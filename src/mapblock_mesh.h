@@ -34,8 +34,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 struct PreMeshBuffer
 {
 	video::SMaterial material;
-	core::array<u16>  indices;
-	core::array<video::S3DVertex>  vertices;
+	core::array<u16> indices;
+	core::array<video::S3DVertex> vertices;
 };
 
 class MeshCollector
@@ -68,20 +68,20 @@ public:
 			p = &m_prebuffers[m_prebuffers.size()-1];
 		}
 
-		u32 vertex_count = p-> vertices.size();
+		u32 vertex_count = p->vertices.size();
 		for(u32 i=0; i<numIndices; i++)
 		{
 			u32 j = indices[i] + vertex_count;
-			if(j >  65535)
+			if(j > 65535)
 			{
 				dstream<<"FIXME: Meshbuffer ran out of indices"<<std::endl;
 				// NOTE: Fix is to just add an another MeshBuffer
 			}
-			p-> indices.push_back(j);
+			p->indices.push_back(j);
 		}
 		for(u32 i=0; i<numVertices; i++)
 		{
-			p-> vertices.push_back(vertices[i]);
+			p->vertices.push_back(vertices[i]);
 		}
 	}
 
@@ -103,22 +103,22 @@ public:
 			// it's a typedeffed CMeshBuffer<video::S3DVertex>
 			scene::SMeshBuffer *buf = new scene::SMeshBuffer();
 			// Set material
-			buf-> Material = p.material;
-			//((scene::SMeshBuffer*)buf)-> Material = p.material;
+			buf->Material = p.material;
+			//((scene::SMeshBuffer*)buf)->Material = p.material;
 			// Use VBO
-			//buf-> setHardwareMappingHint(scene::EHM_STATIC);
+			//buf->setHardwareMappingHint(scene::EHM_STATIC);
 			// Add to mesh
-			mesh-> addMeshBuffer(buf);
+			mesh->addMeshBuffer(buf);
 			// Mesh grabbed it
-			buf-> drop();
+			buf->drop();
 
-			buf-> append(p.vertices.pointer(), p.vertices.size(),
+			buf->append(p.vertices.pointer(), p.vertices.size(),
 					p.indices.pointer(), p.indices.size());
 		}
 	}
 
 private:
-	core::array<PreMeshBuffer>  m_prebuffers;
+	core::array<PreMeshBuffer> m_prebuffers;
 };
 
 // Helper functions

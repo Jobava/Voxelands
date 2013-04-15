@@ -21,7 +21,7 @@ public:
 
 	//! constructor
 	MyBillboardSceneNode(ISceneNode* parent, ISceneManager* mgr, s32 id,
-		const core::vector3df& position, const core::dimension2d<f32> & size);
+		const core::vector3df& position, const core::dimension2d<f32>& size);
 
 	//! pre render event
 	virtual void OnRegisterSceneNode();
@@ -30,13 +30,13 @@ public:
 	virtual void render();
 
 	//! returns the axis aligned bounding box of this node
-	virtual const core::aabbox3d<f32> & getBoundingBox() const;
+	virtual const core::aabbox3d<f32>& getBoundingBox() const;
 
 	//! sets the size of the billboard
-	virtual void setSize(const core::dimension2d<f32> & size);
+	virtual void setSize(const core::dimension2d<f32>& size);
 
 	//! gets the size of the billboard
-	virtual const core::dimension2d<f32> & getSize() const;
+	virtual const core::dimension2d<f32>& getSize() const;
 
 	virtual video::SMaterial& getMaterial(u32 i);
 
@@ -57,12 +57,12 @@ public:
 	//! \param[out] bottomColor: stores the color of the bottom vertices
 	virtual void getColor(video::SColor& topColor, video::SColor& bottomColor) const;
 
-	virtual void setTCoords(u32 i, core::vector2d<f32>  c);
+	virtual void setTCoords(u32 i, core::vector2d<f32> c);
 
 private:
 
-	core::dimension2d<f32>  Size;
-	core::aabbox3d<f32>  BBox;
+	core::dimension2d<f32> Size;
+	core::aabbox3d<f32> BBox;
 	video::SMaterial Material;
 
 	video::S3DVertex vertices[4];

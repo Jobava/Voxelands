@@ -31,14 +31,14 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 /*
 	A cache from texture name to texture path
 */
-MutexedMap<std::string, std::string>  g_texturename_to_path_cache;
+MutexedMap<std::string, std::string> g_texturename_to_path_cache;
 
 /*
 	Replaces the filename extension.
 	eg:
 		std::string image = "a/image.png"
 		replace_ext(image, "jpg")
-		->  image = "a/image.jpg"
+		-> image = "a/image.jpg"
 	Returns true on success.
 */
 static bool replace_ext(std::string &path, const char *ext)
@@ -47,7 +47,7 @@ static bool replace_ext(std::string &path, const char *ext)
 		return false;
 	// Find place of last dot, fail if \ or / found.
 	s32 last_dot_i = -1;
-	for(s32 i=path.size()-1; i> =0; i--)
+	for(s32 i=path.size()-1; i>=0; i--)
 	{
 		if(path[i] == '.')
 		{
@@ -117,7 +117,7 @@ std::string getTexturePath(const std::string &filename)
 	/*
 		Check from texture_path
 	*/
-	std::string texture_path = g_settings-> get("texture_path");
+	std::string texture_path = g_settings->get("texture_path");
 	if(texture_path != "")
 	{
 		std::string testpath = texture_path + DIR_DELIM + filename;
@@ -162,7 +162,7 @@ TextureSource::TextureSource(IrrlichtDevice *device):
 	m_name_to_id[""] = 0;
 
 	// Build main texture atlas
-	if(g_settings-> getBool("enable_texture_atlas"))
+	if(g_settings->getBool("enable_texture_atlas"))
 		buildMainAtlas();
 	else
 		infostream<<"Not building texture atlas."<<std::endl;
@@ -177,7 +177,7 @@ void TextureSource::processQueue()
 	/*
 		Fetch textures
 	*/
-	if(m_get_texture_queue.size() >  0)
+	if(m_get_texture_queue.size() > 0)
 	{
 		GetRequest<std::string, u32, u8, u8>
 				request = m_get_texture_queue.pop();
@@ -193,7 +193,7 @@ void TextureSource::processQueue()
 		result.callers = request.callers;
 		result.item = getTextureIdDirect(request.key);
 
-		request.dest-> push_back(result);
+		request.dest->push_back(result);
 	}
 }
 
@@ -206,11 +206,11 @@ u32 TextureSource::getTextureId(const std::string &name)
 			See if texture already exists
 		*/
 		JMutexAutoLock lock(m_atlaspointer_cache_mutex);
-		core::map<std::string, u32> ::Node *n;
+		core::map<std::string, u32>::Node *n;
 		n = m_name_to_id.find(name);
 		if(n != NULL)
 		{
-			return n-> getValue();
+			return n->getValue();
 		}
 	}
 
@@ -226,7 +226,7 @@ u32 TextureSource::getTextureId(const std::string &name)
 		infostream<<"getTextureId(): Queued: name=\""<<name<<"\""<<std::endl;
 
 		// We're gonna ask the result to be put into here
-		ResultQueue<std::string, u32, u8, u8>  result_queue;
+		ResultQueue<std::string, u32, u8, u8> result_queue;
 
 		// Throw a request in
 		m_get_texture_queue.add(name, 0, 0, &result_queue);
@@ -306,13 +306,13 @@ u32 TextureSource::getTextureIdDirect(const std::string &name)
 	{
 		JMutexAutoLock lock(m_atlaspointer_cache_mutex);
 
-		core::map<std::string, u32> ::Node *n;
+		core::map<std::string, u32>::Node *n;
 		n = m_name_to_id.find(name);
 		if(n != NULL)
 		{
 			infostream<<"getTextureIdDirect(): \""<<name
 					<<"\" found in cache"<<std::endl;
-			return n-> getValue();
+			return n->getValue();
 		}
 	}
 
@@ -334,7 +334,7 @@ u32 TextureSource::getTextureIdDirect(const std::string &name)
 
 	// Find last meta separator in name
 	s32 last_separator_position = -1;
-	for(s32 i=name.size()-1; i> =0; i--)
+	for(s32 i=name.size()-1; i>=0; i--)
 	{
 		if(name[i] == separator)
 		{
@@ -359,7 +359,7 @@ u32 TextureSource::getTextureIdDirect(const std::string &name)
 
 	//infostream<<"base_image_id="<<base_image_id<<std::endl;
 
-	video::IVideoDriver* driver = m_device-> getVideoDriver();
+	video::IVideoDriver* driver = m_device->getVideoDriver();
 	assert(driver);
 
 	video::ITexture *t = NULL;
@@ -386,17 +386,17 @@ u32 TextureSource::getTextureIdDirect(const std::string &name)
 		}
 		else
 		{
-			core::dimension2d<u32>  dim = ap.intsize;
+			core::dimension2d<u32> dim = ap.intsize;
 
-			baseimg = driver-> createImage(video::ECF_A8R8G8B8, dim);
+			baseimg = driver->createImage(video::ECF_A8R8G8B8, dim);
 
-			core::position2d<s32>  pos_to(0,0);
-			core::position2d<s32>  pos_from = ap.intpos;
+			core::position2d<s32> pos_to(0,0);
+			core::position2d<s32> pos_from = ap.intpos;
 
-			image-> copyTo(
+			image->copyTo(
 					baseimg, // target
 					v2s32(0,0), // position in target
-					core::rect<s32> (pos_from, dim) // from
+					core::rect<s32>(pos_from, dim) // from
 			);
 
 			/*infostream<<"getTextureIdDirect(): Loaded \""
@@ -431,7 +431,7 @@ u32 TextureSource::getTextureIdDirect(const std::string &name)
 	if(baseimg != NULL)
 	{
 		// Create texture from resulting image
-		t = driver-> addTexture(name.c_str(), baseimg);
+		t = driver->addTexture(name.c_str(), baseimg);
 	}
 
 	/*
@@ -446,9 +446,9 @@ u32 TextureSource::getTextureIdDirect(const std::string &name)
 	ap.pos = v2f(0,0);
 	ap.size = v2f(1,1);
 	ap.tiled = 0;
-	core::dimension2d<u32>  baseimg_dim(0,0);
+	core::dimension2d<u32> baseimg_dim(0,0);
 	if(baseimg)
-		baseimg_dim = baseimg-> getDimension();
+		baseimg_dim = baseimg->getDimension();
 	SourceAtlasPointer nap(name, ap, baseimg, v2s32(0,0), baseimg_dim);
 	m_atlaspointer_cache.push_back(nap);
 	m_name_to_id.insert(name, id);
@@ -463,10 +463,10 @@ std::string TextureSource::getTextureName(u32 id)
 {
 	JMutexAutoLock lock(m_atlaspointer_cache_mutex);
 
-	if(id > = m_atlaspointer_cache.size())
+	if(id >= m_atlaspointer_cache.size())
 	{
 		infostream<<"TextureSource::getTextureName(): id="<<id
-				<<" > = m_atlaspointer_cache.size()="
+				<<" >= m_atlaspointer_cache.size()="
 				<<m_atlaspointer_cache.size()<<std::endl;
 		return "";
 	}
@@ -479,7 +479,7 @@ AtlasPointer TextureSource::getTexture(u32 id)
 {
 	JMutexAutoLock lock(m_atlaspointer_cache_mutex);
 
-	if(id > = m_atlaspointer_cache.size())
+	if(id >= m_atlaspointer_cache.size())
 		return AtlasPointer(0, NULL);
 
 	return m_atlaspointer_cache[id].a;
@@ -491,15 +491,15 @@ void TextureSource::buildMainAtlas()
 
 	//return; // Disable (for testing)
 
-	video::IVideoDriver* driver = m_device-> getVideoDriver();
+	video::IVideoDriver* driver = m_device->getVideoDriver();
 	assert(driver);
 
 	JMutexAutoLock lock(m_atlaspointer_cache_mutex);
 
 	// Create an image of the right size
-	core::dimension2d<u32>  atlas_dim(1024,1024);
+	core::dimension2d<u32> atlas_dim(1024,1024);
 	video::IImage *atlas_img =
-			driver-> createImage(video::ECF_A8R8G8B8, atlas_dim);
+			driver->createImage(video::ECF_A8R8G8B8, atlas_dim);
 	//assert(atlas_img);
 	if(atlas_img == NULL)
 	{
@@ -513,21 +513,21 @@ void TextureSource::buildMainAtlas()
 		main content features
 	*/
 
-	core::map<std::string, bool>  sourcelist;
+	core::map<std::string, bool> sourcelist;
 
 	for(u16 j=0; j<MAX_CONTENT+1; j++)
 	{
 		if(j == CONTENT_IGNORE || j == CONTENT_AIR)
 			continue;
 		ContentFeatures *f = &content_features(j);
-		for(core::map<std::string, bool> ::Iterator
-				i = f-> used_texturenames.getIterator();
+		for(core::map<std::string, bool>::Iterator
+				i = f->used_texturenames.getIterator();
 				i.atEnd() == false; i++)
 		{
-			std::string name = i.getNode()-> getKey();
+			std::string name = i.getNode()->getKey();
 			sourcelist[name] = true;
 
-			if(f-> often_contains_mineral){
+			if(f->often_contains_mineral){
 				for(int k=1; k<MINERAL_COUNT; k++){
 					std::string mineraltexture = mineral_block_texture(k);
 					std::string fulltexture = name + "^" + mineraltexture;
@@ -538,11 +538,11 @@ void TextureSource::buildMainAtlas()
 	}
 
 	infostream<<"Creating texture atlas out of textures: ";
-	for(core::map<std::string, bool> ::Iterator
+	for(core::map<std::string, bool>::Iterator
 			i = sourcelist.getIterator();
 			i.atEnd() == false; i++)
 	{
-		std::string name = i.getNode()-> getKey();
+		std::string name = i.getNode()->getKey();
 		infostream<<"\""<<name<<"\" ";
 	}
 	infostream<<std::endl;
@@ -556,27 +556,27 @@ void TextureSource::buildMainAtlas()
 	/*
 		First pass: generate almost everything
 	*/
-	core::position2d<s32>  pos_in_atlas(0,0);
+	core::position2d<s32> pos_in_atlas(0,0);
 
 	pos_in_atlas.Y = padding;
 
-	for(core::map<std::string, bool> ::Iterator
+	for(core::map<std::string, bool>::Iterator
 			i = sourcelist.getIterator();
 			i.atEnd() == false; i++)
 	{
-		std::string name = i.getNode()-> getKey();
+		std::string name = i.getNode()->getKey();
 
-		/*video::IImage *img = driver-> createImageFromFile(
+		/*video::IImage *img = driver->createImageFromFile(
 				getTexturePath(name.c_str()).c_str());
 		if(img == NULL)
 			continue;
 
-		core::dimension2d<u32>  dim = img-> getDimension();
+		core::dimension2d<u32> dim = img->getDimension();
 		// Make a copy with the right color format
 		video::IImage *img2 =
-				driver-> createImage(video::ECF_A8R8G8B8, dim);
-		img-> copyTo(img2);
-		img-> drop();*/
+				driver->createImage(video::ECF_A8R8G8B8, dim);
+		img->copyTo(img2);
+		img->drop();*/
 
 		// Generate image by name
 		video::IImage *img2 = generate_image_from_scratch(name, m_device);
@@ -586,12 +586,12 @@ void TextureSource::buildMainAtlas()
 			continue;
 		}
 
-		core::dimension2d<u32>  dim = img2-> getDimension();
+		core::dimension2d<u32> dim = img2->getDimension();
 
 		// Don't add to atlas if image is large
-		core::dimension2d<u32>  max_size_in_atlas(32,32);
-		if(dim.Width >  max_size_in_atlas.Width
-		|| dim.Height >  max_size_in_atlas.Height)
+		core::dimension2d<u32> max_size_in_atlas(32,32);
+		if(dim.Width > max_size_in_atlas.Width
+		|| dim.Height > max_size_in_atlas.Height)
 		{
 			infostream<<"TextureSource::buildMainAtlas(): Not adding "
 					<<"\""<<name<<"\" because image is large"<<std::endl;
@@ -599,9 +599,9 @@ void TextureSource::buildMainAtlas()
 		}
 
 		// Wrap columns and stop making atlas if atlas is full
-		if(pos_in_atlas.Y + dim.Height >  atlas_dim.Height)
+		if(pos_in_atlas.Y + dim.Height > atlas_dim.Height)
 		{
-			if(pos_in_atlas.X >  (s32)atlas_dim.Width - 256 - padding){
+			if(pos_in_atlas.X > (s32)atlas_dim.Width - 256 - padding){
 				errorstream<<"TextureSource::buildMainAtlas(): "
 						<<"Atlas is full, not adding more textures."
 						<<std::endl;
@@ -616,14 +616,14 @@ void TextureSource::buildMainAtlas()
 
 		// Tile it a few times in the X direction
 		u16 xwise_tiling = column_width / dim.Width;
-		if(xwise_tiling >  16) // Limit to 16 (more gives no benefit)
+		if(xwise_tiling > 16) // Limit to 16 (more gives no benefit)
 			xwise_tiling = 16;
 		for(u32 j=0; j<xwise_tiling; j++)
 		{
 			// Copy the copy to the atlas
-			img2-> copyToWithAlpha(atlas_img,
+			img2->copyToWithAlpha(atlas_img,
 					pos_in_atlas + v2s32(j*dim.Width,0),
-					core::rect<s32> (v2s32(0,0), dim),
+					core::rect<s32>(v2s32(0,0), dim),
 					video::SColor(255,255,255,255),
 					NULL);
 		}
@@ -646,11 +646,11 @@ void TextureSource::buildMainAtlas()
 				src_y = pos_in_atlas.Y;
 			}
 			s32 x = x0 + pos_in_atlas.X;
-			video::SColor c = atlas_img-> getPixel(x, src_y);
-			atlas_img-> setPixel(x,dst_y,c);
+			video::SColor c = atlas_img->getPixel(x, src_y);
+			atlas_img->setPixel(x,dst_y,c);
 		}
 
-		img2-> drop();
+		img2->drop();
 
 		/*
 			Add texture to caches
@@ -680,17 +680,17 @@ void TextureSource::buildMainAtlas()
 	/*
 		Make texture
 	*/
-	video::ITexture *t = driver-> addTexture("__main_atlas__", atlas_img);
+	video::ITexture *t = driver->addTexture("__main_atlas__", atlas_img);
 	assert(t);
 
 	/*
 		Second pass: set texture pointer in generated AtlasPointers
 	*/
-	for(core::map<std::string, bool> ::Iterator
+	for(core::map<std::string, bool>::Iterator
 			i = sourcelist.getIterator();
 			i.atEnd() == false; i++)
 	{
-		std::string name = i.getNode()-> getKey();
+		std::string name = i.getNode()->getKey();
 		if(m_name_to_id.find(name) == NULL)
 			continue;
 		u32 id = m_name_to_id[name];
@@ -706,7 +706,7 @@ void TextureSource::buildMainAtlas()
 	infostream<<"Removing and writing texture atlas for inspection to "
 			<<atlaspath<<std::endl;
 	fs::RecursiveDelete(atlaspath);
-	driver-> writeImageToFile(atlas_img, atlaspath.c_str());*/
+	driver->writeImageToFile(atlas_img, atlaspath.c_str());*/
 }
 
 video::IImage* generate_image_from_scratch(std::string name,
@@ -715,7 +715,7 @@ video::IImage* generate_image_from_scratch(std::string name,
 	/*infostream<<"generate_image_from_scratch(): "
 			"\""<<name<<"\""<<std::endl;*/
 
-	video::IVideoDriver* driver = device-> getVideoDriver();
+	video::IVideoDriver* driver = device->getVideoDriver();
 	assert(driver);
 
 	/*
@@ -728,7 +728,7 @@ video::IImage* generate_image_from_scratch(std::string name,
 
 	// Find last meta separator in name
 	s32 last_separator_position = -1;
-	for(s32 i=name.size()-1; i> =0; i--)
+	for(s32 i=name.size()-1; i>=0; i--)
 	{
 		if(name[i] == separator)
 		{
@@ -779,7 +779,7 @@ video::IImage* generate_image_from_scratch(std::string name,
 bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 		IrrlichtDevice *device)
 {
-	video::IVideoDriver* driver = device-> getVideoDriver();
+	video::IVideoDriver* driver = device->getVideoDriver();
 	assert(driver);
 
 	// Stuff starting with [ are special commands
@@ -790,7 +790,7 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 		/*infostream<<"generate_image(): Loading path \""<<path
 				<<"\""<<std::endl;*/
 
-		video::IImage *image = driver-> createImageFromFile(path.c_str());
+		video::IImage *image = driver->createImageFromFile(path.c_str());
 
 		if(image == NULL)
 		{
@@ -804,21 +804,21 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
                     <<" image for \""<<part_of_name<<"\""<<std::endl;
 
 			// Just create a dummy image
-			//core::dimension2d<u32>  dim(2,2);
-			core::dimension2d<u32>  dim(1,1);
-			image = driver-> createImage(video::ECF_A8R8G8B8, dim);
+			//core::dimension2d<u32> dim(2,2);
+			core::dimension2d<u32> dim(1,1);
+			image = driver->createImage(video::ECF_A8R8G8B8, dim);
 			assert(image);
-			/*image-> setPixel(0,0, video::SColor(255,255,0,0));
-			image-> setPixel(1,0, video::SColor(255,0,255,0));
-			image-> setPixel(0,1, video::SColor(255,0,0,255));
-			image-> setPixel(1,1, video::SColor(255,255,0,255));*/
-			image-> setPixel(0,0, video::SColor(255,myrand()%256,
+			/*image->setPixel(0,0, video::SColor(255,255,0,0));
+			image->setPixel(1,0, video::SColor(255,0,255,0));
+			image->setPixel(0,1, video::SColor(255,0,0,255));
+			image->setPixel(1,1, video::SColor(255,255,0,255));*/
+			image->setPixel(0,0, video::SColor(255,myrand()%256,
 					myrand()%256,myrand()%256));
-			/*image-> setPixel(1,0, video::SColor(255,myrand()%256,
+			/*image->setPixel(1,0, video::SColor(255,myrand()%256,
 					myrand()%256,myrand()%256));
-			image-> setPixel(0,1, video::SColor(255,myrand()%256,
+			image->setPixel(0,1, video::SColor(255,myrand()%256,
 					myrand()%256,myrand()%256));
-			image-> setPixel(1,1, video::SColor(255,myrand()%256,
+			image->setPixel(1,1, video::SColor(255,myrand()%256,
 					myrand()%256,myrand()%256));*/
 		}
 
@@ -831,29 +831,29 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 				Otherwise images with alpha cannot be blitted on
 				images that don't have alpha in the original file.
 			*/
-			core::dimension2d<u32>  dim = image-> getDimension();
-			baseimg = driver-> createImage(video::ECF_A8R8G8B8, dim);
-			image-> copyTo(baseimg);
-			image-> drop();
+			core::dimension2d<u32> dim = image->getDimension();
+			baseimg = driver->createImage(video::ECF_A8R8G8B8, dim);
+			image->copyTo(baseimg);
+			image->drop();
 		}
 		// Else blit on base.
 		else
 		{
 			//infostream<<"Blitting "<<part_of_name<<" on base"<<std::endl;
 			// Size of the copied area
-			core::dimension2d<u32>  dim = image-> getDimension();
-			//core::dimension2d<u32>  dim(16,16);
+			core::dimension2d<u32> dim = image->getDimension();
+			//core::dimension2d<u32> dim(16,16);
 			// Position to copy the blitted to in the base image
-			core::position2d<s32>  pos_to(0,0);
+			core::position2d<s32> pos_to(0,0);
 			// Position to copy the blitted from in the blitted image
-			core::position2d<s32>  pos_from(0,0);
+			core::position2d<s32> pos_from(0,0);
 			// Blit
-			image-> copyToWithAlpha(baseimg, pos_to,
-					core::rect<s32> (pos_from, dim),
+			image->copyToWithAlpha(baseimg, pos_to,
+					core::rect<s32>(pos_from, dim),
 					video::SColor(255,255,255,255),
 					NULL);
 			// Drop image
-			image-> drop();
+			image->drop();
 		}
 	}
 	else
@@ -893,7 +893,7 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 			u16 progression = stoi(part_of_name.substr(6));
 
 			// Size of the base image
-			core::dimension2d<u32>  dim_base = baseimg-> getDimension();
+			core::dimension2d<u32> dim_base = baseimg->getDimension();
 
 			/*
 				Load crack image.
@@ -901,39 +901,39 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 				It is an image with a number of cracking stages
 				horizontally tiled.
 			*/
-			video::IImage *img_crack = driver-> createImageFromFile(
+			video::IImage *img_crack = driver->createImageFromFile(
 					getTexturePath("crack.png").c_str());
 
 			if(img_crack)
 			{
 				// Dimension of original image
-				core::dimension2d<u32>  dim_crack
-						= img_crack-> getDimension();
+				core::dimension2d<u32> dim_crack
+						= img_crack->getDimension();
 				// Count of crack stages
 				u32 crack_count = dim_crack.Height / dim_crack.Width;
 				// Limit progression
-				if(progression >  crack_count-1)
+				if(progression > crack_count-1)
 					progression = crack_count-1;
 				// Dimension of a single scaled crack stage
-				core::dimension2d<u32>  dim_crack_scaled_single(
+				core::dimension2d<u32> dim_crack_scaled_single(
 					dim_base.Width,
 					dim_base.Height
 				);
 				// Dimension of scaled size
-				core::dimension2d<u32>  dim_crack_scaled(
+				core::dimension2d<u32> dim_crack_scaled(
 					dim_crack_scaled_single.Width,
 					dim_crack_scaled_single.Height * crack_count
 				);
 				// Create scaled crack image
-				video::IImage *img_crack_scaled = driver-> createImage(
+				video::IImage *img_crack_scaled = driver->createImage(
 						video::ECF_A8R8G8B8, dim_crack_scaled);
 				if(img_crack_scaled)
 				{
 					// Scale crack image by copying
-					img_crack-> copyToScaling(img_crack_scaled);
+					img_crack->copyToScaling(img_crack_scaled);
 
 					// Position to copy the crack from
-					core::position2d<s32>  pos_crack_scaled(
+					core::position2d<s32> pos_crack_scaled(
 						0,
 						dim_crack_scaled_single.Height * progression
 					);
@@ -945,26 +945,26 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 							/ dim_crack_scaled_single.Width; x0++)
 					{
 						// Position to copy the crack to in the base image
-						core::position2d<s32>  pos_base(
+						core::position2d<s32> pos_base(
 							x0*dim_crack_scaled_single.Width,
 							y0*dim_crack_scaled_single.Height
 						);
 						// Rectangle to copy the crack from on the scaled image
-						core::rect<s32>  rect_crack_scaled(
+						core::rect<s32> rect_crack_scaled(
 							pos_crack_scaled,
 							dim_crack_scaled_single
 						);
 						// Copy it
-						img_crack_scaled-> copyToWithAlpha(baseimg, pos_base,
+						img_crack_scaled->copyToWithAlpha(baseimg, pos_base,
 								rect_crack_scaled,
 								video::SColor(255,255,255,255),
 								NULL);
 					}
 
-					img_crack_scaled-> drop();
+					img_crack_scaled->drop();
 				}
 
-				img_crack-> drop();
+				img_crack->drop();
 			}
 		}
 		/*
@@ -978,8 +978,8 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 			u32 w0 = stoi(sf.next("x"));
 			u32 h0 = stoi(sf.next(":"));
 			infostream<<"combined w="<<w0<<" h="<<h0<<std::endl;
-			core::dimension2d<u32>  dim(w0,h0);
-			baseimg = driver-> createImage(video::ECF_A8R8G8B8, dim);
+			core::dimension2d<u32> dim(w0,h0);
+			baseimg = driver->createImage(video::ECF_A8R8G8B8, dim);
 			while(sf.atend() == false)
 			{
 				u32 x = stoi(sf.next(","));
@@ -988,23 +988,23 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 				infostream<<"Adding \""<<filename
 						<<"\" to combined ("<<x<<","<<y<<")"
 						<<std::endl;
-				video::IImage *img = driver-> createImageFromFile(
+				video::IImage *img = driver->createImageFromFile(
 						getTexturePath(filename.c_str()).c_str());
 				if(img)
 				{
-					core::dimension2d<u32>  dim = img-> getDimension();
+					core::dimension2d<u32> dim = img->getDimension();
 					infostream<<"Size "<<dim.Width
 							<<"x"<<dim.Height<<std::endl;
-					core::position2d<s32>  pos_base(x, y);
+					core::position2d<s32> pos_base(x, y);
 					video::IImage *img2 =
-							driver-> createImage(video::ECF_A8R8G8B8, dim);
-					img-> copyTo(img2);
-					img-> drop();
-					img2-> copyToWithAlpha(baseimg, pos_base,
-							core::rect<s32> (v2s32(0,0), dim),
+							driver->createImage(video::ECF_A8R8G8B8, dim);
+					img->copyTo(img2);
+					img->drop();
+					img2->copyToWithAlpha(baseimg, pos_base,
+							core::rect<s32>(v2s32(0,0), dim),
 							video::SColor(255,255,255,255),
 							NULL);
-					img2-> drop();
+					img2->drop();
 				}
 				else
 				{
@@ -1053,7 +1053,7 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 			infostream<<"generate_image(): Loading path \""<<path
 					<<"\""<<std::endl;
 
-			video::IImage *image = driver-> createImageFromFile(path.c_str());
+			video::IImage *image = driver->createImageFromFile(path.c_str());
 
 			if(image == NULL)
 			{
@@ -1062,21 +1062,21 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 			}
 			else
 			{
-				core::dimension2d<u32>  dim = image-> getDimension();
-				baseimg = driver-> createImage(video::ECF_A8R8G8B8, dim);
+				core::dimension2d<u32> dim = image->getDimension();
+				baseimg = driver->createImage(video::ECF_A8R8G8B8, dim);
 
 				// Set alpha to full
 				for(u32 y=0; y<dim.Height; y++)
 				for(u32 x=0; x<dim.Width; x++)
 				{
-					video::SColor c = image-> getPixel(x,y);
+					video::SColor c = image->getPixel(x,y);
 					c.setAlpha(255);
-					image-> setPixel(x,y,c);
+					image->setPixel(x,y,c);
 				}
 				// Blit
-				image-> copyTo(baseimg);
+				image->copyTo(baseimg);
 
-				image-> drop();
+				image->drop();
 			}
 		}
 		/*
@@ -1104,7 +1104,7 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 			infostream<<"generate_image(): Loading path \""<<path
 					<<"\""<<std::endl;
 
-			video::IImage *image = driver-> createImageFromFile(path.c_str());
+			video::IImage *image = driver->createImageFromFile(path.c_str());
 
 			if(image == NULL)
 			{
@@ -1113,25 +1113,25 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 			}
 			else
 			{
-				core::dimension2d<u32>  dim = image-> getDimension();
-				baseimg = driver-> createImage(video::ECF_A8R8G8B8, dim);
+				core::dimension2d<u32> dim = image->getDimension();
+				baseimg = driver->createImage(video::ECF_A8R8G8B8, dim);
 
 				// Blit
-				image-> copyTo(baseimg);
+				image->copyTo(baseimg);
 
-				image-> drop();
+				image->drop();
 
 				for(u32 y=0; y<dim.Height; y++)
 				for(u32 x=0; x<dim.Width; x++)
 				{
-					video::SColor c = baseimg-> getPixel(x,y);
+					video::SColor c = baseimg->getPixel(x,y);
 					u32 r = c.getRed();
 					u32 g = c.getGreen();
 					u32 b = c.getBlue();
 					if(!(r == r1 && g == g1 && b == b1))
 						continue;
 					c.setAlpha(0);
-					baseimg-> setPixel(x,y,c);
+					baseimg->setPixel(x,y,c);
 				}
 			}
 		}
@@ -1163,7 +1163,7 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 			infostream<<"generate_image(): Loading path \""<<path
 					<<"\""<<std::endl;
 
-			video::IImage *image = driver-> createImageFromFile(path.c_str());
+			video::IImage *image = driver->createImageFromFile(path.c_str());
 
 			if(image == NULL)
 			{
@@ -1172,18 +1172,18 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 			}
 			else
 			{
-				core::dimension2d<u32>  dim = image-> getDimension();
-				baseimg = driver-> createImage(video::ECF_A8R8G8B8, dim);
+				core::dimension2d<u32> dim = image->getDimension();
+				baseimg = driver->createImage(video::ECF_A8R8G8B8, dim);
 
 				// Blit
-				image-> copyTo(baseimg);
+				image->copyTo(baseimg);
 
-				image-> drop();
+				image->drop();
 
 				for(u32 y=0; y<dim.Height; y++)
 				for(u32 x=0; x<dim.Width; x++)
 				{
-					video::SColor c = baseimg-> getPixel(x,y);
+					video::SColor c = baseimg->getPixel(x,y);
 					u32 r = c.getRed();
 					u32 g = c.getGreen();
 					u32 b = c.getBlue();
@@ -1191,7 +1191,7 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 					   !(r == r2 && g == g2 && b == b2))
 						continue;
 					c.setAlpha(0);
-					baseimg-> setPixel(x,y,c);
+					baseimg->setPixel(x,y,c);
 				}
 			}
 		}
@@ -1223,7 +1223,7 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 #if 1
 			//TODO
 
-			if(driver-> queryFeature(video::EVDF_RENDER_TO_TARGET) == false)
+			if(driver->queryFeature(video::EVDF_RENDER_TO_TARGET) == false)
 			{
 				infostream<<"generate_image(): EVDF_RENDER_TO_TARGET"
 						" not supported. Creating fallback image"<<std::endl;
@@ -1235,7 +1235,7 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 			u32 w0 = 64;
 			u32 h0 = 64;
 			//infostream<<"inventorycube w="<<w0<<" h="<<h0<<std::endl;
-			core::dimension2d<u32>  dim(w0,h0);
+			core::dimension2d<u32> dim(w0,h0);
 
 			// Generate images for the faces of the cube
 			video::IImage *img_top = generate_image_from_scratch(
@@ -1247,30 +1247,30 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 			assert(img_top && img_left && img_right);
 
 			// TODO: Create textures from images
-			video::ITexture *texture_top = driver-> addTexture(
+			video::ITexture *texture_top = driver->addTexture(
 					(imagename_top + "__temp__").c_str(), img_top);
 			assert(texture_top);
 
 			// Drop images
-			img_top-> drop();
-			img_left-> drop();
-			img_right-> drop();
+			img_top->drop();
+			img_left->drop();
+			img_right->drop();
 
 			// Create render target texture
 			video::ITexture *rtt = NULL;
 			std::string rtt_name = part_of_name + "_RTT";
-			rtt = driver-> addRenderTargetTexture(dim, rtt_name.c_str(),
+			rtt = driver->addRenderTargetTexture(dim, rtt_name.c_str(),
 					video::ECF_A8R8G8B8);
 			assert(rtt);
 
 			// Set render target
-			driver-> setRenderTarget(rtt, true, true,
+			driver->setRenderTarget(rtt, true, true,
 					video::SColor(0,0,0,0));
 
 			// Get a scene manager
-			scene::ISceneManager *smgr_main = device-> getSceneManager();
+			scene::ISceneManager *smgr_main = device->getSceneManager();
 			assert(smgr_main);
-			scene::ISceneManager *smgr = smgr_main-> createNewSceneManager();
+			scene::ISceneManager *smgr = smgr_main->createNewSceneManager();
 			assert(smgr);
 
 			/*
@@ -1281,56 +1281,56 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 				the textures cannot be set individually (or can they?)
 			*/
 
-			scene::ISceneNode* cube = smgr-> addCubeSceneNode(1.0, NULL, -1,
+			scene::ISceneNode* cube = smgr->addCubeSceneNode(1.0, NULL, -1,
 					v3f(0,0,0), v3f(0, 45, 0));
 			// Set texture of cube
-			cube-> setMaterialTexture(0, texture_top);
-			//cube-> setMaterialFlag(video::EMF_LIGHTING, false);
-			cube-> setMaterialFlag(video::EMF_ANTI_ALIASING, false);
-			cube-> setMaterialFlag(video::EMF_BILINEAR_FILTER, false);
+			cube->setMaterialTexture(0, texture_top);
+			//cube->setMaterialFlag(video::EMF_LIGHTING, false);
+			cube->setMaterialFlag(video::EMF_ANTI_ALIASING, false);
+			cube->setMaterialFlag(video::EMF_BILINEAR_FILTER, false);
 
-			scene::ICameraSceneNode* camera = smgr-> addCameraSceneNode(0,
+			scene::ICameraSceneNode* camera = smgr->addCameraSceneNode(0,
 					v3f(0, 1.0, -1.5), v3f(0, 0, 0));
 			// Set orthogonal projection
-			core::CMatrix4<f32>  pm;
+			core::CMatrix4<f32> pm;
 			pm.buildProjectionMatrixOrthoLH(1.65, 1.65, 0, 100);
-			camera-> setProjectionMatrix(pm, true);
+			camera->setProjectionMatrix(pm, true);
 
-			/*scene::ILightSceneNode *light =*/ smgr-> addLightSceneNode(0,
+			/*scene::ILightSceneNode *light =*/ smgr->addLightSceneNode(0,
 					v3f(-50, 100, 0), video::SColorf(0.5,0.5,0.5), 1000);
 
-			smgr-> setAmbientLight(video::SColorf(0.2,0.2,0.2));
+			smgr->setAmbientLight(video::SColorf(0.2,0.2,0.2));
 
 			// Render scene
-			driver-> beginScene(true, true, video::SColor(0,0,0,0));
-			smgr-> drawAll();
-			driver-> endScene();
+			driver->beginScene(true, true, video::SColor(0,0,0,0));
+			smgr->drawAll();
+			driver->endScene();
 
 			// NOTE: The scene nodes should not be dropped, otherwise
-			//       smgr-> drop() segfaults
-			/*cube-> drop();
-			camera-> drop();
-			light-> drop();*/
+			//       smgr->drop() segfaults
+			/*cube->drop();
+			camera->drop();
+			light->drop();*/
 			// Drop scene manager
-			smgr-> drop();
+			smgr->drop();
 
 			// Unset render target
-			driver-> setRenderTarget(0, true, true, 0);
+			driver->setRenderTarget(0, true, true, 0);
 
 			//TODO: Free textures of images
-			driver-> removeTexture(texture_top);
+			driver->removeTexture(texture_top);
 
 			// Create image of render target
-			video::IImage *image = driver-> createImage(rtt, v2s32(0,0), dim);
+			video::IImage *image = driver->createImage(rtt, v2s32(0,0), dim);
 
 			assert(image);
 
-			baseimg = driver-> createImage(video::ECF_A8R8G8B8, dim);
+			baseimg = driver->createImage(video::ECF_A8R8G8B8, dim);
 
 			if(image)
 			{
-				image-> copyTo(baseimg);
-				image-> drop();
+				image->copyTo(baseimg);
+				image->drop();
 			}
 #endif
 		}
@@ -1349,7 +1349,7 @@ void make_progressbar(float value, video::IImage *image)
 	if(image == NULL)
 		return;
 
-	core::dimension2d<u32>  size = image-> getDimension();
+	core::dimension2d<u32> size = image->getDimension();
 
 	u32 barheight = size.Height/16;
 	u32 barpad_x = size.Width/16;
@@ -1371,7 +1371,7 @@ void make_progressbar(float value, video::IImage *image)
 		u32 x = x0 + barpos.X;
 		for(u32 y=barpos.Y; y<barpos.Y+barheight; y++)
 		{
-			image-> setPixel(x,y, *c);
+			image->setPixel(x,y, *c);
 		}
 	}
 }

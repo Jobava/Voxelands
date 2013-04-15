@@ -69,7 +69,7 @@ public:
 
 	DiggingProperties get(const std::string toolname)
 	{
-		core::map<std::string, DiggingProperties> ::Node *n;
+		core::map<std::string, DiggingProperties>::Node *n;
 		n = m_digging_properties.find(toolname);
 		if(n == NULL)
 		{
@@ -82,7 +82,7 @@ public:
 			}
 		}
 		// Return found properties
-		return n-> getValue();
+		return n->getValue();
 	}
 
 	void clear()
@@ -93,7 +93,7 @@ public:
 private:
 	// toolname="": default properties (digging by hand)
 	// Key is toolname
-	core::map<std::string, DiggingProperties>  m_digging_properties;
+	core::map<std::string, DiggingProperties> m_digging_properties;
 };
 
 // For getting the default properties, set tool=""

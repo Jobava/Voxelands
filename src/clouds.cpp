@@ -47,7 +47,7 @@ Clouds::Clouds(
 	//m_material.setFlag(video::EMF_ANTI_ALIASING, true);
 	//m_material.MaterialType = video::EMT_TRANSPARENT_VERTEX_ALPHA;
 
-	m_box = core::aabbox3d<f32> (-BS*1000000,cloud_y-BS,-BS*1000000,
+	m_box = core::aabbox3d<f32>(-BS*1000000,cloud_y-BS,-BS*1000000,
 			BS*1000000,cloud_y+BS,BS*1000000);
 
 }
@@ -61,32 +61,32 @@ void Clouds::OnRegisterSceneNode()
 {
 	if(IsVisible)
 	{
-		//SceneManager-> registerNodeForRendering(this, scene::ESNRP_TRANSPARENT);
-		SceneManager-> registerNodeForRendering(this, scene::ESNRP_SOLID);
+		//SceneManager->registerNodeForRendering(this, scene::ESNRP_TRANSPARENT);
+		SceneManager->registerNodeForRendering(this, scene::ESNRP_SOLID);
 	}
 
 	ISceneNode::OnRegisterSceneNode();
 }
 
-#define MYROUND(x) (x >  0.0 ? (int)x : (int)x - 1)
+#define MYROUND(x) (x > 0.0 ? (int)x : (int)x - 1)
 
 void Clouds::render()
 {
-	video::IVideoDriver* driver = SceneManager-> getVideoDriver();
+	video::IVideoDriver* driver = SceneManager->getVideoDriver();
 
-	/*if(SceneManager-> getSceneNodeRenderPass() != scene::ESNRP_TRANSPARENT)
+	/*if(SceneManager->getSceneNodeRenderPass() != scene::ESNRP_TRANSPARENT)
 		return;*/
-	if(SceneManager-> getSceneNodeRenderPass() != scene::ESNRP_SOLID)
+	if(SceneManager->getSceneNodeRenderPass() != scene::ESNRP_SOLID)
 		return;
 
 	ScopeProfiler sp(g_profiler, "Rendering of clouds, avg", SPT_AVG);
 
 	int num_faces_to_draw = 1;
-	if(g_settings-> getBool("enable_3d_clouds"))
+	if(g_settings->getBool("enable_3d_clouds"))
 		num_faces_to_draw = 6;
 
-	driver-> setTransform(video::ETS_WORLD, AbsoluteTransformation);
-	driver-> setMaterial(m_material);
+	driver->setTransform(video::ETS_WORLD, AbsoluteTransformation);
+	driver->setMaterial(m_material);
 
 	/*
 		Clouds move from X+ towards X-
@@ -210,7 +210,7 @@ void Clouds::render()
 			for(u16 i=0; i<4; i++)
 				v[i].Pos += pos;
 			u16 indices[] = {0,1,2,2,3,0};
-			driver-> drawVertexPrimitiveList(v, 4, indices, 2,
+			driver->drawVertexPrimitiveList(v, 4, indices, 2,
 					video::EVT_STANDARD, scene::EPT_TRIANGLES, video::EIT_16BIT);
 		}
 

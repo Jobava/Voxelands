@@ -27,7 +27,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 class KeyList : protected core::list<KeyPress>
 {
-	typedef core::list<KeyPress>  super;
+	typedef core::list<KeyPress> super;
 	typedef super::Iterator Iterator;
 	typedef super::ConstIterator ConstIterator;
 
@@ -73,7 +73,7 @@ public:
 
 	void toggle(const KeyPress &key)
 	{
-		Iterator p(this-> find(key));
+		Iterator p(this->find(key));
 		if (p != end())
 			erase(p);
 		else

@@ -23,7 +23,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "settings.h"
 #include "profiler.h"
 
-core::map<u16, ServerActiveObject::Factory>  ServerActiveObject::m_types;
+core::map<u16, ServerActiveObject::Factory> ServerActiveObject::m_types;
 
 /* Some helper functions */
 
@@ -34,7 +34,7 @@ void accelerate_xz(v3f &speed, v3f target_speed, f32 max_increase)
 	d_wanted.Y = 0;
 	f32 dl_wanted = d_wanted.getLength();
 	f32 dl = dl_wanted;
-	if(dl >  max_increase)
+	if(dl > max_increase)
 		dl = max_increase;
 
 	v3f d = d_wanted.normalize() * dl;
@@ -68,14 +68,14 @@ ServerActiveObject* TestSAO::create(ServerEnvironment *env, u16 id, v3f pos,
 void TestSAO::step(float dtime, bool send_recommended)
 {
 	m_age += dtime;
-	if(m_age >  10)
+	if(m_age > 10)
 	{
 		m_removed = true;
 		return;
 	}
 
 	m_base_position.Y += dtime * BS * 2;
-	if(m_base_position.Y >  8*BS)
+	if(m_base_position.Y > 8*BS)
 		m_base_position.Y = 2*BS;
 
 	if(send_recommended == false)
@@ -147,24 +147,24 @@ void ItemSAO::step(float dtime, bool send_recommended)
 		return;
 	dtime = interval;
 
-	core::aabbox3d<f32>  box(-BS/3.,0.0,-BS/3., BS/3.,BS*2./3.,BS/3.);
+	core::aabbox3d<f32> box(-BS/3.,0.0,-BS/3., BS/3.,BS*2./3.,BS/3.);
 	collisionMoveResult moveresult;
 	// Apply gravity
 	m_speed_f += v3f(0, -dtime*9.81*BS, 0);
 	// Maximum movement without glitches
 	f32 pos_max_d = BS*0.25;
 	// Limit speed
-	if(m_speed_f.getLength()*dtime >  pos_max_d)
+	if(m_speed_f.getLength()*dtime > pos_max_d)
 		m_speed_f *= pos_max_d / (m_speed_f.getLength()*dtime);
 	v3f pos_f = getBasePosition();
 	v3f pos_f_old = pos_f;
-	moveresult = collisionMoveSimple(&m_env-> getMap(), pos_max_d,
+	moveresult = collisionMoveSimple(&m_env->getMap(), pos_max_d,
 			box, dtime, pos_f, m_speed_f);
 
 	if(send_recommended == false)
 		return;
 
-	if(pos_f.getDistanceFrom(m_last_sent_position) >  0.05*BS)
+	if(pos_f.getDistanceFrom(m_last_sent_position) > 0.05*BS)
 	{
 		setBasePosition(pos_f);
 		m_last_sent_position = pos_f;
@@ -225,7 +225,7 @@ InventoryItem * ItemSAO::createInventoryItem()
 		std::istringstream is(m_inventorystring, std::ios_base::binary);
 		InventoryItem *item = InventoryItem::deSerialize(is);
 		infostream<<__FUNCTION_NAME<<": m_inventorystring=\""
-				<<m_inventorystring<<"\" ->  item="<<item
+				<<m_inventorystring<<"\" -> item="<<item
 				<<std::endl;
 		return item;
 	}
@@ -244,13 +244,13 @@ void ItemSAO::rightClick(Player *player)
 	if(item == NULL)
 		return;
 
-	bool to_be_deleted = item-> use(m_env, player);
+	bool to_be_deleted = item->use(m_env, player);
 
 	if(to_be_deleted)
 		m_removed = true;
 	else
 		// Reflect changes to the item here
-		m_inventorystring = item-> getItemString();
+		m_inventorystring = item->getItemString();
 
 	delete item;
 }
@@ -309,7 +309,7 @@ void RatSAO::step(float dtime, bool send_recommended)
 	*/
 
 	/*m_age += dtime;
-	if(m_age >  60)
+	if(m_age > 60)
 	{
 		// Die
 		m_removed = true;
@@ -324,13 +324,13 @@ void RatSAO::step(float dtime, bool send_recommended)
 	*/
 	bool player_is_close = false;
 	// Check connected players
-	core::list<Player*>  players = m_env-> getPlayers(true);
-	core::list<Player*> ::Iterator i;
+	core::list<Player*> players = m_env->getPlayers(true);
+	core::list<Player*>::Iterator i;
 	for(i = players.begin();
 			i != players.end(); i++)
 	{
 		Player *player = *i;
-		v3f playerpos = player-> getPosition();
+		v3f playerpos = player->getPosition();
 		if(m_base_position.getDistanceFrom(playerpos) < BS*10.0)
 		{
 			player_is_close = true;
@@ -381,16 +381,16 @@ void RatSAO::step(float dtime, bool send_recommended)
 		Move it, with collision detection
 	*/
 
-	core::aabbox3d<f32>  box(-BS/3.,0.0,-BS/3., BS/3.,BS*2./3.,BS/3.);
+	core::aabbox3d<f32> box(-BS/3.,0.0,-BS/3., BS/3.,BS*2./3.,BS/3.);
 	collisionMoveResult moveresult;
 	// Maximum movement without glitches
 	f32 pos_max_d = BS*0.25;
 	// Limit speed
-	if(m_speed_f.getLength()*dtime >  pos_max_d)
+	if(m_speed_f.getLength()*dtime > pos_max_d)
 		m_speed_f *= pos_max_d / (m_speed_f.getLength()*dtime);
 	v3f pos_f = getBasePosition();
 	v3f pos_f_old = pos_f;
-	moveresult = collisionMoveSimple(&m_env-> getMap(), pos_max_d,
+	moveresult = collisionMoveSimple(&m_env->getMap(), pos_max_d,
 			box, dtime, pos_f, m_speed_f);
 	m_touching_ground = moveresult.touching_ground;
 
@@ -399,7 +399,7 @@ void RatSAO::step(float dtime, bool send_recommended)
 	if(send_recommended == false)
 		return;
 
-	if(pos_f.getDistanceFrom(m_last_sent_position) >  0.05*BS)
+	if(pos_f.getDistanceFrom(m_last_sent_position) > 0.05*BS)
 	{
 		m_last_sent_position = pos_f;
 
@@ -479,7 +479,7 @@ ServerActiveObject* Oerkki1SAO::create(ServerEnvironment *env, u16 id, v3f pos,
 	if(version != 0)
 		return NULL;
 	Oerkki1SAO *o = new Oerkki1SAO(env, id, pos);
-	o-> m_hp = hp;
+	o->m_hp = hp;
 	return o;
 }
 
@@ -500,7 +500,7 @@ void Oerkki1SAO::step(float dtime, bool send_recommended)
 	*/
 
 	m_age += dtime;
-	if(m_age >  120)
+	if(m_age > 120)
 	{
 		// Die
 		m_removed = true;
@@ -521,13 +521,13 @@ void Oerkki1SAO::step(float dtime, bool send_recommended)
 	bool player_is_too_close = false;
 	v3f near_player_pos;
 	// Check connected players
-	core::list<Player*>  players = m_env-> getPlayers(true);
-	core::list<Player*> ::Iterator i;
+	core::list<Player*> players = m_env->getPlayers(true);
+	core::list<Player*>::Iterator i;
 	for(i = players.begin();
 			i != players.end(); i++)
 	{
 		Player *player = *i;
-		v3f playerpos = player-> getPosition();
+		v3f playerpos = player->getPosition();
 		f32 dist = m_base_position.getDistanceFrom(playerpos);
 		if(dist < BS*0.6)
 		{
@@ -562,14 +562,14 @@ void Oerkki1SAO::step(float dtime, bool send_recommended)
 		f32 nyaw = 180./PI*atan2(ndir.Z,ndir.X);
 		if(nyaw < m_yaw - 180)
 			nyaw += 360;
-		else if(nyaw >  m_yaw + 180)
+		else if(nyaw > m_yaw + 180)
 			nyaw -= 360;
 		m_yaw = 0.95*m_yaw + 0.05*nyaw;
 		m_yaw = wrapDegrees(m_yaw);
 
 		f32 speed = 2*BS;
 
-		if((m_touching_ground || m_after_jump_timer >  0.0)
+		if((m_touching_ground || m_after_jump_timer > 0.0)
 				&& !player_is_too_close)
 		{
 			v3f dir(cos(m_yaw/180*PI),0,sin(m_yaw/180*PI));
@@ -602,7 +602,7 @@ void Oerkki1SAO::step(float dtime, bool send_recommended)
 		}
 	}
 
-	if((m_speed_f - target_speed).getLength() >  BS*4 || player_is_too_close)
+	if((m_speed_f - target_speed).getLength() > BS*4 || player_is_too_close)
 		accelerate_xz(m_speed_f, target_speed, dtime*BS*8);
 	else
 		accelerate_xz(m_speed_f, target_speed, dtime*BS*4);
@@ -613,16 +613,16 @@ void Oerkki1SAO::step(float dtime, bool send_recommended)
 		Move it, with collision detection
 	*/
 
-	core::aabbox3d<f32>  box(-BS/3.,0.0,-BS/3., BS/3.,BS*5./3.,BS/3.);
+	core::aabbox3d<f32> box(-BS/3.,0.0,-BS/3., BS/3.,BS*5./3.,BS/3.);
 	collisionMoveResult moveresult;
 	// Maximum movement without glitches
 	f32 pos_max_d = BS*0.25;
 	/*// Limit speed
-	if(m_speed_f.getLength()*dtime >  pos_max_d)
+	if(m_speed_f.getLength()*dtime > pos_max_d)
 		m_speed_f *= pos_max_d / (m_speed_f.getLength()*dtime);*/
 	v3f pos_f = getBasePosition();
 	v3f pos_f_old = pos_f;
-	moveresult = collisionMovePrecise(&m_env-> getMap(), pos_max_d,
+	moveresult = collisionMovePrecise(&m_env->getMap(), pos_max_d,
 			box, dtime, pos_f, m_speed_f);
 	m_touching_ground = moveresult.touching_ground;
 
@@ -634,7 +634,7 @@ void Oerkki1SAO::step(float dtime, bool send_recommended)
 	speed_diff.X *= 2;
 	speed_diff.Z *= 2;
 	float vel = speed_diff.getLength();
-	if(vel >  tolerance)
+	if(vel > tolerance)
 	{
 		f32 damage_f = (vel - tolerance)/BS*factor;
 		u16 damage = (u16)(damage_f+0.5);
@@ -646,7 +646,7 @@ void Oerkki1SAO::step(float dtime, bool send_recommended)
 	if(send_recommended == false && m_speed_f.getLength() < 3.0*BS)
 		return;
 
-	if(pos_f.getDistanceFrom(m_last_sent_position) >  0.05*BS)
+	if(pos_f.getDistanceFrom(m_last_sent_position) > 0.05*BS)
 	{
 		m_last_sent_position = pos_f;
 
@@ -795,13 +795,13 @@ void FireflySAO::step(float dtime, bool send_recommended)
 	*/
 	bool player_is_close = false;
 	// Check connected players
-	core::list<Player*>  players = m_env-> getPlayers(true);
-	core::list<Player*> ::Iterator i;
+	core::list<Player*> players = m_env->getPlayers(true);
+	core::list<Player*>::Iterator i;
 	for(i = players.begin();
 			i != players.end(); i++)
 	{
 		Player *player = *i;
-		v3f playerpos = player-> getPosition();
+		v3f playerpos = player->getPosition();
 		if(m_base_position.getDistanceFrom(playerpos) < BS*10.0)
 		{
 			player_is_close = true;
@@ -852,16 +852,16 @@ void FireflySAO::step(float dtime, bool send_recommended)
 		Move it, with collision detection
 	*/
 
-	core::aabbox3d<f32>  box(-BS/3.,-BS*2/3.0,-BS/3., BS/3.,BS*4./3.,BS/3.);
+	core::aabbox3d<f32> box(-BS/3.,-BS*2/3.0,-BS/3., BS/3.,BS*4./3.,BS/3.);
 	collisionMoveResult moveresult;
 	// Maximum movement without glitches
 	f32 pos_max_d = BS*0.25;
 	// Limit speed
-	if(m_speed_f.getLength()*dtime >  pos_max_d)
+	if(m_speed_f.getLength()*dtime > pos_max_d)
 		m_speed_f *= pos_max_d / (m_speed_f.getLength()*dtime);
 	v3f pos_f = getBasePosition();
 	v3f pos_f_old = pos_f;
-	moveresult = collisionMoveSimple(&m_env-> getMap(), pos_max_d,
+	moveresult = collisionMoveSimple(&m_env->getMap(), pos_max_d,
 			box, dtime, pos_f, m_speed_f);
 	m_touching_ground = moveresult.touching_ground;
 
@@ -870,7 +870,7 @@ void FireflySAO::step(float dtime, bool send_recommended)
 	if(send_recommended == false)
 		return;
 
-	if(pos_f.getDistanceFrom(m_last_sent_position) >  0.05*BS)
+	if(pos_f.getDistanceFrom(m_last_sent_position) > 0.05*BS)
 	{
 		m_last_sent_position = pos_f;
 
@@ -948,9 +948,9 @@ MobV2SAO::MobV2SAO(ServerEnvironment *env, u16 id, v3f pos,
 
 	m_properties = new Settings();
 	if(init_properties)
-		m_properties-> update(*init_properties);
+		m_properties->update(*init_properties);
 
-	m_properties-> setV3F("pos", pos);
+	m_properties->setV3F("pos", pos);
 
 	setPropertyDefaults();
 	readProperties();
@@ -976,7 +976,7 @@ std::string MobV2SAO::getStaticData()
 	updateProperties();
 
 	std::ostringstream os(std::ios::binary);
-	m_properties-> writeLines(os);
+	m_properties->writeLines(os);
 	return os.str();
 }
 
@@ -1015,7 +1015,7 @@ bool checkFreePosition(Map *map, v3s16 p0, v3s16 size)
 	for(int dz=0; dz<size.Z; dz++){
 		v3s16 dp(dx, dy, dz);
 		v3s16 p = p0 + dp;
-		MapNode n = map-> getNodeNoEx(p);
+		MapNode n = map->getNodeNoEx(p);
 		if(n.getContent() != CONTENT_AIR)
 			return false;
 	}
@@ -1025,7 +1025,7 @@ bool checkFreePosition(Map *map, v3s16 p0, v3s16 size)
 bool checkWalkablePosition(Map *map, v3s16 p0)
 {
 	v3s16 p = p0 + v3s16(0,-1,0);
-	MapNode n = map-> getNodeNoEx(p);
+	MapNode n = map->getNodeNoEx(p);
 	if(n.getContent() != CONTENT_AIR)
 		return true;
 	return false;
@@ -1046,7 +1046,7 @@ static void get_random_u32_array(u32 a[], u32 len)
 	for(i=0; i<len; i++)
 		a[i] = i;
 	n = len;
-	while(n >  1){
+	while(n > 1){
 		u32 k = myrand() % n;
 		n--;
 		u32 temp = a[n];
@@ -1059,31 +1059,31 @@ static void get_random_u32_array(u32 a[], u32 len)
 
 static void explodeSquare(Map *map, v3s16 p0, v3s16 size)
 {
-	core::map<v3s16, MapBlock*>  modified_blocks;
+	core::map<v3s16, MapBlock*> modified_blocks;
 
 	for(int dx=0; dx<size.X; dx++)
 	for(int dy=0; dy<size.Y; dy++)
 	for(int dz=0; dz<size.Z; dz++){
 		v3s16 dp(dx - size.X/2, dy - size.Y/2, dz - size.Z/2);
 		v3s16 p = p0 + dp;
-		MapNode n = map-> getNodeNoEx(p);
+		MapNode n = map->getNodeNoEx(p);
 		if(n.getContent() == CONTENT_IGNORE)
 			continue;
-		//map-> removeNodeWithEvent(p);
-		map-> removeNodeAndUpdate(p, modified_blocks);
+		//map->removeNodeWithEvent(p);
+		map->removeNodeAndUpdate(p, modified_blocks);
 	}
 
 	// Send a MEET_OTHER event
 	MapEditEvent event;
 	event.type = MEET_OTHER;
-	for(core::map<v3s16, MapBlock*> ::Iterator
+	for(core::map<v3s16, MapBlock*>::Iterator
 		  i = modified_blocks.getIterator();
 		  i.atEnd() == false; i++)
 	{
-		v3s16 p = i.getNode()-> getKey();
+		v3s16 p = i.getNode()->getKey();
 		event.modified_blocks.insert(p, true);
 	}
-	map-> dispatchEvent(&event);
+	map->dispatchEvent(&event);
 }
 
 void MobV2SAO::step(float dtime, bool send_recommended)
@@ -1091,27 +1091,27 @@ void MobV2SAO::step(float dtime, bool send_recommended)
 	ScopeProfiler sp2(g_profiler, "MobV2SAO::step avg", SPT_AVG);
 
 	assert(m_env);
-	Map *map = &m_env-> getMap();
+	Map *map = &m_env->getMap();
 
 	m_age += dtime;
 
-	if(m_die_age > = 0.0 && m_age > = m_die_age){
+	if(m_die_age >= 0.0 && m_age >= m_die_age){
 		m_removed = true;
 		return;
 	}
 
 	m_random_disturb_timer += dtime;
-	if(m_random_disturb_timer > = 5.0)
+	if(m_random_disturb_timer >= 5.0)
 	{
 		m_random_disturb_timer = 0;
 		// Check connected players
-		core::list<Player*>  players = m_env-> getPlayers(true);
-		core::list<Player*> ::Iterator i;
+		core::list<Player*> players = m_env->getPlayers(true);
+		core::list<Player*>::Iterator i;
 		for(i = players.begin();
 				i != players.end(); i++)
 		{
 			Player *player = *i;
-			v3f playerpos = player-> getPosition();
+			v3f playerpos = player->getPosition();
 			f32 dist = m_base_position.getDistanceFrom(playerpos);
 			if(dist < BS*16)
 			{
@@ -1119,8 +1119,8 @@ void MobV2SAO::step(float dtime, bool send_recommended)
 					actionstream<<"Mob id="<<m_id<<" at "
 							<<PP(m_base_position/BS)
 							<<" got randomly disturbed by "
-							<<player-> getName()<<std::endl;
-					m_disturbing_player = player-> getName();
+							<<player->getName()<<std::endl;
+					m_disturbing_player = player->getName();
 					m_disturb_timer = 0;
 					break;
 				}
@@ -1129,14 +1129,14 @@ void MobV2SAO::step(float dtime, bool send_recommended)
 	}
 
 	Player *disturbing_player =
-			m_env-> getPlayer(m_disturbing_player.c_str());
+			m_env->getPlayer(m_disturbing_player.c_str());
 	v3f disturbing_player_off = v3f(0,1,0);
 	v3f disturbing_player_norm = v3f(0,1,0);
 	float disturbing_player_distance = 1000000;
 	float disturbing_player_dir = 0;
 	if(disturbing_player){
 		disturbing_player_off =
-				disturbing_player-> getPosition() - m_base_position;
+				disturbing_player->getPosition() - m_base_position;
 		disturbing_player_distance = disturbing_player_off.getLength();
 		disturbing_player_norm = disturbing_player_off;
 		disturbing_player_norm.normalize();
@@ -1152,9 +1152,9 @@ void MobV2SAO::step(float dtime, bool send_recommended)
 		if(m_shooting_timer <= 0.0 && m_shooting){
 			m_shooting = false;
 
-			std::string shoot_type = m_properties-> get("shoot_type");
+			std::string shoot_type = m_properties->get("shoot_type");
 			v3f shoot_pos(0,0,0);
-			shoot_pos.Y += m_properties-> getFloat("shoot_y") * BS;
+			shoot_pos.Y += m_properties->getFloat("shoot_y") * BS;
 			if(shoot_type == "fireball"){
 				v3f dir(cos(m_yaw/180*PI),0,sin(m_yaw/180*PI));
 				dir.Y = m_shoot_y;
@@ -1176,8 +1176,8 @@ void MobV2SAO::step(float dtime, bool send_recommended)
 				properties.set("player_hit_interval", "1");
 				ServerActiveObject *obj = new MobV2SAO(m_env, 0,
 						pos, &properties);
-				//m_env-> addActiveObjectAsStatic(obj);
-				m_env-> addActiveObject(obj);
+				//m_env->addActiveObjectAsStatic(obj);
+				m_env->addActiveObject(obj);
 			} else {
 				infostream<<__FUNCTION_NAME<<": Mob id="<<m_id
 						<<": Unknown shoot_type="<<shoot_type
@@ -1192,10 +1192,10 @@ void MobV2SAO::step(float dtime, bool send_recommended)
 			reload_time = 3.0;
 
 		bool shoot_without_player = false;
-		if(m_properties-> getBool("mindless_rage"))
+		if(m_properties->getBool("mindless_rage"))
 			shoot_without_player = true;
 
-		if(!m_shooting && m_shoot_reload_timer > = reload_time &&
+		if(!m_shooting && m_shoot_reload_timer >= reload_time &&
 				!m_next_pos_exists &&
 				(m_disturb_timer <= 60.0 || shoot_without_player))
 		{
@@ -1256,7 +1256,7 @@ void MobV2SAO::step(float dtime, bool send_recommended)
 				speed = BS * 3.0;
 			dir *= dtime * speed;
 			bool arrived = false;
-			if(dir.getLength() >  diff.getLength()){
+			if(dir.getLength() > diff.getLength()){
 				dir = diff;
 				arrived = true;
 			}
@@ -1271,7 +1271,7 @@ void MobV2SAO::step(float dtime, bool send_recommended)
 		v3s16 pos_i = floatToInt(m_base_position, BS);
 		v3s16 size_blocks = v3s16(m_size.X+0.5,m_size.Y+0.5,m_size.X+0.5);
 		v3s16 pos_size_off(0,0,0);
-		if(m_size.X > = 2.5){
+		if(m_size.X >= 2.5){
 			pos_size_off.X = -1;
 			pos_size_off.Y = -1;
 		}
@@ -1325,7 +1325,7 @@ void MobV2SAO::step(float dtime, bool send_recommended)
 		v3s16 pos_i = floatToInt(m_base_position, BS);
 		v3s16 size_blocks = v3s16(m_size.X+0.5,m_size.Y+0.5,m_size.X+0.5);
 		v3s16 pos_size_off(0,0,0);
-		if(m_size.X > = 2.5){
+		if(m_size.X >= 2.5){
 			pos_size_off.X = -1;
 			pos_size_off.Y = -1;
 		}
@@ -1345,7 +1345,7 @@ void MobV2SAO::step(float dtime, bool send_recommended)
 	if(send_recommended == false)
 		return;
 
-	if(m_base_position.getDistanceFrom(m_last_sent_position) >  0.05*BS)
+	if(m_base_position.getDistanceFrom(m_last_sent_position) > 0.05*BS)
 	{
 		sendPosition();
 	}
@@ -1355,7 +1355,7 @@ u16 MobV2SAO::punch(const std::string &toolname, v3f dir,
 		const std::string &playername)
 {
 	assert(m_env);
-	Map *map = &m_env-> getMap();
+	Map *map = &m_env->getMap();
 
 	actionstream<<playername<<" punches mob id="<<m_id
 			<<" with a \""<<toolname<<"\" at "
@@ -1371,7 +1371,7 @@ u16 MobV2SAO::punch(const std::string &toolname, v3f dir,
 		v3s16 pos_i = floatToInt(new_base_position, BS);
 		v3s16 size_blocks = v3s16(m_size.X+0.5,m_size.Y+0.5,m_size.X+0.5);
 		v3s16 pos_size_off(0,0,0);
-		if(m_size.X > = 2.5){
+		if(m_size.X >= 2.5){
 			pos_size_off.X = -1;
 			pos_size_off.Y = -1;
 		}
@@ -1401,7 +1401,7 @@ u16 MobV2SAO::punch(const std::string &toolname, v3f dir,
 
 bool MobV2SAO::isPeaceful()
 {
-	return m_properties-> getBool("is_peaceful");
+	return m_properties->getBool("is_peaceful");
 }
 
 void MobV2SAO::sendPosition()
@@ -1422,42 +1422,42 @@ void MobV2SAO::sendPosition()
 
 void MobV2SAO::setPropertyDefaults()
 {
-	m_properties-> setDefault("is_peaceful", "false");
-	m_properties-> setDefault("move_type", "ground_nodes");
-	m_properties-> setDefault("speed", "(0,0,0)");
-	m_properties-> setDefault("age", "0");
-	m_properties-> setDefault("yaw", "0");
-	m_properties-> setDefault("pos", "(0,0,0)");
-	m_properties-> setDefault("hp", "0");
-	m_properties-> setDefault("die_age", "-1");
-	m_properties-> setDefault("size", "(1,2)");
-	m_properties-> setDefault("shoot_type", "fireball");
-	m_properties-> setDefault("shoot_y", "0");
-	m_properties-> setDefault("mindless_rage", "false");
+	m_properties->setDefault("is_peaceful", "false");
+	m_properties->setDefault("move_type", "ground_nodes");
+	m_properties->setDefault("speed", "(0,0,0)");
+	m_properties->setDefault("age", "0");
+	m_properties->setDefault("yaw", "0");
+	m_properties->setDefault("pos", "(0,0,0)");
+	m_properties->setDefault("hp", "0");
+	m_properties->setDefault("die_age", "-1");
+	m_properties->setDefault("size", "(1,2)");
+	m_properties->setDefault("shoot_type", "fireball");
+	m_properties->setDefault("shoot_y", "0");
+	m_properties->setDefault("mindless_rage", "false");
 }
 void MobV2SAO::readProperties()
 {
-	m_move_type = m_properties-> get("move_type");
-	m_speed = m_properties-> getV3F("speed");
-	m_age = m_properties-> getFloat("age");
-	m_yaw = m_properties-> getFloat("yaw");
-	m_base_position = m_properties-> getV3F("pos");
-	m_hp = m_properties-> getS32("hp");
-	m_die_age = m_properties-> getFloat("die_age");
-	m_size = m_properties-> getV2F("size");
+	m_move_type = m_properties->get("move_type");
+	m_speed = m_properties->getV3F("speed");
+	m_age = m_properties->getFloat("age");
+	m_yaw = m_properties->getFloat("yaw");
+	m_base_position = m_properties->getV3F("pos");
+	m_hp = m_properties->getS32("hp");
+	m_die_age = m_properties->getFloat("die_age");
+	m_size = m_properties->getV2F("size");
 }
 void MobV2SAO::updateProperties()
 {
-	m_properties-> set("move_type", m_move_type);
-	m_properties-> setV3F("speed", m_speed);
-	m_properties-> setFloat("age", m_age);
-	m_properties-> setFloat("yaw", m_yaw);
-	m_properties-> setV3F("pos", m_base_position);
-	m_properties-> setS32("hp", m_hp);
-	m_properties-> setFloat("die_age", m_die_age);
-	m_properties-> setV2F("size", m_size);
+	m_properties->set("move_type", m_move_type);
+	m_properties->setV3F("speed", m_speed);
+	m_properties->setFloat("age", m_age);
+	m_properties->setFloat("yaw", m_yaw);
+	m_properties->setV3F("pos", m_base_position);
+	m_properties->setS32("hp", m_hp);
+	m_properties->setFloat("die_age", m_die_age);
+	m_properties->setV2F("size", m_size);
 
-	m_properties-> setS32("version", 0);
+	m_properties->setS32("version", 0);
 }
 
 void MobV2SAO::doDamage(u16 d)

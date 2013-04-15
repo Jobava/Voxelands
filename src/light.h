@@ -48,7 +48,7 @@ inline u8 diminish_light(u8 light)
 {
 	if(light == 0)
 		return 0;
-	if(light > = LIGHT_MAX)
+	if(light >= LIGHT_MAX)
 		return LIGHT_MAX - 1;
 
 	return light - 1;
@@ -56,7 +56,7 @@ inline u8 diminish_light(u8 light)
 
 inline u8 diminish_light(u8 light, u8 distance)
 {
-	if(distance > = light)
+	if(distance >= light)
 		return 0;
 	return  light - distance;
 }
@@ -80,7 +80,7 @@ inline u8 decode_light(u8 light)
 	if(light == LIGHT_SUN)
 		return light_decode_table[LIGHT_MAX];
 
-	if(light >  LIGHT_MAX)
+	if(light > LIGHT_MAX)
 		light = LIGHT_MAX;
 
 	return light_decode_table[light];

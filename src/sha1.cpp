@@ -35,8 +35,8 @@ SOFTWARE.
 void SHA1::hexPrinter( unsigned char* c, int l )
 {
 	assert( c );
-	assert( l >  0 );
-	while( l >  0 )
+	assert( l > 0 );
+	while( l > 0 )
 	{
 		printf( " %02x", *c );
 		l--;
@@ -47,16 +47,16 @@ void SHA1::hexPrinter( unsigned char* c, int l )
 // circular left bit rotation.  MSB wraps around to LSB
 Uint32 SHA1::lrot( Uint32 x, int bits )
 {
-	return (x<<bits) | (x> > (32 - bits));
+	return (x<<bits) | (x>>(32 - bits));
 };
 
 // Save a 32-bit unsigned integer to memory, in big-endian order
 void SHA1::storeBigEndianUint32( unsigned char* byte, Uint32 num )
 {
 	assert( byte );
-	byte[0] = (unsigned char)(num> > 24);
-	byte[1] = (unsigned char)(num> > 16);
-	byte[2] = (unsigned char)(num> > 8);
+	byte[0] = (unsigned char)(num>>24);
+	byte[1] = (unsigned char)(num>>16);
+	byte[2] = (unsigned char)(num>>8);
 	byte[3] = (unsigned char)num;
 }
 
@@ -146,15 +146,15 @@ void SHA1::process()
 void SHA1::addBytes( const char* data, int num )
 {
 	assert( data );
-	assert( num >  0 );
+	assert( num > 0 );
 	// add these bytes to the running total
 	size += num;
 	// repeat until all data is processed
-	while( num >  0 )
+	while( num > 0 )
 	{
 		// number of bytes required to complete block
 		int needed = 64 - unprocessedBytes;
-		assert( needed >  0 );
+		assert( needed > 0 );
 		// number of bytes to copy (use smaller of two)
 		int toCopy = (num < needed) ? num : needed;
 		// Copy the bytes
@@ -174,7 +174,7 @@ unsigned char* SHA1::getDigest()
 {
 	// save the message size
 	Uint32 totalBitsL = size << 3;
-	Uint32 totalBitsH = size > >  29;
+	Uint32 totalBitsH = size >> 29;
 	// add 0x80 to the message
 	addBytes( "\x80", 1 );
 
@@ -184,7 +184,7 @@ unsigned char* SHA1::getDigest()
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 	// block has no room for 8-byte filesize, so finish it
-	if( unprocessedBytes >  56 )
+	if( unprocessedBytes > 56 )
 		addBytes( (char*)footer, 64 - unprocessedBytes);
 	assert( unprocessedBytes <= 56 );
 	// how many zeros do we need

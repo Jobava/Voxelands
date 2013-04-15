@@ -466,27 +466,27 @@ InventoryItem *craft_get_result(InventoryItem **items)
 
 void craft_set_creative_inventory(Player *player)
 {
-	player-> resetInventory();
+	player->resetInventory();
 
 	// Give some good tools
 	{
 		InventoryItem *item = new ToolItem("MesePick", 0);
-		void* r = player-> inventory.addItem("main", item);
+		void* r = player->inventory.addItem("main", item);
 		assert(r == NULL);
 	}
 	{
 		InventoryItem *item = new ToolItem("SteelPick", 0);
-		void* r = player-> inventory.addItem("main", item);
+		void* r = player->inventory.addItem("main", item);
 		assert(r == NULL);
 	}
 	{
 		InventoryItem *item = new ToolItem("SteelAxe", 0);
-		void* r = player-> inventory.addItem("main", item);
+		void* r = player->inventory.addItem("main", item);
 		assert(r == NULL);
 	}
 	{
 		InventoryItem *item = new ToolItem("SteelShovel", 0);
-		void* r = player-> inventory.addItem("main", item);
+		void* r = player->inventory.addItem("main", item);
 		assert(r == NULL);
 	}
 
@@ -529,7 +529,7 @@ void craft_set_creative_inventory(Player *player)
 			break;
 
 		InventoryItem *item = new MaterialItem(*mip, 1);
-		player-> inventory.addItem("main", item);
+		player->inventory.addItem("main", item);
 
 		mip++;
 	}
@@ -539,7 +539,7 @@ void craft_set_creative_inventory(Player *player)
 
 	// add torch first
 	InventoryItem *item = new MaterialItem(CONTENT_TORCH, 1);
-	player-> inventory.addItem("main", item);
+	player->inventory.addItem("main", item);
 
 	// Then others
 	for(u16 i=0; i<USEFUL_CONTENT_COUNT; i++)
@@ -550,14 +550,14 @@ void craft_set_creative_inventory(Player *player)
 			continue;
 
 		InventoryItem *item = new MaterialItem(i, 1);
-		player-> inventory.addItem("main", item);
+		player->inventory.addItem("main", item);
 	}
 #endif
 
 	/*// Sign
 	{
 		InventoryItem *item = new MapBlockObjectItem("Sign Example text");
-		void* r = player-> inventory.addItem("main", item);
+		void* r = player->inventory.addItem("main", item);
 		assert(r == NULL);
 	}*/
 }
@@ -566,70 +566,70 @@ void craft_give_initial_stuff(Player *player)
 {
 	{
 		InventoryItem *item = new ToolItem("SteelPick", 0);
-		void* r = player-> inventory.addItem("main", item);
+		void* r = player->inventory.addItem("main", item);
 		assert(r == NULL);
 	}
 	{
 		InventoryItem *item = new MaterialItem(CONTENT_TORCH, 99);
-		void* r = player-> inventory.addItem("main", item);
+		void* r = player->inventory.addItem("main", item);
 		assert(r == NULL);
 	}
 	{
 		InventoryItem *item = new ToolItem("SteelAxe", 0);
-		void* r = player-> inventory.addItem("main", item);
+		void* r = player->inventory.addItem("main", item);
 		assert(r == NULL);
 	}
 	{
 		InventoryItem *item = new ToolItem("SteelShovel", 0);
-		void* r = player-> inventory.addItem("main", item);
+		void* r = player->inventory.addItem("main", item);
 		assert(r == NULL);
 	}
 	{
 		InventoryItem *item = new MaterialItem(CONTENT_COBBLE, 99);
-		void* r = player-> inventory.addItem("main", item);
+		void* r = player->inventory.addItem("main", item);
 		assert(r == NULL);
 	}
 	/*{
 		InventoryItem *item = new MaterialItem(CONTENT_MESE, 6);
-		void* r = player-> inventory.addItem("main", item);
+		void* r = player->inventory.addItem("main", item);
 		assert(r == NULL);
 	}
 	{
 		InventoryItem *item = new MaterialItem(CONTENT_COALSTONE, 6);
-		void* r = player-> inventory.addItem("main", item);
+		void* r = player->inventory.addItem("main", item);
 		assert(r == NULL);
 	}
 	{
 		InventoryItem *item = new MaterialItem(CONTENT_WOOD, 6);
-		void* r = player-> inventory.addItem("main", item);
+		void* r = player->inventory.addItem("main", item);
 		assert(r == NULL);
 	}
 	{
 		InventoryItem *item = new CraftItem("Stick", 4);
-		void* r = player-> inventory.addItem("main", item);
+		void* r = player->inventory.addItem("main", item);
 		assert(r == NULL);
 	}
 	{
 		InventoryItem *item = new ToolItem("WPick", 32000);
-		void* r = player-> inventory.addItem("main", item);
+		void* r = player->inventory.addItem("main", item);
 		assert(r == NULL);
 	}
 	{
 		InventoryItem *item = new ToolItem("STPick", 32000);
-		void* r = player-> inventory.addItem("main", item);
+		void* r = player->inventory.addItem("main", item);
 		assert(r == NULL);
 	}*/
 	/*// and some signs
 	for(u16 i=0; i<4; i++)
 	{
 		InventoryItem *item = new MapBlockObjectItem("Sign Example text");
-		bool r = player-> inventory.addItem("main", item);
+		bool r = player->inventory.addItem("main", item);
 		assert(r == true);
 	}*/
 	/*// Give some other stuff
 	{
 		InventoryItem *item = new MaterialItem(CONTENT_TREE, 999);
-		bool r = player-> inventory.addItem("main", item);
+		bool r = player->inventory.addItem("main", item);
 		assert(r == true);
 	}*/
 }

@@ -46,17 +46,17 @@ GUIKeyChangeMenu::~GUIKeyChangeMenu()
 
 void GUIKeyChangeMenu::removeChildren()
 {
-	const core::list<gui::IGUIElement*>  &children = getChildren();
-	core::list<gui::IGUIElement*>  children_copy;
-	for (core::list<gui::IGUIElement*> ::ConstIterator i = children.begin(); i
+	const core::list<gui::IGUIElement*> &children = getChildren();
+	core::list<gui::IGUIElement*> children_copy;
+	for (core::list<gui::IGUIElement*>::ConstIterator i = children.begin(); i
 			!= children.end(); i++)
 	{
 		children_copy.push_back(*i);
 	}
-	for (core::list<gui::IGUIElement*> ::Iterator i = children_copy.begin(); i
+	for (core::list<gui::IGUIElement*>::Iterator i = children_copy.begin(); i
 			!= children_copy.end(); i++)
 	{
-		(*i)-> remove();
+		(*i)->remove();
 	}
 }
 
@@ -73,7 +73,7 @@ void GUIKeyChangeMenu::regenerateGui(v2u32 screensize)
 
 	v2s32 size(620, 430);
 
-	core::rect < s32 >  rect(screensize.X / 2 - size.X / 2,
+	core::rect < s32 > rect(screensize.X / 2 - size.X / 2,
 			screensize.Y / 2 - size.Y / 2, screensize.X / 2 + size.X / 2,
 			screensize.Y / 2 + size.Y / 2);
 
@@ -83,167 +83,167 @@ void GUIKeyChangeMenu::regenerateGui(v2u32 screensize)
 	v2s32 topleft(0, 0);
 	changeCtype("");
 	{
-		core::rect < s32 >  rect(0, 0, 125, 20);
+		core::rect < s32 > rect(0, 0, 125, 20);
 		rect += topleft + v2s32(25, 3);
 		//gui::IGUIStaticText *t =
-		Environment-> addStaticText(wgettext("KEYBINDINGS"),
+		Environment->addStaticText(wgettext("KEYBINDINGS"),
 				rect, false, true, this, -1);
-		//t-> setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
 	v2s32 offset(25, 40);
 	// buttons
 
 	{
-		core::rect < s32 >  rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment-> addStaticText(wgettext("Forward"),
+		Environment->addStaticText(wgettext("Forward"),
 				rect, false, true, this, -1);
-		//t-> setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 >  rect(0, 0, 100, 30);
+		core::rect < s32 > rect(0, 0, 100, 30);
 		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
-		this-> forward = Environment-> addButton(rect, this,
+		this->forward = Environment->addButton(rect, this,
 				GUI_ID_KEY_FORWARD_BUTTON,
 				wgettext(key_forward.name()));
 	}
 
 	offset += v2s32(0, 25);
 	{
-		core::rect < s32 >  rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment-> addStaticText(wgettext("Backward"),
+		Environment->addStaticText(wgettext("Backward"),
 				rect, false, true, this, -1);
-		//t-> setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 >  rect(0, 0, 100, 30);
+		core::rect < s32 > rect(0, 0, 100, 30);
 		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
-		this-> backward = Environment-> addButton(rect, this,
+		this->backward = Environment->addButton(rect, this,
 				GUI_ID_KEY_BACKWARD_BUTTON,
 				wgettext(key_backward.name()));
 	}
 	offset += v2s32(0, 25);
 	{
-		core::rect < s32 >  rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment-> addStaticText(wgettext("Left"),
+		Environment->addStaticText(wgettext("Left"),
 				rect, false, true, this, -1);
-		//t-> setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 >  rect(0, 0, 100, 30);
+		core::rect < s32 > rect(0, 0, 100, 30);
 		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
-		this-> left = Environment-> addButton(rect, this, GUI_ID_KEY_LEFT_BUTTON,
+		this->left = Environment->addButton(rect, this, GUI_ID_KEY_LEFT_BUTTON,
 				wgettext(key_left.name()));
 	}
 	offset += v2s32(0, 25);
 	{
-		core::rect < s32 >  rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment-> addStaticText(wgettext("Right"),
+		Environment->addStaticText(wgettext("Right"),
 				rect, false, true, this, -1);
-		//t-> setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 >  rect(0, 0, 100, 30);
+		core::rect < s32 > rect(0, 0, 100, 30);
 		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
-		this-> right = Environment-> addButton(rect, this,
+		this->right = Environment->addButton(rect, this,
 				GUI_ID_KEY_RIGHT_BUTTON,
 				wgettext(key_right.name()));
 	}
 	offset += v2s32(0, 25);
 	{
-		core::rect < s32 >  rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment-> addStaticText(wgettext("Use"),
+		Environment->addStaticText(wgettext("Use"),
 				rect, false, true, this, -1);
-		//t-> setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 >  rect(0, 0, 100, 30);
+		core::rect < s32 > rect(0, 0, 100, 30);
 		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
-		this-> use = Environment-> addButton(rect, this, GUI_ID_KEY_USE_BUTTON,
+		this->use = Environment->addButton(rect, this, GUI_ID_KEY_USE_BUTTON,
 				wgettext(key_use.name()));
 	}
 	offset += v2s32(0, 25);
 	{
-		core::rect < s32 >  rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment-> addStaticText(wgettext("Sneak"),
+		Environment->addStaticText(wgettext("Sneak"),
 				rect, false, true, this, -1);
-		//t-> setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 >  rect(0, 0, 100, 30);
+		core::rect < s32 > rect(0, 0, 100, 30);
 		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
-		this-> sneak = Environment-> addButton(rect, this,
+		this->sneak = Environment->addButton(rect, this,
 				GUI_ID_KEY_SNEAK_BUTTON,
 				wgettext(key_sneak.name()));
 	}
 	offset += v2s32(0, 25);
 	{
-		core::rect < s32 >  rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment-> addStaticText(wgettext("Jump"), rect, false, true, this, -1);
-		//t-> setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		Environment->addStaticText(wgettext("Jump"), rect, false, true, this, -1);
+		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 >  rect(0, 0, 100, 30);
+		core::rect < s32 > rect(0, 0, 100, 30);
 		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
-		this-> jump = Environment-> addButton(rect, this, GUI_ID_KEY_JUMP_BUTTON,
+		this->jump = Environment->addButton(rect, this, GUI_ID_KEY_JUMP_BUTTON,
 				wgettext(key_jump.name()));
 	}
 
 	offset += v2s32(0, 25);
 	{
-		core::rect < s32 >  rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment-> addStaticText(wgettext("Inventory"),
+		Environment->addStaticText(wgettext("Inventory"),
 				rect, false, true, this, -1);
-		//t-> setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 >  rect(0, 0, 100, 30);
+		core::rect < s32 > rect(0, 0, 100, 30);
 		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
-		this-> inventory = Environment-> addButton(rect, this,
+		this->inventory = Environment->addButton(rect, this,
 				GUI_ID_KEY_INVENTORY_BUTTON,
 				wgettext(key_inventory.name()));
 	}
 	offset += v2s32(0, 25);
 	{
-		core::rect < s32 >  rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment-> addStaticText(wgettext("Chat"), rect, false, true, this, -1);
-		//t-> setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		Environment->addStaticText(wgettext("Chat"), rect, false, true, this, -1);
+		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 >  rect(0, 0, 100, 30);
+		core::rect < s32 > rect(0, 0, 100, 30);
 		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
-		this-> chat = Environment-> addButton(rect, this, GUI_ID_KEY_CHAT_BUTTON,
+		this->chat = Environment->addButton(rect, this, GUI_ID_KEY_CHAT_BUTTON,
 				wgettext(key_chat.name()));
 	}
 	offset += v2s32(0, 25);
 	{
-		core::rect < s32 >  rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment-> addStaticText(wgettext("Command"), rect, false, true, this, -1);
-		//t-> setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		Environment->addStaticText(wgettext("Command"), rect, false, true, this, -1);
+		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 >  rect(0, 0, 100, 30);
+		core::rect < s32 > rect(0, 0, 100, 30);
 		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
-		this-> cmd = Environment-> addButton(rect, this, GUI_ID_KEY_CMD_BUTTON,
+		this->cmd = Environment->addButton(rect, this, GUI_ID_KEY_CMD_BUTTON,
 				wgettext(key_cmd.name()));
 	}
 
@@ -251,76 +251,76 @@ void GUIKeyChangeMenu::regenerateGui(v2u32 screensize)
 	//next col
 	offset = v2s32(250, 40);
 	{
-		core::rect < s32 >  rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment-> addStaticText(wgettext("Toggle fly"),
+		Environment->addStaticText(wgettext("Toggle fly"),
 				rect, false, true, this, -1);
-		//t-> setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 >  rect(0, 0, 100, 30);
+		core::rect < s32 > rect(0, 0, 100, 30);
 		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
-		this-> fly = Environment-> addButton(rect, this, GUI_ID_KEY_FLY_BUTTON,
+		this->fly = Environment->addButton(rect, this, GUI_ID_KEY_FLY_BUTTON,
 				wgettext(key_fly.name()));
 	}
 	offset += v2s32(0, 25);
 	{
-		core::rect < s32 >  rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment-> addStaticText(wgettext("Toggle fast"),
+		Environment->addStaticText(wgettext("Toggle fast"),
 				rect, false, true, this, -1);
-		//t-> setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 >  rect(0, 0, 100, 30);
+		core::rect < s32 > rect(0, 0, 100, 30);
 		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
-		this-> fast = Environment-> addButton(rect, this, GUI_ID_KEY_FAST_BUTTON,
+		this->fast = Environment->addButton(rect, this, GUI_ID_KEY_FAST_BUTTON,
 				wgettext(key_fast.name()));
 	}
 	offset += v2s32(0, 25);
 	{
-		core::rect < s32 >  rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment-> addStaticText(wgettext("Range select"),
+		Environment->addStaticText(wgettext("Range select"),
 				rect, false, true, this, -1);
-		//t-> setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 >  rect(0, 0, 100, 30);
+		core::rect < s32 > rect(0, 0, 100, 30);
 		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
-		this-> range = Environment-> addButton(rect, this,
+		this->range = Environment->addButton(rect, this,
 				GUI_ID_KEY_RANGE_BUTTON,
 				wgettext(key_range.name()));
 	}
 
 	offset += v2s32(0, 25);
 	{
-		core::rect < s32 >  rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment-> addStaticText(wgettext("Print stacks"),
+		Environment->addStaticText(wgettext("Print stacks"),
 				rect, false, true, this, -1);
-		//t-> setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 >  rect(0, 0, 100, 30);
+		core::rect < s32 > rect(0, 0, 100, 30);
 		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
-		this-> dump = Environment-> addButton(rect, this, GUI_ID_KEY_DUMP_BUTTON,
+		this->dump = Environment->addButton(rect, this, GUI_ID_KEY_DUMP_BUTTON,
 				wgettext(key_dump.name()));
 	}
 	{
-		core::rect < s32 >  rect(0, 0, 100, 30);
+		core::rect < s32 > rect(0, 0, 100, 30);
 		rect += topleft + v2s32(size.X - 100 - 20, size.Y - 40);
-		Environment-> addButton(rect, this, GUI_ID_BACK_BUTTON,
+		Environment->addButton(rect, this, GUI_ID_BACK_BUTTON,
 		wgettext("Save"));
 	}
 	{
-		core::rect < s32 >  rect(0, 0, 100, 30);
+		core::rect < s32 > rect(0, 0, 100, 30);
 		rect += topleft + v2s32(size.X - 100 - 20 - 100 - 20, size.Y - 40);
-		Environment-> addButton(rect, this, GUI_ID_ABORT_BUTTON,
+		Environment->addButton(rect, this, GUI_ID_ABORT_BUTTON,
 		wgettext("Cancel"));
 	}
 	changeCtype("C");
@@ -328,17 +328,17 @@ void GUIKeyChangeMenu::regenerateGui(v2u32 screensize)
 
 void GUIKeyChangeMenu::drawMenu()
 {
-	gui::IGUISkin* skin = Environment-> getSkin();
+	gui::IGUISkin* skin = Environment->getSkin();
 	if (!skin)
 		return;
-	video::IVideoDriver* driver = Environment-> getVideoDriver();
+	video::IVideoDriver* driver = Environment->getVideoDriver();
 
 	video::SColor bgcolor(140, 0, 0, 0);
 
 	{
-		core::rect < s32 >  rect(0, 0, 620, 620);
+		core::rect < s32 > rect(0, 0, 620, 620);
 		rect += AbsoluteRect.UpperLeftCorner;
-		driver-> draw2DRectangle(bgcolor, rect, &AbsoluteClippingRect);
+		driver->draw2DRectangle(bgcolor, rect, &AbsoluteClippingRect);
 	}
 
 	gui::IGUIElement::draw();
@@ -346,20 +346,20 @@ void GUIKeyChangeMenu::drawMenu()
 
 bool GUIKeyChangeMenu::acceptInput()
 {
-	g_settings-> set("keymap_forward", key_forward.sym());
-	g_settings-> set("keymap_backward", key_backward.sym());
-	g_settings-> set("keymap_left", key_left.sym());
-	g_settings-> set("keymap_right", key_right.sym());
-	g_settings-> set("keymap_jump", key_jump.sym());
-	g_settings-> set("keymap_sneak", key_sneak.sym());
-	g_settings-> set("keymap_inventory", key_inventory.sym());
-	g_settings-> set("keymap_chat", key_chat.sym());
-	g_settings-> set("keymap_cmd", key_cmd.sym());
-	g_settings-> set("keymap_rangeselect", key_range.sym());
-	g_settings-> set("keymap_freemove", key_fly.sym());
-	g_settings-> set("keymap_fastmove", key_fast.sym());
-	g_settings-> set("keymap_special1", key_use.sym());
-	g_settings-> set("keymap_print_debug_stacks", key_dump.sym());
+	g_settings->set("keymap_forward", key_forward.sym());
+	g_settings->set("keymap_backward", key_backward.sym());
+	g_settings->set("keymap_left", key_left.sym());
+	g_settings->set("keymap_right", key_right.sym());
+	g_settings->set("keymap_jump", key_jump.sym());
+	g_settings->set("keymap_sneak", key_sneak.sym());
+	g_settings->set("keymap_inventory", key_inventory.sym());
+	g_settings->set("keymap_chat", key_chat.sym());
+	g_settings->set("keymap_cmd", key_cmd.sym());
+	g_settings->set("keymap_rangeselect", key_range.sym());
+	g_settings->set("keymap_freemove", key_fly.sym());
+	g_settings->set("keymap_fastmove", key_fast.sym());
+	g_settings->set("keymap_special1", key_use.sym());
+	g_settings->set("keymap_print_debug_stacks", key_dump.sym());
 	clearKeyCache();
 	return true;
 }
@@ -383,54 +383,54 @@ void GUIKeyChangeMenu::init_keys()
 
 bool GUIKeyChangeMenu::resetMenu()
 {
-	if (activeKey > = 0)
+	if (activeKey >= 0)
 	{
 		switch (activeKey)
 		{
 		case GUI_ID_KEY_FORWARD_BUTTON:
-			this-> forward-> setText(
+			this->forward->setText(
 					wgettext(key_forward.name()));
 			break;
 		case GUI_ID_KEY_BACKWARD_BUTTON:
-			this-> backward-> setText(
+			this->backward->setText(
 					wgettext(key_backward.name()));
 			break;
 		case GUI_ID_KEY_LEFT_BUTTON:
-			this-> left-> setText(wgettext(key_left.name()));
+			this->left->setText(wgettext(key_left.name()));
 			break;
 		case GUI_ID_KEY_RIGHT_BUTTON:
-			this-> right-> setText(wgettext(key_right.name()));
+			this->right->setText(wgettext(key_right.name()));
 			break;
 		case GUI_ID_KEY_JUMP_BUTTON:
-			this-> jump-> setText(wgettext(key_jump.name()));
+			this->jump->setText(wgettext(key_jump.name()));
 			break;
 		case GUI_ID_KEY_SNEAK_BUTTON:
-			this-> sneak-> setText(wgettext(key_sneak.name()));
+			this->sneak->setText(wgettext(key_sneak.name()));
 			break;
 		case GUI_ID_KEY_INVENTORY_BUTTON:
-			this-> inventory-> setText(
+			this->inventory->setText(
 					wgettext(key_inventory.name()));
 			break;
 		case GUI_ID_KEY_CHAT_BUTTON:
-			this-> chat-> setText(wgettext(key_chat.name()));
+			this->chat->setText(wgettext(key_chat.name()));
 			break;
 		case GUI_ID_KEY_CMD_BUTTON:
-			this-> cmd-> setText(wgettext(key_cmd.name()));
+			this->cmd->setText(wgettext(key_cmd.name()));
 			break;
 		case GUI_ID_KEY_RANGE_BUTTON:
-			this-> range-> setText(wgettext(key_range.name()));
+			this->range->setText(wgettext(key_range.name()));
 			break;
 		case GUI_ID_KEY_FLY_BUTTON:
-			this-> fly-> setText(wgettext(key_fly.name()));
+			this->fly->setText(wgettext(key_fly.name()));
 			break;
 		case GUI_ID_KEY_FAST_BUTTON:
-			this-> fast-> setText(wgettext(key_fast.name()));
+			this->fast->setText(wgettext(key_fast.name()));
 			break;
 		case GUI_ID_KEY_USE_BUTTON:
-			this-> use-> setText(wgettext(key_use.name()));
+			this->use->setText(wgettext(key_use.name()));
 			break;
 		case GUI_ID_KEY_DUMP_BUTTON:
-			this-> dump-> setText(wgettext(key_dump.name()));
+			this->dump->setText(wgettext(key_dump.name()));
 			break;
 		}
 		activeKey = -1;
@@ -440,7 +440,7 @@ bool GUIKeyChangeMenu::resetMenu()
 }
 bool GUIKeyChangeMenu::OnEvent(const SEvent& event)
 {
-	if (event.EventType == EET_KEY_INPUT_EVENT && activeKey > = 0
+	if (event.EventType == EET_KEY_INPUT_EVENT && activeKey >= 0
 			&& event.KeyInput.PressedDown)
 	{
 		changeCtype("");
@@ -448,73 +448,73 @@ bool GUIKeyChangeMenu::OnEvent(const SEvent& event)
 
 		if (activeKey == GUI_ID_KEY_FORWARD_BUTTON)
 		{
-			this-> forward-> setText(wgettext(kp.name()));
-			this-> key_forward = kp;
+			this->forward->setText(wgettext(kp.name()));
+			this->key_forward = kp;
 		}
 		else if (activeKey == GUI_ID_KEY_BACKWARD_BUTTON)
 		{
-			this-> backward-> setText(wgettext(kp.name()));
-			this-> key_backward = kp;
+			this->backward->setText(wgettext(kp.name()));
+			this->key_backward = kp;
 		}
 		else if (activeKey == GUI_ID_KEY_LEFT_BUTTON)
 		{
-			this-> left-> setText(wgettext(kp.name()));
-			this-> key_left = kp;
+			this->left->setText(wgettext(kp.name()));
+			this->key_left = kp;
 		}
 		else if (activeKey == GUI_ID_KEY_RIGHT_BUTTON)
 		{
-			this-> right-> setText(wgettext(kp.name()));
-			this-> key_right = kp;
+			this->right->setText(wgettext(kp.name()));
+			this->key_right = kp;
 		}
 		else if (activeKey == GUI_ID_KEY_JUMP_BUTTON)
 		{
-			this-> jump-> setText(wgettext(kp.name()));
-			this-> key_jump = kp;
+			this->jump->setText(wgettext(kp.name()));
+			this->key_jump = kp;
 		}
 		else if (activeKey == GUI_ID_KEY_SNEAK_BUTTON)
 		{
-			this-> sneak-> setText(wgettext(kp.name()));
-			this-> key_sneak = kp;
+			this->sneak->setText(wgettext(kp.name()));
+			this->key_sneak = kp;
 		}
 		else if (activeKey == GUI_ID_KEY_INVENTORY_BUTTON)
 		{
-			this-> inventory-> setText(wgettext(kp.name()));
-			this-> key_inventory = kp;
+			this->inventory->setText(wgettext(kp.name()));
+			this->key_inventory = kp;
 		}
 		else if (activeKey == GUI_ID_KEY_CHAT_BUTTON)
 		{
-			this-> chat-> setText(wgettext(kp.name()));
-			this-> key_chat = kp;
+			this->chat->setText(wgettext(kp.name()));
+			this->key_chat = kp;
 		}
 		else if (activeKey == GUI_ID_KEY_CMD_BUTTON)
 		{
-			this-> cmd-> setText(wgettext(kp.name()));
-			this-> key_cmd = kp;
+			this->cmd->setText(wgettext(kp.name()));
+			this->key_cmd = kp;
 		}
 		else if (activeKey == GUI_ID_KEY_RANGE_BUTTON)
 		{
-			this-> range-> setText(wgettext(kp.name()));
-			this-> key_range = kp;
+			this->range->setText(wgettext(kp.name()));
+			this->key_range = kp;
 		}
 		else if (activeKey == GUI_ID_KEY_FLY_BUTTON)
 		{
-			this-> fly-> setText(wgettext(kp.name()));
-			this-> key_fly = kp;
+			this->fly->setText(wgettext(kp.name()));
+			this->key_fly = kp;
 		}
 		else if (activeKey == GUI_ID_KEY_FAST_BUTTON)
 		{
-			this-> fast-> setText(wgettext(kp.name()));
-			this-> key_fast = kp;
+			this->fast->setText(wgettext(kp.name()));
+			this->key_fast = kp;
 		}
 		else if (activeKey == GUI_ID_KEY_USE_BUTTON)
 		{
-			this-> use-> setText(wgettext(kp.name()));
-			this-> key_use = kp;
+			this->use->setText(wgettext(kp.name()));
+			this->key_use = kp;
 		}
 		else if (activeKey == GUI_ID_KEY_DUMP_BUTTON)
 		{
-			this-> dump-> setText(wgettext(kp.name()));
-			this-> key_dump = kp;
+			this->dump->setText(wgettext(kp.name()));
+			this->key_dump = kp;
 		}
 		changeCtype("C");
 		activeKey = -1;
@@ -535,13 +535,13 @@ bool GUIKeyChangeMenu::OnEvent(const SEvent& event)
 		}
 		if (event.GUIEvent.EventType == gui::EGET_BUTTON_CLICKED)
 		{
-			if(event.GUIEvent.Caller-> getID() != GUI_ID_BACK_BUTTON &&
-				event.GUIEvent.Caller-> getID() != GUI_ID_ABORT_BUTTON)
+			if(event.GUIEvent.Caller->getID() != GUI_ID_BACK_BUTTON &&
+				event.GUIEvent.Caller->getID() != GUI_ID_ABORT_BUTTON)
 			{
 				changeCtype("");
 			}
 
-			switch (event.GUIEvent.Caller-> getID())
+			switch (event.GUIEvent.Caller->getID())
 			{
 			case GUI_ID_BACK_BUTTON: //back
 				acceptInput();
@@ -552,73 +552,73 @@ bool GUIKeyChangeMenu::OnEvent(const SEvent& event)
 				return true;
 			case GUI_ID_KEY_FORWARD_BUTTON:
 				resetMenu();
-				activeKey = event.GUIEvent.Caller-> getID();
-				this-> forward-> setText(wgettext("press Key"));
+				activeKey = event.GUIEvent.Caller->getID();
+				this->forward->setText(wgettext("press Key"));
 				break;
 			case GUI_ID_KEY_BACKWARD_BUTTON:
 				resetMenu();
-				activeKey = event.GUIEvent.Caller-> getID();
-				this-> backward-> setText(wgettext("press Key"));
+				activeKey = event.GUIEvent.Caller->getID();
+				this->backward->setText(wgettext("press Key"));
 				break;
 			case GUI_ID_KEY_LEFT_BUTTON:
 				resetMenu();
-				activeKey = event.GUIEvent.Caller-> getID();
-				this-> left-> setText(wgettext("press Key"));
+				activeKey = event.GUIEvent.Caller->getID();
+				this->left->setText(wgettext("press Key"));
 				break;
 			case GUI_ID_KEY_RIGHT_BUTTON:
 				resetMenu();
-				activeKey = event.GUIEvent.Caller-> getID();
-				this-> right-> setText(wgettext("press Key"));
+				activeKey = event.GUIEvent.Caller->getID();
+				this->right->setText(wgettext("press Key"));
 				break;
 			case GUI_ID_KEY_USE_BUTTON:
 				resetMenu();
-				activeKey = event.GUIEvent.Caller-> getID();
-				this-> use-> setText(wgettext("press Key"));
+				activeKey = event.GUIEvent.Caller->getID();
+				this->use->setText(wgettext("press Key"));
 				break;
 			case GUI_ID_KEY_FLY_BUTTON:
 				resetMenu();
-				activeKey = event.GUIEvent.Caller-> getID();
-				this-> fly-> setText(wgettext("press Key"));
+				activeKey = event.GUIEvent.Caller->getID();
+				this->fly->setText(wgettext("press Key"));
 				break;
 			case GUI_ID_KEY_FAST_BUTTON:
 				resetMenu();
-				activeKey = event.GUIEvent.Caller-> getID();
-				this-> fast-> setText(wgettext("press Key"));
+				activeKey = event.GUIEvent.Caller->getID();
+				this->fast->setText(wgettext("press Key"));
 				break;
 			case GUI_ID_KEY_JUMP_BUTTON:
 				resetMenu();
-				activeKey = event.GUIEvent.Caller-> getID();
-				this-> jump-> setText(wgettext("press Key"));
+				activeKey = event.GUIEvent.Caller->getID();
+				this->jump->setText(wgettext("press Key"));
 				break;
 			case GUI_ID_KEY_CHAT_BUTTON:
 				resetMenu();
-				activeKey = event.GUIEvent.Caller-> getID();
-				this-> chat-> setText(wgettext("press Key"));
+				activeKey = event.GUIEvent.Caller->getID();
+				this->chat->setText(wgettext("press Key"));
 				break;
 			case GUI_ID_KEY_CMD_BUTTON:
 				resetMenu();
-				activeKey = event.GUIEvent.Caller-> getID();
-				this-> cmd-> setText(wgettext("press Key"));
+				activeKey = event.GUIEvent.Caller->getID();
+				this->cmd->setText(wgettext("press Key"));
 				break;
 			case GUI_ID_KEY_SNEAK_BUTTON:
 				resetMenu();
-				activeKey = event.GUIEvent.Caller-> getID();
-				this-> sneak-> setText(wgettext("press Key"));
+				activeKey = event.GUIEvent.Caller->getID();
+				this->sneak->setText(wgettext("press Key"));
 				break;
 			case GUI_ID_KEY_INVENTORY_BUTTON:
 				resetMenu();
-				activeKey = event.GUIEvent.Caller-> getID();
-				this-> inventory-> setText(wgettext("press Key"));
+				activeKey = event.GUIEvent.Caller->getID();
+				this->inventory->setText(wgettext("press Key"));
 				break;
 			case GUI_ID_KEY_DUMP_BUTTON:
 				resetMenu();
-				activeKey = event.GUIEvent.Caller-> getID();
-				this-> dump-> setText(wgettext("press Key"));
+				activeKey = event.GUIEvent.Caller->getID();
+				this->dump->setText(wgettext("press Key"));
 				break;
 			case GUI_ID_KEY_RANGE_BUTTON:
 				resetMenu();
-				activeKey = event.GUIEvent.Caller-> getID();
-				this-> range-> setText(wgettext("press Key"));
+				activeKey = event.GUIEvent.Caller->getID();
+				this->range->setText(wgettext("press Key"));
 				break;
 			}
 			//Buttons
@@ -626,6 +626,6 @@ bool GUIKeyChangeMenu::OnEvent(const SEvent& event)
 
 		}
 	}
-	return Parent ? Parent-> OnEvent(event) : false;
+	return Parent ? Parent->OnEvent(event) : false;
 }
 

@@ -15,6 +15,6 @@ DiggingProperties getDiggingProperties(u16 content, const std::string &tool)
 		// Not diggable
 		return DiggingProperties();
 
-	return mprop-> get(tool);
+	return mprop->get(tool);
 }
 

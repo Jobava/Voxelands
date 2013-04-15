@@ -46,7 +46,7 @@ extern u32 emerge_time;
 extern u32 emerge_load_time;
 
 /*
-	This class resembles aabbox3d<s16>  a lot, but has inclusive
+	This class resembles aabbox3d<s16> a lot, but has inclusive
 	edges for saner handling of integer sizes
 */
 class VoxelArea
@@ -83,9 +83,9 @@ public:
 		if(a.MinEdge.X < MinEdge.X) MinEdge.X = a.MinEdge.X;
 		if(a.MinEdge.Y < MinEdge.Y) MinEdge.Y = a.MinEdge.Y;
 		if(a.MinEdge.Z < MinEdge.Z) MinEdge.Z = a.MinEdge.Z;
-		if(a.MaxEdge.X >  MaxEdge.X) MaxEdge.X = a.MaxEdge.X;
-		if(a.MaxEdge.Y >  MaxEdge.Y) MaxEdge.Y = a.MaxEdge.Y;
-		if(a.MaxEdge.Z >  MaxEdge.Z) MaxEdge.Z = a.MaxEdge.Z;
+		if(a.MaxEdge.X > MaxEdge.X) MaxEdge.X = a.MaxEdge.X;
+		if(a.MaxEdge.Y > MaxEdge.Y) MaxEdge.Y = a.MaxEdge.Y;
+		if(a.MaxEdge.Z > MaxEdge.Z) MaxEdge.Z = a.MaxEdge.Z;
 	}
 	void addPoint(v3s16 p)
 	{
@@ -98,9 +98,9 @@ public:
 		if(p.X < MinEdge.X) MinEdge.X = p.X;
 		if(p.Y < MinEdge.Y) MinEdge.Y = p.Y;
 		if(p.Z < MinEdge.Z) MinEdge.Z = p.Z;
-		if(p.X >  MaxEdge.X) MaxEdge.X = p.X;
-		if(p.Y >  MaxEdge.Y) MaxEdge.Y = p.Y;
-		if(p.Z >  MaxEdge.Z) MaxEdge.Z = p.Z;
+		if(p.X > MaxEdge.X) MaxEdge.X = p.X;
+		if(p.Y > MaxEdge.Y) MaxEdge.Y = p.Y;
+		if(p.Z > MaxEdge.Z) MaxEdge.Z = p.Z;
 	}
 
 	// Pad with d nodes
@@ -143,22 +143,22 @@ public:
 			return false;
 
 		return(
-			a.MinEdge.X > = MinEdge.X && a.MaxEdge.X <= MaxEdge.X &&
-			a.MinEdge.Y > = MinEdge.Y && a.MaxEdge.Y <= MaxEdge.Y &&
-			a.MinEdge.Z > = MinEdge.Z && a.MaxEdge.Z <= MaxEdge.Z
+			a.MinEdge.X >= MinEdge.X && a.MaxEdge.X <= MaxEdge.X &&
+			a.MinEdge.Y >= MinEdge.Y && a.MaxEdge.Y <= MaxEdge.Y &&
+			a.MinEdge.Z >= MinEdge.Z && a.MaxEdge.Z <= MaxEdge.Z
 		);
 	}
 	bool contains(v3s16 p) const
 	{
 		return(
-			p.X > = MinEdge.X && p.X <= MaxEdge.X &&
-			p.Y > = MinEdge.Y && p.Y <= MaxEdge.Y &&
-			p.Z > = MinEdge.Z && p.Z <= MaxEdge.Z
+			p.X >= MinEdge.X && p.X <= MaxEdge.X &&
+			p.Y >= MinEdge.Y && p.Y <= MaxEdge.Y &&
+			p.Z >= MinEdge.Z && p.Z <= MaxEdge.Z
 		);
 	}
 	bool contains(s32 i) const
 	{
-		return (i > = 0 && i < getVolume());
+		return (i >= 0 && i < getVolume());
 	}
 	bool operator==(const VoxelArea &other) const
 	{
@@ -182,7 +182,7 @@ public:
 
 		a: area inside *this
 	*/
-	void diff(const VoxelArea &a, core::list<VoxelArea>  &result)
+	void diff(const VoxelArea &a, core::list<VoxelArea> &result)
 	{
 		/*
 			This can result in a maximum of 6 areas
@@ -497,14 +497,14 @@ public:
 	void clearFlag(u8 flag);
 
 	void unspreadLight(enum LightBank bank, v3s16 p, u8 oldlight,
-			core::map<v3s16, bool>  & light_sources);
+			core::map<v3s16, bool> & light_sources);
 	void unspreadLight(enum LightBank bank,
-			core::map<v3s16, u8>  & from_nodes,
-			core::map<v3s16, bool>  & light_sources);
+			core::map<v3s16, u8> & from_nodes,
+			core::map<v3s16, bool> & light_sources);
 
 	void spreadLight(enum LightBank bank, v3s16 p);
 	void spreadLight(enum LightBank bank,
-			core::map<v3s16, bool>  & from_nodes);
+			core::map<v3s16, bool> & from_nodes);
 
 	/*
 		Virtual functions

@@ -47,18 +47,18 @@ GUIDeathScreen::~GUIDeathScreen()
 
 void GUIDeathScreen::removeChildren()
 {
-	const core::list<gui::IGUIElement*>  &children = getChildren();
-	core::list<gui::IGUIElement*>  children_copy;
-	for(core::list<gui::IGUIElement*> ::ConstIterator
+	const core::list<gui::IGUIElement*> &children = getChildren();
+	core::list<gui::IGUIElement*> children_copy;
+	for(core::list<gui::IGUIElement*>::ConstIterator
 			i = children.begin(); i != children.end(); i++)
 	{
 		children_copy.push_back(*i);
 	}
-	for(core::list<gui::IGUIElement*> ::Iterator
+	for(core::list<gui::IGUIElement*>::Iterator
 			i = children_copy.begin();
 			i != children_copy.end(); i++)
 	{
-		(*i)-> remove();
+		(*i)->remove();
 	}
 }
 
@@ -74,7 +74,7 @@ void GUIDeathScreen::regenerateGui(v2u32 screensize)
 	/*
 		Calculate new sizes and positions
 	*/
-	core::rect<s32>  rect(
+	core::rect<s32> rect(
 			screensize.X/2 - 500/2,
 			screensize.Y/2 - 200/2,
 			screensize.X/2 + 500/2,
@@ -91,37 +91,37 @@ void GUIDeathScreen::regenerateGui(v2u32 screensize)
 	*/
 	changeCtype("");
 	{
-		core::rect<s32>  rect(0, 0, 400, 50);
+		core::rect<s32> rect(0, 0, 400, 50);
 		rect = rect + v2s32(size.X/2-400/2, size.Y/2-50/2-25);
-		Environment-> addStaticText(wgettext("You died."), rect, false,
+		Environment->addStaticText(wgettext("You died."), rect, false,
 				true, this, 256);
 	}
 	{
-		core::rect<s32>  rect(0, 0, 140, 30);
+		core::rect<s32> rect(0, 0, 140, 30);
 		rect = rect + v2s32(size.X/2-140/2, size.Y/2-30/2+25);
 		gui::IGUIElement *e =
-		Environment-> addButton(rect, this, 257,
+		Environment->addButton(rect, this, 257,
 			wgettext("Respawn"));
-		Environment-> setFocus(e);
+		Environment->setFocus(e);
 	}
 	changeCtype("C");
 }
 
 void GUIDeathScreen::drawMenu()
 {
-	gui::IGUISkin* skin = Environment-> getSkin();
+	gui::IGUISkin* skin = Environment->getSkin();
 	if (!skin)
 		return;
-	video::IVideoDriver* driver = Environment-> getVideoDriver();
+	video::IVideoDriver* driver = Environment->getVideoDriver();
 
 	{
 		video::SColor color(180,50,0,0);
-		driver-> draw2DRectangle(color,
-				core::rect<s32> (0,0,m_screensize.X,m_screensize.Y), NULL);
+		driver->draw2DRectangle(color,
+				core::rect<s32>(0,0,m_screensize.X,m_screensize.Y), NULL);
 	}
 	{
 		video::SColor bgcolor(50,0,0,0);
-		driver-> draw2DRectangle(bgcolor, AbsoluteRect, &AbsoluteClippingRect);
+		driver->draw2DRectangle(bgcolor, AbsoluteRect, &AbsoluteClippingRect);
 	}
 
 	gui::IGUIElement::draw();
@@ -159,7 +159,7 @@ bool GUIDeathScreen::OnEvent(const SEvent& event)
 		}
 		if(event.GUIEvent.EventType==gui::EGET_BUTTON_CLICKED)
 		{
-			switch(event.GUIEvent.Caller-> getID())
+			switch(event.GUIEvent.Caller->getID())
 			{
 			case 257:
 				respawn();
@@ -169,11 +169,11 @@ bool GUIDeathScreen::OnEvent(const SEvent& event)
 		}
 	}
 
-	return Parent ? Parent-> OnEvent(event) : false;
+	return Parent ? Parent->OnEvent(event) : false;
 }
 
 void GUIDeathScreen::respawn()
 {
-	m_respawner-> respawn();
+	m_respawner->respawn();
 }
 

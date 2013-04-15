@@ -28,8 +28,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 void drawInventoryItem(video::IVideoDriver *driver,
 		gui::IGUIFont *font,
-		InventoryItem *item, core::rect<s32>  rect,
-		const core::rect<s32>  *clip);
+		InventoryItem *item, core::rect<s32> rect,
+		const core::rect<s32> *clip);
 
 class GUIInventoryMenu : public GUIModalMenu
 {
@@ -105,7 +105,7 @@ public:
 
 	// See .cpp for format
 	static v2s16 makeDrawSpecArrayFromString(
-			core::array<GUIInventoryMenu::DrawSpec>  &draw_spec,
+			core::array<GUIInventoryMenu::DrawSpec> &draw_spec,
 			const std::string &data,
 			const std::string &current_name);
 
@@ -118,7 +118,7 @@ public:
 			);
 	~GUIInventoryMenu();
 
-	void setDrawSpec(core::array<DrawSpec>  &init_draw_spec)
+	void setDrawSpec(core::array<DrawSpec> &init_draw_spec)
 	{
 		m_init_draw_spec = init_draw_spec;
 	}
@@ -150,8 +150,8 @@ protected:
 	InventoryContext *m_c;
 	InventoryManager *m_invmgr;
 
-	core::array<DrawSpec>  m_init_draw_spec;
-	core::array<ListDrawSpec>  m_draw_spec;
+	core::array<DrawSpec> m_init_draw_spec;
+	core::array<ListDrawSpec> m_draw_spec;
 
 	ItemSpec *m_selected_item;
 };

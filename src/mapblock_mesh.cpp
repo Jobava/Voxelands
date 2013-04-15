@@ -29,7 +29,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 void MeshMakeData::fill(u32 daynight_ratio, MapBlock *block)
 {
 	m_daynight_ratio = daynight_ratio;
-	m_blockpos = block-> getPos();
+	m_blockpos = block->getPos();
 
 	v3s16 blockpos_nodes = m_blockpos*MAP_BLOCKSIZE;
 
@@ -38,7 +38,7 @@ void MeshMakeData::fill(u32 daynight_ratio, MapBlock *block)
 		because they are already copied to this block
 	*/
 	m_temp_mods.clear();
-	block-> copyTempMods(m_temp_mods);
+	block->copyTempMods(m_temp_mods);
 
 	/*
 		Copy data
@@ -54,7 +54,7 @@ void MeshMakeData::fill(u32 daynight_ratio, MapBlock *block)
 		// 0ms
 
 		// Copy our data
-		block-> copyTo(m_vmanip);
+		block->copyTo(m_vmanip);
 	}
 	{
 		//TimeTaker timer("copy neighbor block data");
@@ -66,15 +66,15 @@ void MeshMakeData::fill(u32 daynight_ratio, MapBlock *block)
 		*/
 
 		// Get map
-		Map *map = block-> getParent();
+		Map *map = block->getParent();
 
 		for(u16 i=0; i<6; i++)
 		{
 			const v3s16 &dir = g_6dirs[i];
 			v3s16 bp = m_blockpos + dir;
-			MapBlock *b = map-> getBlockNoCreateNoEx(bp);
+			MapBlock *b = map->getBlockNoCreateNoEx(bp);
 			if(b)
-				b-> copyTo(m_vmanip);
+				b->copyTo(m_vmanip);
 		}
 	}
 }
@@ -154,7 +154,7 @@ video::SColor MapBlock_LightColor(u8 alpha, u8 light)
 	// Emphase blue a bit in darker places
 	float lim = 80;
 	float power = 0.8;
-	if(light >  lim)
+	if(light > lim)
 		return video::SColor(alpha,light,light,light);
 	else
 		return video::SColor(alpha,light,light,MYMAX(0,
@@ -170,7 +170,7 @@ struct FastFace
 
 void makeFastFace(TileSpec tile, u8 li0, u8 li1, u8 li2, u8 li3, v3f p,
 		v3s16 dir, v3f scale, v3f posRelative_f,
-		core::array<FastFace>  &dest)
+		core::array<FastFace> &dest)
 {
 	FastFace face;
 
@@ -199,9 +199,9 @@ void makeFastFace(TileSpec tile, u8 li0, u8 li1, u8 li2, u8 li3, v3f p,
 	}
 
 	f32 abs_scale = 1.;
-	if     (scale.X < 0.999 || scale.X >  1.001) abs_scale = scale.X;
-	else if(scale.Y < 0.999 || scale.Y >  1.001) abs_scale = scale.Y;
-	else if(scale.Z < 0.999 || scale.Z >  1.001) abs_scale = scale.Z;
+	if     (scale.X < 0.999 || scale.X > 1.001) abs_scale = scale.X;
+	else if(scale.Y < 0.999 || scale.Y > 1.001) abs_scale = scale.Y;
+	else if(scale.Z < 0.999 || scale.Z > 1.001) abs_scale = scale.Z;
 
 	v3f zerovector = v3f(0,0,0);
 
@@ -218,30 +218,30 @@ void makeFastFace(TileSpec tile, u8 li0, u8 li1, u8 li2, u8 li3, v3f p,
 	/*video::SColor c = MapBlock_LightColor(alpha, li);
 
 	face.vertices[0] = video::S3DVertex(vertex_pos[0], v3f(0,1,0), c,
-			core::vector2d<f32> (x0+w*abs_scale, y0+h));
+			core::vector2d<f32>(x0+w*abs_scale, y0+h));
 	face.vertices[1] = video::S3DVertex(vertex_pos[1], v3f(0,1,0), c,
-			core::vector2d<f32> (x0, y0+h));
+			core::vector2d<f32>(x0, y0+h));
 	face.vertices[2] = video::S3DVertex(vertex_pos[2], v3f(0,1,0), c,
-			core::vector2d<f32> (x0, y0));
+			core::vector2d<f32>(x0, y0));
 	face.vertices[3] = video::S3DVertex(vertex_pos[3], v3f(0,1,0), c,
-			core::vector2d<f32> (x0+w*abs_scale, y0));*/
+			core::vector2d<f32>(x0+w*abs_scale, y0));*/
 
 	face.vertices[0] = video::S3DVertex(vertex_pos[0], v3f(0,1,0),
 			MapBlock_LightColor(alpha, li0),
-			core::vector2d<f32> (x0+w*abs_scale, y0+h));
+			core::vector2d<f32>(x0+w*abs_scale, y0+h));
 	face.vertices[1] = video::S3DVertex(vertex_pos[1], v3f(0,1,0),
 			MapBlock_LightColor(alpha, li1),
-			core::vector2d<f32> (x0, y0+h));
+			core::vector2d<f32>(x0, y0+h));
 	face.vertices[2] = video::S3DVertex(vertex_pos[2], v3f(0,1,0),
 			MapBlock_LightColor(alpha, li2),
-			core::vector2d<f32> (x0, y0));
+			core::vector2d<f32>(x0, y0));
 	face.vertices[3] = video::S3DVertex(vertex_pos[3], v3f(0,1,0),
 			MapBlock_LightColor(alpha, li3),
-			core::vector2d<f32> (x0+w*abs_scale, y0));
+			core::vector2d<f32>(x0+w*abs_scale, y0));
 
 	face.tile = tile;
 	//DEBUG
-	//f-> tile = TILE_STONE;
+	//f->tile = TILE_STONE;
 
 	dest.push_back(face);
 }
@@ -259,12 +259,12 @@ TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir,
 	/*
 		Check temporary modifications on this node
 	*/
-	/*core::map<v3s16, NodeMod> ::Node *n;
+	/*core::map<v3s16, NodeMod>::Node *n;
 	n = m_temp_mods.find(p);
 	// If modified
 	if(n != NULL)
 	{
-		struct NodeMod mod = n-> getValue();*/
+		struct NodeMod mod = n->getValue();*/
 	NodeMod mod;
 	if(temp_mods.get(p, &mod))
 	{
@@ -282,20 +282,20 @@ TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir,
 
 			// Get original texture name
 			u32 orig_id = spec.texture.id;
-			std::string orig_name = g_texturesource-> getTextureName(orig_id);
+			std::string orig_name = g_texturesource->getTextureName(orig_id);
 
 			// Create new texture name
 			std::ostringstream os;
 			os<<orig_name<<"^[crack"<<mod.param;
 
 			// Get new texture
-			u32 new_id = g_texturesource-> getTextureId(os.str());
+			u32 new_id = g_texturesource->getTextureId(os.str());
 
 			/*dstream<<"MapBlock::getNodeTile(): Switching from "
 					<<orig_name<<" to "<<os.str()<<" ("
 					<<orig_id<<" to "<<new_id<<")"<<std::endl;*/
 
-			spec.texture = g_texturesource-> getTexture(new_id);
+			spec.texture = g_texturesource->getTexture(new_id);
 		}
 	}
 
@@ -307,12 +307,12 @@ content_t getNodeContent(v3s16 p, MapNode mn, NodeModMap &temp_mods)
 	/*
 		Check temporary modifications on this node
 	*/
-	/*core::map<v3s16, NodeMod> ::Node *n;
+	/*core::map<v3s16, NodeMod>::Node *n;
 	n = m_temp_mods.find(p);
 	// If modified
 	if(n != NULL)
 	{
-		struct NodeMod mod = n-> getValue();*/
+		struct NodeMod mod = n->getValue();*/
 	NodeMod mod;
 	if(temp_mods.get(p, &mod))
 	{
@@ -379,7 +379,7 @@ u8 getSmoothLight(v3s16 p, VoxelManipulator &vmanip, u32 daynight_ratio)
 
 	light /= light_count;
 
-	if(ambient_occlusion >  4)
+	if(ambient_occlusion > 4)
 	{
 		ambient_occlusion -= 4;
 		light = (float)light / ((float)ambient_occlusion * 0.5 + 1.0);
@@ -488,7 +488,7 @@ void updateFastFaceRow(
 		v3f translate_dir_f,
 		v3s16 face_dir,
 		v3f face_dir_f,
-		core::array<FastFace>  &dest,
+		core::array<FastFace> &dest,
 		NodeModMap &temp_mods,
 		VoxelManipulator &vmanip,
 		v3s16 blockpos_nodes,
@@ -545,27 +545,27 @@ void updateFastFaceRow(
 			}
 			else{
 				/*if(makes_face){
-					g_profiler-> add("Meshgen: diff: next_makes_face != makes_face",
+					g_profiler->add("Meshgen: diff: next_makes_face != makes_face",
 							next_makes_face != makes_face ? 1 : 0);
-					g_profiler-> add("Meshgen: diff: n_p_corr != p_corr + t_dir",
+					g_profiler->add("Meshgen: diff: n_p_corr != p_corr + t_dir",
 							(next_p_corrected != p_corrected + translate_dir) ? 1 : 0);
-					g_profiler-> add("Meshgen: diff: next_f_dir_corr != f_dir_corr",
+					g_profiler->add("Meshgen: diff: next_f_dir_corr != f_dir_corr",
 							next_face_dir_corrected != face_dir_corrected ? 1 : 0);
-					g_profiler-> add("Meshgen: diff: next_lights[] != lights[]",
+					g_profiler->add("Meshgen: diff: next_lights[] != lights[]",
 							(next_lights[0] != lights[0] ||
 							next_lights[0] != lights[0] ||
 							next_lights[0] != lights[0] ||
 							next_lights[0] != lights[0]) ? 1 : 0);
-					g_profiler-> add("Meshgen: diff: !(next_tile == tile)",
+					g_profiler->add("Meshgen: diff: !(next_tile == tile)",
 							!(next_tile == tile) ? 1 : 0);
 				}*/
 			}
-			/*g_profiler-> add("Meshgen: Total faces checked", 1);
+			/*g_profiler->add("Meshgen: Total faces checked", 1);
 			if(makes_face)
-				g_profiler-> add("Meshgen: Total makes_face checked", 1);*/
+				g_profiler->add("Meshgen: Total makes_face checked", 1);*/
 		} else {
 			/*if(makes_face)
-				g_profiler-> add("Meshgen: diff: last position", 1);*/
+				g_profiler->add("Meshgen: diff: last position", 1);*/
 		}
 
 		continuous_tiles_count++;
@@ -618,9 +618,9 @@ void updateFastFaceRow(
 						sp, face_dir_corrected, scale,
 						posRelative_f, dest);
 
-				g_profiler-> avg("Meshgen: faces drawn by tiling", 0);
+				g_profiler->avg("Meshgen: faces drawn by tiling", 0);
 				for(int i=1; i<continuous_tiles_count; i++){
-					g_profiler-> avg("Meshgen: faces drawn by tiling", 1);
+					g_profiler->avg("Meshgen: faces drawn by tiling", 1);
 				}
 			}
 
@@ -646,9 +646,9 @@ scene::SMesh* makeMapBlockMesh(MeshMakeData *data)
 	// 24-155ms for MAP_BLOCKSIZE=32
 	//TimeTaker timer1("makeMapBlockMesh()");
 
-	core::array<FastFace>  fastfaces_new;
+	core::array<FastFace> fastfaces_new;
 
-	v3s16 blockpos_nodes = data-> m_blockpos*MAP_BLOCKSIZE;
+	v3s16 blockpos_nodes = data->m_blockpos*MAP_BLOCKSIZE;
 
 	// floating point conversion
 	v3f posRelative_f(blockpos_nodes.X, blockpos_nodes.Y, blockpos_nodes.Z);
@@ -656,9 +656,9 @@ scene::SMesh* makeMapBlockMesh(MeshMakeData *data)
 	/*
 		Some settings
 	*/
-	//bool new_style_water = g_settings-> getBool("new_style_water");
-	//bool new_style_leaves = g_settings-> getBool("new_style_leaves");
-	bool smooth_lighting = g_settings-> getBool("smooth_lighting");
+	//bool new_style_water = g_settings->getBool("new_style_water");
+	//bool new_style_leaves = g_settings->getBool("new_style_leaves");
+	bool smooth_lighting = g_settings->getBool("smooth_lighting");
 
 	/*
 		We are including the faces of the trailing edges of the block.
@@ -677,15 +677,15 @@ scene::SMesh* makeMapBlockMesh(MeshMakeData *data)
 		*/
 		for(s16 y=0; y<MAP_BLOCKSIZE; y++){
 			for(s16 z=0; z<MAP_BLOCKSIZE; z++){
-				updateFastFaceRow(data-> m_daynight_ratio, posRelative_f,
+				updateFastFaceRow(data->m_daynight_ratio, posRelative_f,
 						v3s16(0,y,z), MAP_BLOCKSIZE,
 						v3s16(1,0,0), //dir
 						v3f  (1,0,0),
 						v3s16(0,1,0), //face dir
 						v3f  (0,1,0),
 						fastfaces_new,
-						data-> m_temp_mods,
-						data-> m_vmanip,
+						data->m_temp_mods,
+						data->m_vmanip,
 						blockpos_nodes,
 						smooth_lighting);
 			}
@@ -695,15 +695,15 @@ scene::SMesh* makeMapBlockMesh(MeshMakeData *data)
 		*/
 		for(s16 x=0; x<MAP_BLOCKSIZE; x++){
 			for(s16 y=0; y<MAP_BLOCKSIZE; y++){
-				updateFastFaceRow(data-> m_daynight_ratio, posRelative_f,
+				updateFastFaceRow(data->m_daynight_ratio, posRelative_f,
 						v3s16(x,y,0), MAP_BLOCKSIZE,
 						v3s16(0,0,1),
 						v3f  (0,0,1),
 						v3s16(1,0,0),
 						v3f  (1,0,0),
 						fastfaces_new,
-						data-> m_temp_mods,
-						data-> m_vmanip,
+						data->m_temp_mods,
+						data->m_vmanip,
 						blockpos_nodes,
 						smooth_lighting);
 			}
@@ -713,15 +713,15 @@ scene::SMesh* makeMapBlockMesh(MeshMakeData *data)
 		*/
 		for(s16 z=0; z<MAP_BLOCKSIZE; z++){
 			for(s16 y=0; y<MAP_BLOCKSIZE; y++){
-				updateFastFaceRow(data-> m_daynight_ratio, posRelative_f,
+				updateFastFaceRow(data->m_daynight_ratio, posRelative_f,
 						v3s16(0,y,z), MAP_BLOCKSIZE,
 						v3s16(1,0,0),
 						v3f  (1,0,0),
 						v3s16(0,0,1),
 						v3f  (0,0,1),
 						fastfaces_new,
-						data-> m_temp_mods,
-						data-> m_vmanip,
+						data->m_temp_mods,
+						data->m_vmanip,
 						blockpos_nodes,
 						smooth_lighting);
 			}
@@ -736,7 +736,7 @@ scene::SMesh* makeMapBlockMesh(MeshMakeData *data)
 
 	MeshCollector collector;
 
-	if(fastfaces_new.size() >  0)
+	if(fastfaces_new.size() > 0)
 	{
 		// avg 0ms (100ms spikes when loading textures the first time)
 		//TimeTaker timer2("updateMesh() mesh building");
@@ -803,15 +803,15 @@ scene::SMesh* makeMapBlockMesh(MeshMakeData *data)
 		Do some stuff to the mesh
 	*/
 
-	mesh_new-> recalculateBoundingBox();
+	mesh_new->recalculateBoundingBox();
 
 	/*
 		Delete new mesh if it is empty
 	*/
 
-	if(mesh_new-> getMeshBufferCount() == 0)
+	if(mesh_new->getMeshBufferCount() == 0)
 	{
-		mesh_new-> drop();
+		mesh_new->drop();
 		mesh_new = NULL;
 	}
 
@@ -820,13 +820,13 @@ scene::SMesh* makeMapBlockMesh(MeshMakeData *data)
 #if 0
 		// Usually 1-700 faces and 1-7 materials
 		std::cout<<"Updated MapBlock has "<<fastfaces_new.size()<<" faces "
-				<<"and uses "<<mesh_new-> getMeshBufferCount()
+				<<"and uses "<<mesh_new->getMeshBufferCount()
 				<<" materials (meshbuffers)"<<std::endl;
 #endif
 
 		// Use VBO for mesh (this just would set this for ever buffer)
 		// This will lead to infinite memory usage because or irrlicht.
-		//mesh_new-> setHardwareMappingHint(scene::EHM_STATIC);
+		//mesh_new->setHardwareMappingHint(scene::EHM_STATIC);
 
 		/*
 			NOTE: If that is enabled, some kind of a queue to the main

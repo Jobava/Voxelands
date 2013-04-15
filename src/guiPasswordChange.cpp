@@ -54,22 +54,22 @@ void GUIPasswordChange::removeChildren()
 	{
 		gui::IGUIElement *e = getElementFromId(ID_oldPassword);
 		if(e != NULL)
-			e-> remove();
+			e->remove();
 	}
 	{
 		gui::IGUIElement *e = getElementFromId(ID_newPassword1);
 		if(e != NULL)
-			e-> remove();
+			e->remove();
 	}
 	{
 		gui::IGUIElement *e = getElementFromId(ID_newPassword2);
 		if(e != NULL)
-			e-> remove();
+			e->remove();
 	}
 	{
 		gui::IGUIElement *e = getElementFromId(ID_change);
 		if(e != NULL)
-			e-> remove();
+			e->remove();
 	}
 }
 
@@ -83,7 +83,7 @@ void GUIPasswordChange::regenerateGui(v2u32 screensize)
 	/*
 		Calculate new sizes and positions
 	*/
-	core::rect<s32>  rect(
+	core::rect<s32> rect(
 			screensize.X/2 - 580/2,
 			screensize.Y/2 - 300/2,
 			screensize.X/2 + 580/2,
@@ -103,70 +103,70 @@ void GUIPasswordChange::regenerateGui(v2u32 screensize)
 	s32 ypos = 50;
 	changeCtype("");
 	{
-		core::rect<s32>  rect(0, 0, 110, 20);
+		core::rect<s32> rect(0, 0, 110, 20);
 		rect += topleft_client + v2s32(35, ypos+6);
-		Environment-> addStaticText(wgettext("Old Password"),
+		Environment->addStaticText(wgettext("Old Password"),
 			rect, false, true, this, -1);
 	}
 	changeCtype("C");
 	{
-		core::rect<s32>  rect(0, 0, 230, 30);
+		core::rect<s32> rect(0, 0, 230, 30);
 		rect += topleft_client + v2s32(160, ypos);
 		gui::IGUIEditBox *e =
-		Environment-> addEditBox(L"", rect, true, this, ID_oldPassword);
-		Environment-> setFocus(e);
-		e-> setPasswordBox(true);
+		Environment->addEditBox(L"", rect, true, this, ID_oldPassword);
+		Environment->setFocus(e);
+		e->setPasswordBox(true);
 	}
 	ypos += 50;
 	changeCtype("");
 	{
-		core::rect<s32>  rect(0, 0, 110, 20);
+		core::rect<s32> rect(0, 0, 110, 20);
 		rect += topleft_client + v2s32(35, ypos+6);
-		Environment-> addStaticText(wgettext("New Password"),
+		Environment->addStaticText(wgettext("New Password"),
 			rect, false, true, this, -1);
 	}
 	changeCtype("C");
 	{
-		core::rect<s32>  rect(0, 0, 230, 30);
+		core::rect<s32> rect(0, 0, 230, 30);
 		rect += topleft_client + v2s32(160, ypos);
 		gui::IGUIEditBox *e =
-		Environment-> addEditBox(L"", rect, true, this, ID_newPassword1);
-		e-> setPasswordBox(true);
+		Environment->addEditBox(L"", rect, true, this, ID_newPassword1);
+		e->setPasswordBox(true);
 	}
 	ypos += 50;
 	changeCtype("");
 	{
-		core::rect<s32>  rect(0, 0, 110, 20);
+		core::rect<s32> rect(0, 0, 110, 20);
 		rect += topleft_client + v2s32(35, ypos+6);
-		Environment-> addStaticText(wgettext("Confirm Password"),
+		Environment->addStaticText(wgettext("Confirm Password"),
 			rect, false, true, this, -1);
 	}
 	changeCtype("C");
 	{
-		core::rect<s32>  rect(0, 0, 230, 30);
+		core::rect<s32> rect(0, 0, 230, 30);
 		rect += topleft_client + v2s32(160, ypos);
 		gui::IGUIEditBox *e =
-		Environment-> addEditBox(L"", rect, true, this, ID_newPassword2);
-		e-> setPasswordBox(true);
+		Environment->addEditBox(L"", rect, true, this, ID_newPassword2);
+		e->setPasswordBox(true);
 	}
 
 	ypos += 50;
 	changeCtype("");
 	{
-		core::rect<s32>  rect(0, 0, 140, 30);
+		core::rect<s32> rect(0, 0, 140, 30);
 		rect = rect + v2s32(size.X/2-140/2, ypos);
-		Environment-> addButton(rect, this, ID_change, wgettext("Change"));
+		Environment->addButton(rect, this, ID_change, wgettext("Change"));
 	}
 
 	ypos += 50;
 	{
-		core::rect<s32>  rect(0, 0, 300, 20);
+		core::rect<s32> rect(0, 0, 300, 20);
 		rect += topleft_client + v2s32(35, ypos);
 		IGUIElement *e =
-		Environment-> addStaticText(
+		Environment->addStaticText(
 			wgettext("Passwords do not match!"),
 			rect, false, true, this, ID_message);
-		e-> setVisible(false);
+		e->setVisible(false);
 	}
 	changeCtype("C");
 
@@ -174,13 +174,13 @@ void GUIPasswordChange::regenerateGui(v2u32 screensize)
 
 void GUIPasswordChange::drawMenu()
 {
-	gui::IGUISkin* skin = Environment-> getSkin();
+	gui::IGUISkin* skin = Environment->getSkin();
 	if (!skin)
 		return;
-	video::IVideoDriver* driver = Environment-> getVideoDriver();
+	video::IVideoDriver* driver = Environment->getVideoDriver();
 
 	video::SColor bgcolor(140,0,0,0);
-	driver-> draw2DRectangle(bgcolor, AbsoluteRect, &AbsoluteClippingRect);
+	driver->draw2DRectangle(bgcolor, AbsoluteRect, &AbsoluteClippingRect);
 
 	gui::IGUIElement::draw();
 }
@@ -192,19 +192,19 @@ bool GUIPasswordChange::acceptInput()
 		gui::IGUIElement *e;
 		e = getElementFromId(ID_oldPassword);
 		if(e != NULL)
-			oldpass = e-> getText();
+			oldpass = e->getText();
 		e = getElementFromId(ID_newPassword1);
 		if(e != NULL)
-			newpass = e-> getText();
+			newpass = e->getText();
 		e = getElementFromId(ID_newPassword2);
-		if(e != NULL && newpass != e-> getText())
+		if(e != NULL && newpass != e->getText())
 		{
 			e = getElementFromId(ID_message);
 			if(e != NULL)
-				e-> setVisible(true);
+				e->setVisible(true);
 			return false;
 		}
-		m_client-> sendChangePassword(oldpass, newpass);
+		m_client->sendChangePassword(oldpass, newpass);
 		return true;
 }
 
@@ -239,7 +239,7 @@ bool GUIPasswordChange::OnEvent(const SEvent& event)
 		}
 		if(event.GUIEvent.EventType==gui::EGET_BUTTON_CLICKED)
 		{
-			switch(event.GUIEvent.Caller-> getID())
+			switch(event.GUIEvent.Caller->getID())
 			{
 			case ID_change:
 				if(acceptInput())
@@ -249,7 +249,7 @@ bool GUIPasswordChange::OnEvent(const SEvent& event)
 		}
 		if(event.GUIEvent.EventType==gui::EGET_EDITBOX_ENTER)
 		{
-			switch(event.GUIEvent.Caller-> getID())
+			switch(event.GUIEvent.Caller->getID())
 			{
 			case ID_oldPassword:
 			case ID_newPassword1:
@@ -261,6 +261,6 @@ bool GUIPasswordChange::OnEvent(const SEvent& event)
 		}
 	}
 
-	return Parent ? Parent-> OnEvent(event) : false;
+	return Parent ? Parent->OnEvent(event) : false;
 }
 

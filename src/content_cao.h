@@ -67,7 +67,7 @@ struct SmoothTranslator
 	{
 		vect_old = vect_show;
 		vect_aim = vect_new;
-		if(anim_time < 0.001 || anim_time >  1.0)
+		if(anim_time < 0.001 || anim_time > 1.0)
 			anim_time = anim_time_counter;
 		else
 			anim_time = anim_time * 0.9 + anim_time_counter * 0.1;
@@ -81,11 +81,11 @@ struct SmoothTranslator
 		anim_counter = anim_counter + dtime;
 		v3f vect_move = vect_aim - vect_old;
 		f32 moveratio = 1.0;
-		if(anim_time >  0.001)
+		if(anim_time > 0.001)
 			moveratio = anim_time_counter / anim_time;
 		// Move a bit less than should, to avoid oscillation
 		moveratio = moveratio * 0.5;
-		if(moveratio >  1.5)
+		if(moveratio > 1.5)
 			moveratio = 1.5;
 		vect_show = vect_old + vect_move * moveratio;
 	}
@@ -158,13 +158,13 @@ public:
 
 	void initialize(const std::string &data);
 
-	core::aabbox3d<f32> * getSelectionBox()
+	core::aabbox3d<f32>* getSelectionBox()
 		{return &m_selection_box;}
 	v3f getPosition()
 		{return m_position;}
 
 private:
-	core::aabbox3d<f32>  m_selection_box;
+	core::aabbox3d<f32> m_selection_box;
 	scene::IMeshSceneNode *m_node;
 	v3f m_position;
 	std::string m_inventorystring;
@@ -199,14 +199,14 @@ public:
 
 	void initialize(const std::string &data);
 
-	core::aabbox3d<f32> * getSelectionBox()
+	core::aabbox3d<f32>* getSelectionBox()
 		{return &m_selection_box;}
 	v3f getPosition()
 		{return pos_translator.vect_show;}
 		//{return m_position;}
 
 private:
-	core::aabbox3d<f32>  m_selection_box;
+	core::aabbox3d<f32> m_selection_box;
 	scene::IMeshSceneNode *m_node;
 	v3f m_position;
 	float m_yaw;
@@ -242,7 +242,7 @@ public:
 
 	void initialize(const std::string &data);
 
-	core::aabbox3d<f32> * getSelectionBox()
+	core::aabbox3d<f32>* getSelectionBox()
 		{return &m_selection_box;}
 	v3f getPosition()
 		{return pos_translator.vect_show;}
@@ -253,7 +253,7 @@ public:
 
 private:
 	IntervalLimiter m_attack_interval;
-	core::aabbox3d<f32>  m_selection_box;
+	core::aabbox3d<f32> m_selection_box;
 	scene::IMeshSceneNode *m_node;
 	v3f m_position;
 	float m_yaw;
@@ -291,13 +291,13 @@ public:
 
 	void initialize(const std::string &data);
 
-	core::aabbox3d<f32> * getSelectionBox()
+	core::aabbox3d<f32>* getSelectionBox()
 		{return &m_selection_box;}
 	v3f getPosition()
 		{return m_position;}
 
 private:
-	core::aabbox3d<f32>  m_selection_box;
+	core::aabbox3d<f32> m_selection_box;
 	scene::IMeshSceneNode *m_node;
 	v3f m_position;
 	float m_yaw;
@@ -333,7 +333,7 @@ public:
 
 	void initialize(const std::string &data);
 
-	core::aabbox3d<f32> * getSelectionBox()
+	core::aabbox3d<f32>* getSelectionBox()
 		{return &m_selection_box;}
 	v3f getPosition()
 		{return pos_translator.vect_show;}
@@ -347,7 +347,7 @@ private:
 	void setLooks(const std::string &looks);
 
 	IntervalLimiter m_attack_interval;
-	core::aabbox3d<f32>  m_selection_box;
+	core::aabbox3d<f32> m_selection_box;
 	scene::MyBillboardSceneNode *m_node;
 	v3f m_position;
 	std::string m_texture_name;

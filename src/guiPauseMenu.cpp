@@ -50,32 +50,32 @@ void GUIPauseMenu::removeChildren()
 	{
 		gui::IGUIElement *e = getElementFromId(256);
 		if(e != NULL)
-			e-> remove();
+			e->remove();
 	}
 	{
 		gui::IGUIElement *e = getElementFromId(257);
 		if(e != NULL)
-			e-> remove();
+			e->remove();
 	}
 	{
 		gui::IGUIElement *e = getElementFromId(258);
 		if(e != NULL)
-			e-> remove();
+			e->remove();
 	}
 	{
 		gui::IGUIElement *e = getElementFromId(259);
 		if(e != NULL)
-			e-> remove();
+			e->remove();
 	}
 	{
 		gui::IGUIElement *e = getElementFromId(260);
 		if(e != NULL)
-			e-> remove();
+			e->remove();
 	}
 	{
 		gui::IGUIElement *e = getElementFromId(261);
 		if(e != NULL)
-			e-> remove();
+			e->remove();
 	}
 }
 
@@ -89,7 +89,7 @@ void GUIPauseMenu::regenerateGui(v2u32 screensize)
 	/*
 		Calculate new sizes and positions
 	*/
-	core::rect<s32>  rect(
+	core::rect<s32> rect(
 			screensize.X/2 - 580/2,
 			screensize.Y/2 - 300/2,
 			screensize.X/2 + 580/2,
@@ -110,37 +110,37 @@ void GUIPauseMenu::regenerateGui(v2u32 screensize)
 	s32 btn_y = size.Y/2-((btn_num*btn_height+(btn_num-1)*btn_gap))/2;
 	changeCtype("");
 	{
-		core::rect<s32>  rect(0, 0, 140, btn_height);
+		core::rect<s32> rect(0, 0, 140, btn_height);
 		rect = rect + v2s32(size.X/2-140/2, btn_y);
-		Environment-> addButton(rect, this, 256,
+		Environment->addButton(rect, this, 256,
 			wgettext("Continue"));
 	}
 	btn_y += btn_height + btn_gap;
 	{
-		core::rect<s32>  rect(0, 0, 140, btn_height);
+		core::rect<s32> rect(0, 0, 140, btn_height);
 		rect = rect + v2s32(size.X/2-140/2, btn_y);
-		Environment-> addButton(rect, this, 261,
+		Environment->addButton(rect, this, 261,
 			wgettext("Change Password"));
 	}
 	btn_y += btn_height + btn_gap;
 	{
-		core::rect<s32>  rect(0, 0, 140, btn_height);
+		core::rect<s32> rect(0, 0, 140, btn_height);
 		rect = rect + v2s32(size.X/2-140/2, btn_y);
-		Environment-> addButton(rect, this, 260,
+		Environment->addButton(rect, this, 260,
 			wgettext("Disconnect"));
 	}
 	btn_y += btn_height + btn_gap;
 	{
-		core::rect<s32>  rect(0, 0, 140, btn_height);
+		core::rect<s32> rect(0, 0, 140, btn_height);
 		rect = rect + v2s32(size.X/2-140/2, btn_y);
-		Environment-> addButton(rect, this, 257,
+		Environment->addButton(rect, this, 257,
 			wgettext("Exit to OS"));
 	}
 
 	{
-		core::rect<s32>  rect(0, 0, 180, 240);
+		core::rect<s32> rect(0, 0, 180, 240);
 		rect = rect + v2s32(size.X/2 + 90, size.Y/2-rect.getHeight()/2);
-		Environment-> addStaticText(chartowchar_t(gettext(
+		Environment->addStaticText(chartowchar_t(gettext(
 		"Default Controls:\n"
 		"- WASD: Walk\n"
 		"- Mouse left: dig/hit\n"
@@ -155,13 +155,13 @@ void GUIPauseMenu::regenerateGui(v2u32 screensize)
 		)), rect, false, true, this, 258);
 	}
 	{
-		core::rect<s32>  rect(0, 0, 180, 220);
+		core::rect<s32> rect(0, 0, 180, 220);
 		rect = rect + v2s32(size.X/2 - 90 - rect.getWidth(), size.Y/2-rect.getHeight()/2);
 
 		v2u32 max_texture_size;
 		{
-			video::IVideoDriver* driver = Environment-> getVideoDriver();
-			max_texture_size = driver-> getMaxTextureSize();
+			video::IVideoDriver* driver = Environment->getVideoDriver();
+			max_texture_size = driver->getMaxTextureSize();
 		}
 
 		/*wchar_t text[200];
@@ -184,20 +184,20 @@ void GUIPauseMenu::regenerateGui(v2u32 screensize)
 		os<<BUILD_INFO<<"\n";
 		os<<"ud_path = "<<wrap_rows(porting::path_userdata, 20)<<"\n";
 
-		Environment-> addStaticText(narrow_to_wide(os.str()).c_str(), rect, false, true, this, 259);
+		Environment->addStaticText(narrow_to_wide(os.str()).c_str(), rect, false, true, this, 259);
 	}
 	changeCtype("C");
 }
 
 void GUIPauseMenu::drawMenu()
 {
-	gui::IGUISkin* skin = Environment-> getSkin();
+	gui::IGUISkin* skin = Environment->getSkin();
 	if (!skin)
 		return;
-	video::IVideoDriver* driver = Environment-> getVideoDriver();
+	video::IVideoDriver* driver = Environment->getVideoDriver();
 
 	video::SColor bgcolor(140,0,0,0);
-	driver-> draw2DRectangle(bgcolor, AbsoluteRect, &AbsoluteClippingRect);
+	driver->draw2DRectangle(bgcolor, AbsoluteRect, &AbsoluteClippingRect);
 
 	gui::IGUIElement::draw();
 }
@@ -236,7 +236,7 @@ bool GUIPauseMenu::OnEvent(const SEvent& event)
 		}
 		if(event.GUIEvent.EventType==gui::EGET_BUTTON_CLICKED)
 		{
-			switch(event.GUIEvent.Caller-> getID())
+			switch(event.GUIEvent.Caller->getID())
 			{
 			case 256: // continue
 				quitMenu();
@@ -244,20 +244,20 @@ bool GUIPauseMenu::OnEvent(const SEvent& event)
 				return true;
 			case 261:
 				quitMenu();
-				m_gamecallback-> changePassword();
+				m_gamecallback->changePassword();
 				return true;
 			case 260: // disconnect
-				m_gamecallback-> disconnect();
+				m_gamecallback->disconnect();
 				quitMenu();
 				return true;
 			case 257: // exit
-				m_gamecallback-> exitToOS();
+				m_gamecallback->exitToOS();
 				quitMenu();
 				return true;
 			}
 		}
 	}
 
-	return Parent ? Parent-> OnEvent(event) : false;
+	return Parent ? Parent->OnEvent(event) : false;
 }
 

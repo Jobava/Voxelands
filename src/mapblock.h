@@ -269,9 +269,9 @@ public:
 		return m_pos * MAP_BLOCKSIZE;
 	}
 
-	core::aabbox3d<s16>  getBox()
+	core::aabbox3d<s16> getBox()
 	{
-		return core::aabbox3d<s16> (getPosRelative(),
+		return core::aabbox3d<s16>(getPosRelative(),
 				getPosRelative()
 				+ v3s16(MAP_BLOCKSIZE, MAP_BLOCKSIZE, MAP_BLOCKSIZE)
 				- v3s16(1,1,1));
@@ -285,18 +285,18 @@ public:
 	{
 		if(data == NULL)
 			return false;
-		return (p.X > = 0 && p.X < MAP_BLOCKSIZE
-				&& p.Y > = 0 && p.Y < MAP_BLOCKSIZE
-				&& p.Z > = 0 && p.Z < MAP_BLOCKSIZE);
+		return (p.X >= 0 && p.X < MAP_BLOCKSIZE
+				&& p.Y >= 0 && p.Y < MAP_BLOCKSIZE
+				&& p.Z >= 0 && p.Z < MAP_BLOCKSIZE);
 	}
 
 	MapNode getNode(s16 x, s16 y, s16 z)
 	{
 		if(data == NULL)
 			throw InvalidPositionException();
-		if(x < 0 || x > = MAP_BLOCKSIZE) throw InvalidPositionException();
-		if(y < 0 || y > = MAP_BLOCKSIZE) throw InvalidPositionException();
-		if(z < 0 || z > = MAP_BLOCKSIZE) throw InvalidPositionException();
+		if(x < 0 || x >= MAP_BLOCKSIZE) throw InvalidPositionException();
+		if(y < 0 || y >= MAP_BLOCKSIZE) throw InvalidPositionException();
+		if(z < 0 || z >= MAP_BLOCKSIZE) throw InvalidPositionException();
 		return data[z*MAP_BLOCKSIZE*MAP_BLOCKSIZE + y*MAP_BLOCKSIZE + x];
 	}
 
@@ -318,9 +318,9 @@ public:
 	{
 		if(data == NULL)
 			throw InvalidPositionException();
-		if(x < 0 || x > = MAP_BLOCKSIZE) throw InvalidPositionException();
-		if(y < 0 || y > = MAP_BLOCKSIZE) throw InvalidPositionException();
-		if(z < 0 || z > = MAP_BLOCKSIZE) throw InvalidPositionException();
+		if(x < 0 || x >= MAP_BLOCKSIZE) throw InvalidPositionException();
+		if(y < 0 || y >= MAP_BLOCKSIZE) throw InvalidPositionException();
+		if(z < 0 || z >= MAP_BLOCKSIZE) throw InvalidPositionException();
 		data[z*MAP_BLOCKSIZE*MAP_BLOCKSIZE + y*MAP_BLOCKSIZE + x] = n;
 		raiseModified(MOD_STATE_WRITE_NEEDED);
 	}
@@ -414,7 +414,7 @@ public:
 #endif
 
 	// See comments in mapblock.cpp
-	bool propagateSunlight(core::map<v3s16, bool>  & light_sources,
+	bool propagateSunlight(core::map<v3s16, bool> & light_sources,
 			bool remove_light=false, bool *black_air_left=NULL);
 
 	// Copies data to VoxelManipulator to getPosRelative()
@@ -555,9 +555,9 @@ private:
 	{
 		if(data == NULL)
 			throw InvalidPositionException();
-		if(x < 0 || x > = MAP_BLOCKSIZE) throw InvalidPositionException();
-		if(y < 0 || y > = MAP_BLOCKSIZE) throw InvalidPositionException();
-		if(z < 0 || z > = MAP_BLOCKSIZE) throw InvalidPositionException();
+		if(x < 0 || x >= MAP_BLOCKSIZE) throw InvalidPositionException();
+		if(y < 0 || y >= MAP_BLOCKSIZE) throw InvalidPositionException();
+		if(z < 0 || z >= MAP_BLOCKSIZE) throw InvalidPositionException();
 		return data[z*MAP_BLOCKSIZE*MAP_BLOCKSIZE + y*MAP_BLOCKSIZE + x];
 	}
 	MapNode & getNodeRef(v3s16 &p)
@@ -656,11 +656,11 @@ inline bool blockpos_over_limit(v3s16 p)
 {
 	return
 	  (p.X < -MAP_GENERATION_LIMIT / MAP_BLOCKSIZE
-	|| p.X >   MAP_GENERATION_LIMIT / MAP_BLOCKSIZE
+	|| p.X >  MAP_GENERATION_LIMIT / MAP_BLOCKSIZE
 	|| p.Y < -MAP_GENERATION_LIMIT / MAP_BLOCKSIZE
-	|| p.Y >   MAP_GENERATION_LIMIT / MAP_BLOCKSIZE
+	|| p.Y >  MAP_GENERATION_LIMIT / MAP_BLOCKSIZE
 	|| p.Z < -MAP_GENERATION_LIMIT / MAP_BLOCKSIZE
-	|| p.Z >   MAP_GENERATION_LIMIT / MAP_BLOCKSIZE);
+	|| p.Z >  MAP_GENERATION_LIMIT / MAP_BLOCKSIZE);
 }
 
 /*

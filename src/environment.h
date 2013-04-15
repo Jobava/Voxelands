@@ -65,8 +65,8 @@ public:
 	Player * getPlayer(const char *name);
 	Player * getRandomConnectedPlayer();
 	Player * getNearestConnectedPlayer(v3f pos);
-	core::list<Player*>  getPlayers();
-	core::list<Player*>  getPlayers(bool ignore_disconnected);
+	core::list<Player*> getPlayers();
+	core::list<Player*> getPlayers(bool ignore_disconnected);
 	void printPlayers(std::ostream &o);
 
 	//void setDayNightRatio(u32 r);
@@ -85,7 +85,7 @@ public:
 
 protected:
 	// peer_ids in here should be unique, except that there may be many 0s
-	core::list<Player*>  m_players;
+	core::list<Player*> m_players;
 	// Brightness
 	//u32 m_daynight_ratio;
 	// Time of day in milli-hours (0-23999); determines day and night
@@ -99,10 +99,10 @@ protected:
 class ActiveBlockList
 {
 public:
-	void update(core::list<v3s16>  &active_positions,
+	void update(core::list<v3s16> &active_positions,
 			s16 radius,
-			core::map<v3s16, bool>  &blocks_removed,
-			core::map<v3s16, bool>  &blocks_added);
+			core::map<v3s16, bool> &blocks_removed,
+			core::map<v3s16, bool> &blocks_added);
 
 	bool contains(v3s16 p){
 		return (m_list.find(p) != NULL);
@@ -112,7 +112,7 @@ public:
 		m_list.clear();
 	}
 
-	core::map<v3s16, bool>  m_list;
+	core::map<v3s16, bool> m_list;
 
 private:
 };
@@ -188,16 +188,16 @@ public:
 		inside a radius around a position
 	*/
 	void getAddedActiveObjects(v3s16 pos, s16 radius,
-			core::map<u16, bool>  &current_objects,
-			core::map<u16, bool>  &added_objects);
+			core::map<u16, bool> &current_objects,
+			core::map<u16, bool> &added_objects);
 
 	/*
 		Find out what new objects have been removed from
 		inside a radius around a position
 	*/
 	void getRemovedActiveObjects(v3s16 pos, s16 radius,
-			core::map<u16, bool>  &current_objects,
-			core::map<u16, bool>  &removed_objects);
+			core::map<u16, bool> &current_objects,
+			core::map<u16, bool> &removed_objects);
 
 	/*
 		Get the next message emitted by some active object.
@@ -272,9 +272,9 @@ private:
 	// Pointer to server (which is handling this environment)
 	Server *m_server;
 	// Active object list
-	core::map<u16, ServerActiveObject*>  m_active_objects;
+	core::map<u16, ServerActiveObject*> m_active_objects;
 	// Outgoing network message buffer for active objects
-	Queue<ActiveObjectMessage>  m_active_object_messages;
+	Queue<ActiveObjectMessage> m_active_object_messages;
 	// Some timers
 	float m_random_spawn_timer; // used for experimental code
 	float m_send_recommended_timer;
@@ -304,7 +304,7 @@ public:
 	ActiveBlockModifier(){};
 	virtual ~ActiveBlockModifier(){};
 
-	//virtual core::list<u8>  update(ServerEnvironment *env) = 0;
+	//virtual core::list<u8> update(ServerEnvironment *env) = 0;
 	virtual u32 getTriggerContentCount(){ return 1;}
 	virtual u8 getTriggerContent(u32 i) = 0;
 	virtual float getActiveInterval() = 0;
@@ -377,7 +377,7 @@ public:
 		if(getDayNightRatio() != old_dr)
 		{
 			dout_client<<DTIME<<"ClientEnvironment: DayNightRatio changed"
-					<<" ->  expiring meshes"<<std::endl;
+					<<" -> expiring meshes"<<std::endl;
 			expireMeshes(true);
 		}
 	}
@@ -415,7 +415,7 @@ public:
 
 	// Get all nearby objects
 	void getActiveObjects(v3f origin, f32 max_d,
-			core::array<DistanceSortedActiveObject>  &dest);
+			core::array<DistanceSortedActiveObject> &dest);
 
 	// Get event from queue. CEE_NONE is returned if queue is empty.
 	ClientEnvEvent getClientEvent();
@@ -423,8 +423,8 @@ public:
 private:
 	ClientMap *m_map;
 	scene::ISceneManager *m_smgr;
-	core::map<u16, ClientActiveObject*>  m_active_objects;
-	Queue<ClientEnvEvent>  m_client_event_queue;
+	core::map<u16, ClientActiveObject*> m_active_objects;
+	Queue<ClientEnvEvent> m_client_event_queue;
 	IntervalLimiter m_active_object_light_update_interval;
 	IntervalLimiter m_lava_hurt_interval;
 };

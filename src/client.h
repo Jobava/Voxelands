@@ -76,7 +76,7 @@ public:
 	}
 
 private:
-	core::list<QueuedMeshUpdate*>  m_queue;
+	core::list<QueuedMeshUpdate*> m_queue;
 	JMutex m_mutex;
 };
 
@@ -106,7 +106,7 @@ public:
 
 	MeshUpdateQueue m_queue_in;
 
-	MutexedQueue<MeshUpdateResult>  m_queue_out;
+	MutexedQueue<MeshUpdateResult> m_queue_out;
 };
 
 enum ClientEventType
@@ -183,7 +183,7 @@ public:
 	// Returns true if something was received
 	bool AsyncProcessPacket();
 	bool AsyncProcessData();
-	void Send(u16 channelnum, SharedBuffer<u8>  data, bool reliable);
+	void Send(u16 channelnum, SharedBuffer<u8> data, bool reliable);
 
 	// Pops out a packet from the packet queue
 	//IncomingPacket getPacket();
@@ -236,7 +236,7 @@ public:
 	ClientActiveObject * getSelectedActiveObject(
 			f32 max_d,
 			v3f from_pos_f_on_map,
-			core::line3d<f32>  shootline_on_map
+			core::line3d<f32> shootline_on_map
 	);
 
 	// Prints a line or two of info
@@ -277,9 +277,9 @@ public:
 		//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
 		LocalPlayer *player = m_env.getLocalPlayer();
 		assert(player != NULL);
-		std::wstring name = narrow_to_wide(player-> getName());
+		std::wstring name = narrow_to_wide(player->getName());
 		m_chat_queue.push_back(
-				(std::wstring)L"<"+name+L">  "+message);
+				(std::wstring)L"<"+name+L"> "+message);
 	}
 
 	u64 getMapSeed(){ return m_map_seed; }
@@ -339,7 +339,7 @@ private:
 	// This is behind m_env_mutex.
 	bool m_inventory_updated;
 
-	core::map<v3s16, bool>  m_active_blocks;
+	core::map<v3s16, bool> m_active_blocks;
 
 	PacketCounter m_packetcounter;
 
@@ -350,7 +350,7 @@ private:
 	//s32 m_daynight_i;
 	//u32 m_daynight_ratio;
 
-	Queue<std::wstring>  m_chat_queue;
+	Queue<std::wstring> m_chat_queue;
 
 	// The seed returned by the server in TOCLIENT_INIT is stored here
 	u64 m_map_seed;
@@ -361,7 +361,7 @@ private:
 
 	InventoryContext m_inventory_context;
 
-	Queue<ClientEvent>  m_client_event_queue;
+	Queue<ClientEvent> m_client_event_queue;
 
 	friend class FarMesh;
 };

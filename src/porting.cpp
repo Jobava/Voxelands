@@ -129,7 +129,7 @@ void pathRemoveFile(char *path, char delim)
 {
 	// Remove filename and path delimiter
 	int i;
-	for(i = strlen(path)-1; i> =0; i--)
+	for(i = strlen(path)-1; i>=0; i--)
 	{
 		if(path[i] == delim)
 			break;
@@ -226,7 +226,7 @@ void initializePaths()
 	path_data = std::string(buf) + DIR_DELIM ".." DIR_DELIM "data";
 	//path_data = std::string(buf) + "/../share/" + PROJECT_NAME;
 
-	// Use "C:\Documents and Settings\user\Application Data\<PROJECT_NAME> "
+	// Use "C:\Documents and Settings\user\Application Data\<PROJECT_NAME>"
 	len = GetEnvironmentVariable("APPDATA", buf, buflen);
 	assert(len < buflen);
 	path_userdata = std::string(buf) + DIR_DELIM + PROJECT_NAME;

@@ -30,7 +30,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 	NodeMetadata
 */
 
-core::map<u16, NodeMetadata::Factory>  NodeMetadata::m_types;
+core::map<u16, NodeMetadata::Factory> NodeMetadata::m_types;
 
 NodeMetadata::NodeMetadata()
 {
@@ -51,7 +51,7 @@ NodeMetadata* NodeMetadata::deSerialize(std::istream &is)
 	std::string data = deSerializeString(is);
 
 	// Find factory function
-	core::map<u16, Factory> ::Node *n;
+	core::map<u16, Factory>::Node *n;
 	n = m_types.find(id);
 	if(n == NULL)
 	{
@@ -66,7 +66,7 @@ NodeMetadata* NodeMetadata::deSerialize(std::istream &is)
 	{
 		std::istringstream iss(data, std::ios_base::binary);
 
-		Factory f = n-> getValue();
+		Factory f = n->getValue();
 		NodeMetadata *meta = (*f)(iss);
 		return meta;
 	}
@@ -90,7 +90,7 @@ void NodeMetadata::serialize(std::ostream &os)
 
 void NodeMetadata::registerType(u16 id, Factory f)
 {
-	core::map<u16, Factory> ::Node *n;
+	core::map<u16, Factory>::Node *n;
 	n = m_types.find(id);
 	if(n)
 		return;
@@ -113,18 +113,18 @@ void NodeMetadataList::serialize(std::ostream &os)
 	writeU16(buf, count);
 	os.write((char*)buf, 2);
 
-	for(core::map<v3s16, NodeMetadata*> ::Iterator
+	for(core::map<v3s16, NodeMetadata*>::Iterator
 			i = m_data.getIterator();
 			i.atEnd()==false; i++)
 	{
-		v3s16 p = i.getNode()-> getKey();
-		NodeMetadata *data = i.getNode()-> getValue();
+		v3s16 p = i.getNode()->getKey();
+		NodeMetadata *data = i.getNode()->getValue();
 
 		u16 p16 = p.Z*MAP_BLOCKSIZE*MAP_BLOCKSIZE + p.Y*MAP_BLOCKSIZE + p.X;
 		writeU16(buf, p16);
 		os.write((char*)buf, 2);
 
-		data-> serialize(os);
+		data->serialize(os);
 	}
 
 }
@@ -137,7 +137,7 @@ void NodeMetadataList::deSerialize(std::istream &is)
 	is.read((char*)buf, 2);
 	u16 version = readU16(buf);
 
-	if(version >  1)
+	if(version > 1)
 	{
 		infostream<<__FUNCTION_NAME<<": version "<<version<<" not supported"
 				<<std::endl;
@@ -180,21 +180,21 @@ void NodeMetadataList::deSerialize(std::istream &is)
 
 NodeMetadataList::~NodeMetadataList()
 {
-	for(core::map<v3s16, NodeMetadata*> ::Iterator
+	for(core::map<v3s16, NodeMetadata*>::Iterator
 			i = m_data.getIterator();
 			i.atEnd()==false; i++)
 	{
-		delete i.getNode()-> getValue();
+		delete i.getNode()->getValue();
 	}
 }
 
 NodeMetadata* NodeMetadataList::get(v3s16 p)
 {
-	core::map<v3s16, NodeMetadata*> ::Node *n;
+	core::map<v3s16, NodeMetadata*>::Node *n;
 	n = m_data.find(p);
 	if(n == NULL)
 		return NULL;
-	return n-> getValue();
+	return n->getValue();
 }
 
 void NodeMetadataList::remove(v3s16 p)
@@ -216,13 +216,13 @@ void NodeMetadataList::set(v3s16 p, NodeMetadata *d)
 bool NodeMetadataList::step(float dtime)
 {
 	bool something_changed = false;
-	for(core::map<v3s16, NodeMetadata*> ::Iterator
+	for(core::map<v3s16, NodeMetadata*>::Iterator
 			i = m_data.getIterator();
 			i.atEnd()==false; i++)
 	{
-		v3s16 p = i.getNode()-> getKey();
-		NodeMetadata *meta = i.getNode()-> getValue();
-		bool changed = meta-> step(dtime);
+		v3s16 p = i.getNode()->getKey();
+		NodeMetadata *meta = i.getNode()->getValue();
+		bool changed = meta->step(dtime);
 		if(changed)
 			something_changed = true;
 	}

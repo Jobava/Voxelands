@@ -50,12 +50,12 @@ void GUIMessageMenu::removeChildren()
 	{
 		gui::IGUIElement *e = getElementFromId(256);
 		if(e != NULL)
-			e-> remove();
+			e->remove();
 	}
 	{
 		gui::IGUIElement *e = getElementFromId(257);
 		if(e != NULL)
-			e-> remove();
+			e->remove();
 	}
 }
 
@@ -69,7 +69,7 @@ void GUIMessageMenu::regenerateGui(v2u32 screensize)
 	/*
 		Calculate new sizes and positions
 	*/
-	core::rect<s32>  rect(
+	core::rect<s32> rect(
 			screensize.X/2 - 580/2,
 			screensize.Y/2 - 300/2,
 			screensize.X/2 + 580/2,
@@ -85,32 +85,32 @@ void GUIMessageMenu::regenerateGui(v2u32 screensize)
 		Add stuff
 	*/
 	{
-		core::rect<s32>  rect(0, 0, 400, 50);
+		core::rect<s32> rect(0, 0, 400, 50);
 		rect = rect + v2s32(size.X/2-400/2, size.Y/2-50/2-25);
-		Environment-> addStaticText(m_message_text.c_str(), rect, false,
+		Environment->addStaticText(m_message_text.c_str(), rect, false,
 				true, this, 256);
 	}
 	changeCtype("");
 	{
-		core::rect<s32>  rect(0, 0, 140, 30);
+		core::rect<s32> rect(0, 0, 140, 30);
 		rect = rect + v2s32(size.X/2-140/2, size.Y/2-30/2+25);
 		gui::IGUIElement *e =
-		Environment-> addButton(rect, this, 257,
+		Environment->addButton(rect, this, 257,
 			wgettext("Proceed"));
-		Environment-> setFocus(e);
+		Environment->setFocus(e);
 	}
 	changeCtype("C");
 }
 
 void GUIMessageMenu::drawMenu()
 {
-	gui::IGUISkin* skin = Environment-> getSkin();
+	gui::IGUISkin* skin = Environment->getSkin();
 	if (!skin)
 		return;
-	video::IVideoDriver* driver = Environment-> getVideoDriver();
+	video::IVideoDriver* driver = Environment->getVideoDriver();
 
 	video::SColor bgcolor(140,0,0,0);
-	driver-> draw2DRectangle(bgcolor, AbsoluteRect, &AbsoluteClippingRect);
+	driver->draw2DRectangle(bgcolor, AbsoluteRect, &AbsoluteClippingRect);
 
 	gui::IGUIElement::draw();
 }
@@ -147,7 +147,7 @@ bool GUIMessageMenu::OnEvent(const SEvent& event)
 		}
 		if(event.GUIEvent.EventType==gui::EGET_BUTTON_CLICKED)
 		{
-			switch(event.GUIEvent.Caller-> getID())
+			switch(event.GUIEvent.Caller->getID())
 			{
 			case 257:
 				m_status = true;
@@ -157,6 +157,6 @@ bool GUIMessageMenu::OnEvent(const SEvent& event)
 		}
 	}
 
-	return Parent ? Parent-> OnEvent(event) : false;
+	return Parent ? Parent->OnEvent(event) : false;
 }
 

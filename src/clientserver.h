@@ -336,9 +336,9 @@ enum ToServerCommand
 	*/
 };
 
-inline SharedBuffer<u8>  makePacket_TOCLIENT_TIME_OF_DAY(u16 time)
+inline SharedBuffer<u8> makePacket_TOCLIENT_TIME_OF_DAY(u16 time)
 {
-	SharedBuffer<u8>  data(2+2);
+	SharedBuffer<u8> data(2+2);
 	writeU16(&data[0], TOCLIENT_TIME_OF_DAY);
 	writeU16(&data[2], time);
 	return data;

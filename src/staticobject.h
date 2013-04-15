@@ -120,18 +120,18 @@ public:
 		u16 count = m_stored.size() + m_active.size();
 		writeU16((u8*)buf, count);
 		os.write(buf, 2);
-		for(core::list<StaticObject> ::Iterator
+		for(core::list<StaticObject>::Iterator
 				i = m_stored.begin();
 				i != m_stored.end(); i++)
 		{
 			StaticObject &s_obj = *i;
 			s_obj.serialize(os);
 		}
-		for(core::map<u16, StaticObject> ::Iterator
+		for(core::map<u16, StaticObject>::Iterator
 				i = m_active.getIterator();
 				i.atEnd()==false; i++)
 		{
-			StaticObject s_obj = i.getNode()-> getValue();
+			StaticObject s_obj = i.getNode()->getValue();
 			s_obj.serialize(os);
 		}
 	}
@@ -157,8 +157,8 @@ public:
 		from m_stored and inserted to m_active.
 		The caller directly manipulates these containers.
 	*/
-	core::list<StaticObject>  m_stored;
-	core::map<u16, StaticObject>  m_active;
+	core::list<StaticObject> m_stored;
+	core::map<u16, StaticObject> m_active;
 
 private:
 };

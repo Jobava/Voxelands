@@ -64,18 +64,18 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 // Lowest supported serialization version
 #define SER_FMT_VER_LOWEST 0
 
-#define ser_ver_supported(v) (v > = SER_FMT_VER_LOWEST && v <= SER_FMT_VER_HIGHEST)
+#define ser_ver_supported(v) (v >= SER_FMT_VER_LOWEST && v <= SER_FMT_VER_HIGHEST)
 
 /*
 	Misc. serialization functions
 */
 
-void compressZlib(SharedBuffer<u8>  data, std::ostream &os);
+void compressZlib(SharedBuffer<u8> data, std::ostream &os);
 void compressZlib(const std::string &data, std::ostream &os);
 void decompressZlib(std::istream &is, std::ostream &os);
 
 // These choose between zlib and a self-made one according to version
-void compress(SharedBuffer<u8>  data, std::ostream &os, u8 version);
+void compress(SharedBuffer<u8> data, std::ostream &os, u8 version);
 //void compress(const std::string &data, std::ostream &os, u8 version);
 void decompress(std::istream &is, std::ostream &os, u8 version);
 

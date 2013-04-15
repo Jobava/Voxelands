@@ -102,7 +102,7 @@ struct TestCompress
 	{
 		{ // ver 0
 
-		SharedBuffer<u8>  fromdata(4);
+		SharedBuffer<u8> fromdata(4);
 		fromdata[0]=1;
 		fromdata[1]=5;
 		fromdata[2]=5;
@@ -114,7 +114,7 @@ struct TestCompress
 		std::string str_out = os.str();
 
 		infostream<<"str_out.size()="<<str_out.size()<<std::endl;
-		infostream<<"TestCompress: 1,5,5,1 ->  ";
+		infostream<<"TestCompress: 1,5,5,1 -> ";
 		for(u32 i=0; i<str_out.size(); i++)
 		{
 			infostream<<(u32)str_out[i]<<",";
@@ -158,7 +158,7 @@ struct TestCompress
 
 		{ // ver HIGHEST
 
-		SharedBuffer<u8>  fromdata(4);
+		SharedBuffer<u8> fromdata(4);
 		fromdata[0]=1;
 		fromdata[1]=5;
 		fromdata[2]=5;
@@ -170,7 +170,7 @@ struct TestCompress
 		std::string str_out = os.str();
 
 		infostream<<"str_out.size()="<<str_out.size()<<std::endl;
-		infostream<<"TestCompress: 1,5,5,1 ->  ";
+		infostream<<"TestCompress: 1,5,5,1 -> ";
 		for(u32 i=0; i<str_out.size(); i++)
 		{
 			infostream<<(u32)str_out[i]<<",";
@@ -249,21 +249,21 @@ struct TestVoxelManipulator
 		// An area that is 1 bigger in x+ and z-
 		VoxelArea d(v3s16(-2,-2,-3), v3s16(3,2,2));
 
-		core::list<VoxelArea>  aa;
+		core::list<VoxelArea> aa;
 		d.diff(c, aa);
 
 		// Correct results
-		core::array<VoxelArea>  results;
+		core::array<VoxelArea> results;
 		results.push_back(VoxelArea(v3s16(-2,-2,-3),v3s16(3,2,-3)));
 		results.push_back(VoxelArea(v3s16(3,-2,-2),v3s16(3,2,2)));
 
 		assert(aa.size() == results.size());
 
 		infostream<<"Result of diff:"<<std::endl;
-		for(core::list<VoxelArea> ::Iterator
+		for(core::list<VoxelArea>::Iterator
 				i = aa.begin(); i != aa.end(); i++)
 		{
-			i-> print(infostream);
+			i->print(infostream);
 			infostream<<std::endl;
 
 			s32 j = results.linear_search(*i);
@@ -327,7 +327,7 @@ struct TestVoxelManipulator
 
 		const char *p = content;
 		for(s16 z=0; z<size.Z; z++)
-		for(s16 y=size.Y-1; y> =0; y--)
+		for(s16 y=size.Y-1; y>=0; y--)
 		for(s16 x=0; x<size.X; x++)
 		{
 			MapNode n;
@@ -346,7 +346,7 @@ struct TestVoxelManipulator
 
 		v.print(infostream, VOXELPRINT_WATERPRESSURE);
 
-		core::map<v3s16, u8>  active_nodes;
+		core::map<v3s16, u8> active_nodes;
 		v.updateAreaWaterPressure(area, active_nodes);
 
 		v.print(infostream, VOXELPRINT_WATERPRESSURE);
@@ -388,7 +388,7 @@ struct TestMapBlock
 
 		MapNode node;
 		bool position_valid;
-		core::list<v3s16>  validity_exceptions;
+		core::list<v3s16> validity_exceptions;
 
 		TC()
 		{
@@ -399,7 +399,7 @@ struct TestMapBlock
 		{
 			//return position_valid ^ (p==position_valid_exception);
 			bool exception = false;
-			for(core::list<v3s16> ::Iterator i=validity_exceptions.begin();
+			for(core::list<v3s16>::Iterator i=validity_exceptions.begin();
 					i != validity_exceptions.end(); i++)
 			{
 				if(p == *i)
@@ -561,7 +561,7 @@ struct TestMapBlock
 			parent.node.setContent(CONTENT_AIR);
 			parent.node.setLight(LIGHTBANK_DAY, LIGHT_SUN);
 			parent.node.setLight(LIGHTBANK_NIGHT, 0);
-			core::map<v3s16, bool>  light_sources;
+			core::map<v3s16, bool> light_sources;
 			// The bottom block is invalid, because we have a shadowing node
 			assert(b.propagateSunlight(light_sources) == false);
 			assert(b.getNode(v3s16(1,4,0)).getLight(LIGHTBANK_DAY) == LIGHT_SUN);
@@ -588,7 +588,7 @@ struct TestMapBlock
 			parent.position_valid = true;
 			b.setIsUnderground(true);
 			parent.node.setLight(LIGHTBANK_DAY, LIGHT_MAX/2);
-			core::map<v3s16, bool>  light_sources;
+			core::map<v3s16, bool> light_sources;
 			// The block below should be valid because there shouldn't be
 			// sunlight in there either
 			assert(b.propagateSunlight(light_sources, true) == true);
@@ -629,7 +629,7 @@ struct TestMapBlock
 			}
 			// Lighting value for the valid nodes
 			parent.node.setLight(LIGHTBANK_DAY, LIGHT_MAX/2);
-			core::map<v3s16, bool>  light_sources;
+			core::map<v3s16, bool> light_sources;
 			// Bottom block is not valid
 			assert(b.propagateSunlight(light_sources) == false);
 		}
@@ -745,7 +745,7 @@ struct TestConnection
 		u32 proto_id = 0x12345678;
 		u16 peer_id = 123;
 		u8 channel = 2;
-		SharedBuffer<u8>  data1(1);
+		SharedBuffer<u8> data1(1);
 		data1[0] = 100;
 		Address a(127,0,0,1, 10);
 		u16 seqnum = 34352;
@@ -768,7 +768,7 @@ struct TestConnection
 
 		//infostream<<"initial data1[0]="<<((u32)data1[0]&0xff)<<std::endl;
 
-		SharedBuffer<u8>  p2 = con::makeReliablePacket(data1, seqnum);
+		SharedBuffer<u8> p2 = con::makeReliablePacket(data1, seqnum);
 
 		/*infostream<<"p2.getSize()="<<p2.getSize()<<", data1.getSize()="
 				<<data1.getSize()<<std::endl;
@@ -793,16 +793,16 @@ struct TestConnection
 		void peerAdded(con::Peer *peer)
 		{
 			infostream<<"Handler("<<name<<")::peerAdded(): "
-					"id="<<peer-> id<<std::endl;
-			last_id = peer-> id;
+					"id="<<peer->id<<std::endl;
+			last_id = peer->id;
 			count++;
 		}
 		void deletingPeer(con::Peer *peer, bool timeout)
 		{
 			infostream<<"Handler("<<name<<")::deletingPeer(): "
-					"id="<<peer-> id
+					"id="<<peer->id
 					<<", timeout="<<timeout<<std::endl;
-			last_id = peer-> id;
+			last_id = peer->id;
 			count--;
 		}
 
@@ -852,7 +852,7 @@ struct TestConnection
 		try
 		{
 			u16 peer_id;
-			SharedBuffer<u8>  data;
+			SharedBuffer<u8> data;
 			infostream<<"** running client.Receive()"<<std::endl;
 			u32 size = client.Receive(peer_id, data);
 			infostream<<"** Client received: peer_id="<<peer_id
@@ -874,7 +874,7 @@ struct TestConnection
 		try
 		{
 			u16 peer_id;
-			SharedBuffer<u8>  data;
+			SharedBuffer<u8> data;
 			infostream<<"** running server.Receive()"<<std::endl;
 			u32 size = server.Receive(peer_id, data);
 			infostream<<"** Server received: peer_id="<<peer_id
@@ -901,7 +901,7 @@ struct TestConnection
 			try
 			{
 				u16 peer_id;
-				SharedBuffer<u8>  data;
+				SharedBuffer<u8> data;
 				infostream<<"** running client.Receive()"<<std::endl;
 				u32 size = client.Receive(peer_id, data);
 				infostream<<"** Client received: peer_id="<<peer_id
@@ -919,7 +919,7 @@ struct TestConnection
 		try
 		{
 			u16 peer_id;
-			SharedBuffer<u8>  data;
+			SharedBuffer<u8> data;
 			infostream<<"** running server.Receive()"<<std::endl;
 			u32 size = server.Receive(peer_id, data);
 			infostream<<"** Server received: peer_id="<<peer_id
@@ -936,7 +936,7 @@ struct TestConnection
 		{
 			/*u8 data[] = "Hello World!";
 			u32 datasize = sizeof(data);*/
-			SharedBuffer<u8>  data = SharedBufferFromString("Hello World!");
+			SharedBuffer<u8> data = SharedBufferFromString("Hello World!");
 
 			infostream<<"** running client.Send()"<<std::endl;
 			client.Send(PEER_ID_SERVER, 0, data, true);
@@ -944,7 +944,7 @@ struct TestConnection
 			sleep_ms(50);
 
 			u16 peer_id;
-			SharedBuffer<u8>  recvdata;
+			SharedBuffer<u8> recvdata;
 			infostream<<"** running server.Receive()"<<std::endl;
 			u32 size = server.Receive(peer_id, recvdata);
 			infostream<<"** Server received: peer_id="<<peer_id
@@ -963,8 +963,8 @@ struct TestConnection
 		{
 			//u8 data1[] = "hello1";
 			//u8 data2[] = "hello2";
-			SharedBuffer<u8>  data1 = SharedBufferFromString("hello1");
-			SharedBuffer<u8>  data2 = SharedBufferFromString("Hello2");
+			SharedBuffer<u8> data1 = SharedBufferFromString("hello1");
+			SharedBuffer<u8> data2 = SharedBufferFromString("Hello2");
 
 			Address client_address =
 					server.GetPeerAddress(peer_id_client);
@@ -973,13 +973,13 @@ struct TestConnection
 					<<std::endl;
 
 			u8 chn = 0;
-			con::Channel *ch = &server.getPeer(peer_id_client)-> channels[chn];
-			u16 sn = ch-> next_outgoing_seqnum;
-			ch-> next_outgoing_seqnum = sn+1;
+			con::Channel *ch = &server.getPeer(peer_id_client)->channels[chn];
+			u16 sn = ch->next_outgoing_seqnum;
+			ch->next_outgoing_seqnum = sn+1;
 			server.Send(peer_id_client, chn, data2, true);
-			ch-> next_outgoing_seqnum = sn;
+			ch->next_outgoing_seqnum = sn;
 			server.Send(peer_id_client, chn, data1, true);
-			ch-> next_outgoing_seqnum = sn+1;
+			ch->next_outgoing_seqnum = sn+1;
 			server.Send(peer_id_client, chn, data2, true);
 
 			sleep_ms(50);
@@ -987,7 +987,7 @@ struct TestConnection
 			infostream<<"*** Receiving the packets"<<std::endl;
 
 			u16 peer_id;
-			SharedBuffer<u8>  recvdata;
+			SharedBuffer<u8> recvdata;
 			u32 size;
 
 			infostream<<"** running client.Receive()"<<std::endl;
@@ -1042,7 +1042,7 @@ struct TestConnection
 			for(;;){
 				int datasize = myrand_range(0,5)==0?myrand_range(100,10000):myrand_range(0,100);
 				infostream<<"datasize="<<datasize<<std::endl;
-				SharedBuffer<u8>  data1(datasize);
+				SharedBuffer<u8> data1(datasize);
 				for(u16 i=0; i<datasize; i++)
 					data1[i] = i/4;
 
@@ -1056,7 +1056,7 @@ struct TestConnection
 				//int receivetimes = myrand_range(1,20);
 				int receivetimes = 20;
 				for(int i=0; i<receivetimes; i++){
-					SharedBuffer<u8>  recvdata;
+					SharedBuffer<u8> recvdata;
 					u16 peer_id = 132;
 					u16 size = 0;
 					bool received = false;
@@ -1074,7 +1074,7 @@ struct TestConnection
 		*/
 		{
 			const int datasize = 30000;
-			SharedBuffer<u8>  data1(datasize);
+			SharedBuffer<u8> data1(datasize);
 			for(u16 i=0; i<datasize; i++){
 				data1[i] = i/4;
 			}
@@ -1084,7 +1084,7 @@ struct TestConnection
 				if(i%2==0) DEBUGPRINT(" ");
 				DEBUGPRINT("%.2X", ((int)((const char*)*data1)[i])&0xff);
 			}
-			if(datasize> 20)
+			if(datasize>20)
 				infostream<<"...";
 			infostream<<std::endl;
 
@@ -1092,14 +1092,14 @@ struct TestConnection
 
 			sleep_ms(3000);
 
-			SharedBuffer<u8>  recvdata;
+			SharedBuffer<u8> recvdata;
 			infostream<<"** running client.Receive()"<<std::endl;
 			u16 peer_id = 132;
 			u16 size = 0;
 			bool received = false;
 			u32 timems0 = porting::getTimeMs();
 			for(;;){
-				if(porting::getTimeMs() - timems0 >  5000)
+				if(porting::getTimeMs() - timems0 > 5000)
 					break;
 				try{
 					size = client.Receive(peer_id, recvdata);
@@ -1118,7 +1118,7 @@ struct TestConnection
 				if(i%2==0) DEBUGPRINT(" ");
 				DEBUGPRINT("%.2X", ((int)(recvdata[i]))&0xff);
 			}
-			if(size> 20)
+			if(size>20)
 				infostream<<"...";
 			infostream<<std::endl;
 

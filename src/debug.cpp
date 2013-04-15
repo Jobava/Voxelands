@@ -114,7 +114,7 @@ void DebugStack::print(FILE *file, bool everything)
 }
 
 
-core::map<threadid_t, DebugStack*>  g_debug_stacks;
+core::map<threadid_t, DebugStack*> g_debug_stacks;
 JMutex g_debug_stacks_mutex;
 
 void debug_stacks_init()
@@ -128,16 +128,16 @@ void debug_stacks_print()
 
 	DEBUGPRINT("Debug stacks:\n");
 
-	for(core::map<threadid_t, DebugStack*> ::Iterator
+	for(core::map<threadid_t, DebugStack*>::Iterator
 			i = g_debug_stacks.getIterator();
 			i.atEnd() == false; i++)
 	{
-		DebugStack *stack = i.getNode()-> getValue();
+		DebugStack *stack = i.getNode()->getValue();
 
 		for(int i=0; i<DEBUGSTREAM_COUNT; i++)
 		{
 			if(g_debugstreams[i] != NULL)
-				stack-> print(g_debugstreams[i], true);
+				stack->print(g_debugstreams[i], true);
 		}
 	}
 }
@@ -148,11 +148,11 @@ DebugStacker::DebugStacker(const char *text)
 
 	JMutexAutoLock lock(g_debug_stacks_mutex);
 
-	core::map<threadid_t, DebugStack*> ::Node *n;
+	core::map<threadid_t, DebugStack*>::Node *n;
 	n = g_debug_stacks.find(threadid);
 	if(n != NULL)
 	{
-		m_stack = n-> getValue();
+		m_stack = n->getValue();
 	}
 	else
 	{
@@ -162,7 +162,7 @@ DebugStacker::DebugStacker(const char *text)
 		g_debug_stacks.insert(threadid, m_stack);
 	}
 
-	if(m_stack-> stack_i > = DEBUG_STACK_SIZE)
+	if(m_stack->stack_i >= DEBUG_STACK_SIZE)
 	{
 		m_overflowed = true;
 	}
@@ -170,11 +170,11 @@ DebugStacker::DebugStacker(const char *text)
 	{
 		m_overflowed = false;
 
-		snprintf(m_stack-> stack[m_stack-> stack_i],
+		snprintf(m_stack->stack[m_stack->stack_i],
 				DEBUG_STACK_TEXT_SIZE, "%s", text);
-		m_stack-> stack_i++;
-		if(m_stack-> stack_i >  m_stack-> stack_max_i)
-			m_stack-> stack_max_i = m_stack-> stack_i;
+		m_stack->stack_i++;
+		if(m_stack->stack_i > m_stack->stack_max_i)
+			m_stack->stack_max_i = m_stack->stack_i;
 	}
 }
 
@@ -185,11 +185,11 @@ DebugStacker::~DebugStacker()
 	if(m_overflowed == true)
 		return;
 
-	m_stack-> stack_i--;
+	m_stack->stack_i--;
 
-	if(m_stack-> stack_i == 0)
+	if(m_stack->stack_i == 0)
 	{
-		threadid_t threadid = m_stack-> threadid;
+		threadid_t threadid = m_stack->threadid;
 		/*DEBUGPRINT("Deleting debug stack for thread %x\n",
 				(unsigned int)threadid);*/
 		delete m_stack;
@@ -205,10 +205,10 @@ void se_trans_func(unsigned int u, EXCEPTION_POINTERS* pExp)
 	dstream<<"In trans_func.\n";
 	if(u == EXCEPTION_ACCESS_VIOLATION)
 	{
-		PEXCEPTION_RECORD r = pExp-> ExceptionRecord;
-		dstream<<"Access violation at "<<r-> ExceptionAddress
-				<<" write?="<<r-> ExceptionInformation[0]
-				<<" address="<<r-> ExceptionInformation[1]
+		PEXCEPTION_RECORD r = pExp->ExceptionRecord;
+		dstream<<"Access violation at "<<r->ExceptionAddress
+				<<" write?="<<r->ExceptionInformation[0]
+				<<" address="<<r->ExceptionInformation[1]
 				<<std::endl;
 		throw FatalSystemException
 		("Access violation");

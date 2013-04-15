@@ -53,12 +53,12 @@ void GUITextInputMenu::removeChildren()
 	{
 		gui::IGUIElement *e = getElementFromId(256);
 		if(e != NULL)
-			e-> remove();
+			e->remove();
 	}
 	{
 		gui::IGUIElement *e = getElementFromId(257);
 		if(e != NULL)
-			e-> remove();
+			e->remove();
 	}
 }
 
@@ -70,7 +70,7 @@ void GUITextInputMenu::regenerateGui(v2u32 screensize)
 		gui::IGUIElement *e = getElementFromId(256);
 		if(e != NULL)
 		{
-			text = e-> getText();
+			text = e->getText();
 		}
 		else
 		{
@@ -87,7 +87,7 @@ void GUITextInputMenu::regenerateGui(v2u32 screensize)
 	/*
 		Calculate new sizes and positions
 	*/
-	core::rect<s32>  rect(
+	core::rect<s32> rect(
 			screensize.X/2 - 580/2,
 			screensize.Y/2 - 300/2,
 			screensize.X/2 + 580/2,
@@ -103,23 +103,23 @@ void GUITextInputMenu::regenerateGui(v2u32 screensize)
 		Add stuff
 	*/
 	{
-		core::rect<s32>  rect(0, 0, 300, 30);
+		core::rect<s32> rect(0, 0, 300, 30);
 		rect = rect + v2s32(size.X/2-300/2, size.Y/2-30/2-25);
 		gui::IGUIElement *e =
-		Environment-> addEditBox(text.c_str(), rect, true, this, 256);
-		Environment-> setFocus(e);
+		Environment->addEditBox(text.c_str(), rect, true, this, 256);
+		Environment->setFocus(e);
 
 		irr::SEvent evt;
 		evt.EventType = EET_KEY_INPUT_EVENT;
 		evt.KeyInput.Key = KEY_END;
 		evt.KeyInput.PressedDown = true;
-		e-> OnEvent(evt);
+		e->OnEvent(evt);
 	}
 	changeCtype("");
 	{
-		core::rect<s32>  rect(0, 0, 140, 30);
+		core::rect<s32> rect(0, 0, 140, 30);
 		rect = rect + v2s32(size.X/2-140/2, size.Y/2-30/2+25);
-		Environment-> addButton(rect, this, 257,
+		Environment->addButton(rect, this, 257,
 			wgettext("Proceed"));
 	}
 	changeCtype("C");
@@ -127,13 +127,13 @@ void GUITextInputMenu::regenerateGui(v2u32 screensize)
 
 void GUITextInputMenu::drawMenu()
 {
-	gui::IGUISkin* skin = Environment-> getSkin();
+	gui::IGUISkin* skin = Environment->getSkin();
 	if (!skin)
 		return;
-	video::IVideoDriver* driver = Environment-> getVideoDriver();
+	video::IVideoDriver* driver = Environment->getVideoDriver();
 
 	video::SColor bgcolor(140,0,0,0);
-	driver-> draw2DRectangle(bgcolor, AbsoluteRect, &AbsoluteClippingRect);
+	driver->draw2DRectangle(bgcolor, AbsoluteRect, &AbsoluteClippingRect);
 
 	gui::IGUIElement::draw();
 }
@@ -145,7 +145,7 @@ void GUITextInputMenu::acceptInput()
 		gui::IGUIElement *e = getElementFromId(256);
 		if(e != NULL)
 		{
-			m_dest-> gotText(e-> getText());
+			m_dest->gotText(e->getText());
 		}
 		delete m_dest;
 		m_dest = NULL;
@@ -183,7 +183,7 @@ bool GUITextInputMenu::OnEvent(const SEvent& event)
 		}
 		if(event.GUIEvent.EventType==gui::EGET_BUTTON_CLICKED)
 		{
-			switch(event.GUIEvent.Caller-> getID())
+			switch(event.GUIEvent.Caller->getID())
 			{
 			case 257:
 				acceptInput();
@@ -194,7 +194,7 @@ bool GUITextInputMenu::OnEvent(const SEvent& event)
 		}
 		if(event.GUIEvent.EventType==gui::EGET_EDITBOX_ENTER)
 		{
-			switch(event.GUIEvent.Caller-> getID())
+			switch(event.GUIEvent.Caller->getID())
 			{
 			case 256:
 				acceptInput();
@@ -205,6 +205,6 @@ bool GUITextInputMenu::OnEvent(const SEvent& event)
 		}
 	}
 
-	return Parent ? Parent-> OnEvent(event) : false;
+	return Parent ? Parent->OnEvent(event) : false;
 }
 

@@ -115,7 +115,7 @@ public:
 	{
 		const InventoryList *list = inventory.getList("main");
 		if (list)
-			return list-> getItem(m_selected_item);
+			return list->getItem(m_selected_item);
 		return NULL;
 	}
 
@@ -224,7 +224,7 @@ public:
 	virtual void OnRegisterSceneNode()
 	{
 		if (IsVisible)
-			SceneManager-> registerNodeForRendering(this);
+			SceneManager->registerNodeForRendering(this);
 
 		ISceneNode::OnRegisterSceneNode();
 	}
@@ -234,7 +234,7 @@ public:
 		// Do nothing
 	}
 
-	virtual const core::aabbox3d<f32> & getBoundingBox() const
+	virtual const core::aabbox3d<f32>& getBoundingBox() const
 	{
 		return m_box;
 	}
@@ -243,7 +243,7 @@ public:
 	{
 		m_oldpos = m_showpos;
 
-		if(m_pos_animation_time < 0.001 || m_pos_animation_time >  1.0)
+		if(m_pos_animation_time < 0.001 || m_pos_animation_time > 1.0)
 			m_pos_animation_time = m_pos_animation_time_counter;
 		else
 			m_pos_animation_time = m_pos_animation_time * 0.9
@@ -277,7 +277,7 @@ public:
 
 		u8 li = decode_light(light_at_pos);
 		video::SColor color(255,li,li,li);
-		setMeshVerticesColor(m_node-> getMesh(), color);
+		setMeshVerticesColor(m_node->getMesh(), color);
 	}
 
 	void move(f32 dtime, Map &map, f32 pos_max_d);
@@ -285,7 +285,7 @@ public:
 private:
 	scene::IMeshSceneNode *m_node;
 	scene::ITextSceneNode* m_text;
-	core::aabbox3d<f32>  m_box;
+	core::aabbox3d<f32> m_box;
 
 	v3f m_oldpos;
 	f32 m_pos_animation_counter;
@@ -356,7 +356,7 @@ public:
 	}
 
 	void move(f32 dtime, Map &map, f32 pos_max_d,
-			core::list<CollisionInfo>  *collision_info);
+			core::list<CollisionInfo> *collision_info);
 	void move(f32 dtime, Map &map, f32 pos_max_d);
 
 	void applyControl(float dtime);

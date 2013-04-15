@@ -203,7 +203,7 @@ int main(int argc, char *argv[])
 	*/
 
 	// List all allowed options
-	core::map<std::string, ValueSpec>  allowed_options;
+	core::map<std::string, ValueSpec> allowed_options;
 	allowed_options.insert("help", ValueSpec(VALUETYPE_FLAG));
 	allowed_options.insert("config", ValueSpec(VALUETYPE_STRING,
 			"Load configuration from specified file"));
@@ -220,23 +220,23 @@ int main(int argc, char *argv[])
 	if(ret == false || cmd_args.getFlag("help"))
 	{
 		dstream<<"Allowed options:"<<std::endl;
-		for(core::map<std::string, ValueSpec> ::Iterator
+		for(core::map<std::string, ValueSpec>::Iterator
 				i = allowed_options.getIterator();
 				i.atEnd() == false; i++)
 		{
-			dstream<<"  --"<<i.getNode()-> getKey();
-			if(i.getNode()-> getValue().type == VALUETYPE_FLAG)
+			dstream<<"  --"<<i.getNode()->getKey();
+			if(i.getNode()->getValue().type == VALUETYPE_FLAG)
 			{
 			}
 			else
 			{
-				dstream<<" <value> ";
+				dstream<<" <value>";
 			}
 			dstream<<std::endl;
 
-			if(i.getNode()-> getValue().help != NULL)
+			if(i.getNode()->getValue().help != NULL)
 			{
-				dstream<<"      "<<i.getNode()-> getValue().help
+				dstream<<"      "<<i.getNode()->getValue().help
 						<<std::endl;
 			}
 		}
@@ -267,7 +267,7 @@ int main(int argc, char *argv[])
 
 	if(cmd_args.exists("config"))
 	{
-		bool r = g_settings-> readConfigFile(cmd_args.get("config").c_str());
+		bool r = g_settings->readConfigFile(cmd_args.get("config").c_str());
 		if(r == false)
 		{
 			errorstream<<"Could not read configuration from \""
@@ -278,7 +278,7 @@ int main(int argc, char *argv[])
 	}
 	else
 	{
-		core::array<std::string>  filenames;
+		core::array<std::string> filenames;
 		filenames.push_back(porting::path_userdata +
 				DIR_DELIM + "minetest.conf");
 #ifdef RUN_IN_PLACE
@@ -288,7 +288,7 @@ int main(int argc, char *argv[])
 
 		for(u32 i=0; i<filenames.size(); i++)
 		{
-			bool r = g_settings-> readConfigFile(filenames[i].c_str());
+			bool r = g_settings->readConfigFile(filenames[i].c_str());
 			if(r)
 			{
 				configpath = filenames[i];
@@ -326,7 +326,7 @@ int main(int argc, char *argv[])
 	<<"  _____ |__| ____   _____/  |_  ____   _______/  |_ "<<std::endl
 	<<" /     \\|  |/    \\_/ __ \\   __\\/ __ \\ /  ___/\\   __\\"<<std::endl
 	<<"|  Y Y  \\  |   |  \\  ___/|  | \\  ___/ \\___ \\  |  |  "<<std::endl
-	<<"|__|_|  /__|___|  /\\___  > __|  \\___  > ____  >  |__|  "<<std::endl
+	<<"|__|_|  /__|___|  /\\___  >__|  \\___  >____  > |__|  "<<std::endl
 	<<"      \\/        \\/     \\/          \\/     \\/        "<<std::endl
 	<<std::endl;
 
@@ -338,9 +338,9 @@ int main(int argc, char *argv[])
 	{
 		port = cmd_args.getU16("port");
 	}
-	else if(g_settings-> exists("port") && g_settings-> getU16("port") != 0)
+	else if(g_settings->exists("port") && g_settings->getU16("port") != 0)
 	{
-		port = g_settings-> getU16("port");
+		port = g_settings->getU16("port");
 	}
 	else
 	{
@@ -352,8 +352,8 @@ int main(int argc, char *argv[])
 	std::string map_dir = porting::path_userdata+DIR_DELIM+"world";
 	if(cmd_args.exists("map-dir"))
 		map_dir = cmd_args.get("map-dir");
-	else if(g_settings-> exists("map-dir"))
-		map_dir = g_settings-> get("map-dir");
+	else if(g_settings->exists("map-dir"))
+		map_dir = g_settings->get("map-dir");
 
 	// Create server
 	Server server(map_dir.c_str(), configpath);

@@ -63,7 +63,7 @@ public:
 
 	void deleteBlock(MapBlock *block);
 
-	void getBlocks(core::list<MapBlock*>  &dest);
+	void getBlocks(core::list<MapBlock*> &dest);
 
 	// Always false at the moment, because sector contains no metadata.
 	bool differs_from_disk;
@@ -71,7 +71,7 @@ public:
 protected:
 
 	// The pile of MapBlocks
-	core::map<s16, MapBlock*>  m_blocks;
+	core::map<s16, MapBlock*> m_blocks;
 
 	Map *m_parent;
 	// Position on parent (in MapBlock widths)
@@ -111,7 +111,7 @@ public:
 			std::istream &is,
 			Map *parent,
 			v2s16 p2d,
-			core::map<v2s16, MapSector*>  & sectors
+			core::map<v2s16, MapSector*> & sectors
 		);
 
 private:

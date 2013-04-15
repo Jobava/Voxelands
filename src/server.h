@@ -43,7 +43,7 @@ struct QueuedBlockEmerge
 {
 	v3s16 pos;
 	// key = peer_id, value = flags
-	core::map<u16, u8>  peer_ids;
+	core::map<u16, u8> peer_ids;
 };
 
 /*
@@ -61,7 +61,7 @@ public:
 	{
 		JMutexAutoLock lock(m_mutex);
 
-		core::list<QueuedBlockEmerge*> ::Iterator i;
+		core::list<QueuedBlockEmerge*>::Iterator i;
 		for(i=m_queue.begin(); i!=m_queue.end(); i++)
 		{
 			QueuedBlockEmerge *q = *i;
@@ -84,13 +84,13 @@ public:
 				Find if block is already in queue.
 				If it is, update the peer to it and quit.
 			*/
-			core::list<QueuedBlockEmerge*> ::Iterator i;
+			core::list<QueuedBlockEmerge*>::Iterator i;
 			for(i=m_queue.begin(); i!=m_queue.end(); i++)
 			{
 				QueuedBlockEmerge *q = *i;
-				if(q-> pos == pos)
+				if(q->pos == pos)
 				{
-					q-> peer_ids[peer_id] = flags;
+					q->peer_ids[peer_id] = flags;
 					return;
 				}
 			}
@@ -100,9 +100,9 @@ public:
 			Add the block
 		*/
 		QueuedBlockEmerge *q = new QueuedBlockEmerge;
-		q-> pos = pos;
+		q->pos = pos;
 		if(peer_id != 0)
-			q-> peer_ids[peer_id] = flags;
+			q->peer_ids[peer_id] = flags;
 		m_queue.push_back(q);
 	}
 
@@ -112,7 +112,7 @@ public:
 	{
 		JMutexAutoLock lock(m_mutex);
 
-		core::list<QueuedBlockEmerge*> ::Iterator i = m_queue.begin();
+		core::list<QueuedBlockEmerge*>::Iterator i = m_queue.begin();
 		if(i == m_queue.end())
 			return NULL;
 		QueuedBlockEmerge *q = *i;
@@ -132,11 +132,11 @@ public:
 
 		u32 count = 0;
 
-		core::list<QueuedBlockEmerge*> ::Iterator i;
+		core::list<QueuedBlockEmerge*>::Iterator i;
 		for(i=m_queue.begin(); i!=m_queue.end(); i++)
 		{
 			QueuedBlockEmerge *q = *i;
-			if(q-> peer_ids.find(peer_id) != NULL)
+			if(q->peer_ids.find(peer_id) != NULL)
 				count++;
 		}
 
@@ -144,7 +144,7 @@ public:
 	}
 
 private:
-	core::list<QueuedBlockEmerge*>  m_queue;
+	core::list<QueuedBlockEmerge*> m_queue;
 	JMutex m_mutex;
 };
 
@@ -201,7 +201,7 @@ struct PlayerInfo
 	void PrintLine(std::ostream *s);
 };
 
-u32 PIChecksum(core::list<PlayerInfo>  &l);
+u32 PIChecksum(core::list<PlayerInfo> &l);
 
 /*
 	Used for queueing and sorting block transfers in containers
@@ -263,7 +263,7 @@ public:
 		dtime is used for resetting send radius at slow interval
 	*/
 	void GetNextBlocks(Server *server, float dtime,
-			core::array<PrioritySortedBlockTransfer>  &dest);
+			core::array<PrioritySortedBlockTransfer> &dest);
 
 	/*
 		Connection and environment should be locked when this is called.
@@ -273,7 +273,7 @@ public:
 	void SendObjectData(
 			Server *server,
 			float dtime,
-			core::map<v3s16, bool>  &stepped_blocks
+			core::map<v3s16, bool> &stepped_blocks
 		);
 
 	void GotBlock(v3s16 p);
@@ -281,7 +281,7 @@ public:
 	void SentBlock(v3s16 p);
 
 	void SetBlockNotSent(v3s16 p);
-	void SetBlocksNotSent(core::map<v3s16, MapBlock*>  &blocks);
+	void SetBlocksNotSent(core::map<v3s16, MapBlock*> &blocks);
 
 	s32 SendingCount()
 	{
@@ -317,7 +317,7 @@ public:
 		List of active objects that the client knows of.
 		Value is dummy.
 	*/
-	core::map<u16, bool>  m_known_objects;
+	core::map<u16, bool> m_known_objects;
 
 private:
 	/*
@@ -329,7 +329,7 @@ private:
 		Key is position, value is dummy.
 		No MapBlock* is stored here because the blocks can get deleted.
 	*/
-	core::map<v3s16, bool>  m_blocks_sent;
+	core::map<v3s16, bool> m_blocks_sent;
 	s16 m_nearest_unsent_d;
 	v3s16 m_last_center;
 	float m_nearest_unsent_reset_timer;
@@ -342,7 +342,7 @@ private:
 		Block is removed when GOTBLOCKS is received.
 		Value is time from sending. (not used at the moment)
 	*/
-	core::map<v3s16, float>  m_blocks_sending;
+	core::map<v3s16, float> m_blocks_sending;
 
 	/*
 		Count of excess GotBlocks().
@@ -381,7 +381,7 @@ public:
 	void Receive();
 	void ProcessData(u8 *data, u32 datasize, u16 peer_id);
 
-	core::list<PlayerInfo>  getPlayerInfo();
+	core::list<PlayerInfo> getPlayerInfo();
 
 	/*u32 getDayNightRatio()
 	{
@@ -517,9 +517,9 @@ private:
 	*/
 	// Envlock and conlock should be locked when calling these
 	void sendRemoveNode(v3s16 p, u16 ignore_id=0,
-			core::list<u16>  *far_players=NULL, float far_d_nodes=100);
+			core::list<u16> *far_players=NULL, float far_d_nodes=100);
 	void sendAddNode(v3s16 p, MapNode n, u16 ignore_id=0,
-			core::list<u16>  *far_players=NULL, float far_d_nodes=100);
+			core::list<u16> *far_players=NULL, float far_d_nodes=100);
 	void setBlockNotSent(v3s16 p);
 
 	// Environment and Connection must be locked when called
@@ -546,7 +546,7 @@ private:
 		Player *player = m_env.getPlayer(peer_id);
 		if(player == NULL)
 			return "[id="+itos(peer_id);
-		return player-> getName();
+		return player->getName();
 	}
 
 	/*
@@ -589,7 +589,7 @@ private:
 	con::Connection m_con;
 	JMutex m_con_mutex;
 	// Connected clients (behind the con mutex)
-	core::map<u16, RemoteClient*>  m_clients;
+	core::map<u16, RemoteClient*> m_clients;
 
 	// User authentication
 	AuthManager m_authmanager;
@@ -618,13 +618,13 @@ private:
 	*/
 
 	// 0-23999
-	//MutexedVariable<u32>  m_time_of_day;
+	//MutexedVariable<u32> m_time_of_day;
 	// Used to buffer dtime for adding to m_time_of_day
 	float m_time_counter;
 	// Timer for sending time of day over network
 	float m_time_of_day_send_timer;
 	// Uptime of server in seconds
-	MutexedVariable<double>  m_uptime;
+	MutexedVariable<double> m_uptime;
 
 	/*
 		Peer change queue.
@@ -642,7 +642,7 @@ private:
 		u16 peer_id;
 		bool timeout;
 	};
-	Queue<PeerChange>  m_peer_change_queue;
+	Queue<PeerChange> m_peer_change_queue;
 
 	/*
 		Random stuff
@@ -669,7 +669,7 @@ private:
 		Queue of map edits from the environment for sending to the clients
 		This is behind m_env_mutex
 	*/
-	Queue<MapEditEvent*>  m_unsent_map_edit_queue;
+	Queue<MapEditEvent*> m_unsent_map_edit_queue;
 	/*
 		Set to true when the server itself is modifying the map and does
 		all sending of information by itself.

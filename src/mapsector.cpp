@@ -42,10 +42,10 @@ void MapSector::deleteBlocks()
 	m_block_cache = NULL;
 
 	// Delete all
-	core::map<s16, MapBlock*> ::Iterator i = m_blocks.getIterator();
+	core::map<s16, MapBlock*>::Iterator i = m_blocks.getIterator();
 	for(; i.atEnd() == false; i++)
 	{
-		delete i.getNode()-> getValue();
+		delete i.getNode()->getValue();
 	}
 
 	// Clear container
@@ -61,14 +61,14 @@ MapBlock * MapSector::getBlockBuffered(s16 y)
 	}
 
 	// If block doesn't exist, return NULL
-	core::map<s16, MapBlock*> ::Node *n = m_blocks.find(y);
+	core::map<s16, MapBlock*>::Node *n = m_blocks.find(y);
 	if(n == NULL)
 	{
 		block = NULL;
 	}
 	// If block exists, return it
 	else{
-		block = n-> getValue();
+		block = n->getValue();
 	}
 
 	// Cache the last result
@@ -105,14 +105,14 @@ MapBlock * MapSector::createBlankBlock(s16 y)
 
 void MapSector::insertBlock(MapBlock *block)
 {
-	s16 block_y = block-> getPos().Y;
+	s16 block_y = block->getPos().Y;
 
 	MapBlock *block2 = getBlockBuffered(block_y);
 	if(block2 != NULL){
 		throw AlreadyExistsException("Block already exists");
 	}
 
-	v2s16 p2d(block-> getPos().X, block-> getPos().Z);
+	v2s16 p2d(block->getPos().X, block->getPos().Z);
 	assert(p2d == m_pos);
 
 	// Insert into container
@@ -121,7 +121,7 @@ void MapSector::insertBlock(MapBlock *block)
 
 void MapSector::deleteBlock(MapBlock *block)
 {
-	s16 block_y = block-> getPos().Y;
+	s16 block_y = block->getPos().Y;
 
 	// Clear from cache
 	m_block_cache = NULL;
@@ -133,16 +133,16 @@ void MapSector::deleteBlock(MapBlock *block)
 	delete block;
 }
 
-void MapSector::getBlocks(core::list<MapBlock*>  &dest)
+void MapSector::getBlocks(core::list<MapBlock*> &dest)
 {
-	core::list<MapBlock*>  ref_list;
+	core::list<MapBlock*> ref_list;
 
-	core::map<s16, MapBlock*> ::Iterator bi;
+	core::map<s16, MapBlock*>::Iterator bi;
 
 	bi = m_blocks.getIterator();
 	for(; bi.atEnd() == false; bi++)
 	{
-		MapBlock *b = bi.getNode()-> getValue();
+		MapBlock *b = bi.getNode()->getValue();
 		dest.push_back(b);
 	}
 }
@@ -186,7 +186,7 @@ ServerMapSector* ServerMapSector::deSerialize(
 		std::istream &is,
 		Map *parent,
 		v2s16 p2d,
-		core::map<v2s16, MapSector*>  & sectors
+		core::map<v2s16, MapSector*> & sectors
 	)
 {
 	/*
@@ -215,7 +215,7 @@ ServerMapSector* ServerMapSector::deSerialize(
 
 	ServerMapSector *sector = NULL;
 
-	core::map<v2s16, MapSector*> ::Node *n = sectors.find(p2d);
+	core::map<v2s16, MapSector*>::Node *n = sectors.find(p2d);
 
 	if(n != NULL)
 	{
@@ -223,8 +223,8 @@ ServerMapSector* ServerMapSector::deSerialize(
 				"at the moment, because code hasn't been tested."
 				<<std::endl;
 
-		MapSector *sector = n-> getValue();
-		assert(sector-> getId() == MAPSECTOR_SERVER);
+		MapSector *sector = n->getValue();
+		assert(sector->getId() == MAPSECTOR_SERVER);
 		return (ServerMapSector*)sector;
 	}
 	else

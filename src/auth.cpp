@@ -159,14 +159,14 @@ void AuthManager::save()
 		throw SerializationError("AuthManager::save(): Couldn't open file");
 	}
 
-	for(core::map<std::string, AuthData> ::Iterator
+	for(core::map<std::string, AuthData>::Iterator
 			i = m_authdata.getIterator();
 			i.atEnd()==false; i++)
 	{
-		std::string name = i.getNode()-> getKey();
+		std::string name = i.getNode()->getKey();
 		if(name == "")
 			continue;
-		AuthData ad = i.getNode()-> getValue();
+		AuthData ad = i.getNode()->getValue();
 		os<<name<<":"<<ad.pwd<<":"<<privsToString(ad.privs)<<"\n";
 	}
 
@@ -177,7 +177,7 @@ bool AuthManager::exists(const std::string &username)
 {
 	JMutexAutoLock lock(m_mutex);
 
-	core::map<std::string, AuthData> ::Node *n;
+	core::map<std::string, AuthData>::Node *n;
 	n = m_authdata.find(username);
 	if(n == NULL)
 		return false;
@@ -206,12 +206,12 @@ std::string AuthManager::getPassword(const std::string &username)
 {
 	JMutexAutoLock lock(m_mutex);
 
-	core::map<std::string, AuthData> ::Node *n;
+	core::map<std::string, AuthData>::Node *n;
 	n = m_authdata.find(username);
 	if(n == NULL)
 		throw AuthNotFoundException("");
 
-	return n-> getValue().pwd;
+	return n->getValue().pwd;
 }
 
 void AuthManager::setPassword(const std::string &username,
@@ -219,14 +219,14 @@ void AuthManager::setPassword(const std::string &username,
 {
 	JMutexAutoLock lock(m_mutex);
 
-	core::map<std::string, AuthData> ::Node *n;
+	core::map<std::string, AuthData>::Node *n;
 	n = m_authdata.find(username);
 	if(n == NULL)
 		throw AuthNotFoundException("");
 
-	AuthData ad = n-> getValue();
+	AuthData ad = n->getValue();
 	ad.pwd = password;
-	n-> setValue(ad);
+	n->setValue(ad);
 
 	m_modified = true;
 }
@@ -235,26 +235,26 @@ u64 AuthManager::getPrivs(const std::string &username)
 {
 	JMutexAutoLock lock(m_mutex);
 
-	core::map<std::string, AuthData> ::Node *n;
+	core::map<std::string, AuthData>::Node *n;
 	n = m_authdata.find(username);
 	if(n == NULL)
 		throw AuthNotFoundException("");
 
-	return n-> getValue().privs;
+	return n->getValue().privs;
 }
 
 void AuthManager::setPrivs(const std::string &username, u64 privs)
 {
 	JMutexAutoLock lock(m_mutex);
 
-	core::map<std::string, AuthData> ::Node *n;
+	core::map<std::string, AuthData>::Node *n;
 	n = m_authdata.find(username);
 	if(n == NULL)
 		throw AuthNotFoundException("");
 
-	AuthData ad = n-> getValue();
+	AuthData ad = n->getValue();
 	ad.privs = privs;
-	n-> setValue(ad);
+	n->setValue(ad);
 
 	m_modified = true;
 }

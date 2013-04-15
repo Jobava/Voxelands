@@ -127,7 +127,7 @@ struct ContentFeatures
 
 	// List of all block textures that have been used (value is dummy)
 	// Exists on server too for cleaner code in content_mapnode.cpp
-	core::map<std::string, bool>  used_texturenames;
+	core::map<std::string, bool> used_texturenames;
 
 	// Type of MapNode::param1
 	ContentParamType param_type;
@@ -347,8 +347,8 @@ inline bool content_liquid_source(content_t m)
 {
 	return content_features(m).liquid_type == LIQUID_SOURCE;
 }
-// CONTENT_WATER || CONTENT_WATERSOURCE ->  CONTENT_WATER
-// CONTENT_LAVA || CONTENT_LAVASOURCE ->  CONTENT_LAVA
+// CONTENT_WATER || CONTENT_WATERSOURCE -> CONTENT_WATER
+// CONTENT_LAVA || CONTENT_LAVASOURCE -> CONTENT_LAVA
 // NOTE: Don't use, use "content_features(m).whatever" instead
 inline content_t make_liquid_flowing(content_t m)
 {
@@ -390,17 +390,17 @@ inline u8 packDir(v3s16 dir)
 {
 	u8 b = 0;
 
-	if(dir.X >  0)
+	if(dir.X > 0)
 		b |= (1<<0);
 	else if(dir.X < 0)
 		b |= (1<<1);
 
-	if(dir.Y >  0)
+	if(dir.Y > 0)
 		b |= (1<<2);
 	else if(dir.Y < 0)
 		b |= (1<<3);
 
-	if(dir.Z >  0)
+	if(dir.Z > 0)
 		b |= (1<<4);
 	else if(dir.Z < 0)
 		b |= (1<<5);
@@ -465,7 +465,7 @@ struct MapNode
 	/*
 		Main content
 		0x00-0x7f: Short content type
-		0x80-0xff: Long content type (param2> > 4 makes up low bytes)
+		0x80-0xff: Long content type (param2>>4 makes up low bytes)
 	*/
 	union
 	{
@@ -491,7 +491,7 @@ struct MapNode
 	/*
 		The second parameter. Initialized to 0.
 		E.g. direction for torches and flowing water.
-		If param0 > = 0x80, bits 0xf0 of this is extended content type data
+		If param0 >= 0x80, bits 0xf0 of this is extended content type data
 	*/
 	union
 	{
@@ -526,19 +526,19 @@ struct MapNode
 		if(param0 < 0x80)
 			return param0;
 		else
-			return (param0<<4) + (param2> > 4);
+			return (param0<<4) + (param2>>4);
 	}
 	void setContent(content_t c)
 	{
 		if(c < 0x80)
 		{
-			if(param0 > = 0x80)
+			if(param0 >= 0x80)
 				param2 &= ~(0xf0);
 			param0 = c;
 		}
 		else
 		{
-			param0 = c> > 4;
+			param0 = c>>4;
 			param2 &= ~(0xf0);
 			param2 |= (c&0x0f)<<4;
 		}
@@ -572,11 +572,11 @@ struct MapNode
 		if(content_features(*this).param_type == CPT_LIGHT)
 		{
 			lightday = param1 & 0x0f;
-			lightnight = (param1> > 4)&0x0f;
+			lightnight = (param1>>4)&0x0f;
 		}
-		if(light_source() >  lightday)
+		if(light_source() > lightday)
 			lightday = light_source();
-		if(light_source() >  lightnight)
+		if(light_source() > lightnight)
 			lightnight = light_source();
 		return (lightday&0x0f) | ((lightnight<<4)&0xf0);
 	}
@@ -590,11 +590,11 @@ struct MapNode
 			if(bank == LIGHTBANK_DAY)
 				light = param1 & 0x0f;
 			else if(bank == LIGHTBANK_NIGHT)
-				light = (param1> > 4)&0x0f;
+				light = (param1>>4)&0x0f;
 			else
 				assert(0);
 		}
-		if(light_source() >  light)
+		if(light_source() > light)
 			light = light_source();
 		return light;
 	}
@@ -609,7 +609,7 @@ struct MapNode
 		u8 max = LIGHT_MAX;
 		if(getLight(LIGHTBANK_DAY) == LIGHT_SUN)
 			max = LIGHT_SUN;
-		if(l >  max)
+		if(l > max)
 			l = max;
 		return l;
 	}

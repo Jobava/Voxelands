@@ -51,14 +51,14 @@ public:
 	bool set(v3s16 p, const NodeMod &mod)
 	{
 		// See if old is different, cancel if it is not different.
-		core::map<v3s16, NodeMod> ::Node *n = m_mods.find(p);
+		core::map<v3s16, NodeMod>::Node *n = m_mods.find(p);
 		if(n)
 		{
-			NodeMod old = n-> getValue();
+			NodeMod old = n->getValue();
 			if(old == mod)
 				return false;
 
-			n-> setValue(mod);
+			n->setValue(mod);
 		}
 		else
 		{
@@ -70,12 +70,12 @@ public:
 	// Returns true if there was one
 	bool get(v3s16 p, NodeMod *mod)
 	{
-		core::map<v3s16, NodeMod> ::Node *n;
+		core::map<v3s16, NodeMod>::Node *n;
 		n = m_mods.find(p);
 		if(n == NULL)
 			return false;
 		if(mod)
-			*mod = n-> getValue();
+			*mod = n->getValue();
 		return true;
 	}
 	bool clear(v3s16 p)
@@ -98,16 +98,16 @@ public:
 	{
 		dest.m_mods.clear();
 
-		for(core::map<v3s16, NodeMod> ::Iterator
+		for(core::map<v3s16, NodeMod>::Iterator
 				i = m_mods.getIterator();
 				i.atEnd() == false; i++)
 		{
-			dest.m_mods.insert(i.getNode()-> getKey(), i.getNode()-> getValue());
+			dest.m_mods.insert(i.getNode()->getKey(), i.getNode()->getValue());
 		}
 	}
 
 private:
-	core::map<v3s16, NodeMod>  m_mods;
+	core::map<v3s16, NodeMod> m_mods;
 };
 
 #endif

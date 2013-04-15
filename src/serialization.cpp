@@ -52,7 +52,7 @@ void zerr(int ret)
     }
 }
 
-void compressZlib(SharedBuffer<u8>  data, std::ostream &os)
+void compressZlib(SharedBuffer<u8> data, std::ostream &os)
 {
 	z_stream z;
 	const s32 bufsize = 16384;
@@ -107,7 +107,7 @@ void compressZlib(SharedBuffer<u8>  data, std::ostream &os)
 
 void compressZlib(const std::string &data, std::ostream &os)
 {
-	SharedBuffer<u8>  databuf((u8*)data.c_str(), data.size());
+	SharedBuffer<u8> databuf((u8*)data.c_str(), data.size());
 	compressZlib(databuf, os);
 }
 
@@ -193,9 +193,9 @@ void decompressZlib(std::istream &is, std::ostream &os)
 	inflateEnd(&z);
 }
 
-void compress(SharedBuffer<u8>  data, std::ostream &os, u8 version)
+void compress(SharedBuffer<u8> data, std::ostream &os, u8 version)
 {
-	if(version > = 11)
+	if(version >= 11)
 	{
 		compressZlib(data, os);
 		return;
@@ -238,7 +238,7 @@ void compress(SharedBuffer<u8>  data, std::ostream &os, u8 version)
 
 void decompress(std::istream &is, std::ostream &os, u8 version)
 {
-	if(version > = 11)
+	if(version >= 11)
 	{
 		decompressZlib(is, os);
 		return;

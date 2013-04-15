@@ -22,7 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "map.h"
 
 collisionMoveResult collisionMoveSimple(Map *map, f32 pos_max_d,
-		const core::aabbox3d<f32>  &box_0,
+		const core::aabbox3d<f32> &box_0,
 		f32 dtime, v3f &pos_f, v3f &speed_f)
 {
 	collisionMoveResult result;
@@ -51,15 +51,15 @@ collisionMoveResult collisionMoveSimple(Map *map, f32 pos_max_d,
 	//f32 d = 0.15*BS;
 
 	// This should always apply, otherwise there are glitches
-	assert(d >  pos_max_d);
+	assert(d > pos_max_d);
 
 	/*
 		Calculate collision box
 	*/
-	core::aabbox3d<f32>  box = box_0;
+	core::aabbox3d<f32> box = box_0;
 	box.MaxEdge += pos_f;
 	box.MinEdge += pos_f;
-	core::aabbox3d<f32>  oldbox = box_0;
+	core::aabbox3d<f32> oldbox = box_0;
 	oldbox.MaxEdge += oldpos_f;
 	oldbox.MinEdge += oldpos_f;
 
@@ -78,7 +78,7 @@ collisionMoveResult collisionMoveSimple(Map *map, f32 pos_max_d,
 	{
 		try{
 			// Object collides into walkable nodes
-			MapNode n = map-> getNode(v3s16(x,y,z));
+			MapNode n = map->getNode(v3s16(x,y,z));
 			if(content_features(n).walkable == false)
 				continue;
 		}
@@ -88,7 +88,7 @@ collisionMoveResult collisionMoveSimple(Map *map, f32 pos_max_d,
 			// walking over map borders
 		}
 
-		core::aabbox3d<f32>  nodebox = getNodeBox(v3s16(x,y,z), BS);
+		core::aabbox3d<f32> nodebox = getNodeBox(v3s16(x,y,z), BS);
 
 		/*
 			See if the object is touching ground.
@@ -102,9 +102,9 @@ collisionMoveResult collisionMoveSimple(Map *map, f32 pos_max_d,
 		if(
 				//fabs(nodebox.MaxEdge.Y-box.MinEdge.Y) < d
 				fabs(nodebox.MaxEdge.Y-box.MinEdge.Y) < 0.15*BS
-				&& nodebox.MaxEdge.X-d >  box.MinEdge.X
+				&& nodebox.MaxEdge.X-d > box.MinEdge.X
 				&& nodebox.MinEdge.X+d < box.MaxEdge.X
-				&& nodebox.MaxEdge.Z-d >  box.MinEdge.Z
+				&& nodebox.MaxEdge.Z-d > box.MinEdge.Z
 				&& nodebox.MinEdge.Z+d < box.MaxEdge.Z
 		){
 			result.touching_ground = true;
@@ -139,11 +139,11 @@ collisionMoveResult collisionMoveSimple(Map *map, f32 pos_max_d,
 				Collision happens when object is going through a surface.
 			*/
 			bool negative_axis_collides =
-				(nodemax >  objectmin && nodemax <= objectmin_old + d
+				(nodemax > objectmin && nodemax <= objectmin_old + d
 					&& speed_f.dotProduct(dirs[i]) < 0);
 			bool positive_axis_collides =
-				(nodemin < objectmax && nodemin > = objectmax_old - d
-					&& speed_f.dotProduct(dirs[i]) >  0);
+				(nodemin < objectmax && nodemin >= objectmax_old - d
+					&& speed_f.dotProduct(dirs[i]) > 0);
 			bool main_axis_collides =
 					negative_axis_collides || positive_axis_collides;
 
@@ -159,7 +159,7 @@ collisionMoveResult collisionMoveSimple(Map *map, f32 pos_max_d,
 				f32 nodemin = nodebox.MinEdge.dotProduct(dirs[j]);
 				f32 objectmax = box.MaxEdge.dotProduct(dirs[j]);
 				f32 objectmin = box.MinEdge.dotProduct(dirs[j]);
-				if(!(nodemax - d >  objectmin && nodemin + d < objectmax))
+				if(!(nodemax - d > objectmin && nodemin + d < objectmax))
 				{
 					other_axes_overlap = false;
 					break;
@@ -184,7 +184,7 @@ collisionMoveResult collisionMoveSimple(Map *map, f32 pos_max_d,
 }
 
 collisionMoveResult collisionMovePrecise(Map *map, f32 pos_max_d,
-		const core::aabbox3d<f32>  &box_0,
+		const core::aabbox3d<f32> &box_0,
 		f32 dtime, v3f &pos_f, v3f &speed_f)
 {
 	collisionMoveResult final_result;
@@ -194,11 +194,11 @@ collisionMoveResult collisionMovePrecise(Map *map, f32 pos_max_d,
 	f32 dtime_max_increment = pos_max_d / speed_f.getLength();
 
 	// Maximum time increment is 10ms or lower
-	if(dtime_max_increment >  0.01)
+	if(dtime_max_increment > 0.01)
 		dtime_max_increment = 0.01;
 
 	// Don't allow overly huge dtime
-	if(dtime >  2.0)
+	if(dtime > 2.0)
 		dtime = 2.0;
 
 	f32 dtime_downcount = dtime;
@@ -209,7 +209,7 @@ collisionMoveResult collisionMovePrecise(Map *map, f32 pos_max_d,
 		loopcount++;
 
 		f32 dtime_part;
-		if(dtime_downcount >  dtime_max_increment)
+		if(dtime_downcount > dtime_max_increment)
 		{
 			dtime_part = dtime_max_increment;
 			dtime_downcount -= dtime_part;
@@ -231,7 +231,7 @@ collisionMoveResult collisionMovePrecise(Map *map, f32 pos_max_d,
 		if(result.touching_ground)
 			final_result.touching_ground = true;
 	}
-	while(dtime_downcount >  0.001);
+	while(dtime_downcount > 0.001);
 
 
 	return final_result;

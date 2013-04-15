@@ -48,8 +48,8 @@ public:
 	// 0 <= light_at_pos <= LIGHT_SUN
 	virtual void updateLight(u8 light_at_pos){}
 	virtual v3s16 getLightPosition(){return v3s16(0,0,0);}
-	virtual core::aabbox3d<f32> * getSelectionBox(){return NULL;}
-	virtual core::aabbox3d<f32> * getCollisionBox(){return NULL;}
+	virtual core::aabbox3d<f32>* getSelectionBox(){return NULL;}
+	virtual core::aabbox3d<f32>* getCollisionBox(){return NULL;}
 	virtual v3f getPosition(){return v3f(0,0,0);}
 	virtual bool doShowSelectionBox(){return true;}
 
@@ -80,7 +80,7 @@ protected:
 	static void registerType(u16 type, Factory f);
 private:
 	// Used for creating objects based on type
-	static core::map<u16, Factory>  m_types;
+	static core::map<u16, Factory> m_types;
 };
 
 struct DistanceSortedActiveObject

@@ -46,7 +46,7 @@ void ContentFeatures::setTexture(u16 i, std::string name, u8 alpha)
 
 	if(g_texturesource)
 	{
-		tiles[i].texture = g_texturesource-> getTexture(name);
+		tiles[i].texture = g_texturesource->getTexture(name);
 	}
 
 	if(alpha != 255)
@@ -66,7 +66,7 @@ void ContentFeatures::setInventoryTexture(std::string imgname)
 
 	imgname += "^[forcesingle";
 
-	inventory_texture = g_texturesource-> getTextureRaw(imgname);
+	inventory_texture = g_texturesource->getTextureRaw(imgname);
 }
 
 void ContentFeatures::setInventoryTextureCube(std::string top,
@@ -86,7 +86,7 @@ void ContentFeatures::setInventoryTextureCube(std::string top,
 	imgname_full += left;
 	imgname_full += "{";
 	imgname_full += right;
-	inventory_texture = g_texturesource-> getTextureRaw(imgname_full);
+	inventory_texture = g_texturesource->getTextureRaw(imgname_full);
 }
 #endif
 
@@ -144,10 +144,10 @@ void init_mapnode()
 	{
 		ContentFeatures *f = &g_content_features[i];
 		// Re-initialize
-		f-> reset();
+		f->reset();
 
 		for(u16 j=0; j<6; j++)
-			f-> tiles[j].material_type = initial_material_type;
+			f->tiles[j].material_type = initial_material_type;
 	}
 #endif
 
@@ -160,8 +160,8 @@ void init_mapnode()
 		if(i == CONTENT_IGNORE || i == CONTENT_AIR)
 			continue;
 		ContentFeatures *f = &g_content_features[i];
-		f-> setAllTextures("unknown_block.png");
-		f-> dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+		f->setAllTextures("unknown_block.png");
+		f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	}
 
 	// Make CONTENT_IGNORE to not block the view when occlusion culling
@@ -219,7 +219,7 @@ u8 face_contents(content_t m1, content_t m2, bool *equivalent)
 			return 2;
 	}
 
-	if(c1 >  c2)
+	if(c1 > c2)
 		return 1;
 	else
 		return 2;
@@ -289,12 +289,12 @@ TileSpec MapNode::getTile(v3s16 dir)
 		if(mineral_texture_name != "")
 		{
 			u32 orig_id = spec.texture.id;
-			std::string texture_name = g_texturesource-> getTextureName(orig_id);
+			std::string texture_name = g_texturesource->getTextureName(orig_id);
 			//texture_name += "^blit:";
 			texture_name += "^";
 			texture_name += mineral_texture_name;
-			u32 new_id = g_texturesource-> getTextureId(texture_name);
-			spec.texture = g_texturesource-> getTexture(new_id);
+			u32 new_id = g_texturesource->getTextureId(texture_name);
+			spec.texture = g_texturesource->getTexture(new_id);
 		}
 	}
 
@@ -374,7 +374,7 @@ void MapNode::deSerialize(u8 *source, u8 version)
 	{
 		param0 = source[0];
 		// This version doesn't support saved lighting
-		if(light_propagates() || light_source() >  0)
+		if(light_propagates() || light_source() > 0)
 			param1 = 0;
 		else
 			param1 = source[1];
@@ -437,7 +437,7 @@ u8 getFaceLight(u32 daynight_ratio, MapNode n, MapNode n2,
 		u8 light;
 		u8 l1 = n.getLightBlend(daynight_ratio);
 		u8 l2 = n2.getLightBlend(daynight_ratio);
-		if(l1 >  l2)
+		if(l1 > l2)
 			light = l1;
 		else
 			light = l2;

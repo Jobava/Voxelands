@@ -41,7 +41,7 @@ void init_mineral()
 
 std::string mineral_block_texture(u8 mineral)
 {
-	if(mineral > = MINERAL_COUNT)
+	if(mineral >= MINERAL_COUNT)
 		return "";
 
 	return mineral_textures[mineral];

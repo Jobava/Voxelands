@@ -15,7 +15,7 @@ namespace scene
 //! constructor
 MyBillboardSceneNode::MyBillboardSceneNode(ISceneNode* parent,
 		ISceneManager* mgr, s32 id,
-		const core::vector3df& position, const core::dimension2d<f32> & size)
+		const core::vector3df& position, const core::dimension2d<f32>& size)
 	: IBillboardSceneNode(parent, mgr, id, position)
 {
 	#ifdef _DEBUG
@@ -52,7 +52,7 @@ MyBillboardSceneNode::MyBillboardSceneNode(ISceneNode* parent,
 void MyBillboardSceneNode::OnRegisterSceneNode()
 {
 	if (IsVisible)
-		SceneManager-> registerNodeForRendering(this);
+		SceneManager->registerNodeForRendering(this);
 
 	ISceneNode::OnRegisterSceneNode();
 }
@@ -61,8 +61,8 @@ void MyBillboardSceneNode::OnRegisterSceneNode()
 //! render
 void MyBillboardSceneNode::render()
 {
-	video::IVideoDriver* driver = SceneManager-> getVideoDriver();
-	ICameraSceneNode* camera = SceneManager-> getActiveCamera();
+	video::IVideoDriver* driver = SceneManager->getVideoDriver();
+	ICameraSceneNode* camera = SceneManager->getActiveCamera();
 
 	if (!camera || !driver)
 		return;
@@ -71,9 +71,9 @@ void MyBillboardSceneNode::render()
 
 	core::vector3df pos = getAbsolutePosition();
 
-	core::vector3df campos = camera-> getAbsolutePosition();
-	core::vector3df target = camera-> getTarget();
-	core::vector3df up = camera-> getUpVector();
+	core::vector3df campos = camera->getAbsolutePosition();
+	core::vector3df target = camera->getTarget();
+	core::vector3df up = camera->getUpVector();
 	core::vector3df view = target - campos;
 	view.normalize();
 
@@ -103,30 +103,30 @@ void MyBillboardSceneNode::render()
 
 	if ( DebugDataVisible & scene::EDS_BBOX )
 	{
-		driver-> setTransform(video::ETS_WORLD, AbsoluteTransformation);
+		driver->setTransform(video::ETS_WORLD, AbsoluteTransformation);
 		video::SMaterial m;
 		m.Lighting = false;
-		driver-> setMaterial(m);
-		driver-> draw3DBox(BBox, video::SColor(0,208,195,152));
+		driver->setMaterial(m);
+		driver->draw3DBox(BBox, video::SColor(0,208,195,152));
 	}
 
-	driver-> setTransform(video::ETS_WORLD, core::IdentityMatrix);
+	driver->setTransform(video::ETS_WORLD, core::IdentityMatrix);
 
-	driver-> setMaterial(Material);
+	driver->setMaterial(Material);
 
-	driver-> drawIndexedTriangleList(vertices, 4, indices, 2);
+	driver->drawIndexedTriangleList(vertices, 4, indices, 2);
 }
 
 
 //! returns the axis aligned bounding box of this node
-const core::aabbox3d<f32> & MyBillboardSceneNode::getBoundingBox() const
+const core::aabbox3d<f32>& MyBillboardSceneNode::getBoundingBox() const
 {
 	return BBox;
 }
 
 
 //! sets the size of the billboard
-void MyBillboardSceneNode::setSize(const core::dimension2d<f32> & size)
+void MyBillboardSceneNode::setSize(const core::dimension2d<f32>& size)
 {
 	Size = size;
 
@@ -156,7 +156,7 @@ u32 MyBillboardSceneNode::getMaterialCount() const
 
 
 //! gets the size of the billboard
-const core::dimension2d<f32> & MyBillboardSceneNode::getSize() const
+const core::dimension2d<f32>& MyBillboardSceneNode::getSize() const
 {
 	return Size;
 }
@@ -192,7 +192,7 @@ void MyBillboardSceneNode::getColor(video::SColor & topColor, video::SColor & bo
 	topColor = vertices[1].Color;
 }
 
-void MyBillboardSceneNode::setTCoords(u32 i, core::vector2d<f32>  c)
+void MyBillboardSceneNode::setTCoords(u32 i, core::vector2d<f32> c)
 {
 	vertices[i].TCoords = c;
 }

@@ -44,7 +44,7 @@ public:
 			gui::IGUIElement* parent, s32 id,
 			IMenuManager *menumgr):
 		IGUIElement(gui::EGUIET_ELEMENT, env, parent, id,
-				core::rect<s32> (0,0,100,100))
+				core::rect<s32>(0,0,100,100))
 	{
 		//m_force_regenerate_gui = false;
 
@@ -53,12 +53,12 @@ public:
 		m_screensize_old = v2u32(0,0);
 
 		setVisible(true);
-		Environment-> setFocus(this);
-		m_menumgr-> createdMenu(this);
+		Environment->setFocus(this);
+		m_menumgr->createdMenu(this);
 	}
 	virtual ~GUIModalMenu()
 	{
-		m_menumgr-> deletingMenu(this);
+		m_menumgr->deletingMenu(this);
 	}
 
 	void allowFocusRemoval(bool allow)
@@ -76,8 +76,8 @@ public:
 		if(!IsVisible)
 			return;
 
-		video::IVideoDriver* driver = Environment-> getVideoDriver();
-		v2u32 screensize = driver-> getScreenSize();
+		video::IVideoDriver* driver = Environment->getVideoDriver();
+		v2u32 screensize = driver->getScreenSize();
 		if(screensize != m_screensize_old /*|| m_force_regenerate_gui*/)
 		{
 			m_screensize_old = screensize;
@@ -98,24 +98,24 @@ public:
 	{
 		allowFocusRemoval(true);
 		// This removes Environment's grab on us
-		Environment-> removeFocus(this);
-		this-> remove();
+		Environment->removeFocus(this);
+		this->remove();
 	}
 
 	void removeChildren()
 	{
-		const core::list<gui::IGUIElement*>  &children = getChildren();
-		core::list<gui::IGUIElement*>  children_copy;
-		for(core::list<gui::IGUIElement*> ::ConstIterator
+		const core::list<gui::IGUIElement*> &children = getChildren();
+		core::list<gui::IGUIElement*> children_copy;
+		for(core::list<gui::IGUIElement*>::ConstIterator
 				i = children.begin(); i != children.end(); i++)
 		{
 			children_copy.push_back(*i);
 		}
-		for(core::list<gui::IGUIElement*> ::Iterator
+		for(core::list<gui::IGUIElement*>::Iterator
 				i = children_copy.begin();
 				i != children_copy.end(); i++)
 		{
-			(*i)-> remove();
+			(*i)->remove();
 		}
 	}
 

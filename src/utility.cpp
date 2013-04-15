@@ -159,12 +159,12 @@ void mysrand(unsigned seed)
 
 int myrand_range(int min, int max)
 {
-	if(max-min >  MYRAND_MAX)
+	if(max-min > MYRAND_MAX)
 	{
-		errorstream<<"WARNING: myrand_range: max-min >  MYRAND_MAX"<<std::endl;
+		errorstream<<"WARNING: myrand_range: max-min > MYRAND_MAX"<<std::endl;
 		assert(0);
 	}
-	if(min >  max)
+	if(min > max)
 	{
 		assert(0);
 		return max;
@@ -179,12 +179,12 @@ void setMeshVerticesColor(scene::IMesh* mesh, video::SColor& color)
 	if(mesh == NULL)
 		return;
 
-	u16 mc = mesh-> getMeshBufferCount();
+	u16 mc = mesh->getMeshBufferCount();
 	for(u16 j=0; j<mc; j++)
 	{
-		scene::IMeshBuffer *buf = mesh-> getMeshBuffer(j);
-		video::S3DVertex *vertices = (video::S3DVertex*)buf-> getVertices();
-		u16 vc = buf-> getVertexCount();
+		scene::IMeshBuffer *buf = mesh->getMeshBuffer(j);
+		video::S3DVertex *vertices = (video::S3DVertex*)buf->getVertices();
+		u16 vc = buf->getVertexCount();
 		for(u16 i=0; i<vc; i++)
 		{
 			vertices[i].Color = color;
@@ -228,7 +228,7 @@ bool isBlockInSight(v3s16 blockpos_b, v3f camera_pos, v3f camera_dir,
 		return true;
 
 	// If block is far away, it's not in sight
-	if(d >  range * BS)
+	if(d > range * BS)
 		return false;
 
 	// Maximum radius of a block

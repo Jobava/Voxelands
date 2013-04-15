@@ -61,7 +61,7 @@ MapBlock::~MapBlock()
 
 		if(mesh)
 		{
-			mesh-> drop();
+			mesh->drop();
 			mesh = NULL;
 		}
 	}
@@ -78,7 +78,7 @@ bool MapBlock::isValidPositionParent(v3s16 p)
 		return true;
 	}
 	else{
-		return m_parent-> isValidPosition(getPosRelative() + p);
+		return m_parent->isValidPosition(getPosRelative() + p);
 	}
 }
 
@@ -86,7 +86,7 @@ MapNode MapBlock::getNodeParent(v3s16 p)
 {
 	if(isValidPosition(p) == false)
 	{
-		return m_parent-> getNode(getPosRelative() + p);
+		return m_parent->getNode(getPosRelative() + p);
 	}
 	else
 	{
@@ -100,7 +100,7 @@ void MapBlock::setNodeParent(v3s16 p, MapNode & n)
 {
 	if(isValidPosition(p) == false)
 	{
-		m_parent-> setNode(getPosRelative() + p, n);
+		m_parent->setNode(getPosRelative() + p, n);
 	}
 	else
 	{
@@ -115,7 +115,7 @@ MapNode MapBlock::getNodeParentNoEx(v3s16 p)
 	if(isValidPosition(p) == false)
 	{
 		try{
-			return m_parent-> getNode(getPosRelative() + p);
+			return m_parent->getNode(getPosRelative() + p);
 		}
 		catch(InvalidPositionException &e)
 		{
@@ -177,24 +177,24 @@ void MapBlock::replaceMesh(scene::SMesh *mesh_new)
 	{
 		// Remove hardware buffers of meshbuffers of mesh
 		// NOTE: No way, this runs in a different thread and everything
-		/*u32 c = mesh_old-> getMeshBufferCount();
+		/*u32 c = mesh_old->getMeshBufferCount();
 		for(u32 i=0; i<c; i++)
 		{
-			IMeshBuffer *buf = mesh_old-> getMeshBuffer(i);
+			IMeshBuffer *buf = mesh_old->getMeshBuffer(i);
 		}*/
 
-		/*dstream<<"mesh_old-> getReferenceCount()="
-				<<mesh_old-> getReferenceCount()<<std::endl;
-		u32 c = mesh_old-> getMeshBufferCount();
+		/*dstream<<"mesh_old->getReferenceCount()="
+				<<mesh_old->getReferenceCount()<<std::endl;
+		u32 c = mesh_old->getMeshBufferCount();
 		for(u32 i=0; i<c; i++)
 		{
-			scene::IMeshBuffer *buf = mesh_old-> getMeshBuffer(i);
-			dstream<<"buf-> getReferenceCount()="
-					<<buf-> getReferenceCount()<<std::endl;
+			scene::IMeshBuffer *buf = mesh_old->getMeshBuffer(i);
+			dstream<<"buf->getReferenceCount()="
+					<<buf->getReferenceCount()<<std::endl;
 		}*/
 
 		// Drop the mesh
-		mesh_old-> drop();
+		mesh_old->drop();
 
 		//delete mesh_old;
 	}
@@ -223,7 +223,7 @@ void MapBlock::replaceMesh(scene::SMesh *mesh_new)
 	if black_air_left!=NULL, it is set to true if non-sunlighted
 	air is left in block.
 */
-bool MapBlock::propagateSunlight(core::map<v3s16, bool>  & light_sources,
+bool MapBlock::propagateSunlight(core::map<v3s16, bool> & light_sources,
 		bool remove_light, bool *black_air_left)
 {
 	// Whether the sunlight at the top of the bottom block is valid
@@ -305,7 +305,7 @@ bool MapBlock::propagateSunlight(core::map<v3s16, bool>  & light_sources,
 
 			u8 current_light = no_sunlight ? 0 : LIGHT_SUN;
 
-			for(; y > = 0; y--)
+			for(; y >= 0; y--)
 			{
 				v3s16 pos(x, y, z);
 				MapNode &n = getNodeRef(pos);
@@ -354,7 +354,7 @@ bool MapBlock::propagateSunlight(core::map<v3s16, bool>  & light_sources,
 
 				u8 old_light = n.getLight(LIGHTBANK_DAY);
 
-				if(current_light >  old_light || remove_light)
+				if(current_light > old_light || remove_light)
 				{
 					n.setLight(LIGHTBANK_DAY, current_light);
 				}
@@ -487,7 +487,7 @@ s16 MapBlock::getGroundLevel(v2s16 p2d)
 	try
 	{
 		s16 y = MAP_BLOCKSIZE-1;
-		for(; y> =0; y--)
+		for(; y>=0; y--)
 		{
 			MapNode n = getNodeRef(p2d.X, y, p2d.Y);
 			if(content_features(n).walkable)
@@ -526,7 +526,7 @@ void MapBlock::serialize(std::ostream &os, u8 version)
 		u32 nodecount = MAP_BLOCKSIZE*MAP_BLOCKSIZE*MAP_BLOCKSIZE;
 
 		u32 buflen = 1 + nodecount * MapNode::serializedLength(version);
-		SharedBuffer<u8>  dest(buflen);
+		SharedBuffer<u8> dest(buflen);
 
 		dest[0] = is_underground;
 		for(u32 i=0; i<nodecount; i++)
@@ -550,7 +550,7 @@ void MapBlock::serialize(std::ostream &os, u8 version)
 		u32 nodecount = MAP_BLOCKSIZE*MAP_BLOCKSIZE*MAP_BLOCKSIZE;
 
 		// Get and compress materials
-		SharedBuffer<u8>  materialdata(nodecount);
+		SharedBuffer<u8> materialdata(nodecount);
 		for(u32 i=0; i<nodecount; i++)
 		{
 			materialdata[i] = data[i].param0;
@@ -558,17 +558,17 @@ void MapBlock::serialize(std::ostream &os, u8 version)
 		compress(materialdata, os, version);
 
 		// Get and compress lights
-		SharedBuffer<u8>  lightdata(nodecount);
+		SharedBuffer<u8> lightdata(nodecount);
 		for(u32 i=0; i<nodecount; i++)
 		{
 			lightdata[i] = data[i].param1;
 		}
 		compress(lightdata, os, version);
 
-		if(version > = 10)
+		if(version >= 10)
 		{
 			// Get and compress param2
-			SharedBuffer<u8>  param2data(nodecount);
+			SharedBuffer<u8> param2data(nodecount);
 			for(u32 i=0; i<nodecount; i++)
 			{
 				param2data[i] = data[i].param2;
@@ -587,7 +587,7 @@ void MapBlock::serialize(std::ostream &os, u8 version)
 			flags |= 0x02;
 		if(m_lighting_expired)
 			flags |= 0x04;
-		if(version > = 18)
+		if(version >= 18)
 		{
 			if(m_generated == false)
 				flags |= 0x08;
@@ -601,14 +601,14 @@ void MapBlock::serialize(std::ostream &os, u8 version)
 		*/
 
 		// Serialize nodes
-		SharedBuffer<u8>  databuf_nodelist(nodecount*3);
+		SharedBuffer<u8> databuf_nodelist(nodecount*3);
 		for(u32 i=0; i<nodecount; i++)
 		{
 			data[i].serialize(&databuf_nodelist[i*3], version);
 		}
 
 		// Create buffer with different parameters sorted
-		SharedBuffer<u8>  databuf(nodecount*3);
+		SharedBuffer<u8> databuf(nodecount*3);
 		for(u32 i=0; i<nodecount; i++)
 		{
 			databuf[i] = databuf_nodelist[i*3];
@@ -625,7 +625,7 @@ void MapBlock::serialize(std::ostream &os, u8 version)
 		/*
 			NodeMetadata
 		*/
-		if(version > = 14)
+		if(version >= 14)
 		{
 			if(version <= 15)
 			{
@@ -682,7 +682,7 @@ void MapBlock::deSerialize(std::istream &is, u8 version)
 		for(u32 i=0; i<nodecount; i++)
 		{
 			s32 len = MapNode::serializedLength(version);
-			SharedBuffer<u8>  d(len);
+			SharedBuffer<u8> d(len);
 			is.read((char*)*d, len);
 			if(is.gcount() != len)
 				throw SerializationError
@@ -725,7 +725,7 @@ void MapBlock::deSerialize(std::istream &is, u8 version)
 			}
 		}
 
-		if(version > = 10)
+		if(version >= 10)
 		{
 			// Uncompress and set param2 data
 			std::ostringstream os(std::ios_base::binary);
@@ -750,7 +750,7 @@ void MapBlock::deSerialize(std::istream &is, u8 version)
 		is_underground = (flags & 0x01) ? true : false;
 		m_day_night_differs = (flags & 0x02) ? true : false;
 		m_lighting_expired = (flags & 0x04) ? true : false;
-		if(version > = 18)
+		if(version >= 18)
 			m_generated = (flags & 0x08) ? false : true;
 
 		// Uncompress data
@@ -775,7 +775,7 @@ void MapBlock::deSerialize(std::istream &is, u8 version)
 		/*
 			NodeMetadata
 		*/
-		if(version > = 14)
+		if(version >= 14)
 		{
 			// Ignore errors
 			try{
@@ -806,20 +806,20 @@ void MapBlock::deSerialize(std::istream &is, u8 version)
 void MapBlock::serializeDiskExtra(std::ostream &os, u8 version)
 {
 	// Versions up from 9 have block objects. (DEPRECATED)
-	if(version > = 9)
+	if(version >= 9)
 	{
 		// count=0
 		writeU16(os, 0);
 	}
 
 	// Versions up from 15 have static objects.
-	if(version > = 15)
+	if(version >= 15)
 	{
 		m_static_objects.serialize(os);
 	}
 
 	// Timestamp
-	if(version > = 17)
+	if(version >= 17)
 	{
 		writeU32(os, getTimestamp());
 	}
@@ -830,7 +830,7 @@ void MapBlock::deSerializeDiskExtra(std::istream &is, u8 version)
 	/*
 		Versions up from 9 have block objects. (DEPRECATED)
 	*/
-	if(version > = 9)
+	if(version >= 9)
 	{
 		u16 count = readU16(is);
 		// Not supported and length not known if count is not 0
@@ -844,13 +844,13 @@ void MapBlock::deSerializeDiskExtra(std::istream &is, u8 version)
 	/*
 		Versions up from 15 have static objects.
 	*/
-	if(version > = 15)
+	if(version >= 15)
 	{
 		m_static_objects.deSerialize(is);
 	}
 
 	// Timestamp
-	if(version > = 17)
+	if(version >= 17)
 	{
 		setTimestamp(readU32(is));
 	}
@@ -872,12 +872,12 @@ std::string analyze_block(MapBlock *block)
 
 	std::ostringstream desc;
 
-	v3s16 p = block-> getPos();
+	v3s16 p = block->getPos();
 	char spos[20];
 	snprintf(spos, 20, "(%2d,%2d,%2d), ", p.X, p.Y, p.Z);
 	desc<<spos;
 
-	switch(block-> getModified())
+	switch(block->getModified())
 	{
 	case MOD_STATE_CLEAN:
 		desc<<"CLEAN,           ";
@@ -889,32 +889,32 @@ std::string analyze_block(MapBlock *block)
 		desc<<"WRITE_NEEDED,    ";
 		break;
 	default:
-		desc<<"unknown getModified()="+itos(block-> getModified())+", ";
+		desc<<"unknown getModified()="+itos(block->getModified())+", ";
 	}
 
-	if(block-> isGenerated())
+	if(block->isGenerated())
 		desc<<"is_gen [X], ";
 	else
 		desc<<"is_gen [ ], ";
 
-	if(block-> getIsUnderground())
+	if(block->getIsUnderground())
 		desc<<"is_ug [X], ";
 	else
 		desc<<"is_ug [ ], ";
 
 #ifndef SERVER
-	if(block-> getMeshExpired())
+	if(block->getMeshExpired())
 		desc<<"mesh_exp [X], ";
 	else
 		desc<<"mesh_exp [ ], ";
 #endif
 
-	if(block-> getLightingExpired())
+	if(block->getLightingExpired())
 		desc<<"lighting_exp [X], ";
 	else
 		desc<<"lighting_exp [ ], ";
 
-	if(block-> isDummy())
+	if(block->isDummy())
 	{
 		desc<<"Dummy, ";
 	}
@@ -939,7 +939,7 @@ std::string analyze_block(MapBlock *block)
 		for(s16 x0=0; x0<MAP_BLOCKSIZE; x0++)
 		{
 			v3s16 p(x0,y0,z0);
-			MapNode n = block-> getNode(p);
+			MapNode n = block->getNode(p);
 			content_t c = n.getContent();
 			if(c == CONTENT_IGNORE)
 				some_ignore = true;
@@ -976,7 +976,7 @@ std::string analyze_block(MapBlock *block)
 		if(water)
 			ss<<"water, ";
 
-		if(ss.str().size()> =2)
+		if(ss.str().size()>=2)
 			desc<<ss.str().substr(0, ss.str().size()-2);
 
 		desc<<"}, ";

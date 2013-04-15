@@ -98,7 +98,7 @@ public:
 	}
 	void remove(u16 count)
 	{
-		assert(m_count > = count);
+		assert(m_count >= count);
 		m_count -= count;
 	}
 
@@ -166,16 +166,16 @@ public:
 
 	virtual bool addableTo(const InventoryItem *other) const
 	{
-		if(std::string(other-> getName()) != "MaterialItem")
+		if(std::string(other->getName()) != "MaterialItem")
 			return false;
 		MaterialItem *m = (MaterialItem*)other;
-		if(m-> getMaterial() != m_content)
+		if(m->getMaterial() != m_content)
 			return false;
 		return true;
 	}
 	u16 freeSpace() const
 	{
-		if(m_count >  QUANTITY_ITEM_MAX_COUNT)
+		if(m_count > QUANTITY_ITEM_MAX_COUNT)
 			return 0;
 		return QUANTITY_ITEM_MAX_COUNT - m_count;
 	}
@@ -242,16 +242,16 @@ public:
 
 	virtual bool addableTo(const InventoryItem *other) const
 	{
-		if(std::string(other-> getName()) != "CraftItem")
+		if(std::string(other->getName()) != "CraftItem")
 			return false;
 		CraftItem *m = (CraftItem*)other;
-		if(m-> m_subname != m_subname)
+		if(m->m_subname != m_subname)
 			return false;
 		return true;
 	}
 	u16 freeSpace() const
 	{
-		if(m_count >  QUANTITY_ITEM_MAX_COUNT)
+		if(m_count > QUANTITY_ITEM_MAX_COUNT)
 			return 0;
 		return QUANTITY_ITEM_MAX_COUNT - m_count;
 	}
@@ -354,7 +354,7 @@ public:
 		std::ostringstream os;
 		os<<basename<<"^[progressbar"<<value_f;
 
-		return g_texturesource-> getTextureRaw(os.str());
+		return g_texturesource->getTextureRaw(os.str());
 	}
 
 	video::ITexture * getImageRaw() const
@@ -362,7 +362,7 @@ public:
 		if(g_texturesource == NULL)
 			return NULL;
 
-		return g_texturesource-> getTextureRaw(getBasename());
+		return g_texturesource->getTextureRaw(getBasename());
 	}
 #endif
 	std::string getText()
@@ -399,7 +399,7 @@ public:
 	// Returns true if weared out
 	bool addWear(u16 add)
 	{
-		if(m_wear > = 65535 - add)
+		if(m_wear >= 65535 - add)
 		{
 			m_wear = 65535;
 			return true;
@@ -474,7 +474,7 @@ public:
 	void print(std::ostream &o);
 
 private:
-	core::array<InventoryItem*>  m_items;
+	core::array<InventoryItem*> m_items;
 	u32 m_size;
 	std::string m_name;
 	//bool m_dirty;
@@ -505,14 +505,14 @@ public:
 		InventoryList *list = getList(listname);
 		if(list == NULL)
 			return newitem;
-		return list-> addItem(newitem);
+		return list->addItem(newitem);
 	}
 
 private:
 	// -1 if not found
 	const s32 getListIndex(const std::string &name) const;
 
-	core::array<InventoryList*>  m_lists;
+	core::array<InventoryList*> m_lists;
 };
 
 class Player;

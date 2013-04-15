@@ -254,11 +254,11 @@ KeyPress::KeyPress() :
 
 KeyPress::KeyPress(const char *name)
 {
-	if (strlen(name) >  4) {
+	if (strlen(name) > 4) {
 		try {
 			Key = keyname_to_keycode(name);
 			m_name = name;
-			if (strlen(name) >  8)
+			if (strlen(name) > 8)
 				mbtowc(&Char, name + 8, 1);
 			else
 				Char = L'\0';
@@ -326,17 +326,17 @@ const KeyPress NumberKey[] = {
 */
 
 // A simple cache for quicker lookup
-core::map<std::string, KeyPress>  g_key_setting_cache;
+core::map<std::string, KeyPress> g_key_setting_cache;
 
 KeyPress getKeySetting(const char *settingname)
 {
-	core::map<std::string, KeyPress> ::Node *n;
+	core::map<std::string, KeyPress>::Node *n;
 	n = g_key_setting_cache.find(settingname);
 	if(n)
-		return n-> getValue();
+		return n->getValue();
 	g_key_setting_cache.insert(settingname,
-			g_settings-> get(settingname).c_str());
-	return g_key_setting_cache.find(settingname)-> getValue();
+			g_settings->get(settingname).c_str());
+	return g_key_setting_cache.find(settingname)->getValue();
 }
 
 void clearKeyCache()

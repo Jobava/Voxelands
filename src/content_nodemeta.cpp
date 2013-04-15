@@ -68,7 +68,7 @@ ChestNodeMetadata::ChestNodeMetadata()
 	NodeMetadata::registerType(typeId(), create);
 
 	m_inventory = new Inventory();
-	m_inventory-> addList("0", 8*4);
+	m_inventory->addList("0", 8*4);
 }
 ChestNodeMetadata::~ChestNodeMetadata()
 {
@@ -81,18 +81,18 @@ u16 ChestNodeMetadata::typeId() const
 NodeMetadata* ChestNodeMetadata::create(std::istream &is)
 {
 	ChestNodeMetadata *d = new ChestNodeMetadata();
-	d-> m_inventory-> deSerialize(is);
+	d->m_inventory->deSerialize(is);
 	return d;
 }
 NodeMetadata* ChestNodeMetadata::clone()
 {
 	ChestNodeMetadata *d = new ChestNodeMetadata();
-	*d-> m_inventory = *m_inventory;
+	*d->m_inventory = *m_inventory;
 	return d;
 }
 void ChestNodeMetadata::serializeBody(std::ostream &os)
 {
-	m_inventory-> serialize(os);
+	m_inventory->serialize(os);
 }
 std::string ChestNodeMetadata::infoText()
 {
@@ -103,10 +103,10 @@ bool ChestNodeMetadata::nodeRemovalDisabled()
 	/*
 		Disable removal if chest contains something
 	*/
-	InventoryList *list = m_inventory-> getList("0");
+	InventoryList *list = m_inventory->getList("0");
 	if(list == NULL)
 		return false;
-	if(list-> getUsedSlots() == 0)
+	if(list->getUsedSlots() == 0)
 		return false;
 	return true;
 }
@@ -130,7 +130,7 @@ LockingChestNodeMetadata::LockingChestNodeMetadata()
 	NodeMetadata::registerType(typeId(), create);
 
 	m_inventory = new Inventory();
-	m_inventory-> addList("0", 8*4);
+	m_inventory->addList("0", 8*4);
 }
 LockingChestNodeMetadata::~LockingChestNodeMetadata()
 {
@@ -143,20 +143,20 @@ u16 LockingChestNodeMetadata::typeId() const
 NodeMetadata* LockingChestNodeMetadata::create(std::istream &is)
 {
 	LockingChestNodeMetadata *d = new LockingChestNodeMetadata();
-	d-> setOwner(deSerializeString(is));
-	d-> m_inventory-> deSerialize(is);
+	d->setOwner(deSerializeString(is));
+	d->m_inventory->deSerialize(is);
 	return d;
 }
 NodeMetadata* LockingChestNodeMetadata::clone()
 {
 	LockingChestNodeMetadata *d = new LockingChestNodeMetadata();
-	*d-> m_inventory = *m_inventory;
+	*d->m_inventory = *m_inventory;
 	return d;
 }
 void LockingChestNodeMetadata::serializeBody(std::ostream &os)
 {
 	os<<serializeString(m_text);
-	m_inventory-> serialize(os);
+	m_inventory->serialize(os);
 }
 std::string LockingChestNodeMetadata::infoText()
 {
@@ -167,10 +167,10 @@ bool LockingChestNodeMetadata::nodeRemovalDisabled()
 	/*
 		Disable removal if chest contains something
 	*/
-	InventoryList *list = m_inventory-> getList("0");
+	InventoryList *list = m_inventory->getList("0");
 	if(list == NULL)
 		return false;
-	if(list-> getUsedSlots() == 0)
+	if(list->getUsedSlots() == 0)
 		return false;
 	return true;
 }
@@ -194,9 +194,9 @@ FurnaceNodeMetadata::FurnaceNodeMetadata()
 	NodeMetadata::registerType(typeId(), create);
 
 	m_inventory = new Inventory();
-	m_inventory-> addList("fuel", 1);
-	m_inventory-> addList("src", 1);
-	m_inventory-> addList("dst", 4);
+	m_inventory->addList("fuel", 1);
+	m_inventory->addList("src", 1);
+	m_inventory->addList("dst", 4);
 
 	m_step_accumulator = 0;
 	m_fuel_totaltime = 0;
@@ -215,41 +215,41 @@ u16 FurnaceNodeMetadata::typeId() const
 NodeMetadata* FurnaceNodeMetadata::clone()
 {
 	FurnaceNodeMetadata *d = new FurnaceNodeMetadata();
-	*d-> m_inventory = *m_inventory;
+	*d->m_inventory = *m_inventory;
 	return d;
 }
 NodeMetadata* FurnaceNodeMetadata::create(std::istream &is)
 {
 	FurnaceNodeMetadata *d = new FurnaceNodeMetadata();
 
-	d-> m_inventory-> deSerialize(is);
+	d->m_inventory->deSerialize(is);
 
 	int temp;
-	is> > temp;
-	d-> m_fuel_totaltime = (float)temp/10;
-	is> > temp;
-	d-> m_fuel_time = (float)temp/10;
+	is>>temp;
+	d->m_fuel_totaltime = (float)temp/10;
+	is>>temp;
+	d->m_fuel_time = (float)temp/10;
 
 	return d;
 }
 void FurnaceNodeMetadata::serializeBody(std::ostream &os)
 {
-	m_inventory-> serialize(os);
+	m_inventory->serialize(os);
 	os<<itos(m_fuel_totaltime*10)<<" ";
 	os<<itos(m_fuel_time*10)<<" ";
 }
 std::string FurnaceNodeMetadata::infoText()
 {
 	//return "Furnace";
-	if(m_fuel_time > = m_fuel_totaltime)
+	if(m_fuel_time >= m_fuel_totaltime)
 	{
-		const InventoryList *src_list = m_inventory-> getList("src");
+		const InventoryList *src_list = m_inventory->getList("src");
 		assert(src_list);
-		const InventoryItem *src_item = src_list-> getItem(0);
+		const InventoryItem *src_item = src_list->getItem(0);
 
-		if(src_item && src_item-> isCookable()) {
-			InventoryList *dst_list = m_inventory-> getList("dst");
-			if(!dst_list-> roomForCookedItem(src_item))
+		if(src_item && src_item->isCookable()) {
+			InventoryList *dst_list = m_inventory->getList("dst");
+			if(!dst_list->roomForCookedItem(src_item))
 				return "Furnace is overloaded";
 			return "Furnace is out of fuel";
 		}
@@ -260,7 +260,7 @@ std::string FurnaceNodeMetadata::infoText()
 	{
 		std::string s = "Furnace is active";
 		// Do this so it doesn't always show (0%) for weak fuel
-		if(m_fuel_totaltime >  3) {
+		if(m_fuel_totaltime > 3) {
 			s += " (";
 			s += itos(m_fuel_time/m_fuel_totaltime*100);
 			s += "%)";
@@ -273,13 +273,13 @@ bool FurnaceNodeMetadata::nodeRemovalDisabled()
 	/*
 		Disable removal if furnace is not empty
 	*/
-	InventoryList *list[3] = {m_inventory-> getList("src"),
-	m_inventory-> getList("dst"), m_inventory-> getList("fuel")};
+	InventoryList *list[3] = {m_inventory->getList("src"),
+	m_inventory->getList("dst"), m_inventory->getList("fuel")};
 
 	for(int i = 0; i < 3; i++) {
 		if(list[i] == NULL)
 			continue;
-		if(list[i]-> getUsedSlots() == 0)
+		if(list[i]->getUsedSlots() == 0)
 			continue;
 		return true;
 	}
@@ -292,30 +292,30 @@ void FurnaceNodeMetadata::inventoryModified()
 }
 bool FurnaceNodeMetadata::step(float dtime)
 {
-	if(dtime >  60.0)
+	if(dtime > 60.0)
 		infostream<<"Furnace stepping a long time ("<<dtime<<")"<<std::endl;
 	// Update at a fixed frequency
 	const float interval = 2.0;
 	m_step_accumulator += dtime;
 	bool changed = false;
-	while(m_step_accumulator >  interval)
+	while(m_step_accumulator > interval)
 	{
 		m_step_accumulator -= interval;
 		dtime = interval;
 
 		//infostream<<"Furnace step dtime="<<dtime<<std::endl;
 
-		InventoryList *dst_list = m_inventory-> getList("dst");
+		InventoryList *dst_list = m_inventory->getList("dst");
 		assert(dst_list);
 
-		InventoryList *src_list = m_inventory-> getList("src");
+		InventoryList *src_list = m_inventory->getList("src");
 		assert(src_list);
-		InventoryItem *src_item = src_list-> getItem(0);
+		InventoryItem *src_item = src_list->getItem(0);
 
 		bool room_available = false;
 
-		if(src_item && src_item-> isCookable())
-			room_available = dst_list-> roomForCookedItem(src_item);
+		if(src_item && src_item->isCookable())
+			room_available = dst_list->roomForCookedItem(src_item);
 
 		// Start only if there are free slots in dst, so that it can
 		// accomodate any result item
@@ -338,12 +338,12 @@ bool FurnaceNodeMetadata::step(float dtime)
 			//infostream<<"Furnace is active"<<std::endl;
 			m_fuel_time += dtime;
 			m_src_time += dtime;
-			if(m_src_time > = m_src_totaltime && m_src_totaltime >  0.001
+			if(m_src_time >= m_src_totaltime && m_src_totaltime > 0.001
 					&& src_item)
 			{
-				InventoryItem *cookresult = src_item-> createCookResult();
-				dst_list-> addItem(cookresult);
-				src_list-> decrementMaterials(1);
+				InventoryItem *cookresult = src_item->createCookResult();
+				dst_list->addItem(cookresult);
+				src_list->decrementMaterials(1);
 				m_src_time = 0;
 				m_src_totaltime = 0;
 			}
@@ -357,14 +357,14 @@ bool FurnaceNodeMetadata::step(float dtime)
 		/*
 			Get the source again in case it has all burned
 		*/
-		src_item = src_list-> getItem(0);
+		src_item = src_list->getItem(0);
 
 		/*
 			If there is no source item, or the source item is not cookable,
 			or the furnace is still cooking, or the furnace became overloaded, stop loop.
 		*/
 		if(src_item == NULL || !room_available || m_fuel_time < m_fuel_totaltime ||
-			dst_list-> roomForCookedItem(src_item) == false)
+			dst_list->roomForCookedItem(src_item) == false)
 		{
 			m_step_accumulator = 0;
 			break;
@@ -372,85 +372,85 @@ bool FurnaceNodeMetadata::step(float dtime)
 
 		//infostream<<"Furnace is out of fuel"<<std::endl;
 
-		InventoryList *fuel_list = m_inventory-> getList("fuel");
+		InventoryList *fuel_list = m_inventory->getList("fuel");
 		assert(fuel_list);
-		const InventoryItem *fuel_item = fuel_list-> getItem(0);
+		const InventoryItem *fuel_item = fuel_list->getItem(0);
 
 		if(ItemSpec(ITEM_MATERIAL, CONTENT_TREE).checkItem(fuel_item))
 		{
 			m_fuel_totaltime = 30;
 			m_fuel_time = 0;
-			fuel_list-> decrementMaterials(1);
+			fuel_list->decrementMaterials(1);
 			changed = true;
 		}
 		else if(ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLETREE).checkItem(fuel_item))
 		{
 			m_fuel_totaltime = 30;
 			m_fuel_time = 0;
-			fuel_list-> decrementMaterials(1);
+			fuel_list->decrementMaterials(1);
 			changed = true;
 		}
 		else if(ItemSpec(ITEM_MATERIAL, CONTENT_FENCE).checkItem(fuel_item))
 		{
 			m_fuel_totaltime = 30/2;
 			m_fuel_time = 0;
-			fuel_list-> decrementMaterials(1);
+			fuel_list->decrementMaterials(1);
 			changed = true;
 		}
 		else if(ItemSpec(ITEM_MATERIAL, CONTENT_WOOD).checkItem(fuel_item))
 		{
 			m_fuel_totaltime = 30/4;
 			m_fuel_time = 0;
-			fuel_list-> decrementMaterials(1);
+			fuel_list->decrementMaterials(1);
 			changed = true;
 		}
 		else if(ItemSpec(ITEM_MATERIAL, CONTENT_BOOKSHELF).checkItem(fuel_item))
 		{
 			m_fuel_totaltime = 30/4;
 			m_fuel_time = 0;
-			fuel_list-> decrementMaterials(1);
+			fuel_list->decrementMaterials(1);
 			changed = true;
 		}
 		else if(ItemSpec(ITEM_MATERIAL, CONTENT_LEAVES).checkItem(fuel_item))
 		{
 			m_fuel_totaltime = 30/16;
 			m_fuel_time = 0;
-			fuel_list-> decrementMaterials(1);
+			fuel_list->decrementMaterials(1);
 			changed = true;
 		}
 		else if(ItemSpec(ITEM_MATERIAL, CONTENT_PAPYRUS).checkItem(fuel_item))
 		{
 			m_fuel_totaltime = 30/32;
 			m_fuel_time = 0;
-			fuel_list-> decrementMaterials(1);
+			fuel_list->decrementMaterials(1);
 			changed = true;
 		}
 		else if(ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLEGRASS).checkItem(fuel_item))
 		{
 			m_fuel_totaltime = 30/32;
 			m_fuel_time = 0;
-			fuel_list-> decrementMaterials(1);
+			fuel_list->decrementMaterials(1);
 			changed = true;
 		}
 		else if(ItemSpec(ITEM_MATERIAL, CONTENT_CACTUS).checkItem(fuel_item))
 		{
 			m_fuel_totaltime = 30/4;
 			m_fuel_time = 0;
-			fuel_list-> decrementMaterials(1);
+			fuel_list->decrementMaterials(1);
 			changed = true;
 		}
 		else if(ItemSpec(ITEM_CRAFT, "Stick").checkItem(fuel_item))
 		{
 			m_fuel_totaltime = 30/4/4;
 			m_fuel_time = 0;
-			fuel_list-> decrementMaterials(1);
+			fuel_list->decrementMaterials(1);
 			changed = true;
 		}
 		else if(ItemSpec(ITEM_CRAFT, "lump_of_coal").checkItem(fuel_item))
 		{
 			m_fuel_totaltime = 40;
 			m_fuel_time = 0;
-			fuel_list-> decrementMaterials(1);
+			fuel_list->decrementMaterials(1);
 			changed = true;
 		}
 		else

@@ -47,7 +47,7 @@ FarMesh::FarMesh(
 {
 	dstream<<__FUNCTION_NAME<<std::endl;
 
-	video::IVideoDriver* driver = mgr-> getVideoDriver();
+	video::IVideoDriver* driver = mgr->getVideoDriver();
 
 	m_materials[0].setFlag(video::EMF_LIGHTING, false);
 	m_materials[0].setFlag(video::EMF_BACK_FACE_CULLING, true);
@@ -63,11 +63,11 @@ FarMesh::FarMesh(
 	m_materials[1].setFlag(video::EMF_BILINEAR_FILTER, false);
 	m_materials[1].setFlag(video::EMF_FOG_ENABLE, false);
 	m_materials[1].setTexture
-			(0, driver-> getTexture(getTexturePath("treeprop.png").c_str()));
+			(0, driver->getTexture(getTexturePath("treeprop.png").c_str()));
 	m_materials[1].MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
 	m_materials[1].setFlag(video::EMF_FOG_ENABLE, true);
 
-	m_box = core::aabbox3d<f32> (-BS*1000000,-BS*31000,-BS*1000000,
+	m_box = core::aabbox3d<f32>(-BS*1000000,-BS*31000,-BS*1000000,
 			BS*1000000,BS*31000,BS*1000000);
 
 }
@@ -92,15 +92,15 @@ void FarMesh::OnRegisterSceneNode()
 {
 	if(IsVisible)
 	{
-		//SceneManager-> registerNodeForRendering(this, scene::ESNRP_TRANSPARENT);
-		SceneManager-> registerNodeForRendering(this, scene::ESNRP_SOLID);
-		//SceneManager-> registerNodeForRendering(this, scene::ESNRP_SKY_BOX);
+		//SceneManager->registerNodeForRendering(this, scene::ESNRP_TRANSPARENT);
+		SceneManager->registerNodeForRendering(this, scene::ESNRP_SOLID);
+		//SceneManager->registerNodeForRendering(this, scene::ESNRP_SKY_BOX);
 	}
 
 	ISceneNode::OnRegisterSceneNode();
 }
 
-#define MYROUND(x) (x >  0.0 ? (int)x : (int)x - 1)
+#define MYROUND(x) (x > 0.0 ? (int)x : (int)x - 1)
 
 // Temporary hack
 struct HeightPoint
@@ -110,13 +110,13 @@ struct HeightPoint
 	float have_sand;
 	float tree_amount;
 };
-core::map<v2s16, HeightPoint>  g_heights;
+core::map<v2s16, HeightPoint> g_heights;
 
 HeightPoint ground_height(u64 seed, v2s16 p2d)
 {
-	core::map<v2s16, HeightPoint> ::Node *n = g_heights.find(p2d);
+	core::map<v2s16, HeightPoint>::Node *n = g_heights.find(p2d);
 	if(n)
-		return n-> getValue();
+		return n->getValue();
 	HeightPoint hp;
 	s16 level = mapgen::find_ground_level_from_noise(seed, p2d, 3);
 	hp.gh = (level-4)*BS;
@@ -124,7 +124,7 @@ HeightPoint ground_height(u64 seed, v2s16 p2d)
 	/*hp.gh = BS*base_rock_level_2d(seed, p2d);
 	hp.ma = BS*get_mud_add_amount(seed, p2d);*/
 	hp.have_sand = mapgen::get_have_sand(seed, p2d);
-	if(hp.gh >  BS*WATER_LEVEL)
+	if(hp.gh > BS*WATER_LEVEL)
 		hp.tree_amount = mapgen::tree_amount_2d(seed, p2d);
 	else
 		hp.tree_amount = 0;
@@ -138,16 +138,16 @@ HeightPoint ground_height(u64 seed, v2s16 p2d)
 
 void FarMesh::render()
 {
-	video::IVideoDriver* driver = SceneManager-> getVideoDriver();
+	video::IVideoDriver* driver = SceneManager->getVideoDriver();
 
-	/*if(SceneManager-> getSceneNodeRenderPass() != scene::ESNRP_TRANSPARENT)
+	/*if(SceneManager->getSceneNodeRenderPass() != scene::ESNRP_TRANSPARENT)
 		return;*/
-	if(SceneManager-> getSceneNodeRenderPass() != scene::ESNRP_SOLID)
+	if(SceneManager->getSceneNodeRenderPass() != scene::ESNRP_SOLID)
 		return;
-	/*if(SceneManager-> getSceneNodeRenderPass() != scene::ESNRP_SKY_BOX)
+	/*if(SceneManager->getSceneNodeRenderPass() != scene::ESNRP_SKY_BOX)
 		return;*/
 
-	driver-> setTransform(video::ETS_WORLD, AbsoluteTransformation);
+	driver->setTransform(video::ETS_WORLD, AbsoluteTransformation);
 
 	//const s16 grid_radius_i = 12;
 	//const float grid_size = BS*50;
@@ -177,7 +177,7 @@ void FarMesh::render()
 	{
 		/*// Don't draw very close to player
 		s16 dd = 3;
-		if(zi >  -dd && zi < dd && xi >  -dd && xi < dd)
+		if(zi > -dd && zi < dd && xi > -dd && xi < dd)
 			continue;*/
 
 		v2s16 p_in_noise_i(
@@ -186,7 +186,7 @@ void FarMesh::render()
 		);
 
 		// If sector was drawn, don't draw it this way
-		if(m_client-> m_env.getClientMap().sectorWasDrawn(p_in_noise_i))
+		if(m_client->m_env.getClientMap().sectorWasDrawn(p_in_noise_i))
 			continue;
 
 		/*if((p_in_noise_i.X + p_in_noise_i.Y)%2==0)
@@ -248,7 +248,7 @@ void FarMesh::render()
 			noise[i] = hps[i].gh + hps[i].ma;
 			if(noise[i] < h_min)
 				h_min = noise[i];
-			if(noise[i] >  h_max)
+			if(noise[i] > h_max)
 				h_max = noise[i];
 			ma_avg += hps[i].ma;
 			h_avg += noise[i];
@@ -265,7 +265,7 @@ void FarMesh::render()
 		float light_f = noise[0]+noise[1]-noise[2]-noise[3];
 		light_f /= 100;
 		if(light_f < -1.0) light_f = -1.0;
-		if(light_f >  1.0) light_f = 1.0;
+		if(light_f > 1.0) light_f = 1.0;
 		//light_f += 1.0;
 		//light_f /= 2.0;
 
@@ -291,7 +291,7 @@ void FarMesh::render()
 			light_f = 0;
 		}
 		// Steep cliffs
-		else if(steepness >  2.0)
+		else if(steepness > 2.0)
 		{
 			c = video::SColor(255,128,128,128);
 			ground_is_rock = true;
@@ -306,7 +306,7 @@ void FarMesh::render()
 			}
 			else
 			{
-				if(h_avg <= 2.5*BS && have_sand_count > = 2)
+				if(h_avg <= 2.5*BS && have_sand_count >= 2)
 				{
 					c = video::SColor(255,210,194,156);
 					ground_is_sand = true;
@@ -314,7 +314,7 @@ void FarMesh::render()
 				else
 				{
 					/*// Trees if there are over 0.01 trees per MapNode
-					if(tree_amount_avg >  0.01)
+					if(tree_amount_avg > 0.01)
 						c = video::SColor(255,50,128,50);
 					else
 						c = video::SColor(255,107,134,51);*/
@@ -333,11 +333,11 @@ void FarMesh::render()
 
 		float b = m_brightness + light_f*0.1*m_brightness;
 		if(b < 0) b = 0;
-		if(b >  2) b = 2;
+		if(b > 2) b = 2;
 
 		c = video::SColor(255, b*c.getRed(), b*c.getGreen(), b*c.getBlue());
 
-		driver-> setMaterial(m_materials[0]);
+		driver->setMaterial(m_materials[0]);
 
 		video::S3DVertex vertices[4] =
 		{
@@ -347,14 +347,14 @@ void FarMesh::render()
 			video::S3DVertex(p1.X,noise[3],p0.Y, 0,0,0, c, 0,0),
 		};
 		u16 indices[] = {0,1,2,2,3,0};
-		driver-> drawVertexPrimitiveList(vertices, 4, indices, 2,
+		driver->drawVertexPrimitiveList(vertices, 4, indices, 2,
 				video::EVT_STANDARD, scene::EPT_TRIANGLES, video::EIT_16BIT);
 
 		// Add some trees if appropriate
-		if(tree_amount_avg > = 0.0065 && steepness < 1.4
+		if(tree_amount_avg >= 0.0065 && steepness < 1.4
 				&& ground_is_mud == true)
 		{
-			driver-> setMaterial(m_materials[1]);
+			driver->setMaterial(m_materials[1]);
 
 			float b = m_brightness;
 			c = video::SColor(255, b*255, b*255, b*255);
@@ -372,7 +372,7 @@ void FarMesh::render()
 							0,0,0, c, 1,1),
 				};
 				u16 indices[] = {0,1,2,2,3,0};
-				driver-> drawVertexPrimitiveList(vertices, 4, indices, 2,
+				driver->drawVertexPrimitiveList(vertices, 4, indices, 2,
 						video::EVT_STANDARD, scene::EPT_TRIANGLES,
 						video::EIT_16BIT);
 			}
@@ -389,14 +389,14 @@ void FarMesh::render()
 							0,0,0, c, 1,1),
 				};
 				u16 indices[] = {0,1,2,2,3,0};
-				driver-> drawVertexPrimitiveList(vertices, 4, indices, 2,
+				driver->drawVertexPrimitiveList(vertices, 4, indices, 2,
 						video::EVT_STANDARD, scene::EPT_TRIANGLES,
 						video::EIT_16BIT);
 			}
 		}
 	}
 
-	//driver-> clearZBuffer();
+	//driver->clearZBuffer();
 }
 
 void FarMesh::step(float dtime)

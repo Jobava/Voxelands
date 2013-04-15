@@ -62,12 +62,12 @@ public:
 	{
 		JMutexAutoLock lock(m_mutex);
 
-		for(core::map<std::string, std::string> ::Iterator
+		for(core::map<std::string, std::string>::Iterator
 				i = m_settings.getIterator();
 				i.atEnd() == false; i++)
 		{
-			std::string name = i.getNode()-> getKey();
-			std::string value = i.getNode()-> getValue();
+			std::string name = i.getNode()->getKey();
+			std::string value = i.getNode()->getValue();
 			os<<name<<" = "<<value<<"\n";
 		}
 	}
@@ -171,8 +171,8 @@ public:
 		Returns false on EOF
 	*/
 	bool getUpdatedConfigObject(std::istream &is,
-			core::list<std::string>  &dst,
-			core::map<std::string, bool>  &updated)
+			core::list<std::string> &dst,
+			core::map<std::string, bool> &updated)
 	{
 		JMutexAutoLock lock(m_mutex);
 
@@ -217,7 +217,7 @@ public:
 			if(newvalue != value)
 			{
 				infostream<<"Changing value of \""<<name<<"\" = \""
-						<<value<<"\" ->  \""<<newvalue<<"\""
+						<<value<<"\" -> \""<<newvalue<<"\""
 						<<std::endl;
 			}
 
@@ -239,8 +239,8 @@ public:
 		infostream<<"Updating configuration file: \""
 				<<filename<<"\""<<std::endl;
 
-		core::list<std::string>  objects;
-		core::map<std::string, bool>  updated;
+		core::list<std::string> objects;
+		core::map<std::string, bool> updated;
 
 		// Read and modify stuff
 		{
@@ -274,7 +274,7 @@ public:
 			/*
 				Write updated stuff
 			*/
-			for(core::list<std::string> ::Iterator
+			for(core::list<std::string>::Iterator
 					i = objects.begin();
 					i != objects.end(); i++)
 			{
@@ -284,14 +284,14 @@ public:
 			/*
 				Write stuff that was not already in the file
 			*/
-			for(core::map<std::string, std::string> ::Iterator
+			for(core::map<std::string, std::string>::Iterator
 					i = m_settings.getIterator();
 					i.atEnd() == false; i++)
 			{
-				if(updated.find(i.getNode()-> getKey()))
+				if(updated.find(i.getNode()->getKey()))
 					continue;
-				std::string name = i.getNode()-> getKey();
-				std::string value = i.getNode()-> getValue();
+				std::string name = i.getNode()->getKey();
+				std::string value = i.getNode()->getValue();
 				infostream<<"Adding \""<<name<<"\" = \""<<value<<"\""
 						<<std::endl;
 				os<<name<<" = "<<value<<"\n";
@@ -307,25 +307,25 @@ public:
 		returns true on success
 	*/
 	bool parseCommandLine(int argc, char *argv[],
-			core::map<std::string, ValueSpec>  &allowed_options)
+			core::map<std::string, ValueSpec> &allowed_options)
 	{
 		int i=1;
 		for(;;)
 		{
-			if(i > = argc)
+			if(i >= argc)
 				break;
 			std::string argname = argv[i];
 			if(argname.substr(0, 2) != "--")
 			{
 				errorstream<<"Invalid command-line parameter \""
-						<<argname<<"\": --<option>  expected."<<std::endl;
+						<<argname<<"\": --<option> expected."<<std::endl;
 				return false;
 			}
 			i++;
 
 			std::string name = argname.substr(2);
 
-			core::map<std::string, ValueSpec> ::Node *n;
+			core::map<std::string, ValueSpec>::Node *n;
 			n = allowed_options.find(name);
 			if(n == NULL)
 			{
@@ -334,7 +334,7 @@ public:
 				return false;
 			}
 
-			ValueType type = n-> getValue().type;
+			ValueType type = n->getValue().type;
 
 			std::string value = "";
 
@@ -344,7 +344,7 @@ public:
 			}
 			else
 			{
-				if(i > = argc)
+				if(i >= argc)
 				{
 					errorstream<<"Invalid command-line parameter \""
 							<<name<<"\": missing value"<<std::endl;
@@ -397,7 +397,7 @@ public:
 	{
 		JMutexAutoLock lock(m_mutex);
 
-		core::map<std::string, std::string> ::Node *n;
+		core::map<std::string, std::string>::Node *n;
 		n = m_settings.find(name);
 		if(n == NULL)
 		{
@@ -410,7 +410,7 @@ public:
 			}
 		}
 
-		return n-> getValue();
+		return n->getValue();
 	}
 
 	bool getBool(std::string name)
@@ -513,7 +513,7 @@ public:
 		u64 value = 0;
 		std::string s = get(name);
 		std::istringstream ss(s);
-		ss> > value;
+		ss>>value;
 		return value;
 	}
 
@@ -588,18 +588,18 @@ public:
 		if(&other == this)
 			return;
 
-		for(core::map<std::string, std::string> ::Iterator
+		for(core::map<std::string, std::string>::Iterator
 				i = other.m_settings.getIterator();
 				i.atEnd() == false; i++)
 		{
-			m_settings[i.getNode()-> getKey()] = i.getNode()-> getValue();
+			m_settings[i.getNode()->getKey()] = i.getNode()->getValue();
 		}
 
-		for(core::map<std::string, std::string> ::Iterator
+		for(core::map<std::string, std::string>::Iterator
 				i = other.m_defaults.getIterator();
 				i.atEnd() == false; i++)
 		{
-			m_defaults[i.getNode()-> getKey()] = i.getNode()-> getValue();
+			m_defaults[i.getNode()->getKey()] = i.getNode()->getValue();
 		}
 
 		return;
@@ -613,20 +613,20 @@ public:
 		if(&other == this)
 			return *this;
 
-		for(core::map<std::string, std::string> ::Iterator
+		for(core::map<std::string, std::string>::Iterator
 				i = other.m_settings.getIterator();
 				i.atEnd() == false; i++)
 		{
-			m_settings.insert(i.getNode()-> getKey(),
-					i.getNode()-> getValue());
+			m_settings.insert(i.getNode()->getKey(),
+					i.getNode()->getValue());
 		}
 
-		for(core::map<std::string, std::string> ::Iterator
+		for(core::map<std::string, std::string>::Iterator
 				i = other.m_defaults.getIterator();
 				i.atEnd() == false; i++)
 		{
-			m_defaults.insert(i.getNode()-> getKey(),
-					i.getNode()-> getValue());
+			m_defaults.insert(i.getNode()->getKey(),
+					i.getNode()->getValue());
 		}
 
 		return *this;
@@ -648,8 +648,8 @@ public:
 	}
 
 private:
-	core::map<std::string, std::string>  m_settings;
-	core::map<std::string, std::string>  m_defaults;
+	core::map<std::string, std::string> m_settings;
+	core::map<std::string, std::string> m_defaults;
 	// All methods that access m_settings/m_defaults directly should lock this.
 	JMutex m_mutex;
 };

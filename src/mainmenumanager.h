@@ -37,7 +37,7 @@ class MainMenuManager : public IMenuManager
 public:
 	virtual void createdMenu(GUIModalMenu *menu)
 	{
-		for(core::list<GUIModalMenu*> ::Iterator
+		for(core::list<GUIModalMenu*>::Iterator
 				i = m_stack.begin();
 				i != m_stack.end(); i++)
 		{
@@ -45,7 +45,7 @@ public:
 		}
 
 		if(m_stack.size() != 0)
-			(*m_stack.getLast())-> setVisible(false);
+			(*m_stack.getLast())->setVisible(false);
 		m_stack.push_back(menu);
 	}
 
@@ -55,7 +55,7 @@ public:
 		bool removed_entry;
 		do{
 			removed_entry = false;
-			for(core::list<GUIModalMenu*> ::Iterator
+			for(core::list<GUIModalMenu*>::Iterator
 					i = m_stack.begin();
 					i != m_stack.end(); i++)
 			{
@@ -68,12 +68,12 @@ public:
 			}
 		}while(removed_entry);
 
-		/*core::list<GUIModalMenu*> ::Iterator i = m_stack.getLast();
+		/*core::list<GUIModalMenu*>::Iterator i = m_stack.getLast();
 		assert(*i == menu);
 		m_stack.erase(i);*/
 
 		if(m_stack.size() != 0)
-			(*m_stack.getLast())-> setVisible(true);
+			(*m_stack.getLast())->setVisible(true);
 	}
 
 	u32 menuCount()
@@ -81,7 +81,7 @@ public:
 		return m_stack.size();
 	}
 
-	core::list<GUIModalMenu*>  m_stack;
+	core::list<GUIModalMenu*> m_stack;
 };
 
 extern MainMenuManager g_menumgr;
@@ -100,7 +100,7 @@ public:
 
 	virtual void exitToOS()
 	{
-		device-> closeDevice();
+		device->closeDevice();
 	}
 
 	virtual void disconnect()

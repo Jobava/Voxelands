@@ -155,7 +155,7 @@ public:
 	/*
 		Queue of messages to be sent to the client
 	*/
-	Queue<ActiveObjectMessage>  m_messages_out;
+	Queue<ActiveObjectMessage> m_messages_out;
 
 protected:
 	// Used for creating objects based on type
@@ -169,7 +169,7 @@ protected:
 
 private:
 	// Used for creating objects based on type
-	static core::map<u16, Factory>  m_types;
+	static core::map<u16, Factory> m_types;
 };
 
 #endif

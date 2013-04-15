@@ -42,7 +42,7 @@ ServerActiveObject* ServerActiveObject::create(u8 type,
 		const std::string &data)
 {
 	// Find factory function
-	core::map<u16, Factory> ::Node *n;
+	core::map<u16, Factory>::Node *n;
 	n = m_types.find(type);
 	if(n == NULL)
 	{
@@ -52,14 +52,14 @@ ServerActiveObject* ServerActiveObject::create(u8 type,
 		return NULL;
 	}
 
-	Factory f = n-> getValue();
+	Factory f = n->getValue();
 	ServerActiveObject *object = (*f)(env, id, pos, data);
 	return object;
 }
 
 void ServerActiveObject::registerType(u16 type, Factory f)
 {
-	core::map<u16, Factory> ::Node *n;
+	core::map<u16, Factory>::Node *n;
 	n = m_types.find(type);
 	if(n)
 		return;

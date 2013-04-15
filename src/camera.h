@@ -212,7 +212,7 @@ public:
 
 	void removeSpriteFromCache(video::ITexture* texture);
 
-	virtual const core::aabbox3d<f32> & getBoundingBox() const;
+	virtual const core::aabbox3d<f32>& getBoundingBox() const;
 	virtual void OnRegisterSceneNode();
 	virtual void render();
 

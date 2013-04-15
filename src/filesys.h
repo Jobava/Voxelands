@@ -41,7 +41,7 @@ struct DirListNode
 	bool dir;
 };
 
-std::vector<DirListNode>  GetDirListing(std::string path);
+std::vector<DirListNode> GetDirListing(std::string path);
 
 // Returns true if already exists
 bool CreateDir(std::string path);

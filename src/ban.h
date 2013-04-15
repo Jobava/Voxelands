@@ -44,7 +44,7 @@ public:
 private:
 	JMutex m_mutex;
 	std::string m_banfilepath;
-	std::map<std::string, std::string>  m_ips;
+	std::map<std::string, std::string> m_ips;
 	bool m_modified;
 
 };

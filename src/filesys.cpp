@@ -37,9 +37,9 @@ namespace fs
 
 #define BUFSIZE MAX_PATH
 
-std::vector<DirListNode>  GetDirListing(std::string pathstring)
+std::vector<DirListNode> GetDirListing(std::string pathstring)
 {
-	std::vector<DirListNode>  listing;
+	std::vector<DirListNode> listing;
 
 	WIN32_FIND_DATA FindFileData;
 	HANDLE hFind = INVALID_HANDLE_VALUE;
@@ -57,7 +57,7 @@ std::vector<DirListNode>  GetDirListing(std::string pathstring)
 	}
 
 	// Check that the input is not larger than allowed.
-	if (pathstring.size() >  (BUFSIZE - 2))
+	if (pathstring.size() > (BUFSIZE - 2))
 	{
 	  _tprintf(TEXT("Input directory is too large.\n"));
 	  retval = 3;
@@ -172,9 +172,9 @@ bool RecursiveDelete(std::string path)
 #include <sys/stat.h>
 #include <sys/wait.h>
 
-std::vector<DirListNode>  GetDirListing(std::string pathstring)
+std::vector<DirListNode> GetDirListing(std::string pathstring)
 {
-	std::vector<DirListNode>  listing;
+	std::vector<DirListNode> listing;
 
     DIR *dp;
     struct dirent *dirp;
@@ -187,10 +187,10 @@ std::vector<DirListNode>  GetDirListing(std::string pathstring)
 		// NOTE:
 		// Be very sure to not include '..' in the results, it will
 		// result in an epic failure when deleting stuff.
-		if(dirp-> d_name[0]!='.'){
+		if(dirp->d_name[0]!='.'){
 			DirListNode node;
-			node.name = dirp-> d_name;
-			if(dirp-> d_type == DT_DIR) node.dir = true;
+			node.name = dirp->d_name;
+			if(dirp->d_type == DT_DIR) node.dir = true;
 			else node.dir = false;
 			if(node.name != "." && node.name != "..")
 				listing.push_back(node);
@@ -274,7 +274,7 @@ bool RecursiveDelete(std::string path)
 bool RecursiveDeleteContent(std::string path)
 {
 	std::cerr<<"Removing content of \""<<path<<"\""<<std::endl;
-	std::vector<DirListNode>  list = GetDirListing(path);
+	std::vector<DirListNode> list = GetDirListing(path);
 	for(unsigned int i=0; i<list.size(); i++)
 	{
 		if(trim(list[i].name) == "." || trim(list[i].name) == "..")
@@ -294,7 +294,7 @@ bool CreateAllDirs(std::string path)
 {
 
 	size_t pos;
-	std::vector<std::string>  tocreate;
+	std::vector<std::string> tocreate;
 	std::string basepath = path;
 	while(!PathExists(basepath))
 	{
@@ -304,7 +304,7 @@ bool CreateAllDirs(std::string path)
 			return false;
 		basepath = basepath.substr(0,pos);
 	}
-	for(int i=tocreate.size()-1;i> =0;i--)
+	for(int i=tocreate.size()-1;i>=0;i--)
 		CreateDir(tocreate[i]);
 	return true;
 }

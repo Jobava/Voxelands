@@ -43,7 +43,7 @@ Player::Player():
 	m_speed(0,0,0),
 	m_position(0,0,0)
 {
-	updateName("<not set> ");
+	updateName("<not set>");
 	resetInventory();
 }
 
@@ -72,7 +72,7 @@ void Player::accelerate(v3f target_speed, f32 max_increase)
 	d_wanted.Y = 0;
 	f32 dl_wanted = d_wanted.getLength();
 	f32 dl = dl_wanted;
-	if(dl >  max_increase)
+	if(dl > max_increase)
 		dl = max_increase;
 
 	v3f d = d_wanted.normalize() * dl;
@@ -84,20 +84,20 @@ void Player::accelerate(v3f target_speed, f32 max_increase)
 #if 0 // old code
 	if(m_speed.X < target_speed.X - max_increase)
 		m_speed.X += max_increase;
-	else if(m_speed.X >  target_speed.X + max_increase)
+	else if(m_speed.X > target_speed.X + max_increase)
 		m_speed.X -= max_increase;
 	else if(m_speed.X < target_speed.X)
 		m_speed.X = target_speed.X;
-	else if(m_speed.X >  target_speed.X)
+	else if(m_speed.X > target_speed.X)
 		m_speed.X = target_speed.X;
 
 	if(m_speed.Z < target_speed.Z - max_increase)
 		m_speed.Z += max_increase;
-	else if(m_speed.Z >  target_speed.Z + max_increase)
+	else if(m_speed.Z > target_speed.Z + max_increase)
 		m_speed.Z -= max_increase;
 	else if(m_speed.Z < target_speed.Z)
 		m_speed.Z = target_speed.Z;
-	else if(m_speed.Z >  target_speed.Z)
+	else if(m_speed.Z > target_speed.Z)
 		m_speed.Z = target_speed.Z;
 #endif
 }
@@ -122,7 +122,7 @@ void Player::serialize(std::ostream &os)
 	// If actual inventory is backed up due to creative mode, save it
 	// instead of the dummy creative mode inventory
 	if(inventory_backup)
-		inventory_backup-> serialize(os);
+		inventory_backup->serialize(os);
 	else
 		inventory.serialize(os);
 }
@@ -173,7 +173,7 @@ void Player::deSerialize(std::istream &is)
 		else
 		{
 			std::istringstream ss(sprivs);
-			ss> > privs;
+			ss>>privs;
 		}
 	}catch(SettingNotFoundException &e){
 		privs = PRIV_DEFAULT;
@@ -192,23 +192,23 @@ RemotePlayer::RemotePlayer(
 		scene::ISceneNode* parent,
 		IrrlichtDevice *device,
 		s32 id):
-	scene::ISceneNode(parent, (device==NULL)?NULL:device-> getSceneManager(), id),
+	scene::ISceneNode(parent, (device==NULL)?NULL:device->getSceneManager(), id),
 	m_text(NULL)
 {
-	m_box = core::aabbox3d<f32> (-BS/2,0,-BS/2,BS/2,BS*2,BS/2);
+	m_box = core::aabbox3d<f32>(-BS/2,0,-BS/2,BS/2,BS*2,BS/2);
 
 	if(parent != NULL && device != NULL)
 	{
 		// ISceneNode stores a member called SceneManager
 		scene::ISceneManager* mgr = SceneManager;
-		video::IVideoDriver* driver = mgr-> getVideoDriver();
-		gui::IGUIEnvironment* gui = device-> getGUIEnvironment();
+		video::IVideoDriver* driver = mgr->getVideoDriver();
+		gui::IGUIEnvironment* gui = device->getGUIEnvironment();
 
 		// Add a text node for showing the name
 		wchar_t wname[1] = {0};
-		m_text = mgr-> addTextSceneNode(gui-> getBuiltInFont(),
+		m_text = mgr->addTextSceneNode(gui->getBuiltInFont(),
 				wname, video::SColor(255,255,255,255), this);
-		m_text-> setPosition(v3f(0, (f32)BS*2.1, 0));
+		m_text->setPosition(v3f(0, (f32)BS*2.1, 0));
 
 		// Attach a simple mesh to the player for showing an image
 		scene::SMesh *mesh = new scene::SMesh();
@@ -223,18 +223,18 @@ RemotePlayer::RemotePlayer(
 			video::S3DVertex(-BS/2,BS*2,0, 0,0,0, c, 0,0),
 		};
 		u16 indices[] = {0,1,2,2,3,0};
-		buf-> append(vertices, 4, indices, 6);
+		buf->append(vertices, 4, indices, 6);
 		// Set material
-		buf-> getMaterial().setFlag(video::EMF_LIGHTING, false);
-		//buf-> getMaterial().setFlag(video::EMF_BACK_FACE_CULLING, false);
-		buf-> getMaterial().setTexture(0, driver-> getTexture(getTexturePath("player.png").c_str()));
-		buf-> getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
-		buf-> getMaterial().setFlag(video::EMF_FOG_ENABLE, true);
-		//buf-> getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL;
-		buf-> getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
+		buf->getMaterial().setFlag(video::EMF_LIGHTING, false);
+		//buf->getMaterial().setFlag(video::EMF_BACK_FACE_CULLING, false);
+		buf->getMaterial().setTexture(0, driver->getTexture(getTexturePath("player.png").c_str()));
+		buf->getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
+		buf->getMaterial().setFlag(video::EMF_FOG_ENABLE, true);
+		//buf->getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL;
+		buf->getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
 		// Add to mesh
-		mesh-> addMeshBuffer(buf);
-		buf-> drop();
+		mesh->addMeshBuffer(buf);
+		buf->drop();
 		}
 		{ // Back
 		scene::IMeshBuffer *buf = new scene::SMeshBuffer();
@@ -247,21 +247,21 @@ RemotePlayer::RemotePlayer(
 			video::S3DVertex(BS/2,BS*2,0, 0,0,0, c, 1,0),
 		};
 		u16 indices[] = {0,1,2,2,3,0};
-		buf-> append(vertices, 4, indices, 6);
+		buf->append(vertices, 4, indices, 6);
 		// Set material
-		buf-> getMaterial().setFlag(video::EMF_LIGHTING, false);
-		//buf-> getMaterial().setFlag(video::EMF_BACK_FACE_CULLING, false);
-		buf-> getMaterial().setTexture(0, driver-> getTexture(getTexturePath("player_back.png").c_str()));
-		buf-> getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
-		buf-> getMaterial().setFlag(video::EMF_FOG_ENABLE, true);
-		buf-> getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
+		buf->getMaterial().setFlag(video::EMF_LIGHTING, false);
+		//buf->getMaterial().setFlag(video::EMF_BACK_FACE_CULLING, false);
+		buf->getMaterial().setTexture(0, driver->getTexture(getTexturePath("player_back.png").c_str()));
+		buf->getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
+		buf->getMaterial().setFlag(video::EMF_FOG_ENABLE, true);
+		buf->getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
 		// Add to mesh
-		mesh-> addMeshBuffer(buf);
-		buf-> drop();
+		mesh->addMeshBuffer(buf);
+		buf->drop();
 		}
-		m_node = mgr-> addMeshSceneNode(mesh, this);
-		mesh-> drop();
-		m_node-> setPosition(v3f(0,0,0));
+		m_node = mgr->addMeshSceneNode(mesh, this);
+		mesh->drop();
+		m_node->setPosition(v3f(0,0,0));
 	}
 }
 
@@ -278,7 +278,7 @@ void RemotePlayer::updateName(const char *name)
 	{
 		wchar_t wname[PLAYERNAME_SIZE];
 		mbstowcs(wname, m_name, strlen(m_name)+1);
-		m_text-> setText(wname);
+		m_text->setText(wname);
 	}
 }
 
@@ -292,7 +292,7 @@ void RemotePlayer::move(f32 dtime, Map &map, f32 pos_max_d)
 		moveratio = 1.0;
 	else
 		moveratio = m_pos_animation_counter / m_pos_animation_time;
-	if(moveratio >  1.5)
+	if(moveratio > 1.5)
 		moveratio = 1.5;
 	m_showpos = m_oldpos + movevector * moveratio;
 
@@ -320,7 +320,7 @@ LocalPlayer::~LocalPlayer()
 }
 
 void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
-		core::list<CollisionInfo>  *collision_info)
+		core::list<CollisionInfo> *collision_info)
 {
 	v3f position = getPosition();
 	v3f oldpos = position;
@@ -337,7 +337,7 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 	position += m_speed * dtime;
 
 	// Skip collision detection if a special movement mode is used
-	bool free_move = g_settings-> getBool("free_move");
+	bool free_move = g_settings->getBool("free_move");
 	if(free_move)
 	{
 		setPosition(position);
@@ -409,7 +409,7 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 	f32 d = 0.15*BS;
 
 	// This should always apply, otherwise there are glitches
-	assert(d >  pos_max_d);
+	assert(d > pos_max_d);
 
 	float player_radius = BS*0.35;
 	float player_height = BS*1.7;
@@ -453,7 +453,7 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 					CollisionInfo info;
 					info.t = COLLISION_FALL;
 					info.speed = m_speed.Y - old_speed.Y;
-					collision_info-> push_back(info);
+					collision_info->push_back(info);
 				}
 			}*/
 		}
@@ -462,7 +462,7 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 	/*
 		Calculate player collision box (new and old)
 	*/
-	core::aabbox3d<f32>  playerbox(
+	core::aabbox3d<f32> playerbox(
 		position.X - player_radius,
 		position.Y - 0.0,
 		position.Z - player_radius,
@@ -470,7 +470,7 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 		position.Y + player_height,
 		position.Z + player_radius
 	);
-	core::aabbox3d<f32>  playerbox_old(
+	core::aabbox3d<f32> playerbox_old(
 		oldpos.X - player_radius,
 		oldpos.Y - 0.0,
 		oldpos.Z - player_radius,
@@ -489,7 +489,7 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 
 	/*std::cout<<"Checking collisions for ("
 			<<oldpos_i.X<<","<<oldpos_i.Y<<","<<oldpos_i.Z
-			<<") ->  ("
+			<<") -> ("
 			<<pos_i.X<<","<<pos_i.Y<<","<<pos_i.Z
 			<<"):"<<std::endl;*/
 
@@ -515,7 +515,7 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 			// walking over map borders
 		}
 
-		core::aabbox3d<f32>  nodebox = getNodeBox(v3s16(x,y,z), BS);
+		core::aabbox3d<f32> nodebox = getNodeBox(v3s16(x,y,z), BS);
 
 		/*
 			See if the player is touching ground.
@@ -529,9 +529,9 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 		if(
 				//fabs(nodebox.MaxEdge.Y-playerbox.MinEdge.Y) < d
 				fabs(nodebox.MaxEdge.Y-playerbox.MinEdge.Y) < 0.15*BS
-				&& nodebox.MaxEdge.X-d >  playerbox.MinEdge.X
+				&& nodebox.MaxEdge.X-d > playerbox.MinEdge.X
 				&& nodebox.MinEdge.X+d < playerbox.MaxEdge.X
-				&& nodebox.MaxEdge.Z-d >  playerbox.MinEdge.Z
+				&& nodebox.MaxEdge.Z-d > playerbox.MinEdge.Z
 				&& nodebox.MinEdge.Z+d < playerbox.MaxEdge.Z
 		){
 			touching_ground = true;
@@ -573,17 +573,17 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 			if(i == 1)
 				neg_d = 0.15*BS;
 			bool negative_axis_collides =
-				(nodemax >  playermin && nodemax <= playermin_old + neg_d
+				(nodemax > playermin && nodemax <= playermin_old + neg_d
 					&& m_speed.dotProduct(dirs[i]) < 0);
 			bool positive_axis_collides =
-				(nodemin < playermax && nodemin > = playermax_old - pos_d
-					&& m_speed.dotProduct(dirs[i]) >  0);*/
+				(nodemin < playermax && nodemin >= playermax_old - pos_d
+					&& m_speed.dotProduct(dirs[i]) > 0);*/
 			bool negative_axis_collides =
-				(nodemax >  playermin && nodemax <= playermin_old + d
+				(nodemax > playermin && nodemax <= playermin_old + d
 					&& m_speed.dotProduct(dirs[i]) < 0);
 			bool positive_axis_collides =
-				(nodemin < playermax && nodemin > = playermax_old - d
-					&& m_speed.dotProduct(dirs[i]) >  0);
+				(nodemin < playermax && nodemin >= playermax_old - d
+					&& m_speed.dotProduct(dirs[i]) > 0);
 			bool main_axis_collides =
 					negative_axis_collides || positive_axis_collides;
 
@@ -599,7 +599,7 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 				f32 nodemin = nodebox.MinEdge.dotProduct(dirs[j]);
 				f32 playermax = playerbox.MaxEdge.dotProduct(dirs[j]);
 				f32 playermin = playerbox.MinEdge.dotProduct(dirs[j]);
-				if(!(nodemax - d >  playermin && nodemin + d < playermax))
+				if(!(nodemax - d > playermin && nodemin + d < playermax))
 				{
 					other_axes_overlap = false;
 					break;
@@ -626,7 +626,7 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 						CollisionInfo info;
 						info.t = COLLISION_FALL;
 						info.speed = m_speed.Y - old_speed.Y;
-						collision_info-> push_back(info);
+						collision_info->push_back(info);
 					}
 				}*/
 			}
@@ -665,8 +665,8 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 					fabs(player_p2df.X-node_p2df.X),
 					fabs(player_p2df.Y-node_p2df.Y));
 
-			if(distance_f >  min_distance_f ||
-					max_axis_distance_f >  0.5*BS + sneak_max + 0.1*BS)
+			if(distance_f > min_distance_f ||
+					max_axis_distance_f > 0.5*BS + sneak_max + 0.1*BS)
 				continue;
 
 			try{
@@ -723,7 +723,7 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 			CollisionInfo info;
 			info.t = COLLISION_FALL;
 			info.speed = m_speed.Y - old_speed.Y;
-			collision_info-> push_back(info);
+			collision_info->push_back(info);
 		}
 	}
 }
@@ -750,9 +750,9 @@ void LocalPlayer::applyControl(float dtime)
 
 	v3f speed = v3f(0,0,0);
 
-	bool free_move = g_settings-> getBool("free_move");
-	bool fast_move = g_settings-> getBool("fast_move");
-	bool continuous_forward = g_settings-> getBool("continuous_forward");
+	bool free_move = g_settings->getBool("free_move");
+	bool fast_move = g_settings->getBool("fast_move");
+	bool continuous_forward = g_settings->getBool("continuous_forward");
 
 	if(free_move || is_climbing)
 	{

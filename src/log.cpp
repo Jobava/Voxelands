@@ -26,8 +26,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "debug.h"
 #include "gettime.h"
 
-std::list<ILogOutput*>  log_outputs[LMT_NUM_VALUES];
-std::map<threadid_t, std::string>  log_threadnames;
+std::list<ILogOutput*> log_outputs[LMT_NUM_VALUES];
+std::map<threadid_t, std::string> log_threadnames;
 
 void log_add_output(ILogOutput *out, enum LogMessageLevel lev)
 {
@@ -72,18 +72,18 @@ static std::string get_lev_string(enum LogMessageLevel lev)
 void log_printline(enum LogMessageLevel lev, const std::string &text)
 {
 	std::string threadname = "(unknown thread)";
-	std::map<threadid_t, std::string> ::const_iterator i;
+	std::map<threadid_t, std::string>::const_iterator i;
 	i = log_threadnames.find(get_current_thread_id());
 	if(i != log_threadnames.end())
-		threadname = i-> second;
+		threadname = i->second;
 	std::string levelname = get_lev_string(lev);
 	std::ostringstream os(std::ios_base::binary);
 	os<<getTimestamp()<<": "<<levelname<<"["<<threadname<<"]: "<<text;
-	for(std::list<ILogOutput*> ::iterator i = log_outputs[lev].begin();
+	for(std::list<ILogOutput*>::iterator i = log_outputs[lev].begin();
 			i != log_outputs[lev].end(); i++){
 		ILogOutput *out = *i;
-		out-> printLog(os.str());
-		out-> printLog(lev, text);
+		out->printLog(os.str());
+		out->printLog(lev, text);
 	}
 }
 

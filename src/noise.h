@@ -43,12 +43,12 @@ public:
 	}
 	int range(int min, int max)
 	{
-		if(max-min >  32768/10)
+		if(max-min > 32768/10)
 		{
-			//dstream<<"WARNING: PseudoRandom::range: max >  32767"<<std::endl;
+			//dstream<<"WARNING: PseudoRandom::range: max > 32767"<<std::endl;
 			assert(0);
 		}
-		if(min >  max)
+		if(min > max)
 		{
 			assert(0);
 			return max;

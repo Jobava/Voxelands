@@ -46,7 +46,7 @@ public:
 protected:
 	static bool valid_kcode(irr::EKEY_CODE k)
 	{
-		return k >  0 && k < irr::KEY_KEY_CODES_COUNT;
+		return k > 0 && k < irr::KEY_KEY_CODES_COUNT;
 	}
 
 	irr::EKEY_CODE Key;

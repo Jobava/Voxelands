@@ -57,7 +57,7 @@ namespace mapgen
 		ManualMapVoxelManipulator *vmanip;
 		u64 seed;
 		v3s16 blockpos;
-		UniqueQueue<v3s16>  transforming_liquid;
+		UniqueQueue<v3s16> transforming_liquid;
 
 		BlockMakeData();
 		~BlockMakeData();

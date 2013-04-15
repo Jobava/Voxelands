@@ -31,7 +31,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 struct ServerCommandContext
 {
-	std::vector<std::wstring>  parms;
+	std::vector<std::wstring> parms;
 	std::wstring paramstring;
 	Server* server;
 	ServerEnvironment *env;
@@ -42,7 +42,7 @@ struct ServerCommandContext
 	u32 flags;
 
 	ServerCommandContext(
-		std::vector<std::wstring>  parms,
+		std::vector<std::wstring> parms,
 		std::wstring paramstring,
 		Server* server,
 		ServerEnvironment *env,

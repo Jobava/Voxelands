@@ -67,24 +67,24 @@ Camera::Camera(scene::ISceneManager* smgr, MapDrawControl& draw_control):
 
 	// note: making the camera node a child of the player node
 	// would lead to unexpected behaviour, so we don't do that.
-	m_playernode = smgr-> addEmptySceneNode(smgr-> getRootSceneNode());
-	m_headnode = smgr-> addEmptySceneNode(m_playernode);
-	m_cameranode = smgr-> addCameraSceneNode(smgr-> getRootSceneNode());
-	m_cameranode-> bindTargetAndRotation(true);
+	m_playernode = smgr->addEmptySceneNode(smgr->getRootSceneNode());
+	m_headnode = smgr->addEmptySceneNode(m_playernode);
+	m_cameranode = smgr->addCameraSceneNode(smgr->getRootSceneNode());
+	m_cameranode->bindTargetAndRotation(true);
 
 	// This needs to be in its own scene manager. It is drawn after
 	// all other 3D scene nodes and before the GUI.
-	m_wieldmgr = smgr-> createNewSceneManager();
-	m_wieldmgr-> addCameraSceneNode();
-	m_wieldnode = new ExtrudedSpriteSceneNode(m_wieldmgr-> getRootSceneNode(), m_wieldmgr);
+	m_wieldmgr = smgr->createNewSceneManager();
+	m_wieldmgr->addCameraSceneNode();
+	m_wieldnode = new ExtrudedSpriteSceneNode(m_wieldmgr->getRootSceneNode(), m_wieldmgr);
 
 	updateSettings();
 }
 
 Camera::~Camera()
 {
-	m_wieldmgr-> drop();
-	m_wieldnode-> drop();
+	m_wieldmgr->drop();
+	m_wieldnode->drop();
 }
 
 bool Camera::successfullyCreated(std::wstring& error_message)
@@ -138,7 +138,7 @@ void Camera::step(f32 dtime)
 				m_view_bobbing_anim -= offset;
 			else
 				m_view_bobbing_anim += offset;
-			if (m_view_bobbing_anim <= 0 || m_view_bobbing_anim > = 1)
+			if (m_view_bobbing_anim <= 0 || m_view_bobbing_anim >= 1)
 			{
 				m_view_bobbing_anim = 0;
 				m_view_bobbing_state = 0;
@@ -148,18 +148,18 @@ void Camera::step(f32 dtime)
 			// Animation is getting turned off
 			if(m_view_bobbing_anim < 0.25){
 				m_view_bobbing_anim -= offset;
-			} else if(m_view_bobbing_anim >  0.75){
+			} else if(m_view_bobbing_anim > 0.75){
 				m_view_bobbing_anim += offset;
 			} if(m_view_bobbing_anim < 0.5){
 				m_view_bobbing_anim += offset;
-				if(m_view_bobbing_anim >  0.5)
+				if(m_view_bobbing_anim > 0.5)
 					m_view_bobbing_anim = 0.5;
 			} else {
 				m_view_bobbing_anim -= offset;
 				if(m_view_bobbing_anim < 0.5)
 					m_view_bobbing_anim = 0.5;
 			}
-			if(m_view_bobbing_anim <= 0 || m_view_bobbing_anim > = 1 ||
+			if(m_view_bobbing_anim <= 0 || m_view_bobbing_anim >= 1 ||
 					fabs(m_view_bobbing_anim - 0.5) < 0.01)
 			{
 				m_view_bobbing_anim = 0;
@@ -177,7 +177,7 @@ void Camera::step(f32 dtime)
 	{
 		f32 offset = dtime * 3.5;
 		m_digging_anim += offset;
-		if (m_digging_anim > = 1)
+		if (m_digging_anim >= 1)
 		{
 			m_digging_anim = 0;
 			m_digging_button = -1;
@@ -188,14 +188,14 @@ void Camera::step(f32 dtime)
 void Camera::update(LocalPlayer* player, f32 frametime, v2u32 screensize)
 {
 	// Set player node transformation
-	m_playernode-> setPosition(player-> getPosition());
-	m_playernode-> setRotation(v3f(0, -1 * player-> getYaw(), 0));
-	m_playernode-> updateAbsolutePosition();
+	m_playernode->setPosition(player->getPosition());
+	m_playernode->setRotation(v3f(0, -1 * player->getYaw(), 0));
+	m_playernode->updateAbsolutePosition();
 
 	// Set head node transformation
-	m_headnode-> setPosition(player-> getEyeOffset());
-	m_headnode-> setRotation(v3f(player-> getPitch(), 0, 0));
-	m_headnode-> updateAbsolutePosition();
+	m_headnode->setPosition(player->getEyeOffset());
+	m_headnode->setRotation(v3f(player->getPitch(), 0, 0));
+	m_headnode->updateAbsolutePosition();
 
 	// Compute relative camera position and target
 	v3f rel_cam_pos = v3f(0,0,0);
@@ -221,7 +221,7 @@ void Camera::update(LocalPlayer* player, f32 frametime, v2u32 screensize)
 		//rel_cam_target += 0.03 * bobvec;
 		//rel_cam_up.rotateXYBy(0.02 * bobdir * bobtmp * PI);
 		float f = 1.0;
-		f *= g_settings-> getFloat("view_bobbing_amount");
+		f *= g_settings->getFloat("view_bobbing_amount");
 		rel_cam_pos += bobvec * f;
 		//rel_cam_target += 0.995 * bobvec * f;
 		rel_cam_target += bobvec * f;
@@ -245,26 +245,26 @@ void Camera::update(LocalPlayer* player, f32 frametime, v2u32 screensize)
 	}
 
 	// Compute absolute camera position and target
-	m_headnode-> getAbsoluteTransformation().transformVect(m_camera_position, rel_cam_pos);
-	m_headnode-> getAbsoluteTransformation().rotateVect(m_camera_direction, rel_cam_target - rel_cam_pos);
+	m_headnode->getAbsoluteTransformation().transformVect(m_camera_position, rel_cam_pos);
+	m_headnode->getAbsoluteTransformation().rotateVect(m_camera_direction, rel_cam_target - rel_cam_pos);
 
 	v3f abs_cam_up;
-	m_headnode-> getAbsoluteTransformation().rotateVect(abs_cam_up, rel_cam_up);
+	m_headnode->getAbsoluteTransformation().rotateVect(abs_cam_up, rel_cam_up);
 
 	// Set camera node transformation
-	m_cameranode-> setPosition(m_camera_position);
-	m_cameranode-> setUpVector(abs_cam_up);
+	m_cameranode->setPosition(m_camera_position);
+	m_cameranode->setUpVector(abs_cam_up);
 	// *100.0 helps in large map coordinates
-	m_cameranode-> setTarget(m_camera_position + 100 * m_camera_direction);
+	m_cameranode->setTarget(m_camera_position + 100 * m_camera_direction);
 
 	// FOV and and aspect ratio
 	m_aspect = (f32)screensize.X / (f32) screensize.Y;
 	m_fov_x = 2 * atan(0.5 * m_aspect * tan(m_fov_y));
-	m_cameranode-> setAspectRatio(m_aspect);
-	m_cameranode-> setFOV(m_fov_y);
+	m_cameranode->setAspectRatio(m_aspect);
+	m_cameranode->setFOV(m_fov_y);
 	// Just so big a value that everything rendered is visible
 	// Some more allowance that m_viewing_range_max * BS because of active objects etc.
-	m_cameranode-> setFarValue(m_viewing_range_max * BS * 10);
+	m_cameranode->setFarValue(m_viewing_range_max * BS * 10);
 
 	// Position the wielded item
 	v3f wield_position = v3f(45, -35, 65);
@@ -289,9 +289,9 @@ void Camera::update(LocalPlayer* player, f32 frametime, v2u32 screensize)
 		wield_position.X -= sin(bobfrac*PI*2.0) * 3.0;
 		wield_position.Y += sin(my_modf(bobfrac*2.0)*PI) * 3.0;
 	}
-	m_wieldnode-> setPosition(wield_position);
-	m_wieldnode-> setRotation(wield_rotation);
-	m_wieldnode-> updateLight(player-> light);
+	m_wieldnode->setPosition(wield_position);
+	m_wieldnode->setRotation(wield_rotation);
+	m_wieldnode->updateLight(player->light);
 
 	// Render distance feedback loop
 	updateViewingRange(frametime);
@@ -299,11 +299,11 @@ void Camera::update(LocalPlayer* player, f32 frametime, v2u32 screensize)
 	// If the player seems to be walking on solid ground,
 	// view bobbing is enabled and free_move is off,
 	// start (or continue) the view bobbing animation.
-	v3f speed = player-> getSpeed();
-	if ((hypot(speed.X, speed.Z) >  BS) &&
-		(player-> touching_ground) &&
-		(g_settings-> getBool("view_bobbing") == true) &&
-		(g_settings-> getBool("free_move") == false))
+	v3f speed = player->getSpeed();
+	if ((hypot(speed.X, speed.Z) > BS) &&
+		(player->touching_ground) &&
+		(g_settings->getBool("view_bobbing") == true) &&
+		(g_settings->getBool("free_move") == false))
 	{
 		// Start animation
 		m_view_bobbing_state = 1;
@@ -327,7 +327,7 @@ void Camera::updateViewingRange(f32 frametime_in)
 
 	// Actually this counter kind of sucks because frametime is busytime
 	m_frametime_counter -= frametime_in;
-	if (m_frametime_counter >  0)
+	if (m_frametime_counter > 0)
 		return;
 	m_frametime_counter = 0.2;
 
@@ -432,18 +432,18 @@ void Camera::updateViewingRange(f32 frametime_in)
 
 void Camera::updateSettings()
 {
-	m_viewing_range_min = g_settings-> getS16("viewing_range_nodes_min");
+	m_viewing_range_min = g_settings->getS16("viewing_range_nodes_min");
 	m_viewing_range_min = MYMAX(5.0, m_viewing_range_min);
 
-	m_viewing_range_max = g_settings-> getS16("viewing_range_nodes_max");
+	m_viewing_range_max = g_settings->getS16("viewing_range_nodes_max");
 	m_viewing_range_max = MYMAX(m_viewing_range_min, m_viewing_range_max);
 
-	f32 fov_degrees = g_settings-> getFloat("fov");
+	f32 fov_degrees = g_settings->getFloat("fov");
 	fov_degrees = MYMAX(fov_degrees, 10.0);
 	fov_degrees = MYMIN(fov_degrees, 170.0);
 	m_fov_y = fov_degrees * PI / 180.0;
 
-	f32 wanted_fps = g_settings-> getFloat("wanted_fps");
+	f32 wanted_fps = g_settings->getFloat("wanted_fps");
 	wanted_fps = MYMAX(wanted_fps, 1.0);
 	m_wanted_frametime = 1.0 / wanted_fps;
 }
@@ -455,15 +455,15 @@ void Camera::wield(const InventoryItem* item)
 		bool isCube = false;
 
 		// Try to make a MaterialItem cube.
-		if (std::string(item-> getName()) == "MaterialItem")
+		if (std::string(item->getName()) == "MaterialItem")
 		{
 			// A block-type material
 			MaterialItem* mat_item = (MaterialItem*) item;
-			content_t content = mat_item-> getMaterial();
+			content_t content = mat_item->getMaterial();
 			if (content_features(content).solidness || content_features(content).visual_solidness)
 			{
-				m_wieldnode-> setCube(content_features(content).tiles);
-				m_wieldnode-> setScale(v3f(30));
+				m_wieldnode->setCube(content_features(content).tiles);
+				m_wieldnode->setScale(v3f(30));
 				isCube = true;
 			}
 		}
@@ -471,16 +471,16 @@ void Camera::wield(const InventoryItem* item)
 		// If that failed, make an extruded sprite.
 		if (!isCube)
 		{
-			m_wieldnode-> setSprite(item-> getImageRaw());
-			m_wieldnode-> setScale(v3f(40));
+			m_wieldnode->setSprite(item->getImageRaw());
+			m_wieldnode->setScale(v3f(40));
 		}
 
-		m_wieldnode-> setVisible(true);
+		m_wieldnode->setVisible(true);
 	}
 	else
 	{
 		// Bare hands
-		m_wieldnode-> setVisible(false);
+		m_wieldnode->setVisible(false);
 	}
 }
 
@@ -492,14 +492,14 @@ void Camera::setDigging(s32 button)
 
 void Camera::drawWieldedTool()
 {
-	m_wieldmgr-> getVideoDriver()-> clearZBuffer();
+	m_wieldmgr->getVideoDriver()->clearZBuffer();
 
-	scene::ICameraSceneNode* cam = m_wieldmgr-> getActiveCamera();
-	cam-> setAspectRatio(m_cameranode-> getAspectRatio());
-	cam-> setFOV(m_cameranode-> getFOV());
-	cam-> setNearValue(0.1);
-	cam-> setFarValue(100);
-	m_wieldmgr-> drawAll();
+	scene::ICameraSceneNode* cam = m_wieldmgr->getActiveCamera();
+	cam->setAspectRatio(m_cameranode->getAspectRatio());
+	cam->setFOV(m_cameranode->getFOV());
+	cam->setNearValue(0.1);
+	cam->setFarValue(100);
+	m_wieldmgr->drawAll();
 }
 
 
@@ -513,7 +513,7 @@ ExtrudedSpriteSceneNode::ExtrudedSpriteSceneNode(
 ):
 	ISceneNode(parent, mgr, id, position, rotation, scale)
 {
-	m_meshnode = mgr-> addMeshSceneNode(NULL, this, -1, v3f(0,0,0), v3f(0,0,0), v3f(1,1,1), true);
+	m_meshnode = mgr->addMeshSceneNode(NULL, this, -1, v3f(0,0,0), v3f(0,0,0), v3f(1,1,1), true);
 	m_thickness = 0.1;
 	m_cubemesh = NULL;
 	m_is_cube = false;
@@ -524,24 +524,24 @@ ExtrudedSpriteSceneNode::~ExtrudedSpriteSceneNode()
 {
 	removeChild(m_meshnode);
 	if (m_cubemesh)
-		m_cubemesh-> drop();
+		m_cubemesh->drop();
 }
 
 void ExtrudedSpriteSceneNode::setSprite(video::ITexture* texture)
 {
 	if (texture == NULL)
 	{
-		m_meshnode-> setVisible(false);
+		m_meshnode->setVisible(false);
 		return;
 	}
 
 	io::path name = getExtrudedName(texture);
-	scene::IMeshCache* cache = SceneManager-> getMeshCache();
-	scene::IAnimatedMesh* mesh = cache-> getMeshByName(name);
+	scene::IMeshCache* cache = SceneManager->getMeshCache();
+	scene::IAnimatedMesh* mesh = cache->getMeshByName(name);
 	if (mesh != NULL)
 	{
 		// Extruded texture has been found in cache.
-		m_meshnode-> setMesh(mesh);
+		m_meshnode->setMesh(mesh);
 	}
 	else
 	{
@@ -550,20 +550,20 @@ void ExtrudedSpriteSceneNode::setSprite(video::ITexture* texture)
 		if (mesh == NULL)
 		{
 			dstream << "Warning: failed to extrude sprite" << std::endl;
-			m_meshnode-> setVisible(false);
+			m_meshnode->setVisible(false);
 			return;
 		}
-		cache-> addMesh(name, mesh);
-		m_meshnode-> setMesh(mesh);
-		mesh-> drop();
+		cache->addMesh(name, mesh);
+		m_meshnode->setMesh(mesh);
+		mesh->drop();
 	}
 
-	m_meshnode-> setScale(v3f(1, 1, m_thickness));
-	m_meshnode-> getMaterial(0).setTexture(0, texture);
-	m_meshnode-> getMaterial(0).setFlag(video::EMF_LIGHTING, false);
-	m_meshnode-> getMaterial(0).setFlag(video::EMF_BILINEAR_FILTER, false);
-	m_meshnode-> getMaterial(0).MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-	m_meshnode-> setVisible(true);
+	m_meshnode->setScale(v3f(1, 1, m_thickness));
+	m_meshnode->getMaterial(0).setTexture(0, texture);
+	m_meshnode->getMaterial(0).setFlag(video::EMF_LIGHTING, false);
+	m_meshnode->getMaterial(0).setFlag(video::EMF_BILINEAR_FILTER, false);
+	m_meshnode->getMaterial(0).MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
+	m_meshnode->setVisible(true);
 	m_is_cube = false;
 	updateLight(m_light);
 }
@@ -573,8 +573,8 @@ void ExtrudedSpriteSceneNode::setCube(const TileSpec tiles[6])
 	if (m_cubemesh == NULL)
 		m_cubemesh = createCubeMesh();
 
-	m_meshnode-> setMesh(m_cubemesh);
-	m_meshnode-> setScale(v3f(1));
+	m_meshnode->setMesh(m_cubemesh);
+	m_meshnode->setScale(v3f(1));
 	for (int i = 0; i < 6; ++i)
 	{
 		// Get the tile texture and atlas transformation
@@ -583,7 +583,7 @@ void ExtrudedSpriteSceneNode::setCube(const TileSpec tiles[6])
 		v2f size = tiles[i].texture.size;
 
 		// Set material flags and texture
-		video::SMaterial& material = m_meshnode-> getMaterial(i);
+		video::SMaterial& material = m_meshnode->getMaterial(i);
 		material.setFlag(video::EMF_LIGHTING, false);
 		material.setFlag(video::EMF_BILINEAR_FILTER, false);
 		tiles[i].applyMaterialOptions(material);
@@ -591,7 +591,7 @@ void ExtrudedSpriteSceneNode::setCube(const TileSpec tiles[6])
 		material.getTextureMatrix(0).setTextureTranslate(pos.X, pos.Y);
 		material.getTextureMatrix(0).setTextureScale(size.X, size.Y);
 	}
-	m_meshnode-> setVisible(true);
+	m_meshnode->setVisible(true);
 	m_is_cube = true;
 	updateLight(m_light);
 }
@@ -604,33 +604,33 @@ void ExtrudedSpriteSceneNode::updateLight(u8 light)
 	// Set brightness one lower than incoming light
 	diminish_light(li);
 	video::SColor color(255,li,li,li);
-	setMeshVerticesColor(m_meshnode-> getMesh(), color);
+	setMeshVerticesColor(m_meshnode->getMesh(), color);
 }
 
 void ExtrudedSpriteSceneNode::removeSpriteFromCache(video::ITexture* texture)
 {
-	scene::IMeshCache* cache = SceneManager-> getMeshCache();
-	scene::IAnimatedMesh* mesh = cache-> getMeshByName(getExtrudedName(texture));
+	scene::IMeshCache* cache = SceneManager->getMeshCache();
+	scene::IAnimatedMesh* mesh = cache->getMeshByName(getExtrudedName(texture));
 	if (mesh != NULL)
-		cache-> removeMesh(mesh);
+		cache->removeMesh(mesh);
 }
 
 void ExtrudedSpriteSceneNode::setSpriteThickness(f32 thickness)
 {
 	m_thickness = thickness;
 	if (!m_is_cube)
-		m_meshnode-> setScale(v3f(1, 1, thickness));
+		m_meshnode->setScale(v3f(1, 1, thickness));
 }
 
-const core::aabbox3d<f32> & ExtrudedSpriteSceneNode::getBoundingBox() const
+const core::aabbox3d<f32>& ExtrudedSpriteSceneNode::getBoundingBox() const
 {
-	return m_meshnode-> getBoundingBox();
+	return m_meshnode->getBoundingBox();
 }
 
 void ExtrudedSpriteSceneNode::OnRegisterSceneNode()
 {
 	if (IsVisible)
-		SceneManager-> registerNodeForRendering(this);
+		SceneManager->registerNodeForRendering(this);
 	ISceneNode::OnRegisterSceneNode();
 }
 
@@ -641,7 +641,7 @@ void ExtrudedSpriteSceneNode::render()
 
 io::path ExtrudedSpriteSceneNode::getExtrudedName(video::ITexture* texture)
 {
-	io::path path = texture-> getName();
+	io::path path = texture->getName();
 	path.append("/[extruded]");
 	return path;
 }
@@ -668,7 +668,7 @@ scene::IAnimatedMesh* ExtrudedSpriteSceneNode::extrudeARGB(u32 width, u32 height
 			video::S3DVertex(-0.5,-0.5,+0.5, 0,0,+1, c, 0,1),
 		};
 		u16 indices[12] = {0,1,2,2,3,0,4,5,6,6,7,4};
-		buf-> append(vertices, 8, indices, 12);
+		buf->append(vertices, 8, indices, 12);
 	}
 
 	// "Interior"
@@ -688,7 +688,7 @@ scene::IAnimatedMesh* ExtrudedSpriteSceneNode::extrudeARGB(u32 width, u32 height
 			scanline[0] = 0;
 			u8* argb_scanline = data + (y - 1) * argb_wstep;
 			for (u32 x = 0; x < width; ++x)
-				scanline[x+1] = (argb_scanline[x*4+3] > = alpha_threshold);
+				scanline[x+1] = (argb_scanline[x*4+3] >= alpha_threshold);
 			scanline[width + 1] = 0;
 		}
 	}
@@ -720,7 +720,7 @@ scene::IAnimatedMesh* ExtrudedSpriteSceneNode::extrudeARGB(u32 width, u32 height
 					video::S3DVertex(vx1,vy,+0.5, 0,-1,0, c, tx1,ty),
 				};
 				u16 indices[6] = {0,1,2,2,3,0};
-				buf-> append(vertices, 4, indices, 6);
+				buf->append(vertices, 4, indices, 6);
 				x = xx - 1;
 			}
 			if (!scanline[x] && scanline[x + wstep])
@@ -742,7 +742,7 @@ scene::IAnimatedMesh* ExtrudedSpriteSceneNode::extrudeARGB(u32 width, u32 height
 					video::S3DVertex(vx2,vy,-0.5, 0,1,0, c, tx2,ty),
 				};
 				u16 indices[6] = {0,1,2,2,3,0};
-				buf-> append(vertices, 4, indices, 6);
+				buf->append(vertices, 4, indices, 6);
 				x = xx - 1;
 			}
 		}
@@ -772,7 +772,7 @@ scene::IAnimatedMesh* ExtrudedSpriteSceneNode::extrudeARGB(u32 width, u32 height
 					video::S3DVertex(vx,vy2,-0.5, 1,0,0, c, tx,ty2),
 				};
 				u16 indices[6] = {0,1,2,2,3,0};
-				buf-> append(vertices, 4, indices, 6);
+				buf->append(vertices, 4, indices, 6);
 				y = yy - 1;
 			}
 			if (!scancol[y * wstep] && scancol[y * wstep + 1])
@@ -794,7 +794,7 @@ scene::IAnimatedMesh* ExtrudedSpriteSceneNode::extrudeARGB(u32 width, u32 height
 					video::S3DVertex(vx,vy1,+0.5, -1,0,0, c, tx,ty1),
 				};
 				u16 indices[6] = {0,1,2,2,3,0};
-				buf-> append(vertices, 4, indices, 6);
+				buf->append(vertices, 4, indices, 6);
 				y = yy - 1;
 			}
 		}
@@ -802,50 +802,50 @@ scene::IAnimatedMesh* ExtrudedSpriteSceneNode::extrudeARGB(u32 width, u32 height
 
 	// Add to mesh
 	scene::SMesh* mesh = new scene::SMesh();
-	buf-> recalculateBoundingBox();
-	mesh-> addMeshBuffer(buf);
-	buf-> drop();
-	mesh-> recalculateBoundingBox();
+	buf->recalculateBoundingBox();
+	mesh->addMeshBuffer(buf);
+	buf->drop();
+	mesh->recalculateBoundingBox();
 	scene::SAnimatedMesh* anim_mesh = new scene::SAnimatedMesh(mesh);
-	mesh-> drop();
+	mesh->drop();
 	return anim_mesh;
 }
 
 scene::IAnimatedMesh* ExtrudedSpriteSceneNode::extrude(video::ITexture* texture)
 {
 	scene::IAnimatedMesh* mesh = NULL;
-	core::dimension2d<u32>  size = texture-> getSize();
-	video::ECOLOR_FORMAT format = texture-> getColorFormat();
+	core::dimension2d<u32> size = texture->getSize();
+	video::ECOLOR_FORMAT format = texture->getColorFormat();
 	if (format == video::ECF_A8R8G8B8)
 	{
 		// Texture is in the correct color format, we can pass it
 		// to extrudeARGB right away.
-		void* data = texture-> lock(true);
+		void* data = texture->lock(true);
 		if (data == NULL)
 			return NULL;
 		mesh = extrudeARGB(size.Width, size.Height, (u8*) data);
-		texture-> unlock();
+		texture->unlock();
 	}
 	else
 	{
-		video::IVideoDriver* driver = SceneManager-> getVideoDriver();
+		video::IVideoDriver* driver = SceneManager->getVideoDriver();
 
-		video::IImage* img1 = driver-> createImageFromData(format, size, texture-> lock(true));
+		video::IImage* img1 = driver->createImageFromData(format, size, texture->lock(true));
 		if (img1 == NULL)
 			return NULL;
 
 		// img1 is in the texture's color format, convert to 8-bit ARGB
-		video::IImage* img2 = driver-> createImage(video::ECF_A8R8G8B8, size);
+		video::IImage* img2 = driver->createImage(video::ECF_A8R8G8B8, size);
 		if (img2 != NULL)
 		{
-			img1-> copyTo(img2);
-			img1-> drop();
+			img1->copyTo(img2);
+			img1->drop();
 
-			mesh = extrudeARGB(size.Width, size.Height, (u8*) img2-> lock());
-			img2-> unlock();
-			img2-> drop();
+			mesh = extrudeARGB(size.Width, size.Height, (u8*) img2->lock());
+			img2->unlock();
+			img2->drop();
 		}
-		img1-> drop();
+		img1->drop();
 	}
 	return mesh;
 }
@@ -893,11 +893,11 @@ scene::IMesh* ExtrudedSpriteSceneNode::createCubeMesh()
 	for (u32 i=0; i<6; ++i)
 	{
 		scene::IMeshBuffer* buf = new scene::SMeshBuffer();
-		buf-> append(vertices + 4 * i, 4, indices, 6);
-		buf-> recalculateBoundingBox();
-		mesh-> addMeshBuffer(buf);
-		buf-> drop();
+		buf->append(vertices + 4 * i, 4, indices, 6);
+		buf->recalculateBoundingBox();
+		mesh->addMeshBuffer(buf);
+		buf->drop();
 	}
-	mesh-> recalculateBoundingBox();
+	mesh->recalculateBoundingBox();
 	return mesh;
 }

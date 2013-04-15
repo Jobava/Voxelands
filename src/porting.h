@@ -63,15 +63,15 @@ extern std::string path_data;
 
 /*
 	Directory for storing user data. Examples:
-	Windows: "C:\Documents and Settings\user\Application Data\<PROJECT_NAME> "
-	Linux: "~/.<PROJECT_NAME> "
-	Mac: "~/Library/Application Support/<PROJECT_NAME> "
+	Windows: "C:\Documents and Settings\user\Application Data\<PROJECT_NAME>"
+	Linux: "~/.<PROJECT_NAME>"
+	Mac: "~/Library/Application Support/<PROJECT_NAME>"
 */
 extern std::string path_userdata;
 
 /*
 	Get full path of stuff in data directory.
-	Example: "stone.png" ->  "../data/stone.png"
+	Example: "stone.png" -> "../data/stone.png"
 */
 inline std::string getDataPath(const char *subpath)
 {

@@ -52,7 +52,7 @@ public:
 
 	virtual void render();
 
-	virtual const core::aabbox3d<f32> & getBoundingBox() const
+	virtual const core::aabbox3d<f32>& getBoundingBox() const
 	{
 		return m_box;
 	}
@@ -71,7 +71,7 @@ public:
 
 private:
 	video::SMaterial m_materials[FARMESH_MATERIAL_COUNT];
-	core::aabbox3d<f32>  m_box;
+	core::aabbox3d<f32> m_box;
 	float m_cloud_y;
 	float m_brightness;
 	u64 m_seed;

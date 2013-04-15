@@ -94,7 +94,7 @@ public:
 private:
 	JMutex m_mutex;
 	std::string m_authfilepath;
-	core::map<std::string, AuthData>  m_authdata;
+	core::map<std::string, AuthData> m_authdata;
 	bool m_modified;
 };
 

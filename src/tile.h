@@ -250,9 +250,9 @@ private:
 
 	// A texture id is index in this array.
 	// The first position contains a NULL texture.
-	core::array<SourceAtlasPointer>  m_atlaspointer_cache;
+	core::array<SourceAtlasPointer> m_atlaspointer_cache;
 	// Maps a texture name to an index in the former.
-	core::map<std::string, u32>  m_name_to_id;
+	core::map<std::string, u32> m_name_to_id;
 	// The two former containers are behind this mutex
 	JMutex m_atlaspointer_cache_mutex;
 
@@ -261,13 +261,13 @@ private:
 	video::ITexture *m_main_atlas_texture;
 
 	// Queued texture fetches (to be processed by the main thread)
-	RequestQueue<std::string, u32, u8, u8>  m_get_texture_queue;
+	RequestQueue<std::string, u32, u8, u8> m_get_texture_queue;
 };
 
 enum MaterialType{
 	MATERIAL_ALPHA_NONE,
 	MATERIAL_ALPHA_VERTEX,
-	MATERIAL_ALPHA_SIMPLE, // > 127 = opaque
+	MATERIAL_ALPHA_SIMPLE, // >127 = opaque
 	MATERIAL_ALPHA_BLEND,
 };
 

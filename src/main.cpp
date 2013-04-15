@@ -55,9 +55,9 @@ A list of "active blocks" in which stuff happens. (+=done)
 		  nearest ones.
 
 Vim conversion regexpes for moving to extended content type storage:
-%s/\(\.\|-> \)d \([!=]=\)/\1getContent() \2/g
+%s/\(\.\|->\)d \([!=]=\)/\1getContent() \2/g
 %s/content_features(\([^.]*\)\.d)/content_features(\1)/g
-%s/\(\.\|-> \)d = \([^;]*\);/\1setContent(\2);/g
+%s/\(\.\|->\)d = \([^;]*\);/\1setContent(\2);/g
 %s/\(getNodeNoExNoEmerge([^)]*)\)\.d/\1.getContent()/g
 %s/\(getNodeNoExNoEmerge(.*)\)\.d/\1.getContent()/g
 %s/\.d;/.getContent();/g
@@ -224,7 +224,7 @@ Graphics:
 
 SUGG: Combine MapBlock's face caches to so big pieces that VBO
       can be used
-      - That is > 500 vertices
+      - That is >500 vertices
 	  - This is not easy; all the MapBlocks close to the player would
 	    still need to be drawn separately and combining the blocks
 		would have to happen in a background thread
@@ -514,7 +514,7 @@ public:
 	{
 		if(m_device == NULL)
 			return 0;
-		return m_device-> getTimer()-> getRealTime();
+		return m_device->getTimer()->getRealTime();
 	}
 private:
 	IrrlichtDevice *m_device;
@@ -537,7 +537,7 @@ u32 getTimeMs()
 {
 	if(g_timegetter == NULL)
 		return 0;
-	return g_timegetter-> getTime();
+	return g_timegetter->getTime();
 }
 
 /*
@@ -689,72 +689,72 @@ public:
 	}
 	virtual bool isKeyDown(const KeyPress &keyCode)
 	{
-		return m_receiver-> IsKeyDown(keyCode);
+		return m_receiver->IsKeyDown(keyCode);
 	}
 	virtual bool wasKeyDown(const KeyPress &keyCode)
 	{
-		return m_receiver-> WasKeyDown(keyCode);
+		return m_receiver->WasKeyDown(keyCode);
 	}
 	virtual v2s32 getMousePos()
 	{
-		return m_device-> getCursorControl()-> getPosition();
+		return m_device->getCursorControl()->getPosition();
 	}
 	virtual void setMousePos(s32 x, s32 y)
 	{
-		m_device-> getCursorControl()-> setPosition(x, y);
+		m_device->getCursorControl()->setPosition(x, y);
 	}
 
 	virtual bool getLeftState()
 	{
-		return m_receiver-> left_active;
+		return m_receiver->left_active;
 	}
 	virtual bool getRightState()
 	{
-		return m_receiver-> right_active;
+		return m_receiver->right_active;
 	}
 
 	virtual bool getLeftClicked()
 	{
-		return m_receiver-> leftclicked;
+		return m_receiver->leftclicked;
 	}
 	virtual bool getRightClicked()
 	{
-		return m_receiver-> rightclicked;
+		return m_receiver->rightclicked;
 	}
 	virtual void resetLeftClicked()
 	{
-		m_receiver-> leftclicked = false;
+		m_receiver->leftclicked = false;
 	}
 	virtual void resetRightClicked()
 	{
-		m_receiver-> rightclicked = false;
+		m_receiver->rightclicked = false;
 	}
 
 	virtual bool getLeftReleased()
 	{
-		return m_receiver-> leftreleased;
+		return m_receiver->leftreleased;
 	}
 	virtual bool getRightReleased()
 	{
-		return m_receiver-> rightreleased;
+		return m_receiver->rightreleased;
 	}
 	virtual void resetLeftReleased()
 	{
-		m_receiver-> leftreleased = false;
+		m_receiver->leftreleased = false;
 	}
 	virtual void resetRightReleased()
 	{
-		m_receiver-> rightreleased = false;
+		m_receiver->rightreleased = false;
 	}
 
 	virtual s32 getMouseWheel()
 	{
-		return m_receiver-> getMouseWheel();
+		return m_receiver->getMouseWheel();
 	}
 
 	void clear()
 	{
-		m_receiver-> clearInput();
+		m_receiver->clearInput();
 	}
 private:
 	IrrlichtDevice *m_device;
@@ -988,7 +988,7 @@ void SpeedTests()
 	{
 		TimeTaker timer("Testing core::map speed");
 
-		core::map<v2s16, f32>  map1;
+		core::map<v2s16, f32> map1;
 		tempf = -324;
 		const s16 ii=300;
 		for(s16 y=0; y<ii; y++){
@@ -997,7 +997,7 @@ void SpeedTests()
 				tempf += 1;
 			}
 		}
-		for(s16 y=ii-1; y> =0; y--){
+		for(s16 y=ii-1; y>=0; y--){
 			for(s16 x=0; x<ii; x++){
 				tempf = map1[v2s16(x,y)];
 			}
@@ -1031,10 +1031,10 @@ void SpeedTests()
 
 void drawMenuBackground(video::IVideoDriver* driver)
 {
-	core::dimension2d<u32>  screensize = driver-> getScreenSize();
+	core::dimension2d<u32> screensize = driver->getScreenSize();
 
 	video::ITexture *bgtexture =
-			driver-> getTexture(getTexturePath("mud.png").c_str());
+			driver->getTexture(getTexturePath("mud.png").c_str());
 	if(bgtexture)
 	{
 		s32 texturesize = 128;
@@ -1044,34 +1044,34 @@ void drawMenuBackground(video::IVideoDriver* driver)
 		for(s32 y=0; y<tiled_y; y++)
 		for(s32 x=0; x<tiled_x; x++)
 		{
-			core::rect<s32>  rect(0,0,texturesize,texturesize);
+			core::rect<s32> rect(0,0,texturesize,texturesize);
 			rect += v2s32(x*texturesize, y*texturesize);
-			driver-> draw2DImage(bgtexture, rect,
-				core::rect<s32> (core::position2d<s32> (0,0),
-				core::dimension2di(bgtexture-> getSize())),
+			driver->draw2DImage(bgtexture, rect,
+				core::rect<s32>(core::position2d<s32>(0,0),
+				core::dimension2di(bgtexture->getSize())),
 				NULL, NULL, true);
 		}
 	}
 
 	video::ITexture *logotexture =
-			driver-> getTexture(getTexturePath("menulogo.png").c_str());
+			driver->getTexture(getTexturePath("menulogo.png").c_str());
 	if(logotexture)
 	{
-		v2s32 logosize(logotexture-> getOriginalSize().Width,
-				logotexture-> getOriginalSize().Height);
+		v2s32 logosize(logotexture->getOriginalSize().Width,
+				logotexture->getOriginalSize().Height);
 		logosize *= 4;
 
 		video::SColor bgcolor(255,50,50,50);
-		core::rect<s32>  bgrect(0, screensize.Height-logosize.Y-20,
+		core::rect<s32> bgrect(0, screensize.Height-logosize.Y-20,
 				screensize.Width, screensize.Height);
-		driver-> draw2DRectangle(bgcolor, bgrect, NULL);
+		driver->draw2DRectangle(bgcolor, bgrect, NULL);
 
-		core::rect<s32>  rect(0,0,logosize.X,logosize.Y);
+		core::rect<s32> rect(0,0,logosize.X,logosize.Y);
 		rect += v2s32(screensize.Width/2,screensize.Height-10-logosize.Y);
 		rect -= v2s32(logosize.X/2, 0);
-		driver-> draw2DImage(logotexture, rect,
-			core::rect<s32> (core::position2d<s32> (0,0),
-			core::dimension2di(logotexture-> getSize())),
+		driver->draw2DImage(logotexture, rect,
+			core::rect<s32>(core::position2d<s32>(0,0),
+			core::dimension2di(logotexture->getSize())),
 			NULL, NULL, true);
 	}
 }
@@ -1117,7 +1117,7 @@ int main(int argc, char *argv[])
 	*/
 
 	// List all allowed options
-	core::map<std::string, ValueSpec>  allowed_options;
+	core::map<std::string, ValueSpec> allowed_options;
 	allowed_options.insert("help", ValueSpec(VALUETYPE_FLAG));
 	allowed_options.insert("server", ValueSpec(VALUETYPE_FLAG,
 			"Run server directly"));
@@ -1142,23 +1142,23 @@ int main(int argc, char *argv[])
 	if(ret == false || cmd_args.getFlag("help"))
 	{
 		dstream<<"Allowed options:"<<std::endl;
-		for(core::map<std::string, ValueSpec> ::Iterator
+		for(core::map<std::string, ValueSpec>::Iterator
 				i = allowed_options.getIterator();
 				i.atEnd() == false; i++)
 		{
-			dstream<<"  --"<<i.getNode()-> getKey();
-			if(i.getNode()-> getValue().type == VALUETYPE_FLAG)
+			dstream<<"  --"<<i.getNode()->getKey();
+			if(i.getNode()->getValue().type == VALUETYPE_FLAG)
 			{
 			}
 			else
 			{
-				dstream<<" <value> ";
+				dstream<<" <value>";
 			}
 			dstream<<std::endl;
 
-			if(i.getNode()-> getValue().help != NULL)
+			if(i.getNode()->getValue().help != NULL)
 			{
-				dstream<<"      "<<i.getNode()-> getValue().help
+				dstream<<"      "<<i.getNode()->getValue().help
 						<<std::endl;
 			}
 		}
@@ -1234,7 +1234,7 @@ int main(int argc, char *argv[])
 
 	if(cmd_args.exists("config"))
 	{
-		bool r = g_settings-> readConfigFile(cmd_args.get("config").c_str());
+		bool r = g_settings->readConfigFile(cmd_args.get("config").c_str());
 		if(r == false)
 		{
 			errorstream<<"Could not read configuration from \""
@@ -1245,7 +1245,7 @@ int main(int argc, char *argv[])
 	}
 	else
 	{
-		core::array<std::string>  filenames;
+		core::array<std::string> filenames;
 		filenames.push_back(porting::path_userdata +
 				DIR_DELIM + "minetest.conf");
 #ifdef RUN_IN_PLACE
@@ -1255,7 +1255,7 @@ int main(int argc, char *argv[])
 
 		for(u32 i=0; i<filenames.size(); i++)
 		{
-			bool r = g_settings-> readConfigFile(filenames[i].c_str());
+			bool r = g_settings->readConfigFile(filenames[i].c_str());
 			if(r)
 			{
 				configpath = filenames[i];
@@ -1309,8 +1309,8 @@ int main(int argc, char *argv[])
 	u16 port = 30000;
 	if(cmd_args.exists("port"))
 		port = cmd_args.getU16("port");
-	else if(g_settings-> exists("port"))
-		port = g_settings-> getU16("port");
+	else if(g_settings->exists("port"))
+		port = g_settings->getU16("port");
 	if(port == 0)
 		port = 30000;
 
@@ -1318,8 +1318,8 @@ int main(int argc, char *argv[])
 	std::string map_dir = porting::path_userdata+DIR_DELIM+"world";
 	if(cmd_args.exists("map-dir"))
 		map_dir = cmd_args.get("map-dir");
-	else if(g_settings-> exists("map-dir"))
-		map_dir = g_settings-> get("map-dir");
+	else if(g_settings->exists("map-dir"))
+		map_dir = g_settings->get("map-dir");
 
 	// Run dedicated server if asked to
 	if(cmd_args.getFlag("server"))
@@ -1353,10 +1353,10 @@ int main(int argc, char *argv[])
 	}
 	else
 	{
-		address = g_settings-> get("address");
+		address = g_settings->get("address");
 	}
 
-	std::string playername = g_settings-> get("name");
+	std::string playername = g_settings->get("name");
 
 	/*
 		Device initialization
@@ -1365,14 +1365,14 @@ int main(int argc, char *argv[])
 	// Resolution selection
 
 	bool fullscreen = false;
-	u16 screenW = g_settings-> getU16("screenW");
-	u16 screenH = g_settings-> getU16("screenH");
+	u16 screenW = g_settings->getU16("screenW");
+	u16 screenH = g_settings->getU16("screenH");
 
 	// Determine driver
 
 	video::E_DRIVER_TYPE driverType;
 
-	std::string driverstring = g_settings-> get("video_driver");
+	std::string driverstring = g_settings->get("video_driver");
 
 	if(driverstring == "null")
 		driverType = video::EDT_NULL;
@@ -1401,7 +1401,7 @@ int main(int argc, char *argv[])
 
 	IrrlichtDevice *device;
 	device = createDevice(driverType,
-			core::dimension2d<u32> (screenW, screenH),
+			core::dimension2d<u32>(screenW, screenH),
 			16, fullscreen, false, false, &receiver);
 
 	if (device == 0)
@@ -1411,19 +1411,19 @@ int main(int argc, char *argv[])
 		Continue initialization
 	*/
 
-	video::IVideoDriver* driver = device-> getVideoDriver();
+	video::IVideoDriver* driver = device->getVideoDriver();
 
 	// Disable mipmaps (because some of them look ugly)
-	driver-> setTextureCreationFlag(video::ETCF_CREATE_MIP_MAPS, false);
+	driver->setTextureCreationFlag(video::ETCF_CREATE_MIP_MAPS, false);
 
 	/*
 		This changes the minimum allowed number of vertices in a VBO.
 		Default is 500.
 	*/
-	//driver-> setMinHardwareBufferVertexCount(50);
+	//driver->setMinHardwareBufferVertexCount(50);
 
 	// Set the window caption
-	device-> setWindowCaption(L"Minetest [Main Menu]");
+	device->setWindowCaption(L"Minetest [Main Menu]");
 
 	// Create time getter
 	g_timegetter = new IrrlichtTimeGetter(device);
@@ -1444,9 +1444,9 @@ int main(int argc, char *argv[])
 		return 0;
 	}
 
-	device-> setResizable(true);
+	device->setResizable(true);
 
-	bool random_input = g_settings-> getBool("random_input")
+	bool random_input = g_settings->getBool("random_input")
 			|| cmd_args.getFlag("random-input");
 	InputHandler *input = NULL;
 	if(random_input)
@@ -1454,29 +1454,29 @@ int main(int argc, char *argv[])
 	else
 		input = new RealInputHandler(device, &receiver);
 
-	scene::ISceneManager* smgr = device-> getSceneManager();
+	scene::ISceneManager* smgr = device->getSceneManager();
 
-	guienv = device-> getGUIEnvironment();
-	gui::IGUISkin* skin = guienv-> getSkin();
-	gui::IGUIFont* font = guienv-> getFont(getTexturePath("fontlucida.png").c_str());
+	guienv = device->getGUIEnvironment();
+	gui::IGUISkin* skin = guienv->getSkin();
+	gui::IGUIFont* font = guienv->getFont(getTexturePath("fontlucida.png").c_str());
 	if(font)
-		skin-> setFont(font);
+		skin->setFont(font);
 	else
 		errorstream<<"WARNING: Font file was not found."
 				" Using default font."<<std::endl;
 	// If font was not found, this will get us one
-	font = skin-> getFont();
+	font = skin->getFont();
 	assert(font);
 
-	u32 text_height = font-> getDimension(L"Hello, world!").Height;
+	u32 text_height = font->getDimension(L"Hello, world!").Height;
 	infostream<<"text_height="<<text_height<<std::endl;
 
-	//skin-> setColor(gui::EGDC_BUTTON_TEXT, video::SColor(255,0,0,0));
-	skin-> setColor(gui::EGDC_BUTTON_TEXT, video::SColor(255,255,255,255));
-	//skin-> setColor(gui::EGDC_3D_HIGH_LIGHT, video::SColor(0,0,0,0));
-	//skin-> setColor(gui::EGDC_3D_SHADOW, video::SColor(0,0,0,0));
-	skin-> setColor(gui::EGDC_3D_HIGH_LIGHT, video::SColor(255,0,0,0));
-	skin-> setColor(gui::EGDC_3D_SHADOW, video::SColor(255,0,0,0));
+	//skin->setColor(gui::EGDC_BUTTON_TEXT, video::SColor(255,0,0,0));
+	skin->setColor(gui::EGDC_BUTTON_TEXT, video::SColor(255,255,255,255));
+	//skin->setColor(gui::EGDC_3D_HIGH_LIGHT, video::SColor(0,0,0,0));
+	//skin->setColor(gui::EGDC_3D_SHADOW, video::SColor(0,0,0,0));
+	skin->setColor(gui::EGDC_3D_HIGH_LIGHT, video::SColor(255,0,0,0));
+	skin->setColor(gui::EGDC_3D_SHADOW, video::SColor(255,0,0,0));
 
 	/*
 		Preload some textures and stuff
@@ -1501,7 +1501,7 @@ int main(int argc, char *argv[])
 	/*
 		Menu-game loop
 	*/
-	while(device-> run() && kill == false)
+	while(device->run() && kill == false)
 	{
 
 		// This is used for catching disconnects
@@ -1511,15 +1511,15 @@ int main(int argc, char *argv[])
 			/*
 				Clear everything from the GUIEnvironment
 			*/
-			guienv-> clear();
+			guienv->clear();
 
 			/*
 				We need some kind of a root node to be able to add
 				custom gui elements directly on the screen.
 				Otherwise they won't be automatically drawn.
 			*/
-			guiroot = guienv-> addStaticText(L"",
-					core::rect<s32> (0, 0, 10000, 10000));
+			guiroot = guienv->addStaticText(L"",
+					core::rect<s32>(0, 0, 10000, 10000));
 
 			/*
 				Out-of-game menu loop.
@@ -1529,32 +1529,32 @@ int main(int argc, char *argv[])
 			while(kill == false)
 			{
 				// Cursor can be non-visible when coming from the game
-				device-> getCursorControl()-> setVisible(true);
+				device->getCursorControl()->setVisible(true);
 				// Some stuff are left to scene manager when coming from the game
 				// (map at least?)
-				smgr-> clear();
+				smgr->clear();
 				// Reset or hide the debug gui texts
-				/*guitext-> setText(L"Minetest-c55");
-				guitext2-> setVisible(false);
-				guitext_info-> setVisible(false);
-				guitext_chat-> setVisible(false);*/
+				/*guitext->setText(L"Minetest-c55");
+				guitext2->setVisible(false);
+				guitext_info->setVisible(false);
+				guitext_chat->setVisible(false);*/
 
 				// Initialize menu data
 				MainMenuData menudata;
 				menudata.address = narrow_to_wide(address);
 				menudata.name = narrow_to_wide(playername);
 				menudata.port = narrow_to_wide(itos(port));
-				menudata.fancy_trees = g_settings-> getBool("new_style_leaves");
-				menudata.smooth_lighting = g_settings-> getBool("smooth_lighting");
-				menudata.clouds_3d = g_settings-> getBool("enable_3d_clouds");
-				menudata.opaque_water = g_settings-> getBool("opaque_water");
-				menudata.creative_mode = g_settings-> getBool("creative_mode");
-				menudata.enable_damage = g_settings-> getBool("enable_damage");
+				menudata.fancy_trees = g_settings->getBool("new_style_leaves");
+				menudata.smooth_lighting = g_settings->getBool("smooth_lighting");
+				menudata.clouds_3d = g_settings->getBool("enable_3d_clouds");
+				menudata.opaque_water = g_settings->getBool("opaque_water");
+				menudata.creative_mode = g_settings->getBool("creative_mode");
+				menudata.enable_damage = g_settings->getBool("enable_damage");
 
 				GUIMainMenu *menu =
 						new GUIMainMenu(guienv, guiroot, -1,
 							&g_menumgr, &menudata, g_gamecallback);
-				menu-> allowFocusRemoval(true);
+				menu->allowFocusRemoval(true);
 
 				if(error_message != L"")
 				{
@@ -1564,27 +1564,27 @@ int main(int argc, char *argv[])
 					GUIMessageMenu *menu2 =
 							new GUIMessageMenu(guienv, guiroot, -1,
 								&g_menumgr, error_message.c_str());
-					menu2-> drop();
+					menu2->drop();
 					error_message = L"";
 				}
 
-				video::IVideoDriver* driver = device-> getVideoDriver();
+				video::IVideoDriver* driver = device->getVideoDriver();
 
 				infostream<<"Created main menu"<<std::endl;
 
-				while(device-> run() && kill == false)
+				while(device->run() && kill == false)
 				{
-					if(menu-> getStatus() == true)
+					if(menu->getStatus() == true)
 						break;
 
-					//driver-> beginScene(true, true, video::SColor(255,0,0,0));
-					driver-> beginScene(true, true, video::SColor(255,128,128,128));
+					//driver->beginScene(true, true, video::SColor(255,0,0,0));
+					driver->beginScene(true, true, video::SColor(255,128,128,128));
 
 					drawMenuBackground(driver);
 
-					guienv-> drawAll();
+					guienv->drawAll();
 
-					driver-> endScene();
+					driver->endScene();
 
 					// On some computers framerate doesn't seem to be
 					// automatically limited
@@ -1592,12 +1592,12 @@ int main(int argc, char *argv[])
 				}
 
 				// Break out of menu-game loop to shut down cleanly
-				if(device-> run() == false || kill == true)
+				if(device->run() == false || kill == true)
 					break;
 
 				infostream<<"Dropping main menu"<<std::endl;
 
-				menu-> drop();
+				menu->drop();
 
 				// Delete map if requested
 				if(menudata.delete_map)
@@ -1618,12 +1618,12 @@ int main(int argc, char *argv[])
 				int newport = stoi(wide_to_narrow(menudata.port));
 				if(newport != 0)
 					port = newport;
-				g_settings-> set("new_style_leaves", itos(menudata.fancy_trees));
-				g_settings-> set("smooth_lighting", itos(menudata.smooth_lighting));
-				g_settings-> set("enable_3d_clouds", itos(menudata.clouds_3d));
-				g_settings-> set("opaque_water", itos(menudata.opaque_water));
-				g_settings-> set("creative_mode", itos(menudata.creative_mode));
-				g_settings-> set("enable_damage", itos(menudata.enable_damage));
+				g_settings->set("new_style_leaves", itos(menudata.fancy_trees));
+				g_settings->set("smooth_lighting", itos(menudata.smooth_lighting));
+				g_settings->set("enable_3d_clouds", itos(menudata.clouds_3d));
+				g_settings->set("opaque_water", itos(menudata.opaque_water));
+				g_settings->set("creative_mode", itos(menudata.creative_mode));
+				g_settings->set("enable_damage", itos(menudata.enable_damage));
 
 				// NOTE: These are now checked server side; no need to do it
 				//       here, so let's not do it here.
@@ -1642,19 +1642,19 @@ int main(int argc, char *argv[])
 				}*/
 
 				// Save settings
-				g_settings-> set("name", playername);
-				g_settings-> set("address", address);
-				g_settings-> set("port", itos(port));
+				g_settings->set("name", playername);
+				g_settings->set("address", address);
+				g_settings->set("port", itos(port));
 				// Update configuration file
 				if(configpath != "")
-					g_settings-> updateConfigFile(configpath.c_str());
+					g_settings->updateConfigFile(configpath.c_str());
 
 				// Continue to game
 				break;
 			}
 
 			// Break out of menu-game loop to shut down cleanly
-			if(device-> run() == false)
+			if(device->run() == false)
 				break;
 
 			// Initialize mapnode again to enable changed graphics settings
@@ -1707,7 +1707,7 @@ int main(int argc, char *argv[])
 	/*
 		In the end, delete the Irrlicht device.
 	*/
-	device-> drop();
+	device->drop();
 
 	END_DEBUG_EXCEPTION_HANDLER(errorstream)
 

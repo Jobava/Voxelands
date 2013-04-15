@@ -45,33 +45,33 @@ extern const v3s16 g_27dirs[27];
 
 inline void writeU64(u8 *data, u64 i)
 {
-	data[0] = ((i> > 56)&0xff);
-	data[1] = ((i> > 48)&0xff);
-	data[2] = ((i> > 40)&0xff);
-	data[3] = ((i> > 32)&0xff);
-	data[4] = ((i> > 24)&0xff);
-	data[5] = ((i> > 16)&0xff);
-	data[6] = ((i> >  8)&0xff);
-	data[7] = ((i> >  0)&0xff);
+	data[0] = ((i>>56)&0xff);
+	data[1] = ((i>>48)&0xff);
+	data[2] = ((i>>40)&0xff);
+	data[3] = ((i>>32)&0xff);
+	data[4] = ((i>>24)&0xff);
+	data[5] = ((i>>16)&0xff);
+	data[6] = ((i>> 8)&0xff);
+	data[7] = ((i>> 0)&0xff);
 }
 
 inline void writeU32(u8 *data, u32 i)
 {
-	data[0] = ((i> > 24)&0xff);
-	data[1] = ((i> > 16)&0xff);
-	data[2] = ((i> >  8)&0xff);
-	data[3] = ((i> >  0)&0xff);
+	data[0] = ((i>>24)&0xff);
+	data[1] = ((i>>16)&0xff);
+	data[2] = ((i>> 8)&0xff);
+	data[3] = ((i>> 0)&0xff);
 }
 
 inline void writeU16(u8 *data, u16 i)
 {
-	data[0] = ((i> >  8)&0xff);
-	data[1] = ((i> >  0)&0xff);
+	data[0] = ((i>> 8)&0xff);
+	data[1] = ((i>> 0)&0xff);
 }
 
 inline void writeU8(u8 *data, u8 i)
 {
-	data[0] = ((i> >  0)&0xff);
+	data[0] = ((i>> 0)&0xff);
 }
 
 inline u64 readU64(u8 *data)
@@ -275,7 +275,7 @@ public:
 		*refcount = 1;
 		ptr = t;
 	}
-	SharedPtr(SharedPtr<T>  &t)
+	SharedPtr(SharedPtr<T> &t)
 	{
 		//*this = t;
 		drop();
@@ -287,7 +287,7 @@ public:
 	{
 		drop();
 	}
-	SharedPtr<T>  & operator=(T *t)
+	SharedPtr<T> & operator=(T *t)
 	{
 		drop();
 		refcount = new int;
@@ -295,7 +295,7 @@ public:
 		ptr = t;
 		return *this;
 	}
-	SharedPtr<T>  & operator=(SharedPtr<T>  &t)
+	SharedPtr<T> & operator=(SharedPtr<T> &t)
 	{
 		drop();
 		refcount = t.refcount;
@@ -303,7 +303,7 @@ public:
 		ptr = t.ptr;
 		return *this;
 	}
-	T* operator-> ()
+	T* operator->()
 	{
 		return ptr;
 	}
@@ -326,7 +326,7 @@ public:
 private:
 	void drop()
 	{
-		assert((*refcount) >  0);
+		assert((*refcount) > 0);
 		(*refcount)--;
 		if(*refcount == 0)
 		{
@@ -479,7 +479,7 @@ public:
 	/*
 		Copies whole buffer
 	*/
-	SharedBuffer(const Buffer<T>  &buffer)
+	SharedBuffer(const Buffer<T> &buffer)
 	{
 		m_size = buffer.getSize();
 		if(m_size != 0)
@@ -509,14 +509,14 @@ public:
 	{
 		return m_size;
 	}
-	operator Buffer<T> () const
+	operator Buffer<T>() const
 	{
-		return Buffer<T> (data, m_size);
+		return Buffer<T>(data, m_size);
 	}
 private:
 	void drop()
 	{
-		assert((*refcount) >  0);
+		assert((*refcount) > 0);
 		(*refcount)--;
 		if(*refcount == 0)
 		{
@@ -530,9 +530,9 @@ private:
 	unsigned int *refcount;
 };
 
-inline SharedBuffer<u8>  SharedBufferFromString(const char *string)
+inline SharedBuffer<u8> SharedBufferFromString(const char *string)
 {
-	SharedBuffer<u8>  b((u8*)string, strlen(string)+1);
+	SharedBuffer<u8> b((u8*)string, strlen(string)+1);
 	return b;
 }
 
@@ -602,7 +602,7 @@ void setMeshVerticesColor(scene::IMesh* mesh, video::SColor& color);
 #endif
 
 // Calculates the borders of a "d-radius" cube
-inline void getFacePositions(core::list<v3s16>  &list, u16 d)
+inline void getFacePositions(core::list<v3s16> &list, u16 d)
 {
 	if(d == 0)
 	{
@@ -701,7 +701,7 @@ private:
 
 inline s16 getContainerPos(s16 p, s16 d)
 {
-	return (p> =0 ? p : p-d+1) / d;
+	return (p>=0 ? p : p-d+1) / d;
 }
 
 inline v2s16 getContainerPos(v2s16 p, s16 d)
@@ -741,26 +741,26 @@ inline v3s16 getContainerPos(v3s16 p, v3s16 d)
 inline bool isInArea(v3s16 p, s16 d)
 {
 	return (
-		p.X > = 0 && p.X < d &&
-		p.Y > = 0 && p.Y < d &&
-		p.Z > = 0 && p.Z < d
+		p.X >= 0 && p.X < d &&
+		p.Y >= 0 && p.Y < d &&
+		p.Z >= 0 && p.Z < d
 	);
 }
 
 inline bool isInArea(v2s16 p, s16 d)
 {
 	return (
-		p.X > = 0 && p.X < d &&
-		p.Y > = 0 && p.Y < d
+		p.X >= 0 && p.X < d &&
+		p.Y >= 0 && p.Y < d
 	);
 }
 
 inline bool isInArea(v3s16 p, v3s16 d)
 {
 	return (
-		p.X > = 0 && p.X < d.X &&
-		p.Y > = 0 && p.Y < d.Y &&
-		p.Z > = 0 && p.Z < d.Z
+		p.X >= 0 && p.X < d.X &&
+		p.Y >= 0 && p.Y < d.Y &&
+		p.Z >= 0 && p.Z < d.Z
 	);
 }
 
@@ -768,12 +768,12 @@ inline s16 rangelim(s16 i, s16 max)
 {
 	if(i < 0)
 		return 0;
-	if(i >  max)
+	if(i > max)
 		return max;
 	return i;
 }
 
-#define rangelim(d, min, max) ((d) < (min) ? (min) : ((d)> (max)?(max):(d)))
+#define rangelim(d, min, max) ((d) < (min) ? (min) : ((d)>(max)?(max):(d)))
 
 inline v3s16 arealim(v3s16 p, s16 d)
 {
@@ -783,11 +783,11 @@ inline v3s16 arealim(v3s16 p, s16 d)
 		p.Y = 0;
 	if(p.Z < 0)
 		p.Z = 0;
-	if(p.X >  d-1)
+	if(p.X > d-1)
 		p.X = d-1;
-	if(p.Y >  d-1)
+	if(p.Y > d-1)
 		p.Y = d-1;
-	if(p.Z >  d-1)
+	if(p.Z > d-1)
 		p.Z = d-1;
 	return p;
 }
@@ -795,10 +795,10 @@ inline v3s16 arealim(v3s16 p, s16 d)
 inline std::wstring narrow_to_wide(const std::string& mbs)
 {
 	size_t wcl = mbs.size();
-	Buffer<wchar_t>  wcs(wcl+1);
+	Buffer<wchar_t> wcs(wcl+1);
 	size_t l = mbstowcs(*wcs, mbs.c_str(), wcl);
 	if(l == (size_t)(-1))
-		return L"<invalid multibyte string> ";
+		return L"<invalid multibyte string>";
 	wcs[l] = 0;
 	return *wcs;
 }
@@ -806,7 +806,7 @@ inline std::wstring narrow_to_wide(const std::string& mbs)
 inline std::string wide_to_narrow(const std::wstring& wcs)
 {
 	size_t mbl = wcs.size()*4;
-	SharedBuffer<char>  mbs(mbl+1);
+	SharedBuffer<char> mbs(mbl+1);
 	size_t l = wcstombs(*mbs, wcs.c_str(), mbl);
 	if(l == (size_t)(-1))
 		mbs[0] = 0;
@@ -817,9 +817,9 @@ inline std::string wide_to_narrow(const std::wstring& wcs)
 
 // Split a string using the given delimiter. Returns a vector containing
 // the component parts.
-inline std::vector<std::wstring>  str_split(const std::wstring &str, wchar_t delimiter)
+inline std::vector<std::wstring> str_split(const std::wstring &str, wchar_t delimiter)
 {
-	std::vector<std::wstring>  parts;
+	std::vector<std::wstring> parts;
 	std::wstringstream sstr(str);
 	std::wstring part;
 	while(std::getline(sstr, part, delimiter))
@@ -887,7 +887,7 @@ inline std::string lowercase(const std::string &s)
 	for(size_t i=0; i<s.size(); i++)
 	{
 		char c = s[i];
-		if(c > = 'A' && c <= 'Z')
+		if(c >= 'A' && c <= 'Z')
 			c -= 'A' - 'a';
 		s2 += c;
 	}
@@ -907,7 +907,7 @@ inline s32 stoi(const std::string &s, s32 min, s32 max)
 	s32 i = atoi(s.c_str());
 	if(i < min)
 		i = min;
-	if(i >  max)
+	if(i > max)
 		i = max;
 	return i;
 }
@@ -930,7 +930,7 @@ inline float stof(std::string s)
 {
 	float f;
 	std::istringstream ss(s);
-	ss> > f;
+	ss>>f;
 	return f;
 }
 
@@ -1029,7 +1029,7 @@ public:
 		if(m_list.size() == 0)
 			throw ItemNotFoundException("Queue: queue is empty");
 
-		typename core::list<T> ::Iterator begin = m_list.begin();
+		typename core::list<T>::Iterator begin = m_list.begin();
 		T t = *begin;
 		m_list.erase(begin);
 		return t;
@@ -1039,7 +1039,7 @@ public:
 		if(m_list.size() == 0)
 			throw ItemNotFoundException("Queue: queue is empty");
 
-		typename core::list<T> ::Iterator last = m_list.getLast();
+		typename core::list<T>::Iterator last = m_list.getLast();
 		T t = *last;
 		m_list.erase(last);
 		return t;
@@ -1051,7 +1051,7 @@ public:
 	}
 
 protected:
-	core::list<T>  m_list;
+	core::list<T> m_list;
 };
 
 /*
@@ -1085,15 +1085,15 @@ public:
 			{
 				JMutexAutoLock lock(m_mutex);
 
-				if(m_list.size() >  0)
+				if(m_list.size() > 0)
 				{
-					typename core::list<T> ::Iterator begin = m_list.begin();
+					typename core::list<T>::Iterator begin = m_list.begin();
 					T t = *begin;
 					m_list.erase(begin);
 					return t;
 				}
 
-				if(wait_time_ms > = wait_time_max_ms)
+				if(wait_time_ms >= wait_time_max_ms)
 					throw ItemNotFoundException("MutexedQueue: queue is empty");
 			}
 
@@ -1111,15 +1111,15 @@ public:
 			{
 				JMutexAutoLock lock(m_mutex);
 
-				if(m_list.size() >  0)
+				if(m_list.size() > 0)
 				{
-					typename core::list<T> ::Iterator last = m_list.getLast();
+					typename core::list<T>::Iterator last = m_list.getLast();
 					T t = *last;
 					m_list.erase(last);
 					return t;
 				}
 
-				if(wait_time_ms > = wait_time_max_ms)
+				if(wait_time_ms >= wait_time_max_ms)
 					throw ItemNotFoundException("MutexedQueue: queue is empty");
 			}
 
@@ -1134,14 +1134,14 @@ public:
 		return m_mutex;
 	}
 
-	core::list<T>  & getList()
+	core::list<T> & getList()
 	{
 		return m_list;
 	}
 
 protected:
 	JMutex m_mutex;
-	core::list<T>  m_list;
+	core::list<T> m_list;
 };
 
 /*
@@ -1162,11 +1162,11 @@ class GetResult
 public:
 	Key key;
 	T item;
-	core::list<CallerInfo<Caller, CallerData>  >  callers;
+	core::list<CallerInfo<Caller, CallerData> > callers;
 };
 
 template<typename Key, typename T, typename Caller, typename CallerData>
-class ResultQueue: public MutexedQueue< GetResult<Key, T, Caller, CallerData>  >
+class ResultQueue: public MutexedQueue< GetResult<Key, T, Caller, CallerData> >
 {
 };
 
@@ -1178,11 +1178,11 @@ public:
 	{
 		dest = NULL;
 	}
-	GetRequest(ResultQueue<Key,T, Caller, CallerData>  *a_dest)
+	GetRequest(ResultQueue<Key,T, Caller, CallerData> *a_dest)
 	{
 		dest = a_dest;
 	}
-	GetRequest(ResultQueue<Key,T, Caller, CallerData>  *a_dest,
+	GetRequest(ResultQueue<Key,T, Caller, CallerData> *a_dest,
 			Key a_key)
 	{
 		dest = a_dest;
@@ -1193,8 +1193,8 @@ public:
 	}
 
 	Key key;
-	ResultQueue<Key, T, Caller, CallerData>  *dest;
-	core::list<CallerInfo<Caller, CallerData>  >  callers;
+	ResultQueue<Key, T, Caller, CallerData> *dest;
+	core::list<CallerInfo<Caller, CallerData> > callers;
 };
 
 template<typename Key, typename T, typename Caller, typename CallerData>
@@ -1207,33 +1207,33 @@ public:
 	}
 
 	void add(Key key, Caller caller, CallerData callerdata,
-			ResultQueue<Key, T, Caller, CallerData>  *dest)
+			ResultQueue<Key, T, Caller, CallerData> *dest)
 	{
 		JMutexAutoLock lock(m_queue.getMutex());
 
 		/*
 			If the caller is already on the list, only update CallerData
 		*/
-		for(typename core::list< GetRequest<Key, T, Caller, CallerData>  > ::Iterator
+		for(typename core::list< GetRequest<Key, T, Caller, CallerData> >::Iterator
 				i = m_queue.getList().begin();
 				i != m_queue.getList().end(); i++)
 		{
-			GetRequest<Key, T, Caller, CallerData>  &request = *i;
+			GetRequest<Key, T, Caller, CallerData> &request = *i;
 
 			if(request.key == key)
 			{
-				for(typename core::list< CallerInfo<Caller, CallerData>  > ::Iterator
+				for(typename core::list< CallerInfo<Caller, CallerData> >::Iterator
 						i = request.callers.begin();
 						i != request.callers.end(); i++)
 				{
-					CallerInfo<Caller, CallerData>  &ca = *i;
+					CallerInfo<Caller, CallerData> &ca = *i;
 					if(ca.caller == caller)
 					{
 						ca.data = callerdata;
 						return;
 					}
 				}
-				CallerInfo<Caller, CallerData>  ca;
+				CallerInfo<Caller, CallerData> ca;
 				ca.caller = caller;
 				ca.data = callerdata;
 				request.callers.push_back(ca);
@@ -1245,9 +1245,9 @@ public:
 			Else add a new request to the queue
 		*/
 
-		GetRequest<Key, T, Caller, CallerData>  request;
+		GetRequest<Key, T, Caller, CallerData> request;
 		request.key = key;
-		CallerInfo<Caller, CallerData>  ca;
+		CallerInfo<Caller, CallerData> ca;
 		ca.caller = caller;
 		ca.data = callerdata;
 		request.callers.push_back(ca);
@@ -1256,13 +1256,13 @@ public:
 		m_queue.getList().push_back(request);
 	}
 
-	GetRequest<Key, T, Caller, CallerData>  pop(bool wait_if_empty=false)
+	GetRequest<Key, T, Caller, CallerData> pop(bool wait_if_empty=false)
 	{
 		return m_queue.pop_front(wait_if_empty);
 	}
 
 private:
-	MutexedQueue< GetRequest<Key, T, Caller, CallerData>  >  m_queue;
+	MutexedQueue< GetRequest<Key, T, Caller, CallerData> > m_queue;
 };
 
 /*
@@ -1311,7 +1311,7 @@ public:
 
 	Value pop_front()
 	{
-		typename core::list<Value> ::Iterator i = m_list.begin();
+		typename core::list<Value>::Iterator i = m_list.begin();
 		Value value = *i;
 		m_map.remove(value);
 		m_list.erase(i);
@@ -1325,8 +1325,8 @@ public:
 	}
 
 private:
-	core::map<Value, u8>  m_map;
-	core::list<Value>  m_list;
+	core::map<Value, u8> m_map;
+	core::list<Value> m_list;
 };
 
 #if 1
@@ -1351,20 +1351,20 @@ public:
 	{
 		JMutexAutoLock lock(m_mutex);
 
-		typename core::map<Key, Value> ::Node *n;
+		typename core::map<Key, Value>::Node *n;
 		n = m_values.find(name);
 
 		if(n == NULL)
 			return false;
 
 		if(result != NULL)
-			*result = n-> getValue();
+			*result = n->getValue();
 
 		return true;
 	}
 
 private:
-	core::map<Key, Value>  m_values;
+	core::map<Key, Value> m_values;
 	JMutex m_mutex;
 };
 #endif
@@ -1408,10 +1408,10 @@ public:
 	u32 getId(const T &value)
 	{
 		JMutexAutoLock lock(m_mutex);
-		typename core::map<T, u32> ::Node *n;
+		typename core::map<T, u32>::Node *n;
 		n = m_value_to_id.find(value);
 		if(n != NULL)
-			return n-> getValue();
+			return n->getValue();
 		m_id_to_value.push_back(value);
 		u32 new_id = m_id_to_value.size();
 		m_value_to_id.insert(value, new_id);
@@ -1421,8 +1421,8 @@ public:
 private:
 	JMutex m_mutex;
 	// Values are stored here at id-1 position (id 1 = [0])
-	core::array<T>  m_id_to_value;
-	core::map<T, u32>  m_value_to_id;
+	core::array<T> m_id_to_value;
+	core::map<T, u32> m_value_to_id;
 };
 
 /*
@@ -1467,7 +1467,7 @@ inline std::string wrap_rows(const std::string &from, u32 rowlen)
 	Some helper stuff
 */
 #define MYMIN(a,b) ((a)<(b)?(a):(b))
-#define MYMAX(a,b) ((a)> (b)?(a):(b))
+#define MYMAX(a,b) ((a)>(b)?(a):(b))
 
 /*
 	Returns integer position of node in given floating point position
@@ -1475,9 +1475,9 @@ inline std::string wrap_rows(const std::string &from, u32 rowlen)
 inline v3s16 floatToInt(v3f p, f32 d)
 {
 	v3s16 p2(
-		(p.X + (p.X> 0 ? d/2 : -d/2))/d,
-		(p.Y + (p.Y> 0 ? d/2 : -d/2))/d,
-		(p.Z + (p.Z> 0 ? d/2 : -d/2))/d);
+		(p.X + (p.X>0 ? d/2 : -d/2))/d,
+		(p.Y + (p.Y>0 ? d/2 : -d/2))/d,
+		(p.Z + (p.Z>0 ? d/2 : -d/2))/d);
 	return p2;
 }
 
@@ -1502,7 +1502,7 @@ inline v3f intToFloat(v3s16 p, f32 d)
 inline std::string serializeString(const std::string &plain)
 {
 	//assert(plain.size() <= 65535);
-	if(plain.size() >  65535)
+	if(plain.size() > 65535)
 		throw SerializationError("String too long for serializeString");
 	char buf[2];
 	writeU16((u8*)&buf[0], plain.size());
@@ -1516,7 +1516,7 @@ inline std::string serializeString(const std::string &plain)
 inline std::string serializeWideString(const std::wstring &plain)
 {
 	//assert(plain.size() <= 65535);
-	if(plain.size() >  65535)
+	if(plain.size() > 65535)
 		throw SerializationError("String too long for serializeString");
 	char buf[2];
 	writeU16((u8*)buf, plain.size());
@@ -1540,7 +1540,7 @@ inline std::string deSerializeString(std::istream &is)
 	u16 s_size = readU16((u8*)buf);
 	if(s_size == 0)
 		return "";
-	Buffer<char>  buf2(s_size);
+	Buffer<char> buf2(s_size);
 	is.read(&buf2[0], s_size);
 	std::string s;
 	s.reserve(s_size);
@@ -1590,7 +1590,7 @@ inline std::string deSerializeLongString(std::istream &is)
 	u32 s_size = readU32((u8*)buf);
 	if(s_size == 0)
 		return "";
-	Buffer<char>  buf2(s_size);
+	Buffer<char> buf2(s_size);
 	is.read(&buf2[0], s_size);
 	std::string s;
 	s.reserve(s_size);
@@ -1607,19 +1607,19 @@ inline u32 time_to_daynight_ratio(u32 time_of_day)
 	const s32 daytimelength = 8;
 	s32 d = daylength;
 	s32 t = (((time_of_day)%24000)/(24000/d));
-	if(t < nightlength/2 || t > = d - nightlength/2)
+	if(t < nightlength/2 || t >= d - nightlength/2)
 		//return 300;
 		return 350;
-	else if(t > = d/2 - daytimelength/2 && t < d/2 + daytimelength/2)
+	else if(t >= d/2 - daytimelength/2 && t < d/2 + daytimelength/2)
 		return 1000;
 	else
 		return 750;
 }
 
 // Random helper. Usually d=BS
-inline core::aabbox3d<f32>  getNodeBox(v3s16 p, float d)
+inline core::aabbox3d<f32> getNodeBox(v3s16 p, float d)
 {
-	return core::aabbox3d<f32> (
+	return core::aabbox3d<f32>(
 		(float)p.X * d - 0.5*d,
 		(float)p.Y * d - 0.5*d,
 		(float)p.Z * d - 0.5*d,

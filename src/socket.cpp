@@ -92,17 +92,17 @@ void Address::Resolve(const char *name)
 		FIXME: This is an ugly hack; change the whole class
 		to store the address as sockaddr
 	*/
-	struct sockaddr_in *t = (struct sockaddr_in*)resolved-> ai_addr;
-	m_address = ntohl(t-> sin_addr.s_addr);
+	struct sockaddr_in *t = (struct sockaddr_in*)resolved->ai_addr;
+	m_address = ntohl(t->sin_addr.s_addr);
 	freeaddrinfo(resolved);
 }
 
 std::string Address::serializeString() const
 {
 	unsigned int a, b, c, d;
-	a = (m_address & 0xFF000000)> > 24;
-	b = (m_address & 0x00FF0000)> > 16;
-	c = (m_address & 0x0000FF00)> > 8;
+	a = (m_address & 0xFF000000)>>24;
+	b = (m_address & 0x00FF0000)>>16;
+	c = (m_address & 0x0000FF00)>>8;
 	d = (m_address & 0x000000FF);
 	return itos(a)+"."+itos(b)+"."+itos(c)+"."+itos(d);
 }
@@ -135,10 +135,10 @@ void Address::setPort(unsigned short port)
 
 void Address::print(std::ostream *s) const
 {
-	(*s)<<((m_address> > 24)&0xff)<<"."
-			<<((m_address> > 16)&0xff)<<"."
-			<<((m_address> > 8)&0xff)<<"."
-			<<((m_address> > 0)&0xff)<<":"
+	(*s)<<((m_address>>24)&0xff)<<"."
+			<<((m_address>>16)&0xff)<<"."
+			<<((m_address>>8)&0xff)<<"."
+			<<((m_address>>0)&0xff)<<":"
 			<<m_port;
 }
 
@@ -222,14 +222,14 @@ void UDPSocket::Send(const Address & destination, const void * data, int size)
 		/*dstream<<DPS<<"UDPSocket("<<(int)m_handle
 				<<")::Send(): destination=";*/
 		dstream<<DPS;
-		dstream<<(int)m_handle<<" ->  ";
+		dstream<<(int)m_handle<<" -> ";
 		destination.print();
 		dstream<<", size="<<size<<", data=";
 		for(int i=0; i<size && i<20; i++){
 			if(i%2==0) DEBUGPRINT(" ");
 			DEBUGPRINT("%.2X", ((int)((const char*)data)[i])&0xff);
 		}
-		if(size> 20)
+		if(size>20)
 			dstream<<"...";
 		if(dumping_packet)
 			dstream<<" (DUMPED BY INTERNET_SIMULATOR)";
@@ -291,7 +291,7 @@ int UDPSocket::Receive(Address & sender, void * data, int size)
 			if(i%2==0) DEBUGPRINT(" ");
 			DEBUGPRINT("%.2X", ((int)((const char*)data)[i])&0xff);
 		}
-		if(received> 20)
+		if(received>20)
 			dstream<<"...";
 		dstream<<std::endl;
 	}

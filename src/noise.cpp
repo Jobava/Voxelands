@@ -81,7 +81,7 @@ double noise2d(int x, int y, int seed)
 {
 	int n = (NOISE_MAGIC_X * x + NOISE_MAGIC_Y * y
 			+ NOISE_MAGIC_SEED * seed) & 0x7fffffff;
-	n = (n> > 13)^n;
+	n = (n>>13)^n;
 	n = (n * (n*n*60493+19990303) + 1376312589) & 0x7fffffff;
 	return 1.0 - (double)n/1073741824;
 }
@@ -90,7 +90,7 @@ double noise3d(int x, int y, int z, int seed)
 {
 	int n = (NOISE_MAGIC_X * x + NOISE_MAGIC_Y * y + NOISE_MAGIC_Z * z
 			+ NOISE_MAGIC_SEED * seed) & 0x7fffffff;
-	n = (n> > 13)^n;
+	n = (n>>13)^n;
 	n = (n * (n*n*60493+19990303) + 1376312589) & 0x7fffffff;
 	return 1.0 - (double)n/1073741824;
 }
@@ -99,8 +99,8 @@ double noise3d(int x, int y, int z, int seed)
 double noise2d_gradient(double x, double y, int seed)
 {
 	// Calculate the integer coordinates
-	int x0 = (x >  0.0 ? (int)x : (int)x - 1);
-	int y0 = (y >  0.0 ? (int)y : (int)y - 1);
+	int x0 = (x > 0.0 ? (int)x : (int)x - 1);
+	int y0 = (y > 0.0 ? (int)y : (int)y - 1);
 	// Calculate the remaining part of the coordinates
 	double xl = x - (double)x0;
 	double yl = y - (double)y0;
@@ -124,8 +124,8 @@ double noise2d_gradient(double x, double y, int seed)
 double noise2d_gradient(double x, double y, int seed)
 {
 	// Calculate the integer coordinates
-	int x0 = (x >  0.0 ? (int)x : (int)x - 1);
-	int y0 = (y >  0.0 ? (int)y : (int)y - 1);
+	int x0 = (x > 0.0 ? (int)x : (int)x - 1);
+	int y0 = (y > 0.0 ? (int)y : (int)y - 1);
 	// Calculate the remaining part of the coordinates
 	double xl = x - (double)x0;
 	double yl = y - (double)y0;
@@ -142,9 +142,9 @@ double noise2d_gradient(double x, double y, int seed)
 double noise3d_gradient(double x, double y, double z, int seed)
 {
 	// Calculate the integer coordinates
-	int x0 = (x >  0.0 ? (int)x : (int)x - 1);
-	int y0 = (y >  0.0 ? (int)y : (int)y - 1);
-	int z0 = (z >  0.0 ? (int)z : (int)z - 1);
+	int x0 = (x > 0.0 ? (int)x : (int)x - 1);
+	int y0 = (y > 0.0 ? (int)y : (int)y - 1);
+	int z0 = (z > 0.0 ? (int)z : (int)z - 1);
 	// Calculate the remaining part of the coordinates
 	double xl = x - (double)x0;
 	double yl = y - (double)y0;
@@ -222,11 +222,11 @@ double noise3d_perlin_abs(double x, double y, double z, int seed,
 	return a;
 }
 
-// -1-> 0, 0-> 1, 1-> 0
+// -1->0, 0->1, 1->0
 double contour(double v)
 {
 	v = fabs(v);
-	if(v > = 1.0)
+	if(v >= 1.0)
 		return 0.0;
 	return (1.0-v);
 }
@@ -362,7 +362,7 @@ void NoiseBuffer::create(int seed, int octaves, double persistence,
 void NoiseBuffer::intSet(int x, int y, int z, double d)
 {
 	int i = m_size_x*m_size_y*z + m_size_x*y + x;
-	assert(i > = 0);
+	assert(i >= 0);
 	assert(i < m_size_x*m_size_y*m_size_z);
 	m_data[i] = d;
 }
@@ -370,7 +370,7 @@ void NoiseBuffer::intSet(int x, int y, int z, double d)
 void NoiseBuffer::intMultiply(int x, int y, int z, double d)
 {
 	int i = m_size_x*m_size_y*z + m_size_x*y + x;
-	assert(i > = 0);
+	assert(i >= 0);
 	assert(i < m_size_x*m_size_y*m_size_z);
 	m_data[i] = m_data[i] * d;
 }
@@ -378,7 +378,7 @@ void NoiseBuffer::intMultiply(int x, int y, int z, double d)
 double NoiseBuffer::intGet(int x, int y, int z)
 {
 	int i = m_size_x*m_size_y*z + m_size_x*y + x;
-	assert(i > = 0);
+	assert(i >= 0);
 	assert(i < m_size_x*m_size_y*m_size_z);
 	return m_data[i];
 }
@@ -392,9 +392,9 @@ double NoiseBuffer::get(double x, double y, double z)
 	y /= m_samplelength_y;
 	z /= m_samplelength_z;
 	// Calculate the integer coordinates
-	int x0 = (x >  0.0 ? (int)x : (int)x - 1);
-	int y0 = (y >  0.0 ? (int)y : (int)y - 1);
-	int z0 = (z >  0.0 ? (int)z : (int)z - 1);
+	int x0 = (x > 0.0 ? (int)x : (int)x - 1);
+	int y0 = (y > 0.0 ? (int)y : (int)y - 1);
+	int z0 = (z > 0.0 ? (int)z : (int)z - 1);
 	// Calculate the remaining part of the coordinates
 	double xl = x - (double)x0;
 	double yl = y - (double)y0;
@@ -420,6 +420,6 @@ double NoiseBuffer::get(double x, double y, double z)
 	x /= m_samplelength_x;
 	y /= m_samplelength_y;
 	z /= m_samplelength_z;
-	if(x <= 0.0 || x > = m_size_x)
+	if(x <= 0.0 || x >= m_size_x)
 }*/
 

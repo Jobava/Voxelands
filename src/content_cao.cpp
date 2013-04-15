@@ -23,7 +23,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "settings.h"
 #include <ICameraSceneNode.h>
 
-core::map<u16, ClientActiveObject::Factory>  ClientActiveObject::m_types;
+core::map<u16, ClientActiveObject::Factory> ClientActiveObject::m_types;
 
 /*
 	TestCAO
@@ -54,7 +54,7 @@ void TestCAO::addToScene(scene::ISceneManager *smgr)
 	if(m_node != NULL)
 		return;
 
-	video::IVideoDriver* driver = smgr-> getVideoDriver();
+	video::IVideoDriver* driver = smgr->getVideoDriver();
 
 	scene::SMesh *mesh = new scene::SMesh();
 	scene::IMeshBuffer *buf = new scene::SMeshBuffer();
@@ -67,20 +67,20 @@ void TestCAO::addToScene(scene::ISceneManager *smgr)
 		video::S3DVertex(-BS/2,BS/4,0, 0,0,0, c, 0,0),
 	};
 	u16 indices[] = {0,1,2,2,3,0};
-	buf-> append(vertices, 4, indices, 6);
+	buf->append(vertices, 4, indices, 6);
 	// Set material
-	buf-> getMaterial().setFlag(video::EMF_LIGHTING, false);
-	buf-> getMaterial().setFlag(video::EMF_BACK_FACE_CULLING, false);
-	buf-> getMaterial().setTexture
-			(0, driver-> getTexture(getTexturePath("rat.png").c_str()));
-	buf-> getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
-	buf-> getMaterial().setFlag(video::EMF_FOG_ENABLE, true);
-	buf-> getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL;
+	buf->getMaterial().setFlag(video::EMF_LIGHTING, false);
+	buf->getMaterial().setFlag(video::EMF_BACK_FACE_CULLING, false);
+	buf->getMaterial().setTexture
+			(0, driver->getTexture(getTexturePath("rat.png").c_str()));
+	buf->getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
+	buf->getMaterial().setFlag(video::EMF_FOG_ENABLE, true);
+	buf->getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL;
 	// Add to mesh
-	mesh-> addMeshBuffer(buf);
-	buf-> drop();
-	m_node = smgr-> addMeshSceneNode(mesh, NULL);
-	mesh-> drop();
+	mesh->addMeshBuffer(buf);
+	buf->drop();
+	m_node = smgr->addMeshSceneNode(mesh, NULL);
+	mesh->drop();
 	updateNodePos();
 }
 
@@ -89,7 +89,7 @@ void TestCAO::removeFromScene()
 	if(m_node == NULL)
 		return;
 
-	m_node-> remove();
+	m_node->remove();
 	m_node = NULL;
 }
 
@@ -107,18 +107,18 @@ void TestCAO::updateNodePos()
 	if(m_node == NULL)
 		return;
 
-	m_node-> setPosition(m_position);
-	//m_node-> setRotation(v3f(0, 45, 0));
+	m_node->setPosition(m_position);
+	//m_node->setRotation(v3f(0, 45, 0));
 }
 
 void TestCAO::step(float dtime, ClientEnvironment *env)
 {
 	if(m_node)
 	{
-		v3f rot = m_node-> getRotation();
+		v3f rot = m_node->getRotation();
 		//infostream<<"dtime="<<dtime<<", rot.Y="<<rot.Y<<std::endl;
 		rot.Y += dtime * 180;
-		m_node-> setRotation(rot);
+		m_node->setRotation(rot);
 	}
 }
 
@@ -127,13 +127,13 @@ void TestCAO::processMessage(const std::string &data)
 	infostream<<"TestCAO: Got data: "<<data<<std::endl;
 	std::istringstream is(data, std::ios::binary);
 	u16 cmd;
-	is> > cmd;
+	is>>cmd;
 	if(cmd == 0)
 	{
 		v3f newpos;
-		is> > newpos.X;
-		is> > newpos.Y;
-		is> > newpos.Z;
+		is>>newpos.X;
+		is>>newpos.Y;
+		is>>newpos.Z;
 		m_position = newpos;
 		updateNodePos();
 	}
@@ -171,7 +171,7 @@ void ItemCAO::addToScene(scene::ISceneManager *smgr)
 	if(m_node != NULL)
 		return;
 
-	video::IVideoDriver* driver = smgr-> getVideoDriver();
+	video::IVideoDriver* driver = smgr->getVideoDriver();
 
 	scene::SMesh *mesh = new scene::SMesh();
 	scene::IMeshBuffer *buf = new scene::SMeshBuffer();
@@ -188,25 +188,25 @@ void ItemCAO::addToScene(scene::ISceneManager *smgr)
 		video::S3DVertex(BS/3.,0+BS*2./3.,0, 0,0,0, c, 0,0),
 	};
 	u16 indices[] = {0,1,2,2,3,0};
-	buf-> append(vertices, 4, indices, 6);
+	buf->append(vertices, 4, indices, 6);
 	// Set material
-	buf-> getMaterial().setFlag(video::EMF_LIGHTING, false);
-	buf-> getMaterial().setFlag(video::EMF_BACK_FACE_CULLING, false);
-	//buf-> getMaterial().setTexture(0, NULL);
+	buf->getMaterial().setFlag(video::EMF_LIGHTING, false);
+	buf->getMaterial().setFlag(video::EMF_BACK_FACE_CULLING, false);
+	//buf->getMaterial().setTexture(0, NULL);
 	// Initialize with the stick texture
-	buf-> getMaterial().setTexture
-			(0, driver-> getTexture(getTexturePath("stick.png").c_str()));
-	buf-> getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
-	buf-> getMaterial().setFlag(video::EMF_FOG_ENABLE, true);
-	buf-> getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL;
+	buf->getMaterial().setTexture
+			(0, driver->getTexture(getTexturePath("stick.png").c_str()));
+	buf->getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
+	buf->getMaterial().setFlag(video::EMF_FOG_ENABLE, true);
+	buf->getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL;
 	// Add to mesh
-	mesh-> addMeshBuffer(buf);
-	buf-> drop();
-	m_node = smgr-> addMeshSceneNode(mesh, NULL);
-	mesh-> drop();
+	mesh->addMeshBuffer(buf);
+	buf->drop();
+	m_node = smgr->addMeshSceneNode(mesh, NULL);
+	mesh->drop();
 	// Set it to use the materials of the meshbuffers directly.
 	// This is needed for changing the texture in the future
-	m_node-> setReadOnlyMaterials(true);
+	m_node->setReadOnlyMaterials(true);
 	updateNodePos();
 
 	/*
@@ -220,11 +220,11 @@ void ItemCAO::addToScene(scene::ISceneManager *smgr)
 		InventoryItem *item = NULL;
 		item = InventoryItem::deSerialize(is);
 		infostream<<__FUNCTION_NAME<<": m_inventorystring=\""
-				<<m_inventorystring<<"\" ->  item="<<item
+				<<m_inventorystring<<"\" -> item="<<item
 				<<std::endl;
 		if(item)
 		{
-			texture = item-> getImage();
+			texture = item->getImage();
 			delete item;
 		}
 	}
@@ -236,7 +236,7 @@ void ItemCAO::addToScene(scene::ISceneManager *smgr)
 	}
 
 	// Set meshbuffer texture
-	buf-> getMaterial().setTexture(0, texture);
+	buf->getMaterial().setTexture(0, texture);
 }
 
 void ItemCAO::removeFromScene()
@@ -244,7 +244,7 @@ void ItemCAO::removeFromScene()
 	if(m_node == NULL)
 		return;
 
-	m_node-> remove();
+	m_node->remove();
 	m_node = NULL;
 }
 
@@ -255,7 +255,7 @@ void ItemCAO::updateLight(u8 light_at_pos)
 
 	u8 li = decode_light(light_at_pos);
 	video::SColor color(255,li,li,li);
-	setMeshVerticesColor(m_node-> getMesh(), color);
+	setMeshVerticesColor(m_node->getMesh(), color);
 }
 
 v3s16 ItemCAO::getLightPosition()
@@ -268,21 +268,21 @@ void ItemCAO::updateNodePos()
 	if(m_node == NULL)
 		return;
 
-	m_node-> setPosition(m_position);
+	m_node->setPosition(m_position);
 }
 
 void ItemCAO::step(float dtime, ClientEnvironment *env)
 {
 	if(m_node)
 	{
-		/*v3f rot = m_node-> getRotation();
+		/*v3f rot = m_node->getRotation();
 		rot.Y += dtime * 120;
-		m_node-> setRotation(rot);*/
-		LocalPlayer *player = env-> getLocalPlayer();
+		m_node->setRotation(rot);*/
+		LocalPlayer *player = env->getLocalPlayer();
 		assert(player);
-		v3f rot = m_node-> getRotation();
-		rot.Y = 180.0 - (player-> getYaw());
-		m_node-> setRotation(rot);
+		v3f rot = m_node->getRotation();
+		rot.Y = 180.0 - (player->getYaw());
+		m_node->setRotation(rot);
 	}
 }
 
@@ -353,7 +353,7 @@ void RatCAO::addToScene(scene::ISceneManager *smgr)
 	if(m_node != NULL)
 		return;
 
-	video::IVideoDriver* driver = smgr-> getVideoDriver();
+	video::IVideoDriver* driver = smgr->getVideoDriver();
 
 	scene::SMesh *mesh = new scene::SMesh();
 	scene::IMeshBuffer *buf = new scene::SMeshBuffer();
@@ -366,24 +366,24 @@ void RatCAO::addToScene(scene::ISceneManager *smgr)
 		video::S3DVertex(-BS/2,BS/2,0, 0,0,0, c, 0,0),
 	};
 	u16 indices[] = {0,1,2,2,3,0};
-	buf-> append(vertices, 4, indices, 6);
+	buf->append(vertices, 4, indices, 6);
 	// Set material
-	buf-> getMaterial().setFlag(video::EMF_LIGHTING, false);
-	buf-> getMaterial().setFlag(video::EMF_BACK_FACE_CULLING, false);
-	//buf-> getMaterial().setTexture(0, NULL);
-	buf-> getMaterial().setTexture
-			(0, driver-> getTexture(getTexturePath("rat.png").c_str()));
-	buf-> getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
-	buf-> getMaterial().setFlag(video::EMF_FOG_ENABLE, true);
-	buf-> getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL;
+	buf->getMaterial().setFlag(video::EMF_LIGHTING, false);
+	buf->getMaterial().setFlag(video::EMF_BACK_FACE_CULLING, false);
+	//buf->getMaterial().setTexture(0, NULL);
+	buf->getMaterial().setTexture
+			(0, driver->getTexture(getTexturePath("rat.png").c_str()));
+	buf->getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
+	buf->getMaterial().setFlag(video::EMF_FOG_ENABLE, true);
+	buf->getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL;
 	// Add to mesh
-	mesh-> addMeshBuffer(buf);
-	buf-> drop();
-	m_node = smgr-> addMeshSceneNode(mesh, NULL);
-	mesh-> drop();
+	mesh->addMeshBuffer(buf);
+	buf->drop();
+	m_node = smgr->addMeshSceneNode(mesh, NULL);
+	mesh->drop();
 	// Set it to use the materials of the meshbuffers directly.
 	// This is needed for changing the texture in the future
-	m_node-> setReadOnlyMaterials(true);
+	m_node->setReadOnlyMaterials(true);
 	updateNodePos();
 }
 
@@ -392,7 +392,7 @@ void RatCAO::removeFromScene()
 	if(m_node == NULL)
 		return;
 
-	m_node-> remove();
+	m_node->remove();
 	m_node = NULL;
 }
 
@@ -403,7 +403,7 @@ void RatCAO::updateLight(u8 light_at_pos)
 
 	u8 li = decode_light(light_at_pos);
 	video::SColor color(255,li,li,li);
-	setMeshVerticesColor(m_node-> getMesh(), color);
+	setMeshVerticesColor(m_node->getMesh(), color);
 }
 
 v3s16 RatCAO::getLightPosition()
@@ -416,12 +416,12 @@ void RatCAO::updateNodePos()
 	if(m_node == NULL)
 		return;
 
-	//m_node-> setPosition(m_position);
-	m_node-> setPosition(pos_translator.vect_show);
+	//m_node->setPosition(m_position);
+	m_node->setPosition(pos_translator.vect_show);
 
-	v3f rot = m_node-> getRotation();
+	v3f rot = m_node->getRotation();
 	rot.Y = 180.0 - m_yaw;
-	m_node-> setRotation(rot);
+	m_node->setRotation(rot);
 }
 
 void RatCAO::step(float dtime, ClientEnvironment *env)
@@ -501,7 +501,7 @@ void Oerkki1CAO::addToScene(scene::ISceneManager *smgr)
 	if(m_node != NULL)
 		return;
 
-	video::IVideoDriver* driver = smgr-> getVideoDriver();
+	video::IVideoDriver* driver = smgr->getVideoDriver();
 
 	scene::SMesh *mesh = new scene::SMesh();
 	scene::IMeshBuffer *buf = new scene::SMeshBuffer();
@@ -514,24 +514,24 @@ void Oerkki1CAO::addToScene(scene::ISceneManager *smgr)
 		video::S3DVertex(-BS/2-BS,BS*2,0, 0,0,0, c, 0,0),
 	};
 	u16 indices[] = {0,1,2,2,3,0};
-	buf-> append(vertices, 4, indices, 6);
+	buf->append(vertices, 4, indices, 6);
 	// Set material
-	buf-> getMaterial().setFlag(video::EMF_LIGHTING, false);
-	buf-> getMaterial().setFlag(video::EMF_BACK_FACE_CULLING, false);
-	//buf-> getMaterial().setTexture(0, NULL);
-	buf-> getMaterial().setTexture
-			(0, driver-> getTexture(getTexturePath("oerkki1.png").c_str()));
-	buf-> getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
-	buf-> getMaterial().setFlag(video::EMF_FOG_ENABLE, true);
-	buf-> getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL;
+	buf->getMaterial().setFlag(video::EMF_LIGHTING, false);
+	buf->getMaterial().setFlag(video::EMF_BACK_FACE_CULLING, false);
+	//buf->getMaterial().setTexture(0, NULL);
+	buf->getMaterial().setTexture
+			(0, driver->getTexture(getTexturePath("oerkki1.png").c_str()));
+	buf->getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
+	buf->getMaterial().setFlag(video::EMF_FOG_ENABLE, true);
+	buf->getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL;
 	// Add to mesh
-	mesh-> addMeshBuffer(buf);
-	buf-> drop();
-	m_node = smgr-> addMeshSceneNode(mesh, NULL);
-	mesh-> drop();
+	mesh->addMeshBuffer(buf);
+	buf->drop();
+	m_node = smgr->addMeshSceneNode(mesh, NULL);
+	mesh->drop();
 	// Set it to use the materials of the meshbuffers directly.
 	// This is needed for changing the texture in the future
-	m_node-> setReadOnlyMaterials(true);
+	m_node->setReadOnlyMaterials(true);
 	updateNodePos();
 }
 
@@ -540,7 +540,7 @@ void Oerkki1CAO::removeFromScene()
 	if(m_node == NULL)
 		return;
 
-	m_node-> remove();
+	m_node->remove();
 	m_node = NULL;
 }
 
@@ -551,15 +551,15 @@ void Oerkki1CAO::updateLight(u8 light_at_pos)
 
 	if(light_at_pos <= 2)
 	{
-		m_node-> setVisible(false);
+		m_node->setVisible(false);
 		return;
 	}
 
-	m_node-> setVisible(true);
+	m_node->setVisible(true);
 
 	u8 li = decode_light(light_at_pos);
 	video::SColor color(255,li,li,li);
-	setMeshVerticesColor(m_node-> getMesh(), color);
+	setMeshVerticesColor(m_node->getMesh(), color);
 }
 
 v3s16 Oerkki1CAO::getLightPosition()
@@ -572,12 +572,12 @@ void Oerkki1CAO::updateNodePos()
 	if(m_node == NULL)
 		return;
 
-	//m_node-> setPosition(m_position);
-	m_node-> setPosition(pos_translator.vect_show);
+	//m_node->setPosition(m_position);
+	m_node->setPosition(pos_translator.vect_show);
 
-	v3f rot = m_node-> getRotation();
+	v3f rot = m_node->getRotation();
 	rot.Y = 180.0 - m_yaw + 90.0;
-	m_node-> setRotation(rot);
+	m_node->setRotation(rot);
 }
 
 void Oerkki1CAO::step(float dtime, ClientEnvironment *env)
@@ -585,10 +585,10 @@ void Oerkki1CAO::step(float dtime, ClientEnvironment *env)
 	pos_translator.translate(dtime);
 	updateNodePos();
 
-	LocalPlayer *player = env-> getLocalPlayer();
+	LocalPlayer *player = env->getLocalPlayer();
 	assert(player);
 
-	v3f playerpos = player-> getPosition();
+	v3f playerpos = player->getPosition();
 	v2f playerpos_2d(playerpos.X,playerpos.Z);
 	v2f objectpos_2d(m_position.X,m_position.Z);
 
@@ -597,11 +597,11 @@ void Oerkki1CAO::step(float dtime, ClientEnvironment *env)
 	{
 		if(m_attack_interval.step(dtime, 0.5))
 		{
-			env-> damageLocalPlayer(2);
+			env->damageLocalPlayer(2);
 		}
 	}
 
-	if(m_damage_visual_timer >  0)
+	if(m_damage_visual_timer > 0)
 	{
 		if(!m_damage_texture_enabled)
 		{
@@ -609,17 +609,17 @@ void Oerkki1CAO::step(float dtime, ClientEnvironment *env)
 			if(m_node)
 			{
 				video::IVideoDriver* driver =
-					m_node-> getSceneManager()-> getVideoDriver();
+					m_node->getSceneManager()->getVideoDriver();
 
-				scene::IMesh *mesh = m_node-> getMesh();
+				scene::IMesh *mesh = m_node->getMesh();
 				if(mesh == NULL)
 					return;
 
-				u16 mc = mesh-> getMeshBufferCount();
+				u16 mc = mesh->getMeshBufferCount();
 				for(u16 j=0; j<mc; j++)
 				{
-					scene::IMeshBuffer *buf = mesh-> getMeshBuffer(j);
-					buf-> getMaterial().setTexture(0, driver-> getTexture(
+					scene::IMeshBuffer *buf = mesh->getMeshBuffer(j);
+					buf->getMaterial().setTexture(0, driver->getTexture(
 							getTexturePath("oerkki1_damaged.png").c_str()));
 				}
 			}
@@ -635,17 +635,17 @@ void Oerkki1CAO::step(float dtime, ClientEnvironment *env)
 			if(m_node)
 			{
 				video::IVideoDriver* driver =
-					m_node-> getSceneManager()-> getVideoDriver();
+					m_node->getSceneManager()->getVideoDriver();
 
-				scene::IMesh *mesh = m_node-> getMesh();
+				scene::IMesh *mesh = m_node->getMesh();
 				if(mesh == NULL)
 					return;
 
-				u16 mc = mesh-> getMeshBufferCount();
+				u16 mc = mesh->getMeshBufferCount();
 				for(u16 j=0; j<mc; j++)
 				{
-					scene::IMeshBuffer *buf = mesh-> getMeshBuffer(j);
-					buf-> getMaterial().setTexture(0, driver-> getTexture(
+					scene::IMeshBuffer *buf = mesh->getMeshBuffer(j);
+					buf->getMaterial().setTexture(0, driver->getTexture(
 							getTexturePath("oerkki1.png").c_str()));
 				}
 			}
@@ -738,7 +738,7 @@ void FireflyCAO::addToScene(scene::ISceneManager *smgr)
 	if(m_node != NULL)
 		return;
 
-	video::IVideoDriver* driver = smgr-> getVideoDriver();
+	video::IVideoDriver* driver = smgr->getVideoDriver();
 
 	scene::SMesh *mesh = new scene::SMesh();
 	scene::IMeshBuffer *buf = new scene::SMeshBuffer();
@@ -751,24 +751,24 @@ void FireflyCAO::addToScene(scene::ISceneManager *smgr)
 		video::S3DVertex(0,BS/2,0, 0,0,0, c, 0,0),
 	};
 	u16 indices[] = {0,1,2,2,3,0};
-	buf-> append(vertices, 4, indices, 6);
+	buf->append(vertices, 4, indices, 6);
 	// Set material
-	buf-> getMaterial().setFlag(video::EMF_LIGHTING, false);
-	buf-> getMaterial().setFlag(video::EMF_BACK_FACE_CULLING, false);
-	//buf-> getMaterial().setTexture(0, NULL);
-	buf-> getMaterial().setTexture
-			(0, driver-> getTexture(getTexturePath("firefly.png").c_str()));
-	buf-> getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
-	buf-> getMaterial().setFlag(video::EMF_FOG_ENABLE, true);
-	buf-> getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL;
+	buf->getMaterial().setFlag(video::EMF_LIGHTING, false);
+	buf->getMaterial().setFlag(video::EMF_BACK_FACE_CULLING, false);
+	//buf->getMaterial().setTexture(0, NULL);
+	buf->getMaterial().setTexture
+			(0, driver->getTexture(getTexturePath("firefly.png").c_str()));
+	buf->getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
+	buf->getMaterial().setFlag(video::EMF_FOG_ENABLE, true);
+	buf->getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL;
 	// Add to mesh
-	mesh-> addMeshBuffer(buf);
-	buf-> drop();
-	m_node = smgr-> addMeshSceneNode(mesh, NULL);
-	mesh-> drop();
+	mesh->addMeshBuffer(buf);
+	buf->drop();
+	m_node = smgr->addMeshSceneNode(mesh, NULL);
+	mesh->drop();
 	// Set it to use the materials of the meshbuffers directly.
 	// This is needed for changing the texture in the future
-	m_node-> setReadOnlyMaterials(true);
+	m_node->setReadOnlyMaterials(true);
 	updateNodePos();
 }
 
@@ -777,7 +777,7 @@ void FireflyCAO::removeFromScene()
 	if(m_node == NULL)
 		return;
 
-	m_node-> remove();
+	m_node->remove();
 	m_node = NULL;
 }
 
@@ -788,7 +788,7 @@ void FireflyCAO::updateLight(u8 light_at_pos)
 
 	u8 li = 255;
 	video::SColor color(255,li,li,li);
-	setMeshVerticesColor(m_node-> getMesh(), color);
+	setMeshVerticesColor(m_node->getMesh(), color);
 }
 
 v3s16 FireflyCAO::getLightPosition()
@@ -801,12 +801,12 @@ void FireflyCAO::updateNodePos()
 	if(m_node == NULL)
 		return;
 
-	//m_node-> setPosition(m_position);
-	m_node-> setPosition(pos_translator.vect_show);
+	//m_node->setPosition(m_position);
+	m_node->setPosition(pos_translator.vect_show);
 
-	v3f rot = m_node-> getRotation();
+	v3f rot = m_node->getRotation();
 	rot.Y = 180.0 - m_yaw;
-	m_node-> setRotation(rot);
+	m_node->setRotation(rot);
 }
 
 void FireflyCAO::step(float dtime, ClientEnvironment *env)
@@ -904,31 +904,31 @@ void MobV2CAO::addToScene(scene::ISceneManager *smgr)
 	texture_string += m_texture_name;
 
 	scene::MyBillboardSceneNode *bill = new scene::MyBillboardSceneNode(
-			smgr-> getRootSceneNode(), smgr, -1, v3f(0,0,0), v2f(1,1));
-	bill-> setMaterialTexture(0, g_texturesource-> getTextureRaw(texture_string));
-	bill-> setMaterialFlag(video::EMF_LIGHTING, false);
-	bill-> setMaterialFlag(video::EMF_BILINEAR_FILTER, false);
-	bill-> setMaterialType(video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF);
-	bill-> setMaterialFlag(video::EMF_FOG_ENABLE, true);
-	bill-> setColor(video::SColor(255,0,0,0));
-	bill-> setVisible(false); /* Set visible when brightness is known */
-	bill-> setSize(m_sprite_size);
+			smgr->getRootSceneNode(), smgr, -1, v3f(0,0,0), v2f(1,1));
+	bill->setMaterialTexture(0, g_texturesource->getTextureRaw(texture_string));
+	bill->setMaterialFlag(video::EMF_LIGHTING, false);
+	bill->setMaterialFlag(video::EMF_BILINEAR_FILTER, false);
+	bill->setMaterialType(video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF);
+	bill->setMaterialFlag(video::EMF_FOG_ENABLE, true);
+	bill->setColor(video::SColor(255,0,0,0));
+	bill->setVisible(false); /* Set visible when brightness is known */
+	bill->setSize(m_sprite_size);
 	if(m_sprite_type == "humanoid_1"){
 		const float txp = 1./192;
 		const float txs = txp*32;
 		const float typ = 1./240;
 		const float tys = typ*48;
-		bill-> setTCoords(0, v2f(txs*1, tys*1));
-		bill-> setTCoords(1, v2f(txs*1, tys*0));
-		bill-> setTCoords(2, v2f(txs*0, tys*0));
-		bill-> setTCoords(3, v2f(txs*0, tys*1));
+		bill->setTCoords(0, v2f(txs*1, tys*1));
+		bill->setTCoords(1, v2f(txs*1, tys*0));
+		bill->setTCoords(2, v2f(txs*0, tys*0));
+		bill->setTCoords(3, v2f(txs*0, tys*1));
 	} else if(m_sprite_type == "simple"){
 		const float txs = 1.0;
 		const float tys = 1.0 / m_simple_anim_frames;
-		bill-> setTCoords(0, v2f(txs*1, tys*1));
-		bill-> setTCoords(1, v2f(txs*1, tys*0));
-		bill-> setTCoords(2, v2f(txs*0, tys*0));
-		bill-> setTCoords(3, v2f(txs*0, tys*1));
+		bill->setTCoords(0, v2f(txs*1, tys*1));
+		bill->setTCoords(1, v2f(txs*1, tys*0));
+		bill->setTCoords(2, v2f(txs*0, tys*0));
+		bill->setTCoords(3, v2f(txs*0, tys*1));
 	} else {
 		infostream<<"MobV2CAO: Unknown sprite type \""<<m_sprite_type<<"\""
 				<<std::endl;
@@ -944,8 +944,8 @@ void MobV2CAO::removeFromScene()
 	if(m_node == NULL)
 		return;
 
-	m_node-> drop();
-	m_node-> remove();
+	m_node->drop();
+	m_node->remove();
 	m_node = NULL;
 }
 
@@ -959,22 +959,22 @@ void MobV2CAO::updateLight(u8 light_at_pos)
 	if(m_node == NULL)
 		return;
 
-	if(m_damage_visual_timer >  0)
+	if(m_damage_visual_timer > 0)
 		return;
 
 	if(m_shooting && m_bright_shooting)
 		return;
 
 	/*if(light_at_pos <= 2){
-		m_node-> setVisible(false);
+		m_node->setVisible(false);
 		return;
 	}*/
 
-	m_node-> setVisible(true);
+	m_node->setVisible(true);
 
 	u8 li = decode_light(light_at_pos);
 	video::SColor color(255,li,li,li);
-	m_node-> setColor(color);
+	m_node->setColor(color);
 }
 
 v3s16 MobV2CAO::getLightPosition()
@@ -987,7 +987,7 @@ void MobV2CAO::updateNodePos()
 	if(m_node == NULL)
 		return;
 
-	m_node-> setPosition(pos_translator.vect_show + v3f(0,m_sprite_y,0));
+	m_node->setPosition(pos_translator.vect_show + v3f(0,m_sprite_y,0));
 }
 
 void MobV2CAO::step(float dtime, ClientEnvironment *env)
@@ -999,13 +999,13 @@ void MobV2CAO::step(float dtime, ClientEnvironment *env)
 	pos_translator.translate(dtime);
 
 	if(m_sprite_type == "humanoid_1"){
-		scene::ICameraSceneNode* camera = m_node-> getSceneManager()-> getActiveCamera();
+		scene::ICameraSceneNode* camera = m_node->getSceneManager()->getActiveCamera();
 		if(!camera)
 			return;
-		v3f cam_to_mob = m_node-> getAbsolutePosition() - camera-> getAbsolutePosition();
+		v3f cam_to_mob = m_node->getAbsolutePosition() - camera->getAbsolutePosition();
 		cam_to_mob.normalize();
 		int col = 0;
-		if(cam_to_mob.Y >  0.75)
+		if(cam_to_mob.Y > 0.75)
 			col = 5;
 		else if(cam_to_mob.Y < -0.75)
 			col = 4;
@@ -1031,7 +1031,7 @@ void MobV2CAO::step(float dtime, ClientEnvironment *env)
 			row = 3;
 		} else if(m_walking){
 			m_walk_timer += dtime;
-			if(m_walk_timer > = 0.5){
+			if(m_walk_timer >= 0.5){
 				m_walk_frame = (m_walk_frame + 1) % 2;
 				m_walk_timer = 0;
 			}
@@ -1045,13 +1045,13 @@ void MobV2CAO::step(float dtime, ClientEnvironment *env)
 		const float txs = txp*32;
 		const float typ = 1./240;
 		const float tys = typ*48;
-		bill-> setTCoords(0, v2f(txs*(1+col), tys*(1+row)));
-		bill-> setTCoords(1, v2f(txs*(1+col), tys*(0+row)));
-		bill-> setTCoords(2, v2f(txs*(0+col), tys*(0+row)));
-		bill-> setTCoords(3, v2f(txs*(0+col), tys*(1+row)));
+		bill->setTCoords(0, v2f(txs*(1+col), tys*(1+row)));
+		bill->setTCoords(1, v2f(txs*(1+col), tys*(0+row)));
+		bill->setTCoords(2, v2f(txs*(0+col), tys*(0+row)));
+		bill->setTCoords(3, v2f(txs*(0+col), tys*(1+row)));
 	} else if(m_sprite_type == "simple"){
 		m_walk_timer += dtime;
-		if(m_walk_timer > = m_simple_anim_frametime){
+		if(m_walk_timer >= m_simple_anim_frametime){
 			m_walk_frame = (m_walk_frame + 1) % m_simple_anim_frames;
 			m_walk_timer = 0;
 		}
@@ -1059,10 +1059,10 @@ void MobV2CAO::step(float dtime, ClientEnvironment *env)
 		int row = m_walk_frame;
 		const float txs = 1.0;
 		const float tys = 1.0 / m_simple_anim_frames;
-		bill-> setTCoords(0, v2f(txs*(1+col), tys*(1+row)));
-		bill-> setTCoords(1, v2f(txs*(1+col), tys*(0+row)));
-		bill-> setTCoords(2, v2f(txs*(0+col), tys*(0+row)));
-		bill-> setTCoords(3, v2f(txs*(0+col), tys*(1+row)));
+		bill->setTCoords(0, v2f(txs*(1+col), tys*(1+row)));
+		bill->setTCoords(1, v2f(txs*(1+col), tys*(0+row)));
+		bill->setTCoords(2, v2f(txs*(0+col), tys*(0+row)));
+		bill->setTCoords(3, v2f(txs*(0+col), tys*(1+row)));
 	} else {
 		infostream<<"MobV2CAO::step(): Unknown sprite type \""
 				<<m_sprite_type<<"\""<<std::endl;
@@ -1072,17 +1072,17 @@ void MobV2CAO::step(float dtime, ClientEnvironment *env)
 
 	/* Damage local player */
 	if(m_player_hit_damage && m_player_hit_timer <= 0.0){
-		LocalPlayer *player = env-> getLocalPlayer();
+		LocalPlayer *player = env->getLocalPlayer();
 		assert(player);
 
-		v3f playerpos = player-> getPosition();
+		v3f playerpos = player->getPosition();
 		v2f playerpos_2d(playerpos.X,playerpos.Z);
 		v2f objectpos_2d(m_position.X,m_position.Z);
 
 		if(fabs(m_position.Y - playerpos.Y) < m_player_hit_distance*BS &&
 		objectpos_2d.getDistanceFrom(playerpos_2d) < m_player_hit_distance*BS)
 		{
-			env-> damageLocalPlayer(m_player_hit_damage);
+			env->damageLocalPlayer(m_player_hit_damage);
 			m_player_hit_timer = m_player_hit_interval;
 		}
 	}
@@ -1091,7 +1091,7 @@ void MobV2CAO::step(float dtime, ClientEnvironment *env)
 
 	m_player_hit_timer -= dtime;
 
-	if(m_damage_visual_timer > = 0){
+	if(m_damage_visual_timer >= 0){
 		m_damage_visual_timer -= dtime;
 		if(m_damage_visual_timer <= 0){
 			infostream<<"id="<<m_id<<" damage visual ended"<<std::endl;
@@ -1099,7 +1099,7 @@ void MobV2CAO::step(float dtime, ClientEnvironment *env)
 	}
 
 	m_walking_unset_timer += dtime;
-	if(m_walking_unset_timer > = 1.0){
+	if(m_walking_unset_timer >= 1.0){
 		m_walking = false;
 	}
 
@@ -1108,7 +1108,7 @@ void MobV2CAO::step(float dtime, ClientEnvironment *env)
 		if(m_bright_shooting){
 			u8 li = decode_light(m_last_light);
 			video::SColor color(255,li,li,li);
-			bill-> setColor(color);
+			bill->setColor(color);
 			m_bright_shooting = false;
 		}
 		m_shooting = false;
@@ -1143,13 +1143,13 @@ void MobV2CAO::processMessage(const std::string &data)
 		//u16 damage = readU16(is);
 
 		/*u8 li = decode_light(m_last_light);
-		if(li > = 100)
+		if(li >= 100)
 			li = 30;
 		else
 			li = 255;*/
 
 		/*video::SColor color(255,255,0,0);
-		m_node-> setColor(color);
+		m_node->setColor(color);
 
 		m_damage_visual_timer = 0.2;*/
 	}
@@ -1163,7 +1163,7 @@ void MobV2CAO::processMessage(const std::string &data)
 		if(m_bright_shooting){
 			u8 li = 255;
 			video::SColor color(255,li,li,li);
-			m_node-> setColor(color);
+			m_node->setColor(color);
 		}
 
 		m_shooting = true;
@@ -1187,24 +1187,24 @@ void MobV2CAO::initialize(const std::string &data)
 		std::ostringstream tmp_os(std::ios::binary);
 		decompressZlib(is, tmp_os);
 		std::istringstream tmp_is(tmp_os.str(), std::ios::binary);
-		m_properties-> parseConfigLines(tmp_is, "MobArgsEnd");
+		m_properties->parseConfigLines(tmp_is, "MobArgsEnd");
 
 		infostream<<"MobV2CAO::initialize(): got properties:"<<std::endl;
-		m_properties-> writeLines(infostream);
+		m_properties->writeLines(infostream);
 
-		m_properties-> setDefault("looks", "dummy_default");
-		m_properties-> setDefault("yaw", "0");
-		m_properties-> setDefault("pos", "(0,0,0)");
-		m_properties-> setDefault("player_hit_damage", "0");
-		m_properties-> setDefault("player_hit_distance", "1.5");
-		m_properties-> setDefault("player_hit_interval", "1.5");
+		m_properties->setDefault("looks", "dummy_default");
+		m_properties->setDefault("yaw", "0");
+		m_properties->setDefault("pos", "(0,0,0)");
+		m_properties->setDefault("player_hit_damage", "0");
+		m_properties->setDefault("player_hit_distance", "1.5");
+		m_properties->setDefault("player_hit_interval", "1.5");
 
-		setLooks(m_properties-> get("looks"));
-		m_yaw = m_properties-> getFloat("yaw");
-		m_position = m_properties-> getV3F("pos");
-		m_player_hit_damage = m_properties-> getS32("player_hit_damage");
-		m_player_hit_distance = m_properties-> getFloat("player_hit_distance");
-		m_player_hit_interval = m_properties-> getFloat("player_hit_interval");
+		setLooks(m_properties->get("looks"));
+		m_yaw = m_properties->getFloat("yaw");
+		m_position = m_properties->getV3F("pos");
+		m_player_hit_damage = m_properties->getS32("player_hit_damage");
+		m_player_hit_distance = m_properties->getFloat("player_hit_distance");
+		m_player_hit_interval = m_properties->getFloat("player_hit_interval");
 
 		pos_translator.init(m_position);
 	}
@@ -1215,7 +1215,7 @@ void MobV2CAO::initialize(const std::string &data)
 bool MobV2CAO::directReportPunch(const std::string &toolname, v3f dir)
 {
 	video::SColor color(255,255,0,0);
-	m_node-> setColor(color);
+	m_node->setColor(color);
 
 	m_damage_visual_timer = 0.05;
 
@@ -1258,7 +1258,7 @@ void MobV2CAO::setLooks(const std::string &looks)
 		selection_y = 0 * BS;
 	}
 
-	m_selection_box = core::aabbox3d<f32> (
+	m_selection_box = core::aabbox3d<f32>(
 			-selection_size.X, selection_y, -selection_size.X,
 			selection_size.X, selection_y+selection_size.Y,
 			selection_size.X);

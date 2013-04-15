@@ -111,10 +111,10 @@ inline u8 readChannel(u8 *packetdata)
 #define SEQNUM_MAX 65535
 inline bool seqnum_higher(u16 higher, u16 lower)
 {
-	if(lower >  higher && lower - higher >  SEQNUM_MAX/2){
+	if(lower > higher && lower - higher > SEQNUM_MAX/2){
 		return true;
 	}
-	return (higher >  lower);
+	return (higher > lower);
 }
 
 struct BufferedPacket
@@ -125,7 +125,7 @@ struct BufferedPacket
 	BufferedPacket(u32 a_size):
 		data(a_size), time(0.0), totaltime(0.0)
 	{}
-	SharedBuffer<u8>  data; // Data of the packet, including headers
+	SharedBuffer<u8> data; // Data of the packet, including headers
 	float time; // Seconds from buffering the packet or re-sending
 	float totaltime; // Seconds from buffering the packet
 	Address address; // Sender or destination
@@ -134,29 +134,29 @@ struct BufferedPacket
 // This adds the base headers to the data and makes a packet out of it
 BufferedPacket makePacket(Address &address, u8 *data, u32 datasize,
 		u32 protocol_id, u16 sender_peer_id, u8 channel);
-BufferedPacket makePacket(Address &address, SharedBuffer<u8>  &data,
+BufferedPacket makePacket(Address &address, SharedBuffer<u8> &data,
 		u32 protocol_id, u16 sender_peer_id, u8 channel);
 
 // Add the TYPE_ORIGINAL header to the data
-SharedBuffer<u8>  makeOriginalPacket(
-		SharedBuffer<u8>  data);
+SharedBuffer<u8> makeOriginalPacket(
+		SharedBuffer<u8> data);
 
 // Split data in chunks and add TYPE_SPLIT headers to them
-core::list<SharedBuffer<u8>  >  makeSplitPacket(
-		SharedBuffer<u8>  data,
+core::list<SharedBuffer<u8> > makeSplitPacket(
+		SharedBuffer<u8> data,
 		u32 chunksize_max,
 		u16 seqnum);
 
 // Depending on size, make a TYPE_ORIGINAL or TYPE_SPLIT packet
 // Increments split_seqnum if a split packet is made
-core::list<SharedBuffer<u8>  >  makeAutoSplitPacket(
-		SharedBuffer<u8>  data,
+core::list<SharedBuffer<u8> > makeAutoSplitPacket(
+		SharedBuffer<u8> data,
 		u32 chunksize_max,
 		u16 &split_seqnum);
 
 // Add the TYPE_RELIABLE header to the data
-SharedBuffer<u8>  makeReliablePacket(
-		SharedBuffer<u8>  data,
+SharedBuffer<u8> makeReliablePacket(
+		SharedBuffer<u8> data,
 		u16 seqnum);
 
 struct IncomingSplitPacket
@@ -167,7 +167,7 @@ struct IncomingSplitPacket
 		reliable = false;
 	}
 	// Key is chunk number, value is data without headers
-	core::map<u16, SharedBuffer<u8>  >  chunks;
+	core::map<u16, SharedBuffer<u8> > chunks;
 	u32 chunk_count;
 	float time; // Seconds from adding
 	bool reliable; // If true, isn't deleted on timeout
@@ -268,7 +268,7 @@ with a buffer in the receiving and transmitting end.
 	for fast access to the smallest one.
 */
 
-typedef core::list<BufferedPacket> ::Iterator RPBSearchResult;
+typedef core::list<BufferedPacket>::Iterator RPBSearchResult;
 
 class ReliablePacketBuffer
 {
@@ -286,10 +286,10 @@ public:
 	void incrementTimeouts(float dtime);
 	void resetTimedOuts(float timeout);
 	bool anyTotaltimeReached(float timeout);
-	core::list<BufferedPacket>  getTimedOuts(float timeout);
+	core::list<BufferedPacket> getTimedOuts(float timeout);
 
 private:
-	core::list<BufferedPacket>  m_list;
+	core::list<BufferedPacket> m_list;
 };
 
 /*
@@ -304,13 +304,13 @@ public:
 		Returns a reference counted buffer of length != 0 when a full split
 		packet is constructed. If not, returns one of length 0.
 	*/
-	SharedBuffer<u8>  insert(BufferedPacket &p, bool reliable);
+	SharedBuffer<u8> insert(BufferedPacket &p, bool reliable);
 
 	void removeUnreliableTimedOuts(float dtime, float timeout);
 
 private:
 	// Key is seqnum
-	core::map<u16, IncomingSplitPacket*>  m_buf;
+	core::map<u16, IncomingSplitPacket*> m_buf;
 };
 
 class Connection;
@@ -406,10 +406,10 @@ struct OutgoingPacket
 {
 	u16 peer_id;
 	u8 channelnum;
-	SharedBuffer<u8>  data;
+	SharedBuffer<u8> data;
 	bool reliable;
 
-	OutgoingPacket(u16 peer_id_, u8 channelnum_, SharedBuffer<u8>  data_,
+	OutgoingPacket(u16 peer_id_, u8 channelnum_, SharedBuffer<u8> data_,
 			bool reliable_):
 		peer_id(peer_id_),
 		channelnum(channelnum_),
@@ -430,7 +430,7 @@ struct ConnectionEvent
 {
 	enum ConnectionEventType type;
 	u16 peer_id;
-	Buffer<u8>  data;
+	Buffer<u8> data;
 	bool timeout;
 	Address address;
 
@@ -451,7 +451,7 @@ struct ConnectionEvent
 		return "Invalid ConnectionEvent";
 	}
 
-	void dataReceived(u16 peer_id_, SharedBuffer<u8>  data_)
+	void dataReceived(u16 peer_id_, SharedBuffer<u8> data_)
 	{
 		type = CONNEVENT_DATA_RECEIVED;
 		peer_id = peer_id_;
@@ -489,7 +489,7 @@ struct ConnectionCommand
 	Address address;
 	u16 peer_id;
 	u8 channelnum;
-	Buffer<u8>  data;
+	Buffer<u8> data;
 	bool reliable;
 
 	ConnectionCommand(): type(CONNCMD_NONE) {}
@@ -509,7 +509,7 @@ struct ConnectionCommand
 		type = CONNCMD_DISCONNECT;
 	}
 	void send(u16 peer_id_, u8 channelnum_,
-			SharedBuffer<u8>  data_, bool reliable_)
+			SharedBuffer<u8> data_, bool reliable_)
 	{
 		type = CONNCMD_SEND;
 		peer_id = peer_id_;
@@ -517,7 +517,7 @@ struct ConnectionCommand
 		data = data_;
 		reliable = reliable_;
 	}
-	void sendToAll(u8 channelnum_, SharedBuffer<u8>  data_, bool reliable_)
+	void sendToAll(u8 channelnum_, SharedBuffer<u8> data_, bool reliable_)
 	{
 		type = CONNCMD_SEND_TO_ALL;
 		channelnum = channelnum_;
@@ -551,9 +551,9 @@ public:
 	void Connect(Address address);
 	bool Connected();
 	void Disconnect();
-	u32 Receive(u16 &peer_id, SharedBuffer<u8>  &data);
-	void SendToAll(u8 channelnum, SharedBuffer<u8>  data, bool reliable);
-	void Send(u16 peer_id, u8 channelnum, SharedBuffer<u8>  data, bool reliable);
+	u32 Receive(u16 &peer_id, SharedBuffer<u8> &data);
+	void SendToAll(u8 channelnum, SharedBuffer<u8> data, bool reliable);
+	void Send(u16 peer_id, u8 channelnum, SharedBuffer<u8> data, bool reliable);
 	void RunTimeouts(float dtime); // dummy
 	u16 GetPeerID(){ return m_peer_id; }
 	Address GetPeerAddress(u16 peer_id);
@@ -569,22 +569,22 @@ private:
 	void serve(u16 port);
 	void connect(Address address);
 	void disconnect();
-	void sendToAll(u8 channelnum, SharedBuffer<u8>  data, bool reliable);
-	void send(u16 peer_id, u8 channelnum, SharedBuffer<u8>  data, bool reliable);
+	void sendToAll(u8 channelnum, SharedBuffer<u8> data, bool reliable);
+	void send(u16 peer_id, u8 channelnum, SharedBuffer<u8> data, bool reliable);
 	void sendAsPacket(u16 peer_id, u8 channelnum,
-			SharedBuffer<u8>  data, bool reliable);
+			SharedBuffer<u8> data, bool reliable);
 	void rawSendAsPacket(u16 peer_id, u8 channelnum,
-			SharedBuffer<u8>  data, bool reliable);
+			SharedBuffer<u8> data, bool reliable);
 	void rawSend(const BufferedPacket &packet);
 	Peer* getPeer(u16 peer_id);
 	Peer* getPeerNoEx(u16 peer_id);
-	core::list<Peer*>  getPeers();
-	bool getFromBuffers(u16 &peer_id, SharedBuffer<u8>  &dst);
+	core::list<Peer*> getPeers();
+	bool getFromBuffers(u16 &peer_id, SharedBuffer<u8> &dst);
 	// Returns next data from a buffer if possible
 	// If found, returns true; if not, false.
 	// If found, sets peer_id and dst
 	bool checkIncomingBuffers(Channel *channel, u16 &peer_id,
-			SharedBuffer<u8>  &dst);
+			SharedBuffer<u8> &dst);
 	/*
 		Processes a packet with the basic header stripped out.
 		Parameters:
@@ -593,14 +593,14 @@ private:
 			channelnum: channel on which the packet was sent
 			reliable: true if recursing into a reliable packet
 	*/
-	SharedBuffer<u8>  processPacket(Channel *channel,
-			SharedBuffer<u8>  packetdata, u16 peer_id,
+	SharedBuffer<u8> processPacket(Channel *channel,
+			SharedBuffer<u8> packetdata, u16 peer_id,
 			u8 channelnum, bool reliable);
 	bool deletePeer(u16 peer_id, bool timeout);
 
-	Queue<OutgoingPacket>  m_outgoing_queue;
-	MutexedQueue<ConnectionEvent>  m_event_queue;
-	MutexedQueue<ConnectionCommand>  m_command_queue;
+	Queue<OutgoingPacket> m_outgoing_queue;
+	MutexedQueue<ConnectionEvent> m_event_queue;
+	MutexedQueue<ConnectionCommand> m_command_queue;
 
 	u32 m_protocol_id;
 	u32 m_max_packet_size;
@@ -608,7 +608,7 @@ private:
 	UDPSocket m_socket;
 	u16 m_peer_id;
 
-	core::map<u16, Peer*>  m_peers;
+	core::map<u16, Peer*> m_peers;
 	JMutex m_peers_mutex;
 
 	// Backwards compatibility

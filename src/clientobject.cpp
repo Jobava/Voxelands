@@ -39,7 +39,7 @@ ClientActiveObject::~ClientActiveObject()
 ClientActiveObject* ClientActiveObject::create(u8 type)
 {
 	// Find factory function
-	core::map<u16, Factory> ::Node *n;
+	core::map<u16, Factory>::Node *n;
 	n = m_types.find(type);
 	if(n == NULL)
 	{
@@ -49,14 +49,14 @@ ClientActiveObject* ClientActiveObject::create(u8 type)
 		return NULL;
 	}
 
-	Factory f = n-> getValue();
+	Factory f = n->getValue();
 	ClientActiveObject *object = (*f)();
 	return object;
 }
 
 void ClientActiveObject::registerType(u16 type, Factory f)
 {
-	core::map<u16, Factory> ::Node *n;
+	core::map<u16, Factory>::Node *n;
 	n = m_types.find(type);
 	if(n)
 		return;

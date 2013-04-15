@@ -61,12 +61,12 @@ public:
             p = n + plop.length();
         }
         //else
-            //std::cout<<"\tp> =tek.size()"<<std::endl;
+            //std::cout<<"\tp>=tek.size()"<<std::endl;
 		//std::cout<<"palautus=\""<<palautus<<"\""<<std::endl;
         return palautus;
     }
     bool atend(){
-        if(p> =tek.size()) return true;
+        if(p>=tek.size()) return true;
         return false;
     }
     Strfnd(std::string s){
@@ -111,12 +111,12 @@ public:
             p = n + plop.length();
         }
         //else
-            //std::cout<<"\tp> =tek.size()"<<std::endl;
+            //std::cout<<"\tp>=tek.size()"<<std::endl;
 		//std::cout<<"palautus=\""<<palautus<<"\""<<std::endl;
         return palautus;
     }
     bool atend(){
-        if(p> =tek.size()) return true;
+        if(p>=tek.size()) return true;
         return false;
     }
     WStrfnd(std::wstring s){
@@ -128,7 +128,7 @@ inline std::string trim(const std::string &s)
 {
 	std::string str = s;
     while(
-            str.length()> 0
+            str.length()>0
             &&
             (
              str.substr(0,               1)==" "     ||

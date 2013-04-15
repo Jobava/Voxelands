@@ -72,7 +72,7 @@ public:
 protected:
 	static void registerType(u16 id, Factory f);
 private:
-	static core::map<u16, Factory>  m_types;
+	static core::map<u16, Factory> m_types;
 };
 
 /*
@@ -98,7 +98,7 @@ public:
 	bool step(float dtime);
 
 private:
-	core::map<v3s16, NodeMetadata*>  m_data;
+	core::map<v3s16, NodeMetadata*> m_data;
 };
 
 #endif
