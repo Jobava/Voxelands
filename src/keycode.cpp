@@ -21,6 +21,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "main.h" // For g_settings
 #include "exceptions.h"
 #include "settings.h"
+#include "hex.h"
 
 class UnknownKeycode : public BaseException
 {
@@ -258,9 +259,10 @@ KeyPress::KeyPress(const char *name)
 		try {
 			Key = keyname_to_keycode(name);
 			m_name = name;
-			if (strlen(name) > 8)
-				mbtowc(&Char, name + 8, 1);
-			else
+			if (strlen(name) > 8 && strncmp(name, "KEY_KEY_", 8) == 0) {
+				int chars_read = mbtowc(&Char, name + 8, 1);
+				assert (chars_read == 1 && "unexpected multibyte character");
+			} else
 				Char = L'\0';
 			return;
 		} catch (UnknownKeycode &e) {};
@@ -270,7 +272,8 @@ KeyPress::KeyPress(const char *name)
 		m_name += name;
 		try {
 			Key = keyname_to_keycode(m_name.c_str());
-			mbtowc(&Char, name, 1);
+			int chars_read = mbtowc(&Char, name, 1);
+			assert (chars_read == 1 && "unexpected multibyte character");
 			return;
 		} catch (UnknownKeycode &e) {};
 	}
@@ -279,7 +282,8 @@ KeyPress::KeyPress(const char *name)
 
 	Key = irr::KEY_KEY_CODES_COUNT;
 
-	mbtowc(&Char, name, 1);
+	int mbtowc_ret = mbtowc(&Char, name, 1);
+	assert (mbtowc_ret == 1 && "unexpected multibyte character");
 	m_name = name[0];
 }
 
@@ -292,7 +296,11 @@ KeyPress::KeyPress(const irr::SEvent::SKeyInput &in)
 	} else {
 		size_t maxlen = wctomb(NULL, Char);
 		m_name.resize(maxlen+1, '\0');
-		wctomb(&m_name[0], Char);
+		maxlen = wctomb(&m_name[0], Char);
+		if(maxlen < 0){
+			std::string hexstr = hex_encode((const char*)&Char, sizeof(Char));
+			errorstream<<"KeyPress: Unexpected multibyte character "<<hexstr<<std::endl;
+		}
 	}
 }
 

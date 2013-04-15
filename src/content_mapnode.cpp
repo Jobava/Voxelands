@@ -107,7 +107,9 @@ void content_mapnode_init()
 	bool new_style_water = g_settings->getBool("new_style_water");
 	bool new_style_leaves = g_settings->getBool("new_style_leaves");
 	bool invisible_stone = g_settings->getBool("invisible_stone");
+#ifndef SERVER
 	bool opaque_water = g_settings->getBool("opaque_water");
+#endif
 
 	content_t i;
 	ContentFeatures *f = NULL;

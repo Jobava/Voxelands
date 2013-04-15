@@ -73,12 +73,14 @@ public:
 
 	int overflow(int c)
 	{
+		size_t sz;
 		for(int i=0; i<DEBUGSTREAM_COUNT; i++)
 		{
 			if(g_debugstreams[i] == stderr && m_disable_stderr)
 				continue;
 			if(g_debugstreams[i] != NULL)
-				(void)fwrite(&c, 1, 1, g_debugstreams[i]);
+				if ((sz = fwrite(&c, 1, 1, g_debugstreams[i])) < 0)
+					continue;
 			//TODO: Is this slow?
 			fflush(g_debugstreams[i]);
 		}
@@ -87,12 +89,14 @@ public:
 	}
 	std::streamsize xsputn(const char *s, std::streamsize n)
 	{
+		size_t sz;
 		for(int i=0; i<DEBUGSTREAM_COUNT; i++)
 		{
 			if(g_debugstreams[i] == stderr && m_disable_stderr)
 				continue;
 			if(g_debugstreams[i] != NULL)
-				(void)fwrite(s, 1, n, g_debugstreams[i]);
+				if ((sz = fwrite(s, 1, n, g_debugstreams[i])) < 0)
+					continue;
 			//TODO: Is this slow?
 			fflush(g_debugstreams[i]);
 		}
