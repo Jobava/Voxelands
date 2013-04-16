@@ -121,6 +121,7 @@ set(common_SRCS
 	mapblock.cpp
 	mapsector.cpp
 	map.cpp
+	mesh.cpp
 	player.cpp
 	utility.cpp
 	test.cpp
@@ -238,7 +239,7 @@ if(MSVC)
 	# Flags for C files (sqlite)
 	# /MT = Link statically with standard library stuff
 	set(CMAKE_C_FLAGS_RELEASE "/O2 /Ob2 /MT")
-	
+
 	if(BUILD_SERVER)
 		set_target_properties(${PROJECT_NAME}server PROPERTIES
 				COMPILE_DEFINITIONS "SERVER")
@@ -246,20 +247,20 @@ if(MSVC)
 
 else()
 	# Probably GCC
-	
+
 	if(WARN_ALL)
 		set(RELEASE_WARNING_FLAGS "-Wall")
 	else()
 		set(RELEASE_WARNING_FLAGS "")
 	endif()
-	
+
 	if(NOT APPLE AND NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 		CHECK_CXX_COMPILER_FLAG("-Wno-unused-but-set-variable" HAS_UNUSED_BUT_SET_VARIABLE_WARNING)
 		if(HAS_UNUSED_BUT_SET_VARIABLE_WARNING)
 			set(WARNING_FLAGS "${WARNING_FLAGS} -Wno-unused-but-set-variable")
 		endif(HAS_UNUSED_BUT_SET_VARIABLE_WARNING)
 	endif()
-	
+
 	if(APPLE)
 		set(CMAKE_OSX_ARCHITECTURES i386 CACHE STRING "do not build for 64-bit" FORCE)
 		set(ARCH i386)
@@ -271,7 +272,7 @@ else()
 	if(USE_GPROF)
 		set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -pg")
 	endif()
-	
+
 	if(BUILD_SERVER)
 		set_target_properties(${PROJECT_NAME}server PROPERTIES
 				COMPILE_DEFINITIONS "SERVER")

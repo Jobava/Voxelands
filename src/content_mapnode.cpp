@@ -205,6 +205,7 @@ void content_mapnode_init()
 	f->setAllTextures("tree.png");
 	f->setTexture(0, "tree_top.png");
 	f->setTexture(1, "tree_top.png");
+	f->setInventoryTextureCube("tree_top.png", "tree.png", "tree.png");
 	f->param_type = CPT_MINERAL;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -215,6 +216,7 @@ void content_mapnode_init()
 	f->setAllTextures("jungletree.png");
 	f->setTexture(0, "jungletree_top.png");
 	f->setTexture(1, "jungletree_top.png");
+	f->setInventoryTextureCube("jungletree_top.png", "jungletree.png", "jungletree.png");
 	f->param_type = CPT_MINERAL;
 	//f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -283,9 +285,7 @@ void content_mapnode_init()
 	f->setAllTextures("bookshelf.png");
 	f->setTexture(0, "wood.png");
 	f->setTexture(1, "wood.png");
-	// FIXME: setInventoryTextureCube() only cares for the first texture
-	f->setInventoryTextureCube("bookshelf.png", "bookshelf.png", "bookshelf.png");
-	//f->setInventoryTextureCube("wood.png", "bookshelf.png", "bookshelf.png");
+	f->setInventoryTextureCube("wood.png", "bookshelf.png", "bookshelf.png");
 	f->param_type = CPT_MINERAL;
 	f->is_ground_content = true;
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
@@ -623,7 +623,7 @@ void content_mapnode_init()
 	f->setTexture(1, "chest_top.png");
 	f->setTexture(5, "chest_front.png"); // Z-
 	f->setInventoryTexture("chest_top.png");
-	//f->setInventoryTextureCube("chest_top.png", "chest_side.png", "chest_side.png");
+	f->setInventoryTextureCube("chest_top.png", "chest_front.png", "chest_side.png");
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new ChestNodeMetadata();
@@ -637,7 +637,7 @@ void content_mapnode_init()
 	f->setTexture(1, "chest_top.png");
 	f->setTexture(5, "chest_lock.png"); // Z-
 	f->setInventoryTexture("chest_lock.png");
-	//f->setInventoryTextureCube("chest_top.png", "chest_side.png", "chest_side.png");
+	f->setInventoryTextureCube("chest_top.png", "chest_lock.png", "chest_side.png");
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockingChestNodeMetadata();
@@ -648,7 +648,7 @@ void content_mapnode_init()
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("furnace_side.png");
 	f->setTexture(5, "furnace_front.png"); // Z-
-	f->setInventoryTexture("furnace_front.png");
+	f->setInventoryTextureCube("furnace_side.png", "furnace_front.png", "furnace_side.png");
 	//f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COBBLE)+" 6";
 	if(f->initial_metadata == NULL)
@@ -676,8 +676,7 @@ void content_mapnode_init()
 	i = CONTENT_STEEL;
 	f = &content_features(i);
 	f->setAllTextures("steel_block.png");
-	f->setInventoryTextureCube("steel_block.png", "steel_block.png",
-			"steel_block.png");
+	f->setInventoryTextureCube("steel_block.png", "steel_block.png", "steel_block.png");
 	f->param_type = CPT_NONE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -689,14 +688,14 @@ void content_mapnode_init()
 	f->setAllTextures("nc_side.png");
 	f->setTexture(5, "nc_front.png"); // Z-
 	f->setTexture(4, "nc_back.png"); // Z+
-	f->setInventoryTexture("nc_front.png");
+	f->setInventoryTextureCube("nc_front.png", "nc_side.png", "nc_side.png");
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	setStoneLikeDiggingProperties(f->digging_properties, 3.0);
 
 	i = CONTENT_NC_RB;
 	f = &content_features(i);
 	f->setAllTextures("nc_rb.png");
-	f->setInventoryTexture("nc_rb.png");
+	f->setInventoryTextureCube("nc_rb.png", "nc_rb.png", "nc_rb.png");
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	setStoneLikeDiggingProperties(f->digging_properties, 3.0);
 

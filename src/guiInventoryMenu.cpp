@@ -134,10 +134,6 @@ void GUIInventoryMenu::regenerateGui(v2u32 screensize)
 	// Remove children
 	removeChildren();
 
-	/*padding = v2s32(24,24);
-	spacing = v2s32(60,56);
-	imgsize = v2s32(48,48);*/
-
 	padding = v2s32(screensize.Y/40, screensize.Y/40);
 	spacing = v2s32(screensize.Y/12, screensize.Y/13);
 	imgsize = v2s32(screensize.Y/15, screensize.Y/15);
@@ -172,16 +168,6 @@ void GUIInventoryMenu::regenerateGui(v2u32 screensize)
 					s.geom));
 		}
 	}
-
-	/*
-	m_draw_spec.clear();
-	m_draw_spec.push_back(ListDrawSpec("main",
-			basepos + v2s32(spacing.X*0, spacing.Y*3), v2s32(8, 4)));
-	m_draw_spec.push_back(ListDrawSpec("craft",
-			basepos + v2s32(spacing.X*3, spacing.Y*0), v2s32(3, 3)));
-	m_draw_spec.push_back(ListDrawSpec("craftresult",
-			basepos + v2s32(spacing.X*7, spacing.Y*1), v2s32(1, 1)));
-	*/
 
 	// Add children
 	{
@@ -247,15 +233,6 @@ void GUIInventoryMenu::drawList(const ListDrawSpec &s)
 		if(m_selected_item != NULL && m_selected_item->listname == s.listname
 				&& m_selected_item->i == i)
 		{
-			/*s32 border = imgsize.X/12;
-			driver->draw2DRectangle(video::SColor(255,192,192,192),
-					core::rect<s32>(rect.UpperLeftCorner - v2s32(1,1)*border,
-							rect.LowerRightCorner + v2s32(1,1)*border),
-					NULL);
-			driver->draw2DRectangle(video::SColor(255,0,0,0),
-					core::rect<s32>(rect.UpperLeftCorner - v2s32(1,1)*((border+1)/2),
-							rect.LowerRightCorner + v2s32(1,1)*((border+1)/2)),
-					NULL);*/
 			s32 border = 2;
 			driver->draw2DRectangle(video::SColor(255,255,0,0),
 					core::rect<s32>(rect.UpperLeftCorner - v2s32(1,1)*border,
