@@ -42,7 +42,7 @@ void setWoodLikeDiggingProperties(DiggingPropertiesList &list, float toughness);
 	Maps <=v19 content types to current ones.
 	Should never be touched.
 */
-content_t trans_table_19[21][2] = {
+content_t trans_table_19[20][2] = {
 	{CONTENT_GRASS, 1},
 	{CONTENT_TREE, 4},
 	{CONTENT_LEAVES, 5},
@@ -50,7 +50,6 @@ content_t trans_table_19[21][2] = {
 	{CONTENT_MESE, 7},
 	{CONTENT_MUD, 8},
 	{CONTENT_CLOUD, 10},
-	{CONTENT_COALSTONE, 11},
 	{CONTENT_WOOD, 12},
 	{CONTENT_SAND, 13},
 	{CONTENT_COBBLE, 18},
@@ -342,13 +341,6 @@ void content_mapnode_init()
 	f->walkable = false;
 	f->climbable = true;
 	setWoodLikeDiggingProperties(f->digging_properties, 0.5);
-
-	// Deprecated
-	i = CONTENT_COALSTONE;
-	f = &content_features(i);
-	f->setAllTextures("stone.png^mineral_coal.png");
-	f->is_ground_content = true;
-	setStoneLikeDiggingProperties(f->digging_properties, 1.5);
 
 	i = CONTENT_WOOD;
 	f = &content_features(i);
@@ -649,8 +641,7 @@ void content_mapnode_init()
 	f->setAllTextures("furnace_side.png");
 	f->setTexture(5, "furnace_front.png"); // Z-
 	f->setInventoryTextureCube("furnace_side.png", "furnace_front.png", "furnace_side.png");
-	//f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COBBLE)+" 6";
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new FurnaceNodeMetadata();
 	setStoneLikeDiggingProperties(f->digging_properties, 3.0);
@@ -750,9 +741,6 @@ void setStoneLikeDiggingProperties(DiggingPropertiesList &list, float toughness)
 			DiggingProperties(true, 0.75*toughness, 65535./100.*toughness));
 	list.set("SteelPick",
 			DiggingProperties(true, 0.50*toughness, 65535./333.*toughness));
-
-	/*list.set("MesePick",
-			DiggingProperties(true, 0.0*toughness, 65535./20.*toughness));*/
 }
 
 void setDirtLikeDiggingProperties(DiggingPropertiesList &list, float toughness)

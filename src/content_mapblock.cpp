@@ -123,15 +123,10 @@ void makeCuboid(video::SMaterial &material, MeshCollector *collector,
 void mapblock_mesh_generate_special(MeshMakeData *data,
 		MeshCollector &collector)
 {
-	// 0ms
-	//TimeTaker timer("mapblock_mesh_generate_special()");
-
 	/*
 		Some settings
 	*/
 	bool new_style_water = g_settings->getBool("new_style_water");
-	bool new_style_leaves = g_settings->getBool("new_style_leaves");
-	//bool smooth_lighting = g_settings->getBool("smooth_lighting");
 	bool invisible_stone = g_settings->getBool("invisible_stone");
 
 	float node_liquid_level = 1.0;
@@ -232,7 +227,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		/*
 			Add torches to mesh
 		*/
-		if(n.getContent() == CONTENT_TORCH)
+		switch (n.getContent()) {
+		case CONTENT_TORCH:
 		{
 			v3s16 dir = unpackDir(n.param2);
 
@@ -301,7 +297,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		/*
 			Signs on walls
 		*/
-		else if(n.getContent() == CONTENT_SIGN_WALL)
+		break;
+		case CONTENT_SIGN_WALL:
 		{
 			AtlasPointer ap = g_texturesource->getTexture("sign_wall.png");
 
@@ -359,7 +356,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		/*
 			Add flowing liquid to mesh
 		*/
-		else if(content_features(n).liquid_type == LIQUID_FLOWING)
+		break;
+		case LIQUID_FLOWING:
 		{
 			assert(content_features(n).special_material);
 			video::SMaterial &liquid_material =
@@ -600,13 +598,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					if(dir == v3s16(1,0,-0))
 						vertices[j].Pos.rotateXZBy(-90);
 
-					// Do this to not cause glitches when two liquids are
-					// side-by-side
-					/*if(neighbor_is_same_liquid == false){
-						vertices[j].Pos.X *= 0.98;
-						vertices[j].Pos.Z *= 0.98;
-					}*/
-
 					vertices[j].Pos += intToFloat(p + blockpos_nodes, BS);
 				}
 
@@ -638,8 +629,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 				for(s32 i=0; i<4; i++)
 				{
-					//vertices[i].Pos.Y += liquid_level;
-					//vertices[i].Pos.Y += neighbor_levels[v3s16(0,0,0)];
 					s32 j = corner_resolve[i];
 					vertices[i].Pos.Y += corner_levels[j];
 					vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
@@ -653,8 +642,9 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		/*
 			Add water sources to mesh if using new style
 		*/
-		else if(content_features(n).liquid_type == LIQUID_SOURCE
-				&& new_style_water)
+		break;
+		case LIQUID_SOURCE:
+		if (new_style_water)
 		{
 			assert(content_features(n).special_material);
 			video::SMaterial &liquid_material =
@@ -663,12 +653,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			AtlasPointer &pa_liquid1 =
 					*content_features(n).special_atlas;
 
-			bool top_is_air = false;
 			MapNode n = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y+1,z));
-			if(n.getContent() == CONTENT_AIR)
-				top_is_air = true;
-
-			if(top_is_air == false)
+			if(n.getContent() != CONTENT_AIR)
 				continue;
 
 			u8 l = decode_light(n.getLightBlend(data->m_daynight_ratio));
@@ -700,9 +686,9 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		/*
 			Add leaves if using new style
 		*/
-		else if(n.getContent() == CONTENT_LEAVES && new_style_leaves)
+		break;
+		case CONTENT_LEAVES:
 		{
-			/*u8 l = decode_light(n.getLightBlend(data->m_daynight_ratio));*/
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l);
 
@@ -764,7 +750,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		/*
 			Add glass
 		*/
-		else if(n.getContent() == CONTENT_GLASS)
+		break;
+		case CONTENT_GLASS:
 		{
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l);
@@ -827,7 +814,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		/*
 			Add fence
 		*/
-		else if(n.getContent() == CONTENT_FENCE)
+		break;
+		case CONTENT_FENCE:
 		{
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l);
@@ -906,18 +894,14 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		/*
 			Add stones with minerals if stone is invisible
 		*/
-		else if(n.getContent() == CONTENT_STONE && invisible_stone && n.getMineral() != MINERAL_NONE)
+		break;
+		case CONTENT_STONE:
+		if (invisible_stone && n.getMineral() != MINERAL_NONE)
 		{
 			for(u32 j=0; j<6; j++)
 			{
 				// NOTE: Hopefully g_6dirs[j] is the right direction...
 				v3s16 dir = g_6dirs[j];
-				/*u8 l = 0;
-				MapNode n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + dir);
-				if(content_features(n2).param_type == CPT_LIGHT)
-					l = decode_light(n2.getLightBlend(data->m_daynight_ratio));
-				else
-					l = 255;*/
 				u8 l = 255;
 				video::SColor c = MapBlock_LightColor(255, l);
 
@@ -971,7 +955,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			}
 		}
 #endif
-		else if(n.getContent() == CONTENT_PAPYRUS)
+		break;
+		case CONTENT_PAPYRUS:
 		{
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l);
@@ -1021,7 +1006,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				collector.append(material_papyrus, vertices, 4, indices, 6);
 			}
 		}
-		else if(n.getContent() == CONTENT_JUNGLEGRASS)
+		break;
+		case CONTENT_JUNGLEGRASS:
 		{
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l);
@@ -1072,7 +1058,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				collector.append(material_junglegrass, vertices, 4, indices, 6);
 			}
 		}
-		else if(n.getContent() == CONTENT_RAIL)
+		break;
+		case CONTENT_RAIL:
 		{
 			bool is_rail_x [] = { false, false };  /* x-1, x+1 */
 			bool is_rail_z [] = { false, false };  /* z-1, z+1 */
@@ -1180,7 +1167,9 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			u16 indices[] = {0,1,2,2,3,0};
 			collector.append(material_rail, vertices, 4, indices, 6);
 		}
-		else if (n.getContent() == CONTENT_LADDER) {
+		break;
+		case CONTENT_LADDER:
+		{
 			AtlasPointer ap = g_texturesource->getTexture("ladder.png");
 
 			// Set material
@@ -1234,7 +1223,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			// Add to mesh collector
 			collector.append(material_ladder, vertices, 4, indices, 6);
 		}
-		else if(n.getContent() == CONTENT_APPLE)
+		break;
+		case CONTENT_APPLE:
 		{
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l);
@@ -1284,7 +1274,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				collector.append(material_apple, vertices, 4, indices, 6);
 			}
 		}
-		else if(n.getContent() == CONTENT_SAPLING) {
+		break;
+		case CONTENT_SAPLING: {
 		        u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l);
 
@@ -1332,6 +1323,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				// Add to mesh collector
 				collector.append(material_sapling, vertices, 4, indices, 6);
 			}
+		}
 		}
 	}
 }
