@@ -1172,8 +1172,9 @@ void ServerEnvironment::step(float dtime)
 						{
 							test_p = leaf_p + v3s16(x,y,z);
 							testnode = m_map->getNodeNoEx(test_p);
-							if (testnode.getContent() == CONTENT_TREE ||
-								testnode.getContent() == CONTENT_JUNGLETREE)
+							if (testnode.getContent() == CONTENT_TREE
+								|| testnode.getContent() == CONTENT_JUNGLETREE
+								|| testnode.getContent() == CONTENT_IGNORE)
 							{
 								found = true;
 								break;
@@ -1207,7 +1208,8 @@ void ServerEnvironment::step(float dtime)
 					for(s16 x=-max_d; !found && x<=max_d; x++) {
 						test_p = apple_p + v3s16(x,y,z);
 						testnode = m_map->getNodeNoEx(test_p);
-						if (testnode.getContent() == CONTENT_LEAVES) {
+						if (testnode.getContent() == CONTENT_LEAVES
+							|| testnode.getContent() == CONTENT_IGNORE) {
 							found = true;
 							break;
 						}
