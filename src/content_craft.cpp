@@ -532,6 +532,8 @@ void craft_set_creative_inventory(Player *player)
 		CONTENT_FURNACE,
 		CONTENT_SIGN_WALL,
 		CONTENT_LAVASOURCE,
+		CONTENT_WOOD,
+		CONTENT_LADDER,
 		CONTENT_IGNORE
 	};
 
