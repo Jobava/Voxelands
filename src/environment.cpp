@@ -1224,6 +1224,80 @@ void ServerEnvironment::step(float dtime)
 						addActiveObject(obj);
 					}
 				}
+				/* grow junglegrass on sand near water */
+				if(n.getContent() == CONTENT_SAND) {
+					if(myrand()%500 == 0)
+					{
+						MapNode n_top1 = m_map->getNodeNoEx(p+v3s16(0,1,0));
+						MapNode n_top2 = m_map->getNodeNoEx(p+v3s16(0,2,0));
+						if (
+							content_features(n_top1).air_equivalent == true
+							&& content_features(n_top2).air_equivalent == true
+						) {
+							s16 max_d = 1;
+							v3s16 test_p;
+							MapNode testnode;
+							bool found = false;
+							for(s16 z=-max_d; !found && z<=max_d; z++) {
+							for(s16 y=-max_d; !found && y<=max_d; y++) {
+							for(s16 x=-max_d; !found && x<=max_d; x++) {
+								test_p = p + v3s16(x,y,z);
+								testnode = m_map->getNodeNoEx(test_p);
+								if (testnode.getContent() == CONTENT_WATERSOURCE) {
+									n_top1.setContent(CONTENT_JUNGLEGRASS);
+									m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top1);
+									break;
+								}
+							}
+							}
+							}
+						}
+					}
+				}
+				/* make papyrus grow near water */
+				if(n.getContent() == CONTENT_PAPYRUS) {
+					if(myrand()%500 == 0)
+					{
+						MapNode n_top1 = m_map->getNodeNoEx(p+v3s16(0,1,0));
+						MapNode n_top2 = m_map->getNodeNoEx(p+v3s16(0,2,0));
+						if (
+							content_features(n_top1).air_equivalent == true
+							&& content_features(n_top2).air_equivalent == true
+						) {
+							s16 max_d = 2;
+							v3s16 test_p;
+							MapNode testnode;
+							bool found = false;
+							s16 y;
+							for(y=1; y<=max_d; y++) {
+								test_p = p - v3s16(0,y,0);
+								testnode = m_map->getNodeNoEx(test_p);
+								if (testnode.getContent() == CONTENT_MUD) {
+									found = true;
+									break;
+								}else if (testnode.getContent() != CONTENT_PAPYRUS) {
+									break;
+								}
+							}
+							if (found) {
+								found = false;
+								for(s16 z=-max_d; !found && z<=max_d; z++) {
+								for(s16 y1=-max_d; !found && y1<=max_d; y1++) {
+								for(s16 x=-max_d; !found && x<=max_d; x++) {
+									test_p = p + v3s16(x,y1-y,z);
+									testnode = m_map->getNodeNoEx(test_p);
+									if (testnode.getContent() == CONTENT_WATERSOURCE) {
+										n_top1.setContent(CONTENT_PAPYRUS);
+										m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top1);
+										break;
+									}
+								}
+								}
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 	}
