@@ -389,6 +389,19 @@ InventoryItem *craft_get_result(InventoryItem **items)
 		}
 	}
 
+	// Cotton
+	{
+		ItemSpec specs[9];
+		specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLEGRASS);
+		specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLEGRASS);
+		specs[6] = ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLEGRASS);
+		specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLEGRASS);
+		if(checkItemCombination(items, specs))
+		{
+			return new MaterialItem(CONTENT_COTTON, 1);
+		}
+	}
+
 	// Paper
 	{
 		ItemSpec specs[9];
@@ -514,7 +527,7 @@ void craft_set_creative_inventory(Player *player)
 		CONTENT_RAIL,
 		CONTENT_MESE,
 		CONTENT_WATERSOURCE,
-		CONTENT_CLOUD,
+		CONTENT_COTTON,
 		CONTENT_CHEST,
 		CONTENT_FURNACE,
 		CONTENT_SIGN_WALL,

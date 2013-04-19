@@ -76,7 +76,7 @@ std::string item_craft_get_image_name(const std::string &subname)
 	else if(subname == "apple_iron")
 		return "apple_iron.png";
 	else
-		return "cloud.png"; // just something
+		return "cotton.png"; // just something
 }
 
 ServerActiveObject* item_craft_create_object(const std::string &subname,

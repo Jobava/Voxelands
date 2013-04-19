@@ -64,8 +64,8 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_GRASS_FOOTSTEPS 0x803 //6
 #define CONTENT_MESE 0x804 //7
 #define CONTENT_MUD 0x805 //8
-// Pretty much useless, clouds won't be drawn this way
-#define CONTENT_CLOUD 0x806 //10
+// used to be cloud
+#define CONTENT_COTTON 0x806 //10
 
 #define CONTENT_WOOD 0x808 //12
 #define CONTENT_SAND 0x809 //13

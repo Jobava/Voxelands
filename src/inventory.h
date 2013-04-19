@@ -333,7 +333,7 @@ public:
 		else if(m_toolname == "SteelSword")
 			return "tool_steelsword.png";
 		else
-			return "cloud.png";
+			return "cotton.png";
 }
 
 	video::ITexture * getImage() const
