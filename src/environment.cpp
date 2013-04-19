@@ -1226,7 +1226,7 @@ void ServerEnvironment::step(float dtime)
 				}
 				/* grow junglegrass on sand near water */
 				if(n.getContent() == CONTENT_SAND) {
-					if(myrand()%200 == 0)
+					if(myrand()%500 == 0)
 					{
 						MapNode n_top1 = m_map->getNodeNoEx(p+v3s16(0,1,0));
 						MapNode n_top2 = m_map->getNodeNoEx(p+v3s16(0,2,0));
