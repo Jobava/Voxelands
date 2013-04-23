@@ -660,11 +660,5 @@ struct ItemSpec
 	bool checkItem(const InventoryItem *item) const;
 };
 
-/*
-	items: a pointer to an array of 9 pointers to items
-	specs: a pointer to an array of 9 ItemSpecs
-*/
-bool checkItemCombination(const InventoryItem * const*items, const ItemSpec *specs);
-
 #endif
 

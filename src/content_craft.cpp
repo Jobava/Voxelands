@@ -23,455 +23,447 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "player.h"
 #include "mapnode.h" // For content_t
 
+struct CraftDef {
+	ItemSpec specs[9];
+	InventoryItem *item;
+
+	bool operator==(InventoryItem const * const *items)
+	{
+		u16 items_min_x = 100;
+		u16 items_max_x = 100;
+		u16 items_min_y = 100;
+		u16 items_max_y = 100;
+		for(u16 y=0; y<3; y++)
+		for(u16 x=0; x<3; x++)
+		{
+			if(items[y*3 + x] == NULL)
+				continue;
+			if(items_min_x == 100 || x < items_min_x)
+				items_min_x = x;
+			if(items_min_y == 100 || y < items_min_y)
+				items_min_y = y;
+			if(items_max_x == 100 || x > items_max_x)
+				items_max_x = x;
+			if(items_max_y == 100 || y > items_max_y)
+				items_max_y = y;
+		}
+		// No items at all, just return false
+		if(items_min_x == 100)
+			return false;
+
+		u16 items_w = items_max_x - items_min_x + 1;
+		u16 items_h = items_max_y - items_min_y + 1;
+
+		u16 specs_min_x = 100;
+		u16 specs_max_x = 100;
+		u16 specs_min_y = 100;
+		u16 specs_max_y = 100;
+		for(u16 y=0; y<3; y++)
+		for(u16 x=0; x<3; x++)
+		{
+			if(specs[y*3 + x].type == ITEM_NONE)
+				continue;
+			if(specs_min_x == 100 || x < specs_min_x)
+				specs_min_x = x;
+			if(specs_min_y == 100 || y < specs_min_y)
+				specs_min_y = y;
+			if(specs_max_x == 100 || x > specs_max_x)
+				specs_max_x = x;
+			if(specs_max_y == 100 || y > specs_max_y)
+				specs_max_y = y;
+		}
+		// No specs at all, just return false
+		if(specs_min_x == 100)
+			return false;
+
+		u16 specs_w = specs_max_x - specs_min_x + 1;
+		u16 specs_h = specs_max_y - specs_min_y + 1;
+
+		// Different sizes
+		if(items_w != specs_w || items_h != specs_h)
+			return false;
+
+		for(u16 y=0; y<specs_h; y++)
+		for(u16 x=0; x<specs_w; x++)
+		{
+			u16 items_x = items_min_x + x;
+			u16 items_y = items_min_y + y;
+			u16 specs_x = specs_min_x + x;
+			u16 specs_y = specs_min_y + y;
+			const InventoryItem *item = items[items_y * 3 + items_x];
+			const ItemSpec &spec = specs[specs_y * 3 + specs_x];
+
+			if(spec.checkItem(item) == false)
+				return false;
+		}
+
+		return true;
+	}
+};
+
 /*
 	items: actually *items[9]
 	return value: allocates a new item, or returns NULL.
 */
 InventoryItem *craft_get_result(InventoryItem **items)
 {
-	// Wood
-	{
-		ItemSpec specs[9];
-		specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_TREE);
-		if(checkItemCombination(items, specs))
+	static CraftDef defs[32];
+	static int defs_init = 0;
+
+	// only initialise (and hence allocate) these once
+	if (!defs_init) {
+		// Wood
 		{
-			return new MaterialItem(CONTENT_WOOD, 4);
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_TREE);
+			defs[defs_init].item = new MaterialItem(CONTENT_WOOD, 4);
+			defs_init++;
+		}
+
+		// Stick
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].item = new CraftItem("Stick", 4);
+			defs_init++;
+		}
+
+		// Fence
+		{
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[5] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].item = new MaterialItem(CONTENT_FENCE, 2);
+			defs_init++;
+		}
+
+		// Sign
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[5] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].item = new MaterialItem(CONTENT_SIGN_WALL, 1);
+			defs_init++;
+		}
+
+		// Torch
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "lump_of_coal");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].item = new MaterialItem(CONTENT_TORCH, 4);
+			defs_init++;
+		}
+
+		// Wooden pick
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].item = new ToolItem("WPick", 0);
+			defs_init++;
+		}
+
+		// Stone pick
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].item = new ToolItem("STPick", 0);
+			defs_init++;
+		}
+
+		// Steel pick
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[1] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[2] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].item = new ToolItem("SteelPick", 0);
+			defs_init++;
+		}
+
+		// Mese pick
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_MESE);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_MESE);
+			defs[defs_init].specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_MESE);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].item = new ToolItem("MesePick", 0);
+			defs_init++;
+		}
+
+		// Wooden shovel
+		{
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].item = new ToolItem("WShovel", 0);
+			defs_init++;
+		}
+
+		// Stone shovel
+		{
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].item = new ToolItem("STShovel", 0);
+			defs_init++;
+		}
+
+		// Steel shovel
+		{
+			defs[defs_init].specs[1] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].item = new ToolItem("SteelShovel", 0);
+			defs_init++;
+		}
+
+		// Wooden axe
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].item = new ToolItem("WAxe", 0);
+			defs_init++;
+		}
+
+		// Stone axe
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].item = new ToolItem("STAxe", 0);
+			defs_init++;
+		}
+
+		// Steel axe
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[1] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].item = new ToolItem("SteelAxe", 0);
+			defs_init++;
+		}
+
+		// Wooden sword
+		{
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].item = new ToolItem("WSword", 0);
+			defs_init++;
+		}
+
+		// Stone sword
+		{
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].item = new ToolItem("STSword", 0);
+			defs_init++;
+		}
+
+		// Steel sword
+		{
+			defs[defs_init].specs[1] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].item = new ToolItem("SteelSword", 0);
+			defs_init++;
+		}
+
+		// Rail
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[1] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[2] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[5] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].item = new MaterialItem(CONTENT_RAIL, 15);
+			defs_init++;
+		}
+
+		// Chest
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[5] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[6] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[8] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].item = new MaterialItem(CONTENT_CHEST, 1);
+			defs_init++;
+		}
+
+		// Locking Chest
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[5] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[6] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[8] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].item = new MaterialItem(CONTENT_LOCKABLE_CHEST, 1);
+			defs_init++;
+		}
+
+		// Furnace
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[5] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[6] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[8] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].item = new MaterialItem(CONTENT_FURNACE, 1);
+			defs_init++;
+		}
+
+		// Steel block
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[1] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[2] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[5] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].item = new MaterialItem(CONTENT_STEEL, 1);
+			defs_init++;
+		}
+
+		// Sandstone
+		{
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_SAND);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_SAND);
+			defs[defs_init].specs[6] = ItemSpec(ITEM_MATERIAL, CONTENT_SAND);
+			defs[defs_init].specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_SAND);
+			defs[defs_init].item = new MaterialItem(CONTENT_SANDSTONE, 1);
+			defs_init++;
+		}
+
+		// Clay
+		{
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "lump_of_clay");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "lump_of_clay");
+			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "lump_of_clay");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "lump_of_clay");
+			defs[defs_init].item = new MaterialItem(CONTENT_CLAY, 1);
+			defs_init++;
+		}
+
+		// Brick
+		{
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "clay_brick");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "clay_brick");
+			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "clay_brick");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "clay_brick");
+			defs[defs_init].item = new MaterialItem(CONTENT_BRICK, 1);
+			defs_init++;
+		}
+
+		// Cotton
+		{
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLEGRASS);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLEGRASS);
+			defs[defs_init].specs[6] = ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLEGRASS);
+			defs[defs_init].specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLEGRASS);
+			defs[defs_init].item = new MaterialItem(CONTENT_COTTON, 1);
+			defs_init++;
+		}
+
+		// Paper
+		{
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_PAPYRUS);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_PAPYRUS);
+			defs[defs_init].specs[5] = ItemSpec(ITEM_MATERIAL, CONTENT_PAPYRUS);
+			defs[defs_init].item = new CraftItem("paper", 1);
+			defs_init++;
+		}
+
+		// Book
+		{
+			defs[defs_init].specs[1] = ItemSpec(ITEM_CRAFT, "paper");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "paper");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "paper");
+			defs[defs_init].item = new CraftItem("book", 1);
+			defs_init++;
+		}
+
+		// Book shelf
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "book");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "book");
+			defs[defs_init].specs[5] = ItemSpec(ITEM_CRAFT, "book");
+			defs[defs_init].specs[6] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[8] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].item = new MaterialItem(CONTENT_BOOKSHELF, 1);
+			defs_init++;
+		}
+
+		// Ladder
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[2] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[5] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].item = new MaterialItem(CONTENT_LADDER, 1);
+			defs_init++;
+		}
+
+		// Iron Apple
+		{
+			defs[defs_init].specs[1] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "apple");
+			defs[defs_init].specs[5] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].item = new CraftItem("apple_iron", 1);
+			defs_init++;
 		}
 	}
 
-	// Stick
-	{
-		ItemSpec specs[9];
-		specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		if(checkItemCombination(items, specs))
-		{
-			return new CraftItem("Stick", 4);
-		}
-	}
-
-	// Fence
-	{
-		ItemSpec specs[9];
-		specs[3] = ItemSpec(ITEM_CRAFT, "Stick");
-		specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
-		specs[5] = ItemSpec(ITEM_CRAFT, "Stick");
-		specs[6] = ItemSpec(ITEM_CRAFT, "Stick");
-		specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
-		specs[8] = ItemSpec(ITEM_CRAFT, "Stick");
-		if(checkItemCombination(items, specs))
-		{
-			return new MaterialItem(CONTENT_FENCE, 2);
-		}
-	}
-
-	// Sign
-	{
-		ItemSpec specs[9];
-		specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[5] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
-		if(checkItemCombination(items, specs))
-		{
-			//return new MapBlockObjectItem("Sign");
-			return new MaterialItem(CONTENT_SIGN_WALL, 1);
-		}
-	}
-
-	// Torch
-	{
-		ItemSpec specs[9];
-		specs[0] = ItemSpec(ITEM_CRAFT, "lump_of_coal");
-		specs[3] = ItemSpec(ITEM_CRAFT, "Stick");
-		if(checkItemCombination(items, specs))
-		{
-			return new MaterialItem(CONTENT_TORCH, 4);
-		}
-	}
-
-	// Wooden pick
-	{
-		ItemSpec specs[9];
-		specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
-		specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
-		if(checkItemCombination(items, specs))
-		{
-			return new ToolItem("WPick", 0);
-		}
-	}
-
-	// Stone pick
-	{
-		ItemSpec specs[9];
-		specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
-		specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
-		specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
-		specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
-		specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
-		if(checkItemCombination(items, specs))
-		{
-			return new ToolItem("STPick", 0);
-		}
-	}
-
-	// Steel pick
-	{
-		ItemSpec specs[9];
-		specs[0] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[1] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[2] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
-		specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
-		if(checkItemCombination(items, specs))
-		{
-			return new ToolItem("SteelPick", 0);
-		}
-	}
-
-	// Mese pick
-	{
-		ItemSpec specs[9];
-		specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_MESE);
-		specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_MESE);
-		specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_MESE);
-		specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
-		specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
-		if(checkItemCombination(items, specs))
-		{
-			return new ToolItem("MesePick", 0);
-		}
-	}
-
-	// Wooden shovel
-	{
-		ItemSpec specs[9];
-		specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
-		specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
-		if(checkItemCombination(items, specs))
-		{
-			return new ToolItem("WShovel", 0);
-		}
-	}
-
-	// Stone shovel
-	{
-		ItemSpec specs[9];
-		specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
-		specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
-		specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
-		if(checkItemCombination(items, specs))
-		{
-			return new ToolItem("STShovel", 0);
-		}
-	}
-
-	// Steel shovel
-	{
-		ItemSpec specs[9];
-		specs[1] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
-		specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
-		if(checkItemCombination(items, specs))
-		{
-			return new ToolItem("SteelShovel", 0);
-		}
-	}
-
-	// Wooden axe
-	{
-		ItemSpec specs[9];
-		specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
-		specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
-		if(checkItemCombination(items, specs))
-		{
-			return new ToolItem("WAxe", 0);
-		}
-	}
-
-	// Stone axe
-	{
-		ItemSpec specs[9];
-		specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
-		specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
-		specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
-		specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
-		specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
-		if(checkItemCombination(items, specs))
-		{
-			return new ToolItem("STAxe", 0);
-		}
-	}
-
-	// Steel axe
-	{
-		ItemSpec specs[9];
-		specs[0] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[1] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[3] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
-		specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
-		if(checkItemCombination(items, specs))
-		{
-			return new ToolItem("SteelAxe", 0);
-		}
-	}
-
-	// Wooden sword
-	{
-		ItemSpec specs[9];
-		specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
-		if(checkItemCombination(items, specs))
-		{
-			return new ToolItem("WSword", 0);
-		}
-	}
-
-	// Stone sword
-	{
-		ItemSpec specs[9];
-		specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
-		specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
-		specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
-		if(checkItemCombination(items, specs))
-		{
-			return new ToolItem("STSword", 0);
-		}
-	}
-
-	// Steel sword
-	{
-		ItemSpec specs[9];
-		specs[1] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[4] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
-		if(checkItemCombination(items, specs))
-		{
-			return new ToolItem("SteelSword", 0);
-		}
-	}
-
-	// Rail
-	{
-		ItemSpec specs[9];
-		specs[0] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[1] = ItemSpec(ITEM_CRAFT, "Stick");
-		specs[2] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[3] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
-		specs[5] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[6] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
-		specs[8] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		if(checkItemCombination(items, specs))
-		{
-			return new MaterialItem(CONTENT_RAIL, 15);
-		}
-	}
-
-	// Chest
-	{
-		ItemSpec specs[9];
-		specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[5] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[6] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[8] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		if(checkItemCombination(items, specs))
-		{
-			return new MaterialItem(CONTENT_CHEST, 1);
-		}
-	}
-
-	// Locking Chest
-	{
-		ItemSpec specs[9];
-		specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[4] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[5] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[6] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[8] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		if(checkItemCombination(items, specs))
-		{
-			return new MaterialItem(CONTENT_LOCKABLE_CHEST, 1);
-		}
-	}
-
-	// Furnace
-	{
-		ItemSpec specs[9];
-		specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
-		specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
-		specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
-		specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
-		specs[5] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
-		specs[6] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
-		specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
-		specs[8] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
-		if(checkItemCombination(items, specs))
-		{
-			return new MaterialItem(CONTENT_FURNACE, 1);
-		}
-	}
-
-	// Steel block
-	{
-		ItemSpec specs[9];
-		specs[0] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[1] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[2] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[3] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[4] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[5] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[6] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[7] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[8] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		if(checkItemCombination(items, specs))
-		{
-			return new MaterialItem(CONTENT_STEEL, 1);
-		}
-	}
-
-	// Sandstone
-	{
-		ItemSpec specs[9];
-		specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_SAND);
-		specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_SAND);
-		specs[6] = ItemSpec(ITEM_MATERIAL, CONTENT_SAND);
-		specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_SAND);
-		if(checkItemCombination(items, specs))
-		{
-			return new MaterialItem(CONTENT_SANDSTONE, 1);
-		}
-	}
-
-	// Clay
-	{
-		ItemSpec specs[9];
-		specs[3] = ItemSpec(ITEM_CRAFT, "lump_of_clay");
-		specs[4] = ItemSpec(ITEM_CRAFT, "lump_of_clay");
-		specs[6] = ItemSpec(ITEM_CRAFT, "lump_of_clay");
-		specs[7] = ItemSpec(ITEM_CRAFT, "lump_of_clay");
-		if(checkItemCombination(items, specs))
-		{
-			return new MaterialItem(CONTENT_CLAY, 1);
-		}
-	}
-
-	// Brick
-	{
-		ItemSpec specs[9];
-		specs[3] = ItemSpec(ITEM_CRAFT, "clay_brick");
-		specs[4] = ItemSpec(ITEM_CRAFT, "clay_brick");
-		specs[6] = ItemSpec(ITEM_CRAFT, "clay_brick");
-		specs[7] = ItemSpec(ITEM_CRAFT, "clay_brick");
-		if(checkItemCombination(items, specs))
-		{
-			return new MaterialItem(CONTENT_BRICK, 1);
-		}
-	}
-
-	// Cotton
-	{
-		ItemSpec specs[9];
-		specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLEGRASS);
-		specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLEGRASS);
-		specs[6] = ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLEGRASS);
-		specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLEGRASS);
-		if(checkItemCombination(items, specs))
-		{
-			return new MaterialItem(CONTENT_COTTON, 1);
-		}
-	}
-
-	// Paper
-	{
-		ItemSpec specs[9];
-		specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_PAPYRUS);
-		specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_PAPYRUS);
-		specs[5] = ItemSpec(ITEM_MATERIAL, CONTENT_PAPYRUS);
-		if(checkItemCombination(items, specs))
-		{
-			return new CraftItem("paper", 1);
-		}
-	}
-
-	// Book
-	{
-		ItemSpec specs[9];
-		specs[1] = ItemSpec(ITEM_CRAFT, "paper");
-		specs[4] = ItemSpec(ITEM_CRAFT, "paper");
-		specs[7] = ItemSpec(ITEM_CRAFT, "paper");
-		if(checkItemCombination(items, specs))
-		{
-			return new CraftItem("book", 1);
-		}
-	}
-
-	// Book shelf
-	{
-		ItemSpec specs[9];
-		specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[3] = ItemSpec(ITEM_CRAFT, "book");
-		specs[4] = ItemSpec(ITEM_CRAFT, "book");
-		specs[5] = ItemSpec(ITEM_CRAFT, "book");
-		specs[6] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		specs[8] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
-		if(checkItemCombination(items, specs))
-		{
-			return new MaterialItem(CONTENT_BOOKSHELF, 1);
-		}
-	}
-
-	// Ladder
-	{
-		ItemSpec specs[9];
-		specs[0] = ItemSpec(ITEM_CRAFT, "Stick");
-		specs[2] = ItemSpec(ITEM_CRAFT, "Stick");
-		specs[3] = ItemSpec(ITEM_CRAFT, "Stick");
-		specs[4] = ItemSpec(ITEM_CRAFT, "Stick");
-		specs[5] = ItemSpec(ITEM_CRAFT, "Stick");
-		specs[6] = ItemSpec(ITEM_CRAFT, "Stick");
-		specs[8] = ItemSpec(ITEM_CRAFT, "Stick");
-		if(checkItemCombination(items, specs))
-		{
-			return new MaterialItem(CONTENT_LADDER, 1);
-		}
-	}
-
-	// Iron Apple
-	{
-		ItemSpec specs[9];
-		specs[1] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[3] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[4] = ItemSpec(ITEM_CRAFT, "apple");
-		specs[5] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		specs[7] = ItemSpec(ITEM_CRAFT, "steel_ingot");
-		if(checkItemCombination(items, specs))
-		{
-			return new CraftItem("apple_iron", 1);
-		}
+	for (int i=0; i<defs_init; i++) {
+		if (defs[i] == items)
+			return defs[i].item->clone();
 	}
 
 	return NULL;
@@ -548,33 +540,6 @@ void craft_set_creative_inventory(Player *player)
 
 		mip++;
 	}
-
-#if 0
-	assert(USEFUL_CONTENT_COUNT <= PLAYER_INVENTORY_SIZE);
-
-	// add torch first
-	InventoryItem *item = new MaterialItem(CONTENT_TORCH, 1);
-	player->inventory.addItem("main", item);
-
-	// Then others
-	for(u16 i=0; i<USEFUL_CONTENT_COUNT; i++)
-	{
-		// Skip some materials
-		if(i == CONTENT_WATER || i == CONTENT_TORCH
-			|| i == CONTENT_COALSTONE)
-			continue;
-
-		InventoryItem *item = new MaterialItem(i, 1);
-		player->inventory.addItem("main", item);
-	}
-#endif
-
-	/*// Sign
-	{
-		InventoryItem *item = new MapBlockObjectItem("Sign Example text");
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}*/
 }
 
 void craft_give_initial_stuff(Player *player)
@@ -604,48 +569,5 @@ void craft_give_initial_stuff(Player *player)
 		void* r = player->inventory.addItem("main", item);
 		assert(r == NULL);
 	}
-	/*{
-		InventoryItem *item = new MaterialItem(CONTENT_MESE, 6);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
-	{
-		InventoryItem *item = new MaterialItem(CONTENT_COALSTONE, 6);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
-	{
-		InventoryItem *item = new MaterialItem(CONTENT_WOOD, 6);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
-	{
-		InventoryItem *item = new CraftItem("Stick", 4);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
-	{
-		InventoryItem *item = new ToolItem("WPick", 32000);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
-	{
-		InventoryItem *item = new ToolItem("STPick", 32000);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}*/
-	/*// and some signs
-	for(u16 i=0; i<4; i++)
-	{
-		InventoryItem *item = new MapBlockObjectItem("Sign Example text");
-		bool r = player->inventory.addItem("main", item);
-		assert(r == true);
-	}*/
-	/*// Give some other stuff
-	{
-		InventoryItem *item = new MaterialItem(CONTENT_TREE, 999);
-		bool r = player->inventory.addItem("main", item);
-		assert(r == true);
-	}*/
 }
 
