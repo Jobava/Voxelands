@@ -1439,17 +1439,20 @@ bool isFreeServerActiveObjectId(u16 id,
 u16 getFreeServerActiveObjectId(
 		core::map<u16, ServerActiveObject*> &objects)
 {
-	u16 new_id = 1;
-	for(;;)
-	{
-		if(isFreeServerActiveObjectId(new_id, objects))
-			return new_id;
+	//try to reuse id's as late as possible
+	static u16 last_used_id = 0;
+	u16 startid = last_used_id;
 
-		if(new_id == 65535)
+	for (;;) {
+		last_used_id++;
+		if (isFreeServerActiveObjectId(last_used_id, objects))
+			return last_used_id;
+
+		if (last_used_id == startid)
 			return 0;
-
-		new_id++;
 	}
+
+	return 0;
 }
 
 u16 ServerEnvironment::addActiveObject(ServerActiveObject *object)
@@ -2342,17 +2345,19 @@ bool isFreeClientActiveObjectId(u16 id,
 u16 getFreeClientActiveObjectId(
 		core::map<u16, ClientActiveObject*> &objects)
 {
-	u16 new_id = 1;
-	for(;;)
-	{
-		if(isFreeClientActiveObjectId(new_id, objects))
-			return new_id;
+	//try to reuse id's as late as possible
+	static u16 last_used_id = 0;
+	u16 startid = last_used_id;
 
-		if(new_id == 65535)
+	for (;;) {
+		last_used_id ++;
+		if (isFreeClientActiveObjectId(last_used_id, objects))
+			return last_used_id;
+
+		if(last_used_id == startid)
 			return 0;
-
-		new_id++;
 	}
+	return 0;
 }
 
 u16 ClientEnvironment::addActiveObject(ClientActiveObject *object)

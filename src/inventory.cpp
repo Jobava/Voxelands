@@ -712,9 +712,8 @@ const InventoryList * Inventory::getList(const std::string &name) const
 
 const s32 Inventory::getListIndex(const std::string &name) const
 {
-	for(u32 i=0; i<m_lists.size(); i++)
-	{
-		if(m_lists[i]->getName() == name)
+	for(u32 i=0; i<m_lists.size(); i++) {
+		if (m_lists[i]->getName() == name)
 			return i;
 	}
 	return -1;
@@ -729,22 +728,19 @@ InventoryAction * InventoryAction::deSerialize(std::istream &is)
 	std::string type;
 	std::getline(is, type, ' ');
 
-	InventoryAction *a = NULL;
-
 	if(type == "Move")
-	{
-		a = new IMoveAction(is);
-	}
+		return new IMoveAction(is);
 
-	return a;
+	return NULL;
 }
 
 static std::string describeC(const struct InventoryContext *c)
 {
-	if(c->current_player == NULL)
+	if(c->current_player == NULL) {
 		return "current_player=NULL";
-	else
+	}else{
 		return std::string("current_player=") + c->current_player->getName();
+	}
 }
 
 void IMoveAction::apply(InventoryContext *c, InventoryManager *mgr)
