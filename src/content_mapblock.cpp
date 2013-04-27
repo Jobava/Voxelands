@@ -227,136 +227,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		/*
 			Add torches to mesh
 		*/
-		switch (n.getContent()) {
-		case CONTENT_TORCH:
-		{
-			v3s16 dir = unpackDir(n.param2);
-
-			const char *texturename = "torch.png";
-			if(dir == v3s16(0,-1,0)){
-				texturename = "torch_on_floor.png";
-			} else if(dir == v3s16(0,1,0)){
-				texturename = "torch_on_ceiling.png";
-			// For backwards compatibility
-			} else if(dir == v3s16(0,0,0)){
-				texturename = "torch_on_floor.png";
-			} else {
-				texturename = "torch.png";
-			}
-
-			AtlasPointer ap = g_texturesource->getTexture(texturename);
-
-			// Set material
-			video::SMaterial material;
-			material.setFlag(video::EMF_LIGHTING, false);
-			material.setFlag(video::EMF_BACK_FACE_CULLING, false);
-			material.setFlag(video::EMF_BILINEAR_FILTER, false);
-			material.setFlag(video::EMF_FOG_ENABLE, true);
-			//material.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL;
-			material.MaterialType
-					= video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-			material.setTexture(0, ap.atlas);
-
-			video::SColor c(255,255,255,255);
-
-			// Wall at X+ of node
-			video::S3DVertex vertices[4] =
-			{
-				video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
-						ap.x0(), ap.y1()),
-				video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
-						ap.x1(), ap.y1()),
-				video::S3DVertex(BS/2,BS/2,0, 0,0,0, c,
-						ap.x1(), ap.y0()),
-				video::S3DVertex(-BS/2,BS/2,0, 0,0,0, c,
-						ap.x0(), ap.y0()),
-			};
-
-			for(s32 i=0; i<4; i++)
-			{
-				if(dir == v3s16(1,0,0))
-					vertices[i].Pos.rotateXZBy(0);
-				if(dir == v3s16(-1,0,0))
-					vertices[i].Pos.rotateXZBy(180);
-				if(dir == v3s16(0,0,1))
-					vertices[i].Pos.rotateXZBy(90);
-				if(dir == v3s16(0,0,-1))
-					vertices[i].Pos.rotateXZBy(-90);
-				if(dir == v3s16(0,-1,0))
-					vertices[i].Pos.rotateXZBy(45);
-				if(dir == v3s16(0,1,0))
-					vertices[i].Pos.rotateXZBy(-45);
-
-				vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
-			}
-
-			u16 indices[] = {0,1,2,2,3,0};
-			// Add to mesh collector
-			collector.append(material, vertices, 4, indices, 6);
-		}
-		/*
-			Signs on walls
-		*/
-		break;
-		case CONTENT_SIGN_WALL:
-		{
-			AtlasPointer ap = g_texturesource->getTexture("sign_wall.png");
-
-			// Set material
-			video::SMaterial material;
-			material.setFlag(video::EMF_LIGHTING, false);
-			material.setFlag(video::EMF_BACK_FACE_CULLING, false);
-			material.setFlag(video::EMF_BILINEAR_FILTER, false);
-			material.setFlag(video::EMF_FOG_ENABLE, true);
-			material.MaterialType
-					= video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-			material.setTexture(0, ap.atlas);
-
-			u8 l = decode_light(n.getLightBlend(data->m_daynight_ratio));
-			video::SColor c = MapBlock_LightColor(255, l);
-
-			float d = (float)BS/16;
-			// Wall at X+ of node
-			video::S3DVertex vertices[4] =
-			{
-				video::S3DVertex(BS/2-d,-BS/2,-BS/2, 0,0,0, c,
-						ap.x0(), ap.y1()),
-				video::S3DVertex(BS/2-d,-BS/2,BS/2, 0,0,0, c,
-						ap.x1(), ap.y1()),
-				video::S3DVertex(BS/2-d,BS/2,BS/2, 0,0,0, c,
-						ap.x1(), ap.y0()),
-				video::S3DVertex(BS/2-d,BS/2,-BS/2, 0,0,0, c,
-						ap.x0(), ap.y0()),
-			};
-
-			v3s16 dir = unpackDir(n.param2);
-
-			for(s32 i=0; i<4; i++)
-			{
-				if(dir == v3s16(1,0,0))
-					vertices[i].Pos.rotateXZBy(0);
-				if(dir == v3s16(-1,0,0))
-					vertices[i].Pos.rotateXZBy(180);
-				if(dir == v3s16(0,0,1))
-					vertices[i].Pos.rotateXZBy(90);
-				if(dir == v3s16(0,0,-1))
-					vertices[i].Pos.rotateXZBy(-90);
-				if(dir == v3s16(0,-1,0))
-					vertices[i].Pos.rotateXYBy(-90);
-				if(dir == v3s16(0,1,0))
-					vertices[i].Pos.rotateXYBy(90);
-
-				vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
-			}
-
-			u16 indices[] = {0,1,2,2,3,0};
-			// Add to mesh collector
-			collector.append(material, vertices, 4, indices, 6);
-		}
-		/*
-			Add flowing liquid to mesh
-		*/
-		break;
+		switch (content_features(n).liquid_type) {
 		case LIQUID_FLOWING:
 		{
 			assert(content_features(n).special_material);
@@ -683,6 +554,138 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			// Add to mesh collector
 			collector.append(liquid_material, vertices, 4, indices, 6);
 		}
+		break;
+		case LIQUID_NONE:
+		switch (n.getContent()) {
+		case CONTENT_TORCH:
+		{
+			v3s16 dir = unpackDir(n.param2);
+
+			const char *texturename = "torch.png";
+			if(dir == v3s16(0,-1,0)){
+				texturename = "torch_on_floor.png";
+			} else if(dir == v3s16(0,1,0)){
+				texturename = "torch_on_ceiling.png";
+			// For backwards compatibility
+			} else if(dir == v3s16(0,0,0)){
+				texturename = "torch_on_floor.png";
+			} else {
+				texturename = "torch.png";
+			}
+
+			AtlasPointer ap = g_texturesource->getTexture(texturename);
+
+			// Set material
+			video::SMaterial material;
+			material.setFlag(video::EMF_LIGHTING, false);
+			material.setFlag(video::EMF_BACK_FACE_CULLING, false);
+			material.setFlag(video::EMF_BILINEAR_FILTER, false);
+			material.setFlag(video::EMF_FOG_ENABLE, true);
+			//material.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL;
+			material.MaterialType
+					= video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
+			material.setTexture(0, ap.atlas);
+
+			video::SColor c(255,255,255,255);
+
+			// Wall at X+ of node
+			video::S3DVertex vertices[4] =
+			{
+				video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
+						ap.x0(), ap.y1()),
+				video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
+						ap.x1(), ap.y1()),
+				video::S3DVertex(BS/2,BS/2,0, 0,0,0, c,
+						ap.x1(), ap.y0()),
+				video::S3DVertex(-BS/2,BS/2,0, 0,0,0, c,
+						ap.x0(), ap.y0()),
+			};
+
+			for(s32 i=0; i<4; i++)
+			{
+				if(dir == v3s16(1,0,0))
+					vertices[i].Pos.rotateXZBy(0);
+				if(dir == v3s16(-1,0,0))
+					vertices[i].Pos.rotateXZBy(180);
+				if(dir == v3s16(0,0,1))
+					vertices[i].Pos.rotateXZBy(90);
+				if(dir == v3s16(0,0,-1))
+					vertices[i].Pos.rotateXZBy(-90);
+				if(dir == v3s16(0,-1,0))
+					vertices[i].Pos.rotateXZBy(45);
+				if(dir == v3s16(0,1,0))
+					vertices[i].Pos.rotateXZBy(-45);
+
+				vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+			}
+
+			u16 indices[] = {0,1,2,2,3,0};
+			// Add to mesh collector
+			collector.append(material, vertices, 4, indices, 6);
+		}
+		/*
+			Signs on walls
+		*/
+		break;
+		case CONTENT_SIGN_WALL:
+		{
+			AtlasPointer ap = g_texturesource->getTexture("sign_wall.png");
+
+			// Set material
+			video::SMaterial material;
+			material.setFlag(video::EMF_LIGHTING, false);
+			material.setFlag(video::EMF_BACK_FACE_CULLING, false);
+			material.setFlag(video::EMF_BILINEAR_FILTER, false);
+			material.setFlag(video::EMF_FOG_ENABLE, true);
+			material.MaterialType
+					= video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
+			material.setTexture(0, ap.atlas);
+
+			u8 l = decode_light(n.getLightBlend(data->m_daynight_ratio));
+			video::SColor c = MapBlock_LightColor(255, l);
+
+			float d = (float)BS/16;
+			// Wall at X+ of node
+			video::S3DVertex vertices[4] =
+			{
+				video::S3DVertex(BS/2-d,-BS/2,-BS/2, 0,0,0, c,
+						ap.x0(), ap.y1()),
+				video::S3DVertex(BS/2-d,-BS/2,BS/2, 0,0,0, c,
+						ap.x1(), ap.y1()),
+				video::S3DVertex(BS/2-d,BS/2,BS/2, 0,0,0, c,
+						ap.x1(), ap.y0()),
+				video::S3DVertex(BS/2-d,BS/2,-BS/2, 0,0,0, c,
+						ap.x0(), ap.y0()),
+			};
+
+			v3s16 dir = unpackDir(n.param2);
+
+			for(s32 i=0; i<4; i++)
+			{
+				if(dir == v3s16(1,0,0))
+					vertices[i].Pos.rotateXZBy(0);
+				if(dir == v3s16(-1,0,0))
+					vertices[i].Pos.rotateXZBy(180);
+				if(dir == v3s16(0,0,1))
+					vertices[i].Pos.rotateXZBy(90);
+				if(dir == v3s16(0,0,-1))
+					vertices[i].Pos.rotateXZBy(-90);
+				if(dir == v3s16(0,-1,0))
+					vertices[i].Pos.rotateXYBy(-90);
+				if(dir == v3s16(0,1,0))
+					vertices[i].Pos.rotateXYBy(90);
+
+				vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+			}
+
+			u16 indices[] = {0,1,2,2,3,0};
+			// Add to mesh collector
+			collector.append(material, vertices, 4, indices, 6);
+		}
+		/*
+			Add flowing liquid to mesh
+		*/
+		break;
 		/*
 			Add leaves if using new style
 		*/
@@ -1323,6 +1326,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				// Add to mesh collector
 				collector.append(material_sapling, vertices, 4, indices, 6);
 			}
+		}
 		}
 		}
 	}
