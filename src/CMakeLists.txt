@@ -146,7 +146,6 @@ endif()
 # Client sources
 set(minetest_SRCS
 	${common_SRCS}
-	MyBillboardSceneNode.cpp
 	content_mapblock.cpp
 	content_cao.cpp
 	mapblock_mesh.cpp

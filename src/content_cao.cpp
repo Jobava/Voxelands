@@ -23,6 +23,15 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "settings.h"
 #include <ICameraSceneNode.h>
 
+static void setBillboardTextureMatrix(scene::IBillboardSceneNode *bill,
+	float txs, float tys, int col, int row)
+{
+	video::SMaterial& material = bill->getMaterial(0);
+	core::matrix4& matrix = material.getTextureMatrix(0);
+	matrix.setTextureTranslate(txs*col, tys*row);
+	matrix.setTextureScale(txs, tys);
+}
+
 core::map<u16, ClientActiveObject::Factory> ClientActiveObject::m_types;
 
 /*
@@ -903,8 +912,8 @@ void MobV2CAO::addToScene(scene::ISceneManager *smgr)
 	std::string texture_string = "[makealpha2:128,0,0;128,128,0:";
 	texture_string += m_texture_name;
 
-	scene::MyBillboardSceneNode *bill = new scene::MyBillboardSceneNode(
-			smgr->getRootSceneNode(), smgr, -1, v3f(0,0,0), v2f(1,1));
+	scene::IBillboardSceneNode *bill = smgr->addBillboardSceneNode(
+		NULL, v2f(1, 1), v3f(0,0,0), -1);
 	bill->setMaterialTexture(0, g_texturesource->getTextureRaw(texture_string));
 	bill->setMaterialFlag(video::EMF_LIGHTING, false);
 	bill->setMaterialFlag(video::EMF_BILINEAR_FILTER, false);
@@ -918,17 +927,11 @@ void MobV2CAO::addToScene(scene::ISceneManager *smgr)
 		const float txs = txp*32;
 		const float typ = 1./240;
 		const float tys = typ*48;
-		bill->setTCoords(0, v2f(txs*1, tys*1));
-		bill->setTCoords(1, v2f(txs*1, tys*0));
-		bill->setTCoords(2, v2f(txs*0, tys*0));
-		bill->setTCoords(3, v2f(txs*0, tys*1));
+		setBillboardTextureMatrix(bill, txs, tys, 0, 0);
 	} else if(m_sprite_type == "simple"){
 		const float txs = 1.0;
 		const float tys = 1.0 / m_simple_anim_frames;
-		bill->setTCoords(0, v2f(txs*1, tys*1));
-		bill->setTCoords(1, v2f(txs*1, tys*0));
-		bill->setTCoords(2, v2f(txs*0, tys*0));
-		bill->setTCoords(3, v2f(txs*0, tys*1));
+		setBillboardTextureMatrix(bill, txs, tys, 0, 0);
 	} else {
 		infostream<<"MobV2CAO: Unknown sprite type \""<<m_sprite_type<<"\""
 				<<std::endl;
@@ -992,7 +995,7 @@ void MobV2CAO::updateNodePos()
 
 void MobV2CAO::step(float dtime, ClientEnvironment *env)
 {
-	scene::MyBillboardSceneNode *bill = m_node;
+	scene::IBillboardSceneNode *bill = m_node;
 	if(!bill)
 		return;
 
@@ -1045,10 +1048,7 @@ void MobV2CAO::step(float dtime, ClientEnvironment *env)
 		const float txs = txp*32;
 		const float typ = 1./240;
 		const float tys = typ*48;
-		bill->setTCoords(0, v2f(txs*(1+col), tys*(1+row)));
-		bill->setTCoords(1, v2f(txs*(1+col), tys*(0+row)));
-		bill->setTCoords(2, v2f(txs*(0+col), tys*(0+row)));
-		bill->setTCoords(3, v2f(txs*(0+col), tys*(1+row)));
+		setBillboardTextureMatrix(bill, txs, tys, col, row);
 	} else if(m_sprite_type == "simple"){
 		m_walk_timer += dtime;
 		if(m_walk_timer >= m_simple_anim_frametime){
@@ -1059,10 +1059,7 @@ void MobV2CAO::step(float dtime, ClientEnvironment *env)
 		int row = m_walk_frame;
 		const float txs = 1.0;
 		const float tys = 1.0 / m_simple_anim_frames;
-		bill->setTCoords(0, v2f(txs*(1+col), tys*(1+row)));
-		bill->setTCoords(1, v2f(txs*(1+col), tys*(0+row)));
-		bill->setTCoords(2, v2f(txs*(0+col), tys*(0+row)));
-		bill->setTCoords(3, v2f(txs*(0+col), tys*(1+row)));
+		setBillboardTextureMatrix(bill, txs, tys, col, row);
 	} else {
 		infostream<<"MobV2CAO::step(): Unknown sprite type \""
 				<<m_sprite_type<<"\""<<std::endl;

@@ -22,6 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "client.h"
 #include "main.h" // for g_settings
 #include "map.h"
+#include "mesh.h"
 #include "player.h"
 #include "tile.h"
 #include <cmath>
@@ -529,8 +530,9 @@ ExtrudedSpriteSceneNode::~ExtrudedSpriteSceneNode()
 
 void ExtrudedSpriteSceneNode::setSprite(video::ITexture* texture)
 {
-	if (texture == NULL)
-	{
+	const v3f sprite_scale(1.0,1.0, 1.0); // width, height, thickness
+
+	if (texture == NULL) {
 		m_meshnode->setVisible(false);
 		return;
 	}
@@ -546,7 +548,7 @@ void ExtrudedSpriteSceneNode::setSprite(video::ITexture* texture)
 	else
 	{
 		// Texture was not yet extruded, do it now and save in cache
-		mesh = extrude(texture);
+		mesh = createExtrudedMesh(texture, SceneManager->getVideoDriver(), sprite_scale);
 		if (mesh == NULL)
 		{
 			dstream << "Warning: failed to extrude sprite" << std::endl;
@@ -570,8 +572,9 @@ void ExtrudedSpriteSceneNode::setSprite(video::ITexture* texture)
 
 void ExtrudedSpriteSceneNode::setCube(const TileSpec tiles[6])
 {
+	const v3f cube_scale(1.0, 1.0, 1.0);
 	if (m_cubemesh == NULL)
-		m_cubemesh = createCubeMesh();
+		m_cubemesh = createCubeMesh(cube_scale);
 
 	m_meshnode->setMesh(m_cubemesh);
 	m_meshnode->setScale(v3f(1));
@@ -644,260 +647,4 @@ io::path ExtrudedSpriteSceneNode::getExtrudedName(video::ITexture* texture)
 	io::path path = texture->getName();
 	path.append("/[extruded]");
 	return path;
-}
-
-scene::IAnimatedMesh* ExtrudedSpriteSceneNode::extrudeARGB(u32 width, u32 height, u8* data)
-{
-	const s32 argb_wstep = 4 * width;
-	const s32 alpha_threshold = 1;
-
-	scene::IMeshBuffer* buf = new scene::SMeshBuffer();
-	video::SColor c(255,255,255,255);
-
-	// Front and back
-	{
-		video::S3DVertex vertices[8] =
-		{
-			video::S3DVertex(-0.5,-0.5,-0.5, 0,0,-1, c, 0,1),
-			video::S3DVertex(-0.5,+0.5,-0.5, 0,0,-1, c, 0,0),
-			video::S3DVertex(+0.5,+0.5,-0.5, 0,0,-1, c, 1,0),
-			video::S3DVertex(+0.5,-0.5,-0.5, 0,0,-1, c, 1,1),
-			video::S3DVertex(+0.5,-0.5,+0.5, 0,0,+1, c, 1,1),
-			video::S3DVertex(+0.5,+0.5,+0.5, 0,0,+1, c, 1,0),
-			video::S3DVertex(-0.5,+0.5,+0.5, 0,0,+1, c, 0,0),
-			video::S3DVertex(-0.5,-0.5,+0.5, 0,0,+1, c, 0,1),
-		};
-		u16 indices[12] = {0,1,2,2,3,0,4,5,6,6,7,4};
-		buf->append(vertices, 8, indices, 12);
-	}
-
-	// "Interior"
-	// (add faces where a solid pixel is next to a transparent one)
-	u8* solidity = new u8[(width+2) * (height+2)];
-	u32 wstep = width + 2;
-	for (u32 y = 0; y < height + 2; ++y)
-	{
-		u8* scanline = solidity + y * wstep;
-		if (y == 0 || y == height + 1)
-		{
-			for (u32 x = 0; x < width + 2; ++x)
-				scanline[x] = 0;
-		}
-		else
-		{
-			scanline[0] = 0;
-			u8* argb_scanline = data + (y - 1) * argb_wstep;
-			for (u32 x = 0; x < width; ++x)
-				scanline[x+1] = (argb_scanline[x*4+3] >= alpha_threshold);
-			scanline[width + 1] = 0;
-		}
-	}
-
-	// without this, there would be occasional "holes" in the mesh
-	f32 eps = 0.01;
-
-	for (u32 y = 0; y <= height; ++y)
-	{
-		u8* scanline = solidity + y * wstep + 1;
-		for (u32 x = 0; x <= width; ++x)
-		{
-			if (scanline[x] && !scanline[x + wstep])
-			{
-				u32 xx = x + 1;
-				while (scanline[xx] && !scanline[xx + wstep])
-					++xx;
-				f32 vx1 = (x - eps) / (f32) width - 0.5;
-				f32 vx2 = (xx + eps) / (f32) width - 0.5;
-				f32 vy = 0.5 - (y - eps) / (f32) height;
-				f32 tx1 = x / (f32) width;
-				f32 tx2 = xx / (f32) width;
-				f32 ty = (y - 0.5) / (f32) height;
-				video::S3DVertex vertices[8] =
-				{
-					video::S3DVertex(vx1,vy,-0.5, 0,-1,0, c, tx1,ty),
-					video::S3DVertex(vx2,vy,-0.5, 0,-1,0, c, tx2,ty),
-					video::S3DVertex(vx2,vy,+0.5, 0,-1,0, c, tx2,ty),
-					video::S3DVertex(vx1,vy,+0.5, 0,-1,0, c, tx1,ty),
-				};
-				u16 indices[6] = {0,1,2,2,3,0};
-				buf->append(vertices, 4, indices, 6);
-				x = xx - 1;
-			}
-			if (!scanline[x] && scanline[x + wstep])
-			{
-				u32 xx = x + 1;
-				while (!scanline[xx] && scanline[xx + wstep])
-					++xx;
-				f32 vx1 = (x - eps) / (f32) width - 0.5;
-				f32 vx2 = (xx + eps) / (f32) width - 0.5;
-				f32 vy = 0.5 - (y + eps) / (f32) height;
-				f32 tx1 = x / (f32) width;
-				f32 tx2 = xx / (f32) width;
-				f32 ty = (y + 0.5) / (f32) height;
-				video::S3DVertex vertices[8] =
-				{
-					video::S3DVertex(vx1,vy,-0.5, 0,1,0, c, tx1,ty),
-					video::S3DVertex(vx1,vy,+0.5, 0,1,0, c, tx1,ty),
-					video::S3DVertex(vx2,vy,+0.5, 0,1,0, c, tx2,ty),
-					video::S3DVertex(vx2,vy,-0.5, 0,1,0, c, tx2,ty),
-				};
-				u16 indices[6] = {0,1,2,2,3,0};
-				buf->append(vertices, 4, indices, 6);
-				x = xx - 1;
-			}
-		}
-	}
-
-	for (u32 x = 0; x <= width; ++x)
-	{
-		u8* scancol = solidity + x + wstep;
-		for (u32 y = 0; y <= height; ++y)
-		{
-			if (scancol[y * wstep] && !scancol[y * wstep + 1])
-			{
-				u32 yy = y + 1;
-				while (scancol[yy * wstep] && !scancol[yy * wstep + 1])
-					++yy;
-				f32 vx = (x - eps) / (f32) width - 0.5;
-				f32 vy1 = 0.5 - (y - eps) / (f32) height;
-				f32 vy2 = 0.5 - (yy + eps) / (f32) height;
-				f32 tx = (x - 0.5) / (f32) width;
-				f32 ty1 = y / (f32) height;
-				f32 ty2 = yy / (f32) height;
-				video::S3DVertex vertices[8] =
-				{
-					video::S3DVertex(vx,vy1,-0.5, 1,0,0, c, tx,ty1),
-					video::S3DVertex(vx,vy1,+0.5, 1,0,0, c, tx,ty1),
-					video::S3DVertex(vx,vy2,+0.5, 1,0,0, c, tx,ty2),
-					video::S3DVertex(vx,vy2,-0.5, 1,0,0, c, tx,ty2),
-				};
-				u16 indices[6] = {0,1,2,2,3,0};
-				buf->append(vertices, 4, indices, 6);
-				y = yy - 1;
-			}
-			if (!scancol[y * wstep] && scancol[y * wstep + 1])
-			{
-				u32 yy = y + 1;
-				while (!scancol[yy * wstep] && scancol[yy * wstep + 1])
-					++yy;
-				f32 vx = (x + eps) / (f32) width - 0.5;
-				f32 vy1 = 0.5 - (y - eps) / (f32) height;
-				f32 vy2 = 0.5 - (yy + eps) / (f32) height;
-				f32 tx = (x + 0.5) / (f32) width;
-				f32 ty1 = y / (f32) height;
-				f32 ty2 = yy / (f32) height;
-				video::S3DVertex vertices[8] =
-				{
-					video::S3DVertex(vx,vy1,-0.5, -1,0,0, c, tx,ty1),
-					video::S3DVertex(vx,vy2,-0.5, -1,0,0, c, tx,ty2),
-					video::S3DVertex(vx,vy2,+0.5, -1,0,0, c, tx,ty2),
-					video::S3DVertex(vx,vy1,+0.5, -1,0,0, c, tx,ty1),
-				};
-				u16 indices[6] = {0,1,2,2,3,0};
-				buf->append(vertices, 4, indices, 6);
-				y = yy - 1;
-			}
-		}
-	}
-
-	// Add to mesh
-	scene::SMesh* mesh = new scene::SMesh();
-	buf->recalculateBoundingBox();
-	mesh->addMeshBuffer(buf);
-	buf->drop();
-	mesh->recalculateBoundingBox();
-	scene::SAnimatedMesh* anim_mesh = new scene::SAnimatedMesh(mesh);
-	mesh->drop();
-	return anim_mesh;
-}
-
-scene::IAnimatedMesh* ExtrudedSpriteSceneNode::extrude(video::ITexture* texture)
-{
-	scene::IAnimatedMesh* mesh = NULL;
-	core::dimension2d<u32> size = texture->getSize();
-	video::ECOLOR_FORMAT format = texture->getColorFormat();
-	if (format == video::ECF_A8R8G8B8)
-	{
-		// Texture is in the correct color format, we can pass it
-		// to extrudeARGB right away.
-		void* data = texture->lock(true);
-		if (data == NULL)
-			return NULL;
-		mesh = extrudeARGB(size.Width, size.Height, (u8*) data);
-		texture->unlock();
-	}
-	else
-	{
-		video::IVideoDriver* driver = SceneManager->getVideoDriver();
-
-		video::IImage* img1 = driver->createImageFromData(format, size, texture->lock(true));
-		if (img1 == NULL)
-			return NULL;
-
-		// img1 is in the texture's color format, convert to 8-bit ARGB
-		video::IImage* img2 = driver->createImage(video::ECF_A8R8G8B8, size);
-		if (img2 != NULL)
-		{
-			img1->copyTo(img2);
-			img1->drop();
-
-			mesh = extrudeARGB(size.Width, size.Height, (u8*) img2->lock());
-			img2->unlock();
-			img2->drop();
-		}
-		img1->drop();
-	}
-	return mesh;
-}
-
-scene::IMesh* ExtrudedSpriteSceneNode::createCubeMesh()
-{
-	video::SColor c(255,255,255,255);
-	video::S3DVertex vertices[24] =
-	{
-		// Up
-		video::S3DVertex(-0.5,+0.5,-0.5, 0,1,0, c, 0,1),
-		video::S3DVertex(-0.5,+0.5,+0.5, 0,1,0, c, 0,0),
-		video::S3DVertex(+0.5,+0.5,+0.5, 0,1,0, c, 1,0),
-		video::S3DVertex(+0.5,+0.5,-0.5, 0,1,0, c, 1,1),
-		// Down
-		video::S3DVertex(-0.5,-0.5,-0.5, 0,-1,0, c, 0,0),
-		video::S3DVertex(+0.5,-0.5,-0.5, 0,-1,0, c, 1,0),
-		video::S3DVertex(+0.5,-0.5,+0.5, 0,-1,0, c, 1,1),
-		video::S3DVertex(-0.5,-0.5,+0.5, 0,-1,0, c, 0,1),
-		// Right
-		video::S3DVertex(+0.5,-0.5,-0.5, 1,0,0, c, 0,1),
-		video::S3DVertex(+0.5,+0.5,-0.5, 1,0,0, c, 0,0),
-		video::S3DVertex(+0.5,+0.5,+0.5, 1,0,0, c, 1,0),
-		video::S3DVertex(+0.5,-0.5,+0.5, 1,0,0, c, 1,1),
-		// Left
-		video::S3DVertex(-0.5,-0.5,-0.5, -1,0,0, c, 1,1),
-		video::S3DVertex(-0.5,-0.5,+0.5, -1,0,0, c, 0,1),
-		video::S3DVertex(-0.5,+0.5,+0.5, -1,0,0, c, 0,0),
-		video::S3DVertex(-0.5,+0.5,-0.5, -1,0,0, c, 1,0),
-		// Back
-		video::S3DVertex(-0.5,-0.5,+0.5, 0,0,1, c, 1,1),
-		video::S3DVertex(+0.5,-0.5,+0.5, 0,0,1, c, 0,1),
-		video::S3DVertex(+0.5,+0.5,+0.5, 0,0,1, c, 0,0),
-		video::S3DVertex(-0.5,+0.5,+0.5, 0,0,1, c, 1,0),
-		// Front
-		video::S3DVertex(-0.5,-0.5,-0.5, 0,0,-1, c, 0,1),
-		video::S3DVertex(-0.5,+0.5,-0.5, 0,0,-1, c, 0,0),
-		video::S3DVertex(+0.5,+0.5,-0.5, 0,0,-1, c, 1,0),
-		video::S3DVertex(+0.5,-0.5,-0.5, 0,0,-1, c, 1,1),
-	};
-
-	u16 indices[6] = {0,1,2,2,3,0};
-
-	scene::SMesh* mesh = new scene::SMesh();
-	for (u32 i=0; i<6; ++i)
-	{
-		scene::IMeshBuffer* buf = new scene::SMeshBuffer();
-		buf->append(vertices + 4 * i, 4, indices, 6);
-		buf->recalculateBoundingBox();
-		mesh->addMeshBuffer(buf);
-		buf->drop();
-	}
-	mesh->recalculateBoundingBox();
-	return mesh;
 }

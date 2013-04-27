@@ -225,9 +225,6 @@ private:
 
 	// internal extrusion helper methods
 	io::path getExtrudedName(video::ITexture* texture);
-	scene::IAnimatedMesh* extrudeARGB(u32 width, u32 height, u8* data);
-	scene::IAnimatedMesh* extrude(video::ITexture* texture);
-	scene::IMesh* createCubeMesh();
 };
 
 #endif

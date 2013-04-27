@@ -160,7 +160,7 @@ void LockingChestNodeMetadata::serializeBody(std::ostream &os)
 }
 std::string LockingChestNodeMetadata::infoText()
 {
-	return "Locking Chest";
+	return std::string("Locking Chest owned by '")+m_text+"'";
 }
 bool LockingChestNodeMetadata::nodeRemovalDisabled()
 {

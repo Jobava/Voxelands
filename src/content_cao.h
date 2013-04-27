@@ -24,7 +24,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "content_object.h"
 #include "utility.h" // For IntervalLimiter
 class Settings;
-#include "MyBillboardSceneNode.h"
+#include <IBillboardSceneNode.h>
 
 /*
 	SmoothTranslator
@@ -348,7 +348,7 @@ private:
 
 	IntervalLimiter m_attack_interval;
 	core::aabbox3d<f32> m_selection_box;
-	scene::MyBillboardSceneNode *m_node;
+	scene::IBillboardSceneNode *m_node;
 	v3f m_position;
 	std::string m_texture_name;
 	float m_yaw;
