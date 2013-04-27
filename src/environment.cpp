@@ -1055,7 +1055,7 @@ void ServerEnvironment::step(float dtime)
 				if(n.getContent() == CONTENT_STONE ||
 						n.getContent() == CONTENT_MOSSYCOBBLE)
 				{
-   					if(myrand()%200 == 0 && active_object_count_wider == 0)
+   					if(myrand()%500 == 0 && active_object_count_wider == 0)
 					{
 						v3s16 p1 = p + v3s16(0,1,0);
 						MapNode n1a = m_map->getNodeNoEx(p1+v3s16(0,0,0));
@@ -1065,29 +1065,30 @@ void ServerEnvironment::step(float dtime)
 									n1b.getContent() == CONTENT_AIR)
 							{
 								v3f pos = intToFloat(p1, BS);
+								ServerActiveObject *obj;
+								Settings properties;
 								int i = myrand()%5;
-								if(i == 0 || i == 1){
+								switch (i) {
+								case 0:
 									actionstream<<"A dungeon master spawns at "
 											<<PP(p1)<<std::endl;
-									Settings properties;
 									getMob_dungeon_master(properties);
-									ServerActiveObject *obj = new MobV2SAO(
-											this, 0, pos, &properties);
+									obj = new MobV2SAO(this, 0, pos, &properties);
 									addActiveObject(obj);
-								} else if(i == 2 || i == 3){
-									actionstream<<"Rats spawn at "
+									break;
+								case 1:
+									actionstream<<"Rat spawns at "
 											<<PP(p1)<<std::endl;
-									for(int j=0; j<3; j++){
-										ServerActiveObject *obj = new RatSAO(
-												this, 0, pos);
-										addActiveObject(obj);
-									}
-								} else {
+									obj = new RatSAO(this, 0, pos);
+									addActiveObject(obj);
+									break;
+								case 2:
 									actionstream<<"An oerkki spawns at "
 											<<PP(p1)<<std::endl;
-									ServerActiveObject *obj = new Oerkki1SAO(
-											this, 0, pos);
+									obj = new Oerkki1SAO(this, 0, pos);
 									addActiveObject(obj);
+									break;
+								default:;
 								}
 							}
 						}
