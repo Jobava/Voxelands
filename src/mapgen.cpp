@@ -914,10 +914,16 @@ static void make_dungeon1(VoxelManipulator &vmanip, PseudoRandom &random)
 	u32 room_count = random.range(2,7);
 	for(u32 i=0; i<room_count; i++)
 	{
-		// Make a room to the determined place
-		make_room1(vmanip, roomsize, roomplace);
 
 		v3s16 room_center = roomplace + v3s16(roomsize.X/2,1,roomsize.Z/2);
+
+		// dungeons should only be made in stone, so if room_center isn't stone
+		// stop making a dungeon
+		if (vmanip.m_data[vmanip.m_area.index(room_center)].getContent() != CONTENT_STONE)
+			break;
+
+		// Make a room to the determined place
+		make_room1(vmanip, roomsize, roomplace);
 
 		// Place torch at room center (for testing)
 		//vmanip.m_data[vmanip.m_area.index(room_center)] = MapNode(CONTENT_TORCH);
