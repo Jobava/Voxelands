@@ -1020,10 +1020,8 @@ void ServerEnvironment::step(float dtime)
 					//if(myrand()%20 == 0)
 					{
 						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
-						if (
-							n_top.getContent() != CONTENT_AIR &&
-							n_top.getContent() != CONTENT_IGNORE
-						)
+						if(content_features(n_top).air_equivalent == false
+							&& n_top.getContent() != CONTENT_IGNORE)
 						{
 							n.setContent(CONTENT_MUD);
 							m_map->addNodeWithEvent(p, n);
