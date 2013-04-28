@@ -1059,7 +1059,6 @@ void drawMenuBackground(video::IVideoDriver* driver)
 	{
 		v2s32 logosize(logotexture->getOriginalSize().Width,
 				logotexture->getOriginalSize().Height);
-		logosize *= 4;
 
 		video::SColor bgcolor(255,50,50,50);
 		core::rect<s32> bgrect(0, screensize.Height-logosize.Y-20,
