@@ -1113,7 +1113,9 @@ void ServerEnvironment::step(float dtime)
 							v3s16 test_p = p + v3s16(x,y,z);
 							if (test_p != p) {
 								content_t tcon = m_map->getNodeNoEx(test_p).getContent();
-								if (tcon != CONTENT_AIR
+								if (
+									tcon != CONTENT_AIR
+									&& tcon != CONTENT_TREE
 									&& tcon != CONTENT_LEAVES
 									&& tcon != CONTENT_IGNORE)
 									grow = false;
