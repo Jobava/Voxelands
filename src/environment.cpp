@@ -1099,7 +1099,7 @@ void ServerEnvironment::step(float dtime)
 				*/
 				if(n.getContent() == CONTENT_SAPLING)
 				{
-					if(myrand()%30 == 0)
+					if(myrand()%10 == 0)
 					{
 						s16 max_y = 7;
 						s16 max_o = 2;

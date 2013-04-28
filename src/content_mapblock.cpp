@@ -1286,13 +1286,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			{
 				video::S3DVertex vertices[4] =
 				{
-					video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
+					video::S3DVertex(-BS/3,-BS/2,0, 0,0,0, c,
 						pa_sapling.x0(), pa_sapling.y1()),
-					video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
+					video::S3DVertex(BS/3,-BS/2,0, 0,0,0, c,
 						pa_sapling.x1(), pa_sapling.y1()),
-					video::S3DVertex(BS/2,BS/1,0, 0,0,0, c,
+					video::S3DVertex(BS/3,BS/3,0, 0,0,0, c,
 						pa_sapling.x1(), pa_sapling.y0()),
-					video::S3DVertex(-BS/2,BS/1,0, 0,0,0, c,
+					video::S3DVertex(-BS/3,BS/3,0, 0,0,0, c,
 						pa_sapling.x0(), pa_sapling.y0()),
 				};
 
