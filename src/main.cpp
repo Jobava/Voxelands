@@ -1541,11 +1541,6 @@ int main(int argc, char *argv[])
 				// Some stuff are left to scene manager when coming from the game
 				// (map at least?)
 				smgr->clear();
-				// Reset or hide the debug gui texts
-				/*guitext->setText(L"Minetest-c55");
-				guitext2->setVisible(false);
-				guitext_info->setVisible(false);
-				guitext_chat->setVisible(false);*/
 
 				// Initialize menu data
 				MainMenuData menudata;

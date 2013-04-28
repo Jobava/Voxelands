@@ -864,7 +864,7 @@ void the_game(
 
 	// First line of debug text
 	gui::IGUIStaticText *guitext = guienv->addStaticText(
-			L"Minetest-c55",
+			L"Minetest-Classic",
 			core::rect<s32>(5, 5, 795, 5+text_height),
 			false, false);
 	// Second line of debug text
@@ -2058,7 +2058,7 @@ void the_game(
 			endscenetime_avg = endscenetime_avg * 0.95 + (float)endscenetime*0.05;
 
 			char temptext[300];
-			snprintf(temptext, 300, "Minetest-c55 %s ("
+			snprintf(temptext, 300, "Minetest-Classic %s ("
 					"R: range_all=%i"
 					")"
 					" drawtime=%.0f, beginscenetime=%.0f"

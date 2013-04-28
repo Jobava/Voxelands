@@ -1,7 +1,8 @@
-Minetest-c55
+Minetest-Classic
 ---------------
 An InfiniMiner/Minecraft inspired game.
 Copyright (c) 2010-2011 Perttu Ahola <celeron55@gmail.com>
+Forked from Minetest 0.3.x by Lisa 'darkrose' Milne <lisa@ltmnet.com>
 (see source files for other contributors)
 
 Further documentation:
@@ -93,8 +94,8 @@ Compiling on Windows:
 	* Optional: gettext bibrary and tools:
 		http://gnuwin32.sourceforge.net/downlinks/gettext.php
 		- This is used for other UI languages. Feel free to leave it out.
-	* And, of course, Minetest-c55:
-		http://celeron.55.lt/~celeron55/minetest/download
+	* And, of course, Minetest-Classic:
+		https://gitorious.org/minetest-classic/minetest-classic/archive-tarball/master
 - Steps:
 	- Select a directory called DIR hereafter in which you will operate.
 	- Make sure you have CMake and a compiler installed.
@@ -195,23 +196,23 @@ cmake %sourcedir% -G "Visual Studio 10" -DIRRLICHT_SOURCE_DIR=%irrlichtpath% -DR
 "C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" PACKAGE.vcxproj /p:Configuration=Release
 popd
 
-License of Minetest-c55 textures
+License of Minetest-Classic textures
 --------------------------------
 
 This does not apply to texture packs made by others.
 
-Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)                                 
+Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
 http://creativecommons.org/licenses/by-sa/3.0/
 
-License of Minetest-c55
+License of Minetest-Classic
 -----------------------
 
-Minetest-c55
-Copyright (C) 2010-2011 celeron55, Perttu Ahola <celeron55@gmail.com>
+Minetest-Classic
+Copyright (C) 2010-2013 celeron55, Perttu Ahola <celeron55@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
+the Free Software Foundation; either version 3 of the License, or
 (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
@@ -222,6 +223,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+
+Minetest-c55 was licensed under GPLv2 or later, the 'or later' option
+ was taken by Lisa 'darkrose' Milne when forking Minetest-Classic, thus
+ updating the license to GPLv3
 
 Irrlicht
 ---------------
