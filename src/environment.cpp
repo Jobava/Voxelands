@@ -753,9 +753,6 @@ void ServerEnvironment::step(float dtime)
 
 	//TimeTaker timer("ServerEnv step");
 
-	// Get some settings
-	bool footprints = g_settings->getBool("footprints");
-
 	/*
 		Increment game time
 	*/
@@ -784,26 +781,6 @@ void ServerEnvironment::step(float dtime)
 
 			// Move
 			player->move(dtime, *m_map, 100*BS);
-
-			/*
-				Add footsteps to grass
-			*/
-			if(footprints)
-			{
-				// Get node that is at BS/4 under player
-				v3s16 bottompos = floatToInt(playerpos + v3f(0,-BS/4,0), BS);
-				try{
-					MapNode n = m_map->getNode(bottompos);
-					if(n.getContent() == CONTENT_GRASS)
-					{
-						n.setContent(CONTENT_GRASS_FOOTSTEPS);
-						m_map->setNode(bottompos, n);
-					}
-				}
-				catch(InvalidPositionException &e)
-				{
-				}
-			}
 		}
 	}
 
@@ -1009,6 +986,82 @@ void ServerEnvironment::step(float dtime)
 						{
 							n.setContent(CONTENT_GRASS);
 							m_map->addNodeWithEvent(p, n);
+						}
+					}
+				}
+				/*
+					Grow stuff on farm dirt
+				*/
+				if(n.getContent() == CONTENT_FARM_DIRT)
+				{
+					if (myrand()%20 == 0)
+					{
+						s16 max_d = 1;
+						s16 max_growth = 2;
+						v3s16 temp_p = p;
+						v3s16 test_p;
+						content_t type = CONTENT_JUNGLEGRASS;
+						MapNode testnode;
+						bool found = false;
+						for(s16 z=-max_d; !found && z<=max_d; z++) {
+						for(s16 x=-max_d; !found && x<=max_d; x++)
+						{
+							test_p = temp_p + v3s16(x,0,z);
+							testnode = m_map->getNodeNoEx(test_p);
+							if (
+								testnode.getContent() == CONTENT_WATERSOURCE
+							) {
+								found = true;
+								break;
+							}
+						}
+						}
+
+						if (found) {
+							found = false;
+							test_p = temp_p + v3s16(0,1,0);
+							testnode = m_map->getNodeNoEx(test_p);
+							switch (testnode.getContent()) {
+							case CONTENT_AIR:
+								for(s16 z=-max_d; !found && z<=max_d; z++) {
+								for(s16 x=-max_d; !found && x<=max_d; x++)
+								{
+									test_p = temp_p + v3s16(x,1,z);
+									testnode = m_map->getNodeNoEx(test_p);
+									if (
+										testnode.getContent() == CONTENT_JUNGLEGRASS
+										|| testnode.getContent() == CONTENT_PAPYRUS
+									) {
+										found = true;
+										type = testnode.getContent();
+										test_p = temp_p + v3s16(0,1,0);
+										break;
+									}
+								}
+								}
+								break;
+							case CONTENT_PAPYRUS:
+								max_growth = 5;
+								type = CONTENT_PAPYRUS;
+							case CONTENT_JUNGLEGRASS:
+								for(s16 y=2; !found && y<=max_growth; y++)
+								{
+									test_p = temp_p + v3s16(0,y,0);
+									testnode = m_map->getNodeNoEx(test_p);
+									if (testnode.getContent() == CONTENT_AIR) {
+										found = true;
+										break;
+									}
+								}
+								break;
+							default:;
+							}
+							if (found)
+							{
+								MapNode n_top = m_map->getNodeNoEx(test_p);
+								n.setContent(type);
+								m_map->addNodeWithEvent(test_p, n);
+							}
 						}
 					}
 				}
@@ -2059,7 +2112,6 @@ void ClientEnvironment::step(float dtime)
 
 	// Get some settings
 	bool free_move = g_settings->getBool("free_move");
-	bool footprints = g_settings->getBool("footprints");
 
 	// Get local player
 	LocalPlayer *lplayer = getLocalPlayer();
@@ -2252,34 +2304,6 @@ void ClientEnvironment::step(float dtime)
 		}
 		catch(InvalidPositionException &e) {}
 		player->updateLight(light);
-
-		/*
-			Add footsteps to grass
-		*/
-		if(footprints)
-		{
-			// Get node that is at BS/4 under player
-			v3s16 bottompos = floatToInt(playerpos + v3f(0,-BS/4,0), BS);
-			try{
-				MapNode n = m_map->getNode(bottompos);
-				if(n.getContent() == CONTENT_GRASS)
-				{
-					n.setContent(CONTENT_GRASS_FOOTSTEPS);
-					m_map->setNode(bottompos, n);
-					// Update mesh on client
-					if(m_map->mapType() == MAPTYPE_CLIENT)
-					{
-						v3s16 p_blocks = getNodeBlockPos(bottompos);
-						MapBlock *b = m_map->getBlockNoCreate(p_blocks);
-						//b->updateMesh(getDayNightRatio());
-						b->setMeshExpired(true);
-					}
-				}
-			}
-			catch(InvalidPositionException &e)
-			{
-			}
-		}
 	}
 
 	/*

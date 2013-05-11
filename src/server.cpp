@@ -2423,6 +2423,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 			content_t material = CONTENT_IGNORE;
 			u8 mineral = MINERAL_NONE;
+			const InventoryItem *wield;
 
 			bool cannot_remove_node = false;
 
@@ -2499,136 +2500,205 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				return;
 			}
 
-			actionstream<<player->getName()<<" digs "<<PP(p_under)
-					<<", gets material "<<(int)material<<", mineral "
-					<<(int)mineral<<std::endl;
-
-			/*
-				Send the removal to all close-by players.
-				- If other player is close, send REMOVENODE
-				- Otherwise set blocks not sent
-			*/
-			core::list<u16> far_players;
-			sendRemoveNode(p_under, peer_id, &far_players, 30);
-
-			/*
-				Update and send inventory
-			*/
-
-			if(g_settings->getBool("creative_mode") == false)
+			wield = player->getWieldItem();
+			std::string wieldname;
+			bool is_farm_swap = false;
+			// This is pretty much the entirety of farming
+			if (
+				material == CONTENT_MUD
+				&& wield && wield->getName() == std::string("ToolItem")
+				&& wieldname == ((ToolItem*)wield)->getToolName() &&
+				(
+					wieldname == std::string("SteelShovel")
+					|| wieldname == std::string("STShovel")
+					|| wieldname == std::string("WShovel")
+				)
+			)
 			{
-				/*
-					Wear out tool
-				*/
-				InventoryList *mlist = player->inventory.getList("main");
-				if(mlist != NULL)
+				v3s16 temp_p = p_under;
+				v3s16 test_p;
+				MapNode testnode;
+				for(s16 z=-1; !is_farm_swap && z<=1; z++) {
+				for(s16 x=-1; !is_farm_swap && x<=1; x++)
 				{
-					InventoryItem *item = mlist->getItem(item_i);
-					if(item && (std::string)item->getName() == "ToolItem")
-					{
-						ToolItem *titem = (ToolItem*)item;
-						std::string toolname = titem->getToolName();
-
-						// Get digging properties for material and tool
-						DiggingProperties prop =
-								getDiggingProperties(material, toolname);
-
-						if(prop.diggable == false)
-						{
-							infostream<<"Server: WARNING: Player digged"
-									<<" with impossible material + tool"
-									<<" combination"<<std::endl;
-						}
-
-						bool weared_out = titem->addWear(prop.wear);
-
-						if(weared_out)
-						{
-							mlist->deleteItem(item_i);
-						}
+					test_p = temp_p + v3s16(x,0,z);
+					testnode = m_env.getMap().getNodeNoEx(test_p);
+					if (
+						testnode.getContent() == CONTENT_WATERSOURCE
+					) {
+						is_farm_swap = true;
+						break;
 					}
 				}
-
-				/*
-					Add dug item to inventory
-				*/
-
-				InventoryItem *item = NULL;
-
-				if(mineral != MINERAL_NONE)
-					item = getDiggedMineralItem(mineral);
-
-				// If not mineral
-				if(item == NULL)
-				{
-					std::string &dug_s = content_features(material).dug_item;
-					if(dug_s != "")
-					{
-						std::istringstream is(dug_s, std::ios::binary);
-						item = InventoryItem::deSerialize(is);
-					}
-				}
-
-				if(item != NULL)
-				{
-					// Add a item to inventory
-					player->inventory.addItem("main", item);
-
-					// Send inventory
-					UpdateCrafting(player->peer_id);
-					SendInventory(player->peer_id);
-				}
-
-				item = NULL;
-
-				if(mineral != MINERAL_NONE)
-				  item = getDiggedMineralItem(mineral);
-
-				// If not mineral
-				if(item == NULL)
-				{
-				        std::string &extra_dug_s = content_features(material).extra_dug_item;
-					s32 extra_rarity = content_features(material).extra_dug_item_rarity;
-					if(extra_dug_s != "" && extra_rarity != 0
-					   && myrand() % extra_rarity == 0)
-					{
-				                std::istringstream is(extra_dug_s, std::ios::binary);
-						item = InventoryItem::deSerialize(is);
-					}
-				}
-
-				if(item != NULL)
-				{
-				        // Add a item to inventory
-				        player->inventory.addItem("main", item);
-
-					// Send inventory
-					UpdateCrafting(player->peer_id);
-					SendInventory(player->peer_id);
 				}
 			}
-
-			/*
-				Remove the node
-				(this takes some time so it is done after the quick stuff)
-			*/
+			if (is_farm_swap)
 			{
-				MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+				MapNode n = m_env.getMap().getNode(p_under);
+				n.setContent(CONTENT_FARM_DIRT);
+				core::list<u16> far_players;
+				sendAddNode(p_under, n, 0, &far_players, 30);
 
-				m_env.getMap().removeNodeAndUpdate(p_under, modified_blocks);
+				/*
+					Add node.
+
+					This takes some time so it is done after the quick stuff
+				*/
+				core::map<v3s16, MapBlock*> modified_blocks;
+				{
+					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+
+					std::string p_name = std::string(player->getName());
+					m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
+				}
+				/*
+					Set blocks not sent to far players
+				*/
+				for(core::list<u16>::Iterator
+						i = far_players.begin();
+						i != far_players.end(); i++)
+				{
+					u16 peer_id = *i;
+					RemoteClient *client = getClient(peer_id);
+					if(client==NULL)
+						continue;
+					client->SetBlocksNotSent(modified_blocks);
+				}
 			}
-			/*
-				Set blocks not sent to far players
-			*/
-			for(core::list<u16>::Iterator
-					i = far_players.begin();
-					i != far_players.end(); i++)
+			else
 			{
-				u16 peer_id = *i;
-				RemoteClient *client = getClient(peer_id);
-				if(client==NULL)
-					continue;
-				client->SetBlocksNotSent(modified_blocks);
+
+				actionstream<<player->getName()<<" digs "<<PP(p_under)
+						<<", gets material "<<(int)material<<", mineral "
+						<<(int)mineral<<std::endl;
+
+				/*
+					Send the removal to all close-by players.
+					- If other player is close, send REMOVENODE
+					- Otherwise set blocks not sent
+				*/
+				core::list<u16> far_players;
+				sendRemoveNode(p_under, peer_id, &far_players, 30);
+
+				/*
+					Update and send inventory
+				*/
+
+				if(g_settings->getBool("creative_mode") == false)
+				{
+					/*
+						Wear out tool
+					*/
+					InventoryList *mlist = player->inventory.getList("main");
+					if(mlist != NULL)
+					{
+						InventoryItem *item = mlist->getItem(item_i);
+						if(item && (std::string)item->getName() == "ToolItem")
+						{
+							ToolItem *titem = (ToolItem*)item;
+							std::string toolname = titem->getToolName();
+
+							// Get digging properties for material and tool
+							DiggingProperties prop =
+									getDiggingProperties(material, toolname);
+
+							if(prop.diggable == false)
+							{
+								infostream<<"Server: WARNING: Player digged"
+										<<" with impossible material + tool"
+										<<" combination"<<std::endl;
+							}
+
+							bool weared_out = titem->addWear(prop.wear);
+
+							if(weared_out)
+							{
+								mlist->deleteItem(item_i);
+							}
+						}
+					}
+
+					/*
+						Add dug item to inventory
+					*/
+
+					InventoryItem *item = NULL;
+
+					if(mineral != MINERAL_NONE)
+						item = getDiggedMineralItem(mineral);
+
+					// If not mineral
+					if(item == NULL)
+					{
+						std::string &dug_s = content_features(material).dug_item;
+						if(dug_s != "")
+						{
+							std::istringstream is(dug_s, std::ios::binary);
+							item = InventoryItem::deSerialize(is);
+						}
+					}
+
+					if(item != NULL)
+					{
+						// Add a item to inventory
+						player->inventory.addItem("main", item);
+
+						// Send inventory
+						UpdateCrafting(player->peer_id);
+						SendInventory(player->peer_id);
+					}
+
+					item = NULL;
+
+					if(mineral != MINERAL_NONE)
+					  item = getDiggedMineralItem(mineral);
+
+					// If not mineral
+					if(item == NULL)
+					{
+						std::string &extra_dug_s = content_features(material).extra_dug_item;
+						s32 extra_rarity = content_features(material).extra_dug_item_rarity;
+						if(extra_dug_s != "" && extra_rarity != 0
+						   && myrand() % extra_rarity == 0)
+						{
+							std::istringstream is(extra_dug_s, std::ios::binary);
+							item = InventoryItem::deSerialize(is);
+						}
+					}
+
+					if(item != NULL)
+					{
+						// Add a item to inventory
+						player->inventory.addItem("main", item);
+
+						// Send inventory
+						UpdateCrafting(player->peer_id);
+						SendInventory(player->peer_id);
+					}
+				}
+
+				/*
+					Remove the node
+					(this takes some time so it is done after the quick stuff)
+				*/
+				{
+					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+
+					m_env.getMap().removeNodeAndUpdate(p_under, modified_blocks);
+				}
+				/*
+					Set blocks not sent to far players
+				*/
+				for(core::list<u16>::Iterator
+						i = far_players.begin();
+						i != far_players.end(); i++)
+				{
+					u16 peer_id = *i;
+					RemoteClient *client = getClient(peer_id);
+					if(client==NULL)
+						continue;
+					client->SetBlocksNotSent(modified_blocks);
+				}
 			}
 		}
 

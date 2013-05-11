@@ -67,6 +67,21 @@ collisionMoveResult collisionMoveSimple(Map *map, f32 pos_max_d,
 		If the object lies on a walkable node, this is set to true.
 	*/
 	result.touching_ground = false;
+	try{
+		// Check for liquid, and damage = lava
+		MapNode n = map->getNode(pos_i);
+		if(content_features(n).liquid_type != LIQUID_NONE)
+		{
+			result.in_liquid = true;
+			if (content_features(n).damage_per_second > 1.0)
+				result.touching_lethal = true;
+		}
+	}
+	catch(InvalidPositionException &e)
+	{
+		// Doing nothing here will block the object from
+		// walking over map borders
+	}
 
 	/*
 		Go through every node around the object

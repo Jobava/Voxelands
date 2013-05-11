@@ -46,7 +46,7 @@ content_t trans_table_19[20][2] = {
 	{CONTENT_GRASS, 1},
 	{CONTENT_TREE, 4},
 	{CONTENT_LEAVES, 5},
-	{CONTENT_GRASS_FOOTSTEPS, 6},
+	{CONTENT_FARM_DIRT, 6},
 	{CONTENT_MESE, 7},
 	{CONTENT_MUD, 8},
 	{CONTENT_COTTON, 10},
@@ -135,11 +135,9 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MUD)+" 1";
 	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
 
-	i = CONTENT_GRASS_FOOTSTEPS;
+	i = CONTENT_FARM_DIRT;
 	f = &content_features(i);
-	f->setAllTextures("mud.png^grass_side.png");
-	f->setTexture(0, "grass_footsteps.png");
-	f->setTexture(1, "mud.png");
+	f->setAllTextures("dirt.png");
 	f->param_type = CPT_MINERAL;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MUD)+" 1";

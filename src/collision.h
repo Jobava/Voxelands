@@ -27,9 +27,13 @@ class Map;
 struct collisionMoveResult
 {
 	bool touching_ground;
+	bool in_liquid;
+	bool touching_lethal;
 
 	collisionMoveResult():
-		touching_ground(false)
+		touching_ground(false),
+		in_liquid(false),
+		touching_lethal(false)
 	{}
 };
 

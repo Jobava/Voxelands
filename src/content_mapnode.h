@@ -61,7 +61,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_GRASS 0x800 //1
 #define CONTENT_TREE 0x801 //4
 #define CONTENT_LEAVES 0x802 //5
-#define CONTENT_GRASS_FOOTSTEPS 0x803 //6
+#define CONTENT_FARM_DIRT 0x803 //6
 #define CONTENT_MESE 0x804 //7
 #define CONTENT_MUD 0x805 //8
 // used to be cloud

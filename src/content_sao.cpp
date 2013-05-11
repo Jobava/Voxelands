@@ -392,6 +392,14 @@ void RatSAO::step(float dtime, bool send_recommended)
 	v3f pos_f_old = pos_f;
 	moveresult = collisionMoveSimple(&m_env->getMap(), pos_max_d,
 			box, dtime, pos_f, m_speed_f);
+
+	// basicly 'die in lava'
+	if (moveresult.touching_lethal)
+	{
+		m_removed = true;
+		return;
+	}
+
 	m_touching_ground = moveresult.touching_ground;
 
 	setBasePosition(pos_f);
@@ -624,6 +632,14 @@ void Oerkki1SAO::step(float dtime, bool send_recommended)
 	v3f pos_f_old = pos_f;
 	moveresult = collisionMovePrecise(&m_env->getMap(), pos_max_d,
 			box, dtime, pos_f, m_speed_f);
+
+	if (moveresult.touching_lethal)
+	{
+		// Die
+		m_removed = true;
+		return;
+	}
+
 	m_touching_ground = moveresult.touching_ground;
 
 	// Do collision damage
@@ -863,6 +879,14 @@ void FireflySAO::step(float dtime, bool send_recommended)
 	v3f pos_f_old = pos_f;
 	moveresult = collisionMoveSimple(&m_env->getMap(), pos_max_d,
 			box, dtime, pos_f, m_speed_f);
+
+	// basicly 'die in lava'
+	if (moveresult.touching_lethal)
+	{
+		m_removed = true;
+		return;
+	}
+
 	m_touching_ground = moveresult.touching_ground;
 
 	setBasePosition(pos_f);
