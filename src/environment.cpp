@@ -1031,6 +1031,7 @@ void ServerEnvironment::step(float dtime)
 									if (
 										testnode.getContent() == CONTENT_JUNGLEGRASS
 										|| testnode.getContent() == CONTENT_PAPYRUS
+										|| testnode.getContent() == CONTENT_CACTUS
 									) {
 										found = true;
 										type = testnode.getContent();
@@ -1043,13 +1044,17 @@ void ServerEnvironment::step(float dtime)
 							case CONTENT_PAPYRUS:
 								max_growth = 5;
 								type = CONTENT_PAPYRUS;
+							case CONTENT_CACTUS:
+								max_growth = 4;
+								type = CONTENT_CACTUS;
 							case CONTENT_JUNGLEGRASS:
 								for(s16 y=2; !found && y<=max_growth; y++)
 								{
 									test_p = temp_p + v3s16(0,y,0);
 									testnode = m_map->getNodeNoEx(test_p);
-									if (testnode.getContent() == CONTENT_AIR) {
-										found = true;
+									if (testnode.getContent() != type) {
+										if (testnode.getContent() == CONTENT_AIR)
+											found = true;
 										break;
 									}
 								}
