@@ -2507,7 +2507,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			if (
 				material == CONTENT_MUD
 				&& wield && wield->getName() == std::string("ToolItem")
-				&& wieldname == ((ToolItem*)wield)->getToolName() &&
+				&& (wieldname = ((ToolItem*)wield)->getToolName()) != std::string("") &&
 				(
 					wieldname == std::string("SteelShovel")
 					|| wieldname == std::string("STShovel")
@@ -2518,24 +2518,32 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				v3s16 temp_p = p_under;
 				v3s16 test_p;
 				MapNode testnode;
-				for(s16 z=-1; !is_farm_swap && z<=1; z++) {
-				for(s16 x=-1; !is_farm_swap && x<=1; x++)
-				{
-					test_p = temp_p + v3s16(x,0,z);
-					testnode = m_env.getMap().getNodeNoEx(test_p);
-					if (
-						testnode.getContent() == CONTENT_WATERSOURCE
-					) {
-						is_farm_swap = true;
-						break;
+				test_p = temp_p + v3s16(0,1,0);
+				testnode = m_env.getMap().getNodeNoEx(test_p);
+				if (testnode.getContent() == CONTENT_AIR) {
+					for(s16 z=-1; !is_farm_swap && z<=1; z++) {
+					for(s16 x=-1; !is_farm_swap && x<=1; x++)
+					{
+						test_p = temp_p + v3s16(x,0,z);
+						testnode = m_env.getMap().getNodeNoEx(test_p);
+						if (
+							testnode.getContent() == CONTENT_WATERSOURCE
+						) {
+							is_farm_swap = true;
+							break;
+						}
 					}
-				}
+					}
 				}
 			}
 			if (is_farm_swap)
 			{
 				MapNode n = m_env.getMap().getNode(p_under);
 				n.setContent(CONTENT_FARM_DIRT);
+
+				actionstream<<player->getName()<<" ploughs "<<PP(p_under)
+						<<" into farm dirt"<<std::endl;
+
 				core::list<u16> far_players;
 				sendAddNode(p_under, n, 0, &far_players, 30);
 
