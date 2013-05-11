@@ -1044,10 +1044,34 @@ void ServerEnvironment::step(float dtime)
 							case CONTENT_PAPYRUS:
 								max_growth = 5;
 								type = CONTENT_PAPYRUS;
+								for(s16 y=2; !found && y<=max_growth; y++)
+								{
+									test_p = temp_p + v3s16(0,y,0);
+									testnode = m_map->getNodeNoEx(test_p);
+									if (testnode.getContent() != type) {
+										if (testnode.getContent() == CONTENT_AIR)
+											found = true;
+										break;
+									}
+								}
+								break;
 							case CONTENT_CACTUS:
 								max_growth = 4;
 								type = CONTENT_CACTUS;
+								for(s16 y=2; !found && y<=max_growth; y++)
+								{
+									test_p = temp_p + v3s16(0,y,0);
+									testnode = m_map->getNodeNoEx(test_p);
+									if (testnode.getContent() != type) {
+										if (testnode.getContent() == CONTENT_AIR)
+											found = true;
+										break;
+									}
+								}
+								break;
 							case CONTENT_JUNGLEGRASS:
+								max_growth = 2;
+								type = CONTENT_JUNGLEGRASS;
 								for(s16 y=2; !found && y<=max_growth; y++)
 								{
 									test_p = temp_p + v3s16(0,y,0);
