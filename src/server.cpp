@@ -4299,10 +4299,6 @@ Player *Server::emergePlayer(const char *name, const char *password, u16 peer_id
 
 		// Got one.
 		player->peer_id = peer_id;
-		// fix player appearing underground
-		// TODO: probably a better way/place to do this
-		v3f pos = player->getPosition();
-		player->setPosition(pos+v3f(0,3,0));
 
 		// Reset inventory to creative if in creative mode
 		if(g_settings->getBool("creative_mode"))
