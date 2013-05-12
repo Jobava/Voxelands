@@ -22,9 +22,9 @@
 #
 
 # Network port (UDP)
-#port = 
+#port =
 # Name of player; on a server this is the main admin
-#name = 
+#name =
 
 #
 # Client stuff
@@ -62,7 +62,7 @@
 #screenW = 800
 #screenH = 600
 # Address to connect to (#blank = start local server)
-#address = 
+#address =
 # Enable random user input, for testing
 #random_input = false
 # Timeout for client to remove unused map data from memory
@@ -82,7 +82,7 @@
 # disable if it causes graphics glitches.
 #enable_texture_atlas = true
 # Path to texture directory. All textures are first searched from here.
-#texture_path = 
+#texture_path =
 # Video back-end.
 # Possible values: null, software, burningsvideo, direct3d8, direct3d9, opengl
 #video_driver = opengl
@@ -130,9 +130,11 @@
 # Gives some stuff to players at the beginning
 #give_initial_stuff = false
 # New users need to input this password
-#default_password = 
+#default_password =
 # Available privileges: build, teleport, settime, privs, shout
 #default_privs = build, shout
+# enable a static spawnpoint (default unset)
+#static_spawnpoint = (0,0,0)
 
 # Profiler data print interval. #0 = disable.
 #profiler_print_interval = 0
