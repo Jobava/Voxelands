@@ -166,6 +166,7 @@ bool RecursiveDelete(std::string path)
 
 #else // POSIX
 
+#include <unistd.h>
 #include <sys/types.h>
 #include <dirent.h>
 #include <errno.h>
