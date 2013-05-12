@@ -282,7 +282,6 @@ scene::IAnimatedMesh* createExtrudedMesh(video::ITexture *texture,
 		if (img2 != NULL)
 		{
 			img1->copyTo(img2);
-			img1->drop();
 
 			mesh = extrudeARGB(size.Width, size.Height, (u8*) img2->lock());
 			img2->unlock();
@@ -363,7 +362,7 @@ void setMeshColor(scene::IMesh *mesh, const video::SColor &color)
 {
 	if(mesh == NULL)
 		return;
-	
+
 	u16 mc = mesh->getMeshBufferCount();
 	for(u16 j=0; j<mc; j++)
 	{
@@ -384,7 +383,7 @@ void setMeshColorByNormalXYZ(scene::IMesh *mesh,
 {
 	if(mesh == NULL)
 		return;
-	
+
 	u16 mc = mesh->getMeshBufferCount();
 	for(u16 j=0; j<mc; j++)
 	{
