@@ -994,7 +994,7 @@ void ServerEnvironment::step(float dtime)
 				*/
 				if(n.getContent() == CONTENT_FARM_DIRT)
 				{
-					if (myrand()%20 == 0)
+					if (myrand()%30 == 0)
 					{
 						s16 max_d = 1;
 						s16 max_growth = 2;
