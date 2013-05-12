@@ -4225,7 +4225,11 @@ void Server::notifyPlayers(const std::wstring msg)
 
 v3f findSpawnPos(ServerMap &map)
 {
-	return v3f(0,0,0);
+	if (g_settings->exists("static_spawnpoint"))
+	{
+		v3f pos = g_settings->getV3F("static_spawnpoint");
+		return pos;
+	}
 
 	v2s16 nodepos;
 	s16 groundheight = 0;
