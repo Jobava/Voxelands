@@ -48,6 +48,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("keymap_toggle_update_camera", "KEY_F4");
 	// Some (temporary) keys for debugging
 	settings->setDefault("keymap_print_debug_stacks", "KEY_KEY_P");
+	settings->setDefault("mouse_sensitivity", "0.2");
 
 	settings->setDefault("wanted_fps", "30");
 	settings->setDefault("fps_max", "60");

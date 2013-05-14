@@ -49,6 +49,8 @@
 #keymap_screenshot = KEY_F12
 # Some (temporary) keys for debugging
 #keymap_print_debug_stacks = KEY_KEY_P
+# Sensitivity multiplier
+#mouse_sensitivity = 0.2
 
 # The desired FPS
 #wanted_fps = 30

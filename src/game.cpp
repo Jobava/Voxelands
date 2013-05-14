@@ -1442,20 +1442,12 @@ void the_game(
 				s32 dy = input->getMousePos().Y - displaycenter.Y;
 				if(invert_mouse)
 					dy = -dy;
-				//infostream<<"window active, pos difference "<<dx<<","<<dy<<std::endl;
 
-				/*const float keyspeed = 500;
-				if(input->isKeyDown(irr::KEY_UP))
-					dy -= dtime * keyspeed;
-				if(input->isKeyDown(irr::KEY_DOWN))
-					dy += dtime * keyspeed;
-				if(input->isKeyDown(irr::KEY_LEFT))
-					dx -= dtime * keyspeed;
-				if(input->isKeyDown(irr::KEY_RIGHT))
-					dx += dtime * keyspeed;*/
+				float d = g_settings->getFloat("mouse_sensitivity");
+				d = rangelim(d, 0.01, 100.0);
 
-				camera_yaw -= dx*0.2;
-				camera_pitch += dy*0.2;
+				camera_yaw -= dx*d;
+				camera_pitch += dy*d;
 				if(camera_pitch < -89.5) camera_pitch = -89.5;
 				if(camera_pitch > 89.5) camera_pitch = 89.5;
 			}
