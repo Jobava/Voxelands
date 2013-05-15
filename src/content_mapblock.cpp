@@ -791,26 +791,32 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					for(u16 i=0; i<4; i++) {
 						vertices[i].Pos.rotateXZBy(0);
 					}
+					break;
 				case 1: // Y+
 					for(u16 i=0; i<4; i++) {
 						vertices[i].Pos.rotateYZBy(-90);
 					}
+					break;
 				case 2: // X+
 					for(u16 i=0; i<4; i++) {
 						vertices[i].Pos.rotateXZBy(-90);
 					}
+					break;
 				case 3: // Z-
 					for(u16 i=0; i<4; i++) {
 						vertices[i].Pos.rotateXZBy(180);
 					}
+					break;
 				case 4: // Y-
 					for(u16 i=0; i<4; i++) {
 						vertices[i].Pos.rotateYZBy(90);
 					}
+					break;
 				case 5: // X-
 					for(u16 i=0; i<4; i++) {
 						vertices[i].Pos.rotateXZBy(90);
 					}
+					break;
 				default:;
 				}
 
