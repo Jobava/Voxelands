@@ -97,7 +97,7 @@ static std::string getImagePath(std::string path)
 
 /*
 	Gets the path to a texture by first checking if the texture exists
-	in texture_path and if not, using the data path.
+	in data_path and if not, using the default data path.
 
 	Checks all supported extensions by replacing the original extension.
 
@@ -115,13 +115,14 @@ std::string getTexturePath(const std::string &filename)
 	if(incache)
 		return fullpath;
 
+	std::string rel_path = std::string("textures")+DIR_DELIM+filename;
 	/*
-		Check from texture_path
+		Check from data_path /textures
 	*/
-	std::string texture_path = g_settings->get("texture_path");
-	if(texture_path != "")
+	std::string data_path = g_settings->get("data_path");
+	if(data_path != "")
 	{
-		std::string testpath = texture_path + DIR_DELIM + filename;
+		std::string testpath = data_path + DIR_DELIM + rel_path;
 		// Check all filename extensions. Returns "" if not found.
 		fullpath = getImagePath(testpath);
 	}
@@ -131,7 +132,6 @@ std::string getTexturePath(const std::string &filename)
 	*/
 	if(fullpath == "")
 	{
-		std::string rel_path = std::string("textures")+DIR_DELIM+filename;
 		std::string testpath = porting::path_data + DIR_DELIM + rel_path;
 		// Check all filename extensions. Returns "" if not found.
 		fullpath = getImagePath(testpath);

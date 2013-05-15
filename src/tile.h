@@ -31,7 +31,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 /*
 	Gets the path to a texture by first checking if the texture exists
-	in texture_path and if not, using the data path.
+	in data_path and if not, using the default data path.
 
 	Checks all supported extensions by replacing the original extension.
 
