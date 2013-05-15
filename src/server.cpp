@@ -1213,7 +1213,7 @@ void Server::AsyncRunStep()
 		m_env.step(dtime);
 	}
 
-	const float map_timer_and_unload_dtime = 5.15;
+	const float map_timer_and_unload_dtime = 2.92;
 	if(m_map_timer_and_unload_interval.step(dtime, map_timer_and_unload_dtime))
 	{
 		JMutexAutoLock lock(m_env_mutex);
@@ -3484,13 +3484,11 @@ void Server::inventoryModified(InventoryContext *c, std::string id)
 		if(meta)
 			meta->inventoryModified();
 
-		for(core::map<u16, RemoteClient*>::Iterator
-			i = m_clients.getIterator();
-			i.atEnd()==false; i++)
-		{
-			RemoteClient *client = i.getNode()->getValue();
-			client->SetBlockNotSent(blockpos);
-		}
+		MapBlock *block = m_env.getMap().getBlockNoCreateNoEx(blockpos);
+		if(block)
+			block->raiseModified(MOD_STATE_WRITE_NEEDED);
+
+		setBlockNotSent(blockpos);
 
 		return;
 	}

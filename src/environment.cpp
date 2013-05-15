@@ -2444,6 +2444,17 @@ u16 ClientEnvironment::addActiveObject(ClientActiveObject *object)
 			<<"added (id="<<object->getId()<<")"<<std::endl;
 	m_active_objects.insert(object->getId(), object);
 	object->addToScene(m_smgr);
+	{ // Update lighting immediately
+		u8 light = 0;
+		try{
+			// Get node at head
+			v3s16 p = object->getLightPosition();
+			MapNode n = m_map->getNode(p);
+			light = n.getLightBlend(getDayNightRatio());
+		}
+		catch(InvalidPositionException &e) {}
+		object->updateLight(light);
+	}
 	return object->getId();
 }
 

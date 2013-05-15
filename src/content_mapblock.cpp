@@ -216,6 +216,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			g_texturesource->getTextureId("junglegrass.png"));
 	material_junglegrass.setTexture(0, pa_junglegrass.atlas);
 
+	// generic material pointer
+	video::SMaterial *material_current;
+	AtlasPointer *pa_current;
+
 	for(s16 z=0; z<MAP_BLOCKSIZE; z++)
 	for(s16 y=0; y<MAP_BLOCKSIZE; y++)
 	for(s16 x=0; x<MAP_BLOCKSIZE; x++)
@@ -761,6 +765,14 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 			for(u32 j=0; j<6; j++)
 			{
+				// Check this neighbor
+				v3s16 n2p = blockpos_nodes + p + g_6dirs[j];
+				MapNode n2 = data->m_vmanip.getNodeNoEx(n2p);
+				// Don't make face if neighbor is of same type
+				// if(n2.getContent() == n.getContent())
+				// 	continue;
+
+				// The face at Z+
 				video::S3DVertex vertices[4] =
 				{
 					video::S3DVertex(-BS/2,-BS/2,BS/2, 0,0,0, c,
@@ -773,39 +785,36 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						pa_glass.x0(), pa_glass.y0()),
 				};
 
-				if(j == 0)
-				{
-					for(u16 i=0; i<4; i++)
+				// Rotations in the g_6dirs format
+				switch (j) {
+				case 0: // Z+
+					for(u16 i=0; i<4; i++) {
 						vertices[i].Pos.rotateXZBy(0);
-				}
-				else if(j == 1)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(180);
-				}
-				else if(j == 2)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(-90);
-				}
-				else if(j == 3)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(90);
-				}
-				else if(j == 4)
-				{
-					for(u16 i=0; i<4; i++)
+					}
+				case 1: // Y+
+					for(u16 i=0; i<4; i++) {
 						vertices[i].Pos.rotateYZBy(-90);
-				}
-				else if(j == 5)
-				{
-					for(u16 i=0; i<4; i++)
+					}
+				case 2: // X+
+					for(u16 i=0; i<4; i++) {
+						vertices[i].Pos.rotateXZBy(-90);
+					}
+				case 3: // Z-
+					for(u16 i=0; i<4; i++) {
+						vertices[i].Pos.rotateXZBy(180);
+					}
+				case 4: // Y-
+					for(u16 i=0; i<4; i++) {
 						vertices[i].Pos.rotateYZBy(90);
+					}
+				case 5: // X-
+					for(u16 i=0; i<4; i++) {
+						vertices[i].Pos.rotateXZBy(90);
+					}
+				default:;
 				}
 
-				for(u16 i=0; i<4; i++)
-				{
+				for (u16 i=0; i<4; i++) {
 					vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
 				}
 
@@ -958,109 +967,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			}
 		}
 #endif
-		break;
-		case CONTENT_PAPYRUS:
-		{
-			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
-			video::SColor c = MapBlock_LightColor(255, l);
-
-			for(u32 j=0; j<4; j++)
-			{
-				video::S3DVertex vertices[4] =
-				{
-					video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
-						pa_papyrus.x0(), pa_papyrus.y1()),
-					video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
-						pa_papyrus.x1(), pa_papyrus.y1()),
-					video::S3DVertex(BS/2,BS/2,0, 0,0,0, c,
-						pa_papyrus.x1(), pa_papyrus.y0()),
-					video::S3DVertex(-BS/2,BS/2,0, 0,0,0, c,
-						pa_papyrus.x0(), pa_papyrus.y0()),
-				};
-
-				if(j == 0)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(45);
-				}
-				else if(j == 1)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(-45);
-				}
-				else if(j == 2)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(135);
-				}
-				else if(j == 3)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(-135);
-				}
-
-				for(u16 i=0; i<4; i++)
-				{
-					vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
-				}
-
-				u16 indices[] = {0,1,2,2,3,0};
-				// Add to mesh collector
-				collector.append(material_papyrus, vertices, 4, indices, 6);
-			}
-		}
-		break;
-		case CONTENT_JUNGLEGRASS:
-		{
-			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
-			video::SColor c = MapBlock_LightColor(255, l);
-
-			for(u32 j=0; j<4; j++)
-			{
-				video::S3DVertex vertices[4] =
-				{
-					video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
-						pa_junglegrass.x0(), pa_junglegrass.y1()),
-					video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
-						pa_junglegrass.x1(), pa_junglegrass.y1()),
-					video::S3DVertex(BS/2,BS/1,0, 0,0,0, c,
-						pa_junglegrass.x1(), pa_junglegrass.y0()),
-					video::S3DVertex(-BS/2,BS/1,0, 0,0,0, c,
-						pa_junglegrass.x0(), pa_junglegrass.y0()),
-				};
-
-				if(j == 0)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(45);
-				}
-				else if(j == 1)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(-45);
-				}
-				else if(j == 2)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(135);
-				}
-				else if(j == 3)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(-135);
-				}
-
-				for(u16 i=0; i<4; i++)
-				{
-					vertices[i].Pos *= 1.3;
-					vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
-				}
-
-				u16 indices[] = {0,1,2,2,3,0};
-				// Add to mesh collector
-				collector.append(material_junglegrass, vertices, 4, indices, 6);
-			}
-		}
 		break;
 		case CONTENT_RAIL:
 		{
@@ -1227,7 +1133,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			collector.append(material_ladder, vertices, 4, indices, 6);
 		}
 		break;
-		case CONTENT_APPLE:
+		case CONTENT_JUNGLEGRASS:
 		{
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l);
@@ -1237,13 +1143,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				video::S3DVertex vertices[4] =
 				{
 					video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
-						pa_apple.x0(), pa_apple.y1()),
+						pa_junglegrass.x0(), pa_junglegrass.y1()),
 					video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
-						pa_apple.x1(), pa_apple.y1()),
-					video::S3DVertex(BS/2,BS/2,0, 0,0,0, c,
-						pa_apple.x1(), pa_apple.y0()),
-					video::S3DVertex(-BS/2,BS/2,0, 0,0,0, c,
-						pa_apple.x0(), pa_apple.y0()),
+						pa_junglegrass.x1(), pa_junglegrass.y1()),
+					video::S3DVertex(BS/2,BS/1,0, 0,0,0, c,
+						pa_junglegrass.x1(), pa_junglegrass.y0()),
+					video::S3DVertex(-BS/2,BS/1,0, 0,0,0, c,
+						pa_junglegrass.x0(), pa_junglegrass.y0()),
 				};
 
 				if(j == 0)
@@ -1269,31 +1175,50 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 				for(u16 i=0; i<4; i++)
 				{
+					vertices[i].Pos *= 1.3;
 					vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
 				}
 
 				u16 indices[] = {0,1,2,2,3,0};
 				// Add to mesh collector
-				collector.append(material_apple, vertices, 4, indices, 6);
+				collector.append(material_junglegrass, vertices, 4, indices, 6);
 			}
 		}
 		break;
-		case CONTENT_SAPLING: {
-		        u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
+		case CONTENT_PAPYRUS:
+		case CONTENT_SAPLING:
+		case CONTENT_APPLE:
+		{
+			switch (n.getContent()) {
+			case CONTENT_PAPYRUS:
+				material_current = &material_papyrus;
+				pa_current = &pa_papyrus;
+				break;
+			case CONTENT_SAPLING:
+				material_current = &material_sapling;
+				pa_current = &pa_sapling;
+				break;
+			case CONTENT_APPLE:
+			default:
+				material_current = &material_apple;
+				pa_current = &pa_apple;
+				break;
+			}
+			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l);
 
 			for(u32 j=0; j<4; j++)
 			{
 				video::S3DVertex vertices[4] =
 				{
-					video::S3DVertex(-BS/3,-BS/2,0, 0,0,0, c,
-						pa_sapling.x0(), pa_sapling.y1()),
-					video::S3DVertex(BS/3,-BS/2,0, 0,0,0, c,
-						pa_sapling.x1(), pa_sapling.y1()),
-					video::S3DVertex(BS/3,BS/3,0, 0,0,0, c,
-						pa_sapling.x1(), pa_sapling.y0()),
-					video::S3DVertex(-BS/3,BS/3,0, 0,0,0, c,
-						pa_sapling.x0(), pa_sapling.y0()),
+					video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
+						pa_current->x0(), pa_current->y1()),
+					video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
+						pa_current->x1(), pa_current->y1()),
+					video::S3DVertex(BS/2,BS/2,0, 0,0,0, c,
+						pa_current->x1(), pa_current->y0()),
+					video::S3DVertex(-BS/2,BS/2,0, 0,0,0, c,
+						pa_current->x0(), pa_current->y0()),
 				};
 
 				if(j == 0)
@@ -1324,9 +1249,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 				u16 indices[] = {0,1,2,2,3,0};
 				// Add to mesh collector
-				collector.append(material_sapling, vertices, 4, indices, 6);
+				collector.append(*material_current, vertices, 4, indices, 6);
 			}
 		}
+		break;
 		}
 		}
 	}
