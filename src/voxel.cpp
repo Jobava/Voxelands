@@ -309,21 +309,21 @@ void VoxelManipulator::unspreadLight(enum LightBank bank, v3s16 p, u8 oldlight,
 			If the neighbor is dimmer than what was specified
 			as oldlight (the light of the previous node)
 		*/
-		if(n2.getLight(bank) < oldlight)
+		u8 light2 = n2.getLight(bank);
+		if(light2 < oldlight)
 		{
 			/*
 				And the neighbor is transparent and it has some light
 			*/
-			if(n2.light_propagates() && n2.getLight(bank) != 0)
+			if(n2.light_propagates() && light2 != 0)
 			{
 				/*
 					Set light to 0 and add to queue
 				*/
 
-				u8 current_light = n2.getLight(bank);
 				n2.setLight(bank, 0);
 
-				unspreadLight(bank, n2pos, current_light, light_sources);
+				unspreadLight(bank, n2pos, light2, light_sources);
 
 				/*
 					Remove from light_sources if it is there
@@ -526,12 +526,13 @@ void VoxelManipulator::spreadLight(enum LightBank bank, v3s16 p)
 			continue;
 
 		MapNode &n2 = m_data[n2i];
+		u8 light2 = n2.getLight(bank);
 
 		/*
 			If the neighbor is brighter than the current node,
 			add to list (it will light up this node on its turn)
 		*/
-		if(n2.getLight(bank) > undiminish_light(oldlight))
+		if(light2 > undiminish_light(oldlight))
 		{
 			spreadLight(bank, n2pos);
 		}
@@ -539,7 +540,7 @@ void VoxelManipulator::spreadLight(enum LightBank bank, v3s16 p)
 			If the neighbor is dimmer than how much light this node
 			would spread on it, add to list
 		*/
-		if(n2.getLight(bank) < newlight)
+		if(light2 < newlight)
 		{
 			if(n2.light_propagates())
 			{
@@ -631,12 +632,13 @@ void VoxelManipulator::spreadLight(enum LightBank bank,
 					continue;
 
 				MapNode &n2 = m_data[n2i];
+				u8 light2 = n2.getLight(bank);
 
 				/*
 					If the neighbor is brighter than the current node,
 					add to list (it will light up this node on its turn)
 				*/
-				if(n2.getLight(bank) > undiminish_light(oldlight))
+				if(light2 > undiminish_light(oldlight))
 				{
 					lighted_nodes.insert(n2pos, true);
 				}
@@ -644,7 +646,7 @@ void VoxelManipulator::spreadLight(enum LightBank bank,
 					If the neighbor is dimmer than how much light this node
 					would spread on it, add to list
 				*/
-				if(n2.getLight(bank) < newlight)
+				if(light2 < newlight)
 				{
 					if(n2.light_propagates())
 					{

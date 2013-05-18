@@ -796,32 +796,21 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 
 		if(image == NULL)
 		{
-			infostream<<"generate_image(): Could not load image \""
-                    <<part_of_name<<"\" from path \""<<path<<"\""
-					<<" while building texture"<<std::endl;
+			if (part_of_name != "") {
+				infostream<<"generate_image(): Could not load image \""
+			    <<part_of_name<<"\" from path \""<<path<<"\""
+						<<" while building texture"<<std::endl;
 
-			//return false;
-
-			infostream<<"generate_image(): Creating a dummy"
-                    <<" image for \""<<part_of_name<<"\""<<std::endl;
+				infostream<<"generate_image(): Creating a dummy"
+			    <<" image for \""<<part_of_name<<"\""<<std::endl;
+			}
 
 			// Just create a dummy image
-			//core::dimension2d<u32> dim(2,2);
 			core::dimension2d<u32> dim(1,1);
 			image = driver->createImage(video::ECF_A8R8G8B8, dim);
 			assert(image);
-			/*image->setPixel(0,0, video::SColor(255,255,0,0));
-			image->setPixel(1,0, video::SColor(255,0,255,0));
-			image->setPixel(0,1, video::SColor(255,0,0,255));
-			image->setPixel(1,1, video::SColor(255,255,0,255));*/
 			image->setPixel(0,0, video::SColor(255,myrand()%256,
 					myrand()%256,myrand()%256));
-			/*image->setPixel(1,0, video::SColor(255,myrand()%256,
-					myrand()%256,myrand()%256));
-			image->setPixel(0,1, video::SColor(255,myrand()%256,
-					myrand()%256,myrand()%256));
-			image->setPixel(1,1, video::SColor(255,myrand()%256,
-					myrand()%256,myrand()%256));*/
 		}
 
 		// If base image is NULL, load as base.

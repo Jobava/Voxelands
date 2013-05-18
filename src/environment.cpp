@@ -1245,7 +1245,7 @@ void ServerEnvironment::step(float dtime)
 				}
 				if (n.getContent() == CONTENT_LEAVES) // leaf decay
 				{
-					if (myrand()%20 == 0)
+					if (myrand()%10 == 0)
 					{
 						s16 max_d = 3;
 						v3s16 leaf_p = p;
