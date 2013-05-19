@@ -40,6 +40,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 	Utilizes a thread-safe cache.
 */
 std::string getTexturePath(const std::string &filename);
+std::string getModelPath(const std::string &filename);
 
 /*
 	Specifies a texture in an atlas.

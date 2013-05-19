@@ -33,6 +33,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 	A cache from texture name to texture path
 */
 MutexedMap<std::string, std::string> g_texturename_to_path_cache;
+MutexedMap<std::string, std::string> g_modelname_to_path_cache;
 
 /*
 	Replaces the filename extension.
@@ -139,6 +140,53 @@ std::string getTexturePath(const std::string &filename)
 
 	// Add to cache (also an empty result is cached)
 	g_texturename_to_path_cache.set(filename, fullpath);
+
+	// Finally return it
+	return fullpath;
+}
+
+/*
+	Gets the path to a model by first checking if the model exists
+	in data_path and if not, using the default data path.
+
+	Checks all supported extensions by replacing the original extension.
+
+	If not found, returns "".
+*/
+std::string getModelPath(const std::string &filename)
+{
+	std::string fullpath = "";
+	/*
+		Check from cache
+	*/
+	bool incache = g_modelname_to_path_cache.get(filename, &fullpath);
+	if(incache)
+		return fullpath;
+
+	std::string rel_path = std::string("models")+DIR_DELIM+filename;
+	/*
+		Check from data_path /models
+	*/
+	std::string data_path = g_settings->get("data_path");
+	if(data_path != "")
+	{
+		std::string testpath = data_path + DIR_DELIM + rel_path;
+		if(fs::PathExists(testpath))
+			fullpath = testpath;
+	}
+
+	/*
+		Check from default data directory
+	*/
+	if(fullpath == "")
+	{
+		std::string testpath = porting::path_data + DIR_DELIM + rel_path;
+		if(fs::PathExists(testpath))
+			fullpath = testpath;
+	}
+
+	// Add to cache (also an empty result is cached)
+	g_modelname_to_path_cache.set(filename, fullpath);
 
 	// Finally return it
 	return fullpath;
