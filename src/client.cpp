@@ -32,6 +32,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "profiler.h"
 #include "log.h"
 #include "http.h"
+#include "sound.h"
 
 /*
 	QueuedMeshUpdate
@@ -2239,5 +2240,10 @@ float Client::getRTT(void)
 	} catch(con::PeerNotFoundException &e){
 		return 1337;
 	}
+}
+
+ISoundManager* Client::getSoundManager()
+{
+	return &dummySoundManager;
 }
 

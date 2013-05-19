@@ -30,6 +30,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "clientobject.h"
 #include "particles.h"
 #include "utility.h" // For IntervalLimiter
+#include "sound.h"
 
 struct MeshMakeData;
 
@@ -317,6 +318,7 @@ public:
 	}
 
 	float getRTT(void);
+	virtual ISoundManager* getSoundManager();
 
 private:
 

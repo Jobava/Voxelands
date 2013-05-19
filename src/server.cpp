@@ -41,6 +41,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "profiler.h"
 #include "log.h"
 #include "base64.h"
+#include "sound.h"
 
 #define PP(x) "("<<(x).X<<","<<(x).Y<<","<<(x).Z<<")"
 
@@ -5728,6 +5729,11 @@ u64 Server::getPlayerPrivs(Player *player)
 	{
 		return getPlayerAuthPrivs(playername);
 	}
+}
+
+ISoundManager* Server::getSoundManager()
+{
+	return &dummySoundManager;
 }
 
 void dedicated_server_loop(Server &server, bool &kill)
