@@ -185,8 +185,8 @@ if(WIN32)
 	endif(MINGW)
 endif()
 
-# Client sources
 set(voxelands_SRCS
+	${common_SRCS}
 	${audio_SRCS}
 	content_mapblock.cpp
 	content_cao.cpp
