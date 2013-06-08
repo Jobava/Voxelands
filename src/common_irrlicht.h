@@ -36,6 +36,13 @@ video::SColor(255,30,30,30));d->endScene();}
 #include <IImage.h>
 #include <IrrlichtDevice.h>
 #include <IMeshSceneNode.h>
+// this is to stop unqualified-id compiler problems
+#ifdef PI
+# undef PI
+#endif
+#include <ITextSceneNode.h>
+#include <IAnimatedMesh.h>
+#include <IAnimatedMeshSceneNode.h>
 #include <SMesh.h>
 #include <ISceneManager.h>
 #include <IMeshBuffer.h>

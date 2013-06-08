@@ -562,7 +562,7 @@ Frame Root {
              96.078431;
              0.000000; 0.000000; 0.000000;;
              0.000000; 0.000000; 0.000000;;
-            TextureFilename {"character.png";}
+            TextureFilename {"data/models/character.png";}
           }
         } //End of Cube_001 Material List
         MeshTextureCoords { //Cube_001 UV Coordinates

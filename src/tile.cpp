@@ -152,6 +152,8 @@ std::string getTexturePath(const std::string &filename)
 	Checks all supported extensions by replacing the original extension.
 
 	If not found, returns "".
+
+	Utilizes a thread-safe cache.
 */
 std::string getModelPath(const std::string &filename)
 {
@@ -172,7 +174,7 @@ std::string getModelPath(const std::string &filename)
 	{
 		std::string testpath = data_path + DIR_DELIM + rel_path;
 		if(fs::PathExists(testpath))
-			fullpath = testpath;
+			fullpath = std::string(testpath);
 	}
 
 	/*
@@ -182,7 +184,7 @@ std::string getModelPath(const std::string &filename)
 	{
 		std::string testpath = porting::path_data + DIR_DELIM + rel_path;
 		if(fs::PathExists(testpath))
-			fullpath = testpath;
+			fullpath = std::string(testpath);
 	}
 
 	// Add to cache (also an empty result is cached)

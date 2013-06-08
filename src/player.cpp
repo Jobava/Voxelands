@@ -23,7 +23,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "constants.h"
 #include "utility.h"
 #ifndef SERVER
-#include <ITextSceneNode.h>
+#include "common_irrlicht.h"
+#include "mesh.h"
 #endif
 #include "settings.h"
 
@@ -193,6 +194,7 @@ RemotePlayer::RemotePlayer(
 		IrrlichtDevice *device,
 		s32 id):
 	scene::ISceneNode(parent, (device==NULL)?NULL:device->getSceneManager(), id),
+	m_node(NULL),
 	m_text(NULL)
 {
 	m_box = core::aabbox3d<f32>(-BS/2,0,-BS/2,BS/2,BS*2,BS/2);
@@ -208,77 +210,62 @@ RemotePlayer::RemotePlayer(
 		wchar_t wname[1] = {0};
 		m_text = mgr->addTextSceneNode(gui->getBuiltInFont(),
 				wname, video::SColor(255,255,255,255), this);
+		if (!m_text)
+			return;
 		m_text->setPosition(v3f(0, (f32)BS*2.1, 0));
 
-		// Attach a simple mesh to the player for showing an image
-		scene::SMesh *mesh = new scene::SMesh();
-		{ // Front
-		scene::IMeshBuffer *buf = new scene::SMeshBuffer();
-		video::SColor c(255,255,255,255);
-		video::S3DVertex vertices[4] =
-		{
-			video::S3DVertex(-BS/2,0,0, 0,0,0, c, 0,1),
-			video::S3DVertex(BS/2,0,0, 0,0,0, c, 1,1),
-			video::S3DVertex(BS/2,BS*2,0, 0,0,0, c, 1,0),
-			video::S3DVertex(-BS/2,BS*2,0, 0,0,0, c, 0,0),
-		};
-		u16 indices[] = {0,1,2,2,3,0};
-		buf->append(vertices, 4, indices, 6);
-		// Set material
-		buf->getMaterial().setFlag(video::EMF_LIGHTING, false);
-		//buf->getMaterial().setFlag(video::EMF_BACK_FACE_CULLING, false);
-		buf->getMaterial().setTexture(0, driver->getTexture(getTexturePath("player.png").c_str()));
-		buf->getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
-		buf->getMaterial().setFlag(video::EMF_FOG_ENABLE, true);
-		//buf->getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL;
-		buf->getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-		// Add to mesh
-		mesh->addMeshBuffer(buf);
-		buf->drop();
+		scene::IAnimatedMesh* mesh = mgr->getMesh(getModelPath("character.x").c_str());
+		if (!mesh)
+			return;
+
+		m_node = mgr->addAnimatedMeshSceneNode(mesh,this);
+
+		if (m_node) {
+			m_node->setFrameLoop(0,79);
+			m_node->setScale(v3f(1.0,1.0,1.0));
+			setMeshColor(m_node->getMesh(), video::SColor(255,255,255,255));
+
+			// Set material flags and texture
+			m_node->setMaterialTexture( 0, driver->getTexture(getTexturePath("character.png").c_str()));
+			video::SMaterial& material = m_node->getMaterial(0);
+			material.setFlag(video::EMF_LIGHTING, false);
+			material.setFlag(video::EMF_BILINEAR_FILTER, false);
+
+			m_node->setPosition(v3f(0,(f32)BS,0));
 		}
-		{ // Back
-		scene::IMeshBuffer *buf = new scene::SMeshBuffer();
-		video::SColor c(255,255,255,255);
-		video::S3DVertex vertices[4] =
-		{
-			video::S3DVertex(BS/2,0,0, 0,0,0, c, 1,1),
-			video::S3DVertex(-BS/2,0,0, 0,0,0, c, 0,1),
-			video::S3DVertex(-BS/2,BS*2,0, 0,0,0, c, 0,0),
-			video::S3DVertex(BS/2,BS*2,0, 0,0,0, c, 1,0),
-		};
-		u16 indices[] = {0,1,2,2,3,0};
-		buf->append(vertices, 4, indices, 6);
-		// Set material
-		buf->getMaterial().setFlag(video::EMF_LIGHTING, false);
-		//buf->getMaterial().setFlag(video::EMF_BACK_FACE_CULLING, false);
-		buf->getMaterial().setTexture(0, driver->getTexture(getTexturePath("player_back.png").c_str()));
-		buf->getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
-		buf->getMaterial().setFlag(video::EMF_FOG_ENABLE, true);
-		buf->getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-		// Add to mesh
-		mesh->addMeshBuffer(buf);
-		buf->drop();
-		}
-		m_node = mgr->addMeshSceneNode(mesh, this);
-		mesh->drop();
-		m_node->setPosition(v3f(0,0,0));
+		// TODO: this is causing a segfault when a player quits and rejoins
+		//mesh->drop();
 	}
 }
 
 RemotePlayer::~RemotePlayer()
 {
-	if(SceneManager != NULL)
+	if(SceneManager != NULL) {
 		ISceneNode::remove();
+	}
 }
 
 void RemotePlayer::updateName(const char *name)
 {
 	Player::updateName(name);
-	if(m_text != NULL)
-	{
+	if (m_text != NULL) {
 		wchar_t wname[PLAYERNAME_SIZE];
 		mbstowcs(wname, m_name, strlen(m_name)+1);
 		m_text->setText(wname);
+	}
+	if (m_node != NULL) {
+		std::string tex = std::string("players/player_")+name+".png";
+		std::string ptex = getTexturePath(tex);
+		printf("'%s' '%s'\n",tex.c_str(),ptex.c_str());
+		if (ptex == "")
+			return;
+		// Set material flags and texture
+		scene::ISceneManager* mgr = SceneManager;
+		video::IVideoDriver* driver = mgr->getVideoDriver();
+		m_node->setMaterialTexture( 0, driver->getTexture(ptex.c_str()));
+		video::SMaterial& material = m_node->getMaterial(0);
+		material.setFlag(video::EMF_LIGHTING, false);
+		material.setFlag(video::EMF_BILINEAR_FILTER, false);
 	}
 }
 
@@ -295,6 +282,22 @@ void RemotePlayer::move(f32 dtime, Map &map, f32 pos_max_d)
 	if(moveratio > 1.5)
 		moveratio = 1.5;
 	m_showpos = m_oldpos + movevector * moveratio;
+
+	if (
+		(
+			movevector.X < 0.001
+			&& movevector.X > -0.001
+		) || (
+			movevector.Z < 0.001
+			&& movevector.Z > -0.001
+		)
+	) {
+		if (m_node->getEndFrame() != 79)
+			m_node->setFrameLoop(0,79);
+	}else{
+		if (m_node->getEndFrame() != 187)
+			m_node->setFrameLoop(168,187);
+	}
 
 	ISceneNode::setPosition(m_showpos);
 }

@@ -21,13 +21,13 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define PLAYER_HEADER
 
 #include "common_irrlicht.h"
+#include <IAnimatedMesh.h>
 #include "inventory.h"
 #include "collision.h"
 
 #define PLAYERNAME_SIZE 20
 
 #define PLAYERNAME_ALLOWED_CHARS "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"
-
 
 class Map;
 
@@ -252,7 +252,6 @@ public:
 		m_pos_animation_counter = 0;
 
 		Player::setPosition(position);
-		//ISceneNode::setPosition(position);
 	}
 
 	virtual void setYaw(f32 yaw)
@@ -283,7 +282,7 @@ public:
 	void move(f32 dtime, Map &map, f32 pos_max_d);
 
 private:
-	scene::IMeshSceneNode *m_node;
+	scene::IAnimatedMeshSceneNode *m_node;
 	scene::ITextSceneNode* m_text;
 	core::aabbox3d<f32> m_box;
 
