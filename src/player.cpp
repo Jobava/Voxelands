@@ -230,6 +230,7 @@ RemotePlayer::RemotePlayer(
 			video::SMaterial& material = m_node->getMaterial(0);
 			material.setFlag(video::EMF_LIGHTING, false);
 			material.setFlag(video::EMF_BILINEAR_FILTER, false);
+			material.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
 
 			m_node->setPosition(v3f(0,(f32)BS,0));
 		}
