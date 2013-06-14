@@ -207,7 +207,7 @@ public:
 
 private:
 	core::aabbox3d<f32> m_selection_box;
-	scene::IMeshSceneNode *m_node;
+	scene::IAnimatedMeshSceneNode *m_node;
 	v3f m_position;
 	float m_yaw;
 	SmoothTranslator pos_translator;
@@ -254,7 +254,7 @@ public:
 private:
 	IntervalLimiter m_attack_interval;
 	core::aabbox3d<f32> m_selection_box;
-	scene::IMeshSceneNode *m_node;
+	scene::IAnimatedMeshSceneNode *m_node;
 	v3f m_position;
 	float m_yaw;
 	SmoothTranslator pos_translator;

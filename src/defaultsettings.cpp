@@ -67,7 +67,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("new_style_leaves", "true");
 	settings->setDefault("smooth_lighting", "true");
 	settings->setDefault("frametime_graph", "false");
-	settings->setDefault("enable_texture_atlas", "true");
+	settings->setDefault("enable_texture_atlas", "false");
 	settings->setDefault("data_path", "");
 	settings->setDefault("video_driver", "opengl");
 	settings->setDefault("free_move", "false");

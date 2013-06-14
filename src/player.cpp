@@ -222,6 +222,7 @@ RemotePlayer::RemotePlayer(
 			return;
 
 		m_node = mgr->addAnimatedMeshSceneNode(mesh,this);
+//		m_node = m_node->clone(); // this will be fixed in later irrlicht versions, but for now our players may flash
 
 		if (m_node) {
 			m_node->setFrameLoop(0,79);

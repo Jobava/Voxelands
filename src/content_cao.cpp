@@ -21,6 +21,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "path.h"
 #include "environment.h"
 #include "settings.h"
+#include "mesh.h"
 #include <ICameraSceneNode.h>
 
 static void setBillboardTextureMatrix(scene::IBillboardSceneNode *bill,
@@ -363,36 +364,28 @@ void RatCAO::addToScene(scene::ISceneManager *smgr)
 		return;
 
 	video::IVideoDriver* driver = smgr->getVideoDriver();
+	scene::IAnimatedMesh* mesh = smgr->getMesh(getModelPath("rat.x").c_str());
+	if (!mesh)
+		return;
 
-	scene::SMesh *mesh = new scene::SMesh();
-	scene::IMeshBuffer *buf = new scene::SMeshBuffer();
-	video::SColor c(255,255,255,255);
-	video::S3DVertex vertices[4] =
-	{
-		video::S3DVertex(-BS/2,0,0, 0,0,0, c, 0,1),
-		video::S3DVertex(BS/2,0,0, 0,0,0, c, 1,1),
-		video::S3DVertex(BS/2,BS/2,0, 0,0,0, c, 1,0),
-		video::S3DVertex(-BS/2,BS/2,0, 0,0,0, c, 0,0),
-	};
-	u16 indices[] = {0,1,2,2,3,0};
-	buf->append(vertices, 4, indices, 6);
-	// Set material
-	buf->getMaterial().setFlag(video::EMF_LIGHTING, false);
-	buf->getMaterial().setFlag(video::EMF_BACK_FACE_CULLING, false);
-	//buf->getMaterial().setTexture(0, NULL);
-	buf->getMaterial().setTexture
-			(0, driver->getTexture(getTexturePath("rat.png").c_str()));
-	buf->getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
-	buf->getMaterial().setFlag(video::EMF_FOG_ENABLE, true);
-	buf->getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL;
-	// Add to mesh
-	mesh->addMeshBuffer(buf);
-	buf->drop();
-	m_node = smgr->addMeshSceneNode(mesh, NULL);
-	mesh->drop();
-	// Set it to use the materials of the meshbuffers directly.
-	// This is needed for changing the texture in the future
-	m_node->setReadOnlyMaterials(true);
+	m_node = smgr->addAnimatedMeshSceneNode(mesh);
+//	m_node = m_node->clone(); // this will be fixed in later irrlicht versions, but for now our mobs flash
+
+	if (m_node) {
+		m_node->setFrameLoop(0,79);
+		m_node->setScale(v3f(1.0,1.0,1.0));
+		setMeshColor(m_node->getMesh(), video::SColor(255,255,255,255));
+
+		// Set material flags and texture
+		m_node->setMaterialTexture( 0, driver->getTexture(getTexturePath("rat_mob.png").c_str()));
+		video::SMaterial& material = m_node->getMaterial(0);
+		material.setFlag(video::EMF_LIGHTING, false);
+		material.setFlag(video::EMF_BILINEAR_FILTER, false);
+		material.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
+
+		m_node->setPosition(v3f(0,0,0));
+	}
+
 	updateNodePos();
 }
 
@@ -410,9 +403,10 @@ void RatCAO::updateLight(u8 light_at_pos)
 	if(m_node == NULL)
 		return;
 
-	u8 li = decode_light(light_at_pos);
-	video::SColor color(255,li,li,li);
-	setMeshVerticesColor(m_node->getMesh(), color);
+	// disabled due to the clone bug, this will at least stop flashing
+	//u8 li = decode_light(light_at_pos);
+	//video::SColor color(255,li,li,li);
+	//setMeshVerticesColor(m_node->getMesh(), color);
 }
 
 v3s16 RatCAO::getLightPosition()
@@ -429,7 +423,7 @@ void RatCAO::updateNodePos()
 	m_node->setPosition(pos_translator.vect_show);
 
 	v3f rot = m_node->getRotation();
-	rot.Y = 180.0 - m_yaw;
+	rot.Y = 90.0 - m_yaw;
 	m_node->setRotation(rot);
 }
 
@@ -511,36 +505,27 @@ void Oerkki1CAO::addToScene(scene::ISceneManager *smgr)
 		return;
 
 	video::IVideoDriver* driver = smgr->getVideoDriver();
+	scene::IAnimatedMesh* mesh = smgr->getMesh(getModelPath("oerkki.x").c_str());
+	if (!mesh)
+		return;
 
-	scene::SMesh *mesh = new scene::SMesh();
-	scene::IMeshBuffer *buf = new scene::SMeshBuffer();
-	video::SColor c(255,255,255,255);
-	video::S3DVertex vertices[4] =
-	{
-		video::S3DVertex(-BS/2-BS,0,0, 0,0,0, c, 0,1),
-		video::S3DVertex(BS/2+BS,0,0, 0,0,0, c, 1,1),
-		video::S3DVertex(BS/2+BS,BS*2,0, 0,0,0, c, 1,0),
-		video::S3DVertex(-BS/2-BS,BS*2,0, 0,0,0, c, 0,0),
-	};
-	u16 indices[] = {0,1,2,2,3,0};
-	buf->append(vertices, 4, indices, 6);
-	// Set material
-	buf->getMaterial().setFlag(video::EMF_LIGHTING, false);
-	buf->getMaterial().setFlag(video::EMF_BACK_FACE_CULLING, false);
-	//buf->getMaterial().setTexture(0, NULL);
-	buf->getMaterial().setTexture
-			(0, driver->getTexture(getTexturePath("oerkki1.png").c_str()));
-	buf->getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
-	buf->getMaterial().setFlag(video::EMF_FOG_ENABLE, true);
-	buf->getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL;
-	// Add to mesh
-	mesh->addMeshBuffer(buf);
-	buf->drop();
-	m_node = smgr->addMeshSceneNode(mesh, NULL);
-	mesh->drop();
-	// Set it to use the materials of the meshbuffers directly.
-	// This is needed for changing the texture in the future
-	m_node->setReadOnlyMaterials(true);
+	m_node = smgr->addAnimatedMeshSceneNode(mesh);
+//	m_node = m_node->clone(); // this will be fixed in later irrlicht versions, but for now our mobs flash
+
+	if (m_node) {
+		m_node->setFrameLoop(24,36);
+		m_node->setScale(v3f(5.0,5.0,5.0));
+		setMeshColor(m_node->getMesh(), video::SColor(255,255,255,255));
+
+		// Set material flags and texture
+		m_node->setMaterialTexture( 0, driver->getTexture(getTexturePath("oerkki.png").c_str()));
+		video::SMaterial& material = m_node->getMaterial(0);
+		material.setFlag(video::EMF_LIGHTING, false);
+		material.setFlag(video::EMF_BILINEAR_FILTER, false);
+		material.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
+
+		m_node->setPosition(v3f(0,0,0));
+	}
 	updateNodePos();
 }
 
@@ -566,9 +551,10 @@ void Oerkki1CAO::updateLight(u8 light_at_pos)
 
 	m_node->setVisible(true);
 
-	u8 li = decode_light(light_at_pos);
-	video::SColor color(255,li,li,li);
-	setMeshVerticesColor(m_node->getMesh(), color);
+	// disabled due to the clone bug, this will at least stop flashing
+	//u8 li = decode_light(light_at_pos);
+	//video::SColor color(255,li,li,li);
+	//setMeshVerticesColor(m_node->getMesh(), color);
 }
 
 v3s16 Oerkki1CAO::getLightPosition()
@@ -585,7 +571,7 @@ void Oerkki1CAO::updateNodePos()
 	m_node->setPosition(pos_translator.vect_show);
 
 	v3f rot = m_node->getRotation();
-	rot.Y = 180.0 - m_yaw + 90.0;
+	rot.Y = 90-m_yaw;
 	m_node->setRotation(rot);
 }
 
@@ -616,22 +602,7 @@ void Oerkki1CAO::step(float dtime, ClientEnvironment *env)
 		{
 			// Enable damage texture
 			if(m_node)
-			{
-				video::IVideoDriver* driver =
-					m_node->getSceneManager()->getVideoDriver();
-
-				scene::IMesh *mesh = m_node->getMesh();
-				if(mesh == NULL)
-					return;
-
-				u16 mc = mesh->getMeshBufferCount();
-				for(u16 j=0; j<mc; j++)
-				{
-					scene::IMeshBuffer *buf = mesh->getMeshBuffer(j);
-					buf->getMaterial().setTexture(0, driver->getTexture(
-							getTexturePath("oerkki1_damaged.png").c_str()));
-				}
-			}
+				m_node->setFrameLoop(37,49);
 			m_damage_texture_enabled = true;
 		}
 		m_damage_visual_timer -= dtime;
@@ -642,22 +613,7 @@ void Oerkki1CAO::step(float dtime, ClientEnvironment *env)
 		{
 			// Disable damage texture
 			if(m_node)
-			{
-				video::IVideoDriver* driver =
-					m_node->getSceneManager()->getVideoDriver();
-
-				scene::IMesh *mesh = m_node->getMesh();
-				if(mesh == NULL)
-					return;
-
-				u16 mc = mesh->getMeshBufferCount();
-				for(u16 j=0; j<mc; j++)
-				{
-					scene::IMeshBuffer *buf = mesh->getMeshBuffer(j);
-					buf->getMaterial().setTexture(0, driver->getTexture(
-							getTexturePath("oerkki1.png").c_str()));
-				}
-			}
+				m_node->setFrameLoop(24,36);
 			m_damage_texture_enabled = false;
 		}
 	}

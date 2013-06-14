@@ -739,6 +739,14 @@ void ServerEnvironment::clearAllObjects()
 static void getMob_dungeon_master(Settings &properties)
 {
 	properties.set("looks", "dungeon_master");
+	properties.set("visual", "mesh");
+	properties.set("visual_model","dungeon_master.x");
+	properties.set("visual_model_texture","dungeon_master_mob.png");
+	properties.set("visual_model_","");
+	properties.set("visual_sprite","dungeon_master.png");
+	properties.set("visual_sprite_size","(2.0,0.85,3.0)");
+	properties.set("visual_sprite_type","humanoid_1");
+	properties.set("visual_selection_size","(0.4,-0.4,2.6)");
 	properties.setFloat("yaw", 1.57);
 	properties.setFloat("hp", 30);
 	properties.setBool("bright_shooting", true);
