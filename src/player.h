@@ -21,7 +21,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define PLAYER_HEADER
 
 #include "common_irrlicht.h"
+#ifndef SERVER
 #include <IAnimatedMesh.h>
+#endif
 #include "inventory.h"
 #include "collision.h"
 
