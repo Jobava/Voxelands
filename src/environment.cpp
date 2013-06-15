@@ -1150,27 +1150,40 @@ void ServerEnvironment::step(float dtime)
 								ServerActiveObject *obj;
 								Settings properties;
 								int i = myrand()%5;
-								switch (i) {
-								case 0:
-									actionstream<<"A dungeon master spawns at "
-											<<PP(p1)<<std::endl;
-									getMob_dungeon_master(properties);
-									obj = new MobV2SAO(this, 0, pos, &properties);
-									addActiveObject(obj);
-									break;
-								case 1:
-									actionstream<<"Rat spawns at "
-											<<PP(p1)<<std::endl;
-									obj = new RatSAO(this, 0, pos);
-									addActiveObject(obj);
-									break;
-								case 2:
-									actionstream<<"An oerkki spawns at "
-											<<PP(p1)<<std::endl;
-									obj = new Oerkki1SAO(this, 0, pos);
-									addActiveObject(obj);
-									break;
-								default:;
+								if (g_settings->getBool("only_peaceful_mobs")) {
+									if (i == 1) {
+										actionstream<<"Rat spawns at "
+												<<PP(p1)<<std::endl;
+										obj = new RatSAO(this, 0, pos);
+										addActiveObject(obj);
+										active_object_count_wider++;
+									}
+								}else{
+									switch (i) {
+									case 0:
+										actionstream<<"A dungeon master spawns at "
+												<<PP(p1)<<std::endl;
+										getMob_dungeon_master(properties);
+										obj = new MobV2SAO(this, 0, pos, &properties);
+										addActiveObject(obj);
+										active_object_count_wider++;
+										break;
+									case 1:
+										actionstream<<"Rat spawns at "
+												<<PP(p1)<<std::endl;
+										obj = new RatSAO(this, 0, pos);
+										addActiveObject(obj);
+										active_object_count_wider++;
+										break;
+									case 2:
+										actionstream<<"An oerkki spawns at "
+												<<PP(p1)<<std::endl;
+										obj = new Oerkki1SAO(this, 0, pos);
+										addActiveObject(obj);
+										active_object_count_wider++;
+										break;
+									default:;
+									}
 								}
 							}
 						}
@@ -1399,6 +1412,7 @@ void ServerEnvironment::step(float dtime)
 
 		// This helps the objects to send data at the same time
 		bool send_recommended = false;
+		bool peaceful_mobs = g_settings->getBool("only_peaceful_mobs");
 		m_send_recommended_timer += dtime;
 		if(m_send_recommended_timer > 0.10)
 		{
@@ -1412,7 +1426,7 @@ void ServerEnvironment::step(float dtime)
 		{
 			ServerActiveObject* obj = i.getNode()->getValue();
 			// Remove non-peaceful mobs on peaceful mode
-			if(g_settings->getBool("only_peaceful_mobs")){
+			if(peaceful_mobs){
 				if(!obj->isPeaceful())
 					obj->m_removed = true;
 			}
