@@ -345,9 +345,11 @@ void content_mapnode_init()
 	i = CONTENT_BORDERSTONE;
 	f = &content_features(i);
 	f->setAllTextures("borderstone.png");
-	f->setInventoryTextureCube("morderstone.png", "borderstone.png", "borderstone.png");
+	f->setInventoryTextureCube("borderstone.png", "borderstone.png", "borderstone.png");
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new BorderStoneNodeMetadata();
 	setStoneLikeDiggingProperties(f->digging_properties, 2.0);
 
 	i = CONTENT_WOOD;

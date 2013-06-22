@@ -107,7 +107,7 @@ struct CraftDef {
 */
 InventoryItem *craft_get_result(InventoryItem **items)
 {
-	static CraftDef defs[32];
+	static CraftDef defs[33];
 	static int defs_init = 0;
 
 	// only initialise (and hence allocate) these once

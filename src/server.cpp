@@ -2477,6 +2477,25 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						<<" because privileges are "<<getPlayerPrivs(player)
 						<<std::endl;
 				cannot_remove_node = true;
+			}else{
+				s16 max_d = g_settings->getS16("borderstone_radius");
+				v3s16 test_p;
+				MapNode testnode;
+				for(s16 z=-max_d; !cannot_remove_node && z<=max_d; z++) {
+				for(s16 y=-max_d; !cannot_remove_node && y<=max_d; y++) {
+				for(s16 x=-max_d; !cannot_remove_node && x<=max_d; x++) {
+					test_p = p_under + v3s16(x,y,z);
+					NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
+					if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
+						BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
+						if (bsm->getOwner() != player->getName()) {
+							cannot_remove_node = true;
+							break;
+						}
+					}
+				}
+				}
+				}
 			}
 
 			/*
@@ -2727,6 +2746,23 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			if(item == NULL)
 				return;
 
+			s16 max_d = g_settings->getS16("borderstone_radius");
+			v3s16 test_p;
+			MapNode testnode;
+			for(s16 z=-max_d; z<=max_d; z++) {
+			for(s16 y=-max_d; y<=max_d; y++) {
+			for(s16 x=-max_d; x<=max_d; x++) {
+				test_p = p_over + v3s16(x,y,z);
+				NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
+				if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
+					BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
+					if (bsm->getOwner() != player->getName())
+						return;
+				}
+			}
+			}
+			}
+
 			/*
 				Handle material items
 			*/
@@ -2774,6 +2810,26 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				MaterialItem *mitem = (MaterialItem*)item;
 				MapNode n;
 				n.setContent(mitem->getMaterial());
+
+				// don't allow borderstone to be place near another player's borderstone
+				if (n.getContent() == CONTENT_BORDERSTONE) {
+					s16 max_d = g_settings->getS16("borderstone_radius")*2;
+					v3s16 test_p;
+					MapNode testnode;
+					for(s16 z=-max_d; z<=max_d; z++) {
+					for(s16 y=-max_d; y<=max_d; y++) {
+					for(s16 x=-max_d; x<=max_d; x++) {
+						test_p = p_over + v3s16(x,y,z);
+						NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
+						if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
+							BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
+							if (bsm->getOwner() != player->getName())
+								return;
+						}
+					}
+					}
+					}
+				}
 
 				actionstream<<player->getName()<<" places material "
 						<<(int)mitem->getMaterial()

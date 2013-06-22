@@ -137,6 +137,8 @@
 #default_privs = build, shout
 # enable a static spawnpoint (default unset)
 #static_spawnpoint = (0,0,0)
+# the protection radius of borderstone
+#borderstone_radius = 5
 
 # Profiler data print interval. #0 = disable.
 #profiler_print_interval = 0

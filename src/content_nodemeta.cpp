@@ -183,6 +183,44 @@ std::string LockingChestNodeMetadata::getInventoryDrawSpecString()
 }
 
 /*
+	BorderStoneNodeMetadata
+*/
+
+// Prototype
+BorderStoneNodeMetadata proto_BorderStoneNodeMetadata;
+
+BorderStoneNodeMetadata::BorderStoneNodeMetadata()
+{
+	NodeMetadata::registerType(typeId(), create);
+}
+BorderStoneNodeMetadata::~BorderStoneNodeMetadata()
+{
+}
+u16 BorderStoneNodeMetadata::typeId() const
+{
+	return CONTENT_BORDERSTONE;
+}
+NodeMetadata* BorderStoneNodeMetadata::create(std::istream &is)
+{
+	BorderStoneNodeMetadata *d = new BorderStoneNodeMetadata();
+	d->setOwner(deSerializeString(is));
+	return d;
+}
+NodeMetadata* BorderStoneNodeMetadata::clone()
+{
+	BorderStoneNodeMetadata *d = new BorderStoneNodeMetadata();
+	return d;
+}
+void BorderStoneNodeMetadata::serializeBody(std::ostream &os)
+{
+	os<<serializeString(m_text);
+}
+std::string BorderStoneNodeMetadata::infoText()
+{
+	return std::string("Border Stone owned by '")+m_text+"'";
+}
+
+/*
 	FurnaceNodeMetadata
 */
 
