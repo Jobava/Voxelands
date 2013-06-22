@@ -906,16 +906,12 @@ void ServerEnvironment::step(float dtime)
 	if(m_active_blocks_test_interval.step(dtime, 10.0))
 	{
 		ScopeProfiler sp(g_profiler, "SEnv: modify in blocks avg /10s", SPT_AVG);
-		//float dtime = 10.0;
 
 		for(core::map<v3s16, bool>::Iterator
 				i = m_active_blocks.m_list.getIterator();
 				i.atEnd()==false; i++)
 		{
 			v3s16 p = i.getNode()->getKey();
-
-			/*infostream<<"Server: Block ("<<p.X<<","<<p.Y<<","<<p.Z
-					<<") being handled"<<std::endl;*/
 
 			MapBlock *block = m_map->getBlockNoCreateNoEx(p);
 			if(block==NULL)
@@ -936,11 +932,6 @@ void ServerEnvironment::step(float dtime)
 				Everything should bind to inside this single content
 				searching loop to keep things fast.
 			*/
-			// TODO: Implement usage of ActiveBlockModifier
-
-			// Find out how many objects the block contains
-			//u32 active_object_count = block->m_static_objects.m_active.size();
-			// Find out how many objects this and all the neighbors contain
 			u32 active_object_count_wider = 0;
 			for(s16 x=-1; x<=1; x++)
 			for(s16 y=-1; y<=1; y++)
@@ -952,16 +943,6 @@ void ServerEnvironment::step(float dtime)
 				active_object_count_wider +=
 						block->m_static_objects.m_active.size()
 						+ block->m_static_objects.m_stored.size();
-
-				/*if(block->m_static_objects.m_stored.size() != 0){
-					errorstream<<"ServerEnvironment::step(): "
-							<<PP(block->getPos())<<" contains "
-							<<block->m_static_objects.m_stored.size()
-							<<" stored objects; "
-							<<"when spawning objects, when counting active "
-							<<"objects in wide area. relative position: "
-							<<"("<<x<<","<<y<<","<<z<<")"<<std::endl;
-				}*/
 			}
 
 			v3s16 p0;
@@ -994,7 +975,7 @@ void ServerEnvironment::step(float dtime)
 				*/
 				if(n.getContent() == CONTENT_FARM_DIRT)
 				{
-					if (myrand()%30 == 0)
+					if (myrand()%50 == 0)
 					{
 						s16 max_d = 1;
 						s16 max_growth = 2;
@@ -1298,7 +1279,6 @@ void ServerEnvironment::step(float dtime)
 					Apples should fall if there is no leaves block holding it
 				*/
 				if(n.getContent() == CONTENT_APPLE) {
-					//actionstream << "checking apple at " << PP(p) << "\n";
 					s16 max_d = 1;
 					v3s16 apple_p = p, test_p;
 					MapNode testnode;
@@ -1326,7 +1306,7 @@ void ServerEnvironment::step(float dtime)
 				}
 				/* grow junglegrass on sand near water */
 				if(n.getContent() == CONTENT_SAND) {
-					if(myrand()%1000 == 0)
+					if(myrand()%5000 == 0)
 					{
 						MapNode n_top1 = m_map->getNodeNoEx(p+v3s16(0,1,0));
 						MapNode n_top2 = m_map->getNodeNoEx(p+v3s16(0,2,0));
@@ -1456,60 +1436,6 @@ void ServerEnvironment::step(float dtime)
 		*/
 		removeRemovedObjects();
 	}
-
-	if(g_settings->getBool("enable_experimental"))
-	{
-
-	/*
-		TEST CODE
-	*/
-#if 0
-	m_random_spawn_timer -= dtime;
-	if(m_random_spawn_timer < 0)
-	{
-		//m_random_spawn_timer += myrand_range(2.0, 20.0);
-		//m_random_spawn_timer += 2.0;
-		m_random_spawn_timer += 200.0;
-
-		/*
-			Find some position
-		*/
-
-		/*v2s16 p2d(myrand_range(-5,5), myrand_range(-5,5));
-		s16 y = 1 + getServerMap().findGroundLevel(p2d);
-		v3f pos(p2d.X*BS,y*BS,p2d.Y*BS);*/
-
-		Player *player = getRandomConnectedPlayer();
-		v3f pos(0,0,0);
-		if(player)
-			pos = player->getPosition();
-		pos += v3f(
-			myrand_range(-3,3)*BS,
-			5,
-			myrand_range(-3,3)*BS
-		);
-
-		/*
-			Create a ServerActiveObject
-		*/
-
-		//TestSAO *obj = new TestSAO(this, 0, pos);
-		//ServerActiveObject *obj = new ItemSAO(this, 0, pos, "CraftItem Stick 1");
-		//ServerActiveObject *obj = new RatSAO(this, 0, pos);
-		//ServerActiveObject *obj = new Oerkki1SAO(this, 0, pos);
-		//ServerActiveObject *obj = new FireflySAO(this, 0, pos);
-
-		infostream<<"Server: Spawning MobV2SAO at "
-				<<"("<<pos.X<<","<<pos.Y<<","<<pos.Z<<")"<<std::endl;
-
-		Settings properties;
-		getMob_dungeon_master(properties);
-		ServerActiveObject *obj = new MobV2SAO(this, 0, pos, &properties);
-		addActiveObject(obj);
-	}
-#endif
-
-	} // enable_experimental
 }
 
 ServerActiveObject* ServerEnvironment::getActiveObject(u16 id)

@@ -42,7 +42,7 @@ void setWoodLikeDiggingProperties(DiggingPropertiesList &list, float toughness);
 	Maps <=v19 content types to current ones.
 	Should never be touched.
 */
-content_t trans_table_19[20][2] = {
+content_t trans_table_19[21][2] = {
 	{CONTENT_GRASS, 1},
 	{CONTENT_TREE, 4},
 	{CONTENT_LEAVES, 5},
@@ -50,6 +50,7 @@ content_t trans_table_19[20][2] = {
 	{CONTENT_MESE, 7},
 	{CONTENT_MUD, 8},
 	{CONTENT_COTTON, 10},
+	{CONTENT_BORDERSTONE, 11},
 	{CONTENT_WOOD, 12},
 	{CONTENT_SAND, 13},
 	{CONTENT_COBBLE, 18},
@@ -339,6 +340,15 @@ void content_mapnode_init()
 	f->walkable = false;
 	f->climbable = true;
 	setWoodLikeDiggingProperties(f->digging_properties, 0.5);
+
+
+	i = CONTENT_BORDERSTONE;
+	f = &content_features(i);
+	f->setAllTextures("borderstone.png");
+	f->setInventoryTextureCube("morderstone.png", "borderstone.png", "borderstone.png");
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setStoneLikeDiggingProperties(f->digging_properties, 2.0);
 
 	i = CONTENT_WOOD;
 	f = &content_features(i);

@@ -24,7 +24,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 void content_mapnode_init();
 
-extern content_t trans_table_19[20][2];
+extern content_t trans_table_19[21][2];
 
 MapNode mapnode_translate_from_internal(MapNode n_from, u8 version);
 MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
@@ -66,7 +66,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_MUD 0x805 //8
 // used to be cloud
 #define CONTENT_COTTON 0x806 //10
-
+#define CONTENT_BORDERSTONE 0x807 //11
 #define CONTENT_WOOD 0x808 //12
 #define CONTENT_SAND 0x809 //13
 #define CONTENT_COBBLE 0x80a //18
