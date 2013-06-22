@@ -1212,6 +1212,7 @@ void ServerEnvironment::step(float dtime)
 									tcon != CONTENT_AIR
 									&& tcon != CONTENT_TREE
 									&& tcon != CONTENT_LEAVES
+									&& tcon != CONTENT_APPLE
 									&& tcon != CONTENT_IGNORE)
 									grow = false;
 							}
