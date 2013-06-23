@@ -2477,7 +2477,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						<<" because privileges are "<<getPlayerPrivs(player)
 						<<std::endl;
 				cannot_remove_node = true;
-			}else{
+			}else if((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
 				s16 max_d = g_settings->getS16("borderstone_radius");
 				v3s16 test_p;
 				MapNode testnode;
