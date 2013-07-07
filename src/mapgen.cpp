@@ -159,7 +159,113 @@ void make_tree(ManualMapVoxelManipulator &vmanip, v3s16 p0, bool is_apple_tree)
 	}
 }
 
-static void make_jungletree(VoxelManipulator &vmanip, v3s16 p0)
+void make_largetree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
+{
+	MapNode treenode(CONTENT_TREE);
+	MapNode leavesnode(CONTENT_LEAVES);
+
+	s16 trunk_h = myrand_range(7, 10);
+	v3s16 p1 = p0;
+	for(s16 ii=0; ii<trunk_h; ii++)
+	{
+		if(vmanip.m_area.contains(p1))
+			vmanip.m_data[vmanip.m_area.index(p1)] = treenode;
+		p1.Y++;
+	}
+
+	// p1 is now the last piece of the trunk
+	p1.Y -= 1;
+	s16 xz = myrand_range(0,1);
+
+	VoxelArea leaves_a(v3s16(-3,-2,-3), v3s16(3,2,3));
+	//SharedPtr<u8> leaves_d(new u8[leaves_a.getVolume()]);
+	Buffer<u8> leaves_d(leaves_a.getVolume());
+	for(s32 i=0; i<leaves_a.getVolume(); i++)
+		leaves_d[i] = 0;
+
+	for (s16 k=0; k<3; k++) {
+		if (xz) {
+			if (k == 1) {
+				p1.Y -= 2;
+				for (s16 ki=0; ki<3; ki++) {
+					p1.X++;
+					vmanip.m_data[vmanip.m_area.index(p1)] = treenode;
+				}
+			}else if (k == 2) {
+				p1.X -= 3;
+				for (s16 ki=0; ki<3; ki++) {
+					p1.X--;
+					vmanip.m_data[vmanip.m_area.index(p1)] = treenode;
+				}
+			}
+			vmanip.m_data[vmanip.m_area.index(p1)] = treenode;
+		}else{
+			if (k == 1) {
+				p1.Y -= 2;
+				for (s16 ki=0; ki<3; ki++) {
+					p1.Z++;
+					vmanip.m_data[vmanip.m_area.index(p1)] = treenode;
+				}
+			}else if (k == 2) {
+				p1.Z -= 3;
+				for (s16 ki=0; ki<3; ki++) {
+					p1.Z--;
+					vmanip.m_data[vmanip.m_area.index(p1)] = treenode;
+				}
+			}
+			vmanip.m_data[vmanip.m_area.index(p1)] = treenode;
+		}
+		// Force leaves at near the end of the trunk
+		{
+			s16 d = 1;
+			for(s16 z=-d; z<=d; z++)
+			for(s16 y=-d; y<=d; y++)
+			for(s16 x=-d; x<=d; x++)
+			{
+				leaves_d[leaves_a.index(v3s16(x,y,z))] = 1;
+			}
+		}
+
+		// Add leaves randomly
+		for(u32 iii=0; iii<15; iii++)
+		{
+			s16 d = 1;
+
+			v3s16 p(
+				myrand_range(leaves_a.MinEdge.X, leaves_a.MaxEdge.X-d),
+				myrand_range(leaves_a.MinEdge.Y, leaves_a.MaxEdge.Y-d),
+				myrand_range(leaves_a.MinEdge.Z, leaves_a.MaxEdge.Z-d)
+			);
+
+			for(s16 z=0; z<=d; z++)
+			for(s16 y=0; y<=d; y++)
+			for(s16 x=0; x<=d; x++)
+			{
+				leaves_d[leaves_a.index(p+v3s16(x,y,z))] = 1;
+			}
+		}
+
+		// Blit leaves to vmanip
+		for(s16 z=leaves_a.MinEdge.Z; z<=leaves_a.MaxEdge.Z; z++)
+		for(s16 y=leaves_a.MinEdge.Y; y<=leaves_a.MaxEdge.Y; y++)
+		for(s16 x=leaves_a.MinEdge.X; x<=leaves_a.MaxEdge.X; x++)
+		{
+			v3s16 p(x,y,z);
+			p += p1;
+			if(vmanip.m_area.contains(p) == false)
+				continue;
+			u32 vi = vmanip.m_area.index(p);
+			if(vmanip.m_data[vi].getContent() != CONTENT_AIR
+					&& vmanip.m_data[vi].getContent() != CONTENT_IGNORE)
+				continue;
+			u32 i = leaves_a.index(x,y,z);
+			if(leaves_d[i] == 1)
+				vmanip.m_data[vi] = leavesnode;
+		}
+	}
+}
+
+void make_jungletree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
 {
 	MapNode treenode(CONTENT_JUNGLETREE);
 	MapNode leavesnode(CONTENT_LEAVES);
@@ -2145,17 +2251,22 @@ void make_block(BlockMakeData *data)
 					//if(surface_humidity_2d(data->seed, v2s16(x, y)) < 0.5)
 					if(is_jungle == false)
 					{
-						bool is_apple_tree;
-						if(myrand_range(0,4) != 0)
-							is_apple_tree = false;
-						else
-							is_apple_tree = noise2d_perlin(
-									0.5+(float)p.X/100, 0.5+(float)p.Z/100,
-									data->seed+342902, 3, 0.45) > 0.2;
-						make_tree(vmanip, p, is_apple_tree);
-					}
-					else
+						if (myrand_range(0,10) != 0) {
+							bool is_apple_tree;
+							if (myrand_range(0,4) != 0) {
+								is_apple_tree = false;
+							}else{
+								is_apple_tree = noise2d_perlin(
+										0.5+(float)p.X/100, 0.5+(float)p.Z/100,
+										data->seed+342902, 3, 0.45) > 0.2;
+							}
+							make_tree(vmanip, p, is_apple_tree);
+						}else{
+							make_largetree(vmanip, p);
+						}
+					}else{
 						make_jungletree(vmanip, p);
+					}
 				}
 				// Cactii grow only on sand, on land
 				else if(n->getContent() == CONTENT_SAND && y > WATER_LEVEL + 2)

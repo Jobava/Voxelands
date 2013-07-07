@@ -43,6 +43,10 @@ namespace mapgen
 
 	// Add a tree
 	void make_tree(ManualMapVoxelManipulator &vmanip, v3s16 p0, bool is_apple_tree);
+	// Add a large tree
+	void make_largetree(ManualMapVoxelManipulator &vmanip, v3s16 p0);
+	// Add a jungle tree
+	void make_jungletree(ManualMapVoxelManipulator &vmanip, v3s16 p0);
 
 	/*
 		These are used by FarMesh

@@ -1179,26 +1179,72 @@ void ServerEnvironment::step(float dtime)
 					{
 						s16 max_y = 7;
 						s16 max_o = 2;
-						bool grow = true;
+						s16 grow = 1;
 						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
-						if (below != CONTENT_MUD && below != CONTENT_GRASS)
-							grow = false;
-						for (s16 z=-max_o; grow && z < max_o; z++) {
-						for (s16 y=2; grow && y < max_y; y++) {
-						for (s16 x=-max_o; grow && x < max_o; x++) {
-							v3s16 test_p = p + v3s16(x,y,z);
-							if (test_p != p) {
-								content_t tcon = m_map->getNodeNoEx(test_p).getContent();
-								if (
-									tcon != CONTENT_AIR
-									&& tcon != CONTENT_TREE
-									&& tcon != CONTENT_LEAVES
-									&& tcon != CONTENT_APPLE
-									&& tcon != CONTENT_IGNORE)
-									grow = false;
+						if (below == CONTENT_JUNGLETREE) {
+							grow = 3;
+							max_y = 10;
+							for (s16 z=-max_o; grow && z < max_o; z++) {
+							for (s16 y=2; grow && y < max_y; y++) {
+							for (s16 x=-max_o; grow && x < max_o; x++) {
+								v3s16 test_p = p + v3s16(x,y,z);
+								if (test_p != p) {
+									content_t tcon = m_map->getNodeNoEx(test_p).getContent();
+									if (
+										tcon != CONTENT_AIR
+										&& tcon != CONTENT_TREE
+										&& tcon != CONTENT_JUNGLETREE
+										&& tcon != CONTENT_LEAVES
+										&& tcon != CONTENT_APPLE
+										&& tcon != CONTENT_IGNORE
+									)
+										grow = 0;
+								}
 							}
-						}
-						}
+							}
+							}
+						}else if (below == CONTENT_MUD || below == CONTENT_GRASS) {
+							for (s16 z=-max_o; grow && z < max_o; z++) {
+							for (s16 y=2; grow && y < max_y; y++) {
+							for (s16 x=-max_o; grow && x < max_o; x++) {
+								v3s16 test_p = p + v3s16(x,y,z);
+								if (test_p != p) {
+									content_t tcon = m_map->getNodeNoEx(test_p).getContent();
+									if (
+										tcon != CONTENT_AIR
+										&& tcon != CONTENT_TREE
+										&& tcon != CONTENT_LEAVES
+										&& tcon != CONTENT_APPLE
+										&& tcon != CONTENT_IGNORE)
+										grow = 0;
+								}
+							}
+							}
+							}
+							if (grow && myrand()%2) {
+								max_y = 12;
+								max_o = 10;
+								grow = 2;
+								for (s16 z=-max_o; grow == 2 && z < max_o; z++) {
+								for (s16 y=2; grow == 2 && y < max_y; y++) {
+								for (s16 x=-max_o; grow == 2 && x < max_o; x++) {
+									v3s16 test_p = p + v3s16(x,y,z);
+									if (test_p != p) {
+										content_t tcon = m_map->getNodeNoEx(test_p).getContent();
+										if (
+											tcon != CONTENT_AIR
+											&& tcon != CONTENT_TREE
+											&& tcon != CONTENT_LEAVES
+											&& tcon != CONTENT_APPLE
+											&& tcon != CONTENT_IGNORE)
+											grow = 1;
+									}
+								}
+								}
+								}
+							}
+						}else{
+							grow = 0;
 						}
 
 						if (grow) {
@@ -1210,8 +1256,15 @@ void ServerEnvironment::step(float dtime)
 							ManualMapVoxelManipulator vmanip(m_map);
 							v3s16 tree_blockp = getNodeBlockPos(tree_p);
 							vmanip.initialEmerge(tree_blockp - v3s16(1,1,1), tree_blockp + v3s16(1,1,1));
-							bool is_apple_tree = myrand()%4 == 0;
-							mapgen::make_tree(vmanip, tree_p, is_apple_tree);
+							if (grow == 2) {
+								mapgen::make_largetree(vmanip, tree_p);
+							}else if (grow == 3) {
+								tree_p.Y -= 1;
+								mapgen::make_jungletree(vmanip, tree_p);
+							}else{
+								bool is_apple_tree = myrand()%4 == 0;
+								mapgen::make_tree(vmanip, tree_p, is_apple_tree);
+							}
 							vmanip.blitBackAll(&modified_blocks);
 
 							// update lighting
