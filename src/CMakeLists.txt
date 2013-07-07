@@ -130,6 +130,7 @@ set(common_SRCS
 	sha1.cpp
 	base64.cpp
 	ban.cpp
+	http.cpp
 )
 
 # This gives us the icon

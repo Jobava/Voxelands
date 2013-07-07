@@ -152,29 +152,15 @@ UDPSocket::UDPSocket()
 	if(g_sockets_initialized == false)
 		throw SocketException("Sockets not initialized");
 
-    m_handle = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+	m_handle = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
 	if(DP)
-	dstream<<DPS<<"UDPSocket("<<(int)m_handle<<")::UDPSocket()"<<std::endl;
+		dstream<<DPS<<"UDPSocket("<<(int)m_handle<<")::UDPSocket()"<<std::endl;
 
-    if(m_handle <= 0)
-    {
+	if(m_handle <= 0)
+	{
 		throw SocketException("Failed to create socket");
-    }
-
-/*#ifdef _WIN32
-	DWORD nonblocking = 0;
-	if(ioctlsocket(m_handle, FIONBIO, &nonblocking) != 0)
-	{
-		throw SocketException("Failed set non-blocking mode");
 	}
-#else
-	int nonblocking = 0;
-	if(fcntl(m_handle, F_SETFL, O_NONBLOCK, nonblocking) == -1)
-	{
-		throw SocketException("Failed set non-blocking mode");
-	}
-#endif*/
 
 	setTimeoutMs(0);
 }
@@ -197,18 +183,18 @@ void UDPSocket::Bind(unsigned short port)
 	dstream<<DPS<<"UDPSocket("<<(int)m_handle
 			<<")::Bind(): port="<<port<<std::endl;
 
-    sockaddr_in address;
-    address.sin_family = AF_INET;
-    address.sin_addr.s_addr = INADDR_ANY;
-    address.sin_port = htons(port);
+	sockaddr_in address;
+	address.sin_family = AF_INET;
+	address.sin_addr.s_addr = INADDR_ANY;
+	address.sin_port = htons(port);
 
-    if(bind(m_handle, (const sockaddr*)&address, sizeof(sockaddr_in)) < 0)
-    {
+	if(bind(m_handle, (const sockaddr*)&address, sizeof(sockaddr_in)) < 0)
+	{
 #ifndef DISABLE_ERRNO
 		dstream<<(int)m_handle<<": Bind failed: "<<strerror(errno)<<std::endl;
 #endif
 		throw SocketException("Failed to bind socket");
-    }
+	}
 }
 
 void UDPSocket::Send(const Address & destination, const void * data, int size)
@@ -254,10 +240,10 @@ void UDPSocket::Send(const Address & destination, const void * data, int size)
 	int sent = sendto(m_handle, (const char*)data, size,
 		0, (sockaddr*)&address, sizeof(sockaddr_in));
 
-    if(sent != size)
-    {
+	if(sent != size)
+	{
 		throw SendFailedException("Failed to send packet");
-    }
+	}
 }
 
 int UDPSocket::Receive(Address & sender, void * data, int size)
@@ -358,4 +344,199 @@ bool UDPSocket::WaitData(int timeout_ms)
 	return true;
 }
 
+/* TCPSocket */
 
+TCPSocket::TCPSocket()
+{
+	if (g_sockets_initialized == false)
+		throw SocketException("Sockets not initialized");
+
+	m_handle = socket(AF_INET, SOCK_STREAM, 0);
+
+	if (DP)
+		dstream<<DPS<<"TCPSocket("<<(int)m_handle<<")::TCPSocket()"<<std::endl;
+
+	if (m_handle <= 0) {
+		throw SocketException("Failed to create socket");
+	}
+
+	int a=1;
+	setsockopt(m_handle, SOL_SOCKET, SO_REUSEADDR, &a, sizeof(a));
+
+	setTimeoutMs(0);
+}
+
+TCPSocket::~TCPSocket()
+{
+	if (DP)
+		dstream<<DPS<<"TCPSocket("<<(int)m_handle<<")::~TCPSocket()"<<std::endl;
+
+#ifdef _WIN32
+	closesocket(m_handle);
+#else
+	close(m_handle);
+#endif
+}
+
+void TCPSocket::Bind(unsigned short port)
+{
+	if(DP)
+		dstream<<DPS<<"TCPSocket("<<(int)m_handle<<")::Bind(): port="<<port<<std::endl;
+
+	sockaddr_in address;
+	address.sin_family = AF_INET;
+	address.sin_addr.s_addr = INADDR_ANY;
+	address.sin_port = htons(port);
+
+	if (bind(m_handle, (const sockaddr*)&address, sizeof(sockaddr_in)) < 0) {
+#ifndef DISABLE_ERRNO
+		dstream<<(int)m_handle<<": Bind failed: "<<strerror(errno)<<std::endl;
+#endif
+		throw SocketException("Failed to bind socket");
+	}
+
+	if (listen(m_handle, 5) < 0) {
+#ifndef DISABLE_ERRNO
+		dstream<<(int)m_handle<<": Listen failed: "<<strerror(errno)<<std::endl;
+#endif
+		throw SocketException("Failed to set socket to listening mode");
+	}
+}
+
+bool TCPSocket::Connect(const Address &destination)
+{
+	sockaddr_in address;
+	address.sin_family = AF_INET;
+	address.sin_addr.s_addr = htonl(destination.getAddress());
+	address.sin_port = htons(destination.getPort());
+
+	if (connect(m_handle, (sockaddr*)&address, sizeof(sockaddr_in)) < 0) {
+#ifndef DISABLE_ERRNO
+		dstream<<(int)m_handle<<": Connect failed: "<<strerror(errno)<<std::endl;
+#endif
+		return false;
+	}
+	return true;
+}
+
+void TCPSocket::Send(const void *data, int size)
+{
+	int sent = send(m_handle, (const char*)data, size, 0);
+
+	if (sent != size)
+		throw SendFailedException("Failed to send data");
+}
+
+int TCPSocket::Receive(void *data, int size)
+{
+	if (WaitData(m_timeout_ms) == false)
+		return -1;
+
+	sockaddr_in address;
+	socklen_t address_len = sizeof(address);
+
+	int received = recvfrom(
+		m_handle,
+		(char*)data,
+		size,
+		0,
+		(sockaddr*)&address,
+		&address_len
+	);
+
+	if (received < 0)
+		return -1;
+
+	unsigned int address_ip = ntohl(address.sin_addr.s_addr);
+	unsigned int address_port = ntohs(address.sin_port);
+
+	Address sender(address_ip, address_port);
+
+	if (DP) {
+		dstream<<DPS<<(int)m_handle<<" <- ";
+		dstream<<", size="<<received<<", data=";
+		for (int i=0; i<received && i<20; i++) {
+			if (i%2==0)
+				DEBUGPRINT(" ");
+			unsigned int a = ((const unsigned char*)data)[i];
+			DEBUGPRINT("%.2X", a);
+		}
+		if (received>20)
+			dstream<<"...";
+		dstream<<std::endl;
+	}
+
+	return received;
+}
+
+TCPSocket* TCPSocket::Accept()
+{
+	sockaddr_in address;
+	socklen_t address_len = sizeof(address);
+
+	int client = accept(m_handle, (sockaddr*)&address, &address_len);
+	if (client < 0) {
+#ifndef DISABLE_ERRNO
+		dstream<<(int)m_handle<<": Accept failed: "<<strerror(errno)<<std::endl;
+#endif
+		throw SocketException("Failed to accept socket");
+	}
+
+	TCPSocket *socket = new TCPSocket();
+	socket->m_handle = client;
+
+	return socket;
+}
+
+int TCPSocket::GetHandle()
+{
+	return m_handle;
+}
+
+void TCPSocket::setTimeoutMs(int timeout_ms)
+{
+	m_timeout_ms = timeout_ms;
+}
+
+bool TCPSocket::WaitData(int timeout_ms)
+{
+	fd_set readset;
+	int result;
+
+	// Initialize the set
+	FD_ZERO(&readset);
+	FD_SET(m_handle, &readset);
+
+	// Initialize time out struct
+	struct timeval tv;
+	tv.tv_sec = 0;
+	tv.tv_usec = timeout_ms * 1000;
+	// select()
+	result = select(m_handle+1, &readset, NULL, NULL, &tv);
+
+	if (result == 0) {
+		return false;
+	}else if (result < 0 && errno == EINTR) {
+		return false;
+	}else if (result < 0) {
+		// Error
+#ifndef DISABLE_ERRNO
+		dstream<<(int)m_handle<<": Select failed: "<<strerror(errno)<<std::endl;
+#endif
+#ifdef _WIN32
+		int e = WSAGetLastError();
+		dstream<<(int)m_handle<<": WSAGetLastError()="<<e<<std::endl;
+		if (e == 10004 /*=WSAEINTR*/) {
+			dstream<<"WARNING: Ignoring WSAEINTR."<<std::endl;
+			return false;
+		}
+#endif
+		throw SocketException("Select failed");
+	}else if (FD_ISSET(m_handle, &readset) == false) {
+		// No data
+		return false;
+	}
+
+	// There is data
+	return true;
+}
