@@ -96,6 +96,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("default_privs", "build, shout");
 	settings->setDefault("borderstone_radius","5");
 
+	settings->setDefault("enable_http","true");
 	settings->setDefault("profiler_print_interval", "0");
 	settings->setDefault("enable_mapgen_debug_info", "false");
 	settings->setDefault("objectdata_interval", "0.2");

@@ -4090,6 +4090,10 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		actionstream<<player->getName()<<" respawns at "
 				<<PP(player->getPosition()/BS)<<std::endl;
 	}
+	else if(command == TOSERVER_WANTCOOKIE)
+	{
+		SendPlayerCookie(player);
+	}
 	else
 	{
 		infostream<<"Server::ProcessData(): Ignoring "
@@ -4510,6 +4514,22 @@ void Server::BroadcastChatMessage(const std::wstring &message)
 void Server::SendPlayerHP(Player *player)
 {
 	SendHP(m_con, player->peer_id, player->hp);
+}
+
+void Server::SendPlayerCookie(Player *player)
+{
+	std::ostringstream os(std::ios_base::binary);
+	std::string c = player->getCookie();
+
+	writeU16(os, TOCLIENT_HAVECOOKIE);
+	writeU16(os, c.size());
+	os.write(c.c_str(),c.size());
+
+	// Make data buffer
+	std::string s = os.str();
+	SharedBuffer<u8> data((u8*)s.c_str(), s.size());
+	// Send as reliable
+	m_con.Send(player->peer_id, 0, data, true);
 }
 
 void Server::SendMovePlayer(Player *player)

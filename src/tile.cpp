@@ -113,7 +113,7 @@ std::string getTexturePath(const std::string &filename)
 		Check from cache
 	*/
 	bool incache = g_texturename_to_path_cache.get(filename, &fullpath);
-	if(incache)
+	if (incache && fullpath != "")
 		return fullpath;
 
 	std::string rel_path = std::string("textures")+DIR_DELIM+filename;

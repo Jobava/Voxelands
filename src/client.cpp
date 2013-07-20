@@ -31,6 +31,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "settings.h"
 #include "profiler.h"
 #include "log.h"
+#include "http.h"
 
 /*
 	QueuedMeshUpdate
@@ -211,6 +212,8 @@ Client::Client(
 	//m_env_mutex.Init();
 	//m_con_mutex.Init();
 
+	m_httpclient = new HTTPClient(this);
+
 	m_mesh_update_thread.Start();
 
 	/*
@@ -248,6 +251,8 @@ void Client::connect(Address address)
 	//JMutexAutoLock lock(m_con_mutex); //bulk comment-out
 	m_con.SetTimeoutMs(0);
 	m_con.Connect(address);
+	if (g_settings->getBool("enable_http"))
+		m_httpclient->start(address);
 }
 
 bool Client::connectedAndInitialized()
@@ -760,6 +765,7 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		writeU16(&reply[0], TOSERVER_INIT2);
 		// Send as reliable
 		m_con.Send(PEER_ID_SERVER, 1, reply, true);
+		sendWantCookie();
 
 		return;
 	}
@@ -1046,6 +1052,8 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 				}
 
 				player->updateName((char*)&data[start+2]);
+				std::string p_name((char*)&data[start+2]);
+				m_httpclient->pushRequest(HTTPREQUEST_SKIN_HASH,p_name);
 
 				start += item_size;
 			}
@@ -1507,6 +1515,22 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		event.deathscreen.camera_point_target_z = camera_point_target.Z;
 		m_client_event_queue.push_back(event);
 	}
+	else if(command == TOCLIENT_HAVECOOKIE)
+	{
+		/*
+			u16 command
+			u16 textlen
+			textdata
+		*/
+		std::string datastring((char*)&data[2], datasize-2);
+		std::istringstream is(datastring, std::ios_base::binary);
+
+		u16 len = readU16(is);
+		char buff[len+1];
+		is.read(buff,len);
+		buff[len] = 0;
+		printf("received cookie '%s'\n",buff);
+	}
 	else
 	{
 		infostream<<"Client: Ignoring unknown command "
@@ -1748,6 +1772,19 @@ void Client::sendRespawn()
 	std::ostringstream os(std::ios_base::binary);
 
 	writeU16(os, TOSERVER_RESPAWN);
+
+	// Make data buffer
+	std::string s = os.str();
+	SharedBuffer<u8> data((u8*)s.c_str(), s.size());
+	// Send as reliable
+	Send(0, data, true);
+}
+
+void Client::sendWantCookie()
+{
+	DSTACK(__FUNCTION_NAME);
+	std::ostringstream os(std::ios_base::binary);
+	writeU16(os, TOSERVER_WANTCOOKIE);
 
 	// Make data buffer
 	std::string s = os.str();

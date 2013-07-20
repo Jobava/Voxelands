@@ -448,6 +448,14 @@ public:
 		}
 	}
 
+	std::string getPlayerCookie(std::string &name)
+	{
+		Player *p = m_env.getPlayer(name.c_str());
+		if (p == NULL)
+			return "";
+		return p->getCookie();
+	}
+
 	// Saves g_settings to configpath given at initialization
 	void saveConfig();
 
@@ -511,6 +519,7 @@ private:
 	void SendChatMessage(u16 peer_id, const std::wstring &message);
 	void BroadcastChatMessage(const std::wstring &message);
 	void SendPlayerHP(Player *player);
+	void SendPlayerCookie(Player *player);
 	/*
 		Send a node removal/addition event to all clients except ignore_id.
 		Additionally, if far_players!=NULL, players further away than

@@ -139,6 +139,8 @@ struct ClientEvent
 	};
 };
 
+class HTTPClient;
+
 class Client : public con::PeerHandler, public InventoryManager
 {
 public:
@@ -199,6 +201,7 @@ public:
 		const std::wstring newpassword);
 	void sendDamage(u8 damage);
 	void sendRespawn();
+	void sendWantCookie();
 
 	// locks envlock
 	void removeNode(v3s16 p);
@@ -330,6 +333,7 @@ private:
 	ClientEnvironment m_env;
 
 	con::Connection m_con;
+	HTTPClient *m_httpclient;
 
 	IrrlichtDevice *m_device;
 
