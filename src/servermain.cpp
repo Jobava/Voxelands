@@ -78,6 +78,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "content_craft.h"
 #include "content_craftitem.h"
 #include "content_toolitem.h"
+#include "http.h"
 
 /*
 	Settings.
@@ -370,9 +371,13 @@ int main(int argc, char *argv[])
 	// Create server
 	Server server(map_dir.c_str(), configpath);
 	server.start(port);
+	HTTPServer http_server(server);
+	if (g_settings->getBool("enable_http"))
+		http_server.start(port);
 
 	// Run server
 	dedicated_server_loop(server, kill);
+	http_server.stop();
 
 	} //try
 	catch(con::PeerNotFoundException &e)
