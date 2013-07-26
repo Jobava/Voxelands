@@ -158,8 +158,9 @@ void ItemSAO::step(float dtime, bool send_recommended)
 		m_speed_f *= pos_max_d / (m_speed_f.getLength()*dtime);
 	v3f pos_f = getBasePosition();
 	v3f pos_f_old = pos_f;
+	v3f accel_f = v3f(0,0,0);
 	moveresult = collisionMoveSimple(&m_env->getMap(), pos_max_d,
-			box, dtime, pos_f, m_speed_f);
+			box, 0.0, dtime, pos_f, m_speed_f, accel_f);
 
 	if(send_recommended == false)
 		return;
@@ -390,8 +391,9 @@ void RatSAO::step(float dtime, bool send_recommended)
 		m_speed_f *= pos_max_d / (m_speed_f.getLength()*dtime);
 	v3f pos_f = getBasePosition();
 	v3f pos_f_old = pos_f;
+	v3f accel_f = v3f(0,0,0);
 	moveresult = collisionMoveSimple(&m_env->getMap(), pos_max_d,
-			box, dtime, pos_f, m_speed_f);
+			box, 0.0, dtime, pos_f, m_speed_f, accel_f);
 
 	// basicly 'die in lava'
 	if (moveresult.touching_lethal)
@@ -630,8 +632,9 @@ void Oerkki1SAO::step(float dtime, bool send_recommended)
 		m_speed_f *= pos_max_d / (m_speed_f.getLength()*dtime);*/
 	v3f pos_f = getBasePosition();
 	v3f pos_f_old = pos_f;
-	moveresult = collisionMovePrecise(&m_env->getMap(), pos_max_d,
-			box, dtime, pos_f, m_speed_f);
+	v3f accel_f = v3f(0,0,0);
+	moveresult = collisionMoveSimple(&m_env->getMap(), pos_max_d,
+			box, 0.0, dtime, pos_f, m_speed_f, accel_f);
 
 	if (moveresult.touching_lethal)
 	{
@@ -877,8 +880,9 @@ void FireflySAO::step(float dtime, bool send_recommended)
 		m_speed_f *= pos_max_d / (m_speed_f.getLength()*dtime);
 	v3f pos_f = getBasePosition();
 	v3f pos_f_old = pos_f;
+	v3f accel_f = v3f(0,0,0);
 	moveresult = collisionMoveSimple(&m_env->getMap(), pos_max_d,
-			box, dtime, pos_f, m_speed_f);
+			box, 0.0, dtime, pos_f, m_speed_f, accel_f);
 
 	// basicly 'die in lava'
 	if (moveresult.touching_lethal)

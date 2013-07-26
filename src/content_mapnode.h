@@ -57,6 +57,14 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_LAVA 32
 #define CONTENT_LAVASOURCE 33
 
+// rays stuff
+#define CONTENT_STONEBRICK 34
+#define CONTENT_STEELSTONEBRICK 35
+#define CONTENT_GLASSLIGHT 36
+#define CONTENT_WOODJUNGLE 37
+#define CONTENT_COALCHECKER 38
+#define CONTENT_BRICKGREEN 39
+
 // 0x800...0xfff (2048...4095): higher 4 bytes of param2 are not usable
 #define CONTENT_GRASS 0x800 //1
 #define CONTENT_TREE 0x801 //4
@@ -64,7 +72,6 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_FARM_DIRT 0x803 //6
 #define CONTENT_MESE 0x804 //7
 #define CONTENT_MUD 0x805 //8
-// used to be cloud
 #define CONTENT_COTTON 0x806 //10
 #define CONTENT_BORDERSTONE 0x807 //11
 #define CONTENT_WOOD 0x808 //12
@@ -86,6 +93,42 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_NC_RB 0x818
 #define CONTENT_APPLE 0x819
 #define CONTENT_SAPLING 0x820
+
+// slabs
+#define CONTENT_COBBLE_SLAB 0x821
+#define CONTENT_MOSSYCOBBLE_SLAB 0x822
+#define CONTENT_STONE_SLAB 0x823
+#define CONTENT_WOOD_SLAB 0x824
+#define CONTENT_JUNGLE_SLAB 0x825
+#define CONTENT_BRICK_SLAB 0x826
+#define CONTENT_SANDSTONE_SLAB 0x827
+
+// stairs
+#define CONTENT_COBBLE_STAIR 0x828
+#define CONTENT_MOSSYCOBBLE_STAIR 0x829
+#define CONTENT_STONE_STAIR 0x82a
+#define CONTENT_WOOD_STAIR 0x82b
+#define CONTENT_JUNGLE_STAIR 0x82c
+#define CONTENT_BRICK_STAIR 0x82d
+#define CONTENT_SANDSTONE_STAIR 0x82e
+
+// upside down slabs
+#define CONTENT_COBBLE_SLAB_UD 0x831
+#define CONTENT_MOSSYCOBBLE_SLAB_UD 0x832
+#define CONTENT_STONE_SLAB_UD 0x833
+#define CONTENT_WOOD_SLAB_UD 0x834
+#define CONTENT_JUNGLE_SLAB_UD 0x835
+#define CONTENT_BRICK_SLAB_UD 0x836
+#define CONTENT_SANDSTONE_SLAB_UD 0x837
+
+// upside down stairs
+#define CONTENT_COBBLE_STAIR_UD 0x838
+#define CONTENT_MOSSYCOBBLE_STAIR_UD 0x839
+#define CONTENT_STONE_STAIR_UD 0x83a
+#define CONTENT_WOOD_STAIR_UD 0x83b
+#define CONTENT_JUNGLE_STAIR_UD 0x83c
+#define CONTENT_BRICK_STAIR_UD 0x83d
+#define CONTENT_SANDSTONE_STAIR_UD 0x83e
 
 #endif
 

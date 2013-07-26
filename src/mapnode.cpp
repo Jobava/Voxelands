@@ -39,6 +39,40 @@ ContentFeatures::~ContentFeatures()
 #endif
 }
 
+static std::vector<aabb3f> transformNodeBox(const ContentFeatures &n,
+		const std::vector<aabb3f> &nodebox)
+{
+	std::vector<aabb3f> boxes;
+	// TODO: facedir!
+	int facedir = 0;
+	for(std::vector<aabb3f>::const_iterator
+		i = nodebox.begin();
+		i != nodebox.end(); i++)
+	{
+		aabb3f box = *i;
+		if (facedir == 1) {
+			box.MinEdge.rotateXZBy(-90);
+			box.MaxEdge.rotateXZBy(-90);
+			box.repair();
+		}else if (facedir == 2) {
+			box.MinEdge.rotateXZBy(180);
+			box.MaxEdge.rotateXZBy(180);
+			box.repair();
+		}else if (facedir == 3) {
+			box.MinEdge.rotateXZBy(90);
+			box.MaxEdge.rotateXZBy(90);
+			box.repair();
+		}
+		boxes.push_back(box);
+	}
+	return boxes;
+}
+
+std::vector<aabb3f> ContentFeatures::getNodeBoxes() const
+{
+        return transformNodeBox(*this, nodeboxes);
+}
+
 #ifndef SERVER
 void ContentFeatures::setTexture(u16 i, std::string name, u8 alpha)
 {
@@ -81,6 +115,46 @@ void ContentFeatures::setInventoryTextureCube(std::string top,
 
 	std::string imgname_full;
 	imgname_full += "[inventorycube{";
+	imgname_full += top;
+	imgname_full += "{";
+	imgname_full += left;
+	imgname_full += "{";
+	imgname_full += right;
+	inventory_texture = g_texturesource->getTextureRaw(imgname_full);
+}
+
+void ContentFeatures::setInventoryTextureSlab(std::string top,
+		std::string left, std::string right)
+{
+	if(g_texturesource == NULL)
+		return;
+
+	str_replace_char(top, '^', '&');
+	str_replace_char(left, '^', '&');
+	str_replace_char(right, '^', '&');
+
+	std::string imgname_full;
+	imgname_full += "[inventoryslab{";
+	imgname_full += top;
+	imgname_full += "{";
+	imgname_full += left;
+	imgname_full += "{";
+	imgname_full += right;
+	inventory_texture = g_texturesource->getTextureRaw(imgname_full);
+}
+
+void ContentFeatures::setInventoryTextureStair(std::string top,
+		std::string left, std::string right)
+{
+	if(g_texturesource == NULL)
+		return;
+
+	str_replace_char(top, '^', '&');
+	str_replace_char(left, '^', '&');
+	str_replace_char(right, '^', '&');
+
+	std::string imgname_full;
+	imgname_full += "[inventorystair{";
 	imgname_full += top;
 	imgname_full += "{";
 	imgname_full += left;

@@ -21,42 +21,57 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define COLLISION_HEADER
 
 #include "common_irrlicht.h"
+#include <vector>
 
 class Map;
 
-struct collisionMoveResult
-{
-	bool touching_ground;
-	bool in_liquid;
-	bool touching_lethal;
-
-	collisionMoveResult():
-		touching_ground(false),
-		in_liquid(false),
-		touching_lethal(false)
-	{}
-};
-
-// Moves using a single iteration; speed should not exceed pos_max_d/dtime
-collisionMoveResult collisionMoveSimple(Map *map, f32 pos_max_d,
-		const core::aabbox3d<f32> &box_0,
-		f32 dtime, v3f &pos_f, v3f &speed_f);
-
-// Moves using as many iterations as needed
-collisionMoveResult collisionMovePrecise(Map *map, f32 pos_max_d,
-		const core::aabbox3d<f32> &box_0,
-		f32 dtime, v3f &pos_f, v3f &speed_f);
-
 enum CollisionType
 {
-	COLLISION_FALL
+	COLLISION_FALL,
+	COLLISION_NODE
 };
 
 struct CollisionInfo
 {
 	CollisionType t;
 	f32 speed;
+	v3s16 node_p; // COLLISION_NODE
+	v3f old_speed;
+	v3f new_speed;
+
+	CollisionInfo():
+		t(COLLISION_NODE),
+		node_p(-32768,-32768,-32768),
+		old_speed(0,0,0),
+		new_speed(0,0,0)
+	{}
 };
+
+struct collisionMoveResult
+{
+	bool touching_ground;
+	bool in_liquid;
+	bool touching_lethal;
+	bool collides;
+	bool collides_xz;
+	bool standing_on_unloaded;
+	std::vector<CollisionInfo> collisions;
+
+	collisionMoveResult():
+		touching_ground(false),
+		in_liquid(false),
+		touching_lethal(false),
+		collides(false),
+		collides_xz(false),
+		standing_on_unloaded(false)
+	{}
+};
+
+// Moves using a single iteration; speed should not exceed pos_max_d/dtime
+collisionMoveResult collisionMoveSimple(Map *map,
+		f32 pos_max_d, const aabb3f &box_0,
+		f32 stepheight, f32 dtime,
+		v3f &pos_f, v3f &speed_f, v3f &accel_f);
 
 #endif
 

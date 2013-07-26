@@ -78,6 +78,26 @@ void init_mapnode();
 #define CONTENT_AIR 126
 
 /*
+	Draw types
+*/
+enum ContentDrawType
+{
+	CDT_AIRLIKE,
+	CDT_CUBELIKE,
+	CDT_RAILLIKE,
+	CDT_PLANTLIKE,
+	CDT_PLANTLIKE_SML,
+	CDT_PLANTLIKE_LGE,
+	CDT_LIQUID,
+	CDT_LIQUID_SOURCE,
+	CDT_SIGNLIKE,
+	CDT_NODEBOX,
+	CDT_GLASSLIKE,
+	CDT_TORCHLIKE,
+	CDT_FENCELIKE
+};
+
+/*
 	Content feature list
 */
 
@@ -124,6 +144,7 @@ struct ContentFeatures
 	video::SMaterial *special_material2;
 	AtlasPointer *special_atlas;
 #endif
+	std::vector<aabb3f> nodeboxes;
 
 	// List of all block textures that have been used (value is dummy)
 	// Exists on server too for cleaner code in content_mapnode.cpp
@@ -131,6 +152,8 @@ struct ContentFeatures
 
 	// Type of MapNode::param1
 	ContentParamType param_type;
+	// drawtype
+	ContentDrawType draw_type;
 	// True for all ground-like things like stone and mud, false for eg. trees
 	bool is_ground_content;
 	bool light_propagates;
@@ -202,8 +225,18 @@ struct ContentFeatures
 		special_material = NULL;
 		special_material2 = NULL;
 		special_atlas = NULL;
+		nodeboxes.clear();
+		nodeboxes.push_back(core::aabbox3d<f32>(
+			-0.5*BS,
+			-0.5*BS,
+			-0.5*BS,
+			0.5*BS,
+			0.5*BS,
+			0.5*BS
+		));
 #endif
 		param_type = CPT_NONE;
+		draw_type = CDT_AIRLIKE;
 		is_ground_content = false;
 		light_propagates = false;
 		sunlight_propagates = false;
@@ -234,6 +267,26 @@ struct ContentFeatures
 	}
 
 	~ContentFeatures();
+
+	/*
+		Bounding Box
+	*/
+
+	/*
+		Gets list of node boxes (used for collision)
+	*/
+        std::vector<aabb3f> getNodeBoxes() const;
+
+	void setNodeBox(core::aabbox3d<f32> bb)
+	{
+		nodeboxes.clear();
+		nodeboxes.push_back(bb);
+	}
+
+	void addNodeBox(core::aabbox3d<f32> bb)
+	{
+		nodeboxes.push_back(bb);
+	}
 
 	/*
 		Quickhands for simple materials
@@ -278,10 +331,20 @@ struct ContentFeatures
 	void setInventoryTextureCube(std::string top,
 			std::string left, std::string right)
 	{}
+	void setInventoryTextureSlab(std::string top,
+			std::string left, std::string right)
+	{}
+	void setInventoryTextureStair(std::string top,
+			std::string left, std::string right)
+	{}
 #else
 	void setInventoryTexture(std::string imgname);
 
 	void setInventoryTextureCube(std::string top,
+			std::string left, std::string right);
+	void setInventoryTextureSlab(std::string top,
+			std::string left, std::string right);
+	void setInventoryTextureStair(std::string top,
 			std::string left, std::string right);
 #endif
 };

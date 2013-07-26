@@ -324,7 +324,7 @@ LocalPlayer::~LocalPlayer()
 }
 
 void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
-		core::list<CollisionInfo> *collision_info)
+                core::list<CollisionInfo> *collision_info)
 {
 	v3f position = getPosition();
 	v3f oldpos = position;
@@ -338,12 +338,11 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 	/*
 		Calculate new position
 	*/
-	position += m_speed * dtime;
+	position += m_speed * dtime/2;
 
 	// Skip collision detection if a special movement mode is used
 	bool free_move = g_settings->getBool("free_move");
-	if(free_move)
-	{
+	if (free_move) {
 		setPosition(position);
 		return;
 	}
@@ -360,20 +359,15 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 	*/
 	try{
 		// If in water, the threshold of coming out is at higher y
-		if(in_water)
-		{
+		if (in_water) {
 			v3s16 pp = floatToInt(position + v3f(0,BS*0.1,0), BS);
 			in_water = content_liquid(map.getNode(pp).getContent());
-		}
 		// If not in water, the threshold of going in is at lower y
-		else
-		{
+		}else{
 			v3s16 pp = floatToInt(position + v3f(0,BS*0.5,0), BS);
 			in_water = content_liquid(map.getNode(pp).getContent());
 		}
-	}
-	catch(InvalidPositionException &e)
-	{
+	}catch(InvalidPositionException &e) {
 		in_water = false;
 	}
 
@@ -383,9 +377,7 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 	try{
 		v3s16 pp = floatToInt(position + v3f(0,0,0), BS);
 		in_water_stable = content_liquid(map.getNode(pp).getContent());
-	}
-	catch(InvalidPositionException &e)
-	{
+	}catch(InvalidPositionException &e) {
 		in_water_stable = false;
 	}
 
@@ -393,14 +385,12 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 	        Check if player is climbing
 	*/
 
-	try {
+	try{
 	        v3s16 pp = floatToInt(position + v3f(0,0.5*BS,0), BS);
 		v3s16 pp2 = floatToInt(position + v3f(0,-0.2*BS,0), BS);
 		is_climbing = ((content_features(map.getNode(pp).getContent()).climbable ||
 				content_features(map.getNode(pp2).getContent()).climbable) && !free_move);
-	}
-	catch(InvalidPositionException &e)
-	{
+	}catch(InvalidPositionException &e) {
 	        is_climbing = false;
 	}
 
@@ -421,67 +411,44 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 	// Maximum distance over border for sneaking
 	f32 sneak_max = BS*0.4;
 
-	/*
-		If sneaking, player has larger collision radius to keep from
-		falling
-	*/
-	/*if(control.sneak)
-		player_radius = sneak_max + d*1.1;*/
-
-	/*
-		If sneaking, keep in range from the last walked node and don't
-		fall off from it
-	*/
-	if(control.sneak && m_sneak_node_exists)
-	{
+	if (control.sneak && m_sneak_node_exists) {
 		f32 maxd = 0.5*BS + sneak_max;
 		v3f lwn_f = intToFloat(m_sneak_node, BS);
 		position.X = rangelim(position.X, lwn_f.X-maxd, lwn_f.X+maxd);
 		position.Z = rangelim(position.Z, lwn_f.Z-maxd, lwn_f.Z+maxd);
 
 		f32 min_y = lwn_f.Y + 0.5*BS;
-		if(position.Y < min_y)
-		{
+		if (position.Y < min_y) {
 			position.Y = min_y;
-
-			//v3f old_speed = m_speed;
 
 			if(m_speed.Y < 0)
 				m_speed.Y = 0;
-
-			/*if(collision_info)
-			{
-				// Report fall collision
-				if(old_speed.Y < m_speed.Y - 0.1)
-				{
-					CollisionInfo info;
-					info.t = COLLISION_FALL;
-					info.speed = m_speed.Y - old_speed.Y;
-					collision_info->push_back(info);
-				}
-			}*/
 		}
 	}
 
 	/*
 		Calculate player collision box (new and old)
 	*/
+
 	core::aabbox3d<f32> playerbox(
-		position.X - player_radius,
-		position.Y - 0.0,
-		position.Z - player_radius,
-		position.X + player_radius,
-		position.Y + player_height,
-		position.Z + player_radius
+		-player_radius,
+		0.0,
+		-player_radius,
+		player_radius,
+		player_height,
+		player_radius
 	);
-	core::aabbox3d<f32> playerbox_old(
-		oldpos.X - player_radius,
-		oldpos.Y - 0.0,
-		oldpos.Z - player_radius,
-		oldpos.X + player_radius,
-		oldpos.Y + player_height,
-		oldpos.Z + player_radius
-	);
+
+	float player_stepheight = touching_ground ? (BS*0.6) : (BS*0.2);
+
+	v3f accel_f = v3f(0,0,0);
+
+	collisionMoveResult result = collisionMoveSimple(&map,
+		pos_max_d, playerbox,
+		player_stepheight, dtime,
+		position,
+		m_speed,
+		accel_f);
 
 	/*
 		If the player's feet touch the topside of any node, this is
@@ -489,200 +456,53 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 
 		Player is allowed to jump when this is true.
 	*/
-	touching_ground = false;
-
-	/*std::cout<<"Checking collisions for ("
-			<<oldpos_i.X<<","<<oldpos_i.Y<<","<<oldpos_i.Z
-			<<") -> ("
-			<<pos_i.X<<","<<pos_i.Y<<","<<pos_i.Z
-			<<"):"<<std::endl;*/
-
-	bool standing_on_unloaded = false;
-
-	/*
-		Go through every node around the player
-	*/
-	for(s16 y = oldpos_i.Y - 1; y <= oldpos_i.Y + 2; y++)
-	for(s16 z = oldpos_i.Z - 1; z <= oldpos_i.Z + 1; z++)
-	for(s16 x = oldpos_i.X - 1; x <= oldpos_i.X + 1; x++)
-	{
-		bool is_unloaded = false;
-		try{
-			// Player collides into walkable nodes
-			if(content_walkable(map.getNode(v3s16(x,y,z)).getContent()) == false)
-				continue;
-		}
-		catch(InvalidPositionException &e)
-		{
-			is_unloaded = true;
-			// Doing nothing here will block the player from
-			// walking over map borders
-		}
-
-		core::aabbox3d<f32> nodebox = getNodeBox(v3s16(x,y,z), BS);
-
-		/*
-			See if the player is touching ground.
-
-			Player touches ground if player's minimum Y is near node's
-			maximum Y and player's X-Z-area overlaps with the node's
-			X-Z-area.
-
-			Use 0.15*BS so that it is easier to get on a node.
-		*/
-		if(
-				//fabs(nodebox.MaxEdge.Y-playerbox.MinEdge.Y) < d
-				fabs(nodebox.MaxEdge.Y-playerbox.MinEdge.Y) < 0.15*BS
-				&& nodebox.MaxEdge.X-d > playerbox.MinEdge.X
-				&& nodebox.MinEdge.X+d < playerbox.MaxEdge.X
-				&& nodebox.MaxEdge.Z-d > playerbox.MinEdge.Z
-				&& nodebox.MinEdge.Z+d < playerbox.MaxEdge.Z
-		){
-			touching_ground = true;
-			if(is_unloaded)
-				standing_on_unloaded = true;
-		}
-
-		// If player doesn't intersect with node, ignore node.
-		if(playerbox.intersectsWithBox(nodebox) == false)
-			continue;
-
-		/*
-			Go through every axis
-		*/
-		v3f dirs[3] = {
-			v3f(0,0,1), // back-front
-			v3f(0,1,0), // top-bottom
-			v3f(1,0,0), // right-left
-		};
-		for(u16 i=0; i<3; i++)
-		{
-			/*
-				Calculate values along the axis
-			*/
-			f32 nodemax = nodebox.MaxEdge.dotProduct(dirs[i]);
-			f32 nodemin = nodebox.MinEdge.dotProduct(dirs[i]);
-			f32 playermax = playerbox.MaxEdge.dotProduct(dirs[i]);
-			f32 playermin = playerbox.MinEdge.dotProduct(dirs[i]);
-			f32 playermax_old = playerbox_old.MaxEdge.dotProduct(dirs[i]);
-			f32 playermin_old = playerbox_old.MinEdge.dotProduct(dirs[i]);
-
-			/*
-				Check collision for the axis.
-				Collision happens when player is going through a surface.
-			*/
-			/*f32 neg_d = d;
-			f32 pos_d = d;
-			// Make it easier to get on top of a node
-			if(i == 1)
-				neg_d = 0.15*BS;
-			bool negative_axis_collides =
-				(nodemax > playermin && nodemax <= playermin_old + neg_d
-					&& m_speed.dotProduct(dirs[i]) < 0);
-			bool positive_axis_collides =
-				(nodemin < playermax && nodemin >= playermax_old - pos_d
-					&& m_speed.dotProduct(dirs[i]) > 0);*/
-			bool negative_axis_collides =
-				(nodemax > playermin && nodemax <= playermin_old + d
-					&& m_speed.dotProduct(dirs[i]) < 0);
-			bool positive_axis_collides =
-				(nodemin < playermax && nodemin >= playermax_old - d
-					&& m_speed.dotProduct(dirs[i]) > 0);
-			bool main_axis_collides =
-					negative_axis_collides || positive_axis_collides;
-
-			/*
-				Check overlap of player and node in other axes
-			*/
-			bool other_axes_overlap = true;
-			for(u16 j=0; j<3; j++)
-			{
-				if(j == i)
-					continue;
-				f32 nodemax = nodebox.MaxEdge.dotProduct(dirs[j]);
-				f32 nodemin = nodebox.MinEdge.dotProduct(dirs[j]);
-				f32 playermax = playerbox.MaxEdge.dotProduct(dirs[j]);
-				f32 playermin = playerbox.MinEdge.dotProduct(dirs[j]);
-				if(!(nodemax - d > playermin && nodemin + d < playermax))
-				{
-					other_axes_overlap = false;
-					break;
-				}
-			}
-
-			/*
-				If this is a collision, revert the position in the main
-				direction.
-			*/
-			if(other_axes_overlap && main_axis_collides)
-			{
-				//v3f old_speed = m_speed;
-
-				m_speed -= m_speed.dotProduct(dirs[i]) * dirs[i];
-				position -= position.dotProduct(dirs[i]) * dirs[i];
-				position += oldpos.dotProduct(dirs[i]) * dirs[i];
-
-				/*if(collision_info)
-				{
-					// Report fall collision
-					if(old_speed.Y < m_speed.Y - 0.1)
-					{
-						CollisionInfo info;
-						info.t = COLLISION_FALL;
-						info.speed = m_speed.Y - old_speed.Y;
-						collision_info->push_back(info);
-					}
-				}*/
-			}
-
-		}
-	} // xyz
+	touching_ground = result.touching_ground;
 
 	/*
 		Check the nodes under the player to see from which node the
-		player is sneaking from, if any.
+		player is sneaking from, if any.  If the node from under
+		the player has been removed, the player falls.
 	*/
-	{
+	v3s16 current_node = floatToInt(position - v3f(0,BS/2,0), BS);
+	if (m_sneak_node_exists && map.getNodeNoEx(m_old_node_below).getContent() == CONTENT_AIR && m_old_node_below_type != CONTENT_AIR) {
+		// Old node appears to have been removed; that is,
+		// it wasn't air before but now it is
+		m_refresh_sneak_node = false;
+		m_sneak_node_exists = false;
+	}else if (map.getNodeNoEx(current_node).getContent() != CONTENT_AIR) {
+		// We are on something, so make sure to recalculate the sneak
+		// node.
+		m_refresh_sneak_node = true;
+	}
+
+	if (m_refresh_sneak_node) {
 		v3s16 pos_i_bottom = floatToInt(position - v3f(0,BS/2,0), BS);
 		v2f player_p2df(position.X, position.Z);
 		f32 min_distance_f = 100000.0*BS;
-		// If already seeking from some node, compare to it.
-		/*if(m_sneak_node_exists)
-		{
-			v3f sneaknode_pf = intToFloat(m_sneak_node, BS);
-			v2f sneaknode_p2df(sneaknode_pf.X, sneaknode_pf.Z);
-			f32 d_horiz_f = player_p2df.getDistanceFrom(sneaknode_p2df);
-			f32 d_vert_f = fabs(sneaknode_pf.Y + BS*0.5 - position.Y);
-			// Ignore if player is not on the same level (likely dropped)
-			if(d_vert_f < 0.15*BS)
-				min_distance_f = d_horiz_f;
-		}*/
+
 		v3s16 new_sneak_node = m_sneak_node;
-		for(s16 x=-1; x<=1; x++)
-		for(s16 z=-1; z<=1; z++)
+		for (s16 x=-1; x<=1; x++)
+		for (s16 z=-1; z<=1; z++)
 		{
 			v3s16 p = pos_i_bottom + v3s16(x,0,z);
 			v3f pf = intToFloat(p, BS);
 			v2f node_p2df(pf.X, pf.Z);
 			f32 distance_f = player_p2df.getDistanceFrom(node_p2df);
 			f32 max_axis_distance_f = MYMAX(
-					fabs(player_p2df.X-node_p2df.X),
-					fabs(player_p2df.Y-node_p2df.Y));
+			fabs(player_p2df.X-node_p2df.X),
+			fabs(player_p2df.Y-node_p2df.Y));
 
-			if(distance_f > min_distance_f ||
-					max_axis_distance_f > 0.5*BS + sneak_max + 0.1*BS)
+			if (distance_f > min_distance_f || max_axis_distance_f > 0.5*BS + sneak_max + 0.1*BS)
 				continue;
 
 			try{
 				// The node to be sneaked on has to be walkable
-				if(content_walkable(map.getNode(p).getContent()) == false)
+				if (content_features(map.getNode(p).getContent()).walkable == false)
 					continue;
 				// And the node above it has to be nonwalkable
-				if(content_walkable(map.getNode(p+v3s16(0,1,0)).getContent()) == true)
+				if (content_features(map.getNode(p+v3s16(0,1,0)).getContent()).walkable == true)
 					continue;
-			}
-			catch(InvalidPositionException &e)
-			{
+			}catch(InvalidPositionException &e) {
 				continue;
 			}
 
@@ -692,22 +512,14 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 
 		bool sneak_node_found = (min_distance_f < 100000.0*BS*0.9);
 
-		if(control.sneak && m_sneak_node_exists)
-		{
-			if(sneak_node_found)
-				m_sneak_node = new_sneak_node;
-		}
-		else
-		{
-			m_sneak_node = new_sneak_node;
-			m_sneak_node_exists = sneak_node_found;
-		}
+		m_sneak_node = new_sneak_node;
+		m_sneak_node_exists = sneak_node_found;
 
 		/*
 			If sneaking, the player's collision box can be in air, so
 			this has to be set explicitly
 		*/
-		if(sneak_node_found && control.sneak)
+		if (sneak_node_found && control.sneak)
 			touching_ground = true;
 	}
 
@@ -722,7 +534,7 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 	if(collision_info)
 	{
 		// Report fall collision
-		if(old_speed.Y < m_speed.Y - 0.1 && !standing_on_unloaded)
+		if(old_speed.Y < m_speed.Y - 0.1 && !result.standing_on_unloaded)
 		{
 			CollisionInfo info;
 			info.t = COLLISION_FALL;

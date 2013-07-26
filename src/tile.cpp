@@ -1349,6 +1349,233 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 				image->drop();
 			}
 		}
+		/*
+			[inventoryslab{topimage{leftimage{rightimage
+			In every subimage, replace ^ with &.
+			Create an "inventory slab".
+			NOTE: This should be used only on its own.
+			Example (a grass slab (not actually used in game):
+			"[inventoryslab{grass.png{mud.png&grass_side.png{mud.png&grass_side.png"
+		*/
+		else if(part_of_name.substr(0,14) == "[inventoryslab")
+		{
+			if(baseimg != NULL)
+			{
+				errorstream<<"generate_image(): baseimg!=NULL "
+						<<"for part_of_name=\""<<part_of_name
+						<<"\", cancelling."<<std::endl;
+				return false;
+			}
+
+			str_replace_char(part_of_name, '&', '^');
+			Strfnd sf(part_of_name);
+			sf.next("{");
+			std::string imagename_top = sf.next("{");
+			std::string imagename_left = sf.next("{");
+			std::string imagename_right = sf.next("{");
+
+			// Generate images for the faces of the cube
+			video::IImage *img_top = generate_image_from_scratch(
+					imagename_top, device);
+			video::IImage *img_left = generate_image_from_scratch(
+					imagename_left, device);
+			video::IImage *img_right = generate_image_from_scratch(
+					imagename_right, device);
+			assert(img_top && img_left && img_right);
+
+			// Create textures from images
+			video::ITexture *texture_top = driver->addTexture(
+					(imagename_top + "__temp__").c_str(), img_top);
+			video::ITexture *texture_left = driver->addTexture(
+					(imagename_left + "__temp__").c_str(), img_left);
+			video::ITexture *texture_right = driver->addTexture(
+					(imagename_right + "__temp__").c_str(), img_right);
+			assert(texture_top && texture_left && texture_right);
+
+			// Drop images
+			img_top->drop();
+			img_left->drop();
+			img_right->drop();
+
+			/*
+				Draw a cube mesh into a render target texture
+			*/
+			scene::IMesh* cube = createCubeMesh(v3f(1, 0.5, 1));
+			setMeshColor(cube, video::SColor(255, 255, 255, 255));
+			cube->getMeshBuffer(0)->getMaterial().setTexture(0, texture_top);
+			cube->getMeshBuffer(1)->getMaterial().setTexture(0, texture_top);
+			cube->getMeshBuffer(2)->getMaterial().setTexture(0, texture_right);
+			cube->getMeshBuffer(3)->getMaterial().setTexture(0, texture_right);
+			cube->getMeshBuffer(4)->getMaterial().setTexture(0, texture_left);
+			cube->getMeshBuffer(5)->getMaterial().setTexture(0, texture_left);
+
+			core::dimension2d<u32> dim(64,64);
+			std::string rtt_texture_name = part_of_name + "_RTT";
+
+			v3f camera_position(0, 1.0, -1.5);
+			camera_position.rotateXZBy(45);
+			v3f camera_lookat(0, 0, 0);
+			core::CMatrix4<f32> camera_projection_matrix;
+			// Set orthogonal projection
+			camera_projection_matrix.buildProjectionMatrixOrthoLH(
+					1.65, 1.65, 0, 100);
+
+			video::SColorf ambient_light(0.2,0.2,0.2);
+			v3f light_position(10, 100, -50);
+			video::SColorf light_color(0.5,0.5,0.5);
+			f32 light_radius = 1000;
+
+			video::ITexture *rtt = generateTextureFromMesh(
+					cube, device, dim, rtt_texture_name,
+					camera_position,
+					camera_lookat,
+					camera_projection_matrix,
+					ambient_light,
+					light_position,
+					light_color,
+					light_radius);
+
+			// Drop mesh
+			cube->drop();
+
+			// Free textures of images
+			driver->removeTexture(texture_top);
+			driver->removeTexture(texture_left);
+			driver->removeTexture(texture_right);
+
+			if(rtt == NULL)
+			{
+				baseimg = generate_image_from_scratch(
+						imagename_top, device);
+				return true;
+			}
+
+			// Create image of render target
+			video::IImage *image = driver->createImage(rtt, v2s32(0,0), dim);
+			assert(image);
+
+			baseimg = driver->createImage(video::ECF_A8R8G8B8, dim);
+
+			if(image)
+			{
+				image->copyTo(baseimg);
+				image->drop();
+			}
+		}
+		/*
+			[inventorystair{topimage{leftimage{rightimage
+			In every subimage, replace ^ with &.
+			Create an "inventory stair".
+			NOTE: This should be used only on its own.
+			Example (a grass stair (not actually used in game):
+			"[inventorystair{grass.png{mud.png&grass_side.png{mud.png&grass_side.png"
+			TODO: not implemented, only creates a cube
+		*/
+		else if(part_of_name.substr(0,15) == "[inventorystair")
+		{
+			if(baseimg != NULL)
+			{
+				errorstream<<"generate_image(): baseimg!=NULL "
+						<<"for part_of_name=\""<<part_of_name
+						<<"\", cancelling."<<std::endl;
+				return false;
+			}
+
+			str_replace_char(part_of_name, '&', '^');
+			Strfnd sf(part_of_name);
+			sf.next("{");
+			std::string imagename_top = sf.next("{");
+			std::string imagename_left = sf.next("{");
+			std::string imagename_right = sf.next("{");
+
+			// Generate images for the faces of the cube
+			video::IImage *img_top = generate_image_from_scratch(
+					imagename_top, device);
+			video::IImage *img_left = generate_image_from_scratch(
+					imagename_left, device);
+			video::IImage *img_right = generate_image_from_scratch(
+					imagename_right, device);
+			assert(img_top && img_left && img_right);
+
+			// Create textures from images
+			video::ITexture *texture_top = driver->addTexture(
+					(imagename_top + "__temp__").c_str(), img_top);
+			video::ITexture *texture_left = driver->addTexture(
+					(imagename_left + "__temp__").c_str(), img_left);
+			video::ITexture *texture_right = driver->addTexture(
+					(imagename_right + "__temp__").c_str(), img_right);
+			assert(texture_top && texture_left && texture_right);
+
+			// Drop images
+			img_top->drop();
+			img_left->drop();
+			img_right->drop();
+
+			/*
+				Draw a cube mesh into a render target texture
+			*/
+			scene::IMesh* cube = createCubeMesh(v3f(1, 1, 1));
+			setMeshColor(cube, video::SColor(255, 255, 255, 255));
+			cube->getMeshBuffer(0)->getMaterial().setTexture(0, texture_top);
+			cube->getMeshBuffer(1)->getMaterial().setTexture(0, texture_top);
+			cube->getMeshBuffer(2)->getMaterial().setTexture(0, texture_right);
+			cube->getMeshBuffer(3)->getMaterial().setTexture(0, texture_right);
+			cube->getMeshBuffer(4)->getMaterial().setTexture(0, texture_left);
+			cube->getMeshBuffer(5)->getMaterial().setTexture(0, texture_left);
+
+			core::dimension2d<u32> dim(64,64);
+			std::string rtt_texture_name = part_of_name + "_RTT";
+
+			v3f camera_position(0, 1.0, -1.5);
+			camera_position.rotateXZBy(45);
+			v3f camera_lookat(0, 0, 0);
+			core::CMatrix4<f32> camera_projection_matrix;
+			// Set orthogonal projection
+			camera_projection_matrix.buildProjectionMatrixOrthoLH(
+					1.65, 1.65, 0, 100);
+
+			video::SColorf ambient_light(0.2,0.2,0.2);
+			v3f light_position(10, 100, -50);
+			video::SColorf light_color(0.5,0.5,0.5);
+			f32 light_radius = 1000;
+
+			video::ITexture *rtt = generateTextureFromMesh(
+					cube, device, dim, rtt_texture_name,
+					camera_position,
+					camera_lookat,
+					camera_projection_matrix,
+					ambient_light,
+					light_position,
+					light_color,
+					light_radius);
+
+			// Drop mesh
+			cube->drop();
+
+			// Free textures of images
+			driver->removeTexture(texture_top);
+			driver->removeTexture(texture_left);
+			driver->removeTexture(texture_right);
+
+			if(rtt == NULL)
+			{
+				baseimg = generate_image_from_scratch(
+						imagename_top, device);
+				return true;
+			}
+
+			// Create image of render target
+			video::IImage *image = driver->createImage(rtt, v2s32(0,0), dim);
+			assert(image);
+
+			baseimg = driver->createImage(video::ECF_A8R8G8B8, dim);
+
+			if(image)
+			{
+				image->copyTo(baseimg);
+				image->drop();
+			}
+		}
 		else
 		{
 			infostream<<"generate_image(): Invalid "
