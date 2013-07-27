@@ -137,6 +137,16 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			g_texturesource->getTextureId("glass.png"));
 	material_glass.setTexture(0, pa_glass.atlas);
 
+	// Glasslight material
+	video::SMaterial material_glasslight;
+	material_glasslight.setFlag(video::EMF_LIGHTING, false);
+	material_glasslight.setFlag(video::EMF_BILINEAR_FILTER, false);
+	material_glasslight.setFlag(video::EMF_FOG_ENABLE, true);
+	material_glasslight.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
+	AtlasPointer pa_glasslight = g_texturesource->getTexture(
+			g_texturesource->getTextureId("glasslight.png"));
+	material_glasslight.setTexture(0, pa_glasslight.atlas);
+
 	// Wood material
 	video::SMaterial material_wood;
 	material_wood.setFlag(video::EMF_LIGHTING, false);
@@ -147,6 +157,16 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			g_texturesource->getTextureId("wood.png"));
 	material_wood.setTexture(0, pa_wood.atlas);
 
+	// Junglewood material
+	video::SMaterial material_junglewood;
+	material_junglewood.setFlag(video::EMF_LIGHTING, false);
+	material_junglewood.setFlag(video::EMF_BILINEAR_FILTER, false);
+	material_junglewood.setFlag(video::EMF_FOG_ENABLE, true);
+	material_junglewood.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
+	AtlasPointer pa_junglewood = g_texturesource->getTexture(
+			g_texturesource->getTextureId("junglewood.png"));
+	material_junglewood.setTexture(0, pa_junglewood.atlas);
+
 	// Cobble material
 	video::SMaterial material_cobble;
 	material_cobble.setFlag(video::EMF_LIGHTING, false);
@@ -156,6 +176,46 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 	AtlasPointer pa_cobble = g_texturesource->getTexture(
 			g_texturesource->getTextureId("cobble.png"));
 	material_cobble.setTexture(0, pa_cobble.atlas);
+
+	// Mossycobble material
+	video::SMaterial material_mossycobble;
+	material_mossycobble.setFlag(video::EMF_LIGHTING, false);
+	material_mossycobble.setFlag(video::EMF_BILINEAR_FILTER, false);
+	material_mossycobble.setFlag(video::EMF_FOG_ENABLE, true);
+	material_mossycobble.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
+	AtlasPointer pa_mossycobble = g_texturesource->getTexture(
+			g_texturesource->getTextureId("mossycobble.png"));
+	material_mossycobble.setTexture(0, pa_mossycobble.atlas);
+
+	// Stone material
+	video::SMaterial material_stone;
+	material_stone.setFlag(video::EMF_LIGHTING, false);
+	material_stone.setFlag(video::EMF_BILINEAR_FILTER, false);
+	material_stone.setFlag(video::EMF_FOG_ENABLE, true);
+	material_stone.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
+	AtlasPointer pa_stone = g_texturesource->getTexture(
+			g_texturesource->getTextureId("stone.png"));
+	material_stone.setTexture(0, pa_stone.atlas);
+
+	// Sandstone material
+	video::SMaterial material_sandstone;
+	material_sandstone.setFlag(video::EMF_LIGHTING, false);
+	material_sandstone.setFlag(video::EMF_BILINEAR_FILTER, false);
+	material_sandstone.setFlag(video::EMF_FOG_ENABLE, true);
+	material_sandstone.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
+	AtlasPointer pa_sandstone = g_texturesource->getTexture(
+			g_texturesource->getTextureId("sandstone.png"));
+	material_sandstone.setTexture(0, pa_sandstone.atlas);
+
+	// Brick material
+	video::SMaterial material_brick;
+	material_brick.setFlag(video::EMF_LIGHTING, false);
+	material_brick.setFlag(video::EMF_BILINEAR_FILTER, false);
+	material_brick.setFlag(video::EMF_FOG_ENABLE, true);
+	material_brick.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
+	AtlasPointer pa_brick = g_texturesource->getTexture(
+			g_texturesource->getTextureId("brick.png"));
+	material_brick.setTexture(0, pa_brick.atlas);
 
 	// General ground material for special output
 	// Texture is modified just before usage
@@ -711,6 +771,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				pa_current = &pa_glass;
 				material_current = &material_glass;
 				break;
+			case CONTENT_GLASSLIGHT:
+				pa_current = &pa_glasslight;
+				material_current = &material_glasslight;
+				break;
 			case CONTENT_LEAVES:
 				pa_current = &pa_leaves1;
 				material_current = &material_leaves1;
@@ -1149,7 +1213,46 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		break;
 		case CDT_NODEBOX:
 		{
-			material_current = &material_cobble;
+			switch (n.getContent()) {
+			case CONTENT_MOSSYCOBBLE_STAIR:
+			case CONTENT_MOSSYCOBBLE_STAIR_UD:
+			case CONTENT_MOSSYCOBBLE_SLAB:
+			case CONTENT_MOSSYCOBBLE_SLAB_UD:
+				material_current = &material_mossycobble;
+				break;
+			case CONTENT_STONE_STAIR:
+			case CONTENT_STONE_STAIR_UD:
+			case CONTENT_STONE_SLAB:
+			case CONTENT_STONE_SLAB_UD:
+				material_current = &material_stone;
+				break;
+			case CONTENT_WOOD_STAIR:
+			case CONTENT_WOOD_STAIR_UD:
+			case CONTENT_WOOD_SLAB:
+			case CONTENT_WOOD_SLAB_UD:
+				material_current = &material_wood;
+				break;
+			case CONTENT_JUNGLE_STAIR:
+			case CONTENT_JUNGLE_STAIR_UD:
+			case CONTENT_JUNGLE_SLAB:
+			case CONTENT_JUNGLE_SLAB_UD:
+				material_current = &material_junglewood;
+				break;
+			case CONTENT_BRICK_STAIR:
+			case CONTENT_BRICK_STAIR_UD:
+			case CONTENT_BRICK_SLAB:
+			case CONTENT_BRICK_SLAB_UD:
+				material_current = &material_brick;
+				break;
+			case CONTENT_SANDSTONE_STAIR:
+			case CONTENT_SANDSTONE_STAIR_UD:
+			case CONTENT_SANDSTONE_SLAB:
+			case CONTENT_SANDSTONE_SLAB_UD:
+				material_current = &material_sandstone;
+				break;
+			default:
+				material_current = &material_cobble;
+			}
 
 			u32 lt = 0;
 			u8 ld = 0;

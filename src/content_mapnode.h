@@ -42,6 +42,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 
 #define CONTENT_WATER 2
 #define CONTENT_TORCH 3
+#define CONTENT_GLASSLIGHT 4
 
 #define CONTENT_WATERSOURCE 9
 
@@ -56,14 +57,6 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_LADDER 31
 #define CONTENT_LAVA 32
 #define CONTENT_LAVASOURCE 33
-
-// rays stuff
-#define CONTENT_STONEBRICK 34
-#define CONTENT_STEELSTONEBRICK 35
-#define CONTENT_GLASSLIGHT 36
-#define CONTENT_WOODJUNGLE 37
-#define CONTENT_COALCHECKER 38
-#define CONTENT_BRICKGREEN 39
 
 // 0x800...0xfff (2048...4095): higher 4 bytes of param2 are not usable
 #define CONTENT_GRASS 0x800 //1
@@ -92,6 +85,9 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_NC 0x817
 #define CONTENT_NC_RB 0x818
 #define CONTENT_APPLE 0x819
+#define CONTENT_JUNGLEWOOD 0x81a
+#define CONTENT_STONEBRICK 0x81b
+#define CONTENT_STONEBLOCK 0x81c
 #define CONTENT_SAPLING 0x820
 
 // slabs
@@ -137,6 +133,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 
 #define CONTENT_SLAB_STAIR_UD_MIN 0x831
 #define CONTENT_SLAB_STAIR_UD_MAX 0x83F
+
 
 #endif
 

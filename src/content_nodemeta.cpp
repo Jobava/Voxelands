@@ -428,6 +428,13 @@ bool FurnaceNodeMetadata::step(float dtime)
 			fuel_list->decrementMaterials(1);
 			changed = true;
 		}
+		else if(ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLETREE).checkItem(fuel_item))
+		{
+			m_fuel_totaltime = 30/4;
+			m_fuel_time = 0;
+			fuel_list->decrementMaterials(1);
+			changed = true;
+		}
 		else if(ItemSpec(ITEM_MATERIAL, CONTENT_FENCE).checkItem(fuel_item))
 		{
 			m_fuel_totaltime = 30/2;
