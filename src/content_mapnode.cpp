@@ -1055,7 +1055,6 @@ void content_mapnode_init()
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("cobble.png");
 	f->setInventoryTextureStair("cobble.png", "cobble.png", "cobble.png");
-	f->param_type = CPT_NONE;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1083,7 +1082,6 @@ void content_mapnode_init()
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("mossycobble.png");
 	f->setInventoryTextureStair("mossycobble.png", "mossycobble.png", "mossycobble.png");
-	f->param_type = CPT_NONE;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1111,7 +1109,6 @@ void content_mapnode_init()
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("stone.png");
 	f->setInventoryTextureStair("stone.png", "stone.png", "stone.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1166,7 +1163,6 @@ void content_mapnode_init()
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("junglewood.png");
 	f->setInventoryTextureStair("junglewood.png", "junglewood.png", "junglewood.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	//f->is_ground_content = true;
@@ -1194,7 +1190,6 @@ void content_mapnode_init()
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("brick.png");
 	f->setInventoryTextureStair("brick.png", "brick.png", "brick.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem clay_brick 4");
@@ -1221,7 +1216,6 @@ void content_mapnode_init()
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("sandstone.png");
 	f->setInventoryTextureStair("sandstone.png", "sandstone.png", "sandstone.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1250,7 +1244,6 @@ void content_mapnode_init()
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("cobble.png");
 	f->setInventoryTextureStair("cobble.png", "cobble.png", "cobble.png");
-	f->param_type = CPT_NONE;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1278,7 +1271,6 @@ void content_mapnode_init()
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("mossycobble.png");
 	f->setInventoryTextureStair("mossycobble.png", "mossycobble.png", "mossycobble.png");
-	f->param_type = CPT_NONE;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1290,7 +1282,6 @@ void content_mapnode_init()
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("stone.png");
 	f->setInventoryTextureStair("stone.png", "stone.png", "stone.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1313,7 +1304,6 @@ void content_mapnode_init()
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("junglewood.png");
 	f->setInventoryTextureStair("junglewood.png", "junglewood.png", "junglewood.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	//f->is_ground_content = true;
@@ -1325,7 +1315,6 @@ void content_mapnode_init()
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("brick.png");
 	f->setInventoryTextureStair("brick.png", "brick.png", "brick.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1337,7 +1326,6 @@ void content_mapnode_init()
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("sandstone.png");
 	f->setInventoryTextureStair("sandstone.png", "sandstone.png", "sandstone.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;

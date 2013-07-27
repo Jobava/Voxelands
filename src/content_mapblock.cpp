@@ -1171,7 +1171,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			video::SColor c = MapBlock_LightColor(255, l);
 
 			v3f pos = intToFloat(p+blockpos_nodes, BS);
-			std::vector<aabb3f> boxes = content_features(n).getNodeBoxes();
+			std::vector<aabb3f> boxes = content_features(n).getNodeBoxes(n);
 			for(std::vector<aabb3f>::iterator
 					i = boxes.begin();
 					i != boxes.end(); i++)

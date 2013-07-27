@@ -279,7 +279,7 @@ struct ContentFeatures
 	/*
 		Gets list of node boxes (used for collision)
 	*/
-        std::vector<aabb3f> getNodeBoxes() const;
+        std::vector<aabb3f> getNodeBoxes(MapNode &n) const;
 
 	void setNodeBox(core::aabbox3d<f32> bb)
 	{

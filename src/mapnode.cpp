@@ -39,12 +39,14 @@ ContentFeatures::~ContentFeatures()
 #endif
 }
 
-static std::vector<aabb3f> transformNodeBox(const ContentFeatures &n,
+static std::vector<aabb3f> transformNodeBox(MapNode &n,
 		const std::vector<aabb3f> &nodebox)
 {
 	std::vector<aabb3f> boxes;
 	// TODO: facedir!
 	int facedir = 0;
+	if (content_features(n).param_type == CPT_FACEDIR_SIMPLE)
+		facedir = n.param1;
 	for(std::vector<aabb3f>::const_iterator
 		i = nodebox.begin();
 		i != nodebox.end(); i++)
@@ -68,9 +70,9 @@ static std::vector<aabb3f> transformNodeBox(const ContentFeatures &n,
 	return boxes;
 }
 
-std::vector<aabb3f> ContentFeatures::getNodeBoxes() const
+std::vector<aabb3f> ContentFeatures::getNodeBoxes(MapNode &n) const
 {
-        return transformNodeBox(*this, nodeboxes);
+        return transformNodeBox(n, nodeboxes);
 }
 
 #ifndef SERVER

@@ -237,7 +237,7 @@ collisionMoveResult collisionMoveSimple(Map *map,
 			if(f.walkable == false)
 				continue;
 
-			std::vector<aabb3f> nodeboxes = f.getNodeBoxes();
+			std::vector<aabb3f> nodeboxes = f.getNodeBoxes(n);
 			for(std::vector<aabb3f>::iterator
 					i = nodeboxes.begin();
 					i != nodeboxes.end(); i++)
