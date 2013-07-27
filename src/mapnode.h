@@ -228,6 +228,7 @@ struct ContentFeatures
 		special_material = NULL;
 		special_material2 = NULL;
 		special_atlas = NULL;
+#endif
 		nodeboxes.clear();
 		nodeboxes.push_back(core::aabbox3d<f32>(
 			-0.5*BS,
@@ -237,7 +238,6 @@ struct ContentFeatures
 			0.5*BS,
 			0.5*BS
 		));
-#endif
 		param_type = CPT_NONE;
 		draw_type = CDT_AIRLIKE;
 		is_ground_content = false;
