@@ -188,6 +188,9 @@ struct ContentFeatures
 	// Mineral overrides this.
 	std::string dug_item;
 
+	// When two slabs are joined into a cube, they make this
+	content_t slab_cube_type;
+
 	// Extra dug item and its rarity
 	std::string extra_dug_item;
 	s32 extra_dug_item_rarity;
@@ -252,6 +255,7 @@ struct ContentFeatures
 		air_equivalent = false;
 		often_contains_mineral = false;
 		dug_item = "";
+		slab_cube_type = CONTENT_IGNORE;
 		initial_metadata = NULL;
 		liquid_alternative_flowing = CONTENT_IGNORE;
 		liquid_alternative_source = CONTENT_IGNORE;

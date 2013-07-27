@@ -338,11 +338,11 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 	/*
 		Calculate new position
 	*/
-	position += m_speed * dtime/2;
 
 	// Skip collision detection if a special movement mode is used
 	bool free_move = g_settings->getBool("free_move");
 	if (free_move) {
+		position += m_speed * dtime;
 		setPosition(position);
 		return;
 	}

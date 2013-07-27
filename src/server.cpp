@@ -2735,6 +2735,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		else if(action == 1)
 		{
 
+			v3s16 p_dir = p_under - p_over;
 			InventoryList *ilist = player->inventory.getList("main");
 			if(ilist == NULL)
 				return;
@@ -2838,6 +2839,19 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				// Calculate direction for wall mounted stuff
 				if(content_features(n).wall_mounted)
 					n.param2 = packDir(p_under - p_over);
+
+				// Stairs and Slabs special functions
+				if (n.getContent() >= CONTENT_SLAB_STAIR_MIN && n.getContent() <= CONTENT_SLAB_STAIR_UD_MAX) {
+					MapNode abv = m_env.getMap().getNodeNoEx(p_over+p_dir);
+					// Make a cube is two slabs of the same type are stacked on each other
+					if (content_features(n).slab_cube_type != CONTENT_IGNORE && content_features(n).slab_cube_type == content_features(abv).slab_cube_type) {
+						n.setContent(content_features(n).slab_cube_type);
+						p_over += p_dir;
+					// Flip it upside down if it's being placed on the roof
+					}else if (p_dir.Y == 1) {
+						n.setContent(n.getContent()|CONTENT_SLAB_STAIR_FLIP);
+					}
+				}
 
 				// Calculate the direction for furnaces and chests and stuff
 				if(content_features(n).param_type == CPT_FACEDIR_SIMPLE)

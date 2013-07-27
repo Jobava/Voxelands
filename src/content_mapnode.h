@@ -112,6 +112,11 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_BRICK_STAIR 0x82d
 #define CONTENT_SANDSTONE_STAIR 0x82e
 
+#define CONTENT_SLAB_MASK 0x827
+#define CONTENT_SLAB_STAIR_MIN 0x821
+#define CONTENT_SLAB_STAIR_MAX 0x82F
+#define CONTENT_SLAB_STAIR_FLIP 0x010
+
 // upside down slabs
 #define CONTENT_COBBLE_SLAB_UD 0x831
 #define CONTENT_MOSSYCOBBLE_SLAB_UD 0x832
@@ -129,6 +134,9 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_JUNGLE_STAIR_UD 0x83c
 #define CONTENT_BRICK_STAIR_UD 0x83d
 #define CONTENT_SANDSTONE_STAIR_UD 0x83e
+
+#define CONTENT_SLAB_STAIR_UD_MIN 0x831
+#define CONTENT_SLAB_STAIR_UD_MAX 0x83F
 
 #endif
 
