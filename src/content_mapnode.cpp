@@ -901,7 +901,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	//f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->slab_cube_type = CONTENT_JUNGLETREE;
+	f->slab_cube_type = CONTENT_JUNGLEWOOD;
 	f->setNodeBox(core::aabbox3d<f32>(
 		-0.5*BS,
 		-0.5*BS,
@@ -1041,7 +1041,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	//f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_JUNGLE_SLAB)+" 1";
-	f->slab_cube_type = CONTENT_JUNGLETREE;
+	f->slab_cube_type = CONTENT_JUNGLEWOOD;
 	f->setNodeBox(core::aabbox3d<f32>(
 		-0.5*BS,
 		0.,
