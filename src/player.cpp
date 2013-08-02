@@ -214,7 +214,7 @@ RemotePlayer::RemotePlayer(
 			return;
 		m_text->setPosition(v3f(0, (f32)BS*2.1, 0));
 
-		scene::IAnimatedMesh* mesh = mgr->getMesh(getModelPath("character.x").c_str());
+		scene::IAnimatedMesh* mesh = mgr->getMesh(getModelPath("character.b3d").c_str());
 		if (!mesh)
 			return;
 
