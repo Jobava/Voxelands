@@ -363,7 +363,7 @@ InventoryItem *craft_get_result(InventoryItem **items)
 
 		// Converted Locking Chest
 		{
-			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "steel_ingote");
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "steel_ingot");
 			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_CHEST);
 			defs[defs_init].item = new MaterialItem(CONTENT_LOCKABLE_CHEST, 1);
 			defs_init++;
@@ -416,7 +416,7 @@ InventoryItem *craft_get_result(InventoryItem **items)
 		// Uncrafted Steel block
 		{
 			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_STEEL);
-			defs[defs_init].item = new CraftItem("steel_ingot", 1);
+			defs[defs_init].item = new CraftItem("steel_ingot", 9);
 			defs_init++;
 		}
 
