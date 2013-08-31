@@ -39,14 +39,13 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 //              the faces in the list is top-backi-right-front-left-bottom
 //              If you specified 0,0,1,1 for each face, that would be the
 //              same as passing NULL.
-void makeCuboid(video::SMaterial &material, MeshCollector *collector,
+void makeCuboid(video::SMaterial &material, AtlasPointer *pa, MeshCollector *collector,
 	video::SColor &c, const aabb3f &box, const f32* txc)
 {
 	v3f min = box.MinEdge;
 	v3f max = box.MaxEdge;
 
-	if(txc == NULL)
-	{
+	if (txc == NULL) {
 		static const f32 txc_default[24] = {
 			0,0,1,1,
 			0,0,1,1,
@@ -58,8 +57,7 @@ void makeCuboid(video::SMaterial &material, MeshCollector *collector,
 		txc = txc_default;
 	}
 
-	video::S3DVertex vertices[24] =
-	{
+	video::S3DVertex vertices[24] = {
 		// up
 		video::S3DVertex(min.X,max.Y,max.Z, 0,1,0, c, txc[0],txc[1]),
 		video::S3DVertex(max.X,max.Y,max.Z, 0,1,0, c, txc[2],txc[1]),
@@ -92,11 +90,20 @@ void makeCuboid(video::SMaterial &material, MeshCollector *collector,
 		video::S3DVertex(min.X,min.Y,min.Z, 0,0,-1, c, txc[20],txc[23]),
 	};
 
+
+	if (pa) {
+		f32 sx = pa->x1()-pa->x0();
+		f32 sy = pa->y1()-pa->y0();
+		for (s32 j=0; j<24; j++) {
+			vertices[j].TCoords *= v2f(sx,sy);
+			vertices[j].TCoords += v2f(pa->x0(),pa->y0());
+		}
+	}
+
 	u16 indices[] = {0,1,2,2,3,0};
 
 	// Add to mesh collector
-	for(s32 j=0; j<24; j+=4)
-	{
+	for (s32 j=0; j<24; j+=4) {
 		collector->append(material, vertices+j, 4, indices, 6);
 	}
 }
@@ -876,7 +883,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					0.35,0,0.65,1,
 					0.35,0,0.65,1,
 					0.4,0.4,0.6,0.6};
-			makeCuboid(material_wood, &collector, c, post, postuv);
+			makeCuboid(material_wood, &pa_wood, &collector, c, post, postuv);
 
 			// Now a section of fence, +X, if there's a post there
 			v3s16 p2 = p;
@@ -896,10 +903,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					0,0.4,1,0.6,
 					0,0.4,1,0.6,
 					0,0.4,1,0.6};
-				makeCuboid(material_wood, &collector, c, bar, xrailuv);
+				makeCuboid(material_wood, &pa_wood, &collector, c, bar, xrailuv);
 				bar.MinEdge.Y -= BS/2;
 				bar.MaxEdge.Y -= BS/2;
-				makeCuboid(material_wood, &collector, c, bar, xrailuv);
+				makeCuboid(material_wood, &pa_wood, &collector, c, bar, xrailuv);
 			}
 
 			// Now a section of fence, +Z, if there's a post there
@@ -920,10 +927,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					0,0.4,1,0.6,
 					0,0.4,1,0.6,
 					0,0.4,1,0.6};
-				makeCuboid(material_wood, &collector, c, bar, zrailuv);
+				makeCuboid(material_wood, &pa_wood, &collector, c, bar, zrailuv);
 				bar.MinEdge.Y -= BS/2;
 				bar.MaxEdge.Y -= BS/2;
-				makeCuboid(material_wood, &collector, c, bar, zrailuv);
+				makeCuboid(material_wood, &pa_wood, &collector, c, bar, zrailuv);
 			}
 
 		}
@@ -1219,39 +1226,46 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			case CONTENT_MOSSYCOBBLE_SLAB:
 			case CONTENT_MOSSYCOBBLE_SLAB_UD:
 				material_current = &material_mossycobble;
+				pa_current = &pa_mossycobble;
 				break;
 			case CONTENT_STONE_STAIR:
 			case CONTENT_STONE_STAIR_UD:
 			case CONTENT_STONE_SLAB:
 			case CONTENT_STONE_SLAB_UD:
 				material_current = &material_stone;
+				pa_current = &pa_stone;
 				break;
 			case CONTENT_WOOD_STAIR:
 			case CONTENT_WOOD_STAIR_UD:
 			case CONTENT_WOOD_SLAB:
 			case CONTENT_WOOD_SLAB_UD:
 				material_current = &material_wood;
+				pa_current = &pa_wood;
 				break;
 			case CONTENT_JUNGLE_STAIR:
 			case CONTENT_JUNGLE_STAIR_UD:
 			case CONTENT_JUNGLE_SLAB:
 			case CONTENT_JUNGLE_SLAB_UD:
 				material_current = &material_junglewood;
+				pa_current = &pa_junglewood;
 				break;
 			case CONTENT_BRICK_STAIR:
 			case CONTENT_BRICK_STAIR_UD:
 			case CONTENT_BRICK_SLAB:
 			case CONTENT_BRICK_SLAB_UD:
 				material_current = &material_brick;
+				pa_current = &pa_brick;
 				break;
 			case CONTENT_SANDSTONE_STAIR:
 			case CONTENT_SANDSTONE_STAIR_UD:
 			case CONTENT_SANDSTONE_SLAB:
 			case CONTENT_SANDSTONE_SLAB_UD:
 				material_current = &material_sandstone;
+				pa_current = &pa_sandstone;
 				break;
 			default:
 				material_current = &material_cobble;
+				pa_current = &pa_cobble;
 			}
 
 			u32 lt = 0;
@@ -1304,7 +1318,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					// front
 					tx1, 1-ty2, tx2, 1-ty1,
 				};
-				makeCuboid(*material_current, &collector, c, box, txc);
+				makeCuboid(*material_current, pa_current, &collector, c, box, txc);
 			}
 		}
 		break;

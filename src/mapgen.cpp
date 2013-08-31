@@ -1912,6 +1912,10 @@ void make_block(BlockMakeData *data)
 	/*
 		Add mud and sand and others underground (in place of stone)
 	*/
+	content_t liquid_type = CONTENT_LAVASOURCE;
+	if (blockpos.Y > -1 || ((blockpos.X + blockpos.Z)/blockpos.Y+1)%16 == 0) {
+		liquid_type = CONTENT_WATERSOURCE;
+	}
 
 	for(s16 x=node_min.X; x<=node_max.X; x++)
 	for(s16 z=node_min.Z; z<=node_max.Z; z++)
@@ -1941,7 +1945,7 @@ void make_block(BlockMakeData *data)
 					else if(noisebuf_ground_crumbleness.get(x,y,z) <
 							-3.0 + MYMIN(0.1 * sqrt((float)MYMAX(0, -y)), 1.5))
 					{
-						vmanip.m_data[i] = MapNode(CONTENT_LAVASOURCE);
+						vmanip.m_data[i] = MapNode(liquid_type);
 						for(s16 x1=-1; x1<=1; x1++)
 						for(s16 y1=-1; y1<=1; y1++)
 						for(s16 z1=-1; z1<=1; z1++)
