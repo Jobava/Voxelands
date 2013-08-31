@@ -270,10 +270,10 @@ void content_mapnode_init()
 	f->light_propagates = true;
 	//f->param_type = CPT_MINERAL;
 	f->param_type = CPT_LIGHT;
-	f->draw_type = CDT_GLASSLIKE;
 	//f->is_ground_content = true;
 	if(new_style_leaves)
 	{
+		f->draw_type = CDT_GLASSLIKE;
 		f->solidness = 0; // drawn separately, makes no faces
 		f->visual_solidness = 1;
 		f->setAllTextures("leaves.png");
@@ -281,6 +281,7 @@ void content_mapnode_init()
 	}
 	else
 	{
+		f->draw_type = CDT_CUBELIKE;
 		f->setAllTextures("[noalpha:leaves.png");
 	}
 	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAPLING)+" 1";
