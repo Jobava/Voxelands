@@ -27,8 +27,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 // For IGameCallback
 #include "guiPauseMenu.h"
 
-enum
-{
+enum {
 	GUI_ID_QUIT_BUTTON = 101,
 	GUI_ID_NAME_INPUT,
 	GUI_ID_ADDRESS_INPUT,
@@ -41,12 +40,25 @@ enum
 	GUI_ID_CREATIVE_CB,
 	GUI_ID_JOIN_GAME_BUTTON,
 	GUI_ID_CHANGE_KEYS_BUTTON,
-	GUI_ID_DELETE_MAP_BUTTON
+	GUI_ID_DELETE_MAP_BUTTON,
+	GUI_ID_TAB_SINGLEPLAYER,
+	GUI_ID_TAB_MULTIPLAYER,
+	GUI_ID_TAB_SETTINGS,
+	GUI_ID_TAB_CREDITS,
+};
+
+enum {
+	TAB_SINGLEPLAYER=0,
+	TAB_MULTIPLAYER,
+	TAB_SETTINGS,
+	TAB_CREDITS
 };
 
 struct MainMenuData
 {
 	MainMenuData():
+		// Generic
+		selected_tab(0),
 		// Client opts
 		fancy_trees(false),
 		smooth_lighting(false),
@@ -59,6 +71,8 @@ struct MainMenuData
 
 	// These are in the native format of the gui elements
 
+	// Generic
+	int selected_tab;
 	// Client options
 	std::wstring address;
 	std::wstring port;
@@ -68,6 +82,12 @@ struct MainMenuData
 	bool smooth_lighting;
 	bool clouds_3d;
 	bool opaque_water;
+	//bool mip_map;
+	//bool anisotropic_filter;
+	//bool bilinear_filter;
+	//bool trilinear_filter;
+	//int enable_shaders;
+	//bool enable_particles;
 	// Server options
 	bool creative_mode;
 	bool enable_damage;
@@ -102,6 +122,11 @@ public:
 
 	bool OnEvent(const SEvent& event);
 
+	int getTab()
+	{
+		return m_data->selected_tab;
+	}
+
 private:
 	MainMenuData *m_data;
 	bool m_accepted;
@@ -111,6 +136,7 @@ private:
 	gui::IGUIElement* parent;
 	s32 id;
 	IMenuManager *menumgr;
+	v2u32 m_screensize;
 };
 
 #endif
