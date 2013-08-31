@@ -316,6 +316,7 @@ bool GUIInventoryMenu::OnEvent(const SEvent& event)
 		if (event.KeyInput.PressedDown && (kp == EscapeKey ||
 			kp == getKeySetting("keymap_inventory")))
 		{
+			m_tooltip_element->setVisible(false);
 			quitMenu();
 			return true;
 		}
