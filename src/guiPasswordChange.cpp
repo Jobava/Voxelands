@@ -84,10 +84,10 @@ void GUIPasswordChange::regenerateGui(v2u32 screensize)
 		Calculate new sizes and positions
 	*/
 	core::rect<s32> rect(
-			screensize.X/2 - 580/2,
-			screensize.Y/2 - 300/2,
-			screensize.X/2 + 580/2,
-			screensize.Y/2 + 300/2
+			screensize.X/2 - 230,
+			screensize.Y/2 - 120,
+			screensize.X/2 + 230,
+			screensize.Y/2 + 120
 	);
 
 	DesiredRect = rect;
@@ -100,7 +100,7 @@ void GUIPasswordChange::regenerateGui(v2u32 screensize)
 	/*
 		Add stuff
 	*/
-	s32 ypos = 50;
+	s32 ypos = 30;
 	changeCtype("");
 	{
 		core::rect<s32> rect(0, 0, 110, 20);
@@ -113,7 +113,7 @@ void GUIPasswordChange::regenerateGui(v2u32 screensize)
 		core::rect<s32> rect(0, 0, 230, 30);
 		rect += topleft_client + v2s32(160, ypos);
 		gui::IGUIEditBox *e =
-		Environment->addEditBox(L"", rect, true, this, ID_oldPassword);
+		Environment->addEditBox(L"", rect, false, this, ID_oldPassword);
 		Environment->setFocus(e);
 		e->setPasswordBox(true);
 	}
@@ -130,7 +130,7 @@ void GUIPasswordChange::regenerateGui(v2u32 screensize)
 		core::rect<s32> rect(0, 0, 230, 30);
 		rect += topleft_client + v2s32(160, ypos);
 		gui::IGUIEditBox *e =
-		Environment->addEditBox(L"", rect, true, this, ID_newPassword1);
+		Environment->addEditBox(L"", rect, false, this, ID_newPassword1);
 		e->setPasswordBox(true);
 	}
 	ypos += 50;
@@ -146,7 +146,7 @@ void GUIPasswordChange::regenerateGui(v2u32 screensize)
 		core::rect<s32> rect(0, 0, 230, 30);
 		rect += topleft_client + v2s32(160, ypos);
 		gui::IGUIEditBox *e =
-		Environment->addEditBox(L"", rect, true, this, ID_newPassword2);
+		Environment->addEditBox(L"", rect, false, this, ID_newPassword2);
 		e->setPasswordBox(true);
 	}
 
@@ -179,8 +179,14 @@ void GUIPasswordChange::drawMenu()
 		return;
 	video::IVideoDriver* driver = Environment->getVideoDriver();
 
-	video::SColor bgcolor(140,0,0,0);
-	driver->draw2DRectangle(bgcolor, AbsoluteRect, &AbsoluteClippingRect);
+	//video::SColor bgcolor(140,0,0,0);
+	//driver->draw2DRectangle(bgcolor, AbsoluteRect, &AbsoluteClippingRect);
+
+	video::SColor bgtcolor(240,50,50,70);
+	video::SColor bgbcolor(240,30,30,50);
+	driver->draw2DRectangle(AbsoluteRect,bgtcolor, bgtcolor, bgbcolor, bgbcolor, &AbsoluteClippingRect);
+	video::SColor bdcolor(245,60,60,80);
+	driver->draw2DRectangleOutline(AbsoluteRect, bdcolor);
 
 	gui::IGUIElement::draw();
 }

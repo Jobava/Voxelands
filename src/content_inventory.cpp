@@ -79,6 +79,39 @@ std::string item_craft_get_image_name(const std::string &subname)
 		return "cotton.png"; // just something
 }
 
+std::string item_craft_get_name(const std::string &subname)
+{
+	if(subname == "paper") {
+		return "Paper";
+	}else if(subname == "book") {
+		return "Book";
+	}else if(subname == "lump_of_coal") {
+		return "Coal Lump";
+	}else if(subname == "lump_of_iron") {
+		return "Iron Lump";
+	}else if(subname == "lump_of_clay") {
+		return "Clay Lump";
+	}else if(subname == "steel_ingot") {
+		return "Steel Ingot";
+	}else if(subname == "clay_brick") {
+		return "Clay Brick";
+	}else if(subname == "rat") {
+		return "Rat";
+	}else if(subname == "cooked_rat") {
+		return "Cooked Rat";
+	}else if(subname == "scorched_stuff") {
+		return "Scorched Stuff";
+	}else if(subname == "firefly") {
+		return "Firefly";
+	}else if(subname == "apple") {
+		return "Apple";
+	}else if(subname == "apple_iron") {
+		return "Iron Apple";
+	}
+
+	return subname;
+}
+
 ServerActiveObject* item_craft_create_object(const std::string &subname,
 		ServerEnvironment *env, u16 id, v3f pos)
 {

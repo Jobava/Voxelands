@@ -94,7 +94,9 @@ GUIInventoryMenu::GUIInventoryMenu(gui::IGUIEnvironment* env,
 	GUIModalMenu(env, parent, id, menumgr),
 	m_menu_size(menu_size),
 	m_c(c),
-	m_invmgr(invmgr)
+	m_invmgr(invmgr),
+	m_pointer(0,0),
+	m_tooltip_element(NULL)
 {
 	m_selected_item = NULL;
 }
@@ -173,10 +175,22 @@ void GUIInventoryMenu::regenerateGui(v2u32 screensize)
 	{
 		core::rect<s32> rect(0, 0, size.X-padding.X*2, helptext_h);
 		rect = rect + v2s32(size.X/2 - rect.getWidth()/2,
-				size.Y-rect.getHeight()-15);
+				size.Y-rect.getHeight()-12);
 		const wchar_t *text =
 		L"Left click: Move all items, Right click: Move single item";
 		Environment->addStaticText(text, rect, false, true, this, 256);
+	}
+	// Add tooltip
+	{
+		// Note: parent != this so that the tooltip isn't clipped by the menu rectangle
+		m_tooltip_element = Environment->addStaticText(L"",core::rect<s32>(0,0,110,18));
+		m_tooltip_element->enableOverrideColor(true);
+		m_tooltip_element->setBackgroundColor(video::SColor(140,30,30,50));
+		m_tooltip_element->setDrawBackground(true);
+		m_tooltip_element->setDrawBorder(true);
+		m_tooltip_element->setOverrideColor(video::SColor(255,255,255,255));
+		m_tooltip_element->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_CENTER);
+		m_tooltip_element->setWordWrap(false);
 	}
 }
 
@@ -194,8 +208,7 @@ GUIInventoryMenu::ItemSpec GUIInventoryMenu::getItemAtPos(v2s32 p) const
 			s32 y = (i/s.geom.X) * spacing.Y;
 			v2s32 p0(x,y);
 			core::rect<s32> rect = imgrect + s.pos + p0;
-			if(rect.isPointInside(p))
-			{
+			if (rect.isPointInside(p)) {
 				return ItemSpec(s.inventoryname, s.listname, i);
 			}
 		}
@@ -219,34 +232,48 @@ void GUIInventoryMenu::drawList(const ListDrawSpec &s)
 	InventoryList *ilist = inv->getList(s.listname);
 
 	core::rect<s32> imgrect(0,0,imgsize.X,imgsize.Y);
+	video::SColor bdcolor(245,60,60,80);
+	video::SColor hbcolor(240,255,0,0);
+	video::SColor bgcolor(240,30,30,50);
 
-	for(s32 i=0; i<s.geom.X*s.geom.Y; i++)
-	{
+	for (s32 i=0; i<s.geom.X*s.geom.Y; i++) {
 		s32 x = (i%s.geom.X) * spacing.X;
 		s32 y = (i/s.geom.X) * spacing.Y;
 		v2s32 p(x,y);
 		core::rect<s32> rect = imgrect + s.pos + p;
 		InventoryItem *item = NULL;
-		if(ilist)
+		if (ilist)
 			item = ilist->getItem(i);
 
-		if(m_selected_item != NULL && m_selected_item->listname == s.listname
-				&& m_selected_item->i == i)
-		{
-			s32 border = 2;
-			driver->draw2DRectangle(video::SColor(255,255,0,0),
-					core::rect<s32>(rect.UpperLeftCorner - v2s32(1,1)*border,
-							rect.LowerRightCorner + v2s32(1,1)*border),
-					&AbsoluteClippingRect);
-		}
-
-		video::SColor bgcolor(255,128,128,128);
 		driver->draw2DRectangle(bgcolor, rect, &AbsoluteClippingRect);
 
-		if(item)
-		{
-			drawInventoryItem(driver, font, item,
-					rect, &AbsoluteClippingRect);
+		if (m_selected_item != NULL && m_selected_item->listname == s.listname && m_selected_item->i == i) {
+			driver->draw2DRectangleOutline(rect, hbcolor);
+
+		}else{
+			driver->draw2DRectangleOutline(rect, bdcolor);
+		}
+
+		if (item) {
+			drawInventoryItem(driver, font, item, rect, &AbsoluteClippingRect);
+			if (rect.isPointInside(m_pointer)) {
+				std::string name = item->getGuiName();
+				if (name != "") {
+					m_tooltip_element->setVisible(true);
+					this->bringToFront(m_tooltip_element);
+					m_tooltip_element->setText(narrow_to_wide(name).c_str());
+					s32 tooltip_x = m_pointer.X + 15;
+					s32 tooltip_y = m_pointer.Y + 15;
+					s32 tooltip_width = m_tooltip_element->getTextWidth() + 14;
+					s32 tooltip_height = m_tooltip_element->getTextHeight() + 4;
+					m_tooltip_element->setRelativePosition(
+						core::rect<s32>(
+							core::position2d<s32>(tooltip_x, tooltip_y),
+							core::dimension2d<s32>(tooltip_width, tooltip_height)
+						)
+					);
+				}
+			}
 		}
 
 	}
@@ -259,15 +286,18 @@ void GUIInventoryMenu::drawMenu()
 		return;
 	video::IVideoDriver* driver = Environment->getVideoDriver();
 
-	video::SColor bgcolor(140,0,0,0);
-	driver->draw2DRectangle(bgcolor, AbsoluteRect, &AbsoluteClippingRect);
+	video::SColor bgtcolor(240,50,50,70);
+	video::SColor bgbcolor(240,30,30,50);
+	driver->draw2DRectangle(AbsoluteRect,bgtcolor, bgtcolor, bgbcolor, bgbcolor, &AbsoluteClippingRect);
+	video::SColor bdcolor(245,60,60,80);
+	driver->draw2DRectangleOutline(AbsoluteRect, bdcolor);
 
 	/*
 		Draw items
 	*/
+	m_tooltip_element->setVisible(false);
 
-	for(u32 i=0; i<m_draw_spec.size(); i++)
-	{
+	for (u32 i=0; i<m_draw_spec.size(); i++) {
 		ListDrawSpec &s = m_draw_spec[i];
 		drawList(s);
 	}
@@ -300,6 +330,9 @@ bool GUIInventoryMenu::OnEvent(const SEvent& event)
 			amount = 1;
 		else if(event.MouseInput.Event == EMIE_MMOUSE_PRESSED_DOWN)
 			amount = 10;
+
+		m_pointer.X = event.MouseInput.X;
+		m_pointer.Y = event.MouseInput.Y;
 
 		if(amount >= 0)
 		{

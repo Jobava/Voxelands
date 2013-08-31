@@ -119,10 +119,12 @@ void GUIDeathScreen::drawMenu()
 		driver->draw2DRectangle(color,
 				core::rect<s32>(0,0,m_screensize.X,m_screensize.Y), NULL);
 	}
-	{
-		video::SColor bgcolor(50,0,0,0);
-		driver->draw2DRectangle(bgcolor, AbsoluteRect, &AbsoluteClippingRect);
-	}
+
+	video::SColor bgtcolor(240,50,50,70);
+	video::SColor bgbcolor(240,30,30,50);
+	driver->draw2DRectangle(AbsoluteRect,bgtcolor, bgtcolor, bgbcolor, bgbcolor, &AbsoluteClippingRect);
+	video::SColor bdcolor(245,60,60,80);
+	driver->draw2DRectangleOutline(AbsoluteRect, bdcolor);
 
 	gui::IGUIElement::draw();
 }

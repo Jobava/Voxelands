@@ -109,7 +109,7 @@ void GUIKeyChangeMenu::regenerateGui(v2u32 screensize)
 				wgettext(key_forward.name()));
 	}
 
-	offset += v2s32(0, 25);
+	offset += v2s32(0, 33);
 	{
 		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
@@ -125,7 +125,7 @@ void GUIKeyChangeMenu::regenerateGui(v2u32 screensize)
 				GUI_ID_KEY_BACKWARD_BUTTON,
 				wgettext(key_backward.name()));
 	}
-	offset += v2s32(0, 25);
+	offset += v2s32(0, 33);
 	{
 		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
@@ -140,7 +140,7 @@ void GUIKeyChangeMenu::regenerateGui(v2u32 screensize)
 		this->left = Environment->addButton(rect, this, GUI_ID_KEY_LEFT_BUTTON,
 				wgettext(key_left.name()));
 	}
-	offset += v2s32(0, 25);
+	offset += v2s32(0, 33);
 	{
 		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
@@ -156,7 +156,7 @@ void GUIKeyChangeMenu::regenerateGui(v2u32 screensize)
 				GUI_ID_KEY_RIGHT_BUTTON,
 				wgettext(key_right.name()));
 	}
-	offset += v2s32(0, 25);
+	offset += v2s32(0, 33);
 	{
 		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
@@ -171,7 +171,7 @@ void GUIKeyChangeMenu::regenerateGui(v2u32 screensize)
 		this->use = Environment->addButton(rect, this, GUI_ID_KEY_USE_BUTTON,
 				wgettext(key_use.name()));
 	}
-	offset += v2s32(0, 25);
+	offset += v2s32(0, 33);
 	{
 		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
@@ -187,7 +187,7 @@ void GUIKeyChangeMenu::regenerateGui(v2u32 screensize)
 				GUI_ID_KEY_SNEAK_BUTTON,
 				wgettext(key_sneak.name()));
 	}
-	offset += v2s32(0, 25);
+	offset += v2s32(0, 33);
 	{
 		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
@@ -202,7 +202,7 @@ void GUIKeyChangeMenu::regenerateGui(v2u32 screensize)
 				wgettext(key_jump.name()));
 	}
 
-	offset += v2s32(0, 25);
+	offset += v2s32(0, 33);
 	{
 		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
@@ -218,7 +218,7 @@ void GUIKeyChangeMenu::regenerateGui(v2u32 screensize)
 				GUI_ID_KEY_INVENTORY_BUTTON,
 				wgettext(key_inventory.name()));
 	}
-	offset += v2s32(0, 25);
+	offset += v2s32(0, 33);
 	{
 		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
@@ -232,7 +232,7 @@ void GUIKeyChangeMenu::regenerateGui(v2u32 screensize)
 		this->chat = Environment->addButton(rect, this, GUI_ID_KEY_CHAT_BUTTON,
 				wgettext(key_chat.name()));
 	}
-	offset += v2s32(0, 25);
+	offset += v2s32(0, 33);
 	{
 		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
@@ -264,7 +264,7 @@ void GUIKeyChangeMenu::regenerateGui(v2u32 screensize)
 		this->fly = Environment->addButton(rect, this, GUI_ID_KEY_FLY_BUTTON,
 				wgettext(key_fly.name()));
 	}
-	offset += v2s32(0, 25);
+	offset += v2s32(0, 33);
 	{
 		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
@@ -279,7 +279,7 @@ void GUIKeyChangeMenu::regenerateGui(v2u32 screensize)
 		this->fast = Environment->addButton(rect, this, GUI_ID_KEY_FAST_BUTTON,
 				wgettext(key_fast.name()));
 	}
-	offset += v2s32(0, 25);
+	offset += v2s32(0, 33);
 	{
 		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
@@ -296,7 +296,7 @@ void GUIKeyChangeMenu::regenerateGui(v2u32 screensize)
 				wgettext(key_range.name()));
 	}
 
-	offset += v2s32(0, 25);
+	offset += v2s32(0, 33);
 	{
 		core::rect < s32 > rect(0, 0, 100, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
@@ -338,7 +338,13 @@ void GUIKeyChangeMenu::drawMenu()
 	{
 		core::rect < s32 > rect(0, 0, 620, 620);
 		rect += AbsoluteRect.UpperLeftCorner;
-		driver->draw2DRectangle(bgcolor, rect, &AbsoluteClippingRect);
+		//driver->draw2DRectangle(bgcolor, rect, &AbsoluteClippingRect);
+
+		video::SColor bgtcolor(240,50,50,70);
+		video::SColor bgbcolor(240,30,30,50);
+		driver->draw2DRectangle(rect,bgtcolor, bgtcolor, bgbcolor, bgbcolor, &AbsoluteClippingRect);
+		video::SColor bdcolor(245,60,60,80);
+		driver->draw2DRectangleOutline(rect, bdcolor);
 	}
 
 	gui::IGUIElement::draw();

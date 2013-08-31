@@ -116,6 +116,7 @@ void content_mapnode_init()
 
 	i = CONTENT_STONE;
 	f = &content_features(i);
+	f->description = std::string("Stone");
 	f->setAllTextures("stone.png");
 	f->setInventoryTextureCube("stone.png", "stone.png", "stone.png");
 	f->param_type = CPT_MINERAL;
@@ -129,6 +130,7 @@ void content_mapnode_init()
 
 	i = CONTENT_STONEBRICK;
 	f = &content_features(i);
+	f->description = std::string("Stone Brick");
 	f->setAllTextures("stonebrick.png");
 	f->setInventoryTextureCube("stonebrick.png", "stonebrick.png", "stonebrick.png");
 	f->param_type = CPT_NONE;
@@ -139,6 +141,7 @@ void content_mapnode_init()
 
 	i = CONTENT_STONEBLOCK;
 	f = &content_features(i);
+	f->description = std::string("Stone Block");
 	f->setAllTextures("stoneblock.png");
 	f->setInventoryTextureCube("stoneblock.png", "stoneblock.png", "stoneblock.png");
 	f->param_type = CPT_NONE;
@@ -149,6 +152,7 @@ void content_mapnode_init()
 
 	i = CONTENT_GRASS;
 	f = &content_features(i);
+	f->description = std::string("Grass");
 	f->setAllTextures("mud.png^grass_side.png");
 	f->setTexture(0, "grass.png");
 	f->setTexture(1, "mud.png");
@@ -160,6 +164,7 @@ void content_mapnode_init()
 
 	i = CONTENT_FARM_DIRT;
 	f = &content_features(i);
+	f->description = std::string("Farm Dirt");
 	f->setAllTextures("dirt.png");
 	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
@@ -169,6 +174,7 @@ void content_mapnode_init()
 
 	i = CONTENT_MUD;
 	f = &content_features(i);
+	f->description = std::string("Mud");
 	f->setAllTextures("mud.png");
 	f->setInventoryTextureCube("mud.png", "mud.png", "mud.png");
 	f->param_type = CPT_MINERAL;
@@ -179,6 +185,7 @@ void content_mapnode_init()
 
 	i = CONTENT_SAND;
 	f = &content_features(i);
+	f->description = std::string("Sand");
 	f->setAllTextures("sand.png");
 	f->setInventoryTextureCube("sand.png", "sand.png", "sand.png");
 	f->param_type = CPT_MINERAL;
@@ -189,6 +196,7 @@ void content_mapnode_init()
 
 	i = CONTENT_GRAVEL;
 	f = &content_features(i);
+	f->description = std::string("Gravel");
 	f->setAllTextures("gravel.png");
 	f->setInventoryTextureCube("gravel.png", "gravel.png", "gravel.png");
 	f->param_type = CPT_MINERAL;
@@ -199,6 +207,7 @@ void content_mapnode_init()
 
 	i = CONTENT_SANDSTONE;
 	f = &content_features(i);
+	f->description = std::string("Sand Stone");
 	f->setAllTextures("sandstone.png");
 	f->setInventoryTextureCube("sandstone.png", "sandstone.png", "sandstone.png");
 	f->param_type = CPT_MINERAL;
@@ -209,6 +218,7 @@ void content_mapnode_init()
 
 	i = CONTENT_CLAY;
 	f = &content_features(i);
+	f->description = std::string("Clay");
 	f->setAllTextures("clay.png");
 	f->setInventoryTextureCube("clay.png", "clay.png", "clay.png");
 	f->param_type = CPT_MINERAL;
@@ -219,6 +229,7 @@ void content_mapnode_init()
 
 	i = CONTENT_BRICK;
 	f = &content_features(i);
+	f->description = std::string("Brick");
 	f->setAllTextures("brick.png");
 	f->setInventoryTextureCube("brick.png", "brick.png", "brick.png");
 	f->param_type = CPT_MINERAL;
@@ -229,6 +240,7 @@ void content_mapnode_init()
 
 	i = CONTENT_TREE;
 	f = &content_features(i);
+	f->description = std::string("Tree");
 	f->setAllTextures("tree.png");
 	f->setTexture(0, "tree_top.png");
 	f->setTexture(1, "tree_top.png");
@@ -241,6 +253,7 @@ void content_mapnode_init()
 
 	i = CONTENT_JUNGLETREE;
 	f = &content_features(i);
+	f->description = std::string("Jungle Tree");
 	f->setAllTextures("jungletree.png");
 	f->setTexture(0, "jungletree_top.png");
 	f->setTexture(1, "jungletree_top.png");
@@ -253,6 +266,7 @@ void content_mapnode_init()
 
 	i = CONTENT_JUNGLEGRASS;
 	f = &content_features(i);
+	f->description = std::string("Jungle Grass");
 	f->setInventoryTexture("junglegrass.png");
 	f->used_texturenames["junglegrass.png"] = true;
 	f->light_propagates = true;
@@ -267,6 +281,7 @@ void content_mapnode_init()
 
 	i = CONTENT_LEAVES;
 	f = &content_features(i);
+	f->description = std::string("Leaves");
 	f->light_propagates = true;
 	//f->param_type = CPT_MINERAL;
 	f->param_type = CPT_LIGHT;
@@ -291,6 +306,7 @@ void content_mapnode_init()
 
 	i = CONTENT_CACTUS;
 	f = &content_features(i);
+	f->description = std::string("Cactus");
 	f->setAllTextures("cactus_side.png");
 	f->setTexture(0, "cactus_top.png");
 	f->setTexture(1, "cactus_top.png");
@@ -303,6 +319,7 @@ void content_mapnode_init()
 
 	i = CONTENT_PAPYRUS;
 	f = &content_features(i);
+	f->description = std::string("Papyrus");
 	f->setInventoryTexture("papyrus.png");
 	f->used_texturenames["papyrus.png"] = true;
 	f->light_propagates = true;
@@ -316,6 +333,7 @@ void content_mapnode_init()
 
 	i = CONTENT_BOOKSHELF;
 	f = &content_features(i);
+	f->description = std::string("Book Shelf");
 	f->setAllTextures("bookshelf.png");
 	f->setTexture(0, "wood.png");
 	f->setTexture(1, "wood.png");
@@ -341,6 +359,7 @@ void content_mapnode_init()
 
 	i = CONTENT_GLASSLIGHT;
 	f = &content_features(i);
+	f->description = std::string("Glass Light");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -356,6 +375,7 @@ void content_mapnode_init()
 
 	i = CONTENT_FENCE;
 	f = &content_features(i);
+	f->description = std::string("Fence");
 	f->light_propagates = true;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_FENCELIKE;
@@ -369,6 +389,7 @@ void content_mapnode_init()
 
 	i = CONTENT_RAIL;
 	f = &content_features(i);
+	f->description = std::string("Rail");
 	f->setInventoryTexture("rail.png");
 	f->used_texturenames["rail.png"] = true;
 	f->light_propagates = true;
@@ -383,6 +404,7 @@ void content_mapnode_init()
 
 	i = CONTENT_LADDER;
 	f = &content_features(i);
+	f->description = std::string("Ladder");
 	f->setInventoryTexture("ladder.png");
 	f->used_texturenames["ladder.png"] = true;
 	f->light_propagates = true;
@@ -399,6 +421,7 @@ void content_mapnode_init()
 
 	i = CONTENT_BORDERSTONE;
 	f = &content_features(i);
+	f->description = std::string("Border Stone");
 	f->setAllTextures("borderstone.png");
 	f->setInventoryTextureCube("borderstone.png", "borderstone.png", "borderstone.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -410,6 +433,7 @@ void content_mapnode_init()
 
 	i = CONTENT_WOOD;
 	f = &content_features(i);
+	f->description = std::string("Wood");
 	f->setAllTextures("wood.png");
 	f->setInventoryTextureCube("wood.png", "wood.png", "wood.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -419,6 +443,7 @@ void content_mapnode_init()
 
 	i = CONTENT_JUNGLEWOOD;
 	f = &content_features(i);
+	f->description = std::string("Jungle Wood");
 	f->setAllTextures("junglewood.png");
 	f->setInventoryTextureCube("junglewood.png", "junglewood.png", "junglewood.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -428,6 +453,7 @@ void content_mapnode_init()
 
 	i = CONTENT_MESE;
 	f = &content_features(i);
+	f->description = std::string("Mese");
 	f->setAllTextures("mese.png");
 	f->setInventoryTextureCube("mese.png", "mese.png", "mese.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -437,6 +463,7 @@ void content_mapnode_init()
 
 	i = CONTENT_COTTON;
 	f = &content_features(i);
+	f->description = std::string("Cotton");
 	f->setAllTextures("cotton.png");
 	f->setInventoryTextureCube("cotton.png", "cotton.png", "cotton.png");
 	f->param_type = CPT_MINERAL;
@@ -447,6 +474,7 @@ void content_mapnode_init()
 
 	i = CONTENT_AIR;
 	f = &content_features(i);
+	f->description = std::string("Air");
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_AIRLIKE;
 	f->light_propagates = true;
@@ -460,6 +488,7 @@ void content_mapnode_init()
 
 	i = CONTENT_WATER;
 	f = &content_features(i);
+	f->description = std::string("Water");
 	f->setInventoryTextureCube("water.png", "water.png", "water.png");
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_LIQUID;
@@ -503,6 +532,7 @@ void content_mapnode_init()
 
 	i = CONTENT_WATERSOURCE;
 	f = &content_features(i);
+	f->description = std::string("Water");
 	//f->setInventoryTexture("water.png");
 	f->setInventoryTextureCube("water.png", "water.png", "water.png");
 	if(new_style_water)
@@ -559,6 +589,7 @@ void content_mapnode_init()
 
 	i = CONTENT_LAVA;
 	f = &content_features(i);
+	f->description = std::string("Lava");
 	f->setInventoryTextureCube("lava.png", "lava.png", "lava.png");
 	f->used_texturenames["lava.png"] = true;
 	f->param_type = CPT_LIGHT;
@@ -604,6 +635,7 @@ void content_mapnode_init()
 
 	i = CONTENT_LAVASOURCE;
 	f = &content_features(i);
+	f->description = std::string("Lava");
 	f->setInventoryTextureCube("lava.png", "lava.png", "lava.png");
 	f->used_texturenames["ladder.png"] = true;
 	if(new_style_water)
@@ -660,6 +692,7 @@ void content_mapnode_init()
 
 	i = CONTENT_TORCH;
 	f = &content_features(i);
+	f->description = std::string("Torch");
 	f->setInventoryTexture("torch_on_floor.png");
 	f->used_texturenames["torch_on_floor.png"] = true;
 	f->used_texturenames["torch_on_ceiling.png"] = true;
@@ -679,6 +712,7 @@ void content_mapnode_init()
 
 	i = CONTENT_SIGN_WALL;
 	f = &content_features(i);
+	f->description = std::string("Sign");
 	f->setInventoryTexture("sign_wall.png");
 	f->used_texturenames["sign_wall.png"] = true;
 	f->param_type = CPT_LIGHT;
@@ -696,6 +730,7 @@ void content_mapnode_init()
 
 	i = CONTENT_CHEST;
 	f = &content_features(i);
+	f->description = std::string("Chest");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_CUBELIKE;
 	f->setAllTextures("chest_side.png");
@@ -711,6 +746,7 @@ void content_mapnode_init()
 
 	i = CONTENT_LOCKABLE_CHEST;
 	f = &content_features(i);
+	f->description = std::string("Locking Chest");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_CUBELIKE;
 	f->setAllTextures("chest_side.png");
@@ -726,6 +762,7 @@ void content_mapnode_init()
 
 	i = CONTENT_FURNACE;
 	f = &content_features(i);
+	f->description = std::string("Furnace");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_CUBELIKE;
 	f->setAllTextures("furnace_side.png");
@@ -738,6 +775,7 @@ void content_mapnode_init()
 
 	i = CONTENT_COBBLE;
 	f = &content_features(i);
+	f->description = std::string("Cobble Stone");
 	f->setAllTextures("cobble.png");
 	f->setInventoryTextureCube("cobble.png", "cobble.png", "cobble.png");
 	f->param_type = CPT_NONE;
@@ -748,6 +786,7 @@ void content_mapnode_init()
 
 	i = CONTENT_MOSSYCOBBLE;
 	f = &content_features(i);
+	f->description = std::string("Mossy Cobble Stone");
 	f->setAllTextures("mossycobble.png");
 	f->setInventoryTextureCube("mossycobble.png", "mossycobble.png", "mossycobble.png");
 	f->param_type = CPT_NONE;
@@ -758,6 +797,7 @@ void content_mapnode_init()
 
 	i = CONTENT_STEEL;
 	f = &content_features(i);
+	f->description = std::string("Steel Block");
 	f->setAllTextures("steel_block.png");
 	f->setInventoryTextureCube("steel_block.png", "steel_block.png", "steel_block.png");
 	f->param_type = CPT_NONE;
@@ -768,6 +808,7 @@ void content_mapnode_init()
 
 	i = CONTENT_NC;
 	f = &content_features(i);
+	f->description = std::string("Nyan Cat");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_CUBELIKE;
 	f->setAllTextures("nc_side.png");
@@ -779,6 +820,7 @@ void content_mapnode_init()
 
 	i = CONTENT_NC_RB;
 	f = &content_features(i);
+	f->description = std::string("Rainbow");
 	f->draw_type = CDT_CUBELIKE;
 	f->setAllTextures("nc_rb.png");
 	f->setInventoryTextureCube("nc_rb.png", "nc_rb.png", "nc_rb.png");
@@ -787,6 +829,7 @@ void content_mapnode_init()
 
 	i = CONTENT_SAPLING;
 	f = &content_features(i);
+	f->description = std::string("Sapling");
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_PLANTLIKE;
 	f->setAllTextures("sapling.png");
@@ -801,6 +844,7 @@ void content_mapnode_init()
 
 	i = CONTENT_APPLE;
 	f = &content_features(i);
+	f->description = std::string("Apple");
 	f->setInventoryTexture("apple.png");
 	f->used_texturenames["apple.png"] = true;
 	f->param_type = CPT_LIGHT;
@@ -816,6 +860,7 @@ void content_mapnode_init()
 	// slabs
 	i = CONTENT_COBBLE_SLAB;
 	f = &content_features(i);
+	f->description = std::string("Cobble Stone Slab");
 	f->setAllTextures("cobble.png");
 	f->setInventoryTextureSlab("cobble.png", "cobble.png", "cobble.png");
 	f->param_type = CPT_NONE;
@@ -836,6 +881,7 @@ void content_mapnode_init()
 
 	i = CONTENT_MOSSYCOBBLE_SLAB;
 	f = &content_features(i);
+	f->description = std::string("Mossy Cobble Stone Slab");
 	f->setAllTextures("mossycobble.png");
 	f->setInventoryTextureSlab("mossycobble.png", "mossycobble.png", "mossycobble.png");
 	f->param_type = CPT_NONE;
@@ -856,6 +902,7 @@ void content_mapnode_init()
 
 	i = CONTENT_STONE_SLAB;
 	f = &content_features(i);
+	f->description = std::string("Stone Slab");
 	f->setAllTextures("stone.png");
 	f->setInventoryTextureSlab("stone.png", "stone.png", "stone.png");
 	f->param_type = CPT_MINERAL;
@@ -876,6 +923,7 @@ void content_mapnode_init()
 
 	i = CONTENT_WOOD_SLAB;
 	f = &content_features(i);
+	f->description = std::string("Wood Slab");
 	f->setAllTextures("wood.png");
 	f->setInventoryTextureSlab("wood.png", "wood.png", "wood.png");
 	f->draw_type = CDT_NODEBOX;
@@ -895,6 +943,7 @@ void content_mapnode_init()
 
 	i = CONTENT_JUNGLE_SLAB;
 	f = &content_features(i);
+	f->description = std::string("Jungle Wood Slab");
 	f->setAllTextures("junglewood.png");
 	f->setInventoryTextureSlab("junglewood.png", "junglewood.png", "junglewood.png");
 	f->param_type = CPT_MINERAL;
@@ -915,6 +964,7 @@ void content_mapnode_init()
 
 	i = CONTENT_BRICK_SLAB;
 	f = &content_features(i);
+	f->description = std::string("Brick Slab");
 	f->setAllTextures("brick.png");
 	f->setInventoryTextureSlab("brick.png", "brick.png", "brick.png");
 	f->param_type = CPT_MINERAL;
@@ -935,6 +985,7 @@ void content_mapnode_init()
 
 	i = CONTENT_SANDSTONE_SLAB;
 	f = &content_features(i);
+	f->description = std::string("Sand Stone Slab");
 	f->setAllTextures("sandstone.png");
 	f->setInventoryTextureSlab("sandstone.png", "sandstone.png", "sandstone.png");
 	f->param_type = CPT_MINERAL;
@@ -1096,6 +1147,7 @@ void content_mapnode_init()
 	// stairs
 	i = CONTENT_COBBLE_STAIR;
 	f = &content_features(i);
+	f->description = std::string("Cobble Stone Stair");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("cobble.png");
 	f->setInventoryTextureStair("cobble.png", "cobble.png", "cobble.png");
@@ -1123,6 +1175,7 @@ void content_mapnode_init()
 
 	i = CONTENT_MOSSYCOBBLE_STAIR;
 	f = &content_features(i);
+	f->description = std::string("Mossy Cobble Stone Stair");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("mossycobble.png");
 	f->setInventoryTextureStair("mossycobble.png", "mossycobble.png", "mossycobble.png");
@@ -1150,6 +1203,7 @@ void content_mapnode_init()
 
 	i = CONTENT_STONE_STAIR;
 	f = &content_features(i);
+	f->description = std::string("Stone Stair");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("stone.png");
 	f->setInventoryTextureStair("stone.png", "stone.png", "stone.png");
@@ -1178,6 +1232,7 @@ void content_mapnode_init()
 
 	i = CONTENT_WOOD_STAIR;
 	f = &content_features(i);
+	f->description = std::string("Wood Stair");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -1205,6 +1260,7 @@ void content_mapnode_init()
 
 	i = CONTENT_JUNGLE_STAIR;
 	f = &content_features(i);
+	f->description = std::string("Jungle Wood Stair");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("junglewood.png");
 	f->setInventoryTextureStair("junglewood.png", "junglewood.png", "junglewood.png");
@@ -1232,6 +1288,7 @@ void content_mapnode_init()
 
 	i = CONTENT_BRICK_STAIR;
 	f = &content_features(i);
+	f->description = std::string("Brick Stair");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("brick.png");
 	f->setInventoryTextureStair("brick.png", "brick.png", "brick.png");
@@ -1259,6 +1316,7 @@ void content_mapnode_init()
 
 	i = CONTENT_SANDSTONE_STAIR;
 	f = &content_features(i);
+	f->description = std::string("Sand Stone Stair");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("sandstone.png");
 	f->setInventoryTextureStair("sandstone.png", "sandstone.png", "sandstone.png");

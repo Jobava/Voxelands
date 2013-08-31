@@ -110,12 +110,12 @@ public:
 			const std::string &current_name);
 
 	GUIInventoryMenu(gui::IGUIEnvironment* env,
-			gui::IGUIElement* parent, s32 id,
-			IMenuManager *menumgr,
-			v2s16 menu_size,
-			InventoryContext *c,
-			InventoryManager *invmgr
-			);
+		gui::IGUIElement* parent, s32 id,
+		IMenuManager *menumgr,
+		v2s16 menu_size,
+		InventoryContext *c,
+		InventoryManager *invmgr
+	);
 	~GUIInventoryMenu();
 
 	void setDrawSpec(core::array<DrawSpec> &init_draw_spec)
@@ -154,6 +154,8 @@ protected:
 	core::array<ListDrawSpec> m_draw_spec;
 
 	ItemSpec *m_selected_item;
+	v2s32 m_pointer;
+	gui::IGUIStaticText *m_tooltip_element;
 };
 
 #endif

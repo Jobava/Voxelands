@@ -170,6 +170,10 @@ video::ITexture * CraftItem::getImage() const
 	return g_texturesource->getTextureRaw(name);
 }
 #endif
+std::string CraftItem::getGuiName()
+{
+	return item_craft_get_name(m_subname);
+}
 
 ServerActiveObject* CraftItem::createSAO(ServerEnvironment *env, u16 id, v3f pos)
 {

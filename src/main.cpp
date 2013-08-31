@@ -1470,19 +1470,20 @@ int main(int argc, char *argv[])
 	u32 text_height = font->getDimension(L"Hello, world!").Height;
 	infostream<<"text_height="<<text_height<<std::endl;
 
-	//skin->setColor(gui::EGDC_BUTTON_TEXT, video::SColor(255,0,0,0));
-	skin->setColor(gui::EGDC_BUTTON_TEXT, video::SColor(255,255,255,255));
-	//skin->setColor(gui::EGDC_3D_HIGH_LIGHT, video::SColor(0,0,0,0));
-	//skin->setColor(gui::EGDC_3D_SHADOW, video::SColor(0,0,0,0));
 	skin->setColor(gui::EGDC_3D_HIGH_LIGHT, video::SColor(255,0,0,0));
 	skin->setColor(gui::EGDC_3D_SHADOW, video::SColor(255,0,0,0));
 	skin->setColor(gui::EGDC_HIGH_LIGHT, video::SColor(255,70,100,50));
 	skin->setColor(gui::EGDC_HIGH_LIGHT_TEXT, video::SColor(255,255,255,255));
+	skin->setColor(gui::EGDC_BUTTON_TEXT, video::SColor(255,255,255,255));
 
 #if (IRRLICHT_VERSION_MAJOR >= 1 && IRRLICHT_VERSION_MINOR >= 8) || IRRLICHT_VERSION_MAJOR >= 2
-	// Irrlicht 1.8 input colours
-	skin->setColor(gui::EGDC_EDITABLE, video::SColor(255,128,128,128));
-	skin->setColor(gui::EGDC_FOCUSED_EDITABLE, video::SColor(255,96,134,49));
+		// Irrlicht 1.8 input colours
+	video::SColor ecolor(255,60,60,80);
+	skin->setColor(gui::EGDC_3D_FACE, ecolor);
+	skin->setColor(gui::EGDC_3D_SHADOW, ecolor);
+	skin->setColor(gui::EGDC_3D_DARK_SHADOW, video::SColor(255,30,30,50));
+	skin->setColor(gui::EGDC_EDITABLE, ecolor);
+	skin->setColor(gui::EGDC_FOCUSED_EDITABLE, ecolor);
 #endif
 
 	/*

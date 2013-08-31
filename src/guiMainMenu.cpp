@@ -187,7 +187,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	changeCtype("");
 	{
 		core::rect<s32> rect(0, 0, 20, 125);
-		rect += topleft_client + v2s32(-15, 60);
+		rect += topleft_client + v2s32(-15, 40);
 		const wchar_t *text = L"C\nL\nI\nE\nN\nT";
 		//gui::IGUIStaticText *t =
 		Environment->addStaticText(text, rect, false, true, this, -1);
@@ -197,24 +197,24 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	// Nickname + password
 	{
 		core::rect<s32> rect(0, 0, 110, 20);
-		rect += topleft_client + v2s32(35, 50+6);
+		rect += topleft_client + v2s32(35, 36);
 		Environment->addStaticText(wgettext("Name/Password"),
 			rect, false, true, this, -1);
 	}
 	changeCtype("C");
 	{
 		core::rect<s32> rect(0, 0, 230, 30);
-		rect += topleft_client + v2s32(160, 50);
+		rect += topleft_client + v2s32(160, 30);
 		gui::IGUIElement *e =
-		Environment->addEditBox(text_name.c_str(), rect, true, this, GUI_ID_NAME_INPUT);
+		Environment->addEditBox(text_name.c_str(), rect, false, this, GUI_ID_NAME_INPUT);
 		if(text_name == L"")
 			Environment->setFocus(e);
 	}
 	{
 		core::rect<s32> rect(0, 0, 120, 30);
-		rect += topleft_client + v2s32(size_client.X-60-100, 50);
+		rect += topleft_client + v2s32(size_client.X-60-100, 30);
 		gui::IGUIEditBox *e =
-		Environment->addEditBox(L"", rect, true, this, 264);
+		Environment->addEditBox(L"", rect, false, this, 264);
 		e->setPasswordBox(true);
 		if(text_name != L"" && text_address != L"")
 			Environment->setFocus(e);
@@ -224,53 +224,53 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	// Address + port
 	{
 		core::rect<s32> rect(0, 0, 110, 20);
-		rect += topleft_client + v2s32(35, 100+6);
+		rect += topleft_client + v2s32(35, 86);
 		Environment->addStaticText(wgettext("Address/Port"),
 			rect, false, true, this, -1);
 	}
 	changeCtype("C");
 	{
 		core::rect<s32> rect(0, 0, 230, 30);
-		rect += topleft_client + v2s32(160, 100);
+		rect += topleft_client + v2s32(160, 80);
 		gui::IGUIElement *e =
-		Environment->addEditBox(text_address.c_str(), rect, true, this, GUI_ID_ADDRESS_INPUT);
+		Environment->addEditBox(text_address.c_str(), rect, false, this, GUI_ID_ADDRESS_INPUT);
 		if(text_name != L"" && text_address == L"")
 			Environment->setFocus(e);
 	}
 	{
 		core::rect<s32> rect(0, 0, 120, 30);
 		//rect += topleft_client + v2s32(160+250+20, 125);
-		rect += topleft_client + v2s32(size_client.X-60-100, 100);
-		Environment->addEditBox(text_port.c_str(), rect, true, this, GUI_ID_PORT_INPUT);
+		rect += topleft_client + v2s32(size_client.X-60-100, 80);
+		Environment->addEditBox(text_port.c_str(), rect, false, this, GUI_ID_PORT_INPUT);
 	}
 	changeCtype("");
 	{
 		core::rect<s32> rect(0, 0, 400, 20);
-		rect += topleft_client + v2s32(160, 100+35);
+		rect += topleft_client + v2s32(160, 115);
 		Environment->addStaticText(wgettext("Leave address blank to start a local server."),
 			rect, false, true, this, -1);
 	}
 	{
 		core::rect<s32> rect(0, 0, 250, 30);
-		rect += topleft_client + v2s32(35, 150);
+		rect += topleft_client + v2s32(35, 130);
 		Environment->addCheckBox(fancy_trees, rect, this, GUI_ID_FANCYTREE_CB,
 			wgettext("Fancy trees"));
 	}
 	{
 		core::rect<s32> rect(0, 0, 250, 30);
-		rect += topleft_client + v2s32(35, 150+20);
+		rect += topleft_client + v2s32(35, 150);
 		Environment->addCheckBox(smooth_lighting, rect, this, GUI_ID_SMOOTH_LIGHTING_CB,
 				wgettext("Smooth Lighting"));
 	}
 	{
 		core::rect<s32> rect(0, 0, 250, 30);
-		rect += topleft_client + v2s32(35, 150+40);
+		rect += topleft_client + v2s32(35, 170);
 		Environment->addCheckBox(clouds_3d, rect, this, GUI_ID_3D_CLOUDS_CB,
 				wgettext("3D Clouds"));
 	}
 	{
 		core::rect<s32> rect(0, 0, 250, 30);
-		rect += topleft_client + v2s32(35, 150+60);
+		rect += topleft_client + v2s32(35, 190);
 		Environment->addCheckBox(opaque_water, rect, this, GUI_ID_OPAQUE_WATER_CB,
 				wgettext("Opaque water"));
 	}
@@ -278,7 +278,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	{
 		core::rect<s32> rect(0, 0, 180, 30);
 		//rect += topleft_client + v2s32(size_client.X/2-180/2, 225-30/2);
-		rect += topleft_client + v2s32(size_client.X-180-40, 150+25);
+		rect += topleft_client + v2s32(size_client.X-180-40, 155);
 		Environment->addButton(rect, this, GUI_ID_JOIN_GAME_BUTTON,
 			wgettext("Start Game / Connect"));
 	}
@@ -287,7 +287,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	{
 		core::rect<s32> rect(0, 0, 100, 30);
 		//rect += topleft_client + v2s32(size_client.X/2-180/2, 225-30/2);
-		rect += topleft_client + v2s32(size_client.X-180-40-100-20, 150+25);
+		rect += topleft_client + v2s32(size_client.X-180-40-100-20, 155);
 		Environment->addButton(rect, this, GUI_ID_CHANGE_KEYS_BUTTON,
 			wgettext("Change keys"));
 	}
@@ -338,21 +338,28 @@ void GUIMainMenu::drawMenu()
 		return;
 	video::IVideoDriver* driver = Environment->getVideoDriver();
 
-	/*video::SColor bgcolor(140,0,0,0);
-	driver->draw2DRectangle(bgcolor, AbsoluteRect, &AbsoluteClippingRect);*/
-
 	video::SColor bgcolor(140,0,0,0);
 
 	{
 		core::rect<s32> rect(0, 0, 620, 230);
 		rect += AbsoluteRect.UpperLeftCorner;
-		driver->draw2DRectangle(bgcolor, rect, &AbsoluteClippingRect);
+
+		video::SColor bgtcolor(240,50,50,70);
+		video::SColor bgbcolor(240,30,30,50);
+		driver->draw2DRectangle(rect,bgtcolor, bgtcolor, bgbcolor, bgbcolor, &AbsoluteClippingRect);
+		video::SColor bdcolor(245,60,60,80);
+		driver->draw2DRectangleOutline(rect, bdcolor);
 	}
 
 	{
 		core::rect<s32> rect(0, 250, 620, 430);
 		rect += AbsoluteRect.UpperLeftCorner;
-		driver->draw2DRectangle(bgcolor, rect, &AbsoluteClippingRect);
+
+		video::SColor bgtcolor(240,50,50,70);
+		video::SColor bgbcolor(240,30,30,50);
+		driver->draw2DRectangle(rect,bgtcolor, bgtcolor, bgbcolor, bgbcolor, &AbsoluteClippingRect);
+		video::SColor bdcolor(245,60,60,80);
+		driver->draw2DRectangleOutline(rect, bdcolor);
 	}
 
 	gui::IGUIElement::draw();

@@ -182,73 +182,63 @@ void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 
 	core::rect<s32> imgrect(0,0,imgsize,imgsize);
 
+	std::string selected = "";
+
 	for(s32 i=0; i<itemcount; i++)
 	{
 		InventoryItem *item = mainlist->getItem(i);
 
-		core::rect<s32> rect = imgrect + pos
-				+ v2s32(padding+i*(imgsize+padding*2), padding);
+		core::rect<s32> rect = imgrect + pos + v2s32(padding+i*(imgsize+padding*2), padding);
 
-		if(g_selected_item == i)
-		{
+		if (g_selected_item == i) {
 			video::SColor c_outside(255,255,0,0);
-			//video::SColor c_outside(255,0,0,0);
-			//video::SColor c_inside(255,192,192,192);
-			s32 x1 = rect.UpperLeftCorner.X;
-			s32 y1 = rect.UpperLeftCorner.Y;
-			s32 x2 = rect.LowerRightCorner.X;
-			s32 y2 = rect.LowerRightCorner.Y;
-			// Black base borders
-			driver->draw2DRectangle(c_outside,
-					core::rect<s32>(
-						v2s32(x1 - padding, y1 - padding),
-						v2s32(x2 + padding, y1)
-					), NULL);
-			driver->draw2DRectangle(c_outside,
-					core::rect<s32>(
-						v2s32(x1 - padding, y2),
-						v2s32(x2 + padding, y2 + padding)
-					), NULL);
-			driver->draw2DRectangle(c_outside,
-					core::rect<s32>(
-						v2s32(x1 - padding, y1),
-						v2s32(x1, y2)
-					), NULL);
-			driver->draw2DRectangle(c_outside,
-					core::rect<s32>(
-						v2s32(x2, y1),
-						v2s32(x2 + padding, y2)
-					), NULL);
-			/*// Light inside borders
-			driver->draw2DRectangle(c_inside,
-					core::rect<s32>(
-						v2s32(x1 - padding/2, y1 - padding/2),
-						v2s32(x2 + padding/2, y1)
-					), NULL);
-			driver->draw2DRectangle(c_inside,
-					core::rect<s32>(
-						v2s32(x1 - padding/2, y2),
-						v2s32(x2 + padding/2, y2 + padding/2)
-					), NULL);
-			driver->draw2DRectangle(c_inside,
-					core::rect<s32>(
-						v2s32(x1 - padding/2, y1),
-						v2s32(x1, y2)
-					), NULL);
-			driver->draw2DRectangle(c_inside,
-					core::rect<s32>(
-						v2s32(x2, y1),
-						v2s32(x2 + padding/2, y2)
-					), NULL);
-			*/
-		}
+			//s32 x1 = rect.UpperLeftCorner.X;
+			//s32 y1 = rect.UpperLeftCorner.Y;
+			//s32 x2 = rect.LowerRightCorner.X;
+			//s32 y2 = rect.LowerRightCorner.Y;
+			//// Black base borders
+			//driver->draw2DRectangle(c_outside,
+					//core::rect<s32>(
+						//v2s32(x1 - padding, y1 - padding),
+						//v2s32(x2 + padding, y1)
+					//), NULL);
+			//driver->draw2DRectangle(c_outside,
+					//core::rect<s32>(
+						//v2s32(x1 - padding, y2),
+						//v2s32(x2 + padding, y2 + padding)
+					//), NULL);
+			//driver->draw2DRectangle(c_outside,
+					//core::rect<s32>(
+						//v2s32(x1 - padding, y1),
+						//v2s32(x1, y2)
+					//), NULL);
+			//driver->draw2DRectangle(c_outside,
+					//core::rect<s32>(
+						//v2s32(x2, y1),
+						//v2s32(x2 + padding, y2)
+					//), NULL);
+			s32 xo = (rect.LowerRightCorner.X-rect.UpperLeftCorner.X) / 4;
+			s32 yo = (rect.LowerRightCorner.Y-rect.UpperLeftCorner.Y) / 4;
+			rect.LowerRightCorner.X += xo;
+			rect.UpperLeftCorner.Y -= yo;
+			pos.X += xo;
+			video::SColor bgcolor2(128,0,0,0);
+			driver->draw2DRectangle(bgcolor2, rect, NULL);
+			driver->draw2DRectangleOutline(rect, c_outside);
 
-		video::SColor bgcolor2(128,0,0,0);
-		driver->draw2DRectangle(bgcolor2, rect, NULL);
+			if (item != NULL) {
+				drawInventoryItem(driver, font, item, rect, NULL);
+				std::string name = item->getGuiName();
+				if (name != "") {
+					selected = name;
+				}
+			}
+		}else{
+			video::SColor bgcolor2(128,0,0,0);
+			driver->draw2DRectangle(bgcolor2, rect, NULL);
 
-		if(item != NULL)
-		{
-			drawInventoryItem(driver, font, item, rect, NULL);
+			if (item != NULL)
+				drawInventoryItem(driver, font, item, rect, NULL);
 		}
 	}
 
@@ -258,7 +248,7 @@ void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 	{
 		video::ITexture *heart_texture =
 				driver->getTexture(getTexturePath("heart.png").c_str());
-		v2s32 p = pos + v2s32(0, -20);
+		v2s32 p = pos + v2s32(0, -25);
 		for(s32 i=0; i<halfheartcount/2; i++)
 		{
 			const video::SColor color(255,255,255,255);
@@ -284,6 +274,18 @@ void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 				NULL, colors, true);
 			p += v2s32(16,0);
 		}
+	}
+	if (selected != "") {
+		v2u32 dim = font->getDimension(narrow_to_wide(selected).c_str());
+		v2s32 sdim(dim.X,dim.Y);
+		v2s32 p = pos + v2s32(170, -(24+(sdim.Y-16)));
+
+		core::rect<s32> rect2(
+			p,
+			sdim
+		);
+		font->draw(selected.c_str(), rect2,
+			video::SColor(255,255,255,255), false, false, NULL);
 	}
 }
 
@@ -1235,10 +1237,10 @@ void the_game(
 					v2s32(0, 3), v2s32(8, 4)));
 			draw_spec.push_back(GUIInventoryMenu::DrawSpec(
 					"list", "current_player", "craft",
-					v2s32(3, 0), v2s32(3, 3)));
+					v2s32(2, 0), v2s32(3, 3)));
 			draw_spec.push_back(GUIInventoryMenu::DrawSpec(
 					"list", "current_player", "craftresult",
-					v2s32(7, 1), v2s32(1, 1)));
+					v2s32(6, 1), v2s32(1, 1)));
 
 			menu->setDrawSpec(draw_spec);
 

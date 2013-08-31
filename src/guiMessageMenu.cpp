@@ -69,12 +69,19 @@ void GUIMessageMenu::regenerateGui(v2u32 screensize)
 	/*
 		Calculate new sizes and positions
 	*/
+	//core::rect<s32> rect(
+			//screensize.X/2 - 580/2,
+			//screensize.Y/2 - 300/2,
+			//screensize.X/2 + 580/2,
+			//screensize.Y/2 + 300/2
+	//);
 	core::rect<s32> rect(
-			screensize.X/2 - 580/2,
-			screensize.Y/2 - 300/2,
-			screensize.X/2 + 580/2,
-			screensize.Y/2 + 300/2
+			screensize.X/2 - 160,
+			screensize.Y/2 - 60,
+			screensize.X/2 + 160,
+			screensize.Y/2 + 60
 	);
+
 
 	DesiredRect = rect;
 	recalculateAbsolutePosition(false);
@@ -96,7 +103,7 @@ void GUIMessageMenu::regenerateGui(v2u32 screensize)
 		rect = rect + v2s32(size.X/2-140/2, size.Y/2-30/2+25);
 		gui::IGUIElement *e =
 		Environment->addButton(rect, this, 257,
-			wgettext("Proceed"));
+			wgettext("Continue"));
 		Environment->setFocus(e);
 	}
 	changeCtype("C");
@@ -109,8 +116,14 @@ void GUIMessageMenu::drawMenu()
 		return;
 	video::IVideoDriver* driver = Environment->getVideoDriver();
 
-	video::SColor bgcolor(140,0,0,0);
-	driver->draw2DRectangle(bgcolor, AbsoluteRect, &AbsoluteClippingRect);
+	//video::SColor bgcolor(140,0,0,0);
+	//driver->draw2DRectangle(bgcolor, AbsoluteRect, &AbsoluteClippingRect);
+
+	video::SColor bgtcolor(240,50,50,70);
+	video::SColor bgbcolor(240,30,30,50);
+	driver->draw2DRectangle(AbsoluteRect,bgtcolor, bgtcolor, bgbcolor, bgbcolor, &AbsoluteClippingRect);
+	video::SColor bdcolor(245,60,60,80);
+	driver->draw2DRectangleOutline(AbsoluteRect, bdcolor);
 
 	gui::IGUIElement::draw();
 }

@@ -87,11 +87,17 @@ void GUITextInputMenu::regenerateGui(v2u32 screensize)
 	/*
 		Calculate new sizes and positions
 	*/
+	//core::rect<s32> rect(
+			//screensize.X/2 - 580/2,
+			//screensize.Y/2 - 300/2,
+			//screensize.X/2 + 580/2,
+			//screensize.Y/2 + 300/2
+	//);
 	core::rect<s32> rect(
-			screensize.X/2 - 580/2,
-			screensize.Y/2 - 300/2,
-			screensize.X/2 + 580/2,
-			screensize.Y/2 + 300/2
+			screensize.X/2 - 160,
+			screensize.Y/2 - 60,
+			screensize.X/2 + 160,
+			screensize.Y/2 + 60
 	);
 
 	DesiredRect = rect;
@@ -106,8 +112,9 @@ void GUITextInputMenu::regenerateGui(v2u32 screensize)
 		core::rect<s32> rect(0, 0, 300, 30);
 		rect = rect + v2s32(size.X/2-300/2, size.Y/2-30/2-25);
 		gui::IGUIElement *e =
-		Environment->addEditBox(text.c_str(), rect, true, this, 256);
+		Environment->addEditBox(text.c_str(), rect, false, this, 256);
 		Environment->setFocus(e);
+
 
 		irr::SEvent evt;
 		evt.EventType = EET_KEY_INPUT_EVENT;
@@ -120,7 +127,7 @@ void GUITextInputMenu::regenerateGui(v2u32 screensize)
 		core::rect<s32> rect(0, 0, 140, 30);
 		rect = rect + v2s32(size.X/2-140/2, size.Y/2-30/2+25);
 		Environment->addButton(rect, this, 257,
-			wgettext("Proceed"));
+			wgettext("Write It"));
 	}
 	changeCtype("C");
 }
@@ -132,8 +139,14 @@ void GUITextInputMenu::drawMenu()
 		return;
 	video::IVideoDriver* driver = Environment->getVideoDriver();
 
-	video::SColor bgcolor(140,0,0,0);
-	driver->draw2DRectangle(bgcolor, AbsoluteRect, &AbsoluteClippingRect);
+	//video::SColor bgcolor(140,0,0,0);
+	//driver->draw2DRectangle(bgcolor, AbsoluteRect, &AbsoluteClippingRect);
+
+	video::SColor bgtcolor(240,50,50,70);
+	video::SColor bgbcolor(240,30,30,50);
+	driver->draw2DRectangle(AbsoluteRect,bgtcolor, bgtcolor, bgbcolor, bgbcolor, &AbsoluteClippingRect);
+	video::SColor bdcolor(245,60,60,80);
+	driver->draw2DRectangleOutline(AbsoluteRect, bdcolor);
 
 	gui::IGUIElement::draw();
 }

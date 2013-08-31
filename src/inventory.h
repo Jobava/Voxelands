@@ -59,6 +59,8 @@ public:
 	// Shall return an image of the item without embellishments (or NULL)
 	virtual video::ITexture * getImageRaw() const { return getImage(); }
 #endif
+	// this is used for tool tips
+	virtual std::string getGuiName() { return ""; }
 	// Shall return a text to show in the GUI
 	virtual std::string getText() { return ""; }
 	// Returns the string used for inventory
@@ -157,6 +159,11 @@ public:
 		return content_features(m_content).inventory_texture;
 	}
 #endif
+	std::string getGuiName()
+	{
+		return content_features(m_content).description;
+	}
+
 	std::string getText()
 	{
 		std::ostringstream os;
@@ -230,6 +237,9 @@ public:
 #ifndef SERVER
 	video::ITexture * getImage() const;
 #endif
+
+	std::string getGuiName();
+
 	std::string getText()
 	{
 		std::ostringstream os;
@@ -334,7 +344,7 @@ public:
 			return "tool_steelsword.png";
 		else
 			return "cotton.png";
-}
+	}
 
 	video::ITexture * getImage() const
 	{
@@ -365,6 +375,37 @@ public:
 		return g_texturesource->getTextureRaw(getBasename());
 	}
 #endif
+	std::string getGuiName() {
+		if (m_toolname == "WPick") {
+			return "Wooden Pick";
+		}else if (m_toolname == "STPick") {
+			return "Stone Pick";
+		}else if (m_toolname == "SteelPick") {
+			return "Steel Pick";
+		}else if (m_toolname == "MesePick") {
+			return "Mese Pick";
+		}else if (m_toolname == "WShovel") {
+			return "Wooden Shovel";
+		}else if (m_toolname == "STShovel") {
+			return "Stone Shovel";
+		}else if (m_toolname == "SteelShovel") {
+			return "Steel Shovel";
+		}else if (m_toolname == "WAxe") {
+			return "Wooden Axe";
+		}else if (m_toolname == "STAxe") {
+			return "Stone Axe";
+		}else if (m_toolname == "SteelAxe") {
+			return "Steel Axe";
+		}else if (m_toolname == "WSword") {
+			return "Wooden Sword";
+		}else if (m_toolname == "STSword") {
+			return "Stone Sword";
+		}else if (m_toolname == "SteelSword") {
+			return "Steel Sword";
+		}
+
+		return "";
+	}
 	std::string getText()
 	{
 		return "";

@@ -144,6 +144,7 @@ struct ContentFeatures
 	video::SMaterial *special_material2;
 	AtlasPointer *special_atlas;
 #endif
+	std::string description;
 	std::vector<aabb3f> nodeboxes;
 
 	// List of all block textures that have been used (value is dummy)
@@ -229,6 +230,7 @@ struct ContentFeatures
 		special_material2 = NULL;
 		special_atlas = NULL;
 #endif
+		description = std::string("");
 		nodeboxes.clear();
 		nodeboxes.push_back(core::aabbox3d<f32>(
 			-0.5*BS,
