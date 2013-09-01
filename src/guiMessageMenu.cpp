@@ -92,8 +92,8 @@ void GUIMessageMenu::regenerateGui(v2u32 screensize)
 		Add stuff
 	*/
 	{
-		core::rect<s32> rect(0, 0, 400, 50);
-		rect = rect + v2s32(size.X/2-400/2, size.Y/2-50/2-25);
+		core::rect<s32> rect(0, 0, 300, 50);
+		rect = rect + v2s32(size.X/2-150, size.Y/2-50/2-25);
 		Environment->addStaticText(m_message_text.c_str(), rect, false,
 				true, this, 256);
 	}
