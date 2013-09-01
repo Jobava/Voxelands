@@ -425,7 +425,6 @@ void GUIMainMenu::drawMenu()
 
 void GUIMainMenu::acceptInput()
 {
-	m_data->selected_tab = getTab();
 	{
 		gui::IGUIElement *e = getElementFromId(GUI_ID_NAME_INPUT);
 		if (e != NULL) {
@@ -535,18 +534,30 @@ bool GUIMainMenu::OnEvent(const SEvent& event)
 				quitMenu();
 				return true;
 			case GUI_ID_TAB_SINGLEPLAYER:
+				if (m_data->selected_tab == TAB_SETTINGS)
+					acceptInput();
+				m_accepted = false;
 				m_data->selected_tab = TAB_SINGLEPLAYER;
 				regenerateGui(m_screensize);
 				return true;
 			case GUI_ID_TAB_MULTIPLAYER:
+				if (m_data->selected_tab == TAB_SETTINGS)
+					acceptInput();
+				m_accepted = false;
 				m_data->selected_tab = TAB_MULTIPLAYER;
 				regenerateGui(m_screensize);
 				return true;
 			case GUI_ID_TAB_SETTINGS:
+				if (m_data->selected_tab == TAB_SETTINGS)
+					acceptInput();
+				m_accepted = false;
 				m_data->selected_tab = TAB_SETTINGS;
 				regenerateGui(m_screensize);
 				return true;
 			case GUI_ID_TAB_CREDITS:
+				if (m_data->selected_tab == TAB_SETTINGS)
+					acceptInput();
+				m_accepted = false;
 				m_data->selected_tab = TAB_CREDITS;
 				regenerateGui(m_screensize);
 				return true;
