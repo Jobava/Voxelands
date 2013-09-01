@@ -3,12 +3,35 @@ Minetest-c55 changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1309.00: (release 2013-09-01)
+- a wide assortment of bugfixes to just about everything
+- update license to GPLv3
+- kill rats in lava
+- add farming and farm dirt
+- fix sandstone only dropping 1 sand
+- add static_spawnpoint setting
+- fix various compiler errors
+- add mouse_sensitivity option by EXio4 and kahrl
+- fix player getting thrown underground after connecting
+- 3D player models -> Stu's improved model -> b3d models
+- png shrinkage
+- stop too many mobs spawning
+- let trees grow through apples
+- allow planting of jungle tree
+- add random large trees
+- borderstone
+- implement nodeboxes -> implement stairs and slabs
+- ui redesign and new main menu
+- switch to new versions that don't conflict with minetest-engine
+
 Classic: (initial fork April 2013)
 - Leaf and apple decay, +junglegrass and papyrus now grow
 - Fixed inventory cube rendering
 - Added support for irrlicht 1.8
 - remove CONTENT_CLOUD, replace with CONTENT_COTTON - crafted from
  junglegrass
+
+========================================================================
 
 0.3.1: (released on 2011-11-09)
 - Fix frustum culling (previous versions have rendered too much stuff

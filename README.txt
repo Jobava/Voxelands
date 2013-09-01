@@ -7,9 +7,7 @@ Forked from Minetest 0.3.x by Lisa 'darkrose' Milne <lisa@ltmnet.com>
 
 Further documentation:
 ----------------------
-- Website: http://celeron.55.lt/~celeron55/minetest/
-- Wiki: http://celeron.55.lt/~celeron55/minetest/wiki/
-- Forum: http://celeron.55.lt/~celeron55/minetest/forum/
+- Website: http://www.minetest-classic.com/
 - doc/ directory of source distribution
 
 This game is not finished:
@@ -19,8 +17,18 @@ This game is not finished:
 
 Controls:
 ---------
-- See the in-game pause menu
+- Settable in the Settings tab of the main menu
 - Settable in the configuration file, see the section below.
+	- WASD: Walk
+	- Mouse left: dig/hit
+	- Mouse right: place/use
+	- Mouse wheel: select item
+	- 0...9: select item
+	- Shift: sneak
+	- R: Toggle viewing all loaded chunks
+	- I: Inventory menu
+	- ESC: This menu
+	- T: Chat
 
 Map directory:
 --------------
