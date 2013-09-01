@@ -198,6 +198,12 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		rect += v2s32(10, 200);
 		Environment->addButton(rect, this, GUI_ID_TAB_CREDITS, wgettext("Credits"));
 	}
+	// Quit button
+	{
+		core::rect<s32> rect(0, 0, 180, 30);
+		rect += v2s32(10, 240);
+		Environment->addButton(rect, this, GUI_ID_TAB_QUIT, wgettext("Quit"));
+	}
 
 	v2s32 topleft_content(200, 0);
 	v2s32 size_content = size - v2s32(300, 0);
@@ -435,11 +441,8 @@ void GUIMainMenu::acceptInput()
 	}
 	{
 		gui::IGUIElement *e = getElementFromId(GUI_ID_ADDRESS_INPUT);
-		if (e != NULL) {
+		if (e != NULL)
 			m_data->address = e->getText();
-		}else{
-			m_data->address = std::wstring(L"");
-		}
 	}
 	{
 		gui::IGUIElement *e = getElementFromId(GUI_ID_PORT_INPUT);
@@ -516,6 +519,8 @@ bool GUIMainMenu::OnEvent(const SEvent& event)
 			{
 			case GUI_ID_JOIN_GAME_BUTTON: // Start game
 				acceptInput();
+				if (m_data->selected_tab == TAB_SINGLEPLAYER)
+					m_data->address = std::wstring(L"");
 				quitMenu();
 				return true;
 			case GUI_ID_CHANGE_KEYS_BUTTON: {
@@ -544,6 +549,10 @@ bool GUIMainMenu::OnEvent(const SEvent& event)
 			case GUI_ID_TAB_CREDITS:
 				m_data->selected_tab = TAB_CREDITS;
 				regenerateGui(m_screensize);
+				return true;
+			case GUI_ID_TAB_QUIT:
+				m_gamecallback->exitToOS();
+				quitMenu();
 				return true;
 			}
 		}
