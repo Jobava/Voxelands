@@ -65,6 +65,9 @@ Compiling on GNU/Linux:
 Install dependencies. Here's an example for Debian/Ubuntu:
 $ apt-get install build-essential libirrlicht-dev cmake libbz2-dev libpng12-dev libjpeg8-dev libxxf86vm-dev libgl1-mesa-dev libsqlite3-dev
 
+Here's an example for RedHat/Fedora/CentOS:
+$ yum install irrlicht-devel bzip2-devel libpng-devel libjpeg-turbo-devel libXxf86vm-devel mesa-libglapi libsqlite3x-devel
+
 Download source, extract (this is the URL to the latest of source repository, which might not work at all times):
 $ wget https://github.com/celeron55/minetest/tarball/master -O master.tar.gz
 $ tar xf master.tar.gz
