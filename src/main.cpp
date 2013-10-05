@@ -443,6 +443,7 @@ Doing currently:
 #include "content_craft.h"
 #include "content_craftitem.h"
 #include "content_toolitem.h"
+#include "path.h"
 
 // This makes textures
 ITextureSource *g_texturesource = NULL;

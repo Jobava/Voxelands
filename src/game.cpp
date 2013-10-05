@@ -43,6 +43,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "gettext.h"
 #include "log.h"
 #include "filesys.h"
+#include "path.h"
 
 /*
 	TODO: Move content-aware stuff to separate file by adding properties

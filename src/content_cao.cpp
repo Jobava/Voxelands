@@ -18,7 +18,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 */
 
 #include "content_cao.h"
-#include "tile.h"
+#include "path.h"
 #include "environment.h"
 #include "settings.h"
 #include <ICameraSceneNode.h>

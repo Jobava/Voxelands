@@ -28,7 +28,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "noise.h"
 #include "map.h"
 #include "client.h"
-
+#include "path.h"
 #include "mapgen.h"
 
 FarMesh::FarMesh(

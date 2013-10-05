@@ -39,8 +39,10 @@ class SHA1
 	public:
 		SHA1();
 		~SHA1();
-		void addBytes( const char* data, int num );
+		void addBytes(const char* data, int num );
+		void addFile(const char* file);
 		unsigned char* getDigest();
+		int getDigest(char* buff);
 		// utility methods
 		static Uint32 lrot( Uint32 x, int bits );
 		static void storeBigEndianUint32( unsigned char* byte, Uint32 num );
