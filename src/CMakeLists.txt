@@ -129,6 +129,7 @@ set(common_SRCS
 	base64.cpp
 	ban.cpp
 	http.cpp
+	path.cpp
 )
 
 # This gives us the icon

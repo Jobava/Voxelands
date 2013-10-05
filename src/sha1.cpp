@@ -169,6 +169,20 @@ void SHA1::addBytes( const char* data, int num )
 	}
 }
 
+void SHA1::addFile(const char* file)
+{
+	char buff[2048];
+	size_t l;
+	FILE *f;
+	f = fopen(file,"rb");
+	if (!f)
+		return;
+	while ((l = fread(buff,1,2048,f)) > 0) {
+		addBytes(buff,l);
+	}
+	fclose(f);
+}
+
 // digest ************************************************************
 unsigned char* SHA1::getDigest()
 {
@@ -204,4 +218,17 @@ unsigned char* SHA1::getDigest()
 	storeBigEndianUint32( digest + 16, H4 );
 	// return the digest
 	return digest;
+}
+
+int SHA1::getDigest(char* buff)
+{
+	int l;
+	int t = 0;
+	unsigned char* d = getDigest();
+	for (int i=0; i<20; i++) {
+		l = sprintf(buff,"%02x",d[i]);
+		buff += l;
+		t += l;
+	}
+	return t;
 }

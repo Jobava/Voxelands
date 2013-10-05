@@ -439,6 +439,7 @@ Doing currently:
 #include "settings.h"
 #include "profiler.h"
 #include "log.h"
+#include "path.h"
 
 // This makes textures
 ITextureSource *g_texturesource = NULL;

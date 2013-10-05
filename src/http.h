@@ -27,6 +27,7 @@
 #include "common_irrlicht.h"
 #include "utility.h"
 #include "server.h"
+#include "player.h"
 #include <map>
 
 class HTTPServer;
@@ -57,34 +58,49 @@ public:
 	void clear()
 	{
 		m_contentLength = 0;
-		m_keepalive = false;
 		m_cookie = std::string("");
 		m_url = std::string("");
 		m_url_split.clear();
 	}
-	int read(char* buff, int length);
+	virtual int read(char* buff, int length) = 0;
 	u32 length() {return m_contentLength;}
-	bool keepAlive() {return m_keepalive;}
-	std::string &cookie() {return m_cookie;}
-	std::string &url() {return m_url;}
-	std::string &url(int index) {return m_url_split[index];}
-	std::string &get(std::string name) {return m_headers[name];}
-	void set(std::string name, std::string value) {m_headers[name] = value;}
-	void setLength(u32 length) {m_contentLength = length;}
-	void setKeepAlive(bool ka) {m_keepalive = ka;}
+	std::string getCookie() {return m_cookie;}
+	std::string getUrl() {return m_url;}
+	std::string getUrl(unsigned int index) { if (m_url_split.size() > index) return m_url_split[index]; return std::string("");}
+	std::string getHeader(std::string name) {return m_headers[name];}
+	std::string getMethod() {return m_method;}
+	u32 getLength() {return m_contentLength;}
+
 	void setCookie(std::string cookie) {std::string c(cookie.c_str()); m_cookie = c;}
 	void setUrl(std::string url) {std::string u(url); m_url = u;}
+	void addUrl(std::string url) {m_url_split.push_back(url);}
+	void setHeader(std::string name, std::string value) {m_headers[name] = value;}
 	void setMethod(std::string method) {std::string m(method); m_method = m;}
-	void setProtocol(std::string proto) {std::string p(proto); m_protocol = p;}
+	void setLength(u32 length) {m_contentLength = length;}
 private:
 	std::map<std::string,std::string> m_headers;
 	u32 m_contentLength;
-	bool m_keepalive;
 	std::string m_cookie;
 	std::string m_url;
 	std::vector<std::string> m_url_split;
 	std::string m_method;
-	std::string m_protocol;
+};
+
+class HTTPRequestHeaders : public HTTPHeaders
+{
+public:
+	virtual int read(char* buff, int length);
+private:
+};
+
+class HTTPResponseHeaders : public HTTPHeaders
+{
+public:
+	virtual int read(char* buff, int length);
+	void setResponse(int r) {m_response = r;}
+	int getResponse() {return m_response;}
+private:
+	int m_response;
 };
 
 class HTTPRemoteClient
@@ -96,19 +112,36 @@ public:
 	{
 		m_socket = sock;
 		m_server = server;
+		m_start = 0;
+		m_end = 0;
 	}
 	~HTTPRemoteClient();
 	int receive();
+private:
+	int read(char* buff, int size);
+	int fillBuffer();
+	void sendHeaders();
+
+	int handlePlayer();
+	int handleTexture();
+	int handleModel();
+	int handleMap();
+	int handleIndex();
+	int handleSpecial(const char* response, std::string content);
+	int handleSpecial(const char* response) {return handleSpecial(response,"");}
+
 	void send(char* data);
 	void send(std::string &data) {send((char*)data.c_str());}
 	void sendHTML(char* data);
 	void sendHTML(std::string &data) {sendHTML((char*)data.c_str());}
 	void sendFile(std::string &file);
 	void setResponse(const char* response) {std::string r(response); m_response = r;}
-private:
-	void sendHeaders();
-	HTTPHeaders m_recv_headers;
-	HTTPHeaders m_send_headers;
+
+	char m_buff[2048];
+	int m_start;
+	int m_end;
+	HTTPRequestHeaders m_recv_headers;
+	HTTPResponseHeaders m_send_headers;
 	std::string m_response;
 	bool m_auth;
 	TCPSocket *m_socket;
@@ -123,7 +156,10 @@ public:
 	void start(u16 port);
 	void stop();
 	void step();
-	std::string getPlayerCookie(std::string &name) {return m_server->getPlayerCookie(name);}
+	std::string getPlayerCookie(std::string name) {return m_server->getPlayerCookie(name);}
+	std::string getPlayerFromCookie(std::string cookie) {return m_server->getPlayerFromCookie(cookie);}
+	std::string getPlayerPrivs(std::string name) {return privsToString(m_server->getPlayerAuthPrivs(name));}
+	Server *getGameServer() {return m_server;}
 private:
 	TCPSocket *m_socket;
 	std::vector<HTTPRemoteClient*> m_peers;
@@ -192,12 +228,12 @@ public:
 private:
 	void get(std::string &url);
 	void post(std::string &url, char* data);
-	void postFile(std::string &url, std::string &file);
+	void put(std::string &url, std::string &file);
 	HTTPRequest popRequest();
 	void sendHeaders();
 	TCPSocket *m_socket;
-	HTTPHeaders m_recv_headers;
-	HTTPHeaders m_send_headers;
+	HTTPResponseHeaders m_recv_headers;
+	HTTPRequestHeaders m_send_headers;
 	std::string m_cookie;
 	std::vector<HTTPRequest> m_requests;
 	JMutex m_req_mutex;

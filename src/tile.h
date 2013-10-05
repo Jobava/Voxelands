@@ -32,23 +32,6 @@ using namespace jthread;
 */
 
 /*
-	Gets the path to a texture/model by first checking if it exists
-	in data_path and if not, using the default data path.
-
-	Checks all supported extensions by replacing the original extension.
-
-	If not found, returns "".
-
-	Utilizes a thread-safe cache.
-*/
-std::string getTexturePath(const std::string &filename);
-std::string getModelPath(const std::string &filename);
-
-u32 parseImageTransform(const std::string& s);
-core::dimension2d<u32> imageTransformDimension(u32 transform, core::dimension2d<u32> dim);
-void imageTransform(u32 transform, video::IImage *src, video::IImage *dst);
-
-/*
 	Specifies a texture in an atlas.
 
 	This is used to specify single textures also.

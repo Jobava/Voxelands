@@ -27,7 +27,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "mesh.h"
 #endif
 #include "settings.h"
-#include "filesys.h"
+#include "path.h"
 
 Player::Player():
 	touching_ground(false),
