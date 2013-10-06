@@ -26,24 +26,28 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #ifndef SERVER
 // Create a cuboid.
-//  material  - the material to use (for all 6 faces)
-//  collector - the MeshCollector for the resulting polygons
-//  pa        - texture atlas pointer for the material
-//  c         - vertex colour - used for all
-//  pos       - the position of the centre of the cuboid
-//  rz,ry,rz  - the radius of the cuboid in each dimension
-//  txc       - texture coordinates - this is a list of texture coordinates
-//              for the opposite corners of each face - therefore, there
-//              should be (2+2)*6=24 values in the list. Alternatively, pass
-//              NULL to use the entire texture for each face. The order of
-//              the faces in the list is top-backi-right-front-left-bottom
-//              If you specified 0,0,1,1 for each face, that would be the
-//              same as passing NULL.
-void makeCuboid(video::SMaterial &material, AtlasPointer *pa, MeshCollector *collector,
-	video::SColor &c, const aabb3f &box, const f32* txc)
+// collector - the MeshCollector for the resulting polygons
+// box - the position and size of the box
+// tiles - the tiles (materials) to use (for all 6 faces)
+// tilecount - number of entries in tiles, 1<=tilecount<=6
+// c - vertex colour - used for all
+// txc - texture coordinates - this is a list of texture coordinates
+// for the opposite corners of each face - therefore, there
+// should be (2+2)*6=24 values in the list. Alternatively, pass
+// NULL to use the entire texture for each face. The order of
+// the faces in the list is up-down-right-left-back-front
+// (compatible with ContentFeatures). If you specified 0,0,1,1
+// for each face, that would be the same as passing NULL.
+void makeCuboid(MeshCollector *collector, const aabb3f &box,
+	TileSpec *tiles, int tilecount,
+	video::SColor &c, const f32* txc)
 {
+	assert(tilecount >= 1 && tilecount <= 6);
+
 	v3f min = box.MinEdge;
 	v3f max = box.MaxEdge;
+
+
 
 	if (txc == NULL) {
 		static const f32 txc_default[24] = {
@@ -91,20 +95,16 @@ void makeCuboid(video::SMaterial &material, AtlasPointer *pa, MeshCollector *col
 	};
 
 
-	if (pa) {
-		f32 sx = pa->x1()-pa->x0();
-		f32 sy = pa->y1()-pa->y0();
-		for (s32 j=0; j<24; j++) {
-			vertices[j].TCoords *= v2f(sx,sy);
-			vertices[j].TCoords += v2f(pa->x0(),pa->y0());
-		}
+	for (s32 j=0; j<24; j++) {
+		int tileindex = MYMIN(j/4, tilecount-1);
+		vertices[j].TCoords *= tiles[tileindex].texture.size;
+		vertices[j].TCoords += tiles[tileindex].texture.pos;
 	}
-
 	u16 indices[] = {0,1,2,2,3,0};
-
 	// Add to mesh collector
 	for (s32 j=0; j<24; j+=4) {
-		collector->append(material, vertices+j, 4, indices, 6);
+		int tileindex = MYMIN(j/4, tilecount-1);
+		collector->append(tiles[tileindex].getMaterial(), vertices+j, 4, indices, 6);
 	}
 }
 #endif
@@ -123,181 +123,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		node_liquid_level = 0.85;
 
 	v3s16 blockpos_nodes = data->m_blockpos*MAP_BLOCKSIZE;
-
-	// leaves material
-	video::SMaterial material_leaves1;
-	material_leaves1.setFlag(video::EMF_LIGHTING, false);
-	material_leaves1.setFlag(video::EMF_BILINEAR_FILTER, false);
-	material_leaves1.setFlag(video::EMF_FOG_ENABLE, true);
-	material_leaves1.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-	AtlasPointer pa_leaves1 = g_texturesource->getTexture(
-			g_texturesource->getTextureId("leaves.png"));
-	material_leaves1.setTexture(0, pa_leaves1.atlas);
-
-	// Glass material
-	video::SMaterial material_glass;
-	material_glass.setFlag(video::EMF_LIGHTING, false);
-	material_glass.setFlag(video::EMF_BILINEAR_FILTER, false);
-	material_glass.setFlag(video::EMF_FOG_ENABLE, true);
-	material_glass.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-	AtlasPointer pa_glass = g_texturesource->getTexture(
-			g_texturesource->getTextureId("glass.png"));
-	material_glass.setTexture(0, pa_glass.atlas);
-
-	// Glasslight material
-	video::SMaterial material_glasslight;
-	material_glasslight.setFlag(video::EMF_LIGHTING, false);
-	material_glasslight.setFlag(video::EMF_BILINEAR_FILTER, false);
-	material_glasslight.setFlag(video::EMF_FOG_ENABLE, true);
-	material_glasslight.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-	AtlasPointer pa_glasslight = g_texturesource->getTexture(
-			g_texturesource->getTextureId("glasslight.png"));
-	material_glasslight.setTexture(0, pa_glasslight.atlas);
-
-	// Wood material
-	video::SMaterial material_wood;
-	material_wood.setFlag(video::EMF_LIGHTING, false);
-	material_wood.setFlag(video::EMF_BILINEAR_FILTER, false);
-	material_wood.setFlag(video::EMF_FOG_ENABLE, true);
-	material_wood.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-	AtlasPointer pa_wood = g_texturesource->getTexture(
-			g_texturesource->getTextureId("wood.png"));
-	material_wood.setTexture(0, pa_wood.atlas);
-
-	// Sign material
-	video::SMaterial material_sign;
-	material_sign.setFlag(video::EMF_LIGHTING, false);
-	material_sign.setFlag(video::EMF_BILINEAR_FILTER, false);
-	material_sign.setFlag(video::EMF_BACK_FACE_CULLING, false);
-	material_sign.setFlag(video::EMF_FOG_ENABLE, true);
-	material_sign.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-	AtlasPointer pa_sign = g_texturesource->getTexture(
-			g_texturesource->getTextureId("sign.png"));
-	material_sign.setTexture(0, pa_sign.atlas);
-
-	// Junglewood material
-	video::SMaterial material_junglewood;
-	material_junglewood.setFlag(video::EMF_LIGHTING, false);
-	material_junglewood.setFlag(video::EMF_BILINEAR_FILTER, false);
-	material_junglewood.setFlag(video::EMF_FOG_ENABLE, true);
-	material_junglewood.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-	AtlasPointer pa_junglewood = g_texturesource->getTexture(
-			g_texturesource->getTextureId("junglewood.png"));
-	material_junglewood.setTexture(0, pa_junglewood.atlas);
-
-	// Cobble material
-	video::SMaterial material_cobble;
-	material_cobble.setFlag(video::EMF_LIGHTING, false);
-	material_cobble.setFlag(video::EMF_BILINEAR_FILTER, false);
-	material_cobble.setFlag(video::EMF_FOG_ENABLE, true);
-	material_cobble.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-	AtlasPointer pa_cobble = g_texturesource->getTexture(
-			g_texturesource->getTextureId("cobble.png"));
-	material_cobble.setTexture(0, pa_cobble.atlas);
-
-	// Mossycobble material
-	video::SMaterial material_mossycobble;
-	material_mossycobble.setFlag(video::EMF_LIGHTING, false);
-	material_mossycobble.setFlag(video::EMF_BILINEAR_FILTER, false);
-	material_mossycobble.setFlag(video::EMF_FOG_ENABLE, true);
-	material_mossycobble.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-	AtlasPointer pa_mossycobble = g_texturesource->getTexture(
-			g_texturesource->getTextureId("mossycobble.png"));
-	material_mossycobble.setTexture(0, pa_mossycobble.atlas);
-
-	// Stone material
-	video::SMaterial material_stone;
-	material_stone.setFlag(video::EMF_LIGHTING, false);
-	material_stone.setFlag(video::EMF_BILINEAR_FILTER, false);
-	material_stone.setFlag(video::EMF_FOG_ENABLE, true);
-	material_stone.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-	AtlasPointer pa_stone = g_texturesource->getTexture(
-			g_texturesource->getTextureId("stone.png"));
-	material_stone.setTexture(0, pa_stone.atlas);
-
-	// Sandstone material
-	video::SMaterial material_sandstone;
-	material_sandstone.setFlag(video::EMF_LIGHTING, false);
-	material_sandstone.setFlag(video::EMF_BILINEAR_FILTER, false);
-	material_sandstone.setFlag(video::EMF_FOG_ENABLE, true);
-	material_sandstone.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-	AtlasPointer pa_sandstone = g_texturesource->getTexture(
-			g_texturesource->getTextureId("sandstone.png"));
-	material_sandstone.setTexture(0, pa_sandstone.atlas);
-
-	// Brick material
-	video::SMaterial material_brick;
-	material_brick.setFlag(video::EMF_LIGHTING, false);
-	material_brick.setFlag(video::EMF_BILINEAR_FILTER, false);
-	material_brick.setFlag(video::EMF_FOG_ENABLE, true);
-	material_brick.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-	AtlasPointer pa_brick = g_texturesource->getTexture(
-			g_texturesource->getTextureId("brick.png"));
-	material_brick.setTexture(0, pa_brick.atlas);
-
-	// General ground material for special output
-	// Texture is modified just before usage
-	video::SMaterial material_general;
-	material_general.setFlag(video::EMF_LIGHTING, false);
-	material_general.setFlag(video::EMF_BILINEAR_FILTER, false);
-	material_general.setFlag(video::EMF_FOG_ENABLE, true);
-	material_general.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-
-
-	// Papyrus material
-	video::SMaterial material_papyrus;
-	material_papyrus.setFlag(video::EMF_LIGHTING, false);
-	material_papyrus.setFlag(video::EMF_BACK_FACE_CULLING, false);
-	material_papyrus.setFlag(video::EMF_BILINEAR_FILTER, false);
-	material_papyrus.setFlag(video::EMF_FOG_ENABLE, true);
-	material_papyrus.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-	AtlasPointer pa_papyrus = g_texturesource->getTexture(
-			g_texturesource->getTextureId("papyrus.png"));
-	material_papyrus.setTexture(0, pa_papyrus.atlas);
-
-	// Apple material
-	video::SMaterial material_apple;
-	material_apple.setFlag(video::EMF_LIGHTING, false);
-	material_apple.setFlag(video::EMF_BILINEAR_FILTER, false);
-	material_apple.setFlag(video::EMF_BACK_FACE_CULLING, false);
-	material_apple.setFlag(video::EMF_FOG_ENABLE, true);
-	material_apple.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-	AtlasPointer pa_apple = g_texturesource->getTexture(
-			g_texturesource->getTextureId("apple.png"));
-	material_apple.setTexture(0, pa_apple.atlas);
-
-
-	// Sapling material
-	video::SMaterial material_sapling;
-	material_sapling.setFlag(video::EMF_LIGHTING, false);
-	material_sapling.setFlag(video::EMF_BILINEAR_FILTER, false);
-	material_sapling.setFlag(video::EMF_BACK_FACE_CULLING, false);
-	material_sapling.setFlag(video::EMF_FOG_ENABLE, true);
-	material_sapling.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-	AtlasPointer pa_sapling = g_texturesource->getTexture(
-			g_texturesource->getTextureId("sapling.png"));
-	material_sapling.setTexture(0, pa_sapling.atlas);
-
-
-	// junglegrass material
-	video::SMaterial material_junglegrass;
-	material_junglegrass.setFlag(video::EMF_LIGHTING, false);
-	material_junglegrass.setFlag(video::EMF_BILINEAR_FILTER, false);
-	material_junglegrass.setFlag(video::EMF_BACK_FACE_CULLING, false);
-	material_junglegrass.setFlag(video::EMF_FOG_ENABLE, true);
-	material_junglegrass.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-	AtlasPointer pa_junglegrass = g_texturesource->getTexture(
-			g_texturesource->getTextureId("junglegrass.png"));
-	material_junglegrass.setTexture(0, pa_junglegrass.atlas);
-
-	// sign material
-	AtlasPointer ap_sign_wall = g_texturesource->getTexture("sign_wall.png");
-	// ladder material
-	AtlasPointer ap_ladder = g_texturesource->getTexture("ladder.png");
-
-	// generic material pointer
-	video::SMaterial *material_current;
-	AtlasPointer *pa_current;
 
 	for(s16 z=0; z<MAP_BLOCKSIZE; z++)
 	for(s16 y=0; y<MAP_BLOCKSIZE; y++)
@@ -814,17 +639,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		break;
 		case CDT_SIGNLIKE:
 		{
-			switch (n.getContent()) {
-			case CONTENT_SIGN_WALL:
-				material_current = &material_sign;
-				pa_current = &pa_sign;
-				break;
-			default:
-				material_current = &material_sign;
-				pa_current = &pa_sign;
-				break;
-			}
-
 			u8 l = decode_light(n.getLightBlend(data->m_daynight_ratio));
 			video::SColor c = MapBlock_LightColor(255, l);
 
@@ -869,11 +683,11 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				video::S3DVertex(-0.4*BS,-0.2*BS,0.45*BS, 0,0,-1, c, txc[20],txc[23]),
 			};
 
-			f32 sx = pa_current->x1()-pa_current->x0();
-			f32 sy = pa_current->y1()-pa_current->y0();
+			f32 sx = content_features(n).tiles[0].texture.x1()-content_features(n).tiles[0].texture.x0();
+			f32 sy = content_features(n).tiles[0].texture.y1()-content_features(n).tiles[0].texture.y0();
 			for (s32 j=0; j<24; j++) {
 				vertices[j].TCoords *= v2f(sx,sy);
-				vertices[j].TCoords += v2f(pa_current->x0(),pa_current->y0());
+				vertices[j].TCoords += v2f(content_features(n).tiles[0].texture.x0(),content_features(n).tiles[0].texture.y0());
 			}
 			v3s16 dir = unpackDir(n.param2);
 
@@ -897,7 +711,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			u16 indices[] = {0,1,2,2,3,0};
 			// Add to mesh collector
 			for (s32 j=0; j<24; j+=4) {
-				collector.append(*material_current, &vertices[j], 4, indices, 6);
+				collector.append(content_features(n).tiles[0].getMaterial(), &vertices[j], 4, indices, 6);
 			}
 		}
 		/*
@@ -906,24 +720,15 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		break;
 		case CDT_WALLMOUNT:
 		{
-			switch (n.getContent()) {
-			case CONTENT_LADDER:
-				pa_current = &ap_ladder;
-				break;
-			default:
-				pa_current = &ap_ladder;
-				break;
-			}
-
 			// Set material
-			video::SMaterial material;
+			video::SMaterial material = content_features(n).tiles[0].getMaterial();
 			material.setFlag(video::EMF_LIGHTING, false);
 			material.setFlag(video::EMF_BACK_FACE_CULLING, false);
 			material.setFlag(video::EMF_BILINEAR_FILTER, false);
 			material.setFlag(video::EMF_FOG_ENABLE, true);
 			material.MaterialType
 					= video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-			material.setTexture(0, pa_current->atlas);
+			//material.setTexture(0, pa_current->atlas);
 
 			u8 l = decode_light(n.getLightBlend(data->m_daynight_ratio));
 			video::SColor c = MapBlock_LightColor(255, l);
@@ -933,13 +738,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			video::S3DVertex vertices[4] =
 			{
 				video::S3DVertex(BS/2-d,-BS/2,-BS/2, 0,0,0, c,
-						pa_current->x0(), pa_current->y1()),
+						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
 				video::S3DVertex(BS/2-d,-BS/2,BS/2, 0,0,0, c,
-						pa_current->x1(), pa_current->y1()),
+						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
 				video::S3DVertex(BS/2-d,BS/2,BS/2, 0,0,0, c,
-						pa_current->x1(), pa_current->y0()),
+						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
 				video::S3DVertex(BS/2-d,BS/2,-BS/2, 0,0,0, c,
-						pa_current->x0(), pa_current->y0()),
+						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
 			};
 
 			v3s16 dir = unpackDir(n.param2);
@@ -964,7 +769,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 			u16 indices[] = {0,1,2,2,3,0};
 			// Add to mesh collector
-			collector.append(material, vertices, 4, indices, 6);
+			collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
 		}
 		/*
 			Add leaves if using new style
@@ -978,25 +783,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l);
 
-			switch (n.getContent()) {
-			case CONTENT_GLASS:
-				pa_current = &pa_glass;
-				material_current = &material_glass;
-				break;
-			case CONTENT_GLASSLIGHT:
-				pa_current = &pa_glasslight;
-				material_current = &material_glasslight;
-				break;
-			case CONTENT_LEAVES:
-				pa_current = &pa_leaves1;
-				material_current = &material_leaves1;
-				break;
-			default:
-				pa_current = &pa_glass;
-				material_current = &material_glass;
-				break;
-			}
-
 			for(u32 j=0; j<6; j++)
 			{
 				// Check this neighbor
@@ -1007,13 +793,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				video::S3DVertex vertices[4] =
 				{
 					video::S3DVertex(-BS/2,-BS/2,BS/2, 0,0,0, c,
-						pa_current->x0(), pa_current->y1()),
+						content_features(n).tiles[j].texture.x0(), content_features(n).tiles[j].texture.y1()),
 					video::S3DVertex(BS/2,-BS/2,BS/2, 0,0,0, c,
-						pa_current->x1(), pa_current->y1()),
+						content_features(n).tiles[j].texture.x1(), content_features(n).tiles[j].texture.y1()),
 					video::S3DVertex(BS/2,BS/2,BS/2, 0,0,0, c,
-						pa_current->x1(), pa_current->y0()),
+						content_features(n).tiles[j].texture.x1(), content_features(n).tiles[j].texture.y0()),
 					video::S3DVertex(-BS/2,BS/2,BS/2, 0,0,0, c,
-						pa_current->x0(), pa_current->y0()),
+						content_features(n).tiles[j].texture.x0(), content_features(n).tiles[j].texture.y0()),
 				};
 
 				// Rotations in the g_6dirs format
@@ -1057,7 +843,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 				u16 indices[] = {0,1,2,2,3,0};
 				// Add to mesh collector
-				collector.append(*material_current, vertices, 4, indices, 6);
+				collector.append(content_features(n).tiles[j].getMaterial(), vertices, 4, indices, 6);
 			}
 		}
 		/*
@@ -1088,7 +874,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				0.35,0,0.65,1,
 				0.35,0,0.65,1
 			};
-			makeCuboid(material_wood, &pa_wood, &collector, c, post, postuv);
+			makeCuboid(&collector, post, content_features(n).tiles, 6,  c, postuv);
 
 			// Now a section of fence, +X, if there's a post there
 			v3s16 p2 = p;
@@ -1109,10 +895,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					0,0.4,1,0.6,
 					0,0.4,1,0.6
 				};
-				makeCuboid(material_wood, &pa_wood, &collector, c, bar, xrailuv);
+				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, xrailuv);
 				bar.MinEdge.Y -= BS/2;
 				bar.MaxEdge.Y -= BS/2;
-				makeCuboid(material_wood, &pa_wood, &collector, c, bar, xrailuv);
+				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, xrailuv);
 			}
 
 			// Now a section of fence, +Z, if there's a post there
@@ -1133,10 +919,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					0,0.4,1,0.6,
 					0,0.4,1,0.6,
 					0,0.4,1,0.6};
-				makeCuboid(material_wood, &pa_wood, &collector, c, bar, zrailuv);
+				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, zrailuv);
 				bar.MinEdge.Y -= BS/2;
 				bar.MaxEdge.Y -= BS/2;
-				makeCuboid(material_wood, &pa_wood, &collector, c, bar, zrailuv);
+				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, zrailuv);
 			}
 
 		}
@@ -1261,13 +1047,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				video::S3DVertex vertices[4] =
 				{
 					video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
-						pa_junglegrass.x0(), pa_junglegrass.y1()),
+						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
 					video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
-						pa_junglegrass.x1(), pa_junglegrass.y1()),
+						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
 					video::S3DVertex(BS/2,BS/1,0, 0,0,0, c,
-						pa_junglegrass.x1(), pa_junglegrass.y0()),
+						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
 					video::S3DVertex(-BS/2,BS/1,0, 0,0,0, c,
-						pa_junglegrass.x0(), pa_junglegrass.y0()),
+						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
 				};
 
 				if(j == 0)
@@ -1299,23 +1085,12 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 				u16 indices[] = {0,1,2,2,3,0};
 				// Add to mesh collector
-				collector.append(material_junglegrass, vertices, 4, indices, 6);
+				collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
 			}
 		}
 		break;
 		case CDT_PLANTLIKE:
 		{
-			switch (n.getContent()) {
-			case CONTENT_PAPYRUS:
-				material_current = &material_papyrus;
-				pa_current = &pa_papyrus;
-				break;
-			case CONTENT_SAPLING:
-			default:
-				material_current = &material_sapling;
-				pa_current = &pa_sapling;
-				break;
-			}
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l);
 
@@ -1324,13 +1099,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				video::S3DVertex vertices[4] =
 				{
 					video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
-						pa_current->x0(), pa_current->y1()),
+						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
 					video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
-						pa_current->x1(), pa_current->y1()),
+						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
 					video::S3DVertex(BS/2,BS/2,0, 0,0,0, c,
-						pa_current->x1(), pa_current->y0()),
+						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
 					video::S3DVertex(-BS/2,BS/2,0, 0,0,0, c,
-						pa_current->x0(), pa_current->y0()),
+						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
 				};
 
 				if(j == 0)
@@ -1361,19 +1136,12 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 				u16 indices[] = {0,1,2,2,3,0};
 				// Add to mesh collector
-				collector.append(*material_current, vertices, 4, indices, 6);
+				collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
 			}
 		}
 		break;
 		case CDT_PLANTLIKE_SML:
 		{
-			switch (n.getContent()) {
-			case CONTENT_APPLE:
-			default:
-				material_current = &material_apple;
-				pa_current = &pa_apple;
-				break;
-			}
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l);
 
@@ -1382,13 +1150,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				video::S3DVertex vertices[4] =
 				{
 					video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
-						pa_current->x0(), pa_current->y1()),
+						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
 					video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
-						pa_current->x1(), pa_current->y1()),
+						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
 					video::S3DVertex(BS/2,BS/2,0, 0,0,0, c,
-						pa_current->x1(), pa_current->y0()),
+						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
 					video::S3DVertex(-BS/2,BS/2,0, 0,0,0, c,
-						pa_current->x0(), pa_current->y0()),
+						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
 				};
 
 				if(j == 0)
@@ -1420,65 +1188,12 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 				u16 indices[] = {0,1,2,2,3,0};
 				// Add to mesh collector
-				collector.append(*material_current, vertices, 4, indices, 6);
+				collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
 			}
 		}
 		break;
 		case CDT_NODEBOX:
 		{
-			switch (n.getContent()) {
-			case CONTENT_MOSSYCOBBLE_STAIR:
-			case CONTENT_MOSSYCOBBLE_STAIR_UD:
-			case CONTENT_MOSSYCOBBLE_SLAB:
-			case CONTENT_MOSSYCOBBLE_SLAB_UD:
-				material_current = &material_mossycobble;
-				pa_current = &pa_mossycobble;
-				break;
-			case CONTENT_STONE_STAIR:
-			case CONTENT_STONE_STAIR_UD:
-			case CONTENT_STONE_SLAB:
-			case CONTENT_STONE_SLAB_UD:
-				material_current = &material_stone;
-				pa_current = &pa_stone;
-				break;
-			case CONTENT_WOOD_STAIR:
-			case CONTENT_WOOD_STAIR_UD:
-			case CONTENT_WOOD_SLAB:
-			case CONTENT_WOOD_SLAB_UD:
-				material_current = &material_wood;
-				pa_current = &pa_wood;
-				break;
-			case CONTENT_JUNGLE_STAIR:
-			case CONTENT_JUNGLE_STAIR_UD:
-			case CONTENT_JUNGLE_SLAB:
-			case CONTENT_JUNGLE_SLAB_UD:
-				material_current = &material_junglewood;
-				pa_current = &pa_junglewood;
-				break;
-			case CONTENT_BRICK_STAIR:
-			case CONTENT_BRICK_STAIR_UD:
-			case CONTENT_BRICK_SLAB:
-			case CONTENT_BRICK_SLAB_UD:
-				material_current = &material_brick;
-				pa_current = &pa_brick;
-				break;
-			case CONTENT_SANDSTONE_STAIR:
-			case CONTENT_SANDSTONE_STAIR_UD:
-			case CONTENT_SANDSTONE_SLAB:
-			case CONTENT_SANDSTONE_SLAB_UD:
-				material_current = &material_sandstone;
-				pa_current = &pa_sandstone;
-				break;
-			case CONTENT_SIGN:
-			case CONTENT_SIGN_UD:
-				material_current = &material_sign;
-				pa_current = &pa_sign;
-				break;
-			default:
-				material_current = &material_cobble;
-				pa_current = &pa_cobble;
-			}
-
 			u32 lt = 0;
 			u32 ltp;
 			u8 ld = 0;
@@ -1533,7 +1248,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					// front
 					tx1, 1-ty2, tx2, 1-ty1,
 				};
-				makeCuboid(*material_current, pa_current, &collector, c, box, txc);
+				makeCuboid(&collector, box, content_features(n).tiles, 6,  c, txc);
 			}
 		}
 		break;

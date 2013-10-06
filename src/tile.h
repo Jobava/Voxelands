@@ -321,14 +321,19 @@ struct TileSpec
 		else if(material_type == MATERIAL_ALPHA_BLEND)
 			material.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL;
 
+		material.setFlag(video::EMF_LIGHTING, false);
+		material.setFlag(video::EMF_BILINEAR_FILTER, false);
+		material.setFlag(video::EMF_FOG_ENABLE, true);
+
 		material.BackfaceCulling = (material_flags & MATERIAL_FLAG_BACKFACE_CULLING) ? true : false;
 	}
 
-	// NOTE: Deprecated, i guess?
-	void setTexturePos(u8 tx_, u8 ty_, u8 tw_, u8 th_)
+	video::SMaterial getMaterial()
 	{
-		texture.pos = v2f((float)tx_/256.0, (float)ty_/256.0);
-		texture.size = v2f(((float)tw_ + 1.0)/256.0, ((float)th_ + 1.0)/256.0);
+		video::SMaterial m;
+		applyMaterialOptions(m);
+		m.setTexture(0,texture.atlas);
+		return m;
 	}
 
 	AtlasPointer texture;

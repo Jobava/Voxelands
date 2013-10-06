@@ -304,17 +304,30 @@ struct ContentFeatures
 	{}
 	void setAllTextures(std::string name, u8 alpha=255)
 	{}
+	void setTextureFlags(u16 i, u8 flags)
+	{}
+	void setAllTextureFlags(u8 flags)
+	{}
 #else
 	void setTexture(u16 i, std::string name, u8 alpha=255);
 
 	void setAllTextures(std::string name, u8 alpha=255)
 	{
-		for(u16 i=0; i<6; i++)
-		{
+		for (u16 i=0; i<6; i++) {
 			setTexture(i, name, alpha);
 		}
 		// Force inventory texture too
 		setInventoryTexture(name);
+	}
+	void setTextureFlags(u16 i, u8 flags)
+	{
+		tiles[i].material_flags = flags;
+	}
+	void setAllTextureFlags(u8 flags)
+	{
+		for (u16 i=0; i<6; i++) {
+			setTextureFlags(i, flags);
+		}
 	}
 #endif
 

@@ -268,7 +268,8 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Jungle Grass");
 	f->setInventoryTexture("junglegrass.png");
-	f->used_texturenames["junglegrass.png"] = true;
+	f->setAllTextures("junglegrass.png");
+	f->setAllTextureFlags(0);
 	f->light_propagates = true;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_PLANTLIKE_LGE;
@@ -321,7 +322,8 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Papyrus");
 	f->setInventoryTexture("papyrus.png");
-	f->used_texturenames["papyrus.png"] = true;
+	f->setAllTextures("papyrus.png");
+	f->setAllTextureFlags(0);
 	f->light_propagates = true;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_PLANTLIKE;
@@ -376,6 +378,7 @@ void content_mapnode_init()
 	i = CONTENT_FENCE;
 	f = &content_features(i);
 	f->description = std::string("Fence");
+	f->setAllTextures("wood.png");
 	f->light_propagates = true;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_FENCELIKE;
@@ -406,7 +409,7 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Ladder");
 	f->setInventoryTexture("ladder.png");
-	f->used_texturenames["ladder.png"] = true;
+	f->setAllTextures("ladder.png");
 	f->light_propagates = true;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_WALLMOUNT;
@@ -712,8 +715,7 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Sign");
 	f->setInventoryTexture("sign_inventory.png");
-	f->used_texturenames["sign_inventory.png"] = true;
-	f->used_texturenames["sign.png"] = true;
+	f->setAllTextures("sign.png");
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_SIGNLIKE;
 	f->light_propagates = true;
@@ -731,8 +733,7 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Sign");
 	f->setInventoryTexture("sign_inventory.png");
-	f->used_texturenames["sign_inventory.png"] = true;
-	f->used_texturenames["sign.png"] = true;
+	f->setAllTextures("sign.png");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -761,8 +762,7 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Sign");
 	f->setInventoryTexture("sign_inventory.png");
-	f->used_texturenames["sign_inventory.png"] = true;
-	f->used_texturenames["sign.png"] = true;
+	f->setAllTextures("sign.png");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -905,7 +905,7 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Apple");
 	f->setInventoryTexture("apple.png");
-	f->used_texturenames["apple.png"] = true;
+	f->setAllTextures("apple.png");
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_PLANTLIKE_SML;
 	f->light_propagates = true;

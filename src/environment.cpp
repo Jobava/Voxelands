@@ -1083,9 +1083,14 @@ void ServerEnvironment::step(float dtime)
 					//if(myrand()%20 == 0)
 					{
 						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
-						if(content_features(n_top).air_equivalent == false
-							&& n_top.getContent() != CONTENT_IGNORE && content_features(n_top).draw_type != CDT_PLANTLIKE && n_top.getContent() != CONTENT_SIGN)
-						{
+						if (
+							content_features(n_top).air_equivalent == false
+							&& n_top.getContent() != CONTENT_IGNORE
+							&& content_features(n_top).draw_type != CDT_PLANTLIKE
+							&& content_features(n_top).draw_type != CDT_PLANTLIKE_SML
+							&& content_features(n_top).draw_type != CDT_PLANTLIKE_LGE
+							&& n_top.getContent() != CONTENT_SIGN
+						) {
 							n.setContent(CONTENT_MUD);
 							m_map->addNodeWithEvent(p, n);
 						}
