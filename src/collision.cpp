@@ -181,19 +181,18 @@ bool wouldCollideWithCeiling(
 	return false;
 }
 
-
 collisionMoveResult collisionMoveSimple(Map *map,
 		f32 pos_max_d, const aabb3f &box_0,
 		f32 stepheight, f32 dtime,
 		v3f &pos_f, v3f &speed_f, v3f &accel_f)
 {
 	//TimeTaker tt("collisionMoveSimple");
-    ScopeProfiler sp(g_profiler, "collisionMoveSimple avg", SPT_AVG);
+	    ScopeProfiler sp(g_profiler, "collisionMoveSimple avg", SPT_AVG);
 
 	collisionMoveResult result;
 
 	/*
-		Calculate new velocity
+	Calculate new velocity
 	*/
 	if( dtime > 0.5 ) {
 		infostream<<"collisionMoveSimple: WARNING: maximum step interval exceeded, lost movement details!"<<std::endl;
@@ -201,79 +200,88 @@ collisionMoveResult collisionMoveSimple(Map *map,
 	}
 	speed_f += accel_f * dtime;
 
-    // If there is no speed, there are no collisions
+	// If there is no speed, there are no collisions
 	if(speed_f.getLength() == 0)
 		return result;
 
+	// Limit speed for avoiding hangs
+	speed_f.Y=rangelim(speed_f.Y,-5000,5000);
+	speed_f.X=rangelim(speed_f.X,-5000,5000);
+	speed_f.Z=rangelim(speed_f.Z,-5000,5000);
+
 	/*
-		Collect node boxes in movement range
+	Collect node boxes in movement range
 	*/
 	std::vector<aabb3f> cboxes;
 	std::vector<bool> is_unloaded;
 	std::vector<bool> is_step_up;
+	std::vector<bool> is_object;
 	std::vector<v3s16> node_positions;
 	{
-	//TimeTaker tt2("collisionMoveSimple collect boxes");
-    ScopeProfiler sp(g_profiler, "collisionMoveSimple collect boxes avg", SPT_AVG);
+		//TimeTaker tt2("collisionMoveSimple collect boxes");
+		    ScopeProfiler sp(g_profiler, "collisionMoveSimple collect boxes avg", SPT_AVG);
 
-	v3s16 oldpos_i = floatToInt(pos_f, BS);
-	v3s16 newpos_i = floatToInt(pos_f + speed_f * dtime, BS);
-	s16 min_x = MYMIN(oldpos_i.X, newpos_i.X) + (box_0.MinEdge.X / BS) - 1;
-	s16 min_y = MYMIN(oldpos_i.Y, newpos_i.Y) + (box_0.MinEdge.Y / BS) - 1;
-	s16 min_z = MYMIN(oldpos_i.Z, newpos_i.Z) + (box_0.MinEdge.Z / BS) - 1;
-	s16 max_x = MYMAX(oldpos_i.X, newpos_i.X) + (box_0.MaxEdge.X / BS) + 1;
-	s16 max_y = MYMAX(oldpos_i.Y, newpos_i.Y) + (box_0.MaxEdge.Y / BS) + 1;
-	s16 max_z = MYMAX(oldpos_i.Z, newpos_i.Z) + (box_0.MaxEdge.Z / BS) + 1;
+		v3s16 oldpos_i = floatToInt(pos_f, BS);
+		v3s16 newpos_i = floatToInt(pos_f + speed_f * dtime, BS);
+		s16 min_x = MYMIN(oldpos_i.X, newpos_i.X) + (box_0.MinEdge.X / BS) - 1;
+		s16 min_y = MYMIN(oldpos_i.Y, newpos_i.Y) + (box_0.MinEdge.Y / BS) - 1;
+		s16 min_z = MYMIN(oldpos_i.Z, newpos_i.Z) + (box_0.MinEdge.Z / BS) - 1;
+		s16 max_x = MYMAX(oldpos_i.X, newpos_i.X) + (box_0.MaxEdge.X / BS) + 1;
+		s16 max_y = MYMAX(oldpos_i.Y, newpos_i.Y) + (box_0.MaxEdge.Y / BS) + 1;
+		s16 max_z = MYMAX(oldpos_i.Z, newpos_i.Z) + (box_0.MaxEdge.Z / BS) + 1;
 
-	for(s16 x = min_x; x <= max_x; x++)
-	for(s16 y = min_y; y <= max_y; y++)
-	for(s16 z = min_z; z <= max_z; z++)
-	{
-		v3s16 p(x,y,z);
-		try{
-			// Object collides into walkable nodes
-			MapNode n = map->getNode(p);
-			const ContentFeatures &f = content_features(n);
-			if(f.walkable == false)
-				continue;
+		for(s16 x = min_x; x <= max_x; x++)
+		for(s16 y = min_y; y <= max_y; y++)
+		for(s16 z = min_z; z <= max_z; z++)
+		{
+			v3s16 p(x,y,z);
+			try{
+				// Object collides into walkable nodes
+				MapNode n = map->getNode(p);
+				const ContentFeatures &f = content_features(n);
+				if(f.walkable == false)
+					continue;
 
-			std::vector<aabb3f> nodeboxes = f.getNodeBoxes(n);
-			for(std::vector<aabb3f>::iterator
-					i = nodeboxes.begin();
-					i != nodeboxes.end(); i++)
+				std::vector<aabb3f> nodeboxes = f.getNodeBoxes(n);
+				for(std::vector<aabb3f>::iterator
+				i = nodeboxes.begin();
+				i != nodeboxes.end(); i++)
+				{
+					aabb3f box = *i;
+					box.MinEdge += v3f(x, y, z)*BS;
+					box.MaxEdge += v3f(x, y, z)*BS;
+					cboxes.push_back(box);
+					is_unloaded.push_back(false);
+					is_step_up.push_back(false);
+					node_positions.push_back(p);
+					is_object.push_back(false);
+				}
+			}
+			catch(InvalidPositionException &e)
 			{
-				aabb3f box = *i;
-				box.MinEdge += v3f(x, y, z)*BS;
-				box.MaxEdge += v3f(x, y, z)*BS;
+				// Collide with unloaded nodes
+				aabb3f box = getNodeBox(p, BS);
 				cboxes.push_back(box);
-				is_unloaded.push_back(false);
+				is_unloaded.push_back(true);
 				is_step_up.push_back(false);
 				node_positions.push_back(p);
+				is_object.push_back(false);
 			}
 		}
-		catch(InvalidPositionException &e)
-		{
-			// Collide with unloaded nodes
-			aabb3f box = getNodeBox(p, BS);
-			cboxes.push_back(box);
-			is_unloaded.push_back(true);
-			is_step_up.push_back(false);
-			node_positions.push_back(p);
-		}
-	}
 	} // tt2
 
 	assert(cboxes.size() == is_unloaded.size());
 	assert(cboxes.size() == is_step_up.size());
 	assert(cboxes.size() == node_positions.size());
+	assert(cboxes.size() == is_object.size());
 
 	/*
-		Collision detection
+	Collision detection
 	*/
 
 	/*
-		Collision uncertainty radius
-		Make it a bit larger than the maximum distance of movement
+	Collision uncertainty radius
+	Make it a bit larger than the maximum distance of movement
 	*/
 	f32 d = pos_max_d * 1.1;
 	// A fairly large value in here makes moving smoother
@@ -287,7 +295,7 @@ collisionMoveResult collisionMoveSimple(Map *map,
 	while(dtime > BS*1e-10)
 	{
 		//TimeTaker tt3("collisionMoveSimple dtime loop");
-        ScopeProfiler sp(g_profiler, "collisionMoveSimple dtime loop avg", SPT_AVG);
+			ScopeProfiler sp(g_profiler, "collisionMoveSimple dtime loop avg", SPT_AVG);
 
 		// Avoid infinite loop
 		loopcount++;
@@ -307,7 +315,7 @@ collisionMoveResult collisionMoveSimple(Map *map,
 		u32 nearest_boxindex = -1;
 
 		/*
-			Go through every nodebox, find nearest collision
+		Go through every nodebox, find nearest collision
 		*/
 		for(u32 boxindex = 0; boxindex < cboxes.size(); boxindex++)
 		{
@@ -318,7 +326,7 @@ collisionMoveResult collisionMoveSimple(Map *map,
 			// Find nearest collision of the two boxes (raytracing-like)
 			f32 dtime_tmp;
 			int collided = axisAlignedCollision(
-					cboxes[boxindex], movingbox, speed_f, d, dtime_tmp);
+			cboxes[boxindex], movingbox, speed_f, d, dtime_tmp);
 
 			if(collided == -1 || dtime_tmp >= nearest_dtime)
 				continue;
@@ -332,7 +340,7 @@ collisionMoveResult collisionMoveSimple(Map *map,
 		{
 			// No collision with any collision box.
 			pos_f += speed_f * dtime;
-			dtime = 0;  // Set to 0 to avoid "infinite" loop due to small FP numbers
+			dtime = 0; // Set to 0 to avoid "infinite" loop due to small FP numbers
 		}
 		else
 		{
@@ -342,11 +350,11 @@ collisionMoveResult collisionMoveSimple(Map *map,
 
 			// Check for stairs.
 			bool step_up = (nearest_collided != 1) && // must not be Y direction
-					(movingbox.MinEdge.Y < cbox.MaxEdge.Y) &&
-					(movingbox.MinEdge.Y + stepheight > cbox.MaxEdge.Y) &&
-					(!wouldCollideWithCeiling(cboxes, movingbox,
-							cbox.MaxEdge.Y - movingbox.MinEdge.Y,
-							d));
+			(movingbox.MinEdge.Y < cbox.MaxEdge.Y) &&
+			(movingbox.MinEdge.Y + stepheight > cbox.MaxEdge.Y) &&
+			(!wouldCollideWithCeiling(cboxes, movingbox,
+			cbox.MaxEdge.Y - movingbox.MinEdge.Y,
+			d));
 
 			// Move to the point of collision and reduce dtime by nearest_dtime
 			if(nearest_dtime < 0)
@@ -373,7 +381,6 @@ collisionMoveResult collisionMoveSimple(Map *map,
 				is_collision = false;
 
 			CollisionInfo info;
-			info.t = COLLISION_NODE;
 			info.node_p = node_positions[nearest_boxindex];
 			info.old_speed = speed_f;
 
@@ -413,7 +420,7 @@ collisionMoveResult collisionMoveSimple(Map *map,
 	}
 
 	/*
-		Final touches: Check if standing on ground, step up stairs.
+	Final touches: Check if standing on ground, step up stairs.
 	*/
 	aabb3f box = box_0;
 	box.MinEdge += pos_f;
@@ -423,19 +430,19 @@ collisionMoveResult collisionMoveSimple(Map *map,
 		const aabb3f& cbox = cboxes[boxindex];
 
 		/*
-			See if the object is touching ground.
+		See if the object is touching ground.
 
-			Object touches ground if object's minimum Y is near node's
-			maximum Y and object's X-Z-area overlaps with the node's
-			X-Z-area.
+		Object touches ground if object's minimum Y is near node's
+		maximum Y and object's X-Z-area overlaps with the node's
+		X-Z-area.
 
-			Use 0.15*BS so that it is easier to get on a node.
+		Use 0.15*BS so that it is easier to get on a node.
 		*/
 		if(
-				cbox.MaxEdge.X-d > box.MinEdge.X &&
-				cbox.MinEdge.X+d < box.MaxEdge.X &&
-				cbox.MaxEdge.Z-d > box.MinEdge.Z &&
-				cbox.MinEdge.Z+d < box.MaxEdge.Z
+		cbox.MaxEdge.X-d > box.MinEdge.X &&
+		cbox.MinEdge.X+d < box.MaxEdge.X &&
+		cbox.MaxEdge.Z-d > box.MinEdge.Z &&
+		cbox.MinEdge.Z+d < box.MaxEdge.Z
 		){
 			if(is_step_up[boxindex])
 			{
