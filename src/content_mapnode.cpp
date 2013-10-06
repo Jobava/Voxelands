@@ -409,7 +409,7 @@ void content_mapnode_init()
 	f->used_texturenames["ladder.png"] = true;
 	f->light_propagates = true;
 	f->param_type = CPT_LIGHT;
-	f->draw_type = CDT_SIGNLIKE;
+	f->draw_type = CDT_WALLMOUNT;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem ")+itos(i)+" 1";
 	f->wall_mounted = true;
@@ -693,10 +693,8 @@ void content_mapnode_init()
 	i = CONTENT_TORCH;
 	f = &content_features(i);
 	f->description = std::string("Torch");
-	f->setInventoryTexture("torch_on_floor.png");
-	f->used_texturenames["torch_on_floor.png"] = true;
-	f->used_texturenames["torch_on_ceiling.png"] = true;
-	f->used_texturenames["torch_on_floor.png"] = true;
+	f->setInventoryTexture("torch_inventory.png");
+	f->used_texturenames["torch_inventory.png"] = true;
 	f->used_texturenames["torch.png"] = true;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_TORCHLIKE;
@@ -713,8 +711,9 @@ void content_mapnode_init()
 	i = CONTENT_SIGN_WALL;
 	f = &content_features(i);
 	f->description = std::string("Sign");
-	f->setInventoryTexture("sign_wall.png");
-	f->used_texturenames["sign_wall.png"] = true;
+	f->setInventoryTexture("sign_inventory.png");
+	f->used_texturenames["sign_inventory.png"] = true;
+	f->used_texturenames["sign.png"] = true;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_SIGNLIKE;
 	f->light_propagates = true;
@@ -727,6 +726,66 @@ void content_mapnode_init()
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new SignNodeMetadata("Some sign");
 	f->digging_properties.set("", DiggingProperties(true, 0.5, 0));
+
+	i = CONTENT_SIGN;
+	f = &content_features(i);
+	f->description = std::string("Sign");
+	f->setInventoryTexture("sign_inventory.png");
+	f->used_texturenames["sign_inventory.png"] = true;
+	f->used_texturenames["sign.png"] = true;
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SIGN_WALL)+" 1";
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new SignNodeMetadata("Some sign");
+	f->digging_properties.set("", DiggingProperties(true, 0.5, 0));
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.05*BS,
+		-0.5*BS,
+		-0.05*BS,
+		0.05*BS,
+		0.5*BS,
+		0.05*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.4*BS,
+		0.,
+		-0.1*BS,
+		0.4*BS,
+		0.4*BS,
+		-0.05*BS
+	));
+
+	i = CONTENT_SIGN_UD;
+	f = &content_features(i);
+	f->description = std::string("Sign");
+	f->setInventoryTexture("sign_inventory.png");
+	f->used_texturenames["sign_inventory.png"] = true;
+	f->used_texturenames["sign.png"] = true;
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SIGN_WALL)+" 1";
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new SignNodeMetadata("Some sign");
+	f->digging_properties.set("", DiggingProperties(true, 0.5, 0));
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.05*BS,
+		-0.5*BS,
+		-0.05*BS,
+		0.05*BS,
+		0.5*BS,
+		0.05*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.4*BS,
+		-0.4*BS,
+		-0.1*BS,
+		0.4*BS,
+		0.,
+		-0.05*BS
+	));
 
 	i = CONTENT_CHEST;
 	f = &content_features(i);

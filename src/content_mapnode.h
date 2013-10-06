@@ -50,6 +50,8 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_CHEST 15
 #define CONTENT_FURNACE 16
 #define CONTENT_LOCKABLE_CHEST 17
+#define CONTENT_SIGN 18
+#define CONTENT_SIGN_UD 19
 
 #define CONTENT_FENCE 21
 

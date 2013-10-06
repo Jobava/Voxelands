@@ -1602,18 +1602,34 @@ inline std::string deSerializeLongString(std::istream &is)
 
 inline u32 time_to_daynight_ratio(u32 time_of_day)
 {
-	const s32 daylength = 16;
-	const s32 nightlength = 6;
-	const s32 daytimelength = 8;
-	s32 d = daylength;
-	s32 t = (((time_of_day)%24000)/(24000/d));
-	if(t < nightlength/2 || t >= d - nightlength/2)
-		//return 300;
-		return 350;
-	else if(t >= d/2 - daytimelength/2 && t < d/2 + daytimelength/2)
-		return 1000;
-	else
-		return 750;
+	float t = time_of_day;
+	if(t < 0)
+		t += ((int)(-t)/24000)*24000;
+	if(t >= 24000)
+		t -= ((int)(t)/24000)*24000;
+	if(t > 12000)
+		t = 24000 - t;
+	float values[][2] = {
+		{4250+125, 150},
+		{4500+125, 150},
+		{4750+125, 250},
+		{5000+125, 350},
+		{5250+125, 500},
+		{5500+125, 675},
+		{5750+125, 875},
+		{6000+125, 1000},
+		{6250+125, 1000},
+	};
+	for (u32 i=0; i<sizeof(values)/sizeof(*values); i++) {
+		if (values[i][0] <= t)
+			continue;
+		if (i == 0)
+			return values[i][1];
+		float td0 = values[i][0] - values[i-1][0];
+		float f = (t - values[i-1][0]) / td0;
+		return f * values[i][1] + (1.0 - f) * values[i-1][1];
+	}
+	return 1000;
 }
 
 // Random helper. Usually d=BS

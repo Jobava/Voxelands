@@ -164,6 +164,17 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			g_texturesource->getTextureId("wood.png"));
 	material_wood.setTexture(0, pa_wood.atlas);
 
+	// Sign material
+	video::SMaterial material_sign;
+	material_sign.setFlag(video::EMF_LIGHTING, false);
+	material_sign.setFlag(video::EMF_BILINEAR_FILTER, false);
+	material_sign.setFlag(video::EMF_BACK_FACE_CULLING, false);
+	material_sign.setFlag(video::EMF_FOG_ENABLE, true);
+	material_sign.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
+	AtlasPointer pa_sign = g_texturesource->getTexture(
+			g_texturesource->getTextureId("sign.png"));
+	material_sign.setTexture(0, pa_sign.atlas);
+
 	// Junglewood material
 	video::SMaterial material_junglewood;
 	material_junglewood.setFlag(video::EMF_LIGHTING, false);
@@ -236,6 +247,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 	// Papyrus material
 	video::SMaterial material_papyrus;
 	material_papyrus.setFlag(video::EMF_LIGHTING, false);
+	material_papyrus.setFlag(video::EMF_BACK_FACE_CULLING, false);
 	material_papyrus.setFlag(video::EMF_BILINEAR_FILTER, false);
 	material_papyrus.setFlag(video::EMF_FOG_ENABLE, true);
 	material_papyrus.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
@@ -247,6 +259,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 	video::SMaterial material_apple;
 	material_apple.setFlag(video::EMF_LIGHTING, false);
 	material_apple.setFlag(video::EMF_BILINEAR_FILTER, false);
+	material_apple.setFlag(video::EMF_BACK_FACE_CULLING, false);
 	material_apple.setFlag(video::EMF_FOG_ENABLE, true);
 	material_apple.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
 	AtlasPointer pa_apple = g_texturesource->getTexture(
@@ -258,6 +271,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 	video::SMaterial material_sapling;
 	material_sapling.setFlag(video::EMF_LIGHTING, false);
 	material_sapling.setFlag(video::EMF_BILINEAR_FILTER, false);
+	material_sapling.setFlag(video::EMF_BACK_FACE_CULLING, false);
 	material_sapling.setFlag(video::EMF_FOG_ENABLE, true);
 	material_sapling.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
 	AtlasPointer pa_sapling = g_texturesource->getTexture(
@@ -269,6 +283,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 	video::SMaterial material_junglegrass;
 	material_junglegrass.setFlag(video::EMF_LIGHTING, false);
 	material_junglegrass.setFlag(video::EMF_BILINEAR_FILTER, false);
+	material_junglegrass.setFlag(video::EMF_BACK_FACE_CULLING, false);
 	material_junglegrass.setFlag(video::EMF_FOG_ENABLE, true);
 	material_junglegrass.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
 	AtlasPointer pa_junglegrass = g_texturesource->getTexture(
@@ -628,26 +643,21 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		break;
 		case CDT_TORCHLIKE:
 		{
-			v3s16 dir = unpackDir(n.param2);
 
-			const char *texturename = "torch.png";
-			if(dir == v3s16(0,-1,0)){
-				texturename = "torch_on_floor.png";
-			} else if(dir == v3s16(0,1,0)){
-				texturename = "torch_on_ceiling.png";
-			// For backwards compatibility
-			} else if(dir == v3s16(0,0,0)){
-				texturename = "torch_on_floor.png";
-			} else {
-				texturename = "torch.png";
-			}
-
-			AtlasPointer ap = g_texturesource->getTexture(texturename);
+			AtlasPointer ap = g_texturesource->getTexture("torch.png");
+			static const f32 txc[24] = {
+				0,0,0.05,0.05,
+				0.8,0.8,0.9,0.9,
+				0,0,1,1,
+				0,0,1,1,
+				0,0,1,1,
+				0,0,1,1
+			};
+			video::S3DVertex *v;
 
 			// Set material
 			video::SMaterial material;
 			material.setFlag(video::EMF_LIGHTING, false);
-			material.setFlag(video::EMF_BACK_FACE_CULLING, false);
 			material.setFlag(video::EMF_BILINEAR_FILTER, false);
 			material.setFlag(video::EMF_FOG_ENABLE, true);
 			//material.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL;
@@ -656,41 +666,147 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			material.setTexture(0, ap.atlas);
 
 			video::SColor c(255,255,255,255);
+			v3f pos = intToFloat(p+blockpos_nodes, BS);
 
-			// Wall at X+ of node
-			video::S3DVertex vertices[4] =
-			{
-				video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
-						ap.x0(), ap.y1()),
-				video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
-						ap.x1(), ap.y1()),
-				video::S3DVertex(BS/2,BS/2,0, 0,0,0, c,
-						ap.x1(), ap.y0()),
-				video::S3DVertex(-BS/2,BS/2,0, 0,0,0, c,
-						ap.x0(), ap.y0()),
-			};
+			v3s16 dir = unpackDir(n.param2);
+			if (dir.Y == 1) { // roof
+				video::S3DVertex vertices[24] = {
+					// up
+					video::S3DVertex(-0.1*BS, 0.5*BS,0., 0,1,0, c, txc[4],txc[5]),
+					video::S3DVertex(0.,0.5*BS,0., 0,1,0, c, txc[6],txc[5]),
+					video::S3DVertex(0.,0.5*BS,-0.1*BS, 0,1,0, c, txc[6],txc[7]),
+					video::S3DVertex(-0.1*BS, 0.5*BS,-0.1*BS, 0,1,0, c, txc[4],txc[7]),
+					// down
+					video::S3DVertex(0.,-0.1*BS,0., 0,-1,0, c, txc[0],txc[1]),
+					video::S3DVertex(0.1*BS,-0.1*BS,0., 0,-1,0, c, txc[2],txc[1]),
+					video::S3DVertex(0.1*BS,-0.1*BS,0.1*BS, 0,-1,0, c, txc[2],txc[3]),
+					video::S3DVertex(0.,-0.1*BS,0.1*BS, 0,-1,0, c, txc[0],txc[3]),
+					// right
+					video::S3DVertex(0.,0.5*BS,-0.1*BS, 1,0,0, c, txc[ 8],txc[11]),
+					video::S3DVertex(0.,0.5*BS,0., 1,0,0, c, txc[10],txc[11]),
+					video::S3DVertex(0.1*BS,-0.1*BS,0.1*BS, 1,0,0, c, txc[10],txc[9]),
+					video::S3DVertex(0.1*BS,-0.1*BS,0., 1,0,0, c, txc[ 8],txc[9]),
+					// left
+					video::S3DVertex(-0.1*BS,0.5*BS,0., -1,0,0, c, txc[12],txc[15]),
+					video::S3DVertex(-0.1*BS,0.5*BS,-0.1*BS, -1,0,0, c, txc[14],txc[15]),
+					video::S3DVertex(0.,-0.1*BS,0., -1,0,0, c, txc[14],txc[13]),
+					video::S3DVertex(0.,-0.1*BS,0.1*BS, -1,0,0, c, txc[12],txc[13]),
+					// back
+					video::S3DVertex(0.,0.5*BS,0., 0,0,1, c, txc[16],txc[19]),
+					video::S3DVertex(-0.1*BS,0.5*BS,0., 0,0,1, c, txc[18],txc[19]),
+					video::S3DVertex(0.,-0.1*BS,0.1*BS, 0,0,1, c, txc[18],txc[17]),
+					video::S3DVertex(0.1*BS,-0.1*BS,0.1*BS, 0,0,1, c, txc[16],txc[17]),
+					// front
+					video::S3DVertex(-0.1*BS,0.5*BS,-0.1*BS, 0,0,-1, c, txc[20],txc[23]),
+					video::S3DVertex(0.,0.5*BS,-0.1*BS, 0,0,-1, c, txc[22],txc[23]),
+					video::S3DVertex(0.1*BS,-0.1*BS,0., 0,0,-1, c, txc[22],txc[21]),
+					video::S3DVertex(0.,-0.1*BS,0., 0,0,-1, c, txc[20],txc[21]),
+				};
+				for(s32 i=0; i<24; i++) {
+					vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+				}
+				v = vertices;
+			}else if (dir.Y == -1) { // floor
+				video::S3DVertex vertices[24] = {
+					// up
+					//video::S3DVertex(min.X,max.Y,max.Z, 0,1,0, c, txc[0],txc[1]),
+					video::S3DVertex(-0.05*BS,0.1*BS,0.05*BS, 0,1,0, c, txc[0],txc[1]),
+					video::S3DVertex(0.05*BS,0.1*BS,0.05*BS, 0,1,0, c, txc[2],txc[1]),
+					video::S3DVertex(0.05*BS,0.1*BS,-0.05*BS, 0,1,0, c, txc[2],txc[3]),
+					video::S3DVertex(-0.05*BS,0.1*BS,-0.05*BS, 0,1,0, c, txc[0],txc[3]),
+					// down
+					video::S3DVertex(-0.05*BS,-0.5*BS,-0.05*BS, 0,-1,0, c, txc[4],txc[5]),
+					video::S3DVertex(0.05*BS,-0.5*BS,-0.05*BS, 0,-1,0, c, txc[6],txc[5]),
+					video::S3DVertex(0.05*BS,-0.5*BS,0.05*BS, 0,-1,0, c, txc[6],txc[7]),
+					video::S3DVertex(-0.05*BS,-0.5*BS,0.05*BS, 0,-1,0, c, txc[4],txc[7]),
+					// right
+					video::S3DVertex(0.05*BS,0.1*BS,-0.05*BS, 1,0,0, c, txc[ 8],txc[9]),
+					video::S3DVertex(0.05*BS,0.1*BS,0.05*BS, 1,0,0, c, txc[10],txc[9]),
+					video::S3DVertex(0.05*BS,-0.5*BS,0.05*BS, 1,0,0, c, txc[10],txc[11]),
+					video::S3DVertex(0.05*BS,-0.5*BS,-0.05*BS, 1,0,0, c, txc[ 8],txc[11]),
+					// left
+					video::S3DVertex(-0.05*BS,0.1*BS,0.05*BS, -1,0,0, c, txc[12],txc[13]),
+					video::S3DVertex(-0.05*BS,0.1*BS,-0.05*BS, -1,0,0, c, txc[14],txc[13]),
+					video::S3DVertex(-0.05*BS,-0.5*BS,-0.05*BS, -1,0,0, c, txc[14],txc[15]),
+					video::S3DVertex(-0.05*BS,-0.5*BS,0.05*BS, -1,0,0, c, txc[12],txc[15]),
+					// back
+					video::S3DVertex(0.05*BS,0.1*BS,0.05*BS, 0,0,1, c, txc[16],txc[17]),
+					video::S3DVertex(-0.05*BS,0.1*BS,0.05*BS, 0,0,1, c, txc[18],txc[17]),
+					video::S3DVertex(-0.05*BS,-0.5*BS,0.05*BS, 0,0,1, c, txc[18],txc[19]),
+					video::S3DVertex(0.05*BS,-0.5*BS,0.05*BS, 0,0,1, c, txc[16],txc[19]),
+					// front
+					video::S3DVertex(-0.05*BS,0.1*BS,-0.05*BS, 0,0,-1, c, txc[20],txc[21]),
+					video::S3DVertex(0.05*BS,0.1*BS,-0.05*BS, 0,0,-1, c, txc[22],txc[21]),
+					video::S3DVertex(0.05*BS,-0.5*BS,-0.05*BS, 0,0,-1, c, txc[22],txc[23]),
+					video::S3DVertex(-0.05*BS,-0.5*BS,-0.05*BS, 0,0,-1, c, txc[20],txc[23]),
+				};
+				for(s32 i=0; i<24; i++) {
+					vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+				}
+				v = vertices;
+			}else{ // wall
+				video::S3DVertex vertices[24] = {
+					// up
+					//video::S3DVertex(min.X,max.Y,max.Z, 0,1,0, c, txc[0],txc[1]),
+					video::S3DVertex(-0.05*BS,0.3*BS,0.4*BS, 0,1,0, c, txc[0],txc[1]),
+					video::S3DVertex(0.05*BS,0.3*BS,0.4*BS, 0,1,0, c, txc[2],txc[1]),
+					video::S3DVertex(0.05*BS,0.3*BS,0.3*BS, 0,1,0, c, txc[2],txc[3]),
+					video::S3DVertex(-0.05*BS,0.3*BS,0.3*BS, 0,1,0, c, txc[0],txc[3]),
+					// down
+					video::S3DVertex(-0.05*BS,-0.3*BS,0.4*BS, 0,-1,0, c, txc[4],txc[5]),
+					video::S3DVertex(0.05*BS,-0.3*BS,0.4*BS, 0,-1,0, c, txc[6],txc[5]),
+					video::S3DVertex(0.05*BS,-0.3*BS,0.5*BS, 0,-1,0, c, txc[6],txc[7]),
+					video::S3DVertex(-0.05*BS,-0.3*BS,0.5*BS, 0,-1,0, c, txc[4],txc[7]),
+					// right
+					video::S3DVertex(0.05*BS,0.3*BS,0.3*BS, 1,0,0, c, txc[ 8],txc[9]),
+					video::S3DVertex(0.05*BS,0.3*BS,0.4*BS, 1,0,0, c, txc[10],txc[9]),
+					video::S3DVertex(0.05*BS,-0.3*BS,0.5*BS, 1,0,0, c, txc[10],txc[11]),
+					video::S3DVertex(0.05*BS,-0.3*BS,0.4*BS, 1,0,0, c, txc[ 8],txc[11]),
+					// left
+					video::S3DVertex(-0.05*BS,0.3*BS,0.4*BS, -1,0,0, c, txc[12],txc[13]),
+					video::S3DVertex(-0.05*BS,0.3*BS,0.3*BS, -1,0,0, c, txc[14],txc[13]),
+					video::S3DVertex(-0.05*BS,-0.3*BS,0.4*BS, -1,0,0, c, txc[14],txc[15]),
+					video::S3DVertex(-0.05*BS,-0.3*BS,0.5*BS, -1,0,0, c, txc[12],txc[15]),
+					// back
+					video::S3DVertex(0.05*BS,0.3*BS,0.4*BS, 0,0,1, c, txc[16],txc[17]),
+					video::S3DVertex(-0.05*BS,0.3*BS,0.4*BS, 0,0,1, c, txc[18],txc[17]),
+					video::S3DVertex(-0.05*BS,-0.3*BS,0.5*BS, 0,0,1, c, txc[18],txc[19]),
+					video::S3DVertex(0.05*BS,-0.3*BS,0.5*BS, 0,0,1, c, txc[16],txc[19]),
+					// front
+					video::S3DVertex(-0.05*BS,0.3*BS,0.3*BS, 0,0,-1, c, txc[20],txc[21]),
+					video::S3DVertex(0.05*BS,0.3*BS,0.3*BS, 0,0,-1, c, txc[22],txc[21]),
+					video::S3DVertex(0.05*BS,-0.3*BS,0.4*BS, 0,0,-1, c, txc[22],txc[23]),
+					video::S3DVertex(-0.05*BS,-0.3*BS,0.4*BS, 0,0,-1, c, txc[20],txc[23]),
+				};
 
-			for(s32 i=0; i<4; i++)
-			{
-				if(dir == v3s16(1,0,0))
-					vertices[i].Pos.rotateXZBy(0);
-				if(dir == v3s16(-1,0,0))
-					vertices[i].Pos.rotateXZBy(180);
-				if(dir == v3s16(0,0,1))
-					vertices[i].Pos.rotateXZBy(90);
-				if(dir == v3s16(0,0,-1))
-					vertices[i].Pos.rotateXZBy(-90);
-				if(dir == v3s16(0,-1,0))
-					vertices[i].Pos.rotateXZBy(45);
-				if(dir == v3s16(0,1,0))
-					vertices[i].Pos.rotateXZBy(-45);
+				for(s32 i=0; i<24; i++) {
+					if(dir == v3s16(1,0,0))
+						vertices[i].Pos.rotateXZBy(-90);
+					if(dir == v3s16(-1,0,0))
+						vertices[i].Pos.rotateXZBy(90);
+					if(dir == v3s16(0,0,1))
+						vertices[i].Pos.rotateXZBy(0);
+					if(dir == v3s16(0,0,-1))
+						vertices[i].Pos.rotateXZBy(180);
 
-				vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+					vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+				}
+				v = vertices;
+			}
+
+			f32 sx = ap.x1()-ap.x0();
+			f32 sy = ap.y1()-ap.y0();
+			for (s32 j=0; j<24; j++) {
+				v[j].TCoords *= v2f(sx,sy);
+				v[j].TCoords += v2f(ap.x0(),ap.y0());
 			}
 
 			u16 indices[] = {0,1,2,2,3,0};
+
 			// Add to mesh collector
-			collector.append(material, vertices, 4, indices, 6);
+			for (s32 j=0; j<24; j+=4) {
+				collector.append(material, &v[j], 4, indices, 6);
+			}
 		}
 		/*
 			Signs on walls
@@ -700,13 +816,102 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		{
 			switch (n.getContent()) {
 			case CONTENT_SIGN_WALL:
-				pa_current = &ap_sign_wall;
+				material_current = &material_sign;
+				pa_current = &pa_sign;
 				break;
+			default:
+				material_current = &material_sign;
+				pa_current = &pa_sign;
+				break;
+			}
+
+			u8 l = decode_light(n.getLightBlend(data->m_daynight_ratio));
+			video::SColor c = MapBlock_LightColor(255, l);
+
+			static const f32 txc[24] = {
+				0.1,0,0.9,0.1,
+				0.1,0,0.9,0.1,
+				0.1,0.3,0.9,0.7,
+				0.1,0.3,0.9,0.7,
+				0.1,0.3,0.9,0.7,
+				0.1,0.3,0.9,0.7
+			};
+			video::S3DVertex vertices[24] = {
+				// up
+				video::S3DVertex(-0.4*BS,0.2*BS,0.5*BS, 0,1,0, c, txc[0],txc[1]),
+				video::S3DVertex(0.4*BS,0.2*BS,0.5*BS, 0,1,0, c, txc[2],txc[1]),
+				video::S3DVertex(0.4*BS,0.2*BS,0.45*BS, 0,1,0, c, txc[2],txc[3]),
+				video::S3DVertex(-0.4*BS,0.2*BS,0.45*BS, 0,1,0, c, txc[0],txc[3]),
+				// down
+				video::S3DVertex(-0.4*BS,-0.2*BS,0.45*BS, 0,-1,0, c, txc[4],txc[5]),
+				video::S3DVertex(0.4*BS,-0.2*BS,0.45*BS, 0,-1,0, c, txc[6],txc[5]),
+				video::S3DVertex(0.4*BS,-0.2*BS,0.5*BS, 0,-1,0, c, txc[6],txc[7]),
+				video::S3DVertex(-0.4*BS,-0.2*BS,0.5*BS, 0,-1,0, c, txc[4],txc[7]),
+				// right
+				video::S3DVertex(0.4*BS,0.2*BS,0.45*BS, 1,0,0, c, txc[ 8],txc[9]),
+				video::S3DVertex(0.4*BS,0.2*BS,0.5*BS, 1,0,0, c, txc[10],txc[9]),
+				video::S3DVertex(0.4*BS,-0.2*BS,0.5*BS, 1,0,0, c, txc[10],txc[11]),
+				video::S3DVertex(0.4*BS,-0.2*BS,0.45*BS, 1,0,0, c, txc[ 8],txc[11]),
+				// left
+				video::S3DVertex(-0.4*BS,0.2*BS,0.5*BS, -1,0,0, c, txc[12],txc[13]),
+				video::S3DVertex(-0.4*BS,0.2*BS,0.45*BS, -1,0,0, c, txc[14],txc[13]),
+				video::S3DVertex(-0.4*BS,-0.2*BS,0.45*BS, -1,0,0, c, txc[14],txc[15]),
+				video::S3DVertex(-0.4*BS,-0.2*BS,0.5*BS, -1,0,0, c, txc[12],txc[15]),
+				// back
+				video::S3DVertex(0.4*BS,0.2*BS,0.5*BS, 0,0,1, c, txc[16],txc[17]),
+				video::S3DVertex(-0.4*BS,0.2*BS,0.5*BS, 0,0,1, c, txc[18],txc[17]),
+				video::S3DVertex(-0.4*BS,-0.2*BS,0.5*BS, 0,0,1, c, txc[18],txc[19]),
+				video::S3DVertex(0.4*BS,-0.2*BS,0.5*BS, 0,0,1, c, txc[16],txc[19]),
+				// front
+				video::S3DVertex(-0.4*BS,0.2*BS,0.45*BS, 0,0,-1, c, txc[20],txc[21]),
+				video::S3DVertex(0.4*BS,0.2*BS,0.45*BS, 0,0,-1, c, txc[22],txc[21]),
+				video::S3DVertex(0.4*BS,-0.2*BS,0.45*BS, 0,0,-1, c, txc[22],txc[23]),
+				video::S3DVertex(-0.4*BS,-0.2*BS,0.45*BS, 0,0,-1, c, txc[20],txc[23]),
+			};
+
+			f32 sx = pa_current->x1()-pa_current->x0();
+			f32 sy = pa_current->y1()-pa_current->y0();
+			for (s32 j=0; j<24; j++) {
+				vertices[j].TCoords *= v2f(sx,sy);
+				vertices[j].TCoords += v2f(pa_current->x0(),pa_current->y0());
+			}
+			v3s16 dir = unpackDir(n.param2);
+
+			for (s32 i=0; i<24; i++) {
+				if(dir == v3s16(1,0,0))
+					vertices[i].Pos.rotateXZBy(-90);
+				if(dir == v3s16(-1,0,0))
+					vertices[i].Pos.rotateXZBy(90);
+				if(dir == v3s16(0,0,1))
+					vertices[i].Pos.rotateXZBy(0);
+				if(dir == v3s16(0,0,-1))
+					vertices[i].Pos.rotateXZBy(180);
+				if(dir == v3s16(0,-1,0))
+					vertices[i].Pos.rotateYZBy(90);
+				if(dir == v3s16(0,1,0))
+					vertices[i].Pos.rotateYZBy(-90);
+
+				vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+			}
+
+			u16 indices[] = {0,1,2,2,3,0};
+			// Add to mesh collector
+			for (s32 j=0; j<24; j+=4) {
+				collector.append(*material_current, &vertices[j], 4, indices, 6);
+			}
+		}
+		/*
+			Signs on walls
+		*/
+		break;
+		case CDT_WALLMOUNT:
+		{
+			switch (n.getContent()) {
 			case CONTENT_LADDER:
 				pa_current = &ap_ladder;
 				break;
 			default:
-				pa_current = &ap_sign_wall;
+				pa_current = &ap_ladder;
 				break;
 			}
 
@@ -876,13 +1081,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			post.MinEdge += pos;
 			post.MaxEdge += pos;
 			f32 postuv[24]={
-
-					0.4,0.4,0.6,0.6,
-					0.35,0,0.65,1,
-					0.35,0,0.65,1,
-					0.35,0,0.65,1,
-					0.35,0,0.65,1,
-					0.4,0.4,0.6,0.6};
+				0.4,0.4,0.6,0.6,
+				0.4,0.4,0.6,0.6,
+				0.35,0,0.65,1,
+				0.35,0,0.65,1,
+				0.35,0,0.65,1,
+				0.35,0,0.65,1
+			};
 			makeCuboid(material_wood, &pa_wood, &collector, c, post, postuv);
 
 			// Now a section of fence, +X, if there's a post there
@@ -902,7 +1107,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					0,0.4,1,0.6,
 					0,0.4,1,0.6,
 					0,0.4,1,0.6,
-					0,0.4,1,0.6};
+					0,0.4,1,0.6
+				};
 				makeCuboid(material_wood, &pa_wood, &collector, c, bar, xrailuv);
 				bar.MinEdge.Y -= BS/2;
 				bar.MaxEdge.Y -= BS/2;
@@ -1050,7 +1256,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l);
 
-			for(u32 j=0; j<4; j++)
+			for(u32 j=0; j<2; j++)
 			{
 				video::S3DVertex vertices[4] =
 				{
@@ -1113,7 +1319,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l);
 
-			for(u32 j=0; j<4; j++)
+			for(u32 j=0; j<2; j++)
 			{
 				video::S3DVertex vertices[4] =
 				{
@@ -1171,7 +1377,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l);
 
-			for(u32 j=0; j<4; j++)
+			for(u32 j=0; j<2; j++)
 			{
 				video::S3DVertex vertices[4] =
 				{
@@ -1263,12 +1469,18 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				material_current = &material_sandstone;
 				pa_current = &pa_sandstone;
 				break;
+			case CONTENT_SIGN:
+			case CONTENT_SIGN_UD:
+				material_current = &material_sign;
+				pa_current = &pa_sign;
+				break;
 			default:
 				material_current = &material_cobble;
 				pa_current = &pa_cobble;
 			}
 
 			u32 lt = 0;
+			u32 ltp;
 			u8 ld = 0;
 			for (s16 tx=-1; tx<2; tx++) {
 			for (s16 ty=-1; ty<2; ty++) {
@@ -1278,7 +1490,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				MapNode n = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+tx,y+ty,z+tz));
 				if (ty<1 && n.getContent() != CONTENT_AIR)
 					continue;
-				lt += decode_light(n.getLightBlend(data->m_daynight_ratio));
+				ltp = decode_light(n.getLightBlend(data->m_daynight_ratio));
+				if (!ltp)
+					continue;
+				lt += ltp;
 				ld++;
 			}
 			}

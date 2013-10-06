@@ -1084,7 +1084,7 @@ void ServerEnvironment::step(float dtime)
 					{
 						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
 						if(content_features(n_top).air_equivalent == false
-							&& n_top.getContent() != CONTENT_IGNORE)
+							&& n_top.getContent() != CONTENT_IGNORE && content_features(n_top).draw_type != CDT_PLANTLIKE && n_top.getContent() != CONTENT_SIGN)
 						{
 							n.setContent(CONTENT_MUD);
 							m_map->addNodeWithEvent(p, n);
@@ -1202,6 +1202,27 @@ void ServerEnvironment::step(float dtime)
 								}
 							}
 							}
+							}
+							if (grow) {
+								for (s16 z=-max_o; grow && z < max_o; z++) {
+								for (s16 x=-max_o; grow && x < max_o; x++) {
+									v3s16 test_p = p + v3s16(x,-1,z);
+									if (test_p != p) {
+										content_t tcon = m_map->getNodeNoEx(test_p).getContent();
+										if (
+											tcon != CONTENT_AIR
+											&& tcon != CONTENT_TREE
+											&& tcon != CONTENT_JUNGLETREE
+											&& tcon != CONTENT_LEAVES
+											&& tcon != CONTENT_APPLE
+											&& tcon != CONTENT_IGNORE
+											&& tcon != CONTENT_MUD
+											&& tcon != CONTENT_GRASS
+										)
+											grow = 0;
+									}
+								}
+								}
 							}
 						}else if (below == CONTENT_MUD || below == CONTENT_GRASS) {
 							for (s16 z=-max_o; grow && z < max_o; z++) {

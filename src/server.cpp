@@ -2853,6 +2853,15 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					}
 				}
 
+				// Signs?
+				if (n.getContent() == CONTENT_SIGN_WALL) {
+					if (p_dir.Y == 1) {
+						n.setContent(CONTENT_SIGN_UD);
+					}else if (p_dir.Y == -1) {
+						n.setContent(CONTENT_SIGN);
+					}
+				}
+
 				// Calculate the direction for furnaces and chests and stuff
 				if(content_features(n).param_type == CPT_FACEDIR_SIMPLE)
 				{
