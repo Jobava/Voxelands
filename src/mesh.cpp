@@ -21,9 +21,11 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "log.h"
 #include <cassert>
 #include <iostream>
+#include <vector>
 #include <IAnimatedMesh.h>
 #include <SAnimatedMesh.h>
 #include <ICameraSceneNode.h>
+#include "constants.h"
 
 // In Irrlicht 1.8 the signature of ITexture::lock was changed from
 // (bool, u32) to (E_TEXTURE_LOCK_MODE, u32).
@@ -33,63 +35,82 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define MY_ETLM_READ_ONLY video::ETLM_READ_ONLY
 #endif
 
-scene::IAnimatedMesh* createCubeMesh(v3f scale)
+scene::IAnimatedMesh* createNodeBoxMesh(std::vector<aabb3f> nodeboxes, v3f scale)
 {
 	video::SColor c(255,255,255,255);
-	video::S3DVertex vertices[24] =
-	{
-		// Up
-		video::S3DVertex(-0.5,+0.5,-0.5, 0,1,0, c, 0,1),
-		video::S3DVertex(-0.5,+0.5,+0.5, 0,1,0, c, 0,0),
-		video::S3DVertex(+0.5,+0.5,+0.5, 0,1,0, c, 1,0),
-		video::S3DVertex(+0.5,+0.5,-0.5, 0,1,0, c, 1,1),
-		// Down
-		video::S3DVertex(-0.5,-0.5,-0.5, 0,-1,0, c, 0,0),
-		video::S3DVertex(+0.5,-0.5,-0.5, 0,-1,0, c, 1,0),
-		video::S3DVertex(+0.5,-0.5,+0.5, 0,-1,0, c, 1,1),
-		video::S3DVertex(-0.5,-0.5,+0.5, 0,-1,0, c, 0,1),
-		// Right
-		video::S3DVertex(+0.5,-0.5,-0.5, 1,0,0, c, 0,1),
-		video::S3DVertex(+0.5,+0.5,-0.5, 1,0,0, c, 0,0),
-		video::S3DVertex(+0.5,+0.5,+0.5, 1,0,0, c, 1,0),
-		video::S3DVertex(+0.5,-0.5,+0.5, 1,0,0, c, 1,1),
-		// Left
-		video::S3DVertex(-0.5,-0.5,-0.5, -1,0,0, c, 1,1),
-		video::S3DVertex(-0.5,-0.5,+0.5, -1,0,0, c, 0,1),
-		video::S3DVertex(-0.5,+0.5,+0.5, -1,0,0, c, 0,0),
-		video::S3DVertex(-0.5,+0.5,-0.5, -1,0,0, c, 1,0),
-		// Back
-		video::S3DVertex(-0.5,-0.5,+0.5, 0,0,1, c, 1,1),
-		video::S3DVertex(+0.5,-0.5,+0.5, 0,0,1, c, 0,1),
-		video::S3DVertex(+0.5,+0.5,+0.5, 0,0,1, c, 0,0),
-		video::S3DVertex(-0.5,+0.5,+0.5, 0,0,1, c, 1,0),
-		// Front
-		video::S3DVertex(-0.5,-0.5,-0.5, 0,0,-1, c, 0,1),
-		video::S3DVertex(-0.5,+0.5,-0.5, 0,0,-1, c, 0,0),
-		video::S3DVertex(+0.5,+0.5,-0.5, 0,0,-1, c, 1,0),
-		video::S3DVertex(+0.5,-0.5,-0.5, 0,0,-1, c, 1,1),
-	};
-
-	u16 indices[6] = {0,1,2,2,3,0};
 
 	scene::SMesh *mesh = new scene::SMesh();
-	for (u32 i=0; i<6; ++i)
-	{
-		scene::IMeshBuffer *buf = new scene::SMeshBuffer();
-		buf->append(vertices + 4 * i, 4, indices, 6);
-		// Set default material
-		buf->getMaterial().setFlag(video::EMF_LIGHTING, false);
-		buf->getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
-		buf->getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-		// Add mesh buffer to mesh
-		mesh->addMeshBuffer(buf);
-		buf->drop();
+	for (std::vector<aabb3f>::const_iterator n = nodeboxes.begin(); n != nodeboxes.end(); n++) {
+		aabb3f box = *n;
+		v3f min = box.MinEdge;
+		v3f max = box.MaxEdge;
+		video::S3DVertex vertices[24] = {
+			// Up
+			video::S3DVertex(min.X/BS,max.Y/BS,min.Z/BS, 0,1,0, c, 0,1),
+			video::S3DVertex(min.X/BS,max.Y/BS,max.Z/BS, 0,1,0, c, 0,0),
+			video::S3DVertex(max.X/BS,max.Y/BS,max.Z/BS, 0,1,0, c, 1,0),
+			video::S3DVertex(max.X/BS,max.Y/BS,min.Z/BS, 0,1,0, c, 1,1),
+			// Down
+			video::S3DVertex(min.X/BS,min.Y/BS,min.Z/BS, 0,-1,0, c, 0,0),
+			video::S3DVertex(max.X/BS,min.Y/BS,min.Z/BS, 0,-1,0, c, 1,0),
+			video::S3DVertex(max.X/BS,min.Y/BS,max.Z/BS, 0,-1,0, c, 1,1),
+			video::S3DVertex(min.X/BS,min.Y/BS,max.Z/BS, 0,-1,0, c, 0,1),
+			// Right
+			video::S3DVertex(max.X/BS,min.Y/BS,min.Z/BS, 1,0,0, c, 0,1),
+			video::S3DVertex(max.X/BS,max.Y/BS,min.Z/BS, 1,0,0, c, 0,0),
+			video::S3DVertex(max.X/BS,max.Y/BS,max.Z/BS, 1,0,0, c, 1,0),
+			video::S3DVertex(max.X/BS,min.Y/BS,max.Z/BS, 1,0,0, c, 1,1),
+			// Left
+			video::S3DVertex(min.X/BS,min.Y/BS,min.Z/BS, -1,0,0, c, 1,1),
+			video::S3DVertex(min.X/BS,min.Y/BS,max.Z/BS, -1,0,0, c, 0,1),
+			video::S3DVertex(min.X/BS,max.Y/BS,max.Z/BS, -1,0,0, c, 0,0),
+			video::S3DVertex(min.X/BS,max.Y/BS,min.Z/BS, -1,0,0, c, 1,0),
+			// Back
+			video::S3DVertex(min.X/BS,min.Y/BS,max.Z/BS, 0,0,1, c, 1,1),
+			video::S3DVertex(max.X/BS,min.Y/BS,max.Z/BS, 0,0,1, c, 0,1),
+			video::S3DVertex(max.X/BS,max.Y/BS,max.Z/BS, 0,0,1, c, 0,0),
+			video::S3DVertex(min.X/BS,max.Y/BS,max.Z/BS, 0,0,1, c, 1,0),
+			// Front
+			video::S3DVertex(min.X/BS,min.Y/BS,min.Z/BS, 0,0,-1, c, 0,1),
+			video::S3DVertex(min.X/BS,max.Y/BS,min.Z/BS, 0,0,-1, c, 0,0),
+			video::S3DVertex(max.X/BS,max.Y/BS,min.Z/BS, 0,0,-1, c, 1,0),
+			video::S3DVertex(max.X/BS,min.Y/BS,min.Z/BS, 0,0,-1, c, 1,1),
+		};
+
+		u16 indices[6] = {0,1,2,2,3,0};
+		for (u32 i=0; i<6; ++i) {
+			scene::IMeshBuffer *buf = new scene::SMeshBuffer();
+			buf->append(vertices + 4 * i, 4, indices, 6);
+			// Set default material
+			buf->getMaterial().setFlag(video::EMF_LIGHTING, false);
+			buf->getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
+			buf->getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
+			// Add mesh buffer to mesh
+			mesh->addMeshBuffer(buf);
+			buf->drop();
+		}
 	}
 
 	scene::SAnimatedMesh *anim_mesh = new scene::SAnimatedMesh(mesh);
 	mesh->drop();
 	scaleMesh(anim_mesh, scale);  // also recalculates bounding box
 	return anim_mesh;
+}
+
+scene::IAnimatedMesh* createCubeMesh(v3f scale)
+{
+	std::vector<aabb3f> nodeboxes;
+	nodeboxes.clear();
+	nodeboxes.push_back(core::aabbox3d<f32>(
+		-0.5*BS,
+		-0.5*BS,
+		-0.5*BS,
+		0.5*BS,
+		0.5*BS,
+		0.5*BS
+	));
+
+	return createNodeBoxMesh(nodeboxes,scale);
 }
 
 static scene::IAnimatedMesh* extrudeARGB(u32 twidth, u32 theight, u8 *data)

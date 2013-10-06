@@ -921,7 +921,6 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Cobble Stone Slab");
 	f->setAllTextures("cobble.png");
-	f->setInventoryTextureSlab("cobble.png", "cobble.png", "cobble.png");
 	f->param_type = CPT_NONE;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -936,13 +935,13 @@ void content_mapnode_init()
 		0,
 		0.5*BS
 	));
+	f->setInventoryTextureNodeBox(i,"cobble.png", "cobble.png", "cobble.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
 
 	i = CONTENT_MOSSYCOBBLE_SLAB;
 	f = &content_features(i);
 	f->description = std::string("Mossy Cobble Stone Slab");
 	f->setAllTextures("mossycobble.png");
-	f->setInventoryTextureSlab("mossycobble.png", "mossycobble.png", "mossycobble.png");
 	f->param_type = CPT_NONE;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -957,13 +956,13 @@ void content_mapnode_init()
 		0,
 		0.5*BS
 	));
+	f->setInventoryTextureNodeBox(i,"mossycobble.png", "mossycobble.png", "mossycobble.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 0.8);
 
 	i = CONTENT_STONE_SLAB;
 	f = &content_features(i);
 	f->description = std::string("Stone Slab");
 	f->setAllTextures("stone.png");
-	f->setInventoryTextureSlab("stone.png", "stone.png", "stone.png");
 	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -978,13 +977,13 @@ void content_mapnode_init()
 		0,
 		0.5*BS
 	));
+	f->setInventoryTextureNodeBox(i,"stone.png", "stone.png", "stone.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
 
 	i = CONTENT_WOOD_SLAB;
 	f = &content_features(i);
 	f->description = std::string("Wood Slab");
 	f->setAllTextures("wood.png");
-	f->setInventoryTextureSlab("wood.png", "wood.png", "wood.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -998,13 +997,13 @@ void content_mapnode_init()
 		0,
 		0.5*BS
 	));
+	f->setInventoryTextureNodeBox(i,"wood.png", "wood.png", "wood.png");
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
 	i = CONTENT_JUNGLE_SLAB;
 	f = &content_features(i);
 	f->description = std::string("Jungle Wood Slab");
 	f->setAllTextures("junglewood.png");
-	f->setInventoryTextureSlab("junglewood.png", "junglewood.png", "junglewood.png");
 	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -1019,13 +1018,13 @@ void content_mapnode_init()
 		0,
 		0.5*BS
 	));
+	f->setInventoryTextureNodeBox(i,"junglewood.png", "junglewood.png", "junglewood.png");
 	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
 
 	i = CONTENT_BRICK_SLAB;
 	f = &content_features(i);
 	f->description = std::string("Brick Slab");
 	f->setAllTextures("brick.png");
-	f->setInventoryTextureSlab("brick.png", "brick.png", "brick.png");
 	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -1040,13 +1039,13 @@ void content_mapnode_init()
 		0,
 		0.5*BS
 	));
+	f->setInventoryTextureNodeBox(i,"brick.png", "brick.png", "brick.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
 
 	i = CONTENT_SANDSTONE_SLAB;
 	f = &content_features(i);
 	f->description = std::string("Sand Stone Slab");
 	f->setAllTextures("sandstone.png");
-	f->setInventoryTextureSlab("sandstone.png", "sandstone.png", "sandstone.png");
 	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -1061,13 +1060,13 @@ void content_mapnode_init()
 		0,
 		0.5*BS
 	));
+	f->setInventoryTextureNodeBox(i,"sandstone.png", "sandstone.png", "sandstone.png");
 	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
 
 	// upside down slabs
 	i = CONTENT_COBBLE_SLAB_UD;
 	f = &content_features(i);
 	f->setAllTextures("cobble.png");
-	f->setInventoryTextureSlab("cobble.png", "cobble.png", "cobble.png");
 	f->param_type = CPT_NONE;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -1082,12 +1081,12 @@ void content_mapnode_init()
 		0.5*BS,
 		0.5*BS
 	));
+	f->setInventoryTextureNodeBox(i,"cobble.png", "cobble.png", "cobble.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
 
 	i = CONTENT_MOSSYCOBBLE_SLAB_UD;
 	f = &content_features(i);
 	f->setAllTextures("mossycobble.png");
-	f->setInventoryTextureSlab("mossycobble.png", "mossycobble.png", "mossycobble.png");
 	f->param_type = CPT_NONE;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -1102,12 +1101,12 @@ void content_mapnode_init()
 		0.5*BS,
 		0.5*BS
 	));
+	f->setInventoryTextureNodeBox(i,"mossycobble.png", "mossycobble.png", "mossycobble.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 0.8);
 
 	i = CONTENT_STONE_SLAB_UD;
 	f = &content_features(i);
 	f->setAllTextures("stone.png");
-	f->setInventoryTextureSlab("stone.png", "stone.png", "stone.png");
 	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -1122,12 +1121,12 @@ void content_mapnode_init()
 		0.5*BS,
 		0.5*BS
 	));
+	f->setInventoryTextureNodeBox(i,"stone.png", "stone.png", "stone.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
 
 	i = CONTENT_WOOD_SLAB_UD;
 	f = &content_features(i);
 	f->setAllTextures("wood.png");
-	f->setInventoryTextureSlab("wood.png", "wood.png", "wood.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1141,12 +1140,12 @@ void content_mapnode_init()
 		0.5*BS,
 		0.5*BS
 	));
+	f->setInventoryTextureNodeBox(i,"wood.png", "wood.png", "wood.png");
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
 	i = CONTENT_JUNGLE_SLAB_UD;
 	f = &content_features(i);
 	f->setAllTextures("junglewood.png");
-	f->setInventoryTextureSlab("junglewood.png", "junglewood.png", "junglewood.png");
 	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -1161,12 +1160,12 @@ void content_mapnode_init()
 		0.5*BS,
 		0.5*BS
 	));
+	f->setInventoryTextureNodeBox(i,"junglewood.png", "junglewood.png", "junglewood.png");
 	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
 
 	i = CONTENT_BRICK_SLAB_UD;
 	f = &content_features(i);
 	f->setAllTextures("brick.png");
-	f->setInventoryTextureSlab("brick.png", "brick.png", "brick.png");
 	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -1181,12 +1180,12 @@ void content_mapnode_init()
 		0.5*BS,
 		0.5*BS
 	));
+	f->setInventoryTextureNodeBox(i,"brick.png", "brick.png", "brick.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
 
 	i = CONTENT_SANDSTONE_SLAB_UD;
 	f = &content_features(i);
 	f->setAllTextures("sandstone.png");
-	f->setInventoryTextureSlab("sandstone.png", "sandstone.png", "sandstone.png");
 	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -1201,6 +1200,7 @@ void content_mapnode_init()
 		0.5*BS,
 		0.5*BS
 	));
+	f->setInventoryTextureNodeBox(i,"sandstone.png", "sandstone.png", "sandstone.png");
 	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
 
 	// stairs
@@ -1209,7 +1209,6 @@ void content_mapnode_init()
 	f->description = std::string("Cobble Stone Stair");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("cobble.png");
-	f->setInventoryTextureStair("cobble.png", "cobble.png", "cobble.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1230,6 +1229,7 @@ void content_mapnode_init()
 		0.5*BS,
 		0.5*BS
 	));
+	f->setInventoryTextureNodeBox(i,"cobble.png", "cobble.png", "cobble.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
 
 	i = CONTENT_MOSSYCOBBLE_STAIR;
@@ -1237,7 +1237,6 @@ void content_mapnode_init()
 	f->description = std::string("Mossy Cobble Stone Stair");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("mossycobble.png");
-	f->setInventoryTextureStair("mossycobble.png", "mossycobble.png", "mossycobble.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1258,6 +1257,7 @@ void content_mapnode_init()
 		0.5*BS,
 		0.5*BS
 	));
+	f->setInventoryTextureNodeBox(i,"mossycobble.png", "mossycobble.png", "mossycobble.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 0.8);
 
 	i = CONTENT_STONE_STAIR;
@@ -1265,7 +1265,6 @@ void content_mapnode_init()
 	f->description = std::string("Stone Stair");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("stone.png");
-	f->setInventoryTextureStair("stone.png", "stone.png", "stone.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1287,6 +1286,7 @@ void content_mapnode_init()
 		0.5*BS,
 		0.5*BS
 	));
+	f->setInventoryTextureNodeBox(i,"stone.png", "stone.png", "stone.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
 
 	i = CONTENT_WOOD_STAIR;
@@ -1296,7 +1296,6 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->setAllTextures("wood.png");
-	f->setInventoryTextureStair("wood.png", "wood.png", "wood.png");
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->setNodeBox(core::aabbox3d<f32>(
@@ -1315,6 +1314,7 @@ void content_mapnode_init()
 		0.5*BS,
 		0.5*BS
 	));
+	f->setInventoryTextureNodeBox(i,"wood.png", "wood.png", "wood.png");
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
 	i = CONTENT_JUNGLE_STAIR;
@@ -1322,7 +1322,6 @@ void content_mapnode_init()
 	f->description = std::string("Jungle Wood Stair");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("junglewood.png");
-	f->setInventoryTextureStair("junglewood.png", "junglewood.png", "junglewood.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	//f->is_ground_content = true;
@@ -1343,6 +1342,7 @@ void content_mapnode_init()
 		0.5*BS,
 		0.5*BS
 	));
+	f->setInventoryTextureNodeBox(i,"junglewood.png", "junglewood.png", "junglewood.png");
 	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
 
 	i = CONTENT_BRICK_STAIR;
@@ -1350,7 +1350,6 @@ void content_mapnode_init()
 	f->description = std::string("Brick Stair");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("brick.png");
-	f->setInventoryTextureStair("brick.png", "brick.png", "brick.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1371,6 +1370,7 @@ void content_mapnode_init()
 		0.5*BS,
 		0.5*BS
 	));
+	f->setInventoryTextureNodeBox(i,"brick.png", "brick.png", "brick.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
 
 	i = CONTENT_SANDSTONE_STAIR;
@@ -1378,7 +1378,6 @@ void content_mapnode_init()
 	f->description = std::string("Sand Stone Stair");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("sandstone.png");
-	f->setInventoryTextureStair("sandstone.png", "sandstone.png", "sandstone.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1399,6 +1398,7 @@ void content_mapnode_init()
 		0.5*BS,
 		0.5*BS
 	));
+	f->setInventoryTextureNodeBox(i,"sandstone.png", "sandstone.png", "sandstone.png");
 	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
 
 	// upside down stairs
@@ -1406,7 +1406,6 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("cobble.png");
-	f->setInventoryTextureStair("cobble.png", "cobble.png", "cobble.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1427,13 +1426,13 @@ void content_mapnode_init()
 		0.,
 		0.
 	));
+	f->setInventoryTextureNodeBox(i,"cobble.png", "cobble.png", "cobble.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
 
 	i = CONTENT_MOSSYCOBBLE_STAIR_UD;
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("mossycobble.png");
-	f->setInventoryTextureStair("mossycobble.png", "mossycobble.png", "mossycobble.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1454,13 +1453,13 @@ void content_mapnode_init()
 		0.,
 		0.
 	));
+	f->setInventoryTextureNodeBox(i,"mossycobble.png", "mossycobble.png", "mossycobble.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 0.8);
 
 	i = CONTENT_STONE_STAIR_UD;
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("stone.png");
-	f->setInventoryTextureStair("stone.png", "stone.png", "stone.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1481,13 +1480,13 @@ void content_mapnode_init()
 		0.,
 		0.
 	));
+	f->setInventoryTextureNodeBox(i,"stone.png", "stone.png", "stone.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
 
 	i = CONTENT_WOOD_STAIR_UD;
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("wood.png");
-	f->setInventoryTextureStair("wood.png", "wood.png", "wood.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1508,13 +1507,13 @@ void content_mapnode_init()
 		0.,
 		0.
 	));
+	f->setInventoryTextureNodeBox(i,"wood.png", "wood.png", "wood.png");
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
 	i = CONTENT_JUNGLE_STAIR_UD;
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("junglewood.png");
-	f->setInventoryTextureStair("junglewood.png", "junglewood.png", "junglewood.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	//f->is_ground_content = true;
@@ -1535,13 +1534,13 @@ void content_mapnode_init()
 		0.,
 		0.
 	));
+	f->setInventoryTextureNodeBox(i,"junglewood.png", "junglewood.png", "junglewood.png");
 	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
 
 	i = CONTENT_BRICK_STAIR_UD;
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("brick.png");
-	f->setInventoryTextureStair("brick.png", "brick.png", "brick.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1562,13 +1561,13 @@ void content_mapnode_init()
 		0.,
 		0.
 	));
+	f->setInventoryTextureNodeBox(i,"brick.png", "brick.png", "brick.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
 
 	i = CONTENT_SANDSTONE_STAIR_UD;
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("sandstone.png");
-	f->setInventoryTextureStair("sandstone.png", "sandstone.png", "sandstone.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1589,6 +1588,7 @@ void content_mapnode_init()
 		0.,
 		0.
 	));
+	f->setInventoryTextureNodeBox(i,"sandstone.png", "sandstone.png", "sandstone.png");
 	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
 
 	// NOTE: Remember to add frequently used stuff to the texture atlas in tile.cpp

@@ -125,38 +125,23 @@ void ContentFeatures::setInventoryTextureCube(std::string top,
 	inventory_texture = g_texturesource->getTextureRaw(imgname_full);
 }
 
-void ContentFeatures::setInventoryTextureSlab(std::string top,
+void ContentFeatures::setInventoryTextureNodeBox(content_t c, std::string top,
 		std::string left, std::string right)
 {
 	if(g_texturesource == NULL)
 		return;
+
+	char n[50];
+	sprintf(n,"%d",(int)c);
 
 	str_replace_char(top, '^', '&');
 	str_replace_char(left, '^', '&');
 	str_replace_char(right, '^', '&');
 
 	std::string imgname_full;
-	imgname_full += "[inventoryslab{";
-	imgname_full += top;
+	imgname_full += "[inventorynode{";
+	imgname_full += n;
 	imgname_full += "{";
-	imgname_full += left;
-	imgname_full += "{";
-	imgname_full += right;
-	inventory_texture = g_texturesource->getTextureRaw(imgname_full);
-}
-
-void ContentFeatures::setInventoryTextureStair(std::string top,
-		std::string left, std::string right)
-{
-	if(g_texturesource == NULL)
-		return;
-
-	str_replace_char(top, '^', '&');
-	str_replace_char(left, '^', '&');
-	str_replace_char(right, '^', '&');
-
-	std::string imgname_full;
-	imgname_full += "[inventorystair{";
 	imgname_full += top;
 	imgname_full += "{";
 	imgname_full += left;

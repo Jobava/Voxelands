@@ -351,10 +351,7 @@ struct ContentFeatures
 	void setInventoryTextureCube(std::string top,
 			std::string left, std::string right)
 	{}
-	void setInventoryTextureSlab(std::string top,
-			std::string left, std::string right)
-	{}
-	void setInventoryTextureStair(std::string top,
+	void setInventoryTextureNodeBox(content_t c, std::string top,
 			std::string left, std::string right)
 	{}
 #else
@@ -362,9 +359,7 @@ struct ContentFeatures
 
 	void setInventoryTextureCube(std::string top,
 			std::string left, std::string right);
-	void setInventoryTextureSlab(std::string top,
-			std::string left, std::string right);
-	void setInventoryTextureStair(std::string top,
+	void setInventoryTextureNodeBox(content_t c, std::string top,
 			std::string left, std::string right);
 #endif
 };
