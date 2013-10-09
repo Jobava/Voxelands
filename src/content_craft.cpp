@@ -107,7 +107,7 @@ struct CraftDef {
 */
 InventoryItem *craft_get_result(InventoryItem **items)
 {
-	static CraftDef defs[56];
+	static CraftDef defs[74];
 	static int defs_init = 0;
 
 	// only initialise (and hence allocate) these once
@@ -702,6 +702,158 @@ InventoryItem *craft_get_result(InventoryItem **items)
 			defs[defs_init].specs[6] = ItemSpec(ITEM_MATERIAL, CONTENT_STONE);
 			defs[defs_init].specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_STONE);
 			defs[defs_init].item = new MaterialItem(CONTENT_STONEBLOCK, 4);
+			defs_init++;
+		}
+
+		// wood door
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[6] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].item = new MaterialItem(CONTENT_WOOD_DOOR_LT, 1);
+			defs_init++;
+		}
+
+		// steel door
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[1] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].item = new MaterialItem(CONTENT_STEEL_DOOR_LT, 1);
+			defs_init++;
+		}
+
+		// wood windowed door
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS);
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD_DOOR_LT);
+			defs[defs_init].item = new MaterialItem(CONTENT_WOOD_W_DOOR_LT, 1);
+			defs_init++;
+		}
+
+		// steel windowed door
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS);
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_STEEL_DOOR_LT);
+			defs[defs_init].item = new MaterialItem(CONTENT_STEEL_W_DOOR_LT, 1);
+			defs_init++;
+		}
+
+		// wood windowed door
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS);
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD_DOOR_RT);
+			defs[defs_init].item = new MaterialItem(CONTENT_WOOD_W_DOOR_RT, 1);
+			defs_init++;
+		}
+
+		// steel windowed door
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS);
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_STEEL_DOOR_RT);
+			defs[defs_init].item = new MaterialItem(CONTENT_STEEL_W_DOOR_RT, 1);
+			defs_init++;
+		}
+
+		// wood opposite door
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD_DOOR_LT);
+			defs[defs_init].item = new MaterialItem(CONTENT_WOOD_DOOR_RT, 1);
+			defs_init++;
+		}
+
+		// steel opposite door
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_STEEL_DOOR_LT);
+			defs[defs_init].item = new MaterialItem(CONTENT_STEEL_DOOR_RT, 1);
+			defs_init++;
+		}
+
+		// wood !opposite door
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD_DOOR_RT);
+			defs[defs_init].item = new MaterialItem(CONTENT_WOOD_DOOR_LT, 1);
+			defs_init++;
+		}
+
+		// steel !opposite door
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_STEEL_DOOR_RT);
+			defs[defs_init].item = new MaterialItem(CONTENT_STEEL_DOOR_LT, 1);
+			defs_init++;
+		}
+
+		// wood opposite windowed door
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD_W_DOOR_LT);
+			defs[defs_init].item = new MaterialItem(CONTENT_WOOD_W_DOOR_RT, 1);
+			defs_init++;
+		}
+
+		// steel opposite windowed door
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_STEEL_W_DOOR_LT);
+			defs[defs_init].item = new MaterialItem(CONTENT_STEEL_W_DOOR_RT, 1);
+			defs_init++;
+		}
+
+		// wood !opposite windowed door
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD_W_DOOR_RT);
+			defs[defs_init].item = new MaterialItem(CONTENT_WOOD_W_DOOR_LT, 1);
+			defs_init++;
+		}
+
+		// steel !opposite windowed door
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_STEEL_W_DOOR_RT);
+			defs[defs_init].item = new MaterialItem(CONTENT_STEEL_W_DOOR_LT, 1);
+			defs_init++;
+		}
+
+		// wood hatch
+		{
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[5] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[6] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[8] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].item = new MaterialItem(CONTENT_WOOD_HATCH, 1);
+			defs_init++;
+		}
+
+		// steel hatch
+		{
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[5] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].item = new MaterialItem(CONTENT_STEEL_HATCH, 1);
+			defs_init++;
+		}
+
+		// wood windowed hatch
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS);
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD_HATCH);
+			defs[defs_init].item = new MaterialItem(CONTENT_WOOD_W_HATCH, 1);
+			defs_init++;
+		}
+
+		// steel windowed hatch
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS);
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_STEEL_HATCH);
+			defs[defs_init].item = new MaterialItem(CONTENT_STEEL_W_HATCH, 1);
 			defs_init++;
 		}
 	}

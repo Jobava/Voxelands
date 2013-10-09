@@ -37,6 +37,430 @@ void setStoneLikeDiggingProperties(DiggingPropertiesList &list, float toughness)
 void setDirtLikeDiggingProperties(DiggingPropertiesList &list, float toughness);
 void setWoodLikeDiggingProperties(DiggingPropertiesList &list, float toughness);
 
+static void content_mapnode_nodebox_stair(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		-0.5*BS,
+		-0.5*BS,
+		0.5*BS,
+		0,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		0.,
+		0.,
+		0.5*BS,
+		0.5*BS,
+		0.5*BS
+	));
+}
+
+static void content_mapnode_nodebox_stairud(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		0.,
+		-0.5*BS,
+		0.5*BS,
+		0.5*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		-0.5*BS,
+		-0.5*BS,
+		0.5*BS,
+		0.,
+		0.
+	));
+}
+
+static void content_mapnode_nodebox_slab(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		-0.5*BS,
+		-0.5*BS,
+		0.5*BS,
+		0,
+		0.5*BS
+	));
+}
+
+static void content_mapnode_nodebox_slabud(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		0.,
+		-0.5*BS,
+		0.5*BS,
+		0.5*BS,
+		0.5*BS
+	));
+}
+
+static void content_mapnode_nodebox_door(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		-0.5*BS,
+		-0.5*BS,
+		0.5*BS,
+		0.5*BS,
+		-0.35*BS
+	));
+}
+
+static void content_mapnode_nodebox_doorw(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		-0.5*BS,
+		-0.5*BS,
+		0.5*BS,
+		-0.3*BS,
+		-0.35*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		0.3*BS,
+		-0.5*BS,
+		0.5*BS,
+		0.5*BS,
+		-0.35*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		-0.3*BS,
+		-0.5*BS,
+		-0.3*BS,
+		0.3*BS,
+		-0.35*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.3*BS,
+		-0.3*BS,
+		-0.5*BS,
+		0.5*BS,
+		0.3*BS,
+		-0.35*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.05*BS,
+		-0.3*BS,
+		-0.45*BS,
+		0.05*BS,
+		0.3*BS,
+		-0.4*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		-0.05*BS,
+		-0.45*BS,
+		0.1*BS,
+		0.05*BS,
+		-0.4*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.1*BS,
+		-0.05*BS,
+		-0.45*BS,
+		0.5*BS,
+		0.05*BS,
+		-0.4*BS
+	));
+}
+
+static void content_mapnode_nodebox_doorol(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		-0.5*BS,
+		-0.5*BS,
+		-0.35*BS,
+		0.5*BS,
+		0.5*BS
+	));
+}
+
+static void content_mapnode_nodebox_doorwol(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		-0.5*BS,
+		-0.5*BS,
+		-0.35*BS,
+		-0.3*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		0.3*BS,
+		-0.5*BS,
+		-0.35*BS,
+		0.5*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		-0.3*BS,
+		-0.5*BS,
+		-0.35*BS,
+		0.3*BS,
+		-0.3*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		-0.3*BS,
+		0.3*BS,
+		-0.35*BS,
+		0.3*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.45*BS,
+		-0.3*BS,
+		-0.05*BS,
+		-0.4*BS,
+		0.3*BS,
+		0.05*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.45*BS,
+		-0.05*BS,
+		-0.3*BS,
+		-0.4*BS,
+		0.05*BS,
+		-0.05*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.45*BS,
+		-0.05*BS,
+		0.05*BS,
+		-0.4*BS,
+		0.05*BS,
+		0.3*BS
+	));
+}
+
+static void content_mapnode_nodebox_dooror(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		0.35*BS,
+		-0.5*BS,
+		-0.5*BS,
+		0.5*BS,
+		0.5*BS,
+		0.5*BS
+	));
+}
+
+static void content_mapnode_nodebox_doorwor(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		0.35*BS,
+		-0.5*BS,
+		-0.5*BS,
+		0.5*BS,
+		-0.3*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.35*BS,
+		0.3*BS,
+		-0.5*BS,
+		0.5*BS,
+		0.5*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.35*BS,
+		-0.3*BS,
+		-0.5*BS,
+		0.5*BS,
+		0.3*BS,
+		-0.3*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.35*BS,
+		-0.3*BS,
+		0.3*BS,
+		0.5*BS,
+		0.3*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.4*BS,
+		-0.3*BS,
+		-0.05*BS,
+		0.45*BS,
+		0.3*BS,
+		0.05*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.4*BS,
+		-0.05*BS,
+		-0.3*BS,
+		0.45*BS,
+		0.05*BS,
+		-0.05*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.4*BS,
+		-0.05*BS,
+		0.05*BS,
+		0.45*BS,
+		0.05*BS,
+		0.3*BS
+	));
+}
+
+static void content_mapnode_nodebox_hatch(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		0.35*BS,
+		-0.5*BS,
+		0.5*BS,
+		0.5*BS,
+		0.5*BS
+	));
+}
+
+static void content_mapnode_nodebox_hatchw(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		0.35*BS,
+		-0.5*BS,
+		0.5*BS,
+		0.5*BS,
+		-0.3*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		0.35*BS,
+		0.3*BS,
+		0.5*BS,
+		0.5*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.3*BS,
+		0.35*BS,
+		-0.3*BS,
+		0.5*BS,
+		0.5*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		0.35*BS,
+		-0.3*BS,
+		-0.3*BS,
+		0.5*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.05*BS,
+		0.4*BS,
+		-0.3*BS,
+		0.05*BS,
+		0.45*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.3*BS,
+		0.4*BS,
+		-0.05*BS,
+		-0.05*BS,
+		0.45*BS,
+		0.05*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.05*BS,
+		0.4*BS,
+		-0.05*BS,
+		0.3*BS,
+		0.45*BS,
+		0.05*BS
+	));
+}
+
+static void content_mapnode_nodebox_hatcho(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		0.35*BS,
+		-0.5*BS,
+		-0.5*BS,
+		0.5*BS,
+		0.5*BS,
+		0.5*BS
+	));
+}
+
+static void content_mapnode_nodebox_hatchwo(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		0.35*BS,
+		0.3*BS,
+		-0.5*BS,
+		0.5*BS,
+		0.5*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.35*BS,
+		-0.5*BS,
+		-0.5*BS,
+		0.5*BS,
+		-0.3*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.35*BS,
+		-0.3*BS,
+		-0.5*BS,
+		0.5*BS,
+		0.3*BS,
+		-0.3*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.35*BS,
+		-0.3*BS,
+		0.3*BS,
+		0.5*BS,
+		0.3*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.4*BS,
+		-0.3*BS,
+		-0.05*BS,
+		0.45*BS,
+		0.3*BS,
+		0.05*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.4*BS,
+		-0.05*BS,
+		-0.3*BS,
+		0.45*BS,
+		0.05*BS,
+		-0.05*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.4*BS,
+		-0.05*BS,
+		0.05*BS,
+		0.45*BS,
+		0.05*BS,
+		0.3*BS
+	));
+}
+
 /*
 	A conversion table for backwards compatibility.
 	Maps <=v19 content types to current ones.
@@ -714,8 +1138,8 @@ void content_mapnode_init()
 	i = CONTENT_SIGN_WALL;
 	f = &content_features(i);
 	f->description = std::string("Sign");
+	f->setAllTextures("sign_wall.png");
 	f->setInventoryTexture("sign_inventory.png");
-	f->setAllTextures("sign.png");
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_SIGNLIKE;
 	f->light_propagates = true;
@@ -732,8 +1156,10 @@ void content_mapnode_init()
 	i = CONTENT_SIGN;
 	f = &content_features(i);
 	f->description = std::string("Sign");
-	f->setInventoryTexture("sign_inventory.png");
 	f->setAllTextures("sign.png");
+	f->setTexture(4, "sign_back.png");
+	f->setTexture(5, "sign_front.png"); // Z-
+	f->setInventoryTexture("sign_inventory.png");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -761,8 +1187,10 @@ void content_mapnode_init()
 	i = CONTENT_SIGN_UD;
 	f = &content_features(i);
 	f->description = std::string("Sign");
-	f->setInventoryTexture("sign_inventory.png");
 	f->setAllTextures("sign.png");
+	f->setTexture(4, "sign_back_ud.png");
+	f->setTexture(5, "sign_front_ud.png"); // Z-
+	f->setInventoryTexture("sign_inventory.png");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -927,14 +1355,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->slab_cube_type = CONTENT_COBBLE;
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0,
-		0.5*BS
-	));
+	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"cobble.png", "cobble.png", "cobble.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
 
@@ -948,14 +1369,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->slab_cube_type = CONTENT_MOSSYCOBBLE;
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0,
-		0.5*BS
-	));
+	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"mossycobble.png", "mossycobble.png", "mossycobble.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 0.8);
 
@@ -969,14 +1383,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->slab_cube_type = CONTENT_STONE;
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0,
-		0.5*BS
-	));
+	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"stone.png", "stone.png", "stone.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
 
@@ -989,14 +1396,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->slab_cube_type = CONTENT_WOOD;
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0,
-		0.5*BS
-	));
+	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"wood.png", "wood.png", "wood.png");
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
@@ -1010,14 +1410,7 @@ void content_mapnode_init()
 	//f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->slab_cube_type = CONTENT_JUNGLEWOOD;
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0,
-		0.5*BS
-	));
+	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"junglewood.png", "junglewood.png", "junglewood.png");
 	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
 
@@ -1031,14 +1424,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem clay_brick 4");
 	f->slab_cube_type = CONTENT_BRICK;
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0,
-		0.5*BS
-	));
+	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"brick.png", "brick.png", "brick.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
 
@@ -1052,14 +1438,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAND)+" 4";
 	f->slab_cube_type = CONTENT_SANDSTONE;
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0,
-		0.5*BS
-	));
+	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"sandstone.png", "sandstone.png", "sandstone.png");
 	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
 
@@ -1073,14 +1452,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COBBLE_SLAB)+" 1";
 	f->slab_cube_type = CONTENT_COBBLE;
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
+	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"cobble.png", "cobble.png", "cobble.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
 
@@ -1093,14 +1465,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MOSSYCOBBLE_SLAB)+" 1";
 	f->slab_cube_type = CONTENT_MOSSYCOBBLE;
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
+	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"mossycobble.png", "mossycobble.png", "mossycobble.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 0.8);
 
@@ -1113,14 +1478,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STONE_SLAB)+" 1";
 	f->slab_cube_type = CONTENT_STONE;
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
+	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"stone.png", "stone.png", "stone.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
 
@@ -1132,14 +1490,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_SLAB)+" 1";
 	f->slab_cube_type = CONTENT_WOOD;
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
+	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"wood.png", "wood.png", "wood.png");
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
@@ -1152,14 +1503,7 @@ void content_mapnode_init()
 	//f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_JUNGLE_SLAB)+" 1";
 	f->slab_cube_type = CONTENT_JUNGLEWOOD;
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
+	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"junglewood.png", "junglewood.png", "junglewood.png");
 	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
 
@@ -1172,14 +1516,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem clay_brick 4");
 	f->slab_cube_type = CONTENT_BRICK;
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
+	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"brick.png", "brick.png", "brick.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
 
@@ -1192,14 +1529,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAND)+" 4";
 	f->slab_cube_type = CONTENT_SANDSTONE;
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
+	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"sandstone.png", "sandstone.png", "sandstone.png");
 	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
 
@@ -1213,22 +1543,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.,
-		0.,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
+	content_mapnode_nodebox_stair(f);
 	f->setInventoryTextureNodeBox(i,"cobble.png", "cobble.png", "cobble.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
 
@@ -1241,22 +1556,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.,
-		0.,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
+	content_mapnode_nodebox_stair(f);
 	f->setInventoryTextureNodeBox(i,"mossycobble.png", "mossycobble.png", "mossycobble.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 0.8);
 
@@ -1270,22 +1570,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->often_contains_mineral = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.,
-		0.,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
+	content_mapnode_nodebox_stair(f);
 	f->setInventoryTextureNodeBox(i,"stone.png", "stone.png", "stone.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
 
@@ -1298,22 +1583,7 @@ void content_mapnode_init()
 	f->setAllTextures("wood.png");
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.,
-		0.,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
+	content_mapnode_nodebox_stair(f);
 	f->setInventoryTextureNodeBox(i,"wood.png", "wood.png", "wood.png");
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
@@ -1326,22 +1596,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	//f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.,
-		0.,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
+	content_mapnode_nodebox_stair(f);
 	f->setInventoryTextureNodeBox(i,"junglewood.png", "junglewood.png", "junglewood.png");
 	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
 
@@ -1354,22 +1609,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem clay_brick 4");
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.,
-		0.,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
+	content_mapnode_nodebox_stair(f);
 	f->setInventoryTextureNodeBox(i,"brick.png", "brick.png", "brick.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
 
@@ -1382,22 +1622,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAND)+" 4";
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.,
-		0.,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
+	content_mapnode_nodebox_stair(f);
 	f->setInventoryTextureNodeBox(i,"sandstone.png", "sandstone.png", "sandstone.png");
 	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
 
@@ -1410,22 +1635,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COBBLE_STAIR)+" 1";
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0.,
-		0.
-	));
+	content_mapnode_nodebox_stairud(f);
 	f->setInventoryTextureNodeBox(i,"cobble.png", "cobble.png", "cobble.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
 
@@ -1437,22 +1647,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MOSSYCOBBLE_STAIR)+" 1";
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0.,
-		0.
-	));
+	content_mapnode_nodebox_stairud(f);
 	f->setInventoryTextureNodeBox(i,"mossycobble.png", "mossycobble.png", "mossycobble.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 0.8);
 
@@ -1464,22 +1659,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STONE_STAIR)+" 1";
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0.,
-		0.
-	));
+	content_mapnode_nodebox_stairud(f);
 	f->setInventoryTextureNodeBox(i,"stone.png", "stone.png", "stone.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
 
@@ -1491,22 +1671,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_STAIR)+" 1";
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0.,
-		0.
-	));
+	content_mapnode_nodebox_stairud(f);
 	f->setInventoryTextureNodeBox(i,"wood.png", "wood.png", "wood.png");
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
@@ -1518,22 +1683,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	//f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_JUNGLE_STAIR)+" 1";
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0.,
-		0.
-	));
+	content_mapnode_nodebox_stairud(f);
 	f->setInventoryTextureNodeBox(i,"junglewood.png", "junglewood.png", "junglewood.png");
 	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
 
@@ -1545,22 +1695,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem clay_brick 4");
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0.,
-		0.
-	));
+	content_mapnode_nodebox_stairud(f);
 	f->setInventoryTextureNodeBox(i,"brick.png", "brick.png", "brick.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
 
@@ -1572,24 +1707,560 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAND)+" 4";
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0.,
-		0.
-	));
+	content_mapnode_nodebox_stairud(f);
 	f->setInventoryTextureNodeBox(i,"sandstone.png", "sandstone.png", "sandstone.png");
 	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+
+	// doors
+	i = CONTENT_WOOD_DOOR_LB;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Wood Door");
+	f->setAllTextures("door_wood_lb.png");
+	f->setInventoryTexture("door_wood_l_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
+	content_mapnode_nodebox_door(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	i = CONTENT_WOOD_DOOR_LT;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Wood Door");
+	f->setAllTextures("door_wood_lt.png");
+	f->setInventoryTexture("door_wood_l_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_door(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+
+	i = CONTENT_STEEL_DOOR_LB;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Steel Door");
+	f->setAllTextures("door_steel_lb.png");
+	f->setInventoryTexture("door_steel_l_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
+	content_mapnode_nodebox_door(f);
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockedDoorNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	i = CONTENT_STEEL_DOOR_LT;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Steel Door");
+	f->setAllTextures("door_steel_lt.png");
+	f->setInventoryTexture("door_steel_l_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_door(f);
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockedDoorNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+
+	i = CONTENT_WOOD_W_DOOR_LB;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Wood Windowed Door");
+	f->setAllTextures("door_wood_wlb.png");
+	f->setInventoryTexture("door_wood_wl_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
+	content_mapnode_nodebox_door(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	i = CONTENT_WOOD_W_DOOR_LT;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Wood Windowed Door");
+	f->setAllTextures("door_wood_wlt.png");
+	f->setInventoryTexture("door_wood_wl_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_doorw(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+
+	i = CONTENT_STEEL_W_DOOR_LB;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Steel Windowed Door");
+	f->setAllTextures("door_steel_wlb.png");
+	f->setInventoryTexture("door_steel_wl_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
+	content_mapnode_nodebox_door(f);
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockedDoorNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	i = CONTENT_STEEL_W_DOOR_LT;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Steel Windowed Door");
+	f->setAllTextures("door_steel_wlt.png");
+	f->setInventoryTexture("door_steel_wl_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_doorw(f);
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockedDoorNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+
+	// right doors
+	i = CONTENT_WOOD_DOOR_RB;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Right Hanging Wood Door");
+	f->setAllTextures("door_wood_rb.png");
+	f->setInventoryTexture("door_wood_r_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
+	content_mapnode_nodebox_door(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	i = CONTENT_WOOD_DOOR_RT;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Right Hanging Wood Door");
+	f->setAllTextures("door_wood_rt.png");
+	f->setInventoryTexture("door_wood_r_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_door(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+
+	i = CONTENT_STEEL_DOOR_RB;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Right Hanging Steel Door");
+	f->setAllTextures("door_steel_rb.png");
+	f->setInventoryTexture("door_steel_r_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
+	content_mapnode_nodebox_door(f);
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockedDoorNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	i = CONTENT_STEEL_DOOR_RT;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Right Hanging Steel Door");
+	f->setAllTextures("door_steel_rt.png");
+	f->setInventoryTexture("door_steel_r_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_door(f);
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockedDoorNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+
+	i = CONTENT_WOOD_W_DOOR_RB;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Right Hanging Wood Windowed Door");
+	f->setAllTextures("door_wood_wrb.png");
+	f->setInventoryTexture("door_wood_wr_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
+	content_mapnode_nodebox_door(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	i = CONTENT_WOOD_W_DOOR_RT;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Right Hanging Wood Windowed Door");
+	f->setAllTextures("door_wood_wrt.png");
+	f->setInventoryTexture("door_wood_wr_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_doorw(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+
+	i = CONTENT_STEEL_W_DOOR_RB;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Right Hanging Steel Windowed Door");
+	f->setAllTextures("door_steel_wrb.png");
+	f->setInventoryTexture("door_steel_wr_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
+	content_mapnode_nodebox_door(f);
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockedDoorNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	i = CONTENT_STEEL_W_DOOR_RT;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Right Hanging Steel Windowed Door");
+	f->setAllTextures("door_steel_wrt.png");
+	f->setInventoryTexture("door_steel_wr_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_doorw(f);
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockedDoorNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+
+	// open doors
+	i = CONTENT_WOOD_DOOR_LB_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Wood Door");
+	f->setAllTextures("door_wood_lb.png");
+	f->setInventoryTexture("door_wood_l_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_DOOR_LT)+" 1";
+	content_mapnode_nodebox_doorol(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	i = CONTENT_WOOD_DOOR_LT_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Wood Door");
+	f->setAllTextures("door_wood_lt.png");
+	f->setInventoryTexture("door_wood_l_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_DOOR_LT)+" 1";
+	content_mapnode_nodebox_doorol(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+
+	i = CONTENT_STEEL_DOOR_LB_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Steel Door");
+	f->setAllTextures("door_steel_lb.png");
+	f->setInventoryTexture("door_steel_l_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_DOOR_LT)+" 1";
+	content_mapnode_nodebox_doorol(f);
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockedDoorNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	i = CONTENT_STEEL_DOOR_LT_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Steel Door");
+	f->setAllTextures("door_steel_lt.png");
+	f->setInventoryTexture("door_steel_l_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_DOOR_LT)+" 1";
+	content_mapnode_nodebox_doorol(f);
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockedDoorNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+
+	i = CONTENT_WOOD_W_DOOR_LB_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Wood Windowed Door");
+	f->setAllTextures("door_wood_wlb.png");
+	f->setInventoryTexture("door_wood_wl_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_W_DOOR_LT)+" 1";
+	content_mapnode_nodebox_doorol(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	i = CONTENT_WOOD_W_DOOR_LT_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Wood Windowed Door");
+	f->setAllTextures("door_wood_wlt.png");
+	f->setInventoryTexture("door_wood_wl_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_W_DOOR_LT)+" 1";
+	content_mapnode_nodebox_doorwol(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+
+	i = CONTENT_STEEL_W_DOOR_LB_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Steel Windowed Door");
+	f->setAllTextures("door_steel_wlb.png");
+	f->setInventoryTexture("door_steel_wl_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_W_DOOR_LT)+" 1";
+	content_mapnode_nodebox_doorol(f);
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockedDoorNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	i = CONTENT_STEEL_W_DOOR_LT_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Steel Windowed Door");
+	f->setAllTextures("door_steel_wlt.png");
+	f->setInventoryTexture("door_steel_wl_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_W_DOOR_LT)+" 1";
+	content_mapnode_nodebox_doorwol(f);
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockedDoorNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+
+	// right open doors
+	i = CONTENT_WOOD_DOOR_RB_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Right Hanging Wood Door");
+	f->setAllTextures("door_wood_rb.png");
+	f->setInventoryTexture("door_wood_r_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_DOOR_RT)+" 1";
+	content_mapnode_nodebox_dooror(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	i = CONTENT_WOOD_DOOR_RT_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Right Hanging Wood Door");
+	f->setAllTextures("door_wood_rt.png");
+	f->setInventoryTexture("door_wood_r_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_DOOR_RT)+" 1";
+	content_mapnode_nodebox_dooror(f);
+	f->setInventoryTextureNodeBox(i,"wood.png", "wood.png", "wood.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+
+	i = CONTENT_STEEL_DOOR_RB_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Right Hanging Steel Door");
+	f->setAllTextures("door_steel_rb.png");
+	f->setInventoryTexture("door_steel_r_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_DOOR_RT)+" 1";
+	content_mapnode_nodebox_dooror(f);
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockedDoorNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	i = CONTENT_STEEL_DOOR_RT_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Right Hanging Steel Door");
+	f->setAllTextures("door_steel_rt.png");
+	f->setInventoryTexture("door_steel_r_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_DOOR_RT)+" 1";
+	content_mapnode_nodebox_dooror(f);
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockedDoorNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+
+	i = CONTENT_WOOD_W_DOOR_RB_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Right Hanging Wood Windowed Door");
+	f->setAllTextures("door_wood_wrb.png");
+	f->setInventoryTexture("door_wood_wr_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_W_DOOR_RT)+" 1";
+	content_mapnode_nodebox_dooror(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	i = CONTENT_WOOD_W_DOOR_RT_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Right Hanging Wood Windowed Door");
+	f->setAllTextures("door_wood_wrt.png");
+	f->setInventoryTexture("door_wood_wr_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_W_DOOR_RT)+" 1";
+	content_mapnode_nodebox_doorwor(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+
+	i = CONTENT_STEEL_W_DOOR_RB_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Right Hanging Steel Windowed Door");
+	f->setAllTextures("door_steel_wrb.png");
+	f->setInventoryTexture("door_wood_wr_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_W_DOOR_RT)+" 1";
+	content_mapnode_nodebox_dooror(f);
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockedDoorNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	i = CONTENT_STEEL_W_DOOR_RT_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Right Hanging Steel Windowed Door");
+	f->setAllTextures("door_steel_wrt.png");
+	f->setInventoryTexture("door_wood_wr_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_W_DOOR_RT)+" 1";
+	content_mapnode_nodebox_doorwor(f);
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockedDoorNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+
+	// hatches
+	i = CONTENT_WOOD_HATCH;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Wood Hatch");
+	f->setAllTextures("hatch_wood.png");
+	f->setInventoryTexture("hatch_wood_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_hatch(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+
+	i = CONTENT_STEEL_HATCH;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Steel Hatch");
+	f->setAllTextures("hatch_steel.png");
+	f->setInventoryTexture("hatch_steel_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_hatch(f);
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockedDoorNodeMetadata();
+
+	i = CONTENT_WOOD_W_HATCH;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Wood Windowed Hatch");
+	f->setAllTextures("hatch_wood_w.png");
+	f->setInventoryTexture("hatch_wood_w_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_hatchw(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+
+	i = CONTENT_STEEL_W_HATCH;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Steel Windowed Hatch");
+	f->setAllTextures("hatch_steel_w.png");
+	f->setInventoryTexture("hatch_steel_w_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_hatchw(f);
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockedDoorNodeMetadata();
+
+	// open hatches
+	i = CONTENT_WOOD_HATCH_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Wood Hatch");
+	f->setAllTextures("hatch_wood.png");
+	f->setInventoryTexture("hatch_wood_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->climbable = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_HATCH)+" 1";
+	content_mapnode_nodebox_hatcho(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	i = CONTENT_STEEL_HATCH_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Steel Hatch");
+	f->setAllTextures("hatch_steel.png");
+	f->setInventoryTexture("hatch_steel_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->climbable = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_HATCH)+" 1";
+	content_mapnode_nodebox_hatcho(f);
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockedDoorNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+
+	i = CONTENT_WOOD_W_HATCH_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Wood Hatch");
+	f->setAllTextures("hatch_wood_w.png");
+	f->setInventoryTexture("hatch_wood_w_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->climbable = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_HATCH)+" 1";
+	content_mapnode_nodebox_hatchwo(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	i = CONTENT_STEEL_W_HATCH_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Steel Hatch");
+	f->setAllTextures("hatch_steel_w.png");
+	f->setInventoryTexture("hatch_steel_w_inv.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->climbable = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_HATCH)+" 1";
+	content_mapnode_nodebox_hatchwo(f);
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockedDoorNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
 
 	// NOTE: Remember to add frequently used stuff to the texture atlas in tile.cpp
 

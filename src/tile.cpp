@@ -549,7 +549,7 @@ void TextureSource::buildMainAtlas()
 	JMutexAutoLock lock(m_atlaspointer_cache_mutex);
 
 	// Create an image of the right size
-	core::dimension2d<u32> atlas_dim(1024,1024);
+	core::dimension2d<u32> atlas_dim(2048,2048);
 	video::IImage *atlas_img =
 			driver->createImage(video::ECF_A8R8G8B8, atlas_dim);
 	//assert(atlas_img);

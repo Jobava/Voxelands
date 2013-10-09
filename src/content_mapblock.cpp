@@ -471,12 +471,12 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 			AtlasPointer ap = g_texturesource->getTexture("torch.png");
 			static const f32 txc[24] = {
-				0,0,0.05,0.05,
-				0.8,0.8,0.9,0.9,
-				0,0,1,1,
-				0,0,1,1,
-				0,0,1,1,
-				0,0,1,1
+				0.6,0.1,0.9,0.4,
+				0.6,0.6,0.6,0.9,
+				0,0,0.3,1,
+				0,0,0.3,1,
+				0,0,0.3,1,
+				0,0,0.3,1
 			};
 			video::S3DVertex *v;
 

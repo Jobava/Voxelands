@@ -2395,6 +2395,68 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		*/
 		if(action == 0)
 		{
+			MapNode n = m_env.getMap().getNode(p_under);
+			if (n.getContent() >= CONTENT_DOOR_MIN && n.getContent() <= CONTENT_DOOR_MAX) {
+				v3s16 mp(0,1,0);
+				if ((n.getContent()&CONTENT_DOOR_STEEL_MASK) == CONTENT_DOOR_STEEL_MASK) {
+					NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
+					if (meta && meta->typeId() == CONTENT_WOOD_DOOR_LT) {
+						LockedDoorNodeMetadata *ldm = (LockedDoorNodeMetadata*)meta;
+						if (ldm->getOwner() != player->getName())
+							return;
+					}
+				}
+				if ((n.getContent()&CONTENT_DOOR_SECT_MASK) == CONTENT_DOOR_SECT_MASK)
+					mp.Y = -1;
+
+				MapNode m = m_env.getMap().getNode(p_under+mp);
+				core::list<u16> far_players;
+				if ((n.getContent()&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK) {
+					if ((n.getContent()&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
+						n.setContent(n.getContent()&~CONTENT_DOOR_OPEN_MASK);
+						m.setContent(m.getContent()&~CONTENT_DOOR_OPEN_MASK);
+					}else{
+						n.setContent(n.getContent()|CONTENT_DOOR_OPEN_MASK);
+						m.setContent(m.getContent()|CONTENT_DOOR_OPEN_MASK);
+					}
+					sendAddNode(p_under+mp, m, 0, &far_players, 30);
+				}else{
+					if ((n.getContent()&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
+						n.setContent(n.getContent()&~CONTENT_DOOR_OPEN_MASK);
+					}else{
+						n.setContent(n.getContent()|CONTENT_DOOR_OPEN_MASK);
+					}
+				}
+				sendAddNode(p_under, n, 0, &far_players, 30);
+
+				/*
+					Add node.
+
+					This takes some time so it is done after the quick stuff
+				*/
+				core::map<v3s16, MapBlock*> modified_blocks;
+				{
+					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+
+					std::string p_name = std::string(player->getName());
+					m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
+					if ((n.getContent()&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK)
+						m_env.getMap().addNodeAndUpdate(p_under+mp, m, modified_blocks, p_name);
+				}
+				/*
+					Set blocks not sent to far players
+				*/
+				for(core::list<u16>::Iterator
+						i = far_players.begin();
+						i != far_players.end(); i++)
+				{
+					u16 peer_id = *i;
+					RemoteClient *client = getClient(peer_id);
+					if(client==NULL)
+						continue;
+					client->SetBlocksNotSent(modified_blocks);
+				}
+			}
 			/*
 				NOTE: This can be used in the future to check if
 				somebody is cheating, by checking the timing.
@@ -2599,12 +2661,32 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						<<", gets material "<<(int)material<<", mineral "
 						<<(int)mineral<<std::endl;
 
+				core::list<u16> far_players;
+				MapNode n = m_env.getMap().getNode(p_under);
+				if (
+					n.getContent() >= CONTENT_DOOR_MIN
+					&& n.getContent() <= CONTENT_DOOR_MAX
+					&& (n.getContent()&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK
+				) {
+					if ((n.getContent()&CONTENT_DOOR_SECT_MASK) == CONTENT_DOOR_SECT_MASK) {
+						sendRemoveNode(p_under+v3s16(0,-1,0), peer_id, &far_players, 30);
+						{
+							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+							m_env.getMap().removeNodeAndUpdate(p_under+v3s16(0,-1,0), modified_blocks);
+						}
+					}else{
+						sendRemoveNode(p_under+v3s16(0,1,0), peer_id, &far_players, 30);
+						{
+							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+							m_env.getMap().removeNodeAndUpdate(p_under+v3s16(0,1,0), modified_blocks);
+						}
+					}
+				}
 				/*
 					Send the removal to all close-by players.
 					- If other player is close, send REMOVENODE
 					- Otherwise set blocks not sent
 				*/
-				core::list<u16> far_players;
 				sendRemoveNode(p_under, peer_id, &far_players, 30);
 
 				/*
@@ -2882,10 +2964,47 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					}
 				}
 
+				core::list<u16> far_players;
+				core::map<v3s16, MapBlock*> modified_blocks;
+				if (
+					n.getContent() >= CONTENT_DOOR_MIN
+					&& n.getContent() <= CONTENT_DOOR_MAX
+					&& (n.getContent()&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK
+				) {
+					MapNode abv = m_env.getMap().getNodeNoEx(p_over+v3s16(0,1,0));
+					MapNode und = m_env.getMap().getNodeNoEx(p_over+v3s16(0,-1,0));
+					if (abv.getContent() == CONTENT_AIR) {
+						n.setContent(n.getContent()&~CONTENT_DOOR_SECT_MASK);
+						MapNode m;
+						m.setContent(n.getContent()|CONTENT_DOOR_SECT_MASK);
+						m.param1 = n.param1;
+						sendAddNode(p_over+v3s16(0,1,0), m, 0, &far_players, 30);
+						{
+							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+
+							std::string p_name = std::string(player->getName());
+							m_env.getMap().addNodeAndUpdate(p_over+v3s16(0,1,0), m, modified_blocks, p_name);
+						}
+					}else if (und.getContent() == CONTENT_AIR) {
+						n.setContent(n.getContent()|CONTENT_DOOR_SECT_MASK);
+						MapNode m;
+						m.setContent(n.getContent()&~CONTENT_DOOR_SECT_MASK);
+						m.param1 = n.param1;
+						sendAddNode(p_over+v3s16(0,-1,0), m, 0, &far_players, 30);
+						{
+							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+
+							std::string p_name = std::string(player->getName());
+							m_env.getMap().addNodeAndUpdate(p_over+v3s16(0,-1,0), m, modified_blocks, p_name);
+						}
+					}else{
+						return;
+					}
+				}
+
 				/*
 					Send to all close-by players
 				*/
-				core::list<u16> far_players;
 				sendAddNode(p_over, n, 0, &far_players, 30);
 
 				/*
@@ -2909,7 +3028,6 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 					This takes some time so it is done after the quick stuff
 				*/
-				core::map<v3s16, MapBlock*> modified_blocks;
 				{
 					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 

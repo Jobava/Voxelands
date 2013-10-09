@@ -104,6 +104,25 @@ private:
 	std::string m_text;
 };
 
+class LockedDoorNodeMetadata : public NodeMetadata
+{
+public:
+	LockedDoorNodeMetadata();
+	~LockedDoorNodeMetadata();
+
+	virtual u16 typeId() const;
+	static NodeMetadata* create(std::istream &is);
+	virtual NodeMetadata* clone();
+	virtual void serializeBody(std::ostream &os);
+	virtual std::string infoText();
+
+	virtual std::string getOwner(){ return m_text; }
+	virtual void setOwner(std::string t){ m_text = t; }
+
+private:
+	std::string m_text;
+};
+
 class FurnaceNodeMetadata : public NodeMetadata
 {
 public:

@@ -221,6 +221,44 @@ std::string BorderStoneNodeMetadata::infoText()
 }
 
 /*
+	LockedDoorNodeMetadata
+*/
+
+// Prototype
+LockedDoorNodeMetadata proto_LockedDoorNodeMetadata;
+
+LockedDoorNodeMetadata::LockedDoorNodeMetadata()
+{
+	NodeMetadata::registerType(typeId(), create);
+}
+LockedDoorNodeMetadata::~LockedDoorNodeMetadata()
+{
+}
+u16 LockedDoorNodeMetadata::typeId() const
+{
+	return CONTENT_WOOD_DOOR_LT;
+}
+NodeMetadata* LockedDoorNodeMetadata::create(std::istream &is)
+{
+	LockedDoorNodeMetadata *d = new LockedDoorNodeMetadata();
+	d->setOwner(deSerializeString(is));
+	return d;
+}
+NodeMetadata* LockedDoorNodeMetadata::clone()
+{
+	LockedDoorNodeMetadata *d = new LockedDoorNodeMetadata();
+	return d;
+}
+void LockedDoorNodeMetadata::serializeBody(std::ostream &os)
+{
+	os<<serializeString(m_text);
+}
+std::string LockedDoorNodeMetadata::infoText()
+{
+	return std::string("Locked Door owned by '")+m_text+"'";
+}
+
+/*
 	FurnaceNodeMetadata
 */
 
