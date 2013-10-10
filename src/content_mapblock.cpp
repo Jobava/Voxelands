@@ -468,8 +468,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		break;
 		case CDT_TORCHLIKE:
 		{
-
-			AtlasPointer ap = g_texturesource->getTexture("torch.png");
 			static const f32 txc[24] = {
 				0.6,0.1,0.9,0.4,
 				0.6,0.6,0.6,0.9,
@@ -479,16 +477,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				0,0,0.3,1
 			};
 			video::S3DVertex *v;
-
-			// Set material
-			video::SMaterial material;
-			material.setFlag(video::EMF_LIGHTING, false);
-			material.setFlag(video::EMF_BILINEAR_FILTER, false);
-			material.setFlag(video::EMF_FOG_ENABLE, true);
-			//material.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL;
-			material.MaterialType
-					= video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-			material.setTexture(0, ap.atlas);
 
 			video::SColor c(255,255,255,255);
 			v3f pos = intToFloat(p+blockpos_nodes, BS);
@@ -619,18 +607,21 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				v = vertices;
 			}
 
-			f32 sx = ap.x1()-ap.x0();
-			f32 sy = ap.y1()-ap.y0();
+			f32 sx = content_features(n.getContent()).tiles[0].texture.x1()-content_features(n.getContent()).tiles[0].texture.x0();
+			f32 sy = content_features(n.getContent()).tiles[0].texture.y1()-content_features(n.getContent()).tiles[0].texture.y0();
 			for (s32 j=0; j<24; j++) {
 				v[j].TCoords *= v2f(sx,sy);
-				v[j].TCoords += v2f(ap.x0(),ap.y0());
+				v[j].TCoords += v2f(
+					content_features(n.getContent()).tiles[0].texture.x0(),
+					content_features(n.getContent()).tiles[0].texture.y0()
+				);
 			}
 
 			u16 indices[] = {0,1,2,2,3,0};
 
 			// Add to mesh collector
 			for (s32 j=0; j<24; j+=4) {
-				collector.append(material, &v[j], 4, indices, 6);
+				collector.append(content_features(n.getContent()).tiles[0].getMaterial(), &v[j], 4, indices, 6);
 			}
 		}
 		/*

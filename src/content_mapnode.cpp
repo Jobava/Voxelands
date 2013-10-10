@@ -1121,8 +1121,7 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Torch");
 	f->setInventoryTexture("torch_inventory.png");
-	f->used_texturenames["torch_inventory.png"] = true;
-	f->used_texturenames["torch.png"] = true;
+	f->setAllTextures("torch.png");
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_TORCHLIKE;
 	f->light_propagates = true;
