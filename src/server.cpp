@@ -2669,25 +2669,27 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					&& (n.getContent()&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK
 				) {
 					if ((n.getContent()&CONTENT_DOOR_SECT_MASK) == CONTENT_DOOR_SECT_MASK) {
-						sendRemoveNode(p_under+v3s16(0,-1,0), peer_id, &far_players, 30);
+						sendRemoveNode(p_under+v3s16(0,-1,0), 0, &far_players, 30);
 						{
 							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 							m_env.getMap().removeNodeAndUpdate(p_under+v3s16(0,-1,0), modified_blocks);
 						}
 					}else{
-						sendRemoveNode(p_under+v3s16(0,1,0), peer_id, &far_players, 30);
+						sendRemoveNode(p_under+v3s16(0,1,0), 0, &far_players, 30);
 						{
 							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 							m_env.getMap().removeNodeAndUpdate(p_under+v3s16(0,1,0), modified_blocks);
 						}
 					}
-				}
+					sendRemoveNode(p_under, 0, &far_players, 30);
+				}else{
 				/*
 					Send the removal to all close-by players.
 					- If other player is close, send REMOVENODE
 					- Otherwise set blocks not sent
 				*/
-				sendRemoveNode(p_under, peer_id, &far_players, 30);
+					sendRemoveNode(p_under, peer_id, &far_players, 30);
+				}
 
 				/*
 					Update and send inventory
