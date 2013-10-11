@@ -1320,7 +1320,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_PLANTLIKE;
 	f->setAllTextures("sapling.png");
 	f->setInventoryTexture("sapling.png");
-	f->used_texturenames["sapling.png"] = true;
+	f->setAllTextureFlags(0);
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->light_propagates = true;
 	f->air_equivalent = false;
@@ -1715,8 +1715,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Wood Door");
-	f->setAllTextures("door_wood_lb.png");
-	f->setInventoryTexture("door_wood_l_inv.png");
+	f->setAllTextures("door_wood_b.png");
+	f->setTexture(4,"door_wood_b.png[transformFX");
+	f->setInventoryTexture("door_wood_inv.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1727,8 +1728,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Wood Door");
-	f->setAllTextures("door_wood_lt.png");
-	f->setInventoryTexture("door_wood_l_inv.png");
+	f->setAllTextures("door_wood_t.png");
+	f->setTexture(4,"door_wood_t.png[transformFX");
+	f->setInventoryTexture("door_wood_inv.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1740,8 +1742,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Steel Door");
-	f->setAllTextures("door_steel_lb.png");
-	f->setInventoryTexture("door_steel_l_inv.png");
+	f->setAllTextures("door_steel_b.png");
+	f->setTexture(4,"door_steel_b.png[transformFX");
+	f->setInventoryTexture("door_steel_inv.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1754,8 +1757,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Steel Door");
-	f->setAllTextures("door_steel_lt.png");
-	f->setInventoryTexture("door_steel_l_inv.png");
+	f->setAllTextures("door_steel_t.png");
+	f->setTexture(4,"door_steel_t.png[transformFX");
+	f->setInventoryTexture("door_steel_inv.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1769,8 +1773,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Wood Windowed Door");
-	f->setAllTextures("door_wood_wlb.png");
-	f->setInventoryTexture("door_wood_wl_inv.png");
+	f->setAllTextures("door_wood_wb.png");
+	f->setTexture(4,"door_wood_wb.png[transformFX");
+	f->setInventoryTexture("door_wood_w_inv.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1781,8 +1786,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Wood Windowed Door");
-	f->setAllTextures("door_wood_wlt.png");
-	f->setInventoryTexture("door_wood_wl_inv.png");
+	f->setAllTextures("door_wood_wt.png");
+	f->setTexture(4,"door_wood_wt.png[transformFX");
+	f->setInventoryTexture("door_wood_w_inv.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1794,8 +1800,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Steel Windowed Door");
-	f->setAllTextures("door_steel_wlb.png");
-	f->setInventoryTexture("door_steel_wl_inv.png");
+	f->setAllTextures("door_steel_wb.png");
+	f->setTexture(4,"door_steel_wb.png[transformFX");
+	f->setInventoryTexture("door_steel_w_inv.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1808,8 +1815,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Steel Windowed Door");
-	f->setAllTextures("door_steel_wlt.png");
-	f->setInventoryTexture("door_steel_wl_inv.png");
+	f->setAllTextures("door_steel_wt.png");
+	f->setTexture(4,"door_steel_wt.png[transformFX");
+	f->setInventoryTexture("door_steel_w_inv.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1824,8 +1832,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Wood Door");
-	f->setAllTextures("door_wood_rb.png");
-	f->setInventoryTexture("door_wood_r_inv.png");
+	f->setAllTextures("door_wood_b.png[transformFX");
+	f->setTexture(4,"door_wood_b.png");
+	f->setInventoryTexture("door_wood_inv.png[transformFX");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1836,8 +1845,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Wood Door");
-	f->setAllTextures("door_wood_rt.png");
-	f->setInventoryTexture("door_wood_r_inv.png");
+	f->setAllTextures("door_wood_t.png[transformFX");
+	f->setTexture(4,"door_wood_t.png");
+	f->setInventoryTexture("door_wood_inv.png[transformFX");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1849,8 +1859,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Steel Door");
-	f->setAllTextures("door_steel_rb.png");
-	f->setInventoryTexture("door_steel_r_inv.png");
+	f->setAllTextures("door_steel_b.png[transformFX");
+	f->setTexture(4,"door_steel_b.png");
+	f->setInventoryTexture("door_steel_inv.png[transformFX");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1863,8 +1874,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Steel Door");
-	f->setAllTextures("door_steel_rt.png");
-	f->setInventoryTexture("door_steel_r_inv.png");
+	f->setAllTextures("door_steel_t.png[transformFX");
+	f->setTexture(4,"door_steel_t.png");
+	f->setInventoryTexture("door_steel_inv.png[transformFX");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1878,8 +1890,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Wood Windowed Door");
-	f->setAllTextures("door_wood_wrb.png");
-	f->setInventoryTexture("door_wood_wr_inv.png");
+	f->setAllTextures("door_wood_wb.png[transformFX");
+	f->setTexture(4,"door_wood_wb.png");
+	f->setInventoryTexture("door_wood_w_inv.png[transformFX");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1890,8 +1903,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Wood Windowed Door");
-	f->setAllTextures("door_wood_wrt.png");
-	f->setInventoryTexture("door_wood_wr_inv.png");
+	f->setAllTextures("door_wood_wt.png[transformFX");
+	f->setTexture(4,"door_wood_wt.png");
+	f->setInventoryTexture("door_wood_w_inv.png[transformFX");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1903,8 +1917,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Steel Windowed Door");
-	f->setAllTextures("door_steel_wrb.png");
-	f->setInventoryTexture("door_steel_wr_inv.png");
+	f->setAllTextures("door_steel_wb.png[transformFX");
+	f->setTexture(4,"door_steel_wb.png");
+	f->setInventoryTexture("door_steel_w_inv.png[transformFX");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1917,8 +1932,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Steel Windowed Door");
-	f->setAllTextures("door_steel_wrt.png");
-	f->setInventoryTexture("door_steel_wr_inv.png");
+	f->setAllTextures("door_steel_wt.png[transformFX");
+	f->setTexture(4,"door_steel_wt.png");
+	f->setInventoryTexture("door_steel_w_inv.png[transformFX");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1933,8 +1949,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Wood Door");
-	f->setAllTextures("door_wood_lb.png");
-	f->setInventoryTexture("door_wood_l_inv.png");
+	f->setAllTextures("door_wood_b.png");
+	f->setTexture(4,"door_wood_b.png[transformFX");
+	f->setInventoryTexture("door_wood_inv.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1945,8 +1962,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Wood Door");
-	f->setAllTextures("door_wood_lt.png");
-	f->setInventoryTexture("door_wood_l_inv.png");
+	f->setAllTextures("door_wood_t.png");
+	f->setTexture(4,"door_wood_t.png[transformFX");
+	f->setInventoryTexture("door_wood_inv.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1958,8 +1976,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Steel Door");
-	f->setAllTextures("door_steel_lb.png");
-	f->setInventoryTexture("door_steel_l_inv.png");
+	f->setAllTextures("door_steel_b.png");
+	f->setTexture(4,"door_steel_b.png[transformFX");
+	f->setInventoryTexture("door_steel_inv.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1972,8 +1991,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Steel Door");
-	f->setAllTextures("door_steel_lt.png");
-	f->setInventoryTexture("door_steel_l_inv.png");
+	f->setAllTextures("door_steel_t.png");
+	f->setTexture(4,"door_steel_t.png[transformFX");
+	f->setInventoryTexture("door_steel_inv.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1987,8 +2007,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Wood Windowed Door");
-	f->setAllTextures("door_wood_wlb.png");
-	f->setInventoryTexture("door_wood_wl_inv.png");
+	f->setAllTextures("door_wood_wb.png");
+	f->setTexture(4,"door_wood_wb.png[transformFX");
+	f->setInventoryTexture("door_wood_w_inv.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1999,8 +2020,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Wood Windowed Door");
-	f->setAllTextures("door_wood_wlt.png");
-	f->setInventoryTexture("door_wood_wl_inv.png");
+	f->setAllTextures("door_wood_wt.png");
+	f->setTexture(4,"door_wood_wt.png[transformFX");
+	f->setInventoryTexture("door_wood_w_inv.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2012,8 +2034,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Steel Windowed Door");
-	f->setAllTextures("door_steel_wlb.png");
-	f->setInventoryTexture("door_steel_wl_inv.png");
+	f->setAllTextures("door_steel_wb.png");
+	f->setTexture(4,"door_steel_wb.png[transformFX");
+	f->setInventoryTexture("door_steel_w_inv.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2026,8 +2049,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Steel Windowed Door");
-	f->setAllTextures("door_steel_wlt.png");
-	f->setInventoryTexture("door_steel_wl_inv.png");
+	f->setAllTextures("door_steel_wt.png");
+	f->setTexture(4,"door_steel_wt.png[transformFX");
+	f->setInventoryTexture("door_steel_w_inv.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2042,8 +2066,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Wood Door");
-	f->setAllTextures("door_wood_rb.png");
-	f->setInventoryTexture("door_wood_r_inv.png");
+	f->setAllTextures("door_wood_b.png[transformFX");
+	f->setTexture(4,"door_wood_b.png");
+	f->setInventoryTexture("door_wood_inv.png[transformFX");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2054,8 +2079,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Wood Door");
-	f->setAllTextures("door_wood_rt.png");
-	f->setInventoryTexture("door_wood_r_inv.png");
+	f->setAllTextures("door_wood_t.png[transformFX");
+	f->setTexture(4,"door_wood_t.png");
+	f->setInventoryTexture("door_wood_inv.png[transformFX");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2068,8 +2094,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Steel Door");
-	f->setAllTextures("door_steel_rb.png");
-	f->setInventoryTexture("door_steel_r_inv.png");
+	f->setAllTextures("door_steel_b.png[transformFX");
+	f->setTexture(4,"door_steel_b.png");
+	f->setInventoryTexture("door_steel_inv.png[transformFX");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2082,8 +2109,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Steel Door");
-	f->setAllTextures("door_steel_rt.png");
-	f->setInventoryTexture("door_steel_r_inv.png");
+	f->setAllTextures("door_steel_b.png[transformFX");
+	f->setTexture(4,"door_steel_b.png");
+	f->setInventoryTexture("door_steel_inv.png[transformFX");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2097,8 +2125,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Wood Windowed Door");
-	f->setAllTextures("door_wood_wrb.png");
-	f->setInventoryTexture("door_wood_wr_inv.png");
+	f->setAllTextures("door_wood_wb.png[transformFX");
+	f->setTexture(4,"door_wood_wb.png");
+	f->setInventoryTexture("door_wood_w_inv.png[transformFX");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2109,8 +2138,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Wood Windowed Door");
-	f->setAllTextures("door_wood_wrt.png");
-	f->setInventoryTexture("door_wood_wr_inv.png");
+	f->setAllTextures("door_wood_wt.png[transformFX");
+	f->setTexture(4,"door_wood_wt.png");
+	f->setInventoryTexture("door_wood_w_inv.png[transformFX");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2122,8 +2152,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Steel Windowed Door");
-	f->setAllTextures("door_steel_wrb.png");
-	f->setInventoryTexture("door_wood_wr_inv.png");
+	f->setAllTextures("door_steel_wb.png[transformFX");
+	f->setTexture(4,"door_steel_wb.png");
+	f->setInventoryTexture("door_steel_w_inv.png[transformFX");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2136,8 +2167,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Steel Windowed Door");
-	f->setAllTextures("door_steel_wrt.png");
-	f->setInventoryTexture("door_wood_wr_inv.png");
+	f->setAllTextures("door_steel_wt.png[transformFX");
+	f->setTexture(4,"door_steel_wt.png");
+	f->setInventoryTexture("door_steel_w_inv.png[transformFX");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;

@@ -42,6 +42,10 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 std::string getTexturePath(const std::string &filename);
 std::string getModelPath(const std::string &filename);
 
+u32 parseImageTransform(const std::string& s);
+core::dimension2d<u32> imageTransformDimension(u32 transform, core::dimension2d<u32> dim);
+void imageTransform(u32 transform, video::IImage *src, video::IImage *dst);
+
 /*
 	Specifies a texture in an atlas.
 
