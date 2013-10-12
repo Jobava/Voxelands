@@ -37,6 +37,8 @@ Camera::Camera(scene::ISceneManager* smgr, MapDrawControl& draw_control):
 
 	m_wieldmgr(NULL),
 	m_wieldnode(NULL),
+	m_wieldnode_baserotation(-100, 110, -100),
+	m_wieldnode_baseposition(45, -35, 65),
 
 	m_draw_control(draw_control),
 	m_viewing_range_min(5.0),
@@ -268,8 +270,8 @@ void Camera::update(LocalPlayer* player, f32 frametime, v2u32 screensize)
 	m_cameranode->setFarValue(m_viewing_range_max * BS * 10);
 
 	// Position the wielded item
-	v3f wield_position = v3f(45, -35, 65);
-	v3f wield_rotation = v3f(-100, 110, -100);
+	v3f wield_position = m_wieldnode_baseposition;
+	v3f wield_rotation = m_wieldnode_baserotation;
 	if (m_digging_button != -1)
 	{
 		f32 digfrac = m_digging_anim;
@@ -453,25 +455,29 @@ void Camera::wield(const InventoryItem* item)
 {
 	if (item != NULL)
 	{
-		bool isCube = false;
+		bool haveWield = false;
+		m_wieldnode_baserotation = v3f(-100, 110, -100);
+		m_wieldnode_baseposition = v3f(45, -35, 65);
 
 		// Try to make a MaterialItem cube.
-		if (std::string(item->getName()) == "MaterialItem")
-		{
+		if (std::string(item->getName()) == "MaterialItem") {
 			// A block-type material
 			MaterialItem* mat_item = (MaterialItem*) item;
 			content_t content = mat_item->getMaterial();
-			if (content_features(content).solidness || content_features(content).visual_solidness)
-			{
+			if (content_features(content).solidness || content_features(content).visual_solidness) {
 				m_wieldnode->setCube(content_features(content).tiles);
 				m_wieldnode->setScale(v3f(30));
-				isCube = true;
+				haveWield = true;
+			}else if (content_features(content).draw_type == CDT_NODEBOX && content_features(content).wield_nodebox == true) {
+				m_wieldnode->setNodeBox(content);
+				m_wieldnode->setScale(v3f(30));
+				m_wieldnode_baserotation = v3f(-10, 10, -10);
+				haveWield = true;
 			}
 		}
 
 		// If that failed, make an extruded sprite.
-		if (!isCube)
-		{
+		if (!haveWield) {
 			m_wieldnode->setSprite(item->getImageRaw());
 			m_wieldnode->setScale(v3f(40));
 		}
@@ -481,7 +487,12 @@ void Camera::wield(const InventoryItem* item)
 	else
 	{
 		// Bare hands
-		m_wieldnode->setVisible(false);
+		m_wieldnode->setArm();
+		m_wieldnode_baserotation = v3f(-30, 130, 0);
+		m_wieldnode_baseposition = v3f(45, -35, 45);
+		//m_wieldnode->setSprite(g_texturesource->getTextureRaw("hand.png"));
+		//m_wieldnode->setScale(v3f(40,40,100));
+		m_wieldnode->setVisible(true);
 	}
 }
 
@@ -573,8 +584,10 @@ void ExtrudedSpriteSceneNode::setSprite(video::ITexture* texture)
 void ExtrudedSpriteSceneNode::setCube(const TileSpec tiles[6])
 {
 	const v3f cube_scale(1.0, 1.0, 1.0);
-	if (m_cubemesh == NULL)
-		m_cubemesh = createCubeMesh(cube_scale);
+	if (m_cubemesh)
+		m_cubemesh->drop();
+
+	m_cubemesh = createCubeMesh(cube_scale);
 
 	m_meshnode->setMesh(m_cubemesh);
 	m_meshnode->setScale(v3f(1));
@@ -590,6 +603,89 @@ void ExtrudedSpriteSceneNode::setCube(const TileSpec tiles[6])
 		material.setFlag(video::EMF_LIGHTING, false);
 		material.setFlag(video::EMF_BILINEAR_FILTER, false);
 		tiles[i].applyMaterialOptions(material);
+		material.setTexture(0, atlas);
+		material.getTextureMatrix(0).setTextureTranslate(pos.X, pos.Y);
+		material.getTextureMatrix(0).setTextureScale(size.X, size.Y);
+	}
+	m_meshnode->setVisible(true);
+	m_is_cube = true;
+	updateLight(m_light);
+}
+
+void ExtrudedSpriteSceneNode::setNodeBox(content_t c)
+{
+	const v3f cube_scale(1.0, 1.0, 1.0);
+	if (m_cubemesh)
+		m_cubemesh->drop();
+
+	m_cubemesh = createNodeBoxMesh(content_features(c).nodeboxes,cube_scale);
+
+	for (u16 i=0; i < content_features(c).nodeboxes.size(); i++) {
+		for (int t=0; t<6; t++) {
+			video::ITexture* atlas = content_features(c).tiles[t].texture.atlas;
+			v2f pos = content_features(c).tiles[t].texture.pos;
+			v2f size = content_features(c).tiles[t].texture.size;
+			video::SMaterial& material = m_cubemesh->getMeshBuffer((i*6)+t)->getMaterial();
+			material.setFlag(video::EMF_LIGHTING, false);
+			material.setFlag(video::EMF_BILINEAR_FILTER, false);
+			content_features(c).tiles[i].applyMaterialOptions(material);
+			material.setTexture(0, atlas);
+			material.getTextureMatrix(0).setTextureTranslate(pos.X, pos.Y);
+			material.getTextureMatrix(0).setTextureScale(size.X, size.Y);
+		}
+	}
+
+	m_meshnode->setMesh(m_cubemesh);
+	m_meshnode->setScale(v3f(1));
+
+	m_meshnode->setVisible(true);
+	m_is_cube = true;
+	updateLight(m_light);
+}
+
+void ExtrudedSpriteSceneNode::setArm()
+{
+	const v3f cube_scale(0.3, 1.0, 0.3);
+	if (m_cubemesh)
+		m_cubemesh->drop();
+
+	m_cubemesh = createCubeMesh(cube_scale);
+
+	m_meshnode->setMesh(m_cubemesh);
+	m_meshnode->setScale(v3f(1));
+
+	// Get the tile texture and atlas transformation
+	std::string tex;
+	if (getTexturePath("player.png") != "") {
+		tex = "player.png^[forcesingle";
+	}else{
+		tex = "character.png^[forcesingle";
+	}
+	video::ITexture* atlas = g_texturesource->getTextureRaw(tex);
+	v2f pos(0.625,0.5);
+	v2f size(0.0625,-0.0625);
+
+	// Set material flags and texture
+	video::SMaterial& material = m_meshnode->getMaterial(0);
+	material.setFlag(video::EMF_LIGHTING, false);
+	material.setFlag(video::EMF_BILINEAR_FILTER, false);
+	material.MaterialType = video::EMT_SOLID;
+	material.BackfaceCulling = true;
+	material.setTexture(0, atlas);
+	material.getTextureMatrix(0).setTextureTranslate(pos.X, pos.Y);
+	material.getTextureMatrix(0).setTextureScale(size.X, size.Y);
+
+	for (int i = 1; i < 6; ++i) {
+		// Get the tile texture and atlas transformation
+		v2f pos(0.625,1);
+		v2f size(0.0625,-0.375);
+
+		// Set material flags and texture
+		video::SMaterial& material = m_meshnode->getMaterial(i);
+		material.setFlag(video::EMF_LIGHTING, false);
+		material.setFlag(video::EMF_BILINEAR_FILTER, false);
+		material.MaterialType = video::EMT_SOLID;
+		material.BackfaceCulling = true;
 		material.setTexture(0, atlas);
 		material.getTextureMatrix(0).setTextureTranslate(pos.X, pos.Y);
 		material.getTextureMatrix(0).setTextureScale(size.X, size.Y);

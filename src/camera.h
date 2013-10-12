@@ -135,6 +135,8 @@ private:
 
 	scene::ISceneManager* m_wieldmgr;
 	ExtrudedSpriteSceneNode* m_wieldnode;
+	v3f m_wieldnode_baserotation;
+	v3f m_wieldnode_baseposition;
 
 	// draw control
 	MapDrawControl& m_draw_control;
@@ -204,6 +206,8 @@ public:
 
 	void setSprite(video::ITexture* texture);
 	void setCube(const TileSpec tiles[6]);
+	void setNodeBox(content_t c);
+	void setArm();
 
 	f32 getSpriteThickness() const { return m_thickness; }
 	void setSpriteThickness(f32 thickness);

@@ -1720,6 +1720,7 @@ void content_mapnode_init()
 	f->setTexture(3,"door_wood_b.png^^[transformFX");
 	f->setTexture(4,"door_wood_b.png^^[transformFX");
 	f->setInventoryTexture("door_wood_inv.png");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1735,6 +1736,7 @@ void content_mapnode_init()
 	f->setTexture(3,"door_wood_t.png^^[transformFX");
 	f->setTexture(4,"door_wood_t.png^^[transformFX");
 	f->setInventoryTexture("door_wood_inv.png");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1751,6 +1753,7 @@ void content_mapnode_init()
 	f->setTexture(3,"door_steel_b.png^^[transformFX");
 	f->setTexture(4,"door_steel_b.png^^[transformFX");
 	f->setInventoryTexture("door_steel_inv.png");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1768,6 +1771,7 @@ void content_mapnode_init()
 	f->setTexture(3,"door_steel_t.png^^[transformFX");
 	f->setTexture(4,"door_steel_t.png^^[transformFX");
 	f->setInventoryTexture("door_steel_inv.png");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1786,6 +1790,7 @@ void content_mapnode_init()
 	f->setTexture(3,"door_wood_wb.png^[transformFX");
 	f->setTexture(4,"door_wood_wb.png^[transformFX");
 	f->setInventoryTexture("door_wood_w_inv.png");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1801,6 +1806,7 @@ void content_mapnode_init()
 	f->setTexture(3,"door_wood_wt.png^[transformFX");
 	f->setTexture(4,"door_wood_wt.png^[transformFX");
 	f->setInventoryTexture("door_wood_w_inv.png");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1817,6 +1823,7 @@ void content_mapnode_init()
 	f->setTexture(3,"door_steel_wb.png^[transformFX");
 	f->setTexture(4,"door_steel_wb.png^[transformFX");
 	f->setInventoryTexture("door_steel_w_inv.png");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1834,6 +1841,7 @@ void content_mapnode_init()
 	f->setTexture(3,"door_steel_wt.png^[transformFX");
 	f->setTexture(4,"door_steel_wt.png^[transformFX");
 	f->setInventoryTexture("door_steel_w_inv.png");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1853,6 +1861,7 @@ void content_mapnode_init()
 	f->setTexture(3,"door_wood_b.png");
 	f->setTexture(4,"door_wood_b.png");
 	f->setInventoryTexture("door_wood_inv.png^[transformFX");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1868,6 +1877,7 @@ void content_mapnode_init()
 	f->setTexture(3,"door_wood_t.png");
 	f->setTexture(4,"door_wood_t.png");
 	f->setInventoryTexture("door_wood_inv.png^[transformFX");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1884,6 +1894,7 @@ void content_mapnode_init()
 	f->setTexture(3,"door_steel_b.png");
 	f->setTexture(4,"door_steel_b.png");
 	f->setInventoryTexture("door_steel_inv.png^[transformFX");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1901,6 +1912,7 @@ void content_mapnode_init()
 	f->setTexture(3,"door_steel_t.png");
 	f->setTexture(4,"door_steel_t.png");
 	f->setInventoryTexture("door_steel_inv.png^[transformFX");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1919,6 +1931,7 @@ void content_mapnode_init()
 	f->setTexture(3,"door_wood_wb.png");
 	f->setTexture(4,"door_wood_wb.png");
 	f->setInventoryTexture("door_wood_w_inv.png^[transformFX");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1934,6 +1947,7 @@ void content_mapnode_init()
 	f->setTexture(3,"door_wood_wt.png");
 	f->setTexture(4,"door_wood_wt.png");
 	f->setInventoryTexture("door_wood_w_inv.png^[transformFX");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1950,6 +1964,7 @@ void content_mapnode_init()
 	f->setTexture(3,"door_steel_wb.png");
 	f->setTexture(4,"door_steel_wb.png");
 	f->setInventoryTexture("door_steel_w_inv.png^[transformFX");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1967,6 +1982,7 @@ void content_mapnode_init()
 	f->setTexture(3,"door_steel_wt.png");
 	f->setTexture(4,"door_steel_wt.png");
 	f->setInventoryTexture("door_steel_w_inv.png^[transformFX");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1984,6 +2000,7 @@ void content_mapnode_init()
 	f->setAllTextures("door_wood_b.png");
 	f->setTexture(3,"door_wood_b.png^[transformFX");
 	f->setInventoryTexture("door_wood_inv.png");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1997,6 +2014,7 @@ void content_mapnode_init()
 	f->setAllTextures("door_wood_t.png");
 	f->setTexture(3,"door_wood_t.png^[transformFX");
 	f->setInventoryTexture("door_wood_inv.png");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2011,6 +2029,7 @@ void content_mapnode_init()
 	f->setAllTextures("door_steel_b.png");
 	f->setTexture(3,"door_steel_b.png^[transformFX");
 	f->setInventoryTexture("door_steel_inv.png");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2026,6 +2045,7 @@ void content_mapnode_init()
 	f->setAllTextures("door_steel_t.png");
 	f->setTexture(3,"door_steel_t.png^[transformFX");
 	f->setInventoryTexture("door_steel_inv.png");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2042,6 +2062,7 @@ void content_mapnode_init()
 	f->setAllTextures("door_wood_wb.png");
 	f->setTexture(3,"door_wood_wb.png^[transformFX");
 	f->setInventoryTexture("door_wood_w_inv.png");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2055,6 +2076,7 @@ void content_mapnode_init()
 	f->setAllTextures("door_wood_wt.png");
 	f->setTexture(3,"door_wood_wt.png^[transformFX");
 	f->setInventoryTexture("door_wood_w_inv.png");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2069,6 +2091,7 @@ void content_mapnode_init()
 	f->setAllTextures("door_steel_wb.png");
 	f->setTexture(3,"door_steel_wb.png^[transformFX");
 	f->setInventoryTexture("door_steel_w_inv.png");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2084,6 +2107,7 @@ void content_mapnode_init()
 	f->setAllTextures("door_steel_wt.png");
 	f->setTexture(3,"door_steel_wt.png^[transformFX");
 	f->setInventoryTexture("door_steel_w_inv.png");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2103,6 +2127,7 @@ void content_mapnode_init()
 	f->setTexture(4,"door_wood_b.png^[transformFX");
 	f->setTexture(5,"door_wood_b.png^[transformFX");
 	f->setInventoryTexture("door_wood_inv.png^[transformFX");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2118,6 +2143,7 @@ void content_mapnode_init()
 	f->setTexture(4,"door_wood_t.png^[transformFX");
 	f->setTexture(5,"door_wood_t.png^[transformFX");
 	f->setInventoryTexture("door_wood_inv.png^[transformFX");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2135,6 +2161,7 @@ void content_mapnode_init()
 	f->setTexture(4,"door_steel_b.png^[transformFX");
 	f->setTexture(5,"door_steel_b.png^[transformFX");
 	f->setInventoryTexture("door_steel_inv.png^[transformFX");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2152,6 +2179,7 @@ void content_mapnode_init()
 	f->setTexture(4,"door_steel_t.png^[transformFX");
 	f->setTexture(5,"door_steel_t.png^[transformFX");
 	f->setInventoryTexture("door_steel_inv.png^[transformFX");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2170,6 +2198,7 @@ void content_mapnode_init()
 	f->setTexture(4,"door_wood_wb.png^[transformFX");
 	f->setTexture(5,"door_wood_wb.png^[transformFX");
 	f->setInventoryTexture("door_wood_w_inv.png^[transformFX");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2185,6 +2214,7 @@ void content_mapnode_init()
 	f->setTexture(4,"door_wood_wt.png^[transformFX");
 	f->setTexture(5,"door_wood_wt.png^[transformFX");
 	f->setInventoryTexture("door_wood_w_inv.png^[transformFX");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2201,6 +2231,7 @@ void content_mapnode_init()
 	f->setTexture(4,"door_steel_wb.png^[transformFX");
 	f->setTexture(5,"door_steel_wb.png^[transformFX");
 	f->setInventoryTexture("door_steel_w_inv.png^[transformFX");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2218,6 +2249,7 @@ void content_mapnode_init()
 	f->setTexture(4,"door_steel_wt.png^[transformFX");
 	f->setTexture(5,"door_steel_wt.png^[transformFX");
 	f->setInventoryTexture("door_steel_w_inv.png^[transformFX");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2235,6 +2267,7 @@ void content_mapnode_init()
 	f->setAllTextures("hatch_wood.png");
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("hatch_wood_inv.png");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2249,6 +2282,7 @@ void content_mapnode_init()
 	f->setAllTextures("hatch_steel.png");
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("hatch_steel_inv.png");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2264,6 +2298,7 @@ void content_mapnode_init()
 	f->setAllTextures("hatch_wood_w.png");
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("hatch_wood_w_inv.png");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2278,6 +2313,7 @@ void content_mapnode_init()
 	f->setAllTextures("hatch_steel_w.png");
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("hatch_steel_w_inv.png");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2296,6 +2332,7 @@ void content_mapnode_init()
 	f->setTexture(3,"hatch_wood.png^[transformR90");
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("hatch_wood_inv.png");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->climbable = true;
@@ -2313,6 +2350,7 @@ void content_mapnode_init()
 	f->setTexture(3,"hatch_steel.png^[transformR90");
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("hatch_steel_inv.png");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->climbable = true;
@@ -2331,6 +2369,7 @@ void content_mapnode_init()
 	f->setTexture(3,"hatch_wood.png^[transformR90");
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("hatch_wood_w_inv.png");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->climbable = true;
@@ -2348,6 +2387,7 @@ void content_mapnode_init()
 	f->setTexture(3,"hatch_steel.png^[transformR90");
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("hatch_steel_w_inv.png");
+	f->wield_nodebox = false;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->climbable = true;

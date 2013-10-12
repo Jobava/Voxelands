@@ -147,6 +147,7 @@ struct ContentFeatures
 #endif
 
 	bool rotate_tile_with_nodebox;
+	bool wield_nodebox;
 	std::string description;
 	std::vector<aabb3f> nodeboxes;
 
@@ -234,6 +235,7 @@ struct ContentFeatures
 		special_atlas = NULL;
 #endif
 		rotate_tile_with_nodebox = false;
+		wield_nodebox = true;
 		description = std::string("");
 		nodeboxes.clear();
 		nodeboxes.push_back(core::aabbox3d<f32>(
