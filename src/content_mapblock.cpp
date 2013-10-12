@@ -1219,7 +1219,9 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			}
 			}
 
-			u8 l = lt/ld;
+			u8 l = 0;
+			if (ld)
+				l = lt/ld;
 			video::SColor c = MapBlock_LightColor(255, l);
 
 			v3f pos = intToFloat(p+blockpos_nodes, BS);

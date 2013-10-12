@@ -366,9 +366,11 @@ u8 getSmoothLight(v3s16 p, VoxelManipulator &vmanip, u32 daynight_ratio)
 		{
 			light += decode_light(n.getLightBlend(daynight_ratio));
 			light_count++;
-		}
-		else
-		{
+		}else if (content_features(n).draw_type == CDT_NODEBOX) {
+			// not quite right, but it gets rid of glowing nodes
+			light += decode_light(n.getLightBlend(daynight_ratio));
+			light_count++;
+		}else{
 			if(n.getContent() != CONTENT_IGNORE)
 				ambient_occlusion++;
 		}
