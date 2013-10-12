@@ -2395,7 +2395,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		*/
 		if(action == 0)
 		{
-			MapNode n = m_env.getMap().getNode(p_under);
+			MapNode n = m_env.getMap().getNodeNoEx(p_under);
 			if (n.getContent() >= CONTENT_DOOR_MIN && n.getContent() <= CONTENT_DOOR_MAX) {
 				v3s16 mp(0,1,0);
 				if ((n.getContent()&CONTENT_DOOR_STEEL_MASK) == CONTENT_DOOR_STEEL_MASK) {
