@@ -50,6 +50,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("keymap_print_debug_stacks", "KEY_KEY_P");
 	settings->setDefault("mouse_sensitivity", "0.2");
 
+	settings->setDefault("mainmenu_tab","singleplayer");
 	settings->setDefault("wanted_fps", "30");
 	settings->setDefault("fps_max", "60");
 	settings->setDefault("viewing_range_nodes_max", "300");

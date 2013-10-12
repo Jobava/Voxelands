@@ -18,6 +18,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 */
 
 #include "guiMainMenu.h"
+#include "settings.h"
 #include "guiKeyChangeMenu.h"
 #include "debug.h"
 #include "serialization.h"
@@ -217,6 +218,16 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	/*
 		Client section
 	*/
+	std::string selected_tab = g_settings->get("mainmenu_tab");
+	if (selected_tab == "multiplayer") {
+		m_data->selected_tab = TAB_MULTIPLAYER;
+	}else if (selected_tab == "settings") {
+		m_data->selected_tab = TAB_SETTINGS;
+	}else if (selected_tab == "credits") {
+		m_data->selected_tab = TAB_CREDITS;
+	}else{
+		m_data->selected_tab = TAB_SINGLEPLAYER;
+	}
 
 	if (m_data->selected_tab == TAB_MULTIPLAYER) {
 		changeCtype("");
@@ -538,6 +549,7 @@ bool GUIMainMenu::OnEvent(const SEvent& event)
 					acceptInput();
 				m_accepted = false;
 				m_data->selected_tab = TAB_SINGLEPLAYER;
+				g_settings->set("mainmenu_tab","singleplayer");
 				regenerateGui(m_screensize);
 				return true;
 			case GUI_ID_TAB_MULTIPLAYER:
@@ -545,6 +557,7 @@ bool GUIMainMenu::OnEvent(const SEvent& event)
 					acceptInput();
 				m_accepted = false;
 				m_data->selected_tab = TAB_MULTIPLAYER;
+				g_settings->set("mainmenu_tab","multiplayer");
 				regenerateGui(m_screensize);
 				return true;
 			case GUI_ID_TAB_SETTINGS:
@@ -552,6 +565,7 @@ bool GUIMainMenu::OnEvent(const SEvent& event)
 					acceptInput();
 				m_accepted = false;
 				m_data->selected_tab = TAB_SETTINGS;
+				g_settings->set("mainmenu_tab","settings");
 				regenerateGui(m_screensize);
 				return true;
 			case GUI_ID_TAB_CREDITS:
@@ -559,6 +573,7 @@ bool GUIMainMenu::OnEvent(const SEvent& event)
 					acceptInput();
 				m_accepted = false;
 				m_data->selected_tab = TAB_CREDITS;
+				g_settings->set("mainmenu_tab","credits");
 				regenerateGui(m_screensize);
 				return true;
 			case GUI_ID_TAB_QUIT:
