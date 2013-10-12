@@ -1185,6 +1185,20 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		break;
 		case CDT_NODEBOX:
 		{
+			static const v3s16 tile_dirs[6] = {
+				v3s16(0, 1, 0),
+				v3s16(0, -1, 0),
+				v3s16(1, 0, 0),
+				v3s16(-1, 0, 0),
+				v3s16(0, 0, 1),
+				v3s16(0, 0, -1)
+			};
+
+			TileSpec tiles[6];
+			for (int i = 0; i < 6; i++) {
+				// Handles facedir rotation for textures
+				tiles[i] = n.getTile(tile_dirs[i]);
+			}
 			u32 lt = 0;
 			u32 ltp;
 			u8 ld = 0;
@@ -1210,10 +1224,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 			v3f pos = intToFloat(p+blockpos_nodes, BS);
 			std::vector<aabb3f> boxes = content_features(n).getNodeBoxes(n);
-			for(std::vector<aabb3f>::iterator
-					i = boxes.begin();
-					i != boxes.end(); i++)
-			{
+			for (std::vector<aabb3f>::iterator i = boxes.begin(); i != boxes.end(); i++) {
 				aabb3f box = *i;
 				box.MinEdge += pos;
 				box.MaxEdge += pos;
@@ -1239,7 +1250,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					// front
 					tx1, 1-ty2, tx2, 1-ty1,
 				};
-				makeCuboid(&collector, box, content_features(n).tiles, 6,  c, txc);
+				makeCuboid(&collector, box, tiles, 6,  c, txc);
 			}
 		}
 		break;

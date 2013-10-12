@@ -145,6 +145,8 @@ struct ContentFeatures
 	video::SMaterial *special_material2;
 	AtlasPointer *special_atlas;
 #endif
+
+	bool rotate_tile_with_nodebox;
 	std::string description;
 	std::vector<aabb3f> nodeboxes;
 
@@ -231,6 +233,7 @@ struct ContentFeatures
 		special_material2 = NULL;
 		special_atlas = NULL;
 #endif
+		rotate_tile_with_nodebox = false;
 		description = std::string("");
 		nodeboxes.clear();
 		nodeboxes.push_back(core::aabbox3d<f32>(

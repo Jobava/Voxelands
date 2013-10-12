@@ -43,7 +43,6 @@ static std::vector<aabb3f> transformNodeBox(MapNode &n,
 		const std::vector<aabb3f> &nodebox)
 {
 	std::vector<aabb3f> boxes;
-	// TODO: facedir!
 	int facedir = 0;
 	if (content_features(n).param_type == CPT_FACEDIR_SIMPLE)
 		facedir = n.param1;
@@ -312,18 +311,13 @@ v3s16 facedir_rotate(u8 facedir, v3s16 dir)
 #ifndef SERVER
 TileSpec MapNode::getTile(v3s16 dir)
 {
+	TileSpec spec;
+	s32 dir_i = 0;
+
 	if(content_features(*this).param_type == CPT_FACEDIR_SIMPLE)
 		dir = facedir_rotate(param1, dir);
 
-	TileSpec spec;
-
-	s32 dir_i = -1;
-
-	if(dir == v3s16(0,0,0))
-		dir_i = -1;
-	else if(dir == v3s16(0,1,0))
-		dir_i = 0;
-	else if(dir == v3s16(0,-1,0))
+	if(dir == v3s16(0,-1,0))
 		dir_i = 1;
 	else if(dir == v3s16(1,0,0))
 		dir_i = 2;
@@ -334,11 +328,7 @@ TileSpec MapNode::getTile(v3s16 dir)
 	else if(dir == v3s16(0,0,-1))
 		dir_i = 5;
 
-	if(dir_i == -1)
-		// Non-directional
-		spec = content_features(*this).tiles[0];
-	else
-		spec = content_features(*this).tiles[dir_i];
+	spec = content_features(*this).tiles[dir_i];
 
 	/*
 		If it contains some mineral, change texture id
@@ -356,6 +346,40 @@ TileSpec MapNode::getTile(v3s16 dir)
 			texture_name += mineral_texture_name;
 			u32 new_id = g_texturesource->getTextureId(texture_name);
 			spec.texture = g_texturesource->getTexture(new_id);
+		}
+	}
+	if (content_features(*this).rotate_tile_with_nodebox) {
+		if(dir_i == 0){
+			if(param1 == 1){ // -90
+				std::string name = g_texturesource->getTextureName(spec.texture.id);
+				name += "^[transformR270";
+				spec.texture = g_texturesource->getTexture(name);
+			}
+			else if(param1 == 2){ // 180
+				spec.texture.pos += spec.texture.size;
+				spec.texture.size *= -1;
+			}
+			else if(param1 == 3){ // 90
+				std::string name = g_texturesource->getTextureName(spec.texture.id);
+				name += "^[transformR90";
+				spec.texture = g_texturesource->getTexture(name);
+			}
+		}
+		else if(dir_i == 1){
+			if(param1 == 1){ // -90
+				std::string name = g_texturesource->getTextureName(spec.texture.id);
+				name += "^[transformR90";
+				spec.texture = g_texturesource->getTexture(name);
+			}
+			else if(param1 == 2){ // 180
+				spec.texture.pos += spec.texture.size;
+				spec.texture.size *= -1;
+			}
+			else if(param1 == 3){ // 90
+				std::string name = g_texturesource->getTextureName(spec.texture.id);
+				name += "^[transformR270";
+				spec.texture = g_texturesource->getTexture(name);
+			}
 		}
 	}
 
