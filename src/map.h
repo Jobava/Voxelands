@@ -36,6 +36,8 @@ extern "C" {
 	#include "sqlite3.h"
 }
 
+using namespace jthread;
+
 class MapSector;
 class ServerMapSector;
 class ClientMapSector;

@@ -25,6 +25,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "utility.h"
 #include <string>
 
+using namespace jthread;
+
 /*
 	tile.{h,cpp}: Texture handling stuff.
 */
