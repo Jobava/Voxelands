@@ -37,6 +37,7 @@ void setStoneLikeDiggingProperties(DiggingPropertiesList &list, float toughness)
 void setDirtLikeDiggingProperties(DiggingPropertiesList &list, float toughness);
 void setWoodLikeDiggingProperties(DiggingPropertiesList &list, float toughness);
 void setLeafLikeDiggingProperties(DiggingPropertiesList &list, float toughness);
+void setWaterLikeDiggingProperties(DiggingPropertiesList &list, float toughness);
 
 static void content_mapnode_nodebox_stair(ContentFeatures *f)
 {
@@ -1080,7 +1081,7 @@ void content_mapnode_init()
 	f->light_propagates = true;
 	f->walkable = false;
 	f->pointable = false;
-	f->diggable = false;
+	//f->diggable = false;
 	f->buildable_to = true;
 	f->liquid_type = LIQUID_SOURCE;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -1106,6 +1107,7 @@ void content_mapnode_init()
 		f->special_atlas = pa_water1;
 	}
 #endif
+	setWaterLikeDiggingProperties(f->digging_properties, 0.5);
 
 	i = CONTENT_LAVA;
 	f = &content_features(i);
@@ -1182,7 +1184,7 @@ void content_mapnode_init()
 	f->light_source = LIGHT_MAX-1;
 	f->walkable = false;
 	f->pointable = false;
-	f->diggable = false;
+	//f->diggable = false;
 	f->buildable_to = true;
 	f->liquid_type = LIQUID_SOURCE;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -1209,6 +1211,7 @@ void content_mapnode_init()
 		f->special_atlas = pa_lava1;
 	}
 #endif
+	setWaterLikeDiggingProperties(f->digging_properties, 0.5);
 
 	i = CONTENT_TORCH;
 	f = &content_features(i);
@@ -2766,4 +2769,14 @@ void setLeafLikeDiggingProperties(DiggingPropertiesList &list, float toughness)
 			DiggingProperties(true, 0.5*toughness, 65535./333.*toughness));
 }
 
+void setWaterLikeDiggingProperties(DiggingPropertiesList &list, float toughness)
+{
+	list.set("",
+			DiggingProperties(true, 150000.0*toughness, 0));
 
+	list.set("WBucket",
+			DiggingProperties(true, 0.0, 65535./30.*toughness));
+
+	list.set("SteelBucket",
+			DiggingProperties(true, 0.0, 65535./80.*toughness));
+}

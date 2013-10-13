@@ -117,6 +117,17 @@ std::string getTexturePath(const std::string &filename)
 		return fullpath;
 
 	std::string rel_path = std::string("textures")+DIR_DELIM+filename;
+
+	/*
+		Check from user data directory
+	*/
+	if(fullpath == "")
+	{
+		std::string testpath = porting::path_userdata + DIR_DELIM + rel_path;
+		// Check all filename extensions. Returns "" if not found.
+		fullpath = getImagePath(testpath);
+	}
+
 	/*
 		Check from data_path /textures
 	*/
@@ -166,6 +177,17 @@ std::string getModelPath(const std::string &filename)
 		return fullpath;
 
 	std::string rel_path = std::string("models")+DIR_DELIM+filename;
+
+	/*
+		Check from user data directory
+	*/
+	if(fullpath == "")
+	{
+		std::string testpath = porting::path_userdata + DIR_DELIM + rel_path;
+		// Check all filename extensions. Returns "" if not found.
+		fullpath = getImagePath(testpath);
+	}
+
 	/*
 		Check from data_path /models
 	*/

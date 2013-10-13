@@ -2582,7 +2582,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			}
 
 			wield = player->getWieldItem();
-			std::string wieldname;
+			std::string wieldname("");
 			bool is_farm_swap = false;
 			// This is pretty much the entirety of farming
 			if (
@@ -2751,6 +2751,45 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							std::string dug_s = std::string("MaterialItem2 ")+itos(CONTENT_TRIMMED_LEAVES)+" 1";;
 							std::istringstream is(dug_s, std::ios::binary);
 							item = InventoryItem::deSerialize(is);
+						}else if (
+							material == CONTENT_WATERSOURCE
+							&& wield
+							&& wield->getName() == std::string("ToolItem")
+							&& (wieldname = ((ToolItem*)wield)->getToolName()) != std::string("")
+							&& (
+								wieldname == std::string("WBucket")
+								|| wieldname == std::string("SteelBucket")
+							)
+						) {
+							std::string dug_s = std::string("ToolItem ") + wieldname + "_water 1";
+							std::istringstream is(dug_s, std::ios::binary);
+							item = InventoryItem::deSerialize(is);
+							mlist->changeItem(item_i,item);
+							item = NULL;
+							UpdateCrafting(player->peer_id);
+							SendInventory(player->peer_id);
+						}else if (
+							material == CONTENT_LAVASOURCE
+							&& wield
+							&& wield->getName() == std::string("ToolItem")
+							&& (wieldname = ((ToolItem*)wield)->getToolName()) != std::string("")
+							&& (
+								wieldname == std::string("WBucket")
+								|| wieldname == std::string("SteelBucket")
+							)
+						) {
+							if (g_settings->getBool("enable_lavabuckets") == false || wieldname == std::string("WBucket")) {
+								mlist->deleteItem(item_i);
+								HandlePlayerHP(player,4);
+							}else{
+								std::string dug_s = std::string("ToolItem ") + wieldname + "_lava 1";
+								std::istringstream is(dug_s, std::ios::binary);
+								item = InventoryItem::deSerialize(is);
+								mlist->changeItem(item_i,item);
+								item = NULL;
+							}
+							UpdateCrafting(player->peer_id);
+							SendInventory(player->peer_id);
 						}else{
 							std::string &dug_s = content_features(material).dug_item;
 							if(dug_s != "")
@@ -3076,6 +3115,108 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 					}
 				}*/
+			}else if (
+				item->getName() == std::string("ToolItem")
+				&& (
+					((ToolItem*)item)->getToolName() == std::string("WBucket_water")
+					|| ((ToolItem*)item)->getToolName() == std::string("SteelBucket_water")
+					|| ((ToolItem*)item)->getToolName() == std::string("SteelBucket_lava")
+				)
+			) {
+				MapNode n = m_env.getMap().getNodeNoEx(p_over);
+				std::string wieldname = ((ToolItem*)item)->getToolName();
+				if (
+					wieldname == std::string("WBucket_water")
+					|| wieldname == std::string("SteelBucket_water")
+				) {
+					if (ilist != NULL) {
+						std::string dug_s = std::string("ToolItem ");
+						if (wieldname == std::string("WBucket_water")) {
+							dug_s += "WBucket 1";
+						}else{
+							dug_s += "SteelBucket 1";
+						}
+						std::istringstream is(dug_s, std::ios::binary);
+						InventoryItem *item = InventoryItem::deSerialize(is);
+						ilist->changeItem(item_i,item);
+						UpdateCrafting(player->peer_id);
+						SendInventory(player->peer_id);
+						n.setContent(CONTENT_WATERSOURCE);
+						core::list<u16> far_players;
+						sendAddNode(p_over, n, 0, &far_players, 30);
+
+						/*
+							Add node.
+
+							This takes some time so it is done after the quick stuff
+						*/
+						core::map<v3s16, MapBlock*> modified_blocks;
+						{
+							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+
+							std::string p_name = std::string(player->getName());
+							m_env.getMap().addNodeAndUpdate(p_over, n, modified_blocks, p_name);
+						}
+						/*
+							Set blocks not sent to far players
+						*/
+						for(core::list<u16>::Iterator
+								i = far_players.begin();
+								i != far_players.end(); i++)
+						{
+							u16 peer_id = *i;
+							RemoteClient *client = getClient(peer_id);
+							if(client==NULL)
+								continue;
+							client->SetBlocksNotSent(modified_blocks);
+						}
+					}
+				}else if (wieldname == std::string("SteelBucket_lava")) {
+					if (ilist != NULL) {
+						if (g_settings->getBool("enable_lavabuckets")) {
+							std::string dug_s = std::string("ToolItem SteelBucket 1");
+							std::istringstream is(dug_s, std::ios::binary);
+							InventoryItem *item = InventoryItem::deSerialize(is);
+							ilist->changeItem(item_i,item);
+							UpdateCrafting(player->peer_id);
+							SendInventory(player->peer_id);
+							n.setContent(CONTENT_LAVASOURCE);
+							core::list<u16> far_players;
+							sendAddNode(p_over, n, 0, &far_players, 30);
+
+							/*
+								Add node.
+
+								This takes some time so it is done after the quick stuff
+							*/
+							core::map<v3s16, MapBlock*> modified_blocks;
+							{
+								MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+
+								std::string p_name = std::string(player->getName());
+								m_env.getMap().addNodeAndUpdate(p_over, n, modified_blocks, p_name);
+							}
+							/*
+								Set blocks not sent to far players
+							*/
+							for(core::list<u16>::Iterator
+									i = far_players.begin();
+									i != far_players.end(); i++)
+							{
+								u16 peer_id = *i;
+								RemoteClient *client = getClient(peer_id);
+								if(client==NULL)
+									continue;
+								client->SetBlocksNotSent(modified_blocks);
+							}
+						}else{
+							ilist->deleteItem(item_i);
+							HandlePlayerHP(player,4);
+							UpdateCrafting(player->peer_id);
+							SendInventory(player->peer_id);
+						}
+					}
+				}
 			}
 			/*
 				Place other item (not a block)

@@ -256,6 +256,7 @@ collisionMoveResult collisionMoveSimple(Map *map,
 					node_positions.push_back(p);
 					is_object.push_back(false);
 				}
+				nodeboxes.clear();
 			}
 			catch(InvalidPositionException &e)
 			{

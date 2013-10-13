@@ -322,8 +322,23 @@ void getPointedNode(Client *client, v3f player_position,
 		try
 		{
 			n = client->getNode(v3s16(x,y,z));
-			if(content_pointable(n.getContent()) == false)
-				continue;
+			if(content_pointable(n.getContent()) == false) {
+				if (content_liquid_source(n.getContent()) == false)
+					continue;
+				const InventoryItem *wield = client->getLocalPlayer()->getWieldItem();
+				std::string wieldname;
+				if (
+					!wield
+					|| wield->getName() != std::string("ToolItem")
+					|| (wieldname = ((ToolItem*)wield)->getToolName()) == std::string("")
+					|| (
+						wieldname != std::string("SteelBucket")
+						&& wieldname != std::string("WBucket")
+					)
+				) {
+					continue;
+				}
+			}
 		}
 		catch(InvalidPositionException &e)
 		{

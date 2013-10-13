@@ -107,7 +107,7 @@ struct CraftDef {
 */
 InventoryItem *craft_get_result(InventoryItem **items)
 {
-	static CraftDef defs[112];
+	static CraftDef defs[113];
 	static int defs_init = 0;
 
 	// only initialise (and hence allocate) these once
@@ -1199,6 +1199,17 @@ InventoryItem *craft_get_result(InventoryItem **items)
 			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
 			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "Stick");
 			defs[defs_init].item = new ToolItem("WBucket", 0);
+			defs_init++;
+		}
+
+		// Steel bucket
+		{
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[5] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].item = new ToolItem("SteelBucket", 0);
 			defs_init++;
 		}
 	}
