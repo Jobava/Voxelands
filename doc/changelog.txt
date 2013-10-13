@@ -3,6 +3,23 @@ Minetest-c55 changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1310.00: (in development)
+- Update jthread to 1.3.1
+- Implement buckets
+- Implement wildgrass, flowers, dyes, coloured cotton, flower pots
+- Implement shears, trimmed leaves (no leaf decay)
+- Added some alternate craft recipes
+- Remember main menu tab when exiting game
+- Add wieldnode for nodeboxes, and player arm when nothing wielded
+- Fix nodebox lighting
+- Implement doors and hatches
+- Implement inventory images for nodeboxes
+- Move texture definitions to content features and clean up content_mapblock.cpp
+- Fix collision + sneak + sneak elevators
+- Make some 3d things 3d (torches, signs)
+- Added dependencies example for RedHat/Fedora/CentOS. (MavJS)
+- Correct text position on guiMessageMenu
+
 1309.00: (release 2013-09-01)
 - a wide assortment of bugfixes to just about everything
 - update license to GPLv3
