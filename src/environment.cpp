@@ -1101,7 +1101,8 @@ void ServerEnvironment::step(float dtime)
 				*/
 				if (n.getContent() == CONTENT_GRASS)
 				{
-					if (p.Y > -1 && myrand()%600 == 0) {
+					int f = (600-p.Y)+10;
+					if (p.Y > -1 && myrand()%f == 0) {
 						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
 						if (n_top.getContent() == CONTENT_AIR && n_top.getLightBlend(getDayNightRatio()) >= 13) {
 							v3f pp;
