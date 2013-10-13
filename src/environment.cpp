@@ -1104,8 +1104,15 @@ void ServerEnvironment::step(float dtime)
 					if (p.Y > -1 && myrand()%600 == 0) {
 						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
 						if (n_top.getContent() == CONTENT_AIR && n_top.getLightBlend(getDayNightRatio()) >= 13) {
-							n_top.setContent(CONTENT_WILDGRASS_SHORT);
-							m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top);
+							v3f pp;
+							pp.X = p.X;
+							pp.Y = p.Y;
+							pp.Z = p.Z;
+							Player *nearest = getNearestConnectedPlayer(pp);
+							if (nearest == NULL || nearest->getPosition().getDistanceFrom(pp*BS)/BS > 10.0) {
+								n_top.setContent(CONTENT_WILDGRASS_SHORT);
+								m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top);
+							}
 						}
 					}
 				}
@@ -1113,7 +1120,8 @@ void ServerEnvironment::step(float dtime)
 				{
 					if (p.Y > -1 && myrand()%200 == 0) {
 						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
-						if (n_top.getLightBlend(getDayNightRatio()) >= 13) {
+						MapNode n_btm = m_map->getNodeNoEx(p+v3s16(0,-1,0));
+						if (n_btm.getContent() == CONTENT_GRASS && n_top.getLightBlend(getDayNightRatio()) >= 13) {
 							if (myrand()%5 == 0) {
 								n.setContent(CONTENT_FLOWER_STEM);
 								m_map->addNodeWithEvent(p, n);
@@ -1135,7 +1143,8 @@ void ServerEnvironment::step(float dtime)
 				{
 					if (p.Y > -1 && myrand()%200 == 0) {
 						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
-						if (n_top.getLightBlend(getDayNightRatio()) >= 13) {
+						MapNode n_btm = m_map->getNodeNoEx(p+v3s16(0,-1,0));
+						if ((n_btm.getContent() == CONTENT_GRASS || n_btm.getContent() == CONTENT_FLOWER_POT) && n_top.getLightBlend(getDayNightRatio()) >= 13) {
 							switch (myrand()%3) {
 							case 0:
 								n.setContent(CONTENT_FLOWER_ROSE);

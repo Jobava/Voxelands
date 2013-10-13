@@ -2683,6 +2683,23 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					}
 					sendRemoveNode(p_under, 0, &far_players, 30);
 				}else{
+					if (n.getContent() == CONTENT_FLOWER_POT) {
+						MapNode a = m_env.getMap().getNode(p_under+v3s16(0,1,0));
+						if (
+							a.getContent() == CONTENT_FLOWER_ROSE
+							|| a.getContent() == CONTENT_FLOWER_DAFFODIL
+							|| a.getContent() == CONTENT_FLOWER_TULIP
+							|| a.getContent() == CONTENT_FLOWER_STEM
+							|| a.getContent() == CONTENT_WILDGRASS_SHORT
+							|| a.getContent() == CONTENT_WILDGRASS_LONG
+						) {
+							sendRemoveNode(p_under+v3s16(0,1,0), 0, &far_players, 30);
+							{
+								MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+								m_env.getMap().removeNodeAndUpdate(p_under+v3s16(0,1,0), modified_blocks);
+							}
+						}
+					}
 				/*
 					Send the removal to all close-by players.
 					- If other player is close, send REMOVENODE
