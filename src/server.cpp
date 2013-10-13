@@ -2741,11 +2741,23 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					// If not mineral
 					if(item == NULL)
 					{
-						std::string &dug_s = content_features(material).dug_item;
-						if(dug_s != "")
-						{
+						if (
+							material == CONTENT_LEAVES
+							&& wield
+							&& wield->getName() == std::string("ToolItem")
+							&& (wieldname = ((ToolItem*)wield)->getToolName()) != std::string("")
+							&& wieldname == std::string("Shears")
+						) {
+							std::string dug_s = std::string("MaterialItem2 ")+itos(CONTENT_TRIMMED_LEAVES)+" 1";;
 							std::istringstream is(dug_s, std::ios::binary);
 							item = InventoryItem::deSerialize(is);
+						}else{
+							std::string &dug_s = content_features(material).dug_item;
+							if(dug_s != "")
+							{
+								std::istringstream is(dug_s, std::ios::binary);
+								item = InventoryItem::deSerialize(is);
+							}
 						}
 					}
 
@@ -4425,7 +4437,7 @@ v3f findSpawnPos(ServerMap &map)
 	if (g_settings->exists("static_spawnpoint"))
 	{
 		v3f pos = g_settings->getV3F("static_spawnpoint");
-		return pos;
+		return pos*BS;
 	}
 
 	v2s16 nodepos;

@@ -1097,6 +1097,84 @@ void ServerEnvironment::step(float dtime)
 					}
 				}
 				/*
+					plants!
+				*/
+				if (n.getContent() == CONTENT_GRASS)
+				{
+					if (p.Y > -1 && myrand()%600 == 0) {
+						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
+						if (n_top.getContent() == CONTENT_AIR && n_top.getLightBlend(getDayNightRatio()) >= 13) {
+							n_top.setContent(CONTENT_WILDGRASS_SHORT);
+							m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top);
+						}
+					}
+				}
+				if (n.getContent() == CONTENT_WILDGRASS_SHORT)
+				{
+					if (p.Y > -1 && myrand()%200 == 0) {
+						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
+						if (n_top.getLightBlend(getDayNightRatio()) >= 13) {
+							if (myrand()%5 == 0) {
+								n.setContent(CONTENT_FLOWER_STEM);
+								m_map->addNodeWithEvent(p, n);
+							}else{
+								n.setContent(CONTENT_WILDGRASS_LONG);
+								m_map->addNodeWithEvent(p, n);
+							}
+						}
+					}
+				}
+				if (n.getContent() == CONTENT_WILDGRASS_LONG)
+				{
+					if (p.Y > -1 && myrand()%200 == 0) {
+						n.setContent(CONTENT_DEADGRASS);
+						m_map->addNodeWithEvent(p, n);
+					}
+				}
+				if (n.getContent() == CONTENT_FLOWER_STEM)
+				{
+					if (p.Y > -1 && myrand()%200 == 0) {
+						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
+						if (n_top.getLightBlend(getDayNightRatio()) >= 13) {
+							switch (myrand()%3) {
+							case 0:
+								n.setContent(CONTENT_FLOWER_ROSE);
+								m_map->addNodeWithEvent(p, n);
+								break;
+							case 1:
+								n.setContent(CONTENT_FLOWER_DAFFODIL);
+								m_map->addNodeWithEvent(p, n);
+								break;
+							case 2:
+								n.setContent(CONTENT_FLOWER_TULIP);
+								m_map->addNodeWithEvent(p, n);
+								break;
+							}
+						}
+					}
+				}
+				if (n.getContent() == CONTENT_DEADGRASS)
+				{
+					if (p.Y > -1 && myrand()%200 == 0)
+						m_map->removeNodeWithEvent(p);
+				}
+				if (
+					n.getContent() == CONTENT_FLOWER_ROSE
+					|| n.getContent() == CONTENT_FLOWER_DAFFODIL
+					|| n.getContent() == CONTENT_FLOWER_TULIP
+				) {
+					MapNode n_under = m_map->getNodeNoEx(p+v3s16(0,-1,0));
+					if (n_under.getContent() == CONTENT_GRASS) {
+						if (myrand()%200 == 0) {
+							n.setContent(CONTENT_WILDGRASS_SHORT);
+							m_map->addNodeWithEvent(p, n);
+						}
+					}else if (n_under.getContent() != CONTENT_FLOWER_POT) {
+						n.setContent(CONTENT_WILDGRASS_SHORT);
+						m_map->addNodeWithEvent(p, n);
+					}
+				}
+				/*
 					Rats spawn around regular trees
 				*/
 				if(n.getContent() == CONTENT_TREE ||

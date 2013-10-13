@@ -342,6 +342,10 @@ public:
 			return "tool_stonesword.png";
 		else if(m_toolname == "SteelSword")
 			return "tool_steelsword.png";
+		else if(m_toolname == "Shears")
+			return "tool_shears.png";
+		else if(m_toolname == "WBucket")
+			return "tool_woodbucket.png";
 		else
 			return "cotton.png";
 	}
@@ -402,6 +406,10 @@ public:
 			return "Stone Sword";
 		}else if (m_toolname == "SteelSword") {
 			return "Steel Sword";
+		}else if (m_toolname == "Shears") {
+			return "Shears";
+		}else if(m_toolname == "WBucket") {
+			return "Wooden Bucket";
 		}
 
 		return "";

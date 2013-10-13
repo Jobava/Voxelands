@@ -31,6 +31,8 @@ bool item_material_is_cookable(content_t content)
 		return true;
 	else if(content == CONTENT_SAND)
 		return true;
+	else if(content == CONTENT_FLOWER_POT_RAW)
+		return true;
 	return false;
 }
 
@@ -42,71 +44,106 @@ InventoryItem* item_material_create_cook_result(content_t content)
 		return new MaterialItem(CONTENT_STONE, 1);
 	else if(content == CONTENT_SAND)
 		return new MaterialItem(CONTENT_GLASS, 1);
+	else if(content == CONTENT_FLOWER_POT_RAW)
+		return new MaterialItem(CONTENT_FLOWER_POT, 1);
 	return NULL;
 }
 
 std::string item_craft_get_image_name(const std::string &subname)
 {
-	if(subname == "Stick")
+	if (subname == "Stick") {
 		return "stick.png";
-	else if(subname == "paper")
+	}else if (subname == "paper") {
 		return "paper.png";
-	else if(subname == "book")
+	}else if (subname == "book") {
 		return "book.png";
-	else if(subname == "lump_of_coal")
+	}else if (subname == "lump_of_coal") {
 		return "lump_of_coal.png";
-	else if(subname == "lump_of_iron")
+	}else if (subname == "lump_of_iron") {
 		return "lump_of_iron.png";
-	else if(subname == "lump_of_clay")
+	}else if (subname == "lump_of_clay") {
 		return "lump_of_clay.png";
-	else if(subname == "steel_ingot")
+	}else if (subname == "steel_ingot") {
 		return "steel_ingot.png";
-	else if(subname == "clay_brick")
+	}else if (subname == "clay_brick") {
 		return "clay_brick.png";
-	else if(subname == "rat")
+	}else if (subname == "rat") {
 		return "rat.png";
-	else if(subname == "cooked_rat")
+	}else if (subname == "cooked_rat") {
 		return "cooked_rat.png";
-	else if(subname == "scorched_stuff")
+	}else if (subname == "scorched_stuff") {
 		return "scorched_stuff.png";
-	else if(subname == "firefly")
+	}else if (subname == "firefly") {
 		return "firefly.png";
-	else if(subname == "apple")
+	}else if (subname == "apple") {
 		return "apple.png^[forcesingle";
-	else if(subname == "apple_iron")
+	}else if (subname == "apple_iron") {
 		return "apple_iron.png";
-	else
+	}else if (subname == "dye_blue") {
+		return "dye_blue.png";
+	}else if (subname == "dye_green") {
+		return "dye_green.png";
+	}else if (subname == "dye_orange") {
+		return "dye_orange.png";
+	}else if (subname == "dye_purple") {
+		return "dye_purple.png";
+	}else if (subname == "dye_red") {
+		return "dye_red.png";
+	}else if (subname == "dye_yellow") {
+		return "dye_yellow.png";
+	}else if (subname == "dye_white") {
+		return "dye_white.png";
+	}else if (subname == "dye_black") {
+		return "dye_black.png";
+	}else{
 		return "cotton.png"; // just something
+	}
 }
 
 std::string item_craft_get_name(const std::string &subname)
 {
-	if(subname == "paper") {
+	if (subname == "paper") {
 		return "Paper";
-	}else if(subname == "book") {
+	}else if (subname == "book") {
 		return "Book";
-	}else if(subname == "lump_of_coal") {
+	}else if (subname == "lump_of_coal") {
 		return "Coal Lump";
-	}else if(subname == "lump_of_iron") {
+	}else if (subname == "lump_of_iron") {
 		return "Iron Lump";
-	}else if(subname == "lump_of_clay") {
+	}else if (subname == "lump_of_clay") {
 		return "Clay Lump";
-	}else if(subname == "steel_ingot") {
+	}else if (subname == "steel_ingot") {
 		return "Steel Ingot";
-	}else if(subname == "clay_brick") {
+	}else if (subname == "clay_brick") {
 		return "Clay Brick";
-	}else if(subname == "rat") {
+	}else if (subname == "rat") {
 		return "Rat";
-	}else if(subname == "cooked_rat") {
+	}else if (subname == "cooked_rat") {
 		return "Cooked Rat";
-	}else if(subname == "scorched_stuff") {
+	}else if (subname == "scorched_stuff") {
 		return "Scorched Stuff";
-	}else if(subname == "firefly") {
+	}else if (subname == "firefly") {
 		return "Firefly";
-	}else if(subname == "apple") {
+	}else if (subname == "apple") {
 		return "Apple";
-	}else if(subname == "apple_iron") {
+	}else if (subname == "apple_iron") {
 		return "Iron Apple";
+	}else if (subname == "dye_blue") {
+		return "Blue Dye";
+	}else if (subname == "dye_green") {
+		return "Green Dye";
+	}else if (subname == "dye_orange") {
+		return "Orange Dye";
+	}else if (subname == "dye_purple") {
+		return "Purple Dye";
+	}else if (subname == "dye_red") {
+		return "Red Dye";
+	}else if (subname == "dye_yellow") {
+		return "Yellow Dye";
+	}else if (subname == "dye_white") {
+		return "White Dye";
+	}else if (subname == "dye_black") {
+		return "Black Dye";
 	}
 
 	return subname;

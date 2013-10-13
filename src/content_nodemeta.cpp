@@ -501,6 +501,20 @@ bool FurnaceNodeMetadata::step(float dtime)
 			fuel_list->decrementMaterials(1);
 			changed = true;
 		}
+		else if(ItemSpec(ITEM_MATERIAL, CONTENT_WILDGRASS_SHORT).checkItem(fuel_item))
+		{
+			m_fuel_totaltime = 30/32;
+			m_fuel_time = 0;
+			fuel_list->decrementMaterials(1);
+			changed = true;
+		}
+		else if(ItemSpec(ITEM_MATERIAL, CONTENT_DEADGRASS).checkItem(fuel_item))
+		{
+			m_fuel_totaltime = 30/32;
+			m_fuel_time = 0;
+			fuel_list->decrementMaterials(1);
+			changed = true;
+		}
 		else if(ItemSpec(ITEM_MATERIAL, CONTENT_PAPYRUS).checkItem(fuel_item))
 		{
 			m_fuel_totaltime = 30/32;
@@ -524,7 +538,7 @@ bool FurnaceNodeMetadata::step(float dtime)
 		}
 		else if(ItemSpec(ITEM_CRAFT, "Stick").checkItem(fuel_item))
 		{
-			m_fuel_totaltime = 30/4/4;
+			m_fuel_totaltime = 30/16;
 			m_fuel_time = 0;
 			fuel_list->decrementMaterials(1);
 			changed = true;

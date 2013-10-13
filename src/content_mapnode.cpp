@@ -36,6 +36,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 void setStoneLikeDiggingProperties(DiggingPropertiesList &list, float toughness);
 void setDirtLikeDiggingProperties(DiggingPropertiesList &list, float toughness);
 void setWoodLikeDiggingProperties(DiggingPropertiesList &list, float toughness);
+void setLeafLikeDiggingProperties(DiggingPropertiesList &list, float toughness);
 
 static void content_mapnode_nodebox_stair(ContentFeatures *f)
 {
@@ -711,23 +712,38 @@ void content_mapnode_init()
 	//f->param_type = CPT_MINERAL;
 	f->param_type = CPT_LIGHT;
 	//f->is_ground_content = true;
-	if(new_style_leaves)
-	{
+	if (new_style_leaves) {
 		f->draw_type = CDT_GLASSLIKE;
 		f->solidness = 0; // drawn separately, makes no faces
 		f->visual_solidness = 1;
 		f->setAllTextures("leaves.png");
 		f->setInventoryTextureCube("leaves.png", "leaves.png", "leaves.png");
-	}
-	else
-	{
+	}else{
 		f->draw_type = CDT_CUBELIKE;
 		f->setAllTextures("[noalpha:leaves.png");
 	}
 	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAPLING)+" 1";
 	f->extra_dug_item_rarity = 20;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	setLeafLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_TRIMMED_LEAVES;
+	f = &content_features(i);
+	f->description = std::string("Trimmed Leaves");
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	if (new_style_leaves) {
+		f->draw_type = CDT_GLASSLIKE;
+		f->solidness = 0; // drawn separately, makes no faces
+		f->visual_solidness = 1;
+		f->setAllTextures("leaves.png");
+		f->setInventoryTextureCube("leaves.png", "leaves.png", "leaves.png");
+	}else{
+		f->draw_type = CDT_CUBELIKE;
+		f->setAllTextures("[noalpha:leaves.png");
+	}
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setLeafLikeDiggingProperties(f->digging_properties, 0.15);
 
 	i = CONTENT_CACTUS;
 	f = &content_features(i);
@@ -893,6 +909,83 @@ void content_mapnode_init()
 	f->description = std::string("Cotton");
 	f->setAllTextures("cotton.png");
 	f->setInventoryTextureCube("cotton.png", "cotton.png", "cotton.png");
+	f->param_type = CPT_MINERAL;
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+
+	i = CONTENT_COTTON_BLUE;
+	f = &content_features(i);
+	f->description = std::string("Blue Cotton");
+	f->setAllTextures("cotton_blue.png");
+	f->setInventoryTextureCube("cotton_blue.png", "cotton_blue.png", "cotton_blue.png");
+	f->param_type = CPT_MINERAL;
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+
+	i = CONTENT_COTTON_GREEN;
+	f = &content_features(i);
+	f->description = std::string("Green Cotton");
+	f->setAllTextures("cotton_green.png");
+	f->setInventoryTextureCube("cotton_green.png", "cotton_green.png", "cotton_green.png");
+	f->param_type = CPT_MINERAL;
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+
+	i = CONTENT_COTTON_ORANGE;
+	f = &content_features(i);
+	f->description = std::string("Orange Cotton");
+	f->setAllTextures("cotton_orange.png");
+	f->setInventoryTextureCube("cotton_orange.png", "cotton_orange.png", "cotton_orange.png");
+	f->param_type = CPT_MINERAL;
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+
+	i = CONTENT_COTTON_PURPLE;
+	f = &content_features(i);
+	f->description = std::string("Purple Cotton");
+	f->setAllTextures("cotton_purple.png");
+	f->setInventoryTextureCube("cotton_purple.png", "cotton_purple.png", "cotton_purple.png");
+	f->param_type = CPT_MINERAL;
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+
+	i = CONTENT_COTTON_RED;
+	f = &content_features(i);
+	f->description = std::string("Red Cotton");
+	f->setAllTextures("cotton_red.png");
+	f->setInventoryTextureCube("cotton_red.png", "cotton_red.png", "cotton_red.png");
+	f->param_type = CPT_MINERAL;
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+
+	i = CONTENT_COTTON_YELLOW;
+	f = &content_features(i);
+	f->description = std::string("Yellow Cotton");
+	f->setAllTextures("cotton_yellow.png");
+	f->setInventoryTextureCube("cotton_yellow.png", "cotton_yellow.png", "cotton_yellow.png");
+	f->param_type = CPT_MINERAL;
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+
+	i = CONTENT_COTTON_BLACK;
+	f = &content_features(i);
+	f->description = std::string("Black Cotton");
+	f->setAllTextures("cotton_black.png");
+	f->setInventoryTextureCube("cotton_black.png", "cotton_black.png", "cotton_black.png");
 	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
@@ -2397,6 +2490,214 @@ void content_mapnode_init()
 		f->initial_metadata = new LockedDoorNodeMetadata();
 	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
 
+	// plants
+	i = CONTENT_WILDGRASS_SHORT;
+	f = &content_features(i);
+	f->description = std::string("Wild Grass");
+	f->setInventoryTexture("wildgrass_short.png");
+	f->setAllTextures("wildgrass_short.png");
+	f->setAllTextureFlags(0);
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_PLANTLIKE;
+	f->air_equivalent = false; // grass grows underneath
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->walkable = false;
+	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
+
+	i = CONTENT_WILDGRASS_LONG;
+	f = &content_features(i);
+	f->description = std::string("Wild Grass");
+	f->setInventoryTexture("wildgrass_long.png");
+	f->setAllTextures("wildgrass_long.png");
+	f->setAllTextureFlags(0);
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_PLANTLIKE;
+	f->air_equivalent = false; // grass grows underneath
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WILDGRASS_SHORT)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->walkable = false;
+	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
+
+	i = CONTENT_DEADGRASS;
+	f = &content_features(i);
+	f->description = std::string("Dead Grass");
+	f->setInventoryTexture("deadgrass.png");
+	f->setAllTextures("deadgrass.png");
+	f->setAllTextureFlags(0);
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_PLANTLIKE;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->walkable = false;
+	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
+
+	i = CONTENT_FLOWER_STEM;
+	f = &content_features(i);
+	f->description = std::string("Flower Stem");
+	f->setInventoryTexture("flower_stem.png");
+	f->setAllTextures("flower_stem.png");
+	f->setAllTextureFlags(0);
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_PLANTLIKE;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->walkable = false;
+	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
+
+	i = CONTENT_FLOWER_ROSE;
+	f = &content_features(i);
+	f->description = std::string("Rose");
+	f->setInventoryTexture("flower_rose.png");
+	f->setAllTextures("flower_rose.png");
+	f->setAllTextureFlags(0);
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_PLANTLIKE;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->walkable = false;
+	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
+
+	i = CONTENT_FLOWER_DAFFODIL;
+	f = &content_features(i);
+	f->description = std::string("Daffodil");
+	f->setInventoryTexture("flower_daffodil.png");
+	f->setAllTextures("flower_daffodil.png");
+	f->setAllTextureFlags(0);
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_PLANTLIKE;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->walkable = false;
+	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
+
+	i = CONTENT_FLOWER_TULIP;
+	f = &content_features(i);
+	f->description = std::string("Tulip");
+	f->setInventoryTexture("flower_tulip.png");
+	f->setAllTextures("flower_tulip.png");
+	f->setAllTextureFlags(0);
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_PLANTLIKE;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->walkable = false;
+	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
+
+	i = CONTENT_FLOWER_POT_RAW;
+	f = &content_features(i);
+	f->param_type = CPT_LIGHT;
+	f->description = std::string("Unbaked Flower Pot");
+	f->setAllTextures("flower_pot_raw.png");
+	f->setTexture(0,"flower_pot_raw_top.png");
+	f->setTexture(1,"flower_pot_raw_bottom.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setStoneLikeDiggingProperties(f->digging_properties, 0.75);
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		0.2*BS,
+		-0.5*BS,
+		0.5*BS,
+		0.5*BS,
+		-0.3*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		0.2*BS,
+		0.3*BS,
+		0.5*BS,
+		0.5*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.3*BS,
+		0.2*BS,
+		-0.3*BS,
+		0.5*BS,
+		0.5*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		0.2*BS,
+		-0.3*BS,
+		-0.3*BS,
+		0.5*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.3*BS,
+		-0.5*BS,
+		-0.3*BS,
+		0.3*BS,
+		0.35*BS,
+		0.3*BS
+	));
+	f->setInventoryTextureNodeBox(i,"flower_pot_raw_top.png","flower_pot_raw.png","flower_pot_raw.png");
+
+	i = CONTENT_FLOWER_POT;
+	f = &content_features(i);
+	f->param_type = CPT_LIGHT;
+	f->description = std::string("Flower Pot");
+	f->setAllTextures("flower_pot.png");
+	f->setTexture(0,"flower_pot_top.png");
+	f->setTexture(1,"flower_pot_bottom.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setStoneLikeDiggingProperties(f->digging_properties, 0.75);
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		0.2*BS,
+		-0.5*BS,
+		0.5*BS,
+		0.5*BS,
+		-0.3*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		0.2*BS,
+		0.3*BS,
+		0.5*BS,
+		0.5*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.3*BS,
+		0.2*BS,
+		-0.3*BS,
+		0.5*BS,
+		0.5*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		0.2*BS,
+		-0.3*BS,
+		-0.3*BS,
+		0.5*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.3*BS,
+		-0.5*BS,
+		-0.3*BS,
+		0.3*BS,
+		0.35*BS,
+		0.3*BS
+	));
+	f->setInventoryTextureNodeBox(i,"flower_pot_top.png","flower_pot.png","flower_pot.png");
+
+
 	// NOTE: Remember to add frequently used stuff to the texture atlas in tile.cpp
 
 
@@ -2447,6 +2748,21 @@ void setWoodLikeDiggingProperties(DiggingPropertiesList &list, float toughness)
 	list.set("STAxe",
 			DiggingProperties(true, 0.75*toughness, 65535./100.*toughness));
 	list.set("SteelAxe",
+			DiggingProperties(true, 0.5*toughness, 65535./333.*toughness));
+}
+
+void setLeafLikeDiggingProperties(DiggingPropertiesList &list, float toughness)
+{
+	list.set("",
+			DiggingProperties(true, 3.0*toughness, 0));
+
+	list.set("WAxe",
+			DiggingProperties(true, 1.5*toughness, 65535./20.*toughness));
+	list.set("STAxe",
+			DiggingProperties(true, 0.75*toughness, 65535./80.*toughness));
+	list.set("SteelAxe",
+			DiggingProperties(true, 0.5*toughness, 65535./200.*toughness));
+	list.set("Shears",
 			DiggingProperties(true, 0.5*toughness, 65535./333.*toughness));
 }
 
