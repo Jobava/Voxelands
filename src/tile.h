@@ -31,6 +31,10 @@ using namespace jthread;
 	tile.{h,cpp}: Texture handling stuff.
 */
 
+u32 parseImageTransform(const std::string& s);
+core::dimension2d<u32> imageTransformDimension(u32 transform, core::dimension2d<u32> dim);
+void imageTransform(u32 transform, video::IImage *src, video::IImage *dst);
+
 /*
 	Specifies a texture in an atlas.
 
