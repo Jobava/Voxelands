@@ -33,7 +33,16 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 	Utilizes a thread-safe cache.
 */
-std::string getTexturePath(const std::string &filename);
-std::string getModelPath(const std::string &filename);
+std::string getPath(const char* type, const std::string &filename, bool must_exist);
+
+/* wrappers for the old functions, because too lazy to replace them all */
+inline std::string getTexturePath(const std::string &filename)
+{
+	return getPath("texture",filename,true);
+}
+inline std::string getModelPath(const std::string &filename)
+{
+	return getPath("model",filename,true);
+}
 
 #endif

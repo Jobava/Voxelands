@@ -93,99 +93,88 @@ static std::string getImagePath(std::string path)
 }
 
 /*
-	Gets the path to a texture by first checking if the texture exists
-	in data_path and if not, using the default data path.
-
-	Checks all supported extensions by replacing the original extension.
-
-	If not found, returns "".
-
-	Utilizes a thread-safe cache.
-*/
-std::string getTexturePath(const std::string &filename)
+ * The new path resolver, so much prettier
+ *
+ * gets the path to a texture by first checking if the texture exists
+ * in data_path and if not, using the default data path.
+ *
+ * checks all supported extensions by replacing the original extension.
+ *
+ * if not found, returns "".
+ *
+ * utilizes a thread-safe cache.
+ */
+std::string getPath(const char* tp, const std::string &filename, bool must_exist)
 {
 	std::string fullpath = "";
-	/*
-		Check from cache
-	*/
-	bool incache = g_texturename_to_path_cache.get(filename, &fullpath);
-	if (incache && fullpath != "")
-		return fullpath;
+	std::string type(tp);
 
-	std::string rel_path = std::string("textures")+DIR_DELIM+filename;
-	/*
-		Check from data_path /textures
-	*/
-	std::string data_path = g_settings->get("data_path");
-	if(data_path != "")
-	{
-		std::string testpath = data_path + DIR_DELIM + rel_path;
-		// Check all filename extensions. Returns "" if not found.
-		fullpath = getImagePath(testpath);
-	}
-
-	/*
-		Check from default data directory
-	*/
-	if(fullpath == "")
-	{
-		std::string testpath = porting::path_data + DIR_DELIM + rel_path;
-		// Check all filename extensions. Returns "" if not found.
-		fullpath = getImagePath(testpath);
-	}
-
-	// Add to cache (also an empty result is cached)
-	g_texturename_to_path_cache.set(filename, fullpath);
-
-	// Finally return it
-	return fullpath;
-}
-
-/*
-	Gets the path to a model by first checking if the model exists
-	in data_path and if not, using the default data path.
-
-	Checks all supported extensions by replacing the original extension.
-
-	If not found, returns "".
-
-	Utilizes a thread-safe cache.
-*/
-std::string getModelPath(const std::string &filename)
-{
-	std::string fullpath = "";
-	/*
-		Check from cache
-	*/
+	/* check from cache */
 	bool incache = g_modelname_to_path_cache.get(filename, &fullpath);
-	if(incache)
-		return fullpath;
+	if (incache) {
+		if (must_exist == true) {
+			if (!fs::PathExists(fullpath))
+				fullpath = "";
+		}
+		if (fullpath != "")
+			return fullpath;
+	}
 
-	std::string rel_path = std::string("models")+DIR_DELIM+filename;
-	/*
-		Check from data_path /models
-	*/
+	std::string rel_path = std::string("");
+	if (type == "model") {
+		rel_path += std::string("models")+DIR_DELIM+filename;
+	}else if (type == "texture") {
+		rel_path += std::string("textures")+DIR_DELIM+filename;
+	}else if (type == "html") {
+		rel_path += std::string("html")+DIR_DELIM+filename;
+	}else if (type == "player") {
+		rel_path += std::string("textures")+DIR_DELIM+"players"+DIR_DELIM+filename;
+	}
+
+	/* check from data_path */
 	std::string data_path = g_settings->get("data_path");
-	if(data_path != "")
-	{
+	if (data_path != "") {
 		std::string testpath = data_path + DIR_DELIM + rel_path;
-		if(fs::PathExists(testpath))
-			fullpath = std::string(testpath);
+		if (type == "model" || type == "html") {
+			if (fs::PathExists(testpath))
+				fullpath = std::string(testpath);
+		}else{
+			fullpath = getImagePath(testpath);
+		}
 	}
 
-	/*
-		Check from default data directory
-	*/
-	if(fullpath == "")
-	{
+	/* check from user data directory */
+	if (fullpath == "") {
+		std::string testpath = porting::path_userdata + DIR_DELIM + rel_path;
+		if (type == "model" || type == "html") {
+			if (fs::PathExists(testpath))
+				fullpath = std::string(testpath);
+		}else{
+			fullpath = getImagePath(testpath);
+		}
+	}
+
+	/* check from default data directory */
+	if (fullpath == "") {
 		std::string testpath = porting::path_data + DIR_DELIM + rel_path;
-		if(fs::PathExists(testpath))
-			fullpath = std::string(testpath);
+		if (type == "model" || type == "html") {
+			if (fs::PathExists(testpath))
+				fullpath = std::string(testpath);
+		}else{
+			fullpath = getImagePath(testpath);
+		}
 	}
 
-	// Add to cache (also an empty result is cached)
+	if (must_exist == false && fullpath == "")
+#ifdef RUN_IN_PLACE
+		fullpath = porting::path_data + DIR_DELIM + rel_path;
+#else
+		fullpath = porting::path_userdata + DIR_DELIM + rel_path;
+#endif
+
+	/* add to cache (also an empty result is cached) */
 	g_modelname_to_path_cache.set(filename, fullpath);
 
-	// Finally return it
+	/* finally return it */
 	return fullpath;
 }

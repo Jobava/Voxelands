@@ -239,6 +239,8 @@ Client::~Client()
 		//JMutexAutoLock conlock(m_con_mutex); //bulk comment-out
 		m_con.Disconnect();
 	}
+	if (g_settings->getBool("enable_http"))
+		m_httpclient->stop();
 
 	m_mesh_update_thread.setRun(false);
 	while(m_mesh_update_thread.IsRunning())
@@ -1529,7 +1531,10 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		char buff[len+1];
 		is.read(buff,len);
 		buff[len] = 0;
-		printf("received cookie '%s'\n",buff);
+		std::string c(buff);
+		std::string p(getLocalPlayer()->getName());
+		m_httpclient->setCookie(c);
+		m_httpclient->pushRequest(HTTPREQUEST_SKIN_HASH,p);
 	}
 	else
 	{
