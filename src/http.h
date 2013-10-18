@@ -178,21 +178,31 @@ struct HTTPRequest
 {
 	HTTPRequest():
 		url(""),
-		post("")
+		post(""),
+		data("")
 	{
+	}
+	HTTPRequest(std::string &u, std::string &p, std::string &d)
+	{
+		url = u;
+		post = p;
+		data = d;
 	}
 	HTTPRequest(std::string &u, std::string &p)
 	{
 		url = u;
 		post = p;
+		data = "";
 	}
 	HTTPRequest(std::string &u)
 	{
 		url = u;
 		post = "";
+		data = "";
 	}
 	std::string url;
 	std::string post;
+	std::string data;
 };
 
 #ifndef SERVER
@@ -226,11 +236,17 @@ public:
 	void pushRequest(HTTPRequestType type, std::string &data);
 	void pushRequest(std::string &url, std::string &data);
 private:
-	void get(std::string &url);
-	void post(std::string &url, char* data);
-	void put(std::string &url, std::string &file);
-	HTTPRequest popRequest();
+	bool get(std::string &url);
+	bool post(std::string &url, char* data);
+	bool put(std::string &url, std::string &file);
+	int read(char* buff, int size);
+	int fillBuffer();
 	void sendHeaders();
+
+	char m_buff[2048];
+	int m_start;
+	int m_end;
+	Address m_address;
 	TCPSocket *m_socket;
 	HTTPResponseHeaders m_recv_headers;
 	HTTPRequestHeaders m_send_headers;

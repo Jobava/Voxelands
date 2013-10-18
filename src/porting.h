@@ -71,7 +71,7 @@ extern std::string path_userdata;
 
 /*
 	Get full path of stuff in data directory.
-	Example: "stone.png" -> "../data/stone.png"
+	Example: "stone.png" -> "../data/textures/stone.png"
 */
 std::string getDataPath(const char *subpath);
 

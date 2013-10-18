@@ -53,6 +53,7 @@ void * HTTPServerThread::Thread()
 			m_server->step();
 		}catch (con::NoIncomingDataException &e) {
 		}catch(con::PeerNotFoundException &e) {
+		}catch(SendFailedException &e) {
 		}
 	}
 
@@ -279,35 +280,43 @@ int HTTPRemoteClient::handlePlayer()
 		return 1;
 	/* player skin */
 	}else if (m_recv_headers.getUrl(2) == "skin") {
-		std::string data_path = g_settings->get("data_path");
-		if (data_path == "")
-			data_path = "data";
-		std::string file = data_path + DIR_DELIM + "textures" + DIR_DELIM + "players" + DIR_DELIM + "player_" + m_recv_headers.getUrl(1) + ".png";
-		/* compare hash */
-		if (m_recv_headers.getUrl(3) != "") {
-			FILE *f;
-			f = fopen(file.c_str(),"rb");
-			if (!f)
-				return handleSpecial("204 No Content");
-			fclose(f);
-			SHA1 s;
-			s.addFile(file.c_str());
-			s.getDigest(buff);
-			if (std::string(buff) == m_recv_headers.getUrl(3)) {
-				return handleSpecial("204 No Content");
-			}else if (m_auth && m_recv_headers.getHeader("User") == m_recv_headers.getUrl(1)) {
-				return handleSpecial("304 Not Modified");
-			}
-			m_send_headers.setHeader("Content-Type","image/png");
-			sendFile(file);
-			return 1;
-		}
-		/* get file */
+		std::string file = getPath("player","player_" + m_recv_headers.getUrl(1) + ".png",true);
 		if (m_recv_headers.getMethod() != "PUT") {
+			if (file == "") {
+				if (m_auth && m_recv_headers.getHeader("User") == m_recv_headers.getUrl(1))
+					return handleSpecial("304 Not Modified");
+				if (m_recv_headers.getUrl(3) == "hash")
+					return handleSpecial("204 No Content");
+				m_send_headers.setHeader("Location","/texture/character.png");
+				return handleSpecial("303 See Other","<p><a href=\"/texture/character.png\">/texture/character.png</a></p>");
+			}
+			/* compare hash */
+			if (m_recv_headers.getUrl(3) == "hash") {
+				FILE *f;
+				f = fopen(file.c_str(),"rb");
+				if (!f)
+					return handleSpecial("204 No Content");
+				fseek(f,0,SEEK_END);
+				size_t l = ftell(f);
+				fclose(f);
+				if (!l)
+					return handleSpecial("204 No Content");
+				SHA1 s;
+				s.addFile(file.c_str());
+				s.getDigest(buff);
+				if (std::string(buff) == m_recv_headers.getUrl(4)) {
+					return handleSpecial("204 No Content");
+				}else if (m_auth && m_recv_headers.getHeader("User") == m_recv_headers.getUrl(1)) {
+					return handleSpecial("304 Not Modified");
+				}
+			}
+			/* get file */
 			m_send_headers.setHeader("Content-Type","image/png");
 			sendFile(file);
 			return 1;
 		}
+		if (file == "")
+			file = getPath("player","player_" + m_recv_headers.getUrl(1) + ".png",false);
 		/* put only works for the owner */
 		if (!m_auth || m_recv_headers.getHeader("User") != m_server->getPlayerFromCookie(m_recv_headers.getCookie()))
 			return handleSpecial("405 Method Not Allowed");
@@ -316,15 +325,19 @@ int HTTPRemoteClient::handlePlayer()
 		if (!f)
 			return handleSpecial("500 Internal Server Error");
 		size_t s = m_recv_headers.getLength();
-		if (!s)
+		if (!s) {
+			fclose(f);
 			return handleSpecial("411 Length Required");
+		}
 		size_t l;
 		size_t c = 2048;
+		size_t t = 0;
 		if (c > s)
 			c = s;
 		if (c) {
 			while ((l = read(buff,c)) > 0) {
 				s -= l;
+				t += l;
 				c = fwrite(buff,1,l,f);
 				if (c != l) {
 					fclose(f);
@@ -337,6 +350,7 @@ int HTTPRemoteClient::handlePlayer()
 					break;
 			}
 		}
+printf("recieved: %lu %lu\n",s,l);
 		fclose(f);
 		return handleSpecial("201 Created");
 	}else if (m_server->getGameServer()->getPlayer(m_recv_headers.getUrl(1))) {
@@ -369,7 +383,9 @@ int HTTPRemoteClient::handlePlayer()
 /* handle /texture/<file> url's */
 int HTTPRemoteClient::handleTexture()
 {
-	std::string file = getTexturePath(m_recv_headers.getUrl(1));
+	std::string file = getPath("texture",m_recv_headers.getUrl(1),true);
+	if (file == "")
+		return handleSpecial("404 Not Found");
 	m_send_headers.setHeader("Content-Type","image/png");
 	sendFile(file);
 	return 1;
@@ -378,7 +394,9 @@ int HTTPRemoteClient::handleTexture()
 /* handle /model/<file> url's */
 int HTTPRemoteClient::handleModel()
 {
-	std::string file = getModelPath(m_recv_headers.getUrl(1));
+	std::string file = getPath("model",m_recv_headers.getUrl(1),true);
+	if (file == "")
+		return handleSpecial("404 Not Found");
 	m_send_headers.setHeader("Content-Type","application/octet-stream");
 	sendFile(file);
 	return 1;
@@ -444,21 +462,10 @@ void HTTPRemoteClient::sendHTML(char* data)
 	FILE *f;
 	int l[4];
 	char* b;
-	std::string data_path = g_settings->get("data_path");
-	if (data_path == "")
-		data_path = "data";
-	std::string file = data_path + DIR_DELIM + "html" + DIR_DELIM + "header.html";
+	std::string file = getPath("html","header.html",true);
 	h = fopen(file.c_str(),"r");
-	if (!h && data_path != "data") {
-		file = std::string("data") + DIR_DELIM + "html" + DIR_DELIM + "header.html";
-		h = fopen(file.c_str(),"r");
-	}
-	file = data_path + DIR_DELIM + "html" + DIR_DELIM + "footer.html";
+	file = getPath("html","footer.html",true);
 	f = fopen(file.c_str(),"r");
-	if (!f && data_path != "data") {
-		file = std::string("data") + DIR_DELIM + "html" + DIR_DELIM + "footer.html";
-		f = fopen(file.c_str(),"r");
-	}
 
 	if (h) {
 		fseek(h,0,SEEK_END);
@@ -505,28 +512,24 @@ void HTTPRemoteClient::sendFile(std::string &file)
 	FILE *f;
 	f = fopen(file.c_str(),"rb");
 	if (!f) {
-		std::string data_path = g_settings->get("data_path");
-		if (data_path == "")
-			data_path = "data";
-		if (file.substr(data_path.size()+1,24) == "textures/players/player_") {
-			m_send_headers.setHeader("Location","/texture/character.png");
-			handleSpecial("303 See Other","<p><a href=\"/texture/character.png\">/texture/character.png</a></p>");
-			return;
-		}
 		handleSpecial("404 Not Found");
 		return;
 	}
 	fseek(f,0,SEEK_END);
 	size_t l = ftell(f);
 	fseek(f,0,SEEK_SET);
+	size_t s = l;
+	size_t t = 0;
 
 	m_send_headers.setLength(l);
 	sendHeaders();
 
 	char buff[1024];
 	while ((l = fread(buff,1,1024,f)) > 0) {
+		t += l;
 		m_socket->Send(buff,l);
 	}
+printf("sent: %lu %lu\n",s,t);
 
 	fclose(f);
 }
@@ -632,9 +635,7 @@ void HTTPClient::start(const Address &address)
 	// Stop thread if already running
 	m_thread.stop();
 
-	m_socket = new TCPSocket();
-	m_socket->setTimeoutMs(30);
-	m_socket->Connect(address);
+	m_address = address;
 
 	// Start thread
 	m_thread.setRun(true);
@@ -649,7 +650,6 @@ void HTTPClient::stop()
 	DSTACK(__FUNCTION_NAME);
 
 	m_thread.stop();
-	delete m_socket;
 
 	infostream<<"HTTPClient: Threads stopped"<<std::endl;
 }
@@ -657,12 +657,149 @@ void HTTPClient::stop()
 /* the main function for the client loop */
 void HTTPClient::step()
 {
-	sleep(1);
+	if (m_requests.size() == 0 || m_cookie == "") {
+		/* this should only happen if a packet was lost
+		 * or the server has enable_http = false */
+		//if (m_requests.size() > 0 || m_cookie == "")
+			//m_client->sendWantCookie();
+		sleep(1);
+		return;
+	}
+
+	std::vector<HTTPRequest> p;
+
+	m_req_mutex.Lock();
+	p.swap(m_requests);
+	m_req_mutex.Unlock();
+
+	for (std::vector<HTTPRequest>::iterator i = p.begin(); i != p.end(); ++i) {
+		HTTPRequest q = *i;
+		m_socket = new TCPSocket();
+		if (m_socket == NULL) {
+			m_req_mutex.Lock();
+			m_requests.push_back(q);
+			m_req_mutex.Unlock();
+			continue;
+		}
+		if (m_socket->Connect(m_address) == false) {
+			delete m_socket;
+			m_req_mutex.Lock();
+			m_requests.push_back(q);
+			m_req_mutex.Unlock();
+			continue;
+		}
+
+		m_recv_headers.clear();
+		m_send_headers.clear();
+
+		if (q.post == "") {
+			get(q.url);
+		}else{
+			put(q.url,q.post);
+		}
+
+		int r = 0;
+		int h = -1;
+		m_start = 0;
+		m_end = 0;
+		while (m_socket->WaitData(1000)) {
+			r = fillBuffer();
+			if (r<1) {
+				delete m_socket;
+				m_req_mutex.Lock();
+				m_requests.push_back(q);
+				m_req_mutex.Unlock();
+				h = -1;
+				break;
+			}
+			h = m_recv_headers.read(m_buff,r);
+			if (h > -1)
+				break;
+			if (h == -1 || m_recv_headers.getResponse() == 500) {
+				delete m_socket;
+				m_req_mutex.Lock();
+				m_requests.push_back(q);
+				m_req_mutex.Unlock();
+				r = 0;
+				break;
+			}
+		}
+		if (h < 0) {
+			delete m_socket;
+			continue;
+		}
+
+		r = m_recv_headers.getResponse();
+
+		if (q.post == "") {
+			if (r == 204 || r == 303) {
+				delete m_socket;
+				continue;
+			}else if (r == 304) {
+				std::string d(m_client->getLocalPlayer()->getName());
+				pushRequest(HTTPREQUEST_SKIN_SEND,d);
+				delete m_socket;
+				continue;
+			}
+			if (r != 200) {
+				errorstream << "receive skin returned " << r << std::endl;
+				delete m_socket;
+				continue;
+			}
+			if (q.data == "") {
+				errorstream << "receive skin returned successful for no player?" << std::endl;
+				delete m_socket;
+				continue;
+			}
+			if (q.data == m_client->getLocalPlayer()->getName()) {
+				delete m_socket;
+				continue;
+			}
+			char buff[2048];
+			std::string file = getPath("player",std::string("player_")+q.data+".png",false);
+			FILE *f;
+			f = fopen(file.c_str(),"wb");
+			if (!f) {
+				delete m_socket;
+				continue;
+			}
+			size_t s = m_recv_headers.getLength();
+			if (!s) {
+				delete m_socket;
+				fclose(f);
+				continue;
+			}
+			size_t l;
+			size_t c = 2048;
+			if (c > s)
+				c = s;
+			if (c) {
+				while ((l = read(buff,c)) > 0) {
+					s -= l;
+					c = fwrite(buff,1,l,f);
+					if (c != l)
+						break;
+					c = 2048;
+					if (c > s)
+						c = s;
+					if (!c)
+						break;
+				}
+			}
+			fclose(f);
+		}else if (r == 405) {
+			errorstream << "send skin returned 405 Method Not Allowed" << std::endl;
+		}
+		delete m_socket;
+	}
+	p.clear();
 }
 
 /* add a request to the http client queue */
 void HTTPClient::pushRequest(HTTPRequestType type, std::string &data)
 {
+	if (m_thread.getRun() == false)
+		return;
 	switch (type) {
 	case HTTPREQUEST_NULL:
 		break;
@@ -681,6 +818,7 @@ void HTTPClient::pushRequest(HTTPRequestType type, std::string &data)
 		std::string url("/player/");
 		url += data + "/skin";
 		HTTPRequest r(url);
+		r.data = data;
 		m_req_mutex.Lock();
 		m_requests.push_back(r);
 		m_req_mutex.Unlock();
@@ -699,8 +837,8 @@ void HTTPClient::pushRequest(HTTPRequestType type, std::string &data)
 	 */
 	case HTTPREQUEST_SKIN_HASH:
 	{
-		std::string tex = std::string("players") + DIR_DELIM + "player_" + data + ".png";
-		std::string ptex = getTexturePath(tex);
+		std::string tex = std::string("player_") + data + ".png";
+		std::string ptex = getPath("player",tex,true);
 		if (ptex == "") {
 			pushRequest(HTTPREQUEST_SKIN,data);
 			return;
@@ -710,8 +848,9 @@ void HTTPClient::pushRequest(HTTPRequestType type, std::string &data)
 		s.addFile(ptex.c_str());
 		s.getDigest(buff);
 		std::string url("/player/");
-		url += data + "/skin/" + buff;
+		url += data + "/skin/hash/" + buff;
 		HTTPRequest r(url);
+		r.data = data;
 		m_req_mutex.Lock();
 		m_requests.push_back(r);
 		m_req_mutex.Unlock();
@@ -729,13 +868,13 @@ void HTTPClient::pushRequest(HTTPRequestType type, std::string &data)
 	case HTTPREQUEST_SKIN_SEND:
 	{
 		std::string tex = std::string("player.png");
-		std::string ptex = getTexturePath(tex);
+		std::string ptex = getPath("texture",tex,true);
 		if (ptex == "")
 			return;
 
 		std::string url("/player/");
 		url += data + "/skin";
-		HTTPRequest r(url,ptex);
+		HTTPRequest r(url,ptex,data);
 		m_req_mutex.Lock();
 		m_requests.push_back(r);
 		m_req_mutex.Unlock();
@@ -748,6 +887,8 @@ void HTTPClient::pushRequest(HTTPRequestType type, std::string &data)
 /* add a request to the http client queue */
 void HTTPClient::pushRequest(std::string &url, std::string &data)
 {
+	if (m_thread.getRun() == false)
+		return;
 	HTTPRequest r(url,data);
 	m_req_mutex.Lock();
 	m_requests.push_back(r);
@@ -755,33 +896,126 @@ void HTTPClient::pushRequest(std::string &url, std::string &data)
 }
 
 /* send a http GET request to the server */
-void HTTPClient::get(std::string &url)
+bool HTTPClient::get(std::string &url)
 {
+	m_send_headers.setLength(0);
+	m_send_headers.setMethod("GET");
+	m_send_headers.setUrl(url);
+
+	sendHeaders();
+	return true;
 }
 
 /* send a http POST request to the server */
-void HTTPClient::post(std::string &url, char* data)
+bool HTTPClient::post(std::string &url, char* data)
 {
+	return false;
 }
 
 /* send a file to the server with a http PUT request */
-void HTTPClient::put(std::string &url, std::string &file)
+bool HTTPClient::put(std::string &url, std::string &file)
 {
+	FILE *f;
+	u32 s;
+	f = fopen(file.c_str(),"r");
+	if (!f)
+		return false;
+	fseek(f,0,SEEK_END);
+	s = ftell(f);
+printf("filesize: %u\n",s);
+	fseek(f,0,SEEK_SET);
+	m_send_headers.setLength(s);
+	m_send_headers.setHeader("Content-Type","image/png");
+	m_send_headers.setMethod("PUT");
+	m_send_headers.setUrl(url);
+
+	sendHeaders();
+
+	char buff[1024];
+	while ((s = fread(buff,1,1024,f)) > 0) {
+		m_socket->Send(buff,s);
+	}
+	fclose(f);
+	return true;
 }
 
-/* get a request from the client queue */
-HTTPRequest HTTPClient::popRequest()
+/* read data from a remote http client */
+int HTTPClient::read(char* buff, int size)
 {
-	m_req_mutex.Lock();
-	HTTPRequest r = m_requests.front();
-	m_requests.erase(m_requests.begin());
-	m_req_mutex.Unlock();
-	return r;
+	if (size > 2048) {
+		int r = 0;
+		int l;
+		int c = 2048;
+		int s = size;
+		while (fillBuffer()) {
+			c = 2048;
+			if (s<c)
+				c = s;
+			l = m_end-m_start;
+			if (l<c)
+				c = l;
+			if (c < 1)
+				break;
+			memcpy(buff+r,m_buff+m_start,c);
+			m_start += c;
+			r += c;
+			s -= c;
+		}
+		return r;
+	}
+
+	if (fillBuffer() < size)
+		return 0;
+
+	memcpy(buff,m_buff+m_start,size);
+	m_start+=size;
+	return size;
+}
+
+/* data read from remote http clients is buffered, fill the buffer */
+int HTTPClient::fillBuffer()
+{
+	int l = m_end-m_start;
+	if (l && m_start) {
+		memcpy(m_buff,m_buff+m_start,l);
+		m_start = 0;
+		m_end = l;
+	}
+	l = 2048-m_end;
+
+	if (!m_socket->WaitData(30))
+		return m_end;
+
+	return m_end+m_socket->Receive(m_buff+m_end,l);
 }
 
 /* send http headers to the server */
 void HTTPClient::sendHeaders()
 {
+	std::string v;
+	int s;
+	char buff[1024];
+
+	s = snprintf(buff,1024,"%s %s HTTP/1.0\r\n",m_send_headers.getMethod().c_str(),m_send_headers.getUrl().c_str());
+	m_socket->Send(buff,s);
+
+	v = m_send_headers.getHeader("Content-Type");
+	if (v != "") {
+		s = snprintf(buff,1024,"Content-Type: %s\r\n",v.c_str());
+		m_socket->Send(buff,s);
+	}
+
+	s = m_send_headers.length();
+	s = snprintf(buff,1024,"Content-Length: %d\r\n",s);
+	m_socket->Send(buff,s);
+
+	s = snprintf(buff,1024,"Cookie: MTID=%s\r\n",m_cookie.c_str());
+	m_socket->Send(buff,s);
+
+	s = snprintf(buff,1024,"User: %s\r\n",m_client->getLocalPlayer()->getName());
+	m_socket->Send(buff,s);
+
+	m_socket->Send("\r\n",2);
 }
 #endif
 
@@ -870,7 +1104,7 @@ int HTTPResponseHeaders::read(char* buff, int length)
 	int n = 1;
 	int o = 0;
 	int i = 0;
-	int c = getUrl() == "" ? 0 : 1;
+	int c = getResponse();
 
 	for (i=0; i<length; i++) {
 		if (buff[i] == '\r' || (!o && buff[i] == ' '))

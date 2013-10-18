@@ -256,9 +256,9 @@ void RemotePlayer::updateName(const char *name)
 		mbstowcs(wname, m_name, strlen(m_name)+1);
 		m_text->setText(wname);
 	}
-	if (m_node != NULL) {
-		std::string tex = std::string("players") + DIR_DELIM + "player_" + m_name + ".png";
-		std::string ptex = getTexturePath(tex);
+	if (m_node != NULL && !isLocal()) {
+		std::string tex = std::string("player_") + m_name + ".png";
+		std::string ptex = getPath("player",tex,true);
 		printf("'%s' '%s'\n",tex.c_str(),ptex.c_str());
 		if (ptex == "")
 			return;
