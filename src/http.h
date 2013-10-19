@@ -255,6 +255,7 @@ private:
 	JMutex m_req_mutex;
 	HTTPClientThread m_thread;
 	Client *m_client;
+	int m_connection_failures;
 };
 #endif
 

@@ -294,13 +294,19 @@ int HTTPRemoteClient::handlePlayer()
 			if (m_recv_headers.getUrl(3) == "hash") {
 				FILE *f;
 				f = fopen(file.c_str(),"rb");
-				if (!f)
+				if (!f) {
+					if (m_auth && m_recv_headers.getHeader("User") == m_recv_headers.getUrl(1))
+						return handleSpecial("304 Not Modified");
 					return handleSpecial("204 No Content");
+				}
 				fseek(f,0,SEEK_END);
 				size_t l = ftell(f);
 				fclose(f);
-				if (!l)
+				if (!l) {
+					if (m_auth && m_recv_headers.getHeader("User") == m_recv_headers.getUrl(1))
+						return handleSpecial("304 Not Modified");
 					return handleSpecial("204 No Content");
+				}
 				SHA1 s;
 				s.addFile(file.c_str());
 				s.getDigest(buff);
@@ -334,11 +340,16 @@ int HTTPRemoteClient::handlePlayer()
 		size_t t = 0;
 		if (c > s)
 			c = s;
+printf("pending: %lu %lu %d %d\n",c,s,m_start,m_end);
 		if (c) {
+printf("pending: %lu %lu %d %d\n",c,s,m_start,m_end);
+			if (m_start == m_end)
+				m_socket->WaitData(5000);
 			while ((l = read(buff,c)) > 0) {
 				s -= l;
 				t += l;
 				c = fwrite(buff,1,l,f);
+printf("written: %lu\n",c);
 				if (c != l) {
 					fclose(f);
 					return handleSpecial("500 Internal Server Error");
@@ -350,9 +361,13 @@ int HTTPRemoteClient::handlePlayer()
 					break;
 			}
 		}
-printf("recieved: %lu %lu\n",s,l);
+printf("received: %lu %lu\n",s,t);
+		l = ftell(f);
 		fclose(f);
-		return handleSpecial("201 Created");
+		if (s == t)
+			return handleSpecial("201 Created");
+		fs::RecursiveDelete(file.c_str());
+		return handleSpecial("500 Internal Server Error");
 	}else if (m_server->getGameServer()->getPlayer(m_recv_headers.getUrl(1))) {
 		std::string html("<h1>Players</h1>\n");
 		Player *player = m_server->getGameServer()->getPlayer(m_recv_headers.getUrl(1));
@@ -518,7 +533,7 @@ void HTTPRemoteClient::sendFile(std::string &file)
 	fseek(f,0,SEEK_END);
 	size_t l = ftell(f);
 	fseek(f,0,SEEK_SET);
-	size_t s = l;
+	//size_t s = l;
 	size_t t = 0;
 
 	m_send_headers.setLength(l);
@@ -529,7 +544,7 @@ void HTTPRemoteClient::sendFile(std::string &file)
 		t += l;
 		m_socket->Send(buff,l);
 	}
-printf("sent: %lu %lu\n",s,t);
+//printf("sent: %lu %lu\n",s,t);
 
 	fclose(f);
 }
@@ -636,6 +651,7 @@ void HTTPClient::start(const Address &address)
 	m_thread.stop();
 
 	m_address = address;
+	m_connection_failures = 0;
 
 	// Start thread
 	m_thread.setRun(true);
@@ -686,8 +702,16 @@ void HTTPClient::step()
 			m_req_mutex.Lock();
 			m_requests.push_back(q);
 			m_req_mutex.Unlock();
+			m_connection_failures++;
+			/* assume the server has no http */
+			if (m_connection_failures > 4) {
+				stop();
+				p.clear();
+				return;
+			}
 			continue;
 		}
+		m_connection_failures = 0;
 
 		m_recv_headers.clear();
 		m_send_headers.clear();
@@ -702,13 +726,10 @@ void HTTPClient::step()
 		int h = -1;
 		m_start = 0;
 		m_end = 0;
+		m_recv_headers.setResponse(0);
 		while (m_socket->WaitData(1000)) {
 			r = fillBuffer();
 			if (r<1) {
-				delete m_socket;
-				m_req_mutex.Lock();
-				m_requests.push_back(q);
-				m_req_mutex.Unlock();
 				h = -1;
 				break;
 			}
@@ -716,16 +737,17 @@ void HTTPClient::step()
 			if (h > -1)
 				break;
 			if (h == -1 || m_recv_headers.getResponse() == 500) {
-				delete m_socket;
-				m_req_mutex.Lock();
-				m_requests.push_back(q);
-				m_req_mutex.Unlock();
+				sleep(1);
 				r = 0;
+				h = -1;
 				break;
 			}
 		}
 		if (h < 0) {
 			delete m_socket;
+			m_req_mutex.Lock();
+			m_requests.push_back(q);
+			m_req_mutex.Unlock();
 			continue;
 		}
 
@@ -840,8 +862,14 @@ void HTTPClient::pushRequest(HTTPRequestType type, std::string &data)
 		std::string tex = std::string("player_") + data + ".png";
 		std::string ptex = getPath("player",tex,true);
 		if (ptex == "") {
-			pushRequest(HTTPREQUEST_SKIN,data);
-			return;
+			if (data == m_client->getLocalPlayer()->getName()) {
+				ptex = getPath("texture","player.png",true);
+				if (ptex == "")
+					return;
+			}else{
+				pushRequest(HTTPREQUEST_SKIN,data);
+				return;
+			}
 		}
 		char buff[100];
 		SHA1 s;
@@ -922,7 +950,6 @@ bool HTTPClient::put(std::string &url, std::string &file)
 		return false;
 	fseek(f,0,SEEK_END);
 	s = ftell(f);
-printf("filesize: %u\n",s);
 	fseek(f,0,SEEK_SET);
 	m_send_headers.setLength(s);
 	m_send_headers.setHeader("Content-Type","image/png");
@@ -931,10 +958,15 @@ printf("filesize: %u\n",s);
 
 	sendHeaders();
 
+	u32 t = 0;
+	u32 l;
+
 	char buff[1024];
-	while ((s = fread(buff,1,1024,f)) > 0) {
-		m_socket->Send(buff,s);
+	while ((l = fread(buff,1,1024,f)) > 0) {
+		t += l;
+		m_socket->Send(buff,l);
 	}
+printf("sent: %u %u\n",t,s);
 	fclose(f);
 	return true;
 }
@@ -1112,6 +1144,7 @@ int HTTPResponseHeaders::read(char* buff, int length)
 		if (buff[i] == '\n') {
 			if (!c) {
 				nbuff[o] = 0;
+printf("%d '%s'\n",__LINE__,nbuff);
 				char* r = strchr(nbuff,' ');
 				if (!r)
 					return -1;

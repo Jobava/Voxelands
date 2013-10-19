@@ -361,8 +361,10 @@ TCPSocket::TCPSocket()
 	}
 
 	int a=1;
-	setsockopt(m_handle, SOL_SOCKET, SO_REUSEADDR, &a, sizeof(a));
-
+	setsockopt(m_handle, SOL_SOCKET, SO_REUSEADDR, &a, sizeof(int));
+#if defined(__FreeBSD__)
+	setsockopt(m_handle, SOL_SOCKET, SO_NOSIGPIPE, &a, sizeof(int));
+#endif
 	setTimeoutMs(0);
 }
 
@@ -421,7 +423,11 @@ bool TCPSocket::Connect(const Address &destination)
 
 void TCPSocket::Send(const void *data, int size)
 {
-	int sent = send(m_handle, (const char*)data, size, 0);
+	int flags = 0;
+#if defined(linux)
+	flags = MSG_NOSIGNAL;
+#endif
+	int sent = send(m_handle, (const char*)data, size, flags);
 
 	if (sent != size)
 		throw SendFailedException("Failed to send data");
