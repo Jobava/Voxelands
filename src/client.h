@@ -217,6 +217,7 @@ public:
 	// Wrapper to Map
 	NodeMetadata* getNodeMetadata(v3s16 p);
 
+	Player* getPlayer(const char* name) { return m_env.getPlayer(name);}
 	LocalPlayer* getLocalPlayer();
 
 	void setPlayerControl(PlayerControl &control);
