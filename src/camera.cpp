@@ -491,7 +491,7 @@ void Camera::wield(const InventoryItem* item)
 		m_wieldnode_baserotation = v3f(-30, 130, 20);
 		m_wieldnode_baseposition = v3f(45, -43, 65);
 		//m_wieldnode->setSprite(g_texturesource->getTextureRaw("hand.png"));
-		//m_wieldnode->setScale(v3f(40,40,100));
+		m_wieldnode->setScale(v3f(40));
 		m_wieldnode->setVisible(true);
 	}
 }
