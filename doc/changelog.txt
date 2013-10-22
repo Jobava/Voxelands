@@ -3,6 +3,9 @@ Minetest-c55 changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1310.01: (release 2013-10-22)
+- fix water flooding with sources growing upwards
+
 1310.00: (release 2013-10-20)
 - Update jthread to 1.3.1
 - Implement buckets
