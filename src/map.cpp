@@ -1680,7 +1680,9 @@ void Map::transformLiquids(core::map<v3s16, MapBlock*> & modified_blocks)
 					if (content_features(nb.n.getContent()).liquid_alternative_flowing !=liquid_kind) {
 						neutrals[num_neutrals++] = nb;
 					} else {
-						sources[num_sources++] = nb;
+						// Do not count bottom source, it will screw things up
+						if (dirs[i].Y != -1)
+							sources[num_sources++] = nb;
 					}
 					break;
 				case LIQUID_FLOWING:
@@ -3481,15 +3483,15 @@ MapBlock* ServerMap::loadBlock(v3s16 blockpos)
 		}
 		catch(InvalidFilenameException &e)
 		{
-			return false;
+			return NULL;
 		}
 		catch(FileNotGoodException &e)
 		{
-			return false;
+			return NULL;
 		}
 		catch(std::exception &e)
 		{
-			return false;
+			return NULL;
 		}
 	}
 
