@@ -107,7 +107,7 @@ struct CraftDef {
 */
 InventoryItem *craft_get_result(InventoryItem **items)
 {
-	static CraftDef defs[113];
+	static CraftDef defs[117];
 	static int defs_init = 0;
 
 	// only initialise (and hence allocate) these once
@@ -1088,6 +1088,42 @@ InventoryItem *craft_get_result(InventoryItem **items)
 			defs_init++;
 		}
 
+		// wood gate
+		{
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[5] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].item = new MaterialItem(CONTENT_WOOD_GATE, 1);
+			defs_init++;
+		}
+
+		// wood gate
+		{
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLEWOOD);
+			defs[defs_init].specs[5] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLEWOOD);
+			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].item = new MaterialItem(CONTENT_WOOD_GATE, 1);
+			defs_init++;
+		}
+
+		// steel gate
+		{
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_STEEL);
+			defs[defs_init].specs[5] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_STEEL);
+			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].item = new MaterialItem(CONTENT_STEEL_GATE, 1);
+			defs_init++;
+		}
+
 		// flower pot
 		{
 			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "lump_of_clay");
@@ -1210,6 +1246,18 @@ InventoryItem *craft_get_result(InventoryItem **items)
 			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "steel_ingot");
 			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "steel_ingot");
 			defs[defs_init].item = new ToolItem("SteelBucket", 0);
+			defs_init++;
+		}
+
+		// Cobble wall
+		{
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[5] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[6] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[8] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].item = new MaterialItem(CONTENT_COBBLE_WALL, 4);
 			defs_init++;
 		}
 	}

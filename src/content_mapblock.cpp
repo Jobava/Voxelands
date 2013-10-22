@@ -838,6 +838,187 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			}
 		}
 		/*
+			Add wall
+		*/
+		break;
+		case CDT_WALLLIKE:
+		{
+			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
+			video::SColor c = MapBlock_LightColor(255, l);
+
+			const f32 post_rad=(f32)0.2*BS;
+			const f32 wall_rad=(f32)0.15*BS;
+
+			v3f pos = intToFloat(p+blockpos_nodes, BS);
+			bool x_plus = false;
+			bool x_minus = false;
+			bool z_plus = false;
+			bool z_minus = false;
+			bool y_plus = false;
+			// Now a section of fence, +X, if there's a post there
+			v3s16 p2 = p;
+			p2.X++;
+			MapNode n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + p2);
+			const ContentFeatures *f2 = &content_features(n2);
+			if (
+				f2->draw_type == CDT_FENCELIKE
+				|| f2->draw_type == CDT_WALLLIKE
+				|| n2.getContent() == CONTENT_WOOD_GATE
+				|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
+				|| n2.getContent() == CONTENT_STEEL_GATE
+				|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
+			) {
+				aabb3f bar(wall_rad,-(0.5*BS),-wall_rad,
+						0.5*BS,0.3*BS,wall_rad);
+				x_plus = true;
+				bar.MinEdge += pos;
+				bar.MaxEdge += pos;
+				f32 xrailuv[24]={
+					0.,0.35,0.35,0.65,
+					0.,0.35,0.35,0.65,
+					0.35,0.2,0.65,1,
+					0.35,0.2,0.65,1,
+					0.,0.2,0.35,1,
+					0.,0.2,0.35,1
+				};
+				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, xrailuv);
+			}
+
+			// Now a section of fence, -X, if there's a post there
+			p2 = p;
+			p2.X--;
+			n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + p2);
+			f2 = &content_features(n2);
+			if (
+				f2->draw_type == CDT_FENCELIKE
+				|| f2->draw_type == CDT_WALLLIKE
+				|| n2.getContent() == CONTENT_WOOD_GATE
+				|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
+				|| n2.getContent() == CONTENT_STEEL_GATE
+				|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
+			) {
+				aabb3f bar(-0.5*BS,-(0.5*BS),-wall_rad,
+						-wall_rad,0.3*BS,wall_rad);
+				x_minus = true;
+				bar.MinEdge += pos;
+				bar.MaxEdge += pos;
+				f32 xrailuv[24]={
+					0.65,0.35,1,0.65,
+					0.65,0.35,1,0.65,
+					0.35,0.2,0.65,1,
+					0.35,0.2,0.65,1,
+					0.65,0.2,1,1,
+					0.65,0.2,1,1
+				};
+				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, xrailuv);
+			}
+
+			// Now a section of fence, +Z, if there's a post there
+			p2 = p;
+			p2.Z++;
+			n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + p2);
+			f2 = &content_features(n2);
+			if (
+				f2->draw_type == CDT_FENCELIKE
+				|| f2->draw_type == CDT_WALLLIKE
+				|| n2.getContent() == CONTENT_WOOD_GATE
+				|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
+				|| n2.getContent() == CONTENT_STEEL_GATE
+				|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
+			) {
+				aabb3f bar(-wall_rad,-(0.5*BS),wall_rad,
+						wall_rad,0.3*BS,0.5*BS);
+				z_plus = true;
+				bar.MinEdge += pos;
+				bar.MaxEdge += pos;
+				f32 zrailuv[24]={
+					0.5,0.35,1,0.65,
+					0.5,0.35,1,0.65,
+					0.5,0.2,1,1,
+					0.5,0.2,1,1,
+					0.35,0.2,0.65,1,
+					0.35,0.2,0.65,1
+				};
+				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, zrailuv);
+			}
+
+			// Now a section of fence, +Z, if there's a post there
+			p2 = p;
+			p2.Z--;
+			n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + p2);
+			f2 = &content_features(n2);
+			if (
+				f2->draw_type == CDT_FENCELIKE
+				|| f2->draw_type == CDT_WALLLIKE
+				|| n2.getContent() == CONTENT_WOOD_GATE
+				|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
+				|| n2.getContent() == CONTENT_STEEL_GATE
+				|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
+			) {
+				aabb3f bar(-wall_rad,-(0.5*BS),-0.5*BS,
+						wall_rad,0.3*BS,-wall_rad);
+				z_minus = true;
+				bar.MinEdge += pos;
+				bar.MaxEdge += pos;
+				f32 zrailuv[24]={
+					0,0.35,0.5,0.65,
+					0,0.35,0.5,0.65,
+					0,0.2,0.5,1,
+					0,0.2,0.5,1,
+					0.35,0.2,0.65,1,
+					0.35,0.2,0.65,1
+				};
+				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, zrailuv);
+			}
+			int have_post = x_plus + x_minus + z_plus + z_minus;
+			if (have_post == 2) {
+				p2 = p;
+				p2.Y++;
+				n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + p2);
+				have_post = 0;
+				if (n2.getContent() != CONTENT_AIR && n2.getContent() != CONTENT_IGNORE) {
+					have_post = 1;
+				}else if (x_plus && z_plus) {
+					have_post = 1;
+				}else if (x_minus && z_plus) {
+					have_post = 1;
+				}else if (x_plus && z_minus) {
+					have_post = 1;
+				}else if (x_minus && z_minus) {
+					have_post = 1;
+				}
+			}else{
+				have_post = 1;
+			}
+			if (have_post == 1) {
+				aabb3f post(-post_rad,-BS/2,-post_rad,post_rad,BS/2,post_rad);
+				post.MinEdge += pos;
+				post.MaxEdge += pos;
+				f32 postuv[24]={
+					0.3,0.3,0.7,0.7,
+					0.3,0.3,0.7,0.7,
+					0.3,0,0.7,1,
+					0.3,0,0.7,1,
+					0.3,0,0.7,1,
+					0.3,0,0.7,1
+				};
+				makeCuboid(&collector, post, content_features(n).tiles, 6,  c, postuv);
+			}else{
+				aabb3f post(-wall_rad,-(0.5*BS),-wall_rad,wall_rad,0.3*BS,wall_rad);
+				post.MinEdge += pos;
+				post.MaxEdge += pos;
+				f32 postuv[24]={
+					0.35,0.35,0.65,0.65,
+					0.35,0.35,0.65,0.65,
+					0.35,0.2,0.65,1,
+					0.35,0.2,0.65,1,
+					0.35,0.2,0.65,1,
+					0.35,0.2,0.65,1
+				};
+				makeCuboid(&collector, post, content_features(n).tiles, 6,  c, postuv);
+			}
+		}
+		/*
 			Add fence
 		*/
 		break;
@@ -848,7 +1029,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 			const f32 post_rad=(f32)BS/10;
 			const f32 bar_rad=(f32)BS/20;
-			const f32 bar_len=(f32)(BS/2)-post_rad;
 
 			// The post - always present
 			v3f pos = intToFloat(p+blockpos_nodes, BS);
@@ -872,19 +1052,56 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			p2.X++;
 			MapNode n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + p2);
 			const ContentFeatures *f2 = &content_features(n2);
-			if(f2->draw_type == CDT_FENCELIKE)
-			{
-				aabb3f bar(-bar_len+BS/2,-bar_rad+BS/4,-bar_rad,
-						bar_len+BS/2,bar_rad+BS/4,bar_rad);
+			if (
+				f2->draw_type == CDT_FENCELIKE
+				|| f2->draw_type == CDT_WALLLIKE
+				|| n2.getContent() == CONTENT_WOOD_GATE
+				|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
+				|| n2.getContent() == CONTENT_STEEL_GATE
+				|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
+			) {
+				aabb3f bar(post_rad,-bar_rad+BS/4,-bar_rad,
+						0.5*BS,bar_rad+BS/4,bar_rad);
 				bar.MinEdge += pos;
 				bar.MaxEdge += pos;
 				f32 xrailuv[24]={
-					0,0.4,1,0.6,
-					0,0.4,1,0.6,
-					0,0.4,1,0.6,
-					0,0.4,1,0.6,
-					0,0.4,1,0.6,
-					0,0.4,1,0.6
+					0.5,0.4,1,0.6,
+					0.5,0.4,1,0.6,
+					0.5,0.4,1,0.6,
+					0.5,0.4,1,0.6,
+					0.5,0.4,1,0.6,
+					0.5,0.4,1,0.6
+				};
+				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, xrailuv);
+				bar.MinEdge.Y -= BS/2;
+				bar.MaxEdge.Y -= BS/2;
+				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, xrailuv);
+			}
+
+			// Now a section of fence, +Z, if there's a post there
+			p2 = p;
+			p2.X--;
+			n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + p2);
+			f2 = &content_features(n2);
+			if (
+				f2->draw_type == CDT_FENCELIKE
+				|| f2->draw_type == CDT_WALLLIKE
+				|| n2.getContent() == CONTENT_WOOD_GATE
+				|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
+				|| n2.getContent() == CONTENT_STEEL_GATE
+				|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
+			) {
+				aabb3f bar(-0.5*BS,-bar_rad+BS/4,-bar_rad,
+						-post_rad,bar_rad+BS/4,bar_rad);
+				bar.MinEdge += pos;
+				bar.MaxEdge += pos;
+				f32 xrailuv[24]={
+					0,0.4,0.5,0.6,
+					0,0.4,0.5,0.6,
+					0,0.4,0.5,0.6,
+					0,0.4,0.5,0.6,
+					0,0.4,0.5,0.6,
+					0,0.4,0.5,0.6
 				};
 				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, xrailuv);
 				bar.MinEdge.Y -= BS/2;
@@ -897,10 +1114,46 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			p2.Z++;
 			n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + p2);
 			f2 = &content_features(n2);
-			if(f2->draw_type == CDT_FENCELIKE)
-			{
-				aabb3f bar(-bar_rad,-bar_rad+BS/4,-bar_len+BS/2,
-						bar_rad,bar_rad+BS/4,bar_len+BS/2);
+			if (
+				f2->draw_type == CDT_FENCELIKE
+				|| f2->draw_type == CDT_WALLLIKE
+				|| n2.getContent() == CONTENT_WOOD_GATE
+				|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
+				|| n2.getContent() == CONTENT_STEEL_GATE
+				|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
+			) {
+				aabb3f bar(-bar_rad,-bar_rad+BS/4,post_rad,
+						bar_rad,bar_rad+BS/4,0.5*BS);
+				bar.MinEdge += pos;
+				bar.MaxEdge += pos;
+				f32 zrailuv[24]={
+					0,0.4,1,0.6,
+					0,0.4,1,0.6,
+					0,0.4,1,0.6,
+					0,0.4,1,0.6,
+					0,0.4,1,0.6,
+					0,0.4,1,0.6};
+				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, zrailuv);
+				bar.MinEdge.Y -= BS/2;
+				bar.MaxEdge.Y -= BS/2;
+				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, zrailuv);
+			}
+
+			// Now a section of fence, +Z, if there's a post there
+			p2 = p;
+			p2.Z--;
+			n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + p2);
+			f2 = &content_features(n2);
+			if (
+				f2->draw_type == CDT_FENCELIKE
+				|| f2->draw_type == CDT_WALLLIKE
+				|| n2.getContent() == CONTENT_WOOD_GATE
+				|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
+				|| n2.getContent() == CONTENT_STEEL_GATE
+				|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
+			) {
+				aabb3f bar(-bar_rad,-bar_rad+BS/4,-0.5*BS,
+						bar_rad,bar_rad+BS/4,-post_rad);
 				bar.MinEdge += pos;
 				bar.MaxEdge += pos;
 				f32 zrailuv[24]={

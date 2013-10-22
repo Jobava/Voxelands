@@ -463,6 +463,118 @@ static void content_mapnode_nodebox_hatchwo(ContentFeatures *f)
 	));
 }
 
+static void content_mapnode_nodebox_gate(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.4*BS,
+		-0.4*BS,
+		-0.05*BS,
+		0.4*BS,
+		-0.2*BS,
+		0.05*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.4*BS,
+		0.2*BS,
+		-0.05*BS,
+		0.4*BS,
+		0.4*BS,
+		0.05*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		-0.5*BS,
+		-0.05*BS,
+		-0.4*BS,
+		0.5*BS,
+		0.05*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.4*BS,
+		-0.5*BS,
+		-0.05*BS,
+		0.5*BS,
+		0.5*BS,
+		0.05*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.1*BS,
+		-0.2*BS,
+		-0.05*BS,
+		0.1*BS,
+		0.5*BS,
+		0.05*BS
+	));
+}
+
+static void content_mapnode_nodebox_gateo(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		-0.5*BS,
+		-0.05*BS,
+		-0.4*BS,
+		0.5*BS,
+		0.05*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.4*BS,
+		-0.5*BS,
+		-0.05*BS,
+		0.5*BS,
+		0.5*BS,
+		0.05*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		-0.4*BS,
+		0.4*BS,
+		-0.4*BS,
+		0.5*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.4*BS,
+		-0.4*BS,
+		0.4*BS,
+		0.5*BS,
+		0.5*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		0.2*BS,
+		-0.05*BS,
+		-0.4*BS,
+		0.4*BS,
+		0.4*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		-0.4*BS,
+		-0.05*BS,
+		-0.4*BS,
+		-0.2*BS,
+		0.4*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.4*BS,
+		0.2*BS,
+		-0.05*BS,
+		0.5*BS,
+		0.4*BS,
+		0.4*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.4*BS,
+		-0.4*BS,
+		-0.05*BS,
+		0.5*BS,
+		-0.2*BS,
+		0.4*BS
+	));
+}
+
 /*
 	A conversion table for backwards compatibility.
 	Maps <=v19 content types to current ones.
@@ -2386,6 +2498,7 @@ void content_mapnode_init()
 	content_mapnode_nodebox_hatch(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
 
 	i = CONTENT_WOOD_W_HATCH;
 	f = &content_features(i);
@@ -2417,6 +2530,40 @@ void content_mapnode_init()
 	content_mapnode_nodebox_hatchw(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+
+	// gates
+	i = CONTENT_WOOD_GATE;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Wood Gate");
+	f->setAllTextures("gate_wood.png");
+	f->rotate_tile_with_nodebox = true;
+	f->setInventoryTexture("gate_wood_inv.png");
+	f->wield_nodebox = false;
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_gate(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+
+	i = CONTENT_STEEL_GATE;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Steel Gate");
+	f->setAllTextures("gate_steel.png");
+	f->rotate_tile_with_nodebox = true;
+	f->setInventoryTexture("gate_steel_inv.png");
+	f->wield_nodebox = false;
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_gate(f);
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockedDoorNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
 
 	// open hatches
 	i = CONTENT_WOOD_HATCH_OPEN;
@@ -2436,7 +2583,6 @@ void content_mapnode_init()
 	content_mapnode_nodebox_hatcho(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
 	i = CONTENT_STEEL_HATCH_OPEN;
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
@@ -2469,11 +2615,10 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->climbable = true;
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_HATCH)+" 1";
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_W_HATCH)+" 1";
 	content_mapnode_nodebox_hatchwo(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
 	i = CONTENT_STEEL_W_HATCH_OPEN;
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
@@ -2487,8 +2632,41 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->climbable = true;
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_HATCH)+" 1";
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_W_HATCH)+" 1";
 	content_mapnode_nodebox_hatchwo(f);
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockedDoorNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+
+	// open gates
+	i = CONTENT_WOOD_GATE_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Wood Gate");
+	f->setAllTextures("gate_wood.png");
+	f->rotate_tile_with_nodebox = true;
+	f->setInventoryTexture("gate_wood_inv.png");
+	f->wield_nodebox = false;
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_gateo(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+
+	i = CONTENT_STEEL_GATE_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Steel Gate");
+	f->setAllTextures("gate_steel.png");
+	f->rotate_tile_with_nodebox = true;
+	f->setInventoryTexture("gate_steel_inv.png");
+	f->wield_nodebox = false;
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_gateo(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
 	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
@@ -2700,6 +2878,20 @@ void content_mapnode_init()
 	));
 	f->setInventoryTextureNodeBox(i,"flower_pot_top.png","flower_pot.png","flower_pot.png");
 
+	// walls
+	i = CONTENT_COBBLE_WALL;
+	f = &content_features(i);
+	f->description = std::string("Cobblestone Wall");
+	f->setAllTextures("cobble.png");
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_WALLLIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->air_equivalent = true; // grass grows underneath
+	f->setInventoryTexture("cobble_wall_inv.png");
+	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
 
 	// NOTE: Remember to add frequently used stuff to the texture atlas in tile.cpp
 

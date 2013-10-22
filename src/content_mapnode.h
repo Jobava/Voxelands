@@ -91,7 +91,6 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_STONEBRICK 0x81b
 #define CONTENT_STONEBLOCK 0x81c
 #define CONTENT_SAPLING 0x820
-
 // slabs
 #define CONTENT_COBBLE_SLAB 0x821
 #define CONTENT_MOSSYCOBBLE_SLAB 0x822
@@ -100,7 +99,6 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_JUNGLE_SLAB 0x825
 #define CONTENT_BRICK_SLAB 0x826
 #define CONTENT_SANDSTONE_SLAB 0x827
-
 // stairs
 #define CONTENT_COBBLE_STAIR 0x828
 #define CONTENT_MOSSYCOBBLE_STAIR 0x829
@@ -109,12 +107,11 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_JUNGLE_STAIR 0x82c
 #define CONTENT_BRICK_STAIR 0x82d
 #define CONTENT_SANDSTONE_STAIR 0x82e
-
+// slab/stair masks
 #define CONTENT_SLAB_MASK 0x827
 #define CONTENT_SLAB_STAIR_MIN 0x821
 #define CONTENT_SLAB_STAIR_MAX 0x82F
 #define CONTENT_SLAB_STAIR_FLIP 0x010
-
 // upside down slabs
 #define CONTENT_COBBLE_SLAB_UD 0x831
 #define CONTENT_MOSSYCOBBLE_SLAB_UD 0x832
@@ -123,7 +120,6 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_JUNGLE_SLAB_UD 0x835
 #define CONTENT_BRICK_SLAB_UD 0x836
 #define CONTENT_SANDSTONE_SLAB_UD 0x837
-
 // upside down stairs
 #define CONTENT_COBBLE_STAIR_UD 0x838
 #define CONTENT_MOSSYCOBBLE_STAIR_UD 0x839
@@ -132,10 +128,9 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_JUNGLE_STAIR_UD 0x83c
 #define CONTENT_BRICK_STAIR_UD 0x83d
 #define CONTENT_SANDSTONE_STAIR_UD 0x83e
-
+// slab/stair masks
 #define CONTENT_SLAB_STAIR_UD_MIN 0x831
 #define CONTENT_SLAB_STAIR_UD_MAX 0x83F
-
 // doors
 #define CONTENT_WOOD_DOOR_LB 0x840
 #define CONTENT_WOOD_DOOR_LT 0x841
@@ -153,11 +148,14 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_WOOD_W_DOOR_RT 0x84D
 #define CONTENT_STEEL_W_DOOR_RB 0x84E
 #define CONTENT_STEEL_W_DOOR_RT 0x84F
-
+// hatches
 #define CONTENT_WOOD_HATCH 0x850
 #define CONTENT_STEEL_HATCH 0x852
 #define CONTENT_WOOD_W_HATCH 0x854
 #define CONTENT_STEEL_W_HATCH 0x856
+// gates
+#define CONTENT_WOOD_GATE 0x858
+#define CONTENT_STEEL_GATE 0x85A
 
 // open doors
 #define CONTENT_WOOD_DOOR_LB_OPEN 0x860
@@ -176,12 +174,15 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_WOOD_W_DOOR_RT_OPEN 0x86D
 #define CONTENT_STEEL_W_DOOR_RB_OPEN 0x86E
 #define CONTENT_STEEL_W_DOOR_RT_OPEN 0x86F
-
+// open hatches
 #define CONTENT_WOOD_HATCH_OPEN 0x870
 #define CONTENT_STEEL_HATCH_OPEN 0x872
 #define CONTENT_WOOD_W_HATCH_OPEN 0x874
 #define CONTENT_STEEL_W_HATCH_OPEN 0x876
-
+// open gates
+#define CONTENT_WOOD_GATE_OPEN 0x878
+#define CONTENT_STEEL_GATE_OPEN 0x87A
+// door/hatch/gate masks
 #define CONTENT_DOOR_MIN 0x840
 #define CONTENT_DOOR_MAX 0x87F
 #define CONTENT_DOOR_STEEL_MASK 0x002
@@ -201,6 +202,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_FLOWER_POT 0x888
 #define CONTENT_TRIMMED_LEAVES 0x889
 
+// coloured cotton
 #define CONTENT_COTTON_BLUE 0x890
 #define CONTENT_COTTON_GREEN 0x891
 #define CONTENT_COTTON_ORANGE 0x892
@@ -208,6 +210,11 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_COTTON_RED 0x894
 #define CONTENT_COTTON_YELLOW 0x895
 #define CONTENT_COTTON_BLACK 0x896
+// walls
+#define CONTENT_COBBLE_WALL 0x89A
+#define CONTENT_MOSSYCOBBLE_WALL 0x89B
+#define CONTENT_SANDSTONE_WALL 0x89C
+#define CONTENT_STONE_WALL 0x89D
 
 #endif
 
