@@ -543,6 +543,13 @@ bool FurnaceNodeMetadata::step(float dtime)
 			fuel_list->decrementMaterials(1);
 			changed = true;
 		}
+		else if(ItemSpec(ITEM_MATERIAL, CONTENT_HAY).checkItem(fuel_item))
+		{
+			m_fuel_totaltime = 20;
+			m_fuel_time = 0;
+			fuel_list->decrementMaterials(1);
+			changed = true;
+		}
 		else if(ItemSpec(ITEM_CRAFT, "lump_of_coal").checkItem(fuel_item))
 		{
 			m_fuel_totaltime = 40;

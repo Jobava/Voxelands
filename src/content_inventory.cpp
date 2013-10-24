@@ -33,6 +33,8 @@ bool item_material_is_cookable(content_t content)
 		return true;
 	else if(content == CONTENT_FLOWER_POT_RAW)
 		return true;
+	else if(content == CONTENT_CLAY)
+		return true;
 	return false;
 }
 
@@ -46,6 +48,8 @@ InventoryItem* item_material_create_cook_result(content_t content)
 		return new MaterialItem(CONTENT_GLASS, 1);
 	else if(content == CONTENT_FLOWER_POT_RAW)
 		return new MaterialItem(CONTENT_FLOWER_POT, 1);
+	else if(content == CONTENT_CLAY)
+		return new MaterialItem(CONTENT_TERRACOTTA, 1);
 	return NULL;
 }
 

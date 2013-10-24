@@ -1101,7 +1101,7 @@ void ServerEnvironment::step(float dtime)
 				*/
 				if (n.getContent() == CONTENT_GRASS)
 				{
-					int f = (600-p.Y)+10;
+					int f = (1000-(p.Y*2))+10;
 					if (p.Y > -1 && myrand()%f == 0) {
 						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
 						if (n_top.getContent() == CONTENT_AIR && n_top.getLightBlend(getDayNightRatio()) >= 13) {
@@ -1498,7 +1498,39 @@ void ServerEnvironment::step(float dtime)
 							}
 							}
 							}
+						}else if (
+							p.Y < -30
+							&& n_top1.getContent() == CONTENT_WATERSOURCE
+							&& n_top2.getContent() == CONTENT_WATERSOURCE
+							//&& myrand()%5000 == 0
+						) {
+							n_top1.setContent(CONTENT_SPONGE_FULL);
+							m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top1);
 						}
+					}
+				}
+				/* make sponge soak up water */
+				if (n.getContent() == CONTENT_SPONGE) {
+					v3s16 test_p;
+					MapNode testnode;
+					bool sponge_soaked = false;
+					s16 max_d = 2;
+					for(s16 z=-max_d; z<=max_d; z++) {
+					for(s16 y=-max_d; y<=max_d; y++) {
+					for(s16 x=-max_d; x<=max_d; x++) {
+						test_p = p + v3s16(x,y,z);
+						testnode = m_map->getNodeNoEx(test_p);
+						if (testnode.getContent() == CONTENT_WATERSOURCE) {
+							sponge_soaked = true;
+							testnode.setContent(CONTENT_AIR);
+							m_map->addNodeWithEvent(test_p, testnode);
+						}
+					}
+					}
+					}
+					if (sponge_soaked) {
+						n.setContent(CONTENT_SPONGE_FULL);
+						m_map->addNodeWithEvent(p, n);
 					}
 				}
 				/* make papyrus grow near water */

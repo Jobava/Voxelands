@@ -854,7 +854,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			bool x_minus = false;
 			bool z_plus = false;
 			bool z_minus = false;
-			bool y_plus = false;
 			// Now a section of fence, +X, if there's a post there
 			v3s16 p2 = p;
 			p2.X++;
@@ -868,8 +867,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				|| n2.getContent() == CONTENT_STEEL_GATE
 				|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
 			) {
-				aabb3f bar(wall_rad,-(0.5*BS),-wall_rad,
-						0.5*BS,0.3*BS,wall_rad);
+				aabb3f bar(
+					0.,-(0.5*BS),-wall_rad,
+					0.5*BS,0.3*BS,wall_rad
+				);
 				x_plus = true;
 				bar.MinEdge += pos;
 				bar.MaxEdge += pos;
@@ -878,8 +879,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					0.,0.35,0.35,0.65,
 					0.35,0.2,0.65,1,
 					0.35,0.2,0.65,1,
-					0.,0.2,0.35,1,
-					0.,0.2,0.35,1
+					0.,0.2,0.5,1,
+					0.,0.2,0.5,1
 				};
 				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, xrailuv);
 			}
@@ -897,8 +898,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				|| n2.getContent() == CONTENT_STEEL_GATE
 				|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
 			) {
-				aabb3f bar(-0.5*BS,-(0.5*BS),-wall_rad,
-						-wall_rad,0.3*BS,wall_rad);
+				aabb3f bar(
+					-0.5*BS,-(0.5*BS),-wall_rad,
+					0.,0.3*BS,wall_rad
+				);
 				x_minus = true;
 				bar.MinEdge += pos;
 				bar.MaxEdge += pos;
@@ -907,8 +910,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					0.65,0.35,1,0.65,
 					0.35,0.2,0.65,1,
 					0.35,0.2,0.65,1,
-					0.65,0.2,1,1,
-					0.65,0.2,1,1
+					0.5,0.2,1,1,
+					0.5,0.2,1,1
 				};
 				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, xrailuv);
 			}
@@ -926,8 +929,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				|| n2.getContent() == CONTENT_STEEL_GATE
 				|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
 			) {
-				aabb3f bar(-wall_rad,-(0.5*BS),wall_rad,
-						wall_rad,0.3*BS,0.5*BS);
+				aabb3f bar(
+					-wall_rad,-(0.5*BS),0.,
+					wall_rad,0.3*BS,0.5*BS
+				);
 				z_plus = true;
 				bar.MinEdge += pos;
 				bar.MaxEdge += pos;
@@ -955,8 +960,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				|| n2.getContent() == CONTENT_STEEL_GATE
 				|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
 			) {
-				aabb3f bar(-wall_rad,-(0.5*BS),-0.5*BS,
-						wall_rad,0.3*BS,-wall_rad);
+				aabb3f bar(
+					-wall_rad,-(0.5*BS),-0.5*BS,
+					wall_rad,0.3*BS,0.
+				);
 				z_minus = true;
 				bar.MinEdge += pos;
 				bar.MaxEdge += pos;
@@ -1001,19 +1008,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					0.3,0,0.7,1,
 					0.3,0,0.7,1,
 					0.3,0,0.7,1
-				};
-				makeCuboid(&collector, post, content_features(n).tiles, 6,  c, postuv);
-			}else{
-				aabb3f post(-wall_rad,-(0.5*BS),-wall_rad,wall_rad,0.3*BS,wall_rad);
-				post.MinEdge += pos;
-				post.MaxEdge += pos;
-				f32 postuv[24]={
-					0.35,0.35,0.65,0.65,
-					0.35,0.35,0.65,0.65,
-					0.35,0.2,0.65,1,
-					0.35,0.2,0.65,1,
-					0.35,0.2,0.65,1,
-					0.35,0.2,0.65,1
 				};
 				makeCuboid(&collector, post, content_features(n).tiles, 6,  c, postuv);
 			}
