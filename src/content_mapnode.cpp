@@ -1306,6 +1306,7 @@ void content_mapnode_init()
 	f->description = std::string("Ladder");
 	f->setInventoryTexture("ladder.png");
 	f->setAllTextures("ladder.png");
+	f->setAllTextureFlags(0);
 	f->light_propagates = true;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_WALLMOUNT;
