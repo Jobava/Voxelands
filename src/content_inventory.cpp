@@ -25,31 +25,33 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 bool item_material_is_cookable(content_t content)
 {
-	if(content == CONTENT_TREE)
-		return true;
-	else if(content == CONTENT_COBBLE)
-		return true;
-	else if(content == CONTENT_SAND)
-		return true;
-	else if(content == CONTENT_FLOWER_POT_RAW)
-		return true;
-	else if(content == CONTENT_CLAY)
+	if (
+		content == CONTENT_TREE
+		|| content == CONTENT_COBBLE
+		|| content == CONTENT_SAND
+		|| content == CONTENT_FLOWER_POT_RAW
+		|| content == CONTENT_CLAY
+		|| content == CONTENT_MESE
+	)
 		return true;
 	return false;
 }
 
 InventoryItem* item_material_create_cook_result(content_t content)
 {
-	if(content == CONTENT_TREE)
-		return new CraftItem("lump_of_coal", 1);
-	else if(content == CONTENT_COBBLE)
+	if (content == CONTENT_TREE) {
+		return new CraftItem("lump_of_charcoal", 1);
+	}else if (content == CONTENT_COBBLE) {
 		return new MaterialItem(CONTENT_STONE, 1);
-	else if(content == CONTENT_SAND)
+	}else if (content == CONTENT_SAND) {
 		return new MaterialItem(CONTENT_GLASS, 1);
-	else if(content == CONTENT_FLOWER_POT_RAW)
+	}else if (content == CONTENT_FLOWER_POT_RAW) {
 		return new MaterialItem(CONTENT_FLOWER_POT, 1);
-	else if(content == CONTENT_CLAY)
+	}else if (content == CONTENT_CLAY) {
 		return new MaterialItem(CONTENT_TERRACOTTA, 1);
+	}else if (content == CONTENT_MESE) {
+		return new CraftItem("saltpeter", 1);
+	}
 	return NULL;
 }
 
@@ -61,14 +63,36 @@ std::string item_craft_get_image_name(const std::string &subname)
 		return "paper.png";
 	}else if (subname == "book") {
 		return "book.png";
+	}else if (subname == "lump_of_charcoal") {
+		return "lump_of_charcoal.png";
 	}else if (subname == "lump_of_coal") {
 		return "lump_of_coal.png";
 	}else if (subname == "lump_of_iron") {
 		return "lump_of_iron.png";
 	}else if (subname == "lump_of_clay") {
 		return "lump_of_clay.png";
+	}else if (subname == "lump_of_tin") {
+		return "lump_of_tin.png";
+	}else if (subname == "lump_of_copper") {
+		return "lump_of_copper.png";
+	}else if (subname == "lump_of_silver") {
+		return "lump_of_silver.png";
+	}else if (subname == "lump_of_gold") {
+		return "lump_of_gold.png";
+	}else if (subname == "lump_of_quartz") {
+		return "lump_of_quartz.png";
+	}else if (subname == "lump_of_flint") {
+		return "lump_of_flint.png";
 	}else if (subname == "steel_ingot") {
 		return "steel_ingot.png";
+	}else if (subname == "tin_ingot") {
+		return "tin_ingot.png";
+	}else if (subname == "copper_ingot") {
+		return "copper_ingot.png";
+	}else if (subname == "silver_ingot") {
+		return "silver_ingot.png";
+	}else if (subname == "gold_ingot") {
+		return "gold_ingot.png";
 	}else if (subname == "clay_brick") {
 		return "clay_brick.png";
 	}else if (subname == "rat") {
@@ -99,6 +123,12 @@ std::string item_craft_get_image_name(const std::string &subname)
 		return "dye_white.png";
 	}else if (subname == "dye_black") {
 		return "dye_black.png";
+	}else if (subname == "quartz_dust") {
+		return "quartz_dust.png";
+	}else if (subname == "saltpeter") {
+		return "saltpeter.png";
+	}else if (subname == "gunpowder") {
+		return "gunpowder.png";
 	}else{
 		return "cotton.png"; // just something
 	}
@@ -110,12 +140,34 @@ std::string item_craft_get_name(const std::string &subname)
 		return "Paper";
 	}else if (subname == "book") {
 		return "Book";
+	}else if (subname == "lump_of_charcoal") {
+		return "Charcoal Lump";
 	}else if (subname == "lump_of_coal") {
 		return "Coal Lump";
 	}else if (subname == "lump_of_iron") {
-		return "Iron Lump";
+		return "Iron Ore";
 	}else if (subname == "lump_of_clay") {
 		return "Clay Lump";
+	}else if (subname == "lump_of_tin") {
+		return "Tin Ore";
+	}else if (subname == "lump_of_copper") {
+		return "Copper Ore";
+	}else if (subname == "lump_of_silver") {
+		return "Silver Ore";
+	}else if (subname == "lump_of_gold") {
+		return "Gold Ore";
+	}else if (subname == "lump_of_quartz") {
+		return "Quartz Crystal";
+	}else if (subname == "tin_ingot") {
+		return "Tin Ingot";
+	}else if (subname == "copper_ingot") {
+		return "Copper Ingot";
+	}else if (subname == "silver_ingot") {
+		return "Silver Ingot";
+	}else if (subname == "gold_ingot") {
+		return "Gold Ingot";
+	}else if (subname == "lump_of_flint") {
+		return "Flint";
 	}else if (subname == "steel_ingot") {
 		return "Steel Ingot";
 	}else if (subname == "clay_brick") {
@@ -148,6 +200,12 @@ std::string item_craft_get_name(const std::string &subname)
 		return "White Dye";
 	}else if (subname == "dye_black") {
 		return "Black Dye";
+	}else if (subname == "quartz_dust") {
+		return "Quartz Dust";
+	}else if (subname == "saltpeter") {
+		return "Salt Peter";
+	}else if (subname == "gunpowder") {
+		return "Gun Powder";
 	}
 
 	return subname;
@@ -180,7 +238,16 @@ s16 item_craft_get_drop_count(const std::string &subname)
 
 bool item_craft_is_cookable(const std::string &subname)
 {
-	if(subname == "lump_of_iron" || subname == "lump_of_clay" || subname == "rat" || subname == "cooked_rat")
+	if (
+		subname == "lump_of_iron"
+		|| subname == "lump_of_tin"
+		|| subname == "lump_of_copper"
+		|| subname == "lump_of_silver"
+		|| subname == "lump_of_gold"
+		|| subname == "lump_of_clay"
+		|| subname == "rat"
+		|| subname == "cooked_rat"
+	)
 		return true;
 
 	return false;
@@ -188,37 +255,47 @@ bool item_craft_is_cookable(const std::string &subname)
 
 InventoryItem* item_craft_create_cook_result(const std::string &subname)
 {
-	if(subname == "lump_of_iron")
+	if (subname == "lump_of_iron") {
 		return new CraftItem("steel_ingot", 1);
-	else if(subname == "lump_of_clay")
+	}else if (subname == "lump_of_tin") {
+		return new CraftItem("tin_ingot", 1);
+	}else if (subname == "lump_of_copper") {
+		return new CraftItem("copper_ingot", 1);
+	}else if (subname == "lump_of_silver") {
+		return new CraftItem("silver_ingot", 1);
+	}else if (subname == "lump_of_gold") {
+		return new CraftItem("gold_ingot", 1);
+	}else if (subname == "lump_of_clay") {
 		return new CraftItem("clay_brick", 1);
-	else if(subname == "rat")
+	}else if (subname == "rat") {
 		return new CraftItem("cooked_rat", 1);
-	else if(subname == "cooked_rat")
+	}else if (subname == "cooked_rat") {
 		return new CraftItem("scorched_stuff", 1);
+	}
 
 	return NULL;
 }
 
 bool item_craft_is_eatable(const std::string &subname)
 {
-	if(subname == "cooked_rat")
-		return true;
-	else if(subname == "apple")
-		return true;
-	else if(subname == "apple_iron")
+	if (
+		subname == "cooked_rat"
+		|| subname == "apple"
+		|| subname == "apple_iron"
+	)
 		return true;
 	return false;
 }
 
 s16 item_craft_eat_hp_change(const std::string &subname)
 {
-	if(subname == "cooked_rat")
+	if (subname == "cooked_rat") {
 		return 6; // 3 hearts
-	else if(subname == "apple")
+	}else if (subname == "apple") {
 		return 4; // 2 hearts
-	else if(subname == "apple_iron")
+	}else if (subname == "apple_iron") {
 		return 8; // 4 hearts
+	}
 	return 0;
 }
 

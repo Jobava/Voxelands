@@ -22,6 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "content_mapnode.h"
 #include "player.h"
 #include "mapnode.h" // For content_t
+#include "settings.h" // for g_settings
 
 struct CraftDef {
 	ItemSpec specs[9];
@@ -107,7 +108,7 @@ struct CraftDef {
 */
 InventoryItem *craft_get_result(InventoryItem **items)
 {
-	static CraftDef defs[135];
+	static CraftDef defs[174];
 	static int defs_init = 0;
 
 	// only initialise (and hence allocate) these once
@@ -428,6 +429,116 @@ InventoryItem *craft_get_result(InventoryItem **items)
 		{
 			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_STEEL);
 			defs[defs_init].item = new CraftItem("steel_ingot", 9);
+			defs_init++;
+		}
+
+		// copper block
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "copper_ingot");
+			defs[defs_init].specs[1] = ItemSpec(ITEM_CRAFT, "copper_ingot");
+			defs[defs_init].specs[2] = ItemSpec(ITEM_CRAFT, "copper_ingot");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "copper_ingot");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "copper_ingot");
+			defs[defs_init].specs[5] = ItemSpec(ITEM_CRAFT, "copper_ingot");
+			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "copper_ingot");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "copper_ingot");
+			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "copper_ingot");
+			defs[defs_init].item = new MaterialItem(CONTENT_COPPER, 1);
+			defs_init++;
+		}
+
+		// Uncrafted Copper block
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_COPPER);
+			defs[defs_init].item = new CraftItem("copper_ingot", 9);
+			defs_init++;
+		}
+
+		// gold block
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "gold_ingot");
+			defs[defs_init].specs[1] = ItemSpec(ITEM_CRAFT, "gold_ingot");
+			defs[defs_init].specs[2] = ItemSpec(ITEM_CRAFT, "gold_ingot");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "gold_ingot");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "gold_ingot");
+			defs[defs_init].specs[5] = ItemSpec(ITEM_CRAFT, "gold_ingot");
+			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "gold_ingot");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "gold_ingot");
+			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "gold_ingot");
+			defs[defs_init].item = new MaterialItem(CONTENT_GOLD, 1);
+			defs_init++;
+		}
+
+		// Uncrafted gold block
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_GOLD);
+			defs[defs_init].item = new CraftItem("gold_ingot", 9);
+			defs_init++;
+		}
+
+		// silver block
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "silver_ingot");
+			defs[defs_init].specs[1] = ItemSpec(ITEM_CRAFT, "silver_ingot");
+			defs[defs_init].specs[2] = ItemSpec(ITEM_CRAFT, "silver_ingot");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "silver_ingot");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "silver_ingot");
+			defs[defs_init].specs[5] = ItemSpec(ITEM_CRAFT, "silver_ingot");
+			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "silver_ingot");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "silver_ingot");
+			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "silver_ingot");
+			defs[defs_init].item = new MaterialItem(CONTENT_SILVER, 1);
+			defs_init++;
+		}
+
+		// Uncrafted silver block
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_SILVER);
+			defs[defs_init].item = new CraftItem("silver_ingot", 9);
+			defs_init++;
+		}
+
+		// tin block
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "tin_ingot");
+			defs[defs_init].specs[1] = ItemSpec(ITEM_CRAFT, "tin_ingot");
+			defs[defs_init].specs[2] = ItemSpec(ITEM_CRAFT, "tin_ingot");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "tin_ingot");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "tin_ingot");
+			defs[defs_init].specs[5] = ItemSpec(ITEM_CRAFT, "tin_ingot");
+			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "tin_ingot");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "tin_ingot");
+			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "tin_ingot");
+			defs[defs_init].item = new MaterialItem(CONTENT_TIN, 1);
+			defs_init++;
+		}
+
+		// Uncrafted tin block
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_TIN);
+			defs[defs_init].item = new CraftItem("tin_ingot", 9);
+			defs_init++;
+		}
+
+		// quartz block
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "lump_of_quartz");
+			defs[defs_init].specs[1] = ItemSpec(ITEM_CRAFT, "lump_of_quartz");
+			defs[defs_init].specs[2] = ItemSpec(ITEM_CRAFT, "lump_of_quartz");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "lump_of_quartz");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "lump_of_quartz");
+			defs[defs_init].specs[5] = ItemSpec(ITEM_CRAFT, "lump_of_quartz");
+			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "lump_of_quartz");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "lump_of_quartz");
+			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "lump_of_quartz");
+			defs[defs_init].item = new MaterialItem(CONTENT_QUARTZ, 1);
+			defs_init++;
+		}
+
+		// Uncrafted quartz block
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_QUARTZ);
+			defs[defs_init].item = new CraftItem("lump_of_quartz", 9);
 			defs_init++;
 		}
 
@@ -1249,6 +1360,17 @@ InventoryItem *craft_get_result(InventoryItem **items)
 			defs_init++;
 		}
 
+		// Tin bucket
+		{
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "tin_ingot");
+			defs[defs_init].specs[5] = ItemSpec(ITEM_CRAFT, "tin_ingot");
+			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "tin_ingot");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "tin_ingot");
+			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "tin_ingot");
+			defs[defs_init].item = new ToolItem("TinBucket", 0);
+			defs_init++;
+		}
+
 		// Cobble wall
 		{
 			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
@@ -1436,6 +1558,251 @@ InventoryItem *craft_get_result(InventoryItem **items)
 			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "dye_black");
 			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_CLAY);
 			defs[defs_init].item = new MaterialItem(CONTENT_CLAY_BLACK, 1);
+			defs_init++;
+		}
+
+		// blue glass
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "dye_blue");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS);
+			defs[defs_init].item = new MaterialItem(CONTENT_GLASS_BLUE, 1);
+			defs_init++;
+		}
+
+		// green glass
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "dye_green");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS);
+			defs[defs_init].item = new MaterialItem(CONTENT_GLASS_GREEN, 1);
+			defs_init++;
+		}
+
+		// orange glass
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "dye_orange");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS);
+			defs[defs_init].item = new MaterialItem(CONTENT_GLASS_ORANGE, 1);
+			defs_init++;
+		}
+
+		// purple glass
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "dye_purple");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS);
+			defs[defs_init].item = new MaterialItem(CONTENT_GLASS_PURPLE, 1);
+			defs_init++;
+		}
+
+		// red glass
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "dye_red");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS);
+			defs[defs_init].item = new MaterialItem(CONTENT_GLASS_RED, 1);
+			defs_init++;
+		}
+
+		// yellow glass
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "dye_yellow");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS);
+			defs[defs_init].item = new MaterialItem(CONTENT_GLASS_YELLOW, 1);
+			defs_init++;
+		}
+
+		// black glass
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "dye_black");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS);
+			defs[defs_init].item = new MaterialItem(CONTENT_GLASS_BLACK, 1);
+			defs_init++;
+		}
+
+		// Carpet
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_COTTON);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_COTTON);
+			defs[defs_init].item = new MaterialItem(CONTENT_CARPET, 3);
+			defs_init++;
+		}
+
+		// blue Carpet
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_COTTON_BLUE);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_COTTON_BLUE);
+			defs[defs_init].item = new MaterialItem(CONTENT_CARPET_BLUE, 3);
+			defs_init++;
+		}
+
+		// blue Carpet
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "dye_blue");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_CARPET);
+			defs[defs_init].item = new MaterialItem(CONTENT_CARPET_BLUE, 1);
+			defs_init++;
+		}
+
+		// green Carpet
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_COTTON_GREEN);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_COTTON_GREEN);
+			defs[defs_init].item = new MaterialItem(CONTENT_CARPET_GREEN, 3);
+			defs_init++;
+		}
+
+		// green Carpet
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "dye_green");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_CARPET);
+			defs[defs_init].item = new MaterialItem(CONTENT_CARPET_GREEN, 1);
+			defs_init++;
+		}
+
+		// orange Carpet
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_COTTON_ORANGE);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_COTTON_ORANGE);
+			defs[defs_init].item = new MaterialItem(CONTENT_CARPET_ORANGE, 3);
+			defs_init++;
+		}
+
+		// orange Carpet
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "dye_orange");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_CARPET);
+			defs[defs_init].item = new MaterialItem(CONTENT_CARPET_ORANGE, 1);
+			defs_init++;
+		}
+
+		// purple Carpet
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_COTTON_PURPLE);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_COTTON_PURPLE);
+			defs[defs_init].item = new MaterialItem(CONTENT_CARPET_PURPLE, 3);
+			defs_init++;
+		}
+
+		// purple Carpet
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "dye_purple");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_CARPET);
+			defs[defs_init].item = new MaterialItem(CONTENT_CARPET_PURPLE, 1);
+			defs_init++;
+		}
+
+		// red Carpet
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_COTTON_RED);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_COTTON_RED);
+			defs[defs_init].item = new MaterialItem(CONTENT_CARPET_RED, 3);
+			defs_init++;
+		}
+
+		// red Carpet
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "dye_red");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_CARPET);
+			defs[defs_init].item = new MaterialItem(CONTENT_CARPET_RED, 1);
+			defs_init++;
+		}
+
+		// yellow Carpet
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_COTTON_YELLOW);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_COTTON_YELLOW);
+			defs[defs_init].item = new MaterialItem(CONTENT_CARPET_YELLOW, 3);
+			defs_init++;
+		}
+
+		// yellow Carpet
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "dye_yellow");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_CARPET);
+			defs[defs_init].item = new MaterialItem(CONTENT_CARPET_YELLOW, 1);
+			defs_init++;
+		}
+
+		// black Carpet
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_COTTON_BLACK);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_COTTON_BLACK);
+			defs[defs_init].item = new MaterialItem(CONTENT_CARPET_BLACK, 3);
+			defs_init++;
+		}
+
+		// black Carpet
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "dye_black");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_CARPET);
+			defs[defs_init].item = new MaterialItem(CONTENT_CARPET_BLACK, 1);
+			defs_init++;
+		}
+
+		// Coal block
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "lump_of_coal");
+			defs[defs_init].specs[1] = ItemSpec(ITEM_CRAFT, "lump_of_coal");
+			defs[defs_init].specs[2] = ItemSpec(ITEM_CRAFT, "lump_of_coal");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "lump_of_coal");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "lump_of_coal");
+			defs[defs_init].specs[5] = ItemSpec(ITEM_CRAFT, "lump_of_coal");
+			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "lump_of_coal");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "lump_of_coal");
+			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "lump_of_coal");
+			defs[defs_init].item = new MaterialItem(CONTENT_COAL, 1);
+			defs_init++;
+		}
+
+		// Charoal block
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "lump_of_charcoal");
+			defs[defs_init].specs[1] = ItemSpec(ITEM_CRAFT, "lump_of_charcoal");
+			defs[defs_init].specs[2] = ItemSpec(ITEM_CRAFT, "lump_of_charcoal");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "lump_of_charcoal");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "lump_of_charcoal");
+			defs[defs_init].specs[5] = ItemSpec(ITEM_CRAFT, "lump_of_charcoal");
+			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "lump_of_charcoal");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "lump_of_charcoal");
+			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "lump_of_charcoal");
+			defs[defs_init].item = new MaterialItem(CONTENT_CHARCOAL, 1);
+			defs_init++;
+		}
+
+		// fire starter
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "lump_of_flint");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].item = new ToolItem("FireStarter", 0);
+			defs_init++;
+		}
+
+		// quartz dust
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "lump_of_quartz");
+			defs[defs_init].item = new CraftItem("quartz_dust", 1);
+			defs_init++;
+		}
+
+		// gun powder
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "lump_of_charcoal");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "saltpeter");
+			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "lump_of_flint");
+			defs[defs_init].item = new CraftItem("gunpowder", 2);
+			defs_init++;
+		}
+
+		// tnt
+		if (g_settings->getBool("enable_tnt")) {
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "gunpowder");
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_SAND);
+			defs[defs_init].specs[2] = ItemSpec(ITEM_CRAFT, "gunpowder");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_SAND);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "gunpowder");
+			defs[defs_init].specs[5] = ItemSpec(ITEM_MATERIAL, CONTENT_SAND);
+			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "gunpowder");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_SAND);
+			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "gunpowder");
+			defs[defs_init].item = new MaterialItem(CONTENT_TNT, 1);
 			defs_init++;
 		}
 	}

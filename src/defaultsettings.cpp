@@ -114,5 +114,6 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("full_block_send_enable_min_time_from_building", "2.0");
 	settings->setDefault("enable_experimental", "false");
 	settings->setDefault("enable_lavabuckets", "false");
+	settings->setDefault("enable_tnt", "false");
 }
 

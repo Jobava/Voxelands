@@ -22,6 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "porting.h"
 #include "collision.h"
 #include "content_mapnode.h"
+#include "content_nodemeta.h"
 #include "mapblock.h"
 #include "serverobject.h"
 #include "content_sao.h"
@@ -29,6 +30,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "settings.h"
 #include "log.h"
 #include "profiler.h"
+#include "server.h"
 
 #define PP(x) "("<<(x).X<<","<<(x).Y<<","<<(x).Z<<")"
 
@@ -1101,8 +1103,8 @@ void ServerEnvironment::step(float dtime)
 				*/
 				if (n.getContent() == CONTENT_GRASS)
 				{
-					int f = (1000-(p.Y*2))+10;
-					if (p.Y > -1 && myrand()%f == 0) {
+					int f = (10000-(p.Y*2))+10;
+					if (p.Y > 2 && myrand()%f == 0) {
 						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
 						if (n_top.getContent() == CONTENT_AIR && n_top.getLightBlend(getDayNightRatio()) >= 13) {
 							v3f pp;
@@ -1119,18 +1121,25 @@ void ServerEnvironment::step(float dtime)
 				}
 				if (n.getContent() == CONTENT_WILDGRASS_SHORT)
 				{
-					if (p.Y > -1 && myrand()%200 == 0) {
-						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
-						MapNode n_btm = m_map->getNodeNoEx(p+v3s16(0,-1,0));
-						if (n_btm.getContent() == CONTENT_GRASS && n_top.getLightBlend(getDayNightRatio()) >= 13) {
-							if (myrand()%5 == 0) {
-								n.setContent(CONTENT_FLOWER_STEM);
-								m_map->addNodeWithEvent(p, n);
-							}else{
-								n.setContent(CONTENT_WILDGRASS_LONG);
-								m_map->addNodeWithEvent(p, n);
+					MapNode n_btm = m_map->getNodeNoEx(p+v3s16(0,-1,0));
+					if (n_btm.getContent() == CONTENT_GRASS || n_btm.getContent() == CONTENT_MUD) {
+						if (p.Y > -1 && myrand()%200 == 0) {
+							MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
+							if (n_btm.getContent() == CONTENT_GRASS) {
+								if (n_top.getLightBlend(getDayNightRatio()) >= 13) {
+									if (myrand()%5 == 0) {
+										n.setContent(CONTENT_FLOWER_STEM);
+										m_map->addNodeWithEvent(p, n);
+									}else{
+										n.setContent(CONTENT_WILDGRASS_LONG);
+										m_map->addNodeWithEvent(p, n);
+									}
+								}
 							}
 						}
+					}else{
+						n.setContent(CONTENT_DEADGRASS);
+						m_map->addNodeWithEvent(p, n);
 					}
 				}
 				if (n.getContent() == CONTENT_WILDGRASS_LONG)
@@ -1142,25 +1151,30 @@ void ServerEnvironment::step(float dtime)
 				}
 				if (n.getContent() == CONTENT_FLOWER_STEM)
 				{
-					if (p.Y > -1 && myrand()%200 == 0) {
-						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
-						MapNode n_btm = m_map->getNodeNoEx(p+v3s16(0,-1,0));
-						if ((n_btm.getContent() == CONTENT_GRASS || n_btm.getContent() == CONTENT_FLOWER_POT) && n_top.getLightBlend(getDayNightRatio()) >= 13) {
-							switch (myrand()%3) {
-							case 0:
-								n.setContent(CONTENT_FLOWER_ROSE);
-								m_map->addNodeWithEvent(p, n);
-								break;
-							case 1:
-								n.setContent(CONTENT_FLOWER_DAFFODIL);
-								m_map->addNodeWithEvent(p, n);
-								break;
-							case 2:
-								n.setContent(CONTENT_FLOWER_TULIP);
-								m_map->addNodeWithEvent(p, n);
-								break;
+					MapNode n_btm = m_map->getNodeNoEx(p+v3s16(0,-1,0));
+					if (n_btm.getContent() == CONTENT_GRASS || n_btm.getContent() == CONTENT_MUD) {
+						if (p.Y > -1 && myrand()%200 == 0) {
+							MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
+							if ((n_btm.getContent() == CONTENT_GRASS || n_btm.getContent() == CONTENT_FLOWER_POT) && n_top.getLightBlend(getDayNightRatio()) >= 13) {
+								switch (myrand()%3) {
+								case 0:
+									n.setContent(CONTENT_FLOWER_ROSE);
+									m_map->addNodeWithEvent(p, n);
+									break;
+								case 1:
+									n.setContent(CONTENT_FLOWER_DAFFODIL);
+									m_map->addNodeWithEvent(p, n);
+									break;
+								case 2:
+									n.setContent(CONTENT_FLOWER_TULIP);
+									m_map->addNodeWithEvent(p, n);
+									break;
+								}
 							}
 						}
+					}else{
+						n.setContent(CONTENT_DEADGRASS);
+						m_map->addNodeWithEvent(p, n);
 					}
 				}
 				if (n.getContent() == CONTENT_DEADGRASS)
@@ -1182,6 +1196,103 @@ void ServerEnvironment::step(float dtime)
 					}else if (n_under.getContent() != CONTENT_FLOWER_POT) {
 						n.setContent(CONTENT_WILDGRASS_SHORT);
 						m_map->addNodeWithEvent(p, n);
+					}
+				}
+				/*
+					fire that goes out
+				*/
+				if (n.getContent() == CONTENT_FIRE_SHORTTERM) {
+					if (myrand()%10 == 0)
+						m_map->removeNodeWithEvent(p);
+				}
+				/*
+					fire that spreads just a little
+				*/
+				if (n.getContent() == CONTENT_FIRE) {
+					if (myrand()%10) {
+						bool can_spread = true;
+						s16 bs_rad = g_settings->getS16("borderstone_radius");
+						bs_rad += 2;
+						// if any node is border stone protected, don't spread
+						for(s16 x=-bs_rad; can_spread && x<=bs_rad; x++)
+						for(s16 y=-bs_rad; can_spread && y<=bs_rad; y++)
+						for(s16 z=-bs_rad; can_spread && z<=bs_rad; z++)
+						{
+							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
+							if (n_test.getContent() == CONTENT_BORDERSTONE)
+								can_spread = false;
+						}
+						if (can_spread) {
+							for(s16 x=-1; x<=1; x++)
+							for(s16 y=0; y<=1; y++)
+							for(s16 z=-1; z<=1; z++)
+							{
+								MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
+								if (n_test.getContent() == CONTENT_FIRE || n_test.getContent() == CONTENT_FIRE_SHORTTERM)
+									continue;
+								if (content_features(n_test).flammable > 0) {
+									n_test.setContent(CONTENT_FIRE_SHORTTERM);
+									m_map->addNodeWithEvent(p+v3s16(x,y,z), n_test);
+								}
+							}
+						}
+					}
+				}
+				/*
+					boom
+				*/
+				if (n.getContent() == CONTENT_TNT) {
+					TNTNodeMetadata *meta = (TNTNodeMetadata*)m_map->getNodeMetadata(p);
+					if (meta && meta->getArmed() && meta->getTime() < 0.0) {
+						bool can_spread = true;
+						s16 bs_rad = g_settings->getS16("borderstone_radius");
+						bs_rad += 3;
+						// if any node is border stone protected, don't destroy anything
+						for(s16 x=-bs_rad; can_spread && x<=bs_rad; x++)
+						for(s16 y=-bs_rad; can_spread && y<=bs_rad; y++)
+						for(s16 z=-bs_rad; can_spread && z<=bs_rad; z++)
+						{
+							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
+							if (n_test.getContent() == CONTENT_BORDERSTONE)
+								can_spread = false;
+						}
+						if (can_spread) {
+							for(s16 x=-2; x<=2; x++)
+							for(s16 y=-2; y<=2; y++)
+							for(s16 z=-2; z<=2; z++)
+							{
+								MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
+								if (n_test.getContent() == CONTENT_AIR)
+									continue;
+								if (n_test.getContent() == CONTENT_TNT) {
+									meta = (TNTNodeMetadata*)m_map->getNodeMetadata(p+v3s16(x,y,z));
+									if (meta && !meta->getArmed())
+										meta->setArmed(true);
+									continue;
+								}
+								if (
+									(x == -2 && y == -2)
+									|| (x == 2 && y == -2)
+									|| (x == -2 && y == 2)
+									|| (x == 2 && y == 2)
+									|| (z == -2 && y == -2)
+									|| (z == 2 && y == -2)
+									|| (z == -2 && y == 2)
+									|| (z == 2 && y == 2)
+									|| (x == -2 && z == -2)
+									|| (x == 2 && z == -2)
+									|| (x == -2 && z == 2)
+									|| (x == 2 && z == 2)
+								) {
+									if (myrand()%3 == 0)
+										continue;
+								}
+								m_map->removeNodeWithEvent(p+v3s16(x,y,z));
+							}
+						}
+						// but still blow up
+						m_map->removeNodeWithEvent(p);
+						// TODO: damage nearby players
 					}
 				}
 				/*

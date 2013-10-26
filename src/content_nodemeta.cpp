@@ -550,6 +550,13 @@ bool FurnaceNodeMetadata::step(float dtime)
 			fuel_list->decrementMaterials(1);
 			changed = true;
 		}
+		else if(ItemSpec(ITEM_CRAFT, "lump_of_charcoal").checkItem(fuel_item))
+		{
+			m_fuel_totaltime = 40;
+			m_fuel_time = 0;
+			fuel_list->decrementMaterials(1);
+			changed = true;
+		}
 		else if(ItemSpec(ITEM_CRAFT, "lump_of_coal").checkItem(fuel_item))
 		{
 			m_fuel_totaltime = 40;
@@ -577,4 +584,57 @@ std::string FurnaceNodeMetadata::getInventoryDrawSpecString()
 		"list[current_player;main;0,5;8,4;]";
 }
 
+/*
+	LockedDoorNodeMetadata
+*/
 
+// Prototype
+TNTNodeMetadata proto_TNTNodeMetadata;
+
+TNTNodeMetadata::TNTNodeMetadata():
+	m_armed(false),
+	m_time(0)
+{
+	NodeMetadata::registerType(typeId(), create);
+}
+TNTNodeMetadata::~TNTNodeMetadata()
+{
+}
+u16 TNTNodeMetadata::typeId() const
+{
+	return CONTENT_TNT;
+}
+NodeMetadata* TNTNodeMetadata::create(std::istream &is)
+{
+	TNTNodeMetadata *d = new TNTNodeMetadata();
+	int temp;
+	is>>temp;
+	d->m_time = (float)temp/10;
+	is>>temp;
+	d->m_armed = (bool)temp;
+	return d;
+}
+NodeMetadata* TNTNodeMetadata::clone()
+{
+	TNTNodeMetadata *d = new TNTNodeMetadata();
+	return d;
+}
+bool TNTNodeMetadata::step(float dtime)
+{
+	if (!m_armed)
+		return false;
+	m_time -= dtime;
+	return true;
+}
+void TNTNodeMetadata::serializeBody(std::ostream &os)
+{
+	os<<itos(m_time*10) << " ";
+	os<<itos(m_armed) << " ";
+}
+std::string TNTNodeMetadata::infoText()
+{
+	if (!m_armed)
+		return std::string("");
+
+	return std::string("Armed Explosive: ")+itos((int)ceil(m_time))+" seconds till detonation";
+}

@@ -35,17 +35,33 @@ void init_mineral();
 #define MINERAL_NONE 0
 #define MINERAL_COAL 1
 #define MINERAL_IRON 2
+#define MINERAL_TIN 3
+#define MINERAL_COPPER 4
+#define MINERAL_SILVER 5
+#define MINERAL_GOLD 6
+#define MINERAL_QUARTZ 7
 
-#define MINERAL_COUNT 3
+#define MINERAL_COUNT 8
 
 std::string mineral_block_texture(u8 mineral);
 
 inline CraftItem * getDiggedMineralItem(u8 mineral)
 {
-	if(mineral == MINERAL_COAL)
+	if (mineral == MINERAL_COAL) {
 		return new CraftItem("lump_of_coal", 1);
-	else if(mineral == MINERAL_IRON)
+	}else if(mineral == MINERAL_IRON) {
 		return new CraftItem("lump_of_iron", 1);
+	}else if(mineral == MINERAL_TIN) {
+		return new CraftItem("lump_of_tin", 1);
+	}else if(mineral == MINERAL_COPPER) {
+		return new CraftItem("lump_of_copper", 1);
+	}else if(mineral == MINERAL_SILVER) {
+		return new CraftItem("lump_of_silver", 1);
+	}else if(mineral == MINERAL_GOLD) {
+		return new CraftItem("lump_of_gold", 1);
+	}else if(mineral == MINERAL_QUARTZ) {
+		return new CraftItem("lump_of_quartz", 1);
+	}
 
 	return NULL;
 }

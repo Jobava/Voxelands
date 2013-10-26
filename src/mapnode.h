@@ -177,6 +177,8 @@ struct ContentFeatures
 	bool climbable;
 	// Player can build on these
 	bool buildable_to;
+	// Whether fire can be started on top of it
+	u8 flammable;
 	// Whether the node has no liquid, source liquid or flowing liquid
 	enum LiquidType liquid_type;
 	// If true, param2 is set to direction when placed. Used for torches.
@@ -259,6 +261,7 @@ struct ContentFeatures
 		diggable = true;
 		climbable = false;
 		buildable_to = false;
+		flammable = 0;
 		liquid_type = LIQUID_NONE;
 		wall_mounted = false;
 		air_equivalent = false;
@@ -314,6 +317,10 @@ struct ContentFeatures
 	{}
 	void setAllTextureFlags(u8 flags)
 	{}
+	void setTextureType(u16 i, u8 type)
+	{}
+	void setAllTextureTypes(u8 type)
+	{}
 #else
 	void setTexture(u16 i, std::string name, u8 alpha=255);
 
@@ -333,6 +340,16 @@ struct ContentFeatures
 	{
 		for (u16 i=0; i<6; i++) {
 			setTextureFlags(i, flags);
+		}
+	}
+	void setTextureType(u16 i, u8 type)
+	{
+		tiles[i].material_type = type;
+	}
+	void setAllTextureTypes(u8 type)
+	{
+		for (u16 i=0; i<6; i++) {
+			setTextureType(i, type);
 		}
 	}
 #endif

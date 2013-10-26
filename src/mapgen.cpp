@@ -1821,22 +1821,21 @@ void make_block(BlockMakeData *data)
 				MapNode new_content(CONTENT_IGNORE);
 				u32 sparseness = 6;
 
-				if(noisebuf_ground_crumbleness.get(x,y+5,z) < -0.1)
-				{
+				if (noisebuf_ground_crumbleness.get(x,y+5,z) < -0.1) {
 					new_content = MapNode(CONTENT_STONE, MINERAL_COAL);
+				}else if (noisebuf_ground_wetness.get(x,y+5,z) > 0.1) {
+					new_content = MapNode(CONTENT_STONE, MINERAL_IRON);
+				}else if (noisebuf_ground_crumbleness.get(x,y,z) > 0.4) {
+					new_content = MapNode(CONTENT_STONE, MINERAL_SILVER);
+				}else if (noisebuf_ground_crumbleness.get(x,y,z) > 0.3) {
+					new_content = MapNode(CONTENT_STONE, MINERAL_GOLD);
+				}else if (noisebuf_ground_crumbleness.get(x,y,z) > 0.2) {
+					new_content = MapNode(CONTENT_STONE, MINERAL_COPPER);
+				}else if (noisebuf_ground_crumbleness.get(x,y,z) > 0.1) {
+					new_content = MapNode(CONTENT_STONE, MINERAL_TIN);
+				}else if (noisebuf_ground_wetness.get(x,y+5,z) > 0.0) {
+					new_content = MapNode(CONTENT_STONE, MINERAL_QUARTZ);
 				}
-				else
-				{
-					if(noisebuf_ground_wetness.get(x,y+5,z) > 0.0)
-						new_content = MapNode(CONTENT_STONE, MINERAL_IRON);
-					/*if(noisebuf_ground_wetness.get(x,y,z) > 0.0)
-						vmanip.m_data[i] = MapNode(CONTENT_MUD);
-					else
-						vmanip.m_data[i] = MapNode(CONTENT_SAND);*/
-				}
-				/*else if(noisebuf_ground_crumbleness.get(x,y,z) > 0.1)
-				{
-				}*/
 
 				if(new_content.getContent() != CONTENT_IGNORE)
 				{

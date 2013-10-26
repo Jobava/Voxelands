@@ -149,6 +149,28 @@ private:
 	float m_src_time;
 };
 
+class TNTNodeMetadata : public NodeMetadata
+{
+public:
+	TNTNodeMetadata();
+	~TNTNodeMetadata();
+
+	virtual u16 typeId() const;
+	static NodeMetadata* create(std::istream &is);
+	virtual NodeMetadata* clone();
+	virtual void serializeBody(std::ostream &os);
+	virtual std::string infoText();
+	virtual bool step(float dtime);
+
+	float getTime() {return m_time;}
+	bool getArmed() {return m_armed;}
+	void setArmed(bool state) {m_armed = state; if (state) m_time = 5.0;}
+
+private:
+	bool m_armed;
+	float m_time;
+};
+
 
 #endif
 

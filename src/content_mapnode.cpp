@@ -575,6 +575,18 @@ static void content_mapnode_nodebox_gateo(ContentFeatures *f)
 	));
 }
 
+static void content_mapnode_nodebox_carpet(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		-0.5*BS,
+		-0.5*BS,
+		0.5*BS,
+		-0.4*BS,
+		0.5*BS
+	));
+}
+
 /*
 	A conversion table for backwards compatibility.
 	Maps <=v19 content types to current ones.
@@ -666,6 +678,30 @@ void content_mapnode_init()
 	if(invisible_stone)
 		f->solidness = 0; // For debugging, hides regular stone
 
+	i = CONTENT_COAL;
+	f = &content_features(i);
+	f->description = std::string("Coal Block");
+	f->setAllTextures("coal.png");
+	f->setInventoryTextureCube("coal.png", "coal.png", "coal.png");
+	f->param_type = CPT_MINERAL;
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->flammable = 2; // can be set on fire
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+
+	i = CONTENT_CHARCOAL;
+	f = &content_features(i);
+	f->description = std::string("Charcoal Block");
+	f->setAllTextures("charcoal.png");
+	f->setInventoryTextureCube("charcoal.png", "charcoal.png", "charcoal.png");
+	f->param_type = CPT_MINERAL;
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->flammable = 2; // can be set on fire
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+
 	i = CONTENT_STONEBRICK;
 	f = &content_features(i);
 	f->description = std::string("Stone Brick");
@@ -741,6 +777,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->extra_dug_item = std::string("CraftItem lump_of_flint 1");
+	f->extra_dug_item_rarity = 10;
 	setDirtLikeDiggingProperties(f->digging_properties, 1.75);
 
 	i = CONTENT_SANDSTONE;
@@ -943,6 +981,7 @@ void content_mapnode_init()
 	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
+	f->flammable = 2; // can be set on fire
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
 
@@ -956,6 +995,7 @@ void content_mapnode_init()
 	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	//f->is_ground_content = true;
+	f->flammable = 2; // can be set on fire
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
 
@@ -973,6 +1013,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
 
 	i = CONTENT_LEAVES;
@@ -987,11 +1028,15 @@ void content_mapnode_init()
 		f->solidness = 0; // drawn separately, makes no faces
 		f->visual_solidness = 1;
 		f->setAllTextures("leaves.png");
+#ifndef SERVER
+		f->setAllTextureTypes(MATERIAL_ALPHA_SIMPLE);
+#endif
 		f->setInventoryTextureCube("leaves.png", "leaves.png", "leaves.png");
 	}else{
 		f->draw_type = CDT_CUBELIKE;
 		f->setAllTextures("[noalpha:leaves.png");
 	}
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAPLING)+" 1";
 	f->extra_dug_item_rarity = 20;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -1007,11 +1052,15 @@ void content_mapnode_init()
 		f->solidness = 0; // drawn separately, makes no faces
 		f->visual_solidness = 1;
 		f->setAllTextures("leaves.png");
+#ifndef SERVER
+		f->setAllTextureTypes(MATERIAL_ALPHA_SIMPLE);
+#endif
 		f->setInventoryTextureCube("leaves.png", "leaves.png", "leaves.png");
 	}else{
 		f->draw_type = CDT_CUBELIKE;
 		f->setAllTextures("[noalpha:leaves.png");
 	}
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	setLeafLikeDiggingProperties(f->digging_properties, 0.15);
 
@@ -1025,6 +1074,7 @@ void content_mapnode_init()
 	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
@@ -1041,6 +1091,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
 
 	i = CONTENT_BOOKSHELF;
@@ -1053,10 +1104,12 @@ void content_mapnode_init()
 	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
 	i = CONTENT_GLASS;
 	f = &content_features(i);
+	f->description = std::string("Glass");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -1066,7 +1119,136 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->visual_solidness = 1;
 	f->setAllTextures("glass.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
 	f->setInventoryTextureCube("glass.png", "glass.png", "glass.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_GLASS_BLUE;
+	f = &content_features(i);
+	f->description = std::string("Blue Glass");
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_GLASSLIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->setAllTextures("glass_blue.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	f->setInventoryTextureCube("glass_blue.png", "glass_blue.png", "glass_blue.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_GLASS_GREEN;
+	f = &content_features(i);
+	f->description = std::string("Green Glass");
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_GLASSLIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->setAllTextures("glass_green.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	f->setInventoryTextureCube("glass_green.png", "glass_green.png", "glass_green.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_GLASS_ORANGE;
+	f = &content_features(i);
+	f->description = std::string("Orange Glass");
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_GLASSLIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->setAllTextures("glass_orange.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	f->setInventoryTextureCube("glass_orange.png", "glass_orange.png", "glass_orange.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_GLASS_PURPLE;
+	f = &content_features(i);
+	f->description = std::string("Purple Glass");
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_GLASSLIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->setAllTextures("glass_purple.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	f->setInventoryTextureCube("glass_purple.png", "glass_purple.png", "glass_purple.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_GLASS_RED;
+	f = &content_features(i);
+	f->description = std::string("Red Glass");
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_GLASSLIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->setAllTextures("glass_red.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	f->setInventoryTextureCube("glass_red.png", "glass_red.png", "glass_red.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_GLASS_YELLOW;
+	f = &content_features(i);
+	f->description = std::string("Yellow Glass");
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_GLASSLIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->setAllTextures("glass_yellow.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	f->setInventoryTextureCube("glass_yellow.png", "glass_yellow.png", "glass_yellow.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_GLASS_BLACK;
+	f = &content_features(i);
+	f->description = std::string("Black Glass");
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_GLASSLIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->setAllTextures("glass_black.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	f->setInventoryTextureCube("glass_black.png", "glass_black.png", "glass_black.png");
 	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
 
 	i = CONTENT_GLASSLIGHT;
@@ -1081,6 +1263,9 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->visual_solidness = 1;
 	f->setAllTextures("glasslight.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
 	f->setInventoryTextureCube("glasslight.png", "glasslight.png", "glasslight.png");
 	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
 	f->light_source = LIGHT_MAX-1;
@@ -1098,6 +1283,7 @@ void content_mapnode_init()
 	f->air_equivalent = true; // grass grows underneath
 	f->setInventoryTexture("fence.png");
 	f->used_texturenames["fence.png"] = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
 	i = CONTENT_RAIL;
@@ -1130,6 +1316,7 @@ void content_mapnode_init()
 	f->air_equivalent = true;
 	f->walkable = false;
 	f->climbable = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setWoodLikeDiggingProperties(f->digging_properties, 0.5);
 
 	i = CONTENT_BORDERSTONE;
@@ -1152,6 +1339,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
 	i = CONTENT_JUNGLEWOOD;
@@ -1162,6 +1350,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
 	i = CONTENT_MESE;
@@ -1174,17 +1363,6 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	setStoneLikeDiggingProperties(f->digging_properties, 0.5);
 
-	i = CONTENT_COTTON;
-	f = &content_features(i);
-	f->description = std::string("Cotton");
-	f->setAllTextures("cotton.png");
-	f->setInventoryTextureCube("cotton.png", "cotton.png", "cotton.png");
-	f->param_type = CPT_MINERAL;
-	f->draw_type = CDT_CUBELIKE;
-	f->is_ground_content = true;
-	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
-
 	i = CONTENT_SPONGE;
 	f = &content_features(i);
 	f->description = std::string("Sponge");
@@ -1194,6 +1372,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
 
 	i = CONTENT_SPONGE_FULL;
@@ -1220,6 +1399,18 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	setLeafLikeDiggingProperties(f->digging_properties, 0.6);
 
+	i = CONTENT_COTTON;
+	f = &content_features(i);
+	f->description = std::string("Cotton");
+	f->setAllTextures("cotton.png");
+	f->setInventoryTextureCube("cotton.png", "cotton.png", "cotton.png");
+	f->param_type = CPT_MINERAL;
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+
 	i = CONTENT_COTTON_BLUE;
 	f = &content_features(i);
 	f->description = std::string("Blue Cotton");
@@ -1229,6 +1420,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
 
 	i = CONTENT_COTTON_GREEN;
@@ -1240,6 +1432,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
 
 	i = CONTENT_COTTON_ORANGE;
@@ -1251,6 +1444,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
 
 	i = CONTENT_COTTON_PURPLE;
@@ -1262,6 +1456,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
 
 	i = CONTENT_COTTON_RED;
@@ -1273,6 +1468,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
 
 	i = CONTENT_COTTON_YELLOW;
@@ -1284,6 +1480,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
 
 	i = CONTENT_COTTON_BLACK;
@@ -1295,6 +1492,119 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+
+	i = CONTENT_CARPET;
+	f = &content_features(i);
+	f->description = std::string("Carpet");
+	f->setAllTextures("cotton.png");
+	f->param_type = CPT_MINERAL;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_carpet(f);
+	f->setInventoryTextureNodeBox(i,"cotton.png", "cotton.png", "cotton.png");
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+
+	i = CONTENT_CARPET_BLUE;
+	f = &content_features(i);
+	f->description = std::string("Blue Carpet");
+	f->setAllTextures("cotton_blue.png");
+	f->param_type = CPT_MINERAL;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_carpet(f);
+	f->setInventoryTextureNodeBox(i,"cotton_blue.png", "cotton_blue.png", "cotton_blue.png");
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+
+	i = CONTENT_CARPET_GREEN;
+	f = &content_features(i);
+	f->description = std::string("Green Carpet");
+	f->setAllTextures("cotton_green.png");
+	f->param_type = CPT_MINERAL;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_carpet(f);
+	f->setInventoryTextureNodeBox(i,"cotton_green.png", "cotton_green.png", "cotton_green.png");
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+
+	i = CONTENT_CARPET_ORANGE;
+	f = &content_features(i);
+	f->description = std::string("Orange Carpet");
+	f->setAllTextures("cotton_orange.png");
+	f->param_type = CPT_MINERAL;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_carpet(f);
+	f->setInventoryTextureNodeBox(i,"cotton_orange.png", "cotton_orange.png", "cotton_orange.png");
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+
+	i = CONTENT_CARPET_PURPLE;
+	f = &content_features(i);
+	f->description = std::string("Purple Carpet");
+	f->setAllTextures("cotton_purple.png");
+	f->param_type = CPT_MINERAL;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_carpet(f);
+	f->setInventoryTextureNodeBox(i,"cotton_purple.png", "cotton_purple.png", "cotton_purple.png");
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+
+	i = CONTENT_CARPET_RED;
+	f = &content_features(i);
+	f->description = std::string("Red Carpet");
+	f->setAllTextures("cotton_red.png");
+	f->param_type = CPT_MINERAL;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_carpet(f);
+	f->setInventoryTextureNodeBox(i,"cotton_red.png", "cotton_red.png", "cotton_red.png");
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+
+	i = CONTENT_CARPET_YELLOW;
+	f = &content_features(i);
+	f->description = std::string("Yellow Carpet");
+	f->setAllTextures("cotton_yellow.png");
+	f->param_type = CPT_MINERAL;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_carpet(f);
+	f->setInventoryTextureNodeBox(i,"cotton_yellow.png", "cotton_yellow.png", "cotton_yellow.png");
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+
+	i = CONTENT_CARPET_BLACK;
+	f = &content_features(i);
+	f->description = std::string("Black Carpet");
+	f->setAllTextures("cotton_black.png");
+	f->param_type = CPT_MINERAL;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_carpet(f);
+	f->setInventoryTextureNodeBox(i,"cotton_black.png", "cotton_black.png", "cotton_black.png");
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
 
 	i = CONTENT_AIR;
@@ -1428,6 +1738,7 @@ void content_mapnode_init()
 	f->pointable = false;
 	f->diggable = false;
 	f->buildable_to = true;
+	f->flammable = 2; // can be set on fire
 	f->liquid_type = LIQUID_FLOWING;
 	f->liquid_alternative_flowing = CONTENT_LAVA;
 	f->liquid_alternative_source = CONTENT_LAVASOURCE;
@@ -1490,6 +1801,7 @@ void content_mapnode_init()
 	f->pointable = false;
 	//f->diggable = false;
 	f->buildable_to = true;
+	f->flammable = 2; // can be set on fire
 	f->liquid_type = LIQUID_SOURCE;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->liquid_alternative_flowing = CONTENT_LAVA;
@@ -1517,6 +1829,44 @@ void content_mapnode_init()
 #endif
 	setWaterLikeDiggingProperties(f->digging_properties, 0.5);
 
+	i = CONTENT_FIRE;
+	f = &content_features(i);
+	f->description = std::string("Fire");
+	f->setAllTextures("fire.png");
+	f->setAllTextureFlags(0);
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_PLANTLIKE;
+	f->light_propagates = true;
+	f->light_source = LIGHT_MAX-1;
+	f->solidness = 0; // Drawn separately, makes no faces
+	f->walkable = false;
+	f->pointable = false;
+	f->diggable = false;
+	f->buildable_to = true;
+	f->damage_per_second = 4*2;
+#ifndef SERVER
+	f->post_effect_color = video::SColor(192, 255, 64, 0);
+#endif
+
+	i = CONTENT_FIRE_SHORTTERM;
+	f = &content_features(i);
+	f->description = std::string("Fire");
+	f->setAllTextures("fire.png");
+	f->setAllTextureFlags(0);
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_PLANTLIKE;
+	f->light_propagates = true;
+	f->light_source = LIGHT_MAX-1;
+	f->solidness = 0; // Drawn separately, makes no faces
+	f->walkable = false;
+	f->pointable = false;
+	f->diggable = false;
+	f->buildable_to = true;
+	f->damage_per_second = 4*2;
+#ifndef SERVER
+	f->post_effect_color = video::SColor(192, 255, 64, 0);
+#endif
+
 	i = CONTENT_TORCH;
 	f = &content_features(i);
 	f->description = std::string("Torch");
@@ -1530,6 +1880,7 @@ void content_mapnode_init()
 	f->walkable = false;
 	f->wall_mounted = true;
 	f->air_equivalent = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->light_source = LIGHT_MAX-1;
 	f->digging_properties.set("", DiggingProperties(true, 0.0, 0));
@@ -1547,6 +1898,7 @@ void content_mapnode_init()
 	f->walkable = false;
 	f->wall_mounted = true;
 	f->air_equivalent = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new SignNodeMetadata("Some sign");
@@ -1562,6 +1914,7 @@ void content_mapnode_init()
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SIGN_WALL)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new SignNodeMetadata("Some sign");
@@ -1593,6 +1946,7 @@ void content_mapnode_init()
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SIGN_WALL)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new SignNodeMetadata("Some sign");
@@ -1692,6 +2046,61 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
 
+	i = CONTENT_COPPER;
+	f = &content_features(i);
+	f->description = std::string("Copper Block");
+	f->setAllTextures("copper_block.png");
+	f->setInventoryTextureCube("copper_block.png", "copper_block.png", "copper_block.png");
+	f->param_type = CPT_NONE;
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+
+	i = CONTENT_GOLD;
+	f = &content_features(i);
+	f->description = std::string("Gold Block");
+	f->setAllTextures("gold_block.png");
+	f->setInventoryTextureCube("gold_block.png", "gold_block.png", "gold_block.png");
+	f->param_type = CPT_NONE;
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+
+	i = CONTENT_SILVER;
+	f = &content_features(i);
+	f->description = std::string("Silver Block");
+	f->setAllTextures("silver_block.png");
+	f->setInventoryTextureCube("silver_block.png", "silver_block.png", "silver_block.png");
+	f->param_type = CPT_NONE;
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+
+	i = CONTENT_TIN;
+	f = &content_features(i);
+	f->description = std::string("Tin Block");
+	f->setAllTextures("tin_block.png");
+	f->setInventoryTextureCube("tin_block.png", "tin_block.png", "tin_block.png");
+	f->param_type = CPT_NONE;
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+
+	i = CONTENT_QUARTZ;
+	f = &content_features(i);
+	f->description = std::string("Quartz Block");
+	f->setAllTextures("quartz_block.png");
+	f->setInventoryTextureCube("quartz_block.png", "quartz_block.png", "quartz_block.png");
+	f->param_type = CPT_NONE;
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+
 	i = CONTENT_NC;
 	f = &content_features(i);
 	f->description = std::string("Nyan Cat");
@@ -1726,6 +2135,7 @@ void content_mapnode_init()
 	f->air_equivalent = false;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->digging_properties.set("", DiggingProperties(true, 0.0, 0));
 
 	i = CONTENT_APPLE;
@@ -1733,6 +2143,7 @@ void content_mapnode_init()
 	f->description = std::string("Apple");
 	f->setInventoryTexture("apple.png");
 	f->setAllTextures("apple.png");
+	f->setAllTextureFlags(0);
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_PLANTLIKE_SML;
 	f->light_propagates = true;
@@ -1740,6 +2151,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
 	f->air_equivalent = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->dug_item = std::string("CraftItem apple 1");
 	f->digging_properties.set("", DiggingProperties(true, 0.0, 0));
 
@@ -1797,6 +2209,7 @@ void content_mapnode_init()
 	f->slab_cube_type = CONTENT_WOOD;
 	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"wood.png", "wood.png", "wood.png");
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
 	i = CONTENT_JUNGLE_SLAB;
@@ -1811,6 +2224,7 @@ void content_mapnode_init()
 	f->slab_cube_type = CONTENT_JUNGLEWOOD;
 	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"junglewood.png", "junglewood.png", "junglewood.png");
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
 
 	i = CONTENT_BRICK_SLAB;
@@ -1891,6 +2305,7 @@ void content_mapnode_init()
 	f->slab_cube_type = CONTENT_WOOD;
 	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"wood.png", "wood.png", "wood.png");
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
 	i = CONTENT_JUNGLE_SLAB_UD;
@@ -1904,6 +2319,7 @@ void content_mapnode_init()
 	f->slab_cube_type = CONTENT_JUNGLEWOOD;
 	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"junglewood.png", "junglewood.png", "junglewood.png");
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
 
 	i = CONTENT_BRICK_SLAB_UD;
@@ -1984,6 +2400,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_stair(f);
 	f->setInventoryTextureNodeBox(i,"wood.png", "wood.png", "wood.png");
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
 	i = CONTENT_JUNGLE_STAIR;
@@ -1997,6 +2414,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_stair(f);
 	f->setInventoryTextureNodeBox(i,"junglewood.png", "junglewood.png", "junglewood.png");
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
 
 	i = CONTENT_BRICK_STAIR;
@@ -2072,6 +2490,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_STAIR)+" 1";
 	content_mapnode_nodebox_stairud(f);
 	f->setInventoryTextureNodeBox(i,"wood.png", "wood.png", "wood.png");
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
 	i = CONTENT_JUNGLE_STAIR_UD;
@@ -2084,6 +2503,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_JUNGLE_STAIR)+" 1";
 	content_mapnode_nodebox_stairud(f);
 	f->setInventoryTextureNodeBox(i,"junglewood.png", "junglewood.png", "junglewood.png");
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
 
 	i = CONTENT_BRICK_STAIR_UD;
@@ -2125,6 +2545,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_door(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 	i = CONTENT_WOOD_DOOR_LT;
@@ -2141,6 +2562,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_door(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
@@ -2195,6 +2617,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_door(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 	i = CONTENT_WOOD_W_DOOR_LT;
@@ -2211,6 +2634,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_doorw(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
@@ -2266,6 +2690,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_door(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 	i = CONTENT_WOOD_DOOR_RT;
@@ -2282,6 +2707,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_door(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
@@ -2336,6 +2762,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_door(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 	i = CONTENT_WOOD_W_DOOR_RT;
@@ -2352,6 +2779,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_doorw(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
@@ -2405,6 +2833,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_DOOR_LT)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_doorol(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 	i = CONTENT_WOOD_DOOR_LT_OPEN;
@@ -2419,6 +2848,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_DOOR_LT)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_doorol(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
@@ -2467,6 +2897,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_W_DOOR_LT)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_doorol(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 	i = CONTENT_WOOD_W_DOOR_LT_OPEN;
@@ -2481,6 +2912,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_W_DOOR_LT)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_doorwol(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
@@ -2532,6 +2964,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_DOOR_RT)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_dooror(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 	i = CONTENT_WOOD_DOOR_RT_OPEN;
@@ -2548,6 +2981,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_DOOR_RT)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_dooror(f);
 	f->setInventoryTextureNodeBox(i,"wood.png", "wood.png", "wood.png");
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
@@ -2603,6 +3037,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_W_DOOR_RT)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_dooror(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 	i = CONTENT_WOOD_W_DOOR_RT_OPEN;
@@ -2619,6 +3054,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_W_DOOR_RT)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_doorwor(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
@@ -2672,6 +3108,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_hatch(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
@@ -2704,6 +3141,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_hatchw(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
@@ -2737,6 +3175,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_gate(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
@@ -2772,6 +3211,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->climbable = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_HATCH)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_hatcho(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
@@ -2808,6 +3248,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->climbable = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_W_HATCH)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_hatchwo(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
@@ -2843,6 +3284,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_gateo(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
@@ -2877,6 +3319,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	//f->pointable = false;
 	//f->buildable_to = true;
 	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
@@ -2894,6 +3337,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WILDGRASS_SHORT)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
 
 	i = CONTENT_DEADGRASS;
@@ -2908,6 +3352,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
 
 	i = CONTENT_FLOWER_STEM;
@@ -2922,6 +3367,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
 
 	i = CONTENT_FLOWER_ROSE;
@@ -2936,6 +3382,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
 
 	i = CONTENT_FLOWER_DAFFODIL;
@@ -2950,6 +3397,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
 
 	i = CONTENT_FLOWER_TULIP;
@@ -2964,6 +3412,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
 
 	i = CONTENT_FLOWER_POT_RAW;
@@ -3127,6 +3576,21 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->air_equivalent = true; // grass grows underneath
 	f->setInventoryTexture("sandstone_wall_inv.png");
+	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+
+	i = CONTENT_TNT;
+	f = &content_features(i);
+	f->description = std::string("TNT");
+	f->setAllTextures("tnt.png");
+	f->setTexture(0, "tnt_top.png");
+	f->setTexture(1, "tnt_bottom.png");
+	f->setInventoryTextureCube("tnt_top.png", "tnt.png", "tnt.png");
+	f->param_type = CPT_MINERAL;
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new TNTNodeMetadata();
 	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
 
 	// NOTE: Remember to add frequently used stuff to the texture atlas in tile.cpp

@@ -346,14 +346,20 @@ public:
 			return "tool_shears.png";
 		}else if (m_toolname == "WBucket") {
 			return "tool_woodbucket.png";
+		}else if (m_toolname == "TinBucket") {
+			return "tool_tinbucket.png";
 		}else if (m_toolname == "WBucket_water") {
 			return "tool_woodbucket_water.png";
+		}else if (m_toolname == "TinBucket_water") {
+			return "tool_tinbucket_water.png";
 		}else if(m_toolname == "SteelBucket") {
 			return "tool_steelbucket.png";
 		}else if(m_toolname == "SteelBucket_water") {
 			return "tool_steelbucket_water.png";
 		}else if(m_toolname == "SteelBucket_lava") {
 			return "tool_steelbucket_lava.png";
+		}else if (m_toolname == "FireStarter") {
+			return "tool_fire_starter.png";
 		}else{
 			return "cotton.png";
 		}
@@ -427,6 +433,8 @@ public:
 			return "Steel Bucket of Water";
 		}else if(m_toolname == "SteelBucket_lava") {
 			return "Steel Bucket of Lava";
+		}else if (m_toolname == "FireStarter") {
+			return "Fire Starter";
 		}
 
 		return "";
@@ -620,6 +628,7 @@ public:
 
 struct InventoryAction
 {
+	virtual ~InventoryAction() {}
 	static InventoryAction * deSerialize(std::istream &is);
 
 	virtual u16 getType() const = 0;

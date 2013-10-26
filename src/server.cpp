@@ -2456,6 +2456,49 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						continue;
 					client->SetBlocksNotSent(modified_blocks);
 				}
+			}else if (content_features(n).flammable > 1) {
+				const InventoryItem *wield = player->getWieldItem();
+				if (
+					wield && wield->getName() == std::string("ToolItem")
+					&& ((ToolItem*)wield)->getToolName() == "FireStarter"
+				) {
+					if (content_features(n).flammable == 2) {
+						MapNode a = m_env.getMap().getNodeNoEx(p_under+v3s16(0,1,0));
+						if (a.getContent() == CONTENT_AIR || content_features(a).flammable > 0) {
+							a.setContent(CONTENT_FIRE);
+							core::list<u16> far_players;
+							sendAddNode(p_under+v3s16(0,1,0), a, 0, &far_players, 30);
+							core::map<v3s16, MapBlock*> modified_blocks;
+							{
+								MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+
+								std::string p_name = std::string(player->getName());
+								m_env.getMap().addNodeAndUpdate(p_under+v3s16(0,1,0), a, modified_blocks, p_name);
+							}
+						}
+					}else{
+						n.setContent(CONTENT_FIRE_SHORTTERM);
+						core::list<u16> far_players;
+						sendAddNode(p_under, n, 0, &far_players, 30);
+						core::map<v3s16, MapBlock*> modified_blocks;
+						{
+							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+
+							std::string p_name = std::string(player->getName());
+							m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
+						}
+					}
+				}
+			}else if (n.getContent() == CONTENT_TNT) {
+				const InventoryItem *wield = player->getWieldItem();
+				if (
+					wield && wield->getName() == std::string("ToolItem")
+					&& ((ToolItem*)wield)->getToolName() == "FireStarter"
+				) {
+					TNTNodeMetadata *meta = (TNTNodeMetadata*)m_env.getMap().getNodeMetadata(p_under);
+					if (meta && !meta->getArmed())
+						meta->setArmed(true);
+				}
 			}
 			/*
 				NOTE: This can be used in the future to check if
@@ -2700,6 +2743,14 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							}
 						}
 					}
+					MapNode a = m_env.getMap().getNode(p_under+v3s16(0,1,0));
+					if (a.getContent() == CONTENT_FIRE) {
+						sendRemoveNode(p_under+v3s16(0,1,0), 0, &far_players, 30);
+						{
+							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+							m_env.getMap().removeNodeAndUpdate(p_under+v3s16(0,1,0), modified_blocks);
+						}
+					}
 				/*
 					Send the removal to all close-by players.
 					- If other player is close, send REMOVENODE
@@ -2776,6 +2827,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							&& (
 								wieldname == std::string("WBucket")
 								|| wieldname == std::string("SteelBucket")
+								|| wieldname == std::string("TinBucket")
 							)
 						) {
 							std::string dug_s = std::string("ToolItem ") + wieldname + "_water 1";
@@ -2793,6 +2845,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							&& (
 								wieldname == std::string("WBucket")
 								|| wieldname == std::string("SteelBucket")
+								|| wieldname == std::string("TinBucket")
 							)
 						) {
 							MapNode n = m_env.getMap().getNode(p_under);
