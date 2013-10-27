@@ -255,6 +255,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_SILVER 0x8C3
 #define CONTENT_GOLD 0x8C4
 #define CONTENT_QUARTZ 0x8C5
+// fire and tnt
 #define CONTENT_FIRE 0x8C6
 #define CONTENT_FIRE_SHORTTERM 0x8C7
 #define CONTENT_TNT 0x8C8

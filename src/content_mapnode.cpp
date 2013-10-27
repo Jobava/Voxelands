@@ -1369,7 +1369,6 @@ void content_mapnode_init()
 	f->description = std::string("Sponge");
 	f->setAllTextures("sponge.png");
 	f->setInventoryTextureCube("sponge.png", "sponge.png", "sponge.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -1381,7 +1380,6 @@ void content_mapnode_init()
 	f->description = std::string("Waterlogged Sponge");
 	f->setAllTextures("sponge_full.png");
 	f->setInventoryTextureCube("sponge_full.png", "sponge_full.png", "sponge_full.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";

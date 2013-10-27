@@ -2409,7 +2409,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				if ((n.getContent()&CONTENT_DOOR_SECT_MASK) == CONTENT_DOOR_SECT_MASK)
 					mp.Y = -1;
 
-				MapNode m = m_env.getMap().getNode(p_under+mp);
+				MapNode m = m_env.getMap().getNodeNoEx(p_under+mp);
 				core::list<u16> far_players;
 				if ((n.getContent()&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK) {
 					if ((n.getContent()&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
@@ -2662,7 +2662,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			}
 			if (is_farm_swap)
 			{
-				MapNode n = m_env.getMap().getNode(p_under);
+				MapNode n = m_env.getMap().getNodeNoEx(p_under);
 				n.setContent(CONTENT_FARM_DIRT);
 
 				actionstream<<player->getName()<<" ploughs "<<PP(p_under)
@@ -2705,7 +2705,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						<<(int)mineral<<std::endl;
 
 				core::list<u16> far_players;
-				MapNode n = m_env.getMap().getNode(p_under);
+				MapNode n = m_env.getMap().getNodeNoEx(p_under);
 				if (
 					n.getContent() >= CONTENT_DOOR_MIN
 					&& n.getContent() <= CONTENT_DOOR_MAX
@@ -2727,7 +2727,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					sendRemoveNode(p_under, 0, &far_players, 30);
 				}else{
 					if (n.getContent() == CONTENT_FLOWER_POT) {
-						MapNode a = m_env.getMap().getNode(p_under+v3s16(0,1,0));
+						MapNode a = m_env.getMap().getNodeNoEx(p_under+v3s16(0,1,0));
 						if (
 							a.getContent() == CONTENT_FLOWER_ROSE
 							|| a.getContent() == CONTENT_FLOWER_DAFFODIL
@@ -2743,7 +2743,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							}
 						}
 					}
-					MapNode a = m_env.getMap().getNode(p_under+v3s16(0,1,0));
+					MapNode a = m_env.getMap().getNodeNoEx(p_under+v3s16(0,1,0));
 					if (a.getContent() == CONTENT_FIRE) {
 						sendRemoveNode(p_under+v3s16(0,1,0), 0, &far_players, 30);
 						{
@@ -2848,7 +2848,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 								|| wieldname == std::string("TinBucket")
 							)
 						) {
-							MapNode n = m_env.getMap().getNode(p_under);
+							MapNode n = m_env.getMap().getNodeNoEx(p_under);
 							n.setContent(CONTENT_SPONGE);
 
 							core::list<u16> far_players;

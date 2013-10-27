@@ -1103,8 +1103,8 @@ void ServerEnvironment::step(float dtime)
 				*/
 				if (n.getContent() == CONTENT_GRASS)
 				{
-					int f = (10000-(p.Y*2))+10;
-					if (p.Y > 2 && myrand()%f == 0) {
+					int f = (1000-(p.Y*2))+10;
+					if (p.Y > 1 && myrand()%f == 0) {
 						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
 						if (n_top.getContent() == CONTENT_AIR && n_top.getLightBlend(getDayNightRatio()) >= 13) {
 							v3f pp;
@@ -1112,9 +1112,27 @@ void ServerEnvironment::step(float dtime)
 							pp.Y = p.Y;
 							pp.Z = p.Z;
 							Player *nearest = getNearestConnectedPlayer(pp);
-							if (nearest == NULL || nearest->getPosition().getDistanceFrom(pp*BS)/BS > 10.0) {
-								n_top.setContent(CONTENT_WILDGRASS_SHORT);
-								m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top);
+							if (nearest == NULL || nearest->getPosition().getDistanceFrom(pp*BS)/BS > 20.0) {
+								bool can_grow = true;
+								for(s16 x=-1; can_grow && x<=1; x++)
+								for(s16 y=-1; can_grow && y<=1; y++)
+								for(s16 z=-1; can_grow && z<=1; z++)
+								{
+									MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
+									if (
+										n_test.getContent() == CONTENT_WILDGRASS_SHORT
+										|| n_test.getContent() == CONTENT_WILDGRASS_LONG
+										|| n_test.getContent() == CONTENT_FLOWER_STEM
+										|| n_test.getContent() == CONTENT_FLOWER_ROSE
+										|| n_test.getContent() == CONTENT_FLOWER_TULIP
+										|| n_test.getContent() == CONTENT_FLOWER_DAFFODIL
+									)
+										can_grow = false;
+								}
+								if (can_grow) {
+									n_top.setContent(CONTENT_WILDGRASS_SHORT);
+									m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top);
+								}
 							}
 						}
 					}
@@ -1153,7 +1171,7 @@ void ServerEnvironment::step(float dtime)
 				{
 					MapNode n_btm = m_map->getNodeNoEx(p+v3s16(0,-1,0));
 					if (n_btm.getContent() == CONTENT_GRASS || n_btm.getContent() == CONTENT_MUD) {
-						if (p.Y > -1 && myrand()%200 == 0) {
+						if (p.Y > -1 && myrand()%100 == 0) {
 							MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
 							if ((n_btm.getContent() == CONTENT_GRASS || n_btm.getContent() == CONTENT_FLOWER_POT) && n_top.getLightBlend(getDayNightRatio()) >= 13) {
 								switch (myrand()%3) {
@@ -1613,7 +1631,7 @@ void ServerEnvironment::step(float dtime)
 							p.Y < -30
 							&& n_top1.getContent() == CONTENT_WATERSOURCE
 							&& n_top2.getContent() == CONTENT_WATERSOURCE
-							//&& myrand()%5000 == 0
+							&& myrand()%50 == 0
 						) {
 							n_top1.setContent(CONTENT_SPONGE_FULL);
 							m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top1);
