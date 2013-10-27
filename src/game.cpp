@@ -322,7 +322,7 @@ void getPointedNode(Client *client, v3f player_position,
 		try
 		{
 			n = client->getNode(v3s16(x,y,z));
-			if(content_pointable(n.getContent()) == false) {
+			if (content_pointable(n.getContent()) == false) {
 				if (content_liquid_source(n.getContent()) == false)
 					continue;
 				const InventoryItem *wield = client->getLocalPlayer()->getWieldItem();
@@ -336,6 +336,14 @@ void getPointedNode(Client *client, v3f player_position,
 						&& wieldname != std::string("WBucket")
 						&& wieldname != std::string("TinBucket")
 					)
+				) {
+					continue;
+				}
+			}else if (n.getContent() >= CONTENT_PLANTS_MIN && n.getContent() <= CONTENT_PLANTS_MAX) {
+				const InventoryItem *wield = client->getLocalPlayer()->getWieldItem();
+				if (
+					wield
+					&& wield->getName() == std::string("MaterialItem")
 				) {
 					continue;
 				}

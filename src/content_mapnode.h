@@ -201,6 +201,8 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_FLOWER_POT_RAW 0x887
 #define CONTENT_FLOWER_POT 0x888
 #define CONTENT_TRIMMED_LEAVES 0x889
+#define CONTENT_PLANTS_MIN 0x880
+#define CONTENT_PLANTS_MAX 0x886
 
 // coloured cotton
 #define CONTENT_COTTON_BLUE 0x890

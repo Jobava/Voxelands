@@ -3320,7 +3320,7 @@ void content_mapnode_init()
 	f->walkable = false;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	//f->pointable = false;
-	//f->buildable_to = true;
+	f->buildable_to = true;
 	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
 
 	i = CONTENT_WILDGRASS_LONG;
@@ -3337,6 +3337,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->buildable_to = true;
 	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
 
 	i = CONTENT_DEADGRASS;
@@ -3352,6 +3353,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->buildable_to = true;
 	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
 
 	i = CONTENT_FLOWER_STEM;
@@ -3367,6 +3369,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->buildable_to = true;
 	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
 
 	i = CONTENT_FLOWER_ROSE;
@@ -3382,6 +3385,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->buildable_to = true;
 	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
 
 	i = CONTENT_FLOWER_DAFFODIL;
@@ -3397,6 +3401,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->buildable_to = true;
 	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
 
 	i = CONTENT_FLOWER_TULIP;
@@ -3412,6 +3417,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->buildable_to = true;
 	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
 
 	i = CONTENT_FLOWER_POT_RAW;
