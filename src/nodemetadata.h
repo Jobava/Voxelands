@@ -24,6 +24,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <string>
 #include <iostream>
 
+#define ENERGY_MAX 16
+
 /*
 	Used for storing:
 
@@ -68,6 +70,26 @@ public:
 	// primarily used for locking chests, but others can play too
 	virtual std::string getOwner(){ return std::string(""); }
 	virtual void setOwner(std::string t){  }
+	// used by tnt to arm it, but also for future circuitry
+	// level is the amount of power
+	// powersrc is the generator or such that created the power
+	// signalsrc is the node that sent this node the energise signal
+	// pos is the position of this node
+	// returns false if propogation was stopped
+	virtual bool energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos) {return false;}
+	bool energise(u8 level, v3f powersrc, v3f signalsrc, v3s16 pos)
+	{
+		v3s16 p;
+		v3s16 s;
+		p.X = powersrc.X;
+		p.Y = powersrc.Y;
+		p.Z = powersrc.Z;
+		s.X = signalsrc.X;
+		s.Y = signalsrc.Y;
+		s.Z = signalsrc.Z;
+		return energise(level,p,s,pos);
+	}
+	virtual u8 getEnergy() {return 0;}
 
 protected:
 	static void registerType(u16 id, Factory f);

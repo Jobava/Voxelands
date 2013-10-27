@@ -162,9 +162,25 @@ public:
 	virtual std::string infoText();
 	virtual bool step(float dtime);
 
-	float getTime() {return m_time;}
-	bool getArmed() {return m_armed;}
-	void setArmed(bool state) {m_armed = state; if (state) m_time = 5.0;}
+	//float getTime() {return m_time;}
+	//bool getArmed() {return m_armed;}
+	//void setArmed(bool state) {m_armed = state; if (state) m_time = 5.0;}
+	virtual bool energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
+	{
+		if (level == 0) {
+			m_armed = false;
+			return true;
+		}
+		m_armed = true;
+		m_time = 5.0;
+		return true;
+	}
+	virtual u8 getEnergy()
+	{
+		if (!m_armed)
+			return 0;
+		return ENERGY_MAX-((u8)m_time);
+	}
 
 private:
 	bool m_armed;

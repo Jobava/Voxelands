@@ -425,8 +425,12 @@ public:
 			return "Shears";
 		}else if(m_toolname == "WBucket") {
 			return "Wooden Bucket";
+		}else if (m_toolname == "TinBucket") {
+			return "Tin Bucket";
 		}else if(m_toolname == "WBucket_water") {
 			return "Wooden Bucket of Water";
+		}else if (m_toolname == "TinBucket_water") {
+			return "Tin Bucket of Water";
 		}else if(m_toolname == "SteelBucket") {
 			return "Steel Bucket";
 		}else if(m_toolname == "SteelBucket_water") {

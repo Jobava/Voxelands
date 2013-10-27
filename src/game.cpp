@@ -334,6 +334,7 @@ void getPointedNode(Client *client, v3f player_position,
 					|| (
 						wieldname != std::string("SteelBucket")
 						&& wieldname != std::string("WBucket")
+						&& wieldname != std::string("TinBucket")
 					)
 				) {
 					continue;

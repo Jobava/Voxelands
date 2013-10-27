@@ -3668,6 +3668,9 @@ void setWaterLikeDiggingProperties(DiggingPropertiesList &list, float toughness)
 	list.set("WBucket",
 			DiggingProperties(true, 0.0, 65535./30.*toughness));
 
+	list.set("TinBucket",
+			DiggingProperties(true, 0.0, 65535./50.*toughness));
+
 	list.set("SteelBucket",
 			DiggingProperties(true, 0.0, 65535./80.*toughness));
 }

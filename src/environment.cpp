@@ -22,7 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "porting.h"
 #include "collision.h"
 #include "content_mapnode.h"
-#include "content_nodemeta.h"
+#include "nodemetadata.h"
 #include "mapblock.h"
 #include "serverobject.h"
 #include "content_sao.h"
@@ -1260,8 +1260,8 @@ void ServerEnvironment::step(float dtime)
 					boom
 				*/
 				if (n.getContent() == CONTENT_TNT) {
-					TNTNodeMetadata *meta = (TNTNodeMetadata*)m_map->getNodeMetadata(p);
-					if (meta && meta->getArmed() && meta->getTime() < 0.0) {
+					NodeMetadata *meta = m_map->getNodeMetadata(p);
+					if (meta && meta->getEnergy() == ENERGY_MAX) {
 						bool can_spread = true;
 						s16 bs_rad = g_settings->getS16("borderstone_radius");
 						bs_rad += 3;
@@ -1283,9 +1283,9 @@ void ServerEnvironment::step(float dtime)
 								if (n_test.getContent() == CONTENT_AIR)
 									continue;
 								if (n_test.getContent() == CONTENT_TNT) {
-									meta = (TNTNodeMetadata*)m_map->getNodeMetadata(p+v3s16(x,y,z));
-									if (meta && !meta->getArmed())
-										meta->setArmed(true);
+									meta = m_map->getNodeMetadata(p+v3s16(x,y,z));
+									if (meta && !meta->getEnergy())
+										meta->energise(ENERGY_MAX,p,p,p+v3s16(x,y,z));
 									continue;
 								}
 								if (

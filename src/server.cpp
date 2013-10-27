@@ -2495,9 +2495,9 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					wield && wield->getName() == std::string("ToolItem")
 					&& ((ToolItem*)wield)->getToolName() == "FireStarter"
 				) {
-					TNTNodeMetadata *meta = (TNTNodeMetadata*)m_env.getMap().getNodeMetadata(p_under);
-					if (meta && !meta->getArmed())
-						meta->setArmed(true);
+					NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
+					if (meta && !meta->getEnergy())
+						meta->energise(ENERGY_MAX,player->getPosition(),player->getPosition(),p_under);
 				}
 			}
 			/*
@@ -2894,10 +2894,15 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							&& (wieldname = ((ToolItem*)wield)->getToolName()) != std::string("")
 							&& (
 								wieldname == std::string("WBucket")
+								|| wieldname == std::string("TinBucket")
 								|| wieldname == std::string("SteelBucket")
 							)
 						) {
-							if (g_settings->getBool("enable_lavabuckets") == false || wieldname == std::string("WBucket")) {
+							if (
+								g_settings->getBool("enable_lavabuckets") == false
+								|| wieldname == std::string("WBucket")
+								|| wieldname == std::string("TinBucket")
+							) {
 								mlist->deleteItem(item_i);
 								HandlePlayerHP(player,4);
 							}else{
@@ -3238,6 +3243,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				item->getName() == std::string("ToolItem")
 				&& (
 					((ToolItem*)item)->getToolName() == std::string("WBucket_water")
+					|| ((ToolItem*)item)->getToolName() == std::string("TinBucket_water")
 					|| ((ToolItem*)item)->getToolName() == std::string("SteelBucket_water")
 					|| ((ToolItem*)item)->getToolName() == std::string("SteelBucket_lava")
 				)
@@ -3246,12 +3252,15 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				std::string wieldname = ((ToolItem*)item)->getToolName();
 				if (
 					wieldname == std::string("WBucket_water")
+					|| wieldname == std::string("TinBucket_water")
 					|| wieldname == std::string("SteelBucket_water")
 				) {
 					if (ilist != NULL) {
 						std::string dug_s = std::string("ToolItem ");
 						if (wieldname == std::string("WBucket_water")) {
 							dug_s += "WBucket 1";
+						}else if (wieldname == std::string("TinBucket_water")) {
+							dug_s += "TinBucket 1";
 						}else{
 							dug_s += "SteelBucket 1";
 						}

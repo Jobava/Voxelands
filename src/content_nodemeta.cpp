@@ -624,6 +624,8 @@ bool TNTNodeMetadata::step(float dtime)
 	if (!m_armed)
 		return false;
 	m_time -= dtime;
+	if (m_time < 0.0)
+		m_time = 0.0;
 	return true;
 }
 void TNTNodeMetadata::serializeBody(std::ostream &os)
