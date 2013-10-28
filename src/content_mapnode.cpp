@@ -1871,6 +1871,7 @@ void content_mapnode_init()
 	f->description = std::string("Torch");
 	f->setAllTextures("torch.png");
 	f->setInventoryTexture("torch_inventory.png");
+	f->setAllTextureFlags(0);
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_TORCHLIKE;
 	f->light_propagates = true;
@@ -3282,7 +3283,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
-	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_GATE)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_gateo(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
@@ -3298,7 +3299,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
-	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_GATE)+" 1";
 	content_mapnode_nodebox_gateo(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
