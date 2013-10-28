@@ -1389,9 +1389,7 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Hay Bale");
 	f->setAllTextures("hay_bale.png");
-	f->setTexture(0,"hay_bale_top.png");
-	f->setTexture(1,"hay_bale_top.png");
-	f->setInventoryTextureCube("hay_bale_top.png", "hay_bale.png", "hay_bale.png");
+	f->setInventoryTextureCube("hay_bale.png", "hay_bale.png", "hay_bale.png");
 	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
