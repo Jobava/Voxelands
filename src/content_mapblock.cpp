@@ -468,13 +468,21 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		break;
 		case CDT_TORCHLIKE:
 		{
+			//static const f32 txc[24] = {
+				//0.6,0.1,0.9,0.4,
+				//0.6,0.6,0.6,0.9,
+				//0,0,0.3,1,
+				//0,0,0.3,1,
+				//0,0,0.3,1,
+				//0,0,0.3,1
+			//};
 			static const f32 txc[24] = {
-				0.6,0.1,0.9,0.4,
-				0.6,0.6,0.6,0.9,
-				0,0,0.3,1,
-				0,0,0.3,1,
-				0,0,0.3,1,
-				0,0,0.3,1
+				0.4,0.4,0.6,0.6,
+				0.4,0.4,0.6,0.6,
+				0.35,0,0.65,1,
+				0.35,0,0.65,1,
+				0.35,0,0.65,1,
+				0.35,0,0.65,1
 			};
 			video::S3DVertex *v;
 
@@ -1126,7 +1134,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					0,0.4,1,0.6,
 					0,0.4,1,0.6,
 					0,0.4,1,0.6,
-					0,0.4,1,0.6};
+					0,0.4,1,0.6
+				};
 				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, zrailuv);
 				bar.MinEdge.Y -= BS/2;
 				bar.MaxEdge.Y -= BS/2;
@@ -1156,7 +1165,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					0,0.4,1,0.6,
 					0,0.4,1,0.6,
 					0,0.4,1,0.6,
-					0,0.4,1,0.6};
+					0,0.4,1,0.6
+				};
 				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, zrailuv);
 				bar.MinEdge.Y -= BS/2;
 				bar.MaxEdge.Y -= BS/2;
