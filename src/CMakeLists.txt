@@ -1,4 +1,4 @@
-project(minetest)
+project(minetest-classic)
 cmake_minimum_required( VERSION 2.6 )
 
 if(RUN_IN_PLACE)
@@ -207,9 +207,9 @@ if(BUILD_CLIENT)
 endif(BUILD_CLIENT)
 
 if(BUILD_SERVER)
-	add_executable(${PROJECT_NAME}server ${minetestserver_SRCS})
+	add_executable(${PROJECT_NAME}-server ${minetestserver_SRCS})
 	target_link_libraries(
-		${PROJECT_NAME}server
+		${PROJECT_NAME}-server
 		${ZLIB_LIBRARIES}
 		${JTHREAD_LIBRARY}
 		${SQLITE3_LIBRARY}
@@ -273,7 +273,7 @@ else()
 	endif()
 
 	if(BUILD_SERVER)
-		set_target_properties(${PROJECT_NAME}server PROPERTIES
+		set_target_properties(${PROJECT_NAME}-server PROPERTIES
 				COMPILE_DEFINITIONS "SERVER")
 	endif(BUILD_SERVER)
 
@@ -294,7 +294,7 @@ if(BUILD_CLIENT)
 
 	file(GLOB images "${CMAKE_CURRENT_SOURCE_DIR}/../data/textures/*.png")
 	install(FILES ${images} DESTINATION ${DATADIR}/textures)
-	file(GLOB models 
+	file(GLOB models
 "${CMAKE_CURRENT_SOURCE_DIR}/../data/models/*.b3d")
 	install(FILES ${models} DESTINATION ${DATADIR}/models)
 
@@ -325,7 +325,7 @@ if(BUILD_CLIENT)
 endif(BUILD_CLIENT)
 
 if(BUILD_SERVER)
-	install(TARGETS ${PROJECT_NAME}server DESTINATION ${BINDIR})
+	install(TARGETS ${PROJECT_NAME}-server DESTINATION ${BINDIR})
 endif(BUILD_SERVER)
 
 if (USE_GETTEXT)
