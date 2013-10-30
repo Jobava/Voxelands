@@ -240,7 +240,7 @@ if(MSVC)
 	set(CMAKE_C_FLAGS_RELEASE "/O2 /Ob2 /MT")
 
 	if(BUILD_SERVER)
-		set_target_properties(${PROJECT_NAME}server PROPERTIES
+		set_target_properties(${PROJECT_NAME}-server PROPERTIES
 				COMPILE_DEFINITIONS "SERVER")
 	endif(BUILD_SERVER)
 
