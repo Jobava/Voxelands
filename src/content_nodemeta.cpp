@@ -638,5 +638,9 @@ std::string TNTNodeMetadata::infoText()
 	if (!m_armed)
 		return std::string("");
 
-	return std::string("Armed Explosive: ")+itos((int)ceil(m_time))+" seconds till detonation";
+	int s = (int)ceil(m_time);
+	if (s < 1)
+		return std::string("Armed Explosive: about to detonate");
+
+	return std::string("Armed Explosive: ")+itos(s)+" seconds till detonation";
 }
