@@ -1354,6 +1354,23 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 		}
 		break;
+		case CDT_WIRELIKE:
+		{
+
+			MapNode n_minus_x = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1,y,z));
+			MapNode n_plus_x = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1,y,z));
+			MapNode n_minus_z = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y,z-1));
+			MapNode n_plus_z = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y,z+1));
+			bool x_plus = false;
+			bool x_plus_y = false;
+			bool x_minus = false;
+			bool x_minus_y = false;
+			bool z_plus = false;
+			bool z_plus_y = false;
+			bool z_minus = false;
+			bool z_minus_y = false;
+		}
+		break;
 		case CDT_RAILLIKE:
 		{
 			bool is_rail_x [] = { false, false };  /* x-1, x+1 */

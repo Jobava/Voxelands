@@ -168,6 +168,8 @@ public:
 			m_armed = false;
 			return true;
 		}
+		if (m_armed)
+			return true;
 		m_armed = true;
 		m_time = 5.0;
 		return true;

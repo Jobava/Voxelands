@@ -132,6 +132,7 @@ set(common_SRCS
 	ban.cpp
 	http.cpp
 	path.cpp
+	circuit.cpp
 )
 
 # This gives us the icon

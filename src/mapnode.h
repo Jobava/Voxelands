@@ -96,7 +96,8 @@ enum ContentDrawType
 	CDT_GLASSLIKE,
 	CDT_TORCHLIKE,
 	CDT_FENCELIKE,
-	CDT_WALLLIKE
+	CDT_WALLLIKE,
+	CDT_WIRELIKE
 };
 
 /*
@@ -185,6 +186,10 @@ struct ContentFeatures
 	u8 flammable;
 	// Whether a player or mob can jump over this node
 	bool jumpable;
+	// Whether the node conducts circuit current
+	bool conductive;
+	// How the current drops by on this conductive node
+	u8 energy_drop;
 	// Whether the node has no liquid, source liquid or flowing liquid
 	enum LiquidType liquid_type;
 	// If true, param2 is set to direction when placed. Used for torches.
@@ -276,6 +281,8 @@ struct ContentFeatures
 		buildable_to = false;
 		flammable = 0;
 		jumpable = true;
+		conductive = false;
+		energy_drop = 1;
 		liquid_type = LIQUID_NONE;
 		wall_mounted = false;
 		air_equivalent = false;

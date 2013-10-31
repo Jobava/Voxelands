@@ -25,6 +25,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <iostream>
 
 #define ENERGY_MAX 16
+#define ENERGY_MIN 0
 
 /*
 	Used for storing:
@@ -89,7 +90,7 @@ public:
 		s.Z = signalsrc.Z;
 		return energise(level,p,s,pos);
 	}
-	virtual u8 getEnergy() {return 0;}
+	virtual u8 getEnergy() {return ENERGY_MIN;}
 
 protected:
 	static void registerType(u16 id, Factory f);

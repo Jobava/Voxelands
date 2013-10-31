@@ -23,7 +23,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 //#include "serverobject.h"
 #include "content_sao.h"
 
-
 ServerActiveObject* item_craft_create_object(const std::string &subname,
 		ServerEnvironment *env, u16 id, v3f pos)
 {
