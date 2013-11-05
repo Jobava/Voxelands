@@ -18,6 +18,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 */
 
 #include "environment.h"
+#include "circuit.h"
 #include "filesys.h"
 #include "porting.h"
 #include "collision.h"
@@ -278,6 +279,7 @@ ServerEnvironment::ServerEnvironment(ServerMap *map, Server *server):
 	m_game_time(0),
 	m_game_time_fraction_counter(0)
 {
+	m_circuit = new CircuitManager(this);
 }
 
 ServerEnvironment::~ServerEnvironment()
@@ -642,7 +644,7 @@ void ServerEnvironment::activateBlock(MapBlock *block, u32 additional_dtime)
 						n_top.getLight(LIGHTBANK_DAY) >= 13)
 				{
 					n.setContent(CONTENT_GRASS);
-					m_map->addNodeWithEvent(p, n);
+					addNode(p, n);
 				}
 			}
 		}
@@ -1205,7 +1207,7 @@ void ServerEnvironment::step(float dtime)
 							{
 								MapNode n_top = m_map->getNodeNoEx(test_p);
 								n.setContent(type);
-								m_map->addNodeWithEvent(test_p, n);
+								addNode(test_p, n);
 							}
 						}
 					}
@@ -1228,7 +1230,7 @@ void ServerEnvironment::step(float dtime)
 							&& n_top.getContent() != CONTENT_SNOW
 						) {
 							n.setContent(CONTENT_MUD);
-							m_map->addNodeWithEvent(p, n);
+							addNode(p, n);
 						}
 					}
 				}
@@ -1265,7 +1267,7 @@ void ServerEnvironment::step(float dtime)
 								}
 								if (can_grow) {
 									n_top.setContent(CONTENT_WILDGRASS_SHORT);
-									m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top);
+									addNode(p+v3s16(0,1,0), n_top);
 								}
 							}
 						}
@@ -1281,24 +1283,24 @@ void ServerEnvironment::step(float dtime)
 								if (n_top.getLightBlend(getDayNightRatio()) >= 13) {
 									if (myrand()%5 == 0) {
 										n.setContent(CONTENT_FLOWER_STEM);
-										m_map->addNodeWithEvent(p, n);
+										addNode(p, n);
 									}else{
 										n.setContent(CONTENT_WILDGRASS_LONG);
-										m_map->addNodeWithEvent(p, n);
+										addNode(p, n);
 									}
 								}
 							}
 						}
 					}else{
 						n.setContent(CONTENT_DEADGRASS);
-						m_map->addNodeWithEvent(p, n);
+						addNode(p, n);
 					}
 				}
 				if (n.getContent() == CONTENT_WILDGRASS_LONG)
 				{
 					if (p.Y > -1 && myrand()%200 == 0) {
 						n.setContent(CONTENT_DEADGRASS);
-						m_map->addNodeWithEvent(p, n);
+						addNode(p, n);
 					}
 				}
 				if (n.getContent() == CONTENT_FLOWER_STEM)
@@ -1311,28 +1313,28 @@ void ServerEnvironment::step(float dtime)
 								switch (myrand()%3) {
 								case 0:
 									n.setContent(CONTENT_FLOWER_ROSE);
-									m_map->addNodeWithEvent(p, n);
+									addNode(p, n);
 									break;
 								case 1:
 									n.setContent(CONTENT_FLOWER_DAFFODIL);
-									m_map->addNodeWithEvent(p, n);
+									addNode(p, n);
 									break;
 								case 2:
 									n.setContent(CONTENT_FLOWER_TULIP);
-									m_map->addNodeWithEvent(p, n);
+									addNode(p, n);
 									break;
 								}
 							}
 						}
 					}else{
 						n.setContent(CONTENT_DEADGRASS);
-						m_map->addNodeWithEvent(p, n);
+						addNode(p, n);
 					}
 				}
 				if (n.getContent() == CONTENT_DEADGRASS)
 				{
 					if (p.Y > -1 && myrand()%200 == 0)
-						m_map->removeNodeWithEvent(p);
+						removeNode(p);
 				}
 				if (
 					n.getContent() == CONTENT_FLOWER_ROSE
@@ -1343,11 +1345,11 @@ void ServerEnvironment::step(float dtime)
 					if (n_under.getContent() == CONTENT_GRASS) {
 						if (myrand()%200 == 0) {
 							n.setContent(CONTENT_WILDGRASS_SHORT);
-							m_map->addNodeWithEvent(p, n);
+							addNode(p, n);
 						}
 					}else if (n_under.getContent() != CONTENT_FLOWER_POT) {
 						n.setContent(CONTENT_WILDGRASS_SHORT);
-						m_map->addNodeWithEvent(p, n);
+						addNode(p, n);
 					}
 				}
 				/*
@@ -1355,7 +1357,7 @@ void ServerEnvironment::step(float dtime)
 				*/
 				if (n.getContent() == CONTENT_FIRE_SHORTTERM) {
 					if (myrand()%10 == 0)
-						m_map->removeNodeWithEvent(p);
+						removeNode(p);
 				}
 				/*
 					fire that spreads just a little
@@ -1422,7 +1424,7 @@ void ServerEnvironment::step(float dtime)
 										m_map->addNodeWithEvent(p+v3s16(x,y,z)+p_foot, n_test);
 									}
 									n_test.setContent(CONTENT_FIRE_SHORTTERM);
-									m_map->addNodeWithEvent(p+v3s16(x,y,z), n_test);
+									addNode(p+v3s16(x,y,z), n_test);
 								}
 							}
 						}
@@ -1488,7 +1490,7 @@ void ServerEnvironment::step(float dtime)
 							}
 						}
 						// but still blow up
-						m_map->removeNodeWithEvent(p);
+						removeNode(p);
 					}
 				}
 				/*
@@ -1957,8 +1959,9 @@ void ServerEnvironment::step(float dtime)
 						}
 						}
 						}
-						if (!found) {
-							m_map->removeNodeWithEvent(leaf_p);
+						if (!found)
+						{
+							removeNode(leaf_p);
 							if (myrand()%20 == 0) {
 								v3f sapling_pos = intToFloat(leaf_p, BS);
 								sapling_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
@@ -1998,7 +2001,7 @@ void ServerEnvironment::step(float dtime)
 					}
 					}
 					if(!found) {
-						m_map->removeNodeWithEvent(apple_p);
+						removeNode(apple_p);
 						v3f apple_pos = intToFloat(apple_p, BS);
 						apple_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
 						ServerActiveObject *obj = new ItemSAO(this, 0, apple_pos, "CraftItem apple 1");
@@ -2026,7 +2029,7 @@ void ServerEnvironment::step(float dtime)
 								testnode = m_map->getNodeNoEx(test_p);
 								if (testnode.getContent() == CONTENT_WATERSOURCE) {
 									n_top1.setContent(CONTENT_JUNGLEGRASS);
-									m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top1);
+									addNode(p+v3s16(0,1,0), n_top1);
 									break;
 								}
 							}
@@ -2039,7 +2042,7 @@ void ServerEnvironment::step(float dtime)
 							&& myrand()%50 == 0
 						) {
 							n_top1.setContent(CONTENT_SPONGE_FULL);
-							m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top1);
+							addNode(p+v3s16(0,1,0), n_top1);
 						}
 					}
 				}
@@ -2056,15 +2059,14 @@ void ServerEnvironment::step(float dtime)
 						testnode = m_map->getNodeNoEx(test_p);
 						if (testnode.getContent() == CONTENT_WATERSOURCE) {
 							sponge_soaked = true;
-							testnode.setContent(CONTENT_AIR);
-							m_map->addNodeWithEvent(test_p, testnode);
+							removeNode(test_p);
 						}
 					}
 					}
 					}
 					if (sponge_soaked) {
 						n.setContent(CONTENT_SPONGE_FULL);
-						m_map->addNodeWithEvent(p, n);
+						addNode(p, n);
 					}
 				}
 				/* make papyrus grow near water */
@@ -2101,7 +2103,7 @@ void ServerEnvironment::step(float dtime)
 									testnode = m_map->getNodeNoEx(test_p);
 									if (testnode.getContent() == CONTENT_WATERSOURCE) {
 										n_top1.setContent(CONTENT_PAPYRUS);
-										m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top1);
+										addNode(p+v3s16(0,1,0), n_top1);
 										break;
 									}
 								}

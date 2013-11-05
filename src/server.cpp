@@ -42,6 +42,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "profiler.h"
 #include "log.h"
 #include "base64.h"
+#include "circuit.h"
 
 #define PP(x) "("<<(x).X<<","<<(x).Y<<","<<(x).Z<<")"
 
@@ -188,7 +189,7 @@ void * EmergeThread::Thread()
 					<<"("<<p.X<<","<<p.Y<<","<<p.Z<<") "
 					<<"only_from_disk="<<only_from_disk<<std::endl;
 
-		ServerMap &map = ((ServerMap&)m_server->m_env.getMap());
+		ServerMap &map = ((ServerMap&)m_server->m_env->getMap());
 
 		//core::map<v3s16, MapBlock*> changed_blocks;
 		//core::map<v3s16, MapBlock*> lighting_invalidated_blocks;
@@ -253,7 +254,7 @@ void * EmergeThread::Thread()
 					MapEditEventIgnorer ign(&m_server->m_ignore_map_edit_events);
 
 					// Activate objects and stuff
-					m_server->m_env.activateBlock(block, 3600);
+					m_server->m_env->activateBlock(block, 3600);
 				}
 			}
 			else
@@ -374,7 +375,7 @@ void RemoteClient::GetNextBlocks(Server *server, float dtime,
 
 	//TimeTaker timer("RemoteClient::GetNextBlocks");
 
-	Player *player = server->m_env.getPlayer(peer_id);
+	Player *player = server->m_env->getPlayer(peer_id);
 
 	assert(player != NULL);
 
@@ -575,7 +576,7 @@ void RemoteClient::GetNextBlocks(Server *server, float dtime,
 					MAP_BLOCKSIZE*p.Z);
 
 				// Get ground height in nodes
-				s16 gh = server->m_env.getServerMap().findGroundLevel(
+				s16 gh = server->m_env->getServerMap().findGroundLevel(
 						p2d_nodes_center);
 
 				// If differs a lot, don't generate
@@ -614,7 +615,7 @@ void RemoteClient::GetNextBlocks(Server *server, float dtime,
 			/*
 				Check if map has this block
 			*/
-			MapBlock *block = server->m_env.getMap().getBlockNoCreateNoEx(p);
+			MapBlock *block = server->m_env->getMap().getBlockNoCreateNoEx(p);
 
 			bool surely_not_found_on_disk = false;
 			bool block_is_invalid = false;
@@ -643,7 +644,7 @@ void RemoteClient::GetNextBlocks(Server *server, float dtime,
 
 #if 0
 				v2s16 p2d(p.X, p.Z);
-				ServerMap *map = (ServerMap*)(&server->m_env.getMap());
+				ServerMap *map = (ServerMap*)(&server->m_env->getMap());
 				v2s16 chunkpos = map->sector_to_chunk(p2d);
 				if(map->chunkNonVolatile(chunkpos) == false)
 					block_is_invalid = true;
@@ -697,7 +698,7 @@ void RemoteClient::GetNextBlocks(Server *server, float dtime,
 						flags |= BLOCK_EMERGE_FLAG_FROMDISK;
 
 					server->m_emerge_queue.addBlock(peer_id, p, flags);
-					server->m_emergethread.trigger();
+					server->m_emergethread->trigger();
 
 					if(nearest_emerged_d == -1)
 						nearest_emerged_d = d;
@@ -805,7 +806,7 @@ void RemoteClient::SendObjectData(
 	*/
 
 	// Get connected players
-	core::list<Player*> players = server->m_env.getPlayers(true);
+	core::list<Player*> players = server->m_env->getPlayers(true);
 
 	// Write player count
 	u16 playercount = players.size();
@@ -856,7 +857,7 @@ void RemoteClient::SendObjectData(
 	std::string s = os.str();
 	SharedBuffer<u8> data((u8*)s.c_str(), s.size());
 	// Send as unreliable
-	server->m_con.Send(peer_id, 0, data, false);
+	server->m_con->Send(peer_id, 0, data, false);
 }
 
 void RemoteClient::GotBlock(v3s16 p)
@@ -951,12 +952,8 @@ Server::Server(
 		std::string mapsavedir,
 		std::string configpath
 	):
-	m_env(new ServerMap(mapsavedir), this),
-	m_con(PROTOCOL_ID, 512, CONNECTION_TIMEOUT, this),
 	m_authmanager(mapsavedir+DIR_DELIM+"auth.txt"),
 	m_banmanager(mapsavedir+DIR_DELIM+"ipban.txt"),
-	m_thread(this),
-	m_emergethread(this),
 	m_time_counter(0),
 	m_time_of_day_send_timer(0),
 	m_uptime(0),
@@ -966,6 +963,11 @@ Server::Server(
 	m_ignore_map_edit_events(false),
 	m_ignore_map_edit_events_peer_id(0)
 {
+	m_env = new ServerEnvironment(new ServerMap(mapsavedir), this);
+	m_con = new con::Connection(PROTOCOL_ID, 512, CONNECTION_TIMEOUT, this);
+	m_thread = new ServerThread(this);
+	m_emergethread = new EmergeThread(this);
+
 	m_liquid_transform_timer = 0.0;
 	m_print_info_timer = 0.0;
 	m_objectdata_timer = 0.0;
@@ -978,18 +980,18 @@ Server::Server(
 	m_step_dtime = 0.0;
 
 	// Register us to receive map edit events
-	m_env.getMap().addEventReceiver(this);
+	m_env->getMap().addEventReceiver(this);
 
 	// If file exists, load environment metadata
 	if(fs::PathExists(m_mapsavedir+DIR_DELIM+"env_meta.txt"))
 	{
 		infostream<<"Server: Loading environment metadata"<<std::endl;
-		m_env.loadMeta(m_mapsavedir);
+		m_env->loadMeta(m_mapsavedir);
 	}
 
 	// Load players
 	infostream<<"Server: Loading players"<<std::endl;
-	m_env.deSerializePlayers(m_mapsavedir);
+	m_env->deSerializePlayers(m_mapsavedir);
 }
 
 Server::~Server()
@@ -1032,13 +1034,13 @@ Server::~Server()
 			Save players
 		*/
 		infostream<<"Server: Saving players"<<std::endl;
-		m_env.serializePlayers(m_mapsavedir);
+		m_env->serializePlayers(m_mapsavedir);
 
 		/*
 			Save environment metadata
 		*/
 		infostream<<"Server: Saving environment metadata"<<std::endl;
-		m_env.saveMeta(m_mapsavedir);
+		m_env->saveMeta(m_mapsavedir);
 	}
 
 	/*
@@ -1061,7 +1063,7 @@ Server::~Server()
 			{
 				u16 peer_id = i.getNode()->getKey();
 				JMutexAutoLock envlock(m_env_mutex);
-				m_env.removePlayer(peer_id);
+				m_env->removePlayer(peer_id);
 			}*/
 
 			// Delete client
@@ -1074,17 +1076,17 @@ void Server::start(unsigned short port)
 {
 	DSTACK(__FUNCTION_NAME);
 	// Stop thread if already running
-	m_thread.stop();
+	m_thread->stop();
 
 	// Initialize connection
-	m_con.SetTimeoutMs(30);
-	m_con.Serve(port);
-	if (!m_con.getRun())
+	m_con->SetTimeoutMs(30);
+	m_con->Serve(port);
+	if (!m_con->getRun())
 		return;
 
 	// Start thread
-	m_thread.setRun(true);
-	m_thread.Start();
+	m_thread->setRun(true);
+	m_thread->Start();
 
 	infostream<<"Server: Started on port "<<port<<std::endl;
 }
@@ -1096,10 +1098,10 @@ void Server::stop()
 	infostream<<"Server: Stopping and waiting threads"<<std::endl;
 
 	// Stop threads (set run=false first so both start stopping)
-	m_thread.setRun(false);
-	m_emergethread.setRun(false);
-	m_thread.stop();
-	m_emergethread.stop();
+	m_thread->setRun(false);
+	m_emergethread->setRun(false);
+	m_thread->stop();
+	m_emergethread->stop();
 
 	infostream<<"Server: Threads stopped"<<std::endl;
 }
@@ -1161,7 +1163,7 @@ void Server::AsyncRunStep()
 		// Process connection's timeouts
 		JMutexAutoLock lock2(m_con_mutex);
 		ScopeProfiler sp(g_profiler, "Server: connection timeout processing");
-		m_con.RunTimeouts(dtime);
+		m_con->RunTimeouts(dtime);
 	}
 
 	{
@@ -1181,7 +1183,7 @@ void Server::AsyncRunStep()
 		u32 units = (u32)(m_time_counter*speed);
 		m_time_counter -= (f32)units / speed;
 
-		m_env.setTimeOfDay((m_env.getTimeOfDay() + units) % 24000);
+		m_env->setTimeOfDay((m_env->getTimeOfDay() + units) % 24000);
 
 		//infostream<<"Server: m_time_of_day = "<<m_time_of_day.get()<<std::endl;
 
@@ -1202,12 +1204,12 @@ void Server::AsyncRunStep()
 				i.atEnd() == false; i++)
 			{
 				RemoteClient *client = i.getNode()->getValue();
-				//Player *player = m_env.getPlayer(client->peer_id);
+				//Player *player = m_env->getPlayer(client->peer_id);
 
 				SharedBuffer<u8> data = makePacket_TOCLIENT_TIME_OF_DAY(
-						m_env.getTimeOfDay());
+						m_env->getTimeOfDay());
 				// Send as reliable
-				m_con.Send(client->peer_id, 0, data, true);
+				m_con->Send(client->peer_id, 0, data, true);
 			}
 		}
 	}
@@ -1217,7 +1219,7 @@ void Server::AsyncRunStep()
 		// Step environment
 		ScopeProfiler sp(g_profiler, "SEnv step");
 		ScopeProfiler sp2(g_profiler, "SEnv step avg", SPT_AVG);
-		m_env.step(dtime);
+		m_env->step(dtime);
 	}
 
 	const float map_timer_and_unload_dtime = 2.92;
@@ -1226,7 +1228,7 @@ void Server::AsyncRunStep()
 		JMutexAutoLock lock(m_env_mutex);
 		// Run Map's timers and unload unused data
 		ScopeProfiler sp(g_profiler, "Server: map timer and unload");
-		m_env.getMap().timerUpdate(map_timer_and_unload_dtime,
+		m_env->getMap().timerUpdate(map_timer_and_unload_dtime,
 				g_settings->getFloat("server_unload_unused_data_timeout"));
 	}
 
@@ -1247,13 +1249,13 @@ void Server::AsyncRunStep()
 		ScopeProfiler sp(g_profiler, "Server: liquid transform");
 
 		core::map<v3s16, MapBlock*> modified_blocks;
-		m_env.getMap().transformLiquids(modified_blocks);
+		m_env->getMap().transformLiquids(modified_blocks);
 #if 0
 		/*
 			Update lighting
 		*/
 		core::map<v3s16, MapBlock*> lighting_modified_blocks;
-		ServerMap &map = ((ServerMap&)m_env.getMap());
+		ServerMap &map = ((ServerMap&)m_env->getMap());
 		map.updateLighting(modified_blocks, lighting_modified_blocks);
 
 		// Add blocks modified by lighting to modified_blocks
@@ -1303,7 +1305,7 @@ void Server::AsyncRunStep()
 			{
 				//u16 peer_id = i.getNode()->getKey();
 				RemoteClient *client = i.getNode()->getValue();
-				Player *player = m_env.getPlayer(client->peer_id);
+				Player *player = m_env->getPlayer(client->peer_id);
 				if(player==NULL)
 					continue;
 				infostream<<"* "<<player->getName()<<"\t";
@@ -1334,7 +1336,7 @@ void Server::AsyncRunStep()
 			i.atEnd() == false; i++)
 		{
 			RemoteClient *client = i.getNode()->getValue();
-			Player *player = m_env.getPlayer(client->peer_id);
+			Player *player = m_env->getPlayer(client->peer_id);
 			if(player==NULL)
 			{
 				// This can happen if the client timeouts somehow
@@ -1347,9 +1349,9 @@ void Server::AsyncRunStep()
 
 			core::map<u16, bool> removed_objects;
 			core::map<u16, bool> added_objects;
-			m_env.getRemovedActiveObjects(pos, radius,
+			m_env->getRemovedActiveObjects(pos, radius,
 					client->m_known_objects, removed_objects);
-			m_env.getAddedActiveObjects(pos, radius,
+			m_env->getAddedActiveObjects(pos, radius,
 					client->m_known_objects, added_objects);
 
 			// Ignore if nothing happened
@@ -1372,7 +1374,7 @@ void Server::AsyncRunStep()
 			{
 				// Get object
 				u16 id = i.getNode()->getKey();
-				ServerActiveObject* obj = m_env.getActiveObject(id);
+				ServerActiveObject* obj = m_env->getActiveObject(id);
 
 				// Add to data buffer for sending
 				writeU16((u8*)buf, i.getNode()->getKey());
@@ -1394,7 +1396,7 @@ void Server::AsyncRunStep()
 			{
 				// Get object
 				u16 id = i.getNode()->getKey();
-				ServerActiveObject* obj = m_env.getActiveObject(id);
+				ServerActiveObject* obj = m_env->getActiveObject(id);
 
 				// Get object type
 				u8 type = ACTIVEOBJECT_TYPE_INVALID;
@@ -1429,7 +1431,7 @@ void Server::AsyncRunStep()
 			memcpy((char*)&reply[2], data_buffer.c_str(),
 					data_buffer.size());
 			// Send as reliable
-			m_con.Send(client->peer_id, 0, reply, true);
+			m_con->Send(client->peer_id, 0, reply, true);
 
 			infostream<<"Server: Sent object remove/add: "
 					<<removed_objects.size()<<" removed, "
@@ -1460,7 +1462,7 @@ void Server::AsyncRunStep()
 			}
 		}
 
-		m_env.setKnownActiveObjects(whatever);
+		m_env->setKnownActiveObjects(whatever);
 #endif
 
 	}
@@ -1481,7 +1483,7 @@ void Server::AsyncRunStep()
 		// Get active object messages from environment
 		for(;;)
 		{
-			ActiveObjectMessage aom = m_env.getActiveObjectMessage();
+			ActiveObjectMessage aom = m_env->getActiveObjectMessage();
 			if(aom.id == 0)
 				break;
 
@@ -1550,7 +1552,7 @@ void Server::AsyncRunStep()
 				memcpy((char*)&reply[2], reliable_data.c_str(),
 						reliable_data.size());
 				// Send as reliable
-				m_con.Send(client->peer_id, 0, reply, true);
+				m_con->Send(client->peer_id, 0, reply, true);
 			}
 			if(unreliable_data.size() > 0)
 			{
@@ -1559,7 +1561,7 @@ void Server::AsyncRunStep()
 				memcpy((char*)&reply[2], unreliable_data.c_str(),
 						unreliable_data.size());
 				// Send as unreliable
-				m_con.Send(client->peer_id, 0, reply, false);
+				m_con->Send(client->peer_id, 0, reply, false);
 			}
 
 			/*if(reliable_data.size() > 0 || unreliable_data.size() > 0)
@@ -1670,7 +1672,7 @@ void Server::AsyncRunStep()
 				{
 					v3s16 p = i.getNode()->getKey();
 					modified_blocks2.insert(p,
-							m_env.getMap().getBlockNoCreateNoEx(p));
+							m_env->getMap().getBlockNoCreateNoEx(p));
 				}
 				// Set blocks not sent
 				for(core::list<u16>::Iterator
@@ -1731,7 +1733,7 @@ void Server::AsyncRunStep()
 		{
 			counter = 0.0;
 
-			m_emergethread.trigger();
+			m_emergethread->trigger();
 		}
 	}
 
@@ -1757,15 +1759,15 @@ void Server::AsyncRunStep()
 			JMutexAutoLock lock(m_env_mutex);
 
 			/*// Unload unused data (delete from memory)
-			m_env.getMap().unloadUnusedData(
+			m_env->getMap().unloadUnusedData(
 					g_settings->getFloat("server_unload_unused_sectors_timeout"));
 					*/
-			/*u32 deleted_count = m_env.getMap().unloadUnusedData(
+			/*u32 deleted_count = m_env->getMap().unloadUnusedData(
 					g_settings->getFloat("server_unload_unused_sectors_timeout"));
 					*/
 
 			// Save only changed parts
-			m_env.getMap().save(true);
+			m_env->getMap().save(true);
 
 			/*if(deleted_count > 0)
 			{
@@ -1774,10 +1776,10 @@ void Server::AsyncRunStep()
 			}*/
 
 			// Save players
-			m_env.serializePlayers(m_mapsavedir);
+			m_env->serializePlayers(m_mapsavedir);
 
 			// Save environment metadata
-			m_env.saveMeta(m_mapsavedir);
+			m_env->saveMeta(m_mapsavedir);
 		}
 	}
 }
@@ -1791,7 +1793,7 @@ void Server::Receive()
 	try{
 		{
 			JMutexAutoLock conlock(m_con_mutex);
-			datasize = m_con.Receive(peer_id, data);
+			datasize = m_con->Receive(peer_id, data);
 		}
 
 		// This has to be called so that the client list gets synced
@@ -1819,7 +1821,7 @@ void Server::Receive()
 				<<" has apparently closed connection. "
 				<<"Removing player."<<std::endl;
 
-		m_env.removePlayer(peer_id);*/
+		m_env->removePlayer(peer_id);*/
 	}
 }
 
@@ -1831,15 +1833,15 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 	JMutexAutoLock conlock(m_con_mutex);
 
 	try{
-		Address address = m_con.GetPeerAddress(peer_id);
+		Address address = m_con->GetPeerAddress(peer_id);
 
 		// drop player if is ip is banned
 		if(m_banmanager.isIpBanned(address.serializeString())){
-			SendAccessDenied(m_con, peer_id,
+			SendAccessDenied(*m_con, peer_id,
 					L"Your ip is banned. Banned name was "
 					+narrow_to_wide(m_banmanager.getBanName(
 						address.serializeString())));
-			m_con.DeletePeer(peer_id);
+			m_con->DeletePeer(peer_id);
 			return;
 		}
 	}
@@ -1891,7 +1893,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			infostream<<"Server: Cannot negotiate "
 					"serialization version with peer "
 					<<peer_id<<std::endl;
-			SendAccessDenied(m_con, peer_id,
+			SendAccessDenied(*m_con, peer_id,
 					L"Your client is too old (map format)");
 			return;
 		}
@@ -1919,7 +1921,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		{
 			if(net_proto_version < PROTOCOL_VERSION)
 			{
-				SendAccessDenied(m_con, peer_id,
+				SendAccessDenied(*m_con, peer_id,
 						L"Your client is too old. Please upgrade.");
 				return;
 			}
@@ -1940,7 +1942,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		if(playername[0]=='\0')
 		{
 			infostream<<"Server: Player has empty name"<<std::endl;
-			SendAccessDenied(m_con, peer_id,
+			SendAccessDenied(*m_con, peer_id,
 					L"Empty name");
 			return;
 		}
@@ -1948,7 +1950,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		if(string_allowed(playername, PLAYERNAME_ALLOWED_CHARS)==false)
 		{
 			infostream<<"Server: Player has invalid name"<<std::endl;
-			SendAccessDenied(m_con, peer_id,
+			SendAccessDenied(*m_con, peer_id,
 					L"Name contains unallowed characters");
 			return;
 		}
@@ -1971,7 +1973,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 		if (!base64_is_valid(password)) {
 			infostream<<"Server: "<<playername<<" supplied invalid password hash"<<std::endl;
-			SendAccessDenied(m_con, peer_id, L"Invalid password hash");
+			SendAccessDenied(*m_con, peer_id, L"Invalid password hash");
 			return;
 		}
 
@@ -1993,7 +1995,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			infostream<<"Server: peer_id="<<peer_id
 					<<": supplied invalid password for "
 					<<playername<<std::endl;
-			SendAccessDenied(m_con, peer_id, L"Invalid password");
+			SendAccessDenied(*m_con, peer_id, L"Invalid password");
 			return;
 		}
 
@@ -2016,7 +2018,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					& (PRIV_SERVER|PRIV_BAN|PRIV_PRIVS)) == 0 &&
 				playername != g_settings->get("name"))
 		{
-			SendAccessDenied(m_con, peer_id, L"Too many users.");
+			SendAccessDenied(*m_con, peer_id, L"Too many users.");
 			return;
 		}
 
@@ -2044,10 +2046,10 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			writeU16(&reply[0], TOCLIENT_INIT);
 			writeU8(&reply[2], deployed);
 			writeV3S16(&reply[2+1], floatToInt(player->getPosition()+v3f(0,BS/2,0), BS));
-			writeU64(&reply[2+1+6], m_env.getServerMap().getSeed());
+			writeU64(&reply[2+1+6], m_env->getServerMap().getSeed());
 
 			// Send as reliable
-			m_con.Send(peer_id, 0, reply, true);
+			m_con->Send(peer_id, 0, reply, true);
 		}
 
 		/*
@@ -2081,7 +2083,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		// Send player items to all players
 		SendPlayerItems();
 
-		Player *player = m_env.getPlayer(peer_id);
+		Player *player = m_env->getPlayer(peer_id);
 
 		// Send HP
 		SendPlayerHP(player);
@@ -2089,8 +2091,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		// Send time of day
 		{
 			SharedBuffer<u8> data = makePacket_TOCLIENT_TIME_OF_DAY(
-					m_env.getTimeOfDay());
-			m_con.Send(peer_id, 0, data, true);
+					m_env->getTimeOfDay());
+			m_con->Send(peer_id, 0, data, true);
 		}
 
 		// Send information about server to player in chat
@@ -2099,7 +2101,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		// Send information about joining in chat
 		{
 			std::wstring name = L"unknown";
-			Player *player = m_env.getPlayer(peer_id);
+			Player *player = m_env->getPlayer(peer_id);
 			if(player != NULL)
 				name = narrow_to_wide(player->getName());
 
@@ -2139,7 +2141,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				if(client->serialization_version == SER_FMT_VER_INVALID)
 					continue;
 				// Get player
-				Player *player = m_env.getPlayer(client->peer_id);
+				Player *player = m_env->getPlayer(client->peer_id);
 				if(!player)
 					continue;
 				// Get name of player
@@ -2161,7 +2163,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		return;
 	}
 
-	Player *player = m_env.getPlayer(peer_id);
+	Player *player = m_env->getPlayer(peer_id);
 
 	if(player == NULL){
 		infostream<<"Server::ProcessData(): Cancelling: "
@@ -2269,7 +2271,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		u16 id = readS16(&data[3]);
 		u16 item_i = readU16(&data[5]);
 
-		ServerActiveObject *obj = m_env.getActiveObject(id);
+		ServerActiveObject *obj = m_env->getActiveObject(id);
 
 		if(obj == NULL)
 		{
@@ -2411,11 +2413,11 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		if(action == 0)
 		{
 			SendPlayerAnim(player,PLAYERANIM_DIG);
-			MapNode n = m_env.getMap().getNodeNoEx(p_under);
+			MapNode n = m_env->getMap().getNodeNoEx(p_under);
 			if (n.getContent() >= CONTENT_DOOR_MIN && n.getContent() <= CONTENT_DOOR_MAX) {
 				v3s16 mp(0,1,0);
 				if ((n.getContent()&CONTENT_DOOR_STEEL_MASK) == CONTENT_DOOR_STEEL_MASK) {
-					NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
+					NodeMetadata *meta = m_env->getMap().getNodeMetadata(p_under);
 					if (meta && meta->typeId() == CONTENT_WOOD_DOOR_LT) {
 						LockedDoorNodeMetadata *ldm = (LockedDoorNodeMetadata*)meta;
 						if (ldm->getOwner() != player->getName())
@@ -2425,7 +2427,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				if ((n.getContent()&CONTENT_DOOR_SECT_MASK) == CONTENT_DOOR_SECT_MASK)
 					mp.Y = -1;
 
-				MapNode m = m_env.getMap().getNodeNoEx(p_under+mp);
+				MapNode m = m_env->getMap().getNodeNoEx(p_under+mp);
 				core::list<u16> far_players;
 				core::map<v3s16, MapBlock*> modified_blocks;
 				if ((n.getContent()&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK) {
@@ -2475,9 +2477,9 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 
 					std::string p_name = std::string(player->getName());
-					m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
+					m_env->getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
 					if ((n.getContent()&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK)
-						m_env.getMap().addNodeAndUpdate(p_under+mp, m, modified_blocks, p_name);
+						m_env->getMap().addNodeAndUpdate(p_under+mp, m, modified_blocks, p_name);
 				}
 				/*
 					Set blocks not sent to far players
@@ -2491,107 +2493,6 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					if(client==NULL)
 						continue;
 					client->SetBlocksNotSent(modified_blocks);
-				}
-			}else if (content_features(n).flammable > 1) {
-				InventoryItem *wield = (InventoryItem*)player->getWieldItem();
-				if (wield && wield->getContent() == CONTENT_TOOLITEM_FIRESTARTER) {
-					if((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
-						s16 max_d = g_settings->getS16("borderstone_radius");
-						v3s16 test_p;
-						MapNode testnode;
-						for(s16 z=-max_d; z<=max_d; z++) {
-						for(s16 y=-max_d; y<=max_d; y++) {
-						for(s16 x=-max_d; x<=max_d; x++) {
-							test_p = p_under + v3s16(x,y,z);
-							NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
-							if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
-								BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
-								if (bsm->getOwner() != player->getName())
-									return;
-							}
-						}
-						}
-						}
-					}
-					if (content_features(n).flammable == 2) {
-						MapNode a = m_env.getMap().getNodeNoEx(p_under+v3s16(0,1,0));
-						if (a.getContent() == CONTENT_AIR || content_features(a).flammable > 0) {
-							a.setContent(CONTENT_FIRE);
-							core::list<u16> far_players;
-							sendAddNode(p_under+v3s16(0,1,0), a, 0, &far_players, 30);
-							core::map<v3s16, MapBlock*> modified_blocks;
-							{
-								MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-
-								std::string p_name = std::string(player->getName());
-								m_env.getMap().addNodeAndUpdate(p_under+v3s16(0,1,0), a, modified_blocks, p_name);
-							}
-							for(core::list<u16>::Iterator i = far_players.begin(); i != far_players.end(); i++) {
-								u16 peer_id = *i;
-								RemoteClient *client = getClient(peer_id);
-								if (client == NULL)
-									continue;
-								client->SetBlocksNotSent(modified_blocks);
-							}
-						}
-					}else{
-						n.setContent(CONTENT_FIRE_SHORTTERM);
-						core::list<u16> far_players;
-						sendAddNode(p_under, n, 0, &far_players, 30);
-						core::map<v3s16, MapBlock*> modified_blocks;
-						{
-							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-
-							std::string p_name = std::string(player->getName());
-							m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
-						}
-						for(core::list<u16>::Iterator i = far_players.begin(); i != far_players.end(); i++) {
-							u16 peer_id = *i;
-							RemoteClient *client = getClient(peer_id);
-							if (client == NULL)
-								continue;
-							client->SetBlocksNotSent(modified_blocks);
-						}
-					}
-					ToolItem *titem = (ToolItem*)wield;
-					bool weared_out = titem->addWear(1000);
-					if (weared_out) {
-						InventoryList *mlist = player->inventory.getList("main");
-						mlist->deleteItem(item_i);
-					}
-					SendInventory(player->peer_id);
-				}
-			}else if (n.getContent() == CONTENT_TNT) {
-				InventoryItem *wield = (InventoryItem*)player->getWieldItem();
-				if (wield && wield->getContent() == CONTENT_TOOLITEM_FIRESTARTER) {
-					if((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
-						s16 max_d = g_settings->getS16("borderstone_radius");
-						v3s16 test_p;
-						MapNode testnode;
-						for(s16 z=-max_d; z<=max_d; z++) {
-						for(s16 y=-max_d; y<=max_d; y++) {
-						for(s16 x=-max_d; x<=max_d; x++) {
-							test_p = p_under + v3s16(x,y,z);
-							NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
-							if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
-								BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
-								if (bsm->getOwner() != player->getName())
-									return;
-							}
-						}
-						}
-						}
-					}
-					NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
-					if (meta && !meta->getEnergy())
-						meta->energise(ENERGY_MAX,player->getPosition(),player->getPosition(),p_under);
-					ToolItem *titem = (ToolItem*)wield;
-					bool weared_out = titem->addWear(1000);
-					if (weared_out) {
-						InventoryList *mlist = player->inventory.getList("main");
-						mlist->deleteItem(item_i);
-					}
-					SendInventory(player->peer_id);
 				}
 			}else if (n.getContent() == CONTENT_MESE) {
 				core::list<u16> far_players;
@@ -2721,6 +2622,34 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						client->SetBlocksNotSent(modified_blocks);
 						client->SetBlockNotSent(blockpos);
 					}
+			}else{
+				InventoryItem *wield = (InventoryItem*)player->getWieldItem();
+				if (wield && wield->getContent() == CONTENT_TOOLITEM_FIRESTARTER) {
+					if((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
+						s16 max_d = g_settings->getS16("borderstone_radius");
+						v3s16 test_p;
+						MapNode testnode;
+						for(s16 z=-max_d; z<=max_d; z++) {
+						for(s16 y=-max_d; y<=max_d; y++) {
+						for(s16 x=-max_d; x<=max_d; x++) {
+							test_p = p_under + v3s16(x,y,z);
+							NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
+							if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
+								BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
+								if (bsm->getOwner() != player->getName())
+									return;
+							}
+						}
+						}
+						}
+					}
+					m_env->getCircuitManager().energise(ENERGY_MAX,player->getPosition(),p_under);
+					ToolItem *titem = (ToolItem*)wield;
+					bool weared_out = titem->addWear(1000);
+					if (weared_out) {
+						InventoryList *mlist = player->inventory.getList("main");
+						mlist->deleteItem(item_i);
+					}
 				}
 			}
 			/*
@@ -2758,7 +2687,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 			try
 			{
-				MapNode n = m_env.getMap().getNode(p_under);
+				MapNode n = m_env->getMap().getNode(p_under);
 				// Get mineral
 				mineral = n.getMineral();
 				// Get material at position
@@ -2779,7 +2708,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				if(cannot_remove_node == false)
 				{
 					// Get node metadata
-					NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
+					NodeMetadata *meta = m_env->getMap().getNodeMetadata(p_under);
 					if(meta && meta->nodeRemovalDisabled() == true)
 					{
 						infostream<<"Server: Not finishing digging: "
@@ -2814,7 +2743,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				for(s16 y=-max_d; !cannot_remove_node && y<=max_d; y++) {
 				for(s16 x=-max_d; !cannot_remove_node && x<=max_d; x++) {
 					test_p = p_under + v3s16(x,y,z);
-					NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
+					NodeMetadata *meta = m_env->getMap().getNodeMetadata(test_p);
 					if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
 						BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
 						if (bsm->getOwner() != player->getName()) {
@@ -2865,13 +2794,13 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				v3s16 test_p;
 				MapNode testnode;
 				test_p = temp_p + v3s16(0,1,0);
-				testnode = m_env.getMap().getNodeNoEx(test_p);
+				testnode = m_env->getMap().getNodeNoEx(test_p);
 				if (testnode.getContent() == CONTENT_AIR) {
 					for(s16 z=-1; !is_farm_swap && z<=1; z++) {
 					for(s16 x=-1; !is_farm_swap && x<=1; x++)
 					{
 						test_p = temp_p + v3s16(x,0,z);
-						testnode = m_env.getMap().getNodeNoEx(test_p);
+						testnode = m_env->getMap().getNodeNoEx(test_p);
 						if (
 							testnode.getContent() == CONTENT_WATERSOURCE
 						) {
@@ -2902,7 +2831,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 
 					std::string p_name = std::string(player->getName());
-					m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
+					m_env->getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
 				}
 				/*
 					Set blocks not sent to far players
@@ -2924,7 +2853,12 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						<<(int)mineral<<std::endl;
 
 				core::list<u16> far_players;
-				MapNode n = m_env.getMap().getNodeNoEx(p_under);
+				MapNode n = m_env->getMap().getNodeNoEx(p_under);
+				if (n.getContent() >= CONTENT_CIRCUIT_POWERSRC_MIN && n.getContent() <= CONTENT_CIRCUIT_POWERSRC_MAX) {
+					m_env->getCircuitManager().energise(ENERGY_MIN,p_under,p_under);
+				}else{
+					m_env->getCircuitManager().disconnect(p_under);
+				}
 				if (
 					n.getContent() >= CONTENT_DOOR_MIN
 					&& n.getContent() <= CONTENT_DOOR_MAX
@@ -2934,19 +2868,19 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						sendRemoveNode(p_under+v3s16(0,-1,0), 0, &far_players, 30);
 						{
 							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-							m_env.getMap().removeNodeAndUpdate(p_under+v3s16(0,-1,0), modified_blocks);
+							m_env->getMap().removeNodeAndUpdate(p_under+v3s16(0,-1,0), modified_blocks);
 						}
 					}else{
 						sendRemoveNode(p_under+v3s16(0,1,0), 0, &far_players, 30);
 						{
 							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-							m_env.getMap().removeNodeAndUpdate(p_under+v3s16(0,1,0), modified_blocks);
+							m_env->getMap().removeNodeAndUpdate(p_under+v3s16(0,1,0), modified_blocks);
 						}
 					}
 					sendRemoveNode(p_under, 0, &far_players, 30);
 				}else{
 					if (n.getContent() == CONTENT_FLOWER_POT) {
-						MapNode a = m_env.getMap().getNodeNoEx(p_under+v3s16(0,1,0));
+						MapNode a = m_env->getMap().getNodeNoEx(p_under+v3s16(0,1,0));
 						if (
 							a.getContent() == CONTENT_FLOWER_ROSE
 							|| a.getContent() == CONTENT_FLOWER_DAFFODIL
@@ -2958,16 +2892,16 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							sendRemoveNode(p_under+v3s16(0,1,0), 0, &far_players, 30);
 							{
 								MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-								m_env.getMap().removeNodeAndUpdate(p_under+v3s16(0,1,0), modified_blocks);
+								m_env->getMap().removeNodeAndUpdate(p_under+v3s16(0,1,0), modified_blocks);
 							}
 						}
 					}
-					MapNode a = m_env.getMap().getNodeNoEx(p_under+v3s16(0,1,0));
+					MapNode a = m_env->getMap().getNodeNoEx(p_under+v3s16(0,1,0));
 					if (a.getContent() == CONTENT_FIRE) {
 						sendRemoveNode(p_under+v3s16(0,1,0), 0, &far_players, 30);
 						{
 							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-							m_env.getMap().removeNodeAndUpdate(p_under+v3s16(0,1,0), modified_blocks);
+							m_env->getMap().removeNodeAndUpdate(p_under+v3s16(0,1,0), modified_blocks);
 						}
 					}
 					if (n.getContent() >= CONTENT_BED_MIN && n.getContent() <= CONTENT_BED_MAX) {
@@ -3233,7 +3167,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				{
 					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 
-					m_env.getMap().removeNodeAndUpdate(p_under, modified_blocks);
+					m_env->getMap().removeNodeAndUpdate(p_under, modified_blocks);
 				}
 				/*
 					Set blocks not sent to far players
@@ -3275,7 +3209,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			for(s16 y=-max_d; y<=max_d; y++) {
 			for(s16 x=-max_d; x<=max_d; x++) {
 				test_p = p_over + v3s16(x,y,z);
-				NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
+				NodeMetadata *meta = m_env->getMap().getNodeMetadata(test_p);
 				if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
 					BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
 					if (bsm->getOwner() != player->getName())
@@ -3292,7 +3226,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			{
 				try{
 					// Don't add a node if this is not a free space
-					MapNode n2 = m_env.getMap().getNode(p_over);
+					MapNode n2 = m_env->getMap().getNode(p_over);
 					bool no_enough_privs =
 							((getPlayerPrivs(player) & PRIV_BUILD)==0);
 					if(no_enough_privs)
@@ -3342,7 +3276,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					for(s16 y=-max_d; y<=max_d; y++) {
 					for(s16 x=-max_d; x<=max_d; x++) {
 						test_p = p_over + v3s16(x,y,z);
-						NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
+						NodeMetadata *meta = m_env->getMap().getNodeMetadata(test_p);
 						if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
 							BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
 							if (bsm->getOwner() != player->getName())
@@ -3471,8 +3405,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					&& n.getContent() <= CONTENT_DOOR_MAX
 					&& (n.getContent()&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK
 				) {
-					MapNode abv = m_env.getMap().getNodeNoEx(p_over+v3s16(0,1,0));
-					MapNode und = m_env.getMap().getNodeNoEx(p_over+v3s16(0,-1,0));
+					MapNode abv = m_env->getMap().getNodeNoEx(p_over+v3s16(0,1,0));
+					MapNode und = m_env->getMap().getNodeNoEx(p_over+v3s16(0,-1,0));
 					if (abv.getContent() == CONTENT_AIR) {
 						n.setContent(n.getContent()&~CONTENT_DOOR_SECT_MASK);
 						MapNode m;
@@ -3484,7 +3418,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 
 							std::string p_name = std::string(player->getName());
-							m_env.getMap().addNodeAndUpdate(p_over+v3s16(0,1,0), m, modified_blocks, p_name);
+							m_env->getMap().addNodeAndUpdate(p_over+v3s16(0,1,0), m, modified_blocks, p_name);
 						}
 					}else if (und.getContent() == CONTENT_AIR) {
 						n.setContent(n.getContent()|CONTENT_DOOR_SECT_MASK);
@@ -3497,7 +3431,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 
 							std::string p_name = std::string(player->getName());
-							m_env.getMap().addNodeAndUpdate(p_over+v3s16(0,-1,0), m, modified_blocks, p_name);
+							m_env->getMap().addNodeAndUpdate(p_over+v3s16(0,-1,0), m, modified_blocks, p_name);
 						}
 					}else{
 						return;
@@ -3534,7 +3468,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 
 					std::string p_name = std::string(player->getName());
-					m_env.getMap().addNodeAndUpdate(p_over, n, modified_blocks, p_name);
+					m_env->getMap().addNodeAndUpdate(p_over, n, modified_blocks, p_name);
 				}
 				/*
 					Set blocks not sent to far players
@@ -3548,6 +3482,12 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					if(client==NULL)
 						continue;
 					client->SetBlocksNotSent(modified_blocks);
+				}
+
+				if (n.getContent() >= CONTENT_CIRCUIT_POWERSRC_MIN && n.getContent() <= CONTENT_CIRCUIT_POWERSRC_MAX) {
+					m_env->getCircuitManager().energise(ENERGY_MAX,p_over,p_over);
+				}else{
+					m_env->getCircuitManager().connect(p_over);
 				}
 
 				/*
@@ -3636,7 +3576,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 
 							std::string p_name = std::string(player->getName());
-							m_env.getMap().addNodeAndUpdate(p_over, n, modified_blocks, p_name);
+							m_env->getMap().addNodeAndUpdate(p_over, n, modified_blocks, p_name);
 						}
 						/*
 							Set blocks not sent to far players
@@ -3675,7 +3615,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 								MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 
 								std::string p_name = std::string(player->getName());
-								m_env.getMap().addNodeAndUpdate(p_over, n, modified_blocks, p_name);
+								m_env->getMap().addNodeAndUpdate(p_over, n, modified_blocks, p_name);
 							}
 							/*
 								Set blocks not sent to far players
@@ -3698,6 +3638,67 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						}
 					}
 				}
+			}else if (
+				item->getName() == std::string("CraftItem")
+				&& (
+					((CraftItem*)item)->getSubName() == std::string("mese_dust")
+				)
+			) {
+				MapNode n = m_env->getMap().getNodeNoEx(p_over);
+				n.setContent(CONTENT_CIRCUIT_MESEWIRE_OFF);
+				core::list<u16> far_players;
+				sendAddNode(p_over, n, 0, &far_players, 30);
+
+				if (g_settings->getBool("creative_mode") == false) {
+					// Delete the right amount of items from the slot
+					u16 dropcount = item->getDropCount();
+
+					// Delete item if all gone
+					if (item->getCount() <= dropcount) {
+						if (item->getCount() < dropcount)
+							infostream<<"WARNING: Server: dropped more items"
+									<<" than the slot contains"<<std::endl;
+
+						InventoryList *ilist = player->inventory.getList("main");
+						if (ilist)
+							// Remove from inventory and send inventory
+							ilist->deleteItem(item_i);
+					}
+					// Else decrement it
+					else{
+						item->remove(dropcount);
+					}
+
+					// Send inventory
+					UpdateCrafting(peer_id);
+					SendInventory(peer_id);
+				}
+
+				/*
+					Add node.
+
+					This takes some time so it is done after the quick stuff
+				*/
+				core::map<v3s16, MapBlock*> modified_blocks;
+				{
+					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+
+					std::string p_name = std::string(player->getName());
+					m_env->getMap().addNodeAndUpdate(p_over, n, modified_blocks, p_name);
+				}
+				/*
+					Set blocks not sent to far players
+				*/
+				for(core::list<u16>::Iterator
+						i = far_players.begin();
+						i != far_players.end(); i++)
+				{
+					u16 peer_id = *i;
+					RemoteClient *client = getClient(peer_id);
+					if(client==NULL)
+						continue;
+					client->SetBlocksNotSent(modified_blocks);
+				}
 			}
 			/*
 				Place other item (not a block)
@@ -3710,7 +3711,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					Check that the block is loaded so that the item
 					can properly be added to the static list too
 				*/
-				MapBlock *block = m_env.getMap().getBlockNoCreateNoEx(blockpos);
+				MapBlock *block = m_env->getMap().getBlockNoCreateNoEx(blockpos);
 				if(block==NULL)
 				{
 					infostream<<"Error while placing object: "
@@ -3741,7 +3742,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				/*
 					Create the object
 				*/
-				ServerActiveObject *obj = item->createSAO(&m_env, 0, pos);
+				ServerActiveObject *obj = item->createSAO(m_env, 0, pos);
 
 				if(obj == NULL)
 				{
@@ -3755,7 +3756,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							<<" at "<<PP(p_over)<<std::endl;
 
 					// Add the object to the environment
-					m_env.addActiveObject(obj);
+					m_env->addActiveObject(obj);
 
 					infostream<<"Placed object"<<std::endl;
 
@@ -3842,7 +3843,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			text += (char)buf[0];
 		}
 
-		NodeMetadata *meta = m_env.getMap().getNodeMetadata(p);
+		NodeMetadata *meta = m_env->getMap().getNodeMetadata(p);
 		if(!meta)
 			return;
 		if(meta->typeId() != CONTENT_SIGN_WALL)
@@ -3854,7 +3855,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				<<" at "<<PP(p)<<std::endl;
 
 		v3s16 blockpos = getNodeBlockPos(p);
-		MapBlock *block = m_env.getMap().getBlockNoCreateNoEx(blockpos);
+		MapBlock *block = m_env->getMap().getBlockNoCreateNoEx(blockpos);
 		if(block)
 		{
 			block->setChangedFlag();
@@ -3964,7 +3965,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						p.X = stoi(fn.next(","));
 						p.Y = stoi(fn.next(","));
 						p.Z = stoi(fn.next(","));
-						NodeMetadata *meta = m_env.getMap().getNodeMetadata(p);
+						NodeMetadata *meta = m_env->getMap().getNodeMetadata(p);
 						if(meta && meta->typeId() == CONTENT_LOCKABLE_CHEST) {
 							LockingChestNodeMetadata *lcm = (LockingChestNodeMetadata*)meta;
 							if (lcm->getOwner() != player->getName())
@@ -3982,7 +3983,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						p.X = stoi(fn.next(","));
 						p.Y = stoi(fn.next(","));
 						p.Z = stoi(fn.next(","));
-						NodeMetadata *meta = m_env.getMap().getNodeMetadata(p);
+						NodeMetadata *meta = m_env->getMap().getNodeMetadata(p);
 						if(meta && meta->typeId() == CONTENT_LOCKABLE_CHEST) {
 							LockingChestNodeMetadata *lcm = (LockingChestNodeMetadata*)meta;
 							if (lcm->getOwner() != player->getName())
@@ -4065,7 +4066,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				str_split(message, L' '),
 				paramstring,
 				this,
-				&m_env,
+				m_env,
 				player,
 				privs);
 
@@ -4278,7 +4279,7 @@ Inventory* Server::getInventory(InventoryContext *c, std::string id)
 		p.X = stoi(fn.next(","));
 		p.Y = stoi(fn.next(","));
 		p.Z = stoi(fn.next(","));
-		NodeMetadata *meta = m_env.getMap().getNodeMetadata(p);
+		NodeMetadata *meta = m_env->getMap().getNodeMetadata(p);
 		if(meta)
 			return meta->getInventory();
 		infostream<<"nodemeta at ("<<p.X<<","<<p.Y<<","<<p.Z<<"): "
@@ -4311,11 +4312,11 @@ void Server::inventoryModified(InventoryContext *c, std::string id)
 		p.Z = stoi(fn.next(","));
 		v3s16 blockpos = getNodeBlockPos(p);
 
-		NodeMetadata *meta = m_env.getMap().getNodeMetadata(p);
+		NodeMetadata *meta = m_env->getMap().getNodeMetadata(p);
 		if(meta)
 			meta->inventoryModified();
 
-		MapBlock *block = m_env.getMap().getBlockNoCreateNoEx(blockpos);
+		MapBlock *block = m_env->getMap().getBlockNoCreateNoEx(blockpos);
 		if(block)
 			block->raiseModified(MOD_STATE_WRITE_NEEDED);
 
@@ -4335,7 +4336,7 @@ core::list<PlayerInfo> Server::getPlayerInfo()
 
 	core::list<PlayerInfo> list;
 
-	core::list<Player*> players = m_env.getPlayers();
+	core::list<Player*> players = m_env->getPlayers();
 
 	core::list<Player*>::Iterator i;
 	for(i = players.begin();
@@ -4348,8 +4349,8 @@ core::list<PlayerInfo> Server::getPlayerInfo()
 		try{
 			// Copy info from connection to info struct
 			info.id = player->peer_id;
-			info.address = m_con.GetPeerAddress(player->peer_id);
-			info.avg_rtt = m_con.GetPeerAvgRTT(player->peer_id);
+			info.address = m_con->GetPeerAddress(player->peer_id);
+			info.avg_rtt = m_con->GetPeerAvgRTT(player->peer_id);
 		}
 		catch(con::PeerNotFoundException &e)
 		{
@@ -4479,7 +4480,7 @@ void Server::SendPlayerInfos()
 	//JMutexAutoLock envlock(m_env_mutex);
 
 	// Get connected players
-	core::list<Player*> players = m_env.getPlayers(true);
+	core::list<Player*> players = m_env->getPlayers(true);
 
 	u32 player_count = players.getSize();
 	u32 datasize = 2+(2+PLAYERNAME_SIZE)*player_count;
@@ -4506,14 +4507,14 @@ void Server::SendPlayerInfos()
 	//JMutexAutoLock conlock(m_con_mutex);
 
 	// Send as reliable
-	m_con.SendToAll(0, data, true);
+	m_con->SendToAll(0, data, true);
 }
 
 void Server::SendInventory(u16 peer_id)
 {
 	DSTACK(__FUNCTION_NAME);
 
-	Player* player = m_env.getPlayer(peer_id);
+	Player* player = m_env->getPlayer(peer_id);
 	assert(player);
 
 	/*
@@ -4532,7 +4533,7 @@ void Server::SendInventory(u16 peer_id)
 	memcpy(&data[2], s.c_str(), s.size());
 
 	// Send as reliable
-	m_con.Send(peer_id, 0, data, true);
+	m_con->Send(peer_id, 0, data, true);
 }
 
 std::string getWieldedItemString(const Player *player)
@@ -4562,7 +4563,7 @@ void Server::SendWieldedItem(const Player* player)
 	std::string s = os.str();
 	SharedBuffer<u8> data((u8*)s.c_str(), s.size());
 
-	m_con.SendToAll(0, data, true);
+	m_con->SendToAll(0, data, true);
 }
 
 void Server::SendPlayerAnim(const Player* player, u8 animation_id)
@@ -4589,7 +4590,7 @@ void Server::SendPlayerItems()
 	DSTACK(__FUNCTION_NAME);
 
 	std::ostringstream os(std::ios_base::binary);
-	core::list<Player *> players = m_env.getPlayers(true);
+	core::list<Player *> players = m_env->getPlayers(true);
 
 	writeU16(os, TOCLIENT_PLAYERITEM);
 	writeU16(os, players.size());
@@ -4605,7 +4606,7 @@ void Server::SendPlayerItems()
 	std::string s = os.str();
 	SharedBuffer<u8> data((u8*)s.c_str(), s.size());
 
-	m_con.SendToAll(0, data, true);
+	m_con->SendToAll(0, data, true);
 }
 
 void Server::SendChatMessage(u16 peer_id, const std::wstring &message)
@@ -4635,7 +4636,7 @@ void Server::SendChatMessage(u16 peer_id, const std::wstring &message)
 	std::string s = os.str();
 	SharedBuffer<u8> data((u8*)s.c_str(), s.size());
 	// Send as reliable
-	m_con.Send(peer_id, 0, data, true);
+	m_con->Send(peer_id, 0, data, true);
 }
 
 void Server::BroadcastChatMessage(const std::wstring &message)
@@ -4656,7 +4657,7 @@ void Server::BroadcastChatMessage(const std::wstring &message)
 
 void Server::SendPlayerHP(Player *player)
 {
-	SendHP(m_con, player->peer_id, player->hp);
+	SendHP(*m_con, player->peer_id, player->hp);
 }
 
 void Server::SendPlayerCookie(Player *player)
@@ -4700,7 +4701,7 @@ void Server::SendMovePlayer(Player *player)
 	std::string s = os.str();
 	SharedBuffer<u8> data((u8*)s.c_str(), s.size());
 	// Send as reliable
-	m_con.Send(player->peer_id, 0, data, true);
+	m_con->Send(player->peer_id, 0, data, true);
 }
 
 void Server::sendRemoveNode(v3s16 p, u16 ignore_id,
@@ -4734,7 +4735,7 @@ void Server::sendRemoveNode(v3s16 p, u16 ignore_id,
 		if(far_players)
 		{
 			// Get player
-			Player *player = m_env.getPlayer(client->peer_id);
+			Player *player = m_env->getPlayer(client->peer_id);
 			if(player)
 			{
 				// If player is far away, only set modified blocks not sent
@@ -4748,7 +4749,7 @@ void Server::sendRemoveNode(v3s16 p, u16 ignore_id,
 		}
 
 		// Send as reliable
-		m_con.Send(client->peer_id, 0, reply, true);
+		m_con->Send(client->peer_id, 0, reply, true);
 	}
 }
 
@@ -4775,7 +4776,7 @@ void Server::sendAddNode(v3s16 p, MapNode n, u16 ignore_id,
 		if(far_players)
 		{
 			// Get player
-			Player *player = m_env.getPlayer(client->peer_id);
+			Player *player = m_env->getPlayer(client->peer_id);
 			if(player)
 			{
 				// If player is far away, only set modified blocks not sent
@@ -4798,7 +4799,7 @@ void Server::sendAddNode(v3s16 p, MapNode n, u16 ignore_id,
 		n.serialize(&reply[8], client->serialization_version);
 
 		// Send as reliable
-		m_con.Send(client->peer_id, 0, reply, true);
+		m_con->Send(client->peer_id, 0, reply, true);
 	}
 }
 
@@ -4863,7 +4864,7 @@ void Server::SendBlockNoLock(u16 peer_id, MapBlock *block, u8 ver)
 	/*
 		Send packet
 	*/
-	m_con.Send(peer_id, 1, reply, true);
+	m_con->Send(peer_id, 1, reply, true);
 }
 
 void Server::SendBlocks(float dtime)
@@ -4915,7 +4916,7 @@ void Server::SendBlocks(float dtime)
 		MapBlock *block = NULL;
 		try
 		{
-			block = m_env.getMap().getBlockNoCreate(q.pos);
+			block = m_env->getMap().getBlockNoCreate(q.pos);
 		}
 		catch(InvalidPositionException &e)
 		{
@@ -4963,7 +4964,7 @@ void Server::HandlePlayerHP(Player *player, s16 damage)
 		RemoteClient *client = getClient(player->peer_id);
 		if(client->net_proto_version >= 3)
 		{
-			SendDeathscreen(m_con, player->peer_id, false, v3f(0,0,0));
+			SendDeathscreen(*m_con, player->peer_id, false, v3f(0,0,0));
 		}
 		else
 		{
@@ -4974,7 +4975,7 @@ void Server::HandlePlayerHP(Player *player, s16 damage)
 
 void Server::RespawnPlayer(Player *player)
 {
-	v3f pos = findSpawnPos(m_env.getServerMap());
+	v3f pos = findSpawnPos(m_env->getServerMap());
 	player->setPosition(pos);
 	player->hp = 20;
 	SendMovePlayer(player);
@@ -4985,7 +4986,7 @@ void Server::UpdateCrafting(u16 peer_id)
 {
 	DSTACK(__FUNCTION_NAME);
 
-	Player* player = m_env.getPlayer(peer_id);
+	Player* player = m_env->getPlayer(peer_id);
 	assert(player);
 
 	/*
@@ -5051,7 +5052,7 @@ std::wstring Server::getStatusString()
 		if(client->serialization_version == SER_FMT_VER_INVALID)
 			continue;
 		// Get player
-		Player *player = m_env.getPlayer(client->peer_id);
+		Player *player = m_env->getPlayer(client->peer_id);
 		// Get name of player
 		std::wstring name = L"unknown";
 		if(player != NULL)
@@ -5060,7 +5061,7 @@ std::wstring Server::getStatusString()
 		os<<name<<L",";
 	}
 	os<<L"}";
-	if(((ServerMap*)(&m_env.getMap()))->isSavingEnabled() == false)
+	if(((ServerMap*)(&m_env->getMap()))->isSavingEnabled() == false)
 		os<<std::endl<<L"# Server: "<<" WARNING: Map saving is disabled.";
 	if(g_settings->get("motd") != "")
 		os<<std::endl<<L"# Server: "<<narrow_to_wide(g_settings->get("motd"));
@@ -5076,7 +5077,7 @@ void Server::saveConfig()
 
 void Server::notifyPlayer(const char *name, const std::wstring msg)
 {
-	Player *player = m_env.getPlayer(name);
+	Player *player = m_env->getPlayer(name);
 	if(!player)
 		return;
 	SendChatMessage(player->peer_id, std::wstring(L"Server: -!- ")+msg);
@@ -5113,7 +5114,7 @@ v3f findSpawnPos(ServerMap &map)
 				-range + (myrand()%(range*2)));
 		v2s16 sectorpos = getNodeSectorPos(nodepos);
 		// Get sector (NOTE: Don't get because it's slow)
-		//m_env.getMap().emergeSector(sectorpos);
+		//m_env->getMap().emergeSector(sectorpos);
 		// Get ground height at point (fallbacks to heightmap function)
 		groundheight = map.findGroundLevel(nodepos);
 		// Don't go underwater
@@ -5151,7 +5152,7 @@ Player *Server::emergePlayer(const char *name, const char *password, u16 peer_id
 	/*
 		Try to get an existing player
 	*/
-	Player *player = m_env.getPlayer(name);
+	Player *player = m_env->getPlayer(name);
 	if(player != NULL)
 	{
 		// If player is already connected, cancel
@@ -5181,7 +5182,7 @@ Player *Server::emergePlayer(const char *name, const char *password, u16 peer_id
 	/*
 		If player with the wanted peer_id already exists, cancel.
 	*/
-	if(m_env.getPlayer(peer_id) != NULL)
+	if(m_env->getPlayer(peer_id) != NULL)
 	{
 		infostream<<"emergePlayer(): Player with wrong name but same"
 				" peer_id already exists"<<std::endl;
@@ -5209,7 +5210,7 @@ Player *Server::emergePlayer(const char *name, const char *password, u16 peer_id
 		infostream<<"Server: Finding spawn place for player \""
 				<<player->getName()<<"\""<<std::endl;
 
-		v3f pos = findSpawnPos(m_env.getServerMap());
+		v3f pos = findSpawnPos(m_env->getServerMap());
 
 		player->setPosition(pos);
 
@@ -5217,7 +5218,7 @@ Player *Server::emergePlayer(const char *name, const char *password, u16 peer_id
 			Add player to environment
 		*/
 
-		m_env.addPlayer(player);
+		m_env->addPlayer(player);
 
 		/*
 			Add stuff to inventory
@@ -5288,7 +5289,7 @@ void Server::handlePeerChange(PeerChange &c)
 		{
 			// Get object
 			u16 id = i.getNode()->getKey();
-			ServerActiveObject* obj = m_env.getActiveObject(id);
+			ServerActiveObject* obj = m_env->getActiveObject(id);
 
 			if(obj && obj->m_known_by_count > 0)
 				obj->m_known_by_count--;
@@ -5297,7 +5298,7 @@ void Server::handlePeerChange(PeerChange &c)
 		// Collect information about leaving in chat
 		std::wstring message;
 		{
-			Player *player = m_env.getPlayer(c.peer_id);
+			Player *player = m_env->getPlayer(c.peer_id);
 			if(player != NULL)
 			{
 				std::wstring name = narrow_to_wide(player->getName());
@@ -5311,12 +5312,12 @@ void Server::handlePeerChange(PeerChange &c)
 
 		/*// Delete player
 		{
-			m_env.removePlayer(c.peer_id);
+			m_env->removePlayer(c.peer_id);
 		}*/
 
 		// Set player client disconnected
 		{
-			Player *player = m_env.getPlayer(c.peer_id);
+			Player *player = m_env->getPlayer(c.peer_id);
 			if(player != NULL)
 				player->peer_id = 0;
 
@@ -5335,7 +5336,7 @@ void Server::handlePeerChange(PeerChange &c)
 					if(client->serialization_version == SER_FMT_VER_INVALID)
 						continue;
 					// Get player
-					Player *player = m_env.getPlayer(client->peer_id);
+					Player *player = m_env->getPlayer(client->peer_id);
 					if(!player)
 						continue;
 					// Get name of player

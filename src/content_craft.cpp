@@ -566,6 +566,21 @@ content_t *getRecipe(InventoryItem *item)
 			}
 			return recipe;
 		}
+
+		// mese dust
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_MESE);
+			defs[defs_init].item = new CraftItem("mese_dust", 2);
+			defs_init++;
+		}
+
+		// PowerPlant
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_MESE);
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLEGRASS);
+			defs[defs_init].item = new MaterialItem(CONTENT_CIRCUIT_POWERPLANT, 1);
+			defs_init++;
+		}
 	}
 	for (std::vector<CraftDefShapeless>::iterator i=shapeless_recipes.begin(); i!=shapeless_recipes.end(); i++) {
 		CraftDefShapeless d = *i;

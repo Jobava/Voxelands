@@ -23,6 +23,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "content_mapnode.h"
 #include "mapnode.h"
 #include "content_nodemeta.h"
+#include "circuit.h"
 #include "settings.h"
 #include "content_craftitem.h"
 #include "content_toolitem.h"
@@ -6075,6 +6076,84 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_BLACK_HEAD)+" 1";
 	content_mapnode_nodebox_bed_foot(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+
+	i = CONTENT_CIRCUIT_MESEWIRE;
+	f = &content_features(i);
+	f->description = std::string("Mese Wire");
+	f->setAllTextures("mese_wire.png");
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_WIRELIKE;
+	f->conductive = true;
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->air_equivalent = true; // grass grows underneath
+	f->solidness = 0; // drawn separately, makes no faces
+	//f->light_source = 1;
+	f->light_source = LIGHT_MAX-1;
+	f->unpowered_node = CONTENT_CIRCUIT_MESEWIRE_OFF;
+	f->dug_item = std::string("CraftItem mese_dust 1");
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new CircuitNodeMetadata();
+	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+
+	i = CONTENT_CIRCUIT_MESEWIRE_OFF;
+	f = &content_features(i);
+	f->description = std::string("Mese Wire");
+	f->setAllTextures("mese_wire.png");
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_WIRELIKE;
+	f->conductive = true;
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->air_equivalent = true; // grass grows underneath
+	f->solidness = 0; // drawn separately, makes no faces
+	f->powered_node = CONTENT_CIRCUIT_MESEWIRE;
+	f->dug_item = std::string("CraftItem mese_dust 1");
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new CircuitNodeMetadata();
+	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+
+	i = CONTENT_CIRCUIT_POWERPLANT;
+	f = &content_features(i);
+	f->description = std::string("Power Plant");
+	f->setInventoryTexture("junglegrass.png");
+	f->setAllTextures("junglegrass.png");
+	f->setAllTextureFlags(0);
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_PLANTLIKE_LGE;
+	f->conductive = true;
+	f->energy_drop = 0;
+	f->air_equivalent = false; // grass grows underneath
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->walkable = false;
+	//f->light_source = LIGHT_MAX-1;
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new CircuitNodeMetadata();
+	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
+
+	i = CONTENT_CIRCUIT_POWERPLANT_OFF;
+	f = &content_features(i);
+	f->description = std::string("Power Plant");
+	f->setInventoryTexture("junglegrass.png");
+	f->setAllTextures("junglegrass.png");
+	f->setAllTextureFlags(0);
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_PLANTLIKE_LGE;
+	f->conductive = true;
+	f->energy_drop = 0;
+	f->air_equivalent = false; // grass grows underneath
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_POWERPLANT)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->walkable = false;
+	f->light_source = 2;
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new CircuitNodeMetadata();
+	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
 
 	// NOTE: Remember to add frequently used stuff to the texture atlas in tile.cpp
 

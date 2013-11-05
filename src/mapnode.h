@@ -190,6 +190,9 @@ struct ContentFeatures
 	bool conductive;
 	// How the current drops by on this conductive node
 	u8 energy_drop;
+	// these are swap value for when the node is powered/unpowered
+	content_t powered_node;
+	content_t unpowered_node;
 	// Whether the node has no liquid, source liquid or flowing liquid
 	enum LiquidType liquid_type;
 	// If true, param2 is set to direction when placed. Used for torches.
@@ -283,6 +286,8 @@ struct ContentFeatures
 		jumpable = true;
 		conductive = false;
 		energy_drop = 1;
+		unpowered_node = CONTENT_IGNORE;
+		powered_node = CONTENT_IGNORE;
 		liquid_type = LIQUID_NONE;
 		wall_mounted = false;
 		air_equivalent = false;

@@ -177,6 +177,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_ROUGHSTONEBLOCK 0x8CD
 #define CONTENT_STEAM 0x8CE
 #define CONTENT_INCINERATOR 0x8CF
+#define CONTENT_TNT_OFF 0x8D0
 // glass pane
 #define CONTENT_GLASS_PANE 0x900
 #define CONTENT_GLASS_PANE_BLUE 0x901
@@ -383,7 +384,15 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_CIRCUIT_LAMP 0xF40
 #define CONTENT_CIRCUIT_LAMP_OFF 0xF41
 
-// circuits - MASKs
+// circuits - MASKs and control data
 #define CONTENT_CIRCUIT_OFF_MASK 0x001
+#define CONTENT_CIRCUIT_MIN 0xF00
+#define CONTENT_CIRCUIT_MAX 0xFFF
+#define CONTENT_CIRCUIT_WIRE_MIN 0xF00
+#define CONTENT_CIRCUIT_WIRE_MAX 0xF1F
+#define CONTENT_CIRCUIT_POWERSRC_MIN 0xF20
+#define CONTENT_CIRCUIT_POWERSRC_MAX 0xF2F
+#define CONTENT_CIRCUIT_GADGET_MIN 0xF40
+#define CONTENT_CIRCUIT_GADGET_MAX 0xFFF
 
 #endif

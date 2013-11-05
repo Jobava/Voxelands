@@ -391,7 +391,7 @@ public:
 	// Environment must be locked when called
 	void setTimeOfDay(u32 time)
 	{
-		m_env.setTimeOfDay(time);
+		m_env->setTimeOfDay(time);
 		m_time_of_day_send_timer = 0;
 	}
 
@@ -491,7 +491,7 @@ public:
 
 	Address getPeerAddress(u16 peer_id)
 	{
-		return m_con.GetPeerAddress(peer_id);
+		return m_con->GetPeerAddress(peer_id);
 	}
 
 	// Envlock and conlock should be locked when calling this
@@ -566,7 +566,7 @@ private:
 	// When called, environment mutex should be locked
 	std::string getPlayerName(u16 peer_id)
 	{
-		Player *player = m_env.getPlayer(peer_id);
+		Player *player = m_env->getPlayer(peer_id);
 		if(player == NULL)
 			return "[id="+itos(peer_id);
 		return player->getName();
@@ -605,11 +605,11 @@ private:
 	// environment shall be locked first.
 
 	// Environment
-	ServerEnvironment m_env;
+	ServerEnvironment *m_env;
 	JMutex m_env_mutex;
 
 	// Connection
-	con::Connection m_con;
+	con::Connection *m_con;
 	JMutex m_con_mutex;
 	// Connected clients (behind the con mutex)
 	core::map<u16, RemoteClient*> m_clients;
@@ -630,9 +630,9 @@ private:
 	JMutex m_step_dtime_mutex;
 
 	// The server mainly operates in this thread
-	ServerThread m_thread;
+	ServerThread *m_thread;
 	// This thread fetches and generates map
-	EmergeThread m_emergethread;
+	EmergeThread *m_emergethread;
 	// Queue of block coordinates to be processed by the emerge thread
 	BlockEmergeQueue m_emerge_queue;
 

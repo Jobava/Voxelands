@@ -39,5 +39,3 @@ ServerActiveObject* item_craft_create_object(const std::string &subname,
 
 	return NULL;
 }
-
-

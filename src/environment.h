@@ -35,6 +35,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "common_irrlicht.h"
 #include "player.h"
 #include "map.h"
+#include "circuit.h"
 #include <ostream>
 #include "utility.h"
 #include "activeobject.h"
@@ -135,6 +136,11 @@ public:
 	Map & getMap()
 	{
 		return *m_map;
+	}
+
+	CircuitManager & getCircuitManager()
+	{
+		return *m_circuit;
 	}
 
 	ServerMap & getServerMap()
@@ -267,6 +273,20 @@ private:
 	void deactivateFarObjects(bool force_delete);
 
 	/*
+		wrappers for node place/remove that allow for circuits
+	*/
+	void addNode(v3s16 p, MapNode n)
+	{
+		m_map->addNodeWithEvent(p,n);
+		m_circuit->connect(p);
+	}
+	void removeNode(v3s16 p)
+	{
+		m_circuit->disconnect(p);
+		m_map->removeNodeWithEvent(p);
+	}
+
+	/*
 		Member variables
 	*/
 
@@ -274,6 +294,8 @@ private:
 	ServerMap *m_map;
 	// Pointer to server (which is handling this environment)
 	Server *m_server;
+	// Circuits
+	CircuitManager *m_circuit;
 	// Active object list
 	core::map<u16, ServerActiveObject*> m_active_objects;
 	// Outgoing network message buffer for active objects
