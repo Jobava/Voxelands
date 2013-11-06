@@ -2660,8 +2660,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					}
 				}
 			}
-			if (is_farm_swap)
-			{
+			if (is_farm_swap) {
 				MapNode n = m_env.getMap().getNodeNoEx(p_under);
 				n.setContent(CONTENT_FARM_DIRT);
 
@@ -2696,9 +2695,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						continue;
 					client->SetBlocksNotSent(modified_blocks);
 				}
-			}
-			else
-			{
+			}else{
 
 				actionstream<<player->getName()<<" digs "<<PP(p_under)
 						<<", gets material "<<(int)material<<", mineral "
@@ -2924,42 +2921,50 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						}
 					}
 
-					if(item != NULL)
-					{
-						// Add a item to inventory
-						player->inventory.addItem("main", item);
-
-						// Send inventory
-						UpdateCrafting(player->peer_id);
-						SendInventory(player->peer_id);
-					}
-
-					item = NULL;
-
-					if(mineral != MINERAL_NONE)
-					  item = getDiggedMineralItem(mineral);
-
-					// If not mineral
-					if(item == NULL)
-					{
-						std::string &extra_dug_s = content_features(material).extra_dug_item;
-						s32 extra_rarity = content_features(material).extra_dug_item_rarity;
-						if(extra_dug_s != "" && extra_rarity != 0
-						   && myrand() % extra_rarity == 0)
+					/* more attempts to stop water/lava being dug */
+					if (
+						material != CONTENT_WATERSOURCE
+						&& material != CONTENT_LAVASOURCE
+						&& material != CONTENT_WATER
+						&& material != CONTENT_LAVA
+					) {
+						if(item != NULL)
 						{
-							std::istringstream is(extra_dug_s, std::ios::binary);
-							item = InventoryItem::deSerialize(is);
+							// Add a item to inventory
+							player->inventory.addItem("main", item);
+
+							// Send inventory
+							UpdateCrafting(player->peer_id);
+							SendInventory(player->peer_id);
 						}
-					}
 
-					if(item != NULL)
-					{
-						// Add a item to inventory
-						player->inventory.addItem("main", item);
+						item = NULL;
 
-						// Send inventory
-						UpdateCrafting(player->peer_id);
-						SendInventory(player->peer_id);
+						if(mineral != MINERAL_NONE)
+						  item = getDiggedMineralItem(mineral);
+
+						// If not mineral
+						if(item == NULL)
+						{
+							std::string &extra_dug_s = content_features(material).extra_dug_item;
+							s32 extra_rarity = content_features(material).extra_dug_item_rarity;
+							if(extra_dug_s != "" && extra_rarity != 0
+							   && myrand() % extra_rarity == 0)
+							{
+								std::istringstream is(extra_dug_s, std::ios::binary);
+								item = InventoryItem::deSerialize(is);
+							}
+						}
+
+						if(item != NULL)
+						{
+							// Add a item to inventory
+							player->inventory.addItem("main", item);
+
+							// Send inventory
+							UpdateCrafting(player->peer_id);
+							SendInventory(player->peer_id);
+						}
 					}
 				}
 
