@@ -2538,6 +2538,10 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				if(block)
 					block->raiseModified(MOD_STATE_WRITE_NEEDED);
 				setBlockNotSent(blockpos);
+			}else if (n.getContent() == CONTENT_CIRCUIT_SWITCH) {
+					m_env->getCircuitManager().energise(ENERGY_MIN,p_under,p_under);
+			}else if (n.getContent() == CONTENT_CIRCUIT_SWITCH_OFF) {
+					m_env->getCircuitManager().energise(ENERGY_MAX,p_under,p_under);
 			}else if (content_features(n).param_type == CPT_FACEDIR_SIMPLE || content_features(n).param2_type == CPT_FACEDIR_SIMPLE) {
 				InventoryItem *wield = (InventoryItem*)player->getWieldItem();
 				if (
@@ -2812,7 +2816,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				}
 			}
 			if (is_farm_swap) {
-				MapNode n = m_env.getMap().getNodeNoEx(p_under);
+				MapNode n = m_env->getMap().getNodeNoEx(p_under);
 				n.setContent(CONTENT_FARM_DIRT);
 
 				actionstream<<player->getName()<<" ploughs "<<PP(p_under)
@@ -3699,6 +3703,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						continue;
 					client->SetBlocksNotSent(modified_blocks);
 				}
+				m_env->getCircuitManager().connect(p_over);
 			}
 			/*
 				Place other item (not a block)

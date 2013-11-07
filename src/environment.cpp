@@ -1504,7 +1504,7 @@ void ServerEnvironment::step(float dtime)
 					Player *nearest = getNearestConnectedPlayer(pp);
 					if (nearest == NULL || nearest->getPosition().getDistanceFrom(pp*BS)/BS > 6.0) {
 						n.setContent(CONTENT_MESE);
-						m_map->addNodeWithEvent(p, n);
+						addNode(p, n);
 					}
 				}
 				/*

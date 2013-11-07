@@ -20,6 +20,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #ifndef CONTENT_NODEMETA_HEADER
 #define CONTENT_NODEMETA_HEADER
 
+#include <map>
 #include "nodemetadata.h"
 
 class Inventory;
@@ -119,8 +120,17 @@ public:
 	virtual std::string getOwner(){ return m_text; }
 	virtual void setOwner(std::string t){ m_text = t; }
 
+	virtual bool energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos);
+	virtual u8 getEnergy()
+	{
+		return m_energy;
+	}
+	virtual std::map<v3s16, u8> *getSources() {return &m_sources;}
+
 private:
 	std::string m_text;
+	u8 m_energy;
+	std::map<v3s16, u8> m_sources;
 };
 
 class FurnaceNodeMetadata : public NodeMetadata
@@ -186,6 +196,7 @@ private:
 	float m_time;
 };
 
+
 class IncineratorNodeMetadata : public NodeMetadata
 {
 public:
@@ -225,6 +236,30 @@ public:
 
 private:
 	Inventory *m_inventory;
+};
+
+class CircuitNodeMetadata : public NodeMetadata
+{
+public:
+	CircuitNodeMetadata();
+	~CircuitNodeMetadata();
+
+	virtual u16 typeId() const;
+	static NodeMetadata* create(std::istream &is);
+	virtual NodeMetadata* clone();
+	virtual void serializeBody(std::ostream &os);
+	virtual bool step(float dtime) {return false;};
+
+	virtual bool energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos);
+	virtual u8 getEnergy()
+	{
+		return m_energy;
+	}
+	virtual std::map<v3s16, u8> *getSources() {return &m_sources;}
+
+private:
+	u8 m_energy;
+	std::map<v3s16, u8> m_sources;
 };
 
 #endif

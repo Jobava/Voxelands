@@ -230,6 +230,7 @@ LockedDoorNodeMetadata proto_LockedDoorNodeMetadata;
 
 LockedDoorNodeMetadata::LockedDoorNodeMetadata()
 {
+	m_sources.clear();
 	NodeMetadata::registerType(typeId(), create);
 }
 LockedDoorNodeMetadata::~LockedDoorNodeMetadata()
@@ -243,6 +244,22 @@ NodeMetadata* LockedDoorNodeMetadata::create(std::istream &is)
 {
 	LockedDoorNodeMetadata *d = new LockedDoorNodeMetadata();
 	d->setOwner(deSerializeString(is));
+	int temp;
+	is>>temp;
+	d->m_energy = temp;
+	int i;
+	is>>i;
+	v3s16 p;
+	for (; i > 0; i--) {
+		is>>temp;
+		p.X = temp;
+		is>>temp;
+		p.Y = temp;
+		is>>temp;
+		p.Z = temp;
+		is>>temp;
+		d->m_sources[p] = temp;
+	}
 	return d;
 }
 NodeMetadata* LockedDoorNodeMetadata::clone()
@@ -253,10 +270,38 @@ NodeMetadata* LockedDoorNodeMetadata::clone()
 void LockedDoorNodeMetadata::serializeBody(std::ostream &os)
 {
 	os<<serializeString(m_text);
+	os<<itos(m_energy) << " ";
+	os<<itos(m_sources.size()) << " ";
+	for (std::map<v3s16,u8>::iterator i = m_sources.begin(); i != m_sources.end(); i++) {
+		os<<itos(i->first.X) << " ";
+		os<<itos(i->first.Y) << " ";
+		os<<itos(i->first.Z) << " ";
+		os<<itos(i->second) << " ";
+	}
 }
 std::string LockedDoorNodeMetadata::infoText()
 {
 	return std::string("Locked Door owned by '")+m_text+"'";
+}
+bool LockedDoorNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
+{
+printf("%s %s %d\n",__FILE__,__FUNCTION__,__LINE__);
+	if (m_sources[powersrc] == level)
+		return true;
+printf("%s %s %d\n",__FILE__,__FUNCTION__,__LINE__);
+	m_sources[powersrc] = level;
+	if (!level || m_energy < level) {
+		m_energy = level;
+		if (!level) {
+			for (std::map<v3s16,u8>::iterator i = m_sources.begin(); i != m_sources.end(); i++) {
+				u8 v = i->second;
+				if (v > m_energy)
+					m_energy = v;
+			}
+		}
+	}
+printf("%s %s %d\n",__FILE__,__FUNCTION__,__LINE__);
+	return true;
 }
 
 /*
@@ -478,7 +523,7 @@ std::string FurnaceNodeMetadata::getInventoryDrawSpecString()
 }
 
 /*
-	LockedDoorNodeMetadata
+	TNTNodeMetadata
 */
 
 // Prototype
@@ -611,13 +656,6 @@ std::string IncineratorNodeMetadata::getInventoryDrawSpecString()
 		"list[current_player;main;0,3;8,4;]";
 }
 
-
-
-
-
-
-
-
 /*
 	CraftGuideNodeMetadata
 */
@@ -727,4 +765,79 @@ std::string CraftGuideNodeMetadata::getInventoryDrawSpecString()
 		"list[current_name;recipe;0,3;3,3;]"
 		"list[current_name;result;1,7;1,1;]";
 		//"list[current_name;furnace;1,9;1,1;]";
+}
+
+/*
+	CircuitNodeMetadata
+*/
+
+// Prototype
+CircuitNodeMetadata proto_CircuitNodeMetadata;
+
+CircuitNodeMetadata::CircuitNodeMetadata():
+	m_energy(0)
+{
+	m_sources.clear();
+	NodeMetadata::registerType(typeId(), create);
+}
+CircuitNodeMetadata::~CircuitNodeMetadata()
+{
+}
+u16 CircuitNodeMetadata::typeId() const
+{
+	return CONTENT_CIRCUIT_MESEWIRE;
+}
+NodeMetadata* CircuitNodeMetadata::create(std::istream &is)
+{
+	CircuitNodeMetadata *d = new CircuitNodeMetadata();
+	int temp;
+	is>>temp;
+	d->m_energy = temp;
+	int i;
+	is>>i;
+	v3s16 p;
+	for (; i > 0; i--) {
+		is>>temp;
+		p.X = temp;
+		is>>temp;
+		p.Y = temp;
+		is>>temp;
+		p.Z = temp;
+		is>>temp;
+		d->m_sources[p] = temp;
+	}
+	return d;
+}
+NodeMetadata* CircuitNodeMetadata::clone()
+{
+	CircuitNodeMetadata *d = new CircuitNodeMetadata();
+	return d;
+}
+void CircuitNodeMetadata::serializeBody(std::ostream &os)
+{
+	os<<itos(m_energy) << " ";
+	os<<itos(m_sources.size()) << " ";
+	for (std::map<v3s16,u8>::iterator i = m_sources.begin(); i != m_sources.end(); i++) {
+		os<<itos(i->first.X) << " ";
+		os<<itos(i->first.Y) << " ";
+		os<<itos(i->first.Z) << " ";
+		os<<itos(i->second) << " ";
+	}
+}
+bool CircuitNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
+{
+	if (m_sources[powersrc] == level)
+		return true;
+	m_sources[powersrc] = level;
+	if (!level || m_energy < level) {
+		m_energy = level;
+		if (!level) {
+			for (std::map<v3s16,u8>::iterator i = m_sources.begin(); i != m_sources.end(); i++) {
+				u8 v = i->second;
+				if (v > m_energy)
+					m_energy = v;
+			}
+		}
+	}
+	return true;
 }

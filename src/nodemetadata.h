@@ -23,6 +23,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "common_irrlicht.h"
 #include <string>
 #include <iostream>
+#include <map>
 
 #define ENERGY_MAX 16
 #define ENERGY_MIN 0
@@ -91,6 +92,7 @@ public:
 		return energise(level,p,s,pos);
 	}
 	virtual u8 getEnergy() {return ENERGY_MIN;}
+	virtual std::map<v3s16, u8> *getSources() {return NULL;}
 
 protected:
 	static void registerType(u16 id, Factory f);

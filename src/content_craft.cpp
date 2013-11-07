@@ -581,6 +581,26 @@ content_t *getRecipe(InventoryItem *item)
 			defs[defs_init].item = new MaterialItem(CONTENT_CIRCUIT_POWERPLANT, 1);
 			defs_init++;
 		}
+
+		// electric lamp
+		{
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS);
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "lump_of_quartz");
+			defs[defs_init].specs[5] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS);
+			defs[defs_init].specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS);
+			defs[defs_init].item = new MaterialItem(CONTENT_CIRCUIT_LAMP, 2);
+			defs_init++;
+		}
+
+		// switch
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "mese_dust");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_STONE);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "quartz_dust");
+			defs[defs_init].item = new MaterialItem(CONTENT_CIRCUIT_SWITCH, 1);
+			defs_init++;
+		}
 	}
 	for (std::vector<CraftDefShapeless>::iterator i=shapeless_recipes.begin(); i!=shapeless_recipes.end(); i++) {
 		CraftDefShapeless d = *i;

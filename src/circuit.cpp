@@ -19,57 +19,10 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>
 ************************************************************************/
 
+#include "content_mapnode.h"
+#include "content_nodemeta.h"
 #include "circuit.h"
 #include "environment.h"
-
-/* default metadata for circuit nodes */
-CircuitNodeMetadata::CircuitNodeMetadata():
-	m_energy(0)
-{
-	m_sources.clear();
-	NodeMetadata::registerType(typeId(), create);
-}
-CircuitNodeMetadata::~CircuitNodeMetadata()
-{
-}
-u16 CircuitNodeMetadata::typeId() const
-{
-	return CONTENT_CIRCUIT_MESEWIRE;
-}
-NodeMetadata* CircuitNodeMetadata::create(std::istream &is)
-{
-	CircuitNodeMetadata *d = new CircuitNodeMetadata();
-	int temp;
-	is>>temp;
-	d->m_energy = temp;
-	return d;
-}
-NodeMetadata* CircuitNodeMetadata::clone()
-{
-	CircuitNodeMetadata *d = new CircuitNodeMetadata();
-	return d;
-}
-void CircuitNodeMetadata::serializeBody(std::ostream &os)
-{
-	os<<itos(m_energy) << " ";
-}
-bool CircuitNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
-{
-	if (m_sources[powersrc] == level)
-		return true;
-	m_sources[powersrc] = level;
-	if (!level || m_energy < level) {
-		m_energy = level;
-		if (!level) {
-			for (std::map<v3s16,u8>::iterator i = m_sources.begin(); i != m_sources.end(); i++) {
-				u8 v = i->second;
-				if (v > m_energy)
-					m_energy = v;
-			}
-		}
-	}
-	return true;
-}
 
 /* CircuitManager */
 
@@ -89,7 +42,7 @@ bool CircuitManager::energise(u8 level, v3s16 powersrc, v3s16 pos)
 		return propogate(level,powersrc,powersrc,pos);
 	/* if it's not conductive, check if it's flammable */
 	if (content_features(n).conductive == false) {
-		if (level < ENERGY_MAX-1 || content_features(n).flammable != 2)
+		if (level < ENERGY_HALF || content_features(n).flammable != 2)
 			return false;
 		return propogate(level,powersrc,powersrc,pos);
 	}
@@ -100,7 +53,6 @@ bool CircuitManager::energise(u8 level, v3s16 powersrc, v3s16 pos)
 		return false;
 	if (meta->getEnergy() != level)
 		return false;
-
 	return propogate(level,powersrc,powersrc,pos);
 }
 
@@ -112,7 +64,7 @@ bool CircuitManager::propogate(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 
 
 	/* if it's not conductive, check if it's flammable */
 	if (content_features(n).conductive == false) {
-		if (level < ENERGY_MAX-1 || content_features(n).flammable != 2)
+		if (level < ENERGY_HALF || content_features(n).flammable != 2)
 			return false;
 		n = map.getNodeNoEx(pos+v3s16(0,1,0));
 		if (n.getContent() != CONTENT_AIR && content_features(n).flammable == 0)
@@ -121,16 +73,18 @@ bool CircuitManager::propogate(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 
 		map.addNodeWithEvent(pos+v3s16(0,1,0),n);
 		return false;
 	}
+	meta = map.getNodeMetadata(pos);
+	if (!meta)
+		return false;
 
+printf("%s %s %d\n",__FILE__,__FUNCTION__,__LINE__);
 	/* if we're not sending 0 energy (power off), decrement the energy
 	 * by the node's energy_drop value */
 	if (level > ENERGY_MIN) {
-		meta = map.getNodeMetadata(pos);
-		if (!meta)
-			return false;
 		if (pos != powersrc) {
-			if (meta->getEnergy() >= level)
+			if (meta->getEnergy() >= level) {
 				return false;
+			}
 		}
 		if (content_features(n).powered_node != CONTENT_IGNORE) {
 			n.setContent(content_features(n).powered_node);
@@ -148,9 +102,6 @@ bool CircuitManager::propogate(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 
 		if (level <= ENERGY_MIN)
 			return false;
 	}else{
-		meta = map.getNodeMetadata(pos);
-		if (!meta)
-			return false;
 		if (pos != powersrc) {
 			if (meta->getEnergy() == ENERGY_MIN)
 				return false;
@@ -242,10 +193,119 @@ bool CircuitManager::connect(v3s16 pos)
 	Map &map = m_env->getMap();
 	MapNode n = map.getNodeNoEx(pos);
 	NodeMetadata *meta = map.getNodeMetadata(pos);
+	NodeMetadata *nmeta;
 	content_t c = n.getContent();
 
+printf("%s %s %d\n",__FILE__,__FUNCTION__,__LINE__);
 	if (content_features(c).conductive) {
+		if (n.getContent() >= CONTENT_CIRCUIT_POWERSRC_MIN && n.getContent() <= CONTENT_CIRCUIT_POWERSRC_MAX)
+			return energise(ENERGY_MAX,pos,pos);
+		std::map<v3s16, u8> *sources;
+		std::map<v3s16, u8> csources;
+		v3s16 p;
+		MapNode pn;
+		for(s16 x=-1; x<=1; x++)
+		for(s16 y=-1; y<=1; y++)
+		for(s16 z=-1; z<=1; z++)
+		{
+			if (!x && !y && !z)
+				continue;
+			p = pos+v3s16(x,y,z);
+			pn = map.getNodeNoEx(p);
+			if (content_features(pn).conductive == false)
+				continue;
+			nmeta = map.getNodeMetadata(p);
+			if (!nmeta)
+				continue;
+			sources = nmeta->getSources();
+			if (!sources)
+				continue;
+			csources = *sources;
+			for (std::map<v3s16,u8>::iterator i = csources.begin(); i != csources.end(); i++) {
+				u8 v = i->second-content_features(pn).energy_drop;
+				propogate(v,i->first,p,pos);
+			}
+		}
 	}else{
+		std::map<v3s16, u8> *sources;
+		std::map<v3s16, u8> csources;
+		std::vector<v3s16> unique_sources;
+		v3s16 p;
+		MapNode pn;
+		v3s16 s;
+		MapNode sn;
+		unique_sources.clear();
+		// collect sources
+		for(s16 x=-1; x<=1; x++)
+		for(s16 y=-1; y<=1; y++)
+		for(s16 z=-1; z<=1; z++)
+		{
+			if (!x && !y && !z)
+				continue;
+			p = pos+v3s16(x,y,z);
+			pn = map.getNodeNoEx(p);
+			if (content_features(pn).conductive == false)
+				continue;
+			nmeta = map.getNodeMetadata(p);
+			if (!nmeta)
+				continue;
+			sources = nmeta->getSources();
+			if (!sources)
+				continue;
+			csources = *sources;
+			for (std::map<v3s16,u8>::iterator i = csources.begin(); i != csources.end(); i++) {
+printf("%s %s %d (%d,%d,%d)\n",__FILE__,__FUNCTION__,__LINE__,i->first.X,i->first.Y,i->first.Z);
+				s = i->first;
+				sn = map.getNodeNoEx(s);
+				if (content_features(sn).conductive == false)
+					continue;
+printf("%s %s %d (%d,%d,%d)\n",__FILE__,__FUNCTION__,__LINE__,i->first.X,i->first.Y,i->first.Z);
+				meta = map.getNodeMetadata(s);
+				if (!meta)
+					continue;
+printf("%s %s %d (%d,%d,%d)\n",__FILE__,__FUNCTION__,__LINE__,i->first.X,i->first.Y,i->first.Z);
+				if (meta->getEnergy() == ENERGY_MIN)
+					continue;
+printf("%s %s %d (%d,%d,%d)\n",__FILE__,__FUNCTION__,__LINE__,i->first.X,i->first.Y,i->first.Z);
+				bool have = false;
+				for (std::vector<v3s16>::iterator j = unique_sources.begin(); j != unique_sources.end(); j++) {
+					if ((*j) == s) {
+						have = true;
+						break;
+					}
+				}
+printf("%s %s %d (%d,%d,%d) %d (%d,%d,%d)\n",__FILE__,__FUNCTION__,__LINE__,i->first.X,i->first.Y,i->first.Z,(int)have,s.X,s.Y,s.Z);
+				if (!have)
+					unique_sources.push_back(s);
+			}
+		}
+printf("%s %s %d %lu\n",__FILE__,__FUNCTION__,__LINE__,unique_sources.size());
+		// propogate deenergise
+		for(s16 x=-1; x<=1; x++)
+		for(s16 y=-1; y<=1; y++)
+		for(s16 z=-1; z<=1; z++)
+		{
+			if (!x && !y && !z)
+				continue;
+			p = pos+v3s16(x,y,z);
+			pn = map.getNodeNoEx(p);
+			if (content_features(pn).conductive == false)
+				continue;
+			nmeta = map.getNodeMetadata(p);
+			if (!nmeta)
+				continue;
+			sources = nmeta->getSources();
+			if (!sources)
+				continue;
+			csources = *sources;
+			for (std::map<v3s16,u8>::iterator i = csources.begin(); i != csources.end(); i++) {
+				propogate(ENERGY_MIN,i->first,pos,p);
+			}
+		}
+		//energise sources
+		for (std::vector<v3s16>::iterator j = unique_sources.begin(); j != unique_sources.end(); j++) {
+			energise(ENERGY_MAX,*j,*j);
+		}
 	}
 
 	return false; //propogate(level,powersrc,powersrc,pos);
@@ -255,8 +315,20 @@ bool CircuitManager::disconnect(v3s16 pos)
 {
 	Map &map = m_env->getMap();
 	MapNode n;
-	NodeMetadata *meta = map.getNodeMetadata(pos);
+	//NodeMetadata *meta = map.getNodeMetadata(pos);
 	content_t c = n.getContent();
+
+	if (content_features(c).conductive) {
+		if (n.getContent() >= CONTENT_CIRCUIT_POWERSRC_MIN && n.getContent() <= CONTENT_CIRCUIT_POWERSRC_MAX)
+			return energise(ENERGY_MIN,pos,pos);
+	}else{
+		MapNode n = map.getNodeNoEx(pos + v3s16(0,-1,0));
+		n = map.getNodeNoEx(pos + v3s16(0,1,0));
+		n = map.getNodeNoEx(pos + v3s16(-1,0,0));
+		n = map.getNodeNoEx(pos + v3s16(1,0,0));
+		n = map.getNodeNoEx(pos + v3s16(0,0,-1));
+		n = map.getNodeNoEx(pos + v3s16(0,0,1));
+	}
 
 	return false; //propogate(level,powersrc,powersrc,pos);
 }

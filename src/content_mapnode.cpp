@@ -2295,6 +2295,18 @@ void content_mapnode_init()
 	f->light_source = 10;
 	setStoneLikeDiggingProperties(f->digging_properties, 0.5);
 
+	i = CONTENT_MESE_DIGGING;
+	f = &content_features(i);
+	f->description = std::string("Mese");
+	f->setAllTextures("mese.png");
+	f->setInventoryTextureCube("mese.png", "mese.png", "mese.png");
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MESE)+" 1";
+	f->light_source = 10;
+	setStoneLikeDiggingProperties(f->digging_properties, 0.5);
+
 	i = CONTENT_SPONGE;
 	f = &content_features(i);
 	f->description = std::string("Sponge");
@@ -3899,7 +3911,6 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
-	f->often_contains_mineral = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_stair(f);
 	f->setInventoryTextureNodeBox(i,"stone.png", "stone.png", "stone.png");
@@ -4126,6 +4137,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->conductive = true;
+	f->powered_node = CONTENT_STEEL_DOOR_LB_OPEN;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
 	content_mapnode_nodebox_door(f);
@@ -4147,6 +4159,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->conductive = true;
+	f->powered_node = CONTENT_STEEL_DOOR_LT_OPEN;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_door(f);
@@ -4261,6 +4274,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->conductive = true;
+	f->powered_node = CONTENT_STEEL_W_DOOR_LB_OPEN;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
 	content_mapnode_nodebox_door(f);
@@ -4283,6 +4297,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->conductive = true;
+	f->powered_node = CONTENT_STEEL_W_DOOR_LT_OPEN;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_doorw(f);
@@ -4395,6 +4410,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->conductive = true;
+	f->powered_node = CONTENT_STEEL_DOOR_RB_OPEN;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
 	content_mapnode_nodebox_door(f);
@@ -4416,6 +4432,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->conductive = true;
+	f->powered_node = CONTENT_STEEL_DOOR_RT_OPEN;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_door(f);
@@ -4485,6 +4502,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->conductive = true;
+	f->powered_node = CONTENT_STEEL_W_DOOR_RB_OPEN;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
 	content_mapnode_nodebox_door(f);
@@ -4507,6 +4525,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->conductive = true;
+	f->powered_node = CONTENT_STEEL_W_DOOR_RT_OPEN;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_doorw(f);
@@ -4609,6 +4628,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->conductive = true;
+	f->unpowered_node = CONTENT_STEEL_DOOR_LB;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_DOOR_LT)+" 1";
 	content_mapnode_nodebox_doorol(f);
@@ -4629,6 +4649,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->conductive = true;
+	f->unpowered_node = CONTENT_STEEL_DOOR_LT;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_DOOR_LT)+" 1";
 	content_mapnode_nodebox_doorol(f);
@@ -4689,6 +4710,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->conductive = true;
+	f->unpowered_node = CONTENT_STEEL_W_DOOR_LB;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_W_DOOR_LT)+" 1";
 	content_mapnode_nodebox_doorol(f);
@@ -4709,6 +4731,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->conductive = true;
+	f->unpowered_node = CONTENT_STEEL_W_DOOR_LT;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_W_DOOR_LT)+" 1";
 	content_mapnode_nodebox_doorwol(f);
@@ -4819,6 +4842,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->conductive = true;
+	f->unpowered_node = CONTENT_STEEL_DOOR_RB;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_DOOR_RT)+" 1";
 	content_mapnode_nodebox_dooror(f);
@@ -4841,6 +4865,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->conductive = true;
+	f->unpowered_node = CONTENT_STEEL_DOOR_RT;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_DOOR_RT)+" 1";
 	content_mapnode_nodebox_dooror(f);
@@ -4907,6 +4932,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->conductive = true;
+	f->unpowered_node = CONTENT_STEEL_W_DOOR_RB;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_W_DOOR_RT)+" 1";
 	content_mapnode_nodebox_dooror(f);
@@ -4929,6 +4955,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->conductive = true;
+	f->unpowered_node = CONTENT_STEEL_W_DOOR_RT;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_W_DOOR_RT)+" 1";
 	content_mapnode_nodebox_doorwor(f);
@@ -4967,6 +4994,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->conductive = true;
+	f->powered_node = CONTENT_STEEL_HATCH_OPEN;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_hatch(f);
@@ -5010,6 +5038,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->conductive = true;
+	f->powered_node = CONTENT_STEEL_W_HATCH_OPEN;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_hatchw(f);
@@ -5059,6 +5088,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->conductive = true;
+	f->powered_node = CONTENT_STEEL_GATE_OPEN;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_gate(f);
@@ -5106,6 +5136,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->conductive = true;
+	f->unpowered_node = CONTENT_STEEL_HATCH;
 	f->climbable = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_HATCH)+" 1";
 	content_mapnode_nodebox_hatcho(f);
@@ -5151,6 +5182,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->conductive = true;
+	f->unpowered_node = CONTENT_STEEL_W_HATCH;
 	f->climbable = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_W_HATCH)+" 1";
 	content_mapnode_nodebox_hatchwo(f);
@@ -5193,6 +5225,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->conductive = true;
+	f->unpowered_node = CONTENT_STEEL_GATE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_GATE)+" 1";
 	content_mapnode_nodebox_gateo(f);
@@ -6089,8 +6122,7 @@ void content_mapnode_init()
 	f->sunlight_propagates = true;
 	f->air_equivalent = true; // grass grows underneath
 	f->solidness = 0; // drawn separately, makes no faces
-	//f->light_source = 1;
-	f->light_source = LIGHT_MAX-1;
+	f->light_source = 8;
 	f->unpowered_node = CONTENT_CIRCUIT_MESEWIRE_OFF;
 	f->dug_item = std::string("CraftItem mese_dust 1");
 	if(f->initial_metadata == NULL)
@@ -6118,8 +6150,7 @@ void content_mapnode_init()
 	i = CONTENT_CIRCUIT_POWERPLANT;
 	f = &content_features(i);
 	f->description = std::string("Power Plant");
-	f->setInventoryTexture("junglegrass.png");
-	f->setAllTextures("junglegrass.png");
+	f->setAllTextures("powerplant.png");
 	f->setAllTextureFlags(0);
 	f->light_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -6130,7 +6161,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
-	//f->light_source = LIGHT_MAX-1;
+	f->light_source = 8;
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new CircuitNodeMetadata();
 	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
@@ -6138,8 +6169,7 @@ void content_mapnode_init()
 	i = CONTENT_CIRCUIT_POWERPLANT_OFF;
 	f = &content_features(i);
 	f->description = std::string("Power Plant");
-	f->setInventoryTexture("junglegrass.png");
-	f->setAllTextures("junglegrass.png");
+	f->setAllTextures("powerplant.png");
 	f->setAllTextureFlags(0);
 	f->light_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -6150,10 +6180,86 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_POWERPLANT)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
-	f->light_source = 2;
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new CircuitNodeMetadata();
 	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
+
+	i = CONTENT_CIRCUIT_SWITCH;
+	f = &content_features(i);
+	f->description = std::string("Switch");
+	f->setAllTextures("circuit_switch.png");
+	f->setTexture(5,"circuit_switch_front.png");
+	f->setInventoryTextureCube("circuit_switch.png","circuit_switch_front.png","circuit_switch.png");
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_CUBELIKE;
+	f->unpowered_node = CONTENT_CIRCUIT_SWITCH_OFF;
+	f->is_ground_content = true;
+	f->conductive = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new CircuitNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+
+	i = CONTENT_CIRCUIT_SWITCH_OFF;
+	f = &content_features(i);
+	f->description = std::string("Switch");
+	f->setAllTextures("circuit_switch.png");
+	f->setTexture(5,"circuit_switch_front_off.png");
+	f->setInventoryTextureCube("circuit_switch.png","circuit_switch_front_off.png","circuit_switch.png");
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_CUBELIKE;
+	f->powered_node = CONTENT_CIRCUIT_SWITCH;
+	f->is_ground_content = true;
+	f->conductive = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_SWITCH)+" 1";
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new CircuitNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+
+	i = CONTENT_CIRCUIT_LAMP;
+	f = &content_features(i);
+	f->description = std::string("Electric Lamp");
+	f->is_ground_content = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_GLASSLIKE;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->conductive = true;
+	f->light_source = LIGHT_MAX-1;
+	f->unpowered_node = CONTENT_CIRCUIT_LAMP_OFF;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->setAllTextures("circuit_lamp.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	f->setInventoryTextureCube("circuit_lamp.png", "circuit_lamp.png", "circuit_lamp.png");
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new CircuitNodeMetadata();
+	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+
+	i = CONTENT_CIRCUIT_LAMP_OFF;
+	f = &content_features(i);
+	f->description = std::string("Electric Lamp");
+	f->is_ground_content = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_GLASSLIKE;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->conductive = true;
+	f->powered_node = CONTENT_CIRCUIT_LAMP;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_LAMP)+" 1";
+	f->setAllTextures("circuit_lamp.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	f->setInventoryTextureCube("circuit_lamp.png", "circuit_lamp.png", "circuit_lamp.png");
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new CircuitNodeMetadata();
+	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
 
 	// NOTE: Remember to add frequently used stuff to the texture atlas in tile.cpp
 
