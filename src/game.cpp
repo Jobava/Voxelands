@@ -568,18 +568,52 @@ void getPointedNode(Client *client, v3f player_position,
 					box.MaxEdge += npf;
 
 					if (box.intersectsWithLine(shootline)) {
-						nodefound = true;
-						nodepos = np;
-						neighbourpos = np;
-						mindistance = distance;
-						const float d = 0.502;
-						core::aabbox3d<f32> nodebox
-								(-BS*d, -BS*d, -BS*d, BS*d, BS*d, BS*d);
-						v3f nodepos_f = intToFloat(nodepos, BS);
-						nodebox.MinEdge += nodepos_f;
-						nodebox.MaxEdge += nodepos_f;
-						nodehilightbox = nodebox;
-						break;
+						for(u16 i=0; i<6; i++) {
+							v3f dir_f = v3f(dirs[i].X,
+									dirs[i].Y, dirs[i].Z);
+							v3f centerpoint = npf + dir_f * BS/2;
+							f32 distance =
+									(centerpoint - camera_position).getLength();
+
+							if(distance < mindistance)
+							{
+								core::CMatrix4<f32> m;
+								m.buildRotateFromTo(v3f(0,0,1), dir_f);
+
+								// This is the back face
+								v3f corners[2] = {
+									v3f(BS/2, BS/2, BS/2),
+									v3f(-BS/2, -BS/2, BS/2+d)
+								};
+
+								for(u16 j=0; j<2; j++)
+								{
+									m.rotateVect(corners[j]);
+									corners[j] += npf;
+								}
+
+								core::aabbox3d<f32> facebox(corners[0]);
+								facebox.addInternalPoint(corners[1]);
+
+								if(facebox.intersectsWithLine(shootline))
+								{
+									nodefound = true;
+									nodepos = np;
+									neighbourpos = np + dirs[i];
+									mindistance = distance;
+
+									//nodehilightbox = facebox;
+
+									const float d = 0.502;
+									core::aabbox3d<f32> nodebox
+											(-BS*d, -BS*d, -BS*d, BS*d, BS*d, BS*d);
+									v3f nodepos_f = intToFloat(nodepos, BS);
+									nodebox.MinEdge += nodepos_f;
+									nodebox.MaxEdge += nodepos_f;
+									nodehilightbox = nodebox;
+								}
+							} // if distance < mindistance
+						} // for dirs
 					}
 				}
 				boxes.clear();

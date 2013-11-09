@@ -71,7 +71,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_BORDERSTONE 0x807 //11
 #define CONTENT_WOOD 0x808 //12
 #define CONTENT_SAND 0x809 //13
-#define CONTENT_COBBLE 0x80a //18
+#define CONTENT_ROUGHSTONE 0x80a //18
 #define CONTENT_STEEL 0x80b //19
 #define CONTENT_GLASS 0x80c //20
 #define CONTENT_MOSSYCOBBLE 0x80d //22
@@ -92,7 +92,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_STONEBLOCK 0x81c
 #define CONTENT_SAPLING 0x820
 // slabs
-#define CONTENT_COBBLE_SLAB 0x821
+#define CONTENT_ROUGHSTONE_SLAB 0x821
 #define CONTENT_MOSSYCOBBLE_SLAB 0x822
 #define CONTENT_STONE_SLAB 0x823
 #define CONTENT_WOOD_SLAB 0x824
@@ -100,7 +100,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_BRICK_SLAB 0x826
 #define CONTENT_SANDSTONE_SLAB 0x827
 // stairs
-#define CONTENT_COBBLE_STAIR 0x828
+#define CONTENT_ROUGHSTONE_STAIR 0x828
 #define CONTENT_MOSSYCOBBLE_STAIR 0x829
 #define CONTENT_STONE_STAIR 0x82a
 #define CONTENT_WOOD_STAIR 0x82b
@@ -113,7 +113,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_SLAB_STAIR_MAX 0x82F
 #define CONTENT_SLAB_STAIR_FLIP 0x010
 // upside down slabs
-#define CONTENT_COBBLE_SLAB_UD 0x831
+#define CONTENT_ROUGHSTONE_SLAB_UD 0x831
 #define CONTENT_MOSSYCOBBLE_SLAB_UD 0x832
 #define CONTENT_STONE_SLAB_UD 0x833
 #define CONTENT_WOOD_SLAB_UD 0x834
@@ -121,7 +121,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_BRICK_SLAB_UD 0x836
 #define CONTENT_SANDSTONE_SLAB_UD 0x837
 // upside down stairs
-#define CONTENT_COBBLE_STAIR_UD 0x838
+#define CONTENT_ROUGHSTONE_STAIR_UD 0x838
 #define CONTENT_MOSSYCOBBLE_STAIR_UD 0x839
 #define CONTENT_STONE_STAIR_UD 0x83a
 #define CONTENT_WOOD_STAIR_UD 0x83b
@@ -213,10 +213,11 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_COTTON_YELLOW 0x895
 #define CONTENT_COTTON_BLACK 0x896
 // walls
-#define CONTENT_COBBLE_WALL 0x89A
+#define CONTENT_ROUGHSTONE_WALL 0x89A
 #define CONTENT_MOSSYCOBBLE_WALL 0x89B
 #define CONTENT_SANDSTONE_WALL 0x89C
 #define CONTENT_STONE_WALL 0x89D
+#define CONTENT_COBBLE_WALL 0x89E
 // sponge
 #define CONTENT_SPONGE 0x8A0
 #define CONTENT_SPONGE_FULL 0x8A1
@@ -261,6 +262,20 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_FIRE 0x8C6
 #define CONTENT_FIRE_SHORTTERM 0x8C7
 #define CONTENT_TNT 0x8C8
+#define CONTENT_FLASH 0x8C9
+#define CONTENT_MESE_DIGGING 0x8CA
+#define CONTENT_COBBLE 0x8CB
+#define CONTENT_ROUGHSTONEBRICK 0x8CC
+#define CONTENT_ROUGHSTONEBLOCK 0x8CD
+// glass pane
+#define CONTENT_GLASS_PANE 0x900
+#define CONTENT_GLASS_PANE_BLUE 0x901
+#define CONTENT_GLASS_PANE_GREEN 0x902
+#define CONTENT_GLASS_PANE_ORANGE 0x903
+#define CONTENT_GLASS_PANE_PURPLE 0x904
+#define CONTENT_GLASS_PANE_RED 0x905
+#define CONTENT_GLASS_PANE_YELLOW 0x906
+#define CONTENT_GLASS_PANE_BLACK 0x907
 
 #endif
 

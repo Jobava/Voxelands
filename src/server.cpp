@@ -2499,6 +2499,24 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					if (meta && !meta->getEnergy())
 						meta->energise(ENERGY_MAX,player->getPosition(),player->getPosition(),p_under);
 				}
+			}else if (n.getContent() == CONTENT_MESE) {
+				core::list<u16> far_players;
+				core::map<v3s16, MapBlock*> modified_blocks;
+				n.setContent(CONTENT_MESE_DIGGING);
+				sendAddNode(p_under, n, 0, &far_players, 30);
+				{
+					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+
+					std::string p_name = std::string(player->getName());
+					m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
+				}
+				for(core::list<u16>::Iterator i = far_players.begin(); i != far_players.end(); i++) {
+					u16 peer_id = *i;
+					RemoteClient *client = getClient(peer_id);
+					if (client == NULL)
+						continue;
+					client->SetBlocksNotSent(modified_blocks);
+				}
 			}
 			/*
 				NOTE: This can be used in the future to check if
@@ -3100,10 +3118,6 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						<<(int)mitem->getMaterial()
 						<<" at "<<PP(p_under)<<std::endl;
 
-				// Calculate direction for wall mounted stuff
-				if(content_features(n).wall_mounted)
-					n.param2 = packDir(p_under - p_over);
-
 				// Stairs and Slabs special functions
 				if (n.getContent() >= CONTENT_SLAB_STAIR_MIN && n.getContent() <= CONTENT_SLAB_STAIR_UD_MAX) {
 					MapNode abv = m_env.getMap().getNodeNoEx(p_over+p_dir);
@@ -3118,13 +3132,17 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				}
 
 				// Signs?
-				if (n.getContent() == CONTENT_SIGN_WALL) {
+				if (n.getContent() == CONTENT_SIGN) {
 					if (p_dir.Y == 1) {
 						n.setContent(CONTENT_SIGN_UD);
-					}else if (p_dir.Y == -1) {
-						n.setContent(CONTENT_SIGN);
+					}else if (p_dir.Y != -1) {
+						n.setContent(CONTENT_SIGN_WALL);
 					}
 				}
+
+				// Calculate direction for wall mounted stuff
+				if(content_features(n).wall_mounted)
+					n.param2 = packDir(p_under - p_over);
 
 				// Calculate the direction for furnaces and chests and stuff
 				if(content_features(n).param_type == CPT_FACEDIR_SIMPLE)

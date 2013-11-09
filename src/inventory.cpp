@@ -146,12 +146,13 @@ ServerActiveObject* InventoryItem::createSAO(ServerEnvironment *env, u16 id, v3f
 
 bool MaterialItem::isCookable() const
 {
-	return item_material_is_cookable(m_content);
+	return (content_features(m_content).cook_result != "");
 }
 
 InventoryItem *MaterialItem::createCookResult() const
 {
-	return item_material_create_cook_result(m_content);
+	std::istringstream is(content_features(m_content).cook_result, std::ios::binary);
+	return InventoryItem::deSerialize(is);
 }
 
 /*

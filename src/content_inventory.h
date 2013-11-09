@@ -28,9 +28,6 @@ class InventoryItem;
 class ServerActiveObject;
 class ServerEnvironment;
 
-bool           item_material_is_cookable(content_t content);
-InventoryItem* item_material_create_cook_result(content_t content);
-
 std::string         item_craft_get_image_name(const std::string &subname);
 std::string         item_craft_get_name(const std::string &subname);
 ServerActiveObject* item_craft_create_object(const std::string &subname,

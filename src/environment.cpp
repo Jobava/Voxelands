@@ -1103,7 +1103,7 @@ void ServerEnvironment::step(float dtime)
 				*/
 				if (n.getContent() == CONTENT_GRASS)
 				{
-					int f = (1000-(p.Y*2))+10;
+					int f = (700-(p.Y*2))+10;
 					if (p.Y > 1 && myrand()%f == 0) {
 						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
 						if (n_top.getContent() == CONTENT_AIR && n_top.getLightBlend(getDayNightRatio()) >= 13) {
@@ -1262,7 +1262,7 @@ void ServerEnvironment::step(float dtime)
 				if (n.getContent() == CONTENT_TNT) {
 					NodeMetadata *meta = m_map->getNodeMetadata(p);
 					if (meta && meta->getEnergy() == ENERGY_MAX) {
-						bool can_spread = true;
+						bool can_spread = g_settings->getBool("enable_tnt");
 						s16 bs_rad = g_settings->getS16("borderstone_radius");
 						bs_rad += 3;
 						// if any node is border stone protected, don't destroy anything
@@ -1305,12 +1305,26 @@ void ServerEnvironment::step(float dtime)
 									if (myrand()%3 == 0)
 										continue;
 								}
-								m_map->removeNodeWithEvent(p+v3s16(x,y,z));
+								n_test.setContent(CONTENT_FLASH);
+								m_map->addNodeWithEvent(p+v3s16(x,y,z),n_test);
 							}
 						}
 						// but still blow up
 						m_map->removeNodeWithEvent(p);
-						// TODO: damage nearby players
+					}
+				}
+				/*
+					mese prettiness
+				*/
+				if (n.getContent() == CONTENT_MESE_DIGGING) {
+					v3f pp;
+					pp.X = p.X;
+					pp.Y = p.Y;
+					pp.Z = p.Z;
+					Player *nearest = getNearestConnectedPlayer(pp);
+					if (nearest == NULL || nearest->getPosition().getDistanceFrom(pp*BS)/BS > 6.0) {
+						n.setContent(CONTENT_MESE);
+						m_map->addNodeWithEvent(p, n);
 					}
 				}
 				/*

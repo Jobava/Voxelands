@@ -1448,29 +1448,33 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				// Handles facedir rotation for textures
 				tiles[i] = n.getTile(tile_dirs[i]);
 			}
-			u32 lt = 0;
-			u32 ltp;
-			u8 ld = 0;
-			for (s16 tx=-1; tx<2; tx++) {
-			for (s16 ty=-1; ty<2; ty++) {
-			for (s16 tz=-1; tz<2; tz++) {
-				if (!tx && !ty && !tz)
-					continue;
-				MapNode n = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+tx,y+ty,z+tz));
-				if (ty<1 && n.getContent() != CONTENT_AIR)
-					continue;
-				ltp = decode_light(n.getLightBlend(data->m_daynight_ratio));
-				if (!ltp)
-					continue;
-				lt += ltp;
-				ld++;
-			}
-			}
+			u8 l = 0;
+			if (content_features(n).param_type == CPT_LIGHT) {
+				l = decode_light(n.getLightBlend(data->m_daynight_ratio));
+			}else{
+				u32 lt = 0;
+				u32 ltp;
+				u8 ld = 0;
+				for (s16 tx=-1; tx<2; tx++) {
+				for (s16 ty=-1; ty<2; ty++) {
+				for (s16 tz=-1; tz<2; tz++) {
+					if (!tx && !ty && !tz)
+						continue;
+					MapNode tn = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+tx,y+ty,z+tz));
+					if (ty<1 && tn.getContent() != CONTENT_AIR)
+						continue;
+					ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
+					if (!ltp)
+						continue;
+					lt += ltp;
+					ld++;
+				}
+				}
+				}
+				if (ld)
+					l = lt/ld;
 			}
 
-			u8 l = 0;
-			if (ld)
-				l = lt/ld;
 			video::SColor c = MapBlock_LightColor(255, l);
 
 			v3f pos = intToFloat(p+blockpos_nodes, BS);

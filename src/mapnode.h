@@ -203,6 +203,9 @@ struct ContentFeatures
 	std::string extra_dug_item;
 	s32 extra_dug_item_rarity;
 
+	// the result of cooking this node
+	std::string cook_result;
+
 	// Initial metadata is cloned from this
 	NodeMetadata *initial_metadata;
 
@@ -268,6 +271,9 @@ struct ContentFeatures
 		often_contains_mineral = false;
 		dug_item = "";
 		slab_cube_type = CONTENT_IGNORE;
+		extra_dug_item = "";
+		extra_dug_item_rarity = 2;
+		cook_result = "";
 		initial_metadata = NULL;
 		liquid_alternative_flowing = CONTENT_IGNORE;
 		liquid_alternative_source = CONTENT_IGNORE;
