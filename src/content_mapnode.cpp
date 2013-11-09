@@ -2443,7 +2443,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->slab_cube_type = CONTENT_ROUGHSTONE;
 	content_mapnode_nodebox_slab(f);
-	f->setInventoryTextureNodeBox(i,"rouchstone.png", "roughstone.png", "roughstone.png");
+	f->setInventoryTextureNodeBox(i,"roughstone.png", "roughstone.png", "roughstone.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
 
 	i = CONTENT_MOSSYCOBBLE_SLAB;
