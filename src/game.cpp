@@ -482,8 +482,7 @@ void getPointedNode(Client *client, v3f player_position,
 				v3f(BS*0.49, BS/2, BS/2),
 			};
 
-			for(s32 i=0; i<2; i++)
-			{
+			for (s32 i=0; i<2; i++) {
 				if(dir == v3s16(1,0,0))
 					vertices[i].rotateXZBy(0);
 				if(dir == v3s16(-1,0,0))
@@ -555,8 +554,40 @@ void getPointedNode(Client *client, v3f player_position,
 			}
 		}
 		/*
+			Node box
+		*/
+		else if (content_features(n).draw_type == CDT_NODEBOX) {
+			f32 distance = (npf - camera_position).getLength();
+
+			if (distance < mindistance) {
+				aabb3f box;
+				std::vector<aabb3f> boxes = content_features(n).getNodeBoxes(n);
+				for (std::vector<aabb3f>::iterator i = boxes.begin(); i != boxes.end(); i++) {
+					box = *i;
+					box.MinEdge += npf;
+					box.MaxEdge += npf;
+
+					if (box.intersectsWithLine(shootline)) {
+						nodefound = true;
+						nodepos = np;
+						neighbourpos = np;
+						mindistance = distance;
+						const float d = 0.502;
+						core::aabbox3d<f32> nodebox
+								(-BS*d, -BS*d, -BS*d, BS*d, BS*d, BS*d);
+						v3f nodepos_f = intToFloat(nodepos, BS);
+						nodebox.MinEdge += nodepos_f;
+						nodebox.MaxEdge += nodepos_f;
+						nodehilightbox = nodebox;
+						break;
+					}
+				}
+				boxes.clear();
+			}
+		/*
 			Regular blocks
 		*/
+		}
 		else
 		{
 			for(u16 i=0; i<6; i++)
