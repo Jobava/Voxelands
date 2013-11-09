@@ -648,6 +648,176 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version)
 			}
 		}
 	}
+	// stairs, slabs, gates, doors, and hatches were moved for 1311.00
+	if (n_from.getContent() >= 0x821 && n_from.getContent() <= 0x87F) {
+		// slabs
+		if (n_from.getContent() == 0x821) {
+			result.setContent(CONTENT_ROUGHSTONE_SLAB);
+		}else if (n_from.getContent() == 0x822) {
+			result.setContent(CONTENT_MOSSYCOBBLE_SLAB);
+		}else if (n_from.getContent() == 0x823) {
+			result.setContent(CONTENT_STONE_SLAB);
+		}else if (n_from.getContent() == 0x824) {
+			result.setContent(CONTENT_WOOD_SLAB);
+		}else if (n_from.getContent() == 0x825) {
+			result.setContent(CONTENT_JUNGLE_SLAB);
+		}else if (n_from.getContent() == 0x826) {
+			result.setContent(CONTENT_BRICK_SLAB);
+		}else if (n_from.getContent() == 0x827) {
+			result.setContent(CONTENT_SANDSTONE_SLAB);
+		}
+		// stairs
+		if (n_from.getContent() == 0x828) {
+			result.setContent(CONTENT_ROUGHSTONE_STAIR);
+		}else if (n_from.getContent() == 0x829) {
+			result.setContent(CONTENT_MOSSYCOBBLE_STAIR);
+		}else if (n_from.getContent() == 0x82a) {
+			result.setContent(CONTENT_STONE_STAIR);
+		}else if (n_from.getContent() == 0x82b) {
+			result.setContent(CONTENT_WOOD_STAIR);
+		}else if (n_from.getContent() == 0x82c) {
+			result.setContent(CONTENT_JUNGLE_STAIR);
+		}else if (n_from.getContent() == 0x82d) {
+			result.setContent(CONTENT_BRICK_STAIR);
+		}else if (n_from.getContent() == 0x82e) {
+			result.setContent(CONTENT_SANDSTONE_STAIR);
+		}
+		// upside down slabs
+		if (n_from.getContent() == 0x831) {
+			result.setContent(CONTENT_ROUGHSTONE_SLAB_UD);
+		}else if (n_from.getContent() == 0x832) {
+			result.setContent(CONTENT_MOSSYCOBBLE_SLAB_UD);
+		}else if (n_from.getContent() == 0x833) {
+			result.setContent(CONTENT_STONE_SLAB_UD);
+		}else if (n_from.getContent() == 0x834) {
+			result.setContent(CONTENT_WOOD_SLAB_UD);
+		}else if (n_from.getContent() == 0x835) {
+			result.setContent(CONTENT_JUNGLE_SLAB_UD);
+		}else if (n_from.getContent() == 0x836) {
+			result.setContent(CONTENT_BRICK_SLAB_UD);
+		}else if (n_from.getContent() == 0x837) {
+			result.setContent(CONTENT_SANDSTONE_SLAB_UD);
+		}
+		// upside down stairs
+		if (n_from.getContent() == 0x838) {
+			result.setContent(CONTENT_ROUGHSTONE_STAIR_UD);
+		}else if (n_from.getContent() == 0x839) {
+			result.setContent(CONTENT_MOSSYCOBBLE_STAIR_UD);
+		}else if (n_from.getContent() == 0x83a) {
+			result.setContent(CONTENT_STONE_STAIR_UD);
+		}else if (n_from.getContent() == 0x83b) {
+			result.setContent(CONTENT_WOOD_STAIR_UD);
+		}else if (n_from.getContent() == 0x83c) {
+			result.setContent(CONTENT_JUNGLE_STAIR_UD);
+		}else if (n_from.getContent() == 0x83d) {
+			result.setContent(CONTENT_BRICK_STAIR_UD);
+		}else if (n_from.getContent() == 0x83e) {
+			result.setContent(CONTENT_SANDSTONE_STAIR_UD);
+		}
+
+
+		// doors
+		if (n_from.getContent() == 0x840) {
+			result.setContent(CONTENT_WOOD_DOOR_LB);
+		}else if (n_from.getContent() == 0x841) {
+			result.setContent(CONTENT_WOOD_DOOR_LT);
+		}else if (n_from.getContent() == 0x842) {
+			result.setContent(CONTENT_STEEL_DOOR_LB);
+		}else if (n_from.getContent() == 0x843) {
+			result.setContent(CONTENT_STEEL_DOOR_LT);
+		}else if (n_from.getContent() == 0x844) {
+			result.setContent(CONTENT_WOOD_W_DOOR_LB);
+		}else if (n_from.getContent() == 0x845) {
+			result.setContent(CONTENT_WOOD_W_DOOR_LT);
+		}else if (n_from.getContent() == 0x846) {
+			result.setContent(CONTENT_STEEL_W_DOOR_LB);
+		}else if (n_from.getContent() == 0x847) {
+			result.setContent(CONTENT_STEEL_W_DOOR_LT);
+		}else if (n_from.getContent() == 0x848) {
+			result.setContent(CONTENT_WOOD_DOOR_RB);
+		}else if (n_from.getContent() == 0x849) {
+			result.setContent(CONTENT_WOOD_DOOR_RT);
+		}else if (n_from.getContent() == 0x84A) {
+			result.setContent(CONTENT_STEEL_DOOR_RB);
+		}else if (n_from.getContent() == 0x84B) {
+			result.setContent(CONTENT_STEEL_DOOR_RT);
+		}else if (n_from.getContent() == 0x84C) {
+			result.setContent(CONTENT_WOOD_W_DOOR_RB);
+		}else if (n_from.getContent() == 0x84D) {
+			result.setContent(CONTENT_WOOD_W_DOOR_RT);
+		}else if (n_from.getContent() == 0x84E) {
+			result.setContent(CONTENT_STEEL_W_DOOR_RB);
+		}else if (n_from.getContent() == 0x84F) {
+			result.setContent(CONTENT_STEEL_W_DOOR_RT);
+		}
+		// hatches
+		if (n_from.getContent() == 0x850) {
+			result.setContent(CONTENT_WOOD_HATCH);
+		}else if (n_from.getContent() == 0x852) {
+			result.setContent(CONTENT_STEEL_HATCH);
+		}else if (n_from.getContent() == 0x854) {
+			result.setContent(CONTENT_WOOD_W_HATCH);
+		}else if (n_from.getContent() == 0x856) {
+			result.setContent(CONTENT_STEEL_W_HATCH);
+		}
+		// gates
+		if (n_from.getContent() == 0x858) {
+			result.setContent(CONTENT_WOOD_GATE);
+		}else if (n_from.getContent() == 0x85A) {
+			result.setContent(CONTENT_STEEL_GATE);
+		}
+
+		// open doors
+		if (n_from.getContent() == 0x860) {
+			result.setContent(CONTENT_WOOD_DOOR_LB_OPEN);
+		}else if (n_from.getContent() == 0x861) {
+			result.setContent(CONTENT_WOOD_DOOR_LT_OPEN);
+		}else if (n_from.getContent() == 0x862) {
+			result.setContent(CONTENT_STEEL_DOOR_LB_OPEN);
+		}else if (n_from.getContent() == 0x863) {
+			result.setContent(CONTENT_STEEL_DOOR_LT_OPEN);
+		}else if (n_from.getContent() == 0x864) {
+			result.setContent(CONTENT_WOOD_W_DOOR_LB_OPEN);
+		}else if (n_from.getContent() == 0x865) {
+			result.setContent(CONTENT_WOOD_W_DOOR_LT_OPEN);
+		}else if (n_from.getContent() == 0x866) {
+			result.setContent(CONTENT_STEEL_W_DOOR_LB_OPEN);
+		}else if (n_from.getContent() == 0x867) {
+			result.setContent(CONTENT_STEEL_W_DOOR_LT_OPEN);
+		}else if (n_from.getContent() == 0x868) {
+			result.setContent(CONTENT_WOOD_DOOR_RB_OPEN);
+		}else if (n_from.getContent() == 0x869) {
+			result.setContent(CONTENT_WOOD_DOOR_RT_OPEN);
+		}else if (n_from.getContent() == 0x86A) {
+			result.setContent(CONTENT_STEEL_DOOR_RB_OPEN);
+		}else if (n_from.getContent() == 0x86B) {
+			result.setContent(CONTENT_STEEL_DOOR_RT_OPEN);
+		}else if (n_from.getContent() == 0x86C) {
+			result.setContent(CONTENT_WOOD_W_DOOR_RB_OPEN);
+		}else if (n_from.getContent() == 0x86D) {
+			result.setContent(CONTENT_WOOD_W_DOOR_RT_OPEN);
+		}else if (n_from.getContent() == 0x86E) {
+			result.setContent(CONTENT_STEEL_W_DOOR_RB_OPEN);
+		}else if (n_from.getContent() == 0x86F) {
+			result.setContent(CONTENT_STEEL_W_DOOR_RT_OPEN);
+		}
+		// open hatches
+		if (n_from.getContent() == 0x870) {
+			result.setContent(CONTENT_WOOD_HATCH_OPEN);
+		}else if (n_from.getContent() == 0x872) {
+			result.setContent(CONTENT_STEEL_HATCH_OPEN);
+		}else if (n_from.getContent() == 0x874) {
+			result.setContent(CONTENT_WOOD_W_HATCH_OPEN);
+		}else if (n_from.getContent() == 0x876) {
+			result.setContent(CONTENT_STEEL_W_HATCH_OPEN);
+		}
+		// open gates
+		if (n_from.getContent() == 0x878) {
+			result.setContent(CONTENT_WOOD_GATE_OPEN);
+		}else if (n_from.getContent() == 0x87A) {
+			result.setContent(CONTENT_STEEL_GATE_OPEN);
+		}
+	}
 	return result;
 }
 
@@ -2933,6 +3103,41 @@ void content_mapnode_init()
 		f->initial_metadata = new LockedDoorNodeMetadata();
 	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
 
+	i = CONTENT_GLASS_DOOR_LB;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Glass Door");
+	f->setAllTextures("door_glass_b.png");
+	f->setTexture(2,"door_glass_b.png^^[transformFX");
+	f->setTexture(3,"door_glass_b.png^^[transformFX");
+	f->setTexture(4,"door_glass_b.png^^[transformFX");
+	f->setInventoryTexture("door_glass_inv.png");
+	f->wield_nodebox = false;
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	content_mapnode_nodebox_door(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	i = CONTENT_GLASS_DOOR_LT;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Glass Door");
+	f->setAllTextures("door_glass_t.png");
+	f->setTexture(2,"door_glass_t.png^^[transformFX");
+	f->setTexture(3,"door_glass_t.png^^[transformFX");
+	f->setTexture(4,"door_glass_t.png^^[transformFX");
+	f->setInventoryTexture("door_glass_inv.png");
+	f->wield_nodebox = false;
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	content_mapnode_nodebox_door(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+
 	i = CONTENT_WOOD_W_DOOR_LB;
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
@@ -3040,6 +3245,41 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_door(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+
+	i = CONTENT_GLASS_DOOR_RB;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Right Hanging Glass Door");
+	f->setAllTextures("door_glass_b.png^[transformFX");
+	f->setTexture(2,"door_glass_b.png");
+	f->setTexture(3,"door_glass_b.png");
+	f->setTexture(4,"door_glass_b.png");
+	f->setInventoryTexture("door_glass_inv.png^[transformFX");
+	f->wield_nodebox = false;
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	content_mapnode_nodebox_door(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	i = CONTENT_GLASS_DOOR_RT;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Right Hanging Glass Door");
+	f->setAllTextures("door_glass_t.png^[transformFX");
+	f->setTexture(2,"door_glass_t.png");
+	f->setTexture(3,"door_glass_t.png");
+	f->setTexture(4,"door_glass_t.png");
+	f->setInventoryTexture("door_glass_inv.png^[transformFX");
+	f->wield_nodebox = false;
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	content_mapnode_nodebox_door(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
 
 	i = CONTENT_STEEL_DOOR_RB;
 	f = &content_features(i);
@@ -3182,6 +3422,37 @@ void content_mapnode_init()
 	content_mapnode_nodebox_doorol(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
+	i = CONTENT_GLASS_DOOR_LB_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Glass Door");
+	f->setAllTextures("door_glass_b.png");
+	f->setTexture(3,"door_glass_b.png^[transformFX");
+	f->setInventoryTexture("door_glass_inv.png");
+	f->wield_nodebox = false;
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	content_mapnode_nodebox_doorol(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	i = CONTENT_GLASS_DOOR_LT_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Glass Door");
+	f->setAllTextures("door_glass_t.png");
+	f->setTexture(3,"door_glass_t.png^[transformFX");
+	f->setInventoryTexture("door_glass_inv.png");
+	f->wield_nodebox = false;
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	content_mapnode_nodebox_doorol(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+
 	i = CONTENT_STEEL_DOOR_LB_OPEN;
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
@@ -3313,8 +3584,42 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_DOOR_RT)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_dooror(f);
-	f->setInventoryTextureNodeBox(i,"wood.png", "wood.png", "wood.png");
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+
+	i = CONTENT_GLASS_DOOR_RB_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Right Hanging Glass Door");
+	f->setAllTextures("door_glass_b.png");
+	f->setTexture(2,"door_glass_b.png^^[transformFX");
+	f->setTexture(3,"door_glass_b.png^^[transformFX");
+	f->setTexture(4,"door_glass_b.png^^[transformFX");
+	f->setInventoryTexture("door_glass_inv.png^[transformFX");
+	f->wield_nodebox = false;
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	content_mapnode_nodebox_dooror(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	i = CONTENT_GLASS_DOOR_RT_OPEN;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->description = std::string("Right Hanging Glass Door");
+	f->setAllTextures("door_glass_t.png");
+	f->setTexture(2,"door_glass_t.png^^[transformFX");
+	f->setTexture(3,"door_glass_t.png^^[transformFX");
+	f->setTexture(4,"door_glass_t.png^^[transformFX");
+	f->setInventoryTexture("door_glass_inv.png^[transformFX");
+	f->wield_nodebox = false;
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	content_mapnode_nodebox_dooror(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
 
 	i = CONTENT_STEEL_DOOR_RB_OPEN;
 	f = &content_features(i);
