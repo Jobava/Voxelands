@@ -1067,6 +1067,32 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	setLeafLikeDiggingProperties(f->digging_properties, 0.15);
 
+	i = CONTENT_JUNGLELEAVES;
+	f = &content_features(i);
+	f->description = std::string("Jungle Leaves");
+	f->light_propagates = true;
+	//f->param_type = CPT_MINERAL;
+	f->param_type = CPT_LIGHT;
+	//f->is_ground_content = true;
+	if (new_style_leaves) {
+		f->draw_type = CDT_GLASSLIKE;
+		f->solidness = 0; // drawn separately, makes no faces
+		f->visual_solidness = 1;
+		f->setAllTextures("jungleleaves.png");
+#ifndef SERVER
+		f->setAllTextureTypes(MATERIAL_ALPHA_SIMPLE);
+#endif
+		f->setInventoryTextureCube("jungleleaves.png", "jungleleaves.png", "jungleleaves.png");
+	}else{
+		f->draw_type = CDT_CUBELIKE;
+		f->setAllTextures("[noalpha:jungleleaves.png");
+	}
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_JUNGLESAPLING)+" 1";
+	f->extra_dug_item_rarity = 20;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setLeafLikeDiggingProperties(f->digging_properties, 0.15);
+
 	i = CONTENT_TRIMMED_LEAVES;
 	f = &content_features(i);
 	f->description = std::string("Trimmed Leaves");
@@ -1612,6 +1638,18 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->cook_result = std::string("CraftItem saltpeter 1");
+	setStoneLikeDiggingProperties(f->digging_properties, 0.5);
+
+	i = CONTENT_MESE_DIGGING;
+	f = &content_features(i);
+	f->description = std::string("Mese");
+	f->setAllTextures("mese.png");
+	f->setInventoryTextureCube("mese.png", "mese.png", "mese.png");
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MESE)+" 1";
+	f->light_source = 10;
 	setStoneLikeDiggingProperties(f->digging_properties, 0.5);
 
 	i = CONTENT_SPONGE;
@@ -2405,6 +2443,22 @@ void content_mapnode_init()
 	f->draw_type = CDT_PLANTLIKE;
 	f->setAllTextures("sapling.png");
 	f->setInventoryTexture("sapling.png");
+	f->setAllTextureFlags(0);
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->light_propagates = true;
+	f->air_equivalent = false;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->walkable = false;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->digging_properties.set("", DiggingProperties(true, 0.0, 0));
+
+	i = CONTENT_JUNGLESAPLING;
+	f = &content_features(i);
+	f->description = std::string("Jungle Sapling");
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_PLANTLIKE;
+	f->setAllTextures("junglesapling.png");
+	f->setInventoryTexture("junglesapling.png");
 	f->setAllTextureFlags(0);
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->light_propagates = true;

@@ -268,7 +268,7 @@ void make_largetree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
 void make_jungletree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
 {
 	MapNode treenode(CONTENT_JUNGLETREE);
-	MapNode leavesnode(CONTENT_LEAVES);
+	MapNode leavesnode(CONTENT_JUNGLELEAVES);
 
 	for(s16 x=-1; x<=1; x++)
 	for(s16 z=-1; z<=1; z++)

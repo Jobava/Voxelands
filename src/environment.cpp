@@ -1548,7 +1548,71 @@ void ServerEnvironment::step(float dtime)
 						}
 					}
 				}
-				if (n.getContent() == CONTENT_LEAVES) // leaf decay
+				if(n.getContent() == CONTENT_JUNGLESAPLING) {
+					if(myrand()%10 == 0)
+					{
+						s16 max_y = 10;
+						s16 max_o = 2;
+						bool grow = true;
+						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
+						if (below == CONTENT_MUD || below == CONTENT_GRASS) {
+							for (s16 z=-max_o; grow && z < max_o; z++) {
+							for (s16 y=2; grow && y < max_y; y++) {
+							for (s16 x=-max_o; grow && x < max_o; x++) {
+								v3s16 test_p = p + v3s16(x,y,z);
+								if (test_p != p) {
+									content_t tcon = m_map->getNodeNoEx(test_p).getContent();
+									if (
+										tcon != CONTENT_AIR
+										&& tcon != CONTENT_TREE
+										&& tcon != CONTENT_JUNGLETREE
+										&& tcon != CONTENT_LEAVES
+										&& tcon != CONTENT_APPLE
+										&& tcon != CONTENT_IGNORE
+									)
+										grow = false;
+								}
+							}
+							}
+							}
+							if (grow) {
+								actionstream<<"A sapling grows into a jungle tree at "
+									<<PP(p)<<std::endl;
+
+								core::map<v3s16, MapBlock*> modified_blocks;
+								v3s16 tree_p = p;
+								ManualMapVoxelManipulator vmanip(m_map);
+								v3s16 tree_blockp = getNodeBlockPos(tree_p);
+								vmanip.initialEmerge(tree_blockp - v3s16(1,1,1), tree_blockp + v3s16(1,1,1));
+								mapgen::make_jungletree(vmanip, tree_p);
+								vmanip.blitBackAll(&modified_blocks);
+
+								// update lighting
+								core::map<v3s16, MapBlock*> lighting_modified_blocks;
+								for(core::map<v3s16, MapBlock*>::Iterator
+									i = modified_blocks.getIterator();
+									i.atEnd() == false; i++)
+								{
+									lighting_modified_blocks.insert(i.getNode()->getKey(), i.getNode()->getValue());
+								}
+								m_map->updateLighting(lighting_modified_blocks, modified_blocks);
+
+								// Send a MEET_OTHER event
+								MapEditEvent event;
+								event.type = MEET_OTHER;
+								for(core::map<v3s16, MapBlock*>::Iterator
+									i = modified_blocks.getIterator();
+									i.atEnd() == false; i++)
+								{
+									v3s16 p = i.getNode()->getKey();
+									event.modified_blocks.insert(p, true);
+								}
+								m_map->dispatchEvent(&event);
+							}
+						}
+					}
+				}
+				if (n.getContent() == CONTENT_LEAVES || n.getContent() == CONTENT_JUNGLELEAVES) // leaf decay
 				{
 					if (myrand()%10 == 0)
 					{
@@ -1579,7 +1643,10 @@ void ServerEnvironment::step(float dtime)
 							if (myrand()%20 == 0) {
 								v3f sapling_pos = intToFloat(leaf_p, BS);
 								sapling_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
-								ServerActiveObject *obj = new ItemSAO(this, 0, sapling_pos, "MaterialItem2 " + itos(CONTENT_SAPLING) + " 1");
+								content_t c = CONTENT_SAPLING;
+								if (n.getContent() == CONTENT_JUNGLELEAVES)
+									c = CONTENT_JUNGLESAPLING;
+								ServerActiveObject *obj = new ItemSAO(this, 0, sapling_pos, "MaterialItem2 " + itos(c) + " 1");
 								addActiveObject(obj);
 							}
 						}

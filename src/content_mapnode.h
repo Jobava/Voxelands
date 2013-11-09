@@ -276,6 +276,9 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_GLASS_PANE_RED 0x905
 #define CONTENT_GLASS_PANE_YELLOW 0x906
 #define CONTENT_GLASS_PANE_BLACK 0x907
+// more more
+#define CONTENT_JUNGLELEAVES 0x910
+#define CONTENT_JUNGLESAPLING 0x911
 
 #endif
 
