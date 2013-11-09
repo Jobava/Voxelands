@@ -108,7 +108,7 @@ struct CraftDef {
 */
 InventoryItem *craft_get_result(InventoryItem **items)
 {
-	static CraftDef defs[199];
+	static CraftDef defs[210];
 	static int defs_init = 0;
 
 	// only initialise (and hence allocate) these once
@@ -762,12 +762,21 @@ InventoryItem *craft_get_result(InventoryItem **items)
 			defs_init++;
 		}
 
-		// cobble slabs
+		// roughstone slabs
 		{
 			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_ROUGHSTONE);
 			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_ROUGHSTONE);
 			defs[defs_init].specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_ROUGHSTONE);
 			defs[defs_init].item = new MaterialItem(CONTENT_ROUGHSTONE_SLAB, 3);
+			defs_init++;
+		}
+
+		// cobble slabs
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].item = new MaterialItem(CONTENT_COBBLE_SLAB, 3);
 			defs_init++;
 		}
 
@@ -825,7 +834,79 @@ InventoryItem *craft_get_result(InventoryItem **items)
 			defs_init++;
 		}
 
-		// cobble stairs
+		// glass slabs
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS);
+			defs[defs_init].specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS);
+			defs[defs_init].item = new MaterialItem(CONTENT_GLASS_SLAB, 3);
+			defs_init++;
+		}
+
+		// blue glass slabs
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS_BLUE);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS_BLUE);
+			defs[defs_init].specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS_BLUE);
+			defs[defs_init].item = new MaterialItem(CONTENT_GLASS_BLUE_SLAB, 3);
+			defs_init++;
+		}
+
+		// green glass slabs
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS_GREEN);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS_GREEN);
+			defs[defs_init].specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS_GREEN);
+			defs[defs_init].item = new MaterialItem(CONTENT_GLASS_GREEN_SLAB, 3);
+			defs_init++;
+		}
+
+		// orange glass slabs
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS_ORANGE);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS_ORANGE);
+			defs[defs_init].specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS_ORANGE);
+			defs[defs_init].item = new MaterialItem(CONTENT_GLASS_ORANGE_SLAB, 3);
+			defs_init++;
+		}
+
+		// purple glass slabs
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS_PURPLE);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS_PURPLE);
+			defs[defs_init].specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS_PURPLE);
+			defs[defs_init].item = new MaterialItem(CONTENT_GLASS_PURPLE_SLAB, 3);
+			defs_init++;
+		}
+
+		// red glass slabs
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS_RED);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS_RED);
+			defs[defs_init].specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS_RED);
+			defs[defs_init].item = new MaterialItem(CONTENT_GLASS_RED_SLAB, 3);
+			defs_init++;
+		}
+
+		// yellow glass slabs
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS_YELLOW);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS_YELLOW);
+			defs[defs_init].specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS_YELLOW);
+			defs[defs_init].item = new MaterialItem(CONTENT_GLASS_YELLOW_SLAB, 3);
+			defs_init++;
+		}
+
+		// black glass slabs
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS_BLACK);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS_BLACK);
+			defs[defs_init].specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS_BLACK);
+			defs[defs_init].item = new MaterialItem(CONTENT_GLASS_BLACK_SLAB, 3);
+			defs_init++;
+		}
+
+		// roughstone stairs
 		{
 			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_ROUGHSTONE);
 			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_ROUGHSTONE);
@@ -837,7 +918,7 @@ InventoryItem *craft_get_result(InventoryItem **items)
 			defs_init++;
 		}
 
-		// cobble stairs
+		// roughstone stairs
 		{
 			defs[defs_init].specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_ROUGHSTONE);
 			defs[defs_init].specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_ROUGHSTONE);
@@ -846,6 +927,30 @@ InventoryItem *craft_get_result(InventoryItem **items)
 			defs[defs_init].specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_ROUGHSTONE);
 			defs[defs_init].specs[8] = ItemSpec(ITEM_MATERIAL, CONTENT_ROUGHSTONE);
 			defs[defs_init].item = new MaterialItem(CONTENT_ROUGHSTONE_STAIR, 6);
+			defs_init++;
+		}
+
+		// cobble stairs
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[6] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[8] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].item = new MaterialItem(CONTENT_COBBLE_STAIR, 6);
+			defs_init++;
+		}
+
+		// cobble stairs
+		{
+			defs[defs_init].specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[5] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[6] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].specs[8] = ItemSpec(ITEM_MATERIAL, CONTENT_COBBLE);
+			defs[defs_init].item = new MaterialItem(CONTENT_COBBLE_STAIR, 6);
 			defs_init++;
 		}
 

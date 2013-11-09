@@ -2670,6 +2670,20 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i,"roughstone.png", "roughstone.png", "roughstone.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
 
+	i = CONTENT_COBBLE_SLAB;
+	f = &content_features(i);
+	f->description = std::string("Cobble Stone Slab");
+	f->setAllTextures("cobble.png");
+	f->param_type = CPT_NONE;
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->slab_cube_type = CONTENT_COBBLE;
+	content_mapnode_nodebox_slab(f);
+	f->setInventoryTextureNodeBox(i,"cobble.png", "cobble.png", "cobble.png");
+	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
+
 	i = CONTENT_MOSSYCOBBLE_SLAB;
 	f = &content_features(i);
 	f->description = std::string("Mossy Cobble Stone Slab");
@@ -2755,6 +2769,166 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i,"sandstone.png", "sandstone.png", "sandstone.png");
 	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
 
+	i = CONTENT_GLASS_SLAB;
+	f = &content_features(i);
+	f->description = std::string("Glass Slab");
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->slab_cube_type = CONTENT_GLASS;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->setAllTextures("glass.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	content_mapnode_nodebox_slab(f);
+	f->setInventoryTextureNodeBox(i,"glass.png", "glass.png", "glass.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_GLASS_BLUE_SLAB;
+	f = &content_features(i);
+	f->description = std::string("Blue Glass Slab");
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->slab_cube_type = CONTENT_GLASS_BLUE;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->setAllTextures("glass_blue.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	content_mapnode_nodebox_slab(f);
+	f->setInventoryTextureNodeBox(i,"glass_blue.png", "glass_blue.png", "glass_blue.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_GLASS_GREEN_SLAB;
+	f = &content_features(i);
+	f->description = std::string("Green Glass Slab");
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->slab_cube_type = CONTENT_GLASS_GREEN;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->setAllTextures("glass_green.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	content_mapnode_nodebox_slab(f);
+	f->setInventoryTextureNodeBox(i,"glass_green.png", "glass_green.png", "glass_green.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_GLASS_ORANGE_SLAB;
+	f = &content_features(i);
+	f->description = std::string("Orange Glass Slab");
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->slab_cube_type = CONTENT_GLASS_ORANGE;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->setAllTextures("glass_orange.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	content_mapnode_nodebox_slab(f);
+	f->setInventoryTextureNodeBox(i,"glass_orange.png", "glass_orange.png", "glass_orange.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_GLASS_PURPLE_SLAB;
+	f = &content_features(i);
+	f->description = std::string("Purple Glass Slab");
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->slab_cube_type = CONTENT_GLASS_PURPLE;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->setAllTextures("glass_purple.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	content_mapnode_nodebox_slab(f);
+	f->setInventoryTextureNodeBox(i,"glass_purple.png", "glass_purple.png", "glass_purple.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_GLASS_RED_SLAB;
+	f = &content_features(i);
+	f->description = std::string("Red Glass Slab");
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->slab_cube_type = CONTENT_GLASS_RED;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->setAllTextures("glass_red.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	content_mapnode_nodebox_slab(f);
+	f->setInventoryTextureNodeBox(i,"glass_red.png", "glass_red.png", "glass_red.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_GLASS_YELLOW_SLAB;
+	f = &content_features(i);
+	f->description = std::string("Yellow Glass Slab");
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->slab_cube_type = CONTENT_GLASS_YELLOW;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->setAllTextures("glass_yellow.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	content_mapnode_nodebox_slab(f);
+	f->setInventoryTextureNodeBox(i,"glass_yellow.png", "glass_yellow.png", "glass_yellow.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_GLASS_BLACK_SLAB;
+	f = &content_features(i);
+	f->description = std::string("Black Glass Slab");
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->slab_cube_type = CONTENT_GLASS_BLACK;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->setAllTextures("glass_black.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	content_mapnode_nodebox_slab(f);
+	f->setInventoryTextureNodeBox(i,"glass_black.png", "glass_black.png", "glass_black.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+
 	// upside down slabs
 	i = CONTENT_ROUGHSTONE_SLAB_UD;
 	f = &content_features(i);
@@ -2767,6 +2941,20 @@ void content_mapnode_init()
 	f->slab_cube_type = CONTENT_ROUGHSTONE;
 	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"roughstone.png", "roughstone.png", "roughstone.png");
+	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
+
+	i = CONTENT_COBBLE_SLAB_UD;
+	f = &content_features(i);
+	f->description = std::string("Cobble Stone Slab");
+	f->setAllTextures("cobble.png");
+	f->param_type = CPT_NONE;
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->slab_cube_type = CONTENT_COBBLE;
+	content_mapnode_nodebox_slabud(f);
+	f->setInventoryTextureNodeBox(i,"cobble.png", "cobble.png", "cobble.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
 
 	i = CONTENT_MOSSYCOBBLE_SLAB_UD;
@@ -2848,6 +3036,166 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i,"sandstone.png", "sandstone.png", "sandstone.png");
 	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
 
+	i = CONTENT_GLASS_SLAB_UD;
+	f = &content_features(i);
+	f->description = std::string("Glass Slab");
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->slab_cube_type = CONTENT_GLASS;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->setAllTextures("glass.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	content_mapnode_nodebox_slabud(f);
+	f->setInventoryTextureNodeBox(i,"glass.png", "glass.png", "glass.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_GLASS_BLUE_SLAB_UD;
+	f = &content_features(i);
+	f->description = std::string("Blue Glass Slab");
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->slab_cube_type = CONTENT_GLASS_BLUE;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->setAllTextures("glass_blue.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	content_mapnode_nodebox_slabud(f);
+	f->setInventoryTextureNodeBox(i,"glass_blue.png", "glass_blue.png", "glass_blue.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_GLASS_GREEN_SLAB_UD;
+	f = &content_features(i);
+	f->description = std::string("Green Glass Slab");
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->slab_cube_type = CONTENT_GLASS_GREEN;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->setAllTextures("glass_green.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	content_mapnode_nodebox_slabud(f);
+	f->setInventoryTextureNodeBox(i,"glass_green.png", "glass_green.png", "glass_green.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_GLASS_ORANGE_SLAB_UD;
+	f = &content_features(i);
+	f->description = std::string("Orange Glass Slab");
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->slab_cube_type = CONTENT_GLASS_ORANGE;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->setAllTextures("glass_orange.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	content_mapnode_nodebox_slabud(f);
+	f->setInventoryTextureNodeBox(i,"glass_orange.png", "glass_orange.png", "glass_orange.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_GLASS_PURPLE_SLAB_UD;
+	f = &content_features(i);
+	f->description = std::string("Purple Glass Slab");
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->slab_cube_type = CONTENT_GLASS_PURPLE;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->setAllTextures("glass_purple.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	content_mapnode_nodebox_slabud(f);
+	f->setInventoryTextureNodeBox(i,"glass_purple.png", "glass_purple.png", "glass_purple.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_GLASS_RED_SLAB_UD;
+	f = &content_features(i);
+	f->description = std::string("Red Glass Slab");
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->slab_cube_type = CONTENT_GLASS_RED;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->setAllTextures("glass_red.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	content_mapnode_nodebox_slabud(f);
+	f->setInventoryTextureNodeBox(i,"glass_red.png", "glass_red.png", "glass_red.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_GLASS_YELLOW_SLAB_UD;
+	f = &content_features(i);
+	f->description = std::string("Yellow Glass Slab");
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->slab_cube_type = CONTENT_GLASS_YELLOW;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->setAllTextures("glass_yellow.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	content_mapnode_nodebox_slabud(f);
+	f->setInventoryTextureNodeBox(i,"glass_yellow.png", "glass_yellow.png", "glass_yellow.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_GLASS_BLACK_SLAB_UD;
+	f = &content_features(i);
+	f->description = std::string("Black Glass Slab");
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->slab_cube_type = CONTENT_GLASS_BLACK;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->setAllTextures("glass_black.png");
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	content_mapnode_nodebox_slabud(f);
+	f->setInventoryTextureNodeBox(i,"glass_black.png", "glass_black.png", "glass_black.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+
 	// stairs
 	i = CONTENT_ROUGHSTONE_STAIR;
 	f = &content_features(i);
@@ -2860,6 +3208,19 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_stair(f);
 	f->setInventoryTextureNodeBox(i,"roughstone.png", "roughstone.png", "roughstone.png");
+	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
+
+	i = CONTENT_COBBLE_STAIR;
+	f = &content_features(i);
+	f->description = std::string("Cobble Stone Stair");
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->setAllTextures("cobble.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_stair(f);
+	f->setInventoryTextureNodeBox(i,"cobble.png", "cobble.png", "cobble.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
 
 	i = CONTENT_MOSSYCOBBLE_STAIR;
@@ -2954,6 +3315,18 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_ROUGHSTONE_STAIR)+" 1";
 	content_mapnode_nodebox_stairud(f);
 	f->setInventoryTextureNodeBox(i,"roughstone.png", "roughstone.png", "roughstone.png");
+	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
+
+	i = CONTENT_COBBLE_STAIR_UD;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->setAllTextures("cobble.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_ROUGHSTONE_STAIR)+" 1";
+	content_mapnode_nodebox_stairud(f);
+	f->setInventoryTextureNodeBox(i,"cobble.png", "cobble.png", "cobble.png");
 	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
 
 	i = CONTENT_MOSSYCOBBLE_STAIR_UD;
