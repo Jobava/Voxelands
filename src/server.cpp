@@ -2024,6 +2024,11 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					<<": failed to emerge player"<<std::endl;
 			return;
 		}
+		{
+			Address address = getPeerAddress(peer_id);
+			std::string ip_string = address.serializeString();
+			((ServerRemotePlayer*)player)->setAddress(ip_string);
+		}
 
 		/*
 			Answer with a TOCLIENT_INIT

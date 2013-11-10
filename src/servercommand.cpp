@@ -261,7 +261,17 @@ void cmd_banunban(std::wostringstream &os, ServerCommandContext *ctx)
 			actionstream<<ctx->player->getName()<<" bans "
 					<<player->getName()<<" / "<<ip_string<<std::endl;
 		} catch(con::PeerNotFoundException){
-			dstream<<__FUNCTION_NAME<<": peer was not found"<<std::endl;
+			std::string ip_string = ((ServerRemotePlayer*)player)->getAddress();
+			if (ip_string != "") {
+				ctx->server->setIpBanned(ip_string, player->getName());
+				os<<L"-!- Banned "<<narrow_to_wide(ip_string)<<L"|"
+						<<narrow_to_wide(player->getName());
+
+				actionstream<<ctx->player->getName()<<" bans "
+						<<player->getName()<<" / "<<ip_string<<std::endl;
+			}else{
+				dstream<<__FUNCTION_NAME<<": peer was not found"<<std::endl;
+			}
 		}
 	}
 	else

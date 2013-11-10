@@ -184,7 +184,8 @@ public:
 class ServerRemotePlayer : public Player
 {
 public:
-	ServerRemotePlayer()
+	ServerRemotePlayer():
+		m_addr("")
 	{
 	}
 	virtual ~ServerRemotePlayer()
@@ -200,7 +201,11 @@ public:
 	{
 	}
 
+	void setAddress(std::string addr) {m_addr = addr;}
+	std::string getAddress() {return m_addr;}
+
 private:
+	std::string m_addr;
 };
 
 #ifndef SERVER
