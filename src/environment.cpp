@@ -1259,6 +1259,12 @@ void ServerEnvironment::step(float dtime)
 				/*
 					boom
 				*/
+				if (n.getContent() == CONTENT_FLASH) {
+					removeNode(p);
+				}
+				/*
+					boom
+				*/
 				if (n.getContent() == CONTENT_TNT) {
 					NodeMetadata *meta = m_map->getNodeMetadata(p);
 					if (meta && meta->getEnergy() == ENERGY_MAX) {
