@@ -1260,7 +1260,7 @@ void ServerEnvironment::step(float dtime)
 					boom
 				*/
 				if (n.getContent() == CONTENT_FLASH) {
-					removeNode(p);
+					m_map->removeNodeWithEvent(p);
 				}
 				/*
 					boom
