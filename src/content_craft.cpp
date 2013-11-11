@@ -162,7 +162,7 @@ InventoryItem *craft_get_result(InventoryItem **items)
 			defs[defs_init].specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
 			defs[defs_init].specs[5] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
 			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
-			defs[defs_init].item = new MaterialItem(CONTENT_SIGN_WALL, 1);
+			defs[defs_init].item = new MaterialItem(CONTENT_SIGN, 1);
 			defs_init++;
 		}
 
@@ -175,7 +175,7 @@ InventoryItem *craft_get_result(InventoryItem **items)
 			defs[defs_init].specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLEWOOD);
 			defs[defs_init].specs[5] = ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLEWOOD);
 			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
-			defs[defs_init].item = new MaterialItem(CONTENT_SIGN_WALL, 1);
+			defs[defs_init].item = new MaterialItem(CONTENT_SIGN, 1);
 			defs_init++;
 		}
 
