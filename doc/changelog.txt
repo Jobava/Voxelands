@@ -4,6 +4,20 @@ This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
 1311.00: (next)
+- replace cobble with rough stone
+- make cobble craftable from rough stone
+- add rough stone slabs, stairs, and walls
+- make all default crafting recipes use rough stone instead of cobble
+- switch sign inventory item to floor mounted nodebox
+- give jungle trees their own jungle leaves that drop jungle saplings
+- make jungle saplings grow into jungle trees
+- move cook result to ContentFeatures
+- change project name and paths to minetest-classic
+- make server MINETEST ascii art message into MINETEST CLASSIC
+- try to fix the water digging bug
+- fix node box selection box
+- make /ban work on players that aren't connected
+- add glass doors and slabs
 - fix ladders and some plantlike node being back face culled
 - add hay from 9 deadgrass, make it burnable
 - add stained clay and glass
@@ -18,7 +32,7 @@ For minor stuff, refer to the commit log of the repository.
 - make cooked mese create saltpeter
 - add coal and charcoal blocks
 - add firestarter, fire, and fire spread
-- add gunpowder and tnt
+- add gunpowder, tnt and tnt 'flash' explosion
 - make fire, fire spread, and tnt honour borderstone
 - add sponges
 - tweak plant growth a bit
