@@ -590,14 +590,12 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				0,0,0.3,1,
 				0,0,0.3,1
 			};
-			video::S3DVertex *v;
-
 			video::SColor c(255,255,255,255);
 			v3f pos = intToFloat(p+blockpos_nodes, BS);
-
 			v3s16 dir = unpackDir(n.param2);
-			if (dir.Y == 1) { // roof
-				video::S3DVertex vertices[24] = {
+			video::S3DVertex *v;
+			video::S3DVertex vertices[3][24] = {
+				{ // roof
 					// up
 					video::S3DVertex(-0.1*BS, 0.5*BS,0., 0,1,0, c, txc[4],txc[5]),
 					video::S3DVertex(0.,0.5*BS,0., 0,1,0, c, txc[6],txc[5]),
@@ -628,13 +626,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					video::S3DVertex(0.,0.5*BS,-0.1*BS, 0,0,-1, c, txc[22],txc[23]),
 					video::S3DVertex(0.1*BS,-0.1*BS,0., 0,0,-1, c, txc[22],txc[21]),
 					video::S3DVertex(0.,-0.1*BS,0., 0,0,-1, c, txc[20],txc[21]),
-				};
-				for(s32 i=0; i<24; i++) {
-					vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
-				}
-				v = vertices;
-			}else if (dir.Y == -1) { // floor
-				video::S3DVertex vertices[24] = {
+				},{ // floor
 					// up
 					//video::S3DVertex(min.X,max.Y,max.Z, 0,1,0, c, txc[0],txc[1]),
 					video::S3DVertex(-0.05*BS,0.1*BS,0.05*BS, 0,1,0, c, txc[0],txc[1]),
@@ -666,13 +658,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					video::S3DVertex(0.05*BS,0.1*BS,-0.05*BS, 0,0,-1, c, txc[22],txc[21]),
 					video::S3DVertex(0.05*BS,-0.5*BS,-0.05*BS, 0,0,-1, c, txc[22],txc[23]),
 					video::S3DVertex(-0.05*BS,-0.5*BS,-0.05*BS, 0,0,-1, c, txc[20],txc[23]),
-				};
-				for(s32 i=0; i<24; i++) {
-					vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
-				}
-				v = vertices;
-			}else{ // wall
-				video::S3DVertex vertices[24] = {
+				},{ // wall
 					// up
 					//video::S3DVertex(min.X,max.Y,max.Z, 0,1,0, c, txc[0],txc[1]),
 					video::S3DVertex(-0.05*BS,0.3*BS,0.4*BS, 0,1,0, c, txc[0],txc[1]),
@@ -704,21 +690,33 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					video::S3DVertex(0.05*BS,0.3*BS,0.3*BS, 0,0,-1, c, txc[22],txc[21]),
 					video::S3DVertex(0.05*BS,-0.3*BS,0.4*BS, 0,0,-1, c, txc[22],txc[23]),
 					video::S3DVertex(-0.05*BS,-0.3*BS,0.4*BS, 0,0,-1, c, txc[20],txc[23]),
-				};
-
-				for(s32 i=0; i<24; i++) {
-					if(dir == v3s16(1,0,0))
-						vertices[i].Pos.rotateXZBy(-90);
-					if(dir == v3s16(-1,0,0))
-						vertices[i].Pos.rotateXZBy(90);
-					if(dir == v3s16(0,0,1))
-						vertices[i].Pos.rotateXZBy(0);
-					if(dir == v3s16(0,0,-1))
-						vertices[i].Pos.rotateXZBy(180);
-
-					vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
 				}
-				v = vertices;
+			};
+
+			if (dir.Y == 1) { // roof
+				for (s32 i=0; i<24; i++) {
+					vertices[0][i].Pos += intToFloat(p + blockpos_nodes, BS);
+				}
+				v = vertices[0];
+			}else if (dir.Y == -1) { // floor
+				for (s32 i=0; i<24; i++) {
+					vertices[1][i].Pos += intToFloat(p + blockpos_nodes, BS);
+				}
+				v = vertices[1];
+			}else{ // wall
+				for (s32 i=0; i<24; i++) {
+					if(dir == v3s16(1,0,0))
+						vertices[2][i].Pos.rotateXZBy(-90);
+					if(dir == v3s16(-1,0,0))
+						vertices[2][i].Pos.rotateXZBy(90);
+					if(dir == v3s16(0,0,1))
+						vertices[2][i].Pos.rotateXZBy(0);
+					if(dir == v3s16(0,0,-1))
+						vertices[2][i].Pos.rotateXZBy(180);
+
+					vertices[2][i].Pos += intToFloat(p + blockpos_nodes, BS);
+				}
+				v = vertices[2];
 			}
 
 			f32 sx = content_features(n.getContent()).tiles[0].texture.x1()-content_features(n.getContent()).tiles[0].texture.x0();
