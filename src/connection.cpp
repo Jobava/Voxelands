@@ -990,7 +990,17 @@ nextpeer:
 void Connection::serve(u16 port)
 {
 	dout_con<<getDesc()<<" serving at port "<<port<<std::endl;
+#ifndef SERVER
+	try{
+#endif
 	m_socket.Bind(port);
+#ifndef SERVER
+	}catch(SocketException &e) {
+printf("%s %s %d\n",__FILE__,__FUNCTION__,__LINE__);
+		setRun(false);
+		return;
+	}
+#endif
 	m_peer_id = PEER_ID_SERVER;
 }
 

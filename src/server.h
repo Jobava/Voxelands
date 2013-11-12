@@ -375,7 +375,7 @@ public:
 	void stop();
 	// This is mainly a way to pass the time to the server.
 	// Actual processing is done in an another thread.
-	void step(float dtime);
+	bool step(float dtime);
 	// This is run by ServerThread and does the actual processing
 	void AsyncRunStep();
 	void Receive();

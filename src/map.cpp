@@ -3958,6 +3958,8 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 			for(u32 i=0; i<c; i++)
 			{
 				scene::IMeshBuffer *buf = mesh->getMeshBuffer(i);
+				if (buf == NULL)
+					continue;
 				const video::SMaterial& material = buf->getMaterial();
 				video::IMaterialRenderer* rnd =
 						driver->getMaterialRenderer(material.MaterialType);

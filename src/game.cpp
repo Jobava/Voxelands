@@ -876,8 +876,12 @@ void the_game(
 
 			client.step(0.1);
 
-			if(server != NULL)
-				server->step(0.1);
+			if (server != NULL) {
+				if (!server->step(0.1)) {
+					could_connect = false;
+					break;
+				}
+			}
 
 			// Delay a bit
 			sleep_ms(100);
@@ -887,16 +891,15 @@ void the_game(
 	catch(con::PeerNotFoundException &e)
 	{}
 
-	if(could_connect == false)
-	{
-		if(client.accessDenied())
-		{
+	if (could_connect == false) {
+		if (client.accessDenied()) {
 			error_message = L"Access denied. Reason: "
 					+client.accessDeniedReason();
 			errorstream<<wide_to_narrow(error_message)<<std::endl;
-		}
-		else
-		{
+		}else if (server != NULL) {
+			error_message = L"Unable to Connect (port already in use?).";
+			errorstream<<"Timed out."<<std::endl;
+		}else{
 			error_message = L"Connection timed out.";
 			errorstream<<"Timed out."<<std::endl;
 		}

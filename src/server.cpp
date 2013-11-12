@@ -1077,6 +1077,8 @@ void Server::start(unsigned short port)
 	// Initialize connection
 	m_con.SetTimeoutMs(30);
 	m_con.Serve(port);
+	if (!m_con.getRun())
+		return;
 
 	// Start thread
 	m_thread.setRun(true);
@@ -1100,9 +1102,11 @@ void Server::stop()
 	infostream<<"Server: Threads stopped"<<std::endl;
 }
 
-void Server::step(float dtime)
+bool Server::step(float dtime)
 {
 	DSTACK(__FUNCTION_NAME);
+	if (!m_con.getRun())
+		return false;
 	// Limit a bit
 	if(dtime > 2.0)
 		dtime = 2.0;
@@ -1110,6 +1114,7 @@ void Server::step(float dtime)
 		JMutexAutoLock lock(m_step_dtime_mutex);
 		m_step_dtime += dtime;
 	}
+	return true;
 }
 
 void Server::AsyncRunStep()
