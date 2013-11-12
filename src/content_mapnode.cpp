@@ -4826,6 +4826,25 @@ void content_mapnode_init()
 	f->post_effect_color = video::SColor(192, 255, 255, 64);
 #endif
 
+	i = CONTENT_STEAM;
+	f = &content_features(i);
+	f->description = std::string("Steam");
+	f->setAllTextures("steam.png");
+	f->solidness = 0;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_GLASSLIKE;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->walkable = false;
+	f->pointable = false;
+	f->diggable = false;
+	f->buildable_to = true;
+	f->damage_per_second = 4;
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+	f->post_effect_color = video::SColor(120, 200, 200, 200);
+#endif
+
 	// NOTE: Remember to add frequently used stuff to the texture atlas in tile.cpp
 
 

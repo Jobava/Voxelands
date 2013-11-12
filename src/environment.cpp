@@ -22,6 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "porting.h"
 #include "collision.h"
 #include "content_mapnode.h"
+#include "mineral.h"
 #include "nodemetadata.h"
 #include "mapblock.h"
 #include "serverobject.h"
@@ -1444,7 +1445,7 @@ void ServerEnvironment::step(float dtime)
 										continue;
 								}
 								n_test.setContent(CONTENT_FLASH);
-								m_map->addNodeWithEvent(p+v3s16(x,y,z),n_test);
+								m_delayed_node_changes[p+v3s16(x,y,z)] = n_test;
 							}
 						}
 						// but still blow up
@@ -1960,6 +1961,85 @@ void ServerEnvironment::step(float dtime)
 						}
 					}
 				}
+				/* steam dissipates */
+				if(n.getContent() == CONTENT_STEAM)
+				{
+					m_map->removeNodeWithEvent(p);
+				}
+				/* make lava cool near water */
+				if(n.getContent() == CONTENT_LAVASOURCE || n.getContent() == CONTENT_LAVA)
+				{
+					MapNode testnode;
+					bool found = false;
+					for(s16 z=-1; z<=1; z++) {
+					for(s16 y=-1; y<=1; y++) {
+					for(s16 x=-1; x<=1; x++) {
+						testnode = m_map->getNodeNoEx(p+v3s16(x,y,z));
+						if(testnode.getContent() == CONTENT_WATER || testnode.getContent() == CONTENT_WATERSOURCE)
+						{
+							found = true;
+							testnode.setContent(CONTENT_STEAM);
+							m_delayed_node_changes[p+v3s16(x,y,z)] = testnode;
+						}
+					}
+					}
+					}
+
+					if(found == true && n.getContent() == CONTENT_LAVASOURCE)
+					{
+						int material = myrand()%50;
+						switch(material)
+						{
+							case 0:
+							case 1:
+							case 2:
+							case 3:
+							case 4:
+							case 5:
+							case 6:
+							case 7:
+								n = MapNode(CONTENT_STONE, MINERAL_COAL);
+								break;
+							case 8:
+							case 9:
+							case 10:
+							case 11:
+								n = MapNode(CONTENT_STONE, MINERAL_IRON);
+								break;
+							case 12:
+							case 13:
+							case 14:
+							case 15:
+								n = MapNode(CONTENT_STONE, MINERAL_TIN);
+								break;
+							case 16:
+							case 17:
+							case 18:
+							case 19:
+								n = MapNode(CONTENT_STONE, MINERAL_COPPER);
+								break;
+							case 20:
+								n = MapNode(CONTENT_STONE, MINERAL_SILVER);
+								break;
+							case 21:
+								n = MapNode(CONTENT_STONE, MINERAL_GOLD);
+								break;
+							default:
+								n.setContent(CONTENT_ROUGHSTONE);
+								break;
+						}
+						m_map->addNodeWithEvent(p, n);
+					} else if(found == true)
+					{
+						n.setContent(CONTENT_ROUGHSTONE);
+						m_map->addNodeWithEvent(p, n);
+					}
+				}
+			}
+			for(std::map<v3s16,MapNode>::iterator i = m_delayed_node_changes.begin(); i != m_delayed_node_changes.end(); i++)
+			{
+				m_map->addNodeWithEvent(i->first, i->second);
+				m_delayed_node_changes.erase(i);
 			}
 		}
 	}

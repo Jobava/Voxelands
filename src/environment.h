@@ -31,6 +31,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 */
 
 #include <list>
+#include <map>
 #include "common_irrlicht.h"
 #include "player.h"
 #include "map.h"
@@ -90,6 +91,8 @@ protected:
 	//u32 m_daynight_ratio;
 	// Time of day in milli-hours (0-23999); determines day and night
 	u32 m_time_of_day;
+	// A list of positions and nodes that should be set *after* the entire loop runs
+	std::map<v3s16,MapNode> m_delayed_node_changes;
 };
 
 /*

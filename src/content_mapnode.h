@@ -173,6 +173,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_COBBLE 0x8CB
 #define CONTENT_ROUGHSTONEBRICK 0x8CC
 #define CONTENT_ROUGHSTONEBLOCK 0x8CD
+#define CONTENT_STEAM 0x8CE
 // glass pane
 #define CONTENT_GLASS_PANE 0x900
 #define CONTENT_GLASS_PANE_BLUE 0x901
