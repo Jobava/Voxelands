@@ -3281,7 +3281,39 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					|| ((ToolItem*)item)->getToolName() == std::string("SteelBucket_lava")
 				)
 			) {
-				MapNode n = m_env.getMap().getNodeNoEx(p_over);
+				MapNode n;
+				try{
+					// Don't add a node if this is not a free space
+					n = m_env.getMap().getNode(p_over);
+					bool no_enough_privs =
+							((getPlayerPrivs(player) & PRIV_BUILD)==0);
+					if(no_enough_privs)
+						infostream<<"Player "<<player->getName()<<" cannot add node"
+							<<" because privileges are "<<getPlayerPrivs(player)
+							<<std::endl;
+
+					if (content_features(n).buildable_to == false || no_enough_privs) {
+						// Client probably has wrong data.
+						// Set block not sent, so that client will get
+						// a valid one.
+						infostream<<"Client "<<peer_id<<" tried to place"
+								<<" node in invalid position; setting"
+								<<" MapBlock not sent."<<std::endl;
+						RemoteClient *client = getClient(peer_id);
+						v3s16 blockpos = getNodeBlockPos(p_over);
+						client->SetBlockNotSent(blockpos);
+						return;
+					}
+				}
+				catch(InvalidPositionException &e)
+				{
+					infostream<<"Server: Ignoring ADDNODE: Node not found"
+							<<" Adding block to emerge queue."
+							<<std::endl;
+					m_emerge_queue.addBlock(peer_id,
+							getNodeBlockPos(p_over), BLOCK_EMERGE_FLAG_FROMDISK);
+					return;
+				}
 				std::string wieldname = ((ToolItem*)item)->getToolName();
 				if (
 					wieldname == std::string("WBucket_water")
