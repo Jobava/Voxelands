@@ -1325,47 +1325,66 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		break;
 		case CDT_PLANTLIKE_LGE:
 		{
+			MapNode n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + p + v3s16(0,1,0));
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l);
-
-			for(u32 j=0; j<2; j++)
-			{
-				video::S3DVertex vertices[4] =
-				{
-					video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,BS/1,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
-					video::S3DVertex(-BS/2,BS/1,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
+			f32 tuv[4] = {
+				content_features(n).tiles[0].texture.x0(),
+				content_features(n).tiles[0].texture.x1(),
+				content_features(n).tiles[0].texture.y0(),
+				content_features(n).tiles[0].texture.y1()
+			};
+			s32 h = 1;
+			f32 s = 1.3;
+			if (
+				content_features(n2).draw_type == CDT_PLANTLIKE_LGE
+				|| content_features(n2).draw_type == CDT_PLANTLIKE
+				|| content_features(n2).draw_type == CDT_PLANTLIKE_SML
+			) {
+				tuv[2] = (0.333*content_features(n).tiles[0].texture.size.Y)+content_features(n).tiles[0].texture.y0();
+				h = 2;
+				s = 1.0;
+			}
+			video::S3DVertex base_vertices[4] = {
+				base_vertices[0] = video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,tuv[0], tuv[3]),
+				base_vertices[1] = video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,tuv[1], tuv[3]),
+				base_vertices[2] = video::S3DVertex(BS/2,BS/h,0, 0,0,0, c,tuv[1], tuv[2]),
+				base_vertices[3] = video::S3DVertex(-BS/2,BS/h,0, 0,0,0, c,tuv[0], tuv[2])
+			};
+			for (u32 j=0; j<2; j++) {
+				video::S3DVertex vertices[4] = {
+					base_vertices[0],
+					base_vertices[1],
+					base_vertices[2],
+					base_vertices[3]
 				};
 
-				if(j == 0)
-				{
-					for(u16 i=0; i<4; i++)
+				switch (j) {
+				case 0:
+					for (u16 i=0; i<4; i++) {
 						vertices[i].Pos.rotateXZBy(45);
-				}
-				else if(j == 1)
-				{
-					for(u16 i=0; i<4; i++)
+					}
+					break;
+				case 1:
+					for (u16 i=0; i<4; i++) {
 						vertices[i].Pos.rotateXZBy(-45);
-				}
-				else if(j == 2)
-				{
-					for(u16 i=0; i<4; i++)
+					}
+					break;
+				case 2:
+					for (u16 i=0; i<4; i++) {
 						vertices[i].Pos.rotateXZBy(135);
-				}
-				else if(j == 3)
-				{
-					for(u16 i=0; i<4; i++)
+					}
+					break;
+				case 3:
+					for (u16 i=0; i<4; i++) {
 						vertices[i].Pos.rotateXZBy(-135);
+					}
+					break;
+				default:;
 				}
 
-				for(u16 i=0; i<4; i++)
-				{
-					vertices[i].Pos *= 1.3;
+				for (u16 i=0; i<4; i++) {
+					vertices[i].Pos.X *= 1.3;
 					vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
 				}
 
