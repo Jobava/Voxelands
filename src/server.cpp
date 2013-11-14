@@ -2421,30 +2421,50 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 				MapNode m = m_env.getMap().getNodeNoEx(p_under+mp);
 				core::list<u16> far_players;
+				core::map<v3s16, MapBlock*> modified_blocks;
 				if ((n.getContent()&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK) {
-					if ((n.getContent()&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
-						n.setContent(n.getContent()&~CONTENT_DOOR_OPEN_MASK);
-						m.setContent(m.getContent()&~CONTENT_DOOR_OPEN_MASK);
+					if (m.getContent() < CONTENT_DOOR_MIN || m.getContent() > CONTENT_DOOR_MAX) {
+						sendRemoveNode(p_under, 0, &far_players, 30);
+						{
+							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+							m_env.getMap().removeNodeAndUpdate(p_under, modified_blocks);
+						}
+						/*
+							Set blocks not sent to far players
+						*/
+						for(core::list<u16>::Iterator i = far_players.begin(); i != far_players.end(); i++) {
+							u16 peer_id = *i;
+							RemoteClient *client = getClient(peer_id);
+							if(client==NULL)
+								continue;
+							client->SetBlocksNotSent(modified_blocks);
+						}
+						return;
 					}else{
-						n.setContent(n.getContent()|CONTENT_DOOR_OPEN_MASK);
-						m.setContent(m.getContent()|CONTENT_DOOR_OPEN_MASK);
+						if ((n.getContent()&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
+							n.setContent(n.getContent()&~CONTENT_DOOR_OPEN_MASK);
+							m.setContent(m.getContent()&~CONTENT_DOOR_OPEN_MASK);
+						}else{
+							n.setContent(n.getContent()|CONTENT_DOOR_OPEN_MASK);
+							m.setContent(m.getContent()|CONTENT_DOOR_OPEN_MASK);
+						}
+						sendAddNode(p_under+mp, m, 0, &far_players, 30);
+						sendAddNode(p_under, n, 0, &far_players, 30);
 					}
-					sendAddNode(p_under+mp, m, 0, &far_players, 30);
 				}else{
 					if ((n.getContent()&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
 						n.setContent(n.getContent()&~CONTENT_DOOR_OPEN_MASK);
 					}else{
 						n.setContent(n.getContent()|CONTENT_DOOR_OPEN_MASK);
 					}
+					sendAddNode(p_under, n, 0, &far_players, 30);
 				}
-				sendAddNode(p_under, n, 0, &far_players, 30);
 
 				/*
 					Add node.
 
 					This takes some time so it is done after the quick stuff
 				*/
-				core::map<v3s16, MapBlock*> modified_blocks;
 				{
 					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 

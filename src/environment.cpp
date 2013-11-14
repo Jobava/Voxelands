@@ -1249,6 +1249,20 @@ void ServerEnvironment::step(float dtime)
 								if (n_test.getContent() == CONTENT_FIRE || n_test.getContent() == CONTENT_FIRE_SHORTTERM)
 									continue;
 								if (content_features(n_test).flammable > 0) {
+									content_t c = n_test.getContent();
+									if (
+										c >= CONTENT_DOOR_MIN
+										&& c <= CONTENT_DOOR_MAX
+										&& (c&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK
+									) {
+										MapNode n_sect;
+										n_sect.setContent(CONTENT_FIRE_SHORTTERM);
+										if ((c&CONTENT_DOOR_SECT_MASK) == CONTENT_DOOR_SECT_MASK) {
+											m_map->addNodeWithEvent(p+v3s16(x,y-1,z), n_sect);
+										}else{
+											m_map->addNodeWithEvent(p+v3s16(x,y+1,z), n_sect);
+										}
+									}
 									n_test.setContent(CONTENT_FIRE_SHORTTERM);
 									m_map->addNodeWithEvent(p+v3s16(x,y,z), n_test);
 								}
