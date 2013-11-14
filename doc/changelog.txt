@@ -3,6 +3,12 @@ Minetest-c55 changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1311.01: (release 2013-11-14)
+- prevent water being placed inside doors
+- stop fire only burning half of doors
+- fix infinite everything bug
+- stop stacked large plantlike nodes depth buffer fighting (jungle grass)
+
 1311.00: (release 2013-11-13)
 - replace cobble with rough stone
 - make cobble craftable from rough stone
