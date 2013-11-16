@@ -31,6 +31,12 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #define PLAYERNAME_ALLOWED_CHARS "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"
 
+#define PLAYERANIM_STAND 0
+#define PLAYERANIM_WALK 1
+#define PLAYERANIM_DIG 2
+#define PLAYERANIM_WALKDIG 3
+#define PLAYERANIM_DIE 4
+
 class Map;
 
 class Player
@@ -132,6 +138,9 @@ public:
 	{
 		light = light_at_pos;
 	}
+
+	virtual void updateAnim(u8 anim_id)
+	{}
 
 	// NOTE: Use peer_id == 0 for disconnected
 	/*virtual bool isClientConnected() { return false; }
@@ -274,6 +283,8 @@ public:
 
 	void updateName(const char *name);
 
+	virtual void updateAnim(u8 anim_id) {m_anim_id = anim_id;}
+
 	virtual void updateLight(u8 light_at_pos)
 	{
 		Player::updateLight(light_at_pos);
@@ -298,6 +309,7 @@ private:
 	f32 m_pos_animation_time;
 	f32 m_pos_animation_time_counter;
 	v3f m_showpos;
+	u8 m_anim_id;
 };
 
 #endif // !SERVER

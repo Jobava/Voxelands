@@ -2405,6 +2405,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		*/
 		if(action == 0)
 		{
+			SendPlayerAnim(player,PLAYERANIM_DIG);
 			MapNode n = m_env.getMap().getNodeNoEx(p_under);
 			if (n.getContent() >= CONTENT_DOOR_MIN && n.getContent() <= CONTENT_DOOR_MAX) {
 				v3s16 mp(0,1,0);
@@ -2559,6 +2560,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		*/
 		else if(action == 2)
 		{
+			SendPlayerAnim(player,PLAYERANIM_STAND);
 #if 0
 			RemoteClient *client = getClient(peer_id);
 			JMutexAutoLock digmutex(client->m_dig_mutex);
@@ -3046,7 +3048,6 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		*/
 		else if(action == 1)
 		{
-
 			v3s16 p_dir = p_under - p_over;
 			InventoryList *ilist = player->inventory.getList("main");
 			if(ilist == NULL)
@@ -4291,6 +4292,25 @@ void Server::SendWieldedItem(const Player* player)
 	writeU16(os, 1);
 	writeU16(os, player->peer_id);
 	os<<serializeString(getWieldedItemString(player));
+
+	// Make data buffer
+	std::string s = os.str();
+	SharedBuffer<u8> data((u8*)s.c_str(), s.size());
+
+	m_con.SendToAll(0, data, true);
+}
+
+void Server::SendPlayerAnim(const Player* player, u8 animation_id)
+{
+	DSTACK(__FUNCTION_NAME);
+
+	assert(player);
+
+	std::ostringstream os(std::ios_base::binary);
+
+	writeU16(os, TOCLIENT_PLAYER_ANIMATION);
+	writeU16(os, player->peer_id);
+	writeU8(os, animation_id);
 
 	// Make data buffer
 	std::string s = os.str();

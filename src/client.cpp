@@ -1090,6 +1090,27 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 			}
 		} //envlock
 	}
+	else if(command == TOCLIENT_PLAYER_ANIMATION)
+	{
+		u16 peer_id = readU16(&data[2]);
+		u8 anim_id = readU8(&data[4]);
+
+		Player *player = m_env.getPlayer(peer_id);
+
+		// Create a player if it doesn't exist
+		if (player == NULL) {
+			player = new RemotePlayer(
+					m_device->getSceneManager()->getRootSceneNode(),
+					m_device,
+					-1);
+			player->peer_id = peer_id;
+			m_env.addPlayer(player);
+			infostream<<"Client: Adding new player " <<peer_id<<std::endl;
+		}
+
+		player->updateAnim(anim_id);
+		player->updateName(player->getName());
+	}
 	else if(command == TOCLIENT_SECTORMETA)
 	{
 		infostream<<"Client received DEPRECATED TOCLIENT_SECTORMETA"<<std::endl;

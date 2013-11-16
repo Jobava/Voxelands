@@ -27,6 +27,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "mesh.h"
 #endif
 #include "settings.h"
+#include "filesys.h"
 
 Player::Player():
 	touching_ground(false),
@@ -195,7 +196,8 @@ RemotePlayer::RemotePlayer(
 		s32 id):
 	scene::ISceneNode(parent, (device==NULL)?NULL:device->getSceneManager(), id),
 	m_node(NULL),
-	m_text(NULL)
+	m_text(NULL),
+	m_anim_id(PLAYERANIM_STAND)
 {
 	m_box = core::aabbox3d<f32>(-BS/2,0,-BS/2,BS/2,BS*2,BS/2);
 
@@ -255,7 +257,7 @@ void RemotePlayer::updateName(const char *name)
 		m_text->setText(wname);
 	}
 	if (m_node != NULL) {
-		std::string tex = std::string("players/player_")+name+".png";
+		std::string tex = std::string("players") + DIR_DELIM + "player_" + name + ".png";
 		std::string ptex = getTexturePath(tex);
 		printf("'%s' '%s'\n",tex.c_str(),ptex.c_str());
 		if (ptex == "")
@@ -293,11 +295,19 @@ void RemotePlayer::move(f32 dtime, Map &map, f32 pos_max_d)
 			&& movevector.Z > -0.001
 		)
 	) {
-		if (m_node->getEndFrame() != 79)
+		if (m_anim_id == PLAYERANIM_DIG) {
+			if (m_node->getEndFrame() != 198)
+				m_node->setFrameLoop(189,198);
+		}else if (m_node->getEndFrame() != 79) {
 			m_node->setFrameLoop(0,79);
+		}
 	}else{
-		if (m_node->getEndFrame() != 187)
+		if (m_anim_id == PLAYERANIM_DIG) {
+			if (m_node->getEndFrame() != 219)
+				m_node->setFrameLoop(200,219);
+		}else if (m_node->getEndFrame() != 187) {
 			m_node->setFrameLoop(168,187);
+		}
 	}
 
 	ISceneNode::setPosition(m_showpos);

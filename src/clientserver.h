@@ -70,7 +70,12 @@ enum ToClientCommand
 		[N] char[20] name
 	*/
 
-	TOCLIENT_OPT_BLOCK_NOT_FOUND = 0x25, // Obsolete
+	TOCLIENT_PLAYER_ANIMATION = 0x25, // stolen from TOCLIENT_OPT_BLOCK_NOT_FOUND
+	/*
+		[0] u16 command
+		[2] u16 peer_id
+		[4] u8 animation_id
+	*/
 
 	TOCLIENT_SECTORMETA = 0x26, // Obsolete
 	/*
