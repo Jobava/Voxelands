@@ -1482,7 +1482,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
-	f->visual_solidness = 1;
 	f->setAllTextures("glass_pane_side.png");
 	f->setTexture(4,"glass.png");
 	f->setTexture(5,"glass.png");
@@ -1510,7 +1509,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
-	f->visual_solidness = 1;
 	f->setAllTextures("glass_pane_blue_side.png");
 	f->setTexture(4,"glass_blue.png");
 	f->setTexture(5,"glass_blue.png");
@@ -1538,7 +1536,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
-	f->visual_solidness = 1;
 	f->setAllTextures("glass_pane_green_side.png");
 	f->setTexture(4,"glass_green.png");
 	f->setTexture(5,"glass_green.png");
@@ -1566,7 +1563,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
-	f->visual_solidness = 1;
 	f->setAllTextures("glass_pane_orange_side.png");
 	f->setTexture(4,"glass_orange.png");
 	f->setTexture(5,"glass_orange.png");
@@ -1594,7 +1590,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
-	f->visual_solidness = 1;
 	f->setAllTextures("glass_pane_purple_side.png");
 	f->setTexture(4,"glass_purple.png");
 	f->setTexture(5,"glass_purple.png");
@@ -1622,7 +1617,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
-	f->visual_solidness = 1;
 	f->setAllTextures("glass_pane_red_side.png");
 	f->setTexture(4,"glass_red.png");
 	f->setTexture(5,"glass_red.png");
@@ -1650,7 +1644,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
-	f->visual_solidness = 1;
 	f->setAllTextures("glass_pane_yellow_side.png");
 	f->setTexture(4,"glass_yellow.png");
 	f->setTexture(5,"glass_yellow.png");
@@ -1678,7 +1671,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
-	f->visual_solidness = 1;
 	f->setAllTextures("glass_pane_black_side.png");
 	f->setTexture(4,"glass_black.png");
 	f->setTexture(5,"glass_black.png");
@@ -2780,7 +2772,6 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->slab_cube_type = CONTENT_GLASS;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->visual_solidness = 1;
 	f->setAllTextures("glass.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
@@ -2800,7 +2791,6 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->slab_cube_type = CONTENT_GLASS_BLUE;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->visual_solidness = 1;
 	f->setAllTextures("glass_blue.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
@@ -2820,7 +2810,6 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->slab_cube_type = CONTENT_GLASS_GREEN;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->visual_solidness = 1;
 	f->setAllTextures("glass_green.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
@@ -2840,7 +2829,6 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->slab_cube_type = CONTENT_GLASS_ORANGE;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->visual_solidness = 1;
 	f->setAllTextures("glass_orange.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
@@ -2860,7 +2848,6 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->slab_cube_type = CONTENT_GLASS_PURPLE;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->visual_solidness = 1;
 	f->setAllTextures("glass_purple.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
@@ -2880,7 +2867,6 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->slab_cube_type = CONTENT_GLASS_RED;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->visual_solidness = 1;
 	f->setAllTextures("glass_red.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
@@ -2900,7 +2886,6 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->slab_cube_type = CONTENT_GLASS_YELLOW;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->visual_solidness = 1;
 	f->setAllTextures("glass_yellow.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
@@ -2920,7 +2905,6 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->slab_cube_type = CONTENT_GLASS_BLACK;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->visual_solidness = 1;
 	f->setAllTextures("glass_black.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
@@ -3047,7 +3031,6 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->slab_cube_type = CONTENT_GLASS;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->visual_solidness = 1;
 	f->setAllTextures("glass.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
@@ -3067,7 +3050,6 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->slab_cube_type = CONTENT_GLASS_BLUE;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->visual_solidness = 1;
 	f->setAllTextures("glass_blue.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
@@ -3087,7 +3069,6 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->slab_cube_type = CONTENT_GLASS_GREEN;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->visual_solidness = 1;
 	f->setAllTextures("glass_green.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
@@ -3107,7 +3088,6 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->slab_cube_type = CONTENT_GLASS_ORANGE;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->visual_solidness = 1;
 	f->setAllTextures("glass_orange.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
@@ -3127,7 +3107,6 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->slab_cube_type = CONTENT_GLASS_PURPLE;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->visual_solidness = 1;
 	f->setAllTextures("glass_purple.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
@@ -3147,7 +3126,6 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->slab_cube_type = CONTENT_GLASS_RED;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->visual_solidness = 1;
 	f->setAllTextures("glass_red.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
@@ -3167,7 +3145,6 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->slab_cube_type = CONTENT_GLASS_YELLOW;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->visual_solidness = 1;
 	f->setAllTextures("glass_yellow.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
@@ -3187,7 +3164,6 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->slab_cube_type = CONTENT_GLASS_BLACK;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->visual_solidness = 1;
 	f->setAllTextures("glass_black.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
