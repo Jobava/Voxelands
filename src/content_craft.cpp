@@ -108,7 +108,7 @@ struct CraftDef {
 */
 InventoryItem *craft_get_result(InventoryItem **items)
 {
-	static CraftDef defs[210];
+	static CraftDef defs[211];
 	static int defs_init = 0;
 
 	// only initialise (and hence allocate) these once
@@ -2135,6 +2135,21 @@ InventoryItem *craft_get_result(InventoryItem **items)
 			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "black_dye");
 			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_GLASS_PANE);
 			defs[defs_init].item = new MaterialItem(CONTENT_GLASS_PANE_BLACK, 1);
+			defs_init++;
+		}
+
+		// Snow block
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "snow_ball");
+			defs[defs_init].specs[1] = ItemSpec(ITEM_CRAFT, "snow_ball");
+			defs[defs_init].specs[2] = ItemSpec(ITEM_CRAFT, "snow_ball");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "snow_ball");
+			defs[defs_init].specs[4] = ItemSpec(ITEM_CRAFT, "snow_ball");
+			defs[defs_init].specs[5] = ItemSpec(ITEM_CRAFT, "snow_ball");
+			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "snow_ball");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "snow_ball");
+			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "snow_ball");
+			defs[defs_init].item = new MaterialItem(CONTENT_SNOW_BLOCK, 1);
 			defs_init++;
 		}
 	}

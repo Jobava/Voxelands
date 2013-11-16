@@ -319,5 +319,12 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_DOOR_OPEN_MASK 0x080
 #define CONTENT_HATCH_MASK 0x040
 
+#define CONTENT_SNOW 0xC01
+#define CONTENT_MUDSNOW 0xC02
+#define CONTENT_SNOW_BLOCK 0xC03
+#define CONTENT_ICE 0xC04
+#define CONTENT_CONIFER_LEAVES 0xC06
+#define CONTENT_CONIFER_SAPLING 0xC07
+
 #endif
 

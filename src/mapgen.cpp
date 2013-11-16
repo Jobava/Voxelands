@@ -159,6 +159,45 @@ void make_tree(ManualMapVoxelManipulator &vmanip, v3s16 p0, bool is_apple_tree)
 	}
 }
 
+void make_conifertree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
+{
+	MapNode treenode(CONTENT_TREE);
+	MapNode leavesnode(CONTENT_CONIFER_LEAVES);
+
+	s16 trunk_h = myrand_range(8, 11);
+	v3s16 p1 = p0;
+	for (s16 ii=0; ii<trunk_h; ii++) {
+		if(vmanip.m_area.contains(p1))
+			vmanip.m_data[vmanip.m_area.index(p1)] = treenode;
+		p1.Y++;
+	}
+
+	// p1 is now the last piece of the trunk
+	for (s16 ii=1; ii<=3; ii++) {
+		if (vmanip.m_area.contains(p1+v3s16(0,ii,0)))
+			vmanip.m_data[vmanip.m_area.index(p1+v3s16(0,ii,0))] = leavesnode;
+	}
+	for(s16 z=-1; z<=1; z++)
+	for(s16 y=-2; y<=0; y++)
+	for(s16 x=-1; x<=1; x++)
+	{
+		if (!x && !z)
+			continue;
+		if (vmanip.m_area.contains(p1+v3s16(x,y,z)))
+			vmanip.m_data[vmanip.m_area.index(p1+v3s16(x,y,z))] = leavesnode;
+	}
+	for(s16 z=-2; z<=2; z++)
+	for(s16 y=-5; y<-2; y++)
+	for(s16 x=-2; x<=2; x++)
+	{
+		if (!x && !z)
+			continue;
+		if (vmanip.m_area.contains(p1+v3s16(x,y,z)))
+			vmanip.m_data[vmanip.m_area.index(p1+v3s16(x,y,z))] = leavesnode;
+	}
+
+}
+
 void make_largetree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
 {
 	MapNode treenode(CONTENT_TREE);
@@ -2142,8 +2181,7 @@ void make_block(BlockMakeData *data)
 
 						if(current_depth < 4)
 						{
-							if(have_sand)
-							{
+							if (have_sand) {
 								// Determine whether to have clay in the sand here
 								double claynoise = noise2d_perlin(
 										0.5+(float)p2d.X/500, 0.5+(float)p2d.Y/500,
@@ -2157,14 +2195,17 @@ void make_block(BlockMakeData *data)
 									vmanip.m_data[i] = MapNode(CONTENT_CLAY);
 								else
 									vmanip.m_data[i] = MapNode(CONTENT_SAND);
-							}
-							#if 1
-							else if(current_depth==0 && !water_detected
-									&& y >= WATER_LEVEL && air_detected)
-								vmanip.m_data[i] = MapNode(CONTENT_GRASS);
-							#endif
-							else
+							}else if (current_depth==0 && !water_detected && y >= WATER_LEVEL && air_detected) {
+								if (y > 50) {
+									vmanip.m_data[i] = MapNode(CONTENT_MUDSNOW);
+								}else if (y > 45 && myrand()%5 == 0) {
+									vmanip.m_data[i] = MapNode(CONTENT_MUDSNOW);
+								}else{
+									vmanip.m_data[i] = MapNode(CONTENT_GRASS);
+								}
+							}else{
 								vmanip.m_data[i] = MapNode(CONTENT_MUD);
+							}
 						}
 						else
 						{
@@ -2238,7 +2279,7 @@ void make_block(BlockMakeData *data)
 				u32 i = data->vmanip->m_area.index(p);
 				MapNode *n = &data->vmanip->m_data[i];
 
-				if(n->getContent() != CONTENT_MUD && n->getContent() != CONTENT_GRASS && n->getContent() != CONTENT_SAND)
+				if(n->getContent() != CONTENT_MUD && n->getContent() != CONTENT_GRASS && n->getContent() != CONTENT_SAND && n->getContent() != CONTENT_MUDSNOW)
 						continue;
 
 				// Papyrus grows only on mud and in water
@@ -2252,24 +2293,35 @@ void make_block(BlockMakeData *data)
 				{
 					p.Y++;
 					//if(surface_humidity_2d(data->seed, v2s16(x, y)) < 0.5)
-					if(is_jungle == false)
-					{
-						if (myrand_range(0,10) != 0) {
-							bool is_apple_tree;
-							if (myrand_range(0,4) != 0) {
-								is_apple_tree = false;
-							}else{
-								is_apple_tree = noise2d_perlin(
-										0.5+(float)p.X/100, 0.5+(float)p.Z/100,
-										data->seed+342902, 3, 0.45) > 0.2;
-							}
-							make_tree(vmanip, p, is_apple_tree);
+					if (is_jungle == false || y > 30) {
+						// connifers
+						if (y > 45) {
+							make_conifertree(vmanip, p);
+						// regular trees
 						}else{
-							make_largetree(vmanip, p);
+							if (myrand_range(0,10) != 0) {
+								bool is_apple_tree;
+								if (myrand_range(0,4) != 0) {
+									is_apple_tree = false;
+								}else{
+									is_apple_tree = noise2d_perlin(
+											0.5+(float)p.X/100, 0.5+(float)p.Z/100,
+											data->seed+342902, 3, 0.45) > 0.2;
+								}
+								make_tree(vmanip, p, is_apple_tree);
+							}else{
+								make_largetree(vmanip, p);
+							}
 						}
 					}else{
 						make_jungletree(vmanip, p);
 					}
+				}
+				// connifers
+				else if(n->getContent() == CONTENT_MUDSNOW)
+				{
+					p.Y++;
+					make_conifertree(vmanip, p);
 				}
 				// Cactii grow only on sand, on land
 				else if(n->getContent() == CONTENT_SAND && y > WATER_LEVEL + 2)

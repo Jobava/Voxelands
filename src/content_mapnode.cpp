@@ -848,12 +848,26 @@ void content_mapnode_init()
 	if(invisible_stone)
 		f->solidness = 0; // For debugging, hides regular stone
 
+	i = CONTENT_ICE;
+	f = &content_features(i);
+	f->description = std::string("Ice");
+	f->setAllTextures("ice.png");
+	f->setInventoryTextureCube("ice.png", "ice.png", "ice.png");
+	f->draw_type = CDT_GLASSLIKE;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->is_ground_content = true;
+	f->solidness = 0;
+	f->visual_solidness = 1;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+
 	i = CONTENT_COAL;
 	f = &content_features(i);
 	f->description = std::string("Coal Block");
 	f->setAllTextures("coal.png");
 	f->setInventoryTextureCube("coal.png", "coal.png", "coal.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->flammable = 2; // can be set on fire
@@ -865,7 +879,6 @@ void content_mapnode_init()
 	f->description = std::string("Charcoal Block");
 	f->setAllTextures("charcoal.png");
 	f->setInventoryTextureCube("charcoal.png", "charcoal.png", "charcoal.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->flammable = 2; // can be set on fire
@@ -877,7 +890,6 @@ void content_mapnode_init()
 	f->description = std::string("Stone Brick");
 	f->setAllTextures("stonebrick.png");
 	f->setInventoryTextureCube("stonebrick.png", "stonebrick.png", "stonebrick.png");
-	f->param_type = CPT_NONE;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -888,7 +900,6 @@ void content_mapnode_init()
 	f->description = std::string("Stone Block");
 	f->setAllTextures("stoneblock.png");
 	f->setInventoryTextureCube("stoneblock.png", "stoneblock.png", "stoneblock.png");
-	f->param_type = CPT_NONE;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -899,7 +910,6 @@ void content_mapnode_init()
 	f->description = std::string("Rough Stone Brick");
 	f->setAllTextures("roughstone_brick.png");
 	f->setInventoryTextureCube("roughstone_brick.png", "roughstone_brick.png", "roughstone_brick.png");
-	f->param_type = CPT_NONE;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -910,7 +920,6 @@ void content_mapnode_init()
 	f->description = std::string("Rough Stone Block");
 	f->setAllTextures("roughstone_block.png");
 	f->setInventoryTextureCube("roughstone_block.png", "roughstone_block.png", "roughstone_block.png");
-	f->param_type = CPT_NONE;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -922,7 +931,17 @@ void content_mapnode_init()
 	f->setAllTextures("mud.png^grass_side.png");
 	f->setTexture(0, "grass.png");
 	f->setTexture(1, "mud.png");
-	f->param_type = CPT_MINERAL;
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MUD)+" 1";
+	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+
+	i = CONTENT_MUDSNOW;
+	f = &content_features(i);
+	f->description = std::string("Muddy Snow");
+	f->setAllTextures("mud.png^snow_side.png");
+	f->setTexture(0, "snow.png");
+	f->setTexture(1, "mud.png");
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MUD)+" 1";
@@ -932,7 +951,6 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Farm Dirt");
 	f->setAllTextures("dirt.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MUD)+" 1";
@@ -943,7 +961,6 @@ void content_mapnode_init()
 	f->description = std::string("Mud");
 	f->setAllTextures("mud.png");
 	f->setInventoryTextureCube("mud.png", "mud.png", "mud.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -954,7 +971,6 @@ void content_mapnode_init()
 	f->description = std::string("Sand");
 	f->setAllTextures("sand.png");
 	f->setInventoryTextureCube("sand.png", "sand.png", "sand.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -966,7 +982,6 @@ void content_mapnode_init()
 	f->description = std::string("Gravel");
 	f->setAllTextures("gravel.png");
 	f->setInventoryTextureCube("gravel.png", "gravel.png", "gravel.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -979,7 +994,6 @@ void content_mapnode_init()
 	f->description = std::string("Sand Stone");
 	f->setAllTextures("sandstone.png");
 	f->setInventoryTextureCube("sandstone.png", "sandstone.png", "sandstone.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAND)+" 4";
@@ -990,7 +1004,6 @@ void content_mapnode_init()
 	f->description = std::string("Sand Stone Bricks");
 	f->setAllTextures("sandstone_brick.png");
 	f->setInventoryTextureCube("sandstone_brick.png", "sandstone_brick.png", "sandstone_brick.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAND)+" 4";
@@ -1001,7 +1014,6 @@ void content_mapnode_init()
 	f->description = std::string("Sand Stone Blocks");
 	f->setAllTextures("sandstone_block.png");
 	f->setInventoryTextureCube("sandstone_block.png", "sandstone_block.png", "sandstone_block.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAND)+" 4";
@@ -1012,7 +1024,6 @@ void content_mapnode_init()
 	f->description = std::string("Clay");
 	f->setAllTextures("clay.png");
 	f->setInventoryTextureCube("clay.png", "clay.png", "clay.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem lump_of_clay 4");
@@ -1024,7 +1035,6 @@ void content_mapnode_init()
 	f->description = std::string("Blue Clay");
 	f->setAllTextures("clay_blue.png");
 	f->setInventoryTextureCube("clay_blue.png", "clay_blue.png", "clay_blue.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem lump_of_clay 4");
@@ -1037,7 +1047,6 @@ void content_mapnode_init()
 	f->description = std::string("Green Clay");
 	f->setAllTextures("clay_green.png");
 	f->setInventoryTextureCube("clay_green.png", "clay_green.png", "clay_green.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem lump_of_clay 4");
@@ -1050,7 +1059,6 @@ void content_mapnode_init()
 	f->description = std::string("Orange Clay");
 	f->setAllTextures("clay_orange.png");
 	f->setInventoryTextureCube("clay_orange.png", "clay_orange.png", "clay_orange.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem lump_of_clay 4");
@@ -1063,7 +1071,6 @@ void content_mapnode_init()
 	f->description = std::string("Purple Clay");
 	f->setAllTextures("clay_purple.png");
 	f->setInventoryTextureCube("clay_purple.png", "clay_purple.png", "clay_purple.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem lump_of_clay 4");
@@ -1076,7 +1083,6 @@ void content_mapnode_init()
 	f->description = std::string("Red Clay");
 	f->setAllTextures("clay_red.png");
 	f->setInventoryTextureCube("clay_red.png", "clay_red.png", "clay_red.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem lump_of_clay 4");
@@ -1089,7 +1095,6 @@ void content_mapnode_init()
 	f->description = std::string("Yellow Clay");
 	f->setAllTextures("clay_yellow.png");
 	f->setInventoryTextureCube("clay_yellow.png", "clay_yellow.png", "clay_yellow.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem lump_of_clay 4");
@@ -1102,7 +1107,6 @@ void content_mapnode_init()
 	f->description = std::string("Black Clay");
 	f->setAllTextures("clay_black.png");
 	f->setInventoryTextureCube("clay_black.png", "clay_black.png", "clay_black.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem lump_of_clay 4");
@@ -1115,7 +1119,6 @@ void content_mapnode_init()
 	f->description = std::string("Brick");
 	f->setAllTextures("brick.png");
 	f->setInventoryTextureCube("brick.png", "brick.png", "brick.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem clay_brick 4");
@@ -1126,7 +1129,6 @@ void content_mapnode_init()
 	f->description = std::string("Terracotta");
 	f->setAllTextures("terracotta.png");
 	f->setInventoryTextureCube("terracotta.png", "terracotta.png", "terracotta.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -1137,7 +1139,6 @@ void content_mapnode_init()
 	f->description = std::string("Terracotta Brick");
 	f->setAllTextures("terracotta_brick.png");
 	f->setInventoryTextureCube("terracotta_brick.png", "terracotta_brick.png", "terracotta_brick.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -1148,7 +1149,6 @@ void content_mapnode_init()
 	f->description = std::string("Terracotta Block");
 	f->setAllTextures("terracotta_block.png");
 	f->setInventoryTextureCube("terracotta_block.png", "terracotta_block.png", "terracotta_block.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -1159,7 +1159,6 @@ void content_mapnode_init()
 	f->description = std::string("Terracotta Tile");
 	f->setAllTextures("terracotta_tile.png");
 	f->setInventoryTextureCube("terracotta_tile.png", "terracotta_tile.png", "terracotta_tile.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -1172,7 +1171,6 @@ void content_mapnode_init()
 	f->setTexture(0, "tree_top.png");
 	f->setTexture(1, "tree_top.png");
 	f->setInventoryTextureCube("tree_top.png", "tree.png", "tree.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->flammable = 2; // can be set on fire
@@ -1187,7 +1185,6 @@ void content_mapnode_init()
 	f->setTexture(0, "jungletree_top.png");
 	f->setTexture(1, "jungletree_top.png");
 	f->setInventoryTextureCube("jungletree_top.png", "jungletree.png", "jungletree.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	//f->is_ground_content = true;
 	f->flammable = 2; // can be set on fire
@@ -1215,7 +1212,6 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Leaves");
 	f->light_propagates = true;
-	//f->param_type = CPT_MINERAL;
 	f->param_type = CPT_LIGHT;
 	//f->is_ground_content = true;
 	if (new_style_leaves) {
@@ -1241,7 +1237,6 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Jungle Leaves");
 	f->light_propagates = true;
-	//f->param_type = CPT_MINERAL;
 	f->param_type = CPT_LIGHT;
 	//f->is_ground_content = true;
 	if (new_style_leaves) {
@@ -1259,6 +1254,31 @@ void content_mapnode_init()
 	}
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_JUNGLESAPLING)+" 1";
+	f->extra_dug_item_rarity = 20;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setLeafLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_CONIFER_LEAVES;
+	f = &content_features(i);
+	f->description = std::string("Conifer Leaves");
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	//f->is_ground_content = true;
+	if (new_style_leaves) {
+		f->draw_type = CDT_GLASSLIKE;
+		f->solidness = 0; // drawn separately, makes no faces
+		f->visual_solidness = 1;
+		f->setAllTextures("conifer_leaves.png");
+#ifndef SERVER
+		f->setAllTextureTypes(MATERIAL_ALPHA_SIMPLE);
+#endif
+		f->setInventoryTextureCube("conifer_leaves.png", "conifer_leaves.png", "conifer_leaves.png");
+	}else{
+		f->draw_type = CDT_CUBELIKE;
+		f->setAllTextures("[noalpha:conifer_leaves.png");
+	}
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CONIFER_SAPLING)+" 1";
 	f->extra_dug_item_rarity = 20;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	setLeafLikeDiggingProperties(f->digging_properties, 0.15);
@@ -1292,7 +1312,6 @@ void content_mapnode_init()
 	f->setTexture(0, "cactus_top.png");
 	f->setTexture(1, "cactus_top.png");
 	f->setInventoryTextureCube("cactus_top.png", "cactus_side.png", "cactus_side.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
@@ -1322,7 +1341,6 @@ void content_mapnode_init()
 	f->setTexture(0, "wood.png");
 	f->setTexture(1, "wood.png");
 	f->setInventoryTextureCube("wood.png", "bookshelf.png", "bookshelf.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
@@ -1840,18 +1858,44 @@ void content_mapnode_init()
 	f->description = std::string("Hay Bale");
 	f->setAllTextures("hay_bale.png");
 	f->setInventoryTextureCube("hay_bale.png", "hay_bale.png", "hay_bale.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	setLeafLikeDiggingProperties(f->digging_properties, 0.6);
+
+	i = CONTENT_SNOW_BLOCK;
+	f = &content_features(i);
+	f->description = std::string("Snow");
+	f->setAllTextures("snow.png");
+	f->setInventoryTextureCube("snow.png", "snow.png", "snow.png");
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("CraftItem snow_ball 9");
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	setDirtLikeDiggingProperties(f->digging_properties, 0.3);
+
+	i = CONTENT_SNOW;
+	f = &content_features(i);
+	f->description = std::string("Snow");
+	f->setAllTextures("snow.png");
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->light_propagates = true;
+	f->buildable_to = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("CraftItem snow_ball 1");
+	content_mapnode_nodebox_carpet(f);
+	f->setInventoryTextureNodeBox(i,"snow.png", "snow.png", "snow.png");
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	setDirtLikeDiggingProperties(f->digging_properties, 0.3);
 
 	i = CONTENT_COTTON;
 	f = &content_features(i);
 	f->description = std::string("Cotton");
 	f->setAllTextures("cotton.png");
 	f->setInventoryTextureCube("cotton.png", "cotton.png", "cotton.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -1863,7 +1907,6 @@ void content_mapnode_init()
 	f->description = std::string("Blue Cotton");
 	f->setAllTextures("cotton_blue.png");
 	f->setInventoryTextureCube("cotton_blue.png", "cotton_blue.png", "cotton_blue.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -1875,7 +1918,6 @@ void content_mapnode_init()
 	f->description = std::string("Green Cotton");
 	f->setAllTextures("cotton_green.png");
 	f->setInventoryTextureCube("cotton_green.png", "cotton_green.png", "cotton_green.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -1887,7 +1929,6 @@ void content_mapnode_init()
 	f->description = std::string("Orange Cotton");
 	f->setAllTextures("cotton_orange.png");
 	f->setInventoryTextureCube("cotton_orange.png", "cotton_orange.png", "cotton_orange.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -1899,7 +1940,6 @@ void content_mapnode_init()
 	f->description = std::string("Purple Cotton");
 	f->setAllTextures("cotton_purple.png");
 	f->setInventoryTextureCube("cotton_purple.png", "cotton_purple.png", "cotton_purple.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -1911,7 +1951,6 @@ void content_mapnode_init()
 	f->description = std::string("Red Cotton");
 	f->setAllTextures("cotton_red.png");
 	f->setInventoryTextureCube("cotton_red.png", "cotton_red.png", "cotton_red.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -1923,7 +1962,6 @@ void content_mapnode_init()
 	f->description = std::string("Yellow Cotton");
 	f->setAllTextures("cotton_yellow.png");
 	f->setInventoryTextureCube("cotton_yellow.png", "cotton_yellow.png", "cotton_yellow.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -1935,7 +1973,6 @@ void content_mapnode_init()
 	f->description = std::string("Black Cotton");
 	f->setAllTextures("cotton_black.png");
 	f->setInventoryTextureCube("cotton_black.png", "cotton_black.png", "cotton_black.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -2630,6 +2667,22 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->digging_properties.set("", DiggingProperties(true, 0.0, 0));
 
+	i = CONTENT_CONIFER_SAPLING;
+	f = &content_features(i);
+	f->description = std::string("Conifer Sapling");
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_PLANTLIKE;
+	f->setAllTextures("conifer_sapling.png");
+	f->setInventoryTexture("conifer_sapling.png");
+	f->setAllTextureFlags(0);
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->light_propagates = true;
+	f->air_equivalent = false;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->walkable = false;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->digging_properties.set("", DiggingProperties(true, 0.0, 0));
+
 	i = CONTENT_APPLE;
 	f = &content_features(i);
 	f->description = std::string("Apple");
@@ -2694,7 +2747,6 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Stone Slab");
 	f->setAllTextures("stone.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2722,7 +2774,6 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Jungle Wood Slab");
 	f->setAllTextures("junglewood.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	//f->is_ground_content = true;
@@ -2737,7 +2788,6 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Brick Slab");
 	f->setAllTextures("brick.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2751,7 +2801,6 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Sand Stone Slab");
 	f->setAllTextures("sandstone.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2957,7 +3006,6 @@ void content_mapnode_init()
 	i = CONTENT_STONE_SLAB_UD;
 	f = &content_features(i);
 	f->setAllTextures("stone.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -2983,7 +3031,6 @@ void content_mapnode_init()
 	i = CONTENT_JUNGLE_SLAB_UD;
 	f = &content_features(i);
 	f->setAllTextures("junglewood.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	//f->is_ground_content = true;
@@ -2997,7 +3044,6 @@ void content_mapnode_init()
 	i = CONTENT_BRICK_SLAB_UD;
 	f = &content_features(i);
 	f->setAllTextures("brick.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3010,7 +3056,6 @@ void content_mapnode_init()
 	i = CONTENT_SANDSTONE_SLAB_UD;
 	f = &content_features(i);
 	f->setAllTextures("sandstone.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -4601,7 +4646,6 @@ void content_mapnode_init()
 	f->setTexture(0, "tnt_top.png");
 	f->setTexture(1, "tnt_bottom.png");
 	f->setInventoryTextureCube("tnt_top.png", "tnt.png", "tnt.png");
-	f->param_type = CPT_MINERAL;
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";

@@ -339,7 +339,7 @@ void getPointedNode(Client *client, v3f player_position,
 				) {
 					continue;
 				}
-			}else if (n.getContent() >= CONTENT_PLANTS_MIN && n.getContent() <= CONTENT_PLANTS_MAX) {
+			}else if ((n.getContent() >= CONTENT_PLANTS_MIN && n.getContent() <= CONTENT_PLANTS_MAX) || n.getContent() == CONTENT_SNOW) {
 				const InventoryItem *wield = client->getLocalPlayer()->getWieldItem();
 				if (
 					wield

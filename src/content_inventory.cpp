@@ -97,6 +97,8 @@ std::string item_craft_get_image_name(const std::string &subname)
 		return "saltpeter.png";
 	}else if (subname == "gunpowder") {
 		return "gunpowder.png";
+	}else if (subname == "snow_ball") {
+		return "snow_ball.png";
 	}else{
 		return "cotton.png"; // just something
 	}
@@ -174,6 +176,8 @@ std::string item_craft_get_name(const std::string &subname)
 		return "Salt Peter";
 	}else if (subname == "gunpowder") {
 		return "Gun Powder";
+	}else if (subname == "snow_ball") {
+		return "Snow Ball";
 	}
 
 	return subname;

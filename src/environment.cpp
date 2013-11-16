@@ -959,16 +959,133 @@ void ServerEnvironment::step(float dtime)
 					Test something:
 					Convert mud under proper lighting to grass
 				*/
-				if(n.getContent() == CONTENT_MUD)
-				{
-					if(myrand()%20 == 0)
-					{
+				if(n.getContent() == CONTENT_MUD) {
+					if (myrand()%20 == 0) {
 						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
-						if(content_features(n_top).air_equivalent &&
-								n_top.getLightBlend(getDayNightRatio()) >= 13)
-						{
-							n.setContent(CONTENT_GRASS);
+						if (content_features(n_top).air_equivalent) {
+							if (p.Y > 50) {
+								n.setContent(CONTENT_MUDSNOW);
+								m_map->addNodeWithEvent(p, n);
+							}else if (n_top.getLightBlend(getDayNightRatio()) >= 13) {
+								n.setContent(CONTENT_GRASS);
+								m_map->addNodeWithEvent(p, n);
+							}
+						}
+					}
+				}else if (n.getContent() == CONTENT_GRASS) {
+					if (myrand()%20 == 0) {
+						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
+						if (content_features(n_top).air_equivalent) {
+							if (p.Y > 50) {
+								n.setContent(CONTENT_MUDSNOW);
+								m_map->addNodeWithEvent(p, n);
+							}
+						}
+					}
+				}else if (
+					p.Y > 55
+					&& (
+						content_features(n).draw_type == CDT_CUBELIKE
+						|| content_features(n).draw_type == CDT_GLASSLIKE
+					)
+				) {
+					if (myrand()%20 == 0) {
+						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
+						// check that it's on top, and somewhere snow could fall
+						// not 100% because torches
+						if (n_top.getContent() == CONTENT_AIR && n_top.getLightBlend(getDayNightRatio()) >= 13) {
+							n_top.setContent(CONTENT_SNOW);
+							m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top);
+						}
+					}
+				}
+				if (n.getContent() == CONTENT_WATERSOURCE || n.getContent() == CONTENT_WATER) {
+					if (p.Y > 60) {
+						n.setContent(CONTENT_ICE);
+						m_map->addNodeWithEvent(p, n);
+					}
+				}else if (n.getContent() == CONTENT_ICE) {
+					if (p.Y < 40) {
+						bool found = false;
+						for(s16 x=-3; !found && x<=3; x++) {
+						for(s16 y=-1; !found && y<=1; y++) {
+						for(s16 z=-3; !found && z<=3; z++) {
+							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
+							if (n_test.getContent() == CONTENT_WATERSOURCE)
+								found = true;
+						}
+						}
+						}
+						if (found) {
+							n.setContent(CONTENT_WATER);
 							m_map->addNodeWithEvent(p, n);
+						}else{
+							n.setContent(CONTENT_WATERSOURCE);
+							m_map->addNodeWithEvent(p, n);
+						}
+					}else{
+						bool found = false;
+						for(s16 x=-3; !found && x<=3; x++) {
+						for(s16 y=-1; !found && y<=1; y++) {
+						for(s16 z=-3; !found && z<=3; z++) {
+							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
+							if (
+								n_test.getContent() == CONTENT_LAVASOURCE
+								|| n_test.getContent() == CONTENT_LAVA
+								|| n_test.getContent() == CONTENT_FIRE
+							)
+								found = true;
+						}
+						}
+						}
+						if (found) {
+							n.setContent(CONTENT_WATERSOURCE);
+							m_map->addNodeWithEvent(p, n);
+						}
+					}
+				}else if (n.getContent() == CONTENT_SNOW) {
+					MapNode n_test = m_map->getNodeNoEx(p+v3s16(0,-1,0));
+					if (n_test.getContent() == CONTENT_AIR)
+						m_map->removeNodeWithEvent(p);
+				}else if (n.getContent() == CONTENT_SNOW_BLOCK) {
+					if (p.Y < 1) {
+						bool found = false;
+						for(s16 x=-3; !found && x<=3; x++) {
+						for(s16 y=-1; !found && y<=1; y++) {
+						for(s16 z=-3; !found && z<=3; z++) {
+							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
+							if (n_test.getContent() == CONTENT_WATERSOURCE)
+								found = true;
+						}
+						}
+						}
+						if (found) {
+							n.setContent(CONTENT_WATER);
+							m_map->addNodeWithEvent(p, n);
+						}else{
+							n.setContent(CONTENT_WATERSOURCE);
+							m_map->addNodeWithEvent(p, n);
+						}
+					}else{
+						bool found = false;
+						for(s16 x=-3; !found && x<=3; x++) {
+						for(s16 y=-1; !found && y<=1; y++) {
+						for(s16 z=-3; !found && z<=3; z++) {
+							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
+							if (
+								n_test.getContent() == CONTENT_LAVASOURCE
+								|| n_test.getContent() == CONTENT_LAVA
+								|| n_test.getContent() == CONTENT_FIRE
+							)
+								found = true;
+						}
+						}
+						}
+						if (found) {
+							n.setContent(CONTENT_WATERSOURCE);
+							m_map->addNodeWithEvent(p, n);
+						}else{
+							m_map->removeNodeWithEvent(p);
 						}
 					}
 				}
@@ -1080,7 +1197,7 @@ void ServerEnvironment::step(float dtime)
 				/*
 					Convert grass into mud if under something else than air
 				*/
-				if(n.getContent() == CONTENT_GRASS)
+				if(n.getContent() == CONTENT_GRASS || n.getContent() == CONTENT_MUDSNOW)
 				{
 					//if(myrand()%20 == 0)
 					{
@@ -1092,6 +1209,7 @@ void ServerEnvironment::step(float dtime)
 							&& content_features(n_top).draw_type != CDT_PLANTLIKE_SML
 							&& content_features(n_top).draw_type != CDT_PLANTLIKE_LGE
 							&& n_top.getContent() != CONTENT_SIGN
+							&& n_top.getContent() != CONTENT_SNOW
 						) {
 							n.setContent(CONTENT_MUD);
 							m_map->addNodeWithEvent(p, n);
@@ -1437,50 +1555,7 @@ void ServerEnvironment::step(float dtime)
 						s16 max_o = 2;
 						s16 grow = 1;
 						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
-						if (below == CONTENT_JUNGLETREE) {
-							grow = 3;
-							max_y = 10;
-							for (s16 z=-max_o; grow && z < max_o; z++) {
-							for (s16 y=2; grow && y < max_y; y++) {
-							for (s16 x=-max_o; grow && x < max_o; x++) {
-								v3s16 test_p = p + v3s16(x,y,z);
-								if (test_p != p) {
-									content_t tcon = m_map->getNodeNoEx(test_p).getContent();
-									if (
-										tcon != CONTENT_AIR
-										&& tcon != CONTENT_TREE
-										&& tcon != CONTENT_JUNGLETREE
-										&& tcon != CONTENT_LEAVES
-										&& tcon != CONTENT_APPLE
-										&& tcon != CONTENT_IGNORE
-									)
-										grow = 0;
-								}
-							}
-							}
-							}
-							if (grow) {
-								for (s16 z=-max_o; grow && z < max_o; z++) {
-								for (s16 x=-max_o; grow && x < max_o; x++) {
-									v3s16 test_p = p + v3s16(x,-1,z);
-									if (test_p != p) {
-										content_t tcon = m_map->getNodeNoEx(test_p).getContent();
-										if (
-											tcon != CONTENT_AIR
-											&& tcon != CONTENT_TREE
-											&& tcon != CONTENT_JUNGLETREE
-											&& tcon != CONTENT_LEAVES
-											&& tcon != CONTENT_APPLE
-											&& tcon != CONTENT_IGNORE
-											&& tcon != CONTENT_MUD
-											&& tcon != CONTENT_GRASS
-										)
-											grow = 0;
-									}
-								}
-								}
-							}
-						}else if (below == CONTENT_MUD || below == CONTENT_GRASS) {
+						if (below == CONTENT_MUD || below == CONTENT_GRASS) {
 							for (s16 z=-max_o; grow && z < max_o; z++) {
 							for (s16 y=2; grow && y < max_y; y++) {
 							for (s16 x=-max_o; grow && x < max_o; x++) {
@@ -1491,6 +1566,8 @@ void ServerEnvironment::step(float dtime)
 										tcon != CONTENT_AIR
 										&& tcon != CONTENT_TREE
 										&& tcon != CONTENT_LEAVES
+										&& tcon != CONTENT_JUNGLELEAVES
+										&& tcon != CONTENT_CONIFER_LEAVES
 										&& tcon != CONTENT_APPLE
 										&& tcon != CONTENT_IGNORE)
 										grow = 0;
@@ -1512,6 +1589,8 @@ void ServerEnvironment::step(float dtime)
 											tcon != CONTENT_AIR
 											&& tcon != CONTENT_TREE
 											&& tcon != CONTENT_LEAVES
+											&& tcon != CONTENT_JUNGLELEAVES
+											&& tcon != CONTENT_CONIFER_LEAVES
 											&& tcon != CONTENT_APPLE
 											&& tcon != CONTENT_IGNORE)
 											grow = 1;
@@ -1535,9 +1614,6 @@ void ServerEnvironment::step(float dtime)
 							vmanip.initialEmerge(tree_blockp - v3s16(1,1,1), tree_blockp + v3s16(1,1,1));
 							if (grow == 2) {
 								mapgen::make_largetree(vmanip, tree_p);
-							}else if (grow == 3) {
-								tree_p.Y -= 1;
-								mapgen::make_jungletree(vmanip, tree_p);
 							}else{
 								bool is_apple_tree = myrand()%4 == 0;
 								mapgen::make_tree(vmanip, tree_p, is_apple_tree);
@@ -1587,6 +1663,8 @@ void ServerEnvironment::step(float dtime)
 										&& tcon != CONTENT_TREE
 										&& tcon != CONTENT_JUNGLETREE
 										&& tcon != CONTENT_LEAVES
+										&& tcon != CONTENT_JUNGLELEAVES
+										&& tcon != CONTENT_CONIFER_LEAVES
 										&& tcon != CONTENT_APPLE
 										&& tcon != CONTENT_IGNORE
 									)
@@ -1632,8 +1710,80 @@ void ServerEnvironment::step(float dtime)
 						}
 					}
 				}
-				if (n.getContent() == CONTENT_LEAVES || n.getContent() == CONTENT_JUNGLELEAVES) // leaf decay
-				{
+				if(n.getContent() == CONTENT_CONIFER_SAPLING) {
+					if(myrand()%10 == 0)
+					{
+						s16 max_y = 12;
+						s16 max_o = 2;
+						bool grow = true;
+						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
+						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_MUDSNOW) {
+							for (s16 z=-max_o; grow && z < max_o; z++) {
+							for (s16 y=2; grow && y < max_y; y++) {
+							for (s16 x=-max_o; grow && x < max_o; x++) {
+								v3s16 test_p = p + v3s16(x,y,z);
+								if (test_p != p) {
+									content_t tcon = m_map->getNodeNoEx(test_p).getContent();
+									if (
+										tcon != CONTENT_AIR
+										&& tcon != CONTENT_TREE
+										&& tcon != CONTENT_JUNGLETREE
+										&& tcon != CONTENT_LEAVES
+										&& tcon != CONTENT_JUNGLELEAVES
+										&& tcon != CONTENT_CONIFER_LEAVES
+										&& tcon != CONTENT_APPLE
+										&& tcon != CONTENT_IGNORE
+									)
+										grow = false;
+								}
+							}
+							}
+							}
+							if (grow) {
+								actionstream<<"A sapling grows into a conifer tree at "
+									<<PP(p)<<std::endl;
+
+								core::map<v3s16, MapBlock*> modified_blocks;
+								v3s16 tree_p = p;
+								ManualMapVoxelManipulator vmanip(m_map);
+								v3s16 tree_blockp = getNodeBlockPos(tree_p);
+								vmanip.initialEmerge(tree_blockp - v3s16(1,1,1), tree_blockp + v3s16(1,1,1));
+								mapgen::make_conifertree(vmanip, tree_p);
+								vmanip.blitBackAll(&modified_blocks);
+
+								// update lighting
+								core::map<v3s16, MapBlock*> lighting_modified_blocks;
+								for(core::map<v3s16, MapBlock*>::Iterator
+									i = modified_blocks.getIterator();
+									i.atEnd() == false; i++)
+								{
+									lighting_modified_blocks.insert(i.getNode()->getKey(), i.getNode()->getValue());
+								}
+								m_map->updateLighting(lighting_modified_blocks, modified_blocks);
+
+								// Send a MEET_OTHER event
+								MapEditEvent event;
+								event.type = MEET_OTHER;
+								for(core::map<v3s16, MapBlock*>::Iterator
+									i = modified_blocks.getIterator();
+									i.atEnd() == false; i++)
+								{
+									v3s16 p = i.getNode()->getKey();
+									event.modified_blocks.insert(p, true);
+								}
+								m_map->dispatchEvent(&event);
+							}
+						}
+					}
+				}
+				/*
+				 * leaf decay
+				 */
+				if (
+					n.getContent() == CONTENT_LEAVES
+					|| n.getContent() == CONTENT_JUNGLELEAVES
+					|| n.getContent() == CONTENT_CONIFER_LEAVES
+				) {
 					if (myrand()%10 == 0)
 					{
 						s16 max_d = 3;
@@ -1664,8 +1814,11 @@ void ServerEnvironment::step(float dtime)
 								v3f sapling_pos = intToFloat(leaf_p, BS);
 								sapling_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
 								content_t c = CONTENT_SAPLING;
-								if (n.getContent() == CONTENT_JUNGLELEAVES)
+								if (n.getContent() == CONTENT_JUNGLELEAVES) {
 									c = CONTENT_JUNGLESAPLING;
+								}else if (n.getContent() == CONTENT_CONIFER_LEAVES) {
+									c = CONTENT_CONIFER_SAPLING;
+								}
 								ServerActiveObject *obj = new ItemSAO(this, 0, sapling_pos, "MaterialItem2 " + itos(c) + " 1");
 								addActiveObject(obj);
 							}
@@ -2852,8 +3005,7 @@ void ClientEnvironment::removeActiveObject(u16 id)
 	infostream<<"ClientEnvironment::removeActiveObject(): "
 			<<"id="<<id<<std::endl;
 	ClientActiveObject* obj = getActiveObject(id);
-	if(obj == NULL)
-	{
+	if (obj == NULL) {
 		infostream<<"ClientEnvironment::removeActiveObject(): "
 				<<"id="<<id<<" not found"<<std::endl;
 		return;

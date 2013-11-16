@@ -398,7 +398,7 @@ void RatCAO::addToScene(scene::ISceneManager *smgr)
 
 void RatCAO::removeFromScene()
 {
-	if(m_node == NULL)
+	if (m_node == NULL)
 		return;
 
 	m_node->remove();
