@@ -587,6 +587,134 @@ static void content_mapnode_nodebox_carpet(ContentFeatures *f)
 	));
 }
 
+static void content_mapnode_nodebox_bed_head(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.4375*BS,
+		-0.125*BS,
+		-0.5*BS,
+		0.4375*BS,
+		0.125*BS,
+		0.4375*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.375*BS,
+		0.125*BS,
+		0.*BS,
+		0.375*BS,
+		0.1875*BS,
+		0.375*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		-0.5*BS,
+		0.375*BS,
+		-0.375*BS,
+		0.5*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.375*BS,
+		-0.5*BS,
+		0.375*BS,
+		0.5*BS,
+		0.5*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.375*BS,
+		-0.125*BS,
+		0.4375*BS,
+		0.375*BS,
+		0.*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.375*BS,
+		0.1925*BS,
+		0.4375*BS,
+		0.375*BS,
+		0.375*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.4375*BS,
+		-0.125*BS,
+		-0.5*BS,
+		0.5*BS,
+		0.*BS,
+		0.375*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		-0.125*BS,
+		-0.5*BS,
+		-0.4375*BS,
+		0.*BS,
+		0.375*BS
+	));
+}
+
+static void content_mapnode_nodebox_bed_foot(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.4375*BS,
+		-0.125*BS,
+		-0.4375*BS,
+		0.4375*BS,
+		0.125*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		-0.5*BS,
+		-0.5*BS,
+		-0.375*BS,
+		0.5*BS,
+		-0.375*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.375*BS,
+		-0.5*BS,
+		-0.5*BS,
+		0.5*BS,
+		0.5*BS,
+		-0.375*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.375*BS,
+		-0.125*BS,
+		-0.5*BS,
+		0.375*BS,
+		0.*BS,
+		-0.4375*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.375*BS,
+		0.1925*BS,
+		-0.5*BS,
+		0.375*BS,
+		0.25*BS,
+		-0.4375*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.4375*BS,
+		-0.125*BS,
+		-0.375*BS,
+		0.5*BS,
+		0.*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		-0.125*BS,
+		-0.375*BS,
+		-0.4375*BS,
+		0.*BS,
+		0.5*BS
+	));
+}
+
 /*
 	A conversion table for backwards compatibility.
 	Maps <=v19 content types to current ones.
@@ -1816,6 +1944,17 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+
+	i = CONTENT_WOOD_FINISHED;
+	f = &content_features(i);
+	f->description = std::string("Finished Wood");
+	f->setAllTextures("finished_wood.png");
+	f->setInventoryTextureCube("finished_wood.png", "finished_wood.png", "finished_wood.png");
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	setWoodLikeDiggingProperties(f->digging_properties, 0.5);
 
 	i = CONTENT_MESE;
 	f = &content_features(i);
@@ -4844,6 +4983,123 @@ void content_mapnode_init()
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 	f->post_effect_color = video::SColor(120, 200, 200, 200);
 #endif
+
+	i = CONTENT_CHAIR;
+	f = &content_features(i);
+	f->description = std::string("Chair");
+	f->setAllTextures("finished_wood.png");
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.3*BS, -0.5*BS, 0.20*BS, -0.2*BS, 0.5*BS, 0.30*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.2*BS, -0.5*BS, 0.20*BS, 0.3*BS, 0.5*BS, 0.30*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.3*BS, -0.5*BS, -0.30*BS, -0.2*BS, -0.1*BS, -0.20*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.2*BS, -0.5*BS, -0.30*BS, 0.3*BS, -0.1*BS, -0.20*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.3*BS, -0.1*BS, -0.30*BS, 0.3*BS, 0.0*BS, 0.20*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.2*BS, 0.1*BS, 0.25*BS, 0.2*BS, 0.4*BS, 0.26*BS
+	));
+	f->setInventoryTextureNodeBox(i,"finished_wood.png", "finished_wood.png", "finished_wood.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+
+	i = CONTENT_TABLE;
+	f = &content_features(i);
+	f->description = std::string("Table");
+	f->setAllTextures("finished_wood.png");
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.4*BS, -0.5*BS, -0.4*BS, -0.3*BS, 0.4*BS, -0.3*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.3*BS, -0.5*BS, -0.4*BS, 0.4*BS, 0.4*BS, -0.3*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.4*BS, -0.5*BS, 0.3*BS, -0.3*BS, 0.4*BS, 0.4*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.3*BS, -0.5*BS, 0.3*BS, 0.4*BS, 0.4*BS, 0.4*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS, 0.4*BS, -0.5*BS, 0.5*BS, 0.5*BS, 0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.4*BS, -0.2*BS, -0.3*BS, -0.3*BS, -0.1*BS, 0.3*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.3*BS, -0.2*BS, -0.4*BS, 0.4*BS, -0.1*BS, 0.3*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.3*BS, -0.2*BS, -0.4*BS, 0.4*BS, -0.1*BS, -0.3*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.3*BS, -0.2*BS, 0.3*BS, 0.3*BS, -0.1*BS, 0.4*BS
+	));
+	f->setInventoryTextureNodeBox(i,"finished_wood.png", "finished_wood.png", "finished_wood.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+
+	i = CONTENT_BED_HEAD;
+	f = &content_features(i);
+	f->description = std::string("Bed");
+	f->setAllTextures("bed_side.png");
+	f->setTexture(0,"bed_head.png");
+	f->setTexture(1,"bed_bottom.png");
+	f->setTexture(3,"bed_side.png^[transformFX");
+	f->setTexture(4,"bed_end.png");
+	f->setTexture(5,"bed_end.png");
+	f->setInventoryTexture("bed.png");
+	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_bed_head(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+
+	i = CONTENT_BED_FOOT;
+	f = &content_features(i);
+	f->description = std::string("Bed");
+	f->setAllTextures("bed_side.png");
+	f->setTexture(0,"bed_top.png");
+	f->setTexture(1,"bed_bottom.png");
+	f->setTexture(2,"bed_side.png^[transformFX");
+	f->setTexture(4,"bed_end.png");
+	f->setTexture(5,"bed_end.png");
+	f->setInventoryTexture("bed.png");
+	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_HEAD)+" 1";
+	content_mapnode_nodebox_bed_foot(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
 
 	// NOTE: Remember to add frequently used stuff to the texture atlas in tile.cpp
 

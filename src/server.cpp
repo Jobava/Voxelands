@@ -2798,6 +2798,51 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							m_env.getMap().removeNodeAndUpdate(p_under+v3s16(0,1,0), modified_blocks);
 						}
 					}
+					if (n.getContent() == CONTENT_BED_HEAD) {
+						v3s16 p_foot = v3s16(0,0,0);
+						u8 d = n.param2&0x0F;
+						switch (d) {
+						case 1:
+							p_foot.X = -1;
+							break;
+						case 2:
+							p_foot.Z = 1;
+							break;
+						case 3:
+							p_foot.X = 1;
+							break;
+						default:
+							p_foot.Z = -1;
+							break;
+						}
+						sendRemoveNode(p_under+p_foot, 0, &far_players, 30);
+						{
+							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+							m_env.getMap().removeNodeAndUpdate(p_under+p_foot, modified_blocks);
+						}
+					}else if (n.getContent() == CONTENT_BED_FOOT) {
+						v3s16 p_head = v3s16(0,0,0);
+						u8 d = n.param2&0x0F;
+						switch (d) {
+						case 1:
+							p_head.X = 1;
+							break;
+						case 2:
+							p_head.Z = -1;
+							break;
+						case 3:
+							p_head.X = -1;
+							break;
+						default:
+							p_head.Z = 1;
+							break;
+						}
+						sendRemoveNode(p_under+p_head, 0, &far_players, 30);
+						{
+							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+							m_env.getMap().removeNodeAndUpdate(p_under+p_head, modified_blocks);
+						}
+					}
 				/*
 					Send the removal to all close-by players.
 					- If other player is close, send REMOVENODE
@@ -3225,6 +3270,39 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 				core::list<u16> far_players;
 				core::map<v3s16, MapBlock*> modified_blocks;
+				if (n.getContent() == CONTENT_BED_HEAD) {
+					v3s16 p_foot = v3s16(0,0,0);
+					u8 d = n.param2&0x0F;
+					switch (d) {
+					case 1:
+						p_foot.X = 1;
+						break;
+					case 2:
+						p_foot.Z = -1;
+						break;
+					case 3:
+						p_foot.X = -1;
+						break;
+					default:
+						p_foot.Z = 1;
+						break;
+					}
+					MapNode foot = m_env.getMap().getNodeNoEx(p_over+p_foot);
+					if (!content_features(foot).buildable_to)
+						return;
+					foot.setContent(n.getContent());
+					foot.param2 &= 0xF0;
+					foot.param2 |= d;
+					n.setContent(n.getContent()+1);
+					sendAddNode(p_over+p_foot, foot, 0, &far_players, 30);
+					{
+						MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+
+						std::string p_name = std::string(player->getName());
+						m_env.getMap().addNodeAndUpdate(p_over+p_foot, foot, modified_blocks, p_name);
+					}
+				}
+
 				if (
 					n.getContent() >= CONTENT_DOOR_MIN
 					&& n.getContent() <= CONTENT_DOOR_MAX

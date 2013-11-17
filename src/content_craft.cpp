@@ -108,7 +108,7 @@ struct CraftDef {
 */
 InventoryItem *craft_get_result(InventoryItem **items)
 {
-	static CraftDef defs[211];
+	static CraftDef defs[216];
 	static int defs_init = 0;
 
 	// only initialise (and hence allocate) these once
@@ -2150,6 +2150,63 @@ InventoryItem *craft_get_result(InventoryItem **items)
 			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "snow_ball");
 			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "snow_ball");
 			defs[defs_init].item = new MaterialItem(CONTENT_SNOW_BLOCK, 1);
+			defs_init++;
+		}
+
+		// finished wood
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].item = new MaterialItem(CONTENT_WOOD_FINISHED, 4);
+			defs_init++;
+		}
+
+		// finished wood
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLEWOOD);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLEWOOD);
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLEWOOD);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLEWOOD);
+			defs[defs_init].item = new MaterialItem(CONTENT_WOOD_FINISHED, 4);
+			defs_init++;
+		}
+
+		// chair
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD_FINISHED);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD_FINISHED);
+			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].item = new MaterialItem(CONTENT_CHAIR, 2);
+			defs_init++;
+		}
+
+		// table
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD_FINISHED);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD_FINISHED);
+			defs[defs_init].specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD_FINISHED);
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[5] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].item = new MaterialItem(CONTENT_TABLE, 1);
+			defs_init++;
+		}
+
+		// bed
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_COTTON);
+			defs[defs_init].specs[2] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_COTTON);
+			defs[defs_init].specs[5] = ItemSpec(ITEM_MATERIAL, CONTENT_WOOD);
+			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_COTTON);
+			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].item = new MaterialItem(CONTENT_BED_HEAD, 1);
 			defs_init++;
 		}
 	}
