@@ -158,6 +158,7 @@ struct ContentFeatures
 
 	// Type of MapNode::param1
 	ContentParamType param_type;
+	ContentParamType param2_type;
 	// drawtype
 	ContentDrawType draw_type;
 	// True for all ground-like things like stone and mud, false for eg. trees
@@ -253,6 +254,7 @@ struct ContentFeatures
 			0.5*BS
 		));
 		param_type = CPT_NONE;
+		param2_type = CPT_NONE;
 		draw_type = CDT_AIRLIKE;
 		is_ground_content = false;
 		light_propagates = false;

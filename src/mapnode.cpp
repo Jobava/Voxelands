@@ -44,8 +44,8 @@ static std::vector<aabb3f> transformNodeBox(MapNode &n,
 {
 	std::vector<aabb3f> boxes;
 	int facedir = 0;
-	if (content_features(n).param_type == CPT_FACEDIR_SIMPLE)
-		facedir = n.param1;
+	if (content_features(n).param2_type == CPT_FACEDIR_SIMPLE)
+		facedir = n.param2&0x0F;
 	for(std::vector<aabb3f>::const_iterator
 		i = nodebox.begin();
 		i != nodebox.end(); i++)
@@ -314,8 +314,11 @@ TileSpec MapNode::getTile(v3s16 dir)
 	TileSpec spec;
 	s32 dir_i = 0;
 
-	if(content_features(*this).param_type == CPT_FACEDIR_SIMPLE)
+	if (content_features(*this).param2_type == CPT_FACEDIR_SIMPLE) {
+		dir = facedir_rotate(param2&0x0F, dir);
+	}else if (content_features(*this).param_type == CPT_FACEDIR_SIMPLE) {
 		dir = facedir_rotate(param1, dir);
+	}
 
 	if(dir == v3s16(0,-1,0))
 		dir_i = 1;

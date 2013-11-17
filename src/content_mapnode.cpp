@@ -1493,9 +1493,10 @@ void content_mapnode_init()
 	i = CONTENT_GLASS_PANE;
 	f = &content_features(i);
 	f->description = std::string("Glass Pane");
-	//f->light_propagates = true;
-	//f->sunlight_propagates = true;
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -1520,9 +1521,10 @@ void content_mapnode_init()
 	i = CONTENT_GLASS_PANE_BLUE;
 	f = &content_features(i);
 	f->description = std::string("Blue Glass Pane");
-	//f->light_propagates = true;
-	//f->sunlight_propagates = true;
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -1547,9 +1549,10 @@ void content_mapnode_init()
 	i = CONTENT_GLASS_PANE_GREEN;
 	f = &content_features(i);
 	f->description = std::string("Green Glass Pane");
-	//f->light_propagates = true;
-	//f->sunlight_propagates = true;
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -1574,9 +1577,10 @@ void content_mapnode_init()
 	i = CONTENT_GLASS_PANE_ORANGE;
 	f = &content_features(i);
 	f->description = std::string("Orange Glass Pane");
-	//f->light_propagates = true;
-	//f->sunlight_propagates = true;
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -1601,9 +1605,10 @@ void content_mapnode_init()
 	i = CONTENT_GLASS_PANE_PURPLE;
 	f = &content_features(i);
 	f->description = std::string("Purple Glass Pane");
-	//f->light_propagates = true;
-	//f->sunlight_propagates = true;
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -1628,9 +1633,10 @@ void content_mapnode_init()
 	i = CONTENT_GLASS_PANE_RED;
 	f = &content_features(i);
 	f->description = std::string("Red Glass Pane");
-	//f->light_propagates = true;
-	//f->sunlight_propagates = true;
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -1655,9 +1661,10 @@ void content_mapnode_init()
 	i = CONTENT_GLASS_PANE_YELLOW;
 	f = &content_features(i);
 	f->description = std::string("Yellow Glass Pane");
-	//f->light_propagates = true;
-	//f->sunlight_propagates = true;
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -1682,9 +1689,10 @@ void content_mapnode_init()
 	i = CONTENT_GLASS_PANE_BLACK;
 	f = &content_features(i);
 	f->description = std::string("Black Glass Pane");
-	//f->light_propagates = true;
-	//f->sunlight_propagates = true;
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -2409,7 +2417,10 @@ void content_mapnode_init()
 	f->setAllTextures("sign.png");
 	f->setTexture(4, "sign_back.png");
 	f->setTexture(5, "sign_front.png"); // Z-
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
@@ -2441,7 +2452,10 @@ void content_mapnode_init()
 	f->setAllTextures("sign.png");
 	f->setTexture(4, "sign_back_ud.png");
 	f->setTexture(5, "sign_front_ud.png"); // Z-
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
@@ -3425,7 +3439,7 @@ void content_mapnode_init()
 	// doors
 	i = CONTENT_WOOD_DOOR_LB;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Wood Door");
 	f->setAllTextures("door_wood_b.png");
 	f->setTexture(2,"door_wood_b.png^^[transformFX");
@@ -3433,6 +3447,8 @@ void content_mapnode_init()
 	f->setTexture(4,"door_wood_b.png^^[transformFX");
 	f->setInventoryTexture("door_wood_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3442,7 +3458,7 @@ void content_mapnode_init()
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 	i = CONTENT_WOOD_DOOR_LT;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Wood Door");
 	f->setAllTextures("door_wood_t.png");
 	f->setTexture(2,"door_wood_t.png^^[transformFX");
@@ -3450,6 +3466,8 @@ void content_mapnode_init()
 	f->setTexture(4,"door_wood_t.png^^[transformFX");
 	f->setInventoryTexture("door_wood_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3460,7 +3478,7 @@ void content_mapnode_init()
 
 	i = CONTENT_STEEL_DOOR_LB;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Steel Door");
 	f->setAllTextures("door_steel_b.png");
 	f->setTexture(2,"door_steel_b.png^^[transformFX");
@@ -3468,6 +3486,8 @@ void content_mapnode_init()
 	f->setTexture(4,"door_steel_b.png^^[transformFX");
 	f->setInventoryTexture("door_steel_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3478,7 +3498,7 @@ void content_mapnode_init()
 	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
 	i = CONTENT_STEEL_DOOR_LT;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Steel Door");
 	f->setAllTextures("door_steel_t.png");
 	f->setTexture(2,"door_steel_t.png^^[transformFX");
@@ -3486,6 +3506,8 @@ void content_mapnode_init()
 	f->setTexture(4,"door_steel_t.png^^[transformFX");
 	f->setInventoryTexture("door_steel_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3497,7 +3519,7 @@ void content_mapnode_init()
 
 	i = CONTENT_GLASS_DOOR_LB;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Glass Door");
 	f->setAllTextures("door_glass_b.png");
 	f->setTexture(2,"door_glass_b.png^^[transformFX");
@@ -3505,6 +3527,9 @@ void content_mapnode_init()
 	f->setTexture(4,"door_glass_b.png^^[transformFX");
 	f->setInventoryTexture("door_glass_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3514,7 +3539,7 @@ void content_mapnode_init()
 	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
 	i = CONTENT_GLASS_DOOR_LT;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Glass Door");
 	f->setAllTextures("door_glass_t.png");
 	f->setTexture(2,"door_glass_t.png^^[transformFX");
@@ -3522,6 +3547,9 @@ void content_mapnode_init()
 	f->setTexture(4,"door_glass_t.png^^[transformFX");
 	f->setInventoryTexture("door_glass_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3532,7 +3560,7 @@ void content_mapnode_init()
 
 	i = CONTENT_WOOD_W_DOOR_LB;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Wood Windowed Door");
 	f->setAllTextures("door_wood_wb.png");
 	f->setTexture(2,"door_wood_wb.png^[transformFX");
@@ -3540,6 +3568,9 @@ void content_mapnode_init()
 	f->setTexture(4,"door_wood_wb.png^[transformFX");
 	f->setInventoryTexture("door_wood_w_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3549,7 +3580,7 @@ void content_mapnode_init()
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 	i = CONTENT_WOOD_W_DOOR_LT;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Wood Windowed Door");
 	f->setAllTextures("door_wood_wt.png");
 	f->setTexture(2,"door_wood_wt.png^[transformFX");
@@ -3557,6 +3588,9 @@ void content_mapnode_init()
 	f->setTexture(4,"door_wood_wt.png^[transformFX");
 	f->setInventoryTexture("door_wood_w_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3567,7 +3601,7 @@ void content_mapnode_init()
 
 	i = CONTENT_STEEL_W_DOOR_LB;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Steel Windowed Door");
 	f->setAllTextures("door_steel_wb.png");
 	f->setTexture(2,"door_steel_wb.png^[transformFX");
@@ -3575,6 +3609,9 @@ void content_mapnode_init()
 	f->setTexture(4,"door_steel_wb.png^[transformFX");
 	f->setInventoryTexture("door_steel_w_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3585,7 +3622,7 @@ void content_mapnode_init()
 	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
 	i = CONTENT_STEEL_W_DOOR_LT;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Steel Windowed Door");
 	f->setAllTextures("door_steel_wt.png");
 	f->setTexture(2,"door_steel_wt.png^[transformFX");
@@ -3593,6 +3630,9 @@ void content_mapnode_init()
 	f->setTexture(4,"door_steel_wt.png^[transformFX");
 	f->setInventoryTexture("door_steel_w_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3605,7 +3645,7 @@ void content_mapnode_init()
 	// right doors
 	i = CONTENT_WOOD_DOOR_RB;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Wood Door");
 	f->setAllTextures("door_wood_b.png^[transformFX");
 	f->setTexture(2,"door_wood_b.png");
@@ -3613,6 +3653,8 @@ void content_mapnode_init()
 	f->setTexture(4,"door_wood_b.png");
 	f->setInventoryTexture("door_wood_inv.png^[transformFX");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3622,7 +3664,7 @@ void content_mapnode_init()
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 	i = CONTENT_WOOD_DOOR_RT;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Wood Door");
 	f->setAllTextures("door_wood_t.png^[transformFX");
 	f->setTexture(2,"door_wood_t.png");
@@ -3630,6 +3672,8 @@ void content_mapnode_init()
 	f->setTexture(4,"door_wood_t.png");
 	f->setInventoryTexture("door_wood_inv.png^[transformFX");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3640,7 +3684,7 @@ void content_mapnode_init()
 
 	i = CONTENT_GLASS_DOOR_RB;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Glass Door");
 	f->setAllTextures("door_glass_b.png^[transformFX");
 	f->setTexture(2,"door_glass_b.png");
@@ -3648,6 +3692,9 @@ void content_mapnode_init()
 	f->setTexture(4,"door_glass_b.png");
 	f->setInventoryTexture("door_glass_inv.png^[transformFX");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3657,7 +3704,7 @@ void content_mapnode_init()
 	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
 	i = CONTENT_GLASS_DOOR_RT;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Glass Door");
 	f->setAllTextures("door_glass_t.png^[transformFX");
 	f->setTexture(2,"door_glass_t.png");
@@ -3665,6 +3712,9 @@ void content_mapnode_init()
 	f->setTexture(4,"door_glass_t.png");
 	f->setInventoryTexture("door_glass_inv.png^[transformFX");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3675,7 +3725,7 @@ void content_mapnode_init()
 
 	i = CONTENT_STEEL_DOOR_RB;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Steel Door");
 	f->setAllTextures("door_steel_b.png^[transformFX");
 	f->setTexture(2,"door_steel_b.png");
@@ -3683,6 +3733,8 @@ void content_mapnode_init()
 	f->setTexture(4,"door_steel_b.png");
 	f->setInventoryTexture("door_steel_inv.png^[transformFX");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3693,7 +3745,7 @@ void content_mapnode_init()
 	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
 	i = CONTENT_STEEL_DOOR_RT;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Steel Door");
 	f->setAllTextures("door_steel_t.png^[transformFX");
 	f->setTexture(2,"door_steel_t.png");
@@ -3701,6 +3753,8 @@ void content_mapnode_init()
 	f->setTexture(4,"door_steel_t.png");
 	f->setInventoryTexture("door_steel_inv.png^[transformFX");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3712,7 +3766,7 @@ void content_mapnode_init()
 
 	i = CONTENT_WOOD_W_DOOR_RB;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Wood Windowed Door");
 	f->setAllTextures("door_wood_wb.png^[transformFX");
 	f->setTexture(2,"door_wood_wb.png");
@@ -3720,6 +3774,9 @@ void content_mapnode_init()
 	f->setTexture(4,"door_wood_wb.png");
 	f->setInventoryTexture("door_wood_w_inv.png^[transformFX");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3729,7 +3786,7 @@ void content_mapnode_init()
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 	i = CONTENT_WOOD_W_DOOR_RT;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Wood Windowed Door");
 	f->setAllTextures("door_wood_wt.png^[transformFX");
 	f->setTexture(2,"door_wood_wt.png");
@@ -3737,6 +3794,9 @@ void content_mapnode_init()
 	f->setTexture(4,"door_wood_wt.png");
 	f->setInventoryTexture("door_wood_w_inv.png^[transformFX");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3747,7 +3807,7 @@ void content_mapnode_init()
 
 	i = CONTENT_STEEL_W_DOOR_RB;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Steel Windowed Door");
 	f->setAllTextures("door_steel_wb.png^[transformFX");
 	f->setTexture(2,"door_steel_wb.png");
@@ -3755,6 +3815,9 @@ void content_mapnode_init()
 	f->setTexture(4,"door_steel_wb.png");
 	f->setInventoryTexture("door_steel_w_inv.png^[transformFX");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3765,7 +3828,7 @@ void content_mapnode_init()
 	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
 	i = CONTENT_STEEL_W_DOOR_RT;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Steel Windowed Door");
 	f->setAllTextures("door_steel_wt.png^[transformFX");
 	f->setTexture(2,"door_steel_wt.png");
@@ -3773,6 +3836,9 @@ void content_mapnode_init()
 	f->setTexture(4,"door_steel_wt.png");
 	f->setInventoryTexture("door_steel_w_inv.png^[transformFX");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3785,12 +3851,15 @@ void content_mapnode_init()
 	// open doors
 	i = CONTENT_WOOD_DOOR_LB_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Wood Door");
 	f->setAllTextures("door_wood_b.png");
 	f->setTexture(3,"door_wood_b.png^[transformFX");
 	f->setInventoryTexture("door_wood_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3800,12 +3869,15 @@ void content_mapnode_init()
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 	i = CONTENT_WOOD_DOOR_LT_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Wood Door");
 	f->setAllTextures("door_wood_t.png");
 	f->setTexture(3,"door_wood_t.png^[transformFX");
 	f->setInventoryTexture("door_wood_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3816,12 +3888,15 @@ void content_mapnode_init()
 
 	i = CONTENT_GLASS_DOOR_LB_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Glass Door");
 	f->setAllTextures("door_glass_b.png");
 	f->setTexture(3,"door_glass_b.png^[transformFX");
 	f->setInventoryTexture("door_glass_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3831,12 +3906,15 @@ void content_mapnode_init()
 	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
 	i = CONTENT_GLASS_DOOR_LT_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Glass Door");
 	f->setAllTextures("door_glass_t.png");
 	f->setTexture(3,"door_glass_t.png^[transformFX");
 	f->setInventoryTexture("door_glass_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3847,12 +3925,15 @@ void content_mapnode_init()
 
 	i = CONTENT_STEEL_DOOR_LB_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Steel Door");
 	f->setAllTextures("door_steel_b.png");
 	f->setTexture(3,"door_steel_b.png^[transformFX");
 	f->setInventoryTexture("door_steel_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3863,12 +3944,15 @@ void content_mapnode_init()
 	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
 	i = CONTENT_STEEL_DOOR_LT_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Steel Door");
 	f->setAllTextures("door_steel_t.png");
 	f->setTexture(3,"door_steel_t.png^[transformFX");
 	f->setInventoryTexture("door_steel_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3880,12 +3964,15 @@ void content_mapnode_init()
 
 	i = CONTENT_WOOD_W_DOOR_LB_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Wood Windowed Door");
 	f->setAllTextures("door_wood_wb.png");
 	f->setTexture(3,"door_wood_wb.png^[transformFX");
 	f->setInventoryTexture("door_wood_w_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3895,12 +3982,15 @@ void content_mapnode_init()
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 	i = CONTENT_WOOD_W_DOOR_LT_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Wood Windowed Door");
 	f->setAllTextures("door_wood_wt.png");
 	f->setTexture(3,"door_wood_wt.png^[transformFX");
 	f->setInventoryTexture("door_wood_w_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3911,12 +4001,15 @@ void content_mapnode_init()
 
 	i = CONTENT_STEEL_W_DOOR_LB_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Steel Windowed Door");
 	f->setAllTextures("door_steel_wb.png");
 	f->setTexture(3,"door_steel_wb.png^[transformFX");
 	f->setInventoryTexture("door_steel_w_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3927,12 +4020,15 @@ void content_mapnode_init()
 	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
 	i = CONTENT_STEEL_W_DOOR_LT_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Steel Windowed Door");
 	f->setAllTextures("door_steel_wt.png");
 	f->setTexture(3,"door_steel_wt.png^[transformFX");
 	f->setInventoryTexture("door_steel_w_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3945,7 +4041,7 @@ void content_mapnode_init()
 	// right open doors
 	i = CONTENT_WOOD_DOOR_RB_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Wood Door");
 	f->setAllTextures("door_wood_b.png");
 	f->setTexture(3,"door_wood_b.png^[transformFX");
@@ -3953,6 +4049,9 @@ void content_mapnode_init()
 	f->setTexture(5,"door_wood_b.png^[transformFX");
 	f->setInventoryTexture("door_wood_inv.png^[transformFX");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3962,7 +4061,7 @@ void content_mapnode_init()
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 	i = CONTENT_WOOD_DOOR_RT_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Wood Door");
 	f->setAllTextures("door_wood_t.png");
 	f->setTexture(3,"door_wood_t.png^[transformFX");
@@ -3970,6 +4069,9 @@ void content_mapnode_init()
 	f->setTexture(5,"door_wood_t.png^[transformFX");
 	f->setInventoryTexture("door_wood_inv.png^[transformFX");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3980,7 +4082,7 @@ void content_mapnode_init()
 
 	i = CONTENT_GLASS_DOOR_RB_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Glass Door");
 	f->setAllTextures("door_glass_b.png");
 	f->setTexture(2,"door_glass_b.png^^[transformFX");
@@ -3988,6 +4090,9 @@ void content_mapnode_init()
 	f->setTexture(4,"door_glass_b.png^^[transformFX");
 	f->setInventoryTexture("door_glass_inv.png^[transformFX");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -3997,7 +4102,7 @@ void content_mapnode_init()
 	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
 	i = CONTENT_GLASS_DOOR_RT_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Glass Door");
 	f->setAllTextures("door_glass_t.png");
 	f->setTexture(2,"door_glass_t.png^^[transformFX");
@@ -4005,6 +4110,9 @@ void content_mapnode_init()
 	f->setTexture(4,"door_glass_t.png^^[transformFX");
 	f->setInventoryTexture("door_glass_inv.png^[transformFX");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -4015,7 +4123,7 @@ void content_mapnode_init()
 
 	i = CONTENT_STEEL_DOOR_RB_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Steel Door");
 	f->setAllTextures("door_steel_b.png");
 	f->setTexture(3,"door_steel_b.png^[transformFX");
@@ -4023,6 +4131,9 @@ void content_mapnode_init()
 	f->setTexture(5,"door_steel_b.png^[transformFX");
 	f->setInventoryTexture("door_steel_inv.png^[transformFX");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -4033,7 +4144,7 @@ void content_mapnode_init()
 	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
 	i = CONTENT_STEEL_DOOR_RT_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Steel Door");
 	f->setAllTextures("door_steel_b.png");
 	f->setTexture(3,"door_steel_t.png^[transformFX");
@@ -4041,6 +4152,9 @@ void content_mapnode_init()
 	f->setTexture(5,"door_steel_t.png^[transformFX");
 	f->setInventoryTexture("door_steel_inv.png^[transformFX");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -4052,7 +4166,7 @@ void content_mapnode_init()
 
 	i = CONTENT_WOOD_W_DOOR_RB_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Wood Windowed Door");
 	f->setAllTextures("door_wood_wb.png");
 	f->setTexture(3,"door_wood_wb.png^[transformFX");
@@ -4060,6 +4174,9 @@ void content_mapnode_init()
 	f->setTexture(5,"door_wood_wb.png^[transformFX");
 	f->setInventoryTexture("door_wood_w_inv.png^[transformFX");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -4069,7 +4186,7 @@ void content_mapnode_init()
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 	i = CONTENT_WOOD_W_DOOR_RT_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Wood Windowed Door");
 	f->setAllTextures("door_wood_wt.png");
 	f->setTexture(3,"door_wood_wt.png^[transformFX");
@@ -4077,6 +4194,9 @@ void content_mapnode_init()
 	f->setTexture(5,"door_wood_wt.png^[transformFX");
 	f->setInventoryTexture("door_wood_w_inv.png^[transformFX");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -4087,7 +4207,7 @@ void content_mapnode_init()
 
 	i = CONTENT_STEEL_W_DOOR_RB_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Steel Windowed Door");
 	f->setAllTextures("door_steel_wb.png");
 	f->setTexture(3,"door_steel_wb.png^[transformFX");
@@ -4095,6 +4215,9 @@ void content_mapnode_init()
 	f->setTexture(5,"door_steel_wb.png^[transformFX");
 	f->setInventoryTexture("door_steel_w_inv.png^[transformFX");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -4105,7 +4228,7 @@ void content_mapnode_init()
 	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
 	i = CONTENT_STEEL_W_DOOR_RT_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Right Hanging Steel Windowed Door");
 	f->setAllTextures("door_steel_wt.png");
 	f->setTexture(3,"door_steel_wt.png^[transformFX");
@@ -4113,6 +4236,9 @@ void content_mapnode_init()
 	f->setTexture(5,"door_steel_wt.png^[transformFX");
 	f->setInventoryTexture("door_steel_w_inv.png^[transformFX");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -4158,12 +4284,15 @@ void content_mapnode_init()
 
 	i = CONTENT_WOOD_W_HATCH;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Wood Windowed Hatch");
 	f->setAllTextures("hatch_wood_w.png");
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("hatch_wood_w_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -4174,12 +4303,15 @@ void content_mapnode_init()
 
 	i = CONTENT_STEEL_W_HATCH;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Steel Windowed Hatch");
 	f->setAllTextures("hatch_steel_w.png");
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("hatch_steel_w_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -4192,12 +4324,15 @@ void content_mapnode_init()
 	// gates
 	i = CONTENT_WOOD_GATE;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Wood Gate");
 	f->setAllTextures("gate_wood.png");
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("gate_wood_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -4208,12 +4343,15 @@ void content_mapnode_init()
 
 	i = CONTENT_STEEL_GATE;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Steel Gate");
 	f->setAllTextures("gate_steel.png");
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("gate_steel_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -4226,7 +4364,7 @@ void content_mapnode_init()
 	// open hatches
 	i = CONTENT_WOOD_HATCH_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Wood Hatch");
 	f->setAllTextures("hatch_wood.png");
 	f->setTexture(2,"hatch_wood.png^[transformR90");
@@ -4234,6 +4372,9 @@ void content_mapnode_init()
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("hatch_wood_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->climbable = true;
@@ -4244,7 +4385,7 @@ void content_mapnode_init()
 
 	i = CONTENT_STEEL_HATCH_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Steel Hatch");
 	f->setAllTextures("hatch_steel.png");
 	f->setTexture(2,"hatch_steel.png^[transformR90");
@@ -4252,6 +4393,9 @@ void content_mapnode_init()
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("hatch_steel_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->climbable = true;
@@ -4263,7 +4407,7 @@ void content_mapnode_init()
 
 	i = CONTENT_WOOD_W_HATCH_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Wood Hatch");
 	f->setAllTextures("hatch_wood_w.png");
 	f->setTexture(2,"hatch_wood.png^[transformR90");
@@ -4271,6 +4415,9 @@ void content_mapnode_init()
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("hatch_wood_w_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->climbable = true;
@@ -4281,7 +4428,7 @@ void content_mapnode_init()
 
 	i = CONTENT_STEEL_W_HATCH_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Steel Hatch");
 	f->setAllTextures("hatch_steel_w.png");
 	f->setTexture(2,"hatch_steel.png^[transformR90");
@@ -4289,6 +4436,9 @@ void content_mapnode_init()
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("hatch_steel_w_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->climbable = true;
@@ -4301,12 +4451,15 @@ void content_mapnode_init()
 	// open gates
 	i = CONTENT_WOOD_GATE_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Wood Gate");
 	f->setAllTextures("gate_wood.png");
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("gate_wood_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -4317,12 +4470,15 @@ void content_mapnode_init()
 
 	i = CONTENT_STEEL_GATE_OPEN;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Steel Gate");
 	f->setAllTextures("gate_steel.png");
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("gate_steel_inv.png");
 	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;

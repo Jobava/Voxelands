@@ -3176,8 +3176,23 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					n.param2 = packDir(p_under - p_over);
 
 				// Calculate the direction for furnaces and chests and stuff
-				if(content_features(n).param_type == CPT_FACEDIR_SIMPLE)
-				{
+				if (content_features(n).param2_type == CPT_FACEDIR_SIMPLE) {
+					v3f playerpos = player->getPosition();
+					v3f blockpos = intToFloat(p_over, BS) - playerpos;
+					blockpos = blockpos.normalize();
+					n.param2 &= 0xF0;
+					if (fabs(blockpos.X) > fabs(blockpos.Z)) {
+						if (blockpos.X < 0)
+							n.param2 |= 0x03;
+						else
+							n.param2 |= 0x01;
+					} else {
+						if (blockpos.Z < 0)
+							n.param2 |= 0x02;
+						else
+							n.param2 |= 0x00;
+					}
+				}else if (content_features(n).param_type == CPT_FACEDIR_SIMPLE) {
 					v3f playerpos = player->getPosition();
 					v3f blockpos = intToFloat(p_over, BS) - playerpos;
 					blockpos = blockpos.normalize();
@@ -3209,6 +3224,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						MapNode m;
 						m.setContent(n.getContent()|CONTENT_DOOR_SECT_MASK);
 						m.param1 = n.param1;
+						m.param2 |= n.param2&0x0F;
 						sendAddNode(p_over+v3s16(0,1,0), m, 0, &far_players, 30);
 						{
 							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
@@ -3221,6 +3237,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						MapNode m;
 						m.setContent(n.getContent()&~CONTENT_DOOR_SECT_MASK);
 						m.param1 = n.param1;
+						m.param2 |= n.param2&0x0F;
 						sendAddNode(p_over+v3s16(0,-1,0), m, 0, &far_players, 30);
 						{
 							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
