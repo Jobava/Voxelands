@@ -44,8 +44,11 @@ static std::vector<aabb3f> transformNodeBox(MapNode &n,
 {
 	std::vector<aabb3f> boxes;
 	int facedir = 0;
-	if (content_features(n).param2_type == CPT_FACEDIR_SIMPLE)
+	if (content_features(n).param2_type == CPT_FACEDIR_SIMPLE) {
 		facedir = n.param2&0x0F;
+	}else if (content_features(n).param_type == CPT_FACEDIR_SIMPLE) {
+		facedir = n.param1;
+	}
 	for(std::vector<aabb3f>::const_iterator
 		i = nodebox.begin();
 		i != nodebox.end(); i++)

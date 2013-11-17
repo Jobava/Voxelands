@@ -3152,13 +3152,26 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				// Stairs and Slabs special functions
 				if (n.getContent() >= CONTENT_SLAB_STAIR_MIN && n.getContent() <= CONTENT_SLAB_STAIR_UD_MAX) {
 					MapNode abv = m_env.getMap().getNodeNoEx(p_over+p_dir);
-					// Make a cube is two slabs of the same type are stacked on each other
-					if (content_features(n).slab_cube_type != CONTENT_IGNORE && content_features(n).slab_cube_type == content_features(abv).slab_cube_type) {
+					// Flip it upside down if it's being placed on the roof
+					// or if placing against an upside down node
+					if (
+						p_dir.Y == 1
+						|| (
+							abv.getContent() >= CONTENT_SLAB_STAIR_UD_MIN
+							&& abv.getContent() <= CONTENT_SLAB_STAIR_UD_MAX
+						)
+					) {
+						n.setContent(n.getContent()|CONTENT_SLAB_STAIR_FLIP);
+					}
+					// Make a cube if two slabs of the same type are stacked on each other
+					if (
+						p_dir.X == 0
+						&& p_dir.Z == 0
+						&& content_features(n).slab_cube_type != CONTENT_IGNORE
+						&& content_features(n).slab_cube_type == content_features(abv).slab_cube_type
+					) {
 						n.setContent(content_features(n).slab_cube_type);
 						p_over += p_dir;
-					// Flip it upside down if it's being placed on the roof
-					}else if (p_dir.Y == 1) {
-						n.setContent(n.getContent()|CONTENT_SLAB_STAIR_FLIP);
 					}
 				}
 

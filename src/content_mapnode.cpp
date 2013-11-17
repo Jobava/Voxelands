@@ -72,10 +72,10 @@ static void content_mapnode_nodebox_stairud(ContentFeatures *f)
 	f->addNodeBox(core::aabbox3d<f32>(
 		-0.5*BS,
 		-0.5*BS,
-		-0.5*BS,
+		0.,
 		0.5*BS,
 		0.,
-		0.
+		0.5*BS
 	));
 }
 
