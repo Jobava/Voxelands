@@ -2803,6 +2803,7 @@ void ClientEnvironment::step(float dtime)
 	{
 		v3f pf = lplayer->getPosition();
 
+		v3s16 pp = floatToInt(pf, BS);
 		// Feet, middle and head
 		v3s16 p1 = floatToInt(pf + v3f(0, BS*0.1, 0), BS);
 		MapNode n1 = m_map->getNodeNoEx(p1);
@@ -2818,9 +2819,22 @@ void ClientEnvironment::step(float dtime)
 				content_features(n2).damage_per_second);
 		damage_per_second = MYMAX(damage_per_second,
 				content_features(n3).damage_per_second);
+		if (damage_per_second == 0 && pp.Y > 60 && pp.Y < 200 && myrand()%10 == 0) {
+			bool found = false;
+			for (s16 x=-4; !found && x<5; x++) {
+			for (s16 y=-2; !found && y<5; y++) {
+			for (s16 z=-4; !found && z<5; z++) {
+				n1 = m_map->getNodeNoEx(pp + v3s16(x,y,z));
+				if (n1.getContent() == CONTENT_FIRE)
+					found = true;
+			}
+			}
+			}
+			if (!found)
+				damage_per_second = MYMAX(damage_per_second,1);
+		}
 
-		if(damage_per_second != 0)
-		{
+		if (damage_per_second != 0) {
 			ClientEnvEvent event;
 			event.type = CEE_PLAYER_DAMAGE;
 			event.player_damage.amount = damage_per_second;
