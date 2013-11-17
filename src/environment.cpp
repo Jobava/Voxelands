@@ -963,7 +963,7 @@ void ServerEnvironment::step(float dtime)
 					if (myrand()%20 == 0) {
 						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
 						if (content_features(n_top).air_equivalent) {
-							if (p.Y > 50) {
+							if (p.Y > 50 && p.Y < 200) {
 								n.setContent(CONTENT_MUDSNOW);
 								m_map->addNodeWithEvent(p, n);
 							}else if (n_top.getLightBlend(getDayNightRatio()) >= 13) {
@@ -976,14 +976,14 @@ void ServerEnvironment::step(float dtime)
 					if (myrand()%20 == 0) {
 						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
 						if (content_features(n_top).air_equivalent) {
-							if (p.Y > 50) {
+							if (p.Y > 50 && p.Y < 200) {
 								n.setContent(CONTENT_MUDSNOW);
 								m_map->addNodeWithEvent(p, n);
 							}
 						}
 					}
 				}else if (
-					p.Y > 55
+					p.Y > 55 && p.Y < 200
 					&& (
 						content_features(n).draw_type == CDT_CUBELIKE
 						|| content_features(n).draw_type == CDT_GLASSLIKE
@@ -1000,7 +1000,7 @@ void ServerEnvironment::step(float dtime)
 					}
 				}
 				if (n.getContent() == CONTENT_WATERSOURCE || n.getContent() == CONTENT_WATER) {
-					if (p.Y > 60) {
+					if (p.Y > 60 && p.Y < 200) {
 						n.setContent(CONTENT_ICE);
 						m_map->addNodeWithEvent(p, n);
 					}
