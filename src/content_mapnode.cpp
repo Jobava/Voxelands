@@ -1871,7 +1871,6 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem snow_ball 9");
-	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setDirtLikeDiggingProperties(f->digging_properties, 0.3);
 
 	i = CONTENT_SNOW;
@@ -1888,7 +1887,6 @@ void content_mapnode_init()
 	f->dug_item = std::string("CraftItem snow_ball 1");
 	content_mapnode_nodebox_carpet(f);
 	f->setInventoryTextureNodeBox(i,"snow.png", "snow.png", "snow.png");
-	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	setDirtLikeDiggingProperties(f->digging_properties, 0.3);
 
 	i = CONTENT_COTTON;
