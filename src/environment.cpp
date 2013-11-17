@@ -1005,29 +1005,12 @@ void ServerEnvironment::step(float dtime)
 						m_map->addNodeWithEvent(p, n);
 					}
 				}else if (n.getContent() == CONTENT_ICE) {
-					if (p.Y < 40) {
-						bool found = false;
-						for(s16 x=-3; !found && x<=3; x++) {
+					bool found = false;
+					if (p.Y > 40) {
+						s16 range = (p.Y > 60) ? 2 : 4;
+						for(s16 x=-range; !found && x<=range; x++) {
 						for(s16 y=-1; !found && y<=1; y++) {
-						for(s16 z=-3; !found && z<=3; z++) {
-							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
-							if (n_test.getContent() == CONTENT_WATERSOURCE)
-								found = true;
-						}
-						}
-						}
-						if (found) {
-							n.setContent(CONTENT_WATER);
-							m_map->addNodeWithEvent(p, n);
-						}else{
-							n.setContent(CONTENT_WATERSOURCE);
-							m_map->addNodeWithEvent(p, n);
-						}
-					}else{
-						bool found = false;
-						for(s16 x=-3; !found && x<=3; x++) {
-						for(s16 y=-1; !found && y<=1; y++) {
-						for(s16 z=-3; !found && z<=3; z++) {
+						for(s16 z=-range; !found && z<=range; z++) {
 							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
 							if (
 								n_test.getContent() == CONTENT_LAVASOURCE
@@ -1038,7 +1021,24 @@ void ServerEnvironment::step(float dtime)
 						}
 						}
 						}
+					}else{
+						found = true;
+					}
+					if (found) {
+						found = false;
+						for(s16 x=-5; !found && x<=5; x++) {
+						for(s16 y=-1; !found && y<=1; y++) {
+						for(s16 z=-5; !found && z<=5; z++) {
+							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
+							if (n_test.getContent() == CONTENT_WATERSOURCE)
+								found = true;
+						}
+						}
+						}
 						if (found) {
+							n.setContent(CONTENT_WATER);
+							m_map->addNodeWithEvent(p, n);
+						}else{
 							n.setContent(CONTENT_WATERSOURCE);
 							m_map->addNodeWithEvent(p, n);
 						}
