@@ -1109,7 +1109,6 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		}
 
 		player->updateAnim(anim_id);
-		player->updateName(player->getName());
 	}
 	else if(command == TOCLIENT_SECTORMETA)
 	{

@@ -257,7 +257,7 @@ void RemotePlayer::updateName(const char *name)
 		m_text->setText(wname);
 	}
 	if (m_node != NULL) {
-		std::string tex = std::string("players") + DIR_DELIM + "player_" + name + ".png";
+		std::string tex = std::string("players") + DIR_DELIM + "player_" + m_name + ".png";
 		std::string ptex = getTexturePath(tex);
 		printf("'%s' '%s'\n",tex.c_str(),ptex.c_str());
 		if (ptex == "")
