@@ -347,6 +347,9 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_BED_YELLOW_FOOT 0xC1D
 #define CONTENT_BED_BLACK_HEAD 0xC1E
 #define CONTENT_BED_BLACK_FOOT 0xC1F
+#define CONTENT_BED_MIN 0xC10
+#define CONTENT_BED_MAX 0xC1F
+#define CONTENT_BED_FOOT_MASK 0x001
 
 #endif
 

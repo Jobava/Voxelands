@@ -1381,6 +1381,30 @@ void ServerEnvironment::step(float dtime)
 										}else{
 											m_map->addNodeWithEvent(p+v3s16(x,y+1,z), n_sect);
 										}
+									}else if (
+										n_test.getContent() >= CONTENT_BED_MIN
+										&& n_test.getContent() <= CONTENT_BED_MAX
+									) {
+										v3s16 p_foot = v3s16(0,0,0);
+										u8 d = n_test.param2&0x0F;
+										switch (d) {
+										case 1:
+											p_foot.X = 1;
+											break;
+										case 2:
+											p_foot.Z = -1;
+											break;
+										case 3:
+											p_foot.X = -1;
+											break;
+										default:
+											p_foot.Z = 1;
+											break;
+										}
+										if ((n_test.getContent()&CONTENT_BED_FOOT_MASK) == 0)
+											p_foot *= -1;
+										n_test.setContent(CONTENT_FIRE_SHORTTERM);
+										m_map->addNodeWithEvent(p+v3s16(x,y,z)+p_foot, n_test);
 									}
 									n_test.setContent(CONTENT_FIRE_SHORTTERM);
 									m_map->addNodeWithEvent(p+v3s16(x,y,z), n_test);

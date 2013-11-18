@@ -4993,6 +4993,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->rotate_tile_with_nodebox = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
@@ -5062,13 +5063,13 @@ void content_mapnode_init()
 	i = CONTENT_BED_HEAD;
 	f = &content_features(i);
 	f->description = std::string("Bed");
-	f->setAllTextures("bed_side.png");
 	f->setTexture(0,"bed_head.png");
 	f->setTexture(1,"bed_bottom.png");
+	f->setTexture(2,"bed_side.png");
 	f->setTexture(3,"bed_side.png^[transformFX");
 	f->setTexture(4,"bed_end.png");
 	f->setTexture(5,"bed_end.png");
-	f->setInventoryTexture("bed.png");
+	f->setInventoryTexture("bed_inv.png");
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -5077,6 +5078,7 @@ void content_mapnode_init()
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->rotate_tile_with_nodebox = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_bed_head(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
@@ -5084,13 +5086,13 @@ void content_mapnode_init()
 	i = CONTENT_BED_FOOT;
 	f = &content_features(i);
 	f->description = std::string("Bed");
-	f->setAllTextures("bed_side.png");
 	f->setTexture(0,"bed_top.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"bed_side.png^[transformFX");
+	f->setTexture(3,"bed_side.png");
 	f->setTexture(4,"bed_end.png");
 	f->setTexture(5,"bed_end.png");
-	f->setInventoryTexture("bed.png");
+	f->setInventoryTexture("bed_inv.png");
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -5099,7 +5101,330 @@ void content_mapnode_init()
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->rotate_tile_with_nodebox = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_HEAD)+" 1";
+	content_mapnode_nodebox_bed_foot(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+
+	i = CONTENT_BED_BLUE_HEAD;
+	f = &content_features(i);
+	f->description = std::string("Bed");
+	f->setTexture(0,"bed_blue_head.png");
+	f->setTexture(1,"bed_bottom.png");
+	f->setTexture(2,"bed_blue_side.png");
+	f->setTexture(3,"bed_blue_side.png^[transformFX");
+	f->setTexture(4,"bed_blue_end.png");
+	f->setTexture(5,"bed_blue_end.png");
+	f->setInventoryTexture("bed_blue_inv.png");
+	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->rotate_tile_with_nodebox = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_bed_head(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+
+	i = CONTENT_BED_BLUE_FOOT;
+	f = &content_features(i);
+	f->description = std::string("Bed");
+	f->setTexture(0,"bed_blue_top.png");
+	f->setTexture(1,"bed_bottom.png");
+	f->setTexture(2,"bed_blue_side.png^[transformFX");
+	f->setTexture(3,"bed_blue_side.png");
+	f->setTexture(4,"bed_blue_end.png");
+	f->setTexture(5,"bed_blue_end.png");
+	f->setInventoryTexture("bed_blue_inv.png");
+	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->rotate_tile_with_nodebox = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_BLUE_HEAD)+" 1";
+	content_mapnode_nodebox_bed_foot(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+
+	i = CONTENT_BED_GREEN_HEAD;
+	f = &content_features(i);
+	f->description = std::string("Bed");
+	f->setTexture(0,"bed_green_head.png");
+	f->setTexture(1,"bed_bottom.png");
+	f->setTexture(2,"bed_green_side.png");
+	f->setTexture(3,"bed_green_side.png^[transformFX");
+	f->setTexture(4,"bed_green_end.png");
+	f->setTexture(5,"bed_green_end.png");
+	f->setInventoryTexture("bed_green_inv.png");
+	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->rotate_tile_with_nodebox = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_bed_head(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+
+	i = CONTENT_BED_GREEN_FOOT;
+	f = &content_features(i);
+	f->description = std::string("Bed");
+	f->setTexture(0,"bed_green_top.png");
+	f->setTexture(1,"bed_bottom.png");
+	f->setTexture(2,"bed_green_side.png^[transformFX");
+	f->setTexture(3,"bed_green_side.png");
+	f->setTexture(4,"bed_green_end.png");
+	f->setTexture(5,"bed_green_end.png");
+	f->setInventoryTexture("bed_green_inv.png");
+	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->rotate_tile_with_nodebox = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_GREEN_HEAD)+" 1";
+	content_mapnode_nodebox_bed_foot(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+
+	i = CONTENT_BED_ORANGE_HEAD;
+	f = &content_features(i);
+	f->description = std::string("Bed");
+	f->setTexture(0,"bed_orange_head.png");
+	f->setTexture(1,"bed_bottom.png");
+	f->setTexture(2,"bed_orange_side.png");
+	f->setTexture(3,"bed_orange_side.png^[transformFX");
+	f->setTexture(4,"bed_orange_end.png");
+	f->setTexture(5,"bed_orange_end.png");
+	f->setInventoryTexture("bed_orange_inv.png");
+	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->rotate_tile_with_nodebox = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_bed_head(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+
+	i = CONTENT_BED_ORANGE_FOOT;
+	f = &content_features(i);
+	f->description = std::string("Bed");
+	f->setTexture(0,"bed_orange_top.png");
+	f->setTexture(1,"bed_bottom.png");
+	f->setTexture(2,"bed_orange_side.png^[transformFX");
+	f->setTexture(3,"bed_orange_side.png");
+	f->setTexture(4,"bed_orange_end.png");
+	f->setTexture(5,"bed_orange_end.png");
+	f->setInventoryTexture("bed_orange_inv.png");
+	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->rotate_tile_with_nodebox = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_ORANGE_HEAD)+" 1";
+	content_mapnode_nodebox_bed_foot(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+
+	i = CONTENT_BED_PURPLE_HEAD;
+	f = &content_features(i);
+	f->description = std::string("Bed");
+	f->setTexture(0,"bed_purple_head.png");
+	f->setTexture(1,"bed_bottom.png");
+	f->setTexture(2,"bed_purple_side.png");
+	f->setTexture(3,"bed_purple_side.png^[transformFX");
+	f->setTexture(4,"bed_purple_end.png");
+	f->setTexture(5,"bed_purple_end.png");
+	f->setInventoryTexture("bed_purple_inv.png");
+	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->rotate_tile_with_nodebox = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_bed_head(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+
+	i = CONTENT_BED_PURPLE_FOOT;
+	f = &content_features(i);
+	f->description = std::string("Bed");
+	f->setTexture(0,"bed_purple_top.png");
+	f->setTexture(1,"bed_bottom.png");
+	f->setTexture(2,"bed_purple_side.png^[transformFX");
+	f->setTexture(3,"bed_purple_side.png");
+	f->setTexture(4,"bed_purple_end.png");
+	f->setTexture(5,"bed_purple_end.png");
+	f->setInventoryTexture("bed_purple_inv.png");
+	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->rotate_tile_with_nodebox = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_PURPLE_HEAD)+" 1";
+	content_mapnode_nodebox_bed_foot(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+
+	i = CONTENT_BED_RED_HEAD;
+	f = &content_features(i);
+	f->description = std::string("Bed");
+	f->setTexture(0,"bed_red_head.png");
+	f->setTexture(1,"bed_bottom.png");
+	f->setTexture(2,"bed_red_side.png");
+	f->setTexture(3,"bed_red_side.png^[transformFX");
+	f->setTexture(4,"bed_red_end.png");
+	f->setTexture(5,"bed_red_end.png");
+	f->setInventoryTexture("bed_red_inv.png");
+	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->rotate_tile_with_nodebox = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_bed_head(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+
+	i = CONTENT_BED_RED_FOOT;
+	f = &content_features(i);
+	f->description = std::string("Bed");
+	f->setTexture(0,"bed_red_top.png");
+	f->setTexture(1,"bed_bottom.png");
+	f->setTexture(2,"bed_red_side.png^[transformFX");
+	f->setTexture(3,"bed_red_side.png");
+	f->setTexture(4,"bed_red_end.png");
+	f->setTexture(5,"bed_red_end.png");
+	f->setInventoryTexture("bed_red_inv.png");
+	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->rotate_tile_with_nodebox = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_RED_HEAD)+" 1";
+	content_mapnode_nodebox_bed_foot(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+
+	i = CONTENT_BED_YELLOW_HEAD;
+	f = &content_features(i);
+	f->description = std::string("Bed");
+	f->setTexture(0,"bed_yellow_head.png");
+	f->setTexture(1,"bed_bottom.png");
+	f->setTexture(2,"bed_yellow_side.png");
+	f->setTexture(3,"bed_yellow_side.png^[transformFX");
+	f->setTexture(4,"bed_yellow_end.png");
+	f->setTexture(5,"bed_yellow_end.png");
+	f->setInventoryTexture("bed_inv.png");
+	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->rotate_tile_with_nodebox = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_bed_head(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+
+	i = CONTENT_BED_YELLOW_FOOT;
+	f = &content_features(i);
+	f->description = std::string("Bed");
+	f->setTexture(0,"bed_yellow_top.png");
+	f->setTexture(1,"bed_bottom.png");
+	f->setTexture(2,"bed_yellow_side.png^[transformFX");
+	f->setTexture(3,"bed_yellow_side.png");
+	f->setTexture(4,"bed_yellow_end.png");
+	f->setTexture(5,"bed_yellow_end.png");
+	f->setInventoryTexture("bed_yellow_inv.png");
+	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->rotate_tile_with_nodebox = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_YELLOW_HEAD)+" 1";
+	content_mapnode_nodebox_bed_foot(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+
+	i = CONTENT_BED_BLACK_HEAD;
+	f = &content_features(i);
+	f->description = std::string("Bed");
+	f->setTexture(0,"bed_black_head.png");
+	f->setTexture(1,"bed_bottom.png");
+	f->setTexture(2,"bed_black_side.png");
+	f->setTexture(3,"bed_black_side.png^[transformFX");
+	f->setTexture(4,"bed_black_end.png");
+	f->setTexture(5,"bed_black_end.png");
+	f->setInventoryTexture("bed_black_inv.png");
+	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->rotate_tile_with_nodebox = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_bed_head(f);
+	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+
+	i = CONTENT_BED_BLACK_FOOT;
+	f = &content_features(i);
+	f->description = std::string("Bed");
+	f->setTexture(0,"bed_black_top.png");
+	f->setTexture(1,"bed_bottom.png");
+	f->setTexture(2,"bed_black_side.png^[transformFX");
+	f->setTexture(3,"bed_black_side.png");
+	f->setTexture(4,"bed_black_end.png");
+	f->setTexture(5,"bed_black_end.png");
+	f->setInventoryTexture("bed_black_inv.png");
+	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->rotate_tile_with_nodebox = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_BLACK_HEAD)+" 1";
 	content_mapnode_nodebox_bed_foot(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
 
