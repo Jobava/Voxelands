@@ -355,33 +355,34 @@ TileSpec MapNode::getTile(v3s16 dir)
 		}
 	}
 	if (content_features(*this).rotate_tile_with_nodebox) {
-		if(dir_i == 0){
-			if(param1 == 1){ // -90
+		u8 facedir = 0;
+		if (content_features(*this).param_type == CPT_FACEDIR_SIMPLE) {
+			facedir = param1;
+		}else if (content_features(*this).param2_type == CPT_FACEDIR_SIMPLE) {
+			facedir = (param2&0x0F);
+		}
+		if (dir_i == 0) {
+			if (facedir == 1) { // -90
 				std::string name = g_texturesource->getTextureName(spec.texture.id);
 				name += "^[transformR270";
 				spec.texture = g_texturesource->getTexture(name);
-			}
-			else if(param1 == 2){ // 180
+			}else if (facedir == 2) { // 180
 				spec.texture.pos += spec.texture.size;
 				spec.texture.size *= -1;
-			}
-			else if(param1 == 3){ // 90
+			}else if (facedir == 3) { // 90
 				std::string name = g_texturesource->getTextureName(spec.texture.id);
 				name += "^[transformR90";
 				spec.texture = g_texturesource->getTexture(name);
 			}
-		}
-		else if(dir_i == 1){
-			if(param1 == 1){ // -90
+		}else if (dir_i == 1) {
+			if (facedir == 1) { // -90
 				std::string name = g_texturesource->getTextureName(spec.texture.id);
 				name += "^[transformR90";
 				spec.texture = g_texturesource->getTexture(name);
-			}
-			else if(param1 == 2){ // 180
+			}else if (facedir == 2) { // 180
 				spec.texture.pos += spec.texture.size;
 				spec.texture.size *= -1;
-			}
-			else if(param1 == 3){ // 90
+			}else if (facedir == 3) { // 90
 				std::string name = g_texturesource->getTextureName(spec.texture.id);
 				name += "^[transformR270";
 				spec.texture = g_texturesource->getTexture(name);

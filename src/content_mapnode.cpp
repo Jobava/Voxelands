@@ -5076,6 +5076,7 @@ void content_mapnode_init()
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
+	f->rotate_tile_with_nodebox = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_bed_head(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
@@ -5097,6 +5098,7 @@ void content_mapnode_init()
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
+	f->rotate_tile_with_nodebox = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_HEAD)+" 1";
 	content_mapnode_nodebox_bed_foot(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
