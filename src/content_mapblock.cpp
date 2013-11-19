@@ -47,8 +47,6 @@ void makeCuboid(MeshCollector *collector, const aabb3f &box,
 	v3f min = box.MinEdge;
 	v3f max = box.MaxEdge;
 
-
-
 	if (txc == NULL) {
 		static const f32 txc_default[24] = {
 			0,0,1,1,
@@ -92,6 +90,73 @@ void makeCuboid(MeshCollector *collector, const aabb3f &box,
 		video::S3DVertex(max.X,max.Y,min.Z, 0,0,-1, c, txc[22],txc[21]),
 		video::S3DVertex(max.X,min.Y,min.Z, 0,0,-1, c, txc[22],txc[23]),
 		video::S3DVertex(min.X,min.Y,min.Z, 0,0,-1, c, txc[20],txc[23]),
+	};
+
+
+	for (s32 j=0; j<24; j++) {
+		int tileindex = MYMIN(j/4, tilecount-1);
+		vertices[j].TCoords *= tiles[tileindex].texture.size;
+		vertices[j].TCoords += tiles[tileindex].texture.pos;
+	}
+	u16 indices[] = {0,1,2,2,3,0};
+	// Add to mesh collector
+	for (s32 j=0; j<24; j+=4) {
+		int tileindex = MYMIN(j/4, tilecount-1);
+		collector->append(tiles[tileindex].getMaterial(), vertices+j, 4, indices, 6);
+	}
+}
+void makeSmoothCuboid(MeshCollector *collector, const aabb3f &box,
+	TileSpec *tiles, int tilecount,
+	video::SColor c[8], const f32* txc)
+{
+	assert(tilecount >= 1 && tilecount <= 6);
+
+	v3f min = box.MinEdge;
+	v3f max = box.MaxEdge;
+
+	if (txc == NULL) {
+		static const f32 txc_default[24] = {
+			0,0,1,1,
+			0,0,1,1,
+			0,0,1,1,
+			0,0,1,1,
+			0,0,1,1,
+			0,0,1,1
+		};
+		txc = txc_default;
+	}
+
+	video::S3DVertex vertices[24] = {
+		// up
+		video::S3DVertex(min.X,max.Y,max.Z, 0,1,0, c[0], txc[0],txc[1]),
+		video::S3DVertex(max.X,max.Y,max.Z, 0,1,0, c[1], txc[2],txc[1]),
+		video::S3DVertex(max.X,max.Y,min.Z, 0,1,0, c[2], txc[2],txc[3]),
+		video::S3DVertex(min.X,max.Y,min.Z, 0,1,0, c[3], txc[0],txc[3]),
+		// down
+		video::S3DVertex(min.X,min.Y,min.Z, 0,-1,0, c[4], txc[4],txc[5]),
+		video::S3DVertex(max.X,min.Y,min.Z, 0,-1,0, c[5], txc[6],txc[5]),
+		video::S3DVertex(max.X,min.Y,max.Z, 0,-1,0, c[6], txc[6],txc[7]),
+		video::S3DVertex(min.X,min.Y,max.Z, 0,-1,0, c[7], txc[4],txc[7]),
+		// right
+		video::S3DVertex(max.X,max.Y,min.Z, 1,0,0, c[2], txc[ 8],txc[9]),
+		video::S3DVertex(max.X,max.Y,max.Z, 1,0,0, c[1], txc[10],txc[9]),
+		video::S3DVertex(max.X,min.Y,max.Z, 1,0,0, c[6], txc[10],txc[11]),
+		video::S3DVertex(max.X,min.Y,min.Z, 1,0,0, c[5], txc[ 8],txc[11]),
+		// left
+		video::S3DVertex(min.X,max.Y,max.Z, -1,0,0, c[0], txc[12],txc[13]),
+		video::S3DVertex(min.X,max.Y,min.Z, -1,0,0, c[3], txc[14],txc[13]),
+		video::S3DVertex(min.X,min.Y,min.Z, -1,0,0, c[4], txc[14],txc[15]),
+		video::S3DVertex(min.X,min.Y,max.Z, -1,0,0, c[7], txc[12],txc[15]),
+		// back
+		video::S3DVertex(max.X,max.Y,max.Z, 0,0,1, c[1], txc[16],txc[17]),
+		video::S3DVertex(min.X,max.Y,max.Z, 0,0,1, c[0], txc[18],txc[17]),
+		video::S3DVertex(min.X,min.Y,max.Z, 0,0,1, c[7], txc[18],txc[19]),
+		video::S3DVertex(max.X,min.Y,max.Z, 0,0,1, c[6], txc[16],txc[19]),
+		// front
+		video::S3DVertex(min.X,max.Y,min.Z, 0,0,-1, c[3], txc[20],txc[21]),
+		video::S3DVertex(max.X,max.Y,min.Z, 0,0,-1, c[2], txc[22],txc[21]),
+		video::S3DVertex(max.X,min.Y,min.Z, 0,0,-1, c[5], txc[22],txc[23]),
+		video::S3DVertex(min.X,min.Y,min.Z, 0,0,-1, c[4], txc[20],txc[23]),
 	};
 
 
@@ -1513,34 +1578,84 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				// Handles facedir rotation for textures
 				tiles[i] = n.getTile(tile_dirs[i]);
 			}
-			u8 l = 0;
-			if (content_features(n).param_type == CPT_LIGHT) {
-				l = decode_light(n.getLightBlend(data->m_daynight_ratio));
-			}else{
-				u32 lt = 0;
+			video::SColor lights[8];
+			if (g_settings->getBool("smooth_lighting")) {
+				static const v3s16 corners[8] = {
+					v3s16(0,1,1),
+					v3s16(1,1,1),
+					v3s16(1,1,0),
+					v3s16(0,1,0),
+					v3s16(0,0,0),
+					v3s16(1,0,0),
+					v3s16(1,0,1),
+					v3s16(0,0,1)
+				};
+				u8 l;
+				u32 lt;
 				u32 ltp;
-				u8 ld = 0;
-				for (s16 tx=-1; tx<2; tx++) {
-				for (s16 ty=-1; ty<2; ty++) {
-				for (s16 tz=-1; tz<2; tz++) {
-					if (!tx && !ty && !tz)
-						continue;
-					MapNode tn = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+tx,y+ty,z+tz));
-					if (ty<1 && tn.getContent() != CONTENT_AIR)
-						continue;
-					ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
-					if (!ltp)
-						continue;
-					lt += ltp;
-					ld++;
+				u8 ld;
+				MapNode tn;
+				for (int i=0; i<8; i++) {
+					l = 0;
+					lt = 0;
+					ld = 0;
+					for (s16 tx=-1; tx<1; tx++) {
+					for (s16 ty=-1; ty<1; ty++) {
+					for (s16 tz=-1; tz<1; tz++) {
+						tn = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(tx,ty,tz) + p + corners[i]);
+						if (
+							ty<1
+							&& (
+								tn.getContent() != CONTENT_AIR
+								&& content_features(tn).light_source == 0
+								&& content_features(tn).param_type != CPT_LIGHT
+							)
+						)
+							continue;
+						ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
+						if (!ltp)
+							continue;
+						lt += ltp;
+						ld++;
+					}
+					}
+					}
+					if (ld)
+						l = lt/ld;
+					lights[i] = MapBlock_LightColor(255, l);
 				}
+			}else{
+				u8 l = 0;
+				if (content_features(n).param_type == CPT_LIGHT) {
+					l = decode_light(n.getLightBlend(data->m_daynight_ratio));
+				}else{
+					u32 lt = 0;
+					u32 ltp;
+					u8 ld = 0;
+					for (s16 tx=-1; tx<2; tx++) {
+					for (s16 ty=-1; ty<2; ty++) {
+					for (s16 tz=-1; tz<2; tz++) {
+						if (!tx && !ty && !tz)
+							continue;
+						MapNode tn = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+tx,y+ty,z+tz));
+						if (ty<1 && tn.getContent() != CONTENT_AIR)
+							continue;
+						ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
+						if (!ltp)
+							continue;
+						lt += ltp;
+						ld++;
+					}
+					}
+					}
+					if (ld)
+						l = lt/ld;
 				}
+				video::SColor c = MapBlock_LightColor(255, l);
+				for (int i=0; i<8; i++) {
+					lights[i] = c;
 				}
-				if (ld)
-					l = lt/ld;
 			}
-
-			video::SColor c = MapBlock_LightColor(255, l);
 
 			v3f pos = intToFloat(p+blockpos_nodes, BS);
 			std::vector<aabb3f> boxes = content_features(n).getNodeBoxes(n);
@@ -1570,7 +1685,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					// front
 					tx1, 1-ty2, tx2, 1-ty1,
 				};
-				makeCuboid(&collector, box, tiles, 6,  c, txc);
+				makeSmoothCuboid(&collector, box, tiles, 6,  lights, txc);
 			}
 		}
 		break;
