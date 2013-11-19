@@ -106,6 +106,13 @@ void makeCuboid(MeshCollector *collector, const aabb3f &box,
 	}
 }
 
+/*
+ * get the light values for a node
+ * smooth lighting gets per-vertex
+ * standard lighting gets per-face
+ * TODO: smooth lighting currently gets the light for each surrounding node up
+ * to eight times, probably a better way to do this
+ */
 static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool smooth_lighting)
 {
 	if (!smooth_lighting) {
@@ -964,7 +971,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		break;
 		case CDT_GLASSLIKE:
 		{
-			static const aau8 l[6][4] = {
+			static const u8 l[6][4] = {
 				{0,1,6,7},
 				{0,1,2,3},
 				{1,2,5,6},
