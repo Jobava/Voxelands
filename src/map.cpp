@@ -1614,21 +1614,21 @@ void Map::transformLiquids(core::map<v3s16, MapBlock*> & modified_blocks)
 		u8 liquid_kind = CONTENT_IGNORE;
 		LiquidType liquid_type = content_features(n0.getContent()).liquid_type;
 		switch (liquid_type) {
-			case LIQUID_SOURCE:
-				liquid_level = LIQUID_LEVEL_SOURCE;
-				liquid_kind = content_features(n0.getContent()).liquid_alternative_flowing;
-				break;
-			case LIQUID_FLOWING:
-				liquid_level = (n0.param2 & LIQUID_LEVEL_MASK);
-				liquid_kind = n0.getContent();
-				break;
-			case LIQUID_NONE:
-				// if this is an air node, it *could* be transformed into a liquid. otherwise,
-				// continue with the next node.
-				if (n0.getContent() != CONTENT_AIR)
-					continue;
-				liquid_kind = CONTENT_AIR;
-				break;
+		case LIQUID_SOURCE:
+			liquid_level = LIQUID_LEVEL_SOURCE;
+			liquid_kind = content_features(n0.getContent()).liquid_alternative_flowing;
+			break;
+		case LIQUID_FLOWING:
+			liquid_level = (n0.param2 & LIQUID_LEVEL_MASK);
+			liquid_kind = n0.getContent();
+			break;
+		case LIQUID_NONE:
+			// if this is an air node, it *could* be transformed into a liquid. otherwise,
+			// continue with the next node.
+			if (n0.getContent() != CONTENT_AIR)
+				continue;
+			liquid_kind = CONTENT_AIR;
+			break;
 		}
 
 		/*
@@ -1669,6 +1669,9 @@ void Map::transformLiquids(core::map<v3s16, MapBlock*> & modified_blocks)
 						if (nb.t == NEIGHBOR_LOWER) {
 							flowing_down = true;
 						}
+					}else if (nb.t == NEIGHBOR_LOWER && nb.n.getContent() == CONTENT_IGNORE) {
+						flowing_down = true;
+						neutrals[num_neutrals++] = nb;
 					} else {
 						neutrals[num_neutrals++] = nb;
 					}

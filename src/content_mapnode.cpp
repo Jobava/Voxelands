@@ -2269,6 +2269,7 @@ void content_mapnode_init()
 	f->description = std::string("Water");
 	f->setInventoryTextureCube("water.png", "water.png", "water.png");
 	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_LIQUID;
 	f->draw_type = CDT_LIQUID;
 	f->light_propagates = true;
 	f->solidness = 0; // Drawn separately, makes no faces
@@ -2334,6 +2335,7 @@ void content_mapnode_init()
 #endif
 	}
 	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_LIQUID;
 	f->draw_type = CDT_LIQUID_SOURCE;
 	f->light_propagates = true;
 	f->walkable = false;
@@ -2372,6 +2374,7 @@ void content_mapnode_init()
 	f->setInventoryTextureCube("lava.png", "lava.png", "lava.png");
 	f->used_texturenames["lava.png"] = true;
 	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_LIQUID;
 	f->draw_type = CDT_LIQUID;
 	f->light_propagates = false;
 	f->light_source = LIGHT_MAX-1;
@@ -2437,6 +2440,7 @@ void content_mapnode_init()
 #endif
 	}
 	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_LIQUID;
 	f->draw_type = CDT_LIQUID_SOURCE;
 	f->light_propagates = false;
 	f->light_source = LIGHT_MAX-1;

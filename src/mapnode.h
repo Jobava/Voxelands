@@ -109,7 +109,8 @@ enum ContentParamType
 	CPT_LIGHT,
 	CPT_MINERAL,
 	// Direction for chests and furnaces and such
-	CPT_FACEDIR_SIMPLE
+	CPT_FACEDIR_SIMPLE,
+	CPT_LIQUID
 };
 
 enum LiquidType

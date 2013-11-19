@@ -86,7 +86,7 @@ void set_default_settings(Settings *settings)
 	// "map-dir" doesn't exist by default.
 	settings->setDefault("motd", "");
 	settings->setDefault("max_users", "20");
-	settings->setDefault("strict_protocol_version_checking", "true");
+	settings->setDefault("strict_protocol_version_checking", "false");
 	settings->setDefault("creative_mode", "false");
 	settings->setDefault("enable_damage", "true");
 	settings->setDefault("only_peaceful_mobs", "false");
