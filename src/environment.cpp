@@ -2010,66 +2010,67 @@ void ServerEnvironment::step(float dtime)
 				{
 					MapNode testnode;
 					bool found = false;
-					for(s16 z=-1; z<=1; z++) {
-					for(s16 y=-1; y<=1; y++) {
-					for(s16 x=-1; x<=1; x++) {
-						testnode = m_map->getNodeNoEx(p+v3s16(x,y,z));
-						if(testnode.getContent() == CONTENT_WATER || testnode.getContent() == CONTENT_WATERSOURCE)
-						{
-							found = true;
-							testnode.setContent(CONTENT_STEAM);
-							m_delayed_node_changes[p+v3s16(x,y,z)] = testnode;
+					if (p.Y > 60 && p.Y < 200) {
+						found = true;
+					}else{
+						for(s16 z=-1; z<=1; z++) {
+						for(s16 y=-1; y<=1; y++) {
+						for(s16 x=-1; x<=1; x++) {
+							testnode = m_map->getNodeNoEx(p+v3s16(x,y,z));
+							if(testnode.getContent() == CONTENT_WATER || testnode.getContent() == CONTENT_WATERSOURCE)
+							{
+								found = true;
+								testnode.setContent(CONTENT_STEAM);
+								m_delayed_node_changes[p+v3s16(x,y,z)] = testnode;
+							}
 						}
-					}
-					}
+						}
+						}
 					}
 
-					if(found == true && n.getContent() == CONTENT_LAVASOURCE)
-					{
+					if (found == true && n.getContent() == CONTENT_LAVASOURCE) {
 						int material = myrand()%50;
-						switch(material)
-						{
-							case 0:
-							case 1:
-							case 2:
-							case 3:
-							case 4:
-							case 5:
-							case 6:
-							case 7:
-								n = MapNode(CONTENT_STONE, MINERAL_COAL);
-								break;
-							case 8:
-							case 9:
-							case 10:
-							case 11:
-								n = MapNode(CONTENT_STONE, MINERAL_IRON);
-								break;
-							case 12:
-							case 13:
-							case 14:
-							case 15:
-								n = MapNode(CONTENT_STONE, MINERAL_TIN);
-								break;
-							case 16:
-							case 17:
-							case 18:
-							case 19:
-								n = MapNode(CONTENT_STONE, MINERAL_COPPER);
-								break;
-							case 20:
-								n = MapNode(CONTENT_STONE, MINERAL_SILVER);
-								break;
-							case 21:
-								n = MapNode(CONTENT_STONE, MINERAL_GOLD);
-								break;
-							default:
-								n.setContent(CONTENT_ROUGHSTONE);
-								break;
+						switch(material) {
+						case 0:
+						case 1:
+						case 2:
+						case 3:
+						case 4:
+						case 5:
+						case 6:
+						case 7:
+							n = MapNode(CONTENT_STONE, MINERAL_COAL);
+							break;
+						case 8:
+						case 9:
+						case 10:
+						case 11:
+							n = MapNode(CONTENT_STONE, MINERAL_IRON);
+							break;
+						case 12:
+						case 13:
+						case 14:
+						case 15:
+							n = MapNode(CONTENT_STONE, MINERAL_TIN);
+							break;
+						case 16:
+						case 17:
+						case 18:
+						case 19:
+							n = MapNode(CONTENT_STONE, MINERAL_COPPER);
+							break;
+						case 20:
+							n = MapNode(CONTENT_STONE, MINERAL_SILVER);
+							break;
+						case 21:
+							n = MapNode(CONTENT_STONE, MINERAL_GOLD);
+							break;
+						default:
+							n.setContent(CONTENT_ROUGHSTONE);
+							break;
 						}
 						m_map->addNodeWithEvent(p, n);
-					} else if(found == true)
-					{
+					}else if (found == true) {
 						n.setContent(CONTENT_ROUGHSTONE);
 						m_map->addNodeWithEvent(p, n);
 					}
