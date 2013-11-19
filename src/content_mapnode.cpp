@@ -5110,7 +5110,7 @@ void content_mapnode_init()
 
 	i = CONTENT_BED_BLUE_HEAD;
 	f = &content_features(i);
-	f->description = std::string("Bed");
+	f->description = std::string("Blue Bed");
 	f->setTexture(0,"bed_blue_head.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"bed_blue_side.png");
@@ -5133,7 +5133,7 @@ void content_mapnode_init()
 
 	i = CONTENT_BED_BLUE_FOOT;
 	f = &content_features(i);
-	f->description = std::string("Bed");
+	f->description = std::string("Blue Bed");
 	f->setTexture(0,"bed_blue_top.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"bed_blue_side.png^[transformFX");
@@ -5156,7 +5156,7 @@ void content_mapnode_init()
 
 	i = CONTENT_BED_GREEN_HEAD;
 	f = &content_features(i);
-	f->description = std::string("Bed");
+	f->description = std::string("Green Bed");
 	f->setTexture(0,"bed_green_head.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"bed_green_side.png");
@@ -5179,7 +5179,7 @@ void content_mapnode_init()
 
 	i = CONTENT_BED_GREEN_FOOT;
 	f = &content_features(i);
-	f->description = std::string("Bed");
+	f->description = std::string("Green Bed");
 	f->setTexture(0,"bed_green_top.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"bed_green_side.png^[transformFX");
@@ -5202,7 +5202,7 @@ void content_mapnode_init()
 
 	i = CONTENT_BED_ORANGE_HEAD;
 	f = &content_features(i);
-	f->description = std::string("Bed");
+	f->description = std::string("Orange Bed");
 	f->setTexture(0,"bed_orange_head.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"bed_orange_side.png");
@@ -5225,7 +5225,7 @@ void content_mapnode_init()
 
 	i = CONTENT_BED_ORANGE_FOOT;
 	f = &content_features(i);
-	f->description = std::string("Bed");
+	f->description = std::string("Orange Bed");
 	f->setTexture(0,"bed_orange_top.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"bed_orange_side.png^[transformFX");
@@ -5248,7 +5248,7 @@ void content_mapnode_init()
 
 	i = CONTENT_BED_PURPLE_HEAD;
 	f = &content_features(i);
-	f->description = std::string("Bed");
+	f->description = std::string("Purple Bed");
 	f->setTexture(0,"bed_purple_head.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"bed_purple_side.png");
@@ -5271,7 +5271,7 @@ void content_mapnode_init()
 
 	i = CONTENT_BED_PURPLE_FOOT;
 	f = &content_features(i);
-	f->description = std::string("Bed");
+	f->description = std::string("Purple Bed");
 	f->setTexture(0,"bed_purple_top.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"bed_purple_side.png^[transformFX");
@@ -5294,7 +5294,7 @@ void content_mapnode_init()
 
 	i = CONTENT_BED_RED_HEAD;
 	f = &content_features(i);
-	f->description = std::string("Bed");
+	f->description = std::string("Red Bed");
 	f->setTexture(0,"bed_red_head.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"bed_red_side.png");
@@ -5317,7 +5317,7 @@ void content_mapnode_init()
 
 	i = CONTENT_BED_RED_FOOT;
 	f = &content_features(i);
-	f->description = std::string("Bed");
+	f->description = std::string("Red Bed");
 	f->setTexture(0,"bed_red_top.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"bed_red_side.png^[transformFX");
@@ -5340,14 +5340,14 @@ void content_mapnode_init()
 
 	i = CONTENT_BED_YELLOW_HEAD;
 	f = &content_features(i);
-	f->description = std::string("Bed");
+	f->description = std::string("Yellow Bed");
 	f->setTexture(0,"bed_yellow_head.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"bed_yellow_side.png");
 	f->setTexture(3,"bed_yellow_side.png^[transformFX");
 	f->setTexture(4,"bed_yellow_end.png");
 	f->setTexture(5,"bed_yellow_end.png");
-	f->setInventoryTexture("bed_inv.png");
+	f->setInventoryTexture("bed_yellow_inv.png");
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -5363,7 +5363,7 @@ void content_mapnode_init()
 
 	i = CONTENT_BED_YELLOW_FOOT;
 	f = &content_features(i);
-	f->description = std::string("Bed");
+	f->description = std::string("Yellow Bed");
 	f->setTexture(0,"bed_yellow_top.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"bed_yellow_side.png^[transformFX");
@@ -5386,7 +5386,7 @@ void content_mapnode_init()
 
 	i = CONTENT_BED_BLACK_HEAD;
 	f = &content_features(i);
-	f->description = std::string("Bed");
+	f->description = std::string("Black Bed");
 	f->setTexture(0,"bed_black_head.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"bed_black_side.png");
@@ -5409,7 +5409,7 @@ void content_mapnode_init()
 
 	i = CONTENT_BED_BLACK_FOOT;
 	f = &content_features(i);
-	f->description = std::string("Bed");
+	f->description = std::string("Black Bed");
 	f->setTexture(0,"bed_black_top.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"bed_black_side.png^[transformFX");
