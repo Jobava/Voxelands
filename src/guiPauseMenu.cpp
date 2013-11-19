@@ -118,7 +118,7 @@ void GUIPauseMenu::regenerateGui(v2u32 screensize)
 	}
 	{
 		core::rect<s32> rect(0, 0, 200, 20);
-		rect = rect + v2s32(80 , 30);
+		rect = rect + v2s32(85 , 30);
 
 		v2u32 max_texture_size;
 		{
@@ -132,8 +132,23 @@ void GUIPauseMenu::regenerateGui(v2u32 screensize)
 		Environment->addStaticText(narrow_to_wide(os.str()).c_str(), rect, false, true, this, 259);
 	}
 	{
-		core::rect<s32> rect(0, 0, 250, 220);
-		rect = rect + v2s32(40,50);
+		core::rect<s32> rect(0, 0, 205, 20);
+		rect = rect + v2s32(70,50);
+
+		v2u32 max_texture_size;
+		{
+			video::IVideoDriver* driver = Environment->getVideoDriver();
+			max_texture_size = driver->getMaxTextureSize();
+		}
+
+		std::ostringstream os;
+		os<<"darkrose@minetest-classic.com";
+
+		Environment->addStaticText(narrow_to_wide(os.str()).c_str(), rect, false, true, this, 259);
+	}
+	{
+		core::rect<s32> rect(0, 0, 250, 20);
+		rect = rect + v2s32(40,70);
 
 		v2u32 max_texture_size;
 		{
@@ -143,21 +158,6 @@ void GUIPauseMenu::regenerateGui(v2u32 screensize)
 
 		std::ostringstream os;
 		os<<"Based on Minetest-C55 by Perttu Ahola";
-
-		Environment->addStaticText(narrow_to_wide(os.str()).c_str(), rect, false, true, this, 259);
-	}
-	{
-		core::rect<s32> rect(0, 0, 200, 220);
-		rect = rect + v2s32(100,70);
-
-		v2u32 max_texture_size;
-		{
-			video::IVideoDriver* driver = Environment->getVideoDriver();
-			max_texture_size = driver->getMaxTextureSize();
-		}
-
-		std::ostringstream os;
-		os<<"celeron55@gmail.com";
 
 		Environment->addStaticText(narrow_to_wide(os.str()).c_str(), rect, false, true, this, 259);
 	}
