@@ -1002,8 +1002,25 @@ void ServerEnvironment::step(float dtime)
 				}
 				if (n.getContent() == CONTENT_WATERSOURCE || n.getContent() == CONTENT_WATER) {
 					if (p.Y > 60 && p.Y < 200) {
-						n.setContent(CONTENT_ICE);
-						m_map->addNodeWithEvent(p, n);
+						bool found = false;
+						s16 range = (p.Y > 60) ? 2 : 4;
+						for(s16 x=-range; !found && x<=range; x++) {
+						for(s16 y=-1; !found && y<=1; y++) {
+						for(s16 z=-range; !found && z<=range; z++) {
+							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
+							if (
+								n_test.getContent() == CONTENT_LAVASOURCE
+								|| n_test.getContent() == CONTENT_LAVA
+								|| n_test.getContent() == CONTENT_FIRE
+							)
+								found = true;
+						}
+						}
+						}
+						if (found == false) {
+							n.setContent(CONTENT_ICE);
+							m_map->addNodeWithEvent(p, n);
+						}
 					}
 				}else if (n.getContent() == CONTENT_ICE) {
 					bool found = false;

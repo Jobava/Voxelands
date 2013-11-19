@@ -981,7 +981,7 @@ void content_mapnode_init()
 	f->description = std::string("Ice");
 	f->setAllTextures("ice.png");
 	f->setInventoryTextureCube("ice.png", "ice.png", "ice.png");
-	f->draw_type = CDT_GLASSLIKE;
+	f->draw_type = CDT_CUBELIKE;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
