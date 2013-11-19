@@ -1024,7 +1024,7 @@ void ServerEnvironment::step(float dtime)
 					}
 				}else if (n.getContent() == CONTENT_ICE) {
 					bool found = false;
-					if (p.Y > 40) {
+					if (p.Y > 0) {
 						s16 range = (p.Y > 60) ? 2 : 4;
 						for(s16 x=-range; !found && x<=range; x++) {
 						for(s16 y=-1; !found && y<=1; y++) {
@@ -1102,8 +1102,6 @@ void ServerEnvironment::step(float dtime)
 						if (found) {
 							n.setContent(CONTENT_WATERSOURCE);
 							m_map->addNodeWithEvent(p, n);
-						}else{
-							m_map->removeNodeWithEvent(p);
 						}
 					}
 				}
