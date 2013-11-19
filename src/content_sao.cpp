@@ -395,9 +395,8 @@ void RatSAO::step(float dtime, bool send_recommended)
 	moveresult = collisionMoveSimple(&m_env->getMap(), pos_max_d,
 			box, 0.0, dtime, pos_f, m_speed_f, accel_f);
 
-	// basicly 'die in lava'
-	if (moveresult.touching_lethal)
-	{
+	// basically 'die in lava or water'
+	if (moveresult.touching_lethal || moveresult.in_liquid) {
 		m_removed = true;
 		return;
 	}
