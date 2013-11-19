@@ -25,6 +25,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define PROTOCOL_VERSION 4
 /* the last protocol version used by 0.3.x minetest-c55 clients */
 #define PROTOCOL_DOTTHREE 3
+/* this is the oldest protocol that we will allow to connect
+ * even with strict_protocol_version_checking = false */
+#define PROTOCOL_OLDEST 3
 
 #define PROTOCOL_ID 0x4f457403
 

@@ -1906,8 +1906,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 		getClient(peer_id)->net_proto_version = net_proto_version;
 
-		if(net_proto_version == 0)
-		{
+		if (net_proto_version < PROTOCOL_OLDEST) {
 			SendAccessDenied(m_con, peer_id,
 					L"Your client is too old. Please upgrade.");
 			return;
