@@ -986,8 +986,6 @@ void content_mapnode_init()
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
 	f->is_ground_content = true;
-	f->solidness = 0;
-	f->visual_solidness = 1;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
 
