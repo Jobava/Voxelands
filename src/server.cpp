@@ -2559,7 +2559,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				InventoryList *plist = player->inventory.getList("main");
 				if (plist == NULL || ilist == NULL)
 					return;
-				InventoryItem *fitem = plist->getItem(0);
+				InventoryItem *fitem = ilist->getItem(0);
 				if (!fitem || !fitem->getCount())
 					return;
 				plist->deleteItem(item_i);
