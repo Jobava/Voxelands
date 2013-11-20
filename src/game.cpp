@@ -970,7 +970,7 @@ void the_game(
 	// Object infos are shown in this
 	gui::IGUIStaticText *guitext_info = guienv->addStaticText(
 			L"",
-			core::rect<s32>(0,0,400,text_height+5) + v2s32(100,200),
+			core::rect<s32>(0,0,500,text_height+5) + v2s32(100,200),
 			false, false);
 
 	// Chat text
