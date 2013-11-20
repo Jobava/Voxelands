@@ -119,7 +119,7 @@ static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool
 		u8 l = 0;
 		u32 lt = 0;
 		u32 ltp;
-		u8 ld = 0;
+		u8 ld = 1;
 		for (s16 tx=-1; tx<2; tx++) {
 		for (s16 ty=-1; ty<2; ty++) {
 		for (s16 tz=-1; tz<2; tz++) {
@@ -167,7 +167,7 @@ static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool
 	for (int i=0; i<8; i++) {
 		l = 0;
 		lt = 0;
-		ld = 0;
+		ld = 1;
 		for (s16 tx=-1; tx<1; tx++) {
 		for (s16 ty=-1; ty<1; ty++) {
 		for (s16 tz=-1; tz<1; tz++) {
