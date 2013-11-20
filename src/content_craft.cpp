@@ -108,7 +108,7 @@ struct CraftDef {
 */
 InventoryItem *craft_get_result(InventoryItem **items)
 {
-	static CraftDef defs[223];
+	static CraftDef defs[233];
 	static int defs_init = 0;
 
 	// only initialise (and hence allocate) these once
@@ -407,6 +407,21 @@ InventoryItem *craft_get_result(InventoryItem **items)
 			defs[defs_init].specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_ROUGHSTONE);
 			defs[defs_init].specs[8] = ItemSpec(ITEM_MATERIAL, CONTENT_ROUGHSTONE);
 			defs[defs_init].item = new MaterialItem(CONTENT_FURNACE, 1);
+			defs_init++;
+		}
+
+		// Incinerator
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_ROUGHSTONE);
+			defs[defs_init].specs[1] = ItemSpec(ITEM_MATERIAL, CONTENT_ROUGHSTONE);
+			defs[defs_init].specs[2] = ItemSpec(ITEM_MATERIAL, CONTENT_ROUGHSTONE);
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_ROUGHSTONE);
+			defs[defs_init].specs[4] = ItemSpec(ITEM_MATERIAL, CONTENT_MESE);
+			defs[defs_init].specs[5] = ItemSpec(ITEM_MATERIAL, CONTENT_ROUGHSTONE);
+			defs[defs_init].specs[6] = ItemSpec(ITEM_MATERIAL, CONTENT_ROUGHSTONE);
+			defs[defs_init].specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_ROUGHSTONE);
+			defs[defs_init].specs[8] = ItemSpec(ITEM_MATERIAL, CONTENT_ROUGHSTONE);
+			defs[defs_init].item = new MaterialItem(CONTENT_INCINERATOR, 1);
 			defs_init++;
 		}
 
@@ -1956,6 +1971,13 @@ InventoryItem *craft_get_result(InventoryItem **items)
 			defs_init++;
 		}
 
+		// Coal block
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_COAL);
+			defs[defs_init].item = new CraftItem("lump_of_coal", 9);
+			defs_init++;
+		}
+
 		// Charoal block
 		{
 			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "lump_of_charcoal");
@@ -1968,6 +1990,13 @@ InventoryItem *craft_get_result(InventoryItem **items)
 			defs[defs_init].specs[7] = ItemSpec(ITEM_CRAFT, "lump_of_charcoal");
 			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "lump_of_charcoal");
 			defs[defs_init].item = new MaterialItem(CONTENT_CHARCOAL, 1);
+			defs_init++;
+		}
+
+		// Charcoal block
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_MATERIAL, CONTENT_CHARCOAL);
+			defs[defs_init].item = new CraftItem("lump_of_charcoal", 9);
 			defs_init++;
 		}
 
@@ -2225,6 +2254,14 @@ InventoryItem *craft_get_result(InventoryItem **items)
 			defs_init++;
 		}
 
+		// red bed
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "dye_blue");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_BED_HEAD);
+			defs[defs_init].item = new MaterialItem(CONTENT_BED_BLUE_HEAD, 1);
+			defs_init++;
+		}
+
 		// green bed
 		{
 			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "Stick");
@@ -2236,6 +2273,14 @@ InventoryItem *craft_get_result(InventoryItem **items)
 			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "Stick");
 			defs[defs_init].specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_COTTON_GREEN);
 			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].item = new MaterialItem(CONTENT_BED_GREEN_HEAD, 1);
+			defs_init++;
+		}
+
+		// green bed
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "dye_green");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_BED_HEAD);
 			defs[defs_init].item = new MaterialItem(CONTENT_BED_GREEN_HEAD, 1);
 			defs_init++;
 		}
@@ -2255,6 +2300,14 @@ InventoryItem *craft_get_result(InventoryItem **items)
 			defs_init++;
 		}
 
+		// orange bed
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "dye_orange");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_BED_HEAD);
+			defs[defs_init].item = new MaterialItem(CONTENT_BED_ORANGE_HEAD, 1);
+			defs_init++;
+		}
+
 		// purple bed
 		{
 			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "Stick");
@@ -2266,6 +2319,14 @@ InventoryItem *craft_get_result(InventoryItem **items)
 			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "Stick");
 			defs[defs_init].specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_COTTON_PURPLE);
 			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].item = new MaterialItem(CONTENT_BED_PURPLE_HEAD, 1);
+			defs_init++;
+		}
+
+		// purple bed
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "dye_purple");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_BED_HEAD);
 			defs[defs_init].item = new MaterialItem(CONTENT_BED_PURPLE_HEAD, 1);
 			defs_init++;
 		}
@@ -2285,6 +2346,14 @@ InventoryItem *craft_get_result(InventoryItem **items)
 			defs_init++;
 		}
 
+		// red bed
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "dye_red");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_BED_HEAD);
+			defs[defs_init].item = new MaterialItem(CONTENT_BED_RED_HEAD, 1);
+			defs_init++;
+		}
+
 		// yellow bed
 		{
 			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "Stick");
@@ -2300,6 +2369,14 @@ InventoryItem *craft_get_result(InventoryItem **items)
 			defs_init++;
 		}
 
+		// yellow bed
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "dye_yellow");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_BED_HEAD);
+			defs[defs_init].item = new MaterialItem(CONTENT_BED_YELLOW_HEAD, 1);
+			defs_init++;
+		}
+
 		// black bed
 		{
 			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "Stick");
@@ -2311,6 +2388,14 @@ InventoryItem *craft_get_result(InventoryItem **items)
 			defs[defs_init].specs[6] = ItemSpec(ITEM_CRAFT, "Stick");
 			defs[defs_init].specs[7] = ItemSpec(ITEM_MATERIAL, CONTENT_COTTON_BLACK);
 			defs[defs_init].specs[8] = ItemSpec(ITEM_CRAFT, "Stick");
+			defs[defs_init].item = new MaterialItem(CONTENT_BED_BLACK_HEAD, 1);
+			defs_init++;
+		}
+
+		// black bed
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "dye_black");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_BED_HEAD);
 			defs[defs_init].item = new MaterialItem(CONTENT_BED_BLACK_HEAD, 1);
 			defs_init++;
 		}

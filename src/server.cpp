@@ -2551,6 +2551,32 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						continue;
 					client->SetBlocksNotSent(modified_blocks);
 				}
+			}else if (n.getContent() == CONTENT_INCINERATOR) {
+				NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
+				if (!meta)
+					return;
+				InventoryList *ilist = meta->getInventory()->getList("fuel");
+				InventoryList *plist = player->inventory.getList("main");
+				if (plist == NULL || ilist == NULL)
+					return;
+				InventoryItem *fitem = plist->getItem(0);
+				if (!fitem || !fitem->getCount())
+					return;
+				plist->deleteItem(item_i);
+				UpdateCrafting(peer_id);
+				SendInventory(peer_id);
+				if (fitem->getCount() == 1) {
+					ilist->deleteItem(0);
+				}else{
+					fitem->remove(1);
+				}
+
+				v3s16 blockpos = getNodeBlockPos(p_under);
+				meta->inventoryModified();
+				MapBlock *block = m_env.getMap().getBlockNoCreateNoEx(blockpos);
+				if(block)
+					block->raiseModified(MOD_STATE_WRITE_NEEDED);
+				setBlockNotSent(blockpos);
 			}
 			/*
 				NOTE: This can be used in the future to check if

@@ -644,3 +644,75 @@ std::string TNTNodeMetadata::infoText()
 
 	return std::string("Armed Explosive: ")+itos(s)+" seconds till detonation";
 }
+
+/*
+	IncineratorNodeMetadata
+*/
+
+// Prototype
+IncineratorNodeMetadata proto_IncineratorNodeMetadata;
+
+IncineratorNodeMetadata::IncineratorNodeMetadata()
+{
+	NodeMetadata::registerType(typeId(), create);
+
+	m_inventory = new Inventory();
+	m_inventory->addList("fuel", 1);
+}
+IncineratorNodeMetadata::~IncineratorNodeMetadata()
+{
+	delete m_inventory;
+}
+u16 IncineratorNodeMetadata::typeId() const
+{
+	return CONTENT_INCINERATOR;
+}
+NodeMetadata* IncineratorNodeMetadata::clone()
+{
+	IncineratorNodeMetadata *d = new IncineratorNodeMetadata();
+	*d->m_inventory = *m_inventory;
+	return d;
+}
+NodeMetadata* IncineratorNodeMetadata::create(std::istream &is)
+{
+	IncineratorNodeMetadata *d = new IncineratorNodeMetadata();
+
+	d->m_inventory->deSerialize(is);
+
+	return d;
+}
+void IncineratorNodeMetadata::serializeBody(std::ostream &os)
+{
+	m_inventory->serialize(os);
+}
+std::string IncineratorNodeMetadata::infoText()
+{
+	InventoryList *list = m_inventory->getList("fuel");
+
+	if (list && list->getUsedSlots() > 0)
+		return "Incinerator is active";
+	return "Incinerator is inactive";
+}
+bool IncineratorNodeMetadata::nodeRemovalDisabled()
+{
+	/*
+		Disable removal if not empty
+	*/
+	InventoryList *list = m_inventory->getList("fuel");
+
+	if (list && list->getUsedSlots() > 0)
+		return true;
+	return false;
+
+}
+void IncineratorNodeMetadata::inventoryModified()
+{
+	infostream<<"Incinerator inventory modification callback"<<std::endl;
+}
+std::string IncineratorNodeMetadata::getInventoryDrawSpecString()
+{
+	return
+		"invsize[8,7;]"
+		"list[current_name;fuel;4,1;1,1;]"
+		"list[current_player;main;0,3;8,4;]";
+}

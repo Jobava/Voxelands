@@ -2667,6 +2667,19 @@ void content_mapnode_init()
 		f->initial_metadata = new FurnaceNodeMetadata();
 	setStoneLikeDiggingProperties(f->digging_properties, 3.0);
 
+	i = CONTENT_INCINERATOR;
+	f = &content_features(i);
+	f->description = std::string("Incinerator");
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_CUBELIKE;
+	f->setAllTextures("incinerator_side.png");
+	f->setTexture(5, "incinerator_front.png"); // Z-
+	f->setInventoryTextureCube("incinerator_side.png", "incinerator_front.png", "incinerator_side.png");
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new IncineratorNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 3.0);
+
 	i = CONTENT_ROUGHSTONE;
 	f = &content_features(i);
 	f->description = std::string("Rough Stone");

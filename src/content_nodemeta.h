@@ -184,6 +184,26 @@ private:
 	float m_time;
 };
 
+class IncineratorNodeMetadata : public NodeMetadata
+{
+public:
+	IncineratorNodeMetadata();
+	~IncineratorNodeMetadata();
+
+	virtual u16 typeId() const;
+	virtual NodeMetadata* clone();
+	static NodeMetadata* create(std::istream &is);
+	virtual void serializeBody(std::ostream &os);
+	virtual std::string infoText();
+	virtual Inventory* getInventory() {return m_inventory;}
+	virtual void inventoryModified();
+	virtual bool nodeRemovalDisabled();
+	virtual std::string getInventoryDrawSpecString();
+
+private:
+	Inventory *m_inventory;
+};
+
 
 #endif
 
