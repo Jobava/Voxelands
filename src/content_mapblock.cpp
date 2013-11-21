@@ -671,12 +671,12 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		case CDT_TORCHLIKE:
 		{
 			static const f32 txc[24] = {
-				0.6,0.1,0.9,0.4,
-				0.6,0.6,0.6,0.9,
-				0,0,0.3,1,
-				0,0,0.3,1,
-				0,0,0.3,1,
-				0,0,0.3,1
+				0.625,0.125,0.75,0.25,
+				0.625,0.625,0.625,0.75,
+				0,0,0.125,1,
+				0,0,0.125,1,
+				0,0,0.125,1,
+				0,0,0.125,1
 			};
 			video::SColor c(255,255,255,255);
 			v3f pos = intToFloat(p+blockpos_nodes, BS);
