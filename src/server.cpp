@@ -2522,6 +2522,13 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
 						}
 					}
+					ToolItem *titem = (ToolItem*)wield;
+					bool weared_out = titem->addWear(1000);
+					if (weared_out) {
+						InventoryList *mlist = player->inventory.getList("main");
+						mlist->deleteItem(item_i);
+					}
+					SendInventory(player->peer_id);
 				}
 			}else if (n.getContent() == CONTENT_TNT) {
 				const InventoryItem *wield = player->getWieldItem();
@@ -2532,6 +2539,13 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
 					if (meta && !meta->getEnergy())
 						meta->energise(ENERGY_MAX,player->getPosition(),player->getPosition(),p_under);
+					ToolItem *titem = (ToolItem*)wield;
+					bool weared_out = titem->addWear(1000);
+					if (weared_out) {
+						InventoryList *mlist = player->inventory.getList("main");
+						mlist->deleteItem(item_i);
+					}
+					SendInventory(player->peer_id);
 				}
 			}else if (n.getContent() == CONTENT_MESE) {
 				core::list<u16> far_players;
