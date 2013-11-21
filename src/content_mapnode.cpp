@@ -2678,7 +2678,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new IncineratorNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 0.01);
+	setStoneLikeDiggingProperties(f->digging_properties, 0.8);
 
 	i = CONTENT_ROUGHSTONE;
 	f = &content_features(i);

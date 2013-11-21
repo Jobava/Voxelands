@@ -2509,6 +2509,13 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 								std::string p_name = std::string(player->getName());
 								m_env.getMap().addNodeAndUpdate(p_under+v3s16(0,1,0), a, modified_blocks, p_name);
 							}
+							for(core::list<u16>::Iterator i = far_players.begin(); i != far_players.end(); i++) {
+								u16 peer_id = *i;
+								RemoteClient *client = getClient(peer_id);
+								if (client == NULL)
+									continue;
+								client->SetBlocksNotSent(modified_blocks);
+							}
 						}
 					}else{
 						n.setContent(CONTENT_FIRE_SHORTTERM);
@@ -2520,6 +2527,13 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 							std::string p_name = std::string(player->getName());
 							m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
+						}
+						for(core::list<u16>::Iterator i = far_players.begin(); i != far_players.end(); i++) {
+							u16 peer_id = *i;
+							RemoteClient *client = getClient(peer_id);
+							if (client == NULL)
+								continue;
+							client->SetBlocksNotSent(modified_blocks);
 						}
 					}
 					ToolItem *titem = (ToolItem*)wield;
@@ -2564,6 +2578,71 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					if (client == NULL)
 						continue;
 					client->SetBlocksNotSent(modified_blocks);
+				}
+			}else if (content_features(n).param_type == CPT_FACEDIR_SIMPLE || content_features(n).param2_type == CPT_FACEDIR_SIMPLE) {
+				const InventoryItem *wield = player->getWieldItem();
+				if (
+					wield && wield->getName() == std::string("ToolItem")
+					&& ((ToolItem*)wield)->getToolName() == "crowbar"
+				) {
+					u8 rot = 0;
+					NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
+					NodeMetadata *ometa = NULL;
+					if (meta)
+						ometa = meta->clone();
+					// get the rotation
+					if (content_features(n).param_type == CPT_FACEDIR_SIMPLE) {
+						rot = n.param1;
+					}else{
+						rot = n.param2&0x0F;
+					}
+					// rotate it
+					printf("%d\n",rot);
+					rot++;
+					if (rot > 3)
+						rot = 0;
+					printf("%d\n",rot);
+					// set the rotation
+					if (content_features(n).param_type == CPT_FACEDIR_SIMPLE) {
+						n.param1 = rot;
+					}else{
+						n.param2 &= 0xF0;
+						n.param2 |= rot;
+					}
+					// send the node
+					core::list<u16> far_players;
+					core::map<v3s16, MapBlock*> modified_blocks;
+					sendAddNode(p_under, n, 0, &far_players, 30);
+					// wear out the crowbar
+					ToolItem *titem = (ToolItem*)wield;
+					bool weared_out = titem->addWear(200);
+					if (weared_out) {
+						InventoryList *mlist = player->inventory.getList("main");
+						mlist->deleteItem(item_i);
+					}
+					SendInventory(player->peer_id);
+					// the slow add to map
+					{
+						MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+
+						std::string p_name = std::string(player->getName());
+						m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
+					}
+					if (ometa)
+						m_env.getMap().setNodeMetadata(p_under,ometa);
+					v3s16 blockpos = getNodeBlockPos(p_under);
+					MapBlock *block = m_env.getMap().getBlockNoCreateNoEx(blockpos);
+					if (block)
+						block->setChangedFlag();
+
+					for(core::map<u16, RemoteClient*>::Iterator
+						i = m_clients.getIterator();
+						i.atEnd()==false; i++)
+					{
+						RemoteClient *client = i.getNode()->getValue();
+						client->SetBlocksNotSent(modified_blocks);
+						client->SetBlockNotSent(blockpos);
+					}
 				}
 			}else if (n.getContent() == CONTENT_INCINERATOR) {
 				NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);

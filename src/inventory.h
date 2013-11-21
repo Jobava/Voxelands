@@ -360,6 +360,8 @@ public:
 			return "tool_steelbucket_lava.png";
 		}else if (m_toolname == "FireStarter") {
 			return "tool_fire_starter.png";
+		}else if (m_toolname == "crowbar") {
+			return "crowbar.png";
 		}else{
 			return "cotton.png";
 		}
@@ -439,6 +441,8 @@ public:
 			return "Steel Bucket of Lava";
 		}else if (m_toolname == "FireStarter") {
 			return "Fire Starter";
+		}else if (m_toolname == "crowbar") {
+			return "Crow Bar";
 		}
 
 		return "";

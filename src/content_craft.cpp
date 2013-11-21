@@ -108,7 +108,7 @@ struct CraftDef {
 */
 InventoryItem *craft_get_result(InventoryItem **items)
 {
-	static CraftDef defs[233];
+	static CraftDef defs[234];
 	static int defs_init = 0;
 
 	// only initialise (and hence allocate) these once
@@ -2397,6 +2397,14 @@ InventoryItem *craft_get_result(InventoryItem **items)
 			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "dye_black");
 			defs[defs_init].specs[3] = ItemSpec(ITEM_MATERIAL, CONTENT_BED_HEAD);
 			defs[defs_init].item = new MaterialItem(CONTENT_BED_BLACK_HEAD, 1);
+			defs_init++;
+		}
+
+		// crowbar
+		{
+			defs[defs_init].specs[0] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].specs[3] = ItemSpec(ITEM_CRAFT, "steel_ingot");
+			defs[defs_init].item = new ToolItem("crowbar", 0);
 			defs_init++;
 		}
 	}
