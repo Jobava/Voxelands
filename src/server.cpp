@@ -2496,6 +2496,24 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					wield && wield->getName() == std::string("ToolItem")
 					&& ((ToolItem*)wield)->getToolName() == "FireStarter"
 				) {
+					if((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
+						s16 max_d = g_settings->getS16("borderstone_radius");
+						v3s16 test_p;
+						MapNode testnode;
+						for(s16 z=-max_d; z<=max_d; z++) {
+						for(s16 y=-max_d; y<=max_d; y++) {
+						for(s16 x=-max_d; x<=max_d; x++) {
+							test_p = p_under + v3s16(x,y,z);
+							NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
+							if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
+								BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
+								if (bsm->getOwner() != player->getName())
+									return;
+							}
+						}
+						}
+						}
+					}
 					if (content_features(n).flammable == 2) {
 						MapNode a = m_env.getMap().getNodeNoEx(p_under+v3s16(0,1,0));
 						if (a.getContent() == CONTENT_AIR || content_features(a).flammable > 0) {
@@ -2550,6 +2568,24 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					wield && wield->getName() == std::string("ToolItem")
 					&& ((ToolItem*)wield)->getToolName() == "FireStarter"
 				) {
+					if((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
+						s16 max_d = g_settings->getS16("borderstone_radius");
+						v3s16 test_p;
+						MapNode testnode;
+						for(s16 z=-max_d; z<=max_d; z++) {
+						for(s16 y=-max_d; y<=max_d; y++) {
+						for(s16 x=-max_d; x<=max_d; x++) {
+							test_p = p_under + v3s16(x,y,z);
+							NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
+							if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
+								BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
+								if (bsm->getOwner() != player->getName())
+									return;
+							}
+						}
+						}
+						}
+					}
 					NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
 					if (meta && !meta->getEnergy())
 						meta->energise(ENERGY_MAX,player->getPosition(),player->getPosition(),p_under);
@@ -2585,6 +2621,24 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					wield && wield->getName() == std::string("ToolItem")
 					&& ((ToolItem*)wield)->getToolName() == "crowbar"
 				) {
+					if((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
+						s16 max_d = g_settings->getS16("borderstone_radius");
+						v3s16 test_p;
+						MapNode testnode;
+						for(s16 z=-max_d; z<=max_d; z++) {
+						for(s16 y=-max_d; y<=max_d; y++) {
+						for(s16 x=-max_d; x<=max_d; x++) {
+							test_p = p_under + v3s16(x,y,z);
+							NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
+							if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
+								BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
+								if (bsm->getOwner() != player->getName())
+									return;
+							}
+						}
+						}
+						}
+					}
 					u8 rot = 0;
 					NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
 					NodeMetadata *ometa = NULL;
