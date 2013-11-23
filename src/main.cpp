@@ -439,6 +439,10 @@ Doing currently:
 #include "settings.h"
 #include "profiler.h"
 #include "log.h"
+// for the init functions
+#include "content_craft.h"
+#include "content_craftitem.h"
+#include "content_toolitem.h"
 
 // This makes textures
 ITextureSource *g_texturesource = NULL;
@@ -1277,6 +1281,9 @@ int main(int argc, char *argv[])
 		These are needed for unit tests at least.
 	*/
 
+	crafting::initCrafting();
+	content_craftitem_init();
+	content_toolitem_init();
 	// Initial call with g_texturesource not set.
 	init_mapnode();
 	// Must be called before g_texturesource is created

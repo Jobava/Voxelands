@@ -31,6 +31,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "debug.h"
 #include "main.h" // For g_materials
 #include "mapnode.h" // For content_t
+// for mapping to old subname
+#include "content_craftitem.h"
+#include "content_toolitem.h"
 
 #define QUANTITY_ITEM_MAX_COUNT 99
 
@@ -59,6 +62,8 @@ public:
 	// Shall return an image of the item without embellishments (or NULL)
 	virtual video::ITexture * getImageRaw() const { return getImage(); }
 #endif
+	// get the content type
+	content_t getContent() {return m_content;}
 	// this is used for tool tips
 	virtual std::string getGuiName() { return ""; }
 	// Shall return a text to show in the GUI
@@ -123,6 +128,7 @@ public:
 
 protected:
 	u16 m_count;
+	content_t m_content;
 };
 
 class MaterialItem : public InventoryItem
@@ -199,7 +205,6 @@ public:
 		return m_content;
 	}
 private:
-	content_t m_content;
 };
 
 /*
@@ -214,6 +219,13 @@ public:
 		InventoryItem(count)
 	{
 		m_subname = subname;
+		m_content = content_craftitem_features(subname).content;
+	}
+	CraftItem(content_t content, u16 count):
+		InventoryItem(count)
+	{
+		m_content = content;
+		m_subname = content_craftitem_features(content).name;
 	}
 	/*
 		Implementation interface
@@ -293,6 +305,12 @@ public:
 		InventoryItem(1)
 	{
 		m_toolname = toolname;
+		m_wear = wear;
+	}
+	ToolItem(content_t content, u16 wear):
+		InventoryItem(1)
+	{
+		m_content = content;
 		m_wear = wear;
 	}
 	/*
@@ -450,22 +468,6 @@ public:
 	std::string getText()
 	{
 		return "";
-
-		/*std::ostringstream os;
-		u16 f = 4;
-		u16 d = 65535/f;
-		u16 i;
-		for(i=0; i<(65535-m_wear)/d; i++)
-			os<<'X';
-		for(; i<f; i++)
-			os<<'-';
-		return os.str();*/
-
-		/*std::ostringstream os;
-		os<<m_toolname;
-		os<<" ";
-		os<<(m_wear/655);
-		return os.str();*/
 	}
 	/*
 		Special methods

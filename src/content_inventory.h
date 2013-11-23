@@ -28,15 +28,8 @@ class InventoryItem;
 class ServerActiveObject;
 class ServerEnvironment;
 
-std::string         item_craft_get_image_name(const std::string &subname);
-std::string         item_craft_get_name(const std::string &subname);
 ServerActiveObject* item_craft_create_object(const std::string &subname,
 		ServerEnvironment *env, u16 id, v3f pos);
-s16                 item_craft_get_drop_count(const std::string &subname);
-bool                item_craft_is_cookable(const std::string &subname);
-InventoryItem*      item_craft_create_cook_result(const std::string &subname);
-bool                item_craft_is_eatable(const std::string &subname);
-s16                 item_craft_eat_hp_change(const std::string &subname);
 
 #endif
 

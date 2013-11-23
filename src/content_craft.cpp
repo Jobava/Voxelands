@@ -20,88 +20,192 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "content_craft.h"
 #include "inventory.h"
 #include "content_mapnode.h"
+#include "content_craftitem.h"
+#include "content_toolitem.h"
 #include "player.h"
 #include "mapnode.h" // For content_t
 #include "settings.h" // for g_settings
 
-struct CraftDef {
-	ItemSpec specs[9];
-	InventoryItem *item;
+namespace crafting {
 
-	bool operator==(InventoryItem const * const *items)
-	{
-		u16 items_min_x = 100;
-		u16 items_max_x = 100;
-		u16 items_min_y = 100;
-		u16 items_max_y = 100;
-		for(u16 y=0; y<3; y++)
-		for(u16 x=0; x<3; x++)
-		{
-			if(items[y*3 + x] == NULL)
-				continue;
-			if(items_min_x == 100 || x < items_min_x)
-				items_min_x = x;
-			if(items_min_y == 100 || y < items_min_y)
-				items_min_y = y;
-			if(items_max_x == 100 || x > items_max_x)
-				items_max_x = x;
-			if(items_max_y == 100 || y > items_max_y)
-				items_max_y = y;
-		}
-		// No items at all, just return false
-		if(items_min_x == 100)
-			return false;
+std::vector<CraftDef> shaped_recipes;
+std::vector<CraftDefShapeless> shapeless_recipes;
 
-		u16 items_w = items_max_x - items_min_x + 1;
-		u16 items_h = items_max_y - items_min_y + 1;
+void initCrafting()
+{
+	shaped_recipes.clear();
+	shapeless_recipes.clear();
+}
 
-		u16 specs_min_x = 100;
-		u16 specs_max_x = 100;
-		u16 specs_min_y = 100;
-		u16 specs_max_y = 100;
-		for(u16 y=0; y<3; y++)
-		for(u16 x=0; x<3; x++)
-		{
-			if(specs[y*3 + x].type == ITEM_NONE)
-				continue;
-			if(specs_min_x == 100 || x < specs_min_x)
-				specs_min_x = x;
-			if(specs_min_y == 100 || y < specs_min_y)
-				specs_min_y = y;
-			if(specs_max_x == 100 || x > specs_max_x)
-				specs_max_x = x;
-			if(specs_max_y == 100 || y > specs_max_y)
-				specs_max_y = y;
-		}
-		// No specs at all, just return false
-		if(specs_min_x == 100)
-			return false;
-
-		u16 specs_w = specs_max_x - specs_min_x + 1;
-		u16 specs_h = specs_max_y - specs_min_y + 1;
-
-		// Different sizes
-		if(items_w != specs_w || items_h != specs_h)
-			return false;
-
-		for(u16 y=0; y<specs_h; y++)
-		for(u16 x=0; x<specs_w; x++)
-		{
-			u16 items_x = items_min_x + x;
-			u16 items_y = items_min_y + y;
-			u16 specs_x = specs_min_x + x;
-			u16 specs_y = specs_min_y + y;
-			const InventoryItem *item = items[items_y * 3 + items_x];
-			const ItemSpec &spec = specs[specs_y * 3 + specs_x];
-
-			if(spec.checkItem(item) == false)
-				return false;
-		}
-
-		return true;
+void setRecipe(content_t recipe[9], content_t result, u16 count)
+{
+	CraftDef d;
+	for (int i=0; i<9; i++) {
+		d.recipe[i] = recipe[i];
 	}
+	d.result = result;
+	d.result_count = count;
+	shaped_recipes.push_back(d);
+}
+
+void setShapelessRecipe(content_t recipe[9], content_t result, u16 count)
+{
+	CraftDefShapeless d;
+	for (int i=0; i<9; i++) {
+		d.recipe[i] = recipe[i];
+	}
+	d.result = result;
+	d.result_count = count;
+	shapeless_recipes.push_back(d);
+}
+
+InventoryItem *getResult(InventoryItem **items)
+{
+	for (std::vector<CraftDef>::iterator i=shaped_recipes.begin(); i!=shaped_recipes.end(); i++) {
+		CraftDef d = *i;
+		if (d == items) {
+			if ((d.result&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
+				return new CraftItem(d.result,d.result_count);
+			}else if ((d.result&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+				return new ToolItem(d.result,d.result_count);
+			}else{
+				return new MaterialItem(d.result,d.result_count);
+			}
+		}
+	}
+	for (std::vector<CraftDefShapeless>::iterator i=shapeless_recipes.begin(); i!=shapeless_recipes.end(); i++) {
+		CraftDefShapeless d = *i;
+		if (d == items) {
+			if ((d.result&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
+				return new CraftItem(d.result,d.result_count);
+			}else if ((d.result&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+				return new ToolItem(d.result,d.result_count);
+			}else{
+				return new MaterialItem(d.result,d.result_count);
+			}
+		}
+	}
+
+	return NULL;
+}
+
+// TODO: return recipe from result
+InventoryItem **getRecipe(InventoryItem *item)
+{
+	return NULL;
+}
+
+// TODO: creative inventory needs redoing
+void giveCreative(Player *player)
+{
+	player->resetInventory();
+
+	// Give some good tools
+	{
+		InventoryItem *item = new ToolItem("MesePick", 0);
+		void* r = player->inventory.addItem("main", item);
+		assert(r == NULL);
+	}
+	{
+		InventoryItem *item = new ToolItem("SteelPick", 0);
+		void* r = player->inventory.addItem("main", item);
+		assert(r == NULL);
+	}
+	{
+		InventoryItem *item = new ToolItem("SteelAxe", 0);
+		void* r = player->inventory.addItem("main", item);
+		assert(r == NULL);
+	}
+	{
+		InventoryItem *item = new ToolItem("SteelShovel", 0);
+		void* r = player->inventory.addItem("main", item);
+		assert(r == NULL);
+	}
+
+	/*
+		Give materials
+	*/
+
+	// CONTENT_IGNORE-terminated list
+	content_t material_items[] = {
+		CONTENT_TORCH,
+		CONTENT_ROUGHSTONE,
+		CONTENT_MUD,
+		CONTENT_STONE,
+		CONTENT_SAND,
+		CONTENT_SANDSTONE,
+		CONTENT_CLAY,
+		CONTENT_BRICK,
+		CONTENT_TREE,
+		CONTENT_LEAVES,
+		CONTENT_CACTUS,
+		CONTENT_PAPYRUS,
+		CONTENT_BOOKSHELF,
+		CONTENT_GLASS,
+		CONTENT_FENCE,
+		CONTENT_RAIL,
+		CONTENT_MESE,
+		CONTENT_WATERSOURCE,
+		CONTENT_COTTON,
+		CONTENT_CHEST,
+		CONTENT_FURNACE,
+		CONTENT_SIGN,
+		CONTENT_LAVASOURCE,
+		CONTENT_WOOD,
+		CONTENT_LADDER,
+		CONTENT_IGNORE
+	};
+
+	content_t *mip = material_items;
+	for(u16 i=0; i<PLAYER_INVENTORY_SIZE; i++)
+	{
+		if(*mip == CONTENT_IGNORE)
+			break;
+
+		InventoryItem *item = new MaterialItem(*mip, 1);
+		player->inventory.addItem("main", item);
+
+		mip++;
+	}
+}
+
+void giveInitial(Player *player)
+{
+	{
+		InventoryItem *item = new ToolItem("SteelPick", 0);
+		void* r = player->inventory.addItem("main", item);
+		assert(r == NULL);
+	}
+	{
+		InventoryItem *item = new MaterialItem(CONTENT_TORCH, 99);
+		void* r = player->inventory.addItem("main", item);
+		assert(r == NULL);
+	}
+	{
+		InventoryItem *item = new ToolItem("SteelAxe", 0);
+		void* r = player->inventory.addItem("main", item);
+		assert(r == NULL);
+	}
+	{
+		InventoryItem *item = new ToolItem("SteelShovel", 0);
+		void* r = player->inventory.addItem("main", item);
+		assert(r == NULL);
+	}
+	{
+		InventoryItem *item = new ToolItem("Shears", 0);
+		void* r = player->inventory.addItem("main", item);
+		assert(r == NULL);
+	}
+	{
+		InventoryItem *item = new MaterialItem(CONTENT_ROUGHSTONE, 99);
+		void* r = player->inventory.addItem("main", item);
+		assert(r == NULL);
+	}
+}
+
 };
 
+#if 0
 /*
 	items: actually *items[9]
 	return value: allocates a new item, or returns NULL.
@@ -2416,106 +2520,4 @@ InventoryItem *craft_get_result(InventoryItem **items)
 
 	return NULL;
 }
-
-void craft_set_creative_inventory(Player *player)
-{
-	player->resetInventory();
-
-	// Give some good tools
-	{
-		InventoryItem *item = new ToolItem("MesePick", 0);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
-	{
-		InventoryItem *item = new ToolItem("SteelPick", 0);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
-	{
-		InventoryItem *item = new ToolItem("SteelAxe", 0);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
-	{
-		InventoryItem *item = new ToolItem("SteelShovel", 0);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
-
-	/*
-		Give materials
-	*/
-
-	// CONTENT_IGNORE-terminated list
-	content_t material_items[] = {
-		CONTENT_TORCH,
-		CONTENT_ROUGHSTONE,
-		CONTENT_MUD,
-		CONTENT_STONE,
-		CONTENT_SAND,
-		CONTENT_SANDSTONE,
-		CONTENT_CLAY,
-		CONTENT_BRICK,
-		CONTENT_TREE,
-		CONTENT_LEAVES,
-		CONTENT_CACTUS,
-		CONTENT_PAPYRUS,
-		CONTENT_BOOKSHELF,
-		CONTENT_GLASS,
-		CONTENT_FENCE,
-		CONTENT_RAIL,
-		CONTENT_MESE,
-		CONTENT_WATERSOURCE,
-		CONTENT_COTTON,
-		CONTENT_CHEST,
-		CONTENT_FURNACE,
-		CONTENT_SIGN,
-		CONTENT_LAVASOURCE,
-		CONTENT_WOOD,
-		CONTENT_LADDER,
-		CONTENT_IGNORE
-	};
-
-	content_t *mip = material_items;
-	for(u16 i=0; i<PLAYER_INVENTORY_SIZE; i++)
-	{
-		if(*mip == CONTENT_IGNORE)
-			break;
-
-		InventoryItem *item = new MaterialItem(*mip, 1);
-		player->inventory.addItem("main", item);
-
-		mip++;
-	}
-}
-
-void craft_give_initial_stuff(Player *player)
-{
-	{
-		InventoryItem *item = new ToolItem("SteelPick", 0);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
-	{
-		InventoryItem *item = new MaterialItem(CONTENT_TORCH, 99);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
-	{
-		InventoryItem *item = new ToolItem("SteelAxe", 0);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
-	{
-		InventoryItem *item = new ToolItem("SteelShovel", 0);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
-	{
-		InventoryItem *item = new MaterialItem(CONTENT_ROUGHSTONE, 99);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
-}
-
+#endif

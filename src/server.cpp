@@ -4996,7 +4996,7 @@ void Server::UpdateCrafting(u16 peer_id)
 			}
 
 			// Get result of crafting grid
-			InventoryItem *result = craft_get_result(items);
+			InventoryItem *result = crafting::getResult(items);
 			if(result)
 				rlist->addItem(result);
 		}
@@ -5156,7 +5156,7 @@ Player *Server::emergePlayer(const char *name, const char *password, u16 peer_id
 			player->inventory_backup = new Inventory();
 			*(player->inventory_backup) = player->inventory;
 			// Set creative inventory
-			craft_set_creative_inventory(player);
+			crafting::giveCreative(player);
 		}
 
 		return player;
@@ -5214,11 +5214,11 @@ Player *Server::emergePlayer(const char *name, const char *password, u16 peer_id
 			player->inventory_backup = new Inventory();
 			*(player->inventory_backup) = player->inventory;
 			// Set creative inventory
-			craft_set_creative_inventory(player);
+			crafting::giveCreative(player);
 		}
 		else if(g_settings->getBool("give_initial_stuff"))
 		{
-			craft_give_initial_stuff(player);
+			crafting::giveInitial(player);
 		}
 
 		return player;

@@ -96,6 +96,8 @@ set(common_SRCS
 	content_inventory.cpp
 	content_nodemeta.cpp
 	content_craft.cpp
+	content_craftitem.cpp
+	content_toolitem.cpp
 	content_mapnode.cpp
 	auth.cpp
 	collision.cpp

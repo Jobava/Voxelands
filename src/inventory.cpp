@@ -40,6 +40,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 InventoryItem::InventoryItem(u16 count)
 {
+	m_content = CONTENT_IGNORE;
 	m_count = count;
 }
 
@@ -165,7 +166,7 @@ video::ITexture * CraftItem::getImage() const
 	if(g_texturesource == NULL)
 		return NULL;
 
-	std::string name = item_craft_get_image_name(m_subname);
+	std::string name = content_craftitem_features(m_content).texture;
 
 	// Get such a texture
 	return g_texturesource->getTextureRaw(name);
@@ -173,7 +174,7 @@ video::ITexture * CraftItem::getImage() const
 #endif
 std::string CraftItem::getGuiName()
 {
-	return item_craft_get_name(m_subname);
+	return content_craftitem_features(m_content).gui_name;
 }
 
 ServerActiveObject* CraftItem::createSAO(ServerEnvironment *env, u16 id, v3f pos)
@@ -189,7 +190,7 @@ ServerActiveObject* CraftItem::createSAO(ServerEnvironment *env, u16 id, v3f pos
 u16 CraftItem::getDropCount() const
 {
 	// Special cases
-	s16 dc = item_craft_get_drop_count(m_subname);
+	s16 dc = content_craftitem_features(m_content).drop_count;
 	if(dc != -1)
 		return dc;
 	// Default
@@ -198,20 +199,20 @@ u16 CraftItem::getDropCount() const
 
 bool CraftItem::isCookable() const
 {
-	return item_craft_is_cookable(m_subname);
+	return content_craftitem_features(m_content).cook_result != "";
 }
 
 InventoryItem *CraftItem::createCookResult() const
 {
-	return item_craft_create_cook_result(m_subname);
+	std::istringstream is(content_craftitem_features(m_content).cook_result, std::ios::binary);
+	return InventoryItem::deSerialize(is);
 }
 
 bool CraftItem::use(ServerEnvironment *env, Player *player)
 {
-	if(item_craft_is_eatable(m_subname))
-	{
+	if (content_craftitem_features(m_content).edible) {
 		u16 result_count = getCount() - 1; // Eat one at a time
-		s16 hp_change = item_craft_eat_hp_change(m_subname);
+		s16 hp_change = content_craftitem_features(m_content).edible;
 		if(player->hp + hp_change > 20)
 			player->hp = 20;
 		else
