@@ -169,6 +169,8 @@ namespace crafting {
 	void setUncraftHardBlockRecipe(u16 input, u16 result);
 	// four input in a Z yields four result
 	void setBrickRecipe(u16 input, u16 result);
+	// four input1 surround one input2 yields four result
+	void setSurroundRecipe(u16 input1, u16 input2, u16 result);
 	// five input in an X yields five result
 	void set5Recipe(u16 input, u16 result);
 	// three input in a v yields one result
@@ -197,16 +199,17 @@ namespace crafting {
 	void setHatchRecipe(u16 input, u16 result);
 	// six input in two horizontal rows yields six result
 	void setWallRecipe(u16 input, u16 result);
+	// shapeless shortcuts
 	// one each of inputs shapeless yields 1 result
-	void set1Any2(u16 input1, u16 input2, u16 result);
+	void set1Any2Recipe(u16 input1, u16 input2, u16 result);
 	// one each of inputs shapeless yields 2 result
-	void set2Any2(u16 input1, u16 input2, u16 result);
+	void set2Any2Recipe(u16 input1, u16 input2, u16 result);
 	// one each of inputs shapeless yields 1 result
-	void set1Any3(u16 input1, u16 input2, u16 input3, u16 result);
+	void set1Any3Recipe(u16 input1, u16 input2, u16 input3, u16 result);
 	// one each of inputs shapeless yields 2 result
-	void set2Any3(u16 input1, u16 input2, u16 input3, u16 result);
+	void set2Any3Recipe(u16 input1, u16 input2, u16 input3, u16 result);
 	// one each of inputs shapeless yields 3 result
-	void set3Any3(u16 input1, u16 input2, u16 input3, u16 result);
+	void set3Any3Recipe(u16 input1, u16 input2, u16 input3, u16 result);
 	// special shortcuts
 	// bed recipe, input is bottom two cotton yields one result
 	void setBedRecipe(u16 input, u16 result);
@@ -223,7 +226,7 @@ namespace crafting {
 	// sword recipe, input is blade yields one result
 	void setSwordRecipe(u16 input, u16 result);
 	// gate recipe 1 2 1 in two rows yields one result
-	void setGateRecipt(u16 input1, u16 input2, u16 result);
+	void setGateRecipe(u16 input1, u16 input2, u16 result);
 
 	InventoryItem *getResult(InventoryItem **items);
 	InventoryItem **getRecipe(InventoryItem *item);

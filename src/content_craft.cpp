@@ -184,6 +184,16 @@ void setBrickRecipe(u16 input, u16 result)
 	r[5] = input;
 	setRecipe(r,result,4);
 }
+// four input1 surround one input2 yields four result
+void setSurroundRecipe(u16 input1, u16 input2, u16 result)
+{
+	u16 r[9] = {
+		CONTENT_IGNORE,	input1,	CONTENT_IGNORE,
+		input1,		input2,	input1,
+		CONTENT_IGNORE,	input1,	CONTENT_IGNORE
+	};
+	setRecipe(r,result,4);
+}
 // 5 input in an X yields five result
 void set5Recipe(u16 input, u16 result)
 {
@@ -331,7 +341,7 @@ void setWallRecipe(u16 input, u16 result)
 	setRecipe(r,result,1);
 }
 // one each of inputs shapeless yields 1 result
-void set1Any2(u16 input1, u16 input2, u16 result)
+void set1Any2Recipe(u16 input1, u16 input2, u16 result)
 {
 	u16 r[9] = {
 		input1,		input2,		CONTENT_IGNORE,
@@ -341,7 +351,7 @@ void set1Any2(u16 input1, u16 input2, u16 result)
 	setShapelessRecipe(r,result,1);
 }
 // one each of inputs shapeless yields 2 result
-void set2Any2(u16 input1, u16 input2, u16 result)
+void set2Any2Recipe(u16 input1, u16 input2, u16 result)
 {
 	u16 r[9] = {
 		input1,		input2,		CONTENT_IGNORE,
@@ -351,7 +361,7 @@ void set2Any2(u16 input1, u16 input2, u16 result)
 	setShapelessRecipe(r,result,2);
 }
 // one each of inputs shapeless yields 3 result
-void set1Any3(u16 input1, u16 input2, u16 input3, u16 result)
+void set1Any3Recipe(u16 input1, u16 input2, u16 input3, u16 result)
 {
 	u16 r[9] = {
 		input1,		input2,		input3,
@@ -361,7 +371,7 @@ void set1Any3(u16 input1, u16 input2, u16 input3, u16 result)
 	setShapelessRecipe(r,result,1);
 }
 // one each of inputs shapeless yields 2 result
-void set2Any3(u16 input1, u16 input2, u16 input3, u16 result)
+void set2Any3Recipe(u16 input1, u16 input2, u16 input3, u16 result)
 {
 	u16 r[9] = {
 		input1,		input2,		input3,
@@ -371,7 +381,7 @@ void set2Any3(u16 input1, u16 input2, u16 input3, u16 result)
 	setShapelessRecipe(r,result,2);
 }
 // one each of inputs shapeless yields 3 result
-void set3Any3(u16 input1, u16 input2, u16 input3, u16 result)
+void set3Any3Recipe(u16 input1, u16 input2, u16 input3, u16 result)
 {
 	u16 r[9] = {
 		input1,		input2,		input3,
@@ -464,7 +474,7 @@ void setSwordRecipe(u16 input, u16 result)
 	setRecipe(r,result,1);
 }
 // gate recipe 1 2 1 in two rows yields one result
-void setGateRecipt(u16 input1, u16 input2, u16 result)
+void setGateRecipe(u16 input1, u16 input2, u16 result)
 {
 	u16 r[9] = {
 		input1,		input2,		input1,
