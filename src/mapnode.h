@@ -207,6 +207,8 @@ struct ContentFeatures
 
 	// the result of cooking this node
 	std::string cook_result;
+	// the fuel value of this node
+	float fuel_time;
 
 	// Initial metadata is cloned from this
 	NodeMetadata *initial_metadata;
@@ -277,6 +279,7 @@ struct ContentFeatures
 		extra_dug_item = "";
 		extra_dug_item_rarity = 2;
 		cook_result = "";
+		fuel_time = 0.0;
 		initial_metadata = NULL;
 		liquid_alternative_flowing = CONTENT_IGNORE;
 		liquid_alternative_source = CONTENT_IGNORE;

@@ -119,6 +119,10 @@ public:
 	virtual float getCookTime(){return 3.0;}
 	// Result of cooking (can randomize)
 	virtual InventoryItem *createCookResult() const {return NULL;}
+	// Whether it can be used as fuel
+	virtual bool isFuel() const {return false;}
+	// the fuel time value
+	virtual float getFuelTime() {return 0.0;}
 
 	// Eat, press, activate, whatever.
 	// Called when item is right-clicked when lying on ground.
@@ -197,6 +201,8 @@ public:
 	*/
 	bool isCookable() const;
 	InventoryItem *createCookResult() const;
+	virtual bool isFuel() const;
+	virtual float getFuelTime() const;
 	/*
 		Special methods
 	*/
@@ -219,13 +225,13 @@ public:
 		InventoryItem(count)
 	{
 		m_subname = subname;
-		m_content = content_craftitem_features(subname).content;
+		m_content = content_craftitem_features(m_subname).content;
 	}
 	CraftItem(content_t content, u16 count):
 		InventoryItem(count)
 	{
 		m_content = content;
-		m_subname = content_craftitem_features(content).name;
+		m_subname = content_craftitem_features(m_content).name;
 	}
 	/*
 		Implementation interface
@@ -284,6 +290,8 @@ public:
 
 	bool isCookable() const;
 	InventoryItem *createCookResult() const;
+	virtual bool isFuel() const;
+	virtual float getFuelTime() const;
 
 	bool use(ServerEnvironment *env, Player *player);
 
@@ -306,12 +314,14 @@ public:
 	{
 		m_toolname = toolname;
 		m_wear = wear;
+		m_content = content_toolitem_features(m_toolname).content;
 	}
 	ToolItem(content_t content, u16 wear):
 		InventoryItem(1)
 	{
 		m_content = content;
 		m_wear = wear;
+		m_toolname = content_toolitem_features(m_content).name;
 	}
 	/*
 		Implementation interface
@@ -334,55 +344,7 @@ public:
 	}
 #ifndef SERVER
 	std::string getBasename() const {
-		if (m_toolname == "WPick") {
-			return "tool_woodpick.png";
-		}else if (m_toolname == "STPick") {
-			return "tool_stonepick.png";
-		}else if (m_toolname == "SteelPick") {
-			return "tool_steelpick.png";
-		}else if (m_toolname == "MesePick") {
-			return "tool_mesepick.png";
-		}else if (m_toolname == "WShovel") {
-			return "tool_woodshovel.png";
-		}else if (m_toolname == "STShovel") {
-			return "tool_stoneshovel.png";
-		}else if (m_toolname == "SteelShovel") {
-			return "tool_steelshovel.png";
-		}else if (m_toolname == "WAxe") {
-			return "tool_woodaxe.png";
-		}else if (m_toolname == "STAxe") {
-			return "tool_stoneaxe.png";
-		}else if (m_toolname == "SteelAxe") {
-			return "tool_steelaxe.png";
-		}else if (m_toolname == "WSword") {
-			return "tool_woodsword.png";
-		}else if (m_toolname == "STSword") {
-			return "tool_stonesword.png";
-		}else if (m_toolname == "SteelSword") {
-			return "tool_steelsword.png";
-		}else if (m_toolname == "Shears") {
-			return "tool_shears.png";
-		}else if (m_toolname == "WBucket") {
-			return "tool_woodbucket.png";
-		}else if (m_toolname == "TinBucket") {
-			return "tool_tinbucket.png";
-		}else if (m_toolname == "WBucket_water") {
-			return "tool_woodbucket_water.png";
-		}else if (m_toolname == "TinBucket_water") {
-			return "tool_tinbucket_water.png";
-		}else if(m_toolname == "SteelBucket") {
-			return "tool_steelbucket.png";
-		}else if(m_toolname == "SteelBucket_water") {
-			return "tool_steelbucket_water.png";
-		}else if(m_toolname == "SteelBucket_lava") {
-			return "tool_steelbucket_lava.png";
-		}else if (m_toolname == "FireStarter") {
-			return "tool_fire_starter.png";
-		}else if (m_toolname == "crowbar") {
-			return "crowbar.png";
-		}else{
-			return "cotton.png";
-		}
+		return content_toolitem_features(m_content).texture;
 	}
 
 	video::ITexture * getImage() const
@@ -415,60 +377,16 @@ public:
 	}
 #endif
 	std::string getGuiName() {
-		if (m_toolname == "WPick") {
-			return "Wooden Pick";
-		}else if (m_toolname == "STPick") {
-			return "Stone Pick";
-		}else if (m_toolname == "SteelPick") {
-			return "Steel Pick";
-		}else if (m_toolname == "MesePick") {
-			return "Mese Pick";
-		}else if (m_toolname == "WShovel") {
-			return "Wooden Shovel";
-		}else if (m_toolname == "STShovel") {
-			return "Stone Shovel";
-		}else if (m_toolname == "SteelShovel") {
-			return "Steel Shovel";
-		}else if (m_toolname == "WAxe") {
-			return "Wooden Axe";
-		}else if (m_toolname == "STAxe") {
-			return "Stone Axe";
-		}else if (m_toolname == "SteelAxe") {
-			return "Steel Axe";
-		}else if (m_toolname == "WSword") {
-			return "Wooden Sword";
-		}else if (m_toolname == "STSword") {
-			return "Stone Sword";
-		}else if (m_toolname == "SteelSword") {
-			return "Steel Sword";
-		}else if (m_toolname == "Shears") {
-			return "Shears";
-		}else if(m_toolname == "WBucket") {
-			return "Wooden Bucket";
-		}else if (m_toolname == "TinBucket") {
-			return "Tin Bucket";
-		}else if(m_toolname == "WBucket_water") {
-			return "Wooden Bucket of Water";
-		}else if (m_toolname == "TinBucket_water") {
-			return "Tin Bucket of Water";
-		}else if(m_toolname == "SteelBucket") {
-			return "Steel Bucket";
-		}else if(m_toolname == "SteelBucket_water") {
-			return "Steel Bucket of Water";
-		}else if(m_toolname == "SteelBucket_lava") {
-			return "Steel Bucket of Lava";
-		}else if (m_toolname == "FireStarter") {
-			return "Fire Starter";
-		}else if (m_toolname == "crowbar") {
-			return "Crow Bar";
-		}
-
-		return "";
+		return content_toolitem_features(m_content).gui_name;
 	}
 	std::string getText()
 	{
 		return "";
 	}
+	bool isCookable() const;
+	InventoryItem *createCookResult() const;
+	virtual bool isFuel() const;
+	virtual float getFuelTime() const;
 	/*
 		Special methods
 	*/

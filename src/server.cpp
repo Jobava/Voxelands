@@ -4997,7 +4997,7 @@ void Server::UpdateCrafting(u16 peer_id)
 
 			// Get result of crafting grid
 			InventoryItem *result = crafting::getResult(items);
-			if(result)
+			if (result)
 				rlist->addItem(result);
 		}
 

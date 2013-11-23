@@ -18,6 +18,8 @@
 ************************************************************************/
 
 #include "content_craftitem.h"
+#include "content_mapnode.h"
+#include "content_craft.h"
 #include <map>
 
 std::map<content_t,struct CraftItemFeatures> g_content_craftitem_features;
@@ -55,6 +57,7 @@ void content_craftitem_init()
 	f->texture = "paper.png";
 	f->name = "paper";
 	f->gui_name = "Paper";
+	crafting::setRow1Recipe(CONTENT_PAPYRUS,CONTENT_CRAFTITEM_PAPER);
 
 	i = CONTENT_CRAFTITEM_BOOK;
 	f = &g_content_craftitem_features[i];
@@ -62,6 +65,7 @@ void content_craftitem_init()
 	f->texture = "book.png";
 	f->name = "book";
 	f->gui_name = "Book";
+	crafting::setCol1Recipe(CONTENT_CRAFTITEM_PAPER,CONTENT_CRAFTITEM_BOOK);
 
 	i = CONTENT_CRAFTITEM_LUMP_OF_CHARCOAL;
 	f = &g_content_craftitem_features[i];
@@ -69,6 +73,7 @@ void content_craftitem_init()
 	f->texture = "lump_of_charcoal.png";
 	f->name = "lump_of_charcoal";
 	f->gui_name = "Charcoal Lump";
+	f->fuel_time = 40;
 
 	i = CONTENT_CRAFTITEM_LUMP_OF_COAL;
 	f = &g_content_craftitem_features[i];
@@ -76,6 +81,7 @@ void content_craftitem_init()
 	f->texture = "lump_of_coal.png";
 	f->name = "lump_of_coal";
 	f->gui_name = "Coal Lump";
+	f->fuel_time = 40;
 
 	i = CONTENT_CRAFTITEM_LUMP_OF_IRON;
 	f = &g_content_craftitem_features[i];
@@ -217,7 +223,7 @@ void content_craftitem_init()
 	i = CONTENT_CRAFTITEM_APPLE;
 	f = &g_content_craftitem_features[i];
 	f->content = CONTENT_CRAFTITEM_APPLE;
-	f->texture = "apple.png";
+	f->texture = "apple.png^[forcesingle";
 	f->name = "apple";
 	f->gui_name = "Apple";
 	f->edible = 4;
@@ -229,6 +235,14 @@ void content_craftitem_init()
 	f->name = "apple_iron";
 	f->gui_name = "apple_iron";
 	f->edible = 8;
+	{
+		u16 recipe[9] = {
+			CONTENT_CRAFTITEM_STEEL_INGOT,		CONTENT_IGNORE,	CONTENT_CRAFTITEM_STEEL_INGOT,
+			CONTENT_IGNORE,	CONTENT_CRAFTITEM_APPLE,		CONTENT_IGNORE,
+			CONTENT_CRAFTITEM_STEEL_INGOT,		CONTENT_IGNORE,	CONTENT_CRAFTITEM_STEEL_INGOT
+		};
+		crafting::setRecipe(recipe,CONTENT_CRAFTITEM_APPLE_IRON,1);
+	}
 
 	i = CONTENT_CRAFTITEM_DYE_BLUE;
 	f = &g_content_craftitem_features[i];
@@ -236,6 +250,7 @@ void content_craftitem_init()
 	f->texture = "dye_blue.png";
 	f->name = "dye_blue";
 	f->gui_name = "Blue Dye";
+	crafting::set1To2Recipe(CONTENT_FLOWER_TULIP,CONTENT_CRAFTITEM_DYE_BLUE);
 
 	i = CONTENT_CRAFTITEM_DYE_GREEN;
 	f = &g_content_craftitem_features[i];
@@ -243,6 +258,7 @@ void content_craftitem_init()
 	f->texture = "dye_green.png";
 	f->name = "dye_green";
 	f->gui_name = "Green Dye";
+	crafting::set2Any2(CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_CRAFTITEM_DYE_GREEN);
 
 	i = CONTENT_CRAFTITEM_DYE_ORANGE;
 	f = &g_content_craftitem_features[i];
@@ -250,6 +266,7 @@ void content_craftitem_init()
 	f->texture = "dye_orange.png";
 	f->name = "dye_orange";
 	f->gui_name = "Orange Dye";
+	crafting::set2Any2(CONTENT_CRAFTITEM_DYE_RED,CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_CRAFTITEM_DYE_ORANGE);
 
 	i = CONTENT_CRAFTITEM_DYE_PURPLE;
 	f = &g_content_craftitem_features[i];
@@ -257,6 +274,7 @@ void content_craftitem_init()
 	f->texture = "dye_purple.png";
 	f->name = "dye_purple";
 	f->gui_name = "Purple Dye";
+	crafting::set2Any2(CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_CRAFTITEM_DYE_RED,CONTENT_CRAFTITEM_DYE_PURPLE);
 
 	i = CONTENT_CRAFTITEM_DYE_RED;
 	f = &g_content_craftitem_features[i];
@@ -264,6 +282,7 @@ void content_craftitem_init()
 	f->texture = "dye_red.png";
 	f->name = "dye_red";
 	f->gui_name = "Red Dye";
+	crafting::set1To2Recipe(CONTENT_FLOWER_ROSE,CONTENT_CRAFTITEM_DYE_RED);
 
 	i = CONTENT_CRAFTITEM_DYE_YELLOW;
 	f = &g_content_craftitem_features[i];
@@ -271,6 +290,7 @@ void content_craftitem_init()
 	f->texture = "dye_yellow.png";
 	f->name = "dye_yellow";
 	f->gui_name = "Yellow Dye";
+	crafting::set1To2Recipe(CONTENT_FLOWER_DAFFODIL,CONTENT_CRAFTITEM_DYE_YELLOW);
 
 	i = CONTENT_CRAFTITEM_DYE_WHITE;
 	f = &g_content_craftitem_features[i];
@@ -278,6 +298,7 @@ void content_craftitem_init()
 	f->texture = "dye_white.png";
 	f->name = "dye_white";
 	f->gui_name = "White Dye";
+	crafting::set2Any3(CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_CRAFTITEM_DYE_RED,CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_CRAFTITEM_DYE_WHITE);
 
 	i = CONTENT_CRAFTITEM_DYE_BLACK;
 	f = &g_content_craftitem_features[i];
@@ -285,6 +306,7 @@ void content_craftitem_init()
 	f->texture = "dye_black.png";
 	f->name = "dye_black";
 	f->gui_name = "Black Dye";
+	crafting::set2Any2(CONTENT_CRAFTITEM_DYE_WHITE,CONTENT_CRAFTITEM_LUMP_OF_COAL,CONTENT_CRAFTITEM_DYE_BLACK);
 
 	i = CONTENT_CRAFTITEM_QUARTZ_DUST;
 	f = &g_content_craftitem_features[i];
@@ -292,6 +314,7 @@ void content_craftitem_init()
 	f->texture = "quartz_dust.png";
 	f->name = "quartz_dust";
 	f->gui_name = "Quartz Dust";
+	crafting::set1To1Recipe(CONTENT_CRAFTITEM_LUMP_OF_QUARTZ,CONTENT_CRAFTITEM_QUARTZ_DUST);
 
 	i = CONTENT_CRAFTITEM_SALTPETER;
 	f = &g_content_craftitem_features[i];
@@ -306,6 +329,7 @@ void content_craftitem_init()
 	f->texture = "gunpowder.png";
 	f->name = "gunpowder";
 	f->gui_name = "Gun Powder";
+	crafting::set1Any3(CONTENT_CRAFTITEM_LUMP_OF_CHARCOAL,CONTENT_CRAFTITEM_LUMP_OF_FLINT,CONTENT_CRAFTITEM_SALTPETER,CONTENT_CRAFTITEM_GUNPOWDER);
 
 	i = CONTENT_CRAFTITEM_SNOW_BALL;
 	f = &g_content_craftitem_features[i];
@@ -320,5 +344,8 @@ void content_craftitem_init()
 	f->texture = "stick.png";
 	f->name = "Stick";
 	f->gui_name = "Stick";
+	f->fuel_time = 30/16;
+	crafting::set1To4Recipe(CONTENT_WOOD,CONTENT_CRAFTITEM_STICK);
+	crafting::set1To4Recipe(CONTENT_JUNGLEWOOD,CONTENT_CRAFTITEM_STICK);
 
 }

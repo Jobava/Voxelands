@@ -111,6 +111,7 @@ struct CraftDefShapeless {
 		s8 found[9] = {-1,-1,-1,-1,-1,-1,-1,-1,-1};
 		s8 found_count = 0;
 		s8 search_count = 0;
+		s8 match_count = 0;
 		for (s8 i=0; i<9; i++) {
 			if (items[i] == NULL)
 				continue;
@@ -118,24 +119,111 @@ struct CraftDefShapeless {
 			for (s8 j=0; j<9; j++) {
 				if (recipe[j] == CONTENT_IGNORE)
 					continue;
-				if (found[j] > -1)
+				if (found[j] > 0)
 					continue;
+				found[j] = 0;
 				if (recipe[j] == items[i]->getContent()) {
-					found[j] = i;
-					found_count++;
+					found[j] = 1;
+					match_count++;
 					break;
 				}
 			}
 		}
-		return (found_count == search_count);
+		for (s8 i=0; i<9; i++) {
+			if (recipe[i] != CONTENT_IGNORE)
+				found_count++;
+		}
+		return (found_count && search_count && match_count && match_count == search_count && found_count == search_count);
 	}
 };
 
 namespace crafting {
 	void initCrafting();
 
+	// add recipes
 	void setRecipe(u16 recipe[9], u16 result, u16 count);
 	void setShapelessRecipe(u16 recipe[9], u16 result, u16 count);
+
+	// shortcuts
+	// one input yields one result
+	void set1To1Recipe(u16 input, u16 result);
+	// one input yields two result
+	void set1To2Recipe(u16 input, u16 result);
+	// one input yields four result
+	void set1To4Recipe(u16 input, u16 result);
+	// one input1 over one input2 yields one result
+	void set1over1Recipe(u16 input1, u16 input2, u16 result);
+	// one input1 over one input2 yields two result
+	void set1over2Recipe(u16 input1, u16 input2, u16 result);
+	// one input1 over one input2 yields four result
+	void set1over4Recipe(u16 input1, u16 input2, u16 result);
+	// four input in a square yields one result
+	void setSoftBlockRecipe(u16 input, u16 result);
+	// four input in a square yields four result
+	void setBlockRecipe(u16 input, u16 result);
+	// nine input yields one result
+	void setHardBlockRecipe(u16 input, u16 result);
+	// one input yields four result
+	void setUncraftBlockRecipe(u16 input, u16 result);
+	// one input yields nine result
+	void setUncraftHardBlockRecipe(u16 input, u16 result);
+	// four input in a Z yields four result
+	void setBrickRecipe(u16 input, u16 result);
+	// five input in an X yields five result
+	void set5Recipe(u16 input, u16 result);
+	// three input in a v yields one result
+	void setVRecipe(u16 input, u16 result);
+	// five input in a u yields one result
+	void setURecipe(u16 input, u16 result);
+	// three input in a horizontal row yields one result
+	void setRow1Recipe(u16 input, u16 result);
+	// three input in a horizontal row yields three result
+	void setRow3Recipe(u16 input, u16 result);
+	// three input in a vertical row yields one result
+	void setCol1Recipe(u16 input, u16 result);
+	// three input in a vertical row yields three result
+	void setCol3Recipe(u16 input, u16 result);
+	// six input as a stair yields six result
+	void setStairRecipe(u16 input, u16 result);
+	// two input in a horizontal row yields three result
+	void setTileRecipe(u16 input, u16 result);
+	// eight input in a circle yields one result
+	void setRoundRecipe(u16 input, u16 result);
+	// eight input1 surrounding one input2 yields one result
+	void setFilledRoundRecipe(u16 input1, u16 input2, u16 result);
+	// six input in two vertical columns yields one result
+	void setDoorRecipe(u16 input, u16 result);
+	// six input in two horizontal rows yields one result
+	void setHatchRecipe(u16 input, u16 result);
+	// six input in two horizontal rows yields six result
+	void setWallRecipe(u16 input, u16 result);
+	// one each of inputs shapeless yields 1 result
+	void set1Any2(u16 input1, u16 input2, u16 result);
+	// one each of inputs shapeless yields 2 result
+	void set2Any2(u16 input1, u16 input2, u16 result);
+	// one each of inputs shapeless yields 1 result
+	void set1Any3(u16 input1, u16 input2, u16 input3, u16 result);
+	// one each of inputs shapeless yields 2 result
+	void set2Any3(u16 input1, u16 input2, u16 input3, u16 result);
+	// one each of inputs shapeless yields 3 result
+	void set3Any3(u16 input1, u16 input2, u16 input3, u16 result);
+	// special shortcuts
+	// bed recipe, input is bottom two cotton yields one result
+	void setBedRecipe(u16 input, u16 result);
+	// sign recipe, input is top six wood yields one result
+	void setSignRecipe(u16 input, u16 result);
+	// shears recipe, input is blade yields one result
+	void setShearsRecipe(u16 input, u16 result);
+	// shovel recipe, input is blade yields one result
+	void setShovelRecipe(u16 input, u16 result);
+	// axe recipe, input is blade yields one result
+	void setAxeRecipe(u16 input, u16 result);
+	// pick recipe, input is blade yields one result
+	void setPickRecipe(u16 input, u16 result);
+	// sword recipe, input is blade yields one result
+	void setSwordRecipe(u16 input, u16 result);
+	// gate recipe 1 2 1 in two rows yields one result
+	void setGateRecipt(u16 input1, u16 input2, u16 result);
 
 	InventoryItem *getResult(InventoryItem **items);
 	InventoryItem **getRecipe(InventoryItem *item);

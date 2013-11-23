@@ -156,6 +156,16 @@ InventoryItem *MaterialItem::createCookResult() const
 	return InventoryItem::deSerialize(is);
 }
 
+bool MaterialItem::isFuel() const
+{
+	return (content_features(m_content).fuel_time != 0.0);
+}
+
+float MaterialItem::getFuelTime() const
+{
+	return content_features(m_content).fuel_time;
+}
+
 /*
 	CraftItem
 */
@@ -208,6 +218,16 @@ InventoryItem *CraftItem::createCookResult() const
 	return InventoryItem::deSerialize(is);
 }
 
+bool CraftItem::isFuel() const
+{
+	return (content_craftitem_features(m_content).fuel_time != 0.0);
+}
+
+float CraftItem::getFuelTime() const
+{
+	return content_craftitem_features(m_content).fuel_time;
+}
+
 bool CraftItem::use(ServerEnvironment *env, Player *player)
 {
 	if (content_craftitem_features(m_content).edible) {
@@ -224,6 +244,27 @@ bool CraftItem::use(ServerEnvironment *env, Player *player)
 			setCount(result_count);
 	}
 	return false;
+}
+
+bool ToolItem::isCookable() const
+{
+	return content_toolitem_features(m_content).cook_result != "";
+}
+
+InventoryItem *ToolItem::createCookResult() const
+{
+	std::istringstream is(content_toolitem_features(m_content).cook_result, std::ios::binary);
+	return InventoryItem::deSerialize(is);
+}
+
+bool ToolItem::isFuel() const
+{
+	return (content_toolitem_features(m_content).fuel_time != 0.0);
+}
+
+float ToolItem::getFuelTime() const
+{
+	return content_toolitem_features(m_content).fuel_time;
 }
 
 /*

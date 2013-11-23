@@ -450,126 +450,14 @@ bool FurnaceNodeMetadata::step(float dtime)
 
 		InventoryList *fuel_list = m_inventory->getList("fuel");
 		assert(fuel_list);
-		const InventoryItem *fuel_item = fuel_list->getItem(0);
-
-		if(ItemSpec(ITEM_MATERIAL, CONTENT_TREE).checkItem(fuel_item))
-		{
-			m_fuel_totaltime = 30;
+		InventoryItem *fuel_item = fuel_list->getItem(0);
+		if (fuel_item->isFuel()) {
+			m_fuel_totaltime = fuel_item->getFuelTime();
 			m_fuel_time = 0;
 			fuel_list->decrementMaterials(1);
 			changed = true;
-		}
-		else if(ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLETREE).checkItem(fuel_item))
-		{
-			m_fuel_totaltime = 30;
-			m_fuel_time = 0;
-			fuel_list->decrementMaterials(1);
-			changed = true;
-		}
-		else if(ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLEWOOD).checkItem(fuel_item))
-		{
-			m_fuel_totaltime = 30/4;
-			m_fuel_time = 0;
-			fuel_list->decrementMaterials(1);
-			changed = true;
-		}
-		else if(ItemSpec(ITEM_MATERIAL, CONTENT_FENCE).checkItem(fuel_item))
-		{
-			m_fuel_totaltime = 30/2;
-			m_fuel_time = 0;
-			fuel_list->decrementMaterials(1);
-			changed = true;
-		}
-		else if(ItemSpec(ITEM_MATERIAL, CONTENT_WOOD).checkItem(fuel_item))
-		{
-			m_fuel_totaltime = 30/4;
-			m_fuel_time = 0;
-			fuel_list->decrementMaterials(1);
-			changed = true;
-		}
-		else if(ItemSpec(ITEM_MATERIAL, CONTENT_BOOKSHELF).checkItem(fuel_item))
-		{
-			m_fuel_totaltime = 30/4;
-			m_fuel_time = 0;
-			fuel_list->decrementMaterials(1);
-			changed = true;
-		}
-		else if(ItemSpec(ITEM_MATERIAL, CONTENT_LEAVES).checkItem(fuel_item))
-		{
-			m_fuel_totaltime = 30/16;
-			m_fuel_time = 0;
-			fuel_list->decrementMaterials(1);
-			changed = true;
-		}
-		else if(ItemSpec(ITEM_MATERIAL, CONTENT_WILDGRASS_SHORT).checkItem(fuel_item))
-		{
-			m_fuel_totaltime = 30/32;
-			m_fuel_time = 0;
-			fuel_list->decrementMaterials(1);
-			changed = true;
-		}
-		else if(ItemSpec(ITEM_MATERIAL, CONTENT_DEADGRASS).checkItem(fuel_item))
-		{
-			m_fuel_totaltime = 30/32;
-			m_fuel_time = 0;
-			fuel_list->decrementMaterials(1);
-			changed = true;
-		}
-		else if(ItemSpec(ITEM_MATERIAL, CONTENT_PAPYRUS).checkItem(fuel_item))
-		{
-			m_fuel_totaltime = 30/32;
-			m_fuel_time = 0;
-			fuel_list->decrementMaterials(1);
-			changed = true;
-		}
-		else if(ItemSpec(ITEM_MATERIAL, CONTENT_JUNGLEGRASS).checkItem(fuel_item))
-		{
-			m_fuel_totaltime = 30/32;
-			m_fuel_time = 0;
-			fuel_list->decrementMaterials(1);
-			changed = true;
-		}
-		else if(ItemSpec(ITEM_MATERIAL, CONTENT_CACTUS).checkItem(fuel_item))
-		{
-			m_fuel_totaltime = 30/4;
-			m_fuel_time = 0;
-			fuel_list->decrementMaterials(1);
-			changed = true;
-		}
-		else if(ItemSpec(ITEM_CRAFT, "Stick").checkItem(fuel_item))
-		{
-			m_fuel_totaltime = 30/16;
-			m_fuel_time = 0;
-			fuel_list->decrementMaterials(1);
-			changed = true;
-		}
-		else if(ItemSpec(ITEM_MATERIAL, CONTENT_HAY).checkItem(fuel_item))
-		{
-			m_fuel_totaltime = 20;
-			m_fuel_time = 0;
-			fuel_list->decrementMaterials(1);
-			changed = true;
-		}
-		else if(ItemSpec(ITEM_CRAFT, "lump_of_charcoal").checkItem(fuel_item))
-		{
-			m_fuel_totaltime = 40;
-			m_fuel_time = 0;
-			fuel_list->decrementMaterials(1);
-			changed = true;
-		}
-		else if(ItemSpec(ITEM_CRAFT, "lump_of_coal").checkItem(fuel_item))
-		{
-			m_fuel_totaltime = 40;
-			m_fuel_time = 0;
-			fuel_list->decrementMaterials(1);
-			changed = true;
-		}
-		else
-		{
-			//infostream<<"No fuel found"<<std::endl;
-			// No fuel, stop loop.
+		}else{
 			m_step_accumulator = 0;
-			break;
 		}
 	}
 	return changed;
