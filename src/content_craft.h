@@ -93,6 +93,11 @@ struct CraftDef {
 			u16 specs_x = specs_min_x + x;
 			u16 specs_y = specs_min_y + y;
 
+			if (items[items_y * 3 + items_x] == NULL) {
+				if (recipe[specs_y * 3 + specs_x] != CONTENT_IGNORE)
+					return false;
+				continue;
+			}
 			if (items[items_y * 3 + items_x]->getContent() != recipe[specs_y * 3 + specs_x])
 				return false;
 		}

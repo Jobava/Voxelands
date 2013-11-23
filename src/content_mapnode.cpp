@@ -5350,7 +5350,7 @@ void content_mapnode_init()
 			CONTENT_WOOD_FINISHED,		CONTENT_WOOD_FINISHED,		CONTENT_IGNORE,
 			CONTENT_CRAFTITEM_STICK,	CONTENT_CRAFTITEM_STICK,	CONTENT_IGNORE
 		};
-		crafting::setRecipe(r,CONTENT_TNT,1);
+		crafting::setRecipe(r,CONTENT_CHAIR,1);
 	}
 
 	i = CONTENT_TABLE;
@@ -5402,7 +5402,7 @@ void content_mapnode_init()
 			CONTENT_CRAFTITEM_STICK,	CONTENT_IGNORE,			CONTENT_CRAFTITEM_STICK,
 			CONTENT_IGNORE,			CONTENT_IGNORE,			CONTENT_IGNORE,
 		};
-		crafting::setRecipe(r,CONTENT_TNT,1);
+		crafting::setRecipe(r,CONTENT_TABLE,1);
 	}
 
 	i = CONTENT_BED_HEAD;
