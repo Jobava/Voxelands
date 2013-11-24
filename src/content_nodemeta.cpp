@@ -577,8 +577,9 @@ void IncineratorNodeMetadata::serializeBody(std::ostream &os)
 std::string IncineratorNodeMetadata::infoText()
 {
 	InventoryList *list = m_inventory->getList("fuel");
+	InventoryItem *fitem;
 
-	if (list && list->getUsedSlots() > 0)
+	if (list && list->getUsedSlots() > 0 && (fitem = list->getItem(0)) != NULL && fitem->isFuel())
 		return "Incinerator is active";
 	return "Incinerator is inactive";
 }
