@@ -390,17 +390,14 @@ bool FurnaceNodeMetadata::step(float dtime)
 
 		bool room_available = false;
 
-		if(src_item && src_item->isCookable())
+		if (src_item && src_item->isCookable())
 			room_available = dst_list->roomForCookedItem(src_item);
 
 		// Start only if there are free slots in dst, so that it can
 		// accomodate any result item
-		if(room_available)
-		{
+		if (room_available) {
 			m_src_totaltime = 3;
-		}
-		else
-		{
+		}else{
 			m_src_time = 0;
 			m_src_totaltime = 0;
 		}
@@ -409,14 +406,11 @@ bool FurnaceNodeMetadata::step(float dtime)
 			If fuel is burning, increment the burn counters.
 			If item finishes cooking, move it to result.
 		*/
-		if(m_fuel_time < m_fuel_totaltime)
-		{
+		if (m_fuel_time < m_fuel_totaltime) {
 			//infostream<<"Furnace is active"<<std::endl;
 			m_fuel_time += dtime;
 			m_src_time += dtime;
-			if(m_src_time >= m_src_totaltime && m_src_totaltime > 0.001
-					&& src_item)
-			{
+			if (m_src_time >= m_src_totaltime && m_src_totaltime > 0.001 && src_item) {
 				InventoryItem *cookresult = src_item->createCookResult();
 				dst_list->addItem(cookresult);
 				src_list->decrementMaterials(1);
@@ -426,7 +420,7 @@ bool FurnaceNodeMetadata::step(float dtime)
 			changed = true;
 
 			// If the fuel was not used up this step, just keep burning it
-			if(m_fuel_time < m_fuel_totaltime)
+			if (m_fuel_time < m_fuel_totaltime)
 				continue;
 		}
 
@@ -451,8 +445,15 @@ bool FurnaceNodeMetadata::step(float dtime)
 		InventoryList *fuel_list = m_inventory->getList("fuel");
 		assert(fuel_list);
 		InventoryItem *fuel_item = fuel_list->getItem(0);
-		if (fuel_item->isFuel()) {
-			m_fuel_totaltime = fuel_item->getFuelTime();
+		if (fuel_item && fuel_item->isFuel()) {
+			if ((fuel_item->getContent()&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
+				m_fuel_totaltime = ((CraftItem*)fuel_item)->getFuelTime();
+			}else if ((fuel_item->getContent()&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+				m_fuel_totaltime = ((ToolItem*)fuel_item)->getFuelTime();
+			}else{
+				m_fuel_totaltime = fuel_item->getFuelTime();
+			}
+printf("m_fuel_totaltime = %f (%d)\n",m_fuel_totaltime,fuel_item->getContent());
 			m_fuel_time = 0;
 			fuel_list->decrementMaterials(1);
 			changed = true;

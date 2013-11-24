@@ -2034,6 +2034,7 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/4;
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	crafting::set1To4Recipe(CONTENT_TREE,CONTENT_WOOD);
 
 	i = CONTENT_JUNGLEWOOD;
 	f = &content_features(i);
@@ -2046,6 +2047,7 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/4;
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	crafting::set1To4Recipe(CONTENT_JUNGLETREE,CONTENT_JUNGLEWOOD);
 
 	i = CONTENT_WOOD_FINISHED;
 	f = &content_features(i);

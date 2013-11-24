@@ -290,8 +290,8 @@ public:
 
 	bool isCookable() const;
 	InventoryItem *createCookResult() const;
-	virtual bool isFuel() const;
-	virtual float getFuelTime() const;
+	bool isFuel() const;
+	float getFuelTime() const;
 
 	bool use(ServerEnvironment *env, Player *player);
 
@@ -385,8 +385,8 @@ public:
 	}
 	bool isCookable() const;
 	InventoryItem *createCookResult() const;
-	virtual bool isFuel() const;
-	virtual float getFuelTime() const;
+	bool isFuel() const;
+	float getFuelTime() const;
 	/*
 		Special methods
 	*/
