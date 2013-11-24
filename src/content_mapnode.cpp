@@ -27,6 +27,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "content_craftitem.h"
 #include "content_toolitem.h"
 #include "content_craft.h"
+#ifndef SERVER
+#include "tile.h"
+#endif
 
 #define WATER_ALPHA 160
 
@@ -2429,6 +2432,7 @@ void content_mapnode_init()
 	i = CONTENT_WATER;
 	f = &content_features(i);
 	f->description = std::string("Water");
+	f->setAllTextures("water.png");
 	f->setInventoryTextureCube("water.png", "water.png", "water.png");
 	f->param_type = CPT_LIGHT;
 	f->param2_type = CPT_LIQUID;
@@ -2447,34 +2451,15 @@ void content_mapnode_init()
 #ifndef SERVER
 	if(!opaque_water)
 		f->vertex_alpha = WATER_ALPHA;
+	f->setAllTextureFlags(0);
+	f->setAllTextureTypes(MATERIAL_ALPHA_VERTEX);
 	f->post_effect_color = video::SColor(64, 100, 100, 200);
-	if(f->special_material == NULL && g_texturesource)
-	{
-		// Flowing water material
-		f->special_material = new video::SMaterial;
-		f->special_material->setFlag(video::EMF_LIGHTING, false);
-		f->special_material->setFlag(video::EMF_BACK_FACE_CULLING, false);
-		f->special_material->setFlag(video::EMF_BILINEAR_FILTER, false);
-		f->special_material->setFlag(video::EMF_FOG_ENABLE, true);
-		if(!opaque_water)
-			f->special_material->MaterialType = video::EMT_TRANSPARENT_VERTEX_ALPHA;
-		AtlasPointer *pa_water1 = new AtlasPointer(g_texturesource->getTexture(
-				g_texturesource->getTextureId("water.png")));
-		f->special_material->setTexture(0, pa_water1->atlas);
-
-		// Flowing water material, backface culled
-		f->special_material2 = new video::SMaterial;
-		*f->special_material2 = *f->special_material;
-		f->special_material2->setFlag(video::EMF_BACK_FACE_CULLING, true);
-
-		f->special_atlas = pa_water1;
-	}
 #endif
 
 	i = CONTENT_WATERSOURCE;
 	f = &content_features(i);
 	f->description = std::string("Water");
-	//f->setInventoryTexture("water.png");
+	f->setAllTextures("water.png");
 	f->setInventoryTextureCube("water.png", "water.png", "water.png");
 	if(new_style_water)
 	{
@@ -2502,7 +2487,6 @@ void content_mapnode_init()
 	f->light_propagates = true;
 	f->walkable = false;
 	f->pointable = false;
-	//f->diggable = false;
 	f->buildable_to = true;
 	f->liquid_type = LIQUID_SOURCE;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -2512,29 +2496,17 @@ void content_mapnode_init()
 #ifndef SERVER
 	if(!opaque_water)
 		f->vertex_alpha = WATER_ALPHA;
+	f->setAllTextureFlags(0);
+	f->setAllTextureTypes(MATERIAL_ALPHA_VERTEX);
 	f->post_effect_color = video::SColor(64, 100, 100, 200);
-	if(f->special_material == NULL && g_texturesource)
-	{
-		// New-style water source material (mostly unused)
-		f->special_material = new video::SMaterial;
-		f->special_material->setFlag(video::EMF_LIGHTING, false);
-		f->special_material->setFlag(video::EMF_BACK_FACE_CULLING, false);
-		f->special_material->setFlag(video::EMF_BILINEAR_FILTER, false);
-		f->special_material->setFlag(video::EMF_FOG_ENABLE, true);
-		f->special_material->MaterialType = video::EMT_TRANSPARENT_VERTEX_ALPHA;
-		AtlasPointer *pa_water1 = new AtlasPointer(g_texturesource->getTexture(
-				g_texturesource->getTextureId("water.png")));
-		f->special_material->setTexture(0, pa_water1->atlas);
-		f->special_atlas = pa_water1;
-	}
 #endif
 	setWaterLikeDiggingProperties(f->digging_properties, 0.5);
 
 	i = CONTENT_LAVA;
 	f = &content_features(i);
 	f->description = std::string("Lava");
+	f->setAllTextures("lava.png");
 	f->setInventoryTextureCube("lava.png", "lava.png", "lava.png");
-	f->used_texturenames["lava.png"] = true;
 	f->param_type = CPT_LIGHT;
 	f->param2_type = CPT_LIQUID;
 	f->draw_type = CDT_LIQUID;
@@ -2555,35 +2527,13 @@ void content_mapnode_init()
 	f->damage_per_second = 4*2;
 #ifndef SERVER
 	f->post_effect_color = video::SColor(192, 255, 64, 0);
-	if(f->special_material == NULL && g_texturesource)
-	{
-		// Flowing lava material
-		f->special_material = new video::SMaterial;
-		f->special_material->setFlag(video::EMF_LIGHTING, false);
-		f->special_material->setFlag(video::EMF_BACK_FACE_CULLING, false);
-		f->special_material->setFlag(video::EMF_BILINEAR_FILTER, false);
-		f->special_material->setFlag(video::EMF_FOG_ENABLE, true);
-		f->special_material->MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-
-		AtlasPointer *pa_lava1 = new AtlasPointer(
-			g_texturesource->getTexture(
-				g_texturesource->getTextureId("lava.png")));
-		f->special_material->setTexture(0, pa_lava1->atlas);
-
-		// Flowing lava material, backface culled
-		f->special_material2 = new video::SMaterial;
-		*f->special_material2 = *f->special_material;
-		f->special_material2->setFlag(video::EMF_BACK_FACE_CULLING, true);
-
-		f->special_atlas = pa_lava1;
-	}
 #endif
 
 	i = CONTENT_LAVASOURCE;
 	f = &content_features(i);
 	f->description = std::string("Lava");
+	f->setAllTextures("lava.png");
 	f->setInventoryTextureCube("lava.png", "lava.png", "lava.png");
-	f->used_texturenames["ladder.png"] = true;
 	if(new_style_water)
 	{
 		f->solidness = 0; // drawn separately, makes no faces
@@ -2621,22 +2571,6 @@ void content_mapnode_init()
 	f->damage_per_second = 4*2;
 #ifndef SERVER
 	f->post_effect_color = video::SColor(192, 255, 64, 0);
-	if(f->special_material == NULL && g_texturesource)
-	{
-		// New-style lava source material (mostly unused)
-		f->special_material = new video::SMaterial;
-		f->special_material->setFlag(video::EMF_LIGHTING, false);
-		f->special_material->setFlag(video::EMF_BACK_FACE_CULLING, false);
-		f->special_material->setFlag(video::EMF_BILINEAR_FILTER, false);
-		f->special_material->setFlag(video::EMF_FOG_ENABLE, true);
-		f->special_material->MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-		AtlasPointer *pa_lava1 = new AtlasPointer(
-			g_texturesource->getTexture(
-				g_texturesource->getTextureId("lava.png")));
-		f->special_material->setTexture(0, pa_lava1->atlas);
-
-		f->special_atlas = pa_lava1;
-	}
 #endif
 	setWaterLikeDiggingProperties(f->digging_properties, 0.5);
 

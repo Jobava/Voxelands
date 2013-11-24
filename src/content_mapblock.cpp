@@ -113,7 +113,7 @@ void makeCuboid(MeshCollector *collector, const aabb3f &box,
  * TODO: smooth lighting currently gets the light for each surrounding node up
  * to eight times, probably a better way to do this
  */
-static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool smooth_lighting)
+static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool smooth_lighting, u8 vertex_alpha)
 {
 	if (!smooth_lighting) {
 		u8 l = 0;
@@ -143,7 +143,7 @@ static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool
 		}
 		if (ld)
 			l = lt/ld;
-		video::SColor c = MapBlock_LightColor(255, l);
+		video::SColor c = MapBlock_LightColor(vertex_alpha, l);
 		for (int i=0; i<8; i++) {
 			lights[i] = c;
 		}
@@ -191,8 +191,12 @@ static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool
 		}
 		if (ld)
 			l = lt/ld;
-		lights[i] = MapBlock_LightColor(255, l);
+		lights[i] = MapBlock_LightColor(vertex_alpha, l);
 	}
+}
+static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool smooth_lighting)
+{
+	getLights(pos,lights,data,smooth_lighting,255);
 }
 #endif
 
@@ -343,16 +347,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			break;
 		case CDT_LIQUID:
 		{
-			assert(content_features(n).special_material);
-			video::SMaterial &liquid_material =
-					*content_features(n).special_material;
-			video::SMaterial &liquid_material_bfculled =
-					*content_features(n).special_material2;
-
-			assert(content_features(n).special_atlas);
-			AtlasPointer &pa_liquid1 =
-					*content_features(n).special_atlas;
-
 			bool top_is_same_liquid = false;
 			MapNode ntop = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y+1,z));
 			content_t c_flowing = content_features(n).liquid_alternative_flowing;
@@ -362,13 +356,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 			u8 l = 0;
 			// Use the light of the node on top if possible
-			if(content_features(ntop).param_type == CPT_LIGHT)
+			if (content_features(ntop).param_type == CPT_LIGHT){
 				l = decode_light(ntop.getLightBlend(data->m_daynight_ratio));
 			// Otherwise use the light of this node (the liquid)
-			else
+			}else{
 				l = decode_light(n.getLightBlend(data->m_daynight_ratio));
-			video::SColor c = MapBlock_LightColor(
-					content_features(n).vertex_alpha, l);
+			}
+			video::SColor c = MapBlock_LightColor(content_features(n).vertex_alpha, l);
 
 			// Neighbor liquid levels (key = relative position)
 			// Includes current node
@@ -395,15 +389,22 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				// Check neighbor
 				v3s16 p2 = p + neighbor_dirs[i];
 				MapNode n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + p2);
-				if(n2.getContent() != CONTENT_IGNORE)
-				{
+				if(n2.getContent() != CONTENT_IGNORE) {
 					content = n2.getContent();
 
-					if(n2.getContent() == c_source)
-						level = (-0.5+node_liquid_level) * BS;
-					else if(n2.getContent() == c_flowing)
+					if (n2.getContent() == c_source) {
+						p2.Y += 1;
+						n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + p2);
+						if (content_features(n2).liquid_type == LIQUID_NONE) {
+							level = 0.5*BS;
+						}else{
+							level = (-0.5+node_liquid_level) * BS;
+						}
+						p2.Y -= 1;
+					}else if(n2.getContent() == c_flowing) {
 						level = (-0.5 + ((float)(n2.param2&LIQUID_LEVEL_MASK)
 								+ 0.5) / 8.0 * node_liquid_level) * BS;
+					}
 
 					// Check node above neighbor.
 					// NOTE: This doesn't get executed if neighbor
@@ -516,22 +517,16 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						&& top_is_same_liquid == false)
 					continue;
 
-				// Use backface culled material if neighbor doesn't have a
-				// solidness of 0
-				video::SMaterial *current_material = &liquid_material;
-				if(n_feat.solidness != 0 || n_feat.visual_solidness != 0)
-					current_material = &liquid_material_bfculled;
-
 				video::S3DVertex vertices[4] =
 				{
 					video::S3DVertex(-BS/2,0,BS/2, 0,0,0, c,
-							pa_liquid1.x0(), pa_liquid1.y1()),
+							content_features(n).tiles[i].texture.x0(), content_features(n).tiles[i].texture.y1()),
 					video::S3DVertex(BS/2,0,BS/2, 0,0,0, c,
-							pa_liquid1.x1(), pa_liquid1.y1()),
+							content_features(n).tiles[i].texture.x1(), content_features(n).tiles[i].texture.y1()),
 					video::S3DVertex(BS/2,0,BS/2, 0,0,0, c,
-							pa_liquid1.x1(), pa_liquid1.y0()),
+							content_features(n).tiles[i].texture.x1(), content_features(n).tiles[i].texture.y0()),
 					video::S3DVertex(-BS/2,0,BS/2, 0,0,0, c,
-							pa_liquid1.x0(), pa_liquid1.y0()),
+							content_features(n).tiles[i].texture.x0(), content_features(n).tiles[i].texture.y0()),
 				};
 
 				/*
@@ -587,7 +582,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 				u16 indices[] = {0,1,2,2,3,0};
 				// Add to mesh collector
-				collector.append(*current_material, vertices, 4, indices, 6);
+				collector.append(content_features(n).tiles[i].getMaterial(), vertices, 4, indices, 6);
 			}
 
 			/*
@@ -599,13 +594,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				video::S3DVertex vertices[4] =
 				{
 					video::S3DVertex(-BS/2,0,BS/2, 0,0,0, c,
-							pa_liquid1.x0(), pa_liquid1.y1()),
+							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
 					video::S3DVertex(BS/2,0,BS/2, 0,0,0, c,
-							pa_liquid1.x1(), pa_liquid1.y1()),
+							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
 					video::S3DVertex(BS/2,0,-BS/2, 0,0,0, c,
-							pa_liquid1.x1(), pa_liquid1.y0()),
+							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
 					video::S3DVertex(-BS/2,0,-BS/2, 0,0,0, c,
-							pa_liquid1.x0(), pa_liquid1.y0()),
+							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
 				};
 
 				// This fixes a strange bug
@@ -620,7 +615,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 				u16 indices[] = {0,1,2,2,3,0};
 				// Add to mesh collector
-				collector.append(liquid_material, vertices, 4, indices, 6);
+				collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
 			}
 		}
 		/*
@@ -630,42 +625,92 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		case CDT_LIQUID_SOURCE:
 		if (new_style_water)
 		{
-			assert(content_features(n).special_material);
-			video::SMaterial &liquid_material =
-					*content_features(n).special_material;
-			assert(content_features(n).special_atlas);
-			AtlasPointer &pa_liquid1 =
-					*content_features(n).special_atlas;
-
-			MapNode n = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y+1,z));
-			if(n.getContent() != CONTENT_AIR)
-				continue;
-
-			u8 l = decode_light(n.getLightBlend(data->m_daynight_ratio));
-			video::SColor c = MapBlock_LightColor(
-					content_features(n).vertex_alpha, l);
-
-			video::S3DVertex vertices[4] =
-			{
-				video::S3DVertex(-BS/2,0,BS/2, 0,0,0, c,
-						pa_liquid1.x0(), pa_liquid1.y1()),
-				video::S3DVertex(BS/2,0,BS/2, 0,0,0, c,
-						pa_liquid1.x1(), pa_liquid1.y1()),
-				video::S3DVertex(BS/2,0,-BS/2, 0,0,0, c,
-						pa_liquid1.x1(), pa_liquid1.y0()),
-				video::S3DVertex(-BS/2,0,-BS/2, 0,0,0, c,
-						pa_liquid1.x0(), pa_liquid1.y0()),
+			static const u8 l[6][4] = {
+				{0,1,6,7},
+				{0,1,2,3},
+				{1,2,5,6},
+				{2,3,4,5},
+				{4,5,6,7},
+				{0,3,4,7}
 			};
+			video::SColor c[8];
+			getLights(blockpos_nodes+p,c,data,smooth_lighting,content_features(n).vertex_alpha);
 
-			for(s32 i=0; i<4; i++)
+			for(u32 j=0; j<6; j++)
 			{
-				vertices[i].Pos.Y += (-0.5+node_liquid_level)*BS;
-				vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
-			}
+				// Check this neighbor
+				v3s16 n2p = blockpos_nodes + p + g_6dirs[j];
+				MapNode n2 = data->m_vmanip.getNodeNoEx(n2p);
+				if (content_features(n2).liquid_type != LIQUID_NONE) {
+					if (n2.getContent() == content_features(n).liquid_alternative_flowing)
+						continue;
+					if (n2.getContent() == content_features(n).liquid_alternative_source)
+						continue;
+				}else if (g_6dirs[j].Y != 1 && n2.getContent() != CONTENT_AIR && content_features(n2).draw_type == CDT_CUBELIKE) {
+					continue;
+				}else if (n2.getContent() == CONTENT_IGNORE) {
+					continue;
+				}
 
-			u16 indices[] = {0,1,2,2,3,0};
-			// Add to mesh collector
-			collector.append(liquid_material, vertices, 4, indices, 6);
+				// The face at Z+
+				video::S3DVertex vertices[4] =
+				{
+					video::S3DVertex(-BS/2,-BS/2,BS/2, 0,0,0, c[l[j][0]],
+						content_features(n).tiles[j].texture.x0(), content_features(n).tiles[j].texture.y1()),
+					video::S3DVertex(BS/2,-BS/2,BS/2, 0,0,0, c[l[j][1]],
+						content_features(n).tiles[j].texture.x1(), content_features(n).tiles[j].texture.y1()),
+					video::S3DVertex(BS/2,BS/2,BS/2, 0,0,0, c[l[j][2]],
+						content_features(n).tiles[j].texture.x1(), content_features(n).tiles[j].texture.y0()),
+					video::S3DVertex(-BS/2,BS/2,BS/2, 0,0,0, c[l[j][3]],
+						content_features(n).tiles[j].texture.x0(), content_features(n).tiles[j].texture.y0()),
+				};
+
+				// Rotations in the g_6dirs format
+				switch (j) {
+				case 0: // Z+
+					for(u16 i=0; i<4; i++) {
+						vertices[i].Pos.rotateXZBy(0);
+					}
+					break;
+				case 1: // Y+
+					for(u16 i=0; i<4; i++) {
+						vertices[i].Pos.rotateYZBy(-90);
+					}
+					break;
+				case 2: // X+
+					for(u16 i=0; i<4; i++) {
+						vertices[i].Pos.rotateXZBy(-90);
+					}
+					break;
+				case 3: // Z-
+					for(u16 i=0; i<4; i++) {
+						vertices[i].Pos.rotateXZBy(180);
+					}
+					break;
+				case 4: // Y-
+					for(u16 i=0; i<4; i++) {
+						vertices[i].Pos.rotateYZBy(90);
+					}
+					break;
+				case 5: // X-
+					for(u16 i=0; i<4; i++) {
+						vertices[i].Pos.rotateXZBy(90);
+					}
+					break;
+				default:;
+				}
+
+				for (u16 i=0; i<4; i++) {
+					vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+					if (j == 1 || (j != 4 && i<2)) {
+						vertices[i].Pos.Y -=0.15*BS;
+					}
+				}
+
+				u16 indices[] = {0,1,2,2,3,0};
+				// Add to mesh collector
+				collector.append(content_features(n).tiles[j].getMaterial(), vertices, 4, indices, 6);
+			}
 		}
 		break;
 		case CDT_TORCHLIKE:
