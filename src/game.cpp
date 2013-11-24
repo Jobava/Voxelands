@@ -168,17 +168,10 @@ void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 	}
 
 	s32 padding = imgsize/12;
-	//s32 height = imgsize + padding*2;
 	s32 width = itemcount*(imgsize+padding*2);
 
 	// Position of upper left corner of bar
 	v2s32 pos = centerlowerpos - v2s32(width/2, imgsize+padding*2);
-
-	// Draw background color
-	/*core::rect<s32> barrect(0,0,width,height);
-	barrect += pos;
-	video::SColor bgcolor(255,128,128,128);
-	driver->draw2DRectangle(bgcolor, barrect, NULL);*/
 
 	core::rect<s32> imgrect(0,0,imgsize,imgsize);
 
@@ -192,31 +185,6 @@ void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 
 		if (g_selected_item == i) {
 			video::SColor c_outside(255,255,0,0);
-			//s32 x1 = rect.UpperLeftCorner.X;
-			//s32 y1 = rect.UpperLeftCorner.Y;
-			//s32 x2 = rect.LowerRightCorner.X;
-			//s32 y2 = rect.LowerRightCorner.Y;
-			//// Black base borders
-			//driver->draw2DRectangle(c_outside,
-					//core::rect<s32>(
-						//v2s32(x1 - padding, y1 - padding),
-						//v2s32(x2 + padding, y1)
-					//), NULL);
-			//driver->draw2DRectangle(c_outside,
-					//core::rect<s32>(
-						//v2s32(x1 - padding, y2),
-						//v2s32(x2 + padding, y2 + padding)
-					//), NULL);
-			//driver->draw2DRectangle(c_outside,
-					//core::rect<s32>(
-						//v2s32(x1 - padding, y1),
-						//v2s32(x1, y2)
-					//), NULL);
-			//driver->draw2DRectangle(c_outside,
-					//core::rect<s32>(
-						//v2s32(x2, y1),
-						//v2s32(x2 + padding, y2)
-					//), NULL);
 			s32 xo = (rect.LowerRightCorner.X-rect.UpperLeftCorner.X) / 4;
 			s32 yo = (rect.LowerRightCorner.Y-rect.UpperLeftCorner.Y) / 4;
 			rect.LowerRightCorner.X += xo;
@@ -761,22 +729,14 @@ void the_game(
 	screensize = driver->getScreenSize();
 
 	const s32 hotbar_itemcount = 8;
-	//const s32 hotbar_imagesize = 36;
-	//const s32 hotbar_imagesize = 64;
 	s32 hotbar_imagesize = 48;
 
 	// The color of the sky
-
-	//video::SColor skycolor = video::SColor(255,140,186,250);
-
 	video::SColor bgcolor_bright = video::SColor(255,170,200,230);
 
 	/*
 		Draw "Loading" screen
 	*/
-	/*gui::IGUIStaticText *gui_loadingtext = */
-	//draw_load_screen(L"Loading and connecting...", driver, font);
-
 	draw_load_screen(L"Loading...", driver, font);
 
 	/*
@@ -804,7 +764,6 @@ void the_game(
 	Address connect_address(0,0,0,0, port);
 	try{
 		if(address == "")
-			//connect_address.Resolve("localhost");
 			connect_address.setAddress(127,0,0,1);
 		else
 			connect_address.Resolve(address.c_str());
@@ -812,9 +771,7 @@ void the_game(
 	catch(ResolveError &e)
 	{
 		errorstream<<"Couldn't resolve address"<<std::endl;
-		//return 0;
 		error_message = L"Couldn't resolve address";
-		//gui_loadingtext->remove();
 		return;
 	}
 
@@ -854,13 +811,7 @@ void the_game(
 			ss<<L" seconds)";
 			draw_load_screen(ss.str(), driver, font);
 
-			/*// Update screen
-			driver->beginScene(true, true, video::SColor(255,0,0,0));
-			guienv->drawAll();
-			driver->endScene();*/
-
 			// Update client and server
-
 			client.step(0.1);
 
 			if (server != NULL) {
@@ -890,7 +841,6 @@ void the_game(
 			error_message = L"Connection timed out.";
 			errorstream<<"Timed out."<<std::endl;
 		}
-		//gui_loadingtext->remove();
 		return;
 	}
 
@@ -937,8 +887,6 @@ void the_game(
 		Move into game
 	*/
 
-	//gui_loadingtext->remove();
-
 	/*
 		Add some gui stuff
 	*/
@@ -966,7 +914,6 @@ void the_game(
 			core::rect<s32>(0,0,0,0),
 			//false, false); // Disable word wrap as of now
 			false, true);
-	//guitext_chat->setBackgroundColor(video::SColor(96,0,0,0));
 	core::list<ChatLine> chat_lines;
 
 	// Profiler text (size is updated when text is updated)
@@ -978,30 +925,9 @@ void the_game(
 	guitext_profiler->setBackgroundColor(video::SColor(80,0,0,0));
 	guitext_profiler->setVisible(false);
 
-	/*GUIQuickInventory *quick_inventory = new GUIQuickInventory
-			(guienv, NULL, v2s32(10, 70), 5, &local_inventory);*/
-	/*GUIQuickInventory *quick_inventory = new GUIQuickInventory
-			(guienv, NULL, v2s32(0, 0), quickinv_itemcount, &local_inventory);*/
-
-	// Test the text input system
-	/*(new GUITextInputMenu(guienv, guiroot, -1, &g_menumgr,
-			NULL))->drop();*/
-	/*GUIMessageMenu *menu =
-			new GUIMessageMenu(guienv, guiroot, -1,
-				&g_menumgr,
-				L"Asd");
-	menu->drop();*/
-
 	// Launch pause menu
 	(new GUIPauseMenu(guienv, guiroot, -1, g_gamecallback,
 			&g_menumgr))->drop();
-
-	// Enable texts
-	/*guitext2->setVisible(true);
-	guitext_info->setVisible(true);
-	guitext_chat->setVisible(true);*/
-
-	//s32 guitext_chat_pad_bottom = 70;
 
 	/*
 		Some statistics are collected in these
@@ -1010,9 +936,6 @@ void the_game(
 	u32 beginscenetime = 0;
 	u32 scenetime = 0;
 	u32 endscenetime = 0;
-
-	// A test
-	//throw con::PeerNotFoundException("lol");
 
 	core::list<float> frametime_log;
 
@@ -1086,7 +1009,6 @@ void the_game(
 		last_screensize = screensize;
 		screensize = driver->getScreenSize();
 		v2s32 displaycenter(screensize.X/2,screensize.Y/2);
-		//bool screensize_changed = screensize != last_screensize;
 
 		// Resize hotbar
 		if(screensize.Y <= 800)
@@ -1102,15 +1024,6 @@ void the_game(
 		// Info text
 		std::wstring infotext;
 
-		// When screen size changes, update positions and sizes of stuff
-		/*if(screensize_changed)
-		{
-			v2s32 pos(displaycenter.X-((quickinv_itemcount-1)*quickinv_spacing+quickinv_size)/2, screensize.Y-quickinv_spacing);
-			quick_inventory->updatePosition(pos);
-		}*/
-
-		//TimeTaker //timer1("//timer1");
-
 		// Time of frame without fps limit
 		float busytime;
 		u32 busytime_u32;
@@ -1123,8 +1036,6 @@ void the_game(
 				busytime_u32 = 0;
 			busytime = busytime_u32 / 1000.0;
 		}
-
-		//infostream<<"busytime_u32="<<busytime_u32<<std::endl;
 
 		// Necessary for device->getTimer()->getTime()
 		device->run();
@@ -1175,13 +1086,6 @@ void the_game(
 			core::list<float>::Iterator i = frametime_log.begin();
 			frametime_log.erase(i);
 		}
-
-		/*
-			Visualize frametime in terminal
-		*/
-		/*for(u32 i=0; i<dtime*400; i++)
-			infostream<<"X";
-		infostream<<std::endl;*/
 
 		/*
 			Time average and jitter calculation
@@ -1593,7 +1497,6 @@ void the_game(
 
 		if(server != NULL)
 		{
-			//TimeTaker timer("server->step(dtime)");
 			server->step(dtime);
 		}
 
@@ -1602,9 +1505,7 @@ void the_game(
 		*/
 
 		{
-			//TimeTaker timer("client.step(dtime)");
 			client.step(dtime);
-			//client.step(dtime_avg1);
 		}
 
 		{
@@ -1618,8 +1519,6 @@ void the_game(
 				}
 				else if(event.type == CE_PLAYER_DAMAGE)
 				{
-					//u16 damage = event.player_damage.amount;
-					//infostream<<"Player damage: "<<damage<<std::endl;
 					damage_flash_timer = 0.05;
 					if(event.player_damage.amount >= 2){
 						damage_flash_timer += 0.05 * event.player_damage.amount;
@@ -1635,12 +1534,6 @@ void the_game(
 					if(respawn_menu_active)
 						continue;
 
-					/*bool set_camera_point_target =
-							event.deathscreen.set_camera_point_target;
-					v3f camera_point_target;
-					camera_point_target.X = event.deathscreen.camera_point_target_x;
-					camera_point_target.Y = event.deathscreen.camera_point_target_y;
-					camera_point_target.Z = event.deathscreen.camera_point_target_z;*/
 					MainRespawnInitiator *respawner =
 							new MainRespawnInitiator(
 									&respawn_menu_active, &client);
@@ -1650,17 +1543,10 @@ void the_game(
 					menu->drop();
 
 					/* Handle visualization */
-
 					damage_flash_timer = 0;
-
-					/*LocalPlayer* player = client.getLocalPlayer();
-					player->setPosition(player->getPosition() + v3f(0,-BS,0));
-					camera.update(player, busytime, screensize);*/
 				}
 			}
 		}
-
-		//TimeTaker //timer2("//timer2");
 
 		LocalPlayer* player = client.getLocalPlayer();
 		camera.update(player, busytime, screensize);
@@ -1676,16 +1562,10 @@ void the_game(
 				camera_direction, camera_fov);
 		}
 
-		//timer2.stop();
-		//TimeTaker //timer3("//timer3");
-
 		/*
 			Calculate what block is the crosshair pointing to
 		*/
 
-		//u32 t1 = device->getTimer()->getRealTime();
-
-		//f32 d = 4; // max. distance
 		f32 d = 4; // max. distance
 		core::line3d<f32> shootline(camera_position,
 				camera_position + camera_direction * BS * (d+1));
@@ -1707,8 +1587,6 @@ void the_game(
 				nodepos_old = v3s16(-32768,-32768,-32768);
 			}
 
-			//infostream<<"Client returned selected_active_object != NULL"<<std::endl;
-
 			core::aabbox3d<f32> *selection_box
 					= selected_active_object->getSelectionBox();
 			// Box should exist because object was returned in the
@@ -1725,10 +1603,8 @@ void the_game(
 			if(selected_active_object->doShowSelectionBox())
 				hilightboxes.push_back(box_on_map);
 
-			//infotext = narrow_to_wide("A ClientActiveObject");
 			infotext = narrow_to_wide(selected_active_object->infoText());
 
-			//if(input->getLeftClicked())
 			if(input->getLeftState())
 			{
 				bool do_punch = false;
@@ -1799,8 +1675,6 @@ void the_game(
 				infotext = narrow_to_wide(meta->infoText());
 			}
 
-			//MapNode node = client.getNode(nodepos);
-
 			/*
 				Handle digging
 			*/
@@ -1866,10 +1740,6 @@ void the_game(
 
 					if(prop.diggable == false)
 					{
-						/*infostream<<"Material "<<(int)material
-								<<" not diggable with \""
-								<<toolname<<"\""<<std::endl;*/
-						// I guess nobody will wait for this long
 						dig_time_complete = 10000000.0;
 					}
 					else
@@ -1890,8 +1760,6 @@ void the_game(
 
 					if(dig_index < CRACK_ANIMATION_LENGTH)
 					{
-						//TimeTaker timer("client.setTempMod");
-						//infostream<<"dig_index="<<dig_index<<std::endl;
 						client.setTempMod(nodepos, NodeMod(NODEMOD_CRACK, dig_index));
 					}
 					else
@@ -2011,7 +1879,6 @@ void the_game(
 		}
 		if(input->getRightReleased())
 		{
-			//inostream<<DTIME<<"Right released"<<std::endl;
 			// Nothing here
 		}
 
@@ -2029,9 +1896,6 @@ void the_game(
 				bgcolor_bright.getRed() * l / 255,
 				bgcolor_bright.getGreen() * l / 255,
 				bgcolor_bright.getBlue() * l / 255);
-				/*skycolor.getRed() * l / 255,
-				skycolor.getGreen() * l / 255,
-				skycolor.getBlue() * l / 255);*/
 
 		float brightness = (float)l/255.0;
 
@@ -2087,8 +1951,6 @@ void the_game(
 				range *= 0.9;
 				if(draw_control.range_all)
 					range = 100000*BS;
-				/*if(range < 50*BS)
-					range = range * 0.5 + 25*BS;*/
 			}
 
 			driver->setFog(
@@ -2117,8 +1979,6 @@ void the_game(
 		/*
 			Update gui stuff (0ms)
 		*/
-
-		//TimeTaker guiupdatetimer("Gui updating");
 
 		{
 			static float drawtime_avg = 0;
@@ -2180,12 +2040,6 @@ void the_game(
 			while(client.getChatMessage(message))
 			{
 				chat_lines.push_back(ChatLine(message));
-				/*if(chat_lines.size() > 6)
-				{
-					core::list<ChatLine>::Iterator
-							i = chat_lines.begin();
-					chat_lines.erase(i);
-				}*/
 			}
 			// Append them to form the whole static text and throw
 			// it to the gui element
@@ -2226,13 +2080,6 @@ void the_game(
 
 			// Update gui element size and position
 
-			/*core::rect<s32> rect(
-					10,
-					screensize.Y - guitext_chat_pad_bottom
-							- text_height*chat_lines.size(),
-					screensize.X - 10,
-					screensize.Y - guitext_chat_pad_bottom
-			);*/
 			core::rect<s32> rect(
 					10,
 					50,
@@ -2259,7 +2106,6 @@ void the_game(
 		{
 			client.selectPlayerItem(g_selected_item);
 			old_selected_item = g_selected_item;
-			//infostream<<"Updating local inventory"<<std::endl;
 			client.getLocalInventory(local_inventory);
 
 			// Update wielded tool
@@ -2292,13 +2138,8 @@ void the_game(
 		{
 			TimeTaker timer("beginScene");
 			driver->beginScene(true, true, bgcolor);
-			//driver->beginScene(false, true, bgcolor);
 			beginscenetime = timer.stop(true);
 		}
-
-		//timer3.stop();
-
-		//infostream<<"smgr->drawAll()"<<std::endl;
 
 		{
 			TimeTaker timer("smgr");
@@ -2307,11 +2148,6 @@ void the_game(
 		}
 
 		{
-		//TimeTaker timer9("auxiliary drawings");
-		// 0ms
-
-		//timer9.stop();
-		//TimeTaker //timer10("//timer10");
 
 		video::SMaterial m;
 		//m.Thickness = 10;
@@ -2324,11 +2160,6 @@ void the_game(
 		for(core::list< core::aabbox3d<f32> >::Iterator i=hilightboxes.begin();
 				i != hilightboxes.end(); i++)
 		{
-			/*infostream<<"hilightbox min="
-					<<"("<<i->MinEdge.X<<","<<i->MinEdge.Y<<","<<i->MinEdge.Z<<")"
-					<<" max="
-					<<"("<<i->MaxEdge.X<<","<<i->MaxEdge.Y<<","<<i->MaxEdge.Z<<")"
-					<<std::endl;*/
 			driver->draw3DBox(*i, video::SColor(255,0,0,0));
 		}
 
@@ -2377,9 +2208,6 @@ void the_game(
 
 		} // timer
 
-		//timer10.stop();
-		//TimeTaker //timer11("//timer11");
-
 		/*
 			Draw gui
 		*/
@@ -2424,12 +2252,11 @@ void the_game(
 		*/
 
 		static s16 lastFPS = 0;
-		//u16 fps = driver->getFPS();
 		u16 fps = (1.0/dtime_avg1);
 
 		if (lastFPS != fps)
 		{
-			core::stringw str = L"Minetest [";
+			core::stringw str = L"Minetest Classic [";
 			str += driver->getName();
 			str += "] FPS=";
 			str += fps;
@@ -2450,12 +2277,7 @@ void the_game(
 		generator and other stuff quits
 	*/
 	{
-		/*gui::IGUIStaticText *gui_shuttingdowntext = */
 		draw_load_screen(L"Shutting down stuff...", driver, font);
-		/*driver->beginScene(true, true, video::SColor(255,0,0,0));
-		guienv->drawAll();
-		driver->endScene();
-		gui_shuttingdowntext->remove();*/
 	}
 }
 
