@@ -174,6 +174,7 @@ void content_toolitem_init()
 	f->texture = "tool_woodbucket.png";
 	f->name = "WBucket";
 	f->gui_name = "Wooden Bucket";
+	f->liquids_pointable = true;
 	crafting::setURecipe(CONTENT_CRAFTITEM_STICK,CONTENT_TOOLITEM_WBUCKET);
 
 	i = CONTENT_TOOLITEM_TINBUCKET;
@@ -182,6 +183,7 @@ void content_toolitem_init()
 	f->texture = "tool_tinbucket.png";
 	f->name = "TinBucket";
 	f->gui_name = "Tin Bucket";
+	f->liquids_pointable = true;
 	crafting::setURecipe(CONTENT_CRAFTITEM_TIN_INGOT,CONTENT_TOOLITEM_TINBUCKET);
 
 	i = CONTENT_TOOLITEM_WBUCKET_WATER;
@@ -204,6 +206,7 @@ void content_toolitem_init()
 	f->texture = "tool_steelbucket.png";
 	f->name = "SteelBucket";
 	f->gui_name = "Steel Bucket";
+	f->liquids_pointable = true;
 	crafting::setURecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_STEELBUCKET);
 
 	i = CONTENT_TOOLITEM_STEELBUCKET_WATER;

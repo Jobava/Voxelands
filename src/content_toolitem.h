@@ -20,6 +20,8 @@ struct ToolItemFeatures {
 	s16 edible;
 	// the number dropped on right click, -1 for all
 	s16 drop_count;
+	// whether this tool can point at liquid nodes
+	bool liquids_pointable;
 
 	ToolItemFeatures():
 		content(CONTENT_IGNORE),
@@ -29,7 +31,8 @@ struct ToolItemFeatures {
 		cook_result(""),
 		fuel_time(0.0),
 		edible(0),
-		drop_count(-1)
+		drop_count(-1),
+		liquids_pointable(false)
 	{}
 };
 

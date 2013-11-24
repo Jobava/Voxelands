@@ -1949,6 +1949,7 @@ void content_mapnode_init()
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_FENCELIKE;
 	f->is_ground_content = true;
+	f->jumpable = false;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->air_equivalent = true; // grass grows underneath
@@ -2141,6 +2142,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->light_propagates = true;
 	f->buildable_to = true;
+	f->material_pointable = false;
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("CraftItem snow_ball 1");
@@ -4769,6 +4771,7 @@ void content_mapnode_init()
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("gate_wood_inv.png");
 	f->wield_nodebox = false;
+	f->jumpable = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
@@ -4791,6 +4794,7 @@ void content_mapnode_init()
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("gate_steel_inv.png");
 	f->wield_nodebox = false;
+	f->jumpable = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
@@ -4949,6 +4953,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
+	f->material_pointable = false;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	//f->pointable = false;
@@ -4969,6 +4974,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WILDGRASS_SHORT)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
+	f->material_pointable = false;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->buildable_to = true;
@@ -4987,6 +4993,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
+	f->material_pointable = false;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->buildable_to = true;
@@ -5005,6 +5012,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
+	f->material_pointable = false;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->buildable_to = true;
@@ -5023,6 +5031,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
+	f->material_pointable = false;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->buildable_to = true;
@@ -5041,6 +5050,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
+	f->material_pointable = false;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->buildable_to = true;
@@ -5059,6 +5069,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
+	f->material_pointable = false;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->buildable_to = true;
@@ -5197,6 +5208,7 @@ void content_mapnode_init()
 	f->description = std::string("Rough Stone Wall");
 	f->setAllTextures("roughstone.png");
 	f->light_propagates = true;
+	f->jumpable = false;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_WALLLIKE;
 	f->is_ground_content = true;
@@ -5212,6 +5224,7 @@ void content_mapnode_init()
 	f->description = std::string("Mossy Cobblestone Wall");
 	f->setAllTextures("mossycobble.png");
 	f->light_propagates = true;
+	f->jumpable = false;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_WALLLIKE;
 	f->is_ground_content = true;
@@ -5227,6 +5240,7 @@ void content_mapnode_init()
 	f->description = std::string("Stone Wall");
 	f->setAllTextures("stone.png");
 	f->light_propagates = true;
+	f->jumpable = false;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_WALLLIKE;
 	f->is_ground_content = true;
@@ -5242,6 +5256,7 @@ void content_mapnode_init()
 	f->description = std::string("Sand Stone Wall");
 	f->setAllTextures("sandstone.png");
 	f->light_propagates = true;
+	f->jumpable = false;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_WALLLIKE;
 	f->is_ground_content = true;

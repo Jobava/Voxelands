@@ -244,17 +244,12 @@ collisionMoveResult collisionMoveSimple(Map *map,
 					continue;
 
 				std::vector<aabb3f> nodeboxes = f.getNodeBoxes(n);
-				if (
-					f.draw_type == CDT_WALLLIKE
-					|| f.draw_type == CDT_FENCELIKE
-					|| n.getContent() == CONTENT_WOOD_GATE
-					|| n.getContent() == CONTENT_STEEL_GATE
-				) {
+				if (f.jumpable == false)
 					nodeboxes.push_back(core::aabbox3d<f32>(
 						-0.5*BS,0.5*BS,-0.5*BS,
 						0.5*BS,1.0*BS,0.5*BS
 					));
-				}
+
 				for(std::vector<aabb3f>::iterator
 				i = nodeboxes.begin();
 				i != nodeboxes.end(); i++)

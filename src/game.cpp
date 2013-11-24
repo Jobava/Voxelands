@@ -313,6 +313,11 @@ void getPointedNode(Client *client, v3f player_position,
 	s16 yend = pos_i.Y + 1 + (camera_direction.Y>0 ? a : 1);
 	s16 zend = pos_i.Z + (camera_direction.Z>0 ? a : 1);
 	s16 xend = pos_i.X + (camera_direction.X>0 ? a : 1);
+	InventoryItem *wield = (InventoryItem*)client->getLocalPlayer()->getWieldItem();
+	bool wield_is_hand = (wield == NULL);
+	bool wield_is_tool = (wield && wield->getContent()&CONTENT_TOOLITEM_MASK);
+	bool wield_is_craft = (wield && wield->getContent()&CONTENT_CRAFTITEM_MASK);
+	bool wield_is_material = (!wield_is_hand && !wield_is_tool && !wield_is_craft);
 
 	for(s16 y = ystart; y <= yend; y++)
 	for(s16 z = zstart; z <= zend; z++)
@@ -322,31 +327,13 @@ void getPointedNode(Client *client, v3f player_position,
 		try
 		{
 			n = client->getNode(v3s16(x,y,z));
-			if (content_pointable(n.getContent()) == false) {
-				if (content_liquid_source(n.getContent()) == false)
+			if (content_features(n.getContent()).pointable == false) {
+				if (content_features(n.getContent()).liquid_type != LIQUID_SOURCE)
 					continue;
-				const InventoryItem *wield = client->getLocalPlayer()->getWieldItem();
-				std::string wieldname;
-				if (
-					!wield
-					|| wield->getName() != std::string("ToolItem")
-					|| (wieldname = ((ToolItem*)wield)->getToolName()) == std::string("")
-					|| (
-						wieldname != std::string("SteelBucket")
-						&& wieldname != std::string("WBucket")
-						&& wieldname != std::string("TinBucket")
-					)
-				) {
+				if (!wield || content_toolitem_features(wield->getContent()).liquids_pointable == false)
 					continue;
-				}
-			}else if ((n.getContent() >= CONTENT_PLANTS_MIN && n.getContent() <= CONTENT_PLANTS_MAX) || n.getContent() == CONTENT_SNOW) {
-				const InventoryItem *wield = client->getLocalPlayer()->getWieldItem();
-				if (
-					wield
-					&& wield->getName() == std::string("MaterialItem")
-				) {
+			}else if (content_features(n.getContent()).material_pointable == false && wield_is_material) {
 					continue;
-				}
 			}
 		}
 		catch(InvalidPositionException &e)

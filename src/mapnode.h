@@ -173,6 +173,8 @@ struct ContentFeatures
 	bool walkable;
 	// Player can point to these
 	bool pointable;
+	// Player can point to these while holding a material (node)
+	bool material_pointable;
 	// Player can dig these
 	bool diggable;
 	// Player can climb these
@@ -181,6 +183,8 @@ struct ContentFeatures
 	bool buildable_to;
 	// Whether fire can be started on top of it
 	u8 flammable;
+	// Whether a player or mob can jump over this node
+	bool jumpable;
 	// Whether the node has no liquid, source liquid or flowing liquid
 	enum LiquidType liquid_type;
 	// If true, param2 is set to direction when placed. Used for torches.
@@ -266,10 +270,12 @@ struct ContentFeatures
 		visual_solidness = 0;
 		walkable = true;
 		pointable = true;
+		material_pointable = true;
 		diggable = true;
 		climbable = false;
 		buildable_to = false;
 		flammable = 0;
+		jumpable = true;
 		liquid_type = LIQUID_NONE;
 		wall_mounted = false;
 		air_equivalent = false;
