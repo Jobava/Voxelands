@@ -2859,7 +2859,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new IncineratorNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 0.8);
+	setStoneLikeDiggingProperties(f->digging_properties, 0.4);
 	crafting::setFilledRoundRecipe(CONTENT_ROUGHSTONE,CONTENT_MESE,CONTENT_FURNACE);
 
 	i = CONTENT_ROUGHSTONE;
