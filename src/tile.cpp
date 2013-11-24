@@ -1553,17 +1553,63 @@ void make_progressbar(float value, video::IImage *image)
 	u32 barwidth = size.Width - barpad_x*2;
 	v2u32 barpos(barpad_x, size.Height - barheight - barpad_y);
 
-	u32 barvalue_i = (u32)(((float)barwidth * value) + 0.5);
+	printf("%f\n",value);
 
-	video::SColor active(255,255,0,0);
+	u32 barvalue_i = (u32)(((float)barwidth * value) + 0.5);
+	u32 barvalue_c[10] = {
+		(u32)(((float)barwidth * 0.1)),
+		(u32)(((float)barwidth * 0.2)),
+		(u32)(((float)barwidth * 0.3)),
+		(u32)(((float)barwidth * 0.4)),
+		(u32)(((float)barwidth * 0.5)),
+		(u32)(((float)barwidth * 0.6)),
+		(u32)(((float)barwidth * 0.7)),
+		(u32)(((float)barwidth * 0.8)),
+		(u32)(((float)barwidth * 0.9)),
+		(u32)(((float)barwidth * 1.0))
+	};
+
+	video::SColor active[10] = {
+		video::SColor(255,255,0,0),
+		video::SColor(255,255,40,0),
+		video::SColor(255,255,80,0),
+		video::SColor(255,255,110,0),
+		video::SColor(255,255,120,0),
+		video::SColor(255,255,140,0),
+		video::SColor(255,255,160,0),
+		video::SColor(255,170,180,0),
+		video::SColor(255,50,200,0),
+		video::SColor(255,0,255,0)
+	};
 	video::SColor inactive(255,0,0,0);
 	for(u32 x0=0; x0<barwidth; x0++)
 	{
 		video::SColor *c;
-		if(x0 < barvalue_i)
-			c = &active;
-		else
+		if (x0 < barvalue_i) {
+			if (x0 < barvalue_c[0]) {
+				c = &active[0];
+			}else if (x0 < barvalue_c[1]) {
+				c = &active[1];
+			}else if (x0 < barvalue_c[2]) {
+				c = &active[2];
+			}else if (x0 < barvalue_c[3]) {
+				c = &active[3];
+			}else if (x0 < barvalue_c[4]) {
+				c = &active[4];
+			}else if (x0 < barvalue_c[5]) {
+				c = &active[5];
+			}else if (x0 < barvalue_c[6]) {
+				c = &active[6];
+			}else if (x0 < barvalue_c[7]) {
+				c = &active[7];
+			}else if (x0 < barvalue_c[8]) {
+				c = &active[8];
+			}else{
+				c = &active[9];
+			}
+		}else{
 			c = &inactive;
+		}
 		u32 x = x0 + barpos.X;
 		for(u32 y=barpos.Y; y<barpos.Y+barheight; y++)
 		{
