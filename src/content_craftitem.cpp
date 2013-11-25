@@ -348,4 +348,13 @@ void content_craftitem_init()
 	crafting::set1To4Recipe(CONTENT_WOOD,CONTENT_CRAFTITEM_STICK);
 	crafting::set1To4Recipe(CONTENT_JUNGLEWOOD,CONTENT_CRAFTITEM_STICK);
 
+	i = CONTENT_CRAFTITEM_PLANK;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_PLANK;
+	f->texture = "pine_plank.png";
+	f->name = "pine_plank";
+	f->gui_name = "Pine Plank";
+	f->fuel_time = 30/16;
+	crafting::set1To4Recipe(CONTENT_WOOD_PINE,CONTENT_CRAFTITEM_PLANK);
+
 }

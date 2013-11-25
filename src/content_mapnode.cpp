@@ -1355,6 +1355,37 @@ void content_mapnode_init()
 	f->fuel_time = 30;
 	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
 
+	i = CONTENT_CONIFER_TREE;
+	f = &content_features(i);
+	f->description = std::string("Conifer Tree");
+	f->setAllTextures("conifer_tree.png");
+	f->setTexture(0, "conifer_tree_top.png");
+	f->setTexture(1, "conifer_tree_top.png");
+	f->is_ground_content = true;
+	f->flammable = 2; // can be set on fire
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->cook_result = std::string("CraftItem lump_of_charcoal 1");
+	f->fuel_time = 30;
+	f->draw_type = CDT_NODEBOX;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->is_ground_content = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 0;
+	f->fuel_time = 25;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.4375*BS,
+		-0.5*BS,
+		-0.4375*BS,
+		0.4375*BS,
+		0.5*BS,
+		0.4375*BS
+	));
+	f->setInventoryTextureNodeBox(i,"conifer_tree_top.png", "conifer_tree.png", "conifer_tree.png");
+	setWoodLikeDiggingProperties(f->digging_properties, 0.8);
+
 	i = CONTENT_JUNGLEGRASS;
 	f = &content_features(i);
 	f->description = std::string("Jungle Grass");
@@ -1480,12 +1511,56 @@ void content_mapnode_init()
 	f->setAllTextures("cactus_side.png");
 	f->setTexture(0, "cactus_top.png");
 	f->setTexture(1, "cactus_top.png");
-	f->setInventoryTextureCube("cactus_top.png", "cactus_side.png", "cactus_side.png");
-	f->draw_type = CDT_CUBELIKE;
+	f->draw_type = CDT_NODEBOX;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
 	f->is_ground_content = true;
+	f->solidness = 0; // drawn separately, makes no faces
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/4;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.4375*BS,
+		-0.5*BS,
+		-0.4375*BS,
+		0.4375*BS,
+		0.5*BS,
+		0.4375*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		0.3125*BS,
+		-0.5*BS,
+		-0.4375*BS,
+		0.375*BS,
+		-0.4375*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.4375*BS,
+		0.125*BS,
+		0.4375*BS,
+		0.5*BS,
+		0.1875*BS,
+		0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.4375*BS,
+		-0.1875*BS,
+		-0.5*BS,
+		0.5*BS,
+		-0.125*BS,
+		-0.4375*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		-0.375*BS,
+		0.4375*BS,
+		-0.4375*BS,
+		-0.3125*BS,
+		0.5*BS
+	));
+	f->setInventoryTextureCube("cactus_top.png", "cactus_side.png", "cactus_side.png");
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 
 	i = CONTENT_PAPYRUS;
@@ -2053,19 +2128,18 @@ void content_mapnode_init()
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 	crafting::set1To4Recipe(CONTENT_JUNGLETREE,CONTENT_JUNGLEWOOD);
 
-	i = CONTENT_WOOD_FINISHED;
+	i = CONTENT_WOOD_PINE;
 	f = &content_features(i);
-	f->description = std::string("Finished Wood");
-	f->setAllTextures("finished_wood.png");
-	f->setInventoryTextureCube("finished_wood.png", "finished_wood.png", "finished_wood.png");
+	f->description = std::string("Pine");
+	f->setAllTextures("pine.png");
+	f->setInventoryTextureCube("pine.png", "pine.png", "pine.png");
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/16;
 	setWoodLikeDiggingProperties(f->digging_properties, 0.5);
-	crafting::setBlockRecipe(CONTENT_WOOD,CONTENT_WOOD_FINISHED);
-	crafting::setBlockRecipe(CONTENT_JUNGLEWOOD,CONTENT_WOOD_FINISHED);
+	crafting::set1To4Recipe(CONTENT_CONIFER_TREE,CONTENT_WOOD_PINE);
 
 	i = CONTENT_MESE;
 	f = &content_features(i);
@@ -2689,6 +2763,7 @@ void content_mapnode_init()
 	));
 	f->setInventoryTextureNodeBox(i,"sign.png", "sign_front.png", "sign.png");
 	crafting::setSignRecipe(CONTENT_WOOD,CONTENT_SIGN);
+	crafting::setSignRecipe(CONTENT_WOOD_PINE,CONTENT_SIGN);
 	crafting::setSignRecipe(CONTENT_JUNGLEWOOD,CONTENT_SIGN);
 
 	i = CONTENT_SIGN_UD;
@@ -5264,7 +5339,7 @@ void content_mapnode_init()
 	i = CONTENT_CHAIR;
 	f = &content_features(i);
 	f->description = std::string("Chair");
-	f->setAllTextures("finished_wood.png");
+	f->setAllTextures("pine.png");
 	f->param_type = CPT_LIGHT;
 	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_NODEBOX;
@@ -5293,21 +5368,21 @@ void content_mapnode_init()
 	f->addNodeBox(core::aabbox3d<f32>(
 		-0.2*BS, 0.1*BS, 0.25*BS, 0.2*BS, 0.4*BS, 0.26*BS
 	));
-	f->setInventoryTextureNodeBox(i,"finished_wood.png", "finished_wood.png", "finished_wood.png");
+	f->setInventoryTextureNodeBox(i,"pine.png", "pine.png", "pine.png");
 	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
 	{
 		u16 r[9] = {
-			CONTENT_CRAFTITEM_STICK,	CONTENT_IGNORE,			CONTENT_IGNORE,
-			CONTENT_WOOD_FINISHED,		CONTENT_WOOD_FINISHED,		CONTENT_IGNORE,
-			CONTENT_CRAFTITEM_STICK,	CONTENT_CRAFTITEM_STICK,	CONTENT_IGNORE
+			CONTENT_CRAFTITEM_PLANK,	CONTENT_IGNORE,			CONTENT_IGNORE,
+			CONTENT_WOOD_PINE,		CONTENT_WOOD_PINE,		CONTENT_IGNORE,
+			CONTENT_CRAFTITEM_PLANK,	CONTENT_CRAFTITEM_PLANK,	CONTENT_IGNORE
 		};
-		crafting::setRecipe(r,CONTENT_CHAIR,1);
+		crafting::setRecipe(r,CONTENT_CHAIR,2);
 	}
 
 	i = CONTENT_TABLE;
 	f = &content_features(i);
 	f->description = std::string("Table");
-	f->setAllTextures("finished_wood.png");
+	f->setAllTextures("pine.png");
 	f->param_type = CPT_LIGHT;
 	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_NODEBOX;
@@ -5344,13 +5419,13 @@ void content_mapnode_init()
 	f->addNodeBox(core::aabbox3d<f32>(
 		-0.3*BS, -0.2*BS, 0.3*BS, 0.3*BS, -0.1*BS, 0.4*BS
 	));
-	f->setInventoryTextureNodeBox(i,"finished_wood.png", "finished_wood.png", "finished_wood.png");
+	f->setInventoryTextureNodeBox(i,"pine.png", "pine.png", "pine.png");
 	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
 	{
 		u16 r[9] = {
-			CONTENT_WOOD_FINISHED,		CONTENT_WOOD_FINISHED,		CONTENT_WOOD_FINISHED,
-			CONTENT_CRAFTITEM_STICK,	CONTENT_IGNORE,			CONTENT_CRAFTITEM_STICK,
+			CONTENT_WOOD_PINE,		CONTENT_WOOD_PINE,		CONTENT_WOOD_PINE,
+			CONTENT_CRAFTITEM_PLANK,	CONTENT_IGNORE,			CONTENT_CRAFTITEM_PLANK,
 			CONTENT_IGNORE,			CONTENT_IGNORE,			CONTENT_IGNORE,
 		};
 		crafting::setRecipe(r,CONTENT_TABLE,1);

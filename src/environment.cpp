@@ -1839,6 +1839,7 @@ void ServerEnvironment::step(float dtime)
 							testnode = m_map->getNodeNoEx(test_p);
 							if (testnode.getContent() == CONTENT_TREE
 								|| testnode.getContent() == CONTENT_JUNGLETREE
+								|| testnode.getContent() == CONTENT_CONIFER_TREE
 								|| testnode.getContent() == CONTENT_IGNORE)
 							{
 								found = true;

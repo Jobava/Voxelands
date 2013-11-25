@@ -161,7 +161,7 @@ void make_tree(ManualMapVoxelManipulator &vmanip, v3s16 p0, bool is_apple_tree)
 
 void make_conifertree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
 {
-	MapNode treenode(CONTENT_TREE);
+	MapNode treenode(CONTENT_CONIFER_TREE);
 	MapNode leavesnode(CONTENT_CONIFER_LEAVES);
 
 	s16 trunk_h = myrand_range(8, 11);

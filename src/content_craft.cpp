@@ -395,17 +395,11 @@ void set3Any3Recipe(u16 input1, u16 input2, u16 input3, u16 result)
 void setBedRecipe(u16 input, u16 result)
 {
 	u16 r[9] = {
-		CONTENT_CRAFTITEM_STICK,	CONTENT_COTTON,	CONTENT_CRAFTITEM_STICK,
-		CONTENT_WOOD,			input,		CONTENT_WOOD,
-		CONTENT_CRAFTITEM_STICK,	input,		CONTENT_CRAFTITEM_STICK
+		CONTENT_CRAFTITEM_PLANK,	CONTENT_COTTON,	CONTENT_CRAFTITEM_PLANK,
+		CONTENT_WOOD_PINE,		input,		CONTENT_WOOD_PINE,
+		CONTENT_CRAFTITEM_PLANK,	input,		CONTENT_CRAFTITEM_PLANK
 	};
 	setRecipe(r,result,1);
-	u16 r1[9] = {
-		CONTENT_CRAFTITEM_STICK,	CONTENT_COTTON,	CONTENT_CRAFTITEM_STICK,
-		CONTENT_JUNGLEWOOD,		input,		CONTENT_JUNGLEWOOD,
-		CONTENT_CRAFTITEM_STICK,	input,		CONTENT_CRAFTITEM_STICK
-	};
-	setRecipe(r1,result,1);
 }
 // sign recipe, input is top six wood yields one result
 void setSignRecipe(u16 input, u16 result)

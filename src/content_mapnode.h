@@ -328,7 +328,8 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_ICE 0xC04
 #define CONTENT_CONIFER_LEAVES 0xC06
 #define CONTENT_CONIFER_SAPLING 0xC07
-#define CONTENT_WOOD_FINISHED 0xC08
+#define CONTENT_WOOD_PINE 0xC08
+#define CONTENT_CONIFER_TREE 0xC09
 
 // beds
 #define CONTENT_BED_HEAD 0xC10
