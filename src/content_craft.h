@@ -234,7 +234,7 @@ namespace crafting {
 	void setGateRecipe(u16 input1, u16 input2, u16 result);
 
 	InventoryItem *getResult(InventoryItem **items);
-	InventoryItem **getRecipe(InventoryItem *item);
+	content_t *getRecipe(InventoryItem *item);
 
 	void giveCreative(Player *player);
 	void giveInitial(Player *player);

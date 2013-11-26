@@ -196,6 +196,9 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_TRIMMED_JUNGLE_LEAVES 0x916
 #define CONTENT_TRIMMED_CONIFER_LEAVES 0x917
 
+//bwahaha!
+#define CONTENT_CRAFT_GUIDE 0x9FF
+
 // slabs
 #define CONTENT_ROUGHSTONE_SLAB 0xA00
 #define CONTENT_MOSSYCOBBLE_SLAB 0xA01

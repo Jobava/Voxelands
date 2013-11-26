@@ -2356,6 +2356,26 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i,"snow.png", "snow.png", "snow.png");
 	setDirtLikeDiggingProperties(f->digging_properties, 0.3);
 
+	i = CONTENT_CRAFT_GUIDE;
+	f = &content_features(i);
+	f->description = std::string("Craft Guide");
+	f->setAllTextures("craft_guide.png");
+	f->setInventoryTextureCube("craft_guide.png", "craft_guide.png", "craft_guide.png");
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new CraftGuideNodeMetadata();
+	{
+		content_t r[9] = {
+			CONTENT_CRAFTITEM_STICK,	CONTENT_CRAFTITEM_STICK,	CONTENT_IGNORE,
+			CONTENT_IGNORE,			CONTENT_CRAFTITEM_STICK,	CONTENT_IGNORE,
+			CONTENT_CRAFTITEM_STICK,	CONTENT_IGNORE,			CONTENT_IGNORE
+		};
+		crafting::setRecipe(r,CONTENT_CRAFT_GUIDE,1);
+	}
+
 	i = CONTENT_COTTON;
 	f = &content_features(i);
 	f->description = std::string("Cotton");

@@ -569,8 +569,30 @@ InventoryItem *getResult(InventoryItem **items)
 }
 
 // TODO: return recipe from result
-InventoryItem **getRecipe(InventoryItem *item)
+content_t *getRecipe(InventoryItem *item)
 {
+	content_t r = item->getContent();
+	content_t *recipe;
+	for (std::vector<CraftDef>::iterator i=shaped_recipes.begin(); i!=shaped_recipes.end(); i++) {
+		CraftDef d = *i;
+		if (d.result == r) {
+			recipe = new content_t[9];
+			for (int j=0; j<9; j++) {
+				recipe[j] = d.recipe[j];
+			}
+			return recipe;
+		}
+	}
+	for (std::vector<CraftDefShapeless>::iterator i=shapeless_recipes.begin(); i!=shapeless_recipes.end(); i++) {
+		CraftDefShapeless d = *i;
+		if (d.result == r) {
+			recipe = new content_t[9];
+			for (int j=0; j<9; j++) {
+				recipe[j] = d.recipe[j];
+			}
+			return recipe;
+		}
+	}
 	return NULL;
 }
 

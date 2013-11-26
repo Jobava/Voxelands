@@ -205,5 +205,25 @@ private:
 };
 
 
+class CraftGuideNodeMetadata : public NodeMetadata
+{
+public:
+	CraftGuideNodeMetadata();
+	~CraftGuideNodeMetadata();
+
+	virtual u16 typeId() const;
+	NodeMetadata* clone();
+	static NodeMetadata* create(std::istream &is);
+	virtual void serializeBody(std::ostream &os);
+	virtual Inventory* getInventory() {return m_inventory;}
+	virtual bool nodeRemovalDisabled();
+	virtual void inventoryModified();
+	virtual bool step(float dtime);
+	virtual std::string getInventoryDrawSpecString();
+
+private:
+	Inventory *m_inventory;
+};
+
 #endif
 

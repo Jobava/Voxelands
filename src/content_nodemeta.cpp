@@ -20,6 +20,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "content_nodemeta.h"
 #include "inventory.h"
 #include "content_mapnode.h"
+#include "content_craft.h"
 #include "log.h"
 
 /*
@@ -608,4 +609,122 @@ std::string IncineratorNodeMetadata::getInventoryDrawSpecString()
 		"invsize[8,7;]"
 		"list[current_name;fuel;4,1;1,1;]"
 		"list[current_player;main;0,3;8,4;]";
+}
+
+
+
+
+
+
+
+
+/*
+	CraftGuideNodeMetadata
+*/
+static content_t g_contents[] = {
+#include "content_list.h"
+	CONTENT_IGNORE
+};
+
+// Prototype
+CraftGuideNodeMetadata proto_CraftGuideNodeMetadata;
+
+CraftGuideNodeMetadata::CraftGuideNodeMetadata()
+{
+	NodeMetadata::registerType(typeId(), create);
+
+	m_inventory = new Inventory();
+	m_inventory->addList("list", 300);
+	m_inventory->addList("recipe", 9);
+	m_inventory->addList("result", 1);
+	//m_inventory->addList("furnace",1);
+}
+CraftGuideNodeMetadata::~CraftGuideNodeMetadata()
+{
+	delete m_inventory;
+}
+u16 CraftGuideNodeMetadata::typeId() const
+{
+	return CONTENT_CRAFT_GUIDE;
+}
+NodeMetadata* CraftGuideNodeMetadata::clone()
+{
+	CraftGuideNodeMetadata *d = new CraftGuideNodeMetadata();
+	*d->m_inventory = *m_inventory;
+	InventoryList *l = d->m_inventory->getList("list");
+	InventoryItem *t;
+	content_t *r;
+	for (int i=0; g_contents[i] != CONTENT_IGNORE; i++) {
+		if ((g_contents[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
+			t = new CraftItem(g_contents[i],1);
+		}else if ((g_contents[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+			t = new ToolItem(g_contents[i],1);
+		}else{
+			t = new MaterialItem(g_contents[i],1);
+		}
+		r = crafting::getRecipe(t);
+		if (!r) {
+			delete t;
+			continue;
+		}
+		l->addItem(t);
+	}
+	return d;
+}
+NodeMetadata* CraftGuideNodeMetadata::create(std::istream &is)
+{
+	CraftGuideNodeMetadata *d = new CraftGuideNodeMetadata();
+
+	d->m_inventory->deSerialize(is);
+
+	return d;
+}
+void CraftGuideNodeMetadata::serializeBody(std::ostream &os)
+{
+	m_inventory->serialize(os);
+}
+bool CraftGuideNodeMetadata::nodeRemovalDisabled()
+{
+	return false;
+}
+void CraftGuideNodeMetadata::inventoryModified()
+{
+	infostream<<"CraftGuide inventory modification callback"<<std::endl;
+}
+bool CraftGuideNodeMetadata::step(float dtime)
+{
+	InventoryList *l = m_inventory->getList("result");
+	InventoryItem *t = l->getItem(0);
+	if (!t || t->getContent() == CONTENT_IGNORE)
+		return false;
+	content_t *r = crafting::getRecipe(t);
+	if (!r)
+		return false;
+	l = m_inventory->getList("recipe");
+	l->clearItems();
+	for (int i=0; i<9; i++) {
+		if (r[i] == CONTENT_IGNORE)
+			continue;
+		if ((r[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
+			t = new CraftItem(r[i],1);
+		}else if ((r[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+			t = new ToolItem(r[i],1);
+		}else{
+			t = new MaterialItem(r[i],1);
+		}
+		l->addItem(i,t);
+	}
+
+	delete[] r;
+
+	return true;
+}
+std::string CraftGuideNodeMetadata::getInventoryDrawSpecString()
+{
+	return
+		"invsize[22,15;]"
+		"list[current_name;list;4,1;17,13;]"
+		"list[current_name;recipe;0,3;3,3;]"
+		"list[current_name;result;1,7;1,1;]";
+		//"list[current_name;furnace;1,9;1,1;]";
 }
