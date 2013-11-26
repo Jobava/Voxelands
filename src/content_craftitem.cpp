@@ -345,16 +345,35 @@ void content_craftitem_init()
 	f->name = "Stick";
 	f->gui_name = "Stick";
 	f->fuel_time = 30/16;
-	crafting::set1To4Recipe(CONTENT_WOOD,CONTENT_CRAFTITEM_STICK);
-	crafting::set1To4Recipe(CONTENT_JUNGLEWOOD,CONTENT_CRAFTITEM_STICK);
+	crafting::set1To2Recipe(CONTENT_CRAFTITEM_PINE_PLANK,CONTENT_CRAFTITEM_STICK);
+	crafting::set1To2Recipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_CRAFTITEM_STICK);
+	crafting::set1To2Recipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_CRAFTITEM_STICK);
 
-	i = CONTENT_CRAFTITEM_PLANK;
+	i = CONTENT_CRAFTITEM_PINE_PLANK;
 	f = &g_content_craftitem_features[i];
-	f->content = CONTENT_CRAFTITEM_PLANK;
+	f->content = CONTENT_CRAFTITEM_PINE_PLANK;
 	f->texture = "pine_plank.png";
 	f->name = "pine_plank";
 	f->gui_name = "Pine Plank";
 	f->fuel_time = 30/16;
-	crafting::set1To4Recipe(CONTENT_WOOD_PINE,CONTENT_CRAFTITEM_PLANK);
+	crafting::set1To4Recipe(CONTENT_WOOD_PINE,CONTENT_CRAFTITEM_PINE_PLANK);
+
+	i = CONTENT_CRAFTITEM_WOOD_PLANK;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_WOOD_PLANK;
+	f->texture = "wood_plank.png";
+	f->name = "wood_plank";
+	f->gui_name = "Wood Plank";
+	f->fuel_time = 30/16;
+	crafting::set1To4Recipe(CONTENT_WOOD,CONTENT_CRAFTITEM_WOOD_PLANK);
+
+	i = CONTENT_CRAFTITEM_JUNGLE_PLANK;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_JUNGLE_PLANK;
+	f->texture = "jungle_plank.png";
+	f->name = "jungle_plank";
+	f->gui_name = "Jungle Wood Plank";
+	f->fuel_time = 30/16;
+	crafting::set1To4Recipe(CONTENT_JUNGLEWOOD,CONTENT_CRAFTITEM_JUNGLE_PLANK);
 
 }

@@ -1341,6 +1341,21 @@ void content_mapnode_init()
 	f->fuel_time = 30;
 	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
 
+	i = CONTENT_APPLE_TREE;
+	f = &content_features(i);
+	f->description = std::string("Apple Tree");
+	f->setAllTextures("apple_tree.png");
+	f->setTexture(0, "apple_tree_top.png");
+	f->setTexture(1, "apple_tree_top.png");
+	f->setInventoryTextureCube("apple_tree_top.png", "apple_tree.png", "apple_tree.png");
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->flammable = 2; // can be set on fire
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->cook_result = std::string("CraftItem lump_of_charcoal 1");
+	f->fuel_time = 30;
+	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
+
 	i = CONTENT_JUNGLETREE;
 	f = &content_features(i);
 	f->description = std::string("Jungle Tree");
@@ -1430,6 +1445,32 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	setLeafLikeDiggingProperties(f->digging_properties, 0.15);
 
+	i = CONTENT_APPLE_LEAVES;
+	f = &content_features(i);
+	f->description = std::string("Apple Tree Leaves");
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	//f->is_ground_content = true;
+	if (new_style_leaves) {
+		f->draw_type = CDT_GLASSLIKE;
+		f->solidness = 0; // drawn separately, makes no faces
+		f->visual_solidness = 1;
+		f->setAllTextures("apple_leaves.png");
+#ifndef SERVER
+		f->setAllTextureTypes(MATERIAL_ALPHA_SIMPLE);
+#endif
+		f->setInventoryTextureCube("apple_leaves.png", "apple_leaves.png", "apple_leaves.png");
+	}else{
+		f->draw_type = CDT_CUBELIKE;
+		f->setAllTextures("[noalpha:apple_leaves.png");
+	}
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/16;
+	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_APPLE_SAPLING)+" 1";
+	f->extra_dug_item_rarity = 20;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setLeafLikeDiggingProperties(f->digging_properties, 0.15);
+
 	i = CONTENT_JUNGLELEAVES;
 	f = &content_features(i);
 	f->description = std::string("Jungle Leaves");
@@ -1499,6 +1540,75 @@ void content_mapnode_init()
 	}else{
 		f->draw_type = CDT_CUBELIKE;
 		f->setAllTextures("[noalpha:leaves.png");
+	}
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/16;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setLeafLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_TRIMMED_APPLE_LEAVES;
+	f = &content_features(i);
+	f->description = std::string("Trimmed Apple Tree Leaves");
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	if (new_style_leaves) {
+		f->draw_type = CDT_GLASSLIKE;
+		f->solidness = 0; // drawn separately, makes no faces
+		f->visual_solidness = 1;
+		f->setAllTextures("apple_leaves.png");
+#ifndef SERVER
+		f->setAllTextureTypes(MATERIAL_ALPHA_SIMPLE);
+#endif
+		f->setInventoryTextureCube("apple_leaves.png", "apple_leaves.png", "apple_leaves.png");
+	}else{
+		f->draw_type = CDT_CUBELIKE;
+		f->setAllTextures("[noalpha:apple_leaves.png");
+	}
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/16;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setLeafLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_TRIMMED_JUNGLE_LEAVES;
+	f = &content_features(i);
+	f->description = std::string("Trimmed Jungle Leaves");
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	if (new_style_leaves) {
+		f->draw_type = CDT_GLASSLIKE;
+		f->solidness = 0; // drawn separately, makes no faces
+		f->visual_solidness = 1;
+		f->setAllTextures("jungleleaves.png");
+#ifndef SERVER
+		f->setAllTextureTypes(MATERIAL_ALPHA_SIMPLE);
+#endif
+		f->setInventoryTextureCube("jungleleaves.png", "jungleleaves.png", "jungleleaves.png");
+	}else{
+		f->draw_type = CDT_CUBELIKE;
+		f->setAllTextures("[noalpha:jungleleaves.png");
+	}
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/16;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	setLeafLikeDiggingProperties(f->digging_properties, 0.15);
+
+	i = CONTENT_TRIMMED_CONIFER_LEAVES;
+	f = &content_features(i);
+	f->description = std::string("Trimmed Conifer Leaves");
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	if (new_style_leaves) {
+		f->draw_type = CDT_GLASSLIKE;
+		f->solidness = 0; // drawn separately, makes no faces
+		f->visual_solidness = 1;
+		f->setAllTextures("conifer_leaves.png");
+#ifndef SERVER
+		f->setAllTextureTypes(MATERIAL_ALPHA_SIMPLE);
+#endif
+		f->setInventoryTextureCube("conifer_leaves.png", "conifer_leaves.png", "conifer_leaves.png");
+	}else{
+		f->draw_type = CDT_CUBELIKE;
+		f->setAllTextures("[noalpha:conifer_leaves.png");
 	}
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/16;
@@ -2036,7 +2146,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 15;
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
-	crafting::setWallRecipe(CONTENT_CRAFTITEM_STICK,CONTENT_FENCE);
+	crafting::setWallRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_FENCE);
+	crafting::setWallRecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_FENCE);
 
 	i = CONTENT_RAIL;
 	f = &content_features(i);
@@ -2054,10 +2165,13 @@ void content_mapnode_init()
 	setDirtLikeDiggingProperties(f->digging_properties, 0.75);
 	{
 		u16 r[9] = {
-			CONTENT_CRAFTITEM_STEEL_INGOT,	CONTENT_CRAFTITEM_STICK,	CONTENT_CRAFTITEM_STEEL_INGOT,
-			CONTENT_CRAFTITEM_STEEL_INGOT,	CONTENT_CRAFTITEM_STICK,	CONTENT_CRAFTITEM_STEEL_INGOT,
-			CONTENT_CRAFTITEM_STEEL_INGOT,	CONTENT_CRAFTITEM_STICK,	CONTENT_CRAFTITEM_STEEL_INGOT
+			CONTENT_CRAFTITEM_STEEL_INGOT,	CONTENT_CRAFTITEM_WOOD_PLANK,	CONTENT_CRAFTITEM_STEEL_INGOT,
+			CONTENT_CRAFTITEM_STEEL_INGOT,	CONTENT_IGNORE,			CONTENT_CRAFTITEM_STEEL_INGOT,
+			CONTENT_CRAFTITEM_STEEL_INGOT,	CONTENT_CRAFTITEM_WOOD_PLANK,	CONTENT_CRAFTITEM_STEEL_INGOT
 		};
+		crafting::setRecipe(r,CONTENT_RAIL,15);
+		r[1] = CONTENT_CRAFTITEM_JUNGLE_PLANK;
+		r[7] = CONTENT_CRAFTITEM_JUNGLE_PLANK;
 		crafting::setRecipe(r,CONTENT_RAIL,15);
 	}
 
@@ -2082,10 +2196,24 @@ void content_mapnode_init()
 	setWoodLikeDiggingProperties(f->digging_properties, 0.5);
 	{
 		u16 r[9] = {
-			CONTENT_CRAFTITEM_STICK,	CONTENT_IGNORE,			CONTENT_CRAFTITEM_STICK,
-			CONTENT_CRAFTITEM_STICK,	CONTENT_CRAFTITEM_STICK,	CONTENT_CRAFTITEM_STICK,
-			CONTENT_CRAFTITEM_STICK,	CONTENT_IGNORE,			CONTENT_CRAFTITEM_STICK
+			CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_CRAFTITEM_STICK,	CONTENT_CRAFTITEM_PINE_PLANK,
+			CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_CRAFTITEM_STICK,	CONTENT_CRAFTITEM_PINE_PLANK,
+			CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_CRAFTITEM_STICK,	CONTENT_CRAFTITEM_PINE_PLANK
 		};
+		crafting::setRecipe(r,CONTENT_LADDER,2);
+		r[0] = CONTENT_CRAFTITEM_WOOD_PLANK;
+		r[2] = CONTENT_CRAFTITEM_WOOD_PLANK;
+		r[3] = CONTENT_CRAFTITEM_WOOD_PLANK;
+		r[5] = CONTENT_CRAFTITEM_WOOD_PLANK;
+		r[6] = CONTENT_CRAFTITEM_WOOD_PLANK;
+		r[8] = CONTENT_CRAFTITEM_WOOD_PLANK;
+		crafting::setRecipe(r,CONTENT_LADDER,2);
+		r[0] = CONTENT_CRAFTITEM_JUNGLE_PLANK;
+		r[2] = CONTENT_CRAFTITEM_JUNGLE_PLANK;
+		r[3] = CONTENT_CRAFTITEM_JUNGLE_PLANK;
+		r[5] = CONTENT_CRAFTITEM_JUNGLE_PLANK;
+		r[6] = CONTENT_CRAFTITEM_JUNGLE_PLANK;
+		r[8] = CONTENT_CRAFTITEM_JUNGLE_PLANK;
 		crafting::setRecipe(r,CONTENT_LADDER,2);
 	}
 
@@ -2114,6 +2242,7 @@ void content_mapnode_init()
 	f->fuel_time = 30/4;
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
 	crafting::set1To4Recipe(CONTENT_TREE,CONTENT_WOOD);
+	crafting::set1To4Recipe(CONTENT_APPLE_TREE,CONTENT_WOOD);
 
 	i = CONTENT_JUNGLEWOOD;
 	f = &content_features(i);
@@ -3015,6 +3144,23 @@ void content_mapnode_init()
 	f->draw_type = CDT_PLANTLIKE;
 	f->setAllTextures("sapling.png");
 	f->setInventoryTexture("sapling.png");
+	f->setAllTextureFlags(0);
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->light_propagates = true;
+	f->air_equivalent = false;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->walkable = false;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 1;
+	f->digging_properties.set("", DiggingProperties(true, 0.0, 0));
+
+	i = CONTENT_APPLE_SAPLING;
+	f = &content_features(i);
+	f->description = std::string("Apple Tree Sapling");
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_PLANTLIKE;
+	f->setAllTextures("apple_sapling.png");
+	f->setInventoryTexture("apple_sapling.png");
 	f->setAllTextureFlags(0);
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->light_propagates = true;
@@ -5373,9 +5519,9 @@ void content_mapnode_init()
 	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
 	{
 		u16 r[9] = {
-			CONTENT_CRAFTITEM_PLANK,	CONTENT_IGNORE,			CONTENT_IGNORE,
+			CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_IGNORE,			CONTENT_IGNORE,
 			CONTENT_WOOD_PINE,		CONTENT_WOOD_PINE,		CONTENT_IGNORE,
-			CONTENT_CRAFTITEM_PLANK,	CONTENT_CRAFTITEM_PLANK,	CONTENT_IGNORE
+			CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_IGNORE
 		};
 		crafting::setRecipe(r,CONTENT_CHAIR,2);
 	}
@@ -5426,7 +5572,7 @@ void content_mapnode_init()
 	{
 		u16 r[9] = {
 			CONTENT_WOOD_PINE,		CONTENT_WOOD_PINE,		CONTENT_WOOD_PINE,
-			CONTENT_CRAFTITEM_PLANK,	CONTENT_IGNORE,			CONTENT_CRAFTITEM_PLANK,
+			CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_IGNORE,			CONTENT_CRAFTITEM_PINE_PLANK,
 			CONTENT_IGNORE,			CONTENT_IGNORE,			CONTENT_IGNORE,
 		};
 		crafting::setRecipe(r,CONTENT_TABLE,1);

@@ -1605,12 +1605,17 @@ void ServerEnvironment::step(float dtime)
 									if (
 										tcon != CONTENT_AIR
 										&& tcon != CONTENT_TREE
+										&& tcon != CONTENT_APPLE_TREE
+										&& tcon != CONTENT_JUNGLETREE
 										&& tcon != CONTENT_LEAVES
 										&& tcon != CONTENT_JUNGLELEAVES
 										&& tcon != CONTENT_CONIFER_LEAVES
+										&& tcon != CONTENT_APPLE_LEAVES
 										&& tcon != CONTENT_APPLE
-										&& tcon != CONTENT_IGNORE)
+										&& tcon != CONTENT_IGNORE
+									) {
 										grow = 0;
+									}
 								}
 							}
 							}
@@ -1628,12 +1633,17 @@ void ServerEnvironment::step(float dtime)
 										if (
 											tcon != CONTENT_AIR
 											&& tcon != CONTENT_TREE
+											&& tcon != CONTENT_APPLE_TREE
+											&& tcon != CONTENT_JUNGLETREE
 											&& tcon != CONTENT_LEAVES
 											&& tcon != CONTENT_JUNGLELEAVES
 											&& tcon != CONTENT_CONIFER_LEAVES
+											&& tcon != CONTENT_APPLE_LEAVES
 											&& tcon != CONTENT_APPLE
-											&& tcon != CONTENT_IGNORE)
+											&& tcon != CONTENT_IGNORE
+										) {
 											grow = 1;
+										}
 									}
 								}
 								}
@@ -1655,9 +1665,81 @@ void ServerEnvironment::step(float dtime)
 							if (grow == 2) {
 								mapgen::make_largetree(vmanip, tree_p);
 							}else{
-								bool is_apple_tree = myrand()%4 == 0;
-								mapgen::make_tree(vmanip, tree_p, is_apple_tree);
+								mapgen::make_tree(vmanip, tree_p);
 							}
+							vmanip.blitBackAll(&modified_blocks);
+
+							// update lighting
+							core::map<v3s16, MapBlock*> lighting_modified_blocks;
+							for(core::map<v3s16, MapBlock*>::Iterator
+								i = modified_blocks.getIterator();
+								i.atEnd() == false; i++)
+							{
+								lighting_modified_blocks.insert(i.getNode()->getKey(), i.getNode()->getValue());
+							}
+							m_map->updateLighting(lighting_modified_blocks, modified_blocks);
+
+							// Send a MEET_OTHER event
+							MapEditEvent event;
+							event.type = MEET_OTHER;
+							for(core::map<v3s16, MapBlock*>::Iterator
+								i = modified_blocks.getIterator();
+								i.atEnd() == false; i++)
+							{
+								v3s16 p = i.getNode()->getKey();
+								event.modified_blocks.insert(p, true);
+							}
+							m_map->dispatchEvent(&event);
+						}
+					}
+				}
+				if(n.getContent() == CONTENT_APPLE_SAPLING)
+				{
+					if(myrand()%10 == 0)
+					{
+						s16 max_y = 7;
+						s16 max_o = 2;
+						bool grow = true;
+						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
+						if (below == CONTENT_MUD || below == CONTENT_GRASS) {
+							for (s16 z=-max_o; grow && z < max_o; z++) {
+							for (s16 y=2; grow && y < max_y; y++) {
+							for (s16 x=-max_o; grow && x < max_o; x++) {
+								v3s16 test_p = p + v3s16(x,y,z);
+								if (test_p != p) {
+									content_t tcon = m_map->getNodeNoEx(test_p).getContent();
+									if (
+										tcon != CONTENT_AIR
+										&& tcon != CONTENT_TREE
+										&& tcon != CONTENT_APPLE_TREE
+										&& tcon != CONTENT_JUNGLETREE
+										&& tcon != CONTENT_LEAVES
+										&& tcon != CONTENT_JUNGLELEAVES
+										&& tcon != CONTENT_CONIFER_LEAVES
+										&& tcon != CONTENT_APPLE_LEAVES
+										&& tcon != CONTENT_APPLE
+										&& tcon != CONTENT_IGNORE
+									) {
+										grow = false;
+									}
+								}
+							}
+							}
+							}
+						}else{
+							grow = false;
+						}
+
+						if (grow) {
+							actionstream<<"A sapling grows into a tree at "
+								<<PP(p)<<std::endl;
+
+							core::map<v3s16, MapBlock*> modified_blocks;
+							v3s16 tree_p = p;
+							ManualMapVoxelManipulator vmanip(m_map);
+							v3s16 tree_blockp = getNodeBlockPos(tree_p);
+							vmanip.initialEmerge(tree_blockp - v3s16(1,1,1), tree_blockp + v3s16(1,1,1));
+							mapgen::make_appletree(vmanip, tree_p);
 							vmanip.blitBackAll(&modified_blocks);
 
 							// update lighting
@@ -1701,14 +1783,17 @@ void ServerEnvironment::step(float dtime)
 									if (
 										tcon != CONTENT_AIR
 										&& tcon != CONTENT_TREE
+										&& tcon != CONTENT_APPLE_TREE
 										&& tcon != CONTENT_JUNGLETREE
 										&& tcon != CONTENT_LEAVES
 										&& tcon != CONTENT_JUNGLELEAVES
 										&& tcon != CONTENT_CONIFER_LEAVES
+										&& tcon != CONTENT_APPLE_LEAVES
 										&& tcon != CONTENT_APPLE
 										&& tcon != CONTENT_IGNORE
-									)
+									) {
 										grow = false;
+									}
 								}
 							}
 							}
@@ -1823,9 +1908,9 @@ void ServerEnvironment::step(float dtime)
 					n.getContent() == CONTENT_LEAVES
 					|| n.getContent() == CONTENT_JUNGLELEAVES
 					|| n.getContent() == CONTENT_CONIFER_LEAVES
+					|| n.getContent() == CONTENT_APPLE_LEAVES
 				) {
-					if (myrand()%10 == 0)
-					{
+					if (myrand()%10 == 0) {
 						s16 max_d = 3;
 						v3s16 leaf_p = p;
 						v3s16 test_p;
@@ -1838,6 +1923,7 @@ void ServerEnvironment::step(float dtime)
 							test_p = leaf_p + v3s16(x,y,z);
 							testnode = m_map->getNodeNoEx(test_p);
 							if (testnode.getContent() == CONTENT_TREE
+								|| testnode.getContent() == CONTENT_APPLE_TREE
 								|| testnode.getContent() == CONTENT_JUNGLETREE
 								|| testnode.getContent() == CONTENT_CONIFER_TREE
 								|| testnode.getContent() == CONTENT_IGNORE)
@@ -1848,8 +1934,7 @@ void ServerEnvironment::step(float dtime)
 						}
 						}
 						}
-						if (!found)
-						{
+						if (!found) {
 							m_map->removeNodeWithEvent(leaf_p);
 							if (myrand()%20 == 0) {
 								v3f sapling_pos = intToFloat(leaf_p, BS);
@@ -1859,6 +1944,8 @@ void ServerEnvironment::step(float dtime)
 									c = CONTENT_JUNGLESAPLING;
 								}else if (n.getContent() == CONTENT_CONIFER_LEAVES) {
 									c = CONTENT_CONIFER_SAPLING;
+								}else if (n.getContent() == CONTENT_APPLE_LEAVES) {
+									c = CONTENT_APPLE_SAPLING;
 								}
 								ServerActiveObject *obj = new ItemSAO(this, 0, sapling_pos, "MaterialItem2 " + itos(c) + " 1");
 								addActiveObject(obj);
@@ -1879,7 +1966,7 @@ void ServerEnvironment::step(float dtime)
 					for(s16 x=-max_d; !found && x<=max_d; x++) {
 						test_p = apple_p + v3s16(x,y,z);
 						testnode = m_map->getNodeNoEx(test_p);
-						if (testnode.getContent() == CONTENT_LEAVES
+						if (testnode.getContent() == CONTENT_APPLE_LEAVES
 							|| testnode.getContent() == CONTENT_IGNORE) {
 							found = true;
 							break;

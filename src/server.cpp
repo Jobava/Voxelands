@@ -33,6 +33,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "filesys.h"
 #include "content_mapnode.h"
 #include "content_craft.h"
+#include "content_craftitem.h"
+#include "content_toolitem.h"
 #include "content_nodemeta.h"
 #include "mapblock.h"
 #include "serverobject.h"
@@ -2491,11 +2493,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					client->SetBlocksNotSent(modified_blocks);
 				}
 			}else if (content_features(n).flammable > 1) {
-				const InventoryItem *wield = player->getWieldItem();
-				if (
-					wield && wield->getName() == std::string("ToolItem")
-					&& ((ToolItem*)wield)->getToolName() == "FireStarter"
-				) {
+				InventoryItem *wield = (InventoryItem*)player->getWieldItem();
+				if (wield && wield->getContent() == CONTENT_TOOLITEM_FIRESTARTER) {
 					if((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
 						s16 max_d = g_settings->getS16("borderstone_radius");
 						v3s16 test_p;
@@ -2563,11 +2562,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					SendInventory(player->peer_id);
 				}
 			}else if (n.getContent() == CONTENT_TNT) {
-				const InventoryItem *wield = player->getWieldItem();
-				if (
-					wield && wield->getName() == std::string("ToolItem")
-					&& ((ToolItem*)wield)->getToolName() == "FireStarter"
-				) {
+				InventoryItem *wield = (InventoryItem*)player->getWieldItem();
+				if (wield && wield->getContent() == CONTENT_TOOLITEM_FIRESTARTER) {
 					if((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
 						s16 max_d = g_settings->getS16("borderstone_radius");
 						v3s16 test_p;
@@ -2642,11 +2638,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					block->raiseModified(MOD_STATE_WRITE_NEEDED);
 				setBlockNotSent(blockpos);
 			}else if (content_features(n).param_type == CPT_FACEDIR_SIMPLE || content_features(n).param2_type == CPT_FACEDIR_SIMPLE) {
-				const InventoryItem *wield = player->getWieldItem();
-				if (
-					wield && wield->getName() == std::string("ToolItem")
-					&& ((ToolItem*)wield)->getToolName() == "crowbar"
-				) {
+				InventoryItem *wield = (InventoryItem*)player->getWieldItem();
+				if (wield && wield->getContent() == CONTENT_TOOLITEM_CROWBAR) {
 					if((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
 						s16 max_d = g_settings->getS16("borderstone_radius");
 						v3s16 test_p;
@@ -2754,7 +2747,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 			content_t material = CONTENT_IGNORE;
 			u8 mineral = MINERAL_NONE;
-			const InventoryItem *wield;
+			InventoryItem *wield;
 
 			bool cannot_remove_node = false;
 
@@ -2850,19 +2843,15 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				return;
 			}
 
-			wield = player->getWieldItem();
-			std::string wieldname("");
+			wield = (InventoryItem*)player->getWieldItem();
 			bool is_farm_swap = false;
 			// This is pretty much the entirety of farming
 			if (
 				material == CONTENT_MUD
-				&& wield && wield->getName() == std::string("ToolItem")
-				&& (wieldname = ((ToolItem*)wield)->getToolName()) != std::string("") &&
-				(
-					wieldname == std::string("SteelShovel")
-					|| wieldname == std::string("STShovel")
-					|| wieldname == std::string("WShovel")
-				)
+				&& wield
+				&& wield->getContent() == CONTENT_TOOLITEM_STEELSHOVEL
+				&& wield->getContent() == CONTENT_TOOLITEM_STSHOVEL
+				&& wield->getContent() == CONTENT_TOOLITEM_WSHOVEL
 			)
 			{
 				v3s16 temp_p = p_under;
@@ -3056,30 +3045,33 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						item = getDiggedMineralItem(mineral);
 
 					// If not mineral
-					if(item == NULL)
-					{
-						if (
-							material == CONTENT_LEAVES
-							&& wield
-							&& wield->getName() == std::string("ToolItem")
-							&& (wieldname = ((ToolItem*)wield)->getToolName()) != std::string("")
-							&& wieldname == std::string("Shears")
-						) {
+					if (item == NULL && wield && (wield->getContent()&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+						ToolItem *tool = (ToolItem*)wield;
+						if (material == CONTENT_LEAVES && tool->getContent() == CONTENT_TOOLITEM_STEELSHEARS) {
 							std::string dug_s = std::string("MaterialItem2 ")+itos(CONTENT_TRIMMED_LEAVES)+" 1";;
+							std::istringstream is(dug_s, std::ios::binary);
+							item = InventoryItem::deSerialize(is);
+						}else if (material == CONTENT_JUNGLELEAVES && tool->getContent() == CONTENT_TOOLITEM_STEELSHEARS) {
+							std::string dug_s = std::string("MaterialItem2 ")+itos(CONTENT_TRIMMED_JUNGLE_LEAVES)+" 1";;
+							std::istringstream is(dug_s, std::ios::binary);
+							item = InventoryItem::deSerialize(is);
+						}else if (material == CONTENT_APPLE_LEAVES && tool->getContent() == CONTENT_TOOLITEM_STEELSHEARS) {
+							std::string dug_s = std::string("MaterialItem2 ")+itos(CONTENT_TRIMMED_APPLE_LEAVES)+" 1";;
+							std::istringstream is(dug_s, std::ios::binary);
+							item = InventoryItem::deSerialize(is);
+						}else if (material == CONTENT_CONIFER_LEAVES && tool->getContent() == CONTENT_TOOLITEM_STEELSHEARS) {
+							std::string dug_s = std::string("MaterialItem2 ")+itos(CONTENT_TRIMMED_CONIFER_LEAVES)+" 1";;
 							std::istringstream is(dug_s, std::ios::binary);
 							item = InventoryItem::deSerialize(is);
 						}else if (
 							material == CONTENT_WATERSOURCE
-							&& wield
-							&& wield->getName() == std::string("ToolItem")
-							&& (wieldname = ((ToolItem*)wield)->getToolName()) != std::string("")
 							&& (
-								wieldname == std::string("WBucket")
-								|| wieldname == std::string("SteelBucket")
-								|| wieldname == std::string("TinBucket")
+								tool->getContent() == CONTENT_TOOLITEM_WBUCKET
+								|| tool->getContent() == CONTENT_TOOLITEM_STEELBUCKET
+								|| tool->getContent() == CONTENT_TOOLITEM_TINBUCKET
 							)
 						) {
-							std::string dug_s = std::string("ToolItem ") + wieldname + "_water 1";
+							std::string dug_s = std::string("ToolItem ") + tool->getToolName() + "_water 1";
 							std::istringstream is(dug_s, std::ios::binary);
 							item = InventoryItem::deSerialize(is);
 							mlist->changeItem(item_i,item);
@@ -3088,13 +3080,10 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							SendInventory(player->peer_id);
 						}else if (
 							material == CONTENT_SPONGE_FULL
-							&& wield
-							&& wield->getName() == std::string("ToolItem")
-							&& (wieldname = ((ToolItem*)wield)->getToolName()) != std::string("")
 							&& (
-								wieldname == std::string("WBucket")
-								|| wieldname == std::string("SteelBucket")
-								|| wieldname == std::string("TinBucket")
+								tool->getContent() == CONTENT_TOOLITEM_WBUCKET
+								|| tool->getContent() == CONTENT_TOOLITEM_STEELBUCKET
+								|| tool->getContent() == CONTENT_TOOLITEM_TINBUCKET
 							)
 						) {
 							MapNode n = m_env.getMap().getNodeNoEx(p_under);
@@ -3128,7 +3117,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 									continue;
 								client->SetBlocksNotSent(modified_blocks);
 							}
-							std::string dug_s = std::string("ToolItem ") + wieldname + "_water 1";
+							std::string dug_s = std::string("ToolItem ") + tool->getName() + "_water 1";
 							std::istringstream is(dug_s, std::ios::binary);
 							item = InventoryItem::deSerialize(is);
 							mlist->changeItem(item_i,item);
@@ -3138,24 +3127,21 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							return;
 						}else if (
 							material == CONTENT_LAVASOURCE
-							&& wield
-							&& wield->getName() == std::string("ToolItem")
-							&& (wieldname = ((ToolItem*)wield)->getToolName()) != std::string("")
 							&& (
-								wieldname == std::string("WBucket")
-								|| wieldname == std::string("TinBucket")
-								|| wieldname == std::string("SteelBucket")
+								tool->getContent() == CONTENT_TOOLITEM_WBUCKET
+								|| tool->getContent() == CONTENT_TOOLITEM_STEELBUCKET
+								|| tool->getContent() == CONTENT_TOOLITEM_TINBUCKET
 							)
 						) {
 							if (
 								g_settings->getBool("enable_lavabuckets") == false
-								|| wieldname == std::string("WBucket")
-								|| wieldname == std::string("TinBucket")
+								|| tool->getContent() == CONTENT_TOOLITEM_WBUCKET
+								|| tool->getContent() == CONTENT_TOOLITEM_TINBUCKET
 							) {
 								mlist->deleteItem(item_i);
 								HandlePlayerHP(player,4);
 							}else{
-								std::string dug_s = std::string("ToolItem ") + wieldname + "_lava 1";
+								std::string dug_s = std::string("ToolItem ") + tool->getToolName() + "_lava 1";
 								std::istringstream is(dug_s, std::ios::binary);
 								item = InventoryItem::deSerialize(is);
 								mlist->changeItem(item_i,item);
@@ -3559,13 +3545,10 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					}
 				}*/
 			}else if (
-				item->getName() == std::string("ToolItem")
-				&& (
-					((ToolItem*)item)->getToolName() == std::string("WBucket_water")
-					|| ((ToolItem*)item)->getToolName() == std::string("TinBucket_water")
-					|| ((ToolItem*)item)->getToolName() == std::string("SteelBucket_water")
-					|| ((ToolItem*)item)->getToolName() == std::string("SteelBucket_lava")
-				)
+				item->getContent() == CONTENT_TOOLITEM_WBUCKET_WATER
+				|| item->getContent() == CONTENT_TOOLITEM_STEELBUCKET_WATER
+				|| item->getContent() == CONTENT_TOOLITEM_STEELBUCKET_LAVA
+				|| item->getContent() == CONTENT_TOOLITEM_TINBUCKET_WATER
 			) {
 				MapNode n;
 				try{
@@ -3600,17 +3583,16 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							getNodeBlockPos(p_over), BLOCK_EMERGE_FLAG_FROMDISK);
 					return;
 				}
-				std::string wieldname = ((ToolItem*)item)->getToolName();
 				if (
-					wieldname == std::string("WBucket_water")
-					|| wieldname == std::string("TinBucket_water")
-					|| wieldname == std::string("SteelBucket_water")
+					item->getContent() == CONTENT_TOOLITEM_WBUCKET_WATER
+					|| item->getContent() == CONTENT_TOOLITEM_STEELBUCKET_WATER
+					|| item->getContent() == CONTENT_TOOLITEM_TINBUCKET_WATER
 				) {
 					if (ilist != NULL) {
 						std::string dug_s = std::string("ToolItem ");
-						if (wieldname == std::string("WBucket_water")) {
+						if (item->getContent() == CONTENT_TOOLITEM_WBUCKET_WATER) {
 							dug_s += "WBucket 1";
-						}else if (wieldname == std::string("TinBucket_water")) {
+						}else if (item->getContent() == CONTENT_TOOLITEM_TINBUCKET_WATER) {
 							dug_s += "TinBucket 1";
 						}else{
 							dug_s += "SteelBucket 1";
@@ -3650,7 +3632,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							client->SetBlocksNotSent(modified_blocks);
 						}
 					}
-				}else if (wieldname == std::string("SteelBucket_lava")) {
+				}else if (item->getContent() == CONTENT_TOOLITEM_STEELBUCKET_LAVA) {
 					if (ilist != NULL) {
 						if (g_settings->getBool("enable_lavabuckets")) {
 							std::string dug_s = std::string("ToolItem SteelBucket 1");
