@@ -451,11 +451,14 @@ bool FurnaceNodeMetadata::step(float dtime)
 			}else if ((fuel_item->getContent()&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
 				m_fuel_totaltime = ((ToolItem*)fuel_item)->getFuelTime();
 			}else{
-				m_fuel_totaltime = fuel_item->getFuelTime();
+				m_fuel_totaltime = ((MaterialItem*)fuel_item)->getFuelTime();
 			}
-printf("m_fuel_totaltime = %f (%d)\n",m_fuel_totaltime,fuel_item->getContent());
 			m_fuel_time = 0;
+			content_t c = fuel_item->getContent();
 			fuel_list->decrementMaterials(1);
+			if (c == CONTENT_TOOLITEM_STEELBUCKET_LAVA) {
+				fuel_list->addItem(0,new ToolItem(CONTENT_TOOLITEM_STEELBUCKET,0));
+			}
 			changed = true;
 		}else{
 			m_step_accumulator = 0;

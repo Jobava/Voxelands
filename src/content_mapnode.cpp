@@ -2884,6 +2884,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->cook_result = std::string("MaterialItem2 ")+itos(CONTENT_STONE)+" 1";
 	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
+	crafting::setBlockRecipe(CONTENT_COBBLE,CONTENT_ROUGHSTONE);
 
 	i = CONTENT_COBBLE;
 	f = &content_features(i);
