@@ -3118,7 +3118,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 										continue;
 									client->SetBlocksNotSent(modified_blocks);
 								}
-								std::string dug_s = std::string("ToolItem ") + tool->getName() + "_water 1";
+								std::string dug_s = std::string("ToolItem ") + tool->getToolName() + "_water 1";
 								std::istringstream is(dug_s, std::ios::binary);
 								item = InventoryItem::deSerialize(is);
 								mlist->changeItem(item_i,item);
