@@ -672,10 +672,8 @@ scene::SMesh* makeMapBlockMesh(MeshMakeData *data)
 	{
 		// 2-12ms for MAP_BLOCKSIZE=16
 		//TimeTaker timer2("updateMesh() collect");
-		for (s16 x=0; x<MAP_BLOCKSIZE; x++) {
-			for (s16 y=0; y<MAP_BLOCKSIZE; y++) {
-				for (s16 z=0; z<MAP_BLOCKSIZE; z++) {
-					if (!x) {
+		for (s16 y=0; y<MAP_BLOCKSIZE; y++) {
+			for (s16 z=0; z<MAP_BLOCKSIZE; z++) {
 		/*
 			Go through every y,z and get top(y+) faces in rows of x+
 		*/
@@ -704,8 +702,8 @@ scene::SMesh* makeMapBlockMesh(MeshMakeData *data)
 						data->m_vmanip,
 						blockpos_nodes,
 						smooth_lighting);
-					}
-					if (!z) {
+			}
+			for (s16 x=0; x<MAP_BLOCKSIZE; x++) {
 		/*
 			Go through every x,y and get right(x+) faces in rows of z+
 		*/
@@ -720,8 +718,6 @@ scene::SMesh* makeMapBlockMesh(MeshMakeData *data)
 						data->m_vmanip,
 						blockpos_nodes,
 						smooth_lighting);
-					}
-				}
 			}
 		}
 	}
