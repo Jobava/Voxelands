@@ -2849,9 +2849,11 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			if (
 				material == CONTENT_MUD
 				&& wield
-				&& wield->getContent() == CONTENT_TOOLITEM_STEELSHOVEL
-				&& wield->getContent() == CONTENT_TOOLITEM_STSHOVEL
-				&& wield->getContent() == CONTENT_TOOLITEM_WSHOVEL
+				&& (
+					wield->getContent() == CONTENT_TOOLITEM_STEELSHOVEL
+					|| wield->getContent() == CONTENT_TOOLITEM_STSHOVEL
+					|| wield->getContent() == CONTENT_TOOLITEM_WSHOVEL
+				)
 			)
 			{
 				v3s16 temp_p = p_under;
