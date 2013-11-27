@@ -644,8 +644,7 @@ void updateFastFaceRow(
 
 scene::SMesh* makeMapBlockMesh(MeshMakeData *data)
 {
-	// 4-21ms for MAP_BLOCKSIZE=16
-	// 24-155ms for MAP_BLOCKSIZE=32
+	// 2-12ms for MAP_BLOCKSIZE=16
 	//TimeTaker timer1("makeMapBlockMesh()");
 
 	core::array<FastFace> fastfaces_new;
@@ -671,14 +670,15 @@ scene::SMesh* makeMapBlockMesh(MeshMakeData *data)
 	*/
 
 	{
-		// 4-23ms for MAP_BLOCKSIZE=16
+		// 2-12ms for MAP_BLOCKSIZE=16
 		//TimeTaker timer2("updateMesh() collect");
-
+		for (s16 x=0; x<MAP_BLOCKSIZE; x++) {
+			for (s16 y=0; y<MAP_BLOCKSIZE; y++) {
+				for (s16 z=0; z<MAP_BLOCKSIZE; z++) {
+					if (!x) {
 		/*
 			Go through every y,z and get top(y+) faces in rows of x+
 		*/
-		for(s16 y=0; y<MAP_BLOCKSIZE; y++){
-			for(s16 z=0; z<MAP_BLOCKSIZE; z++){
 				updateFastFaceRow(data->m_daynight_ratio, posRelative_f,
 						v3s16(0,y,z), MAP_BLOCKSIZE,
 						v3s16(1,0,0), //dir
@@ -690,31 +690,9 @@ scene::SMesh* makeMapBlockMesh(MeshMakeData *data)
 						data->m_vmanip,
 						blockpos_nodes,
 						smooth_lighting);
-			}
-		}
-		/*
-			Go through every x,y and get right(x+) faces in rows of z+
-		*/
-		for(s16 x=0; x<MAP_BLOCKSIZE; x++){
-			for(s16 y=0; y<MAP_BLOCKSIZE; y++){
-				updateFastFaceRow(data->m_daynight_ratio, posRelative_f,
-						v3s16(x,y,0), MAP_BLOCKSIZE,
-						v3s16(0,0,1),
-						v3f  (0,0,1),
-						v3s16(1,0,0),
-						v3f  (1,0,0),
-						fastfaces_new,
-						data->m_temp_mods,
-						data->m_vmanip,
-						blockpos_nodes,
-						smooth_lighting);
-			}
-		}
 		/*
 			Go through every y,z and get back(z+) faces in rows of x+
 		*/
-		for(s16 z=0; z<MAP_BLOCKSIZE; z++){
-			for(s16 y=0; y<MAP_BLOCKSIZE; y++){
 				updateFastFaceRow(data->m_daynight_ratio, posRelative_f,
 						v3s16(0,y,z), MAP_BLOCKSIZE,
 						v3s16(1,0,0),
@@ -726,6 +704,24 @@ scene::SMesh* makeMapBlockMesh(MeshMakeData *data)
 						data->m_vmanip,
 						blockpos_nodes,
 						smooth_lighting);
+					}
+					if (!z) {
+		/*
+			Go through every x,y and get right(x+) faces in rows of z+
+		*/
+				updateFastFaceRow(data->m_daynight_ratio, posRelative_f,
+						v3s16(x,y,0), MAP_BLOCKSIZE,
+						v3s16(0,0,1),
+						v3f  (0,0,1),
+						v3s16(1,0,0),
+						v3f  (1,0,0),
+						fastfaces_new,
+						data->m_temp_mods,
+						data->m_vmanip,
+						blockpos_nodes,
+						smooth_lighting);
+					}
+				}
 			}
 		}
 	}
