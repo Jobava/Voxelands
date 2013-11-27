@@ -3905,13 +3905,10 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						Craftresult is no longer preview if something
 						is moved into it
 					*/
-					if(ma->to_list == "craftresult"
-							&& ma->from_list != "craftresult")
-					{
+					if (ma->to_list == "craftresult" && ma->from_list != "craftresult") {
 						// If it currently is a preview, remove
 						// its contents
-						if(player->craftresult_is_preview)
-						{
+						if (player->craftresult_is_preview) {
 							rlist->deleteItem(0);
 						}
 						player->craftresult_is_preview = false;
@@ -3919,30 +3916,27 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					/*
 						Crafting takes place if this condition is true.
 					*/
-					if(player->craftresult_is_preview &&
-							ma->from_list == "craftresult")
-					{
-						player->craftresult_is_preview = false;
-						clist->decrementMaterials(1);
+					bool craft_occurred = false;
+					if (player->craftresult_is_preview && ma->from_list == "craftresult") {
+						InventoryItem *item = rlist->getItem(0);
+						if (mlist->roomForItem(item)) {
+							player->craftresult_is_preview = false;
+							clist->decrementMaterials(1);
+							craft_occurred = true;
 
-						/* Print out action */
-						InventoryList *list =
-								player->inventory.getList("craftresult");
-						assert(list);
-						InventoryItem *item = list->getItem(0);
-						std::string itemname = "NULL";
-						if(item)
-							itemname = item->getName();
-						actionstream<<player->getName()<<" crafts "
-								<<itemname<<std::endl;
+							std::string itemname = "NULL";
+							if (item)
+								itemname = item->getName();
+							actionstream<<player->getName()<<" crafts "<<itemname<<std::endl;
+						}else{
+							disable_action = true;
+						}
 					}
 					/*
 						If the craftresult is placed on itself, move it to
 						main inventory instead of doing the action
 					*/
-					if(ma->to_list == "craftresult"
-							&& ma->from_list == "craftresult")
-					{
+					if (craft_occurred && ma->to_list == "craftresult" && ma->from_list == "craftresult") {
 						disable_action = true;
 
 						InventoryItem *item1 = rlist->changeItem(0, NULL);
