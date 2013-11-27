@@ -230,6 +230,7 @@ void content_toolitem_init()
 	f->texture = "tool_fire_starter.png";
 	f->name = "FireStarter";
 	f->gui_name = "Fire Starter";
+	f->liquids_pointable = true;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_FLINT,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_FIRESTARTER);
 
 	i = CONTENT_TOOLITEM_CROWBAR;
