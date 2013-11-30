@@ -196,20 +196,20 @@ if os.path.exists(path + "map.sqlite"):
     import sqlite3
     conn = sqlite3.connect(path + "map.sqlite")
     cur = conn.cursor()
-    
+
     cur.execute("SELECT `pos` FROM `blocks`")
     while True:
         r = cur.fetchone()
         if not r:
             break
-        
+
         x, y, z = getIntegerAsBlock(r[0])
-        
+
         if x < sector_xmin or x > sector_xmax:
             continue
         if z < sector_zmin or z > sector_zmax:
             continue
-        
+
         xlist.append(x)
         zlist.append(z)
 
