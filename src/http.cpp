@@ -36,6 +36,33 @@
 #include "path.h"
 #include "config.h"
 
+/* interface builders, these just keep some code below clean */
+static std::string http_player_interface(Player *player, HTTPServer *server)
+{
+	char buff[2048];
+	std::string html("<div class=\"panel\"><h2><a href=\"/player/");
+	html += player->getName();
+	html += "\" class=\"secret\">";
+	html += player->getName();
+	html += "</a></h2>";
+	html += "<p class=\"right\"><img src=\"/player/";
+	html += player->getName();
+	html += "/skin\" /></p>";
+	snprintf(buff, 2048,"% .1f, % .1f, % .1f",player->getPosition().X/BS,player->getPosition().Y/BS,player->getPosition().Z/BS);
+	if (player->peer_id == 0) {
+		html += "<p class=\"red\">Offline</p>";
+		html += "<p><strong>Last seen at:</strong> ";
+	}else{
+		html += "<p class=\"green bold\">Online</p>";
+		html += "<p><strong>Currently at:</strong> ";
+	}
+	html += buff;
+	html += "</p><p><strong>Privileges:</strong> ";
+	html += server->getPlayerPrivs(player->getName());
+	html += "</p></div>";
+	return html;
+}
+
 /* server thread main loop */
 void * HTTPServerThread::Thread()
 {
@@ -255,26 +282,7 @@ int HTTPRemoteClient::handlePlayer()
 		std::string html("<h1>Players</h1>\n");
 		for (core::list<Player*>::Iterator i = players.begin(); i != players.end(); i++) {
 			Player *player = *i;
-			html += "<div class=\"panel\"><h2><a href=\"/player/";
-			html += player->getName();
-			html += "\" class=\"secret\">";
-			html += player->getName();
-			html += "</a></h2>";
-			html += "<p class=\"right\"><img src=\"/player/";
-			html += player->getName();
-			html += "/skin\" /></p>";
-			snprintf(buff, 2048,"% .1f, % .1f, % .1f",player->getPosition().X/BS,player->getPosition().Y/BS,player->getPosition().Z/BS);
-			if (player->peer_id == 0) {
-				html += "<p class=\"red\">Offline</p>";
-				html += "<p><strong>Last seen at:</strong> ";
-			}else{
-				html += "<p class=\"green bold\">Online</p>";
-				html += "<p><strong>Currently at:</strong> ";
-			}
-			html += buff;
-			html += "</p><p><strong>Privileges:</strong> ";
-			html += m_server->getPlayerPrivs(player->getName());
-			html += "</p></div>";
+			html += http_player_interface(player,m_server);
 		}
 		sendHTML((char*)html.c_str());
 		return 1;
@@ -326,15 +334,13 @@ int HTTPRemoteClient::handlePlayer()
 		/* put only works for the owner */
 		if (!m_auth || m_recv_headers.getHeader("User") != m_server->getPlayerFromCookie(m_recv_headers.getCookie()))
 			return handleSpecial("405 Method Not Allowed");
+		size_t s = m_recv_headers.getLength();
+		if (!s)
+			return handleSpecial("411 Length Required");
 		FILE *f;
 		f = fopen(file.c_str(),"wb");
 		if (!f)
 			return handleSpecial("500 Internal Server Error");
-		size_t s = m_recv_headers.getLength();
-		if (!s) {
-			fclose(f);
-			return handleSpecial("411 Length Required");
-		}
 		size_t l;
 		size_t c = 2048;
 		size_t t = 0;
