@@ -2339,6 +2339,64 @@ void content_mapnode_init()
 	setDirtLikeDiggingProperties(f->digging_properties, 0.3);
 	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_SNOW_BALL,CONTENT_SNOW_BLOCK);
 
+	i = CONTENT_SNOWMAN;
+	f = &content_features(i);
+	f->description = std::string("Snowman");
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->solidness = 0;
+	f->setAllTextures("snowman.png");
+	f->setTexture(0,"snowman_top.png");
+	f->setTexture(1,"snowman_top.png");
+	f->setTexture(5,"snowman_front.png");
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("CraftItem snow_ball 18");
+	f->extra_dug_item = std::string("CraftItem Stick 3");
+	f->extra_dug_item_rarity = 1;
+	f->rotate_tile_with_nodebox = true;
+	setDirtLikeDiggingProperties(f->digging_properties, 0.3);
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.3125*BS,
+		-0.5*BS,
+		-0.3125*BS,
+		0.3125*BS,
+		0.125*BS,
+		0.3125*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.25*BS,
+		0.125*BS,
+		-0.25*BS,
+		0.25*BS,
+		0.5*BS,
+		0.25*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.0625*BS,
+		0.3125*BS,
+		-0.375*BS,
+		0.*BS,
+		0.375*BS,
+		-0.25*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,
+		-0.0625*BS,
+		-0.0625*BS,
+		0.5*BS,
+		0.*BS,
+		0.*BS
+	));
+	f->setInventoryTextureNodeBox(i,"snow.png", "snow.png", "snow.png");
+	{
+		content_t r[9] = {
+			CONTENT_IGNORE,			CONTENT_IGNORE,		CONTENT_IGNORE,
+			CONTENT_IGNORE,			CONTENT_SNOW_BLOCK,	CONTENT_CRAFTITEM_STICK,
+			CONTENT_CRAFTITEM_STICK,	CONTENT_SNOW_BLOCK,	CONTENT_CRAFTITEM_STICK
+		};
+		crafting::setRecipe(r,CONTENT_SNOWMAN,1);
+	}
+
 	i = CONTENT_SNOW;
 	f = &content_features(i);
 	f->description = std::string("Snow");
