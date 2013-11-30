@@ -2969,9 +2969,9 @@ void content_mapnode_init()
 		-0.05*BS
 	));
 	f->setInventoryTextureNodeBox(i,"sign.png", "sign_front.png", "sign.png");
-	crafting::setSignRecipe(CONTENT_WOOD,CONTENT_SIGN);
-	crafting::setSignRecipe(CONTENT_WOOD_PINE,CONTENT_SIGN);
-	crafting::setSignRecipe(CONTENT_JUNGLEWOOD,CONTENT_SIGN);
+	crafting::setSignRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_SIGN);
+	crafting::setSignRecipe(CONTENT_CRAFTITEM_PINE_PLANK,CONTENT_SIGN);
+	crafting::setSignRecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_SIGN);
 
 	i = CONTENT_SIGN_UD;
 	f = &content_features(i);

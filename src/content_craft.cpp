@@ -407,8 +407,12 @@ void setSignRecipe(u16 input, u16 result)
 	u16 r[9] = {
 		input,		input,				input,
 		input,		input,				input,
-		CONTENT_IGNORE,	CONTENT_CRAFTITEM_STICK,	CONTENT_IGNORE
+		CONTENT_IGNORE,	CONTENT_CRAFTITEM_WOOD_PLANK,	CONTENT_IGNORE
 	};
+	setRecipe(r,result,1);
+	r[7] = CONTENT_CRAFTITEM_PINE_PLANK;
+	setRecipe(r,result,1);
+	r[7] = CONTENT_CRAFTITEM_JUNGLE_PLANK;
 	setRecipe(r,result,1);
 }
 // shears recipe, input is blade yields one result
