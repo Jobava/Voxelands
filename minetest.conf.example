@@ -158,7 +158,7 @@
 #time_send_interval = 20
 # Length of day/night cycle. 72=20min, 360=4min, 1=24hour
 #time_speed = 72
-# enable a http microserver for admin and player textures
+# enable a http microserver player texture transfers
 #enable_http = true
 #server_unload_unused_data_timeout = 60
 #server_map_save_interval = 60

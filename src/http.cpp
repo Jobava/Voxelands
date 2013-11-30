@@ -331,6 +331,7 @@ int HTTPRemoteClient::handlePlayer()
 		}
 		if (file == "")
 			file = getPath("player","player_" + m_recv_headers.getUrl(1) + ".png",false);
+		fs::CreateAllDirs(getPath("dir",std::string("textures")+DIR_DELIM+"players",false));
 		/* put only works for the owner */
 		if (!m_auth || m_recv_headers.getHeader("User") != m_server->getPlayerFromCookie(m_recv_headers.getCookie()))
 			return handleSpecial("405 Method Not Allowed");
@@ -346,16 +347,13 @@ int HTTPRemoteClient::handlePlayer()
 		size_t t = 0;
 		if (c > s)
 			c = s;
-printf("pending: %lu %lu %d %d\n",c,s,m_start,m_end);
 		if (c) {
-printf("pending: %lu %lu %d %d\n",c,s,m_start,m_end);
 			if (m_start == m_end)
-				m_socket->WaitData(5000);
+				m_socket->WaitData(60000);
 			while ((l = read(buff,c)) > 0) {
 				s -= l;
 				t += l;
 				c = fwrite(buff,1,l,f);
-printf("written: %lu\n",c);
 				if (c != l) {
 					fclose(f);
 					return handleSpecial("500 Internal Server Error");
@@ -367,10 +365,9 @@ printf("written: %lu\n",c);
 					break;
 			}
 		}
-printf("received: %lu %lu\n",s,t);
 		l = ftell(f);
 		fclose(f);
-		if (s == t)
+		if (l == t)
 			return handleSpecial("201 Created");
 		fs::RecursiveDelete(file.c_str());
 		return handleSpecial("500 Internal Server Error");
@@ -784,17 +781,17 @@ void HTTPClient::step()
 				continue;
 			}
 			char buff[2048];
+			fs::CreateAllDirs(getPath("dir",std::string("textures")+DIR_DELIM+"players",false));
 			std::string file = getPath("player",std::string("player_")+q.data+".png",false);
+			size_t s = m_recv_headers.getLength();
+			if (!s) {
+				delete m_socket;
+				continue;
+			}
 			FILE *f;
 			f = fopen(file.c_str(),"wb");
 			if (!f) {
 				delete m_socket;
-				continue;
-			}
-			size_t s = m_recv_headers.getLength();
-			if (!s) {
-				delete m_socket;
-				fclose(f);
 				continue;
 			}
 			size_t l;
@@ -972,7 +969,6 @@ bool HTTPClient::put(std::string &url, std::string &file)
 		t += l;
 		m_socket->Send(buff,l);
 	}
-printf("sent: %u %u\n",t,s);
 	fclose(f);
 	return true;
 }
@@ -1150,7 +1146,6 @@ int HTTPResponseHeaders::read(char* buff, int length)
 		if (buff[i] == '\n') {
 			if (!c) {
 				nbuff[o] = 0;
-printf("%d '%s'\n",__LINE__,nbuff);
 				char* r = strchr(nbuff,' ');
 				if (!r)
 					return -1;
