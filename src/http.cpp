@@ -683,7 +683,11 @@ void HTTPClient::step()
 		 * or the server has enable_http = false */
 		//if (m_requests.size() > 0 || m_cookie == "")
 			//m_client->sendWantCookie();
+#ifdef _WIN32
+		Sleep(1000);
+#else
 		sleep(1);
+#endif
 		return;
 	}
 
