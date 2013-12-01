@@ -2913,6 +2913,7 @@ void content_mapnode_init()
 	f->light_source = LIGHT_MAX-1;
 	f->digging_properties.set("", DiggingProperties(true, 0.0, 0));
 	crafting::set1over4Recipe(CONTENT_CRAFTITEM_COAL,CONTENT_CRAFTITEM_STICK,CONTENT_TORCH);
+	crafting::set1over4Recipe(CONTENT_CRAFTITEM_CHARCOAL,CONTENT_CRAFTITEM_STICK,CONTENT_TORCH);
 
 	i = CONTENT_SIGN_WALL;
 	f = &content_features(i);
