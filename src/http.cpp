@@ -502,9 +502,9 @@ void HTTPRemoteClient::sendHTML(char* data)
 	}
 
 	if (l[0] > l[2]) {
-		b = (char*)alloca(l[0]);
+		b = new char[l[0]];
 	}else{
-		b = (char*)alloca(l[2]);
+		b = new char[l[2]];
 	}
 
 	l[3] = l[0]+l[1]+l[2];
@@ -522,6 +522,8 @@ void HTTPRemoteClient::sendHTML(char* data)
 		m_socket->Send(b,l[3]);
 		fclose(f);
 	}
+
+	delete b;
 }
 
 /* send a file to a remote http client */
@@ -740,7 +742,11 @@ void HTTPClient::step()
 			if (h > -1)
 				break;
 			if (h == -1 || m_recv_headers.getResponse() == 500) {
+#ifdef _WIN32
+				Sleep(1000);
+#else
 				sleep(1);
+#endif
 				r = 0;
 				h = -1;
 				break;
