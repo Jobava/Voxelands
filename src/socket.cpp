@@ -360,10 +360,15 @@ TCPSocket::TCPSocket()
 		throw SocketException("Failed to create socket");
 	}
 
+#ifdef _WIN32
+	char a=1;
+	setsockopt(m_handle, SOL_SOCKET, SO_REUSEADDR, &a, sizeof(int));
+#else
 	int a=1;
 	setsockopt(m_handle, SOL_SOCKET, SO_REUSEADDR, &a, sizeof(int));
 #if defined(__FreeBSD__)
 	setsockopt(m_handle, SOL_SOCKET, SO_NOSIGPIPE, &a, sizeof(int));
+#endif
 #endif
 	setTimeoutMs(0);
 }
