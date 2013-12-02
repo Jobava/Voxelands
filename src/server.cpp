@@ -3919,7 +3919,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					bool craft_occurred = false;
 					if (player->craftresult_is_preview && ma->from_list == "craftresult") {
 						InventoryItem *item = rlist->getItem(0);
-						if (mlist->roomForItem(item)) {
+						if (item && mlist->roomForItem(item)) {
 							player->craftresult_is_preview = false;
 							clist->decrementMaterials(1);
 							craft_occurred = true;
