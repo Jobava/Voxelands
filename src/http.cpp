@@ -809,9 +809,17 @@ void HTTPClient::step()
 			if (c > s)
 				c = s;
 			if (c) {
+printf("1 %lu %lu\n",c,s);
+				if (m_start == m_end) {
+printf("wait\n");
+					m_socket->WaitData(60000);
+				}
+printf("2 %lu %lu\n",c,s);
 				while ((l = read(buff,c)) > 0) {
+printf("3 %lu %lu %lu\n",c,s,l);
 					s -= l;
 					c = fwrite(buff,1,l,f);
+printf("4 %lu %lu %lu\n",c,s,l);
 					if (c != l)
 						break;
 					c = 2048;
@@ -821,6 +829,7 @@ void HTTPClient::step()
 						break;
 				}
 			}
+printf("5 %lu %lu %lu\n",c,s,l);
 			fclose(f);
 		}else if (r == 405) {
 			errorstream << "send skin returned 405 Method Not Allowed" << std::endl;
