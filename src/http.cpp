@@ -755,6 +755,10 @@ void HTTPClient::step()
 				h = -1;
 				break;
 			}
+			if (h == -2) {
+				m_start = 0;
+				m_end = 0;
+			}
 		}
 		if (h < 0) {
 			delete m_socket;
@@ -763,6 +767,8 @@ void HTTPClient::step()
 			m_req_mutex.Unlock();
 			continue;
 		}
+
+		m_start += h;
 
 		r = m_recv_headers.getResponse();
 
@@ -809,17 +815,17 @@ void HTTPClient::step()
 			if (c > s)
 				c = s;
 			if (c) {
-printf("1 %lu %lu\n",c,s);
 				if (m_start == m_end) {
-printf("wait\n");
 					m_socket->WaitData(60000);
+#ifdef _WIN32
+				Sleep(1000);
+#else
+				sleep(1);
+#endif
 				}
-printf("2 %lu %lu\n",c,s);
 				while ((l = read(buff,c)) > 0) {
-printf("3 %lu %lu %lu\n",c,s,l);
 					s -= l;
 					c = fwrite(buff,1,l,f);
-printf("4 %lu %lu %lu\n",c,s,l);
 					if (c != l)
 						break;
 					c = 2048;
@@ -829,7 +835,6 @@ printf("4 %lu %lu %lu\n",c,s,l);
 						break;
 				}
 			}
-printf("5 %lu %lu %lu\n",c,s,l);
 			fclose(f);
 		}else if (r == 405) {
 			errorstream << "send skin returned 405 Method Not Allowed" << std::endl;
@@ -1039,7 +1044,8 @@ int HTTPClient::fillBuffer()
 	if (!m_socket->WaitData(30))
 		return m_end;
 
-	return m_end+m_socket->Receive(m_buff+m_end,l);
+	m_end += m_socket->Receive(m_buff+m_end,l);
+	return m_end;
 }
 
 /* send http headers to the server */
