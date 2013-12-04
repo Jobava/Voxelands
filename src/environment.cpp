@@ -1506,6 +1506,29 @@ void ServerEnvironment::step(float dtime)
 					}
 				}
 				/*
+					cobble becomes mossy underwater
+				*/
+				if (n.getContent() == CONTENT_COBBLE) {
+					if (myrand()%20 == 0) {
+						MapNode a = m_map->getNodeNoEx(p+v3s16(0,1,0));
+						if (a.getContent() == CONTENT_WATERSOURCE) {
+							n.setContent(CONTENT_MOSSYCOBBLE);
+							m_map->addNodeWithEvent(p,n);
+						}else{
+							bool found = false;
+							/* moss also grows */
+							for (s16 i=0;!false && i<6; i++) {
+								a = m_map->getNodeNoEx(p+g_6dirs[i]);
+								if (a.getContent() == CONTENT_MOSSYCOBBLE) {
+									n.setContent(CONTENT_MOSSYCOBBLE);
+									m_map->addNodeWithEvent(p,n);
+									found = true;
+								}
+							}
+						}
+					}
+				}
+				/*
 					Rats spawn around regular trees
 				*/
 				if(n.getContent() == CONTENT_TREE ||
