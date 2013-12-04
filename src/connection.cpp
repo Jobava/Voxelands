@@ -996,7 +996,6 @@ void Connection::serve(u16 port)
 	m_socket.Bind(port);
 #ifndef SERVER
 	}catch(SocketException &e) {
-printf("%s %s %d\n",__FILE__,__FUNCTION__,__LINE__);
 		setRun(false);
 		return;
 	}

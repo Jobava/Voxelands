@@ -1133,7 +1133,6 @@ int HTTPRequestHeaders::read(char* buff, int length)
 				if (!strcmp(nbuff,"Content-Length")) {
 					setLength(strtoul(vbuff,NULL,10));
 				}else if (!strcmp(nbuff,"Cookie") && !strncmp(vbuff,"MTID=",5)) {
-					printf("cookie: '%s'\n",vbuff+5);
 					setCookie(vbuff+5);
 				}else{
 					setHeader(nbuff,vbuff);
@@ -1192,7 +1191,6 @@ int HTTPResponseHeaders::read(char* buff, int length)
 				if (!strcmp(nbuff,"Content-Length")) {
 					setLength(strtoul(vbuff,NULL,10));
 				}else if (!strcmp(nbuff,"SetCookie") && !strncmp(vbuff,"MTID=",5)) {
-					printf("cookie: '%s'\n",vbuff+5);
 					setCookie(vbuff+5);
 				}else{
 					setHeader(nbuff,vbuff);

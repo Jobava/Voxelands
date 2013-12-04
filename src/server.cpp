@@ -2639,7 +2639,14 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				setBlockNotSent(blockpos);
 			}else if (content_features(n).param_type == CPT_FACEDIR_SIMPLE || content_features(n).param2_type == CPT_FACEDIR_SIMPLE) {
 				InventoryItem *wield = (InventoryItem*)player->getWieldItem();
-				if (wield && wield->getContent() == CONTENT_TOOLITEM_CROWBAR) {
+				if (
+					(
+						n.getContent() < CONTENT_BED_MIN
+						|| n.getContent() > CONTENT_BED_MAX
+					)
+					&& wield
+					&& wield->getContent() == CONTENT_TOOLITEM_CROWBAR
+				) {
 					if((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
 						s16 max_d = g_settings->getS16("borderstone_radius");
 						v3s16 test_p;
@@ -2670,11 +2677,9 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						rot = n.param2&0x0F;
 					}
 					// rotate it
-					printf("%d\n",rot);
 					rot++;
 					if (rot > 3)
 						rot = 0;
-					printf("%d\n",rot);
 					// set the rotation
 					if (content_features(n).param_type == CPT_FACEDIR_SIMPLE) {
 						n.param1 = rot;
