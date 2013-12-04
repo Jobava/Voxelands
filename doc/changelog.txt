@@ -3,6 +3,39 @@ Minetest-c55 changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1312.00: (release 2014-12-04)
+- added http transfer of player skins (buggy, but easier to debug in use)
+- add snow biome at y = 60-200, damage player in cold unless near fire
+- add conifer trees in snow biome
+- allow facedir nodes to also propogate light - no more dark doorways
+- add lava cooling to roughstone and ores when near water (Menche)
+- add dig animation to player
+- fix some wield items
+- add tables, chairs, and beds
+- fix upside down stair/slab placement
+- water freezes to ice in the cold band, melts back to water down low
+- add a basic in-game craft guide
+- add crowbar tool to rotate nodes without losing metadata
+- make 0.3.x show a warning when connecting to classic servers
+- enable smooth lighting for nodeboxes and some special draw types
+- add incinerator for disposing of inventory items
+- increase infotext length slightly
+- complete rewrite of crafting, craftitems, and toolitems
+- make fences and walls not jumpable
+- assorted code cleanups
+- make mese glow slightly when digging
+- pretty up tool progress bars
+- some fixes to new style water
+- give apple trees their own wood and leaves
+- make regular and large trees bigger
+- make trimmed leaves for all 4 leaf types (conifer,regular,apple,jungle)
+- add plank craftitem, replace sticks/wood with plank on most recipes
+- craft sticks from leaves
+- some meshgen improvements
+- let firestarter start fire on lava
+- make nodeboxes align with texture pixels
+- make cobble grow moss when underwater
+
 1311.01: (release 2013-11-14)
 - prevent water being placed inside doors
 - stop fire only burning half of doors
