@@ -117,7 +117,7 @@ static void content_mapnode_nodebox_door(ContentFeatures *f)
 		-0.5*BS,
 		0.5*BS,
 		0.5*BS,
-		-0.35*BS
+		-0.3125*BS
 	));
 }
 
@@ -128,56 +128,56 @@ static void content_mapnode_nodebox_doorw(ContentFeatures *f)
 		-0.5*BS,
 		-0.5*BS,
 		0.5*BS,
-		-0.3*BS,
-		-0.35*BS
+		-0.3125*BS,
+		-0.3125*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
 		-0.5*BS,
-		0.3*BS,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		-0.35*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.3*BS,
-		-0.5*BS,
-		-0.3*BS,
-		0.3*BS,
-		-0.35*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.3*BS,
-		-0.3*BS,
+		0.3125*BS,
 		-0.5*BS,
 		0.5*BS,
-		0.3*BS,
-		-0.35*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.05*BS,
-		-0.3*BS,
-		-0.45*BS,
-		0.05*BS,
-		0.3*BS,
-		-0.4*BS
+		0.5*BS,
+		-0.3125*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
 		-0.5*BS,
-		-0.05*BS,
-		-0.45*BS,
-		0.1*BS,
-		0.05*BS,
-		-0.4*BS
+		-0.3125*BS,
+		-0.5*BS,
+		-0.3125*BS,
+		0.3125*BS,
+		-0.3125*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
-		-0.1*BS,
-		-0.05*BS,
-		-0.45*BS,
+		0.3125*BS,
+		-0.3125*BS,
+		-0.5*BS,
 		0.5*BS,
-		0.05*BS,
-		-0.4*BS
+		0.3125*BS,
+		-0.3125*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.0625*BS,
+		-0.3125*BS,
+		-0.4375*BS,
+		0.0625*BS,
+		0.3125*BS,
+		-0.375*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.3125*BS,
+		-0.0625*BS,
+		-0.4375*BS,
+		-0.0625*BS,
+		0.0625*BS,
+		-0.375*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.0625*BS,
+		-0.0625*BS,
+		-0.4375*BS,
+		0.3125*BS,
+		0.0625*BS,
+		-0.375*BS
 	));
 }
 
@@ -187,7 +187,7 @@ static void content_mapnode_nodebox_doorol(ContentFeatures *f)
 		-0.5*BS,
 		-0.5*BS,
 		-0.5*BS,
-		-0.35*BS,
+		-0.3125*BS,
 		0.5*BS,
 		0.5*BS
 	));
@@ -199,64 +199,64 @@ static void content_mapnode_nodebox_doorwol(ContentFeatures *f)
 		-0.5*BS,
 		-0.5*BS,
 		-0.5*BS,
-		-0.35*BS,
-		-0.3*BS,
+		-0.3125*BS,
+		-0.3125*BS,
 		0.5*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
 		-0.5*BS,
-		0.3*BS,
+		0.3125*BS,
 		-0.5*BS,
-		-0.35*BS,
+		-0.3125*BS,
 		0.5*BS,
 		0.5*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
 		-0.5*BS,
-		-0.3*BS,
+		-0.3125*BS,
 		-0.5*BS,
-		-0.35*BS,
-		0.3*BS,
-		-0.3*BS
+		-0.3125*BS,
+		0.3125*BS,
+		-0.3125*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
 		-0.5*BS,
-		-0.3*BS,
-		0.3*BS,
-		-0.35*BS,
-		0.3*BS,
+		-0.3125*BS,
+		0.3125*BS,
+		-0.3125*BS,
+		0.3125*BS,
 		0.5*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
-		-0.45*BS,
-		-0.3*BS,
-		-0.05*BS,
-		-0.4*BS,
-		0.3*BS,
-		0.05*BS
+		-0.4375*BS,
+		-0.3125*BS,
+		-0.0625*BS,
+		-0.375*BS,
+		0.3125*BS,
+		0.0625*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
-		-0.45*BS,
-		-0.05*BS,
-		-0.3*BS,
-		-0.4*BS,
-		0.05*BS,
-		-0.05*BS
+		-0.4375*BS,
+		-0.0625*BS,
+		-0.3125*BS,
+		-0.375*BS,
+		0.0625*BS,
+		-0.0625*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
-		-0.45*BS,
-		-0.05*BS,
-		0.05*BS,
-		-0.4*BS,
-		0.05*BS,
-		0.3*BS
+		-0.4375*BS,
+		-0.0625*BS,
+		0.0625*BS,
+		-0.375*BS,
+		0.0625*BS,
+		0.3125*BS
 	));
 }
 
 static void content_mapnode_nodebox_dooror(ContentFeatures *f)
 {
 	f->setNodeBox(core::aabbox3d<f32>(
-		0.35*BS,
+		0.3125*BS,
 		-0.5*BS,
 		-0.5*BS,
 		0.5*BS,
@@ -268,60 +268,60 @@ static void content_mapnode_nodebox_dooror(ContentFeatures *f)
 static void content_mapnode_nodebox_doorwor(ContentFeatures *f)
 {
 	f->setNodeBox(core::aabbox3d<f32>(
-		0.35*BS,
+		0.3125*BS,
 		-0.5*BS,
 		-0.5*BS,
 		0.5*BS,
-		-0.3*BS,
+		-0.3125*BS,
 		0.5*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
-		0.35*BS,
-		0.3*BS,
+		0.3125*BS,
+		0.3125*BS,
 		-0.5*BS,
 		0.5*BS,
 		0.5*BS,
 		0.5*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
-		0.35*BS,
-		-0.3*BS,
+		0.3125*BS,
+		-0.3125*BS,
 		-0.5*BS,
 		0.5*BS,
-		0.3*BS,
-		-0.3*BS
+		0.3125*BS,
+		-0.3125*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
-		0.35*BS,
-		-0.3*BS,
-		0.3*BS,
+		0.3125*BS,
+		-0.3125*BS,
+		0.3125*BS,
 		0.5*BS,
-		0.3*BS,
+		0.3125*BS,
 		0.5*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
-		0.4*BS,
-		-0.3*BS,
-		-0.05*BS,
-		0.45*BS,
-		0.3*BS,
-		0.05*BS
+		0.375*BS,
+		-0.3125*BS,
+		-0.0625*BS,
+		0.4375*BS,
+		0.3125*BS,
+		0.0625*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
-		0.4*BS,
-		-0.05*BS,
-		-0.3*BS,
-		0.45*BS,
-		0.05*BS,
-		-0.05*BS
+		0.375*BS,
+		-0.0625*BS,
+		-0.3125*BS,
+		0.4375*BS,
+		0.0625*BS,
+		-0.0625*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
-		0.4*BS,
-		-0.05*BS,
-		0.05*BS,
-		0.45*BS,
-		0.05*BS,
-		0.3*BS
+		0.375*BS,
+		-0.0625*BS,
+		0.0625*BS,
+		0.4375*BS,
+		0.0625*BS,
+		0.3125*BS
 	));
 }
 
@@ -329,7 +329,7 @@ static void content_mapnode_nodebox_hatch(ContentFeatures *f)
 {
 	f->setNodeBox(core::aabbox3d<f32>(
 		-0.5*BS,
-		0.35*BS,
+		0.3125*BS,
 		-0.5*BS,
 		0.5*BS,
 		0.5*BS,
@@ -341,66 +341,66 @@ static void content_mapnode_nodebox_hatchw(ContentFeatures *f)
 {
 	f->setNodeBox(core::aabbox3d<f32>(
 		-0.5*BS,
-		0.35*BS,
+		0.3125*BS,
 		-0.5*BS,
 		0.5*BS,
 		0.5*BS,
-		-0.3*BS
+		-0.3125*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
 		-0.5*BS,
-		0.35*BS,
-		0.3*BS,
+		0.3125*BS,
+		0.3125*BS,
 		0.5*BS,
 		0.5*BS,
 		0.5*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
-		0.3*BS,
-		0.35*BS,
-		-0.3*BS,
+		0.3125*BS,
+		0.3125*BS,
+		-0.3125*BS,
 		0.5*BS,
 		0.5*BS,
-		0.5*BS
+		0.3125*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
 		-0.5*BS,
-		0.35*BS,
-		-0.3*BS,
-		-0.3*BS,
+		0.3125*BS,
+		-0.3125*BS,
+		-0.3125*BS,
 		0.5*BS,
+		0.3125*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.0625*BS,
+		0.375*BS,
+		-0.3125*BS,
+		0.0625*BS,
+		0.4375*BS,
 		0.5*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
-		-0.05*BS,
-		0.4*BS,
-		-0.3*BS,
-		0.05*BS,
-		0.45*BS,
-		0.5*BS
+		-0.3125*BS,
+		0.375*BS,
+		-0.0625*BS,
+		-0.0625*BS,
+		0.4375*BS,
+		0.0625*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
-		-0.3*BS,
-		0.4*BS,
-		-0.05*BS,
-		-0.05*BS,
-		0.45*BS,
-		0.05*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.05*BS,
-		0.4*BS,
-		-0.05*BS,
-		0.3*BS,
-		0.45*BS,
-		0.05*BS
+		0.0625*BS,
+		0.375*BS,
+		-0.0625*BS,
+		0.3125*BS,
+		0.4375*BS,
+		0.0625*BS
 	));
 }
 
 static void content_mapnode_nodebox_hatcho(ContentFeatures *f)
 {
 	f->setNodeBox(core::aabbox3d<f32>(
-		0.35*BS,
+		0.3125*BS,
 		-0.5*BS,
 		-0.5*BS,
 		0.5*BS,
@@ -412,60 +412,60 @@ static void content_mapnode_nodebox_hatcho(ContentFeatures *f)
 static void content_mapnode_nodebox_hatchwo(ContentFeatures *f)
 {
 	f->setNodeBox(core::aabbox3d<f32>(
-		0.35*BS,
-		0.3*BS,
+		0.3125*BS,
+		0.3125*BS,
 		-0.5*BS,
 		0.5*BS,
 		0.5*BS,
 		0.5*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
-		0.35*BS,
+		0.3125*BS,
 		-0.5*BS,
 		-0.5*BS,
 		0.5*BS,
-		-0.3*BS,
+		-0.3125*BS,
 		0.5*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
-		0.35*BS,
-		-0.3*BS,
+		0.3125*BS,
+		-0.3125*BS,
 		-0.5*BS,
 		0.5*BS,
-		0.3*BS,
-		-0.3*BS
+		0.3125*BS,
+		-0.3125*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
-		0.35*BS,
-		-0.3*BS,
-		0.3*BS,
+		0.3125*BS,
+		-0.3125*BS,
+		0.3125*BS,
 		0.5*BS,
-		0.3*BS,
+		0.3125*BS,
 		0.5*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
-		0.4*BS,
-		-0.3*BS,
-		-0.05*BS,
-		0.45*BS,
-		0.3*BS,
-		0.05*BS
+		0.375*BS,
+		-0.3125*BS,
+		-0.0625*BS,
+		0.4375*BS,
+		0.3125*BS,
+		0.0625*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
-		0.4*BS,
-		-0.05*BS,
-		-0.3*BS,
-		0.45*BS,
-		0.05*BS,
-		-0.05*BS
+		0.375*BS,
+		-0.0625*BS,
+		-0.3125*BS,
+		0.4375*BS,
+		0.0625*BS,
+		-0.0625*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
-		0.4*BS,
-		-0.05*BS,
-		0.05*BS,
-		0.45*BS,
-		0.05*BS,
-		0.3*BS
+		0.375*BS,
+		-0.0625*BS,
+		0.0625*BS,
+		0.4375*BS,
+		0.0625*BS,
+		0.3125*BS
 	));
 }
 
@@ -1626,6 +1626,7 @@ void content_mapnode_init()
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->is_ground_content = true;
+	f->damage_per_second = 2;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/4;
@@ -5346,7 +5347,7 @@ void content_mapnode_init()
 		-0.3*BS,
 		0.5*BS,
 		0.5*BS,
-		0.5*BS
+		0.3*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
 		-0.5*BS,
@@ -5354,7 +5355,7 @@ void content_mapnode_init()
 		-0.3*BS,
 		-0.3*BS,
 		0.5*BS,
-		0.5*BS
+		0.3*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
 		-0.3*BS,
@@ -5402,7 +5403,7 @@ void content_mapnode_init()
 		-0.3*BS,
 		0.5*BS,
 		0.5*BS,
-		0.5*BS
+		0.3*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
 		-0.5*BS,
@@ -5410,7 +5411,7 @@ void content_mapnode_init()
 		-0.3*BS,
 		-0.3*BS,
 		0.5*BS,
-		0.5*BS
+		0.3*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
 		-0.3*BS,
