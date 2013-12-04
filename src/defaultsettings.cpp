@@ -96,7 +96,13 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("default_privs", "build, shout");
 	settings->setDefault("borderstone_radius","5");
 
+	// only enable http on the server for now
+	// adventurous players can enable it on the client
+#ifndef SERVER
+	settings->setDefault("enable_http","false");
+#else
 	settings->setDefault("enable_http","true");
+#endif
 	settings->setDefault("profiler_print_interval", "0");
 	settings->setDefault("enable_mapgen_debug_info", "false");
 	settings->setDefault("objectdata_interval", "0.2");
