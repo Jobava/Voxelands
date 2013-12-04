@@ -4107,8 +4107,8 @@ void content_mapnode_init()
 	f->fuel_time = 30;
 	content_mapnode_nodebox_door(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
-	crafting::setDoorRecipe(CONTENT_WOOD,CONTENT_WOOD_DOOR_LT);
-	crafting::setDoorRecipe(CONTENT_JUNGLEWOOD,CONTENT_WOOD_DOOR_LT);
+	crafting::setDoorRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_WOOD_DOOR_LT);
+	crafting::setDoorRecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_WOOD_DOOR_LT);
 	crafting::set1To1Recipe(CONTENT_WOOD_DOOR_RT,CONTENT_WOOD_DOOR_LT);
 
 	i = CONTENT_STEEL_DOOR_LB;
@@ -4935,8 +4935,8 @@ void content_mapnode_init()
 	f->fuel_time = 30;
 	content_mapnode_nodebox_hatch(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
-	crafting::setHatchRecipe(CONTENT_WOOD,CONTENT_WOOD_HATCH);
-	crafting::setHatchRecipe(CONTENT_JUNGLEWOOD,CONTENT_WOOD_HATCH);
+	crafting::setHatchRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_WOOD_HATCH);
+	crafting::setHatchRecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_WOOD_HATCH);
 
 	i = CONTENT_STEEL_HATCH;
 	f = &content_features(i);
@@ -5019,8 +5019,10 @@ void content_mapnode_init()
 	f->fuel_time = 30;
 	content_mapnode_nodebox_gate(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
-	crafting::setGateRecipe(CONTENT_CRAFTITEM_STICK,CONTENT_WOOD,CONTENT_WOOD_GATE);
-	crafting::setGateRecipe(CONTENT_CRAFTITEM_STICK,CONTENT_JUNGLEWOOD,CONTENT_WOOD_GATE);
+	crafting::setGateRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_WOOD,CONTENT_WOOD_GATE);
+	crafting::setGateRecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_JUNGLEWOOD,CONTENT_WOOD_GATE);
+	crafting::setGateRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_JUNGLEWOOD,CONTENT_WOOD_GATE);
+	crafting::setGateRecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_WOOD,CONTENT_WOOD_GATE);
 
 	i = CONTENT_STEEL_GATE;
 	f = &content_features(i);
