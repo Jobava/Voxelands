@@ -3080,7 +3080,7 @@ void content_mapnode_init()
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new IncineratorNodeMetadata();
 	setStoneLikeDiggingProperties(f->digging_properties, 0.4);
-	crafting::setFilledRoundRecipe(CONTENT_ROUGHSTONE,CONTENT_MESE,CONTENT_FURNACE);
+	crafting::setFilledRoundRecipe(CONTENT_ROUGHSTONE,CONTENT_MESE,CONTENT_INCINERATOR);
 
 	i = CONTENT_ROUGHSTONE;
 	f = &content_features(i);
