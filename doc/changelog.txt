@@ -3,6 +3,10 @@ Minetest-c55 changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1312.01: (release 2014-12-06)
+- fix craft recipes for doors, hatches, incinerators
+- add some missing nodes to the craft guide
+
 1312.00: (release 2014-12-04)
 - added http transfer of player skins (buggy, but easier to debug in use)
 - add snow biome at y = 60-200, damage player in cold unless near fire

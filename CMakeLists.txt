@@ -9,7 +9,7 @@ project(minetest-classic)
 
 # Also remember to set PROTOCOL_VERSION in clientserver.h when releasing
 set(VERSION_MAJOR 1312)
-set(VERSION_MINOR 00)
+set(VERSION_MINOR 01)
 set(VERSION_STRING "${VERSION_MAJOR}.${VERSION_MINOR}")
 
 MESSAGE(STATUS "*** Will build version ${VERSION_STRING} ***")
