@@ -198,10 +198,6 @@ namespace crafting {
 	void setRoundRecipe(u16 input, u16 result);
 	// eight input1 surrounding one input2 yields one result
 	void setFilledRoundRecipe(u16 input1, u16 input2, u16 result);
-	// six input in two vertical columns yields one result
-	void setDoorRecipe(u16 input, u16 result);
-	// six input in two horizontal rows yields one result
-	void setHatchRecipe(u16 input, u16 result);
 	// six input in two horizontal rows yields six result
 	void setWallRecipe(u16 input, u16 result);
 	// shapeless shortcuts

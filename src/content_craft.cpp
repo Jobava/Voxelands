@@ -310,26 +310,6 @@ void setFilledRoundRecipe(u16 input1, u16 input2, u16 result)
 	};
 	setRecipe(r,result,1);
 }
-// six input in two vertical columns yields one result
-void setDoorRecipe(u16 input, u16 result)
-{
-	u16 r[9] = {
-		input,		input,		CONTENT_IGNORE,
-		input,		input,		CONTENT_IGNORE,
-		input,		input,		CONTENT_IGNORE
-	};
-	setRecipe(r,result,1);
-}
-// six input in two horizontal rows yields one result
-void setHatchRecipe(u16 input, u16 result)
-{
-	u16 r[9] = {
-		input,		input,		input,
-		input,		input,		input,
-		CONTENT_IGNORE,	CONTENT_IGNORE,	CONTENT_IGNORE
-	};
-	setRecipe(r,result,1);
-}
 // six input in two horizontal rows yields six result
 void setWallRecipe(u16 input, u16 result)
 {

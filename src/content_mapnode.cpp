@@ -4107,8 +4107,7 @@ void content_mapnode_init()
 	f->fuel_time = 30;
 	content_mapnode_nodebox_door(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
-	crafting::setDoorRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_WOOD_DOOR_LT);
-	crafting::setDoorRecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_WOOD_DOOR_LT);
+	crafting::set1over1Recipe(CONTENT_WOOD_HATCH,CONTENT_WOOD_HATCH,CONTENT_WOOD_DOOR_LT);
 	crafting::set1To1Recipe(CONTENT_WOOD_DOOR_RT,CONTENT_WOOD_DOOR_LT);
 
 	i = CONTENT_STEEL_DOOR_LB;
@@ -4151,7 +4150,7 @@ void content_mapnode_init()
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
 	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
-	crafting::setDoorRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_STEEL_DOOR_LT);
+	crafting::set1over1Recipe(CONTENT_STEEL_HATCH,CONTENT_STEEL_HATCH,CONTENT_STEEL_DOOR_LT);
 	crafting::set1To1Recipe(CONTENT_STEEL_DOOR_RT,CONTENT_STEEL_DOOR_LT);
 
 	i = CONTENT_GLASS_DOOR_LB;
@@ -4194,7 +4193,7 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_door(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
-	crafting::setDoorRecipe(CONTENT_GLASS,CONTENT_GLASS_DOOR_LT);
+	crafting::set1over1Recipe(CONTENT_GLASS_PANE,CONTENT_GLASS_PANE,CONTENT_GLASS_DOOR_LT);
 	crafting::set1To1Recipe(CONTENT_GLASS_DOOR_RT,CONTENT_GLASS_DOOR_LT);
 
 	i = CONTENT_WOOD_W_DOOR_LB;
@@ -4239,6 +4238,7 @@ void content_mapnode_init()
 	f->fuel_time = 30;
 	content_mapnode_nodebox_doorw(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	crafting::set1over1Recipe(CONTENT_WOOD_W_HATCH,CONTENT_WOOD_HATCH,CONTENT_WOOD_W_DOOR_LT);
 	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_WOOD_DOOR_LT,CONTENT_WOOD_W_DOOR_LT);
 	crafting::set1To1Recipe(CONTENT_WOOD_W_DOOR_RT,CONTENT_WOOD_W_DOOR_LT);
 
@@ -4284,6 +4284,7 @@ void content_mapnode_init()
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
 	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	crafting::set1over1Recipe(CONTENT_STEEL_W_HATCH,CONTENT_STEEL_HATCH,CONTENT_STEEL_W_DOOR_LT);
 	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_STEEL_DOOR_LT,CONTENT_STEEL_W_DOOR_LT);
 	crafting::set1To1Recipe(CONTENT_STEEL_W_DOOR_RT,CONTENT_STEEL_W_DOOR_LT);
 
@@ -4935,8 +4936,8 @@ void content_mapnode_init()
 	f->fuel_time = 30;
 	content_mapnode_nodebox_hatch(f);
 	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
-	crafting::setHatchRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_WOOD_HATCH);
-	crafting::setHatchRecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_WOOD_HATCH);
+	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_WOOD_HATCH);
+	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_WOOD_HATCH);
 
 	i = CONTENT_STEEL_HATCH;
 	f = &content_features(i);
@@ -4954,7 +4955,7 @@ void content_mapnode_init()
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
 	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
-	crafting::setHatchRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_STEEL_HATCH);
+	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_STEEL_HATCH);
 
 	i = CONTENT_WOOD_W_HATCH;
 	f = &content_features(i);
