@@ -318,7 +318,7 @@ void setWallRecipe(u16 input, u16 result)
 		input,		input,		input,
 		CONTENT_IGNORE,	CONTENT_IGNORE,	CONTENT_IGNORE
 	};
-	setRecipe(r,result,1);
+	setRecipe(r,result,6);
 }
 // one each of inputs shapeless yields 1 result
 void set1Any2Recipe(u16 input1, u16 input2, u16 result)
