@@ -87,11 +87,13 @@ printf("%s %s %d\n",__FILE__,__FUNCTION__,__LINE__);
 			}
 		}
 		if (content_features(n).powered_node != CONTENT_IGNORE) {
+			std::string owner = meta->getOwner();
 			n.setContent(content_features(n).powered_node);
 			map.addNodeWithEvent(pos,n);
 			meta = map.getNodeMetadata(pos);
 			if (!meta)
 				return false;
+			meta->setOwner(owner);
 		}
 		if (!meta->energise(level,powersrc,powersrc,pos))
 			return false;
@@ -107,11 +109,13 @@ printf("%s %s %d\n",__FILE__,__FUNCTION__,__LINE__);
 				return false;
 		}
 		if (content_features(n).unpowered_node != CONTENT_IGNORE) {
+			std::string owner = meta->getOwner();
 			n.setContent(content_features(n).unpowered_node);
 			map.addNodeWithEvent(pos,n);
 			meta = map.getNodeMetadata(pos);
 			if (!meta)
 				return false;
+			meta->setOwner(owner);
 		}
 		if (!meta->energise(level,powersrc,powersrc,pos))
 			return false;

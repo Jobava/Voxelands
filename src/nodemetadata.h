@@ -26,6 +26,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <map>
 
 #define ENERGY_MAX 16
+#define ENERGY_HALF 8
 #define ENERGY_MIN 0
 
 /*

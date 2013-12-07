@@ -1109,7 +1109,7 @@ void Server::stop()
 bool Server::step(float dtime)
 {
 	DSTACK(__FUNCTION_NAME);
-	if (!m_con.getRun())
+	if (!m_con->getRun())
 		return false;
 	// Limit a bit
 	if(dtime > 2.0)
@@ -1911,7 +1911,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		getClient(peer_id)->net_proto_version = net_proto_version;
 
 		if (net_proto_version < PROTOCOL_OLDEST) {
-			SendAccessDenied(m_con, peer_id,
+			SendAccessDenied(*m_con, peer_id,
 					L"Your client is too old. Please upgrade.");
 			return;
 		}
@@ -2435,7 +2435,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						sendRemoveNode(p_under, 0, &far_players, 30);
 						{
 							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-							m_env.getMap().removeNodeAndUpdate(p_under, modified_blocks);
+							m_env->getMap().removeNodeAndUpdate(p_under, modified_blocks);
 						}
 						/*
 							Set blocks not sent to far players
@@ -2503,7 +2503,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 
 					std::string p_name = std::string(player->getName());
-					m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
+					m_env->getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
 				}
 				for(core::list<u16>::Iterator i = far_players.begin(); i != far_players.end(); i++) {
 					u16 peer_id = *i;
@@ -2513,7 +2513,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					client->SetBlocksNotSent(modified_blocks);
 				}
 			}else if (n.getContent() == CONTENT_INCINERATOR) {
-				NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
+				NodeMetadata *meta = m_env->getMap().getNodeMetadata(p_under);
 				if (!meta)
 					return;
 				InventoryList *ilist = meta->getInventory()->getList("fuel");
@@ -2534,7 +2534,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 				v3s16 blockpos = getNodeBlockPos(p_under);
 				meta->inventoryModified();
-				MapBlock *block = m_env.getMap().getBlockNoCreateNoEx(blockpos);
+				MapBlock *block = m_env->getMap().getBlockNoCreateNoEx(blockpos);
 				if(block)
 					block->raiseModified(MOD_STATE_WRITE_NEEDED);
 				setBlockNotSent(blockpos);
@@ -2560,7 +2560,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						for(s16 y=-max_d; y<=max_d; y++) {
 						for(s16 x=-max_d; x<=max_d; x++) {
 							test_p = p_under + v3s16(x,y,z);
-							NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
+							NodeMetadata *meta = m_env->getMap().getNodeMetadata(test_p);
 							if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
 								BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
 								if (bsm->getOwner() != player->getName())
@@ -2571,7 +2571,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						}
 					}
 					u8 rot = 0;
-					NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
+					NodeMetadata *meta = m_env->getMap().getNodeMetadata(p_under);
 					NodeMetadata *ometa = NULL;
 					if (meta)
 						ometa = meta->clone();
@@ -2609,12 +2609,12 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 
 						std::string p_name = std::string(player->getName());
-						m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
+						m_env->getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
 					}
 					if (ometa)
-						m_env.getMap().setNodeMetadata(p_under,ometa);
+						m_env->getMap().setNodeMetadata(p_under,ometa);
 					v3s16 blockpos = getNodeBlockPos(p_under);
-					MapBlock *block = m_env.getMap().getBlockNoCreateNoEx(blockpos);
+					MapBlock *block = m_env->getMap().getBlockNoCreateNoEx(blockpos);
 					if (block)
 						block->setChangedFlag();
 
@@ -2626,6 +2626,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						client->SetBlocksNotSent(modified_blocks);
 						client->SetBlockNotSent(blockpos);
 					}
+				}
 			}else{
 				InventoryItem *wield = (InventoryItem*)player->getWieldItem();
 				if (wield && wield->getContent() == CONTENT_TOOLITEM_FIRESTARTER) {
@@ -2637,7 +2638,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						for(s16 y=-max_d; y<=max_d; y++) {
 						for(s16 x=-max_d; x<=max_d; x++) {
 							test_p = p_under + v3s16(x,y,z);
-							NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
+							NodeMetadata *meta = m_env->getMap().getNodeMetadata(test_p);
 							if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
 								BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
 								if (bsm->getOwner() != player->getName())
@@ -2931,7 +2932,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						sendRemoveNode(p_under+p_foot, 0, &far_players, 30);
 						{
 							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-							m_env.getMap().removeNodeAndUpdate(p_under+p_foot, modified_blocks);
+							m_env->getMap().removeNodeAndUpdate(p_under+p_foot, modified_blocks);
 						}
 					}
 				/*
@@ -3032,7 +3033,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 									|| tool->getContent() == CONTENT_TOOLITEM_TINBUCKET
 								)
 							) {
-								MapNode n = m_env.getMap().getNodeNoEx(p_under);
+								MapNode n = m_env->getMap().getNodeNoEx(p_under);
 								n.setContent(CONTENT_SPONGE);
 
 								core::list<u16> far_players;
@@ -3048,7 +3049,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 									MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 
 									std::string p_name = std::string(player->getName());
-									m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
+									m_env->getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
 								}
 								/*
 									Set blocks not sent to far players
@@ -3297,7 +3298,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 				// Stairs and Slabs special functions
 				if (n.getContent() >= CONTENT_SLAB_STAIR_MIN && n.getContent() <= CONTENT_SLAB_STAIR_UD_MAX) {
-					MapNode abv = m_env.getMap().getNodeNoEx(p_over+p_dir);
+					MapNode abv = m_env->getMap().getNodeNoEx(p_over+p_dir);
 					// Flip it upside down if it's being placed on the roof
 					// or if placing against an upside down node
 					if (
@@ -3388,7 +3389,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						p_foot.Z = 1;
 						break;
 					}
-					MapNode foot = m_env.getMap().getNodeNoEx(p_over+p_foot);
+					MapNode foot = m_env->getMap().getNodeNoEx(p_over+p_foot);
 					if (!content_features(foot).buildable_to)
 						return;
 					foot.setContent(n.getContent());
@@ -3400,7 +3401,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 
 						std::string p_name = std::string(player->getName());
-						m_env.getMap().addNodeAndUpdate(p_over+p_foot, foot, modified_blocks, p_name);
+						m_env->getMap().addNodeAndUpdate(p_over+p_foot, foot, modified_blocks, p_name);
 					}
 				}
 
@@ -3517,7 +3518,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				MapNode n;
 				try{
 					// Don't add a node if this is not a free space
-					n = m_env.getMap().getNode(p_over);
+					n = m_env->getMap().getNode(p_over);
 					bool no_enough_privs =
 							((getPlayerPrivs(player) & PRIV_BUILD)==0);
 					if(no_enough_privs)
@@ -3642,12 +3643,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						}
 					}
 				}
-			}else if (
-				item->getName() == std::string("CraftItem")
-				&& (
-					((CraftItem*)item)->getSubName() == std::string("mese_dust")
-				)
-			) {
+			}else if (item->getContent() == CONTENT_CRAFTITEM_MESEDUST) {
 				MapNode n = m_env->getMap().getNodeNoEx(p_over);
 				n.setContent(CONTENT_CIRCUIT_MESEWIRE_OFF);
 				core::list<u16> far_players;
@@ -4587,7 +4583,7 @@ void Server::SendPlayerAnim(const Player* player, u8 animation_id)
 	std::string s = os.str();
 	SharedBuffer<u8> data((u8*)s.c_str(), s.size());
 
-	m_con.SendToAll(0, data, true);
+	m_con->SendToAll(0, data, true);
 }
 
 void Server::SendPlayerItems()
@@ -4678,7 +4674,7 @@ void Server::SendPlayerCookie(Player *player)
 	std::string s = os.str();
 	SharedBuffer<u8> data((u8*)s.c_str(), s.size());
 	// Send as reliable
-	m_con.Send(player->peer_id, 0, data, true);
+	m_con->Send(player->peer_id, 0, data, true);
 }
 
 void Server::SendMovePlayer(Player *player)

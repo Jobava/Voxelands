@@ -316,6 +316,15 @@ void content_craftitem_init()
 	f->gui_name = "Quartz Dust";
 	crafting::set1To1Recipe(CONTENT_CRAFTITEM_QUARTZ,CONTENT_CRAFTITEM_QUARTZ_DUST);
 
+	i = CONTENT_CRAFTITEM_MESEDUST;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_MESEDUST;
+	f->texture = "mese_dust.png";
+	f->name = "mese_dust";
+	f->gui_name = "Mese Dust";
+	f->drop_count = 1;
+	crafting::set1To2Recipe(CONTENT_MESE,CONTENT_CRAFTITEM_MESEDUST);
+
 	i = CONTENT_CRAFTITEM_SALTPETER;
 	f = &g_content_craftitem_features[i];
 	f->content = CONTENT_CRAFTITEM_SALTPETER;

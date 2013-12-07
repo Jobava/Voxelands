@@ -450,14 +450,14 @@ public:
 
 	std::string getPlayerCookie(std::string &name)
 	{
-		Player *p = m_env.getPlayer(name.c_str());
+		Player *p = m_env->getPlayer(name.c_str());
 		if (p == NULL)
 			return "";
 		return p->getCookie();
 	}
 	std::string getPlayerFromCookie(std::string &cookie)
 	{
-		core::list<Player*> players = m_env.getPlayers();
+		core::list<Player*> players = m_env->getPlayers();
 		for (core::list<Player*>::Iterator i = players.begin(); i != players.end(); i++) {
 			Player *player = *i;
 			if (player->getCookie() == cookie)
@@ -465,9 +465,9 @@ public:
 		}
 		return std::string("");
 	}
-	Player *getPlayer(std::string name) {return m_env.getPlayer(name.c_str());}
-	core::list<Player*> getPlayers() {return m_env.getPlayers();}
-	core::list<Player*> getPlayers(bool ign_disconnected) {return m_env.getPlayers(ign_disconnected);}
+	Player *getPlayer(std::string name) {return m_env->getPlayer(name.c_str());}
+	core::list<Player*> getPlayers() {return m_env->getPlayers();}
+	core::list<Player*> getPlayers(bool ign_disconnected) {return m_env->getPlayers(ign_disconnected);}
 
 	// Saves g_settings to configpath given at initialization
 	void saveConfig();

@@ -6215,6 +6215,14 @@ void content_mapnode_init()
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new CircuitNodeMetadata();
 	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+	{
+		u16 recipe[9] = {
+			CONTENT_IGNORE,	CONTENT_CRAFTITEM_MESEDUST,	CONTENT_IGNORE,
+			CONTENT_IGNORE,	CONTENT_STONE,			CONTENT_IGNORE,
+			CONTENT_IGNORE,	CONTENT_CRAFTITEM_QUARTZ_DUST,	CONTENT_IGNORE
+		};
+		crafting::setRecipe(recipe,CONTENT_CIRCUIT_SWITCH_OFF,1);
+	}
 
 	i = CONTENT_CIRCUIT_LAMP;
 	f = &content_features(i);
@@ -6260,6 +6268,14 @@ void content_mapnode_init()
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new CircuitNodeMetadata();
 	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	{
+		u16 recipe[9] = {
+			CONTENT_GLASS,	CONTENT_IGNORE,			CONTENT_GLASS,
+			CONTENT_IGNORE,	CONTENT_CRAFTITEM_QUARTZ,	CONTENT_IGNORE,
+			CONTENT_GLASS,	CONTENT_IGNORE,			CONTENT_GLASS
+		};
+		crafting::setRecipe(recipe,CONTENT_CIRCUIT_LAMP_OFF,1);
+	}
 
 	// NOTE: Remember to add frequently used stuff to the texture atlas in tile.cpp
 
