@@ -36,6 +36,7 @@ enum {
 	GUI_ID_SMOOTH_LIGHTING_CB,
 	GUI_ID_3D_CLOUDS_CB,
 	GUI_ID_OPAQUE_WATER_CB,
+	GUI_ID_PARTICLES_CB,
 	GUI_ID_DAMAGE_CB,
 	GUI_ID_CREATIVE_CB,
 	GUI_ID_JOIN_GAME_BUTTON,
@@ -63,6 +64,7 @@ struct MainMenuData
 		// Client opts
 		fancy_trees(false),
 		smooth_lighting(false),
+		particles(true),
 		// Server opts
 		creative_mode(false),
 		enable_damage(false),
@@ -88,7 +90,7 @@ struct MainMenuData
 	//bool bilinear_filter;
 	//bool trilinear_filter;
 	//int enable_shaders;
-	//bool enable_particles;
+	bool particles;
 	// Server options
 	bool creative_mode;
 	bool enable_damage;

@@ -157,6 +157,7 @@ set(minetest_SRCS
 	keycode.cpp
 	camera.cpp
 	clouds.cpp
+	particles.cpp
 	clientobject.cpp
 	guiMainMenu.cpp
 	guiKeyChangeMenu.cpp

@@ -84,6 +84,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	bool smooth_lighting;
 	bool clouds_3d;
 	bool opaque_water;
+	bool particles;
 
 	m_screensize = screensize;
 
@@ -136,6 +137,13 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			opaque_water = ((gui::IGUICheckBox*)e)->isChecked();
 		else
 			opaque_water = m_data->opaque_water;
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_PARTICLES_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			particles = ((gui::IGUICheckBox*)e)->isChecked();
+		else
+			particles = m_data->particles;
 	}
 
 	// Server options
@@ -326,11 +334,17 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			Environment->addCheckBox(opaque_water, rect, this, GUI_ID_OPAQUE_WATER_CB,
 					wgettext("Opaque water"));
 		}
+		{
+			core::rect<s32> rect(0, 0, 200, 30);
+			rect += topleft_content + v2s32(85, 180);
+			Environment->addCheckBox(particles, rect, this, GUI_ID_PARTICLES_CB,
+					wgettext("Particles"));
+		}
 
 		// Key change button
 		{
 			core::rect<s32> rect(0, 0, 130, 30);
-			rect += topleft_content + v2s32(90, 200);
+			rect += topleft_content + v2s32(90, 230);
 			Environment->addButton(rect, this, GUI_ID_CHANGE_KEYS_BUTTON,
 				wgettext("Change keys"));
 		}
@@ -488,6 +502,11 @@ void GUIMainMenu::acceptInput()
 		gui::IGUIElement *e = getElementFromId(GUI_ID_OPAQUE_WATER_CB);
 		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
 			m_data->opaque_water = ((gui::IGUICheckBox*)e)->isChecked();
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_PARTICLES_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			m_data->particles = ((gui::IGUICheckBox*)e)->isChecked();
 	}
 
 	m_accepted = true;

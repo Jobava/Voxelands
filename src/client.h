@@ -28,6 +28,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "jmutex.h"
 #include <ostream>
 #include "clientobject.h"
+#include "particles.h"
 #include "utility.h" // For IntervalLimiter
 
 struct MeshMakeData;
@@ -202,6 +203,8 @@ public:
 	void sendDamage(u8 damage);
 	void sendRespawn();
 	void sendWantCookie();
+
+	ClientEnvironment& getEnv() { return m_env; }
 
 	// locks envlock
 	void removeNode(v3s16 p);

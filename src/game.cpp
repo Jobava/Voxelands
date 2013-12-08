@@ -1746,6 +1746,8 @@ void the_game(
 					else
 					{
 						dig_time_complete = prop.time;
+						if (g_settings->getBool("enable_particles"))
+							addPunchingParticles(smgr, player, nodepos, content_features(n).tiles);
 					}
 
 					if(dig_time_complete >= 0.001)
@@ -1769,6 +1771,9 @@ void the_game(
 						client.groundAction(3, nodepos, neighbourpos, g_selected_item);
 						client.clearTempMod(nodepos);
 						client.removeNode(nodepos);
+
+						if (g_settings->getBool("enable_particles"))
+							addDiggingParticles(smgr, player, nodepos, content_features(n).tiles);
 
 						dig_time = 0;
 
@@ -1931,6 +1936,12 @@ void the_game(
 			farmesh->update(v2f(player_position.X, player_position.Z),
 					0.05+brightness*0.95, farmesh_range);
 		}
+
+		/*
+			Update particles
+		*/
+		allparticles_step(dtime, client.getEnv());
+		allparticlespawners_step(dtime, client.getEnv());
 
 		// Store brightness value
 		old_brightness = brightness;
@@ -2272,6 +2283,8 @@ void the_game(
 	*/
 	if(clouds)
 		clouds->drop();
+
+	clear_particles();
 
 	/*
 		Draw a "shutting down" screen, which will be shown while the map
