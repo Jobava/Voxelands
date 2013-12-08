@@ -85,6 +85,10 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	bool clouds_3d;
 	bool opaque_water;
 	bool particles;
+	bool mipmap;
+	bool bilinear;
+	bool trilinear;
+	bool anisotropic;
 
 	m_screensize = screensize;
 
@@ -144,6 +148,34 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			particles = ((gui::IGUICheckBox*)e)->isChecked();
 		else
 			particles = m_data->particles;
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_MIPMAP_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			mipmap = ((gui::IGUICheckBox*)e)->isChecked();
+		else
+			mipmap = m_data->mip_map;
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_BILINEAR_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			bilinear = ((gui::IGUICheckBox*)e)->isChecked();
+		else
+			bilinear = m_data->bilinear_filter;
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_TRILINEAR_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			trilinear = ((gui::IGUICheckBox*)e)->isChecked();
+		else
+			trilinear = m_data->trilinear_filter;
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_ANISOTROPIC_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			anisotropic = ((gui::IGUICheckBox*)e)->isChecked();
+		else
+			anisotropic = m_data->anisotropic_filter;
 	}
 
 	// Server options
@@ -340,11 +372,35 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			Environment->addCheckBox(particles, rect, this, GUI_ID_PARTICLES_CB,
 					wgettext("Particles"));
 		}
+		{
+			core::rect<s32> rect(0, 0, 200, 30);
+			rect += topleft_content + v2s32(85, 210);
+			Environment->addCheckBox(mipmap, rect, this, GUI_ID_MIPMAP_CB,
+					wgettext("Mip-Mapping"));
+		}
+		{
+			core::rect<s32> rect(0, 0, 200, 30);
+			rect += topleft_content + v2s32(85, 240);
+			Environment->addCheckBox(bilinear, rect, this, GUI_ID_BILINEAR_CB,
+					wgettext("Bi-Linear Filtering"));
+		}
+		{
+			core::rect<s32> rect(0, 0, 200, 30);
+			rect += topleft_content + v2s32(85, 270);
+			Environment->addCheckBox(trilinear, rect, this, GUI_ID_TRILINEAR_CB,
+					wgettext("Tri-Linear Filtering"));
+		}
+		{
+			core::rect<s32> rect(0, 0, 200, 30);
+			rect += topleft_content + v2s32(85, 300);
+			Environment->addCheckBox(anisotropic, rect, this, GUI_ID_ANISOTROPIC_CB,
+					wgettext("Anisotropic Filtering"));
+		}
 
 		// Key change button
 		{
 			core::rect<s32> rect(0, 0, 130, 30);
-			rect += topleft_content + v2s32(90, 230);
+			rect += topleft_content + v2s32(90, 350);
 			Environment->addButton(rect, this, GUI_ID_CHANGE_KEYS_BUTTON,
 				wgettext("Change keys"));
 		}
@@ -507,6 +563,26 @@ void GUIMainMenu::acceptInput()
 		gui::IGUIElement *e = getElementFromId(GUI_ID_PARTICLES_CB);
 		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
 			m_data->particles = ((gui::IGUICheckBox*)e)->isChecked();
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_MIPMAP_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			m_data->mip_map = ((gui::IGUICheckBox*)e)->isChecked();
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_BILINEAR_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			m_data->bilinear_filter = ((gui::IGUICheckBox*)e)->isChecked();
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_TRILINEAR_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			m_data->trilinear_filter = ((gui::IGUICheckBox*)e)->isChecked();
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_ANISOTROPIC_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			m_data->anisotropic_filter = ((gui::IGUICheckBox*)e)->isChecked();
 	}
 
 	m_accepted = true;

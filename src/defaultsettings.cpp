@@ -82,6 +82,10 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("enable_3d_clouds", "false");
 	settings->setDefault("opaque_water", "false");
 	settings->setDefault("enable_particles", "true");
+	settings->setDefault("mip_map", "false");
+	settings->setDefault("anisotropic_filter", "false");
+	settings->setDefault("bilinear_filter", "false");
+	settings->setDefault("trilinear_filter", "false");
 
 	// Server stuff
 	// "map-dir" doesn't exist by default.

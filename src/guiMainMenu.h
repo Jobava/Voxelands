@@ -36,6 +36,10 @@ enum {
 	GUI_ID_SMOOTH_LIGHTING_CB,
 	GUI_ID_3D_CLOUDS_CB,
 	GUI_ID_OPAQUE_WATER_CB,
+	GUI_ID_MIPMAP_CB,
+	GUI_ID_BILINEAR_CB,
+	GUI_ID_TRILINEAR_CB,
+	GUI_ID_ANISOTROPIC_CB,
 	GUI_ID_PARTICLES_CB,
 	GUI_ID_DAMAGE_CB,
 	GUI_ID_CREATIVE_CB,
@@ -85,10 +89,10 @@ struct MainMenuData
 	bool smooth_lighting;
 	bool clouds_3d;
 	bool opaque_water;
-	//bool mip_map;
-	//bool anisotropic_filter;
-	//bool bilinear_filter;
-	//bool trilinear_filter;
+	bool mip_map;
+	bool anisotropic_filter;
+	bool bilinear_filter;
+	bool trilinear_filter;
 	//int enable_shaders;
 	bool particles;
 	// Server options
