@@ -108,6 +108,14 @@
 #screenshot_path = .
 # Amount of view bobbing (0 = no view bobbing, 1.0 = normal, 2.0 = double)
 #view_bobbing_amount = 1.0
+# Show particles while digging
+#enable_particles = true
+# Filtering settings
+# Bi/trilinear filters are best used on higher resolution texture packs
+#mip_map = true
+#anisotropic_filter = true
+#bilinear_filter = false
+#trilinear_filter = false
 
 #
 # Server stuff
