@@ -64,7 +64,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("fov", "72");
 	settings->setDefault("view_bobbing", "true");
 	settings->setDefault("new_style_water", "false");
-	settings->setDefault("new_style_leaves", "false");
+	settings->setDefault("new_style_leaves", "true");
 	settings->setDefault("smooth_lighting", "true");
 	settings->setDefault("frametime_graph", "false");
 	settings->setDefault("enable_texture_atlas", "true");
@@ -79,11 +79,11 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("invisible_stone", "false");
 	settings->setDefault("screenshot_path", ".");
 	settings->setDefault("view_bobbing_amount", "1.0");
-	settings->setDefault("enable_3d_clouds", "false");
+	settings->setDefault("enable_3d_clouds", "true");
 	settings->setDefault("opaque_water", "false");
 	settings->setDefault("enable_particles", "true");
-	settings->setDefault("mip_map", "false");
-	settings->setDefault("anisotropic_filter", "false");
+	settings->setDefault("mip_map", "true");
+	settings->setDefault("anisotropic_filter", "true");
 	settings->setDefault("bilinear_filter", "false");
 	settings->setDefault("trilinear_filter", "false");
 
