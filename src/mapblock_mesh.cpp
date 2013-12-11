@@ -181,8 +181,7 @@ void makeFastFace(TileSpec tile, u8 li0, u8 li1, u8 li2, u8 li3, v3f p,
 	v3f vertex_pos[4];
 	v3s16 vertex_dirs[4];
 	getNodeVertexDirs(dir, vertex_dirs);
-	for(u16 i=0; i<4; i++)
-	{
+	for (u16 i=0; i<4; i++) {
 		vertex_pos[i] = v3f(
 				BS/2*vertex_dirs[i].X,
 				BS/2*vertex_dirs[i].Y,
@@ -190,8 +189,7 @@ void makeFastFace(TileSpec tile, u8 li0, u8 li1, u8 li2, u8 li3, v3f p,
 		);
 	}
 
-	for(u16 i=0; i<4; i++)
-	{
+	for (u16 i=0; i<4; i++) {
 		vertex_pos[i].X *= scale.X;
 		vertex_pos[i].Y *= scale.Y;
 		vertex_pos[i].Z *= scale.Z;
@@ -199,32 +197,22 @@ void makeFastFace(TileSpec tile, u8 li0, u8 li1, u8 li2, u8 li3, v3f p,
 	}
 
 	f32 abs_scale = 1.;
-	if     (scale.X < 0.999 || scale.X > 1.001) abs_scale = scale.X;
-	else if(scale.Y < 0.999 || scale.Y > 1.001) abs_scale = scale.Y;
-	else if(scale.Z < 0.999 || scale.Z > 1.001) abs_scale = scale.Z;
+	if (scale.X < 0.999 || scale.X > 1.001) {
+		abs_scale = scale.X;
+	}else if(scale.Y < 0.999 || scale.Y > 1.001) {
+		abs_scale = scale.Y;
+	}else if(scale.Z < 0.999 || scale.Z > 1.001) {
+		abs_scale = scale.Z;
+	}
 
 	v3f zerovector = v3f(0,0,0);
 
 	u8 alpha = tile.alpha;
-	/*u8 alpha = 255;
-	if(tile.id == TILE_WATER)
-		alpha = WATER_ALPHA;*/
 
 	float x0 = tile.texture.pos.X;
 	float y0 = tile.texture.pos.Y;
 	float w = tile.texture.size.X;
 	float h = tile.texture.size.Y;
-
-	/*video::SColor c = MapBlock_LightColor(alpha, li);
-
-	face.vertices[0] = video::S3DVertex(vertex_pos[0], v3f(0,1,0), c,
-			core::vector2d<f32>(x0+w*abs_scale, y0+h));
-	face.vertices[1] = video::S3DVertex(vertex_pos[1], v3f(0,1,0), c,
-			core::vector2d<f32>(x0, y0+h));
-	face.vertices[2] = video::S3DVertex(vertex_pos[2], v3f(0,1,0), c,
-			core::vector2d<f32>(x0, y0));
-	face.vertices[3] = video::S3DVertex(vertex_pos[3], v3f(0,1,0), c,
-			core::vector2d<f32>(x0+w*abs_scale, y0));*/
 
 	face.vertices[0] = video::S3DVertex(vertex_pos[0], v3f(0,1,0),
 			MapBlock_LightColor(alpha, li0),
@@ -240,8 +228,6 @@ void makeFastFace(TileSpec tile, u8 li0, u8 li1, u8 li2, u8 li3, v3f p,
 			core::vector2d<f32>(x0+w*abs_scale, y0));
 
 	face.tile = tile;
-	//DEBUG
-	//f->tile = TILE_STONE;
 
 	dest.push_back(face);
 }
@@ -259,22 +245,13 @@ TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir,
 	/*
 		Check temporary modifications on this node
 	*/
-	/*core::map<v3s16, NodeMod>::Node *n;
-	n = m_temp_mods.find(p);
-	// If modified
-	if(n != NULL)
-	{
-		struct NodeMod mod = n->getValue();*/
 	NodeMod mod;
-	if(temp_mods.get(p, &mod))
-	{
-		if(mod.type == NODEMOD_CHANGECONTENT)
-		{
+	if (temp_mods.get(p, &mod)) {
+		if (mod.type == NODEMOD_CHANGECONTENT) {
 			MapNode mn2(mod.param);
 			spec = mn2.getTile(face_dir);
 		}
-		if(mod.type == NODEMOD_CRACK)
-		{
+		if (mod.type == NODEMOD_CRACK) {
 			/*
 				Get texture id, translate it to name, append stuff to
 				name, get texture id
@@ -291,10 +268,6 @@ TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir,
 			// Get new texture
 			u32 new_id = g_texturesource->getTextureId(os.str());
 
-			/*dstream<<"MapBlock::getNodeTile(): Switching from "
-					<<orig_name<<" to "<<os.str()<<" ("
-					<<orig_id<<" to "<<new_id<<")"<<std::endl;*/
-
 			spec.texture = g_texturesource->getTexture(new_id);
 		}
 	}
@@ -307,23 +280,12 @@ content_t getNodeContent(v3s16 p, MapNode mn, NodeModMap &temp_mods)
 	/*
 		Check temporary modifications on this node
 	*/
-	/*core::map<v3s16, NodeMod>::Node *n;
-	n = m_temp_mods.find(p);
-	// If modified
-	if(n != NULL)
-	{
-		struct NodeMod mod = n->getValue();*/
 	NodeMod mod;
-	if(temp_mods.get(p, &mod))
-	{
+	if (temp_mods.get(p, &mod)) {
 		if(mod.type == NODEMOD_CHANGECONTENT)
-		{
-			// Overrides content
 			return mod.param;
-		}
-		if(mod.type == NODEMOD_CRACK)
+		/*if(mod.type == NODEMOD_CRACK)
 		{
-			/*
 				Content doesn't change.
 
 				face_contents works just like it should, because
@@ -333,8 +295,7 @@ content_t getNodeContent(v3s16 p, MapNode mn, NodeModMap &temp_mods)
 				If a semi-transparent node is cracked in front an
 				another one, it really doesn't matter whether there
 				is a cracked face drawn in between or not.
-			*/
-		}
+		}*/
 	}
 
 	return mn.getContent();
@@ -357,13 +318,13 @@ u8 getSmoothLight(v3s16 p, VoxelManipulator &vmanip, u32 daynight_ratio)
 	u16 ambient_occlusion = 0;
 	u16 light = 0;
 	u16 light_count = 0;
-	for(u32 i=0; i<8; i++)
-	{
+	for(u32 i=0; i<8; i++) {
 		MapNode n = vmanip.getNodeNoEx(p - dirs8[i]);
-		if(content_features(n).param_type == CPT_LIGHT
-				// Fast-style leaves look better this way
-				&& content_features(n).solidness != 2)
-		{
+		if (
+			content_features(n).param_type == CPT_LIGHT
+			// Fast-style leaves look better this way
+			&& content_features(n).solidness != 2
+		) {
 			light += decode_light(n.getLightBlend(daynight_ratio));
 			light_count++;
 		}else if (content_features(n).draw_type == CDT_NODEBOX) {
@@ -376,13 +337,12 @@ u8 getSmoothLight(v3s16 p, VoxelManipulator &vmanip, u32 daynight_ratio)
 		}
 	}
 
-	if(light_count == 0)
+	if (light_count == 0)
 		return 255;
 
 	light /= light_count;
 
-	if(ambient_occlusion > 4)
-	{
+	if (ambient_occlusion > 4) {
 		ambient_occlusion -= 4;
 		light = (float)light / ((float)ambient_occlusion * 0.5 + 1.0);
 	}
@@ -394,12 +354,21 @@ u8 getSmoothLight(v3s16 p, VoxelManipulator &vmanip, u32 daynight_ratio)
 u8 getSmoothLight(v3s16 p, v3s16 corner,
 		VoxelManipulator &vmanip, u32 daynight_ratio)
 {
-	if(corner.X == 1) p.X += 1;
-	else              assert(corner.X == -1);
-	if(corner.Y == 1) p.Y += 1;
-	else              assert(corner.Y == -1);
-	if(corner.Z == 1) p.Z += 1;
-	else              assert(corner.Z == -1);
+	if (corner.X == 1) {
+		p.X += 1;
+	}else{
+		assert(corner.X == -1);
+	}
+	if (corner.Y == 1) {
+		p.Y += 1;
+	}else{
+		assert(corner.Y == -1);
+	}
+	if (corner.Z == 1) {
+		p.Z += 1;
+	}else{
+		assert(corner.Z == -1);
+	}
 
 	return getSmoothLight(p, vmanip, daynight_ratio);
 }
@@ -432,44 +401,35 @@ void getTileInfo(
 	bool equivalent = false;
 	u8 mf = face_contents(content0, content1, &equivalent);
 
-	if(mf == 0)
-	{
+	if (mf == 0) {
 		makes_face = false;
 		return;
 	}
 
 	makes_face = true;
 
-	if(mf == 1)
-	{
+	if (mf == 1) {
 		tile = tile0;
 		p_corrected = p;
 		face_dir_corrected = face_dir;
-	}
-	else
-	{
+	}else{
 		tile = tile1;
 		p_corrected = p + face_dir;
 		face_dir_corrected = -face_dir;
 	}
 
 	// eg. water and glass
-	if(equivalent)
+	if (equivalent)
 		tile.material_flags |= MATERIAL_FLAG_BACKFACE_CULLING;
 
-	if(smooth_lighting == false)
-	{
+	if (smooth_lighting == false) {
 		lights[0] = lights[1] = lights[2] = lights[3] =
 				decode_light(getFaceLight(daynight_ratio, n0, n1, face_dir));
-	}
-	else
-	{
+	}else{
 		v3s16 vertex_dirs[4];
 		getNodeVertexDirs(face_dir_corrected, vertex_dirs);
-		for(u16 i=0; i<4; i++)
-		{
-			lights[i] = getSmoothLight(blockpos_nodes + p_corrected,
-					vertex_dirs[i], vmanip, daynight_ratio);
+		for (u16 i=0; i<4; i++) {
+			lights[i] = getSmoothLight(blockpos_nodes + p_corrected, vertex_dirs[i], vmanip, daynight_ratio);
 		}
 	}
 
@@ -509,8 +469,7 @@ void updateFastFaceRow(
 			vmanip, temp_mods, smooth_lighting,
 			makes_face, p_corrected, face_dir_corrected, lights, tile);
 
-	for(u16 j=0; j<length; j++)
-	{
+	for (u16 j=0; j<length; j++) {
 		// If tiling can be done, this is set to false in the next step
 		bool next_is_different = true;
 
@@ -524,8 +483,7 @@ void updateFastFaceRow(
 
 		// If at last position, there is nothing to compare to and
 		// the face must be drawn anyway
-		if(j != length - 1)
-		{
+		if (j != length - 1) {
 			p_next = p + translate_dir;
 
 			getTileInfo(blockpos_nodes, p_next, face_dir, daynight_ratio,
@@ -534,40 +492,18 @@ void updateFastFaceRow(
 					next_face_dir_corrected, next_lights,
 					next_tile);
 
-			if(next_makes_face == makes_face
-					&& next_p_corrected == p_corrected + translate_dir
-					&& next_face_dir_corrected == face_dir_corrected
-					&& next_lights[0] == lights[0]
-					&& next_lights[1] == lights[1]
-					&& next_lights[2] == lights[2]
-					&& next_lights[3] == lights[3]
-					&& next_tile == tile)
-			{
+			if (
+				next_makes_face == makes_face
+				&& next_p_corrected == p_corrected + translate_dir
+				&& next_face_dir_corrected == face_dir_corrected
+				&& next_lights[0] == lights[0]
+				&& next_lights[1] == lights[1]
+				&& next_lights[2] == lights[2]
+				&& next_lights[3] == lights[3]
+				&& next_tile == tile
+			) {
 				next_is_different = false;
 			}
-			else{
-				/*if(makes_face){
-					g_profiler->add("Meshgen: diff: next_makes_face != makes_face",
-							next_makes_face != makes_face ? 1 : 0);
-					g_profiler->add("Meshgen: diff: n_p_corr != p_corr + t_dir",
-							(next_p_corrected != p_corrected + translate_dir) ? 1 : 0);
-					g_profiler->add("Meshgen: diff: next_f_dir_corr != f_dir_corr",
-							next_face_dir_corrected != face_dir_corrected ? 1 : 0);
-					g_profiler->add("Meshgen: diff: next_lights[] != lights[]",
-							(next_lights[0] != lights[0] ||
-							next_lights[0] != lights[0] ||
-							next_lights[0] != lights[0] ||
-							next_lights[0] != lights[0]) ? 1 : 0);
-					g_profiler->add("Meshgen: diff: !(next_tile == tile)",
-							!(next_tile == tile) ? 1 : 0);
-				}*/
-			}
-			/*g_profiler->add("Meshgen: Total faces checked", 1);
-			if(makes_face)
-				g_profiler->add("Meshgen: Total makes_face checked", 1);*/
-		} else {
-			/*if(makes_face)
-				g_profiler->add("Meshgen: diff: last position", 1);*/
 		}
 
 		continuous_tiles_count++;
@@ -579,51 +515,34 @@ void updateFastFaceRow(
 			If tiled==0, it means the texture can be tiled infinitely.
 			Otherwise check tiled agains continuous_tiles_count.
 		*/
-		if(tile.texture.atlas != NULL && tile.texture.tiled != 0)
-		{
-			if(tile.texture.tiled <= continuous_tiles_count)
+		if (tile.texture.atlas != NULL && tile.texture.tiled != 0) {
+			if (tile.texture.tiled <= continuous_tiles_count)
 				end_of_texture = true;
 		}
 
-		// Do this to disable tiling textures
-		//end_of_texture = true; //DEBUG
-
-		if(next_is_different || end_of_texture)
-		{
+		if (next_is_different || end_of_texture) {
 			/*
 				Create a face if there should be one
 			*/
-			if(makes_face)
-			{
+			if (makes_face) {
 				// Floating point conversion of the position vector
 				v3f pf(p_corrected.X, p_corrected.Y, p_corrected.Z);
 				// Center point of face (kind of)
 				v3f sp = pf - ((f32)continuous_tiles_count / 2. - 0.5) * translate_dir_f;
-				if(continuous_tiles_count != 1)
+				if (continuous_tiles_count != 1)
 					sp += translate_dir_f;
 				v3f scale(1,1,1);
 
 				if(translate_dir.X != 0)
-				{
 					scale.X = continuous_tiles_count;
-				}
 				if(translate_dir.Y != 0)
-				{
 					scale.Y = continuous_tiles_count;
-				}
 				if(translate_dir.Z != 0)
-				{
 					scale.Z = continuous_tiles_count;
-				}
 
 				makeFastFace(tile, lights[0], lights[1], lights[2], lights[3],
 						sp, face_dir_corrected, scale,
 						posRelative_f, dest);
-
-				g_profiler->avg("Meshgen: faces drawn by tiling", 0);
-				for(int i=1; i<continuous_tiles_count; i++){
-					g_profiler->avg("Meshgen: faces drawn by tiling", 1);
-				}
 			}
 
 			continuous_tiles_count = 0;
@@ -657,8 +576,6 @@ scene::SMesh* makeMapBlockMesh(MeshMakeData *data)
 	/*
 		Some settings
 	*/
-	//bool new_style_water = g_settings->getBool("new_style_water");
-	//bool new_style_leaves = g_settings->getBool("new_style_leaves");
 	bool smooth_lighting = g_settings->getBool("smooth_lighting");
 
 	/*
