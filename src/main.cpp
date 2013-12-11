@@ -1058,26 +1058,26 @@ void drawMenuBackground(video::IVideoDriver* driver)
 		}
 	}
 
-	video::ITexture *logotexture =
-			driver->getTexture(getTexturePath("menulogo.png").c_str());
-	if(logotexture)
-	{
-		v2s32 logosize(logotexture->getOriginalSize().Width,
-				logotexture->getOriginalSize().Height);
+	//video::ITexture *logotexture =
+			//driver->getTexture(getTexturePath("menulogo.png").c_str());
+	//if(logotexture)
+	//{
+		//v2s32 logosize(logotexture->getOriginalSize().Width,
+				//logotexture->getOriginalSize().Height);
 
-		video::SColor bgcolor(255,50,50,50);
-		core::rect<s32> bgrect(0, screensize.Height-logosize.Y-20,
-				screensize.Width, screensize.Height);
-		driver->draw2DRectangle(bgcolor, bgrect, NULL);
+		//video::SColor bgcolor(255,50,50,50);
+		//core::rect<s32> bgrect(0, screensize.Height-logosize.Y-20,
+				//screensize.Width, screensize.Height);
+		//driver->draw2DRectangle(bgcolor, bgrect, NULL);
 
-		core::rect<s32> rect(0,0,logosize.X,logosize.Y);
-		rect += v2s32(screensize.Width/2,screensize.Height-10-logosize.Y);
-		rect -= v2s32(logosize.X/2, 0);
-		driver->draw2DImage(logotexture, rect,
-			core::rect<s32>(core::position2d<s32>(0,0),
-			core::dimension2di(logotexture->getSize())),
-			NULL, NULL, true);
-	}
+		//core::rect<s32> rect(0,0,logosize.X,logosize.Y);
+		//rect += v2s32(screensize.Width/2,screensize.Height-10-logosize.Y);
+		//rect -= v2s32(logosize.X/2, 0);
+		//driver->draw2DImage(logotexture, rect,
+			//core::rect<s32>(core::position2d<s32>(0,0),
+			//core::dimension2di(logotexture->getSize())),
+			//NULL, NULL, true);
+	//}
 }
 
 class StderrLogOutput: public ILogOutput

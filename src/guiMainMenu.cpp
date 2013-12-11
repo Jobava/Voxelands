@@ -28,7 +28,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <IGUIButton.h>
 #include <IGUIStaticText.h>
 #include <IGUIFont.h>
-#include <IGUITabControl.h>
+#include "path.h"
 
 
 #include "gettext.h"
@@ -203,7 +203,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		Calculate new sizes and positions
 	*/
 
-	v2s32 size(500, 430);
+	v2s32 size(600, 500);
 
 	core::rect<s32> rect(
 			screensize.X/2 - size.X/2,
@@ -218,31 +218,31 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	// Single Player button
 	{
 		core::rect<s32> rect(0, 0, 180, 30);
-		rect += v2s32(10, 80);
+		rect += v2s32(10, 120);
 		Environment->addButton(rect, this, GUI_ID_TAB_SINGLEPLAYER, wgettext("Single Player"));
 	}
 	// Multi Player button
 	{
 		core::rect<s32> rect(0, 0, 180, 30);
-		rect += v2s32(10, 120);
+		rect += v2s32(10, 160);
 		Environment->addButton(rect, this, GUI_ID_TAB_MULTIPLAYER, wgettext("Multi Player"));
 	}
 	// Settings button
 	{
 		core::rect<s32> rect(0, 0, 180, 30);
-		rect += v2s32(10, 160);
+		rect += v2s32(10, 200);
 		Environment->addButton(rect, this, GUI_ID_TAB_SETTINGS, wgettext("Settings"));
 	}
 	// Credits button
 	{
 		core::rect<s32> rect(0, 0, 180, 30);
-		rect += v2s32(10, 200);
+		rect += v2s32(10, 240);
 		Environment->addButton(rect, this, GUI_ID_TAB_CREDITS, wgettext("Credits"));
 	}
 	// Quit button
 	{
 		core::rect<s32> rect(0, 0, 180, 30);
-		rect += v2s32(10, 240);
+		rect += v2s32(10, 280);
 		Environment->addButton(rect, this, GUI_ID_TAB_QUIT, wgettext("Quit"));
 	}
 
@@ -272,7 +272,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	if (m_data->selected_tab == TAB_MULTIPLAYER) {
 		changeCtype("");
 		{
-			core::rect<s32> rect(0, 0, 310, 20);
+			core::rect<s32> rect(0, 0, 400, 20);
 			rect += topleft_content + v2s32(0, 20);
 			const wchar_t *text = L"Multi Player";
 			gui::IGUIStaticText *t = Environment->addStaticText(text, rect, false, true, this, -1);
@@ -282,13 +282,13 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		// Nickname + password
 		{
 			core::rect<s32> rect(0, 0, 110, 20);
-			rect += topleft_content + v2s32(20, 60);
+			rect += topleft_content + v2s32(70, 60);
 			Environment->addStaticText(wgettext("Name/Password"), rect, false, true, this, -1);
 		}
 		changeCtype("C");
 		{
 			core::rect<s32> rect(0, 0, 230, 30);
-			rect += topleft_content + v2s32(35, 90);
+			rect += topleft_content + v2s32(85, 90);
 			gui::IGUIElement *e =
 			Environment->addEditBox(text_name.c_str(), rect, false, this, GUI_ID_NAME_INPUT);
 			if(text_name == L"")
@@ -296,7 +296,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		}
 		{
 			core::rect<s32> rect(0, 0, 230, 30);
-			rect += topleft_content + v2s32(35, 125);
+			rect += topleft_content + v2s32(85, 125);
 			gui::IGUIEditBox *e =
 			Environment->addEditBox(L"", rect, false, this, 264);
 			e->setPasswordBox(true);
@@ -308,14 +308,14 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		// Address + port
 		{
 			core::rect<s32> rect(0, 0, 110, 20);
-			rect += topleft_content + v2s32(20, 170);
+			rect += topleft_content + v2s32(70, 170);
 			Environment->addStaticText(wgettext("Address/Port"),
 				rect, false, true, this, -1);
 		}
 		changeCtype("C");
 		{
 			core::rect<s32> rect(0, 0, 230, 30);
-			rect += topleft_content + v2s32(35, 200);
+			rect += topleft_content + v2s32(85, 200);
 			gui::IGUIElement *e =
 			Environment->addEditBox(text_address.c_str(), rect, false, this, GUI_ID_ADDRESS_INPUT);
 			if(text_name != L"" && text_address == L"")
@@ -323,20 +323,20 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		}
 		{
 			core::rect<s32> rect(0, 0, 120, 30);
-			rect += topleft_content + v2s32(145, 240);
+			rect += topleft_content + v2s32(195, 240);
 			Environment->addEditBox(text_port.c_str(), rect, false, this, GUI_ID_PORT_INPUT);
 		}
 		changeCtype("");
 		// Start game button
 		{
 			core::rect<s32> rect(0, 0, 180, 30);
-			rect += topleft_content + v2s32(60, 290);
+			rect += topleft_content + v2s32(110, 290);
 			Environment->addButton(rect, this, GUI_ID_JOIN_GAME_BUTTON, wgettext("Connect"));
 		}
 	}else if (m_data->selected_tab == TAB_SETTINGS) {
 		changeCtype("");
 		{
-			core::rect<s32> rect(0, 0, 310, 20);
+			core::rect<s32> rect(0, 0, 400, 20);
 			rect += topleft_content + v2s32(0, 20);
 			const wchar_t *text = L"Settings";
 			gui::IGUIStaticText *t = Environment->addStaticText(text, rect, false, true, this, -1);
@@ -344,55 +344,55 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(85, 60);
+			rect += topleft_content + v2s32(40, 60);
 			Environment->addCheckBox(fancy_trees, rect, this, GUI_ID_FANCYTREE_CB,
 				wgettext("Fancy trees"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(85, 90);
+			rect += topleft_content + v2s32(40, 90);
 			Environment->addCheckBox(smooth_lighting, rect, this, GUI_ID_SMOOTH_LIGHTING_CB,
 					wgettext("Smooth Lighting"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(85, 120);
+			rect += topleft_content + v2s32(40, 120);
 			Environment->addCheckBox(clouds_3d, rect, this, GUI_ID_3D_CLOUDS_CB,
 					wgettext("3D Clouds"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(85, 150);
+			rect += topleft_content + v2s32(40, 150);
 			Environment->addCheckBox(opaque_water, rect, this, GUI_ID_OPAQUE_WATER_CB,
 					wgettext("Opaque water"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(85, 180);
+			rect += topleft_content + v2s32(200, 60);
 			Environment->addCheckBox(particles, rect, this, GUI_ID_PARTICLES_CB,
 					wgettext("Particles"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(85, 210);
+			rect += topleft_content + v2s32(200, 90);
 			Environment->addCheckBox(mipmap, rect, this, GUI_ID_MIPMAP_CB,
 					wgettext("Mip-Mapping"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(85, 240);
+			rect += topleft_content + v2s32(200, 120);
 			Environment->addCheckBox(bilinear, rect, this, GUI_ID_BILINEAR_CB,
 					wgettext("Bi-Linear Filtering"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(85, 270);
+			rect += topleft_content + v2s32(200, 150);
 			Environment->addCheckBox(trilinear, rect, this, GUI_ID_TRILINEAR_CB,
 					wgettext("Tri-Linear Filtering"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(85, 300);
+			rect += topleft_content + v2s32(200, 180);
 			Environment->addCheckBox(anisotropic, rect, this, GUI_ID_ANISOTROPIC_CB,
 					wgettext("Anisotropic Filtering"));
 		}
@@ -400,14 +400,14 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		// Key change button
 		{
 			core::rect<s32> rect(0, 0, 130, 30);
-			rect += topleft_content + v2s32(90, 350);
+			rect += topleft_content + v2s32(140, 250);
 			Environment->addButton(rect, this, GUI_ID_CHANGE_KEYS_BUTTON,
 				wgettext("Change keys"));
 		}
 	}else if (m_data->selected_tab == TAB_SINGLEPLAYER) {
 		changeCtype("");
 		{
-			core::rect<s32> rect(0, 0, 300, 20);
+			core::rect<s32> rect(0, 0, 400, 20);
 			rect += topleft_content + v2s32(0, 20);
 			const wchar_t *text = L"Single Player";
 			gui::IGUIStaticText *t = Environment->addStaticText(text, rect, false, true, this, -1);
@@ -417,37 +417,37 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		// Server parameters
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(85, 60);
+			rect += topleft_content + v2s32(135, 60);
 			Environment->addCheckBox(creative_mode, rect, this, GUI_ID_CREATIVE_CB, wgettext("Creative Mode"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(85, 90);
+			rect += topleft_content + v2s32(135, 90);
 			Environment->addCheckBox(enable_damage, rect, this, GUI_ID_DAMAGE_CB, wgettext("Enable Damage"));
 		}
 		// Map delete button
 		{
 			core::rect<s32> rect(0, 0, 130, 30);
-			rect += topleft_content + v2s32(90, 130);
+			rect += topleft_content + v2s32(135, 130);
 			Environment->addButton(rect, this, GUI_ID_DELETE_MAP_BUTTON, wgettext("Delete map"));
 		}
 		// Start game button
 		{
 			core::rect<s32> rect(0, 0, 180, 30);
-			rect += topleft_content + v2s32(60, 200);
+			rect += topleft_content + v2s32(110, 200);
 			Environment->addButton(rect, this, GUI_ID_JOIN_GAME_BUTTON, wgettext("Start Game"));
 		}
 	}else if(m_data->selected_tab == TAB_CREDITS) {
 		// CREDITS
 		{
-			core::rect<s32> rect(0, 0, 310, 20);
+			core::rect<s32> rect(0, 0, 400, 20);
 			rect += topleft_content + v2s32(0, 20);
 			const wchar_t *text = L"Credits";
 			gui::IGUIStaticText *t = Environment->addStaticText(text, rect, false, true, this, -1);
 			t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 		}
 		{
-			core::rect<s32> rect(0, 0, 300, 350);
+			core::rect<s32> rect(0, 0, 400, 350);
 			rect += topleft_content + v2s32(0, 50);
 			gui::IGUIStaticText *t = Environment->addStaticText(
 				narrow_to_wide(
@@ -455,7 +455,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 					"http://www.minetest-classic.com/\n"
 					"\n"
 					"By Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
-					"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche\n"
+					"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS\n"
 					"\n"
 					"Based on Minetest-C55\n"
 					"by Perttu Ahola <celeron55@gmail.com>\n"
@@ -486,7 +486,7 @@ void GUIMainMenu::drawMenu()
 		core::rect<s32> left(
 			AbsoluteRect.UpperLeftCorner.X,
 			AbsoluteRect.UpperLeftCorner.Y,
-			AbsoluteRect.LowerRightCorner.X-300,
+			AbsoluteRect.LowerRightCorner.X-400,
 			AbsoluteRect.LowerRightCorner.Y
 		);
 		core::rect<s32> right(
@@ -495,10 +495,24 @@ void GUIMainMenu::drawMenu()
 			AbsoluteRect.LowerRightCorner.X,
 			AbsoluteRect.LowerRightCorner.Y
 		);
-		driver->draw2DRectangle(left, bgtcolor, bgtcolor, bgbcolor, bgbcolor, &AbsoluteClippingRect);
-		driver->draw2DRectangle(right, bgbcolor, bgbcolor, bgtcolor, bgtcolor, &AbsoluteClippingRect);
+		driver->draw2DRectangle(left, bgbcolor, bgbcolor, bgbcolor, bgbcolor, &AbsoluteClippingRect);
+		driver->draw2DRectangle(right, bgtcolor, bgbcolor, bgtcolor, bgbcolor, &AbsoluteClippingRect);
 		video::SColor bdcolor(245,60,60,80);
 		driver->draw2DRectangleOutline(AbsoluteRect, bdcolor);
+
+		video::ITexture *texture = driver->getTexture(getTexturePath("menulogo.png").c_str());
+		if (texture != 0) {
+			const core::dimension2d<u32>& img_origsize = texture->getOriginalSize();
+			core::rect<s32> logo(
+				AbsoluteRect.UpperLeftCorner.X,
+				AbsoluteRect.UpperLeftCorner.Y,
+				AbsoluteRect.UpperLeftCorner.X+200,
+				AbsoluteRect.UpperLeftCorner.Y+80
+			);
+			const video::SColor color(255,255,255,255);
+			const video::SColor colors[] = {color,color,color,color};
+			driver->draw2DImage(texture, logo, core::rect<s32>(core::position2d<s32>(0,0),img_origsize), NULL, colors, true);
+		}
 	}
 
 	gui::IGUIElement::draw();
