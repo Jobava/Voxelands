@@ -390,8 +390,9 @@ void RatCAO::addToScene(scene::ISceneManager *smgr)
 
 		m_node->setPosition(v3f(0,0,0));
 	}
+#if (IRRLICHT_VERSION_MAJOR >= 1 && IRRLICHT_VERSION_MINOR >= 8) || IRRLICHT_VERSION_MAJOR >= 2
 	mesh->drop();
-
+#endif
 	updateNodePos();
 }
 
@@ -535,7 +536,9 @@ void Oerkki1CAO::addToScene(scene::ISceneManager *smgr)
 
 		m_node->setPosition(v3f(0,0,0));
 	}
+#if (IRRLICHT_VERSION_MAJOR >= 1 && IRRLICHT_VERSION_MINOR >= 8) || IRRLICHT_VERSION_MAJOR >= 2
 	mesh->drop();
+#endif
 	updateNodePos();
 }
 

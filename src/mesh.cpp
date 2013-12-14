@@ -19,6 +19,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "mesh.h"
 #include "log.h"
+#include "utility.h"
 #include <cassert>
 #include <iostream>
 #include <vector>
@@ -28,6 +29,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "constants.h"
 #include "path.h"
 #include <IMeshLoader.h>
+#include <IMeshCache.h>
 
 // In Irrlicht 1.8 the signature of ITexture::lock was changed from
 // (bool, u32) to (E_TEXTURE_LOCK_MODE, u32).
@@ -122,6 +124,8 @@ scene::IAnimatedMesh* createModelMesh(scene::ISceneManager* smgr, std::string mo
 	scene::IAnimatedMesh* mesh = smgr->getMesh(model_path.c_str());
 	if (mesh && !unique)
 		return mesh;
+#if (IRRLICHT_VERSION_MAJOR >= 1 && IRRLICHT_VERSION_MINOR >= 8) || IRRLICHT_VERSION_MAJOR >= 2
+	// irrlicht 1.8+ we just manually load the mesh
 	scene::IMeshLoader *loader;
 	u32 lc = smgr->getMeshLoaderCount();
 	io::IReadFile* file = smgr->getFileSystem()->createAndOpenFile(model_path.c_str());
@@ -136,6 +140,21 @@ scene::IAnimatedMesh* createModelMesh(scene::ISceneManager* smgr, std::string mo
 		}
 	}
 	file->drop();
+#else
+	// irrlicht 1.7 doesn't have a meshloader interface, so rename
+	// the previous mesh from this file to force scenemanager to
+	// load a fresh mesh
+	scene::IMeshCache *mc = smgr->getMeshCache();
+	std::string mp;
+	int i=0;
+	do{
+		mp = model_path + "-" + itos(i++);
+	} while (mc->getMeshByName(mp.c_str()));
+
+	mc->renameMesh(mesh,mp.c_str());
+
+	mesh = smgr->getMesh(model_path.c_str());
+#endif
 	return mesh;
 }
 #endif

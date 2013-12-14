@@ -237,7 +237,9 @@ RemotePlayer::RemotePlayer(
 
 			m_node->setPosition(v3f(0,(f32)BS,0));
 		}
+#if (IRRLICHT_VERSION_MAJOR >= 1 && IRRLICHT_VERSION_MINOR >= 8) || IRRLICHT_VERSION_MAJOR >= 2
 		mesh->drop();
+#endif
 	}
 }
 
