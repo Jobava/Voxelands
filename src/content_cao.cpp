@@ -364,27 +364,33 @@ void RatCAO::addToScene(scene::ISceneManager *smgr)
 		return;
 
 	video::IVideoDriver* driver = smgr->getVideoDriver();
-	scene::IAnimatedMesh* mesh = smgr->getMesh(getModelPath("rat.x").c_str());
+	scene::IAnimatedMesh* mesh = createModelMesh(smgr,"rat.x",true);
 	if (!mesh)
 		return;
 
 	m_node = smgr->addAnimatedMeshSceneNode(mesh);
-//	m_node = m_node->clone(); // this will be fixed in later irrlicht versions, but for now our mobs flash
 
 	if (m_node) {
 		m_node->setFrameLoop(0,79);
 		m_node->setScale(v3f(1.0,1.0,1.0));
 		setMeshColor(m_node->getMesh(), video::SColor(255,255,255,255));
 
+		bool use_trilinear_filter = g_settings->getBool("trilinear_filter");
+		bool use_bilinear_filter = g_settings->getBool("bilinear_filter");
+		bool use_anisotropic_filter = g_settings->getBool("anisotropic_filter");
+
 		// Set material flags and texture
 		m_node->setMaterialTexture( 0, driver->getTexture(getTexturePath("rat_mob.png").c_str()));
 		video::SMaterial& material = m_node->getMaterial(0);
 		material.setFlag(video::EMF_LIGHTING, false);
-		material.setFlag(video::EMF_BILINEAR_FILTER, false);
+		material.setFlag(video::EMF_TRILINEAR_FILTER, use_trilinear_filter);
+		material.setFlag(video::EMF_BILINEAR_FILTER, use_bilinear_filter);
+		material.setFlag(video::EMF_ANISOTROPIC_FILTER, use_anisotropic_filter);
 		material.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
 
 		m_node->setPosition(v3f(0,0,0));
 	}
+	mesh->drop();
 
 	updateNodePos();
 }
@@ -403,10 +409,9 @@ void RatCAO::updateLight(u8 light_at_pos)
 	if(m_node == NULL)
 		return;
 
-	// disabled due to the clone bug, this will at least stop flashing
-	//u8 li = decode_light(light_at_pos);
-	//video::SColor color(255,li,li,li);
-	//setMeshVerticesColor(m_node->getMesh(), color);
+	u8 li = decode_light(light_at_pos);
+	video::SColor color(255,li,li,li);
+	setMeshVerticesColor(m_node->getMesh(), color);
 }
 
 v3s16 RatCAO::getLightPosition()
@@ -505,27 +510,32 @@ void Oerkki1CAO::addToScene(scene::ISceneManager *smgr)
 		return;
 
 	video::IVideoDriver* driver = smgr->getVideoDriver();
-	scene::IAnimatedMesh* mesh = smgr->getMesh(getModelPath("oerkki.x").c_str());
+	scene::IAnimatedMesh* mesh = createModelMesh(smgr,"oerkki.x",true);
 	if (!mesh)
 		return;
 
 	m_node = smgr->addAnimatedMeshSceneNode(mesh);
-//	m_node = m_node->clone(); // this will be fixed in later irrlicht versions, but for now our mobs flash
 
 	if (m_node) {
 		m_node->setFrameLoop(24,36);
 		m_node->setScale(v3f(5.0,5.0,5.0));
 		setMeshColor(m_node->getMesh(), video::SColor(255,255,255,255));
+		bool use_trilinear_filter = g_settings->getBool("trilinear_filter");
+		bool use_bilinear_filter = g_settings->getBool("bilinear_filter");
+		bool use_anisotropic_filter = g_settings->getBool("anisotropic_filter");
 
 		// Set material flags and texture
 		m_node->setMaterialTexture( 0, driver->getTexture(getTexturePath("oerkki.png").c_str()));
 		video::SMaterial& material = m_node->getMaterial(0);
 		material.setFlag(video::EMF_LIGHTING, false);
-		material.setFlag(video::EMF_BILINEAR_FILTER, false);
+		material.setFlag(video::EMF_TRILINEAR_FILTER, use_trilinear_filter);
+		material.setFlag(video::EMF_BILINEAR_FILTER, use_bilinear_filter);
+		material.setFlag(video::EMF_ANISOTROPIC_FILTER, use_anisotropic_filter);
 		material.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
 
 		m_node->setPosition(v3f(0,0,0));
 	}
+	mesh->drop();
 	updateNodePos();
 }
 
@@ -551,10 +561,9 @@ void Oerkki1CAO::updateLight(u8 light_at_pos)
 
 	m_node->setVisible(true);
 
-	// disabled due to the clone bug, this will at least stop flashing
-	//u8 li = decode_light(light_at_pos);
-	//video::SColor color(255,li,li,li);
-	//setMeshVerticesColor(m_node->getMesh(), color);
+	u8 li = decode_light(light_at_pos);
+	video::SColor color(255,li,li,li);
+	setMeshVerticesColor(m_node->getMesh(), color);
 }
 
 v3s16 Oerkki1CAO::getLightPosition()
@@ -567,7 +576,6 @@ void Oerkki1CAO::updateNodePos()
 	if(m_node == NULL)
 		return;
 
-	//m_node->setPosition(m_position);
 	m_node->setPosition(pos_translator.vect_show);
 
 	v3f rot = m_node->getRotation();
@@ -766,7 +774,6 @@ void FireflyCAO::updateNodePos()
 	if(m_node == NULL)
 		return;
 
-	//m_node->setPosition(m_position);
 	m_node->setPosition(pos_translator.vect_show);
 
 	v3f rot = m_node->getRotation();

@@ -130,7 +130,7 @@ scene::IAnimatedMesh* createModelMesh(scene::ISceneManager* smgr, std::string mo
 	for (u32 i=0; i<lc; i++) {
 		loader = smgr->getMeshLoader(i);
 		file->seek(0);
-		if (loader->isALoadableFileExtension("character.b3d")) {
+		if (loader->isALoadableFileExtension(model.c_str())) {
 			mesh = loader->createMesh(file);
 			break;
 		}
