@@ -44,6 +44,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 */
 scene::IAnimatedMesh* createNodeBoxMesh(std::vector<aabb3f> nodeboxes, v3f scale);
 scene::IAnimatedMesh* createCubeMesh(v3f scale);
+#ifndef SERVER
+scene::IAnimatedMesh* createModelMesh(scene::ISceneManager* smgr, std::string model, bool unique);
+#endif
 
 /*
 	Create a new extruded mesh from a texture.

@@ -26,6 +26,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <SAnimatedMesh.h>
 #include <ICameraSceneNode.h>
 #include "constants.h"
+#include "path.h"
+#include <IMeshLoader.h>
 
 // In Irrlicht 1.8 the signature of ITexture::lock was changed from
 // (bool, u32) to (E_TEXTURE_LOCK_MODE, u32).
@@ -112,6 +114,31 @@ scene::IAnimatedMesh* createCubeMesh(v3f scale)
 
 	return createNodeBoxMesh(nodeboxes,scale);
 }
+
+#ifndef SERVER
+scene::IAnimatedMesh* createModelMesh(scene::ISceneManager* smgr, std::string model, bool unique)
+{
+	std::string model_path = getModelPath(model);
+	scene::IAnimatedMesh* mesh = smgr->getMesh(model_path.c_str());
+	if (mesh && !unique)
+		return mesh;
+	scene::IMeshLoader *loader;
+	u32 lc = smgr->getMeshLoaderCount();
+	io::IReadFile* file = smgr->getFileSystem()->createAndOpenFile(model_path.c_str());
+	if (!file)
+		return 0;
+	for (u32 i=0; i<lc; i++) {
+		loader = smgr->getMeshLoader(i);
+		file->seek(0);
+		if (loader->isALoadableFileExtension("character.b3d")) {
+			mesh = loader->createMesh(file);
+			break;
+		}
+	}
+	file->drop();
+	return mesh;
+}
+#endif
 
 static scene::IAnimatedMesh* extrudeARGB(u32 twidth, u32 theight, u8 *data)
 {

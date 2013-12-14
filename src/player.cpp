@@ -216,7 +216,8 @@ RemotePlayer::RemotePlayer(
 			return;
 		m_text->setPosition(v3f(0, (f32)BS*2.1, 0));
 
-		scene::IAnimatedMesh* mesh = mgr->getMesh(getModelPath("character.b3d").c_str());
+		// get a unique mesh so that the player model has it's own lighting
+		scene::IAnimatedMesh* mesh = createModelMesh(mgr,"character.b3d",true);
 		if (!mesh)
 			return;
 
@@ -236,8 +237,7 @@ RemotePlayer::RemotePlayer(
 
 			m_node->setPosition(v3f(0,(f32)BS,0));
 		}
-		// TODO: this is causing a segfault when a player quits and rejoins
-		//mesh->drop();
+		mesh->drop();
 	}
 }
 
