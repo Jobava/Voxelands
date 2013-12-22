@@ -39,51 +39,52 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 // Use these sparingly, only when the extra space in param2 might be needed.
 // Add a space when there is unused space between numbers.
 #define CONTENT_STONE 0
-
+// FREE 1
 #define CONTENT_WATER 2
 #define CONTENT_TORCH 3
 #define CONTENT_GLASSLIGHT 4
 #define CONTENT_CHAIR 5
-
+// FREE 6-7
 #define CONTENT_TABLE 8
 #define CONTENT_WATERSOURCE 9
-
+// FREE 10-13
 #define CONTENT_SIGN_WALL 14
 #define CONTENT_CHEST 15
 #define CONTENT_FURNACE 16
 #define CONTENT_LOCKABLE_CHEST 17
 #define CONTENT_SIGN 18
 #define CONTENT_SIGN_UD 19
-
+// FREE 20
 #define CONTENT_FENCE 21
-
+// FREE 22-29
 #define CONTENT_RAIL 30
 #define CONTENT_LADDER 31
 #define CONTENT_LAVA 32
 #define CONTENT_LAVASOURCE 33
+// FREE 34-125
 
 // 0x800...0xfff (2048...4095): higher 4 bytes of param2 are not usable
-#define CONTENT_GRASS 0x800 //1
-#define CONTENT_TREE 0x801 //4
-#define CONTENT_LEAVES 0x802 //5
-#define CONTENT_FARM_DIRT 0x803 //6
-#define CONTENT_MESE 0x804 //7
-#define CONTENT_MUD 0x805 //8
-#define CONTENT_COTTON 0x806 //10
-#define CONTENT_BORDERSTONE 0x807 //11
-#define CONTENT_WOOD 0x808 //12
-#define CONTENT_SAND 0x809 //13
-#define CONTENT_ROUGHSTONE 0x80a //18
-#define CONTENT_STEEL 0x80b //19
-#define CONTENT_GLASS 0x80c //20
-#define CONTENT_MOSSYCOBBLE 0x80d //22
-#define CONTENT_GRAVEL 0x80e //23
-#define CONTENT_SANDSTONE 0x80f //24
-#define CONTENT_CACTUS 0x810 //25
-#define CONTENT_BRICK 0x811 //26
-#define CONTENT_CLAY 0x812 //27
-#define CONTENT_PAPYRUS 0x813 //28
-#define CONTENT_BOOKSHELF 0x814 //29
+#define CONTENT_GRASS 0x800
+#define CONTENT_TREE 0x801
+#define CONTENT_LEAVES 0x802
+#define CONTENT_FARM_DIRT 0x803
+#define CONTENT_MESE 0x804
+#define CONTENT_MUD 0x805
+#define CONTENT_COTTON 0x806
+#define CONTENT_BORDERSTONE 0x807
+#define CONTENT_WOOD 0x808
+#define CONTENT_SAND 0x809
+#define CONTENT_ROUGHSTONE 0x80a
+#define CONTENT_STEEL 0x80b
+#define CONTENT_GLASS 0x80c
+#define CONTENT_MOSSYCOBBLE 0x80d
+#define CONTENT_GRAVEL 0x80e
+#define CONTENT_SANDSTONE 0x80f
+#define CONTENT_CACTUS 0x810
+#define CONTENT_BRICK 0x811
+#define CONTENT_CLAY 0x812
+#define CONTENT_PAPYRUS 0x813
+#define CONTENT_BOOKSHELF 0x814
 #define CONTENT_JUNGLETREE 0x815
 #define CONTENT_JUNGLEGRASS 0x816
 #define CONTENT_NC 0x817
@@ -95,8 +96,8 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_SAPLING 0x820
 
 // old slab/stair
-
 // old door/hatch/gate
+// FREE 821-87F
 
 // plants
 #define CONTENT_WILDGRASS_SHORT 0x880
@@ -177,6 +178,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_ROUGHSTONEBLOCK 0x8CD
 #define CONTENT_STEAM 0x8CE
 #define CONTENT_INCINERATOR 0x8CF
+// FREE 8D0-8FF
 // glass pane
 #define CONTENT_GLASS_PANE 0x900
 #define CONTENT_GLASS_PANE_BLUE 0x901
@@ -195,7 +197,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_TRIMMED_APPLE_LEAVES 0x915
 #define CONTENT_TRIMMED_JUNGLE_LEAVES 0x916
 #define CONTENT_TRIMMED_CONIFER_LEAVES 0x917
-
+// FREE 918-9FE
 //bwahaha!
 #define CONTENT_CRAFT_GUIDE 0x9FF
 
@@ -257,7 +259,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_SLAB_STAIR_FLIP 0x040
 #define CONTENT_SLAB_STAIR_UD_MIN 0xA40
 #define CONTENT_SLAB_STAIR_UD_MAX 0xA6F
-
+// FREE A70-AFF
 // doors
 #define CONTENT_WOOD_DOOR_LB 0xB00
 #define CONTENT_WOOD_DOOR_LT 0xB01
@@ -265,19 +267,19 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_STEEL_DOOR_LT 0xB03
 #define CONTENT_GLASS_DOOR_LB 0xB04
 #define CONTENT_GLASS_DOOR_LT 0xB05
-
+// windowed doors
 #define CONTENT_WOOD_W_DOOR_LB 0xB10
 #define CONTENT_WOOD_W_DOOR_LT 0xB11
 #define CONTENT_STEEL_W_DOOR_LB 0xB12
 #define CONTENT_STEEL_W_DOOR_LT 0xB13
-
+// right doors
 #define CONTENT_WOOD_DOOR_RB 0xB20
 #define CONTENT_WOOD_DOOR_RT 0xB21
 #define CONTENT_STEEL_DOOR_RB 0xB22
 #define CONTENT_STEEL_DOOR_RT 0xB23
 #define CONTENT_GLASS_DOOR_RB 0xB24
 #define CONTENT_GLASS_DOOR_RT 0xB25
-
+// right windowed doors
 #define CONTENT_WOOD_W_DOOR_RB 0xB30
 #define CONTENT_WOOD_W_DOOR_RT 0xB31
 #define CONTENT_STEEL_W_DOOR_RB 0xB32
@@ -298,19 +300,19 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_STEEL_DOOR_LT_OPEN 0xB83
 #define CONTENT_GLASS_DOOR_LB_OPEN 0xB84
 #define CONTENT_GLASS_DOOR_LT_OPEN 0xB85
-
+// open windowed doors
 #define CONTENT_WOOD_W_DOOR_LB_OPEN 0xB90
 #define CONTENT_WOOD_W_DOOR_LT_OPEN 0xB91
 #define CONTENT_STEEL_W_DOOR_LB_OPEN 0xB92
 #define CONTENT_STEEL_W_DOOR_LT_OPEN 0xB93
-
+// open right doors
 #define CONTENT_WOOD_DOOR_RB_OPEN 0xBA0
 #define CONTENT_WOOD_DOOR_RT_OPEN 0xBA1
 #define CONTENT_STEEL_DOOR_RB_OPEN 0xBA2
 #define CONTENT_STEEL_DOOR_RT_OPEN 0xBA3
 #define CONTENT_GLASS_DOOR_RB_OPEN 0xBA4
 #define CONTENT_GLASS_DOOR_RT_OPEN 0xBA5
-
+// open right windowed doors
 #define CONTENT_WOOD_W_DOOR_RB_OPEN 0xBB0
 #define CONTENT_WOOD_W_DOOR_RT_OPEN 0xBB1
 #define CONTENT_STEEL_W_DOOR_RB_OPEN 0xBB2
@@ -340,7 +342,6 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_CONIFER_SAPLING 0xC07
 #define CONTENT_WOOD_PINE 0xC08
 #define CONTENT_CONIFER_TREE 0xC09
-
 // beds
 #define CONTENT_BED_HEAD 0xC10
 #define CONTENT_BED_FOOT 0xC11
@@ -361,6 +362,11 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_BED_MIN 0xC10
 #define CONTENT_BED_MAX 0xC1F
 #define CONTENT_BED_FOOT_MASK 0x001
+// FREE C20-CFF
+
+// D00-DFF - play space for other devs and experiments
+
+// FREE E00-FFF
 
 #endif
 
