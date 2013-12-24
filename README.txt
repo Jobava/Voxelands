@@ -68,10 +68,10 @@ $ apt-get install build-essential libirrlicht-dev cmake libbz2-dev libpng12-dev 
 Here's an example for RedHat/Fedora/CentOS:
 $ yum install irrlicht-devel bzip2-devel libpng-devel libjpeg-turbo-devel libXxf86vm-devel mesa-libglapi libsqlite3x-devel
 
-Download source, extract (this is the URL to the latest of source repository, which might not work at all times):
-$ wget https://github.com/celeron55/minetest/tarball/master -O master.tar.gz
-$ tar xf master.tar.gz
-$ cd celeron55-minetest-286edd4 (or similar)
+Download source, extract (replace <VERSION> in this URL with the latest stable release version, i.e. 1401.00):
+$ wget http://minetest-classic.com/downloads/minetest-classic-<VERSION>-src.tar.bz2
+$ tar xf minetest-classic-*-src.tar.bz2
+$ cd minetest-classic
 
 Build a version that runs directly from the source directory:
 $ cmake . -DRUN_IN_PLACE=1
@@ -79,7 +79,7 @@ $ make -j2
 
 Run it:
 $ cd bin
-$ ./minetest
+$ ./minetest-classic
 
 - Use cmake . -LH to see all CMake options and their current state
 - If you want to install it system-wide (or are making a distribution package), you will want to use -DRUN_IN_PLACE=0
@@ -191,21 +191,13 @@ Compiling on Windows:
 		- You should now have a working game with the executable in
 			DIR/minetest/bin/minetest.exe
 
-Windows releases of minetest are built using a bat script like this:
+Windows releases of Minetest Classic are cross compiled on Linux, using Menche's build script:
 --------------------------------------------------------------------
 
-set installpath="C:\tmp\minetest_install"
-set irrlichtpath="C:\tmp\irrlicht-1.7.2"
+$ wget http://menche.us/files/minetest-classic/build-minetest-classic-win32.sh
+$ sh ./build-minetest-classic-win32.sh
 
-set sourcedir=%CD%
-set builddir=%sourcedir%\bvc10
-mkdir %builddir%
-pushd %builddir%
-cmake %sourcedir% -G "Visual Studio 10" -DIRRLICHT_SOURCE_DIR=%irrlichtpath% -DRUN_IN_PLACE=1 -DCMAKE_INSTALL_PREFIX=%installpath%
-"C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" ALL_BUILD.vcxproj /p:Configuration=Release
-"C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" INSTALL.vcxproj /p:Configuration=Release
-"C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" PACKAGE.vcxproj /p:Configuration=Release
-popd
+this script will install and compile the build-chain and all libraries needed for Minetest Classic
 
 License of Minetest-Classic textures
 --------------------------------
