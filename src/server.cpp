@@ -3157,6 +3157,31 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 								}
 								UpdateCrafting(player->peer_id);
 								SendInventory(player->peer_id);
+							}else if (
+								(
+									material == CONTENT_TREE
+									|| material == CONTENT_JUNGLETREE
+									|| material == CONTENT_APPLE_TREE
+									|| material == CONTENT_CONIFER_TREE
+								) && (
+									tool->getContent() == CONTENT_TOOLITEM_WAXE
+									|| tool->getContent() == CONTENT_TOOLITEM_STAXE
+									|| tool->getContent() == CONTENT_TOOLITEM_STEELAXE
+								)
+							) {
+								content_t c = CONTENT_WOOD;
+								switch (material) {
+								case CONTENT_JUNGLETREE:
+									c = CONTENT_JUNGLEWOOD;
+									break;
+								case CONTENT_CONIFER_TREE:
+									c = CONTENT_WOOD_PINE;
+									break;
+								default:;
+								}
+								std::string dug_s = std::string("MaterialItem2 ")+itos(c)+" 6";;
+								std::istringstream is(dug_s, std::ios::binary);
+								item = InventoryItem::deSerialize(is);
 							}else if (material != CONTENT_WATERSOURCE && material != CONTENT_LAVASOURCE) {
 								std::string &dug_s = content_features(material).dug_item;
 								if (dug_s != "") {
