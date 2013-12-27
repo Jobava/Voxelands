@@ -172,9 +172,15 @@ void cmd_shutdown(std::wostringstream &os,
 void cmd_setting(std::wostringstream &os,
 	ServerCommandContext *ctx)
 {
-	if((ctx->privs & PRIV_SERVER) ==0)
-	{
+	if ((ctx->privs & PRIV_SERVER) ==0) {
 		os<<L"-!- You don't have permission to do that";
+		return;
+	}
+
+	/* no value is set, so instead show the current value */
+	if (ctx->parms.size() == 2) {
+		os << L"-!- '" << ctx->parms[1] << L"' has value '"
+			<< narrow_to_wide(g_settings->get(wide_to_narrow(ctx->parms[1]))) << L"'";
 		return;
 	}
 
