@@ -395,4 +395,11 @@ void content_craftitem_init()
 		crafting::setRecipe(recipe,CONTENT_CRAFTITEM_TNT,1);
 	}
 
+	i = CONTENT_CRAFTITEM_ASH;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_ASH;
+	f->texture = "lump_of_ash.png";
+	f->name = "lump_of_ash";
+	f->gui_name = "Ash";
+
 }

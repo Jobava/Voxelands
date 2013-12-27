@@ -1108,6 +1108,17 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
 
+	i = CONTENT_ASH;
+	f = &content_features(i);
+	f->description = std::string("Ash Block");
+	f->setAllTextures("ash.png");
+	f->setInventoryTextureCube("ash.png", "ash.png", "ash.png");
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("CraftItem lump_of_ash 9");
+	setDirtLikeDiggingProperties(f->digging_properties, 0.5);
+	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_ASH,CONTENT_ASH);
+
 	i = CONTENT_SAND;
 	f = &content_features(i);
 	f->description = std::string("Sand");

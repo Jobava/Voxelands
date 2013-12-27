@@ -1362,14 +1362,22 @@ void ServerEnvironment::step(float dtime)
 					fire that goes out
 				*/
 				if (n.getContent() == CONTENT_FIRE_SHORTTERM) {
-					if (myrand()%10 == 0)
+					if (myrand()%10 == 0) {
 						m_map->removeNodeWithEvent(p);
+						v3f ash_pos = intToFloat(p, BS);
+						ash_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
+						ServerActiveObject *obj = new ItemSAO(this, 0, ash_pos, "CraftItem lump_of_ash 1");
+						addActiveObject(obj);
+					}
 				}
 				/*
 					fire that spreads just a little
 				*/
 				if (n.getContent() == CONTENT_FIRE) {
-					if (myrand()%10) {
+					MapNode n_below = m_map->getNodeNoEx(p+v3s16(0,-1,0));
+					if (!content_features(n_below).flammable) {
+						m_map->removeNodeWithEvent(p);
+					}else if (myrand()%10) {
 						bool can_spread = true;
 						s16 bs_rad = g_settings->getS16("borderstone_radius");
 						bs_rad += 2;
