@@ -2230,6 +2230,14 @@ void content_mapnode_init()
 		f->initial_metadata = new BorderStoneNodeMetadata();
 	setStoneLikeDiggingProperties(f->digging_properties, 2.0);
 	crafting::setFilledRoundRecipe(CONTENT_STONE,CONTENT_MESE,CONTENT_BORDERSTONE);
+	{
+		u16 r[9] = {
+			CONTENT_CRAFTITEM_STEEL_INGOT,	CONTENT_STONE,			CONTENT_CRAFTITEM_STEEL_INGOT,
+			CONTENT_STONE,			CONTENT_CRAFTITEM_STEEL_INGOT,	CONTENT_STONE,
+			CONTENT_CRAFTITEM_STEEL_INGOT,	CONTENT_STONE,			CONTENT_CRAFTITEM_STEEL_INGOT
+		};
+		crafting::setRecipe(r,CONTENT_BORDERSTONE,1);
+	}
 
 	i = CONTENT_WOOD;
 	f = &content_features(i);
@@ -5519,14 +5527,7 @@ void content_mapnode_init()
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new TNTNodeMetadata();
 	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
-	{
-		u16 r[9] = {
-			CONTENT_CRAFTITEM_GUNPOWDER,	CONTENT_SAND,			CONTENT_CRAFTITEM_GUNPOWDER,
-			CONTENT_SAND,			CONTENT_CRAFTITEM_GUNPOWDER,	CONTENT_SAND,
-			CONTENT_CRAFTITEM_GUNPOWDER,	CONTENT_SAND,			CONTENT_CRAFTITEM_GUNPOWDER
-		};
-		crafting::setRecipe(r,CONTENT_TNT,1);
-	}
+	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_TNT,CONTENT_TNT);
 
 	i = CONTENT_FLASH;
 	f = &content_features(i);

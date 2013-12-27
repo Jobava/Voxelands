@@ -380,4 +380,19 @@ void content_craftitem_init()
 	f->fuel_time = 30/16;
 	crafting::set1To4Recipe(CONTENT_JUNGLEWOOD,CONTENT_CRAFTITEM_JUNGLE_PLANK);
 
+	i = CONTENT_CRAFTITEM_TNT;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_TNT;
+	f->texture = "tnt_stick.png";
+	f->name = "tnt_stick";
+	f->gui_name = "TNT Stick";
+	{
+		u16 recipe[9] = {
+			CONTENT_CRAFTITEM_PAPER,	CONTENT_CRAFTITEM_GUNPOWDER,	CONTENT_CRAFTITEM_PAPER,
+			CONTENT_IGNORE,			CONTENT_IGNORE,			CONTENT_IGNORE,
+			CONTENT_IGNORE,			CONTENT_IGNORE,			CONTENT_IGNORE
+		};
+		crafting::setRecipe(recipe,CONTENT_CRAFTITEM_TNT,1);
+	}
+
 }
