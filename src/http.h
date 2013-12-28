@@ -62,7 +62,7 @@ public:
 		m_url = std::string("");
 		m_url_split.clear();
 	}
-	virtual int read(char* buff, int length) = 0;
+	virtual int read(TCPSocket *sock) = 0;
 	u32 length() {return m_contentLength;}
 	std::string getCookie() {return m_cookie;}
 	std::string getUrl() {return m_url;}
@@ -89,14 +89,14 @@ private:
 class HTTPRequestHeaders : public HTTPHeaders
 {
 public:
-	virtual int read(char* buff, int length);
+	virtual int read(TCPSocket *sock);
 private:
 };
 
 class HTTPResponseHeaders : public HTTPHeaders
 {
 public:
-	virtual int read(char* buff, int length);
+	virtual int read(TCPSocket *sock);
 	void setResponse(int r) {m_response = r;}
 	int getResponse() {return m_response;}
 private:
@@ -112,14 +112,12 @@ public:
 	{
 		m_socket = sock;
 		m_server = server;
-		m_start = 0;
-		m_end = 0;
 	}
 	~HTTPRemoteClient();
 	int receive();
 private:
-	int read(char* buff, int size);
-	int fillBuffer();
+	int read(char* buff, int size) {return m_socket->Receive(buff,size);}
+	int readline(char* buff, int size) {return m_socket->ReceiveLine(buff,size);}
 	void sendHeaders();
 
 	int handlePlayer();
@@ -137,9 +135,6 @@ private:
 	void sendFile(std::string &file);
 	void setResponse(const char* response) {std::string r(response); m_response = r;}
 
-	char m_buff[2048];
-	int m_start;
-	int m_end;
 	HTTPRequestHeaders m_recv_headers;
 	HTTPResponseHeaders m_send_headers;
 	std::string m_response;
@@ -239,13 +234,10 @@ private:
 	bool get(std::string &url);
 	bool post(std::string &url, char* data);
 	bool put(std::string &url, std::string &file);
-	int read(char* buff, int size);
-	int fillBuffer();
+	int read(char* buff, int size) {return m_socket->Receive(buff,size);}
+	int readline(char* buff, int size) {return m_socket->ReceiveLine(buff,size);}
 	void sendHeaders();
 
-	char m_buff[2048];
-	int m_start;
-	int m_end;
 	Address m_address;
 	TCPSocket *m_socket;
 	HTTPResponseHeaders m_recv_headers;

@@ -133,14 +133,20 @@ public:
 	void Send(const void *data, int size);
 	// Returns -1 if there is no data
 	int Receive(void *data, int size);
+	int ReceiveLine(char* data, int size);
 	TCPSocket* Accept();
 	int GetHandle(); // For debugging purposes only
 	void setTimeoutMs(int timeout_ms);
 	// Returns true if there is data, false if timeout occurred
 	bool WaitData(int timeout_ms);
 private:
+	int FillBuffer();
+
 	int m_handle;
 	int m_timeout_ms;
+	char m_buff[2048];
+	int m_bstart;
+	int m_bend;
 };
 
 #endif

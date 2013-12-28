@@ -352,6 +352,8 @@ TCPSocket::TCPSocket()
 		throw SocketException("Sockets not initialized");
 
 	m_handle = socket(AF_INET, SOCK_STREAM, 0);
+	m_bstart = 0;
+	m_bend = 0;
 
 	if (DP)
 		dstream<<DPS<<"TCPSocket("<<(int)m_handle<<")::TCPSocket()"<<std::endl;
@@ -438,46 +440,86 @@ void TCPSocket::Send(const void *data, int size)
 		throw SendFailedException("Failed to send data");
 }
 
+/* data read from remote http clients is buffered, fill the buffer */
+int TCPSocket::FillBuffer()
+{
+	int r;
+	int l = m_bend-m_bstart;
+	if (!m_bstart && l == 2048)
+		return l;
+
+	if (l && m_bstart)
+		memcpy(m_buff,m_buff+m_bstart,l);
+	m_bstart = 0;
+	m_bend = l;
+
+	if (!WaitData(1000))
+		return m_bend;
+
+
+	r = (int)recv(m_handle,m_buff+l,2048-l,0);
+	if (r<0)
+		return m_bend;
+
+	m_bend = l+r;
+
+	return m_bend;
+}
+
 int TCPSocket::Receive(void *data, int size)
 {
-	if (WaitData(m_timeout_ms) == false)
-		return -1;
-
-	sockaddr_in address;
-	socklen_t address_len = sizeof(address);
-
-	int received = recvfrom(
-		m_handle,
-		(char*)data,
-		size,
-		0,
-		(sockaddr*)&address,
-		&address_len
-	);
-
-	if (received < 0)
-		return -1;
-
-	unsigned int address_ip = ntohl(address.sin_addr.s_addr);
-	unsigned int address_port = ntohs(address.sin_port);
-
-	Address sender(address_ip, address_port);
-
-	if (DP) {
-		dstream<<DPS<<(int)m_handle<<" <- ";
-		dstream<<", size="<<received<<", data=";
-		for (int i=0; i<received && i<20; i++) {
-			if (i%2==0)
-				DEBUGPRINT(" ");
-			unsigned int a = ((const unsigned char*)data)[i];
-			DEBUGPRINT("%.2X", a);
+	if (size > 2048) {
+		unsigned char* buff = (unsigned char*)data;
+		int r = 0;
+		int l;
+		int c = 2048;
+		int s = size;
+		while (FillBuffer()) {
+			c = 2048;
+			if (s<c)
+				c = s;
+			l = m_bend-m_bstart;
+			if (l<c)
+				c = l;
+			if (c < 1)
+				break;
+			memcpy(buff+r,m_buff+m_bstart,c);
+			m_bstart += c;
+			r += c;
+			s -= c;
 		}
-		if (received>20)
-			dstream<<"...";
-		dstream<<std::endl;
+		return r;
 	}
 
-	return received;
+	if (FillBuffer() < size)
+		return 0;
+
+	memcpy(data,m_buff+m_bstart,size);
+	m_bstart+=size;
+	return size;
+}
+
+int TCPSocket::ReceiveLine(char* data, int size)
+{
+	int i = 0;
+	for (; i<size; i++) {
+		if (m_bstart >= m_bend)
+			FillBuffer();
+		if (m_bstart >= m_bend)
+			break;
+
+		data[i] = m_buff[m_bstart++];
+		if (data[i] == '\r') {
+			i--;
+		}else if (data[i] == '\n') {
+			data[i] = 0;
+			break;
+		}else if (i > size-2) {
+			data[i+1] = 0;
+			break;
+		}
+	}
+	return i;
 }
 
 TCPSocket* TCPSocket::Accept()

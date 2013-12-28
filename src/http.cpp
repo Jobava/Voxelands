@@ -175,34 +175,12 @@ HTTPRemoteClient::~HTTPRemoteClient()
 /* receive and handle data from a remote http client */
 int HTTPRemoteClient::receive()
 {
-	int r = fillBuffer();
-	if (!r)
-		return 0;
-	if (r<1)
-		return 1;
-
 	m_recv_headers.clear();
 	m_send_headers.clear();
 
-	int h = m_recv_headers.read(m_buff,r);
-	if (h == -1) {
+	int h = m_recv_headers.read(m_socket);
+	if (h == -1)
 		return 1;
-	}else if (h == -2) {
-		if (m_recv_headers.getUrl() == "")
-			return 1;
-		while (m_socket->WaitData(1000)) {
-			r = fillBuffer();
-			if (r<1)
-				return 1;
-			h = m_recv_headers.read(m_buff,r);
-			if (h > -1)
-				break;
-			if (h == -1)
-				return 1;
-		}
-		if (h < 0)
-			return 1;
-	}
 
 	if (m_recv_headers.getCookie() != "" && m_recv_headers.getHeader("User") != "") {
 		if (m_recv_headers.getCookie() == m_server->getPlayerCookie(m_recv_headers.getHeader("User"))) {
@@ -220,56 +198,6 @@ int HTTPRemoteClient::receive()
 	}
 
 	return handleSpecial("404 Not Found");
-}
-
-/* read data from a remote http client */
-int HTTPRemoteClient::read(char* buff, int size)
-{
-	if (size > 2048) {
-		int r = 0;
-		int l;
-		int c = 2048;
-		int s = size;
-		while (fillBuffer()) {
-			c = 2048;
-			if (s<c)
-				c = s;
-			l = m_end-m_start;
-			if (l<c)
-				c = l;
-			if (c < 1)
-				break;
-			memcpy(buff+r,m_buff+m_start,c);
-			m_start += c;
-			r += c;
-			s -= c;
-		}
-		return r;
-	}
-
-	if (fillBuffer() < size)
-		return 0;
-
-	memcpy(buff,m_buff+m_start,size);
-	m_start+=size;
-	return size;
-}
-
-/* data read from remote http clients is buffered, fill the buffer */
-int HTTPRemoteClient::fillBuffer()
-{
-	int l = m_end-m_start;
-	if (l && m_start) {
-		memcpy(m_buff,m_buff+m_start,l);
-		m_start = 0;
-		m_end = l;
-	}
-	l = 2048-m_end;
-
-	if (!m_socket->WaitData(30))
-		return m_end;
-
-	return m_end+m_socket->Receive(m_buff+m_end,l);
 }
 
 /* handle /player/<name> url's */
@@ -348,8 +276,7 @@ int HTTPRemoteClient::handlePlayer()
 		if (c > s)
 			c = s;
 		if (c) {
-			if (m_start == m_end)
-				m_socket->WaitData(60000);
+			//m_socket->WaitData(60000);
 			while ((l = read(buff,c)) > 0) {
 				s -= l;
 				t += l;
@@ -733,42 +660,15 @@ void HTTPClient::step()
 
 		int r = 0;
 		int h = -1;
-		m_start = 0;
-		m_end = 0;
 		m_recv_headers.setResponse(0);
-		while (m_socket->WaitData(1000)) {
-			r = fillBuffer();
-			if (r<1) {
-				h = -1;
-				break;
-			}
-			h = m_recv_headers.read(m_buff,r);
-			if (h > -1)
-				break;
-			if (h == -1 || m_recv_headers.getResponse() == 500) {
-#ifdef _WIN32
-				Sleep(1000);
-#else
-				sleep(1);
-#endif
-				r = 0;
-				h = -1;
-				break;
-			}
-			if (h == -2) {
-				m_start = 0;
-				m_end = 0;
-			}
-		}
-		if (h < 0) {
+		h = m_recv_headers.read(m_socket);
+		if (h == -1 || m_recv_headers.getResponse() == 500) {
 			delete m_socket;
 			m_req_mutex.Lock();
 			m_requests.push_back(q);
 			m_req_mutex.Unlock();
 			continue;
 		}
-
-		m_start += h;
 
 		r = m_recv_headers.getResponse();
 
@@ -815,14 +715,7 @@ void HTTPClient::step()
 			if (c > s)
 				c = s;
 			if (c) {
-				if (m_start == m_end) {
-					m_socket->WaitData(60000);
-#ifdef _WIN32
-				Sleep(1000);
-#else
-				sleep(1);
-#endif
-				}
+				m_socket->WaitData(60000);
 				while ((l = read(buff,c)) > 0) {
 					s -= l;
 					c = fwrite(buff,1,l,f);
@@ -997,57 +890,6 @@ bool HTTPClient::put(std::string &url, std::string &file)
 	return true;
 }
 
-/* read data from a remote http client */
-int HTTPClient::read(char* buff, int size)
-{
-	if (size > 2048) {
-		int r = 0;
-		int l;
-		int c = 2048;
-		int s = size;
-		while (fillBuffer()) {
-			c = 2048;
-			if (s<c)
-				c = s;
-			l = m_end-m_start;
-			if (l<c)
-				c = l;
-			if (c < 1)
-				break;
-			memcpy(buff+r,m_buff+m_start,c);
-			m_start += c;
-			r += c;
-			s -= c;
-		}
-		return r;
-	}
-
-	if (fillBuffer() < size)
-		return 0;
-
-	memcpy(buff,m_buff+m_start,size);
-	m_start+=size;
-	return size;
-}
-
-/* data read from remote http clients is buffered, fill the buffer */
-int HTTPClient::fillBuffer()
-{
-	int l = m_end-m_start;
-	if (l && m_start) {
-		memcpy(m_buff,m_buff+m_start,l);
-		m_start = 0;
-		m_end = l;
-	}
-	l = 2048-m_end;
-
-	if (!m_socket->WaitData(30))
-		return m_end;
-
-	m_end += m_socket->Receive(m_buff+m_end,l);
-	return m_end;
-}
-
 /* send http headers to the server */
 void HTTPClient::sendHeaders()
 {
@@ -1083,131 +925,119 @@ void HTTPClient::sendHeaders()
  */
 
 /* read in headers */
-int HTTPRequestHeaders::read(char* buff, int length)
+int HTTPRequestHeaders::read(TCPSocket *sock)
 {
-	char nbuff[1024];
-	char vbuff[1024];
-	int n = 1;
-	int o = 0;
+	char lbuff[2048];
+	char* n;
+	char* v;
 	int i = 0;
-	int c = getUrl() == "" ? 0 : 1;
 
-	for (i=0; i<length; i++) {
-		if (buff[i] == '\r' || (!o && buff[i] == ' '))
-			continue;
-		if (buff[i] == '\n') {
-			if (!c) {
-				nbuff[o] = 0;
-				char* u = strchr(nbuff,' ');
-				if (!u)
-					return -1;
-				*u = 0;
-				setMethod(nbuff);
-				u++;
-				while (*u == ' ') {
-					u++;
-				}
-				char* p = strchr(u,' ');
-				if (!p)
-					return -1;
-				*p = 0;
-				p++;
-				while (*p == ' ') {
-					p++;
-				}
-				setUrl(u);
-				size_t current;
-				size_t next = -1;
-				std::string s(u);
-				do{
-					current = next + 1;
-					next = s.find_first_of("/", current);
-					if (s.substr(current, next-current) != "")
-						addUrl(s.substr(current, next-current));
-				} while (next != std::string::npos);
-				c++;
-			}else{
-				if (n)
-					return i+1;
-				vbuff[o] = 0;
-				if (!strcmp(nbuff,"Content-Length")) {
-					setLength(strtoul(vbuff,NULL,10));
-				}else if (!strcmp(nbuff,"Cookie") && !strncmp(vbuff,"MTID=",5)) {
-					setCookie(vbuff+5);
-				}else{
-					setHeader(nbuff,vbuff);
-				}
-			}
-			o = 0;
-			n = 1;
-		}else if (n && buff[i] == ':') {
-			nbuff[o] = 0;
-			o = 0;
-			n = 0;
-		}else if (n) {
-			nbuff[o++] = buff[i];
+	i = sock->ReceiveLine(lbuff,2048);
+	if (!i)
+		return -1;
+	n = lbuff;
+	lbuff[i] = 0;
+printf("%s\n",n);
+	{
+		v = strchr(n,' ');
+		if (!v)
+			return -1;
+		*v = 0;
+		setMethod(n);
+		v++;
+		while (*v == ' ') {
+			v++;
+		}
+		n = v;
+	}
+	{
+		v = strchr(n,' ');
+		if (!v)
+			return -1;
+		*v = 0;
+		setUrl(n);
+		size_t current;
+		size_t next = -1;
+		std::string s(n);
+		do{
+			current = next + 1;
+			next = s.find_first_of("/", current);
+			if (s.substr(current, next-current) != "")
+				addUrl(s.substr(current, next-current));
+		} while (next != std::string::npos);
+	}
+
+	while ((i = sock->ReceiveLine(lbuff,2048))) {
+		n = lbuff;
+		v = strchr(lbuff,':');
+		if (!v)
+			return -1;
+		*v = 0;
+		v++;
+		while (*v && *v == ' ') {
+			v++;
+		}
+		if (!strcmp(n,"Content-Length")) {
+			setLength(strtoul(v,NULL,10));
+		}else if (!strcmp(n,"Cookie") && !strncmp(v,"MTID=",5)) {
+			setCookie(v+5);
 		}else{
-			vbuff[o++] = buff[i];
+			setHeader(n,v);
 		}
 	}
 
-	return -2;
+	return 0;
 }
 
 /* read in headers */
-int HTTPResponseHeaders::read(char* buff, int length)
+int HTTPResponseHeaders::read(TCPSocket *sock)
 {
-	char nbuff[1024];
-	char vbuff[1024];
-	int n = 1;
-	int o = 0;
+	char lbuff[2048];
+	char* n;
+	char* v;
 	int i = 0;
-	int c = getResponse();
 
-	for (i=0; i<length; i++) {
-		if (buff[i] == '\r' || (!o && buff[i] == ' '))
-			continue;
-		if (buff[i] == '\n') {
-			if (!c) {
-				nbuff[o] = 0;
-				char* r = strchr(nbuff,' ');
-				if (!r)
-					return -1;
-				*r = 0;
-				r++;
-				while (*r == ' ') {
-					r++;
-				}
-				char* s = strchr(r,' ');
-				if (!s)
-					return -1;
-				*s = 0;
-				setResponse(strtol(r,NULL,10));
-				c++;
-			}else{
-				if (n)
-					return i+1;
-				vbuff[o] = 0;
-				if (!strcmp(nbuff,"Content-Length")) {
-					setLength(strtoul(vbuff,NULL,10));
-				}else if (!strcmp(nbuff,"SetCookie") && !strncmp(vbuff,"MTID=",5)) {
-					setCookie(vbuff+5);
-				}else{
-					setHeader(nbuff,vbuff);
-				}
-			}
-			o = 0;
-			n = 1;
-		}else if (n && buff[i] == ':') {
-			nbuff[o] = 0;
-			o = 0;
-			n = 0;
-		}else if (n) {
-			nbuff[o++] = buff[i];
+	i = sock->ReceiveLine(lbuff,2048);
+	if (!i)
+		return -1;
+	n = lbuff;
+	lbuff[i] = 0;
+printf("%s\n",n);
+	{
+		v = strchr(n,' ');
+		if (!v)
+			return -1;
+		while (*v == ' ') {
+			v++;
+		}
+		n = v;
+	}
+	{
+		v = strchr(n,' ');
+		if (!v)
+			return -1;
+		*v = 0;
+		setResponse(strtol(n,NULL,10));
+	}
+
+	while ((i = sock->ReceiveLine(lbuff,2048))) {
+		n = lbuff;
+		v = strchr(n,':');
+		if (!v)
+			return -1;
+		*v = 0;
+		v++;
+		while (*v && *v == ' ') {
+			v++;
+		}
+		if (!strcmp(n,"Content-Length")) {
+			setLength(strtoul(v,NULL,10));
+		}else if (!strcmp(n,"SetCookie") && !strncmp(v,"MTID=",5)) {
+			setCookie(v+5);
 		}else{
-			vbuff[o++] = buff[i];
+			setHeader(n,v);
 		}
 	}
 
-	return -2;
+	return 0;
 }
