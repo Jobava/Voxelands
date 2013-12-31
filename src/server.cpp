@@ -3102,6 +3102,10 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 								std::string dug_s = std::string("MaterialItem2 ")+itos(CONTENT_TRIMMED_APPLE_LEAVES)+" 1";;
 								std::istringstream is(dug_s, std::ios::binary);
 								item = InventoryItem::deSerialize(is);
+							}else if (material == CONTENT_APPLE_BLOSSOM && tool->getContent() == CONTENT_TOOLITEM_STEELSHEARS) {
+								std::string dug_s = std::string("MaterialItem2 ")+itos(CONTENT_TRIMMED_APPLE_BLOSSOM)+" 1";;
+								std::istringstream is(dug_s, std::ios::binary);
+								item = InventoryItem::deSerialize(is);
 							}else if (material == CONTENT_CONIFER_LEAVES && tool->getContent() == CONTENT_TOOLITEM_STEELSHEARS) {
 								std::string dug_s = std::string("MaterialItem2 ")+itos(CONTENT_TRIMMED_CONIFER_LEAVES)+" 1";;
 								std::istringstream is(dug_s, std::ios::binary);

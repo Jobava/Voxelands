@@ -298,6 +298,7 @@ void content_craftitem_init()
 	f->texture = "dye_white.png";
 	f->name = "dye_white";
 	f->gui_name = "White Dye";
+	crafting::set1To1Recipe(CONTENT_CRAFTITEM_APPLE_BLOSSOM,CONTENT_CRAFTITEM_DYE_WHITE);
 	crafting::set2Any3Recipe(CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_CRAFTITEM_DYE_RED,CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_CRAFTITEM_DYE_WHITE);
 
 	i = CONTENT_CRAFTITEM_DYE_BLACK;
@@ -401,5 +402,14 @@ void content_craftitem_init()
 	f->texture = "lump_of_ash.png";
 	f->name = "lump_of_ash";
 	f->gui_name = "Ash";
+
+	i = CONTENT_CRAFTITEM_APPLE_BLOSSOM;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_APPLE_BLOSSOM;
+	f->texture = "apple_blossom.png";
+	f->name = "apple_blossom";
+	f->gui_name = "Apple Blossoms";
+	f->edible = 1;
+	f->fuel_time = 30/16;
 
 }
