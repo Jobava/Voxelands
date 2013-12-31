@@ -1358,6 +1358,84 @@ void ServerEnvironment::step(float dtime)
 						m_map->addNodeWithEvent(p, n);
 					}
 				}
+
+				// growing apples!
+				if (n.getContent() == CONTENT_APPLE_LEAVES) {
+					if(myrand()%10 == 0) {
+						bool found_blossom = false;
+						bool found_tree = false;
+
+						for(s16 x=-1; x<=1; x++)
+						for(s16 y=-1; y<=1; y++)
+						for(s16 z=-1; z<=1; z++)
+						{
+							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
+							if(n_test.getContent() == CONTENT_APPLE_BLOSSOM)
+							{
+								found_blossom = true;
+								break;
+							}
+						}
+
+						for(s16 x=-3; x<=3; x++)
+						for(s16 y=-3; y<=3; y++)
+						for(s16 z=-3; z<=3; z++)
+						{
+							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
+							if(n_test.getContent() == CONTENT_APPLE_TREE)
+							{
+								found_tree = true;
+								break;
+							}
+						}
+
+						// let's not turn the entire tree to blossoms
+						if(found_blossom == false && found_tree == true)
+						{
+							n.setContent(CONTENT_APPLE_BLOSSOM);
+							m_map->addNodeWithEvent(p, n);
+						}
+					}
+				}
+
+				if (n.getContent() == CONTENT_APPLE_BLOSSOM) {
+					if(myrand()%20 == 0) {
+						int found_apple = 0;
+						bool found_tree = false;
+
+						for(s16 x=-2; x<=2; x++)
+						for(s16 y=-2; y<=2; y++)
+						for(s16 z=-2; z<=2; z++)
+						{
+							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
+							if(n_test.getContent() == CONTENT_APPLE)
+							{
+								++found_apple;
+							}
+						}
+
+						for(s16 x=-3; x<=3; x++)
+						for(s16 y=-3; y<=3; y++)
+						for(s16 z=-3; z<=3; z++)
+						{
+							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
+							if(n_test.getContent() == CONTENT_APPLE_TREE)
+							{
+								found_tree = true;
+								break;
+							}
+						}
+
+						// don't turn all blossoms to apples
+						// blossoms look nice
+						if(found_apple < 3 && found_tree == true)
+						{
+							n.setContent(CONTENT_APPLE);
+							m_map->addNodeWithEvent(p, n);
+						}
+					}
+				}
+
 				/*
 					fire that goes out
 				*/
@@ -1948,6 +2026,7 @@ void ServerEnvironment::step(float dtime)
 					|| n.getContent() == CONTENT_JUNGLELEAVES
 					|| n.getContent() == CONTENT_CONIFER_LEAVES
 					|| n.getContent() == CONTENT_APPLE_LEAVES
+					|| n.getContent() == CONTENT_APPLE_BLOSSOM
 				) {
 					if (myrand()%10 == 0) {
 						s16 max_d = 3;

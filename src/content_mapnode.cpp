@@ -1626,6 +1626,29 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	setLeafLikeDiggingProperties(f->digging_properties, 0.15);
 
+	i = CONTENT_APPLE_BLOSSOM;
+	f = &content_features(i);
+	f->description = std::string("Apple Tree Blossom");
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	//f->is_ground_content = true;
+	if (new_style_leaves) {
+		f->draw_type = CDT_GLASSLIKE;
+		f->solidness = 0; // drawn separately, makes no faces
+		f->visual_solidness = 1;
+		f->setAllTextures("apple_leaves.png^apple_blossom.png");
+#ifndef SERVER
+		f->setAllTextureTypes(MATERIAL_ALPHA_SIMPLE);
+#endif
+		f->setInventoryTextureCube("apple_leaves.png^apple_blossom.png", "apple_leaves.png^apple_blossom.png", "apple_leaves.png^apple_blossom.png");
+	}else{
+		f->draw_type = CDT_CUBELIKE;
+		f->setAllTextures("[noalpha:apple_leaves.png^apple_blossom.png");
+	}
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_APPLE_LEAVES)+" 1";
+	setLeafLikeDiggingProperties(f->digging_properties, 0.15);
+
 	i = CONTENT_CACTUS;
 	f = &content_features(i);
 	f->description = std::string("Cactus");

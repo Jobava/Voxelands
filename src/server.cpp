@@ -3053,7 +3053,42 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 					// If not mineral
 					if (item == NULL) {
-						if (wield && (wield->getContent()&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+						if (material == CONTENT_APPLE) {
+								MapNode n = m_env.getMap().getNodeNoEx(p_under);
+								n.setContent(CONTENT_APPLE_LEAVES);
+
+								core::list<u16> far_players;
+								sendAddNode(p_under, n, 0, &far_players, 30);
+
+								/*
+									Add node.
+
+									This takes some time so it is done after the quick stuff
+								*/
+								core::map<v3s16, MapBlock*> modified_blocks;
+								{
+									MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+
+									std::string p_name = std::string(player->getName());
+									m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
+								}
+								/*
+									Set blocks not sent to far players
+								*/
+								for(core::list<u16>::Iterator
+										i = far_players.begin();
+										i != far_players.end(); i++)
+								{
+									u16 peer_id = *i;
+									RemoteClient *client = getClient(peer_id);
+									if(client==NULL)
+										continue;
+									client->SetBlocksNotSent(modified_blocks);
+								}
+								std::string &dug_s = content_features(material).dug_item;
+								std::istringstream is(dug_s, std::ios::binary);
+								item = InventoryItem::deSerialize(is);
+						}else if (wield && (wield->getContent()&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
 							ToolItem *tool = (ToolItem*)wield;
 							if (material == CONTENT_LEAVES && tool->getContent() == CONTENT_TOOLITEM_STEELSHEARS) {
 								std::string dug_s = std::string("MaterialItem2 ")+itos(CONTENT_TRIMMED_LEAVES)+" 1";;
@@ -3195,8 +3230,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 								std::istringstream is(dug_s, std::ios::binary);
 								item = InventoryItem::deSerialize(is);
 							}
-						}
-					}else if (material != CONTENT_WATERSOURCE && material != CONTENT_LAVASOURCE) {
+						}					}else if (material != CONTENT_WATERSOURCE && material != CONTENT_LAVASOURCE) {
 						std::string &dug_s = content_features(material).dug_item;
 						if (dug_s != "") {
 							std::istringstream is(dug_s, std::ios::binary);

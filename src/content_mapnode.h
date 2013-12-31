@@ -198,7 +198,8 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_TRIMMED_APPLE_LEAVES 0x915
 #define CONTENT_TRIMMED_JUNGLE_LEAVES 0x916
 #define CONTENT_TRIMMED_CONIFER_LEAVES 0x917
-// FREE 918-9FE
+#define CONTENT_APPLE_BLOSSOM 0x918
+// FREE 919-9FE
 //bwahaha!
 #define CONTENT_CRAFT_GUIDE 0x9FF
 
