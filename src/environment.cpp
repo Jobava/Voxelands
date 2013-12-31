@@ -764,6 +764,9 @@ void ServerEnvironment::step(float dtime)
 
 	//TimeTaker timer("ServerEnv step");
 
+	// Get some settings
+	bool footprints = g_settings->getBool("enable_footprints");
+
 	/*
 		Increment game time
 	*/
@@ -779,19 +782,32 @@ void ServerEnvironment::step(float dtime)
 	*/
 	{
 		ScopeProfiler sp(g_profiler, "SEnv: handle players avg", SPT_AVG);
-		for(core::list<Player*>::Iterator i = m_players.begin();
-				i != m_players.end(); i++)
-		{
+		for (core::list<Player*>::Iterator i = m_players.begin(); i != m_players.end(); i++) {
 			Player *player = *i;
 
 			// Ignore disconnected players
-			if(player->peer_id == 0)
+			if (player->peer_id == 0)
 				continue;
 
 			v3f playerpos = player->getPosition();
 
 			// Move
 			player->move(dtime, *m_map, 100*BS);
+
+			/*
+				Add footsteps to grass
+			*/
+			if (footprints) {
+				// Get node that is at BS/4 under player
+				v3s16 bottompos = floatToInt(playerpos + v3f(0,-BS/4,0), BS);
+				try{
+					MapNode n = m_map->getNode(bottompos);
+					if (n.getContent() == CONTENT_GRASS) {
+						n.setContent(CONTENT_GRASS_FOOTSTEPS);
+						m_map->setNode(bottompos, n);
+					}
+				}catch (InvalidPositionException &e) {}
+			}
 		}
 	}
 
@@ -964,6 +980,12 @@ void ServerEnvironment::step(float dtime)
 				v3s16 p = p0 + block->getPosRelative();
 				MapNode n = block->getNodeNoEx(p0);
 
+				if (n.getContent() == CONTENT_GRASS_FOOTSTEPS) {
+					if (myrand()%5 == 0) {
+						n.setContent(CONTENT_GRASS);
+						m_map->addNodeWithEvent(p, n);
+					}
+				}
 				/*
 					Test something:
 					Convert mud under proper lighting to grass
@@ -2990,6 +3012,7 @@ void ClientEnvironment::step(float dtime)
 
 	// Get some settings
 	bool free_move = g_settings->getBool("free_move");
+	bool footprints = g_settings->getBool("enable_footprints");
 
 	// Get local player
 	LocalPlayer *lplayer = getLocalPlayer();
@@ -3197,6 +3220,34 @@ void ClientEnvironment::step(float dtime)
 		}
 		catch(InvalidPositionException &e) {}
 		player->updateLight(light);
+
+		/*
+			Add footsteps to grass
+		*/
+		if(footprints)
+		{
+			// Get node that is at BS/4 under player
+			v3s16 bottompos = floatToInt(playerpos + v3f(0,-BS/4,0), BS);
+			try{
+				MapNode n = m_map->getNode(bottompos);
+				if(n.getContent() == CONTENT_GRASS)
+				{
+					n.setContent(CONTENT_GRASS_FOOTSTEPS);
+					m_map->setNode(bottompos, n);
+					// Update mesh on client
+					if(m_map->mapType() == MAPTYPE_CLIENT)
+					{
+						v3s16 p_blocks = getNodeBlockPos(bottompos);
+						MapBlock *b = m_map->getBlockNoCreate(p_blocks);
+						//b->updateMesh(getDayNightRatio());
+						b->setMeshExpired(true);
+					}
+				}
+			}
+			catch(InvalidPositionException &e)
+			{
+			}
+		}
 	}
 
 	/*

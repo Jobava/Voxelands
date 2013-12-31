@@ -100,6 +100,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("default_password", "");
 	settings->setDefault("default_privs", "build, shout");
 	settings->setDefault("borderstone_radius","5");
+	settings->setDefault("enable_footprints","true");
 
 	// only enable http on the server for now
 	// adventurous players can enable it on the client

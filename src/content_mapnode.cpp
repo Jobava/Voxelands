@@ -1078,6 +1078,17 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MUD)+" 1";
 	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
 
+	i = CONTENT_GRASS_FOOTSTEPS;
+	f = &content_features(i);
+	f->description = std::string("Grass");
+	f->setAllTextures("mud.png^grass_side.png");
+	f->setTexture(0, "grass_footsteps.png");
+	f->setTexture(1, "mud.png");
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MUD)+" 1";
+	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+
 	i = CONTENT_MUDSNOW;
 	f = &content_features(i);
 	f->description = std::string("Muddy Snow");

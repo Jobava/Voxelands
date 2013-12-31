@@ -179,7 +179,8 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_STEAM 0x8CE
 #define CONTENT_INCINERATOR 0x8CF
 #define CONTENT_ASH 0x8D0
-// FREE 8D1-8FF
+#define CONTENT_GRASS_FOOTSTEPS 0x8D1
+// FREE 8D2-8FF
 // glass pane
 #define CONTENT_GLASS_PANE 0x900
 #define CONTENT_GLASS_PANE_BLUE 0x901
