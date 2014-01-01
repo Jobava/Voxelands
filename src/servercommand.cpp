@@ -176,6 +176,10 @@ void cmd_setting(std::wostringstream &os,
 
 	/* no value is set, so instead show the current value */
 	if (ctx->parms.size() == 2) {
+		if (!g_settings->exists(wide_to_narrow(ctx->parms[1]))) {
+			os << L"-!- '" << ctx->parms[1] << L"' is not set";
+			return;
+		}
 		os << L"-!- '" << ctx->parms[1] << L"' has value '"
 			<< narrow_to_wide(g_settings->get(wide_to_narrow(ctx->parms[1]))) << L"'";
 		return;
