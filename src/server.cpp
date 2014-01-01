@@ -3054,6 +3054,31 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					// If not mineral
 					if (item == NULL) {
 						if (material == CONTENT_APPLE) {
+							s16 max_d = 3;
+							v3s16 leaf_p = p_under;
+							v3s16 test_p;
+							MapNode testnode;
+							bool found = false;
+							for(s16 z=-max_d; !found && z<=max_d; z++) {
+							for(s16 y=-max_d; !found && y<=max_d; y++) {
+							for(s16 x=-max_d; !found && x<=max_d; x++)
+							{
+								test_p = leaf_p + v3s16(x,y,z);
+								testnode = m_env.getMap().getNodeNoEx(test_p);
+								if (testnode.getContent() == CONTENT_TREE
+									|| testnode.getContent() == CONTENT_APPLE_TREE
+									|| testnode.getContent() == CONTENT_JUNGLETREE
+									|| testnode.getContent() == CONTENT_CONIFER_TREE
+									|| testnode.getContent() == CONTENT_IGNORE)
+								{
+									found = true;
+									break;
+								}
+							}
+							}
+							}
+
+							if (found) {
 								MapNode n = m_env.getMap().getNodeNoEx(p_under);
 								n.setContent(CONTENT_APPLE_LEAVES);
 
@@ -3085,9 +3110,11 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 										continue;
 									client->SetBlocksNotSent(modified_blocks);
 								}
-								std::string &dug_s = content_features(material).dug_item;
-								std::istringstream is(dug_s, std::ios::binary);
-								item = InventoryItem::deSerialize(is);
+							}
+
+							std::string &dug_s = content_features(material).dug_item;
+							std::istringstream is(dug_s, std::ios::binary);
+							item = InventoryItem::deSerialize(is);
 						}else if (wield && (wield->getContent()&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
 							ToolItem *tool = (ToolItem*)wield;
 							if (material == CONTENT_LEAVES && tool->getContent() == CONTENT_TOOLITEM_STEELSHEARS) {
