@@ -148,9 +148,9 @@
 # the protection radius of borderstone
 #borderstone_radius = 5
 # allow players to collect lava with steel buckets
-#enable_lavabuckets = false
+#enable_lavabuckets = true
 # allow players to craft tnt
-#enable_tnt = false
+#enable_tnt = true
 # add footprints when players walk on grass
 #enable_footprints = true
 
