@@ -2222,8 +2222,11 @@ void content_mapnode_init()
 	i = CONTENT_RAIL;
 	f = &content_features(i);
 	f->description = std::string("Rail");
-	f->setInventoryTexture("rail.png");
-	f->used_texturenames["rail.png"] = true;
+	f->setAllTextures("rail.png");
+	f->setTexture(1,"rail_curved.png");
+	f->setTexture(2,"rail_t_junction.png");
+	f->setTexture(3,"rail_crossing.png");
+	f->setAllTextureFlags(0);
 	f->light_propagates = true;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_RAILLIKE;

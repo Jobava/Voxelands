@@ -1358,110 +1358,147 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		{
 			bool is_rail_x [] = { false, false };  /* x-1, x+1 */
 			bool is_rail_z [] = { false, false };  /* z-1, z+1 */
-			content_t type = n.getContent();
+
+			bool is_rail_z_minus_y [] = { false, false };  /* z-1, z+1; y-1 */
+			bool is_rail_x_minus_y [] = { false, false };  /* x-1, z+1; y-1 */
+			bool is_rail_z_plus_y [] = { false, false };  /* z-1, z+1; y+1 */
+			bool is_rail_x_plus_y [] = { false, false };  /* x-1, x+1; y+1 */
 
 			MapNode n_minus_x = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1,y,z));
 			MapNode n_plus_x = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1,y,z));
 			MapNode n_minus_z = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y,z-1));
 			MapNode n_plus_z = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y,z+1));
+			MapNode n_plus_x_plus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1, y+1, z));
+			MapNode n_plus_x_minus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1, y-1, z));
+			MapNode n_minus_x_plus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1, y+1, z));
+			MapNode n_minus_x_minus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1, y-1, z));
+			MapNode n_plus_z_plus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x, y+1, z+1));
+			MapNode n_minus_z_plus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x, y+1, z-1));
+			MapNode n_plus_z_minus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x, y-1, z+1));
+			MapNode n_minus_z_minus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x, y-1, z-1));
 
-			if(n_minus_x.getContent() == type)
+			content_t thiscontent = n.getContent();
+
+			if (n_minus_x.getContent() == thiscontent)
 				is_rail_x[0] = true;
-			if(n_plus_x.getContent() == type)
+			if (n_minus_x_minus_y.getContent() == thiscontent)
+				is_rail_x_minus_y[0] = true;
+			if (n_minus_x_plus_y.getContent() == thiscontent)
+				is_rail_x_plus_y[0] = true;
+			if (n_plus_x.getContent() == thiscontent)
 				is_rail_x[1] = true;
-			if(n_minus_z.getContent() == type)
+			if (n_plus_x_minus_y.getContent() == thiscontent)
+				is_rail_x_minus_y[1] = true;
+			if (n_plus_x_plus_y.getContent() == thiscontent)
+				is_rail_x_plus_y[1] = true;
+			if (n_minus_z.getContent() == thiscontent)
 				is_rail_z[0] = true;
-			if(n_plus_z.getContent() == type)
+			if (n_minus_z_minus_y.getContent() == thiscontent)
+				is_rail_z_minus_y[0] = true;
+			if (n_minus_z_plus_y.getContent() == thiscontent)
+				is_rail_z_plus_y[0] = true;
+			if (n_plus_z.getContent() == thiscontent)
 				is_rail_z[1] = true;
+			if (n_plus_z_minus_y.getContent() == thiscontent)
+				is_rail_z_minus_y[1] = true;
+			if (n_plus_z_plus_y.getContent() == thiscontent)
+				is_rail_z_plus_y[1] = true;
 
-			int adjacencies = is_rail_x[0] + is_rail_x[1] + is_rail_z[0] + is_rail_z[1];
+			bool is_rail_x_all[] = {false, false};
+			bool is_rail_z_all[] = {false, false};
+			is_rail_x_all[0] = is_rail_x[0] || is_rail_x_minus_y[0] || is_rail_x_plus_y[0];
+			is_rail_x_all[1] = is_rail_x[1] || is_rail_x_minus_y[1] || is_rail_x_plus_y[1];
+			is_rail_z_all[0] = is_rail_z[0] || is_rail_z_minus_y[0] || is_rail_z_plus_y[0];
+			is_rail_z_all[1] = is_rail_z[1] || is_rail_z_minus_y[1] || is_rail_z_plus_y[1];
 
-			// Assign textures
-			const char *texturename = "rail.png";
-			if(adjacencies < 2)
-				texturename = "rail.png";
-			else if(adjacencies == 2)
-			{
-				if((is_rail_x[0] && is_rail_x[1]) || (is_rail_z[0] && is_rail_z[1]))
-					texturename = "rail.png";
-				else
-					texturename = "rail_curved.png";
+			// reasonable default, flat straight unrotated rail
+			bool is_straight = true;
+			int adjacencies = 0;
+			int angle = 0;
+			u8 tileindex = 0;
+
+			// check for sloped rail
+			if (is_rail_x_plus_y[0] || is_rail_x_plus_y[1] || is_rail_z_plus_y[0] || is_rail_z_plus_y[1]) {
+				adjacencies = 5; //5 means sloped
+				is_straight = true; // sloped is always straight
+			}else{
+				// is really straight, rails on both sides
+				is_straight = (is_rail_x_all[0] && is_rail_x_all[1]) || (is_rail_z_all[0] && is_rail_z_all[1]);
+				adjacencies = is_rail_x_all[0] + is_rail_x_all[1] + is_rail_z_all[0] + is_rail_z_all[1];
 			}
-			else if(adjacencies == 3)
-				texturename = "rail_t_junction.png";
-			else if(adjacencies == 4)
-				texturename = "rail_crossing.png";
 
-			AtlasPointer ap = g_texturesource->getTexture(texturename);
+			switch (adjacencies) {
+			case 1:
+				if(is_rail_x_all[0] || is_rail_x_all[1])
+					angle = 90;
+				break;
+			case 2:
+				if(!is_straight)
+					tileindex = 1; // curved
+				if(is_rail_x_all[0] && is_rail_x_all[1])
+					angle = 90;
+				if(is_rail_z_all[0] && is_rail_z_all[1]){
+					if (is_rail_z_plus_y[0])
+						angle = 180;
+				}
+				else if(is_rail_x_all[0] && is_rail_z_all[0])
+					angle = 270;
+				else if(is_rail_x_all[0] && is_rail_z_all[1])
+					angle = 180;
+				else if(is_rail_x_all[1] && is_rail_z_all[1])
+					angle = 90;
+				break;
+			case 3:
+				// here is where the potential to 'switch' a junction is, but not implemented at present
+				tileindex = 2; // t-junction
+				if(!is_rail_x_all[1])
+					angle=180;
+				if(!is_rail_z_all[0])
+					angle=90;
+				if(!is_rail_z_all[1])
+					angle=270;
+				break;
+			case 4:
+				tileindex = 3; // crossing
+				break;
+			case 5: //sloped
+				if(is_rail_z_plus_y[0])
+					angle = 180;
+				if(is_rail_x_plus_y[0])
+					angle = 90;
+				if(is_rail_x_plus_y[1])
+					angle = -90;
+				break;
+			default:
+				break;
+			}
 
-			video::SMaterial material_rail;
-			material_rail.setFlag(video::EMF_LIGHTING, false);
-			material_rail.setFlag(video::EMF_BACK_FACE_CULLING, false);
-			material_rail.setFlag(video::EMF_BILINEAR_FILTER, false);
-			material_rail.setFlag(video::EMF_FOG_ENABLE, true);
-			material_rail.MaterialType
-					= video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-			material_rail.setTexture(0, ap.atlas);
+			TileSpec tile = content_features(thiscontent).tiles[tileindex];
 
-			u8 l = decode_light(n.getLightBlend(data->m_daynight_ratio));
+			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l);
 
-			float d = (float)BS/16;
-			video::S3DVertex vertices[4] =
-			{
-				video::S3DVertex(-BS/2,-BS/2+d,-BS/2, 0,0,0, c,
-						ap.x0(), ap.y1()),
-				video::S3DVertex(BS/2,-BS/2+d,-BS/2, 0,0,0, c,
-						ap.x1(), ap.y1()),
-				video::S3DVertex(BS/2,-BS/2+d,BS/2, 0,0,0, c,
-						ap.x1(), ap.y0()),
-				video::S3DVertex(-BS/2,-BS/2+d,BS/2, 0,0,0, c,
-						ap.x0(), ap.y0()),
+			float d = (float)BS/32;
+
+			char g=-1;
+			if (is_rail_x_plus_y[0] || is_rail_x_plus_y[1] || is_rail_z_plus_y[0] || is_rail_z_plus_y[1])
+				g=1; //Object is at a slope
+
+			video::S3DVertex vertices[4] = {
+				video::S3DVertex(-BS/2,-BS/2+d,-BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y1()),
+				video::S3DVertex(BS/2,-BS/2+d,-BS/2, 0,0,0, c, tile.texture.x1(), tile.texture.y1()),
+				video::S3DVertex(BS/2,g*BS/2+d,BS/2, 0,0,0, c, tile.texture.x1(), tile.texture.y0()),
+				video::S3DVertex(-BS/2,g*BS/2+d,BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y0()),
 			};
 
-			// Rotate textures
-			int angle = 0;
-
-			if(adjacencies == 1)
-			{
-				if(is_rail_x[0] || is_rail_x[1])
-					angle = 90;
-			}
-			else if(adjacencies == 2)
-			{
-				if(is_rail_x[0] && is_rail_x[1])
-					angle = 90;
-				else if(is_rail_x[0] && is_rail_z[0])
-					angle = 270;
-				else if(is_rail_x[0] && is_rail_z[1])
-					angle = 180;
-				else if(is_rail_x[1] && is_rail_z[1])
-					angle = 90;
-			}
-			else if(adjacencies == 3)
-			{
-				if(!is_rail_x[0])
-					angle=0;
-				if(!is_rail_x[1])
-					angle=180;
-				if(!is_rail_z[0])
-					angle=90;
-				if(!is_rail_z[1])
-					angle=270;
-			}
-
-			if(angle != 0) {
-				for(u16 i=0; i<4; i++)
+			for (s32 i=0; i<4; i++) {
+				if (angle != 0)
 					vertices[i].Pos.rotateXZBy(angle);
-			}
-
-			for(s32 i=0; i<4; i++)
-			{
-				vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+				vertices[i].Pos += intToFloat(blockpos_nodes + p, BS);
 			}
 
 			u16 indices[] = {0,1,2,2,3,0};
-			collector.append(material_rail, vertices, 4, indices, 6);
+			collector.append(tile.getMaterial(), vertices, 4, indices, 6);
 		}
 		break;
 		case CDT_PLANTLIKE_LGE:
