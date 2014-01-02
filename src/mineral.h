@@ -48,13 +48,13 @@ std::string mineral_block_texture(u8 mineral);
 inline CraftItem * getDiggedMineralItem(u8 mineral)
 {
 	if (mineral == MINERAL_COAL) {
-		return new CraftItem("lump_of_coal", 1);
+		return new CraftItem("lump_of_coal", 2);
 	}else if(mineral == MINERAL_IRON) {
-		return new CraftItem("lump_of_iron", 1);
+		return new CraftItem("lump_of_iron", 2);
 	}else if(mineral == MINERAL_TIN) {
-		return new CraftItem("lump_of_tin", 1);
+		return new CraftItem("lump_of_tin", 2);
 	}else if(mineral == MINERAL_COPPER) {
-		return new CraftItem("lump_of_copper", 1);
+		return new CraftItem("lump_of_copper", 2);
 	}else if(mineral == MINERAL_SILVER) {
 		return new CraftItem("lump_of_silver", 1);
 	}else if(mineral == MINERAL_GOLD) {
