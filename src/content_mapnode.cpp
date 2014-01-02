@@ -1658,7 +1658,7 @@ void content_mapnode_init()
 	}
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->extra_dug_item = std::string("CraftItem apple_blossom 1");
-	f->extra_dug_item_rarity = 5;
+	f->extra_dug_item_rarity = 3;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_APPLE_LEAVES)+" 1";
 	setLeafLikeDiggingProperties(f->digging_properties, 0.15);
 
