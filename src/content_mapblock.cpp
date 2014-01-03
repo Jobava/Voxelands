@@ -1501,6 +1501,702 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			collector.append(tile.getMaterial(), vertices, 4, indices, 6);
 		}
 		break;
+		case CDT_ROOFLIKE:
+		{
+			bool is_roof_x [] = { false, false };  /* x-1, x+1 */
+			bool is_roof_z [] = { false, false };  /* z-1, z+1 */
+
+			bool is_roof_z_minus_y [] = { false, false };  /* z-1, z+1; y-1 */
+			bool is_roof_x_minus_y [] = { false, false };  /* x-1, z+1; y-1 */
+			bool is_roof_z_plus_y [] = { false, false };  /* z-1, z+1; y+1 */
+			bool is_roof_x_plus_y [] = { false, false };  /* x-1, x+1; y+1 */
+
+			MapNode n_minus_x = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1,y,z));
+			MapNode n_plus_x = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1,y,z));
+			MapNode n_minus_z = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y,z-1));
+			MapNode n_plus_z = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y,z+1));
+			MapNode n_plus_x_plus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1, y+1, z));
+			MapNode n_plus_x_minus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1, y-1, z));
+			MapNode n_minus_x_plus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1, y+1, z));
+			MapNode n_minus_x_minus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1, y-1, z));
+			MapNode n_plus_z_plus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x, y+1, z+1));
+			MapNode n_minus_z_plus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x, y+1, z-1));
+			MapNode n_plus_z_minus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x, y-1, z+1));
+			MapNode n_minus_z_minus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x, y-1, z-1));
+
+			content_t thiscontent = n.getContent();
+
+			if (n_minus_x.getContent() == thiscontent)
+				is_roof_x[0] = true;
+			if (n_minus_x_minus_y.getContent() == thiscontent)
+				is_roof_x_minus_y[0] = true;
+			if (n_minus_x_plus_y.getContent() == thiscontent)
+				is_roof_x_plus_y[0] = true;
+			if (n_plus_x.getContent() == thiscontent)
+				is_roof_x[1] = true;
+			if (n_plus_x_minus_y.getContent() == thiscontent)
+				is_roof_x_minus_y[1] = true;
+			if (n_plus_x_plus_y.getContent() == thiscontent)
+				is_roof_x_plus_y[1] = true;
+			if (n_minus_z.getContent() == thiscontent)
+				is_roof_z[0] = true;
+			if (n_minus_z_minus_y.getContent() == thiscontent)
+				is_roof_z_minus_y[0] = true;
+			if (n_minus_z_plus_y.getContent() == thiscontent)
+				is_roof_z_plus_y[0] = true;
+			if (n_plus_z.getContent() == thiscontent)
+				is_roof_z[1] = true;
+			if (n_plus_z_minus_y.getContent() == thiscontent)
+				is_roof_z_minus_y[1] = true;
+			if (n_plus_z_plus_y.getContent() == thiscontent)
+				is_roof_z_plus_y[1] = true;
+
+			bool is_roof_x_all[] = {false, false};
+			bool is_roof_z_all[] = {false, false};
+			is_roof_x_all[0] = is_roof_x[0] || is_roof_x_minus_y[0] || is_roof_x_plus_y[0];
+			is_roof_x_all[1] = is_roof_x[1] || is_roof_x_minus_y[1] || is_roof_x_plus_y[1];
+			is_roof_z_all[0] = is_roof_z[0] || is_roof_z_minus_y[0] || is_roof_z_plus_y[0];
+			is_roof_z_all[1] = is_roof_z[1] || is_roof_z_minus_y[1] || is_roof_z_plus_y[1];
+
+			u8 adjacencies = is_roof_x[0] + is_roof_x[1] + is_roof_z[0] + is_roof_z[1];
+
+			TileSpec tile = content_features(thiscontent).tiles[0];
+			u8 l = decode_light(
+				undiminish_light(
+					data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x, y+1, z)).getLightBlend(data->m_daynight_ratio)
+				)
+			);
+			video::SColor c = MapBlock_LightColor(255, l);
+
+			video::S3DVertex slope_v[4] = {
+				video::S3DVertex(-BS/2,-BS/2,-BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y1()),
+				video::S3DVertex(BS/2,-BS/2,-BS/2, 0,0,0, c, tile.texture.x1(), tile.texture.y1()),
+				video::S3DVertex(BS/2,BS/2,BS/2, 0,0,0, c, tile.texture.x1(), tile.texture.y0()),
+				video::S3DVertex(-BS/2,BS/2,BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y0()),
+			};
+			// TODO: tex coords for half height
+			video::S3DVertex top_v[2][4] = {
+				{
+					video::S3DVertex(-BS/2, -BS/2, -BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y1()),
+					video::S3DVertex(BS/2,  -BS/2, -BS/2, 0,0,0, c, tile.texture.x1(), tile.texture.y1()),
+					video::S3DVertex(BS/2,  0,     0, 0,0,0, c, tile.texture.x1(), tile.texture.y0()),
+					video::S3DVertex(-BS/2, 0,     0, 0,0,0, c, tile.texture.x0(), tile.texture.y0()),
+				},{
+					video::S3DVertex(-BS/2, 0,     0, 0,0,0, c, tile.texture.x0(), tile.texture.y1()),
+					video::S3DVertex(BS/2,  0,     0, 0,0,0, c, tile.texture.x1(), tile.texture.y1()),
+					video::S3DVertex(BS/2,  -BS/2, BS/2, 0,0,0, c, tile.texture.x1(), tile.texture.y0()),
+					video::S3DVertex(-BS/2, -BS/2, BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y0()),
+				}
+			};
+			video::S3DVertex inner_v[6] = {
+				video::S3DVertex(BS/2,BS/2,-BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y0()),
+				video::S3DVertex(-BS/2,BS/2,-BS/2, 0,0,0, c, tile.texture.x1(), tile.texture.y0()),
+				video::S3DVertex(-BS/2,-BS/2,BS/2, 0,0,0, c, tile.texture.x1(), tile.texture.y1()),
+				video::S3DVertex(BS/2,BS/2,-BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y0()),
+				video::S3DVertex(BS/2,BS/2,BS/2, 0,0,0, c, tile.texture.x1(), tile.texture.y0()),
+				video::S3DVertex(-BS/2,-BS/2,BS/2, 0,0,0, c, tile.texture.x1(), tile.texture.y1()),
+			};
+			// TODO: tex coords for half height
+			video::S3DVertex butt_v[3][4] = {
+				{
+					video::S3DVertex(-BS/2,-BS/2,-BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y1()),
+					video::S3DVertex(-BS/2,-BS/2,BS/2, 0,0,0, c, tile.texture.x1(), tile.texture.y1()),
+					video::S3DVertex(BS/2,BS/2,BS/2, 0,0,0, c, tile.texture.x1(), tile.texture.y0()),
+					video::S3DVertex(BS/2,BS/2,-BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y0()),
+				},{
+					video::S3DVertex(0,     0,     0, 0,0,0, c, tile.texture.x1(), tile.texture.y0()),
+					video::S3DVertex(-BS/2, 0,     0, 0,0,0, c, tile.texture.x0(), tile.texture.y0()),
+					video::S3DVertex(-BS/2, -BS/2, -BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y1()),
+				},{
+					video::S3DVertex(0,     0,     0, 0,0,0, c, tile.texture.x0(), tile.texture.y0()),
+					video::S3DVertex(-BS/2, -BS/2, BS/2, 0,0,0, c, tile.texture.x1(), tile.texture.y1()),
+					video::S3DVertex(-BS/2, 0,     0, 0,0,0, c, tile.texture.x1(), tile.texture.y0()),
+				}
+			};
+			// TODO: tex coords are totally screwed
+			video::S3DVertex topc_v[4][4] = {
+				{
+					video::S3DVertex(0,     0,     0, 0,0,0, c, tile.texture.x1(), tile.texture.y0()),
+					video::S3DVertex(-BS/2, 0,     0, 0,0,0, c, tile.texture.x0(), tile.texture.y0()),
+					video::S3DVertex(-BS/2, -BS/2, -BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y1()),
+				},{
+					video::S3DVertex(0,     0,     0, 0,0,0, c, tile.texture.x0(), tile.texture.y0()),
+					video::S3DVertex(-BS/2, -BS/2, BS/2, 0,0,0, c, tile.texture.x1(), tile.texture.y1()),
+					video::S3DVertex(-BS/2, 0,     0, 0,0,0, c, tile.texture.x1(), tile.texture.y0()),
+					video::S3DVertex(BS/2, -BS/2, BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y1()),
+				},{
+					video::S3DVertex(0,     0,     0, 0,0,0, c, tile.texture.x1(), tile.texture.y0()),
+					video::S3DVertex(0,     0,     -BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y0()),
+					video::S3DVertex(-BS/2, -BS/2, -BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y1()),
+				},{
+					video::S3DVertex(0,     0,     0, 0,0,0, c, tile.texture.x0(), tile.texture.y0()),
+					video::S3DVertex(0,     0,     -BS/2, 0,0,0, c, tile.texture.x1(), tile.texture.y0()),
+					video::S3DVertex(BS/2,  -BS/2, -BS/2, 0,0,0, c, tile.texture.x1(), tile.texture.y1()),
+					video::S3DVertex(BS/2,  -BS/2, BS/2, 0,0,0, c, tile.texture.x1(), tile.texture.y1()),
+				}
+			};
+			video::S3DVertex outer_v[4] = {
+				video::S3DVertex(-BS/2,-BS/2,-BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y1()),
+				video::S3DVertex(BS/2,-BS/2,-BS/2, 0,0,0, c, tile.texture.x1(), tile.texture.y1()),
+				video::S3DVertex(-BS/2,BS/2,BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y0()),
+				video::S3DVertex(BS/2,-BS/2,BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y1()),
+			};
+			// TODO: tex coords are totally screwed
+			video::S3DVertex topx_v[4][4] = {
+				{
+					video::S3DVertex(0,     0,     0, 0,0,0, c, tile.texture.x1(), tile.texture.y0()),
+					video::S3DVertex(-BS/2, 0,     0, 0,0,0, c, tile.texture.x0(), tile.texture.y0()),
+					video::S3DVertex(-BS/2, -BS/2, -BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y1()),
+					video::S3DVertex(-BS/2, -BS/2, BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y1()),
+				},{
+					video::S3DVertex(0,     0,     0, 0,0,0, c, tile.texture.x1(), tile.texture.y0()),
+					video::S3DVertex(BS/2, 0,     0, 0,0,0, c, tile.texture.x0(), tile.texture.y0()),
+					video::S3DVertex(BS/2, -BS/2, -BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y1()),
+					video::S3DVertex(BS/2, -BS/2, BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y1()),
+				},{
+					video::S3DVertex(0,     0,     0, 0,0,0, c, tile.texture.x1(), tile.texture.y0()),
+					video::S3DVertex(0,     0,     -BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y0()),
+					video::S3DVertex(-BS/2, -BS/2, -BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y1()),
+					video::S3DVertex(BS/2,  -BS/2, -BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y1()),
+				},{
+					video::S3DVertex(0,     0,     0, 0,0,0, c, tile.texture.x0(), tile.texture.y0()),
+					video::S3DVertex(0,     0,     BS/2, 0,0,0, c, tile.texture.x1(), tile.texture.y0()),
+					video::S3DVertex(-BS/2, -BS/2, BS/2, 0,0,0, c, tile.texture.x1(), tile.texture.y1()),
+					video::S3DVertex(BS/2,  -BS/2, BS/2, 0,0,0, c, tile.texture.x1(), tile.texture.y1()),
+				}
+			};
+			// TODO: tex coords for half height
+			video::S3DVertex topt_v[4][4] = {
+				{
+					video::S3DVertex(-BS/2, -BS/2, BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y1()),
+					video::S3DVertex(BS/2,  -BS/2, BS/2, 0,0,0, c, tile.texture.x1(), tile.texture.y1()),
+					video::S3DVertex(BS/2,  0,     0, 0,0,0, c, tile.texture.x1(), tile.texture.y0()),
+					video::S3DVertex(-BS/2, 0,     0, 0,0,0, c, tile.texture.x0(), tile.texture.y0()),
+				},{
+					video::S3DVertex(-BS/2, -BS/2, -BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y1()),
+					video::S3DVertex(BS/2,  -BS/2, -BS/2, 0,0,0, c, tile.texture.x1(), tile.texture.y1()),
+					video::S3DVertex(BS/2,  0,     0, 0,0,0, c, tile.texture.x1(), tile.texture.y0()),
+					video::S3DVertex(-BS/2, 0,     0, 0,0,0, c, tile.texture.x0(), tile.texture.y0()),
+				},{
+					video::S3DVertex(0,     0,     -BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y0()),
+					video::S3DVertex(-BS/2, -BS/2, -BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y1()),
+					video::S3DVertex(0,     0,     0, 0,0,0, c, tile.texture.x1(), tile.texture.y0()),
+					video::S3DVertex(BS/2,  -BS/2, -BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y1()),
+				}
+			};
+
+			MapNode abv;
+
+			if (adjacencies == 1) {
+				// cross X
+				if (is_roof_x[0] || is_roof_x[1]) {
+					if (is_roof_z_plus_y[0]) {
+						for (s32 i=0; i<4; i++) {
+							slope_v[i].Pos.rotateXZBy(180);
+							slope_v[i].Pos += intToFloat(blockpos_nodes + p, BS);
+						}
+
+						u16 indices[] = {0,1,2,2,3,0};
+						collector.append(tile.getMaterial(), slope_v, 4, indices, 6);
+					}else if (is_roof_z_plus_y[1]) {
+						for (s32 i=0; i<4; i++) {
+							slope_v[i].Pos += intToFloat(blockpos_nodes + p, BS);
+						}
+
+						u16 indices[] = {0,1,2,2,3,0};
+						collector.append(tile.getMaterial(), slope_v, 4, indices, 6);
+					}else{
+						for (s32 s=0; s<2; s++) {
+							for (s32 i=0; i<4; i++) {
+								top_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
+							}
+
+							u16 indices[] = {0,1,2,2,3,0};
+							collector.append(tile.getMaterial(), top_v[s], 4, indices, 6);
+						}
+					}
+				}
+				// cross Z
+				else if (is_roof_z[0] || is_roof_z[1]) {
+					if (is_roof_x_plus_y[1]) {
+						for (s32 i=0; i<4; i++) {
+							slope_v[i].Pos.rotateXZBy(270);
+							slope_v[i].Pos += intToFloat(blockpos_nodes + p, BS);
+						}
+
+						u16 indices[] = {0,1,2,2,3,0};
+						collector.append(tile.getMaterial(), slope_v, 4, indices, 6);
+					}else if (is_roof_x_plus_y[0]) {
+						for (s32 i=0; i<4; i++) {
+							slope_v[i].Pos.rotateXZBy(90);
+							slope_v[i].Pos += intToFloat(blockpos_nodes + p, BS);
+						}
+
+						u16 indices[] = {0,1,2,2,3,0};
+						collector.append(tile.getMaterial(), slope_v, 4, indices, 6);
+					}else{
+						for (s32 s=0; s<2; s++) {
+							for (s32 i=0; i<4; i++) {
+								top_v[s][i].Pos.rotateXZBy(90);
+								top_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
+							}
+
+							u16 indices[] = {0,1,2,2,3,0};
+							collector.append(tile.getMaterial(), top_v[s], 4, indices, 6);
+						}
+					}
+				}
+			}else if (adjacencies == 2) {
+				// cross X
+				if (is_roof_x[0] && is_roof_x[1]) {
+					if (is_roof_z_plus_y[0]) {
+						for (s32 i=0; i<4; i++) {
+							slope_v[i].Pos.rotateXZBy(180);
+							slope_v[i].Pos += intToFloat(blockpos_nodes + p, BS);
+						}
+
+						u16 indices[] = {0,1,2,2,3,0};
+						collector.append(tile.getMaterial(), slope_v, 4, indices, 6);
+					}else if (is_roof_z_plus_y[1]) {
+						for (s32 i=0; i<4; i++) {
+							slope_v[i].Pos += intToFloat(blockpos_nodes + p, BS);
+						}
+
+						u16 indices[] = {0,1,2,2,3,0};
+						collector.append(tile.getMaterial(), slope_v, 4, indices, 6);
+					}else{
+						for (s32 s=0; s<2; s++) {
+							for (s32 i=0; i<4; i++) {
+								top_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
+							}
+
+							u16 indices[] = {0,1,2,2,3,0};
+							collector.append(tile.getMaterial(), top_v[s], 4, indices, 6);
+						}
+					}
+				}
+				// cross Z
+				else if (is_roof_z[0] && is_roof_z[1]) {
+					if (is_roof_x_plus_y[1]) {
+						for (s32 i=0; i<4; i++) {
+							slope_v[i].Pos.rotateXZBy(270);
+							slope_v[i].Pos += intToFloat(blockpos_nodes + p, BS);
+						}
+
+						u16 indices[] = {0,1,2,2,3,0};
+						collector.append(tile.getMaterial(), slope_v, 4, indices, 6);
+					}else if (is_roof_x_plus_y[0]) {
+						for (s32 i=0; i<4; i++) {
+							slope_v[i].Pos.rotateXZBy(90);
+							slope_v[i].Pos += intToFloat(blockpos_nodes + p, BS);
+						}
+
+						u16 indices[] = {0,1,2,2,3,0};
+						collector.append(tile.getMaterial(), slope_v, 4, indices, 6);
+					}else{
+						for (s32 s=0; s<2; s++) {
+							for (s32 i=0; i<4; i++) {
+								top_v[s][i].Pos.rotateXZBy(90);
+								top_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
+							}
+
+							u16 indices[] = {0,1,2,2,3,0};
+							collector.append(tile.getMaterial(), top_v[s], 4, indices, 6);
+						}
+					}
+				}else if (is_roof_x[0] && is_roof_z[0]) {
+					if (is_roof_x_plus_y[1] && is_roof_z_plus_y[1]) {
+						for (s32 i=0; i<6; i++) {
+							inner_v[i].Pos.rotateXZBy(90);
+							inner_v[i].Pos += intToFloat(blockpos_nodes + p, BS);
+						}
+
+						u16 indices[] = {0,1,2,3,4,5};
+						collector.append(tile.getMaterial(), inner_v, 6, indices, 6);
+					}else if (is_roof_x_plus_y[1]) {
+						s16 k = 6;
+						for (s32 s=0; s<3; s++) {
+							for (s32 i=0; i<4; i++) {
+								butt_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
+							}
+
+							u16 indices[] = {0,1,2,2,3,0};
+							collector.append(tile.getMaterial(),butt_v[s], 4, indices, k);
+							k = 3;
+						}
+					}else if (is_roof_z_plus_y[1]) {
+						s16 k = 6;
+						for (s32 s=0; s<3; s++) {
+							for (s32 i=0; i<4; i++) {
+								butt_v[s][i].Pos.rotateXZBy(90);
+								butt_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
+							}
+
+							u16 indices[] = {0,1,2,2,3,0};
+							collector.append(tile.getMaterial(),butt_v[s], 4, indices, k);
+							k = 3;
+						}
+					}else{
+						abv = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1, y+1, z-1));
+						if (abv.getContent() == thiscontent) {
+							for (s32 i=0; i<4; i++) {
+								outer_v[i].Pos.rotateXZBy(90);
+								outer_v[i].Pos += intToFloat(blockpos_nodes + p, BS);
+							}
+
+							u16 indices[] = {0,1,2,2,1,3};
+							collector.append(tile.getMaterial(), outer_v, 4, indices, 6);
+						}else{
+							u16 indices[4][6] = {
+								{0,1,2,0,3,1},
+								{0,1,2,0,3,1},
+								{0,1,2,0,3,1},
+								{0,1,2,0,2,3}
+							};
+							s16 k = 3;
+							for (s32 s=0; s<4; s++) {
+								k = s%2 ? 6 : 3;
+								for (s32 i=0; i<4; i++) {
+									topc_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
+								}
+
+								collector.append(tile.getMaterial(),topc_v[s], 4, indices[s], k);
+							}
+						}
+					}
+				}else if (is_roof_x[0] && is_roof_z[1]) {
+					if (is_roof_x_plus_y[1] && is_roof_z_plus_y[0]) {
+						for (s32 i=0; i<6; i++) {
+							inner_v[i].Pos += intToFloat(blockpos_nodes + p, BS);
+						}
+
+						u16 indices[] = {0,1,2,3,4,5};
+						collector.append(tile.getMaterial(), inner_v, 6, indices, 6);
+					}else if (is_roof_x_plus_y[1]) {
+						s16 k = 6;
+						for (s32 s=0; s<3; s++) {
+							for (s32 i=0; i<4; i++) {
+								butt_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
+							}
+
+							u16 indices[] = {0,1,2,2,3,0};
+							collector.append(tile.getMaterial(),butt_v[s], 4, indices, k);
+							k = 3;
+						}
+					}else if (is_roof_z_plus_y[0]) {
+						s16 k = 6;
+						for (s32 s=0; s<3; s++) {
+							for (s32 i=0; i<4; i++) {
+								butt_v[s][i].Pos.rotateXZBy(270);
+								butt_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
+							}
+
+							u16 indices[] = {0,1,2,2,3,0};
+							collector.append(tile.getMaterial(),butt_v[s], 4, indices, k);
+							k = 3;
+						}
+					}else{
+						abv = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1, y+1, z+1));
+						if (abv.getContent() == thiscontent) {
+							for (s32 i=0; i<4; i++) {
+								outer_v[i].Pos += intToFloat(blockpos_nodes + p, BS);
+							}
+
+							u16 indices[] = {0,1,2,2,1,3};
+							collector.append(tile.getMaterial(), outer_v, 4, indices, 6);
+						}else{
+							u16 indices[4][6] = {
+								{0,1,2,0,3,1},
+								{0,1,2,0,3,1},
+								{0,1,2,0,3,1},
+								{0,1,2,0,2,3}
+							};
+							s16 k = 3;
+							for (s32 s=0; s<4; s++) {
+								k = s%2 ? 6 : 3;
+								for (s32 i=0; i<4; i++) {
+									topc_v[s][i].Pos.rotateXZBy(270);
+									topc_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
+								}
+
+								collector.append(tile.getMaterial(),topc_v[s], 4, indices[s], k);
+							}
+						}
+					}
+				}else if (is_roof_x[1] && is_roof_z[0]) {
+					if (is_roof_x_plus_y[0] && is_roof_z_plus_y[1]) {
+						for (s32 i=0; i<6; i++) {
+							inner_v[i].Pos.rotateXZBy(180);
+							inner_v[i].Pos += intToFloat(blockpos_nodes + p, BS);
+						}
+
+						u16 indices[] = {0,1,2,3,4,5};
+						collector.append(tile.getMaterial(), inner_v, 6, indices, 6);
+					}else if (is_roof_x_plus_y[0]) {
+						s16 k = 6;
+						for (s32 s=0; s<3; s++) {
+							for (s32 i=0; i<4; i++) {
+								butt_v[s][i].Pos.rotateXZBy(180);
+								butt_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
+							}
+
+							u16 indices[] = {0,1,2,2,3,0};
+							collector.append(tile.getMaterial(),butt_v[s], 4, indices, k);
+							k = 3;
+						}
+					}else if (is_roof_z_plus_y[1]) {
+						s16 k = 6;
+						for (s32 s=0; s<3; s++) {
+							for (s32 i=0; i<4; i++) {
+								butt_v[s][i].Pos.rotateXZBy(90);
+								butt_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
+							}
+
+							u16 indices[] = {0,1,2,2,3,0};
+							collector.append(tile.getMaterial(),butt_v[s], 4, indices, k);
+							k = 3;
+						}
+					}else{
+						abv = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1, y+1, z-1));
+						if (abv.getContent() == thiscontent) {
+							for (s32 i=0; i<4; i++) {
+								outer_v[i].Pos.rotateXZBy(180);
+								outer_v[i].Pos += intToFloat(blockpos_nodes + p, BS);
+							}
+
+							u16 indices[] = {0,1,2,2,1,3};
+							collector.append(tile.getMaterial(), outer_v, 4, indices, 6);
+						}else{
+							u16 indices[4][6] = {
+								{0,1,2,0,3,1},
+								{0,1,2,0,3,1},
+								{0,1,2,0,3,1},
+								{0,1,2,0,2,3}
+							};
+							s16 k = 3;
+							for (s32 s=0; s<4; s++) {
+								k = s%2 ? 6 : 3;
+								for (s32 i=0; i<4; i++) {
+									topc_v[s][i].Pos.rotateXZBy(90);
+									topc_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
+								}
+
+								collector.append(tile.getMaterial(),topc_v[s], 4, indices[s], k);
+							}
+						}
+					}
+				}else if (is_roof_x[1] && is_roof_z[1]) {
+					if (is_roof_x_plus_y[0] && is_roof_z_plus_y[0]) {
+						for (s32 i=0; i<6; i++) {
+							inner_v[i].Pos.rotateXZBy(270);
+							inner_v[i].Pos += intToFloat(blockpos_nodes + p, BS);
+						}
+
+						u16 indices[] = {0,1,2,3,4,5};
+						collector.append(tile.getMaterial(), inner_v, 6, indices, 6);
+					}else if (is_roof_x_plus_y[0]) {
+						s16 k = 6;
+						for (s32 s=0; s<3; s++) {
+							for (s32 i=0; i<4; i++) {
+								butt_v[s][i].Pos.rotateXZBy(180);
+								butt_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
+							}
+
+							u16 indices[] = {0,1,2,2,3,0};
+							collector.append(tile.getMaterial(),butt_v[s], 4, indices, k);
+							k = 3;
+						}
+					}else if (is_roof_z_plus_y[0]) {
+						s16 k = 6;
+						for (s32 s=0; s<3; s++) {
+							for (s32 i=0; i<4; i++) {
+								butt_v[s][i].Pos.rotateXZBy(270);
+								butt_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
+							}
+
+							u16 indices[] = {0,1,2,2,3,0};
+							collector.append(tile.getMaterial(),butt_v[s], 4, indices, k);
+							k = 3;
+						}
+					}else{
+						abv = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1, y+1, z+1));
+						if (abv.getContent() == thiscontent) {
+							for (s32 i=0; i<4; i++) {
+								outer_v[i].Pos.rotateXZBy(270);
+								outer_v[i].Pos += intToFloat(blockpos_nodes + p, BS);
+							}
+
+							u16 indices[] = {0,1,2,2,1,3};
+							collector.append(tile.getMaterial(), outer_v, 4, indices, 6);
+						}else{
+							u16 indices[4][6] = {
+								{0,1,2,0,3,1},
+								{0,1,2,0,3,1},
+								{0,1,2,0,3,1},
+								{0,1,2,0,2,3}
+							};
+							s16 k = 3;
+							for (s32 s=0; s<4; s++) {
+								k = s%2 ? 6 : 3;
+								for (s32 i=0; i<4; i++) {
+									topc_v[s][i].Pos.rotateXZBy(180);
+									topc_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
+								}
+
+								collector.append(tile.getMaterial(),topc_v[s], 4, indices[s], k);
+							}
+						}
+					}
+				}
+			}else if (adjacencies == 3) {
+				if (is_roof_x[0] && is_roof_x[1] && is_roof_z[0]) {
+					if (is_roof_z_plus_y[1]) {
+						s16 k = 6;
+						for (s32 s=0; s<3; s++) {
+							for (s32 i=0; i<4; i++) {
+								butt_v[s][i].Pos.rotateXZBy(90);
+								butt_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
+							}
+
+							u16 indices[] = {0,1,2,2,3,0};
+							collector.append(tile.getMaterial(),butt_v[s], 4, indices, k);
+							k = 3;
+						}
+					}else{
+						for (s32 s=0; s<3; s++) {
+							for (s32 i=0; i<4; i++) {
+								topt_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
+							}
+
+							u16 indices[] = {0,1,2,2,3,0};
+							collector.append(tile.getMaterial(),topt_v[s], 4, indices, 6);
+						}
+					}
+				}else if (is_roof_x[0] && is_roof_x[1] && is_roof_z[1]) {
+					if (is_roof_z_plus_y[0]) {
+						s16 k = 6;
+						for (s32 s=0; s<3; s++) {
+							for (s32 i=0; i<4; i++) {
+								butt_v[s][i].Pos.rotateXZBy(270);
+								butt_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
+							}
+
+							u16 indices[] = {0,1,2,2,3,0};
+							collector.append(tile.getMaterial(),butt_v[s], 4, indices, k);
+							k = 3;
+						}
+					}else{
+						for (s32 s=0; s<3; s++) {
+							for (s32 i=0; i<4; i++) {
+								topt_v[s][i].Pos.rotateXZBy(180);
+								topt_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
+							}
+
+							u16 indices[] = {0,1,2,2,3,0};
+							collector.append(tile.getMaterial(),topt_v[s], 4, indices, 6);
+						}
+					}
+				}else if (is_roof_x[0] && is_roof_z[0] && is_roof_z[1]) {
+					if (is_roof_x_plus_y[1]) {
+						s16 k = 6;
+						for (s32 s=0; s<3; s++) {
+							for (s32 i=0; i<4; i++) {
+								//butt_v[s][i].Pos.rotateXZBy(90);
+								butt_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
+							}
+
+							u16 indices[] = {0,1,2,2,3,0};
+							collector.append(tile.getMaterial(),butt_v[s], 4, indices, k);
+							k = 3;
+						}
+					}else{
+						for (s32 s=0; s<3; s++) {
+							for (s32 i=0; i<4; i++) {
+								topt_v[s][i].Pos.rotateXZBy(270);
+								topt_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
+							}
+
+							u16 indices[] = {0,1,2,2,3,0};
+							collector.append(tile.getMaterial(),topt_v[s], 4, indices, 6);
+						}
+					}
+				}else if (is_roof_x[1] && is_roof_z[0] && is_roof_z[1]) {
+					if (is_roof_x_plus_y[0]) {
+						s16 k = 6;
+						for (s32 s=0; s<3; s++) {
+							for (s32 i=0; i<4; i++) {
+								butt_v[s][i].Pos.rotateXZBy(180);
+								butt_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
+							}
+
+							u16 indices[] = {0,1,2,2,3,0};
+							collector.append(tile.getMaterial(),butt_v[s], 4, indices, k);
+							k = 3;
+						}
+					}else{
+						for (s32 s=0; s<3; s++) {
+							for (s32 i=0; i<4; i++) {
+								topt_v[s][i].Pos.rotateXZBy(90);
+								topt_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
+							}
+
+							u16 indices[] = {0,1,2,2,3,0};
+							collector.append(tile.getMaterial(),topt_v[s], 4, indices, 6);
+						}
+					}
+				}
+			}else if (adjacencies == 4) {
+				for (s32 s=0; s<4; s++) {
+					for (s32 i=0; i<4; i++) {
+						topx_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
+					}
+
+					u16 indices[] = {0,1,2,1,3,0};
+					collector.append(tile.getMaterial(),topx_v[s], 4, indices, 6);
+				}
+			}else{
+				if (is_roof_z_plus_y[0]) {
+					for (s32 i=0; i<4; i++) {
+						slope_v[i].Pos.rotateXZBy(180);
+						slope_v[i].Pos += intToFloat(blockpos_nodes + p, BS);
+					}
+
+					u16 indices[] = {0,1,2,2,3,0};
+					collector.append(tile.getMaterial(), slope_v, 4, indices, 6);
+				}else if (is_roof_z_plus_y[1]) {
+					for (s32 i=0; i<4; i++) {
+						slope_v[i].Pos += intToFloat(blockpos_nodes + p, BS);
+					}
+
+					u16 indices[] = {0,1,2,2,3,0};
+					collector.append(tile.getMaterial(), slope_v, 4, indices, 6);
+				}else if (is_roof_x_plus_y[1]) {
+					for (s32 i=0; i<4; i++) {
+						slope_v[i].Pos.rotateXZBy(270);
+						slope_v[i].Pos += intToFloat(blockpos_nodes + p, BS);
+					}
+
+					u16 indices[] = {0,1,2,2,3,0};
+					collector.append(tile.getMaterial(), slope_v, 4, indices, 6);
+				}else if (is_roof_x_plus_y[0]) {
+					for (s32 i=0; i<4; i++) {
+						slope_v[i].Pos.rotateXZBy(90);
+						slope_v[i].Pos += intToFloat(blockpos_nodes + p, BS);
+					}
+
+					u16 indices[] = {0,1,2,2,3,0};
+					collector.append(tile.getMaterial(), slope_v, 4, indices, 6);
+				}else{
+					for (s32 i=0; i<4; i++) {
+						slope_v[i].Pos += intToFloat(blockpos_nodes + p, BS);
+					}
+
+					u16 indices[] = {0,1,2,2,3,0};
+					collector.append(tile.getMaterial(), slope_v, 4, indices, 6);
+				}
+			}
+		}
+		break;
 		case CDT_PLANTLIKE_LGE:
 		{
 			MapNode n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + p + v3s16(0,1,0));

@@ -2248,6 +2248,58 @@ void content_mapnode_init()
 		crafting::setRecipe(r,CONTENT_RAIL,15);
 	}
 
+	i = CONTENT_ROOFTILE_TERRACOTTA;
+	f = &content_features(i);
+	f->description = std::string("Terracotta Roof Tile");
+	f->setAllTextures("rooftile_terracotta.png");
+	f->setAllTextureFlags(0);
+	f->draw_type = CDT_ROOFLIKE;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	setDirtLikeDiggingProperties(f->digging_properties, 0.75);
+	crafting::set1over4Recipe(CONTENT_TERRACOTTA,CONTENT_TERRACOTTA,CONTENT_ROOFTILE_TERRACOTTA);
+
+	i = CONTENT_ROOFTILE_WOOD;
+	f = &content_features(i);
+	f->description = std::string("Wood Roof Tile");
+	f->setAllTextures("rooftile_wood.png");
+	f->setAllTextureFlags(0);
+	f->draw_type = CDT_ROOFLIKE;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	setDirtLikeDiggingProperties(f->digging_properties, 0.75);
+	crafting::set1over4Recipe(CONTENT_WOOD,CONTENT_WOOD,CONTENT_ROOFTILE_WOOD);
+	crafting::set1over4Recipe(CONTENT_JUNGLEWOOD,CONTENT_JUNGLEWOOD,CONTENT_ROOFTILE_WOOD);
+
+	i = CONTENT_ROOFTILE_ASPHALT;
+	f = &content_features(i);
+	f->description = std::string("Asphalt Roof Tile");
+	f->setAllTextures("rooftile_asphalt.png");
+	f->setAllTextureFlags(0);
+	f->draw_type = CDT_ROOFLIKE;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	setDirtLikeDiggingProperties(f->digging_properties, 0.75);
+	{
+		u16 r[9] = {
+			CONTENT_SAND,			CONTENT_CRAFTITEM_PAPER,	CONTENT_IGNORE,
+			CONTENT_CRAFTITEM_PAPER,	CONTENT_CRAFTITEM_DYE_BLACK,	CONTENT_IGNORE,
+			CONTENT_IGNORE,			CONTENT_IGNORE,			CONTENT_IGNORE,
+		};
+		crafting::setRecipe(r,CONTENT_ROOFTILE_ASPHALT,4);
+	}
+
+	i = CONTENT_ROOFTILE_STONE;
+	f = &content_features(i);
+	f->description = std::string("Stone Roof Tile");
+	f->setAllTextures("rooftile_stone.png");
+	f->setAllTextureFlags(0);
+	f->draw_type = CDT_ROOFLIKE;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	setDirtLikeDiggingProperties(f->digging_properties, 0.75);
+	crafting::set1over4Recipe(CONTENT_ROUGHSTONE,CONTENT_ROUGHSTONE,CONTENT_ROOFTILE_STONE);
+
 	i = CONTENT_LADDER;
 	f = &content_features(i);
 	f->description = std::string("Ladder");
