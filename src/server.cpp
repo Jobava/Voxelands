@@ -1976,20 +1976,17 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		}
 
 		std::string checkpwd;
-		if(m_authmanager.exists(playername))
-		{
+		if (m_authmanager.exists(playername)) {
 			checkpwd = m_authmanager.getPassword(playername);
-		}
-		else
-		{
+		}else{
 			checkpwd = g_settings->get("default_password");
+			checkpwd = translatePassword(playername,narrow_to_wide(checkpwd));
 		}
 
 		/*infostream<<"Server: Client gave password '"<<password
 				<<"', the correct one is '"<<checkpwd<<"'"<<std::endl;*/
 
-		if(password != checkpwd && m_authmanager.exists(playername))
-		{
+		if (password != checkpwd) {
 			infostream<<"Server: peer_id="<<peer_id
 					<<": supplied invalid password for "
 					<<playername<<std::endl;
