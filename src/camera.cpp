@@ -645,7 +645,7 @@ void ExtrudedSpriteSceneNode::setNodeBox(content_t c)
 
 void ExtrudedSpriteSceneNode::setArm()
 {
-	const v3f cube_scale(0.3, 1.0, 0.3);
+	const v3f cube_scale(0.3, 1.5, 0.3);
 	if (m_cubemesh)
 		m_cubemesh->drop();
 
