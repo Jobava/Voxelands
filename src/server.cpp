@@ -2623,7 +2623,10 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				UpdateCrafting(peer_id);
 				SendInventory(peer_id);
 				if (fitem->getCount() == 1) {
+					content_t c = fitem->getContent();
 					ilist->deleteItem(0);
+					if (c == CONTENT_TOOLITEM_STEELBUCKET_LAVA)
+						ilist->addItem(0,new ToolItem(CONTENT_TOOLITEM_STEELBUCKET,0));
 				}else{
 					fitem->remove(1);
 				}
