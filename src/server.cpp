@@ -2665,8 +2665,11 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					u8 rot = 0;
 					NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
 					NodeMetadata *ometa = NULL;
-					if (meta)
+					std::string owner;
+					if (meta) {
 						ometa = meta->clone();
+						owner = meta->getOwner();
+					}
 					// get the rotation
 					if (content_features(n).param_type == CPT_FACEDIR_SIMPLE) {
 						rot = n.param1;
@@ -2703,8 +2706,12 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						std::string p_name = std::string(player->getName());
 						m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
 					}
-					if (ometa)
+					if (ometa) {
 						m_env.getMap().setNodeMetadata(p_under,ometa);
+						meta = m_env.getMap().getNodeMetadata(p_under);
+						if (meta)
+							meta->setOwner(owner);
+					}
 					v3s16 blockpos = getNodeBlockPos(p_under);
 					MapBlock *block = m_env.getMap().getBlockNoCreateNoEx(blockpos);
 					if (block)

@@ -490,7 +490,7 @@ void Camera::wield(const InventoryItem* item)
 		// Bare hands
 		m_wieldnode->setArm();
 		m_wieldnode_baserotation = v3f(-30, 130, 20);
-		m_wieldnode_baseposition = v3f(45, -43, 65);
+		m_wieldnode_baseposition = v3f(45, -43, 60);
 		m_wieldnode->setScale(v3f(40));
 		m_wieldnode->setVisible(true);
 	}
@@ -645,7 +645,7 @@ void ExtrudedSpriteSceneNode::setNodeBox(content_t c)
 
 void ExtrudedSpriteSceneNode::setArm()
 {
-	const v3f cube_scale(0.3, 1.5, 0.3);
+	const v3f cube_scale(0.3, 1.0, 0.3);
 	if (m_cubemesh)
 		m_cubemesh->drop();
 
