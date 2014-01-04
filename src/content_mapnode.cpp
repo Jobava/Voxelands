@@ -588,7 +588,7 @@ static void content_mapnode_nodebox_carpet(ContentFeatures *f)
 		-0.5*BS,
 		-0.5*BS,
 		0.5*BS,
-		-0.4*BS,
+		-0.4375*BS,
 		0.5*BS
 	));
 }
