@@ -1399,8 +1399,6 @@ void make_progressbar(float value, video::IImage *image)
 	u32 barwidth = size.Width - barpad_x*2;
 	v2u32 barpos(barpad_x, size.Height - barheight - barpad_y);
 
-	printf("%f\n",value);
-
 	u32 barvalue_i = (u32)(((float)barwidth * value) + 0.5);
 	u32 barvalue_c[10] = {
 		(u32)(((float)barwidth * 0.1)),
