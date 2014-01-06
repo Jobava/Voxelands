@@ -1169,9 +1169,9 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 			v3f pos = intToFloat(p+blockpos_nodes, BS);
 			if (d[0]) {
-				height = h[0] ? 0.5 : 0.3;
+				height = h[0] ? 0.501 : 0.301;
 				aabb3f bar(
-					0.,-(0.5*BS),-wall_rad,
+					0.,-(0.499*BS),-wall_rad,
 					0.5*BS,height*BS,wall_rad
 				);
 				bar.MinEdge += pos;
@@ -1189,9 +1189,9 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 			// Now a section of fence, -X, if there's a post there
 			if (d[1]) {
-				height = h[1] ? 0.5 : 0.3;
+				height = h[1] ? 0.501 : 0.301;
 				aabb3f bar(
-					-0.5*BS,-(0.5*BS),-wall_rad,
+					-0.5*BS,-(0.499*BS),-wall_rad,
 					0.,height*BS,wall_rad
 				);
 				bar.MinEdge += pos;
@@ -1209,9 +1209,9 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 			// Now a section of fence, +Z, if there's a post there
 			if (d[2]) {
-				height = h[2] ? 0.5 : 0.3;
+				height = h[2] ? 0.501 : 0.301;
 				aabb3f bar(
-					-wall_rad,-(0.5*BS),0.,
+					-wall_rad,-(0.499*BS),0.,
 					wall_rad,height*BS,0.5*BS
 				);
 				bar.MinEdge += pos;
@@ -1229,9 +1229,9 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 			// Now a section of fence, +Z, if there's a post there
 			if (d[3]) {
-				height = h[3] ? 0.5 : 0.3;
+				height = h[3] ? 0.501 : 0.301;
 				aabb3f bar(
-					-wall_rad,-(0.5*BS),-0.5*BS,
+					-wall_rad,-(0.499*BS),-0.5*BS,
 					wall_rad,height*BS,0.
 				);
 				bar.MinEdge += pos;
@@ -1247,9 +1247,9 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, zrailuv);
 			}
 			if (d[4]) {
-				height = h[4] ? 0.5 : 0.3;
+				height = h[4] ? 0.501 : 0.301;
 				aabb3f bar(
-					0.,-(0.5*BS),-wall_rad,
+					0.,-(0.499*BS),-wall_rad,
 					0.707*BS,height*BS,wall_rad
 				);
 				f32 xrailuv[24]={
@@ -1263,9 +1263,9 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				makeAngledCuboid(&collector, pos, bar, content_features(n).tiles, 6,  c, xrailuv, 45);
 			}
 			if (d[5]) {
-				height = h[5] ? 0.5 : 0.3;
+				height = h[5] ? 0.501 : 0.301;
 				aabb3f bar(
-					-0.707*BS,-(0.5*BS),-wall_rad,
+					-0.707*BS,-(0.499*BS),-wall_rad,
 					0.,height*BS,wall_rad
 				);
 				f32 xrailuv[24]={
@@ -1279,9 +1279,9 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				makeAngledCuboid(&collector, pos, bar, content_features(n).tiles, 6,  c, xrailuv, 135);
 			}
 			if (d[6]) {
-				height = h[6] ? 0.5 : 0.3;
+				height = h[6] ? 0.501 : 0.301;
 				aabb3f bar(
-					-wall_rad,-(0.5*BS),0.,
+					-wall_rad,-(0.499*BS),0.,
 					wall_rad,height*BS,0.707*BS
 				);
 				f32 zrailuv[24]={
@@ -1295,9 +1295,9 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				makeAngledCuboid(&collector, pos, bar, content_features(n).tiles, 6,  c, zrailuv, 45);
 			}
 			if (d[7]) {
-				height = h[7] ? 0.5 : 0.3;
+				height = h[7] ? 0.501 : 0.301;
 				aabb3f bar(
-					-wall_rad,-(0.5*BS),-0.707*BS,
+					-wall_rad,-(0.499*BS),-0.707*BS,
 					wall_rad,height*BS,0.
 				);
 				f32 zrailuv[24]={
