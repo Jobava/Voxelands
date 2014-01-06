@@ -288,10 +288,6 @@ static void mapblock_mesh_check_walllike(MeshMakeData *data, v3s16 p, u8 d[8], u
 		if (
 			f2->draw_type == CDT_FENCELIKE
 			|| f2->draw_type == CDT_WALLLIKE
-			|| n2.getContent() == CONTENT_WOOD_GATE
-			|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
-			|| n2.getContent() == CONTENT_STEEL_GATE
-			|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
 		)
 			d[4] = 1;
 	}
@@ -304,10 +300,6 @@ static void mapblock_mesh_check_walllike(MeshMakeData *data, v3s16 p, u8 d[8], u
 		if (
 			f2->draw_type == CDT_FENCELIKE
 			|| f2->draw_type == CDT_WALLLIKE
-			|| n2.getContent() == CONTENT_WOOD_GATE
-			|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
-			|| n2.getContent() == CONTENT_STEEL_GATE
-			|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
 		)
 			d[5] = 1;
 	}
@@ -320,10 +312,6 @@ static void mapblock_mesh_check_walllike(MeshMakeData *data, v3s16 p, u8 d[8], u
 		if (
 			f2->draw_type == CDT_FENCELIKE
 			|| f2->draw_type == CDT_WALLLIKE
-			|| n2.getContent() == CONTENT_WOOD_GATE
-			|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
-			|| n2.getContent() == CONTENT_STEEL_GATE
-			|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
 		)
 			d[6] = 1;
 	}
@@ -336,10 +324,6 @@ static void mapblock_mesh_check_walllike(MeshMakeData *data, v3s16 p, u8 d[8], u
 		if (
 			f2->draw_type == CDT_FENCELIKE
 			|| f2->draw_type == CDT_WALLLIKE
-			|| n2.getContent() == CONTENT_WOOD_GATE
-			|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
-			|| n2.getContent() == CONTENT_STEEL_GATE
-			|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
 		)
 			d[7] = 1;
 	}
@@ -1511,10 +1495,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				if (
 					f2->draw_type == CDT_FENCELIKE
 					|| f2->draw_type == CDT_WALLLIKE
-					|| n2.getContent() == CONTENT_WOOD_GATE
-					|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
-					|| n2.getContent() == CONTENT_STEEL_GATE
-					|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
 				) {
 					aabb3f bar(-bar_rad,-bar_rad+BS/4,-0.707*BS,
 							bar_rad,bar_rad+BS/4,-post_rad);
@@ -1541,10 +1521,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				if (
 					f2->draw_type == CDT_FENCELIKE
 					|| f2->draw_type == CDT_WALLLIKE
-					|| n2.getContent() == CONTENT_WOOD_GATE
-					|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
-					|| n2.getContent() == CONTENT_STEEL_GATE
-					|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
 				) {
 					aabb3f bar(-bar_rad,-bar_rad+BS/4,-0.707*BS,
 							bar_rad,bar_rad+BS/4,-post_rad);
@@ -1571,10 +1547,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				if (
 					f2->draw_type == CDT_FENCELIKE
 					|| f2->draw_type == CDT_WALLLIKE
-					|| n2.getContent() == CONTENT_WOOD_GATE
-					|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
-					|| n2.getContent() == CONTENT_STEEL_GATE
-					|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
 				) {
 					aabb3f bar(-bar_rad,-bar_rad+BS/4,-0.707*BS,
 							bar_rad,bar_rad+BS/4,-post_rad);
@@ -1601,10 +1573,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				if (
 					f2->draw_type == CDT_FENCELIKE
 					|| f2->draw_type == CDT_WALLLIKE
-					|| n2.getContent() == CONTENT_WOOD_GATE
-					|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
-					|| n2.getContent() == CONTENT_STEEL_GATE
-					|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
 				) {
 					aabb3f bar(-bar_rad,-bar_rad+BS/4,-0.707*BS,
 							bar_rad,bar_rad+BS/4,-post_rad);
