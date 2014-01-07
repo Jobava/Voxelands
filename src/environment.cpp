@@ -2411,50 +2411,48 @@ void ServerEnvironment::step(float dtime)
 
 void ServerEnvironment::leafDecay(MapNode n, v3s16 p)
 {
-	if (myrand()%10 == 0) {
-		s16 max_d = 3;
-		v3s16 leaf_p = p;
-		v3s16 test_p;
-		MapNode testnode;
-		bool found = false;
-		for(s16 z=-max_d; !found && z<=max_d; z++) {
-		for(s16 y=-max_d; !found && y<=max_d; y++) {
-		for(s16 x=-max_d; !found && x<=max_d; x++)
-			{
-			test_p = leaf_p + v3s16(x,y,z);
-			testnode = m_map->getNodeNoEx(test_p);
-			if (testnode.getContent() == CONTENT_TREE
-				|| testnode.getContent() == CONTENT_APPLE_TREE
-				|| testnode.getContent() == CONTENT_JUNGLETREE
-				|| testnode.getContent() == CONTENT_CONIFER_TREE
-				|| testnode.getContent() == CONTENT_IGNORE)
-			{
-				found = true;
+	s16 max_d = 3;
+	v3s16 leaf_p = p;
+	v3s16 test_p;
+	MapNode testnode;
+	bool found = false;
+	for(s16 z=-max_d; !found && z<=max_d; z++) {
+	for(s16 y=-max_d; !found && y<=max_d; y++) {
+	for(s16 x=-max_d; !found && x<=max_d; x++)
+		{
+		test_p = leaf_p + v3s16(x,y,z);
+		testnode = m_map->getNodeNoEx(test_p);
+		if (testnode.getContent() == CONTENT_TREE
+			|| testnode.getContent() == CONTENT_APPLE_TREE
+			|| testnode.getContent() == CONTENT_JUNGLETREE
+			|| testnode.getContent() == CONTENT_CONIFER_TREE
+			|| testnode.getContent() == CONTENT_IGNORE)
+		{
+			found = true;
+			break;
+		}
+	}
+	}
+	}
+	if (!found) {
+		m_map->removeNodeWithEvent(leaf_p);
+		if (myrand()%20 == 0) {
+			v3f sapling_pos = intToFloat(leaf_p, BS);
+			sapling_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
+			content_t c = CONTENT_SAPLING;
+			switch(n.getContent()) {
+			case CONTENT_JUNGLELEAVES:
+				c = CONTENT_JUNGLESAPLING;
+				break;
+			case CONTENT_CONIFER_LEAVES:
+				c = CONTENT_CONIFER_SAPLING;
+				break;
+			case CONTENT_APPLE_LEAVES:
+				c = CONTENT_APPLE_SAPLING;
 				break;
 			}
-		}
-		}
-		}
-		if (!found) {
-			m_map->removeNodeWithEvent(leaf_p);
-			if (myrand()%20 == 0) {
-				v3f sapling_pos = intToFloat(leaf_p, BS);
-				sapling_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
-				content_t c = CONTENT_SAPLING;
-				switch(n.getContent()) {
-				case CONTENT_JUNGLELEAVES:
-					c = CONTENT_JUNGLESAPLING;
-					break;
-				case CONTENT_CONIFER_LEAVES:
-					c = CONTENT_CONIFER_SAPLING;
-					break;
-				case CONTENT_APPLE_LEAVES:
-					c = CONTENT_APPLE_SAPLING;
-					break;
-				}
-				ServerActiveObject *obj = new ItemSAO(this, 0, sapling_pos, "MaterialItem2 " + itos(c) + " 1");
-				addActiveObject(obj);
-			}
+			ServerActiveObject *obj = new ItemSAO(this, 0, sapling_pos, "MaterialItem2 " + itos(c) + " 1");
+			addActiveObject(obj);
 		}
 	}
 }
