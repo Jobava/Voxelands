@@ -980,17 +980,22 @@ void ServerEnvironment::step(float dtime)
 				v3s16 p = p0 + block->getPosRelative();
 				MapNode n = block->getNodeNoEx(p0);
 
-				if (n.getContent() == CONTENT_GRASS_FOOTSTEPS) {
+				switch(n.getContent()) {
+				case CONTENT_GRASS_FOOTSTEPS:
+				{
 					if (myrand()%5 == 0) {
 						n.setContent(CONTENT_GRASS);
 						m_map->addNodeWithEvent(p, n);
 					}
+					break;
 				}
+
 				/*
 					Test something:
 					Convert mud under proper lighting to grass
 				*/
-				if(n.getContent() == CONTENT_MUD) {
+				case CONTENT_MUD:
+				{
 					if (myrand()%20 == 0) {
 						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
 						if (content_features(n_top).air_equivalent) {
@@ -1003,34 +1008,12 @@ void ServerEnvironment::step(float dtime)
 							}
 						}
 					}
-				}else if (n.getContent() == CONTENT_GRASS) {
-					if (myrand()%20 == 0) {
-						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
-						if (content_features(n_top).air_equivalent) {
-							if (p.Y > 50 && p.Y < 200) {
-								n.setContent(CONTENT_MUDSNOW);
-								m_map->addNodeWithEvent(p, n);
-							}
-						}
-					}
-				}else if (
-					p.Y > 55 && p.Y < 200
-					&& (
-						content_features(n).draw_type == CDT_CUBELIKE
-						|| content_features(n).draw_type == CDT_GLASSLIKE
-					)
-				) {
-					if (myrand()%20 == 0) {
-						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
-						// check that it's on top, and somewhere snow could fall
-						// not 100% because torches
-						if (n_top.getContent() == CONTENT_AIR && n_top.getLightBlend(getDayNightRatio()) >= 13) {
-							n_top.setContent(CONTENT_SNOW);
-							m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top);
-						}
-					}
+					break;
 				}
-				if (n.getContent() == CONTENT_WATERSOURCE || n.getContent() == CONTENT_WATER) {
+
+				case CONTENT_WATER:
+				case CONTENT_WATERSOURCE:
+				{
 					if (p.Y > 60 && p.Y < 200) {
 						bool found = false;
 						s16 range = (p.Y > 60) ? 2 : 4;
@@ -1052,7 +1035,11 @@ void ServerEnvironment::step(float dtime)
 							m_map->addNodeWithEvent(p, n);
 						}
 					}
-				}else if (n.getContent() == CONTENT_ICE) {
+					break;
+				}
+
+				case CONTENT_ICE:
+				{
 					bool found = false;
 					if (p.Y > 0) {
 						s16 range = (p.Y > 60) ? 2 : 4;
@@ -1091,11 +1078,19 @@ void ServerEnvironment::step(float dtime)
 							m_map->addNodeWithEvent(p, n);
 						}
 					}
-				}else if (n.getContent() == CONTENT_SNOW) {
+					break;
+				}
+
+				case CONTENT_SNOW:
+				{
 					MapNode n_test = m_map->getNodeNoEx(p+v3s16(0,-1,0));
 					if (n_test.getContent() == CONTENT_AIR)
 						m_map->removeNodeWithEvent(p);
-				}else if (n.getContent() == CONTENT_SNOW_BLOCK) {
+					break;
+				}
+
+				case CONTENT_SNOW_BLOCK:
+				{
 					if (p.Y < 1) {
 						bool found = false;
 						for(s16 x=-3; !found && x<=3; x++) {
@@ -1134,11 +1129,11 @@ void ServerEnvironment::step(float dtime)
 							m_map->addNodeWithEvent(p, n);
 						}
 					}
+					break;
 				}
-				/*
-					Grow stuff on farm dirt
-				*/
-				if(n.getContent() == CONTENT_FARM_DIRT)
+
+				// Grow stuff on farm dirt
+				case CONTENT_FARM_DIRT:
 				{
 					if (myrand()%50 == 0)
 					{
@@ -1239,11 +1234,14 @@ void ServerEnvironment::step(float dtime)
 							}
 						}
 					}
+					break;
 				}
+
 				/*
-					Convert grass into mud if under something else than air
+					Convert grass and snow into mud if under something else than air
 				*/
-				if(n.getContent() == CONTENT_GRASS || n.getContent() == CONTENT_MUDSNOW)
+				
+				case CONTENT_MUDSNOW:
 				{
 					//if(myrand()%20 == 0)
 					{
@@ -1262,11 +1260,17 @@ void ServerEnvironment::step(float dtime)
 						}
 					}
 				}
-				/*
-					plants!
-				*/
-				if (n.getContent() == CONTENT_GRASS)
+				case CONTENT_GRASS:
 				{
+					if (myrand()%20 == 0) {
+						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
+						if (content_features(n_top).air_equivalent) {
+							if (p.Y > 50 && p.Y < 200) {
+								n.setContent(CONTENT_MUDSNOW);
+								m_map->addNodeWithEvent(p, n);
+							}
+						}
+					}
 					int f = (700-(p.Y*2))+10;
 					if (p.Y > 1 && myrand()%f == 0) {
 						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
@@ -1300,8 +1304,10 @@ void ServerEnvironment::step(float dtime)
 							}
 						}
 					}
+					break;
 				}
-				if (n.getContent() == CONTENT_WILDGRASS_SHORT)
+				
+				case CONTENT_WILDGRASS_SHORT:
 				{
 					MapNode n_btm = m_map->getNodeNoEx(p+v3s16(0,-1,0));
 					if (n_btm.getContent() == CONTENT_GRASS || n_btm.getContent() == CONTENT_MUD) {
@@ -1323,15 +1329,19 @@ void ServerEnvironment::step(float dtime)
 						n.setContent(CONTENT_DEADGRASS);
 						m_map->addNodeWithEvent(p, n);
 					}
+					break;
 				}
-				if (n.getContent() == CONTENT_WILDGRASS_LONG)
+
+				case CONTENT_WILDGRASS_LONG:
 				{
 					if (p.Y > -1 && myrand()%200 == 0) {
 						n.setContent(CONTENT_DEADGRASS);
 						m_map->addNodeWithEvent(p, n);
 					}
+					break;
 				}
-				if (n.getContent() == CONTENT_FLOWER_STEM)
+
+				case CONTENT_FLOWER_STEM:
 				{
 					MapNode n_btm = m_map->getNodeNoEx(p+v3s16(0,-1,0));
 					if (n_btm.getContent() == CONTENT_GRASS || n_btm.getContent() == CONTENT_MUD) {
@@ -1358,17 +1368,20 @@ void ServerEnvironment::step(float dtime)
 						n.setContent(CONTENT_DEADGRASS);
 						m_map->addNodeWithEvent(p, n);
 					}
+					break;
 				}
-				if (n.getContent() == CONTENT_DEADGRASS)
+
+				case CONTENT_DEADGRASS:
 				{
 					if (p.Y > -1 && myrand()%200 == 0)
 						m_map->removeNodeWithEvent(p);
+					break;
 				}
-				if (
-					n.getContent() == CONTENT_FLOWER_ROSE
-					|| n.getContent() == CONTENT_FLOWER_DAFFODIL
-					|| n.getContent() == CONTENT_FLOWER_TULIP
-				) {
+
+				case CONTENT_FLOWER_ROSE:
+				case CONTENT_FLOWER_DAFFODIL:
+				case CONTENT_FLOWER_TULIP:
+				{
 					MapNode n_under = m_map->getNodeNoEx(p+v3s16(0,-1,0));
 					if (n_under.getContent() == CONTENT_GRASS) {
 						if (myrand()%200 == 0) {
@@ -1379,10 +1392,20 @@ void ServerEnvironment::step(float dtime)
 						n.setContent(CONTENT_WILDGRASS_SHORT);
 						m_map->addNodeWithEvent(p, n);
 					}
+					break;
 				}
 
 				// growing apples!
-				if (n.getContent() == CONTENT_APPLE_LEAVES) {
+				case CONTENT_APPLE_LEAVES:
+				{
+					if(myrand()%10 == 0)
+					{
+						leafDecay(n, p);
+					} else
+					{
+						break;
+					}
+
 					if(myrand()%10 == 0) {
 						bool found_blossom = false;
 						bool found_tree = false;
@@ -1418,9 +1441,19 @@ void ServerEnvironment::step(float dtime)
 							m_map->addNodeWithEvent(p, n);
 						}
 					}
+					break;
 				}
 
-				if (n.getContent() == CONTENT_APPLE_BLOSSOM) {
+				case CONTENT_APPLE_BLOSSOM:
+				{
+					if(myrand()%10 == 0)
+					{
+						leafDecay(n, p);
+					} else
+					{
+						break;
+					}
+
 					if(myrand()%20 == 0) {
 						int found_apple = 0;
 						bool found_tree = false;
@@ -1456,12 +1489,12 @@ void ServerEnvironment::step(float dtime)
 							m_map->addNodeWithEvent(p, n);
 						}
 					}
+					break;
 				}
 
-				/*
-					fire that goes out
-				*/
-				if (n.getContent() == CONTENT_FIRE_SHORTTERM) {
+				// fire that goes out
+				case CONTENT_FIRE_SHORTTERM:
+				{
 					if (myrand()%10 == 0) {
 						m_map->removeNodeWithEvent(p);
 						v3f ash_pos = intToFloat(p, BS);
@@ -1469,11 +1502,12 @@ void ServerEnvironment::step(float dtime)
 						ServerActiveObject *obj = new ItemSAO(this, 0, ash_pos, "CraftItem lump_of_ash 1");
 						addActiveObject(obj);
 					}
+					break;
 				}
-				/*
-					fire that spreads just a little
-				*/
-				if (n.getContent() == CONTENT_FIRE) {
+
+				// fire that spreads just a little
+				case CONTENT_FIRE:
+				{
 					MapNode n_below = m_map->getNodeNoEx(p+v3s16(0,-1,0));
 					if (!content_features(n_below).flammable) {
 						m_map->removeNodeWithEvent(p);
@@ -1543,17 +1577,17 @@ void ServerEnvironment::step(float dtime)
 							}
 						}
 					}
+					break;
 				}
-				/*
-					boom
-				*/
-				if (n.getContent() == CONTENT_FLASH) {
+
+				// boom
+				case CONTENT_FLASH:
 					m_map->removeNodeWithEvent(p);
-				}
-				/*
-					boom
-				*/
-				if (n.getContent() == CONTENT_TNT) {
+					break;
+
+				// boom
+				case CONTENT_TNT:
+				{
 					NodeMetadata *meta = m_map->getNodeMetadata(p);
 					if (meta && meta->getEnergy() == ENERGY_MAX) {
 						bool can_spread = g_settings->getBool("enable_tnt");
@@ -1606,11 +1640,12 @@ void ServerEnvironment::step(float dtime)
 						// but still blow up
 						m_map->removeNodeWithEvent(p);
 					}
+					break;
 				}
-				/*
-					mese prettiness
-				*/
-				if (n.getContent() == CONTENT_MESE_DIGGING) {
+
+				// mese prettiness
+				case CONTENT_MESE_DIGGING:
+				{
 					v3f pp;
 					pp.X = p.X;
 					pp.Y = p.Y;
@@ -1620,11 +1655,12 @@ void ServerEnvironment::step(float dtime)
 						n.setContent(CONTENT_MESE);
 						m_map->addNodeWithEvent(p, n);
 					}
+					break;
 				}
-				/*
-					cobble becomes mossy underwater
-				*/
-				if (n.getContent() == CONTENT_COBBLE) {
+
+				// cobble becomes mossy underwater
+				case CONTENT_COBBLE:
+				{
 					if (myrand()%20 == 0) {
 						MapNode a = m_map->getNodeNoEx(p+v3s16(0,1,0));
 						if (a.getContent() == CONTENT_WATERSOURCE) {
@@ -1643,12 +1679,14 @@ void ServerEnvironment::step(float dtime)
 							}
 						}
 					}
+					break;
 				}
-				/*
-					Rats spawn around regular trees
-				*/
-				if(n.getContent() == CONTENT_TREE ||
-						n.getContent() == CONTENT_JUNGLETREE)
+
+				// Rats spawn around regular trees
+				case CONTENT_TREE:
+				case CONTENT_JUNGLETREE:
+				case CONTENT_APPLE_TREE:
+				case CONTENT_CONIFER_TREE:
 				{
    					if(myrand()%200 == 0 && active_object_count_wider == 0)
 					{
@@ -1664,12 +1702,12 @@ void ServerEnvironment::step(float dtime)
 							addActiveObject(obj);
 						}
 					}
+					break;
 				}
-				/*
-					Fun things spawn in caves and dungeons
-				*/
-				if(n.getContent() == CONTENT_STONE ||
-						n.getContent() == CONTENT_MOSSYCOBBLE)
+
+				// Fun things spawn in caves and dungeons
+				case CONTENT_STONE:
+				case CONTENT_MOSSYCOBBLE:
 				{
    					if(myrand()%500 == 0 && active_object_count_wider == 0)
 					{
@@ -1722,11 +1760,11 @@ void ServerEnvironment::step(float dtime)
 							}
 						}
 					}
+					break;
 				}
-				/*
-					Make trees from saplings!
-				*/
-				if(n.getContent() == CONTENT_SAPLING)
+
+				// Make trees from saplings!
+				case CONTENT_SAPLING:
 				{
 					if(myrand()%10 == 0)
 					{
@@ -1831,8 +1869,10 @@ void ServerEnvironment::step(float dtime)
 							m_map->dispatchEvent(&event);
 						}
 					}
+					break;
 				}
-				if(n.getContent() == CONTENT_APPLE_SAPLING)
+
+				case CONTENT_APPLE_SAPLING:
 				{
 					if(myrand()%10 == 0)
 					{
@@ -1904,8 +1944,11 @@ void ServerEnvironment::step(float dtime)
 							m_map->dispatchEvent(&event);
 						}
 					}
+					break;
 				}
-				if(n.getContent() == CONTENT_JUNGLESAPLING) {
+
+				case CONTENT_JUNGLESAPLING:
+				{
 					if(myrand()%10 == 0)
 					{
 						s16 max_y = 10;
@@ -1973,8 +2016,11 @@ void ServerEnvironment::step(float dtime)
 							}
 						}
 					}
+					break;
 				}
-				if(n.getContent() == CONTENT_CONIFER_SAPLING) {
+
+				case CONTENT_CONIFER_SAPLING:
+				{
 					if(myrand()%10 == 0)
 					{
 						s16 max_y = 12;
@@ -2039,64 +2085,23 @@ void ServerEnvironment::step(float dtime)
 							}
 						}
 					}
+					break;
 				}
-				/*
-				 * leaf decay
-				 */
-				if (
-					n.getContent() == CONTENT_LEAVES
-					|| n.getContent() == CONTENT_JUNGLELEAVES
-					|| n.getContent() == CONTENT_CONIFER_LEAVES
-					|| n.getContent() == CONTENT_APPLE_LEAVES
-					|| n.getContent() == CONTENT_APPLE_BLOSSOM
-				) {
-					if (myrand()%10 == 0) {
-						s16 max_d = 3;
-						v3s16 leaf_p = p;
-						v3s16 test_p;
-						MapNode testnode;
-						bool found = false;
-						for(s16 z=-max_d; !found && z<=max_d; z++) {
-						for(s16 y=-max_d; !found && y<=max_d; y++) {
-						for(s16 x=-max_d; !found && x<=max_d; x++)
-						{
-							test_p = leaf_p + v3s16(x,y,z);
-							testnode = m_map->getNodeNoEx(test_p);
-							if (testnode.getContent() == CONTENT_TREE
-								|| testnode.getContent() == CONTENT_APPLE_TREE
-								|| testnode.getContent() == CONTENT_JUNGLETREE
-								|| testnode.getContent() == CONTENT_CONIFER_TREE
-								|| testnode.getContent() == CONTENT_IGNORE)
-							{
-								found = true;
-								break;
-							}
-						}
-						}
-						}
-						if (!found) {
-							m_map->removeNodeWithEvent(leaf_p);
-							if (myrand()%20 == 0) {
-								v3f sapling_pos = intToFloat(leaf_p, BS);
-								sapling_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
-								content_t c = CONTENT_SAPLING;
-								if (n.getContent() == CONTENT_JUNGLELEAVES) {
-									c = CONTENT_JUNGLESAPLING;
-								}else if (n.getContent() == CONTENT_CONIFER_LEAVES) {
-									c = CONTENT_CONIFER_SAPLING;
-								}else if (n.getContent() == CONTENT_APPLE_LEAVES) {
-									c = CONTENT_APPLE_SAPLING;
-								}
-								ServerActiveObject *obj = new ItemSAO(this, 0, sapling_pos, "MaterialItem2 " + itos(c) + " 1");
-								addActiveObject(obj);
-							}
-						}
-					}
+
+				// leaf decay
+				case CONTENT_LEAVES:
+				case CONTENT_JUNGLELEAVES:
+				case CONTENT_CONIFER_LEAVES:
+				{
+					if (myrand()%10 == 0)
+						leafDecay(n, p);
+
+					break;
 				}
-				/*
-					Apples should fall if there is no leaves block holding it
-				*/
-				if(n.getContent() == CONTENT_APPLE) {
+
+				// Apples should fall if there is no leaves block holding it
+				case CONTENT_APPLE:
+				{
 					s16 max_d = 1;
 					v3s16 apple_p = p, test_p;
 					MapNode testnode;
@@ -2121,9 +2126,12 @@ void ServerEnvironment::step(float dtime)
 						ServerActiveObject *obj = new ItemSAO(this, 0, apple_pos, "CraftItem apple 1");
 						addActiveObject(obj);
 					}
+					break;
 				}
-				/* grow junglegrass on sand near water */
-				if(n.getContent() == CONTENT_SAND) {
+
+				// grow junglegrass on sand near water
+				case CONTENT_SAND:
+				{
 					if(myrand()%5000 == 0)
 					{
 						MapNode n_top1 = m_map->getNodeNoEx(p+v3s16(0,1,0));
@@ -2159,9 +2167,12 @@ void ServerEnvironment::step(float dtime)
 							m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top1);
 						}
 					}
+					break;
 				}
-				/* make sponge soak up water */
-				if (n.getContent() == CONTENT_SPONGE) {
+
+				// make sponge soak up water
+				case CONTENT_SPONGE:
+				{
 					v3s16 test_p;
 					MapNode testnode;
 					bool sponge_soaked = false;
@@ -2183,9 +2194,12 @@ void ServerEnvironment::step(float dtime)
 						n.setContent(CONTENT_SPONGE_FULL);
 						m_map->addNodeWithEvent(p, n);
 					}
+					break;
 				}
-				/* make papyrus grow near water */
-				if(n.getContent() == CONTENT_PAPYRUS) {
+
+				// make papyrus grow near water
+				case CONTENT_PAPYRUS:
+				{
 					if(myrand()%300 == 0)
 					{
 						MapNode n_top1 = m_map->getNodeNoEx(p+v3s16(0,1,0));
@@ -2227,14 +2241,17 @@ void ServerEnvironment::step(float dtime)
 							}
 						}
 					}
+					break;
 				}
-				/* steam dissipates */
-				if(n.getContent() == CONTENT_STEAM)
-				{
+
+				// steam dissipates
+				case CONTENT_STEAM:
 					m_map->removeNodeWithEvent(p);
-				}
-				/* make lava cool near water */
-				if(n.getContent() == CONTENT_LAVASOURCE || n.getContent() == CONTENT_LAVA)
+					break;
+
+				// make lava cool near water
+				case CONTENT_LAVA:
+				case CONTENT_LAVASOURCE:
 				{
 					MapNode testnode;
 					bool found = false;
@@ -2302,8 +2319,32 @@ void ServerEnvironment::step(float dtime)
 						n.setContent(CONTENT_ROUGHSTONE);
 						m_map->addNodeWithEvent(p, n);
 					}
+
+					break;
+				}
+				}
+
+				if (
+					n.getContent() != CONTENT_GRASS
+					&& n.getContent() != CONTENT_MUD
+					&& p.Y > 55 && p.Y < 200
+					&& (
+						content_features(n).draw_type == CDT_CUBELIKE
+						|| content_features(n).draw_type == CDT_GLASSLIKE
+					)
+				) {
+					if (myrand()%20 == 0) {
+						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
+						// check that it's on top, and somewhere snow could fall
+						// not 100% because torches
+						if (n_top.getContent() == CONTENT_AIR && n_top.getLightBlend(getDayNightRatio()) >= 13) {
+							n_top.setContent(CONTENT_SNOW);
+							m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top);
+						}
+					}
 				}
 			}
+
 			for(std::map<v3s16,MapNode>::iterator i = m_delayed_node_changes.begin(); i != m_delayed_node_changes.end(); i++)
 			{
 				m_map->addNodeWithEvent(i->first, i->second);
@@ -2365,6 +2406,56 @@ void ServerEnvironment::step(float dtime)
 			Remove objects that satisfy (m_removed && m_known_by_count==0)
 		*/
 		removeRemovedObjects();
+	}
+}
+
+void ServerEnvironment::leafDecay(MapNode n, v3s16 p)
+{
+	if (myrand()%10 == 0) {
+		s16 max_d = 3;
+		v3s16 leaf_p = p;
+		v3s16 test_p;
+		MapNode testnode;
+		bool found = false;
+		for(s16 z=-max_d; !found && z<=max_d; z++) {
+		for(s16 y=-max_d; !found && y<=max_d; y++) {
+		for(s16 x=-max_d; !found && x<=max_d; x++)
+			{
+			test_p = leaf_p + v3s16(x,y,z);
+			testnode = m_map->getNodeNoEx(test_p);
+			if (testnode.getContent() == CONTENT_TREE
+				|| testnode.getContent() == CONTENT_APPLE_TREE
+				|| testnode.getContent() == CONTENT_JUNGLETREE
+				|| testnode.getContent() == CONTENT_CONIFER_TREE
+				|| testnode.getContent() == CONTENT_IGNORE)
+			{
+				found = true;
+				break;
+			}
+		}
+		}
+		}
+		if (!found) {
+			m_map->removeNodeWithEvent(leaf_p);
+			if (myrand()%20 == 0) {
+				v3f sapling_pos = intToFloat(leaf_p, BS);
+				sapling_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
+				content_t c = CONTENT_SAPLING;
+				switch(n.getContent()) {
+				case CONTENT_JUNGLELEAVES:
+					c = CONTENT_JUNGLESAPLING;
+					break;
+				case CONTENT_CONIFER_LEAVES:
+					c = CONTENT_CONIFER_SAPLING;
+					break;
+				case CONTENT_APPLE_LEAVES:
+					c = CONTENT_APPLE_SAPLING;
+					break;
+				}
+				ServerActiveObject *obj = new ItemSAO(this, 0, sapling_pos, "MaterialItem2 " + itos(c) + " 1");
+				addActiveObject(obj);
+			}
+		}
 	}
 }
 
