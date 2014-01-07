@@ -1398,7 +1398,7 @@ void ServerEnvironment::step(float dtime)
 				// growing apples!
 				case CONTENT_APPLE_LEAVES:
 				{
-					if(myrand()%10 == 0)
+					if(myrand()%8 == 0)
 					{
 						leafDecay(n, p);
 					} else
@@ -1446,7 +1446,7 @@ void ServerEnvironment::step(float dtime)
 
 				case CONTENT_APPLE_BLOSSOM:
 				{
-					if(myrand()%10 == 0)
+					if(myrand()%8 == 0)
 					{
 						leafDecay(n, p);
 					} else
@@ -2093,7 +2093,7 @@ void ServerEnvironment::step(float dtime)
 				case CONTENT_JUNGLELEAVES:
 				case CONTENT_CONIFER_LEAVES:
 				{
-					if (myrand()%10 == 0)
+					if (myrand()%8 == 0)
 						leafDecay(n, p);
 
 					break;
