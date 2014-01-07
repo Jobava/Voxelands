@@ -269,7 +269,7 @@ private:
 	/*
 	   Leaf decay
 	*/
-	void leafDecay(MapNode n, v3s16 p);
+	bool leafDecay(MapNode n, v3s16 p);
 
 	/*
 		Member variables

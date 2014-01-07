@@ -1240,7 +1240,7 @@ void ServerEnvironment::step(float dtime)
 				/*
 					Convert grass and snow into mud if under something else than air
 				*/
-				
+
 				case CONTENT_MUDSNOW:
 				{
 					//if(myrand()%20 == 0)
@@ -1306,7 +1306,7 @@ void ServerEnvironment::step(float dtime)
 					}
 					break;
 				}
-				
+
 				case CONTENT_WILDGRASS_SHORT:
 				{
 					MapNode n_btm = m_map->getNodeNoEx(p+v3s16(0,-1,0));
@@ -1398,37 +1398,30 @@ void ServerEnvironment::step(float dtime)
 				// growing apples!
 				case CONTENT_APPLE_LEAVES:
 				{
-					if(myrand()%8 == 0)
-					{
-						leafDecay(n, p);
-					} else
-					{
+					if (myrand()%8 != 0 || leafDecay(n, p))
 						break;
-					}
 
-					if(myrand()%10 == 0) {
+					if (myrand()%10 == 0) {
 						bool found_blossom = false;
 						bool found_tree = false;
 
-						for(s16 x=-1; x<=1; x++)
-						for(s16 y=-1; y<=1; y++)
-						for(s16 z=-1; z<=1; z++)
+						for(s16 x=-1; !found_blossom && x<=1; x++)
+						for(s16 y=-1; !found_blossom && y<=1; y++)
+						for(s16 z=-1; !found_blossom && z<=1; z++)
 						{
 							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
-							if(n_test.getContent() == CONTENT_APPLE_BLOSSOM)
-							{
+							if (n_test.getContent() == CONTENT_APPLE_BLOSSOM) {
 								found_blossom = true;
 								break;
 							}
 						}
 
-						for(s16 x=-3; x<=3; x++)
-						for(s16 y=-3; y<=3; y++)
-						for(s16 z=-3; z<=3; z++)
+						for(s16 x=-3; !found_tree && x<=3; x++)
+						for(s16 y=-3; !found_tree && y<=3; y++)
+						for(s16 z=-3; !found_tree && z<=3; z++)
 						{
 							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
-							if(n_test.getContent() == CONTENT_APPLE_TREE)
-							{
+							if (n_test.getContent() == CONTENT_APPLE_TREE) {
 								found_tree = true;
 								break;
 							}
@@ -1446,13 +1439,8 @@ void ServerEnvironment::step(float dtime)
 
 				case CONTENT_APPLE_BLOSSOM:
 				{
-					if(myrand()%8 == 0)
-					{
-						leafDecay(n, p);
-					} else
-					{
+					if (myrand()%8 != 0 || leafDecay(n, p))
 						break;
-					}
 
 					if(myrand()%20 == 0) {
 						int found_apple = 0;
@@ -1463,19 +1451,17 @@ void ServerEnvironment::step(float dtime)
 						for(s16 z=-2; z<=2; z++)
 						{
 							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
-							if(n_test.getContent() == CONTENT_APPLE)
-							{
+							if (n_test.getContent() == CONTENT_APPLE) {
 								++found_apple;
 							}
 						}
 
-						for(s16 x=-3; x<=3; x++)
-						for(s16 y=-3; y<=3; y++)
-						for(s16 z=-3; z<=3; z++)
+						for(s16 x=-3; !found_tree && x<=3; x++)
+						for(s16 y=-3; !found_tree && y<=3; y++)
+						for(s16 z=-3; !found_tree && z<=3; z++)
 						{
 							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
-							if(n_test.getContent() == CONTENT_APPLE_TREE)
-							{
+							if (n_test.getContent() == CONTENT_APPLE_TREE) {
 								found_tree = true;
 								break;
 							}
@@ -2409,7 +2395,7 @@ void ServerEnvironment::step(float dtime)
 	}
 }
 
-void ServerEnvironment::leafDecay(MapNode n, v3s16 p)
+bool ServerEnvironment::leafDecay(MapNode n, v3s16 p)
 {
 	s16 max_d = 3;
 	v3s16 leaf_p = p;
@@ -2453,8 +2439,10 @@ void ServerEnvironment::leafDecay(MapNode n, v3s16 p)
 			}
 			ServerActiveObject *obj = new ItemSAO(this, 0, sapling_pos, "MaterialItem2 " + itos(c) + " 1");
 			addActiveObject(obj);
+			return true;
 		}
 	}
+	return false;
 }
 
 ServerActiveObject* ServerEnvironment::getActiveObject(u16 id)
