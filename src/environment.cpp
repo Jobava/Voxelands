@@ -1144,6 +1144,9 @@ void ServerEnvironment::step(float dtime)
 						content_t type = CONTENT_JUNGLEGRASS;
 						MapNode testnode;
 						bool found = false;
+						testnode = m_map->getNodeNoEx(temp_p + v3s16(0,1,0));
+						if (testnode.getContent() != CONTENT_AIR)
+							break;
 						for(s16 z=-max_d; !found && z<=max_d; z++) {
 						for(s16 x=-max_d; !found && x<=max_d; x++)
 						{
@@ -1226,11 +1229,22 @@ void ServerEnvironment::step(float dtime)
 								break;
 							default:;
 							}
-							if (found)
-							{
+							if (!found) {
+								if (myrand()%5 == 0) {
+									// revert to mud
+									n.setContent(CONTENT_MUD);
+									m_map->addNodeWithEvent(p,n);
+								}else{
+									// grow flower
+									found = true;
+									type = CONTENT_FLOWER_STEM;
+									test_p = temp_p + v3s16(0,1,0);
+								}
+							}
+							if (found) {
 								MapNode n_top = m_map->getNodeNoEx(test_p);
-								n.setContent(type);
-								m_map->addNodeWithEvent(test_p, n);
+								n_top.setContent(type);
+								m_map->addNodeWithEvent(test_p, n_top);
 							}
 						}
 					}
@@ -1344,10 +1358,18 @@ void ServerEnvironment::step(float dtime)
 				case CONTENT_FLOWER_STEM:
 				{
 					MapNode n_btm = m_map->getNodeNoEx(p+v3s16(0,-1,0));
-					if (n_btm.getContent() == CONTENT_GRASS || n_btm.getContent() == CONTENT_MUD) {
-						if (p.Y > -1 && myrand()%100 == 0) {
+					int ch = 0;
+					if (
+						n_btm.getContent() == CONTENT_GRASS
+						|| n_btm.getContent() == CONTENT_MUD
+					)
+						ch = 100;
+					if (n_btm.getContent() == CONTENT_FARM_DIRT)
+						ch = 50;
+					if (ch) {
+						if ((ch == 50 || p.Y > -1) && myrand()%100 == 0) {
 							MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
-							if ((n_btm.getContent() == CONTENT_GRASS || n_btm.getContent() == CONTENT_FLOWER_POT) && n_top.getLightBlend(getDayNightRatio()) >= 13) {
+							if (n_top.getLightBlend(getDayNightRatio()) >= 13) {
 								switch (myrand()%3) {
 								case 0:
 									n.setContent(CONTENT_FLOWER_ROSE);
@@ -1388,7 +1410,7 @@ void ServerEnvironment::step(float dtime)
 							n.setContent(CONTENT_WILDGRASS_SHORT);
 							m_map->addNodeWithEvent(p, n);
 						}
-					}else if (n_under.getContent() != CONTENT_FLOWER_POT) {
+					}else if (n_under.getContent() != CONTENT_FLOWER_POT && n_under.getContent() != CONTENT_FARM_DIRT) {
 						n.setContent(CONTENT_WILDGRASS_SHORT);
 						m_map->addNodeWithEvent(p, n);
 					}

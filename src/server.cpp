@@ -2859,8 +2859,10 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			bool is_farm_swap = false;
 			// This is pretty much the entirety of farming
 			if (
-				material == CONTENT_MUD
-				&& wield
+				(
+					material == CONTENT_MUD
+					|| material == CONTENT_GRASS
+				) && wield
 				&& (
 					wield->getContent() == CONTENT_TOOLITEM_STEELSHOVEL
 					|| wield->getContent() == CONTENT_TOOLITEM_STSHOVEL
