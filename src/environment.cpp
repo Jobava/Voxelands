@@ -1422,19 +1422,7 @@ void ServerEnvironment::step(float dtime)
 				case CONTENT_APPLE_LEAVES:
 				{
 					if (myrand()%10 == 0) {
-						bool found_blossom = false;
 						bool found_tree = false;
-
-						for(s16 x=-1; !found_blossom && x<=1; x++)
-						for(s16 y=-1; !found_blossom && y<=1; y++)
-						for(s16 z=-1; !found_blossom && z<=1; z++)
-						{
-							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
-							if (n_test.getContent() == CONTENT_APPLE_BLOSSOM) {
-								found_blossom = true;
-								break;
-							}
-						}
 
 						for(s16 x=-3; !found_tree && x<=3; x++)
 						for(s16 y=-3; !found_tree && y<=3; y++)
@@ -1448,10 +1436,22 @@ void ServerEnvironment::step(float dtime)
 						}
 
 						// let's not turn the entire tree to blossoms
-						if(found_blossom == false && found_tree == true)
-						{
-							n.setContent(CONTENT_APPLE_BLOSSOM);
-							m_map->addNodeWithEvent(p, n);
+						if (found_tree == true) {
+							bool found_blossom = false;
+							for(s16 x=-1; !found_blossom && x<=1; x++)
+							for(s16 y=-1; !found_blossom && y<=1; y++)
+							for(s16 z=-1; !found_blossom && z<=1; z++)
+							{
+								MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
+								if (n_test.getContent() == CONTENT_APPLE_BLOSSOM) {
+									found_blossom = true;
+									break;
+								}
+							}
+							if (found_blossom == false) {
+								n.setContent(CONTENT_APPLE_BLOSSOM);
+								m_map->addNodeWithEvent(p, n);
+							}
 							break;
 						}
 					}
@@ -1516,18 +1516,7 @@ void ServerEnvironment::step(float dtime)
 				case CONTENT_APPLE_BLOSSOM:
 				{
 					if(myrand()%20 == 0) {
-						int found_apple = 0;
 						bool found_tree = false;
-
-						for(s16 x=-2; x<=2; x++)
-						for(s16 y=-2; y<=2; y++)
-						for(s16 z=-2; z<=2; z++)
-						{
-							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
-							if (n_test.getContent() == CONTENT_APPLE) {
-								++found_apple;
-							}
-						}
 
 						for(s16 x=-3; !found_tree && x<=3; x++)
 						for(s16 y=-3; !found_tree && y<=3; y++)
@@ -1543,12 +1532,29 @@ void ServerEnvironment::step(float dtime)
 						// don't turn all blossoms to apples
 						// blossoms look nice
 						if (found_tree == true) {
+							int found_apple = 0;
+
+							for(s16 x=-2; x<=2; x++)
+							for(s16 y=-2; y<=2; y++)
+							for(s16 z=-2; z<=2; z++)
+							{
+								MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
+								if (n_test.getContent() == CONTENT_APPLE) {
+									++found_apple;
+								}
+							}
 							if (found_apple < 3) {
 								n.setContent(CONTENT_APPLE);
 								m_map->addNodeWithEvent(p, n);
 							}
 						}else{
 							m_map->removeNodeWithEvent(p);
+							if (myrand()%5 == 0) {
+								v3f blossom_pos = intToFloat(p, BS);
+								blossom_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
+								ServerActiveObject *obj = new ItemSAO(this, 0, blossom_pos, "CraftItem apple_blossom 1");
+								addActiveObject(obj);
+							}
 						}
 					}
 					break;

@@ -3124,6 +3124,12 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							std::string &dug_s = content_features(material).dug_item;
 							std::istringstream is(dug_s, std::ios::binary);
 							item = InventoryItem::deSerialize(is);
+							// Add a item to inventory
+							player->inventory.addItem("main", item);
+							// Send inventory
+							UpdateCrafting(player->peer_id);
+							SendInventory(player->peer_id);
+							return;
 						}else if (wield && (wield->getContent()&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
 							ToolItem *tool = (ToolItem*)wield;
 							if (material == CONTENT_LEAVES && tool->getContent() == CONTENT_TOOLITEM_STEELSHEARS) {
