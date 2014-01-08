@@ -267,11 +267,6 @@ private:
 	void deactivateFarObjects(bool force_delete);
 
 	/*
-	   Leaf decay
-	*/
-	bool leafDecay(MapNode n, v3s16 p);
-
-	/*
 		Member variables
 	*/
 

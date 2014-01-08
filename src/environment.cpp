@@ -932,6 +932,7 @@ void ServerEnvironment::step(float dtime)
 
 	if(m_active_blocks_test_interval.step(dtime, 10.0))
 	{
+		//TimeTaker timer("envloop");
 		ScopeProfiler sp(g_profiler, "SEnv: modify in blocks avg /10s", SPT_AVG);
 
 		for(core::map<v3s16, bool>::Iterator
@@ -1420,9 +1421,6 @@ void ServerEnvironment::step(float dtime)
 				// growing apples!
 				case CONTENT_APPLE_LEAVES:
 				{
-					if (myrand()%8 != 0 || leafDecay(n, p))
-						break;
-
 					if (myrand()%10 == 0) {
 						bool found_blossom = false;
 						bool found_tree = false;
@@ -1454,6 +1452,62 @@ void ServerEnvironment::step(float dtime)
 						{
 							n.setContent(CONTENT_APPLE_BLOSSOM);
 							m_map->addNodeWithEvent(p, n);
+							break;
+						}
+					}
+					// no break, let it fall through to leaf decay
+				}
+
+				// leaf decay
+				case CONTENT_LEAVES:
+				case CONTENT_JUNGLELEAVES:
+				case CONTENT_CONIFER_LEAVES:
+				{
+					if (myrand()%8 == 0)
+					{
+						s16 max_d = 3;
+						v3s16 leaf_p = p;
+						v3s16 test_p;
+						MapNode testnode;
+						bool found = false;
+						for(s16 z=-max_d; !found && z<=max_d; z++) {
+						for(s16 y=-max_d; !found && y<=max_d; y++) {
+						for(s16 x=-max_d; !found && x<=max_d; x++)
+							{
+							test_p = leaf_p + v3s16(x,y,z);
+							testnode = m_map->getNodeNoEx(test_p);
+							if (testnode.getContent() == CONTENT_TREE
+								|| testnode.getContent() == CONTENT_APPLE_TREE
+								|| testnode.getContent() == CONTENT_JUNGLETREE
+								|| testnode.getContent() == CONTENT_CONIFER_TREE
+								|| testnode.getContent() == CONTENT_IGNORE)
+							{
+								found = true;
+								break;
+							}
+						}
+						}
+						}
+						if (!found) {
+							m_map->removeNodeWithEvent(leaf_p);
+							if (myrand()%20 == 0) {
+								v3f sapling_pos = intToFloat(leaf_p, BS);
+								sapling_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
+								content_t c = CONTENT_SAPLING;
+								switch(n.getContent()) {
+								case CONTENT_JUNGLELEAVES:
+									c = CONTENT_JUNGLESAPLING;
+									break;
+								case CONTENT_CONIFER_LEAVES:
+									c = CONTENT_CONIFER_SAPLING;
+									break;
+								case CONTENT_APPLE_LEAVES:
+									c = CONTENT_APPLE_SAPLING;
+									break;
+								}
+								ServerActiveObject *obj = new ItemSAO(this, 0, sapling_pos, "MaterialItem2 " + itos(c) + " 1");
+								addActiveObject(obj);
+							}
 						}
 					}
 					break;
@@ -1461,9 +1515,6 @@ void ServerEnvironment::step(float dtime)
 
 				case CONTENT_APPLE_BLOSSOM:
 				{
-					if (myrand()%8 != 0 || leafDecay(n, p))
-						break;
-
 					if(myrand()%20 == 0) {
 						int found_apple = 0;
 						bool found_tree = false;
@@ -1491,10 +1542,13 @@ void ServerEnvironment::step(float dtime)
 
 						// don't turn all blossoms to apples
 						// blossoms look nice
-						if(found_apple < 3 && found_tree == true)
-						{
-							n.setContent(CONTENT_APPLE);
-							m_map->addNodeWithEvent(p, n);
+						if (found_tree == true) {
+							if (found_apple < 3) {
+								n.setContent(CONTENT_APPLE);
+								m_map->addNodeWithEvent(p, n);
+							}
+						}else{
+							m_map->removeNodeWithEvent(p);
 						}
 					}
 					break;
@@ -2096,17 +2150,6 @@ void ServerEnvironment::step(float dtime)
 					break;
 				}
 
-				// leaf decay
-				case CONTENT_LEAVES:
-				case CONTENT_JUNGLELEAVES:
-				case CONTENT_CONIFER_LEAVES:
-				{
-					if (myrand()%8 == 0)
-						leafDecay(n, p);
-
-					break;
-				}
-
 				// Apples should fall if there is no leaves block holding it
 				case CONTENT_APPLE:
 				{
@@ -2415,56 +2458,6 @@ void ServerEnvironment::step(float dtime)
 		*/
 		removeRemovedObjects();
 	}
-}
-
-bool ServerEnvironment::leafDecay(MapNode n, v3s16 p)
-{
-	s16 max_d = 3;
-	v3s16 leaf_p = p;
-	v3s16 test_p;
-	MapNode testnode;
-	bool found = false;
-	for(s16 z=-max_d; !found && z<=max_d; z++) {
-	for(s16 y=-max_d; !found && y<=max_d; y++) {
-	for(s16 x=-max_d; !found && x<=max_d; x++)
-		{
-		test_p = leaf_p + v3s16(x,y,z);
-		testnode = m_map->getNodeNoEx(test_p);
-		if (testnode.getContent() == CONTENT_TREE
-			|| testnode.getContent() == CONTENT_APPLE_TREE
-			|| testnode.getContent() == CONTENT_JUNGLETREE
-			|| testnode.getContent() == CONTENT_CONIFER_TREE
-			|| testnode.getContent() == CONTENT_IGNORE)
-		{
-			found = true;
-			break;
-		}
-	}
-	}
-	}
-	if (!found) {
-		m_map->removeNodeWithEvent(leaf_p);
-		if (myrand()%20 == 0) {
-			v3f sapling_pos = intToFloat(leaf_p, BS);
-			sapling_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
-			content_t c = CONTENT_SAPLING;
-			switch(n.getContent()) {
-			case CONTENT_JUNGLELEAVES:
-				c = CONTENT_JUNGLESAPLING;
-				break;
-			case CONTENT_CONIFER_LEAVES:
-				c = CONTENT_CONIFER_SAPLING;
-				break;
-			case CONTENT_APPLE_LEAVES:
-				c = CONTENT_APPLE_SAPLING;
-				break;
-			}
-			ServerActiveObject *obj = new ItemSAO(this, 0, sapling_pos, "MaterialItem2 " + itos(c) + " 1");
-			addActiveObject(obj);
-			return true;
-		}
-	}
-	return false;
 }
 
 ServerActiveObject* ServerEnvironment::getActiveObject(u16 id)
