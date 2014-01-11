@@ -2805,14 +2805,24 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						getNodeBlockPos(p_over), BLOCK_EMERGE_FLAG_FROMDISK);
 				cannot_remove_node = true;
 			}
-
+			wield = (InventoryItem*)player->getWieldItem();
+			// check for a diggable tool
+			if (
+				wield
+				&& (
+					wield->getContent() == CONTENT_TOOLITEM_FIRESTARTER
+					|| wield->getContent() == CONTENT_TOOLITEM_CROWBAR
+				)
+			) {
+				infostream<<"Server: Not finished digging: impossible tool"<<std::endl;
+				cannot_remove_node = true;
 			// Make sure the player is allowed to do it
-			if((getPlayerPrivs(player) & PRIV_BUILD) == 0)
-			{
+			}else if ((getPlayerPrivs(player) & PRIV_BUILD) == 0) {
 				infostream<<"Player "<<player->getName()<<" cannot remove node"
 						<<" because privileges are "<<getPlayerPrivs(player)
 						<<std::endl;
 				cannot_remove_node = true;
+			// check for locked items and borderstone
 			}else if((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
 				NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
 				if (meta
@@ -2852,8 +2862,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				If node can't be removed, set block to be re-sent to
 				client and quit.
 			*/
-			if(cannot_remove_node)
-			{
+			if (cannot_remove_node) {
 				infostream<<"Server: Not finishing digging."<<std::endl;
 
 				// Client probably has wrong data.
@@ -2869,7 +2878,6 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				return;
 			}
 
-			wield = (InventoryItem*)player->getWieldItem();
 			bool is_farm_swap = false;
 			// This is pretty much the entirety of farming
 			if (
