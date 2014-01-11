@@ -2209,6 +2209,7 @@ void ServerEnvironment::step(float dtime)
 								if (testnode.getContent() == CONTENT_WATERSOURCE) {
 									n_top1.setContent(CONTENT_JUNGLEGRASS);
 									m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top1);
+									found = true;
 									break;
 								}
 							}
