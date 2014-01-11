@@ -67,9 +67,12 @@ public:
 	// Used to make custom inventory menus.
 	// See format in guiInventoryMenu.cpp.
 	virtual std::string getInventoryDrawSpecString(){return "";}
-	// primarily used for locking chests, but others can play too
+	// the node owner - if not "" then only the owner can dig the node
 	virtual std::string getOwner(){ return std::string(""); }
 	virtual void setOwner(std::string t){  }
+	// the inventory owner - if not "" then only the owner can modify
+	virtual std::string getInventoryOwner(){ return std::string(""); }
+	virtual void setInventoryOwner(std::string t){  }
 	// used by tnt to arm it, but also for future circuitry
 	// level is the amount of power
 	// powersrc is the generator or such that created the power

@@ -54,9 +54,12 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_LOCKABLE_CHEST 17
 #define CONTENT_SIGN 18
 #define CONTENT_SIGN_UD 19
-// FREE 20
+#define CONTENT_LOCKABLE_FURNACE 20
 #define CONTENT_FENCE 21
-// FREE 22-29
+#define CONTENT_LOCKABLE_SIGN_WALL 22
+#define CONTENT_LOCKABLE_SIGN 23
+#define CONTENT_LOCKABLE_SIGN_UD 24
+// FREE 25-29
 #define CONTENT_RAIL 30
 #define CONTENT_LADDER 31
 #define CONTENT_LAVA 32

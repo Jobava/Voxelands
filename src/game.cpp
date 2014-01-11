@@ -1839,9 +1839,13 @@ void the_game(
 							&client);
 					menu->setDrawSpec(draw_spec);
 					menu->drop();
-				}
-				else if(meta && meta->typeId() == CONTENT_SIGN_WALL && !random_input)
-				{
+				}else if (
+					meta
+					&& (
+						meta->typeId() == CONTENT_SIGN_WALL
+						|| meta->typeId() == CONTENT_LOCKABLE_SIGN_WALL
+					) && !random_input
+				) {
 					infostream<<"Sign node right-clicked"<<std::endl;
 
 					SignNodeMetadata *signmeta = (SignNodeMetadata*)meta;

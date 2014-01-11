@@ -3147,6 +3147,99 @@ void content_mapnode_init()
 	));
 	f->setInventoryTextureNodeBox(i,"sign.png", "sign_front.png", "sign.png");
 
+	i = CONTENT_LOCKABLE_SIGN_WALL;
+	f = &content_features(i);
+	f->description = std::string("Locking Sign");
+	f->setAllTextures("sign_wall_lock.png");
+	f->setInventoryTexture("sign_lock_inventory.png");
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_SIGNLIKE;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->walkable = false;
+	f->wall_mounted = true;
+	f->air_equivalent = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 1;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_LOCKABLE_SIGN)+" 1";
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockingSignNodeMetadata("Some sign");
+	f->digging_properties.set("", DiggingProperties(true, 0.5, 0));
+
+	i = CONTENT_LOCKABLE_SIGN;
+	f = &content_features(i);
+	f->description = std::string("Locking Sign");
+	f->setAllTextures("sign.png");
+	f->setTexture(4, "sign_back.png");
+	f->setTexture(5, "sign_lock.png"); // Z-
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 1;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockingSignNodeMetadata("Some sign");
+	f->digging_properties.set("", DiggingProperties(true, 0.5, 0));
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.05*BS,
+		-0.5*BS,
+		-0.05*BS,
+		0.05*BS,
+		0.5*BS,
+		0.05*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.4*BS,
+		0.,
+		-0.1*BS,
+		0.4*BS,
+		0.4*BS,
+		-0.05*BS
+	));
+	f->setInventoryTextureNodeBox(i,"sign.png", "sign_lock.png", "sign.png");
+	crafting::set1Any2Recipe(CONTENT_SIGN,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_LOCKABLE_SIGN);
+
+	i = CONTENT_LOCKABLE_SIGN_UD;
+	f = &content_features(i);
+	f->description = std::string("Locking Sign");
+	f->setAllTextures("sign.png");
+	f->setTexture(4, "sign_back_ud.png");
+	f->setTexture(5, "sign_lock_ud.png"); // Z-
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 1;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_LOCKABLE_SIGN)+" 1";
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockingSignNodeMetadata("Some sign");
+	f->digging_properties.set("", DiggingProperties(true, 0.5, 0));
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.05*BS,
+		-0.5*BS,
+		-0.05*BS,
+		0.05*BS,
+		0.5*BS,
+		0.05*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.4*BS,
+		-0.4*BS,
+		-0.1*BS,
+		0.4*BS,
+		0.,
+		-0.05*BS
+	));
+	f->setInventoryTextureNodeBox(i,"sign.png", "sign_lock.png", "sign.png");
+
 	i = CONTENT_CHEST;
 	f = &content_features(i);
 	f->description = std::string("Chest");
@@ -3203,6 +3296,21 @@ void content_mapnode_init()
 		f->initial_metadata = new FurnaceNodeMetadata();
 	setStoneLikeDiggingProperties(f->digging_properties, 3.0);
 	crafting::setRoundRecipe(CONTENT_ROUGHSTONE,CONTENT_FURNACE);
+
+	i = CONTENT_LOCKABLE_FURNACE;
+	f = &content_features(i);
+	f->description = std::string("Locking Furnace");
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_CUBELIKE;
+	f->setAllTextures("furnace_side.png");
+	f->setTexture(5, "furnace_lock.png"); // Z-
+	f->setInventoryTextureCube("furnace_side.png", "furnace_lock.png", "furnace_side.png");
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockingFurnaceNodeMetadata();
+	setStoneLikeDiggingProperties(f->digging_properties, 3.0);
+	crafting::setFilledRoundRecipe(CONTENT_ROUGHSTONE,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_LOCKABLE_FURNACE);
+	crafting::set1Any2Recipe(CONTENT_FURNACE,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_LOCKABLE_FURNACE);
 
 	i = CONTENT_INCINERATOR;
 	f = &content_features(i);

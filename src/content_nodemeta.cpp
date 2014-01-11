@@ -58,6 +58,43 @@ std::string SignNodeMetadata::infoText()
 }
 
 /*
+	LockingSignNodeMetadata
+*/
+
+// Prototype
+LockingSignNodeMetadata proto_LockingSignNodeMetadata("");
+
+LockingSignNodeMetadata::LockingSignNodeMetadata(std::string text):
+	m_text(text)
+{
+	NodeMetadata::registerType(typeId(), create);
+}
+u16 LockingSignNodeMetadata::typeId() const
+{
+	return CONTENT_LOCKABLE_SIGN_WALL;
+}
+NodeMetadata* LockingSignNodeMetadata::create(std::istream &is)
+{
+	std::string text = deSerializeString(is);
+	LockingSignNodeMetadata *d = new LockingSignNodeMetadata(text);
+	d->setOwner(deSerializeString(is));
+	return d;
+}
+NodeMetadata* LockingSignNodeMetadata::clone()
+{
+	return new LockingSignNodeMetadata(m_text);
+}
+void LockingSignNodeMetadata::serializeBody(std::ostream &os)
+{
+	os<<serializeString(m_text);
+	os<<serializeString(m_owner);
+}
+std::string LockingSignNodeMetadata::infoText()
+{
+	return std::string("(")+m_owner+") \""+m_text+"\"";
+}
+
+/*
 	ChestNodeMetadata
 */
 
@@ -156,12 +193,12 @@ NodeMetadata* LockingChestNodeMetadata::clone()
 }
 void LockingChestNodeMetadata::serializeBody(std::ostream &os)
 {
-	os<<serializeString(m_text);
+	os<<serializeString(m_owner);
 	m_inventory->serialize(os);
 }
 std::string LockingChestNodeMetadata::infoText()
 {
-	return std::string("Locking Chest owned by '")+m_text+"'";
+	return std::string("Locking Chest owned by '")+m_owner+"'";
 }
 bool LockingChestNodeMetadata::nodeRemovalDisabled()
 {
@@ -468,6 +505,246 @@ bool FurnaceNodeMetadata::step(float dtime)
 	return changed;
 }
 std::string FurnaceNodeMetadata::getInventoryDrawSpecString()
+{
+	return
+		"invsize[8,9;]"
+		"list[current_name;fuel;2,3;1,1;]"
+		"list[current_name;src;2,1;1,1;]"
+		"list[current_name;dst;5,1;2,2;]"
+		"list[current_player;main;0,5;8,4;]";
+}
+
+/*
+	LockingFurnaceNodeMetadata
+*/
+
+// Prototype
+LockingFurnaceNodeMetadata proto_LockingFurnaceNodeMetadata;
+
+LockingFurnaceNodeMetadata::LockingFurnaceNodeMetadata()
+{
+	NodeMetadata::registerType(typeId(), create);
+
+	m_inventory = new Inventory();
+	m_inventory->addList("fuel", 1);
+	m_inventory->addList("src", 1);
+	m_inventory->addList("dst", 4);
+
+	m_step_accumulator = 0;
+	m_fuel_totaltime = 0;
+	m_fuel_time = 0;
+	m_src_totaltime = 0;
+	m_src_time = 0;
+	m_lock = 0;
+}
+LockingFurnaceNodeMetadata::~LockingFurnaceNodeMetadata()
+{
+	delete m_inventory;
+}
+u16 LockingFurnaceNodeMetadata::typeId() const
+{
+	return CONTENT_LOCKABLE_FURNACE;
+}
+NodeMetadata* LockingFurnaceNodeMetadata::clone()
+{
+	LockingFurnaceNodeMetadata *d = new LockingFurnaceNodeMetadata();
+	*d->m_inventory = *m_inventory;
+	return d;
+}
+NodeMetadata* LockingFurnaceNodeMetadata::create(std::istream &is)
+{
+	LockingFurnaceNodeMetadata *d = new LockingFurnaceNodeMetadata();
+
+	d->m_inventory->deSerialize(is);
+	d->setOwner(deSerializeString(is));
+	d->setInventoryOwner(deSerializeString(is));
+
+	int temp;
+	is>>temp;
+	d->m_fuel_totaltime = (float)temp/10;
+	is>>temp;
+	d->m_fuel_time = (float)temp/10;
+	is>>temp;
+	d->m_lock = (float)temp/10;
+
+	return d;
+}
+void LockingFurnaceNodeMetadata::serializeBody(std::ostream &os)
+{
+	m_inventory->serialize(os);
+	os<<serializeString(m_owner);
+	os<<serializeString(m_inv_owner);
+	os<<itos(m_fuel_totaltime*10)<<" ";
+	os<<itos(m_fuel_time*10)<<" ";
+	os<<itos(m_lock*10)<<" ";
+}
+std::string LockingFurnaceNodeMetadata::infoText()
+{
+	//return "Furnace";
+	std::string ostr = m_owner;
+	if (m_inv_owner != "")
+		ostr += ","+m_inv_owner;
+	if(m_fuel_time >= m_fuel_totaltime)
+	{
+		const InventoryList *src_list = m_inventory->getList("src");
+		assert(src_list);
+		const InventoryItem *src_item = src_list->getItem(0);
+
+		if(src_item && src_item->isCookable()) {
+			InventoryList *dst_list = m_inventory->getList("dst");
+			if(!dst_list->roomForCookedItem(src_item))
+				return std::string("Locking Furnace (")+ostr+") is overloaded";
+			return std::string("Locking Furnace (")+ostr+") is out of fuel";
+		}
+		else
+			return std::string("Locking Furnace (")+ostr+") is inactive";
+	}
+	else
+	{
+		std::string s = std::string("Locking Furnace (")+ostr+") is active";
+		// Do this so it doesn't always show (0%) for weak fuel
+		if(m_fuel_totaltime > 3) {
+			s += " (";
+			s += itos(m_fuel_time/m_fuel_totaltime*100);
+			s += "%)";
+		}
+		return s;
+	}
+}
+bool LockingFurnaceNodeMetadata::nodeRemovalDisabled()
+{
+	/*
+		Disable removal if furnace is not empty
+	*/
+	InventoryList *list[3] = {m_inventory->getList("src"),
+	m_inventory->getList("dst"), m_inventory->getList("fuel")};
+
+	for(int i = 0; i < 3; i++) {
+		if(list[i] == NULL)
+			continue;
+		if(list[i]->getUsedSlots() == 0)
+			continue;
+		return true;
+	}
+	return false;
+
+}
+void LockingFurnaceNodeMetadata::inventoryModified()
+{
+	infostream<<"LockingFurnace inventory modification callback"<<std::endl;
+}
+bool LockingFurnaceNodeMetadata::step(float dtime)
+{
+	if(dtime > 60.0)
+		infostream<<"LockingFurnace stepping a long time ("<<dtime<<")"<<std::endl;
+	// Update at a fixed frequency
+	const float interval = 2.0;
+	m_step_accumulator += dtime;
+	bool changed = false;
+	while(m_step_accumulator > interval)
+	{
+		m_step_accumulator -= interval;
+		dtime = interval;
+
+		//infostream<<"Furnace step dtime="<<dtime<<std::endl;
+
+		InventoryList *dst_list = m_inventory->getList("dst");
+		assert(dst_list);
+
+		InventoryList *src_list = m_inventory->getList("src");
+		assert(src_list);
+		InventoryItem *src_item = src_list->getItem(0);
+
+		bool room_available = false;
+
+printf("%f\n",m_lock);
+		if (src_item && src_item->isCookable()) {
+			room_available = dst_list->roomForCookedItem(src_item);
+			m_lock = 300.0;
+			changed = true;
+		}else if (m_lock < 0.0) {
+			setInventoryOwner("");
+			changed = true;
+		}else{
+			m_lock -= dtime;
+			changed = true;
+		}
+printf("%f\n\n",m_lock);
+
+		// Start only if there are free slots in dst, so that it can
+		// accomodate any result item
+		if (room_available) {
+			m_src_totaltime = 3;
+		}else{
+			m_src_time = 0;
+			m_src_totaltime = 0;
+		}
+
+		/*
+			If fuel is burning, increment the burn counters.
+			If item finishes cooking, move it to result.
+		*/
+		if (m_fuel_time < m_fuel_totaltime) {
+			//infostream<<"Furnace is active"<<std::endl;
+			m_fuel_time += dtime;
+			m_src_time += dtime;
+			if (m_src_time >= m_src_totaltime && m_src_totaltime > 0.001 && src_item) {
+				InventoryItem *cookresult = src_item->createCookResult();
+				dst_list->addItem(cookresult);
+				src_list->decrementMaterials(1);
+				m_src_time = 0;
+				m_src_totaltime = 0;
+			}
+			changed = true;
+
+			// If the fuel was not used up this step, just keep burning it
+			if (m_fuel_time < m_fuel_totaltime)
+				continue;
+		}
+
+		/*
+			Get the source again in case it has all burned
+		*/
+		src_item = src_list->getItem(0);
+
+		/*
+			If there is no source item, or the source item is not cookable,
+			or the furnace is still cooking, or the furnace became overloaded, stop loop.
+		*/
+		if(src_item == NULL || !room_available || m_fuel_time < m_fuel_totaltime ||
+			dst_list->roomForCookedItem(src_item) == false)
+		{
+			m_step_accumulator = 0;
+			break;
+		}
+
+		//infostream<<"Furnace is out of fuel"<<std::endl;
+
+		InventoryList *fuel_list = m_inventory->getList("fuel");
+		assert(fuel_list);
+		InventoryItem *fuel_item = fuel_list->getItem(0);
+		if (fuel_item && fuel_item->isFuel()) {
+			if ((fuel_item->getContent()&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
+				m_fuel_totaltime = ((CraftItem*)fuel_item)->getFuelTime();
+			}else if ((fuel_item->getContent()&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+				m_fuel_totaltime = ((ToolItem*)fuel_item)->getFuelTime();
+			}else{
+				m_fuel_totaltime = ((MaterialItem*)fuel_item)->getFuelTime();
+			}
+			m_fuel_time = 0;
+			content_t c = fuel_item->getContent();
+			fuel_list->decrementMaterials(1);
+			if (c == CONTENT_TOOLITEM_STEELBUCKET_LAVA) {
+				fuel_list->addItem(0,new ToolItem(CONTENT_TOOLITEM_STEELBUCKET,0));
+			}
+			changed = true;
+		}else{
+			m_step_accumulator = 0;
+		}
+	}
+	return changed;
+}
+std::string LockingFurnaceNodeMetadata::getInventoryDrawSpecString()
 {
 	return
 		"invsize[8,9;]"

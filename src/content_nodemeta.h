@@ -43,6 +43,31 @@ private:
 	std::string m_text;
 };
 
+class LockingSignNodeMetadata : public NodeMetadata
+{
+public:
+	LockingSignNodeMetadata(std::string text);
+	//~LockingSignNodeMetadata();
+
+	virtual u16 typeId() const;
+	static NodeMetadata* create(std::istream &is);
+	virtual NodeMetadata* clone();
+	virtual void serializeBody(std::ostream &os);
+	virtual std::string infoText();
+
+	virtual std::string getOwner(){ return m_owner; }
+	virtual void setOwner(std::string t){ m_owner = t; }
+	virtual std::string getInventoryOwner(){ return m_owner; }
+	virtual void setInventoryOwner(std::string t){ m_owner = t; }
+
+	std::string getText(){ return m_text; }
+	void setText(std::string t){ m_text = t; }
+
+private:
+	std::string m_text;
+	std::string m_owner;
+};
+
 class ChestNodeMetadata : public NodeMetadata
 {
 public:
@@ -77,12 +102,14 @@ public:
 	virtual bool nodeRemovalDisabled();
 	virtual std::string getInventoryDrawSpecString();
 
-	virtual std::string getOwner(){ return m_text; }
-	virtual void setOwner(std::string t){ m_text = t; }
+	virtual std::string getOwner(){ return m_owner; }
+	virtual void setOwner(std::string t){ m_owner = t; }
+	virtual std::string getInventoryOwner(){ return m_owner; }
+	virtual void setInventoryOwner(std::string t){ m_owner = t; }
 
 private:
 	Inventory *m_inventory;
-	std::string m_text;
+	std::string m_owner;
 };
 
 class BorderStoneNodeMetadata : public NodeMetadata
@@ -147,6 +174,40 @@ private:
 	float m_fuel_time;
 	float m_src_totaltime;
 	float m_src_time;
+};
+
+class LockingFurnaceNodeMetadata : public NodeMetadata
+{
+public:
+	LockingFurnaceNodeMetadata();
+	~LockingFurnaceNodeMetadata();
+
+	virtual u16 typeId() const;
+	virtual NodeMetadata* clone();
+	static NodeMetadata* create(std::istream &is);
+	virtual void serializeBody(std::ostream &os);
+	virtual std::string infoText();
+	virtual Inventory* getInventory() {return m_inventory;}
+	virtual void inventoryModified();
+	virtual bool step(float dtime);
+	virtual bool nodeRemovalDisabled();
+	virtual std::string getInventoryDrawSpecString();
+
+	virtual std::string getOwner(){ return m_owner; }
+	virtual void setOwner(std::string t){ m_owner = t; }
+	virtual std::string getInventoryOwner(){ return m_inv_owner; }
+	virtual void setInventoryOwner(std::string t){ m_inv_owner = t; }
+
+private:
+	Inventory *m_inventory;
+	float m_step_accumulator;
+	float m_fuel_totaltime;
+	float m_fuel_time;
+	float m_src_totaltime;
+	float m_src_time;
+	std::string m_owner;
+	std::string m_inv_owner;
+	float m_lock;
 };
 
 class TNTNodeMetadata : public NodeMetadata

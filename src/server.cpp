@@ -2814,23 +2814,37 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						<<std::endl;
 				cannot_remove_node = true;
 			}else if((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
-				s16 max_d = g_settings->getS16("borderstone_radius");
-				v3s16 test_p;
-				MapNode testnode;
-				for(s16 z=-max_d; !cannot_remove_node && z<=max_d; z++) {
-				for(s16 y=-max_d; !cannot_remove_node && y<=max_d; y++) {
-				for(s16 x=-max_d; !cannot_remove_node && x<=max_d; x++) {
-					test_p = p_under + v3s16(x,y,z);
-					NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
-					if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
-						BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
-						if (bsm->getOwner() != player->getName()) {
-							cannot_remove_node = true;
-							break;
+				NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
+				if (meta
+					&& (
+						meta->typeId() == CONTENT_LOCKABLE_CHEST
+						|| meta->typeId() == CONTENT_LOCKABLE_SIGN
+						|| meta->typeId() == CONTENT_LOCKABLE_SIGN_WALL
+						|| meta->typeId() == CONTENT_LOCKABLE_SIGN_UD
+						|| meta->typeId() == CONTENT_LOCKABLE_FURNACE
+					)
+					&& meta->getOwner() != player->getName()
+				) {
+					cannot_remove_node = true;
+				}else{
+					s16 max_d = g_settings->getS16("borderstone_radius");
+					v3s16 test_p;
+					MapNode testnode;
+					for(s16 z=-max_d; !cannot_remove_node && z<=max_d; z++) {
+					for(s16 y=-max_d; !cannot_remove_node && y<=max_d; y++) {
+					for(s16 x=-max_d; !cannot_remove_node && x<=max_d; x++) {
+						test_p = p_under + v3s16(x,y,z);
+						NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
+						if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
+							BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
+							if (bsm->getOwner() != player->getName()) {
+								cannot_remove_node = true;
+								break;
+							}
 						}
 					}
-				}
-				}
+					}
+					}
 				}
 			}
 
@@ -3495,6 +3509,12 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					}else if (p_dir.Y != -1) {
 						n.setContent(CONTENT_SIGN_WALL);
 					}
+				}else if (n.getContent() == CONTENT_LOCKABLE_SIGN) {
+					if (p_dir.Y == 1) {
+						n.setContent(CONTENT_LOCKABLE_SIGN_UD);
+					}else if (p_dir.Y != -1) {
+						n.setContent(CONTENT_LOCKABLE_SIGN_WALL);
+					}
 				}
 
 				// Calculate direction for wall mounted stuff
@@ -3950,8 +3970,13 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		NodeMetadata *meta = m_env.getMap().getNodeMetadata(p);
 		if(!meta)
 			return;
-		if(meta->typeId() != CONTENT_SIGN_WALL)
-			return;
+		if(meta->typeId() != CONTENT_SIGN_WALL) {
+			if (meta->typeId() != CONTENT_LOCKABLE_SIGN_WALL)
+				return;
+			LockingSignNodeMetadata *lsm = (LockingSignNodeMetadata*)meta;
+			if (lsm->getOwner() != player->getName())
+				return;
+		}
 		SignNodeMetadata *signmeta = (SignNodeMetadata*)meta;
 		signmeta->setText(text);
 
@@ -4058,7 +4083,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				{
 					return;
 				}
-				// if it's a locking chest, only allow the owner or server admins to move items
+				// if it's a locking inventory, only allow the owner or server admins to move items
 				else if (ma->from_inv != "current_player" && (getPlayerPrivs(player) & PRIV_SERVER) == 0)
 				{
 					Strfnd fn(ma->from_inv);
@@ -4070,10 +4095,17 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						p.Y = stoi(fn.next(","));
 						p.Z = stoi(fn.next(","));
 						NodeMetadata *meta = m_env.getMap().getNodeMetadata(p);
-						if(meta && meta->typeId() == CONTENT_LOCKABLE_CHEST) {
-							LockingChestNodeMetadata *lcm = (LockingChestNodeMetadata*)meta;
-							if (lcm->getOwner() != player->getName())
-								return;
+						if (meta) {
+							if (meta->typeId() == CONTENT_LOCKABLE_CHEST) {
+								LockingChestNodeMetadata *lcm = (LockingChestNodeMetadata*)meta;
+								if (lcm->getInventoryOwner() != player->getName())
+									return;
+							}else if (meta->typeId() == CONTENT_LOCKABLE_FURNACE) {
+								LockingFurnaceNodeMetadata *lfm = (LockingFurnaceNodeMetadata*)meta;
+								std::string name = lfm->getInventoryOwner();
+								if (name != "" && name != player->getName() && lfm->getOwner() != player->getName())
+									return;
+							}
 						}
 					}
 				}
@@ -4088,10 +4120,21 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						p.Y = stoi(fn.next(","));
 						p.Z = stoi(fn.next(","));
 						NodeMetadata *meta = m_env.getMap().getNodeMetadata(p);
-						if(meta && meta->typeId() == CONTENT_LOCKABLE_CHEST) {
-							LockingChestNodeMetadata *lcm = (LockingChestNodeMetadata*)meta;
-							if (lcm->getOwner() != player->getName())
-								return;
+						if (meta) {
+							if (meta->typeId() == CONTENT_LOCKABLE_CHEST) {
+								LockingChestNodeMetadata *lcm = (LockingChestNodeMetadata*)meta;
+								if (lcm->getInventoryOwner() != player->getName())
+									return;
+							}else if (meta->typeId() == CONTENT_LOCKABLE_FURNACE) {
+								LockingFurnaceNodeMetadata *lfm = (LockingFurnaceNodeMetadata*)meta;
+								std::string name = lfm->getInventoryOwner();
+								// no owner and inserting to src, claim ownership of the inventory
+								if ((name == "" || lfm->getOwner() == player->getName()) && ma->to_list == "src") {
+									lfm->setInventoryOwner(player->getName());
+								}else if (name != "" && name != player->getName()) {
+									return;
+								}
+							}
 						}
 					}
 				}
