@@ -302,6 +302,9 @@ if(BUILD_CLIENT)
 	file(GLOB models
 "${CMAKE_CURRENT_SOURCE_DIR}/../data/models/*.b3d")
 	install(FILES ${models} DESTINATION ${DATADIR}/models)
+	file(GLOB modelsx
+"${CMAKE_CURRENT_SOURCE_DIR}/../data/models/*.x")
+	install(FILES ${modelsx} DESTINATION ${DATADIR}/models)
 
 	if(USE_GETTEXT)
 		foreach(LOCALE ${GETTEXT_AVAILABLE_LOCALES})
