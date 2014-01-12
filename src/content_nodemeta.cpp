@@ -657,7 +657,6 @@ bool LockingFurnaceNodeMetadata::step(float dtime)
 
 		bool room_available = false;
 
-printf("%f\n",m_lock);
 		if (src_item && src_item->isCookable()) {
 			room_available = dst_list->roomForCookedItem(src_item);
 			m_lock = 300.0;
@@ -669,7 +668,6 @@ printf("%f\n",m_lock);
 			m_lock -= dtime;
 			changed = true;
 		}
-printf("%f\n\n",m_lock);
 
 		// Start only if there are free slots in dst, so that it can
 		// accomodate any result item
