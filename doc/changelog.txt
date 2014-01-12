@@ -3,11 +3,42 @@ Minetest-c55 changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
-1312.01: (release 2014-12-06)
+1401.00: (release 2014-01-12)
+- add particle effects
+- add mipmaps and bilinear/trilinear/anisotropic filters
+- some tweaks to the texture atlas
+- optimise meshgen a little
+- fix models sharing lighting values
+- add 3d mobs
+- digging tree with an axe yields 6 wood
+- add tnt stick, change tnt recipe
+- make fire drop ash, add ash block
+- make apple trees grow apple blossoms and apples (Menche)
+- add grass footsteps
+- make /setting command show the current value if no value given
+- improved /help command
+- enable lavabuckets and tnt by default
+- when digging apples, make leaves grow back in their place
+- make apple blossoms randomly drop a blossom craft item
+- turn a bug into a feature, some minerals should drop to when dug
+- add sloped rails
+- add a rooflike drawtype, and several roof tiles
+- get default_password working
+- fix node owner being lost with crowbar rotation
+- stop incinerators eating the buck when fueled with lava
+- add diagonal fences and walls
+- some rendering fixes to walls
+- optimise environment loop a bit (Menche)
+- improve farming a bit, make it require more work, allow flower farms
+- add some random drops to dirt/mud nodes
+- add locking signs and furnaces
+- make a couple of special tools unable to dig anything
+
+1312.01: (release 2013-12-06)
 - fix craft recipes for doors, hatches, incinerators
 - add some missing nodes to the craft guide
 
-1312.00: (release 2014-12-04)
+1312.00: (release 2013-12-04)
 - added http transfer of player skins (buggy, but easier to debug in use)
 - add snow biome at y = 60-200, damage player in cold unless near fire
 - add conifer trees in snow biome
