@@ -374,7 +374,7 @@ void getPointedNode(Client *client, v3f player_position,
 				}
 			}
 		}
-		else if(n.getContent() == CONTENT_SIGN_WALL)
+		else if(n.getContent() == CONTENT_SIGN_WALL || n.getContent() == CONTENT_LOCKABLE_SIGN_WALL)
 		{
 			v3s16 dir = unpackDir(n.param2);
 			v3f dir_f = v3f(dir.X, dir.Y, dir.Z);
