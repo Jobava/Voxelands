@@ -3,6 +3,10 @@ Minetest-c55 changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1401.01: (release 2014-01-13)
+- add models to install files
+- add furnace back into craft guide
+
 1401.00: (release 2014-01-12)
 - add particle effects
 - add mipmaps and bilinear/trilinear/anisotropic filters
