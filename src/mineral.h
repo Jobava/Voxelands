@@ -22,16 +22,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "inventory.h"
 
-/*
-	Minerals
-
-	Value is stored in the lowest 5 bits of a MapNode's CPT_MINERAL
-	type param.
-*/
-
-// Caches textures
-void init_mineral();
-
 #define MINERAL_NONE 0
 #define MINERAL_COAL 1
 #define MINERAL_IRON 2
@@ -41,29 +31,40 @@ void init_mineral();
 #define MINERAL_GOLD 6
 #define MINERAL_QUARTZ 7
 
-#define MINERAL_COUNT 8
+struct MineralFeatures {
+	std::string texture;
+	// the dug item
+	content_t dug_item;
+	// the number of dug_items received when dug
+	s16 dug_count;
 
-std::string mineral_block_texture(u8 mineral);
+	MineralFeatures():
+		texture(""),
+		dug_item(CONTENT_IGNORE),
+		dug_count(1)
+	{}
+};
+
+/*
+	Minerals
+
+	Value is stored in the lowest 5 bits of a MapNode's CPT_MINERAL
+	type param.
+*/
+
+// Caches textures
+void init_mineral();
+MineralFeatures & mineral_features(u8 i);
+
+#define MINERAL_MAX 255
 
 inline CraftItem * getDiggedMineralItem(u8 mineral)
 {
-	if (mineral == MINERAL_COAL) {
-		return new CraftItem("lump_of_coal", 2);
-	}else if(mineral == MINERAL_IRON) {
-		return new CraftItem("lump_of_iron", 2);
-	}else if(mineral == MINERAL_TIN) {
-		return new CraftItem("lump_of_tin", 2);
-	}else if(mineral == MINERAL_COPPER) {
-		return new CraftItem("lump_of_copper", 2);
-	}else if(mineral == MINERAL_SILVER) {
-		return new CraftItem("lump_of_silver", 1);
-	}else if(mineral == MINERAL_GOLD) {
-		return new CraftItem("lump_of_gold", 1);
-	}else if(mineral == MINERAL_QUARTZ) {
-		return new CraftItem("lump_of_quartz", 1);
-	}
+	MineralFeatures m = mineral_features(mineral);
+	if (m.dug_item == CONTENT_IGNORE)
+		return NULL;
 
-	return NULL;
+	return new CraftItem(content_craftitem_features(m.dug_item).name,m.dug_count);
 }
 
 #endif

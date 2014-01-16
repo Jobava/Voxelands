@@ -11,7 +11,7 @@ struct CraftItemFeatures {
 	// the old 'subname'
 	std::string name;
 	// tooltip used in inventory
-	std::string gui_name;
+	std::string description;
 	// the result of cooking this item
 	std::string cook_result;
 	// the fuel value of this item
@@ -25,7 +25,7 @@ struct CraftItemFeatures {
 		content(CONTENT_IGNORE),
 		texture("unknown_item.png"),
 		name(""),
-		gui_name(""),
+		description(""),
 		cook_result(""),
 		fuel_time(0.0),
 		edible(0),

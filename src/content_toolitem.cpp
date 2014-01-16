@@ -57,7 +57,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_woodpick.png";
 	f->name = "WPick";
-	f->gui_name = "Wooden Pick";
+	f->description = "Wooden Pick";
 	crafting::setPickRecipe(CONTENT_WOOD,CONTENT_TOOLITEM_WPICK);
 	crafting::setPickRecipe(CONTENT_JUNGLEWOOD,CONTENT_TOOLITEM_WPICK);
 
@@ -66,7 +66,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_stonepick.png";
 	f->name = "STPick";
-	f->gui_name = "Stone Pick";
+	f->description = "Stone Pick";
 	crafting::setPickRecipe(CONTENT_ROUGHSTONE,CONTENT_TOOLITEM_STPICK);
 
 	i = CONTENT_TOOLITEM_STEELPICK;
@@ -74,7 +74,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_steelpick.png";
 	f->name = "SteelPick";
-	f->gui_name = "Steel Pick";
+	f->description = "Steel Pick";
 	crafting::setPickRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_STEELPICK);
 
 	i = CONTENT_TOOLITEM_MESEPICK;
@@ -82,7 +82,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_mesepick.png";
 	f->name = "MesePick";
-	f->gui_name = "Mese Pick";
+	f->description = "Mese Pick";
 	crafting::setPickRecipe(CONTENT_MESE,CONTENT_TOOLITEM_MESEPICK);
 
 	i = CONTENT_TOOLITEM_WSHOVEL;
@@ -90,7 +90,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_woodshovel.png";
 	f->name = "WShovel";
-	f->gui_name = "Wooden Shovel";
+	f->description = "Wooden Shovel";
 	crafting::setShovelRecipe(CONTENT_WOOD,CONTENT_TOOLITEM_WSHOVEL);
 	crafting::setShovelRecipe(CONTENT_JUNGLEWOOD,CONTENT_TOOLITEM_WSHOVEL);
 
@@ -99,7 +99,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_stoneshovel.png";
 	f->name = "STShovel";
-	f->gui_name = "Stone Shovel";
+	f->description = "Stone Shovel";
 	crafting::setShovelRecipe(CONTENT_ROUGHSTONE,CONTENT_TOOLITEM_STSHOVEL);
 
 	i = CONTENT_TOOLITEM_STEELSHOVEL;
@@ -107,7 +107,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_steelshovel.png";
 	f->name = "SteelShovel";
-	f->gui_name = "Steel Shovel";
+	f->description = "Steel Shovel";
 	crafting::setShovelRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_STEELSHOVEL);
 
 	i = CONTENT_TOOLITEM_WAXE;
@@ -115,7 +115,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_woodaxe.png";
 	f->name = "WAxe";
-	f->gui_name = "Wooden Axe";
+	f->description = "Wooden Axe";
 	crafting::setAxeRecipe(CONTENT_WOOD,CONTENT_TOOLITEM_WAXE);
 	crafting::setAxeRecipe(CONTENT_JUNGLEWOOD,CONTENT_TOOLITEM_WAXE);
 
@@ -124,7 +124,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_stoneaxe.png";
 	f->name = "STAxe";
-	f->gui_name = "Stone Axe";
+	f->description = "Stone Axe";
 	crafting::setAxeRecipe(CONTENT_ROUGHSTONE,CONTENT_TOOLITEM_STAXE);
 
 	i = CONTENT_TOOLITEM_STEELAXE;
@@ -132,7 +132,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_steelaxe.png";
 	f->name = "SteelAxe";
-	f->gui_name = "Steel Axe";
+	f->description = "Steel Axe";
 	crafting::setAxeRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_STEELAXE);
 
 	i = CONTENT_TOOLITEM_WSWORD;
@@ -140,7 +140,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_woodsword.png";
 	f->name = "WSword";
-	f->gui_name = "Wooden Sword";
+	f->description = "Wooden Sword";
 	crafting::setSwordRecipe(CONTENT_WOOD,CONTENT_TOOLITEM_WSWORD);
 	crafting::setSwordRecipe(CONTENT_JUNGLEWOOD,CONTENT_TOOLITEM_WSWORD);
 
@@ -149,7 +149,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_stonesword.png";
 	f->name = "STSword";
-	f->gui_name = "Stone Sword";
+	f->description = "Stone Sword";
 	crafting::setSwordRecipe(CONTENT_ROUGHSTONE,CONTENT_TOOLITEM_STSWORD);
 
 	i = CONTENT_TOOLITEM_STEELSWORD;
@@ -157,7 +157,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_steelsword.png";
 	f->name = "SteelSword";
-	f->gui_name = "Steel Sword";
+	f->description = "Steel Sword";
 	crafting::setSwordRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_STEELSWORD);
 
 	i = CONTENT_TOOLITEM_STEELSHEARS;
@@ -165,7 +165,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_shears.png";
 	f->name = "Shears";
-	f->gui_name = "Steel Shears";
+	f->description = "Steel Shears";
 	crafting::setShearsRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_STEELSHEARS);
 
 	i = CONTENT_TOOLITEM_WBUCKET;
@@ -173,7 +173,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_woodbucket.png";
 	f->name = "WBucket";
-	f->gui_name = "Wooden Bucket";
+	f->description = "Wooden Bucket";
 	f->liquids_pointable = true;
 	crafting::setURecipe(CONTENT_CRAFTITEM_STICK,CONTENT_TOOLITEM_WBUCKET);
 
@@ -182,7 +182,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_tinbucket.png";
 	f->name = "TinBucket";
-	f->gui_name = "Tin Bucket";
+	f->description = "Tin Bucket";
 	f->liquids_pointable = true;
 	crafting::setURecipe(CONTENT_CRAFTITEM_TIN_INGOT,CONTENT_TOOLITEM_TINBUCKET);
 
@@ -191,21 +191,21 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_woodbucket_water.png";
 	f->name = "WBucket_water";
-	f->gui_name = "Wooden Bucket of Water";
+	f->description = "Wooden Bucket of Water";
 
 	i = CONTENT_TOOLITEM_TINBUCKET_WATER;
 	f = &g_content_toolitem_features[i];
 	f->content = i;
 	f->texture = "tool_tinbucket_water.png";
 	f->name = "TinBucket_water";
-	f->gui_name = "Tin Bucket of Water";
+	f->description = "Tin Bucket of Water";
 
 	i = CONTENT_TOOLITEM_STEELBUCKET;
 	f = &g_content_toolitem_features[i];
 	f->content = i;
 	f->texture = "tool_steelbucket.png";
 	f->name = "SteelBucket";
-	f->gui_name = "Steel Bucket";
+	f->description = "Steel Bucket";
 	f->liquids_pointable = true;
 	crafting::setURecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_STEELBUCKET);
 
@@ -214,14 +214,14 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_steelbucket_water.png";
 	f->name = "SteelBucket_water";
-	f->gui_name = "Steel Bucket of Water";
+	f->description = "Steel Bucket of Water";
 
 	i = CONTENT_TOOLITEM_STEELBUCKET_LAVA;
 	f = &g_content_toolitem_features[i];
 	f->content = i;
 	f->texture = "tool_steelbucket_lava.png";
 	f->name = "SteelBucket_lava";
-	f->gui_name = "Steel Bucket of Lava";
+	f->description = "Steel Bucket of Lava";
 	f->fuel_time = 80;
 
 	i = CONTENT_TOOLITEM_FIRESTARTER;
@@ -229,7 +229,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_fire_starter.png";
 	f->name = "FireStarter";
-	f->gui_name = "Fire Starter";
+	f->description = "Fire Starter";
 	f->liquids_pointable = true;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_FLINT,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_FIRESTARTER);
 
@@ -238,6 +238,6 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "crowbar.png";
 	f->name = "crowbar";
-	f->gui_name = "Crowbar";
+	f->description = "Crowbar";
 	crafting::set1over1Recipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_CROWBAR);
 }

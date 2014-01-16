@@ -184,7 +184,7 @@ video::ITexture * CraftItem::getImage() const
 #endif
 std::string CraftItem::getGuiName()
 {
-	return content_craftitem_features(m_content).gui_name;
+	return content_craftitem_features(m_content).description;
 }
 
 ServerActiveObject* CraftItem::createSAO(ServerEnvironment *env, u16 id, v3f pos)

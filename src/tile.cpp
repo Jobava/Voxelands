@@ -418,9 +418,11 @@ void TextureSource::buildMainAtlas()
 			std::string name = i.getNode()->getKey();
 			sourcelist[name] = true;
 
-			if(f->often_contains_mineral){
-				for(int k=1; k<MINERAL_COUNT; k++){
-					std::string mineraltexture = mineral_block_texture(k);
+			if (f->often_contains_mineral) {
+				for (int k=1; k<MINERAL_MAX; k++){
+					std::string mineraltexture = mineral_features(k).texture;
+					if (mineraltexture == "")
+						continue;
 					std::string fulltexture = name + "^" + mineraltexture;
 					sourcelist[fulltexture] = true;
 				}

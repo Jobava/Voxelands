@@ -56,7 +56,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_PAPER;
 	f->texture = "paper.png";
 	f->name = "paper";
-	f->gui_name = "Paper";
+	f->description = "Paper";
 	crafting::setRow1Recipe(CONTENT_PAPYRUS,CONTENT_CRAFTITEM_PAPER);
 
 	i = CONTENT_CRAFTITEM_BOOK;
@@ -64,7 +64,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_BOOK;
 	f->texture = "book.png";
 	f->name = "book";
-	f->gui_name = "Book";
+	f->description = "Book";
 	crafting::setCol1Recipe(CONTENT_CRAFTITEM_PAPER,CONTENT_CRAFTITEM_BOOK);
 
 	i = CONTENT_CRAFTITEM_CHARCOAL;
@@ -72,7 +72,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_CHARCOAL;
 	f->texture = "lump_of_charcoal.png";
 	f->name = "lump_of_charcoal";
-	f->gui_name = "Charcoal Lump";
+	f->description = "Charcoal Lump";
 	f->fuel_time = 40;
 
 	i = CONTENT_CRAFTITEM_COAL;
@@ -80,7 +80,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_COAL;
 	f->texture = "lump_of_coal.png";
 	f->name = "lump_of_coal";
-	f->gui_name = "Coal Lump";
+	f->description = "Coal Lump";
 	f->fuel_time = 40;
 
 	i = CONTENT_CRAFTITEM_IRON;
@@ -88,7 +88,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_IRON;
 	f->texture = "lump_of_iron.png";
 	f->name = "lump_of_iron";
-	f->gui_name = "Iron Lump";
+	f->description = "Iron Lump";
 	f->cook_result = "CraftItem steel_ingot 1";
 
 	i = CONTENT_CRAFTITEM_CLAY;
@@ -96,7 +96,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_CLAY;
 	f->texture = "lump_of_clay.png";
 	f->name = "lump_of_clay";
-	f->gui_name = "Clay Lump";
+	f->description = "Clay Lump";
 	f->cook_result = "CraftItem clay_brick 1";
 
 	i = CONTENT_CRAFTITEM_TIN;
@@ -104,7 +104,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_TIN;
 	f->texture = "lump_of_tin.png";
 	f->name = "lump_of_tin";
-	f->gui_name = "Tin Lump";
+	f->description = "Tin Lump";
 	f->cook_result = "CraftItem tin_ingot 1";
 
 	i = CONTENT_CRAFTITEM_COPPER;
@@ -112,7 +112,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_COPPER;
 	f->texture = "lump_of_copper.png";
 	f->name = "lump_of_copper";
-	f->gui_name = "Copper Lump";
+	f->description = "Copper Lump";
 	f->cook_result = "CraftItem copper_ingot 1";
 
 	i = CONTENT_CRAFTITEM_SILVER;
@@ -120,7 +120,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_SILVER;
 	f->texture = "lump_of_silver.png";
 	f->name = "lump_of_silver";
-	f->gui_name = "Silver Lump";
+	f->description = "Silver Lump";
 	f->cook_result = "CraftItem silver_ingot 1";
 
 	i = CONTENT_CRAFTITEM_GOLD;
@@ -128,7 +128,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_GOLD;
 	f->texture = "lump_of_gold.png";
 	f->name = "lump_of_gold";
-	f->gui_name = "Gold Lump";
+	f->description = "Gold Lump";
 	f->cook_result = "CraftItem gold_ingot 1";
 
 	i = CONTENT_CRAFTITEM_QUARTZ;
@@ -136,63 +136,63 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_QUARTZ;
 	f->texture = "lump_of_quartz.png";
 	f->name = "lump_of_quartz";
-	f->gui_name = "Quartz Crystal";
+	f->description = "Quartz Crystal";
 
 	i = CONTENT_CRAFTITEM_TIN_INGOT;
 	f = &g_content_craftitem_features[i];
 	f->content = CONTENT_CRAFTITEM_TIN_INGOT;
 	f->texture = "tin_ingot.png";
 	f->name = "tin_ingot";
-	f->gui_name = "Tin Ingot";
+	f->description = "Tin Ingot";
 
 	i = CONTENT_CRAFTITEM_COPPER_INGOT;
 	f = &g_content_craftitem_features[i];
 	f->content = CONTENT_CRAFTITEM_COPPER_INGOT;
 	f->texture = "copper_ingot.png";
 	f->name = "copper_ingot";
-	f->gui_name = "Copper Ingot";
+	f->description = "Copper Ingot";
 
 	i = CONTENT_CRAFTITEM_SILVER_INGOT;
 	f = &g_content_craftitem_features[i];
 	f->content = CONTENT_CRAFTITEM_SILVER_INGOT;
 	f->texture = "silver_ingot.png";
 	f->name = "silver_ingot";
-	f->gui_name = "Silver Ingot";
+	f->description = "Silver Ingot";
 
 	i = CONTENT_CRAFTITEM_GOLD_INGOT;
 	f = &g_content_craftitem_features[i];
 	f->content = CONTENT_CRAFTITEM_GOLD_INGOT;
 	f->texture = "gold_ingot.png";
 	f->name = "gold_ingot";
-	f->gui_name = "Gold Ingot";
+	f->description = "Gold Ingot";
 
 	i = CONTENT_CRAFTITEM_FLINT;
 	f = &g_content_craftitem_features[i];
 	f->content = CONTENT_CRAFTITEM_FLINT;
 	f->texture = "lump_of_flint.png";
 	f->name = "lump_of_flint";
-	f->gui_name = "Flint";
+	f->description = "Flint";
 
 	i = CONTENT_CRAFTITEM_STEEL_INGOT;
 	f = &g_content_craftitem_features[i];
 	f->content = CONTENT_CRAFTITEM_STEEL_INGOT;
 	f->texture = "steel_ingot.png";
 	f->name = "steel_ingot";
-	f->gui_name = "Steel Ingot";
+	f->description = "Steel Ingot";
 
 	i = CONTENT_CRAFTITEM_CLAY_BRICK;
 	f = &g_content_craftitem_features[i];
 	f->content = CONTENT_CRAFTITEM_CLAY_BRICK;
 	f->texture = "clay_brick.png";
 	f->name = "clay_brick";
-	f->gui_name = "Brick";
+	f->description = "Brick";
 
 	i = CONTENT_CRAFTITEM_RAT;
 	f = &g_content_craftitem_features[i];
 	f->content = CONTENT_CRAFTITEM_RAT;
 	f->texture = "rat.png";
 	f->name = "rat";
-	f->gui_name = "Rat";
+	f->description = "Rat";
 	f->cook_result = "CraftItem cooked_rat 1";
 	f->drop_count = 1;
 
@@ -201,7 +201,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_COOKED_RAT;
 	f->texture = "cooked_rat.png";
 	f->name = "cooked_rat";
-	f->gui_name = "Cooked Rat";
+	f->description = "Cooked Rat";
 	f->cook_result = "CraftItem scorched_stuff 1";
 	f->edible = 6;
 
@@ -210,14 +210,14 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_SCORCHED_STUFF;
 	f->texture = "scorched_stuff.png";
 	f->name = "scorched_stuff";
-	f->gui_name = "Scorched Stuff";
+	f->description = "Scorched Stuff";
 
 	i = CONTENT_CRAFTITEM_FIREFLY;
 	f = &g_content_craftitem_features[i];
 	f->content = CONTENT_CRAFTITEM_FIREFLY;
 	f->texture = "firefly.png";
 	f->name = "firefly";
-	f->gui_name = "Firefly";
+	f->description = "Firefly";
 	f->drop_count = 1;
 
 	i = CONTENT_CRAFTITEM_APPLE;
@@ -225,7 +225,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_APPLE;
 	f->texture = "apple.png^[forcesingle";
 	f->name = "apple";
-	f->gui_name = "Apple";
+	f->description = "Apple";
 	f->edible = 4;
 
 	i = CONTENT_CRAFTITEM_APPLE_IRON;
@@ -233,7 +233,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_APPLE_IRON;
 	f->texture = "apple_iron.png";
 	f->name = "apple_iron";
-	f->gui_name = "apple_iron";
+	f->description = "apple_iron";
 	f->edible = 8;
 	{
 		u16 recipe[9] = {
@@ -249,7 +249,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_DYE_BLUE;
 	f->texture = "dye_blue.png";
 	f->name = "dye_blue";
-	f->gui_name = "Blue Dye";
+	f->description = "Blue Dye";
 	crafting::set1To2Recipe(CONTENT_FLOWER_TULIP,CONTENT_CRAFTITEM_DYE_BLUE);
 
 	i = CONTENT_CRAFTITEM_DYE_GREEN;
@@ -257,7 +257,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_DYE_GREEN;
 	f->texture = "dye_green.png";
 	f->name = "dye_green";
-	f->gui_name = "Green Dye";
+	f->description = "Green Dye";
 	crafting::set2Any2Recipe(CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_CRAFTITEM_DYE_GREEN);
 
 	i = CONTENT_CRAFTITEM_DYE_ORANGE;
@@ -265,7 +265,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_DYE_ORANGE;
 	f->texture = "dye_orange.png";
 	f->name = "dye_orange";
-	f->gui_name = "Orange Dye";
+	f->description = "Orange Dye";
 	crafting::set2Any2Recipe(CONTENT_CRAFTITEM_DYE_RED,CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_CRAFTITEM_DYE_ORANGE);
 
 	i = CONTENT_CRAFTITEM_DYE_PURPLE;
@@ -273,7 +273,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_DYE_PURPLE;
 	f->texture = "dye_purple.png";
 	f->name = "dye_purple";
-	f->gui_name = "Purple Dye";
+	f->description = "Purple Dye";
 	crafting::set2Any2Recipe(CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_CRAFTITEM_DYE_RED,CONTENT_CRAFTITEM_DYE_PURPLE);
 
 	i = CONTENT_CRAFTITEM_DYE_RED;
@@ -281,7 +281,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_DYE_RED;
 	f->texture = "dye_red.png";
 	f->name = "dye_red";
-	f->gui_name = "Red Dye";
+	f->description = "Red Dye";
 	crafting::set1To2Recipe(CONTENT_FLOWER_ROSE,CONTENT_CRAFTITEM_DYE_RED);
 
 	i = CONTENT_CRAFTITEM_DYE_YELLOW;
@@ -289,7 +289,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_DYE_YELLOW;
 	f->texture = "dye_yellow.png";
 	f->name = "dye_yellow";
-	f->gui_name = "Yellow Dye";
+	f->description = "Yellow Dye";
 	crafting::set1To2Recipe(CONTENT_FLOWER_DAFFODIL,CONTENT_CRAFTITEM_DYE_YELLOW);
 
 	i = CONTENT_CRAFTITEM_DYE_WHITE;
@@ -297,7 +297,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_DYE_WHITE;
 	f->texture = "dye_white.png";
 	f->name = "dye_white";
-	f->gui_name = "White Dye";
+	f->description = "White Dye";
 	crafting::set1To1Recipe(CONTENT_CRAFTITEM_APPLE_BLOSSOM,CONTENT_CRAFTITEM_DYE_WHITE);
 	crafting::set2Any3Recipe(CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_CRAFTITEM_DYE_RED,CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_CRAFTITEM_DYE_WHITE);
 
@@ -306,7 +306,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_DYE_BLACK;
 	f->texture = "dye_black.png";
 	f->name = "dye_black";
-	f->gui_name = "Black Dye";
+	f->description = "Black Dye";
 	crafting::set2Any2Recipe(CONTENT_CRAFTITEM_DYE_WHITE,CONTENT_CRAFTITEM_COAL,CONTENT_CRAFTITEM_DYE_BLACK);
 
 	i = CONTENT_CRAFTITEM_QUARTZ_DUST;
@@ -314,7 +314,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_QUARTZ_DUST;
 	f->texture = "quartz_dust.png";
 	f->name = "quartz_dust";
-	f->gui_name = "Quartz Dust";
+	f->description = "Quartz Dust";
 	crafting::set1To1Recipe(CONTENT_CRAFTITEM_QUARTZ,CONTENT_CRAFTITEM_QUARTZ_DUST);
 
 	i = CONTENT_CRAFTITEM_SALTPETER;
@@ -322,14 +322,14 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_SALTPETER;
 	f->texture = "saltpeter.png";
 	f->name = "saltpeter";
-	f->gui_name = "Saltpeter";
+	f->description = "Saltpeter";
 
 	i = CONTENT_CRAFTITEM_GUNPOWDER;
 	f = &g_content_craftitem_features[i];
 	f->content = CONTENT_CRAFTITEM_GUNPOWDER;
 	f->texture = "gunpowder.png";
 	f->name = "gunpowder";
-	f->gui_name = "Gun Powder";
+	f->description = "Gun Powder";
 	crafting::set1Any3Recipe(CONTENT_CRAFTITEM_CHARCOAL,CONTENT_CRAFTITEM_FLINT,CONTENT_CRAFTITEM_SALTPETER,CONTENT_CRAFTITEM_GUNPOWDER);
 
 	i = CONTENT_CRAFTITEM_SNOW_BALL;
@@ -337,14 +337,14 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_SNOW_BALL;
 	f->texture = "snow_ball.png";
 	f->name = "snow_ball";
-	f->gui_name = "Snow Ball";
+	f->description = "Snow Ball";
 
 	i = CONTENT_CRAFTITEM_STICK;
 	f = &g_content_craftitem_features[i];
 	f->content = CONTENT_CRAFTITEM_STICK;
 	f->texture = "stick.png";
 	f->name = "Stick";
-	f->gui_name = "Stick";
+	f->description = "Stick";
 	f->fuel_time = 30/16;
 	crafting::set1To2Recipe(CONTENT_CRAFTITEM_PINE_PLANK,CONTENT_CRAFTITEM_STICK);
 	crafting::set1To2Recipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_CRAFTITEM_STICK);
@@ -359,7 +359,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_PINE_PLANK;
 	f->texture = "pine_plank.png";
 	f->name = "pine_plank";
-	f->gui_name = "Pine Plank";
+	f->description = "Pine Plank";
 	f->fuel_time = 30/16;
 	crafting::set1To4Recipe(CONTENT_WOOD_PINE,CONTENT_CRAFTITEM_PINE_PLANK);
 
@@ -368,7 +368,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_WOOD_PLANK;
 	f->texture = "wood_plank.png";
 	f->name = "wood_plank";
-	f->gui_name = "Wood Plank";
+	f->description = "Wood Plank";
 	f->fuel_time = 30/16;
 	crafting::set1To4Recipe(CONTENT_WOOD,CONTENT_CRAFTITEM_WOOD_PLANK);
 
@@ -377,7 +377,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_JUNGLE_PLANK;
 	f->texture = "jungle_plank.png";
 	f->name = "jungle_plank";
-	f->gui_name = "Jungle Wood Plank";
+	f->description = "Jungle Wood Plank";
 	f->fuel_time = 30/16;
 	crafting::set1To4Recipe(CONTENT_JUNGLEWOOD,CONTENT_CRAFTITEM_JUNGLE_PLANK);
 
@@ -386,7 +386,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_TNT;
 	f->texture = "tnt_stick.png";
 	f->name = "tnt_stick";
-	f->gui_name = "TNT Stick";
+	f->description = "TNT Stick";
 	{
 		u16 recipe[9] = {
 			CONTENT_CRAFTITEM_PAPER,	CONTENT_CRAFTITEM_GUNPOWDER,	CONTENT_CRAFTITEM_PAPER,
@@ -401,14 +401,14 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_ASH;
 	f->texture = "lump_of_ash.png";
 	f->name = "lump_of_ash";
-	f->gui_name = "Ash";
+	f->description = "Ash";
 
 	i = CONTENT_CRAFTITEM_APPLE_BLOSSOM;
 	f = &g_content_craftitem_features[i];
 	f->content = CONTENT_CRAFTITEM_APPLE_BLOSSOM;
 	f->texture = "apple_blossom.png";
 	f->name = "apple_blossom";
-	f->gui_name = "Apple Blossoms";
+	f->description = "Apple Blossoms";
 	f->edible = 1;
 	f->fuel_time = 30/16;
 

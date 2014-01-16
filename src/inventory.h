@@ -377,7 +377,7 @@ public:
 	}
 #endif
 	std::string getGuiName() {
-		return content_toolitem_features(m_content).gui_name;
+		return content_toolitem_features(m_content).description;
 	}
 	std::string getText()
 	{

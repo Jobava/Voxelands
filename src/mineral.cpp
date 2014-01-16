@@ -19,38 +19,54 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "mineral.h"
 
+struct MineralFeatures g_mineral_features[MINERAL_MAX+1];
 
-const char *mineral_filenames[MINERAL_COUNT] =
+MineralFeatures & mineral_features(u8 i)
 {
-	NULL,
-	"mineral_coal.png",
-	"mineral_iron.png",
-	"mineral_tin.png",
-	"mineral_copper.png",
-	"mineral_silver.png",
-	"mineral_gold.png",
-	"mineral_quartz.png"
-};
-
-std::string mineral_textures[MINERAL_COUNT];
+	return g_mineral_features[i];
+}
 
 void init_mineral()
 {
-	for(u32 i=0; i<MINERAL_COUNT; i++)
-	{
-		if(mineral_filenames[i] == NULL)
-			continue;
-		mineral_textures[i] = mineral_filenames[i];
-	}
+	u8 i;
+	MineralFeatures *f = NULL;
+
+	i = MINERAL_COAL;
+	f = &mineral_features(i);
+	f->texture = "mineral_coal.png";
+	f->dug_item = CONTENT_CRAFTITEM_COAL;
+	f->dug_count = 2;
+
+	i = MINERAL_IRON;
+	f = &mineral_features(i);
+	f->texture = "mineral_iron.png";
+	f->dug_item = CONTENT_CRAFTITEM_IRON;
+	f->dug_count = 2;
+
+	i = MINERAL_TIN;
+	f = &mineral_features(i);
+	f->texture = "mineral_tin.png";
+	f->dug_item = CONTENT_CRAFTITEM_TIN;
+	f->dug_count = 2;
+
+	i = MINERAL_COPPER;
+	f = &mineral_features(i);
+	f->texture = "mineral_copper.png";
+	f->dug_item = CONTENT_CRAFTITEM_COPPER;
+	f->dug_count = 2;
+
+	i = MINERAL_SILVER;
+	f = &mineral_features(i);
+	f->texture = "mineral_silver.png";
+	f->dug_item = CONTENT_CRAFTITEM_SILVER;
+
+	i = MINERAL_GOLD;
+	f = &mineral_features(i);
+	f->texture = "mineral_gold.png";
+	f->dug_item = CONTENT_CRAFTITEM_GOLD;
+
+	i = MINERAL_QUARTZ;
+	f = &mineral_features(i);
+	f->texture = "mineral_quartz.png";
+	f->dug_item = CONTENT_CRAFTITEM_QUARTZ;
 }
-
-std::string mineral_block_texture(u8 mineral)
-{
-	if(mineral >= MINERAL_COUNT)
-		return "";
-
-	return mineral_textures[mineral];
-}
-
-
-

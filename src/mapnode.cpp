@@ -344,7 +344,7 @@ TileSpec MapNode::getTile(v3s16 dir)
 	if(content_features(*this).param_type == CPT_MINERAL && g_texturesource)
 	{
 		u8 mineral = getMineral();
-		std::string mineral_texture_name = mineral_block_texture(mineral);
+		std::string mineral_texture_name = mineral_features(mineral).texture;
 		if(mineral_texture_name != "")
 		{
 			u32 orig_id = spec.texture.id;
