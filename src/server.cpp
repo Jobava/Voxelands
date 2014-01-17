@@ -3079,7 +3079,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 					InventoryItem *item = NULL;
 
-					if(mineral != MINERAL_NONE)
+					if (mineral != MINERAL_NONE)
 						item = getDiggedMineralItem(mineral);
 
 					// If not mineral
@@ -3313,8 +3313,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						&& material != CONTENT_WATER
 						&& material != CONTENT_LAVA
 					) {
-						if(item != NULL)
-						{
+						if (item != NULL) {
 							// Add a item to inventory
 							player->inventory.addItem("main", item);
 
@@ -3325,24 +3324,20 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 						item = NULL;
 
-						if(mineral != MINERAL_NONE)
-						  item = getDiggedMineralItem(mineral);
+						if (mineral != MINERAL_NONE)
+							item = getDiggedMineralItem(mineral);
 
 						// If not mineral
-						if(item == NULL)
-						{
+						if (item == NULL) {
 							std::string &extra_dug_s = content_features(material).extra_dug_item;
 							s32 extra_rarity = content_features(material).extra_dug_item_rarity;
-							if(extra_dug_s != "" && extra_rarity != 0
-							   && myrand() % extra_rarity == 0)
-							{
+							if (extra_dug_s != "" && extra_rarity != 0 && myrand() % extra_rarity == 0) {
 								std::istringstream is(extra_dug_s, std::ios::binary);
 								item = InventoryItem::deSerialize(is);
 							}
 						}
 
-						if(item != NULL)
-						{
+						if (item != NULL) {
 							// Add a item to inventory
 							player->inventory.addItem("main", item);
 
