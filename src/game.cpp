@@ -1721,6 +1721,7 @@ void the_game(
 
 					// Get tool name. Default is "" = bare hands
 					std::string toolname = "";
+					content_t toolid = CONTENT_IGNORE;
 					InventoryList *mlist = local_inventory.getList("main");
 					if(mlist != NULL)
 					{
@@ -1729,69 +1730,66 @@ void the_game(
 						{
 							ToolItem *titem = (ToolItem*)item;
 							toolname = titem->getToolName();
+							toolid = titem->getContent();
 						}
 					}
 
 					// Get digging properties for material and tool
 					content_t material = n.getContent();
-					DiggingProperties prop =
-							getDiggingProperties(material, toolname);
+					DiggingProperties prop = getDiggingProperties(material, toolname);
 
 					float dig_time_complete = 0.0;
 
-					if(prop.diggable == false)
-					{
+					if (
+						prop.diggable == false
+						|| content_toolitem_features(toolid).type == TT_SPECIAL
+					) {
 						dig_time_complete = 10000000.0;
-					}
-					else
-					{
+						client.clearTempMod(nodepos);
+					}else{
 						dig_time_complete = prop.time;
 						if (g_settings->getBool("enable_particles"))
 							addPunchingParticles(smgr, player, nodepos, content_features(n).tiles);
-					}
 
-					if(dig_time_complete >= 0.001)
-					{
-						dig_index = (u16)((float)CRACK_ANIMATION_LENGTH
-								* dig_time/dig_time_complete);
-					}
-					// This is for torches
-					else
-					{
-						dig_index = CRACK_ANIMATION_LENGTH;
-					}
-
-					if(dig_index < CRACK_ANIMATION_LENGTH)
-					{
-						client.setTempMod(nodepos, NodeMod(NODEMOD_CRACK, dig_index));
-					}
-					else
-					{
-						infostream<<"Digging completed"<<std::endl;
-						client.groundAction(3, nodepos, neighbourpos, g_selected_item);
-						client.clearTempMod(nodepos);
-						client.removeNode(nodepos);
-
-						if (g_settings->getBool("enable_particles"))
-							addDiggingParticles(smgr, player, nodepos, content_features(n).tiles);
-
-						dig_time = 0;
-
-						nodig_delay_counter = dig_time_complete
-								/ (float)CRACK_ANIMATION_LENGTH;
-
-						// We don't want a corresponding delay to
-						// very time consuming nodes
-						if(nodig_delay_counter > 0.5)
+						if(dig_time_complete >= 0.001)
 						{
-							nodig_delay_counter = 0.5;
+							dig_index = (u16)((float)CRACK_ANIMATION_LENGTH
+									* dig_time/dig_time_complete);
 						}
-						// We want a slight delay to very little
-						// time consuming nodes
-						float mindelay = 0.15;
-						if(nodig_delay_counter < mindelay)
+						// This is for torches
+						else
 						{
-							nodig_delay_counter = mindelay;
+							dig_index = CRACK_ANIMATION_LENGTH;
+						}
+
+						if(dig_index < CRACK_ANIMATION_LENGTH)
+						{
+							client.setTempMod(nodepos, NodeMod(NODEMOD_CRACK, dig_index));
+						}
+						else
+						{
+							infostream<<"Digging completed"<<std::endl;
+							client.groundAction(3, nodepos, neighbourpos, g_selected_item);
+							client.clearTempMod(nodepos);
+							client.removeNode(nodepos);
+
+							if (g_settings->getBool("enable_particles"))
+								addDiggingParticles(smgr, player, nodepos, content_features(n).tiles);
+
+							dig_time = 0;
+
+							nodig_delay_counter = dig_time_complete
+									/ (float)CRACK_ANIMATION_LENGTH;
+
+							// We don't want a corresponding delay to
+							// very time consuming nodes
+							if(nodig_delay_counter > 0.5)
+								nodig_delay_counter = 0.5;
+							// We want a slight delay to very little
+							// time consuming nodes
+							float mindelay = 0.15;
+							if(nodig_delay_counter < mindelay)
+								nodig_delay_counter = mindelay;
 						}
 					}
 
