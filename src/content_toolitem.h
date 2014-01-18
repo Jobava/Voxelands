@@ -35,6 +35,10 @@ struct ToolItemFeatures {
 	bool liquids_pointable;
 	// the type of this tool
 	ToolType type;
+	// the hardness of this tool
+	f32 hardness;
+	// the dig time of this tool
+	f32 dig_time;
 
 	ToolItemFeatures():
 		content(CONTENT_IGNORE),
@@ -46,7 +50,9 @@ struct ToolItemFeatures {
 		edible(0),
 		drop_count(-1),
 		liquids_pointable(false),
-		type(TT_NONE)
+		type(TT_NONE),
+		hardness(0.),
+		dig_time(3.)
 	{}
 };
 

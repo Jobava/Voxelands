@@ -26,6 +26,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "common_irrlicht.h"
 #include <string>
+#include "mapnode.h"
 
 struct DiggingProperties
 {
@@ -96,8 +97,8 @@ private:
 	core::map<std::string, DiggingProperties> m_digging_properties;
 };
 
-// For getting the default properties, set tool=""
-DiggingProperties getDiggingProperties(u16 material, const std::string &tool);
+// For getting the default properties, set tool=CONTENT_IGNORE
+DiggingProperties getDiggingProperties(content_t material, content_t toolid);
 
 #endif
 

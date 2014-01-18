@@ -25,7 +25,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "light.h"
 #include "exceptions.h"
 #include "serialization.h"
-#include "materials.h"
 #ifndef SERVER
 #include "tile.h"
 #endif
@@ -42,6 +41,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 */
 typedef u16 content_t;
 #define MAX_CONTENT 0xfff
+#include "materials.h"
 
 /*
 	Initializes all kind of stuff in here.
@@ -119,6 +119,18 @@ enum LiquidType
 	LIQUID_NONE,
 	LIQUID_FLOWING,
 	LIQUID_SOURCE
+};
+
+/*
+	Material Type
+*/
+enum ContentMaterialType {
+	CMT_AIR,
+	CMT_WOOD,
+	CMT_STONE,
+	CMT_LIQUID,
+	CMT_PLANT,
+	CMT_DIRT
 };
 
 struct MapNode;
@@ -231,8 +243,10 @@ struct ContentFeatures
 	// Amount of light the node emits
 	u8 light_source;
 
-	// Digging properties for different tools
-	DiggingPropertiesList digging_properties;
+	// the material type (stone, wood, etc)
+	ContentMaterialType type;
+	// the hardness of the node
+	f32 hardness;
 
 	u32 damage_per_second;
 
@@ -292,7 +306,8 @@ struct ContentFeatures
 		liquid_alternative_source = CONTENT_IGNORE;
 		liquid_viscosity = 0;
 		light_source = 0;
-		digging_properties.clear();
+		type = CMT_AIR;
+		hardness = 1.0;
 		damage_per_second = 0;
 	}
 

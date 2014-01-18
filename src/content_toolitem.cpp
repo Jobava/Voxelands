@@ -59,6 +59,8 @@ void content_toolitem_init()
 	f->name = "WPick";
 	f->description = "Wooden Pick";
 	f->type = TT_PICK;
+	f->hardness = 30.;
+	f->dig_time = 1.5;
 	crafting::setPickRecipe(CONTENT_WOOD,CONTENT_TOOLITEM_WPICK);
 	crafting::setPickRecipe(CONTENT_JUNGLEWOOD,CONTENT_TOOLITEM_WPICK);
 
@@ -69,6 +71,8 @@ void content_toolitem_init()
 	f->name = "STPick";
 	f->description = "Stone Pick";
 	f->type = TT_PICK;
+	f->hardness = 100.;
+	f->dig_time = 0.75;
 	crafting::setPickRecipe(CONTENT_ROUGHSTONE,CONTENT_TOOLITEM_STPICK);
 
 	i = CONTENT_TOOLITEM_STEELPICK;
@@ -78,6 +82,8 @@ void content_toolitem_init()
 	f->name = "SteelPick";
 	f->description = "Steel Pick";
 	f->type = TT_PICK;
+	f->hardness = 333.;
+	f->dig_time = 0.5;
 	crafting::setPickRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_STEELPICK);
 
 	i = CONTENT_TOOLITEM_MESEPICK;
@@ -87,6 +93,8 @@ void content_toolitem_init()
 	f->name = "MesePick";
 	f->description = "Mese Pick";
 	f->type = TT_PICK;
+	f->hardness = 1337.;
+	f->dig_time = 0.;
 	crafting::setPickRecipe(CONTENT_MESE,CONTENT_TOOLITEM_MESEPICK);
 
 	i = CONTENT_TOOLITEM_WSHOVEL;
@@ -96,6 +104,8 @@ void content_toolitem_init()
 	f->name = "WShovel";
 	f->description = "Wooden Shovel";
 	f->type = TT_SHOVEL;
+	f->hardness = 50.;
+	f->dig_time = 0.4;
 	crafting::setShovelRecipe(CONTENT_WOOD,CONTENT_TOOLITEM_WSHOVEL);
 	crafting::setShovelRecipe(CONTENT_JUNGLEWOOD,CONTENT_TOOLITEM_WSHOVEL);
 
@@ -106,6 +116,8 @@ void content_toolitem_init()
 	f->name = "STShovel";
 	f->description = "Stone Shovel";
 	f->type = TT_SHOVEL;
+	f->hardness = 150.;
+	f->dig_time = 0.2;
 	crafting::setShovelRecipe(CONTENT_ROUGHSTONE,CONTENT_TOOLITEM_STSHOVEL);
 
 	i = CONTENT_TOOLITEM_STEELSHOVEL;
@@ -115,6 +127,8 @@ void content_toolitem_init()
 	f->name = "SteelShovel";
 	f->description = "Steel Shovel";
 	f->type = TT_SHOVEL;
+	f->hardness = 400.;
+	f->dig_time = 0.15;
 	crafting::setShovelRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_STEELSHOVEL);
 
 	i = CONTENT_TOOLITEM_WAXE;
@@ -124,6 +138,8 @@ void content_toolitem_init()
 	f->name = "WAxe";
 	f->description = "Wooden Axe";
 	f->type = TT_AXE;
+	f->hardness = 30.;
+	f->dig_time = 1.5;
 	crafting::setAxeRecipe(CONTENT_WOOD,CONTENT_TOOLITEM_WAXE);
 	crafting::setAxeRecipe(CONTENT_JUNGLEWOOD,CONTENT_TOOLITEM_WAXE);
 
@@ -134,6 +150,8 @@ void content_toolitem_init()
 	f->name = "STAxe";
 	f->description = "Stone Axe";
 	f->type = TT_AXE;
+	f->hardness = 100.;
+	f->dig_time = 0.75;
 	crafting::setAxeRecipe(CONTENT_ROUGHSTONE,CONTENT_TOOLITEM_STAXE);
 
 	i = CONTENT_TOOLITEM_STEELAXE;
@@ -143,6 +161,8 @@ void content_toolitem_init()
 	f->name = "SteelAxe";
 	f->description = "Steel Axe";
 	f->type = TT_AXE;
+	f->hardness = 333.;
+	f->dig_time = 0.5;
 	crafting::setAxeRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_STEELAXE);
 
 	i = CONTENT_TOOLITEM_WSWORD;
@@ -152,6 +172,8 @@ void content_toolitem_init()
 	f->name = "WSword";
 	f->description = "Wooden Sword";
 	f->type = TT_SWORD;
+	f->hardness = 20.;
+	f->dig_time = 1.5;
 	crafting::setSwordRecipe(CONTENT_WOOD,CONTENT_TOOLITEM_WSWORD);
 	crafting::setSwordRecipe(CONTENT_JUNGLEWOOD,CONTENT_TOOLITEM_WSWORD);
 
@@ -162,6 +184,8 @@ void content_toolitem_init()
 	f->name = "STSword";
 	f->description = "Stone Sword";
 	f->type = TT_SWORD;
+	f->hardness = 50.;
+	f->dig_time = 1.0;
 	crafting::setSwordRecipe(CONTENT_ROUGHSTONE,CONTENT_TOOLITEM_STSWORD);
 
 	i = CONTENT_TOOLITEM_STEELSWORD;
@@ -171,6 +195,8 @@ void content_toolitem_init()
 	f->name = "SteelSword";
 	f->description = "Steel Sword";
 	f->type = TT_SWORD;
+	f->hardness = 80.;
+	f->dig_time = 0.5;
 	crafting::setSwordRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_STEELSWORD);
 
 	i = CONTENT_TOOLITEM_STEELSHEARS;
@@ -180,6 +206,8 @@ void content_toolitem_init()
 	f->name = "Shears";
 	f->description = "Steel Shears";
 	f->type = TT_SHEAR;
+	f->hardness = 333.;
+	f->dig_time = 0.5;
 	crafting::setShearsRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_STEELSHEARS);
 
 	i = CONTENT_TOOLITEM_WBUCKET;
@@ -190,6 +218,8 @@ void content_toolitem_init()
 	f->description = "Wooden Bucket";
 	f->liquids_pointable = true;
 	f->type = TT_BUCKET;
+	f->hardness = 30.;
+	f->dig_time = 0.0;
 	crafting::setURecipe(CONTENT_CRAFTITEM_STICK,CONTENT_TOOLITEM_WBUCKET);
 
 	i = CONTENT_TOOLITEM_TINBUCKET;
@@ -200,6 +230,8 @@ void content_toolitem_init()
 	f->description = "Tin Bucket";
 	f->liquids_pointable = true;
 	f->type = TT_BUCKET;
+	f->hardness = 50.;
+	f->dig_time = 0.0;
 	crafting::setURecipe(CONTENT_CRAFTITEM_TIN_INGOT,CONTENT_TOOLITEM_TINBUCKET);
 
 	i = CONTENT_TOOLITEM_WBUCKET_WATER;
@@ -226,6 +258,8 @@ void content_toolitem_init()
 	f->description = "Steel Bucket";
 	f->liquids_pointable = true;
 	f->type = TT_BUCKET;
+	f->hardness = 80.;
+	f->dig_time = 0.0;
 	crafting::setURecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_STEELBUCKET);
 
 	i = CONTENT_TOOLITEM_STEELBUCKET_WATER;

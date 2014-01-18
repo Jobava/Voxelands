@@ -3043,14 +3043,10 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						if(item && (std::string)item->getName() == "ToolItem")
 						{
 							ToolItem *titem = (ToolItem*)item;
-							std::string toolname = titem->getToolName();
-
 							// Get digging properties for material and tool
-							DiggingProperties prop =
-									getDiggingProperties(material, toolname);
+							DiggingProperties prop = getDiggingProperties(material, titem->getContent());
 
-							if(prop.diggable == false)
-							{
+							if (prop.diggable == false) {
 								infostream<<"Server: WARNING: Player digged"
 										<<" with impossible material + tool"
 										<<" combination"<<std::endl;
@@ -3059,9 +3055,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							bool weared_out = titem->addWear(prop.wear);
 
 							if(weared_out)
-							{
 								mlist->deleteItem(item_i);
-							}
 						}
 					}
 

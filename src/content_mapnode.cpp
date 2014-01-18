@@ -978,7 +978,8 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->often_contains_mineral = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_ROUGHSTONE)+" 1";
-	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
 	if(invisible_stone)
 		f->solidness = 0; // For debugging, hides regular stone
 
@@ -993,7 +994,8 @@ void content_mapnode_init()
 	f->param_type = CPT_LIGHT;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
 
 	i = CONTENT_COAL;
 	f = &content_features(i);
@@ -1005,7 +1007,8 @@ void content_mapnode_init()
 	f->flammable = 2; // can be set on fire
 	f->fuel_time = 100;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
 	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_COAL,CONTENT_COAL);
 	crafting::setUncraftHardBlockRecipe(CONTENT_COAL,CONTENT_CRAFTITEM_COAL);
 
@@ -1019,7 +1022,8 @@ void content_mapnode_init()
 	f->flammable = 2; // can be set on fire
 	f->fuel_time = 100;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
 	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_CHARCOAL,CONTENT_CHARCOAL);
 	crafting::setUncraftHardBlockRecipe(CONTENT_CHARCOAL,CONTENT_CRAFTITEM_CHARCOAL);
 
@@ -1031,7 +1035,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
 	crafting::setBrickRecipe(CONTENT_STONE,CONTENT_STONEBRICK);
 
 	i = CONTENT_STONEBLOCK;
@@ -1042,7 +1047,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
 	crafting::setBlockRecipe(CONTENT_STONE,CONTENT_STONEBLOCK);
 
 	i = CONTENT_ROUGHSTONEBRICK;
@@ -1053,7 +1059,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
 	crafting::setBrickRecipe(CONTENT_ROUGHSTONE,CONTENT_ROUGHSTONEBRICK);
 
 	i = CONTENT_ROUGHSTONEBLOCK;
@@ -1064,7 +1071,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
 	crafting::setBlockRecipe(CONTENT_ROUGHSTONE,CONTENT_ROUGHSTONEBLOCK);
 
 	i = CONTENT_GRASS;
@@ -1078,7 +1086,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MUD)+" 1";
 	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WILDGRASS_SHORT)+" 1";
 	f->extra_dug_item_rarity = 10;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 
 	i = CONTENT_GRASS_FOOTSTEPS;
 	f = &content_features(i);
@@ -1089,7 +1098,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MUD)+" 1";
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 
 	i = CONTENT_MUDSNOW;
 	f = &content_features(i);
@@ -1102,7 +1112,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MUD)+" 1";
 	f->extra_dug_item = std::string("CraftItem snow_ball 1");
 	f->extra_dug_item_rarity = 5;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 
 	i = CONTENT_FARM_DIRT;
 	f = &content_features(i);
@@ -1111,7 +1122,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MUD)+" 1";
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 
 	i = CONTENT_MUD;
 	f = &content_features(i);
@@ -1121,7 +1133,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 
 	i = CONTENT_ASH;
 	f = &content_features(i);
@@ -1131,7 +1144,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem lump_of_ash 9");
-	setDirtLikeDiggingProperties(f->digging_properties, 0.5);
+	f->type = CMT_DIRT;
+	f->hardness = 0.5;
 	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_ASH,CONTENT_ASH);
 
 	i = CONTENT_SAND;
@@ -1143,7 +1157,8 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->cook_result = std::string("MaterialItem2 ")+itos(CONTENT_GLASS)+" 1";
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 
 	i = CONTENT_GRAVEL;
 	f = &content_features(i);
@@ -1155,7 +1170,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->extra_dug_item = std::string("CraftItem lump_of_flint 1");
 	f->extra_dug_item_rarity = 10;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.75);
+	f->type = CMT_DIRT;
+	f->hardness = 1.75;
 
 	i = CONTENT_SANDSTONE;
 	f = &content_features(i);
@@ -1165,7 +1181,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAND)+" 4";
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::setSoftBlockRecipe(CONTENT_SAND,CONTENT_SANDSTONE);
 
 	i = CONTENT_SANDSTONE_BRICK;
@@ -1176,7 +1193,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAND)+" 4";
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::setBrickRecipe(CONTENT_SANDSTONE,CONTENT_SANDSTONE_BRICK);
 
 	i = CONTENT_SANDSTONE_BLOCK;
@@ -1187,7 +1205,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAND)+" 4";
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::setBlockRecipe(CONTENT_SANDSTONE,CONTENT_SANDSTONE_BLOCK);
 
 	i = CONTENT_CLAY;
@@ -1199,7 +1218,8 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem lump_of_clay 4");
 	f->cook_result = std::string("MaterialItem2 ")+itos(CONTENT_TERRACOTTA)+" 1";
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_CLAY,CONTENT_CLAY);
 
 	i = CONTENT_CLAY_BLUE;
@@ -1212,7 +1232,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("CraftItem lump_of_clay 4");
 	f->extra_dug_item = std::string("CraftItem dye_blue 1");
 	f->extra_dug_item_rarity = 4;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_CLAY,CONTENT_CLAY_BLUE);
 
 	i = CONTENT_CLAY_GREEN;
@@ -1225,7 +1246,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("CraftItem lump_of_clay 4");
 	f->extra_dug_item = std::string("CraftItem dye_green 1");
 	f->extra_dug_item_rarity = 4;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_GREEN,CONTENT_CLAY,CONTENT_CLAY_GREEN);
 
 	i = CONTENT_CLAY_ORANGE;
@@ -1238,7 +1260,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("CraftItem lump_of_clay 4");
 	f->extra_dug_item = std::string("CraftItem dye_orange 1");
 	f->extra_dug_item_rarity = 4;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_ORANGE,CONTENT_CLAY,CONTENT_CLAY_ORANGE);
 
 	i = CONTENT_CLAY_PURPLE;
@@ -1251,7 +1274,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("CraftItem lump_of_clay 4");
 	f->extra_dug_item = std::string("CraftItem dye_purple 1");
 	f->extra_dug_item_rarity = 4;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_PURPLE,CONTENT_CLAY,CONTENT_CLAY_PURPLE);
 
 	i = CONTENT_CLAY_RED;
@@ -1264,7 +1288,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("CraftItem lump_of_clay 4");
 	f->extra_dug_item = std::string("CraftItem dye_red 1");
 	f->extra_dug_item_rarity = 4;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_RED,CONTENT_CLAY,CONTENT_CLAY_RED);
 
 	i = CONTENT_CLAY_YELLOW;
@@ -1277,7 +1302,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("CraftItem lump_of_clay 4");
 	f->extra_dug_item = std::string("CraftItem dye_yellow 1");
 	f->extra_dug_item_rarity = 4;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_CLAY,CONTENT_CLAY_YELLOW);
 
 	i = CONTENT_CLAY_BLACK;
@@ -1290,7 +1316,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("CraftItem lump_of_clay 4");
 	f->extra_dug_item = std::string("CraftItem dye_black 1");
 	f->extra_dug_item_rarity = 4;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_CLAY,CONTENT_CLAY_BLACK);
 
 	i = CONTENT_BRICK;
@@ -1301,7 +1328,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem clay_brick 4");
-	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
 	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_CLAY_BRICK,CONTENT_BRICK);
 
 	i = CONTENT_TERRACOTTA;
@@ -1312,7 +1340,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
 
 	i = CONTENT_TERRACOTTA_BRICK;
 	f = &content_features(i);
@@ -1322,7 +1351,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
 	crafting::setBrickRecipe(CONTENT_TERRACOTTA,CONTENT_TERRACOTTA_BRICK);
 
 	i = CONTENT_TERRACOTTA_BLOCK;
@@ -1333,7 +1363,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
 	crafting::setBlockRecipe(CONTENT_TERRACOTTA,CONTENT_TERRACOTTA_BLOCK);
 
 	i = CONTENT_TERRACOTTA_TILE;
@@ -1341,7 +1372,8 @@ void content_mapnode_init()
 	f->description = std::string("Terracotta Tile");
 	f->setAllTextures("terracotta_tile.png");
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
@@ -1365,7 +1397,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->cook_result = std::string("CraftItem lump_of_charcoal 1");
 	f->fuel_time = 30;
-	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_WOOD;
+	f->hardness = 1.0;
 
 	i = CONTENT_APPLE_TREE;
 	f = &content_features(i);
@@ -1380,7 +1413,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->cook_result = std::string("CraftItem lump_of_charcoal 1");
 	f->fuel_time = 30;
-	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_WOOD;
+	f->hardness = 1.0;
 
 	i = CONTENT_JUNGLETREE;
 	f = &content_features(i);
@@ -1394,7 +1428,8 @@ void content_mapnode_init()
 	f->flammable = 2; // can be set on fire
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->fuel_time = 30;
-	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_WOOD;
+	f->hardness = 1.0;
 
 	i = CONTENT_CONIFER_TREE;
 	f = &content_features(i);
@@ -1425,7 +1460,8 @@ void content_mapnode_init()
 		0.4375*BS
 	));
 	f->setInventoryTextureNodeBox(i,"conifer_tree_top.png", "conifer_tree.png", "conifer_tree.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.8);
+	f->type = CMT_WOOD;
+	f->hardness = 0.8;
 
 	i = CONTENT_JUNGLEGRASS;
 	f = &content_features(i);
@@ -1443,7 +1479,8 @@ void content_mapnode_init()
 	f->walkable = false;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
-	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
+	f->type = CMT_WOOD;
+	f->hardness = 0.10;
 
 	i = CONTENT_LEAVES;
 	f = &content_features(i);
@@ -1469,7 +1506,8 @@ void content_mapnode_init()
 	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAPLING)+" 1";
 	f->extra_dug_item_rarity = 20;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setLeafLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_PLANT;
+	f->hardness = 0.15;
 
 	i = CONTENT_APPLE_LEAVES;
 	f = &content_features(i);
@@ -1495,7 +1533,8 @@ void content_mapnode_init()
 	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_APPLE_SAPLING)+" 1";
 	f->extra_dug_item_rarity = 20;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setLeafLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_PLANT;
+	f->hardness = 0.15;
 
 	i = CONTENT_JUNGLELEAVES;
 	f = &content_features(i);
@@ -1521,7 +1560,8 @@ void content_mapnode_init()
 	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_JUNGLESAPLING)+" 1";
 	f->extra_dug_item_rarity = 20;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setLeafLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_PLANT;
+	f->hardness = 0.15;
 
 	i = CONTENT_CONIFER_LEAVES;
 	f = &content_features(i);
@@ -1547,7 +1587,8 @@ void content_mapnode_init()
 	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CONIFER_SAPLING)+" 1";
 	f->extra_dug_item_rarity = 20;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setLeafLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_PLANT;
+	f->hardness = 0.15;
 
 	i = CONTENT_TRIMMED_LEAVES;
 	f = &content_features(i);
@@ -1570,7 +1611,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/16;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setLeafLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_PLANT;
+	f->hardness = 0.15;
 
 	i = CONTENT_TRIMMED_APPLE_LEAVES;
 	f = &content_features(i);
@@ -1593,7 +1635,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/16;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setLeafLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_PLANT;
+	f->hardness = 0.15;
 
 	i = CONTENT_TRIMMED_JUNGLE_LEAVES;
 	f = &content_features(i);
@@ -1616,7 +1659,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/16;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setLeafLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_PLANT;
+	f->hardness = 0.15;
 
 	i = CONTENT_TRIMMED_CONIFER_LEAVES;
 	f = &content_features(i);
@@ -1639,7 +1683,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/16;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setLeafLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_PLANT;
+	f->hardness = 0.15;
 
 	i = CONTENT_APPLE_BLOSSOM;
 	f = &content_features(i);
@@ -1664,7 +1709,8 @@ void content_mapnode_init()
 	f->extra_dug_item = std::string("CraftItem apple_blossom 1");
 	f->extra_dug_item_rarity = 1;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_APPLE_LEAVES)+" 1";
-	setLeafLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_PLANT;
+	f->hardness = 0.15;
 
 	i = CONTENT_TRIMMED_APPLE_BLOSSOM;
 	f = &content_features(i);
@@ -1686,7 +1732,8 @@ void content_mapnode_init()
 	}
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setLeafLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_PLANT;
+	f->hardness = 0.15;
 
 	i = CONTENT_CACTUS;
 	f = &content_features(i);
@@ -1745,7 +1792,8 @@ void content_mapnode_init()
 		0.5*BS
 	));
 	f->setInventoryTextureCube("cactus_top.png", "cactus_side.png", "cactus_side.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 
 	i = CONTENT_PAPYRUS;
 	f = &content_features(i);
@@ -1762,7 +1810,8 @@ void content_mapnode_init()
 	f->walkable = false;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
-	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+	f->type = CMT_WOOD;
+	f->hardness = 0.25;
 
 	i = CONTENT_BOOKSHELF;
 	f = &content_features(i);
@@ -1775,7 +1824,8 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/4;
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 	{
 		u16 r[9] = {
 			CONTENT_WOOD,	CONTENT_WOOD,	CONTENT_WOOD,
@@ -1809,7 +1859,8 @@ void content_mapnode_init()
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	f->setInventoryTextureCube("glass.png", "glass.png", "glass.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 
 	i = CONTENT_GLASS_BLUE;
 	f = &content_features(i);
@@ -1827,7 +1878,8 @@ void content_mapnode_init()
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	f->setInventoryTextureCube("glass_blue.png", "glass_blue.png", "glass_blue.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_GLASS,CONTENT_GLASS_BLUE);
 
 	i = CONTENT_GLASS_GREEN;
@@ -1846,7 +1898,8 @@ void content_mapnode_init()
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	f->setInventoryTextureCube("glass_green.png", "glass_green.png", "glass_green.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_GREEN,CONTENT_GLASS,CONTENT_GLASS_GREEN);
 
 	i = CONTENT_GLASS_ORANGE;
@@ -1865,7 +1918,8 @@ void content_mapnode_init()
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	f->setInventoryTextureCube("glass_orange.png", "glass_orange.png", "glass_orange.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_ORANGE,CONTENT_GLASS,CONTENT_GLASS_ORANGE);
 
 	i = CONTENT_GLASS_PURPLE;
@@ -1884,7 +1938,8 @@ void content_mapnode_init()
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	f->setInventoryTextureCube("glass_purple.png", "glass_purple.png", "glass_purple.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_PURPLE,CONTENT_GLASS,CONTENT_GLASS_PURPLE);
 
 	i = CONTENT_GLASS_RED;
@@ -1903,7 +1958,8 @@ void content_mapnode_init()
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	f->setInventoryTextureCube("glass_red.png", "glass_red.png", "glass_red.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_RED,CONTENT_GLASS,CONTENT_GLASS_RED);
 
 	i = CONTENT_GLASS_YELLOW;
@@ -1922,7 +1978,8 @@ void content_mapnode_init()
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	f->setInventoryTextureCube("glass_yellow.png", "glass_yellow.png", "glass_yellow.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_GLASS,CONTENT_GLASS_YELLOW);
 
 	i = CONTENT_GLASS_BLACK;
@@ -1941,7 +1998,8 @@ void content_mapnode_init()
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	f->setInventoryTextureCube("glass_black.png", "glass_black.png", "glass_black.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_GLASS,CONTENT_GLASS_BLACK);
 
 	i = CONTENT_GLASS_PANE;
@@ -1970,7 +2028,8 @@ void content_mapnode_init()
 		0.05*BS
 	));
 	f->setInventoryTextureNodeBox(i,"glass_pane_side.png", "glass.png", "glass_pane_side.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	crafting::setCol3Recipe(CONTENT_GLASS,CONTENT_GLASS_PANE);
 
 	i = CONTENT_GLASS_PANE_BLUE;
@@ -1999,7 +2058,8 @@ void content_mapnode_init()
 		0.05*BS
 	));
 	f->setInventoryTextureNodeBox(i,"glass_pane_blue_side.png", "glass_blue.png", "glass_pane_blue_side.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	crafting::setCol3Recipe(CONTENT_GLASS_BLUE,CONTENT_GLASS_PANE_BLUE);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_GLASS_PANE,CONTENT_GLASS_PANE_BLUE);
 
@@ -2029,7 +2089,8 @@ void content_mapnode_init()
 		0.05*BS
 	));
 	f->setInventoryTextureNodeBox(i,"glass_pane_green_side.png", "glass_green.png", "glass_pane_green_side.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	crafting::setCol3Recipe(CONTENT_GLASS_GREEN,CONTENT_GLASS_PANE_GREEN);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_GREEN,CONTENT_GLASS_PANE,CONTENT_GLASS_PANE_GREEN);
 
@@ -2059,7 +2120,8 @@ void content_mapnode_init()
 		0.05*BS
 	));
 	f->setInventoryTextureNodeBox(i,"glass_pane_orange_side.png", "glass_orange.png", "glass_pane_orange_side.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	crafting::setCol3Recipe(CONTENT_GLASS_ORANGE,CONTENT_GLASS_PANE_ORANGE);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_ORANGE,CONTENT_GLASS_PANE,CONTENT_GLASS_PANE_ORANGE);
 
@@ -2089,7 +2151,8 @@ void content_mapnode_init()
 		0.05*BS
 	));
 	f->setInventoryTextureNodeBox(i,"glass_pane_purple_side.png", "glass_purple.png", "glass_pane_purple_side.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	crafting::setCol3Recipe(CONTENT_GLASS_PURPLE,CONTENT_GLASS_PANE_PURPLE);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_PURPLE,CONTENT_GLASS_PANE,CONTENT_GLASS_PANE_PURPLE);
 
@@ -2119,7 +2182,8 @@ void content_mapnode_init()
 		0.05*BS
 	));
 	f->setInventoryTextureNodeBox(i,"glass_pane_red_side.png", "glass_red.png", "glass_pane_red_side.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	crafting::setCol3Recipe(CONTENT_GLASS_RED,CONTENT_GLASS_PANE_RED);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_RED,CONTENT_GLASS_PANE,CONTENT_GLASS_PANE_RED);
 
@@ -2149,7 +2213,8 @@ void content_mapnode_init()
 		0.05*BS
 	));
 	f->setInventoryTextureNodeBox(i,"glass_pane_yellow_side.png", "glass_yellow.png", "glass_pane_yellow_side.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	crafting::setCol3Recipe(CONTENT_GLASS_YELLOW,CONTENT_GLASS_PANE_YELLOW);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_GLASS_PANE,CONTENT_GLASS_PANE_YELLOW);
 
@@ -2179,7 +2244,8 @@ void content_mapnode_init()
 		0.05*BS
 	));
 	f->setInventoryTextureNodeBox(i,"glass_pane_black_side.png", "glass_black.png", "glass_pane_black_side.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	crafting::setCol3Recipe(CONTENT_GLASS_BLACK,CONTENT_GLASS_PANE_BLACK);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_GLASS_PANE,CONTENT_GLASS_PANE_BLACK);
 
@@ -2199,7 +2265,8 @@ void content_mapnode_init()
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	f->setInventoryTextureCube("glasslight.png", "glasslight.png", "glasslight.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	f->light_source = LIGHT_MAX-1;
 	crafting::setSurroundRecipe(CONTENT_GLASS,CONTENT_TORCH,CONTENT_GLASSLIGHT);
 
@@ -2219,7 +2286,8 @@ void content_mapnode_init()
 	f->used_texturenames["fence.png"] = true;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 15;
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 	crafting::setWallRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_FENCE);
 	crafting::setWallRecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_FENCE);
 
@@ -2239,7 +2307,8 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->air_equivalent = true; // grass grows underneath
 	f->walkable = false;
-	setDirtLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_DIRT;
+	f->hardness = 0.75;
 	{
 		u16 r[9] = {
 			CONTENT_CRAFTITEM_STEEL_INGOT,	CONTENT_CRAFTITEM_WOOD_PLANK,	CONTENT_CRAFTITEM_STEEL_INGOT,
@@ -2260,7 +2329,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_ROOFLIKE;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
-	setDirtLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_DIRT;
+	f->hardness = 0.75;
 	crafting::set1over4Recipe(CONTENT_TERRACOTTA,CONTENT_TERRACOTTA,CONTENT_ROOFTILE_TERRACOTTA);
 
 	i = CONTENT_ROOFTILE_WOOD;
@@ -2271,7 +2341,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_ROOFLIKE;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
-	setDirtLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_DIRT;
+	f->hardness = 0.75;
 	crafting::set1over4Recipe(CONTENT_WOOD,CONTENT_WOOD,CONTENT_ROOFTILE_WOOD);
 	crafting::set1over4Recipe(CONTENT_JUNGLEWOOD,CONTENT_JUNGLEWOOD,CONTENT_ROOFTILE_WOOD);
 
@@ -2283,7 +2354,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_ROOFLIKE;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
-	setDirtLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_DIRT;
+	f->hardness = 0.75;
 	{
 		u16 r[9] = {
 			CONTENT_SAND,			CONTENT_CRAFTITEM_PAPER,	CONTENT_IGNORE,
@@ -2301,7 +2373,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_ROOFLIKE;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
-	setDirtLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_DIRT;
+	f->hardness = 0.75;
 	crafting::set1over4Recipe(CONTENT_ROUGHSTONE,CONTENT_ROUGHSTONE,CONTENT_ROOFTILE_STONE);
 
 	i = CONTENT_LADDER;
@@ -2322,7 +2395,8 @@ void content_mapnode_init()
 	f->climbable = true;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/16;
-	setWoodLikeDiggingProperties(f->digging_properties, 0.5);
+	f->type = CMT_WOOD;
+	f->hardness = 0.5;
 	{
 		u16 r[9] = {
 			CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_CRAFTITEM_STICK,	CONTENT_CRAFTITEM_PINE_PLANK,
@@ -2356,7 +2430,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new BorderStoneNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 2.0);
+	f->type = CMT_STONE;
+	f->hardness = 2.0;
 	crafting::setFilledRoundRecipe(CONTENT_STONE,CONTENT_MESE,CONTENT_BORDERSTONE);
 	{
 		u16 r[9] = {
@@ -2377,7 +2452,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/4;
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 	crafting::set1To4Recipe(CONTENT_TREE,CONTENT_WOOD);
 	crafting::set1To4Recipe(CONTENT_APPLE_TREE,CONTENT_WOOD);
 
@@ -2391,7 +2467,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/4;
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 	crafting::set1To4Recipe(CONTENT_JUNGLETREE,CONTENT_JUNGLEWOOD);
 
 	i = CONTENT_WOOD_PINE;
@@ -2404,7 +2481,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/16;
-	setWoodLikeDiggingProperties(f->digging_properties, 0.5);
+	f->type = CMT_WOOD;
+	f->hardness = 0.5;
 	crafting::set1To4Recipe(CONTENT_CONIFER_TREE,CONTENT_WOOD_PINE);
 
 	i = CONTENT_MESE;
@@ -2416,7 +2494,8 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->cook_result = std::string("CraftItem saltpeter 1");
-	setStoneLikeDiggingProperties(f->digging_properties, 0.5);
+	f->type = CMT_STONE;
+	f->hardness = 0.5;
 
 	i = CONTENT_MESE_DIGGING;
 	f = &content_features(i);
@@ -2428,7 +2507,8 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MESE)+" 1";
 	f->light_source = 10;
-	setStoneLikeDiggingProperties(f->digging_properties, 0.5);
+	f->type = CMT_STONE;
+	f->hardness = 0.5;
 
 	i = CONTENT_SPONGE;
 	f = &content_features(i);
@@ -2440,7 +2520,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 1;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 
 	i = CONTENT_SPONGE_FULL;
 	f = &content_features(i);
@@ -2450,7 +2531,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 
 	i = CONTENT_HAY;
 	f = &content_features(i);
@@ -2462,7 +2544,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1;
 	f->fuel_time = 20;
-	setLeafLikeDiggingProperties(f->digging_properties, 0.6);
+	f->type = CMT_PLANT;
+	f->hardness = 0.6;
 	crafting::setHardBlockRecipe(CONTENT_DEADGRASS,CONTENT_HAY);
 
 	i = CONTENT_SNOW_BLOCK;
@@ -2473,7 +2556,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem snow_ball 9");
-	setDirtLikeDiggingProperties(f->digging_properties, 0.3);
+	f->type = CMT_DIRT;
+	f->hardness = 0.3;
 	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_SNOW_BALL,CONTENT_SNOW_BLOCK);
 
 	i = CONTENT_SNOWMAN;
@@ -2491,7 +2575,8 @@ void content_mapnode_init()
 	f->extra_dug_item = std::string("CraftItem Stick 3");
 	f->extra_dug_item_rarity = 1;
 	f->rotate_tile_with_nodebox = true;
-	setDirtLikeDiggingProperties(f->digging_properties, 0.3);
+	f->type = CMT_DIRT;
+	f->hardness = 0.3;
 	f->setNodeBox(core::aabbox3d<f32>(
 		-0.3125*BS,
 		-0.5*BS,
@@ -2549,7 +2634,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("CraftItem snow_ball 1");
 	content_mapnode_nodebox_carpet(f);
 	f->setInventoryTextureNodeBox(i,"snow.png", "snow.png", "snow.png");
-	setDirtLikeDiggingProperties(f->digging_properties, 0.3);
+	f->type = CMT_DIRT;
+	f->hardness = 0.3;
 
 	i = CONTENT_CRAFT_GUIDE;
 	f = &content_features(i);
@@ -2559,7 +2645,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new CraftGuideNodeMetadata();
 	{
@@ -2581,7 +2668,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 15;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::setSoftBlockRecipe(CONTENT_JUNGLEGRASS,CONTENT_COTTON);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_WHITE,CONTENT_COTTON_BLUE,CONTENT_COTTON);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_WHITE,CONTENT_COTTON_GREEN,CONTENT_COTTON);
@@ -2601,7 +2689,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 15;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_COTTON,CONTENT_COTTON_BLUE);
 
 	i = CONTENT_COTTON_GREEN;
@@ -2614,7 +2703,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 15;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_GREEN,CONTENT_COTTON,CONTENT_COTTON_GREEN);
 
 	i = CONTENT_COTTON_ORANGE;
@@ -2627,7 +2717,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 15;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_ORANGE,CONTENT_COTTON,CONTENT_COTTON_ORANGE);
 
 	i = CONTENT_COTTON_PURPLE;
@@ -2640,7 +2731,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 15;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_PURPLE,CONTENT_COTTON,CONTENT_COTTON_PURPLE);
 
 	i = CONTENT_COTTON_RED;
@@ -2653,7 +2745,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 15;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_RED,CONTENT_COTTON,CONTENT_COTTON_RED);
 
 	i = CONTENT_COTTON_YELLOW;
@@ -2666,7 +2759,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 15;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_COTTON,CONTENT_COTTON_YELLOW);
 
 	i = CONTENT_COTTON_BLACK;
@@ -2679,7 +2773,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 15;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_COTTON,CONTENT_COTTON_BLACK);
 
 	i = CONTENT_CARPET;
@@ -2697,7 +2792,8 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i,"cotton.png", "cotton.png", "cotton.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 5;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::setTileRecipe(CONTENT_COTTON,CONTENT_CARPET);
 
 	i = CONTENT_CARPET_BLUE;
@@ -2715,7 +2811,8 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i,"cotton_blue.png", "cotton_blue.png", "cotton_blue.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 5;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::setTileRecipe(CONTENT_COTTON_BLUE,CONTENT_CARPET_BLUE);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_CARPET,CONTENT_CARPET_BLUE);
 
@@ -2734,7 +2831,8 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i,"cotton_green.png", "cotton_green.png", "cotton_green.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 5;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::setTileRecipe(CONTENT_COTTON_GREEN,CONTENT_CARPET_GREEN);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_GREEN,CONTENT_CARPET,CONTENT_CARPET_GREEN);
 
@@ -2753,7 +2851,8 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i,"cotton_orange.png", "cotton_orange.png", "cotton_orange.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 5;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::setTileRecipe(CONTENT_COTTON_ORANGE,CONTENT_CARPET_ORANGE);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_ORANGE,CONTENT_CARPET,CONTENT_CARPET_ORANGE);
 
@@ -2772,7 +2871,8 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i,"cotton_purple.png", "cotton_purple.png", "cotton_purple.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 5;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::setTileRecipe(CONTENT_COTTON_PURPLE,CONTENT_CARPET_PURPLE);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_PURPLE,CONTENT_CARPET,CONTENT_CARPET_PURPLE);
 
@@ -2791,7 +2891,8 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i,"cotton_red.png", "cotton_red.png", "cotton_red.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 5;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::setTileRecipe(CONTENT_COTTON_RED,CONTENT_CARPET_RED);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_RED,CONTENT_CARPET,CONTENT_CARPET_RED);
 
@@ -2810,7 +2911,8 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i,"cotton_yellow.png", "cotton_yellow.png", "cotton_yellow.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 5;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::setTileRecipe(CONTENT_COTTON_YELLOW,CONTENT_CARPET_YELLOW);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_CARPET,CONTENT_CARPET_YELLOW);
 
@@ -2829,7 +2931,8 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i,"cotton_black.png", "cotton_black.png", "cotton_black.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 5;
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::setTileRecipe(CONTENT_COTTON_BLACK,CONTENT_CARPET_BLACK);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_CARPET,CONTENT_CARPET_BLACK);
 
@@ -2918,7 +3021,8 @@ void content_mapnode_init()
 	f->setAllTextureTypes(MATERIAL_ALPHA_VERTEX);
 	f->post_effect_color = video::SColor(64, 100, 100, 200);
 #endif
-	setWaterLikeDiggingProperties(f->digging_properties, 0.5);
+	f->type = CMT_LIQUID;
+	f->hardness = 0.5;
 
 	i = CONTENT_LAVA;
 	f = &content_features(i);
@@ -2990,7 +3094,8 @@ void content_mapnode_init()
 #ifndef SERVER
 	f->post_effect_color = video::SColor(192, 255, 64, 0);
 #endif
-	setWaterLikeDiggingProperties(f->digging_properties, 0.5);
+	f->type = CMT_LIQUID;
+	f->hardness = 0.5;
 
 	i = CONTENT_FIRE;
 	f = &content_features(i);
@@ -3048,7 +3153,8 @@ void content_mapnode_init()
 	f->fuel_time = 0.5;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->light_source = LIGHT_MAX-1;
-	f->digging_properties.set("", DiggingProperties(true, 0.0, 0));
+	f->type = CMT_WOOD;
+	f->hardness = 0.0;
 	crafting::set1over4Recipe(CONTENT_CRAFTITEM_COAL,CONTENT_CRAFTITEM_STICK,CONTENT_TORCH);
 	crafting::set1over4Recipe(CONTENT_CRAFTITEM_CHARCOAL,CONTENT_CRAFTITEM_STICK,CONTENT_TORCH);
 
@@ -3070,7 +3176,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SIGN)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new SignNodeMetadata("Some sign");
-	f->digging_properties.set("", DiggingProperties(true, 0.5, 0));
+	f->type = CMT_WOOD;
+	f->hardness = 0.1;
 
 	i = CONTENT_SIGN;
 	f = &content_features(i);
@@ -3089,7 +3196,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new SignNodeMetadata("Some sign");
-	f->digging_properties.set("", DiggingProperties(true, 0.5, 0));
+	f->type = CMT_WOOD;
+	f->hardness = 0.1;
 	f->setNodeBox(core::aabbox3d<f32>(
 		-0.05*BS,
 		-0.5*BS,
@@ -3128,7 +3236,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SIGN)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new SignNodeMetadata("Some sign");
-	f->digging_properties.set("", DiggingProperties(true, 0.5, 0));
+	f->type = CMT_WOOD;
+	f->hardness = 0.1;
 	f->setNodeBox(core::aabbox3d<f32>(
 		-0.05*BS,
 		-0.5*BS,
@@ -3165,7 +3274,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_LOCKABLE_SIGN)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockingSignNodeMetadata("Some sign");
-	f->digging_properties.set("", DiggingProperties(true, 0.5, 0));
+	f->type = CMT_WOOD;
+	f->hardness = 0.1;
 
 	i = CONTENT_LOCKABLE_SIGN;
 	f = &content_features(i);
@@ -3184,7 +3294,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockingSignNodeMetadata("Some sign");
-	f->digging_properties.set("", DiggingProperties(true, 0.5, 0));
+	f->type = CMT_WOOD;
+	f->hardness = 0.1;
 	f->setNodeBox(core::aabbox3d<f32>(
 		-0.05*BS,
 		-0.5*BS,
@@ -3221,7 +3332,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_LOCKABLE_SIGN)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockingSignNodeMetadata("Some sign");
-	f->digging_properties.set("", DiggingProperties(true, 0.5, 0));
+	f->type = CMT_WOOD;
+	f->hardness = 0.1;
 	f->setNodeBox(core::aabbox3d<f32>(
 		-0.05*BS,
 		-0.5*BS,
@@ -3254,7 +3366,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new ChestNodeMetadata();
-	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_WOOD;
+	f->hardness = 1.0;
 	crafting::setRoundRecipe(CONTENT_WOOD,CONTENT_CHEST);
 	crafting::setRoundRecipe(CONTENT_JUNGLEWOOD,CONTENT_CHEST);
 
@@ -3272,7 +3385,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockingChestNodeMetadata();
-	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_WOOD;
+	f->hardness = 1.0;
 	crafting::setFilledRoundRecipe(CONTENT_WOOD,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_LOCKABLE_CHEST);
 	crafting::setFilledRoundRecipe(CONTENT_JUNGLEWOOD,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_LOCKABLE_CHEST);
 	crafting::set1Any2Recipe(CONTENT_CHEST,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_LOCKABLE_CHEST);
@@ -3294,7 +3408,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new FurnaceNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 3.0);
+	f->type = CMT_STONE;
+	f->hardness = 3.0;
 	crafting::setRoundRecipe(CONTENT_ROUGHSTONE,CONTENT_FURNACE);
 
 	i = CONTENT_LOCKABLE_FURNACE;
@@ -3308,7 +3423,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockingFurnaceNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 3.0);
+	f->type = CMT_STONE;
+	f->hardness = 3.0;
 	crafting::setFilledRoundRecipe(CONTENT_ROUGHSTONE,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_LOCKABLE_FURNACE);
 	crafting::set1Any2Recipe(CONTENT_FURNACE,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_LOCKABLE_FURNACE);
 
@@ -3323,7 +3439,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new IncineratorNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 0.4);
+	f->type = CMT_STONE;
+	f->hardness = 0.4;
 	crafting::setFilledRoundRecipe(CONTENT_ROUGHSTONE,CONTENT_MESE,CONTENT_INCINERATOR);
 
 	i = CONTENT_ROUGHSTONE;
@@ -3336,7 +3453,8 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->cook_result = std::string("MaterialItem2 ")+itos(CONTENT_STONE)+" 1";
-	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
+	f->type = CMT_STONE;
+	f->hardness = 0.9;
 	crafting::setBlockRecipe(CONTENT_COBBLE,CONTENT_ROUGHSTONE);
 
 	i = CONTENT_COBBLE;
@@ -3348,7 +3466,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
+	f->type = CMT_STONE;
+	f->hardness = 0.9;
 	crafting::set5Recipe(CONTENT_ROUGHSTONE,CONTENT_COBBLE);
 
 	i = CONTENT_MOSSYCOBBLE;
@@ -3360,7 +3479,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setStoneLikeDiggingProperties(f->digging_properties, 0.8);
+	f->type = CMT_STONE;
+	f->hardness = 0.8;
 
 	i = CONTENT_STEEL;
 	f = &content_features(i);
@@ -3371,7 +3491,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_STEEL);
 	crafting::setUncraftHardBlockRecipe(CONTENT_STEEL,CONTENT_CRAFTITEM_STEEL_INGOT);
 
@@ -3384,7 +3505,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_COPPER_INGOT,CONTENT_COPPER);
 	crafting::setUncraftHardBlockRecipe(CONTENT_COPPER,CONTENT_CRAFTITEM_COPPER_INGOT);
 
@@ -3397,7 +3519,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_GOLD_INGOT,CONTENT_GOLD);
 	crafting::setUncraftHardBlockRecipe(CONTENT_GOLD,CONTENT_CRAFTITEM_GOLD_INGOT);
 
@@ -3410,7 +3533,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_SILVER_INGOT,CONTENT_SILVER);
 	crafting::setUncraftHardBlockRecipe(CONTENT_SILVER,CONTENT_CRAFTITEM_SILVER_INGOT);
 
@@ -3423,7 +3547,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_TIN_INGOT,CONTENT_TIN);
 	crafting::setUncraftHardBlockRecipe(CONTENT_TIN,CONTENT_CRAFTITEM_TIN_INGOT);
 
@@ -3436,7 +3561,8 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_QUARTZ,CONTENT_QUARTZ);
 	crafting::setUncraftHardBlockRecipe(CONTENT_QUARTZ,CONTENT_CRAFTITEM_QUARTZ);
 
@@ -3450,7 +3576,8 @@ void content_mapnode_init()
 	f->setTexture(4, "nc_back.png"); // Z+
 	f->setInventoryTextureCube("nc_front.png", "nc_side.png", "nc_side.png");
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setStoneLikeDiggingProperties(f->digging_properties, 3.0);
+	f->type = CMT_STONE;
+	f->hardness = 3.0;
 
 	i = CONTENT_NC_RB;
 	f = &content_features(i);
@@ -3459,7 +3586,8 @@ void content_mapnode_init()
 	f->setAllTextures("nc_rb.png");
 	f->setInventoryTextureCube("nc_rb.png", "nc_rb.png", "nc_rb.png");
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setStoneLikeDiggingProperties(f->digging_properties, 3.0);
+	f->type = CMT_STONE;
+	f->hardness = 3.0;
 
 	i = CONTENT_SAPLING;
 	f = &content_features(i);
@@ -3476,7 +3604,8 @@ void content_mapnode_init()
 	f->walkable = false;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 1;
-	f->digging_properties.set("", DiggingProperties(true, 0.0, 0));
+	f->type = CMT_WOOD;
+	f->hardness = 0.0;
 
 	i = CONTENT_APPLE_SAPLING;
 	f = &content_features(i);
@@ -3493,7 +3622,8 @@ void content_mapnode_init()
 	f->walkable = false;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 1;
-	f->digging_properties.set("", DiggingProperties(true, 0.0, 0));
+	f->type = CMT_WOOD;
+	f->hardness = 0.0;
 
 	i = CONTENT_JUNGLESAPLING;
 	f = &content_features(i);
@@ -3510,7 +3640,8 @@ void content_mapnode_init()
 	f->walkable = false;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 1;
-	f->digging_properties.set("", DiggingProperties(true, 0.0, 0));
+	f->type = CMT_WOOD;
+	f->hardness = 0.0;
 
 	i = CONTENT_CONIFER_SAPLING;
 	f = &content_features(i);
@@ -3527,7 +3658,8 @@ void content_mapnode_init()
 	f->walkable = false;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 1;
-	f->digging_properties.set("", DiggingProperties(true, 0.0, 0));
+	f->type = CMT_WOOD;
+	f->hardness = 0.0;
 
 	i = CONTENT_APPLE;
 	f = &content_features(i);
@@ -3545,7 +3677,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 1;
 	f->dug_item = std::string("CraftItem apple 1");
-	f->digging_properties.set("", DiggingProperties(true, 0.0, 0));
+	f->type = CMT_WOOD;
+	f->hardness = 0.0;
 
 	// slabs
 	i = CONTENT_ROUGHSTONE_SLAB;
@@ -3560,7 +3693,8 @@ void content_mapnode_init()
 	f->slab_cube_type = CONTENT_ROUGHSTONE;
 	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"roughstone.png", "roughstone.png", "roughstone.png");
-	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
+	f->type = CMT_STONE;
+	f->hardness = 0.9;
 	crafting::setRow3Recipe(CONTENT_ROUGHSTONE,CONTENT_ROUGHSTONE_SLAB);
 
 	i = CONTENT_COBBLE_SLAB;
@@ -3575,7 +3709,8 @@ void content_mapnode_init()
 	f->slab_cube_type = CONTENT_COBBLE;
 	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"cobble.png", "cobble.png", "cobble.png");
-	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
+	f->type = CMT_STONE;
+	f->hardness = 0.9;
 	crafting::setRow3Recipe(CONTENT_COBBLE,CONTENT_COBBLE_SLAB);
 
 	i = CONTENT_MOSSYCOBBLE_SLAB;
@@ -3590,7 +3725,8 @@ void content_mapnode_init()
 	f->slab_cube_type = CONTENT_MOSSYCOBBLE;
 	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"mossycobble.png", "mossycobble.png", "mossycobble.png");
-	setStoneLikeDiggingProperties(f->digging_properties, 0.8);
+	f->type = CMT_STONE;
+	f->hardness = 0.8;
 	crafting::setRow3Recipe(CONTENT_MOSSYCOBBLE,CONTENT_MOSSYCOBBLE_SLAB);
 
 	i = CONTENT_STONE_SLAB;
@@ -3604,7 +3740,8 @@ void content_mapnode_init()
 	f->slab_cube_type = CONTENT_STONE;
 	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"stone.png", "stone.png", "stone.png");
-	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
 	crafting::setRow3Recipe(CONTENT_STONE,CONTENT_STONE_SLAB);
 
 	i = CONTENT_WOOD_SLAB;
@@ -3620,7 +3757,8 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i,"wood.png", "wood.png", "wood.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 	crafting::setRow3Recipe(CONTENT_WOOD,CONTENT_WOOD_SLAB);
 
 	i = CONTENT_JUNGLE_SLAB;
@@ -3636,7 +3774,8 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i,"junglewood.png", "junglewood.png", "junglewood.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_WOOD;
+	f->hardness = 1.0;
 	crafting::setRow3Recipe(CONTENT_JUNGLEWOOD,CONTENT_JUNGLE_SLAB);
 
 	i = CONTENT_BRICK_SLAB;
@@ -3650,7 +3789,8 @@ void content_mapnode_init()
 	f->slab_cube_type = CONTENT_BRICK;
 	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"brick.png", "brick.png", "brick.png");
-	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
 	crafting::setRow3Recipe(CONTENT_BRICK,CONTENT_BRICK_SLAB);
 
 	i = CONTENT_SANDSTONE_SLAB;
@@ -3664,7 +3804,8 @@ void content_mapnode_init()
 	f->slab_cube_type = CONTENT_SANDSTONE;
 	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"sandstone.png", "sandstone.png", "sandstone.png");
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::setRow3Recipe(CONTENT_SANDSTONE,CONTENT_SANDSTONE_SLAB);
 
 	i = CONTENT_GLASS_SLAB;
@@ -3684,7 +3825,8 @@ void content_mapnode_init()
 #endif
 	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"glass.png", "glass.png", "glass.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	crafting::setRow3Recipe(CONTENT_GLASS,CONTENT_GLASS_SLAB);
 
 	i = CONTENT_GLASS_BLUE_SLAB;
@@ -3704,7 +3846,8 @@ void content_mapnode_init()
 #endif
 	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"glass_blue.png", "glass_blue.png", "glass_blue.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	crafting::setRow3Recipe(CONTENT_GLASS,CONTENT_GLASS_BLUE_SLAB);
 	crafting::set1Any2Recipe(CONTENT_GLASS_SLAB,CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_GLASS_BLUE_SLAB);
 
@@ -3725,7 +3868,8 @@ void content_mapnode_init()
 #endif
 	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"glass_green.png", "glass_green.png", "glass_green.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	crafting::setRow3Recipe(CONTENT_GLASS,CONTENT_GLASS_GREEN_SLAB);
 	crafting::set1Any2Recipe(CONTENT_GLASS_SLAB,CONTENT_CRAFTITEM_DYE_GREEN,CONTENT_GLASS_GREEN_SLAB);
 
@@ -3746,7 +3890,8 @@ void content_mapnode_init()
 #endif
 	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"glass_orange.png", "glass_orange.png", "glass_orange.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	crafting::setRow3Recipe(CONTENT_GLASS,CONTENT_GLASS_ORANGE_SLAB);
 	crafting::set1Any2Recipe(CONTENT_GLASS_SLAB,CONTENT_CRAFTITEM_DYE_ORANGE,CONTENT_GLASS_ORANGE_SLAB);
 
@@ -3767,7 +3912,8 @@ void content_mapnode_init()
 #endif
 	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"glass_purple.png", "glass_purple.png", "glass_purple.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	crafting::setRow3Recipe(CONTENT_GLASS,CONTENT_GLASS_PURPLE_SLAB);
 	crafting::set1Any2Recipe(CONTENT_GLASS_SLAB,CONTENT_CRAFTITEM_DYE_PURPLE,CONTENT_GLASS_PURPLE_SLAB);
 
@@ -3788,7 +3934,8 @@ void content_mapnode_init()
 #endif
 	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"glass_red.png", "glass_red.png", "glass_red.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	crafting::setRow3Recipe(CONTENT_GLASS,CONTENT_GLASS_RED_SLAB);
 	crafting::set1Any2Recipe(CONTENT_GLASS_SLAB,CONTENT_CRAFTITEM_DYE_RED,CONTENT_GLASS_RED_SLAB);
 
@@ -3809,7 +3956,8 @@ void content_mapnode_init()
 #endif
 	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"glass_yellow.png", "glass_yellow.png", "glass_yellow.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	crafting::setRow3Recipe(CONTENT_GLASS,CONTENT_GLASS_YELLOW_SLAB);
 	crafting::set1Any2Recipe(CONTENT_GLASS_SLAB,CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_GLASS_YELLOW_SLAB);
 
@@ -3830,7 +3978,8 @@ void content_mapnode_init()
 #endif
 	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"glass_black.png", "glass_black.png", "glass_black.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	crafting::setRow3Recipe(CONTENT_GLASS,CONTENT_GLASS_BLACK_SLAB);
 	crafting::set1Any2Recipe(CONTENT_GLASS_SLAB,CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_GLASS_BLACK_SLAB);
 
@@ -3846,7 +3995,8 @@ void content_mapnode_init()
 	f->slab_cube_type = CONTENT_ROUGHSTONE;
 	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"roughstone.png", "roughstone.png", "roughstone.png");
-	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
+	f->type = CMT_STONE;
+	f->hardness = 0.9;
 
 	i = CONTENT_COBBLE_SLAB_UD;
 	f = &content_features(i);
@@ -3860,7 +4010,8 @@ void content_mapnode_init()
 	f->slab_cube_type = CONTENT_COBBLE;
 	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"cobble.png", "cobble.png", "cobble.png");
-	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
+	f->type = CMT_STONE;
+	f->hardness = 0.9;
 
 	i = CONTENT_MOSSYCOBBLE_SLAB_UD;
 	f = &content_features(i);
@@ -3873,7 +4024,8 @@ void content_mapnode_init()
 	f->slab_cube_type = CONTENT_MOSSYCOBBLE;
 	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"mossycobble.png", "mossycobble.png", "mossycobble.png");
-	setStoneLikeDiggingProperties(f->digging_properties, 0.8);
+	f->type = CMT_STONE;
+	f->hardness = 0.8;
 
 	i = CONTENT_STONE_SLAB_UD;
 	f = &content_features(i);
@@ -3885,7 +4037,8 @@ void content_mapnode_init()
 	f->slab_cube_type = CONTENT_STONE;
 	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"stone.png", "stone.png", "stone.png");
-	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
 
 	i = CONTENT_WOOD_SLAB_UD;
 	f = &content_features(i);
@@ -3899,7 +4052,8 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i,"wood.png", "wood.png", "wood.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 
 	i = CONTENT_JUNGLE_SLAB_UD;
 	f = &content_features(i);
@@ -3913,7 +4067,8 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i,"junglewood.png", "junglewood.png", "junglewood.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_WOOD;
+	f->hardness = 1.0;
 
 	i = CONTENT_BRICK_SLAB_UD;
 	f = &content_features(i);
@@ -3925,7 +4080,8 @@ void content_mapnode_init()
 	f->slab_cube_type = CONTENT_BRICK;
 	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"brick.png", "brick.png", "brick.png");
-	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
 
 	i = CONTENT_SANDSTONE_SLAB_UD;
 	f = &content_features(i);
@@ -3937,7 +4093,8 @@ void content_mapnode_init()
 	f->slab_cube_type = CONTENT_SANDSTONE;
 	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"sandstone.png", "sandstone.png", "sandstone.png");
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 
 	i = CONTENT_GLASS_SLAB_UD;
 	f = &content_features(i);
@@ -3956,7 +4113,8 @@ void content_mapnode_init()
 #endif
 	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"glass.png", "glass.png", "glass.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 
 	i = CONTENT_GLASS_BLUE_SLAB_UD;
 	f = &content_features(i);
@@ -3975,7 +4133,8 @@ void content_mapnode_init()
 #endif
 	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"glass_blue.png", "glass_blue.png", "glass_blue.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 
 	i = CONTENT_GLASS_GREEN_SLAB_UD;
 	f = &content_features(i);
@@ -3994,7 +4153,8 @@ void content_mapnode_init()
 #endif
 	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"glass_green.png", "glass_green.png", "glass_green.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 
 	i = CONTENT_GLASS_ORANGE_SLAB_UD;
 	f = &content_features(i);
@@ -4013,7 +4173,8 @@ void content_mapnode_init()
 #endif
 	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"glass_orange.png", "glass_orange.png", "glass_orange.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 
 	i = CONTENT_GLASS_PURPLE_SLAB_UD;
 	f = &content_features(i);
@@ -4032,7 +4193,8 @@ void content_mapnode_init()
 #endif
 	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"glass_purple.png", "glass_purple.png", "glass_purple.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 
 	i = CONTENT_GLASS_RED_SLAB_UD;
 	f = &content_features(i);
@@ -4051,7 +4213,8 @@ void content_mapnode_init()
 #endif
 	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"glass_red.png", "glass_red.png", "glass_red.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 
 	i = CONTENT_GLASS_YELLOW_SLAB_UD;
 	f = &content_features(i);
@@ -4070,7 +4233,8 @@ void content_mapnode_init()
 #endif
 	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"glass_yellow.png", "glass_yellow.png", "glass_yellow.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 
 	i = CONTENT_GLASS_BLACK_SLAB_UD;
 	f = &content_features(i);
@@ -4089,7 +4253,8 @@ void content_mapnode_init()
 #endif
 	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"glass_black.png", "glass_black.png", "glass_black.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 
 	// stairs
 	i = CONTENT_ROUGHSTONE_STAIR;
@@ -4103,7 +4268,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_stair(f);
 	f->setInventoryTextureNodeBox(i,"roughstone.png", "roughstone.png", "roughstone.png");
-	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
+	f->type = CMT_STONE;
+	f->hardness = 0.9;
 	crafting::setStairRecipe(CONTENT_ROUGHSTONE,CONTENT_ROUGHSTONE_STAIR);
 
 	i = CONTENT_COBBLE_STAIR;
@@ -4117,7 +4283,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_stair(f);
 	f->setInventoryTextureNodeBox(i,"cobble.png", "cobble.png", "cobble.png");
-	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
+	f->type = CMT_STONE;
+	f->hardness = 0.9;
 	crafting::setStairRecipe(CONTENT_COBBLE,CONTENT_COBBLE_STAIR);
 
 	i = CONTENT_MOSSYCOBBLE_STAIR;
@@ -4131,7 +4298,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_stair(f);
 	f->setInventoryTextureNodeBox(i,"mossycobble.png", "mossycobble.png", "mossycobble.png");
-	setStoneLikeDiggingProperties(f->digging_properties, 0.8);
+	f->type = CMT_STONE;
+	f->hardness = 0.8;
 	crafting::setStairRecipe(CONTENT_MOSSYCOBBLE,CONTENT_MOSSYCOBBLE_STAIR);
 
 	i = CONTENT_STONE_STAIR;
@@ -4146,7 +4314,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_stair(f);
 	f->setInventoryTextureNodeBox(i,"stone.png", "stone.png", "stone.png");
-	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
 	crafting::setStairRecipe(CONTENT_STONE,CONTENT_STONE_STAIR);
 
 	i = CONTENT_WOOD_STAIR;
@@ -4162,7 +4331,8 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i,"wood.png", "wood.png", "wood.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 	crafting::setStairRecipe(CONTENT_WOOD,CONTENT_WOOD_STAIR);
 
 	i = CONTENT_JUNGLE_STAIR;
@@ -4178,7 +4348,8 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i,"junglewood.png", "junglewood.png", "junglewood.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_WOOD;
+	f->hardness = 1.0;
 	crafting::setStairRecipe(CONTENT_JUNGLEWOOD,CONTENT_JUNGLE_STAIR);
 
 	i = CONTENT_BRICK_STAIR;
@@ -4192,7 +4363,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("CraftItem clay_brick 4");
 	content_mapnode_nodebox_stair(f);
 	f->setInventoryTextureNodeBox(i,"brick.png", "brick.png", "brick.png");
-	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
 	crafting::setStairRecipe(CONTENT_BRICK,CONTENT_BRICK_STAIR);
 
 	i = CONTENT_SANDSTONE_STAIR;
@@ -4206,7 +4378,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAND)+" 4";
 	content_mapnode_nodebox_stair(f);
 	f->setInventoryTextureNodeBox(i,"sandstone.png", "sandstone.png", "sandstone.png");
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::setStairRecipe(CONTENT_SANDSTONE,CONTENT_SANDSTONE_STAIR);
 
 	// upside down stairs
@@ -4220,7 +4393,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_ROUGHSTONE_STAIR)+" 1";
 	content_mapnode_nodebox_stairud(f);
 	f->setInventoryTextureNodeBox(i,"roughstone.png", "roughstone.png", "roughstone.png");
-	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
+	f->type = CMT_STONE;
+	f->hardness = 0.9;
 
 	i = CONTENT_COBBLE_STAIR_UD;
 	f = &content_features(i);
@@ -4232,7 +4406,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_ROUGHSTONE_STAIR)+" 1";
 	content_mapnode_nodebox_stairud(f);
 	f->setInventoryTextureNodeBox(i,"cobble.png", "cobble.png", "cobble.png");
-	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
+	f->type = CMT_STONE;
+	f->hardness = 0.9;
 
 	i = CONTENT_MOSSYCOBBLE_STAIR_UD;
 	f = &content_features(i);
@@ -4244,7 +4419,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MOSSYCOBBLE_STAIR)+" 1";
 	content_mapnode_nodebox_stairud(f);
 	f->setInventoryTextureNodeBox(i,"mossycobble.png", "mossycobble.png", "mossycobble.png");
-	setStoneLikeDiggingProperties(f->digging_properties, 0.8);
+	f->type = CMT_STONE;
+	f->hardness = 0.8;
 
 	i = CONTENT_STONE_STAIR_UD;
 	f = &content_features(i);
@@ -4256,7 +4432,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STONE_STAIR)+" 1";
 	content_mapnode_nodebox_stairud(f);
 	f->setInventoryTextureNodeBox(i,"stone.png", "stone.png", "stone.png");
-	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
 
 	i = CONTENT_WOOD_STAIR_UD;
 	f = &content_features(i);
@@ -4270,7 +4447,8 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i,"wood.png", "wood.png", "wood.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 
 	i = CONTENT_JUNGLE_STAIR_UD;
 	f = &content_features(i);
@@ -4284,7 +4462,8 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i,"junglewood.png", "junglewood.png", "junglewood.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	setWoodLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_WOOD;
+	f->hardness = 1.0;
 
 	i = CONTENT_BRICK_STAIR_UD;
 	f = &content_features(i);
@@ -4296,7 +4475,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("CraftItem clay_brick 4");
 	content_mapnode_nodebox_stairud(f);
 	f->setInventoryTextureNodeBox(i,"brick.png", "brick.png", "brick.png");
-	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
 
 	i = CONTENT_SANDSTONE_STAIR_UD;
 	f = &content_features(i);
@@ -4308,7 +4488,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAND)+" 4";
 	content_mapnode_nodebox_stairud(f);
 	f->setInventoryTextureNodeBox(i,"sandstone.png", "sandstone.png", "sandstone.png");
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 
 	// doors
 	i = CONTENT_WOOD_DOOR_LB;
@@ -4330,7 +4511,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_door(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 	i = CONTENT_WOOD_DOOR_LT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -4350,7 +4532,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_door(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 	crafting::set1over1Recipe(CONTENT_WOOD_HATCH,CONTENT_WOOD_HATCH,CONTENT_WOOD_DOOR_LT);
 	crafting::set1To1Recipe(CONTENT_WOOD_DOOR_RT,CONTENT_WOOD_DOOR_LT);
 
@@ -4373,7 +4556,8 @@ void content_mapnode_init()
 	content_mapnode_nodebox_door(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 	i = CONTENT_STEEL_DOOR_LT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -4393,7 +4577,8 @@ void content_mapnode_init()
 	content_mapnode_nodebox_door(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 	crafting::set1over1Recipe(CONTENT_STEEL_HATCH,CONTENT_STEEL_HATCH,CONTENT_STEEL_DOOR_LT);
 	crafting::set1To1Recipe(CONTENT_STEEL_DOOR_RT,CONTENT_STEEL_DOOR_LT);
 
@@ -4416,7 +4601,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_door(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	i = CONTENT_GLASS_DOOR_LT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -4436,7 +4622,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_mapnode_nodebox_door(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	crafting::set1over1Recipe(CONTENT_GLASS_PANE,CONTENT_GLASS_PANE,CONTENT_GLASS_DOOR_LT);
 	crafting::set1To1Recipe(CONTENT_GLASS_DOOR_RT,CONTENT_GLASS_DOOR_LT);
 
@@ -4460,7 +4647,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_door(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 	i = CONTENT_WOOD_W_DOOR_LT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -4481,7 +4669,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_doorw(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 	crafting::set1over1Recipe(CONTENT_WOOD_W_HATCH,CONTENT_WOOD_HATCH,CONTENT_WOOD_W_DOOR_LT);
 	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_WOOD_DOOR_LT,CONTENT_WOOD_W_DOOR_LT);
 	crafting::set1To1Recipe(CONTENT_WOOD_W_DOOR_RT,CONTENT_WOOD_W_DOOR_LT);
@@ -4506,7 +4695,8 @@ void content_mapnode_init()
 	content_mapnode_nodebox_door(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 	i = CONTENT_STEEL_W_DOOR_LT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -4527,7 +4717,8 @@ void content_mapnode_init()
 	content_mapnode_nodebox_doorw(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 	crafting::set1over1Recipe(CONTENT_STEEL_W_HATCH,CONTENT_STEEL_HATCH,CONTENT_STEEL_W_DOOR_LT);
 	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_STEEL_DOOR_LT,CONTENT_STEEL_W_DOOR_LT);
 	crafting::set1To1Recipe(CONTENT_STEEL_W_DOOR_RT,CONTENT_STEEL_W_DOOR_LT);
@@ -4552,7 +4743,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_door(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 	i = CONTENT_WOOD_DOOR_RT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -4572,7 +4764,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_door(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 	crafting::set1To1Recipe(CONTENT_WOOD_DOOR_LT,CONTENT_WOOD_DOOR_RT);
 
 	i = CONTENT_GLASS_DOOR_RB;
@@ -4595,7 +4788,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_door(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	i = CONTENT_GLASS_DOOR_RT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -4616,7 +4810,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_door(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	crafting::set1To1Recipe(CONTENT_GLASS_DOOR_LT,CONTENT_GLASS_DOOR_RT);
 
 	i = CONTENT_STEEL_DOOR_RB;
@@ -4638,7 +4833,8 @@ void content_mapnode_init()
 	content_mapnode_nodebox_door(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 	i = CONTENT_STEEL_DOOR_RT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -4658,7 +4854,8 @@ void content_mapnode_init()
 	content_mapnode_nodebox_door(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 	crafting::set1To1Recipe(CONTENT_GLASS_DOOR_LT,CONTENT_GLASS_DOOR_RT);
 
 	i = CONTENT_WOOD_W_DOOR_RB;
@@ -4681,7 +4878,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_door(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 	i = CONTENT_WOOD_W_DOOR_RT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -4702,7 +4900,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_doorw(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 	crafting::set1To1Recipe(CONTENT_WOOD_W_DOOR_LT,CONTENT_WOOD_W_DOOR_RT);
 	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_WOOD_DOOR_RT,CONTENT_WOOD_W_DOOR_RT);
 
@@ -4726,7 +4925,8 @@ void content_mapnode_init()
 	content_mapnode_nodebox_door(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 	i = CONTENT_STEEL_W_DOOR_RT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -4747,7 +4947,8 @@ void content_mapnode_init()
 	content_mapnode_nodebox_doorw(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 	crafting::set1To1Recipe(CONTENT_STEEL_W_DOOR_LT,CONTENT_STEEL_W_DOOR_RT);
 	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_STEEL_DOOR_RT,CONTENT_STEEL_W_DOOR_RT);
 
@@ -4770,7 +4971,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_doorol(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 	i = CONTENT_WOOD_DOOR_LT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -4789,7 +4991,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_doorol(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 
 	i = CONTENT_GLASS_DOOR_LB_OPEN;
 	f = &content_features(i);
@@ -4809,7 +5012,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_doorol(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	i = CONTENT_GLASS_DOOR_LT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -4828,7 +5032,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_doorol(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 
 	i = CONTENT_STEEL_DOOR_LB_OPEN;
 	f = &content_features(i);
@@ -4848,7 +5053,8 @@ void content_mapnode_init()
 	content_mapnode_nodebox_doorol(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 	i = CONTENT_STEEL_DOOR_LT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -4867,7 +5073,8 @@ void content_mapnode_init()
 	content_mapnode_nodebox_doorol(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 
 	i = CONTENT_WOOD_W_DOOR_LB_OPEN;
 	f = &content_features(i);
@@ -4887,7 +5094,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_doorol(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 	i = CONTENT_WOOD_W_DOOR_LT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -4906,7 +5114,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_doorwol(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 
 	i = CONTENT_STEEL_W_DOOR_LB_OPEN;
 	f = &content_features(i);
@@ -4926,7 +5135,8 @@ void content_mapnode_init()
 	content_mapnode_nodebox_doorol(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 	i = CONTENT_STEEL_W_DOOR_LT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -4945,7 +5155,8 @@ void content_mapnode_init()
 	content_mapnode_nodebox_doorwol(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 
 	// right open doors
 	i = CONTENT_WOOD_DOOR_RB_OPEN;
@@ -4968,7 +5179,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_dooror(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 	i = CONTENT_WOOD_DOOR_RT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -4989,7 +5201,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_dooror(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 
 	i = CONTENT_GLASS_DOOR_RB_OPEN;
 	f = &content_features(i);
@@ -5011,7 +5224,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_dooror(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 	i = CONTENT_GLASS_DOOR_RT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -5032,7 +5246,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_dooror(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.15);
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
 
 	i = CONTENT_STEEL_DOOR_RB_OPEN;
 	f = &content_features(i);
@@ -5054,7 +5269,8 @@ void content_mapnode_init()
 	content_mapnode_nodebox_dooror(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 	i = CONTENT_STEEL_DOOR_RT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -5075,7 +5291,8 @@ void content_mapnode_init()
 	content_mapnode_nodebox_dooror(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 
 	i = CONTENT_WOOD_W_DOOR_RB_OPEN;
 	f = &content_features(i);
@@ -5097,7 +5314,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_dooror(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 	i = CONTENT_WOOD_W_DOOR_RT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -5118,7 +5336,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_doorwor(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 
 	i = CONTENT_STEEL_W_DOOR_RB_OPEN;
 	f = &content_features(i);
@@ -5140,7 +5359,8 @@ void content_mapnode_init()
 	content_mapnode_nodebox_dooror(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 	i = CONTENT_STEEL_W_DOOR_RT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -5161,7 +5381,8 @@ void content_mapnode_init()
 	content_mapnode_nodebox_doorwor(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 
 	// hatches
 	i = CONTENT_WOOD_HATCH;
@@ -5179,7 +5400,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_hatch(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_WOOD_HATCH);
 	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_WOOD_HATCH);
 
@@ -5198,7 +5420,8 @@ void content_mapnode_init()
 	content_mapnode_nodebox_hatch(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_STEEL_HATCH);
 
 	i = CONTENT_WOOD_W_HATCH;
@@ -5219,7 +5442,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_hatchw(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_WOOD_HATCH,CONTENT_WOOD_W_HATCH);
 
 	i = CONTENT_STEEL_W_HATCH;
@@ -5240,7 +5464,8 @@ void content_mapnode_init()
 	content_mapnode_nodebox_hatchw(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_STEEL_HATCH,CONTENT_STEEL_W_HATCH);
 
 	// gates
@@ -5263,7 +5488,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_gate(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 	crafting::setGateRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_WOOD,CONTENT_WOOD_GATE);
 	crafting::setGateRecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_JUNGLEWOOD,CONTENT_WOOD_GATE);
 	crafting::setGateRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_JUNGLEWOOD,CONTENT_WOOD_GATE);
@@ -5288,7 +5514,8 @@ void content_mapnode_init()
 	content_mapnode_nodebox_gate(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 	crafting::setGateRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_STEEL,CONTENT_STEEL_GATE);
 
 	// open hatches
@@ -5312,7 +5539,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_hatcho(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 
 	i = CONTENT_STEEL_HATCH_OPEN;
 	f = &content_features(i);
@@ -5334,7 +5562,8 @@ void content_mapnode_init()
 	content_mapnode_nodebox_hatcho(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 
 	i = CONTENT_WOOD_W_HATCH_OPEN;
 	f = &content_features(i);
@@ -5356,7 +5585,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_hatchwo(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 
 	i = CONTENT_STEEL_W_HATCH_OPEN;
 	f = &content_features(i);
@@ -5378,7 +5608,8 @@ void content_mapnode_init()
 	content_mapnode_nodebox_hatchwo(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 
 	// open gates
 	i = CONTENT_WOOD_GATE_OPEN;
@@ -5399,7 +5630,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_mapnode_nodebox_gateo(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
 
 	i = CONTENT_STEEL_GATE_OPEN;
 	f = &content_features(i);
@@ -5419,7 +5651,8 @@ void content_mapnode_init()
 	content_mapnode_nodebox_gateo(f);
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockedDoorNodeMetadata();
-	setStoneLikeDiggingProperties(f->digging_properties, 5.0);
+	f->type = CMT_STONE;
+	f->hardness = 5.0;
 
 	// plants
 	i = CONTENT_WILDGRASS_SHORT;
@@ -5441,7 +5674,8 @@ void content_mapnode_init()
 	f->fuel_time = 30/32;
 	//f->pointable = false;
 	f->buildable_to = true;
-	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
+	f->type = CMT_WOOD;
+	f->hardness = 0.10;
 
 	i = CONTENT_WILDGRASS_LONG;
 	f = &content_features(i);
@@ -5461,7 +5695,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->buildable_to = true;
-	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
+	f->type = CMT_WOOD;
+	f->hardness = 0.10;
 
 	i = CONTENT_DEADGRASS;
 	f = &content_features(i);
@@ -5480,7 +5715,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->buildable_to = true;
-	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
+	f->type = CMT_WOOD;
+	f->hardness = 0.10;
 
 	i = CONTENT_FLOWER_STEM;
 	f = &content_features(i);
@@ -5499,7 +5735,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->buildable_to = true;
-	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
+	f->type = CMT_WOOD;
+	f->hardness = 0.10;
 
 	i = CONTENT_FLOWER_ROSE;
 	f = &content_features(i);
@@ -5518,7 +5755,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->buildable_to = true;
-	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
+	f->type = CMT_WOOD;
+	f->hardness = 0.10;
 
 	i = CONTENT_FLOWER_DAFFODIL;
 	f = &content_features(i);
@@ -5537,7 +5775,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->buildable_to = true;
-	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
+	f->type = CMT_WOOD;
+	f->hardness = 0.10;
 
 	i = CONTENT_FLOWER_TULIP;
 	f = &content_features(i);
@@ -5556,7 +5795,8 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->buildable_to = true;
-	setWoodLikeDiggingProperties(f->digging_properties, 0.10);
+	f->type = CMT_WOOD;
+	f->hardness = 0.10;
 
 	i = CONTENT_FLOWER_POT_RAW;
 	f = &content_features(i);
@@ -5571,7 +5811,8 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->cook_result = std::string("MaterialItem2 ")+itos(CONTENT_FLOWER_POT)+" 1";
-	setStoneLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_STONE;
+	f->hardness = 0.75;
 	f->setNodeBox(core::aabbox3d<f32>(
 		-0.5*BS,
 		0.2*BS,
@@ -5627,7 +5868,8 @@ void content_mapnode_init()
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	setStoneLikeDiggingProperties(f->digging_properties, 0.75);
+	f->type = CMT_STONE;
+	f->hardness = 0.75;
 	f->setNodeBox(core::aabbox3d<f32>(
 		-0.5*BS,
 		0.2*BS,
@@ -5683,7 +5925,8 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->air_equivalent = true; // grass grows underneath
 	f->setInventoryTexture("cobble_wall_inv.png");
-	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
+	f->type = CMT_STONE;
+	f->hardness = 0.9;
 	crafting::setWallRecipe(CONTENT_COBBLE,CONTENT_COBBLE_WALL);
 
 	i = CONTENT_ROUGHSTONE_WALL;
@@ -5699,7 +5942,8 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->air_equivalent = true; // grass grows underneath
 	f->setInventoryTexture("roughstone_wall_inv.png");
-	setStoneLikeDiggingProperties(f->digging_properties, 0.9);
+	f->type = CMT_STONE;
+	f->hardness = 0.9;
 	crafting::setWallRecipe(CONTENT_ROUGHSTONE,CONTENT_ROUGHSTONE_WALL);
 
 	i = CONTENT_MOSSYCOBBLE_WALL;
@@ -5715,7 +5959,8 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->air_equivalent = true; // grass grows underneath
 	f->setInventoryTexture("mossycobble_wall_inv.png");
-	setStoneLikeDiggingProperties(f->digging_properties, 0.8);
+	f->type = CMT_STONE;
+	f->hardness = 0.8;
 	crafting::setWallRecipe(CONTENT_MOSSYCOBBLE,CONTENT_MOSSYCOBBLE_WALL);
 
 	i = CONTENT_STONE_WALL;
@@ -5731,7 +5976,8 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->air_equivalent = true; // grass grows underneath
 	f->setInventoryTexture("stone_wall_inv.png");
-	setStoneLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
 	crafting::setWallRecipe(CONTENT_STONE,CONTENT_STONE_WALL);
 
 	i = CONTENT_SANDSTONE_WALL;
@@ -5747,7 +5993,8 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->air_equivalent = true; // grass grows underneath
 	f->setInventoryTexture("sandstone_wall_inv.png");
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::setWallRecipe(CONTENT_SANDSTONE,CONTENT_SANDSTONE_WALL);
 
 	i = CONTENT_TNT;
@@ -5762,7 +6009,8 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new TNTNodeMetadata();
-	setDirtLikeDiggingProperties(f->digging_properties, 1.0);
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
 	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_TNT,CONTENT_TNT);
 
 	i = CONTENT_FLASH;
@@ -5836,7 +6084,8 @@ void content_mapnode_init()
 		-0.2*BS, 0.1*BS, 0.25*BS, 0.2*BS, 0.4*BS, 0.26*BS
 	));
 	f->setInventoryTextureNodeBox(i,"pine.png", "pine.png", "pine.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+	f->type = CMT_WOOD;
+	f->hardness = 0.25;
 	{
 		u16 r[9] = {
 			CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_IGNORE,			CONTENT_IGNORE,
@@ -5887,8 +6136,10 @@ void content_mapnode_init()
 		-0.3*BS, -0.2*BS, 0.3*BS, 0.3*BS, -0.1*BS, 0.4*BS
 	));
 	f->setInventoryTextureNodeBox(i,"pine.png", "pine.png", "pine.png");
-	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+	f->type = CMT_WOOD;
+	f->hardness = 0.25;
+	f->type = CMT_WOOD;
+	f->hardness = 0.25;
 	{
 		u16 r[9] = {
 			CONTENT_WOOD_PINE,		CONTENT_WOOD_PINE,		CONTENT_WOOD_PINE,
@@ -5920,7 +6171,8 @@ void content_mapnode_init()
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_bed_head(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+	f->type = CMT_WOOD;
+	f->hardness = 0.25;
 	crafting::setBedRecipe(CONTENT_COTTON,CONTENT_BED_HEAD);
 
 	i = CONTENT_BED_FOOT;
@@ -5945,7 +6197,8 @@ void content_mapnode_init()
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_HEAD)+" 1";
 	content_mapnode_nodebox_bed_foot(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+	f->type = CMT_WOOD;
+	f->hardness = 0.25;
 
 	i = CONTENT_BED_BLUE_HEAD;
 	f = &content_features(i);
@@ -5969,7 +6222,8 @@ void content_mapnode_init()
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_bed_head(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+	f->type = CMT_WOOD;
+	f->hardness = 0.25;
 	crafting::setBedRecipe(CONTENT_COTTON_BLUE,CONTENT_BED_BLUE_HEAD);
 
 	i = CONTENT_BED_BLUE_FOOT;
@@ -5994,7 +6248,8 @@ void content_mapnode_init()
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_BLUE_HEAD)+" 1";
 	content_mapnode_nodebox_bed_foot(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+	f->type = CMT_WOOD;
+	f->hardness = 0.25;
 
 	i = CONTENT_BED_GREEN_HEAD;
 	f = &content_features(i);
@@ -6018,7 +6273,8 @@ void content_mapnode_init()
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_bed_head(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+	f->type = CMT_WOOD;
+	f->hardness = 0.25;
 	crafting::setBedRecipe(CONTENT_COTTON_GREEN,CONTENT_BED_GREEN_HEAD);
 
 	i = CONTENT_BED_GREEN_FOOT;
@@ -6043,7 +6299,8 @@ void content_mapnode_init()
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_GREEN_HEAD)+" 1";
 	content_mapnode_nodebox_bed_foot(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+	f->type = CMT_WOOD;
+	f->hardness = 0.25;
 
 	i = CONTENT_BED_ORANGE_HEAD;
 	f = &content_features(i);
@@ -6067,7 +6324,8 @@ void content_mapnode_init()
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_bed_head(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+	f->type = CMT_WOOD;
+	f->hardness = 0.25;
 	crafting::setBedRecipe(CONTENT_COTTON_ORANGE,CONTENT_BED_ORANGE_HEAD);
 
 	i = CONTENT_BED_ORANGE_FOOT;
@@ -6092,7 +6350,8 @@ void content_mapnode_init()
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_ORANGE_HEAD)+" 1";
 	content_mapnode_nodebox_bed_foot(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+	f->type = CMT_WOOD;
+	f->hardness = 0.25;
 
 	i = CONTENT_BED_PURPLE_HEAD;
 	f = &content_features(i);
@@ -6116,7 +6375,8 @@ void content_mapnode_init()
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_bed_head(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+	f->type = CMT_WOOD;
+	f->hardness = 0.25;
 	crafting::setBedRecipe(CONTENT_COTTON_PURPLE,CONTENT_BED_PURPLE_HEAD);
 
 	i = CONTENT_BED_PURPLE_FOOT;
@@ -6141,7 +6401,8 @@ void content_mapnode_init()
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_PURPLE_HEAD)+" 1";
 	content_mapnode_nodebox_bed_foot(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+	f->type = CMT_WOOD;
+	f->hardness = 0.25;
 
 	i = CONTENT_BED_RED_HEAD;
 	f = &content_features(i);
@@ -6165,7 +6426,8 @@ void content_mapnode_init()
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_bed_head(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+	f->type = CMT_WOOD;
+	f->hardness = 0.25;
 	crafting::setBedRecipe(CONTENT_COTTON_RED,CONTENT_BED_RED_HEAD);
 
 	i = CONTENT_BED_RED_FOOT;
@@ -6190,7 +6452,8 @@ void content_mapnode_init()
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_RED_HEAD)+" 1";
 	content_mapnode_nodebox_bed_foot(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+	f->type = CMT_WOOD;
+	f->hardness = 0.25;
 
 	i = CONTENT_BED_YELLOW_HEAD;
 	f = &content_features(i);
@@ -6214,7 +6477,8 @@ void content_mapnode_init()
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_bed_head(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+	f->type = CMT_WOOD;
+	f->hardness = 0.25;
 	crafting::setBedRecipe(CONTENT_COTTON_YELLOW,CONTENT_BED_YELLOW_HEAD);
 
 	i = CONTENT_BED_YELLOW_FOOT;
@@ -6239,7 +6503,8 @@ void content_mapnode_init()
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_YELLOW_HEAD)+" 1";
 	content_mapnode_nodebox_bed_foot(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+	f->type = CMT_WOOD;
+	f->hardness = 0.25;
 
 	i = CONTENT_BED_BLACK_HEAD;
 	f = &content_features(i);
@@ -6263,7 +6528,8 @@ void content_mapnode_init()
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_bed_head(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
+	f->type = CMT_WOOD;
+	f->hardness = 0.25;
 	crafting::setBedRecipe(CONTENT_COTTON_BLACK,CONTENT_BED_BLACK_HEAD);
 
 	i = CONTENT_BED_BLACK_FOOT;
@@ -6288,87 +6554,6 @@ void content_mapnode_init()
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_BLACK_HEAD)+" 1";
 	content_mapnode_nodebox_bed_foot(f);
-	setWoodLikeDiggingProperties(f->digging_properties, 0.25);
-
-	// NOTE: Remember to add frequently used stuff to the texture atlas in tile.cpp
-
-
-	/*
-		Add MesePick to everything
-	*/
-	for(u16 i=0; i<=MAX_CONTENT; i++)
-	{
-		content_features(i).digging_properties.set("MesePick",
-				DiggingProperties(true, 0.0, 65535./1337));
-	}
-
-}
-
-void setStoneLikeDiggingProperties(DiggingPropertiesList &list, float toughness)
-{
-	list.set("",
-			DiggingProperties(true, 15.0*toughness, 0));
-
-	list.set("WPick",
-			DiggingProperties(true, 1.3*toughness, 65535./30.*toughness));
-	list.set("STPick",
-			DiggingProperties(true, 0.75*toughness, 65535./100.*toughness));
-	list.set("SteelPick",
-			DiggingProperties(true, 0.50*toughness, 65535./333.*toughness));
-}
-
-void setDirtLikeDiggingProperties(DiggingPropertiesList &list, float toughness)
-{
-	list.set("",
-			DiggingProperties(true, 0.75*toughness, 0));
-
-	list.set("WShovel",
-			DiggingProperties(true, 0.4*toughness, 65535./50.*toughness));
-	list.set("STShovel",
-			DiggingProperties(true, 0.2*toughness, 65535./150.*toughness));
-	list.set("SteelShovel",
-			DiggingProperties(true, 0.15*toughness, 65535./400.*toughness));
-}
-
-void setWoodLikeDiggingProperties(DiggingPropertiesList &list, float toughness)
-{
-	list.set("",
-			DiggingProperties(true, 3.0*toughness, 0));
-
-	list.set("WAxe",
-			DiggingProperties(true, 1.5*toughness, 65535./30.*toughness));
-	list.set("STAxe",
-			DiggingProperties(true, 0.75*toughness, 65535./100.*toughness));
-	list.set("SteelAxe",
-			DiggingProperties(true, 0.5*toughness, 65535./333.*toughness));
-}
-
-void setLeafLikeDiggingProperties(DiggingPropertiesList &list, float toughness)
-{
-	list.set("",
-			DiggingProperties(true, 3.0*toughness, 0));
-
-	list.set("WAxe",
-			DiggingProperties(true, 1.5*toughness, 65535./20.*toughness));
-	list.set("STAxe",
-			DiggingProperties(true, 0.75*toughness, 65535./80.*toughness));
-	list.set("SteelAxe",
-			DiggingProperties(true, 0.5*toughness, 65535./200.*toughness));
-	list.set("Shears",
-			DiggingProperties(true, 0.5*toughness, 65535./333.*toughness));
-}
-
-void setWaterLikeDiggingProperties(DiggingPropertiesList &list, float toughness)
-{
-	list.set("",
-			DiggingProperties(true, 150000.0*toughness, 0));
-
-	list.set("WBucket",
-			DiggingProperties(true, 0.0, 65535./30.*toughness));
-
-	list.set("TinBucket",
-			DiggingProperties(true, 0.0, 65535./50.*toughness));
-
-	list.set("SteelBucket",
-			DiggingProperties(true, 0.0, 65535./80.*toughness));
+	f->type = CMT_WOOD;
+	f->hardness = 0.25;
 }

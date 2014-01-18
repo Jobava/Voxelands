@@ -1720,7 +1720,6 @@ void the_game(
 					MapNode n = client.getNode(nodepos);
 
 					// Get tool name. Default is "" = bare hands
-					std::string toolname = "";
 					content_t toolid = CONTENT_IGNORE;
 					InventoryList *mlist = local_inventory.getList("main");
 					if(mlist != NULL)
@@ -1729,21 +1728,17 @@ void the_game(
 						if(item && (std::string)item->getName() == "ToolItem")
 						{
 							ToolItem *titem = (ToolItem*)item;
-							toolname = titem->getToolName();
 							toolid = titem->getContent();
 						}
 					}
 
 					// Get digging properties for material and tool
 					content_t material = n.getContent();
-					DiggingProperties prop = getDiggingProperties(material, toolname);
+					DiggingProperties prop = getDiggingProperties(material, toolid);
 
 					float dig_time_complete = 0.0;
 
-					if (
-						prop.diggable == false
-						|| content_toolitem_features(toolid).type == TT_SPECIAL
-					) {
+					if (prop.diggable == false) {
 						dig_time_complete = 10000000.0;
 						client.clearTempMod(nodepos);
 					}else{
