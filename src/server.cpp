@@ -2809,10 +2809,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			// check for a diggable tool
 			if (
 				wield
-				&& (
-					wield->getContent() == CONTENT_TOOLITEM_FIRESTARTER
-					|| wield->getContent() == CONTENT_TOOLITEM_CROWBAR
-				)
+				&& content_toolitem_features(wield->getContent()).type == TT_SPECIAL
 			) {
 				infostream<<"Server: Not finished digging: impossible tool"<<std::endl;
 				cannot_remove_node = true;
@@ -2885,13 +2882,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					material == CONTENT_MUD
 					|| material == CONTENT_GRASS
 				) && wield
-				&& (
-					wield->getContent() == CONTENT_TOOLITEM_STEELSHOVEL
-					|| wield->getContent() == CONTENT_TOOLITEM_STSHOVEL
-					|| wield->getContent() == CONTENT_TOOLITEM_WSHOVEL
-				)
-			)
-			{
+				&& content_toolitem_features(wield->getContent()).type == TT_SHOVEL
+			) {
 				v3s16 temp_p = p_under;
 				v3s16 test_p;
 				MapNode testnode;
@@ -3154,33 +3146,30 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							return;
 						}else if (wield && (wield->getContent()&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
 							ToolItem *tool = (ToolItem*)wield;
-							if (material == CONTENT_LEAVES && tool->getContent() == CONTENT_TOOLITEM_STEELSHEARS) {
+							ToolItemFeatures tool_features = content_toolitem_features(tool->getContent());
+							if (material == CONTENT_LEAVES && tool_features.type == TT_SHEAR) {
 								std::string dug_s = std::string("MaterialItem2 ")+itos(CONTENT_TRIMMED_LEAVES)+" 1";;
 								std::istringstream is(dug_s, std::ios::binary);
 								item = InventoryItem::deSerialize(is);
-							}else if (material == CONTENT_JUNGLELEAVES && tool->getContent() == CONTENT_TOOLITEM_STEELSHEARS) {
+							}else if (material == CONTENT_JUNGLELEAVES && tool_features.type == TT_SHEAR) {
 								std::string dug_s = std::string("MaterialItem2 ")+itos(CONTENT_TRIMMED_JUNGLE_LEAVES)+" 1";;
 								std::istringstream is(dug_s, std::ios::binary);
 								item = InventoryItem::deSerialize(is);
-							}else if (material == CONTENT_APPLE_LEAVES && tool->getContent() == CONTENT_TOOLITEM_STEELSHEARS) {
+							}else if (material == CONTENT_APPLE_LEAVES && tool_features.type == TT_SHEAR) {
 								std::string dug_s = std::string("MaterialItem2 ")+itos(CONTENT_TRIMMED_APPLE_LEAVES)+" 1";;
 								std::istringstream is(dug_s, std::ios::binary);
 								item = InventoryItem::deSerialize(is);
-							}else if (material == CONTENT_APPLE_BLOSSOM && tool->getContent() == CONTENT_TOOLITEM_STEELSHEARS) {
+							}else if (material == CONTENT_APPLE_BLOSSOM && tool_features.type == TT_SHEAR) {
 								std::string dug_s = std::string("MaterialItem2 ")+itos(CONTENT_TRIMMED_APPLE_BLOSSOM)+" 1";;
 								std::istringstream is(dug_s, std::ios::binary);
 								item = InventoryItem::deSerialize(is);
-							}else if (material == CONTENT_CONIFER_LEAVES && tool->getContent() == CONTENT_TOOLITEM_STEELSHEARS) {
+							}else if (material == CONTENT_CONIFER_LEAVES && tool_features.type == TT_SHEAR) {
 								std::string dug_s = std::string("MaterialItem2 ")+itos(CONTENT_TRIMMED_CONIFER_LEAVES)+" 1";;
 								std::istringstream is(dug_s, std::ios::binary);
 								item = InventoryItem::deSerialize(is);
 							}else if (
 								material == CONTENT_WATERSOURCE
-								&& (
-									tool->getContent() == CONTENT_TOOLITEM_WBUCKET
-									|| tool->getContent() == CONTENT_TOOLITEM_STEELBUCKET
-									|| tool->getContent() == CONTENT_TOOLITEM_TINBUCKET
-								)
+								&& tool_features.type == TT_BUCKET
 							) {
 								std::string dug_s = std::string("ToolItem ") + tool->getToolName() + "_water 1";
 								std::istringstream is(dug_s, std::ios::binary);
@@ -3191,11 +3180,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 								SendInventory(player->peer_id);
 							}else if (
 								material == CONTENT_SPONGE_FULL
-								&& (
-									tool->getContent() == CONTENT_TOOLITEM_WBUCKET
-									|| tool->getContent() == CONTENT_TOOLITEM_STEELBUCKET
-									|| tool->getContent() == CONTENT_TOOLITEM_TINBUCKET
-								)
+								&& tool_features.type == TT_BUCKET
 							) {
 								MapNode n = m_env.getMap().getNodeNoEx(p_under);
 								n.setContent(CONTENT_SPONGE);
@@ -3238,16 +3223,11 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 								return;
 							}else if (
 								material == CONTENT_LAVASOURCE
-								&& (
-									tool->getContent() == CONTENT_TOOLITEM_WBUCKET
-									|| tool->getContent() == CONTENT_TOOLITEM_STEELBUCKET
-									|| tool->getContent() == CONTENT_TOOLITEM_TINBUCKET
-								)
+								&& tool_features.type == TT_BUCKET
 							) {
 								if (
 									g_settings->getBool("enable_lavabuckets") == false
-									|| tool->getContent() == CONTENT_TOOLITEM_WBUCKET
-									|| tool->getContent() == CONTENT_TOOLITEM_TINBUCKET
+									|| tool->getContent() != CONTENT_TOOLITEM_STEELBUCKET
 								) {
 									mlist->deleteItem(item_i);
 									HandlePlayerHP(player,4);
@@ -3267,9 +3247,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 									|| material == CONTENT_APPLE_TREE
 									|| material == CONTENT_CONIFER_TREE
 								) && (
-									tool->getContent() == CONTENT_TOOLITEM_WAXE
-									|| tool->getContent() == CONTENT_TOOLITEM_STAXE
-									|| tool->getContent() == CONTENT_TOOLITEM_STEELAXE
+									tool_features.type == TT_AXE
 								)
 							) {
 								content_t c = CONTENT_WOOD;

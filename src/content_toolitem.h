@@ -5,6 +5,17 @@
 
 #define CONTENT_TOOLITEM_MASK 0x4000
 
+enum ToolType {
+	TT_NONE, // used only when checking against an item that isn't a tool
+	TT_SPECIAL, // special toolitems cannot dig
+	TT_AXE,
+	TT_PICK,
+	TT_SHOVEL,
+	TT_SHEAR,
+	TT_BUCKET,
+	TT_SWORD
+};
+
 struct ToolItemFeatures {
 	content_t content;
 	std::string texture;
@@ -22,6 +33,8 @@ struct ToolItemFeatures {
 	s16 drop_count;
 	// whether this tool can point at liquid nodes
 	bool liquids_pointable;
+	// the type of this tool
+	ToolType type;
 
 	ToolItemFeatures():
 		content(CONTENT_IGNORE),
@@ -32,7 +45,8 @@ struct ToolItemFeatures {
 		fuel_time(0.0),
 		edible(0),
 		drop_count(-1),
-		liquids_pointable(false)
+		liquids_pointable(false),
+		type(TT_NONE)
 	{}
 };
 
