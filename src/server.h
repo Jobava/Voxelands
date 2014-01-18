@@ -447,6 +447,7 @@ public:
 			dstream<<"WARNING: Auth not found for "<<name<<std::endl;
 		}
 	}
+	void setPlayerPassword(const char *name, const char *password) {m_authmanager.setPassword(name,password);}
 
 	std::string getPlayerCookie(std::string &name)
 	{

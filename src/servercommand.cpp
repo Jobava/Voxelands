@@ -321,6 +321,28 @@ void cmd_clearobjects(std::wostringstream &os,
 	ctx->flags |= SEND_TO_OTHERS;
 }
 
+void cmd_setpassword(std::wostringstream &os,
+	ServerCommandContext *ctx)
+{
+	if ((ctx->privs & PRIV_SERVER) ==0) {
+		os<<L"-!- You don't have permission to do that";
+		return;
+	}
+
+	if (ctx->parms.size() != 3) {
+		os<<L"-!- /setpassword <PLAYERNAME> <PASSWORD>";
+		return;
+	}
+
+	std::string name = wide_to_narrow(ctx->parms[1]);
+	std::string pass = translatePassword(name,ctx->parms[2]);
+	ctx->server->setPlayerPassword(name.c_str(), pass.c_str());
+
+	os<<L"-!- Password set for player '";
+	os<<ctx->parms[1];
+	os<<L"'";
+}
+
 void cmd_help(std::wostringstream &os,
 	ServerCommandContext *ctx)
 {
@@ -336,6 +358,9 @@ void cmd_help(std::wostringstream &os,
 				return;
 			}else if (ctx->parms[1] == L"setting") {
 				os<<L"-!- /#setting <SETTING> [= VALUE] - change or view a config setting";
+				return;
+			}else if (ctx->parms[1] == L"setpassword") {
+				os<<L"-!- /setpassword <PLAYERNAME> <PASSWORD> - change or set a player's password";
 				return;
 			}
 		}
@@ -384,9 +409,9 @@ void cmd_help(std::wostringstream &os,
 	}
 
 	os<<L"-!- Available commands: ";
-	os<<L"help status privs ";
+	os<<L"help status privs";
 	if ((privs&PRIV_SERVER) == PRIV_SERVER)
-		os<<L"shutdown setting clearobjects";
+		os<<L" shutdown setting clearobjects setpassword";
 	if ((privs&PRIV_SETTIME) == PRIV_SETTIME)
 		os<<L" time";
 	if ((privs&PRIV_TELEPORT) == PRIV_TELEPORT)
@@ -424,6 +449,8 @@ std::wstring processServerCommand(ServerCommandContext *ctx)
 		cmd_banunban(os, ctx);
 	}else if(ctx->parms[0] == L"me") {
 		cmd_me(os, ctx);
+	}else if(ctx->parms[0] == L"setpassword") {
+		cmd_setpassword(os, ctx);
 	}else if(ctx->parms[0] == L"clearobjects") {
 		cmd_clearobjects(os, ctx);
 	}else{
