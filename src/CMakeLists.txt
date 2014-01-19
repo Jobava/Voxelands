@@ -215,6 +215,7 @@ set(voxelands_SRCS
 # Server sources
 set(voxelandsserver_SRCS
 	${common_SRCS}
+	${audio_SRCS}
 	servermain.cpp
 )
 
