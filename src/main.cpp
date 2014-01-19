@@ -430,7 +430,6 @@ Doing currently:
 #include "config.h"
 #include "guiMainMenu.h"
 #include "mineral.h"
-#include "materials.h"
 #include "game.h"
 #include "keycode.h"
 #include "tile.h"

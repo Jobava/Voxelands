@@ -26,7 +26,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "main.h"
 #include "constants.h"
 #include "voxel.h"
-#include "materials.h"
 #include "mineral.h"
 #include "config.h"
 #include "servercommand.h"

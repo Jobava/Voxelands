@@ -106,7 +106,6 @@ set(common_SRCS
 	noise.cpp
 	mineral.cpp
 	porting.cpp
-	materials.cpp
 	defaultsettings.cpp
 	mapnode.cpp
 	voxel.cpp

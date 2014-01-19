@@ -55,7 +55,29 @@ struct ToolItemFeatures {
 		dig_time(3.)
 	{}
 };
+struct DiggingProperties
+{
+	DiggingProperties():
+		diggable(false),
+		time(0.0),
+		wear(0)
+	{
+	}
+	DiggingProperties(bool a_diggable, float a_time, u16 a_wear):
+		diggable(a_diggable),
+		time(a_time),
+		wear(a_wear)
+	{
+	}
+	bool diggable;
+	// Digging time in seconds
+	float time;
+	// Caused wear
+	u16 wear;
+};
 
+// For getting the default properties, set toolid=CONTENT_IGNORE
+DiggingProperties getDiggingProperties(content_t material, content_t toolid);
 void content_toolitem_init();
 ToolItemFeatures & content_toolitem_features(content_t i);
 ToolItemFeatures & content_toolitem_features(std::string subname);

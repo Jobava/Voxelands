@@ -31,7 +31,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "guiInventoryMenu.h"
 #include "guiTextInputMenu.h"
 #include "guiDeathScreen.h"
-#include "materials.h"
 #include "config.h"
 #include "clouds.h"
 #include "camera.h"

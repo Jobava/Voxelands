@@ -36,15 +36,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define WATER_VISC 1
 #define LAVA_VISC 7
 
-// TODO: Get rid of these and set up some attributes like toughness,
-//       fluffyness, and a funciton to calculate time and durability loss
-//       (and sound? and whatever else) from them
-void setStoneLikeDiggingProperties(DiggingPropertiesList &list, float toughness);
-void setDirtLikeDiggingProperties(DiggingPropertiesList &list, float toughness);
-void setWoodLikeDiggingProperties(DiggingPropertiesList &list, float toughness);
-void setLeafLikeDiggingProperties(DiggingPropertiesList &list, float toughness);
-void setWaterLikeDiggingProperties(DiggingPropertiesList &list, float toughness);
-
 static void content_mapnode_nodebox_stair(ContentFeatures *f)
 {
 	f->setNodeBox(core::aabbox3d<f32>(

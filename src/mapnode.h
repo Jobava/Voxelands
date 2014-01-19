@@ -41,7 +41,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 */
 typedef u16 content_t;
 #define MAX_CONTENT 0xfff
-#include "materials.h"
 
 /*
 	Initializes all kind of stuff in here.
