@@ -62,8 +62,11 @@ DiggingProperties getDiggingProperties(content_t content, content_t tool)
 			diggable = false;
 			break;
 		case TT_AXE:
-			if (c_features.type != CMT_WOOD && c_features.type != CMT_PLANT)
+			if (c_features.type == CMT_PLANT) {
+				time *= 2.;
+			}else if (c_features.type != CMT_WOOD) {
 				time *= 10.;
+			}
 			break;
 		case TT_PICK:
 			if (c_features.type != CMT_STONE)
@@ -80,9 +83,12 @@ DiggingProperties getDiggingProperties(content_t content, content_t tool)
 			break;
 		case TT_BUCKET:
 			if (c_features.type != CMT_LIQUID)
-				time = 10.;
+				time *= 10.;
 			break;
 		case TT_NONE:
+			if (c_features.type == CMT_DIRT)
+				time *= 0.75;
+			break;
 		default:
 			break;
 		}
