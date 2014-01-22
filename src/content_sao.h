@@ -98,7 +98,7 @@ public:
 	InventoryItem* createPickedUpItem(){return NULL;}
 	u16 punch(const std::string &toolname, v3f dir,
 			const std::string &playername);
-	bool isPeaceful(){return false;}
+	u8 level(){return MOB_AGGRESSIVE;}
 private:
 	void doDamage(u16 d);
 
@@ -159,7 +159,7 @@ public:
 	InventoryItem* createPickedUpItem(){return NULL;}
 	u16 punch(const std::string &toolname, v3f dir,
 			const std::string &playername);
-	bool isPeaceful();
+	u8 level();
 private:
 	void sendPosition();
 	void setPropertyDefaults();

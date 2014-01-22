@@ -755,6 +755,7 @@ static void getMob_dungeon_master(Settings &properties)
 	properties.set("player_hit_damage", "1");
 	properties.set("player_hit_distance", "1.0");
 	properties.set("player_hit_interval", "0.5");
+	properties.set("level","destructive");
 	properties.setBool("mindless_rage", myrand_range(0,100)==0);
 }
 
@@ -1790,40 +1791,35 @@ void ServerEnvironment::step(float dtime)
 								ServerActiveObject *obj;
 								Settings properties;
 								int i = myrand()%5;
-								if (g_settings->getBool("only_peaceful_mobs")) {
-									if (i == 1) {
-										actionstream<<"Rat spawns at "
-												<<PP(p1)<<std::endl;
-										obj = new RatSAO(this, 0, pos);
-										addActiveObject(obj);
-										active_object_count_wider++;
-									}
-								}else{
-									switch (i) {
-									case 0:
+								u8 mob_level = mobLevelI(g_settings->get("max_mob_level"));
+								switch (i) {
+								case 0:
+									getMob_dungeon_master(properties);
+									if (mobLevelI(properties.get("level")) >= mob_level) {
 										actionstream<<"A dungeon master spawns at "
-												<<PP(p1)<<std::endl;
-										getMob_dungeon_master(properties);
+											<<PP(p1)<<std::endl;
 										obj = new MobV2SAO(this, 0, pos, &properties);
 										addActiveObject(obj);
 										active_object_count_wider++;
-										break;
-									case 1:
-										actionstream<<"Rat spawns at "
-												<<PP(p1)<<std::endl;
-										obj = new RatSAO(this, 0, pos);
-										addActiveObject(obj);
-										active_object_count_wider++;
-										break;
-									case 2:
+									}
+									break;
+								case 1:
+									actionstream<<"Rat spawns at "
+											<<PP(p1)<<std::endl;
+									obj = new RatSAO(this, 0, pos);
+									addActiveObject(obj);
+									active_object_count_wider++;
+									break;
+								case 2:
+									if (mob_level > MOB_PASSIVE) {
 										actionstream<<"An oerkki spawns at "
-												<<PP(p1)<<std::endl;
+											<<PP(p1)<<std::endl;
 										obj = new Oerkki1SAO(this, 0, pos);
 										addActiveObject(obj);
 										active_object_count_wider++;
-										break;
-									default:;
 									}
+									break;
+								default:;
 								}
 							}
 						}
@@ -2422,7 +2418,7 @@ void ServerEnvironment::step(float dtime)
 
 		// This helps the objects to send data at the same time
 		bool send_recommended = false;
-		bool peaceful_mobs = g_settings->getBool("only_peaceful_mobs");
+		u8 mob_level = mobLevelI(g_settings->get("max_mob_level"));
 		m_send_recommended_timer += dtime;
 		if(m_send_recommended_timer > 0.10)
 		{
@@ -2436,10 +2432,8 @@ void ServerEnvironment::step(float dtime)
 		{
 			ServerActiveObject* obj = i.getNode()->getValue();
 			// Remove non-peaceful mobs on peaceful mode
-			if(peaceful_mobs){
-				if(!obj->isPeaceful())
-					obj->m_removed = true;
-			}
+			if(obj->level() > mob_level)
+				obj->m_removed = true;
 			// Don't step if is to be removed or stored statically
 			if(obj->m_removed || obj->m_pending_deactivation)
 				continue;

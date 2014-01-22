@@ -1426,9 +1426,9 @@ u16 MobV2SAO::punch(const std::string &toolname, v3f dir,
 	return 65536/100;
 }
 
-bool MobV2SAO::isPeaceful()
+u8 MobV2SAO::level()
 {
-	return m_properties->getBool("is_peaceful");
+	return mobLevelI(m_properties->get("level"));
 }
 
 void MobV2SAO::sendPosition()
@@ -1497,7 +1497,7 @@ void MobV2SAO::doDamage(u16 d)
 	}
 	else
 	{
-		actionstream<<"A "<<(isPeaceful()?"peaceful":"non-peaceful")
+		actionstream<<"A "<<m_properties->get("level")
 				<<" mob id="<<m_id<<" dies at "<<PP(m_base_position)<<std::endl;
 		// Die
 		m_hp = 0;
