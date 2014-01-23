@@ -1726,6 +1726,60 @@ void content_mapnode_init()
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
 
+	i = CONTENT_CACTUS_BLOSSOM;
+	f = &content_features(i);
+	f->description = std::string("Cactus Blossom");
+	f->setInventoryTexture("cactus_blossom.png");
+	f->setAllTextures("cactus_blossom.png");
+	f->setAllTextureFlags(0);
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_PLANTLIKE;
+	f->air_equivalent = false; // grass grows underneath
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->walkable = false;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/32;
+	f->type = CMT_WOOD;
+	f->hardness = 0.10;
+
+	i = CONTENT_CACTUS_FLOWER;
+	f = &content_features(i);
+	f->description = std::string("Cactus Flower");
+	f->setInventoryTexture("cactus_flower.png");
+	f->setAllTextures("cactus_flower.png");
+	f->setAllTextureFlags(0);
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_PLANTLIKE;
+	f->air_equivalent = false; // grass grows underneath
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CACTUS_BLOSSOM)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->walkable = false;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/32;
+	f->type = CMT_WOOD;
+	f->hardness = 0.10;
+
+	i = CONTENT_CACTUS_FRUIT;
+	f = &content_features(i);
+	f->description = std::string("Cactus Berry");
+	f->setInventoryTexture("cactus_fruit.png");
+	f->setAllTextures("cactus_fruit.png");
+	f->setAllTextureFlags(0);
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_PLANTLIKE;
+	f->air_equivalent = false; // grass grows underneath
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->walkable = false;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/32;
+	f->type = CMT_WOOD;
+	f->hardness = 0.10;
+
 	i = CONTENT_CACTUS;
 	f = &content_features(i);
 	f->description = std::string("Cactus");
