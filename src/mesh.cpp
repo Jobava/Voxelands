@@ -48,37 +48,58 @@ scene::IAnimatedMesh* createNodeBoxMesh(std::vector<aabb3f> nodeboxes, v3f scale
 		aabb3f box = *n;
 		v3f min = box.MinEdge;
 		v3f max = box.MaxEdge;
+		// Compute texture coords
+		f32 tx1 = (n->MinEdge.X/BS)+0.5;
+		f32 ty1 = (n->MinEdge.Y/BS)+0.5;
+		f32 tz1 = (n->MinEdge.Z/BS)+0.5;
+		f32 tx2 = (n->MaxEdge.X/BS)+0.5;
+		f32 ty2 = (n->MaxEdge.Y/BS)+0.5;
+		f32 tz2 = (n->MaxEdge.Z/BS)+0.5;
+		f32 txc[24] = {
+			// up
+			tx1, 1-tz2, tx2, 1-tz1,
+			// down
+			tx1, tz1, tx2, tz2,
+			// right
+			tz1, 1-ty2, tz2, 1-ty1,
+			// left
+			1-tz2, 1-ty2, 1-tz1, 1-ty1,
+			// back
+			1-tx2, 1-ty2, 1-tx1, 1-ty1,
+			// front
+			tx1, 1-ty2, tx2, 1-ty1,
+		};
 		video::S3DVertex vertices[24] = {
-			// Up
-			video::S3DVertex(min.X/BS,max.Y/BS,min.Z/BS, 0,1,0, c, 0,1),
-			video::S3DVertex(min.X/BS,max.Y/BS,max.Z/BS, 0,1,0, c, 0,0),
-			video::S3DVertex(max.X/BS,max.Y/BS,max.Z/BS, 0,1,0, c, 1,0),
-			video::S3DVertex(max.X/BS,max.Y/BS,min.Z/BS, 0,1,0, c, 1,1),
-			// Down
-			video::S3DVertex(min.X/BS,min.Y/BS,min.Z/BS, 0,-1,0, c, 0,0),
-			video::S3DVertex(max.X/BS,min.Y/BS,min.Z/BS, 0,-1,0, c, 1,0),
-			video::S3DVertex(max.X/BS,min.Y/BS,max.Z/BS, 0,-1,0, c, 1,1),
-			video::S3DVertex(min.X/BS,min.Y/BS,max.Z/BS, 0,-1,0, c, 0,1),
-			// Right
-			video::S3DVertex(max.X/BS,min.Y/BS,min.Z/BS, 1,0,0, c, 0,1),
-			video::S3DVertex(max.X/BS,max.Y/BS,min.Z/BS, 1,0,0, c, 0,0),
-			video::S3DVertex(max.X/BS,max.Y/BS,max.Z/BS, 1,0,0, c, 1,0),
-			video::S3DVertex(max.X/BS,min.Y/BS,max.Z/BS, 1,0,0, c, 1,1),
-			// Left
-			video::S3DVertex(min.X/BS,min.Y/BS,min.Z/BS, -1,0,0, c, 1,1),
-			video::S3DVertex(min.X/BS,min.Y/BS,max.Z/BS, -1,0,0, c, 0,1),
-			video::S3DVertex(min.X/BS,max.Y/BS,max.Z/BS, -1,0,0, c, 0,0),
-			video::S3DVertex(min.X/BS,max.Y/BS,min.Z/BS, -1,0,0, c, 1,0),
-			// Back
-			video::S3DVertex(min.X/BS,min.Y/BS,max.Z/BS, 0,0,1, c, 1,1),
-			video::S3DVertex(max.X/BS,min.Y/BS,max.Z/BS, 0,0,1, c, 0,1),
-			video::S3DVertex(max.X/BS,max.Y/BS,max.Z/BS, 0,0,1, c, 0,0),
-			video::S3DVertex(min.X/BS,max.Y/BS,max.Z/BS, 0,0,1, c, 1,0),
-			// Front
-			video::S3DVertex(min.X/BS,min.Y/BS,min.Z/BS, 0,0,-1, c, 0,1),
-			video::S3DVertex(min.X/BS,max.Y/BS,min.Z/BS, 0,0,-1, c, 0,0),
-			video::S3DVertex(max.X/BS,max.Y/BS,min.Z/BS, 0,0,-1, c, 1,0),
-			video::S3DVertex(max.X/BS,min.Y/BS,min.Z/BS, 0,0,-1, c, 1,1),
+			// up
+			video::S3DVertex(min.X/BS,max.Y/BS,max.Z/BS, 0,1,0, c, txc[0],txc[1]),
+			video::S3DVertex(max.X/BS,max.Y/BS,max.Z/BS, 0,1,0, c, txc[2],txc[1]),
+			video::S3DVertex(max.X/BS,max.Y/BS,min.Z/BS, 0,1,0, c, txc[2],txc[3]),
+			video::S3DVertex(min.X/BS,max.Y/BS,min.Z/BS, 0,1,0, c, txc[0],txc[3]),
+			// down
+			video::S3DVertex(min.X/BS,min.Y/BS,min.Z/BS, 0,-1,0, c, txc[4],txc[5]),
+			video::S3DVertex(max.X/BS,min.Y/BS,min.Z/BS, 0,-1,0, c, txc[6],txc[5]),
+			video::S3DVertex(max.X/BS,min.Y/BS,max.Z/BS, 0,-1,0, c, txc[6],txc[7]),
+			video::S3DVertex(min.X/BS,min.Y/BS,max.Z/BS, 0,-1,0, c, txc[4],txc[7]),
+			// right
+			video::S3DVertex(max.X/BS,max.Y/BS,min.Z/BS, 1,0,0, c, txc[ 8],txc[9]),
+			video::S3DVertex(max.X/BS,max.Y/BS,max.Z/BS, 1,0,0, c, txc[10],txc[9]),
+			video::S3DVertex(max.X/BS,min.Y/BS,max.Z/BS, 1,0,0, c, txc[10],txc[11]),
+			video::S3DVertex(max.X/BS,min.Y/BS,min.Z/BS, 1,0,0, c, txc[ 8],txc[11]),
+			// left
+			video::S3DVertex(min.X/BS,max.Y/BS,max.Z/BS, -1,0,0, c, txc[12],txc[13]),
+			video::S3DVertex(min.X/BS,max.Y/BS,min.Z/BS, -1,0,0, c, txc[14],txc[13]),
+			video::S3DVertex(min.X/BS,min.Y/BS,min.Z/BS, -1,0,0, c, txc[14],txc[15]),
+			video::S3DVertex(min.X/BS,min.Y/BS,max.Z/BS, -1,0,0, c, txc[12],txc[15]),
+			// back
+			video::S3DVertex(max.X/BS,max.Y/BS,max.Z/BS, 0,0,1, c, txc[16],txc[17]),
+			video::S3DVertex(min.X/BS,max.Y/BS,max.Z/BS, 0,0,1, c, txc[18],txc[17]),
+			video::S3DVertex(min.X/BS,min.Y/BS,max.Z/BS, 0,0,1, c, txc[18],txc[19]),
+			video::S3DVertex(max.X/BS,min.Y/BS,max.Z/BS, 0,0,1, c, txc[16],txc[19]),
+			// front
+			video::S3DVertex(min.X/BS,max.Y/BS,min.Z/BS, 0,0,-1, c, txc[20],txc[21]),
+			video::S3DVertex(max.X/BS,max.Y/BS,min.Z/BS, 0,0,-1, c, txc[22],txc[21]),
+			video::S3DVertex(max.X/BS,min.Y/BS,min.Z/BS, 0,0,-1, c, txc[22],txc[23]),
+			video::S3DVertex(min.X/BS,min.Y/BS,min.Z/BS, 0,0,-1, c, txc[20],txc[23]),
 		};
 
 		u16 indices[6] = {0,1,2,2,3,0};
