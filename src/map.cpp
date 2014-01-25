@@ -2236,36 +2236,6 @@ MapBlock* ServerMap::finishBlockMake(mapgen::BlockMakeData *data,
 #if 1
 		// Center block
 		lighting_update_blocks.insert(block->getPos(), block);
-
-		/*{
-			s16 x = 0;
-			s16 z = 0;
-			v3s16 p = block->getPos()+v3s16(x,1,z);
-			lighting_update_blocks[p] = getBlockNoCreateNoEx(p);
-		}*/
-#endif
-#if 0
-		// All modified blocks
-		// NOTE: Should this be done? If this is not done, then the lighting
-		// of the others will be updated in a different place, one by one, i
-		// think... or they might not? Well, at least they are left marked as
-		// "lighting expired"; it seems that is not handled at all anywhere,
-		// so enabling this will slow it down A LOT because otherwise it
-		// would not do this at all. This causes the black trees.
-		for(core::map<v3s16, MapBlock*>::Iterator
-				i = changed_blocks.getIterator();
-				i.atEnd() == false; i++)
-		{
-			lighting_update_blocks.insert(i.getNode()->getKey(),
-					i.getNode()->getValue());
-		}
-		/*// Also force-add all the upmost blocks for proper sunlight
-		for(s16 x=-1; x<=1; x++)
-		for(s16 z=-1; z<=1; z++)
-		{
-			v3s16 p = block->getPos()+v3s16(x,1,z);
-			lighting_update_blocks[p] = getBlockNoCreateNoEx(p);
-		}*/
 #endif
 		updateLighting(lighting_update_blocks, changed_blocks);
 
@@ -2285,11 +2255,6 @@ MapBlock* ServerMap::finishBlockMake(mapgen::BlockMakeData *data,
 		if(enable_mapgen_debug_info == false)
 			t.stop(true); // Hide output
 	}
-
-	/*
-		Add random objects to block
-	*/
-	mapgen::add_random_objects(block);
 
 	/*
 		Go through changed blocks

@@ -24,7 +24,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "mapblock.h"
 #include "map.h"
 #include "mineral.h"
-//#include "serverobject.h"
 #include "content_sao.h"
 
 namespace mapgen
@@ -33,52 +32,6 @@ namespace mapgen
 /*
 	Some helper functions for the map generator
 */
-
-#if 0
-static s16 find_ground_level(VoxelManipulator &vmanip, v2s16 p2d)
-{
-	v3s16 em = vmanip.m_area.getExtent();
-	s16 y_nodes_max = vmanip.m_area.MaxEdge.Y;
-	s16 y_nodes_min = vmanip.m_area.MinEdge.Y;
-	u32 i = vmanip.m_area.index(v3s16(p2d.X, y_nodes_max, p2d.Y));
-	s16 y;
-	for(y=y_nodes_max; y>=y_nodes_min; y--)
-	{
-		MapNode &n = vmanip.m_data[i];
-		if(content_walkable(n.d))
-			break;
-
-		vmanip.m_area.add_y(em, i, -1);
-	}
-	if(y >= y_nodes_min)
-		return y;
-	else
-		return y_nodes_min;
-}
-
-static s16 find_ground_level_clever(VoxelManipulator &vmanip, v2s16 p2d)
-{
-	v3s16 em = vmanip.m_area.getExtent();
-	s16 y_nodes_max = vmanip.m_area.MaxEdge.Y;
-	s16 y_nodes_min = vmanip.m_area.MinEdge.Y;
-	u32 i = vmanip.m_area.index(v3s16(p2d.X, y_nodes_max, p2d.Y));
-	s16 y;
-	for(y=y_nodes_max; y>=y_nodes_min; y--)
-	{
-		MapNode &n = vmanip.m_data[i];
-		if(content_walkable(n.d)
-				&& n.getContent() != CONTENT_TREE
-				&& n.getContent() != CONTENT_LEAVES)
-			break;
-
-		vmanip.m_area.add_y(em, i, -1);
-	}
-	if(y >= y_nodes_min)
-		return y;
-	else
-		return y_nodes_min;
-}
-#endif
 
 void make_tree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
 {
@@ -170,7 +123,6 @@ void make_appletree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
 	p1.Y -= 1;
 
 	VoxelArea leaves_a(v3s16(-2,-1,-2), v3s16(2,2,2));
-	//SharedPtr<u8> leaves_d(new u8[leaves_a.getVolume()]);
 	Buffer<u8> leaves_d(leaves_a.getVolume());
 	for(s32 i=0; i<leaves_a.getVolume(); i++)
 		leaves_d[i] = 0;
@@ -289,7 +241,6 @@ void make_largetree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
 	p1.Y -= 1;
 
 	VoxelArea leaves_a(v3s16(-3,-3,-3), v3s16(3,3,3));
-	//SharedPtr<u8> leaves_d(new u8[leaves_a.getVolume()]);
 	Buffer<u8> leaves_d(leaves_a.getVolume());
 	for(s32 i=0; i<leaves_a.getVolume(); i++)
 		leaves_d[i] = 0;
@@ -482,6 +433,8 @@ void make_cactus(VoxelManipulator &vmanip, v3s16 p0)
 	MapNode cactusnode(CONTENT_CACTUS);
 
 	s16 trunk_h = 3;
+	if (myrand()%5000 == 0)
+		trunk_h = 4;
 	v3s16 p1 = p0;
 	for(s16 ii=0; ii<trunk_h; ii++)
 	{
@@ -490,171 +443,6 @@ void make_cactus(VoxelManipulator &vmanip, v3s16 p0)
 		p1.Y++;
 	}
 }
-
-#if 0
-static void make_randomstone(VoxelManipulator &vmanip, v3s16 p0)
-{
-	MapNode stonenode(CONTENT_STONE);
-
-	s16 size = myrand_range(3, 6);
-
-	VoxelArea stone_a(v3s16(-2,0,-2), v3s16(2,size,2));
-	Buffer<u8> stone_d(stone_a.getVolume());
-	for(s32 i=0; i<stone_a.getVolume(); i++)
-		stone_d[i] = 0;
-
-	// Force stone at bottom to make it usually touch the ground
-	{
-		for(s16 z=0; z<=0; z++)
-		for(s16 y=0; y<=0; y++)
-		for(s16 x=0; x<=0; x++)
-		{
-			stone_d[stone_a.index(v3s16(x,y,z))] = 1;
-		}
-	}
-
-	// Generate from perlin noise
-	for(s16 z=stone_a.MinEdge.Z; z<=stone_a.MaxEdge.Z; z++)
-	for(s16 y=stone_a.MinEdge.Y; y<=stone_a.MaxEdge.Y; y++)
-	for(s16 x=stone_a.MinEdge.X; x<=stone_a.MaxEdge.X; x++)
-	{
-		double d = noise3d_perlin((float)x/3.,(float)z/3.,(float)y/3.,
-				p0.Z*4243+p0.Y*34+p0.X, 2, 0.5);
-		if(z == stone_a.MinEdge.Z || z == stone_a.MaxEdge.Z)
-			d -= 0.3;
-		if(/*y == stone_a.MinEdge.Y ||*/ y == stone_a.MaxEdge.Y)
-			d -= 0.3;
-		if(x == stone_a.MinEdge.X || x == stone_a.MaxEdge.X)
-			d -= 0.3;
-		if(d > 0.0)
-		{
-			u32 vi = stone_a.index(v3s16(x,y,z));
-			stone_d[vi] = 1;
-		}
-	}
-
-	/*// Add stone randomly
-	for(u32 iii=0; iii<7; iii++)
-	{
-		s16 d = 1;
-
-		v3s16 p(
-			myrand_range(stone_a.MinEdge.X, stone_a.MaxEdge.X-d),
-			myrand_range(stone_a.MinEdge.Y, stone_a.MaxEdge.Y-d),
-			myrand_range(stone_a.MinEdge.Z, stone_a.MaxEdge.Z-d)
-		);
-
-		for(s16 z=0; z<=d; z++)
-		for(s16 y=0; y<=d; y++)
-		for(s16 x=0; x<=d; x++)
-		{
-			stone_d[stone_a.index(p+v3s16(x,y,z))] = 1;
-		}
-	}*/
-
-	// Blit stone to vmanip
-	for(s16 z=stone_a.MinEdge.Z; z<=stone_a.MaxEdge.Z; z++)
-	for(s16 y=stone_a.MinEdge.Y; y<=stone_a.MaxEdge.Y; y++)
-	for(s16 x=stone_a.MinEdge.X; x<=stone_a.MaxEdge.X; x++)
-	{
-		v3s16 p(x,y,z);
-		p += p0;
-		if(vmanip.m_area.contains(p) == false)
-			continue;
-		u32 vi = vmanip.m_area.index(p);
-		if(vmanip.m_data[vi].getContent() != CONTENT_AIR
-				&& vmanip.m_data[vi].getContent() != CONTENT_IGNORE)
-			continue;
-		u32 i = stone_a.index(x,y,z);
-		if(stone_d[i] == 1)
-			vmanip.m_data[vi] = stonenode;
-	}
-}
-#endif
-
-#if 0
-static void make_largestone(VoxelManipulator &vmanip, v3s16 p0)
-{
-	MapNode stonenode(CONTENT_STONE);
-
-	s16 size = myrand_range(8, 16);
-
-	VoxelArea stone_a(v3s16(-size/2,0,-size/2), v3s16(size/2,size,size/2));
-	Buffer<u8> stone_d(stone_a.getVolume());
-	for(s32 i=0; i<stone_a.getVolume(); i++)
-		stone_d[i] = 0;
-
-	// Force stone at bottom to make it usually touch the ground
-	{
-		for(s16 z=0; z<=0; z++)
-		for(s16 y=0; y<=0; y++)
-		for(s16 x=0; x<=0; x++)
-		{
-			stone_d[stone_a.index(v3s16(x,y,z))] = 1;
-		}
-	}
-
-	// Generate from perlin noise
-	for(s16 z=stone_a.MinEdge.Z; z<=stone_a.MaxEdge.Z; z++)
-	for(s16 y=stone_a.MinEdge.Y; y<=stone_a.MaxEdge.Y; y++)
-	for(s16 x=stone_a.MinEdge.X; x<=stone_a.MaxEdge.X; x++)
-	{
-		double d = 1.0;
-		d += noise3d_perlin((float)x/10.,(float)z/10.,(float)y/10.,
-				p0.Z*5123+p0.Y*2439+p0.X, 2, 0.5);
-		double mid_z = (stone_a.MaxEdge.Z+stone_a.MinEdge.Z)/2;
-		double mid_x = (stone_a.MaxEdge.X+stone_a.MinEdge.X)/2;
-		double mid_y = (stone_a.MaxEdge.Y+stone_a.MinEdge.Y)/2;
-		double dz = (double)z-mid_z;
-		double dx = (double)x-mid_x;
-		double dy = MYMAX(0, (double)y-mid_y);
-		double r = sqrt(dz*dz+dx*dx+dy*dy);
-		d /= (2*r/size)*2 + 0.01;
-		if(d > 1.0)
-		{
-			u32 vi = stone_a.index(v3s16(x,y,z));
-			stone_d[vi] = 1;
-		}
-	}
-
-	/*// Add stone randomly
-	for(u32 iii=0; iii<7; iii++)
-	{
-		s16 d = 1;
-
-		v3s16 p(
-			myrand_range(stone_a.MinEdge.X, stone_a.MaxEdge.X-d),
-			myrand_range(stone_a.MinEdge.Y, stone_a.MaxEdge.Y-d),
-			myrand_range(stone_a.MinEdge.Z, stone_a.MaxEdge.Z-d)
-		);
-
-		for(s16 z=0; z<=d; z++)
-		for(s16 y=0; y<=d; y++)
-		for(s16 x=0; x<=d; x++)
-		{
-			stone_d[stone_a.index(p+v3s16(x,y,z))] = 1;
-		}
-	}*/
-
-	// Blit stone to vmanip
-	for(s16 z=stone_a.MinEdge.Z; z<=stone_a.MaxEdge.Z; z++)
-	for(s16 y=stone_a.MinEdge.Y; y<=stone_a.MaxEdge.Y; y++)
-	for(s16 x=stone_a.MinEdge.X; x<=stone_a.MaxEdge.X; x++)
-	{
-		v3s16 p(x,y,z);
-		p += p0;
-		if(vmanip.m_area.contains(p) == false)
-			continue;
-		u32 vi = vmanip.m_area.index(p);
-		/*if(vmanip.m_data[vi].getContent() != CONTENT_AIR
-				&& vmanip.m_data[vi].getContent() != CONTENT_IGNORE)
-			continue;*/
-		u32 i = stone_a.index(x,y,z);
-		if(stone_d[i] == 1)
-			vmanip.m_data[vi] = stonenode;
-	}
-}
-#endif
 
 /*
 	Dungeon making routines
@@ -1026,16 +814,6 @@ public:
 				roomplace = doorplace +
 						v3s16(m_random.range(-roomsize.X+2,-2),-1,-roomsize.Z+1);
 #endif
-#if 0
-			if(doordir == v3s16(1,0,0)) // X+
-				roomplace = doorplace + v3s16(0,-1,-roomsize.Z/2);
-			if(doordir == v3s16(-1,0,0)) // X-
-				roomplace = doorplace + v3s16(-roomsize.X+1,-1,-roomsize.Z/2);
-			if(doordir == v3s16(0,0,1)) // Z+
-				roomplace = doorplace + v3s16(-roomsize.X/2,-1,0);
-			if(doordir == v3s16(0,0,-1)) // Z-
-				roomplace = doorplace + v3s16(-roomsize.X/2,-1,-roomsize.Z+1);
-#endif
 
 			// Check fit
 			bool fits = true;
@@ -1250,40 +1028,18 @@ static void make_nc(VoxelManipulator &vmanip, PseudoRandom &random)
 	contour function, which affects the shape of the output considerably.
 */
 #define CAVE_NOISE_SCALE 12.0
-//#define CAVE_NOISE_SCALE 10.0
-//#define CAVE_NOISE_SCALE 7.5
-//#define CAVE_NOISE_SCALE 5.0
-//#define CAVE_NOISE_SCALE 1.0
-
-//#define CAVE_NOISE_THRESHOLD (2.5/CAVE_NOISE_SCALE)
 #define CAVE_NOISE_THRESHOLD (1.5/CAVE_NOISE_SCALE)
 
 NoiseParams get_cave_noise1_params(u64 seed)
 {
-	/*return NoiseParams(NOISE_PERLIN_CONTOUR, seed+52534, 5, 0.7,
-			200, CAVE_NOISE_SCALE);*/
-	/*return NoiseParams(NOISE_PERLIN_CONTOUR, seed+52534, 4, 0.7,
-			100, CAVE_NOISE_SCALE);*/
-	/*return NoiseParams(NOISE_PERLIN_CONTOUR, seed+52534, 5, 0.6,
-			100, CAVE_NOISE_SCALE);*/
-	/*return NoiseParams(NOISE_PERLIN_CONTOUR, seed+52534, 5, 0.3,
-			100, CAVE_NOISE_SCALE);*/
 	return NoiseParams(NOISE_PERLIN_CONTOUR, seed+52534, 4, 0.5,
 			50, CAVE_NOISE_SCALE);
-	//return NoiseParams(NOISE_CONSTANT_ONE);
 }
 
 NoiseParams get_cave_noise2_params(u64 seed)
 {
-	/*return NoiseParams(NOISE_PERLIN_CONTOUR_FLIP_YZ, seed+10325, 5, 0.7,
-			200, CAVE_NOISE_SCALE);*/
-	/*return NoiseParams(NOISE_PERLIN_CONTOUR_FLIP_YZ, seed+10325, 4, 0.7,
-			100, CAVE_NOISE_SCALE);*/
-	/*return NoiseParams(NOISE_PERLIN_CONTOUR_FLIP_YZ, seed+10325, 5, 0.3,
-			100, CAVE_NOISE_SCALE);*/
 	return NoiseParams(NOISE_PERLIN_CONTOUR_FLIP_YZ, seed+10325, 4, 0.5,
 			50, CAVE_NOISE_SCALE);
-	//return NoiseParams(NOISE_CONSTANT_ONE);
 }
 
 NoiseParams get_ground_noise1_params(u64 seed)
@@ -1320,8 +1076,6 @@ bool is_cave(u64 seed, v3s16 p)
 */
 bool val_is_ground(double ground_noise1_val, v3s16 p, u64 seed)
 {
-	//return ((double)p.Y < ground_noise1_val);
-
 	double f = 0.55 + noise2d_perlin(
 			0.5+(float)p.X/250, 0.5+(float)p.Z/250,
 			seed+920381, 3, 0.45);
@@ -1332,8 +1086,6 @@ bool val_is_ground(double ground_noise1_val, v3s16 p, u64 seed)
 	double h = WATER_LEVEL + 10 * noise2d_perlin(
 			0.5+(float)p.X/250, 0.5+(float)p.Z/250,
 			seed+84174, 4, 0.5);
-	/*double f = 1;
-	double h = 0;*/
 	return ((double)p.Y - h < ground_noise1_val * f);
 }
 
@@ -1349,9 +1101,6 @@ bool is_ground(u64 seed, v3s16 p)
 // Amount of trees per area in nodes
 double tree_amount_2d(u64 seed, v2s16 p)
 {
-	/*double noise = noise2d_perlin(
-			0.5+(float)p.X/250, 0.5+(float)p.Y/250,
-			seed+2, 5, 0.66);*/
 	double noise = noise2d_perlin(
 			0.5+(float)p.X/125, 0.5+(float)p.Y/125,
 			seed+2, 4, 0.66);
@@ -1374,20 +1123,6 @@ double surface_humidity_2d(u64 seed, v2s16 p)
 		noise = 1.0;
 	return noise;
 }
-
-#if 0
-double randomstone_amount_2d(u64 seed, v2s16 p)
-{
-	double noise = noise2d_perlin(
-			0.5+(float)p.X/250, 0.5+(float)p.Y/250,
-			seed+3829434, 5, 0.66);
-	double zeroval = 0.1;
-	if(noise < zeroval)
-		return 0;
-	else
-		return 0.01 * (noise-zeroval) / (1.0-zeroval);
-}
-#endif
 
 double largestone_amount_2d(u64 seed, v2s16 p)
 {
@@ -1546,74 +1281,6 @@ bool block_is_underground(u64 seed, v3s16 blockpos)
 		return false;
 }
 
-#if 0
-#define AVERAGE_MUD_AMOUNT 4
-
-double base_rock_level_2d(u64 seed, v2s16 p)
-{
-	// The base ground level
-	double base = (double)WATER_LEVEL - (double)AVERAGE_MUD_AMOUNT
-			+ 20. * noise2d_perlin(
-			0.5+(float)p.X/500., 0.5+(float)p.Y/500.,
-			(seed>>32)+654879876, 6, 0.6);
-
-	/*// A bit hillier one
-	double base2 = WATER_LEVEL - 4.0 + 40. * noise2d_perlin(
-			0.5+(float)p.X/250., 0.5+(float)p.Y/250.,
-			(seed>>27)+90340, 6, 0.69);
-	if(base2 > base)
-		base = base2;*/
-#if 1
-	// Higher ground level
-	double higher = (double)WATER_LEVEL + 25. + 35. * noise2d_perlin(
-			0.5+(float)p.X/250., 0.5+(float)p.Y/250.,
-			seed+85039, 5, 0.69);
-	//higher = 30; // For debugging
-
-	// Limit higher to at least base
-	if(higher < base)
-		higher = base;
-
-	// Steepness factor of cliffs
-	double b = 1.0 + 1.0 * noise2d_perlin(
-			0.5+(float)p.X/250., 0.5+(float)p.Y/250.,
-			seed-932, 7, 0.7);
-	b = rangelim(b, 0.0, 1000.0);
-	b = pow(b, 5);
-	b *= 7;
-	b = rangelim(b, 3.0, 1000.0);
-	//dstream<<"b="<<b<<std::endl;
-	//double b = 20;
-
-	// Offset to more low
-	double a_off = -0.2;
-	// High/low selector
-	/*double a = 0.5 + b * (a_off + noise2d_perlin(
-			0.5+(float)p.X/500., 0.5+(float)p.Y/500.,
-			seed-359, 6, 0.7));*/
-	double a = (double)0.5 + b * (a_off + noise2d_perlin(
-			0.5+(float)p.X/250., 0.5+(float)p.Y/250.,
-			seed-359, 5, 0.60));
-	// Limit
-	a = rangelim(a, 0.0, 1.0);
-
-	//dstream<<"a="<<a<<std::endl;
-
-	double h = base*(1.0-a) + higher*a;
-#else
-	double h = base;
-#endif
-	return h;
-}
-
-double get_mud_add_amount(u64 seed, v2s16 p)
-{
-	return ((float)AVERAGE_MUD_AMOUNT + 3.0 * noise2d_perlin(
-			0.5+(float)p.X/200, 0.5+(float)p.Y/200,
-			seed+91013, 3, 0.55));
-}
-#endif
-
 bool get_have_sand(u64 seed, v2s16 p2d)
 {
 	// Determine whether to have sand here
@@ -1622,75 +1289,6 @@ bool get_have_sand(u64 seed, v2s16 p2d)
 			seed+59420, 3, 0.50);
 
 	return (sandnoise > -0.15);
-}
-
-/*
-	Adds random objects to block, depending on the content of the block
-*/
-void add_random_objects(MapBlock *block)
-{
-#if 0
-	for(s16 z0=0; z0<MAP_BLOCKSIZE; z0++)
-	for(s16 x0=0; x0<MAP_BLOCKSIZE; x0++)
-	{
-		bool last_node_walkable = false;
-		for(s16 y0=0; y0<MAP_BLOCKSIZE; y0++)
-		{
-			v3s16 p(x0,y0,z0);
-			MapNode n = block->getNodeNoEx(p);
-			if(n.getContent() == CONTENT_IGNORE)
-				continue;
-			if(content_features(n).liquid_type != LIQUID_NONE)
-				continue;
-			if(content_features(n).walkable)
-			{
-				last_node_walkable = true;
-				continue;
-			}
-			if(last_node_walkable)
-			{
-				// If block contains light information
-				if(content_features(n).param_type == CPT_LIGHT)
-				{
-					if(n.getLight(LIGHTBANK_DAY) <= 3)
-					{
-						if(myrand() % 300 == 0)
-						{
-							v3f pos_f = intToFloat(p+block->getPosRelative(), BS);
-							pos_f.Y -= BS*0.4;
-							ServerActiveObject *obj = new RatSAO(NULL, 0, pos_f);
-							std::string data = obj->getStaticData();
-							StaticObject s_obj(obj->getType(),
-									obj->getBasePosition(), data);
-							// Add some
-							block->m_static_objects.insert(0, s_obj);
-							block->m_static_objects.insert(0, s_obj);
-							block->m_static_objects.insert(0, s_obj);
-							block->m_static_objects.insert(0, s_obj);
-							block->m_static_objects.insert(0, s_obj);
-							block->m_static_objects.insert(0, s_obj);
-							delete obj;
-						}
-						if(myrand() % 1000 == 0)
-						{
-							v3f pos_f = intToFloat(p+block->getPosRelative(), BS);
-							pos_f.Y -= BS*0.4;
-							ServerActiveObject *obj = new Oerkki1SAO(NULL,0,pos_f);
-							std::string data = obj->getStaticData();
-							StaticObject s_obj(obj->getType(),
-									obj->getBasePosition(), data);
-							// Add one
-							block->m_static_objects.insert(0, s_obj);
-							delete obj;
-						}
-					}
-				}
-			}
-			last_node_walkable = false;
-		}
-	}
-	block->setChangedFlag();
-#endif
 }
 
 void make_block(BlockMakeData *data)
@@ -1726,7 +1324,6 @@ void make_block(BlockMakeData *data)
 
 	s16 approx_groundlevel = (s16)get_sector_average_ground_level(
 			data->seed, v2s16(blockpos.X, blockpos.Z));
-	//dstream<<"approx_groundlevel="<<approx_groundlevel<<std::endl;
 
 	s16 approx_ground_depth = approx_groundlevel - (node_min.Y+MAP_BLOCKSIZE/2);
 
@@ -1739,42 +1336,6 @@ void make_block(BlockMakeData *data)
 			data->seed, v2s16(blockpos.X, blockpos.Z), 1);
 	// Maximum amount of ground above the bottom of the central block
 	s16 maximum_ground_depth = maximum_groundlevel - node_min.Y;
-
-	#if 0
-	/*
-		Special case for high air or water: Just fill with air and water.
-	*/
-	if(maximum_ground_depth < -20)
-	{
-		for(s16 x=node_min.X; x<=node_max.X; x++)
-		for(s16 z=node_min.Z; z<=node_max.Z; z++)
-		{
-			// Node position
-			v2s16 p2d(x,z);
-			{
-				// Use fast index incrementing
-				v3s16 em = vmanip.m_area.getExtent();
-				u32 i = vmanip.m_area.index(v3s16(p2d.X, node_min.Y, p2d.Y));
-				for(s16 y=node_min.Y; y<=node_max.Y; y++)
-				{
-					// Only modify places that have no content
-					if(vmanip.m_data[i].getContent() == CONTENT_IGNORE)
-					{
-						if(y <= WATER_LEVEL)
-							vmanip.m_data[i] = MapNode(CONTENT_WATERSOURCE);
-						else
-							vmanip.m_data[i] = MapNode(CONTENT_AIR);
-					}
-
-					data->vmanip->m_area.add_y(em, i, 1);
-				}
-			}
-		}
-
-		// We're done
-		return;
-	}
-	#endif
 
 	/*
 		If block is deep underground, this is set to true and ground
@@ -1826,7 +1387,6 @@ void make_block(BlockMakeData *data)
 			Density noise
 		*/
 		if(all_is_ground_except_caves == false)
-			//noisebuf_ground.create(data->seed+983240, 6, 0.60, false,
 			noisebuf_ground.create(get_ground_noise1_params(data->seed),
 					minpos_f.X, minpos_f.Y, minpos_f.Z,
 					maxpos_f.X, maxpos_f.Y, maxpos_f.Z,
@@ -1967,8 +1527,6 @@ void make_block(BlockMakeData *data)
 		/*
 			Add coal
 		*/
-		//for(s16 i=0; i < MYMAX(0, 50 - abs(node_min.Y+8 - (-30))); i++)
-		//for(s16 i=0; i<50; i++)
 		u16 coal_amount = 30;
 		u16 coal_rareness = 60 / coal_amount;
 		if(coal_rareness == 0)
@@ -2074,11 +1632,6 @@ void make_block(BlockMakeData *data)
 		Add dungeons
 	*/
 
-	//if(node_min.Y < approx_groundlevel)
-	//if(myrand() % 3 == 0)
-	//if(myrand() % 3 == 0 && node_min.Y < approx_groundlevel)
-	//if(myrand() % 100 == 0 && node_min.Y < approx_groundlevel)
-	//float dungeon_rarity = g_settings.getFloat("dungeon_rarity");
 	float dungeon_rarity = 0.02;
 	if(((noise3d(blockpos.X,blockpos.Y,blockpos.Z,data->seed)+1.0)/2.0)
 			< dungeon_rarity
@@ -2141,11 +1694,6 @@ void make_block(BlockMakeData *data)
 							vmanip.m_data[i].setContent(CONTENT_MOSSYCOBBLE);
 						}
 					}
-					/*else if(vmanip.m_flags[i] & VMANIP_FLAG_DUNGEON_INSIDE)
-					{
-						if(wetness > 1.2)
-							vmanip.m_data[i].setContent(CONTENT_MUD);
-					}*/
 					data->vmanip->m_area.add_y(em, i, -1);
 				}
 			}
@@ -2210,7 +1758,6 @@ void make_block(BlockMakeData *data)
 		If close to ground level
 	*/
 
-	//if(abs(approx_ground_depth) < 30)
 	if(minimum_ground_depth < 5 && maximum_ground_depth > -5)
 	{
 		/*
@@ -2320,7 +1867,6 @@ void make_block(BlockMakeData *data)
 		{
 			s16 x = treerandom.range(node_min.X, node_max.X);
 			s16 z = treerandom.range(node_min.Z, node_max.Z);
-			//s16 y = find_ground_level(data->vmanip, v2s16(x,z));
 			s16 y = find_ground_level_from_noise(data->seed, v2s16(x,z), 4);
 			// Don't make a tree under water level
 			if(y < WATER_LEVEL)
@@ -2365,7 +1911,6 @@ void make_block(BlockMakeData *data)
 				else if((n->getContent() == CONTENT_MUD || n->getContent() == CONTENT_GRASS) && y > WATER_LEVEL + 2)
 				{
 					p.Y++;
-					//if(surface_humidity_2d(data->seed, v2s16(x, y)) < 0.5)
 					if (is_jungle == false || y > 30) {
 						// connifers
 						if (y > 45) {
@@ -2445,85 +1990,11 @@ void make_block(BlockMakeData *data)
 					continue;
 				if(vmanip.m_data[vmanip.m_area.index(p)].getContent() != CONTENT_AIR)
 					continue;
-				/*p.Y--;
-				if(vmanip.m_area.contains(p))
-					vmanip.m_data[vmanip.m_area.index(p)] = CONTENT_MUD;
-				p.Y++;*/
 				if(vmanip.m_area.contains(p))
 					vmanip.m_data[vmanip.m_area.index(p)] = CONTENT_JUNGLEGRASS;
 			}
 		}
-
-#if 0
-		/*
-			Add some kind of random stones
-		*/
-
-		u32 random_stone_count = block_area_nodes *
-				randomstone_amount_2d(data->seed, p2d_center);
-		// Put in random places on part of division
-		for(u32 i=0; i<random_stone_count; i++)
-		{
-			s16 x = myrand_range(node_min.X, node_max.X);
-			s16 z = myrand_range(node_min.Z, node_max.Z);
-			s16 y = find_ground_level_from_noise(data->seed, v2s16(x,z), 1);
-			// Don't add under water level
-			/*if(y < WATER_LEVEL)
-				continue;*/
-			// Don't add if doesn't belong to this block
-			if(y < node_min.Y || y > node_max.Y)
-				continue;
-			v3s16 p(x,y,z);
-			// Filter placement
-			/*{
-				u32 i = data->vmanip->m_area.index(v3s16(p));
-				MapNode *n = &data->vmanip->m_data[i];
-				if(n->getContent() != CONTENT_MUD && n->getContent() != CONTENT_GRASS)
-					continue;
-			}*/
-			// Will be placed one higher
-			p.Y++;
-			// Add it
-			make_randomstone(data->vmanip, p);
-		}
-#endif
-
-#if 0
-		/*
-			Add larger stones
-		*/
-
-		u32 large_stone_count = block_area_nodes *
-				largestone_amount_2d(data->seed, p2d_center);
-		//u32 large_stone_count = 1;
-		// Put in random places on part of division
-		for(u32 i=0; i<large_stone_count; i++)
-		{
-			s16 x = myrand_range(node_min.X, node_max.X);
-			s16 z = myrand_range(node_min.Z, node_max.Z);
-			s16 y = find_ground_level_from_noise(data->seed, v2s16(x,z), 1);
-			// Don't add under water level
-			/*if(y < WATER_LEVEL)
-				continue;*/
-			// Don't add if doesn't belong to this block
-			if(y < node_min.Y || y > node_max.Y)
-				continue;
-			v3s16 p(x,y,z);
-			// Filter placement
-			/*{
-				u32 i = data->vmanip->m_area.index(v3s16(p));
-				MapNode *n = &data->vmanip->m_data[i];
-				if(n->getContent() != CONTENT_MUD && n->getContent() != CONTENT_GRASS)
-					continue;
-			}*/
-			// Will be placed one lower
-			p.Y--;
-			// Add it
-			make_largestone(data->vmanip, p);
-		}
-#endif
 	}
-
 }
 
 BlockMakeData::BlockMakeData():

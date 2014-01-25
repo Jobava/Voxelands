@@ -38,9 +38,6 @@ namespace mapgen
 	// Main map generation routine
 	void make_block(BlockMakeData *data);
 
-	// Add objects according to block content
-	void add_random_objects(MapBlock *block);
-
 	// Add a tree
 	void make_tree(ManualMapVoxelManipulator &vmanip, v3s16 p0);
 	// Add an apple tree
