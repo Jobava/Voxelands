@@ -1422,83 +1422,62 @@ void ServerEnvironment::step(float dtime)
 				// cactus flowers and fruit
 				case CONTENT_CACTUS:
 				{
-					if(myrand()%5 == 0)
-					{
+					if (myrand()%50 == 0) {
 						bool fully_grown = false;
 						int found = 1;
 						v3s16 p_test = p;
 						MapNode n_test = m_map->getNodeNoEx(v3s16(p.X, p.Y+1, p.Z));
-						
-						// can't grow anything if there's something above the cactus
-						if(n_test.getContent() != CONTENT_AIR)
-						{
-							break;
-						}
 
-						while(fully_grown == false)
-						{
+						// can't grow anything if there's something above the cactus
+						if (n_test.getContent() != CONTENT_AIR)
+							break;
+
+						while (fully_grown == false) {
 							p_test.Y--;
 							n_test = m_map->getNodeNoEx(p_test);
 
 							// look down the cactus counting the number of cactus nodes
-							if(n_test.getContent() == CONTENT_CACTUS)
-							{
+							if (n_test.getContent() == CONTENT_CACTUS) {
 								found++;
-								
+
 								// cacti don't grow above 4 naturally, don't grow flowers on tall cactus-pillars
-								if(found > 4)
-								{
+								if (found > 4) {
 									break;
 								}
-							}
-							else
-							{
+							}else{
 								// cacti grow to 3 nodes on sand
 								// and 4 nodes on farm dirt
-								if(n_test.getContent() == CONTENT_SAND)
-								{
-									if(found == 3)
-									{
+								if (n_test.getContent() == CONTENT_SAND) {
+									if (found == 3) {
 										fully_grown = true;
 										break;
-									}
-									else
-									{
+									}else{
 										break;
 									}
-								}
-								else if(n_test.getContent() == CONTENT_FARM_DIRT)
-								{
-									if(found == 4)
-									{
+								}else if (n_test.getContent() == CONTENT_FARM_DIRT) {
+									if (found == 4) {
 										fully_grown = true;
 										break;
-									}
-									else
-									{
+									}else{
 										break;
 									}
 								}
 							}
 						}
 
-						if(fully_grown == true)
-						{
+						if (fully_grown == true) {
 							n.setContent(CONTENT_CACTUS_BLOSSOM);
 							m_map->addNodeWithEvent(v3s16(p.X, p.Y+1, p.Z), n);
 						}
 					}
-
 					break;
 				}
 
 				case CONTENT_CACTUS_BLOSSOM:
 				{
-					if(myrand()%10 == 0)
-					{
+					if (myrand()%10 == 0) {
 						MapNode n_test=m_map->getNodeNoEx(v3s16(p.X, p.Y-1, p.Z));
-						if(n_test.getContent() == CONTENT_CACTUS)
-						{
+						if (n_test.getContent() == CONTENT_CACTUS) {
 							n.setContent(CONTENT_CACTUS_FLOWER);
 							m_map->addNodeWithEvent(p, n);
 						}
@@ -1508,13 +1487,29 @@ void ServerEnvironment::step(float dtime)
 
 				case CONTENT_CACTUS_FLOWER:
 				{
-					if(myrand()%10 == 0)
-					{
+					if (myrand()%10 == 0) {
 						MapNode n_test=m_map->getNodeNoEx(v3s16(p.X, p.Y-1, p.Z));
-						if(n_test.getContent() == CONTENT_CACTUS)
-						{
+						// sometimes fruit, sometimes the flower dies
+						if (n_test.getContent() == CONTENT_CACTUS && myrand()%10 < 6) {
 							n.setContent(CONTENT_CACTUS_FRUIT);
 							m_map->addNodeWithEvent(p, n);
+						}else{
+							m_map->removeNodeWithEvent(p);
+						}
+					}
+					break;
+				}
+
+				case CONTENT_CACTUS_FRUIT:
+				{
+					if (myrand()%500 == 0) {
+						MapNode n_test=m_map->getNodeNoEx(v3s16(p.X, p.Y-1, p.Z));
+						// when the fruit dies, sometimes a new blossom appears
+						if (n_test.getContent() == CONTENT_CACTUS && myrand()%10 == 0) {
+							n.setContent(CONTENT_CACTUS_BLOSSOM);
+							m_map->addNodeWithEvent(p, n);
+						}else{
+							m_map->removeNodeWithEvent(p);
 						}
 					}
 					break;
