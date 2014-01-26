@@ -83,7 +83,7 @@ DiggingProperties getDiggingProperties(content_t content, content_t tool)
 			break;
 		case TT_BUCKET:
 			if (c_features.type != CMT_LIQUID)
-				time *= 10.;
+				time = 10.;
 			break;
 		case TT_NONE:
 			if (c_features.type == CMT_DIRT)
