@@ -1772,7 +1772,7 @@ void content_mapnode_init()
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_PLANTLIKE;
 	f->air_equivalent = false; // grass grows underneath
-	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->dug_item = std::string("CraftItem cactus_fruit 1");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire

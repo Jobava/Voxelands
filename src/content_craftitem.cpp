@@ -290,6 +290,7 @@ void content_craftitem_init()
 	f->texture = "dye_yellow.png";
 	f->name = "dye_yellow";
 	f->description = "Yellow Dye";
+	crafting::set1To2Recipe(CONTENT_CACTUS_BLOSSOM,CONTENT_CRAFTITEM_DYE_YELLOW);
 	crafting::set1To2Recipe(CONTENT_FLOWER_DAFFODIL,CONTENT_CRAFTITEM_DYE_YELLOW);
 
 	i = CONTENT_CRAFTITEM_DYE_WHITE;
@@ -411,5 +412,13 @@ void content_craftitem_init()
 	f->description = "Apple Blossoms";
 	f->edible = 1;
 	f->fuel_time = 30/16;
+
+	i = CONTENT_CRAFTITEM_CACTUS_FRUIT;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_CACTUS_FRUIT;
+	f->texture = "cactus_fruit.png^[forcesingle";
+	f->name = "cactus_fruit";
+	f->description = "Cactus Berry";
+	f->edible = 3;
 
 }
