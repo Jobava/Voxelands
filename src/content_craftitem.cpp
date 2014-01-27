@@ -421,4 +421,20 @@ void content_craftitem_init()
 	f->description = "Cactus Berry";
 	f->edible = 3;
 
+	i = CONTENT_CRAFTITEM_ROTTEN_FRUIT;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_ROTTEN_FRUIT;
+	f->texture = "rotten_fruit.png";
+	f->name = "rotten_fruit";
+	f->description = "Rotten Fruit";
+	f->edible = -1;
+
+	i = CONTENT_CRAFTITEM_MUSH;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_MUSH;
+	f->texture = "rotten_fruit.png";
+	f->name = "mushed_food";
+	f->description = "Mushed Food";
+	f->edible = -1;
+
 }

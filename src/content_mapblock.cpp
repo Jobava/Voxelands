@@ -2420,6 +2420,159 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			}
 		}
 		break;
+		case CDT_PLANTGROWTH_1:
+		{
+			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
+			video::SColor c = MapBlock_LightColor(255, l);
+
+			for(u32 j=0; j<2; j++)
+			{
+				video::S3DVertex vertices[4] =
+				{
+					video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
+						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
+					video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
+						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
+					video::S3DVertex(BS/2,-BS/2.5,0, 0,0,0, c,
+						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
+					video::S3DVertex(-BS/2,-BS/2.5,0, 0,0,0, c,
+						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
+				};
+
+				if(j == 0)
+				{
+					for(u16 i=0; i<4; i++)
+						vertices[i].Pos.rotateXZBy(45);
+				}
+				else if(j == 1)
+				{
+					for(u16 i=0; i<4; i++)
+						vertices[i].Pos.rotateXZBy(-45);
+				}
+				else if(j == 2)
+				{
+					for(u16 i=0; i<4; i++)
+						vertices[i].Pos.rotateXZBy(135);
+				}
+				else if(j == 3)
+				{
+					for(u16 i=0; i<4; i++)
+						vertices[i].Pos.rotateXZBy(-135);
+				}
+
+				for(u16 i=0; i<4; i++)
+				{
+					vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+				}
+
+				u16 indices[] = {0,1,2,2,3,0};
+				// Add to mesh collector
+				collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
+			}
+		}
+		break;
+		case CDT_PLANTGROWTH_2:
+		{
+			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
+			video::SColor c = MapBlock_LightColor(255, l);
+
+			for(u32 j=0; j<2; j++)
+			{
+				video::S3DVertex vertices[4] =
+				{
+					video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
+						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
+					video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
+						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
+					video::S3DVertex(BS/2,0,0, 0,0,0, c,
+						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
+					video::S3DVertex(-BS/2,0,0, 0,0,0, c,
+						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
+				};
+
+				if(j == 0)
+				{
+					for(u16 i=0; i<4; i++)
+						vertices[i].Pos.rotateXZBy(45);
+				}
+				else if(j == 1)
+				{
+					for(u16 i=0; i<4; i++)
+						vertices[i].Pos.rotateXZBy(-45);
+				}
+				else if(j == 2)
+				{
+					for(u16 i=0; i<4; i++)
+						vertices[i].Pos.rotateXZBy(135);
+				}
+				else if(j == 3)
+				{
+					for(u16 i=0; i<4; i++)
+						vertices[i].Pos.rotateXZBy(-135);
+				}
+
+				for(u16 i=0; i<4; i++)
+				{
+					vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+				}
+
+				u16 indices[] = {0,1,2,2,3,0};
+				// Add to mesh collector
+				collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
+			}
+		}
+		break;
+		case CDT_PLANTGROWTH_3:
+		{
+			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
+			video::SColor c = MapBlock_LightColor(255, l);
+
+			for(u32 j=0; j<2; j++)
+			{
+				video::S3DVertex vertices[4] =
+				{
+					video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
+						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
+					video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
+						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
+					video::S3DVertex(BS/2,BS/2.5,0, 0,0,0, c,
+						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
+					video::S3DVertex(-BS/2,BS/2.5,0, 0,0,0, c,
+						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
+				};
+
+				if(j == 0)
+				{
+					for(u16 i=0; i<4; i++)
+						vertices[i].Pos.rotateXZBy(45);
+				}
+				else if(j == 1)
+				{
+					for(u16 i=0; i<4; i++)
+						vertices[i].Pos.rotateXZBy(-45);
+				}
+				else if(j == 2)
+				{
+					for(u16 i=0; i<4; i++)
+						vertices[i].Pos.rotateXZBy(135);
+				}
+				else if(j == 3)
+				{
+					for(u16 i=0; i<4; i++)
+						vertices[i].Pos.rotateXZBy(-135);
+				}
+
+				for(u16 i=0; i<4; i++)
+				{
+					vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+				}
+
+				u16 indices[] = {0,1,2,2,3,0};
+				// Add to mesh collector
+				collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
+			}
+		}
+		break;
 		case CDT_NODEBOX:
 		{
 			static const v3s16 tile_dirs[6] = {

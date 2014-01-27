@@ -1145,33 +1145,27 @@ void ServerEnvironment::step(float dtime)
 						v3s16 test_p;
 						content_t type = CONTENT_JUNGLEGRASS;
 						MapNode testnode;
-						bool found = false;
-						testnode = m_map->getNodeNoEx(temp_p + v3s16(0,1,0));
-						if (testnode.getContent() != CONTENT_AIR)
-							break;
-						for(s16 z=-max_d; !found && z<=max_d; z++) {
-						for(s16 x=-max_d; !found && x<=max_d; x++)
-						{
+						u8 water_found = 0; // 1 = flowing, 2 = source
+						u8 plant_found = 0; // 1 = found not growing, 2 = found and growing
+						for(s16 z=-max_d; !water_found && z<=max_d; z++) {
+						for(s16 x=-max_d; !water_found && x<=max_d; x++) {
 							test_p = temp_p + v3s16(x,0,z);
 							testnode = m_map->getNodeNoEx(test_p);
-							if (
-								testnode.getContent() == CONTENT_WATERSOURCE
-							) {
-								found = true;
-								break;
+							if (testnode.getContent() == CONTENT_WATERSOURCE) {
+								water_found = 2;
+							}else if (testnode.getContent() == CONTENT_WATER) {
+								water_found = 1;
 							}
 						}
 						}
 
-						if (found) {
-							found = false;
+						if (water_found) {
 							test_p = temp_p + v3s16(0,1,0);
 							testnode = m_map->getNodeNoEx(test_p);
 							switch (testnode.getContent()) {
 							case CONTENT_AIR:
-								for(s16 z=-max_d; !found && z<=max_d; z++) {
-								for(s16 x=-max_d; !found && x<=max_d; x++)
-								{
+								for(s16 z=-max_d; !plant_found && z<=max_d; z++) {
+								for(s16 x=-max_d; !plant_found && x<=max_d; x++) {
 									test_p = temp_p + v3s16(x,1,z);
 									testnode = m_map->getNodeNoEx(test_p);
 									if (
@@ -1179,7 +1173,7 @@ void ServerEnvironment::step(float dtime)
 										|| testnode.getContent() == CONTENT_PAPYRUS
 										|| testnode.getContent() == CONTENT_CACTUS
 									) {
-										found = true;
+										plant_found = 2;
 										type = testnode.getContent();
 										test_p = temp_p + v3s16(0,1,0);
 										break;
@@ -1190,13 +1184,13 @@ void ServerEnvironment::step(float dtime)
 							case CONTENT_PAPYRUS:
 								max_growth = 5;
 								type = CONTENT_PAPYRUS;
-								for(s16 y=2; !found && y<=max_growth; y++)
-								{
+								plant_found = 1;
+								for(s16 y=2; plant_found == 1 && y<=max_growth; y++) {
 									test_p = temp_p + v3s16(0,y,0);
 									testnode = m_map->getNodeNoEx(test_p);
 									if (testnode.getContent() != type) {
 										if (testnode.getContent() == CONTENT_AIR)
-											found = true;
+											plant_found = 2;
 										break;
 									}
 								}
@@ -1204,13 +1198,13 @@ void ServerEnvironment::step(float dtime)
 							case CONTENT_CACTUS:
 								max_growth = 4;
 								type = CONTENT_CACTUS;
-								for(s16 y=2; !found && y<=max_growth; y++)
-								{
+								plant_found = 1;
+								for(s16 y=2; plant_found == 1 && y<=max_growth; y++) {
 									test_p = temp_p + v3s16(0,y,0);
 									testnode = m_map->getNodeNoEx(test_p);
 									if (testnode.getContent() != type) {
 										if (testnode.getContent() == CONTENT_AIR)
-											found = true;
+											plant_found = 2;
 										break;
 									}
 								}
@@ -1218,36 +1212,225 @@ void ServerEnvironment::step(float dtime)
 							case CONTENT_JUNGLEGRASS:
 								max_growth = 2;
 								type = CONTENT_JUNGLEGRASS;
-								for(s16 y=2; !found && y<=max_growth; y++)
-								{
+								plant_found = 1;
+								for(s16 y=2; plant_found == 1 && y<=max_growth; y++) {
 									test_p = temp_p + v3s16(0,y,0);
 									testnode = m_map->getNodeNoEx(test_p);
 									if (testnode.getContent() != type) {
 										if (testnode.getContent() == CONTENT_AIR)
-											found = true;
+											plant_found = 2;
 										break;
 									}
 								}
 								break;
+							case CONTENT_SEEDS_WHEAT:
+								test_p = temp_p + v3s16(0,1,0);
+								type = CONTENT_FARM_WHEAT_1;
+								plant_found = 2;
+								break;
+							case CONTENT_SEEDS_MELON:
+								test_p = temp_p + v3s16(0,1,0);
+								type = CONTENT_FARM_MELON_1;
+								plant_found = 2;
+								break;
+							case CONTENT_SEEDS_PUMPKIN:
+								test_p = temp_p + v3s16(0,1,0);
+								type = CONTENT_FARM_PUMPKIN_1;
+								plant_found = 2;
+								break;
+							case CONTENT_SEEDS_POTATO:
+								test_p = temp_p + v3s16(0,1,0);
+								type = CONTENT_FARM_POTATO_1;
+								plant_found = 2;
+								break;
+							case CONTENT_SEEDS_CARROT:
+								test_p = temp_p + v3s16(0,1,0);
+								type = CONTENT_FARM_CARROT_1;
+								plant_found = 2;
+								break;
+							case CONTENT_SEEDS_BEETROOT:
+								test_p = temp_p + v3s16(0,1,0);
+								type = CONTENT_FARM_BEETROOT_1;
+								plant_found = 2;
+								break;
+							case CONTENT_SEEDS_GRAPE:
+								test_p = temp_p + v3s16(0,1,0);
+								type = CONTENT_FARM_GRAPEVINE_1;
+								plant_found = 2;
+								break;
+							case CONTENT_SEEDS_COTTON:
+								test_p = temp_p + v3s16(0,1,0);
+								type = CONTENT_FARM_COTTON_1;
+								plant_found = 2;
+								break;
+							case CONTENT_FARM_WHEAT_1:
+							case CONTENT_FARM_MELON_1:
+							case CONTENT_FARM_PUMPKIN_1:
+							case CONTENT_FARM_POTATO_1:
+							case CONTENT_FARM_CARROT_1:
+							case CONTENT_FARM_BEETROOT_1:
+							case CONTENT_FARM_GRAPEVINE_1:
+							case CONTENT_FARM_COTTON_1:
+							case CONTENT_FARM_WHEAT_2:
+							case CONTENT_FARM_MELON_2:
+							case CONTENT_FARM_PUMPKIN_2:
+							case CONTENT_FARM_POTATO_2:
+							case CONTENT_FARM_CARROT_2:
+							case CONTENT_FARM_BEETROOT_2:
+							case CONTENT_FARM_GRAPEVINE_2:
+							case CONTENT_FARM_COTTON_2:
+							case CONTENT_FARM_WHEAT_3:
+							case CONTENT_FARM_MELON_3:
+							case CONTENT_FARM_PUMPKIN_3:
+							case CONTENT_FARM_POTATO_3:
+							case CONTENT_FARM_CARROT_3:
+							case CONTENT_FARM_BEETROOT_3:
+							case CONTENT_FARM_GRAPEVINE_3:
+							case CONTENT_FARM_COTTON_3:
+								test_p = temp_p + v3s16(0,1,0);
+								type = testnode.getContent()+1;
+								plant_found = 2;
+								break;
+							case CONTENT_FARM_WHEAT:
+								max_growth = 2;
+								plant_found = 1;
+								for (s16 y=2; plant_found == 1 && y<=max_growth; y++) {
+									test_p = temp_p + v3s16(0,y,0);
+									testnode = m_map->getNodeNoEx(test_p);
+									if (testnode.getContent() == CONTENT_AIR) {
+										plant_found = 2;
+										type = CONTENT_FARM_WHEAT_1;
+									}else if (testnode.getContent() == CONTENT_FARM_WHEAT_1) {
+										plant_found = 2;
+										type = CONTENT_FARM_WHEAT_2;
+									}else if (testnode.getContent() == CONTENT_FARM_WHEAT_2) {
+										plant_found = 2;
+										type = CONTENT_FARM_WHEAT_3;
+									}else if (testnode.getContent() == CONTENT_FARM_WHEAT_3) {
+										plant_found = 2;
+										type = CONTENT_FARM_WHEAT;
+									}
+								}
+								break;
+							case CONTENT_FARM_COTTON:
+								max_growth = 2;
+								plant_found = 1;
+								for (s16 y=2; plant_found == 1 && y<=max_growth; y++) {
+									test_p = temp_p + v3s16(0,y,0);
+									testnode = m_map->getNodeNoEx(test_p);
+									if (testnode.getContent() == CONTENT_AIR) {
+										plant_found = 2;
+										type = CONTENT_FARM_COTTON_1;
+									}else if (testnode.getContent() == CONTENT_FARM_COTTON_1) {
+										plant_found = 2;
+										type = CONTENT_FARM_COTTON_2;
+									}else if (testnode.getContent() == CONTENT_FARM_COTTON_2) {
+										plant_found = 2;
+										type = CONTENT_FARM_COTTON_3;
+									}else if (testnode.getContent() == CONTENT_FARM_COTTON_3) {
+										plant_found = 2;
+										type = CONTENT_FARM_COTTON;
+									}
+								}
+								break;
+							case CONTENT_FARM_GRAPEVINE:
+								max_growth = 5;
+								plant_found = 1;
+								for (s16 y=2; plant_found == 1 && y<=max_growth; y++) {
+									test_p = temp_p + v3s16(0,y,0);
+									testnode = m_map->getNodeNoEx(test_p);
+									if (testnode.getContent() == CONTENT_AIR) {
+										plant_found = 2;
+										type = CONTENT_FARM_GRAPEVINE_1;
+									}else if (testnode.getContent() == CONTENT_FARM_GRAPEVINE_1) {
+										plant_found = 2;
+										type = CONTENT_FARM_GRAPEVINE_2;
+									}else if (testnode.getContent() == CONTENT_FARM_GRAPEVINE_2) {
+										plant_found = 2;
+										type = CONTENT_FARM_GRAPEVINE_3;
+									}else if (testnode.getContent() == CONTENT_FARM_GRAPEVINE_3) {
+										plant_found = 2;
+										type = CONTENT_FARM_GRAPEVINE;
+									}
+								}
+								break;
+							case CONTENT_FARM_POTATO:
+							case CONTENT_FARM_CARROT:
+							case CONTENT_FARM_BEETROOT:
+							case CONTENT_FARM_MELON:
+							case CONTENT_FARM_PUMPKIN:
+								plant_found = 1;
+								break;
+							case CONTENT_FERTILIZER:
+							{
+								test_p = temp_p + v3s16(0,1,0);
+								plant_found = 1;
+								u8 seed = myrand()%10;
+								switch (seed) {
+								case 0:
+									type = CONTENT_SEEDS_WHEAT;
+									plant_found = 2;
+									break;
+								case 1:
+									type = CONTENT_SEEDS_MELON;
+									plant_found = 2;
+									break;
+								case 2:
+									type = CONTENT_SEEDS_PUMPKIN;
+									plant_found = 2;
+									break;
+								case 3:
+									type = CONTENT_SEEDS_POTATO;
+									plant_found = 2;
+									break;
+								case 4:
+									type = CONTENT_SEEDS_CARROT;
+									plant_found = 2;
+									break;
+								case 5:
+									type = CONTENT_SEEDS_BEETROOT;
+									plant_found = 2;
+									break;
+								case 6:
+									type = CONTENT_SEEDS_GRAPE;
+									plant_found = 2;
+									break;
+								case 7:
+									type = CONTENT_SEEDS_COTTON;
+									plant_found = 2;
+									break;
+								default:;
+								}
+								break;
+							}
 							default:;
 							}
-							if (!found) {
-								if (myrand()%5 == 0) {
+
+							if (plant_found == 0) {
+								int chance = 5;
+								if (water_found == 1)
+									chance = 2;
+printf("%d %d: %X (%d,%d,%d)\n",(int)plant_found,(int)water_found,(unsigned int)m_map->getNodeNoEx(temp_p+v3s16(0,1,0)).getContent(),temp_p.X,temp_p.Y,temp_p.Z);
+								if (myrand()%chance == 0) {
 									// revert to mud
 									n.setContent(CONTENT_MUD);
 									m_map->addNodeWithEvent(p,n);
 								}else{
 									// grow flower
-									found = true;
+									plant_found = 2;
 									type = CONTENT_FLOWER_STEM;
 									test_p = temp_p + v3s16(0,1,0);
 								}
 							}
-							if (found) {
+							if (plant_found == 2) {
 								MapNode n_top = m_map->getNodeNoEx(test_p);
 								n_top.setContent(type);
 								m_map->addNodeWithEvent(test_p, n_top);
 							}
+						}else{
+							// revert to mud
+							n.setContent(CONTENT_MUD);
+							m_map->addNodeWithEvent(p,n);
 						}
 					}
 					break;
@@ -1502,7 +1685,7 @@ void ServerEnvironment::step(float dtime)
 
 				case CONTENT_CACTUS_FRUIT:
 				{
-					if (myrand()%500 == 0) {
+					if (myrand()%200 == 0) {
 						MapNode n_test=m_map->getNodeNoEx(v3s16(p.X, p.Y-1, p.Z));
 						// when the fruit dies, sometimes a new blossom appears
 						if (n_test.getContent() == CONTENT_CACTUS && myrand()%10 == 0) {
@@ -1510,6 +1693,10 @@ void ServerEnvironment::step(float dtime)
 							m_map->addNodeWithEvent(p, n);
 						}else{
 							m_map->removeNodeWithEvent(p);
+							v3f rot_pos = intToFloat(p, BS);
+							rot_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
+							ServerActiveObject *obj = new ItemSAO(this, 0, rot_pos, "CraftItem rotten_fruit 1");
+							addActiveObject(obj);
 						}
 					}
 					break;
@@ -1647,6 +1834,8 @@ void ServerEnvironment::step(float dtime)
 						}else{
 							m_map->removeNodeWithEvent(p);
 							if (myrand()%5 == 0) {
+								n.setContent(CONTENT_APPLE_LEAVES);
+								m_map->addNodeWithEvent(p, n);
 								v3f blossom_pos = intToFloat(p, BS);
 								blossom_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
 								ServerActiveObject *obj = new ItemSAO(this, 0, blossom_pos, "CraftItem apple_blossom 1");
@@ -2273,6 +2462,11 @@ void ServerEnvironment::step(float dtime)
 						v3f apple_pos = intToFloat(apple_p, BS);
 						apple_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
 						ServerActiveObject *obj = new ItemSAO(this, 0, apple_pos, "CraftItem apple 1");
+						addActiveObject(obj);
+					}else if (myrand()%200 == 0) {
+						v3f rot_pos = intToFloat(p, BS);
+						rot_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
+						ServerActiveObject *obj = new ItemSAO(this, 0, rot_pos, "CraftItem rotten_fruit 1");
 						addActiveObject(obj);
 					}
 					break;

@@ -712,6 +712,42 @@ static void content_mapnode_nodebox_bed_foot(ContentFeatures *f)
 	));
 }
 
+static void content_mapnode_nodebox_plant_1(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.25*BS,
+		-0.5*BS,
+		-0.25*BS,
+		0.25*BS,
+		0.*BS,
+		0.25*BS
+	));
+}
+
+static void content_mapnode_nodebox_plant_2(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.375*BS,
+		-0.5*BS,
+		-0.375*BS,
+		0.375*BS,
+		0.25*BS,
+		0.375*BS
+	));
+}
+
+static void content_mapnode_nodebox_plant_3(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.4375*BS,
+		-0.5*BS,
+		-0.4375*BS,
+		0.4375*BS,
+		0.375*BS,
+		0.4375*BS
+	));
+}
+
 /*
 	A conversion table for backwards compatibility.
 	Maps <=v19 content types to current ones.
@@ -2592,6 +2628,665 @@ void content_mapnode_init()
 	f->type = CMT_PLANT;
 	f->hardness = 0.6;
 	crafting::setHardBlockRecipe(CONTENT_DEADGRASS,CONTENT_HAY);
+
+	i = CONTENT_FERTILIZER;
+	f = &content_features(i);
+	f->description = std::string("Fertilizer");
+	f->setAllTextures("fertilizer.png");
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_mapnode_nodebox_carpet(f);
+	f->setInventoryTextureNodeBox(i,"fertilizer.png", "fertilizer.png", "fertilizer.png");
+	f->type = CMT_DIRT;
+	f->hardness = 0.4;
+	crafting::set2Any2Recipe(CONTENT_CRAFTITEM_ROTTEN_FRUIT,CONTENT_CRAFTITEM_ASH,CONTENT_FERTILIZER);
+
+	i = CONTENT_SEEDS_WHEAT;
+	f = &content_features(i);
+	f->description = std::string("Wheat Seeds");
+	f->setAllTextures("farm_seeds_wheat.png");
+	f->draw_type = CDT_PLANTLIKE;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_SEEDS_MELON;
+	f = &content_features(i);
+	f->description = std::string("Melon Seeds");
+	f->setAllTextures("farm_seeds_melon.png");
+	f->draw_type = CDT_PLANTLIKE;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_SEEDS_PUMPKIN;
+	f = &content_features(i);
+	f->description = std::string("Pumpkin Seeds");
+	f->setAllTextures("farm_seeds_pumpkin.png");
+	f->draw_type = CDT_PLANTLIKE;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_SEEDS_POTATO;
+	f = &content_features(i);
+	f->description = std::string("Potato Seeds");
+	f->setAllTextures("farm_seeds_potato.png");
+	f->draw_type = CDT_PLANTLIKE;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_SEEDS_CARROT;
+	f = &content_features(i);
+	f->description = std::string("Carrot Seeds");
+	f->setAllTextures("farm_seeds_carrot.png");
+	f->draw_type = CDT_PLANTLIKE;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_SEEDS_BEETROOT;
+	f = &content_features(i);
+	f->description = std::string("Beetroot");
+	f->setAllTextures("farm_seeds_beetroot.png");
+	f->draw_type = CDT_PLANTLIKE;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_SEEDS_GRAPE;
+	f = &content_features(i);
+	f->description = std::string("Grape Seeds");
+	f->setAllTextures("farm_seeds_grape.png");
+	f->draw_type = CDT_PLANTLIKE;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_SEEDS_COTTON;
+	f = &content_features(i);
+	f->description = std::string("Cotton Seeds");
+	f->setAllTextures("farm_seeds_cotton.png");
+	f->draw_type = CDT_PLANTLIKE;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_WHEAT_1;
+	f = &content_features(i);
+	f->description = std::string("Wheat");
+	f->setAllTextures("farm_wheat.png");
+	f->draw_type = CDT_PLANTGROWTH_1;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_WHEAT)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_WHEAT_2;
+	f = &content_features(i);
+	f->description = std::string("Wheat");
+	f->setAllTextures("farm_wheat.png");
+	f->draw_type = CDT_PLANTGROWTH_2;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_WHEAT)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_WHEAT_3;
+	f = &content_features(i);
+	f->description = std::string("Wheat");
+	f->setAllTextures("farm_wheat.png");
+	f->draw_type = CDT_PLANTGROWTH_3;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_WHEAT)+" 1";
+	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FARM_WHEAT)+" 1";
+	f->extra_dug_item_rarity = 1;
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_WHEAT;
+	f = &content_features(i);
+	f->description = std::string("Wheat");
+	f->setAllTextures("farm_wheat.png");
+	f->draw_type = CDT_PLANTLIKE;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_WHEAT)+" 2";
+	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FARM_WHEAT)+" 2";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_MELON_1;
+	f = &content_features(i);
+	f->description = std::string("Melon");
+	f->setAllTextures("farm_melon.png");
+	f->draw_type = CDT_NODEBOX;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_MELON)+" 1";
+	content_mapnode_nodebox_plant_1(f);
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_MELON_2;
+	f = &content_features(i);
+	f->description = std::string("Melon");
+	f->setAllTextures("farm_melon.png");
+	f->draw_type = CDT_NODEBOX;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_MELON)+" 1";
+	content_mapnode_nodebox_plant_2(f);
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_MELON_3;
+	f = &content_features(i);
+	f->description = std::string("Melon");
+	f->setAllTextures("farm_melon.png");
+	f->draw_type = CDT_NODEBOX;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_MELON)+" 1";
+	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FARM_MELON)+" 1";
+	f->extra_dug_item_rarity = 1;
+	content_mapnode_nodebox_plant_3(f);
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_MELON;
+	f = &content_features(i);
+	f->description = std::string("Melon");
+	f->setAllTextures("farm_melon.png");
+	f->draw_type = CDT_CUBELIKE;
+	f->flammable = 1;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_MELON)+" 2";
+	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FARM_MELON)+" 2";
+	f->extra_dug_item_rarity = 1;
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_PUMPKIN_1;
+	f = &content_features(i);
+	f->description = std::string("Pumpkin");
+	f->setAllTextures("farm_pumpkin.png");
+	f->draw_type = CDT_NODEBOX;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_PUMPKIN)+" 1";
+	content_mapnode_nodebox_plant_1(f);
+	f->type = CMT_PLANT;
+
+	i = CONTENT_FARM_PUMPKIN_2;
+	f = &content_features(i);
+	f->description = std::string("Pumpkin");
+	f->setAllTextures("farm_pumpkin.png");
+	f->draw_type = CDT_NODEBOX;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_PUMPKIN)+" 1";
+	content_mapnode_nodebox_plant_2(f);
+	f->type = CMT_PLANT;
+
+	i = CONTENT_FARM_PUMPKIN_3;
+	f = &content_features(i);
+	f->description = std::string("Pumpkin");
+	f->setAllTextures("farm_pumpkin.png");
+	f->draw_type = CDT_NODEBOX;
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_PUMPKIN)+" 1";
+	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FARM_PUMPKIN)+" 1";
+	f->extra_dug_item_rarity = 1;
+	content_mapnode_nodebox_plant_3(f);
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_PUMPKIN;
+	f = &content_features(i);
+	f->description = std::string("Pumpkin");
+	f->setAllTextures("farm_pumpkin.png");
+	f->draw_type = CDT_CUBELIKE;
+	f->flammable = 1;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_PUMPKIN)+" 2";
+	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FARM_PUMPKIN)+" 2";
+	f->extra_dug_item_rarity = 1;
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_POTATO_1;
+	f = &content_features(i);
+	f->description = std::string("Potato");
+	f->setAllTextures("farm_potato.png");
+	f->draw_type = CDT_PLANTGROWTH_1;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_POTATO)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_POTATO_2;
+	f = &content_features(i);
+	f->description = std::string("Potato");
+	f->setAllTextures("farm_potato.png");
+	f->draw_type = CDT_PLANTGROWTH_2;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_POTATO)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_POTATO_3;
+	f = &content_features(i);
+	f->description = std::string("Potato");
+	f->setAllTextures("farm_potato.png");
+	f->draw_type = CDT_PLANTGROWTH_3;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_POTATO)+" 1";
+	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FARM_POTATO)+" 1";
+	f->extra_dug_item_rarity = 1;
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_POTATO;
+	f = &content_features(i);
+	f->description = std::string("Potato");
+	f->setAllTextures("farm_potato.png");
+	f->draw_type = CDT_PLANTLIKE;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_POTATO)+" 2";
+	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FARM_POTATO)+" 3";
+	f->extra_dug_item_rarity = 1;
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_CARROT_1;
+	f = &content_features(i);
+	f->description = std::string("Carrot");
+	f->setAllTextures("farm_carrot.png");
+	f->draw_type = CDT_PLANTGROWTH_1;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_CARROT)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_CARROT_2;
+	f = &content_features(i);
+	f->description = std::string("Carrot");
+	f->setAllTextures("farm_carrot.png");
+	f->draw_type = CDT_PLANTGROWTH_2;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_CARROT)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_CARROT_3;
+	f = &content_features(i);
+	f->description = std::string("Carrot");
+	f->setAllTextures("farm_carrot.png");
+	f->draw_type = CDT_PLANTGROWTH_3;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_CARROT)+" 1";
+	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FARM_CARROT)+" 1";
+	f->extra_dug_item_rarity = 1;
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_CARROT;
+	f = &content_features(i);
+	f->description = std::string("Carrot");
+	f->setAllTextures("farm_carrot.png");
+	f->draw_type = CDT_PLANTLIKE;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_CARROT)+" 2";
+	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FARM_CARROT)+" 3";
+	f->extra_dug_item_rarity = 1;
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_BEETROOT_1;
+	f = &content_features(i);
+	f->description = std::string("Beetroot");
+	f->setAllTextures("farm_beetroot.png");
+	f->draw_type = CDT_PLANTGROWTH_1;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_BEETROOT)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_BEETROOT_2;
+	f = &content_features(i);
+	f->description = std::string("Beetroot");
+	f->setAllTextures("farm_beetroot.png");
+	f->draw_type = CDT_PLANTGROWTH_2;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_BEETROOT)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_BEETROOT_3;
+	f = &content_features(i);
+	f->description = std::string("Beetroot");
+	f->setAllTextures("farm_beetroot.png");
+	f->draw_type = CDT_PLANTGROWTH_3;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_BEETROOT)+" 1";
+	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FARM_BEETROOT)+" 1";
+	f->extra_dug_item_rarity = 1;
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_BEETROOT;
+	f = &content_features(i);
+	f->description = std::string("Beetroot");
+	f->setAllTextures("farm_beetroot.png");
+	f->draw_type = CDT_PLANTLIKE;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_BEETROOT)+" 2";
+	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FARM_BEETROOT)+" 3";
+	f->extra_dug_item_rarity = 1;
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_GRAPEVINE_1;
+	f = &content_features(i);
+	f->description = std::string("Grape");
+	f->setAllTextures("farm_grapevine.png");
+	f->draw_type = CDT_PLANTGROWTH_1;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_GRAPE)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_GRAPEVINE_2;
+	f = &content_features(i);
+	f->description = std::string("Grape");
+	f->setAllTextures("farm_grapevine.png");
+	f->draw_type = CDT_PLANTGROWTH_2;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_GRAPE)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_GRAPEVINE_3;
+	f = &content_features(i);
+	f->description = std::string("Grape");
+	f->setAllTextures("farm_grapevine.png");
+	f->draw_type = CDT_PLANTGROWTH_3;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_GRAPE)+" 1";
+	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FARM_GRAPEVINE)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_GRAPEVINE;
+	f = &content_features(i);
+	f->description = std::string("Grape");
+	f->setAllTextures("farm_grapevine.png");
+	f->draw_type = CDT_PLANTLIKE;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_GRAPE)+" 2";
+	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FARM_GRAPEVINE)+" 2";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_COTTON_1;
+	f = &content_features(i);
+	f->description = std::string("Cotton");
+	f->setAllTextures("farm_cotton.png");
+	f->draw_type = CDT_PLANTGROWTH_1;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_COTTON)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_COTTON_2;
+	f = &content_features(i);
+	f->description = std::string("Cotton");
+	f->setAllTextures("farm_cotton.png");
+	f->draw_type = CDT_PLANTGROWTH_2;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_COTTON)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_COTTON_3;
+	f = &content_features(i);
+	f->description = std::string("Cotton");
+	f->setAllTextures("farm_cotton.png");
+	f->draw_type = CDT_PLANTGROWTH_3;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_COTTON)+" 1";
+	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FARM_COTTON)+" 1";
+	f->extra_dug_item_rarity = 1;
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_COTTON;
+	f = &content_features(i);
+	f->description = std::string("Cotton");
+	f->setAllTextures("farm_cotton.png");
+	f->draw_type = CDT_PLANTLIKE;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_COTTON)+" 2";
+	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FARM_COTTON)+" 2";
+	f->extra_dug_item_rarity = 1;
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+
 
 	i = CONTENT_SNOW_BLOCK;
 	f = &content_features(i);
