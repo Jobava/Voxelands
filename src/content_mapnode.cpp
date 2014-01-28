@@ -2726,7 +2726,7 @@ void content_mapnode_init()
 
 	i = CONTENT_SEEDS_BEETROOT;
 	f = &content_features(i);
-	f->description = std::string("Beetroot");
+	f->description = std::string("Beetroot Seeds");
 	f->setAllTextures("farm_seeds_beetroot.png");
 	f->draw_type = CDT_PLANTLIKE;
 	f->param_type = CPT_LIGHT;
@@ -2893,6 +2893,7 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Melon");
 	f->setAllTextures("farm_melon.png");
+	f->setInventoryTextureCube("farm_melon.png","farm_melon.png","farm_melon.png");
 	f->draw_type = CDT_CUBELIKE;
 	f->flammable = 1;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_MELON)+" 2";
@@ -2905,6 +2906,8 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Pumpkin");
 	f->setAllTextures("farm_pumpkin.png");
+	f->setTexture(0,"farm_pumpkin_top.png");
+	f->setTexture(1,"farm_pumpkin_top.png");
 	f->draw_type = CDT_NODEBOX;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
@@ -2921,6 +2924,8 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Pumpkin");
 	f->setAllTextures("farm_pumpkin.png");
+	f->setTexture(0,"farm_pumpkin_top.png");
+	f->setTexture(1,"farm_pumpkin_top.png");
 	f->draw_type = CDT_NODEBOX;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
@@ -2937,6 +2942,8 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Pumpkin");
 	f->setAllTextures("farm_pumpkin.png");
+	f->setTexture(0,"farm_pumpkin_top.png");
+	f->setTexture(1,"farm_pumpkin_top.png");
 	f->draw_type = CDT_NODEBOX;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
@@ -2954,6 +2961,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Pumpkin");
 	f->setAllTextures("farm_pumpkin.png");
+	f->setTexture(0,"farm_pumpkin_top.png");
+	f->setTexture(1,"farm_pumpkin_top.png");
+	f->setInventoryTextureCube("farm_pumpkin_top.png","farm_pumpkin.png","farm_pumpkin.png");
 	f->draw_type = CDT_CUBELIKE;
 	f->flammable = 1;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_PUMPKIN)+" 2";
