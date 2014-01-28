@@ -437,4 +437,166 @@ void content_craftitem_init()
 	f->description = "Mushed Food";
 	f->edible = -1;
 
+	i = CONTENT_CRAFTITEM_PUMPKINSLICE;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_PUMPKINSLICE;
+	f->texture = "pumpkin_slice.png";
+	f->name = "pumpkin_slice";
+	f->description = "Sliced Pumpkin";
+	f->edible = 2;
+	crafting::set1To2Recipe(CONTENT_FARM_PUMPKIN,CONTENT_CRAFTITEM_PUMPKINSLICE);
+
+	i = CONTENT_CRAFTITEM_PUMPKIN_PIE_RAW;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_PUMPKIN_PIE_RAW;
+	f->texture = "pumpkin_pie_raw.png";
+	f->name = "pumpkin_pie_raw";
+	f->description = "Raw Pumpkin Pie";
+	f->cook_result = std::string("CraftItem pumpkin_pie 1");
+	f->edible = 3;
+	crafting::set1over1Recipe(CONTENT_CRAFTITEM_PUMPKINSLICE,CONTENT_CRAFTITEM_DOUGH,CONTENT_CRAFTITEM_PUMPKIN_PIE_RAW);
+
+	i = CONTENT_CRAFTITEM_PUMPKIN_PIE;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_PUMPKIN_PIE;
+	f->texture = "pumpkin_pie.png";
+	f->name = "pumpkin_pie";
+	f->description = "Pumpkin Pie";
+	f->edible = 6;
+
+	i = CONTENT_CRAFTITEM_APPLE_PIE_RAW;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_APPLE_PIE_RAW;
+	f->texture = "apple_pie_raw.png";
+	f->name = "apple_pie_raw";
+	f->description = "Raw Apple Pie";
+	f->cook_result = std::string("CraftItem apple_pie 1");
+	f->edible = 3;
+	crafting::set1over1Recipe(CONTENT_CRAFTITEM_APPLE,CONTENT_CRAFTITEM_DOUGH,CONTENT_CRAFTITEM_APPLE_PIE_RAW);
+
+	i = CONTENT_CRAFTITEM_APPLE_PIE;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_APPLE_PIE;
+	f->texture = "apple_pie.png";
+	f->name = "apple_pie";
+	f->description = "Apple Pie";
+	f->edible = 6;
+
+	i = CONTENT_CRAFTITEM_MELONSLICE;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_MELONSLICE;
+	f->texture = "melon_slice.png";
+	f->name = "melon_slice";
+	f->description = "Sliced Melon";
+	f->edible = 4;
+	crafting::set1To2Recipe(CONTENT_FARM_MELON,CONTENT_CRAFTITEM_MELONSLICE);
+
+	i = CONTENT_CRAFTITEM_WHEAT;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_WHEAT;
+	f->texture = "harvested_wheat.png";
+	f->name = "harvested_wheat";
+	f->description = "Wheat";
+	f->edible = 1;
+
+	i = CONTENT_CRAFTITEM_FLOUR;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_FLOUR;
+	f->texture = "flour.png";
+	f->name = "flour";
+	f->description = "Flour";
+	f->edible = 1;
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_WHEAT,CONTENT_CRAFTITEM_WHEAT,CONTENT_CRAFTITEM_FLOUR);
+
+	i = CONTENT_CRAFTITEM_DOUGH;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_DOUGH;
+	f->texture = "dough.png";
+	f->name = "dough";
+	f->description = "Dough";
+	f->cook_result = std::string("CraftItem bread 1");
+	f->edible = 2;
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_FLOUR,CONTENT_CRAFTITEM_FLOUR,CONTENT_CRAFTITEM_DOUGH);
+
+	i = CONTENT_CRAFTITEM_BREAD;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_BREAD;
+	f->texture = "bread.png";
+	f->name = "bread";
+	f->description = "Bread";
+	f->edible = 5;
+
+	i = CONTENT_CRAFTITEM_POTATO;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_POTATO;
+	f->texture = "harvested_potato.png";
+	f->name = "harvested_potato";
+	f->description = "Potato";
+	f->cook_result = std::string("CraftItem roast_potato 1");
+	f->edible = 3;
+
+	i = CONTENT_CRAFTITEM_STARCH;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_STARCH;
+	f->texture = "potato_starch.png";
+	f->name = "potato_starch";
+	f->description = "Potato Starch";
+	crafting::set1To2Recipe(CONTENT_CRAFTITEM_POTATO,CONTENT_CRAFTITEM_STARCH);
+
+	i = CONTENT_CRAFTITEM_ROASTPOTATO;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_ROASTPOTATO;
+	f->texture = "roast_potato.png";
+	f->name = "roast_potato";
+	f->description = "Roast Potato";
+	f->edible = 6;
+
+	i = CONTENT_CRAFTITEM_CARROT;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_CARROT;
+	f->texture = "harvested_carrot.png";
+	f->name = "harvested_carrot";
+	f->description = "Carrot";
+	f->edible = 4;
+
+	i = CONTENT_CRAFTITEM_CARROT_CAKE_RAW;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_CARROT_CAKE_RAW;
+	f->texture = "carrot_cake_raw.png";
+	f->name = "carrot_cake_raw";
+	f->description = "Raw Carrot Cake";
+	f->cook_result = std::string("CraftItem carrot_cake 1");
+	f->edible = 3;
+	crafting::set1over1Recipe(CONTENT_CRAFTITEM_CARROT,CONTENT_CRAFTITEM_DOUGH,CONTENT_CRAFTITEM_CARROT_CAKE_RAW);
+
+	i = CONTENT_CRAFTITEM_CARROT_CAKE;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_CARROT_CAKE;
+	f->texture = "carrot_cake.png";
+	f->name = "carrot_cake";
+	f->description = "Carrot Cake";
+	f->edible = 6;
+
+	i = CONTENT_CRAFTITEM_BEETROOT;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_BEETROOT;
+	f->texture = "harvested_beetroot.png";
+	f->name = "harvested_beetroot";
+	f->description = "Beetroot";
+	f->edible = 3;
+
+	i = CONTENT_CRAFTITEM_GRAPE;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_GRAPE;
+	f->texture = "harvested_grape.png";
+	f->name = "harvested_grape";
+	f->description = "Bunch of Grapes";
+	f->edible = 4;
+
+	i = CONTENT_CRAFTITEM_STRING;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_STRING;
+	f->texture = "string.png";
+	f->name = "string";
+	f->description = "String";
 }
