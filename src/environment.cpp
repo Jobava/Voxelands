@@ -1359,6 +1359,10 @@ void ServerEnvironment::step(float dtime)
 							case CONTENT_FARM_BEETROOT:
 							case CONTENT_FARM_MELON:
 							case CONTENT_FARM_PUMPKIN:
+							case CONTENT_FLOWER_STEM:
+							case CONTENT_FLOWER_ROSE:
+							case CONTENT_FLOWER_DAFFODIL:
+							case CONTENT_FLOWER_TULIP:
 								plant_found = 1;
 								break;
 							case CONTENT_FERTILIZER:
