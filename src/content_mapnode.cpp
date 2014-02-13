@@ -4227,8 +4227,10 @@ void content_mapnode_init()
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_CUBELIKE;
 	f->setAllTextures("incinerator_side.png");
+	f->setTexture(0, "incinerator_top.png"); // Z-
+	f->setTexture(1, "incinerator_top.png"); // Z-
 	f->setTexture(5, "incinerator_front.png"); // Z-
-	f->setInventoryTextureCube("incinerator_side.png", "incinerator_front.png", "incinerator_side.png");
+	f->setInventoryTextureCube("incinerator_top.png", "incinerator_front.png", "incinerator_side.png");
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new IncineratorNodeMetadata();
