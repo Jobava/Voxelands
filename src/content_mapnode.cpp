@@ -748,6 +748,29 @@ static void content_mapnode_nodebox_plant_3(ContentFeatures *f)
 	));
 }
 
+static void content_mapnode_nodebox_guide(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.4375*BS,
+		-0.5*BS,
+		-0.375*BS,
+
+		0.4375*BS,
+		-0.4375*BS,
+		0.1875*BS
+	));
+
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.375*BS,
+		-0.4375*BS,
+		-0.375*BS,
+
+		0.375*BS,
+		-0.375*BS,
+		0.1875*BS
+	));
+}
+
 /*
 	A conversion table for backwards compatibility.
 	Maps <=v19 content types to current ones.
@@ -3421,11 +3444,19 @@ void content_mapnode_init()
 	i = CONTENT_CRAFT_GUIDE;
 	f = &content_features(i);
 	f->description = std::string("Craft Guide");
-	f->setAllTextures("craft_guide.png");
-	f->setInventoryTextureCube("craft_guide.png", "craft_guide.png", "craft_guide.png");
-	f->draw_type = CDT_CUBELIKE;
+	f->setAllTextures("craft_guide_side.png");
+	f->setTexture(0, "craft_guide_top.png");
+	f->setTexture(1, "craft_guide_bottom.png");
+	f->setTexture(4, "craft_guide_end.png");
+	f->setTexture(5, "craft_guide_end.png");
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_NODEBOX;
+	f->light_propagates = true;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0;
+	content_mapnode_nodebox_guide(f);
+	f->setInventoryTextureNodeBox(i, "craft_guide_top.png", "craft_guide_end.png", "craft_guide_side.png");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	if (f->initial_metadata == NULL)
