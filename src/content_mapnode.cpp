@@ -4192,8 +4192,10 @@ void content_mapnode_init()
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_CUBELIKE;
 	f->setAllTextures("furnace_side.png");
+	f->setTexture(0, "furnace_top.png");
+	f->setTexture(1, "furnace_top.png");
 	f->setTexture(5, "furnace_front.png"); // Z-
-	f->setInventoryTextureCube("furnace_side.png", "furnace_front.png", "furnace_side.png");
+	f->setInventoryTextureCube("furnace_top.png", "furnace_front.png", "furnace_side.png");
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new FurnaceNodeMetadata();
@@ -4207,8 +4209,10 @@ void content_mapnode_init()
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_CUBELIKE;
 	f->setAllTextures("furnace_side.png");
+	f->setTexture(0, "furnace_top.png");
+	f->setTexture(1, "furnace_top.png");
 	f->setTexture(5, "furnace_lock.png"); // Z-
-	f->setInventoryTextureCube("furnace_side.png", "furnace_lock.png", "furnace_side.png");
+	f->setInventoryTextureCube("furnace_top.png", "furnace_lock.png", "furnace_side.png");
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockingFurnaceNodeMetadata();
