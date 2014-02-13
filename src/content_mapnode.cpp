@@ -3450,7 +3450,9 @@ void content_mapnode_init()
 	f->setTexture(4, "craft_guide_end.png");
 	f->setTexture(5, "craft_guide_end.png");
 	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_NODEBOX;
+	f->rotate_tile_with_nodebox = true;
 	f->light_propagates = true;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
