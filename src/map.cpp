@@ -1876,8 +1876,7 @@ void Map::removeNodeMetadata(v3s16 p)
 	block->m_node_metadata.remove(p_rel);
 }
 
-void Map::nodeMetadataStep(float dtime,
-		core::map<v3s16, MapBlock*> &changed_blocks)
+void Map::nodeMetadataStep(float dtime, core::map<v3s16, MapBlock*> &changed_blocks, ServerEnvironment *env)
 {
 	/*
 		NOTE:
@@ -1898,7 +1897,7 @@ void Map::nodeMetadataStep(float dtime,
 		for(i=sectorblocks.begin(); i!=sectorblocks.end(); i++)
 		{
 			MapBlock *block = *i;
-			bool changed = block->m_node_metadata.step(dtime);
+			bool changed = block->m_node_metadata.step(dtime,env);
 			if(changed)
 				changed_blocks[block->getPos()] = block;
 		}

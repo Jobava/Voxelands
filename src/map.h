@@ -43,6 +43,7 @@ class ServerMapSector;
 class ClientMapSector;
 class MapBlock;
 class NodeMetadata;
+class ServerEnvironment;
 
 namespace mapgen{
 	struct BlockMakeData;
@@ -278,7 +279,7 @@ public:
 	void setNodeMetadata(v3s16 p, NodeMetadata *meta);
 	void removeNodeMetadata(v3s16 p);
 	void nodeMetadataStep(float dtime,
-			core::map<v3s16, MapBlock*> &changed_blocks);
+			core::map<v3s16, MapBlock*> &changed_blocks, ServerEnvironment *env);
 
 	/*
 		Misc.

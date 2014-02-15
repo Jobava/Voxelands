@@ -608,7 +608,7 @@ void ServerEnvironment::activateBlock(MapBlock *block, u32 additional_dtime)
 	activateObjects(block);
 
 	// Run node metadata
-	bool changed = block->m_node_metadata.step((float)dtime_s);
+	bool changed = block->m_node_metadata.step((float)dtime_s,this);
 	if(changed)
 	{
 		MapEditEvent event;
@@ -918,7 +918,7 @@ void ServerEnvironment::step(float dtime)
 			block->setTimestampNoChangedFlag(m_game_time);
 
 			// Run node metadata
-			bool changed = block->m_node_metadata.step(dtime);
+			bool changed = block->m_node_metadata.step(dtime,this);
 			if(changed)
 			{
 				MapEditEvent event;

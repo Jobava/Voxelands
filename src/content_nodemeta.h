@@ -22,6 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "nodemetadata.h"
 
+class ServerEnvironment;
 class Inventory;
 
 class SignNodeMetadata : public NodeMetadata
@@ -163,7 +164,7 @@ public:
 	virtual std::string infoText();
 	virtual Inventory* getInventory() {return m_inventory;}
 	virtual void inventoryModified();
-	virtual bool step(float dtime);
+	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool nodeRemovalDisabled();
 	virtual std::string getInventoryDrawSpecString();
 
@@ -189,7 +190,7 @@ public:
 	virtual std::string infoText();
 	virtual Inventory* getInventory() {return m_inventory;}
 	virtual void inventoryModified();
-	virtual bool step(float dtime);
+	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool nodeRemovalDisabled();
 	virtual std::string getInventoryDrawSpecString();
 
@@ -221,7 +222,7 @@ public:
 	virtual NodeMetadata* clone();
 	virtual void serializeBody(std::ostream &os);
 	virtual std::string infoText();
-	virtual bool step(float dtime);
+	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
 
 	virtual bool energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
 	{
@@ -279,7 +280,7 @@ public:
 	virtual Inventory* getInventory() {return m_inventory;}
 	virtual bool nodeRemovalDisabled();
 	virtual void inventoryModified();
-	virtual bool step(float dtime);
+	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual std::string getInventoryDrawSpecString();
 
 private:

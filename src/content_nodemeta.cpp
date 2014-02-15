@@ -404,7 +404,7 @@ void FurnaceNodeMetadata::inventoryModified()
 {
 	infostream<<"Furnace inventory modification callback"<<std::endl;
 }
-bool FurnaceNodeMetadata::step(float dtime)
+bool FurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 {
 	if(dtime > 60.0)
 		infostream<<"Furnace stepping a long time ("<<dtime<<")"<<std::endl;
@@ -633,7 +633,7 @@ void LockingFurnaceNodeMetadata::inventoryModified()
 {
 	infostream<<"LockingFurnace inventory modification callback"<<std::endl;
 }
-bool LockingFurnaceNodeMetadata::step(float dtime)
+bool LockingFurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 {
 	if(dtime > 60.0)
 		infostream<<"LockingFurnace stepping a long time ("<<dtime<<")"<<std::endl;
@@ -787,7 +787,7 @@ NodeMetadata* TNTNodeMetadata::clone()
 	TNTNodeMetadata *d = new TNTNodeMetadata();
 	return d;
 }
-bool TNTNodeMetadata::step(float dtime)
+bool TNTNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 {
 	if (!m_armed)
 		return false;
@@ -966,7 +966,7 @@ void CraftGuideNodeMetadata::inventoryModified()
 {
 	infostream<<"CraftGuide inventory modification callback"<<std::endl;
 }
-bool CraftGuideNodeMetadata::step(float dtime)
+bool CraftGuideNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 {
 	InventoryList *l = m_inventory->getList("result");
 	InventoryItem *t = l->getItem(0);

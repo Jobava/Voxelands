@@ -40,6 +40,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 */
 
 class Inventory;
+class ServerEnvironment;
 
 class NodeMetadata
 {
@@ -62,7 +63,7 @@ public:
 	// the changes are copied elsewhere
 	virtual void inventoryModified(){}
 	// A step in time. Returns true if metadata changed.
-	virtual bool step(float dtime) {return false;}
+	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env) {return false;}
 	virtual bool nodeRemovalDisabled(){return false;}
 	// Used to make custom inventory menus.
 	// See format in guiInventoryMenu.cpp.
@@ -120,7 +121,7 @@ public:
 	void set(v3s16 p, NodeMetadata *d);
 
 	// A step in time. Returns true if something changed.
-	bool step(float dtime);
+	bool step(float dtime, ServerEnvironment *env);
 
 private:
 	core::map<v3s16, NodeMetadata*> m_data;
