@@ -1356,7 +1356,10 @@ void ServerEnvironment::step(float dtime)
 								for (s16 y=2; plant_found == 1 && y<=max_growth; y++) {
 									test_p = temp_p + v3s16(0,y,0);
 									testnode = m_map->getNodeNoEx(test_p);
-									if (testnode.getContent() == CONTENT_TRELLIS) {
+									if (
+										testnode.getContent() == CONTENT_TRELLIS
+										|| testnode.getContent() == CONTENT_TRELLIS_DEAD_VINE
+									) {
 										plant_found = 2;
 										type = CONTENT_FARM_TRELLIS_GRAPE_1;
 									}else if (testnode.getContent() == CONTENT_FARM_TRELLIS_GRAPE_1) {
@@ -1432,7 +1435,6 @@ void ServerEnvironment::step(float dtime)
 								int chance = 5;
 								if (water_found == 1)
 									chance = 2;
-printf("%d %d: %X (%d,%d,%d)\n",(int)plant_found,(int)water_found,(unsigned int)m_map->getNodeNoEx(temp_p+v3s16(0,1,0)).getContent(),temp_p.X,temp_p.Y,temp_p.Z);
 								if (myrand()%chance == 0) {
 									// revert to mud
 									n.setContent(CONTENT_MUD);
@@ -1453,6 +1455,45 @@ printf("%d %d: %X (%d,%d,%d)\n",(int)plant_found,(int)water_found,(unsigned int)
 							// revert to mud
 							n.setContent(CONTENT_MUD);
 							m_map->addNodeWithEvent(p,n);
+						}
+					}
+					break;
+				}
+				/*
+					make vines die
+				 */
+				case CONTENT_FARM_GRAPEVINE_1:
+				case CONTENT_FARM_GRAPEVINE_2:
+				case CONTENT_FARM_GRAPEVINE_3:
+				case CONTENT_FARM_GRAPEVINE:
+				{
+					if (myrand()%5 == 0) {
+						MapNode n_btm = m_map->getNodeNoEx(p+v3s16(0,-1,0));
+						if (
+							n_btm.getContent() != CONTENT_FARM_GRAPEVINE
+							&& n_btm.getContent() != CONTENT_FARM_DIRT
+							&& n_btm.getContent() != CONTENT_MUD
+						) {
+							n.setContent(CONTENT_DEAD_VINE);
+							m_map->addNodeWithEvent(p, n);
+						}
+					}
+					break;
+				}
+				case CONTENT_FARM_TRELLIS_GRAPE_1:
+				case CONTENT_FARM_TRELLIS_GRAPE_2:
+				case CONTENT_FARM_TRELLIS_GRAPE_3:
+				case CONTENT_FARM_TRELLIS_GRAPE:
+				{
+					if (myrand()%5 == 0) {
+						MapNode n_btm = m_map->getNodeNoEx(p+v3s16(0,-1,0));
+						if (
+							n_btm.getContent() != CONTENT_FARM_TRELLIS_GRAPE
+							&& n_btm.getContent() != CONTENT_FARM_DIRT
+							&& n_btm.getContent() != CONTENT_MUD
+						) {
+							n.setContent(CONTENT_TRELLIS_DEAD_VINE);
+							m_map->addNodeWithEvent(p, n);
 						}
 					}
 					break;
@@ -1715,10 +1756,12 @@ printf("%d %d: %X (%d,%d,%d)\n",(int)plant_found,(int)water_found,(unsigned int)
 							m_map->addNodeWithEvent(p, n);
 						}else{
 							m_map->removeNodeWithEvent(p);
-							v3f rot_pos = intToFloat(p, BS);
-							rot_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
-							ServerActiveObject *obj = new ItemSAO(this, 0, rot_pos, "CraftItem rotten_fruit 1");
-							addActiveObject(obj);
+							if (active_object_count_wider < 10) {
+								v3f rot_pos = intToFloat(p, BS);
+								rot_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
+								ServerActiveObject *obj = new ItemSAO(this, 0, rot_pos, "CraftItem rotten_fruit 1");
+								addActiveObject(obj);
+							}
 						}
 					}
 					break;
@@ -2485,7 +2528,9 @@ printf("%d %d: %X (%d,%d,%d)\n",(int)plant_found,(int)water_found,(unsigned int)
 						apple_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
 						ServerActiveObject *obj = new ItemSAO(this, 0, apple_pos, "CraftItem apple 1");
 						addActiveObject(obj);
-					}else if (myrand()%200 == 0) {
+					}else if (myrand()%200 == 0 && active_object_count_wider < 10) {
+						n.setContent(CONTENT_APPLE_LEAVES);
+						m_map->addNodeWithEvent(p,n);
 						v3f rot_pos = intToFloat(p, BS);
 						rot_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
 						ServerActiveObject *obj = new ItemSAO(this, 0, rot_pos, "CraftItem rotten_fruit 1");
