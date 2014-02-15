@@ -38,7 +38,6 @@ CraftItemFeatures & content_craftitem_features(content_t i);
 CraftItemFeatures & content_craftitem_features(std::string subname);
 
 #define CONTENT_CRAFTITEM_PAPER (CONTENT_CRAFTITEM_MASK | 0x01)
-#define CONTENT_CRAFTITEM_BOOK (CONTENT_CRAFTITEM_MASK | 0x02)
 #define CONTENT_CRAFTITEM_CHARCOAL (CONTENT_CRAFTITEM_MASK | 0x03)
 #define CONTENT_CRAFTITEM_COAL (CONTENT_CRAFTITEM_MASK | 0x04)
 #define CONTENT_CRAFTITEM_IRON (CONTENT_CRAFTITEM_MASK | 0x05)

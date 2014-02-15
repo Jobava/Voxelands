@@ -59,14 +59,6 @@ void content_craftitem_init()
 	f->description = "Paper";
 	crafting::setRow1Recipe(CONTENT_PAPYRUS,CONTENT_CRAFTITEM_PAPER);
 
-	i = CONTENT_CRAFTITEM_BOOK;
-	f = &g_content_craftitem_features[i];
-	f->content = CONTENT_CRAFTITEM_BOOK;
-	f->texture = "book.png";
-	f->name = "book";
-	f->description = "Book";
-	crafting::setCol1Recipe(CONTENT_CRAFTITEM_PAPER,CONTENT_CRAFTITEM_BOOK);
-
 	i = CONTENT_CRAFTITEM_CHARCOAL;
 	f = &g_content_craftitem_features[i];
 	f->content = CONTENT_CRAFTITEM_CHARCOAL;

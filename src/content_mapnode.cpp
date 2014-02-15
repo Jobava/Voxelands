@@ -771,6 +771,56 @@ static void content_mapnode_nodebox_guide(ContentFeatures *f)
 	));
 }
 
+static void content_mapnode_nodebox_book(ContentFeatures *f)
+{
+	// lower cover
+	f->setNodeBox(core::aabbox3d<f32>(
+		0,
+		-0.5*BS,
+		// -6 / 16
+		-0.375*BS,
+
+		// 7 / 16
+		0.4375*BS,
+		// -7 / 16
+		-0.4375*BS,
+		// 3 / 16
+		0.1875*BS
+	));
+
+	// pages
+	f->addNodeBox(core::aabbox3d<f32>(
+		0,
+		// -7 / 16
+		-0.4375*BS,
+		// -6 / 16
+		-0.375*BS,
+
+		// 6 / 16
+		0.375*BS,
+		// -5 / 16
+		-0.3125*BS,
+		// 3 / 16
+		0.1875*BS
+	));
+
+	// top cover
+	f->addNodeBox(core::aabbox3d<f32>(
+		0,
+		// -5 / 16
+		-0.3125*BS,
+		// -6 / 16
+		-0.375*BS,
+
+		// 7 / 16
+		0.4375*BS,
+		// -4 / 16
+		-0.25*BS,
+		// 3 / 16
+		0.1875*BS
+	));
+}
+
 /*
 	A conversion table for backwards compatibility.
 	Maps <=v19 content types to current ones.
@@ -1933,7 +1983,7 @@ void content_mapnode_init()
 	{
 		u16 r[9] = {
 			CONTENT_WOOD,	CONTENT_WOOD,	CONTENT_WOOD,
-			CONTENT_CRAFTITEM_BOOK, CONTENT_CRAFTITEM_BOOK, CONTENT_CRAFTITEM_BOOK,
+			CONTENT_BOOK, CONTENT_BOOK, CONTENT_BOOK,
 			CONTENT_WOOD,	CONTENT_WOOD,	CONTENT_WOOD
 		};
 		crafting::setRecipe(r,CONTENT_BOOKSHELF,1);
@@ -1941,7 +1991,7 @@ void content_mapnode_init()
 	{
 		u16 r[9] = {
 			CONTENT_JUNGLEWOOD,	CONTENT_JUNGLEWOOD,	CONTENT_JUNGLEWOOD,
-			CONTENT_CRAFTITEM_BOOK, CONTENT_CRAFTITEM_BOOK, CONTENT_CRAFTITEM_BOOK,
+			CONTENT_BOOK, CONTENT_BOOK, CONTENT_BOOK,
 			CONTENT_JUNGLEWOOD,	CONTENT_JUNGLEWOOD,	CONTENT_JUNGLEWOOD
 		};
 		crafting::setRecipe(r,CONTENT_BOOKSHELF,1);
@@ -3441,6 +3491,30 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 0.3;
 
+	i = CONTENT_BOOK;
+	f = &content_features(i);
+	f->description = std::string("Book");
+	f->setTexture(0, "book_top.png");
+	f->setTexture(1, "book_bottom.png");
+	f->setTexture(2, "book_side.png");
+	f->setTexture(3, "book_binding.png");
+	f->setTexture(4, "book_back.png");
+	f->setTexture(5, "book_front.png");
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->rotate_tile_with_nodebox = true;
+	f->light_propagates = true;
+	f->air_equivalent = true;
+	f->flammable = 1;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0;
+	content_mapnode_nodebox_book(f);
+	f->setInventoryTextureNodeBox(i, "book_top.png", "book_front.png", "book_side.png");
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	crafting::setCol1Recipe(CONTENT_CRAFTITEM_PAPER,i);
+
 	i = CONTENT_CRAFT_GUIDE;
 	f = &content_features(i);
 	f->description = std::string("Craft Guide");
@@ -3454,8 +3528,9 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->rotate_tile_with_nodebox = true;
 	f->light_propagates = true;
-	f->is_ground_content = true;
-	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->air_equivalent = true;
+	f->flammable = 1;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BOOK)+" 1";
 	f->solidness = 0;
 	content_mapnode_nodebox_guide(f);
 	f->setInventoryTextureNodeBox(i, "craft_guide_top.png", "craft_guide_end.png", "craft_guide_side.png");
@@ -3463,14 +3538,6 @@ void content_mapnode_init()
 	f->hardness = 1.0;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new CraftGuideNodeMetadata();
-	{
-		content_t r[9] = {
-			CONTENT_CRAFTITEM_STICK,	CONTENT_CRAFTITEM_STICK,	CONTENT_IGNORE,
-			CONTENT_IGNORE,			CONTENT_CRAFTITEM_STICK,	CONTENT_IGNORE,
-			CONTENT_CRAFTITEM_STICK,	CONTENT_IGNORE,			CONTENT_IGNORE
-		};
-		crafting::setRecipe(r,CONTENT_CRAFT_GUIDE,1);
-	}
 
 	i = CONTENT_COTTON;
 	f = &content_features(i);
