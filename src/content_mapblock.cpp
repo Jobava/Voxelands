@@ -2424,19 +2424,20 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		{
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l);
+			f32 h = (0.75*content_features(n).tiles[0].texture.size.Y)+content_features(n).tiles[0].texture.y0();
 
 			for(u32 j=0; j<2; j++)
 			{
 				video::S3DVertex vertices[4] =
 				{
-					video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
+					video::S3DVertex(-BS/2,-0.5*BS,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
+					video::S3DVertex(BS/2,-0.5*BS,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,-BS/2.5,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
-					video::S3DVertex(-BS/2,-BS/2.5,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
+					video::S3DVertex(BS/2,-0.25*BS,0, 0,0,0, c,
+						content_features(n).tiles[0].texture.x1(), h),
+					video::S3DVertex(-BS/2,-0.25*BS,0, 0,0,0, c,
+						content_features(n).tiles[0].texture.x0(), h),
 				};
 
 				if(j == 0)
@@ -2475,6 +2476,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		{
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l);
+			f32 h = (0.5*content_features(n).tiles[0].texture.size.Y)+content_features(n).tiles[0].texture.y0();
 
 			for(u32 j=0; j<2; j++)
 			{
@@ -2485,9 +2487,9 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
 					video::S3DVertex(BS/2,0,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
+						content_features(n).tiles[0].texture.x1(), h),
 					video::S3DVertex(-BS/2,0,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
+						content_features(n).tiles[0].texture.x0(), h),
 				};
 
 				if(j == 0)
@@ -2526,19 +2528,20 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		{
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l);
+			f32 h = (0.25*content_features(n).tiles[0].texture.size.Y)+content_features(n).tiles[0].texture.y0();
 
 			for(u32 j=0; j<2; j++)
 			{
 				video::S3DVertex vertices[4] =
 				{
-					video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
+					video::S3DVertex(-BS/2,-0.5*BS,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
+					video::S3DVertex(BS/2,-0.5*BS,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,BS/2.5,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
-					video::S3DVertex(-BS/2,BS/2.5,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
+					video::S3DVertex(BS/2,0.25*BS,0, 0,0,0, c,
+						content_features(n).tiles[0].texture.x1(), h),
+					video::S3DVertex(-BS/2,0.25*BS,0, 0,0,0, c,
+						content_features(n).tiles[0].texture.x0(), h),
 				};
 
 				if(j == 0)

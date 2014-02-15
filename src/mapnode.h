@@ -224,6 +224,9 @@ struct ContentFeatures
 	std::string extra_dug_item;
 	s32 extra_dug_item_rarity;
 
+	// when dug, this node will replace the dug node
+	content_t ondig_replace_node;
+
 	// the result of cooking this node
 	std::string cook_result;
 	// the fuel value of this node
@@ -301,6 +304,7 @@ struct ContentFeatures
 		slab_cube_type = CONTENT_IGNORE;
 		extra_dug_item = "";
 		extra_dug_item_rarity = 2;
+		ondig_replace_node = CONTENT_IGNORE;
 		cook_result = "";
 		fuel_time = 0.0;
 		initial_metadata = NULL;

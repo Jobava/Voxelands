@@ -2639,6 +2639,25 @@ void content_mapnode_init()
 	f->hardness = 0.5;
 	crafting::set1To4Recipe(CONTENT_CONIFER_TREE,CONTENT_WOOD_PINE);
 
+	i = CONTENT_TRELLIS;
+	f = &content_features(i);
+	f->description = std::string("Trellis");
+	f->setAllTextures("trellis.png");
+	f->setAllTextureFlags(0);
+	f->draw_type = CDT_PLANTLIKE;
+	f->param_type = CPT_LIGHT;
+	f->solidness = 0;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/4;
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
+	crafting::set5Recipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_TRELLIS);
+	crafting::set5Recipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_TRELLIS);
+
 	i = CONTENT_MESE;
 	f = &content_features(i);
 	f->description = std::string("Mese");
@@ -3052,7 +3071,7 @@ void content_mapnode_init()
 	f->extra_dug_item_rarity = 1;
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
-	
+
 	i = CONTENT_FARM_PUMPKIN_JACK;
 	f = &content_features(i);
 	f->description = std::string("Jack' O Lantern");
@@ -3426,6 +3445,81 @@ void content_mapnode_init()
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 
+	i = CONTENT_FARM_TRELLIS_GRAPE_1;
+	f = &content_features(i);
+	f->description = std::string("Trellis");
+	f->setAllTextures("trellis_grape_1.png");
+	f->setAllTextureFlags(0);
+	f->draw_type = CDT_PLANTLIKE;
+	f->param_type = CPT_LIGHT;
+	f->solidness = 0;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_GRAPE)+" 1";
+	f->ondig_replace_node = CONTENT_TRELLIS;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/4;
+	f->type = CMT_WOOD;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_TRELLIS_GRAPE_2;
+	f = &content_features(i);
+	f->description = std::string("Trellis");
+	f->setAllTextures("trellis_grape_2.png");
+	f->setAllTextureFlags(0);
+	f->draw_type = CDT_PLANTLIKE;
+	f->param_type = CPT_LIGHT;
+	f->solidness = 0;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_GRAPE)+" 1";
+	f->ondig_replace_node = CONTENT_TRELLIS;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/4;
+	f->type = CMT_WOOD;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_TRELLIS_GRAPE_3;
+	f = &content_features(i);
+	f->description = std::string("Trellis");
+	f->setAllTextures("trellis_grape_3.png");
+	f->setAllTextureFlags(0);
+	f->draw_type = CDT_PLANTLIKE;
+	f->param_type = CPT_LIGHT;
+	f->solidness = 0;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_GRAPE)+" 1";
+	f->extra_dug_item = std::string("CraftItem harvested_grape 1");
+	f->extra_dug_item_rarity = 1;
+	f->ondig_replace_node = CONTENT_TRELLIS;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/4;
+	f->type = CMT_WOOD;
+	f->hardness = 0.4;
+
+	i = CONTENT_FARM_TRELLIS_GRAPE;
+	f = &content_features(i);
+	f->description = std::string("Trellis");
+	f->setAllTextures("trellis_grape.png");
+	f->setAllTextureFlags(0);
+	f->draw_type = CDT_PLANTLIKE;
+	f->param_type = CPT_LIGHT;
+	f->solidness = 0;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_GRAPE)+" 2";
+	f->extra_dug_item = std::string("CraftItem harvested_grape 3");
+	f->extra_dug_item_rarity = 1;
+	f->ondig_replace_node = CONTENT_TRELLIS;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/4;
+	f->type = CMT_WOOD;
+	f->hardness = 0.4;
 
 	i = CONTENT_SNOW_BLOCK;
 	f = &content_features(i);
@@ -3563,6 +3657,14 @@ void content_mapnode_init()
 	f->hardness = 1.0;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new CraftGuideNodeMetadata();
+	{
+		content_t r[9] = {
+			CONTENT_CRAFTITEM_STICK, CONTENT_CRAFTITEM_STICK, CONTENT_IGNORE,
+			CONTENT_IGNORE,		 CONTENT_CRAFTITEM_STICK, CONTENT_IGNORE,
+			CONTENT_CRAFTITEM_STICK, CONTENT_IGNORE,	  CONTENT_IGNORE
+		};
+		crafting::setRecipe(r,CONTENT_CRAFT_GUIDE,1);
+	}
 
 	i = CONTENT_COTTON;
 	f = &content_features(i);

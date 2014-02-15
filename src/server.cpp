@@ -3294,7 +3294,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 								std::istringstream is(dug_s, std::ios::binary);
 								item = InventoryItem::deSerialize(is);
 							}
-						}					}else if (material != CONTENT_WATERSOURCE && material != CONTENT_LAVASOURCE) {
+						}
+					}else if (material != CONTENT_WATERSOURCE && material != CONTENT_LAVASOURCE) {
 						std::string &dug_s = content_features(material).dug_item;
 						if (dug_s != "") {
 							std::istringstream is(dug_s, std::ios::binary);
@@ -3365,6 +3366,19 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					if(client==NULL)
 						continue;
 					client->SetBlocksNotSent(modified_blocks);
+				}
+
+				if (content_features(material).ondig_replace_node != CONTENT_IGNORE) {
+					n.setContent(content_features(material).ondig_replace_node);
+					core::list<u16> far_players;
+					sendAddNode(p_under, n, 0, &far_players, 30);
+					core::map<v3s16, MapBlock*> modified_blocks;
+					{
+						MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+
+						std::string p_name = std::string(player->getName());
+						m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
+					}
 				}
 			}
 		}

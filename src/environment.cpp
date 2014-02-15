@@ -1271,6 +1271,7 @@ void ServerEnvironment::step(float dtime)
 							case CONTENT_FARM_BEETROOT_1:
 							case CONTENT_FARM_GRAPEVINE_1:
 							case CONTENT_FARM_COTTON_1:
+							case CONTENT_FARM_TRELLIS_GRAPE_1:
 							case CONTENT_FARM_WHEAT_2:
 							case CONTENT_FARM_MELON_2:
 							case CONTENT_FARM_PUMPKIN_2:
@@ -1279,6 +1280,7 @@ void ServerEnvironment::step(float dtime)
 							case CONTENT_FARM_BEETROOT_2:
 							case CONTENT_FARM_GRAPEVINE_2:
 							case CONTENT_FARM_COTTON_2:
+							case CONTENT_FARM_TRELLIS_GRAPE_2:
 							case CONTENT_FARM_WHEAT_3:
 							case CONTENT_FARM_MELON_3:
 							case CONTENT_FARM_PUMPKIN_3:
@@ -1287,6 +1289,7 @@ void ServerEnvironment::step(float dtime)
 							case CONTENT_FARM_BEETROOT_3:
 							case CONTENT_FARM_GRAPEVINE_3:
 							case CONTENT_FARM_COTTON_3:
+							case CONTENT_FARM_TRELLIS_GRAPE_3:
 								test_p = temp_p + v3s16(0,1,0);
 								type = testnode.getContent()+1;
 								plant_found = 2;
@@ -1334,23 +1337,37 @@ void ServerEnvironment::step(float dtime)
 								}
 								break;
 							case CONTENT_FARM_GRAPEVINE:
-								max_growth = 5;
+							{
 								plant_found = 1;
+								v3s16 tdirs[4] = {v3s16(-1,1,0),v3s16(0,1,-1),v3s16(1,1,0),v3s16(0,1,1)};
+								for (s16 k=0; plant_found == 1 && k<4; k++) {
+									test_p = temp_p + tdirs[k];
+									testnode = m_map->getNodeNoEx(test_p);
+									if (testnode.getContent() == CONTENT_TRELLIS) {
+										plant_found = 2;
+										type = CONTENT_FARM_TRELLIS_GRAPE_1;
+									}
+								}
+							}
+								break;
+							case CONTENT_FARM_TRELLIS_GRAPE:
+								plant_found = 1;
+								max_growth = 5;
 								for (s16 y=2; plant_found == 1 && y<=max_growth; y++) {
 									test_p = temp_p + v3s16(0,y,0);
 									testnode = m_map->getNodeNoEx(test_p);
-									if (testnode.getContent() == CONTENT_AIR) {
+									if (testnode.getContent() == CONTENT_TRELLIS) {
 										plant_found = 2;
-										type = CONTENT_FARM_GRAPEVINE_1;
-									}else if (testnode.getContent() == CONTENT_FARM_GRAPEVINE_1) {
+										type = CONTENT_FARM_TRELLIS_GRAPE_1;
+									}else if (testnode.getContent() == CONTENT_FARM_TRELLIS_GRAPE_1) {
 										plant_found = 2;
-										type = CONTENT_FARM_GRAPEVINE_2;
-									}else if (testnode.getContent() == CONTENT_FARM_GRAPEVINE_2) {
+										type = CONTENT_FARM_TRELLIS_GRAPE_2;
+									}else if (testnode.getContent() == CONTENT_FARM_TRELLIS_GRAPE_2) {
 										plant_found = 2;
-										type = CONTENT_FARM_GRAPEVINE_3;
-									}else if (testnode.getContent() == CONTENT_FARM_GRAPEVINE_3) {
+										type = CONTENT_FARM_TRELLIS_GRAPE_3;
+									}else if (testnode.getContent() == CONTENT_FARM_TRELLIS_GRAPE_3) {
 										plant_found = 2;
-										type = CONTENT_FARM_GRAPEVINE;
+										type = CONTENT_FARM_TRELLIS_GRAPE;
 									}
 								}
 								break;
@@ -1363,6 +1380,7 @@ void ServerEnvironment::step(float dtime)
 							case CONTENT_FLOWER_ROSE:
 							case CONTENT_FLOWER_DAFFODIL:
 							case CONTENT_FLOWER_TULIP:
+							case CONTENT_TRELLIS:
 								plant_found = 1;
 								break;
 							case CONTENT_FERTILIZER:
