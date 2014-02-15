@@ -2915,6 +2915,8 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Melon");
 	f->setAllTextures("farm_melon.png");
+	f->setTexture(0,"farm_melon_top.png");
+	f->setTexture(1,"farm_melon_top.png");
 	f->draw_type = CDT_NODEBOX;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
@@ -2932,6 +2934,8 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Melon");
 	f->setAllTextures("farm_melon.png");
+	f->setTexture(0,"farm_melon_top.png");
+	f->setTexture(1,"farm_melon_top.png");
 	f->draw_type = CDT_NODEBOX;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
@@ -2949,6 +2953,8 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Melon");
 	f->setAllTextures("farm_melon.png");
+	f->setTexture(0,"farm_melon_top.png");
+	f->setTexture(1,"farm_melon_top.png");
 	f->draw_type = CDT_NODEBOX;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
@@ -2966,6 +2972,8 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Melon");
 	f->setAllTextures("farm_melon.png");
+	f->setTexture(0,"farm_melon_top.png");
+	f->setTexture(1,"farm_melon_top.png");
 	f->setInventoryTextureCube("farm_melon.png","farm_melon.png","farm_melon.png");
 	f->draw_type = CDT_CUBELIKE;
 	f->flammable = 1;
@@ -3044,6 +3052,23 @@ void content_mapnode_init()
 	f->extra_dug_item_rarity = 1;
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
+	
+	i = CONTENT_FARM_PUMPKIN_JACK;
+	f = &content_features(i);
+	f->description = std::string("Jack' O Lantern");
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->setAllTextures("farm_pumpkin.png");
+	f->setTexture(0,"farm_pumpkin_top.png");
+	f->setTexture(1,"farm_pumpkin_top.png");
+	f->setTexture(5, "farm_pumpkin_jack.png"); // Z-
+	f->setInventoryTextureCube("farm_pumpkin_top.png","farm_pumpkin_jack.png","farm_pumpkin.png");
+	f->draw_type = CDT_CUBELIKE;
+	f->flammable = 1;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+	f->light_source = LIGHT_MAX-1;
+	crafting::set1Any2Recipe(CONTENT_TORCH,CONTENT_FARM_PUMPKIN,CONTENT_FARM_PUMPKIN_JACK);
 
 	i = CONTENT_FARM_POTATO_1;
 	f = &content_features(i);
