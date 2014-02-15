@@ -2490,10 +2490,16 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				}
 			}else if (n.getContent() == CONTENT_BOOK || n.getContent() == CONTENT_CRAFT_GUIDE) {
 
-				n.setContent((n.getContent() == CONTENT_BOOK) ? (CONTENT_CRAFT_GUIDE) : (CONTENT_BOOK));
 				core::list<u16> far_players;
-				sendAddNode(p_under, n, 0, &far_players, 30);
 				core::map<v3s16, MapBlock*> modified_blocks;
+				if (n.getContent() == CONTENT_CRAFT_GUIDE) {
+					m_env.getMap().removeNodeMetadata(p_under);
+					sendRemoveNode(p_under, 0, &far_players, 30);
+					n.setContent(CONTENT_BOOK);
+				}else{
+					n.setContent(CONTENT_CRAFT_GUIDE);
+				}
+				sendAddNode(p_under, n, 0, &far_players, 30);
 				{
 					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 
