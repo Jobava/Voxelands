@@ -250,9 +250,8 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_FARM_COTTON_2 0x94D
 #define CONTENT_FARM_COTTON_3 0x94E
 #define CONTENT_FARM_COTTON 0x94F
-#define CONTENT_FARM_PUMPKIN_JACK 0x950
-// FREE 951-9FE
-//bwahaha!
+// FREE 951-9FC
+#define CONTENT_FARM_PUMPKIN_JACK 0x9FD
 #define CONTENT_BOOK 0x9FE
 #define CONTENT_CRAFT_GUIDE 0x9FF
 
