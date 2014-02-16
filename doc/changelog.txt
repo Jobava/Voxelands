@@ -1,7 +1,27 @@
-Minetest-c55 changelog
+Minetest-Classic changelog
 ----------------------
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
+
+1402.00: (release 2014-02-16)
+- new textures, skyboxes, and fog (sdzen)
+- new chest and furnace textures (Menche)
+- farm expansion: add pumpkin, cotton, wheat, carrot, beetroot, melon,
+ grapes
+- add rotten fruit, and fertilizer
+- add trellis node, let vines only grow on them
+- add Jack O' Lanterns (sdzen)
+- add apple and pumpkin pies, bread, dough, carrot cake
+- make craft guide into a book (Menche)
+- make sponge less rare and junglegrass growth more rare
+- make cactus grow flowers and fruit
+- fix texture coords on wielded nodeboxes
+- replace only_peace_mobs with max_mob_level
+- .desktop file for app launching (tiemay)
+- new digging properties calculation
+- make special tools not dig in client either
+- add ToolType to ToolItemFeatures, streamline some code
+- add /setpassword command
 
 1401.01: (release 2014-01-13)
 - add models to install files

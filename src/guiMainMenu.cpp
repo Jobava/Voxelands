@@ -455,7 +455,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 					"http://www.minetest-classic.com/\n"
 					"\n"
 					"By Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
-					"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS\n"
+					"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, tiemay\n"
 					"\n"
 					"Based on Minetest-C55\n"
 					"by Perttu Ahola <celeron55@gmail.com>\n"
