@@ -732,7 +732,7 @@ void the_game(
 	s32 hotbar_imagesize = 48;
 
 	// The color of the sky
-	video::SColor bgcolor_bright = video::SColor(255,119,119,237);
+	video::SColor bgcolor_bright = video::SColor(255,167,167,200);
 	/*
 		Draw "Loading" screen
 	*/
