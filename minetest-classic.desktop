@@ -2,6 +2,7 @@
 Name=Minetest Classic
 GenericName=Minetest Classic
 Comment=3D Voxel World Game
+Icon=minetest-icon
 Exec=minetest-classic
 Terminal=false
 Type=Application
