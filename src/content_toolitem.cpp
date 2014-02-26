@@ -273,7 +273,8 @@ void content_toolitem_init()
 	f->type = TT_BUCKET;
 	f->hardness = 30.;
 	f->dig_time = 0.0;
-	crafting::setURecipe(CONTENT_CRAFTITEM_STICK,CONTENT_TOOLITEM_WBUCKET);
+	crafting::setURecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_TOOLITEM_WBUCKET);
+	crafting::setURecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_TOOLITEM_WBUCKET);
 
 	i = CONTENT_TOOLITEM_TINBUCKET;
 	f = &g_content_toolitem_features[i];
