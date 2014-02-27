@@ -3532,7 +3532,7 @@ void content_mapnode_init()
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->is_ground_content = true;
-	f->dug_item = std::string("MaterialItem2") + itos(CONTENT_DEAD_VINE)+" 1";
+	f->dug_item = std::string("MaterialItem2 ") + itos(CONTENT_DEAD_VINE)+" 1";
 	f->ondig_replace_node = CONTENT_TRELLIS;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/4;
@@ -3550,7 +3550,7 @@ void content_mapnode_init()
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->is_ground_content = true;
-	f->dug_item = std::string("MaterialItem2") + itos(i)+" 1";
+	f->dug_item = std::string("MaterialItem2 ") + itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/4;
 	f->type = CMT_WOOD;
