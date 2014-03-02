@@ -3957,59 +3957,9 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 	}
 	else if(command == TOSERVER_SIGNNODETEXT)
 	{
-		if((getPlayerPrivs(player) & PRIV_BUILD) == 0)
-			return;
-		/*
-			u16 command
-			v3s16 p
-			u16 textlen
-			textdata
-		*/
-		std::string datastring((char*)&data[2], datasize-2);
-		std::istringstream is(datastring, std::ios_base::binary);
-		u8 buf[6];
-		// Read stuff
-		is.read((char*)buf, 6);
-		v3s16 p = readV3S16(buf);
-		is.read((char*)buf, 2);
-		u16 textlen = readU16(buf);
-		std::string text;
-		for(u16 i=0; i<textlen; i++)
-		{
-			is.read((char*)buf, 1);
-			text += (char)buf[0];
-		}
-
-		NodeMetadata *meta = m_env.getMap().getNodeMetadata(p);
-		if(!meta)
-			return;
-		if(meta->typeId() != CONTENT_SIGN_WALL) {
-			if (meta->typeId() != CONTENT_LOCKABLE_SIGN_WALL)
-				return;
-			LockingSignNodeMetadata *lsm = (LockingSignNodeMetadata*)meta;
-			if (lsm->getOwner() != player->getName())
-				return;
-		}
-		SignNodeMetadata *signmeta = (SignNodeMetadata*)meta;
-		signmeta->setText(text);
-
-		actionstream<<player->getName()<<" writes \""<<text<<"\" to sign "
-				<<" at "<<PP(p)<<std::endl;
-
-		v3s16 blockpos = getNodeBlockPos(p);
-		MapBlock *block = m_env.getMap().getBlockNoCreateNoEx(blockpos);
-		if(block)
-		{
-			block->setChangedFlag();
-		}
-
-		for(core::map<u16, RemoteClient*>::Iterator
-			i = m_clients.getIterator();
-			i.atEnd()==false; i++)
-		{
-			RemoteClient *client = i.getNode()->getValue();
-			client->SetBlockNotSent(blockpos);
-		}
+		infostream<<"Server: TOSERVER_SIGNNODETEXT not supported anymore"
+				<<std::endl;
+		return;
 	}
 	else if(command == TOSERVER_INVENTORY_ACTION)
 	{
@@ -4397,6 +4347,36 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 	else if(command == TOSERVER_WANTCOOKIE)
 	{
 		SendPlayerCookie(player);
+	}
+	else if(command == TOSERVER_NODEMETA_FIELDS)
+	{
+		std::string datastring((char*)&data[2], datasize-2);
+		std::istringstream is(datastring, std::ios_base::binary);
+		u8 buf[6];
+		// Read p
+		is.read((char*)buf, 6);
+		v3s16 p = readV3S16(buf);
+
+		// Read formname
+		std::string formname = deSerializeString(is);
+
+		// Read number of fields
+		is.read((char*)buf, 2);
+		u16 num = readU16(buf);
+
+		// Read Fields
+		std::map<std::string, std::string> fields;
+		for (int k=0; k<num; k++) {
+			std::string fieldname = deSerializeString(is);
+			std::string fieldvalue = deSerializeLongString(is);
+			fields[fieldname] = fieldvalue;
+		}
+
+		NodeMetadata *meta = m_env.getMap().getNodeMetadata(p);
+		if(!meta)
+			return;
+
+		meta->receiveFields(formname,fields,player);
 	}
 	else
 	{

@@ -895,6 +895,76 @@ void IMoveAction::apply(InventoryContext *c, InventoryManager *mgr)
 }
 
 /*
+	InventoryLocation
+*/
+
+std::string InventoryLocation::dump() const
+{
+	std::ostringstream os(std::ios::binary);
+	serialize(os);
+	return os.str();
+}
+
+void InventoryLocation::serialize(std::ostream &os) const
+{
+        switch(type) {
+        case InventoryLocation::UNDEFINED:
+        {
+		os<<"undefined";
+	}
+        break;
+        case InventoryLocation::CURRENT_PLAYER:
+        {
+		os<<"current_player";
+	}
+        break;
+        case InventoryLocation::PLAYER:
+        {
+		os<<"player:"<<name;
+        }
+        break;
+        case InventoryLocation::NODEMETA:
+        {
+		os<<"nodemeta:"<<p.X<<","<<p.Y<<","<<p.Z;
+        }
+        break;
+        default:
+                assert(0);
+        }
+}
+
+void InventoryLocation::deSerialize(std::istream &is)
+{
+	std::string tname;
+	std::getline(is, tname, ':');
+	if (tname == "undefined") {
+		type = InventoryLocation::UNDEFINED;
+	}else if (tname == "current_player") {
+		type = InventoryLocation::CURRENT_PLAYER;
+	}else if (tname == "player") {
+		type = InventoryLocation::PLAYER;
+		std::getline(is, name, '\n');
+	}else if (tname == "nodemeta") {
+		type = InventoryLocation::NODEMETA;
+		std::string pos;
+		std::getline(is, pos, '\n');
+		Strfnd fn(pos);
+		p.X = stoi(fn.next(","));
+		p.Y = stoi(fn.next(","));
+		p.Z = stoi(fn.next(","));
+	}else{
+		infostream<<"Unknown InventoryLocation type=\""<<tname<<"\""<<std::endl;
+		throw SerializationError("Unknown InventoryLocation type");
+	}
+}
+
+void InventoryLocation::deSerialize(std::string s)
+{
+	std::istringstream is(s, std::ios::binary);
+	deSerialize(is);
+}
+
+/*
 	Craft checking system
 */
 

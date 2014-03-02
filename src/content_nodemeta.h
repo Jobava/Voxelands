@@ -39,6 +39,11 @@ public:
 
 	std::string getText(){ return m_text; }
 	void setText(std::string t){ m_text = t; }
+	virtual void receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player)
+	{
+		m_text = fields["text"];
+	}
+	virtual std::string getDrawSpecString();
 
 private:
 	std::string m_text;
@@ -63,6 +68,8 @@ public:
 
 	std::string getText(){ return m_text; }
 	void setText(std::string t){ m_text = t; }
+	virtual void receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
+	virtual std::string getDrawSpecString();
 
 private:
 	std::string m_text;
@@ -82,7 +89,7 @@ public:
 	virtual std::string infoText();
 	virtual Inventory* getInventory() {return m_inventory;}
 	virtual bool nodeRemovalDisabled();
-	virtual std::string getInventoryDrawSpecString();
+	virtual std::string getDrawSpecString();
 
 private:
 	Inventory *m_inventory;
@@ -101,7 +108,7 @@ public:
 	virtual std::string infoText();
 	virtual Inventory* getInventory() {return m_inventory;}
 	virtual bool nodeRemovalDisabled();
-	virtual std::string getInventoryDrawSpecString();
+	virtual std::string getDrawSpecString();
 
 	virtual std::string getOwner(){ return m_owner; }
 	virtual void setOwner(std::string t){ m_owner = t; }
@@ -166,7 +173,7 @@ public:
 	virtual void inventoryModified();
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool nodeRemovalDisabled();
-	virtual std::string getInventoryDrawSpecString();
+	virtual std::string getDrawSpecString();
 
 private:
 	Inventory *m_inventory;
@@ -192,7 +199,7 @@ public:
 	virtual void inventoryModified();
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool nodeRemovalDisabled();
-	virtual std::string getInventoryDrawSpecString();
+	virtual std::string getDrawSpecString();
 
 	virtual std::string getOwner(){ return m_owner; }
 	virtual void setOwner(std::string t){ m_owner = t; }
@@ -260,7 +267,7 @@ public:
 	virtual Inventory* getInventory() {return m_inventory;}
 	virtual void inventoryModified();
 	virtual bool nodeRemovalDisabled();
-	virtual std::string getInventoryDrawSpecString();
+	virtual std::string getDrawSpecString();
 
 private:
 	Inventory *m_inventory;
@@ -281,7 +288,7 @@ public:
 	virtual bool nodeRemovalDisabled();
 	virtual void inventoryModified();
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
-	virtual std::string getInventoryDrawSpecString();
+	virtual std::string getDrawSpecString();
 
 private:
 	Inventory *m_inventory;

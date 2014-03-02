@@ -23,6 +23,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "common_irrlicht.h"
 #include <string>
 #include <iostream>
+#include <map>
+
+class Player;
 
 #define ENERGY_MAX 16
 
@@ -67,13 +70,15 @@ public:
 	virtual bool nodeRemovalDisabled(){return false;}
 	// Used to make custom inventory menus.
 	// See format in guiInventoryMenu.cpp.
-	virtual std::string getInventoryDrawSpecString(){return "";}
+	virtual std::string getDrawSpecString(){return "";}
 	// the node owner - if not "" then only the owner can dig the node
 	virtual std::string getOwner(){ return std::string(""); }
 	virtual void setOwner(std::string t){  }
 	// the inventory owner - if not "" then only the owner can modify
 	virtual std::string getInventoryOwner(){ return std::string(""); }
 	virtual void setInventoryOwner(std::string t){  }
+	// receive data from the client
+	virtual void receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player) {}
 	// used by tnt to arm it, but also for future circuitry
 	// level is the amount of power
 	// powersrc is the generator or such that created the power

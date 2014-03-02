@@ -22,6 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "content_mapnode.h"
 #include "content_craft.h"
 #include "log.h"
+#include "player.h"
 
 /*
 	SignNodeMetadata
@@ -55,6 +56,10 @@ void SignNodeMetadata::serializeBody(std::ostream &os)
 std::string SignNodeMetadata::infoText()
 {
 	return std::string("\"")+m_text+"\"";
+}
+std::string SignNodeMetadata::getDrawSpecString()
+{
+	return std::string("field[text;;") + m_text + "]";
 }
 
 /*
@@ -92,6 +97,16 @@ void LockingSignNodeMetadata::serializeBody(std::ostream &os)
 std::string LockingSignNodeMetadata::infoText()
 {
 	return std::string("(")+m_owner+") \""+m_text+"\"";
+}
+void LockingSignNodeMetadata::receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player)
+{
+	if (getOwner() != player->getName())
+		return;
+	m_text = fields["text"];
+}
+std::string LockingSignNodeMetadata::getDrawSpecString()
+{
+	return std::string("field[text;;") + m_text + "]";
 }
 
 /*
@@ -148,10 +163,10 @@ bool ChestNodeMetadata::nodeRemovalDisabled()
 		return false;
 	return true;
 }
-std::string ChestNodeMetadata::getInventoryDrawSpecString()
+std::string ChestNodeMetadata::getDrawSpecString()
 {
 	return
-		"invsize[8,9;]"
+		"size[8,9]"
 		"list[current_name;0;0,0;8,4;]"
 		"list[current_player;main;0,5;8,4;]";
 }
@@ -212,10 +227,10 @@ bool LockingChestNodeMetadata::nodeRemovalDisabled()
 		return false;
 	return true;
 }
-std::string LockingChestNodeMetadata::getInventoryDrawSpecString()
+std::string LockingChestNodeMetadata::getDrawSpecString()
 {
 	return
-		"invsize[8,9;]"
+		"size[8,9]"
 		"list[current_name;0;0,0;8,4;]"
 		"list[current_player;main;0,5;8,4;]";
 }
@@ -504,10 +519,10 @@ bool FurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 	}
 	return changed;
 }
-std::string FurnaceNodeMetadata::getInventoryDrawSpecString()
+std::string FurnaceNodeMetadata::getDrawSpecString()
 {
 	return
-		"invsize[8,9;]"
+		"size[8,9]"
 		"list[current_name;fuel;2,3;1,1;]"
 		"list[current_name;src;2,1;1,1;]"
 		"list[current_name;dst;5,1;2,2;]"
@@ -742,10 +757,10 @@ bool LockingFurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment 
 	}
 	return changed;
 }
-std::string LockingFurnaceNodeMetadata::getInventoryDrawSpecString()
+std::string LockingFurnaceNodeMetadata::getDrawSpecString()
 {
 	return
-		"invsize[8,9;]"
+		"size[8,9]"
 		"list[current_name;fuel;2,3;1,1;]"
 		"list[current_name;src;2,1;1,1;]"
 		"list[current_name;dst;5,1;2,2;]"
@@ -878,10 +893,10 @@ void IncineratorNodeMetadata::inventoryModified()
 {
 	infostream<<"Incinerator inventory modification callback"<<std::endl;
 }
-std::string IncineratorNodeMetadata::getInventoryDrawSpecString()
+std::string IncineratorNodeMetadata::getDrawSpecString()
 {
 	return
-		"invsize[8,7;]"
+		"size[8,7]"
 		"list[current_name;fuel;4,1;1,1;]"
 		"list[current_player;main;0,3;8,4;]";
 }
@@ -994,10 +1009,10 @@ bool CraftGuideNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env
 
 	return true;
 }
-std::string CraftGuideNodeMetadata::getInventoryDrawSpecString()
+std::string CraftGuideNodeMetadata::getDrawSpecString()
 {
 	return
-		"invsize[22,15;]"
+		"size[22,15]"
 		"list[current_name;list;4,1;17,13;]"
 		"list[current_name;recipe;0,3;3,3;]"
 		"list[current_name;result;1,7;1,1;]";

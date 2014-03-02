@@ -195,7 +195,8 @@ public:
 			v3s16 nodepos_oversurface, u16 item);
 	void clickActiveObject(u8 button, u16 id, u16 item_i);
 
-	void sendSignNodeText(v3s16 p, std::string text);
+	void sendNodemetaFields(v3s16 p, const std::string &formname,
+			const std::map<std::string, std::string> &fields);
 	void sendInventoryAction(InventoryAction *a);
 	void sendChatMessage(const std::wstring &message);
 	void sendChangePassword(const std::wstring oldpassword,
@@ -236,6 +237,7 @@ public:
 	InventoryContext *getInventoryContext();
 
 	Inventory* getInventory(InventoryContext *c, std::string id);
+	Inventory* getInventory(const InventoryLocation *loc);
 	void inventoryAction(InventoryAction *a);
 
 	// Gets closest object pointed by the shootline

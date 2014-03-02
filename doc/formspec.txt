@@ -1,0 +1,80 @@
+Formspec
+--------
+Formspec defines a menu. Currently not much else than inventories are
+supported. It is a string, with a somewhat strange format.
+
+Spaces and newlines can be inserted between the blocks, as is used in the
+examples.
+
+Examples:
+- Chest:
+    size[8,9]
+    list[current_name;main;0,0;8,4;]
+    list[current_player;main;0,5;8,4;]
+- Furnace:
+    size[8,9]
+    list[current_name;fuel;2,3;1,1;]
+    list[current_name;src;2,1;1,1;]
+    list[current_name;dst;5,1;2,2;]
+    list[current_player;main;0,5;8,4;]
+
+Elements:
+
+size[<W>,<H>]
+^ Define the size of the menu in inventory slots
+^ deprecated: invsize[<W>,<H>;]
+
+list[<inventory location>;<list name>;<X>,<Y>;<W>,<H>;]
+^ Show an inventory list
+
+image[<X>,<Y>;<W>,<H>;<texture name>]
+^ Show an image
+^ Position and size units are inventory slots
+
+field[<X>,<Y>;<W>,<H>;<name>;<label>;<default>]
+^ Textual field; will be sent to server when a button is clicked
+^ x and y position the field relative to the top left of the menu
+^ w and h are the size of the field
+^ fields are a set height, but will be vertically centred on h
+^ Position and size units are inventory slots
+^ name is the name of the field as returned in fields to on_receive_fields
+^ label, if not blank, will be text printed on the top left above the field
+^ default is the default value of the field
+  ^ default may contain variable references such as '${text}' which
+    will fill the value from the metadata value 'text'
+	^ Note: no extra text or more than a single variable is supported ATM.
+
+field[<name>;<label>;<default>]
+^ as above but without position/size units
+^ special field for creating simple forms, such as sign text input
+^ must be used without a size[] element
+^ a 'Write It' button will be added automatically
+
+label[<X>,<Y>;<label>]
+^ x and y work as per field
+^ label is the text on the label
+^ Position and size units are inventory slots
+
+button[<X>,<Y>;<W>,<H>;<name>;<label>]
+^ Clickable button. When clicked, fields will be sent.
+^ x, y and name work as per field
+^ w and h are the size of the button
+^ label is the text on the button
+^ Position and size units are inventory slots
+
+image_button[<X>,<Y>;<W>,<H>;<texture name>;<name>;<label>]
+^ x, y, w, h, and name work as per button
+^ image is the filename of an image
+^ Position and size units are inventory slots
+
+button_exit[<X>,<Y>;<W>,<H>;<name>;<label>]
+^ When clicked, fields will be sent and the form will quit.
+
+image_button_exit[<X>,<Y>;<W>,<H>;<texture name>;<name>;<label>]
+^ When clicked, fields will be sent and the form will quit.
+
+Inventory location:
+- "current_name": Selected node metadata
+- "current_player": Player to whom the menu is shown
+- "player:<name>": Any player
+- "nodemeta:<X>,<Y>,<Z>": Any node metadata

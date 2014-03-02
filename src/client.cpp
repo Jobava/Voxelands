@@ -1639,32 +1639,31 @@ void Client::clickActiveObject(u8 button, u16 id, u16 item_i)
 	Send(0, data, true);
 }
 
-void Client::sendSignNodeText(v3s16 p, std::string text)
+void Client::sendNodemetaFields(v3s16 p, const std::string &formname,
+		const std::map<std::string, std::string> &fields)
 {
-	/*
-		u16 command
-		v3s16 p
-		u16 textlen
-		textdata
-	*/
 	std::ostringstream os(std::ios_base::binary);
 	u8 buf[12];
 
 	// Write command
-	writeU16(buf, TOSERVER_SIGNNODETEXT);
+	writeU16(buf, TOSERVER_NODEMETA_FIELDS);
 	os.write((char*)buf, 2);
 
 	// Write p
 	writeV3S16(buf, p);
 	os.write((char*)buf, 6);
 
-	u16 textlen = text.size();
-	// Write text length
-	writeS16(buf, textlen);
-	os.write((char*)buf, 2);
+	os<<serializeString(formname);
 
-	// Write text
-	os.write((char*)text.c_str(), textlen);
+	// Write number of fields
+	writeU16(buf, fields.size());
+	os.write((char*)buf, 2);
+	for (std::map<std::string, std::string>::const_iterator i = fields.begin(); i != fields.end(); i++) {
+		const std::string &name = i->first;
+		const std::string &value = i->second;
+		os<<serializeString(name);
+		os<<serializeLongString(value);
+	}
 
 	// Make data buffer
 	std::string s = os.str();
@@ -2016,6 +2015,41 @@ Inventory* Client::getInventory(InventoryContext *c, std::string id)
 	}
 
 	infostream<<__FUNCTION_NAME<<": unknown id "<<id<<std::endl;
+	return NULL;
+}
+
+Inventory* Client::getInventory(const InventoryLocation *loc)
+{
+	switch(loc->type){
+	case InventoryLocation::UNDEFINED:
+	{}
+	break;
+	case InventoryLocation::CURRENT_PLAYER:
+	{
+		Player *player = m_env.getLocalPlayer();
+		assert(player != NULL);
+		return &player->inventory;
+	}
+	break;
+	case InventoryLocation::PLAYER:
+	{
+		Player *player = m_env.getPlayer(loc->name.c_str());
+		if(!player)
+			return NULL;
+		return &player->inventory;
+	}
+	break;
+	case InventoryLocation::NODEMETA:
+	{
+		NodeMetadata *meta = m_env.getMap().getNodeMetadata(loc->p);
+		if(!meta)
+			return NULL;
+		return meta->getInventory();
+	}
+	break;
+	default:
+		assert(0);
+	}
 	return NULL;
 }
 void Client::inventoryAction(InventoryAction *a)

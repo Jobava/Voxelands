@@ -28,7 +28,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "server.h"
 #include "guiPauseMenu.h"
 #include "guiPasswordChange.h"
-#include "guiInventoryMenu.h"
+#include "guiFormSpecMenu.h"
 #include "guiTextInputMenu.h"
 #include "guiDeathScreen.h"
 #include "config.h"
@@ -111,22 +111,34 @@ struct TextDestChat : public TextDest
 		m_client->addChatMessage(text);
 	}
 
+	void gotText(std::map<std::string, std::string> fields)
+	{
+		gotText(narrow_to_wide(fields["text"]));
+	}
+
 	Client *m_client;
 };
 
-struct TextDestSignNode : public TextDest
+struct TextDestNodeMetadata : public TextDest
 {
-	TextDestSignNode(v3s16 p, Client *client)
+	TextDestNodeMetadata(v3s16 p, Client *client)
 	{
 		m_p = p;
 		m_client = client;
 	}
+	// This is deprecated I guess? -celeron55
 	void gotText(std::wstring text)
 	{
 		std::string ntext = wide_to_narrow(text);
-		infostream<<"Changing text of a sign node: "
-				<<ntext<<std::endl;
-		m_client->sendSignNodeText(m_p, ntext);
+		infostream<<"Submitting 'text' field of node at ("<<m_p.X<<","
+			<<m_p.Y<<","<<m_p.Z<<"): "<<ntext<<std::endl;
+		std::map<std::string, std::string> fields;
+		fields["text"] = ntext;
+		m_client->sendNodemetaFields(m_p, "", fields);
+	}
+	void gotText(std::map<std::string, std::string> fields)
+	{
+		m_client->sendNodemetaFields(m_p, "", fields);
 	}
 
 	v3s16 m_p;
@@ -150,6 +162,53 @@ public:
 	}
 private:
 	bool *m_active;
+	Client *m_client;
+};
+
+/* Form update callback */
+
+class NodeMetadataFormSource: public IFormSource
+{
+public:
+	NodeMetadataFormSource(ClientMap *map, v3s16 p):
+		m_map(map),
+		m_p(p)
+	{
+	}
+
+	std::string getForm()
+	{
+		NodeMetadata *meta = m_map->getNodeMetadata(m_p);
+		if (!meta)
+			return "";
+		return meta->getDrawSpecString();
+	}
+
+	NodeMetadata *getMeta()
+	{
+		return m_map->getNodeMetadata(m_p);
+	}
+
+	ClientMap *m_map;
+	v3s16 m_p;
+};
+
+class PlayerInventoryFormSource: public IFormSource
+{
+public:
+	PlayerInventoryFormSource(Client *client):
+	m_client(client)
+	{
+	}
+	std::string getForm()
+	{
+		return
+			"size[8,7]"
+			"list[current_player;main;0,3;8,4;]"
+			"list[current_player;craft;2,0;3,3;]"
+			"list[current_player;craftresult;6,1;1,1;]";
+	}
+
 	Client *m_client;
 };
 
@@ -1207,26 +1266,34 @@ void the_game(
 			infostream<<"the_game: "
 					<<"Launching inventory"<<std::endl;
 
-			GUIInventoryMenu *menu =
-				new GUIInventoryMenu(guienv, guiroot, -1,
-					&g_menumgr, v2s16(8,7),
-					client.getInventoryContext(),
+			GUIFormSpecMenu *menu =
+				new GUIFormSpecMenu(guienv, guiroot, -1,
+					&g_menumgr,
 					&client);
 
-			core::array<GUIInventoryMenu::DrawSpec> draw_spec;
-			draw_spec.push_back(GUIInventoryMenu::DrawSpec(
-					"list", "current_player", "main",
-					v2s32(0, 3), v2s32(8, 4)));
-			draw_spec.push_back(GUIInventoryMenu::DrawSpec(
-					"list", "current_player", "craft",
-					v2s32(2, 0), v2s32(3, 3)));
-			draw_spec.push_back(GUIInventoryMenu::DrawSpec(
-					"list", "current_player", "craftresult",
-					v2s32(6, 1), v2s32(1, 1)));
+			InventoryLocation inventoryloc;
+			inventoryloc.setCurrentPlayer();
 
-			menu->setDrawSpec(draw_spec);
-
+			PlayerInventoryFormSource *src = new PlayerInventoryFormSource(&client);
+			assert(src);
+			menu->setFormSpec(src->getForm(), inventoryloc);
+			menu->setFormSource(src);
 			menu->drop();
+
+			//core::array<GUIInventoryMenu::DrawSpec> draw_spec;
+			//draw_spec.push_back(GUIInventoryMenu::DrawSpec(
+					//"list", "current_player", "main",
+					//v2s32(0, 3), v2s32(8, 4)));
+			//draw_spec.push_back(GUIInventoryMenu::DrawSpec(
+					//"list", "current_player", "craft",
+					//v2s32(2, 0), v2s32(3, 3)));
+			//draw_spec.push_back(GUIInventoryMenu::DrawSpec(
+					//"list", "current_player", "craftresult",
+					//v2s32(6, 1), v2s32(1, 1)));
+
+			//menu->setDrawSpec(draw_spec);
+
+			//menu->drop();
 		}
 		else if(input->wasKeyDown(EscapeKey))
 		{
@@ -1798,59 +1865,25 @@ void the_game(
 				infostream<<"Ground right-clicked"<<std::endl;
 
 				// If metadata provides an inventory view, activate it
-				if(meta && meta->getInventoryDrawSpecString() != "" && !random_input)
+				if(meta && meta->getDrawSpecString() != "" && !random_input)
 				{
 					infostream<<"Launching custom inventory view"<<std::endl;
-					/*
-						Construct the unique identification string of the node
-					*/
-					std::string current_name;
-					current_name += "nodemeta:";
-					current_name += itos(nodepos.X);
-					current_name += ",";
-					current_name += itos(nodepos.Y);
-					current_name += ",";
-					current_name += itos(nodepos.Z);
 
-					/*
-						Create menu
-					*/
+					InventoryLocation inventoryloc;
+					inventoryloc.setNodeMeta(nodepos);
 
-					core::array<GUIInventoryMenu::DrawSpec> draw_spec;
-					v2s16 invsize =
-						GUIInventoryMenu::makeDrawSpecArrayFromString(
-							draw_spec,
-							meta->getInventoryDrawSpecString(),
-							current_name);
+					/* Create menu */
 
-					GUIInventoryMenu *menu =
-						new GUIInventoryMenu(guienv, guiroot, -1,
-							&g_menumgr, invsize,
-							client.getInventoryContext(),
-							&client);
-					menu->setDrawSpec(draw_spec);
+					GUIFormSpecMenu *menu =
+						new GUIFormSpecMenu(guienv, guiroot, -1,
+						&g_menumgr,
+						&client);
+					menu->setFormSpec(meta->getDrawSpecString(), inventoryloc);
+					menu->setFormSource(new NodeMetadataFormSource(
+						&client.getEnv().getClientMap(), nodepos));
+					menu->setTextDest(new TextDestNodeMetadata(nodepos, &client));
 					menu->drop();
-				}else if (
-					meta
-					&& (
-						meta->typeId() == CONTENT_SIGN_WALL
-						|| meta->typeId() == CONTENT_LOCKABLE_SIGN_WALL
-					) && !random_input
-				) {
-					infostream<<"Sign node right-clicked"<<std::endl;
 
-					SignNodeMetadata *signmeta = (SignNodeMetadata*)meta;
-
-					// Get a new text for it
-
-					TextDest *dest = new TextDestSignNode(nodepos, &client);
-
-					std::wstring wtext =
-							narrow_to_wide(signmeta->getText());
-
-					(new GUITextInputMenu(guienv, guiroot, -1,
-							&g_menumgr, dest,
-							wtext))->drop();
 				}
 				else
 				{
