@@ -529,6 +529,7 @@ struct InventoryContext
 };
 
 struct InventoryAction;
+struct InventoryLocation;
 
 class InventoryManager
 {
@@ -543,6 +544,8 @@ public:
 		- "nodemeta:X,Y,Z"
 	*/
 	virtual Inventory* getInventory(InventoryContext *c, std::string id)
+		{return NULL;}
+	virtual Inventory* getInventory(const InventoryLocation *loc)
 		{return NULL;}
 	// Used on the server by InventoryAction::apply and other stuff
 	virtual void inventoryModified(InventoryContext *c, std::string id)
@@ -621,6 +624,71 @@ struct IMoveAction : public InventoryAction
 	}
 
 	void apply(InventoryContext *c, InventoryManager *mgr);
+};
+
+struct InventoryLocation
+{
+	enum Type{
+		UNDEFINED,
+		CURRENT_PLAYER,
+		PLAYER,
+		NODEMETA,
+	} type;
+
+	std::string name; // PLAYER
+	v3s16 p; // NODEMETA
+
+	InventoryLocation()
+	{
+		setUndefined();
+	}
+	void setUndefined()
+	{
+		type = UNDEFINED;
+	}
+	void setCurrentPlayer()
+	{
+		type = CURRENT_PLAYER;
+	}
+	void setPlayer(const std::string &name_)
+	{
+		type = PLAYER;
+		name = name_;
+	}
+	void setNodeMeta(v3s16 p_)
+	{
+		type = NODEMETA;
+		p = p_;
+	}
+
+	void applyCurrentPlayer(const std::string &name_)
+	{
+		if (type == CURRENT_PLAYER)
+			setPlayer(name_);
+	}
+	std::string getName()
+	{
+		std::string l_name("");
+		if (type == PLAYER) {
+			l_name += "player:";
+			l_name += name;
+		}else if (type == NODEMETA) {
+			l_name += "nodemeta:";
+			l_name += itos(p.X);
+			l_name += ",";
+			l_name += itos(p.Y);
+			l_name += ",";
+			l_name += itos(p.Z);
+		}else if (type == CURRENT_PLAYER) {
+			l_name += "current_player";
+		}
+		return l_name;
+	}
+
+	std::string dump() const;
+	void serialize(std::ostream &os) const;
+	void deSerialize(std::istream &is);
+	void deSerialize(std::string s);
 };
 
 /*

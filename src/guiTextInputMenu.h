@@ -24,12 +24,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "modalMenu.h"
 #include "utility.h"
 #include <string>
-
-struct TextDest
-{
-	virtual ~TextDest() {}
-	virtual void gotText(std::wstring text) = 0;
-};
+#include "guiFormSpecMenu.h"
 
 class GUITextInputMenu : public GUIModalMenu
 {

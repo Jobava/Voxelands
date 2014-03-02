@@ -356,6 +356,20 @@ enum ToServerCommand
 	/*
 		u16 TOSERVER_WANTCOOKIE
 	*/
+
+	TOSERVER_NODEMETA_FIELDS = 0x3b,
+	/*
+		u16 command
+		v3s16 p
+		u16 len
+		u8[len] form name (reserved for future use)
+		u16 number of fields
+		for each field:
+			u16 len
+			u8[len] field name
+			u32 len
+			u8[len] field value
+	*/
 };
 
 inline SharedBuffer<u8> makePacket_TOCLIENT_TIME_OF_DAY(u16 time)
