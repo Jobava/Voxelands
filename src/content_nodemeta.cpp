@@ -1079,27 +1079,42 @@ bool CraftGuideNodeMetadata::receiveFields(std::string formname, std::map<std::s
 }
 std::string CraftGuideNodeMetadata::getDrawSpecString()
 {
+	InventoryList *l = m_inventory->getList("result");
+	InventoryItem *q = l->getItem(0);
 	InventoryItem *t;
 	content_t *r;
-	if (m_count == 0) {
-		for (int i=0; g_contents[i] != CONTENT_IGNORE; i++) {
-			if ((g_contents[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
-				t = new CraftItem(g_contents[i],1);
-			}else if ((g_contents[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
-				t = new ToolItem(g_contents[i],1);
-			}else{
-				t = new MaterialItem(g_contents[i],1);
-			}
-			r = crafting::getRecipe(t);
-			delete t;
-			if (!r)
-				continue;
-			m_count++;
+	int tr = 0;
+	m_count = 0;
+	for (int i=0; g_contents[i] != CONTENT_IGNORE; i++) {
+		if ((g_contents[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
+			t = new CraftItem(g_contents[i],1);
+		}else if ((g_contents[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+			t = new ToolItem(g_contents[i],1);
+		}else{
+			t = new MaterialItem(g_contents[i],1);
 		}
+		r = crafting::getRecipe(t);
+		if (!r) {
+			delete t;
+			continue;
+		}
+		if (q && q->getContent() == g_contents[i])
+			tr = crafting::getResultCount(t);
+		delete t;
+		m_count++;
 	}
+
 	std::string spec("size[8,9]");
 	spec +=	"label[0.5,0.75;Add item here to see recipe]";
 	spec +=	"list[current_name;result;2,1;1,1;]";
+	// this overflows into the craft grid... but could be cool
+	//if (q && tr) {
+		//spec += "label[0.5,2.5;Gives ";
+		//spec += itos(tr);
+		//spec += " ";
+		//spec += q->getGuiName();
+		//spec += "]";
+	//}
 	spec +=	"list[current_name;recipe;4,0;3,3;]";
 	spec +=	"button[0.25,3.5;2.5,0.75;prev;<< Previous Page]";
 	spec +=	"label[3.5,3.5;Page ";

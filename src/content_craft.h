@@ -231,6 +231,7 @@ namespace crafting {
 
 	InventoryItem *getResult(InventoryItem **items);
 	content_t *getRecipe(InventoryItem *item);
+	int getResultCount(InventoryItem *item);
 
 	void giveCreative(Player *player);
 	void giveInitial(Player *player);
