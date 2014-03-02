@@ -552,7 +552,6 @@ InventoryItem *getResult(InventoryItem **items)
 	return NULL;
 }
 
-// TODO: return recipe from result
 content_t *getRecipe(InventoryItem *item)
 {
 	content_t r = item->getContent();
@@ -578,6 +577,22 @@ content_t *getRecipe(InventoryItem *item)
 		}
 	}
 	return NULL;
+}
+
+int getResultCount(InventoryItem *item)
+{
+	content_t r = item->getContent();
+	for (std::vector<CraftDef>::iterator i=shaped_recipes.begin(); i!=shaped_recipes.end(); i++) {
+		CraftDef d = *i;
+		if (d.result == r)
+			return d.result_count;
+	}
+	for (std::vector<CraftDefShapeless>::iterator i=shapeless_recipes.begin(); i!=shapeless_recipes.end(); i++) {
+		CraftDefShapeless d = *i;
+		if (d.result == r)
+			return d.result_count;
+	}
+	return 0;
 }
 
 // TODO: creative inventory needs redoing
