@@ -77,8 +77,8 @@ public:
 	// the inventory owner - if not "" then only the owner can modify
 	virtual std::string getInventoryOwner(){ return std::string(""); }
 	virtual void setInventoryOwner(std::string t){  }
-	// receive data from the client
-	virtual void receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player) {}
+	// receive data from the client. Returns true if metadata changed.
+	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player) {return false;}
 	// used by tnt to arm it, but also for future circuitry
 	// level is the amount of power
 	// powersrc is the generator or such that created the power

@@ -98,11 +98,12 @@ std::string LockingSignNodeMetadata::infoText()
 {
 	return std::string("(")+m_owner+") \""+m_text+"\"";
 }
-void LockingSignNodeMetadata::receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player)
+bool LockingSignNodeMetadata::receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player)
 {
 	if (getOwner() != player->getName())
-		return;
+		return false;
 	m_text = fields["text"];
+	return true;
 }
 std::string LockingSignNodeMetadata::getDrawSpecString()
 {
@@ -897,6 +898,8 @@ std::string IncineratorNodeMetadata::getDrawSpecString()
 {
 	return
 		"size[8,7]"
+		"label[1,0.5;Add fuel, then punch to incinerate wielded item]"
+		"label[3.5,1.5;Fuel]"
 		"list[current_name;fuel;4,1;1,1;]"
 		"list[current_player;main;0,3;8,4;]";
 }
@@ -923,11 +926,12 @@ CraftGuideNodeMetadata::CraftGuideNodeMetadata()
 {
 	NodeMetadata::registerType(typeId(), create);
 
+	m_page = 0;
+
 	m_inventory = new Inventory();
 	m_inventory->addList("list", 300);
 	m_inventory->addList("recipe", 9);
 	m_inventory->addList("result", 1);
-	//m_inventory->addList("furnace",1);
 }
 CraftGuideNodeMetadata::~CraftGuideNodeMetadata()
 {
@@ -944,7 +948,9 @@ NodeMetadata* CraftGuideNodeMetadata::clone()
 	InventoryList *l = d->m_inventory->getList("list");
 	InventoryItem *t;
 	content_t *r;
-	for (int i=0; g_contents[i] != CONTENT_IGNORE; i++) {
+	l->clearItems();
+	int ti = 0;
+	for (int i=0; g_contents[i] != CONTENT_IGNORE && ti < 40; i++) {
 		if ((g_contents[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
 			t = new CraftItem(g_contents[i],1);
 		}else if ((g_contents[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
@@ -957,8 +963,10 @@ NodeMetadata* CraftGuideNodeMetadata::clone()
 			delete t;
 			continue;
 		}
+		ti++;
 		l->addItem(t);
 	}
+	m_count = ti;
 	return d;
 }
 NodeMetadata* CraftGuideNodeMetadata::create(std::istream &is)
@@ -966,12 +974,14 @@ NodeMetadata* CraftGuideNodeMetadata::create(std::istream &is)
 	CraftGuideNodeMetadata *d = new CraftGuideNodeMetadata();
 
 	d->m_inventory->deSerialize(is);
+	is>>d->m_page;
 
 	return d;
 }
 void CraftGuideNodeMetadata::serializeBody(std::ostream &os)
 {
 	m_inventory->serialize(os);
+	os<<itos(m_page) << " ";
 }
 bool CraftGuideNodeMetadata::nodeRemovalDisabled()
 {
@@ -1009,12 +1019,95 @@ bool CraftGuideNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env
 
 	return true;
 }
+bool CraftGuideNodeMetadata::receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player)
+{
+	if (fields["prev"] == "" && fields["next"] == "")
+		return false;
+	if (fields["prev"] != "")
+		m_page--;
+	if (fields["next"] != "")
+		m_page++;
+	if (m_page < 0)
+		m_page = 0;
+	int ti = 0;
+	InventoryList *l = m_inventory->getList("list");
+	InventoryItem *t;
+	content_t *r;
+	if (m_count == 0) {
+		for (int i=0; g_contents[i] != CONTENT_IGNORE; i++) {
+			if ((g_contents[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
+				t = new CraftItem(g_contents[i],1);
+			}else if ((g_contents[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+				t = new ToolItem(g_contents[i],1);
+			}else{
+				t = new MaterialItem(g_contents[i],1);
+			}
+			r = crafting::getRecipe(t);
+			delete t;
+			if (!r)
+				continue;
+			m_count++;
+		}
+	}
+	if (m_page > (m_count/40))
+		m_page = m_count/40;
+	ti = 0;
+	int ap = 0;
+	l->clearItems();
+	for (int i=0; g_contents[i] != CONTENT_IGNORE; i++) {
+		if ((g_contents[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
+			t = new CraftItem(g_contents[i],1);
+		}else if ((g_contents[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+			t = new ToolItem(g_contents[i],1);
+		}else{
+			t = new MaterialItem(g_contents[i],1);
+		}
+		r = crafting::getRecipe(t);
+		if (!r) {
+			delete t;
+			continue;
+		}
+		ti++;
+		if (ti > 40) {
+			ti = 0;
+			ap++;
+		}
+		if (ap == m_page)
+			l->addItem(t);
+	}
+	return true;
+}
 std::string CraftGuideNodeMetadata::getDrawSpecString()
 {
-	return
-		"size[22,15]"
-		"list[current_name;list;4,1;17,13;]"
-		"list[current_name;recipe;0,3;3,3;]"
-		"list[current_name;result;1,7;1,1;]";
-		//"list[current_name;furnace;1,9;1,1;]";
+	InventoryItem *t;
+	content_t *r;
+	if (m_count == 0) {
+		for (int i=0; g_contents[i] != CONTENT_IGNORE; i++) {
+			if ((g_contents[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
+				t = new CraftItem(g_contents[i],1);
+			}else if ((g_contents[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+				t = new ToolItem(g_contents[i],1);
+			}else{
+				t = new MaterialItem(g_contents[i],1);
+			}
+			r = crafting::getRecipe(t);
+			delete t;
+			if (!r)
+				continue;
+			m_count++;
+		}
+	}
+	std::string spec("size[8,9]");
+	spec +=	"label[0.5,0.75;Add item here to see recipe]";
+	spec +=	"list[current_name;result;2,1;1,1;]";
+	spec +=	"list[current_name;recipe;4,0;3,3;]";
+	spec +=	"button[0.25,3.5;2.5,0.75;prev;<< Previous Page]";
+	spec +=	"label[3.5,3.5;Page ";
+	spec += itos(m_page+1);
+	spec +=" of ";
+	spec += itos((m_count/40)+1);
+	spec += "]";
+	spec +=	"button[6,3.5;2.5,0.75;next;Next Page >>]";
+	spec +=	"list[current_name;list;0,4;8,5;]";
+	return spec;
 }

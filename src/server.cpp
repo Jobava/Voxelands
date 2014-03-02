@@ -4376,7 +4376,20 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		if(!meta)
 			return;
 
-		meta->receiveFields(formname,fields,player);
+		if (meta->receiveFields(formname,fields,player)) {
+			v3s16 blockpos = getNodeBlockPos(p);
+			MapBlock *block = m_env.getMap().getBlockNoCreateNoEx(blockpos);
+			if (block)
+				block->setChangedFlag();
+
+			for(core::map<u16, RemoteClient*>::Iterator
+				i = m_clients.getIterator();
+				i.atEnd()==false; i++)
+			{
+				RemoteClient *client = i.getNode()->getValue();
+				client->SetBlockNotSent(blockpos);
+			}
+		}
 	}
 	else
 	{
