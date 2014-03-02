@@ -39,9 +39,10 @@ public:
 
 	std::string getText(){ return m_text; }
 	void setText(std::string t){ m_text = t; }
-	virtual void receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player)
+	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player)
 	{
 		m_text = fields["text"];
+		return true;
 	}
 	virtual std::string getDrawSpecString();
 
@@ -68,7 +69,7 @@ public:
 
 	std::string getText(){ return m_text; }
 	void setText(std::string t){ m_text = t; }
-	virtual void receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
+	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
 	virtual std::string getDrawSpecString();
 
 private:
@@ -288,10 +289,13 @@ public:
 	virtual bool nodeRemovalDisabled();
 	virtual void inventoryModified();
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
+	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
 	virtual std::string getDrawSpecString();
 
 private:
 	Inventory *m_inventory;
+	int m_page;
+	int m_count;
 };
 
 #endif
