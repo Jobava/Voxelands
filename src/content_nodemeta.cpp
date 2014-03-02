@@ -927,6 +927,7 @@ CraftGuideNodeMetadata::CraftGuideNodeMetadata()
 	NodeMetadata::registerType(typeId(), create);
 
 	m_page = 0;
+	m_count = 0;
 
 	m_inventory = new Inventory();
 	m_inventory->addList("list", 300);
@@ -966,7 +967,6 @@ NodeMetadata* CraftGuideNodeMetadata::clone()
 		ti++;
 		l->addItem(t);
 	}
-	m_count = ti;
 	return d;
 }
 NodeMetadata* CraftGuideNodeMetadata::create(std::istream &is)
