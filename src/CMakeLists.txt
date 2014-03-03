@@ -99,6 +99,7 @@ set(common_SRCS
 	content_craftitem.cpp
 	content_toolitem.cpp
 	content_mapnode.cpp
+	content_list.cpp
 	auth.cpp
 	collision.cpp
 	nodemetadata.cpp

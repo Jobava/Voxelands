@@ -121,6 +121,27 @@ private:
 	std::string m_owner;
 };
 
+class CreativeChestNodeMetadata : public NodeMetadata
+{
+public:
+	CreativeChestNodeMetadata();
+	~CreativeChestNodeMetadata();
+
+	virtual u16 typeId() const;
+	static NodeMetadata* create(std::istream &is);
+	virtual NodeMetadata* clone();
+	virtual void serializeBody(std::ostream &os);
+	virtual std::string infoText();
+	virtual Inventory* getInventory() {return m_inventory;}
+	virtual bool nodeRemovalDisabled();
+	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
+	virtual std::string getDrawSpecString();
+
+private:
+	u16 m_page;
+	Inventory *m_inventory;
+};
+
 class BorderStoneNodeMetadata : public NodeMetadata
 {
 public:
@@ -294,8 +315,7 @@ public:
 
 private:
 	Inventory *m_inventory;
-	int m_page;
-	int m_count;
+	u16 m_page;
 };
 
 #endif

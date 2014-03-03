@@ -800,6 +800,8 @@ bool GUIFormSpecMenu::OnEvent(const SEvent& event)
 						quitMenu();
 					}else{
 						s.send = false;
+						// Restore focus to the full form
+						Environment->setFocus(this);
 					}
 					return true;
 				}
