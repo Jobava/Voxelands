@@ -27,6 +27,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "content_craftitem.h"
 #include "content_toolitem.h"
 #include "content_craft.h"
+#include "content_list.h"
 #ifndef SERVER
 #include "tile.h"
 #endif
@@ -1082,6 +1083,7 @@ void content_mapnode_init()
 	f->hardness = 1.0;
 	if(invisible_stone)
 		f->solidness = 0; // For debugging, hides regular stone
+	lists::add("creative",i);
 
 	i = CONTENT_ICE;
 	f = &content_features(i);
@@ -1096,6 +1098,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
+	lists::add("creative",i);
 
 	i = CONTENT_COAL;
 	f = &content_features(i);
@@ -1111,6 +1114,8 @@ void content_mapnode_init()
 	f->hardness = 1.0;
 	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_COAL,CONTENT_COAL);
 	crafting::setUncraftHardBlockRecipe(CONTENT_COAL,CONTENT_CRAFTITEM_COAL);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_CHARCOAL;
 	f = &content_features(i);
@@ -1126,6 +1131,8 @@ void content_mapnode_init()
 	f->hardness = 1.0;
 	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_CHARCOAL,CONTENT_CHARCOAL);
 	crafting::setUncraftHardBlockRecipe(CONTENT_CHARCOAL,CONTENT_CRAFTITEM_CHARCOAL);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_STONEBRICK;
 	f = &content_features(i);
@@ -1138,6 +1145,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	crafting::setBrickRecipe(CONTENT_STONE,CONTENT_STONEBRICK);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_STONEBLOCK;
 	f = &content_features(i);
@@ -1150,6 +1159,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	crafting::setBlockRecipe(CONTENT_STONE,CONTENT_STONEBLOCK);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_ROUGHSTONEBRICK;
 	f = &content_features(i);
@@ -1162,6 +1173,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	crafting::setBrickRecipe(CONTENT_ROUGHSTONE,CONTENT_ROUGHSTONEBRICK);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_ROUGHSTONEBLOCK;
 	f = &content_features(i);
@@ -1174,6 +1187,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	crafting::setBlockRecipe(CONTENT_ROUGHSTONE,CONTENT_ROUGHSTONEBLOCK);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GRASS;
 	f = &content_features(i);
@@ -1235,6 +1250,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
+	lists::add("creative",i);
 
 	i = CONTENT_ASH;
 	f = &content_features(i);
@@ -1247,6 +1263,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 0.5;
 	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_ASH,CONTENT_ASH);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_SAND;
 	f = &content_features(i);
@@ -1259,6 +1277,7 @@ void content_mapnode_init()
 	f->cook_result = std::string("MaterialItem2 ")+itos(CONTENT_GLASS)+" 1";
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
+	lists::add("creative",i);
 
 	i = CONTENT_GRAVEL;
 	f = &content_features(i);
@@ -1272,6 +1291,7 @@ void content_mapnode_init()
 	f->extra_dug_item_rarity = 10;
 	f->type = CMT_DIRT;
 	f->hardness = 1.75;
+	lists::add("creative",i);
 
 	i = CONTENT_SANDSTONE;
 	f = &content_features(i);
@@ -1284,6 +1304,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::setSoftBlockRecipe(CONTENT_SAND,CONTENT_SANDSTONE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_SANDSTONE_BRICK;
 	f = &content_features(i);
@@ -1296,6 +1318,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::setBrickRecipe(CONTENT_SANDSTONE,CONTENT_SANDSTONE_BRICK);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_SANDSTONE_BLOCK;
 	f = &content_features(i);
@@ -1308,6 +1332,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::setBlockRecipe(CONTENT_SANDSTONE,CONTENT_SANDSTONE_BLOCK);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_CLAY;
 	f = &content_features(i);
@@ -1321,6 +1347,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_CLAY,CONTENT_CLAY);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_CLAY_BLUE;
 	f = &content_features(i);
@@ -1335,6 +1363,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_CLAY,CONTENT_CLAY_BLUE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_CLAY_GREEN;
 	f = &content_features(i);
@@ -1349,6 +1379,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_GREEN,CONTENT_CLAY,CONTENT_CLAY_GREEN);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_CLAY_ORANGE;
 	f = &content_features(i);
@@ -1363,6 +1395,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_ORANGE,CONTENT_CLAY,CONTENT_CLAY_ORANGE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_CLAY_PURPLE;
 	f = &content_features(i);
@@ -1377,6 +1411,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_PURPLE,CONTENT_CLAY,CONTENT_CLAY_PURPLE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_CLAY_RED;
 	f = &content_features(i);
@@ -1391,6 +1427,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_RED,CONTENT_CLAY,CONTENT_CLAY_RED);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_CLAY_YELLOW;
 	f = &content_features(i);
@@ -1405,6 +1443,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_CLAY,CONTENT_CLAY_YELLOW);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_CLAY_BLACK;
 	f = &content_features(i);
@@ -1419,6 +1459,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_CLAY,CONTENT_CLAY_BLACK);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_BRICK;
 	f = &content_features(i);
@@ -1431,6 +1473,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_CLAY_BRICK,CONTENT_BRICK);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_TERRACOTTA;
 	f = &content_features(i);
@@ -1442,6 +1486,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
+	lists::add("creative",i);
 
 	i = CONTENT_TERRACOTTA_BRICK;
 	f = &content_features(i);
@@ -1454,6 +1499,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	crafting::setBrickRecipe(CONTENT_TERRACOTTA,CONTENT_TERRACOTTA_BRICK);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_TERRACOTTA_BLOCK;
 	f = &content_features(i);
@@ -1466,6 +1513,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	crafting::setBlockRecipe(CONTENT_TERRACOTTA,CONTENT_TERRACOTTA_BLOCK);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_TERRACOTTA_TILE;
 	f = &content_features(i);
@@ -1483,6 +1532,8 @@ void content_mapnode_init()
 	content_mapnode_nodebox_carpet(f);
 	f->setInventoryTextureNodeBox(i,"terracotta_tile.png", "terracotta_tile.png", "terracotta_tile.png");
 	crafting::setTileRecipe(CONTENT_TERRACOTTA,CONTENT_TERRACOTTA_TILE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_TREE;
 	f = &content_features(i);
@@ -1499,6 +1550,7 @@ void content_mapnode_init()
 	f->fuel_time = 30;
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
+	lists::add("creative",i);
 
 	i = CONTENT_APPLE_TREE;
 	f = &content_features(i);
@@ -1515,6 +1567,7 @@ void content_mapnode_init()
 	f->fuel_time = 30;
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
+	lists::add("creative",i);
 
 	i = CONTENT_JUNGLETREE;
 	f = &content_features(i);
@@ -1530,6 +1583,7 @@ void content_mapnode_init()
 	f->fuel_time = 30;
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
+	lists::add("creative",i);
 
 	i = CONTENT_CONIFER_TREE;
 	f = &content_features(i);
@@ -1562,6 +1616,7 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i,"conifer_tree_top.png", "conifer_tree.png", "conifer_tree.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.8;
+	lists::add("creative",i);
 
 	i = CONTENT_JUNGLEGRASS;
 	f = &content_features(i);
@@ -1581,6 +1636,7 @@ void content_mapnode_init()
 	f->fuel_time = 30/32;
 	f->type = CMT_WOOD;
 	f->hardness = 0.10;
+	lists::add("creative",i);
 
 	i = CONTENT_LEAVES;
 	f = &content_features(i);
@@ -1713,6 +1769,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
+	lists::add("creative",i);
 
 	i = CONTENT_TRIMMED_APPLE_LEAVES;
 	f = &content_features(i);
@@ -1737,6 +1794,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
+	lists::add("creative",i);
 
 	i = CONTENT_TRIMMED_JUNGLE_LEAVES;
 	f = &content_features(i);
@@ -1761,6 +1819,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
+	lists::add("creative",i);
 
 	i = CONTENT_TRIMMED_CONIFER_LEAVES;
 	f = &content_features(i);
@@ -1785,6 +1844,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
+	lists::add("creative",i);
 
 	i = CONTENT_APPLE_BLOSSOM;
 	f = &content_features(i);
@@ -1834,6 +1894,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
+	lists::add("creative",i);
 
 	i = CONTENT_CACTUS_BLOSSOM;
 	f = &content_features(i);
@@ -1852,6 +1913,7 @@ void content_mapnode_init()
 	f->fuel_time = 30/32;
 	f->type = CMT_WOOD;
 	f->hardness = 0.10;
+	lists::add("creative",i);
 
 	i = CONTENT_CACTUS_FLOWER;
 	f = &content_features(i);
@@ -1870,6 +1932,7 @@ void content_mapnode_init()
 	f->fuel_time = 30/32;
 	f->type = CMT_WOOD;
 	f->hardness = 0.10;
+	lists::add("creative",i);
 
 	i = CONTENT_CACTUS_FRUIT;
 	f = &content_features(i);
@@ -1888,6 +1951,7 @@ void content_mapnode_init()
 	f->fuel_time = 30/32;
 	f->type = CMT_WOOD;
 	f->hardness = 0.10;
+	lists::add("creative",i);
 
 	i = CONTENT_CACTUS;
 	f = &content_features(i);
@@ -1948,6 +2012,7 @@ void content_mapnode_init()
 	f->setInventoryTextureCube("cactus_top.png", "cactus_side.png", "cactus_side.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
+	lists::add("creative",i);
 
 	i = CONTENT_PAPYRUS;
 	f = &content_features(i);
@@ -1966,6 +2031,7 @@ void content_mapnode_init()
 	f->fuel_time = 30/32;
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
+	lists::add("creative",i);
 
 	i = CONTENT_BOOKSHELF;
 	f = &content_features(i);
@@ -1996,6 +2062,8 @@ void content_mapnode_init()
 		};
 		crafting::setRecipe(r,CONTENT_BOOKSHELF,1);
 	}
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS;
 	f = &content_features(i);
@@ -2015,6 +2083,7 @@ void content_mapnode_init()
 	f->setInventoryTextureCube("glass.png", "glass.png", "glass.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS_BLUE;
 	f = &content_features(i);
@@ -2035,6 +2104,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_GLASS,CONTENT_GLASS_BLUE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS_GREEN;
 	f = &content_features(i);
@@ -2055,6 +2126,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_GREEN,CONTENT_GLASS,CONTENT_GLASS_GREEN);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS_ORANGE;
 	f = &content_features(i);
@@ -2075,6 +2148,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_ORANGE,CONTENT_GLASS,CONTENT_GLASS_ORANGE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS_PURPLE;
 	f = &content_features(i);
@@ -2095,6 +2170,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_PURPLE,CONTENT_GLASS,CONTENT_GLASS_PURPLE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS_RED;
 	f = &content_features(i);
@@ -2115,6 +2192,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_RED,CONTENT_GLASS,CONTENT_GLASS_RED);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS_YELLOW;
 	f = &content_features(i);
@@ -2135,6 +2214,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_GLASS,CONTENT_GLASS_YELLOW);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS_BLACK;
 	f = &content_features(i);
@@ -2155,6 +2236,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_GLASS,CONTENT_GLASS_BLACK);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS_PANE;
 	f = &content_features(i);
@@ -2185,6 +2268,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	crafting::setCol3Recipe(CONTENT_GLASS,CONTENT_GLASS_PANE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS_PANE_BLUE;
 	f = &content_features(i);
@@ -2216,6 +2301,8 @@ void content_mapnode_init()
 	f->hardness = 0.15;
 	crafting::setCol3Recipe(CONTENT_GLASS_BLUE,CONTENT_GLASS_PANE_BLUE);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_GLASS_PANE,CONTENT_GLASS_PANE_BLUE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS_PANE_GREEN;
 	f = &content_features(i);
@@ -2247,6 +2334,8 @@ void content_mapnode_init()
 	f->hardness = 0.15;
 	crafting::setCol3Recipe(CONTENT_GLASS_GREEN,CONTENT_GLASS_PANE_GREEN);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_GREEN,CONTENT_GLASS_PANE,CONTENT_GLASS_PANE_GREEN);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS_PANE_ORANGE;
 	f = &content_features(i);
@@ -2278,6 +2367,8 @@ void content_mapnode_init()
 	f->hardness = 0.15;
 	crafting::setCol3Recipe(CONTENT_GLASS_ORANGE,CONTENT_GLASS_PANE_ORANGE);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_ORANGE,CONTENT_GLASS_PANE,CONTENT_GLASS_PANE_ORANGE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS_PANE_PURPLE;
 	f = &content_features(i);
@@ -2309,6 +2400,8 @@ void content_mapnode_init()
 	f->hardness = 0.15;
 	crafting::setCol3Recipe(CONTENT_GLASS_PURPLE,CONTENT_GLASS_PANE_PURPLE);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_PURPLE,CONTENT_GLASS_PANE,CONTENT_GLASS_PANE_PURPLE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS_PANE_RED;
 	f = &content_features(i);
@@ -2340,6 +2433,8 @@ void content_mapnode_init()
 	f->hardness = 0.15;
 	crafting::setCol3Recipe(CONTENT_GLASS_RED,CONTENT_GLASS_PANE_RED);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_RED,CONTENT_GLASS_PANE,CONTENT_GLASS_PANE_RED);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS_PANE_YELLOW;
 	f = &content_features(i);
@@ -2371,6 +2466,8 @@ void content_mapnode_init()
 	f->hardness = 0.15;
 	crafting::setCol3Recipe(CONTENT_GLASS_YELLOW,CONTENT_GLASS_PANE_YELLOW);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_GLASS_PANE,CONTENT_GLASS_PANE_YELLOW);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS_PANE_BLACK;
 	f = &content_features(i);
@@ -2402,6 +2499,8 @@ void content_mapnode_init()
 	f->hardness = 0.15;
 	crafting::setCol3Recipe(CONTENT_GLASS_BLACK,CONTENT_GLASS_PANE_BLACK);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_GLASS_PANE,CONTENT_GLASS_PANE_BLACK);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASSLIGHT;
 	f = &content_features(i);
@@ -2423,6 +2522,8 @@ void content_mapnode_init()
 	f->hardness = 0.15;
 	f->light_source = LIGHT_MAX-1;
 	crafting::setSurroundRecipe(CONTENT_GLASS,CONTENT_TORCH,CONTENT_GLASSLIGHT);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_FENCE;
 	f = &content_features(i);
@@ -2444,6 +2545,8 @@ void content_mapnode_init()
 	f->hardness = 0.75;
 	crafting::setWallRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_FENCE);
 	crafting::setWallRecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_FENCE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_RAIL;
 	f = &content_features(i);
@@ -2486,6 +2589,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 0.75;
 	crafting::set1over4Recipe(CONTENT_TERRACOTTA,CONTENT_TERRACOTTA,CONTENT_ROOFTILE_TERRACOTTA);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_ROOFTILE_WOOD;
 	f = &content_features(i);
@@ -2499,6 +2604,8 @@ void content_mapnode_init()
 	f->hardness = 0.75;
 	crafting::set1over4Recipe(CONTENT_WOOD,CONTENT_WOOD,CONTENT_ROOFTILE_WOOD);
 	crafting::set1over4Recipe(CONTENT_JUNGLEWOOD,CONTENT_JUNGLEWOOD,CONTENT_ROOFTILE_WOOD);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_ROOFTILE_ASPHALT;
 	f = &content_features(i);
@@ -2518,6 +2625,8 @@ void content_mapnode_init()
 		};
 		crafting::setRecipe(r,CONTENT_ROOFTILE_ASPHALT,4);
 	}
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_ROOFTILE_STONE;
 	f = &content_features(i);
@@ -2530,6 +2639,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 0.75;
 	crafting::set1over4Recipe(CONTENT_ROUGHSTONE,CONTENT_ROUGHSTONE,CONTENT_ROOFTILE_STONE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_LADDER;
 	f = &content_features(i);
@@ -2573,6 +2684,8 @@ void content_mapnode_init()
 		r[8] = CONTENT_CRAFTITEM_JUNGLE_PLANK;
 		crafting::setRecipe(r,CONTENT_LADDER,4);
 	}
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_BORDERSTONE;
 	f = &content_features(i);
@@ -2595,6 +2708,7 @@ void content_mapnode_init()
 		};
 		crafting::setRecipe(r,CONTENT_BORDERSTONE,1);
 	}
+	lists::add("craftguide",i);
 
 	i = CONTENT_WOOD;
 	f = &content_features(i);
@@ -2610,6 +2724,8 @@ void content_mapnode_init()
 	f->hardness = 0.75;
 	crafting::set1To4Recipe(CONTENT_TREE,CONTENT_WOOD);
 	crafting::set1To4Recipe(CONTENT_APPLE_TREE,CONTENT_WOOD);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_JUNGLEWOOD;
 	f = &content_features(i);
@@ -2624,6 +2740,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	crafting::set1To4Recipe(CONTENT_JUNGLETREE,CONTENT_JUNGLEWOOD);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_WOOD_PINE;
 	f = &content_features(i);
@@ -2638,6 +2756,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.5;
 	crafting::set1To4Recipe(CONTENT_CONIFER_TREE,CONTENT_WOOD_PINE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_TRELLIS;
 	f = &content_features(i);
@@ -2657,6 +2777,8 @@ void content_mapnode_init()
 	f->hardness = 0.75;
 	crafting::set5Recipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_TRELLIS);
 	crafting::set5Recipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_TRELLIS);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_MESE;
 	f = &content_features(i);
@@ -2669,6 +2791,7 @@ void content_mapnode_init()
 	f->cook_result = std::string("CraftItem saltpeter 1");
 	f->type = CMT_STONE;
 	f->hardness = 0.5;
+	lists::add("creative",i);
 
 	i = CONTENT_MESE_DIGGING;
 	f = &content_features(i);
@@ -2695,6 +2818,7 @@ void content_mapnode_init()
 	f->fuel_time = 1;
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
+	lists::add("creative",i);
 
 	i = CONTENT_SPONGE_FULL;
 	f = &content_features(i);
@@ -2720,6 +2844,8 @@ void content_mapnode_init()
 	f->type = CMT_PLANT;
 	f->hardness = 0.6;
 	crafting::setHardBlockRecipe(CONTENT_DEADGRASS,CONTENT_HAY);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_FERTILIZER;
 	f = &content_features(i);
@@ -2738,6 +2864,8 @@ void content_mapnode_init()
 	f->hardness = 0.4;
 	crafting::set2Any2Recipe(CONTENT_CRAFTITEM_ROTTEN_FRUIT,CONTENT_CRAFTITEM_ASH,CONTENT_FERTILIZER);
 	crafting::set2Any2Recipe(CONTENT_CRAFTITEM_MUSH,CONTENT_CRAFTITEM_ASH,CONTENT_FERTILIZER);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_SEEDS_WHEAT;
 	f = &content_features(i);
@@ -2753,6 +2881,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
+	lists::add("creative",i);
 
 	i = CONTENT_SEEDS_MELON;
 	f = &content_features(i);
@@ -2769,6 +2898,7 @@ void content_mapnode_init()
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	crafting::set1To1Recipe(CONTENT_CRAFTITEM_MELONSLICE,CONTENT_SEEDS_MELON);
+	lists::add("creative",i);
 
 	i = CONTENT_SEEDS_PUMPKIN;
 	f = &content_features(i);
@@ -2785,6 +2915,7 @@ void content_mapnode_init()
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	crafting::set1To1Recipe(CONTENT_CRAFTITEM_PUMPKINSLICE,CONTENT_SEEDS_PUMPKIN);
+	lists::add("creative",i);
 
 	i = CONTENT_SEEDS_POTATO;
 	f = &content_features(i);
@@ -2800,6 +2931,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
+	lists::add("creative",i);
 
 	i = CONTENT_SEEDS_CARROT;
 	f = &content_features(i);
@@ -2815,6 +2947,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
+	lists::add("creative",i);
 
 	i = CONTENT_SEEDS_BEETROOT;
 	f = &content_features(i);
@@ -2830,6 +2963,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
+	lists::add("creative",i);
 
 	i = CONTENT_SEEDS_GRAPE;
 	f = &content_features(i);
@@ -2846,6 +2980,7 @@ void content_mapnode_init()
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	crafting::set1To2Recipe(CONTENT_CRAFTITEM_GRAPE,CONTENT_SEEDS_GRAPE);
+	lists::add("creative",i);
 
 	i = CONTENT_SEEDS_COTTON;
 	f = &content_features(i);
@@ -2861,6 +2996,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
+	lists::add("creative",i);
 
 	i = CONTENT_FARM_WHEAT_1;
 	f = &content_features(i);
@@ -3567,6 +3703,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 0.3;
 	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_SNOW_BALL,CONTENT_SNOW_BLOCK);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_SNOWMAN;
 	f = &content_features(i);
@@ -3626,6 +3764,8 @@ void content_mapnode_init()
 		};
 		crafting::setRecipe(r,CONTENT_SNOWMAN,1);
 	}
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_SNOW;
 	f = &content_features(i);
@@ -3644,6 +3784,7 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i,"snow.png", "snow.png", "snow.png");
 	f->type = CMT_DIRT;
 	f->hardness = 0.3;
+	lists::add("creative",i);
 
 	i = CONTENT_BOOK;
 	f = &content_features(i);
@@ -3668,6 +3809,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::setCol1Recipe(CONTENT_CRAFTITEM_PAPER,i);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_CRAFT_GUIDE;
 	f = &content_features(i);
@@ -3700,6 +3843,8 @@ void content_mapnode_init()
 		};
 		crafting::setRecipe(r,CONTENT_CRAFT_GUIDE,1);
 	}
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_COTTON;
 	f = &content_features(i);
@@ -3729,6 +3874,8 @@ void content_mapnode_init()
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_STARCH,CONTENT_COTTON_YELLOW,CONTENT_COTTON);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_STARCH,CONTENT_COTTON_BLACK,CONTENT_COTTON);
 	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_STRING,CONTENT_COTTON);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_COTTON_BLUE;
 	f = &content_features(i);
@@ -3743,6 +3890,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_COTTON,CONTENT_COTTON_BLUE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_COTTON_GREEN;
 	f = &content_features(i);
@@ -3757,6 +3906,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_GREEN,CONTENT_COTTON,CONTENT_COTTON_GREEN);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_COTTON_ORANGE;
 	f = &content_features(i);
@@ -3771,6 +3922,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_ORANGE,CONTENT_COTTON,CONTENT_COTTON_ORANGE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_COTTON_PURPLE;
 	f = &content_features(i);
@@ -3785,6 +3938,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_PURPLE,CONTENT_COTTON,CONTENT_COTTON_PURPLE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_COTTON_RED;
 	f = &content_features(i);
@@ -3799,6 +3954,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_RED,CONTENT_COTTON,CONTENT_COTTON_RED);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_COTTON_YELLOW;
 	f = &content_features(i);
@@ -3813,6 +3970,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_COTTON,CONTENT_COTTON_YELLOW);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_COTTON_BLACK;
 	f = &content_features(i);
@@ -3827,6 +3986,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_COTTON,CONTENT_COTTON_BLACK);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_CARPET;
 	f = &content_features(i);
@@ -3846,6 +4007,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::setTileRecipe(CONTENT_COTTON,CONTENT_CARPET);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_CARPET_BLUE;
 	f = &content_features(i);
@@ -3866,6 +4029,8 @@ void content_mapnode_init()
 	f->hardness = 1.0;
 	crafting::setTileRecipe(CONTENT_COTTON_BLUE,CONTENT_CARPET_BLUE);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_CARPET,CONTENT_CARPET_BLUE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_CARPET_GREEN;
 	f = &content_features(i);
@@ -3886,6 +4051,8 @@ void content_mapnode_init()
 	f->hardness = 1.0;
 	crafting::setTileRecipe(CONTENT_COTTON_GREEN,CONTENT_CARPET_GREEN);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_GREEN,CONTENT_CARPET,CONTENT_CARPET_GREEN);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_CARPET_ORANGE;
 	f = &content_features(i);
@@ -3906,6 +4073,8 @@ void content_mapnode_init()
 	f->hardness = 1.0;
 	crafting::setTileRecipe(CONTENT_COTTON_ORANGE,CONTENT_CARPET_ORANGE);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_ORANGE,CONTENT_CARPET,CONTENT_CARPET_ORANGE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_CARPET_PURPLE;
 	f = &content_features(i);
@@ -3926,6 +4095,8 @@ void content_mapnode_init()
 	f->hardness = 1.0;
 	crafting::setTileRecipe(CONTENT_COTTON_PURPLE,CONTENT_CARPET_PURPLE);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_PURPLE,CONTENT_CARPET,CONTENT_CARPET_PURPLE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_CARPET_RED;
 	f = &content_features(i);
@@ -3946,6 +4117,8 @@ void content_mapnode_init()
 	f->hardness = 1.0;
 	crafting::setTileRecipe(CONTENT_COTTON_RED,CONTENT_CARPET_RED);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_RED,CONTENT_CARPET,CONTENT_CARPET_RED);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_CARPET_YELLOW;
 	f = &content_features(i);
@@ -3966,6 +4139,8 @@ void content_mapnode_init()
 	f->hardness = 1.0;
 	crafting::setTileRecipe(CONTENT_COTTON_YELLOW,CONTENT_CARPET_YELLOW);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_CARPET,CONTENT_CARPET_YELLOW);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_CARPET_BLACK;
 	f = &content_features(i);
@@ -3986,6 +4161,8 @@ void content_mapnode_init()
 	f->hardness = 1.0;
 	crafting::setTileRecipe(CONTENT_COTTON_BLACK,CONTENT_CARPET_BLACK);
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_CARPET,CONTENT_CARPET_BLACK);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_AIR;
 	f = &content_features(i);
@@ -4208,6 +4385,8 @@ void content_mapnode_init()
 	f->hardness = 0.0;
 	crafting::set1over4Recipe(CONTENT_CRAFTITEM_COAL,CONTENT_CRAFTITEM_STICK,CONTENT_TORCH);
 	crafting::set1over4Recipe(CONTENT_CRAFTITEM_CHARCOAL,CONTENT_CRAFTITEM_STICK,CONTENT_TORCH);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_SIGN_WALL;
 	f = &content_features(i);
@@ -4269,6 +4448,8 @@ void content_mapnode_init()
 	crafting::setSignRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_SIGN);
 	crafting::setSignRecipe(CONTENT_CRAFTITEM_PINE_PLANK,CONTENT_SIGN);
 	crafting::setSignRecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_SIGN);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_SIGN_UD;
 	f = &content_features(i);
@@ -4365,6 +4546,8 @@ void content_mapnode_init()
 	));
 	f->setInventoryTextureNodeBox(i,"sign.png", "sign_lock.png", "sign.png");
 	crafting::set1Any2Recipe(CONTENT_SIGN,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_LOCKABLE_SIGN);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_LOCKABLE_SIGN_UD;
 	f = &content_features(i);
@@ -4421,6 +4604,26 @@ void content_mapnode_init()
 	f->hardness = 1.0;
 	crafting::setRoundRecipe(CONTENT_WOOD,CONTENT_CHEST);
 	crafting::setRoundRecipe(CONTENT_JUNGLEWOOD,CONTENT_CHEST);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CREATIVE_CHEST;
+	f = &content_features(i);
+	f->description = std::string("Creative Chest");
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_CUBELIKE;
+	f->setAllTextures("chest_side.png");
+	f->setTexture(0, "chest_top.png");
+	f->setTexture(1, "chest_top.png");
+	f->setTexture(5, "chest_creative.png"); // Z-
+	f->setInventoryTexture("chest_top.png");
+	f->setInventoryTextureCube("chest_top.png", "chest_creative.png", "chest_side.png");
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new CreativeChestNodeMetadata();
+	f->type = CMT_WOOD;
+	f->hardness = 1.0;
+	lists::add("creative",i);
 
 	i = CONTENT_LOCKABLE_CHEST;
 	f = &content_features(i);
@@ -4447,6 +4650,8 @@ void content_mapnode_init()
 	crafting::setFilledRoundRecipe(CONTENT_WOOD,CONTENT_CRAFTITEM_SILVER_INGOT,CONTENT_LOCKABLE_CHEST);
 	crafting::setFilledRoundRecipe(CONTENT_JUNGLEWOOD,CONTENT_CRAFTITEM_SILVER_INGOT,CONTENT_LOCKABLE_CHEST);
 	crafting::set1Any2Recipe(CONTENT_CHEST,CONTENT_CRAFTITEM_SILVER_INGOT,CONTENT_LOCKABLE_CHEST);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_FURNACE;
 	f = &content_features(i);
@@ -4464,6 +4669,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 3.0;
 	crafting::setRoundRecipe(CONTENT_ROUGHSTONE,CONTENT_FURNACE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_LOCKABLE_FURNACE;
 	f = &content_features(i);
@@ -4482,6 +4689,8 @@ void content_mapnode_init()
 	f->hardness = 3.0;
 	crafting::setFilledRoundRecipe(CONTENT_ROUGHSTONE,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_LOCKABLE_FURNACE);
 	crafting::set1Any2Recipe(CONTENT_FURNACE,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_LOCKABLE_FURNACE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_INCINERATOR;
 	f = &content_features(i);
@@ -4499,6 +4708,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 0.4;
 	crafting::setFilledRoundRecipe(CONTENT_ROUGHSTONE,CONTENT_MESE,CONTENT_INCINERATOR);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_ROUGHSTONE;
 	f = &content_features(i);
@@ -4513,6 +4724,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 0.9;
 	crafting::setBlockRecipe(CONTENT_COBBLE,CONTENT_ROUGHSTONE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_COBBLE;
 	f = &content_features(i);
@@ -4526,6 +4739,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 0.9;
 	crafting::set5Recipe(CONTENT_ROUGHSTONE,CONTENT_COBBLE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_MOSSYCOBBLE;
 	f = &content_features(i);
@@ -4538,6 +4753,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_STONE;
 	f->hardness = 0.8;
+	lists::add("creative",i);
 
 	i = CONTENT_STEEL;
 	f = &content_features(i);
@@ -4552,6 +4768,8 @@ void content_mapnode_init()
 	f->hardness = 5.0;
 	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_STEEL);
 	crafting::setUncraftHardBlockRecipe(CONTENT_STEEL,CONTENT_CRAFTITEM_STEEL_INGOT);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_COPPER;
 	f = &content_features(i);
@@ -4566,6 +4784,8 @@ void content_mapnode_init()
 	f->hardness = 5.0;
 	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_COPPER_INGOT,CONTENT_COPPER);
 	crafting::setUncraftHardBlockRecipe(CONTENT_COPPER,CONTENT_CRAFTITEM_COPPER_INGOT);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GOLD;
 	f = &content_features(i);
@@ -4580,6 +4800,8 @@ void content_mapnode_init()
 	f->hardness = 5.0;
 	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_GOLD_INGOT,CONTENT_GOLD);
 	crafting::setUncraftHardBlockRecipe(CONTENT_GOLD,CONTENT_CRAFTITEM_GOLD_INGOT);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_SILVER;
 	f = &content_features(i);
@@ -4594,6 +4816,8 @@ void content_mapnode_init()
 	f->hardness = 5.0;
 	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_SILVER_INGOT,CONTENT_SILVER);
 	crafting::setUncraftHardBlockRecipe(CONTENT_SILVER,CONTENT_CRAFTITEM_SILVER_INGOT);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_TIN;
 	f = &content_features(i);
@@ -4608,6 +4832,8 @@ void content_mapnode_init()
 	f->hardness = 5.0;
 	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_TIN_INGOT,CONTENT_TIN);
 	crafting::setUncraftHardBlockRecipe(CONTENT_TIN,CONTENT_CRAFTITEM_TIN_INGOT);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_QUARTZ;
 	f = &content_features(i);
@@ -4622,6 +4848,8 @@ void content_mapnode_init()
 	f->hardness = 5.0;
 	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_QUARTZ,CONTENT_QUARTZ);
 	crafting::setUncraftHardBlockRecipe(CONTENT_QUARTZ,CONTENT_CRAFTITEM_QUARTZ);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_NC;
 	f = &content_features(i);
@@ -4635,6 +4863,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_STONE;
 	f->hardness = 3.0;
+	lists::add("creative",i);
 
 	i = CONTENT_NC_RB;
 	f = &content_features(i);
@@ -4645,6 +4874,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_STONE;
 	f->hardness = 3.0;
+	lists::add("creative",i);
 
 	i = CONTENT_SAPLING;
 	f = &content_features(i);
@@ -4663,6 +4893,7 @@ void content_mapnode_init()
 	f->fuel_time = 1;
 	f->type = CMT_WOOD;
 	f->hardness = 0.0;
+	lists::add("creative",i);
 
 	i = CONTENT_APPLE_SAPLING;
 	f = &content_features(i);
@@ -4681,6 +4912,7 @@ void content_mapnode_init()
 	f->fuel_time = 1;
 	f->type = CMT_WOOD;
 	f->hardness = 0.0;
+	lists::add("creative",i);
 
 	i = CONTENT_JUNGLESAPLING;
 	f = &content_features(i);
@@ -4699,6 +4931,7 @@ void content_mapnode_init()
 	f->fuel_time = 1;
 	f->type = CMT_WOOD;
 	f->hardness = 0.0;
+	lists::add("creative",i);
 
 	i = CONTENT_CONIFER_SAPLING;
 	f = &content_features(i);
@@ -4717,6 +4950,7 @@ void content_mapnode_init()
 	f->fuel_time = 1;
 	f->type = CMT_WOOD;
 	f->hardness = 0.0;
+	lists::add("creative",i);
 
 	i = CONTENT_APPLE;
 	f = &content_features(i);
@@ -4736,6 +4970,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("CraftItem apple 1");
 	f->type = CMT_WOOD;
 	f->hardness = 0.0;
+	lists::add("creative",i);
 
 	// slabs
 	i = CONTENT_ROUGHSTONE_SLAB;
@@ -4753,6 +4988,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 0.9;
 	crafting::setRow3Recipe(CONTENT_ROUGHSTONE,CONTENT_ROUGHSTONE_SLAB);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_COBBLE_SLAB;
 	f = &content_features(i);
@@ -4769,6 +5006,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 0.9;
 	crafting::setRow3Recipe(CONTENT_COBBLE,CONTENT_COBBLE_SLAB);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_MOSSYCOBBLE_SLAB;
 	f = &content_features(i);
@@ -4785,6 +5024,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 0.8;
 	crafting::setRow3Recipe(CONTENT_MOSSYCOBBLE,CONTENT_MOSSYCOBBLE_SLAB);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_STONE_SLAB;
 	f = &content_features(i);
@@ -4800,6 +5041,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	crafting::setRow3Recipe(CONTENT_STONE,CONTENT_STONE_SLAB);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_WOOD_SLAB;
 	f = &content_features(i);
@@ -4817,6 +5060,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	crafting::setRow3Recipe(CONTENT_WOOD,CONTENT_WOOD_SLAB);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_JUNGLE_SLAB;
 	f = &content_features(i);
@@ -4834,6 +5079,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
 	crafting::setRow3Recipe(CONTENT_JUNGLEWOOD,CONTENT_JUNGLE_SLAB);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_BRICK_SLAB;
 	f = &content_features(i);
@@ -4849,6 +5096,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	crafting::setRow3Recipe(CONTENT_BRICK,CONTENT_BRICK_SLAB);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_SANDSTONE_SLAB;
 	f = &content_features(i);
@@ -4864,6 +5113,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::setRow3Recipe(CONTENT_SANDSTONE,CONTENT_SANDSTONE_SLAB);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS_SLAB;
 	f = &content_features(i);
@@ -4885,6 +5136,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	crafting::setRow3Recipe(CONTENT_GLASS,CONTENT_GLASS_SLAB);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS_BLUE_SLAB;
 	f = &content_features(i);
@@ -4907,6 +5160,8 @@ void content_mapnode_init()
 	f->hardness = 0.15;
 	crafting::setRow3Recipe(CONTENT_GLASS,CONTENT_GLASS_BLUE_SLAB);
 	crafting::set1Any2Recipe(CONTENT_GLASS_SLAB,CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_GLASS_BLUE_SLAB);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS_GREEN_SLAB;
 	f = &content_features(i);
@@ -4929,6 +5184,8 @@ void content_mapnode_init()
 	f->hardness = 0.15;
 	crafting::setRow3Recipe(CONTENT_GLASS,CONTENT_GLASS_GREEN_SLAB);
 	crafting::set1Any2Recipe(CONTENT_GLASS_SLAB,CONTENT_CRAFTITEM_DYE_GREEN,CONTENT_GLASS_GREEN_SLAB);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS_ORANGE_SLAB;
 	f = &content_features(i);
@@ -4951,6 +5208,8 @@ void content_mapnode_init()
 	f->hardness = 0.15;
 	crafting::setRow3Recipe(CONTENT_GLASS,CONTENT_GLASS_ORANGE_SLAB);
 	crafting::set1Any2Recipe(CONTENT_GLASS_SLAB,CONTENT_CRAFTITEM_DYE_ORANGE,CONTENT_GLASS_ORANGE_SLAB);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS_PURPLE_SLAB;
 	f = &content_features(i);
@@ -4973,6 +5232,8 @@ void content_mapnode_init()
 	f->hardness = 0.15;
 	crafting::setRow3Recipe(CONTENT_GLASS,CONTENT_GLASS_PURPLE_SLAB);
 	crafting::set1Any2Recipe(CONTENT_GLASS_SLAB,CONTENT_CRAFTITEM_DYE_PURPLE,CONTENT_GLASS_PURPLE_SLAB);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS_RED_SLAB;
 	f = &content_features(i);
@@ -4995,6 +5256,8 @@ void content_mapnode_init()
 	f->hardness = 0.15;
 	crafting::setRow3Recipe(CONTENT_GLASS,CONTENT_GLASS_RED_SLAB);
 	crafting::set1Any2Recipe(CONTENT_GLASS_SLAB,CONTENT_CRAFTITEM_DYE_RED,CONTENT_GLASS_RED_SLAB);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS_YELLOW_SLAB;
 	f = &content_features(i);
@@ -5017,6 +5280,8 @@ void content_mapnode_init()
 	f->hardness = 0.15;
 	crafting::setRow3Recipe(CONTENT_GLASS,CONTENT_GLASS_YELLOW_SLAB);
 	crafting::set1Any2Recipe(CONTENT_GLASS_SLAB,CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_GLASS_YELLOW_SLAB);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS_BLACK_SLAB;
 	f = &content_features(i);
@@ -5039,6 +5304,8 @@ void content_mapnode_init()
 	f->hardness = 0.15;
 	crafting::setRow3Recipe(CONTENT_GLASS,CONTENT_GLASS_BLACK_SLAB);
 	crafting::set1Any2Recipe(CONTENT_GLASS_SLAB,CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_GLASS_BLACK_SLAB);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	// upside down slabs
 	i = CONTENT_ROUGHSTONE_SLAB_UD;
@@ -5328,6 +5595,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 0.9;
 	crafting::setStairRecipe(CONTENT_ROUGHSTONE,CONTENT_ROUGHSTONE_STAIR);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_COBBLE_STAIR;
 	f = &content_features(i);
@@ -5343,6 +5612,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 0.9;
 	crafting::setStairRecipe(CONTENT_COBBLE,CONTENT_COBBLE_STAIR);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_MOSSYCOBBLE_STAIR;
 	f = &content_features(i);
@@ -5358,6 +5629,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 0.8;
 	crafting::setStairRecipe(CONTENT_MOSSYCOBBLE,CONTENT_MOSSYCOBBLE_STAIR);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_STONE_STAIR;
 	f = &content_features(i);
@@ -5374,6 +5647,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	crafting::setStairRecipe(CONTENT_STONE,CONTENT_STONE_STAIR);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_WOOD_STAIR;
 	f = &content_features(i);
@@ -5391,6 +5666,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	crafting::setStairRecipe(CONTENT_WOOD,CONTENT_WOOD_STAIR);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_JUNGLE_STAIR;
 	f = &content_features(i);
@@ -5408,6 +5685,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
 	crafting::setStairRecipe(CONTENT_JUNGLEWOOD,CONTENT_JUNGLE_STAIR);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_BRICK_STAIR;
 	f = &content_features(i);
@@ -5423,6 +5702,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	crafting::setStairRecipe(CONTENT_BRICK,CONTENT_BRICK_STAIR);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_SANDSTONE_STAIR;
 	f = &content_features(i);
@@ -5438,6 +5719,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::setStairRecipe(CONTENT_SANDSTONE,CONTENT_SANDSTONE_STAIR);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	// upside down stairs
 	i = CONTENT_ROUGHSTONE_STAIR_UD;
@@ -5593,6 +5876,8 @@ void content_mapnode_init()
 	f->hardness = 0.75;
 	crafting::set1over1Recipe(CONTENT_WOOD_HATCH,CONTENT_WOOD_HATCH,CONTENT_WOOD_DOOR_LT);
 	crafting::set1To1Recipe(CONTENT_WOOD_DOOR_RT,CONTENT_WOOD_DOOR_LT);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_STEEL_DOOR_LB;
 	f = &content_features(i);
@@ -5638,6 +5923,8 @@ void content_mapnode_init()
 	f->hardness = 5.0;
 	crafting::set1over1Recipe(CONTENT_STEEL_HATCH,CONTENT_STEEL_HATCH,CONTENT_STEEL_DOOR_LT);
 	crafting::set1To1Recipe(CONTENT_STEEL_DOOR_RT,CONTENT_STEEL_DOOR_LT);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS_DOOR_LB;
 	f = &content_features(i);
@@ -5683,6 +5970,8 @@ void content_mapnode_init()
 	f->hardness = 0.15;
 	crafting::set1over1Recipe(CONTENT_GLASS_PANE,CONTENT_GLASS_PANE,CONTENT_GLASS_DOOR_LT);
 	crafting::set1To1Recipe(CONTENT_GLASS_DOOR_RT,CONTENT_GLASS_DOOR_LT);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_WOOD_W_DOOR_LB;
 	f = &content_features(i);
@@ -5731,6 +6020,8 @@ void content_mapnode_init()
 	crafting::set1over1Recipe(CONTENT_WOOD_W_HATCH,CONTENT_WOOD_HATCH,CONTENT_WOOD_W_DOOR_LT);
 	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_WOOD_DOOR_LT,CONTENT_WOOD_W_DOOR_LT);
 	crafting::set1To1Recipe(CONTENT_WOOD_W_DOOR_RT,CONTENT_WOOD_W_DOOR_LT);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_STEEL_W_DOOR_LB;
 	f = &content_features(i);
@@ -5779,6 +6070,8 @@ void content_mapnode_init()
 	crafting::set1over1Recipe(CONTENT_STEEL_W_HATCH,CONTENT_STEEL_HATCH,CONTENT_STEEL_W_DOOR_LT);
 	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_STEEL_DOOR_LT,CONTENT_STEEL_W_DOOR_LT);
 	crafting::set1To1Recipe(CONTENT_STEEL_W_DOOR_RT,CONTENT_STEEL_W_DOOR_LT);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	// right doors
 	i = CONTENT_WOOD_DOOR_RB;
@@ -5824,6 +6117,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	crafting::set1To1Recipe(CONTENT_WOOD_DOOR_LT,CONTENT_WOOD_DOOR_RT);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_GLASS_DOOR_RB;
 	f = &content_features(i);
@@ -5870,6 +6165,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	crafting::set1To1Recipe(CONTENT_GLASS_DOOR_LT,CONTENT_GLASS_DOOR_RT);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_STEEL_DOOR_RB;
 	f = &content_features(i);
@@ -5914,6 +6211,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	crafting::set1To1Recipe(CONTENT_GLASS_DOOR_LT,CONTENT_GLASS_DOOR_RT);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_WOOD_W_DOOR_RB;
 	f = &content_features(i);
@@ -5961,6 +6260,8 @@ void content_mapnode_init()
 	f->hardness = 0.75;
 	crafting::set1To1Recipe(CONTENT_WOOD_W_DOOR_LT,CONTENT_WOOD_W_DOOR_RT);
 	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_WOOD_DOOR_RT,CONTENT_WOOD_W_DOOR_RT);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_STEEL_W_DOOR_RB;
 	f = &content_features(i);
@@ -6008,6 +6309,8 @@ void content_mapnode_init()
 	f->hardness = 5.0;
 	crafting::set1To1Recipe(CONTENT_STEEL_W_DOOR_LT,CONTENT_STEEL_W_DOOR_RT);
 	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_STEEL_DOOR_RT,CONTENT_STEEL_W_DOOR_RT);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	// open doors
 	i = CONTENT_WOOD_DOOR_LB_OPEN;
@@ -6461,6 +6764,8 @@ void content_mapnode_init()
 	f->hardness = 0.75;
 	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_WOOD_HATCH);
 	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_WOOD_HATCH);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_STEEL_HATCH;
 	f = &content_features(i);
@@ -6480,6 +6785,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_STEEL_HATCH);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_WOOD_W_HATCH;
 	f = &content_features(i);
@@ -6502,6 +6809,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_WOOD_HATCH,CONTENT_WOOD_W_HATCH);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_STEEL_W_HATCH;
 	f = &content_features(i);
@@ -6524,6 +6833,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_STEEL_HATCH,CONTENT_STEEL_W_HATCH);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	// gates
 	i = CONTENT_WOOD_GATE;
@@ -6551,6 +6862,8 @@ void content_mapnode_init()
 	crafting::setGateRecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_JUNGLEWOOD,CONTENT_WOOD_GATE);
 	crafting::setGateRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_JUNGLEWOOD,CONTENT_WOOD_GATE);
 	crafting::setGateRecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_WOOD,CONTENT_WOOD_GATE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_STEEL_GATE;
 	f = &content_features(i);
@@ -6574,6 +6887,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	crafting::setGateRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_STEEL,CONTENT_STEEL_GATE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	// open hatches
 	i = CONTENT_WOOD_HATCH_OPEN;
@@ -6814,6 +7129,7 @@ void content_mapnode_init()
 	f->buildable_to = true;
 	f->type = CMT_WOOD;
 	f->hardness = 0.10;
+	lists::add("creative",i);
 
 	i = CONTENT_FLOWER_DAFFODIL;
 	f = &content_features(i);
@@ -6834,6 +7150,7 @@ void content_mapnode_init()
 	f->buildable_to = true;
 	f->type = CMT_WOOD;
 	f->hardness = 0.10;
+	lists::add("creative",i);
 
 	i = CONTENT_FLOWER_TULIP;
 	f = &content_features(i);
@@ -6854,6 +7171,7 @@ void content_mapnode_init()
 	f->buildable_to = true;
 	f->type = CMT_WOOD;
 	f->hardness = 0.10;
+	lists::add("creative",i);
 
 	i = CONTENT_FLOWER_POT_RAW;
 	f = &content_features(i);
@@ -6912,6 +7230,7 @@ void content_mapnode_init()
 	));
 	f->setInventoryTextureNodeBox(i,"flower_pot_raw_top.png","flower_pot_raw.png","flower_pot_raw.png");
 	crafting::setVRecipe(CONTENT_CRAFTITEM_CLAY,CONTENT_FLOWER_POT_RAW);
+	lists::add("craftguide",i);
 
 	i = CONTENT_FLOWER_POT;
 	f = &content_features(i);
@@ -6968,6 +7287,7 @@ void content_mapnode_init()
 		0.3*BS
 	));
 	f->setInventoryTextureNodeBox(i,"flower_pot_top.png","flower_pot.png","flower_pot.png");
+	lists::add("creative",i);
 
 	// walls
 	i = CONTENT_COBBLE_WALL;
@@ -6985,6 +7305,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 0.9;
 	crafting::setWallRecipe(CONTENT_COBBLE,CONTENT_COBBLE_WALL);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_ROUGHSTONE_WALL;
 	f = &content_features(i);
@@ -7002,6 +7324,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 0.9;
 	crafting::setWallRecipe(CONTENT_ROUGHSTONE,CONTENT_ROUGHSTONE_WALL);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_MOSSYCOBBLE_WALL;
 	f = &content_features(i);
@@ -7019,6 +7343,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 0.8;
 	crafting::setWallRecipe(CONTENT_MOSSYCOBBLE,CONTENT_MOSSYCOBBLE_WALL);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_STONE_WALL;
 	f = &content_features(i);
@@ -7036,6 +7362,8 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	crafting::setWallRecipe(CONTENT_STONE,CONTENT_STONE_WALL);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_SANDSTONE_WALL;
 	f = &content_features(i);
@@ -7053,6 +7381,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::setWallRecipe(CONTENT_SANDSTONE,CONTENT_SANDSTONE_WALL);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_TNT;
 	f = &content_features(i);
@@ -7069,6 +7399,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_TNT,CONTENT_TNT);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_FLASH;
 	f = &content_features(i);
@@ -7151,6 +7483,8 @@ void content_mapnode_init()
 		};
 		crafting::setRecipe(r,CONTENT_CHAIR,2);
 	}
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_TABLE;
 	f = &content_features(i);
@@ -7205,6 +7539,8 @@ void content_mapnode_init()
 		};
 		crafting::setRecipe(r,CONTENT_TABLE,1);
 	}
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_BED_HEAD;
 	f = &content_features(i);
@@ -7231,6 +7567,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
 	crafting::setBedRecipe(CONTENT_COTTON,CONTENT_BED_HEAD);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_BED_FOOT;
 	f = &content_features(i);
@@ -7282,6 +7620,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
 	crafting::setBedRecipe(CONTENT_COTTON_BLUE,CONTENT_BED_BLUE_HEAD);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_BED_BLUE_FOOT;
 	f = &content_features(i);
@@ -7333,6 +7673,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
 	crafting::setBedRecipe(CONTENT_COTTON_GREEN,CONTENT_BED_GREEN_HEAD);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_BED_GREEN_FOOT;
 	f = &content_features(i);
@@ -7384,6 +7726,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
 	crafting::setBedRecipe(CONTENT_COTTON_ORANGE,CONTENT_BED_ORANGE_HEAD);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_BED_ORANGE_FOOT;
 	f = &content_features(i);
@@ -7435,6 +7779,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
 	crafting::setBedRecipe(CONTENT_COTTON_PURPLE,CONTENT_BED_PURPLE_HEAD);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_BED_PURPLE_FOOT;
 	f = &content_features(i);
@@ -7486,6 +7832,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
 	crafting::setBedRecipe(CONTENT_COTTON_RED,CONTENT_BED_RED_HEAD);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_BED_RED_FOOT;
 	f = &content_features(i);
@@ -7537,6 +7885,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
 	crafting::setBedRecipe(CONTENT_COTTON_YELLOW,CONTENT_BED_YELLOW_HEAD);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_BED_YELLOW_FOOT;
 	f = &content_features(i);
@@ -7588,6 +7938,8 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
 	crafting::setBedRecipe(CONTENT_COTTON_BLACK,CONTENT_BED_BLACK_HEAD);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_BED_BLACK_FOOT;
 	f = &content_features(i);

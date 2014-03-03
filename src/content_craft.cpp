@@ -628,6 +628,7 @@ void giveCreative(Player *player)
 
 	// CONTENT_IGNORE-terminated list
 	content_t material_items[] = {
+		CONTENT_CREATIVE_CHEST,
 		CONTENT_TORCH,
 		CONTENT_ROUGHSTONE,
 		CONTENT_MUD,

@@ -21,6 +21,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "inventory.h"
 #include "content_mapnode.h"
 #include "content_craft.h"
+#include "content_list.h"
 #include "log.h"
 #include "player.h"
 
@@ -234,6 +235,119 @@ std::string LockingChestNodeMetadata::getDrawSpecString()
 		"size[8,9]"
 		"list[current_name;0;0,0;8,4;]"
 		"list[current_player;main;0,5;8,4;]";
+}
+
+/*
+	ChestNodeMetadata
+*/
+
+// Prototype
+CreativeChestNodeMetadata proto_CreativeChestNodeMetadata;
+
+CreativeChestNodeMetadata::CreativeChestNodeMetadata()
+{
+	NodeMetadata::registerType(typeId(), create);
+
+	m_page = 0;
+
+	m_inventory = new Inventory();
+	m_inventory->addList("0", 8*4);
+}
+CreativeChestNodeMetadata::~CreativeChestNodeMetadata()
+{
+	delete m_inventory;
+}
+u16 CreativeChestNodeMetadata::typeId() const
+{
+	return CONTENT_CREATIVE_CHEST;
+}
+NodeMetadata* CreativeChestNodeMetadata::create(std::istream &is)
+{
+	CreativeChestNodeMetadata *d = new CreativeChestNodeMetadata();
+	d->m_inventory->deSerialize(is);
+	is>>d->m_page;
+	return d;
+}
+NodeMetadata* CreativeChestNodeMetadata::clone()
+{
+	CreativeChestNodeMetadata *d = new CreativeChestNodeMetadata();
+	*d->m_inventory = *m_inventory;
+	InventoryList *l = d->m_inventory->getList("0");
+	InventoryItem *t;
+	l->clearItems();
+	std::vector<content_t> &list = lists::get("creative");
+	for (u16 i=0; i<list.size() && i < 32; i++) {
+		if ((list[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
+			t = new CraftItem(list[i],1);
+		}else if ((list[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+			t = new ToolItem(list[i],1);
+		}else{
+			t = new MaterialItem(list[i],1);
+		}
+		l->addItem(t);
+	}
+	return d;
+}
+void CreativeChestNodeMetadata::serializeBody(std::ostream &os)
+{
+	m_inventory->serialize(os);
+	os<<itos(m_page) << " ";
+}
+std::string CreativeChestNodeMetadata::infoText()
+{
+	return "Creative Chest";
+}
+bool CreativeChestNodeMetadata::nodeRemovalDisabled()
+{
+	return false;
+}
+bool CreativeChestNodeMetadata::receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player)
+{
+	if (fields["prev"] == "" && fields["next"] == "")
+		return false;
+	if (fields["prev"] != "")
+		m_page--;
+	if (fields["next"] != "")
+		m_page++;
+	if (m_page < 0)
+		m_page = 0;
+	std::vector<content_t> &list = lists::get("creative");
+	if (m_page > (list.size()/32))
+		m_page = list.size()/32;
+	InventoryList *l = m_inventory->getList("0");
+	InventoryItem *t;
+	l->clearItems();
+	u16 start = m_page*32;
+	u16 end = start+32;
+	if (end > list.size())
+		end = list.size();
+	for (u16 i=start; i<end; i++) {
+		if ((list[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
+			t = new CraftItem(list[i],1);
+		}else if ((list[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+			t = new ToolItem(list[i],1);
+		}else{
+			t = new MaterialItem(list[i],1);
+		}
+		l->addItem(t);
+	}
+	return true;
+}
+std::string CreativeChestNodeMetadata::getDrawSpecString()
+{
+	std::vector<content_t> &list = lists::get("creative");
+	std::string spec("size[8,10]");
+		spec += "list[current_name;0;0,0.5;8,4;]";
+		spec += "button[0.25,5;2.5,0.75;prev;<< Previous Page]";
+		spec += "label[3.5,5;Page ";
+		spec += itos(m_page+1);
+		spec +=" of ";
+		spec += itos((list.size()/32)+1);
+		spec += "]";
+		spec += "button[6,5;2.5,0.75;next;Next Page >>]";
+		spec += "list[current_player;main;0,6;8,4;]";
+
+	return spec;
 }
 
 /*
@@ -904,20 +1018,9 @@ std::string IncineratorNodeMetadata::getDrawSpecString()
 		"list[current_player;main;0,3;8,4;]";
 }
 
-
-
-
-
-
-
-
 /*
 	CraftGuideNodeMetadata
 */
-static content_t g_contents[] = {
-#include "content_list.h"
-	CONTENT_IGNORE
-};
 
 // Prototype
 CraftGuideNodeMetadata proto_CraftGuideNodeMetadata;
@@ -927,7 +1030,6 @@ CraftGuideNodeMetadata::CraftGuideNodeMetadata()
 	NodeMetadata::registerType(typeId(), create);
 
 	m_page = 0;
-	m_count = 0;
 
 	m_inventory = new Inventory();
 	m_inventory->addList("list", 300);
@@ -950,21 +1052,20 @@ NodeMetadata* CraftGuideNodeMetadata::clone()
 	InventoryItem *t;
 	content_t *r;
 	l->clearItems();
-	int ti = 0;
-	for (int i=0; g_contents[i] != CONTENT_IGNORE && ti < 40; i++) {
-		if ((g_contents[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
-			t = new CraftItem(g_contents[i],1);
-		}else if ((g_contents[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
-			t = new ToolItem(g_contents[i],1);
+	std::vector<content_t> &list = lists::get("craftguide");
+	for (u16 i=0; i<list.size() && i < 40; i++) {
+		if ((list[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
+			t = new CraftItem(list[i],1);
+		}else if ((list[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+			t = new ToolItem(list[i],1);
 		}else{
-			t = new MaterialItem(g_contents[i],1);
+			t = new MaterialItem(list[i],1);
 		}
 		r = crafting::getRecipe(t);
 		if (!r) {
 			delete t;
 			continue;
 		}
-		ti++;
 		l->addItem(t);
 	}
 	return d;
@@ -1029,51 +1130,31 @@ bool CraftGuideNodeMetadata::receiveFields(std::string formname, std::map<std::s
 		m_page++;
 	if (m_page < 0)
 		m_page = 0;
-	int ti = 0;
+	std::vector<content_t> &list = lists::get("craftguide");
+	if (m_page > (list.size()/40))
+		m_page = list.size()/40;
 	InventoryList *l = m_inventory->getList("list");
 	InventoryItem *t;
 	content_t *r;
-	if (m_count == 0) {
-		for (int i=0; g_contents[i] != CONTENT_IGNORE; i++) {
-			if ((g_contents[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
-				t = new CraftItem(g_contents[i],1);
-			}else if ((g_contents[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
-				t = new ToolItem(g_contents[i],1);
-			}else{
-				t = new MaterialItem(g_contents[i],1);
-			}
-			r = crafting::getRecipe(t);
-			delete t;
-			if (!r)
-				continue;
-			m_count++;
-		}
-	}
-	if (m_page > (m_count/40))
-		m_page = m_count/40;
-	ti = 0;
-	int ap = 0;
 	l->clearItems();
-	for (int i=0; g_contents[i] != CONTENT_IGNORE; i++) {
-		if ((g_contents[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
-			t = new CraftItem(g_contents[i],1);
-		}else if ((g_contents[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
-			t = new ToolItem(g_contents[i],1);
+	u16 start = m_page*40;
+	u16 end = start+40;
+	if (end > list.size())
+		end = list.size();
+	for (int i=start; i<end; i++) {
+		if ((list[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
+			t = new CraftItem(list[i],1);
+		}else if ((list[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+			t = new ToolItem(list[i],1);
 		}else{
-			t = new MaterialItem(g_contents[i],1);
+			t = new MaterialItem(list[i],1);
 		}
 		r = crafting::getRecipe(t);
 		if (!r) {
 			delete t;
 			continue;
 		}
-		ti++;
-		if (ti > 40) {
-			ti = 0;
-			ap++;
-		}
-		if (ap == m_page)
-			l->addItem(t);
+		l->addItem(t);
 	}
 	return true;
 }
@@ -1081,28 +1162,10 @@ std::string CraftGuideNodeMetadata::getDrawSpecString()
 {
 	InventoryList *l = m_inventory->getList("result");
 	InventoryItem *q = l->getItem(0);
-	InventoryItem *t;
-	content_t *r;
 	int tr = 0;
-	m_count = 0;
-	for (int i=0; g_contents[i] != CONTENT_IGNORE; i++) {
-		if ((g_contents[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
-			t = new CraftItem(g_contents[i],1);
-		}else if ((g_contents[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
-			t = new ToolItem(g_contents[i],1);
-		}else{
-			t = new MaterialItem(g_contents[i],1);
-		}
-		r = crafting::getRecipe(t);
-		if (!r) {
-			delete t;
-			continue;
-		}
-		if (q && q->getContent() == g_contents[i])
-			tr = crafting::getResultCount(t);
-		delete t;
-		m_count++;
-	}
+	std::vector<content_t> &list = lists::get("craftguide");
+	if (q && q->getContent() != CONTENT_IGNORE)
+		tr = crafting::getResultCount(q);
 
 	std::string spec("size[8,9]");
 	spec +=	"label[0.5,0.75;Add item here to see recipe]";
@@ -1120,7 +1183,7 @@ std::string CraftGuideNodeMetadata::getDrawSpecString()
 	spec +=	"label[3.5,3.5;Page ";
 	spec += itos(m_page+1);
 	spec +=" of ";
-	spec += itos((m_count/40)+1);
+	spec += itos((list.size()/40)+1);
 	spec += "]";
 	spec +=	"button[6,3.5;2.5,0.75;next;Next Page >>]";
 	spec +=	"list[current_name;list;0,4;8,5;]";
