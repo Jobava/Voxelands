@@ -2709,6 +2709,7 @@ void content_mapnode_init()
 		crafting::setRecipe(r,CONTENT_BORDERSTONE,1);
 	}
 	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_WOOD;
 	f = &content_features(i);
