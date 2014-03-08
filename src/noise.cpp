@@ -32,15 +32,11 @@ double cos_lookup[16] = {
 	1.0,-0.9238,-0.7071,-0.3826,0,0.3826,0.7071,0.9238
 };
 
-double dotProduct(double vx, double vy, double wx, double wy){
+inline double dotProduct(double vx, double vy, double wx, double wy){
     return vx*wx+vy*wy;
 }
 
-double easeCurve(double t){
-    return 6*pow(t,5)-15*pow(t,4)+10*pow(t,3);
-}
-
-double linearInterpolation(double x0, double x1, double t){
+inline double linearInterpolation(double x0, double x1, double t){
     return x0+(x1-x0)*t;
 }
 
