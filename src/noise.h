@@ -59,7 +59,9 @@ private:
 	int m_next;
 };
 
-double easeCurve(double t);
+inline double easeCurve(double t){
+	return t * t * t * (6. * t * t - 15. * t + 10.);
+}
 
 // Return value: -1 ... 1
 double noise2d(int x, int y, int seed);
