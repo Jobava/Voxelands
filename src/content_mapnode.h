@@ -439,9 +439,17 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_BED_MIN 0xC10
 #define CONTENT_BED_MAX 0xC1F
 #define CONTENT_BED_FOOT_MASK 0x001
-// FREE C20-CFF
+
+// FREE C25-CFF
 
 // D00-DFF - play space for other devs and experiments
+
+// paintings D00 - D04
+//#define CONTENT_PAINTING_RED 0xD00
+//#define CONTENT_PAINTING_BLUE 0xD01
+//#define CONTENT_PAINTING_GREEN 0xD02
+//#define CONTENT_PAINTING_YELLOW 0xD03
+#define CONTENT_PAINTING_WHITE 0xD04
 
 // FREE E00-FFF
 
