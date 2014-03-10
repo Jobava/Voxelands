@@ -772,6 +772,19 @@ static void content_mapnode_nodebox_guide(ContentFeatures *f)
 	));
 }
 
+// Painting nodebox - easy access!
+static void content_mapnode_nodebox_painting(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.437500*BS,
+		-0.375000*BS,
+		0.437500*BS,
+		0.437500*BS,
+		0.375000*BS,
+		0.500000*BS
+	));
+}
+
 static void content_mapnode_nodebox_book(ContentFeatures *f)
 {
 	// lower cover
@@ -8180,4 +8193,38 @@ void content_mapnode_init()
 	content_mapnode_nodebox_bed_foot(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
+	
+	// Paintings
+	i = CONTENT_PAINTING_WHITE;
+	f = &content_features(i);
+	f->description = std::string("White Painting");
+	f->setAllTextures("painting.png");
+	f->setTexture(4, "painting.png");
+	f->setTexture(5, "painting_white.png");
+	f->setInventoryTexture("painting_white.png");
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->walkable = false;
+	//f->wall_mounted = true;
+	f->air_equivalent = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 1;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_PAINTING_WHITE)+" 1";
+	f->type = CMT_WOOD;
+	content_mapnode_nodebox_painting(f);
+	f->hardness = 0.1;
+	{
+		u16 r[9] = {
+			CONTENT_CRAFTITEM_STICK,	CONTENT_CRAFTITEM_STICK,	CONTENT_CRAFTITEM_STICK,
+			CONTENT_CRAFTITEM_STICK, CONTENT_CRAFTITEM_DYE_WHITE, CONTENT_CRAFTITEM_STICK,
+			CONTENT_CRAFTITEM_STICK,	CONTENT_CRAFTITEM_STICK,	CONTENT_CRAFTITEM_STICK
+		};
+		crafting::setRecipe(r,CONTENT_PAINTING_WHITE,1);
+	}
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 }
