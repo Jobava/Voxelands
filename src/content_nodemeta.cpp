@@ -1042,7 +1042,7 @@ CraftGuideNodeMetadata::~CraftGuideNodeMetadata()
 }
 u16 CraftGuideNodeMetadata::typeId() const
 {
-	return CONTENT_CRAFT_GUIDE;
+	return CONTENT_CRAFT_BOOK_OPEN;
 }
 NodeMetadata* CraftGuideNodeMetadata::clone()
 {
