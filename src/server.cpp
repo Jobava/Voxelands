@@ -2488,17 +2488,11 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						continue;
 					client->SetBlocksNotSent(modified_blocks);
 				}
-			}else if (n.getContent() == CONTENT_BOOK || n.getContent() == CONTENT_CRAFT_GUIDE) {
-
+			}else if (content_features(n).onpunch_replace_node != CONTENT_IGNORE) {
 				core::list<u16> far_players;
 				core::map<v3s16, MapBlock*> modified_blocks;
-				if (n.getContent() == CONTENT_CRAFT_GUIDE) {
-					m_env.getMap().removeNodeMetadata(p_under);
-					sendRemoveNode(p_under, 0, &far_players, 30);
-					n.setContent(CONTENT_BOOK);
-				}else{
-					n.setContent(CONTENT_CRAFT_GUIDE);
-				}
+				m_env.getMap().removeNodeMetadata(p_under);
+				n.setContent(content_features(n).onpunch_replace_node);
 				sendAddNode(p_under, n, 0, &far_players, 30);
 				{
 					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
@@ -2613,24 +2607,6 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						mlist->deleteItem(item_i);
 					}
 					SendInventory(player->peer_id);
-				}
-			}else if (n.getContent() == CONTENT_MESE) {
-				core::list<u16> far_players;
-				core::map<v3s16, MapBlock*> modified_blocks;
-				n.setContent(CONTENT_MESE_DIGGING);
-				sendAddNode(p_under, n, 0, &far_players, 30);
-				{
-					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-
-					std::string p_name = std::string(player->getName());
-					m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
-				}
-				for(core::list<u16>::Iterator i = far_players.begin(); i != far_players.end(); i++) {
-					u16 peer_id = *i;
-					RemoteClient *client = getClient(peer_id);
-					if (client == NULL)
-						continue;
-					client->SetBlocksNotSent(modified_blocks);
 				}
 			}else if (n.getContent() == CONTENT_INCINERATOR) {
 				NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
@@ -3513,21 +3489,18 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						n.setContent(content_features(n).slab_cube_type);
 						p_over += p_dir;
 					}
-				}
-
-				// Signs?
-				if (n.getContent() == CONTENT_SIGN) {
-					if (p_dir.Y == 1) {
-						n.setContent(CONTENT_SIGN_UD);
-					}else if (p_dir.Y != -1) {
-						n.setContent(CONTENT_SIGN_WALL);
-					}
-				}else if (n.getContent() == CONTENT_LOCKABLE_SIGN) {
-					if (p_dir.Y == 1) {
-						n.setContent(CONTENT_LOCKABLE_SIGN_UD);
-					}else if (p_dir.Y != -1) {
-						n.setContent(CONTENT_LOCKABLE_SIGN_WALL);
-					}
+				// roof mount
+				}else if (p_dir.Y == 1) {
+					if (content_features(n).roofmount_alternate_node != CONTENT_IGNORE)
+						n.setContent(content_features(n).roofmount_alternate_node);
+				// floor mount
+				}else if (p_dir.Y == -1){
+					if (content_features(n).floormount_alternate_node != CONTENT_IGNORE)
+						n.setContent(content_features(n).roofmount_alternate_node);
+				// wall mount
+				}else{
+					if (content_features(n).wallmount_alternate_node != CONTENT_IGNORE)
+						n.setContent(content_features(n).roofmount_alternate_node);
 				}
 
 				// Calculate direction for wall mounted stuff

@@ -226,6 +226,15 @@ struct ContentFeatures
 
 	// when dug, this node will replace the dug node
 	content_t ondig_replace_node;
+	// when punched, this node will replace the punched node
+	content_t onpunch_replace_node;
+
+	// when placed against a wall, this node should be placed instead
+	content_t wallmount_alternate_node;
+	// when placed on the floor, this node should be placed instead
+	content_t floormount_alternate_node;
+	// when placed on the roof, this node should be placed instead
+	content_t roofmount_alternate_node;
 
 	// the result of cooking this node
 	std::string cook_result;
@@ -305,6 +314,10 @@ struct ContentFeatures
 		extra_dug_item = "";
 		extra_dug_item_rarity = 2;
 		ondig_replace_node = CONTENT_IGNORE;
+		onpunch_replace_node = CONTENT_IGNORE;
+		wallmount_alternate_node = CONTENT_IGNORE;
+		floormount_alternate_node = CONTENT_IGNORE;
+		roofmount_alternate_node = CONTENT_IGNORE;
 		cook_result = "";
 		fuel_time = 0.0;
 		initial_metadata = NULL;
