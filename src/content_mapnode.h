@@ -448,6 +448,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_PAINTING_RED 0xD00
 #define CONTENT_PAINTING_BLUE 0xD01
 #define CONTENT_PAINTING_GREEN 0xD02
+#define CONTENT_PAINTING_CANVAS 0xD02
 #define CONTENT_PAINTING_WHITE 0xD04
 
 // FREE E00-FFF
