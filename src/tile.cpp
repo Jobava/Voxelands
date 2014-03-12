@@ -385,7 +385,7 @@ void TextureSource::buildMainAtlas()
 	JMutexAutoLock lock(m_atlaspointer_cache_mutex);
 
 	// Create an image of the right size
-	core::dimension2d<u32> atlas_dim(2048,2048);
+	core::dimension2d<u32> atlas_dim(4096,4096);
 	core::dimension2d<u32> max_dim = driver->getMaxTextureSize();
 	atlas_dim.Width  = MYMIN(atlas_dim.Width,  max_dim.Width);
 	atlas_dim.Height = MYMIN(atlas_dim.Height, max_dim.Height);
