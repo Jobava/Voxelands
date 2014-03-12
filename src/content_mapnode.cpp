@@ -8329,7 +8329,7 @@ void content_mapnode_init()
 	
 	i = CONTENT_PAINTING_CANVAS;
 	f = &content_features(i);
-	f->description = std::string("Blue Flower Painting");
+	f->description = std::string("Painting Canvas");
 	f->setAllTextures("painting.png");
 	f->setTexture(4, "painting.png");
 	f->setTexture(5, "painting_canvas.png");
