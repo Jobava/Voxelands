@@ -835,6 +835,118 @@ static void content_mapnode_nodebox_book(ContentFeatures *f)
 	));
 }
 
+static void content_mapnode_nodebox_pie(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+	(-4.0 / 16.0)*BS,
+	-0.5*BS,
+	(-4.0 / 16.0)*BS,
+
+	(4.0 / 16.0)*BS,
+	(-6.0 / 16.0)*BS,
+	(4.0 / 16.0)*BS
+	));
+
+	f->addNodeBox(core::aabbox3d<f32>(
+	(-5.0 / 16.0)*BS,
+	(-6.0 / 16.0)*BS,
+	(-5.0 / 16.0)*BS,
+
+	(5.0 / 16.0)*BS,
+	(-5.0 / 16.0)*BS,
+	(5.0 / 16.0)*BS
+	));
+}
+
+static void content_mapnode_nodebox_pie_3(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+	(-4.0 / 16.0)*BS,
+	-0.5*BS,
+	(-4.0 / 16.0)*BS,
+
+	0,
+	(-6.0 / 16.0)*BS,
+	(4.0 / 16.0)*BS
+	));
+
+	f->addNodeBox(core::aabbox3d<f32>(
+	(-5.0 / 16.0)*BS,
+	(-6.0 / 16.0)*BS,
+	(-5.0 / 16.0)*BS,
+
+	0,
+	(-5.0 / 16.0)*BS,
+	(5.0 / 16.0)*BS
+	));
+
+	f->addNodeBox(core::aabbox3d<f32>(
+	0,
+	-0.5*BS,
+	0,
+
+	(4.0 / 16.0)*BS,
+	(-6.0 / 16.0)*BS,
+	(4.0 / 16.0)*BS
+	));
+
+	f->addNodeBox(core::aabbox3d<f32>(
+	0,
+	(-6.0 / 16.0)*BS,
+	0,
+
+	(5.0 / 16.0)*BS,
+	(-5.0 / 16.0)*BS,
+	(5.0 / 16.0)*BS
+	));
+}
+
+static void content_mapnode_nodebox_pie_2(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+	(-4.0 / 16.0)*BS,
+	-0.5*BS,
+	(-4.0 / 16.0)*BS,
+
+	0,
+	(-6.0 / 16.0)*BS,
+	(4.0 / 16.0)*BS
+	));
+
+	f->addNodeBox(core::aabbox3d<f32>(
+	(-5.0 / 16.0)*BS,
+	(-6.0 / 16.0)*BS,
+	(-5.0 / 16.0)*BS,
+
+	0,
+	(-5.0 / 16.0)*BS,
+	(5.0 / 16.0)*BS
+	));
+}
+
+static void content_mapnode_nodebox_pie_1(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+	(-4.0 / 16.0)*BS,
+	-0.5*BS,
+	(-4.0 / 16.0)*BS,
+
+	0,
+	(-6.0 / 16.0)*BS,
+	0
+	));
+
+	f->addNodeBox(core::aabbox3d<f32>(
+	(-5.0 / 16.0)*BS,
+	(-6.0 / 16.0)*BS,
+	(-5.0 / 16.0)*BS,
+
+	0,
+	(-5.0 / 16.0)*BS,
+	0
+	));
+}
+
 /*
 	A conversion table for backwards compatibility.
 	Maps <=v19 content types to current ones.
@@ -3002,6 +3114,226 @@ void content_mapnode_init()
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	lists::add("creative",i);
+
+	i = CONTENT_APPLE_PIE_RAW;
+	f = &content_features(i);
+	f->description = std::string("Raw Apple Pie");
+	f->setTexture(0, "apple_pie_raw.png");
+	f->setTexture(1, "apple_pie_raw.png");
+	f->setTexture(2, "apple_pie_raw.png");
+	f->setTexture(3, "apple_pie_raw.png");
+	f->setTexture(4, "apple_pie_raw.png");
+	f->setTexture(5, "apple_pie_raw.png");
+	f->draw_type = CDT_NODEBOX;
+	f->param_type = CPT_LIGHT;
+	f->flammable = true;
+	f->walkable = true;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->cook_result = std::string("MaterialItem2")+itos(CONTENT_APPLE_PIE)+"  1";
+	content_mapnode_nodebox_pie(f);
+	f->setInventoryTextureNodeBox(i, "apple_pie_raw.png", "apple_pie_raw.png", "apple_pie_raw.png");
+	f->type = CMT_DIRT;
+	f->hardness = 0.4;
+	lists::add("creative",i);
+
+	i = CONTENT_APPLE_PIE;
+	f = &content_features(i);
+	f->description = std::string("Apple Pie");
+	f->setTexture(0, "apple_pie.png");
+	f->setTexture(1, "apple_pie.png");
+	f->setTexture(2, "apple_pie.png");
+	f->setTexture(3, "apple_pie.png");
+	f->setTexture(4, "apple_pie.png");
+	f->setTexture(5, "apple_pie.png");
+	f->draw_type = CDT_NODEBOX;
+	f->param_type = CPT_LIGHT;
+	f->flammable = true;
+	f->walkable = true;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	content_mapnode_nodebox_pie(f);
+	f->setInventoryTextureNodeBox(i, "apple_pie.png", "apple_pie.png", "apple_pie.png");
+	f->dug_item = std::string("CraftItem apple_pie_slice 1");
+	f->ondig_replace_node=CONTENT_APPLE_PIE_3;
+	f->type = CMT_DIRT;
+	f->hardness = 0.4;
+	lists::add("creative",i);
+
+	i = CONTENT_APPLE_PIE_3;
+	f = &content_features(i);
+	f->setTexture(0, "apple_pie.png");
+	f->setTexture(1, "apple_pie.png");
+	f->setTexture(2, "apple_pie.png^[transformR90");
+	f->setTexture(3, "apple_pie.png");
+	f->setTexture(4, "apple_pie.png");
+	f->setTexture(5, "apple_pie.png^[transformR270");
+	f->draw_type = CDT_NODEBOX;
+	f->param_type = CPT_LIGHT;
+	f->flammable = true;
+	f->walkable = true;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	content_mapnode_nodebox_pie_3(f);
+	f->dug_item = std::string("CraftItem apple_pie_slice 1");
+	f->ondig_replace_node=CONTENT_APPLE_PIE_2;
+	f->type = CMT_DIRT;
+	f->hardness = 0.4;
+
+	i = CONTENT_APPLE_PIE_2;
+	f = &content_features(i);
+	f->setTexture(0, "apple_pie.png");
+	f->setTexture(1, "apple_pie.png");
+	f->setTexture(2, "apple_pie.png^[transformFY");
+	f->setTexture(3, "apple_pie.png");
+	f->setTexture(4, "apple_pie.png");
+	f->setTexture(5, "apple_pie.png");
+	f->draw_type = CDT_NODEBOX;
+	f->param_type = CPT_LIGHT;
+	f->flammable = true;
+	f->walkable = true;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	content_mapnode_nodebox_pie_2(f);
+	f->dug_item = std::string("CraftItem apple_pie_slice 1");
+	f->ondig_replace_node=CONTENT_APPLE_PIE_1;
+	f->type = CMT_DIRT;
+	f->hardness = 0.4;
+
+	i = CONTENT_APPLE_PIE_1;
+	f = &content_features(i);
+	f->setTexture(0, "apple_pie.png");
+	f->setTexture(1, "apple_pie.png");
+	f->setTexture(2, "apple_pie.png^[transformFY");
+	f->setTexture(3, "apple_pie.png");
+	f->setTexture(4, "apple_pie.png^[transformFY");
+	f->setTexture(5, "apple_pie.png");
+	f->draw_type = CDT_NODEBOX;
+	f->param_type = CPT_LIGHT;
+	f->flammable = true;
+	f->walkable = true;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	content_mapnode_nodebox_pie_1(f);
+	f->dug_item = std::string("CraftItem apple_pie_slice 1");
+	f->type = CMT_DIRT;
+	f->hardness = 0.4;
+
+	i = CONTENT_PUMPKIN_PIE_RAW;
+	f = &content_features(i);
+	f->description = std::string("Raw Pumpkin Pie");
+	f->setTexture(0, "pumpkin_pie_raw.png");
+	f->setTexture(1, "pumpkin_pie_raw.png");
+	f->setTexture(2, "pumpkin_pie_raw.png");
+	f->setTexture(3, "pumpkin_pie_raw.png");
+	f->setTexture(4, "pumpkin_pie_raw.png");
+	f->setTexture(5, "pumpkin_pie_raw.png");
+	f->draw_type = CDT_NODEBOX;
+	f->param_type = CPT_LIGHT;
+	f->flammable = true;
+	f->walkable = true;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->cook_result = std::string("MaterialItem2")+itos(CONTENT_PUMPKIN_PIE)+"  1";
+	content_mapnode_nodebox_pie(f);
+	f->setInventoryTextureNodeBox(i, "pumpkin_pie_raw.png", "pumpkin_pie_raw.png", "pumpkin_pie_raw.png");
+	f->type = CMT_DIRT;
+	f->hardness = 0.4;
+	lists::add("creative",i);
+
+	i = CONTENT_PUMPKIN_PIE;
+	f = &content_features(i);
+	f->description = std::string("Pumpkin Pie");
+	f->setTexture(0, "pumpkin_pie.png");
+	f->setTexture(1, "pumpkin_pie.png");
+	f->setTexture(2, "pumpkin_pie.png");
+	f->setTexture(3, "pumpkin_pie.png");
+	f->setTexture(4, "pumpkin_pie.png");
+	f->setTexture(5, "pumpkin_pie.png");
+	f->draw_type = CDT_NODEBOX;
+	f->param_type = CPT_LIGHT;
+	f->flammable = true;
+	f->walkable = true;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	content_mapnode_nodebox_pie(f);
+	f->setInventoryTextureNodeBox(i, "pumpkin_pie.png", "pumpkin_pie.png", "pumpkin_pie.png");
+	f->dug_item = std::string("CraftItem pumpkin_pie_slice 1");
+	f->ondig_replace_node=CONTENT_PUMPKIN_PIE_3;
+	f->type = CMT_DIRT;
+	f->hardness = 0.4;
+	lists::add("creative",i);
+
+	i = CONTENT_PUMPKIN_PIE_3;
+	f = &content_features(i);
+	f->setTexture(0, "pumpkin_pie.png");
+	f->setTexture(1, "pumpkin_pie.png");
+	f->setTexture(2, "pumpkin_pie.png^[transformR90");
+	f->setTexture(3, "pumpkin_pie.png");
+	f->setTexture(4, "pumpkin_pie.png");
+	f->setTexture(5, "pumpkin_pie.png^[transformR270");
+	f->draw_type = CDT_NODEBOX;
+	f->param_type = CPT_LIGHT;
+	f->flammable = true;
+	f->walkable = true;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	content_mapnode_nodebox_pie_3(f);
+	f->dug_item = std::string("CraftItem pumpkin_pie_slice 1");
+	f->ondig_replace_node=CONTENT_PUMPKIN_PIE_2;
+	f->type = CMT_DIRT;
+	f->hardness = 0.4;
+
+	i = CONTENT_PUMPKIN_PIE_2;
+	f = &content_features(i);
+	f->setTexture(0, "pumpkin_pie.png");
+	f->setTexture(1, "pumpkin_pie.png");
+	f->setTexture(2, "pumpkin_pie.png^[transformFY");
+	f->setTexture(3, "pumpkin_pie.png");
+	f->setTexture(4, "pumpkin_pie.png");
+	f->setTexture(5, "pumpkin_pie.png");
+	f->draw_type = CDT_NODEBOX;
+	f->param_type = CPT_LIGHT;
+	f->flammable = true;
+	f->walkable = true;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	content_mapnode_nodebox_pie_2(f);
+	f->dug_item = std::string("CraftItem pumpkin_pie_slice 1");
+	f->ondig_replace_node=CONTENT_PUMPKIN_PIE_1;
+	f->type = CMT_DIRT;
+	f->hardness = 0.4;
+
+	i = CONTENT_PUMPKIN_PIE_1;
+	f = &content_features(i);
+	f->setTexture(0, "pumpkin_pie.png");
+	f->setTexture(1, "pumpkin_pie.png");
+	f->setTexture(2, "pumpkin_pie.png^[transformFY");
+	f->setTexture(3, "pumpkin_pie.png");
+	f->setTexture(4, "pumpkin_pie.png^[transformFY");
+	f->setTexture(5, "pumpkin_pie.png");
+	f->draw_type = CDT_NODEBOX;
+	f->param_type = CPT_LIGHT;
+	f->flammable = true;
+	f->walkable = true;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	content_mapnode_nodebox_pie_1(f);
+	f->dug_item = std::string("CraftItem pumpkin_pie_slice 1");
+	f->type = CMT_DIRT;
+	f->hardness = 0.4;
 
 	i = CONTENT_FARM_WHEAT_1;
 	f = &content_features(i);

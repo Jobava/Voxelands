@@ -502,43 +502,21 @@ void content_craftitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = CONTENT_CRAFTITEM_PUMPKIN_PIE_RAW;
+	i = CONTENT_CRAFTITEM_PUMPKIN_PIE_SLICE;
 	f = &g_content_craftitem_features[i];
-	f->content = CONTENT_CRAFTITEM_PUMPKIN_PIE_RAW;
-	f->texture = "pumpkin_pie_raw.png";
-	f->name = "pumpkin_pie_raw";
-	f->description = "Raw Pumpkin Pie";
-	f->cook_result = std::string("CraftItem pumpkin_pie 1");
-	f->edible = 3;
-	crafting::set1over1Recipe(CONTENT_CRAFTITEM_PUMPKINSLICE,CONTENT_CRAFTITEM_DOUGH,CONTENT_CRAFTITEM_PUMPKIN_PIE_RAW);
-	lists::add("craftguide",i);
-
-	i = CONTENT_CRAFTITEM_PUMPKIN_PIE;
-	f = &g_content_craftitem_features[i];
-	f->content = CONTENT_CRAFTITEM_PUMPKIN_PIE;
-	f->texture = "pumpkin_pie.png";
-	f->name = "pumpkin_pie";
-	f->description = "Pumpkin Pie";
+	f->content = CONTENT_CRAFTITEM_PUMPKIN_PIE_SLICE;
+	f->texture = "pumpkin_pie_slice.png";
+	f->name = "pumpkin_pie_slice";
+	f->description = "Pumpkin Pie Slice";
 	f->edible = 6;
-	lists::add("creative",i);
-
-	i = CONTENT_CRAFTITEM_APPLE_PIE_RAW;
-	f = &g_content_craftitem_features[i];
-	f->content = CONTENT_CRAFTITEM_APPLE_PIE_RAW;
-	f->texture = "apple_pie_raw.png";
-	f->name = "apple_pie_raw";
-	f->description = "Raw Apple Pie";
-	f->cook_result = std::string("CraftItem apple_pie 1");
-	f->edible = 3;
-	crafting::set1over1Recipe(CONTENT_CRAFTITEM_APPLE,CONTENT_CRAFTITEM_DOUGH,CONTENT_CRAFTITEM_APPLE_PIE_RAW);
 	lists::add("craftguide",i);
 
-	i = CONTENT_CRAFTITEM_APPLE_PIE;
+	i = CONTENT_CRAFTITEM_APPLE_PIE_SLICE;
 	f = &g_content_craftitem_features[i];
-	f->content = CONTENT_CRAFTITEM_APPLE_PIE;
-	f->texture = "apple_pie.png";
-	f->name = "apple_pie";
-	f->description = "Apple Pie";
+	f->content = CONTENT_CRAFTITEM_APPLE_PIE_SLICE;
+	f->texture = "apple_pie_slice.png";
+	f->name = "apple_pie_slice";
+	f->description = "Apple Pie Slice";
 	f->edible = 6;
 	lists::add("creative",i);
 
