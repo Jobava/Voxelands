@@ -98,10 +98,14 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_STONEBRICK 0x81b
 #define CONTENT_STONEBLOCK 0x81c
 #define CONTENT_SAPLING 0x820
+// paintings
+#define CONTENT_PAINTING_RED 0x821
+#define CONTENT_PAINTING_BLUE 0x822
+#define CONTENT_PAINTING_GREEN 0x823
+#define CONTENT_PAINTING_CANVAS 0x824
+#define CONTENT_PAINTING_WHITE 0x825
 
-// old slab/stair
-// old door/hatch/gate
-// FREE 821-87F
+// FREE 826-87F
 
 // plants
 #define CONTENT_WILDGRASS_SHORT 0x880
@@ -443,13 +447,6 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 // FREE C25-CFF
 
 // D00-DFF - play space for other devs and experiments
-
-// paintings D00 - D04
-#define CONTENT_PAINTING_RED 0xD00
-#define CONTENT_PAINTING_BLUE 0xD01
-#define CONTENT_PAINTING_GREEN 0xD02
-#define CONTENT_PAINTING_CANVAS 0xD02
-#define CONTENT_PAINTING_WHITE 0xD04
 
 // FREE E00-FFF
 
