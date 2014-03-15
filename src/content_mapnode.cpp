@@ -3137,9 +3137,7 @@ void content_mapnode_init()
 	f->setInventoryTextureCube("farm_melon.png","farm_melon.png","farm_melon.png");
 	f->draw_type = CDT_CUBELIKE;
 	f->flammable = 1;
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_MELON)+" 2";
-	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FARM_MELON)+" 1";
-	f->extra_dug_item_rarity = 1;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FARM_MELON)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 
@@ -3207,9 +3205,7 @@ void content_mapnode_init()
 	f->setInventoryTextureCube("farm_pumpkin_top.png","farm_pumpkin.png","farm_pumpkin.png");
 	f->draw_type = CDT_CUBELIKE;
 	f->flammable = 1;
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_PUMPKIN)+" 2";
-	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FARM_PUMPKIN)+" 1";
-	f->extra_dug_item_rarity = 1;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FARM_PUMPKIN)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 
@@ -3494,7 +3490,7 @@ void content_mapnode_init()
 	f->sunlight_propagates = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FARM_GRAPEVINE)+" 1";
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_GRAPE)+" 1";
 	f->extra_dug_item = std::string("CraftItem harvested_grape 1");
 	f->extra_dug_item_rarity = 2;
 	f->type = CMT_PLANT;
@@ -3512,9 +3508,7 @@ void content_mapnode_init()
 	f->sunlight_propagates = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FARM_GRAPEVINE)+" 1";
-	f->extra_dug_item = std::string("CraftItem harvested_grape 3");
-	f->extra_dug_item_rarity = 1;
+	f->dug_item = std::string("CraftItem harvested_grape 3");
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 
