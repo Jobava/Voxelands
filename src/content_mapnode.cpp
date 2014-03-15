@@ -3132,11 +3132,13 @@ void content_mapnode_init()
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->cook_result = std::string("MaterialItem2")+itos(CONTENT_APPLE_PIE)+"  1";
+	f->cook_result = std::string("MaterialItem2 ")+itos(CONTENT_APPLE_PIE)+"  1";
 	content_mapnode_nodebox_pie(f);
 	f->setInventoryTextureNodeBox(i, "apple_pie_raw.png", "apple_pie_raw.png", "apple_pie_raw.png");
 	f->type = CMT_DIRT;
-	f->hardness = 0.4;
+	f->hardness = 0.1;
+	crafting::set1over1Recipe(CONTENT_CRAFTITEM_APPLE,CONTENT_CRAFTITEM_DOUGH,CONTENT_APPLE_PIE_RAW);
+	lists::add("craftguide",i);
 	lists::add("creative",i);
 
 	i = CONTENT_APPLE_PIE;
@@ -3160,7 +3162,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("CraftItem apple_pie_slice 1");
 	f->ondig_replace_node=CONTENT_APPLE_PIE_3;
 	f->type = CMT_DIRT;
-	f->hardness = 0.4;
+	f->hardness = 0.1;
 	lists::add("creative",i);
 
 	i = CONTENT_APPLE_PIE_3;
@@ -3182,7 +3184,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("CraftItem apple_pie_slice 1");
 	f->ondig_replace_node=CONTENT_APPLE_PIE_2;
 	f->type = CMT_DIRT;
-	f->hardness = 0.4;
+	f->hardness = 0.1;
 
 	i = CONTENT_APPLE_PIE_2;
 	f = &content_features(i);
@@ -3203,7 +3205,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("CraftItem apple_pie_slice 1");
 	f->ondig_replace_node=CONTENT_APPLE_PIE_1;
 	f->type = CMT_DIRT;
-	f->hardness = 0.4;
+	f->hardness = 0.1;
 
 	i = CONTENT_APPLE_PIE_1;
 	f = &content_features(i);
@@ -3223,7 +3225,7 @@ void content_mapnode_init()
 	content_mapnode_nodebox_pie_1(f);
 	f->dug_item = std::string("CraftItem apple_pie_slice 1");
 	f->type = CMT_DIRT;
-	f->hardness = 0.4;
+	f->hardness = 0.1;
 
 	i = CONTENT_PUMPKIN_PIE_RAW;
 	f = &content_features(i);
@@ -3242,11 +3244,13 @@ void content_mapnode_init()
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->cook_result = std::string("MaterialItem2")+itos(CONTENT_PUMPKIN_PIE)+"  1";
+	f->cook_result = std::string("MaterialItem2 ")+itos(CONTENT_PUMPKIN_PIE)+"  1";
 	content_mapnode_nodebox_pie(f);
 	f->setInventoryTextureNodeBox(i, "pumpkin_pie_raw.png", "pumpkin_pie_raw.png", "pumpkin_pie_raw.png");
 	f->type = CMT_DIRT;
-	f->hardness = 0.4;
+	f->hardness = 0.1;
+	crafting::set1over1Recipe(CONTENT_CRAFTITEM_PUMPKINSLICE,CONTENT_CRAFTITEM_DOUGH,CONTENT_PUMPKIN_PIE_RAW);
+	lists::add("craftguide",i);
 	lists::add("creative",i);
 
 	i = CONTENT_PUMPKIN_PIE;
@@ -3270,7 +3274,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("CraftItem pumpkin_pie_slice 1");
 	f->ondig_replace_node=CONTENT_PUMPKIN_PIE_3;
 	f->type = CMT_DIRT;
-	f->hardness = 0.4;
+	f->hardness = 0.1;
 	lists::add("creative",i);
 
 	i = CONTENT_PUMPKIN_PIE_3;
@@ -3292,7 +3296,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("CraftItem pumpkin_pie_slice 1");
 	f->ondig_replace_node=CONTENT_PUMPKIN_PIE_2;
 	f->type = CMT_DIRT;
-	f->hardness = 0.4;
+	f->hardness = 0.1;
 
 	i = CONTENT_PUMPKIN_PIE_2;
 	f = &content_features(i);
@@ -3313,7 +3317,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("CraftItem pumpkin_pie_slice 1");
 	f->ondig_replace_node=CONTENT_PUMPKIN_PIE_1;
 	f->type = CMT_DIRT;
-	f->hardness = 0.4;
+	f->hardness = 0.1;
 
 	i = CONTENT_PUMPKIN_PIE_1;
 	f = &content_features(i);
@@ -3333,7 +3337,7 @@ void content_mapnode_init()
 	content_mapnode_nodebox_pie_1(f);
 	f->dug_item = std::string("CraftItem pumpkin_pie_slice 1");
 	f->type = CMT_DIRT;
-	f->hardness = 0.4;
+	f->hardness = 0.1;
 
 	i = CONTENT_FARM_WHEAT_1;
 	f = &content_features(i);
