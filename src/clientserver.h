@@ -22,7 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "utility.h"
 
-#define PROTOCOL_VERSION 4
+#define PROTOCOL_VERSION 5
 /* the last protocol version used by 0.3.x minetest-c55 clients */
 #define PROTOCOL_DOTTHREE 3
 /* this is the oldest protocol that we will allow to connect
