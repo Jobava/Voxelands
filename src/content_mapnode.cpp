@@ -897,19 +897,9 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version)
 		}
 	}
 	// stairs, slabs, gates, doors, and hatches were moved for 1311.00
-	if (n_from.getContent() >= 0x821 && n_from.getContent() <= 0x87F) {
+	if (n_from.getContent() >= 0x826 && n_from.getContent() <= 0x87F) {
 		// slabs
-		if (n_from.getContent() == 0x821) {
-			result.setContent(CONTENT_ROUGHSTONE_SLAB);
-		}else if (n_from.getContent() == 0x822) {
-			result.setContent(CONTENT_MOSSYCOBBLE_SLAB);
-		}else if (n_from.getContent() == 0x823) {
-			result.setContent(CONTENT_STONE_SLAB);
-		}else if (n_from.getContent() == 0x824) {
-			result.setContent(CONTENT_WOOD_SLAB);
-		}else if (n_from.getContent() == 0x825) {
-			result.setContent(CONTENT_JUNGLE_SLAB);
-		}else if (n_from.getContent() == 0x826) {
+		if (n_from.getContent() == 0x826) {
 			result.setContent(CONTENT_BRICK_SLAB);
 		}else if (n_from.getContent() == 0x827) {
 			result.setContent(CONTENT_SANDSTONE_SLAB);
@@ -8193,7 +8183,7 @@ void content_mapnode_init()
 	content_mapnode_nodebox_bed_foot(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
-	
+
 	// Paintings
 	i = CONTENT_PAINTING_WHITE;
 	f = &content_features(i);
@@ -8227,7 +8217,7 @@ void content_mapnode_init()
 	}
 	lists::add("craftguide",i);
 	lists::add("creative",i);
-	
+
 	i = CONTENT_PAINTING_RED;
 	f = &content_features(i);
 	f->description = std::string("Red Rose Painting");
@@ -8260,7 +8250,7 @@ void content_mapnode_init()
 	}
 	lists::add("craftguide",i);
 	lists::add("creative",i);
-	
+
 	i = CONTENT_PAINTING_GREEN;
 	f = &content_features(i);
 	f->description = std::string("Field Painting");
@@ -8293,7 +8283,7 @@ void content_mapnode_init()
 	}
 	lists::add("craftguide",i);
 	lists::add("creative",i);
-	
+
 	i = CONTENT_PAINTING_BLUE;
 	f = &content_features(i);
 	f->description = std::string("Blue Flower Painting");
@@ -8326,7 +8316,7 @@ void content_mapnode_init()
 	}
 	lists::add("craftguide",i);
 	lists::add("creative",i);
-	
+
 	i = CONTENT_PAINTING_CANVAS;
 	f = &content_features(i);
 	f->description = std::string("Painting Canvas");
