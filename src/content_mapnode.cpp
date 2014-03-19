@@ -4147,6 +4147,8 @@ void content_mapnode_init()
 	crafting::setCol1Recipe(CONTENT_CRAFTITEM_PAPER,i);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new ClosedBookNodeMetadata();
 
 	i = CONTENT_COOK_BOOK;
 	f = &content_features(i);
@@ -4262,6 +4264,8 @@ void content_mapnode_init()
 		};
 		crafting::setRecipe(r,CONTENT_CRAFT_BOOK,1);
 	}
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new ClosedBookNodeMetadata();
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -4287,6 +4291,8 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i, "guide_top.png", "guide_end.png", "guide_side.png");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new BookNodeMetadata();
 
 	i = CONTENT_COOK_BOOK_OPEN;
 	f = &content_features(i);

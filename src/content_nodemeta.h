@@ -306,15 +306,65 @@ public:
 	NodeMetadata* clone();
 	static NodeMetadata* create(std::istream &is);
 	virtual void serializeBody(std::ostream &os);
+	virtual std::string infoText() {return std::string("Craft Guide");}
 	virtual Inventory* getInventory() {return m_inventory;}
 	virtual bool nodeRemovalDisabled();
 	virtual void inventoryModified();
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
+	virtual bool import(NodeMetadata *meta);
 	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
 	virtual std::string getDrawSpecString();
 
+	u16 getPage() {return m_page;}
+
 private:
 	Inventory *m_inventory;
+	u16 m_page;
+};
+
+class BookNodeMetadata : public NodeMetadata
+{
+public:
+	BookNodeMetadata();
+
+	virtual u16 typeId() const;
+	NodeMetadata* clone();
+	static NodeMetadata* create(std::istream &is);
+	virtual void serializeBody(std::ostream &os);
+	virtual std::string infoText() {return m_title;}
+	virtual bool nodeRemovalDisabled();
+	virtual bool import(NodeMetadata *meta);
+	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
+	virtual std::string getDrawSpecString();
+
+	std::string getContent() { return m_content; }
+
+private:
+	std::string m_title;
+	std::string m_content;
+};
+
+class ClosedBookNodeMetadata : public NodeMetadata
+{
+public:
+	ClosedBookNodeMetadata();
+
+	virtual u16 typeId() const;
+	NodeMetadata* clone();
+	static NodeMetadata* create(std::istream &is);
+	virtual void serializeBody(std::ostream &os);
+	virtual std::string infoText() {return m_title;}
+	virtual bool nodeRemovalDisabled();
+	virtual bool import(NodeMetadata *meta);
+
+	virtual std::string getOwner(){ return m_owner; }
+	std::string getContent() { return m_content; }
+	u16 getPage() {return m_page;}
+
+private:
+	std::string m_owner;
+	std::string m_title;
+	std::string m_content;
 	u16 m_page;
 };
 
