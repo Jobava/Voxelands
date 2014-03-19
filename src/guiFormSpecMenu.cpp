@@ -248,6 +248,7 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 		{
 			std::string fname = f.next(";");
 			std::string flabel = f.next(";");
+			bool multi = false;
 
 			if(fname.find(",") == std::string::npos && flabel.find(",") == std::string::npos)
 			{
@@ -280,9 +281,15 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 				pos.Y = stof(fname.substr(fname.find(",")+1)) * (float)spacing.Y;
 				v2s32 geom;
 				geom.X = (stof(flabel.substr(0,flabel.find(","))) * (float)spacing.X)-(spacing.X-imgsize.X);
-				pos.Y += (stof(flabel.substr(flabel.find(",")+1)) * (float)imgsize.Y)/2;
+				if (stof(flabel.substr(flabel.find(",")+1)) > 1.0) {
+					geom.Y = (stof(flabel.substr(flabel.find(",")+1)) * (float)spacing.Y)-(spacing.Y-imgsize.Y);
+					multi = true;
+				}else{
+					geom.Y = 30;
+				}
+				pos.Y += ((stof(flabel.substr(flabel.find(",")+1)) * (float)imgsize.Y)/2)-15;
 
-				rect = core::rect<s32>(pos.X, pos.Y-15, pos.X+geom.X, pos.Y+15);
+				rect = core::rect<s32>(pos.X, pos.Y, pos.X+geom.X, pos.Y+geom.Y);
 
 				fname = f.next(";");
 				flabel = f.next(";");
@@ -312,14 +319,18 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 			if (flabel == "")
 			{
 				spec.send = true;
-				gui::IGUIElement *e = Environment->addEditBox(spec.fdefault.c_str(), rect, false, this, spec.fid);
-				Environment->setFocus(e);
-
-				irr::SEvent evt;
-				evt.EventType = EET_KEY_INPUT_EVENT;
-				evt.KeyInput.Key = KEY_END;
-				evt.KeyInput.PressedDown = true;
-				e->OnEvent(evt);
+				gui::IGUIEditBox *e = Environment->addEditBox(spec.fdefault.c_str(), rect, false, this, spec.fid);
+				if (multi) {
+					e->setMultiLine(true);
+					e->setTextAlignment(gui::EGUIA_UPPERLEFT, gui::EGUIA_UPPERLEFT);
+				}else{
+					irr::SEvent evt;
+					evt.EventType = EET_KEY_INPUT_EVENT;
+					evt.KeyInput.Key = KEY_END;
+					evt.KeyInput.PressedDown = true;
+					e->OnEvent(evt);
+					Environment->setFocus(e);
+				}
 			}
 			else if (fname == "")
 			{
@@ -329,17 +340,21 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 			else
 			{
 				spec.send = true;
-				gui::IGUIElement *e = Environment->addEditBox(spec.fdefault.c_str(), rect, false, this, spec.fid);
-				Environment->setFocus(e);
+				gui::IGUIEditBox *e = Environment->addEditBox(spec.fdefault.c_str(), rect, false, this, spec.fid);
+				if (multi) {
+					e->setMultiLine(true);
+					e->setTextAlignment(gui::EGUIA_UPPERLEFT, gui::EGUIA_UPPERLEFT);
+				}else{
+					irr::SEvent evt;
+					evt.EventType = EET_KEY_INPUT_EVENT;
+					evt.KeyInput.Key = KEY_END;
+					evt.KeyInput.PressedDown = true;
+					e->OnEvent(evt);
+					Environment->setFocus(e);
+				}
 				rect.UpperLeftCorner.Y -= 15;
 				rect.LowerRightCorner.Y -= 15;
 				Environment->addStaticText(spec.flabel.c_str(), rect, false, true, this, 0);
-
-				irr::SEvent evt;
-				evt.EventType = EET_KEY_INPUT_EVENT;
-				evt.KeyInput.Key = KEY_END;
-				evt.KeyInput.PressedDown = true;
-				e->OnEvent(evt);
 			}
 
 			m_fields.push_back(spec);

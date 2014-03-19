@@ -1048,12 +1048,17 @@ NodeMetadata* CraftGuideNodeMetadata::clone()
 {
 	CraftGuideNodeMetadata *d = new CraftGuideNodeMetadata();
 	*d->m_inventory = *m_inventory;
+	d->m_page = m_page;
 	InventoryList *l = d->m_inventory->getList("list");
 	InventoryItem *t;
 	content_t *r;
 	l->clearItems();
 	std::vector<content_t> &list = lists::get("craftguide");
-	for (u16 i=0; i<list.size() && i < 40; i++) {
+	u16 start = m_page*40;
+	u16 end = start+40;
+	if (end > list.size())
+		end = list.size();
+	for (int i=start; i<end; i++) {
 		if ((list[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
 			t = new CraftItem(list[i],1);
 		}else if ((list[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
@@ -1118,6 +1123,41 @@ bool CraftGuideNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env
 
 	delete[] r;
 
+	return true;
+}
+bool CraftGuideNodeMetadata::import(NodeMetadata *meta)
+{
+	if (meta->typeId() == CONTENT_BOOK)
+		m_page = ((ClosedBookNodeMetadata*)meta)->getPage();
+
+	if (m_page < 0)
+		m_page = 0;
+	std::vector<content_t> &list = lists::get("craftguide");
+	if (m_page > (list.size()/40))
+		m_page = list.size()/40;
+	InventoryList *l = m_inventory->getList("list");
+	InventoryItem *t;
+	content_t *r;
+	l->clearItems();
+	u16 start = m_page*40;
+	u16 end = start+40;
+	if (end > list.size())
+		end = list.size();
+	for (int i=start; i<end; i++) {
+		if ((list[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
+			t = new CraftItem(list[i],1);
+		}else if ((list[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+			t = new ToolItem(list[i],1);
+		}else{
+			t = new MaterialItem(list[i],1);
+		}
+		r = crafting::getRecipe(t);
+		if (!r) {
+			delete t;
+			continue;
+		}
+		l->addItem(t);
+	}
 	return true;
 }
 bool CraftGuideNodeMetadata::receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player)
@@ -1188,4 +1228,150 @@ std::string CraftGuideNodeMetadata::getDrawSpecString()
 	spec +=	"button[6,3.5;2.5,0.75;next;Next Page >>]";
 	spec +=	"list[current_name;list;0,4;8,5;]";
 	return spec;
+}
+
+/*
+	BookNodeMetadata
+*/
+
+// Prototype
+BookNodeMetadata proto_BookNodeMetadata;
+
+BookNodeMetadata::BookNodeMetadata()
+{
+	NodeMetadata::registerType(typeId(), create);
+
+	m_title = "Book";
+	m_content = "";
+}
+
+u16 BookNodeMetadata::typeId() const
+{
+	return CONTENT_BOOK_OPEN;
+}
+NodeMetadata* BookNodeMetadata::clone()
+{
+	BookNodeMetadata *d = new BookNodeMetadata();
+	d->m_title = m_title;
+	d->m_content = m_content;
+	return d;
+}
+NodeMetadata* BookNodeMetadata::create(std::istream &is)
+{
+	BookNodeMetadata *d = new BookNodeMetadata();
+	d->m_title = deSerializeString(is);
+	d->m_content = deSerializeString(is);
+	return d;
+}
+void BookNodeMetadata::serializeBody(std::ostream &os)
+{
+	os<<serializeString(m_title);
+	os<<serializeString(m_content);
+}
+bool BookNodeMetadata::nodeRemovalDisabled()
+{
+	if (m_content != "")
+		return true;
+	return false;
+}
+bool BookNodeMetadata::import(NodeMetadata *meta)
+{
+	if (meta->typeId() != CONTENT_BOOK)
+		return false;
+
+	ClosedBookNodeMetadata *m = (ClosedBookNodeMetadata*)meta;
+	m_title = m->infoText();
+	m_content = m->getContent();
+	return true;
+}
+bool BookNodeMetadata::receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player)
+{
+	m_title = fields["title"];
+	m_content = fields["content"];
+	return true;
+}
+
+std::string BookNodeMetadata::getDrawSpecString()
+{
+	std::string spec("size[4,6]");
+	spec += "field[1,1;3,1;title;Title;";
+	spec += m_title;
+	spec += "]";
+	spec += "field[1,2;3,2;content;Content;";
+	spec += m_content;
+	spec += "]";
+	spec += "button_exit[1,5;3,1;submit;Save]";
+	return spec;
+}
+
+/*
+	ClosedBookNodeMetadata
+*/
+
+// Prototype
+ClosedBookNodeMetadata proto_ClosedBookNodeMetadata;
+
+ClosedBookNodeMetadata::ClosedBookNodeMetadata()
+{
+	NodeMetadata::registerType(typeId(), create);
+
+	m_page = 0;
+	m_owner = "";
+	m_title = "";
+	m_content = "";
+}
+u16 ClosedBookNodeMetadata::typeId() const
+{
+	return CONTENT_BOOK;
+}
+NodeMetadata* ClosedBookNodeMetadata::clone()
+{
+	ClosedBookNodeMetadata *d = new ClosedBookNodeMetadata();
+	d->m_page = m_page;
+	d->m_owner = m_owner;
+	d->m_title = m_title;
+	d->m_content = m_content;
+	return d;
+}
+NodeMetadata* ClosedBookNodeMetadata::create(std::istream &is)
+{
+	ClosedBookNodeMetadata *d = new ClosedBookNodeMetadata();
+
+	d->m_owner = deSerializeString(is);
+	d->m_title = deSerializeString(is);
+	d->m_content = deSerializeString(is);
+	is>>d->m_page;
+
+	return d;
+}
+void ClosedBookNodeMetadata::serializeBody(std::ostream &os)
+{
+	os<<serializeString(m_owner);
+	os<<serializeString(m_title);
+	os<<serializeString(m_content);
+	os<<itos(m_page) << " ";
+}
+bool ClosedBookNodeMetadata::nodeRemovalDisabled()
+{
+	return false;
+}
+bool ClosedBookNodeMetadata::import(NodeMetadata *meta)
+{
+	switch (meta->typeId()) {
+	case CONTENT_CRAFT_BOOK_OPEN:
+	{
+		CraftGuideNodeMetadata *cm = (CraftGuideNodeMetadata*)meta;
+		m_page = cm->getPage();
+		m_title = cm->infoText();
+		break;
+	}
+	case CONTENT_BOOK_OPEN:
+	{
+		BookNodeMetadata *bm = (BookNodeMetadata*)meta;
+		m_title = bm->infoText();
+		m_content = bm->getContent();
+	}
+	default:;
+	}
+	return false;
 }

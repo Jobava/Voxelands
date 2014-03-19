@@ -2491,7 +2491,16 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			}else if (content_features(n).onpunch_replace_node != CONTENT_IGNORE) {
 				core::list<u16> far_players;
 				core::map<v3s16, MapBlock*> modified_blocks;
+
+				NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
+				NodeMetadata *ometa = NULL;
+				std::string owner;
+				if (meta) {
+					ometa = meta->clone();
+					owner = meta->getOwner();
+				}
 				m_env.getMap().removeNodeMetadata(p_under);
+
 				n.setContent(content_features(n).onpunch_replace_node);
 				sendAddNode(p_under, n, 0, &far_players, 30);
 				{
@@ -2500,12 +2509,29 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					std::string p_name = std::string(player->getName());
 					m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
 				}
-				for(core::list<u16>::Iterator i = far_players.begin(); i != far_players.end(); i++) {
-					u16 peer_id = *i;
-					RemoteClient *client = getClient(peer_id);
-					if (client == NULL)
-						continue;
+
+				if (ometa) {
+					meta = m_env.getMap().getNodeMetadata(p_under);
+					if (meta) {
+						meta->import(ometa);
+						meta->setOwner(owner);
+					}
+
+					delete ometa;
+				}
+
+				v3s16 blockpos = getNodeBlockPos(p_under);
+				MapBlock *block = m_env.getMap().getBlockNoCreateNoEx(blockpos);
+				if (block)
+					block->setChangedFlag();
+
+				for(core::map<u16, RemoteClient*>::Iterator
+					i = m_clients.getIterator();
+					i.atEnd()==false; i++)
+				{
+					RemoteClient *client = i.getNode()->getValue();
 					client->SetBlocksNotSent(modified_blocks);
+					client->SetBlockNotSent(blockpos);
 				}
 			}else if (content_features(n).flammable > 1) {
 				InventoryItem *wield = (InventoryItem*)player->getWieldItem();
