@@ -1863,6 +1863,13 @@ bool ClosedBookNodeMetadata::import(NodeMetadata *meta)
 		m_title = cm->infoText();
 		break;
 	}
+	case CONTENT_DECRAFT_BOOK_OPEN:
+	{
+		DeCraftNodeMetadata *cm = (DeCraftNodeMetadata*)meta;
+		m_page = cm->getPage();
+		m_title = cm->infoText();
+		break;
+	}
 	case CONTENT_BOOK_OPEN:
 	{
 		BookNodeMetadata *bm = (BookNodeMetadata*)meta;
