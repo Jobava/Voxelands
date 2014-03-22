@@ -2179,6 +2179,7 @@ void the_game(
 		else
 		{
 			guitext->setVisible(false);
+			guitext2->setVisible(false);
 		}
 
 		if(show_debug)
