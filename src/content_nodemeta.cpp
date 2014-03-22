@@ -1245,7 +1245,7 @@ CookBookNodeMetadata::CookBookNodeMetadata()
 
 	m_inventory = new Inventory();
 	m_inventory->addList("list", 300);
-	m_inventory->addList("recipe", 9);
+	m_inventory->addList("recipe", 1);
 	m_inventory->addList("result", 1);
 }
 CookBookNodeMetadata::~CookBookNodeMetadata()
@@ -1413,6 +1413,206 @@ std::string CookBookNodeMetadata::getDrawSpecString()
 	spec +=	"label[0.5,0.75;Add item here to see cook result]";
 	spec +=	"list[current_name;result;2,1;1,1;]";
 	spec +=	"list[current_name;recipe;4,1;1,1;]";
+	spec +=	"button[0.25,3.5;2.5,0.75;prev;<< Previous Page]";
+	spec +=	"label[3.5,3.5;Page ";
+	spec += itos(m_page+1);
+	spec +=" of ";
+	spec += itos((list.size()/40)+1);
+	spec += "]";
+	spec +=	"button[6,3.5;2.5,0.75;next;Next Page >>]";
+	spec +=	"list[current_name;list;0,4;8,5;]";
+	return spec;
+}
+
+/*
+	DeCraftNodeMetadata
+*/
+
+// Prototype
+DeCraftNodeMetadata proto_DeCraftNodeMetadata;
+
+DeCraftNodeMetadata::DeCraftNodeMetadata()
+{
+	NodeMetadata::registerType(typeId(), create);
+
+	m_page = 0;
+
+	m_inventory = new Inventory();
+	m_inventory->addList("list", 300);
+	m_inventory->addList("recipe", 1);
+	m_inventory->addList("random", 1);
+	m_inventory->addList("result", 1);
+}
+DeCraftNodeMetadata::~DeCraftNodeMetadata()
+{
+	delete m_inventory;
+}
+u16 DeCraftNodeMetadata::typeId() const
+{
+	return CONTENT_DECRAFT_BOOK_OPEN;
+}
+NodeMetadata* DeCraftNodeMetadata::clone()
+{
+	DeCraftNodeMetadata *d = new DeCraftNodeMetadata();
+	*d->m_inventory = *m_inventory;
+	d->m_page = m_page;
+	InventoryList *l = d->m_inventory->getList("list");
+	InventoryItem *t;
+	l->clearItems();
+	std::vector<content_t> &list = lists::get("decrafting");
+	u16 start = m_page*40;
+	u16 end = start+40;
+	if (end > list.size())
+		end = list.size();
+	for (int i=start; i<end; i++) {
+		if ((list[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK)
+			continue;
+		if ((list[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK)
+			continue;
+		if (content_features(list[i]).dug_item == "" && content_features(list[i]).extra_dug_item == "")
+			continue;
+
+		t = new MaterialItem(list[i],1);
+		l->addItem(t);
+	}
+	return d;
+}
+NodeMetadata* DeCraftNodeMetadata::create(std::istream &is)
+{
+	DeCraftNodeMetadata *d = new DeCraftNodeMetadata();
+
+	d->m_inventory->deSerialize(is);
+	is>>d->m_page;
+
+	return d;
+}
+void DeCraftNodeMetadata::serializeBody(std::ostream &os)
+{
+	m_inventory->serialize(os);
+	os<<itos(m_page) << " ";
+}
+bool DeCraftNodeMetadata::nodeRemovalDisabled()
+{
+	return false;
+}
+void DeCraftNodeMetadata::inventoryModified()
+{
+	infostream<<"DeCraft inventory modification callback"<<std::endl;
+}
+bool DeCraftNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
+{
+	InventoryList *l = m_inventory->getList("result");
+	InventoryItem *t = l->getItem(0);
+	if (!t || t->getContent() == CONTENT_IGNORE)
+		return false;
+	if ((t->getContent()&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK)
+		return false;
+	if ((t->getContent()&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK)
+		return false;
+	if (content_features(t->getContent()).dug_item == "" && content_features(t->getContent()).extra_dug_item == "")
+		return false;
+	l = m_inventory->getList("recipe");
+	l->clearItems();
+	if (content_features(t->getContent()).dug_item != "") {
+		std::istringstream is(content_features(t->getContent()).dug_item, std::ios::binary);
+		InventoryItem *r = InventoryItem::deSerialize(is);
+		if (!r)
+			return false;
+		if (r->getContent() == CONTENT_IGNORE) {
+			delete r;
+			return false;
+		}
+		l->addItem(0,r);
+	}
+	l = m_inventory->getList("random");
+	l->clearItems();
+	if (content_features(t->getContent()).extra_dug_item != "") {
+		std::istringstream is(content_features(t->getContent()).extra_dug_item, std::ios::binary);
+		InventoryItem *r = InventoryItem::deSerialize(is);
+		if (!r)
+			return true;
+		if (r->getContent() == CONTENT_IGNORE) {
+			delete r;
+			return true;
+		}
+		l->addItem(0,r);
+	}
+	return true;
+}
+bool DeCraftNodeMetadata::import(NodeMetadata *meta)
+{
+	if (meta->typeId() == CONTENT_BOOK)
+		m_page = ((ClosedBookNodeMetadata*)meta)->getPage();
+
+	if (m_page < 0)
+		m_page = 0;
+	std::vector<content_t> &list = lists::get("decrafting");
+	if (m_page > (list.size()/40))
+		m_page = list.size()/40;
+	InventoryList *l = m_inventory->getList("list");
+	InventoryItem *t;
+	l->clearItems();
+	u16 start = m_page*40;
+	u16 end = start+40;
+	if (end > list.size())
+		end = list.size();
+	for (int i=start; i<end; i++) {
+		if ((list[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK)
+			continue;
+		if ((list[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK)
+			continue;
+		if (content_features(list[i]).dug_item == "" && content_features(list[i]).extra_dug_item == "")
+			continue;
+
+		t = new MaterialItem(list[i],1);
+		l->addItem(t);
+	}
+	return true;
+}
+bool DeCraftNodeMetadata::receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player)
+{
+	if (fields["prev"] == "" && fields["next"] == "")
+		return false;
+	if (fields["prev"] != "")
+		m_page--;
+	if (fields["next"] != "")
+		m_page++;
+	if (m_page < 0)
+		m_page = 0;
+	std::vector<content_t> &list = lists::get("decrafting");
+	if (m_page > (list.size()/40))
+		m_page = list.size()/40;
+	InventoryList *l = m_inventory->getList("list");
+	InventoryItem *t;
+	l->clearItems();
+	u16 start = m_page*40;
+	u16 end = start+40;
+	if (end > list.size())
+		end = list.size();
+	for (int i=start; i<end; i++) {
+		if ((list[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK)
+			continue;
+		if ((list[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK)
+			continue;
+		if (content_features(list[i]).dug_item == "" && content_features(list[i]).extra_dug_item == "")
+			continue;
+
+		t = new MaterialItem(list[i],1);
+		l->addItem(t);
+	}
+	return true;
+}
+std::string DeCraftNodeMetadata::getDrawSpecString()
+{
+	std::vector<content_t> &list = lists::get("decrafting");
+
+	std::string spec("size[8,9]");
+	spec +=	"label[0.5,0.75;Add item here to see dig result]";
+	spec +=	"list[current_name;result;2,1;1,1;]";
+	spec +=	"label[5,1;Dig Result]";
+	spec +=	"list[current_name;recipe;6.5,0.5;1,1;]";
+	spec +=	"label[5,2;Random Drop]";
+	spec +=	"list[current_name;random;6.5,1.5;1,1;]";
 	spec +=	"button[0.25,3.5;2.5,0.75;prev;<< Previous Page]";
 	spec +=	"label[3.5,3.5;Page ";
 	spec += itos(m_page+1);
