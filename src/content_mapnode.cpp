@@ -1199,6 +1199,7 @@ void content_mapnode_init()
 	if(invisible_stone)
 		f->solidness = 0; // For debugging, hides regular stone
 	lists::add("creative",i);
+	lists::add("decrafting",i);
 
 	i = CONTENT_ICE;
 	f = &content_features(i);
@@ -1311,6 +1312,7 @@ void content_mapnode_init()
 	f->setAllTextures("mud.png^grass_side.png");
 	f->setTexture(0, "grass.png");
 	f->setTexture(1, "mud.png");
+	f->setInventoryTextureCube("grass.png","mud.png^grass_side.png","mud.png^grass_side.png");
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MUD)+" 1";
@@ -1318,6 +1320,7 @@ void content_mapnode_init()
 	f->extra_dug_item_rarity = 10;
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
+	lists::add("decrafting",i);
 
 	i = CONTENT_GRASS_FOOTSTEPS;
 	f = &content_features(i);
@@ -1337,6 +1340,7 @@ void content_mapnode_init()
 	f->setAllTextures("mud.png^snow_side.png");
 	f->setTexture(0, "snow.png");
 	f->setTexture(1, "mud.png");
+	f->setInventoryTextureCube("snow.png","mud.png^snow_side.png","mud.png^snow_side.png");
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MUD)+" 1";
@@ -1344,16 +1348,19 @@ void content_mapnode_init()
 	f->extra_dug_item_rarity = 5;
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
+	lists::add("decrafting",i);
 
 	i = CONTENT_FARM_DIRT;
 	f = &content_features(i);
 	f->description = std::string("Farm Dirt");
 	f->setAllTextures("dirt.png");
+	f->setInventoryTextureCube("dirt.png","dirt.png","dirt.png");
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MUD)+" 1";
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
+	lists::add("decrafting",i);
 
 	i = CONTENT_MUD;
 	f = &content_features(i);
@@ -1380,6 +1387,7 @@ void content_mapnode_init()
 	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_ASH,CONTENT_ASH);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+	lists::add("decrafting",i);
 
 	i = CONTENT_SAND;
 	f = &content_features(i);
@@ -1422,6 +1430,7 @@ void content_mapnode_init()
 	crafting::setSoftBlockRecipe(CONTENT_SAND,CONTENT_SANDSTONE);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+	lists::add("decrafting",i);
 
 	i = CONTENT_SANDSTONE_BRICK;
 	f = &content_features(i);
@@ -1436,6 +1445,7 @@ void content_mapnode_init()
 	crafting::setBrickRecipe(CONTENT_SANDSTONE,CONTENT_SANDSTONE_BRICK);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+	lists::add("decrafting",i);
 
 	i = CONTENT_SANDSTONE_BLOCK;
 	f = &content_features(i);
@@ -1450,6 +1460,7 @@ void content_mapnode_init()
 	crafting::setBlockRecipe(CONTENT_SANDSTONE,CONTENT_SANDSTONE_BLOCK);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+	lists::add("decrafting",i);
 
 	i = CONTENT_CLAY;
 	f = &content_features(i);
@@ -1466,6 +1477,7 @@ void content_mapnode_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 	lists::add("cooking",i);
+	lists::add("decrafting",i);
 
 	i = CONTENT_CLAY_BLUE;
 	f = &content_features(i);
@@ -1482,6 +1494,7 @@ void content_mapnode_init()
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_CLAY,CONTENT_CLAY_BLUE);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+	lists::add("decrafting",i);
 
 	i = CONTENT_CLAY_GREEN;
 	f = &content_features(i);
@@ -1498,6 +1511,7 @@ void content_mapnode_init()
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_GREEN,CONTENT_CLAY,CONTENT_CLAY_GREEN);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+	lists::add("decrafting",i);
 
 	i = CONTENT_CLAY_ORANGE;
 	f = &content_features(i);
@@ -1514,6 +1528,7 @@ void content_mapnode_init()
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_ORANGE,CONTENT_CLAY,CONTENT_CLAY_ORANGE);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+	lists::add("decrafting",i);
 
 	i = CONTENT_CLAY_PURPLE;
 	f = &content_features(i);
@@ -1530,6 +1545,7 @@ void content_mapnode_init()
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_PURPLE,CONTENT_CLAY,CONTENT_CLAY_PURPLE);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+	lists::add("decrafting",i);
 
 	i = CONTENT_CLAY_RED;
 	f = &content_features(i);
@@ -1546,6 +1562,7 @@ void content_mapnode_init()
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_RED,CONTENT_CLAY,CONTENT_CLAY_RED);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+	lists::add("decrafting",i);
 
 	i = CONTENT_CLAY_YELLOW;
 	f = &content_features(i);
@@ -1562,6 +1579,7 @@ void content_mapnode_init()
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_CLAY,CONTENT_CLAY_YELLOW);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+	lists::add("decrafting",i);
 
 	i = CONTENT_CLAY_BLACK;
 	f = &content_features(i);
@@ -1578,6 +1596,7 @@ void content_mapnode_init()
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_CLAY,CONTENT_CLAY_BLACK);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+	lists::add("decrafting",i);
 
 	i = CONTENT_BRICK;
 	f = &content_features(i);
@@ -1592,6 +1611,7 @@ void content_mapnode_init()
 	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_CLAY_BRICK,CONTENT_BRICK);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+	lists::add("decrafting",i);
 
 	i = CONTENT_TERRACOTTA;
 	f = &content_features(i);
@@ -1784,6 +1804,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
+	lists::add("decrafting",i);
 
 	i = CONTENT_APPLE_LEAVES;
 	f = &content_features(i);
@@ -1811,6 +1832,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
+	lists::add("decrafting",i);
 
 	i = CONTENT_JUNGLELEAVES;
 	f = &content_features(i);
@@ -1838,6 +1860,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
+	lists::add("decrafting",i);
 
 	i = CONTENT_CONIFER_LEAVES;
 	f = &content_features(i);
@@ -1865,6 +1888,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
+	lists::add("decrafting",i);
 
 	i = CONTENT_TRIMMED_LEAVES;
 	f = &content_features(i);
@@ -1991,6 +2015,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_APPLE_LEAVES)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
+	lists::add("decrafting",i);
 
 	i = CONTENT_TRIMMED_APPLE_BLOSSOM;
 	f = &content_features(i);
@@ -2053,6 +2078,7 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.10;
 	lists::add("creative",i);
+	lists::add("decrafting",i);
 
 	i = CONTENT_CACTUS_FRUIT;
 	f = &content_features(i);
@@ -3171,6 +3197,7 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 0.1;
 	lists::add("creative",i);
+	lists::add("decrafting",i);
 
 	i = CONTENT_APPLE_PIE_3;
 	f = &content_features(i);
@@ -3284,6 +3311,7 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 0.1;
 	lists::add("creative",i);
+	lists::add("decrafting",i);
 
 	i = CONTENT_PUMPKIN_PIE_3;
 	f = &content_features(i);
@@ -4048,6 +4076,7 @@ void content_mapnode_init()
 	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_SNOW_BALL,CONTENT_SNOW_BLOCK);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+	lists::add("decrafting",i);
 
 	i = CONTENT_SNOWMAN;
 	f = &content_features(i);
@@ -4109,6 +4138,7 @@ void content_mapnode_init()
 	}
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+	lists::add("decrafting",i);
 
 	i = CONTENT_SNOW;
 	f = &content_features(i);
@@ -4128,6 +4158,7 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 0.3;
 	lists::add("creative",i);
+	lists::add("decrafting",i);
 
 	i = CONTENT_BOOK;
 	f = &content_features(i);
@@ -4214,6 +4245,8 @@ void content_mapnode_init()
 	crafting::set1Any2Recipe(CONTENT_BOOK,CONTENT_CRAFTITEM_GUNPOWDER,i);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new ClosedBookNodeMetadata();
 
 	i = CONTENT_DIARY_BOOK;
 	f = &content_features(i);
@@ -4353,6 +4386,8 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i, "guide_decraft_top.png", "guide_decraft_end.png", "guide_decraft_side.png");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new DeCraftNodeMetadata();
 
 	i = CONTENT_DIARY_BOOK_OPEN;
 	f = &content_features(i);
