@@ -1288,19 +1288,121 @@ bool BookNodeMetadata::receiveFields(std::string formname, std::map<std::string,
 {
 	m_title = fields["title"];
 	m_content = fields["content"];
+
+	std::string::size_type pos = 0;
+	while ((pos = m_content.find("]",pos)) != std::string::npos) {
+		m_content.replace(pos,1,")");
+		pos++;
+	}
+	pos = 0;
+	while ((pos = m_content.find("[",pos)) != std::string::npos) {
+		m_content.replace(pos,1,"(");
+		pos++;
+	}
 	return true;
 }
 
 std::string BookNodeMetadata::getDrawSpecString()
 {
-	std::string spec("size[4,6]");
-	spec += "field[1,1;3,1;title;Title;";
+	std::string spec("size[6,6]");
+	spec += "field[1,1;5,1;title;Title;";
 	spec += m_title;
 	spec += "]";
-	spec += "field[1,2;3,2;content;Content;";
+	spec += "field[1,2;5,2;content;Content;";
 	spec += m_content;
 	spec += "]";
-	spec += "button_exit[1,5;3,1;submit;Save]";
+	spec += "button_exit[2,5;3,1;submit;Save]";
+	return spec;
+}
+
+/*
+	DiaryNodeMetadata
+*/
+
+// Prototype
+DiaryNodeMetadata proto_DiaryNodeMetadata;
+
+DiaryNodeMetadata::DiaryNodeMetadata()
+{
+	NodeMetadata::registerType(typeId(), create);
+
+	m_title = "Diary";
+	m_content = "";
+}
+
+u16 DiaryNodeMetadata::typeId() const
+{
+	return CONTENT_DIARY_BOOK_OPEN;
+}
+NodeMetadata* DiaryNodeMetadata::clone()
+{
+	DiaryNodeMetadata *d = new DiaryNodeMetadata();
+	d->m_owner = m_owner;
+	d->m_title = m_title;
+	d->m_content = m_content;
+	return d;
+}
+NodeMetadata* DiaryNodeMetadata::create(std::istream &is)
+{
+	DiaryNodeMetadata *d = new DiaryNodeMetadata();
+	d->m_owner = deSerializeString(is);
+	d->m_title = deSerializeString(is);
+	d->m_content = deSerializeString(is);
+	return d;
+}
+void DiaryNodeMetadata::serializeBody(std::ostream &os)
+{
+	os<<serializeString(m_owner);
+	os<<serializeString(m_title);
+	os<<serializeString(m_content);
+}
+bool DiaryNodeMetadata::nodeRemovalDisabled()
+{
+	if (m_content != "")
+		return true;
+	return false;
+}
+bool DiaryNodeMetadata::import(NodeMetadata *meta)
+{
+	if (meta->typeId() != CONTENT_BOOK)
+		return false;
+
+	ClosedBookNodeMetadata *m = (ClosedBookNodeMetadata*)meta;
+	m_owner = m->getOwner();
+	m_title = m->infoText();
+	m_content = m->getContent();
+	return true;
+}
+bool DiaryNodeMetadata::receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player)
+{
+	if (m_owner != "" && player->getName() != m_owner)
+		return false;
+	m_title = fields["title"];
+	m_content = fields["content"];
+
+	std::string::size_type pos = 0;
+	while ((pos = m_content.find("]",pos)) != std::string::npos) {
+		m_content.replace(pos,1,")");
+		pos++;
+	}
+	pos = 0;
+	while ((pos = m_content.find("[",pos)) != std::string::npos) {
+		m_content.replace(pos,1,"(");
+		pos++;
+	}
+	return true;
+}
+
+std::string DiaryNodeMetadata::getDrawSpecString()
+{
+	std::string spec("size[6,6]");
+	spec += "field[1,1;5,1;title;Title;";
+	spec += m_title;
+	spec += "]";
+	spec += "field[1,2;5,2;content;Content;";
+	spec += m_content;
+	spec += "]";
+	spec += "button_exit[2,5;3,1;submit;Save]";
 	return spec;
 }
 
@@ -1370,6 +1472,15 @@ bool ClosedBookNodeMetadata::import(NodeMetadata *meta)
 		BookNodeMetadata *bm = (BookNodeMetadata*)meta;
 		m_title = bm->infoText();
 		m_content = bm->getContent();
+		break;
+	}
+	case CONTENT_DIARY_BOOK_OPEN:
+	{
+		DiaryNodeMetadata *dm = (DiaryNodeMetadata*)meta;
+		m_owner = dm->getOwner();
+		m_title = dm->infoText();
+		m_content = dm->getContent();
+		break;
 	}
 	default:;
 	}

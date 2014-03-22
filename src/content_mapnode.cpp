@@ -4229,6 +4229,8 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::set1Any2Recipe(CONTENT_BOOK,CONTENT_CRAFTITEM_STEEL_INGOT,i);
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new ClosedBookNodeMetadata();
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -4362,6 +4364,8 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i, "guide_diary_top.png", "guide_diary_end.png", "guide_diary_side.png");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new DiaryNodeMetadata();
 
 	i = CONTENT_CRAFT_BOOK_OPEN;
 	f = &content_features(i);
