@@ -1231,6 +1231,200 @@ std::string CraftGuideNodeMetadata::getDrawSpecString()
 }
 
 /*
+	CookBookNodeMetadata
+*/
+
+// Prototype
+CookBookNodeMetadata proto_CookBookNodeMetadata;
+
+CookBookNodeMetadata::CookBookNodeMetadata()
+{
+	NodeMetadata::registerType(typeId(), create);
+
+	m_page = 0;
+
+	m_inventory = new Inventory();
+	m_inventory->addList("list", 300);
+	m_inventory->addList("recipe", 9);
+	m_inventory->addList("result", 1);
+}
+CookBookNodeMetadata::~CookBookNodeMetadata()
+{
+	delete m_inventory;
+}
+u16 CookBookNodeMetadata::typeId() const
+{
+	return CONTENT_COOK_BOOK_OPEN;
+}
+NodeMetadata* CookBookNodeMetadata::clone()
+{
+	CookBookNodeMetadata *d = new CookBookNodeMetadata();
+	*d->m_inventory = *m_inventory;
+	d->m_page = m_page;
+	InventoryList *l = d->m_inventory->getList("list");
+	InventoryItem *t;
+	l->clearItems();
+	std::vector<content_t> &list = lists::get("cooking");
+	u16 start = m_page*40;
+	u16 end = start+40;
+	if (end > list.size())
+		end = list.size();
+	for (int i=start; i<end; i++) {
+		if ((list[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
+			t = new CraftItem(list[i],1);
+		}else if ((list[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+			t = new ToolItem(list[i],1);
+		}else{
+			t = new MaterialItem(list[i],1);
+		}
+		InventoryItem *cookresult = t->createCookResult();
+		if (!cookresult || cookresult->getContent() == CONTENT_IGNORE) {
+			delete t;
+			delete cookresult;
+			continue;
+		}
+		delete cookresult;
+		l->addItem(t);
+	}
+	return d;
+}
+NodeMetadata* CookBookNodeMetadata::create(std::istream &is)
+{
+	CookBookNodeMetadata *d = new CookBookNodeMetadata();
+
+	d->m_inventory->deSerialize(is);
+	is>>d->m_page;
+
+	return d;
+}
+void CookBookNodeMetadata::serializeBody(std::ostream &os)
+{
+	m_inventory->serialize(os);
+	os<<itos(m_page) << " ";
+}
+bool CookBookNodeMetadata::nodeRemovalDisabled()
+{
+	return false;
+}
+void CookBookNodeMetadata::inventoryModified()
+{
+	infostream<<"CookBook inventory modification callback"<<std::endl;
+}
+bool CookBookNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
+{
+	InventoryList *l = m_inventory->getList("result");
+	InventoryItem *t = l->getItem(0);
+	if (!t || t->getContent() == CONTENT_IGNORE)
+		return false;
+	InventoryItem *cookresult = t->createCookResult();
+	if (!cookresult || cookresult->getContent() == CONTENT_IGNORE)
+		return false;
+	l = m_inventory->getList("recipe");
+	l->clearItems();
+	l->addItem(0,cookresult);
+
+	return true;
+}
+bool CookBookNodeMetadata::import(NodeMetadata *meta)
+{
+	if (meta->typeId() == CONTENT_BOOK)
+		m_page = ((ClosedBookNodeMetadata*)meta)->getPage();
+
+	if (m_page < 0)
+		m_page = 0;
+	std::vector<content_t> &list = lists::get("cooking");
+	if (m_page > (list.size()/40))
+		m_page = list.size()/40;
+	InventoryList *l = m_inventory->getList("list");
+	InventoryItem *t;
+	l->clearItems();
+	u16 start = m_page*40;
+	u16 end = start+40;
+	if (end > list.size())
+		end = list.size();
+	for (int i=start; i<end; i++) {
+		if ((list[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
+			t = new CraftItem(list[i],1);
+		}else if ((list[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+			t = new ToolItem(list[i],1);
+		}else{
+			t = new MaterialItem(list[i],1);
+		}
+		InventoryItem *cookresult = t->createCookResult();
+		if (!cookresult || cookresult->getContent() == CONTENT_IGNORE) {
+			delete t;
+			delete cookresult;
+			continue;
+		}
+		delete cookresult;
+		l->addItem(t);
+	}
+	return true;
+}
+bool CookBookNodeMetadata::receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player)
+{
+	if (fields["prev"] == "" && fields["next"] == "")
+		return false;
+	if (fields["prev"] != "")
+		m_page--;
+	if (fields["next"] != "")
+		m_page++;
+	if (m_page < 0)
+		m_page = 0;
+	std::vector<content_t> &list = lists::get("cooking");
+	if (m_page > (list.size()/40))
+		m_page = list.size()/40;
+	InventoryList *l = m_inventory->getList("list");
+	InventoryItem *t;
+	l->clearItems();
+	u16 start = m_page*40;
+	u16 end = start+40;
+	if (end > list.size())
+		end = list.size();
+	for (int i=start; i<end; i++) {
+		if ((list[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
+			t = new CraftItem(list[i],1);
+		}else if ((list[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+			t = new ToolItem(list[i],1);
+		}else{
+			t = new MaterialItem(list[i],1);
+		}
+		InventoryItem *cookresult = t->createCookResult();
+		if (!cookresult || cookresult->getContent() == CONTENT_IGNORE) {
+			delete t;
+			delete cookresult;
+			continue;
+		}
+		delete cookresult;
+		l->addItem(t);
+	}
+	return true;
+}
+std::string CookBookNodeMetadata::getDrawSpecString()
+{
+	InventoryList *l = m_inventory->getList("result");
+	InventoryItem *q = l->getItem(0);
+	int tr = 0;
+	std::vector<content_t> &list = lists::get("cooking");
+	if (q && q->getContent() != CONTENT_IGNORE)
+		tr = crafting::getResultCount(q);
+
+	std::string spec("size[8,9]");
+	spec +=	"label[0.5,0.75;Add item here to see cook result]";
+	spec +=	"list[current_name;result;2,1;1,1;]";
+	spec +=	"list[current_name;recipe;4,1;1,1;]";
+	spec +=	"button[0.25,3.5;2.5,0.75;prev;<< Previous Page]";
+	spec +=	"label[3.5,3.5;Page ";
+	spec += itos(m_page+1);
+	spec +=" of ";
+	spec += itos((list.size()/40)+1);
+	spec += "]";
+	spec +=	"button[6,3.5;2.5,0.75;next;Next Page >>]";
+	spec +=	"list[current_name;list;0,4;8,5;]";
+	return spec;
+}
+
+/*
 	BookNodeMetadata
 */
 
@@ -1375,7 +1569,9 @@ bool DiaryNodeMetadata::import(NodeMetadata *meta)
 }
 bool DiaryNodeMetadata::receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player)
 {
-	if (m_owner != "" && player->getName() != m_owner)
+	if (m_owner == "")
+		m_owner = player->getName();
+	if (player->getName() != m_owner)
 		return false;
 	m_title = fields["title"];
 	m_content = fields["content"];
