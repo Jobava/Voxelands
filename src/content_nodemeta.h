@@ -322,6 +322,32 @@ private:
 	u16 m_page;
 };
 
+class CookBookNodeMetadata : public NodeMetadata
+{
+public:
+	CookBookNodeMetadata();
+	~CookBookNodeMetadata();
+
+	virtual u16 typeId() const;
+	NodeMetadata* clone();
+	static NodeMetadata* create(std::istream &is);
+	virtual void serializeBody(std::ostream &os);
+	virtual std::string infoText() {return std::string("Cooking Guide");}
+	virtual Inventory* getInventory() {return m_inventory;}
+	virtual bool nodeRemovalDisabled();
+	virtual void inventoryModified();
+	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
+	virtual bool import(NodeMetadata *meta);
+	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
+	virtual std::string getDrawSpecString();
+
+	u16 getPage() {return m_page;}
+
+private:
+	Inventory *m_inventory;
+	u16 m_page;
+};
+
 class BookNodeMetadata : public NodeMetadata
 {
 public:

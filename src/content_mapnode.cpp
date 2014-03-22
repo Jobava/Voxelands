@@ -1393,6 +1393,7 @@ void content_mapnode_init()
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	lists::add("creative",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_GRAVEL;
 	f = &content_features(i);
@@ -1464,6 +1465,7 @@ void content_mapnode_init()
 	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_CLAY,CONTENT_CLAY);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_CLAY_BLUE;
 	f = &content_features(i);
@@ -1666,6 +1668,7 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
 	lists::add("creative",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_APPLE_TREE;
 	f = &content_features(i);
@@ -1683,6 +1686,7 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
 	lists::add("creative",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_JUNGLETREE;
 	f = &content_features(i);
@@ -1732,6 +1736,7 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.8;
 	lists::add("creative",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_JUNGLEGRASS;
 	f = &content_features(i);
@@ -2909,6 +2914,7 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 0.5;
 	lists::add("creative",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_MESE_DIGGING;
 	f = &content_features(i);
@@ -3140,6 +3146,7 @@ void content_mapnode_init()
 	crafting::set1over1Recipe(CONTENT_CRAFTITEM_APPLE,CONTENT_CRAFTITEM_DOUGH,CONTENT_APPLE_PIE_RAW);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_APPLE_PIE;
 	f = &content_features(i);
@@ -3252,6 +3259,7 @@ void content_mapnode_init()
 	crafting::set1over1Recipe(CONTENT_CRAFTITEM_PUMPKINSLICE,CONTENT_CRAFTITEM_DOUGH,CONTENT_PUMPKIN_PIE_RAW);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_PUMPKIN_PIE;
 	f = &content_features(i);
@@ -4177,6 +4185,8 @@ void content_mapnode_init()
 	crafting::set1Any2Recipe(CONTENT_BOOK,CONTENT_CRAFTITEM_CHARCOAL,i);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new ClosedBookNodeMetadata();
 
 	i = CONTENT_DECRAFT_BOOK;
 	f = &content_features(i);
@@ -4318,6 +4328,8 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i, "guide_cook_top.png", "guide_cook_end.png", "guide_cook_side.png");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new CookBookNodeMetadata();
 
 	i = CONTENT_DECRAFT_BOOK_OPEN;
 	f = &content_features(i);
@@ -5284,6 +5296,7 @@ void content_mapnode_init()
 	crafting::setBlockRecipe(CONTENT_COBBLE,CONTENT_ROUGHSTONE);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_COBBLE;
 	f = &content_features(i);
@@ -7789,6 +7802,7 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i,"flower_pot_raw_top.png","flower_pot_raw.png","flower_pot_raw.png");
 	crafting::setVRecipe(CONTENT_CRAFTITEM_CLAY,CONTENT_FLOWER_POT_RAW);
 	lists::add("craftguide",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_FLOWER_POT;
 	f = &content_features(i);

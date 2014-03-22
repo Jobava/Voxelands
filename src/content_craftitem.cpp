@@ -88,6 +88,7 @@ void content_craftitem_init()
 	f->description = "Iron Lump";
 	f->cook_result = "CraftItem steel_ingot 1";
 	lists::add("creative",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_CRAFTITEM_CLAY;
 	f = &g_content_craftitem_features[i];
@@ -97,6 +98,7 @@ void content_craftitem_init()
 	f->description = "Clay Lump";
 	f->cook_result = "CraftItem clay_brick 1";
 	lists::add("creative",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_CRAFTITEM_TIN;
 	f = &g_content_craftitem_features[i];
@@ -106,6 +108,7 @@ void content_craftitem_init()
 	f->description = "Tin Lump";
 	f->cook_result = "CraftItem tin_ingot 1";
 	lists::add("creative",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_CRAFTITEM_COPPER;
 	f = &g_content_craftitem_features[i];
@@ -115,6 +118,7 @@ void content_craftitem_init()
 	f->description = "Copper Lump";
 	f->cook_result = "CraftItem copper_ingot 1";
 	lists::add("creative",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_CRAFTITEM_SILVER;
 	f = &g_content_craftitem_features[i];
@@ -124,6 +128,7 @@ void content_craftitem_init()
 	f->description = "Silver Lump";
 	f->cook_result = "CraftItem silver_ingot 1";
 	lists::add("creative",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_CRAFTITEM_GOLD;
 	f = &g_content_craftitem_features[i];
@@ -133,6 +138,7 @@ void content_craftitem_init()
 	f->description = "Gold Lump";
 	f->cook_result = "CraftItem gold_ingot 1";
 	lists::add("creative",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_CRAFTITEM_QUARTZ;
 	f = &g_content_craftitem_features[i];
@@ -207,6 +213,7 @@ void content_craftitem_init()
 	f->cook_result = "CraftItem cooked_rat 1";
 	f->drop_count = 1;
 	lists::add("creative",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_CRAFTITEM_COOKED_RAT;
 	f = &g_content_craftitem_features[i];
@@ -217,6 +224,7 @@ void content_craftitem_init()
 	f->cook_result = "CraftItem scorched_stuff 1";
 	f->edible = 6;
 	lists::add("creative",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_CRAFTITEM_SCORCHED_STUFF;
 	f = &g_content_craftitem_features[i];
@@ -562,6 +570,7 @@ void content_craftitem_init()
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_FLOUR,CONTENT_CRAFTITEM_FLOUR,CONTENT_CRAFTITEM_DOUGH);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_CRAFTITEM_BREAD;
 	f = &g_content_craftitem_features[i];
@@ -581,6 +590,7 @@ void content_craftitem_init()
 	f->cook_result = std::string("CraftItem roast_potato 1");
 	f->edible = 3;
 	lists::add("creative",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_CRAFTITEM_STARCH;
 	f = &g_content_craftitem_features[i];
@@ -620,6 +630,7 @@ void content_craftitem_init()
 	f->edible = 3;
 	crafting::set1over1Recipe(CONTENT_CRAFTITEM_CARROT,CONTENT_CRAFTITEM_DOUGH,CONTENT_CRAFTITEM_CARROT_CAKE_RAW);
 	lists::add("craftguide",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_CRAFTITEM_CARROT_CAKE;
 	f = &g_content_craftitem_features[i];
