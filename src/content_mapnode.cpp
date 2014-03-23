@@ -8604,6 +8604,7 @@ void content_mapnode_init()
 		};
 		crafting::setRecipe(r,CONTENT_PAINTING_WHITE,1);
 	}
+	crafting::set1Any2Recipe(CONTENT_PAINTING_CANVAS,CONTENT_CRAFTITEM_DYE_WHITE,CONTENT_PAINTING_WHITE);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -8637,6 +8638,7 @@ void content_mapnode_init()
 		};
 		crafting::setRecipe(r,CONTENT_PAINTING_RED,1);
 	}
+	crafting::set1Any2Recipe(CONTENT_PAINTING_CANVAS,CONTENT_CRAFTITEM_DYE_RED,CONTENT_PAINTING_RED);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -8670,6 +8672,7 @@ void content_mapnode_init()
 		};
 		crafting::setRecipe(r,CONTENT_PAINTING_GREEN,1);
 	}
+	crafting::set1Any2Recipe(CONTENT_PAINTING_CANVAS,CONTENT_CRAFTITEM_DYE_GREEN,CONTENT_PAINTING_GREEN);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -8703,6 +8706,7 @@ void content_mapnode_init()
 		};
 		crafting::setRecipe(r,CONTENT_PAINTING_BLUE,1);
 	}
+	crafting::set1Any2Recipe(CONTENT_PAINTING_CANVAS,CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_PAINTING_BLUE);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -8728,6 +8732,10 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	content_mapnode_nodebox_painting(f);
 	f->hardness = 0.1;
+	crafting::set1Any2Recipe(CONTENT_PAINTING_WHITE,CONTENT_CRAFTITEM_STARCH,CONTENT_PAINTING_CANVAS);
+	crafting::set1Any2Recipe(CONTENT_PAINTING_RED,CONTENT_CRAFTITEM_STARCH,CONTENT_PAINTING_CANVAS);
+	crafting::set1Any2Recipe(CONTENT_PAINTING_GREEN,CONTENT_CRAFTITEM_STARCH,CONTENT_PAINTING_CANVAS);
+	crafting::set1Any2Recipe(CONTENT_PAINTING_BLUE,CONTENT_CRAFTITEM_STARCH,CONTENT_PAINTING_CANVAS);
 	{
 		u16 r[9] = {
 			CONTENT_CRAFTITEM_STICK,	CONTENT_CRAFTITEM_STICK,	CONTENT_CRAFTITEM_STICK,
