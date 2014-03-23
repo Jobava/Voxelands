@@ -7353,7 +7353,7 @@ void content_mapnode_init()
 	// hatches
 	i = CONTENT_WOOD_HATCH;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Wood Hatch");
 	f->setAllTextures("hatch_wood.png");
 	f->rotate_tile_with_nodebox = true;
@@ -7375,7 +7375,7 @@ void content_mapnode_init()
 
 	i = CONTENT_STEEL_HATCH;
 	f = &content_features(i);
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->description = std::string("Steel Hatch");
 	f->setAllTextures("hatch_steel.png");
 	f->rotate_tile_with_nodebox = true;
