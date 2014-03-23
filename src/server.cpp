@@ -3746,20 +3746,22 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					|| item->getContent() == CONTENT_TOOLITEM_TINBUCKET_WATER
 				) {
 					if (ilist != NULL) {
-						std::string dug_s = std::string("ToolItem ");
-						if (item->getContent() == CONTENT_TOOLITEM_WBUCKET_WATER) {
-							dug_s += "WBucket 1";
-						}else if (item->getContent() == CONTENT_TOOLITEM_TINBUCKET_WATER) {
-							dug_s += "TinBucket 1";
-						}else{
-							dug_s += "SteelBucket 1";
+						if (g_settings->getBool("creative_mode") == false) {
+							std::string dug_s = std::string("ToolItem ");
+							if (item->getContent() == CONTENT_TOOLITEM_WBUCKET_WATER) {
+								dug_s += "WBucket 1";
+							}else if (item->getContent() == CONTENT_TOOLITEM_TINBUCKET_WATER) {
+								dug_s += "TinBucket 1";
+							}else{
+								dug_s += "SteelBucket 1";
+							}
+							std::istringstream is(dug_s, std::ios::binary);
+							InventoryItem *item = InventoryItem::deSerialize(is);
+							ilist->changeItem(item_i,item);
+							UpdateCrafting(player->peer_id);
+							SendInventory(player->peer_id);
+							n.setContent(CONTENT_WATERSOURCE);
 						}
-						std::istringstream is(dug_s, std::ios::binary);
-						InventoryItem *item = InventoryItem::deSerialize(is);
-						ilist->changeItem(item_i,item);
-						UpdateCrafting(player->peer_id);
-						SendInventory(player->peer_id);
-						n.setContent(CONTENT_WATERSOURCE);
 						core::list<u16> far_players;
 						sendAddNode(p_over, n, 0, &far_players, 30);
 
@@ -3792,12 +3794,14 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				}else if (item->getContent() == CONTENT_TOOLITEM_STEELBUCKET_LAVA) {
 					if (ilist != NULL) {
 						if (g_settings->getBool("enable_lavabuckets")) {
-							std::string dug_s = std::string("ToolItem SteelBucket 1");
-							std::istringstream is(dug_s, std::ios::binary);
-							InventoryItem *item = InventoryItem::deSerialize(is);
-							ilist->changeItem(item_i,item);
-							UpdateCrafting(player->peer_id);
-							SendInventory(player->peer_id);
+							if (g_settings->getBool("creative_mode") == false) {
+								std::string dug_s = std::string("ToolItem SteelBucket 1");
+								std::istringstream is(dug_s, std::ios::binary);
+								InventoryItem *item = InventoryItem::deSerialize(is);
+								ilist->changeItem(item_i,item);
+								UpdateCrafting(player->peer_id);
+								SendInventory(player->peer_id);
+							}
 							n.setContent(CONTENT_LAVASOURCE);
 							core::list<u16> far_players;
 							sendAddNode(p_over, n, 0, &far_players, 30);
