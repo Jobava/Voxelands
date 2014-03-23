@@ -3,6 +3,24 @@ Minetest-Classic changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1403.00: (release 2014-03-23)
+- fix deadvine on trellis causing abort when dug
+- tweaks to rooflike lighting
+- implement formspec
+- new fromspec-based craft guide
+- add a creative chest
+- some noise tweaks
+- add new books system (craft/cooking/decrafting guides, writtable book)
+- make the texture atlas bigger, again
+- Added paintings (Pentium44)
+- fix infinite grapes
+- Piearesquare! - square slicable pies (Menche)
+- backporting HUD hiding (sdzen)
+- Icon in .desktop file (MavJS)
+- add starch texture
+- fix hatches losing their facedir
+- some fiddling with initial and creative inventory items
+
 1402.00: (release 2014-02-16)
 - new textures, skyboxes, and fog (sdzen)
 - new chest and furnace textures (Menche)
