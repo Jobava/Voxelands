@@ -621,52 +621,22 @@ void giveCreative(Player *player)
 		void* r = player->inventory.addItem("main", item);
 		assert(r == NULL);
 	}
-
-	/*
-		Give materials
-	*/
-
-	// CONTENT_IGNORE-terminated list
-	content_t material_items[] = {
-		CONTENT_CREATIVE_CHEST,
-		CONTENT_TORCH,
-		CONTENT_ROUGHSTONE,
-		CONTENT_MUD,
-		CONTENT_STONE,
-		CONTENT_SAND,
-		CONTENT_SANDSTONE,
-		CONTENT_CLAY,
-		CONTENT_BRICK,
-		CONTENT_TREE,
-		CONTENT_LEAVES,
-		CONTENT_CACTUS,
-		CONTENT_PAPYRUS,
-		CONTENT_BOOKSHELF,
-		CONTENT_GLASS,
-		CONTENT_FENCE,
-		CONTENT_RAIL,
-		CONTENT_MESE,
-		CONTENT_WATERSOURCE,
-		CONTENT_COTTON,
-		CONTENT_CHEST,
-		CONTENT_FURNACE,
-		CONTENT_SIGN,
-		CONTENT_LAVASOURCE,
-		CONTENT_WOOD,
-		CONTENT_LADDER,
-		CONTENT_IGNORE
-	};
-
-	content_t *mip = material_items;
-	for(u16 i=0; i<PLAYER_INVENTORY_SIZE; i++)
+	// The much needed creative chest
 	{
-		if(*mip == CONTENT_IGNORE)
-			break;
-
-		InventoryItem *item = new MaterialItem(*mip, 1);
-		player->inventory.addItem("main", item);
-
-		mip++;
+		InventoryItem *item = new MaterialItem(CONTENT_CREATIVE_CHEST, 1);
+		void* r = player->inventory.addItem("main", item);
+		assert(r == NULL);
+	}
+	// and some basics
+	{
+		InventoryItem *item = new MaterialItem(CONTENT_TORCH, 1);
+		void* r = player->inventory.addItem("main", item);
+		assert(r == NULL);
+	}
+	{
+		InventoryItem *item = new MaterialItem(CONTENT_ROUGHSTONEBRICK, 1);
+		void* r = player->inventory.addItem("main", item);
+		assert(r == NULL);
 	}
 }
 
@@ -698,7 +668,7 @@ void giveInitial(Player *player)
 		assert(r == NULL);
 	}
 	{
-		InventoryItem *item = new MaterialItem(CONTENT_ROUGHSTONE, 99);
+		InventoryItem *item = new MaterialItem(CONTENT_ROUGHSTONEBRICK, 99);
 		void* r = player->inventory.addItem("main", item);
 		assert(r == NULL);
 	}
