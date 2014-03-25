@@ -30,6 +30,7 @@
 #include <IGUIStaticText.h>
 #include <IGUIFont.h>
 #include "settings.h"
+#include "gui_colours.h"
 
 GUIKeyChangeMenu::GUIKeyChangeMenu(gui::IGUIEnvironment* env,
 		gui::IGUIElement* parent, s32 id, IMenuManager *menumgr) :
@@ -340,11 +341,8 @@ void GUIKeyChangeMenu::drawMenu()
 		rect += AbsoluteRect.UpperLeftCorner;
 		//driver->draw2DRectangle(bgcolor, rect, &AbsoluteClippingRect);
 
-		video::SColor bgtcolor(240,50,50,70);
-		video::SColor bgbcolor(240,30,30,50);
-		driver->draw2DRectangle(rect,bgtcolor, bgtcolor, bgbcolor, bgbcolor, &AbsoluteClippingRect);
-		video::SColor bdcolor(245,60,60,80);
-		driver->draw2DRectangleOutline(rect, bdcolor);
+		driver->draw2DRectangle(rect, GUI_BG_TOP, GUI_BG_TOP, GUI_BG_BTM, GUI_BG_BTM, &AbsoluteClippingRect);
+		driver->draw2DRectangleOutline(rect, GUI_BORDER);
 	}
 
 	gui::IGUIElement::draw();

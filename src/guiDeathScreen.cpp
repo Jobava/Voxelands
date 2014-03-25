@@ -28,6 +28,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <IGUIFont.h>
 #include "gettext.h"
 #include "client.h"
+#include "gui_colours.h"
 
 GUIDeathScreen::GUIDeathScreen(gui::IGUIEnvironment* env,
 		gui::IGUIElement* parent, s32 id,
@@ -115,16 +116,12 @@ void GUIDeathScreen::drawMenu()
 	video::IVideoDriver* driver = Environment->getVideoDriver();
 
 	{
-		video::SColor color(180,50,0,0);
-		driver->draw2DRectangle(color,
+		driver->draw2DRectangle(GUI_BG_DEATH,
 				core::rect<s32>(0,0,m_screensize.X,m_screensize.Y), NULL);
 	}
 
-	video::SColor bgtcolor(240,50,50,70);
-	video::SColor bgbcolor(240,30,30,50);
-	driver->draw2DRectangle(AbsoluteRect,bgtcolor, bgtcolor, bgbcolor, bgbcolor, &AbsoluteClippingRect);
-	video::SColor bdcolor(245,60,60,80);
-	driver->draw2DRectangleOutline(AbsoluteRect, bdcolor);
+	driver->draw2DRectangle(AbsoluteRect, GUI_BG_TOP, GUI_BG_TOP, GUI_BG_BTM, GUI_BG_BTM, &AbsoluteClippingRect);
+	driver->draw2DRectangleOutline(AbsoluteRect, GUI_BORDER);
 
 	gui::IGUIElement::draw();
 }

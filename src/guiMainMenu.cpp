@@ -29,7 +29,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <IGUIStaticText.h>
 #include <IGUIFont.h>
 #include "path.h"
-
+#include "gui_colours.h"
 
 #include "gettext.h"
 
@@ -481,8 +481,6 @@ void GUIMainMenu::drawMenu()
 	video::IVideoDriver* driver = Environment->getVideoDriver();
 
 	{
-		video::SColor bgtcolor(240,50,50,70);
-		video::SColor bgbcolor(240,30,30,50);
 		core::rect<s32> left(
 			AbsoluteRect.UpperLeftCorner.X,
 			AbsoluteRect.UpperLeftCorner.Y,
@@ -495,10 +493,9 @@ void GUIMainMenu::drawMenu()
 			AbsoluteRect.LowerRightCorner.X,
 			AbsoluteRect.LowerRightCorner.Y
 		);
-		driver->draw2DRectangle(left, bgbcolor, bgbcolor, bgbcolor, bgbcolor, &AbsoluteClippingRect);
-		driver->draw2DRectangle(right, bgtcolor, bgbcolor, bgtcolor, bgbcolor, &AbsoluteClippingRect);
-		video::SColor bdcolor(245,60,60,80);
-		driver->draw2DRectangleOutline(AbsoluteRect, bdcolor);
+		driver->draw2DRectangle(left, GUI_BG_BTM, GUI_BG_BTM, GUI_BG_BTM, GUI_BG_BTM, &AbsoluteClippingRect);
+		driver->draw2DRectangle(right, GUI_BG_TOP, GUI_BG_BTM, GUI_BG_TOP, GUI_BG_BTM, &AbsoluteClippingRect);
+		driver->draw2DRectangleOutline(AbsoluteRect, GUI_BORDER);
 
 		video::ITexture *texture = driver->getTexture(getTexturePath("menulogo.png").c_str());
 		if (texture != 0) {

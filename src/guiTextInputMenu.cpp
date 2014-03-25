@@ -28,6 +28,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <IGUIFont.h>
 
 #include "gettext.h"
+#include "gui_colours.h"
 
 GUITextInputMenu::GUITextInputMenu(gui::IGUIEnvironment* env,
 		gui::IGUIElement* parent, s32 id,
@@ -139,14 +140,8 @@ void GUITextInputMenu::drawMenu()
 		return;
 	video::IVideoDriver* driver = Environment->getVideoDriver();
 
-	//video::SColor bgcolor(140,0,0,0);
-	//driver->draw2DRectangle(bgcolor, AbsoluteRect, &AbsoluteClippingRect);
-
-	video::SColor bgtcolor(240,50,50,70);
-	video::SColor bgbcolor(240,30,30,50);
-	driver->draw2DRectangle(AbsoluteRect,bgtcolor, bgtcolor, bgbcolor, bgbcolor, &AbsoluteClippingRect);
-	video::SColor bdcolor(245,60,60,80);
-	driver->draw2DRectangleOutline(AbsoluteRect, bdcolor);
+	driver->draw2DRectangle(AbsoluteRect, GUI_BG_TOP, GUI_BG_TOP, GUI_BG_BTM, GUI_BG_BTM, &AbsoluteClippingRect);
+	driver->draw2DRectangleOutline(AbsoluteRect, GUI_BORDER);
 
 	gui::IGUIElement::draw();
 }

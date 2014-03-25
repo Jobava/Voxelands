@@ -33,6 +33,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "log.h"
 #include "tile.h" // ITextureSource
 #include "path.h"
+#include "gui_colours.h"
 
 #include "gettext.h"
 
@@ -48,17 +49,14 @@ void drawInventoryItem(video::IVideoDriver *driver,
 	video::ITexture *texture = NULL;
 	texture = item->getImage();
 
-	if(texture != NULL)
-	{
+	if (texture != NULL) {
 		const video::SColor color(255,255,255,255);
 		const video::SColor colors[] = {color,color,color,color};
 		driver->draw2DImage(texture, rect,
 			core::rect<s32>(core::position2d<s32>(0,0),
 			core::dimension2di(texture->getOriginalSize())),
 			clip, colors, true);
-	}
-	else
-	{
+	}else{
 		video::SColor bgcolor(255,50,50,128);
 		driver->draw2DRectangle(bgcolor, rect, clip);
 	}
@@ -493,10 +491,10 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 		// Note: parent != this so that the tooltip isn't clipped by the menu rectangle
 		m_tooltip_element = Environment->addStaticText(L"",core::rect<s32>(0,0,110,18));
 		m_tooltip_element->enableOverrideColor(true);
-		m_tooltip_element->setBackgroundColor(video::SColor(140,30,30,50));
+		m_tooltip_element->setBackgroundColor(GUI_BG_TT);
 		m_tooltip_element->setDrawBackground(true);
 		m_tooltip_element->setDrawBorder(true);
-		m_tooltip_element->setOverrideColor(video::SColor(255,255,255,255));
+		m_tooltip_element->setOverrideColor(GUI_TT_TEXT);
 		m_tooltip_element->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_CENTER);
 		m_tooltip_element->setWordWrap(false);
 	}
@@ -602,11 +600,8 @@ void GUIFormSpecMenu::drawMenu()
 		return;
 	video::IVideoDriver* driver = Environment->getVideoDriver();
 
-	video::SColor bgtcolor(240,50,50,70);
-	video::SColor bgbcolor(240,30,30,50);
-	driver->draw2DRectangle(AbsoluteRect,bgtcolor, bgtcolor, bgbcolor, bgbcolor, &AbsoluteClippingRect);
-	video::SColor bdcolor(245,60,60,80);
-	driver->draw2DRectangleOutline(AbsoluteRect, bdcolor);
+	driver->draw2DRectangle(AbsoluteRect,GUI_BG_TOP, GUI_BG_TOP, GUI_BG_BTM, GUI_BG_BTM, &AbsoluteClippingRect);
+	driver->draw2DRectangleOutline(AbsoluteRect, GUI_BORDER);
 
 	m_tooltip_element->setVisible(false);
 

@@ -443,6 +443,7 @@ Doing currently:
 #include "content_craftitem.h"
 #include "content_toolitem.h"
 #include "path.h"
+#include "gui_colours.h"
 
 // This makes textures
 ITextureSource *g_texturesource = NULL;
@@ -1477,20 +1478,18 @@ int main(int argc, char *argv[])
 	u32 text_height = font->getDimension(L"Hello, world!").Height;
 	infostream<<"text_height="<<text_height<<std::endl;
 
-	skin->setColor(gui::EGDC_3D_HIGH_LIGHT, video::SColor(255,0,0,0));
-	skin->setColor(gui::EGDC_3D_SHADOW, video::SColor(255,0,0,0));
-	skin->setColor(gui::EGDC_HIGH_LIGHT, video::SColor(255,70,100,50));
-	skin->setColor(gui::EGDC_HIGH_LIGHT_TEXT, video::SColor(255,255,255,255));
-	skin->setColor(gui::EGDC_BUTTON_TEXT, video::SColor(255,255,255,255));
+	skin->setColor(gui::EGDC_3D_HIGH_LIGHT, GUI_3D_HIGH_LIGHT);
+	skin->setColor(gui::EGDC_3D_SHADOW, GUI_3D_SHADOW);
+	skin->setColor(gui::EGDC_HIGH_LIGHT, GUI_HIGH_LIGHT);
+	skin->setColor(gui::EGDC_HIGH_LIGHT_TEXT, GUI_HIGH_LIGHT_TEXT);
+	skin->setColor(gui::EGDC_BUTTON_TEXT, GUI_BUTTON_TEXT);
 
 #if (IRRLICHT_VERSION_MAJOR >= 1 && IRRLICHT_VERSION_MINOR >= 8) || IRRLICHT_VERSION_MAJOR >= 2
-		// Irrlicht 1.8 input colours
-	video::SColor ecolor(255,60,60,80);
-	skin->setColor(gui::EGDC_3D_FACE, ecolor);
-	skin->setColor(gui::EGDC_3D_SHADOW, ecolor);
-	skin->setColor(gui::EGDC_3D_DARK_SHADOW, video::SColor(255,30,30,50));
-	skin->setColor(gui::EGDC_EDITABLE, ecolor);
-	skin->setColor(gui::EGDC_FOCUSED_EDITABLE, ecolor);
+	// Irrlicht 1.8 input colours
+	skin->setColor(gui::EGDC_3D_FACE, GUI_3D_FACE);
+	skin->setColor(gui::EGDC_3D_DARK_SHADOW, GUI_3D_DARK_SHADOW);
+	skin->setColor(gui::EGDC_EDITABLE, GUI_EDITABLE);
+	skin->setColor(gui::EGDC_FOCUSED_EDITABLE, GUI_FOCUSED_EDITABLE);
 #endif
 
 	/*

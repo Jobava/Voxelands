@@ -27,6 +27,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include <IGUIFont.h>
 
 #include "gettext.h"
+#include "gui_colours.h"
 
 const int ID_oldPassword = 256;
 const int ID_newPassword1 = 257;
@@ -179,14 +180,8 @@ void GUIPasswordChange::drawMenu()
 		return;
 	video::IVideoDriver* driver = Environment->getVideoDriver();
 
-	//video::SColor bgcolor(140,0,0,0);
-	//driver->draw2DRectangle(bgcolor, AbsoluteRect, &AbsoluteClippingRect);
-
-	video::SColor bgtcolor(240,50,50,70);
-	video::SColor bgbcolor(240,30,30,50);
-	driver->draw2DRectangle(AbsoluteRect,bgtcolor, bgtcolor, bgbcolor, bgbcolor, &AbsoluteClippingRect);
-	video::SColor bdcolor(245,60,60,80);
-	driver->draw2DRectangleOutline(AbsoluteRect, bdcolor);
+	driver->draw2DRectangle(AbsoluteRect, GUI_BG_TOP, GUI_BG_TOP, GUI_BG_BTM, GUI_BG_BTM, &AbsoluteClippingRect);
+	driver->draw2DRectangleOutline(AbsoluteRect, GUI_BORDER);
 
 	gui::IGUIElement::draw();
 }
