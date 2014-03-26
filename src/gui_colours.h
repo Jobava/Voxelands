@@ -12,6 +12,10 @@
 #define GUI_BG_TT		video::SColor(140,30,30,50)
 #define GUI_TT_TEXT		video::SColor(255,255,255,255)
 
+#define GUI_INV_BORDER		video::SColor(245,60,60,80)
+#define GUI_INV_HIGHLIGHT	video::SColor(240,255,0,0)
+#define GUI_INV_BG		video::SColor(240,30,30,50)
+
 #define GUI_3D_HIGH_LIGHT	video::SColor(255,0,0,0)
 #define GUI_HIGH_LIGHT		video::SColor(255,70,100,50)
 #define GUI_HIGH_LIGHT_TEXT	video::SColor(255,255,255,255)

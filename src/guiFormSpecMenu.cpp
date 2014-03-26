@@ -539,9 +539,6 @@ void GUIFormSpecMenu::drawList(const ListDrawSpec &s, int phase)
 	InventoryList *ilist = inv->getList(s.listname);
 
 	core::rect<s32> imgrect(0,0,imgsize.X,imgsize.Y);
-	video::SColor bdcolor(245,60,60,80);
-	video::SColor hbcolor(240,255,0,0);
-	video::SColor bgcolor(240,30,30,50);
 
 	for (s32 i=0; i<s.geom.X*s.geom.Y; i++) {
 		s32 x = (i%s.geom.X) * spacing.X;
@@ -552,13 +549,13 @@ void GUIFormSpecMenu::drawList(const ListDrawSpec &s, int phase)
 		if (ilist)
 			item = ilist->getItem(i);
 
-		driver->draw2DRectangle(bgcolor, rect, &AbsoluteClippingRect);
+		driver->draw2DRectangle(GUI_INV_BG, rect, &AbsoluteClippingRect);
 
 		if (m_selected_item != NULL && m_selected_item->listname == s.listname && m_selected_item->i == i) {
-			driver->draw2DRectangleOutline(rect, hbcolor);
+			driver->draw2DRectangleOutline(rect, GUI_INV_HIGHLIGHT);
 
 		}else{
-			driver->draw2DRectangleOutline(rect, bdcolor);
+			driver->draw2DRectangleOutline(rect, GUI_INV_BORDER);
 		}
 
 		if (item) {
