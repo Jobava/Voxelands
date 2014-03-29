@@ -369,8 +369,9 @@ TileSpec MapNode::getTile(v3s16 dir)
 				name += "^[transformR270";
 				spec.texture = g_texturesource->getTexture(name);
 			}else if (facedir == 2) { // 180
-				spec.texture.pos += spec.texture.size;
-				spec.texture.size *= -1;
+				std::string name = g_texturesource->getTextureName(spec.texture.id);
+				name += "^[transformR180";
+				spec.texture = g_texturesource->getTexture(name);
 			}else if (facedir == 3) { // 90
 				std::string name = g_texturesource->getTextureName(spec.texture.id);
 				name += "^[transformR90";
@@ -382,8 +383,9 @@ TileSpec MapNode::getTile(v3s16 dir)
 				name += "^[transformR90";
 				spec.texture = g_texturesource->getTexture(name);
 			}else if (facedir == 2) { // 180
-				spec.texture.pos += spec.texture.size;
-				spec.texture.size *= -1;
+				std::string name = g_texturesource->getTextureName(spec.texture.id);
+				name += "^[transformR180";
+				spec.texture = g_texturesource->getTexture(name);
 			}else if (facedir == 3) { // 90
 				std::string name = g_texturesource->getTextureName(spec.texture.id);
 				name += "^[transformR270";

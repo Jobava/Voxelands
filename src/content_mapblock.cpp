@@ -128,14 +128,14 @@ void makeRoofTri(MeshCollector *collector, v3f corners[3], v3f pos, TileSpec *ti
 	v2f btm_t[3];
 	for (int i=0; i<3; i++) {
 		top_v[i].X = (corners[i].X*BS)+pos.X;
-		top_v[i].Y = ((corners[i].Y+0.001)*BS)+pos.Y;
+		top_v[i].Y = ((corners[i].Y+0.01)*BS)+pos.Y;
 		top_v[i].Z = (corners[i].Z*BS)+pos.Z;
 		top_t[i].X = ((corners[i].X+0.5)*tiles[0].texture.size.X)+tiles[0].texture.pos.X;
 		top_t[i].Y = ((corners[i].Z+0.5)*tiles[0].texture.size.Y)+tiles[0].texture.pos.Y;
 
 		// reverse winding for bottom
 		btm_v[2-i].X = (corners[i].X*BS)+pos.X;
-		btm_v[2-i].Y = ((corners[i].Y-0.001)*BS)+pos.Y;
+		btm_v[2-i].Y = ((corners[i].Y-0.01)*BS)+pos.Y;
 		btm_v[2-i].Z = (corners[i].Z*BS)+pos.Z;
 		btm_t[i].X = ((corners[i].X+0.5)*tiles[0].texture.size.X)+tiles[0].texture.pos.X;
 		btm_t[i].Y = ((corners[i].Z+0.5)*tiles[0].texture.size.Y)+tiles[0].texture.pos.Y;
@@ -1209,6 +1209,20 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			};
 			video::SColor c[8];
 			getLights(blockpos_nodes+p,c,data,smooth_lighting);
+			static const v3s16 tile_dirs[6] = {
+				v3s16(0, 1, 0),
+				v3s16(0, -1, 0),
+				v3s16(1, 0, 0),
+				v3s16(-1, 0, 0),
+				v3s16(0, 0, 1),
+				v3s16(0, 0, -1)
+			};
+
+			TileSpec tiles[6];
+			for (int i = 0; i < 6; i++) {
+				// Handles facedir rotation for textures
+				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
+			}
 
 			for(u32 j=0; j<6; j++)
 			{
@@ -1220,13 +1234,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				video::S3DVertex vertices[4] =
 				{
 					video::S3DVertex(-BS/2,-BS/2,BS/2, 0,0,0, c[l[j][0]],
-						content_features(n).tiles[j].texture.x0(), content_features(n).tiles[j].texture.y1()),
+						tiles[j].texture.x0(), tiles[j].texture.y1()),
 					video::S3DVertex(BS/2,-BS/2,BS/2, 0,0,0, c[l[j][1]],
-						content_features(n).tiles[j].texture.x1(), content_features(n).tiles[j].texture.y1()),
+						tiles[j].texture.x1(), tiles[j].texture.y1()),
 					video::S3DVertex(BS/2,BS/2,BS/2, 0,0,0, c[l[j][2]],
-						content_features(n).tiles[j].texture.x1(), content_features(n).tiles[j].texture.y0()),
+						tiles[j].texture.x1(), tiles[j].texture.y0()),
 					video::S3DVertex(-BS/2,BS/2,BS/2, 0,0,0, c[l[j][3]],
-						content_features(n).tiles[j].texture.x0(), content_features(n).tiles[j].texture.y0()),
+						tiles[j].texture.x0(), tiles[j].texture.y0()),
 				};
 
 				// Rotations in the g_6dirs format
@@ -1270,7 +1284,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 				u16 indices[] = {0,1,2,2,3,0};
 				// Add to mesh collector
-				collector.append(content_features(n).tiles[j].getMaterial(), vertices, 4, indices, 6);
+				collector.append(tiles[j].getMaterial(), vertices, 4, indices, 6);
 			}
 		}
 		/*
@@ -1289,6 +1303,20 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			bool post;
 			float height;
 			mapblock_mesh_check_walllike(data, blockpos_nodes+p,d,h,&post);
+			static const v3s16 tile_dirs[6] = {
+				v3s16(0, 1, 0),
+				v3s16(0, -1, 0),
+				v3s16(1, 0, 0),
+				v3s16(-1, 0, 0),
+				v3s16(0, 0, 1),
+				v3s16(0, 0, -1)
+			};
+
+			TileSpec tiles[6];
+			for (int i = 0; i < 6; i++) {
+				// Handles facedir rotation for textures
+				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
+			}
 
 			v3f pos = intToFloat(p+blockpos_nodes, BS);
 			if (d[0]) {
@@ -1307,7 +1335,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					0.,0.2,0.5,1,
 					0.,0.2,0.5,1
 				};
-				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, xrailuv);
+				makeCuboid(&collector, bar, tiles, 6,  c, xrailuv);
 			}
 
 			// Now a section of fence, -X, if there's a post there
@@ -1327,7 +1355,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					0.5,0.2,1,1,
 					0.5,0.2,1,1
 				};
-				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, xrailuv);
+				makeCuboid(&collector, bar, tiles, 6,  c, xrailuv);
 			}
 
 			// Now a section of fence, +Z, if there's a post there
@@ -1347,7 +1375,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					0.35,0.2,0.65,1,
 					0.35,0.2,0.65,1
 				};
-				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, zrailuv);
+				makeCuboid(&collector, bar, tiles, 6,  c, zrailuv);
 			}
 
 			// Now a section of fence, +Z, if there's a post there
@@ -1367,7 +1395,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					0.35,0.2,0.65,1,
 					0.35,0.2,0.65,1
 				};
-				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, zrailuv);
+				makeCuboid(&collector, bar, tiles, 6,  c, zrailuv);
 			}
 			if (d[4]) {
 				height = h[4] ? 0.501 : 0.301;
@@ -1383,7 +1411,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					0.,0.2,0.5,1,
 					0.,0.2,0.5,1
 				};
-				makeAngledCuboid(&collector, pos, bar, content_features(n).tiles, 6,  c, xrailuv, 45);
+				makeAngledCuboid(&collector, pos, bar, tiles, 6,  c, xrailuv, 45);
 			}
 			if (d[5]) {
 				height = h[5] ? 0.501 : 0.301;
@@ -1399,7 +1427,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					0.5,0.2,1,1,
 					0.5,0.2,1,1
 				};
-				makeAngledCuboid(&collector, pos, bar, content_features(n).tiles, 6,  c, xrailuv, 135);
+				makeAngledCuboid(&collector, pos, bar, tiles, 6,  c, xrailuv, 135);
 			}
 			if (d[6]) {
 				height = h[6] ? 0.501 : 0.301;
@@ -1415,7 +1443,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					0.35,0.2,0.65,1,
 					0.35,0.2,0.65,1
 				};
-				makeAngledCuboid(&collector, pos, bar, content_features(n).tiles, 6,  c, zrailuv, 45);
+				makeAngledCuboid(&collector, pos, bar, tiles, 6,  c, zrailuv, 45);
 			}
 			if (d[7]) {
 				height = h[7] ? 0.501 : 0.301;
@@ -1431,7 +1459,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					0.35,0.2,0.65,1,
 					0.35,0.2,0.65,1
 				};
-				makeAngledCuboid(&collector, pos, bar, content_features(n).tiles, 6,  c, zrailuv, 315);
+				makeAngledCuboid(&collector, pos, bar, tiles, 6,  c, zrailuv, 315);
 			}
 			if (post) {
 				aabb3f post_v(-post_rad,-BS/2,-post_rad,post_rad,BS/2,post_rad);
@@ -1445,7 +1473,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					0.3,0,0.7,1,
 					0.3,0,0.7,1
 				};
-				makeCuboid(&collector, post_v, content_features(n).tiles, 6,  c, postuv);
+				makeCuboid(&collector, post_v, tiles, 6,  c, postuv);
 			}
 		}
 		/*
@@ -1462,6 +1490,20 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 			// The post - always present
 			v3f pos = intToFloat(p+blockpos_nodes, BS);
+			static const v3s16 tile_dirs[6] = {
+				v3s16(0, 1, 0),
+				v3s16(0, -1, 0),
+				v3s16(1, 0, 0),
+				v3s16(-1, 0, 0),
+				v3s16(0, 0, 1),
+				v3s16(0, 0, -1)
+			};
+
+			TileSpec tiles[6];
+			for (int i = 0; i < 6; i++) {
+				// Handles facedir rotation for textures
+				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
+			}
 
 			// The post - always present
 			aabb3f post(-post_rad,-BS/2,-post_rad,post_rad,BS/2,post_rad);
@@ -1475,7 +1517,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				0.35,0,0.65,1,
 				0.35,0,0.65,1
 			};
-			makeCuboid(&collector, post, content_features(n).tiles, 6,  c, postuv);
+			makeCuboid(&collector, post, tiles, 6,  c, postuv);
 
 			bool fence_plus_x = false;
 			bool fence_minus_x = false;
@@ -1508,10 +1550,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					0.5,0.4,1,0.6,
 					0.5,0.4,1,0.6
 				};
-				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, xrailuv);
+				makeCuboid(&collector, bar, tiles, 6,  c, xrailuv);
 				bar.MinEdge.Y -= BS/2;
 				bar.MaxEdge.Y -= BS/2;
-				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, xrailuv);
+				makeCuboid(&collector, bar, tiles, 6,  c, xrailuv);
 			}
 
 			// Now a section of fence, +Z, if there's a post there
@@ -1540,10 +1582,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					0,0.4,0.5,0.6,
 					0,0.4,0.5,0.6
 				};
-				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, xrailuv);
+				makeCuboid(&collector, bar, tiles, 6,  c, xrailuv);
 				bar.MinEdge.Y -= BS/2;
 				bar.MaxEdge.Y -= BS/2;
-				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, xrailuv);
+				makeCuboid(&collector, bar, tiles, 6,  c, xrailuv);
 			}
 
 			// Now a section of fence, +Z, if there's a post there
@@ -1572,10 +1614,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					0,0.4,1,0.6,
 					0,0.4,1,0.6
 				};
-				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, zrailuv);
+				makeCuboid(&collector, bar, tiles, 6,  c, zrailuv);
 				bar.MinEdge.Y -= BS/2;
 				bar.MaxEdge.Y -= BS/2;
-				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, zrailuv);
+				makeCuboid(&collector, bar, tiles, 6,  c, zrailuv);
 			}
 
 			// Now a section of fence, +Z, if there's a post there
@@ -1604,10 +1646,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					0,0.4,1,0.6,
 					0,0.4,1,0.6
 				};
-				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, zrailuv);
+				makeCuboid(&collector, bar, tiles, 6,  c, zrailuv);
 				bar.MinEdge.Y -= BS/2;
 				bar.MaxEdge.Y -= BS/2;
-				makeCuboid(&collector, bar, content_features(n).tiles, 6,  c, zrailuv);
+				makeCuboid(&collector, bar, tiles, 6,  c, zrailuv);
 			}
 			if (!fence_plus_x && !fence_plus_z) {
 				p2 = p;
@@ -1629,10 +1671,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						0,0.4,1,0.6,
 						0,0.4,1,0.6
 					};
-					makeAngledCuboid(&collector, pos, bar, content_features(n).tiles, 6,  c, zrailuv, 135);
+					makeAngledCuboid(&collector, pos, bar, tiles, 6,  c, zrailuv, 135);
 					bar.MinEdge.Y -= BS/2;
 					bar.MaxEdge.Y -= BS/2;
-					makeAngledCuboid(&collector, pos, bar, content_features(n).tiles, 6,  c, zrailuv, 135);
+					makeAngledCuboid(&collector, pos, bar, tiles, 6,  c, zrailuv, 135);
 				}
 			}
 			if (!fence_plus_x && !fence_minus_z) {
@@ -1655,10 +1697,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						0,0.4,1,0.6,
 						0,0.4,1,0.6
 					};
-					makeAngledCuboid(&collector, pos, bar, content_features(n).tiles, 6,  c, zrailuv, 45);
+					makeAngledCuboid(&collector, pos, bar, tiles, 6,  c, zrailuv, 45);
 					bar.MinEdge.Y -= BS/2;
 					bar.MaxEdge.Y -= BS/2;
-					makeAngledCuboid(&collector, pos, bar, content_features(n).tiles, 6,  c, zrailuv, 45);
+					makeAngledCuboid(&collector, pos, bar, tiles, 6,  c, zrailuv, 45);
 				}
 			}
 			if (!fence_minus_x && !fence_plus_z) {
@@ -1681,10 +1723,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						0,0.4,1,0.6,
 						0,0.4,1,0.6
 					};
-					makeAngledCuboid(&collector, pos, bar, content_features(n).tiles, 6,  c, zrailuv, 225);
+					makeAngledCuboid(&collector, pos, bar, tiles, 6,  c, zrailuv, 225);
 					bar.MinEdge.Y -= BS/2;
 					bar.MaxEdge.Y -= BS/2;
-					makeAngledCuboid(&collector, pos, bar, content_features(n).tiles, 6,  c, zrailuv, 225);
+					makeAngledCuboid(&collector, pos, bar, tiles, 6,  c, zrailuv, 225);
 				}
 			}
 			if (!fence_minus_x && !fence_minus_z) {
@@ -1707,10 +1749,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						0,0.4,1,0.6,
 						0,0.4,1,0.6
 					};
-					makeAngledCuboid(&collector, pos, bar, content_features(n).tiles, 6,  c, zrailuv, 315);
+					makeAngledCuboid(&collector, pos, bar, tiles, 6,  c, zrailuv, 315);
 					bar.MinEdge.Y -= BS/2;
 					bar.MaxEdge.Y -= BS/2;
-					makeAngledCuboid(&collector, pos, bar, content_features(n).tiles, 6,  c, zrailuv, 315);
+					makeAngledCuboid(&collector, pos, bar, tiles, 6,  c, zrailuv, 315);
 				}
 			}
 
@@ -2947,9 +2989,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			TileSpec tiles[6];
 			for (int i = 0; i < 6; i++) {
 				// Handles facedir rotation for textures
-				tiles[i] = n.getTile(tile_dirs[i]);
-				// getNodeTile needs to handle facedir rotation, then we can get cracks in nodeboxes
-				//tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
+				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
 			}
 			video::SColor c[8];
 			getLights(blockpos_nodes+p,c,data,smooth_lighting);
