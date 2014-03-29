@@ -116,6 +116,52 @@ void makeCuboid(MeshCollector *collector, const aabb3f &box,
 }
 
 /*
+ */
+void makeRoofTri(MeshCollector *collector, v3f corners[3], v3f pos, TileSpec *tiles, int tilecount, video::SColor c[8])
+{
+	assert(tilecount >= 1 && tilecount <= 6);
+	// vertices for top and bottom tri
+	v3f top_v[3];
+	v3f btm_v[3];
+	// tex coords for top and bottom tri
+	v2f top_t[3];
+	v2f btm_t[3];
+	for (int i=0; i<3; i++) {
+		top_v[i].X = (corners[i].X*BS)+pos.X;
+		top_v[i].Y = ((corners[i].Y+0.001)*BS)+pos.Y;
+		top_v[i].Z = (corners[i].Z*BS)+pos.Z;
+		top_t[i].X = ((corners[i].X+0.5)*tiles[0].texture.size.X)+tiles[0].texture.pos.X;
+		top_t[i].Y = ((corners[i].Z+0.5)*tiles[0].texture.size.Y)+tiles[0].texture.pos.Y;
+
+		// reverse winding for bottom
+		btm_v[2-i].X = (corners[i].X*BS)+pos.X;
+		btm_v[2-i].Y = ((corners[i].Y-0.001)*BS)+pos.Y;
+		btm_v[2-i].Z = (corners[i].Z*BS)+pos.Z;
+		btm_t[i].X = ((corners[i].X+0.5)*tiles[0].texture.size.X)+tiles[0].texture.pos.X;
+		btm_t[i].Y = ((corners[i].Z+0.5)*tiles[0].texture.size.Y)+tiles[0].texture.pos.Y;
+	}
+
+	{
+		video::S3DVertex tri_v[3] = {
+			video::S3DVertex(btm_v[0].X, btm_v[0].Y, btm_v[0].Z, 0,0,0, c[1], btm_t[0].X, btm_t[0].Y),
+			video::S3DVertex(btm_v[1].X, btm_v[1].Y, btm_v[1].Z, 0,0,0, c[1], btm_t[1].X, btm_t[1].Y),
+			video::S3DVertex(btm_v[2].X, btm_v[2].Y, btm_v[2].Z, 0,0,0, c[1], btm_t[2].X, btm_t[2].Y),
+		};
+		u16 indices[] = {0,1,2};
+		collector->append(tiles[0].getMaterial(),tri_v, 3, indices, 3);
+	}
+	{
+		video::S3DVertex tri_v[3] = {
+			video::S3DVertex(top_v[0].X, top_v[0].Y, top_v[0].Z, 0,0,0, c[0], top_t[0].X, top_t[0].Y),
+			video::S3DVertex(top_v[1].X, top_v[1].Y, top_v[1].Z, 0,0,0, c[0], top_t[1].X, top_t[1].Y),
+			video::S3DVertex(top_v[2].X, top_v[2].Y, top_v[2].Z, 0,0,0, c[0], top_t[2].X, top_t[2].Y),
+		};
+		u16 indices[] = {0,1,2};
+		collector->append(tiles[0].getMaterial(),tri_v, 3, indices, 3);
+	}
+}
+
+/*
  * get the light values for a node
  * smooth lighting gets per-vertex
  * standard lighting gets per-face
@@ -143,7 +189,7 @@ static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool
 			)
 				continue;
 			ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
-			if (!ltp)
+			if (ltp < 20)
 				continue;
 			lt += ltp;
 			ld++;
@@ -191,7 +237,7 @@ static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool
 			)
 				continue;
 			ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
-			if (!ltp)
+			if (ltp < 20)
 				continue;
 			lt += ltp;
 			ld++;
@@ -206,6 +252,83 @@ static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool
 static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool smooth_lighting)
 {
 	getLights(pos,lights,data,smooth_lighting,255);
+}
+static void getRoofLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, v3s16 dir)
+{
+		u8 l = 0;
+		u32 lt = 0;
+		u32 ltp;
+		u8 ld = 0;
+		MapNode tn = data->m_vmanip.getNodeNoEx(pos + v3s16(0,1,0));
+		ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
+		if (ltp < 20 || ltp > 200) {
+			for (s16 tx=-1; tx<2; tx++) {
+			for (s16 ty=0; ty<2; ty++) {
+			for (s16 tz=-1; tz<2; tz++) {
+				if ((dir.X && tx != dir.X) || (dir.Z && tz != dir.Z))
+					continue;
+				tn = data->m_vmanip.getNodeNoEx(pos + v3s16(tx,ty,tz));
+				if (
+					ty<1
+					&& (
+						tn.getContent() != CONTENT_AIR
+						&& content_features(tn).light_source == 0
+						&& content_features(tn).param_type != CPT_LIGHT
+					)
+				)
+					continue;
+				ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
+				if (ltp < 20)
+					continue;
+				lt += ltp;
+				ld++;
+			}
+			}
+			}
+			l = lt;
+			if (ld > 1)
+				l = lt/ld;
+		}else{
+			l = ltp;
+		}
+		lights[0] = MapBlock_LightColor(255, l);
+
+		tn = data->m_vmanip.getNodeNoEx(pos + v3s16(0,-1,0));
+		ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
+		l = 0;
+		ld = 0;
+		lt = 0;
+		if (ltp < 20) {
+			for (s16 tx=-1; tx<2; tx++) {
+			for (s16 ty=-1; ty<1; ty++) {
+			for (s16 tz=-1; tz<2; tz++) {
+				if ((dir.X && tx == dir.X) || (dir.Z && tz == dir.Z))
+					continue;
+				tn = data->m_vmanip.getNodeNoEx(pos + v3s16(tx,ty,tz));
+				if (
+					ty<1
+					&& (
+						tn.getContent() != CONTENT_AIR
+						&& content_features(tn).light_source == 0
+						&& content_features(tn).param_type != CPT_LIGHT
+					)
+				)
+					continue;
+				ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
+				if (ltp < 20)
+					continue;
+				lt += ltp;
+				ld++;
+			}
+			}
+			}
+			l = lt;
+			if (ld > 1)
+				l = lt/ld;
+		}else{
+			l = ltp;
+		}
+		lights[1] = MapBlock_LightColor(255, l);
 }
 #endif
 
@@ -1799,14 +1922,17 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 			u8 adjacencies = is_roof_x[0] + is_roof_x[1] + is_roof_z[0] + is_roof_z[1];
 
-			TileSpec tile = content_features(thiscontent).tiles[0];
-			video::SColor c[8];
-			getLights(blockpos_nodes+p,c,data,smooth_lighting);
+			// get the tile, with crack if being dug
+			TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),data->m_temp_mods);
+			video::SColor c[2];
+			getRoofLights(blockpos_nodes+p,c,data,v3s16(0,0,0));
 
 			u8 type = 0;
 			s16 angle = 0;
 
 			MapNode abv;
+
+			v3f pos = intToFloat(p+blockpos_nodes, BS);
 
 			if (adjacencies == 1) {
 				// cross X
@@ -2009,232 +2135,467 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			switch (type) {
 			case 0:
 			{
-				video::S3DVertex slope_v[4] = {
-					video::S3DVertex(-BS/2,-BS/2,-BS/2, 0,0,0, c[4], tile.texture.x0(), tile.texture.y1()),
-					video::S3DVertex(BS/2,-BS/2,-BS/2, 0,0,0, c[5], tile.texture.x1(), tile.texture.y1()),
-					video::S3DVertex(BS/2,BS/2,BS/2, 0,0,0, c[0], tile.texture.x1(), tile.texture.y0()),
-					video::S3DVertex(-BS/2,BS/2,BS/2, 0,0,0, c[1], tile.texture.x0(), tile.texture.y0()),
-				};
-				for (s32 i=0; i<4; i++) {
-					if (angle != 0)
-						slope_v[i].Pos.rotateXZBy(angle);
-					slope_v[i].Pos += intToFloat(blockpos_nodes + p, BS);
+				v3f cnr[2][3];
+				if (angle == 0) {
+					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+					cnr[0][1] = v3f(0.5,-0.5,-0.5);
+					cnr[0][2] = v3f(0.5,0.5,0.5);
+					cnr[1][0] = v3f(0.5,0.5,0.5);
+					cnr[1][1] = v3f(-0.5,0.5,0.5);
+					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+					getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,-1));
+				}else if (angle == 90) {
+					cnr[0][0] = v3f(-0.5,0.5,-0.5);
+					cnr[0][1] = v3f(0.5,-0.5,-0.5);
+					cnr[0][2] = v3f(0.5,-0.5,0.5);
+					cnr[1][0] = v3f(0.5,-0.5,0.5);
+					cnr[1][1] = v3f(-0.5,0.5,0.5);
+					cnr[1][2] = v3f(-0.5,0.5,-0.5);
+					getRoofLights(blockpos_nodes+p,c,data,v3s16(1,1,0));
+				}else if (angle == 180) {
+					cnr[0][0] = v3f(-0.5,0.5,-0.5);
+					cnr[0][1] = v3f(0.5,0.5,-0.5);
+					cnr[0][2] = v3f(0.5,-0.5,0.5);
+					cnr[1][0] = v3f(0.5,-0.5,0.5);
+					cnr[1][1] = v3f(-0.5,-0.5,0.5);
+					cnr[1][2] = v3f(-0.5,0.5,-0.5);
+					getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,1));
+				}else if (angle == 270) {
+					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+					cnr[0][1] = v3f(0.5,0.5,-0.5);
+					cnr[0][2] = v3f(0.5,0.5,0.5);
+					cnr[1][0] = v3f(0.5,0.5,0.5);
+					cnr[1][1] = v3f(-0.5,-0.5,0.5);
+					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+					getRoofLights(blockpos_nodes+p,c,data,v3s16(-1,1,0));
 				}
-
-				u16 indices[] = {0,1,2,2,3,0};
-				collector.append(tile.getMaterial(), slope_v, 4, indices, 6);
+				for (int s=0; s<2; s++) {
+					makeRoofTri(&collector,cnr[s],pos,&tile,1,c);
+				}
 			}
 			break;
 			case 1:
 			{
-				// TODO: tex coords for half height
-				video::S3DVertex top_v[2][4] = {
-					{
-						video::S3DVertex(-BS/2, -BS/2, -BS/2, 0,0,0, c[4], tile.texture.x0(), tile.texture.y1()),
-						video::S3DVertex(BS/2,  -BS/2, -BS/2, 0,0,0, c[5], tile.texture.x1(), tile.texture.y1()),
-						video::S3DVertex(BS/2,  0,     0, 0,0,0, c[0], tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(-BS/2, 0,     0, 0,0,0, c[1], tile.texture.x0(), tile.texture.y0()),
-					},{
-						video::S3DVertex(-BS/2, 0,     0, 0,0,0, c[0], tile.texture.x0(), tile.texture.y1()),
-						video::S3DVertex(BS/2,  0,     0, 0,0,0, c[1], tile.texture.x1(), tile.texture.y1()),
-						video::S3DVertex(BS/2,  -BS/2, BS/2, 0,0,0, c[4], tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(-BS/2, -BS/2, BS/2, 0,0,0, c[5], tile.texture.x0(), tile.texture.y0()),
-					}
-				};
-				for (s32 s=0; s<2; s++) {
-					for (s32 i=0; i<4; i++) {
-						if (angle != 0)
-							top_v[s][i].Pos.rotateXZBy(angle);
-						top_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
-					}
-
-					u16 indices[] = {0,1,2,2,3,0};
-					collector.append(tile.getMaterial(), top_v[s], 4, indices, 6);
+				v3f cnr[4][3];
+				getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,0));
+				if (angle == 0 || angle == 180) {
+					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+					cnr[0][1] = v3f(0.5,-0.5,-0.5);
+					cnr[0][2] = v3f(0.5,0.,0.);
+					cnr[1][0] = v3f(0.5,0.,0.);
+					cnr[1][1] = v3f(-0.5,0.,0.);
+					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+					cnr[2][0] = v3f(-0.5,0.,0.);
+					cnr[2][1] = v3f(0.5,0.,0.);
+					cnr[2][2] = v3f(0.5,-0.5,0.5);
+					cnr[3][0] = v3f(0.5,-0.5,0.5);
+					cnr[3][1] = v3f(-0.5,-0.5,0.5);
+					cnr[3][2] = v3f(-0.5,0.,0.);
+				}else if (angle == 90 || angle == 270) {
+					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+					cnr[0][1] = v3f(-0.5,-0.5,0.5);
+					cnr[0][2] = v3f(0.,0.,0.5);
+					cnr[1][0] = v3f(0.,0.,0.5);
+					cnr[1][1] = v3f(0.,0.,-0.5);
+					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+					cnr[2][0] = v3f(0.,0.,-0.5);
+					cnr[2][1] = v3f(0.,0.,0.5);
+					cnr[2][2] = v3f(0.5,-0.5,0.5);
+					cnr[3][0] = v3f(0.5,-0.5,0.5);
+					cnr[3][1] = v3f(0.5,-0.5,-0.5);
+					cnr[3][2] = v3f(0.,0.,-0.5);
+				}
+				for (int s=0; s<4; s++) {
+					makeRoofTri(&collector,cnr[s],pos,&tile,1,c);
 				}
 			}
 			break;
 			case 2:
 			{
-				// TODO: tex coords for half height
-				video::S3DVertex butt_v[3][4] = {
-					{
-						video::S3DVertex(-BS/2,-BS/2,-BS/2, 0,0,0, c[4], tile.texture.x0(), tile.texture.y1()),
-						video::S3DVertex(-BS/2,-BS/2,BS/2, 0,0,0, c[5], tile.texture.x1(), tile.texture.y1()),
-						video::S3DVertex(BS/2,BS/2,BS/2, 0,0,0, c[0], tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(BS/2,BS/2,-BS/2, 0,0,0, c[1], tile.texture.x0(), tile.texture.y0()),
-					},{
-						video::S3DVertex(0,     0,     0, 0,0,0, c[0], tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(-BS/2, 0,     0, 0,0,0, c[1], tile.texture.x0(), tile.texture.y0()),
-						video::S3DVertex(-BS/2, -BS/2, -BS/2, 0,0,0, c[4], tile.texture.x0(), tile.texture.y1()),
-					},{
-						video::S3DVertex(0,     0,     0, 0,0,0, c[0], tile.texture.x0(), tile.texture.y0()),
-						video::S3DVertex(-BS/2, -BS/2, BS/2, 0,0,0, c[5], tile.texture.x1(), tile.texture.y1()),
-						video::S3DVertex(-BS/2, 0,     0, 0,0,0, c[1], tile.texture.x1(), tile.texture.y0()),
-					}
-				};
-				s16 k = 6;
-				for (s32 s=0; s<3; s++) {
-					for (s32 i=0; i<4; i++) {
-						if (angle != 0)
-							butt_v[s][i].Pos.rotateXZBy(angle);
-						butt_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
-					}
-
-					u16 indices[] = {0,1,2,2,3,0};
-					collector.append(tile.getMaterial(),butt_v[s], 4, indices, k);
-					k = 3;
+				v3f cnr[2][3];
+				if (angle == 90) {
+					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+					cnr[0][1] = v3f(0.5,-0.5,-0.5);
+					cnr[0][2] = v3f(0.5,0.5,0.5);
+					cnr[1][0] = v3f(0.5,0.5,0.5);
+					cnr[1][1] = v3f(-0.5,0.5,0.5);
+					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+					getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,-1));
+				}else if (angle == 180) {
+					cnr[0][0] = v3f(-0.5,0.5,-0.5);
+					cnr[0][1] = v3f(0.5,-0.5,-0.5);
+					cnr[0][2] = v3f(0.5,-0.5,0.5);
+					cnr[1][0] = v3f(0.5,-0.5,0.5);
+					cnr[1][1] = v3f(-0.5,0.5,0.5);
+					cnr[1][2] = v3f(-0.5,0.5,-0.5);
+					getRoofLights(blockpos_nodes+p,c,data,v3s16(1,1,0));
+				}else if (angle == 270) {
+					cnr[0][0] = v3f(-0.5,0.5,-0.5);
+					cnr[0][1] = v3f(0.5,0.5,-0.5);
+					cnr[0][2] = v3f(0.5,-0.5,0.5);
+					cnr[1][0] = v3f(0.5,-0.5,0.5);
+					cnr[1][1] = v3f(-0.5,-0.5,0.5);
+					cnr[1][2] = v3f(-0.5,0.5,-0.5);
+					getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,1));
+				}else if (angle == 0) {
+					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+					cnr[0][1] = v3f(0.5,0.5,-0.5);
+					cnr[0][2] = v3f(0.5,0.5,0.5);
+					cnr[1][0] = v3f(0.5,0.5,0.5);
+					cnr[1][1] = v3f(-0.5,-0.5,0.5);
+					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+					getRoofLights(blockpos_nodes+p,c,data,v3s16(-1,1,0));
+				}
+				for (int s=0; s<2; s++) {
+					makeRoofTri(&collector,cnr[s],pos,&tile,1,c);
+				}
+			}
+			{
+				v3f cnr[2][3];
+				if (angle == 0) {
+					cnr[0][0] = v3f(0.,0.,0.);
+					cnr[0][1] = v3f(-0.5,0.,0.);
+					cnr[0][2] = v3f(-0.5,-0.5,-0.5);
+					cnr[1][0] = v3f(0.,0.,0.);
+					cnr[1][1] = v3f(-0.5,-0.5,0.5);
+					cnr[1][2] = v3f(-0.5,0.,0.);
+					getRoofLights(blockpos_nodes+p,c,data,v3s16(-1,1,0));
+				}else if (angle == 90) {
+					cnr[0][0] = v3f(0.,0.,0.);
+					cnr[0][1] = v3f(0.,0.,-0.5);
+					cnr[0][2] = v3f(-0.5,-0.5,-0.5);
+					cnr[1][0] = v3f(0.,0.,0.);
+					cnr[1][1] = v3f(0.5,-0.5,-0.5);
+					cnr[1][2] = v3f(0.,0.,-0.5);
+					getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,-1));
+				}else if (angle == 180) {
+					cnr[0][0] = v3f(0.,0.,0.);
+					cnr[0][1] = v3f(0.5,0.,0.);
+					cnr[0][2] = v3f(0.5,-0.5,-0.5);
+					cnr[1][0] = v3f(0.,0.,0.);
+					cnr[1][1] = v3f(0.5,-0.5,0.5);
+					cnr[1][2] = v3f(0.5,0.,0.);
+					getRoofLights(blockpos_nodes+p,c,data,v3s16(1,1,0));
+				}else if (angle == 270) {
+					cnr[0][0] = v3f(0.,0.,0.);
+					cnr[0][1] = v3f(0.,0.,0.5);
+					cnr[0][2] = v3f(-0.5,-0.5,0.5);
+					cnr[1][0] = v3f(0.,0.,0.);
+					cnr[1][1] = v3f(0.5,-0.5,0.5);
+					cnr[1][2] = v3f(0.,0.,0.5);
+					getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,1));
+				}
+				for (int s=0; s<2; s++) {
+					makeRoofTri(&collector,cnr[s],pos,&tile,1,c);
 				}
 			}
 			break;
 			case 3:
 			{
-				// TODO: tex coords are totally screwed
-				video::S3DVertex topc_v[4][4] = {
-					{
-						video::S3DVertex(0,     0,     0, 0,0,0, c[0], tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(-BS/2, 0,     0, 0,0,0, c[1], tile.texture.x0(), tile.texture.y0()),
-						video::S3DVertex(-BS/2, -BS/2, -BS/2, 0,0,0, c[4], tile.texture.x0(), tile.texture.y1()),
-					},{
-						video::S3DVertex(0,     0,     0, 0,0,0, c[0], tile.texture.x0(), tile.texture.y0()),
-						video::S3DVertex(-BS/2, -BS/2, BS/2, 0,0,0, c[4], tile.texture.x1(), tile.texture.y1()),
-						video::S3DVertex(-BS/2, 0,     0, 0,0,0, c[1], tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(BS/2, -BS/2, BS/2, 0,0,0, c[5], tile.texture.x0(), tile.texture.y1()),
-					},{
-						video::S3DVertex(0,     0,     0, 0,0,0, c[0], tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(0,     0,     -BS/2, 0,0,0, c[1], tile.texture.x0(), tile.texture.y0()),
-						video::S3DVertex(-BS/2, -BS/2, -BS/2, 0,0,0, c[4], tile.texture.x0(), tile.texture.y1()),
-					},{
-						video::S3DVertex(0,     0,     0, 0,0,0, c[0], tile.texture.x0(), tile.texture.y0()),
-						video::S3DVertex(0,     0,     -BS/2, 0,0,0, c[1], tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(BS/2,  -BS/2, -BS/2, 0,0,0, c[4], tile.texture.x1(), tile.texture.y1()),
-						video::S3DVertex(BS/2,  -BS/2, BS/2, 0,0,0, c[5], tile.texture.x1(), tile.texture.y1()),
-					}
-				};
-				u16 indices[4][6] = {
-					{0,1,2,0,3,1},
-					{0,1,2,0,3,1},
-					{0,1,2,0,3,1},
-					{0,1,2,0,2,3}
-				};
-				s16 k = 3;
-				for (s32 s=0; s<4; s++) {
-					k = s%2 ? 6 : 3;
-					for (s32 i=0; i<4; i++) {
-						if (angle != 0)
-							topc_v[s][i].Pos.rotateXZBy(angle);
-						topc_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
-					}
-
-					collector.append(tile.getMaterial(),topc_v[s], 4, indices[s], k);
+				v3f cnr[2][3];
+				getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,0));
+				if (angle == 0) {
+					cnr[0][0] = v3f(0.,0.,0.);
+					cnr[0][1] = v3f(-0.5,0.,0.);
+					cnr[0][2] = v3f(-0.5,-0.5,-0.5);
+					cnr[1][0] = v3f(0.,0.,0.);
+					cnr[1][1] = v3f(0.,0.,-0.5);
+					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+				}else if (angle == 90) {
+					cnr[0][0] = v3f(0.,0.,0.);
+					cnr[0][1] = v3f(0.,0.,-0.5);
+					cnr[0][2] = v3f(0.5,-0.5,-0.5);
+					cnr[1][0] = v3f(0.,0.,0.);
+					cnr[1][1] = v3f(0.5,0.,0.);
+					cnr[1][2] = v3f(0.5,-0.5,-0.5);
+				}else if (angle == 180) {
+					cnr[0][0] = v3f(0.,0.,0.);
+					cnr[0][1] = v3f(0.,0.,0.5);
+					cnr[0][2] = v3f(0.5,-0.5,0.5);
+					cnr[1][0] = v3f(0.,0.,0.);
+					cnr[1][1] = v3f(0.5,0.,0.);
+					cnr[1][2] = v3f(0.5,-0.5,0.5);
+				}else if (angle == 270) {
+					cnr[0][0] = v3f(0.,0.,0.);
+					cnr[0][1] = v3f(0.,0.,0.5);
+					cnr[0][2] = v3f(-0.5,-0.5,0.5);
+					cnr[1][0] = v3f(0.,0.,0.);
+					cnr[1][1] = v3f(-0.5,0.,0.);
+					cnr[1][2] = v3f(-0.5,-0.5,0.5);
+				}
+				for (int s=0; s<2; s++) {
+					makeRoofTri(&collector,cnr[s],pos,&tile,1,c);
+				}
+			}
+			{
+				v3f cnr[4][3];
+				if (angle == 0) {
+					cnr[0][0] = v3f(0.,0.,0.);
+					cnr[0][1] = v3f(-0.5,-0.5,0.5);
+					cnr[0][2] = v3f(-0.5,0.,0.);
+					cnr[1][0] = v3f(0.,0.,0.);
+					cnr[1][1] = v3f(0.5,-0.5,0.5);
+					cnr[1][2] = v3f(-0.5,-0.5,0.5);
+					cnr[2][0] = v3f(0.,0.,0.);
+					cnr[2][1] = v3f(0.,0.,-0.5);
+					cnr[2][2] = v3f(0.5,-0.5,-0.5);
+					cnr[3][0] = v3f(0.,0.,0.);
+					cnr[3][1] = v3f(0.5,-0.5,-0.5);
+					cnr[3][2] = v3f(0.5,-0.5,0.5);
+				}else if (angle == 90) {
+					cnr[0][0] = v3f(0.,0.,0.);
+					cnr[0][1] = v3f(-0.5,-0.5,-0.5);
+					cnr[0][2] = v3f(0.,0.,-0.5);
+					cnr[1][0] = v3f(0.,0.,0.);
+					cnr[1][1] = v3f(-0.5,-0.5,0.5);
+					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+					cnr[2][0] = v3f(0.,0.,0.);
+					cnr[2][1] = v3f(0.5,0.,0.);
+					cnr[2][2] = v3f(0.5,-0.5,0.5);
+					cnr[3][0] = v3f(0.,0.,0.);
+					cnr[3][1] = v3f(0.5,-0.5,0.5);
+					cnr[3][2] = v3f(-0.5,-0.5,0.5);
+				}else if (angle == 180) {
+					cnr[0][0] = v3f(0.,0.,0.);
+					cnr[0][1] = v3f(0.5,-0.5,-0.5);
+					cnr[0][2] = v3f(0.5,0.,0.);
+					cnr[1][0] = v3f(0.,0.,0.);
+					cnr[1][1] = v3f(-0.5,-0.5,-0.5);
+					cnr[1][2] = v3f(0.5,-0.5,-0.5);
+					cnr[2][0] = v3f(0.,0.,0.);
+					cnr[2][1] = v3f(0.,0.,0.5);
+					cnr[2][2] = v3f(-0.5,-0.5,0.5);
+					cnr[3][0] = v3f(0.,0.,0.);
+					cnr[3][1] = v3f(-0.5,-0.5,0.5);
+					cnr[3][2] = v3f(-0.5,-0.5,-0.5);
+				}else if (angle == 270) {
+					cnr[0][0] = v3f(0.,0.,0.);
+					cnr[0][1] = v3f(0.5,-0.5,0.5);
+					cnr[0][2] = v3f(0.,0.,0.5);
+					cnr[1][0] = v3f(0.,0.,0.);
+					cnr[1][1] = v3f(0.5,-0.5,-0.5);
+					cnr[1][2] = v3f(0.5,-0.5,0.5);
+					cnr[2][0] = v3f(0.,0.,0.);
+					cnr[2][1] = v3f(-0.5,0.,0.);
+					cnr[2][2] = v3f(-0.5,-0.5,-0.5);
+					cnr[3][0] = v3f(0.,0.,0.);
+					cnr[3][1] = v3f(-0.5,-0.5,-0.5);
+					cnr[3][2] = v3f(0.5,-0.5,-0.5);
+				}
+				for (int s=0; s<4; s++) {
+					makeRoofTri(&collector,cnr[s],pos,&tile,1,c);
 				}
 			}
 			break;
 			case 4:
 			{
-				video::S3DVertex outer_v[4] = {
-					video::S3DVertex(-BS/2,-BS/2,-BS/2, 0,0,0, c[4], tile.texture.x0(), tile.texture.y1()),
-					video::S3DVertex(BS/2,-BS/2,-BS/2, 0,0,0, c[5], tile.texture.x1(), tile.texture.y1()),
-					video::S3DVertex(-BS/2,BS/2,BS/2, 0,0,0, c[0], tile.texture.x0(), tile.texture.y0()),
-					video::S3DVertex(BS/2,-BS/2,BS/2, 0,0,0, c[6], tile.texture.x0(), tile.texture.y1()),
-				};
-				for (s32 i=0; i<4; i++) {
-					if (angle != 0)
-						outer_v[i].Pos.rotateXZBy(angle);
-					outer_v[i].Pos += intToFloat(blockpos_nodes + p, BS);
+				v3f cnr[2][3];
+				if (angle == 0) {
+					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+					cnr[0][1] = v3f(0.5,-0.5,-0.5);
+					cnr[0][2] = v3f(-0.5,0.5,0.5);
+					cnr[1][0] = v3f(-0.5,0.5,0.5);
+					cnr[1][1] = v3f(0.5,-0.5,-0.5);
+					cnr[1][2] = v3f(0.5,-0.5,0.5);
+					getRoofLights(blockpos_nodes+p,c,data,v3s16(1,1,-1));
+				}else if (angle == 90) {
+					cnr[0][0] = v3f(-0.5,-0.5,0.5);
+					cnr[0][1] = v3f(0.5,-0.5,0.5);
+					cnr[0][2] = v3f(-0.5,0.5,-0.5);
+					cnr[1][0] = v3f(-0.5,0.5,-0.5);
+					cnr[1][1] = v3f(0.5,-0.5,0.5);
+					cnr[1][2] = v3f(0.5,-0.5,-0.5);
+					getRoofLights(blockpos_nodes+p,c,data,v3s16(1,1,1));
+				}else if (angle == 180) {
+					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+					cnr[0][1] = v3f(0.5,0.5,-0.5);
+					cnr[0][2] = v3f(-0.5,-0.5,0.5);
+					cnr[1][0] = v3f(-0.5,-0.5,0.5);
+					cnr[1][1] = v3f(0.5,0.5,-0.5);
+					cnr[1][2] = v3f(0.5,-0.5,0.5);
+					getRoofLights(blockpos_nodes+p,c,data,v3s16(-1,1,1));
+				}else if (angle == 270) {
+					cnr[0][0] = v3f(-0.5,-0.5,0.5);
+					cnr[0][1] = v3f(0.5,0.5,0.5);
+					cnr[0][2] = v3f(-0.5,-0.5,-0.5);
+					cnr[1][0] = v3f(-0.5,-0.5,-0.5);
+					cnr[1][1] = v3f(0.5,0.5,0.5);
+					cnr[1][2] = v3f(0.5,-0.5,-0.5);
+					getRoofLights(blockpos_nodes+p,c,data,v3s16(-1,1,-1));
 				}
-
-				u16 indices[] = {0,1,2,2,1,3};
-				collector.append(tile.getMaterial(), outer_v, 4, indices, 6);
+				for (int s=0; s<2; s++) {
+					makeRoofTri(&collector,cnr[s],pos,&tile,1,c);
+				}
 			}
 			break;
 			case 5:
 			{
-				// TODO: tex coords are totally screwed
-				video::S3DVertex topx_v[4][4] = {
+				v3f cnr[8][3] = {
 					{
-						video::S3DVertex(0,     0,     0, 0,0,0, c[0], tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(-BS/2, 0,     0, 0,0,0, c[1], tile.texture.x0(), tile.texture.y0()),
-						video::S3DVertex(-BS/2, -BS/2, -BS/2, 0,0,0, c[4], tile.texture.x0(), tile.texture.y1()),
-						video::S3DVertex(-BS/2, -BS/2, BS/2, 0,0,0, c[5], tile.texture.x0(), tile.texture.y1()),
+						v3f(0.,0.,0.),
+						v3f(-0.5,0.,0.),
+						v3f(-0.5,-0.5,-0.5)
 					},{
-						video::S3DVertex(0,     0,     0, 0,0,0, c[0], tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(BS/2, 0,     0, 0,0,0, c[1], tile.texture.x0(), tile.texture.y0()),
-						video::S3DVertex(BS/2, -BS/2, -BS/2, 0,0,0, c[4], tile.texture.x0(), tile.texture.y1()),
-						video::S3DVertex(BS/2, -BS/2, BS/2, 0,0,0, c[5], tile.texture.x0(), tile.texture.y1()),
+						v3f(-0.5,0.,0.),
+						v3f(-0.5,-0.5,0.5),
+						v3f(0.,0.,0.)
 					},{
-						video::S3DVertex(0,     0,     0, 0,0,0, c[0], tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(0,     0,     -BS/2, 0,0,0, c[1], tile.texture.x0(), tile.texture.y0()),
-						video::S3DVertex(-BS/2, -BS/2, -BS/2, 0,0,0, c[4], tile.texture.x0(), tile.texture.y1()),
-						video::S3DVertex(BS/2,  -BS/2, -BS/2, 0,0,0, c[5], tile.texture.x0(), tile.texture.y1()),
+						v3f(0.,0.,0.),
+						v3f(0.5,0.,0.),
+						v3f(0.5,-0.5,-0.5)
 					},{
-						video::S3DVertex(0,     0,     0, 0,0,0, c[0], tile.texture.x0(), tile.texture.y0()),
-						video::S3DVertex(0,     0,     BS/2, 0,0,0, c[1], tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(-BS/2, -BS/2, BS/2, 0,0,0, c[4], tile.texture.x1(), tile.texture.y1()),
-						video::S3DVertex(BS/2,  -BS/2, BS/2, 0,0,0, c[5], tile.texture.x1(), tile.texture.y1()),
+						v3f(0.5,0.,0.),
+						v3f(0.5,-0.5,0.5),
+						v3f(0.,0.,0.)
+					},{
+						v3f(0.,0.,0.),
+						v3f(0.,0.,-0.5),
+						v3f(-0.5,-0.5,-0.5)
+					},{
+						v3f(0.,0.,-0.5),
+						v3f(0.5,-0.5,-0.5),
+						v3f(0.,0.,0.)
+					},{
+						v3f(0.,0.,0.),
+						v3f(0.,0.,0.5),
+						v3f(-0.5,-0.5,0.5)
+					},{
+						v3f(0.,0.,0.5),
+						v3f(0.5,-0.5,0.5),
+						v3f(0.,0.,0.)
 					}
 				};
-				for (s32 s=0; s<4; s++) {
-					for (s32 i=0; i<4; i++) {
-						topx_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
-					}
-
-					u16 indices[] = {0,1,2,1,3,0};
-					collector.append(tile.getMaterial(),topx_v[s], 4, indices, 6);
+				getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,0));
+				for (int s=0; s<8; s++) {
+					makeRoofTri(&collector,cnr[s],pos,&tile,1,c);
 				}
 			}
 			break;
 			case 6:
 			{
-				// TODO: tex coords for half height
-				video::S3DVertex topt_v[4][4] = {
-					{
-						video::S3DVertex(-BS/2, -BS/2, BS/2, 0,0,0, c[4], tile.texture.x0(), tile.texture.y1()),
-						video::S3DVertex(BS/2,  -BS/2, BS/2, 0,0,0, c[5], tile.texture.x1(), tile.texture.y1()),
-						video::S3DVertex(BS/2,  0,     0, 0,0,0, c[0], tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(-BS/2, 0,     0, 0,0,0, c[1], tile.texture.x0(), tile.texture.y0()),
-					},{
-						video::S3DVertex(-BS/2, -BS/2, -BS/2, 0,0,0, c[4], tile.texture.x0(), tile.texture.y1()),
-						video::S3DVertex(BS/2,  -BS/2, -BS/2, 0,0,0, c[5], tile.texture.x1(), tile.texture.y1()),
-						video::S3DVertex(BS/2,  0,     0, 0,0,0, c[0], tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(-BS/2, 0,     0, 0,0,0, c[1], tile.texture.x0(), tile.texture.y0()),
-					},{
-						video::S3DVertex(0,     0,     -BS/2, 0,0,0, c[0], tile.texture.x0(), tile.texture.y0()),
-						video::S3DVertex(-BS/2, -BS/2, -BS/2, 0,0,0, c[4], tile.texture.x0(), tile.texture.y1()),
-						video::S3DVertex(0,     0,     0, 0,0,0, c[1], tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(BS/2,  -BS/2, -BS/2, 0,0,0, c[5], tile.texture.x0(), tile.texture.y1()),
-					}
-				};
-				for (s32 s=0; s<3; s++) {
-					for (s32 i=0; i<4; i++) {
-						if (angle != 0)
-							topt_v[s][i].Pos.rotateXZBy(angle);
-						topt_v[s][i].Pos += intToFloat(blockpos_nodes + p, BS);
-					}
-
-					u16 indices[] = {0,1,2,2,3,0};
-					collector.append(tile.getMaterial(),topt_v[s], 4, indices, 6);
+				v3f cnr[6][3];
+				getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,0));
+				if (angle == 0) {
+					cnr[0][0] = v3f(-0.5,-0.5,0.5);
+					cnr[0][1] = v3f(0.5,-0.5,0.5);
+					cnr[0][2] = v3f(0.5,0.,0.);
+					cnr[1][0] = v3f(0.5,0.,0.);
+					cnr[1][1] = v3f(-0.5,0.,0.);
+					cnr[1][2] = v3f(-0.5,-0.5,0.5);
+					cnr[2][0] = v3f(-0.5,-0.5,-0.5);
+					cnr[2][1] = v3f(0.5,-0.5,-0.5);
+					cnr[2][2] = v3f(0.5,0.,0.);
+					cnr[3][0] = v3f(0.5,0.,0.);
+					cnr[3][1] = v3f(-0.5,0.,0.);
+					cnr[3][2] = v3f(-0.5,-0.5,-0.5);
+					cnr[4][0] = v3f(0.,0.,-0.5);
+					cnr[4][1] = v3f(-0.5,-0.5,-0.5);
+					cnr[4][2] = v3f(0.,0.,0.);
+					cnr[5][0] = v3f(0.,0.,0.);
+					cnr[5][1] = v3f(0.5,-0.5,-0.5);
+					cnr[5][2] = v3f(0.,0.,-0.5);
+				}else if (angle == 90) {
+					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+					cnr[0][1] = v3f(-0.5,-0.5,0.5);
+					cnr[0][2] = v3f(0.,0.,0.5);
+					cnr[1][0] = v3f(0.,0.,0.5);
+					cnr[1][1] = v3f(0.,0.,-0.5);
+					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+					cnr[2][0] = v3f(0.5,-0.5,-0.5);
+					cnr[2][1] = v3f(0.5,-0.5,0.5);
+					cnr[2][2] = v3f(0.,0.,0.5);
+					cnr[3][0] = v3f(0.,0.,0.5);
+					cnr[3][1] = v3f(0.,0.,-0.5);
+					cnr[3][2] = v3f(0.5,-0.5,-0.5);
+					cnr[4][0] = v3f(0.5,0.,0.);
+					cnr[4][1] = v3f(0.5,-0.5,-0.5);
+					cnr[4][2] = v3f(0.,0.,0.);
+					cnr[5][0] = v3f(0.,0.,0.);
+					cnr[5][1] = v3f(0.5,-0.5,0.5);
+					cnr[5][2] = v3f(0.5,0.,0.);
+				}else if (angle == 180) {
+					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+					cnr[0][1] = v3f(0.5,-0.5,-0.5);
+					cnr[0][2] = v3f(0.5,0.,0.);
+					cnr[1][0] = v3f(0.5,0.,0.);
+					cnr[1][1] = v3f(-0.5,0.,0.);
+					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+					cnr[2][0] = v3f(-0.5,-0.5,0.5);
+					cnr[2][1] = v3f(0.5,-0.5,0.5);
+					cnr[2][2] = v3f(0.5,0.,0.);
+					cnr[3][0] = v3f(0.5,0.,0.);
+					cnr[3][1] = v3f(-0.5,0.,0.);
+					cnr[3][2] = v3f(-0.5,-0.5,0.5);
+					cnr[4][0] = v3f(0.,0.,0.5);
+					cnr[4][1] = v3f(-0.5,-0.5,0.5);
+					cnr[4][2] = v3f(0.,0.,0.);
+					cnr[5][0] = v3f(0.,0.,0.);
+					cnr[5][1] = v3f(0.5,-0.5,0.5);
+					cnr[5][2] = v3f(0.,0.,0.5);
+				}else if (angle == 270) {
+					cnr[0][0] = v3f(0.5,-0.5,-0.5);
+					cnr[0][1] = v3f(0.5,-0.5,0.5);
+					cnr[0][2] = v3f(0.,0.,0.5);
+					cnr[1][0] = v3f(0.,0.,0.5);
+					cnr[1][1] = v3f(0.,0.,-0.5);
+					cnr[1][2] = v3f(0.5,-0.5,-0.5);
+					cnr[2][0] = v3f(-0.5,-0.5,-0.5);
+					cnr[2][1] = v3f(-0.5,-0.5,0.5);
+					cnr[2][2] = v3f(0.,0.,0.5);
+					cnr[3][0] = v3f(0.,0.,0.5);
+					cnr[3][1] = v3f(0.,0.,-0.5);
+					cnr[3][2] = v3f(-0.5,-0.5,-0.5);
+					cnr[4][0] = v3f(-0.5,0.,0.);
+					cnr[4][1] = v3f(-0.5,-0.5,-0.5);
+					cnr[4][2] = v3f(0.,0.,0.);
+					cnr[5][0] = v3f(0.,0.,0.);
+					cnr[5][1] = v3f(-0.5,-0.5,0.5);
+					cnr[5][2] = v3f(-0.5,0.,0.);
 				}
-				break;
+				for (int s=0; s<6; s++) {
+					makeRoofTri(&collector,cnr[s],pos,&tile,1,c);
+				}
 			}
 			break;
 			case 7:
 			{
-				video::S3DVertex inner_v[6] = {
-					video::S3DVertex(BS/2,BS/2,-BS/2, 0,0,0, c[0], tile.texture.x0(), tile.texture.y0()),
-					video::S3DVertex(-BS/2,BS/2,-BS/2, 0,0,0, c[1], tile.texture.x1(), tile.texture.y0()),
-					video::S3DVertex(-BS/2,-BS/2,BS/2, 0,0,0, c[4], tile.texture.x1(), tile.texture.y1()),
-					video::S3DVertex(BS/2,BS/2,-BS/2, 0,0,0, c[2], tile.texture.x0(), tile.texture.y0()),
-					video::S3DVertex(BS/2,BS/2,BS/2, 0,0,0, c[3], tile.texture.x1(), tile.texture.y0()),
-					video::S3DVertex(-BS/2,-BS/2,BS/2, 0,0,0, c[5], tile.texture.x1(), tile.texture.y1()),
-				};
-				for (s32 i=0; i<6; i++) {
-					if (angle != 0)
-						inner_v[i].Pos.rotateXZBy(angle);
-					inner_v[i].Pos += intToFloat(blockpos_nodes + p, BS);
+				v3f cnr[2][3];
+				if (angle == 0) {
+					cnr[0][0] = v3f(0.5,0.5,-0.5);
+					cnr[0][1] = v3f(-0.5,0.5,-0.5);
+					cnr[0][2] = v3f(-0.5,-0.5,0.5);
+					cnr[1][0] = v3f(0.5,0.5,-0.5);
+					cnr[1][1] = v3f(0.5,0.5,0.5);
+					cnr[1][2] = v3f(-0.5,-0.5,0.5);
+					getRoofLights(blockpos_nodes+p,c,data,v3s16(-1,1,1));
+				}else if (angle == 90) {
+					cnr[0][0] = v3f(0.5,0.5,0.5);
+					cnr[0][1] = v3f(-0.5,0.5,0.5);
+					cnr[0][2] = v3f(-0.5,-0.5,-0.5);
+					cnr[1][0] = v3f(0.5,0.5,0.5);
+					cnr[1][1] = v3f(0.5,0.5,-0.5);
+					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+					getRoofLights(blockpos_nodes+p,c,data,v3s16(-1,1,-1));
+				}else if (angle == 180) {
+					cnr[0][0] = v3f(0.5,-0.5,-0.5);
+					cnr[0][1] = v3f(-0.5,0.5,-0.5);
+					cnr[0][2] = v3f(-0.5,0.5,0.5);
+					cnr[1][0] = v3f(0.5,-0.5,-0.5);
+					cnr[1][1] = v3f(0.5,0.5,0.5);
+					cnr[1][2] = v3f(-0.5,0.5,0.5);
+					getRoofLights(blockpos_nodes+p,c,data,v3s16(1,1,-1));
+				}else if (angle == 270) {
+					cnr[0][0] = v3f(0.5,-0.5,0.5);
+					cnr[0][1] = v3f(-0.5,0.5,0.5);
+					cnr[0][2] = v3f(-0.5,0.5,-0.5);
+					cnr[1][0] = v3f(0.5,-0.5,0.5);
+					cnr[1][1] = v3f(0.5,0.5,-0.5);
+					cnr[1][2] = v3f(-0.5,0.5,-0.5);
+					getRoofLights(blockpos_nodes+p,c,data,v3s16(1,1,1));
 				}
-
-				u16 indices[] = {0,1,2,3,4,5};
-				collector.append(tile.getMaterial(), inner_v, 6, indices, 6);
+				for (int s=0; s<2; s++) {
+					makeRoofTri(&collector,cnr[s],pos,&tile,1,c);
+				}
 			}
 			break;
 			default:
@@ -2587,6 +2948,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			for (int i = 0; i < 6; i++) {
 				// Handles facedir rotation for textures
 				tiles[i] = n.getTile(tile_dirs[i]);
+				// getNodeTile needs to handle facedir rotation, then we can get cracks in nodeboxes
+				//tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
 			}
 			video::SColor c[8];
 			getLights(blockpos_nodes+p,c,data,smooth_lighting);
