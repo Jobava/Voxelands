@@ -116,8 +116,9 @@ void makeCuboid(MeshCollector *collector, const aabb3f &box,
 }
 
 /*
+ * makes one tri/poly for a roof section
  */
-void makeRoofTri(MeshCollector *collector, v3f corners[3], v3f pos, TileSpec *tiles, int tilecount, video::SColor c[8])
+void makeRoofTri(MeshCollector *collector, v3f corners[3], v3f pos, TileSpec *tiles, int tilecount, video::SColor c[2])
 {
 	assert(tilecount >= 1 && tilecount <= 6);
 	// vertices for top and bottom tri
