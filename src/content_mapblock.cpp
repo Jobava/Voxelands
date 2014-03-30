@@ -189,7 +189,7 @@ static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool
 			)
 				continue;
 			ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
-			if (ltp < 20)
+			if (!ltp)
 				continue;
 			lt += ltp;
 			ld++;
@@ -237,7 +237,7 @@ static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool
 			)
 				continue;
 			ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
-			if (ltp < 20)
+			if (!ltp)
 				continue;
 			lt += ltp;
 			ld++;
@@ -278,7 +278,7 @@ static void getRoofLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, 
 				)
 					continue;
 				ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
-				if (ltp < 20)
+				if (!ltp)
 					continue;
 				lt += ltp;
 				ld++;
@@ -315,7 +315,7 @@ static void getRoofLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, 
 				)
 					continue;
 				ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
-				if (ltp < 20)
+				if (!ltp)
 					continue;
 				lt += ltp;
 				ld++;
