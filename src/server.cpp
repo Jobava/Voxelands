@@ -3509,10 +3509,10 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					if (
 						p_dir.X == 0
 						&& p_dir.Z == 0
-						&& content_features(n).slab_cube_type != CONTENT_IGNORE
-						&& content_features(n).slab_cube_type == content_features(abv).slab_cube_type
+						&& content_features(n).special_alternate_node != CONTENT_IGNORE
+						&& content_features(n).special_alternate_node == content_features(abv).special_alternate_node
 					) {
-						n.setContent(content_features(n).slab_cube_type);
+						n.setContent(content_features(n).special_alternate_node);
 						p_over += p_dir;
 					}
 				// roof mount

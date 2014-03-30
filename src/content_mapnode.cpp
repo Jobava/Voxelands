@@ -2687,6 +2687,7 @@ void content_mapnode_init()
 	f->used_texturenames["fence.png"] = true;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 15;
+	f->special_alternate_node = CONTENT_WOOD;
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	crafting::setWallRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_FENCE);
@@ -5588,7 +5589,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->slab_cube_type = CONTENT_ROUGHSTONE;
+	f->special_alternate_node = CONTENT_ROUGHSTONE;
 	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"roughstone.png", "roughstone.png", "roughstone.png");
 	f->type = CMT_STONE;
@@ -5606,7 +5607,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->slab_cube_type = CONTENT_COBBLE;
+	f->special_alternate_node = CONTENT_COBBLE;
 	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"cobble.png", "cobble.png", "cobble.png");
 	f->type = CMT_STONE;
@@ -5624,7 +5625,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->slab_cube_type = CONTENT_MOSSYCOBBLE;
+	f->special_alternate_node = CONTENT_MOSSYCOBBLE;
 	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"mossycobble.png", "mossycobble.png", "mossycobble.png");
 	f->type = CMT_STONE;
@@ -5641,7 +5642,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->slab_cube_type = CONTENT_STONE;
+	f->special_alternate_node = CONTENT_STONE;
 	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"stone.png", "stone.png", "stone.png");
 	f->type = CMT_STONE;
@@ -5658,7 +5659,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->slab_cube_type = CONTENT_WOOD;
+	f->special_alternate_node = CONTENT_WOOD;
 	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"wood.png", "wood.png", "wood.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
@@ -5677,7 +5678,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	//f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->slab_cube_type = CONTENT_JUNGLEWOOD;
+	f->special_alternate_node = CONTENT_JUNGLEWOOD;
 	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"junglewood.png", "junglewood.png", "junglewood.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
@@ -5696,7 +5697,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem clay_brick 4");
-	f->slab_cube_type = CONTENT_BRICK;
+	f->special_alternate_node = CONTENT_BRICK;
 	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"brick.png", "brick.png", "brick.png");
 	f->type = CMT_STONE;
@@ -5713,7 +5714,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAND)+" 4";
-	f->slab_cube_type = CONTENT_SANDSTONE;
+	f->special_alternate_node = CONTENT_SANDSTONE;
 	content_mapnode_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"sandstone.png", "sandstone.png", "sandstone.png");
 	f->type = CMT_DIRT;
@@ -5731,7 +5732,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->slab_cube_type = CONTENT_GLASS;
+	f->special_alternate_node = CONTENT_GLASS;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->setAllTextures("glass.png");
 #ifndef SERVER
@@ -5754,7 +5755,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->slab_cube_type = CONTENT_GLASS_BLUE;
+	f->special_alternate_node = CONTENT_GLASS_BLUE;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->setAllTextures("glass_blue.png");
 #ifndef SERVER
@@ -5778,7 +5779,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->slab_cube_type = CONTENT_GLASS_GREEN;
+	f->special_alternate_node = CONTENT_GLASS_GREEN;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->setAllTextures("glass_green.png");
 #ifndef SERVER
@@ -5802,7 +5803,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->slab_cube_type = CONTENT_GLASS_ORANGE;
+	f->special_alternate_node = CONTENT_GLASS_ORANGE;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->setAllTextures("glass_orange.png");
 #ifndef SERVER
@@ -5826,7 +5827,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->slab_cube_type = CONTENT_GLASS_PURPLE;
+	f->special_alternate_node = CONTENT_GLASS_PURPLE;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->setAllTextures("glass_purple.png");
 #ifndef SERVER
@@ -5850,7 +5851,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->slab_cube_type = CONTENT_GLASS_RED;
+	f->special_alternate_node = CONTENT_GLASS_RED;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->setAllTextures("glass_red.png");
 #ifndef SERVER
@@ -5874,7 +5875,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->slab_cube_type = CONTENT_GLASS_YELLOW;
+	f->special_alternate_node = CONTENT_GLASS_YELLOW;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->setAllTextures("glass_yellow.png");
 #ifndef SERVER
@@ -5898,7 +5899,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->slab_cube_type = CONTENT_GLASS_BLACK;
+	f->special_alternate_node = CONTENT_GLASS_BLACK;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->setAllTextures("glass_black.png");
 #ifndef SERVER
@@ -5922,7 +5923,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_ROUGHSTONE_SLAB)+" 1";
-	f->slab_cube_type = CONTENT_ROUGHSTONE;
+	f->special_alternate_node = CONTENT_ROUGHSTONE;
 	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"roughstone.png", "roughstone.png", "roughstone.png");
 	f->type = CMT_STONE;
@@ -5937,7 +5938,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->slab_cube_type = CONTENT_COBBLE;
+	f->special_alternate_node = CONTENT_COBBLE;
 	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"cobble.png", "cobble.png", "cobble.png");
 	f->type = CMT_STONE;
@@ -5951,7 +5952,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MOSSYCOBBLE_SLAB)+" 1";
-	f->slab_cube_type = CONTENT_MOSSYCOBBLE;
+	f->special_alternate_node = CONTENT_MOSSYCOBBLE;
 	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"mossycobble.png", "mossycobble.png", "mossycobble.png");
 	f->type = CMT_STONE;
@@ -5964,7 +5965,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STONE_SLAB)+" 1";
-	f->slab_cube_type = CONTENT_STONE;
+	f->special_alternate_node = CONTENT_STONE;
 	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"stone.png", "stone.png", "stone.png");
 	f->type = CMT_STONE;
@@ -5977,7 +5978,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_SLAB)+" 1";
-	f->slab_cube_type = CONTENT_WOOD;
+	f->special_alternate_node = CONTENT_WOOD;
 	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"wood.png", "wood.png", "wood.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
@@ -5992,7 +5993,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	//f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_JUNGLE_SLAB)+" 1";
-	f->slab_cube_type = CONTENT_JUNGLEWOOD;
+	f->special_alternate_node = CONTENT_JUNGLEWOOD;
 	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"junglewood.png", "junglewood.png", "junglewood.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
@@ -6007,7 +6008,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem clay_brick 4");
-	f->slab_cube_type = CONTENT_BRICK;
+	f->special_alternate_node = CONTENT_BRICK;
 	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"brick.png", "brick.png", "brick.png");
 	f->type = CMT_STONE;
@@ -6020,7 +6021,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAND)+" 4";
-	f->slab_cube_type = CONTENT_SANDSTONE;
+	f->special_alternate_node = CONTENT_SANDSTONE;
 	content_mapnode_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"sandstone.png", "sandstone.png", "sandstone.png");
 	f->type = CMT_DIRT;
@@ -6035,7 +6036,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->slab_cube_type = CONTENT_GLASS;
+	f->special_alternate_node = CONTENT_GLASS;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->setAllTextures("glass.png");
 #ifndef SERVER
@@ -6055,7 +6056,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->slab_cube_type = CONTENT_GLASS_BLUE;
+	f->special_alternate_node = CONTENT_GLASS_BLUE;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->setAllTextures("glass_blue.png");
 #ifndef SERVER
@@ -6075,7 +6076,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->slab_cube_type = CONTENT_GLASS_GREEN;
+	f->special_alternate_node = CONTENT_GLASS_GREEN;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->setAllTextures("glass_green.png");
 #ifndef SERVER
@@ -6095,7 +6096,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->slab_cube_type = CONTENT_GLASS_ORANGE;
+	f->special_alternate_node = CONTENT_GLASS_ORANGE;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->setAllTextures("glass_orange.png");
 #ifndef SERVER
@@ -6115,7 +6116,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->slab_cube_type = CONTENT_GLASS_PURPLE;
+	f->special_alternate_node = CONTENT_GLASS_PURPLE;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->setAllTextures("glass_purple.png");
 #ifndef SERVER
@@ -6135,7 +6136,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->slab_cube_type = CONTENT_GLASS_RED;
+	f->special_alternate_node = CONTENT_GLASS_RED;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->setAllTextures("glass_red.png");
 #ifndef SERVER
@@ -6155,7 +6156,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->slab_cube_type = CONTENT_GLASS_YELLOW;
+	f->special_alternate_node = CONTENT_GLASS_YELLOW;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->setAllTextures("glass_yellow.png");
 #ifndef SERVER
@@ -6175,7 +6176,7 @@ void content_mapnode_init()
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->slab_cube_type = CONTENT_GLASS_BLACK;
+	f->special_alternate_node = CONTENT_GLASS_BLACK;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->setAllTextures("glass_black.png");
 #ifndef SERVER
@@ -7909,6 +7910,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->air_equivalent = true; // grass grows underneath
 	f->setInventoryTexture("cobble_wall_inv.png");
+	f->special_alternate_node = CONTENT_COBBLE;
 	f->type = CMT_STONE;
 	f->hardness = 0.9;
 	crafting::setWallRecipe(CONTENT_COBBLE,CONTENT_COBBLE_WALL);
@@ -7928,6 +7930,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->air_equivalent = true; // grass grows underneath
 	f->setInventoryTexture("roughstone_wall_inv.png");
+	f->special_alternate_node = CONTENT_ROUGHSTONE;
 	f->type = CMT_STONE;
 	f->hardness = 0.9;
 	crafting::setWallRecipe(CONTENT_ROUGHSTONE,CONTENT_ROUGHSTONE_WALL);
@@ -7947,6 +7950,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->air_equivalent = true; // grass grows underneath
 	f->setInventoryTexture("mossycobble_wall_inv.png");
+	f->special_alternate_node = CONTENT_MOSSYCOBBLE;
 	f->type = CMT_STONE;
 	f->hardness = 0.8;
 	crafting::setWallRecipe(CONTENT_MOSSYCOBBLE,CONTENT_MOSSYCOBBLE_WALL);
@@ -7966,6 +7970,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->air_equivalent = true; // grass grows underneath
 	f->setInventoryTexture("stone_wall_inv.png");
+	f->special_alternate_node = CONTENT_STONE;
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	crafting::setWallRecipe(CONTENT_STONE,CONTENT_STONE_WALL);
@@ -7985,6 +7990,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->air_equivalent = true; // grass grows underneath
 	f->setInventoryTexture("sandstone_wall_inv.png");
+	f->special_alternate_node = CONTENT_SANDSTONE;
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	crafting::setWallRecipe(CONTENT_SANDSTONE,CONTENT_SANDSTONE_WALL);

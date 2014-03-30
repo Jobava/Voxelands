@@ -217,9 +217,6 @@ struct ContentFeatures
 	// Mineral overrides this.
 	std::string dug_item;
 
-	// When two slabs are joined into a cube, they make this
-	content_t slab_cube_type;
-
 	// Extra dug item and its rarity
 	std::string extra_dug_item;
 	s32 extra_dug_item_rarity;
@@ -235,6 +232,8 @@ struct ContentFeatures
 	content_t floormount_alternate_node;
 	// when placed on the roof, this node should be placed instead
 	content_t roofmount_alternate_node;
+	// special node for things like slabs combining into cubes, or walls connecting to blocks
+	content_t special_alternate_node;
 
 	// the result of cooking this node
 	std::string cook_result;
@@ -310,7 +309,6 @@ struct ContentFeatures
 		air_equivalent = false;
 		often_contains_mineral = false;
 		dug_item = "";
-		slab_cube_type = CONTENT_IGNORE;
 		extra_dug_item = "";
 		extra_dug_item_rarity = 2;
 		ondig_replace_node = CONTENT_IGNORE;
@@ -318,6 +316,7 @@ struct ContentFeatures
 		wallmount_alternate_node = CONTENT_IGNORE;
 		floormount_alternate_node = CONTENT_IGNORE;
 		roofmount_alternate_node = CONTENT_IGNORE;
+		special_alternate_node = CONTENT_IGNORE;
 		cook_result = "";
 		fuel_time = 0.0;
 		initial_metadata = NULL;

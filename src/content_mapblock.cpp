@@ -333,74 +333,35 @@ static void getRoofLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, 
 #endif
 
 #ifndef SERVER
-static void mapblock_mesh_check_walllike(MeshMakeData *data, v3s16 p, u8 d[8], u8 h[8], bool *post)
+static void mapblock_mesh_check_walllike(MeshMakeData *data, MapNode n, v3s16 p, u8 d[8], u8 h[8], bool *post)
 {
+	v3s16 dirs[4] = {
+		v3s16(1,0,0),
+		v3s16(-1,0,0),
+		v3s16(0,0,1),
+		v3s16(0,0,-1)
+	};
 	for (s16 i=0; i<8; i++) {
 		h[i] = 0;
 		d[i] = 0;
 	}
-	// Now a section of fence, +X, if there's a post there
-	v3s16 p2 = p;
-	p2.X++;
-	MapNode n2 = data->m_vmanip.getNodeNoEx(p2);
-	const ContentFeatures *f2 = &content_features(n2);
-	if (
-		f2->draw_type == CDT_FENCELIKE
-		|| f2->draw_type == CDT_WALLLIKE
-		|| n2.getContent() == CONTENT_WOOD_GATE
-		|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
-		|| n2.getContent() == CONTENT_STEEL_GATE
-		|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
-	) {
-		d[0] = 1;
-	}
-
-	// Now a section of fence, -X, if there's a post there
-	p2 = p;
-	p2.X--;
-	n2 = data->m_vmanip.getNodeNoEx(p2);
-	f2 = &content_features(n2);
-	if (
-		f2->draw_type == CDT_FENCELIKE
-		|| f2->draw_type == CDT_WALLLIKE
-		|| n2.getContent() == CONTENT_WOOD_GATE
-		|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
-		|| n2.getContent() == CONTENT_STEEL_GATE
-		|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
-	) {
-		d[1] = 1;
-	}
-
-	// Now a section of fence, +Z, if there's a post there
-	p2 = p;
-	p2.Z++;
-	n2 = data->m_vmanip.getNodeNoEx(p2);
-	f2 = &content_features(n2);
-	if (
-		f2->draw_type == CDT_FENCELIKE
-		|| f2->draw_type == CDT_WALLLIKE
-		|| n2.getContent() == CONTENT_WOOD_GATE
-		|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
-		|| n2.getContent() == CONTENT_STEEL_GATE
-		|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
-	) {
-		d[2] = 1;
-	}
-
-	// Now a section of fence, +Z, if there's a post there
-	p2 = p;
-	p2.Z--;
-	n2 = data->m_vmanip.getNodeNoEx(p2);
-	f2 = &content_features(n2);
-	if (
-		f2->draw_type == CDT_FENCELIKE
-		|| f2->draw_type == CDT_WALLLIKE
-		|| n2.getContent() == CONTENT_WOOD_GATE
-		|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
-		|| n2.getContent() == CONTENT_STEEL_GATE
-		|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
-	) {
-		d[3] = 1;
+	v3s16 p2;
+	MapNode n2;
+	const ContentFeatures *f2;
+	for (int i=0; i<4; i++) {
+		p2 = p+dirs[i];
+		n2 = data->m_vmanip.getNodeNoEx(p2);
+		f2 = &content_features(n2);
+		if (
+			f2->draw_type == CDT_FENCELIKE
+			|| f2->draw_type == CDT_WALLLIKE
+			|| n2.getContent() == CONTENT_WOOD_GATE
+			|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
+			|| n2.getContent() == CONTENT_STEEL_GATE
+			|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
+		) {
+			d[i] = 1;
+		}
 	}
 	if (!d[0] && !d[2]) {
 		p2 = p;
@@ -458,7 +419,7 @@ static void mapblock_mesh_check_walllike(MeshMakeData *data, v3s16 p, u8 d[8], u
 	u8 ah[8];
 	bool ap;
 	if (content_features(n2).draw_type == CDT_WALLLIKE) {
-		mapblock_mesh_check_walllike(data, p2,ad,ah,&ap);
+		mapblock_mesh_check_walllike(data,n2,p2,ad,ah,&ap);
 		if (ad[0] && d[0])
 			h[0] = 1;
 		if (ad[1] && d[1])
@@ -495,6 +456,18 @@ static void mapblock_mesh_check_walllike(MeshMakeData *data, v3s16 p, u8 d[8], u
 		}
 	}else{
 		*post = true;
+	}
+	if (*post) {
+		for (int i=0; i<4; i++) {
+			p2 = p+dirs[i];
+			n2 = data->m_vmanip.getNodeNoEx(p2);
+			if (
+				n2.getContent() != CONTENT_IGNORE
+				&& n2.getContent() == content_features(n).special_alternate_node
+			) {
+				d[i] = 1;
+			}
+		}
 	}
 }
 
@@ -1302,7 +1275,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			u8 h[8];
 			bool post;
 			float height;
-			mapblock_mesh_check_walllike(data, blockpos_nodes+p,d,h,&post);
+			mapblock_mesh_check_walllike(data,n,blockpos_nodes+p,d,h,&post);
 			static const v3s16 tile_dirs[6] = {
 				v3s16(0, 1, 0),
 				v3s16(0, -1, 0),
@@ -1536,6 +1509,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
 				|| n2.getContent() == CONTENT_STEEL_GATE
 				|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
+				|| (
+					n2.getContent() != CONTENT_IGNORE
+					&& n2.getContent() == content_features(n).special_alternate_node
+				)
 			) {
 				fence_plus_x = true;
 				aabb3f bar(post_rad,-bar_rad+BS/4,-bar_rad,
@@ -1568,6 +1545,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
 				|| n2.getContent() == CONTENT_STEEL_GATE
 				|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
+				|| (
+					n2.getContent() != CONTENT_IGNORE
+					&& n2.getContent() == content_features(n).special_alternate_node
+				)
 			) {
 				fence_minus_x = true;
 				aabb3f bar(-0.5*BS,-bar_rad+BS/4,-bar_rad,
@@ -1600,6 +1581,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
 				|| n2.getContent() == CONTENT_STEEL_GATE
 				|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
+				|| (
+					n2.getContent() != CONTENT_IGNORE
+					&& n2.getContent() == content_features(n).special_alternate_node
+				)
 			) {
 				fence_plus_z = true;
 				aabb3f bar(-bar_rad,-bar_rad+BS/4,post_rad,
@@ -1632,6 +1617,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
 				|| n2.getContent() == CONTENT_STEEL_GATE
 				|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
+				|| (
+					n2.getContent() != CONTENT_IGNORE
+					&& n2.getContent() == content_features(n).special_alternate_node
+				)
 			) {
 				fence_minus_z = true;
 				aabb3f bar(-bar_rad,-bar_rad+BS/4,-0.5*BS,
