@@ -62,10 +62,14 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_CREATIVE_CHEST 25
 // FREE 26-29
 #define CONTENT_RAIL 30
+// deprecated, just here for backwards compat
 #define CONTENT_LADDER 31
 #define CONTENT_LAVA 32
 #define CONTENT_LAVASOURCE 33
-// FREE 34-125
+#define CONTENT_LADDER_WALL 34
+#define CONTENT_LADDER_FLOOR 35
+#define CONTENT_LADDER_ROOF 36
+// FREE 37-125
 
 // 0x800...0xfff (2048...4095): higher 4 bytes of param2 are not usable
 #define CONTENT_GRASS 0x800

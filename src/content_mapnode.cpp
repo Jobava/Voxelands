@@ -2792,14 +2792,17 @@ void content_mapnode_init()
 	i = CONTENT_LADDER;
 	f = &content_features(i);
 	f->description = std::string("Ladder");
-	f->setInventoryTexture("ladder.png");
-	f->setAllTextures("ladder.png");
+	f->setInventoryTexture("ladder-old.png");
+	f->setAllTextures("ladder-old.png");
 	f->setAllTextureFlags(0);
 	f->light_propagates = true;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_WALLMOUNT;
 	f->is_ground_content = true;
-	f->dug_item = std::string("MaterialItem ")+itos(i)+" 1";
+	f->dug_item = std::string("MaterialItem ")+itos(CONTENT_LADDER_WALL)+" 1";
+	f->floormount_alternate_node = CONTENT_LADDER_FLOOR;
+	f->wallmount_alternate_node = CONTENT_LADDER_WALL;
+	f->roofmount_alternate_node = CONTENT_LADDER_ROOF;
 	f->wall_mounted = true;
 	f->solidness = 0;
 	f->air_equivalent = true;
@@ -2809,30 +2812,127 @@ void content_mapnode_init()
 	f->fuel_time = 30/16;
 	f->type = CMT_WOOD;
 	f->hardness = 0.5;
+
+	i = CONTENT_LADDER_WALL;
+	f = &content_features(i);
+	f->description = std::string("Ladder");
+	f->setAllTextures("ladder.png");
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem ")+itos(i)+" 1";
+	f->solidness = 0;
+	f->floormount_alternate_node = CONTENT_LADDER_FLOOR;
+	f->roofmount_alternate_node = CONTENT_LADDER_ROOF;
+	f->rotate_tile_with_nodebox = true;
+	f->climbable = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/16;
+	f->type = CMT_WOOD;
+	f->hardness = 0.5;
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.4375*BS,-0.5*BS,0.3125*BS,-0.3125*BS,0.5*BS,0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.3125*BS,-0.5*BS,0.3125*BS,0.4375*BS,0.5*BS,0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.3125*BS,-0.25*BS,0.375*BS,0.3125*BS,-0.1875*BS,0.4375*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.3125*BS,0.25*BS,0.375*BS,0.3125*BS,0.3125*BS,0.4375*BS
+	));
+	f->setInventoryTextureNodeBox(i,"ladder.png","ladder.png","ladder.png");
 	{
 		u16 r[9] = {
 			CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_CRAFTITEM_STICK,	CONTENT_CRAFTITEM_PINE_PLANK,
 			CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_CRAFTITEM_STICK,	CONTENT_CRAFTITEM_PINE_PLANK,
 			CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_CRAFTITEM_STICK,	CONTENT_CRAFTITEM_PINE_PLANK
 		};
-		crafting::setRecipe(r,CONTENT_LADDER,4);
+		crafting::setRecipe(r,CONTENT_LADDER_WALL,4);
 		r[0] = CONTENT_CRAFTITEM_WOOD_PLANK;
 		r[2] = CONTENT_CRAFTITEM_WOOD_PLANK;
 		r[3] = CONTENT_CRAFTITEM_WOOD_PLANK;
 		r[5] = CONTENT_CRAFTITEM_WOOD_PLANK;
 		r[6] = CONTENT_CRAFTITEM_WOOD_PLANK;
 		r[8] = CONTENT_CRAFTITEM_WOOD_PLANK;
-		crafting::setRecipe(r,CONTENT_LADDER,4);
+		crafting::setRecipe(r,CONTENT_LADDER_WALL,4);
 		r[0] = CONTENT_CRAFTITEM_JUNGLE_PLANK;
 		r[2] = CONTENT_CRAFTITEM_JUNGLE_PLANK;
 		r[3] = CONTENT_CRAFTITEM_JUNGLE_PLANK;
 		r[5] = CONTENT_CRAFTITEM_JUNGLE_PLANK;
 		r[6] = CONTENT_CRAFTITEM_JUNGLE_PLANK;
 		r[8] = CONTENT_CRAFTITEM_JUNGLE_PLANK;
-		crafting::setRecipe(r,CONTENT_LADDER,4);
+		crafting::setRecipe(r,CONTENT_LADDER_WALL,4);
 	}
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+
+	i = CONTENT_LADDER_FLOOR;
+	f = &content_features(i);
+	f->description = std::string("Ladder");
+	f->setAllTextures("ladder.png");
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem ")+itos(CONTENT_LADDER_WALL)+" 1";
+	f->solidness = 0;
+	f->wallmount_alternate_node = CONTENT_LADDER_WALL;
+	f->roofmount_alternate_node = CONTENT_LADDER_ROOF;
+	f->rotate_tile_with_nodebox = true;
+	f->climbable = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/16;
+	f->type = CMT_WOOD;
+	f->hardness = 0.5;
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.4375*BS,-0.5*BS,-0.5*BS,-0.3125*BS,-0.3125*BS,0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.3125*BS,-0.5*BS,-0.5*BS,0.4375*BS,-0.3125*BS,0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.3125*BS,-0.4375*BS,-0.3125*BS,0.3125*BS,-0.375*BS,-0.25*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.3125*BS,-0.4375*BS,0.1875*BS,0.3125*BS,-0.375*BS,0.25*BS
+	));
+
+	i = CONTENT_LADDER_ROOF;
+	f = &content_features(i);
+	f->description = std::string("Ladder");
+	f->setAllTextures("ladder.png");
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem ")+itos(CONTENT_LADDER_WALL)+" 1";
+	f->solidness = 0;
+	f->floormount_alternate_node = CONTENT_LADDER_FLOOR;
+	f->wallmount_alternate_node = CONTENT_LADDER_WALL;
+	f->rotate_tile_with_nodebox = true;
+	f->climbable = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/16;
+	f->type = CMT_WOOD;
+	f->hardness = 0.5;
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.4375*BS,0.3125*BS,-0.5*BS,-0.3125*BS,0.5*BS,0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.3125*BS,0.3125*BS,-0.5*BS,0.4375*BS,0.5*BS,0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.3125*BS,0.375*BS,-0.3125*BS,0.3125*BS,0.4375*BS,-0.25*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.3125*BS,0.375*BS,0.1875*BS,0.3125*BS,0.4375*BS,0.25*BS
+	));
 
 	i = CONTENT_BORDERSTONE;
 	f = &content_features(i);

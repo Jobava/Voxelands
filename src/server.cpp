@@ -3522,11 +3522,11 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				// floor mount
 				}else if (p_dir.Y == -1){
 					if (content_features(n).floormount_alternate_node != CONTENT_IGNORE)
-						n.setContent(content_features(n).roofmount_alternate_node);
+						n.setContent(content_features(n).floormount_alternate_node);
 				// wall mount
 				}else{
 					if (content_features(n).wallmount_alternate_node != CONTENT_IGNORE)
-						n.setContent(content_features(n).roofmount_alternate_node);
+						n.setContent(content_features(n).wallmount_alternate_node);
 				}
 
 				// Calculate direction for wall mounted stuff
