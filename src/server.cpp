@@ -1974,12 +1974,22 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			return;
 		}
 
+		if (password[0] == '\0' && g_settings->getBool("disallow_empty_passwords")) {
+			infostream<<"Server: "<<playername<<" supplied no password"<<std::endl;
+			SendAccessDenied(m_con, peer_id, L"Empty passwords are not allowed on this server.");
+			return;
+		}
+
 		std::string checkpwd;
 		if (m_authmanager.exists(playername)) {
 			checkpwd = m_authmanager.getPassword(playername);
 		}else{
 			checkpwd = g_settings->get("default_password");
-			checkpwd = translatePassword(playername,narrow_to_wide(checkpwd));
+			if (checkpwd.length() > 0) {
+				checkpwd = translatePassword(playername,narrow_to_wide(checkpwd));
+			}else{
+				checkpwd = password;
+			}
 		}
 
 		/*infostream<<"Server: Client gave password '"<<password

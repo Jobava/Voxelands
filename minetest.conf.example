@@ -142,6 +142,8 @@
 #give_initial_stuff = false
 # New users need to input this password
 #default_password =
+# Don't let players join with an empty password
+#disallow_empty_passwords = false
 # Available privileges: build, teleport, settime, privs, shout
 #default_privs = build, shout
 # enable a static spawnpoint (default unset)

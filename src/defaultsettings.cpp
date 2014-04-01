@@ -52,13 +52,13 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("keymap_decrease_viewing_range_min", "KEY_NEXT");
 	// Some (temporary) keys for debugging
 	settings->setDefault("keymap_print_debug_stacks", "KEY_KEY_P");
-	
+
 	// Show debug info by default?
-	#ifdef NDEBUG
+#ifdef NDEBUG
 	settings->setDefault("show_debug", "false");
-	#else
+#else
 	settings->setDefault("show_debug", "true");
-	#endif
+#endif
 
 	settings->setDefault("mouse_sensitivity", "0.2");
 	settings->setDefault("mainmenu_tab","singleplayer");
@@ -102,6 +102,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("motd", "");
 	settings->setDefault("max_users", "20");
 	settings->setDefault("strict_protocol_version_checking", "false");
+	settings->setDefault("disallow_empty_passwords","false");
 	settings->setDefault("creative_mode", "false");
 	settings->setDefault("enable_damage", "true");
 	settings->setDefault("max_mob_level", "aggressive");
