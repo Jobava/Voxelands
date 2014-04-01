@@ -2136,7 +2136,7 @@ void Client::setTempMod(v3s16 p, NodeMod mod)
 			i = affected_blocks.getIterator();
 			i.atEnd() == false; i++)
 	{
-		i.getNode()->getValue()->updateMesh(m_env.getDayNightRatio());
+		i.getNode()->getValue()->updateMesh(m_env.getDayNightRatio(), &m_env);
 	}
 }
 
@@ -2153,7 +2153,7 @@ void Client::clearTempMod(v3s16 p)
 			i = affected_blocks.getIterator();
 			i.atEnd() == false; i++)
 	{
-		i.getNode()->getValue()->updateMesh(m_env.getDayNightRatio());
+		i.getNode()->getValue()->updateMesh(m_env.getDayNightRatio(), &m_env);
 	}
 }
 
@@ -2172,6 +2172,7 @@ void Client::addUpdateMeshTask(v3s16 p, bool ack_to_server)
 	*/
 
 	MeshMakeData *data = new MeshMakeData;
+	data->m_env = &m_env;
 
 	{
 		//TimeTaker timer("data fill");

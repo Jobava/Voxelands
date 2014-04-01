@@ -30,6 +30,8 @@ void MeshMakeData::fill(u32 daynight_ratio, MapBlock *block)
 {
 	m_daynight_ratio = daynight_ratio;
 	m_blockpos = block->getPos();
+	if (m_env)
+		m_vmanip.m_env = m_env;
 
 	v3s16 blockpos_nodes = m_blockpos*MAP_BLOCKSIZE;
 

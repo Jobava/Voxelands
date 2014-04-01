@@ -4154,7 +4154,7 @@ void ClientMap::updateMeshes(v3s16 blockpos, u32 daynight_ratio)
 	try{
 		v3s16 p = blockpos + v3s16(0,0,0);
 		MapBlock *b = getBlockNoCreate(p);
-		b->updateMesh(daynight_ratio);
+		b->updateMesh(daynight_ratio, &m_client->getEnv());
 		//b->setMeshExpired(true);
 	}
 	catch(InvalidPositionException &e){}
@@ -4162,21 +4162,21 @@ void ClientMap::updateMeshes(v3s16 blockpos, u32 daynight_ratio)
 	try{
 		v3s16 p = blockpos + v3s16(-1,0,0);
 		MapBlock *b = getBlockNoCreate(p);
-		b->updateMesh(daynight_ratio);
+		b->updateMesh(daynight_ratio, &m_client->getEnv());
 		//b->setMeshExpired(true);
 	}
 	catch(InvalidPositionException &e){}
 	try{
 		v3s16 p = blockpos + v3s16(0,-1,0);
 		MapBlock *b = getBlockNoCreate(p);
-		b->updateMesh(daynight_ratio);
+		b->updateMesh(daynight_ratio, &m_client->getEnv());
 		//b->setMeshExpired(true);
 	}
 	catch(InvalidPositionException &e){}
 	try{
 		v3s16 p = blockpos + v3s16(0,0,-1);
 		MapBlock *b = getBlockNoCreate(p);
-		b->updateMesh(daynight_ratio);
+		b->updateMesh(daynight_ratio, &m_client->getEnv());
 		//b->setMeshExpired(true);
 	}
 	catch(InvalidPositionException &e){}

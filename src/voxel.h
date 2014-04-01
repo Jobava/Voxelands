@@ -333,6 +333,8 @@ enum VoxelPrintMode
 	VOXELPRINT_WATERPRESSURE,
 };
 
+class Environment;
+
 class VoxelManipulator /*: public NodeContainer*/
 {
 public:
@@ -373,6 +375,7 @@ public:
 
 		return m_data[m_area.index(p)];
 	}
+	MapNode getNodeRO(v3s16 p);
 	MapNode getNodeNoEx(v3s16 p)
 	{
 		emerge(p);
@@ -554,6 +557,8 @@ public:
 		Flags of all nodes
 	*/
 	u8 *m_flags;
+
+	Environment *m_env;
 
 	//TODO: Use these or remove them
 	//TODO: Would these make any speed improvement?

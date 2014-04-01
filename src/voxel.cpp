@@ -22,6 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "utility.h" // For TimeTaker
 #include "gettime.h"
 #include "content_mapnode.h"
+#include "environment.h"
 
 /*
 	Debug stuff
@@ -38,7 +39,8 @@ u32 flowwater_pre_time = 0;
 
 VoxelManipulator::VoxelManipulator():
 	m_data(NULL),
-	m_flags(NULL)
+	m_flags(NULL),
+	m_env(NULL)
 {
 }
 
@@ -49,6 +51,20 @@ VoxelManipulator::~VoxelManipulator()
 		delete[] m_data;
 	if(m_flags)
 		delete[] m_flags;
+}
+
+MapNode VoxelManipulator::getNodeRO(v3s16 p)
+{
+#ifdef SERVER
+	return getNodeNoEx(p);
+#else
+	if (m_area.contains(p) == false || m_flags[m_area.index(p)] & VOXELFLAG_INEXISTENT) {
+		if (m_env)
+			return m_env->getMap().getNodeNoEx(p);
+		return MapNode(CONTENT_IGNORE);
+	}
+	return m_data[m_area.index(p)];
+#endif
 }
 
 void VoxelManipulator::clear()

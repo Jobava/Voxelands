@@ -407,7 +407,7 @@ public:
 		NOTE: Prefer generating the mesh separately and then using
 		replaceMesh().
 	*/
-	void updateMesh(u32 daynight_ratio);
+	void updateMesh(u32 daynight_ratio, Environment *env);
 #endif
 	// Replace the mesh with a new one
 	void replaceMesh(scene::SMesh *mesh_new);

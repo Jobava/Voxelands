@@ -126,6 +126,7 @@ video::SColor MapBlock_LightColor(u8 alpha, u8 light);
 TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods);
 
 class MapBlock;
+class Environment;
 
 struct MeshMakeData
 {
@@ -133,6 +134,7 @@ struct MeshMakeData
 	NodeModMap m_temp_mods;
 	VoxelManipulator m_vmanip;
 	v3s16 m_blockpos;
+	Environment *m_env;
 
 	/*
 		Copy central data directly from block, and other data from

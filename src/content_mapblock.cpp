@@ -179,7 +179,7 @@ static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool
 		for (s16 tx=-1; tx<2; tx++) {
 		for (s16 ty=-1; ty<2; ty++) {
 		for (s16 tz=-1; tz<2; tz++) {
-			MapNode tn = data->m_vmanip.getNodeNoEx(pos + v3s16(tx,ty,tz));
+			MapNode tn = data->m_vmanip.getNodeRO(pos + v3s16(tx,ty,tz));
 			if (
 				ty<1
 				&& (
@@ -227,7 +227,7 @@ static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool
 		for (s16 tx=-1; tx<1; tx++) {
 		for (s16 ty=-1; ty<1; ty++) {
 		for (s16 tz=-1; tz<1; tz++) {
-			tn = data->m_vmanip.getNodeNoEx(pos + v3s16(tx,ty,tz) + corners[i]);
+			tn = data->m_vmanip.getNodeRO(pos + v3s16(tx,ty,tz) + corners[i]);
 			if (
 				ty<1
 				&& (
@@ -260,7 +260,7 @@ static void getRoofLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, 
 		u32 lt = 0;
 		u32 ltp;
 		u8 ld = 0;
-		MapNode tn = data->m_vmanip.getNodeNoEx(pos + v3s16(0,1,0));
+		MapNode tn = data->m_vmanip.getNodeRO(pos + v3s16(0,1,0));
 		ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
 		if (ltp < 20 || ltp > 200) {
 			for (s16 tx=-1; tx<2; tx++) {
@@ -268,7 +268,7 @@ static void getRoofLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, 
 			for (s16 tz=-1; tz<2; tz++) {
 				if ((dir.X && tx != dir.X) || (dir.Z && tz != dir.Z))
 					continue;
-				tn = data->m_vmanip.getNodeNoEx(pos + v3s16(tx,ty,tz));
+				tn = data->m_vmanip.getNodeRO(pos + v3s16(tx,ty,tz));
 				if (
 					ty<1
 					&& (
@@ -294,7 +294,7 @@ static void getRoofLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, 
 		}
 		lights[0] = MapBlock_LightColor(255, l);
 
-		tn = data->m_vmanip.getNodeNoEx(pos + v3s16(0,-1,0));
+		tn = data->m_vmanip.getNodeRO(pos + v3s16(0,-1,0));
 		ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
 		l = 0;
 		ld = 0;
@@ -305,7 +305,7 @@ static void getRoofLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, 
 			for (s16 tz=-1; tz<2; tz++) {
 				if ((dir.X && tx == dir.X) || (dir.Z && tz == dir.Z))
 					continue;
-				tn = data->m_vmanip.getNodeNoEx(pos + v3s16(tx,ty,tz));
+				tn = data->m_vmanip.getNodeRO(pos + v3s16(tx,ty,tz));
 				if (
 					ty<1
 					&& (
@@ -351,7 +351,7 @@ static void mapblock_mesh_check_walllike(MeshMakeData *data, MapNode n, v3s16 p,
 	const ContentFeatures *f2;
 	for (int i=0; i<4; i++) {
 		p2 = p+dirs[i];
-		n2 = data->m_vmanip.getNodeNoEx(p2);
+		n2 = data->m_vmanip.getNodeRO(p2);
 		f2 = &content_features(n2);
 		if (
 			f2->draw_type == CDT_FENCELIKE
@@ -368,7 +368,7 @@ static void mapblock_mesh_check_walllike(MeshMakeData *data, MapNode n, v3s16 p,
 		p2 = p;
 		p2.X++;
 		p2.Z++;
-		n2 = data->m_vmanip.getNodeNoEx(p2);
+		n2 = data->m_vmanip.getNodeRO(p2);
 		f2 = &content_features(n2);
 		if (
 			f2->draw_type == CDT_FENCELIKE
@@ -380,7 +380,7 @@ static void mapblock_mesh_check_walllike(MeshMakeData *data, MapNode n, v3s16 p,
 		p2 = p;
 		p2.X++;
 		p2.Z--;
-		n2 = data->m_vmanip.getNodeNoEx(p2);
+		n2 = data->m_vmanip.getNodeRO(p2);
 		f2 = &content_features(n2);
 		if (
 			f2->draw_type == CDT_FENCELIKE
@@ -392,7 +392,7 @@ static void mapblock_mesh_check_walllike(MeshMakeData *data, MapNode n, v3s16 p,
 		p2 = p;
 		p2.X--;
 		p2.Z++;
-		n2 = data->m_vmanip.getNodeNoEx(p2);
+		n2 = data->m_vmanip.getNodeRO(p2);
 		f2 = &content_features(n2);
 		if (
 			f2->draw_type == CDT_FENCELIKE
@@ -404,7 +404,7 @@ static void mapblock_mesh_check_walllike(MeshMakeData *data, MapNode n, v3s16 p,
 		p2 = p;
 		p2.X--;
 		p2.Z--;
-		n2 = data->m_vmanip.getNodeNoEx(p2);
+		n2 = data->m_vmanip.getNodeRO(p2);
 		f2 = &content_features(n2);
 		if (
 			f2->draw_type == CDT_FENCELIKE
@@ -415,7 +415,7 @@ static void mapblock_mesh_check_walllike(MeshMakeData *data, MapNode n, v3s16 p,
 	u8 ps = d[0]+d[1]+d[2]+d[3]+d[4]+d[5]+d[6]+d[7];
 	p2 = p;
 	p2.Y++;
-	n2 = data->m_vmanip.getNodeNoEx(p2);
+	n2 = data->m_vmanip.getNodeRO(p2);
 	u8 ad[8];
 	u8 ah[8];
 	bool ap;
@@ -461,7 +461,7 @@ static void mapblock_mesh_check_walllike(MeshMakeData *data, MapNode n, v3s16 p,
 	if (*post) {
 		for (int i=0; i<4; i++) {
 			p2 = p+dirs[i];
-			n2 = data->m_vmanip.getNodeNoEx(p2);
+			n2 = data->m_vmanip.getNodeRO(p2);
 			if (
 				n2.getContent() != CONTENT_IGNORE
 				&& n2.getContent() == content_features(n).special_alternate_node
@@ -505,7 +505,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		case CDT_LIQUID:
 		{
 			bool top_is_same_liquid = false;
-			MapNode ntop = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y+1,z));
+			MapNode ntop = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x,y+1,z));
 			content_t c_flowing = content_features(n).liquid_alternative_flowing;
 			content_t c_source = content_features(n).liquid_alternative_source;
 			if(ntop.getContent() == c_flowing || ntop.getContent() == c_source)
@@ -545,13 +545,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				u8 flags = 0;
 				// Check neighbor
 				v3s16 p2 = p + neighbor_dirs[i];
-				MapNode n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + p2);
+				MapNode n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
 				if(n2.getContent() != CONTENT_IGNORE) {
 					content = n2.getContent();
 
 					if (n2.getContent() == c_source) {
 						p2.Y += 1;
-						n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + p2);
+						n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
 						if (content_features(n2).liquid_type == LIQUID_NONE) {
 							level = 0.5*BS;
 						}else{
@@ -567,7 +567,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					// NOTE: This doesn't get executed if neighbor
 					//       doesn't exist
 					p2.Y += 1;
-					n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + p2);
+					n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
 					if(n2.getContent() == c_source ||
 							n2.getContent() == c_flowing)
 						flags |= neighborflag_top_is_same_liquid;
@@ -797,7 +797,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			{
 				// Check this neighbor
 				v3s16 n2p = blockpos_nodes + p + g_6dirs[j];
-				MapNode n2 = data->m_vmanip.getNodeNoEx(n2p);
+				MapNode n2 = data->m_vmanip.getNodeRO(n2p);
 				if (content_features(n2).liquid_type != LIQUID_NONE) {
 					if (n2.getContent() == content_features(n).liquid_alternative_flowing)
 						continue;
@@ -1202,7 +1202,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			{
 				// Check this neighbor
 				v3s16 n2p = blockpos_nodes + p + g_6dirs[j];
-				MapNode n2 = data->m_vmanip.getNodeNoEx(n2p);
+				MapNode n2 = data->m_vmanip.getNodeRO(n2p);
 
 				// The face at Z+
 				video::S3DVertex vertices[4] =
@@ -1501,7 +1501,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			// Now a section of fence, +X, if there's a post there
 			v3s16 p2 = p;
 			p2.X++;
-			MapNode n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + p2);
+			MapNode n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
 			const ContentFeatures *f2 = &content_features(n2);
 			if (
 				f2->draw_type == CDT_FENCELIKE
@@ -1537,7 +1537,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			// Now a section of fence, +Z, if there's a post there
 			p2 = p;
 			p2.X--;
-			n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + p2);
+			n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
 			f2 = &content_features(n2);
 			if (
 				f2->draw_type == CDT_FENCELIKE
@@ -1573,7 +1573,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			// Now a section of fence, +Z, if there's a post there
 			p2 = p;
 			p2.Z++;
-			n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + p2);
+			n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
 			f2 = &content_features(n2);
 			if (
 				f2->draw_type == CDT_FENCELIKE
@@ -1609,7 +1609,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			// Now a section of fence, +Z, if there's a post there
 			p2 = p;
 			p2.Z--;
-			n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + p2);
+			n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
 			f2 = &content_features(n2);
 			if (
 				f2->draw_type == CDT_FENCELIKE
@@ -1645,7 +1645,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				p2 = p;
 				p2.X++;
 				p2.Z++;
-				n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + p2);
+				n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
 				f2 = &content_features(n2);
 				if (
 					f2->draw_type == CDT_FENCELIKE
@@ -1671,7 +1671,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				p2 = p;
 				p2.X++;
 				p2.Z--;
-				n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + p2);
+				n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
 				f2 = &content_features(n2);
 				if (
 					f2->draw_type == CDT_FENCELIKE
@@ -1697,7 +1697,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				p2 = p;
 				p2.X--;
 				p2.Z++;
-				n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + p2);
+				n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
 				f2 = &content_features(n2);
 				if (
 					f2->draw_type == CDT_FENCELIKE
@@ -1723,7 +1723,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				p2 = p;
 				p2.X--;
 				p2.Z--;
-				n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + p2);
+				n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
 				f2 = &content_features(n2);
 				if (
 					f2->draw_type == CDT_FENCELIKE
@@ -1758,18 +1758,18 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			bool is_rail_z_plus_y [] = { false, false };  /* z-1, z+1; y+1 */
 			bool is_rail_x_plus_y [] = { false, false };  /* x-1, x+1; y+1 */
 
-			MapNode n_minus_x = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1,y,z));
-			MapNode n_plus_x = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1,y,z));
-			MapNode n_minus_z = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y,z-1));
-			MapNode n_plus_z = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y,z+1));
-			MapNode n_plus_x_plus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1, y+1, z));
-			MapNode n_plus_x_minus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1, y-1, z));
-			MapNode n_minus_x_plus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1, y+1, z));
-			MapNode n_minus_x_minus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1, y-1, z));
-			MapNode n_plus_z_plus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x, y+1, z+1));
-			MapNode n_minus_z_plus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x, y+1, z-1));
-			MapNode n_plus_z_minus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x, y-1, z+1));
-			MapNode n_minus_z_minus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x, y-1, z-1));
+			MapNode n_minus_x = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x-1,y,z));
+			MapNode n_plus_x = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x+1,y,z));
+			MapNode n_minus_z = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x,y,z-1));
+			MapNode n_plus_z = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x,y,z+1));
+			MapNode n_plus_x_plus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x+1, y+1, z));
+			MapNode n_plus_x_minus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x+1, y-1, z));
+			MapNode n_minus_x_plus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x-1, y+1, z));
+			MapNode n_minus_x_minus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x-1, y-1, z));
+			MapNode n_plus_z_plus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x, y+1, z+1));
+			MapNode n_minus_z_plus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x, y+1, z-1));
+			MapNode n_plus_z_minus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x, y-1, z+1));
+			MapNode n_minus_z_minus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x, y-1, z-1));
 
 			content_t thiscontent = n.getContent();
 
@@ -1905,18 +1905,18 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			bool is_roof_z_plus_y [] = { false, false };  /* z-1, z+1; y+1 */
 			bool is_roof_x_plus_y [] = { false, false };  /* x-1, x+1; y+1 */
 
-			MapNode n_minus_x = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1,y,z));
-			MapNode n_plus_x = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1,y,z));
-			MapNode n_minus_z = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y,z-1));
-			MapNode n_plus_z = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y,z+1));
-			MapNode n_plus_x_plus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1, y+1, z));
-			MapNode n_plus_x_minus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1, y-1, z));
-			MapNode n_minus_x_plus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1, y+1, z));
-			MapNode n_minus_x_minus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1, y-1, z));
-			MapNode n_plus_z_plus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x, y+1, z+1));
-			MapNode n_minus_z_plus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x, y+1, z-1));
-			MapNode n_plus_z_minus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x, y-1, z+1));
-			MapNode n_minus_z_minus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x, y-1, z-1));
+			MapNode n_minus_x = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x-1,y,z));
+			MapNode n_plus_x = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x+1,y,z));
+			MapNode n_minus_z = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x,y,z-1));
+			MapNode n_plus_z = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x,y,z+1));
+			MapNode n_plus_x_plus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x+1, y+1, z));
+			MapNode n_plus_x_minus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x+1, y-1, z));
+			MapNode n_minus_x_plus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x-1, y+1, z));
+			MapNode n_minus_x_minus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x-1, y-1, z));
+			MapNode n_plus_z_plus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x, y+1, z+1));
+			MapNode n_minus_z_plus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x, y+1, z-1));
+			MapNode n_plus_z_minus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x, y-1, z+1));
+			MapNode n_minus_z_minus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x, y-1, z-1));
 
 			content_t thiscontent = n.getContent();
 
@@ -2030,7 +2030,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						type = 2;
 						angle = 90;
 					}else{
-						abv = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1, y+1, z-1));
+						abv = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x-1, y+1, z-1));
 						if (abv.getContent() == thiscontent) {
 							type = 4;
 							angle = 90;
@@ -2050,7 +2050,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						type = 2;
 						angle = 270;
 					}else{
-						abv = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1, y+1, z+1));
+						abv = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x-1, y+1, z+1));
 						if (abv.getContent() == thiscontent) {
 							type = 4;
 							angle = 0;
@@ -2070,7 +2070,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						type = 2;
 						angle = 90;
 					}else{
-						abv = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1, y+1, z-1));
+						abv = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x+1, y+1, z-1));
 						if (abv.getContent() == thiscontent) {
 							type = 4;
 							angle = 180;
@@ -2090,7 +2090,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						type = 2;
 						angle = 270;
 					}else{
-						abv = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1, y+1, z+1));
+						abv = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x+1, y+1, z+1));
 						if (abv.getContent() == thiscontent) {
 							type = 4;
 							angle = 270;
@@ -2637,7 +2637,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		break;
 		case CDT_PLANTLIKE_LGE:
 		{
-			MapNode n2 = data->m_vmanip.getNodeNoEx(blockpos_nodes + p + v3s16(0,1,0));
+			MapNode n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p + v3s16(0,1,0));
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l);
 			f32 tuv[4] = {

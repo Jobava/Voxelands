@@ -135,7 +135,7 @@ MapNode MapBlock::getNodeParentNoEx(v3s16 p)
 #ifndef SERVER
 
 #if 1
-void MapBlock::updateMesh(u32 daynight_ratio)
+void MapBlock::updateMesh(u32 daynight_ratio, Environment *env)
 {
 #if 0
 	/*
@@ -149,6 +149,7 @@ void MapBlock::updateMesh(u32 daynight_ratio)
 #endif
 
 	MeshMakeData data;
+	data.m_env = env;
 	data.fill(daynight_ratio, this);
 
 	scene::SMesh *mesh_new = makeMapBlockMesh(&data);
