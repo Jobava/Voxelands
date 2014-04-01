@@ -58,7 +58,12 @@ MapNode VoxelManipulator::getNodeRO(v3s16 p)
 #ifdef SERVER
 	return getNodeNoEx(p);
 #else
-	if (m_area.contains(p) == false || m_flags[m_area.index(p)] & VOXELFLAG_INEXISTENT) {
+	if (
+		m_area.contains(p) == false
+		|| (m_flags[m_area.index(p)] & VOXELFLAG_INEXISTENT)
+		|| (m_flags[m_area.index(p)] & VOXELFLAG_NOT_LOADED)
+		|| m_data[m_area.index(p)].getContent() == CONTENT_IGNORE
+	) {
 		if (m_env)
 			return m_env->getMap().getNodeNoEx(p);
 		return MapNode(CONTENT_IGNORE);
