@@ -8003,6 +8003,7 @@ void content_mapnode_init()
 	f->description = std::string("Cobblestone Wall");
 	f->setAllTextures("cobble.png");
 	f->light_propagates = true;
+	f->jumpable = false;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_WALLLIKE;
 	f->is_ground_content = true;
