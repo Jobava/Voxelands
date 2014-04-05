@@ -312,7 +312,7 @@ void RemotePlayer::move(f32 dtime, Map &map, f32 pos_max_d)
 		}
 	}
 
-	ISceneNode::setPosition(m_showpos);
+	ISceneNode::setPosition(m_showpos-m_camera_offset);
 }
 
 #endif

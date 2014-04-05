@@ -734,7 +734,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					if(dir == v3s16(1,0,-0))
 						vertices[j].Pos.rotateXZBy(-90);
 
-					vertices[j].Pos += intToFloat(p + blockpos_nodes, BS);
+					vertices[j].Pos += intToFloat(p, BS);
 				}
 
 				u16 indices[] = {0,1,2,2,3,0};
@@ -767,7 +767,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				{
 					s32 j = corner_resolve[i];
 					vertices[i].Pos.Y += corner_levels[j];
-					vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+					vertices[i].Pos += intToFloat(p, BS);
 				}
 
 				u16 indices[] = {0,1,2,2,3,0};
@@ -858,7 +858,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				}
 
 				for (u16 i=0; i<4; i++) {
-					vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+					vertices[i].Pos += intToFloat(p, BS);
 					if (j == 1 || (j != 4 && i<2)) {
 						vertices[i].Pos.Y -=0.15*BS;
 					}
@@ -985,12 +985,12 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 			if (dir.Y == 1) { // roof
 				for (s32 i=0; i<24; i++) {
-					vertices[0][i].Pos += intToFloat(p + blockpos_nodes, BS);
+					vertices[0][i].Pos += intToFloat(p, BS);
 				}
 				v = vertices[0];
 			}else if (dir.Y == -1) { // floor
 				for (s32 i=0; i<24; i++) {
-					vertices[1][i].Pos += intToFloat(p + blockpos_nodes, BS);
+					vertices[1][i].Pos += intToFloat(p, BS);
 				}
 				v = vertices[1];
 			}else{ // wall
@@ -1004,7 +1004,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					if(dir == v3s16(0,0,-1))
 						vertices[2][i].Pos.rotateXZBy(180);
 
-					vertices[2][i].Pos += intToFloat(p + blockpos_nodes, BS);
+					vertices[2][i].Pos += intToFloat(p, BS);
 				}
 				v = vertices[2];
 			}
@@ -1098,7 +1098,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				if(dir == v3s16(0,1,0))
 					vertices[i].Pos.rotateYZBy(-90);
 
-				vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+				vertices[i].Pos += intToFloat(p, BS);
 			}
 
 			u16 indices[] = {0,1,2,2,3,0};
@@ -1157,7 +1157,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				if(dir == v3s16(0,1,0))
 					vertices[i].Pos.rotateXYBy(90);
 
-				vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+				vertices[i].Pos += intToFloat(p, BS);
 			}
 
 			u16 indices[] = {0,1,2,2,3,0};
@@ -1253,7 +1253,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				}
 
 				for (u16 i=0; i<4; i++) {
-					vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+					vertices[i].Pos += intToFloat(p, BS);
 				}
 
 				u16 indices[] = {0,1,2,2,3,0};
@@ -1292,7 +1292,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
 			}
 
-			v3f pos = intToFloat(p+blockpos_nodes, BS);
+			v3f pos = intToFloat(p, BS);
 			if (d[0]) {
 				height = h[0] ? 0.501 : 0.301;
 				aabb3f bar(
@@ -1463,7 +1463,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			const f32 bar_rad=(f32)BS/20;
 
 			// The post - always present
-			v3f pos = intToFloat(p+blockpos_nodes, BS);
+			v3f pos = intToFloat(p, BS);
 			static const v3s16 tile_dirs[6] = {
 				v3s16(0, 1, 0),
 				v3s16(0, -1, 0),
@@ -1888,7 +1888,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			for (s32 i=0; i<4; i++) {
 				if (angle != 0)
 					vertices[i].Pos.rotateXZBy(angle);
-				vertices[i].Pos += intToFloat(blockpos_nodes + p, BS);
+				vertices[i].Pos += intToFloat(p, BS);
 			}
 
 			u16 indices[] = {0,1,2,2,3,0};
@@ -1964,7 +1964,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 			MapNode abv;
 
-			v3f pos = intToFloat(p+blockpos_nodes, BS);
+			v3f pos = intToFloat(p, BS);
 
 			if (adjacencies == 1) {
 				// cross X
@@ -2697,7 +2697,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 				for (u16 i=0; i<4; i++) {
 					vertices[i].Pos.X *= 1.3;
-					vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+					vertices[i].Pos += intToFloat(p, BS);
 				}
 
 				u16 indices[] = {0,1,2,2,3,0};
@@ -2748,7 +2748,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 				for(u16 i=0; i<4; i++)
 				{
-					vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+					vertices[i].Pos += intToFloat(p, BS);
 				}
 
 				u16 indices[] = {0,1,2,2,3,0};
@@ -2800,7 +2800,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				for(u16 i=0; i<4; i++)
 				{
 					vertices[i].Pos *= 0.8;
-					vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+					vertices[i].Pos += intToFloat(p, BS);
 				}
 
 				u16 indices[] = {0,1,2,2,3,0};
@@ -2852,7 +2852,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 				for(u16 i=0; i<4; i++)
 				{
-					vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+					vertices[i].Pos += intToFloat(p, BS);
 				}
 
 				u16 indices[] = {0,1,2,2,3,0};
@@ -2904,7 +2904,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 				for(u16 i=0; i<4; i++)
 				{
-					vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+					vertices[i].Pos += intToFloat(p, BS);
 				}
 
 				u16 indices[] = {0,1,2,2,3,0};
@@ -2956,7 +2956,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 				for(u16 i=0; i<4; i++)
 				{
-					vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+					vertices[i].Pos += intToFloat(p, BS);
 				}
 
 				u16 indices[] = {0,1,2,2,3,0};
@@ -2984,7 +2984,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			video::SColor c[8];
 			getLights(blockpos_nodes+p,c,data,smooth_lighting);
 
-			v3f pos = intToFloat(p+blockpos_nodes, BS);
+			v3f pos = intToFloat(p, BS);
 			std::vector<aabb3f> boxes = content_features(n).getNodeBoxes(n);
 			for (std::vector<aabb3f>::iterator i = boxes.begin(); i != boxes.end(); i++) {
 				aabb3f box = *i;

@@ -163,10 +163,16 @@ public:
 	v3f getPosition()
 		{return m_position;}
 
+	void updateCameraOffset(v3s16 camera_offset)
+	{
+		m_camera_offset = camera_offset;
+	}
+
 private:
 	core::aabbox3d<f32> m_selection_box;
 	scene::IMeshSceneNode *m_node;
 	v3f m_position;
+	v3s16 m_camera_offset;
 	std::string m_inventorystring;
 };
 
@@ -203,12 +209,17 @@ public:
 		{return &m_selection_box;}
 	v3f getPosition()
 		{return pos_translator.vect_show;}
-		//{return m_position;}
+
+	void updateCameraOffset(v3s16 camera_offset)
+	{
+		m_camera_offset = camera_offset;
+	}
 
 private:
 	core::aabbox3d<f32> m_selection_box;
 	scene::IAnimatedMeshSceneNode *m_node;
 	v3f m_position;
+	v3s16 m_camera_offset;
 	float m_yaw;
 	SmoothTranslator pos_translator;
 };
@@ -246,7 +257,11 @@ public:
 		{return &m_selection_box;}
 	v3f getPosition()
 		{return pos_translator.vect_show;}
-		//{return m_position;}
+
+	void updateCameraOffset(v3s16 camera_offset)
+	{
+		m_camera_offset = camera_offset;
+	}
 
 	// If returns true, punch will not be sent to the server
 	bool directReportPunch(const std::string &toolname, v3f dir);
@@ -256,6 +271,7 @@ private:
 	core::aabbox3d<f32> m_selection_box;
 	scene::IAnimatedMeshSceneNode *m_node;
 	v3f m_position;
+	v3s16 m_camera_offset;
 	float m_yaw;
 	SmoothTranslator pos_translator;
 	float m_damage_visual_timer;
@@ -296,10 +312,16 @@ public:
 	v3f getPosition()
 		{return m_position;}
 
+	void updateCameraOffset(v3s16 camera_offset)
+	{
+		m_camera_offset = camera_offset;
+	}
+
 private:
 	core::aabbox3d<f32> m_selection_box;
 	scene::IMeshSceneNode *m_node;
 	v3f m_position;
+	v3s16 m_camera_offset;
 	float m_yaw;
 	SmoothTranslator pos_translator;
 };
@@ -337,7 +359,11 @@ public:
 		{return &m_selection_box;}
 	v3f getPosition()
 		{return pos_translator.vect_show;}
-		//{return m_position;}
+
+	void updateCameraOffset(v3s16 camera_offset)
+	{
+		m_camera_offset = camera_offset;
+	}
 	bool doShowSelectionBox(){return false;}
 
 	// If returns true, punch will not be sent to the server
@@ -350,6 +376,7 @@ private:
 	core::aabbox3d<f32> m_selection_box;
 	scene::IBillboardSceneNode *m_node;
 	v3f m_position;
+	v3s16 m_camera_offset;
 	std::string m_texture_name;
 	float m_yaw;
 	SmoothTranslator pos_translator;

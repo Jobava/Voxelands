@@ -310,6 +310,11 @@ public:
 		setMeshVerticesColor(m_node->getMesh(), color);
 	}
 
+	void updateCameraOffset(v3s16 camera_offset)
+	{
+		m_camera_offset = intToFloat(camera_offset,BS);
+	}
+
 	void move(f32 dtime, Map &map, f32 pos_max_d);
 
 private:
@@ -322,6 +327,7 @@ private:
 	f32 m_pos_animation_time;
 	f32 m_pos_animation_time_counter;
 	v3f m_showpos;
+	v3f m_camera_offset;
 	u8 m_anim_id;
 };
 

@@ -81,10 +81,12 @@ private:
 	JMutex m_mutex;
 };
 
+class MapBlockMesh;
+
 struct MeshUpdateResult
 {
 	v3s16 p;
-	scene::SMesh *mesh;
+	MapBlockMesh *mesh;
 	bool ack_block_to_server;
 
 	MeshUpdateResult():
@@ -108,6 +110,8 @@ public:
 	MeshUpdateQueue m_queue_in;
 
 	MutexedQueue<MeshUpdateResult> m_queue_out;
+
+	v3s16 m_camera_offset;
 };
 
 enum ClientEventType
@@ -212,7 +216,7 @@ public:
 	// locks envlock
 	void addNode(v3s16 p, MapNode n);
 
-	void updateCamera(v3f pos, v3f dir, f32 fov);
+	void updateCamera(v3f pos, v3f dir, f32 fov, v3s16 camera_offset);
 
 	void renderPostFx();
 
@@ -296,6 +300,8 @@ public:
 	void addUpdateMeshTask(v3s16 blockpos, bool ack_to_server=false);
 	// Including blocks at appropriate edges
 	void addUpdateMeshTaskWithEdge(v3s16 blockpos, bool ack_to_server=false);
+
+	void updateCameraOffset(v3s16 camera_offset){ m_mesh_update_thread.m_camera_offset = camera_offset; }
 
 	// Get event from queue. CE_NONE is returned if queue is empty.
 	ClientEvent getClientEvent();

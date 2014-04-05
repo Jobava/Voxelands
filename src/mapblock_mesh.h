@@ -146,5 +146,23 @@ struct MeshMakeData
 // This is the highest-level function in here
 scene::SMesh* makeMapBlockMesh(MeshMakeData *data);
 
+class MapBlockMesh
+{
+public:
+	MapBlockMesh(MeshMakeData *data, v3s16 camera_offset);
+	~MapBlockMesh();
+
+	scene::SMesh* getMesh()
+	{
+		return m_mesh;
+	}
+
+	void updateCameraOffset(v3s16 camera_offset);
+
+private:
+	scene::SMesh *m_mesh;
+	v3s16 m_camera_offset;
+};
+
 #endif
 

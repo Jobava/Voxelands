@@ -529,12 +529,13 @@ public:
 		ISceneNode::drop();
 	}
 
-	void updateCamera(v3f pos, v3f dir, f32 fov)
+	void updateCamera(v3f pos, v3f dir, f32 fov, v3s16 offset)
 	{
 		JMutexAutoLock lock(m_camera_mutex);
 		m_camera_position = pos;
 		m_camera_direction = dir;
 		m_camera_fov = fov;
+		m_camera_offset = offset;
 	}
 
 	/*
@@ -588,7 +589,7 @@ public:
 		Update the faces of the given block and blocks on the
 		leading edge.
 	*/
-	void updateMeshes(v3s16 blockpos, u32 daynight_ratio);
+	void updateMeshes(v3s16 blockpos, u32 daynight_ratio, v3s16 camera_offset);
 
 	// Update meshes that touch the node
 	//void updateNodeMeshes(v3s16 nodepos, u32 daynight_ratio);
@@ -616,6 +617,7 @@ private:
 	v3f m_camera_position;
 	v3f m_camera_direction;
 	f32 m_camera_fov;
+	v3s16 m_camera_offset;
 	JMutex m_camera_mutex;
 
 	core::map<v2s16, bool> m_last_drawn_sectors;

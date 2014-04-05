@@ -159,8 +159,7 @@ void * MeshUpdateThread::Thread()
 
 		ScopeProfiler sp(g_profiler, "Client: Mesh making");
 
-		scene::SMesh *mesh_new = NULL;
-		mesh_new = makeMapBlockMesh(q->data);
+		MapBlockMesh *mesh_new = new MapBlockMesh(q->data, m_camera_offset);
 
 		MeshUpdateResult r;
 		r.p = q->p;
@@ -1920,9 +1919,9 @@ void Client::addNode(v3s16 p, MapNode n)
 	}
 }
 
-void Client::updateCamera(v3f pos, v3f dir, f32 fov)
+void Client::updateCamera(v3f pos, v3f dir, f32 fov, v3s16 camera_offset)
 {
-	m_env.getClientMap().updateCamera(pos, dir, fov);
+	m_env.getClientMap().updateCamera(pos, dir, fov, camera_offset);
 }
 
 void Client::renderPostFx()
@@ -2136,7 +2135,7 @@ void Client::setTempMod(v3s16 p, NodeMod mod)
 			i = affected_blocks.getIterator();
 			i.atEnd() == false; i++)
 	{
-		i.getNode()->getValue()->updateMesh(m_env.getDayNightRatio(), &m_env);
+		i.getNode()->getValue()->updateMesh(m_env.getDayNightRatio(), &m_env, m_mesh_update_thread.m_camera_offset);
 	}
 }
 
@@ -2153,7 +2152,7 @@ void Client::clearTempMod(v3s16 p)
 			i = affected_blocks.getIterator();
 			i.atEnd() == false; i++)
 	{
-		i.getNode()->getValue()->updateMesh(m_env.getDayNightRatio(), &m_env);
+		i.getNode()->getValue()->updateMesh(m_env.getDayNightRatio(), &m_env, m_mesh_update_thread.m_camera_offset);
 	}
 }
 
@@ -2190,18 +2189,6 @@ void Client::addUpdateMeshTask(v3s16 p, bool ack_to_server)
 	/*infostream<<"Mesh update input queue size is "
 			<<m_mesh_update_thread.m_queue_in.size()
 			<<std::endl;*/
-
-#if 0
-	// Temporary test: make mesh directly in here
-	{
-		//TimeTaker timer("make mesh");
-		// 10ms
-		scene::SMesh *mesh_new = NULL;
-		mesh_new = makeMapBlockMesh(data);
-		b->replaceMesh(mesh_new);
-		delete data;
-	}
-#endif
 
 	/*
 		Mark mesh as non-expired at this point so that it can already

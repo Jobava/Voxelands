@@ -61,7 +61,7 @@ MapBlock::~MapBlock()
 
 		if(mesh)
 		{
-			mesh->drop();
+			delete mesh;
 			mesh = NULL;
 		}
 	}
@@ -135,7 +135,7 @@ MapNode MapBlock::getNodeParentNoEx(v3s16 p)
 #ifndef SERVER
 
 #if 1
-void MapBlock::updateMesh(u32 daynight_ratio, Environment *env)
+void MapBlock::updateMesh(u32 daynight_ratio, Environment *env, v3s16 camera_offset)
 {
 #if 0
 	/*
@@ -152,7 +152,9 @@ void MapBlock::updateMesh(u32 daynight_ratio, Environment *env)
 	data.m_env = env;
 	data.fill(daynight_ratio, this);
 
-	scene::SMesh *mesh_new = makeMapBlockMesh(&data);
+	MapBlockMesh *mesh_new = new MapBlockMesh(&data, camera_offset);
+
+	//scene::SMesh *mesh_new = makeMapBlockMesh(&data);
 
 	/*
 		Replace the mesh
@@ -163,14 +165,14 @@ void MapBlock::updateMesh(u32 daynight_ratio, Environment *env)
 }
 #endif
 
-void MapBlock::replaceMesh(scene::SMesh *mesh_new)
+void MapBlock::replaceMesh(MapBlockMesh *mesh_new)
 {
 	mesh_mutex.Lock();
 
 	//scene::SMesh *mesh_old = mesh[daynight_i];
 	//mesh[daynight_i] = mesh_new;
 
-	scene::SMesh *mesh_old = mesh;
+	MapBlockMesh *mesh_old = mesh;
 	mesh = mesh_new;
 	setMeshExpired(false);
 
@@ -195,9 +197,9 @@ void MapBlock::replaceMesh(scene::SMesh *mesh_new)
 		}*/
 
 		// Drop the mesh
-		mesh_old->drop();
+		//mesh_old->drop();
 
-		//delete mesh_old;
+		delete mesh_old;
 	}
 
 	mesh_mutex.Unlock();

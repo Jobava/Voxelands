@@ -368,7 +368,7 @@ public:
 	virtual void addPlayer(Player *player);
 	LocalPlayer * getLocalPlayer();
 
-	void updateMeshes(v3s16 blockpos);
+	void updateMeshes(v3s16 blockpos, v3s16 camera_offset);
 	void expireMeshes(bool only_daynight_diffed);
 
 	void setTimeOfDay(u32 time)
@@ -419,6 +419,8 @@ public:
 	// Get all nearby objects
 	void getActiveObjects(v3f origin, f32 max_d,
 			core::array<DistanceSortedActiveObject> &dest);
+
+	void updateObjectsCameraOffset(v3s16 camera_offset);
 
 	// Get event from queue. CEE_NONE is returned if queue is empty.
 	ClientEnvEvent getClientEvent();

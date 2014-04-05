@@ -322,7 +322,7 @@ void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 void getPointedNode(Client *client, v3f player_position,
 		v3f camera_direction, v3f camera_position,
 		bool &nodefound, core::line3d<f32> shootline,
-		v3s16 &nodepos, v3s16 &neighbourpos,
+		v3s16 &nodepos, v3s16 &neighbourpos, v3s16 camera_offset,
 		core::aabbox3d<f32> &nodehilightbox,
 		f32 d)
 {
@@ -332,6 +332,7 @@ void getPointedNode(Client *client, v3f player_position,
 
 	/*infostream<<"pos_i=("<<pos_i.X<<","<<pos_i.Y<<","<<pos_i.Z<<")"
 			<<std::endl;*/
+//printf("%f,%f,%f - %f,%f,%f\n",shootline.start.X,shootline.start.Y,shootline.start.Z,shootline.end.X,shootline.end.Y,shootline.end.Z);
 
 	s16 a = d;
 	s16 ystart = pos_i.Y + 0 - (camera_direction.Y<0 ? a : 1);
@@ -350,6 +351,7 @@ void getPointedNode(Client *client, v3f player_position,
 	for(s16 z = zstart; z <= zend; z++)
 	for(s16 x = xstart; x <= xend; x++)
 	{
+//printf("%d,%d,%d\n",x,y,z);
 		MapNode n;
 		try
 		{
@@ -428,6 +430,8 @@ void getPointedNode(Client *client, v3f player_position,
 					nodepos = np;
 					neighbourpos = np;
 					mindistance = distance;
+					box.MinEdge -= intToFloat(camera_offset,BS);
+					box.MaxEdge -= intToFloat(camera_offset,BS);
 					nodehilightbox = box;
 				}
 			}
@@ -477,6 +481,8 @@ void getPointedNode(Client *client, v3f player_position,
 					nodepos = np;
 					neighbourpos = np;
 					mindistance = distance;
+					box.MinEdge -= intToFloat(camera_offset,BS);
+					box.MaxEdge -= intToFloat(camera_offset,BS);
 					nodehilightbox = box;
 				}
 			}
@@ -526,6 +532,8 @@ void getPointedNode(Client *client, v3f player_position,
 					nodepos = np;
 					neighbourpos = np;
 					mindistance = distance;
+					box.MinEdge -= intToFloat(camera_offset,BS);
+					box.MaxEdge -= intToFloat(camera_offset,BS);
 					nodehilightbox = box;
 				}
 			}
@@ -563,6 +571,8 @@ void getPointedNode(Client *client, v3f player_position,
 					nodepos = np;
 					neighbourpos = np;
 					mindistance = distance;
+					box.MinEdge -= intToFloat(camera_offset,BS);
+					box.MaxEdge -= intToFloat(camera_offset,BS);
 					nodehilightbox = box;
 				}
 			}
@@ -621,7 +631,7 @@ void getPointedNode(Client *client, v3f player_position,
 									const float d = 0.502;
 									core::aabbox3d<f32> nodebox
 											(-BS*d, -BS*d, -BS*d, BS*d, BS*d, BS*d);
-									v3f nodepos_f = intToFloat(nodepos, BS);
+									v3f nodepos_f = intToFloat(nodepos-camera_offset, BS);
 									nodebox.MinEdge += nodepos_f;
 									nodebox.MaxEdge += nodepos_f;
 									nodehilightbox = nodebox;
@@ -645,6 +655,7 @@ void getPointedNode(Client *client, v3f player_position,
 				v3f centerpoint = npf + dir_f * BS/2;
 				f32 distance =
 						(centerpoint - camera_position).getLength();
+//printf("%f %f - %d,%d,%d\n",distance, mindistance,x,y,z);
 
 				if(distance < mindistance)
 				{
@@ -678,7 +689,7 @@ void getPointedNode(Client *client, v3f player_position,
 						const float d = 0.502;
 						core::aabbox3d<f32> nodebox
 								(-BS*d, -BS*d, -BS*d, BS*d, BS*d, BS*d);
-						v3f nodepos_f = intToFloat(nodepos, BS);
+						v3f nodepos_f = intToFloat(nodepos-camera_offset, BS);
 						nodebox.MinEdge += nodepos_f;
 						nodebox.MaxEdge += nodepos_f;
 						nodehilightbox = nodebox;
@@ -1002,10 +1013,10 @@ void the_game(
 			core::rect<s32>(0,0,0,0),
 			false, false);
 	guitext_status->setVisible(false);
-	
+
 	std::wstring statustext;
 	float statustext_time = 0;
-	
+
 	// Chat text
 	gui::IGUIStaticText *guitext_chat = guienv->addStaticText(
 			L"",
@@ -1725,6 +1736,8 @@ void the_game(
 			}
 		}
 
+		//v3s16 old_camera_offset = camera.getOffset();
+
 		LocalPlayer* player = client.getLocalPlayer();
 		camera.update(player, busytime, screensize);
 		camera.step(dtime);
@@ -1733,10 +1746,18 @@ void the_game(
 		v3f camera_position = camera.getPosition();
 		v3f camera_direction = camera.getDirection();
 		f32 camera_fov = camera.getFovMax();
+		v3s16 camera_offset = camera.getOffset();
+
+		//bool camera_offset_changed = (camera_offset != old_camera_offset);
 
 		if(!disable_camera_update){
 			client.updateCamera(camera_position,
-				camera_direction, camera_fov);
+				camera_direction, camera_fov, camera_offset);
+			client.updateCameraOffset(camera_offset);
+			client.getEnv().updateObjectsCameraOffset(camera_offset);
+			update_particles_camera_offset(camera_offset);
+			if (clouds)
+				clouds->updateCameraOffset(camera_offset);
 		}
 
 		/*
@@ -1770,7 +1791,7 @@ void the_game(
 			// first place
 			assert(selection_box);
 
-			v3f pos = selected_active_object->getPosition();
+			v3f pos = selected_active_object->getPosition()-intToFloat(camera_offset,BS);
 
 			core::aabbox3d<f32> box_on_map(
 					selection_box->MinEdge + pos,
@@ -1825,7 +1846,7 @@ void the_game(
 		getPointedNode(&client, player_position,
 				camera_direction, camera_position,
 				nodefound, shootline,
-				nodepos, neighbourpos,
+				nodepos, neighbourpos, camera_offset,
 				nodehilightbox, d);
 
 		if(!nodefound){

@@ -3768,9 +3768,9 @@ void ClientEnvironment::step(float dtime)
 	}
 }
 
-void ClientEnvironment::updateMeshes(v3s16 blockpos)
+void ClientEnvironment::updateMeshes(v3s16 blockpos, v3s16 camera_offset)
 {
-	m_map->updateMeshes(blockpos, getDayNightRatio());
+	m_map->updateMeshes(blockpos, getDayNightRatio(), camera_offset);
 }
 
 void ClientEnvironment::expireMeshes(bool only_daynight_diffed)
@@ -3962,6 +3962,24 @@ ClientEnvEvent ClientEnvironment::getClientEvent()
 		return event;
 	}
 	return m_client_event_queue.pop_front();
+}
+
+void ClientEnvironment::updateObjectsCameraOffset(v3s16 camera_offset)
+{
+	for(core::map<u16, ClientActiveObject*>::Iterator
+			i = m_active_objects.getIterator();
+			i.atEnd()==false; i++)
+	{
+		ClientActiveObject* obj = i.getNode()->getValue();
+		obj->updateCameraOffset(camera_offset);
+	}
+	for(core::list<Player*>::Iterator i = m_players.begin();
+			i != m_players.end(); i++)
+	{
+		Player *player = *i;
+		if (!player->isLocal())
+			((RemotePlayer*)player)->updateCameraOffset(camera_offset);
+	}
 }
 
 #endif // #ifndef SERVER

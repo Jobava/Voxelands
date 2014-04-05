@@ -67,6 +67,11 @@ public:
 
 	void update(v2f camera_p, float brightness);
 
+	void updateCameraOffset(v3s16 camera_offset)
+	{
+		m_camera_offset = camera_offset;
+	}
+
 private:
 	video::SMaterial m_material;
 	core::aabbox3d<f32> m_box;
@@ -74,6 +79,7 @@ private:
 	float m_brightness;
 	u32 m_seed;
 	v2f m_camera_pos;
+	v3s16 m_camera_offset;
 	float m_time;
 };
 

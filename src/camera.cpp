@@ -29,6 +29,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <SAnimatedMesh.h>
 #include "settings.h"
 #include "path.h"
+#include "constants.h"
+
+#define CAMERA_OFFSET_STEP 200
 
 Camera::Camera(scene::ISceneManager* smgr, MapDrawControl& draw_control):
 	m_smgr(smgr),
@@ -45,6 +48,7 @@ Camera::Camera(scene::ISceneManager* smgr, MapDrawControl& draw_control):
 
 	m_camera_position(0,0,0),
 	m_camera_direction(0,0,0),
+	m_camera_offset(0,0,0),
 
 	m_aspect(1.0),
 	m_fov_x(1.0),
@@ -250,11 +254,20 @@ void Camera::update(LocalPlayer* player, f32 frametime, v2u32 screensize)
 	v3f abs_cam_up;
 	m_headnode->getAbsoluteTransformation().rotateVect(abs_cam_up, rel_cam_up);
 
+	// Update offset if too far away from the center of the map
+
+	m_camera_offset.X += CAMERA_OFFSET_STEP*
+			(((s16)(m_camera_position.X/BS) - m_camera_offset.X)/CAMERA_OFFSET_STEP);
+	m_camera_offset.Y += CAMERA_OFFSET_STEP*
+			(((s16)(m_camera_position.Y/BS) - m_camera_offset.Y)/CAMERA_OFFSET_STEP);
+	m_camera_offset.Z += CAMERA_OFFSET_STEP*
+			(((s16)(m_camera_position.Z/BS) - m_camera_offset.Z)/CAMERA_OFFSET_STEP);
+
 	// Set camera node transformation
-	m_cameranode->setPosition(m_camera_position);
+	m_cameranode->setPosition(m_camera_position-intToFloat(m_camera_offset, BS));
 	m_cameranode->setUpVector(abs_cam_up);
 	// *100.0 helps in large map coordinates
-	m_cameranode->setTarget(m_camera_position + 100 * m_camera_direction);
+	m_cameranode->setTarget(m_camera_position-intToFloat(m_camera_offset, BS) + 100 * m_camera_direction);
 
 	// Get FOV setting
 	f32 fov_degrees = g_settings->getFloat("fov");
@@ -349,7 +362,7 @@ void Camera::updateViewingRange(f32 frametime_in)
 
 	f32 viewing_range_max = g_settings->getS16("viewing_range_nodes_max");
 	viewing_range_max = MYMAX(viewing_range_min, viewing_range_max);
-	
+
 	f32 wanted_fps = g_settings->getFloat("wanted_fps");
 	wanted_fps = MYMAX(wanted_fps, 1.0);
 	f32 wanted_frametime = 1.0 / wanted_fps;
@@ -445,7 +458,7 @@ void Camera::updateViewingRange(f32 frametime_in)
 	// Some more allowance than viewing_range_max * BS because of active objects etc.
 	m_cameranode->setFarValue(viewing_range_max * BS * 10);
 }
-	
+
 void Camera::wield(const InventoryItem* item)
 {
 	if (item != NULL)

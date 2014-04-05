@@ -3650,6 +3650,7 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 	v3f camera_position = m_camera_position;
 	v3f camera_direction = m_camera_direction;
 	f32 camera_fov = m_camera_fov;
+	v3s16 camera_offset = m_camera_offset;
 	m_camera_mutex.Unlock();
 
 	/*
@@ -3739,6 +3740,9 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 				Compare block position to camera position, skip
 				if not seen on display
 			*/
+
+			if (block->mesh != NULL)
+				block->mesh->updateCameraOffset(m_camera_offset);
 
 			float range = 100000 * BS;
 			if(m_control.range_all == false)
@@ -3857,7 +3861,7 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 			{
 				JMutexAutoLock lock(block->mesh_mutex);
 
-				scene::SMesh *mesh = block->mesh;
+				MapBlockMesh *mesh = block->mesh;
 
 				if(mesh == NULL){
 					blocks_in_range_without_mesh++;
@@ -3921,14 +3925,15 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 		{
 			JMutexAutoLock lock(block->mesh_mutex);
 
-			scene::SMesh *mesh = block->mesh;
+			MapBlockMesh *mesh = block->mesh;
 			assert(mesh);
+			assert(mesh->getMesh());
 
-			u32 c = mesh->getMeshBufferCount();
+			u32 c = mesh->getMesh()->getMeshBufferCount();
 			bool stuff_actually_drawn = false;
 			for(u32 i=0; i<c; i++)
 			{
-				scene::IMeshBuffer *buf = mesh->getMeshBuffer(i);
+				scene::IMeshBuffer *buf = mesh->getMesh()->getMeshBuffer(i);
 				if (buf == NULL)
 					continue;
 
@@ -4147,14 +4152,14 @@ void ClientMap::expireMeshes(bool only_daynight_diffed)
 	}
 }
 
-void ClientMap::updateMeshes(v3s16 blockpos, u32 daynight_ratio)
+void ClientMap::updateMeshes(v3s16 blockpos, u32 daynight_ratio, v3s16 camera_offset)
 {
 	assert(mapType() == MAPTYPE_CLIENT);
 
 	try{
 		v3s16 p = blockpos + v3s16(0,0,0);
 		MapBlock *b = getBlockNoCreate(p);
-		b->updateMesh(daynight_ratio, &m_client->getEnv());
+		b->updateMesh(daynight_ratio, &m_client->getEnv(), camera_offset);
 		//b->setMeshExpired(true);
 	}
 	catch(InvalidPositionException &e){}
@@ -4162,21 +4167,21 @@ void ClientMap::updateMeshes(v3s16 blockpos, u32 daynight_ratio)
 	try{
 		v3s16 p = blockpos + v3s16(-1,0,0);
 		MapBlock *b = getBlockNoCreate(p);
-		b->updateMesh(daynight_ratio, &m_client->getEnv());
+		b->updateMesh(daynight_ratio, &m_client->getEnv(), camera_offset);
 		//b->setMeshExpired(true);
 	}
 	catch(InvalidPositionException &e){}
 	try{
 		v3s16 p = blockpos + v3s16(0,-1,0);
 		MapBlock *b = getBlockNoCreate(p);
-		b->updateMesh(daynight_ratio, &m_client->getEnv());
+		b->updateMesh(daynight_ratio, &m_client->getEnv(), camera_offset);
 		//b->setMeshExpired(true);
 	}
 	catch(InvalidPositionException &e){}
 	try{
 		v3s16 p = blockpos + v3s16(0,0,-1);
 		MapBlock *b = getBlockNoCreate(p);
-		b->updateMesh(daynight_ratio, &m_client->getEnv());
+		b->updateMesh(daynight_ratio, &m_client->getEnv(), camera_offset);
 		//b->setMeshExpired(true);
 	}
 	catch(InvalidPositionException &e){}

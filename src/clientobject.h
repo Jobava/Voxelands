@@ -52,6 +52,7 @@ public:
 	virtual core::aabbox3d<f32>* getCollisionBox(){return NULL;}
 	virtual v3f getPosition(){return v3f(0,0,0);}
 	virtual bool doShowSelectionBox(){return true;}
+	virtual void updateCameraOffset(v3s16 camera_offset){};
 
 	// Step object in time
 	virtual void step(float dtime, ClientEnvironment *env){}

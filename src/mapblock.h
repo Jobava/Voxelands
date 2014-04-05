@@ -407,10 +407,10 @@ public:
 		NOTE: Prefer generating the mesh separately and then using
 		replaceMesh().
 	*/
-	void updateMesh(u32 daynight_ratio, Environment *env);
+	void updateMesh(u32 daynight_ratio, Environment *env, v3s16 camera_offset);
 #endif
 	// Replace the mesh with a new one
-	void replaceMesh(scene::SMesh *mesh_new);
+	void replaceMesh(MapBlockMesh *mesh_new);
 #endif
 
 	// See comments in mapblock.cpp
@@ -571,7 +571,7 @@ public:
 	*/
 
 #ifndef SERVER // Only on client
-	scene::SMesh *mesh;
+	MapBlockMesh *mesh;
 	JMutex mesh_mutex;
 #endif
 

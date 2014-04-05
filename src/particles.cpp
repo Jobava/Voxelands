@@ -53,6 +53,7 @@ Particle::Particle(
 ):
 	scene::ISceneNode(smgr->getRootSceneNode(), smgr, id)
 {
+	m_camera_offset = v3s16(0,0,0);
 
 	// Texture
 	m_material.setFlag(video::EMF_LIGHTING, false);
@@ -101,26 +102,9 @@ void Particle::render()
 	video::IVideoDriver* driver = SceneManager->getVideoDriver();
 	driver->setMaterial(m_material);
 	driver->setTransform(video::ETS_WORLD, AbsoluteTransformation);
-	video::SColor c(255, m_light, m_light, m_light);
-
-	video::S3DVertex vertices[4] =
-	{
-		video::S3DVertex(-m_size/2,-m_size/2,0, 0,0,0, c, m_ap->x0(), m_ap->y1()),
-		video::S3DVertex(m_size/2,-m_size/2,0, 0,0,0, c, m_ap->x1(), m_ap->y1()),
-		video::S3DVertex(m_size/2,m_size/2,0, 0,0,0, c, m_ap->x1(), m_ap->y0()),
-		video::S3DVertex(-m_size/2,m_size/2,0, 0,0,0, c ,m_ap->x0(), m_ap->y0()),
-	};
-
-	for(u16 i=0; i<4; i++)
-	{
-		vertices[i].Pos.rotateYZBy(m_player->getPitch());
-		vertices[i].Pos.rotateXZBy(m_player->getYaw());
-		m_box.addInternalPoint(vertices[i].Pos);
-		vertices[i].Pos += m_pos*BS;
-	}
 
 	u16 indices[] = {0,1,2, 2,3,0};
-	driver->drawVertexPrimitiveList(vertices, 4, indices, 2,
+	driver->drawVertexPrimitiveList(m_vertices, 4, indices, 2,
 			video::EVT_STANDARD, scene::EPT_TRIANGLES, video::EIT_16BIT);
 }
 
@@ -154,6 +138,24 @@ void Particle::step(float dtime, ClientEnvironment &env)
 		light = blend_light(env.getDayNightRatio(), LIGHT_SUN, 0);
 	}
 	m_light = decode_light(light);
+
+	video::SColor c(255, m_light, m_light, m_light);
+
+	m_vertices[0] = video::S3DVertex(-m_size/2,-m_size/2,0, 0,0,0,
+	c, m_ap->x0(), m_ap->y1());
+	m_vertices[1] = video::S3DVertex(m_size/2,-m_size/2,0, 0,0,0,
+	c, m_ap->x1(), m_ap->y1());
+	m_vertices[2] = video::S3DVertex(m_size/2,m_size/2,0, 0,0,0,
+	c, m_ap->x1(), m_ap->y0());
+	m_vertices[3] = video::S3DVertex(-m_size/2,m_size/2,0, 0,0,0,
+	c, m_ap->x0(), m_ap->y0());
+
+	for (u16 i=0; i<4; i++) {
+		m_vertices[i].Pos.rotateYZBy(m_player->getPitch());
+		m_vertices[i].Pos.rotateXZBy(m_player->getYaw());
+		m_box.addInternalPoint(m_vertices[i].Pos);
+		m_vertices[i].Pos += m_pos*BS - intToFloat(m_camera_offset, BS);
+	}
 }
 
 std::vector<Particle*> all_particles;
@@ -406,5 +408,15 @@ void clear_particles ()
 		(*i)->remove();
 		delete *i;
 		all_particles.erase(i);
+	}
+}
+
+void update_particles_camera_offset(v3s16 camera_offset)
+{
+	for(std::vector<Particle*>::iterator i =
+			all_particles.begin();
+			i != all_particles.end(); i++)
+	{
+		(*i)->updateCameraOffset(camera_offset);
 	}
 }

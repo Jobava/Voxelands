@@ -25,6 +25,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "content_mapblock.h"
 #include "settings.h"
 #include "profiler.h"
+#include "mesh.h"
 
 void MeshMakeData::fill(u32 daynight_ratio, MapBlock *block)
 {
@@ -171,14 +172,12 @@ struct FastFace
 };
 
 void makeFastFace(TileSpec tile, u8 li0, u8 li1, u8 li2, u8 li3, v3f p,
-		v3s16 dir, v3f scale, v3f posRelative_f,
-		core::array<FastFace> &dest)
+		v3s16 dir, v3f scale, core::array<FastFace> &dest)
 {
 	FastFace face;
 
 	// Position is at the center of the cube.
 	v3f pos = p * BS;
-	posRelative_f *= BS;
 
 	v3f vertex_pos[4];
 	v3s16 vertex_dirs[4];
@@ -195,7 +194,7 @@ void makeFastFace(TileSpec tile, u8 li0, u8 li1, u8 li2, u8 li3, v3f p,
 		vertex_pos[i].X *= scale.X;
 		vertex_pos[i].Y *= scale.Y;
 		vertex_pos[i].Z *= scale.Z;
-		vertex_pos[i] += pos + posRelative_f;
+		vertex_pos[i] += pos;
 	}
 
 	f32 abs_scale = 1.;
@@ -445,7 +444,6 @@ void getTileInfo(
 */
 void updateFastFaceRow(
 		u32 daynight_ratio,
-		v3f posRelative_f,
 		v3s16 startpos,
 		u16 length,
 		v3s16 translate_dir,
@@ -543,8 +541,7 @@ void updateFastFaceRow(
 					scale.Z = continuous_tiles_count;
 
 				makeFastFace(tile, lights[0], lights[1], lights[2], lights[3],
-						sp, face_dir_corrected, scale,
-						posRelative_f, dest);
+						sp, face_dir_corrected, scale, dest);
 			}
 
 			continuous_tiles_count = 0;
@@ -563,7 +560,8 @@ void updateFastFaceRow(
 	}
 }
 
-scene::SMesh* makeMapBlockMesh(MeshMakeData *data)
+MapBlockMesh::MapBlockMesh(MeshMakeData *data, v3s16 camera_offset):
+	m_camera_offset(camera_offset)
 {
 	// 2-12ms for MAP_BLOCKSIZE=16
 	//TimeTaker timer1("makeMapBlockMesh()");
@@ -571,9 +569,6 @@ scene::SMesh* makeMapBlockMesh(MeshMakeData *data)
 	core::array<FastFace> fastfaces_new;
 
 	v3s16 blockpos_nodes = data->m_blockpos*MAP_BLOCKSIZE;
-
-	// floating point conversion
-	v3f posRelative_f(blockpos_nodes.X, blockpos_nodes.Y, blockpos_nodes.Z);
 
 	/*
 		Some settings
@@ -596,7 +591,7 @@ scene::SMesh* makeMapBlockMesh(MeshMakeData *data)
 		/*
 			Go through every y,z and get top(y+) faces in rows of x+
 		*/
-				updateFastFaceRow(data->m_daynight_ratio, posRelative_f,
+				updateFastFaceRow(data->m_daynight_ratio,
 						v3s16(0,y,z), MAP_BLOCKSIZE,
 						v3s16(1,0,0), //dir
 						v3f  (1,0,0),
@@ -610,7 +605,7 @@ scene::SMesh* makeMapBlockMesh(MeshMakeData *data)
 		/*
 			Go through every y,z and get back(z+) faces in rows of x+
 		*/
-				updateFastFaceRow(data->m_daynight_ratio, posRelative_f,
+				updateFastFaceRow(data->m_daynight_ratio,
 						v3s16(0,y,z), MAP_BLOCKSIZE,
 						v3s16(1,0,0),
 						v3f  (1,0,0),
@@ -626,7 +621,7 @@ scene::SMesh* makeMapBlockMesh(MeshMakeData *data)
 		/*
 			Go through every x,y and get right(x+) faces in rows of z+
 		*/
-				updateFastFaceRow(data->m_daynight_ratio, posRelative_f,
+				updateFastFaceRow(data->m_daynight_ratio,
 						v3s16(x,y,0), MAP_BLOCKSIZE,
 						v3s16(0,0,1),
 						v3f  (0,0,1),
@@ -707,39 +702,30 @@ scene::SMesh* makeMapBlockMesh(MeshMakeData *data)
 		Add stuff from collector to mesh
 	*/
 
-	scene::SMesh *mesh_new = NULL;
-	mesh_new = new scene::SMesh();
+	m_mesh = new scene::SMesh();
 
-	collector.fillMesh(mesh_new);
+	collector.fillMesh(m_mesh);
 
 	/*
 		Do some stuff to the mesh
 	*/
 
-	mesh_new->recalculateBoundingBox();
+	m_mesh->recalculateBoundingBox();
 
-	/*
-		Delete new mesh if it is empty
-	*/
+	translateMesh(m_mesh, intToFloat(data->m_blockpos * MAP_BLOCKSIZE - camera_offset, BS));
 
-	if(mesh_new->getMeshBufferCount() == 0)
-	{
-		mesh_new->drop();
-		mesh_new = NULL;
-	}
-
-	if(mesh_new)
+	if(m_mesh)
 	{
 #if 0
 		// Usually 1-700 faces and 1-7 materials
 		std::cout<<"Updated MapBlock has "<<fastfaces_new.size()<<" faces "
-				<<"and uses "<<mesh_new->getMeshBufferCount()
+				<<"and uses "<<m_mesh->getMeshBufferCount()
 				<<" materials (meshbuffers)"<<std::endl;
 #endif
 
 		// Use VBO for mesh (this just would set this for ever buffer)
 		// This will lead to infinite memory usage because or irrlicht.
-		//mesh_new->setHardwareMappingHint(scene::EHM_STATIC);
+		//m_mesh->setHardwareMappingHint(scene::EHM_STATIC);
 
 		/*
 			NOTE: If that is enabled, some kind of a queue to the main
@@ -748,8 +734,19 @@ scene::SMesh* makeMapBlockMesh(MeshMakeData *data)
 		*/
 	}
 
-	return mesh_new;
-
 	//std::cout<<"added "<<fastfaces.getSize()<<" faces."<<std::endl;
 }
 
+MapBlockMesh::~MapBlockMesh()
+{
+	m_mesh->drop();
+	m_mesh = NULL;
+}
+
+void MapBlockMesh::updateCameraOffset(v3s16 camera_offset)
+{
+	if (camera_offset != m_camera_offset) {
+		translateMesh(m_mesh, intToFloat(m_camera_offset-camera_offset, BS));
+		m_camera_offset = camera_offset;
+	}
+}

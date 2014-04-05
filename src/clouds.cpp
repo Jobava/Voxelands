@@ -36,6 +36,7 @@ Clouds::Clouds(
 	m_cloud_y(cloud_y),
 	m_seed(seed),
 	m_camera_pos(0,0),
+	m_camera_offset(0,0,0),
 	m_time(0)
 {
 	dstream<<__FUNCTION_NAME<<std::endl;
@@ -206,6 +207,7 @@ void Clouds::render()
 			}
 
 			v3f pos = v3f(p0.X,m_cloud_y,p0.Y);
+			pos -= intToFloat(m_camera_offset, BS);
 
 			for(u16 i=0; i<4; i++)
 				v[i].Pos += pos;

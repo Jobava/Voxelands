@@ -162,7 +162,8 @@ ItemCAO::ItemCAO():
 	ClientActiveObject(0),
 	m_selection_box(-BS/3.,0.0,-BS/3., BS/3.,BS*2./3.,BS/3.),
 	m_node(NULL),
-	m_position(v3f(0,10*BS,0))
+	m_position(v3f(0,10*BS,0)),
+	m_camera_offset(v3s16(0,0,0))
 {
 	ClientActiveObject::registerType(getType(), create);
 }
@@ -278,7 +279,7 @@ void ItemCAO::updateNodePos()
 	if(m_node == NULL)
 		return;
 
-	m_node->setPosition(m_position);
+	m_node->setPosition(m_position-intToFloat(m_camera_offset, BS));
 }
 
 void ItemCAO::step(float dtime, ClientEnvironment *env)
@@ -344,6 +345,7 @@ RatCAO::RatCAO():
 	m_selection_box(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.),
 	m_node(NULL),
 	m_position(v3f(0,10*BS,0)),
+	m_camera_offset(v3s16(0,0,0)),
 	m_yaw(0)
 {
 	ClientActiveObject::registerType(getType(), create);
@@ -426,7 +428,7 @@ void RatCAO::updateNodePos()
 		return;
 
 	//m_node->setPosition(m_position);
-	m_node->setPosition(pos_translator.vect_show);
+	m_node->setPosition(pos_translator.vect_show-intToFloat(m_camera_offset, BS));
 
 	v3f rot = m_node->getRotation();
 	rot.Y = 90.0 - m_yaw;
@@ -489,6 +491,7 @@ Oerkki1CAO::Oerkki1CAO():
 	m_selection_box(-BS/3.,0.0,-BS/3., BS/3.,BS*2.,BS/3.),
 	m_node(NULL),
 	m_position(v3f(0,10*BS,0)),
+	m_camera_offset(v3s16(0,0,0)),
 	m_yaw(0),
 	m_damage_visual_timer(0),
 	m_damage_texture_enabled(false)
@@ -579,7 +582,7 @@ void Oerkki1CAO::updateNodePos()
 	if(m_node == NULL)
 		return;
 
-	m_node->setPosition(pos_translator.vect_show);
+	m_node->setPosition(pos_translator.vect_show-intToFloat(m_camera_offset, BS));
 
 	v3f rot = m_node->getRotation();
 	rot.Y = 90-m_yaw;
@@ -695,6 +698,7 @@ FireflyCAO::FireflyCAO():
 	m_selection_box(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.),
 	m_node(NULL),
 	m_position(v3f(0,10*BS,0)),
+	m_camera_offset(v3s16(0,0,0)),
 	m_yaw(0)
 {
 	ClientActiveObject::registerType(getType(), create);
@@ -777,7 +781,7 @@ void FireflyCAO::updateNodePos()
 	if(m_node == NULL)
 		return;
 
-	m_node->setPosition(pos_translator.vect_show);
+	m_node->setPosition(pos_translator.vect_show-intToFloat(m_camera_offset, BS));
 
 	v3f rot = m_node->getRotation();
 	rot.Y = 180.0 - m_yaw;
@@ -838,6 +842,7 @@ MobV2CAO::MobV2CAO():
 	m_selection_box(-0.4*BS,-0.4*BS,-0.4*BS, 0.4*BS,0.8*BS,0.4*BS),
 	m_node(NULL),
 	m_position(v3f(0,10*BS,0)),
+	m_camera_offset(v3s16(0,0,0)),
 	m_yaw(0),
 	m_walking(false),
 	m_walking_unset_timer(0),
@@ -956,7 +961,7 @@ void MobV2CAO::updateNodePos()
 	if(m_node == NULL)
 		return;
 
-	m_node->setPosition(pos_translator.vect_show + v3f(0,m_sprite_y,0));
+	m_node->setPosition(pos_translator.vect_show-intToFloat(m_camera_offset, BS) + v3f(0,m_sprite_y,0));
 }
 
 void MobV2CAO::step(float dtime, ClientEnvironment *env)

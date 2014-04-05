@@ -62,12 +62,18 @@ class Particle : public scene::ISceneNode
 	virtual void OnRegisterSceneNode();
 	virtual void render();
 
+	void updateCameraOffset(v3s16 camera_offset)
+	{
+		m_camera_offset = camera_offset;
+	}
+
 	void step(float dtime, ClientEnvironment &env);
 
 	bool get_expired ()
 	{ return m_expiration < m_time; }
 
 private:
+	video::S3DVertex m_vertices[4];
 	float m_time;
 	float m_expiration;
 
@@ -75,6 +81,7 @@ private:
 	core::aabbox3d<f32> m_collisionbox;
 	video::SMaterial m_material;
 	v3f m_pos;
+	v3s16 m_camera_offset;
 	v3f m_velocity;
 	v3f m_acceleration;
 	float tex_x0;
@@ -145,6 +152,7 @@ void clear_particles();
 void addDiggingParticles(scene::ISceneManager* smgr, LocalPlayer *player, v3s16 pos, const TileSpec tiles[]);
 void addPunchingParticles(scene::ISceneManager* smgr, LocalPlayer *player, v3s16 pos, const TileSpec tiles[]);
 void addNodeParticle(scene::ISceneManager* smgr, LocalPlayer *player, v3s16 pos, const TileSpec tiles[]);
+void update_particles_camera_offset(v3s16 camera_offset);
 
 #endif
 
