@@ -2734,6 +2734,44 @@ void ServerEnvironment::step(float dtime)
 
 					break;
 				}
+				case CONTENT_STEEL_DOOR_LB_OPEN:
+				case CONTENT_STEEL_W_DOOR_LB_OPEN:
+				case CONTENT_STEEL_DOOR_RB_OPEN:
+				case CONTENT_STEEL_W_DOOR_RB_OPEN:
+				case CONTENT_STEEL_HATCH_OPEN:
+				case CONTENT_STEEL_W_HATCH_OPEN:
+				case CONTENT_STEEL_GATE_OPEN:
+				{
+					v3s16 mp(0,1,0);
+					if ((n.getContent()&CONTENT_DOOR_SECT_MASK) == CONTENT_DOOR_SECT_MASK)
+						mp.Y = -1;
+
+					MapNode m = m_map->getNodeNoEx(p+mp);
+					if ((n.getContent()&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK) {
+						if (m.getContent() < CONTENT_DOOR_MIN || m.getContent() > CONTENT_DOOR_MAX) {
+							m_map->removeNodeWithEvent(p);
+							break;
+						}else{
+							if ((n.getContent()&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
+								n.setContent(n.getContent()&~CONTENT_DOOR_OPEN_MASK);
+								m.setContent(m.getContent()&~CONTENT_DOOR_OPEN_MASK);
+							}else{
+								n.setContent(n.getContent()|CONTENT_DOOR_OPEN_MASK);
+								m.setContent(m.getContent()|CONTENT_DOOR_OPEN_MASK);
+							}
+						}
+						m_map->addNodeWithEvent(p, n);
+						m_map->addNodeWithEvent(p+mp, m);
+					}else{
+						if ((n.getContent()&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
+							n.setContent(n.getContent()&~CONTENT_DOOR_OPEN_MASK);
+						}else{
+							n.setContent(n.getContent()|CONTENT_DOOR_OPEN_MASK);
+						}
+						m_map->addNodeWithEvent(p, n);
+					}
+					break;
+				}
 				}
 
 				if (

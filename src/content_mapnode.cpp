@@ -6603,8 +6603,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
 	content_mapnode_nodebox_door(f);
-	if(f->initial_metadata == NULL)
-		f->initial_metadata = new LockedDoorNodeMetadata();
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	i = CONTENT_STEEL_DOOR_LT;
@@ -6624,8 +6622,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_door(f);
-	if(f->initial_metadata == NULL)
-		f->initial_metadata = new LockedDoorNodeMetadata();
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	crafting::set1over1Recipe(CONTENT_STEEL_HATCH,CONTENT_STEEL_HATCH,CONTENT_STEEL_DOOR_LT);
@@ -6748,8 +6744,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
 	content_mapnode_nodebox_door(f);
-	if(f->initial_metadata == NULL)
-		f->initial_metadata = new LockedDoorNodeMetadata();
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	i = CONTENT_STEEL_W_DOOR_LT;
@@ -6770,8 +6764,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_doorw(f);
-	if(f->initial_metadata == NULL)
-		f->initial_metadata = new LockedDoorNodeMetadata();
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	crafting::set1over1Recipe(CONTENT_STEEL_W_HATCH,CONTENT_STEEL_HATCH,CONTENT_STEEL_W_DOOR_LT);
@@ -6892,8 +6884,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
 	content_mapnode_nodebox_door(f);
-	if(f->initial_metadata == NULL)
-		f->initial_metadata = new LockedDoorNodeMetadata();
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	i = CONTENT_STEEL_DOOR_RT;
@@ -6913,8 +6903,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_door(f);
-	if(f->initial_metadata == NULL)
-		f->initial_metadata = new LockedDoorNodeMetadata();
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	crafting::set1To1Recipe(CONTENT_GLASS_DOOR_LT,CONTENT_GLASS_DOOR_RT);
@@ -6988,8 +6976,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
 	content_mapnode_nodebox_door(f);
-	if(f->initial_metadata == NULL)
-		f->initial_metadata = new LockedDoorNodeMetadata();
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	i = CONTENT_STEEL_W_DOOR_RT;
@@ -7010,8 +6996,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_doorw(f);
-	if(f->initial_metadata == NULL)
-		f->initial_metadata = new LockedDoorNodeMetadata();
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	crafting::set1To1Recipe(CONTENT_STEEL_W_DOOR_LT,CONTENT_STEEL_W_DOOR_RT);
@@ -7118,8 +7102,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_DOOR_LT)+" 1";
 	content_mapnode_nodebox_doorol(f);
-	if(f->initial_metadata == NULL)
-		f->initial_metadata = new LockedDoorNodeMetadata();
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	i = CONTENT_STEEL_DOOR_LT_OPEN;
@@ -7138,8 +7120,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_DOOR_LT)+" 1";
 	content_mapnode_nodebox_doorol(f);
-	if(f->initial_metadata == NULL)
-		f->initial_metadata = new LockedDoorNodeMetadata();
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 
@@ -7200,8 +7180,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_W_DOOR_LT)+" 1";
 	content_mapnode_nodebox_doorol(f);
-	if(f->initial_metadata == NULL)
-		f->initial_metadata = new LockedDoorNodeMetadata();
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	i = CONTENT_STEEL_W_DOOR_LT_OPEN;
@@ -7220,8 +7198,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_W_DOOR_LT)+" 1";
 	content_mapnode_nodebox_doorwol(f);
-	if(f->initial_metadata == NULL)
-		f->initial_metadata = new LockedDoorNodeMetadata();
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 
@@ -7334,8 +7310,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_DOOR_RT)+" 1";
 	content_mapnode_nodebox_dooror(f);
-	if(f->initial_metadata == NULL)
-		f->initial_metadata = new LockedDoorNodeMetadata();
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	i = CONTENT_STEEL_DOOR_RT_OPEN;
@@ -7356,8 +7330,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_DOOR_RT)+" 1";
 	content_mapnode_nodebox_dooror(f);
-	if(f->initial_metadata == NULL)
-		f->initial_metadata = new LockedDoorNodeMetadata();
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 
@@ -7424,8 +7396,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_W_DOOR_RT)+" 1";
 	content_mapnode_nodebox_dooror(f);
-	if(f->initial_metadata == NULL)
-		f->initial_metadata = new LockedDoorNodeMetadata();
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	i = CONTENT_STEEL_W_DOOR_RT_OPEN;
@@ -7446,8 +7416,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_W_DOOR_RT)+" 1";
 	content_mapnode_nodebox_doorwor(f);
-	if(f->initial_metadata == NULL)
-		f->initial_metadata = new LockedDoorNodeMetadata();
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 
@@ -7487,8 +7455,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_hatch(f);
-	if(f->initial_metadata == NULL)
-		f->initial_metadata = new LockedDoorNodeMetadata();
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_STEEL_HATCH);
@@ -7535,8 +7501,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_hatchw(f);
-	if(f->initial_metadata == NULL)
-		f->initial_metadata = new LockedDoorNodeMetadata();
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_STEEL_HATCH,CONTENT_STEEL_W_HATCH);
@@ -7589,8 +7553,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	content_mapnode_nodebox_gate(f);
-	if(f->initial_metadata == NULL)
-		f->initial_metadata = new LockedDoorNodeMetadata();
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	crafting::setGateRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_STEEL,CONTENT_STEEL_GATE);
@@ -7639,8 +7601,6 @@ void content_mapnode_init()
 	f->climbable = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_HATCH)+" 1";
 	content_mapnode_nodebox_hatcho(f);
-	if(f->initial_metadata == NULL)
-		f->initial_metadata = new LockedDoorNodeMetadata();
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 
@@ -7685,8 +7645,6 @@ void content_mapnode_init()
 	f->climbable = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_W_HATCH)+" 1";
 	content_mapnode_nodebox_hatchwo(f);
-	if(f->initial_metadata == NULL)
-		f->initial_metadata = new LockedDoorNodeMetadata();
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 
@@ -7728,8 +7686,6 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_GATE)+" 1";
 	content_mapnode_nodebox_gateo(f);
-	if(f->initial_metadata == NULL)
-		f->initial_metadata = new LockedDoorNodeMetadata();
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 
