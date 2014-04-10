@@ -157,6 +157,7 @@ void content_toolitem_init()
 	f->dig_time = 0.;
 	crafting::setPickRecipe(CONTENT_MESE,CONTENT_TOOLITEM_MESEPICK);
 	lists::add("craftguide",i);
+	lists::add("creativeinv",i);
 	lists::add("creative",i);
 
 	i = CONTENT_TOOLITEM_WSHOVEL;

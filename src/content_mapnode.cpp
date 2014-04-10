@@ -1290,6 +1290,7 @@ void content_mapnode_init()
 	f->hardness = 1.0;
 	crafting::setBrickRecipe(CONTENT_ROUGHSTONE,CONTENT_ROUGHSTONEBRICK);
 	lists::add("craftguide",i);
+	lists::add("creativeinv",i);
 	lists::add("creative",i);
 
 	i = CONTENT_ROUGHSTONEBLOCK;
@@ -2956,6 +2957,7 @@ void content_mapnode_init()
 		crafting::setRecipe(r,CONTENT_BORDERSTONE,1);
 	}
 	lists::add("craftguide",i);
+	lists::add("creativeinv",i);
 	lists::add("creative",i);
 
 	i = CONTENT_WOOD;
@@ -5080,6 +5082,7 @@ void content_mapnode_init()
 	crafting::set1over4Recipe(CONTENT_CRAFTITEM_COAL,CONTENT_CRAFTITEM_STICK,CONTENT_TORCH);
 	crafting::set1over4Recipe(CONTENT_CRAFTITEM_CHARCOAL,CONTENT_CRAFTITEM_STICK,CONTENT_TORCH);
 	lists::add("craftguide",i);
+	lists::add("creativeinv",i);
 	lists::add("creative",i);
 
 	i = CONTENT_SIGN_WALL;
@@ -5329,6 +5332,7 @@ void content_mapnode_init()
 		f->initial_metadata = new CreativeChestNodeMetadata();
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
+	lists::add("creativeinv",i);
 	lists::add("creative",i);
 
 	i = CONTENT_LOCKABLE_CHEST;

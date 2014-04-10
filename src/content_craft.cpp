@@ -22,6 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "content_mapnode.h"
 #include "content_craftitem.h"
 #include "content_toolitem.h"
+#include "content_list.h"
 #include "player.h"
 #include "mapnode.h" // For content_t
 #include "settings.h" // for g_settings
@@ -595,83 +596,33 @@ int getResultCount(InventoryItem *item)
 	return 0;
 }
 
-// TODO: creative inventory needs redoing
 void giveCreative(Player *player)
 {
+	std::vector<content_t> &creativeinv = lists::get("creativeinv");
+
 	player->resetInventory();
 
-	// Give some good tools
-	{
-		InventoryItem *item = new ToolItem("MesePick", 0);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
-	{
-		InventoryItem *item = new ToolItem("SteelPick", 0);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
-	{
-		InventoryItem *item = new ToolItem("SteelAxe", 0);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
-	{
-		InventoryItem *item = new ToolItem("SteelShovel", 0);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
-	// The much needed creative chest
-	{
-		InventoryItem *item = new MaterialItem(CONTENT_CREATIVE_CHEST, 1);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
-	// and some basics
-	{
-		InventoryItem *item = new MaterialItem(CONTENT_TORCH, 1);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
-	{
-		InventoryItem *item = new MaterialItem(CONTENT_ROUGHSTONEBRICK, 1);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
+	for(u8 i=0; i<creativeinv.size(); i++) {
+		if ((creativeinv[(int)i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
+			assert(player->inventory.addItem("main", new CraftItem(creativeinv[i], 1)) == NULL) ;
+		}else if ((creativeinv.at(i)&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+			assert(player->inventory.addItem("main", new ToolItem(creativeinv[i], 0)) == NULL) ;
+		}else{
+			assert(player->inventory.addItem("main", new MaterialItem(creativeinv[i], 1)) == NULL) ;
+		}
 	}
 }
 
 void giveInitial(Player *player)
 {
-	{
-		InventoryItem *item = new ToolItem("SteelPick", 0);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
-	{
-		InventoryItem *item = new MaterialItem(CONTENT_TORCH, 99);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
-	{
-		InventoryItem *item = new ToolItem("SteelAxe", 0);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
-	{
-		InventoryItem *item = new ToolItem("SteelShovel", 0);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
-	{
-		InventoryItem *item = new ToolItem("Shears", 0);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
-	{
-		InventoryItem *item = new MaterialItem(CONTENT_ROUGHSTONEBRICK, 99);
-		void* r = player->inventory.addItem("main", item);
-		assert(r == NULL);
-	}
+	player->resetInventory();
+	assert(player->inventory.addItem("main", new ToolItem(CONTENT_TOOLITEM_STEELPICK, 0)) == NULL) ;
+	assert(player->inventory.addItem("main", new ToolItem(CONTENT_TOOLITEM_STEELAXE, 0)) == NULL) ;
+	assert(player->inventory.addItem("main", new ToolItem(CONTENT_TOOLITEM_STEELSHOVEL, 0)) == NULL) ;
+	assert(player->inventory.addItem("main", new ToolItem(CONTENT_TOOLITEM_STEELSHEARS, 0)) == NULL) ;
+	assert(player->inventory.addItem("main", new MaterialItem(CONTENT_TORCH, 99)) == NULL) ;
+	assert(player->inventory.addItem("main", new MaterialItem(CONTENT_ROUGHSTONEBRICK, 99)) == NULL) ;
+	assert(player->inventory.addItem("main", new MaterialItem(CONTENT_BORDERSTONE, 5)) == NULL) ;
 }
 
 };
