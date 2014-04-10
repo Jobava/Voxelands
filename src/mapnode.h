@@ -157,10 +157,6 @@ struct ContentFeatures
 	u8 vertex_alpha;
 	// Post effect color, drawn when the camera is inside the node.
 	video::SColor post_effect_color;
-	// Special irrlicht material, used sometimes
-	video::SMaterial *special_material;
-	video::SMaterial *special_material2;
-	AtlasPointer *special_atlas;
 #endif
 
 	bool rotate_tile_with_nodebox;
@@ -272,9 +268,6 @@ struct ContentFeatures
 
 		vertex_alpha = 255;
 		post_effect_color = video::SColor(0, 0, 0, 0);
-		special_material = NULL;
-		special_material2 = NULL;
-		special_atlas = NULL;
 #endif
 		rotate_tile_with_nodebox = false;
 		wield_nodebox = true;

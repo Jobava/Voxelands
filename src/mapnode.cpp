@@ -33,10 +33,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 ContentFeatures::~ContentFeatures()
 {
 	delete initial_metadata;
-#ifndef SERVER
-	delete special_material;
-	delete special_atlas;
-#endif
 }
 
 static std::vector<aabb3f> transformNodeBox(MapNode &n,
