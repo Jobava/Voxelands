@@ -2103,7 +2103,6 @@ void ServerEnvironment::step(float dtime)
 
 				// Rats spawn around regular trees
 				case CONTENT_TREE:
-				case CONTENT_JUNGLETREE:
 				case CONTENT_APPLE_TREE:
 				case CONTENT_CONIFER_TREE:
 				{
@@ -2118,6 +2117,30 @@ void ServerEnvironment::step(float dtime)
 						{
 							v3f pos = intToFloat(p1, BS);
 							ServerActiveObject *obj = new RatSAO(this, 0, pos);
+							addActiveObject(obj);
+						}
+					}
+					break;
+				}
+				// fireflies spawn in jungles at night
+				case CONTENT_JUNGLETREE:
+				{
+					if (myrand()%100 == 0 && active_object_count_wider < 10) {
+						v3s16 p1 = p + v3s16(myrand_range(-2, 2),
+								0, myrand_range(-2, 2));
+						MapNode n1 = m_map->getNodeNoEx(p1);
+						MapNode n1b = m_map->getNodeNoEx(p1+v3s16(0,-1,0));
+						if (
+							(
+								n1b.getContent() == CONTENT_AIR
+								|| n1b.getContent() == CONTENT_JUNGLETREE
+								|| n1b.getContent() == CONTENT_JUNGLEGRASS
+							)
+							&& n1.getContent() == CONTENT_AIR
+							&& n1.getLightBlend(getDayNightRatio()) <= LIGHT_MAX/2
+						) {
+							v3f pos = intToFloat(p1, BS);
+							ServerActiveObject *obj = new FireflySAO(this, 0, pos);
 							addActiveObject(obj);
 						}
 					}

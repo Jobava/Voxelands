@@ -2668,7 +2668,7 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	f->light_source = LIGHT_MAX-1;
-	crafting::setSurroundRecipe(CONTENT_GLASS,CONTENT_TORCH,CONTENT_GLASSLIGHT);
+	crafting::setSurroundRecipe(CONTENT_GLASS,CONTENT_CRAFTITEM_FIREFLY,CONTENT_GLASSLIGHT);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
