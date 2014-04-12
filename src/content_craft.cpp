@@ -598,7 +598,7 @@ int getResultCount(InventoryItem *item)
 
 void giveCreative(Player *player)
 {
-	std::vector<content_t> &creativeinv = lists::get("creativeinv");
+	std::vector<content_t> &creativeinv = lists::get("player-creative");
 
 	player->resetInventory();
 
