@@ -100,6 +100,7 @@ set(common_SRCS
 	content_toolitem.cpp
 	content_mapnode.cpp
 	content_list.cpp
+	content_nodebox.cpp
 	auth.cpp
 	collision.cpp
 	nodemetadata.cpp

@@ -28,6 +28,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "content_toolitem.h"
 #include "content_craft.h"
 #include "content_list.h"
+#include "content_nodebox.h"
 #ifndef SERVER
 #include "tile.h"
 #endif
@@ -37,915 +38,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define WATER_VISC 1
 #define LAVA_VISC 7
 
-static void content_mapnode_nodebox_stair(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.,
-		0.,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
-}
-
-static void content_mapnode_nodebox_stairud(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		0.,
-		0.5*BS,
-		0.,
-		0.5*BS
-	));
-}
-
-static void content_mapnode_nodebox_slab(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0,
-		0.5*BS
-	));
-}
-
-static void content_mapnode_nodebox_slabud(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
-}
-
-static void content_mapnode_nodebox_door(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		-0.3125*BS
-	));
-}
-
-static void content_mapnode_nodebox_doorw(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		-0.3125*BS,
-		-0.3125*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.3125*BS,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		-0.3125*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.3125*BS,
-		-0.5*BS,
-		-0.3125*BS,
-		0.3125*BS,
-		-0.3125*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.3125*BS,
-		-0.3125*BS,
-		-0.5*BS,
-		0.5*BS,
-		0.3125*BS,
-		-0.3125*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.0625*BS,
-		-0.3125*BS,
-		-0.4375*BS,
-		0.0625*BS,
-		0.3125*BS,
-		-0.375*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.3125*BS,
-		-0.0625*BS,
-		-0.4375*BS,
-		-0.0625*BS,
-		0.0625*BS,
-		-0.375*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.0625*BS,
-		-0.0625*BS,
-		-0.4375*BS,
-		0.3125*BS,
-		0.0625*BS,
-		-0.375*BS
-	));
-}
-
-static void content_mapnode_nodebox_doorol(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		-0.3125*BS,
-		0.5*BS,
-		0.5*BS
-	));
-}
-
-static void content_mapnode_nodebox_doorwol(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		-0.3125*BS,
-		-0.3125*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.3125*BS,
-		-0.5*BS,
-		-0.3125*BS,
-		0.5*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.3125*BS,
-		-0.5*BS,
-		-0.3125*BS,
-		0.3125*BS,
-		-0.3125*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.3125*BS,
-		0.3125*BS,
-		-0.3125*BS,
-		0.3125*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.4375*BS,
-		-0.3125*BS,
-		-0.0625*BS,
-		-0.375*BS,
-		0.3125*BS,
-		0.0625*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.4375*BS,
-		-0.0625*BS,
-		-0.3125*BS,
-		-0.375*BS,
-		0.0625*BS,
-		-0.0625*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.4375*BS,
-		-0.0625*BS,
-		0.0625*BS,
-		-0.375*BS,
-		0.0625*BS,
-		0.3125*BS
-	));
-}
-
-static void content_mapnode_nodebox_dooror(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-		0.3125*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
-}
-
-static void content_mapnode_nodebox_doorwor(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-		0.3125*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		-0.3125*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.3125*BS,
-		0.3125*BS,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.3125*BS,
-		-0.3125*BS,
-		-0.5*BS,
-		0.5*BS,
-		0.3125*BS,
-		-0.3125*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.3125*BS,
-		-0.3125*BS,
-		0.3125*BS,
-		0.5*BS,
-		0.3125*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.375*BS,
-		-0.3125*BS,
-		-0.0625*BS,
-		0.4375*BS,
-		0.3125*BS,
-		0.0625*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.375*BS,
-		-0.0625*BS,
-		-0.3125*BS,
-		0.4375*BS,
-		0.0625*BS,
-		-0.0625*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.375*BS,
-		-0.0625*BS,
-		0.0625*BS,
-		0.4375*BS,
-		0.0625*BS,
-		0.3125*BS
-	));
-}
-
-static void content_mapnode_nodebox_hatch(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.3125*BS,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
-}
-
-static void content_mapnode_nodebox_hatchw(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.3125*BS,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		-0.3125*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.3125*BS,
-		0.3125*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.3125*BS,
-		0.3125*BS,
-		-0.3125*BS,
-		0.5*BS,
-		0.5*BS,
-		0.3125*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.3125*BS,
-		-0.3125*BS,
-		-0.3125*BS,
-		0.5*BS,
-		0.3125*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.0625*BS,
-		0.375*BS,
-		-0.3125*BS,
-		0.0625*BS,
-		0.4375*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.3125*BS,
-		0.375*BS,
-		-0.0625*BS,
-		-0.0625*BS,
-		0.4375*BS,
-		0.0625*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.0625*BS,
-		0.375*BS,
-		-0.0625*BS,
-		0.3125*BS,
-		0.4375*BS,
-		0.0625*BS
-	));
-}
-
-static void content_mapnode_nodebox_hatcho(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-		0.3125*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
-}
-
-static void content_mapnode_nodebox_hatchwo(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-		0.3125*BS,
-		0.3125*BS,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.3125*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		-0.3125*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.3125*BS,
-		-0.3125*BS,
-		-0.5*BS,
-		0.5*BS,
-		0.3125*BS,
-		-0.3125*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.3125*BS,
-		-0.3125*BS,
-		0.3125*BS,
-		0.5*BS,
-		0.3125*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.375*BS,
-		-0.3125*BS,
-		-0.0625*BS,
-		0.4375*BS,
-		0.3125*BS,
-		0.0625*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.375*BS,
-		-0.0625*BS,
-		-0.3125*BS,
-		0.4375*BS,
-		0.0625*BS,
-		-0.0625*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.375*BS,
-		-0.0625*BS,
-		0.0625*BS,
-		0.4375*BS,
-		0.0625*BS,
-		0.3125*BS
-	));
-}
-
-static void content_mapnode_nodebox_gate(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.4*BS,
-		-0.4*BS,
-		-0.05*BS,
-		0.4*BS,
-		-0.2*BS,
-		0.05*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.4*BS,
-		0.1*BS,
-		-0.05*BS,
-		0.4*BS,
-		0.3*BS,
-		0.05*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.05*BS,
-		-0.4*BS,
-		0.4*BS,
-		0.05*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.4*BS,
-		-0.5*BS,
-		-0.05*BS,
-		0.5*BS,
-		0.4*BS,
-		0.05*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.1*BS,
-		-0.2*BS,
-		-0.05*BS,
-		0.1*BS,
-		0.4*BS,
-		0.05*BS
-	));
-}
-
-static void content_mapnode_nodebox_gateo(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.05*BS,
-		-0.4*BS,
-		0.4*BS,
-		0.05*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.4*BS,
-		-0.5*BS,
-		-0.05*BS,
-		0.5*BS,
-		0.4*BS,
-		0.05*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.4*BS,
-		0.4*BS,
-		-0.4*BS,
-		0.4*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.4*BS,
-		-0.4*BS,
-		0.4*BS,
-		0.5*BS,
-		0.4*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.1*BS,
-		-0.05*BS,
-		-0.4*BS,
-		0.3*BS,
-		0.4*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.4*BS,
-		-0.05*BS,
-		-0.4*BS,
-		-0.2*BS,
-		0.4*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.4*BS,
-		0.1*BS,
-		-0.05*BS,
-		0.5*BS,
-		0.3*BS,
-		0.4*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.4*BS,
-		-0.4*BS,
-		-0.05*BS,
-		0.5*BS,
-		-0.2*BS,
-		0.4*BS
-	));
-}
-
-static void content_mapnode_nodebox_carpet(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		-0.4375*BS,
-		0.5*BS
-	));
-}
-
-static void content_mapnode_nodebox_bed_head(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.4375*BS,
-		-0.125*BS,
-		-0.5*BS,
-		0.4375*BS,
-		0.125*BS,
-		0.4375*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.375*BS,
-		0.125*BS,
-		0.*BS,
-		0.375*BS,
-		0.1875*BS,
-		0.375*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		0.375*BS,
-		-0.375*BS,
-		0.5*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.375*BS,
-		-0.5*BS,
-		0.375*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.375*BS,
-		-0.125*BS,
-		0.4375*BS,
-		0.375*BS,
-		0.*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.375*BS,
-		0.1925*BS,
-		0.4375*BS,
-		0.375*BS,
-		0.375*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.4375*BS,
-		-0.125*BS,
-		-0.5*BS,
-		0.5*BS,
-		0.*BS,
-		0.375*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.125*BS,
-		-0.5*BS,
-		-0.4375*BS,
-		0.*BS,
-		0.375*BS
-	));
-}
-
-static void content_mapnode_nodebox_bed_foot(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.4375*BS,
-		-0.125*BS,
-		-0.4375*BS,
-		0.4375*BS,
-		0.125*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.5*BS,
-		-0.5*BS,
-		-0.375*BS,
-		0.5*BS,
-		-0.375*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.375*BS,
-		-0.5*BS,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		-0.375*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.375*BS,
-		-0.125*BS,
-		-0.5*BS,
-		0.375*BS,
-		0.*BS,
-		-0.4375*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.375*BS,
-		0.1925*BS,
-		-0.5*BS,
-		0.375*BS,
-		0.25*BS,
-		-0.4375*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.4375*BS,
-		-0.125*BS,
-		-0.375*BS,
-		0.5*BS,
-		0.*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		-0.125*BS,
-		-0.375*BS,
-		-0.4375*BS,
-		0.*BS,
-		0.5*BS
-	));
-}
-
-static void content_mapnode_nodebox_plant_1(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.25*BS,
-		-0.5*BS,
-		-0.25*BS,
-		0.25*BS,
-		0.*BS,
-		0.25*BS
-	));
-}
-
-static void content_mapnode_nodebox_plant_2(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.375*BS,
-		-0.5*BS,
-		-0.375*BS,
-		0.375*BS,
-		0.25*BS,
-		0.375*BS
-	));
-}
-
-static void content_mapnode_nodebox_plant_3(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.4375*BS,
-		-0.5*BS,
-		-0.4375*BS,
-		0.4375*BS,
-		0.375*BS,
-		0.4375*BS
-	));
-}
-
-static void content_mapnode_nodebox_guide(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.4375*BS,
-		-0.5*BS,
-		-0.375*BS,
-
-		0.4375*BS,
-		-0.4375*BS,
-		0.1875*BS
-	));
-
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.375*BS,
-		-0.4375*BS,
-		-0.375*BS,
-
-		0.375*BS,
-		-0.375*BS,
-		0.1875*BS
-	));
-}
-
-// Painting nodebox - easy access!
-static void content_mapnode_nodebox_painting(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.437500*BS,
-		-0.375000*BS,
-		0.437500*BS,
-		0.437500*BS,
-		0.375000*BS,
-		0.500000*BS
-	));
-}
-
-static void content_mapnode_nodebox_book(ContentFeatures *f)
-{
-	// lower cover
-	f->setNodeBox(core::aabbox3d<f32>(
-		0,
-		-0.5*BS,
-		// -6 / 16
-		-0.375*BS,
-
-		// 7 / 16
-		0.4375*BS,
-		// -7 / 16
-		-0.4375*BS,
-		// 3 / 16
-		0.1875*BS
-	));
-
-	// pages
-	f->addNodeBox(core::aabbox3d<f32>(
-		0,
-		// -7 / 16
-		-0.4375*BS,
-		// -6 / 16
-		-0.375*BS,
-
-		// 6 / 16
-		0.375*BS,
-		// -5 / 16
-		-0.3125*BS,
-		// 3 / 16
-		0.1875*BS
-	));
-
-	// top cover
-	f->addNodeBox(core::aabbox3d<f32>(
-		0,
-		// -5 / 16
-		-0.3125*BS,
-		// -6 / 16
-		-0.375*BS,
-
-		// 7 / 16
-		0.4375*BS,
-		// -4 / 16
-		-0.25*BS,
-		// 3 / 16
-		0.1875*BS
-	));
-}
-
-static void content_mapnode_nodebox_pie(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-	(-4.0 / 16.0)*BS,
-	-0.5*BS,
-	(-4.0 / 16.0)*BS,
-
-	(4.0 / 16.0)*BS,
-	(-6.0 / 16.0)*BS,
-	(4.0 / 16.0)*BS
-	));
-
-	f->addNodeBox(core::aabbox3d<f32>(
-	(-5.0 / 16.0)*BS,
-	(-6.0 / 16.0)*BS,
-	(-5.0 / 16.0)*BS,
-
-	(5.0 / 16.0)*BS,
-	(-5.0 / 16.0)*BS,
-	(5.0 / 16.0)*BS
-	));
-}
-
-static void content_mapnode_nodebox_pie_3(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-	(-4.0 / 16.0)*BS,
-	-0.5*BS,
-	(-4.0 / 16.0)*BS,
-
-	0,
-	(-6.0 / 16.0)*BS,
-	(4.0 / 16.0)*BS
-	));
-
-	f->addNodeBox(core::aabbox3d<f32>(
-	(-5.0 / 16.0)*BS,
-	(-6.0 / 16.0)*BS,
-	(-5.0 / 16.0)*BS,
-
-	0,
-	(-5.0 / 16.0)*BS,
-	(5.0 / 16.0)*BS
-	));
-
-	f->addNodeBox(core::aabbox3d<f32>(
-	0,
-	-0.5*BS,
-	0,
-
-	(4.0 / 16.0)*BS,
-	(-6.0 / 16.0)*BS,
-	(4.0 / 16.0)*BS
-	));
-
-	f->addNodeBox(core::aabbox3d<f32>(
-	0,
-	(-6.0 / 16.0)*BS,
-	0,
-
-	(5.0 / 16.0)*BS,
-	(-5.0 / 16.0)*BS,
-	(5.0 / 16.0)*BS
-	));
-}
-
-static void content_mapnode_nodebox_pie_2(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-	(-4.0 / 16.0)*BS,
-	-0.5*BS,
-	(-4.0 / 16.0)*BS,
-
-	0,
-	(-6.0 / 16.0)*BS,
-	(4.0 / 16.0)*BS
-	));
-
-	f->addNodeBox(core::aabbox3d<f32>(
-	(-5.0 / 16.0)*BS,
-	(-6.0 / 16.0)*BS,
-	(-5.0 / 16.0)*BS,
-
-	0,
-	(-5.0 / 16.0)*BS,
-	(5.0 / 16.0)*BS
-	));
-}
-
-static void content_mapnode_nodebox_pie_1(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
-	(-4.0 / 16.0)*BS,
-	-0.5*BS,
-	(-4.0 / 16.0)*BS,
-
-	0,
-	(-6.0 / 16.0)*BS,
-	0
-	));
-
-	f->addNodeBox(core::aabbox3d<f32>(
-	(-5.0 / 16.0)*BS,
-	(-6.0 / 16.0)*BS,
-	(-5.0 / 16.0)*BS,
-
-	0,
-	(-5.0 / 16.0)*BS,
-	0
-	));
-}
+//static void content_nodebox_sign_wall(ContentFeatures *f)
+//{
+//}
 
 /*
 	A conversion table for backwards compatibility.
@@ -1667,7 +762,7 @@ void content_mapnode_init()
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
-	content_mapnode_nodebox_carpet(f);
+	content_nodebox_carpet(f);
 	f->setInventoryTextureNodeBox(i,"terracotta_tile.png", "terracotta_tile.png", "terracotta_tile.png");
 	crafting::setTileRecipe(CONTENT_TERRACOTTA,CONTENT_TERRACOTTA_TILE);
 	lists::add("craftguide",i);
@@ -3110,7 +2205,7 @@ void content_mapnode_init()
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_carpet(f);
+	content_nodebox_carpet(f);
 	f->setInventoryTextureNodeBox(i,"fertilizer.png", "fertilizer.png", "fertilizer.png");
 	f->type = CMT_DIRT;
 	f->hardness = 0.4;
@@ -3268,7 +2363,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->cook_result = std::string("MaterialItem2 ")+itos(CONTENT_APPLE_PIE)+"  1";
-	content_mapnode_nodebox_pie(f);
+	content_nodebox_pie(f);
 	f->setInventoryTextureNodeBox(i, "apple_pie_raw.png", "apple_pie_raw.png", "apple_pie_raw.png");
 	f->type = CMT_DIRT;
 	f->hardness = 0.1;
@@ -3293,7 +2388,7 @@ void content_mapnode_init()
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
-	content_mapnode_nodebox_pie(f);
+	content_nodebox_pie(f);
 	f->setInventoryTextureNodeBox(i, "apple_pie.png", "apple_pie.png", "apple_pie.png");
 	f->dug_item = std::string("CraftItem apple_pie_slice 1");
 	f->ondig_replace_node=CONTENT_APPLE_PIE_3;
@@ -3317,7 +2412,7 @@ void content_mapnode_init()
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
-	content_mapnode_nodebox_pie_3(f);
+	content_nodebox_pie_3(f);
 	f->dug_item = std::string("CraftItem apple_pie_slice 1");
 	f->ondig_replace_node=CONTENT_APPLE_PIE_2;
 	f->type = CMT_DIRT;
@@ -3338,7 +2433,7 @@ void content_mapnode_init()
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
-	content_mapnode_nodebox_pie_2(f);
+	content_nodebox_pie_2(f);
 	f->dug_item = std::string("CraftItem apple_pie_slice 1");
 	f->ondig_replace_node=CONTENT_APPLE_PIE_1;
 	f->type = CMT_DIRT;
@@ -3359,7 +2454,7 @@ void content_mapnode_init()
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
-	content_mapnode_nodebox_pie_1(f);
+	content_nodebox_pie_1(f);
 	f->dug_item = std::string("CraftItem apple_pie_slice 1");
 	f->type = CMT_DIRT;
 	f->hardness = 0.1;
@@ -3382,7 +2477,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->cook_result = std::string("MaterialItem2 ")+itos(CONTENT_PUMPKIN_PIE)+"  1";
-	content_mapnode_nodebox_pie(f);
+	content_nodebox_pie(f);
 	f->setInventoryTextureNodeBox(i, "pumpkin_pie_raw.png", "pumpkin_pie_raw.png", "pumpkin_pie_raw.png");
 	f->type = CMT_DIRT;
 	f->hardness = 0.1;
@@ -3407,7 +2502,7 @@ void content_mapnode_init()
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
-	content_mapnode_nodebox_pie(f);
+	content_nodebox_pie(f);
 	f->setInventoryTextureNodeBox(i, "pumpkin_pie.png", "pumpkin_pie.png", "pumpkin_pie.png");
 	f->dug_item = std::string("CraftItem pumpkin_pie_slice 1");
 	f->ondig_replace_node=CONTENT_PUMPKIN_PIE_3;
@@ -3431,7 +2526,7 @@ void content_mapnode_init()
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
-	content_mapnode_nodebox_pie_3(f);
+	content_nodebox_pie_3(f);
 	f->dug_item = std::string("CraftItem pumpkin_pie_slice 1");
 	f->ondig_replace_node=CONTENT_PUMPKIN_PIE_2;
 	f->type = CMT_DIRT;
@@ -3452,7 +2547,7 @@ void content_mapnode_init()
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
-	content_mapnode_nodebox_pie_2(f);
+	content_nodebox_pie_2(f);
 	f->dug_item = std::string("CraftItem pumpkin_pie_slice 1");
 	f->ondig_replace_node=CONTENT_PUMPKIN_PIE_1;
 	f->type = CMT_DIRT;
@@ -3473,7 +2568,7 @@ void content_mapnode_init()
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
-	content_mapnode_nodebox_pie_1(f);
+	content_nodebox_pie_1(f);
 	f->dug_item = std::string("CraftItem pumpkin_pie_slice 1");
 	f->type = CMT_DIRT;
 	f->hardness = 0.1;
@@ -3561,7 +2656,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_MELON)+" 1";
 	f->extra_dug_item = std::string("CraftItem mushed_food 1");
 	f->extra_dug_item_rarity = 3;
-	content_mapnode_nodebox_plant_1(f);
+	content_nodebox_plant_1(f);
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 
@@ -3580,7 +2675,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_MELON)+" 1";
 	f->extra_dug_item = std::string("CraftItem mushed_food 1");
 	f->extra_dug_item_rarity = 2;
-	content_mapnode_nodebox_plant_2(f);
+	content_nodebox_plant_2(f);
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 
@@ -3599,7 +2694,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_MELON)+" 1";
 	f->extra_dug_item = std::string("CraftItem mushed_food 1");
 	f->extra_dug_item_rarity = 1;
-	content_mapnode_nodebox_plant_3(f);
+	content_nodebox_plant_3(f);
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 
@@ -3631,7 +2726,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_PUMPKIN)+" 1";
 	f->extra_dug_item = std::string("CraftItem mushed_food 1");
 	f->extra_dug_item_rarity = 3;
-	content_mapnode_nodebox_plant_1(f);
+	content_nodebox_plant_1(f);
 	f->type = CMT_PLANT;
 
 	i = CONTENT_FARM_PUMPKIN_2;
@@ -3649,7 +2744,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_PUMPKIN)+" 1";
 	f->extra_dug_item = std::string("CraftItem mushed_food 1");
 	f->extra_dug_item_rarity = 2;
-	content_mapnode_nodebox_plant_2(f);
+	content_nodebox_plant_2(f);
 	f->type = CMT_PLANT;
 
 	i = CONTENT_FARM_PUMPKIN_3;
@@ -3667,7 +2762,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_PUMPKIN)+" 1";
 	f->extra_dug_item = std::string("CraftItem mushed_food 1");
 	f->extra_dug_item_rarity = 1;
-	content_mapnode_nodebox_plant_3(f);
+	content_nodebox_plant_3(f);
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 
@@ -4256,7 +3351,7 @@ void content_mapnode_init()
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("CraftItem snow_ball 1");
-	content_mapnode_nodebox_carpet(f);
+	content_nodebox_carpet(f);
 	f->setInventoryTextureNodeBox(i,"snow.png", "snow.png", "snow.png");
 	f->type = CMT_DIRT;
 	f->hardness = 0.3;
@@ -4282,7 +3377,7 @@ void content_mapnode_init()
 	f->flammable = 1;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0;
-	content_mapnode_nodebox_book(f);
+	content_nodebox_book(f);
 	f->setInventoryTextureNodeBox(i, "book_cover.png", "book_end.png^[transformFX", "book_side.png^[transformFY");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
@@ -4311,7 +3406,7 @@ void content_mapnode_init()
 	f->flammable = 1;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0;
-	content_mapnode_nodebox_book(f);
+	content_nodebox_book(f);
 	f->setInventoryTextureNodeBox(i, "book_cook_cover.png", "book_cook_end.png^[transformFX", "book_cook_side.png^[transformFY");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
@@ -4341,7 +3436,7 @@ void content_mapnode_init()
 	f->flammable = 1;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0;
-	content_mapnode_nodebox_book(f);
+	content_nodebox_book(f);
 	f->setInventoryTextureNodeBox(i, "book_decraft_cover.png", "book_decraft_end.png^[transformFX", "book_decraft_side.png^[transformFY");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
@@ -4370,7 +3465,7 @@ void content_mapnode_init()
 	f->flammable = 1;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0;
-	content_mapnode_nodebox_book(f);
+	content_nodebox_book(f);
 	f->setInventoryTextureNodeBox(i, "book_diary_cover.png", "book_diary_end.png^[transformFX", "book_diary_side.png^[transformFY");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
@@ -4399,7 +3494,7 @@ void content_mapnode_init()
 	f->flammable = 1;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0;
-	content_mapnode_nodebox_book(f);
+	content_nodebox_book(f);
 	f->setInventoryTextureNodeBox(i, "book_craft_cover.png", "book_craft_end.png^[transformFX", "book_craft_side.png^[transformFY");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
@@ -4435,7 +3530,7 @@ void content_mapnode_init()
 	f->flammable = 1;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BOOK)+" 1";
 	f->solidness = 0;
-	content_mapnode_nodebox_guide(f);
+	content_nodebox_guide(f);
 	f->setInventoryTextureNodeBox(i, "guide_top.png", "guide_end.png", "guide_side.png");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
@@ -4460,7 +3555,7 @@ void content_mapnode_init()
 	f->flammable = 1;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COOK_BOOK)+" 1";
 	f->solidness = 0;
-	content_mapnode_nodebox_guide(f);
+	content_nodebox_guide(f);
 	f->setInventoryTextureNodeBox(i, "guide_cook_top.png", "guide_cook_end.png", "guide_cook_side.png");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
@@ -4485,7 +3580,7 @@ void content_mapnode_init()
 	f->flammable = 1;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_DECRAFT_BOOK)+" 1";
 	f->solidness = 0;
-	content_mapnode_nodebox_guide(f);
+	content_nodebox_guide(f);
 	f->setInventoryTextureNodeBox(i, "guide_decraft_top.png", "guide_decraft_end.png", "guide_decraft_side.png");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
@@ -4510,7 +3605,7 @@ void content_mapnode_init()
 	f->flammable = 1;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_DIARY_BOOK)+" 1";
 	f->solidness = 0;
-	content_mapnode_nodebox_guide(f);
+	content_nodebox_guide(f);
 	f->setInventoryTextureNodeBox(i, "guide_diary_top.png", "guide_diary_end.png", "guide_diary_side.png");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
@@ -4535,7 +3630,7 @@ void content_mapnode_init()
 	f->flammable = 1;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BOOK)+" 1";
 	f->solidness = 0;
-	content_mapnode_nodebox_guide(f);
+	content_nodebox_guide(f);
 	f->setInventoryTextureNodeBox(i, "guide_craft_top.png", "guide_craft_end.png", "guide_craft_side.png");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
@@ -4696,7 +3791,7 @@ void content_mapnode_init()
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_carpet(f);
+	content_nodebox_carpet(f);
 	f->setInventoryTextureNodeBox(i,"cotton.png", "cotton.png", "cotton.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 5;
@@ -4717,7 +3812,7 @@ void content_mapnode_init()
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_carpet(f);
+	content_nodebox_carpet(f);
 	f->setInventoryTextureNodeBox(i,"cotton_blue.png", "cotton_blue.png", "cotton_blue.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 5;
@@ -4739,7 +3834,7 @@ void content_mapnode_init()
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_carpet(f);
+	content_nodebox_carpet(f);
 	f->setInventoryTextureNodeBox(i,"cotton_green.png", "cotton_green.png", "cotton_green.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 5;
@@ -4761,7 +3856,7 @@ void content_mapnode_init()
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_carpet(f);
+	content_nodebox_carpet(f);
 	f->setInventoryTextureNodeBox(i,"cotton_orange.png", "cotton_orange.png", "cotton_orange.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 5;
@@ -4783,7 +3878,7 @@ void content_mapnode_init()
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_carpet(f);
+	content_nodebox_carpet(f);
 	f->setInventoryTextureNodeBox(i,"cotton_purple.png", "cotton_purple.png", "cotton_purple.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 5;
@@ -4805,7 +3900,7 @@ void content_mapnode_init()
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_carpet(f);
+	content_nodebox_carpet(f);
 	f->setInventoryTextureNodeBox(i,"cotton_red.png", "cotton_red.png", "cotton_red.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 5;
@@ -4827,7 +3922,7 @@ void content_mapnode_init()
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_carpet(f);
+	content_nodebox_carpet(f);
 	f->setInventoryTextureNodeBox(i,"cotton_yellow.png", "cotton_yellow.png", "cotton_yellow.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 5;
@@ -4849,7 +3944,7 @@ void content_mapnode_init()
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_carpet(f);
+	content_nodebox_carpet(f);
 	f->setInventoryTextureNodeBox(i,"cotton_black.png", "cotton_black.png", "cotton_black.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 5;
@@ -5129,22 +4224,7 @@ void content_mapnode_init()
 		f->initial_metadata = new SignNodeMetadata("Some sign");
 	f->type = CMT_WOOD;
 	f->hardness = 0.1;
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.05*BS,
-		-0.5*BS,
-		-0.05*BS,
-		0.05*BS,
-		0.5*BS,
-		0.05*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.4*BS,
-		0.,
-		-0.1*BS,
-		0.4*BS,
-		0.4*BS,
-		-0.05*BS
-	));
+	content_nodebox_sign(f);
 	f->setInventoryTextureNodeBox(i,"sign.png", "sign_front.png", "sign.png");
 	crafting::setSignRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_SIGN);
 	crafting::setSignRecipe(CONTENT_CRAFTITEM_PINE_PLANK,CONTENT_SIGN);
@@ -5173,22 +4253,7 @@ void content_mapnode_init()
 		f->initial_metadata = new SignNodeMetadata("Some sign");
 	f->type = CMT_WOOD;
 	f->hardness = 0.1;
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.05*BS,
-		-0.5*BS,
-		-0.05*BS,
-		0.05*BS,
-		0.5*BS,
-		0.05*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.4*BS,
-		-0.4*BS,
-		-0.1*BS,
-		0.4*BS,
-		0.,
-		-0.05*BS
-	));
+	content_nodebox_sign_ud(f);
 	f->setInventoryTextureNodeBox(i,"sign.png", "sign_front.png", "sign.png");
 
 	i = CONTENT_LOCKABLE_SIGN_WALL;
@@ -5235,22 +4300,7 @@ void content_mapnode_init()
 		f->initial_metadata = new LockingSignNodeMetadata("Some sign");
 	f->type = CMT_WOOD;
 	f->hardness = 0.1;
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.05*BS,
-		-0.5*BS,
-		-0.05*BS,
-		0.05*BS,
-		0.5*BS,
-		0.05*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.4*BS,
-		0.,
-		-0.1*BS,
-		0.4*BS,
-		0.4*BS,
-		-0.05*BS
-	));
+	content_nodebox_sign(f);
 	f->setInventoryTextureNodeBox(i,"sign.png", "sign_lock.png", "sign.png");
 	crafting::set1Any2Recipe(CONTENT_SIGN,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_LOCKABLE_SIGN);
 	lists::add("craftguide",i);
@@ -5277,22 +4327,7 @@ void content_mapnode_init()
 		f->initial_metadata = new LockingSignNodeMetadata("Some sign");
 	f->type = CMT_WOOD;
 	f->hardness = 0.1;
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.05*BS,
-		-0.5*BS,
-		-0.05*BS,
-		0.05*BS,
-		0.5*BS,
-		0.05*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.4*BS,
-		-0.4*BS,
-		-0.1*BS,
-		0.4*BS,
-		0.,
-		-0.05*BS
-	));
+	content_nodebox_sign_ud(f);
 	f->setInventoryTextureNodeBox(i,"sign.png", "sign_lock.png", "sign.png");
 
 	i = CONTENT_CHEST;
@@ -5694,7 +4729,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_ROUGHSTONE;
-	content_mapnode_nodebox_slab(f);
+	content_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"roughstone.png", "roughstone.png", "roughstone.png");
 	f->type = CMT_STONE;
 	f->hardness = 0.9;
@@ -5712,7 +4747,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_COBBLE;
-	content_mapnode_nodebox_slab(f);
+	content_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"cobble.png", "cobble.png", "cobble.png");
 	f->type = CMT_STONE;
 	f->hardness = 0.9;
@@ -5730,7 +4765,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_MOSSYCOBBLE;
-	content_mapnode_nodebox_slab(f);
+	content_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"mossycobble.png", "mossycobble.png", "mossycobble.png");
 	f->type = CMT_STONE;
 	f->hardness = 0.8;
@@ -5747,7 +4782,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_STONE;
-	content_mapnode_nodebox_slab(f);
+	content_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"stone.png", "stone.png", "stone.png");
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
@@ -5764,7 +4799,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_WOOD;
-	content_mapnode_nodebox_slab(f);
+	content_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"wood.png", "wood.png", "wood.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
@@ -5783,7 +4818,7 @@ void content_mapnode_init()
 	//f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_JUNGLEWOOD;
-	content_mapnode_nodebox_slab(f);
+	content_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"junglewood.png", "junglewood.png", "junglewood.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
@@ -5802,7 +4837,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem clay_brick 4");
 	f->special_alternate_node = CONTENT_BRICK;
-	content_mapnode_nodebox_slab(f);
+	content_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"brick.png", "brick.png", "brick.png");
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
@@ -5819,7 +4854,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAND)+" 4";
 	f->special_alternate_node = CONTENT_SANDSTONE;
-	content_mapnode_nodebox_slab(f);
+	content_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"sandstone.png", "sandstone.png", "sandstone.png");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
@@ -5842,7 +4877,7 @@ void content_mapnode_init()
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
-	content_mapnode_nodebox_slab(f);
+	content_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"glass.png", "glass.png", "glass.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
@@ -5865,7 +4900,7 @@ void content_mapnode_init()
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
-	content_mapnode_nodebox_slab(f);
+	content_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"glass_blue.png", "glass_blue.png", "glass_blue.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
@@ -5889,7 +4924,7 @@ void content_mapnode_init()
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
-	content_mapnode_nodebox_slab(f);
+	content_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"glass_green.png", "glass_green.png", "glass_green.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
@@ -5913,7 +4948,7 @@ void content_mapnode_init()
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
-	content_mapnode_nodebox_slab(f);
+	content_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"glass_orange.png", "glass_orange.png", "glass_orange.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
@@ -5937,7 +4972,7 @@ void content_mapnode_init()
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
-	content_mapnode_nodebox_slab(f);
+	content_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"glass_purple.png", "glass_purple.png", "glass_purple.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
@@ -5961,7 +4996,7 @@ void content_mapnode_init()
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
-	content_mapnode_nodebox_slab(f);
+	content_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"glass_red.png", "glass_red.png", "glass_red.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
@@ -5985,7 +5020,7 @@ void content_mapnode_init()
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
-	content_mapnode_nodebox_slab(f);
+	content_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"glass_yellow.png", "glass_yellow.png", "glass_yellow.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
@@ -6009,7 +5044,7 @@ void content_mapnode_init()
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
-	content_mapnode_nodebox_slab(f);
+	content_nodebox_slab(f);
 	f->setInventoryTextureNodeBox(i,"glass_black.png", "glass_black.png", "glass_black.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
@@ -6028,7 +5063,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_ROUGHSTONE_SLAB)+" 1";
 	f->special_alternate_node = CONTENT_ROUGHSTONE;
-	content_mapnode_nodebox_slabud(f);
+	content_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"roughstone.png", "roughstone.png", "roughstone.png");
 	f->type = CMT_STONE;
 	f->hardness = 0.9;
@@ -6043,7 +5078,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_COBBLE;
-	content_mapnode_nodebox_slabud(f);
+	content_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"cobble.png", "cobble.png", "cobble.png");
 	f->type = CMT_STONE;
 	f->hardness = 0.9;
@@ -6057,7 +5092,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MOSSYCOBBLE_SLAB)+" 1";
 	f->special_alternate_node = CONTENT_MOSSYCOBBLE;
-	content_mapnode_nodebox_slabud(f);
+	content_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"mossycobble.png", "mossycobble.png", "mossycobble.png");
 	f->type = CMT_STONE;
 	f->hardness = 0.8;
@@ -6070,7 +5105,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STONE_SLAB)+" 1";
 	f->special_alternate_node = CONTENT_STONE;
-	content_mapnode_nodebox_slabud(f);
+	content_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"stone.png", "stone.png", "stone.png");
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
@@ -6083,7 +5118,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_SLAB)+" 1";
 	f->special_alternate_node = CONTENT_WOOD;
-	content_mapnode_nodebox_slabud(f);
+	content_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"wood.png", "wood.png", "wood.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
@@ -6098,7 +5133,7 @@ void content_mapnode_init()
 	//f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_JUNGLE_SLAB)+" 1";
 	f->special_alternate_node = CONTENT_JUNGLEWOOD;
-	content_mapnode_nodebox_slabud(f);
+	content_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"junglewood.png", "junglewood.png", "junglewood.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
@@ -6113,7 +5148,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem clay_brick 4");
 	f->special_alternate_node = CONTENT_BRICK;
-	content_mapnode_nodebox_slabud(f);
+	content_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"brick.png", "brick.png", "brick.png");
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
@@ -6126,7 +5161,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAND)+" 4";
 	f->special_alternate_node = CONTENT_SANDSTONE;
-	content_mapnode_nodebox_slabud(f);
+	content_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"sandstone.png", "sandstone.png", "sandstone.png");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
@@ -6146,7 +5181,7 @@ void content_mapnode_init()
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
-	content_mapnode_nodebox_slabud(f);
+	content_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"glass.png", "glass.png", "glass.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
@@ -6166,7 +5201,7 @@ void content_mapnode_init()
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
-	content_mapnode_nodebox_slabud(f);
+	content_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"glass_blue.png", "glass_blue.png", "glass_blue.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
@@ -6186,7 +5221,7 @@ void content_mapnode_init()
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
-	content_mapnode_nodebox_slabud(f);
+	content_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"glass_green.png", "glass_green.png", "glass_green.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
@@ -6206,7 +5241,7 @@ void content_mapnode_init()
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
-	content_mapnode_nodebox_slabud(f);
+	content_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"glass_orange.png", "glass_orange.png", "glass_orange.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
@@ -6226,7 +5261,7 @@ void content_mapnode_init()
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
-	content_mapnode_nodebox_slabud(f);
+	content_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"glass_purple.png", "glass_purple.png", "glass_purple.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
@@ -6246,7 +5281,7 @@ void content_mapnode_init()
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
-	content_mapnode_nodebox_slabud(f);
+	content_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"glass_red.png", "glass_red.png", "glass_red.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
@@ -6266,7 +5301,7 @@ void content_mapnode_init()
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
-	content_mapnode_nodebox_slabud(f);
+	content_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"glass_yellow.png", "glass_yellow.png", "glass_yellow.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
@@ -6286,7 +5321,7 @@ void content_mapnode_init()
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
-	content_mapnode_nodebox_slabud(f);
+	content_nodebox_slabud(f);
 	f->setInventoryTextureNodeBox(i,"glass_black.png", "glass_black.png", "glass_black.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
@@ -6301,7 +5336,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_stair(f);
+	content_nodebox_stair(f);
 	f->setInventoryTextureNodeBox(i,"roughstone.png", "roughstone.png", "roughstone.png");
 	f->type = CMT_STONE;
 	f->hardness = 0.9;
@@ -6318,7 +5353,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_stair(f);
+	content_nodebox_stair(f);
 	f->setInventoryTextureNodeBox(i,"cobble.png", "cobble.png", "cobble.png");
 	f->type = CMT_STONE;
 	f->hardness = 0.9;
@@ -6335,7 +5370,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_stair(f);
+	content_nodebox_stair(f);
 	f->setInventoryTextureNodeBox(i,"mossycobble.png", "mossycobble.png", "mossycobble.png");
 	f->type = CMT_STONE;
 	f->hardness = 0.8;
@@ -6353,7 +5388,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->often_contains_mineral = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_stair(f);
+	content_nodebox_stair(f);
 	f->setInventoryTextureNodeBox(i,"stone.png", "stone.png", "stone.png");
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
@@ -6370,7 +5405,7 @@ void content_mapnode_init()
 	f->setAllTextures("wood.png");
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_stair(f);
+	content_nodebox_stair(f);
 	f->setInventoryTextureNodeBox(i,"wood.png", "wood.png", "wood.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
@@ -6389,7 +5424,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	//f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_stair(f);
+	content_nodebox_stair(f);
 	f->setInventoryTextureNodeBox(i,"junglewood.png", "junglewood.png", "junglewood.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
@@ -6408,7 +5443,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem clay_brick 4");
-	content_mapnode_nodebox_stair(f);
+	content_nodebox_stair(f);
 	f->setInventoryTextureNodeBox(i,"brick.png", "brick.png", "brick.png");
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
@@ -6425,7 +5460,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAND)+" 4";
-	content_mapnode_nodebox_stair(f);
+	content_nodebox_stair(f);
 	f->setInventoryTextureNodeBox(i,"sandstone.png", "sandstone.png", "sandstone.png");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
@@ -6442,7 +5477,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_ROUGHSTONE_STAIR)+" 1";
-	content_mapnode_nodebox_stairud(f);
+	content_nodebox_stairud(f);
 	f->setInventoryTextureNodeBox(i,"roughstone.png", "roughstone.png", "roughstone.png");
 	f->type = CMT_STONE;
 	f->hardness = 0.9;
@@ -6455,7 +5490,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_ROUGHSTONE_STAIR)+" 1";
-	content_mapnode_nodebox_stairud(f);
+	content_nodebox_stairud(f);
 	f->setInventoryTextureNodeBox(i,"cobble.png", "cobble.png", "cobble.png");
 	f->type = CMT_STONE;
 	f->hardness = 0.9;
@@ -6468,7 +5503,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MOSSYCOBBLE_STAIR)+" 1";
-	content_mapnode_nodebox_stairud(f);
+	content_nodebox_stairud(f);
 	f->setInventoryTextureNodeBox(i,"mossycobble.png", "mossycobble.png", "mossycobble.png");
 	f->type = CMT_STONE;
 	f->hardness = 0.8;
@@ -6481,7 +5516,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STONE_STAIR)+" 1";
-	content_mapnode_nodebox_stairud(f);
+	content_nodebox_stairud(f);
 	f->setInventoryTextureNodeBox(i,"stone.png", "stone.png", "stone.png");
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
@@ -6494,7 +5529,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_STAIR)+" 1";
-	content_mapnode_nodebox_stairud(f);
+	content_nodebox_stairud(f);
 	f->setInventoryTextureNodeBox(i,"wood.png", "wood.png", "wood.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
@@ -6509,7 +5544,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	//f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_JUNGLE_STAIR)+" 1";
-	content_mapnode_nodebox_stairud(f);
+	content_nodebox_stairud(f);
 	f->setInventoryTextureNodeBox(i,"junglewood.png", "junglewood.png", "junglewood.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
@@ -6524,7 +5559,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem clay_brick 4");
-	content_mapnode_nodebox_stairud(f);
+	content_nodebox_stairud(f);
 	f->setInventoryTextureNodeBox(i,"brick.png", "brick.png", "brick.png");
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
@@ -6537,7 +5572,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAND)+" 4";
-	content_mapnode_nodebox_stairud(f);
+	content_nodebox_stairud(f);
 	f->setInventoryTextureNodeBox(i,"sandstone.png", "sandstone.png", "sandstone.png");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
@@ -6561,7 +5596,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_door(f);
+	content_nodebox_door(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	i = CONTENT_WOOD_DOOR_LT;
@@ -6582,7 +5617,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_door(f);
+	content_nodebox_door(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	crafting::set1over1Recipe(CONTENT_WOOD_HATCH,CONTENT_WOOD_HATCH,CONTENT_WOOD_DOOR_LT);
@@ -6606,7 +5641,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
-	content_mapnode_nodebox_door(f);
+	content_nodebox_door(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	i = CONTENT_STEEL_DOOR_LT;
@@ -6625,7 +5660,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_door(f);
+	content_nodebox_door(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	crafting::set1over1Recipe(CONTENT_STEEL_HATCH,CONTENT_STEEL_HATCH,CONTENT_STEEL_DOOR_LT);
@@ -6651,7 +5686,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
-	content_mapnode_nodebox_door(f);
+	content_nodebox_door(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	i = CONTENT_GLASS_DOOR_LT;
@@ -6672,7 +5707,7 @@ void content_mapnode_init()
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
-	content_mapnode_nodebox_door(f);
+	content_nodebox_door(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	crafting::set1over1Recipe(CONTENT_GLASS_PANE,CONTENT_GLASS_PANE,CONTENT_GLASS_DOOR_LT);
@@ -6699,7 +5734,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_door(f);
+	content_nodebox_door(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	i = CONTENT_WOOD_W_DOOR_LT;
@@ -6721,7 +5756,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_doorw(f);
+	content_nodebox_doorw(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	crafting::set1over1Recipe(CONTENT_WOOD_W_HATCH,CONTENT_WOOD_HATCH,CONTENT_WOOD_W_DOOR_LT);
@@ -6747,7 +5782,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
-	content_mapnode_nodebox_door(f);
+	content_nodebox_door(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	i = CONTENT_STEEL_W_DOOR_LT;
@@ -6767,7 +5802,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_doorw(f);
+	content_nodebox_doorw(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	crafting::set1over1Recipe(CONTENT_STEEL_W_HATCH,CONTENT_STEEL_HATCH,CONTENT_STEEL_W_DOOR_LT);
@@ -6795,7 +5830,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_door(f);
+	content_nodebox_door(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	i = CONTENT_WOOD_DOOR_RT;
@@ -6816,7 +5851,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_door(f);
+	content_nodebox_door(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	crafting::set1To1Recipe(CONTENT_WOOD_DOOR_LT,CONTENT_WOOD_DOOR_RT);
@@ -6842,7 +5877,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_door(f);
+	content_nodebox_door(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	i = CONTENT_GLASS_DOOR_RT;
@@ -6864,7 +5899,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_door(f);
+	content_nodebox_door(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	crafting::set1To1Recipe(CONTENT_GLASS_DOOR_LT,CONTENT_GLASS_DOOR_RT);
@@ -6887,7 +5922,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
-	content_mapnode_nodebox_door(f);
+	content_nodebox_door(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	i = CONTENT_STEEL_DOOR_RT;
@@ -6906,7 +5941,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_door(f);
+	content_nodebox_door(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	crafting::set1To1Recipe(CONTENT_GLASS_DOOR_LT,CONTENT_GLASS_DOOR_RT);
@@ -6932,7 +5967,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_door(f);
+	content_nodebox_door(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	i = CONTENT_WOOD_W_DOOR_RT;
@@ -6954,7 +5989,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_doorw(f);
+	content_nodebox_doorw(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	crafting::set1To1Recipe(CONTENT_WOOD_W_DOOR_LT,CONTENT_WOOD_W_DOOR_RT);
@@ -6979,7 +6014,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
-	content_mapnode_nodebox_door(f);
+	content_nodebox_door(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	i = CONTENT_STEEL_W_DOOR_RT;
@@ -6999,7 +6034,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_doorw(f);
+	content_nodebox_doorw(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	crafting::set1To1Recipe(CONTENT_STEEL_W_DOOR_LT,CONTENT_STEEL_W_DOOR_RT);
@@ -7025,7 +6060,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_DOOR_LT)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_doorol(f);
+	content_nodebox_doorol(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	i = CONTENT_WOOD_DOOR_LT_OPEN;
@@ -7045,7 +6080,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_DOOR_LT)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_doorol(f);
+	content_nodebox_doorol(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 
@@ -7066,7 +6101,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_doorol(f);
+	content_nodebox_doorol(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	i = CONTENT_GLASS_DOOR_LT_OPEN;
@@ -7086,7 +6121,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_doorol(f);
+	content_nodebox_doorol(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 
@@ -7105,7 +6140,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_DOOR_LT)+" 1";
-	content_mapnode_nodebox_doorol(f);
+	content_nodebox_doorol(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	i = CONTENT_STEEL_DOOR_LT_OPEN;
@@ -7123,7 +6158,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_DOOR_LT)+" 1";
-	content_mapnode_nodebox_doorol(f);
+	content_nodebox_doorol(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 
@@ -7144,7 +6179,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_W_DOOR_LT)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_doorol(f);
+	content_nodebox_doorol(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	i = CONTENT_WOOD_W_DOOR_LT_OPEN;
@@ -7164,7 +6199,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_W_DOOR_LT)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_doorwol(f);
+	content_nodebox_doorwol(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 
@@ -7183,7 +6218,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_W_DOOR_LT)+" 1";
-	content_mapnode_nodebox_doorol(f);
+	content_nodebox_doorol(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	i = CONTENT_STEEL_W_DOOR_LT_OPEN;
@@ -7201,7 +6236,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_W_DOOR_LT)+" 1";
-	content_mapnode_nodebox_doorwol(f);
+	content_nodebox_doorwol(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 
@@ -7225,7 +6260,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_DOOR_RT)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_dooror(f);
+	content_nodebox_dooror(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	i = CONTENT_WOOD_DOOR_RT_OPEN;
@@ -7247,7 +6282,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_DOOR_RT)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_dooror(f);
+	content_nodebox_dooror(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 
@@ -7270,7 +6305,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_dooror(f);
+	content_nodebox_dooror(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	i = CONTENT_GLASS_DOOR_RT_OPEN;
@@ -7292,7 +6327,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_dooror(f);
+	content_nodebox_dooror(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 
@@ -7313,7 +6348,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_DOOR_RT)+" 1";
-	content_mapnode_nodebox_dooror(f);
+	content_nodebox_dooror(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	i = CONTENT_STEEL_DOOR_RT_OPEN;
@@ -7333,7 +6368,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_DOOR_RT)+" 1";
-	content_mapnode_nodebox_dooror(f);
+	content_nodebox_dooror(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 
@@ -7356,7 +6391,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_W_DOOR_RT)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_dooror(f);
+	content_nodebox_dooror(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	i = CONTENT_WOOD_W_DOOR_RT_OPEN;
@@ -7378,7 +6413,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_W_DOOR_RT)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_doorwor(f);
+	content_nodebox_doorwor(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 
@@ -7399,7 +6434,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_W_DOOR_RT)+" 1";
-	content_mapnode_nodebox_dooror(f);
+	content_nodebox_dooror(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	i = CONTENT_STEEL_W_DOOR_RT_OPEN;
@@ -7419,7 +6454,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_W_DOOR_RT)+" 1";
-	content_mapnode_nodebox_doorwor(f);
+	content_nodebox_doorwor(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 
@@ -7438,7 +6473,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_hatch(f);
+	content_nodebox_hatch(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_WOOD_HATCH);
@@ -7458,7 +6493,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_hatch(f);
+	content_nodebox_hatch(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_STEEL_HATCH);
@@ -7482,7 +6517,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_hatchw(f);
+	content_nodebox_hatchw(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_WOOD_HATCH,CONTENT_WOOD_W_HATCH);
@@ -7504,7 +6539,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_hatchw(f);
+	content_nodebox_hatchw(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_STEEL_HATCH,CONTENT_STEEL_W_HATCH);
@@ -7530,7 +6565,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_gate(f);
+	content_nodebox_gate(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	crafting::setGateRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_WOOD,CONTENT_WOOD_GATE);
@@ -7556,7 +6591,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_gate(f);
+	content_nodebox_gate(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	crafting::setGateRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_STEEL,CONTENT_STEEL_GATE);
@@ -7583,7 +6618,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_HATCH)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_hatcho(f);
+	content_nodebox_hatcho(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 
@@ -7604,7 +6639,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->climbable = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_HATCH)+" 1";
-	content_mapnode_nodebox_hatcho(f);
+	content_nodebox_hatcho(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 
@@ -7627,7 +6662,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_W_HATCH)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_hatchwo(f);
+	content_nodebox_hatchwo(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 
@@ -7648,7 +6683,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->climbable = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_W_HATCH)+" 1";
-	content_mapnode_nodebox_hatchwo(f);
+	content_nodebox_hatchwo(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 
@@ -7670,7 +6705,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_GATE)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
-	content_mapnode_nodebox_gateo(f);
+	content_nodebox_gateo(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 
@@ -7689,7 +6724,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_GATE)+" 1";
-	content_mapnode_nodebox_gateo(f);
+	content_nodebox_gateo(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 
@@ -8237,7 +7272,7 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_bed_head(f);
+	content_nodebox_bed_head(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
 	crafting::setBedRecipe(CONTENT_COTTON,CONTENT_BED_HEAD);
@@ -8265,7 +7300,7 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_HEAD)+" 1";
-	content_mapnode_nodebox_bed_foot(f);
+	content_nodebox_bed_foot(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
 
@@ -8290,7 +7325,7 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_bed_head(f);
+	content_nodebox_bed_head(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
 	crafting::setBedRecipe(CONTENT_COTTON_BLUE,CONTENT_BED_BLUE_HEAD);
@@ -8318,7 +7353,7 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_BLUE_HEAD)+" 1";
-	content_mapnode_nodebox_bed_foot(f);
+	content_nodebox_bed_foot(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
 
@@ -8343,7 +7378,7 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_bed_head(f);
+	content_nodebox_bed_head(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
 	crafting::setBedRecipe(CONTENT_COTTON_GREEN,CONTENT_BED_GREEN_HEAD);
@@ -8371,7 +7406,7 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_GREEN_HEAD)+" 1";
-	content_mapnode_nodebox_bed_foot(f);
+	content_nodebox_bed_foot(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
 
@@ -8396,7 +7431,7 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_bed_head(f);
+	content_nodebox_bed_head(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
 	crafting::setBedRecipe(CONTENT_COTTON_ORANGE,CONTENT_BED_ORANGE_HEAD);
@@ -8424,7 +7459,7 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_ORANGE_HEAD)+" 1";
-	content_mapnode_nodebox_bed_foot(f);
+	content_nodebox_bed_foot(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
 
@@ -8449,7 +7484,7 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_bed_head(f);
+	content_nodebox_bed_head(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
 	crafting::setBedRecipe(CONTENT_COTTON_PURPLE,CONTENT_BED_PURPLE_HEAD);
@@ -8477,7 +7512,7 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_PURPLE_HEAD)+" 1";
-	content_mapnode_nodebox_bed_foot(f);
+	content_nodebox_bed_foot(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
 
@@ -8502,7 +7537,7 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_bed_head(f);
+	content_nodebox_bed_head(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
 	crafting::setBedRecipe(CONTENT_COTTON_RED,CONTENT_BED_RED_HEAD);
@@ -8530,7 +7565,7 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_RED_HEAD)+" 1";
-	content_mapnode_nodebox_bed_foot(f);
+	content_nodebox_bed_foot(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
 
@@ -8555,7 +7590,7 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_bed_head(f);
+	content_nodebox_bed_head(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
 	crafting::setBedRecipe(CONTENT_COTTON_YELLOW,CONTENT_BED_YELLOW_HEAD);
@@ -8583,7 +7618,7 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_YELLOW_HEAD)+" 1";
-	content_mapnode_nodebox_bed_foot(f);
+	content_nodebox_bed_foot(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
 
@@ -8608,7 +7643,7 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	content_mapnode_nodebox_bed_head(f);
+	content_nodebox_bed_head(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
 	crafting::setBedRecipe(CONTENT_COTTON_BLACK,CONTENT_BED_BLACK_HEAD);
@@ -8636,7 +7671,7 @@ void content_mapnode_init()
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_BLACK_HEAD)+" 1";
-	content_mapnode_nodebox_bed_foot(f);
+	content_nodebox_bed_foot(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
 
@@ -8661,7 +7696,7 @@ void content_mapnode_init()
 	f->fuel_time = 1;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_PAINTING_WHITE)+" 1";
 	f->type = CMT_WOOD;
-	content_mapnode_nodebox_painting(f);
+	content_nodebox_painting(f);
 	f->hardness = 0.1;
 	{
 		u16 r[9] = {
@@ -8695,7 +7730,7 @@ void content_mapnode_init()
 	f->fuel_time = 1;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_PAINTING_RED)+" 1";
 	f->type = CMT_WOOD;
-	content_mapnode_nodebox_painting(f);
+	content_nodebox_painting(f);
 	f->hardness = 0.1;
 	{
 		u16 r[9] = {
@@ -8729,7 +7764,7 @@ void content_mapnode_init()
 	f->fuel_time = 1;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_PAINTING_GREEN)+" 1";
 	f->type = CMT_WOOD;
-	content_mapnode_nodebox_painting(f);
+	content_nodebox_painting(f);
 	f->hardness = 0.1;
 	{
 		u16 r[9] = {
@@ -8763,7 +7798,7 @@ void content_mapnode_init()
 	f->fuel_time = 1;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_PAINTING_BLUE)+" 1";
 	f->type = CMT_WOOD;
-	content_mapnode_nodebox_painting(f);
+	content_nodebox_painting(f);
 	f->hardness = 0.1;
 	{
 		u16 r[9] = {
@@ -8797,7 +7832,7 @@ void content_mapnode_init()
 	f->fuel_time = 1;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_PAINTING_CANVAS)+" 1";
 	f->type = CMT_WOOD;
-	content_mapnode_nodebox_painting(f);
+	content_nodebox_painting(f);
 	f->hardness = 0.1;
 	crafting::set1Any2Recipe(CONTENT_PAINTING_WHITE,CONTENT_CRAFTITEM_STARCH,CONTENT_PAINTING_CANVAS);
 	crafting::set1Any2Recipe(CONTENT_PAINTING_RED,CONTENT_CRAFTITEM_STARCH,CONTENT_PAINTING_CANVAS);
