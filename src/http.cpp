@@ -294,7 +294,7 @@ int HTTPRemoteClient::handlePlayer()
 		}
 		l = ftell(f);
 		fclose(f);
-		if (l == t)
+		if (l == t && l == m_recv_headers.getLength())
 			return handleSpecial("201 Created");
 		fs::RecursiveDelete(file.c_str());
 		return handleSpecial("500 Internal Server Error");
@@ -543,8 +543,7 @@ void * HTTPClientThread::Thread()
 
 	BEGIN_DEBUG_EXCEPTION_HANDLER
 
-	while (getRun())
-	{
+	while (getRun()) {
 		try{
 			m_client->step();
 		}catch (con::NoIncomingDataException &e) {
@@ -728,7 +727,10 @@ void HTTPClient::step()
 						break;
 				}
 			}
+			l = ftell(f);
 			fclose(f);
+			if (l != m_recv_headers.getLength())
+				fs::RecursiveDelete(file.c_str());
 		}else if (r == 405) {
 			errorstream << "send skin returned 405 Method Not Allowed" << std::endl;
 		}
