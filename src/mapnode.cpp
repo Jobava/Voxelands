@@ -329,9 +329,15 @@ TileSpec MapNode::getTile(v3s16 dir)
 	TileSpec spec;
 	s32 dir_i = 0;
 
-	if (content_features(*this).param2_type == CPT_FACEDIR_SIMPLE) {
+	if (
+		content_features(*this).param2_type == CPT_FACEDIR_SIMPLE
+		|| content_features(*this).param2_type == CPT_FACEDIR_WALLMOUNT
+	) {
 		dir = facedir_rotate(param2&0x0F, dir);
-	}else if (content_features(*this).param_type == CPT_FACEDIR_SIMPLE) {
+	}else if (
+		content_features(*this).param_type == CPT_FACEDIR_SIMPLE
+		|| content_features(*this).param_type == CPT_FACEDIR_WALLMOUNT
+	) {
 		dir = facedir_rotate(param1, dir);
 	}
 

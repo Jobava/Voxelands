@@ -7779,7 +7779,7 @@ void content_mapnode_init()
 	f->setTexture(5, "painting_white.png");
 	f->setInventoryTexture("painting_white.png");
 	f->param_type = CPT_LIGHT;
-	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_WALLMOUNT;
 	f->draw_type = CDT_NODEBOX;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
@@ -7812,7 +7812,7 @@ void content_mapnode_init()
 	f->setTexture(5, "painting_red.png");
 	f->setInventoryTexture("painting_red.png");
 	f->param_type = CPT_LIGHT;
-	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_WALLMOUNT;
 	f->draw_type = CDT_NODEBOX;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
@@ -7845,7 +7845,7 @@ void content_mapnode_init()
 	f->setTexture(5, "painting_green.png");
 	f->setInventoryTexture("painting_green.png");
 	f->param_type = CPT_LIGHT;
-	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_WALLMOUNT;
 	f->draw_type = CDT_NODEBOX;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
@@ -7878,7 +7878,7 @@ void content_mapnode_init()
 	f->setTexture(5, "painting_blue.png");
 	f->setInventoryTexture("painting_blue.png");
 	f->param_type = CPT_LIGHT;
-	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_WALLMOUNT;
 	f->draw_type = CDT_NODEBOX;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
@@ -7911,7 +7911,7 @@ void content_mapnode_init()
 	f->setTexture(5, "painting_canvas.png");
 	f->setInventoryTexture("painting_canvas.png");
 	f->param_type = CPT_LIGHT;
-	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_WALLMOUNT;
 	f->draw_type = CDT_NODEBOX;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
