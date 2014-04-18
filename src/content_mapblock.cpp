@@ -1107,63 +1107,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				collector.append(content_features(n).tiles[0].getMaterial(), &vertices[j], 4, indices, 6);
 			}
 		}
-		/*
-			Signs on walls
-		*/
 		break;
-		case CDT_WALLMOUNT:
-		{
-			// Set material
-			video::SMaterial material = content_features(n).tiles[0].getMaterial();
-			material.setFlag(video::EMF_LIGHTING, false);
-			material.setFlag(video::EMF_BACK_FACE_CULLING, false);
-			material.setFlag(video::EMF_BILINEAR_FILTER, false);
-			material.setFlag(video::EMF_FOG_ENABLE, true);
-			material.MaterialType
-					= video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-			//material.setTexture(0, pa_current->atlas);
-
-			u8 l = decode_light(n.getLightBlend(data->m_daynight_ratio));
-			video::SColor c = MapBlock_LightColor(255, l);
-
-			float d = (float)BS/16;
-			// Wall at X+ of node
-			video::S3DVertex vertices[4] =
-			{
-				video::S3DVertex(BS/2-d,-BS/2,-BS/2, 0,0,0, c,
-						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
-				video::S3DVertex(BS/2-d,-BS/2,BS/2, 0,0,0, c,
-						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
-				video::S3DVertex(BS/2-d,BS/2,BS/2, 0,0,0, c,
-						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
-				video::S3DVertex(BS/2-d,BS/2,-BS/2, 0,0,0, c,
-						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
-			};
-
-			v3s16 dir = unpackDir(n.param2);
-
-			for(s32 i=0; i<4; i++)
-			{
-				if(dir == v3s16(1,0,0))
-					vertices[i].Pos.rotateXZBy(0);
-				if(dir == v3s16(-1,0,0))
-					vertices[i].Pos.rotateXZBy(180);
-				if(dir == v3s16(0,0,1))
-					vertices[i].Pos.rotateXZBy(90);
-				if(dir == v3s16(0,0,-1))
-					vertices[i].Pos.rotateXZBy(-90);
-				if(dir == v3s16(0,-1,0))
-					vertices[i].Pos.rotateXYBy(-90);
-				if(dir == v3s16(0,1,0))
-					vertices[i].Pos.rotateXYBy(90);
-
-				vertices[i].Pos += intToFloat(p, BS);
-			}
-
-			u16 indices[] = {0,1,2,2,3,0};
-			// Add to mesh collector
-			collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
-		}
 		/*
 			Add leaves if using new style
 		*/

@@ -40,9 +40,15 @@ static std::vector<aabb3f> transformNodeBox(MapNode &n,
 {
 	std::vector<aabb3f> boxes;
 	int facedir = 0;
-	if (content_features(n).param2_type == CPT_FACEDIR_SIMPLE) {
+	if (
+		content_features(n).param2_type == CPT_FACEDIR_SIMPLE
+		|| content_features(n).param2_type == CPT_FACEDIR_WALLMOUNT
+	) {
 		facedir = n.param2&0x0F;
-	}else if (content_features(n).param_type == CPT_FACEDIR_SIMPLE) {
+	}else if (
+		content_features(n).param_type == CPT_FACEDIR_SIMPLE
+		|| content_features(n).param_type == CPT_FACEDIR_WALLMOUNT
+	) {
 		facedir = n.param1;
 	}
 	for(std::vector<aabb3f>::const_iterator
@@ -61,6 +67,14 @@ static std::vector<aabb3f> transformNodeBox(MapNode &n,
 		}else if (facedir == 3) {
 			box.MinEdge.rotateXZBy(90);
 			box.MaxEdge.rotateXZBy(90);
+			box.repair();
+		}else if (facedir == 4) {
+			box.MinEdge.rotateXYBy(-90);
+			box.MaxEdge.rotateXYBy(-90);
+			box.repair();
+		}else if (facedir == 5) {
+			box.MinEdge.rotateXYBy(90);
+			box.MaxEdge.rotateXYBy(90);
 			box.repair();
 		}
 		boxes.push_back(box);

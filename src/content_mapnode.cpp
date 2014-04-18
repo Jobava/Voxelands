@@ -103,7 +103,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version)
 			}
 		}
 	}
-	if (n_from.getContent() == CONTENT_LADDER) {
+	if (n_from.getContent() == CONTENT_LADDER_LEGACY) {
 		switch (n_from.param2) {
 		case 1:
 			result.setContent(CONTENT_LADDER_WALL);
@@ -115,9 +115,11 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version)
 			break;
 		case 4:
 			result.setContent(CONTENT_LADDER_ROOF);
+			result.param2 = 0;
 			break;
 		case 8:
 			result.setContent(CONTENT_LADDER_FLOOR);
+			result.param2 = 0;
 			break;
 		case 16:
 			result.setContent(CONTENT_LADDER_WALL);
@@ -125,6 +127,35 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version)
 			break;
 		case 32:
 			result.setContent(CONTENT_LADDER_WALL);
+			result.param2 = 2;
+			break;
+		default:;
+		}
+	}
+	if (n_from.getContent() == CONTENT_TORCH_LEGACY) {
+		switch (n_from.param2) {
+		case 1:
+			result.setContent(CONTENT_TORCH);
+			result.param2 = 1;
+			break;
+		case 2:
+			result.setContent(CONTENT_TORCH);
+			result.param2 = 3;
+			break;
+		case 4:
+			result.setContent(CONTENT_TORCH);
+			result.param2 = 4;
+			break;
+		case 8:
+			result.setContent(CONTENT_TORCH);
+			result.param2 = 5;
+			break;
+		case 16:
+			result.setContent(CONTENT_TORCH);
+			result.param2 = 0;
+			break;
+		case 32:
+			result.setContent(CONTENT_TORCH);
 			result.param2 = 2;
 			break;
 		default:;
@@ -1912,30 +1943,40 @@ void content_mapnode_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = CONTENT_LADDER;
+	i = CONTENT_LADDER_LEGACY;
 	f = &content_features(i);
 	f->description = std::string("Ladder");
-	f->setInventoryTexture("ladder-old.png");
-	f->setAllTextures("ladder-old.png");
-	f->setAllTextureFlags(0);
+	f->setAllTextures("ladder.png");
 	f->light_propagates = true;
 	f->param_type = CPT_LIGHT;
-	f->draw_type = CDT_WALLMOUNT;
+	f->param2_type = CPT_FACEDIR_WALLMOUNT;
+	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem ")+itos(CONTENT_LADDER_WALL)+" 1";
+	f->solidness = 0;
 	f->floormount_alternate_node = CONTENT_LADDER_FLOOR;
 	f->wallmount_alternate_node = CONTENT_LADDER_WALL;
 	f->roofmount_alternate_node = CONTENT_LADDER_ROOF;
-	f->wall_mounted = true;
-	f->solidness = 0;
-	f->air_equivalent = true;
-	f->walkable = false;
+	f->rotate_tile_with_nodebox = true;
 	f->climbable = true;
+	f->air_equivalent = true;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/16;
 	f->type = CMT_WOOD;
 	f->hardness = 0.5;
-	lists::add("creative",i);
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.4375*BS,-0.5*BS,0.3125*BS,-0.3125*BS,0.5*BS,0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.3125*BS,-0.5*BS,0.3125*BS,0.4375*BS,0.5*BS,0.5*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.3125*BS,-0.25*BS,0.375*BS,0.3125*BS,-0.1875*BS,0.4375*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.3125*BS,0.25*BS,0.375*BS,0.3125*BS,0.3125*BS,0.4375*BS
+	));
+	f->setInventoryTextureNodeBox(i,"ladder.png","ladder.png","ladder.png");
 
 	i = CONTENT_LADDER_WALL;
 	f = &content_features(i);
@@ -1943,7 +1984,7 @@ void content_mapnode_init()
 	f->setAllTextures("ladder.png");
 	f->light_propagates = true;
 	f->param_type = CPT_LIGHT;
-	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->param2_type = CPT_FACEDIR_WALLMOUNT;
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem ")+itos(i)+" 1";
@@ -1952,6 +1993,7 @@ void content_mapnode_init()
 	f->roofmount_alternate_node = CONTENT_LADDER_ROOF;
 	f->rotate_tile_with_nodebox = true;
 	f->climbable = true;
+	f->air_equivalent = true;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/16;
 	f->type = CMT_WOOD;
@@ -2009,6 +2051,7 @@ void content_mapnode_init()
 	f->roofmount_alternate_node = CONTENT_LADDER_ROOF;
 	f->rotate_tile_with_nodebox = true;
 	f->climbable = true;
+	f->air_equivalent = true;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/16;
 	f->type = CMT_WOOD;
@@ -2041,6 +2084,7 @@ void content_mapnode_init()
 	f->wallmount_alternate_node = CONTENT_LADDER_WALL;
 	f->rotate_tile_with_nodebox = true;
 	f->climbable = true;
+	f->air_equivalent = true;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/16;
 	f->type = CMT_WOOD;
@@ -4182,6 +4226,27 @@ void content_mapnode_init()
 	f->post_effect_color = video::SColor(192, 255, 64, 0);
 #endif
 
+	i = CONTENT_TORCH_LEGACY;
+	f = &content_features(i);
+	f->description = std::string("Torch");
+	f->setAllTextures("torch.png");
+	f->setInventoryTexture("torch_inventory.png");
+	f->setAllTextureFlags(0);
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_WALLMOUNT;
+	f->draw_type = CDT_TORCHLIKE;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->walkable = false;
+	f->air_equivalent = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 0.5;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_TORCH)+" 1";
+	f->light_source = LIGHT_MAX-1;
+	f->type = CMT_WOOD;
+	f->hardness = 0.0;
+
 	i = CONTENT_TORCH;
 	f = &content_features(i);
 	f->description = std::string("Torch");
@@ -4189,12 +4254,12 @@ void content_mapnode_init()
 	f->setInventoryTexture("torch_inventory.png");
 	f->setAllTextureFlags(0);
 	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_WALLMOUNT;
 	f->draw_type = CDT_TORCHLIKE;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
-	f->wall_mounted = true;
 	f->air_equivalent = true;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 0.5;
@@ -4214,6 +4279,7 @@ void content_mapnode_init()
 	f->setAllTextures("sign_wall.png");
 	f->setInventoryTexture("sign_inventory.png");
 	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_WALLMOUNT;
 	f->draw_type = CDT_SIGNLIKE;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
@@ -4221,7 +4287,6 @@ void content_mapnode_init()
 	f->roofmount_alternate_node = CONTENT_SIGN_UD;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
-	f->wall_mounted = true;
 	f->air_equivalent = true;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 1;
@@ -4290,6 +4355,7 @@ void content_mapnode_init()
 	f->setAllTextures("sign_wall_lock.png");
 	f->setInventoryTexture("sign_lock_inventory.png");
 	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_WALLMOUNT;
 	f->draw_type = CDT_SIGNLIKE;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
@@ -4297,7 +4363,6 @@ void content_mapnode_init()
 	f->roofmount_alternate_node = CONTENT_LOCKABLE_SIGN_UD;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
-	f->wall_mounted = true;
 	f->air_equivalent = true;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 1;
@@ -7718,7 +7783,6 @@ void content_mapnode_init()
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
-	//f->wall_mounted = true;
 	f->air_equivalent = true;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 1;
@@ -7752,7 +7816,6 @@ void content_mapnode_init()
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
-	//f->wall_mounted = true;
 	f->air_equivalent = true;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 1;
@@ -7786,7 +7849,6 @@ void content_mapnode_init()
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
-	//f->wall_mounted = true;
 	f->air_equivalent = true;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 1;
@@ -7820,7 +7882,6 @@ void content_mapnode_init()
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
-	//f->wall_mounted = true;
 	f->air_equivalent = true;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 1;
@@ -7854,7 +7915,6 @@ void content_mapnode_init()
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
-	//f->wall_mounted = true;
 	f->air_equivalent = true;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 1;

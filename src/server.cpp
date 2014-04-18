@@ -3531,11 +3531,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						n.setContent(content_features(n).wallmount_alternate_node);
 				}
 
-				// Calculate direction for wall mounted stuff
-				if(content_features(n).wall_mounted)
-					n.param2 = packDir(p_under - p_over);
 
-				// Calculate the direction for furnaces and chests and stuff
+				// Calculate the direction for directional and wall mounted nodes
 				if (content_features(n).param2_type == CPT_FACEDIR_SIMPLE) {
 					v3f playerpos = player->getPosition();
 					v3f blockpos = intToFloat(p_over, BS) - playerpos;
@@ -3568,6 +3565,12 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						else
 							n.param1 = 0;
 					}
+				}else if (content_features(n).param2_type == CPT_FACEDIR_WALLMOUNT) {
+					n.param2 &= 0xF0;
+					u8 pd = packDir(p_under - p_over);
+					n.param2 |= (pd&0x0F);
+				}else if (content_features(n).param_type == CPT_FACEDIR_WALLMOUNT) {
+					n.param1 = packDir(p_under - p_over);
 				}
 
 				core::list<u16> far_players;

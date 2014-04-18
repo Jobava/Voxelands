@@ -41,10 +41,11 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_STONE 0
 // FREE 1
 #define CONTENT_WATER 2
-#define CONTENT_TORCH 3
+#define CONTENT_TORCH_LEGACY 3
 #define CONTENT_GLASSLIGHT 4
 #define CONTENT_CHAIR 5
-// FREE 6-7
+// FREE 6
+#define CONTENT_TORCH 7
 #define CONTENT_TABLE 8
 #define CONTENT_WATERSOURCE 9
 // FREE 10-13
@@ -63,7 +64,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 // FREE 26-29
 #define CONTENT_RAIL 30
 // deprecated, just here for backwards compat
-#define CONTENT_LADDER 31
+#define CONTENT_LADDER_LEGACY 31
 #define CONTENT_LAVA 32
 #define CONTENT_LAVASOURCE 33
 #define CONTENT_LADDER_WALL 34

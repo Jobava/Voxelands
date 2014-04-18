@@ -93,7 +93,6 @@ enum ContentDrawType
 	CDT_LIQUID,
 	CDT_LIQUID_SOURCE,
 	CDT_SIGNLIKE,
-	CDT_WALLMOUNT,
 	CDT_NODEBOX,
 	CDT_GLASSLIKE,
 	CDT_TORCHLIKE,
@@ -113,6 +112,7 @@ enum ContentParamType
 	CPT_MINERAL,
 	// Direction for chests and furnaces and such
 	CPT_FACEDIR_SIMPLE,
+	CPT_FACEDIR_WALLMOUNT,
 	CPT_LIQUID
 };
 
@@ -198,9 +198,6 @@ struct ContentFeatures
 	bool jumpable;
 	// Whether the node has no liquid, source liquid or flowing liquid
 	enum LiquidType liquid_type;
-	// If true, param2 is set to direction when placed. Used for torches.
-	// NOTE: the direction format is quite inefficient and should be changed
-	bool wall_mounted;
 	// If true, node is equivalent to air. Torches are, air is. Water is not.
 	// Is used for example to check whether a mud block can have grass on.
 	bool air_equivalent;
@@ -298,7 +295,6 @@ struct ContentFeatures
 		flammable = 0;
 		jumpable = true;
 		liquid_type = LIQUID_NONE;
-		wall_mounted = false;
 		air_equivalent = false;
 		often_contains_mineral = false;
 		dug_item = "";
@@ -535,21 +531,18 @@ u8 face_contents(content_t m1, content_t m2, bool *equivalent);
 inline u8 packDir(v3s16 dir)
 {
 	u8 b = 0;
-
-	if(dir.X > 0)
-		b |= (1<<0);
-	else if(dir.X < 0)
-		b |= (1<<1);
-
-	if(dir.Y > 0)
-		b |= (1<<2);
-	else if(dir.Y < 0)
-		b |= (1<<3);
-
-	if(dir.Z > 0)
-		b |= (1<<4);
-	else if(dir.Z < 0)
-		b |= (1<<5);
+	if (dir.Y > 0)
+		return 4;
+	if (dir.Y < 0)
+		return 5;
+	if (dir.Z > 0)
+		return 0;
+	if (dir.X > 0)
+		return 1;
+	if (dir.Z < 0)
+		return 2;
+	if (dir.X < 0)
+		return 3;
 
 	return b;
 }
@@ -557,26 +550,33 @@ inline v3s16 unpackDir(u8 b)
 {
 	v3s16 d(0,0,0);
 
-	if(b & (1<<0))
-		d.X = 1;
-	else if(b & (1<<1))
-		d.X = -1;
-
-	if(b & (1<<2))
-		d.Y = 1;
-	else if(b & (1<<3))
-		d.Y = -1;
-
-	if(b & (1<<4))
+	switch (b) {
+	case 0:
 		d.Z = 1;
-	else if(b & (1<<5))
+		break;
+	case 1:
+		d.X = 1;
+		break;
+	case 2:
 		d.Z = -1;
+		break;
+	case 3:
+		d.X = -1;
+		break;
+	case 4:
+		d.Y = 1;
+		break;
+	case 5:
+		d.Y = -1;
+		break;
+	default:;
+	}
 
 	return d;
 }
 
 /*
-	facedir: CPT_FACEDIR_SIMPLE param1 value
+	facedir: CPT_FACEDIR_SIMPLE param value
 	dir: The face for which stuff is wanted
 	return value: The face from which the stuff is actually found
 
