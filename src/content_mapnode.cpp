@@ -103,6 +103,33 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version)
 			}
 		}
 	}
+	if (n_from.getContent() == CONTENT_LADDER) {
+		switch (n_from.param2) {
+		case 1:
+			result.setContent(CONTENT_LADDER_WALL);
+			result.param2 = 1;
+			break;
+		case 2:
+			result.setContent(CONTENT_LADDER_WALL);
+			result.param2 = 3;
+			break;
+		case 4:
+			result.setContent(CONTENT_LADDER_ROOF);
+			break;
+		case 8:
+			result.setContent(CONTENT_LADDER_FLOOR);
+			break;
+		case 16:
+			result.setContent(CONTENT_LADDER_WALL);
+			result.param2 = 0;
+			break;
+		case 32:
+			result.setContent(CONTENT_LADDER_WALL);
+			result.param2 = 2;
+			break;
+		default:;
+		}
+	}
 	// stairs, slabs, gates, doors, and hatches were moved for 1311.00
 	if (n_from.getContent() >= 0x826 && n_from.getContent() <= 0x87F) {
 		// slabs
@@ -1908,6 +1935,7 @@ void content_mapnode_init()
 	f->fuel_time = 30/16;
 	f->type = CMT_WOOD;
 	f->hardness = 0.5;
+	lists::add("creative",i);
 
 	i = CONTENT_LADDER_WALL;
 	f = &content_features(i);
