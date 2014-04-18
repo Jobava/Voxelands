@@ -1853,10 +1853,8 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Rail");
 	f->setAllTextures("rail.png");
-	f->setTexture(1,"rail_curved.png");
-	f->setTexture(2,"rail_t_junction.png");
-	f->setTexture(3,"rail_crossing.png");
-	f->setAllTextureFlags(0);
+	f->setTexture(0,"track_tie.png");
+	f->setTexture(1,"track_rail.png");
 	f->light_propagates = true;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_RAILLIKE;
@@ -1864,7 +1862,6 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->air_equivalent = true; // grass grows underneath
-	f->walkable = false;
 	f->type = CMT_DIRT;
 	f->hardness = 0.75;
 	{
@@ -1878,6 +1875,11 @@ void content_mapnode_init()
 		r[7] = CONTENT_CRAFTITEM_JUNGLE_PLANK;
 		crafting::setRecipe(r,CONTENT_RAIL,15);
 	}
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,-0.5*BS,-0.5*BS,0.5*BS,-0.375*BS,0.5*BS
+	));
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_ROOFTILE_TERRACOTTA;
 	f = &content_features(i);

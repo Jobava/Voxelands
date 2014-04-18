@@ -495,7 +495,7 @@ void getPointedNode(Client *client, v3f player_position,
 			v3f cpf = npf + dir_f;
 			f32 distance = (cpf - camera_position).getLength();
 
-			float d = (float)BS/16;
+			float d = (float)BS/8;
 			v3f vertices[4] =
 			{
 				v3f(BS/2, -BS/2+d, -BS/2),

@@ -38,6 +38,80 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 // the faces in the list is up-down-right-left-back-front
 // (compatible with ContentFeatures). If you specified 0,0,1,1
 // for each face, that would be the same as passing NULL.
+void makeRotatedCuboid(MeshCollector *collector, v3f pos, const aabb3f &box,
+	TileSpec *tiles, int tilecount,
+	video::SColor c[8], const f32* txc, v3s16 angle)
+{
+	assert(tilecount >= 1 && tilecount <= 6);
+
+	v3f min = box.MinEdge;
+	v3f max = box.MaxEdge;
+
+	if (txc == NULL) {
+		static const f32 txc_default[24] = {
+			0,0,1,1,
+			0,0,1,1,
+			0,0,1,1,
+			0,0,1,1,
+			0,0,1,1,
+			0,0,1,1
+		};
+		txc = txc_default;
+	}
+
+	video::S3DVertex vertices[24] = {
+		// up
+		video::S3DVertex(min.X,max.Y,max.Z, 0,1,0, c[0], txc[0],txc[1]),
+		video::S3DVertex(max.X,max.Y,max.Z, 0,1,0, c[1], txc[2],txc[1]),
+		video::S3DVertex(max.X,max.Y,min.Z, 0,1,0, c[2], txc[2],txc[3]),
+		video::S3DVertex(min.X,max.Y,min.Z, 0,1,0, c[3], txc[0],txc[3]),
+		// down
+		video::S3DVertex(min.X,min.Y,min.Z, 0,-1,0, c[4], txc[4],txc[5]),
+		video::S3DVertex(max.X,min.Y,min.Z, 0,-1,0, c[5], txc[6],txc[5]),
+		video::S3DVertex(max.X,min.Y,max.Z, 0,-1,0, c[6], txc[6],txc[7]),
+		video::S3DVertex(min.X,min.Y,max.Z, 0,-1,0, c[7], txc[4],txc[7]),
+		// right
+		video::S3DVertex(max.X,max.Y,min.Z, 1,0,0, c[2], txc[ 8],txc[9]),
+		video::S3DVertex(max.X,max.Y,max.Z, 1,0,0, c[1], txc[10],txc[9]),
+		video::S3DVertex(max.X,min.Y,max.Z, 1,0,0, c[6], txc[10],txc[11]),
+		video::S3DVertex(max.X,min.Y,min.Z, 1,0,0, c[5], txc[ 8],txc[11]),
+		// left
+		video::S3DVertex(min.X,max.Y,max.Z, -1,0,0, c[0], txc[12],txc[13]),
+		video::S3DVertex(min.X,max.Y,min.Z, -1,0,0, c[3], txc[14],txc[13]),
+		video::S3DVertex(min.X,min.Y,min.Z, -1,0,0, c[4], txc[14],txc[15]),
+		video::S3DVertex(min.X,min.Y,max.Z, -1,0,0, c[7], txc[12],txc[15]),
+		// back
+		video::S3DVertex(max.X,max.Y,max.Z, 0,0,1, c[1], txc[16],txc[17]),
+		video::S3DVertex(min.X,max.Y,max.Z, 0,0,1, c[0], txc[18],txc[17]),
+		video::S3DVertex(min.X,min.Y,max.Z, 0,0,1, c[7], txc[18],txc[19]),
+		video::S3DVertex(max.X,min.Y,max.Z, 0,0,1, c[6], txc[16],txc[19]),
+		// front
+		video::S3DVertex(min.X,max.Y,min.Z, 0,0,-1, c[3], txc[20],txc[21]),
+		video::S3DVertex(max.X,max.Y,min.Z, 0,0,-1, c[2], txc[22],txc[21]),
+		video::S3DVertex(max.X,min.Y,min.Z, 0,0,-1, c[5], txc[22],txc[23]),
+		video::S3DVertex(min.X,min.Y,min.Z, 0,0,-1, c[4], txc[20],txc[23]),
+	};
+
+
+	for (s32 j=0; j<24; j++) {
+		int tileindex = MYMIN(j/4, tilecount-1);
+		if (angle.Y)
+			vertices[j].Pos.rotateXZBy(angle.Y);
+		if (angle.X)
+			vertices[j].Pos.rotateYZBy(angle.X);
+		if (angle.Z)
+			vertices[j].Pos.rotateXYBy(angle.Z);
+		vertices[j].Pos += pos;
+		vertices[j].TCoords *= tiles[tileindex].texture.size;
+		vertices[j].TCoords += tiles[tileindex].texture.pos;
+	}
+	u16 indices[] = {0,1,2,2,3,0};
+	// Add to mesh collector
+	for (s32 j=0; j<24; j+=4) {
+		int tileindex = MYMIN(j/4, tilecount-1);
+		collector->append(tiles[tileindex].getMaterial(), vertices+j, 4, indices, 6);
+	}
+}
 void makeAngledCuboid(MeshCollector *collector, v3f pos, const aabb3f &box,
 	TileSpec *tiles, int tilecount,
 	video::SColor c[8], const f32* txc, s16 angle)
@@ -1805,38 +1879,176 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				if(is_rail_x_plus_y[0])
 					angle = 90;
 				if(is_rail_x_plus_y[1])
-					angle = -90;
+					angle = 270;
 				break;
 			default:
 				break;
 			}
 
-			TileSpec tile = content_features(thiscontent).tiles[tileindex];
-
-			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
-			video::SColor c = MapBlock_LightColor(255, l);
-
-			float d = (float)BS/32;
-
-			char g=-1;
-			if (is_rail_x_plus_y[0] || is_rail_x_plus_y[1] || is_rail_z_plus_y[0] || is_rail_z_plus_y[1])
-				g=1; //Object is at a slope
-
-			video::S3DVertex vertices[4] = {
-				video::S3DVertex(-BS/2,-BS/2+d,-BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y1()),
-				video::S3DVertex(BS/2,-BS/2+d,-BS/2, 0,0,0, c, tile.texture.x1(), tile.texture.y1()),
-				video::S3DVertex(BS/2,g*BS/2+d,BS/2, 0,0,0, c, tile.texture.x1(), tile.texture.y0()),
-				video::S3DVertex(-BS/2,g*BS/2+d,BS/2, 0,0,0, c, tile.texture.x0(), tile.texture.y0()),
+			static const v3s16 tile_dirs[6] = {
+				v3s16(0, 1, 0),
+				v3s16(0, -1, 0),
+				v3s16(1, 0, 0),
+				v3s16(-1, 0, 0),
+				v3s16(0, 0, 1),
+				v3s16(0, 0, -1)
 			};
-
-			for (s32 i=0; i<4; i++) {
-				if (angle != 0)
-					vertices[i].Pos.rotateXZBy(angle);
-				vertices[i].Pos += intToFloat(p, BS);
+			TileSpec tiles[6];
+			TileSpec *tile;
+			for (int i = 0; i < 6; i++) {
+				// Handles facedir rotation for textures
+				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
 			}
+			video::SColor c[8];
+			getLights(blockpos_nodes+p,c,data,smooth_lighting);
+			v3f pos = intToFloat(p,BS);
 
-			u16 indices[] = {0,1,2,2,3,0};
-			collector.append(tile.getMaterial(), vertices, 4, indices, 6);
+			switch (tileindex) {
+			case 0:
+			{
+				if (is_rail_x_plus_y[0] || is_rail_x_plus_y[1] || is_rail_z_plus_y[0] || is_rail_z_plus_y[1]) {
+					aabb3f track[7] = {
+						aabb3f(-0.4375*BS,-0.03125*BS,-0.5625*BS,0.4375*BS,0.03125*BS,-0.4375*BS),
+						aabb3f(-0.4375*BS,-0.03125*BS,-0.3125*BS,0.4375*BS,0.03125*BS,-0.1875*BS),
+						aabb3f(-0.4375*BS,-0.03125*BS,-0.0625*BS,0.4375*BS,0.03125*BS,0.0625*BS),
+						aabb3f(-0.4375*BS,-0.03125*BS,0.1875*BS,0.4375*BS,0.03125*BS,0.3125*BS),
+						aabb3f(-0.4375*BS,-0.03125*BS,0.4375*BS,0.4375*BS,0.03125*BS,0.5625*BS),
+						aabb3f(0.25*BS,0.03125*BS,-0.64*BS,0.3125*BS,0.09375*BS,0.77*BS),
+						aabb3f(-0.3125*BS,0.03125*BS,-0.64*BS,-0.25*BS,0.09375*BS,0.77*BS)
+					};
+					tile = &tiles[0];
+					v3s16 an(0,angle,0);
+					switch (angle) {
+					case 90:
+						an.Z = -45;
+						break;
+					case 180:
+						an.X = 45;
+						break;
+					case 270:
+						an.Z = 45;
+						break;
+					default:
+						an.X = -45;
+					}
+					for (int bi=0; bi<7; bi++) {
+						if (bi == 5)
+							tile = &tiles[1];
+						makeRotatedCuboid(&collector,pos,track[bi],tile,1,c,NULL,an);
+					}
+				}else{
+					aabb3f track[6] = {
+						aabb3f(-0.4375*BS,-0.5*BS,-0.4375*BS,0.4375*BS,-0.4375*BS,-0.3125*BS),
+						aabb3f(-0.4375*BS,-0.5*BS,-0.1875*BS,0.4375*BS,-0.4375*BS,-0.0625*BS),
+						aabb3f(-0.4375*BS,-0.5*BS,0.0625*BS,0.4375*BS,-0.4375*BS,0.1875*BS),
+						aabb3f(-0.4375*BS,-0.5*BS,0.3125*BS,0.4375*BS,-0.4375*BS,0.4375*BS),
+						aabb3f(-0.3125*BS,-0.4375*BS,-0.5*BS,-0.25*BS,-0.375*BS,0.5*BS),
+						aabb3f(0.25*BS,-0.4375*BS,-0.5*BS,0.3125*BS,-0.375*BS,0.5*BS)
+					};
+					tile = &tiles[0];
+					for (int bi=0; bi<6; bi++) {
+						if (bi == 4)
+							tile = &tiles[1];
+						makeAngledCuboid(&collector,pos,track[bi],tile,1,c,NULL,angle);
+					}
+				}
+				break;
+			}
+			case 1:
+			{
+				aabb3f track[20] = {
+					aabb3f(-0.4375*BS,-0.5*BS,-0.4375*BS,0.4375*BS,-0.4375*BS,-0.3125*BS),
+					aabb3f(-0.4375*BS,-0.5*BS,-0.3125*BS,-0.3125*BS,-0.4375*BS,0.4375*BS),
+					aabb3f(-0.3125*BS,-0.5*BS,-0.3125*BS,-0.25*BS,-0.4375*BS,-0.1875*BS),
+					aabb3f(-0.25*BS,-0.5*BS,-0.3125*BS,-0.1875*BS,-0.4375*BS,-0.125*BS),
+					aabb3f(-0.1875*BS,-0.5*BS,-0.25*BS,-0.125*BS,-0.4375*BS,-0.0625*BS),
+					aabb3f(-0.125*BS,-0.5*BS,-0.1875*BS,-0.0625*BS,-0.4375*BS,0.*BS),
+					aabb3f(-0.0625*BS,-0.5*BS,-0.125*BS,0.*BS,-0.4375*BS,0.0625*BS),
+					aabb3f(0.*BS,-0.5*BS,-0.0625*BS,0.0625*BS,-0.4375*BS,0.125*BS),
+					aabb3f(0.0625*BS,-0.5*BS,0.*BS,0.125*BS,-0.4375*BS,0.1875*BS),
+					aabb3f(0.125*BS,-0.5*BS,0.0625*BS,0.1875*BS,-0.4375*BS,0.25*BS),
+					aabb3f(0.1875*BS,-0.5*BS,0.125*BS,0.25*BS,-0.4375*BS,0.3125*BS),
+					aabb3f(0.25*BS,-0.5*BS,0.1875*BS,0.3125*BS,-0.4375*BS,0.25*BS),
+					aabb3f(0.25*BS,-0.4375*BS,-0.5*BS,0.3125*BS,-0.375*BS,-0.0625*BS),
+					aabb3f(-0.3125*BS,-0.4375*BS,-0.5*BS,-0.25*BS,-0.375*BS,-0.3125*BS),
+					aabb3f(-0.5*BS,-0.4375*BS,-0.3125*BS,-0.3125*BS,-0.375*BS,-0.25*BS),
+					aabb3f(-0.5*BS,-0.4375*BS,0.25*BS,-0.0625*BS,-0.375*BS,0.3125*BS),
+					aabb3f(0.0625*BS,-0.4375*BS,0.125*BS,0.125*BS,-0.375*BS,0.1875*BS),
+					aabb3f(0.1875*BS,-0.4375*BS,-0.0625*BS,0.25*BS,-0.375*BS,0.0625*BS),
+					aabb3f(-0.0625*BS,-0.4375*BS,0.1875*BS,0.0625*BS,-0.375*BS,0.25*BS),
+					aabb3f(0.125*BS,-0.4375*BS,0.0625*BS,0.1875*BS,-0.375*BS,0.125*BS)
+				};
+				tile = &tiles[0];
+				for (int bi=0; bi<20; bi++) {
+					if (bi == 12)
+						tile = &tiles[1];
+					makeAngledCuboid(&collector,pos,track[bi],tile,1,c,NULL,angle+90);
+				}
+				break;
+			}
+			case 2:
+			{
+				aabb3f track[17] = {
+					aabb3f(-0.3125*BS,-0.5*BS,-0.4375*BS,0.4375*BS,-0.4375*BS,-0.3125*BS),
+					aabb3f(-0.3125*BS,-0.5*BS,-0.1875*BS,0.4375*BS,-0.4375*BS,-0.0625*BS),
+					aabb3f(-0.3125*BS,-0.5*BS,0.0625*BS,0.4375*BS,-0.4375*BS,0.1875*BS),
+					aabb3f(-0.3125*BS,-0.5*BS,0.3125*BS,0.4375*BS,-0.4375*BS,0.4375*BS),
+					aabb3f(-0.4375*BS,-0.5*BS,-0.4375*BS,-0.3125*BS,-0.4375*BS,0.4375*BS),
+					aabb3f(0.25*BS,-0.4375*BS,-0.5*BS,0.3125*BS,-0.375*BS,0.5*BS),
+					aabb3f(-0.3125*BS,-0.4375*BS,-0.5*BS,-0.25*BS,-0.375*BS,0.1875*BS),
+					aabb3f(-0.3125*BS,-0.4375*BS,0.3125*BS,-0.25*BS,-0.375*BS,0.5*BS),
+					aabb3f(-0.5*BS,-0.4375*BS,-0.3125*BS,-0.3125*BS,-0.375*BS,-0.25*BS),
+					aabb3f(-0.5*BS,-0.4375*BS,0.25*BS,-0.25*BS,-0.375*BS,0.3125*BS),
+					aabb3f(0.125*BS,-0.4375*BS,0.0625*BS,0.1875*BS,-0.375*BS,0.125*BS),
+					aabb3f(0.0625*BS,-0.4375*BS,0.125*BS,0.125*BS,-0.375*BS,0.1875*BS),
+					aabb3f(-0.0625*BS,-0.4375*BS,0.1875*BS,0.0625*BS,-0.375*BS,0.25*BS),
+					aabb3f(0.1875*BS,-0.4375*BS,-0.0625*BS,0.25*BS,-0.375*BS,0.0625*BS),
+					aabb3f(-0.1875*BS,-0.4375*BS,0.25*BS,-0.0625*BS,-0.375*BS,0.3125*BS),
+					aabb3f(-0.1875*BS,-0.4375*BS,0.3125*BS,-0.125*BS,-0.375*BS,0.4375*BS),
+					aabb3f(-0.4375*BS,-0.4375*BS,0.125*BS,-0.3125*BS,-0.375*BS,0.1875*BS)
+				};
+				tile = &tiles[0];
+				for (int bi=0; bi<17; bi++) {
+					if (bi == 5)
+						tile = &tiles[1];
+					makeAngledCuboid(&collector,pos,track[bi],tile,1,c,NULL,angle+180);
+				}
+				break;
+			}
+			case 3:
+			{
+				aabb3f track[20] = {
+					aabb3f(-0.4375*BS,-0.5*BS,-0.4375*BS,0.4375*BS,-0.4375*BS,-0.3125*BS),
+					aabb3f(-0.4375*BS,-0.5*BS,0.3125*BS,0.4375*BS,-0.4375*BS,0.4375*BS),
+					aabb3f(-0.4375*BS,-0.5*BS,-0.3125*BS,-0.3125*BS,-0.4375*BS,0.3125*BS),
+					aabb3f(0.3125*BS,-0.5*BS,-0.3125*BS,0.4375*BS,-0.4375*BS,0.3125*BS),
+					aabb3f(-0.0625*BS,-0.5*BS,-0.3125*BS,0.0625*BS,-0.4375*BS,0.3125*BS),
+					aabb3f(0.0625*BS,-0.5*BS,-0.0625*BS,0.3125*BS,-0.4375*BS,0.0625*BS),
+					aabb3f(-0.3125*BS,-0.5*BS,-0.0625*BS,-0.0625*BS,-0.4375*BS,0.0625*BS),
+					aabb3f(-0.3125*BS,-0.4375*BS,-0.5*BS,-0.25*BS,-0.375*BS,-0.25*BS),
+					aabb3f(0.25*BS,-0.4375*BS,-0.5*BS,0.3125*BS,-0.375*BS,-0.25*BS),
+					aabb3f(-0.5*BS,-0.4375*BS,0.25*BS,-0.3125*BS,-0.375*BS,0.3125*BS),
+					aabb3f(-0.5*BS,-0.4375*BS,-0.3125*BS,-0.3125*BS,-0.375*BS,-0.25*BS),
+					aabb3f(0.3125*BS,-0.4375*BS,-0.3125*BS,0.5*BS,-0.375*BS,-0.25*BS),
+					aabb3f(0.3125*BS,-0.4375*BS,0.25*BS,0.5*BS,-0.375*BS,0.3125*BS),
+					aabb3f(-0.1875*BS,-0.4375*BS,0.25*BS,0.1875*BS,-0.375*BS,0.3125*BS),
+					aabb3f(-0.1875*BS,-0.4375*BS,-0.3125*BS,0.1875*BS,-0.375*BS,-0.25*BS),
+					aabb3f(0.25*BS,-0.4375*BS,0.25*BS,0.3125*BS,-0.375*BS,0.5*BS),
+					aabb3f(0.25*BS,-0.4375*BS,-0.1875*BS,0.3125*BS,-0.375*BS,0.1875*BS),
+					aabb3f(-0.3125*BS,-0.4375*BS,0.25*BS,-0.25*BS,-0.375*BS,0.5*BS),
+					aabb3f(-0.3125*BS,-0.4375*BS,-0.1875*BS,-0.25*BS,-0.375*BS,0.1875*BS),
+					aabb3f(-0.1875*BS,-0.4375*BS,-0.1875*BS,0.1875*BS,-0.375*BS,0.1875*BS)
+				};
+				tile = &tiles[0];
+				for (int bi=0; bi<20; bi++) {
+					if (bi == 7)
+						tile = &tiles[1];
+					makeAngledCuboid(&collector,pos,track[bi],tile,1,c,NULL,angle);
+				}
+				break;
+			}
+			default:;
+			}
 		}
 		break;
 		case CDT_ROOFLIKE:
