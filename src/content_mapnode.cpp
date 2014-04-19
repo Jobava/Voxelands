@@ -2862,12 +2862,15 @@ void content_mapnode_init()
 	f->setTexture(1,"farm_pumpkin_top.png");
 	f->setTexture(5, "farm_pumpkin_jack.png"); // Z-
 	f->setInventoryTextureCube("farm_pumpkin_top.png","farm_pumpkin_jack.png","farm_pumpkin.png");
-	f->draw_type = CDT_CUBELIKE;
+	f->draw_type = CDT_NODEBOX;
 	f->flammable = 1;
+	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->light_source = LIGHT_MAX-1;
+	content_nodebox_jackolantern(f);
+	f->setInventoryTextureNodeBox(i,"farm_pumpkin_top.png","farm_pumpkin_jack.png","farm_pumpkin.png");
 	crafting::set1Any2Recipe(CONTENT_TORCH,CONTENT_FARM_PUMPKIN,CONTENT_FARM_PUMPKIN_JACK);
 
 	i = CONTENT_FARM_POTATO_1;
