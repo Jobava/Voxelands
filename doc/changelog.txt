@@ -3,6 +3,27 @@ Minetest-Classic changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1404.00: (release 2014-04-19)
+- fixes to rooflike lighting
+- fixes to rooflike rendering
+- some hud tweaks (sdzen)
+- add digging cracks to nodeboxes and special draw types
+- make fences and walls connect to their base block type
+- 3d ladders
+- make cobble wall non-jumpable
+- fix servers requiring empty passwords
+- add disallow_empty_passwords setting
+- replace locking doors with spring closing doors
+- fix rendering glitches when far from origin
+- ContentFeatures cleanup
+- redo some inventory things, add borderstone to initial inventories
+ (Menche)
+- make fireflies spawn in jungles at night
+- make glasslight recipe use firefly instead of torch
+- remove CDT_WALLMOUNT and ContentFeatures wall_mounted - better to use
+ nodeboxes and CPT_FACEDIR_WALLMOUNT
+- 3d rails
+
 1403.00: (release 2014-03-23)
 - fix deadvine on trellis causing abort when dug
 - tweaks to rooflike lighting
