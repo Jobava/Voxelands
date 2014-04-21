@@ -3767,8 +3767,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							ilist->changeItem(item_i,item);
 							UpdateCrafting(player->peer_id);
 							SendInventory(player->peer_id);
-							n.setContent(CONTENT_WATERSOURCE);
 						}
+						n.setContent(CONTENT_WATERSOURCE);
 						core::list<u16> far_players;
 						sendAddNode(p_over, n, 0, &far_players, 30);
 
