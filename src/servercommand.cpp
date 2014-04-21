@@ -236,27 +236,27 @@ void cmd_teleport(std::wostringstream &os,
 
 void cmd_banunban(std::wostringstream &os, ServerCommandContext *ctx)
 {
-	if((ctx->privs & PRIV_BAN) == 0)
-	{
+	if ((ctx->privs & PRIV_BAN) == 0) {
 		os<<L"-!- You don't have permission to do that";
 		return;
 	}
 
-	if(ctx->parms.size() < 2)
-	{
+	if (ctx->parms.size() < 2) {
 		std::string desc = ctx->server->getBanDescription("");
 		os<<L"-!- Ban list: "<<narrow_to_wide(desc);
 		return;
 	}
-	if(ctx->parms[0] == L"ban")
-	{
+	if (ctx->parms[0] == L"ban") {
 		Player *player = ctx->env->getPlayer(wide_to_narrow(ctx->parms[1]).c_str());
 
-		if(player == NULL)
-		{
+		if (player == NULL) {
 			os<<L"-!- No such player";
 			return;
 		}
+		std::wstring msg;
+		msg += narrow_to_wide(ctx->player->getName());
+		msg += L" has banned you from this server.";
+		ctx->server->notifyPlayer(player->getName(), msg);
 
 		try{
 			Address address = ctx->server->getPeerAddress(player->peer_id);
@@ -280,9 +280,7 @@ void cmd_banunban(std::wostringstream &os, ServerCommandContext *ctx)
 				dstream<<__FUNCTION_NAME<<": peer was not found"<<std::endl;
 			}
 		}
-	}
-	else
-	{
+	}else{
 		std::string ip_or_name = wide_to_narrow(ctx->parms[1]);
 		std::string desc = ctx->server->getBanDescription(ip_or_name);
 		ctx->server->unsetIpBanned(ip_or_name);
