@@ -2859,6 +2859,7 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FARM_PUMPKIN)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
+	lists::add("creative", i);
 
 	i = CONTENT_FARM_PUMPKIN_JACK;
 	f = &content_features(i);
@@ -2879,6 +2880,7 @@ void content_mapnode_init()
 	content_nodebox_jackolantern(f);
 	f->setInventoryTextureNodeBox(i,"farm_pumpkin_top.png","farm_pumpkin_jack.png","farm_pumpkin.png");
 	crafting::set1Any2Recipe(CONTENT_TORCH,CONTENT_FARM_PUMPKIN,CONTENT_FARM_PUMPKIN_JACK);
+	lists::add("creative", i);
 
 	i = CONTENT_FARM_POTATO_1;
 	f = &content_features(i);
