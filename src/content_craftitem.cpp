@@ -221,18 +221,10 @@ void content_craftitem_init()
 	f->texture = "cooked_rat.png";
 	f->name = "cooked_rat";
 	f->description = "Cooked Rat";
-	f->cook_result = "CraftItem scorched_stuff 1";
+	f->cook_result = "CraftItem ash 1";
 	f->edible = 6;
 	lists::add("creative",i);
 	lists::add("cooking",i);
-
-	i = CONTENT_CRAFTITEM_SCORCHED_STUFF;
-	f = &g_content_craftitem_features[i];
-	f->content = CONTENT_CRAFTITEM_SCORCHED_STUFF;
-	f->texture = "scorched_stuff.png";
-	f->name = "scorched_stuff";
-	f->description = "Scorched Stuff";
-	lists::add("creative",i);
 
 	i = CONTENT_CRAFTITEM_FIREFLY;
 	f = &g_content_craftitem_features[i];
@@ -481,21 +473,12 @@ void content_craftitem_init()
 	f->edible = 3;
 	lists::add("creative",i);
 
-	i = CONTENT_CRAFTITEM_ROTTEN_FRUIT;
-	f = &g_content_craftitem_features[i];
-	f->content = CONTENT_CRAFTITEM_ROTTEN_FRUIT;
-	f->texture = "rotten_fruit.png";
-	f->name = "rotten_fruit";
-	f->description = "Rotten Fruit";
-	f->edible = -1;
-	lists::add("creative",i);
-
 	i = CONTENT_CRAFTITEM_MUSH;
 	f = &g_content_craftitem_features[i];
 	f->content = CONTENT_CRAFTITEM_MUSH;
-	f->texture = "rotten_fruit.png";
-	f->name = "mushed_food";
-	f->description = "Mushed Food";
+	f->texture = "mush.png";
+	f->name = "mush";
+	f->description = "Mush";
 	f->edible = -1;
 	lists::add("creative",i);
 

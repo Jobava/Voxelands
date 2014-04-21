@@ -2290,7 +2290,6 @@ void content_mapnode_init()
 	f->setInventoryTextureNodeBox(i,"fertilizer.png", "fertilizer.png", "fertilizer.png");
 	f->type = CMT_DIRT;
 	f->hardness = 0.4;
-	crafting::set2Any2Recipe(CONTENT_CRAFTITEM_ROTTEN_FRUIT,CONTENT_CRAFTITEM_ASH,CONTENT_FERTILIZER);
 	crafting::set2Any2Recipe(CONTENT_CRAFTITEM_MUSH,CONTENT_CRAFTITEM_ASH,CONTENT_FERTILIZER);
 	lists::add("craftguide",i);
 	lists::add("creative",i);

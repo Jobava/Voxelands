@@ -1759,7 +1759,7 @@ void ServerEnvironment::step(float dtime)
 							if (active_object_count_wider < 10) {
 								v3f rot_pos = intToFloat(p, BS);
 								rot_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
-								ServerActiveObject *obj = new ItemSAO(this, 0, rot_pos, "CraftItem rotten_fruit 1");
+								ServerActiveObject *obj = new ItemSAO(this, 0, rot_pos, "CraftItem mush 1");
 								addActiveObject(obj);
 							}
 						}
@@ -2556,7 +2556,7 @@ void ServerEnvironment::step(float dtime)
 						m_map->addNodeWithEvent(p,n);
 						v3f rot_pos = intToFloat(p, BS);
 						rot_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
-						ServerActiveObject *obj = new ItemSAO(this, 0, rot_pos, "CraftItem rotten_fruit 1");
+						ServerActiveObject *obj = new ItemSAO(this, 0, rot_pos, "CraftItem mush 1");
 						addActiveObject(obj);
 					}
 					break;
