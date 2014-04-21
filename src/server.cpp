@@ -3512,6 +3512,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						p_dir.X == 0
 						&& p_dir.Z == 0
 						&& content_features(n).special_alternate_node != CONTENT_IGNORE
+						&& abv.getContent() >= CONTENT_SLAB_STAIR_MIN
+						&& abv.getContent() <= CONTENT_SLAB_STAIR_UD_MAX
 						&& content_features(n).special_alternate_node == content_features(abv).special_alternate_node
 					) {
 						n.setContent(content_features(n).special_alternate_node);
