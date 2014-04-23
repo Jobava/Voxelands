@@ -4282,10 +4282,9 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Sign");
 	f->setAllTextures("sign_wall.png");
-	f->setInventoryTexture("sign_inventory.png");
 	f->param_type = CPT_LIGHT;
 	f->param2_type = CPT_FACEDIR_WALLMOUNT;
-	f->draw_type = CDT_SIGNLIKE;
+	f->draw_type = CDT_NODEBOX;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->floormount_alternate_node = CONTENT_SIGN;
@@ -4300,6 +4299,7 @@ void content_mapnode_init()
 		f->initial_metadata = new SignNodeMetadata("Some sign");
 	f->type = CMT_WOOD;
 	f->hardness = 0.1;
+	content_nodebox_sign_wall(f);
 
 	i = CONTENT_SIGN;
 	f = &content_features(i);
@@ -4357,11 +4357,12 @@ void content_mapnode_init()
 	i = CONTENT_LOCKABLE_SIGN_WALL;
 	f = &content_features(i);
 	f->description = std::string("Locking Sign");
-	f->setAllTextures("sign_wall_lock.png");
-	f->setInventoryTexture("sign_lock_inventory.png");
+	f->setAllTextures("sign.png");
+	f->setTexture(4, "sign_back.png");
+	f->setTexture(5, "sign_wall_lock.png"); // Z-
 	f->param_type = CPT_LIGHT;
 	f->param2_type = CPT_FACEDIR_WALLMOUNT;
-	f->draw_type = CDT_SIGNLIKE;
+	f->draw_type = CDT_NODEBOX;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->floormount_alternate_node = CONTENT_LOCKABLE_SIGN;
@@ -4376,6 +4377,7 @@ void content_mapnode_init()
 		f->initial_metadata = new LockingSignNodeMetadata("Some sign");
 	f->type = CMT_WOOD;
 	f->hardness = 0.1;
+	content_nodebox_sign_wall(f);
 
 	i = CONTENT_LOCKABLE_SIGN;
 	f = &content_features(i);

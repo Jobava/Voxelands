@@ -34,6 +34,7 @@ void content_nodebox_pie_2(ContentFeatures *f);
 void content_nodebox_pie_1(ContentFeatures *f);
 void content_nodebox_sign(ContentFeatures *f);
 void content_nodebox_sign_ud(ContentFeatures *f);
+void content_nodebox_sign_wall(ContentFeatures *f);
 void content_nodebox_jackolantern(ContentFeatures *f);
 
 #endif

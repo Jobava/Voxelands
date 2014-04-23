@@ -944,7 +944,7 @@ void content_nodebox_sign(ContentFeatures *f)
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
 		-0.4375*BS,
-		-0.0625,
+		-0.0625*BS,
 		-0.125*BS,
 		0.4375*BS,
 		0.4375*BS,
@@ -967,8 +967,20 @@ void content_nodebox_sign_ud(ContentFeatures *f)
 		-0.4375*BS,
 		-0.125*BS,
 		0.4375*BS,
-		0.0625,
+		0.0625*BS,
 		-0.0625*BS
+	));
+}
+
+void content_nodebox_sign_wall(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.4375*BS,
+		-0.25*BS,
+		0.4375*BS,
+		0.4375*BS,
+		0.25*BS,
+		0.5*BS
 	));
 }
 

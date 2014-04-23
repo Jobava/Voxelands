@@ -1100,92 +1100,9 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				collector.append(content_features(n.getContent()).tiles[0].getMaterial(), &v[j], 4, indices, 6);
 			}
 		}
-		/*
-			Signs on walls
-		*/
-		break;
-		case CDT_SIGNLIKE:
-		{
-			u8 l = decode_light(n.getLightBlend(data->m_daynight_ratio));
-			video::SColor c = MapBlock_LightColor(255, l);
-
-			static const f32 txc[24] = {
-				0.1,0,0.9,0.1,
-				0.1,0,0.9,0.1,
-				0.1,0.3,0.9,0.7,
-				0.1,0.3,0.9,0.7,
-				0.1,0.3,0.9,0.7,
-				0.1,0.3,0.9,0.7
-			};
-			video::S3DVertex vertices[24] = {
-				// up
-				video::S3DVertex(-0.4*BS,0.2*BS,0.5*BS, 0,1,0, c, txc[0],txc[1]),
-				video::S3DVertex(0.4*BS,0.2*BS,0.5*BS, 0,1,0, c, txc[2],txc[1]),
-				video::S3DVertex(0.4*BS,0.2*BS,0.45*BS, 0,1,0, c, txc[2],txc[3]),
-				video::S3DVertex(-0.4*BS,0.2*BS,0.45*BS, 0,1,0, c, txc[0],txc[3]),
-				// down
-				video::S3DVertex(-0.4*BS,-0.2*BS,0.45*BS, 0,-1,0, c, txc[4],txc[5]),
-				video::S3DVertex(0.4*BS,-0.2*BS,0.45*BS, 0,-1,0, c, txc[6],txc[5]),
-				video::S3DVertex(0.4*BS,-0.2*BS,0.5*BS, 0,-1,0, c, txc[6],txc[7]),
-				video::S3DVertex(-0.4*BS,-0.2*BS,0.5*BS, 0,-1,0, c, txc[4],txc[7]),
-				// right
-				video::S3DVertex(0.4*BS,0.2*BS,0.45*BS, 1,0,0, c, txc[ 8],txc[9]),
-				video::S3DVertex(0.4*BS,0.2*BS,0.5*BS, 1,0,0, c, txc[10],txc[9]),
-				video::S3DVertex(0.4*BS,-0.2*BS,0.5*BS, 1,0,0, c, txc[10],txc[11]),
-				video::S3DVertex(0.4*BS,-0.2*BS,0.45*BS, 1,0,0, c, txc[ 8],txc[11]),
-				// left
-				video::S3DVertex(-0.4*BS,0.2*BS,0.5*BS, -1,0,0, c, txc[12],txc[13]),
-				video::S3DVertex(-0.4*BS,0.2*BS,0.45*BS, -1,0,0, c, txc[14],txc[13]),
-				video::S3DVertex(-0.4*BS,-0.2*BS,0.45*BS, -1,0,0, c, txc[14],txc[15]),
-				video::S3DVertex(-0.4*BS,-0.2*BS,0.5*BS, -1,0,0, c, txc[12],txc[15]),
-				// back
-				video::S3DVertex(0.4*BS,0.2*BS,0.5*BS, 0,0,1, c, txc[16],txc[17]),
-				video::S3DVertex(-0.4*BS,0.2*BS,0.5*BS, 0,0,1, c, txc[18],txc[17]),
-				video::S3DVertex(-0.4*BS,-0.2*BS,0.5*BS, 0,0,1, c, txc[18],txc[19]),
-				video::S3DVertex(0.4*BS,-0.2*BS,0.5*BS, 0,0,1, c, txc[16],txc[19]),
-				// front
-				video::S3DVertex(-0.4*BS,0.2*BS,0.45*BS, 0,0,-1, c, txc[20],txc[21]),
-				video::S3DVertex(0.4*BS,0.2*BS,0.45*BS, 0,0,-1, c, txc[22],txc[21]),
-				video::S3DVertex(0.4*BS,-0.2*BS,0.45*BS, 0,0,-1, c, txc[22],txc[23]),
-				video::S3DVertex(-0.4*BS,-0.2*BS,0.45*BS, 0,0,-1, c, txc[20],txc[23]),
-			};
-
-			f32 sx = content_features(n).tiles[0].texture.x1()-content_features(n).tiles[0].texture.x0();
-			f32 sy = content_features(n).tiles[0].texture.y1()-content_features(n).tiles[0].texture.y0();
-			for (s32 j=0; j<24; j++) {
-				vertices[j].TCoords *= v2f(sx,sy);
-				vertices[j].TCoords += v2f(content_features(n).tiles[0].texture.x0(),content_features(n).tiles[0].texture.y0());
-			}
-			v3s16 dir = unpackDir(n.param2);
-
-			for (s32 i=0; i<24; i++) {
-				if(dir == v3s16(1,0,0))
-					vertices[i].Pos.rotateXZBy(-90);
-				if(dir == v3s16(-1,0,0))
-					vertices[i].Pos.rotateXZBy(90);
-				if(dir == v3s16(0,0,1))
-					vertices[i].Pos.rotateXZBy(0);
-				if(dir == v3s16(0,0,-1))
-					vertices[i].Pos.rotateXZBy(180);
-				if(dir == v3s16(0,-1,0))
-					vertices[i].Pos.rotateYZBy(90);
-				if(dir == v3s16(0,1,0))
-					vertices[i].Pos.rotateYZBy(-90);
-
-				vertices[i].Pos += intToFloat(p, BS);
-			}
-
-			u16 indices[] = {0,1,2,2,3,0};
-			// Add to mesh collector
-			for (s32 j=0; j<24; j+=4) {
-				collector.append(content_features(n).tiles[0].getMaterial(), &vertices[j], 4, indices, 6);
-			}
-		}
 		break;
 		/*
 			Add leaves if using new style
-		*/
-		/*
 			Add glass
 		*/
 		break;
