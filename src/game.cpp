@@ -525,14 +525,19 @@ void getPointedNode(Client *client, v3f player_position,
 									mindistance = distance;
 
 									//nodehilightbox = facebox;
-
-									const float d = 0.502;
-									core::aabbox3d<f32> nodebox
-											(-BS*d, -BS*d, -BS*d, BS*d, BS*d, BS*d);
-									v3f nodepos_f = intToFloat(nodepos-camera_offset, BS);
-									nodebox.MinEdge += nodepos_f;
-									nodebox.MaxEdge += nodepos_f;
-									nodehilightbox = nodebox;
+									if (boxes.size() == 1) {
+										box.MinEdge -= 0.002;
+										box.MaxEdge += 0.002;
+										nodehilightbox = box;
+									}else{
+										const float d = 0.502;
+										core::aabbox3d<f32> nodebox
+												(-BS*d, -BS*d, -BS*d, BS*d, BS*d, BS*d);
+										v3f nodepos_f = intToFloat(nodepos-camera_offset, BS);
+										nodebox.MinEdge += nodepos_f;
+										nodebox.MaxEdge += nodepos_f;
+										nodehilightbox = nodebox;
+									}
 								}
 							} // if distance < mindistance
 						} // for dirs
