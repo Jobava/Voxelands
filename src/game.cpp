@@ -484,8 +484,8 @@ void getPointedNode(Client *client, v3f player_position,
 			if (distance < mindistance) {
 				aabb3f box;
 				std::vector<aabb3f> boxes = content_features(n).getNodeBoxes(n);
-				for (std::vector<aabb3f>::iterator i = boxes.begin(); i != boxes.end(); i++) {
-					box = *i;
+				for (std::vector<aabb3f>::iterator b = boxes.begin(); b != boxes.end(); b++) {
+					box = *b;
 					box.MinEdge += npf;
 					box.MaxEdge += npf;
 
@@ -526,8 +526,12 @@ void getPointedNode(Client *client, v3f player_position,
 
 									//nodehilightbox = facebox;
 									if (boxes.size() == 1) {
+										box = *b;
 										box.MinEdge -= 0.002;
 										box.MaxEdge += 0.002;
+										v3f nodepos_f = intToFloat(nodepos-camera_offset, BS);
+										box.MinEdge += nodepos_f;
+										box.MaxEdge += nodepos_f;
 										nodehilightbox = box;
 									}else{
 										const float d = 0.502;
