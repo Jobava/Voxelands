@@ -2665,7 +2665,12 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				if(block)
 					block->raiseModified(MOD_STATE_WRITE_NEEDED);
 				setBlockNotSent(blockpos);
-			}else if (content_features(n).param_type == CPT_FACEDIR_SIMPLE || content_features(n).param2_type == CPT_FACEDIR_SIMPLE) {
+			}else if (
+				content_features(n).param_type == CPT_FACEDIR_SIMPLE
+				|| content_features(n).param2_type == CPT_FACEDIR_SIMPLE
+				|| content_features(n).param_type == CPT_FACEDIR_WALLMOUNT
+				|| content_features(n).param2_type == CPT_FACEDIR_WALLMOUNT
+			) {
 				InventoryItem *wield = (InventoryItem*)player->getWieldItem();
 				if (
 					(
@@ -2702,7 +2707,10 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						owner = meta->getOwner();
 					}
 					// get the rotation
-					if (content_features(n).param_type == CPT_FACEDIR_SIMPLE) {
+					if (
+						content_features(n).param_type == CPT_FACEDIR_SIMPLE
+						|| content_features(n).param_type == CPT_FACEDIR_WALLMOUNT
+					) {
 						rot = n.param1;
 					}else{
 						rot = n.param2&0x0F;
@@ -2712,7 +2720,10 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					if (rot > 3)
 						rot = 0;
 					// set the rotation
-					if (content_features(n).param_type == CPT_FACEDIR_SIMPLE) {
+					if (
+						content_features(n).param_type == CPT_FACEDIR_SIMPLE
+						|| content_features(n).param_type == CPT_FACEDIR_WALLMOUNT
+					) {
 						n.param1 = rot;
 					}else{
 						n.param2 &= 0xF0;
