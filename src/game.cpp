@@ -387,8 +387,7 @@ void getPointedNode(Client *client, v3f player_position,
 		/*
 			Meta-objects
 		*/
-		if(n.getContent() == CONTENT_TORCH)
-		{
+		if(n.getContent() == CONTENT_TORCH) {
 			v3s16 dir = unpackDir(n.param2);
 			v3f dir_f = v3f(dir.X, dir.Y, dir.Z);
 			dir_f *= BS/2 - BS/6 - BS/20;
@@ -435,9 +434,7 @@ void getPointedNode(Client *client, v3f player_position,
 					nodehilightbox = box;
 				}
 			}
-		}
-		else if(n.getContent() == CONTENT_RAIL)
-		{
+		}else if(n.getContent() == CONTENT_RAIL) {
 			v3s16 dir = unpackDir(n.param0);
 			v3f dir_f = v3f(dir.X, dir.Y, dir.Z);
 			dir_f *= BS/2 - BS/6 - BS/20;
@@ -474,11 +471,10 @@ void getPointedNode(Client *client, v3f player_position,
 					nodehilightbox = box;
 				}
 			}
-		}
 		/*
-			Node box
+			Roofs and Node boxes
 		*/
-		else if (content_features(n).draw_type == CDT_NODEBOX) {
+		}else if (content_features(n).draw_type == CDT_NODEBOX) {
 			f32 distance = (npf - camera_position).getLength();
 
 			if (distance < mindistance) {
@@ -552,9 +548,7 @@ void getPointedNode(Client *client, v3f player_position,
 		/*
 			Regular blocks
 		*/
-		}
-		else
-		{
+		}else{
 			for(u16 i=0; i<6; i++)
 			{
 				v3f dir_f = v3f(dirs[i].X,

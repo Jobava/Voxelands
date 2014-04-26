@@ -1891,6 +1891,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->type = CMT_DIRT;
 	f->hardness = 0.75;
+	content_nodebox_roofcollide(f);
 	crafting::set1over4Recipe(CONTENT_TERRACOTTA,CONTENT_TERRACOTTA,CONTENT_ROOFTILE_TERRACOTTA);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -1905,6 +1906,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->type = CMT_DIRT;
 	f->hardness = 0.75;
+	content_nodebox_roofcollide(f);
 	crafting::set1over4Recipe(CONTENT_WOOD,CONTENT_WOOD,CONTENT_ROOFTILE_WOOD);
 	crafting::set1over4Recipe(CONTENT_JUNGLEWOOD,CONTENT_JUNGLEWOOD,CONTENT_ROOFTILE_WOOD);
 	lists::add("craftguide",i);
@@ -1920,6 +1922,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->type = CMT_DIRT;
 	f->hardness = 0.75;
+	content_nodebox_roofcollide(f);
 	{
 		u16 r[9] = {
 			CONTENT_SAND,			CONTENT_CRAFTITEM_PAPER,	CONTENT_IGNORE,
@@ -1941,6 +1944,7 @@ void content_mapnode_init()
 	f->solidness = 0; // drawn separately, makes no faces
 	f->type = CMT_DIRT;
 	f->hardness = 0.75;
+	content_nodebox_roofcollide(f);
 	crafting::set1over4Recipe(CONTENT_ROUGHSTONE,CONTENT_ROUGHSTONE,CONTENT_ROOFTILE_STONE);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
