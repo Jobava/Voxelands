@@ -192,7 +192,7 @@ void makeCuboid(MeshCollector *collector, const aabb3f &box,
 /*
  * makes one tri/poly for a roof section
  */
-void makeRoofTri(MeshCollector *collector, v3f corners[3], v3f pos, TileSpec *tiles, int tilecount, video::SColor c[2])
+void makeRoofTri(MeshCollector *collector, v3f corners[3], v3f pos, TileSpec *tiles, int tilecount, video::SColor c[2], s16 rot)
 {
 	assert(tilecount >= 1 && tilecount <= 6);
 	// vertices for top and bottom tri
@@ -205,15 +205,19 @@ void makeRoofTri(MeshCollector *collector, v3f corners[3], v3f pos, TileSpec *ti
 		top_v[i].X = (corners[i].X*BS)+pos.X;
 		top_v[i].Y = ((corners[i].Y+0.01)*BS)+pos.Y;
 		top_v[i].Z = (corners[i].Z*BS)+pos.Z;
-		top_t[i].X = ((corners[i].X+0.5)*tiles[0].texture.size.X)+tiles[0].texture.pos.X;
-		top_t[i].Y = ((corners[i].Z+0.5)*tiles[0].texture.size.Y)+tiles[0].texture.pos.Y;
+		top_t[i].X = (corners[i].X+0.5);
+		top_t[i].Y = (corners[i].Z+0.5);
+		if (rot)
+			top_t[i] = top_t[i].rotateBy(rot,v2f(0.5,0.5));
+		top_t[i].X = (top_t[i].X*tiles[0].texture.size.X)+tiles[0].texture.pos.X;
+		top_t[i].Y = (top_t[i].Y*tiles[0].texture.size.Y)+tiles[0].texture.pos.Y;
 
 		// reverse winding for bottom
 		btm_v[2-i].X = (corners[i].X*BS)+pos.X;
 		btm_v[2-i].Y = ((corners[i].Y-0.01)*BS)+pos.Y;
 		btm_v[2-i].Z = (corners[i].Z*BS)+pos.Z;
-		btm_t[i].X = ((corners[i].X+0.5)*tiles[0].texture.size.X)+tiles[0].texture.pos.X;
-		btm_t[i].Y = ((corners[i].Z+0.5)*tiles[0].texture.size.Y)+tiles[0].texture.pos.Y;
+		btm_t[2-i].X = top_t[i].X;
+		btm_t[2-i].Y = top_t[i].Y;
 	}
 
 	{
@@ -2288,8 +2292,11 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
 					getRoofLights(blockpos_nodes+p,c,data,v3s16(-1,1,0));
 				}
+				s16 a = 180-angle;
+				if (a < 0)
+					a += 360;
 				for (int s=0; s<2; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&tile,1,c);
+					makeRoofTri(&collector,cnr[s],pos,&tile,1,c,a);
 				}
 			}
 			break;
@@ -2324,8 +2331,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					cnr[3][1] = v3f(0.5,-0.5,-0.5);
 					cnr[3][2] = v3f(0.,0.,-0.5);
 				}
+				s16 a = angle;
+				if (a < 180)
+					a += 180;
 				for (int s=0; s<4; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&tile,1,c);
+					if (s == 2)
+						a -= 180;
+					makeRoofTri(&collector,cnr[s],pos,&tile,1,c,a);
 				}
 			}
 			break;
@@ -2365,8 +2377,11 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
 					getRoofLights(blockpos_nodes+p,c,data,v3s16(-1,1,0));
 				}
+				s16 a = 270-angle;
+				if (a < 0)
+					a += 360;
 				for (int s=0; s<2; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&tile,1,c);
+					makeRoofTri(&collector,cnr[s],pos,&tile,1,c,a);
 				}
 			}
 			{
@@ -2404,8 +2419,12 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					cnr[1][2] = v3f(0.,0.,0.5);
 					getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,1));
 				}
+				s16 a = angle;
+				if (a < 180)
+					a += 180;
 				for (int s=0; s<2; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&tile,1,c);
+					makeRoofTri(&collector,cnr[s],pos,&tile,1,c,a);
+					a -= 180;
 				}
 			}
 			break;
@@ -2413,6 +2432,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			{
 				v3f cnr[2][3];
 				getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,0));
+				s16 a1 = angle;
+				s16 a2 = angle + 90;
 				if (angle == 0) {
 					cnr[0][0] = v3f(0.,0.,0.);
 					cnr[0][1] = v3f(-0.5,0.,0.);
@@ -2420,6 +2441,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					cnr[1][0] = v3f(0.,0.,0.);
 					cnr[1][1] = v3f(0.,0.,-0.5);
 					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+					a1 = 180;
+					a2 = 270;
 				}else if (angle == 90) {
 					cnr[0][0] = v3f(0.,0.,0.);
 					cnr[0][1] = v3f(0.,0.,-0.5);
@@ -2434,6 +2457,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					cnr[1][0] = v3f(0.,0.,0.);
 					cnr[1][1] = v3f(0.5,0.,0.);
 					cnr[1][2] = v3f(0.5,-0.5,0.5);
+					a1 = 90;
+					a2 = 0;
 				}else if (angle == 270) {
 					cnr[0][0] = v3f(0.,0.,0.);
 					cnr[0][1] = v3f(0.,0.,0.5);
@@ -2442,12 +2467,16 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					cnr[1][1] = v3f(-0.5,0.,0.);
 					cnr[1][2] = v3f(-0.5,-0.5,0.5);
 				}
+				s16 a = a1;
 				for (int s=0; s<2; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&tile,1,c);
+					makeRoofTri(&collector,cnr[s],pos,&tile,1,c,a);
+					a = a2;
 				}
 			}
 			{
 				v3f cnr[4][3];
+				s16 a1 = angle;
+				s16 a2 = angle + 90;
 				if (angle == 0) {
 					cnr[0][0] = v3f(0.,0.,0.);
 					cnr[0][1] = v3f(-0.5,-0.5,0.5);
@@ -2474,6 +2503,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					cnr[3][0] = v3f(0.,0.,0.);
 					cnr[3][1] = v3f(0.5,-0.5,0.5);
 					cnr[3][2] = v3f(-0.5,-0.5,0.5);
+					a1 = 270;
+					a2 = 0;
 				}else if (angle == 180) {
 					cnr[0][0] = v3f(0.,0.,0.);
 					cnr[0][1] = v3f(0.5,-0.5,-0.5);
@@ -2500,15 +2531,22 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					cnr[3][0] = v3f(0.,0.,0.);
 					cnr[3][1] = v3f(-0.5,-0.5,-0.5);
 					cnr[3][2] = v3f(0.5,-0.5,-0.5);
+					a1 = 90;
+					a2 = 180;
 				}
+				s16 a = a1;
 				for (int s=0; s<4; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&tile,1,c);
+					if (s == 2)
+						a = a2;
+					makeRoofTri(&collector,cnr[s],pos,&tile,1,c,a);
 				}
 			}
 			break;
 			case 4:
 			{
 				v3f cnr[2][3];
+				s16 a1 = angle;
+				s16 a2 = angle - 90;
 				if (angle == 0) {
 					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
 					cnr[0][1] = v3f(0.5,-0.5,-0.5);
@@ -2517,6 +2555,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					cnr[1][1] = v3f(0.5,-0.5,-0.5);
 					cnr[1][2] = v3f(0.5,-0.5,0.5);
 					getRoofLights(blockpos_nodes+p,c,data,v3s16(1,1,-1));
+					a1 = 180;
+					a2 = 90;
 				}else if (angle == 90) {
 					cnr[0][0] = v3f(-0.5,-0.5,0.5);
 					cnr[0][1] = v3f(0.5,-0.5,0.5);
@@ -2525,6 +2565,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					cnr[1][1] = v3f(0.5,-0.5,0.5);
 					cnr[1][2] = v3f(0.5,-0.5,-0.5);
 					getRoofLights(blockpos_nodes+p,c,data,v3s16(1,1,1));
+					a1 = 0;
+					a2 = 90;
 				}else if (angle == 180) {
 					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
 					cnr[0][1] = v3f(0.5,0.5,-0.5);
@@ -2533,6 +2575,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					cnr[1][1] = v3f(0.5,0.5,-0.5);
 					cnr[1][2] = v3f(0.5,-0.5,0.5);
 					getRoofLights(blockpos_nodes+p,c,data,v3s16(-1,1,1));
+					a1 = 270;
+					a2 = 0;
 				}else if (angle == 270) {
 					cnr[0][0] = v3f(-0.5,-0.5,0.5);
 					cnr[0][1] = v3f(0.5,0.5,0.5);
@@ -2542,8 +2586,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					cnr[1][2] = v3f(0.5,-0.5,-0.5);
 					getRoofLights(blockpos_nodes+p,c,data,v3s16(-1,1,-1));
 				}
+				s16 a = a1;
 				for (int s=0; s<2; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&tile,1,c);
+					makeRoofTri(&collector,cnr[s],pos,&tile,1,c,a);
+					a = a2;
 				}
 			}
 			break;
@@ -2584,9 +2630,19 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						v3f(0.,0.,0.)
 					}
 				};
+				s16 a[8] = {
+					180,
+					0,
+					180,
+					0,
+					270,
+					90,
+					270,
+					90,
+				};
 				getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,0));
 				for (int s=0; s<8; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&tile,1,c);
+					makeRoofTri(&collector,cnr[s],pos,&tile,1,c,a[s]);
 				}
 			}
 			break;
@@ -2594,6 +2650,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			{
 				v3f cnr[6][3];
 				getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,0));
+				s16 a[6] = {0,0,0,0,0,0};
 				if (angle == 0) {
 					cnr[0][0] = v3f(-0.5,-0.5,0.5);
 					cnr[0][1] = v3f(0.5,-0.5,0.5);
@@ -2613,6 +2670,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					cnr[5][0] = v3f(0.,0.,0.);
 					cnr[5][1] = v3f(0.5,-0.5,-0.5);
 					cnr[5][2] = v3f(0.,0.,-0.5);
+					a[2] = 180;
+					a[3] = 180;
+					a[4] = 270;
+					a[5] = 90;
 				}else if (angle == 90) {
 					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
 					cnr[0][1] = v3f(-0.5,-0.5,0.5);
@@ -2632,6 +2693,11 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					cnr[5][0] = v3f(0.,0.,0.);
 					cnr[5][1] = v3f(0.5,-0.5,0.5);
 					cnr[5][2] = v3f(0.5,0.,0.);
+					a[0] = 270;
+					a[1] = 270;
+					a[2] = 90;
+					a[3] = 90;
+					a[4] = 180;
 				}else if (angle == 180) {
 					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
 					cnr[0][1] = v3f(0.5,-0.5,-0.5);
@@ -2651,6 +2717,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					cnr[5][0] = v3f(0.,0.,0.);
 					cnr[5][1] = v3f(0.5,-0.5,0.5);
 					cnr[5][2] = v3f(0.,0.,0.5);
+					a[0] = 180;
+					a[1] = 180;
+					a[4] = 270;
+					a[5] = 90;
 				}else if (angle == 270) {
 					cnr[0][0] = v3f(0.5,-0.5,-0.5);
 					cnr[0][1] = v3f(0.5,-0.5,0.5);
@@ -2670,15 +2740,22 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					cnr[5][0] = v3f(0.,0.,0.);
 					cnr[5][1] = v3f(-0.5,-0.5,0.5);
 					cnr[5][2] = v3f(-0.5,0.,0.);
+					a[0] = 90;
+					a[1] = 90;
+					a[2] = 270;
+					a[3] = 270;
+					a[4] = 180;
 				}
 				for (int s=0; s<6; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&tile,1,c);
+					makeRoofTri(&collector,cnr[s],pos,&tile,1,c,a[s]);
 				}
 			}
 			break;
 			case 7:
 			{
 				v3f cnr[2][3];
+				s16 a1 = angle;
+				s16 a2 = angle - 90;
 				if (angle == 0) {
 					cnr[0][0] = v3f(0.5,0.5,-0.5);
 					cnr[0][1] = v3f(-0.5,0.5,-0.5);
@@ -2695,6 +2772,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					cnr[1][1] = v3f(0.5,0.5,-0.5);
 					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
 					getRoofLights(blockpos_nodes+p,c,data,v3s16(-1,1,-1));
+					a1 = 180;
+					a2 = 270;
 				}else if (angle == 180) {
 					cnr[0][0] = v3f(0.5,-0.5,-0.5);
 					cnr[0][1] = v3f(-0.5,0.5,-0.5);
@@ -2703,6 +2782,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					cnr[1][1] = v3f(0.5,0.5,0.5);
 					cnr[1][2] = v3f(-0.5,0.5,0.5);
 					getRoofLights(blockpos_nodes+p,c,data,v3s16(1,1,-1));
+					a1 = 90;
+					a2 = 180;
 				}else if (angle == 270) {
 					cnr[0][0] = v3f(0.5,-0.5,0.5);
 					cnr[0][1] = v3f(-0.5,0.5,0.5);
@@ -2711,9 +2792,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					cnr[1][1] = v3f(0.5,0.5,-0.5);
 					cnr[1][2] = v3f(-0.5,0.5,-0.5);
 					getRoofLights(blockpos_nodes+p,c,data,v3s16(1,1,1));
+					a1 = 90;
+					a2 = 0;
 				}
+				s16 a = a1;
 				for (int s=0; s<2; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&tile,1,c);
+					makeRoofTri(&collector,cnr[s],pos,&tile,1,c,a);
+					a = a2;
 				}
 			}
 			break;
@@ -2734,13 +2819,14 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				cnr[3][2] = v3f(0.5,-0.5,0.5);
 				getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,0));
 				for (int s=0; s<4; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&tile,1,c);
+					makeRoofTri(&collector,cnr[s],pos,&tile,1,c,(90*s)+90+(180*(!(s%2))));
 				}
 			}
 			break;
 			case 9:
 			{
 				v3f cnr[5][3];
+				s16 a[5] = {0,0,0,0,0};
 				if (angle == 0) {
 					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
 					cnr[0][1] = v3f(0.5,-0.5,-0.5);
@@ -2758,6 +2844,9 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					cnr[4][1] = v3f(0.5,-0.5,0.5);
 					cnr[4][2] = v3f(0.,0.,0.);
 					getRoofLights(blockpos_nodes+p,c,data,v3s16(1,1,0));
+					a[0] = 180;
+					a[1] = 180;
+					a[4] = 90;
 				}else if (angle == 90) {
 					cnr[0][0] = v3f(-0.5,-0.5,0.5);
 					cnr[0][1] = v3f(-0.5,-0.5,-0.5);
@@ -2775,6 +2864,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					cnr[4][1] = v3f(0.5,-0.5,0.5);
 					cnr[4][2] = v3f(0.,0.,0.);
 					getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,1));
+					a[0] = 270;
+					a[1] = 270;
+					a[2] = 90;
+					a[3] = 90;
 				}else if (angle == 180) {
 					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
 					cnr[0][1] = v3f(0.5,-0.5,-0.5);
@@ -2792,6 +2885,9 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					cnr[4][1] = v3f(-0.5,-0.5,-0.5);
 					cnr[4][2] = v3f(0.,0.,0.);
 					getRoofLights(blockpos_nodes+p,c,data,v3s16(-1,1,0));
+					a[0] = 180;
+					a[1] = 180;
+					a[4] = 270;
 				}else if (angle == 270) {
 					cnr[0][0] = v3f(-0.5,-0.5,0.5);
 					cnr[0][1] = v3f(-0.5,-0.5,-0.5);
@@ -2809,9 +2905,14 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					cnr[4][1] = v3f(-0.5,-0.5,-0.5);
 					cnr[4][2] = v3f(0.,0.,0.);
 					getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,-1));
+					a[0] = 270;
+					a[1] = 270;
+					a[2] = 90;
+					a[3] = 90;
+					a[4] = 180;
 				}
 				for (int s=0; s<5; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&tile,1,c);
+					makeRoofTri(&collector,cnr[s],pos,&tile,1,c,a[s]);
 				}
 			}
 			break;
