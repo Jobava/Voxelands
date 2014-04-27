@@ -2147,6 +2147,7 @@ void content_mapnode_init()
 	f->hardness = 0.75;
 	crafting::set1To4Recipe(CONTENT_TREE,CONTENT_WOOD);
 	crafting::set1To4Recipe(CONTENT_APPLE_TREE,CONTENT_WOOD);
+	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_WOOD);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -2163,6 +2164,7 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	crafting::set1To4Recipe(CONTENT_JUNGLETREE,CONTENT_JUNGLEWOOD);
+	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_JUNGLEWOOD);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -2179,6 +2181,7 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.5;
 	crafting::set1To4Recipe(CONTENT_CONIFER_TREE,CONTENT_WOOD_PINE);
+	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_PINE_PLANK,CONTENT_WOOD_PINE);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -2268,7 +2271,7 @@ void content_mapnode_init()
 	f->fuel_time = 20;
 	f->type = CMT_PLANT;
 	f->hardness = 0.6;
-	crafting::setHardBlockRecipe(CONTENT_DEADGRASS,CONTENT_HAY);
+	crafting::setSoftBlockRecipe(CONTENT_DEADGRASS,CONTENT_HAY);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
