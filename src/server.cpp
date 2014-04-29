@@ -2920,6 +2920,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				(
 					material == CONTENT_MUD
 					|| material == CONTENT_GRASS
+					|| material == CONTENT_GRASS_FOOTSTEPS
 				) && wield
 				&& content_toolitem_features(wield->getContent()).type == TT_SHOVEL
 			) {
