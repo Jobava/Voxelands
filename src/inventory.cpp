@@ -109,6 +109,14 @@ InventoryItem* InventoryItem::deSerialize(std::istream &is)
 		is>>count;
 		return new CraftItem(subname, count);
 	}
+	else if(name == "CraftItem2")
+	{
+		u16 material;
+		is>>material;
+		u16 count;
+		is>>count;
+		return new CraftItem(material, count);
+	}
 	else if(name == "ToolItem")
 	{
 		std::string toolname;
@@ -116,6 +124,14 @@ InventoryItem* InventoryItem::deSerialize(std::istream &is)
 		u16 wear;
 		is>>wear;
 		return new ToolItem(toolname, wear);
+	}
+	else if(name == "ToolItem2")
+	{
+		u16 material;
+		is>>material;
+		u16 wear;
+		is>>wear;
+		return new ToolItem(material, wear);
 	}
 	else
 	{

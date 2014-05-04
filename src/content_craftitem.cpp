@@ -30,6 +30,12 @@ CraftItemFeatures & content_craftitem_features(content_t i)
 	if ((i&CONTENT_CRAFTITEM_MASK) != CONTENT_CRAFTITEM_MASK)
 		return g_content_craftitem_features[CONTENT_IGNORE];
 
+	// convert deprecated items to new
+	if (i == (CONTENT_CRAFTITEM_MASK | 0x2D)) // rotten fruit
+		i = CONTENT_CRAFTITEM_MUSH;
+	if (i == (CONTENT_CRAFTITEM_MASK | 0x15)) // scorched stuff
+		i = CONTENT_CRAFTITEM_ASH;
+
 	std::map<content_t,struct CraftItemFeatures>::iterator it = g_content_craftitem_features.find(i);
 	if (it == g_content_craftitem_features.end())
 		return g_content_craftitem_features[CONTENT_IGNORE];
@@ -38,6 +44,12 @@ CraftItemFeatures & content_craftitem_features(content_t i)
 
 CraftItemFeatures & content_craftitem_features(std::string subname)
 {
+	// convert deprecated items to new
+	if (subname == "scorched_stuff")
+		return content_craftitem_features(CONTENT_CRAFTITEM_ASH);
+	if (subname == "rotten_fruit")
+		return content_craftitem_features(CONTENT_CRAFTITEM_MUSH);
+
 	for (std::map<content_t,struct CraftItemFeatures>::iterator i = g_content_craftitem_features.begin(); i!=g_content_craftitem_features.end(); i++) {
 		if (i->second.name == subname)
 			return i->second;

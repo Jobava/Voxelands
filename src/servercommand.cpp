@@ -338,12 +338,6 @@ void cmd_setpassword(std::wostringstream &os,
 		return;
 	}
 
-	Player *player = ctx->env->getPlayer(wide_to_narrow(ctx->parms[1]).c_str());
-	if (player == NULL) {
-		os<<L"-!- No such player";
-		return;
-	}
-
 	std::string name = wide_to_narrow(ctx->parms[1]);
 	std::string pass = translatePassword(name,ctx->parms[2]);
 	ctx->server->setPlayerPassword(name.c_str(), pass.c_str());

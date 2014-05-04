@@ -224,14 +224,14 @@ public:
 	CraftItem(std::string subname, u16 count):
 		InventoryItem(count)
 	{
-		m_subname = subname;
-		m_content = content_craftitem_features(m_subname).content;
+		m_subname = content_craftitem_features(subname).name;
+		m_content = content_craftitem_features(subname).content;
 	}
 	CraftItem(content_t content, u16 count):
 		InventoryItem(count)
 	{
-		m_content = content;
-		m_subname = content_craftitem_features(m_content).name;
+		m_subname = content_craftitem_features(content).name;
+		m_content = content_craftitem_features(content).content;
 	}
 	/*
 		Implementation interface
@@ -242,15 +242,15 @@ public:
 	}
 	virtual void serialize(std::ostream &os) const
 	{
-		os<<getName();
+		os<<"CraftItem2";
 		os<<" ";
-		os<<m_subname;
+		os<<(unsigned int)m_content;
 		os<<" ";
 		os<<m_count;
 	}
 	virtual InventoryItem* clone()
 	{
-		return new CraftItem(m_subname, m_count);
+		return new CraftItem(m_content, m_count);
 	}
 #ifndef SERVER
 	video::ITexture * getImage() const;
@@ -312,16 +312,16 @@ public:
 	ToolItem(std::string toolname, u16 wear):
 		InventoryItem(1)
 	{
-		m_toolname = toolname;
 		m_wear = wear;
-		m_content = content_toolitem_features(m_toolname).content;
+		m_toolname = content_toolitem_features(toolname).name;
+		m_content = content_toolitem_features(toolname).content;
 	}
 	ToolItem(content_t content, u16 wear):
 		InventoryItem(1)
 	{
-		m_content = content;
 		m_wear = wear;
-		m_toolname = content_toolitem_features(m_content).name;
+		m_toolname = content_toolitem_features(content).name;
+		m_content = content_toolitem_features(content).content;
 	}
 	/*
 		Implementation interface
@@ -332,15 +332,15 @@ public:
 	}
 	virtual void serialize(std::ostream &os) const
 	{
-		os<<getName();
+		os<<"ToolItem2";
 		os<<" ";
-		os<<m_toolname;
+		os<<(unsigned int)m_content;
 		os<<" ";
-		os<<m_wear;
+		os<<m_count;
 	}
 	virtual InventoryItem* clone()
 	{
-		return new ToolItem(m_toolname, m_wear);
+		return new ToolItem(m_content, m_wear);
 	}
 #ifndef SERVER
 	std::string getBasename() const {
