@@ -34,6 +34,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 // for mapping to old subname
 #include "content_craftitem.h"
 #include "content_toolitem.h"
+#include "content_mapnode.h"
 
 #define QUANTITY_ITEM_MAX_COUNT 99
 
@@ -141,7 +142,9 @@ public:
 	MaterialItem(content_t content, u16 count):
 		InventoryItem(count)
 	{
-		m_content = content;
+		MapNode n(content);
+		n = mapnode_translate_to_internal(n,SER_FMT_VER_HIGHEST);
+		m_content = n.getContent();
 	}
 	/*
 		Implementation interface
