@@ -301,6 +301,7 @@ public:
 private:
 	Inventory *m_inventory;
 	u16 m_page;
+	u16 m_recipe;
 };
 
 class CookBookNodeMetadata : public NodeMetadata

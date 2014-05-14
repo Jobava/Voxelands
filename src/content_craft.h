@@ -104,6 +104,15 @@ struct CraftDef {
 
 		return true;
 	}
+
+	bool operator==(content_t check[9])
+	{
+		for (int i=0; i<9; i++) {
+			if (recipe[i] != check[i])
+			return false;
+		}
+		return true;
+	}
 };
 
 struct CraftDefShapeless {
@@ -139,6 +148,15 @@ struct CraftDefShapeless {
 				found_count++;
 		}
 		return (found_count && search_count && match_count && match_count == search_count && found_count == search_count);
+	}
+
+	bool operator==(content_t check[9])
+	{
+		for (int i=0; i<9; i++) {
+			if (recipe[i] != check[i])
+			return false;
+		}
+		return true;
 	}
 };
 
@@ -231,7 +249,9 @@ namespace crafting {
 
 	InventoryItem *getResult(InventoryItem **items);
 	content_t *getRecipe(InventoryItem *item);
+	content_t *getRecipe(InventoryItem *item, int i);
 	int getResultCount(InventoryItem *item);
+	int getRecipeCount(InventoryItem *item);
 
 	void giveCreative(Player *player);
 	void giveInitial(Player *player);

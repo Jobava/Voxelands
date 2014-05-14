@@ -992,6 +992,7 @@ CraftGuideNodeMetadata::CraftGuideNodeMetadata()
 	NodeMetadata::registerType(typeId(), create);
 
 	m_page = 0;
+	m_recipe = 0;
 
 	m_inventory = new Inventory();
 	m_inventory->addList("list", 300);
@@ -1043,6 +1044,7 @@ NodeMetadata* CraftGuideNodeMetadata::create(std::istream &is)
 
 	d->m_inventory->deSerialize(is);
 	is>>d->m_page;
+	is>>d->m_recipe;
 
 	return d;
 }
@@ -1050,6 +1052,7 @@ void CraftGuideNodeMetadata::serializeBody(std::ostream &os)
 {
 	m_inventory->serialize(os);
 	os<<itos(m_page) << " ";
+	os<<itos(m_recipe) << " ";
 }
 bool CraftGuideNodeMetadata::nodeRemovalDisabled()
 {
@@ -1065,9 +1068,16 @@ bool CraftGuideNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env
 	InventoryItem *t = l->getItem(0);
 	if (!t || t->getContent() == CONTENT_IGNORE)
 		return false;
-	content_t *r = crafting::getRecipe(t);
-	if (!r)
-		return false;
+	content_t *r = crafting::getRecipe(t,m_recipe);
+	if (!r) {
+		if (m_recipe == 0)
+			return false;
+
+		m_recipe = 0;
+		r = crafting::getRecipe(t,m_recipe);
+		if (!r)
+			return false;
+	}
 	l = m_inventory->getList("recipe");
 	l->clearItems();
 	for (int i=0; i<9; i++) {
@@ -1124,19 +1134,34 @@ bool CraftGuideNodeMetadata::import(NodeMetadata *meta)
 }
 bool CraftGuideNodeMetadata::receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player)
 {
+	InventoryList *l = m_inventory->getList("list");
+	InventoryItem *t;
+	if (fields["rprev"] != "" || fields["rnext"] != "") {
+		l = m_inventory->getList("result");
+		t = l->getItem(0);
+		if (fields["rprev"] != "") {
+			if (m_recipe > 0)
+				m_recipe--;
+		}else{
+			m_recipe++;
+		}
+		int m = 1;
+		if (t && t->getContent() != CONTENT_IGNORE)
+			m = crafting::getRecipeCount(t);
+		if (m_recipe >= m)
+			m_recipe = m-1;
+		step(0,v3s16(0,0,0),NULL);
+		return true;
+	}
 	if (fields["prev"] == "" && fields["next"] == "")
 		return false;
-	if (fields["prev"] != "")
+	if (fields["prev"] != "" && m_page > 0)
 		m_page--;
 	if (fields["next"] != "")
 		m_page++;
-	if (m_page < 0)
-		m_page = 0;
 	std::vector<content_t> &list = lists::get("craftguide");
 	if (m_page > (list.size()/40))
 		m_page = list.size()/40;
-	InventoryList *l = m_inventory->getList("list");
-	InventoryItem *t;
 	content_t *r;
 	l->clearItems();
 	u16 start = m_page*40;
@@ -1165,30 +1190,42 @@ std::string CraftGuideNodeMetadata::getDrawSpecString()
 	InventoryList *l = m_inventory->getList("result");
 	InventoryItem *q = l->getItem(0);
 	int tr = 0;
+	int rc = 0;
 	std::vector<content_t> &list = lists::get("craftguide");
-	if (q && q->getContent() != CONTENT_IGNORE)
+	if (q && q->getContent() != CONTENT_IGNORE) {
 		tr = crafting::getResultCount(q);
+		rc = crafting::getRecipeCount(q);
+	}
 
-	std::string spec("size[8,9]");
+	std::string spec("size[8,10]");
 	spec +=	"label[0.5,0.75;Add item here to see recipe]";
 	spec +=	"list[current_name;result;2,1;1,1;]";
-	// this overflows into the craft grid... but could be cool
-	//if (q && tr) {
-		//spec += "label[0.5,2.5;Gives ";
-		//spec += itos(tr);
+	if (rc > 1) {
+		spec += "button[2.5,3.5;1,0.75;rprev;<<]";
+		spec += "label[3.5,3.5;Recipe ";
+		spec += itos(m_recipe+1);
+		spec += " of ";
+		spec += itos(rc);
+		spec += "]";
+		spec += "button[5.5,3.5;1,0.75;rnext;>>]";
+	}
+	if (q && tr) {
+		spec += "label[1,1.5;Gives ";
+		spec += itos(tr);
+		// this overflows into the craft grid... but could be cool
 		//spec += " ";
 		//spec += q->getGuiName();
-		//spec += "]";
-	//}
+		spec += "]";
+	}
 	spec +=	"list[current_name;recipe;4,0;3,3;]";
-	spec +=	"button[0.25,3.5;2.5,0.75;prev;<< Previous Page]";
-	spec +=	"label[3.5,3.5;Page ";
+	spec +=	"button[0.25,4.5;2.5,0.75;prev;<< Previous Page]";
+	spec +=	"label[3.5,4.5;Page ";
 	spec += itos(m_page+1);
 	spec +=" of ";
 	spec += itos((list.size()/40)+1);
 	spec += "]";
-	spec +=	"button[6,3.5;2.5,0.75;next;Next Page >>]";
-	spec +=	"list[current_name;list;0,4;8,5;]";
+	spec +=	"button[6,4.5;2.5,0.75;next;Next Page >>]";
+	spec +=	"list[current_name;list;0,5;8,5;]";
 	return spec;
 }
 

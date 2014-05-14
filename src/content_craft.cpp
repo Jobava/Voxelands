@@ -38,8 +38,30 @@ void initCrafting()
 	shapeless_recipes.clear();
 }
 
+static bool checkRecipe(content_t recipe[9], content_t result)
+{
+	for (std::vector<CraftDef>::iterator i=shaped_recipes.begin(); i!=shaped_recipes.end(); i++) {
+		CraftDef d = *i;
+		if (d.result == result && d == recipe)
+			return true;
+	}
+	return false;
+}
+
+static bool checkShapelessRecipe(content_t recipe[9], content_t result)
+{
+	for (std::vector<CraftDefShapeless>::iterator i=shapeless_recipes.begin(); i!=shapeless_recipes.end(); i++) {
+		CraftDefShapeless d = *i;
+		if (d.result == result && d == recipe)
+			return true;
+	}
+	return false;
+}
+
 void setRecipe(content_t recipe[9], content_t result, u16 count)
 {
+	if (checkRecipe(recipe,result))
+		return;
 	CraftDef d;
 	for (int i=0; i<9; i++) {
 		d.recipe[i] = recipe[i];
@@ -51,6 +73,8 @@ void setRecipe(content_t recipe[9], content_t result, u16 count)
 
 void setShapelessRecipe(content_t recipe[9], content_t result, u16 count)
 {
+	if (checkShapelessRecipe(recipe,result))
+		return;
 	CraftDefShapeless d;
 	for (int i=0; i<9; i++) {
 		d.recipe[i] = recipe[i];
@@ -580,6 +604,40 @@ content_t *getRecipe(InventoryItem *item)
 	return NULL;
 }
 
+content_t *getRecipe(InventoryItem *item, int index)
+{
+	content_t r = item->getContent();
+	content_t *recipe;
+	int count = 0;
+	if (index < 0)
+		return NULL;
+	for (std::vector<CraftDef>::iterator i=shaped_recipes.begin(); i!=shaped_recipes.end(); i++) {
+		CraftDef d = *i;
+		if (d.result == r) {
+			if (index != count++)
+				continue;
+			recipe = new content_t[9];
+			for (int j=0; j<9; j++) {
+				recipe[j] = d.recipe[j];
+			}
+			return recipe;
+		}
+	}
+	for (std::vector<CraftDefShapeless>::iterator i=shapeless_recipes.begin(); i!=shapeless_recipes.end(); i++) {
+		CraftDefShapeless d = *i;
+		if (d.result == r) {
+			if (index != count++)
+				continue;
+			recipe = new content_t[9];
+			for (int j=0; j<9; j++) {
+				recipe[j] = d.recipe[j];
+			}
+			return recipe;
+		}
+	}
+	return NULL;
+}
+
 int getResultCount(InventoryItem *item)
 {
 	content_t r = item->getContent();
@@ -594,6 +652,23 @@ int getResultCount(InventoryItem *item)
 			return d.result_count;
 	}
 	return 0;
+}
+
+int getRecipeCount(InventoryItem *item)
+{
+	content_t r = item->getContent();
+	int count = 0;
+	for (std::vector<CraftDef>::iterator i=shaped_recipes.begin(); i!=shaped_recipes.end(); i++) {
+		CraftDef d = *i;
+		if (d.result == r)
+			count++;
+	}
+	for (std::vector<CraftDefShapeless>::iterator i=shapeless_recipes.begin(); i!=shapeless_recipes.end(); i++) {
+		CraftDefShapeless d = *i;
+		if (d.result == r)
+			count++;
+	}
+	return count;
 }
 
 void giveCreative(Player *player)
