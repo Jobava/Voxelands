@@ -479,9 +479,25 @@ void getPointedNode(Client *client, v3f player_position,
 
 			if (distance < mindistance) {
 				aabb3f box;
+				aabb3f nhbox(0.5*BS,0.5*BS,0.5*BS,-0.5*BS,-0.5*BS,-0.5*BS);
+				bool hit = false;
 				std::vector<aabb3f> boxes = content_features(n).getNodeBoxes(n);
 				for (std::vector<aabb3f>::iterator b = boxes.begin(); b != boxes.end(); b++) {
 					box = *b;
+
+					if (nhbox.MinEdge.X > box.MinEdge.X)
+						nhbox.MinEdge.X = box.MinEdge.X;
+					if (nhbox.MinEdge.Y > box.MinEdge.Y)
+						nhbox.MinEdge.Y = box.MinEdge.Y;
+					if (nhbox.MinEdge.Z > box.MinEdge.Z)
+						nhbox.MinEdge.Z = box.MinEdge.Z;
+					if (nhbox.MaxEdge.X < box.MaxEdge.X)
+						nhbox.MaxEdge.X = box.MaxEdge.X;
+					if (nhbox.MaxEdge.Y < box.MaxEdge.Y)
+						nhbox.MaxEdge.Y = box.MaxEdge.Y;
+					if (nhbox.MaxEdge.Z < box.MaxEdge.Z)
+						nhbox.MaxEdge.Z = box.MaxEdge.Z;
+
 					box.MinEdge += npf;
 					box.MaxEdge += npf;
 
@@ -520,28 +536,19 @@ void getPointedNode(Client *client, v3f player_position,
 									neighbourpos = np + dirs[i];
 									mindistance = distance;
 
-									//nodehilightbox = facebox;
-									if (boxes.size() == 1) {
-										box = *b;
-										box.MinEdge -= 0.002;
-										box.MaxEdge += 0.002;
-										v3f nodepos_f = intToFloat(nodepos-camera_offset, BS);
-										box.MinEdge += nodepos_f;
-										box.MaxEdge += nodepos_f;
-										nodehilightbox = box;
-									}else{
-										const float d = 0.502;
-										core::aabbox3d<f32> nodebox
-												(-BS*d, -BS*d, -BS*d, BS*d, BS*d, BS*d);
-										v3f nodepos_f = intToFloat(nodepos-camera_offset, BS);
-										nodebox.MinEdge += nodepos_f;
-										nodebox.MaxEdge += nodepos_f;
-										nodehilightbox = nodebox;
-									}
+									hit = true;
 								}
 							} // if distance < mindistance
 						} // for dirs
 					}
+				}
+				if (hit) {
+					nhbox.MinEdge -= 0.002;
+					nhbox.MaxEdge += 0.002;
+					v3f nodepos_f = intToFloat(nodepos-camera_offset, BS);
+					nhbox.MinEdge += nodepos_f;
+					nhbox.MaxEdge += nodepos_f;
+					nodehilightbox = nhbox;
 				}
 				boxes.clear();
 			}
