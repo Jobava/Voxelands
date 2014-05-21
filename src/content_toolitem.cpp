@@ -133,6 +133,19 @@ void content_toolitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
+	i = CONTENT_TOOLITEM_FLINTPICK;
+	f = &g_content_toolitem_features[i];
+	f->content = i;
+	f->texture = "tool_flintpick.png";
+	f->name = "FPick";
+	f->description = "Flint Pick";
+	f->type = TT_PICK;
+	f->hardness = 180.;
+	f->dig_time = 1.2;
+	crafting::setPickRecipe(CONTENT_CRAFTITEM_FLINT,CONTENT_TOOLITEM_FLINTPICK);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
 	i = CONTENT_TOOLITEM_STEELPICK;
 	f = &g_content_toolitem_features[i];
 	f->content = i;
@@ -187,6 +200,19 @@ void content_toolitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
+	i = CONTENT_TOOLITEM_FLINTSHOVEL;
+	f = &g_content_toolitem_features[i];
+	f->content = i;
+	f->texture = "tool_flintshovel.png";
+	f->name = "FShovel";
+	f->description = "Flint Shovel";
+	f->type = TT_SHOVEL;
+	f->hardness = 250.;
+	f->dig_time = 0.17;
+	crafting::setShovelRecipe(CONTENT_CRAFTITEM_FLINT,CONTENT_TOOLITEM_FLINTSHOVEL);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
 	i = CONTENT_TOOLITEM_STEELSHOVEL;
 	f = &g_content_toolitem_features[i];
 	f->content = i;
@@ -224,6 +250,19 @@ void content_toolitem_init()
 	f->hardness = 100.;
 	f->dig_time = 0.75;
 	crafting::setAxeRecipe(CONTENT_ROUGHSTONE,CONTENT_TOOLITEM_STAXE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_TOOLITEM_FLINTAXE;
+	f = &g_content_toolitem_features[i];
+	f->content = i;
+	f->texture = "tool_flintaxe.png";
+	f->name = "FAxe";
+	f->description = "Flint Axe";
+	f->type = TT_AXE;
+	f->hardness = 180.;
+	f->dig_time = 0.65;
+	crafting::setAxeRecipe(CONTENT_CRAFTITEM_FLINT,CONTENT_TOOLITEM_FLINTAXE);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -280,10 +319,23 @@ void content_toolitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
+	i = CONTENT_TOOLITEM_FLINTSHEARS;
+	f = &g_content_toolitem_features[i];
+	f->content = i;
+	f->texture = "tool_flintshears.png";
+	f->name = "FShears";
+	f->description = "Flint Shears";
+	f->type = TT_SHEAR;
+	f->hardness = 200.;
+	f->dig_time = 0.7;
+	crafting::setShearsRecipe(CONTENT_CRAFTITEM_FLINT,CONTENT_TOOLITEM_FLINTSHEARS);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
 	i = CONTENT_TOOLITEM_STEELSHEARS;
 	f = &g_content_toolitem_features[i];
 	f->content = i;
-	f->texture = "tool_shears.png";
+	f->texture = "tool_steelshears.png";
 	f->name = "Shears";
 	f->description = "Steel Shears";
 	f->type = TT_SHEAR;
