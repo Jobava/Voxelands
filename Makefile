@@ -1,15 +1,47 @@
-PACKAGE=minetest-classic
-TARGET=$(PACKAGE)
-VERSION=1404.00
-VERSION_EXTRA=:next
+PACKAGE       =  minetest-classic
+TARGET        =  $(PACKAGE)
+VERSION       =  1404.00
+VERSION_EXTRA =  :next
+VERSION_LOCAL ?=
+BUILD_FLAGS   ?=
+ARCH          ?= POSIX
 
-CXX      ?= g++
-CXXFLAGS ?= -march=native -O2 -fomit-frame-pointer -fwrapv -fvisibility=hidden
-LIBS     ?= -ljthread -lIrrlicht -lsqlite3 -lpthread -lz
-LDFLAGS  ?= $(LIBS) -Wl,-O1,--discard-all,--no-undefined,--sort-common,--as-needed,--hash-style=gnu,-z,now,-z,relro
-CPPFLAGS ?= -I./src -I/usr/include/irrlicht -I/usr/include/jthread -DNDEBUG -DVERSION=\"$(VERSION)$(VERSION_EXTRA)\" -DPACKAGE=\"$(PACKAGE)\"
+PWD=$(shell pwd)
 MKDIR    ?= mkdir -p
 RM       ?= rm -f
+EXT      =
+DEFS     = -DNDEBUG -DVERSION=\"$(VERSION)$(VERSION_EXTRA)$(VERSION_LOCAL)\" -DPACKAGE=\"$(PACKAGE)\" $(BUILD_FLAGS)
+
+POSIX_CXX      ?= g++
+POSIX_CXXFLAGS ?= -march=native -O2 -fomit-frame-pointer -fwrapv -fvisibility=hidden
+POSIX_LIBS     ?= -ljthread -lIrrlicht -lsqlite3 -lz -lpthread
+POSIX_LDFLAGS  ?= $(POSIX_LIBS) -Wl,-O1,--discard-all,--no-undefined,--sort-common,--as-needed,--hash-style=gnu,-z,now,-z,relro
+POSIX_CPPFLAGS ?= -I./src -I/usr/include/irrlicht -I/usr/include/jthread $(DEFS)
+
+MINGW        ?=
+W32_CXX      ?= $(MINGW)i686-pc-mingw32-g++
+W32_CXXFLAGS ?= -m32 -march=i686 -O2 -fomit-frame-pointer -fwrapv -fvisibility=hidden -mwindows -O2 -fomit-frame-pointer -pipe -D_FORTIFY_SOURCE=2
+W32_LIBS     ?= -ljthread -lIrrlicht -lsqlite3 -lzlibstatic -lws2_32
+W32_LDFLAGS  ?= -L$(PWD)/w32libs/lib/ $(W32_LIBS) -O2 -fomit-frame-pointer -pipe -D_FORTIFY_SOURCE=2
+W32_CPPFLAGS ?= -I$(PWD)/src -I$(PWD)/w32libs/include/ $(DEFS) -DWIN32 -D_FORTIFY_SOURCE=2
+
+LASTARCH=$(shell touch lastarch && cat lastarch)
+ifeq "$(LASTARCH)" ""
+	LASTARCH=$(ARCH)
+endif
+
+ifeq "$(ARCH)" "POSIX"
+	CXX = $(POSIX_CXX)
+	CXXFLAGS = $(POSIX_CFLAGS)
+	LDFLAGS = $(POSIX_LDFLAGS)
+	CPPFLAGS = $(POSIX_CPPFLAGS)
+else
+	CXX = $(W32_CXX)
+	CXXFLAGS = $(W32_CFLAGS)
+	LDFLAGS = $(W32_LDFLAGS)
+	CPPFLAGS = $(W32_CPPFLAGS)
+	EXT = .exe
+endif
 
 _SOURCES_COMMON = log.cpp content_sao.cpp mapgen.cpp content_inventory.cpp content_nodemeta.cpp content_craft.cpp content_craftitem.cpp content_toolitem.cpp content_mapnode.cpp content_list.cpp content_nodebox.cpp auth.cpp collision.cpp nodemetadata.cpp serverobject.cpp noise.cpp mineral.cpp porting.cpp defaultsettings.cpp mapnode.cpp voxel.cpp inventory.cpp debug.cpp serialization.cpp light.cpp filesys.cpp connection.cpp environment.cpp server.cpp servercommand.cpp socket.cpp mapblock.cpp mapsector.cpp map.cpp mesh.cpp player.cpp utility.cpp test.cpp sha1.cpp base64.cpp ban.cpp http.cpp path.cpp
 
@@ -25,19 +57,37 @@ DISTFILES=src doc data misc po util locale minetest.conf.example Makefile README
 
 all: default
 default: client server
-client: prepare bin/$(TARGET)
-server: prepare bin/$(TARGET)-server
+client: prepare bin/$(TARGET)$(EXT)
+server: prepare bin/$(TARGET)-server$(EXT)
 
+ifeq "$(ARCH)" "W32"
 prepare:
+	$(info $(MINGW))
+	$(info $(W32_CXX))
+ifeq "(shell which $(W32_CXX) 2>/dev/null)" ""
+	$(info =====)
+	$(info  mingw (i686-pc-mingw32-g++) is not in your PATH)
+	$(info  you probably want to set MINGW to the directory containing it)
+	$(info  eg. make w32 MINGW=/usr/mingw/bin/)
+	$(info =====)
+	$(error no crosscompiler)
+endif
+else
+prepare:
+endif
+ifneq "$(ARCH)" "$(LASTARCH)"
+	@$(MAKE) clean
+endif
+	@echo $(ARCH) > lastarch
 	$(MKDIR) clientobj
 	$(MKDIR) serverobj
 	$(MKDIR) bin
 
-bin/$(TARGET) : $(OBJECTS_CLIENT)
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJECTS_CLIENT) -o bin/$(TARGET)
+bin/$(TARGET)$(EXT) : $(OBJECTS_CLIENT)
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJECTS_CLIENT) -o bin/$(TARGET)$(EXT)
 
-bin/$(TARGET)-server : $(OBJECTS_SERVER)
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJECTS_SERVER) -o bin/$(TARGET)-server
+bin/$(TARGET)-server$(EXT) : $(OBJECTS_SERVER)
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJECTS_SERVER) -o bin/$(TARGET)-server$(EXT)
 
 jthread.o: src/jthread/pthread/jmutex.cpp
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c -o jmutex.o src/jthread/pthread/jmutex.cpp
@@ -70,6 +120,7 @@ dist-zip: dist-base
 dist: distclean dist-bz2
 
 distclean:
+	$(RM) lastarch
 	$(RM) jthread.o
 	$(RM) jmutex.o
 	$(RM) serverobj/*
@@ -80,4 +131,18 @@ clean: distclean
 
 fresh: clean all
 
-.PHONY: default client server all fresh prepare
+inplace:
+	@$(MAKE) $(MAKEOPTS) BUILD_FLAGS=-DRUN_IN_PLACE=1 all
+
+inplace-client:
+	@$(MAKE) $(MAKEOPTS) BUILD_FLAGS=-DRUN_IN_PLACE=1 client
+
+inplace-server:
+	@$(MAKE) $(MAKEOPTS) BUILD_FLAGS=-DRUN_IN_PLACE=1 server
+
+w32:
+	@$(MAKE) ARCH="W32" MINGW=$(MINGW) all
+
+w32-fresh: clean w32
+
+.PHONY: default client server all fresh prepare inplace inplace-client inplace-server
