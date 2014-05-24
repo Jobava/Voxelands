@@ -2209,7 +2209,7 @@ void ServerEnvironment::step(float dtime)
 						s16 max_o = 2;
 						s16 grow = 1;
 						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
-						if (below == CONTENT_MUD || below == CONTENT_GRASS) {
+						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_GRASS_FOOTSTEPS) {
 							for (s16 z=-max_o; grow && z < max_o; z++) {
 							for (s16 y=2; grow && y < max_y; y++) {
 							for (s16 x=-max_o; grow && x < max_o; x++) {
@@ -2220,6 +2220,7 @@ void ServerEnvironment::step(float dtime)
 										tcon != CONTENT_AIR
 										&& tcon != CONTENT_TREE
 										&& tcon != CONTENT_APPLE_TREE
+										&& tcon != CONTENT_APPLE_BLOSSOM
 										&& tcon != CONTENT_JUNGLETREE
 										&& tcon != CONTENT_LEAVES
 										&& tcon != CONTENT_JUNGLELEAVES
@@ -2248,6 +2249,7 @@ void ServerEnvironment::step(float dtime)
 											tcon != CONTENT_AIR
 											&& tcon != CONTENT_TREE
 											&& tcon != CONTENT_APPLE_TREE
+											&& tcon != CONTENT_APPLE_BLOSSOM
 											&& tcon != CONTENT_JUNGLETREE
 											&& tcon != CONTENT_LEAVES
 											&& tcon != CONTENT_JUNGLELEAVES
@@ -2317,7 +2319,7 @@ void ServerEnvironment::step(float dtime)
 						s16 max_o = 2;
 						bool grow = true;
 						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
-						if (below == CONTENT_MUD || below == CONTENT_GRASS) {
+						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_GRASS_FOOTSTEPS) {
 							for (s16 z=-max_o; grow && z < max_o; z++) {
 							for (s16 y=2; grow && y < max_y; y++) {
 							for (s16 x=-max_o; grow && x < max_o; x++) {
@@ -2328,6 +2330,7 @@ void ServerEnvironment::step(float dtime)
 										tcon != CONTENT_AIR
 										&& tcon != CONTENT_TREE
 										&& tcon != CONTENT_APPLE_TREE
+										&& tcon != CONTENT_APPLE_BLOSSOM
 										&& tcon != CONTENT_JUNGLETREE
 										&& tcon != CONTENT_LEAVES
 										&& tcon != CONTENT_JUNGLELEAVES
@@ -2392,7 +2395,7 @@ void ServerEnvironment::step(float dtime)
 						s16 max_o = 2;
 						bool grow = true;
 						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
-						if (below == CONTENT_MUD || below == CONTENT_GRASS) {
+						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_GRASS_FOOTSTEPS) {
 							for (s16 z=-max_o; grow && z < max_o; z++) {
 							for (s16 y=2; grow && y < max_y; y++) {
 							for (s16 x=-max_o; grow && x < max_o; x++) {
@@ -2403,6 +2406,7 @@ void ServerEnvironment::step(float dtime)
 										tcon != CONTENT_AIR
 										&& tcon != CONTENT_TREE
 										&& tcon != CONTENT_APPLE_TREE
+										&& tcon != CONTENT_APPLE_BLOSSOM
 										&& tcon != CONTENT_JUNGLETREE
 										&& tcon != CONTENT_LEAVES
 										&& tcon != CONTENT_JUNGLELEAVES
@@ -2464,7 +2468,7 @@ void ServerEnvironment::step(float dtime)
 						s16 max_o = 2;
 						bool grow = true;
 						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
-						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_MUDSNOW) {
+						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_MUDSNOW || below == CONTENT_GRASS_FOOTSTEPS) {
 							for (s16 z=-max_o; grow && z < max_o; z++) {
 							for (s16 y=2; grow && y < max_y; y++) {
 							for (s16 x=-max_o; grow && x < max_o; x++) {
@@ -2474,10 +2478,13 @@ void ServerEnvironment::step(float dtime)
 									if (
 										tcon != CONTENT_AIR
 										&& tcon != CONTENT_TREE
+										&& tcon != CONTENT_APPLE_TREE
+										&& tcon != CONTENT_APPLE_BLOSSOM
 										&& tcon != CONTENT_JUNGLETREE
 										&& tcon != CONTENT_LEAVES
 										&& tcon != CONTENT_JUNGLELEAVES
 										&& tcon != CONTENT_CONIFER_LEAVES
+										&& tcon != CONTENT_APPLE_LEAVES
 										&& tcon != CONTENT_APPLE
 										&& tcon != CONTENT_IGNORE
 									)
