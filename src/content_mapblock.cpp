@@ -1995,31 +1995,29 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			MapNode n_plus_z_minus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x, y-1, z+1));
 			MapNode n_minus_z_minus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x, y-1, z-1));
 
-			content_t thiscontent = n.getContent();
-
-			if (n_minus_x.getContent() == thiscontent)
+			if (content_features(n_minus_x).draw_type == CDT_ROOFLIKE)
 				is_roof_x[0] = true;
-			if (n_minus_x_minus_y.getContent() == thiscontent)
+			if (content_features(n_minus_x_minus_y).draw_type == CDT_ROOFLIKE)
 				is_roof_x_minus_y[0] = true;
-			if (n_minus_x_plus_y.getContent() == thiscontent)
+			if (content_features(n_minus_x_plus_y).draw_type == CDT_ROOFLIKE)
 				is_roof_x_plus_y[0] = true;
-			if (n_plus_x.getContent() == thiscontent)
+			if (content_features(n_plus_x).draw_type == CDT_ROOFLIKE)
 				is_roof_x[1] = true;
-			if (n_plus_x_minus_y.getContent() == thiscontent)
+			if (content_features(n_plus_x_minus_y).draw_type == CDT_ROOFLIKE)
 				is_roof_x_minus_y[1] = true;
-			if (n_plus_x_plus_y.getContent() == thiscontent)
+			if (content_features(n_plus_x_plus_y).draw_type == CDT_ROOFLIKE)
 				is_roof_x_plus_y[1] = true;
-			if (n_minus_z.getContent() == thiscontent)
+			if (content_features(n_minus_z).draw_type == CDT_ROOFLIKE)
 				is_roof_z[0] = true;
-			if (n_minus_z_minus_y.getContent() == thiscontent)
+			if (content_features(n_minus_z_minus_y).draw_type == CDT_ROOFLIKE)
 				is_roof_z_minus_y[0] = true;
-			if (n_minus_z_plus_y.getContent() == thiscontent)
+			if (content_features(n_minus_z_plus_y).draw_type == CDT_ROOFLIKE)
 				is_roof_z_plus_y[0] = true;
-			if (n_plus_z.getContent() == thiscontent)
+			if (content_features(n_plus_z).draw_type == CDT_ROOFLIKE)
 				is_roof_z[1] = true;
-			if (n_plus_z_minus_y.getContent() == thiscontent)
+			if (content_features(n_plus_z_minus_y).draw_type == CDT_ROOFLIKE)
 				is_roof_z_minus_y[1] = true;
-			if (n_plus_z_plus_y.getContent() == thiscontent)
+			if (content_features(n_plus_z_plus_y).draw_type == CDT_ROOFLIKE)
 				is_roof_z_plus_y[1] = true;
 
 			bool is_roof_x_all[] = {false, false};
@@ -2120,7 +2118,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						angle = 90;
 					}else{
 						abv = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x-1, y+1, z-1));
-						if (abv.getContent() == thiscontent) {
+						if (content_features(abv).draw_type == CDT_ROOFLIKE) {
 							type = 4;
 							angle = 90;
 						}else{
@@ -2140,7 +2138,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						angle = 270;
 					}else{
 						abv = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x-1, y+1, z+1));
-						if (abv.getContent() == thiscontent) {
+						if (content_features(abv).draw_type == CDT_ROOFLIKE) {
 							type = 4;
 							angle = 0;
 						}else{
@@ -2160,7 +2158,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						angle = 90;
 					}else{
 						abv = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x+1, y+1, z-1));
-						if (abv.getContent() == thiscontent) {
+						if (content_features(abv).draw_type == CDT_ROOFLIKE) {
 							type = 4;
 							angle = 180;
 						}else{
@@ -2180,7 +2178,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						angle = 270;
 					}else{
 						abv = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x+1, y+1, z+1));
-						if (abv.getContent() == thiscontent) {
+						if (content_features(abv).draw_type == CDT_ROOFLIKE) {
 							type = 4;
 							angle = 270;
 						}else{
