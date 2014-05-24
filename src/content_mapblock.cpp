@@ -2033,6 +2033,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),data->m_temp_mods);
 			video::SColor c[2];
 			getRoofLights(blockpos_nodes+p,c,data,v3s16(0,0,0));
+			TileSpec toptile = getNodeTile(n,p,v3s16(0,-1,0),data->m_temp_mods);
 
 			u8 type = 0;
 			s16 angle = 0;
@@ -2335,7 +2336,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				for (int s=0; s<4; s++) {
 					if (s == 2)
 						a -= 180;
-					makeRoofTri(&collector,cnr[s],pos,&tile,1,c,a);
+					makeRoofTri(&collector,cnr[s],pos,&toptile,1,c,a);
 				}
 			}
 			break;
@@ -2421,7 +2422,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				if (a < 180)
 					a += 180;
 				for (int s=0; s<2; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&tile,1,c,a);
+					makeRoofTri(&collector,cnr[s],pos,&toptile,1,c,a);
 					a -= 180;
 				}
 			}
@@ -2467,7 +2468,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				}
 				s16 a = a1;
 				for (int s=0; s<2; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&tile,1,c,a);
+					makeRoofTri(&collector,cnr[s],pos,&toptile,1,c,a);
 					a = a2;
 				}
 			}
@@ -2536,7 +2537,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				for (int s=0; s<4; s++) {
 					if (s == 2)
 						a = a2;
-					makeRoofTri(&collector,cnr[s],pos,&tile,1,c,a);
+					makeRoofTri(&collector,cnr[s],pos,&toptile,1,c,a);
 				}
 			}
 			break;
@@ -2640,7 +2641,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				};
 				getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,0));
 				for (int s=0; s<8; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&tile,1,c,a[s]);
+					makeRoofTri(&collector,cnr[s],pos,&toptile,1,c,a[s]);
 				}
 			}
 			break;
@@ -2745,7 +2746,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					a[4] = 180;
 				}
 				for (int s=0; s<6; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&tile,1,c,a[s]);
+					makeRoofTri(&collector,cnr[s],pos,&toptile,1,c,a[s]);
 				}
 			}
 			break;
@@ -2817,7 +2818,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				cnr[3][2] = v3f(0.5,-0.5,0.5);
 				getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,0));
 				for (int s=0; s<4; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&tile,1,c,(90*s)+90+(180*(!(s%2))));
+					makeRoofTri(&collector,cnr[s],pos,&toptile,1,c,(90*s)+90+(180*(!(s%2))));
 				}
 			}
 			break;
@@ -2910,7 +2911,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					a[4] = 180;
 				}
 				for (int s=0; s<5; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&tile,1,c,a[s]);
+					makeRoofTri(&collector,cnr[s],pos,&toptile,1,c,a[s]);
 				}
 			}
 			break;

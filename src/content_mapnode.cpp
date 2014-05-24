@@ -1953,7 +1953,11 @@ void content_mapnode_init()
 	f = &content_features(i);
 	f->description = std::string("Glass Roof Tile");
 	f->setAllTextures("glass.png");
+	f->setTexture(1,"glass_slab.png"); // special texture for top sections
 	f->setAllTextureFlags(0);
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
 	f->draw_type = CDT_ROOFLIKE;
@@ -1963,6 +1967,160 @@ void content_mapnode_init()
 	f->hardness = 0.75;
 	content_nodebox_roofcollide(f);
 	crafting::set1over4Recipe(CONTENT_GLASS,CONTENT_GLASS,CONTENT_ROOFTILE_GLASS);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_ROOFTILE_GLASS_BLUE;
+	f = &content_features(i);
+	f->description = std::string("Blue Glass Roof Tile");
+	f->setAllTextures("glass_blue.png");
+	f->setTexture(1,"glass_slab_blue.png"); // special texture for top sections
+	f->setAllTextureFlags(0);
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->draw_type = CDT_ROOFLIKE;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->type = CMT_DIRT;
+	f->hardness = 0.75;
+	content_nodebox_roofcollide(f);
+	crafting::set1over4Recipe(CONTENT_GLASS_BLUE,CONTENT_GLASS_BLUE,CONTENT_ROOFTILE_GLASS_BLUE);
+	crafting::set1Any2Recipe(CONTENT_ROOFTILE_GLASS,CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_ROOFTILE_GLASS_BLUE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_ROOFTILE_GLASS_GREEN;
+	f = &content_features(i);
+	f->description = std::string("Green Glass Roof Tile");
+	f->setAllTextures("glass_green.png");
+	f->setTexture(1,"glass_slab_green.png"); // special texture for top sections
+	f->setAllTextureFlags(0);
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->draw_type = CDT_ROOFLIKE;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->type = CMT_DIRT;
+	f->hardness = 0.75;
+	content_nodebox_roofcollide(f);
+	crafting::set1over4Recipe(CONTENT_GLASS_GREEN,CONTENT_GLASS_GREEN,CONTENT_ROOFTILE_GLASS_GREEN);
+	crafting::set1Any2Recipe(CONTENT_ROOFTILE_GLASS,CONTENT_CRAFTITEM_DYE_GREEN,CONTENT_ROOFTILE_GLASS_GREEN);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_ROOFTILE_GLASS_ORANGE;
+	f = &content_features(i);
+	f->description = std::string("Orange Glass Roof Tile");
+	f->setAllTextures("glass_orange.png");
+	f->setTexture(1,"glass_slab_orange.png"); // special texture for top sections
+	f->setAllTextureFlags(0);
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->draw_type = CDT_ROOFLIKE;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->type = CMT_DIRT;
+	f->hardness = 0.75;
+	content_nodebox_roofcollide(f);
+	crafting::set1over4Recipe(CONTENT_GLASS_ORANGE,CONTENT_GLASS_ORANGE,CONTENT_ROOFTILE_GLASS_ORANGE);
+	crafting::set1Any2Recipe(CONTENT_ROOFTILE_GLASS,CONTENT_CRAFTITEM_DYE_ORANGE,CONTENT_ROOFTILE_GLASS_ORANGE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_ROOFTILE_GLASS_PURPLE;
+	f = &content_features(i);
+	f->description = std::string("Purple Glass Roof Tile");
+	f->setAllTextures("glass_purple.png");
+	f->setTexture(1,"glass_slab_purple.png"); // special texture for top sections
+	f->setAllTextureFlags(0);
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->draw_type = CDT_ROOFLIKE;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->type = CMT_DIRT;
+	f->hardness = 0.75;
+	content_nodebox_roofcollide(f);
+	crafting::set1over4Recipe(CONTENT_GLASS_PURPLE,CONTENT_GLASS_PURPLE,CONTENT_ROOFTILE_GLASS_PURPLE);
+	crafting::set1Any2Recipe(CONTENT_ROOFTILE_GLASS,CONTENT_CRAFTITEM_DYE_PURPLE,CONTENT_ROOFTILE_GLASS_PURPLE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_ROOFTILE_GLASS_RED;
+	f = &content_features(i);
+	f->description = std::string("Red Glass Roof Tile");
+	f->setAllTextures("glass_red.png");
+	f->setTexture(1,"glass_slab_red.png"); // special texture for top sections
+	f->setAllTextureFlags(0);
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->draw_type = CDT_ROOFLIKE;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->type = CMT_DIRT;
+	f->hardness = 0.75;
+	content_nodebox_roofcollide(f);
+	crafting::set1over4Recipe(CONTENT_GLASS_RED,CONTENT_GLASS_RED,CONTENT_ROOFTILE_GLASS_RED);
+	crafting::set1Any2Recipe(CONTENT_ROOFTILE_GLASS,CONTENT_CRAFTITEM_DYE_RED,CONTENT_ROOFTILE_GLASS_RED);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_ROOFTILE_GLASS_YELLOW;
+	f = &content_features(i);
+	f->description = std::string("Yellow Glass Roof Tile");
+	f->setAllTextures("glass_yellow.png");
+	f->setTexture(1,"glass_slab_yellow.png"); // special texture for top sections
+	f->setAllTextureFlags(0);
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->draw_type = CDT_ROOFLIKE;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->type = CMT_DIRT;
+	f->hardness = 0.75;
+	content_nodebox_roofcollide(f);
+	crafting::set1over4Recipe(CONTENT_GLASS_YELLOW,CONTENT_GLASS_YELLOW,CONTENT_ROOFTILE_GLASS_YELLOW);
+	crafting::set1Any2Recipe(CONTENT_ROOFTILE_GLASS,CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_ROOFTILE_GLASS_YELLOW);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_ROOFTILE_GLASS_BLACK;
+	f = &content_features(i);
+	f->description = std::string("Black Glass Roof Tile");
+	f->setAllTextures("glass_black.png");
+	f->setTexture(1,"glass_slab_black.png"); // special texture for top sections
+	f->setAllTextureFlags(0);
+#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
+	f->draw_type = CDT_ROOFLIKE;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->type = CMT_DIRT;
+	f->hardness = 0.75;
+	content_nodebox_roofcollide(f);
+	crafting::set1over4Recipe(CONTENT_GLASS_BLACK,CONTENT_GLASS_BLACK,CONTENT_ROOFTILE_GLASS_BLACK);
+	crafting::set1Any2Recipe(CONTENT_ROOFTILE_GLASS,CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_ROOFTILE_GLASS_BLACK);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -5040,14 +5198,14 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_BLUE;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->setAllTextures("glass_blue_slab.png");
+	f->setAllTextures("glass_slab_blue.png");
 	f->setTexture(0,"glass_blue.png");
 	f->setTexture(1,"glass_blue.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	content_nodebox_slab(f);
-	f->setInventoryTextureNodeBox(i,"glass_blue.png", "glass_blue_slab.png", "glass_blue_slab.png");
+	f->setInventoryTextureNodeBox(i,"glass_blue.png", "glass_slab_blue.png", "glass_slab_blue.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	crafting::setRow3Recipe(CONTENT_GLASS,CONTENT_GLASS_BLUE_SLAB);
@@ -5066,14 +5224,14 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_GREEN;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->setAllTextures("glass_green_slab.png");
+	f->setAllTextures("glass_slab_green.png");
 	f->setTexture(0,"glass_green.png");
 	f->setTexture(1,"glass_green.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	content_nodebox_slab(f);
-	f->setInventoryTextureNodeBox(i,"glass_green.png", "glass_green_slab.png", "glass_green_slab.png");
+	f->setInventoryTextureNodeBox(i,"glass_green.png", "glass_slab_green.png", "glass_slab_green.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	crafting::setRow3Recipe(CONTENT_GLASS,CONTENT_GLASS_GREEN_SLAB);
@@ -5092,14 +5250,14 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_ORANGE;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->setAllTextures("glass_orange_slab.png");
+	f->setAllTextures("glass_slab_orange.png");
 	f->setTexture(0,"glass_orange.png");
 	f->setTexture(1,"glass_oange.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	content_nodebox_slab(f);
-	f->setInventoryTextureNodeBox(i,"glass_orange.png", "glass_orange_slab.png", "glass_orange_slab.png");
+	f->setInventoryTextureNodeBox(i,"glass_orange.png", "glass_slab_orange.png", "glass_slab_orange.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	crafting::setRow3Recipe(CONTENT_GLASS,CONTENT_GLASS_ORANGE_SLAB);
@@ -5118,14 +5276,14 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_PURPLE;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->setAllTextures("glass_purple_slab.png");
+	f->setAllTextures("glass_slab_purple.png");
 	f->setTexture(0,"glass_purple.png");
 	f->setTexture(1,"glass_purple.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	content_nodebox_slab(f);
-	f->setInventoryTextureNodeBox(i,"glass_purple.png", "glass_purple_slab.png", "glass_purple_slab.png");
+	f->setInventoryTextureNodeBox(i,"glass_purple.png", "glass_slab_purple.png", "glass_slab_purple.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	crafting::setRow3Recipe(CONTENT_GLASS,CONTENT_GLASS_PURPLE_SLAB);
@@ -5144,14 +5302,14 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_RED;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->setAllTextures("glass_red_slab.png");
+	f->setAllTextures("glass_slab_red.png");
 	f->setTexture(0,"glass_red.png");
 	f->setTexture(1,"glass_red.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	content_nodebox_slab(f);
-	f->setInventoryTextureNodeBox(i,"glass_red.png", "glass_red_slab.png", "glass_red_slab.png");
+	f->setInventoryTextureNodeBox(i,"glass_red.png", "glass_slab_red.png", "glass_slab_red.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	crafting::setRow3Recipe(CONTENT_GLASS,CONTENT_GLASS_RED_SLAB);
@@ -5170,14 +5328,14 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_YELLOW;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->setAllTextures("glass_yellow_slab.png");
+	f->setAllTextures("glass_slab_yellow.png");
 	f->setTexture(0,"glass_yellow.png");
 	f->setTexture(1,"glass_yellow.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	content_nodebox_slab(f);
-	f->setInventoryTextureNodeBox(i,"glass_yellow.png", "glass_yellow_slab.png", "glass_yellow_slab.png");
+	f->setInventoryTextureNodeBox(i,"glass_yellow.png", "glass_slab_yellow.png", "glass_slab_yellow.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	crafting::setRow3Recipe(CONTENT_GLASS,CONTENT_GLASS_YELLOW_SLAB);
@@ -5196,14 +5354,14 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_BLACK;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->setAllTextures("glass_black_slab.png");
+	f->setAllTextures("glass_slab_black.png");
 	f->setTexture(0,"glass_black.png");
 	f->setTexture(1,"glass_black.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	content_nodebox_slab(f);
-	f->setInventoryTextureNodeBox(i,"glass_black.png", "glass_black_slab.png", "glass_black_slab.png");
+	f->setInventoryTextureNodeBox(i,"glass_black.png", "glass_slab_black.png", "glass_slab_black.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	crafting::setRow3Recipe(CONTENT_GLASS,CONTENT_GLASS_BLACK_SLAB);
@@ -5357,14 +5515,14 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_BLUE;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->setAllTextures("glass_blue_slab.png");
+	f->setAllTextures("glass_slab_blue.png");
 	f->setTexture(0,"glass_blue.png");
 	f->setTexture(1,"glass_blue.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	content_nodebox_slabud(f);
-	f->setInventoryTextureNodeBox(i,"glass_blue.png", "glass_blue_slab.png", "glass_blue_slab.png");
+	f->setInventoryTextureNodeBox(i,"glass_blue.png", "glass_slab_blue.png", "glass_slab_blue.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 
@@ -5379,14 +5537,14 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_GREEN;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->setAllTextures("glass_green_slab.png");
+	f->setAllTextures("glass_slab_green.png");
 	f->setTexture(0,"glass_green.png");
 	f->setTexture(1,"glass_green.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	content_nodebox_slabud(f);
-	f->setInventoryTextureNodeBox(i,"glass_green.png", "glass_green_slab.png", "glass_green_slab.png");
+	f->setInventoryTextureNodeBox(i,"glass_green.png", "glass_slab_green.png", "glass_slab_green.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 
@@ -5401,14 +5559,14 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_ORANGE;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->setAllTextures("glass_orange_slab.png");
+	f->setAllTextures("glass_slab_orange.png");
 	f->setTexture(0,"glass_orange.png");
 	f->setTexture(1,"glass_orange.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	content_nodebox_slabud(f);
-	f->setInventoryTextureNodeBox(i,"glass_orange.png", "glass_orange_slab.png", "glass_orange_slab.png");
+	f->setInventoryTextureNodeBox(i,"glass_orange.png", "glass_slab_orange.png", "glass_slab_orange.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 
@@ -5423,14 +5581,14 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_PURPLE;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->setAllTextures("glass_purple_slab.png");
+	f->setAllTextures("glass_slab_purple.png");
 	f->setTexture(0,"glass_purple.png");
 	f->setTexture(1,"glass_purple.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	content_nodebox_slabud(f);
-	f->setInventoryTextureNodeBox(i,"glass_purple.png", "glass_purple_slab.png", "glass_purple_slab.png");
+	f->setInventoryTextureNodeBox(i,"glass_purple.png", "glass_slab_purple.png", "glass_slab_purple.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 
@@ -5445,14 +5603,14 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_RED;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->setAllTextures("glass_red_slab.png");
+	f->setAllTextures("glass_slab_red.png");
 	f->setTexture(0,"glass_red.png");
 	f->setTexture(1,"glass_red.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	content_nodebox_slabud(f);
-	f->setInventoryTextureNodeBox(i,"glass_red.png", "glass_red_slab.png", "glass_red_slab.png");
+	f->setInventoryTextureNodeBox(i,"glass_red.png", "glass_slab_red.png", "glass_slab_red.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 
@@ -5467,14 +5625,14 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_YELLOW;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->setAllTextures("glass_yellow_slab.png");
+	f->setAllTextures("glass_slab_yellow.png");
 	f->setTexture(0,"glass_yellow.png");
 	f->setTexture(1,"glass_yellow.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	content_nodebox_slabud(f);
-	f->setInventoryTextureNodeBox(i,"glass_yellow.png", "glass_yellow_slab.png", "glass_yellow_slab.png");
+	f->setInventoryTextureNodeBox(i,"glass_yellow.png", "glass_slab_yellow.png", "glass_slab_yellow.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 
@@ -5489,14 +5647,14 @@ void content_mapnode_init()
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_BLACK;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->setAllTextures("glass_black_slab.png");
+	f->setAllTextures("glass_slab_black.png");
 	f->setTexture(0,"glass_black.png");
 	f->setTexture(1,"glass_black.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	content_nodebox_slabud(f);
-	f->setInventoryTextureNodeBox(i,"glass_black.png", "glass_black_slab.png", "glass_black_slab.png");
+	f->setInventoryTextureNodeBox(i,"glass_black.png", "glass_slab_black.png", "glass_slab_black.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 
