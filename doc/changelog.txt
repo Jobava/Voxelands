@@ -3,6 +3,31 @@ Minetest-Classic changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1405.00: (release 2014-05-25)
+- new thatch, glass, and coloured glass rooftiles
+- add new texture to sides of glass slabs
+- allow trees to grow through apple blossoms and on footsteps
+- add flint tools
+- make selection boxes fit nodeboxes better
+- show multiple recipes for items in craft guide
+- allow material items in inventory to convert to newer nodeids
+- add converters for craftitems and toolitems
+- optimize craftitem and toolitem (de)serialization a bit
+- allow grass footsteps to be ploughed to farm dirt
+- make rooflike nodes climbable without jumping
+- add endcaps and topcaps to rooflike drawtype
+- fix /setpassword crashing server when player doesn't exist
+- merge rotten fruit + mushed food and scorched stuff + ash (Menche)
+- add pumpkins to creative inventory (Menche)
+- add plank to wood recipes, and lessen the hay recipe
+- fix texture rotation on rooflike nodes
+- make crowbar work on CPT_FACEDIR_WALLMOUNT nodes
+- remove CDT_SIGNLIKE use nodeboxes for signs
+- notify banned player of banning
+- fix water buckets not working in creative mode
+- fix slabs turning fences into wood
+- add cutouts in jack o lanterns
+
 1404.00: (release 2014-04-19)
 - fixes to rooflike lighting
 - fixes to rooflike rendering
