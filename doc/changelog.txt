@@ -3,6 +3,10 @@ Minetest-Classic changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1405.01: (release 2014-05-26)
+- fix hatch recipes not working
+- fix tool wearbars not working
+
 1405.00: (release 2014-05-25)
 - new thatch, glass, and coloured glass rooftiles
 - add new texture to sides of glass slabs
