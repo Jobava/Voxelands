@@ -439,11 +439,13 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->cook_result = std::string("MaterialItem2 ")+itos(CONTENT_STONEBRICK)+" 1";
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	crafting::setBrickRecipe(CONTENT_ROUGHSTONE,CONTENT_ROUGHSTONEBRICK);
 	lists::add("craftguide",i);
 	lists::add("player-creative",i);
+	lists::add("cooking",i);
 	lists::add("creative",i);
 
 	i = CONTENT_ROUGHSTONEBLOCK;
@@ -454,11 +456,13 @@ void content_mapnode_init()
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->cook_result = std::string("MaterialItem2 ")+itos(CONTENT_STONEBLOCK)+" 1";
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	crafting::setBlockRecipe(CONTENT_ROUGHSTONE,CONTENT_ROUGHSTONEBLOCK);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_GRASS;
 	f = &content_features(i);
