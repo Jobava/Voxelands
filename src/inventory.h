@@ -339,7 +339,7 @@ public:
 		os<<" ";
 		os<<(unsigned int)m_content;
 		os<<" ";
-		os<<m_count;
+		os<<m_wear;
 	}
 	virtual InventoryItem* clone()
 	{
