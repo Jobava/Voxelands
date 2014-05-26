@@ -2339,7 +2339,15 @@ void content_mapnode_init()
 	f->hardness = 0.75;
 	crafting::set1To4Recipe(CONTENT_TREE,CONTENT_WOOD);
 	crafting::set1To4Recipe(CONTENT_APPLE_TREE,CONTENT_WOOD);
-	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_WOOD);
+	//crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_WOOD);
+	{
+		u16 r[9] = {
+			CONTENT_CRAFTITEM_WOOD_PLANK,	CONTENT_IGNORE,	CONTENT_CRAFTITEM_WOOD_PLANK,
+			CONTENT_IGNORE,			CONTENT_IGNORE,	CONTENT_IGNORE,
+			CONTENT_CRAFTITEM_WOOD_PLANK,	CONTENT_IGNORE,	CONTENT_CRAFTITEM_WOOD_PLANK
+		};
+		crafting::setRecipe(r,CONTENT_WOOD,1);
+	}
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -2356,7 +2364,15 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	crafting::set1To4Recipe(CONTENT_JUNGLETREE,CONTENT_JUNGLEWOOD);
-	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_JUNGLEWOOD);
+	//crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_JUNGLEWOOD);
+	{
+		u16 r[9] = {
+			CONTENT_CRAFTITEM_JUNGLE_PLANK,	CONTENT_IGNORE,	CONTENT_CRAFTITEM_JUNGLE_PLANK,
+			CONTENT_IGNORE,			CONTENT_IGNORE,	CONTENT_IGNORE,
+			CONTENT_CRAFTITEM_JUNGLE_PLANK,	CONTENT_IGNORE,	CONTENT_CRAFTITEM_JUNGLE_PLANK
+		};
+		crafting::setRecipe(r,CONTENT_JUNGLEWOOD,1);
+	}
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -2373,7 +2389,15 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.5;
 	crafting::set1To4Recipe(CONTENT_CONIFER_TREE,CONTENT_WOOD_PINE);
-	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_PINE_PLANK,CONTENT_WOOD_PINE);
+	//crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_PINE_PLANK,CONTENT_WOOD_PINE);
+	{
+		u16 r[9] = {
+			CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_IGNORE,	CONTENT_CRAFTITEM_PINE_PLANK,
+			CONTENT_IGNORE,			CONTENT_IGNORE,	CONTENT_IGNORE,
+			CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_IGNORE,	CONTENT_CRAFTITEM_PINE_PLANK
+		};
+		crafting::setRecipe(r,CONTENT_WOOD_PINE,1);
+	}
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
