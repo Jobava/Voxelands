@@ -324,7 +324,7 @@ v3s16 facedir_rotate(u8 facedir, v3s16 dir)
 }
 
 #ifndef SERVER
-TileSpec MapNode::getTile(v3s16 dir)
+TileSpec MapNode::getTileFrom(v3s16 dir, TileSpec raw_spec[6])
 {
 	TileSpec spec;
 	s32 dir_i = 0;
@@ -352,7 +352,7 @@ TileSpec MapNode::getTile(v3s16 dir)
 	else if(dir == v3s16(0,0,-1))
 		dir_i = 5;
 
-	spec = content_features(*this).tiles[dir_i];
+	spec = raw_spec[dir_i];
 
 	/*
 		If it contains some mineral, change texture id

@@ -97,7 +97,8 @@ enum ContentDrawType
 	CDT_TORCHLIKE,
 	CDT_FENCELIKE,
 	CDT_WALLLIKE,
-	CDT_ROOFLIKE
+	CDT_ROOFLIKE,
+	CDT_NODEBOX_META
 };
 
 /*
@@ -149,6 +150,7 @@ struct ContentFeatures
 		5: front
 	*/
 	TileSpec tiles[6];
+	TileSpec meta_tiles[6];
 
 	video::ITexture *inventory_texture;
 
@@ -797,7 +799,9 @@ struct MapNode
 		Returns: TileSpec. Can contain miscellaneous texture coordinates,
 		         which must be obeyed so that the texture atlas can be used.
 	*/
-	TileSpec getTile(v3s16 dir);
+	TileSpec getTile(v3s16 dir) {return getTileFrom(dir,content_features(*this).tiles); }
+	TileSpec getMetaTile(v3s16 dir) {return getTileFrom(dir,content_features(*this).meta_tiles); }
+	TileSpec getTileFrom(v3s16 dir, TileSpec raw_spec[6]);
 #endif
 
 	/*

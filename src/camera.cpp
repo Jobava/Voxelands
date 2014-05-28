@@ -476,7 +476,13 @@ void Camera::wield(const InventoryItem* item)
 				m_wieldnode->setCube(content_features(content).tiles);
 				m_wieldnode->setScale(v3f(30));
 				haveWield = true;
-			}else if (content_features(content).draw_type == CDT_NODEBOX && content_features(content).wield_nodebox == true) {
+			}else if (
+				(
+					content_features(content).draw_type == CDT_NODEBOX
+					|| content_features(content).draw_type == CDT_NODEBOX_META
+				)
+				&& content_features(content).wield_nodebox == true
+			) {
 				m_wieldnode->setNodeBox(content);
 				m_wieldnode->setScale(v3f(30));
 				m_wieldnode_baserotation = v3f(-10, 10, -10);

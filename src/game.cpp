@@ -474,7 +474,10 @@ void getPointedNode(Client *client, v3f player_position,
 		/*
 			Roofs and Node boxes
 		*/
-		}else if (content_features(n).draw_type == CDT_NODEBOX) {
+		}else if (
+			content_features(n).draw_type == CDT_NODEBOX
+			|| content_features(n).draw_type == CDT_NODEBOX_META
+		) {
 			f32 distance = (npf - camera_position).getLength();
 
 			if (distance < mindistance) {

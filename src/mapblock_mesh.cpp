@@ -276,6 +276,49 @@ TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir,
 	return spec;
 }
 
+/*
+	Gets node meta tile from any place relative to block.
+	Returns TILE_NODE if doesn't exist or should not be drawn.
+*/
+TileSpec getMetaTile(MapNode mn, v3s16 p, v3s16 face_dir,
+		NodeModMap &temp_mods)
+{
+	TileSpec spec;
+	spec = mn.getMetaTile(face_dir);
+
+	/*
+		Check temporary modifications on this node
+	*/
+	NodeMod mod;
+	if (temp_mods.get(p, &mod)) {
+		if (mod.type == NODEMOD_CHANGECONTENT) {
+			MapNode mn2(mod.param);
+			spec = mn2.getMetaTile(face_dir);
+		}
+		if (mod.type == NODEMOD_CRACK) {
+			/*
+				Get texture id, translate it to name, append stuff to
+				name, get texture id
+			*/
+
+			// Get original texture name
+			u32 orig_id = spec.texture.id;
+			std::string orig_name = g_texturesource->getTextureName(orig_id);
+
+			// Create new texture name
+			std::ostringstream os;
+			os<<orig_name<<"^[crack"<<mod.param;
+
+			// Get new texture
+			u32 new_id = g_texturesource->getTextureId(os.str());
+
+			spec.texture = g_texturesource->getTexture(new_id);
+		}
+	}
+
+	return spec;
+}
+
 content_t getNodeContent(v3s16 p, MapNode mn, NodeModMap &temp_mods)
 {
 	/*
@@ -328,7 +371,10 @@ u8 getSmoothLight(v3s16 p, VoxelManipulator &vmanip, u32 daynight_ratio)
 		) {
 			light += decode_light(n.getLightBlend(daynight_ratio));
 			light_count++;
-		}else if (content_features(n).draw_type == CDT_NODEBOX) {
+		}else if (
+			content_features(n).draw_type == CDT_NODEBOX
+			|| content_features(n).draw_type == CDT_NODEBOX_META
+		) {
 			// not quite right, but it gets rid of glowing nodes
 			light += decode_light(n.getLightBlend(daynight_ratio));
 			light_count++;

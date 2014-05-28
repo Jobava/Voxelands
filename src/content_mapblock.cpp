@@ -3251,6 +3251,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		}
 		break;
 		case CDT_NODEBOX:
+		case CDT_NODEBOX_META:
 		{
 			static const v3s16 tile_dirs[6] = {
 				v3s16(0, 1, 0),
@@ -3298,6 +3299,43 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					tx1, 1-ty2, tx2, 1-ty1,
 				};
 				makeCuboid(&collector, box, tiles, 6,  c, txc);
+			}
+			if (content_features(n).draw_type == CDT_NODEBOX_META) {
+				boxes = content_features(n).getNodeBoxes(n);
+				if (boxes.size() > 0) {
+					for (int i = 0; i < 6; i++) {
+						// Handles facedir rotation for textures
+						tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
+					}
+					for (std::vector<aabb3f>::iterator i = boxes.begin(); i != boxes.end(); i++) {
+						aabb3f box = *i;
+						box.MinEdge += pos;
+						box.MaxEdge += pos;
+
+						// Compute texture coords
+						f32 tx1 = (i->MinEdge.X/BS)+0.5;
+						f32 ty1 = (i->MinEdge.Y/BS)+0.5;
+						f32 tz1 = (i->MinEdge.Z/BS)+0.5;
+						f32 tx2 = (i->MaxEdge.X/BS)+0.5;
+						f32 ty2 = (i->MaxEdge.Y/BS)+0.5;
+						f32 tz2 = (i->MaxEdge.Z/BS)+0.5;
+						f32 txc[24] = {
+							// up
+							tx1, 1-tz2, tx2, 1-tz1,
+							// down
+							tx1, tz1, tx2, tz2,
+							// right
+							tz1, 1-ty2, tz2, 1-ty1,
+							// left
+							1-tz2, 1-ty2, 1-tz1, 1-ty1,
+							// back
+							1-tx2, 1-ty2, 1-tx1, 1-ty1,
+							// front
+							tx1, 1-ty2, tx2, 1-ty1,
+						};
+						makeCuboid(&collector, box, tiles, 6,  c, txc);
+					}
+				}
 			}
 		}
 		break;
