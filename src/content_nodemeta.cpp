@@ -1958,18 +1958,20 @@ std::vector<aabb3f> BookShelfNodeMetadata::getNodeBoxes(MapNode &n) {
 
 	f32 x = 0;
 	f32 y = 0;
+	f32 h = 0;
 
 	for (s16 i=0; i<14; i++) {
 		if (list->getItem(i) == NULL)
 			continue;
 		x = (i%7)*0.125;
 		y = (i/7)*-0.5;
+		h = ((i%7)%2)*0.0625;
 
 		boxes.push_back(aabb3f(
-			(-0.4375+x)*BS,(0.0625+y)*BS,-0.4375*BS,(-0.3125+x)*BS,(0.375+y)*BS,-0.0625*BS
+			(-0.4375+x)*BS,(0.0625+y)*BS,-0.4375*BS,(-0.3125+x)*BS,(0.375+y+h)*BS,-0.0625*BS
 		));
 		boxes.push_back(aabb3f(
-			(0.3125-x)*BS,(0.0625+y)*BS,0.0625*BS,(0.4375-x)*BS,(0.375+y)*BS,0.4375*BS
+			(0.3125-x)*BS,(0.0625+y)*BS,0.0625*BS,(0.4375-x)*BS,(0.375+y+h)*BS,0.4375*BS
 		));
 	}
 
