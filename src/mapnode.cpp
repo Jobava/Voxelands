@@ -35,7 +35,7 @@ ContentFeatures::~ContentFeatures()
 	delete initial_metadata;
 }
 
-static std::vector<aabb3f> transformNodeBox(MapNode &n,
+std::vector<aabb3f> transformNodeBox(MapNode &n,
 		const std::vector<aabb3f> &nodebox)
 {
 	std::vector<aabb3f> boxes;
@@ -105,6 +105,20 @@ void ContentFeatures::setTexture(u16 i, std::string name, u8 alpha)
 
 	if(inventory_texture == NULL)
 		setInventoryTexture(name);
+}
+
+void ContentFeatures::setMetaTexture(u16 i, std::string name, u8 alpha)
+{
+	used_texturenames[name] = true;
+
+	if(g_texturesource) {
+		meta_tiles[i].texture = g_texturesource->getTexture(name);
+	}
+
+	if (alpha != 255) {
+		meta_tiles[i].alpha = alpha;
+		meta_tiles[i].material_type = MATERIAL_ALPHA_VERTEX;
+	}
 }
 
 void ContentFeatures::setInventoryTexture(std::string imgname)

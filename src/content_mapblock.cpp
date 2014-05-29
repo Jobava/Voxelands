@@ -23,6 +23,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "mineral.h"
 #include "mapblock_mesh.h" // For MapBlock_LightColor()
 #include "settings.h"
+#include "environment.h"
+#include "nodemetadata.h"
 
 #ifndef SERVER
 // Create a cuboid.
@@ -3301,11 +3303,14 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				makeCuboid(&collector, box, tiles, 6,  c, txc);
 			}
 			if (content_features(n).draw_type == CDT_NODEBOX_META) {
-				boxes = content_features(n).getNodeBoxes(n);
+				NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+blockpos_nodes);
+				if (meta == NULL)
+					break;
+				boxes = meta->getNodeBoxes(n);
 				if (boxes.size() > 0) {
 					for (int i = 0; i < 6; i++) {
 						// Handles facedir rotation for textures
-						tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
+						tiles[i] = getMetaTile(n,p,tile_dirs[i],data->m_temp_mods);
 					}
 					for (std::vector<aabb3f>::iterator i = boxes.begin(); i != boxes.end(); i++) {
 						aabb3f box = *i;

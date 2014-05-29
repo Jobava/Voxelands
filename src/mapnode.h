@@ -138,6 +138,9 @@ enum ContentMaterialType {
 struct MapNode;
 class NodeMetadata;
 
+std::vector<aabb3f> transformNodeBox(MapNode &n,
+		const std::vector<aabb3f> &nodebox);
+
 struct ContentFeatures
 {
 #ifndef SERVER
@@ -363,6 +366,18 @@ struct ContentFeatures
 	{}
 	void setAllTextureTypes(u8 type)
 	{}
+	void setMetaTexture(u16 i, std::string name, u8 alpha=255)
+	{}
+	void setAllMetaTextures(std::string name, u8 alpha=255)
+	{}
+	void setMetaTextureFlags(u16 i, u8 flags)
+	{}
+	void setAllMetaTextureFlags(u8 flags)
+	{}
+	void setMetaTextureType(u16 i, u8 type)
+	{}
+	void setAllMetaTextureTypes(u8 type)
+	{}
 #else
 	void setTexture(u16 i, std::string name, u8 alpha=255);
 
@@ -394,6 +409,36 @@ struct ContentFeatures
 			setTextureType(i, type);
 		}
 	}
+
+	void setMetaTexture(u16 i, std::string name, u8 alpha=255);
+
+	void setAllMetaTextures(std::string name, u8 alpha=255)
+	{
+		for (u16 i=0; i<6; i++) {
+			setMetaTexture(i, name, alpha);
+		}
+	}
+	void setMetaTextureFlags(u16 i, u8 flags)
+	{
+		meta_tiles[i].material_flags = flags;
+	}
+	void setAllMetaTextureFlags(u8 flags)
+	{
+		for (u16 i=0; i<6; i++) {
+			setMetaTextureFlags(i, flags);
+		}
+	}
+	void setMetaTextureType(u16 i, u8 type)
+	{
+		meta_tiles[i].material_type = type;
+	}
+	void setAllMetaTextureTypes(u8 type)
+	{
+		for (u16 i=0; i<6; i++) {
+			setMetaTextureType(i, type);
+		}
+	}
+
 #endif
 
 #ifndef SERVER

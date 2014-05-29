@@ -1888,3 +1888,90 @@ bool ClosedBookNodeMetadata::import(NodeMetadata *meta)
 	}
 	return false;
 }
+
+/*
+	BookShelfNodeMetadata
+*/
+
+// Prototype
+BookShelfNodeMetadata proto_BookShelfNodeMetadata;
+
+BookShelfNodeMetadata::BookShelfNodeMetadata()
+{
+	NodeMetadata::registerType(typeId(), create);
+
+	m_inventory = new Inventory();
+	m_inventory->addList("0", 14);
+}
+BookShelfNodeMetadata::~BookShelfNodeMetadata()
+{
+	delete m_inventory;
+}
+u16 BookShelfNodeMetadata::typeId() const
+{
+	return CONTENT_CHEST;
+}
+NodeMetadata* BookShelfNodeMetadata::create(std::istream &is)
+{
+	BookShelfNodeMetadata *d = new BookShelfNodeMetadata();
+	d->m_inventory->deSerialize(is);
+	return d;
+}
+NodeMetadata* BookShelfNodeMetadata::clone()
+{
+	BookShelfNodeMetadata *d = new BookShelfNodeMetadata();
+	*d->m_inventory = *m_inventory;
+	return d;
+}
+void BookShelfNodeMetadata::serializeBody(std::ostream &os)
+{
+	m_inventory->serialize(os);
+}
+bool BookShelfNodeMetadata::nodeRemovalDisabled()
+{
+	/*
+		Disable removal if chest contains something
+	*/
+	InventoryList *list = m_inventory->getList("0");
+	if(list == NULL)
+		return false;
+	if(list->getUsedSlots() == 0)
+		return false;
+	return true;
+}
+std::string BookShelfNodeMetadata::getDrawSpecString()
+{
+	return
+		"size[8,7]"
+		"list[current_name;0;0.5,0;7,2;]"
+		"list[current_player;main;0,3;8,4;]";
+}
+std::vector<aabb3f> BookShelfNodeMetadata::getNodeBoxes(MapNode &n) {
+	std::vector<aabb3f> boxes;
+	boxes.clear();
+
+	InventoryList *list = m_inventory->getList("0");
+	if(list == NULL)
+		return boxes;
+	if(list->getUsedSlots() == 0)
+		return boxes;
+
+	f32 x = 0;
+	f32 y = 0;
+
+	for (s16 i=0; i<14; i++) {
+		if (list->getItem(i) == NULL)
+			continue;
+		x = (i%7)*0.125;
+		y = (i/7)*-0.5;
+
+		boxes.push_back(aabb3f(
+			(-0.4375+x)*BS,(0.0625+y)*BS,-0.4375*BS,(-0.3125+x)*BS,(0.375+y)*BS,-0.0625*BS
+		));
+		boxes.push_back(aabb3f(
+			(0.3125-x)*BS,(0.0625+y)*BS,0.0625*BS,(0.4375-x)*BS,(0.375+y)*BS,0.4375*BS
+		));
+	}
+
+	return transformNodeBox(n,boxes);
+}

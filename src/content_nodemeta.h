@@ -427,5 +427,24 @@ private:
 	u16 m_page;
 };
 
+class BookShelfNodeMetadata : public NodeMetadata
+{
+public:
+	BookShelfNodeMetadata();
+	~BookShelfNodeMetadata();
+
+	virtual u16 typeId() const;
+	static NodeMetadata* create(std::istream &is);
+	virtual NodeMetadata* clone();
+	virtual void serializeBody(std::ostream &os);
+	virtual Inventory* getInventory() {return m_inventory;}
+	virtual bool nodeRemovalDisabled();
+	virtual std::string getDrawSpecString();
+	virtual std::vector<aabb3f> getNodeBoxes(MapNode &n);
+
+private:
+	Inventory *m_inventory;
+};
+
 #endif
 

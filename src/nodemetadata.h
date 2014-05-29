@@ -25,6 +25,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <iostream>
 #include <map>
 #include <vector>
+#include "mapnode.h"
 
 class Player;
 
@@ -83,7 +84,7 @@ public:
 	// import data from another nodemetadata. Returns true if metadata changed.
 	virtual bool import(NodeMetadata *meta) {return false;}
 	// get nodeboxes for CDT_NODEBOX_META
-	virtual std::vector<aabb3f> getNodeBoxes() {return std::vector<aabb3f>();}
+	virtual std::vector<aabb3f> getNodeBoxes(MapNode &n) {return std::vector<aabb3f>();}
 	// used by tnt to arm it, but also for future circuitry
 	// level is the amount of power
 	// powersrc is the generator or such that created the power

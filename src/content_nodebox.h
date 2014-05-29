@@ -37,5 +37,6 @@ void content_nodebox_sign_ud(ContentFeatures *f);
 void content_nodebox_sign_wall(ContentFeatures *f);
 void content_nodebox_jackolantern(ContentFeatures *f);
 void content_nodebox_roofcollide(ContentFeatures *f);
+void content_nodebox_bookshelf(ContentFeatures *f);
 
 #endif

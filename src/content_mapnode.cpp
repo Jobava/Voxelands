@@ -1340,16 +1340,27 @@ void content_mapnode_init()
 	i = CONTENT_BOOKSHELF;
 	f = &content_features(i);
 	f->description = std::string("Book Shelf");
-	f->setAllTextures("bookshelf.png");
-	f->setTexture(0, "wood.png");
-	f->setTexture(1, "wood.png");
-	f->setInventoryTextureCube("wood.png", "bookshelf.png", "bookshelf.png");
-	f->draw_type = CDT_CUBELIKE;
+	f->setAllTextures("bookshelf_front.png");
+	f->setTexture(0, "bookshelf_top.png");
+	f->setTexture(1, "bookshelf_top.png");
+	f->setTexture(2, "bookshelf_side.png");
+	f->setTexture(3, "bookshelf_side.png");
+	f->setAllMetaTextures("bookshelf_book.png");
+	f->setMetaTexture(0, "bookshelf_book_top.png");
+	f->rotate_tile_with_nodebox = true;
+	//f->setInventoryTextureCube("wood.png", "bookshelf.png", "bookshelf.png");
+	f->draw_type = CDT_NODEBOX_META;
+	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->is_ground_content = true;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/4;
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
+	f->solidness = 0;
+	content_nodebox_bookshelf(f);
+	f->setInventoryTextureNodeBox(i,"bookshelf_top.png", "bookshelf_front.png", "bookshelf_side.png");
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new BookShelfNodeMetadata();
 	{
 		u16 r[9] = {
 			CONTENT_WOOD,	CONTENT_WOOD,	CONTENT_WOOD,
