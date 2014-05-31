@@ -1902,6 +1902,13 @@ BookShelfNodeMetadata::BookShelfNodeMetadata()
 
 	m_inventory = new Inventory();
 	m_inventory->addList("0", 14);
+	InventoryList *l = m_inventory->getList("0");
+	l->setStackable(false);
+	l->addAllowed(CONTENT_BOOK);
+	l->addAllowed(CONTENT_COOK_BOOK);
+	l->addAllowed(CONTENT_DECRAFT_BOOK);
+	l->addAllowed(CONTENT_DIARY_BOOK);
+	l->addAllowed(CONTENT_CRAFT_BOOK);
 }
 BookShelfNodeMetadata::~BookShelfNodeMetadata()
 {
@@ -1909,7 +1916,7 @@ BookShelfNodeMetadata::~BookShelfNodeMetadata()
 }
 u16 BookShelfNodeMetadata::typeId() const
 {
-	return CONTENT_CHEST;
+	return CONTENT_BOOKSHELF;
 }
 NodeMetadata* BookShelfNodeMetadata::create(std::istream &is)
 {

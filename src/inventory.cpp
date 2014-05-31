@@ -292,7 +292,9 @@ InventoryList::InventoryList(std::string name, u32 size)
 	m_name = name;
 	m_size = size;
 	clearItems();
-	//m_dirty = false;
+	clearAllowed();
+	clearDenied();
+	setStackable();
 }
 
 InventoryList::~InventoryList()
@@ -341,14 +343,36 @@ void InventoryList::serialize(std::ostream &os) const
 		os<<"\n";
 	}
 
+	if (!m_stackable)
+		os<<"Unstackable\n";
+	for (std::map<content_t, bool>::const_iterator i = m_allowed.begin(); i != m_allowed.end(); ++i) {
+		content_t c = i->first;
+		bool s = i->second;
+		if (!s)
+			continue;
+		os<<"Allowed ";
+		os<<itos(c);
+		os<<"\n";
+	}
+	for (std::map<content_t, bool>::const_iterator i = m_denied.begin(); i != m_denied.end(); ++i) {
+		content_t c = i->first;
+		bool s = i->second;
+		if (!s)
+			continue;
+		os<<"Denied ";
+		os<<itos(c);
+		os<<"\n";
+	}
+
 	os<<"EndInventoryList\n";
 }
 
 void InventoryList::deSerialize(std::istream &is)
 {
-	//is.imbue(std::locale("C"));
-
 	clearItems();
+	clearAllowed();
+	clearDenied();
+	m_stackable = true;
 	u32 item_i = 0;
 
 	for(;;)
@@ -357,35 +381,32 @@ void InventoryList::deSerialize(std::istream &is)
 		std::getline(is, line, '\n');
 
 		std::istringstream iss(line);
-		//iss.imbue(std::locale("C"));
 
 		std::string name;
 		std::getline(iss, name, ' ');
 
-		if(name == "EndInventoryList")
-		{
+		if (name == "EndInventoryList") {
 			break;
-		}
-		// This is a temporary backwards compatibility fix
-		else if(name == "end")
-		{
-			break;
-		}
-		else if(name == "Item")
-		{
+		}else if (name == "Unstackable") {
+			m_stackable = false;
+		}else if (name == "Allowed") {
+			u16 c;
+			iss >> c;
+			m_allowed[c] = true;
+		}else if (name == "Denied") {
+			u16 c;
+			iss >> c;
+			m_denied[c] = true;
+		}else if (name == "Item") {
 			if(item_i > getSize() - 1)
 				throw SerializationError("too many items");
 			InventoryItem *item = InventoryItem::deSerialize(iss);
 			m_items[item_i++] = item;
-		}
-		else if(name == "Empty")
-		{
+		}else if (name == "Empty") {
 			if(item_i > getSize() - 1)
 				throw SerializationError("too many items");
 			m_items[item_i++] = NULL;
-		}
-		else
-		{
+		}else{
 			throw SerializationError("Unknown inventory identifier");
 		}
 	}
@@ -413,6 +434,9 @@ InventoryList & InventoryList::operator = (const InventoryList &other)
 			m_items[i] = item->clone();
 		}
 	}
+	m_stackable = other.m_stackable;
+	m_allowed = other.m_allowed;
+	m_denied = other.m_denied;
 	//setDirty(true);
 
 	return *this;
@@ -482,31 +506,34 @@ InventoryItem * InventoryList::addItem(InventoryItem *newitem)
 	if(newitem == NULL)
 		return NULL;
 
+	if (!isAllowed(newitem))
+		return newitem;
+
 	/*
 		First try to find if it could be added to some existing items
 	*/
-	for(u32 i=0; i<m_items.size(); i++)
-	{
-		// Ignore empty slots
-		if(m_items[i] == NULL)
-			continue;
-		// Try adding
-		newitem = addItem(i, newitem);
-		if(newitem == NULL)
-			return NULL; // All was eaten
+	if (m_stackable) {
+		for (u32 i=0; i<m_items.size(); i++) {
+			// Ignore empty slots
+			if (m_items[i] == NULL)
+				continue;
+			// Try adding
+			newitem = addItem(i, newitem);
+			if (newitem == NULL)
+				return NULL; // All was eaten
+		}
 	}
 
 	/*
 		Then try to add it to empty slots
 	*/
-	for(u32 i=0; i<m_items.size(); i++)
-	{
+	for(u32 i=0; i<m_items.size(); i++) {
 		// Ignore unempty slots
-		if(m_items[i] != NULL)
+		if (m_items[i] != NULL)
 			continue;
 		// Try adding
 		newitem = addItem(i, newitem);
-		if(newitem == NULL)
+		if (newitem == NULL)
 			return NULL; // All was eaten
 	}
 
@@ -516,34 +543,46 @@ InventoryItem * InventoryList::addItem(InventoryItem *newitem)
 
 InventoryItem * InventoryList::addItem(u32 i, InventoryItem *newitem)
 {
-	if(newitem == NULL)
+	if (newitem == NULL)
 		return NULL;
 
-	//setDirty(true);
+	if (!isAllowed(newitem))
+		return newitem;
+
+	InventoryItem *to_item = getItem(i);
+
+	if (m_stackable == false) {
+		if (newitem->getCount() > 1) {
+			if (to_item != NULL)
+				return newitem;
+			newitem->remove(1);
+			m_items[i] = newitem->clone();
+			m_items[i]->setCount(1);
+			return newitem;
+		}
+		m_items[i] = newitem;
+		return to_item;
+	}
 
 	// If it is an empty position, it's an easy job.
-	InventoryItem *to_item = getItem(i);
-	if(to_item == NULL)
-	{
+	if (to_item == NULL) {
 		m_items[i] = newitem;
 		return NULL;
 	}
 
 	// If not addable, return the item
-	if(newitem->addableTo(to_item) == false)
+	if (newitem->addableTo(to_item) == false)
 		return newitem;
 
 	// If the item fits fully in the slot, add counter and delete it
-	if(newitem->getCount() <= to_item->freeSpace())
-	{
+	if (newitem->getCount() <= to_item->freeSpace()) {
 		to_item->add(newitem->getCount());
 		delete newitem;
 		return NULL;
 	}
 	// Else the item does not fit fully. Add all that fits and return
 	// the rest.
-	else
-	{
+	else{
 		u16 freespace = to_item->freeSpace();
 		to_item->add(freespace);
 		newitem->remove(freespace);
@@ -876,7 +915,7 @@ void IMoveAction::apply(InventoryContext *c, InventoryManager *mgr)
 	if(item1 != NULL)
 	{
 		// If olditem is returned, nothing was added.
-		bool nothing_added = (item1 == olditem);
+		bool nothing_added = (item1 == olditem && item1->getCount() == count);
 
 		// If something else is returned, part of the item was left unadded.
 		// Add the other part back to the source item

@@ -27,6 +27,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <map>
 #include "common_irrlicht.h"
 #include "debug.h"
 #include "main.h" // For g_materials
@@ -438,6 +439,27 @@ public:
 	u32 getUsedSlots();
 	u32 getFreeSlots();
 
+	// set specific nodes only allowed in inventory
+	void addAllowed(content_t c) {m_allowed[c] = true;}
+	void clearAllowed() {m_allowed.clear();}
+
+	// set specific nodes not allowed in inventory
+	void addDenied(content_t c) {m_denied[c] = true;}
+	void clearDenied() {m_denied.clear();}
+
+	// whether an item is allowed in inventory
+	bool isAllowed(content_t c)
+	{
+		if (m_allowed.size() > 0)
+			return m_allowed[c];
+		return !m_denied[c];
+	}
+	bool isAllowed(InventoryItem *item) {return isAllowed(item->getContent());}
+
+	// set whether items can be stacked (more than one per slot)
+	void setStackable(bool s=true) {m_stackable = s;}
+	bool getStackable() {return m_stackable;}
+
 	/*bool getDirty(){ return m_dirty; }
 	void setDirty(bool dirty=true){ m_dirty = dirty; }*/
 
@@ -482,6 +504,9 @@ private:
 	core::array<InventoryItem*> m_items;
 	u32 m_size;
 	std::string m_name;
+	std::map<content_t,bool> m_allowed;
+	std::map<content_t,bool> m_denied;
+	bool m_stackable;
 	//bool m_dirty;
 };
 
