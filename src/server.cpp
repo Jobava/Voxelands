@@ -73,8 +73,6 @@ private:
 
 void * ServerThread::Thread()
 {
-	ThreadStarted();
-
 	log_register_thread("ServerThread");
 
 	DSTACK(__FUNCTION_NAME);
@@ -110,8 +108,7 @@ void * ServerThread::Thread()
 
 void * EmergeThread::Thread()
 {
-	ThreadStarted();
-
+printf("EmergeThread::Thread()\n");
 	log_register_thread("EmergeThread");
 
 	DSTACK(__FUNCTION_NAME);
@@ -1082,8 +1079,7 @@ void Server::start(unsigned short port)
 		return;
 
 	// Start thread
-	m_thread.setRun(true);
-	m_thread.Start();
+	m_thread.start();
 
 	infostream<<"Server: Started on port "<<port<<std::endl;
 }
@@ -1094,9 +1090,7 @@ void Server::stop()
 
 	infostream<<"Server: Stopping and waiting threads"<<std::endl;
 
-	// Stop threads (set run=false first so both start stopping)
-	m_thread.setRun(false);
-	m_emergethread.setRun(false);
+	// Stop threads
 	m_thread.stop();
 	m_emergethread.stop();
 

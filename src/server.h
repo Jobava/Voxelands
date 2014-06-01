@@ -181,11 +181,8 @@ public:
 
 	void trigger()
 	{
-		setRun(true);
-		if(IsRunning() == false)
-		{
-			Start();
-		}
+		if (getRun() == false)
+			start();
 	}
 };
 

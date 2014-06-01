@@ -131,8 +131,6 @@ QueuedMeshUpdate * MeshUpdateQueue::pop()
 
 void * MeshUpdateThread::Thread()
 {
-	ThreadStarted();
-
 	log_register_thread("MeshUpdateThread");
 
 	DSTACK(__FUNCTION_NAME);
@@ -213,7 +211,7 @@ Client::Client(
 
 	m_httpclient = new HTTPClient(this);
 
-	m_mesh_update_thread.Start();
+	m_mesh_update_thread.start();
 
 	/*
 		Add local player
@@ -241,9 +239,7 @@ Client::~Client()
 	if (g_settings->getBool("enable_http"))
 		m_httpclient->stop();
 
-	m_mesh_update_thread.setRun(false);
-	while(m_mesh_update_thread.IsRunning())
-		sleep_ms(100);
+	m_mesh_update_thread.stop();
 }
 
 void Client::connect(Address address)

@@ -515,7 +515,7 @@ Connection::Connection(u32 protocol_id, u32 max_packet_size, float timeout):
 {
 	m_socket.setTimeoutMs(5);
 
-	Start();
+	start();
 }
 
 Connection::Connection(u32 protocol_id, u32 max_packet_size, float timeout,
@@ -530,7 +530,7 @@ Connection::Connection(u32 protocol_id, u32 max_packet_size, float timeout,
 {
 	m_socket.setTimeoutMs(5);
 
-	Start();
+	start();
 }
 
 
@@ -543,7 +543,6 @@ Connection::~Connection()
 
 void * Connection::Thread()
 {
-	ThreadStarted();
 	log_register_thread("Connection");
 
 	dout_con<<"Connection thread started"<<std::endl;
@@ -996,7 +995,7 @@ void Connection::serve(u16 port)
 	m_socket.Bind(port);
 #ifndef SERVER
 	}catch(SocketException &e) {
-		setRun(false);
+		stop();
 		return;
 	}
 #endif

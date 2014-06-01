@@ -973,44 +973,193 @@ inline void str_replace_char(std::string & str, char from, char to)
 }
 
 /*
+	A simple mutex implementation
+*/
+#ifdef _WIN32
+class SimpleMutex
+{
+	CRITICAL_SECTION mut;
+
+public:
+
+	SimpleMutex()
+	{
+		InitializeCriticalSection(&mut);
+	}
+
+	~SimpleMutex()
+	{
+		unlock();
+		DeleteCriticalSection(&mut);
+	}
+
+	void lock()
+	{
+		EnterCriticalSection(&mut);
+	}
+
+	bool trylock()
+	{
+		if (!TryEnterCriticalSection(&mut))
+			return true;
+		return false;
+	}
+
+	void unlock()
+	{
+		LeaveCriticalSection(&mut);
+	}
+};
+#else
+class SimpleMutex
+{
+	pthread_mutexattr_t attr;
+	pthread_mutex_t mut;
+
+public:
+
+	SimpleMutex()
+	{
+		pthread_mutexattr_init(&attr);
+		pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
+		pthread_mutex_init(&mut, &attr);
+	}
+
+	~SimpleMutex()
+	{
+		unlock();
+		pthread_mutex_destroy(&mut);
+		pthread_mutexattr_destroy(&attr);
+	}
+
+	void lock()
+	{
+		pthread_mutex_lock(&mut);
+	}
+
+	int trylock()
+	{
+		if (pthread_mutex_trylock(&mut))
+			return true;
+		return false;
+	}
+
+	void unlock()
+	{
+		pthread_mutex_unlock(&mut);
+	}
+};
+#endif
+
+/*
 	A base class for simple background thread implementation
 */
-
-class SimpleThread : public JThread
+class SimpleThread
 {
 	bool run;
-	JMutex run_mutex;
+	SimpleMutex run_mutex;
+#ifdef _WIN32
+	HANDLE thread;
+#else
+	pthread_t thread;
+	pthread_attr_t attr;
+#endif
 
 public:
 
 	SimpleThread():
-		JThread(),
-		run(true)
+		run(false),
+		run_mutex()
 	{
-		run_mutex.Init();
+#ifndef _WIN32
+		pthread_attr_init(&attr);
+		pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+#endif
 	}
 
 	virtual ~SimpleThread()
-	{}
+	{
+		kill();
+	}
 
 	virtual void * Thread() = 0;
 
 	bool getRun()
 	{
-		JMutexAutoLock lock(run_mutex);
-		return run;
+		run_mutex.lock();
+		bool r = run;
+		run_mutex.unlock();
+		return r;
 	}
 	void setRun(bool a_run)
 	{
-		JMutexAutoLock lock(run_mutex);
+		run_mutex.lock();
 		run = a_run;
+		run_mutex.unlock();
+	}
+
+	void start()
+	{
+		if (getRun()) {
+#ifdef _WIN32
+			ResumeThread(thread);
+#else
+			pthread_kill(thread,SIGCONT);
+#endif
+		}else{
+			setRun(true);
+#ifdef _WIN32
+			thread = CreateThread(NULL, 0, &runThread, this, 0, NULL);
+#else
+			pthread_create(&thread, &attr, &runThread, this);
+#endif
+		}
+	}
+
+	void wait()
+	{
+		if (getRun()) {
+#ifdef _WIN32
+			WaitForSingleObject(thread, 2000);
+			CloseHandle(thread);
+#else
+			pthread_join(thread,NULL);
+#endif
+		}
 	}
 
 	void stop()
 	{
 		setRun(false);
-		while(IsRunning())
-			sleep_ms(100);
+		wait();
+	}
+
+	void kill()
+	{
+		if (getRun()) {
+			setRun(false);
+#ifdef _WIN32
+			TerminateThread(thread,0);
+			CloseHandle(thread);
+#else
+			pthread_kill(thread,SIGKILL);
+#endif
+		}
+	}
+
+private:
+	static void *runThread(void* data)
+	{
+		SimpleThread *t = (SimpleThread*)data;
+		void *r = t->Thread();
+		t->setRun(false);
+#ifdef _WIN32
+		ExitThread(0);
+		CloseHandle(t->thread);
+#else
+		pthread_exit(r);
+#endif
+		return r;
 	}
 };
 
