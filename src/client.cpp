@@ -21,7 +21,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "utility.h"
 #include <iostream>
 #include "clientserver.h"
-#include "jmutexautolock.h"
 #include "main.h"
 #include <sstream>
 #include "porting.h"
@@ -32,6 +31,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "profiler.h"
 #include "log.h"
 #include "http.h"
+#include "threads.h"
 
 /*
 	QueuedMeshUpdate
@@ -56,12 +56,12 @@ QueuedMeshUpdate::~QueuedMeshUpdate()
 
 MeshUpdateQueue::MeshUpdateQueue()
 {
-	m_mutex.Init();
+	m_mutex.init();
 }
 
 MeshUpdateQueue::~MeshUpdateQueue()
 {
-	JMutexAutoLock lock(m_mutex);
+	SimpleMutexAutoLock lock(m_mutex);
 
 	core::list<QueuedMeshUpdate*>::Iterator i;
 	for(i=m_queue.begin(); i!=m_queue.end(); i++)
@@ -80,7 +80,7 @@ void MeshUpdateQueue::addBlock(v3s16 p, MeshMakeData *data, bool ack_block_to_se
 
 	assert(data);
 
-	JMutexAutoLock lock(m_mutex);
+	SimpleMutexAutoLock lock(m_mutex);
 
 	/*
 		Find if block is already in queue.
@@ -115,7 +115,7 @@ void MeshUpdateQueue::addBlock(v3s16 p, MeshMakeData *data, bool ack_block_to_se
 // Returns NULL if queue is empty
 QueuedMeshUpdate * MeshUpdateQueue::pop()
 {
-	JMutexAutoLock lock(m_mutex);
+	SimpleMutexAutoLock lock(m_mutex);
 
 	core::list<QueuedMeshUpdate*>::Iterator i = m_queue.begin();
 	if(i == m_queue.end())
@@ -217,7 +217,7 @@ Client::Client(
 		Add local player
 	*/
 	{
-		//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
+		//SimpleMutexAutoLock envlock(m_env_mutex); //bulk comment-out
 
 		Player *player = new LocalPlayer();
 
@@ -233,7 +233,7 @@ Client::Client(
 Client::~Client()
 {
 	{
-		//JMutexAutoLock conlock(m_con_mutex); //bulk comment-out
+		//SimpleMutexAutoLock conlock(m_con_mutex); //bulk comment-out
 		m_con.Disconnect();
 	}
 	if (g_settings->getBool("enable_http"))
@@ -245,7 +245,7 @@ Client::~Client()
 void Client::connect(Address address)
 {
 	DSTACK(__FUNCTION_NAME);
-	//JMutexAutoLock lock(m_con_mutex); //bulk comment-out
+	//SimpleMutexAutoLock lock(m_con_mutex); //bulk comment-out
 	m_con.SetTimeoutMs(0);
 	m_con.Connect(address);
 	if (g_settings->getBool("enable_http"))
@@ -254,7 +254,7 @@ void Client::connect(Address address)
 
 bool Client::connectedAndInitialized()
 {
-	//JMutexAutoLock lock(m_con_mutex); //bulk comment-out
+	//SimpleMutexAutoLock lock(m_con_mutex); //bulk comment-out
 
 	if(m_con.Connected() == false)
 		return false;
@@ -289,7 +289,7 @@ void Client::step(float dtime)
 	{
 		//TimeTaker timer("m_con_mutex + m_con.RunTimeouts()", m_device);
 		// 0ms
-		//JMutexAutoLock lock(m_con_mutex); //bulk comment-out
+		//SimpleMutexAutoLock lock(m_con_mutex); //bulk comment-out
 		m_con.RunTimeouts(dtime);
 	}
 
@@ -329,7 +329,7 @@ void Client::step(float dtime)
 			//counter = 180.0;
 			counter = 60.0;
 
-			//JMutexAutoLock lock(m_env_mutex); //bulk comment-out
+			//SimpleMutexAutoLock lock(m_env_mutex); //bulk comment-out
 
 			core::list<v3s16> deleted_blocks;
 
@@ -358,7 +358,7 @@ void Client::step(float dtime)
 				*/
 
 				// Env is locked so con can be locked.
-				//JMutexAutoLock lock(m_con_mutex); //bulk comment-out
+				//SimpleMutexAutoLock lock(m_con_mutex); //bulk comment-out
 
 				core::list<v3s16>::Iterator i = deleted_blocks.begin();
 				core::list<v3s16> sendlist;
@@ -411,7 +411,7 @@ void Client::step(float dtime)
 		{
 			counter = 2.0;
 
-			//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
+			//SimpleMutexAutoLock envlock(m_env_mutex); //bulk comment-out
 
 			Player *myplayer = m_env.getLocalPlayer();
 			assert(myplayer != NULL);
@@ -516,7 +516,7 @@ void Client::step(float dtime)
 	*/
 	{
 		// 0ms
-		//JMutexAutoLock lock(m_env_mutex); //bulk comment-out
+		//SimpleMutexAutoLock lock(m_env_mutex); //bulk comment-out
 
 		// Control local player (0ms)
 		LocalPlayer *player = m_env.getLocalPlayer();
@@ -563,7 +563,7 @@ void Client::step(float dtime)
 		if(counter >= 10)
 		{
 			counter = 0.0;
-			//JMutexAutoLock lock(m_con_mutex); //bulk comment-out
+			//SimpleMutexAutoLock lock(m_con_mutex); //bulk comment-out
 			// connectedAndInitialized() is true, peer exists.
 			float avg_rtt = m_con.GetPeerAvgRTT(PEER_ID_SERVER);
 			infostream<<"Client: avg_rtt="<<avg_rtt<<std::endl;
@@ -587,7 +587,7 @@ void Client::step(float dtime)
 		Replace updated meshes
 	*/
 	{
-		//JMutexAutoLock lock(m_env_mutex); //bulk comment-out
+		//SimpleMutexAutoLock lock(m_env_mutex); //bulk comment-out
 
 		//TimeTaker timer("** Processing mesh update result queue");
 		// 0ms
@@ -672,7 +672,7 @@ void Client::Receive()
 	u32 datasize;
 	{
 		//TimeTaker t1("con mutex and receive", m_device);
-		//JMutexAutoLock lock(m_con_mutex); //bulk comment-out
+		//SimpleMutexAutoLock lock(m_con_mutex); //bulk comment-out
 		datasize = m_con.Receive(sender_peer_id, data);
 	}
 	//TimeTaker t1("ProcessData", m_device);
@@ -741,7 +741,7 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		v3f playerpos_f = intToFloat(playerpos_s16, BS) - v3f(0, BS/2, 0);
 
 		{ //envlock
-			//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
+			//SimpleMutexAutoLock envlock(m_env_mutex); //bulk comment-out
 
 			// Set player position
 			Player *player = m_env.getLocalPlayer();
@@ -927,7 +927,7 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 				<<std::endl;
 		/*u16 our_peer_id;
 		{
-			//JMutexAutoLock lock(m_con_mutex); //bulk comment-out
+			//SimpleMutexAutoLock lock(m_con_mutex); //bulk comment-out
 			our_peer_id = m_con.GetPeerID();
 		}
 		// Cancel if we don't have a peer id
@@ -939,7 +939,7 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		}*/
 
 		{ //envlock
-			//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
+			//SimpleMutexAutoLock envlock(m_env_mutex); //bulk comment-out
 
 			u32 player_size = 2+12+12+4+4;
 
@@ -993,7 +993,7 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 	{
 		u16 our_peer_id;
 		{
-			//JMutexAutoLock lock(m_con_mutex); //bulk comment-out
+			//SimpleMutexAutoLock lock(m_con_mutex); //bulk comment-out
 			our_peer_id = m_con.GetPeerID();
 		}
 		// Cancel if we don't have a peer id
@@ -1007,7 +1007,7 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		//infostream<<"Client: Server reports players:"<<std::endl;
 
 		{ //envlock
-			//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
+			//SimpleMutexAutoLock envlock(m_env_mutex); //bulk comment-out
 
 			u32 item_size = 2+PLAYERNAME_SIZE;
 			u32 player_count = (datasize-2) / item_size;
@@ -1130,7 +1130,7 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		//infostream<<"Client received TOCLIENT_SECTORMETA"<<std::endl;
 
 		{ //envlock
-			//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
+			//SimpleMutexAutoLock envlock(m_env_mutex); //bulk comment-out
 
 			std::string datastring((char*)&data[2], datasize-2);
 			std::istringstream is(datastring, std::ios_base::binary);
@@ -1165,7 +1165,7 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 
 		{ //envlock
 			//TimeTaker t2("mutex locking", m_device);
-			//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
+			//SimpleMutexAutoLock envlock(m_env_mutex); //bulk comment-out
 			//t2.stop();
 
 			//TimeTaker t3("istringstream init", m_device);
@@ -1345,7 +1345,7 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 				u16 id = readU16((u8*)buf);
 				// Remove it
 				{
-					//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
+					//SimpleMutexAutoLock envlock(m_env_mutex); //bulk comment-out
 					m_env.removeActiveObject(id);
 				}
 			}
@@ -1362,7 +1362,7 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 				std::string data = deSerializeLongString(is);
 				// Add it
 				{
-					//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
+					//SimpleMutexAutoLock envlock(m_env_mutex); //bulk comment-out
 					m_env.addActiveObject(id, type, data);
 				}
 			}
@@ -1405,7 +1405,7 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 				}
 				// Pass on to the environment
 				{
-					//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
+					//SimpleMutexAutoLock envlock(m_env_mutex); //bulk comment-out
 					m_env.processActiveObjectMessage(id, message);
 				}
 			}
@@ -1540,7 +1540,7 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 
 void Client::Send(u16 channelnum, SharedBuffer<u8> data, bool reliable)
 {
-	//JMutexAutoLock lock(m_con_mutex); //bulk comment-out
+	//SimpleMutexAutoLock lock(m_con_mutex); //bulk comment-out
 	m_con.Send(PEER_ID_SERVER, channelnum, data, reliable);
 }
 
@@ -1794,7 +1794,7 @@ void Client::sendWantCookie()
 
 void Client::sendPlayerPos()
 {
-	//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
+	//SimpleMutexAutoLock envlock(m_env_mutex); //bulk comment-out
 
 	Player *myplayer = m_env.getLocalPlayer();
 	if(myplayer == NULL)
@@ -1802,7 +1802,7 @@ void Client::sendPlayerPos()
 
 	u16 our_peer_id;
 	{
-		//JMutexAutoLock lock(m_con_mutex); //bulk comment-out
+		//SimpleMutexAutoLock lock(m_con_mutex); //bulk comment-out
 		our_peer_id = m_con.GetPeerID();
 	}
 
@@ -1863,7 +1863,7 @@ void Client::sendPlayerItem(u16 item)
 
 void Client::removeNode(v3s16 p)
 {
-	//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
+	//SimpleMutexAutoLock envlock(m_env_mutex); //bulk comment-out
 
 	core::map<v3s16, MapBlock*> modified_blocks;
 
@@ -1888,7 +1888,7 @@ void Client::removeNode(v3s16 p)
 
 void Client::addNode(v3s16 p, MapNode n)
 {
-	//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
+	//SimpleMutexAutoLock envlock(m_env_mutex); //bulk comment-out
 
 	TimeTaker timer1("Client::addNode()");
 
@@ -1927,7 +1927,7 @@ void Client::renderPostFx()
 
 MapNode Client::getNode(v3s16 p)
 {
-	//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
+	//SimpleMutexAutoLock envlock(m_env_mutex); //bulk comment-out
 	return m_env.getMap().getNode(p);
 }
 
@@ -1943,7 +1943,7 @@ LocalPlayer* Client::getLocalPlayer()
 
 void Client::setPlayerControl(PlayerControl &control)
 {
-	//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
+	//SimpleMutexAutoLock envlock(m_env_mutex); //bulk comment-out
 	LocalPlayer *player = m_env.getLocalPlayer();
 	assert(player != NULL);
 	player->control = control;
@@ -1964,7 +1964,7 @@ void Client::selectPlayerItem(u16 item)
 bool Client::getLocalInventoryUpdated()
 {
 	// m_inventory_updated is behind envlock
-	//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
+	//SimpleMutexAutoLock envlock(m_env_mutex); //bulk comment-out
 	bool updated = m_inventory_updated;
 	m_inventory_updated = false;
 	return updated;
@@ -1973,7 +1973,7 @@ bool Client::getLocalInventoryUpdated()
 // Copies the inventory of the local player to parameter
 void Client::getLocalInventory(Inventory &dst)
 {
-	//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
+	//SimpleMutexAutoLock envlock(m_env_mutex); //bulk comment-out
 	Player *player = m_env.getLocalPlayer();
 	assert(player != NULL);
 	dst = player->inventory;
@@ -2096,8 +2096,8 @@ ClientActiveObject * Client::getSelectedActiveObject(
 
 void Client::printDebugInfo(std::ostream &os)
 {
-	//JMutexAutoLock lock1(m_fetchblock_mutex);
-	/*JMutexAutoLock lock2(m_incoming_queue_mutex);
+	//SimpleMutexAutoLock lock1(m_fetchblock_mutex);
+	/*SimpleMutexAutoLock lock2(m_incoming_queue_mutex);
 
 	os<<"m_incoming_queue.getSize()="<<m_incoming_queue.getSize()
 		//<<", m_fetchblock_history.size()="<<m_fetchblock_history.size()
@@ -2107,7 +2107,7 @@ void Client::printDebugInfo(std::ostream &os)
 
 u32 Client::getDayNightRatio()
 {
-	//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
+	//SimpleMutexAutoLock envlock(m_env_mutex); //bulk comment-out
 	return m_env.getDayNightRatio();
 }
 
@@ -2120,7 +2120,7 @@ u16 Client::getHP()
 
 void Client::setTempMod(v3s16 p, NodeMod mod)
 {
-	//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
+	//SimpleMutexAutoLock envlock(m_env_mutex); //bulk comment-out
 	assert(m_env.getMap().mapType() == MAPTYPE_CLIENT);
 
 	core::map<v3s16, MapBlock*> affected_blocks;
@@ -2137,7 +2137,7 @@ void Client::setTempMod(v3s16 p, NodeMod mod)
 
 void Client::clearTempMod(v3s16 p)
 {
-	//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
+	//SimpleMutexAutoLock envlock(m_env_mutex); //bulk comment-out
 	assert(m_env.getMap().mapType() == MAPTYPE_CLIENT);
 
 	core::map<v3s16, MapBlock*> affected_blocks;

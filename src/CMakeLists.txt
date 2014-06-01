@@ -81,7 +81,6 @@ else()
 	set(CLIENT_PLATFORM_LIBS ${CLIENT_PLATFORM_LIBS} ${XXF86VM_LIBRARY})
 endif()
 
-find_package(Jthread REQUIRED)
 find_package(Sqlite3 REQUIRED)
 
 configure_file(
@@ -187,7 +186,6 @@ include_directories(
 	${CMAKE_BUILD_TYPE}
 	${PNG_INCLUDE_DIR}
 	${GETTEXT_INCLUDE_DIR}
-	${JTHREAD_INCLUDE_DIR}
 	${SQLITE3_INCLUDE_DIR}
 )
 
@@ -205,7 +203,6 @@ if(BUILD_CLIENT)
 		${PNG_LIBRARIES}
 		${X11_LIBRARIES}
 		${GETTEXT_LIBRARY}
-		${JTHREAD_LIBRARY}
 		${SQLITE3_LIBRARY}
 		${PLATFORM_LIBS}
 		${CLIENT_PLATFORM_LIBS}
@@ -217,7 +214,6 @@ if(BUILD_SERVER)
 	target_link_libraries(
 		${PROJECT_NAME}-server
 		${ZLIB_LIBRARIES}
-		${JTHREAD_LIBRARY}
 		${SQLITE3_LIBRARY}
 		${PLATFORM_LIBS}
 	)
@@ -364,11 +360,6 @@ if (USE_GETTEXT)
 endif(USE_GETTEXT)
 
 # Subdirectories
-
-if (JTHREAD_FOUND)
-else (JTHREAD_FOUND)
-	add_subdirectory(jthread)
-endif (JTHREAD_FOUND)
 
 if (SQLITE3_FOUND)
 else (SQLITE3_FOUND)

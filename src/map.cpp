@@ -2742,12 +2742,13 @@ std::string ServerMap::getSectorDir(v2s16 pos, int layout)
 		default:
 			assert(false);
 	}
+	return "";
 }
 
 v2s16 ServerMap::getSectorPos(std::string dirname)
 {
 	unsigned int x, y;
-	int r;
+	int r = 0;
 	size_t spos = dirname.rfind(DIR_DELIM_C) + 1;
 	assert(spos != std::string::npos);
 	if(dirname.size() - spos == 8)
@@ -3503,8 +3504,7 @@ ClientMap::ClientMap(
 	m_camera_direction(0,0,1),
 	m_camera_fov(PI)
 {
-	m_camera_mutex.Init();
-	assert(m_camera_mutex.IsInitialized());
+	m_camera_mutex.init();
 
 	m_box = core::aabbox3d<f32>(-BS*1000000,-BS*1000000,-BS*1000000,
 			BS*1000000,BS*1000000,BS*1000000);
@@ -3512,7 +3512,7 @@ ClientMap::ClientMap(
 
 ClientMap::~ClientMap()
 {
-	/*JMutexAutoLock lock(mesh_mutex);
+	/*SimpleMutexAutoLock lock(mesh_mutex);
 
 	if(mesh != NULL)
 	{
@@ -3536,7 +3536,7 @@ MapSector * ClientMap::emergeSector(v2s16 p2d)
 	ClientMapSector *sector = new ClientMapSector(this, p2d);
 
 	{
-		//JMutexAutoLock lock(m_sector_mutex); // Bulk comment-out
+		//SimpleMutexAutoLock lock(m_sector_mutex); // Bulk comment-out
 		m_sectors.insert(p2d, sector);
 	}
 
@@ -3549,7 +3549,7 @@ void ClientMap::deSerializeSector(v2s16 p2d, std::istream &is)
 	DSTACK(__FUNCTION_NAME);
 	ClientMapSector *sector = NULL;
 
-	//JMutexAutoLock lock(m_sector_mutex); // Bulk comment-out
+	//SimpleMutexAutoLock lock(m_sector_mutex); // Bulk comment-out
 
 	core::map<v2s16, MapSector*>::Node *n = m_sectors.find(p2d);
 
@@ -3562,7 +3562,7 @@ void ClientMap::deSerializeSector(v2s16 p2d, std::istream &is)
 	{
 		sector = new ClientMapSector(this, p2d);
 		{
-			//JMutexAutoLock lock(m_sector_mutex); // Bulk comment-out
+			//SimpleMutexAutoLock lock(m_sector_mutex); // Bulk comment-out
 			m_sectors.insert(p2d, sector);
 		}
 	}
@@ -3646,12 +3646,12 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 
 	//u32 daynight_ratio = m_client->getDayNightRatio();
 
-	m_camera_mutex.Lock();
+	m_camera_mutex.lock();
 	v3f camera_position = m_camera_position;
 	v3f camera_direction = m_camera_direction;
 	f32 camera_fov = m_camera_fov;
 	v3s16 camera_offset = m_camera_offset;
-	m_camera_mutex.Unlock();
+	m_camera_mutex.unlock();
 
 	/*
 		Get all blocks and draw all visible ones
@@ -3774,7 +3774,7 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 			bool mesh_expired = false;
 
 			{
-				JMutexAutoLock lock(block->mesh_mutex);
+				SimpleMutexAutoLock lock(block->mesh_mutex);
 
 				mesh_expired = block->getMeshExpired();
 
@@ -3859,7 +3859,7 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 				Ignore if mesh doesn't exist
 			*/
 			{
-				JMutexAutoLock lock(block->mesh_mutex);
+				SimpleMutexAutoLock lock(block->mesh_mutex);
 
 				MapBlockMesh *mesh = block->mesh;
 
@@ -3923,7 +3923,7 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 			Draw the faces of the block
 		*/
 		{
-			JMutexAutoLock lock(block->mesh_mutex);
+			SimpleMutexAutoLock lock(block->mesh_mutex);
 
 			MapBlockMesh *mesh = block->mesh;
 			assert(mesh);
@@ -4001,9 +4001,9 @@ void ClientMap::renderPostFx()
 	// Sadly ISceneManager has no "post effects" render pass, in that case we
 	// could just register for that and handle it in renderMap().
 
-	m_camera_mutex.Lock();
+	m_camera_mutex.lock();
 	v3f camera_position = m_camera_position;
-	m_camera_mutex.Unlock();
+	m_camera_mutex.unlock();
 
 	MapNode n = getNodeNoEx(floatToInt(camera_position, BS));
 
@@ -4140,7 +4140,7 @@ void ClientMap::expireMeshes(bool only_daynight_diffed)
 			}
 
 			{
-				JMutexAutoLock lock(block->mesh_mutex);
+				SimpleMutexAutoLock lock(block->mesh_mutex);
 				if(block->mesh != NULL)
 				{
 					/*block->mesh->drop();

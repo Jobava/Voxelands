@@ -24,10 +24,11 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #ifndef MAPSECTOR_HEADER
 #define MAPSECTOR_HEADER
 
-#include <jmutex.h>
 #include "common_irrlicht.h"
 #include "exceptions.h"
 #include <ostream>
+#include "porting.h"
+#include "threads.h"
 
 class MapBlock;
 class Map;

@@ -52,7 +52,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <iostream>
 #include <fstream>
 #include <time.h>
-#include <jmutexautolock.h>
 #include <locale.h>
 #include "common_irrlicht.h"
 #include "debug.h"
@@ -78,6 +77,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "content_craftitem.h"
 #include "content_toolitem.h"
 #include "http.h"
+#include "threads.h"
 
 /*
 	Settings.

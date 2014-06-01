@@ -115,16 +115,16 @@ void DebugStack::print(FILE *file, bool everything)
 
 
 core::map<threadid_t, DebugStack*> g_debug_stacks;
-JMutex g_debug_stacks_mutex;
+SimpleMutex g_debug_stacks_mutex;
 
 void debug_stacks_init()
 {
-	g_debug_stacks_mutex.Init();
+	g_debug_stacks_mutex.init();
 }
 
 void debug_stacks_print()
 {
-	JMutexAutoLock lock(g_debug_stacks_mutex);
+	SimpleMutexAutoLock lock(g_debug_stacks_mutex);
 
 	DEBUGPRINT("Debug stacks:\n");
 
@@ -146,7 +146,7 @@ DebugStacker::DebugStacker(const char *text)
 {
 	threadid_t threadid = get_current_thread_id();
 
-	JMutexAutoLock lock(g_debug_stacks_mutex);
+	SimpleMutexAutoLock lock(g_debug_stacks_mutex);
 
 	core::map<threadid_t, DebugStack*>::Node *n;
 	n = g_debug_stacks.find(threadid);
@@ -180,7 +180,7 @@ DebugStacker::DebugStacker(const char *text)
 
 DebugStacker::~DebugStacker()
 {
-	JMutexAutoLock lock(g_debug_stacks_mutex);
+	SimpleMutexAutoLock lock(g_debug_stacks_mutex);
 
 	if(m_overflowed == true)
 		return;

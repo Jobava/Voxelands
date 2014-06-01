@@ -25,11 +25,11 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "connection.h"
 #include "environment.h"
 #include "common_irrlicht.h"
-#include "jmutex.h"
 #include <ostream>
 #include "clientobject.h"
 #include "particles.h"
 #include "utility.h" // For IntervalLimiter
+#include "threads.h"
 
 struct MeshMakeData;
 
@@ -72,13 +72,13 @@ public:
 
 	u32 size()
 	{
-		JMutexAutoLock lock(m_mutex);
+		SimpleMutexAutoLock lock(m_mutex);
 		return m_queue.size();
 	}
 
 private:
 	core::list<QueuedMeshUpdate*> m_queue;
-	JMutex m_mutex;
+	SimpleMutex m_mutex;
 };
 
 class MapBlockMesh;
@@ -287,7 +287,7 @@ public:
 			return;
 		}
 
-		//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
+		//SimpleMutexAutoLock envlock(m_env_mutex); //bulk comment-out
 		LocalPlayer *player = m_env.getLocalPlayer();
 		assert(player != NULL);
 		std::wstring name = narrow_to_wide(player->getName());

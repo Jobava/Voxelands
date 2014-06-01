@@ -21,12 +21,10 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define AUTH_HEADER
 
 #include <string>
-#include <jthread.h>
-#include <jmutex.h>
 #include "common_irrlicht.h"
 #include "exceptions.h"
-
-using namespace jthread;
+#include "porting.h"
+#include "threads.h"
 
 // Player privileges. These form a bitmask stored in the privs field
 // of the player, and define things they're allowed to do. See also
@@ -94,7 +92,7 @@ public:
 	void setPrivs(const std::string &username, u64 privs);
 	bool isModified();
 private:
-	JMutex m_mutex;
+	SimpleMutex m_mutex;
 	std::string m_authfilepath;
 	core::map<std::string, AuthData> m_authdata;
 	bool m_modified;

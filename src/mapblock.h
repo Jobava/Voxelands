@@ -20,8 +20,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #ifndef MAPBLOCK_HEADER
 #define MAPBLOCK_HEADER
 
-#include <jmutex.h>
-#include <jmutexautolock.h>
 #include <exception>
 #include "debug.h"
 #include "common_irrlicht.h"
@@ -33,6 +31,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "nodemetadata.h"
 #include "staticobject.h"
 #include "mapblock_nodemod.h"
+#include "threads.h"
 #ifndef SERVER
 	#include "mapblock_mesh.h"
 #endif
@@ -436,32 +435,32 @@ public:
 				<<", mod.type="<<mod.type
 				<<", mod.param="<<mod.param
 				<<std::endl;*/
-		JMutexAutoLock lock(m_temp_mods_mutex);
+		SimpleMutexAutoLock lock(m_temp_mods_mutex);
 
 		return m_temp_mods.set(p, mod);
 	}
 	// Returns true if there was one
 	bool getTempMod(v3s16 p, NodeMod *mod)
 	{
-		JMutexAutoLock lock(m_temp_mods_mutex);
+		SimpleMutexAutoLock lock(m_temp_mods_mutex);
 
 		return m_temp_mods.get(p, mod);
 	}
 	bool clearTempMod(v3s16 p)
 	{
-		JMutexAutoLock lock(m_temp_mods_mutex);
+		SimpleMutexAutoLock lock(m_temp_mods_mutex);
 
 		return m_temp_mods.clear(p);
 	}
 	bool clearTempMods()
 	{
-		JMutexAutoLock lock(m_temp_mods_mutex);
+		SimpleMutexAutoLock lock(m_temp_mods_mutex);
 
 		return m_temp_mods.clear();
 	}
 	void copyTempMods(NodeModMap &dst)
 	{
-		JMutexAutoLock lock(m_temp_mods_mutex);
+		SimpleMutexAutoLock lock(m_temp_mods_mutex);
 		m_temp_mods.copy(dst);
 	}
 #endif
@@ -572,7 +571,7 @@ public:
 
 #ifndef SERVER // Only on client
 	MapBlockMesh *mesh;
-	JMutex mesh_mutex;
+	SimpleMutex mesh_mutex;
 #endif
 
 	NodeMetadataList m_node_metadata;
@@ -636,7 +635,7 @@ private:
 	// Temporary modifications to nodes
 	// These are only used when drawing
 	NodeModMap m_temp_mods;
-	JMutex m_temp_mods_mutex;
+	SimpleMutex m_temp_mods_mutex;
 #endif
 
 	/*

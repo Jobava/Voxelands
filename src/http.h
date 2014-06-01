@@ -244,7 +244,7 @@ private:
 	HTTPRequestHeaders m_send_headers;
 	std::string m_cookie;
 	std::vector<HTTPRequest> m_requests;
-	JMutex m_req_mutex;
+	SimpleMutex m_req_mutex;
 	HTTPClientThread m_thread;
 	Client *m_client;
 	int m_connection_failures;

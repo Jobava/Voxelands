@@ -561,7 +561,7 @@ HTTPClient::HTTPClient(Client *client):
 	m_thread(this)
 {
 	m_client = client;
-	m_req_mutex.Init();
+	m_req_mutex.init();
 }
 
 /* destructor */
@@ -613,24 +613,24 @@ void HTTPClient::step()
 
 	std::vector<HTTPRequest> p;
 
-	m_req_mutex.Lock();
+	m_req_mutex.lock();
 	p.swap(m_requests);
-	m_req_mutex.Unlock();
+	m_req_mutex.unlock();
 
 	for (std::vector<HTTPRequest>::iterator i = p.begin(); i != p.end(); ++i) {
 		HTTPRequest q = *i;
 		m_socket = new TCPSocket();
 		if (m_socket == NULL) {
-			m_req_mutex.Lock();
+			m_req_mutex.lock();
 			m_requests.push_back(q);
-			m_req_mutex.Unlock();
+			m_req_mutex.unlock();
 			continue;
 		}
 		if (m_socket->Connect(m_address) == false) {
 			delete m_socket;
-			m_req_mutex.Lock();
+			m_req_mutex.lock();
 			m_requests.push_back(q);
-			m_req_mutex.Unlock();
+			m_req_mutex.unlock();
 			m_connection_failures++;
 			/* assume the server has no http */
 			if (m_connection_failures > 4) {
@@ -657,9 +657,9 @@ void HTTPClient::step()
 		h = m_recv_headers.read(m_socket);
 		if (h == -1 || m_recv_headers.getResponse() == 500) {
 			delete m_socket;
-			m_req_mutex.Lock();
+			m_req_mutex.lock();
 			m_requests.push_back(q);
-			m_req_mutex.Unlock();
+			m_req_mutex.unlock();
 			continue;
 		}
 
@@ -757,9 +757,9 @@ void HTTPClient::pushRequest(HTTPRequestType type, std::string &data)
 		url += data + "/skin";
 		HTTPRequest r(url);
 		r.data = data;
-		m_req_mutex.Lock();
+		m_req_mutex.lock();
 		m_requests.push_back(r);
-		m_req_mutex.Unlock();
+		m_req_mutex.unlock();
 		break;
 	}
 	/*
@@ -795,9 +795,9 @@ void HTTPClient::pushRequest(HTTPRequestType type, std::string &data)
 		url += data + "/skin/hash/" + buff;
 		HTTPRequest r(url);
 		r.data = data;
-		m_req_mutex.Lock();
+		m_req_mutex.lock();
 		m_requests.push_back(r);
-		m_req_mutex.Unlock();
+		m_req_mutex.unlock();
 		break;
 	}
 	/*
@@ -819,9 +819,9 @@ void HTTPClient::pushRequest(HTTPRequestType type, std::string &data)
 		std::string url("/player/");
 		url += data + "/skin";
 		HTTPRequest r(url,ptex,data);
-		m_req_mutex.Lock();
+		m_req_mutex.lock();
 		m_requests.push_back(r);
-		m_req_mutex.Unlock();
+		m_req_mutex.unlock();
 		break;
 	}
 	default:;
@@ -834,9 +834,9 @@ void HTTPClient::pushRequest(std::string &url, std::string &data)
 	if (m_thread.getRun() == false)
 		return;
 	HTTPRequest r(url,data);
-	m_req_mutex.Lock();
+	m_req_mutex.lock();
 	m_requests.push_back(r);
-	m_req_mutex.Unlock();
+	m_req_mutex.unlock();
 }
 
 /* send a http GET request to the server */

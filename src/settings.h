@@ -22,9 +22,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "common_irrlicht.h"
 #include <string>
-#include <jthread.h>
-#include <jmutex.h>
-#include <jmutexautolock.h>
 #include "strfnd.h"
 #include <iostream>
 #include <fstream>
@@ -32,6 +29,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "debug.h"
 #include "utility.h"
 #include "log.h"
+#include "threads.h"
 
 enum ValueType
 {
@@ -50,19 +48,17 @@ struct ValueSpec
 	const char *help;
 };
 
-using namespace jthread;
-
 class Settings
 {
 public:
 	Settings()
 	{
-		m_mutex.Init();
+		m_mutex.init();
 	}
 
 	void writeLines(std::ostream &os)
 	{
-		JMutexAutoLock lock(m_mutex);
+		SimpleMutexAutoLock lock(m_mutex);
 
 		for(core::map<std::string, std::string>::Iterator
 				i = m_settings.getIterator();
@@ -76,7 +72,7 @@ public:
 
 	bool parseConfigLine(const std::string &line)
 	{
-		JMutexAutoLock lock(m_mutex);
+		SimpleMutexAutoLock lock(m_mutex);
 
 		std::string trimmedline = trim(line);
 
@@ -176,7 +172,7 @@ public:
 			core::list<std::string> &dst,
 			core::map<std::string, bool> &updated)
 	{
-		JMutexAutoLock lock(m_mutex);
+		SimpleMutexAutoLock lock(m_mutex);
 
 		if(is.eof())
 			return false;
@@ -260,7 +256,7 @@ public:
 			}
 		}
 
-		JMutexAutoLock lock(m_mutex);
+		SimpleMutexAutoLock lock(m_mutex);
 
 		// Write stuff back
 		{
@@ -368,14 +364,14 @@ public:
 
 	void set(std::string name, std::string value)
 	{
-		JMutexAutoLock lock(m_mutex);
+		SimpleMutexAutoLock lock(m_mutex);
 
 		m_settings[name] = value;
 	}
 
 	void set(std::string name, const char *value)
 	{
-		JMutexAutoLock lock(m_mutex);
+		SimpleMutexAutoLock lock(m_mutex);
 
 		m_settings[name] = value;
 	}
@@ -383,21 +379,21 @@ public:
 
 	void setDefault(std::string name, std::string value)
 	{
-		JMutexAutoLock lock(m_mutex);
+		SimpleMutexAutoLock lock(m_mutex);
 
 		m_defaults[name] = value;
 	}
 
 	bool exists(std::string name)
 	{
-		JMutexAutoLock lock(m_mutex);
+		SimpleMutexAutoLock lock(m_mutex);
 
 		return (m_settings.find(name) || m_defaults.find(name));
 	}
 
 	std::string get(std::string name)
 	{
-		JMutexAutoLock lock(m_mutex);
+		SimpleMutexAutoLock lock(m_mutex);
 
 		core::map<std::string, std::string>::Node *n;
 		n = m_settings.find(name);
@@ -560,7 +556,7 @@ public:
 
 	void clear()
 	{
-		JMutexAutoLock lock(m_mutex);
+		SimpleMutexAutoLock lock(m_mutex);
 
 		m_settings.clear();
 		m_defaults.clear();
@@ -568,7 +564,7 @@ public:
 
 	void updateValue(Settings &other, const std::string &name)
 	{
-		JMutexAutoLock lock(m_mutex);
+		SimpleMutexAutoLock lock(m_mutex);
 
 		if(&other == this)
 			return;
@@ -584,8 +580,8 @@ public:
 
 	void update(Settings &other)
 	{
-		JMutexAutoLock lock(m_mutex);
-		JMutexAutoLock lock2(other.m_mutex);
+		SimpleMutexAutoLock lock(m_mutex);
+		SimpleMutexAutoLock lock2(other.m_mutex);
 
 		if(&other == this)
 			return;
@@ -609,8 +605,8 @@ public:
 
 	Settings & operator+=(Settings &other)
 	{
-		JMutexAutoLock lock(m_mutex);
-		JMutexAutoLock lock2(other.m_mutex);
+		SimpleMutexAutoLock lock(m_mutex);
+		SimpleMutexAutoLock lock2(other.m_mutex);
 
 		if(&other == this)
 			return *this;
@@ -637,8 +633,8 @@ public:
 
 	Settings & operator=(Settings &other)
 	{
-		JMutexAutoLock lock(m_mutex);
-		JMutexAutoLock lock2(other.m_mutex);
+		SimpleMutexAutoLock lock(m_mutex);
+		SimpleMutexAutoLock lock2(other.m_mutex);
 
 		if(&other == this)
 			return *this;
@@ -653,7 +649,7 @@ private:
 	core::map<std::string, std::string> m_settings;
 	core::map<std::string, std::string> m_defaults;
 	// All methods that access m_settings/m_defaults directly should lock this.
-	JMutex m_mutex;
+	SimpleMutex m_mutex;
 };
 
 #endif
