@@ -543,7 +543,6 @@ Connection::~Connection()
 
 void * Connection::Thread()
 {
-printf("Connection::Thread()\n");
 	log_register_thread("Connection");
 
 	dout_con<<"Connection thread started"<<std::endl;
@@ -566,7 +565,6 @@ printf("Connection::Thread()\n");
 		runTimeouts(dtime);
 
 		while(m_command_queue.size() != 0){
-printf("m_command_queue.size() = %u\n",m_command_queue.size());
 			ConnectionCommand c = m_command_queue.pop_front();
 			processCommand(c);
 		}
@@ -577,7 +575,6 @@ printf("m_command_queue.size() = %u\n",m_command_queue.size());
 
 		END_DEBUG_EXCEPTION_HANDLER(derr_con);
 	}
-printf("Connection::Thread() exit\n");
 
 	return NULL;
 }
