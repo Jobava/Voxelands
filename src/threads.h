@@ -210,7 +210,8 @@ public:
 		}else{
 			setRun(true);
 #ifdef _WIN32
-			thread = CreateThread(NULL, 0, &runThread, this, 0, NULL);
+			DWORD id;
+			thread = CreateThread(NULL, 0, runThread, this, 0, &id);
 #else
 			pthread_create(&thread, &attr, &runThread, this);
 #endif
@@ -249,7 +250,11 @@ public:
 	}
 
 private:
+#ifdef _WIN32
+	static DWORD WINAPI runThread(LPVOID data)
+#else
 	static void *runThread(void* data)
+#endif
 	{
 		SimpleThread *t = (SimpleThread*)data;
 		void *r = t->Thread();
@@ -257,10 +262,11 @@ private:
 #ifdef _WIN32
 		ExitThread(0);
 		CloseHandle(t->thread);
+		return (DWORD)r;
 #else
 		pthread_exit(r);
-#endif
 		return r;
+#endif
 	}
 };
 

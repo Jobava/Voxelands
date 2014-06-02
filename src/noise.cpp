@@ -263,6 +263,7 @@ double noise3d_param(const NoiseParams &param, double x, double y, double z)
 				param.persistence));
 	}
 	else assert(0);
+	return 0.0;
 }
 
 /*
