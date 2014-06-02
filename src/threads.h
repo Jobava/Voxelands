@@ -21,6 +21,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define THREADS_HEADER
 
 #if (defined(WIN32) || defined(_WIN32_WCE))
+#include <windows.h>
 typedef DWORD threadid_t;
 #define __NORETURN __declspec(noreturn)
 #define __FUNCTION_NAME __FUNCTION__
