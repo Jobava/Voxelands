@@ -123,7 +123,6 @@ set(common_SRCS
 	mapblock.cpp
 	mapsector.cpp
 	map.cpp
-	mesh.cpp
 	player.cpp
 	utility.cpp
 	test.cpp
@@ -153,6 +152,7 @@ set(minetest_SRCS
 	content_mapblock.cpp
 	content_cao.cpp
 	mapblock_mesh.cpp
+	mesh.cpp
 	farmesh.cpp
 	keycode.cpp
 	camera.cpp
