@@ -1161,7 +1161,7 @@ void content_nodebox_couch_inner(ContentFeatures *f)
 		-0.3125*BS,-0.5*BS,-0.5*BS,0.375*BS,0.*BS,-0.3125*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
-		0.25*BS,0.*BS,-0.5*BS,0.375*BS,0.4375*BS,0.1875*BS
+		0.1875*BS,0.*BS,-0.5*BS,0.375*BS,0.4375*BS,0.1875*BS
 	));
 }
 

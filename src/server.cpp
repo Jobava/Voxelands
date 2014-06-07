@@ -2411,6 +2411,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		{
 			SendPlayerAnim(player,PLAYERANIM_DIG);
 			MapNode n = m_env.getMap().getNodeNoEx(p_under);
+			InventoryItem *wield = (InventoryItem*)player->getWieldItem();
 			if (n.getContent() >= CONTENT_DOOR_MIN && n.getContent() <= CONTENT_DOOR_MAX) {
 				v3s16 mp(0,1,0);
 				if ((n.getContent()&CONTENT_DOOR_SECT_MASK) == CONTENT_DOOR_SECT_MASK)
@@ -2483,7 +2484,13 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						continue;
 					client->SetBlocksNotSent(modified_blocks);
 				}
-			}else if (content_features(n).onpunch_replace_node != CONTENT_IGNORE) {
+			}else if (
+				content_features(n).onpunch_replace_node != CONTENT_IGNORE
+				&& (
+					wield == NULL
+					|| wield->getContent() != CONTENT_TOOLITEM_CROWBAR
+				)
+			) {
 				core::list<u16> far_players;
 				core::map<v3s16, MapBlock*> modified_blocks;
 
@@ -2529,7 +2536,6 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					client->SetBlockNotSent(blockpos);
 				}
 			}else if (content_features(n).flammable > 1) {
-				InventoryItem *wield = (InventoryItem*)player->getWieldItem();
 				if (wield && wield->getContent() == CONTENT_TOOLITEM_FIRESTARTER) {
 					if((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
 						s16 max_d = g_settings->getS16("borderstone_radius");
@@ -2598,7 +2604,6 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					SendInventory(player->peer_id);
 				}
 			}else if (n.getContent() == CONTENT_TNT) {
-				InventoryItem *wield = (InventoryItem*)player->getWieldItem();
 				if (wield && wield->getContent() == CONTENT_TOOLITEM_FIRESTARTER) {
 					if((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
 						s16 max_d = g_settings->getS16("borderstone_radius");
@@ -2664,7 +2669,6 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				|| content_features(n).param_type == CPT_FACEDIR_WALLMOUNT
 				|| content_features(n).param2_type == CPT_FACEDIR_WALLMOUNT
 			) {
-				InventoryItem *wield = (InventoryItem*)player->getWieldItem();
 				if (
 					(
 						n.getContent() < CONTENT_BED_MIN
