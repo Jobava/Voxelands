@@ -7359,7 +7359,7 @@ void content_mapnode_init()
 
 	i = CONTENT_COUCH_CENTRE;
 	f = &content_features(i);
-	f->description = std::string("Cotton");
+	f->description = std::string("Couch");
 	f->setAllTextures("cotton.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -7377,7 +7377,7 @@ void content_mapnode_init()
 
 	i = CONTENT_COUCH_ENDL;
 	f = &content_features(i);
-	f->description = std::string("Cotton");
+	f->description = std::string("Couch");
 	f->setAllTextures("cotton.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -7395,7 +7395,7 @@ void content_mapnode_init()
 
 	i = CONTENT_COUCH_ENDR;
 	f = &content_features(i);
-	f->description = std::string("Cotton");
+	f->description = std::string("Couch");
 	f->setAllTextures("cotton.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -7413,7 +7413,7 @@ void content_mapnode_init()
 
 	i = CONTENT_COUCH_INNER;
 	f = &content_features(i);
-	f->description = std::string("Cotton");
+	f->description = std::string("Couch");
 	f->setAllTextures("cotton.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -7431,7 +7431,7 @@ void content_mapnode_init()
 
 	i = CONTENT_COUCH_OUTER;
 	f = &content_features(i);
-	f->description = std::string("Cotton");
+	f->description = std::string("Couch");
 	f->setAllTextures("cotton.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -7449,7 +7449,7 @@ void content_mapnode_init()
 
 	i = CONTENT_COUCH_CHAIR;
 	f = &content_features(i);
-	f->description = std::string("Cotton");
+	f->description = std::string("Couch");
 	f->setAllTextures("cotton.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -7464,7 +7464,798 @@ void content_mapnode_init()
 	f->onpunch_replace_node = CONTENT_COUCH_CENTRE;
 	content_nodebox_couch_chair(f);
 	f->setInventoryTextureNodeBox(i,"cotton.png", "cotton.png", "cotton.png");
-	crafting::setVRecipe(CONTENT_COTTON,CONTENT_COUCH_CHAIR);
+	crafting::setVRecipe(CONTENT_COTTON,CONTENT_COUCH_CHAIR,2);
+	crafting::set1Any2Recipe(CONTENT_COUCH_CHAIR_BLUE,CONTENT_CRAFTITEM_STARCH,CONTENT_COUCH_CHAIR);
+	crafting::set1Any2Recipe(CONTENT_COUCH_CHAIR_GREEN,CONTENT_CRAFTITEM_STARCH,CONTENT_COUCH_CHAIR);
+	crafting::set1Any2Recipe(CONTENT_COUCH_CHAIR_ORANGE,CONTENT_CRAFTITEM_STARCH,CONTENT_COUCH_CHAIR);
+	crafting::set1Any2Recipe(CONTENT_COUCH_CHAIR_PURPLE,CONTENT_CRAFTITEM_STARCH,CONTENT_COUCH_CHAIR);
+	crafting::set1Any2Recipe(CONTENT_COUCH_CHAIR_RED,CONTENT_CRAFTITEM_STARCH,CONTENT_COUCH_CHAIR);
+	crafting::set1Any2Recipe(CONTENT_COUCH_CHAIR_YELLOW,CONTENT_CRAFTITEM_STARCH,CONTENT_COUCH_CHAIR);
+	crafting::set1Any2Recipe(CONTENT_COUCH_CHAIR_BLACK,CONTENT_CRAFTITEM_STARCH,CONTENT_COUCH_CHAIR);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_COUCH_CENTRE_BLUE;
+	f = &content_features(i);
+	f->description = std::string("Blue Couch");
+	f->setAllTextures("cotton_blue.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_BLUE)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_ENDL_BLUE;
+	content_nodebox_couch_centre(f);
+	f->setInventoryTextureNodeBox(i,"cotton_blue.png", "cotton_blue.png", "cotton_blue.png");
+
+	i = CONTENT_COUCH_ENDL_BLUE;
+	f = &content_features(i);
+	f->description = std::string("Blue Couch");
+	f->setAllTextures("cotton_blue.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_BLUE)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_ENDR_BLUE;
+	content_nodebox_couch_left(f);
+	f->setInventoryTextureNodeBox(i,"cotton_blue.png", "cotton_blue.png", "cotton_blue.png");
+
+	i = CONTENT_COUCH_ENDR_BLUE;
+	f = &content_features(i);
+	f->description = std::string("Blue Couch");
+	f->setAllTextures("cotton_blue.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_BLUE)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_INNER_BLUE;
+	content_nodebox_couch_right(f);
+	f->setInventoryTextureNodeBox(i,"cotton_blue.png", "cotton_blue.png", "cotton_blue.png");
+
+	i = CONTENT_COUCH_INNER_BLUE;
+	f = &content_features(i);
+	f->description = std::string("Blue Couch");
+	f->setAllTextures("cotton_blue.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_BLUE)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_OUTER_BLUE;
+	content_nodebox_couch_inner(f);
+	f->setInventoryTextureNodeBox(i,"cotton_blue.png", "cotton_blue.png", "cotton_blue.png");
+
+	i = CONTENT_COUCH_OUTER_BLUE;
+	f = &content_features(i);
+	f->description = std::string("Blue Couch");
+	f->setAllTextures("cotton_blue.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_BLUE)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_CHAIR_BLUE;
+	content_nodebox_couch_outer(f);
+	f->setInventoryTextureNodeBox(i,"cotton_blue.png", "cotton_blue.png", "cotton_blue.png");
+
+	i = CONTENT_COUCH_CHAIR_BLUE;
+	f = &content_features(i);
+	f->description = std::string("Blue Couch");
+	f->setAllTextures("cotton_blue.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_BLUE)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_CENTRE_BLUE;
+	content_nodebox_couch_chair(f);
+	f->setInventoryTextureNodeBox(i,"cotton_blue.png", "cotton_blue.png", "cotton_blue.png");
+	crafting::setVRecipe(CONTENT_COTTON_BLUE,CONTENT_COUCH_CHAIR_BLUE,2);
+	crafting::set1Any2Recipe(CONTENT_COUCH_CHAIR,CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_COUCH_CHAIR_BLUE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_COUCH_CENTRE_GREEN;
+	f = &content_features(i);
+	f->description = std::string("Green Couch");
+	f->setAllTextures("cotton_green.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_GREEN)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_ENDL_GREEN;
+	content_nodebox_couch_centre(f);
+	f->setInventoryTextureNodeBox(i,"cotton_green.png", "cotton_green.png", "cotton_green.png");
+
+	i = CONTENT_COUCH_ENDL_GREEN;
+	f = &content_features(i);
+	f->description = std::string("Green Couch");
+	f->setAllTextures("cotton_green.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_GREEN)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_ENDR_GREEN;
+	content_nodebox_couch_left(f);
+	f->setInventoryTextureNodeBox(i,"cotton_green.png", "cotton_green.png", "cotton_green.png");
+
+	i = CONTENT_COUCH_ENDR_GREEN;
+	f = &content_features(i);
+	f->description = std::string("Green Couch");
+	f->setAllTextures("cotton_green.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_GREEN)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_INNER_GREEN;
+	content_nodebox_couch_right(f);
+	f->setInventoryTextureNodeBox(i,"cotton_green.png", "cotton_green.png", "cotton_green.png");
+
+	i = CONTENT_COUCH_INNER_GREEN;
+	f = &content_features(i);
+	f->description = std::string("Green Couch");
+	f->setAllTextures("cotton_green.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_GREEN)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_OUTER_GREEN;
+	content_nodebox_couch_inner(f);
+	f->setInventoryTextureNodeBox(i,"cotton_green.png", "cotton_green.png", "cotton_green.png");
+
+	i = CONTENT_COUCH_OUTER_GREEN;
+	f = &content_features(i);
+	f->description = std::string("Green Couch");
+	f->setAllTextures("cotton_green.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_GREEN)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_CHAIR_GREEN;
+	content_nodebox_couch_outer(f);
+	f->setInventoryTextureNodeBox(i,"cotton_green.png", "cotton_green.png", "cotton_green.png");
+
+	i = CONTENT_COUCH_CHAIR_GREEN;
+	f = &content_features(i);
+	f->description = std::string("Green Couch");
+	f->setAllTextures("cotton_green.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_GREEN)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_CENTRE_GREEN;
+	content_nodebox_couch_chair(f);
+	f->setInventoryTextureNodeBox(i,"cotton_green.png", "cotton_green.png", "cotton_green.png");
+	crafting::setVRecipe(CONTENT_COTTON_GREEN,CONTENT_COUCH_CHAIR_GREEN,2);
+	crafting::set1Any2Recipe(CONTENT_COUCH_CHAIR,CONTENT_CRAFTITEM_DYE_GREEN,CONTENT_COUCH_CHAIR_GREEN);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_COUCH_CENTRE_ORANGE;
+	f = &content_features(i);
+	f->description = std::string("Orange Couch");
+	f->setAllTextures("cotton_orange.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_ORANGE)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_ENDL_ORANGE;
+	content_nodebox_couch_centre(f);
+	f->setInventoryTextureNodeBox(i,"cotton_orange.png", "cotton_orange.png", "cotton_orange.png");
+
+	i = CONTENT_COUCH_ENDL_ORANGE;
+	f = &content_features(i);
+	f->description = std::string("Orange Couch");
+	f->setAllTextures("cotton_orange.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_ORANGE)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_ENDR_ORANGE;
+	content_nodebox_couch_left(f);
+	f->setInventoryTextureNodeBox(i,"cotton_orange.png", "cotton_orange.png", "cotton_orange.png");
+
+	i = CONTENT_COUCH_ENDR_ORANGE;
+	f = &content_features(i);
+	f->description = std::string("Orange Couch");
+	f->setAllTextures("cotton_orange.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_ORANGE)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_INNER_ORANGE;
+	content_nodebox_couch_right(f);
+	f->setInventoryTextureNodeBox(i,"cotton_orange.png", "cotton_orange.png", "cotton_orange.png");
+
+	i = CONTENT_COUCH_INNER_ORANGE;
+	f = &content_features(i);
+	f->description = std::string("Orange Couch");
+	f->setAllTextures("cotton_orange.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_ORANGE)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_OUTER_ORANGE;
+	content_nodebox_couch_inner(f);
+	f->setInventoryTextureNodeBox(i,"cotton_orange.png", "cotton_orange.png", "cotton_orange.png");
+
+	i = CONTENT_COUCH_OUTER_ORANGE;
+	f = &content_features(i);
+	f->description = std::string("Orange Couch");
+	f->setAllTextures("cotton_orange.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_ORANGE)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_CHAIR_ORANGE;
+	content_nodebox_couch_outer(f);
+	f->setInventoryTextureNodeBox(i,"cotton_orange.png", "cotton_orange.png", "cotton_orange.png");
+
+	i = CONTENT_COUCH_CHAIR_ORANGE;
+	f = &content_features(i);
+	f->description = std::string("Orange Couch");
+	f->setAllTextures("cotton_orange.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_ORANGE)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_CENTRE_ORANGE;
+	content_nodebox_couch_chair(f);
+	f->setInventoryTextureNodeBox(i,"cotton_orange.png", "cotton_orange.png", "cotton_orange.png");
+	crafting::setVRecipe(CONTENT_COTTON_ORANGE,CONTENT_COUCH_CHAIR_ORANGE,2);
+	crafting::set1Any2Recipe(CONTENT_COUCH_CHAIR,CONTENT_CRAFTITEM_DYE_ORANGE,CONTENT_COUCH_CHAIR_ORANGE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_COUCH_CENTRE_PURPLE;
+	f = &content_features(i);
+	f->description = std::string("Purple Couch");
+	f->setAllTextures("cotton_purple.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_PURPLE)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_ENDL_PURPLE;
+	content_nodebox_couch_centre(f);
+	f->setInventoryTextureNodeBox(i,"cotton_purple.png", "cotton_purple.png", "cotton_purple.png");
+
+	i = CONTENT_COUCH_ENDL_PURPLE;
+	f = &content_features(i);
+	f->description = std::string("Purple Couch");
+	f->setAllTextures("cotton_purple.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_PURPLE)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_ENDR_PURPLE;
+	content_nodebox_couch_left(f);
+	f->setInventoryTextureNodeBox(i,"cotton_purple.png", "cotton_purple.png", "cotton_purple.png");
+
+	i = CONTENT_COUCH_ENDR_PURPLE;
+	f = &content_features(i);
+	f->description = std::string("Purple Couch");
+	f->setAllTextures("cotton_purple.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_PURPLE)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_INNER_PURPLE;
+	content_nodebox_couch_right(f);
+	f->setInventoryTextureNodeBox(i,"cotton_purple.png", "cotton_purple.png", "cotton_purple.png");
+
+	i = CONTENT_COUCH_INNER_PURPLE;
+	f = &content_features(i);
+	f->description = std::string("Purple Couch");
+	f->setAllTextures("cotton_purple.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_PURPLE)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_OUTER_PURPLE;
+	content_nodebox_couch_inner(f);
+	f->setInventoryTextureNodeBox(i,"cotton_purple.png", "cotton_purple.png", "cotton_purple.png");
+
+	i = CONTENT_COUCH_OUTER_PURPLE;
+	f = &content_features(i);
+	f->description = std::string("Purple Couch");
+	f->setAllTextures("cotton_purple.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_PURPLE)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_CHAIR_PURPLE;
+	content_nodebox_couch_outer(f);
+	f->setInventoryTextureNodeBox(i,"cotton_purple.png", "cotton_purple.png", "cotton_purple.png");
+
+	i = CONTENT_COUCH_CHAIR_PURPLE;
+	f = &content_features(i);
+	f->description = std::string("Purple Couch");
+	f->setAllTextures("cotton_purple.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_PURPLE)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_CENTRE_PURPLE;
+	content_nodebox_couch_chair(f);
+	f->setInventoryTextureNodeBox(i,"cotton_purple.png", "cotton_purple.png", "cotton_purple.png");
+	crafting::setVRecipe(CONTENT_COTTON_PURPLE,CONTENT_COUCH_CHAIR_PURPLE,2);
+	crafting::set1Any2Recipe(CONTENT_COUCH_CHAIR,CONTENT_CRAFTITEM_DYE_PURPLE,CONTENT_COUCH_CHAIR_PURPLE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_COUCH_CENTRE_RED;
+	f = &content_features(i);
+	f->description = std::string("Red Couch");
+	f->setAllTextures("cotton_red.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_RED)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_ENDL_RED;
+	content_nodebox_couch_centre(f);
+	f->setInventoryTextureNodeBox(i,"cotton_red.png", "cotton_red.png", "cotton_red.png");
+
+	i = CONTENT_COUCH_ENDL_RED;
+	f = &content_features(i);
+	f->description = std::string("Red Couch");
+	f->setAllTextures("cotton_red.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_RED)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_ENDR_RED;
+	content_nodebox_couch_left(f);
+	f->setInventoryTextureNodeBox(i,"cotton_red.png", "cotton_red.png", "cotton_red.png");
+
+	i = CONTENT_COUCH_ENDR_RED;
+	f = &content_features(i);
+	f->description = std::string("Red Couch");
+	f->setAllTextures("cotton_red.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_RED)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_INNER_RED;
+	content_nodebox_couch_right(f);
+	f->setInventoryTextureNodeBox(i,"cotton_red.png", "cotton_red.png", "cotton_red.png");
+
+	i = CONTENT_COUCH_INNER_RED;
+	f = &content_features(i);
+	f->description = std::string("Red Couch");
+	f->setAllTextures("cotton_red.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_RED)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_OUTER_RED;
+	content_nodebox_couch_inner(f);
+	f->setInventoryTextureNodeBox(i,"cotton_red.png", "cotton_red.png", "cotton_red.png");
+
+	i = CONTENT_COUCH_OUTER_RED;
+	f = &content_features(i);
+	f->description = std::string("Red Couch");
+	f->setAllTextures("cotton_red.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_RED)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_CHAIR_RED;
+	content_nodebox_couch_outer(f);
+	f->setInventoryTextureNodeBox(i,"cotton_red.png", "cotton_red.png", "cotton_red.png");
+
+	i = CONTENT_COUCH_CHAIR_RED;
+	f = &content_features(i);
+	f->description = std::string("Red Couch");
+	f->setAllTextures("cotton_red.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_RED)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_CENTRE_RED;
+	content_nodebox_couch_chair(f);
+	f->setInventoryTextureNodeBox(i,"cotton_red.png", "cotton_red.png", "cotton_red.png");
+	crafting::setVRecipe(CONTENT_COTTON_RED,CONTENT_COUCH_CHAIR_RED,2);
+	crafting::set1Any2Recipe(CONTENT_COUCH_CHAIR,CONTENT_CRAFTITEM_DYE_RED,CONTENT_COUCH_CHAIR_RED);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_COUCH_CENTRE_YELLOW;
+	f = &content_features(i);
+	f->description = std::string("Yellow Couch");
+	f->setAllTextures("cotton_yellow.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_YELLOW)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_ENDL_YELLOW;
+	content_nodebox_couch_centre(f);
+	f->setInventoryTextureNodeBox(i,"cotton_yellow.png", "cotton_yellow.png", "cotton_yellow.png");
+
+	i = CONTENT_COUCH_ENDL_YELLOW;
+	f = &content_features(i);
+	f->description = std::string("Yellow Couch");
+	f->setAllTextures("cotton_yellow.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_YELLOW)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_ENDR_YELLOW;
+	content_nodebox_couch_left(f);
+	f->setInventoryTextureNodeBox(i,"cotton_yellow.png", "cotton_yellow.png", "cotton_yellow.png");
+
+	i = CONTENT_COUCH_ENDR_YELLOW;
+	f = &content_features(i);
+	f->description = std::string("Yellow Couch");
+	f->setAllTextures("cotton_yellow.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_YELLOW)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_INNER_YELLOW;
+	content_nodebox_couch_right(f);
+	f->setInventoryTextureNodeBox(i,"cotton_yellow.png", "cotton_yellow.png", "cotton_yellow.png");
+
+	i = CONTENT_COUCH_INNER_YELLOW;
+	f = &content_features(i);
+	f->description = std::string("Yellow Couch");
+	f->setAllTextures("cotton_yellow.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_YELLOW)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_OUTER_YELLOW;
+	content_nodebox_couch_inner(f);
+	f->setInventoryTextureNodeBox(i,"cotton_yellow.png", "cotton_yellow.png", "cotton_yellow.png");
+
+	i = CONTENT_COUCH_OUTER_YELLOW;
+	f = &content_features(i);
+	f->description = std::string("Yellow Couch");
+	f->setAllTextures("cotton_yellow.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_YELLOW)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_CHAIR_YELLOW;
+	content_nodebox_couch_outer(f);
+	f->setInventoryTextureNodeBox(i,"cotton_yellow.png", "cotton_yellow.png", "cotton_yellow.png");
+
+	i = CONTENT_COUCH_CHAIR_YELLOW;
+	f = &content_features(i);
+	f->description = std::string("Yellow Couch");
+	f->setAllTextures("cotton_yellow.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_YELLOW)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_CENTRE_YELLOW;
+	content_nodebox_couch_chair(f);
+	f->setInventoryTextureNodeBox(i,"cotton_yellow.png", "cotton_yellow.png", "cotton_yellow.png");
+	crafting::setVRecipe(CONTENT_COTTON_YELLOW,CONTENT_COUCH_CHAIR_YELLOW,2);
+	crafting::set1Any2Recipe(CONTENT_COUCH_CHAIR,CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_COUCH_CHAIR_YELLOW);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_COUCH_CENTRE_BLACK;
+	f = &content_features(i);
+	f->description = std::string("Black Couch");
+	f->setAllTextures("cotton_black.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_BLACK)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_ENDL_BLACK;
+	content_nodebox_couch_centre(f);
+	f->setInventoryTextureNodeBox(i,"cotton_black.png", "cotton_black.png", "cotton_black.png");
+
+	i = CONTENT_COUCH_ENDL_BLACK;
+	f = &content_features(i);
+	f->description = std::string("Black Couch");
+	f->setAllTextures("cotton_black.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_BLACK)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_ENDR_BLACK;
+	content_nodebox_couch_left(f);
+	f->setInventoryTextureNodeBox(i,"cotton_black.png", "cotton_black.png", "cotton_black.png");
+
+	i = CONTENT_COUCH_ENDR_BLACK;
+	f = &content_features(i);
+	f->description = std::string("Black Couch");
+	f->setAllTextures("cotton_black.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_BLACK)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_INNER_BLACK;
+	content_nodebox_couch_right(f);
+	f->setInventoryTextureNodeBox(i,"cotton_black.png", "cotton_black.png", "cotton_black.png");
+
+	i = CONTENT_COUCH_INNER_BLACK;
+	f = &content_features(i);
+	f->description = std::string("Black Couch");
+	f->setAllTextures("cotton_black.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_BLACK)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_OUTER_BLACK;
+	content_nodebox_couch_inner(f);
+	f->setInventoryTextureNodeBox(i,"cotton_black.png", "cotton_black.png", "cotton_black.png");
+
+	i = CONTENT_COUCH_OUTER_BLACK;
+	f = &content_features(i);
+	f->description = std::string("Black Couch");
+	f->setAllTextures("cotton_black.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_BLACK)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_CHAIR_BLACK;
+	content_nodebox_couch_outer(f);
+	f->setInventoryTextureNodeBox(i,"cotton_black.png", "cotton_black.png", "cotton_black.png");
+
+	i = CONTENT_COUCH_CHAIR_BLACK;
+	f = &content_features(i);
+	f->description = std::string("Black Couch");
+	f->setAllTextures("cotton_black.png");
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_COUCH_CHAIR_BLACK)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->onpunch_replace_node = CONTENT_COUCH_CENTRE_BLACK;
+	content_nodebox_couch_chair(f);
+	f->setInventoryTextureNodeBox(i,"cotton_black.png", "cotton_black.png", "cotton_black.png");
+	crafting::setVRecipe(CONTENT_COTTON_BLACK,CONTENT_COUCH_CHAIR_BLACK,2);
+	crafting::set1Any2Recipe(CONTENT_COUCH_CHAIR,CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_COUCH_CHAIR_BLACK);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 

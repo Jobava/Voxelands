@@ -229,15 +229,15 @@ void set5Recipe(u16 input, u16 result)
 	};
 	setRecipe(r,result,5);
 }
-// three input in a v yields one result
-void setVRecipe(u16 input, u16 result)
+// three input in a v yields count result
+void setVRecipe(u16 input, u16 result, u16 count)
 {
 	u16 r[9] = {
 		CONTENT_IGNORE,	CONTENT_IGNORE,	CONTENT_IGNORE,
 		input,		CONTENT_IGNORE,	input,
 		CONTENT_IGNORE,	input,	CONTENT_IGNORE
 	};
-	setRecipe(r,result,1);
+	setRecipe(r,result,count);
 }
 // five input in a u yields one result
 void setURecipe(u16 input, u16 result)

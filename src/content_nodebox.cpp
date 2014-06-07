@@ -1107,20 +1107,6 @@ void content_nodebox_couch_centre(ContentFeatures *f)
 void content_nodebox_couch_left(ContentFeatures *f)
 {
 	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,-0.5*BS,-0.3125*BS,0.375*BS,0.*BS,0.375*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,0.*BS,0.1875*BS,0.375*BS,0.4375*BS,0.375*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.25*BS,-0.1875*BS,-0.25*BS,0.4375*BS,0.25*BS,0.3125*BS
-	));
-}
-
-// right end
-void content_nodebox_couch_right(ContentFeatures *f)
-{
-	f->setNodeBox(core::aabbox3d<f32>(
 		-0.375*BS,-0.5*BS,-0.3125*BS,0.5*BS,0.*BS,0.375*BS
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
@@ -1128,6 +1114,20 @@ void content_nodebox_couch_right(ContentFeatures *f)
 	));
 	f->addNodeBox(core::aabbox3d<f32>(
 		-0.4375*BS,-0.1875*BS,-0.25*BS,-0.3125*BS,0.25*BS,0.3125*BS
+	));
+}
+
+// right end
+void content_nodebox_couch_right(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,-0.5*BS,-0.3125*BS,0.375*BS,0.*BS,0.375*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		-0.5*BS,0.*BS,0.1875*BS,0.375*BS,0.4375*BS,0.375*BS
+	));
+	f->addNodeBox(core::aabbox3d<f32>(
+		0.25*BS,-0.1875*BS,-0.25*BS,0.4375*BS,0.25*BS,0.3125*BS
 	));
 }
 

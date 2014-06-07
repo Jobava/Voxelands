@@ -196,8 +196,8 @@ namespace crafting {
 	void setSurroundRecipe(u16 input1, u16 input2, u16 result);
 	// five input in an X yields five result
 	void set5Recipe(u16 input, u16 result);
-	// three input in a v yields one result
-	void setVRecipe(u16 input, u16 result);
+	// three input in a v yields count result
+	void setVRecipe(u16 input, u16 result, u16 count=1);
 	// five input in a u yields one result
 	void setURecipe(u16 input, u16 result);
 	// three input in a horizontal row yields one result
