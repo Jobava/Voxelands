@@ -1149,7 +1149,7 @@ void content_nodebox_couch_chair(ContentFeatures *f)
 }
 
 // inner corner
-void content_nodebox_count_inner(ContentFeatures *f)
+void content_nodebox_couch_inner(ContentFeatures *f)
 {
 	f->setNodeBox(core::aabbox3d<f32>(
 		-0.5*BS,-0.5*BS,-0.3125*BS,0.375*BS,0.*BS,0.375*BS

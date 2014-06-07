@@ -42,7 +42,7 @@ void content_nodebox_couch_centre(ContentFeatures *f);
 void content_nodebox_couch_left(ContentFeatures *f);
 void content_nodebox_couch_right(ContentFeatures *f);
 void content_nodebox_couch_chair(ContentFeatures *f);
-void content_nodebox_count_inner(ContentFeatures *f);
+void content_nodebox_couch_inner(ContentFeatures *f);
 void content_nodebox_couch_outer(ContentFeatures *f);
 
 #endif
