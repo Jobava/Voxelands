@@ -1182,3 +1182,22 @@ void content_nodebox_couch_outer(ContentFeatures *f)
 	));
 }
 
+void content_nodebox_knob(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		// -3 / 16
+		-0.1875*BS,
+		// -3 / 16
+		-0.1875*BS,
+		// 3 / 16
+		0.1875*BS,
+
+		// 3 / 16
+		0.1875*BS,
+		// 3 / 16
+		0.1875*BS,
+		// 8 / 16
+		0.5*BS
+	));
+}
+

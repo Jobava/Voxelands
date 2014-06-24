@@ -44,5 +44,6 @@ void content_nodebox_couch_right(ContentFeatures *f);
 void content_nodebox_couch_chair(ContentFeatures *f);
 void content_nodebox_couch_inner(ContentFeatures *f);
 void content_nodebox_couch_outer(ContentFeatures *f);
+void content_nodebox_knob(ContentFeatures *f);
 
 #endif

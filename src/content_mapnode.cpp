@@ -4649,6 +4649,26 @@ void content_mapnode_init()
 	lists::add("creative",i);
 	lists::add("cooking",i);
 
+	i = CONTENT_ROUGHSTONE_KNOB;
+	f = &content_features(i);
+	f->description = std::string("Rough Stone Knob");
+	f->setAllTextures("roughstone.png");
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_WALLMOUNT;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = false;
+	f->solidness = 0;
+	f->light_propagates = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->type = CMT_STONE;
+	f->hardness = 0.8;
+	f->climbable = true;
+	crafting::set1To4Recipe(CONTENT_ROUGHSTONE,CONTENT_ROUGHSTONE_KNOB);
+	content_nodebox_knob(f);
+	f->setInventoryTextureNodeBox(i,"roughstone.png", "roughstone.png", "roughstone.png");
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
 	i = CONTENT_COBBLE;
 	f = &content_features(i);
 	f->description = std::string("Cobble Stone");
