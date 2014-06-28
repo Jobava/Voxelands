@@ -98,6 +98,7 @@ set(common_SRCS
 	content_craftitem.cpp
 	content_toolitem.cpp
 	content_mapnode.cpp
+	content_mapnode_util.cpp
 	content_list.cpp
 	content_nodebox.cpp
 	auth.cpp

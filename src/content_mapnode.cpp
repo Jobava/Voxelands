@@ -29,6 +29,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "content_craft.h"
 #include "content_list.h"
 #include "content_nodebox.h"
+#include "content_mapnode_util.h"
 #ifndef SERVER
 #include "tile.h"
 #endif
@@ -4649,26 +4650,6 @@ void content_mapnode_init()
 	lists::add("creative",i);
 	lists::add("cooking",i);
 
-	i = CONTENT_ROUGHSTONE_KNOB;
-	f = &content_features(i);
-	f->description = std::string("Rough Stone Knob");
-	f->setAllTextures("roughstone.png");
-	f->param_type = CPT_LIGHT;
-	f->param2_type = CPT_FACEDIR_WALLMOUNT;
-	f->draw_type = CDT_NODEBOX;
-	f->is_ground_content = false;
-	f->solidness = 0;
-	f->light_propagates = true;
-	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->type = CMT_STONE;
-	f->hardness = 0.8;
-	f->climbable = true;
-	crafting::set1To4Recipe(CONTENT_ROUGHSTONE,CONTENT_ROUGHSTONE_KNOB);
-	content_nodebox_knob(f);
-	f->setInventoryTextureNodeBox(i,"roughstone.png", "roughstone.png", "roughstone.png");
-	lists::add("craftguide",i);
-	lists::add("creative",i);
-
 	i = CONTENT_COBBLE;
 	f = &content_features(i);
 	f->description = std::string("Cobble Stone");
@@ -4712,6 +4693,13 @@ void content_mapnode_init()
 	crafting::setUncraftHardBlockRecipe(CONTENT_STEEL,CONTENT_CRAFTITEM_STEEL_INGOT);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+
+	content_nodedef_knob(CONTENT_STONE_KNOB, CONTENT_STONE, CMT_STONE, "stone.png");
+	content_nodedef_knob(CONTENT_ROUGHSTONE_KNOB, CONTENT_ROUGHSTONE, CMT_STONE, "roughstone.png");
+	content_nodedef_knob(CONTENT_SANDSTONE_KNOB, CONTENT_SANDSTONE, CMT_STONE, "sandstone.png");
+	content_nodedef_knob(CONTENT_WOOD_KNOB, CONTENT_WOOD, CMT_WOOD, "wood.png");
+	content_nodedef_knob(CONTENT_JUNGLEWOOD_KNOB, CONTENT_JUNGLEWOOD, CMT_WOOD, "junglewood.png");
+	content_nodedef_knob(CONTENT_PINE_KNOB, CONTENT_WOOD_PINE, CMT_WOOD, "pine.png");
 
 	i = CONTENT_COPPER;
 	f = &content_features(i);

@@ -522,7 +522,13 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 // FREE C25-CFF
 
 // D00-DFF - play space for other devs and experiments
-#define CONTENT_ROUGHSTONE_KNOB 0xD00
+#define CONTENT_STONE_KNOB 0xD00
+#define CONTENT_ROUGHSTONE_KNOB 0xD01
+#define CONTENT_COBBLE_KNOB 0xD02
+#define CONTENT_SANDSTONE_KNOB 0xD03
+#define CONTENT_WOOD_KNOB 0xD04
+#define CONTENT_PINE_KNOB 0xD05
+#define CONTENT_JUNGLEWOOD_KNOB 0xD06
 
 // FREE E00-FFF
 
