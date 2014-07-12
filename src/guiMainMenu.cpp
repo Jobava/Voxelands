@@ -217,32 +217,32 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 
 	// Single Player button
 	{
-		core::rect<s32> rect(0, 0, 180, 30);
-		rect += v2s32(10, 120);
+		core::rect<s32> rect(0, 0, 150, 30);
+		rect += v2s32(25, 200);
 		Environment->addButton(rect, this, GUI_ID_TAB_SINGLEPLAYER, wgettext("Single Player"));
 	}
 	// Multi Player button
 	{
-		core::rect<s32> rect(0, 0, 180, 30);
-		rect += v2s32(10, 160);
+		core::rect<s32> rect(0, 0, 150, 30);
+		rect += v2s32(25, 240);
 		Environment->addButton(rect, this, GUI_ID_TAB_MULTIPLAYER, wgettext("Multi Player"));
 	}
 	// Settings button
 	{
-		core::rect<s32> rect(0, 0, 180, 30);
-		rect += v2s32(10, 200);
+		core::rect<s32> rect(0, 0, 130, 30);
+		rect += v2s32(35, 280);
 		Environment->addButton(rect, this, GUI_ID_TAB_SETTINGS, wgettext("Settings"));
 	}
 	// Credits button
 	{
-		core::rect<s32> rect(0, 0, 180, 30);
-		rect += v2s32(10, 240);
+		core::rect<s32> rect(0, 0, 130, 30);
+		rect += v2s32(35, 320);
 		Environment->addButton(rect, this, GUI_ID_TAB_CREDITS, wgettext("Credits"));
 	}
 	// Quit button
 	{
-		core::rect<s32> rect(0, 0, 180, 30);
-		rect += v2s32(10, 280);
+		core::rect<s32> rect(0, 0, 130, 30);
+		rect += v2s32(35, 360);
 		Environment->addButton(rect, this, GUI_ID_TAB_QUIT, wgettext("Quit"));
 	}
 
@@ -495,8 +495,6 @@ void GUIMainMenu::drawMenu()
 		);
 		driver->draw2DRectangle(left, GUI_BG_BTM, GUI_BG_BTM, GUI_BG_BTM, GUI_BG_BTM, &AbsoluteClippingRect);
 		driver->draw2DRectangle(right, GUI_BG_TOP, GUI_BG_BTM, GUI_BG_TOP, GUI_BG_BTM, &AbsoluteClippingRect);
-		driver->draw2DRectangleOutline(AbsoluteRect, GUI_BORDER);
-
 		video::ITexture *texture = driver->getTexture(getTexturePath("menulogo.png").c_str());
 		if (texture != 0) {
 			const core::dimension2d<u32>& img_origsize = texture->getOriginalSize();
@@ -504,7 +502,7 @@ void GUIMainMenu::drawMenu()
 				AbsoluteRect.UpperLeftCorner.X,
 				AbsoluteRect.UpperLeftCorner.Y,
 				AbsoluteRect.UpperLeftCorner.X+200,
-				AbsoluteRect.UpperLeftCorner.Y+80
+				AbsoluteRect.UpperLeftCorner.Y+200
 			);
 			const video::SColor color(255,255,255,255);
 			const video::SColor colors[] = {color,color,color,color};
