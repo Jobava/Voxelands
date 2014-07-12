@@ -1251,10 +1251,10 @@ int main(int argc, char *argv[])
 	{
 		core::array<std::string> filenames;
 		filenames.push_back(porting::path_userdata +
-				DIR_DELIM + "minetest.conf");
+				DIR_DELIM + "voxelands.conf");
 #ifdef RUN_IN_PLACE
 		filenames.push_back(porting::path_userdata +
-				DIR_DELIM + ".." + DIR_DELIM + "minetest.conf");
+				DIR_DELIM + ".." + DIR_DELIM + "voxelands.conf");
 #endif
 
 		for(u32 i=0; i<filenames.size(); i++)
@@ -1430,7 +1430,7 @@ int main(int argc, char *argv[])
 	//driver->setMinHardwareBufferVertexCount(50);
 
 	// Set the window caption
-	device->setWindowCaption(L"Minetest [Main Menu]");
+	device->setWindowCaption(L"Voxelands [Main Menu]");
 
 	// Create time getter
 	g_timegetter = new IrrlichtTimeGetter(device);

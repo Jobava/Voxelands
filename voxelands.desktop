@@ -1,9 +1,9 @@
 [Desktop Entry]
-Name=Minetest Classic
-GenericName=Minetest Classic
+Name=Voxelands
+GenericName=Voxelands
 Comment=3D Voxel World Game
-Icon=minetest-icon
-Exec=minetest-classic
+Icon=voxelands-icon
+Exec=voxelands
 Terminal=false
 Type=Application
 Categories=Game;

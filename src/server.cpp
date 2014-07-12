@@ -2120,9 +2120,9 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		if (getClient(peer_id)->net_proto_version < PROTOCOL_VERSION) {
 			SendChatMessage(peer_id, L"# Server: WARNING: YOUR CLIENT IS OLD AND MAY NOT WORK PROPERLY WITH THIS SERVER");
 			if (getClient(peer_id)->net_proto_version == PROTOCOL_DOTTHREE) {
-				SendChatMessage(peer_id, L"# Server: Please update to Minetest Classic http://www.minetest-classic.com");
+				SendChatMessage(peer_id, L"# Server: Please update to Voxelands http://www.voxelands.com");
 			}else{
-				SendChatMessage(peer_id, L"# Server: The latest client can be downloaded from http://www.minetest-classic.com/download.html");
+				SendChatMessage(peer_id, L"# Server: The latest client can be downloaded from http://www.voxelands.com/download.html");
 			}
 		}
 

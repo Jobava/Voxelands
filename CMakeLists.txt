@@ -5,7 +5,7 @@ if(${CMAKE_VERSION} STREQUAL "2.8.2")
 endif(${CMAKE_VERSION} STREQUAL "2.8.2")
 
 # This can be read from ${PROJECT_NAME} after project() is called
-project(minetest-classic)
+project(voxelands)
 
 # Also remember to set PROTOCOL_VERSION in clientserver.h when releasing
 set(VERSION_MAJOR 1405)
@@ -68,7 +68,7 @@ endif()
 
 install(FILES "README.txt" DESTINATION "${DOCDIR}")
 install(FILES "doc/changelog.txt" DESTINATION "${DOCDIR}")
-install(FILES "minetest.conf.example" DESTINATION "${DOCDIR}")
+install(FILES "voxelands.conf.example" DESTINATION "${DOCDIR}")
 
 #
 # Subdirectories
@@ -79,21 +79,21 @@ add_subdirectory(src)
 
 # CPack
 
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "An InfiniMiner/Minecraft inspired game")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "The Fun-Focused Free Software Voxel World Game")
 set(CPACK_PACKAGE_VERSION_MAJOR ${VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${VERSION_MINOR})
 set(CPACK_PACKAGE_VERSION_PATCH ${VERSION_PATCH})
-set(CPACK_PACKAGE_VENDOR "celeron55")
-set(CPACK_PACKAGE_CONTACT "Perttu Ahola <celeron55@gmail.com>")
+set(CPACK_PACKAGE_VENDOR "darkrose")
+set(CPACK_PACKAGE_CONTACT "Lisa 'darkrose' Milne <lisa@ltmnet.com>")
 
 if(WIN32)
 	# For some reason these aren't copied otherwise
 	# NOTE: For some reason now it seems to work without these
 	#if(BUILD_CLIENT)
-	#	install(FILES bin/minetest-classic.exe DESTINATION bin)
+	#	install(FILES bin/voxelands.exe DESTINATION bin)
 	#endif()
 	#if(BUILD_SERVER)
-	#	install(FILES bin/minetest-classic-server.exe DESTINATION bin)
+	#	install(FILES bin/voxelands-server.exe DESTINATION bin)
 	#endif()
 
 	set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-${VERSION_STRING}-win32")
@@ -101,7 +101,7 @@ if(WIN32)
 	set(CPACK_GENERATOR ZIP)
 
 	# This might be needed for some installer
-	#set(CPACK_PACKAGE_EXECUTABLES bin/minetest-classic.exe "Minetest" bin/minetest-classic-server.exe "Minetest Server")
+	#set(CPACK_PACKAGE_EXECUTABLES bin/voxelands.exe "Voxelands" bin/voxelands-server.exe "Voxelands Server")
 elseif(APPLE)
 	# TODO
 	# see http://cmake.org/Wiki/CMake:CPackPackageGenerators#Bundle_.28OSX_only.29

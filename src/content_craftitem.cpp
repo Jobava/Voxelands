@@ -1,7 +1,7 @@
 /************************************************************************
 * content_craftitem.cpp
-* minetest-classic - 3d voxel world sandbox game
-* Copyright (C) Lisa Milne 2013 <lisa@ltmnet.com>
+* voxelands - 3d voxel world sandbox game
+* Copyright (C) Lisa Milne 2014 <lisa@ltmnet.com>
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by

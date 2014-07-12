@@ -1,4 +1,4 @@
-project(minetest-classic)
+project(voxelands)
 cmake_minimum_required( VERSION 2.6 )
 
 if(RUN_IN_PLACE)
@@ -99,6 +99,7 @@ set(common_SRCS
 	content_craftitem.cpp
 	content_toolitem.cpp
 	content_mapnode.cpp
+	content_mapnode_util.cpp
 	content_list.cpp
 	content_nodebox.cpp
 	auth.cpp
@@ -149,7 +150,7 @@ if(WIN32)
 endif()
 
 # Client sources
-set(minetest_SRCS
+set(voxelands_SRCS
 	${common_SRCS}
 	content_mapblock.cpp
 	content_cao.cpp
@@ -175,7 +176,7 @@ set(minetest_SRCS
 )
 
 # Server sources
-set(minetestserver_SRCS
+set(voxelandsserver_SRCS
 	${common_SRCS}
 	servermain.cpp
 )
@@ -194,7 +195,7 @@ include_directories(
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_SOURCE_DIR}/bin")
 
 if(BUILD_CLIENT)
-	add_executable(${PROJECT_NAME} ${minetest_SRCS})
+	add_executable(${PROJECT_NAME} ${voxelands_SRCS})
 	target_link_libraries(
 		${PROJECT_NAME}
 		${ZLIB_LIBRARIES}
@@ -213,7 +214,7 @@ if(BUILD_CLIENT)
 endif(BUILD_CLIENT)
 
 if(BUILD_SERVER)
-	add_executable(${PROJECT_NAME}-server ${minetestserver_SRCS})
+	add_executable(${PROJECT_NAME}-server ${voxelandsserver_SRCS})
 	target_link_libraries(
 		${PROJECT_NAME}-server
 		${ZLIB_LIBRARIES}
@@ -293,7 +294,7 @@ endif()
 #
 
 # Example configuration file
-install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../minetest.conf.example" DESTINATION ${EXAMPLE_CONF_DIR})
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../voxelands.conf.example" DESTINATION ${EXAMPLE_CONF_DIR})
 
 if(BUILD_CLIENT)
 	install(TARGETS ${PROJECT_NAME} DESTINATION ${BINDIR})
@@ -341,7 +342,7 @@ if (USE_GETTEXT)
 	set(MO_FILES)
 
 	foreach(LOCALE ${GETTEXT_AVAILABLE_LOCALES})
-		set(PO_FILE_PATH "${GETTEXT_PO_PATH}/${LOCALE}/minetest.po")
+		set(PO_FILE_PATH "${GETTEXT_PO_PATH}/${LOCALE}/voxelands.po")
 		set_mo_paths(MO_BUILD_PATH MO_DEST_PATH ${LOCALE})
 		set(MO_FILE_PATH "${MO_BUILD_PATH}/${PROJECT_NAME}.mo")
 

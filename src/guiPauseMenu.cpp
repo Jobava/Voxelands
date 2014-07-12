@@ -113,7 +113,7 @@ void GUIPauseMenu::regenerateGui(v2u32 screensize)
 		}
 
 		std::ostringstream os;
-		os<<"Minetest-Classic by darkrose and contributors";
+		os<<"Voxelands by darkrose and contributors";
 
 		Environment->addStaticText(narrow_to_wide(os.str()).c_str(), rect, false, true, this, 259);
 	}
@@ -128,7 +128,7 @@ void GUIPauseMenu::regenerateGui(v2u32 screensize)
 		}
 
 		std::ostringstream os;
-		os<<"www.minetest-classic.com";
+		os<<"www.voxelands.com";
 
 		Environment->addStaticText(narrow_to_wide(os.str()).c_str(), rect, false, true, this, 259);
 	}
@@ -143,7 +143,7 @@ void GUIPauseMenu::regenerateGui(v2u32 screensize)
 		}
 
 		std::ostringstream os;
-		os<<"darkrose@minetest-classic.com";
+		os<<"darkrose@voxelands.com";
 
 		Environment->addStaticText(narrow_to_wide(os.str()).c_str(), rect, false, true, this, 259);
 	}

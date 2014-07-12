@@ -451,8 +451,8 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			rect += topleft_content + v2s32(0, 50);
 			gui::IGUIStaticText *t = Environment->addStaticText(
 				narrow_to_wide(
-					"Minetest-Classic\n"
-					"http://www.minetest-classic.com/\n"
+					"Voxelands\n"
+					"http://www.voxelands.com/\n"
 					"\n"
 					"By Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
 					"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, tiemay\n"

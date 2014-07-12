@@ -903,7 +903,7 @@ void the_game(
 
 	// First line of debug text
 	gui::IGUIStaticText *guitext = guienv->addStaticText(
-			L"Minetest-Classic",
+			L"Voxelands",
 			core::rect<s32>(5, 5, 795, 5+text_height),
 			false, false);
 	// Second line of debug text
@@ -2063,7 +2063,7 @@ void the_game(
 			Update gui stuff (0ms)
 		*/
 		const char program_name_and_version[] =
-			"Minetest-Classic " VERSION_STRING;
+			"Voxelands " VERSION_STRING;
 		if(show_debug)
 		{
 			static float drawtime_avg = 0;
@@ -2403,7 +2403,7 @@ void the_game(
 
 		if (lastFPS != fps)
 		{
-			core::stringw str = L"Minetest Classic [";
+			core::stringw str = L"Voxelands [";
 			str += driver->getName();
 			str += "] FPS=";
 			str += fps;
