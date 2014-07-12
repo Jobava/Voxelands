@@ -54,12 +54,12 @@ class BlockEmergeQueue
 public:
 	BlockEmergeQueue()
 	{
-		m_mutex.init();
+		m_mutex.Init();
 	}
 
 	~BlockEmergeQueue()
 	{
-		SimpleMutexAutoLock lock(m_mutex);
+		JMutexAutoLock lock(m_mutex);
 
 		core::list<QueuedBlockEmerge*>::Iterator i;
 		for(i=m_queue.begin(); i!=m_queue.end(); i++)
@@ -76,7 +76,7 @@ public:
 	{
 		DSTACK(__FUNCTION_NAME);
 
-		SimpleMutexAutoLock lock(m_mutex);
+		JMutexAutoLock lock(m_mutex);
 
 		if(peer_id != 0)
 		{
@@ -110,7 +110,7 @@ public:
 	// Returns NULL if queue is empty
 	QueuedBlockEmerge * pop()
 	{
-		SimpleMutexAutoLock lock(m_mutex);
+		JMutexAutoLock lock(m_mutex);
 
 		core::list<QueuedBlockEmerge*>::Iterator i = m_queue.begin();
 		if(i == m_queue.end())
@@ -122,13 +122,13 @@ public:
 
 	u32 size()
 	{
-		SimpleMutexAutoLock lock(m_mutex);
+		JMutexAutoLock lock(m_mutex);
 		return m_queue.size();
 	}
 
 	u32 peerItemCount(u16 peer_id)
 	{
-		SimpleMutexAutoLock lock(m_mutex);
+		JMutexAutoLock lock(m_mutex);
 
 		u32 count = 0;
 
@@ -145,7 +145,7 @@ public:
 
 private:
 	core::list<QueuedBlockEmerge*> m_queue;
-	SimpleMutex m_mutex;
+	JMutex m_mutex;
 };
 
 class Server;
@@ -304,7 +304,7 @@ public:
 	// Time from last placing or removing blocks
 	float m_time_from_building;
 
-	/*SimpleMutex m_dig_mutex;
+	/*JMutex m_dig_mutex;
 	float m_dig_time_remaining;
 	// -1 = not digging
 	s16 m_dig_tool_item;
@@ -604,11 +604,11 @@ private:
 
 	// Environment
 	ServerEnvironment m_env;
-	SimpleMutex m_env_mutex;
+	JMutex m_env_mutex;
 
 	// Connection
 	con::Connection m_con;
-	SimpleMutex m_con_mutex;
+	JMutex m_con_mutex;
 	// Connected clients (behind the con mutex)
 	core::map<u16, RemoteClient*> m_clients;
 
@@ -625,7 +625,7 @@ private:
 	// A buffer for time steps
 	// step() increments and AsyncRunStep() run by m_thread reads it.
 	float m_step_dtime;
-	SimpleMutex m_step_dtime_mutex;
+	JMutex m_step_dtime_mutex;
 
 	// The server mainly operates in this thread
 	ServerThread m_thread;

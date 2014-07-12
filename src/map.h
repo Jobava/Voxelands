@@ -20,6 +20,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #ifndef MAP_HEADER
 #define MAP_HEADER
 
+#include <jmutex.h>
+#include <jmutexautolock.h>
+#include <jthread.h>
 #include <iostream>
 #include <sstream>
 
@@ -28,12 +31,12 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "mapblock_nodemod.h"
 #include "constants.h"
 #include "voxel.h"
-#include "porting.h"
-#include "threads.h"
 
 extern "C" {
 	#include "sqlite3.h"
 }
+
+using namespace jthread;
 
 class MapSector;
 class ServerMapSector;
@@ -528,7 +531,7 @@ public:
 
 	void updateCamera(v3f pos, v3f dir, f32 fov, v3s16 offset)
 	{
-		SimpleMutexAutoLock lock(m_camera_mutex);
+		JMutexAutoLock lock(m_camera_mutex);
 		m_camera_position = pos;
 		m_camera_direction = dir;
 		m_camera_fov = fov;
@@ -607,7 +610,7 @@ private:
 
 	// This is the master heightmap mesh
 	//scene::SMesh *mesh;
-	//SimpleMutex mesh_mutex;
+	//JMutex mesh_mutex;
 
 	MapDrawControl &m_control;
 
@@ -615,7 +618,7 @@ private:
 	v3f m_camera_direction;
 	f32 m_camera_fov;
 	v3s16 m_camera_offset;
-	SimpleMutex m_camera_mutex;
+	JMutex m_camera_mutex;
 
 	core::map<v2s16, bool> m_last_drawn_sectors;
 };

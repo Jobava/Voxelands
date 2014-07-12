@@ -22,10 +22,12 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include <map>
 #include <string>
+#include <jthread.h>
+#include <jmutex.h>
 #include "common_irrlicht.h"
 #include "exceptions.h"
-#include "porting.h"
-#include "threads.h"
+
+using namespace jthread;
 
 class BanManager
 {
@@ -42,7 +44,7 @@ public:
 	void remove(const std::string &ip_or_name);
 	bool isModified();
 private:
-	SimpleMutex m_mutex;
+	JMutex m_mutex;
 	std::string m_banfilepath;
 	std::map<std::string, std::string> m_ips;
 	bool m_modified;

@@ -47,9 +47,9 @@ MapBlock::MapBlock(Map *parent, v3s16 pos, bool dummy):
 
 #ifndef SERVER
 	m_mesh_expired = false;
-	mesh_mutex.init();
+	mesh_mutex.Init();
 	mesh = NULL;
-	m_temp_mods_mutex.init();
+	m_temp_mods_mutex.Init();
 #endif
 }
 
@@ -57,7 +57,7 @@ MapBlock::~MapBlock()
 {
 #ifndef SERVER
 	{
-		SimpleMutexAutoLock lock(mesh_mutex);
+		JMutexAutoLock lock(mesh_mutex);
 
 		if(mesh)
 		{
@@ -142,7 +142,7 @@ void MapBlock::updateMesh(u32 daynight_ratio, Environment *env, v3s16 camera_off
 		DEBUG: If mesh has been generated, don't generate it again
 	*/
 	{
-		SimpleMutexAutoLock meshlock(mesh_mutex);
+		JMutexAutoLock meshlock(mesh_mutex);
 		if(mesh != NULL)
 			return;
 	}
@@ -167,7 +167,7 @@ void MapBlock::updateMesh(u32 daynight_ratio, Environment *env, v3s16 camera_off
 
 void MapBlock::replaceMesh(MapBlockMesh *mesh_new)
 {
-	mesh_mutex.lock();
+	mesh_mutex.Lock();
 
 	//scene::SMesh *mesh_old = mesh[daynight_i];
 	//mesh[daynight_i] = mesh_new;
@@ -202,7 +202,7 @@ void MapBlock::replaceMesh(MapBlockMesh *mesh_new)
 		delete mesh_old;
 	}
 
-	mesh_mutex.unlock();
+	mesh_mutex.Unlock();
 }
 
 #endif // !SERVER

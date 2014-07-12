@@ -27,6 +27,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <string>
 // Included for u32 and such
 #include "common_irrlicht.h"
+#include "debug.h"
 #include "constants.h"
 
 #ifdef _MSC_VER
@@ -44,7 +45,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 # include <signal.h>
 # define sleep_ms(x) usleep(x*1000)
 #endif
-#include "debug.h"
 
 namespace porting
 {

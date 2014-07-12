@@ -22,6 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <iostream>
 #include "clientserver.h"
 #include "map.h"
+#include "jmutexautolock.h"
 #include "main.h"
 #include "constants.h"
 #include "voxel.h"
@@ -40,7 +41,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "profiler.h"
 #include "log.h"
 #include "base64.h"
-#include "threads.h"
 
 #define PP(x) "("<<(x).X<<","<<(x).Y<<","<<(x).Z<<")"
 
@@ -73,7 +73,6 @@ private:
 
 void * ServerThread::Thread()
 {
-printf("ServerThread::Thread()\n");
 	log_register_thread("ServerThread");
 
 	DSTACK(__FUNCTION_NAME);
@@ -104,13 +103,12 @@ printf("ServerThread::Thread()\n");
 
 	END_DEBUG_EXCEPTION_HANDLER(errorstream)
 
-printf("ServerThread::Thread() exit\n");
-
 	return NULL;
 }
 
 void * EmergeThread::Thread()
 {
+printf("EmergeThread::Thread()\n");
 	log_register_thread("EmergeThread");
 
 	DSTACK(__FUNCTION_NAME);
@@ -199,7 +197,7 @@ void * EmergeThread::Thread()
 			Fetch block from map or generate a single block
 		*/
 		{
-			SimpleMutexAutoLock envlock(m_server->m_env_mutex);
+			JMutexAutoLock envlock(m_server->m_env_mutex);
 
 			// Load sector if it isn't loaded
 			if(map.getSectorNoGenerateNoEx(p2d) == NULL)
@@ -266,7 +264,7 @@ void * EmergeThread::Thread()
 		}
 
 		{//envlock
-		SimpleMutexAutoLock envlock(m_server->m_env_mutex);
+		JMutexAutoLock envlock(m_server->m_env_mutex);
 
 		if(got_block)
 		{
@@ -311,7 +309,7 @@ void * EmergeThread::Thread()
 		*/
 
 		// NOTE: Server's clients are also behind the connection mutex
-		SimpleMutexAutoLock lock(m_server->m_con_mutex);
+		JMutexAutoLock lock(m_server->m_con_mutex);
 
 		/*
 			Add the originally fetched block to the modified list
@@ -970,9 +968,9 @@ Server::Server(
 	m_emergethread_trigger_timer = 0.0;
 	m_savemap_timer = 0.0;
 
-	m_env_mutex.init();
-	m_con_mutex.init();
-	m_step_dtime_mutex.init();
+	m_env_mutex.Init();
+	m_con_mutex.Init();
+	m_step_dtime_mutex.Init();
 	m_step_dtime = 0.0;
 
 	// Register us to receive map edit events
@@ -998,7 +996,7 @@ Server::~Server()
 		Send shutdown message
 	*/
 	{
-		SimpleMutexAutoLock conlock(m_con_mutex);
+		JMutexAutoLock conlock(m_con_mutex);
 
 		std::wstring line = L"*** Server shutting down";
 
@@ -1024,7 +1022,7 @@ Server::~Server()
 	}
 
 	{
-		SimpleMutexAutoLock envlock(m_env_mutex);
+		JMutexAutoLock envlock(m_env_mutex);
 
 		/*
 			Save players
@@ -1048,7 +1046,7 @@ Server::~Server()
 		Delete clients
 	*/
 	{
-		SimpleMutexAutoLock clientslock(m_con_mutex);
+		JMutexAutoLock clientslock(m_con_mutex);
 
 		for(core::map<u16, RemoteClient*>::Iterator
 			i = m_clients.getIterator();
@@ -1058,7 +1056,7 @@ Server::~Server()
 			// NOTE: These are removed by env destructor
 			{
 				u16 peer_id = i.getNode()->getKey();
-				SimpleMutexAutoLock envlock(m_env_mutex);
+				JMutexAutoLock envlock(m_env_mutex);
 				m_env.removePlayer(peer_id);
 			}*/
 
@@ -1077,10 +1075,8 @@ void Server::start(unsigned short port)
 	// Initialize connection
 	m_con.SetTimeoutMs(30);
 	m_con.Serve(port);
-	if (!m_con.getRun()) {
-printf("no con run\n");
+	if (!m_con.getRun())
 		return;
-	}
 
 	// Start thread
 	m_thread.start();
@@ -1110,7 +1106,7 @@ bool Server::step(float dtime)
 	if(dtime > 2.0)
 		dtime = 2.0;
 	{
-		SimpleMutexAutoLock lock(m_step_dtime_mutex);
+		JMutexAutoLock lock(m_step_dtime_mutex);
 		m_step_dtime += dtime;
 	}
 	return true;
@@ -1124,7 +1120,7 @@ void Server::AsyncRunStep()
 
 	float dtime;
 	{
-		SimpleMutexAutoLock lock1(m_step_dtime_mutex);
+		JMutexAutoLock lock1(m_step_dtime_mutex);
 		dtime = m_step_dtime;
 	}
 
@@ -1143,7 +1139,7 @@ void Server::AsyncRunStep()
 	//infostream<<"Server::AsyncRunStep(): dtime="<<dtime<<std::endl;
 
 	{
-		SimpleMutexAutoLock lock1(m_step_dtime_mutex);
+		JMutexAutoLock lock1(m_step_dtime_mutex);
 		m_step_dtime -= dtime;
 	}
 
@@ -1156,7 +1152,7 @@ void Server::AsyncRunStep()
 
 	{
 		// Process connection's timeouts
-		SimpleMutexAutoLock lock2(m_con_mutex);
+		JMutexAutoLock lock2(m_con_mutex);
 		ScopeProfiler sp(g_profiler, "Server: connection timeout processing");
 		m_con.RunTimeouts(dtime);
 	}
@@ -1171,7 +1167,7 @@ void Server::AsyncRunStep()
 		Update m_time_of_day and overall game time
 	*/
 	{
-		SimpleMutexAutoLock envlock(m_env_mutex);
+		JMutexAutoLock envlock(m_env_mutex);
 
 		m_time_counter += dtime;
 		f32 speed = g_settings->getFloat("time_speed") * 24000./(24.*3600);
@@ -1191,8 +1187,8 @@ void Server::AsyncRunStep()
 		{
 			m_time_of_day_send_timer = g_settings->getFloat("time_send_interval");
 
-			//SimpleMutexAutoLock envlock(m_env_mutex);
-			SimpleMutexAutoLock conlock(m_con_mutex);
+			//JMutexAutoLock envlock(m_env_mutex);
+			JMutexAutoLock conlock(m_con_mutex);
 
 			for(core::map<u16, RemoteClient*>::Iterator
 				i = m_clients.getIterator();
@@ -1210,7 +1206,7 @@ void Server::AsyncRunStep()
 	}
 
 	{
-		SimpleMutexAutoLock lock(m_env_mutex);
+		JMutexAutoLock lock(m_env_mutex);
 		// Step environment
 		ScopeProfiler sp(g_profiler, "SEnv step");
 		ScopeProfiler sp2(g_profiler, "SEnv step avg", SPT_AVG);
@@ -1220,7 +1216,7 @@ void Server::AsyncRunStep()
 	const float map_timer_and_unload_dtime = 2.92;
 	if(m_map_timer_and_unload_interval.step(dtime, map_timer_and_unload_dtime))
 	{
-		SimpleMutexAutoLock lock(m_env_mutex);
+		JMutexAutoLock lock(m_env_mutex);
 		// Run Map's timers and unload unused data
 		ScopeProfiler sp(g_profiler, "Server: map timer and unload");
 		m_env.getMap().timerUpdate(map_timer_and_unload_dtime,
@@ -1239,7 +1235,7 @@ void Server::AsyncRunStep()
 	{
 		m_liquid_transform_timer -= 1.00;
 
-		SimpleMutexAutoLock lock(m_env_mutex);
+		JMutexAutoLock lock(m_env_mutex);
 
 		ScopeProfiler sp(g_profiler, "Server: liquid transform");
 
@@ -1266,7 +1262,7 @@ void Server::AsyncRunStep()
 			Set the modified blocks unsent for all the clients
 		*/
 
-		SimpleMutexAutoLock lock2(m_con_mutex);
+		JMutexAutoLock lock2(m_con_mutex);
 
 		for(core::map<u16, RemoteClient*>::Iterator
 				i = m_clients.getIterator();
@@ -1290,7 +1286,7 @@ void Server::AsyncRunStep()
 		{
 			counter = 0.0;
 
-			SimpleMutexAutoLock lock2(m_con_mutex);
+			JMutexAutoLock lock2(m_con_mutex);
 
 			if(m_clients.size() != 0)
 				infostream<<"Players:"<<std::endl;
@@ -1317,8 +1313,8 @@ void Server::AsyncRunStep()
 	*/
 	{
 		//infostream<<"Server: Checking added and deleted active objects"<<std::endl;
-		SimpleMutexAutoLock envlock(m_env_mutex);
-		SimpleMutexAutoLock conlock(m_con_mutex);
+		JMutexAutoLock envlock(m_env_mutex);
+		JMutexAutoLock conlock(m_con_mutex);
 
 		ScopeProfiler sp(g_profiler, "Server: checking added and deleted objs");
 
@@ -1466,8 +1462,8 @@ void Server::AsyncRunStep()
 		Send object messages
 	*/
 	{
-		SimpleMutexAutoLock envlock(m_env_mutex);
-		SimpleMutexAutoLock conlock(m_con_mutex);
+		JMutexAutoLock envlock(m_env_mutex);
+		JMutexAutoLock conlock(m_con_mutex);
 
 		//ScopeProfiler sp(g_profiler, "Server: sending object messages");
 
@@ -1706,8 +1702,8 @@ void Server::AsyncRunStep()
 		counter += dtime;
 		if(counter >= g_settings->getFloat("objectdata_interval"))
 		{
-			SimpleMutexAutoLock lock1(m_env_mutex);
-			SimpleMutexAutoLock lock2(m_con_mutex);
+			JMutexAutoLock lock1(m_env_mutex);
+			JMutexAutoLock lock2(m_con_mutex);
 
 			//ScopeProfiler sp(g_profiler, "Server: sending player positions");
 
@@ -1751,7 +1747,7 @@ void Server::AsyncRunStep()
 				m_banmanager.save();
 
 			// Map
-			SimpleMutexAutoLock lock(m_env_mutex);
+			JMutexAutoLock lock(m_env_mutex);
 
 			/*// Unload unused data (delete from memory)
 			m_env.getMap().unloadUnusedData(
@@ -1787,7 +1783,7 @@ void Server::Receive()
 	u32 datasize;
 	try{
 		{
-			SimpleMutexAutoLock conlock(m_con_mutex);
+			JMutexAutoLock conlock(m_con_mutex);
 			datasize = m_con.Receive(peer_id, data);
 		}
 
@@ -1810,7 +1806,7 @@ void Server::Receive()
 		// The peer has been disconnected.
 		// Find the associated player and remove it.
 
-		/*SimpleMutexAutoLock envlock(m_env_mutex);
+		/*JMutexAutoLock envlock(m_env_mutex);
 
 		infostream<<"ServerThread: peer_id="<<peer_id
 				<<" has apparently closed connection. "
@@ -1824,8 +1820,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 {
 	DSTACK(__FUNCTION_NAME);
 	// Environment is locked first.
-	SimpleMutexAutoLock envlock(m_env_mutex);
-	SimpleMutexAutoLock conlock(m_con_mutex);
+	JMutexAutoLock envlock(m_env_mutex);
+	JMutexAutoLock conlock(m_con_mutex);
 
 	try{
 		Address address = m_con.GetPeerAddress(peer_id);
@@ -2785,7 +2781,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			SendPlayerAnim(player,PLAYERANIM_STAND);
 #if 0
 			RemoteClient *client = getClient(peer_id);
-			SimpleMutexAutoLock digmutex(client->m_dig_mutex);
+			JMutexAutoLock digmutex(client->m_dig_mutex);
 			client->m_dig_tool_item = -1;
 #endif
 		}
@@ -4508,8 +4504,8 @@ void Server::inventoryModified(InventoryContext *c, std::string id)
 core::list<PlayerInfo> Server::getPlayerInfo()
 {
 	DSTACK(__FUNCTION_NAME);
-	SimpleMutexAutoLock envlock(m_env_mutex);
-	SimpleMutexAutoLock conlock(m_con_mutex);
+	JMutexAutoLock envlock(m_env_mutex);
+	JMutexAutoLock conlock(m_con_mutex);
 
 	core::list<PlayerInfo> list;
 
@@ -4654,7 +4650,7 @@ void Server::SendPlayerInfos()
 {
 	DSTACK(__FUNCTION_NAME);
 
-	//SimpleMutexAutoLock envlock(m_env_mutex);
+	//JMutexAutoLock envlock(m_env_mutex);
 
 	// Get connected players
 	core::list<Player*> players = m_env.getPlayers(true);
@@ -4681,7 +4677,7 @@ void Server::SendPlayerInfos()
 		start += 2+PLAYERNAME_SIZE;
 	}
 
-	//SimpleMutexAutoLock conlock(m_con_mutex);
+	//JMutexAutoLock conlock(m_con_mutex);
 
 	// Send as reliable
 	m_con.SendToAll(0, data, true);
@@ -5048,8 +5044,8 @@ void Server::SendBlocks(float dtime)
 {
 	DSTACK(__FUNCTION_NAME);
 
-	SimpleMutexAutoLock envlock(m_env_mutex);
-	SimpleMutexAutoLock conlock(m_con_mutex);
+	JMutexAutoLock envlock(m_env_mutex);
+	JMutexAutoLock conlock(m_con_mutex);
 
 	//TimeTaker timer("Server::SendBlocks");
 
@@ -5201,7 +5197,7 @@ void Server::UpdateCrafting(u16 peer_id)
 RemoteClient* Server::getClient(u16 peer_id)
 {
 	DSTACK(__FUNCTION_NAME);
-	//SimpleMutexAutoLock lock(m_con_mutex);
+	//JMutexAutoLock lock(m_con_mutex);
 	core::map<u16, RemoteClient*>::Node *n;
 	n = m_clients.find(peer_id);
 	// A client should exist for all peers
@@ -5422,8 +5418,8 @@ Player *Server::emergePlayer(const char *name, const char *password, u16 peer_id
 
 void Server::handlePeerChange(PeerChange &c)
 {
-	SimpleMutexAutoLock envlock(m_env_mutex);
-	SimpleMutexAutoLock conlock(m_con_mutex);
+	JMutexAutoLock envlock(m_env_mutex);
+	JMutexAutoLock conlock(m_con_mutex);
 
 	if(c.type == PEER_ADDED)
 	{

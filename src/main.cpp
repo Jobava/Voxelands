@@ -1013,15 +1013,15 @@ void SpeedTests()
 		dstream<<"Around 5000/ms should do well here."<<std::endl;
 		TimeTaker timer("Testing mutex speed");
 
-		SimpleMutex m;
-		m.init();
+		JMutex m;
+		m.Init();
 		u32 n = 0;
 		u32 i = 0;
 		do{
 			n += 10000;
 			for(; i<n; i++){
-				m.lock();
-				m.unlock();
+				m.Lock();
+				m.Unlock();
 			}
 		}
 		// Do at least 10ms

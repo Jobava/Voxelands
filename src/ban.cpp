@@ -19,17 +19,17 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "ban.h"
 #include <fstream>
+#include <jmutexautolock.h>
 #include <sstream>
 #include <set>
 #include "strfnd.h"
 #include "debug.h"
-#include "threads.h"
 
 BanManager::BanManager(const std::string &banfilepath):
 		m_banfilepath(banfilepath),
 		m_modified(false)
 {
-	m_mutex.init();
+	m_mutex.Init();
 	try{
 		load();
 	}
@@ -47,7 +47,7 @@ BanManager::~BanManager()
 
 void BanManager::load()
 {
-	SimpleMutexAutoLock lock(m_mutex);
+	JMutexAutoLock lock(m_mutex);
 	dstream<<"BanManager: loading from "<<m_banfilepath<<std::endl;
 	std::ifstream is(m_banfilepath.c_str(), std::ios::binary);
 	if(is.good() == false)
@@ -74,7 +74,7 @@ void BanManager::load()
 
 void BanManager::save()
 {
-	SimpleMutexAutoLock lock(m_mutex);
+	JMutexAutoLock lock(m_mutex);
 	dstream<<"BanManager: saving to "<<m_banfilepath<<std::endl;
 	std::ofstream os(m_banfilepath.c_str(), std::ios::binary);
 
@@ -95,13 +95,13 @@ void BanManager::save()
 
 bool BanManager::isIpBanned(const std::string &ip)
 {
-	SimpleMutexAutoLock lock(m_mutex);
+	JMutexAutoLock lock(m_mutex);
 	return m_ips.find(ip) != m_ips.end();
 }
 
 std::string BanManager::getBanDescription(const std::string &ip_or_name)
 {
-	SimpleMutexAutoLock lock(m_mutex);
+	JMutexAutoLock lock(m_mutex);
 	std::string s = "";
 	for(std::map<std::string, std::string>::iterator
 			i = m_ips.begin();
@@ -117,7 +117,7 @@ std::string BanManager::getBanDescription(const std::string &ip_or_name)
 
 std::string BanManager::getBanName(const std::string &ip)
 {
-	SimpleMutexAutoLock lock(m_mutex);
+	JMutexAutoLock lock(m_mutex);
 	std::map<std::string, std::string>::iterator i = m_ips.find(ip);
 	if(i == m_ips.end())
 		return "";
@@ -126,14 +126,14 @@ std::string BanManager::getBanName(const std::string &ip)
 
 void BanManager::add(const std::string &ip, const std::string &name)
 {
-	SimpleMutexAutoLock lock(m_mutex);
+	JMutexAutoLock lock(m_mutex);
 	m_ips[ip] = name;
 	m_modified = true;
 }
 
 void BanManager::remove(const std::string &ip_or_name)
 {
-	SimpleMutexAutoLock lock(m_mutex);
+	JMutexAutoLock lock(m_mutex);
 	//m_ips.erase(m_ips.find(ip));
 	// Find out all ip-name pairs that match the ip or name
 	std::set<std::string> ips_to_delete;
@@ -157,7 +157,7 @@ void BanManager::remove(const std::string &ip_or_name)
 
 bool BanManager::isModified()
 {
-	SimpleMutexAutoLock lock(m_mutex);
+	JMutexAutoLock lock(m_mutex);
 	return m_modified;
 }
 

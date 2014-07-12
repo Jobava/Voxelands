@@ -25,6 +25,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "utility.h"
 #include <string>
 
+using namespace jthread;
+
 /*
 	tile.{h,cpp}: Texture handling stuff.
 */
@@ -246,7 +248,7 @@ private:
 	// Maps a texture name to an index in the former.
 	core::map<std::string, u32> m_name_to_id;
 	// The two former containers are behind this mutex
-	SimpleMutex m_atlaspointer_cache_mutex;
+	JMutex m_atlaspointer_cache_mutex;
 
 	// Main texture atlas. This is filled at startup and is then not touched.
 	video::IImage *m_main_atlas_image;

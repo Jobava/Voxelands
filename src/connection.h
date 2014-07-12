@@ -609,7 +609,7 @@ private:
 	u16 m_peer_id;
 
 	core::map<u16, Peer*> m_peers;
-	SimpleMutex m_peers_mutex;
+	JMutex m_peers_mutex;
 
 	// Backwards compatibility
 	PeerHandler *m_bc_peerhandler;

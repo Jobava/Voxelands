@@ -25,6 +25,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <string>
 #include <sstream>
 #include <vector>
+#include <jthread.h>
+#include <jmutex.h>
+#include <jmutexautolock.h>
 #include <cstring>
 
 #include "common_irrlicht.h"
@@ -32,7 +35,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "strfnd.h"
 #include "exceptions.h"
 #include "porting.h"
-#include "threads.h"
+
+using namespace jthread;
 
 extern const v3s16 g_6dirs[6];
 
@@ -541,32 +545,32 @@ public:
 	MutexedVariable(T value):
 		m_value(value)
 	{
-		m_mutex.init();
+		m_mutex.Init();
 	}
 
 	T get()
 	{
-		SimpleMutexAutoLock lock(m_mutex);
+		JMutexAutoLock lock(m_mutex);
 		return m_value;
 	}
 
 	void set(T value)
 	{
-		SimpleMutexAutoLock lock(m_mutex);
+		JMutexAutoLock lock(m_mutex);
 		m_value = value;
 	}
 
 	// You'll want to grab this in a SharedPtr
-	SimpleMutex *getLock()
+	JMutexAutoLock * getLock()
 	{
-		return new SimpleMutexAutoLock(m_mutex);
+		return new JMutexAutoLock(m_mutex);
 	}
 
 	// You pretty surely want to grab the lock when accessing this
 	T m_value;
 
 private:
-	SimpleMutex m_mutex;
+	JMutex m_mutex;
 };
 
 /*
@@ -969,6 +973,197 @@ inline void str_replace_char(std::string & str, char from, char to)
 }
 
 /*
+	A simple mutex implementation
+*/
+#ifdef _WIN32
+class SimpleMutex
+{
+	CRITICAL_SECTION mut;
+
+public:
+
+	SimpleMutex()
+	{
+		InitializeCriticalSection(&mut);
+	}
+
+	~SimpleMutex()
+	{
+		unlock();
+		DeleteCriticalSection(&mut);
+	}
+
+	void lock()
+	{
+		EnterCriticalSection(&mut);
+	}
+
+	bool trylock()
+	{
+		if (!TryEnterCriticalSection(&mut))
+			return true;
+		return false;
+	}
+
+	void unlock()
+	{
+		LeaveCriticalSection(&mut);
+	}
+};
+#else
+class SimpleMutex
+{
+	pthread_mutexattr_t attr;
+	pthread_mutex_t mut;
+
+public:
+
+	SimpleMutex()
+	{
+		pthread_mutexattr_init(&attr);
+		pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
+		pthread_mutex_init(&mut, &attr);
+	}
+
+	~SimpleMutex()
+	{
+		unlock();
+		pthread_mutex_destroy(&mut);
+		pthread_mutexattr_destroy(&attr);
+	}
+
+	void lock()
+	{
+		pthread_mutex_lock(&mut);
+	}
+
+	int trylock()
+	{
+		if (pthread_mutex_trylock(&mut))
+			return true;
+		return false;
+	}
+
+	void unlock()
+	{
+		pthread_mutex_unlock(&mut);
+	}
+};
+#endif
+
+/*
+	A base class for simple background thread implementation
+*/
+class SimpleThread
+{
+	bool run;
+	SimpleMutex run_mutex;
+#ifdef _WIN32
+	HANDLE thread;
+#else
+	pthread_t thread;
+	pthread_attr_t attr;
+#endif
+
+public:
+
+	SimpleThread():
+		run(false),
+		run_mutex()
+	{
+#ifndef _WIN32
+		pthread_attr_init(&attr);
+		pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+#endif
+	}
+
+	virtual ~SimpleThread()
+	{
+		kill();
+	}
+
+	virtual void * Thread() = 0;
+
+	bool getRun()
+	{
+		run_mutex.lock();
+		bool r = run;
+		run_mutex.unlock();
+		return r;
+	}
+	void setRun(bool a_run)
+	{
+		run_mutex.lock();
+		run = a_run;
+		run_mutex.unlock();
+	}
+
+	void start()
+	{
+		if (getRun()) {
+#ifdef _WIN32
+			ResumeThread(thread);
+#else
+			pthread_kill(thread,SIGCONT);
+#endif
+		}else{
+			setRun(true);
+#ifdef _WIN32
+			thread = CreateThread(NULL, 0, &runThread, this, 0, NULL);
+#else
+			pthread_create(&thread, &attr, &runThread, this);
+#endif
+		}
+	}
+
+	void wait()
+	{
+		if (getRun()) {
+#ifdef _WIN32
+			WaitForSingleObject(thread, 2000);
+			CloseHandle(thread);
+#else
+			pthread_join(thread,NULL);
+#endif
+		}
+	}
+
+	void stop()
+	{
+		setRun(false);
+		wait();
+	}
+
+	void kill()
+	{
+		if (getRun()) {
+			setRun(false);
+#ifdef _WIN32
+			TerminateThread(thread,0);
+			CloseHandle(thread);
+#else
+			pthread_kill(thread,SIGKILL);
+#endif
+		}
+	}
+
+private:
+	static void *runThread(void* data)
+	{
+		SimpleThread *t = (SimpleThread*)data;
+		void *r = t->Thread();
+		t->setRun(false);
+#ifdef _WIN32
+		ExitThread(0);
+		CloseHandle(t->thread);
+#else
+		pthread_exit(r);
+#endif
+		return r;
+	}
+};
+
+/*
 	FIFO queue (well, actually a FILO also)
 */
 template<typename T>
@@ -1020,16 +1215,16 @@ class MutexedQueue
 public:
 	MutexedQueue()
 	{
-		m_mutex.init();
+		m_mutex.Init();
 	}
 	u32 size()
 	{
-		SimpleMutexAutoLock lock(m_mutex);
+		JMutexAutoLock lock(m_mutex);
 		return m_list.size();
 	}
 	void push_back(T t)
 	{
-		SimpleMutexAutoLock lock(m_mutex);
+		JMutexAutoLock lock(m_mutex);
 		m_list.push_back(t);
 	}
 	T pop_front(u32 wait_time_max_ms=0)
@@ -1039,7 +1234,7 @@ public:
 		for(;;)
 		{
 			{
-				SimpleMutexAutoLock lock(m_mutex);
+				JMutexAutoLock lock(m_mutex);
 
 				if(m_list.size() > 0)
 				{
@@ -1049,7 +1244,7 @@ public:
 					return t;
 				}
 
-				if (wait_time_ms >= wait_time_max_ms)
+				if(wait_time_ms >= wait_time_max_ms)
 					throw ItemNotFoundException("MutexedQueue: queue is empty");
 			}
 
@@ -1065,7 +1260,7 @@ public:
 		for(;;)
 		{
 			{
-				SimpleMutexAutoLock lock(m_mutex);
+				JMutexAutoLock lock(m_mutex);
 
 				if(m_list.size() > 0)
 				{
@@ -1085,7 +1280,7 @@ public:
 		}
 	}
 
-	SimpleMutex & getMutex()
+	JMutex & getMutex()
 	{
 		return m_mutex;
 	}
@@ -1096,7 +1291,7 @@ public:
 	}
 
 protected:
-	SimpleMutex m_mutex;
+	JMutex m_mutex;
 	core::list<T> m_list;
 };
 
@@ -1165,7 +1360,7 @@ public:
 	void add(Key key, Caller caller, CallerData callerdata,
 			ResultQueue<Key, T, Caller, CallerData> *dest)
 	{
-		SimpleMutexAutoLock lock(m_queue.getMutex());
+		JMutexAutoLock lock(m_queue.getMutex());
 
 		/*
 			If the caller is already on the list, only update CallerData
@@ -1292,26 +1487,28 @@ class MutexedMap
 public:
 	MutexedMap()
 	{
-		m_mutex.init();
+		m_mutex.Init();
+		assert(m_mutex.IsInitialized());
 	}
 
 	void set(const Key &name, const Value &value)
 	{
-		SimpleMutexAutoLock lock(m_mutex);
+		JMutexAutoLock lock(m_mutex);
+
 		m_values[name] = value;
 	}
 
 	bool get(const Key &name, Value *result)
 	{
-		SimpleMutexAutoLock lock(m_mutex);
+		JMutexAutoLock lock(m_mutex);
 
 		typename core::map<Key, Value>::Node *n;
 		n = m_values.find(name);
 
-		if (n == NULL)
+		if(n == NULL)
 			return false;
 
-		if (result != NULL)
+		if(result != NULL)
 			*result = n->getValue();
 
 		return true;
@@ -1319,7 +1516,7 @@ public:
 
 private:
 	core::map<Key, Value> m_values;
-	SimpleMutex m_mutex;
+	JMutex m_mutex;
 };
 #endif
 
@@ -1341,16 +1538,17 @@ class MutexedIdGenerator
 public:
 	MutexedIdGenerator()
 	{
-		m_mutex.init();
+		m_mutex.Init();
+		assert(m_mutex.IsInitialized());
 	}
 
 	// Returns true if found
 	bool getValue(u32 id, T &value)
 	{
-		if (id == 0)
+		if(id == 0)
 			return false;
-		SimpleMutexAutoLock(m_mutex);
-		if (m_id_to_value.size() < id)
+		JMutexAutoLock lock(m_mutex);
+		if(m_id_to_value.size() < id)
 			return false;
 		value = m_id_to_value[id-1];
 		return true;
@@ -1360,10 +1558,10 @@ public:
 	// Otherwise generates an id for the value.
 	u32 getId(const T &value)
 	{
-		SimpleMutexAutoLock(m_mutex);
+		JMutexAutoLock lock(m_mutex);
 		typename core::map<T, u32>::Node *n;
 		n = m_value_to_id.find(value);
-		if (n != NULL)
+		if(n != NULL)
 			return n->getValue();
 		m_id_to_value.push_back(value);
 		u32 new_id = m_id_to_value.size();
@@ -1372,7 +1570,7 @@ public:
 	}
 
 private:
-	SimpleMutex m_mutex;
+	JMutex m_mutex;
 	// Values are stored here at id-1 position (id 1 = [0])
 	core::array<T> m_id_to_value;
 	core::map<T, u32> m_value_to_id;

@@ -41,7 +41,7 @@ TextureSource::TextureSource(IrrlichtDevice *device):
 {
 	assert(m_device);
 
-	m_atlaspointer_cache_mutex.init();
+	m_atlaspointer_cache_mutex.Init();
 
 	m_main_thread = get_current_thread_id();
 
@@ -93,7 +93,7 @@ u32 TextureSource::getTextureId(const std::string &name)
 		/*
 			See if texture already exists
 		*/
-		SimpleMutexAutoLock lock(m_atlaspointer_cache_mutex);
+		JMutexAutoLock lock(m_atlaspointer_cache_mutex);
 		core::map<std::string, u32>::Node *n;
 		n = m_name_to_id.find(name);
 		if(n != NULL)
@@ -192,7 +192,7 @@ u32 TextureSource::getTextureIdDirect(const std::string &name)
 		See if texture already exists
 	*/
 	{
-		SimpleMutexAutoLock lock(m_atlaspointer_cache_mutex);
+		JMutexAutoLock lock(m_atlaspointer_cache_mutex);
 
 		core::map<std::string, u32>::Node *n;
 		n = m_name_to_id.find(name);
@@ -260,7 +260,7 @@ u32 TextureSource::getTextureIdDirect(const std::string &name)
 	// If a base image was found, copy it to baseimg
 	if(base_image_id != 0)
 	{
-		SimpleMutexAutoLock lock(m_atlaspointer_cache_mutex);
+		JMutexAutoLock lock(m_atlaspointer_cache_mutex);
 
 		SourceAtlasPointer ap = m_atlaspointer_cache[base_image_id];
 
@@ -326,7 +326,7 @@ u32 TextureSource::getTextureIdDirect(const std::string &name)
 		Add texture to caches (add NULL textures too)
 	*/
 
-	SimpleMutexAutoLock lock(m_atlaspointer_cache_mutex);
+	JMutexAutoLock lock(m_atlaspointer_cache_mutex);
 
 	u32 id = m_atlaspointer_cache.size();
 	AtlasPointer ap(id);
@@ -349,7 +349,7 @@ u32 TextureSource::getTextureIdDirect(const std::string &name)
 
 std::string TextureSource::getTextureName(u32 id)
 {
-	SimpleMutexAutoLock lock(m_atlaspointer_cache_mutex);
+	JMutexAutoLock lock(m_atlaspointer_cache_mutex);
 
 	if(id >= m_atlaspointer_cache.size())
 	{
@@ -365,7 +365,7 @@ std::string TextureSource::getTextureName(u32 id)
 
 AtlasPointer TextureSource::getTexture(u32 id)
 {
-	SimpleMutexAutoLock lock(m_atlaspointer_cache_mutex);
+	JMutexAutoLock lock(m_atlaspointer_cache_mutex);
 
 	if(id >= m_atlaspointer_cache.size())
 		return AtlasPointer(0, NULL);
@@ -382,7 +382,7 @@ void TextureSource::buildMainAtlas()
 	video::IVideoDriver* driver = m_device->getVideoDriver();
 	assert(driver);
 
-	SimpleMutexAutoLock lock(m_atlaspointer_cache_mutex);
+	JMutexAutoLock lock(m_atlaspointer_cache_mutex);
 
 	// Create an image of the right size
 	core::dimension2d<u32> atlas_dim(4096,4096);

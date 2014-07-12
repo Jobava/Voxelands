@@ -19,6 +19,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "auth.h"
 #include <fstream>
+#include <jmutexautolock.h>
 //#include "main.h" // for g_settings
 #include <sstream>
 #include "strfnd.h"
@@ -83,7 +84,7 @@ AuthManager::AuthManager(const std::string &authfilepath):
 		m_authfilepath(authfilepath),
 		m_modified(false)
 {
-	m_mutex.init();
+	m_mutex.Init();
 
 	try{
 		load();
@@ -102,7 +103,7 @@ AuthManager::~AuthManager()
 
 void AuthManager::load()
 {
-	SimpleMutexAutoLock lock(m_mutex);
+	JMutexAutoLock lock(m_mutex);
 
 	dstream<<"AuthManager: loading from "<<m_authfilepath<<std::endl;
 	std::ifstream is(m_authfilepath.c_str(), std::ios::binary);
@@ -148,7 +149,7 @@ void AuthManager::load()
 
 void AuthManager::save()
 {
-	SimpleMutexAutoLock lock(m_mutex);
+	JMutexAutoLock lock(m_mutex);
 
 	dstream<<"AuthManager: saving to "<<m_authfilepath<<std::endl;
 	std::ofstream os(m_authfilepath.c_str(), std::ios::binary);
@@ -174,7 +175,7 @@ void AuthManager::save()
 
 bool AuthManager::exists(const std::string &username)
 {
-	SimpleMutexAutoLock lock(m_mutex);
+	JMutexAutoLock lock(m_mutex);
 
 	core::map<std::string, AuthData>::Node *n;
 	n = m_authdata.find(username);
@@ -185,7 +186,7 @@ bool AuthManager::exists(const std::string &username)
 
 void AuthManager::set(const std::string &username, AuthData ad)
 {
-	SimpleMutexAutoLock lock(m_mutex);
+	JMutexAutoLock lock(m_mutex);
 
 	m_authdata[username] = ad;
 
@@ -194,7 +195,7 @@ void AuthManager::set(const std::string &username, AuthData ad)
 
 void AuthManager::add(const std::string &username)
 {
-	SimpleMutexAutoLock lock(m_mutex);
+	JMutexAutoLock lock(m_mutex);
 
 	m_authdata[username] = AuthData();
 
@@ -203,7 +204,7 @@ void AuthManager::add(const std::string &username)
 
 std::string AuthManager::getPassword(const std::string &username)
 {
-	SimpleMutexAutoLock lock(m_mutex);
+	JMutexAutoLock lock(m_mutex);
 
 	core::map<std::string, AuthData>::Node *n;
 	n = m_authdata.find(username);
@@ -216,7 +217,7 @@ std::string AuthManager::getPassword(const std::string &username)
 void AuthManager::setPassword(const std::string &username,
 		const std::string &password)
 {
-	SimpleMutexAutoLock lock(m_mutex);
+	JMutexAutoLock lock(m_mutex);
 
 	core::map<std::string, AuthData>::Node *n;
 	n = m_authdata.find(username);
@@ -232,7 +233,7 @@ void AuthManager::setPassword(const std::string &username,
 
 u64 AuthManager::getPrivs(const std::string &username)
 {
-	SimpleMutexAutoLock lock(m_mutex);
+	JMutexAutoLock lock(m_mutex);
 
 	core::map<std::string, AuthData>::Node *n;
 	n = m_authdata.find(username);
@@ -244,7 +245,7 @@ u64 AuthManager::getPrivs(const std::string &username)
 
 void AuthManager::setPrivs(const std::string &username, u64 privs)
 {
-	SimpleMutexAutoLock lock(m_mutex);
+	JMutexAutoLock lock(m_mutex);
 
 	core::map<std::string, AuthData>::Node *n;
 	n = m_authdata.find(username);
@@ -260,7 +261,7 @@ void AuthManager::setPrivs(const std::string &username, u64 privs)
 
 bool AuthManager::isModified()
 {
-	SimpleMutexAutoLock lock(m_mutex);
+	JMutexAutoLock lock(m_mutex);
 	return m_modified;
 }
 

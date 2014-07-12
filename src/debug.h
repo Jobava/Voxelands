@@ -21,6 +21,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define DEBUG_HEADER
 
 #include <stdio.h>
+#include <jmutex.h>
+#include <jmutexautolock.h>
 #include <iostream>
 #include "common_irrlicht.h"
 #include "threads.h"
@@ -36,6 +38,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 	#endif
 #else
 #endif
+
+using namespace jthread;
 
 /*
 	Debug output
@@ -125,7 +129,7 @@ extern Nullstream dummyout;
 	Assert
 */
 
-extern void assert_fail(
+__NORETURN extern void assert_fail(
 		const char *assertion, const char *file,
 		unsigned int line, const char *function);
 
@@ -155,7 +159,7 @@ struct DebugStack
 };
 
 extern core::map<threadid_t, DebugStack*> g_debug_stacks;
-extern SimpleMutex g_debug_stacks_mutex;
+extern JMutex g_debug_stacks_mutex;
 
 extern void debug_stacks_init();
 extern void debug_stacks_print();

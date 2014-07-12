@@ -18,6 +18,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 */
 
 #include "mapsector.h"
+#include "jmutexautolock.h"
 #include "client.h"
 #include "exceptions.h"
 #include "mapblock.h"

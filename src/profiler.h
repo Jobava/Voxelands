@@ -23,7 +23,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "common_irrlicht.h"
 #include <string>
 #include "utility.h"
-#include "threads.h"
+#include <jmutex.h>
+#include <jmutexautolock.h>
 
 /*
 	Time profiler
@@ -34,12 +35,12 @@ class Profiler
 public:
 	Profiler()
 	{
-		m_mutex.init();
+		m_mutex.Init();
 	}
 
 	void add(const std::string &name, float value)
 	{
-		SimpleMutexAutoLock lock(m_mutex);
+		JMutexAutoLock lock(m_mutex);
 		{
 			/* No average shall have been used; mark add used as -2 */
 			core::map<std::string, int>::Node *n = m_avgcounts.find(name);
@@ -62,7 +63,7 @@ public:
 
 	void avg(const std::string &name, float value)
 	{
-		SimpleMutexAutoLock lock(m_mutex);
+		JMutexAutoLock lock(m_mutex);
 		{
 			core::map<std::string, int>::Node *n = m_avgcounts.find(name);
 			if(n == NULL)
@@ -87,7 +88,7 @@ public:
 
 	void clear()
 	{
-		SimpleMutexAutoLock lock(m_mutex);
+		JMutexAutoLock lock(m_mutex);
 		for(core::map<std::string, float>::Iterator
 				i = m_data.getIterator();
 				i.atEnd() == false; i++)
@@ -104,8 +105,8 @@ public:
 
 	void printPage(std::ostream &o, u32 page, u32 pagecount)
 	{
-		SimpleMutexAutoLock lock(m_mutex);
-
+		JMutexAutoLock lock(m_mutex);
+		
 		u32 minindex, maxindex;
 		paging(m_data.size(), page, pagecount, minindex, maxindex);
 
@@ -146,7 +147,7 @@ public:
 	}
 
 private:
-	SimpleMutex m_mutex;
+	JMutex m_mutex;
 	core::map<std::string, float> m_data;
 	core::map<std::string, int> m_avgcounts;
 };
