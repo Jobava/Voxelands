@@ -187,13 +187,16 @@ public:
 
 	bool getRun()
 	{
-		SimpleMutexAutoLock lock(run_mutex);
-		return run;
+		run_mutex.lock();
+		bool r = run;
+		run_mutex.unlock();
+		return r;
 	}
 	void setRun(bool a_run)
 	{
-		SimpleMutexAutoLock lock(run_mutex);
+		run_mutex.lock();
 		run = a_run;
+		run_mutex.unlock();
 	}
 
 	void start()
