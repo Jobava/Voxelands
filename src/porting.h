@@ -40,10 +40,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 	#include <windows.h>
 	#define sleep_ms(x) Sleep(x)
 #else
-# include <unistd.h>
-# include <pthread.h>
-# include <signal.h>
-# define sleep_ms(x) usleep(x*1000)
+	#include <unistd.h>
+	#define sleep_ms(x) usleep(x*1000)
 #endif
 
 namespace porting

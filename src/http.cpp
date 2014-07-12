@@ -66,6 +66,8 @@ static std::string http_player_interface(Player *player, HTTPServer *server)
 /* server thread main loop */
 void * HTTPServerThread::Thread()
 {
+	ThreadStarted();
+
 	log_register_thread("HTTPServerThread");
 
 	DSTACK(__FUNCTION_NAME);
@@ -115,7 +117,8 @@ void HTTPServer::start(u16 port)
 	m_socket->Bind(port);
 
 	// Start thread
-	m_thread.start();
+	m_thread.setRun(true);
+	m_thread.Start();
 
 	infostream<<"HTTPServer: Started on port "<<port<<std::endl;
 }
@@ -532,6 +535,8 @@ void HTTPRemoteClient::sendHeaders()
 /* main loop for the client http fetcher */
 void * HTTPClientThread::Thread()
 {
+	ThreadStarted();
+
 	log_register_thread("HTTPClientThread");
 
 	DSTACK(__FUNCTION_NAME);
@@ -580,7 +585,8 @@ void HTTPClient::start(const Address &address)
 	m_connection_failures = 0;
 
 	// Start thread
-	m_thread.start();
+	m_thread.setRun(true);
+	m_thread.Start();
 
 	infostream<<"HTTPClient: Started"<<std::endl;
 }
