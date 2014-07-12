@@ -73,6 +73,7 @@ private:
 
 void * ServerThread::Thread()
 {
+printf("ServerThread::Thread()\n");
 	log_register_thread("ServerThread");
 
 	DSTACK(__FUNCTION_NAME);
@@ -102,6 +103,8 @@ void * ServerThread::Thread()
 	}
 
 	END_DEBUG_EXCEPTION_HANDLER(errorstream)
+
+printf("ServerThread::Thread() exit\n");
 
 	return NULL;
 }
@@ -1074,8 +1077,10 @@ void Server::start(unsigned short port)
 	// Initialize connection
 	m_con.SetTimeoutMs(30);
 	m_con.Serve(port);
-	if (!m_con.getRun())
+	if (!m_con.getRun()) {
+printf("no con run\n");
 		return;
+	}
 
 	// Start thread
 	m_thread.start();
