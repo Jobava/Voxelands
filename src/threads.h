@@ -232,15 +232,8 @@ public:
 
 	void stop()
 	{
-		if (!getRun())
-			return;
 		setRun(false);
-#ifdef _WIN32
-		WaitForSingleObject(thread, 2000);
-		CloseHandle(thread);
-#else
-		pthread_join(thread,NULL);
-#endif
+		wait();
 	}
 
 	void kill()
