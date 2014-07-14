@@ -2803,7 +2803,7 @@ void content_mapnode_init()
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_MELON)+" 1";
-	f->extra_dug_item = std::string("CraftItem mushed_food 1");
+	f->extra_dug_item = std::string("CraftItem mush 1");
 	f->extra_dug_item_rarity = 3;
 	content_nodebox_plant_1(f);
 	f->type = CMT_PLANT;
@@ -2822,7 +2822,7 @@ void content_mapnode_init()
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_MELON)+" 1";
-	f->extra_dug_item = std::string("CraftItem mushed_food 1");
+	f->extra_dug_item = std::string("CraftItem mush 1");
 	f->extra_dug_item_rarity = 2;
 	content_nodebox_plant_2(f);
 	f->type = CMT_PLANT;
@@ -2841,7 +2841,7 @@ void content_mapnode_init()
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_MELON)+" 1";
-	f->extra_dug_item = std::string("CraftItem mushed_food 1");
+	f->extra_dug_item = std::string("CraftItem mush 1");
 	f->extra_dug_item_rarity = 1;
 	content_nodebox_plant_3(f);
 	f->type = CMT_PLANT;
@@ -2873,7 +2873,7 @@ void content_mapnode_init()
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_PUMPKIN)+" 1";
-	f->extra_dug_item = std::string("CraftItem mushed_food 1");
+	f->extra_dug_item = std::string("CraftItem mush 1");
 	f->extra_dug_item_rarity = 3;
 	content_nodebox_plant_1(f);
 	f->type = CMT_PLANT;
@@ -2891,7 +2891,7 @@ void content_mapnode_init()
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_PUMPKIN)+" 1";
-	f->extra_dug_item = std::string("CraftItem mushed_food 1");
+	f->extra_dug_item = std::string("CraftItem mush 1");
 	f->extra_dug_item_rarity = 2;
 	content_nodebox_plant_2(f);
 	f->type = CMT_PLANT;
@@ -2909,7 +2909,7 @@ void content_mapnode_init()
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_PUMPKIN)+" 1";
-	f->extra_dug_item = std::string("CraftItem mushed_food 1");
+	f->extra_dug_item = std::string("CraftItem mush 1");
 	f->extra_dug_item_rarity = 1;
 	content_nodebox_plant_3(f);
 	f->type = CMT_PLANT;
@@ -2963,7 +2963,7 @@ void content_mapnode_init()
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_POTATO)+" 1";
-	f->extra_dug_item = std::string("CraftItem mushed_food 1");
+	f->extra_dug_item = std::string("CraftItem mush 1");
 	f->extra_dug_item_rarity = 3;
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
@@ -2981,7 +2981,7 @@ void content_mapnode_init()
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_POTATO)+" 1";
-	f->extra_dug_item = std::string("CraftItem mushed_food 1");
+	f->extra_dug_item = std::string("CraftItem mush 1");
 	f->extra_dug_item_rarity = 2;
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
@@ -3035,7 +3035,7 @@ void content_mapnode_init()
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_CARROT)+" 1";
-	f->extra_dug_item = std::string("CraftItem mushed_food 1");
+	f->extra_dug_item = std::string("CraftItem mush 1");
 	f->extra_dug_item_rarity = 3;
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
@@ -3053,7 +3053,7 @@ void content_mapnode_init()
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_CARROT)+" 1";
-	f->extra_dug_item = std::string("CraftItem mushed_food 1");
+	f->extra_dug_item = std::string("CraftItem mush 1");
 	f->extra_dug_item_rarity = 2;
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
@@ -3107,7 +3107,7 @@ void content_mapnode_init()
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_BEETROOT)+" 1";
-	f->extra_dug_item = std::string("CraftItem mushed_food 1");
+	f->extra_dug_item = std::string("CraftItem mush 1");
 	f->extra_dug_item_rarity = 3;
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
@@ -3125,7 +3125,7 @@ void content_mapnode_init()
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_BEETROOT)+" 1";
-	f->extra_dug_item = std::string("CraftItem mushed_food 1");
+	f->extra_dug_item = std::string("CraftItem mush 1");
 	f->extra_dug_item_rarity = 2;
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
@@ -3179,7 +3179,7 @@ void content_mapnode_init()
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_GRAPE)+" 1";
-	f->extra_dug_item = std::string("CraftItem mushed_food 1");
+	f->extra_dug_item = std::string("CraftItem mush 1");
 	f->extra_dug_item_rarity = 3;
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
@@ -3197,7 +3197,7 @@ void content_mapnode_init()
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_GRAPE)+" 1";
-	f->extra_dug_item = std::string("CraftItem mushed_food 1");
+	f->extra_dug_item = std::string("CraftItem mush 1");
 	f->extra_dug_item_rarity = 2;
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
