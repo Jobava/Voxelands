@@ -125,7 +125,6 @@ set(common_SRCS
 	mapblock.cpp
 	mapsector.cpp
 	map.cpp
-	mesh.cpp
 	player.cpp
 	utility.cpp
 	test.cpp
@@ -169,6 +168,7 @@ set(voxelands_SRCS
 	guiPauseMenu.cpp
 	guiPasswordChange.cpp
 	guiDeathScreen.cpp
+	mesh.cpp
 	client.cpp
 	tile.cpp
 	game.cpp
