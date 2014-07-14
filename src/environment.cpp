@@ -1137,13 +1137,14 @@ void ServerEnvironment::step(float dtime)
 				// Grow stuff on farm dirt
 				case CONTENT_FARM_DIRT:
 				{
-					if (myrand()%50 == 0)
+					if (myrand()%25 == 0)
 					{
 						s16 max_d = 1;
 						s16 max_growth = 2;
 						v3s16 temp_p = p;
 						v3s16 test_p;
 						content_t type = CONTENT_JUNGLEGRASS;
+						bool long_wait = myrand()%2;
 						MapNode testnode;
 						u8 water_found = 0; // 1 = flowing, 2 = source
 						u8 plant_found = 0; // 1 = found not growing, 2 = found and growing
@@ -1447,9 +1448,22 @@ void ServerEnvironment::step(float dtime)
 								}
 							}
 							if (plant_found == 2) {
-								MapNode n_top = m_map->getNodeNoEx(test_p);
-								n_top.setContent(type);
-								m_map->addNodeWithEvent(test_p, n_top);
+								if (
+									!long_wait
+									|| type == CONTENT_FARM_PUMPKIN_2
+									|| type == CONTENT_FARM_PUMPKIN_3
+									|| type == CONTENT_FARM_PUMPKIN
+									|| type == CONTENT_FARM_MELON_2
+									|| type == CONTENT_FARM_MELON_3
+									|| type == CONTENT_FARM_MELON
+									|| type == CONTENT_CACTUS
+									|| type == CONTENT_PAPYRUS
+									|| type == CONTENT_JUNGLEGRASS
+								) {
+									MapNode n_top = m_map->getNodeNoEx(test_p);
+									n_top.setContent(type);
+									m_map->addNodeWithEvent(test_p, n_top);
+								}
 							}
 						}else{
 							// revert to mud
