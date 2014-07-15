@@ -19,7 +19,7 @@
 #define WATER_VISC 1
 #define LAVA_VISC 7
 
-void content_nodedef_knob(content_t nodeid, content_t source_node, u16 material_type, const char* texture, const char* desc)
+void content_nodedef_knob(content_t nodeid, content_t source_node, ContentMaterialType material_type, const char* texture, const char* desc)
 {
 	ContentFeatures *features = &content_features(nodeid);
 	features->description = std::string(desc);
@@ -34,7 +34,19 @@ void content_nodedef_knob(content_t nodeid, content_t source_node, u16 material_
 	features->type = CMT_STONE;
 	features->hardness = 0.8;
 	features->climbable = true;
-	crafting::set1To4Recipe(source_node,nodeid);
+	if(material_type == CMT_WOOD)
+	{
+		content_t recipe[9] = {
+		CONTENT_IGNORE, CONTENT_IGNORE, CONTENT_IGNORE,
+		source_node   , source_node   , CONTENT_IGNORE,
+		CONTENT_IGNORE, CONTENT_IGNORE, CONTENT_IGNORE};	
+
+		crafting::setRecipe(recipe, nodeid, 2);
+	}
+	else
+	{
+		crafting::set1To4Recipe(source_node,nodeid);
+	}
 	content_nodebox_knob(features);
 	features->setInventoryTextureNodeBox(nodeid,texture,texture,texture);
 	lists::add("craftguide",nodeid);

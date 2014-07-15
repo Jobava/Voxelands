@@ -4698,9 +4698,9 @@ void content_mapnode_init()
 	content_nodedef_knob(CONTENT_STONE_KNOB, CONTENT_STONE, CMT_STONE, "stone.png", "Stone Knob");
 	content_nodedef_knob(CONTENT_ROUGHSTONE_KNOB, CONTENT_ROUGHSTONE, CMT_STONE, "roughstone.png", "Rough Stone Knob");
 	content_nodedef_knob(CONTENT_SANDSTONE_KNOB, CONTENT_SANDSTONE, CMT_STONE, "sandstone.png", "Sandstone Knob");
-	content_nodedef_knob(CONTENT_WOOD_KNOB, CONTENT_WOOD, CMT_WOOD, "wood.png", "Wooden Knob");
-	content_nodedef_knob(CONTENT_JUNGLEWOOD_KNOB, CONTENT_JUNGLEWOOD, CMT_WOOD, "junglewood.png", "Junglewood Knob");
-	content_nodedef_knob(CONTENT_PINE_KNOB, CONTENT_WOOD_PINE, CMT_WOOD, "pine.png", "Pine Knob");
+	content_nodedef_knob(CONTENT_WOOD_KNOB, CONTENT_CRAFTITEM_WOOD_PLANK, CMT_WOOD, "wood.png", "Wooden Knob");
+	content_nodedef_knob(CONTENT_JUNGLEWOOD_KNOB, CONTENT_CRAFTITEM_JUNGLE_PLANK, CMT_WOOD, "junglewood.png", "Junglewood Knob");
+	content_nodedef_knob(CONTENT_PINE_KNOB, CONTENT_CRAFTITEM_PINE_PLANK, CMT_WOOD, "pine.png", "Pine Knob");
 
 	i = CONTENT_COPPER;
 	f = &content_features(i);
