@@ -179,4 +179,6 @@
 # Set to true to enable experimental features or stuff that is tested
 # (varies from version to version, usually not useful at all)
 #enable_experimental = false
+# a slow delete for objects, stops them being loaded from disk
+#onload_ignore_objects = false
 

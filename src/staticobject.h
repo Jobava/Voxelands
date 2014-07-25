@@ -24,6 +24,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <string>
 #include <sstream>
 #include "utility.h"
+#include "settings.h"
+#include "main.h"
 
 struct StaticObject
 {
@@ -137,6 +139,7 @@ public:
 	}
 	void deSerialize(std::istream &is)
 	{
+		bool drop = g_settings->getBool("onload_ignore_objects");
 		char buf[12];
 		// version
 		is.read(buf, 1);
@@ -148,7 +151,8 @@ public:
 		{
 			StaticObject s_obj;
 			s_obj.deSerialize(is, version);
-			m_stored.push_back(s_obj);
+			if (!drop)
+				m_stored.push_back(s_obj);
 		}
 	}
 
