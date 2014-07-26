@@ -1,13 +1,14 @@
-Minetest-Classic
+Voxelands
 ---------------
 An InfiniMiner/Minecraft inspired game.
+Copyright (c) 2013-2014 Lisa 'darkrose' Milne <lisa@ltmnet.com>
+Forked from Minetest 0.3.x
 Copyright (c) 2010-2011 Perttu Ahola <celeron55@gmail.com>
-Forked from Minetest 0.3.x by Lisa 'darkrose' Milne <lisa@ltmnet.com>
 (see source files for other contributors)
 
 Further documentation:
 ----------------------
-- Website: http://www.minetest-classic.com/
+- Website: http://www.voxelands.com/
 - doc/ directory of source distribution
 
 This game is not finished:
@@ -37,23 +38,23 @@ Map directory:
 - For a RUN_IN_PLACE build, it is located in:
 		../world
 - Otherwise something like this:
-	Windows: C:\Documents and Settings\user\Application Data\minetest\world
-	Linux: ~/.minetest/world
-	OS X: ~/Library/Application Support/minetest/world
+	Windows: C:\Documents and Settings\user\Application Data\voxelands\world
+	Linux: ~/.voxelands/world
+	OS X: ~/Library/Application Support/voxelands/world
 
 Configuration file:
 -------------------
-- An optional configuration file can be used. See minetest.conf.example.
+- An optional configuration file can be used. See voxelands.conf.example.
 - Path to file can be passed as a parameter to the executable:
 	--config <path-to-file>
 - Defaults:
 	- If built with -DRUN_IN_PLACE=1:
-		../minetest.conf
-		../../minetest.conf
+		../voxelands.conf
+		../../voxelands.conf
 	- Otherwise something like this:
-		Windows: C:\Documents and Settings\user\Application Data\minetest\minetest.conf
-		Linux: ~/.minetest/minetest.conf
-		OS X: ~/Library/Application Support/minetest.conf
+		Windows: C:\Documents and Settings\user\Application Data\voxelands/voxelands.conf
+		Linux: ~/.voxelands/voxelands.conf
+		OS X: ~/Library/Application Support/voxelands.conf
 
 Command-line options:
 ---------------------
@@ -69,9 +70,9 @@ Here's an example for RedHat/Fedora/CentOS:
 $ yum install irrlicht-devel bzip2-devel libpng-devel libjpeg-turbo-devel libXxf86vm-devel mesa-libglapi libsqlite3x-devel
 
 Download source, extract (replace <VERSION> in this URL with the latest stable release version, i.e. 1401.00):
-$ wget http://minetest-classic.com/downloads/minetest-classic-<VERSION>-src.tar.bz2
-$ tar xf minetest-classic-*-src.tar.bz2
-$ cd minetest-classic
+$ wget http://www.voxelands.com/downloads/minetest-classic-<VERSION>-src.tar.bz2
+$ tar xf voxelands-*-src.tar.bz2
+$ cd voxelands
 
 Build a version that runs directly from the source directory:
 $ cmake . -DRUN_IN_PLACE=1
@@ -79,7 +80,7 @@ $ make -j2
 
 Run it:
 $ cd bin
-$ ./minetest-classic
+$ ./voxelands
 
 - Use cmake . -LH to see all CMake options and their current state
 - If you want to install it system-wide (or are making a distribution package), you will want to use -DRUN_IN_PLACE=0
@@ -105,7 +106,7 @@ Compiling on Windows:
 	* Optional: gettext bibrary and tools:
 		http://gnuwin32.sourceforge.net/downlinks/gettext.php
 		- This is used for other UI languages. Feel free to leave it out.
-	* And, of course, Minetest-Classic:
+	* And, of course, Voxelands:
 		https://gitorious.org/minetest-classic/minetest-classic/archive-tarball/master
 - Steps:
 	- Select a directory called DIR hereafter in which you will operate.
@@ -119,8 +120,8 @@ Compiling on Windows:
 	+ DIR
 		- zlib-1.2.5.tar.gz
 		- zlib125dll.zip
-		- irrlicht-1.7.1.zip
-		- 110214175330.zip (or whatever, this is the minetest source)
+		- irrlicht-1.8.1.zip
+		- voxelands.zip (or whatever, this is the voxelands source)
 		+ zlib-1.2.5
 			- zlib.h
 			+ win32
@@ -129,7 +130,7 @@ Compiling on Windows:
 			- readme.txt
 			+ dll32
 			...
-		+ irrlicht-1.7.1
+		+ irrlicht-1.8.1
 			+ lib
 			+ include
 			...
@@ -137,18 +138,18 @@ Compiling on Windows:
 			+bin
 			+include
 			+lib
-		+ minetest
+		+ voxelands
 			+ src
 			+ doc
 			- CMakeLists.txt
 			...
 	-----------------
 	- Start up the CMake GUI
-	- Select "Browse Source..." and select DIR/minetest
+	- Select "Browse Source..." and select DIR/voxelands
 	- Now, if using MSVC:
-		- Select "Browse Build..." and select DIR/minetest-build
+		- Select "Browse Build..." and select DIR/voxelands-build
 	- Else if using MinGW:
-		- Select "Browse Build..." and select DIR/minetest
+		- Select "Browse Build..." and select DIR/voxelands
 	- Select "Configure"
 	- Select your compiler
 	- It will warn about missing stuff, ignore that at this point. (later don't)
@@ -158,8 +159,8 @@ Compiling on Windows:
 	BUILD_CLIENT             [X]
 	BUILD_SERVER             [ ]
 	CMAKE_BUILD_TYPE         Release
-	CMAKE_INSTALL_PREFIX     DIR/minetest-install
-	IRRLICHT_SOURCE_DIR      DIR/irrlicht-1.7.1
+	CMAKE_INSTALL_PREFIX     DIR/voxelands-install
+	IRRLICHT_SOURCE_DIR      DIR/irrlicht-1.8.1
 	RUN_IN_PLACE             [X]
 	WARN_ALL                 [ ]
 	ZLIB_DLL                 DIR/zlib125dll/dll32/zlibwapi.dll
@@ -175,31 +176,31 @@ Compiling on Windows:
 	- If something is still coloured red, you have a problem.
 	- Hit "Generate"
 	If using MSVC:
-		- Open the generated minetest.sln
+		- Open the generated voxelands.sln
 		- The project defaults to the "Debug" configuration. Make very sure to
 		  select "Release", unless you want to debug some stuff (it's slower
 		  and might not even work at all)
 		- Build the ALL_BUILD project
 		- Build the INSTALL project
 		- You should now have a working game with the executable in
-			DIR/minetest-install/bin/minetest.exe
+			DIR/minetest-install/bin/voxelands.exe
 		- Additionally you may create a zip package by building the PACKAGE
 		  project.
 	If using MinGW:
 		- Using the command line, browse to the build directory and run 'make'
 		  (or mingw32-make or whatever it happens to be)
 		- You should now have a working game with the executable in
-			DIR/minetest/bin/minetest.exe
+			DIR/minetest/bin/voxelands.exe
 
-Windows releases of Minetest Classic are cross compiled on Linux, using Menche's build script:
+Windows releases of Voxelands are cross compiled on Linux, using Menche's build script:
 --------------------------------------------------------------------
 
 $ wget http://menche.us/files/minetest-classic/build-minetest-classic-win32.sh
 $ sh ./build-minetest-classic-win32.sh
 
-this script will install and compile the build-chain and all libraries needed for Minetest Classic
+this script will install and compile the build-chain and all libraries needed for Voxelands
 
-License of Minetest-Classic textures
+License of Voxelands textures
 --------------------------------
 
 This does not apply to texture packs made by others.
@@ -207,10 +208,10 @@ This does not apply to texture packs made by others.
 Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
 http://creativecommons.org/licenses/by-sa/3.0/
 
-License of Minetest-Classic
+License of Voxelands
 -----------------------
 
-Minetest-Classic
+Voxelands
 Copyright (C) 2010-2013 celeron55, Perttu Ahola <celeron55@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
@@ -229,7 +230,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 
 Minetest-c55 was licensed under GPLv2 or later, the 'or later' option
- was taken by Lisa 'darkrose' Milne when forking Minetest-Classic, thus
+ was taken by Lisa 'darkrose' Milne when forking Voxelands, thus
  updating the license to GPLv3
 
 Irrlicht

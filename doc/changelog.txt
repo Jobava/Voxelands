@@ -3,6 +3,24 @@ Minetest-Classic changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1407.00: (release 2014-07-26)
+- name changed from Minetest Classic to Voxelands
+- new menu logo (sdzen)
+- add roughstone brick/block to stone brick/block cook recipes
+- add CDT_NODEBOX_META for dynamic nodeboxes
+- simplify bookshelf recipe, add inventory, have books in inventory show
+ on shelves
+- add customisable inventory list rulesets
+- add couches
+- add decorative stone/wood knobs (Menche)
+- make onpunch_replace_node not work when wielding a crowbar
+- move mesh.cpp to client srcs - fixes server build on Arch (Menche)
+- make cotton plant weild more string
+- make some farm plants grow faster
+- fix some conflicting recipes
+- change some leftover mushed_food drops to mush
+- add method to slowly delete objects
+
 1405.01: (release 2014-05-26)
 - fix hatch recipes not working
 - fix tool wearbars not working
