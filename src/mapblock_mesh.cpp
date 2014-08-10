@@ -147,39 +147,23 @@ void getNodeVertexDirs(v3s16 dir, v3s16 *vertex_dirs)
 
 video::SColor MapBlock_LightColor(u8 alpha, u8 light, bool selected)
 {
-#if 0
-	return video::SColor(alpha,light,light,light);
-#endif
-	//return video::SColor(alpha,light,light,MYMAX(0, (s16)light-25)+25);
-	/*return video::SColor(alpha,light,light,MYMAX(0,
-			pow((float)light/255.0, 0.8)*255.0));*/
-#if 1
-	// Emphase blue a bit in darker places
 	float lim = 80;
 	float power = 0.8;
 	u8 r = light;
 	u8 g = light;
 	u8 b = light;
+	// selected nodes glow a bit
 	if (selected) {
-		//if (light < 250) {
-			//r = 255;
-			//g = 255;
-			b = 255;
-		//}else{
-			r = 128;
-			g = 128;
-			//b = 128;
-		//}
-	}else if (light > lim) {
+		// TODO: make this colour a setting
+		r = 128;
+		g = 128;
+		b = 255;
+	}else if (light <= lim) {
+		// Emphase blue a bit in darker places
 		b = MYMAX(0, pow((float)light/lim, power)*lim);
 	}
-		//return video::SColor(alpha,light,light,light);
-	//else
-		//return video::SColor(alpha,light,light,MYMAX(0,
-				//pow((float)light/lim, power)*lim));
 
 	return video::SColor(alpha,r,g,b);
-#endif
 }
 
 struct FastFace
