@@ -251,6 +251,11 @@ void makeRoofTri(MeshCollector *collector, v3f corners[3], v3f pos, TileSpec *ti
  */
 static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool smooth_lighting, u8 vertex_alpha)
 {
+	bool selected = false;
+	NodeMod mod;
+	data->m_temp_mods.get(pos-(data->m_blockpos*MAP_BLOCKSIZE),&mod);
+	if (mod.type == NODEMOD_SELECTION)
+		selected = true;
 	if (!smooth_lighting) {
 		u8 l = 0;
 		u32 lt = 0;
@@ -279,7 +284,7 @@ static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool
 		}
 		if (ld)
 			l = lt/ld;
-		video::SColor c = MapBlock_LightColor(vertex_alpha, l);
+		video::SColor c = MapBlock_LightColor(vertex_alpha, l, selected);
 		for (int i=0; i<8; i++) {
 			lights[i] = c;
 		}
@@ -327,7 +332,7 @@ static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool
 		}
 		if (ld)
 			l = lt/ld;
-		lights[i] = MapBlock_LightColor(vertex_alpha, l);
+		lights[i] = MapBlock_LightColor(vertex_alpha, l, selected);
 	}
 }
 static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool smooth_lighting)
@@ -336,80 +341,85 @@ static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool
 }
 static void getRoofLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, v3s16 dir)
 {
-		u8 l = 0;
-		u32 lt = 0;
-		u32 ltp;
-		u8 ld = 0;
-		MapNode tn = data->m_vmanip.getNodeRO(pos + v3s16(0,1,0));
-		ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
-		if (ltp < 20 || ltp > 200) {
-			for (s16 tx=-1; tx<2; tx++) {
-			for (s16 ty=0; ty<2; ty++) {
-			for (s16 tz=-1; tz<2; tz++) {
-				if ((dir.X && tx != dir.X) || (dir.Z && tz != dir.Z))
-					continue;
-				tn = data->m_vmanip.getNodeRO(pos + v3s16(tx,ty,tz));
-				if (
-					ty<1
-					&& (
-						tn.getContent() != CONTENT_AIR
-						&& content_features(tn).light_source == 0
-						&& content_features(tn).param_type != CPT_LIGHT
-					)
+	bool selected = false;
+	NodeMod mod;
+	data->m_temp_mods.get(pos-(data->m_blockpos*MAP_BLOCKSIZE),&mod);
+	if (mod.type == NODEMOD_SELECTION)
+		selected = true;
+	u8 l = 0;
+	u32 lt = 0;
+	u32 ltp;
+	u8 ld = 0;
+	MapNode tn = data->m_vmanip.getNodeRO(pos + v3s16(0,1,0));
+	ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
+	if (ltp < 20 || ltp > 200) {
+		for (s16 tx=-1; tx<2; tx++) {
+		for (s16 ty=0; ty<2; ty++) {
+		for (s16 tz=-1; tz<2; tz++) {
+			if ((dir.X && tx != dir.X) || (dir.Z && tz != dir.Z))
+				continue;
+			tn = data->m_vmanip.getNodeRO(pos + v3s16(tx,ty,tz));
+			if (
+				ty<1
+				&& (
+					tn.getContent() != CONTENT_AIR
+					&& content_features(tn).light_source == 0
+					&& content_features(tn).param_type != CPT_LIGHT
 				)
-					continue;
-				ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
-				if (!ltp)
-					continue;
-				lt += ltp;
-				ld++;
-			}
-			}
-			}
-			l = lt;
-			if (ld > 1)
-				l = lt/ld;
-		}else{
-			l = ltp;
+			)
+				continue;
+			ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
+			if (!ltp)
+				continue;
+			lt += ltp;
+			ld++;
 		}
-		lights[0] = MapBlock_LightColor(255, l);
+		}
+		}
+		l = lt;
+		if (ld > 1)
+			l = lt/ld;
+	}else{
+		l = ltp;
+	}
+	lights[0] = MapBlock_LightColor(255, l);
 
-		tn = data->m_vmanip.getNodeRO(pos + v3s16(0,-1,0));
-		ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
-		l = 0;
-		ld = 0;
-		lt = 0;
-		if (ltp < 20) {
-			for (s16 tx=-1; tx<2; tx++) {
-			for (s16 ty=-1; ty<1; ty++) {
-			for (s16 tz=-1; tz<2; tz++) {
-				if ((dir.X && tx == dir.X) || (dir.Z && tz == dir.Z))
-					continue;
-				tn = data->m_vmanip.getNodeRO(pos + v3s16(tx,ty,tz));
-				if (
-					ty<1
-					&& (
-						tn.getContent() != CONTENT_AIR
-						&& content_features(tn).light_source == 0
-						&& content_features(tn).param_type != CPT_LIGHT
-					)
+	tn = data->m_vmanip.getNodeRO(pos + v3s16(0,-1,0));
+	ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
+	l = 0;
+	ld = 0;
+	lt = 0;
+	if (ltp < 20) {
+		for (s16 tx=-1; tx<2; tx++) {
+		for (s16 ty=-1; ty<1; ty++) {
+		for (s16 tz=-1; tz<2; tz++) {
+			if ((dir.X && tx == dir.X) || (dir.Z && tz == dir.Z))
+				continue;
+			tn = data->m_vmanip.getNodeRO(pos + v3s16(tx,ty,tz));
+			if (
+				ty<1
+				&& (
+					tn.getContent() != CONTENT_AIR
+					&& content_features(tn).light_source == 0
+					&& content_features(tn).param_type != CPT_LIGHT
 				)
-					continue;
-				ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
-				if (!ltp)
-					continue;
-				lt += ltp;
-				ld++;
-			}
-			}
-			}
-			l = lt;
-			if (ld > 1)
-				l = lt/ld;
-		}else{
-			l = ltp;
+			)
+				continue;
+			ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
+			if (!ltp)
+				continue;
+			lt += ltp;
+			ld++;
 		}
-		lights[1] = MapBlock_LightColor(255, l);
+		}
+		}
+		l = lt;
+		if (ld > 1)
+			l = lt/ld;
+	}else{
+		l = ltp;
+	}
+	lights[1] = MapBlock_LightColor(255, l, selected);
 }
 #endif
 
@@ -566,6 +576,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		node_liquid_level = 0.85;
 
 	v3s16 blockpos_nodes = data->m_blockpos*MAP_BLOCKSIZE;
+	bool selected = false;
 
 	for(s16 z=0; z<MAP_BLOCKSIZE; z++)
 	for(s16 y=0; y<MAP_BLOCKSIZE; y++)
@@ -574,6 +585,9 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		v3s16 p(x,y,z);
 
 		MapNode n = data->m_vmanip.getNodeNoEx(blockpos_nodes+p);
+		NodeMod mod;
+		data->m_temp_mods.get(p,&mod);
+		selected = (mod.type == NODEMOD_SELECTION);
 
 		/*
 			Add torches to mesh
@@ -599,7 +613,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			}else{
 				l = decode_light(n.getLightBlend(data->m_daynight_ratio));
 			}
-			video::SColor c = MapBlock_LightColor(content_features(n).vertex_alpha, l);
+			video::SColor c = MapBlock_LightColor(content_features(n).vertex_alpha, l, selected);
 
 			// Neighbor liquid levels (key = relative position)
 			// Includes current node
@@ -960,7 +974,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				0,0,0.125,1,
 				0,0,0.125,1
 			};
-			video::SColor c(255,255,255,255);
+			video::SColor c = MapBlock_LightColor(255,255,selected);//(255,255,255,255);
 			v3f pos = intToFloat(p+blockpos_nodes, BS);
 			v3s16 dir = unpackDir(n.param2);
 			video::S3DVertex *v;
@@ -2926,7 +2940,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		{
 			MapNode n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p + v3s16(0,1,0));
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
-			video::SColor c = MapBlock_LightColor(255, l);
+			video::SColor c = MapBlock_LightColor(255, l, selected);
 			f32 tuv[4] = {
 				content_features(n).tiles[0].texture.x0(),
 				content_features(n).tiles[0].texture.x1(),
@@ -2996,7 +3010,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		case CDT_PLANTLIKE:
 		{
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
-			video::SColor c = MapBlock_LightColor(255, l);
+			video::SColor c = MapBlock_LightColor(255, l, selected);
 
 			for(u32 j=0; j<2; j++)
 			{
@@ -3047,7 +3061,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		case CDT_PLANTLIKE_SML:
 		{
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
-			video::SColor c = MapBlock_LightColor(255, l);
+			video::SColor c = MapBlock_LightColor(255, l, selected);
 
 			for(u32 j=0; j<2; j++)
 			{
@@ -3099,7 +3113,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		case CDT_PLANTGROWTH_1:
 		{
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
-			video::SColor c = MapBlock_LightColor(255, l);
+			video::SColor c = MapBlock_LightColor(255, l, selected);
 			f32 h = (0.75*content_features(n).tiles[0].texture.size.Y)+content_features(n).tiles[0].texture.y0();
 
 			for(u32 j=0; j<2; j++)
@@ -3151,7 +3165,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		case CDT_PLANTGROWTH_2:
 		{
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
-			video::SColor c = MapBlock_LightColor(255, l);
+			video::SColor c = MapBlock_LightColor(255, l, selected);
 			f32 h = (0.5*content_features(n).tiles[0].texture.size.Y)+content_features(n).tiles[0].texture.y0();
 
 			for(u32 j=0; j<2; j++)
@@ -3203,7 +3217,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		case CDT_PLANTGROWTH_3:
 		{
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
-			video::SColor c = MapBlock_LightColor(255, l);
+			video::SColor c = MapBlock_LightColor(255, l, selected);
 			f32 h = (0.25*content_features(n).tiles[0].texture.size.Y)+content_features(n).tiles[0].texture.y0();
 
 			for(u32 j=0; j<2; j++)

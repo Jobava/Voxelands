@@ -24,7 +24,8 @@ enum NodeModType
 {
 	NODEMOD_NONE,
 	NODEMOD_CHANGECONTENT, //param is content id
-	NODEMOD_CRACK // param is crack progression
+	NODEMOD_CRACK, // param is crack progression
+	NODEMOD_SELECTION // param is ignored
 };
 
 struct NodeMod

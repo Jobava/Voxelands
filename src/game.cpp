@@ -1768,11 +1768,6 @@ void the_game(
 				nodepos_old = v3s16(-32768,-32768,-32768);
 			}
 		} else {
-			/*
-				Visualize selection
-			*/
-
-			hilightboxes.push_back(nodehilightbox);
 
 			/*
 				Check information text of node
@@ -1793,6 +1788,12 @@ void the_game(
 				client.clearTempMod(nodepos);
 				dig_time = 0.0;
 			}
+			/*
+				Visualize selection
+			*/
+
+			//hilightboxes.push_back(nodehilightbox);
+			client.setTempMod(nodepos, NodeMod(NODEMOD_SELECTION));
 
 			if(nodig_delay_counter > 0.0)
 			{

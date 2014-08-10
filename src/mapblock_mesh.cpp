@@ -145,7 +145,7 @@ void getNodeVertexDirs(v3s16 dir, v3s16 *vertex_dirs)
 	}
 }
 
-video::SColor MapBlock_LightColor(u8 alpha, u8 light)
+video::SColor MapBlock_LightColor(u8 alpha, u8 light, bool selected)
 {
 #if 0
 	return video::SColor(alpha,light,light,light);
@@ -157,11 +157,28 @@ video::SColor MapBlock_LightColor(u8 alpha, u8 light)
 	// Emphase blue a bit in darker places
 	float lim = 80;
 	float power = 0.8;
-	if(light > lim)
-		return video::SColor(alpha,light,light,light);
-	else
-		return video::SColor(alpha,light,light,MYMAX(0,
-				pow((float)light/lim, power)*lim));
+	u8 r = light;
+	u8 g = light;
+	u8 b = light;
+	if (selected) {
+		//if (light < 250) {
+			//r = 255;
+			//g = 255;
+			b = 255;
+		//}else{
+			r = 128;
+			g = 128;
+			//b = 128;
+		//}
+	}else if (light > lim) {
+		b = MYMAX(0, pow((float)light/lim, power)*lim);
+	}
+		//return video::SColor(alpha,light,light,light);
+	//else
+		//return video::SColor(alpha,light,light,MYMAX(0,
+				//pow((float)light/lim, power)*lim));
+
+	return video::SColor(alpha,r,g,b);
 #endif
 }
 
@@ -172,7 +189,7 @@ struct FastFace
 };
 
 void makeFastFace(TileSpec tile, u8 li0, u8 li1, u8 li2, u8 li3, v3f p,
-		v3s16 dir, v3f scale, core::array<FastFace> &dest)
+		v3s16 dir, v3f scale, core::array<FastFace> &dest, bool selected)
 {
 	FastFace face;
 
@@ -216,16 +233,16 @@ void makeFastFace(TileSpec tile, u8 li0, u8 li1, u8 li2, u8 li3, v3f p,
 	float h = tile.texture.size.Y;
 
 	face.vertices[0] = video::S3DVertex(vertex_pos[0], v3f(0,1,0),
-			MapBlock_LightColor(alpha, li0),
+			MapBlock_LightColor(alpha, li0, selected),
 			core::vector2d<f32>(x0+w*abs_scale, y0+h));
 	face.vertices[1] = video::S3DVertex(vertex_pos[1], v3f(0,1,0),
-			MapBlock_LightColor(alpha, li1),
+			MapBlock_LightColor(alpha, li1, selected),
 			core::vector2d<f32>(x0, y0+h));
 	face.vertices[2] = video::S3DVertex(vertex_pos[2], v3f(0,1,0),
-			MapBlock_LightColor(alpha, li2),
+			MapBlock_LightColor(alpha, li2, selected),
 			core::vector2d<f32>(x0, y0));
 	face.vertices[3] = video::S3DVertex(vertex_pos[3], v3f(0,1,0),
-			MapBlock_LightColor(alpha, li3),
+			MapBlock_LightColor(alpha, li3, selected),
 			core::vector2d<f32>(x0+w*abs_scale, y0));
 
 	face.tile = tile;
@@ -271,6 +288,20 @@ TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir,
 
 			spec.texture = g_texturesource->getTexture(new_id);
 		}
+		if (mod.type == NODEMOD_SELECTION) {
+			// Get original texture name
+			u32 orig_id = spec.texture.id;
+			std::string orig_name = g_texturesource->getTextureName(orig_id);
+
+			// Create new texture name
+			std::ostringstream os;
+			os<<orig_name<<"^[forcesingle";
+
+			// Get new texture
+			u32 new_id = g_texturesource->getTextureId(os.str());
+
+			spec.texture = g_texturesource->getTexture(new_id);
+		}
 	}
 
 	return spec;
@@ -308,6 +339,20 @@ TileSpec getMetaTile(MapNode mn, v3s16 p, v3s16 face_dir,
 			// Create new texture name
 			std::ostringstream os;
 			os<<orig_name<<"^[crack"<<mod.param;
+
+			// Get new texture
+			u32 new_id = g_texturesource->getTextureId(os.str());
+
+			spec.texture = g_texturesource->getTexture(new_id);
+		}
+		if (mod.type == NODEMOD_SELECTION) {
+			// Get original texture name
+			u32 orig_id = spec.texture.id;
+			std::string orig_name = g_texturesource->getTextureName(orig_id);
+
+			// Create new texture name
+			std::ostringstream os;
+			os<<orig_name<<"^[forcesingle";
 
 			// Get new texture
 			u32 new_id = g_texturesource->getTextureId(os.str());
@@ -586,8 +631,11 @@ void updateFastFaceRow(
 				if(translate_dir.Z != 0)
 					scale.Z = continuous_tiles_count;
 
+				NodeMod mod;
+				temp_mods.get(p_corrected,&mod);
+				bool selected = (mod.type == NODEMOD_SELECTION);
 				makeFastFace(tile, lights[0], lights[1], lights[2], lights[3],
-						sp, face_dir_corrected, scale, dest);
+						sp, face_dir_corrected, scale, dest, selected);
 			}
 
 			continuous_tiles_count = 0;
