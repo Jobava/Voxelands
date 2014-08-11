@@ -996,6 +996,7 @@ void the_game(
 	// NOTE: getRealTime() causes strange problems in wine (imprecision?)
 	// NOTE: So we have to use getTime() and call run()s between them
 	u32 lasttime = device->getTimer()->getTime();
+	v3s16 lastpointed(0,0,0);
 
 	while(device->run() && kill == false)
 	{
@@ -1773,6 +1774,8 @@ void the_game(
 				Check information text of node
 			*/
 
+			if (nodepos != nodepos_old && nodepos_old != v3s16(-32768,-32768,-32768))
+				client.clearTempMod(nodepos_old);
 			NodeMetadata *meta = client.getNodeMetadata(nodepos);
 			if(meta)
 			{
