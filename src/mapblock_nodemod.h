@@ -20,12 +20,14 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #ifndef MAPBLOCK_NODEMOD_HEADER
 #define MAPBLOCK_NODEMOD_HEADER
 
+#include <map>
+
 enum NodeModType
 {
-	NODEMOD_NONE,
-	NODEMOD_CHANGECONTENT, //param is content id
-	NODEMOD_CRACK, // param is crack progression
-	NODEMOD_SELECTION // param is ignored
+	NODEMOD_NONE = 0x0,
+	NODEMOD_CHANGECONTENT = 0x01, //param is content id
+	NODEMOD_CRACK = 0x02, // param is crack progression
+	NODEMOD_SELECTION = 0x04 // param is ignored
 };
 
 struct NodeMod
@@ -35,11 +37,23 @@ struct NodeMod
 		type = a_type;
 		param = a_param;
 	}
+	bool operator==(enum NodeModType c_type)
+	{
+		if (type)
+printf("%X\n",type);
+		return ((type&c_type)==c_type);
+	}
 	bool operator==(const NodeMod &other)
 	{
 		return (type == other.type && param == other.param);
 	}
-	enum NodeModType type;
+	void operator|=(const NodeMod &other)
+	{
+		type |= other.type;
+		if (other.type != NODEMOD_SELECTION)
+			param = other.param;
+	}
+	u16 type;
 	u16 param;
 };
 
@@ -52,18 +66,16 @@ public:
 	bool set(v3s16 p, const NodeMod &mod)
 	{
 		// See if old is different, cancel if it is not different.
-		core::map<v3s16, NodeMod>::Node *n = m_mods.find(p);
-		if(n)
-		{
-			NodeMod old = n->getValue();
+		std::map<v3s16, NodeMod>::iterator n = m_mods.find(p);
+		if (n != m_mods.end()) {
+			NodeMod old = n->second;
 			if(old == mod)
 				return false;
 
-			n->setValue(mod);
-		}
-		else
-		{
-			m_mods.insert(p, mod);
+			old |= mod;
+			m_mods[p] = old;
+		}else{
+			m_mods[p] = mod;
 		}
 
 		return true;
@@ -71,19 +83,17 @@ public:
 	// Returns true if there was one
 	bool get(v3s16 p, NodeMod *mod)
 	{
-		core::map<v3s16, NodeMod>::Node *n;
-		n = m_mods.find(p);
-		if(n == NULL)
+		std::map<v3s16, NodeMod>::iterator n = m_mods.find(p);
+		if (n == m_mods.end())
 			return false;
 		if(mod)
-			*mod = n->getValue();
+			*mod = n->second;
 		return true;
 	}
 	bool clear(v3s16 p)
 	{
-		if(m_mods.find(p))
-		{
-			m_mods.remove(p);
+		if (m_mods.find(p) != m_mods.end()) {
+			m_mods.erase(p);
 			return true;
 		}
 		return false;
@@ -99,16 +109,15 @@ public:
 	{
 		dest.m_mods.clear();
 
-		for(core::map<v3s16, NodeMod>::Iterator
-				i = m_mods.getIterator();
-				i.atEnd() == false; i++)
+		for(std::map<v3s16, NodeMod>::iterator i = m_mods.begin();
+				i != m_mods.end(); i++)
 		{
-			dest.m_mods.insert(i.getNode()->getKey(), i.getNode()->getValue());
+			dest.m_mods[i->first] = i->second;
 		}
 	}
 
 private:
-	core::map<v3s16, NodeMod> m_mods;
+	std::map<v3s16, NodeMod> m_mods;
 };
 
 #endif

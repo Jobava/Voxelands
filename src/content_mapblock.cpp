@@ -254,7 +254,7 @@ static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool
 	bool selected = false;
 	NodeMod mod;
 	data->m_temp_mods.get(pos-(data->m_blockpos*MAP_BLOCKSIZE),&mod);
-	if (mod.type == NODEMOD_SELECTION)
+	if (mod == NODEMOD_SELECTION)
 		selected = true;
 	if (!smooth_lighting) {
 		u8 l = 0;
@@ -344,7 +344,7 @@ static void getRoofLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, 
 	bool selected = false;
 	NodeMod mod;
 	data->m_temp_mods.get(pos-(data->m_blockpos*MAP_BLOCKSIZE),&mod);
-	if (mod.type == NODEMOD_SELECTION)
+	if (mod == NODEMOD_SELECTION)
 		selected = true;
 	u8 l = 0;
 	u32 lt = 0;
@@ -382,7 +382,7 @@ static void getRoofLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, 
 	}else{
 		l = ltp;
 	}
-	lights[0] = MapBlock_LightColor(255, l);
+	lights[0] = MapBlock_LightColor(255, l, selected);
 
 	tn = data->m_vmanip.getNodeRO(pos + v3s16(0,-1,0));
 	ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
@@ -587,7 +587,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		MapNode n = data->m_vmanip.getNodeNoEx(blockpos_nodes+p);
 		NodeMod mod;
 		data->m_temp_mods.get(p,&mod);
-		selected = (mod.type == NODEMOD_SELECTION);
+		selected = (mod == NODEMOD_SELECTION);
 
 		/*
 			Add torches to mesh

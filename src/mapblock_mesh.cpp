@@ -249,11 +249,11 @@ TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir,
 	*/
 	NodeMod mod;
 	if (temp_mods.get(p, &mod)) {
-		if (mod.type == NODEMOD_CHANGECONTENT) {
+		if (mod == NODEMOD_CHANGECONTENT) {
 			MapNode mn2(mod.param);
 			spec = mn2.getTile(face_dir);
 		}
-		if (mod.type == NODEMOD_CRACK) {
+		if (mod == NODEMOD_CRACK) {
 			/*
 				Get texture id, translate it to name, append stuff to
 				name, get texture id
@@ -272,7 +272,7 @@ TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir,
 
 			spec.texture = g_texturesource->getTexture(new_id);
 		}
-		if (mod.type == NODEMOD_SELECTION) {
+		if (mod == NODEMOD_SELECTION) {
 			// Get original texture name
 			u32 orig_id = spec.texture.id;
 			std::string orig_name = g_texturesource->getTextureName(orig_id);
@@ -306,11 +306,11 @@ TileSpec getMetaTile(MapNode mn, v3s16 p, v3s16 face_dir,
 	*/
 	NodeMod mod;
 	if (temp_mods.get(p, &mod)) {
-		if (mod.type == NODEMOD_CHANGECONTENT) {
+		if (mod == NODEMOD_CHANGECONTENT) {
 			MapNode mn2(mod.param);
 			spec = mn2.getMetaTile(face_dir);
 		}
-		if (mod.type == NODEMOD_CRACK) {
+		if (mod == NODEMOD_CRACK) {
 			/*
 				Get texture id, translate it to name, append stuff to
 				name, get texture id
@@ -329,7 +329,7 @@ TileSpec getMetaTile(MapNode mn, v3s16 p, v3s16 face_dir,
 
 			spec.texture = g_texturesource->getTexture(new_id);
 		}
-		if (mod.type == NODEMOD_SELECTION) {
+		if (mod == NODEMOD_SELECTION) {
 			// Get original texture name
 			u32 orig_id = spec.texture.id;
 			std::string orig_name = g_texturesource->getTextureName(orig_id);
@@ -355,7 +355,7 @@ content_t getNodeContent(v3s16 p, MapNode mn, NodeModMap &temp_mods)
 	*/
 	NodeMod mod;
 	if (temp_mods.get(p, &mod)) {
-		if(mod.type == NODEMOD_CHANGECONTENT)
+		if(mod == NODEMOD_CHANGECONTENT)
 			return mod.param;
 		/*if(mod.type == NODEMOD_CRACK)
 		{
@@ -617,7 +617,7 @@ void updateFastFaceRow(
 
 				NodeMod mod;
 				temp_mods.get(p_corrected,&mod);
-				bool selected = (mod.type == NODEMOD_SELECTION);
+				bool selected = (mod == NODEMOD_SELECTION);
 				makeFastFace(tile, lights[0], lights[1], lights[2], lights[3],
 						sp, face_dir_corrected, scale, dest, selected);
 			}
