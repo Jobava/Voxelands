@@ -1729,7 +1729,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			bool y_plus = false;
 			// +Y
 			if (n_plus_y.getContent() == CONTENT_AIR || content_features(n_plus_y).conductive == true)
-			y_plus = true;
+				y_plus = true;
 			// +X
 			if (
 				content_features(n_plus_x).conductive == false

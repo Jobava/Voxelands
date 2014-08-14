@@ -3862,6 +3862,55 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						}
 					}
 				}
+			}else if (item->getContent() == CONTENT_CRAFTITEM_MESEDUST) {
+				MapNode n = m_env.getMap().getNodeNoEx(p_over);
+				n.setContent(CONTENT_CIRCUIT_MESEWIRE);
+				core::list<u16> far_players;
+				sendAddNode(p_over, n, 0, &far_players, 30);
+				if (g_settings->getBool("creative_mode") == false) {
+					// Delete the right amount of items from the slot
+					u16 dropcount = item->getDropCount();
+					// Delete item if all gone
+					if (item->getCount() <= dropcount) {
+						if (item->getCount() < dropcount)
+							infostream<<"WARNING: Server: dropped more items"
+								<<" than the slot contains"<<std::endl;
+						InventoryList *ilist = player->inventory.getList("main");
+						// Remove from inventory and send inventory
+						if (ilist)
+							ilist->deleteItem(item_i);
+					}
+					// Else decrement it
+					else{
+						item->remove(dropcount);
+					}
+					// Send inventory
+					UpdateCrafting(peer_id);
+					SendInventory(peer_id);
+				}
+				/*
+				Add node.
+				This takes some time so it is done after the quick stuff
+				*/
+				core::map<v3s16, MapBlock*> modified_blocks;
+				{
+					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+					std::string p_name = std::string(player->getName());
+					m_env.getMap().addNodeAndUpdate(p_over, n, modified_blocks, p_name);
+				}
+				/*
+				Set blocks not sent to far players
+				*/
+				for(core::list<u16>::Iterator
+					i = far_players.begin();
+					i != far_players.end(); i++)
+				{
+					u16 peer_id = *i;
+					RemoteClient *client = getClient(peer_id);
+					if(client==NULL)
+						continue;
+					client->SetBlocksNotSent(modified_blocks);
+				}
 			}
 			/*
 				Place other item (not a block)
