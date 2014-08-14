@@ -8962,4 +8962,128 @@ void content_mapnode_init()
 	}
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+
+	i = CONTENT_CIRCUIT_MESEWIRE;
+	f = &content_features(i);
+	f->description = std::string("Mese Wire");
+	f->setAllTextures("mese_wire.png");
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_WIRELIKE;
+	f->conductive = true;
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->air_equivalent = true; // grass grows underneath
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("CraftItem mese_dust 1");
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new CircuitNodeMetadata();
+	lists::add("creative",i);
+
+	i = CONTENT_CIRCUIT_BATTERY;
+	f = &content_features(i);
+	f->description = std::string("Power Plant");
+	f->setAllTextures("circuit_battery.png");
+	f->draw_type = CDT_CUBELIKE;
+	f->conductive = true;
+	f->energy_drop = 0;
+	f->energy_source = true;
+	f->air_equivalent = false; // grass grows underneath
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->walkable = false;
+	f->type = CMT_WOOD;
+	f->hardness = 0.10;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new CircuitNodeMetadata();
+	crafting::set1over1Recipe(CONTENT_CRAFTITEM_QUARTZ,CONTENT_MESE,CONTENT_CIRCUIT_BATTERY);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CIRCUIT_SWITCH;
+	f = &content_features(i);
+	f->description = std::string("Switch");
+	f->setAllTextures("circuit_switch.png");
+	f->setTexture(5,"circuit_switch_front.png");
+	f->setInventoryTextureCube("circuit_switch.png","circuit_switch_front.png","circuit_switch.png");
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->conductive = true;
+	f->energy_drop = 0;
+	f->energy_source = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new CircuitNodeMetadata();
+	{
+		u16 recipe[9] = {
+			CONTENT_IGNORE, CONTENT_CRAFTITEM_MESEDUST, CONTENT_IGNORE,
+			CONTENT_IGNORE, CONTENT_STONE, CONTENT_IGNORE,
+			CONTENT_IGNORE, CONTENT_CRAFTITEM_QUARTZ_DUST, CONTENT_IGNORE
+		};
+		crafting::setRecipe(recipe,CONTENT_CIRCUIT_SWITCH,1);
+	}
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CIRCUIT_LAMP;
+	f = &content_features(i);
+	f->description = std::string("Electric Lamp");
+	f->is_ground_content = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_GLASSLIKE;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->conductive = true;
+	f->light_source = LIGHT_MAX-1;
+	f->unpowered_node = CONTENT_CIRCUIT_LAMP_OFF;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->setAllTextures("circuit_lamp.png");
+	#ifndef SERVER
+		f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+	#endif
+	f->setInventoryTextureCube("circuit_lamp.png", "circuit_lamp.png", "circuit_lamp.png");
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new CircuitNodeMetadata();
+
+	i = CONTENT_CIRCUIT_LAMP_OFF;
+	f = &content_features(i);
+	f->description = std::string("Electric Lamp");
+	f->is_ground_content = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_GLASSLIKE;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->conductive = true;
+	f->powered_node = CONTENT_CIRCUIT_LAMP;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_LAMP)+" 1";
+	f->setAllTextures("circuit_lamp.png");
+	#ifndef SERVER
+	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+	#endif
+	f->setInventoryTextureCube("circuit_lamp.png", "circuit_lamp.png", "circuit_lamp.png");
+	f->type = CMT_WOOD;
+	f->hardness = 0.15;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new CircuitNodeMetadata();
+	{
+		u16 recipe[9] = {
+			CONTENT_GLASS, CONTENT_IGNORE, CONTENT_GLASS,
+			CONTENT_IGNORE, CONTENT_CRAFTITEM_QUARTZ, CONTENT_IGNORE,
+			CONTENT_GLASS, CONTENT_IGNORE, CONTENT_GLASS
+		};
+		crafting::setRecipe(recipe,CONTENT_CIRCUIT_LAMP_OFF,1);
+	}
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 }

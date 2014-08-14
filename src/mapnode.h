@@ -98,7 +98,7 @@ enum ContentDrawType
 	CDT_FENCELIKE,
 	CDT_WALLLIKE,
 	CDT_ROOFLIKE,
-	CDT_NODEBOX_META
+	CDT_NODEBOX_META,
 	CDT_WIRELIKE
 };
 
@@ -201,6 +201,8 @@ struct ContentFeatures
 	u8 flammable;
 	// Whether a player or mob can jump over this node
 	bool jumpable;
+	// Whether the node is a source of circuit current
+	bool energy_source;
 	// Whether the node conducts circuit current
 	bool conductive;
 	// How the current drops by on this conductive node
@@ -236,6 +238,11 @@ struct ContentFeatures
 	content_t roofmount_alternate_node;
 	// special node for things like slabs combining into cubes, or walls connecting to blocks
 	content_t special_alternate_node;
+
+	// when energised, replace with this node
+	content_t powered_node;
+	// when unenergised, replace with this node
+	content_t unpowered_node;
 
 	// the result of cooking this node
 	std::string cook_result;
@@ -303,6 +310,7 @@ struct ContentFeatures
 		buildable_to = false;
 		flammable = 0;
 		jumpable = true;
+		energy_source = false;
 		conductive = false;
 		energy_drop = 1;
 		liquid_type = LIQUID_NONE;
@@ -317,6 +325,8 @@ struct ContentFeatures
 		floormount_alternate_node = CONTENT_IGNORE;
 		roofmount_alternate_node = CONTENT_IGNORE;
 		special_alternate_node = CONTENT_IGNORE;
+		powered_node = CONTENT_IGNORE;
+		unpowered_node = CONTENT_IGNORE;
 		cook_result = "";
 		fuel_time = 0.0;
 		initial_metadata = NULL;

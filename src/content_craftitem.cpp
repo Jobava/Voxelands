@@ -661,4 +661,13 @@ void content_craftitem_init()
 	f->name = "string";
 	f->description = "String";
 	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_MESEDUST;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_MESEDUST;
+	f->texture = "mese_dust.png";
+	f->name = "mese_dust";
+	f->description = "Mese Dust";
+	f->drop_count = 1;
+	crafting::set1To2Recipe(CONTENT_MESE,CONTENT_CRAFTITEM_MESEDUST);
 }

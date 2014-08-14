@@ -1984,3 +1984,79 @@ std::vector<aabb3f> BookShelfNodeMetadata::getNodeBoxes(MapNode &n) {
 
 	return transformNodeBox(n,boxes);
 }
+
+/*
+	CircuitNodeMetadata
+*/
+
+// Prototype
+CircuitNodeMetadata proto_CircuitNodeMetadata;
+
+CircuitNodeMetadata::CircuitNodeMetadata():
+	m_energy(0)
+{
+	m_sources.clear();
+	NodeMetadata::registerType(typeId(), create);
+}
+CircuitNodeMetadata::~CircuitNodeMetadata()
+{
+}
+u16 CircuitNodeMetadata::typeId() const
+{
+	return CONTENT_CIRCUIT_MESEWIRE;
+}
+NodeMetadata* CircuitNodeMetadata::create(std::istream &is)
+{
+	CircuitNodeMetadata *d = new CircuitNodeMetadata();
+	int temp;
+	is>>temp;
+	d->m_energy = temp;
+	int i;
+	is>>i;
+	v3s16 p;
+	for (; i > 0; i--) {
+		is>>temp;
+		p.X = temp;
+		is>>temp;
+		p.Y = temp;
+		is>>temp;
+		p.Z = temp;
+		is>>temp;
+		d->m_sources[p] = temp;
+	}
+	return d;
+}
+NodeMetadata* CircuitNodeMetadata::clone()
+{
+	CircuitNodeMetadata *d = new CircuitNodeMetadata();
+	return d;
+}
+void CircuitNodeMetadata::serializeBody(std::ostream &os)
+{
+	os<<itos(m_energy) << " ";
+	os<<itos(m_sources.size()) << " ";
+	for (std::map<v3s16,u8>::iterator i = m_sources.begin(); i != m_sources.end(); i++) {
+		os<<itos(i->first.X) << " ";
+		os<<itos(i->first.Y) << " ";
+		os<<itos(i->first.Z) << " ";
+		os<<itos(i->second) << " ";
+	}
+}
+bool CircuitNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
+{
+	m_ptime = 0;
+	if (m_sources[powersrc] == level)
+		return true;
+	m_sources[powersrc] = level;
+	if (!level || m_energy < level) {
+		m_energy = level;
+		if (!level) {
+			for (std::map<v3s16,u8>::iterator i = m_sources.begin(); i != m_sources.end(); i++) {
+				u8 v = i->second;
+				if (v > m_energy)
+					m_energy = v;
+			}
+		}
+	}
+	return true;
+}
