@@ -39,8 +39,6 @@ struct NodeMod
 	}
 	bool operator==(enum NodeModType c_type)
 	{
-		if (type)
-printf("%X\n",type);
 		return ((type&c_type)==c_type);
 	}
 	bool operator==(const NodeMod &other)
