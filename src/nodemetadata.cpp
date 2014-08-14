@@ -213,7 +213,7 @@ void NodeMetadataList::set(v3s16 p, NodeMetadata *d)
 	m_data.insert(p, d);
 }
 
-bool NodeMetadataList::step(float dtime, ServerEnvironment *env)
+bool NodeMetadataList::step(float dtime, v3s16 blockpos_nodes, ServerEnvironment *env)
 {
 	bool something_changed = false;
 	for(core::map<v3s16, NodeMetadata*>::Iterator
@@ -222,7 +222,7 @@ bool NodeMetadataList::step(float dtime, ServerEnvironment *env)
 	{
 		v3s16 p = i.getNode()->getKey();
 		NodeMetadata *meta = i.getNode()->getValue();
-		bool changed = meta->step(dtime, p, env);
+		bool changed = meta->step(dtime, blockpos_nodes+p, env);
 		if(changed)
 			something_changed = true;
 	}

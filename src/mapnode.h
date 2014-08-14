@@ -136,6 +136,16 @@ enum ContentMaterialType {
 	CMT_DIRT
 };
 
+/*
+	Circuits Type
+*/
+enum ContentEnergyType {
+	CET_NONE,
+	CET_CONDUCTIVE,
+	CET_SOURCE,
+	CET_SWITCH
+};
+
 struct MapNode;
 class NodeMetadata;
 
@@ -201,10 +211,8 @@ struct ContentFeatures
 	u8 flammable;
 	// Whether a player or mob can jump over this node
 	bool jumpable;
-	// Whether the node is a source of circuit current
-	bool energy_source;
 	// Whether the node conducts circuit current
-	bool conductive;
+	ContentEnergyType energy_type;
 	// How the current drops by on this conductive node
 	u8 energy_drop;
 	// Whether the node has no liquid, source liquid or flowing liquid
@@ -310,8 +318,7 @@ struct ContentFeatures
 		buildable_to = false;
 		flammable = 0;
 		jumpable = true;
-		energy_source = false;
-		conductive = false;
+		energy_type = CET_NONE;
 		energy_drop = 1;
 		liquid_type = LIQUID_NONE;
 		air_equivalent = false;

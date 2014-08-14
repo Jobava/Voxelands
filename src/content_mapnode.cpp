@@ -7319,6 +7319,7 @@ void content_mapnode_init()
 	f->setInventoryTextureCube("tnt_top.png", "tnt.png", "tnt.png");
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
+	f->energy_type = CET_CONDUCTIVE;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new TNTNodeMetadata();
@@ -8969,7 +8970,7 @@ void content_mapnode_init()
 	f->setAllTextures("mese_wire.png");
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_WIRELIKE;
-	f->conductive = true;
+	f->energy_type = CET_CONDUCTIVE;
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
@@ -8978,26 +8979,29 @@ void content_mapnode_init()
 	f->dug_item = std::string("CraftItem mese_dust 1");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
+	content_nodebox_carpet(f);
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new CircuitNodeMetadata();
 	lists::add("creative",i);
 
 	i = CONTENT_CIRCUIT_BATTERY;
 	f = &content_features(i);
-	f->description = std::string("Power Plant");
+	f->description = std::string("Battery");
 	f->setAllTextures("circuit_battery.png");
-	f->draw_type = CDT_CUBELIKE;
-	f->conductive = true;
+	f->setTexture(0,"circuit_battery_top.png");
+	f->setTexture(1,"circuit_battery_bottom.png");
+	f->draw_type = CDT_NODEBOX;
+	f->energy_type = CET_SOURCE;
 	f->energy_drop = 0;
-	f->energy_source = true;
-	f->air_equivalent = false; // grass grows underneath
-	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->light_source = 10;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->walkable = false;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_WOOD;
 	f->hardness = 0.10;
+	content_nodebox_battery(f);
+	f->setInventoryTextureNodeBox(i,"circuit_battery_top.png","circuit_battery.png","circuit_battery.png");
 	if (f->initial_metadata == NULL)
-		f->initial_metadata = new CircuitNodeMetadata();
+		f->initial_metadata = new SourceNodeMetadata();
 	crafting::set1over1Recipe(CONTENT_CRAFTITEM_QUARTZ,CONTENT_MESE,CONTENT_CIRCUIT_BATTERY);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -9007,18 +9011,19 @@ void content_mapnode_init()
 	f->description = std::string("Switch");
 	f->setAllTextures("circuit_switch.png");
 	f->setTexture(5,"circuit_switch_front.png");
-	f->setInventoryTextureCube("circuit_switch.png","circuit_switch_front.png","circuit_switch.png");
-	f->param_type = CPT_FACEDIR_SIMPLE;
-	f->draw_type = CDT_CUBELIKE;
+	f->param_type = CPT_FACEDIR_WALLMOUNT;
+	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
-	f->conductive = true;
+	f->energy_type = CET_SWITCH;
 	f->energy_drop = 0;
-	f->energy_source = true;
+	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
+	content_nodebox_switch(f);
+	f->setInventoryTextureCube("circuit_switch.png","circuit_switch_front.png","circuit_switch.png");
 	if (f->initial_metadata == NULL)
-		f->initial_metadata = new CircuitNodeMetadata();
+		f->initial_metadata = new SwitchNodeMetadata();
 	{
 		u16 recipe[9] = {
 			CONTENT_IGNORE, CONTENT_CRAFTITEM_MESEDUST, CONTENT_IGNORE,
@@ -9040,10 +9045,10 @@ void content_mapnode_init()
 	f->draw_type = CDT_GLASSLIKE;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
-	f->conductive = true;
+	f->energy_type = CET_CONDUCTIVE;
 	f->light_source = LIGHT_MAX-1;
 	f->unpowered_node = CONTENT_CIRCUIT_LAMP_OFF;
-	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_LAMP_OFF)+" 1";
 	f->setAllTextures("circuit_lamp.png");
 	#ifndef SERVER
 		f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
@@ -9064,9 +9069,9 @@ void content_mapnode_init()
 	f->draw_type = CDT_GLASSLIKE;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
-	f->conductive = true;
+	f->energy_type = CET_CONDUCTIVE;
 	f->powered_node = CONTENT_CIRCUIT_LAMP;
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_LAMP)+" 1";
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->setAllTextures("circuit_lamp.png");
 	#ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);

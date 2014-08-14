@@ -608,7 +608,7 @@ void ServerEnvironment::activateBlock(MapBlock *block, u32 additional_dtime)
 	activateObjects(block);
 
 	// Run node metadata
-	bool changed = block->m_node_metadata.step((float)dtime_s,this);
+	bool changed = block->m_node_metadata.step((float)dtime_s, block->getPosRelative(),this);
 	if(changed)
 	{
 		MapEditEvent event;
@@ -918,7 +918,7 @@ void ServerEnvironment::step(float dtime)
 			block->setTimestampNoChangedFlag(m_game_time);
 
 			// Run node metadata
-			bool changed = block->m_node_metadata.step(dtime,this);
+			bool changed = block->m_node_metadata.step(dtime, block->getPosRelative(), this);
 			if(changed)
 			{
 				MapEditEvent event;
@@ -2908,6 +2908,200 @@ ServerActiveObject* ServerEnvironment::getActiveObject(u16 id)
 	if(n == NULL)
 		return NULL;
 	return n->getValue();
+}
+
+bool ServerEnvironment::propogateEnergy(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
+{
+	MapNode n = m_map->getNodeNoEx(pos);
+	NodeMetadata *m;
+	if (n.getContent() == CONTENT_IGNORE)
+		return false;
+	ContentFeatures &f = content_features(n);
+	if (f.energy_type == CET_NONE)
+		return false;
+	if ((f.energy_type == CET_SOURCE || f.energy_type == CET_SWITCH) && pos != powersrc)
+		return false;
+	m = m_map->getNodeMetadata(pos);
+	if (!m)
+		return false;
+	if (!m->energise(level,powersrc,signalsrc,pos))
+		return false;
+	if (level) {
+		if (f.powered_node != CONTENT_IGNORE) {
+			n.setContent(f.powered_node);
+			m_map->addNodeWithEvent(pos, n);
+		}
+	}else if (f.unpowered_node != CONTENT_IGNORE) {
+		n.setContent(f.unpowered_node);
+		m_map->addNodeWithEvent(pos, n);
+	}
+
+	if (f.energy_type != CET_SOURCE && f.energy_type != CET_SWITCH)
+		level -= f.energy_drop;
+
+	MapNode n_plus_y = m_map->getNodeNoEx(pos + v3s16(0,1,0));
+	MapNode n_minus_x = m_map->getNodeNoEx(pos + v3s16(-1,0,0));
+	MapNode n_plus_x = m_map->getNodeNoEx(pos + v3s16(1,0,0));
+	MapNode n_minus_z = m_map->getNodeNoEx(pos + v3s16(0,0,-1));
+	MapNode n_plus_z = m_map->getNodeNoEx(pos + v3s16(0,0,1));
+	MapNode n_minus_xy = m_map->getNodeNoEx(pos + v3s16(-1,1,0));
+	MapNode n_plus_xy = m_map->getNodeNoEx(pos + v3s16(1,1,0));
+	MapNode n_minus_zy = m_map->getNodeNoEx(pos + v3s16(0,1,-1));
+	MapNode n_plus_zy = m_map->getNodeNoEx(pos + v3s16(0,1,1));
+	MapNode n_minus_x_y = m_map->getNodeNoEx(pos + v3s16(-1,-1,0));
+	MapNode n_plus_x_y = m_map->getNodeNoEx(pos + v3s16(1,-1,0));
+	MapNode n_minus_z_y = m_map->getNodeNoEx(pos + v3s16(0,-1,-1));
+	MapNode n_plus_z_y = m_map->getNodeNoEx(pos + v3s16(0,-1,1));
+	bool x_plus = false;
+	bool x_plus_y = false;
+	bool x_plus_y_minus = false;
+	bool x_minus = false;
+	bool x_minus_y = false;
+	bool x_minus_y_minus = false;
+	bool z_plus = false;
+	bool z_plus_y = false;
+	bool z_plus_y_minus = false;
+	bool z_minus = false;
+	bool z_minus_y = false;
+	bool z_minus_y_minus = false;
+	bool y_plus = false;
+	// +Y
+	if (n_plus_y.getContent() == CONTENT_AIR || content_features(n_plus_y).energy_type != CET_NONE)
+		y_plus = true;
+	// +X
+	if (
+		content_features(n_plus_x).energy_type == CET_NONE
+		&& content_features(n_plus_x).flammable != 2
+	) {
+		if (
+			y_plus
+			&& (
+				content_features(n_plus_x).draw_type == CDT_CUBELIKE
+				|| content_features(n_plus_x).draw_type == CDT_GLASSLIKE
+			)
+		) {
+			if (content_features(n_plus_xy).energy_type != CET_NONE) {
+				x_plus_y = true;
+			}
+		}else if (
+			n_plus_x.getContent() == CONTENT_AIR
+			&& content_features(n_plus_x_y).energy_type != CET_NONE
+		) {
+			x_plus_y_minus = true;
+		}
+	}else{
+		x_plus = true;
+	}
+	// -X
+	if (content_features(n_minus_x).energy_type == CET_NONE && content_features(n_minus_x).flammable != 2) {
+		if (
+			y_plus
+			&& (
+				content_features(n_minus_x).draw_type == CDT_CUBELIKE
+				|| content_features(n_minus_x).draw_type == CDT_GLASSLIKE
+			)
+		) {
+			if (content_features(n_minus_xy).energy_type != CET_NONE) {
+				x_minus_y = true;
+			}
+		}else if (
+			n_minus_x.getContent() == CONTENT_AIR
+			&& content_features(n_minus_x_y).energy_type != CET_NONE
+		) {
+			x_minus_y_minus = true;
+		}
+	}else{
+		x_minus = true;
+	}
+	// +Z
+	if (
+		content_features(n_plus_z).energy_type == CET_NONE
+		&& content_features(n_plus_z).flammable != 2
+	) {
+		if (
+			y_plus
+			&& (
+				content_features(n_plus_z).draw_type == CDT_CUBELIKE
+				|| content_features(n_plus_z).draw_type == CDT_GLASSLIKE
+			)
+		) {
+			if (content_features(n_plus_zy).energy_type != CET_NONE) {
+				z_plus_y = true;
+			}
+		}else if (
+			n_plus_z.getContent() == CONTENT_AIR
+			&& content_features(n_plus_z_y).energy_type != CET_NONE
+		) {
+			z_plus_y_minus = true;
+		}
+	}else{
+		z_plus = true;
+	}
+	// -Z
+	if (
+		content_features(n_minus_z).energy_type == CET_NONE
+		&& content_features(n_minus_z).flammable != 2
+	) {
+		if (
+			y_plus
+			&& (
+				content_features(n_minus_z).draw_type == CDT_CUBELIKE
+				|| content_features(n_minus_z).draw_type == CDT_GLASSLIKE
+			)
+		) {
+			if (content_features(n_minus_zy).energy_type != CET_NONE) {
+				z_minus_y = true;
+			}
+		}else if (
+			n_minus_z.getContent() == CONTENT_AIR
+			&& content_features(n_minus_z_y).energy_type != CET_NONE
+		) {
+			z_minus_y_minus = true;
+		}
+	}else{
+		z_minus = true;
+	}
+	if (x_plus) {
+		if ((pos+v3s16(1,0,0)) != signalsrc)
+			propogateEnergy(level,powersrc,pos,pos+v3s16(1,0,0));
+	}else if (x_plus_y) {
+		if ((pos+v3s16(1,1,0)) != signalsrc)
+			propogateEnergy(level,powersrc,pos,pos+v3s16(1,1,0));
+	}else if (x_plus_y_minus) {
+		if ((pos+v3s16(1,-1,0)) != signalsrc)
+			propogateEnergy(level,powersrc,pos,pos+v3s16(1,-1,0));
+	}
+	if (x_minus) {
+		if ((pos+v3s16(-1,0,0)) != signalsrc)
+			propogateEnergy(level,powersrc,pos,pos+v3s16(-1,0,0));
+	}else if (x_minus_y) {
+		if ((pos+v3s16(-1,1,0)) != signalsrc)
+			propogateEnergy(level,powersrc,pos,pos+v3s16(-1,1,0));
+	}else if (x_minus_y_minus) {
+		if ((pos+v3s16(-1,-1,0)) != signalsrc)
+			propogateEnergy(level,powersrc,pos,pos+v3s16(-1,-1,0));
+	}
+	if (z_plus) {
+		if ((pos+v3s16(0,0,1)) != signalsrc)
+			propogateEnergy(level,powersrc,pos,pos+v3s16(0,0,1));
+	}else if (z_plus_y) {
+		if ((pos+v3s16(0,1,1)) != signalsrc)
+			propogateEnergy(level,powersrc,pos,pos+v3s16(0,1,1));
+	}else if (z_plus_y_minus) {
+		if ((pos+v3s16(0,-1,1)) != signalsrc)
+			propogateEnergy(level,powersrc,pos,pos+v3s16(0,-1,1));
+	}
+	if (z_minus) {
+		if ((pos+v3s16(0,0,-1)) != signalsrc)
+			propogateEnergy(level,powersrc,pos,pos+v3s16(0,0,-1));
+	}else if (z_minus_y) {
+		if ((pos+v3s16(0,1,-1)) != signalsrc)
+			propogateEnergy(level,powersrc,pos,pos+v3s16(0,1,-1));
+	}else if (z_minus_y_minus) {
+		if ((pos+v3s16(0,-1,-1)) != signalsrc)
+			propogateEnergy(level,powersrc,pos,pos+v3s16(0,-1,-1));
+	}
+	return false;
 }
 
 bool isFreeServerActiveObjectId(u16 id,

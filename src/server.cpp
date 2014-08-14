@@ -2610,7 +2610,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					}
 					SendInventory(player->peer_id);
 				}
-			}else if (n.getContent() == CONTENT_TNT) {
+			}else if (content_features(n).energy_type != CET_NONE) {
 				if (wield && wield->getContent() == CONTENT_TOOLITEM_FIRESTARTER) {
 					if((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
 						s16 max_d = g_settings->getS16("borderstone_radius");
@@ -2640,6 +2640,14 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						mlist->deleteItem(item_i);
 					}
 					SendInventory(player->peer_id);
+				}else if (content_features(n).energy_type == CET_SWITCH) {
+					NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
+					if (meta) {
+						u8 energy = ENERGY_MAX;
+						if (meta->getEnergy())
+							energy = 0;
+						meta->energise(energy,p_under,p_under,p_under);
+					}
 				}
 			}else if (n.getContent() == CONTENT_INCINERATOR) {
 				NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
@@ -3864,6 +3872,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				}
 			}else if (item->getContent() == CONTENT_CRAFTITEM_MESEDUST) {
 				MapNode n = m_env.getMap().getNodeNoEx(p_over);
+				if (n.getContent() != CONTENT_AIR)
+					return;
 				n.setContent(CONTENT_CIRCUIT_MESEWIRE);
 				core::list<u16> far_players;
 				sendAddNode(p_over, n, 0, &far_players, 30);

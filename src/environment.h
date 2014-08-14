@@ -69,6 +69,7 @@ public:
 	core::list<Player*> getPlayers();
 	core::list<Player*> getPlayers(bool ignore_disconnected);
 	void printPlayers(std::ostream &o);
+	virtual bool propogateEnergy(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos) {return false;};
 
 	//void setDayNightRatio(u32 r);
 	u32 getDayNightRatio();
@@ -225,6 +226,7 @@ public:
 
 	// Clear all objects, loading and going through every MapBlock
 	void clearAllObjects();
+	virtual bool propogateEnergy(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos);
 
 private:
 

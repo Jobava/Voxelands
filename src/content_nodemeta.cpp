@@ -24,6 +24,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "content_list.h"
 #include "log.h"
 #include "player.h"
+#include "environment.h"
 
 /*
 	SignNodeMetadata
@@ -1993,7 +1994,8 @@ std::vector<aabb3f> BookShelfNodeMetadata::getNodeBoxes(MapNode &n) {
 CircuitNodeMetadata proto_CircuitNodeMetadata;
 
 CircuitNodeMetadata::CircuitNodeMetadata():
-	m_energy(0)
+	m_energy(0),
+	m_ptime(0)
 {
 	m_sources.clear();
 	NodeMetadata::registerType(typeId(), create);
@@ -2011,6 +2013,8 @@ NodeMetadata* CircuitNodeMetadata::create(std::istream &is)
 	int temp;
 	is>>temp;
 	d->m_energy = temp;
+	is>>temp;
+	d->m_ptime = (float)temp/10;
 	int i;
 	is>>i;
 	v3s16 p;
@@ -2034,6 +2038,7 @@ NodeMetadata* CircuitNodeMetadata::clone()
 void CircuitNodeMetadata::serializeBody(std::ostream &os)
 {
 	os<<itos(m_energy) << " ";
+	os<<itos(m_ptime*10)<<" ";
 	os<<itos(m_sources.size()) << " ";
 	for (std::map<v3s16,u8>::iterator i = m_sources.begin(); i != m_sources.end(); i++) {
 		os<<itos(i->first.X) << " ";
@@ -2042,11 +2047,27 @@ void CircuitNodeMetadata::serializeBody(std::ostream &os)
 		os<<itos(i->second) << " ";
 	}
 }
+bool CircuitNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
+{
+	m_ptime += dtime;
+	if (!m_energy || m_ptime < 1.1)
+		return false;
+	m_energy = 0;
+	m_sources.clear();
+	MapNode n = env->getMap().getNodeNoEx(pos);
+	if (content_features(n).unpowered_node != CONTENT_IGNORE) {
+		n.setContent(content_features(n).unpowered_node);
+		env->getMap().addNodeWithEvent(pos, n);
+	}
+	return true;
+}
 bool CircuitNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
 {
 	m_ptime = 0;
 	if (m_sources[powersrc] == level)
 		return true;
+	if (level && m_sources[powersrc] > level)
+		return false;
 	m_sources[powersrc] = level;
 	if (!level || m_energy < level) {
 		m_energy = level;
@@ -2059,4 +2080,116 @@ bool CircuitNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3
 		}
 	}
 	return true;
+}
+
+/*
+	SwitchNodeMetadata
+*/
+
+// Prototype
+SwitchNodeMetadata proto_SwitchNodeMetadata;
+
+SwitchNodeMetadata::SwitchNodeMetadata()
+{
+	m_energy = 0;
+	m_ptime = 0;
+	m_sources.clear();
+	NodeMetadata::registerType(typeId(), create);
+}
+u16 SwitchNodeMetadata::typeId() const
+{
+	return CONTENT_CIRCUIT_SWITCH;
+}
+NodeMetadata* SwitchNodeMetadata::create(std::istream &is)
+{
+	SwitchNodeMetadata *d = new SwitchNodeMetadata();
+	int temp;
+	is>>temp;
+	d->m_energy = temp;
+	is>>temp;
+	d->m_ptime = (float)temp/10;
+	int i;
+	is>>i;
+	v3s16 p;
+	for (; i > 0; i--) {
+		is>>temp;
+		p.X = temp;
+		is>>temp;
+		p.Y = temp;
+		is>>temp;
+		p.Z = temp;
+		is>>temp;
+		d->m_sources[p] = temp;
+	}
+	return d;
+}
+NodeMetadata* SwitchNodeMetadata::clone()
+{
+	SwitchNodeMetadata *d = new SwitchNodeMetadata();
+	return d;
+}
+bool SwitchNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
+{
+	if (!m_energy)
+		return false;
+
+	env->propogateEnergy(ENERGY_MAX,pos,pos,pos);
+	return true;
+}
+bool SwitchNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
+{
+	m_ptime = 0;
+	if (m_energy == level)
+		return true;
+	if (powersrc != pos)
+		return false;
+	m_energy = level;
+	return true;
+}
+
+/*
+	SourceNodeMetadata
+*/
+
+// Prototype
+SourceNodeMetadata proto_SourceNodeMetadata;
+
+SourceNodeMetadata::SourceNodeMetadata()
+{
+	m_energy = ENERGY_MAX;
+	m_ptime = 0;
+	m_sources.clear();
+	NodeMetadata::registerType(typeId(), create);
+}
+u16 SourceNodeMetadata::typeId() const
+{
+	return CONTENT_CIRCUIT_BATTERY;
+}
+NodeMetadata* SourceNodeMetadata::create(std::istream &is)
+{
+	SourceNodeMetadata *d = new SourceNodeMetadata();
+	int temp;
+	is>>temp;
+	d->m_energy = temp;
+	is>>temp;
+	d->m_ptime = (float)temp/10;
+	int i;
+	is>>i;
+	v3s16 p;
+	for (; i > 0; i--) {
+		is>>temp;
+		p.X = temp;
+		is>>temp;
+		p.Y = temp;
+		is>>temp;
+		p.Z = temp;
+		is>>temp;
+		d->m_sources[p] = temp;
+	}
+	return d;
+}
+NodeMetadata* SourceNodeMetadata::clone()
+{
+	SourceNodeMetadata *d = new SourceNodeMetadata();
+	return d;
 }

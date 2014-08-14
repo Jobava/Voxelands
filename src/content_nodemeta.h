@@ -455,17 +455,37 @@ public:
 	static NodeMetadata* create(std::istream &is);
 	virtual NodeMetadata* clone();
 	virtual void serializeBody(std::ostream &os);
-	virtual bool step(float dtime) {return false;};
+	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos);
 	virtual u8 getEnergy()
 	{
 		return m_energy;
 	}
 	virtual std::map<v3s16, u8> *getSources() {return &m_sources;}
-private:
+protected:
 	u8 m_energy;
 	std::map<v3s16, u8> m_sources;
 	f32 m_ptime;
+};
+
+class SwitchNodeMetadata : public CircuitNodeMetadata
+{
+public:
+	SwitchNodeMetadata();
+	virtual u16 typeId() const;
+	static NodeMetadata* create(std::istream &is);
+	virtual NodeMetadata* clone();
+	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
+	virtual bool energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos);
+};
+
+class SourceNodeMetadata : public SwitchNodeMetadata
+{
+public:
+	SourceNodeMetadata();
+	virtual u16 typeId() const;
+	static NodeMetadata* create(std::istream &is);
+	virtual NodeMetadata* clone();
 };
 
 #endif

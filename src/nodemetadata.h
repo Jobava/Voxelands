@@ -105,6 +105,7 @@ public:
 		return energise(level,p,s,pos);
 	}
 	virtual u8 getEnergy() {return 0;}
+	virtual std::map<v3s16, u8> *getSources() {return NULL;}
 
 protected:
 	static void registerType(u16 id, Factory f);
@@ -132,7 +133,7 @@ public:
 	void set(v3s16 p, NodeMetadata *d);
 
 	// A step in time. Returns true if something changed.
-	bool step(float dtime, ServerEnvironment *env);
+	bool step(float dtime, v3s16 blockpos_nodes, ServerEnvironment *env);
 
 private:
 	core::map<v3s16, NodeMetadata*> m_data;

@@ -1897,7 +1897,7 @@ void Map::nodeMetadataStep(float dtime, core::map<v3s16, MapBlock*> &changed_blo
 		for(i=sectorblocks.begin(); i!=sectorblocks.end(); i++)
 		{
 			MapBlock *block = *i;
-			bool changed = block->m_node_metadata.step(dtime,env);
+			bool changed = block->m_node_metadata.step(dtime,block->getPosRelative(),env);
 			if(changed)
 				changed_blocks[block->getPos()] = block;
 		}

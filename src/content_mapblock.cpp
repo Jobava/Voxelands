@@ -1728,11 +1728,11 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			bool z_minus_y = false;
 			bool y_plus = false;
 			// +Y
-			if (n_plus_y.getContent() == CONTENT_AIR || content_features(n_plus_y).conductive == true)
+			if (n_plus_y.getContent() == CONTENT_AIR || content_features(n_plus_y).energy_type != CET_NONE)
 				y_plus = true;
 			// +X
 			if (
-				content_features(n_plus_x).conductive == false
+				content_features(n_plus_x).energy_type == CET_NONE
 				&& content_features(n_plus_x).flammable != 2
 			) {
 				if (
@@ -1742,13 +1742,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						|| content_features(n_plus_x).draw_type == CDT_GLASSLIKE
 					)
 				) {
-					if (content_features(n_plus_xy).conductive != false) {
+					if (content_features(n_plus_xy).energy_type != CET_NONE) {
 						x_plus_y = true;
 						x_plus = true;
 					}
 				}else if (
 					n_plus_x.getContent() == CONTENT_AIR
-					&& content_features(n_plus_x_y).conductive != false
+					&& content_features(n_plus_x_y).energy_type != CET_NONE
 				) {
 					x_plus = true;
 				}
@@ -1756,7 +1756,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				x_plus = true;
 			}
 			// -X
-			if (content_features(n_minus_x).conductive == false && content_features(n_minus_x).flammable != 2) {
+			if (content_features(n_minus_x).energy_type == CET_NONE && content_features(n_minus_x).flammable != 2) {
 				if (
 					y_plus
 					&& (
@@ -1764,13 +1764,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						|| content_features(n_minus_x).draw_type == CDT_GLASSLIKE
 					)
 				) {
-					if (content_features(n_minus_xy).conductive != false) {
+					if (content_features(n_minus_xy).energy_type != CET_NONE) {
 						x_minus_y = true;
 						x_minus = true;
 					}
 				}else if (
 					n_minus_x.getContent() == CONTENT_AIR
-					&& content_features(n_minus_x_y).conductive != false
+					&& content_features(n_minus_x_y).energy_type != CET_NONE
 				) {
 					x_minus = true;
 				}
@@ -1779,7 +1779,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			}
 			// +Z
 			if (
-				content_features(n_plus_z).conductive == false
+				content_features(n_plus_z).energy_type == CET_NONE
 				&& content_features(n_plus_z).flammable != 2
 			) {
 				if (
@@ -1789,13 +1789,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						|| content_features(n_plus_z).draw_type == CDT_GLASSLIKE
 					)
 				) {
-					if (content_features(n_plus_zy).conductive != false) {
+					if (content_features(n_plus_zy).energy_type != CET_NONE) {
 						z_plus_y = true;
 						z_plus = true;
 					}
 				}else if (
 					n_plus_z.getContent() == CONTENT_AIR
-					&& content_features(n_plus_z_y).conductive != false
+					&& content_features(n_plus_z_y).energy_type != CET_NONE
 				) {
 					z_plus = true;
 				}
@@ -1804,7 +1804,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			}
 			// -Z
 			if (
-				content_features(n_minus_z).conductive == false
+				content_features(n_minus_z).energy_type == CET_NONE
 				&& content_features(n_minus_z).flammable != 2
 			) {
 				if (
@@ -1814,203 +1814,204 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						|| content_features(n_minus_z).draw_type == CDT_GLASSLIKE
 					)
 				) {
-					if (content_features(n_minus_zy).conductive != false) {
+					if (content_features(n_minus_zy).energy_type != CET_NONE) {
 						z_minus_y = true;
 						z_minus = true;
 					}
 				}else if (
 					n_minus_z.getContent() == CONTENT_AIR
-					&& content_features(n_minus_z_y).conductive != false
+					&& content_features(n_minus_z_y).energy_type != CET_NONE
 				) {
 					z_minus = true;
 				}
 			}else{
 				z_minus = true;
 			}
+			TileSpec tile = getNodeTile(n,p,v3s16(0,0,0),data->m_temp_mods);
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
-			video::SColor c = MapBlock_LightColor(255, l);
-			f32 sy = content_features(n.getContent()).tiles[0].texture.y1()-content_features(n.getContent()).tiles[0].texture.y0();
+			video::SColor c = MapBlock_LightColor(255, l, selected);
+			f32 sy = tile.texture.y1()-tile.texture.y0();
 			if (!x_plus && !x_minus && !z_plus && !z_minus) {
 				{
 					video::S3DVertex vertices[4] = {
 						video::S3DVertex(-BS/2,-0.49*BS,BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
+							tile.texture.x0(), tile.texture.y0()),
 						video::S3DVertex(BS/2,-0.49*BS,BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
+							tile.texture.x0(), tile.texture.y1()),
 						video::S3DVertex(BS/2,-0.49*BS,-BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
+							tile.texture.x1(), tile.texture.y1()),
 						video::S3DVertex(-BS/2,-0.49*BS,-BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
+							tile.texture.x1(), tile.texture.y0()),
 					};
 					for (u16 i=0; i<4; i++) {
-						vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+						vertices[i].Pos += intToFloat(p, BS);
 					}
 					u16 indices[] = {0,1,2,2,3,0};
 					// Add to mesh collector
-					collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
+					collector.append(tile.getMaterial(), vertices, 4, indices, 6);
 				}
 				{
 					video::S3DVertex vertices[4] = {
 						video::S3DVertex(-BS/2,-0.49*BS,BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
+							tile.texture.x0(), tile.texture.y1()),
 						video::S3DVertex(BS/2,-0.49*BS,BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
+							tile.texture.x1(), tile.texture.y1()),
 						video::S3DVertex(BS/2,-0.49*BS,-BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
+							tile.texture.x1(), tile.texture.y0()),
 						video::S3DVertex(-BS/2,-0.49*BS,-BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
+							tile.texture.x0(), tile.texture.y0()),
 					};
 					for (u16 i=0; i<4; i++) {
-						vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+						vertices[i].Pos += intToFloat(p, BS);
 					}
 					u16 indices[] = {0,1,2,2,3,0};
 					// Add to mesh collector
-					collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
+					collector.append(tile.getMaterial(), vertices, 4, indices, 6);
 				}
 			}else{
 				if (x_plus) {
 					video::S3DVertex vertices[4] = {
 						video::S3DVertex(0,-0.49*BS,BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()+(sy/2)),
+							tile.texture.x0(), tile.texture.y0()+(sy/2)),
 						video::S3DVertex(BS/2,-0.49*BS,BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
+							tile.texture.x0(), tile.texture.y1()),
 						video::S3DVertex(BS/2,-0.49*BS,-BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
+							tile.texture.x1(), tile.texture.y1()),
 						video::S3DVertex(0,-0.49*BS,-BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()+(sy/2)),
+							tile.texture.x1(), tile.texture.y0()+(sy/2)),
 					};
 					for (u16 i=0; i<4; i++) {
-						vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+						vertices[i].Pos += intToFloat(p, BS);
 					}
 					u16 indices[] = {0,1,2,2,3,0};
 					// Add to mesh collector
-					collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
+					collector.append(tile.getMaterial(), vertices, 4, indices, 6);
 				}
 				if (x_minus) {
 					video::S3DVertex vertices[4] = {
 						video::S3DVertex(-BS/2,-0.49*BS,BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
+							tile.texture.x0(), tile.texture.y0()),
 						video::S3DVertex(0,-0.49*BS,BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()-(sy/2)),
+							tile.texture.x0(), tile.texture.y1()-(sy/2)),
 						video::S3DVertex(0,-0.49*BS,-BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()-(sy/2)),
+							tile.texture.x1(), tile.texture.y1()-(sy/2)),
 						video::S3DVertex(-BS/2,-0.49*BS,-BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
+							tile.texture.x1(), tile.texture.y0()),
 					};
 					for (u16 i=0; i<4; i++) {
-						vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+						vertices[i].Pos += intToFloat(p, BS);
 					}
 					u16 indices[] = {0,1,2,2,3,0};
 					// Add to mesh collector
-					collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
+					collector.append(tile.getMaterial(), vertices, 4, indices, 6);
 				}
 				if (z_plus) {
 					video::S3DVertex vertices[4] = {
 						video::S3DVertex(-BS/2,-0.49*BS,BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
+							tile.texture.x0(), tile.texture.y1()),
 						video::S3DVertex(BS/2,-0.49*BS,BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
+							tile.texture.x1(), tile.texture.y1()),
 						video::S3DVertex(BS/2,-0.49*BS,0, 0,0,0, c,
-							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()+(sy/2)),
+							tile.texture.x1(), tile.texture.y0()+(sy/2)),
 						video::S3DVertex(-BS/2,-0.49*BS,0, 0,0,0, c,
-							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()+(sy/2)),
+							tile.texture.x0(), tile.texture.y0()+(sy/2)),
 					};
 					for (u16 i=0; i<4; i++) {
-						vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+						vertices[i].Pos += intToFloat(p, BS);
 					}
 					u16 indices[] = {0,1,2,2,3,0};
 					// Add to mesh collector
-					collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
+					collector.append(tile.getMaterial(), vertices, 4, indices, 6);
 				}
 				if (z_minus) {
 					video::S3DVertex vertices[4] = {
 						video::S3DVertex(-BS/2,-0.49*BS,0, 0,0,0, c,
-							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()-(sy/2)),
+							tile.texture.x0(), tile.texture.y1()-(sy/2)),
 						video::S3DVertex(BS/2,-0.49*BS,0, 0,0,0, c,
-							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()-(sy/2)),
+							tile.texture.x1(), tile.texture.y1()-(sy/2)),
 						video::S3DVertex(BS/2,-0.49*BS,-BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
+							tile.texture.x1(), tile.texture.y0()),
 						video::S3DVertex(-BS/2,-0.49*BS,-BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
+							tile.texture.x0(), tile.texture.y0()),
 					};
 					for (u16 i=0; i<4; i++) {
-						vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+						vertices[i].Pos += intToFloat(p, BS);
 					}
 					u16 indices[] = {0,1,2,2,3,0};
 					// Add to mesh collector
-					collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
+					collector.append(tile.getMaterial(), vertices, 4, indices, 6);
 				}
 				if (x_plus_y) {
 					video::S3DVertex vertices[4] = {
 						video::S3DVertex(0.49*BS,-BS/2,-BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
+							tile.texture.x0(), tile.texture.y1()),
 						video::S3DVertex(0.49*BS,-BS/2,BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
+							tile.texture.x1(), tile.texture.y1()),
 						video::S3DVertex(0.49*BS,BS/2,BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
+							tile.texture.x1(), tile.texture.y0()),
 						video::S3DVertex(0.49*BS,BS/2,-BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
+							tile.texture.x0(), tile.texture.y0()),
 					};
 					for (u16 i=0; i<4; i++) {
-						vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+						vertices[i].Pos += intToFloat(p, BS);
 					}
 					u16 indices[] = {0,1,2,2,3,0};
 					// Add to mesh collector
-					collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
+					collector.append(tile.getMaterial(), vertices, 4, indices, 6);
 				}
 				if (x_minus_y) {
 					video::S3DVertex vertices[4] = {
 						video::S3DVertex(-0.49*BS,-BS/2,BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
+							tile.texture.x0(), tile.texture.y1()),
 						video::S3DVertex(-0.49*BS,-BS/2,-BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
+							tile.texture.x1(), tile.texture.y1()),
 						video::S3DVertex(-0.49*BS,BS/2,-BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
+							tile.texture.x1(), tile.texture.y0()),
 						video::S3DVertex(-0.49*BS,BS/2,BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
+							tile.texture.x0(), tile.texture.y0()),
 					};
 					for (u16 i=0; i<4; i++) {
-						vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+						vertices[i].Pos += intToFloat(p, BS);
 					}
 					u16 indices[] = {0,1,2,2,3,0};
 					// Add to mesh collector
-					collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
+					collector.append(tile.getMaterial(), vertices, 4, indices, 6);
 				}
 				if (z_plus_y) {
 					video::S3DVertex vertices[4] = {
 						video::S3DVertex(BS/2,-BS/2,0.49*BS, 0,0,0, c,
-							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
+							tile.texture.x0(), tile.texture.y1()),
 						video::S3DVertex(-BS/2,-BS/2,0.49*BS, 0,0,0, c,
-							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
+							tile.texture.x1(), tile.texture.y1()),
 						video::S3DVertex(-BS/2,BS/2,0.49*BS, 0,0,0, c,
-							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
+							tile.texture.x1(), tile.texture.y0()),
 						video::S3DVertex(BS/2,BS/2,0.49*BS, 0,0,0, c,
-							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
+							tile.texture.x0(), tile.texture.y0()),
 					};
 					for (u16 i=0; i<4; i++) {
-						vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+						vertices[i].Pos += intToFloat(p, BS);
 					}
 					u16 indices[] = {0,1,2,2,3,0};
 					// Add to mesh collector
-					collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
+					collector.append(tile.getMaterial(), vertices, 4, indices, 6);
 				}
 				if (z_minus_y) {
 					video::S3DVertex vertices[4] = {
 						video::S3DVertex(-BS/2,-BS/2,-0.49*BS, 0,0,0, c,
-							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
+							tile.texture.x0(), tile.texture.y1()),
 						video::S3DVertex(BS/2,-BS/2,-0.49*BS, 0,0,0, c,
-							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
+							tile.texture.x1(), tile.texture.y1()),
 						video::S3DVertex(BS/2,BS/2,-0.49*BS, 0,0,0, c,
-							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
+							tile.texture.x1(), tile.texture.y0()),
 						video::S3DVertex(-BS/2,BS/2,-0.49*BS, 0,0,0, c,
-							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
+							tile.texture.x0(), tile.texture.y0()),
 					};
 					for (u16 i=0; i<4; i++) {
-						vertices[i].Pos += intToFloat(p + blockpos_nodes, BS);
+						vertices[i].Pos += intToFloat(p, BS);
 					}
 					u16 indices[] = {0,1,2,2,3,0};
 					// Add to mesh collector
-					collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
+					collector.append(tile.getMaterial(), vertices, 4, indices, 6);
 				}
 			}
 		}
