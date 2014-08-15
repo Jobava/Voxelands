@@ -337,6 +337,22 @@ v3s16 facedir_rotate(u8 facedir, v3s16 dir)
 	return newdir;
 }
 
+v3s16 MapNode::getRotation(v3s16 dir)
+{
+	if (
+		content_features(*this).param2_type == CPT_FACEDIR_SIMPLE
+		|| content_features(*this).param2_type == CPT_FACEDIR_WALLMOUNT
+	) {
+		dir = facedir_rotate(param2&0x0F, dir);
+	}else if (
+		content_features(*this).param_type == CPT_FACEDIR_SIMPLE
+		|| content_features(*this).param_type == CPT_FACEDIR_WALLMOUNT
+	) {
+		dir = facedir_rotate(param1, dir);
+	}
+	return dir;
+}
+
 #ifndef SERVER
 TileSpec MapNode::getTileFrom(v3s16 dir, TileSpec raw_spec[6])
 {

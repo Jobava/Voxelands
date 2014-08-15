@@ -9021,7 +9021,7 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	content_nodebox_switch(f);
-	f->setInventoryTextureCube("circuit_switch.png","circuit_switch_front.png","circuit_switch.png");
+	f->setInventoryTextureNodeBox(i,"circuit_switch.png","circuit_switch_front.png","circuit_switch.png");
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new SwitchNodeMetadata();
 	{
@@ -9031,6 +9031,36 @@ void content_mapnode_init()
 			CONTENT_IGNORE, CONTENT_CRAFTITEM_QUARTZ_DUST, CONTENT_IGNORE
 		};
 		crafting::setRecipe(recipe,CONTENT_CIRCUIT_SWITCH,1);
+	}
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CIRCUIT_GATE;
+	f = &content_features(i);
+	f->description = std::string("Logic Gate");
+	f->setAllTextures("circuit_gate.png");
+	f->setTexture(0,"circuit_gate_top.png");
+	f->rotate_tile_with_nodebox = true;
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->energy_type = CET_GATE;
+	f->energy_drop = 0;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
+	content_nodebox_logicgate(f);
+	f->setInventoryTextureNodeBox(i,"circuit_gate_top.png","circuit_gate.png","circuit_gate.png");
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new LogicGateNodeMetadata();
+	{
+		u16 recipe[9] = {
+			CONTENT_IGNORE, CONTENT_CRAFTITEM_MESEDUST, CONTENT_IGNORE,
+			CONTENT_IGNORE, CONTENT_STONE, CONTENT_IGNORE,
+			CONTENT_IGNORE, CONTENT_IGNORE, CONTENT_IGNORE
+		};
+		crafting::setRecipe(recipe,CONTENT_CIRCUIT_GATE,1);
 	}
 	lists::add("craftguide",i);
 	lists::add("creative",i);

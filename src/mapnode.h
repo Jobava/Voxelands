@@ -143,7 +143,8 @@ enum ContentEnergyType {
 	CET_NONE,
 	CET_CONDUCTIVE,
 	CET_SOURCE,
-	CET_SWITCH
+	CET_SWITCH,
+	CET_GATE
 };
 
 struct MapNode;
@@ -859,6 +860,7 @@ struct MapNode
 		else
 			assert(0);
 	}
+	v3s16 getRotation(v3s16 dir = v3s16(1,1,1));
 
 	// In mapnode.cpp
 #ifndef SERVER

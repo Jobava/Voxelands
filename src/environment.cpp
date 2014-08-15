@@ -2921,10 +2921,16 @@ bool ServerEnvironment::propogateEnergy(u8 level, v3s16 powersrc, v3s16 signalsr
 		return false;
 	if ((f.energy_type == CET_SOURCE || f.energy_type == CET_SWITCH) && pos != powersrc)
 		return false;
+	if (f.energy_type == CET_GATE && pos == powersrc && level != ENERGY_MAX)
+		return false;
 	m = m_map->getNodeMetadata(pos);
 	if (!m)
 		return false;
 	if (!m->energise(level,powersrc,signalsrc,pos))
+		return false;
+	if (f.energy_type == CET_GATE)
+		level = ENERGY_MAX;
+	if (f.energy_type == CET_GATE && pos != powersrc)
 		return false;
 	if (level) {
 		if (f.powered_node != CONTENT_IGNORE) {
@@ -3061,45 +3067,76 @@ bool ServerEnvironment::propogateEnergy(u8 level, v3s16 powersrc, v3s16 signalsr
 	}else{
 		z_minus = true;
 	}
-	if (x_plus) {
-		if ((pos+v3s16(1,0,0)) != signalsrc)
-			propogateEnergy(level,powersrc,pos,pos+v3s16(1,0,0));
-	}else if (x_plus_y) {
-		if ((pos+v3s16(1,1,0)) != signalsrc)
-			propogateEnergy(level,powersrc,pos,pos+v3s16(1,1,0));
-	}else if (x_plus_y_minus) {
-		if ((pos+v3s16(1,-1,0)) != signalsrc)
-			propogateEnergy(level,powersrc,pos,pos+v3s16(1,-1,0));
+
+	bool gate_x_plus = true;
+	bool gate_x_minus = true;
+	bool gate_z_plus = true;
+	bool gate_z_minus = true;
+	if (f.energy_type == CET_GATE) {
+		gate_x_plus = false;
+		gate_x_minus = false;
+		gate_z_plus = false;
+		gate_z_minus = false;
+		powersrc = pos;
+		v3s16 dir = n.getRotation();
+		if (dir == v3s16(1,1,1)) {
+			gate_z_plus = true;
+		}else if (dir == v3s16(-1,1,1)) {
+			gate_x_plus = true;
+		}else if (dir == v3s16(-1,1,-1)) {
+			gate_z_minus = true;
+		}else if (dir == v3s16(1,1,-1)) {
+			gate_x_minus = true;
+		}
 	}
-	if (x_minus) {
-		if ((pos+v3s16(-1,0,0)) != signalsrc)
-			propogateEnergy(level,powersrc,pos,pos+v3s16(-1,0,0));
-	}else if (x_minus_y) {
-		if ((pos+v3s16(-1,1,0)) != signalsrc)
-			propogateEnergy(level,powersrc,pos,pos+v3s16(-1,1,0));
-	}else if (x_minus_y_minus) {
-		if ((pos+v3s16(-1,-1,0)) != signalsrc)
-			propogateEnergy(level,powersrc,pos,pos+v3s16(-1,-1,0));
+
+	if (gate_x_plus) {
+		if (x_plus) {
+			if ((pos+v3s16(1,0,0)) != signalsrc)
+				propogateEnergy(level,powersrc,pos,pos+v3s16(1,0,0));
+		}else if (x_plus_y) {
+			if ((pos+v3s16(1,1,0)) != signalsrc)
+				propogateEnergy(level,powersrc,pos,pos+v3s16(1,1,0));
+		}else if (x_plus_y_minus) {
+			if ((pos+v3s16(1,-1,0)) != signalsrc)
+				propogateEnergy(level,powersrc,pos,pos+v3s16(1,-1,0));
+		}
 	}
-	if (z_plus) {
-		if ((pos+v3s16(0,0,1)) != signalsrc)
-			propogateEnergy(level,powersrc,pos,pos+v3s16(0,0,1));
-	}else if (z_plus_y) {
-		if ((pos+v3s16(0,1,1)) != signalsrc)
-			propogateEnergy(level,powersrc,pos,pos+v3s16(0,1,1));
-	}else if (z_plus_y_minus) {
-		if ((pos+v3s16(0,-1,1)) != signalsrc)
-			propogateEnergy(level,powersrc,pos,pos+v3s16(0,-1,1));
+	if (gate_x_minus) {
+		if (x_minus) {
+			if ((pos+v3s16(-1,0,0)) != signalsrc)
+				propogateEnergy(level,powersrc,pos,pos+v3s16(-1,0,0));
+		}else if (x_minus_y) {
+			if ((pos+v3s16(-1,1,0)) != signalsrc)
+				propogateEnergy(level,powersrc,pos,pos+v3s16(-1,1,0));
+		}else if (x_minus_y_minus) {
+			if ((pos+v3s16(-1,-1,0)) != signalsrc)
+				propogateEnergy(level,powersrc,pos,pos+v3s16(-1,-1,0));
+		}
 	}
-	if (z_minus) {
-		if ((pos+v3s16(0,0,-1)) != signalsrc)
-			propogateEnergy(level,powersrc,pos,pos+v3s16(0,0,-1));
-	}else if (z_minus_y) {
-		if ((pos+v3s16(0,1,-1)) != signalsrc)
-			propogateEnergy(level,powersrc,pos,pos+v3s16(0,1,-1));
-	}else if (z_minus_y_minus) {
-		if ((pos+v3s16(0,-1,-1)) != signalsrc)
-			propogateEnergy(level,powersrc,pos,pos+v3s16(0,-1,-1));
+	if (gate_z_plus) {
+		if (z_plus) {
+			if ((pos+v3s16(0,0,1)) != signalsrc)
+				propogateEnergy(level,powersrc,pos,pos+v3s16(0,0,1));
+		}else if (z_plus_y) {
+			if ((pos+v3s16(0,1,1)) != signalsrc)
+				propogateEnergy(level,powersrc,pos,pos+v3s16(0,1,1));
+		}else if (z_plus_y_minus) {
+			if ((pos+v3s16(0,-1,1)) != signalsrc)
+				propogateEnergy(level,powersrc,pos,pos+v3s16(0,-1,1));
+		}
+	}
+	if (gate_z_minus) {
+		if (z_minus) {
+			if ((pos+v3s16(0,0,-1)) != signalsrc)
+				propogateEnergy(level,powersrc,pos,pos+v3s16(0,0,-1));
+		}else if (z_minus_y) {
+			if ((pos+v3s16(0,1,-1)) != signalsrc)
+				propogateEnergy(level,powersrc,pos,pos+v3s16(0,1,-1));
+		}else if (z_minus_y_minus) {
+			if ((pos+v3s16(0,-1,-1)) != signalsrc)
+				propogateEnergy(level,powersrc,pos,pos+v3s16(0,-1,-1));
+		}
 	}
 	return false;
 }
