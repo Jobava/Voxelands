@@ -2150,6 +2150,72 @@ bool SwitchNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s
 }
 
 /*
+	ButtonNodeMetadata
+*/
+
+// Prototype
+ButtonNodeMetadata proto_ButtonNodeMetadata;
+
+ButtonNodeMetadata::ButtonNodeMetadata()
+{
+	m_energy = 0;
+	m_ptime = 0;
+	m_sources.clear();
+	NodeMetadata::registerType(typeId(), create);
+}
+u16 ButtonNodeMetadata::typeId() const
+{
+	return CONTENT_CIRCUIT_BUTTON;
+}
+NodeMetadata* ButtonNodeMetadata::create(std::istream &is)
+{
+	ButtonNodeMetadata *d = new ButtonNodeMetadata();
+	int temp;
+	is>>temp;
+	d->m_energy = temp;
+	is>>temp;
+	d->m_ptime = (float)temp/10;
+	int i;
+	is>>i;
+	v3s16 p;
+	for (; i > 0; i--) {
+		is>>temp;
+		p.X = temp;
+		is>>temp;
+		p.Y = temp;
+		is>>temp;
+		p.Z = temp;
+		is>>temp;
+		d->m_sources[p] = temp;
+	}
+	return d;
+}
+NodeMetadata* ButtonNodeMetadata::clone()
+{
+	ButtonNodeMetadata *d = new ButtonNodeMetadata();
+	return d;
+}
+bool ButtonNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
+{
+	if (!m_energy)
+		return false;
+
+	env->propogateEnergy(ENERGY_MAX,pos,pos,pos);
+	m_energy = 0;
+	return true;
+}
+bool ButtonNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
+{
+	m_ptime = 0;
+	if (m_energy == level)
+		return true;
+	if (powersrc != pos)
+		return false;
+	m_energy = level;
+	return true;
+}
+
+/*
 	SourceNodeMetadata
 */
 

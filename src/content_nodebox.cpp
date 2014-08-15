@@ -1233,6 +1233,13 @@ void content_nodebox_switch(ContentFeatures *f)
 	));
 }
 
+void content_nodebox_button(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.1875*BS,-0.0625*BS,0.375*BS,0.1875*BS,0.125*BS,0.5*BS
+	));
+}
+
 void content_nodebox_logicgate(ContentFeatures *f)
 {
 	f->setNodeBox(core::aabbox3d<f32>(

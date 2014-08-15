@@ -362,7 +362,7 @@ void content_craftitem_init()
 	f->texture = "quartz_dust.png";
 	f->name = "quartz_dust";
 	f->description = "Quartz Dust";
-	crafting::set1To1Recipe(CONTENT_CRAFTITEM_QUARTZ,CONTENT_CRAFTITEM_QUARTZ_DUST);
+	crafting::set1To2Recipe(CONTENT_CRAFTITEM_QUARTZ,CONTENT_CRAFTITEM_QUARTZ_DUST);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -670,4 +670,12 @@ void content_craftitem_init()
 	f->description = "Mese Dust";
 	f->drop_count = 1;
 	crafting::set1To2Recipe(CONTENT_MESE,CONTENT_CRAFTITEM_MESEDUST);
+
+	i = CONTENT_CRAFTITEM_RESIN;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_RESIN;
+	f->texture = "resin.png";
+	f->name = "lump_of_resin";
+	f->description = "Resin";
+	f->drop_count = 1;
 }

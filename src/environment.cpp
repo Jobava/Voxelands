@@ -806,6 +806,17 @@ void ServerEnvironment::step(float dtime)
 					if (n.getContent() == CONTENT_GRASS) {
 						n.setContent(CONTENT_GRASS_FOOTSTEPS);
 						m_map->setNode(bottompos, n);
+					}else{
+						bottompos.Y += 1;
+						MapNode n = m_map->getNode(bottompos);
+						if (
+							n.getContent() == CONTENT_CIRCUIT_PRESSUREPLATE_STONE
+							|| n.getContent() == CONTENT_CIRCUIT_PRESSUREPLATE_WOOD
+						) {
+							NodeMetadata *meta = m_map->getNodeMetadata(bottompos);
+							if (meta && !meta->getEnergy())
+								meta->energise(ENERGY_MAX,bottompos,bottompos,bottompos);
+						}
 					}
 				}catch (InvalidPositionException &e) {}
 			}
@@ -2917,41 +2928,41 @@ bool ServerEnvironment::propogateEnergy(u8 level, v3s16 powersrc, v3s16 signalsr
 	if (n.getContent() == CONTENT_IGNORE)
 		return false;
 	ContentFeatures &f = content_features(n);
-	if (f.energy_type == CET_NONE)
-		return false;
-	if ((f.energy_type == CET_SOURCE || f.energy_type == CET_SWITCH) && pos != powersrc)
-		return false;
-	if (f.energy_type == CET_GATE && pos == powersrc && level != ENERGY_MAX)
-		return false;
-	m = m_map->getNodeMetadata(pos);
-	if (!m)
-		return false;
-	{
-		MapNode n = m_map->getNodeNoEx(pos);
-		content_t c = n.getContent();
-		if (c >= CONTENT_DOOR_MIN && c <= CONTENT_DOOR_MAX) {
-			v3s16 mp(0,1,0);
-			if ((c&CONTENT_DOOR_SECT_MASK) == CONTENT_DOOR_SECT_MASK)
-				mp.Y = -1;
+	if (f.energy_type == CET_NONE) {
+		if (powersrc != signalsrc || n.getContent() != CONTENT_STONE)
+			return false;
+	}else{
+		if ((f.energy_type == CET_SOURCE || f.energy_type == CET_SWITCH) && pos != powersrc)
+			return false;
+		if (f.energy_type == CET_GATE && pos == powersrc && level != ENERGY_MAX)
+			return false;
+		m = m_map->getNodeMetadata(pos);
+		if (!m)
+			return false;
+		{
+			MapNode n = m_map->getNodeNoEx(pos);
+			content_t c = n.getContent();
+			if (c >= CONTENT_DOOR_MIN && c <= CONTENT_DOOR_MAX) {
+				v3s16 mp(0,1,0);
+				if ((c&CONTENT_DOOR_SECT_MASK) == CONTENT_DOOR_SECT_MASK)
+					mp.Y = -1;
 
-			if (signalsrc != pos+mp)
-				propogateEnergy(level,powersrc,pos,pos+mp);
+				if (signalsrc != pos+mp)
+					propogateEnergy(level,powersrc,pos,pos+mp);
+			}
 		}
+		if (!m->energise(level,powersrc,signalsrc,pos))
+			return false;
+		if (f.energy_type == CET_GATE)
+			level = ENERGY_MAX;
+		if (f.energy_type == CET_GATE && pos != powersrc)
+			return false;
 	}
-	if (!m->energise(level,powersrc,signalsrc,pos))
-		return false;
-	if (f.energy_type == CET_GATE)
-		level = ENERGY_MAX;
-	if (f.energy_type == CET_GATE && pos != powersrc)
-		return false;
 	if (level) {
 		if (f.powered_node != CONTENT_IGNORE) {
 			n.setContent(f.powered_node);
 			m_map->addNodeWithEvent(pos, n);
 		}
-	}else if (f.unpowered_node != CONTENT_IGNORE) {
-		n.setContent(f.unpowered_node);
-		m_map->addNodeWithEvent(pos, n);
 	}
 
 	if (f.energy_type != CET_SOURCE && f.energy_type != CET_SWITCH)
@@ -3112,6 +3123,13 @@ bool ServerEnvironment::propogateEnergy(u8 level, v3s16 powersrc, v3s16 signalsr
 		}else if (x_plus_y_minus) {
 			if ((pos+v3s16(1,-1,0)) != signalsrc)
 				propogateEnergy(level,powersrc,pos,pos+v3s16(1,-1,0));
+		}else if (powersrc == pos) {
+			if ((pos+v3s16(1,0,0)) != signalsrc && n_plus_x.getContent() == CONTENT_STONE)
+				propogateEnergy(level,powersrc,pos,pos+v3s16(1,0,0));
+			if ((pos+v3s16(1,1,0)) != signalsrc && n_plus_xy.getContent() == CONTENT_STONE)
+				propogateEnergy(level,powersrc,pos,pos+v3s16(1,1,0));
+			if ((pos+v3s16(1,-1,0)) != signalsrc && n_plus_x_y.getContent() == CONTENT_STONE)
+				propogateEnergy(level,powersrc,pos,pos+v3s16(1,-1,0));
 		}
 	}
 	if (gate_x_minus) {
@@ -3123,6 +3141,13 @@ bool ServerEnvironment::propogateEnergy(u8 level, v3s16 powersrc, v3s16 signalsr
 				propogateEnergy(level,powersrc,pos,pos+v3s16(-1,1,0));
 		}else if (x_minus_y_minus) {
 			if ((pos+v3s16(-1,-1,0)) != signalsrc)
+				propogateEnergy(level,powersrc,pos,pos+v3s16(-1,-1,0));
+		}else if (powersrc == pos) {
+			if ((pos+v3s16(-1,0,0)) != signalsrc && n_minus_x.getContent() == CONTENT_STONE)
+				propogateEnergy(level,powersrc,pos,pos+v3s16(-1,0,0));
+			if ((pos+v3s16(-1,1,0)) != signalsrc && n_minus_xy.getContent() == CONTENT_STONE)
+				propogateEnergy(level,powersrc,pos,pos+v3s16(-1,1,0));
+			if ((pos+v3s16(-1,-1,0)) != signalsrc && n_minus_x_y.getContent() == CONTENT_STONE)
 				propogateEnergy(level,powersrc,pos,pos+v3s16(-1,-1,0));
 		}
 	}
@@ -3136,6 +3161,13 @@ bool ServerEnvironment::propogateEnergy(u8 level, v3s16 powersrc, v3s16 signalsr
 		}else if (z_plus_y_minus) {
 			if ((pos+v3s16(0,-1,1)) != signalsrc)
 				propogateEnergy(level,powersrc,pos,pos+v3s16(0,-1,1));
+		}else if (powersrc == pos) {
+			if ((pos+v3s16(0,0,1)) != signalsrc && n_plus_z.getContent() == CONTENT_STONE)
+				propogateEnergy(level,powersrc,pos,pos+v3s16(0,0,1));
+			if ((pos+v3s16(0,1,1)) != signalsrc && n_plus_zy.getContent() == CONTENT_STONE)
+				propogateEnergy(level,powersrc,pos,pos+v3s16(0,1,1));
+			if ((pos+v3s16(0,-1,1)) != signalsrc && n_plus_z_y.getContent() == CONTENT_STONE)
+				propogateEnergy(level,powersrc,pos,pos+v3s16(0,-1,1));
 		}
 	}
 	if (gate_z_minus) {
@@ -3147,6 +3179,13 @@ bool ServerEnvironment::propogateEnergy(u8 level, v3s16 powersrc, v3s16 signalsr
 				propogateEnergy(level,powersrc,pos,pos+v3s16(0,1,-1));
 		}else if (z_minus_y_minus) {
 			if ((pos+v3s16(0,-1,-1)) != signalsrc)
+				propogateEnergy(level,powersrc,pos,pos+v3s16(0,-1,-1));
+		}else if (powersrc == pos) {
+			if ((pos+v3s16(0,0,-1)) != signalsrc && n_minus_z.getContent() == CONTENT_STONE)
+				propogateEnergy(level,powersrc,pos,pos+v3s16(0,0,-1));
+			if ((pos+v3s16(0,1,-1)) != signalsrc && n_minus_zy.getContent() == CONTENT_STONE)
+				propogateEnergy(level,powersrc,pos,pos+v3s16(0,1,-1));
+			if ((pos+v3s16(0,-1,-1)) != signalsrc && n_minus_z_y.getContent() == CONTENT_STONE)
 				propogateEnergy(level,powersrc,pos,pos+v3s16(0,-1,-1));
 		}
 	}

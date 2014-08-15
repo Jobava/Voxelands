@@ -488,6 +488,17 @@ public:
 	virtual NodeMetadata* clone();
 };
 
+class ButtonNodeMetadata : public CircuitNodeMetadata
+{
+public:
+	ButtonNodeMetadata();
+	virtual u16 typeId() const;
+	static NodeMetadata* create(std::istream &is);
+	virtual NodeMetadata* clone();
+	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
+	virtual bool energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos);
+};
+
 class NotGateNodeMetadata : public CircuitNodeMetadata
 {
 public:

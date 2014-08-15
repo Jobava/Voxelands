@@ -795,12 +795,14 @@ void content_mapnode_init()
 	}
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/16;
+	f->cook_result = std::string("CraftItem lump_of_resin 1");
 	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAPLING)+" 1";
 	f->extra_dug_item_rarity = 20;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
 	lists::add("decrafting",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_APPLE_LEAVES;
 	f = &content_features(i);
@@ -823,12 +825,14 @@ void content_mapnode_init()
 	}
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/16;
+	f->cook_result = std::string("CraftItem lump_of_resin 1");
 	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_APPLE_SAPLING)+" 1";
 	f->extra_dug_item_rarity = 20;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
 	lists::add("decrafting",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_JUNGLELEAVES;
 	f = &content_features(i);
@@ -851,12 +855,14 @@ void content_mapnode_init()
 	}
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/16;
+	f->cook_result = std::string("CraftItem lump_of_resin 1");
 	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_JUNGLESAPLING)+" 1";
 	f->extra_dug_item_rarity = 20;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
 	lists::add("decrafting",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_CONIFER_LEAVES;
 	f = &content_features(i);
@@ -879,12 +885,14 @@ void content_mapnode_init()
 	}
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/16;
+	f->cook_result = std::string("CraftItem lump_of_resin 1");
 	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CONIFER_SAPLING)+" 1";
 	f->extra_dug_item_rarity = 20;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
 	lists::add("decrafting",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_TRIMMED_LEAVES;
 	f = &content_features(i);
@@ -906,10 +914,12 @@ void content_mapnode_init()
 	}
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/16;
+	f->cook_result = std::string("CraftItem lump_of_resin 1");
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
 	lists::add("creative",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_TRIMMED_APPLE_LEAVES;
 	f = &content_features(i);
@@ -931,10 +941,12 @@ void content_mapnode_init()
 	}
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/16;
+	f->cook_result = std::string("CraftItem lump_of_resin 1");
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
 	lists::add("creative",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_TRIMMED_JUNGLE_LEAVES;
 	f = &content_features(i);
@@ -956,10 +968,12 @@ void content_mapnode_init()
 	}
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/16;
+	f->cook_result = std::string("CraftItem lump_of_resin 1");
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
 	lists::add("creative",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_TRIMMED_CONIFER_LEAVES;
 	f = &content_features(i);
@@ -981,10 +995,12 @@ void content_mapnode_init()
 	}
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/16;
+	f->cook_result = std::string("CraftItem lump_of_resin 1");
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
 	lists::add("creative",i);
+	lists::add("cooking",i);
 
 	i = CONTENT_APPLE_BLOSSOM;
 	f = &content_features(i);
@@ -9049,6 +9065,36 @@ void content_mapnode_init()
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new CircuitNodeMetadata();
 	lists::add("creative",i);
+	lists::add("decrafting",i);
+
+	i = CONTENT_CIRCUIT_COPPERWIRE;
+	f = &content_features(i);
+	f->description = std::string("Copper Wire");
+	f->setAllTextures("copper_wire.png");
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_WIRELIKE;
+	f->energy_type = CET_CONDUCTIVE;
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->air_equivalent = true; // grass grows underneath
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ") + itos(i)+" 1";
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	content_nodebox_carpet(f);
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new CircuitNodeMetadata();
+	{
+		u16 r[9] = {
+			CONTENT_CRAFTITEM_RESIN,	CONTENT_CRAFTITEM_COPPER_INGOT,	CONTENT_IGNORE,
+			CONTENT_IGNORE,			CONTENT_IGNORE,			CONTENT_IGNORE,
+			CONTENT_IGNORE,			CONTENT_IGNORE,			CONTENT_IGNORE
+		};
+		crafting::setShapelessRecipe(r,CONTENT_CIRCUIT_COPPERWIRE,10);
+	}
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_CIRCUIT_BATTERY;
 	f = &content_features(i);
@@ -9075,7 +9121,7 @@ void content_mapnode_init()
 	i = CONTENT_CIRCUIT_SWITCH;
 	f = &content_features(i);
 	f->description = std::string("Switch");
-	f->setAllTextures("circuit_switch.png");
+	f->setAllTextures("stone.png");
 	f->setTexture(5,"circuit_switch_front.png");
 	f->param_type = CPT_FACEDIR_WALLMOUNT;
 	f->draw_type = CDT_NODEBOX;
@@ -9087,7 +9133,7 @@ void content_mapnode_init()
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	content_nodebox_switch(f);
-	f->setInventoryTextureNodeBox(i,"circuit_switch.png","circuit_switch_front.png","circuit_switch.png");
+	f->setInventoryTextureNodeBox(i,"stone.png","circuit_switch_front.png","stone.png");
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new SwitchNodeMetadata();
 	{
@@ -9097,6 +9143,90 @@ void content_mapnode_init()
 			CONTENT_IGNORE, CONTENT_CRAFTITEM_QUARTZ_DUST, CONTENT_IGNORE
 		};
 		crafting::setRecipe(recipe,CONTENT_CIRCUIT_SWITCH,1);
+	}
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CIRCUIT_BUTTON;
+	f = &content_features(i);
+	f->description = std::string("Button");
+	f->setAllTextures("stone.png");
+	f->param_type = CPT_FACEDIR_WALLMOUNT;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->energy_type = CET_SWITCH;
+	f->energy_drop = 0;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
+	content_nodebox_button(f);
+	f->setInventoryTextureNodeBox(i,"stone.png","stone.png","stone.png");
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new ButtonNodeMetadata();
+	{
+		u16 recipe[9] = {
+			CONTENT_IGNORE, CONTENT_CRAFTITEM_MESEDUST, CONTENT_IGNORE,
+			CONTENT_IGNORE, CONTENT_STONE_KNOB, CONTENT_IGNORE,
+			CONTENT_IGNORE, CONTENT_CRAFTITEM_QUARTZ_DUST, CONTENT_IGNORE
+		};
+		crafting::setRecipe(recipe,CONTENT_CIRCUIT_BUTTON,1);
+	}
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CIRCUIT_PRESSUREPLATE_STONE;
+	f = &content_features(i);
+	f->description = std::string("Stone Pressure Plate");
+	f->setAllTextures("stone.png");
+	f->setTexture(0,"pressureplate_stone_top.png");
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->energy_type = CET_SWITCH;
+	f->energy_drop = 0;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
+	content_nodebox_carpet(f);
+	f->setInventoryTextureNodeBox(i,"pressureplate_stone_top.png","stone.png","stone.png");
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new ButtonNodeMetadata();
+	{
+		u16 recipe[9] = {
+			CONTENT_IGNORE, CONTENT_CRAFTITEM_MESEDUST, CONTENT_IGNORE,
+			CONTENT_IGNORE, CONTENT_STONE_SLAB, CONTENT_IGNORE,
+			CONTENT_IGNORE, CONTENT_CRAFTITEM_QUARTZ_DUST, CONTENT_IGNORE
+		};
+		crafting::setRecipe(recipe,CONTENT_CIRCUIT_PRESSUREPLATE_STONE,1);
+	}
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CIRCUIT_PRESSUREPLATE_WOOD;
+	f = &content_features(i);
+	f->description = std::string("Wood Pressure Plate");
+	f->setAllTextures("stone.png");
+	f->setTexture(0,"pressureplate_wood_top.png");
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->energy_type = CET_SWITCH;
+	f->energy_drop = 0;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->type = CMT_WOOD;
+	f->hardness = 1.0;
+	content_nodebox_carpet(f);
+	f->setInventoryTextureNodeBox(i,"pressureplate_wood_top.png","stone.png","stone.png");
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new ButtonNodeMetadata();
+	{
+		u16 recipe[9] = {
+			CONTENT_IGNORE, CONTENT_CRAFTITEM_MESEDUST, CONTENT_IGNORE,
+			CONTENT_IGNORE, CONTENT_WOOD_SLAB, CONTENT_IGNORE,
+			CONTENT_IGNORE, CONTENT_CRAFTITEM_QUARTZ_DUST, CONTENT_IGNORE
+		};
+		crafting::setRecipe(recipe,CONTENT_CIRCUIT_PRESSUREPLATE_WOOD,1);
 	}
 	lists::add("craftguide",i);
 	lists::add("creative",i);
