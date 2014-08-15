@@ -2455,6 +2455,18 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						}
 						sendAddNode(p_under+mp, m, 0, &far_players, 30);
 						sendAddNode(p_under, n, 0, &far_players, 30);
+						if ((n.getContent()&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
+							{
+								NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
+								if (meta && !meta->getEnergy())
+									meta->energise(ENERGY_MAX,p_under,p_under,p_under);
+							}
+							{
+								NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under+mp);
+								if (meta && !meta->getEnergy())
+									meta->energise(ENERGY_MAX,p_under+mp,p_under+mp,p_under+mp);
+							}
+						}
 					}
 				}else{
 					if ((n.getContent()&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
@@ -2463,6 +2475,11 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						n.setContent(n.getContent()|CONTENT_DOOR_OPEN_MASK);
 					}
 					sendAddNode(p_under, n, 0, &far_players, 30);
+					if ((n.getContent()&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
+						NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
+						if (meta && !meta->getEnergy())
+							meta->energise(ENERGY_MAX,p_under,p_under,p_under);
+					}
 				}
 
 				/*

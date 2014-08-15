@@ -541,7 +541,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_CIRCUIT_SOLARPANEL 0xF21
 #define CONTENT_CIRCUIT_WATERWHEEL 0xF22
 #define CONTENT_CIRCUIT_SWITCH 0xF23
-#define CONTENT_CIRCUIT_GATE 0xF24
+#define CONTENT_CIRCUIT_NOTGATE 0xF24
 // circuits - gadgets
 #define CONTENT_CIRCUIT_LAMP 0xF40
 #define CONTENT_CIRCUIT_LAMP_OFF 0xF41

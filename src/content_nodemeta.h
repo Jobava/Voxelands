@@ -488,15 +488,29 @@ public:
 	virtual NodeMetadata* clone();
 };
 
-class LogicGateNodeMetadata : public CircuitNodeMetadata
+class NotGateNodeMetadata : public CircuitNodeMetadata
 {
 public:
-	LogicGateNodeMetadata();
+	NotGateNodeMetadata();
 	virtual u16 typeId() const;
 	static NodeMetadata* create(std::istream &is);
 	virtual NodeMetadata* clone();
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos);
+};
+
+class DoorNodeMetadata : public CircuitNodeMetadata
+{
+public:
+	DoorNodeMetadata();
+	virtual u16 typeId() const;
+	static NodeMetadata* create(std::istream &is);
+	virtual NodeMetadata* clone();
+	virtual void serializeBody(std::ostream &os);
+	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
+	virtual bool energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos);
+private:
+	f32 m_otime;
 };
 
 #endif

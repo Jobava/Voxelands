@@ -2053,7 +2053,6 @@ bool CircuitNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 	if (!m_energy || m_ptime < 1.1)
 		return false;
 	m_energy = 0;
-	m_sources.clear();
 	MapNode n = env->getMap().getNodeNoEx(pos);
 	if (content_features(n).unpowered_node != CONTENT_IGNORE) {
 		n.setContent(content_features(n).unpowered_node);
@@ -2064,6 +2063,8 @@ bool CircuitNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 bool CircuitNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
 {
 	m_ptime = 0;
+	if (!m_energy)
+		m_sources.clear();
 	if (m_sources[powersrc] == level)
 		return true;
 	if (level && m_sources[powersrc] > level)
@@ -2196,26 +2197,26 @@ NodeMetadata* SourceNodeMetadata::clone()
 }
 
 /*
-	LogicGateNodeMetadata
+	NotGateNodeMetadata
 */
 
 // Prototype
-LogicGateNodeMetadata proto_LogicGateNodeMetadata;
+NotGateNodeMetadata proto_NotGateNodeMetadata;
 
-LogicGateNodeMetadata::LogicGateNodeMetadata()
+NotGateNodeMetadata::NotGateNodeMetadata()
 {
 	m_energy = 0;
 	m_ptime = 0;
 	m_sources.clear();
 	NodeMetadata::registerType(typeId(), create);
 }
-u16 LogicGateNodeMetadata::typeId() const
+u16 NotGateNodeMetadata::typeId() const
 {
-	return CONTENT_CIRCUIT_GATE;
+	return CONTENT_CIRCUIT_NOTGATE;
 }
-NodeMetadata* LogicGateNodeMetadata::create(std::istream &is)
+NodeMetadata* NotGateNodeMetadata::create(std::istream &is)
 {
-	LogicGateNodeMetadata *d = new LogicGateNodeMetadata();
+	NotGateNodeMetadata *d = new NotGateNodeMetadata();
 	int temp;
 	is>>temp;
 	d->m_energy = temp;
@@ -2236,12 +2237,12 @@ NodeMetadata* LogicGateNodeMetadata::create(std::istream &is)
 	}
 	return d;
 }
-NodeMetadata* LogicGateNodeMetadata::clone()
+NodeMetadata* NotGateNodeMetadata::clone()
 {
-	LogicGateNodeMetadata *d = new LogicGateNodeMetadata();
+	NotGateNodeMetadata *d = new NotGateNodeMetadata();
 	return d;
 }
-bool LogicGateNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
+bool NotGateNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 {
 	m_ptime += dtime;
 	if (m_ptime < 1.1)
@@ -2252,13 +2253,139 @@ bool LogicGateNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 	env->propogateEnergy(ENERGY_MAX,pos,pos,pos);
 	return true;
 }
-bool LogicGateNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
+bool NotGateNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
 {
 	if (powersrc == pos)
 		return true;
 	m_ptime = 0;
 	if (level && m_sources[powersrc] > level)
 		return false;
+	if (!level || m_energy < level) {
+		m_energy = level;
+		if (!level) {
+			m_sources.erase(powersrc);
+			for (std::map<v3s16,u8>::iterator i = m_sources.begin(); i != m_sources.end(); i++) {
+				u8 v = i->second;
+				if (v > m_energy)
+					m_energy = v;
+			}
+		}
+	}
+	return true;
+}
+
+
+/*
+	DoorNodeMetadata
+*/
+
+// Prototype
+DoorNodeMetadata proto_DoorNodeMetadata;
+
+DoorNodeMetadata::DoorNodeMetadata():
+	m_otime(0)
+{
+	m_energy = 0;
+	m_ptime = 0;
+	m_sources.clear();
+	NodeMetadata::registerType(typeId(), create);
+}
+u16 DoorNodeMetadata::typeId() const
+{
+	return CONTENT_STEEL_DOOR_LB;
+}
+NodeMetadata* DoorNodeMetadata::create(std::istream &is)
+{
+	DoorNodeMetadata *d = new DoorNodeMetadata();
+	int temp;
+	is>>temp;
+	d->m_energy = temp;
+	is>>temp;
+	d->m_ptime = (float)temp/10;
+	is>>temp;
+	d->m_otime = (float)temp/10;
+	int i;
+	is>>i;
+	v3s16 p;
+	for (; i > 0; i--) {
+		is>>temp;
+		p.X = temp;
+		is>>temp;
+		p.Y = temp;
+		is>>temp;
+		p.Z = temp;
+		is>>temp;
+		d->m_sources[p] = temp;
+	}
+	return d;
+}
+NodeMetadata* DoorNodeMetadata::clone()
+{
+	DoorNodeMetadata *d = new DoorNodeMetadata();
+	return d;
+}
+void DoorNodeMetadata::serializeBody(std::ostream &os)
+{
+	os<<itos(m_energy) << " ";
+	os<<itos(m_ptime*10)<<" ";
+	os<<itos(m_otime*10)<<" ";
+	os<<itos(m_sources.size()) << " ";
+	for (std::map<v3s16,u8>::iterator i = m_sources.begin(); i != m_sources.end(); i++) {
+		os<<itos(i->first.X) << " ";
+		os<<itos(i->first.Y) << " ";
+		os<<itos(i->first.Z) << " ";
+		os<<itos(i->second) << " ";
+	}
+}
+bool DoorNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
+{
+	if (m_ptime == 0.0 && m_otime == 0.0 && m_energy == 0) {
+		MapNode n = env->getMap().getNodeNoEx(pos);
+		if ((n.getContent()&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK)
+			m_otime = 5.0;
+	}
+	m_ptime += dtime;
+	if (!m_energy) {
+		if (m_otime <= 0.0) {
+			MapNode n = env->getMap().getNodeNoEx(pos);
+			content_t c = n.getContent();
+			if ((c&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
+				n.setContent(n.getContent()&~CONTENT_DOOR_OPEN_MASK);
+				env->getMap().addNodeWithEvent(pos,n);
+				return true;
+			}
+			return false;
+		}
+		m_otime -= dtime;
+		return false;
+	}else{
+		MapNode n = env->getMap().getNodeNoEx(pos);
+		content_t c = n.getContent();
+		if ((c&CONTENT_DOOR_OPEN_MASK) != CONTENT_DOOR_OPEN_MASK) {
+			n.setContent(n.getContent()|CONTENT_DOOR_OPEN_MASK);
+			env->getMap().addNodeWithEvent(pos,n);
+		}
+	}
+	if (m_ptime < 1.1)
+		return false;
+	m_energy = 0;
+	m_otime = 5.0;
+	return true;
+}
+bool DoorNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
+{
+	m_ptime = 0;
+	if (!m_energy)
+		m_sources.clear();
+	if (powersrc == pos) {
+		m_otime = 5.0;
+		return true;
+	}
+	if (m_sources[powersrc] == level)
+		return true;
+	if (level && m_sources[powersrc] > level)
+		return false;
+	m_sources[powersrc] = level;
 	if (!level || m_energy < level) {
 		m_energy = level;
 		if (!level) {

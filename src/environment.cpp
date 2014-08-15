@@ -2778,44 +2778,44 @@ void ServerEnvironment::step(float dtime)
 
 					break;
 				}
-				case CONTENT_STEEL_DOOR_LB_OPEN:
-				case CONTENT_STEEL_W_DOOR_LB_OPEN:
-				case CONTENT_STEEL_DOOR_RB_OPEN:
-				case CONTENT_STEEL_W_DOOR_RB_OPEN:
-				case CONTENT_STEEL_HATCH_OPEN:
-				case CONTENT_STEEL_W_HATCH_OPEN:
-				case CONTENT_STEEL_GATE_OPEN:
-				{
-					v3s16 mp(0,1,0);
-					if ((n.getContent()&CONTENT_DOOR_SECT_MASK) == CONTENT_DOOR_SECT_MASK)
-						mp.Y = -1;
+				//case CONTENT_STEEL_DOOR_LB_OPEN:
+				//case CONTENT_STEEL_W_DOOR_LB_OPEN:
+				//case CONTENT_STEEL_DOOR_RB_OPEN:
+				//case CONTENT_STEEL_W_DOOR_RB_OPEN:
+				//case CONTENT_STEEL_HATCH_OPEN:
+				//case CONTENT_STEEL_W_HATCH_OPEN:
+				//case CONTENT_STEEL_GATE_OPEN:
+				//{
+					//v3s16 mp(0,1,0);
+					//if ((n.getContent()&CONTENT_DOOR_SECT_MASK) == CONTENT_DOOR_SECT_MASK)
+						//mp.Y = -1;
 
-					MapNode m = m_map->getNodeNoEx(p+mp);
-					if ((n.getContent()&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK) {
-						if (m.getContent() < CONTENT_DOOR_MIN || m.getContent() > CONTENT_DOOR_MAX) {
-							m_map->removeNodeWithEvent(p);
-							break;
-						}else{
-							if ((n.getContent()&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
-								n.setContent(n.getContent()&~CONTENT_DOOR_OPEN_MASK);
-								m.setContent(m.getContent()&~CONTENT_DOOR_OPEN_MASK);
-							}else{
-								n.setContent(n.getContent()|CONTENT_DOOR_OPEN_MASK);
-								m.setContent(m.getContent()|CONTENT_DOOR_OPEN_MASK);
-							}
-						}
-						m_map->addNodeWithEvent(p, n);
-						m_map->addNodeWithEvent(p+mp, m);
-					}else{
-						if ((n.getContent()&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
-							n.setContent(n.getContent()&~CONTENT_DOOR_OPEN_MASK);
-						}else{
-							n.setContent(n.getContent()|CONTENT_DOOR_OPEN_MASK);
-						}
-						m_map->addNodeWithEvent(p, n);
-					}
-					break;
-				}
+					//MapNode m = m_map->getNodeNoEx(p+mp);
+					//if ((n.getContent()&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK) {
+						//if (m.getContent() < CONTENT_DOOR_MIN || m.getContent() > CONTENT_DOOR_MAX) {
+							//m_map->removeNodeWithEvent(p);
+							//break;
+						//}else{
+							//if ((n.getContent()&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
+								//n.setContent(n.getContent()&~CONTENT_DOOR_OPEN_MASK);
+								//m.setContent(m.getContent()&~CONTENT_DOOR_OPEN_MASK);
+							//}else{
+								//n.setContent(n.getContent()|CONTENT_DOOR_OPEN_MASK);
+								//m.setContent(m.getContent()|CONTENT_DOOR_OPEN_MASK);
+							//}
+						//}
+						//m_map->addNodeWithEvent(p, n);
+						//m_map->addNodeWithEvent(p+mp, m);
+					//}else{
+						//if ((n.getContent()&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
+							//n.setContent(n.getContent()&~CONTENT_DOOR_OPEN_MASK);
+						//}else{
+							//n.setContent(n.getContent()|CONTENT_DOOR_OPEN_MASK);
+						//}
+						//m_map->addNodeWithEvent(p, n);
+					//}
+					//break;
+				//}
 				}
 
 				if (
@@ -2926,6 +2926,18 @@ bool ServerEnvironment::propogateEnergy(u8 level, v3s16 powersrc, v3s16 signalsr
 	m = m_map->getNodeMetadata(pos);
 	if (!m)
 		return false;
+	{
+		MapNode n = m_map->getNodeNoEx(pos);
+		content_t c = n.getContent();
+		if (c >= CONTENT_DOOR_MIN && c <= CONTENT_DOOR_MAX) {
+			v3s16 mp(0,1,0);
+			if ((c&CONTENT_DOOR_SECT_MASK) == CONTENT_DOOR_SECT_MASK)
+				mp.Y = -1;
+
+			if (signalsrc != pos+mp)
+				propogateEnergy(level,powersrc,pos,pos+mp);
+		}
+	}
 	if (!m->energise(level,powersrc,signalsrc,pos))
 		return false;
 	if (f.energy_type == CET_GATE)

@@ -5861,6 +5861,9 @@ void content_mapnode_init()
 	content_nodebox_door(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
+	f->energy_type = CET_CONDUCTIVE;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new DoorNodeMetadata();
 	i = CONTENT_STEEL_DOOR_LT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -5880,6 +5883,9 @@ void content_mapnode_init()
 	content_nodebox_door(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
+	f->energy_type = CET_CONDUCTIVE;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new DoorNodeMetadata();
 	crafting::set1over1Recipe(CONTENT_STEEL_HATCH,CONTENT_STEEL_HATCH,CONTENT_STEEL_DOOR_LT);
 	crafting::set1To1Recipe(CONTENT_STEEL_DOOR_RT,CONTENT_STEEL_DOOR_LT);
 	lists::add("craftguide",i);
@@ -6002,6 +6008,9 @@ void content_mapnode_init()
 	content_nodebox_door(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
+	f->energy_type = CET_CONDUCTIVE;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new DoorNodeMetadata();
 	i = CONTENT_STEEL_W_DOOR_LT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -6022,6 +6031,9 @@ void content_mapnode_init()
 	content_nodebox_doorw(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
+	f->energy_type = CET_CONDUCTIVE;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new DoorNodeMetadata();
 	crafting::set1over1Recipe(CONTENT_STEEL_W_HATCH,CONTENT_STEEL_HATCH,CONTENT_STEEL_W_DOOR_LT);
 	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_STEEL_DOOR_LT,CONTENT_STEEL_W_DOOR_LT);
 	crafting::set1To1Recipe(CONTENT_STEEL_W_DOOR_RT,CONTENT_STEEL_W_DOOR_LT);
@@ -6142,6 +6154,9 @@ void content_mapnode_init()
 	content_nodebox_door(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
+	f->energy_type = CET_CONDUCTIVE;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new DoorNodeMetadata();
 	i = CONTENT_STEEL_DOOR_RT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -6161,6 +6176,9 @@ void content_mapnode_init()
 	content_nodebox_door(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
+	f->energy_type = CET_CONDUCTIVE;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new DoorNodeMetadata();
 	crafting::set1To1Recipe(CONTENT_GLASS_DOOR_LT,CONTENT_GLASS_DOOR_RT);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -6234,6 +6252,9 @@ void content_mapnode_init()
 	content_nodebox_door(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
+	f->energy_type = CET_CONDUCTIVE;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new DoorNodeMetadata();
 	i = CONTENT_STEEL_W_DOOR_RT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -6254,6 +6275,9 @@ void content_mapnode_init()
 	content_nodebox_doorw(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
+	f->energy_type = CET_CONDUCTIVE;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new DoorNodeMetadata();
 	crafting::set1To1Recipe(CONTENT_STEEL_W_DOOR_LT,CONTENT_STEEL_W_DOOR_RT);
 	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_STEEL_DOOR_RT,CONTENT_STEEL_W_DOOR_RT);
 	lists::add("craftguide",i);
@@ -6360,6 +6384,9 @@ void content_mapnode_init()
 	content_nodebox_doorol(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
+	f->energy_type = CET_CONDUCTIVE;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new DoorNodeMetadata();
 	i = CONTENT_STEEL_DOOR_LT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -6378,6 +6405,9 @@ void content_mapnode_init()
 	content_nodebox_doorol(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
+	f->energy_type = CET_CONDUCTIVE;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new DoorNodeMetadata();
 
 	i = CONTENT_WOOD_W_DOOR_LB_OPEN;
 	f = &content_features(i);
@@ -6438,6 +6468,9 @@ void content_mapnode_init()
 	content_nodebox_doorol(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
+	f->energy_type = CET_CONDUCTIVE;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new DoorNodeMetadata();
 	i = CONTENT_STEEL_W_DOOR_LT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -6456,6 +6489,9 @@ void content_mapnode_init()
 	content_nodebox_doorwol(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
+	f->energy_type = CET_CONDUCTIVE;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new DoorNodeMetadata();
 
 	// right open doors
 	i = CONTENT_WOOD_DOOR_RB_OPEN;
@@ -6568,6 +6604,9 @@ void content_mapnode_init()
 	content_nodebox_dooror(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
+	f->energy_type = CET_CONDUCTIVE;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new DoorNodeMetadata();
 	i = CONTENT_STEEL_DOOR_RT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -6588,6 +6627,9 @@ void content_mapnode_init()
 	content_nodebox_dooror(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
+	f->energy_type = CET_CONDUCTIVE;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new DoorNodeMetadata();
 
 	i = CONTENT_WOOD_W_DOOR_RB_OPEN;
 	f = &content_features(i);
@@ -6654,6 +6696,9 @@ void content_mapnode_init()
 	content_nodebox_dooror(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
+	f->energy_type = CET_CONDUCTIVE;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new DoorNodeMetadata();
 	i = CONTENT_STEEL_W_DOOR_RT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -6674,6 +6719,9 @@ void content_mapnode_init()
 	content_nodebox_doorwor(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
+	f->energy_type = CET_CONDUCTIVE;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new DoorNodeMetadata();
 
 	// hatches
 	i = CONTENT_WOOD_HATCH;
@@ -6713,6 +6761,9 @@ void content_mapnode_init()
 	content_nodebox_hatch(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
+	f->energy_type = CET_CONDUCTIVE;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new DoorNodeMetadata();
 	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_STEEL_HATCH);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -6759,6 +6810,9 @@ void content_mapnode_init()
 	content_nodebox_hatchw(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
+	f->energy_type = CET_CONDUCTIVE;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new DoorNodeMetadata();
 	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_STEEL_HATCH,CONTENT_STEEL_W_HATCH);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -6811,6 +6865,9 @@ void content_mapnode_init()
 	content_nodebox_gate(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
+	f->energy_type = CET_CONDUCTIVE;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new DoorNodeMetadata();
 	crafting::setGateRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_STEEL,CONTENT_STEEL_GATE);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -6859,6 +6916,9 @@ void content_mapnode_init()
 	content_nodebox_hatcho(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
+	f->energy_type = CET_CONDUCTIVE;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new DoorNodeMetadata();
 
 	i = CONTENT_WOOD_W_HATCH_OPEN;
 	f = &content_features(i);
@@ -6903,6 +6963,9 @@ void content_mapnode_init()
 	content_nodebox_hatchwo(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
+	f->energy_type = CET_CONDUCTIVE;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new DoorNodeMetadata();
 
 	// open gates
 	i = CONTENT_WOOD_GATE_OPEN;
@@ -6944,6 +7007,9 @@ void content_mapnode_init()
 	content_nodebox_gateo(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
+	f->energy_type = CET_CONDUCTIVE;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new DoorNodeMetadata();
 
 	// plants
 	i = CONTENT_WILDGRASS_SHORT;
@@ -9035,9 +9101,9 @@ void content_mapnode_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = CONTENT_CIRCUIT_GATE;
+	i = CONTENT_CIRCUIT_NOTGATE;
 	f = &content_features(i);
-	f->description = std::string("Logic Gate");
+	f->description = std::string("Not Gate");
 	f->setAllTextures("circuit_gate.png");
 	f->setTexture(0,"circuit_gate_top.png");
 	f->rotate_tile_with_nodebox = true;
@@ -9053,14 +9119,14 @@ void content_mapnode_init()
 	content_nodebox_logicgate(f);
 	f->setInventoryTextureNodeBox(i,"circuit_gate_top.png","circuit_gate.png","circuit_gate.png");
 	if (f->initial_metadata == NULL)
-		f->initial_metadata = new LogicGateNodeMetadata();
+		f->initial_metadata = new NotGateNodeMetadata();
 	{
 		u16 recipe[9] = {
 			CONTENT_IGNORE, CONTENT_CRAFTITEM_MESEDUST, CONTENT_IGNORE,
 			CONTENT_IGNORE, CONTENT_STONE, CONTENT_IGNORE,
 			CONTENT_IGNORE, CONTENT_IGNORE, CONTENT_IGNORE
 		};
-		crafting::setRecipe(recipe,CONTENT_CIRCUIT_GATE,1);
+		crafting::setRecipe(recipe,CONTENT_CIRCUIT_NOTGATE,1);
 	}
 	lists::add("craftguide",i);
 	lists::add("creative",i);
