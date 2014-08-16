@@ -9342,12 +9342,12 @@ void content_mapnode_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = CONTENT_CIRCUIT_BATTERY;
+	i = CONTENT_CIRCUIT_REACTOR;
 	f = &content_features(i);
-	f->description = std::string("Battery");
-	f->setAllTextures("circuit_battery.png");
-	f->setTexture(0,"circuit_battery_top.png");
-	f->setTexture(1,"circuit_battery_bottom.png");
+	f->description = std::string("Reactor");
+	f->setAllTextures("circuit_reactor.png");
+	f->setTexture(0,"circuit_reactor_top.png");
+	f->setTexture(1,"circuit_reactor_bottom.png");
 	f->draw_type = CDT_NODEBOX;
 	f->energy_type = CET_SOURCE;
 	f->energy_drop = 0;
@@ -9357,10 +9357,10 @@ void content_mapnode_init()
 	f->type = CMT_WOOD;
 	f->hardness = 0.10;
 	content_nodebox_battery(f);
-	f->setInventoryTextureNodeBox(i,"circuit_battery_top.png","circuit_battery.png","circuit_battery.png");
+	f->setInventoryTextureNodeBox(i,"circuit_reactor_top.png","circuit_reactor.png","circuit_reactor.png");
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new SourceNodeMetadata();
-	crafting::set1over1Recipe(CONTENT_CRAFTITEM_QUARTZ,CONTENT_MESE,CONTENT_CIRCUIT_BATTERY);
+	crafting::set1over1Recipe(CONTENT_CRAFTITEM_QUARTZ,CONTENT_MESE,CONTENT_CIRCUIT_REACTOR);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -9635,9 +9635,12 @@ void content_mapnode_init()
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_NODEBOX;
 	f->energy_type = CET_CONDUCTIVE;
+	f->rotate_tile_with_nodebox = true;
 	f->special_alternate_node = CONTENT_CIRCUIT_PISTON;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_PISTON_OFF)+" 1";
 	f->setAllTextures("circuit_piston_arm.png");
+	f->setTexture(0,"circuit_piston_arm.png^[transformR90");
+	f->setTexture(1,"circuit_piston_arm.png^[transformR270");
 	f->setTexture(3,"circuit_piston_arm.png^[transformFX");
 	f->setTexture(4,"circuit_piston_arm_bottom.png");
 	f->setTexture(5,"circuit_piston_arm_top.png");
@@ -9837,9 +9840,12 @@ void content_mapnode_init()
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_NODEBOX;
 	f->energy_type = CET_CONDUCTIVE;
+	f->rotate_tile_with_nodebox = true;
 	f->special_alternate_node = CONTENT_CIRCUIT_STICKYPISTON;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_STICKYPISTON_OFF)+" 1";
 	f->setAllTextures("circuit_piston_arm.png");
+	f->setTexture(0,"circuit_piston_arm.png^[transformR90");
+	f->setTexture(1,"circuit_piston_arm.png^[transformR270");
 	f->setTexture(3,"circuit_piston_arm.png^[transformFX");
 	f->setTexture(4,"circuit_piston_arm_bottom.png");
 	f->setTexture(5,"circuit_stickypiston_arm_top.png");

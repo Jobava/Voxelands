@@ -2233,7 +2233,7 @@ SourceNodeMetadata::SourceNodeMetadata()
 }
 u16 SourceNodeMetadata::typeId() const
 {
-	return CONTENT_CIRCUIT_BATTERY;
+	return CONTENT_CIRCUIT_REACTOR;
 }
 NodeMetadata* SourceNodeMetadata::create(std::istream &is)
 {

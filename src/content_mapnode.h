@@ -537,7 +537,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_CIRCUIT_MESEWIRE 0xF00
 #define CONTENT_CIRCUIT_COPPERWIRE 0xF01
 // circuits - powersource
-#define CONTENT_CIRCUIT_BATTERY 0xF20
+#define CONTENT_CIRCUIT_REACTOR 0xF20
 #define CONTENT_CIRCUIT_SOLARPANEL 0xF21
 #define CONTENT_CIRCUIT_WATERWHEEL 0xF22
 #define CONTENT_CIRCUIT_SWITCH 0xF23
