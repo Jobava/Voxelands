@@ -2732,6 +2732,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					NodeMetadata *ometa = NULL;
 					std::string owner;
 					if (meta) {
+						if (meta->getEnergy())
+							return;
 						ometa = meta->clone();
 						owner = meta->getOwner();
 					}
@@ -3086,6 +3088,81 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						{
 							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 							m_env.getMap().removeNodeAndUpdate(p_under+p_foot, modified_blocks);
+						}
+					}
+					if (
+						n.getContent() == CONTENT_CIRCUIT_PISTON
+						|| n.getContent() == CONTENT_CIRCUIT_STICKYPISTON
+					) {
+						v3s16 a_dir = n.getRotation();
+						if (a_dir == v3s16(1,1,1)) {
+							a_dir = v3s16(0,0,-1);
+						}else if (a_dir == v3s16(-1,1,1)) {
+							a_dir = v3s16(-1,0,0);
+						}else if (a_dir == v3s16(-1,1,-1)) {
+							a_dir = v3s16(0,0,1);
+						}else if (a_dir == v3s16(1,1,-1)) {
+							a_dir = v3s16(1,0,0);
+						}
+						sendRemoveNode(p_under+a_dir, 0, &far_players, 30);
+						{
+							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+							m_env.getMap().removeNodeAndUpdate(p_under+a_dir, modified_blocks);
+						}
+					}else if (
+						n.getContent() == CONTENT_CIRCUIT_PISTON_UP
+						|| n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_UP
+					) {
+						sendRemoveNode(p_under+v3s16(0,1,0), 0, &far_players, 30);
+						{
+							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+							m_env.getMap().removeNodeAndUpdate(p_under+v3s16(0,1,0), modified_blocks);
+						}
+					}else if (
+						n.getContent() == CONTENT_CIRCUIT_PISTON_DOWN
+						|| n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_DOWN
+					) {
+						sendRemoveNode(p_under+v3s16(0,-1,0), 0, &far_players, 30);
+						{
+							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+							m_env.getMap().removeNodeAndUpdate(p_under+v3s16(0,-1,0), modified_blocks);
+						}
+					}else if (
+						n.getContent() == CONTENT_CIRCUIT_PISTON_ARM
+						|| n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_ARM
+					) {
+						v3s16 a_dir = n.getRotation();
+						if (a_dir == v3s16(1,1,1)) {
+							a_dir = v3s16(0,0,1);
+						}else if (a_dir == v3s16(-1,1,1)) {
+							a_dir = v3s16(1,0,0);
+						}else if (a_dir == v3s16(-1,1,-1)) {
+							a_dir = v3s16(0,0,-1);
+						}else if (a_dir == v3s16(1,1,-1)) {
+							a_dir = v3s16(-1,0,0);
+						}
+						sendRemoveNode(p_under+a_dir, 0, &far_players, 30);
+						{
+							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+							m_env.getMap().removeNodeAndUpdate(p_under+a_dir, modified_blocks);
+						}
+					}else if (
+						n.getContent() == CONTENT_CIRCUIT_PISTON_UP_ARM
+						|| n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_UP_ARM
+					) {
+						sendRemoveNode(p_under+v3s16(0,-1,0), 0, &far_players, 30);
+						{
+							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+							m_env.getMap().removeNodeAndUpdate(p_under+v3s16(0,-1,0), modified_blocks);
+						}
+					}else if (
+						n.getContent() == CONTENT_CIRCUIT_PISTON_DOWN_ARM
+						|| n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_DOWN_ARM
+					) {
+						sendRemoveNode(p_under+v3s16(0,1,0), 0, &far_players, 30);
+						{
+							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+							m_env.getMap().removeNodeAndUpdate(p_under+v3s16(0,1,0), modified_blocks);
 						}
 					}
 				/*

@@ -25,6 +25,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "log.h"
 #include "player.h"
 #include "environment.h"
+#include "settings.h"
+#include "main.h"
 
 /*
 	SignNodeMetadata
@@ -2462,6 +2464,328 @@ bool DoorNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16
 					m_energy = v;
 			}
 		}
+	}
+	return true;
+}
+
+
+/*
+	PistonNodeMetadata
+*/
+
+// Prototype
+PistonNodeMetadata proto_PistonNodeMetadata;
+
+PistonNodeMetadata::PistonNodeMetadata()
+{
+	m_energy = 0;
+	m_ptime = 0;
+	m_sources.clear();
+	NodeMetadata::registerType(typeId(), create);
+}
+u16 PistonNodeMetadata::typeId() const
+{
+	return CONTENT_CIRCUIT_PISTON;
+}
+NodeMetadata* PistonNodeMetadata::create(std::istream &is)
+{
+	PistonNodeMetadata *d = new PistonNodeMetadata();
+	int temp;
+	is>>temp;
+	d->m_energy = temp;
+	is>>temp;
+	d->m_ptime = (float)temp/10;
+	int i;
+	is>>i;
+	v3s16 p;
+	for (; i > 0; i--) {
+		is>>temp;
+		p.X = temp;
+		is>>temp;
+		p.Y = temp;
+		is>>temp;
+		p.Z = temp;
+		is>>temp;
+		d->m_sources[p] = temp;
+	}
+	return d;
+}
+NodeMetadata* PistonNodeMetadata::clone()
+{
+	PistonNodeMetadata *d = new PistonNodeMetadata();
+	return d;
+}
+void PistonNodeMetadata::serializeBody(std::ostream &os)
+{
+	os<<itos(m_energy) << " ";
+	os<<itos(m_ptime*10)<<" ";
+	os<<itos(m_sources.size()) << " ";
+	for (std::map<v3s16,u8>::iterator i = m_sources.begin(); i != m_sources.end(); i++) {
+		os<<itos(i->first.X) << " ";
+		os<<itos(i->first.Y) << " ";
+		os<<itos(i->first.Z) << " ";
+		os<<itos(i->second) << " ";
+	}
+}
+bool PistonNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
+{
+	m_ptime += dtime;
+	if (!m_energy) {
+		MapNode n = env->getMap().getNodeNoEx(pos);
+		v3s16 dir = n.getRotation();
+		if (n.getContent() == CONTENT_CIRCUIT_PISTON) {
+			if (dir == v3s16(1,1,1)) {
+				dir = v3s16(0,0,-1);
+			}else if (dir == v3s16(-1,1,1)) {
+				dir = v3s16(-1,0,0);
+			}else if (dir == v3s16(-1,1,-1)) {
+				dir = v3s16(0,0,1);
+			}else if (dir == v3s16(1,1,-1)) {
+				dir = v3s16(1,0,0);
+			}
+			n.setContent(CONTENT_CIRCUIT_PISTON_OFF);
+			env->getMap().addNodeWithEvent(pos,n);
+			contract(pos,dir,false,env);
+			return true;
+		}else if (n.getContent() == CONTENT_CIRCUIT_PISTON_UP) {
+			dir = v3s16(0,1,0);
+			n.setContent(CONTENT_CIRCUIT_PISTON_UP_OFF);
+			env->getMap().addNodeWithEvent(pos,n);
+			contract(pos,dir,false,env);
+			return true;
+		}else if (n.getContent() == CONTENT_CIRCUIT_PISTON_DOWN) {
+			dir = v3s16(0,-1,0);
+			n.setContent(CONTENT_CIRCUIT_PISTON_DOWN_OFF);
+			env->getMap().addNodeWithEvent(pos,n);
+			contract(pos,dir,false,env);
+			return true;
+		}else if (n.getContent() == CONTENT_CIRCUIT_STICKYPISTON) {
+			if (dir == v3s16(1,1,1)) {
+				dir = v3s16(0,0,-1);
+			}else if (dir == v3s16(-1,1,1)) {
+				dir = v3s16(-1,0,0);
+			}else if (dir == v3s16(-1,1,-1)) {
+				dir = v3s16(0,0,1);
+			}else if (dir == v3s16(1,1,-1)) {
+				dir = v3s16(1,0,0);
+			}
+			n.setContent(CONTENT_CIRCUIT_STICKYPISTON_OFF);
+			env->getMap().addNodeWithEvent(pos,n);
+			contract(pos,dir,true,env);
+			return true;
+		}else if (n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_UP) {
+			dir = v3s16(0,1,0);
+			n.setContent(CONTENT_CIRCUIT_STICKYPISTON_UP_OFF);
+			env->getMap().addNodeWithEvent(pos,n);
+			contract(pos,dir,true,env);
+			return true;
+		}else if (n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_DOWN) {
+			dir = v3s16(0,-1,0);
+			n.setContent(CONTENT_CIRCUIT_STICKYPISTON_DOWN_OFF);
+			env->getMap().addNodeWithEvent(pos,n);
+			contract(pos,dir,true,env);
+			return true;
+		}
+		return false;
+	}else{
+		MapNode n = env->getMap().getNodeNoEx(pos);
+		v3s16 dir = n.getRotation();
+		if (n.getContent() == CONTENT_CIRCUIT_PISTON_OFF) {
+			if (dir == v3s16(1,1,1)) {
+				dir = v3s16(0,0,-1);
+			}else if (dir == v3s16(-1,1,1)) {
+				dir = v3s16(-1,0,0);
+			}else if (dir == v3s16(-1,1,-1)) {
+				dir = v3s16(0,0,1);
+			}else if (dir == v3s16(1,1,-1)) {
+				dir = v3s16(1,0,0);
+			}
+			if (extend(pos,dir,CONTENT_CIRCUIT_PISTON_ARM,env)) {
+				n.setContent(CONTENT_CIRCUIT_PISTON);
+				env->getMap().addNodeWithEvent(pos,n);
+			}
+		}else if (n.getContent() == CONTENT_CIRCUIT_PISTON_UP_OFF) {
+			dir = v3s16(0,1,0);
+			if (extend(pos,dir,CONTENT_CIRCUIT_PISTON_UP_ARM,env)) {
+				n.setContent(CONTENT_CIRCUIT_PISTON_UP);
+				env->getMap().addNodeWithEvent(pos,n);
+			}
+		}else if (n.getContent() == CONTENT_CIRCUIT_PISTON_DOWN_OFF) {
+			dir = v3s16(0,-1,0);
+			if (extend(pos,dir,CONTENT_CIRCUIT_PISTON_DOWN_ARM,env)) {
+				n.setContent(CONTENT_CIRCUIT_PISTON_DOWN);
+				env->getMap().addNodeWithEvent(pos,n);
+			}
+		}else if (n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_OFF) {
+			if (dir == v3s16(1,1,1)) {
+				dir = v3s16(0,0,-1);
+			}else if (dir == v3s16(-1,1,1)) {
+				dir = v3s16(-1,0,0);
+			}else if (dir == v3s16(-1,1,-1)) {
+				dir = v3s16(0,0,1);
+			}else if (dir == v3s16(1,1,-1)) {
+				dir = v3s16(1,0,0);
+			}
+			if (extend(pos,dir,CONTENT_CIRCUIT_STICKYPISTON_ARM,env)) {
+				n.setContent(CONTENT_CIRCUIT_STICKYPISTON);
+				env->getMap().addNodeWithEvent(pos,n);
+			}
+		}else if (n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_UP_OFF) {
+			dir = v3s16(0,1,0);
+			if (extend(pos,dir,CONTENT_CIRCUIT_STICKYPISTON_UP_ARM,env)) {
+				n.setContent(CONTENT_CIRCUIT_STICKYPISTON_UP);
+				env->getMap().addNodeWithEvent(pos,n);
+			}
+		}else if (n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_DOWN_OFF) {
+			dir = v3s16(0,-1,0);
+			if (extend(pos,dir,CONTENT_CIRCUIT_STICKYPISTON_DOWN_ARM,env)) {
+				n.setContent(CONTENT_CIRCUIT_STICKYPISTON_DOWN);
+				env->getMap().addNodeWithEvent(pos,n);
+			}
+		}
+	}
+	if (m_ptime < 1.1)
+		return false;
+	m_energy = 0;
+	return true;
+}
+bool PistonNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
+{
+	m_ptime = 0;
+	if (!m_energy)
+		m_sources.clear();
+	if (m_sources[powersrc] == level)
+		return true;
+	if (level && m_sources[powersrc] > level)
+		return false;
+	m_sources[powersrc] = level;
+	if (!level || m_energy < level) {
+		m_energy = level;
+		if (!level) {
+			m_sources.erase(powersrc);
+			for (std::map<v3s16,u8>::iterator i = m_sources.begin(); i != m_sources.end(); i++) {
+				u8 v = i->second;
+				if (v > m_energy)
+					m_energy = v;
+			}
+		}
+	}
+	return true;
+}
+bool PistonNodeMetadata::extend(v3s16 pos, v3s16 dir, content_t arm, ServerEnvironment *env)
+{
+	bool can_extend = false;
+	v3s16 epos = pos;
+	s16 max_d = g_settings->getS16("borderstone_radius");
+	for (int i=0; i<17; i++) {
+		epos += dir;
+		v3s16 test_p;
+		MapNode testnode;
+		for(s16 z=-max_d; z<=max_d; z++) {
+		for(s16 y=-max_d; y<=max_d; y++) {
+		for(s16 x=-max_d; x<=max_d; x++) {
+			test_p = epos + v3s16(x,y,z);
+			testnode = env->getMap().getNodeNoEx(test_p);
+			if (testnode.getContent() == CONTENT_IGNORE || testnode.getContent() == CONTENT_BORDERSTONE)
+				return false;
+		}
+		}
+		}
+		MapNode n = env->getMap().getNodeNoEx(epos);
+		if (n.getContent() == CONTENT_IGNORE)
+			return false;
+		ContentFeatures &f = content_features(n);
+		if (f.pressure_type == CST_SOLID)
+			return false;
+		if (f.pressure_type == CST_CRUSHED || f.pressure_type == CST_CRUSHABLE) {
+			can_extend = true;
+			break;
+		}
+	}
+	if (!can_extend)
+		return false;
+	MapNode n_prev;
+	MapNode n_cur;
+	MapNode n_next;
+	v3s16 p_prev = pos;
+	v3s16 p_cur = p_prev+dir;
+	v3s16 p_next = p_cur+dir;
+	if (arm == CONTENT_CIRCUIT_PISTON_ARM || arm == CONTENT_CIRCUIT_STICKYPISTON_ARM)
+		n_prev = env->getMap().getNodeNoEx(pos);
+	n_prev.setContent(arm);
+	n_cur = env->getMap().getNodeNoEx(p_cur);
+	for (int i=0; i<17; i++) {
+		ContentFeatures &f = content_features(n_cur);
+		n_next = env->getMap().getNodeNoEx(p_next);
+		env->getMap().addNodeWithEvent(p_cur,n_prev);
+		if (f.pressure_type == CST_CRUSHED)
+			return true;
+		if (f.pressure_type == CST_CRUSHABLE && n_next.getContent() != CONTENT_AIR)
+			return true;
+		n_prev = n_cur;
+		n_cur = n_next;
+		p_prev = p_cur;
+		p_cur = p_next;
+		p_next += dir;
+	}
+	return true;
+}
+bool PistonNodeMetadata::contract(v3s16 pos, v3s16 dir, bool sticky, ServerEnvironment *env)
+{
+	bool dropping = false;
+	env->getMap().removeNodeWithEvent(pos+dir);
+	if (dir.Y == 1)
+		dropping = true;
+	if (!sticky && !dropping)
+		return true;
+
+	s16 max_d = g_settings->getS16("borderstone_radius");
+	v3s16 p_cur = pos+dir;
+	v3s16 p_next = p_cur+dir;
+	for (int i=0; i<16; i++) {
+		MapNode n = env->getMap().getNodeNoEx(p_next);
+		if (n.getContent() == CONTENT_IGNORE)
+			break;
+		ContentFeatures &f = content_features(n);
+		if (f.pressure_type == CST_SOLID)
+			break;
+		if ((!sticky || i) && f.pressure_type != CST_DROPABLE)
+			break;
+		v3s16 test_p;
+		MapNode testnode;
+		for(s16 z=-max_d; z<=max_d; z++) {
+		for(s16 y=-max_d; y<=max_d; y++) {
+		for(s16 x=-max_d; x<=max_d; x++) {
+			test_p = p_cur + v3s16(x,y,z);
+			testnode = env->getMap().getNodeNoEx(test_p);
+			if (testnode.getContent() == CONTENT_IGNORE || testnode.getContent() == CONTENT_BORDERSTONE)
+				return false;
+		}
+		}
+		}
+		if (!dropping)
+			break;
+		p_cur = p_next;
+		p_next += dir;
+	}
+
+	p_cur = pos+dir;
+	p_next = p_cur+dir;
+	for (int i=0; i<16; i++) {
+		MapNode n = env->getMap().getNodeNoEx(p_next);
+		if (n.getContent() == CONTENT_IGNORE)
+			break;
+		ContentFeatures &f = content_features(n);
+		if (f.pressure_type == CST_SOLID)
+			break;
+		if ((!sticky || i) && f.pressure_type != CST_DROPABLE)
+			break;
+		env->getMap().removeNodeWithEvent(p_next);
+		env->getMap().addNodeWithEvent(p_cur,n);
+		if (!dropping)
+			break;
+		p_cur = p_next;
+		p_next += dir;
 	}
 	return true;
 }

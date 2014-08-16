@@ -147,6 +147,19 @@ enum ContentEnergyType {
 	CET_GATE
 };
 
+/*
+	PressureType
+	This determines the behaviour when pushed by a piston
+*/
+enum ContentPressureType {
+	CST_MOVABLE,
+	CST_DROPABLE,	// node may drop when above an upward-facing piston
+	CST_SOLID,
+	CST_CRUSHABLE,	// When pushed, this node will be obliterated
+			// if pushed against another node
+	CST_CRUSHED	// node is always obliterated when pushed
+};
+
 struct MapNode;
 class NodeMetadata;
 
@@ -278,6 +291,8 @@ struct ContentFeatures
 	ContentMaterialType type;
 	// the hardness of the node
 	f32 hardness;
+	// for pistons
+	ContentPressureType pressure_type;
 
 	u32 damage_per_second;
 
@@ -344,6 +359,7 @@ struct ContentFeatures
 		light_source = 0;
 		type = CMT_AIR;
 		hardness = 1.0;
+		pressure_type = CST_MOVABLE;
 		damage_per_second = 0;
 	}
 

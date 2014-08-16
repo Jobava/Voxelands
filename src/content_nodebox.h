@@ -49,5 +49,11 @@ void content_nodebox_battery(ContentFeatures *f);
 void content_nodebox_switch(ContentFeatures *f);
 void content_nodebox_button(ContentFeatures *f);
 void content_nodebox_logicgate(ContentFeatures *f);
+void content_nodebox_piston(ContentFeatures *f);
+void content_nodebox_pistonarm(ContentFeatures *f);
+void content_nodebox_piston_up(ContentFeatures *f);
+void content_nodebox_pistonarm_up(ContentFeatures *f);
+void content_nodebox_piston_down(ContentFeatures *f);
+void content_nodebox_pistonarm_down(ContentFeatures *f);
 
 #endif
