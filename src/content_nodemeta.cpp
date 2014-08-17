@@ -2266,7 +2266,7 @@ NodeMetadata* SolarPanelNodeMetadata::clone()
 bool SolarPanelNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 {
 	MapNode n = env->getMap().getNodeNoEx(pos);
-	if (n.getLightBlend(env->getDayNightRatio()) < 13) {
+	if (n.getLightBlend(env->getDayNightRatio()) < 10) {
 		m_energy = 0;
 		return false;
 	}
@@ -2907,6 +2907,8 @@ bool PistonNodeMetadata::contract(v3s16 pos, v3s16 dir, bool sticky, ServerEnvir
 		ContentFeatures &f = content_features(n);
 		if (f.pressure_type == CST_SOLID)
 			break;
+		if (f.liquid_type != LIQUID_NONE)
+			break;
 		if ((!sticky || i) && f.pressure_type != CST_DROPABLE)
 			break;
 		v3s16 test_p;
@@ -2935,6 +2937,8 @@ bool PistonNodeMetadata::contract(v3s16 pos, v3s16 dir, bool sticky, ServerEnvir
 			break;
 		ContentFeatures &f = content_features(n);
 		if (f.pressure_type == CST_SOLID)
+			break;
+		if (f.liquid_type != LIQUID_NONE)
 			break;
 		if ((!sticky || i) && f.pressure_type != CST_DROPABLE)
 			break;
