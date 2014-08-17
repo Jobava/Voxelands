@@ -99,6 +99,12 @@ set(common_SRCS
 	content_craftitem.cpp
 	content_toolitem.cpp
 	content_mapnode.cpp
+	content_mapnode_door.cpp
+	content_mapnode_farm.cpp
+	content_mapnode_circuit.cpp
+	content_mapnode_furniture.cpp
+	content_mapnode_stair.cpp
+	content_mapnode_slab.cpp
 	content_mapnode_util.cpp
 	content_list.cpp
 	content_nodebox.cpp

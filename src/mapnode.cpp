@@ -193,15 +193,14 @@ ContentFeatures & content_features(MapNode &n)
 */
 void init_mapnode()
 {
-	if(g_texturesource == NULL)
-	{
+	bool repeat = false;
+	if (g_texturesource == NULL) {
 		dstream<<"INFO: Initial run of init_mapnode with "
 				"g_texturesource=NULL. If this segfaults, "
 				"there is a bug with something not checking for "
 				"the NULL value."<<std::endl;
-	}
-	else
-	{
+	}else{
+		repeat = true;
 		dstream<<"INFO: Full run of init_mapnode with "
 				"g_texturesource!=NULL"<<std::endl;
 	}
@@ -257,8 +256,7 @@ void init_mapnode()
 	/*
 		Initialize mapnode content
 	*/
-	content_mapnode_init();
-
+	content_mapnode_init(repeat);
 }
 
 /*

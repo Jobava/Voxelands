@@ -22,7 +22,13 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "mapnode.h"
 
-void content_mapnode_init();
+void content_mapnode_init(bool repeat);
+void content_mapnode_circuit(bool repeat);
+void content_mapnode_farm(bool repeat);
+void content_mapnode_furniture(bool repeat);
+void content_mapnode_door(bool repeat);
+void content_mapnode_stair(bool repeat);
+void content_mapnode_slab(bool repeat);
 
 extern content_t trans_table_19[21][2];
 
