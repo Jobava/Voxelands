@@ -2283,6 +2283,99 @@ bool SolarPanelNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc,
 }
 
 /*
+	WaterWheelNodeMetadata
+*/
+
+// Prototype
+WaterWheelNodeMetadata proto_WaterWheelNodeMetadata;
+
+WaterWheelNodeMetadata::WaterWheelNodeMetadata()
+{
+	m_energy = 0;
+	m_ptime = 0;
+	m_sources.clear();
+	NodeMetadata::registerType(typeId(), create);
+}
+u16 WaterWheelNodeMetadata::typeId() const
+{
+	return CONTENT_CIRCUIT_WATERWHEEL;
+}
+NodeMetadata* WaterWheelNodeMetadata::create(std::istream &is)
+{
+	WaterWheelNodeMetadata *d = new WaterWheelNodeMetadata();
+	int temp;
+	is>>temp;
+	d->m_energy = temp;
+	is>>temp;
+	d->m_ptime = (float)temp/10;
+	int i;
+	is>>i;
+	v3s16 p;
+	for (; i > 0; i--) {
+		is>>temp;
+		p.X = temp;
+		is>>temp;
+		p.Y = temp;
+		is>>temp;
+		p.Z = temp;
+		is>>temp;
+		d->m_sources[p] = temp;
+	}
+	return d;
+}
+NodeMetadata* WaterWheelNodeMetadata::clone()
+{
+	WaterWheelNodeMetadata *d = new WaterWheelNodeMetadata();
+	return d;
+}
+bool WaterWheelNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
+{
+	MapNode n = env->getMap().getNodeNoEx(pos);
+	v3s16 dir = n.getRotation();
+	if (dir == v3s16(1,1,1)) {
+		dir = v3s16(0,0,-1);
+	}else if (dir == v3s16(-1,1,1)) {
+		dir = v3s16(-1,0,0);
+	}else if (dir == v3s16(-1,1,-1)) {
+		dir = v3s16(0,0,1);
+	}else if (dir == v3s16(1,1,-1)) {
+		dir = v3s16(1,0,0);
+	}
+	MapNode inlet = env->getMap().getNodeNoEx(pos-dir);
+	MapNode outlet = env->getMap().getNodeNoEx(pos+dir);
+	if (inlet.getContent() != CONTENT_WATERSOURCE) {
+		if (outlet.getContent() == CONTENT_WATERSOURCE)
+			env->getMap().removeNodeWithEvent(pos+dir);
+		if (m_energy) {
+			m_energy = 0;
+			return true;
+		}
+		return false;
+	}
+	if (outlet.getContent() != CONTENT_WATERSOURCE) {
+		if (outlet.getContent() != CONTENT_AIR) {
+			if (m_energy) {
+				m_energy = 0;
+				return true;
+			}
+			return false;
+		}
+		outlet.setContent(CONTENT_WATERSOURCE);
+		env->getMap().addNodeWithEvent(pos+dir,outlet);
+	}
+
+	m_energy = ENERGY_MAX;
+	env->propogateEnergy(ENERGY_MAX,pos,pos,pos);
+	return true;
+}
+bool WaterWheelNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
+{
+	if (!m_energy)
+		return false;
+	return true;
+}
+
+/*
 	SourceNodeMetadata
 */
 

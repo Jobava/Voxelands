@@ -9394,6 +9394,39 @@ void content_mapnode_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
+	i = CONTENT_CIRCUIT_WATERWHEEL;
+	f = &content_features(i);
+	f->description = std::string("Water Wheel");
+	f->setAllTextures("circuit_waterwheel.png");
+	f->setTexture(2,"circuit_waterwheel_side.png");
+	f->setTexture(3,"circuit_waterwheel_side.png^[transformFX");
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->energy_type = CET_SWITCH;
+	f->energy_drop = 0;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->rotate_tile_with_nodebox = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->type = CMT_WOOD;
+	f->hardness = 0.10;
+	content_nodebox_waterwheel(f);
+	f->setInventoryTextureNodeBox(i,"circuit_waterwheel.png","circuit_waterwheel.png","circuit_waterwheel_side.png");
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new WaterWheelNodeMetadata();
+	{
+		u16 r[9] = {
+			CONTENT_STONE,			CONTENT_WOOD_SLAB,		CONTENT_STONE,
+			CONTENT_CRAFTITEM_MESEDUST,	CONTENT_CRAFTITEM_STEEL_INGOT,	CONTENT_CRAFTITEM_QUARTZ_DUST,
+			CONTENT_STONE,			CONTENT_WOOD_SLAB,		CONTENT_STONE
+		};
+		crafting::setRecipe(r,CONTENT_CIRCUIT_WATERWHEEL,1);
+	}
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
 	i = CONTENT_CIRCUIT_SWITCH;
 	f = &content_features(i);
 	f->description = std::string("Switch");
@@ -9401,6 +9434,7 @@ void content_mapnode_init()
 	f->setTexture(5,"circuit_switch_front.png");
 	f->param_type = CPT_FACEDIR_WALLMOUNT;
 	f->draw_type = CDT_NODEBOX;
+	f->rotate_tile_with_nodebox = true;
 	f->is_ground_content = true;
 	f->energy_type = CET_SWITCH;
 	f->energy_drop = 0;
