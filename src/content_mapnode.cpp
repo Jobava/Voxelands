@@ -9364,6 +9364,36 @@ void content_mapnode_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
+	i = CONTENT_CIRCUIT_SOLARPANEL;
+	f = &content_features(i);
+	f->description = std::string("Solar Panel");
+	f->setAllTextures("wood.png");
+	f->setTexture(0,"circuit_solarpanel_top.png");
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_NODEBOX;
+	f->energy_type = CET_SOURCE;
+	f->energy_drop = 0;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->type = CMT_WOOD;
+	f->hardness = 0.10;
+	content_nodebox_carpet(f);
+	f->setInventoryTextureNodeBox(i,"circuit_solarpanel_top.png","wood.png","wood.png");
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new SolarPanelNodeMetadata();
+	{
+		u16 r[9] = {
+			CONTENT_GLASS,			CONTENT_GLASS,			CONTENT_GLASS,
+			CONTENT_CRAFTITEM_QUARTZ_DUST,	CONTENT_CRAFTITEM_MESEDUST,	CONTENT_CRAFTITEM_QUARTZ_DUST,
+			CONTENT_WOOD_SLAB,		CONTENT_WOOD_SLAB,		CONTENT_WOOD_SLAB
+		};
+		crafting::setRecipe(r,CONTENT_CIRCUIT_SOLARPANEL,1);
+	}
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
 	i = CONTENT_CIRCUIT_SWITCH;
 	f = &content_features(i);
 	f->description = std::string("Switch");

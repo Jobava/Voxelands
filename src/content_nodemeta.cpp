@@ -2218,6 +2218,71 @@ bool ButtonNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s
 }
 
 /*
+	SolarPanelNodeMetadata
+*/
+
+// Prototype
+SolarPanelNodeMetadata proto_SolarPanelNodeMetadata;
+
+SolarPanelNodeMetadata::SolarPanelNodeMetadata()
+{
+	m_energy = 0;
+	m_ptime = 0;
+	m_sources.clear();
+	NodeMetadata::registerType(typeId(), create);
+}
+u16 SolarPanelNodeMetadata::typeId() const
+{
+	return CONTENT_CIRCUIT_SOLARPANEL;
+}
+NodeMetadata* SolarPanelNodeMetadata::create(std::istream &is)
+{
+	SolarPanelNodeMetadata *d = new SolarPanelNodeMetadata();
+	int temp;
+	is>>temp;
+	d->m_energy = temp;
+	is>>temp;
+	d->m_ptime = (float)temp/10;
+	int i;
+	is>>i;
+	v3s16 p;
+	for (; i > 0; i--) {
+		is>>temp;
+		p.X = temp;
+		is>>temp;
+		p.Y = temp;
+		is>>temp;
+		p.Z = temp;
+		is>>temp;
+		d->m_sources[p] = temp;
+	}
+	return d;
+}
+NodeMetadata* SolarPanelNodeMetadata::clone()
+{
+	SolarPanelNodeMetadata *d = new SolarPanelNodeMetadata();
+	return d;
+}
+bool SolarPanelNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
+{
+	MapNode n = env->getMap().getNodeNoEx(pos);
+	if (n.getLightBlend(env->getDayNightRatio()) < 13) {
+		m_energy = 0;
+		return false;
+	}
+
+	m_energy = ENERGY_MAX;
+	env->propogateEnergy(ENERGY_MAX,pos,pos,pos);
+	return true;
+}
+bool SolarPanelNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
+{
+	if (!m_energy)
+		return false;
+	return true;
+}
+
+/*
 	SourceNodeMetadata
 */
 
