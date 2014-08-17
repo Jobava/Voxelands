@@ -524,16 +524,6 @@ public:
 	{
 		//dstream<<"emerge p=("<<p.X<<","<<p.Y<<","<<p.Z<<")"<<std::endl;
 		addArea(a);
-		for(s32 z=a.MinEdge.Z; z<=a.MaxEdge.Z; z++)
-		for(s32 y=a.MinEdge.Y; y<=a.MaxEdge.Y; y++)
-		for(s32 x=a.MinEdge.X; x<=a.MaxEdge.X; x++)
-		{
-			s32 i = m_area.index(x,y,z);
-			// Don't touch nodes that have already been loaded
-			if(!(m_flags[i] & VOXELFLAG_NOT_LOADED))
-				continue;
-			m_flags[i] = VOXELFLAG_INEXISTENT;
-		}
 	}
 
 	/*

@@ -249,10 +249,6 @@ TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir,
 	*/
 	NodeMod mod;
 	if (temp_mods.get(p, &mod)) {
-		if (mod == NODEMOD_CHANGECONTENT) {
-			MapNode mn2(mod.param);
-			spec = mn2.getTile(face_dir);
-		}
 		if (mod == NODEMOD_CRACK) {
 			/*
 				Get texture id, translate it to name, append stuff to
@@ -306,10 +302,6 @@ TileSpec getMetaTile(MapNode mn, v3s16 p, v3s16 face_dir,
 	*/
 	NodeMod mod;
 	if (temp_mods.get(p, &mod)) {
-		if (mod == NODEMOD_CHANGECONTENT) {
-			MapNode mn2(mod.param);
-			spec = mn2.getMetaTile(face_dir);
-		}
 		if (mod == NODEMOD_CRACK) {
 			/*
 				Get texture id, translate it to name, append stuff to
@@ -346,32 +338,6 @@ TileSpec getMetaTile(MapNode mn, v3s16 p, v3s16 face_dir,
 	}
 
 	return spec;
-}
-
-content_t getNodeContent(v3s16 p, MapNode mn, NodeModMap &temp_mods)
-{
-	/*
-		Check temporary modifications on this node
-	*/
-	NodeMod mod;
-	if (temp_mods.get(p, &mod)) {
-		if(mod == NODEMOD_CHANGECONTENT)
-			return mod.param;
-		/*if(mod.type == NODEMOD_CRACK)
-		{
-				Content doesn't change.
-
-				face_contents works just like it should, because
-				there should not be faces between differently cracked
-				nodes.
-
-				If a semi-transparent node is cracked in front an
-				another one, it really doesn't matter whether there
-				is a cracked face drawn in between or not.
-		}*/
-	}
-
-	return mn.getContent();
 }
 
 v3s16 dirs8[8] = {
@@ -468,14 +434,9 @@ void getTileInfo(
 {
 	MapNode n0 = vmanip.getNodeNoEx(blockpos_nodes + p);
 	MapNode n1 = vmanip.getNodeNoEx(blockpos_nodes + p + face_dir);
-	TileSpec tile0 = getNodeTile(n0, p, face_dir, temp_mods);
-	TileSpec tile1 = getNodeTile(n1, p + face_dir, -face_dir, temp_mods);
 
-	// This is hackish
-	content_t content0 = getNodeContent(p, n0, temp_mods);
-	content_t content1 = getNodeContent(p + face_dir, n1, temp_mods);
 	bool equivalent = false;
-	u8 mf = face_contents(content0, content1, &equivalent);
+	u8 mf = face_contents(n0.getContent(), n1.getContent(), &equivalent);
 
 	if (mf == 0) {
 		makes_face = false;
@@ -485,11 +446,11 @@ void getTileInfo(
 	makes_face = true;
 
 	if (mf == 1) {
-		tile = tile0;
+		tile = getNodeTile(n0, p, face_dir, temp_mods);
 		p_corrected = p;
 		face_dir_corrected = face_dir;
 	}else{
-		tile = tile1;
+		tile = getNodeTile(n1, p + face_dir, -face_dir, temp_mods);
 		p_corrected = p + face_dir;
 		face_dir_corrected = -face_dir;
 	}

@@ -25,7 +25,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 enum NodeModType
 {
 	NODEMOD_NONE = 0x0,
-	NODEMOD_CHANGECONTENT = 0x01, //param is content id
+	NODEMOD_UNUSED = 0x01, // used to be CHANGECONTENT - no longer used
 	NODEMOD_CRACK = 0x02, // param is crack progression
 	NODEMOD_SELECTION = 0x04 // param is ignored
 };
