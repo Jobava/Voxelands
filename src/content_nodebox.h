@@ -56,5 +56,6 @@ void content_nodebox_pistonarm_up(ContentFeatures *f);
 void content_nodebox_piston_down(ContentFeatures *f);
 void content_nodebox_pistonarm_down(ContentFeatures *f);
 void content_nodebox_waterwheel(ContentFeatures *f);
+void content_nodebox_clock(ContentFeatures *f);
 
 #endif

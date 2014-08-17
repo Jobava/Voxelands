@@ -446,6 +446,20 @@ private:
 	Inventory *m_inventory;
 };
 
+class ClockNodeMetadata : public NodeMetadata
+{
+public:
+	ClockNodeMetadata();
+	virtual u16 typeId() const;
+	static NodeMetadata* create(std::istream &is);
+	virtual NodeMetadata* clone();
+	virtual void serializeBody(std::ostream &os);
+	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
+	virtual std::vector<aabb3f> getNodeBoxes(MapNode &n);
+private:
+	u16 m_time;
+};
+
 class CircuitNodeMetadata : public NodeMetadata
 {
 public:

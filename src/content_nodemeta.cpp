@@ -1989,6 +1989,85 @@ std::vector<aabb3f> BookShelfNodeMetadata::getNodeBoxes(MapNode &n) {
 }
 
 /*
+	ClockNodeMetadata
+*/
+
+// Prototype
+ClockNodeMetadata proto_ClockNodeMetadata;
+
+ClockNodeMetadata::ClockNodeMetadata():
+	m_time(0)
+{
+	NodeMetadata::registerType(typeId(), create);
+}
+u16 ClockNodeMetadata::typeId() const
+{
+	return CONTENT_CLOCK;
+}
+NodeMetadata* ClockNodeMetadata::create(std::istream &is)
+{
+	ClockNodeMetadata *d = new ClockNodeMetadata();
+	int temp;
+	is>>temp;
+	d->m_time = temp;
+	return d;
+}
+NodeMetadata* ClockNodeMetadata::clone()
+{
+	ClockNodeMetadata *d = new ClockNodeMetadata();
+	return d;
+}
+void ClockNodeMetadata::serializeBody(std::ostream &os)
+{
+	os<<itos(m_time) << " ";
+}
+std::vector<aabb3f> ClockNodeMetadata::getNodeBoxes(MapNode &n) {
+	std::vector<aabb3f> boxes;
+	boxes.clear();
+
+	u16 h = m_time/100;
+	u16 m = (u16)((float)(m_time%100)/1.6667);
+
+	u16 v[4];
+	v[0] = h/10;
+	v[1] = h%10;
+	v[2] = m/10;
+	v[3] = m%10;
+
+	f32 x[4] = {-0.125,0.0625,0.3125,0.5};
+
+	u8 b[10] = {0xFC,0x0C,0xB6,0x9E,0x4E,0xDA,0xFA,0x8C,0xFE,0xDE};
+
+	for (int i=0; i<4; i++) {
+		if ((b[v[i]]&0x80))
+			boxes.push_back(aabb3f((-0.25+x[i])*BS,0.0625*BS,-0.125*BS,(-0.0625+x[i])*BS,0.125*BS,-0.0625*BS));
+		if ((b[v[i]]&0x04))
+			boxes.push_back(aabb3f((-0.125+x[i])*BS,-0.0625*BS,-0.125*BS,(-0.0625+x[i])*BS,0.0625*BS,-0.0625*BS));
+		if ((b[v[i]]&0x08))
+			boxes.push_back(aabb3f((-0.125+x[i])*BS,-0.25*BS,-0.125*BS,(-0.0625+x[i])*BS,-0.125*BS,-0.0625*BS));
+		if ((b[v[i]]&0x10))
+			boxes.push_back(aabb3f((-0.25+x[i])*BS,-0.3125*BS,-0.125*BS,(-0.0625+x[i])*BS,-0.25*BS,-0.0625*BS));
+		if ((b[v[i]]&0x20))
+			boxes.push_back(aabb3f((-0.25+x[i])*BS,-0.25*BS,-0.125*BS,(-0.1875+x[i])*BS,-0.125*BS,-0.0625*BS));
+		if ((b[v[i]]&0x40))
+			boxes.push_back(aabb3f((-0.25+x[i])*BS,-0.0625*BS,-0.125*BS,(-0.1875+x[i])*BS,0.0625*BS,-0.0625*BS));
+		if ((b[v[i]]&0x02))
+			boxes.push_back(aabb3f((-0.1875+x[i])*BS,-0.125*BS,-0.125*BS,(-0.125+x[i])*BS,-0.0625*BS,-0.0625*BS));
+	}
+
+	return transformNodeBox(n,boxes);
+}
+bool ClockNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
+{
+	u32 t = env->getTimeOfDay();
+	t /= 10;
+	if (t == m_time)
+		return false;
+	m_time = t;
+	return true;
+}
+
+/*
 	CircuitNodeMetadata
 */
 

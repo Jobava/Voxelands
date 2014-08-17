@@ -110,7 +110,9 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_PAINTING_CANVAS 0x824
 #define CONTENT_PAINTING_WHITE 0x825
 
-// FREE 826-835
+// FREE 826-82F
+#define CONTENT_CLOCK 0x830
+// FREE 931-835
 
 #define CONTENT_COUCH_CENTRE 0x836
 #define CONTENT_COUCH_ENDL 0x837

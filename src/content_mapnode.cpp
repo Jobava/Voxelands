@@ -9290,6 +9290,41 @@ void content_mapnode_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
+	i = CONTENT_CLOCK;
+	f = &content_features(i);
+	f->description = std::string("Clock");
+	f->setAllTextures("clock.png");
+	f->setTexture(5, "clock_front.png");
+	f->setAllMetaTextures("clock_numbers.png");
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX_META;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->walkable = false;
+	f->air_equivalent = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 1;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->type = CMT_WOOD;
+	f->hardness = 0.1;
+	content_nodebox_clock(f);
+	f->setInventoryTextureNodeBox(i,"clock.png","clock_front.png","clock.png");
+	f->pressure_type = CST_CRUSHABLE;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new ClockNodeMetadata();
+	{
+		u16 r[9] = {
+			CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_CRAFTITEM_PINE_PLANK,
+			CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_CRAFTITEM_MESEDUST,	CONTENT_CRAFTITEM_PINE_PLANK,
+			CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_CRAFTITEM_PINE_PLANK
+		};
+		crafting::setRecipe(r,CONTENT_CLOCK,1);
+	}
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
 	i = CONTENT_CIRCUIT_MESEWIRE;
 	f = &content_features(i);
 	f->description = std::string("Mese Wire");
