@@ -116,6 +116,8 @@
 #anisotropic_filter = true
 #bilinear_filter = false
 #trilinear_filter = false
+# How to show the node being pointed at (outline or hilight)
+#selected_node = hilight
 
 #
 # Server stuff

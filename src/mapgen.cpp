@@ -1500,13 +1500,13 @@ void make_block(BlockMakeData *data)
 				}else if (noisebuf_ground_crumbleness.get(x,y,z) > 0.4) {
 					new_content = MapNode(CONTENT_STONE, MINERAL_SILVER);
 				}else if (noisebuf_ground_crumbleness.get(x,y,z) > 0.3) {
-					new_content = MapNode(CONTENT_STONE, MINERAL_GOLD);
+					new_content = MapNode(CONTENT_STONE, MINERAL_QUARTZ);
 				}else if (noisebuf_ground_crumbleness.get(x,y,z) > 0.2) {
 					new_content = MapNode(CONTENT_STONE, MINERAL_COPPER);
 				}else if (noisebuf_ground_crumbleness.get(x,y,z) > 0.1) {
 					new_content = MapNode(CONTENT_STONE, MINERAL_TIN);
 				}else if (noisebuf_ground_wetness.get(x,y+5,z) > 0.0) {
-					new_content = MapNode(CONTENT_STONE, MINERAL_QUARTZ);
+					new_content = MapNode(CONTENT_STONE, MINERAL_GOLD);
 				}
 
 				if(new_content.getContent() != CONTENT_IGNORE)

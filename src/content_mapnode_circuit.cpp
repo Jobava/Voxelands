@@ -34,6 +34,7 @@ void content_mapnode_circuit(bool repeat)
 	f = &content_features(i);
 	f->description = std::string("Mese Wire");
 	f->setAllTextures("mese_wire.png");
+	f->setAllTextureFlags(0);
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_WIRELIKE;
 	f->energy_type = CET_CONDUCTIVE;
@@ -56,6 +57,7 @@ void content_mapnode_circuit(bool repeat)
 	f = &content_features(i);
 	f->description = std::string("Copper Wire");
 	f->setAllTextures("copper_wire.png");
+	f->setAllTextureFlags(0);
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_WIRELIKE;
 	f->energy_type = CET_CONDUCTIVE;
@@ -175,6 +177,7 @@ void content_mapnode_circuit(bool repeat)
 	f->setAllMetaTextures("stone.png");
 	f->setMetaTexture(5,"circuit_switch_active_front.png");
 	f->param_type = CPT_FACEDIR_WALLMOUNT;
+	f->param2_type = CPT_LIGHT;
 	f->draw_type = CDT_NODEBOX_META;
 	f->rotate_tile_with_nodebox = true;
 	f->is_ground_content = true;
@@ -204,6 +207,7 @@ void content_mapnode_circuit(bool repeat)
 	f->description = std::string("Button");
 	f->setAllTextures("stone.png");
 	f->param_type = CPT_FACEDIR_WALLMOUNT;
+	f->param2_type = CPT_LIGHT;
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->energy_type = CET_SWITCH;

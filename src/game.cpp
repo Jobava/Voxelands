@@ -1796,8 +1796,11 @@ void the_game(
 				Visualize selection
 			*/
 
-			//hilightboxes.push_back(nodehilightbox);
-			client.setTempMod(nodepos, NodeMod(NODEMOD_SELECTION));
+			if (g_settings->exists("selected_node") && g_settings->get("selected_node") == "outline") {
+				hilightboxes.push_back(nodehilightbox);
+			}else{
+				client.setTempMod(nodepos, NodeMod(NODEMOD_SELECTION));
+			}
 
 			if(nodig_delay_counter > 0.0)
 			{
