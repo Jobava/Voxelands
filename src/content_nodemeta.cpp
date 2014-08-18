@@ -2229,6 +2229,24 @@ bool SwitchNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s
 	m_energy = level;
 	return true;
 }
+std::vector<aabb3f>  SwitchNodeMetadata::getNodeBoxes(MapNode &n)
+{
+	std::vector<aabb3f> boxes;
+	boxes.clear();
+
+	if (m_energy) {
+		boxes.push_back(core::aabbox3d<f32>(
+			-0.125*BS,0.*BS,0.375*BS,-0.0625*BS,0.0625*BS,0.4375*BS
+		));
+	}else{
+		boxes.push_back(core::aabbox3d<f32>(
+			0.0625*BS,0.*BS,0.375*BS,0.125*BS,0.0625*BS,0.4375*BS
+		));
+	}
+
+	return transformNodeBox(n,boxes);
+}
+
 
 /*
 	ButtonNodeMetadata

@@ -172,8 +172,10 @@ void content_mapnode_circuit(bool repeat)
 	f->description = std::string("Switch");
 	f->setAllTextures("stone.png");
 	f->setTexture(5,"circuit_switch_front.png");
+	f->setAllMetaTextures("stone.png");
+	f->setMetaTexture(5,"circuit_switch_active_front.png");
 	f->param_type = CPT_FACEDIR_WALLMOUNT;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_NODEBOX_META;
 	f->rotate_tile_with_nodebox = true;
 	f->is_ground_content = true;
 	f->energy_type = CET_SWITCH;

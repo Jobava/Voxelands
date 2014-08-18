@@ -1835,7 +1835,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+blockpos_nodes);
 				if (meta && meta->getEnergy()) {
 					u8 e = meta->getEnergy();
-					e *= 16;
+					e = (e*16)-1;
 					if (e < 80)
 						e = 80;
 					c = video::SColor(255,e,e,e);
