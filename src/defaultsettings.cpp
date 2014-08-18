@@ -107,7 +107,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("enable_damage", "true");
 	settings->setDefault("max_mob_level", "aggressive");
 	settings->setDefault("fixed_map_seed", "");
-	settings->setDefault("give_initial_stuff", "false");
+	settings->setDefault("give_initial_stuff", "true");
 	settings->setDefault("default_password", "");
 	settings->setDefault("default_privs", "build, shout");
 	settings->setDefault("borderstone_radius","5");

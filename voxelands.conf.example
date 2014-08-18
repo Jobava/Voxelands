@@ -141,7 +141,7 @@
 # A chosen map seed for a new map, leave empty for random
 #fixed_map_seed =
 # Gives some stuff to players at the beginning
-#give_initial_stuff = false
+#give_initial_stuff = true
 # New users need to input this password
 #default_password =
 # Don't let players join with an empty password
