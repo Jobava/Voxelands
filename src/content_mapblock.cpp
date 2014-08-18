@@ -1828,8 +1828,21 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				z_minus = true;
 			}
 			TileSpec tile = getNodeTile(n,p,v3s16(0,0,0),data->m_temp_mods);
-			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
-			video::SColor c = MapBlock_LightColor(255, l, selected);
+			video::SColor c;
+			if (selected) {
+				c = video::SColor(255,64,64,255);
+			}else{
+				NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+blockpos_nodes);
+				if (meta && meta->getEnergy()) {
+					u8 e = meta->getEnergy();
+					e *= 16;
+					if (e < 80)
+						e = 80;
+					c = video::SColor(255,e,e,e);
+				}else{
+					c = video::SColor(250,64,64,64);
+				}
+			}
 			f32 sy = tile.texture.y1()-tile.texture.y0();
 			if (!x_plus && !x_minus && !z_plus && !z_minus) {
 				{

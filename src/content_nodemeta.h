@@ -236,10 +236,6 @@ public:
 
 	virtual bool energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
 	{
-		if (level == 0) {
-			m_armed = false;
-			return true;
-		}
 		m_armed = true;
 		m_time = 5.0;
 		return true;

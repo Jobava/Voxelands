@@ -92,18 +92,7 @@ public:
 	// pos is the position of this node
 	// returns false if propogation was stopped
 	virtual bool energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos) {return false;}
-	bool energise(u8 level, v3f powersrc, v3f signalsrc, v3s16 pos)
-	{
-		v3s16 p;
-		v3s16 s;
-		p.X = powersrc.X;
-		p.Y = powersrc.Y;
-		p.Z = powersrc.Z;
-		s.X = signalsrc.X;
-		s.Y = signalsrc.Y;
-		s.Z = signalsrc.Z;
-		return energise(level,p,s,pos);
-	}
+	bool energise(u8 level, v3f powersrc, v3f signalsrc, v3s16 pos) {return false;}
 	virtual u8 getEnergy() {return 0;}
 	virtual std::map<v3s16, u8> *getSources() {return NULL;}
 
