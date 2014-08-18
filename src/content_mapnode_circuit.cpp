@@ -438,7 +438,6 @@ void content_mapnode_circuit(bool repeat)
 	f->visual_solidness = 1;
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_NODEBOX;
-	f->energy_type = CET_CONDUCTIVE;
 	f->rotate_tile_with_nodebox = true;
 	f->special_alternate_node = CONTENT_CIRCUIT_PISTON;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_PISTON_OFF)+" 1";
@@ -505,7 +504,6 @@ void content_mapnode_circuit(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->visual_solidness = 1;
 	f->draw_type = CDT_NODEBOX;
-	f->energy_type = CET_CONDUCTIVE;
 	f->special_alternate_node = CONTENT_CIRCUIT_PISTON_UP;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_PISTON_UP_OFF)+" 1";
 	f->setAllTextures("circuit_piston_arm.png^[transformR270");
@@ -568,7 +566,6 @@ void content_mapnode_circuit(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->visual_solidness = 1;
 	f->draw_type = CDT_NODEBOX;
-	f->energy_type = CET_CONDUCTIVE;
 	f->special_alternate_node = CONTENT_CIRCUIT_PISTON_DOWN;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_PISTON_UP_OFF)+" 1";
 	f->setAllTextures("circuit_piston_arm.png^[transformR90");
@@ -643,7 +640,6 @@ void content_mapnode_circuit(bool repeat)
 	f->visual_solidness = 1;
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_NODEBOX;
-	f->energy_type = CET_CONDUCTIVE;
 	f->rotate_tile_with_nodebox = true;
 	f->special_alternate_node = CONTENT_CIRCUIT_STICKYPISTON;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_STICKYPISTON_OFF)+" 1";
@@ -710,7 +706,6 @@ void content_mapnode_circuit(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->visual_solidness = 1;
 	f->draw_type = CDT_NODEBOX;
-	f->energy_type = CET_CONDUCTIVE;
 	f->special_alternate_node = CONTENT_CIRCUIT_STICKYPISTON_UP;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_STICKYPISTON_UP_OFF)+" 1";
 	f->setAllTextures("circuit_piston_arm.png^[transformR270");
@@ -773,7 +768,6 @@ void content_mapnode_circuit(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->visual_solidness = 1;
 	f->draw_type = CDT_NODEBOX;
-	f->energy_type = CET_CONDUCTIVE;
 	f->special_alternate_node = CONTENT_CIRCUIT_STICKYPISTON_DOWN;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_STICKYPISTON_UP_OFF)+" 1";
 	f->setAllTextures("circuit_piston_arm.png^[transformR90");
