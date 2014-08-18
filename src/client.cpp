@@ -185,7 +185,8 @@ Client::Client(
 		IrrlichtDevice *device,
 		const char *playername,
 		std::string password,
-		MapDrawControl &control):
+		MapDrawControl &control,
+		ISoundManager *sound):
 	m_mesh_update_thread(),
 	m_env(
 		new ClientMap(this, control,
@@ -194,6 +195,7 @@ Client::Client(
 		device->getSceneManager()
 	),
 	m_con(PROTOCOL_ID, 512, CONNECTION_TIMEOUT, this),
+	m_sound(sound),
 	m_device(device),
 	m_server_ser_ver(SER_FMT_VER_INVALID),
 	m_inventory_updated(false),
@@ -2244,6 +2246,8 @@ float Client::getRTT(void)
 
 ISoundManager* Client::getSoundManager()
 {
-	return &dummySoundManager;
+	if (m_sound == NULL)
+		return &dummySoundManager;
+	return m_sound;
 }
 

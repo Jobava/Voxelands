@@ -463,7 +463,9 @@ public:
 
 ISoundManager *createSoundManager()
 {
-	return new OpenALSoundManager();
+	ISoundManager *sound = new OpenALSoundManager();
+	init_sounds(sound);
+	return sound;
 };
 
 #endif

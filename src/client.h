@@ -155,11 +155,12 @@ public:
 	*/
 
 	Client(
-			IrrlichtDevice *device,
-			const char *playername,
-			std::string password,
-			MapDrawControl &control
-			);
+		IrrlichtDevice *device,
+		const char *playername,
+		std::string password,
+		MapDrawControl &control,
+		ISoundManager *sound
+	);
 
 	~Client();
 	/*
@@ -348,6 +349,7 @@ private:
 
 	con::Connection m_con;
 	HTTPClient *m_httpclient;
+	ISoundManager *m_sound;
 
 	IrrlichtDevice *m_device;
 

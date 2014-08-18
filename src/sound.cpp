@@ -22,3 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 // Global DummySoundManager singleton
 DummySoundManager dummySoundManager;
 
+void init_sounds(ISoundManager *sound)
+{
+	sound->loadSound("grass-walk","grass_footstep.1.ogg");
+}

@@ -920,6 +920,8 @@ int main(int argc, char *argv[])
 	// (for texture atlas making)
 	init_mineral();
 
+	ISoundManager *sound = createSoundManager();
+
 	/*
 		Run unit tests
 	*/
@@ -1324,7 +1326,8 @@ int main(int argc, char *argv[])
 				address,
 				port,
 				error_message,
-				configpath
+				configpath,
+				sound
 			);
 
 		} //try

@@ -172,18 +172,34 @@ void Camera::step(f32 dtime)
 		}
 		else
 		{
+			float was = m_view_bobbing_anim;
 			m_view_bobbing_anim = my_modf(m_view_bobbing_anim + offset);
+			if (
+				was == 0
+				|| (was < 0.5f && m_view_bobbing_anim >= 0.5f)
+				|| (was > 0.5f && m_view_bobbing_anim <= 0.5f)
+			) {
+				printf("step\n");
+			}
 		}
 	}
 
-	if (m_digging_button != -1)
-	{
+	if (m_digging_button != -1) {
 		f32 offset = dtime * 3.5;
+		float m_digging_anim_was = m_digging_anim;
 		m_digging_anim += offset;
 		if (m_digging_anim >= 1)
 		{
 			m_digging_anim = 0;
 			m_digging_button = -1;
+		}
+		float lim = 0.15;
+		if (m_digging_anim_was < lim && m_digging_anim >= lim) {
+			if (m_digging_button == 0) {
+				printf("dig\n");
+			}else if(m_digging_button == 1) {
+				printf("place\n");
+			}
 		}
 	}
 }
@@ -210,7 +226,7 @@ void Camera::update(LocalPlayer* player, f32 frametime, v2u32 screensize)
 		f32 bobfrac = my_modf(m_view_bobbing_anim * 2);
 		f32 bobdir = (m_view_bobbing_anim < 0.5) ? 1.0 : -1.0;
 
-		#if 1
+#if 1
 		f32 bobknob = 1.2;
 		f32 bobtmp = sin(pow(bobfrac, bobknob) * PI);
 		//f32 bobtmp2 = cos(pow(bobfrac, bobknob) * PI);
@@ -232,7 +248,7 @@ void Camera::update(LocalPlayer* player, f32 frametime, v2u32 screensize)
 		//rel_cam_target.X -= 0.005 * bobvec.X * f;
 		//rel_cam_target.Y -= 0.005 * bobvec.Y * f;
 		rel_cam_up.rotateXYBy(-0.03 * bobdir * bobtmp * PI * f);
-		#else
+#else
 		f32 angle_deg = 1 * bobdir * sin(bobfrac * PI);
 		f32 angle_rad = angle_deg * PI / 180;
 		f32 r = 0.05;
@@ -243,7 +259,7 @@ void Camera::update(LocalPlayer* player, f32 frametime, v2u32 screensize)
 		rel_cam_pos += off;
 		//rel_cam_target += off;
 		rel_cam_up.rotateXYBy(angle_deg);
-		#endif
+#endif
 
 	}
 

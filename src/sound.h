@@ -90,6 +90,9 @@ public:
 	void updateSoundPosition(int sound, v3f pos) {}
 };
 
+ISoundManager *createSoundManager();
+void init_sounds(ISoundManager *sound);
+
 // Global DummySoundManager singleton
 extern DummySoundManager dummySoundManager;
 

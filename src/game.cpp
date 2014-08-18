@@ -728,7 +728,8 @@ void the_game(
 	std::string address,
 	u16 port,
 	std::wstring &error_message,
-    std::string configpath
+	std::string configpath,
+	ISoundManager *sound
 )
 {
 	video::IVideoDriver* driver = device->getVideoDriver();
@@ -770,7 +771,7 @@ void the_game(
 	draw_load_screen(L"Creating client...", driver, font);
 	infostream<<"Creating client"<<std::endl;
 	MapDrawControl draw_control;
-	Client client(device, playername.c_str(), password, draw_control);
+	Client client(device, playername.c_str(), password, draw_control, sound);
 
 	draw_load_screen(L"Resolving address...", driver, font);
 	Address connect_address(0,0,0,0, port);
