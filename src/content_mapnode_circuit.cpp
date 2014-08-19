@@ -369,7 +369,7 @@ void content_mapnode_circuit(bool repeat)
 			CONTENT_IGNORE, CONTENT_CRAFTITEM_QUARTZ, CONTENT_IGNORE,
 			CONTENT_GLASS, CONTENT_IGNORE, CONTENT_GLASS
 		};
-		crafting::setRecipe(recipe,CONTENT_CIRCUIT_LAMP_OFF,1);
+		crafting::setRecipe(recipe,CONTENT_CIRCUIT_LAMP_OFF,4);
 	}
 	lists::add("craftguide",i);
 	lists::add("creative",i);
