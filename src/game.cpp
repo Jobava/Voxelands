@@ -611,6 +611,8 @@ void getPointedNode(Client *client, v3f player_position,
 			} // for dirs
 		} // regular block
 	} // for coords
+	if (nodefound)
+		client->setPointedNode(nodepos);
 }
 
 void update_skybox(video::IVideoDriver* driver,

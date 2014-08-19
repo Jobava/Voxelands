@@ -325,6 +325,9 @@ public:
 	void playDigSound();
 	void playPlaceSound();
 
+	void setPointedNode(v3s16 p) {m_pointed_node = p;}
+	v3s16 getPointedNode() {return m_pointed_node;}
+
 private:
 
 	// Virtual methods from con::PeerHandler
@@ -364,6 +367,7 @@ private:
 	bool m_inventory_updated;
 
 	core::map<v3s16, bool> m_active_blocks;
+	v3s16 m_pointed_node;
 
 	PacketCounter m_packetcounter;
 

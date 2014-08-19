@@ -349,10 +349,12 @@ struct ClientEnvEvent
 	};
 };
 
+class Client;
+
 class ClientEnvironment : public Environment
 {
 public:
-	ClientEnvironment(ClientMap *map, scene::ISceneManager *smgr);
+	ClientEnvironment(Client *client, ClientMap *map, scene::ISceneManager *smgr);
 	~ClientEnvironment();
 
 	Map & getMap()
@@ -428,6 +430,7 @@ public:
 	ClientEnvEvent getClientEvent();
 
 private:
+	Client *m_client;
 	ClientMap *m_map;
 	scene::ISceneManager *m_smgr;
 	core::map<u16, ClientActiveObject*> m_active_objects;

@@ -96,6 +96,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("anisotropic_filter", "true");
 	settings->setDefault("bilinear_filter", "false");
 	settings->setDefault("trilinear_filter", "false");
+	settings->setDefault("sound_volume", "50");
 
 	// Server stuff
 	// "map-dir" doesn't exist by default.

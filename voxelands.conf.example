@@ -118,6 +118,8 @@
 #trilinear_filter = false
 # How to show the node being pointed at (outline or hilight)
 #selected_node = hilight
+# Volume for sound effects (0-100)
+#sound_volume = 50
 
 #
 # Server stuff

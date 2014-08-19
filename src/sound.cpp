@@ -53,12 +53,20 @@ void init_sounds(ISoundManager *sound)
 
 	// digging
 	// CMT_DIRT
+	sound->loadSound("dirt-dig","dig_dirt.1.ogg");
 	// CMT_STONE
+	sound->loadSound("stone-dig","dig_stone.1.ogg");
 	// CMT_PLANT
+	sound->loadSound("plant-dig","dig_plant.1.ogg");
 	// CMT_LIQUID
+	sound->loadSound("liquid-dig","dig_liquid.1.ogg");
 	// CMT_WOOD
+	sound->loadSound("wood-dig","dig_wood.1.ogg");
 
 	// placing
+	sound->loadSound("place","place_node.1.ogg");
+	sound->loadSound("place","place_node.2.ogg");
+	sound->loadSound("place","place_node.3.ogg");
 	// CMT_DIRT
 	// CMT_STONE
 	// CMT_PLANT

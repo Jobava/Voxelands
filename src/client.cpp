@@ -189,6 +189,7 @@ Client::Client(
 		ISoundManager *sound):
 	m_mesh_update_thread(),
 	m_env(
+		this,
 		new ClientMap(this, control,
 			device->getSceneManager()->getRootSceneNode(),
 			device->getSceneManager(), 666),
@@ -199,6 +200,7 @@ Client::Client(
 	m_device(device),
 	m_server_ser_ver(SER_FMT_VER_INVALID),
 	m_inventory_updated(false),
+	m_pointed_node(-32768,-32768,-32768),
 	m_time_of_day(0),
 	m_map_seed(0),
 	m_password(password),
@@ -1573,6 +1575,8 @@ void Client::groundAction(u8 action, v3s16 nodepos_undersurface,
 	writeV3S16(&data[9], nodepos_oversurface);
 	writeU16(&data[15], item);
 	Send(0, data, true);
+	if (action == 3)
+		playDigSound();
 }
 
 void Client::clickActiveObject(u8 button, u16 id, u16 item_i)
@@ -2256,6 +2260,13 @@ void Client::playStepSound()
 	if (!m_sound)
 		return;
 
+	f32 volume = g_settings->getFloat("sound_volume");
+	if (volume < 1.0)
+		return;
+	if (volume > 100.0)
+		volume = 100.0;
+	volume /= 100.0;
+
 	v3f pf = m_env.getLocalPlayer()->getPosition();
 	v3s16 pp = floatToInt(pf + v3f(0, BS*0.1, 0), BS);
 	MapNode n = m_env.getMap().getNodeNoEx(pp);
@@ -2265,19 +2276,19 @@ void Client::playStepSound()
 	}
 	switch (content_features(n).type) {
 	case CMT_PLANT:
-		m_sound->playSound("plant-walk",false,1.0);
+		m_sound->playSound("plant-walk",false,volume);
 		break;
 	case CMT_DIRT:
-		m_sound->playSound("dirt-walk",false,1.0);
+		m_sound->playSound("dirt-walk",false,volume);
 		break;
 	case CMT_STONE:
-		m_sound->playSound("stone-walk",false,1.0);
+		m_sound->playSound("stone-walk",false,volume);
 		break;
 	case CMT_LIQUID:
-		m_sound->playSound("liquid-walk",false,1.0);
+		m_sound->playSound("liquid-walk",false,volume);
 		break;
 	case CMT_WOOD:
-		m_sound->playSound("wood-walk",false,1.0);
+		m_sound->playSound("wood-walk",false,volume);
 		break;
 	default:;
 	}
@@ -2287,13 +2298,45 @@ void Client::playDigSound()
 {
 	if (!m_sound)
 		return;
-	printf("dig\n");
+
+	f32 volume = g_settings->getFloat("sound_volume");
+	if (volume < 1.0)
+		return;
+	if (volume > 100.0)
+		volume = 100.0;
+	volume /= 100.0;
+	v3s16 p = getPointedNode();
+	MapNode n = m_env.getMap().getNodeNoEx(p);
+	switch (content_features(n).type) {
+	case CMT_PLANT:
+		m_sound->playSound("plant-dig",false,volume);
+		break;
+	case CMT_DIRT:
+		m_sound->playSound("dirt-dig",false,volume);
+		break;
+	case CMT_STONE:
+		m_sound->playSound("stone-dig",false,volume);
+		break;
+	case CMT_LIQUID:
+		m_sound->playSound("liquid-dig",false,volume);
+		break;
+	case CMT_WOOD:
+		m_sound->playSound("wood-dig",false,volume);
+		break;
+	default:;
+	}
 }
 
 void Client::playPlaceSound()
 {
 	if (!m_sound)
 		return;
-	printf("place\n");
-}
 
+	f32 volume = g_settings->getFloat("sound_volume");
+	if (volume < 1.0)
+		return;
+	if (volume > 100.0)
+		volume = 100.0;
+	volume /= 100.0;
+	m_sound->playSound("place",false,volume);
+}

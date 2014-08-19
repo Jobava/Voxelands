@@ -32,6 +32,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "log.h"
 #include "profiler.h"
 #include "server.h"
+#include "client.h"
 
 #define PP(x) "("<<(x).X<<","<<(x).Y<<","<<(x).Z<<")"
 
@@ -3775,7 +3776,8 @@ void ServerEnvironment::deactivateFarObjects(bool force_delete)
 	ClientEnvironment
 */
 
-ClientEnvironment::ClientEnvironment(ClientMap *map, scene::ISceneManager *smgr):
+ClientEnvironment::ClientEnvironment(Client *client, ClientMap *map, scene::ISceneManager *smgr):
+	m_client(client),
 	m_map(map),
 	m_smgr(smgr)
 {
@@ -3938,11 +3940,12 @@ void ClientEnvironment::step(float dtime)
 			i != player_collisions.end(); i++)
 	{
 		CollisionInfo &info = *i;
-		if(info.t == COLLISION_FALL)
-		{
+		if (info.t == COLLISION_FALL) {
 			//f32 tolerance = BS*10; // 2 without damage
 			f32 tolerance = BS*12; // 3 without damage
 			f32 factor = 1;
+			if (info.speed > tolerance/2.0)
+				m_client->playStepSound();
 			if(info.speed > tolerance)
 			{
 				f32 damage_f = (info.speed - tolerance)/BS*factor;
