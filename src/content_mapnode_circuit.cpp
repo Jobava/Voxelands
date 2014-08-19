@@ -176,8 +176,8 @@ void content_mapnode_circuit(bool repeat)
 	f->setTexture(5,"circuit_switch_front.png");
 	f->setAllMetaTextures("stone.png");
 	f->setMetaTexture(5,"circuit_switch_active_front.png");
-	f->param_type = CPT_FACEDIR_WALLMOUNT;
-	f->param2_type = CPT_LIGHT;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_WALLMOUNT;
 	f->draw_type = CDT_NODEBOX_META;
 	f->rotate_tile_with_nodebox = true;
 	f->is_ground_content = true;
@@ -206,8 +206,8 @@ void content_mapnode_circuit(bool repeat)
 	f = &content_features(i);
 	f->description = std::string("Button");
 	f->setAllTextures("stone.png");
-	f->param_type = CPT_FACEDIR_WALLMOUNT;
-	f->param2_type = CPT_LIGHT;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_WALLMOUNT;
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->energy_type = CET_SWITCH;
