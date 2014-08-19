@@ -24,5 +24,44 @@ DummySoundManager dummySoundManager;
 
 void init_sounds(ISoundManager *sound)
 {
-	sound->loadSound("grass-walk","grass_footstep.1.ogg");
+	// walking
+	// CMT_DIRT
+	sound->loadSound("dirt-walk","dirt_footstep.1.ogg");
+	sound->loadSound("dirt-walk","dirt_footstep.2.ogg");
+	sound->loadSound("dirt-walk","dirt_footstep.3.ogg");
+	sound->loadSound("dirt-walk","dirt_footstep.4.ogg");
+	// CMT_STONE
+	sound->loadSound("stone-walk","stone_footstep.1.ogg");
+	sound->loadSound("stone-walk","stone_footstep.2.ogg");
+	sound->loadSound("stone-walk","stone_footstep.3.ogg");
+	sound->loadSound("stone-walk","stone_footstep.4.ogg");
+	// CMT_PLANT
+	sound->loadSound("plant-walk","plant_footstep.1.ogg");
+	sound->loadSound("plant-walk","plant_footstep.2.ogg");
+	sound->loadSound("plant-walk","plant_footstep.3.ogg");
+	sound->loadSound("plant-walk","plant_footstep.4.ogg");
+	// CMT_LIQUID
+	sound->loadSound("liquid-walk","liquid_footstep.1.ogg");
+	sound->loadSound("liquid-walk","liquid_footstep.2.ogg");
+	sound->loadSound("liquid-walk","liquid_footstep.3.ogg");
+	sound->loadSound("liquid-walk","liquid_footstep.4.ogg");
+	// CMT_WOOD
+	sound->loadSound("wood-walk","wood_footstep.1.ogg");
+	sound->loadSound("wood-walk","wood_footstep.2.ogg");
+	sound->loadSound("wood-walk","wood_footstep.3.ogg");
+	sound->loadSound("wood-walk","wood_footstep.4.ogg");
+
+	// digging
+	// CMT_DIRT
+	// CMT_STONE
+	// CMT_PLANT
+	// CMT_LIQUID
+	// CMT_WOOD
+
+	// placing
+	// CMT_DIRT
+	// CMT_STONE
+	// CMT_PLANT
+	// CMT_LIQUID
+	// CMT_WOOD
 }

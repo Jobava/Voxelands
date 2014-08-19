@@ -262,6 +262,7 @@ public:
 		}
 		std::vector<SoundBuffer*> bufs;
 		bufs.push_back(buf);
+		m_buffers[name] = bufs;
 		return;
 	}
 
@@ -413,10 +414,10 @@ public:
 	int playSound(const std::string &name, bool loop, float volume)
 	{
 		maintain();
-		if(name == "")
+		if (name == "")
 			return 0;
 		SoundBuffer *buf = getBuffer(name);
-		if(!buf){
+		if (!buf) {
 			infostream<<"OpenALSoundManager: \""<<name<<"\" not found."
 					<<std::endl;
 			return -1;

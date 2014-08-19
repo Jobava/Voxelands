@@ -867,7 +867,7 @@ void the_game(
 	/*
 		Create the camera node
 	*/
-	Camera camera(smgr, draw_control);
+	Camera camera(smgr, draw_control, &client);
 	if (!camera.successfullyCreated(error_message))
 		return;
 

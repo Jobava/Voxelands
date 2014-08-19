@@ -33,7 +33,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #define CAMERA_OFFSET_STEP 200
 
-Camera::Camera(scene::ISceneManager* smgr, MapDrawControl& draw_control):
+Camera::Camera(scene::ISceneManager* smgr, MapDrawControl& draw_control, Client *client):
+	m_client(client),
 	m_smgr(smgr),
 	m_playernode(NULL),
 	m_headnode(NULL),
@@ -129,25 +130,9 @@ inline f32 my_modf(f32 x)
 
 void Camera::step(f32 dtime)
 {
-	if (m_view_bobbing_state != 0)
-	{
-		//f32 offset = dtime * m_view_bobbing_speed * 0.035;
+	if (m_view_bobbing_state != 0) {
 		f32 offset = dtime * m_view_bobbing_speed * 0.030;
-		if (m_view_bobbing_state == 2)
-		{
-#if 0
-			// Animation is getting turned off
-			if (m_view_bobbing_anim < 0.5)
-				m_view_bobbing_anim -= offset;
-			else
-				m_view_bobbing_anim += offset;
-			if (m_view_bobbing_anim <= 0 || m_view_bobbing_anim >= 1)
-			{
-				m_view_bobbing_anim = 0;
-				m_view_bobbing_state = 0;
-			}
-#endif
-#if 1
+		if (m_view_bobbing_state == 2) {
 			// Animation is getting turned off
 			if(m_view_bobbing_anim < 0.25){
 				m_view_bobbing_anim -= offset;
@@ -168,10 +153,7 @@ void Camera::step(f32 dtime)
 				m_view_bobbing_anim = 0;
 				m_view_bobbing_state = 0;
 			}
-#endif
-		}
-		else
-		{
+		}else{
 			float was = m_view_bobbing_anim;
 			m_view_bobbing_anim = my_modf(m_view_bobbing_anim + offset);
 			if (
@@ -179,7 +161,7 @@ void Camera::step(f32 dtime)
 				|| (was < 0.5f && m_view_bobbing_anim >= 0.5f)
 				|| (was > 0.5f && m_view_bobbing_anim <= 0.5f)
 			) {
-				printf("step\n");
+				m_client->playStepSound();
 			}
 		}
 	}
@@ -188,17 +170,16 @@ void Camera::step(f32 dtime)
 		f32 offset = dtime * 3.5;
 		float m_digging_anim_was = m_digging_anim;
 		m_digging_anim += offset;
-		if (m_digging_anim >= 1)
-		{
+		if (m_digging_anim >= 1) {
 			m_digging_anim = 0;
 			m_digging_button = -1;
 		}
 		float lim = 0.15;
 		if (m_digging_anim_was < lim && m_digging_anim >= lim) {
 			if (m_digging_button == 0) {
-				printf("dig\n");
+				m_client->playDigSound();
 			}else if(m_digging_button == 1) {
-				printf("place\n");
+				m_client->playPlaceSound();
 			}
 		}
 	}

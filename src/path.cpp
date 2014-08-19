@@ -139,7 +139,7 @@ std::string getPath(const char* tp, const std::string &filename, bool must_exist
 	std::string data_path = g_settings->get("data_path");
 	if (data_path != "") {
 		std::string testpath = data_path + DIR_DELIM + rel_path;
-		if (type == "model" || type == "html") {
+		if (type == "model" || type == "html" || type == "sound") {
 			if (fs::PathExists(testpath))
 				fullpath = std::string(testpath);
 		}else{
@@ -150,7 +150,7 @@ std::string getPath(const char* tp, const std::string &filename, bool must_exist
 	/* check from user data directory */
 	if (fullpath == "") {
 		std::string testpath = porting::path_userdata + DIR_DELIM + rel_path;
-		if (type == "model" || type == "html") {
+		if (type == "model" || type == "html" || type == "sound") {
 			if (fs::PathExists(testpath))
 				fullpath = std::string(testpath);
 		}else{
@@ -161,7 +161,7 @@ std::string getPath(const char* tp, const std::string &filename, bool must_exist
 	/* check from default data directory */
 	if (fullpath == "") {
 		std::string testpath = porting::path_data + DIR_DELIM + rel_path;
-		if (type == "model" || type == "html") {
+		if (type == "model" || type == "html" || type == "sound") {
 			if (fs::PathExists(testpath))
 				fullpath = std::string(testpath);
 		}else{

@@ -321,6 +321,10 @@ public:
 	float getRTT(void);
 	virtual ISoundManager* getSoundManager();
 
+	void playStepSound();
+	void playDigSound();
+	void playPlaceSound();
+
 private:
 
 	// Virtual methods from con::PeerHandler

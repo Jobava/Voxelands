@@ -31,6 +31,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 class LocalPlayer;
 class MapDrawControl;
 class ExtrudedSpriteSceneNode;
+class Client;
 
 /*
 	Client camera class, manages the player and camera scene nodes, the viewing distance
@@ -40,7 +41,7 @@ class ExtrudedSpriteSceneNode;
 class Camera
 {
 public:
-	Camera(scene::ISceneManager* smgr, MapDrawControl& draw_control);
+	Camera(scene::ISceneManager* smgr, MapDrawControl& draw_control, Client *client);
 	~Camera();
 
 	// Get player scene node.
@@ -130,6 +131,7 @@ public:
 	void drawWieldedTool();
 
 private:
+	Client *m_client;
 	// Scene manager and nodes
 	scene::ISceneManager* m_smgr;
 	scene::ISceneNode* m_playernode;

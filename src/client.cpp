@@ -2251,3 +2251,49 @@ ISoundManager* Client::getSoundManager()
 	return m_sound;
 }
 
+void Client::playStepSound()
+{
+	if (!m_sound)
+		return;
+
+	v3f pf = m_env.getLocalPlayer()->getPosition();
+	v3s16 pp = floatToInt(pf + v3f(0, BS*0.1, 0), BS);
+	MapNode n = m_env.getMap().getNodeNoEx(pp);
+	if (content_features(n).type == CMT_AIR) {
+		pp.Y--;
+		n = m_env.getMap().getNodeNoEx(pp);
+	}
+	switch (content_features(n).type) {
+	case CMT_PLANT:
+		m_sound->playSound("plant-walk",false,1.0);
+		break;
+	case CMT_DIRT:
+		m_sound->playSound("dirt-walk",false,1.0);
+		break;
+	case CMT_STONE:
+		m_sound->playSound("stone-walk",false,1.0);
+		break;
+	case CMT_LIQUID:
+		m_sound->playSound("liquid-walk",false,1.0);
+		break;
+	case CMT_WOOD:
+		m_sound->playSound("wood-walk",false,1.0);
+		break;
+	default:;
+	}
+}
+
+void Client::playDigSound()
+{
+	if (!m_sound)
+		return;
+	printf("dig\n");
+}
+
+void Client::playPlaceSound()
+{
+	if (!m_sound)
+		return;
+	printf("place\n");
+}
+
