@@ -2770,12 +2770,18 @@ void ServerEnvironment::step(float dtime)
 						case 17:
 						case 18:
 						case 19:
-							n = MapNode(CONTENT_STONE, MINERAL_COPPER);
+							n = MapNode(CONTENT_STONE, MINERAL_QUARTZ);
 							break;
 						case 20:
+						case 21:
+						case 22:
+						case 23:
+							n = MapNode(CONTENT_STONE, MINERAL_COPPER);
+							break;
+						case 24:
 							n = MapNode(CONTENT_STONE, MINERAL_SILVER);
 							break;
-						case 21:
+						case 25:
 							n = MapNode(CONTENT_STONE, MINERAL_GOLD);
 							break;
 						default:
