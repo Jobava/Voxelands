@@ -293,9 +293,9 @@ void content_mapnode_circuit(bool repeat)
 	f->setAllTextures("circuit_gate.png");
 	f->setTexture(0,"circuit_gate_top.png");
 	f->rotate_tile_with_nodebox = true;
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_NODEBOX;
-	f->is_ground_content = true;
 	f->energy_type = CET_GATE;
 	f->energy_drop = 0;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -313,6 +313,36 @@ void content_mapnode_circuit(bool repeat)
 			CONTENT_IGNORE, CONTENT_IGNORE, CONTENT_IGNORE
 		};
 		crafting::setRecipe(recipe,CONTENT_CIRCUIT_NOTGATE,1);
+	}
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CIRCUIT_REPEATER;
+	f = &content_features(i);
+	f->description = std::string("Repeater");
+	f->setAllTextures("circuit_repeater.png");
+	f->setTexture(0,"circuit_repeater_top.png");
+	f->rotate_tile_with_nodebox = true;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->energy_type = CET_GATE;
+	f->energy_drop = 0;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->type = CMT_STONE;
+	f->hardness = 1.0;
+	content_nodebox_logicgate(f);
+	f->setInventoryTextureNodeBox(i,"circuit_repeater_top.png","circuit_repeater.png","circuit_repeater.png");
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new RepeaterNodeMetadata();
+	{
+		u16 recipe[9] = {
+			CONTENT_IGNORE,			CONTENT_IGNORE,	CONTENT_IGNORE,
+			CONTENT_CRAFTITEM_MESEDUST,	CONTENT_STONE,	CONTENT_CRAFTITEM_MESEDUST,
+			CONTENT_IGNORE,			CONTENT_IGNORE,	CONTENT_IGNORE
+		};
+		crafting::setRecipe(recipe,CONTENT_CIRCUIT_REPEATER,1);
 	}
 	lists::add("craftguide",i);
 	lists::add("creative",i);

@@ -2597,6 +2597,106 @@ bool NotGateNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3
 	return true;
 }
 
+/*
+	RepeaterNodeMetadata
+*/
+
+// Prototype
+RepeaterNodeMetadata proto_RepeaterNodeMetadata;
+
+RepeaterNodeMetadata::RepeaterNodeMetadata():
+	m_ticks(0)
+{
+	m_energy = 0;
+	m_ptime = 0;
+	m_sources.clear();
+	NodeMetadata::registerType(typeId(), create);
+}
+u16 RepeaterNodeMetadata::typeId() const
+{
+	return CONTENT_CIRCUIT_REPEATER;
+}
+NodeMetadata* RepeaterNodeMetadata::create(std::istream &is)
+{
+	RepeaterNodeMetadata *d = new RepeaterNodeMetadata();
+	int temp;
+	is>>temp;
+	d->m_energy = temp;
+	is>>temp;
+	d->m_ticks = temp;
+	is>>temp;
+	d->m_ptime = (float)temp/10;
+	int i;
+	is>>i;
+	v3s16 p;
+	for (; i > 0; i--) {
+		is>>temp;
+		p.X = temp;
+		is>>temp;
+		p.Y = temp;
+		is>>temp;
+		p.Z = temp;
+		is>>temp;
+		d->m_sources[p] = temp;
+	}
+	return d;
+}
+NodeMetadata* RepeaterNodeMetadata::clone()
+{
+	RepeaterNodeMetadata *d = new RepeaterNodeMetadata();
+	return d;
+}
+void RepeaterNodeMetadata::serializeBody(std::ostream &os)
+{
+	os<<itos(m_energy) << " ";
+	os<<itos(m_ticks) << " ";
+	os<<itos(m_ptime*10)<<" ";
+	os<<itos(m_sources.size()) << " ";
+	for (std::map<v3s16,u8>::iterator i = m_sources.begin(); i != m_sources.end(); i++) {
+		os<<itos(i->first.X) << " ";
+		os<<itos(i->first.Y) << " ";
+		os<<itos(i->first.Z) << " ";
+		os<<itos(i->second) << " ";
+	}
+}
+bool RepeaterNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
+{
+	m_ptime += dtime;
+	if (m_ptime > 1.0 && m_ticks > 0) {
+		m_energy = 0;
+		m_ticks--;
+	}
+	if (!m_energy && !m_ticks) {
+		return false;
+	}else if (m_energy && m_ticks < 3) {
+		m_ticks++;
+		return true;
+	}
+
+	env->propogateEnergy(ENERGY_MAX,pos,pos,pos);
+	return true;
+}
+bool RepeaterNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
+{
+	if (powersrc == pos)
+		return true;
+	m_ptime = 0;
+	if (level && m_sources[powersrc] > level)
+		return false;
+	if (!level || m_energy < level) {
+		m_energy = level;
+		if (!level) {
+			m_sources.erase(powersrc);
+			for (std::map<v3s16,u8>::iterator i = m_sources.begin(); i != m_sources.end(); i++) {
+				u8 v = i->second;
+				if (v > m_energy)
+					m_energy = v;
+			}
+		}
+	}
+	return true;
+}
+
 
 /*
 	DoorNodeMetadata

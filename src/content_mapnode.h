@@ -553,6 +553,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_CIRCUIT_BUTTON 0xF25
 #define CONTENT_CIRCUIT_PRESSUREPLATE_WOOD 0xF26
 #define CONTENT_CIRCUIT_PRESSUREPLATE_STONE 0xF27
+#define CONTENT_CIRCUIT_REPEATER 0xF28
 // circuits - gadgets
 #define CONTENT_CIRCUIT_LAMP 0xF40
 #define CONTENT_CIRCUIT_LAMP_OFF 0xF41
