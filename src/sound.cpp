@@ -73,3 +73,13 @@ void init_sounds(ISoundManager *sound)
 	// CMT_LIQUID
 	// CMT_WOOD
 }
+
+
+#ifdef SERVER
+
+ISoundManager *createSoundManager()
+{
+	return NULL;
+};
+
+#endif

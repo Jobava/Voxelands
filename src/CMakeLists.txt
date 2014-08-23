@@ -35,6 +35,7 @@ OPTION(ENABLE_AUDIO "Enable audio" ON)
 # this is only set to 1 if audio is enabled _and_ available
 set(USE_AUDIO 0)
 
+if(BUILD_CLIENT)
 if(ENABLE_AUDIO)
 	# Sound libraries
 	find_package(OpenAL)
@@ -59,6 +60,12 @@ if(ENABLE_AUDIO)
 		message(FATAL_ERROR "Sound enabled, but OpenAL not found!")
 	endif(OPENAL_FOUND)
 endif(ENABLE_AUDIO)
+endif(BUILD_CLIENT)
+
+if(USE_AUDIO)
+else()
+	set(audio_SRCS sound.cpp)
+endif(USE_AUDIO)
 
 if(NOT MSVC)
 	set(USE_GPROF 0 CACHE BOOL "Use -pg flag for g++")
