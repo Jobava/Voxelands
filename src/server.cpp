@@ -2649,8 +2649,10 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						}
 					}
 					NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
-					if (meta && !meta->getEnergy())
-						meta->energise(ENERGY_MAX,player->getPosition(),player->getPosition(),p_under);
+					if (meta && !meta->getEnergy()) {
+						v3s16 pp = floatToInt(player->getPosition(),BS);
+						meta->energise(ENERGY_MAX,pp,pp,p_under);
+					}
 					ToolItem *titem = (ToolItem*)wield;
 					bool weared_out = titem->addWear(1000);
 					if (weared_out) {

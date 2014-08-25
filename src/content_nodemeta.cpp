@@ -891,6 +891,18 @@ bool TNTNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 		m_time = 0.0;
 	return true;
 }
+bool TNTNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
+{
+	m_armed = true;
+	m_time = 5.0;
+	return true;
+}
+u8 TNTNodeMetadata::getEnergy()
+{
+	if (!m_armed)
+		return 0;
+	return ENERGY_MAX-((u8)m_time);
+}
 void TNTNodeMetadata::serializeBody(std::ostream &os)
 {
 	os<<itos(m_time*10) << " ";

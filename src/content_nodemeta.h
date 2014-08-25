@@ -234,18 +234,8 @@ public:
 	virtual std::string infoText();
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
 
-	virtual bool energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
-	{
-		m_armed = true;
-		m_time = 5.0;
-		return true;
-	}
-	virtual u8 getEnergy()
-	{
-		if (!m_armed)
-			return 0;
-		return ENERGY_MAX-((u8)m_time);
-	}
+	virtual bool energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos);
+	virtual u8 getEnergy();
 
 private:
 	bool m_armed;
