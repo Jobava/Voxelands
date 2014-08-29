@@ -354,6 +354,10 @@ if(BUILD_CLIENT)
 	file(GLOB modelsx
 "${CMAKE_CURRENT_SOURCE_DIR}/../data/models/*.x")
 	install(FILES ${modelsx} DESTINATION ${DATADIR}/models)
+	file(GLOB html "${CMAKE_CURRENT_SOURCE_DIR}/../data/html/*.html")
+	install(FILES ${html} DESTINATION ${DATADIR}/html)
+	file(GLOB sounds "${CMAKE_CURRENT_SOURCE_DIR}/../data/sounds/*.ogg")
+	install(FILES ${sounds} DESTINATION ${DATADIR}/sounds)
 
 	if(USE_GETTEXT)
 		foreach(LOCALE ${GETTEXT_AVAILABLE_LOCALES})
