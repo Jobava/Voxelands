@@ -1,7 +1,31 @@
-Minetest-Classic changelog
+Voxelands changelog
 ----------------------
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
+
+1408.00: (release 2014-08-29)
+- highlight the selected node instead of showing a selection box
+- implement circuits:
+ - add wirelike drawtype
+ - add energy propagation to environment
+ - add mesewire
+ - add copperwire
+ - add reactor
+ - add solarpanel
+ - add waterwheel
+ - add switch
+ - add button
+ - add NOT gate
+ - add wood/stone pressure plates
+ - add repeater
+ - add lamp
+ - add piston
+ - add sticky piston
+- add a clock
+- optimise mesh gen a little
+- set give_initial_stuff to default as true
+- implement sound
+- add quartz to lava cooling
 
 1407.00: (release 2014-07-26)
 - name changed from Minetest Classic to Voxelands
