@@ -2631,8 +2631,24 @@ void ServerEnvironment::step(float dtime)
 							&& n_top2.getContent() == CONTENT_WATERSOURCE
 							&& myrand()%50 == 0
 						) {
-							n_top1.setContent(CONTENT_SPONGE_FULL);
-							m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top1);
+							s16 max_d = 5;
+							v3s16 test_p;
+							MapNode testnode;
+							int found = 0;
+							for(s16 z=-max_d; found < 2 && z<=max_d; z++) {
+							for(s16 y=-max_d; found < 2 && y<=max_d; y++) {
+							for(s16 x=-max_d; found < 2 && x<=max_d; x++) {
+								test_p = p + v3s16(x,y,z);
+								testnode = m_map->getNodeNoEx(test_p);
+								if (testnode.getContent() == CONTENT_SPONGE_FULL)
+									found++;
+							}
+							}
+							}
+							if (found < 2) {
+								n_top1.setContent(CONTENT_SPONGE_FULL);
+								m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top1);
+							}
 						}
 					}
 					break;
