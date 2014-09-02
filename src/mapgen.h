@@ -23,12 +23,23 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "common_irrlicht.h"
 #include "utility.h" // UniqueQueue
 
-struct BlockMakeData;
 class MapBlock;
 class ManualMapVoxelManipulator;
 
 namespace mapgen
 {
+	struct BlockMakeData
+	{
+		bool no_op;
+		ManualMapVoxelManipulator *vmanip;
+		u64 seed;
+		v3s16 blockpos;
+		UniqueQueue<v3s16> transforming_liquid;
+
+		BlockMakeData();
+		~BlockMakeData();
+	};
+
 	// Finds precise ground level at any position
 	s16 find_ground_level_from_noise(u64 seed, v2s16 p2d, s16 precision);
 
@@ -54,19 +65,6 @@ namespace mapgen
 	*/
 	bool get_have_sand(u64 seed, v2s16 p2d);
 	double tree_amount_2d(u64 seed, v2s16 p);
-
-
-	struct BlockMakeData
-	{
-		bool no_op;
-		ManualMapVoxelManipulator *vmanip;
-		u64 seed;
-		v3s16 blockpos;
-		UniqueQueue<v3s16> transforming_liquid;
-
-		BlockMakeData();
-		~BlockMakeData();
-	};
 
 }; // namespace mapgen
 

@@ -27,6 +27,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <sstream>
 
 #include "common_irrlicht.h"
+#include "mapgen.h"
 #include "mapnode.h"
 #include "mapblock_nodemod.h"
 #include "constants.h"
@@ -44,10 +45,6 @@ class ClientMapSector;
 class MapBlock;
 class NodeMetadata;
 class ServerEnvironment;
-
-namespace mapgen{
-	struct BlockMakeData;
-};
 
 /*
 	MapEditEvent
