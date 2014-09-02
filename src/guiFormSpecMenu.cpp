@@ -171,13 +171,13 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 		if(type == "invsize" || type == "size")
 		{
 			v2f invsize;
-			invsize.X = stof(f.next(","));
+			invsize.X = mystof(f.next(","));
 			if(type == "size")
 			{
-				invsize.Y = stof(f.next("]"));
+				invsize.Y = mystof(f.next("]"));
 			}
 			else{
-				invsize.Y = stof(f.next(";"));
+				invsize.Y = mystof(f.next(";"));
 				errorstream<<"WARNING: invsize is deprecated, use size"<<std::endl;
 				f.next("]");
 			}
@@ -211,11 +211,11 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 				loc.deSerialize(name);
 			std::string listname = f.next(";");
 			v2s32 pos = basepos;
-			pos.X += stof(f.next(",")) * (float)spacing.X;
-			pos.Y += stof(f.next(";")) * (float)spacing.Y;
+			pos.X += mystof(f.next(",")) * (float)spacing.X;
+			pos.Y += mystof(f.next(";")) * (float)spacing.Y;
 			v2s32 geom;
-			geom.X = stoi(f.next(","));
-			geom.Y = stoi(f.next(";"));
+			geom.X = mystoi(f.next(","));
+			geom.Y = mystoi(f.next(";"));
 			infostream<<"list inv="<<name<<", listname="<<listname
 					<<", pos=("<<pos.X<<","<<pos.Y<<")"
 					<<", geom=("<<geom.X<<","<<geom.Y<<")"
@@ -228,11 +228,11 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 		else if(type == "image")
 		{
 			v2s32 pos = basepos;
-			pos.X += stof(f.next(",")) * (float)spacing.X;
-			pos.Y += stof(f.next(";")) * (float)spacing.Y;
+			pos.X += mystof(f.next(",")) * (float)spacing.X;
+			pos.Y += mystof(f.next(";")) * (float)spacing.Y;
 			v2s32 geom;
-			geom.X = stof(f.next(",")) * (float)imgsize.X;
-			geom.Y = stof(f.next(";")) * (float)imgsize.Y;
+			geom.X = mystof(f.next(",")) * (float)imgsize.X;
+			geom.Y = mystof(f.next(";")) * (float)imgsize.Y;
 			std::string name = f.next("]");
 			infostream<<"image name="<<name
 					<<", pos=("<<pos.X<<","<<pos.Y<<")"
@@ -275,17 +275,17 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 			else
 			{
 				v2s32 pos;
-				pos.X = stof(fname.substr(0,fname.find(","))) * (float)spacing.X;
-				pos.Y = stof(fname.substr(fname.find(",")+1)) * (float)spacing.Y;
+				pos.X = mystof(fname.substr(0,fname.find(","))) * (float)spacing.X;
+				pos.Y = mystof(fname.substr(fname.find(",")+1)) * (float)spacing.Y;
 				v2s32 geom;
-				geom.X = (stof(flabel.substr(0,flabel.find(","))) * (float)spacing.X)-(spacing.X-imgsize.X);
-				if (stof(flabel.substr(flabel.find(",")+1)) > 1.0) {
-					geom.Y = (stof(flabel.substr(flabel.find(",")+1)) * (float)spacing.Y)-(spacing.Y-imgsize.Y);
+				geom.X = (mystof(flabel.substr(0,flabel.find(","))) * (float)spacing.X)-(spacing.X-imgsize.X);
+				if (mystof(flabel.substr(flabel.find(",")+1)) > 1.0) {
+					geom.Y = (mystof(flabel.substr(flabel.find(",")+1)) * (float)spacing.Y)-(spacing.Y-imgsize.Y);
 					multi = true;
 				}else{
 					geom.Y = 30;
 				}
-				pos.Y += ((stof(flabel.substr(flabel.find(",")+1)) * (float)imgsize.Y)/2)-15;
+				pos.Y += ((mystof(flabel.substr(flabel.find(",")+1)) * (float)imgsize.Y)/2)-15;
 
 				rect = core::rect<s32>(pos.X, pos.Y, pos.X+geom.X, pos.Y+geom.Y);
 
@@ -360,8 +360,8 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 		else if(type == "label")
 		{
 			v2s32 pos;
-			pos.X = stof(f.next(",")) * (float)spacing.X;
-			pos.Y = stof(f.next(";")) * (float)spacing.Y;
+			pos.X = mystof(f.next(",")) * (float)spacing.X;
+			pos.Y = mystof(f.next(";")) * (float)spacing.Y;
 
 			rect = core::rect<s32>(pos.X, pos.Y+((imgsize.Y/2)-15), pos.X+300, pos.Y+((imgsize.Y/2)+15));
 
@@ -381,11 +381,11 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 		else if(type == "button" || type == "button_exit")
 		{
 			v2s32 pos;
-			pos.X = stof(f.next(",")) * (float)spacing.X;
-			pos.Y = stof(f.next(";")) * (float)spacing.Y;
+			pos.X = mystof(f.next(",")) * (float)spacing.X;
+			pos.Y = mystof(f.next(";")) * (float)spacing.Y;
 			v2s32 geom;
-			geom.X = (stof(f.next(",")) * (float)spacing.X)-(spacing.X-imgsize.X);
-			pos.Y += (stof(f.next(";")) * (float)imgsize.Y)/2;
+			geom.X = (mystof(f.next(",")) * (float)spacing.X)-(spacing.X-imgsize.X);
+			pos.Y += (mystof(f.next(";")) * (float)imgsize.Y)/2;
 
 			rect = core::rect<s32>(pos.X, pos.Y-15, pos.X+geom.X, pos.Y+15);
 
@@ -409,11 +409,11 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 		else if(type == "image_button" || type == "image_button_exit")
 		{
 			v2s32 pos;
-			pos.X = stof(f.next(",")) * (float)spacing.X;
-			pos.Y = stof(f.next(";")) * (float)spacing.Y;
+			pos.X = mystof(f.next(",")) * (float)spacing.X;
+			pos.Y = mystof(f.next(";")) * (float)spacing.Y;
 			v2s32 geom;
-			geom.X = (stof(f.next(",")) * (float)spacing.X)-(spacing.X-imgsize.X);
-			geom.Y = (stof(f.next(";")) * (float)spacing.Y)-(spacing.Y-imgsize.Y);
+			geom.X = (mystof(f.next(",")) * (float)spacing.X)-(spacing.X-imgsize.X);
+			geom.Y = (mystof(f.next(";")) * (float)spacing.Y)-(spacing.Y-imgsize.Y);
 
 			rect = core::rect<s32>(pos.X, pos.Y, pos.X+geom.X, pos.Y+geom.Y);
 

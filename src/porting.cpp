@@ -274,7 +274,7 @@ void initializePaths()
 	{
 		dstream<<"Bundle resource path: "<<path<<std::endl;
 		//chdir(path);
-		path_data = std::string(path) + "/data";
+		path_data = std::string(path) + "/share/" + PROJECT_NAME;
 	}
 	else
     {

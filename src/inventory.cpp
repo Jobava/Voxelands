@@ -1004,9 +1004,9 @@ void InventoryLocation::deSerialize(std::istream &is)
 		std::string pos;
 		std::getline(is, pos, '\n');
 		Strfnd fn(pos);
-		p.X = stoi(fn.next(","));
-		p.Y = stoi(fn.next(","));
-		p.Z = stoi(fn.next(","));
+		p.X = mystoi(fn.next(","));
+		p.Y = mystoi(fn.next(","));
+		p.Z = mystoi(fn.next(","));
 	}else{
 		infostream<<"Unknown InventoryLocation type=\""<<tname<<"\""<<std::endl;
 		throw SerializationError("Unknown InventoryLocation type");

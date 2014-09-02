@@ -103,12 +103,15 @@ else()
 			FIND_LIBRARY(CARBON_LIB Carbon)
 			FIND_LIBRARY(COCOA_LIB Cocoa)
 			FIND_LIBRARY(IOKIT_LIB IOKit)
+			FIND_LIBRARY(COREFOUNDATION_LIB CoreFoundation)
 			mark_as_advanced(
 				CARBON_LIB
 				COCOA_LIB
 				IOKIT_LIB
+				COREFOUNDATION_LIB
 			)
-			SET(CLIENT_PLATFORM_LIBS ${CLIENT_PLATFORM_LIBS} ${CARBON_LIB} ${COCOA_LIB} ${IOKIT_LIB})
+			SET(CLIENT_PLATFORM_LIBS ${CLIENT_PLATFORM_LIBS} ${CARBON_LIB} ${COCOA_LIB} ${IOKIT_LIB} ${COREFOUNDATION_LIB})
+			SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Cocoa")
 		endif(APPLE)
 	endif(BUILD_CLIENT)
 	find_package(ZLIB REQUIRED)
@@ -315,8 +318,8 @@ else()
 	endif()
 
 	if(APPLE)
-		set(CMAKE_OSX_ARCHITECTURES i386 CACHE STRING "do not build for 64-bit" FORCE)
-		set(ARCH i386)
+		set(CMAKE_OSX_ARCHITECTURES x86_64 FORCE)
+		set(ARCH x86_64)
 	endif()
 
 	set(CMAKE_CXX_FLAGS_RELEASE "-DNDEBUG ${RELEASE_WARNING_FLAGS} ${WARNING_FLAGS} -O3 -ffast-math -Wall -fomit-frame-pointer -pipe -funroll-loops")
@@ -397,6 +400,31 @@ if(BUILD_CLIENT)
 			endif()
 		endif(USE_GETTEXT)
 	endif()
+	if(APPLE)
+		# TODO: install Irrlicht.framework into app bundle!
+		# it should be in Contents/Resources/Frameworks/Irrlicht.framework
+
+		# Compile .xib files
+		# should be in Contents/Resources/MainMenu.nib at the end
+		set (VoxelandsMac_XIBS
+			MainMenu
+		)
+		# Make sure the 'Resources' Directory is correctly created before we build
+		add_custom_command (TARGET ${PROJECT_NAME} PRE_BUILD
+			COMMAND mkdir -p ${EXECUTABLE_OUTPUT_PATH}/\${CONFIGURATION}/Contents/Resources)
+		find_program(IBTOOL ibtool HINTS "/usr/bin" "${OSX_DEVELOPER_ROOT}/usr/bin")
+		if (${IBTOOL} STREQUAL "IBTOOL-NOTFOUND")
+			message(SEND_ERROR "ibtool can not be found and is needed to compile the .xib files. It should have been installed with the Apple developer tools. The default system paths were searched in addition to ${OSX_DEVELOPER_ROOT}/usr/bin")
+		endif()
+		# Compile the .xib files using the 'ibtool' program with the destination being the app package
+		foreach(xib ${VoxelandsMac_XIBS})
+			add_custom_command (TARGET ${PROJECT_NAME} POST_BUILD
+				COMMAND ${IBTOOL} --errors --warnings --notices --output-format human-readable-text
+				--compile ${EXECUTABLE_OUTPUT_PATH}/\${CONFIGURATION}/Contents/Resources/${xib}.nib
+				${CMAKE_SOURCE_DIR}/misc/mac/${xib}.xib
+				COMMENT "Compiling ${CMAKE_SOURCE_DIR}/${xib}.xib")
+		endforeach()
+	endif(APPLE)
 endif(BUILD_CLIENT)
 
 if(BUILD_SERVER)

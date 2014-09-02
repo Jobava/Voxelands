@@ -904,9 +904,11 @@ inline bool is_yes(const std::string &s)
 	return false;
 }
 
-inline s32 stoi(const std::string &s, s32 min, s32 max)
+inline s32 mystoi(const std::string &s, s32 min=0, s32 max=0)
 {
 	s32 i = atoi(s.c_str());
+	if (min == max)
+		return i;
 	if(i < min)
 		i = min;
 	if(i > max)
@@ -914,29 +916,25 @@ inline s32 stoi(const std::string &s, s32 min, s32 max)
 	return i;
 }
 
-
-// MSVC2010 includes it's own versions of these
-#if !defined(_MSC_VER) || _MSC_VER < 1600
-
-inline s32 stoi(std::string s)
+inline s32 mywstoi(const std::wstring &s, s32 min=0, s32 max=0)
 {
-	return atoi(s.c_str());
+	s32 i = atoi(wide_to_narrow(s).c_str());
+	if (min == max)
+		return i;
+	if(i < min)
+		i = min;
+	if(i > max)
+		i = max;
+	return i;
 }
 
-inline s32 stoi(std::wstring s)
-{
-	return atoi(wide_to_narrow(s).c_str());
-}
-
-inline float stof(std::string s)
+inline float mystof(std::string s)
 {
 	float f;
 	std::istringstream ss(s);
 	ss>>f;
 	return f;
 }
-
-#endif
 
 inline std::string itos(s32 i)
 {

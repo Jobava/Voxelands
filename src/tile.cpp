@@ -801,7 +801,7 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 			}
 
 			// Crack image number
-			u16 progression = stoi(part_of_name.substr(6));
+			u16 progression = mystoi(part_of_name.substr(6));
 
 			// Size of the base image
 			core::dimension2d<u32> dim_base = baseimg->getDimension();
@@ -886,15 +886,15 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 		{
 			Strfnd sf(part_of_name);
 			sf.next(":");
-			u32 w0 = stoi(sf.next("x"));
-			u32 h0 = stoi(sf.next(":"));
+			u32 w0 = mystoi(sf.next("x"));
+			u32 h0 = mystoi(sf.next(":"));
 			infostream<<"combined w="<<w0<<" h="<<h0<<std::endl;
 			core::dimension2d<u32> dim(w0,h0);
 			baseimg = driver->createImage(video::ECF_A8R8G8B8, dim);
 			while(sf.atend() == false)
 			{
-				u32 x = stoi(sf.next(","));
-				u32 y = stoi(sf.next("="));
+				u32 x = mystoi(sf.next(","));
+				u32 y = mystoi(sf.next("="));
 				std::string filename = sf.next(":");
 				infostream<<"Adding \""<<filename
 						<<"\" to combined ("<<x<<","<<y<<")"
@@ -937,7 +937,7 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 				return false;
 			}
 
-			float value = stof(part_of_name.substr(12));
+			float value = mystof(part_of_name.substr(12));
 			make_progressbar(value, baseimg);
 		}
 		/*
@@ -1005,9 +1005,9 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 			}
 
 			Strfnd sf(part_of_name.substr(11));
-			u32 r1 = stoi(sf.next(","));
-			u32 g1 = stoi(sf.next(","));
-			u32 b1 = stoi(sf.next(":"));
+			u32 r1 = mystoi(sf.next(","));
+			u32 g1 = mystoi(sf.next(","));
+			u32 b1 = mystoi(sf.next(":"));
 			std::string filename = sf.next("");
 
 			std::string path = getTexturePath(filename.c_str());
@@ -1061,12 +1061,12 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 			}
 
 			Strfnd sf(part_of_name.substr(12));
-			u32 r1 = stoi(sf.next(","));
-			u32 g1 = stoi(sf.next(","));
-			u32 b1 = stoi(sf.next(";"));
-			u32 r2 = stoi(sf.next(","));
-			u32 g2 = stoi(sf.next(","));
-			u32 b2 = stoi(sf.next(":"));
+			u32 r1 = mystoi(sf.next(","));
+			u32 g1 = mystoi(sf.next(","));
+			u32 b1 = mystoi(sf.next(";"));
+			u32 r2 = mystoi(sf.next(","));
+			u32 g2 = mystoi(sf.next(","));
+			u32 b2 = mystoi(sf.next(":"));
 			std::string filename = sf.next("");
 
 			std::string path = getTexturePath(filename.c_str());

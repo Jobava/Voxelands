@@ -617,21 +617,21 @@ struct IMoveAction : public InventoryAction
 		std::string ts;
 
 		std::getline(is, ts, ' ');
-		count = stoi(ts);
+		count = mystoi(ts);
 
 		std::getline(is, from_inv, ' ');
 
 		std::getline(is, from_list, ' ');
 
 		std::getline(is, ts, ' ');
-		from_i = stoi(ts);
+		from_i = mystoi(ts);
 
 		std::getline(is, to_inv, ' ');
 
 		std::getline(is, to_list, ' ');
 
 		std::getline(is, ts, ' ');
-		to_i = stoi(ts);
+		to_i = mystoi(ts);
 	}
 
 	u16 getType() const

@@ -2000,9 +2000,9 @@ Inventory* Client::getInventory(InventoryContext *c, std::string id)
 	if(id0 == "nodemeta")
 	{
 		v3s16 p;
-		p.X = stoi(fn.next(","));
-		p.Y = stoi(fn.next(","));
-		p.Z = stoi(fn.next(","));
+		p.X = mystoi(fn.next(","));
+		p.Y = mystoi(fn.next(","));
+		p.Z = mystoi(fn.next(","));
 		NodeMetadata* meta = getNodeMetadata(p);
 		if(meta)
 			return meta->getInventory();

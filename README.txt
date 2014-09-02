@@ -88,6 +88,21 @@ $ ./voxelands
 - You can select between Release and Debug build by -DCMAKE_BUILD_TYPE=<Debug or Release>
   - Debug build is slower, but gives much more useful output in a debugger
 
+Compiling on Mac OS X
+---------------------
+- You need:
+	* XCode 5 - https://developer.apple.com/xcode/downloads/
+	* XCode commandline tools - https://developer.apple.com/downloads/
+	* homebrew - http://brew.sh/
+
+- Steps:
+	* Install dependencies
+		- brew install jpeg-turbo irrlicht
+	* make XCode project for client only
+		- cmake -DJPEG_INCLUDE_LIBRARY=/usr/local/Cellar/jpeg-turbo/<version>/include -DJPEG_LIBRARY=/usr/local/Cellar/jpeg-turbo/<version>lib/libturbojpeg.a -DBUILD_SERVER=0 -DRUN_IN_PLACE=0 -G Xcode .
+	* build XCode project from commandline (If you're using the GUI, make sure to select "package" as build target)
+		- xcodebuild -project voxelands.xcodeproj -target package
+
 Compiling on Windows:
 ---------------------
 

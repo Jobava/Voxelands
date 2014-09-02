@@ -453,12 +453,12 @@ public:
 
 	float getFloat(std::string name)
 	{
-		return stof(get(name));
+		return mystof(get(name));
 	}
 
 	u16 getU16(std::string name)
 	{
-		return stoi(get(name), 0, 65535);
+		return mystoi(get(name), 0, 65535);
 	}
 
 	u16 getU16Ask(std::string name, std::string question, u16 def)
@@ -476,17 +476,17 @@ public:
 		if(s == "")
 			return def;
 
-		return stoi(s, 0, 65535);
+		return mystoi(s, 0, 65535);
 	}
 
 	s16 getS16(std::string name)
 	{
-		return stoi(get(name), -32768, 32767);
+		return mystoi(get(name), -32768, 32767);
 	}
 
 	s32 getS32(std::string name)
 	{
-		return stoi(get(name));
+		return mystoi(get(name));
 	}
 
 	v3f getV3F(std::string name)
@@ -494,9 +494,9 @@ public:
 		v3f value;
 		Strfnd f(get(name));
 		f.next("(");
-		value.X = stof(f.next(","));
-		value.Y = stof(f.next(","));
-		value.Z = stof(f.next(")"));
+		value.X = mystof(f.next(","));
+		value.Y = mystof(f.next(","));
+		value.Z = mystof(f.next(")"));
 		return value;
 	}
 
@@ -505,8 +505,8 @@ public:
 		v2f value;
 		Strfnd f(get(name));
 		f.next("(");
-		value.X = stof(f.next(","));
-		value.Y = stof(f.next(")"));
+		value.X = mystof(f.next(","));
+		value.Y = mystof(f.next(")"));
 		return value;
 	}
 

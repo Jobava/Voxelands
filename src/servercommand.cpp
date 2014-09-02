@@ -140,7 +140,7 @@ void cmd_time(std::wostringstream &os,
 		return;
 	}
 
-	u32 time = stoi(wide_to_narrow(ctx->parms[1]));
+	u32 time = mystoi(wide_to_narrow(ctx->parms[1]));
 	ctx->server->setTimeOfDay(time);
 	os<<L"-!- time_of_day changed.";
 
@@ -222,7 +222,7 @@ void cmd_teleport(std::wostringstream &os,
 		return;
 	}
 
-	v3f dest(stoi(coords[0])*10, stoi(coords[1])*10, stoi(coords[2])*10);
+	v3f dest(mywstoi(coords[0])*10, mywstoi(coords[1])*10, mywstoi(coords[2])*10);
 
 	actionstream<<ctx->player->getName()<<" teleports from "
 			<<PP(ctx->player->getPosition()/BS)<<" to "
