@@ -65,6 +65,7 @@ typedef core::aabbox3d<f32> aabb3f;
 
 // irrlicht 1.8+ has it's own irr::u64
 #if (IRRLICHT_VERSION_MAJOR >= 1 && IRRLICHT_VERSION_MINOR >= 8) || IRRLICHT_VERSION_MAJOR >= 2
+#else
 #ifdef _MSC_VER
 	// Windows
 	typedef unsigned long long u64;
