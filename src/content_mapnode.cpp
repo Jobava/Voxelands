@@ -2969,7 +2969,7 @@ void content_mapnode_init(bool repeat)
 	f->air_equivalent = true;
 	f->onpunch_replace_node = CONTENT_CRAFT_BOOK;
 	f->flammable = 1;
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BOOK)+" 1";
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CRAFT_BOOK)+" 1";
 	f->solidness = 0;
 	content_nodebox_guide(f);
 	f->setInventoryTextureNodeBox(i, "guide_craft_top.png", "guide_craft_end.png", "guide_craft_side.png");
