@@ -61,8 +61,14 @@
 #viewing_range_nodes_max = 300
 #viewing_range_nodes_min = 25
 # Initial window size
-#screenW = 800
+#screenW = 1024
 #screenH = 600
+#fullscreen = false
+#fullscreen_bpp = 24
+# Experimental option, might cause visible spaces between blocks
+# when set to higher number than 0
+#fsaa = 0
+#vsync = false
 # Address to connect to (#blank = start local server)
 #address =
 # Enable random user input, for testing
