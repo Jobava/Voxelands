@@ -41,6 +41,7 @@ enum {
 	GUI_ID_TRILINEAR_CB,
 	GUI_ID_ANISOTROPIC_CB,
 	GUI_ID_PARTICLES_CB,
+	GUI_ID_FULLSCREEN_CB,
 	GUI_ID_DAMAGE_CB,
 	GUI_ID_CREATIVE_CB,
 	GUI_ID_JOIN_GAME_BUTTON,
@@ -69,6 +70,7 @@ struct MainMenuData
 		fancy_trees(false),
 		smooth_lighting(false),
 		particles(true),
+		fullscreen(false),
 		// Server opts
 		creative_mode(false),
 		enable_damage(false),
@@ -95,6 +97,7 @@ struct MainMenuData
 	bool trilinear_filter;
 	//int enable_shaders;
 	bool particles;
+	bool fullscreen;
 	// Server options
 	bool creative_mode;
 	bool enable_damage;

@@ -1207,6 +1207,7 @@ int main(int argc, char *argv[])
 				menudata.smooth_lighting = g_settings->getBool("smooth_lighting");
 				menudata.clouds_3d = g_settings->getBool("enable_3d_clouds");
 				menudata.opaque_water = g_settings->getBool("opaque_water");
+				menudata.fullscreen = g_settings->getBool("fullscreen");
 				menudata.particles = g_settings->getBool("enable_particles");
 				menudata.mip_map = g_settings->getBool("mip_map");
 				menudata.anisotropic_filter = g_settings->getBool("anisotropic_filter");
@@ -1291,6 +1292,7 @@ int main(int argc, char *argv[])
 				g_settings->set("anisotropic_filter", itos(menudata.anisotropic_filter));
 				g_settings->set("bilinear_filter", itos(menudata.bilinear_filter));
 				g_settings->set("trilinear_filter", itos(menudata.trilinear_filter));
+				g_settings->set("fullscreen", itos(menudata.fullscreen));
 				g_settings->set("enable_particles", itos(menudata.particles));
 				g_settings->set("creative_mode", itos(menudata.creative_mode));
 				g_settings->set("enable_damage", itos(menudata.enable_damage));

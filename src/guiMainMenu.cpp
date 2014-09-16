@@ -84,6 +84,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	bool smooth_lighting;
 	bool clouds_3d;
 	bool opaque_water;
+	bool fullscreen;
 	bool particles;
 	bool mipmap;
 	bool bilinear;
@@ -141,6 +142,13 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			opaque_water = ((gui::IGUICheckBox*)e)->isChecked();
 		else
 			opaque_water = m_data->opaque_water;
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_FULLSCREEN_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			fullscreen = ((gui::IGUICheckBox*)e)->isChecked();
+		else
+			fullscreen = m_data->fullscreen;
 	}
 	{
 		gui::IGUIElement *e = getElementFromId(GUI_ID_PARTICLES_CB);
@@ -369,30 +377,36 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
 			rect += topleft_content + v2s32(200, 60);
+			Environment->addCheckBox(fullscreen, rect, this, GUI_ID_FULLSCREEN_CB,
+					wgettext("Fullscreen"));
+		}
+		{
+			core::rect<s32> rect(0, 0, 200, 30);
+			rect += topleft_content + v2s32(200, 90);
 			Environment->addCheckBox(particles, rect, this, GUI_ID_PARTICLES_CB,
 					wgettext("Particles"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(200, 90);
+			rect += topleft_content + v2s32(200, 120);
 			Environment->addCheckBox(mipmap, rect, this, GUI_ID_MIPMAP_CB,
 					wgettext("Mip-Mapping"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(200, 120);
+			rect += topleft_content + v2s32(200, 150);
 			Environment->addCheckBox(bilinear, rect, this, GUI_ID_BILINEAR_CB,
 					wgettext("Bi-Linear Filtering"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(200, 150);
+			rect += topleft_content + v2s32(200, 180);
 			Environment->addCheckBox(trilinear, rect, this, GUI_ID_TRILINEAR_CB,
 					wgettext("Tri-Linear Filtering"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(200, 180);
+			rect += topleft_content + v2s32(200, 210);
 			Environment->addCheckBox(anisotropic, rect, this, GUI_ID_ANISOTROPIC_CB,
 					wgettext("Anisotropic Filtering"));
 		}
@@ -400,7 +414,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		// Key change button
 		{
 			core::rect<s32> rect(0, 0, 130, 30);
-			rect += topleft_content + v2s32(140, 250);
+			rect += topleft_content + v2s32(140, 280);
 			Environment->addButton(rect, this, GUI_ID_CHANGE_KEYS_BUTTON,
 				wgettext("Change keys"));
 		}
@@ -567,6 +581,11 @@ void GUIMainMenu::acceptInput()
 		gui::IGUIElement *e = getElementFromId(GUI_ID_OPAQUE_WATER_CB);
 		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
 			m_data->opaque_water = ((gui::IGUICheckBox*)e)->isChecked();
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_FULLSCREEN_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			m_data->fullscreen = ((gui::IGUICheckBox*)e)->isChecked();
 	}
 	{
 		gui::IGUIElement *e = getElementFromId(GUI_ID_PARTICLES_CB);
