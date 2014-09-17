@@ -27,7 +27,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 // Convert a privileges value into a human-readable string,
 // with each component separated by a comma.
-std::string privsToString(u64 privs)
+std::string privsToString(uint64_t privs)
 {
 	std::ostringstream os(std::ios_base::binary);
 	if(privs & PRIV_BUILD)
@@ -55,9 +55,9 @@ std::string privsToString(u64 privs)
 // Converts a comma-seperated list of privilege values into a
 // privileges value. The reverse of privsToString(). Returns
 // PRIV_INVALID if there is anything wrong with the input.
-u64 stringToPrivs(std::string str)
+uint64_t stringToPrivs(std::string str)
 {
-	u64 privs=0;
+	uint64_t privs=0;
 	Strfnd f(str);
 	while(f.atend() == false)
 	{
@@ -135,7 +135,7 @@ void AuthManager::load()
 		// Read privileges
 		std::string stringprivs;
 		std::getline(iss, stringprivs, ':');
-		u64 privs = stringToPrivs(stringprivs);
+		uint64_t privs = stringToPrivs(stringprivs);
 
 		// Store it
 		AuthData ad;
@@ -231,7 +231,7 @@ void AuthManager::setPassword(const std::string &username,
 	m_modified = true;
 }
 
-u64 AuthManager::getPrivs(const std::string &username)
+uint64_t AuthManager::getPrivs(const std::string &username)
 {
 	JMutexAutoLock lock(m_mutex);
 
@@ -243,7 +243,7 @@ u64 AuthManager::getPrivs(const std::string &username)
 	return n->getValue().privs;
 }
 
-void AuthManager::setPrivs(const std::string &username, u64 privs)
+void AuthManager::setPrivs(const std::string &username, uint64_t privs)
 {
 	JMutexAutoLock lock(m_mutex);
 

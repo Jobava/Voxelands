@@ -35,7 +35,7 @@ FarMesh::FarMesh(
 		scene::ISceneNode* parent,
 		scene::ISceneManager* mgr,
 		s32 id,
-		u64 seed,
+		uint64_t seed,
 		Client *client
 ):
 	scene::ISceneNode(parent, mgr, id),
@@ -112,7 +112,7 @@ struct HeightPoint
 };
 core::map<v2s16, HeightPoint> g_heights;
 
-HeightPoint ground_height(u64 seed, v2s16 p2d)
+HeightPoint ground_height(uint64_t seed, v2s16 p2d)
 {
 	core::map<v2s16, HeightPoint>::Node *n = g_heights.find(p2d);
 	if(n)

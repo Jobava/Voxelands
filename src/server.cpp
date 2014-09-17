@@ -4340,7 +4340,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 		// Local player gets all privileges regardless of
 		// what's set on their account.
-		u64 privs = getPlayerPrivs(player);
+		uint64_t privs = getPlayerPrivs(player);
 
 		// Parse commands
 		if(message[0] == L'/')
@@ -5716,7 +5716,7 @@ void Server::handlePeerChanges()
 	}
 }
 
-u64 Server::getPlayerPrivs(Player *player)
+uint64_t Server::getPlayerPrivs(Player *player)
 {
 	if(player==NULL)
 		return 0;

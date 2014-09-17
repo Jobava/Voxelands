@@ -1921,10 +1921,10 @@ ServerMap::ServerMap(std::string savedir):
 
 	if (g_settings->get("fixed_map_seed").empty())
 	{
-		m_seed = (((u64)(myrand()%0xffff)<<0)
-				+ ((u64)(myrand()%0xffff)<<16)
-				+ ((u64)(myrand()%0xffff)<<32)
-				+ ((u64)(myrand()%0xffff)<<48));
+		m_seed = (((uint64_t)(myrand()%0xffff)<<0)
+				+ ((uint64_t)(myrand()%0xffff)<<16)
+				+ ((uint64_t)(myrand()%0xffff)<<32)
+				+ ((uint64_t)(myrand()%0xffff)<<48));
 	}
 	else
 	{

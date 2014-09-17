@@ -32,36 +32,36 @@ using namespace jthread;
 // of the player, and define things they're allowed to do. See also
 // the static methods Player::privsToString and stringToPrivs that
 // convert these to human-readable form.
-const u64 PRIV_BUILD = 1;            // Can build - i.e. modify the world
-const u64 PRIV_TELEPORT = 2;         // Can teleport
-const u64 PRIV_SETTIME = 4;          // Can set the time
-const u64 PRIV_PRIVS = 8;            // Can grant and revoke privileges
-const u64 PRIV_SERVER = 16;          // Can manage the server (e.g. shutodwn
+const uint64_t PRIV_BUILD = 1;            // Can build - i.e. modify the world
+const uint64_t PRIV_TELEPORT = 2;         // Can teleport
+const uint64_t PRIV_SETTIME = 4;          // Can set the time
+const uint64_t PRIV_PRIVS = 8;            // Can grant and revoke privileges
+const uint64_t PRIV_SERVER = 16;          // Can manage the server (e.g. shutodwn
                                      // ,settings)
-const u64 PRIV_SHOUT = 32;           // Can broadcast chat messages to all
+const uint64_t PRIV_SHOUT = 32;           // Can broadcast chat messages to all
                                      // players
-const u64 PRIV_BAN = 64;             // Can ban players
+const uint64_t PRIV_BAN = 64;             // Can ban players
 
 // Default privileges - these can be overriden for new players using the
 // config option "default_privs" - however, this value still applies for
 // players that existed before the privileges system was added.
-const u64 PRIV_DEFAULT = PRIV_BUILD|PRIV_SHOUT;
-const u64 PRIV_ALL = 0x7FFFFFFFFFFFFFFFULL;
-const u64 PRIV_INVALID = 0x8000000000000000ULL;
+const uint64_t PRIV_DEFAULT = PRIV_BUILD|PRIV_SHOUT;
+const uint64_t PRIV_ALL = 0x7FFFFFFFFFFFFFFFULL;
+const uint64_t PRIV_INVALID = 0x8000000000000000ULL;
 
 // Convert a privileges value into a human-readable string,
 // with each component separated by a comma.
-std::string privsToString(u64 privs);
+std::string privsToString(uint64_t privs);
 
 // Converts a comma-seperated list of privilege values into a
 // privileges value. The reverse of privsToString(). Returns
 // PRIV_INVALID if there is anything wrong with the input.
-u64 stringToPrivs(std::string str);
+uint64_t stringToPrivs(std::string str);
 
 struct AuthData
 {
 	std::string pwd;
-	u64 privs;
+	uint64_t privs;
 
 	AuthData():
 		privs(PRIV_DEFAULT)
@@ -90,8 +90,8 @@ public:
 	std::string getPassword(const std::string &username);
 	void setPassword(const std::string &username,
 			const std::string &password);
-	u64 getPrivs(const std::string &username);
-	void setPrivs(const std::string &username, u64 privs);
+	uint64_t getPrivs(const std::string &username);
+	void setPrivs(const std::string &username, uint64_t privs);
 	bool isModified();
 private:
 	JMutex m_mutex;

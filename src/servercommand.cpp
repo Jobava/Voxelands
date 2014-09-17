@@ -76,7 +76,7 @@ void cmd_grantrevoke(std::wostringstream &os,
 		return;
 	}
 
-	u64 newprivs = stringToPrivs(wide_to_narrow(ctx->parms[2]));
+	uint64_t newprivs = stringToPrivs(wide_to_narrow(ctx->parms[2]));
 	if(newprivs == PRIV_INVALID)
 	{
 		os<<L"-!- Invalid privileges specified";
@@ -91,7 +91,7 @@ void cmd_grantrevoke(std::wostringstream &os,
 	}
 
 	std::string playername = wide_to_narrow(ctx->parms[1]);
-	u64 privs = ctx->server->getPlayerAuthPrivs(playername);
+	uint64_t privs = ctx->server->getPlayerAuthPrivs(playername);
 
 	if(ctx->parms[0] == L"grant"){
 		privs |= newprivs;
@@ -350,7 +350,7 @@ void cmd_setpassword(std::wostringstream &os,
 void cmd_help(std::wostringstream &os,
 	ServerCommandContext *ctx)
 {
-	u64 privs = ctx->privs;
+	uint64_t privs = ctx->privs;
 
 	if (ctx->parms.size() > 1) {
 		if ((privs&PRIV_SERVER) == PRIV_SERVER) {

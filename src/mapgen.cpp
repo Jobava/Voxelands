@@ -1030,37 +1030,37 @@ static void make_nc(VoxelManipulator &vmanip, PseudoRandom &random)
 #define CAVE_NOISE_SCALE 12.0
 #define CAVE_NOISE_THRESHOLD (1.5/CAVE_NOISE_SCALE)
 
-NoiseParams get_cave_noise1_params(u64 seed)
+NoiseParams get_cave_noise1_params(uint64_t seed)
 {
 	return NoiseParams(NOISE_PERLIN_CONTOUR, seed+52534, 4, 0.5,
 			50, CAVE_NOISE_SCALE);
 }
 
-NoiseParams get_cave_noise2_params(u64 seed)
+NoiseParams get_cave_noise2_params(uint64_t seed)
 {
 	return NoiseParams(NOISE_PERLIN_CONTOUR_FLIP_YZ, seed+10325, 4, 0.5,
 			50, CAVE_NOISE_SCALE);
 }
 
-NoiseParams get_ground_noise1_params(u64 seed)
+NoiseParams get_ground_noise1_params(uint64_t seed)
 {
 	return NoiseParams(NOISE_PERLIN, seed+983240, 4,
 			0.55, 80.0, 40.0);
 }
 
-NoiseParams get_ground_crumbleness_params(u64 seed)
+NoiseParams get_ground_crumbleness_params(uint64_t seed)
 {
 	return NoiseParams(NOISE_PERLIN, seed+34413, 3,
 			1.3, 20.0, 1.0);
 }
 
-NoiseParams get_ground_wetness_params(u64 seed)
+NoiseParams get_ground_wetness_params(uint64_t seed)
 {
 	return NoiseParams(NOISE_PERLIN, seed+32474, 4,
 			1.1, 40.0, 1.0);
 }
 
-bool is_cave(u64 seed, v3s16 p)
+bool is_cave(uint64_t seed, v3s16 p)
 {
 	double d1 = noise3d_param(get_cave_noise1_params(seed), p.X,p.Y,p.Z);
 	double d2 = noise3d_param(get_cave_noise2_params(seed), p.X,p.Y,p.Z);
@@ -1074,7 +1074,7 @@ bool is_cave(u64 seed, v3s16 p)
 	      and buffered
 		  NOTE: The speed of these actually isn't terrible
 */
-bool val_is_ground(double ground_noise1_val, v3s16 p, u64 seed)
+bool val_is_ground(double ground_noise1_val, v3s16 p, uint64_t seed)
 {
 	double f = 0.55 + noise2d_perlin(
 			0.5+(float)p.X/250, 0.5+(float)p.Z/250,
@@ -1092,14 +1092,14 @@ bool val_is_ground(double ground_noise1_val, v3s16 p, u64 seed)
 /*
 	Queries whether a position is ground or not.
 */
-bool is_ground(u64 seed, v3s16 p)
+bool is_ground(uint64_t seed, v3s16 p)
 {
 	double val1 = noise3d_param(get_ground_noise1_params(seed), p.X,p.Y,p.Z);
 	return val_is_ground(val1, p, seed);
 }
 
 // Amount of trees per area in nodes
-double tree_amount_2d(u64 seed, v2s16 p)
+double tree_amount_2d(uint64_t seed, v2s16 p)
 {
 	double noise = noise2d_perlin(
 			0.5+(float)p.X/125, 0.5+(float)p.Y/125,
@@ -1111,7 +1111,7 @@ double tree_amount_2d(u64 seed, v2s16 p)
 		return 0.04 * (noise-zeroval) / (1.0-zeroval);
 }
 
-double surface_humidity_2d(u64 seed, v2s16 p)
+double surface_humidity_2d(uint64_t seed, v2s16 p)
 {
 	double noise = noise2d_perlin(
 			0.5+(float)p.X/500, 0.5+(float)p.Y/500,
@@ -1124,7 +1124,7 @@ double surface_humidity_2d(u64 seed, v2s16 p)
 	return noise;
 }
 
-double largestone_amount_2d(u64 seed, v2s16 p)
+double largestone_amount_2d(uint64_t seed, v2s16 p)
 {
 	double noise = noise2d_perlin(
 			0.5+(float)p.X/250, 0.5+(float)p.Y/250,
@@ -1139,7 +1139,7 @@ double largestone_amount_2d(u64 seed, v2s16 p)
 /*
 	Incrementally find ground level from 3d noise
 */
-s16 find_ground_level_from_noise(u64 seed, v2s16 p2d, s16 precision)
+s16 find_ground_level_from_noise(uint64_t seed, v2s16 p2d, s16 precision)
 {
 	// Start a bit fuzzy to make averaging lower precision values
 	// more useful
@@ -1187,9 +1187,9 @@ s16 find_ground_level_from_noise(u64 seed, v2s16 p2d, s16 precision)
 	return level;
 }
 
-double get_sector_average_ground_level(u64 seed, v2s16 sectorpos, double p=4);
+double get_sector_average_ground_level(uint64_t seed, v2s16 sectorpos, double p=4);
 
-double get_sector_average_ground_level(u64 seed, v2s16 sectorpos, double p)
+double get_sector_average_ground_level(uint64_t seed, v2s16 sectorpos, double p)
 {
 	v2s16 node_min = sectorpos*MAP_BLOCKSIZE;
 	v2s16 node_max = (sectorpos+v2s16(1,1))*MAP_BLOCKSIZE-v2s16(1,1);
@@ -1208,9 +1208,9 @@ double get_sector_average_ground_level(u64 seed, v2s16 sectorpos, double p)
 	return a;
 }
 
-double get_sector_maximum_ground_level(u64 seed, v2s16 sectorpos, double p=4);
+double get_sector_maximum_ground_level(uint64_t seed, v2s16 sectorpos, double p=4);
 
-double get_sector_maximum_ground_level(u64 seed, v2s16 sectorpos, double p)
+double get_sector_maximum_ground_level(uint64_t seed, v2s16 sectorpos, double p)
 {
 	v2s16 node_min = sectorpos*MAP_BLOCKSIZE;
 	v2s16 node_max = (sectorpos+v2s16(1,1))*MAP_BLOCKSIZE-v2s16(1,1);
@@ -1239,9 +1239,9 @@ double get_sector_maximum_ground_level(u64 seed, v2s16 sectorpos, double p)
 	return a;
 }
 
-double get_sector_minimum_ground_level(u64 seed, v2s16 sectorpos, double p=4);
+double get_sector_minimum_ground_level(uint64_t seed, v2s16 sectorpos, double p=4);
 
-double get_sector_minimum_ground_level(u64 seed, v2s16 sectorpos, double p)
+double get_sector_minimum_ground_level(uint64_t seed, v2s16 sectorpos, double p)
 {
 	v2s16 node_min = sectorpos*MAP_BLOCKSIZE;
 	v2s16 node_max = (sectorpos+v2s16(1,1))*MAP_BLOCKSIZE-v2s16(1,1);
@@ -1270,7 +1270,7 @@ double get_sector_minimum_ground_level(u64 seed, v2s16 sectorpos, double p)
 	return a;
 }
 
-bool block_is_underground(u64 seed, v3s16 blockpos)
+bool block_is_underground(uint64_t seed, v3s16 blockpos)
 {
 	s16 minimum_groundlevel = (s16)get_sector_minimum_ground_level(
 			seed, v2s16(blockpos.X, blockpos.Z));
@@ -1281,7 +1281,7 @@ bool block_is_underground(u64 seed, v3s16 blockpos)
 		return false;
 }
 
-bool get_have_sand(u64 seed, v2s16 p2d)
+bool get_have_sand(uint64_t seed, v2s16 p2d)
 {
 	// Determine whether to have sand here
 	double sandnoise = noise2d_perlin(

@@ -38,7 +38,7 @@ public:
 			scene::ISceneNode* parent,
 			scene::ISceneManager* mgr,
 			s32 id,
-			u64 seed,
+			uint64_t seed,
 			Client *client
 	);
 
@@ -74,7 +74,7 @@ private:
 	core::aabbox3d<f32> m_box;
 	float m_cloud_y;
 	float m_brightness;
-	u64 m_seed;
+	uint64_t m_seed;
 	v2f m_camera_pos;
 	float m_time;
 	Client *m_client;

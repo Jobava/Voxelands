@@ -432,11 +432,11 @@ public:
 
 	bool isSavingEnabled(){ return m_map_saving_enabled; }
 
-	u64 getSeed(){ return m_seed; }
+	uint64_t getSeed(){ return m_seed; }
 
 private:
 	// Seed used for all kinds of randomness
-	u64 m_seed;
+	uint64_t m_seed;
 
 	std::string m_savedir;
 	bool m_map_saving_enabled;

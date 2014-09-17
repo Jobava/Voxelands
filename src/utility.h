@@ -45,7 +45,7 @@ extern const v3s16 g_26dirs[26];
 // 26th is (0,0,0)
 extern const v3s16 g_27dirs[27];
 
-inline void writeU64(u8 *data, u64 i)
+inline void writeU64(u8 *data, uint64_t i)
 {
 	data[0] = ((i>>56)&0xff);
 	data[1] = ((i>>48)&0xff);
@@ -76,12 +76,12 @@ inline void writeU8(u8 *data, u8 i)
 	data[0] = ((i>> 0)&0xff);
 }
 
-inline u64 readU64(u8 *data)
+inline uint64_t readU64(u8 *data)
 {
-	return ((u64)data[0]<<56) | ((u64)data[1]<<48)
-		| ((u64)data[2]<<40) | ((u64)data[3]<<32)
-		| ((u64)data[4]<<24) | ((u64)data[5]<<16)
-		| ((u64)data[6]<<8) | ((u64)data[7]<<0);
+	return ((uint64_t)data[0]<<56) | ((uint64_t)data[1]<<48)
+		| ((uint64_t)data[2]<<40) | ((uint64_t)data[3]<<32)
+		| ((uint64_t)data[4]<<24) | ((uint64_t)data[5]<<16)
+		| ((uint64_t)data[6]<<8) | ((uint64_t)data[7]<<0);
 }
 
 inline u32 readU32(u8 *data)

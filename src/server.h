@@ -426,7 +426,7 @@ public:
 	// Envlock and conlock should be locked when calling this
 	void SendMovePlayer(Player *player);
 
-	u64 getPlayerAuthPrivs(const std::string &name)
+	uint64_t getPlayerAuthPrivs(const std::string &name)
 	{
 		try{
 			return m_authmanager.getPrivs(name);
@@ -438,7 +438,7 @@ public:
 		}
 	}
 
-	void setPlayerAuthPrivs(const std::string &name, u64 privs)
+	void setPlayerAuthPrivs(const std::string &name, uint64_t privs)
 	{
 		try{
 			return m_authmanager.setPrivs(name, privs);
@@ -590,7 +590,7 @@ private:
 	void handlePeerChange(PeerChange &c);
 	void handlePeerChanges();
 
-	u64 getPlayerPrivs(Player *player);
+	uint64_t getPlayerPrivs(Player *player);
 
 	/*
 		Variables

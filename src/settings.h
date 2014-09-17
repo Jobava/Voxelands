@@ -510,9 +510,9 @@ public:
 		return value;
 	}
 
-	u64 getU64(std::string name)
+	uint64_t getU64(std::string name)
 	{
-		u64 value = 0;
+		uint64_t value = 0;
 		std::string s = get(name);
 		std::istringstream ss(s);
 		ss>>value;
@@ -551,7 +551,7 @@ public:
 		set(name, os.str());
 	}
 
-	void setU64(std::string name, u64 value)
+	void setU64(std::string name, uint64_t value)
 	{
 		std::ostringstream os;
 		os<<value;

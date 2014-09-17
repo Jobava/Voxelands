@@ -297,7 +297,7 @@ public:
 				(std::wstring)L"<"+name+L"> "+message);
 	}
 
-	u64 getMapSeed(){ return m_map_seed; }
+	uint64_t getMapSeed(){ return m_map_seed; }
 
 	void addUpdateMeshTask(v3s16 blockpos, bool ack_to_server=false);
 	// Including blocks at appropriate edges
@@ -381,7 +381,7 @@ private:
 	Queue<std::wstring> m_chat_queue;
 
 	// The seed returned by the server in TOCLIENT_INIT is stored here
-	u64 m_map_seed;
+	uint64_t m_map_seed;
 
 	std::string m_password;
 	bool m_access_denied;

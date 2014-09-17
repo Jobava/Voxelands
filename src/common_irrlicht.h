@@ -63,18 +63,7 @@ typedef core::vector2d<f32> v2f32;
 
 typedef core::aabbox3d<f32> aabb3f;
 
-// irrlicht 1.8+ has it's own irr::u64
-#if (IRRLICHT_VERSION_MAJOR >= 1 && IRRLICHT_VERSION_MINOR >= 8) || IRRLICHT_VERSION_MAJOR >= 2
-#else
-#ifdef _MSC_VER
-	// Windows
-	typedef unsigned long long u64;
-#else
-	// Posix
-	#include <stdint.h>
-	typedef uint64_t u64;
-#endif
-#endif
+#include <stdint.h>
 
 #endif
 
