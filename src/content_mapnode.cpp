@@ -1671,23 +1671,27 @@ void content_mapnode_init(bool repeat)
 	i = CONTENT_FENCE;
 	f = &content_features(i);
 	f->description = std::string("Fence");
-	f->setAllTextures("wood.png");
+	f->setAllTextures("fence.png");
+	f->setTexture(0,"fence_top.png");
+	f->setTexture(1,"fence_top.png");
 	f->light_propagates = true;
 	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_SPECIAL;
 	f->draw_type = CDT_FENCELIKE;
 	f->is_ground_content = true;
 	f->jumpable = false;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->air_equivalent = true; // grass grows underneath
-	f->setInventoryTexture("fence.png");
-	f->used_texturenames["fence.png"] = true;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 15;
 	f->special_alternate_node = CONTENT_WOOD;
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	f->pressure_type = CST_CRUSHABLE;
+	content_nodebox_fence_inv(f);
+	content_nodebox_fence(f);
+	f->setInventoryTextureNodeBox(i,"fence.png","fence_top.png","fence.png");
 	crafting::setWallRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_FENCE);
 	crafting::setWallRecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_FENCE);
 	lists::add("craftguide",i);

@@ -57,5 +57,7 @@ void content_nodebox_piston_down(ContentFeatures *f);
 void content_nodebox_pistonarm_down(ContentFeatures *f);
 void content_nodebox_waterwheel(ContentFeatures *f);
 void content_nodebox_clock(ContentFeatures *f);
+void content_nodebox_fence_inv(ContentFeatures *f);
+void content_nodebox_fence(ContentFeatures *f);
 
 #endif

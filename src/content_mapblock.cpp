@@ -1411,6 +1411,153 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		break;
 		case CDT_FENCELIKE:
 		{
+			static const v3s16 tile_dirs[6] = {
+				v3s16(0, 1, 0),
+				v3s16(0, -1, 0),
+				v3s16(1, 0, 0),
+				v3s16(-1, 0, 0),
+				v3s16(0, 0, 1),
+				v3s16(0, 0, -1)
+			};
+			static const v3s16 fence_dirs[8] = {
+				v3s16(1,0,0),
+				v3s16(-1,0,0),
+				v3s16(0,0,1),
+				v3s16(0,0,-1),
+				v3s16(1,0,1),
+				v3s16(1,0,-1),
+				v3s16(-1,0,1),
+				v3s16(-1,0,-1)
+			};
+			static const int showcheck[4][2] = {
+				{0,2},
+				{0,3},
+				{1,2},
+				{1,3}
+			};
+			static const int shown_angles[8] = {0,0,0,0,45,135,45,315};
+			bool shown_dirs[8] = {false,false,false,false,false,false,false,false};
+			n.param2 = 0;
+
+			TileSpec tiles[6];
+			for (int i = 0; i < 6; i++) {
+				// Handles facedir rotation for textures
+				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
+			}
+			video::SColor c[8];
+			getLights(blockpos_nodes+p,c,data,smooth_lighting);
+
+			v3f pos = intToFloat(p, BS);
+			std::vector<aabb3f> boxes = content_features(n).getNodeBoxes(n);
+			int bi = 1;
+			v3s16 p2 = p;
+			p2.Y++;
+			MapNode n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
+			const ContentFeatures *f2 = &content_features(n2);
+			aabb3f box;
+			if (f2->draw_type == CDT_AIRLIKE || f2->draw_type == CDT_TORCHLIKE)
+				bi = 0;
+			{
+				aabb3f box = boxes[bi];
+
+				// Compute texture coords
+				f32 tx1 = (box.MinEdge.X/BS)+0.5;
+				f32 ty1 = (box.MinEdge.Y/BS)+0.5;
+				f32 tz1 = (box.MinEdge.Z/BS)+0.5;
+				f32 tx2 = (box.MaxEdge.X/BS)+0.5;
+				f32 ty2 = (box.MaxEdge.Y/BS)+0.5;
+				f32 tz2 = (box.MaxEdge.Z/BS)+0.5;
+				box.MinEdge += pos;
+				box.MaxEdge += pos;
+				f32 txc[24] = {
+					// up
+					tx1, 1-tz2, tx2, 1-tz1,
+					// down
+					tx1, tz1, tx2, tz2,
+					// right
+					tz1, 1-ty2, tz2, 1-ty1,
+					// left
+					1-tz2, 1-ty2, 1-tz1, 1-ty1,
+					// back
+					1-tx2, 1-ty2, 1-tx1, 1-ty1,
+					// front
+					tx1, 1-ty2, tx2, 1-ty1,
+				};
+				makeCuboid(&collector, box, tiles, 6,  c, txc);
+			}
+
+			int bps = ((boxes.size()-2)/4); // boxes per section
+			u8 np = 1;
+
+			for (int k=0; k<8; k++) {
+				if (k > 3 && (shown_dirs[showcheck[k-4][0]] || shown_dirs[showcheck[k-4][1]]))
+							continue;
+				p2 = blockpos_nodes+p+fence_dirs[k];
+				n2 = data->m_vmanip.getNodeRO(p2);
+				f2 = &content_features(n2);
+				if (
+					f2->draw_type == CDT_FENCELIKE
+					|| f2->draw_type == CDT_WALLLIKE
+					|| n2.getContent() == CONTENT_WOOD_GATE
+					|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
+					|| n2.getContent() == CONTENT_STEEL_GATE
+					|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
+					|| (
+						n2.getContent() != CONTENT_IGNORE
+						&& n2.getContent() == content_features(n).special_alternate_node
+					)
+				) {
+					shown_dirs[k] = true;
+					n.param2 |= (np<<k);
+					for (int i=0; i<bps; i++) {
+						aabb3f box = boxes[i+2+(bps*(k%4))];
+
+						// Compute texture coords
+						f32 tx1 = (box.MinEdge.X/BS)+0.5;
+						f32 ty1 = (box.MinEdge.Y/BS)+0.5;
+						f32 tz1 = (box.MinEdge.Z/BS)+0.5;
+						f32 tx2 = (box.MaxEdge.X/BS)+0.5;
+						f32 ty2 = (box.MaxEdge.Y/BS)+0.5;
+						f32 tz2 = (box.MaxEdge.Z/BS)+0.5;
+						f32 txc[24] = {
+							// up
+							tx1, 1-tz2, tx2, 1-tz1,
+							// down
+							tx1, tz1, tx2, tz2,
+							// right
+							tz1, 1-ty2, tz2, 1-ty1,
+							// left
+							1-tz2, 1-ty2, 1-tz1, 1-ty1,
+							// back
+							1-tx2, 1-ty2, 1-tx1, 1-ty1,
+							// front
+							tx1, 1-ty2, tx2, 1-ty1,
+						};
+						if (k > 3) {
+							switch (k) {
+							case 4:
+								box.MaxEdge.X *= 1.414;
+								break;
+							case 5:
+								box.MinEdge.X *= 1.414;
+								break;
+							case 6:
+								box.MaxEdge.Z *= 1.414;
+								break;
+							case 7:
+								box.MinEdge.Z *= 1.414;
+								break;
+							default:;
+							}
+						}
+						makeAngledCuboid(&collector, pos, box, tiles, 6,  c, txc, shown_angles[k]);
+					}
+				}
+			}
+			data->m_env->getMap().addNodeWithEvent(p+blockpos_nodes,n);
+		}
+		break;
+		{
 			video::SColor c[8];
 			getLights(blockpos_nodes+p,c,data,smooth_lighting);
 

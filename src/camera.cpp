@@ -477,6 +477,7 @@ void Camera::wield(const InventoryItem* item)
 				(
 					content_features(content).draw_type == CDT_NODEBOX
 					|| content_features(content).draw_type == CDT_NODEBOX_META
+					|| content_features(content).draw_type == CDT_FENCELIKE
 				)
 				&& content_features(content).wield_nodebox == true
 			) {
@@ -628,9 +629,10 @@ void ExtrudedSpriteSceneNode::setNodeBox(content_t c)
 	if (m_cubemesh)
 		m_cubemesh->drop();
 
-	m_cubemesh = createNodeBoxMesh(content_features(c).nodeboxes,cube_scale);
+	std::vector<aabb3f> boxes = content_features(c).getWieldNodeBoxes();
+	m_cubemesh = createNodeBoxMesh(boxes,cube_scale);
 
-	for (u16 i=0; i < content_features(c).nodeboxes.size(); i++) {
+	for (u16 i=0; i < boxes.size(); i++) {
 		for (int t=0; t<6; t++) {
 			video::ITexture* atlas = content_features(c).tiles[t].texture.atlas;
 			v2f pos = content_features(c).tiles[t].texture.pos;

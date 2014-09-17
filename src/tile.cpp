@@ -1314,9 +1314,10 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 			/*
 				Draw a mesh into a render target texture
 			*/
-			scene::IMesh* cube = createNodeBoxMesh(content_features(c).nodeboxes,v3f(1, 1, 1));
+			std::vector<aabb3f> boxes = content_features(c).getWieldNodeBoxes();
+			scene::IMesh* cube = createNodeBoxMesh(boxes,v3f(1, 1, 1));
 			setMeshColor(cube, video::SColor(255, 255, 255, 255));
-			for (u16 i=0; i < content_features(c).nodeboxes.size(); i++) {
+			for (u16 i=0; i < boxes.size(); i++) {
 				cube->getMeshBuffer((i*6)+0)->getMaterial().setTexture(0, texture_top);
 				cube->getMeshBuffer((i*6)+1)->getMaterial().setTexture(0, texture_top);
 				cube->getMeshBuffer((i*6)+2)->getMaterial().setTexture(0, texture_right);

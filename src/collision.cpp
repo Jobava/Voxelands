@@ -244,26 +244,83 @@ collisionMoveResult collisionMoveSimple(Map *map,
 					continue;
 
 				std::vector<aabb3f> nodeboxes = f.getNodeBoxes(n);
-				if (f.jumpable == false)
-					nodeboxes.push_back(core::aabbox3d<f32>(
-						-0.5*BS,0.5*BS,-0.5*BS,
-						0.5*BS,1.0*BS,0.5*BS
-					));
 
-				for(std::vector<aabb3f>::iterator
-				i = nodeboxes.begin();
-				i != nodeboxes.end(); i++)
+#ifndef SERVER
+				if (f.draw_type == CDT_FENCELIKE) {
+					static const int boxcheck[4][2] = {
+						{0,2},
+						{0,3},
+						{1,2},
+						{1,3}
+					};
+					int bps = ((nodeboxes.size()-2)/4); // boxes per section
+					u8 np = 1;
+					{
+						aabb3f box = nodeboxes[0];
+						box.MinEdge += v3f(x, y, z)*BS;
+						if (f.jumpable == false)
+							box.MaxEdge.Y = 1.0*BS;
+						box.MaxEdge += v3f(x, y, z)*BS;
+						cboxes.push_back(box);
+						is_unloaded.push_back(false);
+						is_step_up.push_back(false);
+						node_positions.push_back(p);
+						is_object.push_back(false);
+					}
+					for (int k=0; k<8; k++) {
+						if ((n.param2&(np<<k)) == 0)
+							continue;
+						if (k > 3) {
+							for (int j=0; j<2; j++) {
+								for (int i=0; i<bps; i++) {
+									aabb3f box = nodeboxes[i+2+(bps*boxcheck[k%4][j])];
+									box.MinEdge += v3f(x, y, z)*BS;
+									if (f.jumpable == false)
+										box.MaxEdge.Y = 1.0*BS;
+									box.MaxEdge += v3f(x, y, z)*BS;
+									cboxes.push_back(box);
+									is_unloaded.push_back(false);
+									is_step_up.push_back(false);
+									node_positions.push_back(p);
+									is_object.push_back(false);
+								}
+							}
+						}else{
+							for (int i=0; i<bps; i++) {
+								aabb3f box = nodeboxes[i+2+(bps*(k%4))];
+								box.MinEdge += v3f(x, y, z)*BS;
+								if (f.jumpable == false)
+									box.MaxEdge.Y = 1.0*BS;
+								box.MaxEdge += v3f(x, y, z)*BS;
+								cboxes.push_back(box);
+								is_unloaded.push_back(false);
+								is_step_up.push_back(false);
+								node_positions.push_back(p);
+								is_object.push_back(false);
+							}
+						}
+					}
+					nodeboxes.clear();
+				}else
+#endif
 				{
-					aabb3f box = *i;
-					box.MinEdge += v3f(x, y, z)*BS;
-					box.MaxEdge += v3f(x, y, z)*BS;
-					cboxes.push_back(box);
-					is_unloaded.push_back(false);
-					is_step_up.push_back(false);
-					node_positions.push_back(p);
-					is_object.push_back(false);
+					for(std::vector<aabb3f>::iterator
+					i = nodeboxes.begin();
+					i != nodeboxes.end(); i++)
+					{
+						aabb3f box = *i;
+						box.MinEdge += v3f(x, y, z)*BS;
+						if (f.jumpable == false)
+							box.MaxEdge.Y = 1.0*BS;
+						box.MaxEdge += v3f(x, y, z)*BS;
+						cboxes.push_back(box);
+						is_unloaded.push_back(false);
+						is_step_up.push_back(false);
+						node_positions.push_back(p);
+						is_object.push_back(false);
+					}
+					nodeboxes.clear();
 				}
-				nodeboxes.clear();
 			}
 			catch(InvalidPositionException &e)
 			{

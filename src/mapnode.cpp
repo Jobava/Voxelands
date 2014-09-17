@@ -87,6 +87,13 @@ std::vector<aabb3f> ContentFeatures::getNodeBoxes(MapNode &n) const
         return transformNodeBox(n, nodeboxes);
 }
 
+std::vector<aabb3f> ContentFeatures::getWieldNodeBoxes() const
+{
+	if (wield_nodeboxes.size() > 0)
+		return wield_nodeboxes;
+	return nodeboxes;
+}
+
 #ifndef SERVER
 void ContentFeatures::setTexture(u16 i, std::string name, u8 alpha)
 {

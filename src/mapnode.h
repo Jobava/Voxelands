@@ -114,7 +114,8 @@ enum ContentParamType
 	// Direction for chests and furnaces and such
 	CPT_FACEDIR_SIMPLE,
 	CPT_FACEDIR_WALLMOUNT,
-	CPT_LIQUID
+	CPT_LIQUID,
+	CPT_SPECIAL
 };
 
 enum LiquidType
@@ -192,6 +193,7 @@ struct ContentFeatures
 	bool wield_nodebox;
 	std::string description;
 	std::vector<aabb3f> nodeboxes;
+	std::vector<aabb3f> wield_nodeboxes;
 
 	// List of all block textures that have been used (value is dummy)
 	// Exists on server too for cleaner code in content_mapnode.cpp
@@ -318,6 +320,7 @@ struct ContentFeatures
 			0.5*BS,
 			0.5*BS
 		));
+		wield_nodeboxes.clear();
 		param_type = CPT_NONE;
 		param2_type = CPT_NONE;
 		draw_type = CDT_AIRLIKE;
@@ -388,6 +391,19 @@ struct ContentFeatures
 	void addNodeBox(core::aabbox3d<f32> bb)
 	{
 		nodeboxes.push_back(bb);
+	}
+
+        std::vector<aabb3f> getWieldNodeBoxes() const;
+
+	void setWieldNodeBox(core::aabbox3d<f32> bb)
+	{
+		wield_nodeboxes.clear();
+		wield_nodeboxes.push_back(bb);
+	}
+
+	void addWieldNodeBox(core::aabbox3d<f32> bb)
+	{
+		wield_nodeboxes.push_back(bb);
 	}
 
 	/*
