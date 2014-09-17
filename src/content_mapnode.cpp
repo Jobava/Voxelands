@@ -125,8 +125,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version)
 			break;
 		default:;
 		}
-	}
-	if (n_from.getContent() == CONTENT_TORCH_LEGACY) {
+	}else if (n_from.getContent() == CONTENT_TORCH_LEGACY) {
 		switch (n_from.param2) {
 		case 1:
 			result.setContent(CONTENT_TORCH);
@@ -151,6 +150,25 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version)
 		case 32:
 			result.setContent(CONTENT_TORCH);
 			result.param2 = 2;
+			break;
+		default:;
+		}
+	}else{
+		switch (n_from.getContent()) {
+		case CONTENT_ROUGHSTONE_WALL_LEGACY:
+			result.setContent(CONTENT_ROUGHSTONE_WALL);
+			break;
+		case CONTENT_MOSSYCOBBLE_WALL_LEGACY:
+			result.setContent(CONTENT_MOSSYCOBBLE_WALL);
+			break;
+		case CONTENT_SANDSTONE_WALL_LEGACY:
+			result.setContent(CONTENT_SANDSTONE_WALL);
+			break;
+		case CONTENT_STONE_WALL_LEGACY:
+			result.setContent(CONTENT_STONE_WALL);
+			break;
+		case CONTENT_COBBLE_WALL_LEGACY:
+			result.setContent(CONTENT_COBBLE_WALL);
 			break;
 		default:;
 		}
@@ -4415,12 +4433,15 @@ void content_mapnode_init(bool repeat)
 	f->light_propagates = true;
 	f->jumpable = false;
 	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_SPECIAL;
 	f->draw_type = CDT_WALLLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->air_equivalent = true; // grass grows underneath
-	f->setInventoryTexture("cobble_wall_inv.png");
+	content_nodebox_wall_inv(f);
+	content_nodebox_wall(f);
+	f->setInventoryTextureNodeBox(i,"cobble.png","cobble.png","cobble.png");
 	f->special_alternate_node = CONTENT_COBBLE;
 	f->type = CMT_STONE;
 	f->hardness = 0.9;
@@ -4435,12 +4456,15 @@ void content_mapnode_init(bool repeat)
 	f->light_propagates = true;
 	f->jumpable = false;
 	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_SPECIAL;
 	f->draw_type = CDT_WALLLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->air_equivalent = true; // grass grows underneath
-	f->setInventoryTexture("roughstone_wall_inv.png");
+	content_nodebox_wall_inv(f);
+	content_nodebox_wall(f);
+	f->setInventoryTextureNodeBox(i,"roughstone.png","roughstone.png","roughstone.png");
 	f->special_alternate_node = CONTENT_ROUGHSTONE;
 	f->type = CMT_STONE;
 	f->hardness = 0.9;
@@ -4455,12 +4479,15 @@ void content_mapnode_init(bool repeat)
 	f->light_propagates = true;
 	f->jumpable = false;
 	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_SPECIAL;
 	f->draw_type = CDT_WALLLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->air_equivalent = true; // grass grows underneath
-	f->setInventoryTexture("mossycobble_wall_inv.png");
+	content_nodebox_wall_inv(f);
+	content_nodebox_wall(f);
+	f->setInventoryTextureNodeBox(i,"mossycobble.png","mossycobble.png","mossycobble.png");
 	f->special_alternate_node = CONTENT_MOSSYCOBBLE;
 	f->type = CMT_STONE;
 	f->hardness = 0.8;
@@ -4475,12 +4502,15 @@ void content_mapnode_init(bool repeat)
 	f->light_propagates = true;
 	f->jumpable = false;
 	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_SPECIAL;
 	f->draw_type = CDT_WALLLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->air_equivalent = true; // grass grows underneath
-	f->setInventoryTexture("stone_wall_inv.png");
+	content_nodebox_wall_inv(f);
+	content_nodebox_wall(f);
+	f->setInventoryTextureNodeBox(i,"stone.png","stone.png","stone.png");
 	f->special_alternate_node = CONTENT_STONE;
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
@@ -4495,12 +4525,15 @@ void content_mapnode_init(bool repeat)
 	f->light_propagates = true;
 	f->jumpable = false;
 	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_SPECIAL;
 	f->draw_type = CDT_WALLLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->air_equivalent = true; // grass grows underneath
-	f->setInventoryTexture("sandstone_wall_inv.png");
+	content_nodebox_wall_inv(f);
+	content_nodebox_wall(f);
+	f->setInventoryTextureNodeBox(i,"sandstone.png","sandstone.png","sandstone.png");
 	f->special_alternate_node = CONTENT_SANDSTONE;
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;

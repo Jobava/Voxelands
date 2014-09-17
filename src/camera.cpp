@@ -478,6 +478,7 @@ void Camera::wield(const InventoryItem* item)
 					content_features(content).draw_type == CDT_NODEBOX
 					|| content_features(content).draw_type == CDT_NODEBOX_META
 					|| content_features(content).draw_type == CDT_FENCELIKE
+					|| content_features(content).draw_type == CDT_WALLLIKE
 				)
 				&& content_features(content).wield_nodebox == true
 			) {

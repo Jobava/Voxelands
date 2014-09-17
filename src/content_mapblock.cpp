@@ -424,23 +424,34 @@ static void getRoofLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, 
 #endif
 
 #ifndef SERVER
-static void mapblock_mesh_check_walllike(MeshMakeData *data, MapNode n, v3s16 p, u8 d[8], u8 h[8], bool *post)
+static int mapblock_mesh_check_walllike(MeshMakeData *data, MapNode n, v3s16 p, u8 d[8])
 {
-	v3s16 dirs[4] = {
+	static const v3s16 fence_dirs[8] = {
 		v3s16(1,0,0),
 		v3s16(-1,0,0),
 		v3s16(0,0,1),
-		v3s16(0,0,-1)
+		v3s16(0,0,-1),
+		v3s16(1,0,1),
+		v3s16(1,0,-1),
+		v3s16(-1,0,1),
+		v3s16(-1,0,-1)
 	};
-	for (s16 i=0; i<8; i++) {
-		h[i] = 0;
-		d[i] = 0;
-	}
+	static const int showcheck[4][2] = {
+		{0,2},
+		{0,3},
+		{1,2},
+		{1,3}
+	};
 	v3s16 p2;
 	MapNode n2;
 	const ContentFeatures *f2;
-	for (int i=0; i<4; i++) {
-		p2 = p+dirs[i];
+	for (s16 i=0; i<8; i++) {
+		d[i] = 0;
+	}
+	for (int k=0; k<8; k++) {
+		if (k > 3 && (d[showcheck[k-4][0]] || d[showcheck[k-4][1]]))
+					continue;
+		p2 = p+fence_dirs[k];
 		n2 = data->m_vmanip.getNodeRO(p2);
 		f2 = &content_features(n2);
 		if (
@@ -450,116 +461,56 @@ static void mapblock_mesh_check_walllike(MeshMakeData *data, MapNode n, v3s16 p,
 			|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
 			|| n2.getContent() == CONTENT_STEEL_GATE
 			|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
+			|| (
+				n2.getContent() != CONTENT_IGNORE
+				&& n2.getContent() == content_features(n).special_alternate_node
+			)
 		) {
-			d[i] = 1;
+			d[k] = 1;
 		}
-	}
-	if (!d[0] && !d[2]) {
-		p2 = p;
-		p2.X++;
-		p2.Z++;
-		n2 = data->m_vmanip.getNodeRO(p2);
-		f2 = &content_features(n2);
-		if (
-			f2->draw_type == CDT_FENCELIKE
-			|| f2->draw_type == CDT_WALLLIKE
-		)
-			d[4] = 1;
-	}
-	if (!d[0] && !d[3]) {
-		p2 = p;
-		p2.X++;
-		p2.Z--;
-		n2 = data->m_vmanip.getNodeRO(p2);
-		f2 = &content_features(n2);
-		if (
-			f2->draw_type == CDT_FENCELIKE
-			|| f2->draw_type == CDT_WALLLIKE
-		)
-			d[5] = 1;
-	}
-	if (!d[1] && !d[2]) {
-		p2 = p;
-		p2.X--;
-		p2.Z++;
-		n2 = data->m_vmanip.getNodeRO(p2);
-		f2 = &content_features(n2);
-		if (
-			f2->draw_type == CDT_FENCELIKE
-			|| f2->draw_type == CDT_WALLLIKE
-		)
-			d[6] = 1;
-	}
-	if (!d[1] && !d[3]) {
-		p2 = p;
-		p2.X--;
-		p2.Z--;
-		n2 = data->m_vmanip.getNodeRO(p2);
-		f2 = &content_features(n2);
-		if (
-			f2->draw_type == CDT_FENCELIKE
-			|| f2->draw_type == CDT_WALLLIKE
-		)
-			d[7] = 1;
 	}
 	u8 ps = d[0]+d[1]+d[2]+d[3]+d[4]+d[5]+d[6]+d[7];
 	p2 = p;
 	p2.Y++;
 	n2 = data->m_vmanip.getNodeRO(p2);
-	u8 ad[8];
-	u8 ah[8];
-	bool ap;
+	if (
+		content_features(n2).draw_type != CDT_WALLLIKE
+		&& content_features(n2).draw_type != CDT_AIRLIKE
+	) {
+		if (
+			content_features(n2).draw_type == CDT_TORCHLIKE
+			|| content_features(n2).draw_type == CDT_FENCELIKE
+		)
+			return 0;
+		return 1;
+	}
 	if (content_features(n2).draw_type == CDT_WALLLIKE) {
-		mapblock_mesh_check_walllike(data,n2,p2,ad,ah,&ap);
-		if (ad[0] && d[0])
-			h[0] = 1;
-		if (ad[1] && d[1])
-			h[1] = 1;
-		if (ad[2] && d[2])
-			h[2] = 1;
-		if (ad[3] && d[3])
-			h[3] = 1;
-		if (ad[4] && d[4])
-			h[4] = 1;
-		if (ad[5] && d[5])
-			h[5] = 1;
-		if (ad[6] && d[6])
-			h[6] = 1;
-		if (ad[7] && d[7])
-			h[7] = 1;
+		u8 ad[8];
+		int ap = mapblock_mesh_check_walllike(data,n2,p2,ad);
+		if ((ad[0]+ad[1]+ad[2]+ad[3]+ad[4]+ad[5]+ad[6]+ad[7]) == 2) {
+			if (ap != 2)
+				return 1;
+		}else{
+			return 1;
+		}
 	}
 	if (ps == 2) {
-		*post = false;
-		if (d[0] && d[2]) {
-			*post = true;
-		}else if (d[1] && d[3]) {
-			*post = true;
-		}else if (d[0] && d[3]) {
-			*post = true;
-		}else if (d[1] && d[2]) {
-			*post = true;
-		}else if (d[4] || d[5] || d[6] || d[7]) {
-			*post = true;
-		}else if (content_features(n2).draw_type == CDT_WALLLIKE) {
-			*post = ap;
-		}else if (n2.getContent() != CONTENT_AIR && n2.getContent() != CONTENT_IGNORE) {
-			*post = true;
+		if (
+			d[4]
+			|| d[5]
+			|| d[6]
+			|| d[7]
+			|| (d[0] && d[2])
+			|| (d[1] && d[3])
+			|| (d[0] && d[3])
+			|| (d[1] && d[2])
+		) {
+			return 0;
 		}
 	}else{
-		*post = true;
+		return 0;
 	}
-	if (*post) {
-		for (int i=0; i<4; i++) {
-			p2 = p+dirs[i];
-			n2 = data->m_vmanip.getNodeRO(p2);
-			if (
-				n2.getContent() != CONTENT_IGNORE
-				&& n2.getContent() == content_features(n).special_alternate_node
-			) {
-				d[i] = 1;
-			}
-		}
-	}
+	return 2;
 }
 
 void mapblock_mesh_generate_special(MeshMakeData *data,
@@ -1222,16 +1173,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		break;
 		case CDT_WALLLIKE:
 		{
-			video::SColor c[8];
-			getLights(blockpos_nodes+p,c,data,smooth_lighting);
-
-			const f32 post_rad=(f32)0.2*BS;
-			const f32 wall_rad=(f32)0.15*BS;
-			u8 d[8];
-			u8 h[8];
-			bool post;
-			float height;
-			mapblock_mesh_check_walllike(data,n,blockpos_nodes+p,d,h,&post);
 			static const v3s16 tile_dirs[6] = {
 				v3s16(0, 1, 0),
 				v3s16(0, -1, 0),
@@ -1240,175 +1181,111 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				v3s16(0, 0, 1),
 				v3s16(0, 0, -1)
 			};
+			static const int shown_angles[8] = {0,0,0,0,45,135,45,315};
+			n.param2 = 0;
 
 			TileSpec tiles[6];
 			for (int i = 0; i < 6; i++) {
 				// Handles facedir rotation for textures
 				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
 			}
+			video::SColor c[8];
+			getLights(blockpos_nodes+p,c,data,smooth_lighting);
 
 			v3f pos = intToFloat(p, BS);
-			if (d[0]) {
-				height = h[0] ? 0.501 : 0.301;
-				aabb3f bar(
-					0.,-(0.499*BS),-wall_rad,
-					0.5*BS,height*BS,wall_rad
-				);
-				bar.MinEdge += pos;
-				bar.MaxEdge += pos;
-				f32 xrailuv[24]={
-					0.,0.35,0.35,0.65,
-					0.,0.35,0.35,0.65,
-					0.35,0.2,0.65,1,
-					0.35,0.2,0.65,1,
-					0.,0.2,0.5,1,
-					0.,0.2,0.5,1
+			std::vector<aabb3f> boxes = content_features(n).getNodeBoxes(n);
+			v3s16 p2 = p;
+			p2.Y++;
+			MapNode n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
+			aabb3f box;
+			u8 d[8];
+			int bi = mapblock_mesh_check_walllike(data,n,p+blockpos_nodes,d);
+			{
+				box = boxes[bi];
+
+				// Compute texture coords
+				f32 tx1 = (box.MinEdge.X/BS)+0.5;
+				f32 ty1 = (box.MinEdge.Y/BS)+0.5;
+				f32 tz1 = (box.MinEdge.Z/BS)+0.5;
+				f32 tx2 = (box.MaxEdge.X/BS)+0.5;
+				f32 ty2 = (box.MaxEdge.Y/BS)+0.5;
+				f32 tz2 = (box.MaxEdge.Z/BS)+0.5;
+				box.MinEdge += pos;
+				box.MaxEdge += pos;
+				f32 txc[24] = {
+					// up
+					tx1, 1-tz2, tx2, 1-tz1,
+					// down
+					tx1, tz1, tx2, tz2,
+					// right
+					tz1, 1-ty2, tz2, 1-ty1,
+					// left
+					1-tz2, 1-ty2, 1-tz1, 1-ty1,
+					// back
+					1-tx2, 1-ty2, 1-tx1, 1-ty1,
+					// front
+					tx1, 1-ty2, tx2, 1-ty1,
 				};
-				makeCuboid(&collector, bar, tiles, 6,  c, xrailuv);
+				makeCuboid(&collector, box, tiles, 6,  c, txc);
 			}
 
-			// Now a section of fence, -X, if there's a post there
-			if (d[1]) {
-				height = h[1] ? 0.501 : 0.301;
-				aabb3f bar(
-					-0.5*BS,-(0.499*BS),-wall_rad,
-					0.,height*BS,wall_rad
-				);
-				bar.MinEdge += pos;
-				bar.MaxEdge += pos;
-				f32 xrailuv[24]={
-					0.65,0.35,1,0.65,
-					0.65,0.35,1,0.65,
-					0.35,0.2,0.65,1,
-					0.35,0.2,0.65,1,
-					0.5,0.2,1,1,
-					0.5,0.2,1,1
-				};
-				makeCuboid(&collector, bar, tiles, 6,  c, xrailuv);
-			}
+			int bps = ((boxes.size()-3)/4); // boxes per section
+			u8 np = 1;
 
-			// Now a section of fence, +Z, if there's a post there
-			if (d[2]) {
-				height = h[2] ? 0.501 : 0.301;
-				aabb3f bar(
-					-wall_rad,-(0.499*BS),0.,
-					wall_rad,height*BS,0.5*BS
-				);
-				bar.MinEdge += pos;
-				bar.MaxEdge += pos;
-				f32 zrailuv[24]={
-					0.5,0.35,1,0.65,
-					0.5,0.35,1,0.65,
-					0.5,0.2,1,1,
-					0.5,0.2,1,1,
-					0.35,0.2,0.65,1,
-					0.35,0.2,0.65,1
-				};
-				makeCuboid(&collector, bar, tiles, 6,  c, zrailuv);
-			}
+			for (int k=0; k<8; k++) {
+				if (d[k]) {
+					n.param2 |= (np<<k);
+					for (int i=0; i<bps; i++) {
+						aabb3f box = boxes[i+3+(bps*(k%4))];
 
-			// Now a section of fence, +Z, if there's a post there
-			if (d[3]) {
-				height = h[3] ? 0.501 : 0.301;
-				aabb3f bar(
-					-wall_rad,-(0.499*BS),-0.5*BS,
-					wall_rad,height*BS,0.
-				);
-				bar.MinEdge += pos;
-				bar.MaxEdge += pos;
-				f32 zrailuv[24]={
-					0,0.35,0.5,0.65,
-					0,0.35,0.5,0.65,
-					0,0.2,0.5,1,
-					0,0.2,0.5,1,
-					0.35,0.2,0.65,1,
-					0.35,0.2,0.65,1
-				};
-				makeCuboid(&collector, bar, tiles, 6,  c, zrailuv);
+						// Compute texture coords
+						f32 tx1 = (box.MinEdge.X/BS)+0.5;
+						f32 ty1 = (box.MinEdge.Y/BS)+0.5;
+						f32 tz1 = (box.MinEdge.Z/BS)+0.5;
+						f32 tx2 = (box.MaxEdge.X/BS)+0.5;
+						f32 ty2 = (box.MaxEdge.Y/BS)+0.5;
+						f32 tz2 = (box.MaxEdge.Z/BS)+0.5;
+						f32 txc[24] = {
+							// up
+							tx1, 1-tz2, tx2, 1-tz1,
+							// down
+							tx1, tz1, tx2, tz2,
+							// right
+							tz1, 1-ty2, tz2, 1-ty1,
+							// left
+							1-tz2, 1-ty2, 1-tz1, 1-ty1,
+							// back
+							1-tx2, 1-ty2, 1-tx1, 1-ty1,
+							// front
+							tx1, 1-ty2, tx2, 1-ty1,
+						};
+						if (k > 3) {
+							switch (k) {
+							case 4:
+								box.MaxEdge.X *= 1.414;
+								break;
+							case 5:
+								box.MinEdge.X *= 1.414;
+								break;
+							case 6:
+								box.MaxEdge.Z *= 1.414;
+								break;
+							case 7:
+								box.MinEdge.Z *= 1.414;
+								break;
+							default:;
+							}
+						}
+						makeAngledCuboid(&collector, pos, box, tiles, 6,  c, txc, shown_angles[k]);
+					}
+				}
 			}
-			if (d[4]) {
-				height = h[4] ? 0.501 : 0.301;
-				aabb3f bar(
-					0.,-(0.499*BS),-wall_rad,
-					0.707*BS,height*BS,wall_rad
-				);
-				f32 xrailuv[24]={
-					0.,0.35,0.35,0.65,
-					0.,0.35,0.35,0.65,
-					0.35,0.2,0.65,1,
-					0.35,0.2,0.65,1,
-					0.,0.2,0.5,1,
-					0.,0.2,0.5,1
-				};
-				makeAngledCuboid(&collector, pos, bar, tiles, 6,  c, xrailuv, 45);
-			}
-			if (d[5]) {
-				height = h[5] ? 0.501 : 0.301;
-				aabb3f bar(
-					-0.707*BS,-(0.499*BS),-wall_rad,
-					0.,height*BS,wall_rad
-				);
-				f32 xrailuv[24]={
-					0.65,0.35,1,0.65,
-					0.65,0.35,1,0.65,
-					0.35,0.2,0.65,1,
-					0.35,0.2,0.65,1,
-					0.5,0.2,1,1,
-					0.5,0.2,1,1
-				};
-				makeAngledCuboid(&collector, pos, bar, tiles, 6,  c, xrailuv, 135);
-			}
-			if (d[6]) {
-				height = h[6] ? 0.501 : 0.301;
-				aabb3f bar(
-					-wall_rad,-(0.499*BS),0.,
-					wall_rad,height*BS,0.707*BS
-				);
-				f32 zrailuv[24]={
-					0.5,0.35,1,0.65,
-					0.5,0.35,1,0.65,
-					0.5,0.2,1,1,
-					0.5,0.2,1,1,
-					0.35,0.2,0.65,1,
-					0.35,0.2,0.65,1
-				};
-				makeAngledCuboid(&collector, pos, bar, tiles, 6,  c, zrailuv, 45);
-			}
-			if (d[7]) {
-				height = h[7] ? 0.501 : 0.301;
-				aabb3f bar(
-					-wall_rad,-(0.499*BS),-0.707*BS,
-					wall_rad,height*BS,0.
-				);
-				f32 zrailuv[24]={
-					0,0.35,0.5,0.65,
-					0,0.35,0.5,0.65,
-					0,0.2,0.5,1,
-					0,0.2,0.5,1,
-					0.35,0.2,0.65,1,
-					0.35,0.2,0.65,1
-				};
-				makeAngledCuboid(&collector, pos, bar, tiles, 6,  c, zrailuv, 315);
-			}
-			if (post) {
-				aabb3f post_v(-post_rad,-BS/2,-post_rad,post_rad,BS/2,post_rad);
-				post_v.MinEdge += pos;
-				post_v.MaxEdge += pos;
-				f32 postuv[24]={
-					0.3,0.3,0.7,0.7,
-					0.3,0.3,0.7,0.7,
-					0.3,0,0.7,1,
-					0.3,0,0.7,1,
-					0.3,0,0.7,1,
-					0.3,0,0.7,1
-				};
-				makeCuboid(&collector, post_v, tiles, 6,  c, postuv);
-			}
+			data->m_env->getMap().addNodeWithEvent(p+blockpos_nodes,n);
 		}
+		break;
 		/*
 			Add fence
 		*/
-		break;
 		case CDT_FENCELIKE:
 		{
 			static const v3s16 tile_dirs[6] = {
@@ -1555,299 +1432,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				}
 			}
 			data->m_env->getMap().addNodeWithEvent(p+blockpos_nodes,n);
-		}
-		break;
-		{
-			video::SColor c[8];
-			getLights(blockpos_nodes+p,c,data,smooth_lighting);
-
-			const f32 post_rad=(f32)BS/10;
-			const f32 bar_rad=(f32)BS/20;
-
-			// The post - always present
-			v3f pos = intToFloat(p, BS);
-			static const v3s16 tile_dirs[6] = {
-				v3s16(0, 1, 0),
-				v3s16(0, -1, 0),
-				v3s16(1, 0, 0),
-				v3s16(-1, 0, 0),
-				v3s16(0, 0, 1),
-				v3s16(0, 0, -1)
-			};
-
-			TileSpec tiles[6];
-			for (int i = 0; i < 6; i++) {
-				// Handles facedir rotation for textures
-				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
-			}
-
-			// The post - always present
-			aabb3f post(-post_rad,-BS/2,-post_rad,post_rad,BS/2,post_rad);
-			post.MinEdge += pos;
-			post.MaxEdge += pos;
-			f32 postuv[24]={
-				0.4,0.4,0.6,0.6,
-				0.4,0.4,0.6,0.6,
-				0.35,0,0.65,1,
-				0.35,0,0.65,1,
-				0.35,0,0.65,1,
-				0.35,0,0.65,1
-			};
-			makeCuboid(&collector, post, tiles, 6,  c, postuv);
-
-			bool fence_plus_x = false;
-			bool fence_minus_x = false;
-			bool fence_plus_z = false;
-			bool fence_minus_z = false;
-
-			// Now a section of fence, +X, if there's a post there
-			v3s16 p2 = p;
-			p2.X++;
-			MapNode n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
-			const ContentFeatures *f2 = &content_features(n2);
-			if (
-				f2->draw_type == CDT_FENCELIKE
-				|| f2->draw_type == CDT_WALLLIKE
-				|| n2.getContent() == CONTENT_WOOD_GATE
-				|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
-				|| n2.getContent() == CONTENT_STEEL_GATE
-				|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
-				|| (
-					n2.getContent() != CONTENT_IGNORE
-					&& n2.getContent() == content_features(n).special_alternate_node
-				)
-			) {
-				fence_plus_x = true;
-				aabb3f bar(post_rad,-bar_rad+BS/4,-bar_rad,
-						0.5*BS,bar_rad+BS/4,bar_rad);
-				bar.MinEdge += pos;
-				bar.MaxEdge += pos;
-				f32 xrailuv[24]={
-					0.5,0.4,1,0.6,
-					0.5,0.4,1,0.6,
-					0.5,0.4,1,0.6,
-					0.5,0.4,1,0.6,
-					0.5,0.4,1,0.6,
-					0.5,0.4,1,0.6
-				};
-				makeCuboid(&collector, bar, tiles, 6,  c, xrailuv);
-				bar.MinEdge.Y -= BS/2;
-				bar.MaxEdge.Y -= BS/2;
-				makeCuboid(&collector, bar, tiles, 6,  c, xrailuv);
-			}
-
-			// Now a section of fence, +Z, if there's a post there
-			p2 = p;
-			p2.X--;
-			n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
-			f2 = &content_features(n2);
-			if (
-				f2->draw_type == CDT_FENCELIKE
-				|| f2->draw_type == CDT_WALLLIKE
-				|| n2.getContent() == CONTENT_WOOD_GATE
-				|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
-				|| n2.getContent() == CONTENT_STEEL_GATE
-				|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
-				|| (
-					n2.getContent() != CONTENT_IGNORE
-					&& n2.getContent() == content_features(n).special_alternate_node
-				)
-			) {
-				fence_minus_x = true;
-				aabb3f bar(-0.5*BS,-bar_rad+BS/4,-bar_rad,
-						-post_rad,bar_rad+BS/4,bar_rad);
-				bar.MinEdge += pos;
-				bar.MaxEdge += pos;
-				f32 xrailuv[24]={
-					0,0.4,0.5,0.6,
-					0,0.4,0.5,0.6,
-					0,0.4,0.5,0.6,
-					0,0.4,0.5,0.6,
-					0,0.4,0.5,0.6,
-					0,0.4,0.5,0.6
-				};
-				makeCuboid(&collector, bar, tiles, 6,  c, xrailuv);
-				bar.MinEdge.Y -= BS/2;
-				bar.MaxEdge.Y -= BS/2;
-				makeCuboid(&collector, bar, tiles, 6,  c, xrailuv);
-			}
-
-			// Now a section of fence, +Z, if there's a post there
-			p2 = p;
-			p2.Z++;
-			n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
-			f2 = &content_features(n2);
-			if (
-				f2->draw_type == CDT_FENCELIKE
-				|| f2->draw_type == CDT_WALLLIKE
-				|| n2.getContent() == CONTENT_WOOD_GATE
-				|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
-				|| n2.getContent() == CONTENT_STEEL_GATE
-				|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
-				|| (
-					n2.getContent() != CONTENT_IGNORE
-					&& n2.getContent() == content_features(n).special_alternate_node
-				)
-			) {
-				fence_plus_z = true;
-				aabb3f bar(-bar_rad,-bar_rad+BS/4,post_rad,
-						bar_rad,bar_rad+BS/4,0.5*BS);
-				bar.MinEdge += pos;
-				bar.MaxEdge += pos;
-				f32 zrailuv[24]={
-					0,0.4,1,0.6,
-					0,0.4,1,0.6,
-					0,0.4,1,0.6,
-					0,0.4,1,0.6,
-					0,0.4,1,0.6,
-					0,0.4,1,0.6
-				};
-				makeCuboid(&collector, bar, tiles, 6,  c, zrailuv);
-				bar.MinEdge.Y -= BS/2;
-				bar.MaxEdge.Y -= BS/2;
-				makeCuboid(&collector, bar, tiles, 6,  c, zrailuv);
-			}
-
-			// Now a section of fence, +Z, if there's a post there
-			p2 = p;
-			p2.Z--;
-			n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
-			f2 = &content_features(n2);
-			if (
-				f2->draw_type == CDT_FENCELIKE
-				|| f2->draw_type == CDT_WALLLIKE
-				|| n2.getContent() == CONTENT_WOOD_GATE
-				|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
-				|| n2.getContent() == CONTENT_STEEL_GATE
-				|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
-				|| (
-					n2.getContent() != CONTENT_IGNORE
-					&& n2.getContent() == content_features(n).special_alternate_node
-				)
-			) {
-				fence_minus_z = true;
-				aabb3f bar(-bar_rad,-bar_rad+BS/4,-0.5*BS,
-						bar_rad,bar_rad+BS/4,-post_rad);
-				bar.MinEdge += pos;
-				bar.MaxEdge += pos;
-				f32 zrailuv[24]={
-					0,0.4,1,0.6,
-					0,0.4,1,0.6,
-					0,0.4,1,0.6,
-					0,0.4,1,0.6,
-					0,0.4,1,0.6,
-					0,0.4,1,0.6
-				};
-				makeCuboid(&collector, bar, tiles, 6,  c, zrailuv);
-				bar.MinEdge.Y -= BS/2;
-				bar.MaxEdge.Y -= BS/2;
-				makeCuboid(&collector, bar, tiles, 6,  c, zrailuv);
-			}
-			if (!fence_plus_x && !fence_plus_z) {
-				p2 = p;
-				p2.X++;
-				p2.Z++;
-				n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
-				f2 = &content_features(n2);
-				if (
-					f2->draw_type == CDT_FENCELIKE
-					|| f2->draw_type == CDT_WALLLIKE
-				) {
-					aabb3f bar(-bar_rad,-bar_rad+BS/4,-0.707*BS,
-							bar_rad,bar_rad+BS/4,-post_rad);
-					f32 zrailuv[24]={
-						0,0.4,1,0.6,
-						0,0.4,1,0.6,
-						0,0.4,1,0.6,
-						0,0.4,1,0.6,
-						0,0.4,1,0.6,
-						0,0.4,1,0.6
-					};
-					makeAngledCuboid(&collector, pos, bar, tiles, 6,  c, zrailuv, 135);
-					bar.MinEdge.Y -= BS/2;
-					bar.MaxEdge.Y -= BS/2;
-					makeAngledCuboid(&collector, pos, bar, tiles, 6,  c, zrailuv, 135);
-				}
-			}
-			if (!fence_plus_x && !fence_minus_z) {
-				p2 = p;
-				p2.X++;
-				p2.Z--;
-				n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
-				f2 = &content_features(n2);
-				if (
-					f2->draw_type == CDT_FENCELIKE
-					|| f2->draw_type == CDT_WALLLIKE
-				) {
-					aabb3f bar(-bar_rad,-bar_rad+BS/4,-0.707*BS,
-							bar_rad,bar_rad+BS/4,-post_rad);
-					f32 zrailuv[24]={
-						0,0.4,1,0.6,
-						0,0.4,1,0.6,
-						0,0.4,1,0.6,
-						0,0.4,1,0.6,
-						0,0.4,1,0.6,
-						0,0.4,1,0.6
-					};
-					makeAngledCuboid(&collector, pos, bar, tiles, 6,  c, zrailuv, 45);
-					bar.MinEdge.Y -= BS/2;
-					bar.MaxEdge.Y -= BS/2;
-					makeAngledCuboid(&collector, pos, bar, tiles, 6,  c, zrailuv, 45);
-				}
-			}
-			if (!fence_minus_x && !fence_plus_z) {
-				p2 = p;
-				p2.X--;
-				p2.Z++;
-				n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
-				f2 = &content_features(n2);
-				if (
-					f2->draw_type == CDT_FENCELIKE
-					|| f2->draw_type == CDT_WALLLIKE
-				) {
-					aabb3f bar(-bar_rad,-bar_rad+BS/4,-0.707*BS,
-							bar_rad,bar_rad+BS/4,-post_rad);
-					f32 zrailuv[24]={
-						0,0.4,1,0.6,
-						0,0.4,1,0.6,
-						0,0.4,1,0.6,
-						0,0.4,1,0.6,
-						0,0.4,1,0.6,
-						0,0.4,1,0.6
-					};
-					makeAngledCuboid(&collector, pos, bar, tiles, 6,  c, zrailuv, 225);
-					bar.MinEdge.Y -= BS/2;
-					bar.MaxEdge.Y -= BS/2;
-					makeAngledCuboid(&collector, pos, bar, tiles, 6,  c, zrailuv, 225);
-				}
-			}
-			if (!fence_minus_x && !fence_minus_z) {
-				p2 = p;
-				p2.X--;
-				p2.Z--;
-				n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
-				f2 = &content_features(n2);
-				if (
-					f2->draw_type == CDT_FENCELIKE
-					|| f2->draw_type == CDT_WALLLIKE
-				) {
-					aabb3f bar(-bar_rad,-bar_rad+BS/4,-0.707*BS,
-							bar_rad,bar_rad+BS/4,-post_rad);
-					f32 zrailuv[24]={
-						0,0.4,1,0.6,
-						0,0.4,1,0.6,
-						0,0.4,1,0.6,
-						0,0.4,1,0.6,
-						0,0.4,1,0.6,
-						0,0.4,1,0.6
-					};
-					makeAngledCuboid(&collector, pos, bar, tiles, 6,  c, zrailuv, 315);
-					bar.MinEdge.Y -= BS/2;
-					bar.MaxEdge.Y -= BS/2;
-					makeAngledCuboid(&collector, pos, bar, tiles, 6,  c, zrailuv, 315);
-				}
-			}
-
 		}
 		break;
 		case CDT_WIRELIKE:

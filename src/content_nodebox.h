@@ -59,5 +59,7 @@ void content_nodebox_waterwheel(ContentFeatures *f);
 void content_nodebox_clock(ContentFeatures *f);
 void content_nodebox_fence_inv(ContentFeatures *f);
 void content_nodebox_fence(ContentFeatures *f);
+void content_nodebox_wall_inv(ContentFeatures *f);
+void content_nodebox_wall(ContentFeatures *f);
 
 #endif

@@ -246,7 +246,7 @@ collisionMoveResult collisionMoveSimple(Map *map,
 				std::vector<aabb3f> nodeboxes = f.getNodeBoxes(n);
 
 #ifndef SERVER
-				if (f.draw_type == CDT_FENCELIKE) {
+				if (f.draw_type == CDT_FENCELIKE || f.draw_type == CDT_WALLLIKE) {
 					static const int boxcheck[4][2] = {
 						{0,2},
 						{0,3},
