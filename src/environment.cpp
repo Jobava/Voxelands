@@ -760,6 +760,53 @@ static void getMob_dungeon_master(Settings &properties)
 	properties.setBool("mindless_rage", myrand_range(0,100)==0);
 }
 
+bool ServerEnvironment::searchNear(v3s16 pos, v3s16 radius_min, v3s16 radius_max, std::vector<content_t> c, v3s16 *found)
+{
+	for(s16 x=-radius_min.X; x<=radius_max.X; x++) {
+		for(s16 y=-radius_min.Y; y<=radius_max.Y; y++) {
+			for(s16 z=-radius_min.Z; z<=radius_max.Z; z++) {
+				if (!x && !y && !z)
+					continue;
+				MapNode n_test = m_map->getNodeNoEx(pos+v3s16(x,y,z));
+				for (std::vector<content_t>::iterator i=c.begin(); i != c.end(); i++) {
+					if (n_test.getContent() == *i) {
+						if (found != NULL)
+							*found = pos+v3s16(x,y,z);
+						return true;
+					}
+				}
+			}
+		}
+	}
+	return false;
+}
+
+bool ServerEnvironment::searchNearInv(v3s16 pos, v3s16 radius_min, v3s16 radius_max, std::vector<content_t> c, v3s16 *found)
+{
+	for(s16 x=radius_min.X; x<=radius_max.X; x++) {
+		for(s16 y=radius_min.Y; y<=radius_max.Y; y++) {
+			for(s16 z=radius_min.Z; z<=radius_max.Z; z++) {
+				if (!x && !y && !z)
+					continue;
+				MapNode n_test = m_map->getNodeNoEx(pos+v3s16(x,y,z));
+				bool s = false;
+				for (std::vector<content_t>::iterator i=c.begin(); i != c.end(); i++) {
+					if (n_test.getContent() == *i) {
+						s = true;
+						break;
+					}
+				}
+				if (!s) {
+					if (found != NULL)
+						*found = pos+v3s16(x,y,z);
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+
 void ServerEnvironment::step(float dtime)
 {
 	DSTACK(__FUNCTION_NAME);
@@ -1029,22 +1076,12 @@ void ServerEnvironment::step(float dtime)
 				case CONTENT_WATERSOURCE:
 				{
 					if (p.Y > 60 && p.Y < 200) {
-						bool found = false;
 						s16 range = (p.Y > 60) ? 2 : 4;
-						for(s16 x=-range; !found && x<=range; x++) {
-						for(s16 y=-1; !found && y<=1; y++) {
-						for(s16 z=-range; !found && z<=range; z++) {
-							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
-							if (
-								n_test.getContent() == CONTENT_LAVASOURCE
-								|| n_test.getContent() == CONTENT_LAVA
-								|| n_test.getContent() == CONTENT_FIRE
-							)
-								found = true;
-						}
-						}
-						}
-						if (found == false) {
+						std::vector<content_t> search;
+						search.push_back(CONTENT_LAVASOURCE);
+						search.push_back(CONTENT_LAVA);
+						search.push_back(CONTENT_FIRE);
+						if (searchNear(p,v3s16(range,1,range),search,NULL)) {
 							n.setContent(CONTENT_ICE);
 							m_map->addNodeWithEvent(p, n);
 						}
@@ -1057,34 +1094,16 @@ void ServerEnvironment::step(float dtime)
 					bool found = false;
 					if (p.Y > 0) {
 						s16 range = (p.Y > 60) ? 2 : 4;
-						for(s16 x=-range; !found && x<=range; x++) {
-						for(s16 y=-1; !found && y<=1; y++) {
-						for(s16 z=-range; !found && z<=range; z++) {
-							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
-							if (
-								n_test.getContent() == CONTENT_LAVASOURCE
-								|| n_test.getContent() == CONTENT_LAVA
-								|| n_test.getContent() == CONTENT_FIRE
-							)
-								found = true;
-						}
-						}
-						}
+						std::vector<content_t> search;
+						search.push_back(CONTENT_LAVASOURCE);
+						search.push_back(CONTENT_LAVA);
+						search.push_back(CONTENT_FIRE);
+						found = searchNear(p,v3s16(range,1,range),search,NULL);
 					}else{
 						found = true;
 					}
 					if (found) {
-						found = false;
-						for(s16 x=-5; !found && x<=5; x++) {
-						for(s16 y=-1; !found && y<=1; y++) {
-						for(s16 z=-5; !found && z<=5; z++) {
-							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
-							if (n_test.getContent() == CONTENT_WATERSOURCE)
-								found = true;
-						}
-						}
-						}
-						if (found) {
+						if (searchNear(p,v3s16(5,1,5),CONTENT_WATERSOURCE,NULL)) {
 							n.setContent(CONTENT_WATER);
 							m_map->addNodeWithEvent(p, n);
 						}else{
@@ -1106,17 +1125,7 @@ void ServerEnvironment::step(float dtime)
 				case CONTENT_SNOW_BLOCK:
 				{
 					if (p.Y < 1) {
-						bool found = false;
-						for(s16 x=-3; !found && x<=3; x++) {
-						for(s16 y=-1; !found && y<=1; y++) {
-						for(s16 z=-3; !found && z<=3; z++) {
-							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
-							if (n_test.getContent() == CONTENT_WATERSOURCE)
-								found = true;
-						}
-						}
-						}
-						if (found) {
+						if (searchNear(p,v3s16(3,1,3),CONTENT_WATERSOURCE,NULL)) {
 							n.setContent(CONTENT_WATER);
 							m_map->addNodeWithEvent(p, n);
 						}else{
@@ -1124,21 +1133,11 @@ void ServerEnvironment::step(float dtime)
 							m_map->addNodeWithEvent(p, n);
 						}
 					}else{
-						bool found = false;
-						for(s16 x=-3; !found && x<=3; x++) {
-						for(s16 y=-1; !found && y<=1; y++) {
-						for(s16 z=-3; !found && z<=3; z++) {
-							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
-							if (
-								n_test.getContent() == CONTENT_LAVASOURCE
-								|| n_test.getContent() == CONTENT_LAVA
-								|| n_test.getContent() == CONTENT_FIRE
-							)
-								found = true;
-						}
-						}
-						}
-						if (found) {
+						std::vector<content_t> search;
+						search.push_back(CONTENT_LAVASOURCE);
+						search.push_back(CONTENT_LAVA);
+						search.push_back(CONTENT_FIRE);
+						if (searchNear(p,v3s16(3,1,3),search,NULL)) {
 							n.setContent(CONTENT_WATERSOURCE);
 							m_map->addNodeWithEvent(p, n);
 						}
@@ -1797,33 +1796,8 @@ void ServerEnvironment::step(float dtime)
 				case CONTENT_APPLE_LEAVES:
 				{
 					if (myrand()%10 == 0) {
-						bool found_tree = false;
-
-						for(s16 x=-3; !found_tree && x<=3; x++)
-						for(s16 y=-3; !found_tree && y<=3; y++)
-						for(s16 z=-3; !found_tree && z<=3; z++)
-						{
-							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
-							if (n_test.getContent() == CONTENT_APPLE_TREE) {
-								found_tree = true;
-								break;
-							}
-						}
-
-						// let's not turn the entire tree to blossoms
-						if (found_tree == true) {
-							bool found_blossom = false;
-							for(s16 x=-1; !found_blossom && x<=1; x++)
-							for(s16 y=-1; !found_blossom && y<=1; y++)
-							for(s16 z=-1; !found_blossom && z<=1; z++)
-							{
-								MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
-								if (n_test.getContent() == CONTENT_APPLE_BLOSSOM) {
-									found_blossom = true;
-									break;
-								}
-							}
-							if (found_blossom == false) {
+						if (searchNear(p,v3s16(3,3,3),CONTENT_APPLE_TREE,NULL)) {
+							if (!searchNear(p,v3s16(1,1,1),CONTENT_APPLE_BLOSSOM,NULL)) {
 								n.setContent(CONTENT_APPLE_BLOSSOM);
 								m_map->addNodeWithEvent(p, n);
 							}
@@ -1840,30 +1814,18 @@ void ServerEnvironment::step(float dtime)
 				{
 					if (myrand()%8 == 0)
 					{
-						s16 max_d = 3;
 						v3s16 leaf_p = p;
-						v3s16 test_p;
-						MapNode testnode;
-						bool found = false;
-						for(s16 z=-max_d; !found && z<=max_d; z++) {
-						for(s16 y=-max_d; !found && y<=max_d; y++) {
-						for(s16 x=-max_d; !found && x<=max_d; x++)
-							{
-							test_p = leaf_p + v3s16(x,y,z);
-							testnode = m_map->getNodeNoEx(test_p);
-							if (testnode.getContent() == CONTENT_TREE
-								|| testnode.getContent() == CONTENT_APPLE_TREE
-								|| testnode.getContent() == CONTENT_JUNGLETREE
-								|| testnode.getContent() == CONTENT_CONIFER_TREE
-								|| testnode.getContent() == CONTENT_IGNORE)
-							{
-								found = true;
-								break;
-							}
-						}
-						}
-						}
-						if (!found) {
+						std::vector<content_t> search;
+						search.push_back(CONTENT_TREE);
+						search.push_back(CONTENT_YOUNG_TREE);
+						search.push_back(CONTENT_APPLE_TREE);
+						search.push_back(CONTENT_YOUNG_APPLE_TREE);
+						search.push_back(CONTENT_JUNGLETREE);
+						search.push_back(CONTENT_YOUNG_JUNGLETREE);
+						search.push_back(CONTENT_CONIFER_TREE);
+						search.push_back(CONTENT_YOUNG_CONIFER_TREE);
+						search.push_back(CONTENT_IGNORE);
+						if (!searchNear(p,v3s16(3,3,3),search,NULL)) {
 							m_map->removeNodeWithEvent(leaf_p);
 							if (myrand()%20 == 0) {
 								v3f sapling_pos = intToFloat(leaf_p, BS);
@@ -1891,22 +1853,9 @@ void ServerEnvironment::step(float dtime)
 				case CONTENT_APPLE_BLOSSOM:
 				{
 					if(myrand()%20 == 0) {
-						bool found_tree = false;
-
-						for(s16 x=-3; !found_tree && x<=3; x++)
-						for(s16 y=-3; !found_tree && y<=3; y++)
-						for(s16 z=-3; !found_tree && z<=3; z++)
-						{
-							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
-							if (n_test.getContent() == CONTENT_APPLE_TREE) {
-								found_tree = true;
-								break;
-							}
-						}
-
 						// don't turn all blossoms to apples
 						// blossoms look nice
-						if (found_tree == true) {
+						if (searchNear(p,v3s16(3,3,3),CONTENT_APPLE_TREE,NULL)) {
 							int found_apple = 0;
 
 							for(s16 x=-2; x<=2; x++)
@@ -1957,19 +1906,10 @@ void ServerEnvironment::step(float dtime)
 					if (!content_features(n_below).flammable) {
 						m_map->removeNodeWithEvent(p);
 					}else if (myrand()%10) {
-						bool can_spread = true;
 						s16 bs_rad = g_settings->getS16("borderstone_radius");
 						bs_rad += 2;
 						// if any node is border stone protected, don't spread
-						for(s16 x=-bs_rad; can_spread && x<=bs_rad; x++)
-						for(s16 y=-bs_rad; can_spread && y<=bs_rad; y++)
-						for(s16 z=-bs_rad; can_spread && z<=bs_rad; z++)
-						{
-							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
-							if (n_test.getContent() == CONTENT_BORDERSTONE)
-								can_spread = false;
-						}
-						if (can_spread) {
+						if (!searchNear(p,v3s16(bs_rad,bs_rad,bs_rad),CONTENT_BORDERSTONE,NULL)) {
 							for(s16 x=-1; x<=1; x++)
 							for(s16 y=0; y<=1; y++)
 							for(s16 z=-1; z<=1; z++)
@@ -2035,51 +1975,44 @@ void ServerEnvironment::step(float dtime)
 				{
 					NodeMetadata *meta = m_map->getNodeMetadata(p);
 					if (meta && meta->getEnergy() == ENERGY_MAX) {
-						bool can_spread = g_settings->getBool("enable_tnt");
-						s16 bs_rad = g_settings->getS16("borderstone_radius");
-						bs_rad += 3;
-						// if any node is border stone protected, don't destroy anything
-						for(s16 x=-bs_rad; can_spread && x<=bs_rad; x++)
-						for(s16 y=-bs_rad; can_spread && y<=bs_rad; y++)
-						for(s16 z=-bs_rad; can_spread && z<=bs_rad; z++)
-						{
-							MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
-							if (n_test.getContent() == CONTENT_BORDERSTONE)
-								can_spread = false;
-						}
-						if (can_spread) {
-							for(s16 x=-2; x<=2; x++)
-							for(s16 y=-2; y<=2; y++)
-							for(s16 z=-2; z<=2; z++)
-							{
-								MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
-								if (n_test.getContent() == CONTENT_AIR)
-									continue;
-								if (n_test.getContent() == CONTENT_TNT) {
-									meta = m_map->getNodeMetadata(p+v3s16(x,y,z));
-									if (meta && !meta->getEnergy())
-										meta->energise(ENERGY_MAX,p,p,p+v3s16(x,y,z));
-									continue;
-								}
-								if (
-									(x == -2 && y == -2)
-									|| (x == 2 && y == -2)
-									|| (x == -2 && y == 2)
-									|| (x == 2 && y == 2)
-									|| (z == -2 && y == -2)
-									|| (z == 2 && y == -2)
-									|| (z == -2 && y == 2)
-									|| (z == 2 && y == 2)
-									|| (x == -2 && z == -2)
-									|| (x == 2 && z == -2)
-									|| (x == -2 && z == 2)
-									|| (x == 2 && z == 2)
-								) {
-									if (myrand()%3 == 0)
+						if (g_settings->getBool("enable_tnt")) {
+							s16 bs_rad = g_settings->getS16("borderstone_radius");
+							bs_rad += 3;
+							// if any node is border stone protected, don't destroy anything
+							if (!searchNear(p,v3s16(bs_rad,bs_rad,bs_rad),CONTENT_BORDERSTONE,NULL)) {
+								for(s16 x=-2; x<=2; x++)
+								for(s16 y=-2; y<=2; y++)
+								for(s16 z=-2; z<=2; z++)
+								{
+									MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
+									if (n_test.getContent() == CONTENT_AIR)
 										continue;
+									if (n_test.getContent() == CONTENT_TNT) {
+										meta = m_map->getNodeMetadata(p+v3s16(x,y,z));
+										if (meta && !meta->getEnergy())
+											meta->energise(ENERGY_MAX,p,p,p+v3s16(x,y,z));
+										continue;
+									}
+									if (
+										(x == -2 && y == -2)
+										|| (x == 2 && y == -2)
+										|| (x == -2 && y == 2)
+										|| (x == 2 && y == 2)
+										|| (z == -2 && y == -2)
+										|| (z == 2 && y == -2)
+										|| (z == -2 && y == 2)
+										|| (z == 2 && y == 2)
+										|| (x == -2 && z == -2)
+										|| (x == 2 && z == -2)
+										|| (x == -2 && z == 2)
+										|| (x == 2 && z == 2)
+									) {
+										if (myrand()%3 == 0)
+											continue;
+									}
+									n_test.setContent(CONTENT_FLASH);
+									m_delayed_node_changes[p+v3s16(x,y,z)] = n_test;
 								}
-								n_test.setContent(CONTENT_FLASH);
-								m_delayed_node_changes[p+v3s16(x,y,z)] = n_test;
 							}
 						}
 						// but still blow up
@@ -2229,109 +2162,126 @@ void ServerEnvironment::step(float dtime)
 				// Make trees from saplings!
 				case CONTENT_SAPLING:
 				{
-					if(myrand()%10 == 0)
-					{
-						s16 max_y = 7;
-						s16 max_o = 2;
-						s16 grow = 1;
+					if (myrand()%5 == 0) {
+						std::vector<content_t> search;
+						search.push_back(CONTENT_AIR);
+						search.push_back(CONTENT_TREE);
+						search.push_back(CONTENT_YOUNG_TREE);
+						search.push_back(CONTENT_APPLE_TREE);
+						search.push_back(CONTENT_YOUNG_APPLE_TREE);
+						search.push_back(CONTENT_JUNGLETREE);
+						search.push_back(CONTENT_YOUNG_JUNGLETREE);
+						search.push_back(CONTENT_CONIFER_TREE);
+						search.push_back(CONTENT_YOUNG_CONIFER_TREE);
+						search.push_back(CONTENT_LEAVES);
+						search.push_back(CONTENT_JUNGLELEAVES);
+						search.push_back(CONTENT_CONIFER_LEAVES);
+						search.push_back(CONTENT_APPLE_LEAVES);
+						search.push_back(CONTENT_APPLE_BLOSSOM);
+						search.push_back(CONTENT_APPLE);
+						search.push_back(CONTENT_IGNORE);
 						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
 						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_GRASS_FOOTSTEPS) {
-							for (s16 z=-max_o; grow && z < max_o; z++) {
-							for (s16 y=2; grow && y < max_y; y++) {
-							for (s16 x=-max_o; grow && x < max_o; x++) {
-								v3s16 test_p = p + v3s16(x,y,z);
-								if (test_p != p) {
-									content_t tcon = m_map->getNodeNoEx(test_p).getContent();
-									if (
-										tcon != CONTENT_AIR
-										&& tcon != CONTENT_TREE
-										&& tcon != CONTENT_APPLE_TREE
-										&& tcon != CONTENT_APPLE_BLOSSOM
-										&& tcon != CONTENT_JUNGLETREE
-										&& tcon != CONTENT_LEAVES
-										&& tcon != CONTENT_JUNGLELEAVES
-										&& tcon != CONTENT_CONIFER_LEAVES
-										&& tcon != CONTENT_APPLE_LEAVES
-										&& tcon != CONTENT_APPLE
-										&& tcon != CONTENT_IGNORE
-									) {
-										grow = 0;
-									}
-								}
+							v3s16 h;
+							if (!searchNearInv(p,v3s16(-2,2,-2),v3s16(2,7,2),search,&h)) {
+								// young tree 1
+								MapNode nn(CONTENT_YOUNG_TREE);
+								m_map->addNodeWithEvent(p,nn);
+								nn.setContent(CONTENT_LEAVES);
+								m_map->addNodeWithEvent(p+v3s16(0,1,0),nn);
 							}
-							}
-							}
-							if (grow && myrand()%2) {
-								max_y = 12;
-								max_o = 10;
-								grow = 2;
-								for (s16 z=-max_o; grow == 2 && z < max_o; z++) {
-								for (s16 y=2; grow == 2 && y < max_y; y++) {
-								for (s16 x=-max_o; grow == 2 && x < max_o; x++) {
-									v3s16 test_p = p + v3s16(x,y,z);
-									if (test_p != p) {
-										content_t tcon = m_map->getNodeNoEx(test_p).getContent();
-										if (
-											tcon != CONTENT_AIR
-											&& tcon != CONTENT_TREE
-											&& tcon != CONTENT_APPLE_TREE
-											&& tcon != CONTENT_APPLE_BLOSSOM
-											&& tcon != CONTENT_JUNGLETREE
-											&& tcon != CONTENT_LEAVES
-											&& tcon != CONTENT_JUNGLELEAVES
-											&& tcon != CONTENT_CONIFER_LEAVES
-											&& tcon != CONTENT_APPLE_LEAVES
-											&& tcon != CONTENT_APPLE
-											&& tcon != CONTENT_IGNORE
-										) {
-											grow = 1;
-										}
-									}
-								}
-								}
-								}
-							}
-						}else{
-							grow = 0;
 						}
+					}
+				}
+				break;
+				case CONTENT_YOUNG_TREE:
+				{
+					if (myrand()%5 == 0) {
+						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
+						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_GRASS_FOOTSTEPS) {
+							content_t above = m_map->getNodeNoEx(p+v3s16(0,1,0)).getContent();
+							std::vector<content_t> search;
+							search.push_back(CONTENT_AIR);
+							search.push_back(CONTENT_TREE);
+							search.push_back(CONTENT_YOUNG_TREE);
+							search.push_back(CONTENT_APPLE_TREE);
+							search.push_back(CONTENT_YOUNG_APPLE_TREE);
+							search.push_back(CONTENT_JUNGLETREE);
+							search.push_back(CONTENT_YOUNG_JUNGLETREE);
+							search.push_back(CONTENT_CONIFER_TREE);
+							search.push_back(CONTENT_YOUNG_CONIFER_TREE);
+							search.push_back(CONTENT_LEAVES);
+							search.push_back(CONTENT_JUNGLELEAVES);
+							search.push_back(CONTENT_CONIFER_LEAVES);
+							search.push_back(CONTENT_APPLE_LEAVES);
+							search.push_back(CONTENT_APPLE_BLOSSOM);
+							search.push_back(CONTENT_APPLE);
+							search.push_back(CONTENT_IGNORE);
+							if (above == CONTENT_LEAVES) {
+								// young tree 2
+								v3s16 h;
+								if (!searchNearInv(p,v3s16(-1,2,-1),v3s16(1,4,1),search,&h)) {
+									MapNode nn(CONTENT_YOUNG_TREE);
+									m_map->addNodeWithEvent(p+v3s16(0,1,0),nn);
+									m_map->addNodeWithEvent(p+v3s16(0,2,0),nn);
+									nn.setContent(CONTENT_LEAVES);
+									m_map->addNodeWithEvent(p+v3s16(0,3,0),nn);
+									m_map->addNodeWithEvent(p+v3s16(1,2,0),nn);
+									m_map->addNodeWithEvent(p+v3s16(-1,2,0),nn);
+									m_map->addNodeWithEvent(p+v3s16(0,2,1),nn);
+									m_map->addNodeWithEvent(p+v3s16(0,2,-1),nn);
+								}
+							}else if (above == CONTENT_YOUNG_TREE) {
+								content_t abv = m_map->getNodeNoEx(p+v3s16(0,2,0)).getContent();
+								content_t top = m_map->getNodeNoEx(p+v3s16(0,3,0)).getContent();
+								if (abv == CONTENT_YOUNG_TREE && top == CONTENT_LEAVES) {
+									if (m_map->getNodeNoEx(p+v3s16(1,2,0)).getContent() == CONTENT_LEAVES)
+										m_map->removeNodeWithEvent(p+v3s16(1,2,0));
+									if (m_map->getNodeNoEx(p+v3s16(-1,2,0)).getContent() == CONTENT_LEAVES)
+										m_map->removeNodeWithEvent(p+v3s16(-1,2,0));
+									if (m_map->getNodeNoEx(p+v3s16(0,2,1)).getContent() == CONTENT_LEAVES)
+										m_map->removeNodeWithEvent(p+v3s16(0,2,1));
+									if (m_map->getNodeNoEx(p+v3s16(0,2,-1)).getContent() == CONTENT_LEAVES)
+										m_map->removeNodeWithEvent(p+v3s16(0,2,-1));
+									// full grown tree
+									actionstream<<"A sapling grows into a tree at "
+										<<PP(p)<<std::endl;
 
-						if (grow) {
-							actionstream<<"A sapling grows into a tree at "
-								<<PP(p)<<std::endl;
+									core::map<v3s16, MapBlock*> modified_blocks;
+									v3s16 tree_p = p;
+									ManualMapVoxelManipulator vmanip(m_map);
+									v3s16 tree_blockp = getNodeBlockPos(tree_p);
+									vmanip.initialEmerge(tree_blockp - v3s16(1,1,1), tree_blockp + v3s16(1,1,1));
+									if (!searchNearInv(p,v3s16(-10,2,-10),v3s16(10,12,10),search,NULL)) {
+										mapgen::make_largetree(vmanip, tree_p);
+									}else{
+										mapgen::make_tree(vmanip, tree_p);
+									}
+									vmanip.blitBackAll(&modified_blocks);
 
-							core::map<v3s16, MapBlock*> modified_blocks;
-							v3s16 tree_p = p;
-							ManualMapVoxelManipulator vmanip(m_map);
-							v3s16 tree_blockp = getNodeBlockPos(tree_p);
-							vmanip.initialEmerge(tree_blockp - v3s16(1,1,1), tree_blockp + v3s16(1,1,1));
-							if (grow == 2) {
-								mapgen::make_largetree(vmanip, tree_p);
-							}else{
-								mapgen::make_tree(vmanip, tree_p);
+									// update lighting
+									core::map<v3s16, MapBlock*> lighting_modified_blocks;
+									for(core::map<v3s16, MapBlock*>::Iterator
+										i = modified_blocks.getIterator();
+										i.atEnd() == false; i++)
+									{
+										lighting_modified_blocks.insert(i.getNode()->getKey(), i.getNode()->getValue());
+									}
+									m_map->updateLighting(lighting_modified_blocks, modified_blocks);
+
+									// Send a MEET_OTHER event
+									MapEditEvent event;
+									event.type = MEET_OTHER;
+									for(core::map<v3s16, MapBlock*>::Iterator
+										i = modified_blocks.getIterator();
+										i.atEnd() == false; i++)
+									{
+										v3s16 p = i.getNode()->getKey();
+										event.modified_blocks.insert(p, true);
+									}
+									m_map->dispatchEvent(&event);
+								}
 							}
-							vmanip.blitBackAll(&modified_blocks);
-
-							// update lighting
-							core::map<v3s16, MapBlock*> lighting_modified_blocks;
-							for(core::map<v3s16, MapBlock*>::Iterator
-								i = modified_blocks.getIterator();
-								i.atEnd() == false; i++)
-							{
-								lighting_modified_blocks.insert(i.getNode()->getKey(), i.getNode()->getValue());
-							}
-							m_map->updateLighting(lighting_modified_blocks, modified_blocks);
-
-							// Send a MEET_OTHER event
-							MapEditEvent event;
-							event.type = MEET_OTHER;
-							for(core::map<v3s16, MapBlock*>::Iterator
-								i = modified_blocks.getIterator();
-								i.atEnd() == false; i++)
-							{
-								v3s16 p = i.getNode()->getKey();
-								event.modified_blocks.insert(p, true);
-							}
-							m_map->dispatchEvent(&event);
 						}
 					}
 					break;
@@ -2339,75 +2289,121 @@ void ServerEnvironment::step(float dtime)
 
 				case CONTENT_APPLE_SAPLING:
 				{
-					if(myrand()%10 == 0)
-					{
-						s16 max_y = 7;
-						s16 max_o = 2;
-						bool grow = true;
+					if (myrand()%5 == 0) {
+						std::vector<content_t> search;
+						search.push_back(CONTENT_AIR);
+						search.push_back(CONTENT_TREE);
+						search.push_back(CONTENT_YOUNG_TREE);
+						search.push_back(CONTENT_APPLE_TREE);
+						search.push_back(CONTENT_YOUNG_APPLE_TREE);
+						search.push_back(CONTENT_JUNGLETREE);
+						search.push_back(CONTENT_YOUNG_JUNGLETREE);
+						search.push_back(CONTENT_CONIFER_TREE);
+						search.push_back(CONTENT_YOUNG_CONIFER_TREE);
+						search.push_back(CONTENT_LEAVES);
+						search.push_back(CONTENT_JUNGLELEAVES);
+						search.push_back(CONTENT_CONIFER_LEAVES);
+						search.push_back(CONTENT_APPLE_LEAVES);
+						search.push_back(CONTENT_APPLE_BLOSSOM);
+						search.push_back(CONTENT_APPLE);
+						search.push_back(CONTENT_IGNORE);
 						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
 						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_GRASS_FOOTSTEPS) {
-							for (s16 z=-max_o; grow && z < max_o; z++) {
-							for (s16 y=2; grow && y < max_y; y++) {
-							for (s16 x=-max_o; grow && x < max_o; x++) {
-								v3s16 test_p = p + v3s16(x,y,z);
-								if (test_p != p) {
-									content_t tcon = m_map->getNodeNoEx(test_p).getContent();
-									if (
-										tcon != CONTENT_AIR
-										&& tcon != CONTENT_TREE
-										&& tcon != CONTENT_APPLE_TREE
-										&& tcon != CONTENT_APPLE_BLOSSOM
-										&& tcon != CONTENT_JUNGLETREE
-										&& tcon != CONTENT_LEAVES
-										&& tcon != CONTENT_JUNGLELEAVES
-										&& tcon != CONTENT_CONIFER_LEAVES
-										&& tcon != CONTENT_APPLE_LEAVES
-										&& tcon != CONTENT_APPLE
-										&& tcon != CONTENT_IGNORE
-									) {
-										grow = false;
+							v3s16 h;
+							if (!searchNearInv(p,v3s16(-2,2,-2),v3s16(2,7,2),search,&h)) {
+								// young tree 1
+								MapNode nn(CONTENT_YOUNG_APPLE_TREE);
+								m_map->addNodeWithEvent(p,nn);
+								nn.setContent(CONTENT_APPLE_LEAVES);
+								m_map->addNodeWithEvent(p+v3s16(0,1,0),nn);
+							}
+						}
+					}
+				}
+				break;
+				case CONTENT_YOUNG_APPLE_TREE:
+				{
+					if (myrand()%5 == 0) {
+						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
+						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_GRASS_FOOTSTEPS) {
+							content_t above = m_map->getNodeNoEx(p+v3s16(0,1,0)).getContent();
+							std::vector<content_t> search;
+							search.push_back(CONTENT_AIR);
+							search.push_back(CONTENT_TREE);
+							search.push_back(CONTENT_YOUNG_TREE);
+							search.push_back(CONTENT_APPLE_TREE);
+							search.push_back(CONTENT_YOUNG_APPLE_TREE);
+							search.push_back(CONTENT_JUNGLETREE);
+							search.push_back(CONTENT_YOUNG_JUNGLETREE);
+							search.push_back(CONTENT_CONIFER_TREE);
+							search.push_back(CONTENT_YOUNG_CONIFER_TREE);
+							search.push_back(CONTENT_LEAVES);
+							search.push_back(CONTENT_JUNGLELEAVES);
+							search.push_back(CONTENT_CONIFER_LEAVES);
+							search.push_back(CONTENT_APPLE_LEAVES);
+							search.push_back(CONTENT_APPLE_BLOSSOM);
+							search.push_back(CONTENT_APPLE);
+							search.push_back(CONTENT_IGNORE);
+							if (above == CONTENT_APPLE_LEAVES) {
+								// young tree 2
+								v3s16 h;
+								if (!searchNearInv(p,v3s16(-1,2,-1),v3s16(1,4,1),search,&h)) {
+									MapNode nn(CONTENT_YOUNG_APPLE_TREE);
+									m_map->addNodeWithEvent(p+v3s16(0,1,0),nn);
+									m_map->addNodeWithEvent(p+v3s16(0,2,0),nn);
+									nn.setContent(CONTENT_APPLE_LEAVES);
+									m_map->addNodeWithEvent(p+v3s16(0,3,0),nn);
+									m_map->addNodeWithEvent(p+v3s16(1,2,0),nn);
+									m_map->addNodeWithEvent(p+v3s16(-1,2,0),nn);
+									m_map->addNodeWithEvent(p+v3s16(0,2,1),nn);
+									m_map->addNodeWithEvent(p+v3s16(0,2,-1),nn);
+								}
+							}else if (above == CONTENT_YOUNG_APPLE_TREE) {
+								content_t abv = m_map->getNodeNoEx(p+v3s16(0,2,0)).getContent();
+								content_t top = m_map->getNodeNoEx(p+v3s16(0,3,0)).getContent();
+								if (abv == CONTENT_YOUNG_APPLE_TREE && top == CONTENT_APPLE_LEAVES) {
+									if (m_map->getNodeNoEx(p+v3s16(1,2,0)).getContent() == CONTENT_APPLE_LEAVES)
+										m_map->removeNodeWithEvent(p+v3s16(1,2,0));
+									if (m_map->getNodeNoEx(p+v3s16(-1,2,0)).getContent() == CONTENT_APPLE_LEAVES)
+										m_map->removeNodeWithEvent(p+v3s16(-1,2,0));
+									if (m_map->getNodeNoEx(p+v3s16(0,2,1)).getContent() == CONTENT_APPLE_LEAVES)
+										m_map->removeNodeWithEvent(p+v3s16(0,2,1));
+									if (m_map->getNodeNoEx(p+v3s16(0,2,-1)).getContent() == CONTENT_APPLE_LEAVES)
+										m_map->removeNodeWithEvent(p+v3s16(0,2,-1));
+									actionstream<<"A sapling grows into a tree at "
+										<<PP(p)<<std::endl;
+
+									core::map<v3s16, MapBlock*> modified_blocks;
+									v3s16 tree_p = p;
+									ManualMapVoxelManipulator vmanip(m_map);
+									v3s16 tree_blockp = getNodeBlockPos(tree_p);
+									vmanip.initialEmerge(tree_blockp - v3s16(1,1,1), tree_blockp + v3s16(1,1,1));
+									mapgen::make_appletree(vmanip, tree_p);
+									vmanip.blitBackAll(&modified_blocks);
+
+									// update lighting
+									core::map<v3s16, MapBlock*> lighting_modified_blocks;
+									for(core::map<v3s16, MapBlock*>::Iterator
+										i = modified_blocks.getIterator();
+										i.atEnd() == false; i++)
+									{
+										lighting_modified_blocks.insert(i.getNode()->getKey(), i.getNode()->getValue());
 									}
+									m_map->updateLighting(lighting_modified_blocks, modified_blocks);
+
+									// Send a MEET_OTHER event
+									MapEditEvent event;
+									event.type = MEET_OTHER;
+									for(core::map<v3s16, MapBlock*>::Iterator
+										i = modified_blocks.getIterator();
+										i.atEnd() == false; i++)
+									{
+										v3s16 p = i.getNode()->getKey();
+										event.modified_blocks.insert(p, true);
+									}
+									m_map->dispatchEvent(&event);
 								}
 							}
-							}
-							}
-						}else{
-							grow = false;
-						}
-
-						if (grow) {
-							actionstream<<"A sapling grows into a tree at "
-								<<PP(p)<<std::endl;
-
-							core::map<v3s16, MapBlock*> modified_blocks;
-							v3s16 tree_p = p;
-							ManualMapVoxelManipulator vmanip(m_map);
-							v3s16 tree_blockp = getNodeBlockPos(tree_p);
-							vmanip.initialEmerge(tree_blockp - v3s16(1,1,1), tree_blockp + v3s16(1,1,1));
-							mapgen::make_appletree(vmanip, tree_p);
-							vmanip.blitBackAll(&modified_blocks);
-
-							// update lighting
-							core::map<v3s16, MapBlock*> lighting_modified_blocks;
-							for(core::map<v3s16, MapBlock*>::Iterator
-								i = modified_blocks.getIterator();
-								i.atEnd() == false; i++)
-							{
-								lighting_modified_blocks.insert(i.getNode()->getKey(), i.getNode()->getValue());
-							}
-							m_map->updateLighting(lighting_modified_blocks, modified_blocks);
-
-							// Send a MEET_OTHER event
-							MapEditEvent event;
-							event.type = MEET_OTHER;
-							for(core::map<v3s16, MapBlock*>::Iterator
-								i = modified_blocks.getIterator();
-								i.atEnd() == false; i++)
-							{
-								v3s16 p = i.getNode()->getKey();
-								event.modified_blocks.insert(p, true);
-							}
-							m_map->dispatchEvent(&event);
 						}
 					}
 					break;
@@ -2415,71 +2411,122 @@ void ServerEnvironment::step(float dtime)
 
 				case CONTENT_JUNGLESAPLING:
 				{
-					if(myrand()%10 == 0)
-					{
-						s16 max_y = 10;
-						s16 max_o = 2;
-						bool grow = true;
+					if (myrand()%5 == 0) {
+						std::vector<content_t> search;
+						search.push_back(CONTENT_AIR);
+						search.push_back(CONTENT_TREE);
+						search.push_back(CONTENT_YOUNG_TREE);
+						search.push_back(CONTENT_APPLE_TREE);
+						search.push_back(CONTENT_YOUNG_APPLE_TREE);
+						search.push_back(CONTENT_JUNGLETREE);
+						search.push_back(CONTENT_YOUNG_JUNGLETREE);
+						search.push_back(CONTENT_CONIFER_TREE);
+						search.push_back(CONTENT_YOUNG_CONIFER_TREE);
+						search.push_back(CONTENT_LEAVES);
+						search.push_back(CONTENT_JUNGLELEAVES);
+						search.push_back(CONTENT_CONIFER_LEAVES);
+						search.push_back(CONTENT_APPLE_LEAVES);
+						search.push_back(CONTENT_APPLE_BLOSSOM);
+						search.push_back(CONTENT_APPLE);
+						search.push_back(CONTENT_IGNORE);
 						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
 						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_GRASS_FOOTSTEPS) {
-							for (s16 z=-max_o; grow && z < max_o; z++) {
-							for (s16 y=2; grow && y < max_y; y++) {
-							for (s16 x=-max_o; grow && x < max_o; x++) {
-								v3s16 test_p = p + v3s16(x,y,z);
-								if (test_p != p) {
-									content_t tcon = m_map->getNodeNoEx(test_p).getContent();
-									if (
-										tcon != CONTENT_AIR
-										&& tcon != CONTENT_TREE
-										&& tcon != CONTENT_APPLE_TREE
-										&& tcon != CONTENT_APPLE_BLOSSOM
-										&& tcon != CONTENT_JUNGLETREE
-										&& tcon != CONTENT_LEAVES
-										&& tcon != CONTENT_JUNGLELEAVES
-										&& tcon != CONTENT_CONIFER_LEAVES
-										&& tcon != CONTENT_APPLE_LEAVES
-										&& tcon != CONTENT_APPLE
-										&& tcon != CONTENT_IGNORE
-									) {
-										grow = false;
+							v3s16 h;
+							if (!searchNearInv(p,v3s16(-2,2,-2),v3s16(2,10,2),search,&h)) {
+								// young tree 1
+								MapNode nn(CONTENT_YOUNG_JUNGLETREE);
+								m_map->addNodeWithEvent(p,nn);
+								nn.setContent(CONTENT_JUNGLELEAVES);
+								m_map->addNodeWithEvent(p+v3s16(0,1,0),nn);
+							}
+						}
+					}
+				}
+				break;
+				case CONTENT_YOUNG_JUNGLETREE:
+				{
+					if (myrand()%5 == 0) {
+						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
+						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_GRASS_FOOTSTEPS) {
+							content_t above = m_map->getNodeNoEx(p+v3s16(0,1,0)).getContent();
+							std::vector<content_t> search;
+							search.push_back(CONTENT_AIR);
+							search.push_back(CONTENT_TREE);
+							search.push_back(CONTENT_YOUNG_TREE);
+							search.push_back(CONTENT_APPLE_TREE);
+							search.push_back(CONTENT_YOUNG_APPLE_TREE);
+							search.push_back(CONTENT_JUNGLETREE);
+							search.push_back(CONTENT_YOUNG_JUNGLETREE);
+							search.push_back(CONTENT_CONIFER_TREE);
+							search.push_back(CONTENT_YOUNG_CONIFER_TREE);
+							search.push_back(CONTENT_LEAVES);
+							search.push_back(CONTENT_JUNGLELEAVES);
+							search.push_back(CONTENT_CONIFER_LEAVES);
+							search.push_back(CONTENT_APPLE_LEAVES);
+							search.push_back(CONTENT_APPLE_BLOSSOM);
+							search.push_back(CONTENT_APPLE);
+							search.push_back(CONTENT_IGNORE);
+							if (above == CONTENT_JUNGLELEAVES) {
+								// young tree 2
+								v3s16 h;
+								if (!searchNearInv(p,v3s16(-1,2,-1),v3s16(1,5,1),search,&h)) {
+									MapNode nn(CONTENT_YOUNG_JUNGLETREE);
+									m_map->addNodeWithEvent(p+v3s16(0,1,0),nn);
+									m_map->addNodeWithEvent(p+v3s16(0,2,0),nn);
+									m_map->addNodeWithEvent(p+v3s16(0,3,0),nn);
+									nn.setContent(CONTENT_JUNGLELEAVES);
+									m_map->addNodeWithEvent(p+v3s16(0,4,0),nn);
+									m_map->addNodeWithEvent(p+v3s16(1,3,0),nn);
+									m_map->addNodeWithEvent(p+v3s16(-1,3,0),nn);
+									m_map->addNodeWithEvent(p+v3s16(0,3,1),nn);
+									m_map->addNodeWithEvent(p+v3s16(0,3,-1),nn);
+								}
+							}else if (above == CONTENT_YOUNG_JUNGLETREE) {
+								content_t abv = m_map->getNodeNoEx(p+v3s16(0,2,0)).getContent();
+								content_t abv1 = m_map->getNodeNoEx(p+v3s16(0,3,0)).getContent();
+								content_t top = m_map->getNodeNoEx(p+v3s16(0,4,0)).getContent();
+								if (abv == CONTENT_YOUNG_JUNGLETREE && abv1 == CONTENT_YOUNG_JUNGLETREE && top == CONTENT_JUNGLELEAVES) {
+									if (m_map->getNodeNoEx(p+v3s16(1,3,0)).getContent() == CONTENT_JUNGLELEAVES)
+										m_map->removeNodeWithEvent(p+v3s16(1,3,0));
+									if (m_map->getNodeNoEx(p+v3s16(-1,3,0)).getContent() == CONTENT_JUNGLELEAVES)
+										m_map->removeNodeWithEvent(p+v3s16(-1,3,0));
+									if (m_map->getNodeNoEx(p+v3s16(0,3,1)).getContent() == CONTENT_JUNGLELEAVES)
+										m_map->removeNodeWithEvent(p+v3s16(0,3,1));
+									if (m_map->getNodeNoEx(p+v3s16(0,3,-1)).getContent() == CONTENT_JUNGLELEAVES)
+										m_map->removeNodeWithEvent(p+v3s16(0,3,-1));
+									actionstream<<"A sapling grows into a jungle tree at "
+										<<PP(p)<<std::endl;
+
+									core::map<v3s16, MapBlock*> modified_blocks;
+									v3s16 tree_p = p;
+									ManualMapVoxelManipulator vmanip(m_map);
+									v3s16 tree_blockp = getNodeBlockPos(tree_p);
+									vmanip.initialEmerge(tree_blockp - v3s16(1,1,1), tree_blockp + v3s16(1,1,1));
+									mapgen::make_jungletree(vmanip, tree_p);
+									vmanip.blitBackAll(&modified_blocks);
+
+									// update lighting
+									core::map<v3s16, MapBlock*> lighting_modified_blocks;
+									for(core::map<v3s16, MapBlock*>::Iterator
+										i = modified_blocks.getIterator();
+										i.atEnd() == false; i++)
+									{
+										lighting_modified_blocks.insert(i.getNode()->getKey(), i.getNode()->getValue());
 									}
-								}
-							}
-							}
-							}
-							if (grow) {
-								actionstream<<"A sapling grows into a jungle tree at "
-									<<PP(p)<<std::endl;
+									m_map->updateLighting(lighting_modified_blocks, modified_blocks);
 
-								core::map<v3s16, MapBlock*> modified_blocks;
-								v3s16 tree_p = p;
-								ManualMapVoxelManipulator vmanip(m_map);
-								v3s16 tree_blockp = getNodeBlockPos(tree_p);
-								vmanip.initialEmerge(tree_blockp - v3s16(1,1,1), tree_blockp + v3s16(1,1,1));
-								mapgen::make_jungletree(vmanip, tree_p);
-								vmanip.blitBackAll(&modified_blocks);
-
-								// update lighting
-								core::map<v3s16, MapBlock*> lighting_modified_blocks;
-								for(core::map<v3s16, MapBlock*>::Iterator
-									i = modified_blocks.getIterator();
-									i.atEnd() == false; i++)
-								{
-									lighting_modified_blocks.insert(i.getNode()->getKey(), i.getNode()->getValue());
+									// Send a MEET_OTHER event
+									MapEditEvent event;
+									event.type = MEET_OTHER;
+									for(core::map<v3s16, MapBlock*>::Iterator
+										i = modified_blocks.getIterator();
+										i.atEnd() == false; i++)
+									{
+										v3s16 p = i.getNode()->getKey();
+										event.modified_blocks.insert(p, true);
+									}
+									m_map->dispatchEvent(&event);
 								}
-								m_map->updateLighting(lighting_modified_blocks, modified_blocks);
-
-								// Send a MEET_OTHER event
-								MapEditEvent event;
-								event.type = MEET_OTHER;
-								for(core::map<v3s16, MapBlock*>::Iterator
-									i = modified_blocks.getIterator();
-									i.atEnd() == false; i++)
-								{
-									v3s16 p = i.getNode()->getKey();
-									event.modified_blocks.insert(p, true);
-								}
-								m_map->dispatchEvent(&event);
 							}
 						}
 					}
@@ -2488,70 +2535,121 @@ void ServerEnvironment::step(float dtime)
 
 				case CONTENT_CONIFER_SAPLING:
 				{
-					if(myrand()%10 == 0)
-					{
-						s16 max_y = 12;
-						s16 max_o = 2;
-						bool grow = true;
+					if (myrand()%5 == 0) {
+						std::vector<content_t> search;
+						search.push_back(CONTENT_AIR);
+						search.push_back(CONTENT_TREE);
+						search.push_back(CONTENT_YOUNG_TREE);
+						search.push_back(CONTENT_APPLE_TREE);
+						search.push_back(CONTENT_YOUNG_APPLE_TREE);
+						search.push_back(CONTENT_JUNGLETREE);
+						search.push_back(CONTENT_YOUNG_JUNGLETREE);
+						search.push_back(CONTENT_CONIFER_TREE);
+						search.push_back(CONTENT_YOUNG_CONIFER_TREE);
+						search.push_back(CONTENT_LEAVES);
+						search.push_back(CONTENT_JUNGLELEAVES);
+						search.push_back(CONTENT_CONIFER_LEAVES);
+						search.push_back(CONTENT_APPLE_LEAVES);
+						search.push_back(CONTENT_APPLE_BLOSSOM);
+						search.push_back(CONTENT_APPLE);
+						search.push_back(CONTENT_IGNORE);
 						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
-						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_MUDSNOW || below == CONTENT_GRASS_FOOTSTEPS) {
-							for (s16 z=-max_o; grow && z < max_o; z++) {
-							for (s16 y=2; grow && y < max_y; y++) {
-							for (s16 x=-max_o; grow && x < max_o; x++) {
-								v3s16 test_p = p + v3s16(x,y,z);
-								if (test_p != p) {
-									content_t tcon = m_map->getNodeNoEx(test_p).getContent();
-									if (
-										tcon != CONTENT_AIR
-										&& tcon != CONTENT_TREE
-										&& tcon != CONTENT_APPLE_TREE
-										&& tcon != CONTENT_APPLE_BLOSSOM
-										&& tcon != CONTENT_JUNGLETREE
-										&& tcon != CONTENT_LEAVES
-										&& tcon != CONTENT_JUNGLELEAVES
-										&& tcon != CONTENT_CONIFER_LEAVES
-										&& tcon != CONTENT_APPLE_LEAVES
-										&& tcon != CONTENT_APPLE
-										&& tcon != CONTENT_IGNORE
-									)
-										grow = false;
-								}
+						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_GRASS_FOOTSTEPS) {
+							v3s16 h;
+							if (!searchNearInv(p,v3s16(-2,2,-2),v3s16(2,12,2),search,&h)) {
+								// young tree 1
+								MapNode nn(CONTENT_YOUNG_CONIFER_TREE);
+								m_map->addNodeWithEvent(p,nn);
+								nn.setContent(CONTENT_CONIFER_LEAVES);
+								m_map->addNodeWithEvent(p+v3s16(0,1,0),nn);
 							}
-							}
-							}
-							if (grow) {
-								actionstream<<"A sapling grows into a conifer tree at "
-									<<PP(p)<<std::endl;
-
-								core::map<v3s16, MapBlock*> modified_blocks;
-								v3s16 tree_p = p;
-								ManualMapVoxelManipulator vmanip(m_map);
-								v3s16 tree_blockp = getNodeBlockPos(tree_p);
-								vmanip.initialEmerge(tree_blockp - v3s16(1,1,1), tree_blockp + v3s16(1,1,1));
-								mapgen::make_conifertree(vmanip, tree_p);
-								vmanip.blitBackAll(&modified_blocks);
-
-								// update lighting
-								core::map<v3s16, MapBlock*> lighting_modified_blocks;
-								for(core::map<v3s16, MapBlock*>::Iterator
-									i = modified_blocks.getIterator();
-									i.atEnd() == false; i++)
-								{
-									lighting_modified_blocks.insert(i.getNode()->getKey(), i.getNode()->getValue());
+						}
+					}
+				}
+				break;
+				case CONTENT_YOUNG_CONIFER_TREE:
+				{
+					if (myrand()%5 == 0) {
+						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
+						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_GRASS_FOOTSTEPS) {
+							content_t above = m_map->getNodeNoEx(p+v3s16(0,1,0)).getContent();
+							std::vector<content_t> search;
+							search.push_back(CONTENT_AIR);
+							search.push_back(CONTENT_TREE);
+							search.push_back(CONTENT_YOUNG_TREE);
+							search.push_back(CONTENT_APPLE_TREE);
+							search.push_back(CONTENT_YOUNG_APPLE_TREE);
+							search.push_back(CONTENT_JUNGLETREE);
+							search.push_back(CONTENT_YOUNG_JUNGLETREE);
+							search.push_back(CONTENT_CONIFER_TREE);
+							search.push_back(CONTENT_YOUNG_CONIFER_TREE);
+							search.push_back(CONTENT_LEAVES);
+							search.push_back(CONTENT_JUNGLELEAVES);
+							search.push_back(CONTENT_CONIFER_LEAVES);
+							search.push_back(CONTENT_APPLE_LEAVES);
+							search.push_back(CONTENT_APPLE_BLOSSOM);
+							search.push_back(CONTENT_APPLE);
+							search.push_back(CONTENT_IGNORE);
+							if (above == CONTENT_CONIFER_LEAVES) {
+								// young tree 2
+								v3s16 h;
+								if (!searchNearInv(p,v3s16(-1,2,-1),v3s16(1,5,1),search,&h)) {
+									MapNode nn(CONTENT_YOUNG_CONIFER_TREE);
+									m_map->addNodeWithEvent(p+v3s16(0,1,0),nn);
+									m_map->addNodeWithEvent(p+v3s16(0,2,0),nn);
+									nn.setContent(CONTENT_CONIFER_LEAVES);
+									m_map->addNodeWithEvent(p+v3s16(0,3,0),nn);
+									m_map->addNodeWithEvent(p+v3s16(0,4,0),nn);
+									m_map->addNodeWithEvent(p+v3s16(1,2,0),nn);
+									m_map->addNodeWithEvent(p+v3s16(-1,2,0),nn);
+									m_map->addNodeWithEvent(p+v3s16(0,2,1),nn);
+									m_map->addNodeWithEvent(p+v3s16(0,2,-1),nn);
 								}
-								m_map->updateLighting(lighting_modified_blocks, modified_blocks);
+							}else if (above == CONTENT_YOUNG_CONIFER_TREE) {
+								content_t abv = m_map->getNodeNoEx(p+v3s16(0,2,0)).getContent();
+								content_t top = m_map->getNodeNoEx(p+v3s16(0,3,0)).getContent();
+								if (abv == CONTENT_YOUNG_CONIFER_TREE && top == CONTENT_CONIFER_LEAVES) {
+									if (m_map->getNodeNoEx(p+v3s16(1,2,0)).getContent() == CONTENT_CONIFER_LEAVES)
+										m_map->removeNodeWithEvent(p+v3s16(1,2,0));
+									if (m_map->getNodeNoEx(p+v3s16(-1,2,0)).getContent() == CONTENT_CONIFER_LEAVES)
+										m_map->removeNodeWithEvent(p+v3s16(-1,2,0));
+									if (m_map->getNodeNoEx(p+v3s16(0,2,1)).getContent() == CONTENT_CONIFER_LEAVES)
+										m_map->removeNodeWithEvent(p+v3s16(0,2,1));
+									if (m_map->getNodeNoEx(p+v3s16(0,2,-1)).getContent() == CONTENT_CONIFER_LEAVES)
+										m_map->removeNodeWithEvent(p+v3s16(0,2,-1));
+									actionstream<<"A sapling grows into a conifer tree at "
+										<<PP(p)<<std::endl;
 
-								// Send a MEET_OTHER event
-								MapEditEvent event;
-								event.type = MEET_OTHER;
-								for(core::map<v3s16, MapBlock*>::Iterator
-									i = modified_blocks.getIterator();
-									i.atEnd() == false; i++)
-								{
-									v3s16 p = i.getNode()->getKey();
-									event.modified_blocks.insert(p, true);
+									core::map<v3s16, MapBlock*> modified_blocks;
+									v3s16 tree_p = p;
+									ManualMapVoxelManipulator vmanip(m_map);
+									v3s16 tree_blockp = getNodeBlockPos(tree_p);
+									vmanip.initialEmerge(tree_blockp - v3s16(1,1,1), tree_blockp + v3s16(1,1,1));
+									mapgen::make_conifertree(vmanip, tree_p);
+									vmanip.blitBackAll(&modified_blocks);
+
+									// update lighting
+									core::map<v3s16, MapBlock*> lighting_modified_blocks;
+									for(core::map<v3s16, MapBlock*>::Iterator
+										i = modified_blocks.getIterator();
+										i.atEnd() == false; i++)
+									{
+										lighting_modified_blocks.insert(i.getNode()->getKey(), i.getNode()->getValue());
+									}
+									m_map->updateLighting(lighting_modified_blocks, modified_blocks);
+
+									// Send a MEET_OTHER event
+									MapEditEvent event;
+									event.type = MEET_OTHER;
+									for(core::map<v3s16, MapBlock*>::Iterator
+										i = modified_blocks.getIterator();
+										i.atEnd() == false; i++)
+									{
+										v3s16 p = i.getNode()->getKey();
+										event.modified_blocks.insert(p, true);
+									}
+									m_map->dispatchEvent(&event);
 								}
-								m_map->dispatchEvent(&event);
 							}
 						}
 					}
@@ -2561,24 +2659,11 @@ void ServerEnvironment::step(float dtime)
 				// Apples should fall if there is no leaves block holding it
 				case CONTENT_APPLE:
 				{
-					s16 max_d = 1;
-					v3s16 apple_p = p, test_p;
-					MapNode testnode;
-					bool found = false;
-					for(s16 z=-max_d; !found && z<=max_d; z++) {
-					for(s16 y=-max_d; !found && y<=max_d; y++) {
-					for(s16 x=-max_d; !found && x<=max_d; x++) {
-						test_p = apple_p + v3s16(x,y,z);
-						testnode = m_map->getNodeNoEx(test_p);
-						if (testnode.getContent() == CONTENT_APPLE_LEAVES
-							|| testnode.getContent() == CONTENT_IGNORE) {
-							found = true;
-							break;
-						}
-					}
-					}
-					}
-					if(!found) {
+					v3s16 apple_p = p;
+					std::vector<content_t> search;
+					search.push_back(CONTENT_APPLE_LEAVES);
+					search.push_back(CONTENT_IGNORE);
+					if (!searchNear(p,v3s16(1,1,1),search,NULL)) {
 						m_map->removeNodeWithEvent(apple_p);
 						v3f apple_pos = intToFloat(apple_p, BS);
 						apple_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
@@ -2607,23 +2692,9 @@ void ServerEnvironment::step(float dtime)
 							&& content_features(n_top1).air_equivalent == true
 							&& content_features(n_top2).air_equivalent == true
 						) {
-							s16 max_d = 1;
-							v3s16 test_p;
-							MapNode testnode;
-							bool found = false;
-							for(s16 z=-max_d; !found && z<=max_d; z++) {
-							for(s16 y=-max_d; !found && y<=max_d; y++) {
-							for(s16 x=-max_d; !found && x<=max_d; x++) {
-								test_p = p + v3s16(x,y,z);
-								testnode = m_map->getNodeNoEx(test_p);
-								if (testnode.getContent() == CONTENT_WATERSOURCE) {
-									n_top1.setContent(CONTENT_JUNGLEGRASS);
-									m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top1);
-									found = true;
-									break;
-								}
-							}
-							}
+							if (searchNear(p,v3s16(1,1,1),CONTENT_WATERSOURCE,NULL)) {
+								n_top1.setContent(CONTENT_JUNGLEGRASS);
+								m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top1);
 							}
 						}else if (
 							p.Y < -30
@@ -2696,8 +2767,7 @@ void ServerEnvironment::step(float dtime)
 							v3s16 test_p;
 							MapNode testnode;
 							bool found = false;
-							s16 y;
-							for(y=1; y<=max_d; y++) {
+							for(s16 y=1; y<=max_d; y++) {
 								test_p = p - v3s16(0,y,0);
 								testnode = m_map->getNodeNoEx(test_p);
 								if (testnode.getContent() == CONTENT_MUD) {
@@ -2707,21 +2777,9 @@ void ServerEnvironment::step(float dtime)
 									break;
 								}
 							}
-							if (found) {
-								found = false;
-								for(s16 z=-max_d; !found && z<=max_d; z++) {
-								for(s16 y1=-max_d; !found && y1<=max_d; y1++) {
-								for(s16 x=-max_d; !found && x<=max_d; x++) {
-									test_p = p + v3s16(x,y1-y,z);
-									testnode = m_map->getNodeNoEx(test_p);
-									if (testnode.getContent() == CONTENT_WATERSOURCE) {
-										n_top1.setContent(CONTENT_PAPYRUS);
-										m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top1);
-										break;
-									}
-								}
-								}
-								}
+							if (found &&searchNear(p,v3s16(2,2,2),CONTENT_WATERSOURCE,NULL)) {
+								n_top1.setContent(CONTENT_PAPYRUS);
+								m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top1);
 							}
 						}
 					}
@@ -2738,23 +2796,18 @@ void ServerEnvironment::step(float dtime)
 				case CONTENT_LAVASOURCE:
 				{
 					MapNode testnode;
+					v3s16 test_p;
+					std::vector<content_t> search;
 					bool found = false;
+					search.push_back(CONTENT_WATER);
+					search.push_back(CONTENT_WATERSOURCE);
 					if (p.Y > 60 && p.Y < 200) {
 						found = true;
-					}else{
-						for(s16 z=-1; z<=1; z++) {
-						for(s16 y=-1; y<=1; y++) {
-						for(s16 x=-1; x<=1; x++) {
-							testnode = m_map->getNodeNoEx(p+v3s16(x,y,z));
-							if(testnode.getContent() == CONTENT_WATER || testnode.getContent() == CONTENT_WATERSOURCE)
-							{
-								found = true;
-								testnode.setContent(CONTENT_STEAM);
-								m_delayed_node_changes[p+v3s16(x,y,z)] = testnode;
-							}
-						}
-						}
-						}
+					}else if (searchNear(p,v3s16(1,1,1),search,&test_p)) {
+						testnode = m_map->getNodeNoEx(test_p);
+						found = true;
+						testnode.setContent(CONTENT_STEAM);
+						m_delayed_node_changes[test_p] = testnode;
 					}
 
 					if (found == true && n.getContent() == CONTENT_LAVASOURCE) {
@@ -2812,44 +2865,6 @@ void ServerEnvironment::step(float dtime)
 
 					break;
 				}
-				//case CONTENT_STEEL_DOOR_LB_OPEN:
-				//case CONTENT_STEEL_W_DOOR_LB_OPEN:
-				//case CONTENT_STEEL_DOOR_RB_OPEN:
-				//case CONTENT_STEEL_W_DOOR_RB_OPEN:
-				//case CONTENT_STEEL_HATCH_OPEN:
-				//case CONTENT_STEEL_W_HATCH_OPEN:
-				//case CONTENT_STEEL_GATE_OPEN:
-				//{
-					//v3s16 mp(0,1,0);
-					//if ((n.getContent()&CONTENT_DOOR_SECT_MASK) == CONTENT_DOOR_SECT_MASK)
-						//mp.Y = -1;
-
-					//MapNode m = m_map->getNodeNoEx(p+mp);
-					//if ((n.getContent()&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK) {
-						//if (m.getContent() < CONTENT_DOOR_MIN || m.getContent() > CONTENT_DOOR_MAX) {
-							//m_map->removeNodeWithEvent(p);
-							//break;
-						//}else{
-							//if ((n.getContent()&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
-								//n.setContent(n.getContent()&~CONTENT_DOOR_OPEN_MASK);
-								//m.setContent(m.getContent()&~CONTENT_DOOR_OPEN_MASK);
-							//}else{
-								//n.setContent(n.getContent()|CONTENT_DOOR_OPEN_MASK);
-								//m.setContent(m.getContent()|CONTENT_DOOR_OPEN_MASK);
-							//}
-						//}
-						//m_map->addNodeWithEvent(p, n);
-						//m_map->addNodeWithEvent(p+mp, m);
-					//}else{
-						//if ((n.getContent()&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
-							//n.setContent(n.getContent()&~CONTENT_DOOR_OPEN_MASK);
-						//}else{
-							//n.setContent(n.getContent()|CONTENT_DOOR_OPEN_MASK);
-						//}
-						//m_map->addNodeWithEvent(p, n);
-					//}
-					//break;
-				//}
 				}
 
 				if (

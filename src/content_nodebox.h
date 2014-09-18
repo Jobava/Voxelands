@@ -61,5 +61,6 @@ void content_nodebox_fence_inv(ContentFeatures *f);
 void content_nodebox_fence(ContentFeatures *f);
 void content_nodebox_wall_inv(ContentFeatures *f);
 void content_nodebox_wall(ContentFeatures *f);
+void content_nodebox_youngtree(ContentFeatures *f);
 
 #endif

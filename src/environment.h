@@ -228,6 +228,31 @@ public:
 	void clearAllObjects();
 	virtual bool propogateEnergy(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos);
 
+	// search for c within radius of pos
+	bool searchNear(v3s16 pos, v3s16 radius_min, v3s16 radius_max, std::vector<content_t> c, v3s16 *found);
+	bool searchNear(v3s16 pos, v3s16 radius, std::vector<content_t> c, v3s16 *found)
+	{
+		return searchNear(pos,radius,radius,c,found);
+	}
+	bool searchNear(v3s16 pos, v3s16 radius, content_t c, v3s16 *found)
+	{
+		std::vector<content_t> search;
+		search.push_back(c);
+		return searchNear(pos,radius,radius,search,found);
+	}
+	// search for not c within radius of pos
+	bool searchNearInv(v3s16 pos, v3s16 radius_min, v3s16 radius_max, std::vector<content_t> c, v3s16 *found);
+	bool searchNearInv(v3s16 pos, v3s16 radius, std::vector<content_t> c, v3s16 *found)
+	{
+		return searchNearInv(pos,radius,radius,c,found);
+	}
+	bool searchNearInv(v3s16 pos, v3s16 radius, content_t c, v3s16 *found)
+	{
+		std::vector<content_t> search;
+		search.push_back(c);
+		return searchNearInv(pos,radius,radius,search,found);
+	}
+
 private:
 
 	/*

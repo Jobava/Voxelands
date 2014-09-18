@@ -416,6 +416,7 @@ void content_craftitem_init()
 	f->description = "Pine Plank";
 	f->fuel_time = 30/16;
 	crafting::set1To4Recipe(CONTENT_WOOD_PINE,CONTENT_CRAFTITEM_PINE_PLANK);
+	crafting::set1To2Recipe(CONTENT_YOUNG_CONIFER_TREE,CONTENT_CRAFTITEM_PINE_PLANK);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -427,6 +428,8 @@ void content_craftitem_init()
 	f->description = "Wood Plank";
 	f->fuel_time = 30/16;
 	crafting::set1To4Recipe(CONTENT_WOOD,CONTENT_CRAFTITEM_WOOD_PLANK);
+	crafting::set1To2Recipe(CONTENT_YOUNG_TREE,CONTENT_CRAFTITEM_WOOD_PLANK);
+	crafting::set1To2Recipe(CONTENT_YOUNG_APPLE_TREE,CONTENT_CRAFTITEM_WOOD_PLANK);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -438,6 +441,7 @@ void content_craftitem_init()
 	f->description = "Jungle Wood Plank";
 	f->fuel_time = 30/16;
 	crafting::set1To4Recipe(CONTENT_JUNGLEWOOD,CONTENT_CRAFTITEM_JUNGLE_PLANK);
+	crafting::set1To2Recipe(CONTENT_YOUNG_JUNGLETREE,CONTENT_CRAFTITEM_JUNGLE_PLANK);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 

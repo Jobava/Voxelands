@@ -765,6 +765,82 @@ void content_mapnode_init(bool repeat)
 	lists::add("creative",i);
 	lists::add("cooking",i);
 
+	i = CONTENT_YOUNG_TREE;
+	f = &content_features(i);
+	f->description = std::string("Young Tree");
+	f->setAllTextures("tree.png");
+	f->setTexture(0, "tree_top.png");
+	f->setTexture(1, "tree_top.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	content_nodebox_youngtree(f);
+	f->setInventoryTextureNodeBox(i,"tree_top.png", "tree.png", "tree.png");
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->special_alternate_node = CONTENT_LEAVES;
+	f->fuel_time = 20;
+	f->type = CMT_WOOD;
+	f->hardness = 1.0;
+	lists::add("creative",i);
+
+	i = CONTENT_YOUNG_JUNGLETREE;
+	f = &content_features(i);
+	f->description = std::string("Young Jungle Tree");
+	f->setAllTextures("jungletree.png");
+	f->setTexture(0, "jungletree_top.png");
+	f->setTexture(1, "jungletree_top.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	content_nodebox_youngtree(f);
+	f->setInventoryTextureNodeBox(i,"jungletree_top.png", "jungletree.png", "jungletree.png");
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->special_alternate_node = CONTENT_JUNGLELEAVES;
+	f->fuel_time = 20;
+	f->type = CMT_WOOD;
+	f->hardness = 1.0;
+	lists::add("creative",i);
+
+	i = CONTENT_YOUNG_APPLE_TREE;
+	f = &content_features(i);
+	f->description = std::string("Young Apple Tree");
+	f->setAllTextures("apple_tree.png");
+	f->setTexture(0, "apple_tree_top.png");
+	f->setTexture(1, "apple_tree_top.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	content_nodebox_youngtree(f);
+	f->setInventoryTextureNodeBox(i,"apple_tree_top.png", "apple_tree.png", "apple_tree.png");
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->special_alternate_node = CONTENT_APPLE_LEAVES;
+	f->fuel_time = 20;
+	f->type = CMT_WOOD;
+	f->hardness = 1.0;
+	lists::add("creative",i);
+
+	i = CONTENT_YOUNG_CONIFER_TREE;
+	f = &content_features(i);
+	f->description = std::string("Young Conifer Tree");
+	f->setAllTextures("conifer_tree.png");
+	f->setTexture(0, "conifer_tree_top.png");
+	f->setTexture(1, "conifer_tree_top.png");
+	f->draw_type = CDT_NODEBOX;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->param_type = CPT_LIGHT;
+	content_nodebox_youngtree(f);
+	f->setInventoryTextureNodeBox(i,"conifer_tree_top.png", "conifer_tree.png", "conifer_tree.png");
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->special_alternate_node = CONTENT_CONIFER_LEAVES;
+	f->fuel_time = 20;
+	f->type = CMT_WOOD;
+	f->hardness = 1.0;
+	lists::add("creative",i);
+
 	i = CONTENT_JUNGLEGRASS;
 	f = &content_features(i);
 	f->description = std::string("Jungle Grass");

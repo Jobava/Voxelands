@@ -1463,3 +1463,10 @@ void content_nodebox_wall(ContentFeatures *f)
 	));
 }
 
+void content_nodebox_youngtree(ContentFeatures *f)
+{
+	f->setNodeBox(core::aabbox3d<f32>(
+		-0.125*BS,-0.5*BS,-0.125*BS,0.125*BS,0.5*BS,0.125*BS
+	));
+}
+

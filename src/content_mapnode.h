@@ -200,6 +200,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_COTTON_YELLOW 0x895
 #define CONTENT_COTTON_BLACK 0x896
 // old walls
+// deprecated, just here for backwards compat
 #define CONTENT_ROUGHSTONE_WALL_LEGACY 0x89A
 #define CONTENT_MOSSYCOBBLE_WALL_LEGACY 0x89B
 #define CONTENT_SANDSTONE_WALL_LEGACY 0x89C
@@ -269,7 +270,12 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_COOK_BOOK_OPEN 0x8DB
 #define CONTENT_DECRAFT_BOOK_OPEN 0x8DC
 #define CONTENT_DIARY_BOOK_OPEN 0x8DD
-// FREE 8D3-8FF
+// FREE 8D3-8DF
+#define CONTENT_YOUNG_TREE 0x8F0
+#define CONTENT_YOUNG_JUNGLETREE 0x8F1
+#define CONTENT_YOUNG_APPLE_TREE 0x8F2
+#define CONTENT_YOUNG_CONIFER_TREE 0x8F3
+// FREE 8F4-8FF
 // glass pane
 #define CONTENT_GLASS_PANE 0x900
 #define CONTENT_GLASS_PANE_BLUE 0x901
