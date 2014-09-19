@@ -64,13 +64,13 @@ Compiling on GNU/Linux:
 -----------------------
 
 Install dependencies. Here's an example for Debian/Ubuntu:
-$ apt-get install build-essential libirrlicht-dev cmake libbz2-dev libpng12-dev libjpeg8-dev libxxf86vm-dev libgl1-mesa-dev libsqlite3-dev
+$ apt-get install build-essential libirrlicht-dev cmake libbz2-dev libpng12-dev libjpeg8-dev libxxf86vm-dev libgl1-mesa-dev libsqlite3-dev libopenal-dev libvorbis-dev
 
 Here's an example for RedHat/Fedora/CentOS:
 $ yum install irrlicht-devel bzip2-devel libpng-devel libjpeg-turbo-devel libXxf86vm-devel mesa-libglapi libsqlite3x-devel
 
 Download source, extract (replace <VERSION> in this URL with the latest stable release version, i.e. 1401.00):
-$ wget http://www.voxelands.com/downloads/minetest-classic-<VERSION>-src.tar.bz2
+$ wget http://www.voxelands.com/downloads/voxelands-<VERSION>-src.tar.bz2
 $ tar xf voxelands-*-src.tar.bz2
 $ cd voxelands
 

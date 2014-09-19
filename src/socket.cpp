@@ -448,12 +448,15 @@ int TCPSocket::FillBuffer()
 	if (!m_bstart && l == 2048)
 		return l;
 
-	if (l && m_bstart)
-		memcpy(m_buff,m_buff+m_bstart,l);
+	if (l && m_bstart) {
+		char buff[2048];
+		memcpy(buff,m_buff+m_bstart,l);
+		memcpy(m_buff,buff,l);
+	}
 	m_bstart = 0;
 	m_bend = l;
 
-	if (!WaitData(1000))
+	if (!WaitData(30000))
 		return m_bend;
 
 
@@ -564,6 +567,10 @@ bool TCPSocket::WaitData(int timeout_ms)
 	struct timeval tv;
 	tv.tv_sec = 0;
 	tv.tv_usec = timeout_ms * 1000;
+
+	if (m_bstart != m_bend)
+		return true;
+
 	// select()
 	result = select(m_handle+1, &readset, NULL, NULL, &tv);
 

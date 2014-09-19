@@ -37,7 +37,7 @@
 #include "config.h"
 
 /* interface builders, these just keep some code below clean */
-static std::string http_player_interface(Player *player, HTTPServer *server)
+static std::string http_player_interface(Player *player, HTTPServer *server, bool full)
 {
 	char buff[2048];
 	std::string html("<div class=\"panel\"><h2><a href=\"/player/");
@@ -45,9 +45,11 @@ static std::string http_player_interface(Player *player, HTTPServer *server)
 	html += "\" class=\"secret\">";
 	html += player->getName();
 	html += "</a></h2>";
-	html += "<p class=\"right\"><img src=\"/player/";
-	html += player->getName();
-	html += "/skin\" /></p>";
+	if (full) {
+		html += "<p class=\"right\"><img src=\"/player/";
+		html += player->getName();
+		html += "/skin\" /></p>";
+	}
 	snprintf(buff, 2048,"% .1f, % .1f, % .1f",player->getPosition().X/BS,player->getPosition().Y/BS,player->getPosition().Z/BS);
 	if (player->peer_id == 0) {
 		html += "<p class=\"red\">Offline</p>";
@@ -139,8 +141,12 @@ void HTTPServer::step()
 {
 	if (m_socket->WaitData(50)) {
 		TCPSocket *s = m_socket->Accept();
-		HTTPRemoteClient *c = new HTTPRemoteClient(s,this);
-		m_peers.push_back(c);
+		if (m_peers.size() > 20) {
+			delete s;
+		}else{
+			HTTPRemoteClient *c = new HTTPRemoteClient(s,this);
+			m_peers.push_back(c);
+		}
 	}
 
 	std::vector<HTTPRemoteClient*> p;
@@ -210,7 +216,7 @@ int HTTPRemoteClient::handlePlayer()
 		std::string html("<h1>Players</h1>\n");
 		for (core::list<Player*>::Iterator i = players.begin(); i != players.end(); i++) {
 			Player *player = *i;
-			html += http_player_interface(player,m_server);
+			html += http_player_interface(player,m_server,false);
 		}
 		sendHTML((char*)html.c_str());
 		return 1;
@@ -276,7 +282,6 @@ int HTTPRemoteClient::handlePlayer()
 		if (c > s)
 			c = s;
 		if (c) {
-			//m_socket->WaitData(60000);
 			while ((l = read(buff,c)) > 0) {
 				s -= l;
 				t += l;
@@ -301,24 +306,7 @@ int HTTPRemoteClient::handlePlayer()
 	}else if (m_server->getGameServer()->getPlayer(m_recv_headers.getUrl(1))) {
 		std::string html("<h1>Players</h1>\n");
 		Player *player = m_server->getGameServer()->getPlayer(m_recv_headers.getUrl(1));
-		html += "<div class=\"panel\"><h2>";
-		html += player->getName();
-		html += "</h2>";
-		html += "<p class=\"right\"><img src=\"/player/";
-		html += player->getName();
-		html += "/skin\" /></p>";
-		snprintf(buff, 2048,"% .1f, % .1f, % .1f",player->getPosition().X/BS,player->getPosition().Y/BS,player->getPosition().Z/BS);
-		if (player->peer_id == 0) {
-			html += "<p class=\"red\">Offline</p>";
-			html += "<p><strong>Last seen at:</strong> ";
-		}else{
-			html += "<p class=\"green bold\">Online</p>";
-			html += "<p><strong>Currently at:</strong> ";
-		}
-		html += buff;
-		html += "</p><p><strong>Privileges:</strong> ";
-		html += m_server->getPlayerPrivs(player->getName());
-		html += "</p></div>";
+		html += http_player_interface(player,m_server,true);
 		sendHTML((char*)html.c_str());
 		return 1;
 	}
