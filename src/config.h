@@ -9,7 +9,7 @@
 #ifdef USE_CMAKE_CONFIG_H
 	#include "cmake_config.h"
 #else
-	#define PROJECT_NAME "minetest"
+	#define PROJECT_NAME "voxelands"
 
 	//#define INSTALL_PREFIX ""
 	#define VERSION_STRING "unknown"
