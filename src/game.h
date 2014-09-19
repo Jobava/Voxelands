@@ -25,6 +25,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "keycode.h"
 
+void drawLoadingScreen(video::IVideoDriver* driver, const char* msg);
+
 class KeyList : protected core::list<KeyPress>
 {
 	typedef core::list<KeyPress> super;

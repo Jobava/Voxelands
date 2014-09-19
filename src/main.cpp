@@ -686,27 +686,6 @@ void drawMenuBackground(video::IVideoDriver* driver)
 				NULL, NULL, true);
 		}
 	}
-
-	//video::ITexture *logotexture =
-			//driver->getTexture(getTexturePath("menulogo.png").c_str());
-	//if(logotexture)
-	//{
-		//v2s32 logosize(logotexture->getOriginalSize().Width,
-				//logotexture->getOriginalSize().Height);
-
-		//video::SColor bgcolor(255,50,50,50);
-		//core::rect<s32> bgrect(0, screensize.Height-logosize.Y-20,
-				//screensize.Width, screensize.Height);
-		//driver->draw2DRectangle(bgcolor, bgrect, NULL);
-
-		//core::rect<s32> rect(0,0,logosize.X,logosize.Y);
-		//rect += v2s32(screensize.Width/2,screensize.Height-10-logosize.Y);
-		//rect -= v2s32(logosize.X/2, 0);
-		//driver->draw2DImage(logotexture, rect,
-			//core::rect<s32>(core::position2d<s32>(0,0),
-			//core::dimension2di(logotexture->getSize())),
-			//NULL, NULL, true);
-	//}
 }
 
 class StderrLogOutput: public ILogOutput
@@ -915,7 +894,7 @@ int main(int argc, char *argv[])
 	content_craftitem_init();
 	content_toolitem_init();
 	// Initial call with g_texturesource not set.
-	init_mapnode();
+	init_mapnode(NULL);
 	// Must be called before g_texturesource is created
 	// (for texture atlas making)
 	init_mineral();
@@ -1091,6 +1070,8 @@ int main(int argc, char *argv[])
 	// Create texture source
 	g_texturesource = new TextureSource(device);
 
+	drawLoadingScreen(driver,NULL);
+
 	/*
 		Speed tests (done after irrlicht is loaded to get timer)
 	*/
@@ -1124,6 +1105,7 @@ int main(int argc, char *argv[])
 	// If font was not found, this will get us one
 	font = skin->getFont();
 	assert(font);
+	drawLoadingScreen(driver,"Setting Up UI");
 
 	u32 text_height = font->getDimension(L"Hello, world!").Height;
 	infostream<<"text_height="<<text_height<<std::endl;
@@ -1146,7 +1128,8 @@ int main(int argc, char *argv[])
 		Preload some textures and stuff
 	*/
 
-	init_mapnode(); // Second call with g_texturesource set
+	drawLoadingScreen(driver,"Loading MapNodes");
+	init_mapnode(driver); // Second call with g_texturesource set
 
 	/*
 		GUI stuff
@@ -1330,7 +1313,7 @@ int main(int argc, char *argv[])
 				break;
 
 			// Initialize mapnode again to enable changed graphics settings
-			init_mapnode();
+			init_mapnode(driver);
 
 			/*
 				Run game

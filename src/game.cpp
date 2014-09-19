@@ -44,6 +44,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "filesys.h"
 #include "path.h"
 #include "sound.h"
+#ifndef SERVER
+#include "main.h"
+#endif
 
 /*
 	TODO: Move content-aware stuff to separate file by adding properties
@@ -663,31 +666,42 @@ void update_skybox(video::IVideoDriver* driver,
 }
 
 /*
-	Draws a screen with a single text on it.
+	Draws a screen with logo and text on it.
 	Text will be removed when the screen is drawn the next time.
 */
-/*gui::IGUIStaticText **/
-void draw_load_screen(const std::wstring &text,
-		video::IVideoDriver* driver, gui::IGUIFont* font)
+void drawLoadingScreen(video::IVideoDriver* driver, const char* msg)
 {
-	v2u32 screensize = driver->getScreenSize();
-	const wchar_t *loadingtext = text.c_str();
-	core::vector2d<u32> textsize_u = font->getDimension(loadingtext);
-	core::vector2d<s32> textsize(textsize_u.X,textsize_u.Y);
-	core::vector2d<s32> center(screensize.X/2, screensize.Y/2);
-	core::rect<s32> textrect(center - textsize/2, center + textsize/2);
-
-	gui::IGUIStaticText *guitext = guienv->addStaticText(
-			loadingtext, textrect, false, false);
-	guitext->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+	if (driver == NULL)
+		return;
+	core::dimension2d<u32> screensize = driver->getScreenSize();
+	s32 x = (screensize.Width/2);
+	s32 y = (screensize.Height/2);
 
 	driver->beginScene(true, true, video::SColor(255,0,0,0));
-	guienv->drawAll();
+
+	video::ITexture *logotexture = driver->getTexture(getTexturePath("menulogo.png").c_str());
+	if (logotexture) {
+		core::rect<s32> rect(x-100,y-90,x+100,y+110);
+		driver->draw2DImage(logotexture, rect,
+			core::rect<s32>(core::position2d<s32>(0,0),
+			core::dimension2di(logotexture->getSize())),
+			NULL, NULL, true);
+	}
+	if (guienv) {
+		std::wstring m;
+		if (msg) {
+			m = narrow_to_wide(msg);
+		}else{
+			m = L"Loading";
+		}
+		core::dimension2d<u32> textsize = guienv->getSkin()->getFont()->getDimension(m.c_str());
+		core::rect<s32> rect(x-(textsize.Width/2), y+100, x+textsize.Width, y+100+textsize.Height);
+		gui::IGUIStaticText *guitext = guienv->addStaticText(m.c_str(),rect);
+		guienv->drawAll();
+		guitext->remove();
+	}
+
 	driver->endScene();
-
-	guitext->remove();
-
-	//return guitext;
 }
 
 /* Profiler display */
@@ -754,7 +768,8 @@ void the_game(
 	/*
 		Draw "Loading" screen
 	*/
-	draw_load_screen(L"Loading...", driver, font);
+	//draw_load_screen(L"Loading...", driver, font);
+	drawLoadingScreen(driver,"Loading...");
 
 	/*
 		Create server.
@@ -762,7 +777,8 @@ void the_game(
 	*/
 	SharedPtr<Server> server;
 	if(address == ""){
-		draw_load_screen(L"Creating server...", driver, font);
+		//draw_load_screen(L"Creating server...", driver, font);
+		drawLoadingScreen(driver,"Creating server...");
 		infostream<<"Creating server"<<std::endl;
 		server = new Server(map_dir, configpath);
 		server->start(port);
@@ -772,12 +788,13 @@ void the_game(
 		Create client
 	*/
 
-	draw_load_screen(L"Creating client...", driver, font);
+	//draw_load_screen(L"Creating client...", driver, font);
+	drawLoadingScreen(driver,"Creating client...");
 	infostream<<"Creating client"<<std::endl;
 	MapDrawControl draw_control;
 	Client client(device, playername.c_str(), password, draw_control, sound);
 
-	draw_load_screen(L"Resolving address...", driver, font);
+	drawLoadingScreen(driver,"Resolving address...");
 	Address connect_address(0,0,0,0, port);
 	try{
 		if(address == "")
@@ -822,11 +839,12 @@ void the_game(
 				break;
 			}
 
-			std::wostringstream ss;
-			ss<<L"Connecting to server... (timeout in ";
+			std::ostringstream ss;
+			ss<<"Connecting to server... (timeout in ";
 			ss<<(int)(10.0 - time_counter + 1.0);
-			ss<<L" seconds)";
-			draw_load_screen(ss.str(), driver, font);
+			ss<<" seconds)";
+			//draw_load_screen(ss.str(), driver, font);
+			drawLoadingScreen(driver,ss.str().c_str());
 
 			// Update client and server
 			client.step(0.1);
@@ -2440,7 +2458,7 @@ void the_game(
 		generator and other stuff quits
 	*/
 	{
-		draw_load_screen(L"Shutting down stuff...", driver, font);
+		drawLoadingScreen(driver,"Shutting down...");
 	}
 }
 

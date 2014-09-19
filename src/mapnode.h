@@ -54,7 +54,12 @@ typedef u16 content_t;
 
 	Server only calls this once with g_texturesource=NULL.
 */
+#ifndef SERVER
+#include "common_irrlicht.h"
+void init_mapnode(video::IVideoDriver* driver);
+#else
 void init_mapnode();
+#endif
 
 /*
 	Ignored node.

@@ -198,7 +198,13 @@ ContentFeatures & content_features(MapNode &n)
 /*
 	See mapnode.h for description.
 */
+#ifndef SERVER
+#include "common_irrlicht.h"
+#include "game.h"
+void init_mapnode(video::IVideoDriver* driver)
+#else
 void init_mapnode()
+#endif
 {
 	bool repeat = false;
 	if (g_texturesource == NULL) {
@@ -263,7 +269,31 @@ void init_mapnode()
 	/*
 		Initialize mapnode content
 	*/
+#ifndef SERVER
+	drawLoadingScreen(driver,"Loading Base MapNodes");
+#endif
 	content_mapnode_init(repeat);
+#ifndef SERVER
+	drawLoadingScreen(driver,"Loading Circuit MapNodes");
+#endif
+	content_mapnode_circuit(repeat);
+#ifndef SERVER
+	drawLoadingScreen(driver,"Loading Farming MapNodes");
+#endif
+	content_mapnode_farm(repeat);
+#ifndef SERVER
+	drawLoadingScreen(driver,"Loading Decorative MapNodes");
+#endif
+	content_mapnode_furniture(repeat);
+#ifndef SERVER
+	drawLoadingScreen(driver,"Loading Interactive MapNodes");
+#endif
+	content_mapnode_door(repeat);
+#ifndef SERVER
+	drawLoadingScreen(driver,"Loading Special MapNodes");
+#endif
+	content_mapnode_stair(repeat);
+	content_mapnode_slab(repeat);
 }
 
 /*

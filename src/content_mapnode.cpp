@@ -186,13 +186,6 @@ void content_mapnode_init(bool repeat)
 	bool opaque_water = g_settings->getBool("opaque_water");
 #endif
 
-	content_mapnode_circuit(repeat);
-	content_mapnode_farm(repeat);
-	content_mapnode_furniture(repeat);
-	content_mapnode_door(repeat);
-	content_mapnode_stair(repeat);
-	content_mapnode_slab(repeat);
-
 	content_t i;
 	ContentFeatures *f = NULL;
 
