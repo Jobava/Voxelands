@@ -3583,7 +3583,7 @@ void content_mapnode_init(bool repeat)
 	f->setAllTextures("fire.png");
 	f->setAllTextureFlags(0);
 	f->param_type = CPT_LIGHT;
-	f->draw_type = CDT_PLANTLIKE;
+	f->draw_type = CDT_FIRELIKE;
 	f->light_propagates = true;
 	f->light_source = LIGHT_MAX-1;
 	f->solidness = 0; // Drawn separately, makes no faces
@@ -3603,7 +3603,7 @@ void content_mapnode_init(bool repeat)
 	f->setAllTextures("fire.png");
 	f->setAllTextureFlags(0);
 	f->param_type = CPT_LIGHT;
-	f->draw_type = CDT_PLANTLIKE;
+	f->draw_type = CDT_FIRELIKE;
 	f->light_propagates = true;
 	f->light_source = LIGHT_MAX-1;
 	f->solidness = 0; // Drawn separately, makes no faces

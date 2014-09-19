@@ -3323,6 +3323,87 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			}
 		}
 		break;
+		case CDT_FIRELIKE:
+		{
+			TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),data->m_temp_mods);
+			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
+			video::SColor c = MapBlock_LightColor(255, l, selected);
+			content_t current = n.getContent();
+			content_t n2c;
+			MapNode n2;
+			v3s16 n2p;
+			static const v3s16 dirs[6] = {
+				v3s16( 0, 1, 0),
+				v3s16( 0,-1, 0),
+				v3s16( 1, 0, 0),
+				v3s16(-1, 0, 0),
+				v3s16( 0, 0, 1),
+				v3s16( 0, 0,-1)
+			};
+			int doDraw[6] = {0,0,0,0,0,0};
+			int i;
+			// Draw the full flame even if there are no surrounding nodes
+			bool drawAllFaces = true;
+			// Check for adjacent nodes
+			for (i = 0; i < 6; i++) {
+				n2p = blockpos_nodes + p + dirs[i];
+				n2 = data->m_vmanip.getNodeRO(n2p);
+				n2c = n2.getContent();
+				if (n2c != CONTENT_IGNORE && n2c != CONTENT_AIR && n2c != current) {
+					doDraw[i] = 1;
+					drawAllFaces = false;
+				}
+			}
+			for (u32 j=0; j<4; j++) {
+				video::S3DVertex vertices[4] = {
+					video::S3DVertex(-0.5*BS,-0.5*BS,0.369*BS, 0,0,0, c, tile.texture.x0(), tile.texture.y1()),
+					video::S3DVertex(0.5*BS,-0.5*BS,0.369*BS, 0,0,0, c, tile.texture.x1(), tile.texture.y1()),
+					video::S3DVertex(0.5*BS,0.5*BS,0.369*BS, 0,0,0, c, tile.texture.x1(), tile.texture.y0()),
+					video::S3DVertex(-0.5*BS,0.5*BS,0.369*BS, 0,0,0, c, tile.texture.x0(), tile.texture.y0())
+				};
+				int vOffset = 1; // Vertical offset of faces after rotation
+				// Calculate which faces should be drawn
+				if(j == 0 && (drawAllFaces || (doDraw[3] == 1 || doDraw[1] == 1))) {
+					for(u16 i=0; i<4; i++) {
+						vertices[i].Pos.rotateXZBy(90);
+						vertices[i].Pos.rotateXYBy(-15);
+						vertices[i].Pos.Y -= vOffset;
+					}
+				}else if(j == 1 && (drawAllFaces || (doDraw[5] == 1 || doDraw[1] == 1))) {
+					for(u16 i=0; i<4; i++) {
+						vertices[i].Pos.rotateXZBy(180);
+						vertices[i].Pos.rotateYZBy(15);
+						vertices[i].Pos.Y -= vOffset;
+					}
+				}else if(j == 2 && (drawAllFaces || (doDraw[2] == 1 || doDraw[1] == 1))) {
+					for(u16 i=0; i<4; i++) {
+						vertices[i].Pos.rotateXZBy(270);
+						vertices[i].Pos.rotateXYBy(15);
+						vertices[i].Pos.Y -= vOffset;
+					}
+				}else if(j == 3 && (drawAllFaces || (doDraw[4] == 1 || doDraw[1] == 1))) {
+					for(u16 i=0; i<4; i++) {
+						vertices[i].Pos.rotateYZBy(-15);
+						vertices[i].Pos.Y -= vOffset;
+					}
+				}else if(j == 3 && (drawAllFaces || (doDraw[0] == 1 && doDraw[1] == 0))) {
+					for(u16 i=0; i<4; i++) {
+						vertices[i].Pos.rotateYZBy(-90);
+						vertices[i].Pos.Y += vOffset;
+					}
+				}else{
+					// Skip faces that aren't adjacent to a node
+					continue;
+				}
+				for (u16 i=0; i<4; i++) {
+					vertices[i].Pos += intToFloat(p, BS);
+				}
+				u16 indices[] = {0,1,2,2,3,0};
+				// Add to mesh collector
+				collector.append(tile.getMaterial(), vertices, 4, indices, 6);
+			}
+		}
+		break;
 		case CDT_NODEBOX:
 		case CDT_NODEBOX_META:
 		{
