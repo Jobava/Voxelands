@@ -725,6 +725,15 @@ u16 Oerkki1SAO::punch(const std::string &toolname, v3f dir,
 	return 65536/100;
 }
 
+InventoryItem* Oerkki1SAO::createPickedUpItem()
+{
+	if (!m_removed)
+		return NULL;
+	std::istringstream is("CraftItem oerkki_dust 2", std::ios_base::binary);
+	InventoryItem *item = InventoryItem::deSerialize(is);
+	return item;
+}
+
 void Oerkki1SAO::doDamage(u16 d)
 {
 	infostream<<"oerkki damage: "<<d<<std::endl;

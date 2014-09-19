@@ -682,4 +682,13 @@ void content_craftitem_init()
 	f->name = "lump_of_resin";
 	f->description = "Resin";
 	f->drop_count = 1;
+
+	i = CONTENT_CRAFTITEM_OERKKI_DUST;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_OERKKI_DUST;
+	f->texture = "oerkki_dust.png";
+	f->name = "oerkki_dust";
+	f->description = "Oerkki Dust";
+	f->drop_count = 1;
+	lists::add("creative",i);
 }

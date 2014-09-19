@@ -95,7 +95,7 @@ public:
 	void step(float dtime, bool send_recommended);
 	std::string getClientInitializationData();
 	std::string getStaticData();
-	InventoryItem* createPickedUpItem(){return NULL;}
+	InventoryItem* createPickedUpItem();
 	u16 punch(const std::string &toolname, v3f dir,
 			const std::string &playername);
 	u8 level(){return MOB_AGGRESSIVE;}

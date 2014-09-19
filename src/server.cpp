@@ -2299,18 +2299,14 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			*/
 			InventoryItem *item = obj->createPickedUpItem();
 
-			if(item)
-			{
+			if (item) {
 				InventoryList *ilist = player->inventory.getList("main");
-				if(ilist != NULL)
-				{
+				if (ilist != NULL) {
 					actionstream<<player->getName()<<" picked up "
 							<<item->getName()<<std::endl;
-					if(g_settings->getBool("creative_mode") == false)
-					{
+					if (g_settings->getBool("creative_mode") == false) {
 						// Skip if inventory has no free space
-						if(ilist->roomForItem(item) == false)
-						{
+						if (ilist->roomForItem(item) == false) {
 							infostream<<"Player inventory has no free space"<<std::endl;
 							return;
 						}
@@ -2324,9 +2320,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					// Remove object from environment
 					obj->m_removed = true;
 				}
-			}
-			else
-			{
+			}else{
 				/*
 					Item cannot be picked up. Punch it instead.
 				*/
@@ -2338,11 +2332,9 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				std::string toolname = "";
 
 				InventoryList *mlist = player->inventory.getList("main");
-				if(mlist != NULL)
-				{
+				if (mlist != NULL) {
 					InventoryItem *item = mlist->getItem(item_i);
-					if(item && (std::string)item->getName() == "ToolItem")
-					{
+					if (item && (std::string)item->getName() == "ToolItem") {
 						titem = (ToolItem*)item;
 						toolname = titem->getToolName();
 					}
@@ -2353,9 +2345,29 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				v3f dir = (objpos - playerpos).normalize();
 
 				u16 wear = obj->punch(toolname, dir, player->getName());
+				item = obj->createPickedUpItem();
+				/* killing something might have caused a drop */
+				if (item) {
+					InventoryList *ilist = player->inventory.getList("main");
+					if (ilist != NULL) {
+						actionstream<<player->getName()<<" picked up "
+								<<item->getName()<<std::endl;
+						if (g_settings->getBool("creative_mode") == false) {
+							// Skip if inventory has no free space
+							if (ilist->roomForItem(item) == false) {
+								infostream<<"Player inventory has no free space"<<std::endl;
+								return;
+							}
 
-				if(titem)
-				{
+							// Add to inventory and send inventory
+							ilist->addItem(item);
+							UpdateCrafting(player->peer_id);
+							SendInventory(player->peer_id);
+						}
+					}
+				}
+
+				if (titem) {
 					bool weared_out = titem->addWear(wear);
 					if(weared_out)
 						mlist->deleteItem(item_i);
@@ -4036,6 +4048,45 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						continue;
 					client->SetBlocksNotSent(modified_blocks);
 				}
+			}else if (item->getContent() == CONTENT_CRAFTITEM_OERKKI_DUST) {
+				/*
+					If in creative mode, item dropping is disabled unless
+					player has build privileges
+				*/
+				if(g_settings->getBool("creative_mode") &&
+					(getPlayerPrivs(player) & PRIV_BUILD) == 0)
+				{
+					infostream<<"Not allowing player to drop item: "
+							"creative mode and no build privs"<<std::endl;
+					return;
+				}
+				if (g_settings->getBool("creative_mode") == false) {
+					// Delete the right amount of items from the slot
+					u16 dropcount = item->getDropCount();
+
+					// Delete item if all gone
+					if (item->getCount() <= dropcount) {
+						if (item->getCount() < dropcount)
+							infostream<<"WARNING: Server: dropped more items"
+									<<" than the slot contains"<<std::endl;
+
+						InventoryList *ilist = player->inventory.getList("main");
+						if (ilist)
+							// Remove from inventory and send inventory
+							ilist->deleteItem(item_i);
+					}else{
+						item->remove(dropcount);
+					}
+
+					// Send inventory
+					UpdateCrafting(peer_id);
+					SendInventory(peer_id);
+				}
+				v3f pos;
+				if (!player->getHome(pos))
+					pos = findSpawnPos(m_env.getServerMap());
+				player->setPosition(pos);
+				SendMovePlayer(player);
 			}
 			/*
 				Place other item (not a block)
