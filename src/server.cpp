@@ -3783,7 +3783,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					v3f player_home = intToFloat(p_under,BS);
 					player_home.Y += 0.6*BS;
 					player->setHome(player_home);
-					std::string msg = std::string("Your home is now set to ")+itos(p_under.X)+","+itos(p_under.Y+1)+","+itos(p_under.Z);
+					std::string msg = std::string("Server: -!- Your home is now set to ")+itos(p_under.X)+","+itos(p_under.Y+1)+","+itos(p_under.Z);
 					SendChatMessage(player->peer_id,narrow_to_wide(msg).c_str());
 				}
 
