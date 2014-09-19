@@ -136,8 +136,7 @@ void Player::deSerialize(std::istream &is)
 	for(;;)
 	{
 		if(is.eof())
-			throw SerializationError
-					("Player::deSerialize(): PlayerArgsEnd not found");
+			return;
 		std::string line;
 		std::getline(is, line);
 		std::string trimmedline = trim(line);
