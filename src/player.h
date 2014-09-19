@@ -175,6 +175,10 @@ public:
 
 	u16 peer_id;
 
+	bool getHome(v3f &h);
+	void setHome(v3f h);
+	void unsetHome() {m_hashome = false;}
+
 protected:
 	char m_name[PLAYERNAME_SIZE];
 	u16 m_selected_item;
@@ -182,6 +186,8 @@ protected:
 	f32 m_yaw;
 	v3f m_speed;
 	v3f m_position;
+	v3f m_home;
+	bool m_hashome;
 
 public:
 

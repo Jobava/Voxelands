@@ -77,6 +77,25 @@ private:
 	std::string m_owner;
 };
 
+class FlagNodeMetadata : public NodeMetadata
+{
+public:
+	FlagNodeMetadata();
+	//~FlagNodeMetadata();
+
+	virtual u16 typeId() const;
+	static NodeMetadata* create(std::istream &is);
+	virtual NodeMetadata* clone();
+	virtual void serializeBody(std::ostream &os);
+	virtual std::string infoText();
+
+	virtual std::string getOwner(){ return m_owner; }
+	virtual void setOwner(std::string t){ m_owner = t; }
+
+private:
+	std::string m_owner;
+};
+
 class ChestNodeMetadata : public NodeMetadata
 {
 public:

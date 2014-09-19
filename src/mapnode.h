@@ -302,7 +302,11 @@ struct ContentFeatures
 	// for pistons
 	ContentPressureType pressure_type;
 
+	// how much does this hurt?
 	u32 damage_per_second;
+
+	// can be used to set the users respawn position
+	bool home_node;
 
 	// NOTE: Move relevant properties to here from elsewhere
 
@@ -370,6 +374,7 @@ struct ContentFeatures
 		hardness = 1.0;
 		pressure_type = CST_MOVABLE;
 		damage_per_second = 0;
+		home_node = false;
 	}
 
 	ContentFeatures()

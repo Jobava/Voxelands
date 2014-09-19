@@ -115,6 +115,42 @@ std::string LockingSignNodeMetadata::getDrawSpecString()
 }
 
 /*
+	FlagNodeMetadata
+*/
+
+// Prototype
+FlagNodeMetadata proto_FlagNodeMetadata();
+
+FlagNodeMetadata::FlagNodeMetadata()
+{
+	NodeMetadata::registerType(typeId(), create);
+}
+u16 FlagNodeMetadata::typeId() const
+{
+	return CONTENT_FLAG;
+}
+NodeMetadata* FlagNodeMetadata::create(std::istream &is)
+{
+	FlagNodeMetadata *d = new FlagNodeMetadata();
+	d->setOwner(deSerializeString(is));
+	return d;
+}
+NodeMetadata* FlagNodeMetadata::clone()
+{
+	FlagNodeMetadata *d = new FlagNodeMetadata();
+	d->m_owner = m_owner;
+	return d;
+}
+void FlagNodeMetadata::serializeBody(std::ostream &os)
+{
+	os<<serializeString(m_owner);
+}
+std::string FlagNodeMetadata::infoText()
+{
+	return std::string("")+m_owner+"'s Home Flag";
+}
+
+/*
 	ChestNodeMetadata
 */
 

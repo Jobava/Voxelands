@@ -278,6 +278,10 @@ void init_mapnode()
 #endif
 	content_mapnode_circuit(repeat);
 #ifndef SERVER
+	drawLoadingScreen(driver,"Loading Plant MapNodes");
+#endif
+	content_mapnode_plants(repeat);
+#ifndef SERVER
 	drawLoadingScreen(driver,"Loading Farming MapNodes");
 #endif
 	content_mapnode_farm(repeat);
@@ -294,6 +298,7 @@ void init_mapnode()
 #endif
 	content_mapnode_stair(repeat);
 	content_mapnode_slab(repeat);
+	content_mapnode_special(repeat);
 }
 
 /*

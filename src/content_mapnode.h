@@ -29,6 +29,8 @@ void content_mapnode_furniture(bool repeat);
 void content_mapnode_door(bool repeat);
 void content_mapnode_stair(bool repeat);
 void content_mapnode_slab(bool repeat);
+void content_mapnode_special(bool repeat);
+void content_mapnode_plants(bool repeat);
 
 extern content_t trans_table_19[21][2];
 
@@ -176,6 +178,14 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_COUCH_CHAIR_BLACK 0x865
 
 // FREE 866-87F
+#define CONTENT_FLAG 0x870
+#define CONTENT_FLAG_BLUE 0x871
+#define CONTENT_FLAG_GREEN 0x872
+#define CONTENT_FLAG_ORANGE 0x873
+#define CONTENT_FLAG_PURPLE 0x874
+#define CONTENT_FLAG_RED 0x875
+#define CONTENT_FLAG_YELLOW 0x876
+#define CONTENT_FLAG_BLACK 0x877
 
 // plants
 #define CONTENT_WILDGRASS_SHORT 0x880

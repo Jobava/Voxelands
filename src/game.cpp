@@ -681,7 +681,7 @@ void drawLoadingScreen(video::IVideoDriver* driver, const char* msg)
 
 	video::ITexture *logotexture = driver->getTexture(getTexturePath("menulogo.png").c_str());
 	if (logotexture) {
-		core::rect<s32> rect(x-100,y-90,x+100,y+110);
+		core::rect<s32> rect(x-100,y-150,x+100,y+50);
 		driver->draw2DImage(logotexture, rect,
 			core::rect<s32>(core::position2d<s32>(0,0),
 			core::dimension2di(logotexture->getSize())),
@@ -695,7 +695,7 @@ void drawLoadingScreen(video::IVideoDriver* driver, const char* msg)
 			m = L"Loading";
 		}
 		core::dimension2d<u32> textsize = guienv->getSkin()->getFont()->getDimension(m.c_str());
-		core::rect<s32> rect(x-(textsize.Width/2), y+100, x+textsize.Width, y+100+textsize.Height);
+		core::rect<s32> rect(x-(textsize.Width/2), y+50, x+textsize.Width, y+50+textsize.Height);
 		gui::IGUIStaticText *guitext = guienv->addStaticText(m.c_str(),rect);
 		guienv->drawAll();
 		guitext->remove();

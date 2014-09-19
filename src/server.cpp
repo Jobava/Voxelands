@@ -2902,6 +2902,14 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						|| meta->typeId() == CONTENT_LOCKABLE_SIGN_WALL
 						|| meta->typeId() == CONTENT_LOCKABLE_SIGN_UD
 						|| meta->typeId() == CONTENT_LOCKABLE_FURNACE
+						|| meta->typeId() == CONTENT_FLAG
+						|| meta->typeId() == CONTENT_FLAG_BLUE
+						|| meta->typeId() == CONTENT_FLAG_GREEN
+						|| meta->typeId() == CONTENT_FLAG_ORANGE
+						|| meta->typeId() == CONTENT_FLAG_PURPLE
+						|| meta->typeId() == CONTENT_FLAG_RED
+						|| meta->typeId() == CONTENT_FLAG_YELLOW
+						|| meta->typeId() == CONTENT_FLAG_BLACK
 					)
 					&& meta->getOwner() != player->getName()
 				) {
@@ -2949,7 +2957,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			}
 
 			bool is_farm_swap = false;
-			// This is pretty much the entirety of farming
+			// This was pretty much the entirety of farming
 			if (
 				(
 					material == CONTENT_MUD
@@ -3042,6 +3050,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					}
 					sendRemoveNode(p_under, 0, &far_players, 30);
 				}else{
+					if (content_features(n).home_node)
+						player->unsetHome();
 					if (n.getContent() == CONTENT_FLOWER_POT) {
 						MapNode a = m_env.getMap().getNodeNoEx(p_under+v3s16(0,1,0));
 						if (
@@ -3767,6 +3777,14 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					}else{
 						return;
 					}
+				}
+
+				if (content_features(n).home_node) {
+					v3f player_home = intToFloat(p_under,BS);
+					player_home.Y += 0.6*BS;
+					player->setHome(player_home);
+					std::string msg = std::string("Your home is now set to ")+itos(p_under.X)+","+itos(p_under.Y+1)+","+itos(p_under.Z);
+					SendChatMessage(player->peer_id,narrow_to_wide(msg).c_str());
 				}
 
 				/*
@@ -5310,7 +5328,9 @@ void Server::HandlePlayerHP(Player *player, s16 damage)
 
 void Server::RespawnPlayer(Player *player)
 {
-	v3f pos = findSpawnPos(m_env.getServerMap());
+	v3f pos;
+	if (!player->getHome(pos))
+		pos = findSpawnPos(m_env.getServerMap());
 	player->setPosition(pos);
 	player->hp = 20;
 	SendMovePlayer(player);

@@ -43,7 +43,9 @@ Player::Player():
 	m_pitch(0),
 	m_yaw(0),
 	m_speed(0,0,0),
-	m_position(0,0,0)
+	m_position(0,0,0),
+	m_home(0,0,0),
+	m_hashome(false)
 {
 	updateName("<not set>");
 	resetInventory();
@@ -116,6 +118,8 @@ void Player::serialize(std::ostream &os)
 	args.setV3F("position", m_position);
 	args.setBool("craftresult_is_preview", craftresult_is_preview);
 	args.setS32("hp", hp);
+	if (m_hashome)
+		args.setV3F("home",m_home);
 
 	args.writeLines(os);
 
@@ -165,6 +169,10 @@ void Player::deSerialize(std::istream &is)
 	}catch(SettingNotFoundException &e){
 		hp = 20;
 	}
+	try{
+		m_home = args.getV3F("home");
+		m_hashome = true;
+	}catch(SettingNotFoundException &e){}
 	/*try{
 		std::string sprivs = args.get("privs");
 		if(sprivs == "all")
@@ -181,6 +189,20 @@ void Player::deSerialize(std::istream &is)
 	}*/
 
 	inventory.deSerialize(is);
+}
+
+bool Player::getHome(v3f &h)
+{
+	if (!m_hashome)
+		return false;
+	h = m_home;
+	return true;
+}
+
+void Player::setHome(v3f h)
+{
+	m_home = h;
+	m_hashome = true;
 }
 
 /*
