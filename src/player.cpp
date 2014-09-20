@@ -65,6 +65,7 @@ void Player::resetInventory()
 {
 	inventory.clear();
 	inventory.addList("main", PLAYER_INVENTORY_SIZE);
+	inventory.addList("discard",1);
 	inventory.addList("craft", 9);
 	inventory.addList("craftresult", 1);
 }
@@ -189,6 +190,14 @@ void Player::deSerialize(std::istream &is)
 	}*/
 
 	inventory.deSerialize(is);
+	if (!inventory.getList("main"))
+		inventory.addList("main", PLAYER_INVENTORY_SIZE);
+	if (!inventory.getList("discard"))
+		inventory.addList("discard",1);
+	if (!inventory.getList("craft"))
+		inventory.addList("craft", 9);
+	if (!inventory.getList("craftresult"))
+		inventory.addList("craftresult", 1);
 }
 
 bool Player::getHome(v3f &h)

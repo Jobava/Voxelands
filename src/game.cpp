@@ -209,8 +209,10 @@ public:
 		return
 			"size[8,7]"
 			"list[current_player;main;0,3;8,4;]"
-			"list[current_player;craft;2,0;3,3;]"
-			"list[current_player;craftresult;6,1;1,1;]";
+			"label[0.2,0.7;Drop to Ground]"
+			"list[current_player;discard;0.5,1;1,1;]"
+			"list[current_player;craft;3,0;3,3;]"
+			"list[current_player;craftresult;6.5,1;1,1;]";
 	}
 
 	Client *m_client;
@@ -1261,21 +1263,6 @@ void the_game(
 			menu->setFormSpec(src->getForm(), inventoryloc);
 			menu->setFormSource(src);
 			menu->drop();
-
-			//core::array<GUIInventoryMenu::DrawSpec> draw_spec;
-			//draw_spec.push_back(GUIInventoryMenu::DrawSpec(
-					//"list", "current_player", "main",
-					//v2s32(0, 3), v2s32(8, 4)));
-			//draw_spec.push_back(GUIInventoryMenu::DrawSpec(
-					//"list", "current_player", "craft",
-					//v2s32(2, 0), v2s32(3, 3)));
-			//draw_spec.push_back(GUIInventoryMenu::DrawSpec(
-					//"list", "current_player", "craftresult",
-					//v2s32(6, 1), v2s32(1, 1)));
-
-			//menu->setDrawSpec(draw_spec);
-
-			//menu->drop();
 		}
 		else if(input->wasKeyDown(EscapeKey))
 		{

@@ -4237,13 +4237,9 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				Handle craftresult specially if not in creative mode
 			*/
 			bool disable_action = false;
-			if(a->getType() == IACTION_MOVE
-					&& g_settings->getBool("creative_mode") == false)
-			{
+			if (a->getType() == IACTION_MOVE && g_settings->getBool("creative_mode") == false) {
 				IMoveAction *ma = (IMoveAction*)a;
-				if(ma->to_inv == "current_player" &&
-						ma->from_inv == "current_player")
-				{
+				if(ma->to_inv == "current_player" && ma->from_inv == "current_player") {
 					InventoryList *rlist = player->inventory.getList("craftresult");
 					assert(rlist);
 					InventoryList *clist = player->inventory.getList("craft");
@@ -4293,17 +4289,14 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					}
 				}
 				// Disallow moving items if not allowed to build
-				else if((getPlayerPrivs(player) & PRIV_BUILD) == 0)
-				{
+				else if((getPlayerPrivs(player) & PRIV_BUILD) == 0) {
 					return;
 				}
 				// if it's a locking inventory, only allow the owner or server admins to move items
-				else if (ma->from_inv != "current_player" && (getPlayerPrivs(player) & PRIV_SERVER) == 0)
-				{
+				else if (ma->from_inv != "current_player" && (getPlayerPrivs(player) & PRIV_SERVER) == 0) {
 					Strfnd fn(ma->from_inv);
 					std::string id0 = fn.next(":");
-					if(id0 == "nodemeta")
-					{
+					if (id0 == "nodemeta") {
 						v3s16 p;
 						p.X = mystoi(fn.next(","));
 						p.Y = mystoi(fn.next(","));
@@ -4323,8 +4316,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						}
 					}
 				}
-				else if (ma->to_inv != "current_player" && (getPlayerPrivs(player) & PRIV_SERVER) == 0)
-				{
+				else if (ma->to_inv != "current_player" && (getPlayerPrivs(player) & PRIV_SERVER) == 0) {
 					Strfnd fn(ma->to_inv);
 					std::string id0 = fn.next(":");
 					if(id0 == "nodemeta")
@@ -4354,10 +4346,29 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				}
 			}
 
-			if(disable_action == false)
-			{
+			if (disable_action == false) {
 				// Feed action to player inventory
 				a->apply(&c, this);
+				if (a->getType() == IACTION_MOVE) {
+					IMoveAction *ma = (IMoveAction*)a;
+					if (
+						ma->to_inv == "current_player"
+						&& ma->from_inv == "current_player"
+						&& ma->to_list == "discard"
+					) {
+						InventoryList *list = player->inventory.getList("discard");
+						InventoryItem *item = list->getItem(0);
+						v3f pos = player->getPosition();
+						pos.Y += BS;
+						v3f dir = v3f(0,0,BS);
+						dir.rotateXZBy(player->getYaw());
+						pos += dir;
+						ServerActiveObject *obj = item->createSAO(&m_env,0,pos);
+						m_env.addActiveObject(obj);
+						list->deleteItem(0);
+						SendInventory(player->peer_id);
+					}
+				}
 				// Eat the action
 				delete a;
 			}

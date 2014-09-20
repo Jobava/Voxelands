@@ -850,13 +850,13 @@ void IMoveAction::apply(InventoryContext *c, InventoryManager *mgr)
 	Inventory *inv_from = mgr->getInventory(c, from_inv);
 	Inventory *inv_to = mgr->getInventory(c, to_inv);
 
-	if(!inv_from){
+	if (!inv_from) {
 		infostream<<"IMoveAction::apply(): FAIL: source inventory not found: "
 				<<"context=["<<describeC(c)<<"], from_inv=\""<<from_inv<<"\""
 				<<", to_inv=\""<<to_inv<<"\""<<std::endl;
 		return;
 	}
-	if(!inv_to){
+	if (!inv_to) {
 		infostream<<"IMoveAction::apply(): FAIL: destination inventory not found: "
 				"context=["<<describeC(c)<<"], from_inv=\""<<from_inv<<"\""
 				<<", to_inv=\""<<to_inv<<"\""<<std::endl;
@@ -869,20 +869,19 @@ void IMoveAction::apply(InventoryContext *c, InventoryManager *mgr)
 	/*
 		If a list doesn't exist or the source item doesn't exist
 	*/
-	if(!list_from){
+	if (!list_from) {
 		infostream<<"IMoveAction::apply(): FAIL: source list not found: "
 				<<"context=["<<describeC(c)<<"], from_inv=\""<<from_inv<<"\""
 				<<", from_list=\""<<from_list<<"\""<<std::endl;
 		return;
 	}
-	if(!list_to){
+	if (!list_to) {
 		infostream<<"IMoveAction::apply(): FAIL: destination list not found: "
 				<<"context=["<<describeC(c)<<"], to_inv=\""<<to_inv<<"\""
 				<<", to_list=\""<<to_list<<"\""<<std::endl;
 		return;
 	}
-	if(list_from->getItem(from_i) == NULL)
-	{
+	if (list_from->getItem(from_i) == NULL) {
 		infostream<<"IMoveAction::apply(): FAIL: source item not found: "
 				<<"context=["<<describeC(c)<<"], from_inv=\""<<from_inv<<"\""
 				<<", from_list=\""<<from_list<<"\""
@@ -892,8 +891,7 @@ void IMoveAction::apply(InventoryContext *c, InventoryManager *mgr)
 	/*
 		If the source and the destination slots are the same
 	*/
-	if(inv_from == inv_to && list_from == list_to && from_i == to_i)
-	{
+	if (inv_from == inv_to && list_from == list_to && from_i == to_i) {
 		infostream<<"IMoveAction::apply(): FAIL: source and destination slots "
 				<<"are the same: inv=\""<<from_inv<<"\" list=\""<<from_list
 				<<"\" i="<<from_i<<std::endl;
@@ -912,8 +910,7 @@ void IMoveAction::apply(InventoryContext *c, InventoryManager *mgr)
 	item1 = list_to->addItem(to_i, item1);
 
 	// If something is returned, the item was not fully added
-	if(item1 != NULL)
-	{
+	if (item1 != NULL) {
 		// If olditem is returned, nothing was added.
 		bool nothing_added = (item1 == olditem && item1->getCount() == count);
 
@@ -923,8 +920,7 @@ void IMoveAction::apply(InventoryContext *c, InventoryManager *mgr)
 
 		// If olditem is returned, nothing was added.
 		// Swap the items
-		if(nothing_added)
-		{
+		if (nothing_added) {
 			// Take item from source list
 			item1 = list_from->changeItem(from_i, NULL);
 			// Adding was not possible, swap the items.
