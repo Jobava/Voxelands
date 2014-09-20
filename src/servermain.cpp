@@ -83,8 +83,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 	Settings.
 	These are loaded from the config file.
 */
-Settings main_settings;
-Settings *g_settings = &main_settings;
+GameSettings main_settings;
+GameSettings *g_settings = &main_settings;
 
 // Global profiler
 Profiler main_profiler;

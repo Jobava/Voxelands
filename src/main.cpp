@@ -81,8 +81,8 @@ ITextureSource *g_texturesource = NULL;
 	Settings.
 	These are loaded from the config file.
 */
-Settings main_settings;
-Settings *g_settings = &main_settings;
+GameSettings main_settings;
+GameSettings *g_settings = &main_settings;
 
 // Global profiler
 Profiler main_profiler;
@@ -1197,8 +1197,7 @@ int main(int argc, char *argv[])
 				menudata.bilinear_filter = g_settings->getBool("bilinear_filter");
 				menudata.trilinear_filter = g_settings->getBool("trilinear_filter");
 				driver->setTextureCreationFlag(video::ETCF_CREATE_MIP_MAPS, menudata.mip_map);
-				menudata.creative_mode = g_settings->getBool("creative_mode");
-				menudata.enable_damage = g_settings->getBool("enable_damage");
+				menudata.game_mode = narrow_to_wide(g_settings->get("game_mode"));
 
 				GUIMainMenu *menu =
 						new GUIMainMenu(guienv, guiroot, -1,
@@ -1277,8 +1276,7 @@ int main(int argc, char *argv[])
 				g_settings->set("trilinear_filter", itos(menudata.trilinear_filter));
 				g_settings->set("fullscreen", itos(menudata.fullscreen));
 				g_settings->set("enable_particles", itos(menudata.particles));
-				g_settings->set("creative_mode", itos(menudata.creative_mode));
-				g_settings->set("enable_damage", itos(menudata.enable_damage));
+				g_settings->set("game_mode", wide_to_narrow(menudata.game_mode));
 
 				// NOTE: These are now checked server side; no need to do it
 				//       here, so let's not do it here.

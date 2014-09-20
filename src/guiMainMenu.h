@@ -42,8 +42,10 @@ enum {
 	GUI_ID_ANISOTROPIC_CB,
 	GUI_ID_PARTICLES_CB,
 	GUI_ID_FULLSCREEN_CB,
-	GUI_ID_DAMAGE_CB,
-	GUI_ID_CREATIVE_CB,
+	GUI_ID_GAME_MODE_COMBO,
+	GUI_ID_GAME_MODE_CREATIVE,
+	GUI_ID_GAME_MODE_ADVENTURE,
+	GUI_ID_GAME_MODE_SURVIVAL,
 	GUI_ID_JOIN_GAME_BUTTON,
 	GUI_ID_CHANGE_KEYS_BUTTON,
 	GUI_ID_DELETE_MAP_BUTTON,
@@ -72,8 +74,7 @@ struct MainMenuData
 		particles(true),
 		fullscreen(false),
 		// Server opts
-		creative_mode(false),
-		enable_damage(false),
+		game_mode(L"adventure"),
 		// Actions
 		delete_map(false)
 	{}
@@ -99,8 +100,7 @@ struct MainMenuData
 	bool particles;
 	bool fullscreen;
 	// Server options
-	bool creative_mode;
-	bool enable_damage;
+	std::wstring game_mode;
 	// If map deletion is requested, this is set to true
 	bool delete_map;
 };

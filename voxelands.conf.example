@@ -1,21 +1,14 @@
 # This file is read by default from:
-# ../minetest.conf
-# ../../minetest.conf
+# ../voxelands.conf
+# ../../voxelands.conf
 # Any other path can be chosen by passing the path as a parameter
-# to the program, eg. "minetest.exe --config ../minetest.conf.example"
+# to the program, eg. "voxelands.exe --config ../voxelands.conf.example"
 #
 # By default, all the settings are commented and not functional.
 # Uncomment settings by removing the preceding #.
 #
 # Further documentation:
-# http://celeron.55.lt/~celeron55/minetest/wiki/doku.php
-#
-# NOTE: This file might not be up-to-date, refer to the
-#       defaultsettings.cpp file for an up-to-date list:
-# https://bitbucket.org/celeron55/minetest/src/tip/src/defaultsettings.cpp
-#
-# A vim command to convert most of defaultsettings.cpp to conf file format:
-# :'<,'>s/\tg_settings\.setDefault("\([^"]*\)", "\([^"]*\)");.*/#\1 = \2/g
+# http://wiki.voxelands.com/doku.php?id=settings
 
 #
 # Client and server
@@ -131,25 +124,66 @@
 # Server stuff
 #
 
+# The game mode, creative/adventure/survival
+# this will preset the below settings to some defaults for the mode
+# but those defaults can be overridden here
+#game_mode = adventure
+# Enable players getting damage and dying
+# creative
+#enable_damage = false
+# adventure
+#enable_damage = true
+# survival
+#enable_damage = true
+# The maximum 'level' of mobs to spawn: passive, aggressive, destructive
+# roughly: passive = rats, aggressive = oerkki, destructive = DM
+# creative
+#max_mob_level = passive
+# adventure
+#max_mob_level = aggressive
+# survival
+#max_mob_level = aggressive
+# Gives some stuff to players at the beginning
+# creative - setting is unused if infinite_inventory = true
+#initial_inventory = false
+# adventure
+#initial_inventory = true
+# survival
+#initial_inventory = false
+# The creative style inventory
+# - dug items aren't added, placed items aren't removed
+# creative
+#infinite_inventory = true
+# adventure
+#infinite_inventory = false
+# survival
+#infinite_inventory = false
+# Whether items can be dropped on the ground
+# creative
+#droppable_inventory = false
+# adventure
+#droppable_inventory = true
+# survival
+#droppable_inventory = true
+# Whether tools wear out from use
+# creative
+#tool_wear = false
+# adventure
+#tool_wear = true
+# survival
+#tool_wear = true
+
+
 # Map directory (everything in the world is stored here)
 #map-dir = /custom/map
 # Message of the Day
-#motd = Welcome to this awesome Minetest server!
+#motd = Welcome to this awesome Voxelands server!
 # Maximum number of players connected simultaneously
 #max_users = 20
 # Set to true to prevent old clients connecting
 #strict_protocol_version_checking = false
-# Set to true to enable creative mode (unlimited inventory)
-#creative_mode = false
-# Enable players getting damage and dying
-#enable_damage = false
-# The maximum 'level' of mobs to spawn: passive, aggressive, destructive
-# roughly: passive = rats, aggressive = oerkki, destructive = DM
-#max_mob_level = aggressive
 # A chosen map seed for a new map, leave empty for random
 #fixed_map_seed =
-# Gives some stuff to players at the beginning
-#give_initial_stuff = true
 # New users need to input this password
 #default_password =
 # Don't let players join with an empty password

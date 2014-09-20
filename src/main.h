@@ -21,8 +21,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define MAIN_HEADER
 
 // Settings
-class Settings;
-extern Settings *g_settings;
+class GameSettings;
+extern GameSettings *g_settings;
 
 // This makes and maps textures
 class ITextureSource;

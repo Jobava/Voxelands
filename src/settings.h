@@ -656,5 +656,31 @@ private:
 	JMutex m_mutex;
 };
 
+class GameSettings : public Settings
+{
+public:
+	GameSettings()
+	{
+		Settings();
+	}
+
+	// you'll find this in defaultsettings.cpp
+	void setGameDefaults(std::string mode);
+
+	void set(std::string name, std::string value)
+	{
+		Settings::set(name,value);
+		if (name == "game_mode")
+			setGameDefaults(value);
+	}
+
+	void set(std::string name, const char *value)
+	{
+		Settings::set(name,value);
+		if (name == "game_mode")
+			setGameDefaults(value);
+	}
+};
+
 #endif
 

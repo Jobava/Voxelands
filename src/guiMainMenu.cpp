@@ -25,6 +25,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <string>
 #include <IGUICheckBox.h>
 #include <IGUIEditBox.h>
+#include <IGUIComboBox.h>
 #include <IGUIButton.h>
 #include <IGUIStaticText.h>
 #include <IGUIFont.h>
@@ -78,8 +79,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	std::wstring text_name;
 	std::wstring text_address;
 	std::wstring text_port;
-	bool creative_mode;
-	bool enable_damage;
+	std::wstring game_mode;
 	bool fancy_trees;
 	bool smooth_lighting;
 	bool clouds_3d;
@@ -188,18 +188,25 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 
 	// Server options
 	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_CREATIVE_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			creative_mode = ((gui::IGUICheckBox*)e)->isChecked();
-		else
-			creative_mode = m_data->creative_mode;
-	}
-	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_DAMAGE_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			enable_damage = ((gui::IGUICheckBox*)e)->isChecked();
-		else
-			enable_damage = m_data->enable_damage;
+		gui::IGUIElement *e = getElementFromId(GUI_ID_GAME_MODE_COMBO);
+		if (e != NULL && e->getType() == gui::EGUIET_COMBO_BOX) {
+			gui::IGUIComboBox *c = (gui::IGUIComboBox*)e;
+			switch (c->getItemData(c->getSelected())) {
+			case GUI_ID_GAME_MODE_CREATIVE:
+				game_mode = L"creative";
+				break;
+			case GUI_ID_GAME_MODE_ADVENTURE:
+				game_mode = L"adventure";
+				break;
+			case GUI_ID_GAME_MODE_SURVIVAL:
+				game_mode = L"survival";
+				break;
+			default:
+				game_mode = L"adventure";
+			}
+		}else{
+			game_mode = m_data->game_mode;
+		}
 	}
 
 	/*
@@ -431,24 +438,29 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		// Server parameters
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(135, 60);
-			Environment->addCheckBox(creative_mode, rect, this, GUI_ID_CREATIVE_CB, wgettext("Creative Mode"));
-		}
-		{
-			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(135, 90);
-			Environment->addCheckBox(enable_damage, rect, this, GUI_ID_DAMAGE_CB, wgettext("Enable Damage"));
+			rect += topleft_content + v2s32(100, 60);
+			gui::IGUIComboBox *c = Environment->addComboBox(rect, this, GUI_ID_GAME_MODE_COMBO);
+			u32 cm = c->addItem(wgettext("Creative Mode"),GUI_ID_GAME_MODE_CREATIVE);
+			u32 am = c->addItem(wgettext("Adventure Mode"),GUI_ID_GAME_MODE_ADVENTURE);
+			u32 sm = c->addItem(wgettext("Survival Mode"),GUI_ID_GAME_MODE_SURVIVAL);
+			if (game_mode == L"creative") {
+				c->setSelected(cm);
+			}else if (game_mode == L"adventure") {
+				c->setSelected(am);
+			}else if (game_mode == L"survival") {
+				c->setSelected(sm);
+			}
 		}
 		// Map delete button
 		{
 			core::rect<s32> rect(0, 0, 130, 30);
-			rect += topleft_content + v2s32(135, 130);
+			rect += topleft_content + v2s32(135, 100);
 			Environment->addButton(rect, this, GUI_ID_DELETE_MAP_BUTTON, wgettext("Delete map"));
 		}
 		// Start game button
 		{
 			core::rect<s32> rect(0, 0, 180, 30);
-			rect += topleft_content + v2s32(110, 200);
+			rect += topleft_content + v2s32(110, 170);
 			Environment->addButton(rect, this, GUI_ID_JOIN_GAME_BUTTON, wgettext("Start Game"));
 		}
 	}else if(m_data->selected_tab == TAB_CREDITS) {
@@ -553,14 +565,23 @@ void GUIMainMenu::acceptInput()
 			m_data->port = e->getText();
 	}
 	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_CREATIVE_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			m_data->creative_mode = ((gui::IGUICheckBox*)e)->isChecked();
-	}
-	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_DAMAGE_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			m_data->enable_damage = ((gui::IGUICheckBox*)e)->isChecked();
+		gui::IGUIElement *e = getElementFromId(GUI_ID_GAME_MODE_COMBO);
+		if (e != NULL && e->getType() == gui::EGUIET_COMBO_BOX) {
+			gui::IGUIComboBox *c = (gui::IGUIComboBox*)e;
+			switch (c->getItemData(c->getSelected())) {
+			case GUI_ID_GAME_MODE_CREATIVE:
+				m_data->game_mode = L"creative";
+				break;
+			case GUI_ID_GAME_MODE_ADVENTURE:
+				m_data->game_mode = L"adventure";
+				break;
+			case GUI_ID_GAME_MODE_SURVIVAL:
+				m_data->game_mode = L"survival";
+				break;
+			default:
+				m_data->game_mode = L"adventure";
+			}
+		}
 	}
 	{
 		gui::IGUIElement *e = getElementFromId(GUI_ID_FANCYTREE_CB);
@@ -633,30 +654,25 @@ bool GUIMainMenu::OnEvent(const SEvent& event)
 			return true;
 		}
 	}
-	if(event.EventType==EET_GUI_EVENT)
-	{
-		if(event.GUIEvent.EventType==gui::EGET_ELEMENT_FOCUS_LOST
-				&& isVisible())
-		{
-			if(!canTakeFocus(event.GUIEvent.Element))
-			{
+	if (event.EventType==EET_GUI_EVENT) {
+		if (event.GUIEvent.EventType==gui::EGET_ELEMENT_FOCUS_LOST && isVisible()) {
+			if (!canTakeFocus(event.GUIEvent.Element)) {
 				dstream<<"GUIMainMenu: Not allowing focus change."
 						<<std::endl;
 				// Returning true disables focus change
 				return true;
 			}
 		}
-		if(event.GUIEvent.EventType==gui::EGET_BUTTON_CLICKED)
-		{
-			switch(event.GUIEvent.Caller->getID())
-			{
+		if (event.GUIEvent.EventType==gui::EGET_BUTTON_CLICKED) {
+			switch (event.GUIEvent.Caller->getID()) {
 			case GUI_ID_JOIN_GAME_BUTTON: // Start game
 				acceptInput();
 				if (m_data->selected_tab == TAB_SINGLEPLAYER)
 					m_data->address = std::wstring(L"");
 				quitMenu();
 				return true;
-			case GUI_ID_CHANGE_KEYS_BUTTON: {
+			case GUI_ID_CHANGE_KEYS_BUTTON:
+			{
 				GUIKeyChangeMenu *kmenu = new GUIKeyChangeMenu(env, parent, -1,menumgr);
 				kmenu->drop();
 				return true;
@@ -705,11 +721,20 @@ bool GUIMainMenu::OnEvent(const SEvent& event)
 				return true;
 			}
 		}
-		if(event.GUIEvent.EventType==gui::EGET_EDITBOX_ENTER)
-		{
-			switch(event.GUIEvent.Caller->getID())
-			{
-				case GUI_ID_ADDRESS_INPUT: case GUI_ID_PORT_INPUT: case GUI_ID_NAME_INPUT: case 264:
+		if (event.GUIEvent.EventType == gui::EGET_COMBO_BOX_CHANGED) {
+			switch (event.GUIEvent.Caller->getID()) {
+			case GUI_ID_GAME_MODE_COMBO:
+				acceptInput();
+				m_accepted = false;
+				return true;
+			}
+		}
+		if (event.GUIEvent.EventType==gui::EGET_EDITBOX_ENTER) {
+			switch (event.GUIEvent.Caller->getID()) {
+			case GUI_ID_ADDRESS_INPUT:
+			case GUI_ID_PORT_INPUT:
+			case GUI_ID_NAME_INPUT:
+			case 264:
 				acceptInput();
 				quitMenu();
 				return true;

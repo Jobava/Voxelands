@@ -18,6 +18,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 */
 
 #include "settings.h"
+#include "defaultsettings.h"
 
 void set_default_settings(Settings *settings)
 {
@@ -109,15 +110,13 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("max_users", "20");
 	settings->setDefault("strict_protocol_version_checking", "false");
 	settings->setDefault("disallow_empty_passwords","false");
-	settings->setDefault("creative_mode", "false");
-	settings->setDefault("enable_damage", "true");
-	settings->setDefault("max_mob_level", "aggressive");
 	settings->setDefault("fixed_map_seed", "");
-	settings->setDefault("give_initial_stuff", "true");
 	settings->setDefault("default_password", "");
 	settings->setDefault("default_privs", "build, shout");
 	settings->setDefault("borderstone_radius","5");
 	settings->setDefault("enable_footprints","true");
+	settings->setDefault("game_mode","adventure");
+	set_adventure_defaults(settings);
 
 	// only enable http on the server for now
 	// adventurous players can enable it on the client
@@ -148,3 +147,43 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("enable_tnt", "true");
 }
 
+void set_creative_defaults(Settings *settings)
+{
+	settings->setDefault("infinite_inventory", "true");
+	settings->setDefault("droppable_inventory", "false");
+	settings->setDefault("enable_damage", "false");
+	settings->setDefault("max_mob_level", "passive");
+	settings->setDefault("initial_inventory", "false");
+	settings->setDefault("tool_wear","false");
+}
+
+void set_adventure_defaults(Settings *settings)
+{
+	settings->setDefault("infinite_inventory", "false");
+	settings->setDefault("droppable_inventory", "true");
+	settings->setDefault("enable_damage", "true");
+	settings->setDefault("max_mob_level", "aggressive");
+	settings->setDefault("initial_inventory", "true");
+	settings->setDefault("tool_wear","true");
+}
+
+void set_survival_defaults(Settings *settings)
+{
+	settings->setDefault("infinite_inventory", "false");
+	settings->setDefault("droppable_inventory", "true");
+	settings->setDefault("enable_damage", "true");
+	settings->setDefault("max_mob_level", "aggressive");
+	settings->setDefault("initial_inventory", "false");
+	settings->setDefault("tool_wear","true");
+}
+
+void GameSettings::setGameDefaults(std::string mode)
+{
+	if (mode == "creative") {
+		set_creative_defaults(this);
+	}else if (mode == "survival") {
+		set_survival_defaults(this);
+	}else{
+		set_adventure_defaults(this);
+	}
+}

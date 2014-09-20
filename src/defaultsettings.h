@@ -23,6 +23,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 class Settings;
 
 void set_default_settings(Settings *settings);
+void set_creative_defaults(Settings *settings);
+void set_adventure_defaults(Settings *settings);
+void set_survival_defaults(Settings *settings);
 
 #endif
 

@@ -2304,7 +2304,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				if (ilist != NULL) {
 					actionstream<<player->getName()<<" picked up "
 							<<item->getName()<<std::endl;
-					if (g_settings->getBool("creative_mode") == false) {
+					if (g_settings->getBool("infinite_inventory") == false) {
 						// Skip if inventory has no free space
 						if (ilist->roomForItem(item) == false) {
 							infostream<<"Player inventory has no free space"<<std::endl;
@@ -2352,7 +2352,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					if (ilist != NULL) {
 						actionstream<<player->getName()<<" picked up "
 								<<item->getName()<<std::endl;
-						if (g_settings->getBool("creative_mode") == false) {
+						if (g_settings->getBool("infinite_inventory") == false) {
 							// Skip if inventory has no free space
 							if (ilist->roomForItem(item) == false) {
 								infostream<<"Player inventory has no free space"<<std::endl;
@@ -2367,7 +2367,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					}
 				}
 
-				if (titem) {
+				if (titem && g_settings->getBool("tool_wear")) {
 					bool weared_out = titem->addWear(wear);
 					if(weared_out)
 						mlist->deleteItem(item_i);
@@ -2633,12 +2633,14 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						}
 					}
 					ToolItem *titem = (ToolItem*)wield;
-					bool weared_out = titem->addWear(1000);
-					if (weared_out) {
-						InventoryList *mlist = player->inventory.getList("main");
-						mlist->deleteItem(item_i);
+					if (g_settings->getBool("tool_wear")) {
+						bool weared_out = titem->addWear(1000);
+						if (weared_out) {
+							InventoryList *mlist = player->inventory.getList("main");
+							mlist->deleteItem(item_i);
+						}
+						SendInventory(player->peer_id);
 					}
-					SendInventory(player->peer_id);
 				}
 			}else if (content_features(n).energy_type != CET_NONE && (!wield || wield->getContent() != CONTENT_TOOLITEM_CROWBAR)) {
 				if (wield && wield->getContent() == CONTENT_TOOLITEM_FIRESTARTER) {
@@ -2666,12 +2668,14 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						meta->energise(ENERGY_MAX,pp,pp,p_under);
 					}
 					ToolItem *titem = (ToolItem*)wield;
-					bool weared_out = titem->addWear(1000);
-					if (weared_out) {
-						InventoryList *mlist = player->inventory.getList("main");
-						mlist->deleteItem(item_i);
+					if (g_settings->getBool("tool_wear")) {
+						bool weared_out = titem->addWear(1000);
+						if (weared_out) {
+							InventoryList *mlist = player->inventory.getList("main");
+							mlist->deleteItem(item_i);
+						}
+						SendInventory(player->peer_id);
 					}
-					SendInventory(player->peer_id);
 				}else if (content_features(n).energy_type == CET_SWITCH) {
 					NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
 					if (meta) {
@@ -2781,12 +2785,14 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					sendAddNode(p_under, n, 0, &far_players, 30);
 					// wear out the crowbar
 					ToolItem *titem = (ToolItem*)wield;
-					bool weared_out = titem->addWear(200);
-					if (weared_out) {
-						InventoryList *mlist = player->inventory.getList("main");
-						mlist->deleteItem(item_i);
+					if (g_settings->getBool("tool_wear")) {
+						bool weared_out = titem->addWear(200);
+						if (weared_out) {
+							InventoryList *mlist = player->inventory.getList("main");
+							mlist->deleteItem(item_i);
+						}
+						SendInventory(player->peer_id);
 					}
-					SendInventory(player->peer_id);
 					// the slow add to map
 					{
 						MapEditEventIgnorer ign(&m_ignore_map_edit_events);
@@ -3202,17 +3208,14 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					Update and send inventory
 				*/
 
-				if(g_settings->getBool("creative_mode") == false)
-				{
+				if (g_settings->getBool("infinite_inventory") == false) {
 					/*
 						Wear out tool
 					*/
 					InventoryList *mlist = player->inventory.getList("main");
-					if(mlist != NULL)
-					{
+					if (mlist != NULL && g_settings->getBool("tool_wear")) {
 						InventoryItem *item = mlist->getItem(item_i);
-						if(item && (std::string)item->getName() == "ToolItem")
-						{
+						if (item && (std::string)item->getName() == "ToolItem") {
 							ToolItem *titem = (ToolItem*)item;
 							// Get digging properties for material and tool
 							DiggingProperties prop = getDiggingProperties(material, titem->getContent());
@@ -3808,8 +3811,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					Handle inventory
 				*/
 				InventoryList *ilist = player->inventory.getList("main");
-				if(g_settings->getBool("creative_mode") == false && ilist)
-				{
+				if(g_settings->getBool("infinite_inventory") == false && ilist) {
 					// Remove from inventory and send inventory
 					if(mitem->getCount() == 1)
 						ilist->deleteItem(item_i);
@@ -3904,7 +3906,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					|| item->getContent() == CONTENT_TOOLITEM_TINBUCKET_WATER
 				) {
 					if (ilist != NULL) {
-						if (g_settings->getBool("creative_mode") == false) {
+						if (g_settings->getBool("infinite_inventory") == false) {
 							std::string dug_s = std::string("ToolItem ");
 							if (item->getContent() == CONTENT_TOOLITEM_WBUCKET_WATER) {
 								dug_s += "WBucket 1";
@@ -3952,7 +3954,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				}else if (item->getContent() == CONTENT_TOOLITEM_STEELBUCKET_LAVA) {
 					if (ilist != NULL) {
 						if (g_settings->getBool("enable_lavabuckets")) {
-							if (g_settings->getBool("creative_mode") == false) {
+							if (g_settings->getBool("infinite_inventory") == false) {
 								std::string dug_s = std::string("ToolItem SteelBucket 1");
 								std::istringstream is(dug_s, std::ios::binary);
 								InventoryItem *item = InventoryItem::deSerialize(is);
@@ -3998,13 +4000,18 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					}
 				}
 			}else if (item->getContent() == CONTENT_CRAFTITEM_MESEDUST) {
+				if ((getPlayerPrivs(player) & PRIV_BUILD) == 0) {
+					infostream<<"Not allowing player to drop item: "
+							"no build privs"<<std::endl;
+					return;
+				}
 				MapNode n = m_env.getMap().getNodeNoEx(p_over);
 				if (n.getContent() != CONTENT_AIR)
 					return;
 				n.setContent(CONTENT_CIRCUIT_MESEWIRE);
 				core::list<u16> far_players;
 				sendAddNode(p_over, n, 0, &far_players, 30);
-				if (g_settings->getBool("creative_mode") == false) {
+				if (g_settings->getBool("infinite_inventory") == false) {
 					// Delete the right amount of items from the slot
 					u16 dropcount = item->getDropCount();
 					// Delete item if all gone
@@ -4053,14 +4060,12 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					If in creative mode, item dropping is disabled unless
 					player has build privileges
 				*/
-				if(g_settings->getBool("creative_mode") &&
-					(getPlayerPrivs(player) & PRIV_BUILD) == 0)
-				{
+				if ((getPlayerPrivs(player) & PRIV_BUILD) == 0) {
 					infostream<<"Not allowing player to drop item: "
-							"creative mode and no build privs"<<std::endl;
+							"no build privs"<<std::endl;
 					return;
 				}
-				if (g_settings->getBool("creative_mode") == false) {
+				if (g_settings->getBool("infinite_inventory") == false) {
 					// Delete the right amount of items from the slot
 					u16 dropcount = item->getDropCount();
 
@@ -4091,8 +4096,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			/*
 				Place other item (not a block)
 			*/
-			else
-			{
+			else{
 				v3s16 blockpos = getNodeBlockPos(p_over);
 
 				/*
@@ -4100,8 +4104,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					can properly be added to the static list too
 				*/
 				MapBlock *block = m_env.getMap().getBlockNoCreateNoEx(blockpos);
-				if(block==NULL)
-				{
+				if (block==NULL) {
 					infostream<<"Error while placing object: "
 							"block not found"<<std::endl;
 					return;
@@ -4111,9 +4114,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					If in creative mode, item dropping is disabled unless
 					player has build privileges
 				*/
-				if(g_settings->getBool("creative_mode") &&
-					(getPlayerPrivs(player) & PRIV_BUILD) == 0)
-				{
+				if (g_settings->getBool("droppable_inventory") == false || (getPlayerPrivs(player) & PRIV_BUILD) == 0) {
 					infostream<<"Not allowing player to drop item: "
 							"creative mode and no build privs"<<std::endl;
 					return;
@@ -4132,14 +4133,11 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				*/
 				ServerActiveObject *obj = item->createSAO(&m_env, 0, pos);
 
-				if(obj == NULL)
-				{
+				if (obj == NULL) {
 					infostream<<"WARNING: item resulted in NULL object, "
 							<<"not placing onto map"
 							<<std::endl;
-				}
-				else
-				{
+				}else{
 					actionstream<<player->getName()<<" places "<<item->getName()
 							<<" at "<<PP(p_over)<<std::endl;
 
@@ -4148,14 +4146,12 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 					infostream<<"Placed object"<<std::endl;
 
-					if(g_settings->getBool("creative_mode") == false)
-					{
+					if (g_settings->getBool("infinite_inventory") == false) {
 						// Delete the right amount of items from the slot
 						u16 dropcount = item->getDropCount();
 
 						// Delete item if all gone
-						if(item->getCount() <= dropcount)
-						{
+						if (item->getCount() <= dropcount) {
 							if(item->getCount() < dropcount)
 								infostream<<"WARNING: Server: dropped more items"
 										<<" than the slot contains"<<std::endl;
@@ -4166,8 +4162,9 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 								ilist->deleteItem(item_i);
 						}
 						// Else decrement it
-						else
+						else{
 							item->remove(dropcount);
+						}
 
 						// Send inventory
 						UpdateCrafting(peer_id);
@@ -4214,13 +4211,6 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 	}
 	else if(command == TOSERVER_INVENTORY_ACTION)
 	{
-		/*// Ignore inventory changes if in creative mode
-		if(g_settings->getBool("creative_mode") == true)
-		{
-			infostream<<"TOSERVER_INVENTORY_ACTION: ignoring in creative mode"
-					<<std::endl;
-			return;
-		}*/
 		// Strip command and create a stream
 		std::string datastring((char*)&data[2], datasize-2);
 		infostream<<"TOSERVER_INVENTORY_ACTION: data="<<datastring<<std::endl;
@@ -4237,7 +4227,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				Handle craftresult specially if not in creative mode
 			*/
 			bool disable_action = false;
-			if (a->getType() == IACTION_MOVE && g_settings->getBool("creative_mode") == false) {
+			if (a->getType() == IACTION_MOVE && g_settings->getBool("infinite_inventory") == false) {
 				IMoveAction *ma = (IMoveAction*)a;
 				if(ma->to_inv == "current_player" && ma->from_inv == "current_player") {
 					InventoryList *rlist = player->inventory.getList("craftresult");
@@ -4358,15 +4348,19 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					) {
 						InventoryList *list = player->inventory.getList("discard");
 						InventoryItem *item = list->getItem(0);
-						v3f pos = player->getPosition();
-						pos.Y += BS;
-						v3f dir = v3f(0,0,BS);
-						dir.rotateXZBy(player->getYaw());
-						pos += dir;
-						ServerActiveObject *obj = item->createSAO(&m_env,0,pos);
-						m_env.addActiveObject(obj);
-						list->deleteItem(0);
-						SendInventory(player->peer_id);
+						if (g_settings->getBool("droppable_inventory")) {
+							v3f pos = player->getPosition();
+							pos.Y += BS;
+							v3f dir = v3f(0,0,BS);
+							dir.rotateXZBy(player->getYaw());
+							pos += dir;
+							ServerActiveObject *obj = item->createSAO(&m_env,0,pos);
+							m_env.addActiveObject(obj);
+						}
+						if (g_settings->getBool("infinite_inventory") == false) {
+							list->deleteItem(0);
+							SendInventory(player->peer_id);
+						}
 					}
 				}
 				// Eat the action
@@ -5409,8 +5403,7 @@ void Server::UpdateCrafting(u16 peer_id)
 	/*
 		Calculate crafting stuff
 	*/
-	if(g_settings->getBool("creative_mode") == false)
-	{
+	if (g_settings->getBool("infinite_inventory") == false) {
 		InventoryList *clist = player->inventory.getList("craft");
 		InventoryList *rlist = player->inventory.getList("craftresult");
 
@@ -5435,7 +5428,7 @@ void Server::UpdateCrafting(u16 peer_id)
 				rlist->addItem(result);
 		}
 
-	} // if creative_mode == false
+	}
 }
 
 RemoteClient* Server::getClient(u16 peer_id)
@@ -5583,8 +5576,7 @@ Player *Server::emergePlayer(const char *name, const char *password, u16 peer_id
 		player->peer_id = peer_id;
 
 		// Reset inventory to creative if in creative mode
-		if(g_settings->getBool("creative_mode"))
-		{
+		if (g_settings->getBool("infinite_inventory")) {
 			// Warning: double code below
 			// Backup actual inventory
 			player->inventory_backup = new Inventory();
@@ -5641,17 +5633,14 @@ Player *Server::emergePlayer(const char *name, const char *password, u16 peer_id
 			Add stuff to inventory
 		*/
 
-		if(g_settings->getBool("creative_mode"))
-		{
+		if (g_settings->getBool("infinite_inventory")) {
 			// Warning: double code above
 			// Backup actual inventory
 			player->inventory_backup = new Inventory();
 			*(player->inventory_backup) = player->inventory;
 			// Set creative inventory
 			crafting::giveCreative(player);
-		}
-		else if(g_settings->getBool("give_initial_stuff"))
-		{
+		}else if(g_settings->getBool("initial_inventory")) {
 			crafting::giveInitial(player);
 		}
 

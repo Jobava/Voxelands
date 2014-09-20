@@ -754,7 +754,6 @@ bool GUIFormSpecMenu::OnEvent(const SEvent& event)
 					Inventory *inv = m_invmgr->getInventory(&s.inventoryloc);
 					assert(inv);
 					InventoryList *list = inv->getList(s.listname);
-					printf("here 'tis '%s' '%lX'\n",s.listname.c_str(),list);
 					if (list && list->getItem(s.i) != NULL) {
 						m_selected_item = new ItemSpec(s);
 					}
