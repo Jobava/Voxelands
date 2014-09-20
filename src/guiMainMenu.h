@@ -46,9 +46,24 @@ enum {
 	GUI_ID_GAME_MODE_CREATIVE,
 	GUI_ID_GAME_MODE_ADVENTURE,
 	GUI_ID_GAME_MODE_SURVIVAL,
+	GUI_ID_GAME_SETTINGS_ADV,
+	GUI_ID_GAME_SETTINGS_BASIC,
+	GUI_ID_DAMAGE_CB,
+	GUI_ID_MOBS_COMBO,
+	GUI_ID_MOBS_PASSIVE,
+	GUI_ID_MOBS_AGGRESSIVE,
+	GUI_ID_MOBS_DESTRUCTIVE,
+	GUI_ID_INITIAL_INV_CB,
+	GUI_ID_INFINITE_INV_CB,
+	GUI_ID_DROPPABLE_INV_CB,
+	GUI_ID_TOOL_WEAR_CB,
 	GUI_ID_JOIN_GAME_BUTTON,
 	GUI_ID_CHANGE_KEYS_BUTTON,
-	GUI_ID_DELETE_MAP_BUTTON,
+	GUI_ID_MAP_OPTIONS_BUTTON,
+	GUI_ID_MAP_DELETE_CB,
+	GUI_ID_MAP_CLEAR_CB,
+	GUI_ID_MAP_SEED_CB,
+	GUI_ID_MAP_SEED_INPUT,
 	GUI_ID_TAB_SINGLEPLAYER,
 	GUI_ID_TAB_MULTIPLAYER,
 	GUI_ID_TAB_SETTINGS,
@@ -58,6 +73,8 @@ enum {
 
 enum {
 	TAB_SINGLEPLAYER=0,
+	TAB_SINGLEPLAYER_ADVANCED,
+	TAB_SINGLEPLAYER_MAP,
 	TAB_MULTIPLAYER,
 	TAB_SETTINGS,
 	TAB_CREDITS
@@ -75,8 +92,17 @@ struct MainMenuData
 		fullscreen(false),
 		// Server opts
 		game_mode(L"adventure"),
+		enable_damage(true),
+		max_mob_level(L"aggressive"),
+		initial_inventory(true),
+		infinite_inventory(false),
+		droppable_inventory(true),
+		tool_wear(true),
 		// Actions
-		delete_map(false)
+		delete_map(false),
+		clear_map(false),
+		use_fixed_seed(false),
+		fixed_seed(L"")
 	{}
 
 	// These are in the native format of the gui elements
@@ -101,8 +127,17 @@ struct MainMenuData
 	bool fullscreen;
 	// Server options
 	std::wstring game_mode;
-	// If map deletion is requested, this is set to true
+	bool enable_damage;
+	std::wstring max_mob_level;
+	bool initial_inventory;
+	bool infinite_inventory;
+	bool droppable_inventory;
+	bool tool_wear;
+	// Map options
 	bool delete_map;
+	bool clear_map;
+	bool use_fixed_seed;
+	std::wstring fixed_seed;
 };
 
 class GUIMainMenu : public GUIModalMenu

@@ -19,6 +19,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "guiMainMenu.h"
 #include "settings.h"
+#include "defaultsettings.h"
 #include "guiKeyChangeMenu.h"
 #include "debug.h"
 #include "serialization.h"
@@ -90,6 +91,18 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	bool bilinear;
 	bool trilinear;
 	bool anisotropic;
+
+	std::wstring max_mob_level;
+	bool enable_damage;
+	bool initial_inventory;
+	bool infinite_inventory;
+	bool droppable_inventory;
+	bool tool_wear;
+
+	bool delete_map;
+	bool clear_map;
+	bool use_fixed_seed;
+	std::wstring fixed_seed;
 
 	m_screensize = screensize;
 
@@ -208,6 +221,95 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			game_mode = m_data->game_mode;
 		}
 	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_MOBS_COMBO);
+		if (e != NULL && e->getType() == gui::EGUIET_COMBO_BOX) {
+			gui::IGUIComboBox *c = (gui::IGUIComboBox*)e;
+			switch (c->getItemData(c->getSelected())) {
+			case GUI_ID_MOBS_PASSIVE:
+				max_mob_level = L"passive";
+				break;
+			case GUI_ID_MOBS_AGGRESSIVE:
+				max_mob_level = L"aggressive";
+				break;
+			//case GUI_ID_MOBS_DESTRUCTIVE:
+				//max_mob_level = L"destructive";
+				//break;
+			default:
+				max_mob_level = L"aggressive";
+			}
+		}else{
+			max_mob_level = m_data->max_mob_level;
+		}
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_DAMAGE_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			enable_damage = ((gui::IGUICheckBox*)e)->isChecked();
+		else
+			enable_damage = m_data->enable_damage;
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_INFINITE_INV_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			infinite_inventory = ((gui::IGUICheckBox*)e)->isChecked();
+		else
+			infinite_inventory = m_data->infinite_inventory;
+	}
+	if (!infinite_inventory) {
+		gui::IGUIElement *e = getElementFromId(GUI_ID_INITIAL_INV_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			initial_inventory = ((gui::IGUICheckBox*)e)->isChecked();
+		else
+			initial_inventory = m_data->initial_inventory;
+	}else{
+		initial_inventory = false;
+		m_data->initial_inventory = false;
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_DROPPABLE_INV_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			droppable_inventory = ((gui::IGUICheckBox*)e)->isChecked();
+		else
+			droppable_inventory = m_data->droppable_inventory;
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_TOOL_WEAR_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			tool_wear = ((gui::IGUICheckBox*)e)->isChecked();
+		else
+			tool_wear = m_data->tool_wear;
+	}
+
+	// Map options
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_MAP_DELETE_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			delete_map = ((gui::IGUICheckBox*)e)->isChecked();
+		else
+			delete_map = m_data->delete_map;
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_MAP_CLEAR_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			clear_map = ((gui::IGUICheckBox*)e)->isChecked();
+		else
+			clear_map = m_data->clear_map;
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_MAP_SEED_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			use_fixed_seed = ((gui::IGUICheckBox*)e)->isChecked();
+		else
+			use_fixed_seed = m_data->use_fixed_seed;
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_MAP_SEED_INPUT);
+		if(e != NULL)
+			fixed_seed = e->getText();
+		else
+			fixed_seed = m_data->fixed_seed;
+	}
 
 	/*
 		Remove stuff
@@ -280,6 +382,10 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		m_data->selected_tab = TAB_SETTINGS;
 	}else if (selected_tab == "credits") {
 		m_data->selected_tab = TAB_CREDITS;
+	}else if (selected_tab == "singleadvanced") {
+		m_data->selected_tab = TAB_SINGLEPLAYER_ADVANCED;
+	}else if (selected_tab == "singlemap") {
+		m_data->selected_tab = TAB_SINGLEPLAYER_MAP;
 	}else{
 		m_data->selected_tab = TAB_SINGLEPLAYER;
 	}
@@ -451,16 +557,201 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 				c->setSelected(sm);
 			}
 		}
-		// Map delete button
+		// Advanced settings button
 		{
 			core::rect<s32> rect(0, 0, 130, 30);
-			rect += topleft_content + v2s32(135, 100);
-			Environment->addButton(rect, this, GUI_ID_DELETE_MAP_BUTTON, wgettext("Delete map"));
+			rect += topleft_content + v2s32(40, 100);
+			Environment->addButton(rect, this, GUI_ID_GAME_SETTINGS_ADV, wgettext("Advanced Settings"));
+		}
+		// Map options button
+		{
+			core::rect<s32> rect(0, 0, 130, 30);
+			rect += topleft_content + v2s32(200, 100);
+			Environment->addButton(rect, this, GUI_ID_MAP_OPTIONS_BUTTON, wgettext("Map Options"));
 		}
 		// Start game button
 		{
 			core::rect<s32> rect(0, 0, 180, 30);
 			rect += topleft_content + v2s32(110, 170);
+			Environment->addButton(rect, this, GUI_ID_JOIN_GAME_BUTTON, wgettext("Start Game"));
+		}
+	}else if (m_data->selected_tab == TAB_SINGLEPLAYER_ADVANCED) {
+		changeCtype("");
+		{
+			core::rect<s32> rect(0, 0, 400, 20);
+			rect += topleft_content + v2s32(0, 20);
+			const wchar_t *text = L"Single Player";
+			gui::IGUIStaticText *t = Environment->addStaticText(text, rect, false, true, this, -1);
+			t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		}
+
+		// Server parameters
+		{
+			core::rect<s32> rect(0, 0, 200, 30);
+			rect += topleft_content + v2s32(100, 60);
+			gui::IGUIComboBox *c = Environment->addComboBox(rect, this, GUI_ID_GAME_MODE_COMBO);
+			u32 cm = c->addItem(wgettext("Creative Mode"),GUI_ID_GAME_MODE_CREATIVE);
+			u32 am = c->addItem(wgettext("Adventure Mode"),GUI_ID_GAME_MODE_ADVENTURE);
+			u32 sm = c->addItem(wgettext("Survival Mode"),GUI_ID_GAME_MODE_SURVIVAL);
+			if (game_mode == L"creative") {
+				c->setSelected(cm);
+			}else if (game_mode == L"survival") {
+				c->setSelected(sm);
+			}else{
+				c->setSelected(am);
+			}
+		}
+		// Basic settings button
+		{
+			core::rect<s32> rect(0, 0, 150, 30);
+			rect += topleft_content + v2s32(40, 100);
+			Environment->addButton(rect, this, GUI_ID_GAME_SETTINGS_BASIC, wgettext("Hide Advanced Settings"));
+		}
+		// Map options button
+		{
+			core::rect<s32> rect(0, 0, 130, 30);
+			rect += topleft_content + v2s32(200, 100);
+			Environment->addButton(rect, this, GUI_ID_MAP_OPTIONS_BUTTON, wgettext("Map Options"));
+		}
+		{
+			core::rect<s32> rect(0, 0, 100, 20);
+			rect += topleft_content + v2s32(40, 160);
+			const wchar_t *text = L"Creatures";
+			Environment->addStaticText(text, rect, false, true, this, -1);
+		}
+		{
+			core::rect<s32> rect(0, 0, 240, 30);
+			rect += topleft_content + v2s32(120, 155);
+			gui::IGUIComboBox *c = Environment->addComboBox(rect, this, GUI_ID_MOBS_COMBO);
+			u32 pm = c->addItem(wgettext("Passive"),GUI_ID_MOBS_PASSIVE);
+			u32 am = c->addItem(wgettext("Passive & Aggressive"),GUI_ID_MOBS_AGGRESSIVE);
+			//u32 dm = c->addItem(wgettext("Passive, Aggressive, & Destructive"),GUI_ID_MOBS_DESTRUCTIVE);
+			if (max_mob_level == L"passive") {
+				c->setSelected(pm);
+			//}else if (max_mob_level == L"destructive") {
+				//c->setSelected(dm);
+			}else{
+				c->setSelected(am);
+			}
+		}
+		{
+			core::rect<s32> rect(0, 0, 200, 30);
+			rect += topleft_content + v2s32(40, 200);
+			Environment->addCheckBox(enable_damage, rect, this, GUI_ID_DAMAGE_CB, wgettext("Player Damage"));
+		}
+		{
+			core::rect<s32> rect(0, 0, 200, 30);
+			rect += topleft_content + v2s32(40, 230);
+			Environment->addCheckBox(tool_wear, rect, this, GUI_ID_TOOL_WEAR_CB, wgettext("Tool Wear"));
+		}
+		{
+			core::rect<s32> rect(0, 0, 200, 30);
+			rect += topleft_content + v2s32(200, 200);
+			Environment->addCheckBox(infinite_inventory, rect, this, GUI_ID_INFINITE_INV_CB, wgettext("Infinite Inventory"));
+		}
+		{
+			core::rect<s32> rect(0, 0, 200, 30);
+			rect += topleft_content + v2s32(210, 230);
+			Environment->addCheckBox(initial_inventory, rect, this, GUI_ID_INITIAL_INV_CB, wgettext("Initial Inventory"));
+		}
+		{
+			core::rect<s32> rect(0, 0, 200, 30);
+			rect += topleft_content + v2s32(200, 260);
+			Environment->addCheckBox(droppable_inventory, rect, this, GUI_ID_DROPPABLE_INV_CB, wgettext("Droppable Inventory"));
+		}
+		// Start game button
+		{
+			core::rect<s32> rect(0, 0, 180, 30);
+			rect += topleft_content + v2s32(110, 310);
+			Environment->addButton(rect, this, GUI_ID_JOIN_GAME_BUTTON, wgettext("Start Game"));
+		}
+	}else if (m_data->selected_tab == TAB_SINGLEPLAYER_MAP) {
+		changeCtype("");
+		{
+			core::rect<s32> rect(0, 0, 400, 20);
+			rect += topleft_content + v2s32(0, 20);
+			const wchar_t *text = L"Single Player";
+			gui::IGUIStaticText *t = Environment->addStaticText(text, rect, false, true, this, -1);
+			t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		}
+
+		// Server parameters
+		{
+			core::rect<s32> rect(0, 0, 200, 30);
+			rect += topleft_content + v2s32(100, 60);
+			gui::IGUIComboBox *c = Environment->addComboBox(rect, this, GUI_ID_GAME_MODE_COMBO);
+			u32 cm = c->addItem(wgettext("Creative Mode"),GUI_ID_GAME_MODE_CREATIVE);
+			u32 am = c->addItem(wgettext("Adventure Mode"),GUI_ID_GAME_MODE_ADVENTURE);
+			u32 sm = c->addItem(wgettext("Survival Mode"),GUI_ID_GAME_MODE_SURVIVAL);
+			if (game_mode == L"creative") {
+				c->setSelected(cm);
+			}else if (game_mode == L"adventure") {
+				c->setSelected(am);
+			}else if (game_mode == L"survival") {
+				c->setSelected(sm);
+			}
+		}
+		// Advanced settings button
+		{
+			core::rect<s32> rect(0, 0, 150, 30);
+			rect += topleft_content + v2s32(40, 100);
+			Environment->addButton(rect, this, GUI_ID_GAME_SETTINGS_ADV, wgettext("Advanced Settings"));
+		}
+		// Basic settings button
+		{
+			core::rect<s32> rect(0, 0, 150, 30);
+			rect += topleft_content + v2s32(200, 100);
+			Environment->addButton(rect, this, GUI_ID_GAME_SETTINGS_BASIC, wgettext("Hide Map Options"));
+		}
+		{
+			core::rect<s32> rect(0, 0, 200, 30);
+			rect += topleft_content + v2s32(100, 130);
+			Environment->addCheckBox(delete_map, rect, this, GUI_ID_MAP_DELETE_CB, wgettext("Create New Map"));
+		}
+		if (delete_map) {
+			{
+				core::rect<s32> rect(0, 0, 300, 20);
+				rect += topleft_content + v2s32(70, 160);
+				Environment->addStaticText(wgettext("Warning! Your old map will be deleted!"),
+					rect, false, true, this, -1);
+			}
+			{
+				core::rect<s32> rect(0, 0, 200, 30);
+				rect += topleft_content + v2s32(70, 190);
+				Environment->addCheckBox(use_fixed_seed, rect, this, GUI_ID_MAP_SEED_CB, wgettext("Use Fixed Seed"));
+			}
+			if (use_fixed_seed) {
+				{
+					core::rect<s32> rect(0, 0, 110, 20);
+					rect += topleft_content + v2s32(70, 225);
+					Environment->addStaticText(wgettext("Map Seed"),
+						rect, false, true, this, -1);
+				}
+				changeCtype("C");
+				{
+					core::rect<s32> rect(0, 0, 190, 30);
+					rect += topleft_content + v2s32(140, 220);
+					Environment->addEditBox(fixed_seed.c_str(), rect, false, this, GUI_ID_MAP_SEED_INPUT);
+				}
+				changeCtype("");
+			}
+		}else{
+			{
+				core::rect<s32> rect(0, 0, 200, 30);
+				rect += topleft_content + v2s32(100, 160);
+				Environment->addCheckBox(clear_map, rect, this, GUI_ID_MAP_CLEAR_CB, wgettext("Clear Map"));
+			}
+			if (clear_map) {
+				core::rect<s32> rect(0, 0, 300, 40);
+				rect += topleft_content + v2s32(70, 190);
+				Environment->addStaticText(wgettext("Warning! This will delete all construction from your map!"),
+						rect, false, true, this, -1);
+			}
+		}
+		// Start game button
+		{
+			core::rect<s32> rect(0, 0, 180, 30);
+			rect += topleft_content + v2s32(110, 280);
 			Environment->addButton(rect, this, GUI_ID_JOIN_GAME_BUTTON, wgettext("Start Game"));
 		}
 	}else if(m_data->selected_tab == TAB_CREDITS) {
@@ -564,6 +855,7 @@ void GUIMainMenu::acceptInput()
 		if (e != NULL)
 			m_data->port = e->getText();
 	}
+	std::wstring o_mode = m_data->game_mode;
 	{
 		gui::IGUIElement *e = getElementFromId(GUI_ID_GAME_MODE_COMBO);
 		if (e != NULL && e->getType() == gui::EGUIET_COMBO_BOX) {
@@ -581,6 +873,112 @@ void GUIMainMenu::acceptInput()
 			default:
 				m_data->game_mode = L"adventure";
 			}
+		}
+	}
+	if (m_data->selected_tab == TAB_SINGLEPLAYER_ADVANCED && o_mode != m_data->game_mode) {
+		GameSettings t_settings;
+		if (m_data->game_mode == L"creative") {
+			set_creative_defaults(&t_settings);
+		}else if (m_data->game_mode == L"survival") {
+			set_survival_defaults(&t_settings);
+		}else{
+			set_adventure_defaults(&t_settings);
+		}
+		m_data->enable_damage = t_settings.getBool("enable_damage");
+		m_data->max_mob_level = narrow_to_wide(t_settings.get("max_mob_level"));
+		m_data->initial_inventory = t_settings.getBool("initial_inventory");
+		m_data->infinite_inventory = t_settings.getBool("infinite_inventory");
+		m_data->droppable_inventory = t_settings.getBool("droppable_inventory");
+		m_data->tool_wear = t_settings.getBool("tool_wear");
+		{
+			gui::IGUIElement *e = getElementFromId(GUI_ID_DAMAGE_CB);
+			if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+				((gui::IGUICheckBox*)e)->setChecked(m_data->enable_damage);
+		}
+		{
+			gui::IGUIElement *e = getElementFromId(GUI_ID_MOBS_COMBO);
+			if(e != NULL && e->getType() == gui::EGUIET_COMBO_BOX) {
+				gui::IGUIComboBox *c = (gui::IGUIComboBox*)e;
+				s32 i;
+				if (m_data->max_mob_level == L"passive") {
+					i = c->getIndexForItemData(GUI_ID_MOBS_PASSIVE);
+				//}else if (m_data->max_mob_level == L"destructive") {
+					//i = c->getIndexForItemData(GUI_ID_MOBS_DESTRUCTIVE);
+				}else{
+					i = c->getIndexForItemData(GUI_ID_MOBS_AGGRESSIVE);
+				}
+				c->setSelected(i);
+			}
+		}
+		{
+			gui::IGUIElement *e = getElementFromId(GUI_ID_INITIAL_INV_CB);
+			if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+				((gui::IGUICheckBox*)e)->setChecked(m_data->initial_inventory);
+		}
+		{
+			gui::IGUIElement *e = getElementFromId(GUI_ID_INFINITE_INV_CB);
+			if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+				((gui::IGUICheckBox*)e)->setChecked(m_data->infinite_inventory);
+		}
+		{
+			gui::IGUIElement *e = getElementFromId(GUI_ID_DROPPABLE_INV_CB);
+			if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+				((gui::IGUICheckBox*)e)->setChecked(m_data->droppable_inventory);
+		}
+		{
+			gui::IGUIElement *e = getElementFromId(GUI_ID_TOOL_WEAR_CB);
+			if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+				((gui::IGUICheckBox*)e)->setChecked(m_data->tool_wear);
+		}
+	}else{
+		{
+			gui::IGUIElement *e = getElementFromId(GUI_ID_MOBS_COMBO);
+			if (e != NULL && e->getType() == gui::EGUIET_COMBO_BOX) {
+				gui::IGUIComboBox *c = (gui::IGUIComboBox*)e;
+				switch (c->getItemData(c->getSelected())) {
+				case GUI_ID_MOBS_PASSIVE:
+					m_data->max_mob_level = L"passive";
+					break;
+				case GUI_ID_MOBS_AGGRESSIVE:
+					m_data->max_mob_level = L"aggressive";
+					break;
+				//case GUI_ID_MOBS_DESTRUCTIVE:
+					//m_data->max_mob_level = L"destructive";
+					//break;
+				default:
+					m_data->max_mob_level = L"aggressive";
+				}
+			}
+		}
+		{
+			gui::IGUIElement *e = getElementFromId(GUI_ID_DAMAGE_CB);
+			if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+				m_data->enable_damage = ((gui::IGUICheckBox*)e)->isChecked();
+		}
+		{
+			gui::IGUIElement *e = getElementFromId(GUI_ID_INFINITE_INV_CB);
+			if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+				m_data->infinite_inventory = ((gui::IGUICheckBox*)e)->isChecked();
+		}
+		if (!m_data->infinite_inventory) {
+			gui::IGUIElement *e = getElementFromId(GUI_ID_INITIAL_INV_CB);
+			if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+				m_data->initial_inventory = ((gui::IGUICheckBox*)e)->isChecked();
+		}else{
+			m_data->initial_inventory = false;
+			gui::IGUIElement *e = getElementFromId(GUI_ID_INITIAL_INV_CB);
+			if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+				((gui::IGUICheckBox*)e)->setChecked(false);
+		}
+		{
+			gui::IGUIElement *e = getElementFromId(GUI_ID_DROPPABLE_INV_CB);
+			if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+				m_data->droppable_inventory = ((gui::IGUICheckBox*)e)->isChecked();
+		}
+		{
+			gui::IGUIElement *e = getElementFromId(GUI_ID_TOOL_WEAR_CB);
+			if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+				m_data->tool_wear = ((gui::IGUICheckBox*)e)->isChecked();
 		}
 	}
 	{
@@ -633,6 +1031,26 @@ void GUIMainMenu::acceptInput()
 		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
 			m_data->anisotropic_filter = ((gui::IGUICheckBox*)e)->isChecked();
 	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_MAP_DELETE_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			m_data->delete_map = ((gui::IGUICheckBox*)e)->isChecked();
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_MAP_CLEAR_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			m_data->clear_map = ((gui::IGUICheckBox*)e)->isChecked();
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_MAP_SEED_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			m_data->use_fixed_seed = ((gui::IGUICheckBox*)e)->isChecked();
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_MAP_SEED_INPUT);
+		if(e != NULL)
+			m_data->fixed_seed = e->getText();
+	}
 
 	m_accepted = true;
 }
@@ -663,11 +1081,34 @@ bool GUIMainMenu::OnEvent(const SEvent& event)
 				return true;
 			}
 		}
+		if (event.GUIEvent.EventType==gui::EGET_CHECKBOX_CHANGED) {
+			switch (event.GUIEvent.Caller->getID()) {
+			case GUI_ID_DAMAGE_CB:
+			case GUI_ID_INITIAL_INV_CB:
+			case GUI_ID_DROPPABLE_INV_CB:
+			case GUI_ID_TOOL_WEAR_CB:
+				acceptInput();
+				m_accepted = false;
+				break;
+			case GUI_ID_INFINITE_INV_CB:
+			case GUI_ID_MAP_DELETE_CB: // Delete map
+			case GUI_ID_MAP_CLEAR_CB:
+			case GUI_ID_MAP_SEED_CB:
+				acceptInput();
+				m_accepted = false;
+				regenerateGui(m_screensize);
+				break;
+			}
+		}
 		if (event.GUIEvent.EventType==gui::EGET_BUTTON_CLICKED) {
 			switch (event.GUIEvent.Caller->getID()) {
 			case GUI_ID_JOIN_GAME_BUTTON: // Start game
 				acceptInput();
-				if (m_data->selected_tab == TAB_SINGLEPLAYER)
+				if (
+					m_data->selected_tab == TAB_SINGLEPLAYER
+					|| m_data->selected_tab == TAB_SINGLEPLAYER_ADVANCED
+					|| m_data->selected_tab == TAB_SINGLEPLAYER_MAP
+				)
 					m_data->address = std::wstring(L"");
 				quitMenu();
 				return true;
@@ -677,18 +1118,29 @@ bool GUIMainMenu::OnEvent(const SEvent& event)
 				kmenu->drop();
 				return true;
 			}
-			case GUI_ID_DELETE_MAP_BUTTON: // Delete map
-				// Don't accept input data, just set deletion request
-				m_data->delete_map = true;
-				m_accepted = true;
-				quitMenu();
-				return true;
+			case GUI_ID_GAME_SETTINGS_BASIC:
 			case GUI_ID_TAB_SINGLEPLAYER:
 				if (m_data->selected_tab == TAB_SETTINGS)
 					acceptInput();
 				m_accepted = false;
 				m_data->selected_tab = TAB_SINGLEPLAYER;
 				g_settings->set("mainmenu_tab","singleplayer");
+				regenerateGui(m_screensize);
+				return true;
+			case GUI_ID_GAME_SETTINGS_ADV:
+				if (m_data->selected_tab == TAB_SETTINGS)
+					acceptInput();
+				m_accepted = false;
+				m_data->selected_tab = TAB_SINGLEPLAYER_ADVANCED;
+				g_settings->set("mainmenu_tab","singleadvanced");
+				regenerateGui(m_screensize);
+				return true;
+			case GUI_ID_MAP_OPTIONS_BUTTON:
+				if (m_data->selected_tab == TAB_SETTINGS)
+					acceptInput();
+				m_accepted = false;
+				m_data->selected_tab = TAB_SINGLEPLAYER_MAP;
+				g_settings->set("mainmenu_tab","singlemap");
 				regenerateGui(m_screensize);
 				return true;
 			case GUI_ID_TAB_MULTIPLAYER:
@@ -724,6 +1176,11 @@ bool GUIMainMenu::OnEvent(const SEvent& event)
 		if (event.GUIEvent.EventType == gui::EGET_COMBO_BOX_CHANGED) {
 			switch (event.GUIEvent.Caller->getID()) {
 			case GUI_ID_GAME_MODE_COMBO:
+				acceptInput();
+				m_accepted = false;
+				regenerateGui(m_screensize);
+				return true;
+			case GUI_ID_MOBS_COMBO:
 				acceptInput();
 				m_accepted = false;
 				return true;

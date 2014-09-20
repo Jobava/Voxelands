@@ -1198,6 +1198,20 @@ int main(int argc, char *argv[])
 				menudata.trilinear_filter = g_settings->getBool("trilinear_filter");
 				driver->setTextureCreationFlag(video::ETCF_CREATE_MIP_MAPS, menudata.mip_map);
 				menudata.game_mode = narrow_to_wide(g_settings->get("game_mode"));
+				menudata.enable_damage = g_settings->getBool("enable_damage");
+				menudata.max_mob_level = narrow_to_wide(g_settings->get("max_mob_level"));
+				menudata.initial_inventory = g_settings->getBool("initial_inventory");
+				menudata.infinite_inventory = g_settings->getBool("infinite_inventory");
+				menudata.droppable_inventory = g_settings->getBool("droppable_inventory");
+				menudata.tool_wear = g_settings->getBool("tool_wear");
+				menudata.delete_map = false;
+				menudata.clear_map = false;
+				menudata.use_fixed_seed = false;
+				if (g_settings->exists("fixed_map_seed")) {
+					menudata.fixed_seed = narrow_to_wide(g_settings->get("fixed_map_seed"));
+					if (menudata.fixed_seed != L"")
+						menudata.use_fixed_seed = true;
+				}
 
 				GUIMainMenu *menu =
 						new GUIMainMenu(guienv, guiroot, -1,
@@ -1248,12 +1262,21 @@ int main(int argc, char *argv[])
 				menu->drop();
 
 				// Delete map if requested
-				if(menudata.delete_map)
-				{
+				if (menudata.delete_map) {
 					bool r = fs::RecursiveDeleteContent(map_dir);
-					if(r == false)
-						error_message = L"Delete failed";
-					continue;
+					if(r == false) {
+						error_message = L"Map deletion failed";
+						continue;
+					}
+					if (menudata.use_fixed_seed)
+						g_settings->set("fixed_map_seed",wide_to_narrow(menudata.fixed_seed));
+				}else if (menudata.clear_map) {
+					std::string map_file = map_dir+DIR_DELIM+"map.sqlite";
+					bool r = fs::RecursiveDelete(map_file);
+					if(r == false) {
+						error_message = L"Map clearing failed";
+						continue;
+					}
 				}
 
 				playername = wide_to_narrow(menudata.name);
@@ -1277,22 +1300,12 @@ int main(int argc, char *argv[])
 				g_settings->set("fullscreen", itos(menudata.fullscreen));
 				g_settings->set("enable_particles", itos(menudata.particles));
 				g_settings->set("game_mode", wide_to_narrow(menudata.game_mode));
-
-				// NOTE: These are now checked server side; no need to do it
-				//       here, so let's not do it here.
-				/*// Check for valid parameters, restart menu if invalid.
-				if(playername == "")
-				{
-					error_message = L"Name required.";
-					continue;
-				}
-				// Check that name has only valid chars
-				if(string_allowed(playername, PLAYERNAME_ALLOWED_CHARS)==false)
-				{
-					error_message = L"Characters allowed: "
-							+narrow_to_wide(PLAYERNAME_ALLOWED_CHARS);
-					continue;
-				}*/
+				g_settings->set("enable_damage", itos(menudata.enable_damage));
+				g_settings->set("max_mob_level", wide_to_narrow(menudata.max_mob_level));
+				g_settings->set("initial_inventory", itos(menudata.initial_inventory));
+				g_settings->set("infinite_inventory", itos(menudata.infinite_inventory));
+				g_settings->set("droppable_inventory", itos(menudata.droppable_inventory));
+				g_settings->set("tool_wear", itos(menudata.tool_wear));
 
 				// Save settings
 				g_settings->set("name", playername);
