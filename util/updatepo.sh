@@ -2,11 +2,10 @@
 
 # Update/create voxelands po files
 
-# an auxiliary function to abort processing with an optional error
-# message
+# an auxiliary function to abort processing with an optional error message
 abort() {
-	test -n "$1" && echo >&2 "$1"
-	exit 1
+        test -n "$1" && echo >&2 "$1"
+        exit 1
 }
 
 # The po/ directory is assumed to be parallel to the directory where
@@ -15,51 +14,49 @@ abort() {
 # script found from PATH)
 scriptisin="$(dirname "$(which "$0")")"
 
-# The script is executed from the parent of po/, which is also the
-# parent of the script directory and of the src/ directory.
-# We go through $scriptisin so that it can be executed from whatever
+# Commands below are executed from the parent of po/, which is also the
+# parent of this script's directory and of the src/ directory.
+# We go through $scriptisin so that this script can be executed from whatever
 # directory and still work correctly
 cd "$scriptisin/.."
 
 test -e po || abort "po/ directory not found"
-test -d po || abort "po/ is not a directory!"
+test -d po || abort "po/ should be a directory, but is not!"
 
-# Get a list of the languages we have to update/create
-
-cd po || abort "couldn't change directory to po!"
-
-# This assumes that we won't have dirnames with space, which is
+# Create a list of the languages we have to update/create.
+# This assumes that we won't have dirnames with spaces, which is
 # the case for language codes, which are the only subdirs we expect to
 # find in po/ anyway. If you put anything else there, you need to suffer
 # the consequences of your actions, so we don't do sanity checks
+cd po || abort "couldn't change directory to po!"
+
 langs=""
 
 for lang in * ; do
-	if test ! -d $lang; then
-		continue
-	fi
-	langs="$langs $lang"
+        if test ! -d $lang; then
+                continue
+        fi
+        langs="$langs $lang"
 done
 
-# go back
+# go to parent dir of po/ and src/
 cd ..
 
 # First thing first, update the .pot template. We place it in the po/
-# directory at the top level. You a recent enough xgettext that supports
-# --package-name
+# directory at the top level.
 potfile=po/voxelands.pot
 xgettext --package-name=voxelands --copyright-holder="Lisa 'darkrose' Milne" -kN_ -kwgettext -F -n -o $potfile src/*.cpp src/*.h
 
-# Now iterate on all languages and create the po file if missing, or update it
+# Now iterate on all language dirs and create the po file if missing, or update it
 # if it exists already
 for lang in $langs ; do # note the missing quotes around $langs
-	pofile=po/$lang/voxelands.po
-	if test -e $pofile; then
-		echo "[$lang]: updating strings"
-		msgmerge -F -U $pofile $potfile
-	else
-		# This will ask for the translator identity
-		echo "[$lang]: NEW strings"
-		msginit -l $lang -o $pofile -i $potfile
-	fi
+        pofile=po/$lang/voxelands.po
+        if test -e $pofile; then
+                echo "[$lang]: updating strings"
+                msgmerge -F -U $pofile $potfile
+        else
+                # This will ask for the translator identity
+                echo "[$lang]: creating $lang localization files"
+                msginit -l $lang -o $pofile -i $potfile
+        fi
 done
