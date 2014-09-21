@@ -2432,7 +2432,100 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			SendPlayerAnim(player,PLAYERANIM_DIG);
 			MapNode n = m_env.getMap().getNodeNoEx(p_under);
 			InventoryItem *wield = (InventoryItem*)player->getWieldItem();
-			if (n.getContent() >= CONTENT_DOOR_MIN && n.getContent() <= CONTENT_DOOR_MAX) {
+			if (wield && wield->getContent() == CONTENT_TOOLITEM_KEY) {
+				NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
+				if((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
+					if (meta && meta->getOwner() != player->getName()) {
+						if (meta->getOwner() != "")
+							return;
+					}
+				}
+				content_t c = CONTENT_IGNORE;
+				switch (n.getContent()) {
+				case CONTENT_LOCKABLE_CHEST:
+					c = CONTENT_CHEST;
+					break;
+				case CONTENT_LOCKABLE_FURNACE:
+					c = CONTENT_FURNACE;
+					break;
+				case CONTENT_LOCKABLE_SIGN:
+					c = CONTENT_SIGN;
+					break;
+				case CONTENT_LOCKABLE_SIGN_WALL:
+					c = CONTENT_SIGN_WALL;
+					break;
+				case CONTENT_LOCKABLE_SIGN_UD:
+					c = CONTENT_SIGN_UD;
+					break;
+				case CONTENT_CHEST:
+					c = CONTENT_LOCKABLE_CHEST;
+					break;
+				case CONTENT_FURNACE:
+					c = CONTENT_LOCKABLE_FURNACE;
+					break;
+				case CONTENT_SIGN:
+					c = CONTENT_LOCKABLE_SIGN;
+					break;
+				case CONTENT_SIGN_WALL:
+					c = CONTENT_LOCKABLE_SIGN_WALL;
+					break;
+				case CONTENT_SIGN_UD:
+					c = CONTENT_LOCKABLE_SIGN_UD;
+					break;
+				}
+				if (c == CONTENT_IGNORE)
+					return;
+				NodeMetadata *ometa = NULL;
+				if (meta) {
+					if (meta->getEnergy())
+						return;
+					ometa = meta->clone();
+				}
+				n.setContent(c);
+				// send the node
+				core::list<u16> far_players;
+				core::map<v3s16, MapBlock*> modified_blocks;
+				sendAddNode(p_under, n, 0, &far_players, 30);
+				// wear out the crowbar
+				ToolItem *titem = (ToolItem*)wield;
+				if (g_settings->getBool("tool_wear")) {
+					bool weared_out = titem->addWear(200);
+					if (weared_out) {
+						InventoryList *mlist = player->inventory.getList("main");
+						mlist->deleteItem(item_i);
+					}
+					SendInventory(player->peer_id);
+				}
+				// the slow add to map
+				{
+					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+
+					std::string p_name = std::string(player->getName());
+					m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
+				}
+				if (ometa) {
+					//m_env.getMap().setNodeMetadata(p_under,ometa);
+					meta = m_env.getMap().getNodeMetadata(p_under);
+					if (meta) {
+						meta->import(ometa);
+						meta->setOwner(player->getName());
+						delete ometa;
+					}
+				}
+				v3s16 blockpos = getNodeBlockPos(p_under);
+				MapBlock *block = m_env.getMap().getBlockNoCreateNoEx(blockpos);
+				if (block)
+					block->setChangedFlag();
+
+				for(core::map<u16, RemoteClient*>::Iterator
+					i = m_clients.getIterator();
+					i.atEnd()==false; i++)
+				{
+					RemoteClient *client = i.getNode()->getValue();
+					client->SetBlocksNotSent(modified_blocks);
+					client->SetBlockNotSent(blockpos);
+				}
+			}else if (n.getContent() >= CONTENT_DOOR_MIN && n.getContent() <= CONTENT_DOOR_MAX) {
 				v3s16 mp(0,1,0);
 				if ((n.getContent()&CONTENT_DOOR_SECT_MASK) == CONTENT_DOOR_SECT_MASK)
 					mp.Y = -1;
@@ -2572,57 +2665,37 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					client->SetBlocksNotSent(modified_blocks);
 					client->SetBlockNotSent(blockpos);
 				}
-			}else if (content_features(n).flammable > 1) {
-				if (wield && wield->getContent() == CONTENT_TOOLITEM_FIRESTARTER) {
-					if((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
-						s16 max_d = g_settings->getS16("borderstone_radius");
-						v3s16 test_p;
-						MapNode testnode;
-						for(s16 z=-max_d; z<=max_d; z++) {
-						for(s16 y=-max_d; y<=max_d; y++) {
-						for(s16 x=-max_d; x<=max_d; x++) {
-							test_p = p_under + v3s16(x,y,z);
-							NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
-							if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
-								BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
-								if (bsm->getOwner() != player->getName())
-									return;
-							}
-						}
-						}
+			}else if (content_features(n).flammable > 1 && wield && wield->getContent() == CONTENT_TOOLITEM_FIRESTARTER) {
+				if((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
+					s16 max_d = g_settings->getS16("borderstone_radius");
+					v3s16 test_p;
+					MapNode testnode;
+					for(s16 z=-max_d; z<=max_d; z++) {
+					for(s16 y=-max_d; y<=max_d; y++) {
+					for(s16 x=-max_d; x<=max_d; x++) {
+						test_p = p_under + v3s16(x,y,z);
+						NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
+						if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
+							BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
+							if (bsm->getOwner() != player->getName())
+								return;
 						}
 					}
-					if (content_features(n).flammable == 2) {
-						MapNode a = m_env.getMap().getNodeNoEx(p_under+v3s16(0,1,0));
-						if (a.getContent() == CONTENT_AIR || content_features(a).flammable > 0) {
-							a.setContent(CONTENT_FIRE);
-							core::list<u16> far_players;
-							sendAddNode(p_under+v3s16(0,1,0), a, 0, &far_players, 30);
-							core::map<v3s16, MapBlock*> modified_blocks;
-							{
-								MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-
-								std::string p_name = std::string(player->getName());
-								m_env.getMap().addNodeAndUpdate(p_under+v3s16(0,1,0), a, modified_blocks, p_name);
-							}
-							for(core::list<u16>::Iterator i = far_players.begin(); i != far_players.end(); i++) {
-								u16 peer_id = *i;
-								RemoteClient *client = getClient(peer_id);
-								if (client == NULL)
-									continue;
-								client->SetBlocksNotSent(modified_blocks);
-							}
-						}
-					}else{
-						n.setContent(CONTENT_FIRE_SHORTTERM);
+					}
+					}
+				}
+				if (content_features(n).flammable == 2) {
+					MapNode a = m_env.getMap().getNodeNoEx(p_under+v3s16(0,1,0));
+					if (a.getContent() == CONTENT_AIR || content_features(a).flammable > 0) {
+						a.setContent(CONTENT_FIRE);
 						core::list<u16> far_players;
-						sendAddNode(p_under, n, 0, &far_players, 30);
+						sendAddNode(p_under+v3s16(0,1,0), a, 0, &far_players, 30);
 						core::map<v3s16, MapBlock*> modified_blocks;
 						{
 							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 
 							std::string p_name = std::string(player->getName());
-							m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
+							m_env.getMap().addNodeAndUpdate(p_under+v3s16(0,1,0), a, modified_blocks, p_name);
 						}
 						for(core::list<u16>::Iterator i = far_players.begin(); i != far_players.end(); i++) {
 							u16 peer_id = *i;
@@ -2632,15 +2705,33 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							client->SetBlocksNotSent(modified_blocks);
 						}
 					}
-					ToolItem *titem = (ToolItem*)wield;
-					if (g_settings->getBool("tool_wear")) {
-						bool weared_out = titem->addWear(1000);
-						if (weared_out) {
-							InventoryList *mlist = player->inventory.getList("main");
-							mlist->deleteItem(item_i);
-						}
-						SendInventory(player->peer_id);
+				}else{
+					n.setContent(CONTENT_FIRE_SHORTTERM);
+					core::list<u16> far_players;
+					sendAddNode(p_under, n, 0, &far_players, 30);
+					core::map<v3s16, MapBlock*> modified_blocks;
+					{
+						MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+
+						std::string p_name = std::string(player->getName());
+						m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
 					}
+					for(core::list<u16>::Iterator i = far_players.begin(); i != far_players.end(); i++) {
+						u16 peer_id = *i;
+						RemoteClient *client = getClient(peer_id);
+						if (client == NULL)
+							continue;
+						client->SetBlocksNotSent(modified_blocks);
+					}
+				}
+				ToolItem *titem = (ToolItem*)wield;
+				if (g_settings->getBool("tool_wear")) {
+					bool weared_out = titem->addWear(1000);
+					if (weared_out) {
+						InventoryList *mlist = player->inventory.getList("main");
+						mlist->deleteItem(item_i);
+					}
+					SendInventory(player->peer_id);
 				}
 			}else if (content_features(n).energy_type != CET_NONE && (!wield || wield->getContent() != CONTENT_TOOLITEM_CROWBAR)) {
 				if (wield && wield->getContent() == CONTENT_TOOLITEM_FIRESTARTER) {

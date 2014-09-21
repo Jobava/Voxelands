@@ -46,6 +46,8 @@ public:
 	}
 	virtual std::string getDrawSpecString();
 
+	virtual bool import(NodeMetadata *meta);
+
 private:
 	std::string m_text;
 };
@@ -71,6 +73,8 @@ public:
 	void setText(std::string t){ m_text = t; }
 	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
 	virtual std::string getDrawSpecString();
+
+	virtual bool import(NodeMetadata *meta);
 
 private:
 	std::string m_text;
@@ -111,6 +115,8 @@ public:
 	virtual bool nodeRemovalDisabled();
 	virtual std::string getDrawSpecString();
 
+	virtual bool import(NodeMetadata *meta);
+
 private:
 	Inventory *m_inventory;
 };
@@ -129,6 +135,8 @@ public:
 	virtual Inventory* getInventory() {return m_inventory;}
 	virtual bool nodeRemovalDisabled();
 	virtual std::string getDrawSpecString();
+
+	virtual bool import(NodeMetadata *meta);
 
 	virtual std::string getOwner(){ return m_owner; }
 	virtual void setOwner(std::string t){ m_owner = t; }
@@ -197,6 +205,8 @@ public:
 	virtual bool nodeRemovalDisabled();
 	virtual std::string getDrawSpecString();
 
+	virtual bool import(NodeMetadata *meta);
+
 private:
 	Inventory *m_inventory;
 	float m_step_accumulator;
@@ -222,6 +232,8 @@ public:
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool nodeRemovalDisabled();
 	virtual std::string getDrawSpecString();
+
+	virtual bool import(NodeMetadata *meta);
 
 	virtual std::string getOwner(){ return m_owner; }
 	virtual void setOwner(std::string t){ m_owner = t; }

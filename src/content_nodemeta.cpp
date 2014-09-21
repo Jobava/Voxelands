@@ -65,6 +65,14 @@ std::string SignNodeMetadata::getDrawSpecString()
 {
 	return std::string("field[text;;") + m_text + "]";
 }
+bool SignNodeMetadata::import(NodeMetadata *meta)
+{
+	if (meta->typeId() != CONTENT_LOCKABLE_SIGN_WALL)
+		return false;
+	LockingSignNodeMetadata *l = (LockingSignNodeMetadata*)meta;
+	m_text = l->getText();
+	return true;
+}
 
 /*
 	LockingSignNodeMetadata
@@ -112,6 +120,14 @@ bool LockingSignNodeMetadata::receiveFields(std::string formname, std::map<std::
 std::string LockingSignNodeMetadata::getDrawSpecString()
 {
 	return std::string("field[text;;") + m_text + "]";
+}
+bool LockingSignNodeMetadata::import(NodeMetadata *meta)
+{
+	if (meta->typeId() != CONTENT_SIGN_WALL)
+		return false;
+	SignNodeMetadata *l = (SignNodeMetadata*)meta;
+	m_text = l->getText();
+	return true;
 }
 
 /*
@@ -211,6 +227,14 @@ std::string ChestNodeMetadata::getDrawSpecString()
 		"list[current_name;0;0,0;8,4;]"
 		"list[current_player;main;0,5;8,4;]";
 }
+bool ChestNodeMetadata::import(NodeMetadata *meta)
+{
+	if (meta->typeId() != CONTENT_LOCKABLE_CHEST)
+		return false;
+	LockingChestNodeMetadata *l = (LockingChestNodeMetadata*)meta;
+	*m_inventory = *l->getInventory();
+	return true;
+}
 
 /*
 	LockingChestNodeMetadata
@@ -274,6 +298,14 @@ std::string LockingChestNodeMetadata::getDrawSpecString()
 		"size[8,9]"
 		"list[current_name;0;0,0;8,4;]"
 		"list[current_player;main;0,5;8,4;]";
+}
+bool LockingChestNodeMetadata::import(NodeMetadata *meta)
+{
+	if (meta->typeId() != CONTENT_CHEST)
+		return false;
+	ChestNodeMetadata *l = (ChestNodeMetadata*)meta;
+	*m_inventory = *l->getInventory();
+	return true;
 }
 
 /*
@@ -644,6 +676,14 @@ std::string FurnaceNodeMetadata::getDrawSpecString()
 		"list[current_name;dst;5,1;2,2;]"
 		"list[current_player;main;0,5;8,4;]";
 }
+bool FurnaceNodeMetadata::import(NodeMetadata *meta)
+{
+	if (meta->typeId() != CONTENT_LOCKABLE_FURNACE)
+		return false;
+	LockingFurnaceNodeMetadata *l = (LockingFurnaceNodeMetadata*)meta;
+	*m_inventory = *l->getInventory();
+	return true;
+}
 
 /*
 	LockingFurnaceNodeMetadata
@@ -881,6 +921,14 @@ std::string LockingFurnaceNodeMetadata::getDrawSpecString()
 		"list[current_name;src;2,1;1,1;]"
 		"list[current_name;dst;5,1;2,2;]"
 		"list[current_player;main;0,5;8,4;]";
+}
+bool LockingFurnaceNodeMetadata::import(NodeMetadata *meta)
+{
+	if (meta->typeId() != CONTENT_FURNACE)
+		return false;
+	FurnaceNodeMetadata *l = (FurnaceNodeMetadata*)meta;
+	*m_inventory = *l->getInventory();
+	return true;
 }
 
 /*

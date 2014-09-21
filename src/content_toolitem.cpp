@@ -447,4 +447,14 @@ void content_toolitem_init()
 	crafting::set1over1Recipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_CROWBAR);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+
+	i = CONTENT_TOOLITEM_KEY;
+	f = &g_content_toolitem_features[i];
+	f->content = i;
+	f->texture = "key.png";
+	f->name = "key";
+	f->description = "Key";
+	f->type = TT_SPECIAL;
+	crafting::set1To1Recipe(CONTENT_CRAFTITEM_GOLD_INGOT,CONTENT_TOOLITEM_KEY);
+	lists::add("craftguide",i);
 }
