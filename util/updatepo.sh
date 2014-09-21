@@ -48,7 +48,7 @@ cd ..
 # directory at the top level. You a recent enough xgettext that supports
 # --package-name
 potfile=po/voxelands.pot
-xgettext --package-name=voxelands -kN_ -kwgettext -F -n -o $potfile src/*.cpp src/*.h
+xgettext --package-name=voxelands --copyright-holder="Lisa 'darkrose' Milne" -kN_ -kwgettext -F -n -o $potfile src/*.cpp src/*.h
 
 # Now iterate on all languages and create the po file if missing, or update it
 # if it exists already
