@@ -900,10 +900,13 @@ void IMoveAction::apply(InventoryContext *c, InventoryManager *mgr)
 
 	// Take item from source list
 	InventoryItem *item1 = NULL;
-	if(count == 0)
+	if (count == 0) {
 		item1 = list_from->changeItem(from_i, NULL);
-	else
+		if (item1 != NULL)
+			count = item1->getCount();
+	}else{
 		item1 = list_from->takeItem(from_i, count);
+	}
 
 	// Try to add the item to destination list
 	InventoryItem *olditem = item1;
