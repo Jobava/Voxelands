@@ -1493,6 +1493,7 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 					player->getWieldItem()->serialize(infostream);
 					infostream<<std::endl;
 				}
+				player->wieldItem(0);
 			}
 		}
 	}

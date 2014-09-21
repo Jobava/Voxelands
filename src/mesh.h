@@ -34,6 +34,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <SMeshBuffer.h>
 #include <string>
 #include <vector>
+#include "mapnode.h"
 
 /*
 	Create a new cube mesh.
@@ -100,5 +101,54 @@ video::ITexture *generateTextureFromMesh(scene::IMesh *mesh,
 		v3f light_position,
 		video::SColorf light_color,
 		f32 light_radius);
+
+
+/*
+	A scene node that displays a 2D mesh extruded into the third dimension,
+	to add an illusion of depth.
+
+	Since this class was created to display the wielded tool of the local
+	player, and only tools and items are rendered like this (but not solid
+	content like stone and mud, which are shown as cubes), the option to
+	draw a textured cube instead is provided.
+ */
+class ExtrudedSpriteSceneNode: public scene::ISceneNode
+{
+public:
+	ExtrudedSpriteSceneNode(
+		scene::ISceneNode* parent,
+		scene::ISceneManager* mgr,
+		s32 id = -1,
+		const v3f& position = v3f(0,0,0),
+		const v3f& rotation = v3f(0,0,0),
+		const v3f& scale = v3f(1,1,1));
+	~ExtrudedSpriteSceneNode();
+
+	void setSprite(video::ITexture* texture);
+	void setCube(const TileSpec tiles[6]);
+	void setNodeBox(content_t c);
+	void setArm();
+
+	f32 getSpriteThickness() const { return m_thickness; }
+	void setSpriteThickness(f32 thickness);
+
+	void updateLight(u8 light);
+
+	void removeSpriteFromCache(video::ITexture* texture);
+
+	virtual const core::aabbox3d<f32>& getBoundingBox() const;
+	virtual void OnRegisterSceneNode();
+	virtual void render();
+
+private:
+	scene::IMeshSceneNode* m_meshnode;
+	f32 m_thickness;
+	scene::IMesh* m_cubemesh;
+	bool m_is_cube;
+	u8 m_light;
+
+	// internal extrusion helper methods
+	io::path getExtrudedName(video::ITexture* texture);
+};
 
 #endif

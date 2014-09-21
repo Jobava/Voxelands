@@ -30,6 +30,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "path.h"
 #include <IMeshLoader.h>
 #include <IMeshCache.h>
+#include "main.h"
+#include "settings.h"
 
 // In Irrlicht 1.8 the signature of ITexture::lock was changed from
 // (bool, u32) to (E_TEXTURE_LOCK_MODE, u32).
@@ -568,4 +570,235 @@ video::ITexture *generateTextureFromMesh(scene::IMesh *mesh,
 	driver->setRenderTarget(0, false, true, 0);
 
 	return rtt;
+}
+
+ExtrudedSpriteSceneNode::ExtrudedSpriteSceneNode(
+	scene::ISceneNode* parent,
+	scene::ISceneManager* mgr,
+	s32 id,
+	const v3f& position,
+	const v3f& rotation,
+	const v3f& scale
+):
+	ISceneNode(parent, mgr, id, position, rotation, scale)
+{
+	m_meshnode = mgr->addMeshSceneNode(NULL, this, -1, v3f(0,0,0), v3f(0,0,0), v3f(1,1,1), true);
+	m_thickness = 0.1;
+	m_cubemesh = NULL;
+	m_is_cube = false;
+	m_light = LIGHT_MAX;
+}
+
+ExtrudedSpriteSceneNode::~ExtrudedSpriteSceneNode()
+{
+	removeChild(m_meshnode);
+	if (m_cubemesh)
+		m_cubemesh->drop();
+}
+
+void ExtrudedSpriteSceneNode::setSprite(video::ITexture* texture)
+{
+	const v3f sprite_scale(1.0,1.0, 1.0); // width, height, thickness
+
+	if (texture == NULL) {
+		m_meshnode->setVisible(false);
+		return;
+	}
+
+	io::path name = getExtrudedName(texture);
+	scene::IMeshCache* cache = SceneManager->getMeshCache();
+	scene::IAnimatedMesh* mesh = cache->getMeshByName(name);
+	if (mesh != NULL)
+	{
+		// Extruded texture has been found in cache.
+		m_meshnode->setMesh(mesh);
+	}
+	else
+	{
+		// Texture was not yet extruded, do it now and save in cache
+		mesh = createExtrudedMesh(texture, SceneManager->getVideoDriver(), sprite_scale);
+		if (mesh == NULL)
+		{
+			dstream << "Warning: failed to extrude sprite" << std::endl;
+			m_meshnode->setVisible(false);
+			return;
+		}
+		cache->addMesh(name, mesh);
+		m_meshnode->setMesh(mesh);
+		mesh->drop();
+	}
+
+	m_meshnode->setScale(v3f(1, 1, m_thickness));
+	m_meshnode->getMaterial(0).setTexture(0, texture);
+	m_meshnode->getMaterial(0).setFlag(video::EMF_LIGHTING, false);
+	m_meshnode->getMaterial(0).setFlag(video::EMF_BILINEAR_FILTER, false);
+	m_meshnode->getMaterial(0).MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
+	m_meshnode->setVisible(true);
+	m_is_cube = false;
+	updateLight(m_light);
+}
+
+void ExtrudedSpriteSceneNode::setCube(const TileSpec tiles[6])
+{
+	const v3f cube_scale(1.0, 1.0, 1.0);
+	if (m_cubemesh)
+		m_cubemesh->drop();
+
+	m_cubemesh = createCubeMesh(cube_scale);
+
+	m_meshnode->setMesh(m_cubemesh);
+	m_meshnode->setScale(v3f(1));
+	for (int i = 0; i < 6; ++i)
+	{
+		// Get the tile texture and atlas transformation
+		video::ITexture* atlas = tiles[i].texture.atlas;
+		v2f pos = tiles[i].texture.pos;
+		v2f size = tiles[i].texture.size;
+
+		// Set material flags and texture
+		video::SMaterial& material = m_meshnode->getMaterial(i);
+		material.setFlag(video::EMF_LIGHTING, false);
+		material.setFlag(video::EMF_BILINEAR_FILTER, false);
+		tiles[i].applyMaterialOptions(material);
+		material.setTexture(0, atlas);
+		material.getTextureMatrix(0).setTextureTranslate(pos.X, pos.Y);
+		material.getTextureMatrix(0).setTextureScale(size.X, size.Y);
+	}
+	m_meshnode->setVisible(true);
+	m_is_cube = true;
+	updateLight(m_light);
+}
+
+void ExtrudedSpriteSceneNode::setNodeBox(content_t c)
+{
+	const v3f cube_scale(1.0, 1.0, 1.0);
+	if (m_cubemesh)
+		m_cubemesh->drop();
+
+	std::vector<aabb3f> boxes = content_features(c).getWieldNodeBoxes();
+	m_cubemesh = createNodeBoxMesh(boxes,cube_scale);
+
+	for (u16 i=0; i < boxes.size(); i++) {
+		for (int t=0; t<6; t++) {
+			video::ITexture* atlas = content_features(c).tiles[t].texture.atlas;
+			v2f pos = content_features(c).tiles[t].texture.pos;
+			v2f size = content_features(c).tiles[t].texture.size;
+			video::SMaterial& material = m_cubemesh->getMeshBuffer((i*6)+t)->getMaterial();
+			material.setFlag(video::EMF_LIGHTING, false);
+			material.setFlag(video::EMF_BILINEAR_FILTER, false);
+			content_features(c).tiles[i].applyMaterialOptions(material);
+			material.setTexture(0, atlas);
+			material.getTextureMatrix(0).setTextureTranslate(pos.X, pos.Y);
+			material.getTextureMatrix(0).setTextureScale(size.X, size.Y);
+		}
+	}
+
+	m_meshnode->setMesh(m_cubemesh);
+	m_meshnode->setScale(v3f(1));
+
+	m_meshnode->setVisible(true);
+	m_is_cube = true;
+	updateLight(m_light);
+}
+
+void ExtrudedSpriteSceneNode::setArm()
+{
+	const v3f cube_scale(0.3, 1.0, 0.3);
+	if (m_cubemesh)
+		m_cubemesh->drop();
+
+	m_cubemesh = createCubeMesh(cube_scale);
+
+	m_meshnode->setMesh(m_cubemesh);
+	m_meshnode->setScale(v3f(1));
+
+	// Get the tile texture and atlas transformation
+	std::string tex;
+	if (getTexturePath("player.png") != "") {
+		tex = "player.png^[forcesingle";
+	}else{
+		tex = "character.png^[forcesingle";
+	}
+	video::ITexture* atlas = g_texturesource->getTextureRaw(tex);
+	v2f pos(0.625,0.5);
+	v2f size(0.0625,-0.0625);
+
+	// Set material flags and texture
+	video::SMaterial& material = m_meshnode->getMaterial(0);
+	material.setFlag(video::EMF_LIGHTING, false);
+	material.setFlag(video::EMF_BILINEAR_FILTER, false);
+	material.MaterialType = video::EMT_SOLID;
+	material.BackfaceCulling = true;
+	material.setTexture(0, atlas);
+	material.getTextureMatrix(0).setTextureTranslate(pos.X, pos.Y);
+	material.getTextureMatrix(0).setTextureScale(size.X, size.Y);
+
+	for (int i = 1; i < 6; ++i) {
+		// Get the tile texture and atlas transformation
+		v2f pos(0.625,1);
+		v2f size(0.0625,-0.375);
+
+		// Set material flags and texture
+		video::SMaterial& material = m_meshnode->getMaterial(i);
+		material.setFlag(video::EMF_LIGHTING, false);
+		material.setFlag(video::EMF_BILINEAR_FILTER, false);
+		material.MaterialType = video::EMT_SOLID;
+		material.BackfaceCulling = true;
+		material.setTexture(0, atlas);
+		material.getTextureMatrix(0).setTextureTranslate(pos.X, pos.Y);
+		material.getTextureMatrix(0).setTextureScale(size.X, size.Y);
+	}
+	m_meshnode->setVisible(true);
+	m_is_cube = true;
+	updateLight(m_light);
+}
+
+void ExtrudedSpriteSceneNode::updateLight(u8 light)
+{
+	m_light = light;
+
+	u8 li = decode_light(light);
+	// Set brightness one lower than incoming light
+	diminish_light(li);
+	video::SColor color(255,li,li,li);
+	setMeshVerticesColor(m_meshnode->getMesh(), color);
+}
+
+void ExtrudedSpriteSceneNode::removeSpriteFromCache(video::ITexture* texture)
+{
+	scene::IMeshCache* cache = SceneManager->getMeshCache();
+	scene::IAnimatedMesh* mesh = cache->getMeshByName(getExtrudedName(texture));
+	if (mesh != NULL)
+		cache->removeMesh(mesh);
+}
+
+void ExtrudedSpriteSceneNode::setSpriteThickness(f32 thickness)
+{
+	m_thickness = thickness;
+	if (!m_is_cube)
+		m_meshnode->setScale(v3f(1, 1, thickness));
+}
+
+const core::aabbox3d<f32>& ExtrudedSpriteSceneNode::getBoundingBox() const
+{
+	return m_meshnode->getBoundingBox();
+}
+
+void ExtrudedSpriteSceneNode::OnRegisterSceneNode()
+{
+	if (IsVisible)
+		SceneManager->registerNodeForRendering(this);
+	ISceneNode::OnRegisterSceneNode();
+}
+
+void ExtrudedSpriteSceneNode::render()
+{
+	// do nothing
+}
+
+io::path ExtrudedSpriteSceneNode::getExtrudedName(video::ITexture* texture)
+{
+	io::path path = texture->getName();
+	path.append("/[extruded]");
+	return path;
 }

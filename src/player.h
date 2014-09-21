@@ -302,6 +302,8 @@ public:
 
 	void updateName(const char *name);
 
+	virtual void wieldItem(u16 item);
+
 	virtual void updateAnim(u8 anim_id) {m_anim_id = anim_id;}
 
 	virtual void updateLight(u8 light_at_pos)
@@ -326,6 +328,7 @@ public:
 private:
 	scene::IAnimatedMeshSceneNode *m_node;
 	scene::ITextSceneNode* m_text;
+	class ExtrudedSpriteSceneNode *m_wield;
 	core::aabbox3d<f32> m_box;
 
 	v3f m_oldpos;

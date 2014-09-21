@@ -227,12 +227,12 @@ RemotePlayer::RemotePlayer(
 	scene::ISceneNode(parent, (device==NULL)?NULL:device->getSceneManager(), id),
 	m_node(NULL),
 	m_text(NULL),
+	m_wield(NULL),
 	m_anim_id(PLAYERANIM_STAND)
 {
 	m_box = core::aabbox3d<f32>(-BS/2,0,-BS/2,BS/2,BS*2,BS/2);
 
-	if(parent != NULL && device != NULL)
-	{
+	if (parent != NULL && device != NULL) {
 		// ISceneNode stores a member called SceneManager
 		scene::ISceneManager* mgr = SceneManager;
 		video::IVideoDriver* driver = mgr->getVideoDriver();
@@ -259,13 +259,16 @@ RemotePlayer::RemotePlayer(
 			setMeshColor(m_node->getMesh(), video::SColor(255,255,255,255));
 
 			// Set material flags and texture
-			m_node->setMaterialTexture( 0, driver->getTexture(getTexturePath("character.png").c_str()));
+			m_node->setMaterialTexture(0, driver->getTexture(getTexturePath("character.png").c_str()));
 			video::SMaterial& material = m_node->getMaterial(0);
 			material.setFlag(video::EMF_LIGHTING, false);
 			material.setFlag(video::EMF_BILINEAR_FILTER, false);
 			material.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
 
 			m_node->setPosition(v3f(0,(f32)BS,0));
+			scene::IBoneSceneNode *arm = m_node->getJointNode("Arm_Low_Right");
+			if (arm)
+				m_wield = new ExtrudedSpriteSceneNode(arm,mgr,-1,v3f(0,5,1),v3f(-45,-90,45),v3f(4,4,4));
 		}
 #if (IRRLICHT_VERSION_MAJOR >= 1 && IRRLICHT_VERSION_MINOR >= 8) || IRRLICHT_VERSION_MAJOR >= 2
 		mesh->drop();
@@ -302,6 +305,51 @@ void RemotePlayer::updateName(const char *name)
 		material.setFlag(video::EMF_LIGHTING, false);
 		material.setFlag(video::EMF_BILINEAR_FILTER, false);
 	}
+}
+
+void RemotePlayer::wieldItem(u16 item)
+{
+	m_selected_item = item;
+	if (!m_wield)
+		return;
+	const InventoryItem *i = getWieldItem();
+	if (!i) {
+		m_wield->setVisible(false);
+		return;
+	}
+	bool haveWield = false;
+
+	// Try to make a MaterialItem cube.
+	if (std::string(i->getName()) == "MaterialItem") {
+		// A block-type material
+		MaterialItem* mat_item = (MaterialItem*)i;
+		content_t content = mat_item->getMaterial();
+		if (content_features(content).solidness || content_features(content).visual_solidness) {
+			m_wield->setCube(content_features(content).tiles);
+			haveWield = true;
+		}else if (
+			(
+				content_features(content).draw_type == CDT_NODEBOX
+				|| content_features(content).draw_type == CDT_NODEBOX_META
+				|| content_features(content).draw_type == CDT_FENCELIKE
+				|| content_features(content).draw_type == CDT_WALLLIKE
+			)
+			&& content_features(content).wield_nodebox == true
+		) {
+			m_wield->setNodeBox(content);
+			haveWield = true;
+		}
+		m_wield->setScale(v3f(3,3,3));
+	}else{
+		m_wield->setScale(v3f(4.5,4.5,4.5));
+	}
+
+	// If that failed, make an extruded sprite.
+	if (!haveWield) {
+		m_wield->setSprite(i->getImageRaw());
+	}
+
+	m_wield->setVisible(true);
 }
 
 void RemotePlayer::move(f32 dtime, Map &map, f32 pos_max_d)
