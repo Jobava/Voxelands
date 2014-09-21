@@ -1,6 +1,17 @@
 #!/bin/sh
 
+#
 # Update/create voxelands po files
+# 
+# To update source texts in the po files, simply execute this script with
+# `./updatepo.sh`
+# 
+# To start a localization for a new language, create a directory for it in po/
+# named as it's language code, then execute this script with `./updatepo.sh`
+# 
+# Because we use the --package-name flag, you must have xgettext>=0.17 for
+# this script to work. Use `xgettext -V` to check which version you have.
+# 
 
 # an auxiliary function to abort processing with an optional error message
 abort() {
