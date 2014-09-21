@@ -2486,10 +2486,10 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				core::list<u16> far_players;
 				core::map<v3s16, MapBlock*> modified_blocks;
 				sendAddNode(p_under, n, 0, &far_players, 30);
-				// wear out the crowbar
+				// wear out the key - admin's key doesn't wear
 				ToolItem *titem = (ToolItem*)wield;
-				if (g_settings->getBool("tool_wear")) {
-					bool weared_out = titem->addWear(200);
+				if ((getPlayerPrivs(player) & PRIV_SERVER) == 0 && g_settings->getBool("tool_wear")) {
+					bool weared_out = titem->addWear(10000);
 					if (weared_out) {
 						InventoryList *mlist = player->inventory.getList("main");
 						mlist->deleteItem(item_i);
