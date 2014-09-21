@@ -248,10 +248,8 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 			std::string flabel = f.next(";");
 			bool multi = false;
 
-			if(fname.find(",") == std::string::npos && flabel.find(",") == std::string::npos)
-			{
-				if(!bp_set)
-				{
+			if (fname.find(",") == std::string::npos && flabel.find(",") == std::string::npos) {
+				if (!bp_set) {
 					rect = core::rect<s32>(
 						screensize.X/2 - 160,
 						screensize.Y/2 - 60,
@@ -262,18 +260,16 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 					recalculateAbsolutePosition(false);
 					basepos = getBasePos();
 					bp_set = 1;
-				}
-				else if(bp_set == 2)
+				}else if(bp_set == 2) {
 					errorstream<<"WARNING: invalid use of unpositioned field in inventory"<<std::endl;
+				}
 
 				v2s32 pos = basepos;
 				pos.Y = (m_fields.size()+1*50);
 				printf("%d\n",pos.Y);
 				v2s32 size = DesiredRect.getSize();
 				rect = core::rect<s32>(size.X/2-150, pos.Y, (size.X/2-150)+300, pos.Y+30);
-			}
-			else
-			{
+			}else{
 				v2s32 pos;
 				pos.X = mystof(fname.substr(0,fname.find(","))) * (float)spacing.X;
 				pos.Y = mystof(fname.substr(fname.find(",")+1)) * (float)spacing.Y;
@@ -314,8 +310,7 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 			);
 
 			// three cases: field and no label, label and no field, label and field
-			if (flabel == "")
-			{
+			if (flabel == "") {
 				spec.send = true;
 				gui::IGUIEditBox *e = Environment->addEditBox(spec.fdefault.c_str(), rect, false, this, spec.fid);
 				if (multi) {
@@ -329,29 +324,29 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 					e->OnEvent(evt);
 					Environment->setFocus(e);
 				}
-			}
-			else if (fname == "")
-			{
+			}else if (fname == "") {
 				// set spec field id to 0, this stops submit searching for a value that isn't there
 				Environment->addStaticText(spec.flabel.c_str(), rect, false, true, this, spec.fid);
-			}
-			else
-			{
+			}else{
 				spec.send = true;
 				gui::IGUIEditBox *e = Environment->addEditBox(spec.fdefault.c_str(), rect, false, this, spec.fid);
 				if (multi) {
 					e->setMultiLine(true);
+					e->setWordWrap(true);
 					e->setTextAlignment(gui::EGUIA_UPPERLEFT, gui::EGUIA_UPPERLEFT);
 				}else{
+					Environment->setFocus(e);
 					irr::SEvent evt;
 					evt.EventType = EET_KEY_INPUT_EVENT;
 					evt.KeyInput.Key = KEY_END;
+					evt.KeyInput.Char = 0;
+					evt.KeyInput.Control = 0;
+					evt.KeyInput.Shift = 0;
 					evt.KeyInput.PressedDown = true;
 					e->OnEvent(evt);
-					Environment->setFocus(e);
 				}
-				rect.UpperLeftCorner.Y -= 15;
-				rect.LowerRightCorner.Y -= 15;
+				rect.UpperLeftCorner.Y -= 20;
+				rect.LowerRightCorner.Y = rect.UpperLeftCorner.Y+15;
 				Environment->addStaticText(spec.flabel.c_str(), rect, false, true, this, 0);
 			}
 
@@ -666,46 +661,40 @@ void GUIFormSpecMenu::acceptInput()
 
 bool GUIFormSpecMenu::OnEvent(const SEvent& event)
 {
-	if(event.EventType==EET_KEY_INPUT_EVENT)
-	{
+	if (event.EventType==EET_KEY_INPUT_EVENT) {
 		KeyPress kp(event.KeyInput);
-		if (event.KeyInput.PressedDown && (kp == EscapeKey ||
-			kp == getKeySetting("keymap_inventory")))
-		{
+		if (event.KeyInput.PressedDown && (kp == EscapeKey || kp == getKeySetting("keymap_inventory"))) {
 			m_tooltip_element->setVisible(false);
 			quitMenu();
 			return true;
 		}
-		if(event.KeyInput.Key==KEY_RETURN && event.KeyInput.PressedDown)
-		{
+		if (event.KeyInput.Key==KEY_RETURN && event.KeyInput.PressedDown) {
 			m_tooltip_element->setVisible(false);
 			acceptInput();
 			quitMenu();
 			return true;
 		}
 	}
-	if(event.EventType==EET_MOUSE_INPUT_EVENT) {
+	if (event.EventType==EET_MOUSE_INPUT_EVENT) {
 		char amount = -1;
 
-		if(event.MouseInput.Event == EMIE_LMOUSE_PRESSED_DOWN)
+		if (event.MouseInput.Event == EMIE_LMOUSE_PRESSED_DOWN) {
 			amount = 0;
-		else if(event.MouseInput.Event == EMIE_RMOUSE_PRESSED_DOWN)
+		}else if (event.MouseInput.Event == EMIE_RMOUSE_PRESSED_DOWN) {
 			amount = 1;
-		else if(event.MouseInput.Event == EMIE_MMOUSE_PRESSED_DOWN)
+		}else if (event.MouseInput.Event == EMIE_MMOUSE_PRESSED_DOWN) {
 			amount = 10;
+		}
 
 		m_pointer.X = event.MouseInput.X;
 		m_pointer.Y = event.MouseInput.Y;
 
-		if(amount >= 0)
-		{
+		if (amount >= 0) {
 			v2s32 p(event.MouseInput.X, event.MouseInput.Y);
 			//infostream<<"Mouse down at p=("<<p.X<<","<<p.Y<<")"<<std::endl;
 			ItemSpec s = getItemAtPos(p);
-			if(s.isValid())
-			{
-				if(m_selected_item)
-				{
+			if (s.isValid()) {
+				if (m_selected_item) {
 					Inventory *inv_from = m_invmgr->getInventory(&m_selected_item->inventoryloc);
 					Inventory *inv_to = m_invmgr->getInventory(&s.inventoryloc);
 					assert(inv_from);
@@ -714,15 +703,13 @@ bool GUIFormSpecMenu::OnEvent(const SEvent& event)
 							inv_from->getList(m_selected_item->listname);
 					InventoryList *list_to =
 							inv_to->getList(s.listname);
-					if(list_from == NULL)
+					if (list_from == NULL)
 						infostream<<"from list doesn't exist"<<std::endl;
-					if(list_to == NULL)
+					if (list_to == NULL)
 						infostream<<"to list doesn't exist"<<std::endl;
 					// Indicates whether source slot completely empties
 					bool source_empties = false;
-					if(list_from && list_to
-							&& list_from->getItem(m_selected_item->i) != NULL)
-					{
+					if (list_from && list_to && list_from->getItem(m_selected_item->i) != NULL) {
 						infostream<<"Handing IACTION_MOVE to manager"<<std::endl;
 						IMoveAction *a = new IMoveAction();
 						a->count = amount;
@@ -735,57 +722,44 @@ bool GUIFormSpecMenu::OnEvent(const SEvent& event)
 						//ispec.actions->push_back(a);
 						m_invmgr->inventoryAction(a);
 
-						if(list_from->getItem(m_selected_item->i)->getCount()==1)
+						if (list_from->getItem(m_selected_item->i)->getCount()==1)
 							source_empties = true;
 					}
 					// Remove selection if target was left-clicked or source
 					// slot was emptied
-					if(amount == 0 || source_empties)
-					{
+					if (amount == 0 || source_empties) {
 						delete m_selected_item;
 						m_selected_item = NULL;
 					}
-				}
-				else
-				{
+				}else{
 					/*
 						Select if non-NULL
 					*/
 					Inventory *inv = m_invmgr->getInventory(&s.inventoryloc);
 					assert(inv);
 					InventoryList *list = inv->getList(s.listname);
-					if (list && list->getItem(s.i) != NULL) {
+					if (list && list->getItem(s.i) != NULL)
 						m_selected_item = new ItemSpec(s);
-					}
 				}
-			}
-			else
-			{
-				if(m_selected_item)
-				{
+			}else{
+				if (m_selected_item) {
 					delete m_selected_item;
 					m_selected_item = NULL;
 				}
 			}
 		}
 	}
-	if(event.EventType==EET_GUI_EVENT)
-	{
-		if(event.GUIEvent.EventType==gui::EGET_ELEMENT_FOCUS_LOST
-				&& isVisible())
-		{
-			if(!canTakeFocus(event.GUIEvent.Element))
-			{
+	if (event.EventType==EET_GUI_EVENT) {
+		if (event.GUIEvent.EventType==gui::EGET_ELEMENT_FOCUS_LOST && isVisible()) {
+			if (!canTakeFocus(event.GUIEvent.Element)) {
 				infostream<<"GUIFormSpecMenu: Not allowing focus change."
 						<<std::endl;
 				// Returning true disables focus change
 				return true;
 			}
 		}
-		if(event.GUIEvent.EventType==gui::EGET_BUTTON_CLICKED)
-		{
-			switch(event.GUIEvent.Caller->getID())
-			{
+		if (event.GUIEvent.EventType==gui::EGET_BUTTON_CLICKED) {
+			switch (event.GUIEvent.Caller->getID()) {
 			case 257:
 				acceptInput();
 				quitMenu();
@@ -793,13 +767,11 @@ bool GUIFormSpecMenu::OnEvent(const SEvent& event)
 				return true;
 			}
 			// find the element that was clicked
-			for(u32 i=0; i<m_fields.size(); i++)
-			{
+			for (u32 i=0; i<m_fields.size(); i++) {
 				FieldSpec &s = m_fields[i];
 				// if its a button, set the send field so
 				// receiveFields knows which button was pressed
-				if (s.is_button && s.fid == event.GUIEvent.Caller->getID())
-				{
+				if (s.is_button && s.fid == event.GUIEvent.Caller->getID()) {
 					s.send = true;
 					acceptInput();
 					if (s.is_exit) {
@@ -813,10 +785,8 @@ bool GUIFormSpecMenu::OnEvent(const SEvent& event)
 				}
 			}
 		}
-		if(event.GUIEvent.EventType==gui::EGET_EDITBOX_ENTER)
-		{
-			if(event.GUIEvent.Caller->getID() > 257)
-			{
+		if (event.GUIEvent.EventType==gui::EGET_EDITBOX_ENTER) {
+			if (event.GUIEvent.Caller->getID() > 257) {
 				acceptInput();
 				quitMenu();
 				// quitMenu deallocates menu
