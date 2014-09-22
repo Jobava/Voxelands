@@ -172,6 +172,7 @@ public:
 	bool craftresult_is_preview;
 
 	u16 hp;
+	u16 air;
 
 	u16 peer_id;
 

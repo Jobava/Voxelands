@@ -407,6 +407,8 @@ LocalPlayer::LocalPlayer():
 	// Initialize hp to 0, so that no hearts will be shown if server
 	// doesn't support health points
 	hp = 0;
+	// Likewise, initialize air to 20, so that no bubbles will be shown
+	air = 20;
 }
 
 LocalPlayer::~LocalPlayer()

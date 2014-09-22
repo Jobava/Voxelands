@@ -135,6 +135,13 @@
 #enable_damage = true
 # survival
 #enable_damage = true
+# Enable players suffocating/drowning and dying
+# creative
+#enable_suffocation = false
+# adventure
+#enable_suffocation = false
+# survival
+#enable_suffocation = true
 # The maximum 'level' of mobs to spawn: passive, aggressive, destructive
 # roughly: passive = rats, aggressive = oerkki, destructive = DM
 # creative

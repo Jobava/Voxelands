@@ -539,23 +539,31 @@ void Client::step(float dtime)
 		/*
 			Get events
 		*/
-		for(;;)
-		{
+		for (;;) {
 			ClientEnvEvent event = m_env.getClientEvent();
-			if(event.type == CEE_NONE)
-			{
+			if (event.type == CEE_NONE) {
 				break;
-			}
-			else if(event.type == CEE_PLAYER_DAMAGE)
-			{
-				if(m_ignore_damage_timer <= 0)
-				{
-					u8 damage = event.player_damage.amount;
-					sendDamage(damage);
+			}else if (event.type == CEE_PLAYER_DAMAGE) {
+				if (m_ignore_damage_timer <= 0) {
+					s8 damage = event.player_damage.amount;
+					sendDamage(damage,0);
 
 					// Add to ClientEvent queue
 					ClientEvent event;
 					event.type = CE_PLAYER_DAMAGE;
+					event.player_damage.amount = damage;
+					m_client_event_queue.push_back(event);
+				}
+			}else if (event.type == CEE_PLAYER_SUFFOCATE) {
+				if (m_ignore_damage_timer <= 0) {
+					s8 damage = event.player_damage.amount;
+					sendDamage(0,damage);
+
+					// Add to ClientEvent queue
+					ClientEvent event;
+					event.type = CE_PLAYER_SUFFOCATE;
+					if (getAir() < 1 && damage > 0)
+						event.type = CE_PLAYER_DAMAGE;
 					event.player_damage.amount = damage;
 					m_client_event_queue.push_back(event);
 				}
@@ -1115,46 +1123,16 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 
 		player->updateAnim(anim_id);
 	}
-	else if(command == TOCLIENT_SECTORMETA)
+	else if(command == TOCLIENT_PLAYERHP)
 	{
-		infostream<<"Client received DEPRECATED TOCLIENT_SECTORMETA"<<std::endl;
-#if 0
-		/*
-			[0] u16 command
-			[2] u8 sector count
-			[3...] v2s16 pos + sector metadata
-		*/
-		if(datasize < 3)
-			return;
-
-		//infostream<<"Client received TOCLIENT_SECTORMETA"<<std::endl;
-
-		{ //envlock
-			//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
-
-			std::string datastring((char*)&data[2], datasize-2);
-			std::istringstream is(datastring, std::ios_base::binary);
-
-			u8 buf[4];
-
-			is.read((char*)buf, 1);
-			u16 sector_count = readU8(buf);
-
-			//infostream<<"sector_count="<<sector_count<<std::endl;
-
-			for(u16 i=0; i<sector_count; i++)
-			{
-				// Read position
-				is.read((char*)buf, 4);
-				v2s16 pos = readV2S16(buf);
-				/*infostream<<"Client: deserializing sector at "
-						<<"("<<pos.X<<","<<pos.Y<<")"<<std::endl;*/
-				// Create sector
-				assert(m_env.getMap().mapType() == MAPTYPE_CLIENT);
-				((ClientMap&)m_env.getMap()).deSerializeSector(pos, is);
-			}
-		} //envlock
-#endif
+		std::string datastring((char*)&data[2], datasize-2);
+		std::istringstream is(datastring, std::ios_base::binary);
+		Player *player = m_env.getLocalPlayer();
+		assert(player != NULL);
+		u8 hp = readU8(is);
+		u8 air = readU8(is);
+		player->hp = hp;
+		player->air = air;
 	}
 	else if(command == TOCLIENT_INVENTORY)
 	{
@@ -1413,6 +1391,7 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 	}
 	else if(command == TOCLIENT_HP)
 	{
+		infostream<<"Client received DEPRECATED TOCLIENT_HP"<<std::endl;
 		std::string datastring((char*)&data[2], datasize-2);
 		std::istringstream is(datastring, std::ios_base::binary);
 		Player *player = m_env.getLocalPlayer();
@@ -1753,13 +1732,14 @@ void Client::sendChangePassword(const std::wstring oldpassword,
 }
 
 
-void Client::sendDamage(u8 damage)
+void Client::sendDamage(s8 damage,s8 suffocate)
 {
 	DSTACK(__FUNCTION_NAME);
 	std::ostringstream os(std::ios_base::binary);
 
-	writeU16(os, TOSERVER_DAMAGE);
-	writeU8(os, damage);
+	writeU16(os, TOSERVER_PLAYERDAMAGE);
+	writeS8(os, damage);
+	writeS8(os, suffocate);
 
 	// Make data buffer
 	std::string s = os.str();
@@ -2119,6 +2099,13 @@ u16 Client::getHP()
 	Player *player = m_env.getLocalPlayer();
 	assert(player != NULL);
 	return player->hp;
+}
+
+u16 Client::getAir()
+{
+	Player *player = m_env.getLocalPlayer();
+	assert(player != NULL);
+	return player->air;
 }
 
 void Client::setTempMod(v3s16 p, NodeMod mod)

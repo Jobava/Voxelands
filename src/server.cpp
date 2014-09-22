@@ -2130,7 +2130,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		/*
 			Check HP, respawn if necessary
 		*/
-		HandlePlayerHP(player, 0);
+		HandlePlayerHP(player, 0, 0);
 
 		/*
 			Print out action
@@ -3489,7 +3489,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 									|| tool->getContent() != CONTENT_TOOLITEM_STEELBUCKET
 								) {
 									mlist->deleteItem(item_i);
-									HandlePlayerHP(player,4);
+									HandlePlayerHP(player,4,0);
 								}else{
 									std::string dug_s = std::string("ToolItem ") + tool->getToolName() + "_lava 1";
 									std::istringstream is(dug_s, std::ios::binary);
@@ -4084,7 +4084,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							}
 						}else{
 							ilist->deleteItem(item_i);
-							HandlePlayerHP(player,4);
+							HandlePlayerHP(player,4,0);
 							UpdateCrafting(player->peer_id);
 							SendInventory(player->peer_id);
 						}
@@ -4275,19 +4275,34 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					<<action<<std::endl;
 		}
 	}
-#if 0
-	else if(command == TOSERVER_RELEASE)
+	else if(command == TOSERVER_PLAYERDAMAGE)
 	{
-		if(datasize < 3)
-			return;
-		/*
-			length: 3
-			[0] u16 command
-			[2] u8 button
-		*/
-		infostream<<"TOSERVER_RELEASE ignored"<<std::endl;
+		std::string datastring((char*)&data[2], datasize-2);
+		std::istringstream is(datastring, std::ios_base::binary);
+		s8 damage = readS8(is);
+		s8 suffocate = readS8(is);
+
+		if (damage && g_settings->getBool("enable_damage")) {
+			actionstream<<player->getName()<<" damaged by "
+					<<(int)damage<<" hp at "<<PP(player->getPosition()/BS)
+					<<std::endl;
+		}else{
+			damage = 0;
+		}
+		if (suffocate && g_settings->getBool("enable_suffocation")) {
+			actionstream<<player->getName()<<" lost "
+					<<(int)suffocate<<" air at "<<PP(player->getPosition()/BS)
+					<<std::endl;
+		}else{
+			suffocate = 0;
+		}
+
+		if (!damage && !suffocate) {
+			SendPlayerHP(player);
+		}else{
+			HandlePlayerHP(player, damage, suffocate);
+		}
 	}
-#endif
 	else if(command == TOSERVER_SIGNTEXT)
 	{
 		infostream<<"Server: TOSERVER_SIGNTEXT not supported anymore"
@@ -4590,17 +4605,15 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		std::string datastring((char*)&data[2], datasize-2);
 		std::istringstream is(datastring, std::ios_base::binary);
 		u8 damage = readU8(is);
+		infostream<<"TOSERVER_DAMAGE: using deprecated command"<<std::endl;
 
-		if(g_settings->getBool("enable_damage"))
-		{
+		if (g_settings->getBool("enable_damage")) {
 			actionstream<<player->getName()<<" damaged by "
 					<<(int)damage<<" hp at "<<PP(player->getPosition()/BS)
 					<<std::endl;
 
-			HandlePlayerHP(player, damage);
-		}
-		else
-		{
+			HandlePlayerHP(player, damage, 0);
+		}else{
 			SendPlayerHP(player);
 		}
 	}
@@ -4900,13 +4913,14 @@ void Server::deletingPeer(con::Peer *peer, bool timeout)
 	Static send methods
 */
 
-void Server::SendHP(con::Connection &con, u16 peer_id, u8 hp)
+void Server::SendHP(con::Connection &con, u16 peer_id, u8 hp, u8 air)
 {
 	DSTACK(__FUNCTION_NAME);
 	std::ostringstream os(std::ios_base::binary);
 
-	writeU16(os, TOCLIENT_HP);
+	writeU16(os, TOCLIENT_PLAYERHP);
 	writeU8(os, hp);
+	writeU8(os, air);
 
 	// Make data buffer
 	std::string s = os.str();
@@ -5157,7 +5171,7 @@ void Server::BroadcastChatMessage(const std::wstring &message)
 
 void Server::SendPlayerHP(Player *player)
 {
-	SendHP(m_con, player->peer_id, player->hp);
+	SendHP(m_con, player->peer_id, player->hp, player->air);
 }
 
 void Server::SendPlayerCookie(Player *player)
@@ -5437,15 +5451,22 @@ void Server::SendBlocks(float dtime)
 	Something random
 */
 
-void Server::HandlePlayerHP(Player *player, s16 damage)
+void Server::HandlePlayerHP(Player *player, s16 damage, s16 suffocate)
 {
-	if(player->hp > damage)
-	{
-		player->hp -= damage;
-		SendPlayerHP(player);
+	if (player->air > suffocate) {
+		player->air -= suffocate;
+		if (player->air > 20)
+			player->air = 20;
+	}else{
+		player->air = 0;
+		damage += suffocate-player->air;
 	}
-	else
-	{
+	if (player->hp > damage) {
+		player->hp -= damage;
+		if (player->hp > 20)
+			player->hp = 20;
+		SendPlayerHP(player);
+	}else{
 		infostream<<"Server::HandlePlayerHP(): Player "
 				<<player->getName()<<" dies"<<std::endl;
 
@@ -5480,6 +5501,7 @@ void Server::RespawnPlayer(Player *player)
 		pos = findSpawnPos(m_env.getServerMap());
 	player->setPosition(pos);
 	player->hp = 20;
+	player->air = 20;
 	SendMovePlayer(player);
 	SendPlayerHP(player);
 }

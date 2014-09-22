@@ -22,7 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "utility.h"
 
-#define PROTOCOL_VERSION 5
+#define PROTOCOL_VERSION 6
 /* the last protocol version used by 0.3.x minetest-c55 clients */
 #define PROTOCOL_DOTTHREE 3
 /* this is the oldest protocol that we will allow to connect
@@ -82,11 +82,11 @@ enum ToClientCommand
 		[4] u8 animation_id
 	*/
 
-	TOCLIENT_SECTORMETA = 0x26, // Obsolete
+	TOCLIENT_PLAYERHP = 0x26,
 	/*
-		[0] u16 command
-		[2] u8 sector count
-		[3...] v2s16 pos + sector metadata
+		u16 command
+		u8 hp
+
 	*/
 
 	TOCLIENT_INVENTORY = 0x27,
@@ -284,7 +284,12 @@ enum ToServerCommand
 		3: digging completed
 	*/
 
-	TOSERVER_RELEASE = 0x29, // Obsolete
+	TOSERVER_PLAYERDAMAGE = 0x29,
+	/*
+		u16 command
+		u8 damage_amount
+		u8 suffocate_amount
+	*/
 
 	TOSERVER_SIGNTEXT = 0x30, // Old signs
 	/*
@@ -324,7 +329,7 @@ enum ToServerCommand
 		[5] u16 item
 	*/
 
-	TOSERVER_DAMAGE = 0x35,
+	TOSERVER_DAMAGE = 0x35, // obsolete, see TOSERVER_PLAYERDAMAGE
 	/*
 		u16 command
 		u8 amount

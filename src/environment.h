@@ -336,7 +336,8 @@ private:
 enum ClientEnvEventType
 {
 	CEE_NONE,
-	CEE_PLAYER_DAMAGE
+	CEE_PLAYER_DAMAGE,
+	CEE_PLAYER_SUFFOCATE
 };
 
 struct ClientEnvEvent

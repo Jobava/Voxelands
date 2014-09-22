@@ -223,7 +223,7 @@ public:
 */
 void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 		v2s32 centerlowerpos, s32 imgsize, s32 itemcount,
-		Inventory *inventory, s32 halfheartcount)
+		Inventory *inventory, s32 halfheartcount, s32 halfbubblecount)
 {
 	InventoryList *mainlist = inventory->getList("main");
 	if(mainlist == NULL)
@@ -278,36 +278,74 @@ void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 	/*
 		Draw hearts
 	*/
-	{
-		video::ITexture *heart_texture =
-				driver->getTexture(getTexturePath("heart.png").c_str());
-		v2s32 p = pos + v2s32(0, -25);
-		for(s32 i=0; i<halfheartcount/2; i++)
-		{
+	struct {
+		s32 count;
+		s32 halfcount;
+		const char* texture;
+		bool show_full;
+	} barData[3] = {
+		{halfheartcount/2,halfheartcount,"heart.png",true},
+		{halfbubblecount/2,halfbubblecount,"bubble.png",false},
+		{10,0,"heart.png",false},
+	};
+	v2s32 bar_base(0,-25);
+	for (s32 k=0; k<3; k++) {
+		if (barData[k].count == 10 && !barData[k].show_full)
+			continue;
+		video::ITexture *texture = driver->getTexture(getTexturePath(barData[k].texture).c_str());
+		v2s32 p = pos + bar_base;
+		for (s32 i=0; i<barData[k].count; i++) {
 			const video::SColor color(255,255,255,255);
 			const video::SColor colors[] = {color,color,color,color};
 			core::rect<s32> rect(0,0,16,16);
 			rect += p;
-			driver->draw2DImage(heart_texture, rect,
+			driver->draw2DImage(texture, rect,
 				core::rect<s32>(core::position2d<s32>(0,0),
-				core::dimension2di(heart_texture->getOriginalSize())),
+				core::dimension2di(texture->getOriginalSize())),
 				NULL, colors, true);
 			p += v2s32(16,0);
 		}
-		if(halfheartcount % 2 == 1)
-		{
+		if (barData[k].halfcount % 2 == 1) {
 			const video::SColor color(255,255,255,255);
 			const video::SColor colors[] = {color,color,color,color};
 			core::rect<s32> rect(0,0,16/2,16);
 			rect += p;
-			core::dimension2di srcd(heart_texture->getOriginalSize());
+			core::dimension2di srcd(texture->getOriginalSize());
 			srcd.Width /= 2;
-			driver->draw2DImage(heart_texture, rect,
+			driver->draw2DImage(texture, rect,
 				core::rect<s32>(core::position2d<s32>(0,0), srcd),
 				NULL, colors, true);
 			p += v2s32(16,0);
 		}
+		bar_base.Y -= 20;
 	}
+	//if (halfbubblecount < 20) {
+		//video::ITexture *bubble_texture = driver->getTexture(getTexturePath("bubble.png").c_str());
+		//v2s32 p = pos + v2s32(0, -40);
+		//for (s32 i=0; i<halfbubblecount/2; i++) {
+			//const video::SColor color(255,255,255,255);
+			//const video::SColor colors[] = {color,color,color,color};
+			//core::rect<s32> rect(0,0,16,16);
+			//rect += p;
+			//driver->draw2DImage(bubble_texture, rect,
+				//core::rect<s32>(core::position2d<s32>(0,0),
+				//core::dimension2di(bubble_texture->getOriginalSize())),
+				//NULL, colors, true);
+			//p += v2s32(16,0);
+		//}
+		//if (halfbubblecount % 2 == 1) {
+			//const video::SColor color(255,255,255,255);
+			//const video::SColor colors[] = {color,color,color,color};
+			//core::rect<s32> rect(0,0,16/2,16);
+			//rect += p;
+			//core::dimension2di srcd(bubble_texture->getOriginalSize());
+			//srcd.Width /= 2;
+			//driver->draw2DImage(bubble_texture, rect,
+				//core::rect<s32>(core::position2d<s32>(0,0), srcd),
+				//NULL, colors, true);
+			//p += v2s32(16,0);
+		//}
+	//}
 	if (selected != "") {
 		v2u32 dim = font->getDimension(narrow_to_wide(selected).c_str());
 		v2s32 sdim(dim.X,dim.Y);
@@ -1622,28 +1660,20 @@ void the_game(
 
 		{
 			// Read client events
-			for(;;)
-			{
+			for(;;) {
 				ClientEvent event = client.getClientEvent();
-				if(event.type == CE_NONE)
-				{
+				if (event.type == CE_NONE) {
 					break;
-				}
-				else if(event.type == CE_PLAYER_DAMAGE)
-				{
+				}else if (event.type == CE_PLAYER_DAMAGE) {
 					damage_flash_timer = 0.05;
 					if(event.player_damage.amount >= 2){
 						damage_flash_timer += 0.05 * event.player_damage.amount;
 					}
-				}
-				else if(event.type == CE_PLAYER_FORCE_MOVE)
-				{
+				}else if (event.type == CE_PLAYER_FORCE_MOVE) {
 					camera_yaw = event.player_force_move.yaw;
 					camera_pitch = event.player_force_move.pitch;
-				}
-				else if(event.type == CE_DEATHSCREEN)
-				{
-					if(respawn_menu_active)
+				}else if (event.type == CE_DEATHSCREEN) {
+					if (respawn_menu_active)
 						continue;
 
 					MainRespawnInitiator *respawner =
@@ -2361,8 +2391,7 @@ void the_game(
 		/*
 			Draw crosshair
 		*/
-		if(show_hud)
-		{
+		if (show_hud) {
 			driver->draw2DLine(displaycenter - core::vector2d<s32>(10,0),
 					displaycenter + core::vector2d<s32>(10,0),
 					video::SColor(255,255,255,255));
@@ -2382,18 +2411,16 @@ void the_game(
 		/*
 			Draw hotbar
 		*/
-		if(show_hud)
-		{
+		if (show_hud) {
 			draw_hotbar(driver, font, v2s32(displaycenter.X, screensize.Y),
 					hotbar_imagesize, hotbar_itemcount, &local_inventory,
-					client.getHP());
+					client.getHP(), client.getAir());
 		}
 
 		/*
 			Damage flash
 		*/
-		if(damage_flash_timer > 0.0)
-		{
+		if (damage_flash_timer > 0.0) {
 			damage_flash_timer -= dtime;
 
 			video::SColor color(128,255,0,0);

@@ -76,6 +76,11 @@ inline void writeU8(u8 *data, u8 i)
 	data[0] = ((i>> 0)&0xff);
 }
 
+inline void writeS8(u8 *data, s8 i)
+{
+	data[0] = ((i>> 0)&0xff);
+}
+
 inline uint64_t readU64(u8 *data)
 {
 	return ((uint64_t)data[0]<<56) | ((uint64_t)data[1]<<48)
@@ -97,6 +102,11 @@ inline u16 readU16(u8 *data)
 inline u8 readU8(u8 *data)
 {
 	return (data[0]<<0);
+}
+
+inline s8 readS8(u8 *data)
+{
+	return ((s8)data[0]<<0);
 }
 
 inline void writeS32(u8 *data, s32 i){
@@ -204,11 +214,23 @@ inline void writeU8(std::ostream &os, u8 p)
 	writeU8((u8*)buf, p);
 	os.write(buf, 1);
 }
+inline void writeS8(std::ostream &os, s8 p)
+{
+	char buf[1];
+	writeS8((u8*)buf, p);
+	os.write(buf, 1);
+}
 inline u8 readU8(std::istream &is)
 {
 	char buf[1];
 	is.read(buf, 1);
 	return readU8((u8*)buf);
+}
+inline s8 readS8(std::istream &is)
+{
+	char buf[1];
+	is.read(buf, 1);
+	return readS8((u8*)buf);
 }
 
 inline void writeU16(std::ostream &os, u16 p)

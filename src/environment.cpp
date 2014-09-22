@@ -4033,6 +4033,18 @@ void ClientEnvironment::step(float dtime)
 			event.type = CEE_PLAYER_DAMAGE;
 			event.player_damage.amount = damage_per_second;
 			m_client_event_queue.push_back(event);
+		}else if (!content_features(n3).air_equivalent) {
+			ClientEnvEvent event;
+			event.type = CEE_PLAYER_SUFFOCATE;
+			event.player_damage.amount = 2;
+			if (content_features(n3).liquid_type == LIQUID_NONE)
+				event.player_damage.amount = 4;
+			m_client_event_queue.push_back(event);
+		}else if (lplayer->air < 20) {
+			ClientEnvEvent event;
+			event.type = CEE_PLAYER_SUFFOCATE;
+			event.player_damage.amount = -20;
+			m_client_event_queue.push_back(event);
 		}
 	}
 
