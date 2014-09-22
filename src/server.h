@@ -536,6 +536,8 @@ private:
 	void BroadcastChatMessage(const std::wstring &message);
 	void SendPlayerHP(Player *player);
 	void SendPlayerCookie(Player *player);
+	// tell the client what kind of game is being played
+	void SendSettings(Player *player);
 	/*
 		Send a node removal/addition event to all clients except ignore_id.
 		Additionally, if far_players!=NULL, players further away than

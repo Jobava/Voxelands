@@ -2061,6 +2061,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			Send complete position information
 		*/
 		SendMovePlayer(player);
+		SendSettings(player);
 
 		return;
 	}
@@ -5184,7 +5185,16 @@ void Server::BroadcastChatMessage(const std::wstring &message)
 
 void Server::SendPlayerHP(Player *player)
 {
-	SendHP(m_con, player->peer_id, player->hp, player->air,player->hunger);
+	u8 hp = player->hp;
+	u8 air = player->air;
+	u8 hunger = player->hunger;
+	if (!g_settings->getBool("enable_damage"))
+		hp = 0;
+	if (!g_settings->getBool("enable_suffocation"))
+		air = 20;
+	if (!g_settings->getBool("enable_hunger"))
+		hunger = 0;
+	SendHP(m_con, player->peer_id, hp,air,hunger);
 }
 
 void Server::SendPlayerCookie(Player *player)
@@ -5195,6 +5205,27 @@ void Server::SendPlayerCookie(Player *player)
 	writeU16(os, TOCLIENT_HAVECOOKIE);
 	writeU16(os, c.size());
 	os.write(c.c_str(),c.size());
+
+	// Make data buffer
+	std::string s = os.str();
+	SharedBuffer<u8> data((u8*)s.c_str(), s.size());
+	// Send as reliable
+	m_con.Send(player->peer_id, 0, data, true);
+}
+
+void Server::SendSettings(Player *player)
+{
+	std::ostringstream os(std::ios_base::binary);
+
+	u8 setting;
+
+	writeU16(os, TOCLIENT_SERVERSETTINGS);
+	setting = g_settings->getBool("enable_damage");
+	writeU8(os, setting);
+	setting = g_settings->getBool("enable_suffocation");
+	writeU8(os, setting);
+	setting = g_settings->getBool("enable_hunger");
+	writeU8(os, setting);
 
 	// Make data buffer
 	std::string s = os.str();

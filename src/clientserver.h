@@ -54,16 +54,12 @@ enum ToClientCommand
 	TOCLIENT_ADDNODE = 0x21,
 	TOCLIENT_REMOVENODE = 0x22,
 
-	TOCLIENT_PLAYERPOS = 0x23, // Obsolete
+	TOCLIENT_SERVERSETTINGS = 0x23,
 	/*
-		[0] u16 command
-		// Followed by an arbitary number of these:
-		// Number is determined from packet length.
-		[N] u16 peer_id
-		[N+2] v3s32 position*100
-		[N+2+12] v3s32 speed*100
-		[N+2+12+12] s32 pitch*100
-		[N+2+12+12+4] s32 yaw*100
+		u16 command
+		u8 enable_damage
+		u8 enable_suffocation
+		u8 enable_hunger
 	*/
 
 	TOCLIENT_PLAYERINFO = 0x24,

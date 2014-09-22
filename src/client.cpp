@@ -195,6 +195,9 @@ Client::Client(
 			device->getSceneManager(), 666),
 		device->getSceneManager()
 	),
+	m_server_damage(false),
+	m_server_suffocation(false),
+	m_server_hunger(false),
 	m_con(PROTOCOL_ID, 512, CONNECTION_TIMEOUT, this),
 	m_sound(sound),
 	m_device(device),
@@ -543,7 +546,7 @@ void Client::step(float dtime)
 			ClientEnvEvent event = m_env.getClientEvent();
 			if (event.type == CEE_NONE) {
 				break;
-			}else if (event.type == CEE_PLAYER_DAMAGE) {
+			}else if (event.type == CEE_PLAYER_DAMAGE && getServerDamage()) {
 				if (m_ignore_damage_timer <= 0) {
 					s8 damage = event.player_damage.amount;
 					sendDamage(damage,0,0);
@@ -554,7 +557,7 @@ void Client::step(float dtime)
 					event.player_damage.amount = damage;
 					m_client_event_queue.push_back(event);
 				}
-			}else if (event.type == CEE_PLAYER_SUFFOCATE) {
+			}else if (event.type == CEE_PLAYER_SUFFOCATE && getServerSuffocation()) {
 				if (m_ignore_damage_timer <= 0) {
 					s8 damage = event.player_damage.amount;
 					sendDamage(0,damage,0);
@@ -569,7 +572,7 @@ void Client::step(float dtime)
 					event.player_damage.amount = damage;
 					m_client_event_queue.push_back(event);
 				}
-			}else if (event.type == CEE_PLAYER_HUNGER) {
+			}else if (event.type == CEE_PLAYER_HUNGER && getServerHunger()) {
 				if (m_ignore_damage_timer <= 0) {
 					s8 damage = event.player_damage.amount;
 					sendDamage(0,0,damage);
@@ -946,73 +949,16 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		//infostream<<"Adding mesh update task for received block"<<std::endl;
 		addUpdateMeshTaskWithEdge(p, true);
 	}
-	else if(command == TOCLIENT_PLAYERPOS)
+	else if(command == TOCLIENT_SERVERSETTINGS)
 	{
-		infostream<<"Received deprecated TOCLIENT_PLAYERPOS"
-				<<std::endl;
-		/*u16 our_peer_id;
-		{
-			//JMutexAutoLock lock(m_con_mutex); //bulk comment-out
-			our_peer_id = m_con.GetPeerID();
-		}
-		// Cancel if we don't have a peer id
-		if(our_peer_id == PEER_ID_INEXISTENT){
-			infostream<<"TOCLIENT_PLAYERPOS cancelled: "
-					"we have no peer id"
-					<<std::endl;
-			return;
-		}*/
+		std::string datastring((char*)&data[2], datasize-2);
+		std::istringstream is(datastring, std::ios_base::binary);
 
-		{ //envlock
-			//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
+		u8 damage = readU8(is);
+		u8 suffocation = readU8(is);
+		u8 hunger = readU8(is);
 
-			u32 player_size = 2+12+12+4+4;
-
-			u32 player_count = (datasize-2) / player_size;
-			u32 start = 2;
-			for(u32 i=0; i<player_count; i++)
-			{
-				u16 peer_id = readU16(&data[start]);
-
-				Player *player = m_env.getPlayer(peer_id);
-
-				// Skip if player doesn't exist
-				if(player == NULL)
-				{
-					start += player_size;
-					continue;
-				}
-
-				// Skip if player is local player
-				if(player->isLocal())
-				{
-					start += player_size;
-					continue;
-				}
-
-				v3s32 ps = readV3S32(&data[start+2]);
-				v3s32 ss = readV3S32(&data[start+2+12]);
-				s32 pitch_i = readS32(&data[start+2+12+12]);
-				s32 yaw_i = readS32(&data[start+2+12+12+4]);
-				/*infostream<<"Client: got "
-						<<"pitch_i="<<pitch_i
-						<<" yaw_i="<<yaw_i<<std::endl;*/
-				f32 pitch = (f32)pitch_i / 100.0;
-				f32 yaw = (f32)yaw_i / 100.0;
-				v3f position((f32)ps.X/100., (f32)ps.Y/100., (f32)ps.Z/100.);
-				v3f speed((f32)ss.X/100., (f32)ss.Y/100., (f32)ss.Z/100.);
-				player->setPosition(position);
-				player->setSpeed(speed);
-				player->setPitch(pitch);
-				player->setYaw(yaw);
-
-				/*infostream<<"Client: player "<<peer_id
-						<<" pitch="<<pitch
-						<<" yaw="<<yaw<<std::endl;*/
-
-				start += player_size;
-			}
-		} //envlock
+		setServerSettings(damage,suffocation,hunger);
 	}
 	else if(command == TOCLIENT_PLAYERINFO)
 	{
@@ -1149,9 +1095,12 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		u8 hp = readU8(is);
 		u8 air = readU8(is);
 		u8 hunger = readU8(is);
-		player->hp = hp;
-		player->air = air;
-		player->hunger = hunger;
+		if (m_server_damage)
+			player->hp = hp;
+		if (m_server_suffocation)
+			player->air = air;
+		if (m_server_hunger)
+			player->hunger = hunger;
 	}
 	else if(command == TOCLIENT_INVENTORY)
 	{
@@ -1862,6 +1811,13 @@ void Client::sendPlayerItem(u16 item)
 
 	// Send as reliable
 	Send(0, data, true);
+}
+
+void Client::setServerSettings(bool damage, bool suffocation, bool hunger)
+{
+	m_server_damage = damage;
+	m_server_suffocation = suffocation;
+	m_server_hunger = hunger;
 }
 
 void Client::removeNode(v3s16 p)

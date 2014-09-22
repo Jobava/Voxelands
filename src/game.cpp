@@ -2385,9 +2385,12 @@ void the_game(
 			Draw hotbar
 		*/
 		if (show_hud) {
+			s32 hunger = 0;
+			if (client.getServerHunger())
+				hunger = client.getHunger();
 			draw_hotbar(driver, font, v2s32(displaycenter.X, screensize.Y),
 					hotbar_imagesize, hotbar_itemcount, &local_inventory,
-					client.getHP(), client.getAir(), client.getHunger());
+					client.getHP(), client.getAir(), hunger);
 		}
 
 		/*

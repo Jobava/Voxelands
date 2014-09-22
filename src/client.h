@@ -332,6 +332,10 @@ public:
 	void setPointedNode(v3s16 p) {m_pointed_node = p;}
 	v3s16 getPointedNode() {return m_pointed_node;}
 
+	bool getServerDamage() {return m_server_damage;}
+	bool getServerSuffocation() {return m_server_suffocation;}
+	bool getServerHunger() {return m_server_hunger;}
+
 private:
 
 	// Virtual methods from con::PeerHandler
@@ -347,6 +351,8 @@ private:
 	// Send the item number 'item' as player item to the server
 	void sendPlayerItem(u16 item);
 
+	void setServerSettings(bool damage, bool suffocation, bool hunger);
+
 	float m_packetcounter_timer;
 	float m_connection_reinit_timer;
 	float m_avg_rtt_timer;
@@ -357,6 +363,11 @@ private:
 	MeshUpdateThread m_mesh_update_thread;
 
 	ClientEnvironment m_env;
+
+	// when connecting to a server it will give these via TOCLIENT_SERVERSETTINGS
+	bool m_server_damage;
+	bool m_server_suffocation;
+	bool m_server_hunger;
 
 	con::Connection m_con;
 	HTTPClient *m_httpclient;
