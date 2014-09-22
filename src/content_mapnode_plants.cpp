@@ -208,7 +208,7 @@ void content_mapnode_plants(bool repeat)
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_PLANTLIKE_LGE;
 	//f->is_ground_content = true;
-	f->air_equivalent = false; // grass grows underneath
+	f->air_equivalent = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
@@ -223,6 +223,7 @@ void content_mapnode_plants(bool repeat)
 	f = &content_features(i);
 	f->description = std::string("Leaves");
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
 	//f->is_ground_content = true;
 	if (new_style_leaves) {
@@ -254,6 +255,7 @@ void content_mapnode_plants(bool repeat)
 	f = &content_features(i);
 	f->description = std::string("Apple Tree Leaves");
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
 	//f->is_ground_content = true;
 	if (new_style_leaves) {
@@ -285,6 +287,7 @@ void content_mapnode_plants(bool repeat)
 	f = &content_features(i);
 	f->description = std::string("Jungle Leaves");
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
 	//f->is_ground_content = true;
 	if (new_style_leaves) {
@@ -316,6 +319,7 @@ void content_mapnode_plants(bool repeat)
 	f = &content_features(i);
 	f->description = std::string("Conifer Leaves");
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
 	//f->is_ground_content = true;
 	if (new_style_leaves) {
@@ -347,6 +351,7 @@ void content_mapnode_plants(bool repeat)
 	f = &content_features(i);
 	f->description = std::string("Trimmed Leaves");
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
 	if (new_style_leaves) {
 		f->draw_type = CDT_GLASSLIKE;
@@ -375,6 +380,7 @@ void content_mapnode_plants(bool repeat)
 	f = &content_features(i);
 	f->description = std::string("Trimmed Apple Tree Leaves");
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
 	if (new_style_leaves) {
 		f->draw_type = CDT_GLASSLIKE;
@@ -403,6 +409,7 @@ void content_mapnode_plants(bool repeat)
 	f = &content_features(i);
 	f->description = std::string("Trimmed Jungle Leaves");
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
 	if (new_style_leaves) {
 		f->draw_type = CDT_GLASSLIKE;
@@ -431,6 +438,7 @@ void content_mapnode_plants(bool repeat)
 	f = &content_features(i);
 	f->description = std::string("Trimmed Conifer Leaves");
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
 	if (new_style_leaves) {
 		f->draw_type = CDT_GLASSLIKE;
@@ -459,6 +467,7 @@ void content_mapnode_plants(bool repeat)
 	f = &content_features(i);
 	f->description = std::string("Apple Tree Blossom");
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
 	//f->is_ground_content = true;
 	if (new_style_leaves) {
@@ -487,6 +496,7 @@ void content_mapnode_plants(bool repeat)
 	f = &content_features(i);
 	f->description = std::string("Trimmed Apple Tree Blossom");
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
 	if (new_style_leaves) {
 		f->draw_type = CDT_GLASSLIKE;
@@ -785,7 +795,7 @@ void content_mapnode_plants(bool repeat)
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_PLANTLIKE;
-	f->air_equivalent = false; // grass grows underneath
+	f->air_equivalent = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WILDGRASS_SHORT)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
@@ -805,6 +815,7 @@ void content_mapnode_plants(bool repeat)
 	f->setAllTextureFlags(0);
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_PLANTLIKE;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -826,6 +837,7 @@ void content_mapnode_plants(bool repeat)
 	f->setAllTextureFlags(0);
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_PLANTLIKE;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -847,6 +859,7 @@ void content_mapnode_plants(bool repeat)
 	f->setAllTextureFlags(0);
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_PLANTLIKE;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -869,6 +882,7 @@ void content_mapnode_plants(bool repeat)
 	f->setAllTextureFlags(0);
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_PLANTLIKE;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -891,6 +905,7 @@ void content_mapnode_plants(bool repeat)
 	f->setAllTextureFlags(0);
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_PLANTLIKE;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";

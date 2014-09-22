@@ -93,10 +93,12 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	bool anisotropic;
 
 	std::wstring max_mob_level;
-	bool enable_damage;
 	bool initial_inventory;
 	bool infinite_inventory;
 	bool droppable_inventory;
+	bool enable_damage;
+	bool suffocation;
+	bool hunger;
 	bool tool_wear;
 
 	bool delete_map;
@@ -248,6 +250,27 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			enable_damage = ((gui::IGUICheckBox*)e)->isChecked();
 		else
 			enable_damage = m_data->enable_damage;
+	}
+	if (enable_damage) {
+		{
+			gui::IGUIElement *e = getElementFromId(GUI_ID_SUFFOCATE_CB);
+			if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+				suffocation = ((gui::IGUICheckBox*)e)->isChecked();
+			else
+				suffocation = m_data->suffocation;
+		}
+		{
+			gui::IGUIElement *e = getElementFromId(GUI_ID_HUNGER_CB);
+			if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+				hunger = ((gui::IGUICheckBox*)e)->isChecked();
+			else
+				hunger = m_data->hunger;
+		}
+	}else{
+		suffocation = false;
+		m_data->suffocation = false;
+		hunger = false;
+		m_data->hunger = false;
 	}
 	{
 		gui::IGUIElement *e = getElementFromId(GUI_ID_INFINITE_INV_CB);
@@ -641,28 +664,38 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(40, 230);
+			rect += topleft_content + v2s32(50, 230);
+			Environment->addCheckBox(suffocation, rect, this, GUI_ID_SUFFOCATE_CB, wgettext("Suffocation/Drowning"));
+		}
+		{
+			core::rect<s32> rect(0, 0, 200, 30);
+			rect += topleft_content + v2s32(50, 260);
+			Environment->addCheckBox(hunger, rect, this, GUI_ID_HUNGER_CB, wgettext("Hunger"));
+		}
+		{
+			core::rect<s32> rect(0, 0, 200, 30);
+			rect += topleft_content + v2s32(40, 290);
 			Environment->addCheckBox(tool_wear, rect, this, GUI_ID_TOOL_WEAR_CB, wgettext("Tool Wear"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(200, 200);
+			rect += topleft_content + v2s32(220, 200);
 			Environment->addCheckBox(infinite_inventory, rect, this, GUI_ID_INFINITE_INV_CB, wgettext("Infinite Inventory"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(210, 230);
+			rect += topleft_content + v2s32(230, 230);
 			Environment->addCheckBox(initial_inventory, rect, this, GUI_ID_INITIAL_INV_CB, wgettext("Initial Inventory"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(200, 260);
+			rect += topleft_content + v2s32(220, 260);
 			Environment->addCheckBox(droppable_inventory, rect, this, GUI_ID_DROPPABLE_INV_CB, wgettext("Droppable Inventory"));
 		}
 		// Start game button
 		{
 			core::rect<s32> rect(0, 0, 180, 30);
-			rect += topleft_content + v2s32(110, 310);
+			rect += topleft_content + v2s32(110, 340);
 			Environment->addButton(rect, this, GUI_ID_JOIN_GAME_BUTTON, wgettext("Start Game"));
 		}
 	}else if (m_data->selected_tab == TAB_SINGLEPLAYER_MAP) {
@@ -884,16 +917,28 @@ void GUIMainMenu::acceptInput()
 		}else{
 			set_adventure_defaults(&t_settings);
 		}
-		m_data->enable_damage = t_settings.getBool("enable_damage");
 		m_data->max_mob_level = narrow_to_wide(t_settings.get("max_mob_level"));
 		m_data->initial_inventory = t_settings.getBool("initial_inventory");
 		m_data->infinite_inventory = t_settings.getBool("infinite_inventory");
 		m_data->droppable_inventory = t_settings.getBool("droppable_inventory");
+		m_data->enable_damage = t_settings.getBool("enable_damage");
+		m_data->suffocation = t_settings.getBool("enable_suffocation");
+		m_data->hunger = t_settings.getBool("enable_hunger");
 		m_data->tool_wear = t_settings.getBool("tool_wear");
 		{
 			gui::IGUIElement *e = getElementFromId(GUI_ID_DAMAGE_CB);
 			if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
 				((gui::IGUICheckBox*)e)->setChecked(m_data->enable_damage);
+		}
+		{
+			gui::IGUIElement *e = getElementFromId(GUI_ID_SUFFOCATE_CB);
+			if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+				((gui::IGUICheckBox*)e)->setChecked(m_data->suffocation);
+		}
+		{
+			gui::IGUIElement *e = getElementFromId(GUI_ID_HUNGER_CB);
+			if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+				((gui::IGUICheckBox*)e)->setChecked(m_data->hunger);
 		}
 		{
 			gui::IGUIElement *e = getElementFromId(GUI_ID_MOBS_COMBO);
@@ -954,6 +999,31 @@ void GUIMainMenu::acceptInput()
 			gui::IGUIElement *e = getElementFromId(GUI_ID_DAMAGE_CB);
 			if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
 				m_data->enable_damage = ((gui::IGUICheckBox*)e)->isChecked();
+		}
+		if (m_data->enable_damage) {
+			{
+				gui::IGUIElement *e = getElementFromId(GUI_ID_SUFFOCATE_CB);
+				if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+					m_data->suffocation = ((gui::IGUICheckBox*)e)->isChecked();
+			}
+			{
+				gui::IGUIElement *e = getElementFromId(GUI_ID_HUNGER_CB);
+				if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+					m_data->hunger = ((gui::IGUICheckBox*)e)->isChecked();
+			}
+		}else{
+			{
+				m_data->suffocation = false;
+				gui::IGUIElement *e = getElementFromId(GUI_ID_SUFFOCATE_CB);
+				if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+					((gui::IGUICheckBox*)e)->setChecked(false);
+			}
+			{
+				m_data->hunger = false;
+				gui::IGUIElement *e = getElementFromId(GUI_ID_HUNGER_CB);
+				if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+					((gui::IGUICheckBox*)e)->setChecked(false);
+			}
 		}
 		{
 			gui::IGUIElement *e = getElementFromId(GUI_ID_INFINITE_INV_CB);
@@ -1083,7 +1153,8 @@ bool GUIMainMenu::OnEvent(const SEvent& event)
 		}
 		if (event.GUIEvent.EventType==gui::EGET_CHECKBOX_CHANGED) {
 			switch (event.GUIEvent.Caller->getID()) {
-			case GUI_ID_DAMAGE_CB:
+			case GUI_ID_SUFFOCATE_CB:
+			case GUI_ID_HUNGER_CB:
 			case GUI_ID_INITIAL_INV_CB:
 			case GUI_ID_DROPPABLE_INV_CB:
 			case GUI_ID_TOOL_WEAR_CB:
@@ -1094,6 +1165,7 @@ bool GUIMainMenu::OnEvent(const SEvent& event)
 			case GUI_ID_MAP_DELETE_CB: // Delete map
 			case GUI_ID_MAP_CLEAR_CB:
 			case GUI_ID_MAP_SEED_CB:
+			case GUI_ID_DAMAGE_CB:
 				acceptInput();
 				m_accepted = false;
 				regenerateGui(m_screensize);

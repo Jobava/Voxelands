@@ -984,6 +984,7 @@ void content_mapnode_furniture(bool repeat)
 	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_NODEBOX;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->rotate_tile_with_nodebox = true;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -1032,6 +1033,7 @@ void content_mapnode_furniture(bool repeat)
 	f->draw_type = CDT_NODEBOX;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire

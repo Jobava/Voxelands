@@ -965,6 +965,7 @@ void content_mapnode_special(bool repeat)
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->wallmount_alternate_node = CONTENT_SIGN_WALL;
 	f->roofmount_alternate_node = CONTENT_SIGN_UD;
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -995,6 +996,7 @@ void content_mapnode_special(bool repeat)
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->wallmount_alternate_node = CONTENT_SIGN_WALL;
 	f->floormount_alternate_node = CONTENT_SIGN;
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -1022,6 +1024,7 @@ void content_mapnode_special(bool repeat)
 	f->draw_type = CDT_NODEBOX;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->floormount_alternate_node = CONTENT_LOCKABLE_SIGN;
 	f->roofmount_alternate_node = CONTENT_LOCKABLE_SIGN_UD;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -1046,6 +1049,7 @@ void content_mapnode_special(bool repeat)
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->wallmount_alternate_node = CONTENT_LOCKABLE_SIGN_WALL;
 	f->roofmount_alternate_node = CONTENT_LOCKABLE_SIGN_UD;
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -1074,6 +1078,7 @@ void content_mapnode_special(bool repeat)
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->wallmount_alternate_node = CONTENT_LOCKABLE_SIGN_WALL;
 	f->floormount_alternate_node = CONTENT_LOCKABLE_SIGN;
 	f->param2_type = CPT_FACEDIR_SIMPLE;

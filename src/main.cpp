@@ -1198,11 +1198,13 @@ int main(int argc, char *argv[])
 				menudata.trilinear_filter = g_settings->getBool("trilinear_filter");
 				driver->setTextureCreationFlag(video::ETCF_CREATE_MIP_MAPS, menudata.mip_map);
 				menudata.game_mode = narrow_to_wide(g_settings->get("game_mode"));
-				menudata.enable_damage = g_settings->getBool("enable_damage");
 				menudata.max_mob_level = narrow_to_wide(g_settings->get("max_mob_level"));
 				menudata.initial_inventory = g_settings->getBool("initial_inventory");
 				menudata.infinite_inventory = g_settings->getBool("infinite_inventory");
 				menudata.droppable_inventory = g_settings->getBool("droppable_inventory");
+				menudata.enable_damage = g_settings->getBool("enable_damage");
+				menudata.suffocation = g_settings->getBool("enable_suffocation");
+				menudata.hunger = g_settings->getBool("enable_hunger");
 				menudata.tool_wear = g_settings->getBool("tool_wear");
 				menudata.delete_map = false;
 				menudata.clear_map = false;
@@ -1300,11 +1302,13 @@ int main(int argc, char *argv[])
 				g_settings->set("fullscreen", itos(menudata.fullscreen));
 				g_settings->set("enable_particles", itos(menudata.particles));
 				g_settings->set("game_mode", wide_to_narrow(menudata.game_mode));
-				g_settings->set("enable_damage", itos(menudata.enable_damage));
 				g_settings->set("max_mob_level", wide_to_narrow(menudata.max_mob_level));
 				g_settings->set("initial_inventory", itos(menudata.initial_inventory));
 				g_settings->set("infinite_inventory", itos(menudata.infinite_inventory));
 				g_settings->set("droppable_inventory", itos(menudata.droppable_inventory));
+				g_settings->set("enable_damage", itos(menudata.enable_damage));
+				g_settings->set("enable_suffocation", itos(menudata.suffocation));
+				g_settings->set("enable_hunger", itos(menudata.hunger));
 				g_settings->set("tool_wear", itos(menudata.tool_wear));
 
 				// Save settings

@@ -180,6 +180,7 @@ void content_mapnode_circuit(bool repeat)
 	f->param2_type = CPT_FACEDIR_WALLMOUNT;
 	f->draw_type = CDT_NODEBOX_META;
 	f->rotate_tile_with_nodebox = true;
+	f->air_equivalent = true;
 	f->is_ground_content = true;
 	f->energy_type = CET_SWITCH;
 	f->energy_drop = 0;
@@ -210,6 +211,7 @@ void content_mapnode_circuit(bool repeat)
 	f->param2_type = CPT_FACEDIR_WALLMOUNT;
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
+	f->air_equivalent = true;
 	f->energy_type = CET_SWITCH;
 	f->energy_drop = 0;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -475,6 +477,7 @@ void content_mapnode_circuit(bool repeat)
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_NODEBOX;
 	f->rotate_tile_with_nodebox = true;
+	f->air_equivalent = true;
 	f->special_alternate_node = CONTENT_CIRCUIT_PISTON;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_PISTON_OFF)+" 1";
 	f->setAllTextures("circuit_piston_arm.png");
@@ -537,6 +540,7 @@ void content_mapnode_circuit(bool repeat)
 	f = &content_features(i);
 	f->description = std::string("Piston Arm");
 	f->is_ground_content = true;
+	f->air_equivalent = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->visual_solidness = 1;
 	f->draw_type = CDT_NODEBOX;
@@ -599,6 +603,7 @@ void content_mapnode_circuit(bool repeat)
 	f = &content_features(i);
 	f->description = std::string("Piston Arm");
 	f->is_ground_content = true;
+	f->air_equivalent = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->visual_solidness = 1;
 	f->draw_type = CDT_NODEBOX;
@@ -672,6 +677,7 @@ void content_mapnode_circuit(bool repeat)
 	f = &content_features(i);
 	f->description = std::string("Sticky Piston Arm");
 	f->is_ground_content = true;
+	f->air_equivalent = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->visual_solidness = 1;
 	f->param_type = CPT_FACEDIR_SIMPLE;
@@ -739,6 +745,7 @@ void content_mapnode_circuit(bool repeat)
 	f = &content_features(i);
 	f->description = std::string("Sticky Piston Arm");
 	f->is_ground_content = true;
+	f->air_equivalent = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->visual_solidness = 1;
 	f->draw_type = CDT_NODEBOX;
@@ -801,6 +808,7 @@ void content_mapnode_circuit(bool repeat)
 	f = &content_features(i);
 	f->description = std::string("Sticky Piston Arm");
 	f->is_ground_content = true;
+	f->air_equivalent = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->visual_solidness = 1;
 	f->draw_type = CDT_NODEBOX;

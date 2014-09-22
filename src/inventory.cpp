@@ -251,11 +251,11 @@ bool CraftItem::use(ServerEnvironment *env, Player *player)
 		s16 hp_change = content_craftitem_features(m_content).edible;
 		if (hp_change) {
 			if (player->hunger < 20) {
-				if (player->hunger + hp_change > 20) {
+				if (player->hunger + (hp_change*2) > 20) {
 					hp_change -= 20-player->hunger;
 					player->hunger = 20;
 				}else{
-					player->hunger += hp_change;
+					player->hunger += (hp_change*2);
 					hp_change = 0;
 				}
 			}

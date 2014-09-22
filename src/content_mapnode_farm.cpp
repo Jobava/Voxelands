@@ -73,6 +73,7 @@ void content_mapnode_farm(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->is_ground_content = true;
+	f->air_equivalent = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/4;
@@ -94,6 +95,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
@@ -111,6 +113,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
@@ -129,6 +132,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
@@ -147,6 +151,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
@@ -164,6 +169,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
@@ -181,6 +187,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
@@ -198,6 +205,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
@@ -216,6 +224,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
@@ -233,6 +242,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_WHEAT)+" 1";
@@ -250,6 +260,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_WHEAT)+" 1";
@@ -267,6 +278,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_WHEAT)+" 1";
@@ -286,6 +298,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_WHEAT)+" 2";
@@ -474,6 +487,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_POTATO)+" 1";
@@ -493,6 +507,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_POTATO)+" 1";
@@ -512,6 +527,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_POTATO)+" 1";
@@ -531,6 +547,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_POTATO)+" 2";
@@ -550,6 +567,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_CARROT)+" 1";
@@ -569,6 +587,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_CARROT)+" 1";
@@ -588,6 +607,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_CARROT)+" 1";
@@ -607,6 +627,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_CARROT)+" 2";
@@ -626,6 +647,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_BEETROOT)+" 1";
@@ -645,6 +667,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_BEETROOT)+" 1";
@@ -664,6 +687,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_BEETROOT)+" 1";
@@ -683,6 +707,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_BEETROOT)+" 2";
@@ -702,6 +727,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_GRAPE)+" 1";
@@ -721,6 +747,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_GRAPE)+" 1";
@@ -740,6 +767,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_GRAPE)+" 1";
@@ -759,6 +787,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("CraftItem harvested_grape 3");
@@ -776,6 +805,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_COTTON)+" 1";
@@ -793,6 +823,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_COTTON)+" 1";
@@ -811,6 +842,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_COTTON)+" 1";
@@ -830,6 +862,7 @@ void content_mapnode_farm(bool repeat)
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_COTTON)+" 2";
@@ -849,6 +882,7 @@ void content_mapnode_farm(bool repeat)
 	f->solidness = 0;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_GRAPE)+" 1";
 	f->ondig_replace_node = CONTENT_TRELLIS;
@@ -868,6 +902,7 @@ void content_mapnode_farm(bool repeat)
 	f->solidness = 0;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_GRAPE)+" 1";
 	f->ondig_replace_node = CONTENT_TRELLIS;
@@ -887,6 +922,7 @@ void content_mapnode_farm(bool repeat)
 	f->solidness = 0;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_GRAPE)+" 1";
 	f->extra_dug_item = std::string("CraftItem harvested_grape 1");
@@ -908,6 +944,7 @@ void content_mapnode_farm(bool repeat)
 	f->solidness = 0;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_GRAPE)+" 2";
 	f->extra_dug_item = std::string("CraftItem harvested_grape 3");
@@ -929,6 +966,7 @@ void content_mapnode_farm(bool repeat)
 	f->solidness = 0;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ") + itos(CONTENT_DEAD_VINE)+" 1";
 	f->ondig_replace_node = CONTENT_TRELLIS;

@@ -48,7 +48,6 @@ enum {
 	GUI_ID_GAME_MODE_SURVIVAL,
 	GUI_ID_GAME_SETTINGS_ADV,
 	GUI_ID_GAME_SETTINGS_BASIC,
-	GUI_ID_DAMAGE_CB,
 	GUI_ID_MOBS_COMBO,
 	GUI_ID_MOBS_PASSIVE,
 	GUI_ID_MOBS_AGGRESSIVE,
@@ -56,7 +55,10 @@ enum {
 	GUI_ID_INITIAL_INV_CB,
 	GUI_ID_INFINITE_INV_CB,
 	GUI_ID_DROPPABLE_INV_CB,
+	GUI_ID_DAMAGE_CB,
 	GUI_ID_TOOL_WEAR_CB,
+	GUI_ID_SUFFOCATE_CB,
+	GUI_ID_HUNGER_CB,
 	GUI_ID_JOIN_GAME_BUTTON,
 	GUI_ID_CHANGE_KEYS_BUTTON,
 	GUI_ID_MAP_OPTIONS_BUTTON,
@@ -92,11 +94,13 @@ struct MainMenuData
 		fullscreen(false),
 		// Server opts
 		game_mode(L"adventure"),
-		enable_damage(true),
 		max_mob_level(L"aggressive"),
 		initial_inventory(true),
 		infinite_inventory(false),
 		droppable_inventory(true),
+		enable_damage(true),
+		suffocation(false),
+		hunger(false),
 		tool_wear(true),
 		// Actions
 		delete_map(false),
@@ -127,11 +131,13 @@ struct MainMenuData
 	bool fullscreen;
 	// Server options
 	std::wstring game_mode;
-	bool enable_damage;
 	std::wstring max_mob_level;
 	bool initial_inventory;
 	bool infinite_inventory;
 	bool droppable_inventory;
+	bool enable_damage;
+	bool suffocation;
+	bool hunger;
 	bool tool_wear;
 	// Map options
 	bool delete_map;

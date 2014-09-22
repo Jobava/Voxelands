@@ -43,6 +43,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -65,6 +66,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -92,6 +94,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -115,6 +118,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -144,6 +148,7 @@ void content_mapnode_door(bool repeat)
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
+	f->air_equivalent = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -165,6 +170,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -192,6 +198,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -215,6 +222,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -244,6 +252,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -268,6 +277,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -299,6 +309,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -321,6 +332,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -347,6 +359,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -370,6 +383,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -397,6 +411,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -420,6 +435,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -447,6 +463,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -470,6 +487,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -498,6 +516,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -522,6 +541,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -550,6 +570,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -571,6 +592,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -593,6 +615,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -614,6 +637,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -636,6 +660,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -658,6 +683,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -681,6 +707,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -702,6 +729,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -724,6 +752,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -746,6 +775,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -772,6 +802,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -795,6 +826,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -819,6 +851,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -842,6 +875,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -866,6 +900,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -890,6 +925,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -915,6 +951,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -938,6 +975,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -962,6 +1000,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -986,6 +1025,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -1008,6 +1048,7 @@ void content_mapnode_door(bool repeat)
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("hatch_wood_inv.png");
 	f->wield_nodebox = false;
+	f->air_equivalent = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1031,6 +1072,7 @@ void content_mapnode_door(bool repeat)
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("hatch_steel_inv.png");
 	f->wield_nodebox = false;
+	f->air_equivalent = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
@@ -1054,6 +1096,7 @@ void content_mapnode_door(bool repeat)
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("hatch_wood_w_inv.png");
 	f->wield_nodebox = false;
+	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
@@ -1079,6 +1122,7 @@ void content_mapnode_door(bool repeat)
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("hatch_steel_w_inv.png");
 	f->wield_nodebox = false;
+	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
@@ -1106,6 +1150,7 @@ void content_mapnode_door(bool repeat)
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("gate_wood_inv.png");
 	f->wield_nodebox = false;
+	f->air_equivalent = true;
 	f->jumpable = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
@@ -1135,6 +1180,7 @@ void content_mapnode_door(bool repeat)
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("gate_steel_inv.png");
 	f->wield_nodebox = false;
+	f->air_equivalent = true;
 	f->jumpable = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
@@ -1165,6 +1211,7 @@ void content_mapnode_door(bool repeat)
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("hatch_wood_inv.png");
 	f->wield_nodebox = false;
+	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
@@ -1189,6 +1236,7 @@ void content_mapnode_door(bool repeat)
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("hatch_steel_inv.png");
 	f->wield_nodebox = false;
+	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
@@ -1215,6 +1263,7 @@ void content_mapnode_door(bool repeat)
 	f->setInventoryTexture("hatch_wood_w_inv.png");
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
+	f->air_equivalent = true;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
@@ -1240,6 +1289,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -1264,6 +1314,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -1286,6 +1337,7 @@ void content_mapnode_door(bool repeat)
 	f->wield_nodebox = false;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
+	f->air_equivalent = true;
 	f->sunlight_propagates = true;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
