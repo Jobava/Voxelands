@@ -513,7 +513,7 @@ private:
 		Static send methods
 	*/
 
-	static void SendHP(con::Connection &con, u16 peer_id, u8 hp, u8 air);
+	static void SendHP(con::Connection &con, u16 peer_id, u8 hp, u8 air, u8 hunger);
 	static void SendAccessDenied(con::Connection &con, u16 peer_id,
 			const std::wstring &reason);
 	static void SendDeathscreen(con::Connection &con, u16 peer_id,
@@ -558,7 +558,7 @@ private:
 		Something random
 	*/
 
-	void HandlePlayerHP(Player *player, s16 damage, s16 suffocate);
+	void HandlePlayerHP(Player *player, s16 damage, s16 suffocate, s16 hunger);
 	void RespawnPlayer(Player *player);
 
 	void UpdateCrafting(u16 peer_id);

@@ -337,7 +337,8 @@ enum ClientEnvEventType
 {
 	CEE_NONE,
 	CEE_PLAYER_DAMAGE,
-	CEE_PLAYER_SUFFOCATE
+	CEE_PLAYER_SUFFOCATE,
+	CEE_PLAYER_HUNGER
 };
 
 struct ClientEnvEvent

@@ -4045,6 +4045,25 @@ void ClientEnvironment::step(float dtime)
 			event.type = CEE_PLAYER_SUFFOCATE;
 			event.player_damage.amount = -20;
 			m_client_event_queue.push_back(event);
+		}else{
+			f32 speed = lplayer->getSpeed().getLength();
+			s8 hungry = 0;
+			s32 chance = 100;
+			if (speed > 1.0) {
+				chance = 10;
+				if (speed > 50.0) {
+					chance = 0;
+					hungry = 1;
+				}
+			}
+			if (chance && myrand()%chance == 0)
+				hungry = 1;
+			if (hungry) {
+				ClientEnvEvent event;
+				event.type = CEE_PLAYER_HUNGER;
+				event.player_damage.amount = hungry;
+				m_client_event_queue.push_back(event);
+			}
 		}
 	}
 

@@ -120,6 +120,7 @@ enum ClientEventType
 	CE_NONE,
 	CE_PLAYER_DAMAGE,
 	CE_PLAYER_SUFFOCATE,
+	CE_PLAYER_HUNGER,
 	CE_PLAYER_FORCE_MOVE,
 	CE_DEATHSCREEN,
 };
@@ -208,7 +209,7 @@ public:
 	void sendChatMessage(const std::wstring &message);
 	void sendChangePassword(const std::wstring oldpassword,
 		const std::wstring newpassword);
-	void sendDamage(s8 damage, s8 suffocate);
+	void sendDamage(s8 damage, s8 suffocate, s8 hunger);
 	void sendRespawn();
 	void sendWantCookie();
 
@@ -262,6 +263,7 @@ public:
 
 	u16 getHP();
 	u16 getAir();
+	u16 getHunger();
 
 	void setTempMod(v3s16 p, NodeMod mod);
 	void clearTempMod(v3s16 p);

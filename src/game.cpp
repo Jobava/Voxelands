@@ -223,7 +223,7 @@ public:
 */
 void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 		v2s32 centerlowerpos, s32 imgsize, s32 itemcount,
-		Inventory *inventory, s32 halfheartcount, s32 halfbubblecount)
+		Inventory *inventory, s32 halfheartcount, s32 halfbubblecount, s32 halfhungercount)
 {
 	InventoryList *mainlist = inventory->getList("main");
 	if(mainlist == NULL)
@@ -286,7 +286,7 @@ void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 	} barData[3] = {
 		{halfheartcount/2,halfheartcount,"heart.png",true},
 		{halfbubblecount/2,halfbubblecount,"bubble.png",false},
-		{10,0,"heart.png",false},
+		{halfhungercount/2,halfhungercount,"harvested_carrot.png",true},
 	};
 	v2s32 bar_base(0,-25);
 	for (s32 k=0; k<3; k++) {
@@ -319,33 +319,6 @@ void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 		}
 		bar_base.Y -= 20;
 	}
-	//if (halfbubblecount < 20) {
-		//video::ITexture *bubble_texture = driver->getTexture(getTexturePath("bubble.png").c_str());
-		//v2s32 p = pos + v2s32(0, -40);
-		//for (s32 i=0; i<halfbubblecount/2; i++) {
-			//const video::SColor color(255,255,255,255);
-			//const video::SColor colors[] = {color,color,color,color};
-			//core::rect<s32> rect(0,0,16,16);
-			//rect += p;
-			//driver->draw2DImage(bubble_texture, rect,
-				//core::rect<s32>(core::position2d<s32>(0,0),
-				//core::dimension2di(bubble_texture->getOriginalSize())),
-				//NULL, colors, true);
-			//p += v2s32(16,0);
-		//}
-		//if (halfbubblecount % 2 == 1) {
-			//const video::SColor color(255,255,255,255);
-			//const video::SColor colors[] = {color,color,color,color};
-			//core::rect<s32> rect(0,0,16/2,16);
-			//rect += p;
-			//core::dimension2di srcd(bubble_texture->getOriginalSize());
-			//srcd.Width /= 2;
-			//driver->draw2DImage(bubble_texture, rect,
-				//core::rect<s32>(core::position2d<s32>(0,0), srcd),
-				//NULL, colors, true);
-			//p += v2s32(16,0);
-		//}
-	//}
 	if (selected != "") {
 		v2u32 dim = font->getDimension(narrow_to_wide(selected).c_str());
 		v2s32 sdim(dim.X,dim.Y);
@@ -2414,7 +2387,7 @@ void the_game(
 		if (show_hud) {
 			draw_hotbar(driver, font, v2s32(displaycenter.X, screensize.Y),
 					hotbar_imagesize, hotbar_itemcount, &local_inventory,
-					client.getHP(), client.getAir());
+					client.getHP(), client.getAir(), client.getHunger());
 		}
 
 		/*

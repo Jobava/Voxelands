@@ -546,7 +546,7 @@ void Client::step(float dtime)
 			}else if (event.type == CEE_PLAYER_DAMAGE) {
 				if (m_ignore_damage_timer <= 0) {
 					s8 damage = event.player_damage.amount;
-					sendDamage(damage,0);
+					sendDamage(damage,0,0);
 
 					// Add to ClientEvent queue
 					ClientEvent event;
@@ -557,12 +557,29 @@ void Client::step(float dtime)
 			}else if (event.type == CEE_PLAYER_SUFFOCATE) {
 				if (m_ignore_damage_timer <= 0) {
 					s8 damage = event.player_damage.amount;
-					sendDamage(0,damage);
+					sendDamage(0,damage,0);
 
 					// Add to ClientEvent queue
 					ClientEvent event;
 					event.type = CE_PLAYER_SUFFOCATE;
+					// this will cause the damage screen to flash
+					// when suffocation starts effecting damage
 					if (getAir() < 1 && damage > 0)
+						event.type = CE_PLAYER_DAMAGE;
+					event.player_damage.amount = damage;
+					m_client_event_queue.push_back(event);
+				}
+			}else if (event.type == CEE_PLAYER_HUNGER) {
+				if (m_ignore_damage_timer <= 0) {
+					s8 damage = event.player_damage.amount;
+					sendDamage(0,0,damage);
+
+					// Add to ClientEvent queue
+					ClientEvent event;
+					event.type = CE_PLAYER_HUNGER;
+					// this will cause the damage screen to flash
+					// when hunger starts effecting damage
+					if (getHunger() < 1 && damage > 0)
 						event.type = CE_PLAYER_DAMAGE;
 					event.player_damage.amount = damage;
 					m_client_event_queue.push_back(event);
@@ -1131,8 +1148,10 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		assert(player != NULL);
 		u8 hp = readU8(is);
 		u8 air = readU8(is);
+		u8 hunger = readU8(is);
 		player->hp = hp;
 		player->air = air;
+		player->hunger = hunger;
 	}
 	else if(command == TOCLIENT_INVENTORY)
 	{
@@ -1732,7 +1751,7 @@ void Client::sendChangePassword(const std::wstring oldpassword,
 }
 
 
-void Client::sendDamage(s8 damage,s8 suffocate)
+void Client::sendDamage(s8 damage,s8 suffocate,s8 hunger)
 {
 	DSTACK(__FUNCTION_NAME);
 	std::ostringstream os(std::ios_base::binary);
@@ -1740,6 +1759,7 @@ void Client::sendDamage(s8 damage,s8 suffocate)
 	writeU16(os, TOSERVER_PLAYERDAMAGE);
 	writeS8(os, damage);
 	writeS8(os, suffocate);
+	writeS8(os, hunger);
 
 	// Make data buffer
 	std::string s = os.str();
@@ -2106,6 +2126,13 @@ u16 Client::getAir()
 	Player *player = m_env.getLocalPlayer();
 	assert(player != NULL);
 	return player->air;
+}
+
+u16 Client::getHunger()
+{
+	Player *player = m_env.getLocalPlayer();
+	assert(player != NULL);
+	return player->hunger;
 }
 
 void Client::setTempMod(v3s16 p, NodeMod mod)

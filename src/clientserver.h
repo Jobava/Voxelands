@@ -85,8 +85,9 @@ enum ToClientCommand
 	TOCLIENT_PLAYERHP = 0x26,
 	/*
 		u16 command
-		u8 hp
-
+		s8 hp
+		s8 air
+		s8 hunger
 	*/
 
 	TOCLIENT_INVENTORY = 0x27,
@@ -287,8 +288,9 @@ enum ToServerCommand
 	TOSERVER_PLAYERDAMAGE = 0x29,
 	/*
 		u16 command
-		u8 damage_amount
-		u8 suffocate_amount
+		s8 damage_amount
+		s8 suffocate_amount
+		s8 hunger_amount
 	*/
 
 	TOSERVER_SIGNTEXT = 0x30, // Old signs

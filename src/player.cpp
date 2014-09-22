@@ -38,6 +38,8 @@ Player::Player():
 	inventory_backup(NULL),
 	craftresult_is_preview(true),
 	hp(20),
+	air(20),
+	hunger(20),
 	peer_id(PEER_ID_INEXISTENT),
 	m_selected_item(0),
 	m_pitch(0),
@@ -119,6 +121,8 @@ void Player::serialize(std::ostream &os)
 	args.setV3F("position", m_position);
 	args.setBool("craftresult_is_preview", craftresult_is_preview);
 	args.setS32("hp", hp);
+	args.setS32("air", air);
+	args.setS32("hunger", hunger);
 	if (m_hashome)
 		args.setV3F("home",m_home);
 
@@ -169,6 +173,16 @@ void Player::deSerialize(std::istream &is)
 		hp = args.getS32("hp");
 	}catch(SettingNotFoundException &e){
 		hp = 20;
+	}
+	try{
+		air = args.getS32("air");
+	}catch(SettingNotFoundException &e){
+		air = 20;
+	}
+	try{
+		hunger = args.getS32("hunger");
+	}catch(SettingNotFoundException &e){
+		hunger = 20;
 	}
 	try{
 		m_home = args.getV3F("home");
@@ -407,8 +421,7 @@ LocalPlayer::LocalPlayer():
 	// Initialize hp to 0, so that no hearts will be shown if server
 	// doesn't support health points
 	hp = 0;
-	// Likewise, initialize air to 20, so that no bubbles will be shown
-	air = 20;
+	hunger = 0;
 }
 
 LocalPlayer::~LocalPlayer()

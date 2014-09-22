@@ -153,6 +153,7 @@ void set_creative_defaults(Settings *settings)
 	settings->setDefault("droppable_inventory", "false");
 	settings->setDefault("enable_damage", "false");
 	settings->setDefault("enable_suffocation", "false");
+	settings->setDefault("enable_hunger", "false");
 	settings->setDefault("max_mob_level", "passive");
 	settings->setDefault("initial_inventory", "false");
 	settings->setDefault("tool_wear","false");
@@ -164,6 +165,7 @@ void set_adventure_defaults(Settings *settings)
 	settings->setDefault("droppable_inventory", "true");
 	settings->setDefault("enable_damage", "true");
 	settings->setDefault("enable_suffocation", "false");
+	settings->setDefault("enable_hunger", "false");
 	settings->setDefault("max_mob_level", "aggressive");
 	settings->setDefault("initial_inventory", "true");
 	settings->setDefault("tool_wear","true");
@@ -175,6 +177,7 @@ void set_survival_defaults(Settings *settings)
 	settings->setDefault("droppable_inventory", "true");
 	settings->setDefault("enable_damage", "true");
 	settings->setDefault("enable_suffocation", "true");
+	settings->setDefault("enable_hunger", "true");
 	settings->setDefault("max_mob_level", "aggressive");
 	settings->setDefault("initial_inventory", "false");
 	settings->setDefault("tool_wear","true");
