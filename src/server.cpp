@@ -4283,25 +4283,29 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		s8 suffocate = readS8(is);
 		s8 hunger = readS8(is);
 
-		if (damage && g_settings->getBool("enable_damage")) {
-			actionstream<<player->getName()<<" damaged by "
-					<<(int)damage<<" hp at "<<PP(player->getPosition()/BS)
-					<<std::endl;
+		if (g_settings->getBool("enable_damage")) {
+			if (damage) {
+				actionstream<<player->getName()<<" damaged by "
+						<<(int)damage<<" hp at "<<PP(player->getPosition()/BS)
+						<<std::endl;
+			}
+			if (suffocate && g_settings->getBool("enable_suffocation")) {
+				actionstream<<player->getName()<<" lost "
+						<<(int)suffocate<<" air at "<<PP(player->getPosition()/BS)
+						<<std::endl;
+			}else{
+				suffocate = 0;
+			}
+			if (hunger && g_settings->getBool("enable_hunger")) {
+				actionstream<<player->getName()<<" lost "
+						<<(int)hunger<<" hunger at "<<PP(player->getPosition()/BS)
+						<<std::endl;
+			}else{
+				hunger = 0;
+			}
 		}else{
 			damage = 0;
-		}
-		if (suffocate && g_settings->getBool("enable_suffocation")) {
-			actionstream<<player->getName()<<" lost "
-					<<(int)suffocate<<" air at "<<PP(player->getPosition()/BS)
-					<<std::endl;
-		}else{
 			suffocate = 0;
-		}
-		if (hunger && g_settings->getBool("enable_hunger")) {
-			actionstream<<player->getName()<<" lost "
-					<<(int)hunger<<" hunger at "<<PP(player->getPosition()/BS)
-					<<std::endl;
-		}else{
 			hunger = 0;
 		}
 
