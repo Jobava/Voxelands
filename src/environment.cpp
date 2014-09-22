@@ -4003,8 +4003,7 @@ void ClientEnvironment::step(float dtime)
 	/*
 		A quick draft of lava damage
 	*/
-	if(m_lava_hurt_interval.step(dtime, 1.0))
-	{
+	if (m_lava_hurt_interval.step(dtime, 1.0)) {
 		v3f pf = lplayer->getPosition();
 
 		v3s16 pp = floatToInt(pf, BS);
@@ -4014,8 +4013,7 @@ void ClientEnvironment::step(float dtime)
 		v3s16 p2 = floatToInt(pf + v3f(0, BS*0.8, 0), BS);
 		MapNode n2 = m_map->getNodeNoEx(p2);
 		v3s16 p3 = floatToInt(pf + v3f(0, BS*1.6, 0), BS);
-		MapNode n3 = m_map->getNodeNoEx(p2);
-
+		MapNode n3 = m_map->getNodeNoEx(p3);
 		u32 damage_per_second = 0;
 		damage_per_second = MYMAX(damage_per_second,
 				content_features(n1).damage_per_second);
@@ -4024,17 +4022,9 @@ void ClientEnvironment::step(float dtime)
 		damage_per_second = MYMAX(damage_per_second,
 				content_features(n3).damage_per_second);
 		if (damage_per_second == 0 && pp.Y > 60 && pp.Y < 200 && myrand()%10 == 0) {
-			bool found = false;
-			for (s16 x=-4; !found && x<5; x++) {
-			for (s16 y=-2; !found && y<5; y++) {
-			for (s16 z=-4; !found && z<5; z++) {
-				n1 = m_map->getNodeNoEx(pp + v3s16(x,y,z));
-				if (n1.getContent() == CONTENT_FIRE)
-					found = true;
-			}
-			}
-			}
-			if (!found)
+			std::vector<content_t> search;
+			search.push_back(CONTENT_FIRE);
+			if (!searchNear(pp,v3s16(-4,-2,-4),v3s16(5,5,5),search,NULL))
 				damage_per_second = MYMAX(damage_per_second,1);
 		}
 
@@ -4328,6 +4318,53 @@ ClientEnvEvent ClientEnvironment::getClientEvent()
 		return event;
 	}
 	return m_client_event_queue.pop_front();
+}
+
+bool ClientEnvironment::searchNear(v3s16 pos, v3s16 radius_min, v3s16 radius_max, std::vector<content_t> c, v3s16 *found)
+{
+	for(s16 x=-radius_min.X; x<=radius_max.X; x++) {
+		for(s16 y=-radius_min.Y; y<=radius_max.Y; y++) {
+			for(s16 z=-radius_min.Z; z<=radius_max.Z; z++) {
+				if (!x && !y && !z)
+					continue;
+				MapNode n_test = m_map->getNodeNoEx(pos+v3s16(x,y,z));
+				for (std::vector<content_t>::iterator i=c.begin(); i != c.end(); i++) {
+					if (n_test.getContent() == *i) {
+						if (found != NULL)
+							*found = pos+v3s16(x,y,z);
+						return true;
+					}
+				}
+			}
+		}
+	}
+	return false;
+}
+
+bool ClientEnvironment::searchNearInv(v3s16 pos, v3s16 radius_min, v3s16 radius_max, std::vector<content_t> c, v3s16 *found)
+{
+	for(s16 x=radius_min.X; x<=radius_max.X; x++) {
+		for(s16 y=radius_min.Y; y<=radius_max.Y; y++) {
+			for(s16 z=radius_min.Z; z<=radius_max.Z; z++) {
+				if (!x && !y && !z)
+					continue;
+				MapNode n_test = m_map->getNodeNoEx(pos+v3s16(x,y,z));
+				bool s = false;
+				for (std::vector<content_t>::iterator i=c.begin(); i != c.end(); i++) {
+					if (n_test.getContent() == *i) {
+						s = true;
+						break;
+					}
+				}
+				if (!s) {
+					if (found != NULL)
+						*found = pos+v3s16(x,y,z);
+					return true;
+				}
+			}
+		}
+	}
+	return false;
 }
 
 void ClientEnvironment::updateObjectsCameraOffset(v3s16 camera_offset)

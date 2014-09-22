@@ -321,29 +321,6 @@ private:
 	float m_game_time_fraction_counter;
 };
 
-/*
-	Active block modifier interface.
-
-	These are fed into ServerEnvironment at initialization time;
-	ServerEnvironment handles deleting them.
-*/
-
-class ActiveBlockModifier
-{
-public:
-	ActiveBlockModifier(){};
-	virtual ~ActiveBlockModifier(){};
-
-	//virtual core::list<u8> update(ServerEnvironment *env) = 0;
-	virtual u32 getTriggerContentCount(){ return 1;}
-	virtual u8 getTriggerContent(u32 i) = 0;
-	virtual float getActiveInterval() = 0;
-	// chance of (1 / return value), 0 is disallowed
-	virtual u32 getActiveChance() = 0;
-	// This is called usually at interval for 1/chance of the nodes
-	virtual void triggerEvent(ServerEnvironment *env, v3s16 p) = 0;
-};
-
 #ifndef SERVER
 
 #include "clientobject.h"
@@ -453,6 +430,31 @@ public:
 
 	// Get event from queue. CEE_NONE is returned if queue is empty.
 	ClientEnvEvent getClientEvent();
+
+	// search for c within radius of pos
+	bool searchNear(v3s16 pos, v3s16 radius_min, v3s16 radius_max, std::vector<content_t> c, v3s16 *found);
+	bool searchNear(v3s16 pos, v3s16 radius, std::vector<content_t> c, v3s16 *found)
+	{
+		return searchNear(pos,radius,radius,c,found);
+	}
+	bool searchNear(v3s16 pos, v3s16 radius, content_t c, v3s16 *found)
+	{
+		std::vector<content_t> search;
+		search.push_back(c);
+		return searchNear(pos,radius,radius,search,found);
+	}
+	// search for not c within radius of pos
+	bool searchNearInv(v3s16 pos, v3s16 radius_min, v3s16 radius_max, std::vector<content_t> c, v3s16 *found);
+	bool searchNearInv(v3s16 pos, v3s16 radius, std::vector<content_t> c, v3s16 *found)
+	{
+		return searchNearInv(pos,radius,radius,c,found);
+	}
+	bool searchNearInv(v3s16 pos, v3s16 radius, content_t c, v3s16 *found)
+	{
+		std::vector<content_t> search;
+		search.push_back(c);
+		return searchNearInv(pos,radius,radius,search,found);
+	}
 
 private:
 	Client *m_client;
