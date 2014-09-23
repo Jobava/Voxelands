@@ -261,10 +261,9 @@ void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 
 			if (item != NULL) {
 				drawInventoryItem(driver, font, item, rect, NULL);
-				std::string name = item->getGuiName();
-				if (name != "") {
-					selected = name;
-				}
+				std::wstring name = item->getGuiName();
+				if (name != L"")
+					selected = wide_to_narrow(name);
 			}
 		}else{
 			video::SColor bgcolor2(128,0,0,0);
@@ -682,7 +681,7 @@ void update_skybox(video::IVideoDriver* driver,
 	Draws a screen with logo and text on it.
 	Text will be removed when the screen is drawn the next time.
 */
-void drawLoadingScreen(video::IVideoDriver* driver, const char* msg)
+void drawLoadingScreen(video::IVideoDriver* driver, const std::wstring msg)
 {
 	if (driver == NULL)
 		return;
@@ -702,8 +701,8 @@ void drawLoadingScreen(video::IVideoDriver* driver, const char* msg)
 	}
 	if (guienv) {
 		std::wstring m;
-		if (msg) {
-			m = narrow_to_wide(msg);
+		if (msg != L"") {
+			m = msg;
 		}else{
 			m = L"Loading";
 		}
@@ -782,7 +781,7 @@ void the_game(
 		Draw "Loading" screen
 	*/
 	//draw_load_screen(L"Loading...", driver, font);
-	drawLoadingScreen(driver,"Loading...");
+	drawLoadingScreen(driver,wgettext("Loading..."));
 
 	/*
 		Create server.
@@ -791,7 +790,7 @@ void the_game(
 	SharedPtr<Server> server;
 	if(address == ""){
 		//draw_load_screen(L"Creating server...", driver, font);
-		drawLoadingScreen(driver,"Creating server...");
+		drawLoadingScreen(driver,wgettext("Creating server..."));
 		infostream<<"Creating server"<<std::endl;
 		server = new Server(map_dir, configpath);
 		server->start(port);
@@ -802,12 +801,12 @@ void the_game(
 	*/
 
 	//draw_load_screen(L"Creating client...", driver, font);
-	drawLoadingScreen(driver,"Creating client...");
+	drawLoadingScreen(driver,wgettext("Creating client..."));
 	infostream<<"Creating client"<<std::endl;
 	MapDrawControl draw_control;
 	Client client(device, playername.c_str(), password, draw_control, sound);
 
-	drawLoadingScreen(driver,"Resolving address...");
+	drawLoadingScreen(driver,wgettext("Resolving address..."));
 	Address connect_address(0,0,0,0, port);
 	try{
 		if(address == "")
@@ -852,12 +851,12 @@ void the_game(
 				break;
 			}
 
-			std::ostringstream ss;
-			ss<<"Connecting to server... (timeout in ";
+			std::wostringstream ss;
+			ss<<wgettext("Connecting to server... (timeout in ");
 			ss<<(int)(10.0 - time_counter + 1.0);
-			ss<<" seconds)";
+			ss<<wgettext(" seconds)");
 			//draw_load_screen(ss.str(), driver, font);
-			drawLoadingScreen(driver,ss.str().c_str());
+			drawLoadingScreen(driver,ss.str());
 
 			// Update client and server
 			client.step(0.1);
@@ -2448,7 +2447,7 @@ void the_game(
 		generator and other stuff quits
 	*/
 	{
-		drawLoadingScreen(driver,"Shutting down...");
+		drawLoadingScreen(driver,wgettext("Shutting down..."));
 	}
 }
 

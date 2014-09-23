@@ -19,10 +19,10 @@
 #define WATER_VISC 1
 #define LAVA_VISC 7
 
-void content_nodedef_knob(content_t nodeid, content_t source_node, ContentMaterialType material_type, const char* texture, const char* desc)
+void content_nodedef_knob(content_t nodeid, content_t source_node, ContentMaterialType material_type, const char* texture, const std::wstring desc)
 {
 	ContentFeatures *features = &content_features(nodeid);
-	features->description = std::string(desc);
+	features->description = std::wstring(desc);
 	features->setAllTextures(texture);
 	features->param_type = CPT_LIGHT;
 	features->param2_type = CPT_FACEDIR_WALLMOUNT;
@@ -39,7 +39,7 @@ void content_nodedef_knob(content_t nodeid, content_t source_node, ContentMateri
 		content_t recipe[9] = {
 		CONTENT_IGNORE, CONTENT_IGNORE, CONTENT_IGNORE,
 		source_node   , source_node   , CONTENT_IGNORE,
-		CONTENT_IGNORE, CONTENT_IGNORE, CONTENT_IGNORE};	
+		CONTENT_IGNORE, CONTENT_IGNORE, CONTENT_IGNORE};
 
 		crafting::setRecipe(recipe, nodeid, 2);
 	}

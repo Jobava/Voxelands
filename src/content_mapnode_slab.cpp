@@ -24,6 +24,7 @@
 #include "content_list.h"
 #include "content_craft.h"
 #include "content_nodemeta.h"
+#include "gettext.h"
 
 void content_mapnode_slab(bool repeat)
 {
@@ -33,7 +34,7 @@ void content_mapnode_slab(bool repeat)
 	// slabs
 	i = CONTENT_ROUGHSTONE_SLAB;
 	f = &content_features(i);
-	f->description = std::string("Rough Stone Slab");
+	f->description = wgettext("Rough Stone Slab");
 	f->setAllTextures("roughstone.png");
 	f->param_type = CPT_NONE;
 	f->draw_type = CDT_NODEBOX;
@@ -51,7 +52,7 @@ void content_mapnode_slab(bool repeat)
 
 	i = CONTENT_COBBLE_SLAB;
 	f = &content_features(i);
-	f->description = std::string("Cobble Stone Slab");
+	f->description = wgettext("Cobble Stone Slab");
 	f->setAllTextures("cobble.png");
 	f->param_type = CPT_NONE;
 	f->draw_type = CDT_NODEBOX;
@@ -69,7 +70,7 @@ void content_mapnode_slab(bool repeat)
 
 	i = CONTENT_MOSSYCOBBLE_SLAB;
 	f = &content_features(i);
-	f->description = std::string("Mossy Cobble Stone Slab");
+	f->description = wgettext("Mossy Cobble Stone Slab");
 	f->setAllTextures("mossycobble.png");
 	f->param_type = CPT_NONE;
 	f->draw_type = CDT_NODEBOX;
@@ -87,7 +88,7 @@ void content_mapnode_slab(bool repeat)
 
 	i = CONTENT_STONE_SLAB;
 	f = &content_features(i);
-	f->description = std::string("Stone Slab");
+	f->description = wgettext("Stone Slab");
 	f->setAllTextures("stone.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -104,7 +105,7 @@ void content_mapnode_slab(bool repeat)
 
 	i = CONTENT_WOOD_SLAB;
 	f = &content_features(i);
-	f->description = std::string("Wood Slab");
+	f->description = wgettext("Wood Slab");
 	f->setAllTextures("wood.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -123,7 +124,7 @@ void content_mapnode_slab(bool repeat)
 
 	i = CONTENT_JUNGLE_SLAB;
 	f = &content_features(i);
-	f->description = std::string("Jungle Wood Slab");
+	f->description = wgettext("Jungle Wood Slab");
 	f->setAllTextures("junglewood.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -142,7 +143,7 @@ void content_mapnode_slab(bool repeat)
 
 	i = CONTENT_BRICK_SLAB;
 	f = &content_features(i);
-	f->description = std::string("Brick Slab");
+	f->description = wgettext("Brick Slab");
 	f->setAllTextures("brick.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -159,7 +160,7 @@ void content_mapnode_slab(bool repeat)
 
 	i = CONTENT_SANDSTONE_SLAB;
 	f = &content_features(i);
-	f->description = std::string("Sand Stone Slab");
+	f->description = wgettext("Sand Stone Slab");
 	f->setAllTextures("sandstone.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -176,7 +177,7 @@ void content_mapnode_slab(bool repeat)
 
 	i = CONTENT_GLASS_SLAB;
 	f = &content_features(i);
-	f->description = std::string("Glass Slab");
+	f->description = wgettext("Glass Slab");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -201,7 +202,7 @@ void content_mapnode_slab(bool repeat)
 
 	i = CONTENT_GLASS_BLUE_SLAB;
 	f = &content_features(i);
-	f->description = std::string("Blue Glass Slab");
+	f->description = wgettext("Blue Glass Slab");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -227,7 +228,7 @@ void content_mapnode_slab(bool repeat)
 
 	i = CONTENT_GLASS_GREEN_SLAB;
 	f = &content_features(i);
-	f->description = std::string("Green Glass Slab");
+	f->description = wgettext("Green Glass Slab");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -253,7 +254,7 @@ void content_mapnode_slab(bool repeat)
 
 	i = CONTENT_GLASS_ORANGE_SLAB;
 	f = &content_features(i);
-	f->description = std::string("Orange Glass Slab");
+	f->description = wgettext("Orange Glass Slab");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -279,7 +280,7 @@ void content_mapnode_slab(bool repeat)
 
 	i = CONTENT_GLASS_PURPLE_SLAB;
 	f = &content_features(i);
-	f->description = std::string("Purple Glass Slab");
+	f->description = wgettext("Purple Glass Slab");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -305,7 +306,7 @@ void content_mapnode_slab(bool repeat)
 
 	i = CONTENT_GLASS_RED_SLAB;
 	f = &content_features(i);
-	f->description = std::string("Red Glass Slab");
+	f->description = wgettext("Red Glass Slab");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -331,7 +332,7 @@ void content_mapnode_slab(bool repeat)
 
 	i = CONTENT_GLASS_YELLOW_SLAB;
 	f = &content_features(i);
-	f->description = std::string("Yellow Glass Slab");
+	f->description = wgettext("Yellow Glass Slab");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -357,7 +358,7 @@ void content_mapnode_slab(bool repeat)
 
 	i = CONTENT_GLASS_BLACK_SLAB;
 	f = &content_features(i);
-	f->description = std::string("Black Glass Slab");
+	f->description = wgettext("Black Glass Slab");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -398,7 +399,7 @@ void content_mapnode_slab(bool repeat)
 
 	i = CONTENT_COBBLE_SLAB_UD;
 	f = &content_features(i);
-	f->description = std::string("Cobble Stone Slab");
+	f->description = wgettext("Cobble Stone Slab");
 	f->setAllTextures("cobble.png");
 	f->param_type = CPT_NONE;
 	f->draw_type = CDT_NODEBOX;
@@ -496,7 +497,7 @@ void content_mapnode_slab(bool repeat)
 
 	i = CONTENT_GLASS_SLAB_UD;
 	f = &content_features(i);
-	f->description = std::string("Glass Slab");
+	f->description = wgettext("Glass Slab");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -518,7 +519,7 @@ void content_mapnode_slab(bool repeat)
 
 	i = CONTENT_GLASS_BLUE_SLAB_UD;
 	f = &content_features(i);
-	f->description = std::string("Blue Glass Slab");
+	f->description = wgettext("Blue Glass Slab");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -540,7 +541,7 @@ void content_mapnode_slab(bool repeat)
 
 	i = CONTENT_GLASS_GREEN_SLAB_UD;
 	f = &content_features(i);
-	f->description = std::string("Green Glass Slab");
+	f->description = wgettext("Green Glass Slab");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -562,7 +563,7 @@ void content_mapnode_slab(bool repeat)
 
 	i = CONTENT_GLASS_ORANGE_SLAB_UD;
 	f = &content_features(i);
-	f->description = std::string("Orange Glass Slab");
+	f->description = wgettext("Orange Glass Slab");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -584,7 +585,7 @@ void content_mapnode_slab(bool repeat)
 
 	i = CONTENT_GLASS_PURPLE_SLAB_UD;
 	f = &content_features(i);
-	f->description = std::string("Purple Glass Slab");
+	f->description = wgettext("Purple Glass Slab");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -606,7 +607,7 @@ void content_mapnode_slab(bool repeat)
 
 	i = CONTENT_GLASS_RED_SLAB_UD;
 	f = &content_features(i);
-	f->description = std::string("Red Glass Slab");
+	f->description = wgettext("Red Glass Slab");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -628,7 +629,7 @@ void content_mapnode_slab(bool repeat)
 
 	i = CONTENT_GLASS_YELLOW_SLAB_UD;
 	f = &content_features(i);
-	f->description = std::string("Yellow Glass Slab");
+	f->description = wgettext("Yellow Glass Slab");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -650,7 +651,7 @@ void content_mapnode_slab(bool repeat)
 
 	i = CONTENT_GLASS_BLACK_SLAB_UD;
 	f = &content_features(i);
-	f->description = std::string("Black Glass Slab");
+	f->description = wgettext("Black Glass Slab");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;

@@ -556,11 +556,11 @@ void GUIFormSpecMenu::drawList(const ListDrawSpec &s, int phase)
 		if (item) {
 			drawInventoryItem(driver, font, item, rect, &AbsoluteClippingRect);
 			if (rect.isPointInside(m_pointer)) {
-				std::string name = item->getGuiName();
-				if (name != "") {
+				std::wstring name = item->getGuiName();
+				if (name != L"") {
 					m_tooltip_element->setVisible(true);
 					this->bringToFront(m_tooltip_element);
-					m_tooltip_element->setText(narrow_to_wide(name).c_str());
+					m_tooltip_element->setText(name.c_str());
 					s32 tooltip_x = m_pointer.X + 15;
 					s32 tooltip_y = m_pointer.Y + 15;
 					s32 tooltip_width = m_tooltip_element->getTextWidth() + 14;

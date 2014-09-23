@@ -67,7 +67,7 @@ public:
 	// get the content type
 	content_t getContent() {return m_content;}
 	// this is used for tool tips
-	virtual std::string getGuiName() { return ""; }
+	virtual std::wstring getGuiName() { return L""; }
 	// Shall return a text to show in the GUI
 	virtual std::string getText() { return ""; }
 	// Returns the string used for inventory
@@ -173,7 +173,7 @@ public:
 		return content_features(m_content).inventory_texture;
 	}
 #endif
-	std::string getGuiName()
+	std::wstring getGuiName()
 	{
 		return content_features(m_content).description;
 	}
@@ -260,7 +260,7 @@ public:
 	video::ITexture * getImage() const;
 #endif
 
-	std::string getGuiName();
+	std::wstring getGuiName();
 
 	std::string getText()
 	{
@@ -380,7 +380,7 @@ public:
 		return g_texturesource->getTextureRaw(getBasename());
 	}
 #endif
-	std::string getGuiName() {
+	std::wstring getGuiName() {
 		return content_toolitem_features(m_content).description;
 	}
 	std::string getText()

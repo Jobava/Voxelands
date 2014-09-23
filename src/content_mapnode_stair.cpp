@@ -24,6 +24,7 @@
 #include "content_list.h"
 #include "content_craft.h"
 #include "content_nodemeta.h"
+#include "gettext.h"
 
 void content_mapnode_stair(bool repeat)
 {
@@ -34,7 +35,7 @@ void content_mapnode_stair(bool repeat)
 	i = CONTENT_ROUGHSTONE_STAIR;
 	f = &content_features(i);
 
-	f->description = std::string("Rough Stone Stair");
+	f->description = wgettext("Rough Stone Stair");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("roughstone.png");
 	f->draw_type = CDT_NODEBOX;
@@ -51,7 +52,7 @@ void content_mapnode_stair(bool repeat)
 
 	i = CONTENT_COBBLE_STAIR;
 	f = &content_features(i);
-	f->description = std::string("Cobble Stone Stair");
+	f->description = wgettext("Cobble Stone Stair");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("cobble.png");
 	f->draw_type = CDT_NODEBOX;
@@ -68,7 +69,7 @@ void content_mapnode_stair(bool repeat)
 
 	i = CONTENT_MOSSYCOBBLE_STAIR;
 	f = &content_features(i);
-	f->description = std::string("Mossy Cobble Stone Stair");
+	f->description = wgettext("Mossy Cobble Stone Stair");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("mossycobble.png");
 	f->draw_type = CDT_NODEBOX;
@@ -85,7 +86,7 @@ void content_mapnode_stair(bool repeat)
 
 	i = CONTENT_STONE_STAIR;
 	f = &content_features(i);
-	f->description = std::string("Stone Stair");
+	f->description = wgettext("Stone Stair");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("stone.png");
 	f->draw_type = CDT_NODEBOX;
@@ -103,7 +104,7 @@ void content_mapnode_stair(bool repeat)
 
 	i = CONTENT_WOOD_STAIR;
 	f = &content_features(i);
-	f->description = std::string("Wood Stair");
+	f->description = wgettext("Wood Stair");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -122,7 +123,7 @@ void content_mapnode_stair(bool repeat)
 
 	i = CONTENT_JUNGLE_STAIR;
 	f = &content_features(i);
-	f->description = std::string("Jungle Wood Stair");
+	f->description = wgettext("Jungle Wood Stair");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("junglewood.png");
 	f->draw_type = CDT_NODEBOX;
@@ -141,7 +142,7 @@ void content_mapnode_stair(bool repeat)
 
 	i = CONTENT_BRICK_STAIR;
 	f = &content_features(i);
-	f->description = std::string("Brick Stair");
+	f->description = wgettext("Brick Stair");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("brick.png");
 	f->draw_type = CDT_NODEBOX;
@@ -158,7 +159,7 @@ void content_mapnode_stair(bool repeat)
 
 	i = CONTENT_SANDSTONE_STAIR;
 	f = &content_features(i);
-	f->description = std::string("Sand Stone Stair");
+	f->description = wgettext("Sand Stone Stair");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("sandstone.png");
 	f->draw_type = CDT_NODEBOX;

@@ -24,6 +24,7 @@
 #include "content_list.h"
 #include "content_craft.h"
 #include "content_nodemeta.h"
+#include "gettext.h"
 
 void content_mapnode_furniture(bool repeat)
 {
@@ -32,7 +33,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_BOOKSHELF;
 	f = &content_features(i);
-	f->description = std::string("Book Shelf");
+	f->description = wgettext("Book Shelf");
 	f->setAllTextures("bookshelf_front.png");
 	f->setTexture(0, "bookshelf_top.png");
 	f->setTexture(1, "bookshelf_top.png");
@@ -76,7 +77,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_CENTRE;
 	f = &content_features(i);
-	f->description = std::string("Couch");
+	f->description = wgettext("Couch");
 	f->setAllTextures("cotton.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -94,7 +95,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_ENDL;
 	f = &content_features(i);
-	f->description = std::string("Couch");
+	f->description = wgettext("Couch");
 	f->setAllTextures("cotton.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -112,7 +113,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_ENDR;
 	f = &content_features(i);
-	f->description = std::string("Couch");
+	f->description = wgettext("Couch");
 	f->setAllTextures("cotton.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -130,7 +131,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_INNER;
 	f = &content_features(i);
-	f->description = std::string("Couch");
+	f->description = wgettext("Couch");
 	f->setAllTextures("cotton.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -148,7 +149,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_OUTER;
 	f = &content_features(i);
-	f->description = std::string("Couch");
+	f->description = wgettext("Couch");
 	f->setAllTextures("cotton.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -166,7 +167,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_CHAIR;
 	f = &content_features(i);
-	f->description = std::string("Couch");
+	f->description = wgettext("Couch");
 	f->setAllTextures("cotton.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -194,7 +195,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_CENTRE_BLUE;
 	f = &content_features(i);
-	f->description = std::string("Blue Couch");
+	f->description = wgettext("Blue Couch");
 	f->setAllTextures("cotton_blue.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -212,7 +213,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_ENDL_BLUE;
 	f = &content_features(i);
-	f->description = std::string("Blue Couch");
+	f->description = wgettext("Blue Couch");
 	f->setAllTextures("cotton_blue.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -230,7 +231,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_ENDR_BLUE;
 	f = &content_features(i);
-	f->description = std::string("Blue Couch");
+	f->description = wgettext("Blue Couch");
 	f->setAllTextures("cotton_blue.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -248,7 +249,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_INNER_BLUE;
 	f = &content_features(i);
-	f->description = std::string("Blue Couch");
+	f->description = wgettext("Blue Couch");
 	f->setAllTextures("cotton_blue.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -266,7 +267,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_OUTER_BLUE;
 	f = &content_features(i);
-	f->description = std::string("Blue Couch");
+	f->description = wgettext("Blue Couch");
 	f->setAllTextures("cotton_blue.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -284,7 +285,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_CHAIR_BLUE;
 	f = &content_features(i);
-	f->description = std::string("Blue Couch");
+	f->description = wgettext("Blue Couch");
 	f->setAllTextures("cotton_blue.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -306,7 +307,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_CENTRE_GREEN;
 	f = &content_features(i);
-	f->description = std::string("Green Couch");
+	f->description = wgettext("Green Couch");
 	f->setAllTextures("cotton_green.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -324,7 +325,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_ENDL_GREEN;
 	f = &content_features(i);
-	f->description = std::string("Green Couch");
+	f->description = wgettext("Green Couch");
 	f->setAllTextures("cotton_green.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -342,7 +343,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_ENDR_GREEN;
 	f = &content_features(i);
-	f->description = std::string("Green Couch");
+	f->description = wgettext("Green Couch");
 	f->setAllTextures("cotton_green.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -360,7 +361,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_INNER_GREEN;
 	f = &content_features(i);
-	f->description = std::string("Green Couch");
+	f->description = wgettext("Green Couch");
 	f->setAllTextures("cotton_green.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -378,7 +379,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_OUTER_GREEN;
 	f = &content_features(i);
-	f->description = std::string("Green Couch");
+	f->description = wgettext("Green Couch");
 	f->setAllTextures("cotton_green.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -396,7 +397,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_CHAIR_GREEN;
 	f = &content_features(i);
-	f->description = std::string("Green Couch");
+	f->description = wgettext("Green Couch");
 	f->setAllTextures("cotton_green.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -418,7 +419,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_CENTRE_ORANGE;
 	f = &content_features(i);
-	f->description = std::string("Orange Couch");
+	f->description = wgettext("Orange Couch");
 	f->setAllTextures("cotton_orange.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -436,7 +437,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_ENDL_ORANGE;
 	f = &content_features(i);
-	f->description = std::string("Orange Couch");
+	f->description = wgettext("Orange Couch");
 	f->setAllTextures("cotton_orange.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -454,7 +455,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_ENDR_ORANGE;
 	f = &content_features(i);
-	f->description = std::string("Orange Couch");
+	f->description = wgettext("Orange Couch");
 	f->setAllTextures("cotton_orange.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -472,7 +473,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_INNER_ORANGE;
 	f = &content_features(i);
-	f->description = std::string("Orange Couch");
+	f->description = wgettext("Orange Couch");
 	f->setAllTextures("cotton_orange.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -490,7 +491,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_OUTER_ORANGE;
 	f = &content_features(i);
-	f->description = std::string("Orange Couch");
+	f->description = wgettext("Orange Couch");
 	f->setAllTextures("cotton_orange.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -508,7 +509,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_CHAIR_ORANGE;
 	f = &content_features(i);
-	f->description = std::string("Orange Couch");
+	f->description = wgettext("Orange Couch");
 	f->setAllTextures("cotton_orange.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -530,7 +531,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_CENTRE_PURPLE;
 	f = &content_features(i);
-	f->description = std::string("Purple Couch");
+	f->description = wgettext("Purple Couch");
 	f->setAllTextures("cotton_purple.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -548,7 +549,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_ENDL_PURPLE;
 	f = &content_features(i);
-	f->description = std::string("Purple Couch");
+	f->description = wgettext("Purple Couch");
 	f->setAllTextures("cotton_purple.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -566,7 +567,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_ENDR_PURPLE;
 	f = &content_features(i);
-	f->description = std::string("Purple Couch");
+	f->description = wgettext("Purple Couch");
 	f->setAllTextures("cotton_purple.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -584,7 +585,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_INNER_PURPLE;
 	f = &content_features(i);
-	f->description = std::string("Purple Couch");
+	f->description = wgettext("Purple Couch");
 	f->setAllTextures("cotton_purple.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -602,7 +603,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_OUTER_PURPLE;
 	f = &content_features(i);
-	f->description = std::string("Purple Couch");
+	f->description = wgettext("Purple Couch");
 	f->setAllTextures("cotton_purple.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -620,7 +621,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_CHAIR_PURPLE;
 	f = &content_features(i);
-	f->description = std::string("Purple Couch");
+	f->description = wgettext("Purple Couch");
 	f->setAllTextures("cotton_purple.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -642,7 +643,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_CENTRE_RED;
 	f = &content_features(i);
-	f->description = std::string("Red Couch");
+	f->description = wgettext("Red Couch");
 	f->setAllTextures("cotton_red.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -660,7 +661,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_ENDL_RED;
 	f = &content_features(i);
-	f->description = std::string("Red Couch");
+	f->description = wgettext("Red Couch");
 	f->setAllTextures("cotton_red.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -678,7 +679,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_ENDR_RED;
 	f = &content_features(i);
-	f->description = std::string("Red Couch");
+	f->description = wgettext("Red Couch");
 	f->setAllTextures("cotton_red.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -696,7 +697,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_INNER_RED;
 	f = &content_features(i);
-	f->description = std::string("Red Couch");
+	f->description = wgettext("Red Couch");
 	f->setAllTextures("cotton_red.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -714,7 +715,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_OUTER_RED;
 	f = &content_features(i);
-	f->description = std::string("Red Couch");
+	f->description = wgettext("Red Couch");
 	f->setAllTextures("cotton_red.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -732,7 +733,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_CHAIR_RED;
 	f = &content_features(i);
-	f->description = std::string("Red Couch");
+	f->description = wgettext("Red Couch");
 	f->setAllTextures("cotton_red.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -754,7 +755,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_CENTRE_YELLOW;
 	f = &content_features(i);
-	f->description = std::string("Yellow Couch");
+	f->description = wgettext("Yellow Couch");
 	f->setAllTextures("cotton_yellow.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -772,7 +773,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_ENDL_YELLOW;
 	f = &content_features(i);
-	f->description = std::string("Yellow Couch");
+	f->description = wgettext("Yellow Couch");
 	f->setAllTextures("cotton_yellow.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -790,7 +791,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_ENDR_YELLOW;
 	f = &content_features(i);
-	f->description = std::string("Yellow Couch");
+	f->description = wgettext("Yellow Couch");
 	f->setAllTextures("cotton_yellow.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -808,7 +809,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_INNER_YELLOW;
 	f = &content_features(i);
-	f->description = std::string("Yellow Couch");
+	f->description = wgettext("Yellow Couch");
 	f->setAllTextures("cotton_yellow.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -826,7 +827,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_OUTER_YELLOW;
 	f = &content_features(i);
-	f->description = std::string("Yellow Couch");
+	f->description = wgettext("Yellow Couch");
 	f->setAllTextures("cotton_yellow.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -844,7 +845,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_CHAIR_YELLOW;
 	f = &content_features(i);
-	f->description = std::string("Yellow Couch");
+	f->description = wgettext("Yellow Couch");
 	f->setAllTextures("cotton_yellow.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -866,7 +867,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_CENTRE_BLACK;
 	f = &content_features(i);
-	f->description = std::string("Black Couch");
+	f->description = wgettext("Black Couch");
 	f->setAllTextures("cotton_black.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -884,7 +885,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_ENDL_BLACK;
 	f = &content_features(i);
-	f->description = std::string("Black Couch");
+	f->description = wgettext("Black Couch");
 	f->setAllTextures("cotton_black.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -902,7 +903,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_ENDR_BLACK;
 	f = &content_features(i);
-	f->description = std::string("Black Couch");
+	f->description = wgettext("Black Couch");
 	f->setAllTextures("cotton_black.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -920,7 +921,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_INNER_BLACK;
 	f = &content_features(i);
-	f->description = std::string("Black Couch");
+	f->description = wgettext("Black Couch");
 	f->setAllTextures("cotton_black.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -938,7 +939,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_OUTER_BLACK;
 	f = &content_features(i);
-	f->description = std::string("Black Couch");
+	f->description = wgettext("Black Couch");
 	f->setAllTextures("cotton_black.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -956,7 +957,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_COUCH_CHAIR_BLACK;
 	f = &content_features(i);
-	f->description = std::string("Black Couch");
+	f->description = wgettext("Black Couch");
 	f->setAllTextures("cotton_black.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -978,7 +979,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_CHAIR;
 	f = &content_features(i);
-	f->description = std::string("Chair");
+	f->description = wgettext("Chair");
 	f->setAllTextures("pine.png");
 	f->param_type = CPT_LIGHT;
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -1026,7 +1027,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_TABLE;
 	f = &content_features(i);
-	f->description = std::string("Table");
+	f->description = wgettext("Table");
 	f->setAllTextures("pine.png");
 	f->param_type = CPT_LIGHT;
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -1082,7 +1083,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_BED_HEAD;
 	f = &content_features(i);
-	f->description = std::string("Bed");
+	f->description = wgettext("Bed");
 	f->setTexture(0,"cotton.png^bed_head.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"cotton.png^bed_side_head.png");
@@ -1111,7 +1112,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_BED_FOOT;
 	f = &content_features(i);
-	f->description = std::string("Bed");
+	f->description = wgettext("Bed");
 	f->setTexture(0,"cotton.png^bed_top.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"cotton.png^bed_side.png^[transformFX");
@@ -1137,7 +1138,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_BED_BLUE_HEAD;
 	f = &content_features(i);
-	f->description = std::string("Blue Bed");
+	f->description = wgettext("Blue Bed");
 	f->setTexture(0,"cotton_blue.png^bed_head.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"cotton_blue.png^bed_side_head.png");
@@ -1166,7 +1167,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_BED_BLUE_FOOT;
 	f = &content_features(i);
-	f->description = std::string("Blue Bed");
+	f->description = wgettext("Blue Bed");
 	f->setTexture(0,"cotton_blue.png^bed_top.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"cotton_blue.png^bed_side.png^[transformFX");
@@ -1192,7 +1193,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_BED_GREEN_HEAD;
 	f = &content_features(i);
-	f->description = std::string("Green Bed");
+	f->description = wgettext("Green Bed");
 	f->setTexture(0,"cotton_green.png^bed_head.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"cotton_green.png^bed_side_head.png");
@@ -1221,7 +1222,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_BED_GREEN_FOOT;
 	f = &content_features(i);
-	f->description = std::string("Green Bed");
+	f->description = wgettext("Green Bed");
 	f->setTexture(0,"cotton_green.png^bed_top.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"cotton_green.png^bed_side.png^[transformFX");
@@ -1247,7 +1248,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_BED_ORANGE_HEAD;
 	f = &content_features(i);
-	f->description = std::string("Orange Bed");
+	f->description = wgettext("Orange Bed");
 	f->setTexture(0,"cotton_orange.png^bed_head.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"cotton_orange.png^bed_side_head.png");
@@ -1276,7 +1277,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_BED_ORANGE_FOOT;
 	f = &content_features(i);
-	f->description = std::string("Orange Bed");
+	f->description = wgettext("Orange Bed");
 	f->setTexture(0,"cotton_orange.png^bed_top.png");
 	f->setTexture(1,"cotton_orange.png^bed_bottom.png");
 	f->setTexture(2,"cotton_orange.png^bed_side.png^[transformFX");
@@ -1302,7 +1303,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_BED_PURPLE_HEAD;
 	f = &content_features(i);
-	f->description = std::string("Purple Bed");
+	f->description = wgettext("Purple Bed");
 	f->setTexture(0,"cotton_purple.png^bed_head.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"cotton_purple.png^bed_side_head.png");
@@ -1331,7 +1332,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_BED_PURPLE_FOOT;
 	f = &content_features(i);
-	f->description = std::string("Purple Bed");
+	f->description = wgettext("Purple Bed");
 	f->setTexture(0,"cotton_purple.png^bed_top.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"cotton_purple.png^bed_side.png^[transformFX");
@@ -1357,7 +1358,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_BED_RED_HEAD;
 	f = &content_features(i);
-	f->description = std::string("Red Bed");
+	f->description = wgettext("Red Bed");
 	f->setTexture(0,"cotton_red.png^bed_head.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"cotton_red.png^bed_side_head.png");
@@ -1386,7 +1387,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_BED_RED_FOOT;
 	f = &content_features(i);
-	f->description = std::string("Red Bed");
+	f->description = wgettext("Red Bed");
 	f->setTexture(0,"cotton_red.png^bed_top.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"cotton_red.png^bed_side.png^[transformFX");
@@ -1412,7 +1413,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_BED_YELLOW_HEAD;
 	f = &content_features(i);
-	f->description = std::string("Yellow Bed");
+	f->description = wgettext("Yellow Bed");
 	f->setTexture(0,"cotton_yellow.png^bed_head.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"cotton_yellow.png^bed_side_head.png");
@@ -1441,7 +1442,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_BED_YELLOW_FOOT;
 	f = &content_features(i);
-	f->description = std::string("Yellow Bed");
+	f->description = wgettext("Yellow Bed");
 	f->setTexture(0,"cotton_yellow.png^bed_top.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"cotton_yellow.png^bed_side.png^[transformFX");
@@ -1467,7 +1468,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_BED_BLACK_HEAD;
 	f = &content_features(i);
-	f->description = std::string("Black Bed");
+	f->description = wgettext("Black Bed");
 	f->setTexture(0,"cotton_black.png^bed_head.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"cotton_black.png^bed_side_head.png");
@@ -1496,7 +1497,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_BED_BLACK_FOOT;
 	f = &content_features(i);
-	f->description = std::string("Black Bed");
+	f->description = wgettext("Black Bed");
 	f->setTexture(0,"cotton_black.png^bed_top.png");
 	f->setTexture(1,"bed_bottom.png");
 	f->setTexture(2,"cotton_black.png^bed_side.png^[transformFX");
@@ -1523,7 +1524,7 @@ void content_mapnode_furniture(bool repeat)
 	// Paintings
 	i = CONTENT_PAINTING_WHITE;
 	f = &content_features(i);
-	f->description = std::string("Colorful Painting");
+	f->description = wgettext("Colorful Painting");
 	f->setAllTextures("painting.png");
 	f->setTexture(4, "painting.png");
 	f->setTexture(5, "painting_white.png");
@@ -1557,7 +1558,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_PAINTING_RED;
 	f = &content_features(i);
-	f->description = std::string("Red Rose Painting");
+	f->description = wgettext("Red Rose Painting");
 	f->setAllTextures("painting.png");
 	f->setTexture(4, "painting.png");
 	f->setTexture(5, "painting_red.png");
@@ -1591,7 +1592,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_PAINTING_GREEN;
 	f = &content_features(i);
-	f->description = std::string("Field Painting");
+	f->description = wgettext("Field Painting");
 	f->setAllTextures("painting.png");
 	f->setTexture(4, "painting.png");
 	f->setTexture(5, "painting_green.png");
@@ -1625,7 +1626,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_PAINTING_BLUE;
 	f = &content_features(i);
-	f->description = std::string("Blue Flower Painting");
+	f->description = wgettext("Blue Flower Painting");
 	f->setAllTextures("painting.png");
 	f->setTexture(4, "painting.png");
 	f->setTexture(5, "painting_blue.png");
@@ -1659,7 +1660,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_PAINTING_CANVAS;
 	f = &content_features(i);
-	f->description = std::string("Painting Canvas");
+	f->description = wgettext("Painting Canvas");
 	f->setAllTextures("painting.png");
 	f->setTexture(4, "painting.png");
 	f->setTexture(5, "painting_canvas.png");
@@ -1696,7 +1697,7 @@ void content_mapnode_furniture(bool repeat)
 
 	i = CONTENT_CLOCK;
 	f = &content_features(i);
-	f->description = std::string("Clock");
+	f->description = wgettext("Clock");
 	f->setAllTextures("clock.png");
 	f->setTexture(5, "clock_front.png");
 	f->setAllMetaTextures("clock_numbers.png");

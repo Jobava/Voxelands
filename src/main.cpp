@@ -1070,7 +1070,7 @@ int main(int argc, char *argv[])
 	// Create texture source
 	g_texturesource = new TextureSource(device);
 
-	drawLoadingScreen(driver,NULL);
+	drawLoadingScreen(driver,L"");
 
 	/*
 		Speed tests (done after irrlicht is loaded to get timer)
@@ -1105,7 +1105,7 @@ int main(int argc, char *argv[])
 	// If font was not found, this will get us one
 	font = skin->getFont();
 	assert(font);
-	drawLoadingScreen(driver,"Setting Up UI");
+	drawLoadingScreen(driver,wgettext("Setting Up UI"));
 
 	u32 text_height = font->getDimension(L"Hello, world!").Height;
 	infostream<<"text_height="<<text_height<<std::endl;
@@ -1128,7 +1128,7 @@ int main(int argc, char *argv[])
 		Preload some textures and stuff
 	*/
 
-	drawLoadingScreen(driver,"Loading MapNodes");
+	drawLoadingScreen(driver,wgettext("Loading MapNodes"));
 	init_mapnode(driver); // Second call with g_texturesource set
 
 	/*

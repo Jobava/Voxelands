@@ -23,6 +23,7 @@
 #include "content_list.h"
 #include "content_mapnode.h"
 #include <map>
+#include "gettext.h"
 
 std::map<content_t,struct ToolItemFeatures> g_content_toolitem_features;
 
@@ -111,7 +112,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_woodpick.png";
 	f->name = "WPick";
-	f->description = "Wooden Pick";
+	f->description = wgettext("Wooden Pick");
 	f->type = TT_PICK;
 	f->hardness = 30.;
 	f->dig_time = 1.5;
@@ -125,7 +126,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_stonepick.png";
 	f->name = "STPick";
-	f->description = "Stone Pick";
+	f->description = wgettext("Stone Pick");
 	f->type = TT_PICK;
 	f->hardness = 100.;
 	f->dig_time = 0.75;
@@ -138,7 +139,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_flintpick.png";
 	f->name = "FPick";
-	f->description = "Flint Pick";
+	f->description = wgettext("Flint Pick");
 	f->type = TT_PICK;
 	f->hardness = 180.;
 	f->dig_time = 1.2;
@@ -151,7 +152,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_steelpick.png";
 	f->name = "SteelPick";
-	f->description = "Steel Pick";
+	f->description = wgettext("Steel Pick");
 	f->type = TT_PICK;
 	f->hardness = 333.;
 	f->dig_time = 0.5;
@@ -164,7 +165,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_mesepick.png";
 	f->name = "MesePick";
-	f->description = "Mese Pick";
+	f->description = wgettext("Mese Pick");
 	f->type = TT_PICK;
 	f->hardness = 1337.;
 	f->dig_time = 0.;
@@ -178,7 +179,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_woodshovel.png";
 	f->name = "WShovel";
-	f->description = "Wooden Shovel";
+	f->description = wgettext("Wooden Shovel");
 	f->type = TT_SHOVEL;
 	f->hardness = 50.;
 	f->dig_time = 0.4;
@@ -192,7 +193,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_stoneshovel.png";
 	f->name = "STShovel";
-	f->description = "Stone Shovel";
+	f->description = wgettext("Stone Shovel");
 	f->type = TT_SHOVEL;
 	f->hardness = 150.;
 	f->dig_time = 0.2;
@@ -205,7 +206,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_flintshovel.png";
 	f->name = "FShovel";
-	f->description = "Flint Shovel";
+	f->description = wgettext("Flint Shovel");
 	f->type = TT_SHOVEL;
 	f->hardness = 250.;
 	f->dig_time = 0.17;
@@ -218,7 +219,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_steelshovel.png";
 	f->name = "SteelShovel";
-	f->description = "Steel Shovel";
+	f->description = wgettext("Steel Shovel");
 	f->type = TT_SHOVEL;
 	f->hardness = 400.;
 	f->dig_time = 0.15;
@@ -231,7 +232,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_woodaxe.png";
 	f->name = "WAxe";
-	f->description = "Wooden Axe";
+	f->description = wgettext("Wooden Axe");
 	f->type = TT_AXE;
 	f->hardness = 30.;
 	f->dig_time = 1.5;
@@ -245,7 +246,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_stoneaxe.png";
 	f->name = "STAxe";
-	f->description = "Stone Axe";
+	f->description = wgettext("Stone Axe");
 	f->type = TT_AXE;
 	f->hardness = 100.;
 	f->dig_time = 0.75;
@@ -258,7 +259,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_flintaxe.png";
 	f->name = "FAxe";
-	f->description = "Flint Axe";
+	f->description = wgettext("Flint Axe");
 	f->type = TT_AXE;
 	f->hardness = 180.;
 	f->dig_time = 0.65;
@@ -271,7 +272,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_steelaxe.png";
 	f->name = "SteelAxe";
-	f->description = "Steel Axe";
+	f->description = wgettext("Steel Axe");
 	f->type = TT_AXE;
 	f->hardness = 333.;
 	f->dig_time = 0.5;
@@ -284,7 +285,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_woodsword.png";
 	f->name = "WSword";
-	f->description = "Wooden Sword";
+	f->description = wgettext("Wooden Sword");
 	f->type = TT_SWORD;
 	f->hardness = 20.;
 	f->dig_time = 1.5;
@@ -298,7 +299,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_stonesword.png";
 	f->name = "STSword";
-	f->description = "Stone Sword";
+	f->description = wgettext("Stone Sword");
 	f->type = TT_SWORD;
 	f->hardness = 50.;
 	f->dig_time = 1.0;
@@ -311,7 +312,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_steelsword.png";
 	f->name = "SteelSword";
-	f->description = "Steel Sword";
+	f->description = wgettext("Steel Sword");
 	f->type = TT_SWORD;
 	f->hardness = 80.;
 	f->dig_time = 0.5;
@@ -324,7 +325,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_flintshears.png";
 	f->name = "FShears";
-	f->description = "Flint Shears";
+	f->description = wgettext("Flint Shears");
 	f->type = TT_SHEAR;
 	f->hardness = 200.;
 	f->dig_time = 0.7;
@@ -337,7 +338,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_steelshears.png";
 	f->name = "Shears";
-	f->description = "Steel Shears";
+	f->description = wgettext("Steel Shears");
 	f->type = TT_SHEAR;
 	f->hardness = 333.;
 	f->dig_time = 0.5;
@@ -350,7 +351,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_woodbucket.png";
 	f->name = "WBucket";
-	f->description = "Wooden Bucket";
+	f->description = wgettext("Wooden Bucket");
 	f->liquids_pointable = true;
 	f->type = TT_BUCKET;
 	f->hardness = 30.;
@@ -365,7 +366,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_tinbucket.png";
 	f->name = "TinBucket";
-	f->description = "Tin Bucket";
+	f->description = wgettext("Tin Bucket");
 	f->liquids_pointable = true;
 	f->type = TT_BUCKET;
 	f->hardness = 50.;
@@ -379,7 +380,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_woodbucket_water.png";
 	f->name = "WBucket_water";
-	f->description = "Wooden Bucket of Water";
+	f->description = wgettext("Wooden Bucket of Water");
 	f->type = TT_SPECIAL;
 	lists::add("creative",i);
 
@@ -388,7 +389,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_tinbucket_water.png";
 	f->name = "TinBucket_water";
-	f->description = "Tin Bucket of Water";
+	f->description = wgettext("Tin Bucket of Water");
 	f->type = TT_SPECIAL;
 	lists::add("creative",i);
 
@@ -397,7 +398,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_steelbucket.png";
 	f->name = "SteelBucket";
-	f->description = "Steel Bucket";
+	f->description = wgettext("Steel Bucket");
 	f->liquids_pointable = true;
 	f->type = TT_BUCKET;
 	f->hardness = 80.;
@@ -411,7 +412,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_steelbucket_water.png";
 	f->name = "SteelBucket_water";
-	f->description = "Steel Bucket of Water";
+	f->description = wgettext("Steel Bucket of Water");
 	f->type = TT_SPECIAL;
 	lists::add("creative",i);
 
@@ -420,7 +421,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_steelbucket_lava.png";
 	f->name = "SteelBucket_lava";
-	f->description = "Steel Bucket of Lava";
+	f->description = wgettext("Steel Bucket of Lava");
 	f->fuel_time = 80;
 	f->type = TT_SPECIAL;
 	lists::add("creative",i);
@@ -430,7 +431,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "tool_fire_starter.png";
 	f->name = "FireStarter";
-	f->description = "Fire Starter";
+	f->description = wgettext("Fire Starter");
 	f->liquids_pointable = true;
 	f->type = TT_SPECIAL;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_FLINT,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_FIRESTARTER);
@@ -442,7 +443,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "crowbar.png";
 	f->name = "crowbar";
-	f->description = "Crowbar";
+	f->description = wgettext("Crowbar");
 	f->type = TT_SPECIAL;
 	crafting::set1over1Recipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_CROWBAR);
 	lists::add("craftguide",i);
@@ -453,7 +454,7 @@ void content_toolitem_init()
 	f->content = i;
 	f->texture = "key.png";
 	f->name = "key";
-	f->description = "Key";
+	f->description = wgettext("Key");
 	f->type = TT_SPECIAL;
 	crafting::set1To1Recipe(CONTENT_CRAFTITEM_GOLD_INGOT,CONTENT_TOOLITEM_KEY);
 	lists::add("craftguide",i);

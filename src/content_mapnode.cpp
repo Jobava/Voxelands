@@ -33,6 +33,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #ifndef SERVER
 #include "tile.h"
 #endif
+#include "gettext.h"
 
 #define WATER_ALPHA 160
 
@@ -190,7 +191,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_STONE;
 	f = &content_features(i);
-	f->description = std::string("Stone");
+	f->description = wgettext("Stone");
 	f->setAllTextures("stone.png");
 	f->setInventoryTextureCube("stone.png", "stone.png", "stone.png");
 	f->param_type = CPT_MINERAL;
@@ -207,7 +208,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_ICE;
 	f = &content_features(i);
-	f->description = std::string("Ice");
+	f->description = wgettext("Ice");
 	f->setAllTextures("ice.png");
 	f->setInventoryTextureCube("ice.png", "ice.png", "ice.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -222,7 +223,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_COAL;
 	f = &content_features(i);
-	f->description = std::string("Coal Block");
+	f->description = wgettext("Coal Block");
 	f->setAllTextures("coal.png");
 	f->setInventoryTextureCube("coal.png", "coal.png", "coal.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -239,7 +240,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_CHARCOAL;
 	f = &content_features(i);
-	f->description = std::string("Charcoal Block");
+	f->description = wgettext("Charcoal Block");
 	f->setAllTextures("charcoal.png");
 	f->setInventoryTextureCube("charcoal.png", "charcoal.png", "charcoal.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -256,7 +257,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_STONEBRICK;
 	f = &content_features(i);
-	f->description = std::string("Stone Brick");
+	f->description = wgettext("Stone Brick");
 	f->setAllTextures("stonebrick.png");
 	f->setInventoryTextureCube("stonebrick.png", "stonebrick.png", "stonebrick.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -270,7 +271,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_STONEBLOCK;
 	f = &content_features(i);
-	f->description = std::string("Stone Block");
+	f->description = wgettext("Stone Block");
 	f->setAllTextures("stoneblock.png");
 	f->setInventoryTextureCube("stoneblock.png", "stoneblock.png", "stoneblock.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -284,7 +285,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_ROUGHSTONEBRICK;
 	f = &content_features(i);
-	f->description = std::string("Rough Stone Brick");
+	f->description = wgettext("Rough Stone Brick");
 	f->setAllTextures("roughstone_brick.png");
 	f->setInventoryTextureCube("roughstone_brick.png", "roughstone_brick.png", "roughstone_brick.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -301,7 +302,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_ROUGHSTONEBLOCK;
 	f = &content_features(i);
-	f->description = std::string("Rough Stone Block");
+	f->description = wgettext("Rough Stone Block");
 	f->setAllTextures("roughstone_block.png");
 	f->setInventoryTextureCube("roughstone_block.png", "roughstone_block.png", "roughstone_block.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -317,7 +318,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_GRASS;
 	f = &content_features(i);
-	f->description = std::string("Grass");
+	f->description = wgettext("Grass");
 	f->setAllTextures("mud.png^grass_side.png");
 	f->setTexture(0, "grass.png");
 	f->setTexture(1, "mud.png");
@@ -333,7 +334,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_GRASS_FOOTSTEPS;
 	f = &content_features(i);
-	f->description = std::string("Grass");
+	f->description = wgettext("Grass");
 	f->setAllTextures("mud.png^grass_side.png");
 	f->setTexture(0, "grass_footsteps.png");
 	f->setTexture(1, "mud.png");
@@ -345,7 +346,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_MUDSNOW;
 	f = &content_features(i);
-	f->description = std::string("Muddy Snow");
+	f->description = wgettext("Muddy Snow");
 	f->setAllTextures("mud.png^snow_side.png");
 	f->setTexture(0, "snow.png");
 	f->setTexture(1, "mud.png");
@@ -361,7 +362,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_MUD;
 	f = &content_features(i);
-	f->description = std::string("Mud");
+	f->description = wgettext("Mud");
 	f->setAllTextures("mud.png");
 	f->setInventoryTextureCube("mud.png", "mud.png", "mud.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -373,7 +374,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_ASH;
 	f = &content_features(i);
-	f->description = std::string("Ash Block");
+	f->description = wgettext("Ash Block");
 	f->setAllTextures("ash.png");
 	f->setInventoryTextureCube("ash.png", "ash.png", "ash.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -388,7 +389,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_SAND;
 	f = &content_features(i);
-	f->description = std::string("Sand");
+	f->description = wgettext("Sand");
 	f->setAllTextures("sand.png");
 	f->setInventoryTextureCube("sand.png", "sand.png", "sand.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -403,7 +404,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_GRAVEL;
 	f = &content_features(i);
-	f->description = std::string("Gravel");
+	f->description = wgettext("Gravel");
 	f->setAllTextures("gravel.png");
 	f->setInventoryTextureCube("gravel.png", "gravel.png", "gravel.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -418,7 +419,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_SANDSTONE;
 	f = &content_features(i);
-	f->description = std::string("Sand Stone");
+	f->description = wgettext("Sand Stone");
 	f->setAllTextures("sandstone.png");
 	f->setInventoryTextureCube("sandstone.png", "sandstone.png", "sandstone.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -433,7 +434,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_SANDSTONE_BRICK;
 	f = &content_features(i);
-	f->description = std::string("Sand Stone Bricks");
+	f->description = wgettext("Sand Stone Bricks");
 	f->setAllTextures("sandstone_brick.png");
 	f->setInventoryTextureCube("sandstone_brick.png", "sandstone_brick.png", "sandstone_brick.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -448,7 +449,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_SANDSTONE_BLOCK;
 	f = &content_features(i);
-	f->description = std::string("Sand Stone Blocks");
+	f->description = wgettext("Sand Stone Blocks");
 	f->setAllTextures("sandstone_block.png");
 	f->setInventoryTextureCube("sandstone_block.png", "sandstone_block.png", "sandstone_block.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -463,7 +464,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_CLAY;
 	f = &content_features(i);
-	f->description = std::string("Clay");
+	f->description = wgettext("Clay");
 	f->setAllTextures("clay.png");
 	f->setInventoryTextureCube("clay.png", "clay.png", "clay.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -480,7 +481,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_CLAY_BLUE;
 	f = &content_features(i);
-	f->description = std::string("Blue Clay");
+	f->description = wgettext("Blue Clay");
 	f->setAllTextures("clay_blue.png");
 	f->setInventoryTextureCube("clay_blue.png", "clay_blue.png", "clay_blue.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -497,7 +498,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_CLAY_GREEN;
 	f = &content_features(i);
-	f->description = std::string("Green Clay");
+	f->description = wgettext("Green Clay");
 	f->setAllTextures("clay_green.png");
 	f->setInventoryTextureCube("clay_green.png", "clay_green.png", "clay_green.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -514,7 +515,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_CLAY_ORANGE;
 	f = &content_features(i);
-	f->description = std::string("Orange Clay");
+	f->description = wgettext("Orange Clay");
 	f->setAllTextures("clay_orange.png");
 	f->setInventoryTextureCube("clay_orange.png", "clay_orange.png", "clay_orange.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -531,7 +532,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_CLAY_PURPLE;
 	f = &content_features(i);
-	f->description = std::string("Purple Clay");
+	f->description = wgettext("Purple Clay");
 	f->setAllTextures("clay_purple.png");
 	f->setInventoryTextureCube("clay_purple.png", "clay_purple.png", "clay_purple.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -548,7 +549,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_CLAY_RED;
 	f = &content_features(i);
-	f->description = std::string("Red Clay");
+	f->description = wgettext("Red Clay");
 	f->setAllTextures("clay_red.png");
 	f->setInventoryTextureCube("clay_red.png", "clay_red.png", "clay_red.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -565,7 +566,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_CLAY_YELLOW;
 	f = &content_features(i);
-	f->description = std::string("Yellow Clay");
+	f->description = wgettext("Yellow Clay");
 	f->setAllTextures("clay_yellow.png");
 	f->setInventoryTextureCube("clay_yellow.png", "clay_yellow.png", "clay_yellow.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -582,7 +583,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_CLAY_BLACK;
 	f = &content_features(i);
-	f->description = std::string("Black Clay");
+	f->description = wgettext("Black Clay");
 	f->setAllTextures("clay_black.png");
 	f->setInventoryTextureCube("clay_black.png", "clay_black.png", "clay_black.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -599,7 +600,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_BRICK;
 	f = &content_features(i);
-	f->description = std::string("Brick");
+	f->description = wgettext("Brick");
 	f->setAllTextures("brick.png");
 	f->setInventoryTextureCube("brick.png", "brick.png", "brick.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -614,7 +615,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_TERRACOTTA;
 	f = &content_features(i);
-	f->description = std::string("Terracotta");
+	f->description = wgettext("Terracotta");
 	f->setAllTextures("terracotta.png");
 	f->setInventoryTextureCube("terracotta.png", "terracotta.png", "terracotta.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -626,7 +627,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_TERRACOTTA_BRICK;
 	f = &content_features(i);
-	f->description = std::string("Terracotta Brick");
+	f->description = wgettext("Terracotta Brick");
 	f->setAllTextures("terracotta_brick.png");
 	f->setInventoryTextureCube("terracotta_brick.png", "terracotta_brick.png", "terracotta_brick.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -640,7 +641,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_TERRACOTTA_BLOCK;
 	f = &content_features(i);
-	f->description = std::string("Terracotta Block");
+	f->description = wgettext("Terracotta Block");
 	f->setAllTextures("terracotta_block.png");
 	f->setInventoryTextureCube("terracotta_block.png", "terracotta_block.png", "terracotta_block.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -654,7 +655,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_TERRACOTTA_TILE;
 	f = &content_features(i);
-	f->description = std::string("Terracotta Tile");
+	f->description = wgettext("Terracotta Tile");
 	f->setAllTextures("terracotta_tile.png");
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_STONE;
@@ -673,7 +674,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_GLASS;
 	f = &content_features(i);
-	f->description = std::string("Glass");
+	f->description = wgettext("Glass");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -693,7 +694,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_GLASS_BLUE;
 	f = &content_features(i);
-	f->description = std::string("Blue Glass");
+	f->description = wgettext("Blue Glass");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -715,7 +716,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_GLASS_GREEN;
 	f = &content_features(i);
-	f->description = std::string("Green Glass");
+	f->description = wgettext("Green Glass");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -737,7 +738,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_GLASS_ORANGE;
 	f = &content_features(i);
-	f->description = std::string("Orange Glass");
+	f->description = wgettext("Orange Glass");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -759,7 +760,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_GLASS_PURPLE;
 	f = &content_features(i);
-	f->description = std::string("Purple Glass");
+	f->description = wgettext("Purple Glass");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -781,7 +782,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_GLASS_RED;
 	f = &content_features(i);
-	f->description = std::string("Red Glass");
+	f->description = wgettext("Red Glass");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -803,7 +804,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_GLASS_YELLOW;
 	f = &content_features(i);
-	f->description = std::string("Yellow Glass");
+	f->description = wgettext("Yellow Glass");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -825,7 +826,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_GLASS_BLACK;
 	f = &content_features(i);
-	f->description = std::string("Black Glass");
+	f->description = wgettext("Black Glass");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -847,7 +848,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_GLASS_PANE;
 	f = &content_features(i);
-	f->description = std::string("Glass Pane");
+	f->description = wgettext("Glass Pane");
 	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
@@ -880,7 +881,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_GLASS_PANE_BLUE;
 	f = &content_features(i);
-	f->description = std::string("Blue Glass Pane");
+	f->description = wgettext("Blue Glass Pane");
 	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
@@ -914,7 +915,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_GLASS_PANE_GREEN;
 	f = &content_features(i);
-	f->description = std::string("Green Glass Pane");
+	f->description = wgettext("Green Glass Pane");
 	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
@@ -948,7 +949,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_GLASS_PANE_ORANGE;
 	f = &content_features(i);
-	f->description = std::string("Orange Glass Pane");
+	f->description = wgettext("Orange Glass Pane");
 	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
@@ -982,7 +983,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_GLASS_PANE_PURPLE;
 	f = &content_features(i);
-	f->description = std::string("Purple Glass Pane");
+	f->description = wgettext("Purple Glass Pane");
 	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
@@ -1016,7 +1017,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_GLASS_PANE_RED;
 	f = &content_features(i);
-	f->description = std::string("Red Glass Pane");
+	f->description = wgettext("Red Glass Pane");
 	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
@@ -1050,7 +1051,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_GLASS_PANE_YELLOW;
 	f = &content_features(i);
-	f->description = std::string("Yellow Glass Pane");
+	f->description = wgettext("Yellow Glass Pane");
 	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
@@ -1084,7 +1085,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_GLASS_PANE_BLACK;
 	f = &content_features(i);
-	f->description = std::string("Black Glass Pane");
+	f->description = wgettext("Black Glass Pane");
 	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
@@ -1118,7 +1119,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_GLASSLIGHT;
 	f = &content_features(i);
-	f->description = std::string("Glass Light");
+	f->description = wgettext("Glass Light");
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -1141,7 +1142,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_WOOD;
 	f = &content_features(i);
-	f->description = std::string("Wood");
+	f->description = wgettext("Wood");
 	f->setAllTextures("wood.png");
 	f->setInventoryTextureCube("wood.png", "wood.png", "wood.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -1167,7 +1168,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_JUNGLEWOOD;
 	f = &content_features(i);
-	f->description = std::string("Jungle Wood");
+	f->description = wgettext("Jungle Wood");
 	f->setAllTextures("junglewood.png");
 	f->setInventoryTextureCube("junglewood.png", "junglewood.png", "junglewood.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -1192,7 +1193,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_WOOD_PINE;
 	f = &content_features(i);
-	f->description = std::string("Pine");
+	f->description = wgettext("Pine");
 	f->setAllTextures("pine.png");
 	f->setInventoryTextureCube("pine.png", "pine.png", "pine.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -1217,7 +1218,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_MESE;
 	f = &content_features(i);
-	f->description = std::string("Mese");
+	f->description = wgettext("Mese");
 	f->setAllTextures("mese.png");
 	f->setInventoryTextureCube("mese.png", "mese.png", "mese.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -1232,7 +1233,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_MESE_DIGGING;
 	f = &content_features(i);
-	f->description = std::string("Mese");
+	f->description = wgettext("Mese");
 	f->setAllTextures("mese.png");
 	f->setInventoryTextureCube("mese.png", "mese.png", "mese.png");
 	f->param_type = CPT_LIGHT;
@@ -1245,7 +1246,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_SPONGE;
 	f = &content_features(i);
-	f->description = std::string("Sponge");
+	f->description = wgettext("Sponge");
 	f->setAllTextures("sponge.png");
 	f->setInventoryTextureCube("sponge.png", "sponge.png", "sponge.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -1260,7 +1261,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_SPONGE_FULL;
 	f = &content_features(i);
-	f->description = std::string("Waterlogged Sponge");
+	f->description = wgettext("Waterlogged Sponge");
 	f->setAllTextures("sponge_full.png");
 	f->setInventoryTextureCube("sponge_full.png", "sponge_full.png", "sponge_full.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -1272,7 +1273,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_HAY;
 	f = &content_features(i);
-	f->description = std::string("Hay Bale");
+	f->description = wgettext("Hay Bale");
 	f->setAllTextures("hay_bale.png");
 	f->setInventoryTextureCube("hay_bale.png", "hay_bale.png", "hay_bale.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -1289,7 +1290,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_APPLE_PIE_RAW;
 	f = &content_features(i);
-	f->description = std::string("Raw Apple Pie");
+	f->description = wgettext("Raw Apple Pie");
 	f->setTexture(0, "apple_pie_raw.png");
 	f->setTexture(1, "apple_pie_raw.png");
 	f->setTexture(2, "apple_pie_raw.png");
@@ -1317,7 +1318,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_APPLE_PIE;
 	f = &content_features(i);
-	f->description = std::string("Apple Pie");
+	f->description = wgettext("Apple Pie");
 	f->setTexture(0, "apple_pie.png");
 	f->setTexture(1, "apple_pie.png");
 	f->setTexture(2, "apple_pie.png");
@@ -1408,7 +1409,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_PUMPKIN_PIE_RAW;
 	f = &content_features(i);
-	f->description = std::string("Raw Pumpkin Pie");
+	f->description = wgettext("Raw Pumpkin Pie");
 	f->setTexture(0, "pumpkin_pie_raw.png");
 	f->setTexture(1, "pumpkin_pie_raw.png");
 	f->setTexture(2, "pumpkin_pie_raw.png");
@@ -1436,7 +1437,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_PUMPKIN_PIE;
 	f = &content_features(i);
-	f->description = std::string("Pumpkin Pie");
+	f->description = wgettext("Pumpkin Pie");
 	f->setTexture(0, "pumpkin_pie.png");
 	f->setTexture(1, "pumpkin_pie.png");
 	f->setTexture(2, "pumpkin_pie.png");
@@ -1527,7 +1528,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_DEAD_VINE;
 	f = &content_features(i);
-	f->description = std::string("Dead Vine");
+	f->description = wgettext("Dead Vine");
 	f->setAllTextures("dead_vine.png");
 	f->setAllTextureFlags(0);
 	f->draw_type = CDT_PLANTLIKE;
@@ -1545,7 +1546,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_SNOW_BLOCK;
 	f = &content_features(i);
-	f->description = std::string("Snow");
+	f->description = wgettext("Snow");
 	f->setAllTextures("snow.png");
 	f->setInventoryTextureCube("snow.png", "snow.png", "snow.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -1560,7 +1561,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_SNOWMAN;
 	f = &content_features(i);
-	f->description = std::string("Snowman");
+	f->description = wgettext("Snowman");
 	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->solidness = 0;
 	f->setAllTextures("snowman.png");
@@ -1623,7 +1624,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_SNOW;
 	f = &content_features(i);
-	f->description = std::string("Snow");
+	f->description = wgettext("Snow");
 	f->setAllTextures("snow.png");
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_NODEBOX;
@@ -1644,7 +1645,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_COTTON;
 	f = &content_features(i);
-	f->description = std::string("Cotton");
+	f->description = wgettext("Cotton");
 	f->setAllTextures("cotton.png");
 	f->setInventoryTextureCube("cotton.png", "cotton.png", "cotton.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -1676,7 +1677,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_COTTON_BLUE;
 	f = &content_features(i);
-	f->description = std::string("Blue Cotton");
+	f->description = wgettext("Blue Cotton");
 	f->setAllTextures("cotton_blue.png");
 	f->setInventoryTextureCube("cotton_blue.png", "cotton_blue.png", "cotton_blue.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -1693,7 +1694,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_COTTON_GREEN;
 	f = &content_features(i);
-	f->description = std::string("Green Cotton");
+	f->description = wgettext("Green Cotton");
 	f->setAllTextures("cotton_green.png");
 	f->setInventoryTextureCube("cotton_green.png", "cotton_green.png", "cotton_green.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -1710,7 +1711,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_COTTON_ORANGE;
 	f = &content_features(i);
-	f->description = std::string("Orange Cotton");
+	f->description = wgettext("Orange Cotton");
 	f->setAllTextures("cotton_orange.png");
 	f->setInventoryTextureCube("cotton_orange.png", "cotton_orange.png", "cotton_orange.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -1727,7 +1728,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_COTTON_PURPLE;
 	f = &content_features(i);
-	f->description = std::string("Purple Cotton");
+	f->description = wgettext("Purple Cotton");
 	f->setAllTextures("cotton_purple.png");
 	f->setInventoryTextureCube("cotton_purple.png", "cotton_purple.png", "cotton_purple.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -1744,7 +1745,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_COTTON_RED;
 	f = &content_features(i);
-	f->description = std::string("Red Cotton");
+	f->description = wgettext("Red Cotton");
 	f->setAllTextures("cotton_red.png");
 	f->setInventoryTextureCube("cotton_red.png", "cotton_red.png", "cotton_red.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -1761,7 +1762,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_COTTON_YELLOW;
 	f = &content_features(i);
-	f->description = std::string("Yellow Cotton");
+	f->description = wgettext("Yellow Cotton");
 	f->setAllTextures("cotton_yellow.png");
 	f->setInventoryTextureCube("cotton_yellow.png", "cotton_yellow.png", "cotton_yellow.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -1778,7 +1779,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_COTTON_BLACK;
 	f = &content_features(i);
-	f->description = std::string("Black Cotton");
+	f->description = wgettext("Black Cotton");
 	f->setAllTextures("cotton_black.png");
 	f->setInventoryTextureCube("cotton_black.png", "cotton_black.png", "cotton_black.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -1795,7 +1796,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_CARPET;
 	f = &content_features(i);
-	f->description = std::string("Carpet");
+	f->description = wgettext("Carpet");
 	f->setAllTextures("cotton.png");
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_NODEBOX;
@@ -1817,7 +1818,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_CARPET_BLUE;
 	f = &content_features(i);
-	f->description = std::string("Blue Carpet");
+	f->description = wgettext("Blue Carpet");
 	f->setAllTextures("cotton_blue.png");
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_NODEBOX;
@@ -1840,7 +1841,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_CARPET_GREEN;
 	f = &content_features(i);
-	f->description = std::string("Green Carpet");
+	f->description = wgettext("Green Carpet");
 	f->setAllTextures("cotton_green.png");
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_NODEBOX;
@@ -1863,7 +1864,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_CARPET_ORANGE;
 	f = &content_features(i);
-	f->description = std::string("Orange Carpet");
+	f->description = wgettext("Orange Carpet");
 	f->setAllTextures("cotton_orange.png");
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_NODEBOX;
@@ -1886,7 +1887,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_CARPET_PURPLE;
 	f = &content_features(i);
-	f->description = std::string("Purple Carpet");
+	f->description = wgettext("Purple Carpet");
 	f->setAllTextures("cotton_purple.png");
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_NODEBOX;
@@ -1909,7 +1910,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_CARPET_RED;
 	f = &content_features(i);
-	f->description = std::string("Red Carpet");
+	f->description = wgettext("Red Carpet");
 	f->setAllTextures("cotton_red.png");
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_NODEBOX;
@@ -1932,7 +1933,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_CARPET_YELLOW;
 	f = &content_features(i);
-	f->description = std::string("Yellow Carpet");
+	f->description = wgettext("Yellow Carpet");
 	f->setAllTextures("cotton_yellow.png");
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_NODEBOX;
@@ -1955,7 +1956,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_CARPET_BLACK;
 	f = &content_features(i);
-	f->description = std::string("Black Carpet");
+	f->description = wgettext("Black Carpet");
 	f->setAllTextures("cotton_black.png");
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_NODEBOX;
@@ -1978,7 +1979,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_AIR;
 	f = &content_features(i);
-	f->description = std::string("Air");
+	f->description = wgettext("Air");
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_AIRLIKE;
 	f->light_propagates = true;
@@ -1993,7 +1994,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_WATER;
 	f = &content_features(i);
-	f->description = std::string("Water");
+	f->description = wgettext("Water");
 	f->setAllTextures("water.png");
 	f->setInventoryTextureCube("water.png", "water.png", "water.png");
 	f->param_type = CPT_LIGHT;
@@ -2021,7 +2022,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_WATERSOURCE;
 	f = &content_features(i);
-	f->description = std::string("Water");
+	f->description = wgettext("Water");
 	f->setAllTextures("water.png");
 	f->setInventoryTextureCube("water.png", "water.png", "water.png");
 	if(new_style_water)
@@ -2069,7 +2070,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_LAVA;
 	f = &content_features(i);
-	f->description = std::string("Lava");
+	f->description = wgettext("Lava");
 	f->setAllTextures("lava.png");
 	f->setInventoryTextureCube("lava.png", "lava.png", "lava.png");
 	f->param_type = CPT_LIGHT;
@@ -2097,7 +2098,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_LAVASOURCE;
 	f = &content_features(i);
-	f->description = std::string("Lava");
+	f->description = wgettext("Lava");
 	f->setAllTextures("lava.png");
 	f->setInventoryTextureCube("lava.png", "lava.png", "lava.png");
 	if(new_style_water)
@@ -2144,7 +2145,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_ROUGHSTONE;
 	f = &content_features(i);
-	f->description = std::string("Rough Stone");
+	f->description = wgettext("Rough Stone");
 	f->setAllTextures("roughstone.png");
 	f->setInventoryTextureCube("roughstone.png", "roughstone.png", "roughstone.png");
 	f->param_type = CPT_NONE;
@@ -2161,7 +2162,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_COBBLE;
 	f = &content_features(i);
-	f->description = std::string("Cobble Stone");
+	f->description = wgettext("Cobble Stone");
 	f->setAllTextures("cobble.png");
 	f->setInventoryTextureCube("cobble.png", "cobble.png", "cobble.png");
 	f->param_type = CPT_NONE;
@@ -2176,7 +2177,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_MOSSYCOBBLE;
 	f = &content_features(i);
-	f->description = std::string("Mossy Cobble Stone");
+	f->description = wgettext("Mossy Cobble Stone");
 	f->setAllTextures("mossycobble.png");
 	f->setInventoryTextureCube("mossycobble.png", "mossycobble.png", "mossycobble.png");
 	f->param_type = CPT_NONE;
@@ -2189,7 +2190,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_STEEL;
 	f = &content_features(i);
-	f->description = std::string("Steel Block");
+	f->description = wgettext("Steel Block");
 	f->setAllTextures("steel_block.png");
 	f->setInventoryTextureCube("steel_block.png", "steel_block.png", "steel_block.png");
 	f->param_type = CPT_NONE;
@@ -2203,16 +2204,16 @@ void content_mapnode_init(bool repeat)
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	content_nodedef_knob(CONTENT_STONE_KNOB, CONTENT_STONE, CMT_STONE, "stone.png", "Stone Knob");
-	content_nodedef_knob(CONTENT_ROUGHSTONE_KNOB, CONTENT_ROUGHSTONE, CMT_STONE, "roughstone.png", "Rough Stone Knob");
-	content_nodedef_knob(CONTENT_SANDSTONE_KNOB, CONTENT_SANDSTONE, CMT_STONE, "sandstone.png", "Sandstone Knob");
-	content_nodedef_knob(CONTENT_WOOD_KNOB, CONTENT_CRAFTITEM_WOOD_PLANK, CMT_WOOD, "wood.png", "Wooden Knob");
-	content_nodedef_knob(CONTENT_JUNGLEWOOD_KNOB, CONTENT_CRAFTITEM_JUNGLE_PLANK, CMT_WOOD, "junglewood.png", "Junglewood Knob");
-	content_nodedef_knob(CONTENT_PINE_KNOB, CONTENT_CRAFTITEM_PINE_PLANK, CMT_WOOD, "pine.png", "Pine Knob");
+	content_nodedef_knob(CONTENT_STONE_KNOB, CONTENT_STONE, CMT_STONE, "stone.png", wgettext("Stone Knob"));
+	content_nodedef_knob(CONTENT_ROUGHSTONE_KNOB, CONTENT_ROUGHSTONE, CMT_STONE, "roughstone.png", wgettext("Rough Stone Knob"));
+	content_nodedef_knob(CONTENT_SANDSTONE_KNOB, CONTENT_SANDSTONE, CMT_STONE, "sandstone.png", wgettext("Sandstone Knob"));
+	content_nodedef_knob(CONTENT_WOOD_KNOB, CONTENT_CRAFTITEM_WOOD_PLANK, CMT_WOOD, "wood.png", wgettext("Wooden Knob"));
+	content_nodedef_knob(CONTENT_JUNGLEWOOD_KNOB, CONTENT_CRAFTITEM_JUNGLE_PLANK, CMT_WOOD, "junglewood.png", wgettext("Junglewood Knob"));
+	content_nodedef_knob(CONTENT_PINE_KNOB, CONTENT_CRAFTITEM_PINE_PLANK, CMT_WOOD, "pine.png", wgettext("Pine Knob"));
 
 	i = CONTENT_COPPER;
 	f = &content_features(i);
-	f->description = std::string("Copper Block");
+	f->description = wgettext("Copper Block");
 	f->setAllTextures("copper_block.png");
 	f->setInventoryTextureCube("copper_block.png", "copper_block.png", "copper_block.png");
 	f->param_type = CPT_NONE;
@@ -2228,7 +2229,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_GOLD;
 	f = &content_features(i);
-	f->description = std::string("Gold Block");
+	f->description = wgettext("Gold Block");
 	f->setAllTextures("gold_block.png");
 	f->setInventoryTextureCube("gold_block.png", "gold_block.png", "gold_block.png");
 	f->param_type = CPT_NONE;
@@ -2244,7 +2245,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_SILVER;
 	f = &content_features(i);
-	f->description = std::string("Silver Block");
+	f->description = wgettext("Silver Block");
 	f->setAllTextures("silver_block.png");
 	f->setInventoryTextureCube("silver_block.png", "silver_block.png", "silver_block.png");
 	f->param_type = CPT_NONE;
@@ -2260,7 +2261,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_TIN;
 	f = &content_features(i);
-	f->description = std::string("Tin Block");
+	f->description = wgettext("Tin Block");
 	f->setAllTextures("tin_block.png");
 	f->setInventoryTextureCube("tin_block.png", "tin_block.png", "tin_block.png");
 	f->param_type = CPT_NONE;
@@ -2276,7 +2277,7 @@ void content_mapnode_init(bool repeat)
 
 	i = CONTENT_QUARTZ;
 	f = &content_features(i);
-	f->description = std::string("Quartz Block");
+	f->description = wgettext("Quartz Block");
 	f->setAllTextures("quartz_block.png");
 	f->setInventoryTextureCube("quartz_block.png", "quartz_block.png", "quartz_block.png");
 	f->param_type = CPT_NONE;

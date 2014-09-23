@@ -25,7 +25,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "keycode.h"
 
-void drawLoadingScreen(video::IVideoDriver* driver, const char* msg);
+void drawLoadingScreen(video::IVideoDriver* driver, const std::wstring);
 
 class KeyList : protected core::list<KeyPress>
 {

@@ -28,6 +28,7 @@
 #include "content_craft.h"
 #include "content_nodemeta.h"
 #include "settings.h"
+#include "gettext.h"
 
 void content_mapnode_plants(bool repeat)
 {
@@ -38,7 +39,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_TREE;
 	f = &content_features(i);
-	f->description = std::string("Tree");
+	f->description = wgettext("Tree");
 	f->setAllTextures("tree.png");
 	f->setTexture(0, "tree_top.png");
 	f->setTexture(1, "tree_top.png");
@@ -56,7 +57,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_APPLE_TREE;
 	f = &content_features(i);
-	f->description = std::string("Apple Tree");
+	f->description = wgettext("Apple Tree");
 	f->setAllTextures("apple_tree.png");
 	f->setTexture(0, "apple_tree_top.png");
 	f->setTexture(1, "apple_tree_top.png");
@@ -74,7 +75,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_JUNGLETREE;
 	f = &content_features(i);
-	f->description = std::string("Jungle Tree");
+	f->description = wgettext("Jungle Tree");
 	f->setAllTextures("jungletree.png");
 	f->setTexture(0, "jungletree_top.png");
 	f->setTexture(1, "jungletree_top.png");
@@ -90,7 +91,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_CONIFER_TREE;
 	f = &content_features(i);
-	f->description = std::string("Conifer Tree");
+	f->description = wgettext("Conifer Tree");
 	f->setAllTextures("conifer_tree.png");
 	f->setTexture(0, "conifer_tree_top.png");
 	f->setTexture(1, "conifer_tree_top.png");
@@ -124,7 +125,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_YOUNG_TREE;
 	f = &content_features(i);
-	f->description = std::string("Young Tree");
+	f->description = wgettext("Young Tree");
 	f->setAllTextures("tree.png");
 	f->setTexture(0, "tree_top.png");
 	f->setTexture(1, "tree_top.png");
@@ -143,7 +144,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_YOUNG_JUNGLETREE;
 	f = &content_features(i);
-	f->description = std::string("Young Jungle Tree");
+	f->description = wgettext("Young Jungle Tree");
 	f->setAllTextures("jungletree.png");
 	f->setTexture(0, "jungletree_top.png");
 	f->setTexture(1, "jungletree_top.png");
@@ -162,7 +163,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_YOUNG_APPLE_TREE;
 	f = &content_features(i);
-	f->description = std::string("Young Apple Tree");
+	f->description = wgettext("Young Apple Tree");
 	f->setAllTextures("apple_tree.png");
 	f->setTexture(0, "apple_tree_top.png");
 	f->setTexture(1, "apple_tree_top.png");
@@ -181,7 +182,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_YOUNG_CONIFER_TREE;
 	f = &content_features(i);
-	f->description = std::string("Young Conifer Tree");
+	f->description = wgettext("Young Conifer Tree");
 	f->setAllTextures("conifer_tree.png");
 	f->setTexture(0, "conifer_tree_top.png");
 	f->setTexture(1, "conifer_tree_top.png");
@@ -200,7 +201,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_JUNGLEGRASS;
 	f = &content_features(i);
-	f->description = std::string("Jungle Grass");
+	f->description = wgettext("Jungle Grass");
 	f->setInventoryTexture("junglegrass.png");
 	f->setAllTextures("junglegrass.png");
 	f->setAllTextureFlags(0);
@@ -221,7 +222,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_LEAVES;
 	f = &content_features(i);
-	f->description = std::string("Leaves");
+	f->description = wgettext("Leaves");
 	f->light_propagates = true;
 	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
@@ -253,7 +254,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_APPLE_LEAVES;
 	f = &content_features(i);
-	f->description = std::string("Apple Tree Leaves");
+	f->description = wgettext("Apple Tree Leaves");
 	f->light_propagates = true;
 	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
@@ -285,7 +286,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_JUNGLELEAVES;
 	f = &content_features(i);
-	f->description = std::string("Jungle Leaves");
+	f->description = wgettext("Jungle Leaves");
 	f->light_propagates = true;
 	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
@@ -317,7 +318,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_CONIFER_LEAVES;
 	f = &content_features(i);
-	f->description = std::string("Conifer Leaves");
+	f->description = wgettext("Conifer Leaves");
 	f->light_propagates = true;
 	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
@@ -349,7 +350,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_TRIMMED_LEAVES;
 	f = &content_features(i);
-	f->description = std::string("Trimmed Leaves");
+	f->description = wgettext("Trimmed Leaves");
 	f->light_propagates = true;
 	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
@@ -378,7 +379,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_TRIMMED_APPLE_LEAVES;
 	f = &content_features(i);
-	f->description = std::string("Trimmed Apple Tree Leaves");
+	f->description = wgettext("Trimmed Apple Tree Leaves");
 	f->light_propagates = true;
 	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
@@ -407,7 +408,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_TRIMMED_JUNGLE_LEAVES;
 	f = &content_features(i);
-	f->description = std::string("Trimmed Jungle Leaves");
+	f->description = wgettext("Trimmed Jungle Leaves");
 	f->light_propagates = true;
 	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
@@ -436,7 +437,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_TRIMMED_CONIFER_LEAVES;
 	f = &content_features(i);
-	f->description = std::string("Trimmed Conifer Leaves");
+	f->description = wgettext("Trimmed Conifer Leaves");
 	f->light_propagates = true;
 	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
@@ -465,7 +466,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_APPLE_BLOSSOM;
 	f = &content_features(i);
-	f->description = std::string("Apple Tree Blossom");
+	f->description = wgettext("Apple Tree Blossom");
 	f->light_propagates = true;
 	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
@@ -494,7 +495,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_TRIMMED_APPLE_BLOSSOM;
 	f = &content_features(i);
-	f->description = std::string("Trimmed Apple Tree Blossom");
+	f->description = wgettext("Trimmed Apple Tree Blossom");
 	f->light_propagates = true;
 	f->air_equivalent = true;
 	f->param_type = CPT_LIGHT;
@@ -520,7 +521,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_CACTUS_BLOSSOM;
 	f = &content_features(i);
-	f->description = std::string("Cactus Blossom");
+	f->description = wgettext("Cactus Blossom");
 	f->setInventoryTexture("cactus_blossom.png");
 	f->setAllTextures("cactus_blossom.png");
 	f->setAllTextureFlags(0);
@@ -540,7 +541,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_CACTUS_FLOWER;
 	f = &content_features(i);
-	f->description = std::string("Cactus Flower");
+	f->description = wgettext("Cactus Flower");
 	f->setInventoryTexture("cactus_flower.png");
 	f->setAllTextures("cactus_flower.png");
 	f->setAllTextureFlags(0);
@@ -561,7 +562,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_CACTUS_FRUIT;
 	f = &content_features(i);
-	f->description = std::string("Cactus Berry");
+	f->description = wgettext("Cactus Berry");
 	f->setInventoryTexture("cactus_fruit.png");
 	f->setAllTextures("cactus_fruit.png");
 	f->setAllTextureFlags(0);
@@ -581,7 +582,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_CACTUS;
 	f = &content_features(i);
-	f->description = std::string("Cactus");
+	f->description = wgettext("Cactus");
 	f->setAllTextures("cactus_side.png");
 	f->setTexture(0, "cactus_top.png");
 	f->setTexture(1, "cactus_top.png");
@@ -643,7 +644,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_PAPYRUS;
 	f = &content_features(i);
-	f->description = std::string("Papyrus");
+	f->description = wgettext("Papyrus");
 	f->setInventoryTexture("papyrus.png");
 	f->setAllTextures("papyrus.png");
 	f->setAllTextureFlags(0);
@@ -663,7 +664,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_SAPLING;
 	f = &content_features(i);
-	f->description = std::string("Sapling");
+	f->description = wgettext("Sapling");
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_PLANTLIKE;
 	f->setAllTextures("sapling.png");
@@ -682,7 +683,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_APPLE_SAPLING;
 	f = &content_features(i);
-	f->description = std::string("Apple Tree Sapling");
+	f->description = wgettext("Apple Tree Sapling");
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_PLANTLIKE;
 	f->setAllTextures("apple_sapling.png");
@@ -702,7 +703,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_JUNGLESAPLING;
 	f = &content_features(i);
-	f->description = std::string("Jungle Sapling");
+	f->description = wgettext("Jungle Sapling");
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_PLANTLIKE;
 	f->setAllTextures("junglesapling.png");
@@ -722,7 +723,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_CONIFER_SAPLING;
 	f = &content_features(i);
-	f->description = std::string("Conifer Sapling");
+	f->description = wgettext("Conifer Sapling");
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_PLANTLIKE;
 	f->setAllTextures("conifer_sapling.png");
@@ -742,7 +743,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_APPLE;
 	f = &content_features(i);
-	f->description = std::string("Apple");
+	f->description = wgettext("Apple");
 	f->setInventoryTexture("apple.png");
 	f->setAllTextures("apple.png");
 	f->setAllTextureFlags(0);
@@ -764,7 +765,7 @@ void content_mapnode_plants(bool repeat)
 	// plants
 	i = CONTENT_WILDGRASS_SHORT;
 	f = &content_features(i);
-	f->description = std::string("Wild Grass");
+	f->description = wgettext("Wild Grass");
 	f->setInventoryTexture("wildgrass_short.png");
 	f->setAllTextures("wildgrass_short.png");
 	f->setAllTextureFlags(0);
@@ -787,7 +788,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_WILDGRASS_LONG;
 	f = &content_features(i);
-	f->description = std::string("Wild Grass");
+	f->description = wgettext("Wild Grass");
 	f->setInventoryTexture("wildgrass_long.png");
 	f->setAllTextures("wildgrass_long.png");
 	f->setAllTextureFlags(0);
@@ -809,7 +810,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_DEADGRASS;
 	f = &content_features(i);
-	f->description = std::string("Dead Grass");
+	f->description = wgettext("Dead Grass");
 	f->setInventoryTexture("deadgrass.png");
 	f->setAllTextures("deadgrass.png");
 	f->setAllTextureFlags(0);
@@ -831,7 +832,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_FLOWER_STEM;
 	f = &content_features(i);
-	f->description = std::string("Flower Stem");
+	f->description = wgettext("Flower Stem");
 	f->setInventoryTexture("flower_stem.png");
 	f->setAllTextures("flower_stem.png");
 	f->setAllTextureFlags(0);
@@ -853,7 +854,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_FLOWER_ROSE;
 	f = &content_features(i);
-	f->description = std::string("Rose");
+	f->description = wgettext("Rose");
 	f->setInventoryTexture("flower_rose.png");
 	f->setAllTextures("flower_rose.png");
 	f->setAllTextureFlags(0);
@@ -876,7 +877,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_FLOWER_DAFFODIL;
 	f = &content_features(i);
-	f->description = std::string("Daffodil");
+	f->description = wgettext("Daffodil");
 	f->setInventoryTexture("flower_daffodil.png");
 	f->setAllTextures("flower_daffodil.png");
 	f->setAllTextureFlags(0);
@@ -899,7 +900,7 @@ void content_mapnode_plants(bool repeat)
 
 	i = CONTENT_FLOWER_TULIP;
 	f = &content_features(i);
-	f->description = std::string("Tulip");
+	f->description = wgettext("Tulip");
 	f->setInventoryTexture("flower_tulip.png");
 	f->setAllTextures("flower_tulip.png");
 	f->setAllTextureFlags(0);

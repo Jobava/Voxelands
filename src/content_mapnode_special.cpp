@@ -24,6 +24,7 @@
 #include "content_list.h"
 #include "content_craft.h"
 #include "content_nodemeta.h"
+#include "gettext.h"
 
 void content_mapnode_special(bool repeat)
 {
@@ -33,7 +34,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_FENCE;
 	f = &content_features(i);
-	f->description = std::string("Fence");
+	f->description = wgettext("Fence");
 	f->setAllTextures("fence.png");
 	f->setTexture(0,"fence_top.png");
 	f->setTexture(1,"fence_top.png");
@@ -62,7 +63,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_RAIL;
 	f = &content_features(i);
-	f->description = std::string("Rail");
+	f->description = wgettext("Rail");
 	f->setAllTextures("rail.png");
 	f->setTexture(0,"track_tie.png");
 	f->setTexture(1,"track_rail.png");
@@ -94,7 +95,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_ROOFTILE_TERRACOTTA;
 	f = &content_features(i);
-	f->description = std::string("Terracotta Roof Tile");
+	f->description = wgettext("Terracotta Roof Tile");
 	f->setAllTextures("rooftile_terracotta.png");
 	f->setAllTextureFlags(0);
 	f->draw_type = CDT_ROOFLIKE;
@@ -110,7 +111,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_ROOFTILE_WOOD;
 	f = &content_features(i);
-	f->description = std::string("Wood Roof Tile");
+	f->description = wgettext("Wood Roof Tile");
 	f->setAllTextures("rooftile_wood.png");
 	f->setAllTextureFlags(0);
 	f->draw_type = CDT_ROOFLIKE;
@@ -127,7 +128,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_ROOFTILE_ASPHALT;
 	f = &content_features(i);
-	f->description = std::string("Asphalt Roof Tile");
+	f->description = wgettext("Asphalt Roof Tile");
 	f->setAllTextures("rooftile_asphalt.png");
 	f->setAllTextureFlags(0);
 	f->draw_type = CDT_ROOFLIKE;
@@ -150,7 +151,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_ROOFTILE_STONE;
 	f = &content_features(i);
-	f->description = std::string("Stone Roof Tile");
+	f->description = wgettext("Stone Roof Tile");
 	f->setAllTextures("rooftile_stone.png");
 	f->setAllTextureFlags(0);
 	f->draw_type = CDT_ROOFLIKE;
@@ -166,7 +167,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_ROOFTILE_GLASS;
 	f = &content_features(i);
-	f->description = std::string("Glass Roof Tile");
+	f->description = wgettext("Glass Roof Tile");
 	f->setAllTextures("glass.png");
 	f->setTexture(1,"glass_slab.png"); // special texture for top sections
 	f->setAllTextureFlags(0);
@@ -188,7 +189,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_ROOFTILE_GLASS_BLUE;
 	f = &content_features(i);
-	f->description = std::string("Blue Glass Roof Tile");
+	f->description = wgettext("Blue Glass Roof Tile");
 	f->setAllTextures("glass_blue.png");
 	f->setTexture(1,"glass_slab_blue.png"); // special texture for top sections
 	f->setAllTextureFlags(0);
@@ -211,7 +212,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_ROOFTILE_GLASS_GREEN;
 	f = &content_features(i);
-	f->description = std::string("Green Glass Roof Tile");
+	f->description = wgettext("Green Glass Roof Tile");
 	f->setAllTextures("glass_green.png");
 	f->setTexture(1,"glass_slab_green.png"); // special texture for top sections
 	f->setAllTextureFlags(0);
@@ -234,7 +235,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_ROOFTILE_GLASS_ORANGE;
 	f = &content_features(i);
-	f->description = std::string("Orange Glass Roof Tile");
+	f->description = wgettext("Orange Glass Roof Tile");
 	f->setAllTextures("glass_orange.png");
 	f->setTexture(1,"glass_slab_orange.png"); // special texture for top sections
 	f->setAllTextureFlags(0);
@@ -257,7 +258,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_ROOFTILE_GLASS_PURPLE;
 	f = &content_features(i);
-	f->description = std::string("Purple Glass Roof Tile");
+	f->description = wgettext("Purple Glass Roof Tile");
 	f->setAllTextures("glass_purple.png");
 	f->setTexture(1,"glass_slab_purple.png"); // special texture for top sections
 	f->setAllTextureFlags(0);
@@ -280,7 +281,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_ROOFTILE_GLASS_RED;
 	f = &content_features(i);
-	f->description = std::string("Red Glass Roof Tile");
+	f->description = wgettext("Red Glass Roof Tile");
 	f->setAllTextures("glass_red.png");
 	f->setTexture(1,"glass_slab_red.png"); // special texture for top sections
 	f->setAllTextureFlags(0);
@@ -303,7 +304,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_ROOFTILE_GLASS_YELLOW;
 	f = &content_features(i);
-	f->description = std::string("Yellow Glass Roof Tile");
+	f->description = wgettext("Yellow Glass Roof Tile");
 	f->setAllTextures("glass_yellow.png");
 	f->setTexture(1,"glass_slab_yellow.png"); // special texture for top sections
 	f->setAllTextureFlags(0);
@@ -326,7 +327,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_ROOFTILE_GLASS_BLACK;
 	f = &content_features(i);
-	f->description = std::string("Black Glass Roof Tile");
+	f->description = wgettext("Black Glass Roof Tile");
 	f->setAllTextures("glass_black.png");
 	f->setTexture(1,"glass_slab_black.png"); // special texture for top sections
 	f->setAllTextureFlags(0);
@@ -349,7 +350,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_ROOFTILE_THATCH;
 	f = &content_features(i);
-	f->description = std::string("Thatch Roof Tile");
+	f->description = wgettext("Thatch Roof Tile");
 	f->setAllTextures("rooftile_thatch.png");
 	f->setAllTextureFlags(0);
 	f->draw_type = CDT_ROOFLIKE;
@@ -367,7 +368,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_LADDER_LEGACY;
 	f = &content_features(i);
-	f->description = std::string("Ladder");
+	f->description = wgettext("Ladder");
 	f->setAllTextures("ladder.png");
 	f->light_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -403,7 +404,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_LADDER_WALL;
 	f = &content_features(i);
-	f->description = std::string("Ladder");
+	f->description = wgettext("Ladder");
 	f->setAllTextures("ladder.png");
 	f->light_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -462,7 +463,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_LADDER_FLOOR;
 	f = &content_features(i);
-	f->description = std::string("Ladder");
+	f->description = wgettext("Ladder");
 	f->setAllTextures("ladder.png");
 	f->light_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -496,7 +497,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_LADDER_ROOF;
 	f = &content_features(i);
-	f->description = std::string("Ladder");
+	f->description = wgettext("Ladder");
 	f->setAllTextures("ladder.png");
 	f->light_propagates = true;
 	f->param_type = CPT_LIGHT;
@@ -530,7 +531,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_BORDERSTONE;
 	f = &content_features(i);
-	f->description = std::string("Border Stone");
+	f->description = wgettext("Border Stone");
 	f->setAllTextures("borderstone.png");
 	f->setInventoryTextureCube("borderstone.png", "borderstone.png", "borderstone.png");
 	f->draw_type = CDT_CUBELIKE;
@@ -556,7 +557,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_BOOK;
 	f = &content_features(i);
-	f->description = std::string("Book");
+	f->description = wgettext("Book");
 	f->setTexture(0, "book_cover.png");
 	f->setTexture(1, "book_cover.png^[transformFX");
 	f->setTexture(2, "book_side.png^[transformFY");
@@ -586,7 +587,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_COOK_BOOK;
 	f = &content_features(i);
-	f->description = std::string("Cook Book");
+	f->description = wgettext("Cook Book");
 	f->setTexture(0, "book_cook_cover.png");
 	f->setTexture(1, "book_cook_cover.png^[transformFX");
 	f->setTexture(2, "book_cook_side.png^[transformFY");
@@ -617,7 +618,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_DECRAFT_BOOK;
 	f = &content_features(i);
-	f->description = std::string("Decraft Book");
+	f->description = wgettext("Decraft Book");
 	f->setTexture(0, "book_decraft_cover.png");
 	f->setTexture(1, "book_decraft_cover.png^[transformFX");
 	f->setTexture(2, "book_decraft_side.png^[transformFY");
@@ -647,7 +648,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_DIARY_BOOK;
 	f = &content_features(i);
-	f->description = std::string("Diary");
+	f->description = wgettext("Diary");
 	f->setTexture(0, "book_diary_cover.png");
 	f->setTexture(1, "book_diary_cover.png^[transformFX");
 	f->setTexture(2, "book_diary_side.png^[transformFY");
@@ -677,7 +678,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_CRAFT_BOOK;
 	f = &content_features(i);
-	f->description = std::string("Craft Book");
+	f->description = wgettext("Craft Book");
 	f->setTexture(0, "book_craft_cover.png");
 	f->setTexture(1, "book_craft_cover.png^[transformFX");
 	f->setTexture(2, "book_craft_side.png^[transformFY");
@@ -715,7 +716,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_BOOK_OPEN;
 	f = &content_features(i);
-	f->description = std::string("Guide");
+	f->description = wgettext("Guide");
 	f->setAllTextures("guide_side.png");
 	f->setTexture(0, "guide_top.png");
 	f->setTexture(1, "guide_bottom.png");
@@ -741,7 +742,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_COOK_BOOK_OPEN;
 	f = &content_features(i);
-	f->description = std::string("Cooking Guide");
+	f->description = wgettext("Cooking Guide");
 	f->setAllTextures("guide_cook_side.png");
 	f->setTexture(0, "guide_cook_top.png");
 	f->setTexture(1, "guide_cook_bottom.png");
@@ -767,7 +768,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_DECRAFT_BOOK_OPEN;
 	f = &content_features(i);
-	f->description = std::string("Decrafting Guide");
+	f->description = wgettext("Decrafting Guide");
 	f->setAllTextures("guide_decraft_side.png");
 	f->setTexture(0, "guide_decraft_top.png");
 	f->setTexture(1, "guide_decraft_bottom.png");
@@ -793,7 +794,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_DIARY_BOOK_OPEN;
 	f = &content_features(i);
-	f->description = std::string("Diary");
+	f->description = wgettext("Diary");
 	f->setAllTextures("guide_diary_side.png");
 	f->setTexture(0, "guide_diary_top.png");
 	f->setTexture(1, "guide_diary_bottom.png");
@@ -819,7 +820,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_CRAFT_BOOK_OPEN;
 	f = &content_features(i);
-	f->description = std::string("Craft Guide");
+	f->description = wgettext("Craft Guide");
 	f->setAllTextures("guide_craft_side.png");
 	f->setTexture(0, "guide_craft_top.png");
 	f->setTexture(1, "guide_craft_bottom.png");
@@ -845,7 +846,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_FIRE;
 	f = &content_features(i);
-	f->description = std::string("Fire");
+	f->description = wgettext("Fire");
 	f->setAllTextures("fire.png");
 	f->setAllTextureFlags(0);
 	f->param_type = CPT_LIGHT;
@@ -865,7 +866,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_FIRE_SHORTTERM;
 	f = &content_features(i);
-	f->description = std::string("Fire");
+	f->description = wgettext("Fire");
 	f->setAllTextures("fire.png");
 	f->setAllTextureFlags(0);
 	f->param_type = CPT_LIGHT;
@@ -885,7 +886,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_TORCH_LEGACY;
 	f = &content_features(i);
-	f->description = std::string("Torch");
+	f->description = wgettext("Torch");
 	f->setAllTextures("torch.png");
 	f->setInventoryTexture("torch_inventory.png");
 	f->setAllTextureFlags(0);
@@ -907,7 +908,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_TORCH;
 	f = &content_features(i);
-	f->description = std::string("Torch");
+	f->description = wgettext("Torch");
 	f->setAllTextures("torch.png");
 	f->setInventoryTexture("torch_inventory.png");
 	f->setAllTextureFlags(0);
@@ -934,7 +935,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_SIGN_WALL;
 	f = &content_features(i);
-	f->description = std::string("Sign");
+	f->description = wgettext("Sign");
 	f->setAllTextures("sign_wall.png");
 	f->param_type = CPT_LIGHT;
 	f->param2_type = CPT_FACEDIR_WALLMOUNT;
@@ -958,7 +959,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_SIGN;
 	f = &content_features(i);
-	f->description = std::string("Sign");
+	f->description = wgettext("Sign");
 	f->setAllTextures("sign.png");
 	f->setTexture(4, "sign_back.png");
 	f->setTexture(5, "sign_front.png"); // Z-
@@ -989,7 +990,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_SIGN_UD;
 	f = &content_features(i);
-	f->description = std::string("Sign");
+	f->description = wgettext("Sign");
 	f->setAllTextures("sign.png");
 	f->setTexture(4, "sign_back_ud.png");
 	f->setTexture(5, "sign_front_ud.png"); // Z-
@@ -1015,7 +1016,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_LOCKABLE_SIGN_WALL;
 	f = &content_features(i);
-	f->description = std::string("Locking Sign");
+	f->description = wgettext("Locking Sign");
 	f->setAllTextures("sign.png");
 	f->setTexture(4, "sign_back.png");
 	f->setTexture(5, "sign_wall_lock.png"); // Z-
@@ -1042,7 +1043,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_LOCKABLE_SIGN;
 	f = &content_features(i);
-	f->description = std::string("Locking Sign");
+	f->description = wgettext("Locking Sign");
 	f->setAllTextures("sign.png");
 	f->setTexture(4, "sign_back.png");
 	f->setTexture(5, "sign_lock.png"); // Z-
@@ -1071,7 +1072,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_LOCKABLE_SIGN_UD;
 	f = &content_features(i);
-	f->description = std::string("Locking Sign");
+	f->description = wgettext("Locking Sign");
 	f->setAllTextures("sign.png");
 	f->setTexture(4, "sign_back_ud.png");
 	f->setTexture(5, "sign_lock_ud.png"); // Z-
@@ -1097,7 +1098,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_CHEST;
 	f = &content_features(i);
-	f->description = std::string("Chest");
+	f->description = wgettext("Chest");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_CUBELIKE;
 	f->setAllTextures("chest_side.png");
@@ -1119,7 +1120,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_CREATIVE_CHEST;
 	f = &content_features(i);
-	f->description = std::string("Creative Chest");
+	f->description = wgettext("Creative Chest");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_CUBELIKE;
 	f->setAllTextures("chest_side.png");
@@ -1139,7 +1140,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_LOCKABLE_CHEST;
 	f = &content_features(i);
-	f->description = std::string("Locking Chest");
+	f->description = wgettext("Locking Chest");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_CUBELIKE;
 	f->setAllTextures("chest_side.png");
@@ -1168,7 +1169,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_FURNACE;
 	f = &content_features(i);
-	f->description = std::string("Furnace");
+	f->description = wgettext("Furnace");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_CUBELIKE;
 	f->setAllTextures("furnace_side.png");
@@ -1188,7 +1189,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_LOCKABLE_FURNACE;
 	f = &content_features(i);
-	f->description = std::string("Locking Furnace");
+	f->description = wgettext("Locking Furnace");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_CUBELIKE;
 	f->setAllTextures("furnace_side.png");
@@ -1209,7 +1210,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_INCINERATOR;
 	f = &content_features(i);
-	f->description = std::string("Incinerator");
+	f->description = wgettext("Incinerator");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_CUBELIKE;
 	f->setAllTextures("incinerator_side.png");
@@ -1229,7 +1230,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_NC;
 	f = &content_features(i);
-	f->description = std::string("Nyan Cat");
+	f->description = wgettext("Nyan Cat");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_CUBELIKE;
 	f->setAllTextures("nc_side.png");
@@ -1243,7 +1244,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_NC_RB;
 	f = &content_features(i);
-	f->description = std::string("Rainbow");
+	f->description = wgettext("Rainbow");
 	f->draw_type = CDT_CUBELIKE;
 	f->setAllTextures("nc_rb.png");
 	f->setInventoryTextureCube("nc_rb.png", "nc_rb.png", "nc_rb.png");
@@ -1255,7 +1256,7 @@ void content_mapnode_special(bool repeat)
 	i = CONTENT_FLOWER_POT_RAW;
 	f = &content_features(i);
 	f->param_type = CPT_LIGHT;
-	f->description = std::string("Unbaked Flower Pot");
+	f->description = wgettext("Unbaked Flower Pot");
 	f->setAllTextures("flower_pot_raw.png");
 	f->setTexture(0,"flower_pot_raw_top.png");
 	f->setTexture(1,"flower_pot_raw_bottom.png");
@@ -1316,7 +1317,7 @@ void content_mapnode_special(bool repeat)
 	i = CONTENT_FLOWER_POT;
 	f = &content_features(i);
 	f->param_type = CPT_LIGHT;
-	f->description = std::string("Flower Pot");
+	f->description = wgettext("Flower Pot");
 	f->setAllTextures("flower_pot.png");
 	f->setTexture(0,"flower_pot_top.png");
 	f->setTexture(1,"flower_pot_bottom.png");
@@ -1373,7 +1374,7 @@ void content_mapnode_special(bool repeat)
 	// walls
 	i = CONTENT_COBBLE_WALL;
 	f = &content_features(i);
-	f->description = std::string("Cobblestone Wall");
+	f->description = wgettext("Cobblestone Wall");
 	f->setAllTextures("cobble.png");
 	f->light_propagates = true;
 	f->jumpable = false;
@@ -1396,7 +1397,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_ROUGHSTONE_WALL;
 	f = &content_features(i);
-	f->description = std::string("Rough Stone Wall");
+	f->description = wgettext("Rough Stone Wall");
 	f->setAllTextures("roughstone.png");
 	f->light_propagates = true;
 	f->jumpable = false;
@@ -1419,7 +1420,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_MOSSYCOBBLE_WALL;
 	f = &content_features(i);
-	f->description = std::string("Mossy Cobblestone Wall");
+	f->description = wgettext("Mossy Cobblestone Wall");
 	f->setAllTextures("mossycobble.png");
 	f->light_propagates = true;
 	f->jumpable = false;
@@ -1442,7 +1443,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_STONE_WALL;
 	f = &content_features(i);
-	f->description = std::string("Stone Wall");
+	f->description = wgettext("Stone Wall");
 	f->setAllTextures("stone.png");
 	f->light_propagates = true;
 	f->jumpable = false;
@@ -1465,7 +1466,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_SANDSTONE_WALL;
 	f = &content_features(i);
-	f->description = std::string("Sand Stone Wall");
+	f->description = wgettext("Sand Stone Wall");
 	f->setAllTextures("sandstone.png");
 	f->light_propagates = true;
 	f->jumpable = false;
@@ -1488,7 +1489,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_TNT;
 	f = &content_features(i);
-	f->description = std::string("TNT");
+	f->description = wgettext("TNT");
 	f->setAllTextures("tnt.png");
 	f->setTexture(0, "tnt_top.png");
 	f->setTexture(1, "tnt_bottom.png");
@@ -1507,7 +1508,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_FLASH;
 	f = &content_features(i);
-	f->description = std::string("In-Progress explosion - how did you get this???");
+	f->description = wgettext("In-Progress explosion - how did you get this???");
 	f->setAllTextures("flash.png");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
@@ -1527,7 +1528,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_STEAM;
 	f = &content_features(i);
-	f->description = std::string("Steam");
+	f->description = wgettext("Steam");
 	f->setAllTextures("steam.png");
 	f->solidness = 0;
 	f->param_type = CPT_LIGHT;
@@ -1548,7 +1549,7 @@ void content_mapnode_special(bool repeat)
 	// flags
 	i = CONTENT_FLAG;
 	f = &content_features(i);
-	f->description = std::string("Home Flag");
+	f->description = wgettext("Home Flag");
 	f->setAllTextures("flag.png");
 	f->setTexture(4,"flag.png^[transformFX");
 	f->setTexture(2,"flag_end.png");
@@ -1597,7 +1598,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_FLAG_BLUE;
 	f = &content_features(i);
-	f->description = std::string("Blue Home Flag");
+	f->description = wgettext("Blue Home Flag");
 	f->setAllTextures("flag_blue.png");
 	f->setTexture(4,"flag_blue.png^[transformFX");
 	f->setTexture(2,"flag_blue_end.png");
@@ -1625,7 +1626,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_FLAG_GREEN;
 	f = &content_features(i);
-	f->description = std::string("Green Home Flag");
+	f->description = wgettext("Green Home Flag");
 	f->setAllTextures("flag_green.png");
 	f->setTexture(4,"flag_green.png^[transformFX");
 	f->setTexture(2,"flag_green_end.png");
@@ -1653,7 +1654,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_FLAG_ORANGE;
 	f = &content_features(i);
-	f->description = std::string("Orange Home Flag");
+	f->description = wgettext("Orange Home Flag");
 	f->setAllTextures("flag_orange.png");
 	f->setTexture(4,"flag_orange.png^[transformFX");
 	f->setTexture(2,"flag_orange_end.png");
@@ -1681,7 +1682,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_FLAG_PURPLE;
 	f = &content_features(i);
-	f->description = std::string("Purple Home Flag");
+	f->description = wgettext("Purple Home Flag");
 	f->setAllTextures("flag_purple.png");
 	f->setTexture(4,"flag_purple.png^[transformFX");
 	f->setTexture(2,"flag_purple_end.png");
@@ -1709,7 +1710,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_FLAG_RED;
 	f = &content_features(i);
-	f->description = std::string("Red Home Flag");
+	f->description = wgettext("Red Home Flag");
 	f->setAllTextures("flag_red.png");
 	f->setTexture(4,"flag_red.png^[transformFX");
 	f->setTexture(2,"flag_red_end.png");
@@ -1737,7 +1738,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_FLAG_YELLOW;
 	f = &content_features(i);
-	f->description = std::string("Yellow Home Flag");
+	f->description = wgettext("Yellow Home Flag");
 	f->setAllTextures("flag_yellow.png");
 	f->setTexture(4,"flag_yellow.png^[transformFX");
 	f->setTexture(2,"flag_yellow_end.png");
@@ -1765,7 +1766,7 @@ void content_mapnode_special(bool repeat)
 
 	i = CONTENT_FLAG_BLACK;
 	f = &content_features(i);
-	f->description = std::string("Black Home Flag");
+	f->description = wgettext("Black Home Flag");
 	f->setAllTextures("flag_black.png");
 	f->setTexture(4,"flag_black.png^[transformFX");
 	f->setTexture(2,"flag_black_end.png");

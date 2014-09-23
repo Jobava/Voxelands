@@ -197,7 +197,7 @@ struct ContentFeatures
 
 	bool rotate_tile_with_nodebox;
 	bool wield_nodebox;
-	std::string description;
+	std::wstring description;
 	std::vector<aabb3f> nodeboxes;
 	std::vector<aabb3f> wield_nodeboxes;
 
@@ -320,7 +320,7 @@ struct ContentFeatures
 #endif
 		rotate_tile_with_nodebox = false;
 		wield_nodebox = true;
-		description = std::string("");
+		description = std::wstring(L"");
 		nodeboxes.clear();
 		nodeboxes.push_back(core::aabbox3d<f32>(
 			-0.5*BS,

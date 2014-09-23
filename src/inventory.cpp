@@ -198,7 +198,7 @@ video::ITexture * CraftItem::getImage() const
 	return g_texturesource->getTextureRaw(name);
 }
 #endif
-std::string CraftItem::getGuiName()
+std::wstring CraftItem::getGuiName()
 {
 	return content_craftitem_features(m_content).description;
 }

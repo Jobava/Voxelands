@@ -24,6 +24,7 @@
 #include "content_list.h"
 #include "content_craft.h"
 #include "content_nodemeta.h"
+#include "gettext.h"
 
 void content_mapnode_circuit(bool repeat)
 {
@@ -32,7 +33,7 @@ void content_mapnode_circuit(bool repeat)
 
 	i = CONTENT_CIRCUIT_MESEWIRE;
 	f = &content_features(i);
-	f->description = std::string("Mese Wire");
+	f->description = wgettext("Mese Wire");
 	f->setAllTextures("mese_wire.png");
 	f->setAllTextureFlags(0);
 	f->param_type = CPT_LIGHT;
@@ -55,7 +56,7 @@ void content_mapnode_circuit(bool repeat)
 
 	i = CONTENT_CIRCUIT_COPPERWIRE;
 	f = &content_features(i);
-	f->description = std::string("Copper Wire");
+	f->description = wgettext("Copper Wire");
 	f->setAllTextures("copper_wire.png");
 	f->setAllTextureFlags(0);
 	f->param_type = CPT_LIGHT;
@@ -86,7 +87,7 @@ void content_mapnode_circuit(bool repeat)
 
 	i = CONTENT_CIRCUIT_REACTOR;
 	f = &content_features(i);
-	f->description = std::string("Reactor");
+	f->description = wgettext("Reactor");
 	f->setAllTextures("circuit_reactor.png");
 	f->setTexture(0,"circuit_reactor_top.png");
 	f->setTexture(1,"circuit_reactor_bottom.png");
@@ -108,7 +109,7 @@ void content_mapnode_circuit(bool repeat)
 
 	i = CONTENT_CIRCUIT_SOLARPANEL;
 	f = &content_features(i);
-	f->description = std::string("Solar Panel");
+	f->description = wgettext("Solar Panel");
 	f->setAllTextures("wood.png");
 	f->setTexture(0,"circuit_solarpanel_top.png");
 	f->param_type = CPT_LIGHT;
@@ -138,7 +139,7 @@ void content_mapnode_circuit(bool repeat)
 
 	i = CONTENT_CIRCUIT_WATERWHEEL;
 	f = &content_features(i);
-	f->description = std::string("Water Wheel");
+	f->description = wgettext("Water Wheel");
 	f->setAllTextures("circuit_waterwheel.png");
 	f->setTexture(2,"circuit_waterwheel_side.png");
 	f->setTexture(3,"circuit_waterwheel_side.png^[transformFX");
@@ -171,7 +172,7 @@ void content_mapnode_circuit(bool repeat)
 
 	i = CONTENT_CIRCUIT_SWITCH;
 	f = &content_features(i);
-	f->description = std::string("Switch");
+	f->description = wgettext("Switch");
 	f->setAllTextures("stone.png");
 	f->setTexture(5,"circuit_switch_front.png");
 	f->setAllMetaTextures("stone.png");
@@ -205,7 +206,7 @@ void content_mapnode_circuit(bool repeat)
 
 	i = CONTENT_CIRCUIT_BUTTON;
 	f = &content_features(i);
-	f->description = std::string("Button");
+	f->description = wgettext("Button");
 	f->setAllTextures("stone.png");
 	f->param_type = CPT_LIGHT;
 	f->param2_type = CPT_FACEDIR_WALLMOUNT;
@@ -235,7 +236,7 @@ void content_mapnode_circuit(bool repeat)
 
 	i = CONTENT_CIRCUIT_PRESSUREPLATE_STONE;
 	f = &content_features(i);
-	f->description = std::string("Stone Pressure Plate");
+	f->description = wgettext("Stone Pressure Plate");
 	f->setAllTextures("stone.png");
 	f->setTexture(0,"pressureplate_stone_top.png");
 	f->draw_type = CDT_NODEBOX;
@@ -263,7 +264,7 @@ void content_mapnode_circuit(bool repeat)
 
 	i = CONTENT_CIRCUIT_PRESSUREPLATE_WOOD;
 	f = &content_features(i);
-	f->description = std::string("Wood Pressure Plate");
+	f->description = wgettext("Wood Pressure Plate");
 	f->setAllTextures("stone.png");
 	f->setTexture(0,"pressureplate_wood_top.png");
 	f->draw_type = CDT_NODEBOX;
@@ -291,7 +292,7 @@ void content_mapnode_circuit(bool repeat)
 
 	i = CONTENT_CIRCUIT_NOTGATE;
 	f = &content_features(i);
-	f->description = std::string("Not Gate");
+	f->description = wgettext("Not Gate");
 	f->setAllTextures("circuit_gate.png");
 	f->setTexture(0,"circuit_gate_top.png");
 	f->rotate_tile_with_nodebox = true;
@@ -321,7 +322,7 @@ void content_mapnode_circuit(bool repeat)
 
 	i = CONTENT_CIRCUIT_REPEATER;
 	f = &content_features(i);
-	f->description = std::string("Repeater");
+	f->description = wgettext("Repeater");
 	f->setAllTextures("circuit_repeater.png");
 	f->setTexture(0,"circuit_repeater_top.png");
 	f->rotate_tile_with_nodebox = true;
@@ -351,7 +352,7 @@ void content_mapnode_circuit(bool repeat)
 
 	i = CONTENT_CIRCUIT_LAMP;
 	f = &content_features(i);
-	f->description = std::string("Electric Lamp");
+	f->description = wgettext("Electric Lamp");
 	f->is_ground_content = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->visual_solidness = 1;
@@ -375,7 +376,7 @@ void content_mapnode_circuit(bool repeat)
 
 	i = CONTENT_CIRCUIT_LAMP_OFF;
 	f = &content_features(i);
-	f->description = std::string("Electric Lamp");
+	f->description = wgettext("Electric Lamp");
 	f->is_ground_content = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->visual_solidness = 1;
@@ -409,7 +410,7 @@ void content_mapnode_circuit(bool repeat)
 	// regular piston
 	i = CONTENT_CIRCUIT_PISTON_OFF;
 	f = &content_features(i);
-	f->description = std::string("Piston");
+	f->description = wgettext("Piston");
 	f->is_ground_content = true;
 	f->visual_solidness = 1;
 	f->param_type = CPT_FACEDIR_SIMPLE;
@@ -444,7 +445,7 @@ void content_mapnode_circuit(bool repeat)
 
 	i = CONTENT_CIRCUIT_PISTON;
 	f = &content_features(i);
-	f->description = std::string("Piston");
+	f->description = wgettext("Piston");
 	f->is_ground_content = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->visual_solidness = 1;
@@ -470,7 +471,7 @@ void content_mapnode_circuit(bool repeat)
 
 	i = CONTENT_CIRCUIT_PISTON_ARM;
 	f = &content_features(i);
-	f->description = std::string("Piston Arm");
+	f->description = wgettext("Piston Arm");
 	f->is_ground_content = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->visual_solidness = 1;
@@ -495,7 +496,7 @@ void content_mapnode_circuit(bool repeat)
 	// push up
 	i = CONTENT_CIRCUIT_PISTON_UP_OFF;
 	f = &content_features(i);
-	f->description = std::string("Piston");
+	f->description = wgettext("Piston");
 	f->is_ground_content = true;
 	f->visual_solidness = 1;
 	f->draw_type = CDT_CUBELIKE;
@@ -516,7 +517,7 @@ void content_mapnode_circuit(bool repeat)
 
 	i = CONTENT_CIRCUIT_PISTON_UP;
 	f = &content_features(i);
-	f->description = std::string("Piston");
+	f->description = wgettext("Piston");
 	f->is_ground_content = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->visual_solidness = 1;
@@ -538,7 +539,7 @@ void content_mapnode_circuit(bool repeat)
 
 	i = CONTENT_CIRCUIT_PISTON_UP_ARM;
 	f = &content_features(i);
-	f->description = std::string("Piston Arm");
+	f->description = wgettext("Piston Arm");
 	f->is_ground_content = true;
 	f->air_equivalent = true;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -558,7 +559,7 @@ void content_mapnode_circuit(bool repeat)
 	// push down
 	i = CONTENT_CIRCUIT_PISTON_DOWN_OFF;
 	f = &content_features(i);
-	f->description = std::string("Piston");
+	f->description = wgettext("Piston");
 	f->is_ground_content = true;
 	f->visual_solidness = 1;
 	f->draw_type = CDT_CUBELIKE;
@@ -579,7 +580,7 @@ void content_mapnode_circuit(bool repeat)
 
 	i = CONTENT_CIRCUIT_PISTON_DOWN;
 	f = &content_features(i);
-	f->description = std::string("Piston");
+	f->description = wgettext("Piston");
 	f->is_ground_content = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->visual_solidness = 1;
@@ -601,7 +602,7 @@ void content_mapnode_circuit(bool repeat)
 
 	i = CONTENT_CIRCUIT_PISTON_DOWN_ARM;
 	f = &content_features(i);
-	f->description = std::string("Piston Arm");
+	f->description = wgettext("Piston Arm");
 	f->is_ground_content = true;
 	f->air_equivalent = true;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -621,7 +622,7 @@ void content_mapnode_circuit(bool repeat)
 	// sticky piston
 	i = CONTENT_CIRCUIT_STICKYPISTON_OFF;
 	f = &content_features(i);
-	f->description = std::string("Sticky Piston");
+	f->description = wgettext("Sticky Piston");
 	f->is_ground_content = true;
 	f->visual_solidness = 1;
 	f->param_type = CPT_FACEDIR_SIMPLE;
@@ -649,7 +650,7 @@ void content_mapnode_circuit(bool repeat)
 
 	i = CONTENT_CIRCUIT_STICKYPISTON;
 	f = &content_features(i);
-	f->description = std::string("Sticky Piston");
+	f->description = wgettext("Sticky Piston");
 	f->is_ground_content = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->visual_solidness = 1;
@@ -675,7 +676,7 @@ void content_mapnode_circuit(bool repeat)
 
 	i = CONTENT_CIRCUIT_STICKYPISTON_ARM;
 	f = &content_features(i);
-	f->description = std::string("Sticky Piston Arm");
+	f->description = wgettext("Sticky Piston Arm");
 	f->is_ground_content = true;
 	f->air_equivalent = true;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -700,7 +701,7 @@ void content_mapnode_circuit(bool repeat)
 	// push up
 	i = CONTENT_CIRCUIT_STICKYPISTON_UP_OFF;
 	f = &content_features(i);
-	f->description = std::string("Sticky Piston");
+	f->description = wgettext("Sticky Piston");
 	f->is_ground_content = true;
 	f->visual_solidness = 1;
 	f->draw_type = CDT_CUBELIKE;
@@ -721,7 +722,7 @@ void content_mapnode_circuit(bool repeat)
 
 	i = CONTENT_CIRCUIT_STICKYPISTON_UP;
 	f = &content_features(i);
-	f->description = std::string("Sticky Piston");
+	f->description = wgettext("Sticky Piston");
 	f->is_ground_content = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->visual_solidness = 1;
@@ -743,7 +744,7 @@ void content_mapnode_circuit(bool repeat)
 
 	i = CONTENT_CIRCUIT_STICKYPISTON_UP_ARM;
 	f = &content_features(i);
-	f->description = std::string("Sticky Piston Arm");
+	f->description = wgettext("Sticky Piston Arm");
 	f->is_ground_content = true;
 	f->air_equivalent = true;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -763,7 +764,7 @@ void content_mapnode_circuit(bool repeat)
 	// push down
 	i = CONTENT_CIRCUIT_STICKYPISTON_DOWN_OFF;
 	f = &content_features(i);
-	f->description = std::string("Sticky Piston");
+	f->description = wgettext("Sticky Piston");
 	f->is_ground_content = true;
 	f->visual_solidness = 1;
 	f->draw_type = CDT_CUBELIKE;
@@ -784,7 +785,7 @@ void content_mapnode_circuit(bool repeat)
 
 	i = CONTENT_CIRCUIT_STICKYPISTON_DOWN;
 	f = &content_features(i);
-	f->description = std::string("Sticky Piston");
+	f->description = wgettext("Sticky Piston");
 	f->is_ground_content = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->visual_solidness = 1;
@@ -806,7 +807,7 @@ void content_mapnode_circuit(bool repeat)
 
 	i = CONTENT_CIRCUIT_STICKYPISTON_DOWN_ARM;
 	f = &content_features(i);
-	f->description = std::string("Sticky Piston Arm");
+	f->description = wgettext("Sticky Piston Arm");
 	f->is_ground_content = true;
 	f->air_equivalent = true;
 	f->solidness = 0; // drawn separately, makes no faces

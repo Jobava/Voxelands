@@ -24,6 +24,7 @@
 #include "content_list.h"
 #include "content_craft.h"
 #include "content_nodemeta.h"
+#include "gettext.h"
 
 void content_mapnode_door(bool repeat)
 {
@@ -34,7 +35,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_WOOD_DOOR_LB;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Wood Door");
+	f->description = wgettext("Wood Door");
 	f->setAllTextures("door_wood_b.png");
 	f->setTexture(2,"door_wood_b.png^[transformFX");
 	f->setTexture(3,"door_wood_b.png^[transformFX");
@@ -57,7 +58,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_WOOD_DOOR_LT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Wood Door");
+	f->description = wgettext("Wood Door");
 	f->setAllTextures("door_wood_t.png");
 	f->setTexture(2,"door_wood_t.png^[transformFX");
 	f->setTexture(3,"door_wood_t.png^[transformFX");
@@ -85,7 +86,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_STEEL_DOOR_LB;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Steel Door");
+	f->description = wgettext("Steel Door");
 	f->setAllTextures("door_steel_b.png");
 	f->setTexture(2,"door_steel_b.png^[transformFX");
 	f->setTexture(3,"door_steel_b.png^[transformFX");
@@ -109,7 +110,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_STEEL_DOOR_LT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Steel Door");
+	f->description = wgettext("Steel Door");
 	f->setAllTextures("door_steel_t.png");
 	f->setTexture(2,"door_steel_t.png^[transformFX");
 	f->setTexture(3,"door_steel_t.png^[transformFX");
@@ -138,7 +139,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_GLASS_DOOR_LB;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Glass Door");
+	f->description = wgettext("Glass Door");
 	f->setAllTextures("door_glass_b.png");
 	f->setTexture(2,"door_glass_b.png^[transformFX");
 	f->setTexture(3,"door_glass_b.png^[transformFX");
@@ -161,7 +162,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_GLASS_DOOR_LT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Glass Door");
+	f->description = wgettext("Glass Door");
 	f->setAllTextures("door_glass_t.png");
 	f->setTexture(2,"door_glass_t.png^[transformFX");
 	f->setTexture(3,"door_glass_t.png^[transformFX");
@@ -189,7 +190,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_WOOD_W_DOOR_LB;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Wood Windowed Door");
+	f->description = wgettext("Wood Windowed Door");
 	f->setAllTextures("door_wood_wb.png");
 	f->setTexture(2,"door_wood_wb.png^[transformFX");
 	f->setTexture(3,"door_wood_wb.png^[transformFX");
@@ -213,7 +214,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_WOOD_W_DOOR_LT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Wood Windowed Door");
+	f->description = wgettext("Wood Windowed Door");
 	f->setAllTextures("door_wood_wt.png");
 	f->setTexture(2,"door_wood_wt.png^[transformFX");
 	f->setTexture(3,"door_wood_wt.png^[transformFX");
@@ -243,7 +244,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_STEEL_W_DOOR_LB;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Steel Windowed Door");
+	f->description = wgettext("Steel Windowed Door");
 	f->setAllTextures("door_steel_wb.png");
 	f->setTexture(2,"door_steel_wb.png^[transformFX");
 	f->setTexture(3,"door_steel_wb.png^[transformFX");
@@ -268,7 +269,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_STEEL_W_DOOR_LT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Steel Windowed Door");
+	f->description = wgettext("Steel Windowed Door");
 	f->setAllTextures("door_steel_wt.png");
 	f->setTexture(2,"door_steel_wt.png^[transformFX");
 	f->setTexture(3,"door_steel_wt.png^[transformFX");
@@ -300,7 +301,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_WOOD_DOOR_RB;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Right Hanging Wood Door");
+	f->description = wgettext("Right Hanging Wood Door");
 	f->setAllTextures("door_wood_b.png^[transformFX");
 	f->setTexture(2,"door_wood_b.png");
 	f->setTexture(3,"door_wood_b.png");
@@ -323,7 +324,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_WOOD_DOOR_RT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Right Hanging Wood Door");
+	f->description = wgettext("Right Hanging Wood Door");
 	f->setAllTextures("door_wood_t.png^[transformFX");
 	f->setTexture(2,"door_wood_t.png");
 	f->setTexture(3,"door_wood_t.png");
@@ -350,7 +351,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_GLASS_DOOR_RB;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Right Hanging Glass Door");
+	f->description = wgettext("Right Hanging Glass Door");
 	f->setAllTextures("door_glass_b.png^[transformFX");
 	f->setTexture(2,"door_glass_b.png");
 	f->setTexture(3,"door_glass_b.png");
@@ -374,7 +375,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_GLASS_DOOR_RT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Right Hanging Glass Door");
+	f->description = wgettext("Right Hanging Glass Door");
 	f->setAllTextures("door_glass_t.png^[transformFX");
 	f->setTexture(2,"door_glass_t.png");
 	f->setTexture(3,"door_glass_t.png");
@@ -402,7 +403,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_STEEL_DOOR_RB;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Right Hanging Steel Door");
+	f->description = wgettext("Right Hanging Steel Door");
 	f->setAllTextures("door_steel_b.png^[transformFX");
 	f->setTexture(2,"door_steel_b.png");
 	f->setTexture(3,"door_steel_b.png");
@@ -426,7 +427,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_STEEL_DOOR_RT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Right Hanging Steel Door");
+	f->description = wgettext("Right Hanging Steel Door");
 	f->setAllTextures("door_steel_t.png^[transformFX");
 	f->setTexture(2,"door_steel_t.png");
 	f->setTexture(3,"door_steel_t.png");
@@ -454,7 +455,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_WOOD_W_DOOR_RB;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Right Hanging Wood Windowed Door");
+	f->description = wgettext("Right Hanging Wood Windowed Door");
 	f->setAllTextures("door_wood_wb.png^[transformFX");
 	f->setTexture(2,"door_wood_wb.png");
 	f->setTexture(3,"door_wood_wb.png");
@@ -478,7 +479,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_WOOD_W_DOOR_RT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Right Hanging Wood Windowed Door");
+	f->description = wgettext("Right Hanging Wood Windowed Door");
 	f->setAllTextures("door_wood_wt.png^[transformFX");
 	f->setTexture(2,"door_wood_wt.png");
 	f->setTexture(3,"door_wood_wt.png");
@@ -507,7 +508,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_STEEL_W_DOOR_RB;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Right Hanging Steel Windowed Door");
+	f->description = wgettext("Right Hanging Steel Windowed Door");
 	f->setAllTextures("door_steel_wb.png^[transformFX");
 	f->setTexture(2,"door_steel_wb.png");
 	f->setTexture(3,"door_steel_wb.png");
@@ -532,7 +533,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_STEEL_W_DOOR_RT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Right Hanging Steel Windowed Door");
+	f->description = wgettext("Right Hanging Steel Windowed Door");
 	f->setAllTextures("door_steel_wt.png^[transformFX");
 	f->setTexture(2,"door_steel_wt.png");
 	f->setTexture(3,"door_steel_wt.png");
@@ -563,7 +564,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_WOOD_DOOR_LB_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Wood Door");
+	f->description = wgettext("Wood Door");
 	f->setAllTextures("door_wood_b.png");
 	f->setTexture(3,"door_wood_b.png^[transformFX");
 	f->setInventoryTexture("door_wood_inv.png");
@@ -585,7 +586,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_WOOD_DOOR_LT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Wood Door");
+	f->description = wgettext("Wood Door");
 	f->setAllTextures("door_wood_t.png");
 	f->setTexture(3,"door_wood_t.png^[transformFX");
 	f->setInventoryTexture("door_wood_inv.png");
@@ -608,7 +609,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_GLASS_DOOR_LB_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Glass Door");
+	f->description = wgettext("Glass Door");
 	f->setAllTextures("door_glass_b.png");
 	f->setTexture(3,"door_glass_b.png^[transformFX");
 	f->setInventoryTexture("door_glass_inv.png");
@@ -630,7 +631,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_GLASS_DOOR_LT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Glass Door");
+	f->description = wgettext("Glass Door");
 	f->setAllTextures("door_glass_t.png");
 	f->setTexture(3,"door_glass_t.png^[transformFX");
 	f->setInventoryTexture("door_glass_inv.png");
@@ -653,7 +654,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_STEEL_DOOR_LB_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Steel Door");
+	f->description = wgettext("Steel Door");
 	f->setAllTextures("door_steel_b.png");
 	f->setTexture(3,"door_steel_b.png^[transformFX");
 	f->setInventoryTexture("door_steel_inv.png");
@@ -676,7 +677,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_STEEL_DOOR_LT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Steel Door");
+	f->description = wgettext("Steel Door");
 	f->setAllTextures("door_steel_t.png");
 	f->setTexture(3,"door_steel_t.png^[transformFX");
 	f->setInventoryTexture("door_steel_inv.png");
@@ -700,7 +701,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_WOOD_W_DOOR_LB_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Wood Windowed Door");
+	f->description = wgettext("Wood Windowed Door");
 	f->setAllTextures("door_wood_wb.png");
 	f->setTexture(3,"door_wood_wb.png^[transformFX");
 	f->setInventoryTexture("door_wood_w_inv.png");
@@ -722,7 +723,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_WOOD_W_DOOR_LT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Wood Windowed Door");
+	f->description = wgettext("Wood Windowed Door");
 	f->setAllTextures("door_wood_wt.png");
 	f->setTexture(3,"door_wood_wt.png^[transformFX");
 	f->setInventoryTexture("door_wood_w_inv.png");
@@ -745,7 +746,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_STEEL_W_DOOR_LB_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Steel Windowed Door");
+	f->description = wgettext("Steel Windowed Door");
 	f->setAllTextures("door_steel_wb.png");
 	f->setTexture(3,"door_steel_wb.png^[transformFX");
 	f->setInventoryTexture("door_steel_w_inv.png");
@@ -768,7 +769,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_STEEL_W_DOOR_LT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Steel Windowed Door");
+	f->description = wgettext("Steel Windowed Door");
 	f->setAllTextures("door_steel_wt.png");
 	f->setTexture(3,"door_steel_wt.png^[transformFX");
 	f->setInventoryTexture("door_steel_w_inv.png");
@@ -793,7 +794,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_WOOD_DOOR_RB_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Right Hanging Wood Door");
+	f->description = wgettext("Right Hanging Wood Door");
 	f->setAllTextures("door_wood_b.png");
 	f->setTexture(3,"door_wood_b.png^[transformFX");
 	f->setTexture(4,"door_wood_b.png^[transformFX");
@@ -817,7 +818,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_WOOD_DOOR_RT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Right Hanging Wood Door");
+	f->description = wgettext("Right Hanging Wood Door");
 	f->setAllTextures("door_wood_t.png");
 	f->setTexture(3,"door_wood_t.png^[transformFX");
 	f->setTexture(4,"door_wood_t.png^[transformFX");
@@ -842,7 +843,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_GLASS_DOOR_RB_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Right Hanging Glass Door");
+	f->description = wgettext("Right Hanging Glass Door");
 	f->setAllTextures("door_glass_b.png");
 	f->setTexture(2,"door_glass_b.png^[transformFX");
 	f->setTexture(3,"door_glass_b.png^[transformFX");
@@ -866,7 +867,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_GLASS_DOOR_RT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Right Hanging Glass Door");
+	f->description = wgettext("Right Hanging Glass Door");
 	f->setAllTextures("door_glass_t.png");
 	f->setTexture(2,"door_glass_t.png^[transformFX");
 	f->setTexture(3,"door_glass_t.png^[transformFX");
@@ -891,7 +892,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_STEEL_DOOR_RB_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Right Hanging Steel Door");
+	f->description = wgettext("Right Hanging Steel Door");
 	f->setAllTextures("door_steel_b.png");
 	f->setTexture(3,"door_steel_b.png^[transformFX");
 	f->setTexture(4,"door_steel_b.png^[transformFX");
@@ -916,7 +917,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_STEEL_DOOR_RT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Right Hanging Steel Door");
+	f->description = wgettext("Right Hanging Steel Door");
 	f->setAllTextures("door_steel_b.png");
 	f->setTexture(3,"door_steel_t.png^[transformFX");
 	f->setTexture(4,"door_steel_t.png^[transformFX");
@@ -942,7 +943,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_WOOD_W_DOOR_RB_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Right Hanging Wood Windowed Door");
+	f->description = wgettext("Right Hanging Wood Windowed Door");
 	f->setAllTextures("door_wood_wb.png");
 	f->setTexture(3,"door_wood_wb.png^[transformFX");
 	f->setTexture(4,"door_wood_wb.png^[transformFX");
@@ -966,7 +967,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_WOOD_W_DOOR_RT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Right Hanging Wood Windowed Door");
+	f->description = wgettext("Right Hanging Wood Windowed Door");
 	f->setAllTextures("door_wood_wt.png");
 	f->setTexture(3,"door_wood_wt.png^[transformFX");
 	f->setTexture(4,"door_wood_wt.png^[transformFX");
@@ -991,7 +992,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_STEEL_W_DOOR_RB_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Right Hanging Steel Windowed Door");
+	f->description = wgettext("Right Hanging Steel Windowed Door");
 	f->setAllTextures("door_steel_wb.png");
 	f->setTexture(3,"door_steel_wb.png^[transformFX");
 	f->setTexture(4,"door_steel_wb.png^[transformFX");
@@ -1016,7 +1017,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_STEEL_W_DOOR_RT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Right Hanging Steel Windowed Door");
+	f->description = wgettext("Right Hanging Steel Windowed Door");
 	f->setAllTextures("door_steel_wt.png");
 	f->setTexture(3,"door_steel_wt.png^[transformFX");
 	f->setTexture(4,"door_steel_wt.png^[transformFX");
@@ -1043,7 +1044,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_WOOD_HATCH;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Wood Hatch");
+	f->description = wgettext("Wood Hatch");
 	f->setAllTextures("hatch_wood.png");
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("hatch_wood_inv.png");
@@ -1067,7 +1068,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_STEEL_HATCH;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Steel Hatch");
+	f->description = wgettext("Steel Hatch");
 	f->setAllTextures("hatch_steel.png");
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("hatch_steel_inv.png");
@@ -1091,7 +1092,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_WOOD_W_HATCH;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Wood Windowed Hatch");
+	f->description = wgettext("Wood Windowed Hatch");
 	f->setAllTextures("hatch_wood_w.png");
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("hatch_wood_w_inv.png");
@@ -1117,7 +1118,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_STEEL_W_HATCH;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Steel Windowed Hatch");
+	f->description = wgettext("Steel Windowed Hatch");
 	f->setAllTextures("hatch_steel_w.png");
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("hatch_steel_w_inv.png");
@@ -1145,7 +1146,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_WOOD_GATE;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Wood Gate");
+	f->description = wgettext("Wood Gate");
 	f->setAllTextures("gate_wood.png");
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("gate_wood_inv.png");
@@ -1175,7 +1176,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_STEEL_GATE;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Steel Gate");
+	f->description = wgettext("Steel Gate");
 	f->setAllTextures("gate_steel.png");
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("gate_steel_inv.png");
@@ -1204,7 +1205,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_WOOD_HATCH_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Wood Hatch");
+	f->description = wgettext("Wood Hatch");
 	f->setAllTextures("hatch_wood.png");
 	f->setTexture(2,"hatch_wood.png^[transformR90");
 	f->setTexture(3,"hatch_wood.png^[transformR90");
@@ -1229,7 +1230,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_STEEL_HATCH_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Steel Hatch");
+	f->description = wgettext("Steel Hatch");
 	f->setAllTextures("hatch_steel.png");
 	f->setTexture(2,"hatch_steel.png^[transformR90");
 	f->setTexture(3,"hatch_steel.png^[transformR90");
@@ -1255,7 +1256,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_WOOD_W_HATCH_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Wood Hatch");
+	f->description = wgettext("Wood Hatch");
 	f->setAllTextures("hatch_wood_w.png");
 	f->setTexture(2,"hatch_wood.png^[transformR90");
 	f->setTexture(3,"hatch_wood.png^[transformR90");
@@ -1280,7 +1281,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_STEEL_W_HATCH_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Steel Hatch");
+	f->description = wgettext("Steel Hatch");
 	f->setAllTextures("hatch_steel_w.png");
 	f->setTexture(2,"hatch_steel.png^[transformR90");
 	f->setTexture(3,"hatch_steel.png^[transformR90");
@@ -1307,7 +1308,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_WOOD_GATE_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Wood Gate");
+	f->description = wgettext("Wood Gate");
 	f->setAllTextures("gate_wood.png");
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("gate_wood_inv.png");
@@ -1330,7 +1331,7 @@ void content_mapnode_door(bool repeat)
 	i = CONTENT_STEEL_GATE_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->description = std::string("Steel Gate");
+	f->description = wgettext("Steel Gate");
 	f->setAllTextures("gate_steel.png");
 	f->rotate_tile_with_nodebox = true;
 	f->setInventoryTexture("gate_steel_inv.png");
