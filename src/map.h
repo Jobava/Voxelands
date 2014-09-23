@@ -662,6 +662,8 @@ public:
 
 	// This is much faster with big chunks of generated data
 	void blitBackAll(core::map<v3s16, MapBlock*> * modified_blocks);
+	// Slower than above, but doesn't screw up node metadata
+	void blitBackAllWithMeta(core::map<v3s16, MapBlock*> * modified_blocks);
 
 protected:
 	bool m_create_area;

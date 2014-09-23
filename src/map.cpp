@@ -4466,20 +4466,16 @@ void ManualMapVoxelManipulator::initialEmerge(
 void ManualMapVoxelManipulator::blitBackAll(
 		core::map<v3s16, MapBlock*> * modified_blocks)
 {
-	if(m_area.getExtent() == v3s16(0,0,0))
+	if (m_area.getExtent() == v3s16(0,0,0))
 		return;
 
 	/*
 		Copy data of all blocks
 	*/
-	for(core::map<v3s16, bool>::Iterator
-			i = m_loaded_blocks.getIterator();
-			i.atEnd() == false; i++)
-	{
+	for (core::map<v3s16, bool>::Iterator i = m_loaded_blocks.getIterator(); i.atEnd() == false; i++) {
 		v3s16 p = i.getNode()->getKey();
 		bool existed = i.getNode()->getValue();
-		if(existed == false)
-		{
+		if (existed == false) {
 			// The Great Bug was found using this
 			/*infostream<<"ManualMapVoxelManipulator::blitBackAll: "
 					<<"Inexistent ("<<p.X<<","<<p.Y<<","<<p.Z<<")"
@@ -4487,8 +4483,7 @@ void ManualMapVoxelManipulator::blitBackAll(
 			continue;
 		}
 		MapBlock *block = m_map->getBlockNoCreateNoEx(p);
-		if(block == NULL)
-		{
+		if (block == NULL) {
 			infostream<<"WARNING: "<<__FUNCTION_NAME
 					<<": got NULL block "
 					<<"("<<p.X<<","<<p.Y<<","<<p.Z<<")"
@@ -4498,8 +4493,70 @@ void ManualMapVoxelManipulator::blitBackAll(
 
 		block->copyFrom(*this);
 
-		if(modified_blocks)
+		if (modified_blocks)
 			modified_blocks->insert(p, block);
+	}
+}
+
+void ManualMapVoxelManipulator::blitBackAllWithMeta(
+		core::map<v3s16, MapBlock*> * modified_blocks)
+{
+	if (m_area.getExtent() == v3s16(0,0,0))
+		return;
+
+	/*
+		Copy data of all blocks
+	*/
+	for (core::map<v3s16, bool>::Iterator i = m_loaded_blocks.getIterator(); i.atEnd() == false; i++) {
+		v3s16 p = i.getNode()->getKey();
+		bool existed = i.getNode()->getValue();
+		if (existed == false) {
+			// The Great Bug was found using this
+			/*infostream<<"ManualMapVoxelManipulator::blitBackAll: "
+					<<"Inexistent ("<<p.X<<","<<p.Y<<","<<p.Z<<")"
+					<<std::endl;*/
+			continue;
+		}
+		MapBlock *block = m_map->getBlockNoCreateNoEx(p);
+		if (block == NULL) {
+			infostream<<"WARNING: "<<__FUNCTION_NAME
+					<<": got NULL block "
+					<<"("<<p.X<<","<<p.Y<<","<<p.Z<<")"
+					<<std::endl;
+			continue;
+		}
+
+		block->copyFrom(*this);
+
+		if (modified_blocks)
+			modified_blocks->insert(p, block);
+	}
+	if (!modified_blocks)
+		return;
+	// iterate over the modified blocks search for
+	// nodes that have metadata that shouldn't
+	// nodes that don't have metadata that should
+	// nodes that have the wrong metadata
+	for (core::map<v3s16, MapBlock*>::Iterator i = modified_blocks->getIterator(); i.atEnd() == false; i++) {
+		v3s16 p = i.getNode()->getKey();
+		MapBlock *block = i.getNode()->getValue();
+		if (block == NULL)
+			continue;
+		v3s16 p0;
+		for(p0.X=0; p0.X<MAP_BLOCKSIZE; p0.X++)
+		for(p0.Y=0; p0.Y<MAP_BLOCKSIZE; p0.Y++)
+		for(p0.Z=0; p0.Z<MAP_BLOCKSIZE; p0.Z++) {
+			v3s16 p = p0 + block->getPosRelative();
+			MapNode n = block->getNodeNoEx(p0);
+			if (content_features(n).initial_metadata != NULL) {
+				NodeMetadata *f = content_features(n).initial_metadata;
+				NodeMetadata *a = block->m_node_metadata.get(p0);
+				if (!a || f->typeId() != a->typeId())
+					block->m_node_metadata.set(p0,f->clone());
+			}else if (block->m_node_metadata.get(p0) != NULL) {
+				block->m_node_metadata.remove(p0);
+			}
+		}
 	}
 }
 

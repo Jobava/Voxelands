@@ -27,6 +27,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "environment.h"
 #include "settings.h"
 #include "main.h"
+#include "mapblock.h"
 
 /*
 	SignNodeMetadata
@@ -3161,24 +3162,47 @@ bool PistonNodeMetadata::extend(v3s16 pos, v3s16 dir, content_t arm, ServerEnvir
 	v3s16 p_prev = pos;
 	v3s16 p_cur = p_prev+dir;
 	v3s16 p_next = p_cur+dir;
+
+	core::map<v3s16, MapBlock*> modified_blocks;
+	ManualMapVoxelManipulator vmanip(&env->getMap());
+	v3s16 piston_blockp = getNodeBlockPos(pos);
+	vmanip.initialEmerge(piston_blockp - v3s16(1,1,1), piston_blockp + v3s16(1,1,1));
+
 	if (arm == CONTENT_CIRCUIT_PISTON_ARM || arm == CONTENT_CIRCUIT_STICKYPISTON_ARM)
-		n_prev = env->getMap().getNodeNoEx(pos);
+		n_prev = vmanip.m_data[vmanip.m_area.index(p_prev)];
 	n_prev.setContent(arm);
-	n_cur = env->getMap().getNodeNoEx(p_cur);
+	n_cur = vmanip.m_data[vmanip.m_area.index(p_cur)];
 	for (int i=0; i<17; i++) {
 		ContentFeatures &f = content_features(n_cur);
-		n_next = env->getMap().getNodeNoEx(p_next);
-		env->getMap().addNodeWithEvent(p_cur,n_prev);
+		n_next = vmanip.m_data[vmanip.m_area.index(p_next)];
+		vmanip.m_data[vmanip.m_area.index(p_cur)] = n_prev;
 		if (f.pressure_type == CST_CRUSHED)
-			return true;
+			break;
 		if (f.pressure_type == CST_CRUSHABLE && n_next.getContent() != CONTENT_AIR)
-			return true;
+			break;
 		n_prev = n_cur;
 		n_cur = n_next;
 		p_prev = p_cur;
 		p_cur = p_next;
 		p_next += dir;
 	}
+
+	vmanip.blitBackAllWithMeta(&modified_blocks);
+
+	// update lighting
+	core::map<v3s16, MapBlock*> lighting_modified_blocks;
+	for (core::map<v3s16, MapBlock*>::Iterator i = modified_blocks.getIterator(); i.atEnd() == false; i++) {
+		lighting_modified_blocks.insert(i.getNode()->getKey(), i.getNode()->getValue());
+	}
+	env->getMap().updateLighting(lighting_modified_blocks, modified_blocks);
+	// Send a MEET_OTHER event
+	MapEditEvent event;
+	event.type = MEET_OTHER;
+	for (core::map<v3s16, MapBlock*>::Iterator i = modified_blocks.getIterator(); i.atEnd() == false; i++) {
+		v3s16 p = i.getNode()->getKey();
+		event.modified_blocks.insert(p, true);
+	}
+	env->getMap().dispatchEvent(&event);
 	return true;
 }
 bool PistonNodeMetadata::contract(v3s16 pos, v3s16 dir, bool sticky, ServerEnvironment *env)
@@ -3224,8 +3248,13 @@ bool PistonNodeMetadata::contract(v3s16 pos, v3s16 dir, bool sticky, ServerEnvir
 
 	p_cur = pos+dir;
 	p_next = p_cur+dir;
+
+	core::map<v3s16, MapBlock*> modified_blocks;
+	ManualMapVoxelManipulator vmanip(&env->getMap());
+	v3s16 piston_blockp = getNodeBlockPos(pos);
+	vmanip.initialEmerge(piston_blockp - v3s16(1,1,1), piston_blockp + v3s16(1,1,1));
 	for (int i=0; i<16; i++) {
-		MapNode n = env->getMap().getNodeNoEx(p_next);
+		MapNode n = vmanip.m_data[vmanip.m_area.index(p_next)];
 		if (n.getContent() == CONTENT_IGNORE)
 			break;
 		ContentFeatures &f = content_features(n);
@@ -3235,12 +3264,29 @@ bool PistonNodeMetadata::contract(v3s16 pos, v3s16 dir, bool sticky, ServerEnvir
 			break;
 		if ((!sticky || i) && f.pressure_type != CST_DROPABLE)
 			break;
-		env->getMap().removeNodeWithEvent(p_next);
-		env->getMap().addNodeWithEvent(p_cur,n);
+		vmanip.m_data[vmanip.m_area.index(p_next)] = CONTENT_AIR;
+		vmanip.m_data[vmanip.m_area.index(p_cur)] = n;
 		if (!dropping)
 			break;
 		p_cur = p_next;
 		p_next += dir;
 	}
+
+	vmanip.blitBackAllWithMeta(&modified_blocks);
+
+	// update lighting
+	core::map<v3s16, MapBlock*> lighting_modified_blocks;
+	for (core::map<v3s16, MapBlock*>::Iterator i = modified_blocks.getIterator(); i.atEnd() == false; i++) {
+		lighting_modified_blocks.insert(i.getNode()->getKey(), i.getNode()->getValue());
+	}
+	env->getMap().updateLighting(lighting_modified_blocks, modified_blocks);
+	// Send a MEET_OTHER event
+	MapEditEvent event;
+	event.type = MEET_OTHER;
+	for (core::map<v3s16, MapBlock*>::Iterator i = modified_blocks.getIterator(); i.atEnd() == false; i++) {
+		v3s16 p = i.getNode()->getKey();
+		event.modified_blocks.insert(p, true);
+	}
+	env->getMap().dispatchEvent(&event);
 	return true;
 }
