@@ -4538,7 +4538,6 @@ void ManualMapVoxelManipulator::blitBackAllWithMeta(
 	// nodes that don't have metadata that should
 	// nodes that have the wrong metadata
 	for (core::map<v3s16, MapBlock*>::Iterator i = modified_blocks->getIterator(); i.atEnd() == false; i++) {
-		v3s16 p = i.getNode()->getKey();
 		MapBlock *block = i.getNode()->getValue();
 		if (block == NULL)
 			continue;
@@ -4546,7 +4545,6 @@ void ManualMapVoxelManipulator::blitBackAllWithMeta(
 		for(p0.X=0; p0.X<MAP_BLOCKSIZE; p0.X++)
 		for(p0.Y=0; p0.Y<MAP_BLOCKSIZE; p0.Y++)
 		for(p0.Z=0; p0.Z<MAP_BLOCKSIZE; p0.Z++) {
-			v3s16 p = p0 + block->getPosRelative();
 			MapNode n = block->getNodeNoEx(p0);
 			if (content_features(n).initial_metadata != NULL) {
 				NodeMetadata *f = content_features(n).initial_metadata;
