@@ -796,6 +796,10 @@ void ServerEnvironment::step(float dtime)
 		m_game_time_fraction_counter -= (float)inc_i;
 	}
 
+
+	bool blockstep = m_active_blocks_management_interval.step(dtime, 2.0);
+	core::list<v3s16> players_blockpos;
+
 	/*
 		Handle players
 	*/
@@ -838,31 +842,22 @@ void ServerEnvironment::step(float dtime)
 					}
 				}catch (InvalidPositionException &e) {}
 			}
+			/*
+				Get player block positions
+			*/
+			if (blockstep) {
+				v3s16 blockpos = getNodeBlockPos(
+						floatToInt(player->getPosition(), BS));
+				players_blockpos.push_back(blockpos);
+			}
 		}
 	}
 
 	/*
 		Manage active block list
 	*/
-	if(m_active_blocks_management_interval.step(dtime, 2.0))
-	{
+	if (blockstep) {
 		ScopeProfiler sp(g_profiler, "SEnv: manage act. block list avg /2s", SPT_AVG);
-		/*
-			Get player block positions
-		*/
-		core::list<v3s16> players_blockpos;
-		for(core::list<Player*>::Iterator
-				i = m_players.begin();
-				i != m_players.end(); i++)
-		{
-			Player *player = *i;
-			// Ignore disconnected players
-			if(player->peer_id == 0)
-				continue;
-			v3s16 blockpos = getNodeBlockPos(
-					floatToInt(player->getPosition(), BS));
-			players_blockpos.push_back(blockpos);
-		}
 
 		/*
 			Update list of active blocks, collecting changes
@@ -880,10 +875,7 @@ void ServerEnvironment::step(float dtime)
 		// Convert active objects that are no more in active blocks to static
 		deactivateFarObjects(false);
 
-		for(core::map<v3s16, bool>::Iterator
-				i = blocks_removed.getIterator();
-				i.atEnd()==false; i++)
-		{
+		for (core::map<v3s16, bool>::Iterator i = blocks_removed.getIterator(); i.atEnd()==false; i++) {
 			v3s16 p = i.getNode()->getKey();
 
 			/*infostream<<"Server: Block ("<<p.X<<","<<p.Y<<","<<p.Z
@@ -901,10 +893,7 @@ void ServerEnvironment::step(float dtime)
 			Handle added blocks
 		*/
 
-		for(core::map<v3s16, bool>::Iterator
-				i = blocks_added.getIterator();
-				i.atEnd()==false; i++)
-		{
+		for (core::map<v3s16, bool>::Iterator i = blocks_added.getIterator(); i.atEnd()==false; i++) {
 			v3s16 p = i.getNode()->getKey();
 
 			/*infostream<<"Server: Block ("<<p.X<<","<<p.Y<<","<<p.Z
@@ -1530,23 +1519,14 @@ void ServerEnvironment::step(float dtime)
 							pp.Z = p.Z;
 							Player *nearest = getNearestConnectedPlayer(pp);
 							if (nearest == NULL || nearest->getPosition().getDistanceFrom(pp*BS)/BS > 20.0) {
-								bool can_grow = true;
-								for(s16 x=-1; can_grow && x<=1; x++)
-								for(s16 y=-1; can_grow && y<=1; y++)
-								for(s16 z=-1; can_grow && z<=1; z++)
-								{
-									MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
-									if (
-										n_test.getContent() == CONTENT_WILDGRASS_SHORT
-										|| n_test.getContent() == CONTENT_WILDGRASS_LONG
-										|| n_test.getContent() == CONTENT_FLOWER_STEM
-										|| n_test.getContent() == CONTENT_FLOWER_ROSE
-										|| n_test.getContent() == CONTENT_FLOWER_TULIP
-										|| n_test.getContent() == CONTENT_FLOWER_DAFFODIL
-									)
-										can_grow = false;
-								}
-								if (can_grow) {
+								std::vector<content_t> search;
+								search.push_back(CONTENT_WILDGRASS_SHORT);
+								search.push_back(CONTENT_WILDGRASS_LONG);
+								search.push_back(CONTENT_FLOWER_STEM);
+								search.push_back(CONTENT_FLOWER_ROSE);
+								search.push_back(CONTENT_FLOWER_TULIP);
+								search.push_back(CONTENT_FLOWER_DAFFODIL);
+								if (!searchNear(p,v3s16(1,1,1),search,NULL)) {
 									n_top.setContent(CONTENT_WILDGRASS_SHORT);
 									m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top);
 								}
