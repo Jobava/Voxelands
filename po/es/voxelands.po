@@ -55,7 +55,7 @@ msgstr ""
 
 #: src/guiKeyChangeMenu.cpp:164
 msgid "Use"
-msgstr ""
+msgstr "Usar"
 
 #: src/guiKeyChangeMenu.cpp:179
 msgid "Sneak"
@@ -63,7 +63,7 @@ msgstr ""
 
 #: src/guiKeyChangeMenu.cpp:195
 msgid "Jump"
-msgstr ""
+msgstr "Saltar"
 
 #: src/guiKeyChangeMenu.cpp:210
 msgid "Inventory"
@@ -95,11 +95,11 @@ msgstr ""
 
 #: src/guiKeyChangeMenu.cpp:319
 msgid "Save"
-msgstr ""
+msgstr "Guardar"
 
 #: src/guiKeyChangeMenu.cpp:325 src/keycode.cpp:222
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: src/guiKeyChangeMenu.cpp:560 src/guiKeyChangeMenu.cpp:565
 #: src/guiKeyChangeMenu.cpp:570 src/guiKeyChangeMenu.cpp:575
