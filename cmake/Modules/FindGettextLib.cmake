@@ -33,7 +33,7 @@ IF (WIN32)
 		DOC "gettext *intl*.lib")
 	FIND_FILE(GETTEXT_DLL
 		NAMES libintl.dll intl.dll libintl3.dll intl3.dll
-		PATHS "${CUSTOM_GETTEXT_PATH}/bin" "${CUSTOM_GETTEXT_PATH}/lib" 
+		PATHS "${CUSTOM_GETTEXT_PATH}/bin" "${CUSTOM_GETTEXT_PATH}/lib"
 		DOC "gettext *intl*.dll")
 	FIND_FILE(GETTEXT_ICONV_DLL
 		NAMES libiconv2.dll
@@ -61,7 +61,7 @@ IF(GETTEXT_FOUND)
 	SET(GETTEXT_MO_BUILD_PATH ${CMAKE_BINARY_DIR}/locale/<locale>/LC_MESSAGES)
 	SET(GETTEXT_MO_DEST_PATH ${DATADIR}/../locale/<locale>/LC_MESSAGES)
 	FILE(GLOB GETTEXT_AVAILABLE_LOCALES RELATIVE ${GETTEXT_PO_PATH} "${GETTEXT_PO_PATH}/*")
-	LIST(REMOVE_ITEM GETTEXT_AVAILABLE_LOCALES minetest.pot)
+	LIST(REMOVE_ITEM GETTEXT_AVAILABLE_LOCALES voxelands.pot)
 	MACRO(SET_MO_PATHS _buildvar _destvar _locale)
 		STRING(REPLACE "<locale>" ${_locale} ${_buildvar} ${GETTEXT_MO_BUILD_PATH})
 		STRING(REPLACE "<locale>" ${_locale} ${_destvar} ${GETTEXT_MO_DEST_PATH})
