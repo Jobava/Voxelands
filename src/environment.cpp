@@ -3996,6 +3996,13 @@ void ClientEnvironment::step(float dtime)
 				content_features(n2).damage_per_second);
 		damage_per_second = MYMAX(damage_per_second,
 				content_features(n3).damage_per_second);
+		// under feet (such as standing on cactus)
+		if (damage_per_second == 0) {
+			v3s16 p4 = floatToInt(pf - v3f(0, BS*0.1, 0), BS);
+			MapNode n4 = m_map->getNodeNoEx(p4);
+			damage_per_second = MYMAX(damage_per_second,content_features(n4).damage_per_second);
+		}
+		// cold zone
 		if (damage_per_second == 0 && pp.Y > 60 && pp.Y < 200 && myrand()%10 == 0) {
 			std::vector<content_t> search;
 			search.push_back(CONTENT_FIRE);
