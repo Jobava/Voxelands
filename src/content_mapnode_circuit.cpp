@@ -608,7 +608,7 @@ void content_mapnode_circuit(bool repeat)
 	f->visual_solidness = 1;
 	f->draw_type = CDT_NODEBOX;
 	f->special_alternate_node = CONTENT_CIRCUIT_PISTON_DOWN;
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_PISTON_UP_OFF)+" 1";
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_PISTON_OFF)+" 1";
 	f->setAllTextures("circuit_piston_arm.png^[transformR90");
 	f->setTexture(0,"circuit_piston_arm_bottom.png");
 	f->setTexture(1,"circuit_piston_arm_top.png");
@@ -750,7 +750,7 @@ void content_mapnode_circuit(bool repeat)
 	f->visual_solidness = 1;
 	f->draw_type = CDT_NODEBOX;
 	f->special_alternate_node = CONTENT_CIRCUIT_STICKYPISTON_UP;
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_STICKYPISTON_UP_OFF)+" 1";
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_STICKYPISTON_OFF)+" 1";
 	f->setAllTextures("circuit_piston_arm.png^[transformR270");
 	f->setTexture(0,"circuit_stickypiston_arm_top.png");
 	f->setTexture(1,"circuit_piston_arm_bottom.png");
@@ -813,7 +813,7 @@ void content_mapnode_circuit(bool repeat)
 	f->visual_solidness = 1;
 	f->draw_type = CDT_NODEBOX;
 	f->special_alternate_node = CONTENT_CIRCUIT_STICKYPISTON_DOWN;
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_STICKYPISTON_UP_OFF)+" 1";
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_STICKYPISTON_OFF)+" 1";
 	f->setAllTextures("circuit_piston_arm.png^[transformR90");
 	f->setTexture(0,"circuit_piston_arm_bottom.png");
 	f->setTexture(1,"circuit_stickypiston_arm_top.png");

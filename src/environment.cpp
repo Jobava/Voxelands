@@ -610,44 +610,14 @@ void ServerEnvironment::activateBlock(MapBlock *block, u32 additional_dtime)
 
 	// Run node metadata
 	bool changed = block->m_node_metadata.step((float)dtime_s, block->getPosRelative(),this);
-	if(changed)
-	{
+	bool cchanged = block->m_node_metadata.stepCircuit((float)dtime_s, block->getPosRelative(),this);
+	if (changed || cchanged) {
 		MapEditEvent event;
 		event.type = MEET_BLOCK_NODE_METADATA_CHANGED;
 		event.p = block->getPos();
 		m_map->dispatchEvent(&event);
 
 		block->setChangedFlag();
-	}
-
-	// TODO: Do something
-	// TODO: Implement usage of ActiveBlockModifier
-
-	// Here's a quick demonstration
-	v3s16 p0;
-	for(p0.X=0; p0.X<MAP_BLOCKSIZE; p0.X++)
-	for(p0.Y=0; p0.Y<MAP_BLOCKSIZE; p0.Y++)
-	for(p0.Z=0; p0.Z<MAP_BLOCKSIZE; p0.Z++)
-	{
-		v3s16 p = p0 + block->getPosRelative();
-		MapNode n = block->getNodeNoEx(p0);
-#if 1
-		// Test something:
-		// Convert all mud under proper day lighting to grass
-		if(n.getContent() == CONTENT_MUD)
-		{
-			if(dtime_s > 300)
-			{
-				MapNode n_top = block->getNodeNoEx(p0+v3s16(0,1,0));
-				if(content_features(n_top).air_equivalent &&
-						n_top.getLight(LIGHTBANK_DAY) >= 13)
-				{
-					n.setContent(CONTENT_GRASS);
-					m_map->addNodeWithEvent(p, n);
-				}
-			}
-		}
-#endif
 	}
 }
 
@@ -951,35 +921,44 @@ void ServerEnvironment::step(float dtime)
 	/*
 		Mess around in active blocks
 	*/
-	if(m_active_blocks_nodemetadata_interval.step(dtime, 1.0))
-	{
-		ScopeProfiler sp(g_profiler, "SEnv: mess in act. blocks avg /1s", SPT_AVG);
+	bool circuitstep = m_active_blocks_circuit_interval.step(dtime, 0.2);
+	bool metastep = m_active_blocks_nodemetadata_interval.step(dtime, 1.0);
+	bool nodestep = m_active_blocks_test_interval.step(dtime, 10.0);
 
-		float dtime = 1.0;
-
-		for(core::map<v3s16, bool>::Iterator
-				i = m_active_blocks.m_list.getIterator();
-				i.atEnd()==false; i++)
-		{
+	if (circuitstep || metastep || nodestep) {
+		float circuit_dtime = 0.2;
+		float meta_dtime = 1.0;
+		for (core::map<v3s16, bool>::Iterator i = m_active_blocks.m_list.getIterator(); i.atEnd()==false; i++) {
 			v3s16 p = i.getNode()->getKey();
 
-			/*infostream<<"Server: Block ("<<p.X<<","<<p.Y<<","<<p.Z
-					<<") being handled"<<std::endl;*/
-
 			MapBlock *block = m_map->getBlockNoCreateNoEx(p);
-			if(block==NULL)
+			if (block==NULL)
 				continue;
 
 			// Reset block usage timer
-			block->resetUsageTimer();
+			if (circuitstep || metastep)
+				block->resetUsageTimer();
 
 			// Set current time as timestamp
 			block->setTimestampNoChangedFlag(m_game_time);
 
-			// Run node metadata
-			bool changed = block->m_node_metadata.step(dtime, block->getPosRelative(), this);
-			if(changed)
-			{
+			bool blockchanged = false;
+
+			if (circuitstep) {
+				// Run node metadata
+				bool changed = block->m_node_metadata.stepCircuit(circuit_dtime, block->getPosRelative(), this);
+				if (changed)
+					blockchanged = true;
+			}
+
+			if (metastep) {
+				// Run node metadata
+				bool changed = block->m_node_metadata.step(meta_dtime, block->getPosRelative(), this);
+				if (changed)
+					blockchanged = true;
+			}
+
+			if (blockchanged) {
 				MapEditEvent event;
 				event.type = MEET_BLOCK_NODE_METADATA_CHANGED;
 				event.p = p;
@@ -987,26 +966,9 @@ void ServerEnvironment::step(float dtime)
 
 				block->setChangedFlag();
 			}
-		}
-	}
 
-	if(m_active_blocks_test_interval.step(dtime, 10.0))
-	{
-		//TimeTaker timer("envloop");
-		ScopeProfiler sp(g_profiler, "SEnv: modify in blocks avg /10s", SPT_AVG);
-
-		for(core::map<v3s16, bool>::Iterator
-				i = m_active_blocks.m_list.getIterator();
-				i.atEnd()==false; i++)
-		{
-			v3s16 p = i.getNode()->getKey();
-
-			MapBlock *block = m_map->getBlockNoCreateNoEx(p);
-			if(block==NULL)
+			if (!nodestep)
 				continue;
-
-			// Set current time as timestamp
-			block->setTimestampNoChangedFlag(m_game_time);
 
 			/*
 				Do stuff!

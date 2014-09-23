@@ -2225,10 +2225,10 @@ void CircuitNodeMetadata::serializeBody(std::ostream &os)
 		os<<itos(i->second) << " ";
 	}
 }
-bool CircuitNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
+bool CircuitNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *env)
 {
 	m_ptime += dtime;
-	if (!m_energy || m_ptime < 1.1)
+	if (!m_energy || m_ptime < 0.3)
 		return false;
 	m_energy = 0;
 	MapNode n = env->getMap().getNodeNoEx(pos);
@@ -2308,7 +2308,7 @@ NodeMetadata* SwitchNodeMetadata::clone()
 	SwitchNodeMetadata *d = new SwitchNodeMetadata();
 	return d;
 }
-bool SwitchNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
+bool SwitchNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *env)
 {
 	if (!m_energy)
 		return false;
@@ -2391,7 +2391,7 @@ NodeMetadata* ButtonNodeMetadata::clone()
 	ButtonNodeMetadata *d = new ButtonNodeMetadata();
 	return d;
 }
-bool ButtonNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
+bool ButtonNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *env)
 {
 	if (!m_energy)
 		return false;
@@ -2457,7 +2457,7 @@ NodeMetadata* SolarPanelNodeMetadata::clone()
 	SolarPanelNodeMetadata *d = new SolarPanelNodeMetadata();
 	return d;
 }
-bool SolarPanelNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
+bool SolarPanelNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *env)
 {
 	MapNode n = env->getMap().getNodeNoEx(pos);
 	if (n.getLightBlend(env->getDayNightRatio()) < 10) {
@@ -2522,7 +2522,7 @@ NodeMetadata* WaterWheelNodeMetadata::clone()
 	WaterWheelNodeMetadata *d = new WaterWheelNodeMetadata();
 	return d;
 }
-bool WaterWheelNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
+bool WaterWheelNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *env)
 {
 	MapNode n = env->getMap().getNodeNoEx(pos);
 	v3s16 dir = n.getRotation();
@@ -2662,10 +2662,10 @@ NodeMetadata* NotGateNodeMetadata::clone()
 	NotGateNodeMetadata *d = new NotGateNodeMetadata();
 	return d;
 }
-bool NotGateNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
+bool NotGateNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *env)
 {
 	m_ptime += dtime;
-	if (m_ptime < 1.1)
+	if (m_ptime < 0.3)
 		return false;
 
 	m_energy = 0;
@@ -2756,7 +2756,7 @@ void RepeaterNodeMetadata::serializeBody(std::ostream &os)
 		os<<itos(i->second) << " ";
 	}
 }
-bool RepeaterNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
+bool RepeaterNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *env)
 {
 	m_ptime += dtime;
 	if (m_ptime > 1.0 && m_ticks > 0) {
@@ -2765,7 +2765,7 @@ bool RepeaterNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 	}
 	if (!m_energy && !m_ticks) {
 		return false;
-	}else if (m_energy && m_ticks < 3) {
+	}else if (m_energy && m_ticks < 6) {
 		m_ticks++;
 		return true;
 	}
@@ -2857,7 +2857,7 @@ void DoorNodeMetadata::serializeBody(std::ostream &os)
 		os<<itos(i->second) << " ";
 	}
 }
-bool DoorNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
+bool DoorNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *env)
 {
 	if (m_ptime == 0.0 && m_otime == 0.0 && m_energy == 0) {
 		MapNode n = env->getMap().getNodeNoEx(pos);
@@ -2886,7 +2886,7 @@ bool DoorNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 			env->getMap().addNodeWithEvent(pos,n);
 		}
 	}
-	if (m_ptime < 1.1)
+	if (m_ptime < 0.3)
 		return false;
 	m_energy = 0;
 	m_otime = 5.0;
@@ -2979,7 +2979,7 @@ void PistonNodeMetadata::serializeBody(std::ostream &os)
 		os<<itos(i->second) << " ";
 	}
 }
-bool PistonNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
+bool PistonNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *env)
 {
 	m_ptime += dtime;
 	if (!m_energy) {
@@ -3096,7 +3096,7 @@ bool PistonNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 			}
 		}
 	}
-	if (m_ptime < 1.1)
+	if (m_ptime < 0.3)
 		return false;
 	m_energy = 0;
 	return true;

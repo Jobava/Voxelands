@@ -69,6 +69,7 @@ public:
 	virtual void inventoryModified(){}
 	// A step in time. Returns true if metadata changed.
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env) {return false;}
+	virtual bool stepCircuit(float dtime, v3s16 pos, ServerEnvironment *env) {return false;}
 	virtual bool nodeRemovalDisabled(){return false;}
 	// Used to make custom inventory menus.
 	// See format in guiInventoryMenu.cpp.
@@ -122,6 +123,7 @@ public:
 
 	// A step in time. Returns true if something changed.
 	bool step(float dtime, v3s16 blockpos_nodes, ServerEnvironment *env);
+	bool stepCircuit(float dtime, v3s16 blockpos_nodes, ServerEnvironment *env);
 
 private:
 	core::map<v3s16, NodeMetadata*> m_data;

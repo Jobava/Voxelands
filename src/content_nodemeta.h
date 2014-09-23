@@ -486,7 +486,7 @@ public:
 	static NodeMetadata* create(std::istream &is);
 	virtual NodeMetadata* clone();
 	virtual void serializeBody(std::ostream &os);
-	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
+	virtual bool stepCircuit(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos);
 	virtual u8 getEnergy()
 	{
@@ -506,7 +506,7 @@ public:
 	virtual u16 typeId() const;
 	static NodeMetadata* create(std::istream &is);
 	virtual NodeMetadata* clone();
-	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
+	virtual bool stepCircuit(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos);
 	virtual std::vector<aabb3f> getNodeBoxes(MapNode &n);
 };
@@ -527,7 +527,7 @@ public:
 	virtual u16 typeId() const;
 	static NodeMetadata* create(std::istream &is);
 	virtual NodeMetadata* clone();
-	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
+	virtual bool stepCircuit(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos);
 };
 
@@ -538,7 +538,7 @@ public:
 	virtual u16 typeId() const;
 	static NodeMetadata* create(std::istream &is);
 	virtual NodeMetadata* clone();
-	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
+	virtual bool stepCircuit(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos);
 };
 
@@ -549,7 +549,7 @@ public:
 	virtual u16 typeId() const;
 	static NodeMetadata* create(std::istream &is);
 	virtual NodeMetadata* clone();
-	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
+	virtual bool stepCircuit(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos);
 };
 
@@ -561,7 +561,7 @@ public:
 	static NodeMetadata* create(std::istream &is);
 	virtual NodeMetadata* clone();
 	virtual void serializeBody(std::ostream &os);
-	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
+	virtual bool stepCircuit(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos);
 private:
 	u8 m_ticks;
@@ -574,7 +574,7 @@ public:
 	virtual u16 typeId() const;
 	static NodeMetadata* create(std::istream &is);
 	virtual NodeMetadata* clone();
-	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
+	virtual bool stepCircuit(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos);
 };
 
@@ -586,7 +586,7 @@ public:
 	static NodeMetadata* create(std::istream &is);
 	virtual NodeMetadata* clone();
 	virtual void serializeBody(std::ostream &os);
-	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
+	virtual bool stepCircuit(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos);
 private:
 	f32 m_otime;
@@ -600,7 +600,7 @@ public:
 	static NodeMetadata* create(std::istream &is);
 	virtual NodeMetadata* clone();
 	virtual void serializeBody(std::ostream &os);
-	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
+	virtual bool stepCircuit(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos);
 private:
 	bool extend(v3s16 pos, v3s16 dir, content_t arm, ServerEnvironment *env);

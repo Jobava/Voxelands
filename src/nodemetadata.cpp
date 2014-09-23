@@ -223,7 +223,23 @@ bool NodeMetadataList::step(float dtime, v3s16 blockpos_nodes, ServerEnvironment
 		v3s16 p = i.getNode()->getKey();
 		NodeMetadata *meta = i.getNode()->getValue();
 		bool changed = meta->step(dtime, blockpos_nodes+p, env);
-		if(changed)
+		if (changed)
+			something_changed = true;
+	}
+	return something_changed;
+}
+
+bool NodeMetadataList::stepCircuit(float dtime, v3s16 blockpos_nodes, ServerEnvironment *env)
+{
+	bool something_changed = false;
+	for(core::map<v3s16, NodeMetadata*>::Iterator
+			i = m_data.getIterator();
+			i.atEnd()==false; i++)
+	{
+		v3s16 p = i.getNode()->getKey();
+		NodeMetadata *meta = i.getNode()->getValue();
+		bool changed = meta->stepCircuit(dtime, blockpos_nodes+p, env);
+		if (changed)
 			something_changed = true;
 	}
 	return something_changed;
