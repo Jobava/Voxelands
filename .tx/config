@@ -1,0 +1,8 @@
+[main]
+host = https://www.transifex.com
+
+[voxelands.voxelandspot]
+file_filter = po/<lang>/voxelands.po
+source_file = po/voxelands.pot
+source_lang = en
+
