@@ -139,6 +139,7 @@ set(common_SRCS
 	content_craft.cpp
 	content_craftitem.cpp
 	content_toolitem.cpp
+	content_mob.cpp
 	content_mapnode.cpp
 	content_mapnode_door.cpp
 	content_mapnode_farm.cpp

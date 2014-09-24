@@ -28,24 +28,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define MOB_AGGRESSIVE 1
 #define MOB_DESTRUCTIVE 2
 
-inline u8 mobLevelI(std::string level)
-{
-	if (level == "destructive")
-		return MOB_DESTRUCTIVE;
-	if (level == "aggressive")
-		return MOB_AGGRESSIVE;
-	return MOB_PASSIVE;
-}
-
-inline std::string mobLevelS(u8 level)
-{
-	if (level == MOB_DESTRUCTIVE)
-		return std::string("destructive");
-	if (level == MOB_AGGRESSIVE)
-		return std::string("aggressive");
-	return std::string("passive");
-}
-
 /*
 
 Some planning

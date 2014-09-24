@@ -71,6 +71,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "content_craft.h"
 #include "content_craftitem.h"
 #include "content_toolitem.h"
+#include "content_mob.h"
 #include "path.h"
 #include "gui_colours.h"
 
@@ -893,6 +894,7 @@ int main(int argc, char *argv[])
 	crafting::initCrafting();
 	content_craftitem_init();
 	content_toolitem_init();
+	content_mob_init();
 	// Initial call with g_texturesource not set.
 	init_mapnode(NULL);
 	// Must be called before g_texturesource is created
@@ -1130,6 +1132,8 @@ int main(int argc, char *argv[])
 
 	drawLoadingScreen(driver,wgettext("Loading MapNodes"));
 	init_mapnode(driver); // Second call with g_texturesource set
+	drawLoadingScreen(driver,wgettext("Loading Creatures"));
+	content_mob_init();
 
 	/*
 		GUI stuff

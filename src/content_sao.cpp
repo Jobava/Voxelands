@@ -18,6 +18,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 */
 
 #include "content_sao.h"
+#include "content_mob.h"
 #include "collision.h"
 #include "environment.h"
 #include "settings.h"
@@ -42,63 +43,6 @@ void accelerate_xz(v3f &speed, v3f target_speed, f32 max_increase)
 	speed.X += d.X;
 	speed.Z += d.Z;
 	speed.Y = target_speed.Y;
-}
-
-/*
-	TestSAO
-*/
-
-// Prototype
-TestSAO proto_TestSAO(NULL, 0, v3f(0,0,0));
-
-TestSAO::TestSAO(ServerEnvironment *env, u16 id, v3f pos):
-	ServerActiveObject(env, id, pos),
-	m_timer1(0),
-	m_age(0)
-{
-	ServerActiveObject::registerType(getType(), create);
-}
-
-ServerActiveObject* TestSAO::create(ServerEnvironment *env, u16 id, v3f pos,
-		const std::string &data)
-{
-	return new TestSAO(env, id, pos);
-}
-
-void TestSAO::step(float dtime, bool send_recommended)
-{
-	m_age += dtime;
-	if(m_age > 10)
-	{
-		m_removed = true;
-		return;
-	}
-
-	m_base_position.Y += dtime * BS * 2;
-	if(m_base_position.Y > 8*BS)
-		m_base_position.Y = 2*BS;
-
-	if(send_recommended == false)
-		return;
-
-	m_timer1 -= dtime;
-	if(m_timer1 < 0.0)
-	{
-		m_timer1 += 0.125;
-
-		std::string data;
-
-		data += itos(0); // 0 = position
-		data += " ";
-		data += itos(m_base_position.X);
-		data += " ";
-		data += itos(m_base_position.Y);
-		data += " ";
-		data += itos(m_base_position.Z);
-
-		ActiveObjectMessage aom(getId(), false, data);
-		m_messages_out.push_back(aom);
-	}
 }
 
 

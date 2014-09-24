@@ -77,6 +77,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "content_craft.h"
 #include "content_craftitem.h"
 #include "content_toolitem.h"
+#include "content_mob.h"
 #include "http.h"
 
 /*
@@ -310,6 +311,7 @@ int main(int argc, char *argv[])
 	crafting::initCrafting();
 	content_craftitem_init();
 	content_toolitem_init();
+	content_mob_init();
 	init_mapnode();
 	init_mineral();
 
