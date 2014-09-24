@@ -2,7 +2,7 @@
 Name=Voxelands
 GenericName=Voxelands
 Comment=3D Voxel World Game
-Icon=voxelands-icon
+Icon=voxelands
 Exec=voxelands
 Terminal=false
 Type=Application
