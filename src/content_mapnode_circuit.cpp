@@ -58,9 +58,9 @@ void content_mapnode_circuit(bool repeat)
 	f = &content_features(i);
 	f->description = wgettext("Copper Wire");
 	f->setAllTextures("copper_wire.png");
-	f->setAllTextureFlags(0);
+	f->setInventoryTexture("copper_wire_inv.png");
 	f->param_type = CPT_LIGHT;
-	f->draw_type = CDT_WIRELIKE;
+	f->draw_type = CDT_3DWIRELIKE;
 	f->energy_type = CET_CONDUCTIVE;
 	f->walkable = false;
 	f->light_propagates = true;

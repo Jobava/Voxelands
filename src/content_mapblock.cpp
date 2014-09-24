@@ -1760,6 +1760,240 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			}
 		}
 		break;
+		case CDT_3DWIRELIKE:
+		{
+			MapNode n_plus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y+1,z));
+			MapNode n_minus_x = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1,y,z));
+			MapNode n_plus_x = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1,y,z));
+			MapNode n_minus_z = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y,z-1));
+			MapNode n_plus_z = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y,z+1));
+			MapNode n_minus_xy = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1,y+1,z));
+			MapNode n_plus_xy = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1,y+1,z));
+			MapNode n_minus_zy = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y+1,z-1));
+			MapNode n_plus_zy = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y+1,z+1));
+			MapNode n_minus_x_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1,y-1,z));
+			MapNode n_plus_x_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1,y-1,z));
+			MapNode n_minus_z_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y-1,z-1));
+			MapNode n_plus_z_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y-1,z+1));
+			bool x_plus = false;
+			bool x_plus_y = false;
+			bool x_minus = false;
+			bool x_minus_y = false;
+			bool z_plus = false;
+			bool z_plus_y = false;
+			bool z_minus = false;
+			bool z_minus_y = false;
+			bool y_plus = false;
+			// +Y
+			if (n_plus_y.getContent() == CONTENT_AIR || content_features(n_plus_y).energy_type != CET_NONE)
+				y_plus = true;
+			// +X
+			if (
+				content_features(n_plus_x).energy_type == CET_NONE
+				&& content_features(n_plus_x).flammable != 2
+			) {
+				if (
+					y_plus
+					&& (
+						content_features(n_plus_x).draw_type == CDT_CUBELIKE
+						|| content_features(n_plus_x).draw_type == CDT_GLASSLIKE
+					)
+				) {
+					if (content_features(n_plus_xy).energy_type != CET_NONE) {
+						x_plus_y = true;
+						x_plus = true;
+					}
+				}else if (
+					n_plus_x.getContent() == CONTENT_AIR
+					&& content_features(n_plus_x_y).energy_type != CET_NONE
+				) {
+					x_plus = true;
+				}
+			}else{
+				x_plus = true;
+			}
+			// -X
+			if (content_features(n_minus_x).energy_type == CET_NONE && content_features(n_minus_x).flammable != 2) {
+				if (
+					y_plus
+					&& (
+						content_features(n_minus_x).draw_type == CDT_CUBELIKE
+						|| content_features(n_minus_x).draw_type == CDT_GLASSLIKE
+					)
+				) {
+					if (content_features(n_minus_xy).energy_type != CET_NONE) {
+						x_minus_y = true;
+						x_minus = true;
+					}
+				}else if (
+					n_minus_x.getContent() == CONTENT_AIR
+					&& content_features(n_minus_x_y).energy_type != CET_NONE
+				) {
+					x_minus = true;
+				}
+			}else{
+				x_minus = true;
+			}
+			// +Z
+			if (
+				content_features(n_plus_z).energy_type == CET_NONE
+				&& content_features(n_plus_z).flammable != 2
+			) {
+				if (
+					y_plus
+					&& (
+						content_features(n_plus_z).draw_type == CDT_CUBELIKE
+						|| content_features(n_plus_z).draw_type == CDT_GLASSLIKE
+					)
+				) {
+					if (content_features(n_plus_zy).energy_type != CET_NONE) {
+						z_plus_y = true;
+						z_plus = true;
+					}
+				}else if (
+					n_plus_z.getContent() == CONTENT_AIR
+					&& content_features(n_plus_z_y).energy_type != CET_NONE
+				) {
+					z_plus = true;
+				}
+			}else{
+				z_plus = true;
+			}
+			// -Z
+			if (
+				content_features(n_minus_z).energy_type == CET_NONE
+				&& content_features(n_minus_z).flammable != 2
+			) {
+				if (
+					y_plus
+					&& (
+						content_features(n_minus_z).draw_type == CDT_CUBELIKE
+						|| content_features(n_minus_z).draw_type == CDT_GLASSLIKE
+					)
+				) {
+					if (content_features(n_minus_zy).energy_type != CET_NONE) {
+						z_minus_y = true;
+						z_minus = true;
+					}
+				}else if (
+					n_minus_z.getContent() == CONTENT_AIR
+					&& content_features(n_minus_z_y).energy_type != CET_NONE
+				) {
+					z_minus = true;
+				}
+			}else{
+				z_minus = true;
+			}
+			static const v3s16 tile_dirs[6] = {
+				v3s16(0, 1, 0),
+				v3s16(0, -1, 0),
+				v3s16(1, 0, 0),
+				v3s16(-1, 0, 0),
+				v3s16(0, 0, 1),
+				v3s16(0, 0, -1)
+			};
+
+			TileSpec tiles[6];
+			for (int i = 0; i < 6; i++) {
+				// Handles facedir rotation for textures
+				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
+			}
+
+			v3f pos = intToFloat(p, BS);
+			TileSpec tile = getNodeTile(n,p,v3s16(0,0,0),data->m_temp_mods);
+			video::SColor c;
+			video::SColor c8[8];
+			if (selected) {
+				c = video::SColor(255,64,64,255);
+			}else{
+				NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+blockpos_nodes);
+				if (meta && meta->getEnergy()) {
+					u8 e = meta->getEnergy();
+					e = (e*16)-1;
+					if (e < 80)
+						e = 80;
+					c = video::SColor(255,e,e,e);
+				}else{
+					c = video::SColor(250,64,64,64);
+				}
+			}
+			for (int k=0; k<8; k++) {
+				c8[k] = c;
+			}
+			std::vector<aabb3f> boxes;
+			if (!x_plus && !x_minus && !z_plus && !z_minus) {
+				boxes.push_back(aabb3f(-0.125*BS,-0.5*BS,-0.125*BS,0.125*BS,-0.4375*BS,0.125*BS));
+			}else{
+				if (x_plus) {
+					boxes.push_back(aabb3f(0.,-0.5*BS,-0.0625*BS,0.5*BS,-0.4375*BS,0.0625*BS));
+				}
+				if (x_minus) {
+					boxes.push_back(aabb3f(-0.5*BS,-0.5*BS,-0.0625*BS,0.,-0.4375*BS,0.0625*BS));
+				}
+				if (z_plus) {
+					boxes.push_back(aabb3f(-0.0625*BS,-0.5*BS,0.,0.0625*BS,-0.4375*BS,0.5*BS));
+				}
+				if (z_minus) {
+					boxes.push_back(aabb3f(-0.0625*BS,-0.5*BS,-0.5*BS,0.0625*BS,-0.4375*BS,0.));
+				}
+				if (x_plus_y) {
+					boxes.push_back(aabb3f(0.4375*BS,-0.4375*BS,-0.0625*BS,0.5*BS,0.5625*BS,0.0625*BS));
+				}
+				if (x_minus_y) {
+					boxes.push_back(aabb3f(-0.5*BS,-0.4375*BS,-0.0625*BS,-0.4375*BS,0.5625*BS,0.0625*BS));
+				}
+				if (z_plus_y) {
+					boxes.push_back(aabb3f(-0.0625*BS,-0.4375*BS,0.4375*BS,0.0625*BS,0.5625*BS,0.5*BS));
+				}
+				if (z_minus_y) {
+					boxes.push_back(aabb3f(-0.0625*BS,-0.4375*BS,-0.5*BS,0.0625*BS,0.5625*BS,-0.4375*BS));
+				}
+				u8 cnt = x_plus+x_minus+z_plus+z_minus;
+				if (
+					cnt > 2
+					|| (
+						cnt == 2
+						&& (
+							(x_plus && z_plus)
+							|| (x_minus && z_plus)
+							|| (x_plus && z_minus)
+							|| (x_minus && z_minus)
+						)
+					)
+				) {
+					boxes.push_back(aabb3f(-0.125*BS,-0.5*BS,-0.125*BS,0.125*BS,-0.375*BS,0.125*BS));
+				}
+			}
+			for (std::vector<aabb3f>::iterator i = boxes.begin(); i != boxes.end(); i++) {
+				aabb3f box = *i;
+				box.MinEdge += pos;
+				box.MaxEdge += pos;
+
+				// Compute texture coords
+				f32 tx1 = (i->MinEdge.X/BS)+0.5;
+				f32 ty1 = (i->MinEdge.Y/BS)+0.5;
+				f32 tz1 = (i->MinEdge.Z/BS)+0.5;
+				f32 tx2 = (i->MaxEdge.X/BS)+0.5;
+				f32 ty2 = (i->MaxEdge.Y/BS)+0.5;
+				f32 tz2 = (i->MaxEdge.Z/BS)+0.5;
+				f32 txc[24] = {
+					// up
+					tx1, 1-tz2, tx2, 1-tz1,
+					// down
+					tx1, tz1, tx2, tz2,
+					// right
+					tz1, 1-ty2, tz2, 1-ty1,
+					// left
+					1-tz2, 1-ty2, 1-tz1, 1-ty1,
+					// back
+					1-tx2, 1-ty2, 1-tx1, 1-ty1,
+					// front
+					tx1, 1-ty2, tx2, 1-ty1,
+				};
+				makeCuboid(&collector, box, tiles, 6,  c8, txc);
+			}
+		}
+		break;
 		case CDT_RAILLIKE:
 		{
 			bool is_rail_x [] = { false, false };  /* x-1, x+1 */
