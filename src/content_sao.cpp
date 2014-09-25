@@ -1658,6 +1658,43 @@ void MobSAO::step(float dtime, bool send_recommended)
 		}
 	}
 
+	if (m.motion != MM_CONSTANT && m.motion != MM_STATIC && !m_shooting) {
+		m_walk_around_timer -= dtime;
+		if (m_walk_around_timer <= 0.0) {
+			m_walk_around = !m_walk_around;
+			if (m_walk_around) {
+				m_walk_around_timer = 0.1*myrand_range(10,50);
+			}else{
+				m_walk_around_timer = 0.1*myrand_range(30,70);
+			}
+		}
+		if (m_next_pos_exists) {
+			v3f pos_f = m_base_position;
+			v3f next_pos_f = intToFloat(m_next_pos_i, BS);
+
+			v3f v = next_pos_f - pos_f;
+			m_yaw = atan2(v.Z, v.X) / PI * 180;
+
+			v3f diff = next_pos_f - pos_f;
+			v3f dir = diff;
+			dir.normalize();
+			float speed = BS * 0.5;
+			if (m_falling)
+				speed = BS * 3.0;
+			dir *= dtime * speed;
+			bool arrived = false;
+			if (dir.getLength() > diff.getLength()) {
+				dir = diff;
+				arrived = true;
+			}
+			pos_f += dir;
+			m_base_position = pos_f;
+
+			if ((pos_f - next_pos_f).getLength() < 0.1 || arrived)
+				m_next_pos_exists = false;
+		}
+	}
+
 	if (m.motion == MM_WANDER) {
 		stepMotionWander(dtime);
 	}else if (m.motion == MM_SEEKER) {
@@ -1682,15 +1719,168 @@ void MobSAO::step(float dtime, bool send_recommended)
 }
 void MobSAO::stepMotionWander(float dtime)
 {
+	MobFeatures m = content_mob_features(m_content);
+	v3s16 pos_i = floatToInt(m_base_position, BS);
+	v3s16 pos_size_off(0,0,0);
+	if (m.getSize().X >= 2.5) {
+		pos_size_off.X = -1;
+		pos_size_off.Y = -1;
+	}
+
+	if (m.motion_type == MMT_WALK) {
+		if (!m_next_pos_exists) {
+			/* Check whether to drop down */
+			if (checkFreePosition(pos_i + pos_size_off + v3s16(0,-1,0))) {
+				m_next_pos_i = pos_i + v3s16(0,-1,0);
+				m_next_pos_exists = true;
+				m_falling = true;
+			}else{
+				m_falling = false;
+			}
+		}
+
+		if (m_walk_around && !m_next_pos_exists) {
+			/* Find some position where to go next */
+			v3s16 dps[3*3*3];
+			int num_dps = 0;
+			for (int dx=-1; dx<=1; dx++)
+			for (int dy=-1; dy<=1; dy++)
+			for (int dz=-1; dz<=1; dz++) {
+				if (dx == 0 && dy == 0)
+					continue;
+				if (dx != 0 && dz != 0 && dy != 0)
+					continue;
+				dps[num_dps++] = v3s16(dx,dy,dz);
+			}
+			u32 order[3*3*3];
+			get_random_u32_array(order, num_dps);
+			for (int i=0; i<num_dps; i++) {
+				v3s16 p = dps[order[i]] + pos_i;
+				if (!checkFreeAndWalkablePosition(p + pos_size_off))
+					continue;
+				m_next_pos_i = p;
+				m_next_pos_exists = true;
+				break;
+			}
+		}
+	}else if (m.motion_type == MMT_FLY) {
+		bool falling = false;
+		bool raising = false;
+		if (!m_next_pos_exists) {
+			u16 above;
+			v3s16 p = pos_i + pos_size_off;
+			for (above=0;;above++) {
+				p.Y--;
+				if (!checkFreePosition(p))
+					break;
+			}
+			if (above > 12) {
+				/* Check whether to drop down */
+				if (checkFreePosition(pos_i + pos_size_off + v3s16(0,-1,0))) {
+					m_next_pos_i = pos_i + v3s16(0,-1,0);
+					falling = true;
+				}
+			}else if (above < 8) {
+				/* Check whether to rise up */
+				if (checkFreePosition(pos_i + pos_size_off + v3s16(0,1,0))) {
+					m_next_pos_i = pos_i + v3s16(0,1,0);
+					raising = true;
+				}
+			}
+		}
+
+		if (m_walk_around && !m_next_pos_exists) {
+			/* Find some position where to go next */
+			v3s16 dps[3*3*3];
+			int num_dps = 0;
+			for (int dx=-1; dx<=1; dx++)
+			for (int dy=-1; dy<=1; dy++)
+			for (int dz=-1; dz<=1; dz++) {
+				if (dx == 0 && dy == 0)
+					continue;
+				if (dx != 0 && dz != 0 && dy != 0)
+					continue;
+				if (falling && dy > 0)
+					continue;
+				if (raising && dy < 0)
+					continue;
+				dps[num_dps++] = v3s16(dx,dy,dz);
+			}
+			u32 order[3*3*3];
+			get_random_u32_array(order, num_dps);
+			for (int i=0; i<num_dps; i++) {
+				v3s16 p = dps[order[i]] + pos_i;
+				if (!checkFreePosition(p + pos_size_off))
+					continue;
+				m_next_pos_i = p;
+				m_next_pos_exists = true;
+				break;
+			}
+		}
+	}else if (m.motion_type == MMT_FLYLOW || m.motion_type == MMT_SWIM) {
+		bool falling = false;
+		if (!m_next_pos_exists) {
+			/* Check whether to drop down */
+			if (checkFreePosition(pos_i + pos_size_off + v3s16(0,-1,0))) {
+				m_next_pos_i = pos_i + v3s16(0,-1,0);
+				falling = true;
+			}
+		}
+
+		if (m_walk_around && !m_next_pos_exists) {
+			/* Find some position where to go next */
+			v3s16 dps[3*3*3];
+			int num_dps = 0;
+			for (int dx=-1; dx<=1; dx++)
+			for (int dy=-1; dy<=1; dy++)
+			for (int dz=-1; dz<=1; dz++) {
+				if (dx == 0 && dy == 0)
+					continue;
+				if (dx != 0 && dz != 0 && dy != 0)
+					continue;
+				if (falling && dy > 0)
+					continue;
+				dps[num_dps++] = v3s16(dx,dy,dz);
+			}
+			u32 order[3*3*3];
+			get_random_u32_array(order, num_dps);
+			for (int i=0; i<num_dps; i++) {
+				v3s16 p = dps[order[i]] + pos_i;
+				if (!checkFreePosition(p + pos_size_off))
+					continue;
+				m_next_pos_i = p;
+				m_next_pos_exists = true;
+				break;
+			}
+		}
+	}
 }
 void MobSAO::stepMotionSeeker(float dtime)
 {
+	MobFeatures m = content_mob_features(m_content);
+
+	if (m.motion_type == MMT_WALK) {
+	}else if (m.motion_type == MMT_FLY) {
+	}else if (m.motion_type == MMT_FLYLOW || m.motion_type == MMT_SWIM) {
+	}
 }
 void MobSAO::stepMotionSentry(float dtime)
 {
+	MobFeatures m = content_mob_features(m_content);
+
+	if (m.motion_type == MMT_WALK) {
+	}else if (m.motion_type == MMT_FLY) {
+	}else if (m.motion_type == MMT_FLYLOW || m.motion_type == MMT_SWIM) {
+	}
 }
 void MobSAO::stepMotionThrown(float dtime)
 {
+	MobFeatures m = content_mob_features(m_content);
+
+	if (m.motion_type == MMT_WALK) {
+	}else if (m.motion_type == MMT_FLY) {
+	}else if (m.motion_type == MMT_FLYLOW || m.motion_type == MMT_SWIM) {
+	}
 }
 void MobSAO::stepMotionConstant(float dtime)
 {
@@ -1699,7 +1889,7 @@ void MobSAO::stepMotionConstant(float dtime)
 
 	v3s16 pos_i = floatToInt(m_base_position, BS);
 	v3s16 pos_size_off(0,0,0);
-	if (m.getSizeBlocks().X >= 2.5) {
+	if (m.getSize().X >= 2.5) {
 		pos_size_off.X = -1;
 		pos_size_off.Y = -1;
 	}
@@ -1715,13 +1905,16 @@ bool MobSAO::checkFreePosition(v3s16 p0)
 	assert(m_env);
 	Map *map = &m_env->getMap();
 	v3s16 size = content_mob_features(m_content).getSizeBlocks();
+	content_t clear = CONTENT_AIR;
+	if (content_mob_features(m_content).motion_type == MMT_SWIM)
+		clear = CONTENT_WATERSOURCE;
 	for (int dx=0; dx<size.X; dx++)
 	for (int dy=0; dy<size.Y; dy++)
 	for (int dz=0; dz<size.Z; dz++) {
 		v3s16 dp(dx, dy, dz);
 		v3s16 p = p0 + dp;
 		MapNode n = map->getNodeNoEx(p);
-		if(n.getContent() != CONTENT_AIR)
+		if(n.getContent() != clear)
 			return false;
 	}
 	return true;
@@ -1731,7 +1924,10 @@ bool MobSAO::checkWalkablePosition(v3s16 p0)
 	assert(m_env);
 	v3s16 p = p0 + v3s16(0,-1,0);
 	MapNode n = m_env->getMap().getNodeNoEx(p);
-	if (n.getContent() != CONTENT_AIR)
+	content_t clear = CONTENT_AIR;
+	if (content_mob_features(m_content).motion_type == MMT_SWIM)
+		clear = CONTENT_WATERSOURCE;
+	if (n.getContent() != clear)
 		return true;
 	return false;
 }
@@ -1804,7 +2000,7 @@ u16 MobSAO::punch(const std::string &toolname, v3f dir, const std::string &playe
 		{
 			v3s16 pos_i = floatToInt(new_base_position, BS);
 			v3s16 pos_size_off(0,0,0);
-			if (m.getSizeBlocks().X >= 2.5) {
+			if (m.getSize().X >= 2.5) {
 				pos_size_off.X = -1;
 				pos_size_off.Y = -1;
 			}
