@@ -60,4 +60,73 @@ void content_mob_init()
 	content_t i;
 	MobFeatures *f = NULL;
 
+	i = CONTENT_MOB_RAT;
+	f = &g_content_mob_features[i];
+	f->content = i;
+	f->level = MOB_PASSIVE;
+	f->model = "rat.x";
+	f->setTexture("mob_rat.png");
+	f->punch_action = MPA_PICKUP;
+	f->motion = MM_WANDER;
+	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.));
+
+	i = CONTENT_MOB_FIREFLY;
+	f = &g_content_mob_features[i];
+	f->content = i;
+	f->level = MOB_PASSIVE;
+	f->setTexture("mob_firefly.png");
+	f->punch_action = MPA_PICKUP;
+	f->motion = MM_WANDER;
+	f->glow_light = LIGHT_MAX-1;
+	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.));
+
+	i = CONTENT_MOB_OERKKI;
+	f = &g_content_mob_features[i];
+	f->content = i;
+	f->level = MOB_AGGRESSIVE;
+	f->model = "oerkki.x";
+	f->setTexture("mob_oerkki.png");
+	f->punch_action = MPA_HARM;
+	f->motion = MM_SEEKER;
+	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS*2.,BS/3.));
+
+	i = CONTENT_MOB_DUNGEON_MASTER;
+	f = &g_content_mob_features[i];
+	f->content = i;
+	f->level = MOB_DESTRUCTIVE;
+	f->model = "dungeon_master.x";
+	f->setTexture("mob_dungeon_master.png");
+	f->punch_action = MPA_HARM;
+	f->motion = MM_SENTRY;
+	f->attack_throw_object = CONTENT_MOB_FIREBALL;
+	f->attack_glow_light = LIGHT_MAX-1;
+	f->setCollisionBox(aabb3f(-0.4*BS,-0.4*BS,-0.4*BS, 0.4*BS,0.8*BS,0.4*BS));
+
+	i = CONTENT_MOB_FIREBALL;
+	f = &g_content_mob_features[i];
+	f->content = i;
+	f->level = MOB_DESTRUCTIVE;
+	f->setTexture("mob_fireball.png");
+	f->punch_action = MPA_IGNORE;
+	f->motion = MM_THROWN;
+	f->motion_type = MMT_FLY;
+	f->glow_light = LIGHT_MAX-1;
+	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.));
+
+	i = CONTENT_MOB_DEER;
+	f = &g_content_mob_features[i];
+	f->content = i;
+	i = CONTENT_MOB_SHEEP;
+	f = &g_content_mob_features[i];
+	f->content = i;
+	i = CONTENT_MOB_FISH;
+	f = &g_content_mob_features[i];
+	f->content = i;
+	i = CONTENT_MOB_SHARK;
+	f = &g_content_mob_features[i];
+	f->content = i;
+	i = CONTENT_MOB_WOLF;
+	f = &g_content_mob_features[i];
+	f->content = i;
+
 }

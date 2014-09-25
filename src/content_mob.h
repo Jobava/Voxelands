@@ -34,6 +34,7 @@ enum MobPunchAction
 {
 	MPA_IGNORE = 0,
 	MPA_DIE,
+	MPA_HARM,
 	MPA_PICKUP
 };
 
@@ -42,13 +43,15 @@ enum MobMotion
 	MM_STATIC = 0,
 	MM_WANDER,
 	MM_SEEKER,
-	MM_SENTRY
+	MM_SENTRY,
+	MM_THROWN
 };
 
 enum MobMotionType
 {
 	MMT_WALK = 0,
 	MMT_FLY,
+	MMT_FLYLOW,
 	MMT_SWIM
 };
 
@@ -85,8 +88,12 @@ struct MobFeatures {
 	MobState spawn_state;
 	bool is_tamable;
 	content_t tamed_mob;
+	content_t attack_throw_object;
+	u8 glow_light;
+	u8 attack_glow_light;
 	u16 hp;
 	std::string dropped_item;
+	f32 lifetime;
 
 	MobFeatures()
 	{
@@ -156,6 +163,9 @@ struct MobFeatures {
 		spawn_state = MS_WILD;
 		is_tamable = false;
 		tamed_mob = CONTENT_IGNORE;
+		attack_throw_object = CONTENT_IGNORE;
+		glow_light = 0;
+		attack_glow_light = 0;
 		hp = 20;
 		dropped_item = "";
 	}
@@ -180,5 +190,16 @@ inline std::string mobLevelS(u8 level)
 }
 
 void content_mob_init();
+
+#define CONTENT_MOB_RAT (CONTENT_MOB_MASK | 0x01)
+#define CONTENT_MOB_FIREFLY (CONTENT_MOB_MASK | 0x02)
+#define CONTENT_MOB_OERKKI (CONTENT_MOB_MASK | 0x03)
+#define CONTENT_MOB_DUNGEON_MASTER (CONTENT_MOB_MASK | 0x04)
+#define CONTENT_MOB_FIREBALL (CONTENT_MOB_MASK | 0x05)
+#define CONTENT_MOB_DEER (CONTENT_MOB_MASK | 0x06)
+#define CONTENT_MOB_SHEEP (CONTENT_MOB_MASK | 0x07)
+#define CONTENT_MOB_FISH (CONTENT_MOB_MASK | 0x08)
+#define CONTENT_MOB_SHARK (CONTENT_MOB_MASK | 0x09)
+#define CONTENT_MOB_WOLF (CONTENT_MOB_MASK | 0x0A)
 
 #endif
