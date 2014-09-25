@@ -1470,3 +1470,406 @@ void MobV2SAO::doDamage(u16 d)
 }
 
 
+/*
+	MobSAO
+*/
+
+// Prototype
+MobSAO proto_MobSAO(NULL, 0, v3f(0,0,0), CONTENT_IGNORE);
+
+MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, content_t type):
+	ServerActiveObject(env, id, pos),
+	m_content(type),
+	m_speed(0,0,0),
+	m_last_sent_position(0,0,0),
+	m_oldpos(0,0,0),
+	m_yaw(0),
+	m_touching_ground(false),
+	m_falling(false),
+	m_next_pos_exists(false),
+	m_age(0),
+	m_hp(10),
+	m_disturb_timer(100000),
+	m_random_disturb_timer(0),
+	m_walk_around(false),
+	m_walk_around_timer(0),
+	m_shoot_reload_timer(0),
+	m_shooting(false),
+	m_shooting_timer(0),
+	m_shoot_y(0)
+{
+	ServerActiveObject::registerType(getType(), create);
+}
+MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, v3f speed, content_t type):
+	ServerActiveObject(env, id, pos),
+	m_content(type),
+	m_speed(speed),
+	m_last_sent_position(0,0,0),
+	m_oldpos(0,0,0),
+	m_yaw(0),
+	m_touching_ground(false),
+	m_falling(false),
+	m_next_pos_exists(false),
+	m_age(0),
+	m_hp(10),
+	m_disturb_timer(100000),
+	m_random_disturb_timer(0),
+	m_walk_around(false),
+	m_walk_around_timer(0),
+	m_shoot_reload_timer(0),
+	m_shooting(false),
+	m_shooting_timer(0),
+	m_shoot_y(0)
+{
+	ServerActiveObject::registerType(getType(), create);
+}
+MobSAO::~MobSAO()
+{
+}
+ServerActiveObject* MobSAO::create(ServerEnvironment *env, u16 id, v3f pos, const std::string &data)
+{
+	std::istringstream is(data, std::ios::binary);
+	content_t c = readU16(is);
+	c = content_mob_features(c).content;
+	if (c == CONTENT_IGNORE)
+		return NULL;
+	return new MobSAO(env,id,pos,c);
+}
+std::string MobSAO::getStaticData()
+{
+	return "";
+}
+std::string MobSAO::getClientInitializationData()
+{
+	return "";
+}
+void MobSAO::step(float dtime, bool send_recommended)
+{
+	MobFeatures m = content_mob_features(m_content);
+	Player *disturbing_player = NULL;
+	v3f disturbing_player_off = v3f(0,1,0);
+	v3f disturbing_player_norm = v3f(0,1,0);
+	float disturbing_player_distance = 1000000;
+	float disturbing_player_dir = 0;
+
+	m_age += dtime;
+
+	if (m.lifetime >= 0.0 && m_age >= m.lifetime) {
+		m_removed = true;
+		return;
+	}
+
+	m_random_disturb_timer += dtime;
+	if (m.notices_player) {
+		if (m_random_disturb_timer >= 5.0) {
+			m_random_disturb_timer = 0;
+			m_disturbing_player = "";
+			// Check connected players
+			core::list<Player*> players = m_env->getPlayers(true);
+			for (core::list<Player*>::Iterator i = players.begin(); i != players.end(); i++) {
+				Player *player = *i;
+				v3f playerpos = player->getPosition();
+				f32 dist = m_base_position.getDistanceFrom(playerpos);
+				if (dist < BS*16) {
+					if (myrand_range(0,3) == 0) {
+						actionstream<<"Mob id="<<m_id<<" at "
+								<<PP(m_base_position/BS)
+								<<" got randomly disturbed by "
+								<<player->getName()<<std::endl;
+						m_disturbing_player = player->getName();
+						m_disturb_timer = 0;
+						break;
+					}
+				}
+			}
+		}
+		if (m_disturbing_player != "") {
+			disturbing_player = m_env->getPlayer(m_disturbing_player.c_str());
+			if (disturbing_player ){
+				disturbing_player_off = disturbing_player->getPosition() - m_base_position;
+				disturbing_player_distance = disturbing_player_off.getLength();
+				disturbing_player_norm = disturbing_player_off;
+				disturbing_player_norm.normalize();
+				disturbing_player_dir = 180./PI*atan2(disturbing_player_norm.Z,disturbing_player_norm.X);
+			}
+		}
+		m_disturb_timer += dtime;
+
+		if (!m_falling && m.attack_throw_object != CONTENT_IGNORE) {
+			m_shooting_timer -= dtime;
+			if (m_shooting_timer <= 0.0 && m_shooting) {
+				m_shooting = false;
+				v3f shoot_pos = m.attack_throw_offset * BS;
+				if (0) {
+					v3f dir(cos(m_yaw/180*PI),0,sin(m_yaw/180*PI));
+					dir.Y = m_shoot_y;
+					dir.normalize();
+					v3f speed = dir * BS * 10.0;
+					v3f pos = m_base_position + shoot_pos;
+					infostream<<__FUNCTION_NAME<<": Mob id="<<m_id
+							<<" shooting from "<<PP(pos)
+							<<" at speed "<<PP(speed)<<std::endl;
+					ServerActiveObject *obj = new MobSAO(m_env, 0, pos, speed, m.attack_throw_object);
+					m_env->addActiveObject(obj);
+				}
+			}
+
+			m_shoot_reload_timer += dtime;
+
+			float reload_time = 15.0;
+			if (m_disturb_timer <= 15.0)
+				reload_time = 3.0;
+
+			if (
+				!m_shooting
+				&& m_shoot_reload_timer >= reload_time
+				&& !m_next_pos_exists
+				&& m_disturb_timer <= 60.0
+			) {
+				m_shoot_y = 0;
+				if (
+					m_disturb_timer < 60.0
+					&& disturbing_player
+					&& disturbing_player_distance < 16*BS
+					&& fabs(disturbing_player_norm.Y) < 0.8
+				) {
+					m_yaw = disturbing_player_dir;
+					sendPosition();
+					m_shoot_y += disturbing_player_norm.Y;
+				}else{
+					m_shoot_y = 0.01 * myrand_range(-30,10);
+				}
+				m_shoot_reload_timer = 0.0;
+				m_shooting = true;
+				m_shooting_timer = 1.5;
+				{
+					std::ostringstream os(std::ios::binary);
+					// command (2 = shooting)
+					writeU8(os, 2);
+					// time
+					writeF1000(os, m_shooting_timer + 0.1);
+					// bright?
+					writeU8(os, true);
+					// create message and add to list
+					ActiveObjectMessage aom(getId(), false, os.str());
+					m_messages_out.push_back(aom);
+				}
+			}
+		}
+	}
+
+	if (m.motion == MM_WANDER) {
+		stepMotionWander(dtime);
+	}else if (m.motion == MM_SEEKER) {
+		if (disturbing_player) {
+			stepMotionWander(dtime);
+		}else{
+			stepMotionSeeker(dtime);
+		}
+	}else if (m.motion == MM_SENTRY) {
+		stepMotionSentry(dtime);
+	}else if (m.motion == MM_THROWN) {
+		stepMotionThrown(dtime);
+	}else if (m.motion == MM_CONSTANT) {
+		stepMotionConstant(dtime);
+	}
+
+	if (send_recommended == false)
+		return;
+
+	if (m_base_position.getDistanceFrom(m_last_sent_position) > 0.05*BS)
+		sendPosition();
+}
+void MobSAO::stepMotionWander(float dtime)
+{
+}
+void MobSAO::stepMotionSeeker(float dtime)
+{
+}
+void MobSAO::stepMotionSentry(float dtime)
+{
+}
+void MobSAO::stepMotionThrown(float dtime)
+{
+}
+void MobSAO::stepMotionConstant(float dtime)
+{
+	MobFeatures m = content_mob_features(m_content);
+	m_base_position += m_speed * dtime;
+
+	v3s16 pos_i = floatToInt(m_base_position, BS);
+	v3s16 pos_size_off(0,0,0);
+	if (m.getSizeBlocks().X >= 2.5) {
+		pos_size_off.X = -1;
+		pos_size_off.Y = -1;
+	}
+	if (!checkFreePosition(pos_i + pos_size_off)) {
+		if (m.contact_explosion_diameter > 0)
+			explodeSquare(pos_i, v3s16(m.contact_explosion_diameter,m.contact_explosion_diameter,m.contact_explosion_diameter));
+		m_removed = true;
+		return;
+	}
+}
+bool MobSAO::checkFreePosition(v3s16 p0)
+{
+	assert(m_env);
+	Map *map = &m_env->getMap();
+	v3s16 size = content_mob_features(m_content).getSizeBlocks();
+	for (int dx=0; dx<size.X; dx++)
+	for (int dy=0; dy<size.Y; dy++)
+	for (int dz=0; dz<size.Z; dz++) {
+		v3s16 dp(dx, dy, dz);
+		v3s16 p = p0 + dp;
+		MapNode n = map->getNodeNoEx(p);
+		if(n.getContent() != CONTENT_AIR)
+			return false;
+	}
+	return true;
+}
+bool MobSAO::checkWalkablePosition(v3s16 p0)
+{
+	assert(m_env);
+	v3s16 p = p0 + v3s16(0,-1,0);
+	MapNode n = m_env->getMap().getNodeNoEx(p);
+	if (n.getContent() != CONTENT_AIR)
+		return true;
+	return false;
+}
+bool MobSAO::checkFreeAndWalkablePosition(v3s16 p0)
+{
+	if (!checkFreePosition(p0))
+		return false;
+	if (!checkWalkablePosition(p0))
+		return false;
+	return true;
+}
+void MobSAO::explodeSquare(v3s16 p0, v3s16 size)
+{
+	assert(m_env);
+	Map *map = &m_env->getMap();
+	core::map<v3s16, MapBlock*> modified_blocks;
+
+	for (int dx=0; dx<size.X; dx++)
+	for (int dy=0; dy<size.Y; dy++)
+	for (int dz=0; dz<size.Z; dz++) {
+		v3s16 dp(dx - size.X/2, dy - size.Y/2, dz - size.Z/2);
+		v3s16 p = p0 + dp;
+		MapNode n = map->getNodeNoEx(p);
+		if (n.getContent() == CONTENT_IGNORE)
+			continue;
+		if (content_features(n).pressure_type == CST_SOLID && content_features(n).draw_type == CDT_CUBELIKE)
+			continue;
+		map->removeNodeAndUpdate(p, modified_blocks);
+	}
+
+	// Send a MEET_OTHER event
+	MapEditEvent event;
+	event.type = MEET_OTHER;
+	for (core::map<v3s16, MapBlock*>::Iterator i = modified_blocks.getIterator(); i.atEnd() == false; i++) {
+		v3s16 p = i.getNode()->getKey();
+		event.modified_blocks.insert(p, true);
+	}
+	map->dispatchEvent(&event);
+}
+InventoryItem* MobSAO::createPickedUpItem()
+{
+	MobFeatures m = content_mob_features(m_content);
+	if (m.punch_action != MPA_PICKUP) {
+		if (!m_removed)
+			return NULL;
+	}
+	if (m.dropped_item == "")
+		return NULL;
+	std::istringstream is(m.dropped_item, std::ios_base::binary);
+	InventoryItem *item = InventoryItem::deSerialize(is);
+	return item;
+}
+u16 MobSAO::punch(const std::string &toolname, v3f dir, const std::string &playername)
+{
+	MobFeatures m = content_mob_features(m_content);
+	if (m.punch_action == MPA_IGNORE)
+		return 0;
+
+	actionstream<<playername<<" punches mob id="<<m_id
+			<<" with a \""<<toolname<<"\" at "
+			<<PP(m_base_position/BS)<<std::endl;
+
+	if (m.punch_action == MPA_HARM) {
+		m_disturb_timer = 0;
+		m_disturbing_player = playername;
+		m_next_pos_exists = false; // Cancel moving immediately
+
+		m_yaw = wrapDegrees_180(180./PI*atan2(dir.Z, dir.X) + 180.);
+		v3f new_base_position = m_base_position + dir * BS;
+		{
+			v3s16 pos_i = floatToInt(new_base_position, BS);
+			v3s16 pos_size_off(0,0,0);
+			if (m.getSizeBlocks().X >= 2.5) {
+				pos_size_off.X = -1;
+				pos_size_off.Y = -1;
+			}
+			bool free = checkFreePosition(pos_i + pos_size_off);
+			if(free)
+				m_base_position = new_base_position;
+		}
+		sendPosition();
+
+
+		ToolItemFeatures f = content_toolitem_features(toolname);
+		u16 amount = 2;
+		if (f.type == TT_SWORD) {
+			amount = 4*((f.hardness/100)+1);
+		}else if (f.type == TT_AXE || f.type == TT_PICK) {
+			amount = 2*((f.hardness/200)+1);
+		}
+		doDamage(amount);
+	}else if (m.punch_action == MPA_DIE) {
+		m_hp = 0;
+		m_removed = true;
+	}
+
+	return 655;
+}
+u8 MobSAO::level()
+{
+	return content_mob_features(m_content).level;
+}
+void MobSAO::sendPosition()
+{
+	m_last_sent_position = m_base_position;
+
+	std::ostringstream os(std::ios::binary);
+	// command (0 = update position)
+	writeU8(os, 0);
+	// pos
+	writeV3F1000(os, m_base_position);
+	// yaw
+	writeF1000(os, m_yaw);
+	// create message and add to list
+	ActiveObjectMessage aom(getId(), false, os.str());
+	m_messages_out.push_back(aom);
+}
+void MobSAO::doDamage(u16 d)
+{
+	infostream<<"MobV2 hp="<<m_hp<<" damage="<<d<<std::endl;
+
+	if (d < m_hp) {
+		m_hp -= d;
+	}else{
+		actionstream<<"A "<<mobLevelS(content_mob_features(m_content).level)
+				<<" mob id="<<m_id<<" dies at "<<PP(m_base_position)<<std::endl;
+		// Die
+		m_hp = 0;
+		m_removed = true;
+	}
+	{
+		std::ostringstream os(std::ios::binary);
+		// command (1 = damage)
+		writeU8(os, 1);
+		// amount
+		writeU16(os, d);
+		// create message and add to list
+		ActiveObjectMessage aom(getId(), false, os.str());
+		m_messages_out.push_back(aom);
+	}
+}

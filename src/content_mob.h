@@ -44,7 +44,8 @@ enum MobMotion
 	MM_WANDER,
 	MM_SEEKER,
 	MM_SENTRY,
-	MM_THROWN
+	MM_THROWN,
+	MM_CONSTANT
 };
 
 enum MobMotionType
@@ -87,13 +88,17 @@ struct MobFeatures {
 	MobMotionType motion_type;
 	MobState spawn_state;
 	bool is_tamable;
+	bool notices_player;
 	content_t tamed_mob;
 	content_t attack_throw_object;
+	v3f attack_throw_offset;
+	u8 attack_player_damage;
 	u8 glow_light;
 	u8 attack_glow_light;
 	u16 hp;
 	std::string dropped_item;
 	f32 lifetime;
+	u16 contact_explosion_diameter;
 
 	MobFeatures()
 	{
@@ -130,7 +135,22 @@ struct MobFeatures {
 			return collisionbox;
 		if (!nodeboxes.size())
 			return aabb3f(-0.5,-0.5,-0.5,0.5,0.5,0.5);
-		return nodeboxes[0];
+		aabb3f b = nodeboxes[0];
+		b.MinEdge /= BS;
+		b.MaxEdge /= BS;
+		return b;
+	}
+
+	v3f getSize()
+	{
+		aabb3f c = getCollisionBox();
+		return v3f(c.MaxEdge.X-c.MinEdge.X,c.MaxEdge.Y-c.MinEdge.Y,c.MaxEdge.Z-c.MinEdge.Z);
+	}
+
+	v3s16 getSizeBlocks()
+	{
+		v3f s = getSize();
+		return v3s16(s.X+0.5,s.Y+0.5,s.Z+0.5);
 	}
 
 #ifdef SERVER
@@ -162,12 +182,17 @@ struct MobFeatures {
 		motion_type = MMT_WALK;
 		spawn_state = MS_WILD;
 		is_tamable = false;
+		notices_player = false;
 		tamed_mob = CONTENT_IGNORE;
 		attack_throw_object = CONTENT_IGNORE;
+		attack_throw_offset = v3f(0,0,0);
+		attack_player_damage = 0;
 		glow_light = 0;
 		attack_glow_light = 0;
 		hp = 20;
 		dropped_item = "";
+		lifetime = 0.0;
+		contact_explosion_diameter = 0;
 	}
 };
 
@@ -189,6 +214,7 @@ inline std::string mobLevelS(u8 level)
 	return std::string("passive");
 }
 
+MobFeatures & content_mob_features(content_t i);
 void content_mob_init();
 
 #define CONTENT_MOB_RAT (CONTENT_MOB_MASK | 0x01)

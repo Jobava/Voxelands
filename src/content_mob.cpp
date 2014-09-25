@@ -108,7 +108,7 @@ void content_mob_init()
 	f->level = MOB_DESTRUCTIVE;
 	f->setTexture("mob_fireball.png");
 	f->punch_action = MPA_IGNORE;
-	f->motion = MM_THROWN;
+	f->motion = MM_CONSTANT;
 	f->motion_type = MMT_FLY;
 	f->glow_light = LIGHT_MAX-1;
 	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.));

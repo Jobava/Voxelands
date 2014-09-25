@@ -21,21 +21,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define CONTENT_SAO_HEADER
 
 #include "serverobject.h"
+#include "mapnode.h"
 #include "content_object.h"
-
-class TestSAO : public ServerActiveObject
-{
-public:
-	TestSAO(ServerEnvironment *env, u16 id, v3f pos);
-	u8 getType() const
-		{return ACTIVEOBJECT_TYPE_TEST;}
-	static ServerActiveObject* create(ServerEnvironment *env, u16 id, v3f pos,
-			const std::string &data);
-	void step(float dtime, bool send_recommended);
-private:
-	float m_timer1;
-	float m_age;
-};
 
 class ItemSAO : public ServerActiveObject
 {
@@ -193,6 +180,61 @@ private:
 	float m_shoot_y;
 
 	Settings *m_properties;
+};
+
+class MobSAO : public ServerActiveObject
+{
+public:
+	MobSAO(ServerEnvironment *env, u16 id, v3f pos, content_t type);
+	MobSAO(ServerEnvironment *env, u16 id, v3f pos, v3f speed, content_t type);
+	virtual ~MobSAO();
+	u8 getType() const {return ACTIVEOBJECT_TYPE_MOB;}
+	static ServerActiveObject* create(ServerEnvironment *env, u16 id, v3f pos,
+			const std::string &data);
+	std::string getStaticData();
+	std::string getClientInitializationData();
+	void step(float dtime, bool send_recommended);
+	InventoryItem* createPickedUpItem();
+	u16 punch(const std::string &toolname, v3f dir, const std::string &playername);
+	u8 level();
+private:
+	void sendPosition();
+	void doDamage(u16 d);
+
+	void stepMotionWander(float dtime);
+	void stepMotionSeeker(float dtime);
+	void stepMotionSentry(float dtime);
+	void stepMotionThrown(float dtime);
+	void stepMotionConstant(float dtime);
+
+	bool checkFreePosition(v3s16 p0);
+	bool checkWalkablePosition(v3s16 p0);
+	bool checkFreeAndWalkablePosition(v3s16 p0);
+	void explodeSquare(v3s16 p0, v3s16 size);
+
+	content_t m_content;
+	v3f m_speed;
+	v3f m_last_sent_position;
+	v3f m_oldpos;
+	float m_yaw;
+	bool m_touching_ground;
+	bool m_falling;
+	bool m_next_pos_exists;
+	v3s16 m_next_pos_i;
+
+	float m_age;
+	int m_hp;
+
+	float m_disturb_timer;
+	std::string m_disturbing_player;
+	float m_random_disturb_timer;
+
+	bool m_walk_around;
+	float m_walk_around_timer;
+	float m_shoot_reload_timer;
+	bool m_shooting;
+	float m_shooting_timer;
+	float m_shoot_y;
 };
 
 #endif
