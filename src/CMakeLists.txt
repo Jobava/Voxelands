@@ -426,6 +426,14 @@ if(BUILD_CLIENT)
 				${CMAKE_SOURCE_DIR}/misc/mac/${xib}.xib
 				COMMENT "Compiling ${CMAKE_SOURCE_DIR}/${xib}.xib")
 		endforeach()
+        # Make icns from svg, just in case it was updated
+        add_custom_command (TARGET ${PROJECT_NAME} PRE_BUILD
+                COMMAND ${CMAKE_SOURCE_DIR}/misc/mac/makeicns.sh
+                COMMENT "making ${PROJECT_NAME}.icns file from ${PROJECT_NAME}.svg")
+        # Change to proper version and mac osx deployment version
+        add_custom_command (TARGET ${PROJECT_NAME} PRE_BUILD
+            COMMAND ${CMAKE_SOURCE_DIR}/misc/mac/makeplist.sh ${VERSION_STRING}
+                COMMENT "Change Info.plist according to provided CMAKE variables")
 	endif(APPLE)
 endif(BUILD_CLIENT)
 
