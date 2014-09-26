@@ -352,17 +352,17 @@ if(BUILD_CLIENT)
 	install(TARGETS ${PROJECT_NAME} DESTINATION ${BINDIR})
 
 	file(GLOB images "${CMAKE_CURRENT_SOURCE_DIR}/../data/textures/*.png")
-	install(FILES ${images} DESTINATION ${DATADIR}/textures)
+	install(FILES ${images} DESTINATION ${SHAREDIR}/textures)
 	file(GLOB models
 "${CMAKE_CURRENT_SOURCE_DIR}/../data/models/*.b3d")
-	install(FILES ${models} DESTINATION ${DATADIR}/models)
+	install(FILES ${models} DESTINATION ${SHAREDIR}/models)
 	file(GLOB modelsx
 "${CMAKE_CURRENT_SOURCE_DIR}/../data/models/*.x")
-	install(FILES ${modelsx} DESTINATION ${DATADIR}/models)
+	install(FILES ${modelsx} DESTINATION ${SHAREDIR}/models)
 	file(GLOB html "${CMAKE_CURRENT_SOURCE_DIR}/../data/html/*.html")
-	install(FILES ${html} DESTINATION ${DATADIR}/html)
+	install(FILES ${html} DESTINATION ${SHAREDIR}/html)
 	file(GLOB sounds "${CMAKE_CURRENT_SOURCE_DIR}/../data/sounds/*.ogg")
-	install(FILES ${sounds} DESTINATION ${DATADIR}/sounds)
+	install(FILES ${sounds} DESTINATION ${SHAREDIR}/sounds)
 
 	if(USE_GETTEXT)
 		foreach(LOCALE ${GETTEXT_AVAILABLE_LOCALES})
@@ -415,6 +415,9 @@ if(BUILD_CLIENT)
 		add_custom_command (TARGET ${PROJECT_NAME} PRE_BUILD
 			COMMAND mkdir -p ${EXECUTABLE_OUTPUT_PATH}/\${CONFIGURATION}/Contents/Resources)
 		find_program(IBTOOL ibtool HINTS "/usr/bin" "${OSX_DEVELOPER_ROOT}/usr/bin")
+        # Make sure the 'Libs' Directory is correctly created before we build
+        add_custom_command (TARGET ${PROJECT_NAME} PRE_BUILD
+            COMMAND mkdir -p ${EXECUTABLE_OUTPUT_PATH}/\${CONFIGURATION}/Contents/Resources/libs)
 		if (${IBTOOL} STREQUAL "IBTOOL-NOTFOUND")
 			message(SEND_ERROR "ibtool can not be found and is needed to compile the .xib files. It should have been installed with the Apple developer tools. The default system paths were searched in addition to ${OSX_DEVELOPER_ROOT}/usr/bin")
 		endif()
@@ -427,13 +430,17 @@ if(BUILD_CLIENT)
 				COMMENT "Compiling ${CMAKE_SOURCE_DIR}/${xib}.xib")
 		endforeach()
         # Make icns from svg, just in case it was updated
-        add_custom_command (TARGET ${PROJECT_NAME} PRE_BUILD
+        add_custom_command (TARGET ${PROJECT_NAME} POST_BUILD
                 COMMAND ${CMAKE_SOURCE_DIR}/misc/mac/makeicns.sh
                 COMMENT "making ${PROJECT_NAME}.icns file from ${PROJECT_NAME}.svg")
         # Change to proper version and mac osx deployment version
-        add_custom_command (TARGET ${PROJECT_NAME} PRE_BUILD
+        add_custom_command (TARGET ${PROJECT_NAME} POST_BUILD
             COMMAND ${CMAKE_SOURCE_DIR}/misc/mac/makeplist.sh ${VERSION_STRING}
                 COMMENT "Change Info.plist according to provided CMAKE variables")
+        # Include the linked '.dylib' to bundle inside the app
+        add_custom_command (TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND ${CMAKE_SOURCE_DIR}/misc/mac/makelibbundle.sh ${EXECUTABLE_OUTPUT_PATH}/\${CONFIGURATION}
+            COMMENT "Bundling dylibs with the app bundle")
 	endif(APPLE)
 endif(BUILD_CLIENT)
 

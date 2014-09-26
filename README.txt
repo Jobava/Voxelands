@@ -91,17 +91,29 @@ $ ./voxelands
 Compiling on Mac OS X
 ---------------------
 - You need:
-	* XCode 5 - https://developer.apple.com/xcode/downloads/
-	* XCode commandline tools - https://developer.apple.com/downloads/
+	* XCode - https://developer.apple.com/xcode/downloads/
+	* XCode commandline tools - https://developer.apple.com/downloads/index.action
 	* homebrew - http://brew.sh/
+    * XQuartz - http://xquartz.macosforge.org/landing/
 
 - Steps:
 	* Install dependencies
-		- brew install jpeg-turbo irrlicht
-	* make XCode project for client only
-		- cmake -DJPEG_INCLUDE_LIBRARY=/usr/local/Cellar/jpeg-turbo/<version>/include -DJPEG_LIBRARY=/usr/local/Cellar/jpeg-turbo/<version>lib/libturbojpeg.a -DBUILD_SERVER=0 -DRUN_IN_PLACE=0 -G Xcode .
-	* build XCode project from commandline (If you're using the GUI, make sure to select "package" as build target)
+		- brew install libpng libvorbis libogg jpeg-turbo gettext irrlicht cmake
+	* make XCode project for client only (NOTE: make sure the linked libraries below have the correct versions)
+		- cmake -DIRRLICHT_INCLUDE_DIR=/usr/local/Cellar/irrlicht/1.8.1/include/irrlicht/ \
+        -DIRRLICHT_LIBRARY=/usr/local/Cellar/irrlicht/1.8.1/lib/libIrrlicht.a \
+        -DJPEG_INCLUDE_DIR=/usr/local/Cellar/jpeg-turbo/1.3.1/include \
+        -DJPEG_LIBRARY=/usr/local/Cellar/jpeg-turbo/1.3.1/lib/libturbojpeg.a \
+        -DBUILD_SERVER=0 -DRUN_IN_PLACE=0 \
+        -DCUSTOM_GETTEXT_PATH=/usr/local/Cellar/gettext/0.19.2/ \
+        -DCMAKE_OSX_ARCHITECTURES=x86_64 \
+        -G Xcode . 
+	* build XCode project from commandline (NOTE: if you're using the GUI, make sure to select "package" as build target)
 		- xcodebuild -project voxelands.xcodeproj -target package
+    * open the .dmg app to install voxelands (NOTE: after installing it will show up in the dashboard)
+
+- NOTE:
+    * Currently misc/mac/makelibbundle.sh only bundles .dylibs that are linked from /usr/local
 
 Compiling on Windows:
 ---------------------
