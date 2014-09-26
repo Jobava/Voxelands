@@ -542,56 +542,6 @@ void ServerEnvironment::loadMeta(const std::string &savedir)
 	}
 }
 
-#if 0
-// This is probably very useless
-void spawnRandomObjects(MapBlock *block)
-{
-	for(s16 z0=0; z0<MAP_BLOCKSIZE; z0++)
-	for(s16 x0=0; x0<MAP_BLOCKSIZE; x0++)
-	{
-		bool last_node_walkable = false;
-		for(s16 y0=0; y0<MAP_BLOCKSIZE; y0++)
-		{
-			v3s16 p(x0,y0,z0);
-			MapNode n = block->getNodeNoEx(p);
-			if(n.getContent() == CONTENT_IGNORE)
-				continue;
-			if(content_features(n).liquid_type != LIQUID_NONE)
-				continue;
-			if(content_features(n).walkable)
-			{
-				last_node_walkable = true;
-				continue;
-			}
-			if(last_node_walkable)
-			{
-				// If block contains light information
-				if(content_features(n).param_type == CPT_LIGHT)
-				{
-					if(n.getLight(LIGHTBANK_DAY) <= 5)
-					{
-						if(myrand() % 1000 == 0)
-						{
-							v3f pos_f = intToFloat(p+block->getPosRelative(), BS);
-							pos_f.Y -= BS*0.4;
-							ServerActiveObject *obj = new Oerkki1SAO(NULL,0,pos_f);
-							std::string data = obj->getStaticData();
-							StaticObject s_obj(obj->getType(),
-									obj->getBasePosition(), data);
-							// Add one
-							block->m_static_objects.insert(0, s_obj);
-							delete obj;
-							block->setChangedFlag();
-						}
-					}
-				}
-			}
-			last_node_walkable = false;
-		}
-	}
-}
-#endif
-
 void ServerEnvironment::activateBlock(MapBlock *block, u32 additional_dtime)
 {
 	// Get time difference
@@ -706,29 +656,6 @@ void ServerEnvironment::clearAllObjects()
 	infostream<<"ServerEnvironment::clearAllObjects(): "
 			<<"Finished: Cleared "<<num_objs_cleared<<" objects"
 			<<" in "<<num_blocks_cleared<<" blocks"<<std::endl;
-}
-
-static void getMob_dungeon_master(Settings &properties)
-{
-	properties.set("looks", "dungeon_master");
-	properties.set("visual", "mesh");
-	properties.set("visual_model","dungeon_master.x");
-	properties.set("visual_model_texture","dungeon_master_mob.png");
-	properties.set("visual_model_","");
-	properties.set("visual_sprite","dungeon_master.png");
-	properties.set("visual_sprite_size","(2.0,0.85,3.0)");
-	properties.set("visual_sprite_type","humanoid_1");
-	properties.set("visual_selection_size","(0.4,-0.4,2.6)");
-	properties.setFloat("yaw", 1.57);
-	properties.setFloat("hp", 30);
-	properties.setBool("bright_shooting", true);
-	properties.set("shoot_type", "fireball");
-	properties.set("shoot_y", "0.7");
-	properties.set("player_hit_damage", "1");
-	properties.set("player_hit_distance", "1.0");
-	properties.set("player_hit_interval", "0.5");
-	properties.set("level","destructive");
-	properties.setBool("mindless_rage", myrand_range(0,100)==0);
 }
 
 bool ServerEnvironment::searchNear(v3s16 pos, v3s16 radius_min, v3s16 radius_max, std::vector<content_t> c, v3s16 *found)
@@ -1021,6 +948,11 @@ void ServerEnvironment::step(float dtime)
 			{
 				v3s16 p = p0 + block->getPosRelative();
 				MapNode n = block->getNodeNoEx(p0);
+
+				if (active_object_count_wider < 3 && myrand()%100 == 0) {
+					if (content_mob_spawn(this,p))
+						active_object_count_wider++;
+				}
 
 				switch(n.getContent()) {
 				case CONTENT_GRASS_FOOTSTEPS:
@@ -2025,105 +1957,6 @@ void ServerEnvironment::step(float dtime)
 									n.setContent(CONTENT_MOSSYCOBBLE);
 									m_map->addNodeWithEvent(p,n);
 									found = true;
-								}
-							}
-						}
-					}
-					break;
-				}
-
-				// Rats spawn around regular trees
-				case CONTENT_TREE:
-				case CONTENT_APPLE_TREE:
-				case CONTENT_CONIFER_TREE:
-				{
-   					if(myrand()%200 == 0 && active_object_count_wider == 0)
-					{
-						v3s16 p1 = p + v3s16(myrand_range(-2, 2),
-								0, myrand_range(-2, 2));
-						MapNode n1 = m_map->getNodeNoEx(p1);
-						MapNode n1b = m_map->getNodeNoEx(p1+v3s16(0,-1,0));
-						if(n1b.getContent() == CONTENT_GRASS &&
-								n1.getContent() == CONTENT_AIR)
-						{
-							v3f pos = intToFloat(p1, BS);
-							ServerActiveObject *obj = new RatSAO(this, 0, pos);
-							addActiveObject(obj);
-						}
-					}
-					break;
-				}
-				// fireflies spawn in jungles at night
-				case CONTENT_JUNGLETREE:
-				{
-					if (myrand()%100 == 0 && active_object_count_wider < 10) {
-						v3s16 p1 = p + v3s16(myrand_range(-2, 2),
-								0, myrand_range(-2, 2));
-						MapNode n1 = m_map->getNodeNoEx(p1);
-						MapNode n1b = m_map->getNodeNoEx(p1+v3s16(0,-1,0));
-						if (
-							(
-								n1b.getContent() == CONTENT_AIR
-								|| n1b.getContent() == CONTENT_JUNGLETREE
-								|| n1b.getContent() == CONTENT_JUNGLEGRASS
-							)
-							&& n1.getContent() == CONTENT_AIR
-							&& n1.getLightBlend(getDayNightRatio()) <= LIGHT_MAX/2
-						) {
-							v3f pos = intToFloat(p1, BS);
-							ServerActiveObject *obj = new FireflySAO(this, 0, pos);
-							addActiveObject(obj);
-						}
-					}
-					break;
-				}
-
-				// Fun things spawn in caves and dungeons
-				case CONTENT_STONE:
-				case CONTENT_MOSSYCOBBLE:
-				{
-   					if(myrand()%500 == 0 && active_object_count_wider == 0)
-					{
-						v3s16 p1 = p + v3s16(0,1,0);
-						MapNode n1a = m_map->getNodeNoEx(p1+v3s16(0,0,0));
-						if(n1a.getLightBlend(getDayNightRatio()) <= 3){
-							MapNode n1b = m_map->getNodeNoEx(p1+v3s16(0,1,0));
-							if(n1a.getContent() == CONTENT_AIR &&
-									n1b.getContent() == CONTENT_AIR)
-							{
-								v3f pos = intToFloat(p1, BS);
-								ServerActiveObject *obj;
-								Settings properties;
-								int i = myrand()%5;
-								u8 mob_level = mobLevelI(g_settings->get("max_mob_level"));
-								switch (i) {
-								case 0:
-									getMob_dungeon_master(properties);
-									if (mobLevelI(properties.get("level")) >= mob_level) {
-										actionstream<<"A dungeon master spawns at "
-											<<PP(p1)<<std::endl;
-										obj = new MobV2SAO(this, 0, pos, &properties);
-										addActiveObject(obj);
-										active_object_count_wider++;
-									}
-									break;
-								case 1:
-									actionstream<<"Rat spawns at "
-											<<PP(p1)<<std::endl;
-									obj = new RatSAO(this, 0, pos);
-									addActiveObject(obj);
-									active_object_count_wider++;
-									break;
-								case 2:
-									if (mob_level > MOB_PASSIVE) {
-										actionstream<<"An oerkki spawns at "
-											<<PP(p1)<<std::endl;
-										obj = new Oerkki1SAO(this, 0, pos);
-										addActiveObject(obj);
-										active_object_count_wider++;
-									}
-									break;
-								default:;
 								}
 							}
 						}
@@ -3385,8 +3218,7 @@ ActiveObjectMessage ServerEnvironment::getActiveObjectMessage()
 	************ Private methods *************
 */
 
-u16 ServerEnvironment::addActiveObjectRaw(ServerActiveObject *object,
-		bool set_changed)
+u16 ServerEnvironment::addActiveObjectRaw(ServerActiveObject *object, bool set_changed)
 {
 	assert(object);
 	if(object->getId() == 0){
@@ -3434,7 +3266,7 @@ u16 ServerEnvironment::addActiveObjectRaw(ServerActiveObject *object,
 		object->m_static_exists = true;
 		object->m_static_block = blockpos;
 
-		if(set_changed)
+		if (set_changed)
 			block->raiseModified(MOD_STATE_WRITE_NEEDED);
 	}
 	else{
@@ -4227,12 +4059,11 @@ u16 ClientEnvironment::addActiveObject(ClientActiveObject *object)
 	return object->getId();
 }
 
-void ClientEnvironment::addActiveObject(u16 id, u8 type,
-		const std::string &init_data)
+void ClientEnvironment::addActiveObject(u16 id, u8 type, const std::string &init_data)
 {
+	// TODO: convert old to new
 	ClientActiveObject* obj = ClientActiveObject::create(type);
-	if(obj == NULL)
-	{
+	if (obj == NULL) {
 		infostream<<"ClientEnvironment::addActiveObject(): "
 				<<"id="<<id<<" type="<<type<<": Couldn't create object"
 				<<std::endl;

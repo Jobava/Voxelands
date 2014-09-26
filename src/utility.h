@@ -239,11 +239,20 @@ inline void writeU16(std::ostream &os, u16 p)
 	writeU16((u8*)buf, p);
 	os.write(buf, 2);
 }
+inline void writeS16(std::ostream &os, s16 i){
+	writeU16(os, (u16)i);
+}
 inline u16 readU16(std::istream &is)
 {
 	char buf[2];
 	is.read(buf, 2);
 	return readU16((u8*)buf);
+}
+inline u16 readS16(std::istream &is)
+{
+	char buf[2];
+	is.read(buf, 2);
+	return readS16((u8*)buf);
 }
 
 inline void writeU32(std::ostream &os, u32 p)

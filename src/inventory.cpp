@@ -29,8 +29,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "main.h"
 #include "serverobject.h"
 #include "content_mapnode.h"
-#include "content_inventory.h"
 #include "content_sao.h"
+#include "content_mob.h"
 #include "player.h"
 #include "log.h"
 
@@ -206,9 +206,11 @@ std::wstring CraftItem::getGuiName()
 ServerActiveObject* CraftItem::createSAO(ServerEnvironment *env, u16 id, v3f pos)
 {
 	// Special cases
-	ServerActiveObject *obj = item_craft_create_object(m_subname, env, id, pos);
-	if(obj)
-		return obj;
+	if ((m_content&CONTENT_MOB_MASK) == CONTENT_MOB_MASK) {
+		ServerActiveObject *obj = new MobSAO(env,id,pos,m_content);
+		if (obj)
+			return obj;
+	}
 	// Default
 	return InventoryItem::createSAO(env, id, pos);
 }

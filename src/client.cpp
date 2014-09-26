@@ -1306,6 +1306,7 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 				is.read(buf, 1);
 				u8 type = readU8((u8*)buf);
 				std::string data = deSerializeLongString(is);
+printf("mob add: %d %d\n",id,type);
 				// Add it
 				{
 					//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out

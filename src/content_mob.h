@@ -69,6 +69,16 @@ enum MobAnimation
 	MA_ATTACK
 };
 
+enum MobAnimationKey
+{
+	MA_STAND_START = 0,
+	MA_STAND_END,
+	MA_MOVE_START,
+	MA_MOVE_END,
+	MA_ATTACK_START,
+	MA_ATTACK_END
+};
+
 #define CONTENT_MOB_MASK 0x2000
 
 struct MobFeatures {
@@ -79,7 +89,9 @@ struct MobFeatures {
 	video::ITexture *texture;
 #endif
 	std::string model;
-	std::map<MobAnimation,int[2]> animations;
+	std::map<MobAnimationKey,int> animations;
+	v3f model_scale;
+	v3f model_offset;
 	std::vector<aabb3f> nodeboxes;
 	aabb3f collisionbox;
 
@@ -93,12 +105,18 @@ struct MobFeatures {
 	content_t attack_throw_object;
 	v3f attack_throw_offset;
 	u8 attack_player_damage;
+	v3f attack_player_range;
 	u8 glow_light;
 	u8 attack_glow_light;
 	u16 hp;
 	std::string dropped_item;
 	f32 lifetime;
 	u16 contact_explosion_diameter;
+
+	content_t spawn_on;
+	content_t spawn_in;
+	u8 spawn_min_light;
+	u8 spawn_max_light;
 
 	MobFeatures()
 	{
@@ -153,6 +171,9 @@ struct MobFeatures {
 		return v3s16(s.X+0.5,s.Y+0.5,s.Z+0.5);
 	}
 
+	void getAnimationFrames(MobAnimation type, int *start, int *end);
+	void setAnimationFrames(MobAnimation type, int start, int end);
+
 #ifdef SERVER
 	void setTexture(std::string name)
 	{}
@@ -176,6 +197,8 @@ struct MobFeatures {
 	{
 		content = CONTENT_IGNORE;
 		model = "";
+		model_scale = v3f(0,0,0);
+		model_offset = v3f(0,0,0);
 		nodeboxes.clear();
 		punch_action = MPA_DIE;
 		motion = MM_STATIC;
@@ -187,12 +210,17 @@ struct MobFeatures {
 		attack_throw_object = CONTENT_IGNORE;
 		attack_throw_offset = v3f(0,0,0);
 		attack_player_damage = 0;
+		attack_player_range = v3f(0,0,0);
 		glow_light = 0;
 		attack_glow_light = 0;
 		hp = 20;
 		dropped_item = "";
 		lifetime = 0.0;
 		contact_explosion_diameter = 0;
+		spawn_on = CONTENT_IGNORE;
+		spawn_in = CONTENT_IGNORE;
+		spawn_min_light = 0;
+		spawn_max_light = LIGHT_MAX;
 	}
 };
 
@@ -213,6 +241,9 @@ inline std::string mobLevelS(u8 level)
 		return std::string("aggressive");
 	return std::string("passive");
 }
+
+class ServerEnvironment;
+bool content_mob_spawn(ServerEnvironment *env, v3s16 pos);
 
 MobFeatures & content_mob_features(content_t i);
 void content_mob_init();

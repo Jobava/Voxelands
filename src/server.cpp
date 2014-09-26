@@ -1388,21 +1388,19 @@ void Server::AsyncRunStep()
 			// Handle added objects
 			writeU16((u8*)buf, added_objects.size());
 			data_buffer.append(buf, 2);
-			for(core::map<u16, bool>::Iterator
-					i = added_objects.getIterator();
-					i.atEnd()==false; i++)
-			{
+			for (core::map<u16, bool>::Iterator i = added_objects.getIterator(); i.atEnd()==false; i++) {
 				// Get object
 				u16 id = i.getNode()->getKey();
 				ServerActiveObject* obj = m_env.getActiveObject(id);
 
 				// Get object type
 				u8 type = ACTIVEOBJECT_TYPE_INVALID;
-				if(obj == NULL)
+				if (obj == NULL) {
 					infostream<<"WARNING: "<<__FUNCTION_NAME
 							<<": NULL object"<<std::endl;
-				else
+				}else{
 					type = obj->getType();
+				}
 
 				// Add to data buffer for sending
 				writeU16((u8*)buf, id);
@@ -1410,11 +1408,11 @@ void Server::AsyncRunStep()
 				writeU8((u8*)buf, type);
 				data_buffer.append(buf, 1);
 
-				if(obj)
-					data_buffer.append(serializeLongString(
-							obj->getClientInitializationData()));
-				else
+				if (obj) {
+					data_buffer.append(serializeLongString(obj->getClientInitializationData()));
+				}else{
 					data_buffer.append(serializeLongString(""));
+				}
 
 				// Add to known objects
 				client->m_known_objects.insert(i.getNode()->getKey(), false);
@@ -1426,8 +1424,7 @@ void Server::AsyncRunStep()
 			// Send packet
 			SharedBuffer<u8> reply(2 + data_buffer.size());
 			writeU16(&reply[0], TOCLIENT_ACTIVE_OBJECT_REMOVE_ADD);
-			memcpy((char*)&reply[2], data_buffer.c_str(),
-					data_buffer.size());
+			memcpy((char*)&reply[2], data_buffer.c_str(), data_buffer.size());
 			// Send as reliable
 			m_con.Send(client->peer_id, 0, reply, true);
 

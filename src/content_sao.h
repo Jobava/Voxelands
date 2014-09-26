@@ -46,142 +46,6 @@ private:
 	IntervalLimiter m_move_interval;
 };
 
-class RatSAO : public ServerActiveObject
-{
-public:
-	RatSAO(ServerEnvironment *env, u16 id, v3f pos);
-	u8 getType() const
-		{return ACTIVEOBJECT_TYPE_RAT;}
-	static ServerActiveObject* create(ServerEnvironment *env, u16 id, v3f pos,
-			const std::string &data);
-	void step(float dtime, bool send_recommended);
-	std::string getClientInitializationData();
-	std::string getStaticData();
-	InventoryItem* createPickedUpItem();
-private:
-	bool m_is_active;
-	IntervalLimiter m_inactive_interval;
-	v3f m_speed_f;
-	v3f m_oldpos;
-	v3f m_last_sent_position;
-	float m_yaw;
-	float m_counter1;
-	float m_counter2;
-	float m_age;
-	bool m_touching_ground;
-};
-
-class Oerkki1SAO : public ServerActiveObject
-{
-public:
-	Oerkki1SAO(ServerEnvironment *env, u16 id, v3f pos);
-	u8 getType() const
-		{return ACTIVEOBJECT_TYPE_OERKKI1;}
-	static ServerActiveObject* create(ServerEnvironment *env, u16 id, v3f pos,
-			const std::string &data);
-	void step(float dtime, bool send_recommended);
-	std::string getClientInitializationData();
-	std::string getStaticData();
-	InventoryItem* createPickedUpItem();
-	u16 punch(const std::string &toolname, v3f dir,
-			const std::string &playername);
-	u8 level(){return MOB_AGGRESSIVE;}
-private:
-	void doDamage(u16 d);
-
-	bool m_is_active;
-	IntervalLimiter m_inactive_interval;
-	v3f m_speed_f;
-	v3f m_oldpos;
-	v3f m_last_sent_position;
-	float m_yaw;
-	float m_counter1;
-	float m_counter2;
-	float m_age;
-	bool m_touching_ground;
-	u8 m_hp;
-	float m_after_jump_timer;
-};
-
-class FireflySAO : public ServerActiveObject
-{
-public:
-	FireflySAO(ServerEnvironment *env, u16 id, v3f pos);
-	u8 getType() const
-		{return ACTIVEOBJECT_TYPE_FIREFLY;}
-	static ServerActiveObject* create(ServerEnvironment *env, u16 id, v3f pos,
-			const std::string &data);
-	void step(float dtime, bool send_recommended);
-	std::string getClientInitializationData();
-	std::string getStaticData();
-	InventoryItem* createPickedUpItem();
-private:
-	bool m_is_active;
-	IntervalLimiter m_inactive_interval;
-	v3f m_speed_f;
-	v3f m_oldpos;
-	v3f m_last_sent_position;
-	float m_yaw;
-	float m_counter1;
-	float m_counter2;
-	float m_age;
-	bool m_touching_ground;
-};
-
-class Settings;
-
-class MobV2SAO : public ServerActiveObject
-{
-public:
-	MobV2SAO(ServerEnvironment *env, u16 id, v3f pos,
-			Settings *init_properties);
-	virtual ~MobV2SAO();
-	u8 getType() const
-		{return ACTIVEOBJECT_TYPE_MOBV2;}
-	static ServerActiveObject* create(ServerEnvironment *env, u16 id, v3f pos,
-			const std::string &data);
-	std::string getStaticData();
-	std::string getClientInitializationData();
-	void step(float dtime, bool send_recommended);
-	InventoryItem* createPickedUpItem(){return NULL;}
-	u16 punch(const std::string &toolname, v3f dir,
-			const std::string &playername);
-	u8 level();
-private:
-	void sendPosition();
-	void setPropertyDefaults();
-	void readProperties();
-	void updateProperties();
-	void doDamage(u16 d);
-
-	std::string m_move_type;
-	v3f m_speed;
-	v3f m_last_sent_position;
-	v3f m_oldpos;
-	float m_yaw;
-	float m_counter1;
-	float m_counter2;
-	float m_age;
-	bool m_touching_ground;
-	int m_hp;
-	bool m_walk_around;
-	float m_walk_around_timer;
-	bool m_next_pos_exists;
-	v3s16 m_next_pos_i;
-	float m_shoot_reload_timer;
-	bool m_shooting;
-	float m_shooting_timer;
-	float m_die_age;
-	v2f m_size;
-	bool m_falling;
-	float m_disturb_timer;
-	std::string m_disturbing_player;
-	float m_random_disturb_timer;
-	float m_shoot_y;
-
-	Settings *m_properties;
-};
-
 class MobSAO : public ServerActiveObject
 {
 public:
@@ -216,6 +80,7 @@ private:
 	v3f m_speed;
 	v3f m_last_sent_position;
 	v3f m_oldpos;
+	v3f m_initial_pos;
 	float m_yaw;
 	bool m_touching_ground;
 	bool m_falling;
@@ -223,7 +88,7 @@ private:
 	v3s16 m_next_pos_i;
 
 	float m_age;
-	int m_hp;
+	u8 m_hp;
 
 	float m_disturb_timer;
 	std::string m_disturbing_player;

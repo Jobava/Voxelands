@@ -23,6 +23,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "clientobject.h"
 #include "content_object.h"
 #include "utility.h" // For IntervalLimiter
+#include "mapnode.h"
+#include "content_mob.h"
 class Settings;
 #include <IBillboardSceneNode.h>
 
@@ -96,39 +98,6 @@ struct SmoothTranslator
 	}
 };
 
-
-/*
-	TestCAO
-*/
-
-class TestCAO : public ClientActiveObject
-{
-public:
-	TestCAO();
-	virtual ~TestCAO();
-
-	u8 getType() const
-	{
-		return ACTIVEOBJECT_TYPE_TEST;
-	}
-
-	static ClientActiveObject* create();
-
-	void addToScene(scene::ISceneManager *smgr);
-	void removeFromScene();
-	void updateLight(u8 light_at_pos);
-	v3s16 getLightPosition();
-	void updateNodePos();
-
-	void step(float dtime, ClientEnvironment *env);
-
-	void processMessage(const std::string &data);
-
-private:
-	scene::IMeshSceneNode *m_node;
-	v3f m_position;
-};
-
 /*
 	ItemCAO
 */
@@ -158,10 +127,8 @@ public:
 
 	void initialize(const std::string &data);
 
-	core::aabbox3d<f32>* getSelectionBox()
-		{return &m_selection_box;}
-	v3f getPosition()
-		{return m_position;}
+	core::aabbox3d<f32>* getSelectionBox() {return &m_selection_box;}
+	v3f getPosition() {return m_position;}
 
 	void updateCameraOffset(v3s16 camera_offset)
 	{
@@ -177,18 +144,18 @@ private:
 };
 
 /*
-	RatCAO
+	MobCAO
 */
 
-class RatCAO : public ClientActiveObject
+class MobCAO : public ClientActiveObject
 {
 public:
-	RatCAO();
-	virtual ~RatCAO();
+	MobCAO();
+	virtual ~MobCAO();
 
 	u8 getType() const
 	{
-		return ACTIVEOBJECT_TYPE_RAT;
+		return ACTIVEOBJECT_TYPE_MOB;
 	}
 
 	static ClientActiveObject* create();
@@ -205,160 +172,8 @@ public:
 
 	void initialize(const std::string &data);
 
-	core::aabbox3d<f32>* getSelectionBox()
-		{return &m_selection_box;}
-	v3f getPosition()
-		{return pos_translator.vect_show;}
-
-	void updateCameraOffset(v3s16 camera_offset)
-	{
-		m_camera_offset = camera_offset;
-	}
-
-private:
-	core::aabbox3d<f32> m_selection_box;
-	scene::IAnimatedMeshSceneNode *m_node;
-	v3f m_position;
-	v3s16 m_camera_offset;
-	float m_yaw;
-	SmoothTranslator pos_translator;
-};
-
-/*
-	Oerkki1CAO
-*/
-
-class Oerkki1CAO : public ClientActiveObject
-{
-public:
-	Oerkki1CAO();
-	virtual ~Oerkki1CAO();
-
-	u8 getType() const
-	{
-		return ACTIVEOBJECT_TYPE_OERKKI1;
-	}
-
-	static ClientActiveObject* create();
-
-	void addToScene(scene::ISceneManager *smgr);
-	void removeFromScene();
-	void updateLight(u8 light_at_pos);
-	v3s16 getLightPosition();
-	void updateNodePos();
-
-	void step(float dtime, ClientEnvironment *env);
-
-	void processMessage(const std::string &data);
-
-	void initialize(const std::string &data);
-
-	core::aabbox3d<f32>* getSelectionBox()
-		{return &m_selection_box;}
-	v3f getPosition()
-		{return pos_translator.vect_show;}
-
-	void updateCameraOffset(v3s16 camera_offset)
-	{
-		m_camera_offset = camera_offset;
-	}
-
-	// If returns true, punch will not be sent to the server
-	bool directReportPunch(const std::string &toolname, v3f dir);
-
-private:
-	IntervalLimiter m_attack_interval;
-	core::aabbox3d<f32> m_selection_box;
-	scene::IAnimatedMeshSceneNode *m_node;
-	v3f m_position;
-	v3s16 m_camera_offset;
-	float m_yaw;
-	SmoothTranslator pos_translator;
-	float m_damage_visual_timer;
-	bool m_damage_texture_enabled;
-};
-
-/*
-	FireflyCAO
-*/
-
-class FireflyCAO : public ClientActiveObject
-{
-public:
-	FireflyCAO();
-	virtual ~FireflyCAO();
-
-	u8 getType() const
-	{
-		return ACTIVEOBJECT_TYPE_FIREFLY;
-	}
-
-	static ClientActiveObject* create();
-
-	void addToScene(scene::ISceneManager *smgr);
-	void removeFromScene();
-	void updateLight(u8 light_at_pos);
-	v3s16 getLightPosition();
-	void updateNodePos();
-
-	void step(float dtime, ClientEnvironment *env);
-
-	void processMessage(const std::string &data);
-
-	void initialize(const std::string &data);
-
-	core::aabbox3d<f32>* getSelectionBox()
-		{return &m_selection_box;}
-	v3f getPosition()
-		{return m_position;}
-
-	void updateCameraOffset(v3s16 camera_offset)
-	{
-		m_camera_offset = camera_offset;
-	}
-
-private:
-	core::aabbox3d<f32> m_selection_box;
-	scene::IMeshSceneNode *m_node;
-	v3f m_position;
-	v3s16 m_camera_offset;
-	float m_yaw;
-	SmoothTranslator pos_translator;
-};
-
-/*
-	MobV2CAO
-*/
-
-class MobV2CAO : public ClientActiveObject
-{
-public:
-	MobV2CAO();
-	virtual ~MobV2CAO();
-
-	u8 getType() const
-	{
-		return ACTIVEOBJECT_TYPE_MOBV2;
-	}
-
-	static ClientActiveObject* create();
-
-	void addToScene(scene::ISceneManager *smgr);
-	void removeFromScene();
-	void updateLight(u8 light_at_pos);
-	v3s16 getLightPosition();
-	void updateNodePos();
-
-	void step(float dtime, ClientEnvironment *env);
-
-	void processMessage(const std::string &data);
-
-	void initialize(const std::string &data);
-
-	core::aabbox3d<f32>* getSelectionBox()
-		{return &m_selection_box;}
-	v3f getPosition()
-		{return pos_translator.vect_show;}
+	core::aabbox3d<f32>* getSelectionBox() {m_selection_box = content_mob_features(m_content).getCollisionBox(); return &m_selection_box;}
+	v3f getPosition() {return pos_translator.vect_show;}
 
 	void updateCameraOffset(v3s16 camera_offset)
 	{
@@ -368,39 +183,21 @@ public:
 
 	// If returns true, punch will not be sent to the server
 	bool directReportPunch(const std::string &toolname, v3f dir);
-
 private:
-	void setLooks(const std::string &looks);
-
-	IntervalLimiter m_attack_interval;
-	core::aabbox3d<f32> m_selection_box;
-	scene::IBillboardSceneNode *m_node;
+	aabb3f m_selection_box;
+	content_t m_content;
+	scene::IAnimatedMeshSceneNode *m_node;
 	v3f m_position;
 	v3s16 m_camera_offset;
-	std::string m_texture_name;
 	float m_yaw;
 	SmoothTranslator pos_translator;
-	bool m_walking;
-	float m_walking_unset_timer;
-	float m_walk_timer;
-	int m_walk_frame;
-	float m_damage_visual_timer;
 	u8 m_last_light;
+	float m_player_hit_timer;
+	float m_damage_visual_timer;
 	bool m_shooting;
 	float m_shooting_unset_timer;
-	v2f m_sprite_size;
-	float m_sprite_y;
-	bool m_bright_shooting;
-	std::string m_sprite_type;
-	int m_simple_anim_frames;
-	float m_simple_anim_frametime;
-	bool m_lock_full_brightness;
-	int m_player_hit_damage;
-	float m_player_hit_distance;
-	float m_player_hit_interval;
-	float m_player_hit_timer;
-
-	Settings *m_properties;
+	bool m_walking;
+	float m_walking_unset_timer;
 };
 
 

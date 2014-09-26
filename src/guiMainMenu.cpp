@@ -234,9 +234,9 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			case GUI_ID_MOBS_AGGRESSIVE:
 				max_mob_level = L"aggressive";
 				break;
-			//case GUI_ID_MOBS_DESTRUCTIVE:
-				//max_mob_level = L"destructive";
-				//break;
+			case GUI_ID_MOBS_DESTRUCTIVE:
+				max_mob_level = L"destructive";
+				break;
 			default:
 				max_mob_level = L"aggressive";
 			}
@@ -648,11 +648,11 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			gui::IGUIComboBox *c = Environment->addComboBox(rect, this, GUI_ID_MOBS_COMBO);
 			u32 pm = c->addItem(wgettext("Passive"),GUI_ID_MOBS_PASSIVE);
 			u32 am = c->addItem(wgettext("Passive & Aggressive"),GUI_ID_MOBS_AGGRESSIVE);
-			//u32 dm = c->addItem(wgettext("Passive, Aggressive, & Destructive"),GUI_ID_MOBS_DESTRUCTIVE);
+			u32 dm = c->addItem(wgettext("Passive, Aggressive, & Destructive"),GUI_ID_MOBS_DESTRUCTIVE);
 			if (max_mob_level == L"passive") {
 				c->setSelected(pm);
-			//}else if (max_mob_level == L"destructive") {
-				//c->setSelected(dm);
+			}else if (max_mob_level == L"destructive") {
+				c->setSelected(dm);
 			}else{
 				c->setSelected(am);
 			}
@@ -947,8 +947,8 @@ void GUIMainMenu::acceptInput()
 				s32 i;
 				if (m_data->max_mob_level == L"passive") {
 					i = c->getIndexForItemData(GUI_ID_MOBS_PASSIVE);
-				//}else if (m_data->max_mob_level == L"destructive") {
-					//i = c->getIndexForItemData(GUI_ID_MOBS_DESTRUCTIVE);
+				}else if (m_data->max_mob_level == L"destructive") {
+					i = c->getIndexForItemData(GUI_ID_MOBS_DESTRUCTIVE);
 				}else{
 					i = c->getIndexForItemData(GUI_ID_MOBS_AGGRESSIVE);
 				}
@@ -987,9 +987,9 @@ void GUIMainMenu::acceptInput()
 				case GUI_ID_MOBS_AGGRESSIVE:
 					m_data->max_mob_level = L"aggressive";
 					break;
-				//case GUI_ID_MOBS_DESTRUCTIVE:
-					//m_data->max_mob_level = L"destructive";
-					//break;
+				case GUI_ID_MOBS_DESTRUCTIVE:
+					m_data->max_mob_level = L"destructive";
+					break;
 				default:
 					m_data->max_mob_level = L"aggressive";
 				}
