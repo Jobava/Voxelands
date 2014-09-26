@@ -44,8 +44,7 @@ ServerActiveObject* ServerActiveObject::create(u8 type,
 	// Find factory function
 	core::map<u16, Factory>::Node *n;
 	n = m_types.find(type);
-	if(n == NULL)
-	{
+	if (n == NULL) {
 		// If factory is not found, just return.
 		dstream<<"WARNING: ServerActiveObject: No factory for type="
 				<<type<<std::endl;

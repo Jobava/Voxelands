@@ -41,11 +41,6 @@ MobFeatures & content_mob_features(content_t i)
 }
 
 #ifndef SERVER
-void MobFeatures::setTexture(std::string name)
-{
-	if (g_texturesource)
-		texture = g_texturesource->getTextureRaw(name);
-}
 void MobFeatures::setBoxTexture(u16 i, std::string name, u8 alpha)
 {
 	if (g_texturesource)
@@ -171,6 +166,7 @@ bool content_mob_spawn(ServerEnvironment *env, v3s16 pos)
 void content_mob_init()
 {
 	g_content_mob_features.clear();
+printf("initialising mobs\n\n");
 
 	content_t i;
 	MobFeatures *f = NULL;
@@ -183,6 +179,7 @@ void content_mob_init()
 	f->setTexture("mob_rat.png");
 	f->setAnimationFrames(MA_STAND,0,79);
 	f->punch_action = MPA_PICKUP;
+	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_RAT)+" 1";
 	f->motion = MM_WANDER;
 	f->spawn_on = CONTENT_GRASS;
 	f->spawn_in = CONTENT_AIR;
@@ -194,6 +191,7 @@ void content_mob_init()
 	f->level = MOB_PASSIVE;
 	f->setTexture("mob_firefly.png");
 	f->punch_action = MPA_PICKUP;
+	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_FIREFLY)+" 1";
 	f->motion = MM_WANDER;
 	f->glow_light = LIGHT_MAX-1;
 	f->spawn_on = CONTENT_JUNGLETREE;

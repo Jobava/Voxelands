@@ -1402,6 +1402,8 @@ void Server::AsyncRunStep()
 					type = obj->getType();
 				}
 
+printf("type == %u\n",type);
+
 				// Add to data buffer for sending
 				writeU16((u8*)buf, id);
 				data_buffer.append(buf, 2);
@@ -1413,7 +1415,7 @@ void Server::AsyncRunStep()
 				}else{
 					data_buffer.append(serializeLongString(""));
 				}
-
+printf("data_buffer.size() == %u\n",(u32)data_buffer.size());
 				// Add to known objects
 				client->m_known_objects.insert(i.getNode()->getKey(), false);
 

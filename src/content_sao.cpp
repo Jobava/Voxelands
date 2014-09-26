@@ -280,11 +280,20 @@ MobSAO::~MobSAO()
 ServerActiveObject* MobSAO::create(ServerEnvironment *env, u16 id, v3f pos, const std::string &data)
 {
 	std::istringstream is(data, std::ios::binary);
+	char buf[1];
+	// read version
+	is.read(buf, 1);
+	u8 version = buf[0];
+	// check if version is supported
+	if (version != 0)
+		return NULL;
+	v3f p = readV3F1000(is);
 	content_t c = readU16(is);
 	c = content_mob_features(c).content;
 	if (c == CONTENT_IGNORE)
 		return NULL;
 	MobSAO *o = new MobSAO(env,id,pos,c);
+	o->m_base_position = p;
 	o->m_yaw = readF1000(is);
 	o->m_speed = readV3F1000(is);
 	o->m_age = readF1000(is);
@@ -327,7 +336,7 @@ void MobSAO::step(float dtime, bool send_recommended)
 
 	m_age += dtime;
 
-	if (m.lifetime >= 0.0 && m_age >= m.lifetime) {
+	if (m.lifetime > 0.0 && m_age >= m.lifetime) {
 		m_removed = true;
 		return;
 	}
@@ -433,11 +442,12 @@ void MobSAO::step(float dtime, bool send_recommended)
 		m_walk_around_timer -= dtime;
 		if (m_walk_around_timer <= 0.0) {
 			m_walk_around = !m_walk_around;
-			if (m_walk_around) {
-				m_walk_around_timer = 0.1*myrand_range(10,50);
-			}else{
-				m_walk_around_timer = 0.1*myrand_range(30,70);
-			}
+			m_walk_around_timer = 1.0;
+			//if (m_walk_around) {
+				//m_walk_around_timer = 0.1*myrand_range(10,50);
+			//}else{
+				//m_walk_around_timer = 0.1*myrand_range(30,70);
+			//}
 		}
 		if (m_next_pos_exists) {
 			v3f pos_f = m_base_position;
@@ -493,6 +503,7 @@ void MobSAO::stepMotionWander(float dtime)
 	MobFeatures m = content_mob_features(m_content);
 	v3s16 pos_i = floatToInt(m_base_position, BS);
 	v3s16 pos_size_off(0,0,0);
+	v3f s = m.getSize();
 	if (m.getSize().X >= 2.5) {
 		pos_size_off.X = -1;
 		pos_size_off.Y = -1;
@@ -1036,6 +1047,8 @@ InventoryItem* MobSAO::createPickedUpItem()
 		return NULL;
 	std::istringstream is(m.dropped_item, std::ios_base::binary);
 	InventoryItem *item = InventoryItem::deSerialize(is);
+	if (!m_removed)
+		m_removed = true;
 	return item;
 }
 u16 MobSAO::punch(const std::string &toolname, v3f dir, const std::string &playername)

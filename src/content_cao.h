@@ -179,7 +179,7 @@ public:
 	{
 		m_camera_offset = camera_offset;
 	}
-	bool doShowSelectionBox(){return false;}
+	//bool doShowSelectionBox(){return false;}
 
 	// If returns true, punch will not be sent to the server
 	bool directReportPunch(const std::string &toolname, v3f dir);

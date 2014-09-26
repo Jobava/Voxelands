@@ -52,7 +52,8 @@ public:
 	MobSAO(ServerEnvironment *env, u16 id, v3f pos, content_t type);
 	MobSAO(ServerEnvironment *env, u16 id, v3f pos, v3f speed, content_t type);
 	virtual ~MobSAO();
-	u8 getType() const {return ACTIVEOBJECT_TYPE_MOB;}
+	u8 getType() const
+		{return ACTIVEOBJECT_TYPE_MOB;}
 	static ServerActiveObject* create(ServerEnvironment *env, u16 id, v3f pos,
 			const std::string &data);
 	std::string getStaticData();

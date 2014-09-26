@@ -246,6 +246,7 @@ void MobCAO::addToScene(scene::ISceneManager *smgr)
 	if (m_node != NULL)
 		return;
 
+	video::IVideoDriver* driver = smgr->getVideoDriver();
 	MobFeatures m = content_mob_features(m_content);
 	if (m.model != "") {
 		scene::IAnimatedMesh* mesh = createModelMesh(smgr,m.model.c_str(),true);
@@ -266,7 +267,7 @@ void MobCAO::addToScene(scene::ISceneManager *smgr)
 			bool use_anisotropic_filter = g_settings->getBool("anisotropic_filter");
 
 			// Set material flags and texture
-			m_node->setMaterialTexture( 0, m.texture);
+			m_node->setMaterialTexture( 0, driver->getTexture(getTexturePath(m.texture).c_str()));
 			video::SMaterial& material = m_node->getMaterial(0);
 			material.setFlag(video::EMF_LIGHTING, false);
 			material.setFlag(video::EMF_TRILINEAR_FILTER, use_trilinear_filter);
@@ -274,7 +275,6 @@ void MobCAO::addToScene(scene::ISceneManager *smgr)
 			material.setFlag(video::EMF_ANISOTROPIC_FILTER, use_anisotropic_filter);
 			material.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
 
-			m_node->setPosition(m.model_offset);
 			m_node->setVisible(true);
 		}
 #if (IRRLICHT_VERSION_MAJOR >= 1 && IRRLICHT_VERSION_MINOR >= 8) || IRRLICHT_VERSION_MAJOR >= 2
@@ -287,7 +287,6 @@ void MobCAO::addToScene(scene::ISceneManager *smgr)
 void MobCAO::removeFromScene()
 {
 	if (m_node != NULL) {
-		m_node->drop();
 		m_node->remove();
 		m_node = NULL;
 	}
@@ -302,8 +301,8 @@ void MobCAO::updateLight(u8 light_at_pos)
 
 	m_last_light = light_at_pos;
 
-	if (m_damage_visual_timer > 0)
-		return;
+	//if (m_damage_visual_timer > 0)
+		//return;
 
 	u8 li = decode_light(light_at_pos);
 	video::SColor color(255,li,li,li);
@@ -315,14 +314,18 @@ void MobCAO::updateLight(u8 light_at_pos)
 }
 v3s16 MobCAO::getLightPosition()
 {
-	return v3s16(0,0,0);
+	return floatToInt(m_position, BS);
 }
 void MobCAO::updateNodePos()
 {
 	if (m_node == NULL)
 		return;
-
-	m_node->setPosition(pos_translator.vect_show-intToFloat(m_camera_offset, BS));
+	v3f offset = content_mob_features(m_content).model_offset+v3f(0,-0.5,0);
+	offset.X *= (float)BS;
+	offset.Y *= (float)BS;
+	offset.Z *= (float)BS;
+	offset += pos_translator.vect_show;
+	m_node->setPosition(offset-intToFloat(m_camera_offset, BS));
 
 	v3f rot = m_node->getRotation();
 	rot.Y = 90-m_yaw;
@@ -361,9 +364,9 @@ void MobCAO::step(float dtime, ClientEnvironment *env)
 	/* Run timers */
 	m_player_hit_timer -= dtime;
 
-	if(m_damage_visual_timer >= 0){
+	if (m_damage_visual_timer >= 0) {
 		m_damage_visual_timer -= dtime;
-		if(m_damage_visual_timer <= 0){
+		if (m_damage_visual_timer <= 0) {
 			infostream<<"id="<<m_id<<" damage visual ended"<<std::endl;
 		}
 	}

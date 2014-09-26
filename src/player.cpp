@@ -184,10 +184,10 @@ void Player::deSerialize(std::istream &is)
 	}catch(SettingNotFoundException &e){
 		hunger = 20;
 	}
-	try{
+	if (args.exists("home")) {
 		m_home = args.getV3F("home");
 		m_hashome = true;
-	}catch(SettingNotFoundException &e){}
+	}
 	/*try{
 		std::string sprivs = args.get("privs");
 		if(sprivs == "all")

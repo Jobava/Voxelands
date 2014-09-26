@@ -86,8 +86,8 @@ struct MobFeatures {
 	u8 level;
 #ifndef SERVER
 	TileSpec tiles[6];
-	video::ITexture *texture;
 #endif
+	std::string texture;
 	std::string model;
 	std::map<MobAnimationKey,int> animations;
 	v3f model_scale;
@@ -144,6 +144,8 @@ struct MobFeatures {
 
 	void setCollisionBox(aabb3f cb)
 	{
+		cb.MinEdge.Y -= 0.5*BS;
+		cb.MaxEdge.Y -= 0.5*BS;
 		collisionbox = cb;
 	}
 
@@ -152,17 +154,15 @@ struct MobFeatures {
 		if (collisionbox.MinEdge != collisionbox.MaxEdge)
 			return collisionbox;
 		if (!nodeboxes.size())
-			return aabb3f(-0.5,-0.5,-0.5,0.5,0.5,0.5);
+			return aabb3f(-0.5*BS,0.,-0.5*BS,0.5*BS,BS,0.5*BS);
 		aabb3f b = nodeboxes[0];
-		b.MinEdge /= BS;
-		b.MaxEdge /= BS;
 		return b;
 	}
 
 	v3f getSize()
 	{
 		aabb3f c = getCollisionBox();
-		return v3f(c.MaxEdge.X-c.MinEdge.X,c.MaxEdge.Y-c.MinEdge.Y,c.MaxEdge.Z-c.MinEdge.Z);
+		return v3f((c.MaxEdge.X-c.MinEdge.X)/BS,(c.MaxEdge.Y-c.MinEdge.Y)/BS,(c.MaxEdge.Z-c.MinEdge.Z)/BS);
 	}
 
 	v3s16 getSizeBlocks()
@@ -173,16 +173,14 @@ struct MobFeatures {
 
 	void getAnimationFrames(MobAnimation type, int *start, int *end);
 	void setAnimationFrames(MobAnimation type, int start, int end);
+	void setTexture(std::string name) {texture = name;}
 
 #ifdef SERVER
-	void setTexture(std::string name)
-	{}
 	void setBoxTexture(u16 i, std::string name, u8 alpha=255)
 	{}
 	void setAllBoxTextures(std::string name, u8 alpha=255)
 	{}
 #else
-	void setTexture(std::string name);
 	void setBoxTexture(u16 i, std::string name, u8 alpha=255);
 
 	void setAllBoxTextures(std::string name, u8 alpha=255)
@@ -196,8 +194,9 @@ struct MobFeatures {
 	void reset()
 	{
 		content = CONTENT_IGNORE;
+		texture = "";
 		model = "";
-		model_scale = v3f(0,0,0);
+		model_scale = v3f(1.0,1.0,1.0);
 		model_offset = v3f(0,0,0);
 		nodeboxes.clear();
 		punch_action = MPA_DIE;
