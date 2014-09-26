@@ -353,7 +353,7 @@ void MobSAO::step(float dtime, bool send_recommended)
 				v3f playerpos = player->getPosition();
 				f32 dist = m_base_position.getDistanceFrom(playerpos);
 				if (dist < BS*16) {
-					if (myrand_range(0,3) == 0) {
+					if (dist < BS*3 || myrand_range(0,3) == 0) {
 						actionstream<<"Mob id="<<m_id<<" at "
 								<<PP(m_base_position/BS)
 								<<" got randomly disturbed by "
@@ -441,13 +441,20 @@ void MobSAO::step(float dtime, bool send_recommended)
 	if (m.motion != MM_CONSTANT && m.motion != MM_STATIC && !m_shooting) {
 		m_walk_around_timer -= dtime;
 		if (m_walk_around_timer <= 0.0) {
-			m_walk_around = !m_walk_around;
-			m_walk_around_timer = 1.0;
-			//if (m_walk_around) {
-				//m_walk_around_timer = 0.1*myrand_range(10,50);
-			//}else{
-				//m_walk_around_timer = 0.1*myrand_range(30,70);
-			//}
+			if (m.motion_type == MMT_FLY || (disturbing_player && m.motion == MM_SEEKER)) {
+				if (!m_walk_around) {
+					m_walk_around_timer = 1.0;
+					m_walk_around = true;
+				}
+			}else{
+				m_walk_around = !m_walk_around;
+				if (m_walk_around) {
+					if (!disturbing_player || m.motion != MM_SEEKER)
+					m_walk_around_timer = 0.1*myrand_range(10,30);
+				}else{
+					m_walk_around_timer = 0.1*myrand_range(30,70);
+				}
+			}
 		}
 		if (m_next_pos_exists) {
 			v3f pos_f = m_base_position;
@@ -460,6 +467,8 @@ void MobSAO::step(float dtime, bool send_recommended)
 			v3f dir = diff;
 			dir.normalize();
 			float speed = BS * 0.5;
+			if (m.motion == MM_SEEKER && disturbing_player)
+				speed = BS;
 			if (m_falling)
 				speed = BS * 3.0;
 			dir *= dtime * speed;
@@ -479,7 +488,7 @@ void MobSAO::step(float dtime, bool send_recommended)
 	if (m.motion == MM_WANDER) {
 		stepMotionWander(dtime);
 	}else if (m.motion == MM_SEEKER) {
-		if (disturbing_player) {
+		if (!disturbing_player) {
 			stepMotionWander(dtime);
 		}else{
 			stepMotionSeeker(dtime);
@@ -601,11 +610,27 @@ void MobSAO::stepMotionWander(float dtime)
 		}
 	}else if (m.motion_type == MMT_FLYLOW || m.motion_type == MMT_SWIM) {
 		bool falling = false;
+		bool raising = false;
 		if (!m_next_pos_exists) {
-			/* Check whether to drop down */
-			if (checkFreePosition(pos_i + pos_size_off + v3s16(0,-1,0))) {
-				m_next_pos_i = pos_i + v3s16(0,-1,0);
-				falling = true;
+			u16 above;
+			v3s16 p = pos_i + pos_size_off;
+			for (above=0; above < 6; above++) {
+				p.Y--;
+				if (!checkFreePosition(p))
+					break;
+			}
+			if (above > 5) {
+				/* Check whether to drop down */
+				if (checkFreePosition(pos_i + pos_size_off + v3s16(0,-1,0))) {
+					m_next_pos_i = pos_i + v3s16(0,-1,0);
+					falling = true;
+				}
+			}else if (above < 2) {
+				/* Check whether to rise up */
+				if (checkFreePosition(pos_i + pos_size_off + v3s16(0,1,0))) {
+					m_next_pos_i = pos_i + v3s16(0,1,0);
+					raising = true;
+				}
 			}
 		}
 
@@ -621,6 +646,8 @@ void MobSAO::stepMotionWander(float dtime)
 				if (dx != 0 && dz != 0 && dy != 0)
 					continue;
 				if (falling && dy > 0)
+					continue;
+				if (raising && dy < 0)
 					continue;
 				dps[num_dps++] = v3s16(dx,dy,dz);
 			}
@@ -986,6 +1013,9 @@ bool MobSAO::checkFreePosition(v3s16 p0)
 		if(n.getContent() != clear)
 			return false;
 	}
+	MapNode n = map->getNodeNoEx(p0+v3s16(0,-1,0));
+	if (!content_features(n).jumpable)
+		return false;
 	return true;
 }
 bool MobSAO::checkWalkablePosition(v3s16 p0)
@@ -993,11 +1023,10 @@ bool MobSAO::checkWalkablePosition(v3s16 p0)
 	assert(m_env);
 	v3s16 p = p0 + v3s16(0,-1,0);
 	MapNode n = m_env->getMap().getNodeNoEx(p);
-	content_t clear = CONTENT_AIR;
-	if (content_mob_features(m_content).motion_type == MMT_SWIM)
-		clear = CONTENT_WATERSOURCE;
-	if (n.getContent() != clear)
-		return true;
+	if (n.getContent() != CONTENT_AIR) {
+		if (content_features(n).liquid_type == LIQUID_NONE)
+			return true;
+	}
 	return false;
 }
 bool MobSAO::checkFreeAndWalkablePosition(v3s16 p0)

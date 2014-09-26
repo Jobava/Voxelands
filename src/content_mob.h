@@ -117,6 +117,8 @@ struct MobFeatures {
 	content_t spawn_in;
 	u8 spawn_min_light;
 	u8 spawn_max_light;
+	s16 spawn_min_height;
+	s16 spawn_max_height;
 
 	MobFeatures()
 	{
@@ -220,6 +222,8 @@ struct MobFeatures {
 		spawn_in = CONTENT_IGNORE;
 		spawn_min_light = 0;
 		spawn_max_light = LIGHT_MAX;
+		spawn_min_height = -20000;
+		spawn_max_height = 100;
 	}
 };
 

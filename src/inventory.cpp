@@ -206,8 +206,10 @@ std::wstring CraftItem::getGuiName()
 ServerActiveObject* CraftItem::createSAO(ServerEnvironment *env, u16 id, v3f pos)
 {
 	// Special cases
-	if ((m_content&CONTENT_MOB_MASK) == CONTENT_MOB_MASK) {
-		ServerActiveObject *obj = new MobSAO(env,id,pos,m_content);
+	if ((content_craftitem_features(m_content).drop_item&CONTENT_MOB_MASK) == CONTENT_MOB_MASK) {
+		v3f p = pos;
+		p.Y += 0.5*BS;
+		ServerActiveObject *obj = new MobSAO(env,id,p,content_craftitem_features(m_content).drop_item);
 		if (obj)
 			return obj;
 	}

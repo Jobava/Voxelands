@@ -20,6 +20,8 @@ struct CraftItemFeatures {
 	s16 edible;
 	// the number dropped on right click, -1 for all
 	s16 drop_count;
+	// used by mobs that are picked up
+	content_t drop_item;
 
 	CraftItemFeatures():
 		content(CONTENT_IGNORE),
@@ -29,7 +31,8 @@ struct CraftItemFeatures {
 		cook_result(""),
 		fuel_time(0.0),
 		edible(0),
-		drop_count(-1)
+		drop_count(-1),
+		drop_item(CONTENT_IGNORE)
 	{}
 };
 

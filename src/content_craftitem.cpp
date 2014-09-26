@@ -20,6 +20,7 @@
 #include "content_craftitem.h"
 #include "content_mapnode.h"
 #include "content_craft.h"
+#include "content_mob.h"
 #include "content_list.h"
 #include <map>
 #include "gettext.h"
@@ -225,6 +226,7 @@ void content_craftitem_init()
 	f->description = wgettext("Rat");
 	f->cook_result = "CraftItem cooked_rat 1";
 	f->drop_count = 1;
+	f->drop_item = CONTENT_MOB_RAT;
 	lists::add("creative",i);
 	lists::add("cooking",i);
 
@@ -246,6 +248,7 @@ void content_craftitem_init()
 	f->name = "firefly";
 	f->description = wgettext("Firefly");
 	f->drop_count = 1;
+	f->drop_item = CONTENT_MOB_FIREFLY;
 	lists::add("creative",i);
 
 	i = CONTENT_CRAFTITEM_APPLE;

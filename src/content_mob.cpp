@@ -119,6 +119,10 @@ bool content_mob_spawn(ServerEnvironment *env, v3s16 pos)
 		MobFeatures m = i->second;
 		if (m.spawn_in == CONTENT_IGNORE && m.spawn_on == CONTENT_IGNORE)
 			continue;
+		if (m.spawn_min_height > pos.Y)
+			continue;
+		if (m.spawn_max_height < pos.Y)
+			continue;
 		if (m.spawn_in != CONTENT_IGNORE) {
 			if (m.spawn_in != c1)
 				continue;
@@ -166,7 +170,6 @@ bool content_mob_spawn(ServerEnvironment *env, v3s16 pos)
 void content_mob_init()
 {
 	g_content_mob_features.clear();
-printf("initialising mobs\n\n");
 
 	content_t i;
 	MobFeatures *f = NULL;
@@ -183,31 +186,46 @@ printf("initialising mobs\n\n");
 	f->motion = MM_WANDER;
 	f->spawn_on = CONTENT_GRASS;
 	f->spawn_in = CONTENT_AIR;
+	f->spawn_max_height = 20;
+	f->spawn_max_light = LIGHT_MAX/2;
 	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.));
 
 	i = CONTENT_MOB_FIREFLY;
 	f = &g_content_mob_features[i];
-	//f->content = i;
+	f->content = i;
 	f->level = MOB_PASSIVE;
-	f->setTexture("mob_firefly.png");
+	f->model = "rat.x";
+	f->setTexture("ob_firefly.png");
 	f->punch_action = MPA_PICKUP;
 	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_FIREFLY)+" 1";
 	f->motion = MM_WANDER;
+	f->motion_type = MMT_FLYLOW;
 	f->glow_light = LIGHT_MAX-1;
 	f->spawn_on = CONTENT_JUNGLETREE;
 	f->spawn_in = CONTENT_AIR;
+	f->spawn_min_height = -5;
+	f->spawn_max_height = 20;
+	f->spawn_max_light = LIGHT_MAX/3;
 	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.));
 
 	i = CONTENT_MOB_OERKKI;
 	f = &g_content_mob_features[i];
-	//f->content = i;
+	f->content = i;
 	f->level = MOB_AGGRESSIVE;
 	f->model = "oerkki.x";
+	f->model_scale = v3f(4,4,4);
 	f->setTexture("mob_oerkki.png");
 	f->setAnimationFrames(MA_STAND,24,36);
 	f->setAnimationFrames(MA_ATTACK,37,49);
 	f->punch_action = MPA_HARM;
 	f->motion = MM_SEEKER;
+	f->spawn_on = CONTENT_STONE;
+	f->spawn_in = CONTENT_AIR;
+	f->spawn_max_height = 2;
+	f->spawn_max_light = LIGHT_MAX/4;
+	f->notices_player = true;
+	f->attack_player_damage = 3;
+	f->attack_player_range = v3f(1,1,1);
 	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS*2.,BS/3.));
 
 	i = CONTENT_MOB_DUNGEON_MASTER;
