@@ -748,12 +748,10 @@ bool ServerEnvironment::searchNear(v3s16 pos, v3s16 radius_min, v3s16 radius_max
 				p = pos+v3s16(x,y,z);
 				MapNode n_test;
 				bp = getNodeBlockPos(p);
-				if (p == blockpos) {
+				if (bp == blockpos) {
 					n_test = block->getNodeNoCheck(p-relpos);
 				}else{
-					MapBlock *b = m_map->getBlockNoCreateNoEx(bp);
-					if (b)
-						n_test = b->getNodeNoEx(p-(bp*MAP_BLOCKSIZE));
+					n_test = m_map->getNodeNoEx(p);
 				}
 				for (std::vector<content_t>::iterator i=c.begin(); i != c.end(); i++) {
 					if (n_test.getContent() == *i) {
@@ -785,12 +783,10 @@ bool ServerEnvironment::searchNearInv(v3s16 pos, v3s16 radius_min, v3s16 radius_
 				p = pos+v3s16(x,y,z);
 				MapNode n_test;
 				bp = getNodeBlockPos(p);
-				if (p == blockpos) {
+				if (bp == blockpos) {
 					n_test = block->getNodeNoCheck(p-relpos);
 				}else{
-					MapBlock *b = m_map->getBlockNoCreateNoEx(bp);
-					if (b)
-						n_test = b->getNodeNoEx(p-(bp*MAP_BLOCKSIZE));
+					n_test = m_map->getNodeNoEx(p);
 				}
 				bool s = false;
 				for (std::vector<content_t>::iterator i=c.begin(); i != c.end(); i++) {
