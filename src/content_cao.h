@@ -184,9 +184,10 @@ public:
 	// If returns true, punch will not be sent to the server
 	bool directReportPunch(const std::string &toolname, v3f dir);
 private:
+	void setAnimation(MobAnimation anim);
 	aabb3f m_selection_box;
 	content_t m_content;
-	scene::IAnimatedMeshSceneNode *m_node;
+	scene::IMeshSceneNode *m_node;
 	v3f m_position;
 	v3s16 m_camera_offset;
 	float m_yaw;
@@ -198,6 +199,8 @@ private:
 	float m_shooting_unset_timer;
 	bool m_walking;
 	float m_walking_unset_timer;
+
+	MobDrawType m_draw_type;
 };
 
 

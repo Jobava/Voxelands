@@ -79,6 +79,14 @@ enum MobAnimationKey
 	MA_ATTACK_END
 };
 
+enum MobDrawType
+{
+	MDT_NOTHING = 0,
+	MDT_MODEL,
+	MDT_BLOCK,
+	MDT_SPRITE
+};
+
 #define CONTENT_MOB_MASK 0x2000
 
 struct MobFeatures {
@@ -92,6 +100,7 @@ struct MobFeatures {
 	std::map<MobAnimationKey,int> animations;
 	v3f model_scale;
 	v3f model_offset;
+	v3f model_rotation;
 	std::vector<aabb3f> nodeboxes;
 	aabb3f collisionbox;
 
@@ -200,6 +209,7 @@ struct MobFeatures {
 		model = "";
 		model_scale = v3f(1.0,1.0,1.0);
 		model_offset = v3f(0,0,0);
+		model_rotation = v3f(0,0,0);
 		nodeboxes.clear();
 		punch_action = MPA_DIE;
 		motion = MM_STATIC;

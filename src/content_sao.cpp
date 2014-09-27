@@ -249,6 +249,8 @@ MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, content_t type):
 	m_shoot_y(0)
 {
 	ServerActiveObject::registerType(getType(), create);
+	if ((type&CONTENT_MOB_MASK) == CONTENT_MOB_MASK)
+		m_hp = content_mob_features(type).hp;
 }
 MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, v3f speed, content_t type):
 	ServerActiveObject(env, id, pos),
@@ -273,6 +275,8 @@ MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, v3f speed, content_t typ
 	m_shoot_y(0)
 {
 	ServerActiveObject::registerType(getType(), create);
+	if ((type&CONTENT_MOB_MASK) == CONTENT_MOB_MASK)
+		m_hp = content_mob_features(type).hp;
 }
 MobSAO::~MobSAO()
 {
@@ -345,22 +349,27 @@ void MobSAO::step(float dtime, bool send_recommended)
 	if (m.notices_player) {
 		if (m_random_disturb_timer >= 5.0) {
 			m_random_disturb_timer = 0;
-			m_disturbing_player = "";
-			// Check connected players
-			core::list<Player*> players = m_env->getPlayers(true);
-			for (core::list<Player*>::Iterator i = players.begin(); i != players.end(); i++) {
-				Player *player = *i;
-				v3f playerpos = player->getPosition();
-				f32 dist = m_base_position.getDistanceFrom(playerpos);
-				if (dist < BS*16) {
-					if (dist < BS*3 || myrand_range(0,3) == 0) {
-						actionstream<<"Mob id="<<m_id<<" at "
-								<<PP(m_base_position/BS)
-								<<" got randomly disturbed by "
-								<<player->getName()<<std::endl;
-						m_disturbing_player = player->getName();
-						m_disturb_timer = 0;
-						break;
+			if (
+				m_disturbing_player == ""
+				|| m_base_position.getDistanceFrom(m_env->getPlayer(m_disturbing_player.c_str())->getPosition()) > BS*16
+			) {
+				m_disturbing_player = "";
+				// Check connected players
+				core::list<Player*> players = m_env->getPlayers(true);
+				for (core::list<Player*>::Iterator i = players.begin(); i != players.end(); i++) {
+					Player *player = *i;
+					v3f playerpos = player->getPosition();
+					f32 dist = m_base_position.getDistanceFrom(playerpos);
+					if (dist < BS*16) {
+						if (dist < BS*3 || myrand_range(0,3) == 0) {
+							actionstream<<"Mob id="<<m_id<<" at "
+									<<PP(m_base_position/BS)
+									<<" got randomly disturbed by "
+									<<player->getName()<<std::endl;
+							m_disturbing_player = player->getName();
+							m_disturb_timer = 0;
+							break;
+						}
 					}
 				}
 			}
@@ -382,18 +391,16 @@ void MobSAO::step(float dtime, bool send_recommended)
 			if (m_shooting_timer <= 0.0 && m_shooting) {
 				m_shooting = false;
 				v3f shoot_pos = m.attack_throw_offset * BS;
-				if (0) {
-					v3f dir(cos(m_yaw/180*PI),0,sin(m_yaw/180*PI));
-					dir.Y = m_shoot_y;
-					dir.normalize();
-					v3f speed = dir * BS * 10.0;
-					v3f pos = m_base_position + shoot_pos;
-					infostream<<__FUNCTION_NAME<<": Mob id="<<m_id
-							<<" shooting from "<<PP(pos)
-							<<" at speed "<<PP(speed)<<std::endl;
-					ServerActiveObject *obj = new MobSAO(m_env, 0, pos, speed, m.attack_throw_object);
-					m_env->addActiveObject(obj);
-				}
+				v3f dir(cos(m_yaw/180*PI),0,sin(m_yaw/180*PI));
+				dir.Y = m_shoot_y;
+				dir.normalize();
+				v3f speed = dir * BS * 10.0;
+				v3f pos = m_base_position + shoot_pos;
+				infostream<<__FUNCTION_NAME<<": Mob id="<<m_id
+						<<" shooting from "<<PP(pos)
+						<<" at speed "<<PP(speed)<<std::endl;
+				ServerActiveObject *obj = new MobSAO(m_env, 0, pos, speed, m.attack_throw_object);
+				m_env->addActiveObject(obj);
 			}
 
 			m_shoot_reload_timer += dtime;
@@ -443,7 +450,7 @@ void MobSAO::step(float dtime, bool send_recommended)
 		if (m_walk_around_timer <= 0.0) {
 			if (m.motion_type == MMT_FLY || (disturbing_player && m.motion == MM_SEEKER)) {
 				if (!m_walk_around) {
-					m_walk_around_timer = 1.0;
+					m_walk_around_timer = 0.5;
 					m_walk_around = true;
 				}
 			}else{
@@ -777,11 +784,27 @@ void MobSAO::stepMotionSeeker(float dtime)
 		}
 	}else if (m.motion_type == MMT_FLYLOW || m.motion_type == MMT_SWIM) {
 		bool falling = false;
+		bool raising = false;
 		if (!m_next_pos_exists) {
-			/* Check whether to drop down */
-			if (checkFreePosition(pos_i + pos_size_off + v3s16(0,-1,0))) {
-				m_next_pos_i = pos_i + v3s16(0,-1,0);
-				falling = true;
+			u16 above;
+			v3s16 p = pos_i + pos_size_off;
+			for (above=0; above < 6; above++) {
+				p.Y--;
+				if (!checkFreePosition(p))
+					break;
+			}
+			if (above > 5) {
+				/* Check whether to drop down */
+				if (checkFreePosition(pos_i + pos_size_off + v3s16(0,-1,0))) {
+					m_next_pos_i = pos_i + v3s16(0,-1,0);
+					falling = true;
+				}
+			}else if (above < 2) {
+				/* Check whether to rise up */
+				if (checkFreePosition(pos_i + pos_size_off + v3s16(0,1,0))) {
+					m_next_pos_i = pos_i + v3s16(0,1,0);
+					raising = true;
+				}
 			}
 		}
 
@@ -797,6 +820,8 @@ void MobSAO::stepMotionSeeker(float dtime)
 				if (dx != 0 && dz != 0 && dy != 0)
 					continue;
 				if (falling && dy > 0)
+					continue;
+				if (raising && dy < 0)
 					continue;
 				if ((m_base_position+intToFloat(v3s16(dx,dy,dz),BS)).getDistanceFrom(player_pos) > distance)
 					continue;

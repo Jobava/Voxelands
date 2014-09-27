@@ -230,7 +230,8 @@ MobCAO::MobCAO():
 	m_shooting(false),
 	m_shooting_unset_timer(0),
 	m_walking(false),
-	m_walking_unset_timer(0)
+	m_walking_unset_timer(0),
+	m_draw_type(MDT_NOTHING)
 {
 	ClientActiveObject::registerType(getType(), create);
 }
@@ -253,35 +254,56 @@ void MobCAO::addToScene(scene::ISceneManager *smgr)
 		if (!mesh)
 			return;
 
-		m_node = smgr->addAnimatedMeshSceneNode(mesh);
+		scene::IAnimatedMeshSceneNode* node;
 
-		if (m_node) {
+		node = smgr->addAnimatedMeshSceneNode(mesh);
+
+		if (node) {
 			int s;
 			int e;
 			m.getAnimationFrames(MA_STAND,&s,&e);
-			m_node->setFrameLoop(s,e);
-			m_node->setScale(m.model_scale);
-			setMeshColor(m_node->getMesh(), video::SColor(255,255,255,255));
+			node->setFrameLoop(s,e);
+			node->setScale(m.model_scale);
+			setMeshColor(node->getMesh(), video::SColor(255,255,255,255));
 			bool use_trilinear_filter = g_settings->getBool("trilinear_filter");
 			bool use_bilinear_filter = g_settings->getBool("bilinear_filter");
 			bool use_anisotropic_filter = g_settings->getBool("anisotropic_filter");
 
 			// Set material flags and texture
-			m_node->setMaterialTexture( 0, driver->getTexture(getTexturePath(m.texture).c_str()));
-			video::SMaterial& material = m_node->getMaterial(0);
+			node->setMaterialTexture( 0, driver->getTexture(getTexturePath(m.texture).c_str()));
+			video::SMaterial& material = node->getMaterial(0);
 			material.setFlag(video::EMF_LIGHTING, false);
 			material.setFlag(video::EMF_TRILINEAR_FILTER, use_trilinear_filter);
 			material.setFlag(video::EMF_BILINEAR_FILTER, use_bilinear_filter);
 			material.setFlag(video::EMF_ANISOTROPIC_FILTER, use_anisotropic_filter);
 			material.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
 
-			m_node->setVisible(true);
+			node->setVisible(true);
+			m_draw_type = MDT_MODEL;
 		}
+		m_node = (scene::IMeshSceneNode*)node;
 #if (IRRLICHT_VERSION_MAJOR >= 1 && IRRLICHT_VERSION_MINOR >= 8) || IRRLICHT_VERSION_MAJOR >= 2
 		mesh->drop();
 #endif
 		updateNodePos();
 	}else if (m.nodeboxes.size() > 0) {
+	}else if (m.texture != "") {
+		bool use_trilinear_filter = g_settings->getBool("trilinear_filter");
+		bool use_bilinear_filter = g_settings->getBool("bilinear_filter");
+		bool use_anisotropic_filter = g_settings->getBool("anisotropic_filter");
+		scene::IBillboardSceneNode *bill = smgr->addBillboardSceneNode(NULL, v2f(1, 1), v3f(0,0,0), -1);
+		bill->setMaterialTexture(0, driver->getTexture(getTexturePath(m.texture).c_str()));
+		bill->setMaterialFlag(video::EMF_LIGHTING, false);
+		bill->setMaterialFlag(video::EMF_TRILINEAR_FILTER, use_trilinear_filter);
+		bill->setMaterialFlag(video::EMF_BILINEAR_FILTER, use_bilinear_filter);
+		bill->setMaterialFlag(video::EMF_ANISOTROPIC_FILTER, use_anisotropic_filter);
+		bill->setMaterialType(video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF);
+		bill->setMaterialFlag(video::EMF_FOG_ENABLE, true);
+		bill->setColor(video::SColor(255,0,0,0));
+		bill->setVisible(true);
+		bill->setSize(BS,BS,BS);
+		m_node = (scene::IMeshSceneNode*)bill;
+		m_draw_type = MDT_SPRITE;
 	}
 }
 void MobCAO::removeFromScene()
@@ -308,8 +330,11 @@ void MobCAO::updateLight(u8 light_at_pos)
 	video::SColor color(255,li,li,li);
 
 	if (m_node != NULL) {
-		m_node->setVisible(true);
-		setMeshVerticesColor(m_node->getMesh(), color);
+		if (m_draw_type == MDT_MODEL) {
+			setMeshVerticesColor(((scene::IAnimatedMeshSceneNode*)m_node)->getMesh(), color);
+		}else if (m_draw_type == MDT_SPRITE) {
+			((scene::IBillboardSceneNode*)m_node)->setColor(color);
+		}
 	}
 }
 v3s16 MobCAO::getLightPosition()
@@ -328,7 +353,11 @@ void MobCAO::updateNodePos()
 	m_node->setPosition(offset-intToFloat(m_camera_offset, BS));
 
 	v3f rot = m_node->getRotation();
-	rot.Y = 90-m_yaw;
+	if (m_draw_type == MDT_MODEL) {
+		rot.Y = (90-m_yaw)+content_mob_features(m_content).model_rotation.Y;
+	}else if (m_draw_type == MDT_SPRITE) {
+		rot.Y = m_yaw+content_mob_features(m_content).model_rotation.Y;
+	}
 	m_node->setRotation(rot);
 }
 void MobCAO::step(float dtime, ClientEnvironment *env)
@@ -343,13 +372,11 @@ void MobCAO::step(float dtime, ClientEnvironment *env)
 	updateNodePos();
 
 	/* Damage local player */
-	if (m.attack_player_damage && m_player_hit_timer <= 0.0){
+	if (m.attack_player_damage && m_player_hit_timer <= 0.0) {
 		LocalPlayer *player = env->getLocalPlayer();
 		assert(player);
 
 		v3f playerpos = player->getPosition();
-		v2f playerpos_2d(playerpos.X,playerpos.Z);
-		v2f objectpos_2d(m_position.X,m_position.Z);
 
 		if (
 			fabs(m_position.X - playerpos.X) < m.attack_player_range.X*BS
@@ -374,10 +401,7 @@ void MobCAO::step(float dtime, ClientEnvironment *env)
 	m_walking_unset_timer += dtime;
 	if (m_walking_unset_timer >= 1.0) {
 		m_walking = false;
-		int s;
-		int e;
-		content_mob_features(m_content).getAnimationFrames(MA_STAND,&s,&e);
-		m_node->setFrameLoop(s,e);
+		setAnimation(MA_STAND);
 	}
 
 	m_shooting_unset_timer -= dtime;
@@ -385,9 +409,18 @@ void MobCAO::step(float dtime, ClientEnvironment *env)
 		if (m.attack_glow_light) {
 			u8 li = decode_light(m_last_light);
 			video::SColor color(255,li,li,li);
-			setMeshVerticesColor(m_node->getMesh(), color);
+			if (m_draw_type == MDT_MODEL) {
+				setMeshVerticesColor(((scene::IAnimatedMeshSceneNode*)m_node)->getMesh(), color);
+			}else if (m_draw_type == MDT_SPRITE) {
+				((scene::IBillboardSceneNode*)m_node)->setColor(color);
+			}
 		}
 		m_shooting = false;
+		if (m_walking) {
+			setAnimation(MA_MOVE);
+		}else{
+			setAnimation(MA_STAND);
+		}
 	}
 }
 void MobCAO::processMessage(const std::string &data)
@@ -405,12 +438,11 @@ void MobCAO::processMessage(const std::string &data)
 		// yaw
 		m_yaw = readF1000(is);
 
-		m_walking = true;
-		m_walking_unset_timer = 0;
-		int s;
-		int e;
-		content_mob_features(m_content).getAnimationFrames(MA_MOVE,&s,&e);
-		m_node->setFrameLoop(s,e);
+		if (!m_walking) {
+			m_walking = true;
+			m_walking_unset_timer = 0;
+			setAnimation(MA_MOVE);
+		}
 
 		updateNodePos();
 	}
@@ -423,12 +455,18 @@ void MobCAO::processMessage(const std::string &data)
 			u8 li = decode_light(content_mob_features(m_content).attack_glow_light);
 			video::SColor color(255,li,li,li);
 			if (m_node != NULL) {
-				m_node->setVisible(true);
-				setMeshVerticesColor(m_node->getMesh(), color);
+				if (m_draw_type == MDT_MODEL) {
+					setMeshVerticesColor(((scene::IAnimatedMeshSceneNode*)m_node)->getMesh(), color);
+				}else if (m_draw_type == MDT_SPRITE) {
+					((scene::IBillboardSceneNode*)m_node)->setColor(color);
+				}
 			}
 		}
 
-		m_shooting = true;
+		if (!m_shooting) {
+			m_shooting = true;
+			setAnimation(MA_ATTACK);
+		}
 	}
 }
 void MobCAO::initialize(const std::string &data)
@@ -467,8 +505,11 @@ bool MobCAO::directReportPunch(const std::string &toolname, v3f dir)
 	video::SColor color(255,255,0,0);
 
 	if (m_node != NULL) {
-		m_node->setVisible(true);
-		setMeshVerticesColor(m_node->getMesh(), color);
+		if (m_draw_type == MDT_MODEL) {
+			setMeshVerticesColor(((scene::IAnimatedMeshSceneNode*)m_node)->getMesh(), color);
+		}else if (m_draw_type == MDT_SPRITE) {
+			((scene::IBillboardSceneNode*)m_node)->setColor(color);
+		}
 	}
 
 	m_damage_visual_timer = 0.05;
@@ -479,4 +520,13 @@ bool MobCAO::directReportPunch(const std::string &toolname, v3f dir)
 	updateNodePos();
 
 	return false;
+}
+void MobCAO::setAnimation(MobAnimation anim)
+{
+	if (m_draw_type != MDT_MODEL)
+		return;
+	int s;
+	int e;
+	content_mob_features(m_content).getAnimationFrames(anim,&s,&e);
+	((scene::IAnimatedMeshSceneNode*)m_node)->setFrameLoop(s,e);
 }
