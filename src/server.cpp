@@ -2433,12 +2433,31 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			SendPlayerAnim(player,PLAYERANIM_DIG);
 			MapNode n = m_env.getMap().getNodeNoEx(p_under);
 			InventoryItem *wield = (InventoryItem*)player->getWieldItem();
+			// KEY
 			if (wield && wield->getContent() == CONTENT_TOOLITEM_KEY) {
 				NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
-				if((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
+				if ((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
+					// non-admins can't unlock other players things
 					if (meta && meta->getOwner() != player->getName()) {
 						if (meta->getOwner() != "")
 							return;
+					}
+					s16 max_d = g_settings->getS16("borderstone_radius");
+					v3s16 test_p;
+					MapNode testnode;
+					// non-admins can't lock thing in another player's area
+					for(s16 z=-max_d; z<=max_d; z++) {
+					for(s16 y=-max_d; y<=max_d; y++) {
+					for(s16 x=-max_d; x<=max_d; x++) {
+						test_p = p_under + v3s16(x,y,z);
+						NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
+						if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
+							BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
+							if (bsm->getOwner() != player->getName())
+								return;
+						}
+					}
+					}
 					}
 				}
 				content_t c = CONTENT_IGNORE;
