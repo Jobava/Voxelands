@@ -3,6 +3,37 @@ Voxelands changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1409.00: (release 2014-09-27)
+- make compiling work on OSX
+- update some nodeboxes
+- limit sponge growth
+- fix craft guide dug_item
+- add tree growth stages
+- new firelike drawtype
+- add loading screen
+- fix broken player files crashing the server
+- add home flags for per-player respawn points
+- remove some leftover minetest.conf references
+- give oerrkis a drop - used to teleport home
+- add ability to drop items
+- implement game modes, remove old creative_mode setting
+- rework singleplayer menu to give better game and map options
+- optimise pistons
+- translation updates, new spanish, polish, and german translations
+- have the server send some settings to the client
+- add hunger, enable for survival mode
+- add suffocation and drowning, enable for survival mode
+- fix lava not hurting player when it only touches their head
+- make wielded item visible to other players
+- fix item swapping not working in inventory
+- fix clicking not changing focus in formspecs
+- add key for unlocking locked things
+- new logos
+- add 3d wires
+- use transifex for translations
+- make standing on a damaging node damage the player
+- decrease circuit step time, and optimise the active block code a bit
+
 1408.00: (release 2014-08-29)
 - highlight the selected node instead of showing a selection box
 - implement circuits:
