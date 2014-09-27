@@ -1,22 +1,23 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Lisa 'darkrose' Milne
+# German translations for Voxelands.
+# Copyright (C) 2014 Lisa 'darkrose' Milne
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Jan Rößler <soognarf@googlemail.com>, 2014.
+# Jan RÃ¶ÃŸler <soognarf@googlemail.com>, 2014.
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: voxelands\n"
+"Project-Id-Version: 0.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-09-24 05:20+1000\n"
 "PO-Revision-Date: 2014-09-25 20:41+1000\n"
-"Last-Translator: Jan Rößler <soognarf@googlemail.com>\n"
-"Language-Team: Jan Rößler <soognarf@googlemail.com>\n"
+"Last-Translator: Jan RÃ¶ÃŸler <soognarf@googlemail.com>\n"
+"Language-Team: Deutsch <>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #: src/content_craftitem.cpp:73
 msgid "Paper"
@@ -96,7 +97,7 @@ msgstr "gekochte Ratte"
 
 #: src/content_craftitem.cpp:247
 msgid "Firefly"
-msgstr "Glühwürmchen"
+msgstr "GlÃ¼hwÃ¼rmchen"
 
 #: src/content_craftitem.cpp:256 src/content_mapnode_plants.cpp:746
 msgid "Apple"
@@ -112,7 +113,7 @@ msgstr "blaue Farbe"
 
 #: src/content_craftitem.cpp:293
 msgid "Green Dye"
-msgstr "grüne Farbe"
+msgstr "grÃ¼ne Farbe"
 
 #: src/content_craftitem.cpp:303
 msgid "Orange Dye"
@@ -132,7 +133,7 @@ msgstr "gelbe Farbe"
 
 #: src/content_craftitem.cpp:344
 msgid "White Dye"
-msgstr "weiße Farbe"
+msgstr "weiÃŸe Farbe"
 
 #: src/content_craftitem.cpp:355
 msgid "Black Dye"
@@ -148,7 +149,7 @@ msgstr "Salpeter"
 
 #: src/content_craftitem.cpp:383
 msgid "Gun Powder"
-msgstr "Schießpulver"
+msgstr "SchieÃŸpulver"
 
 #: src/content_craftitem.cpp:393
 msgid "Snow Ball"
@@ -180,11 +181,11 @@ msgstr "Asche"
 
 #: src/content_craftitem.cpp:479
 msgid "Apple Blossoms"
-msgstr "Apfelblüten"
+msgstr "ApfelblÃ¼ten"
 
 #: src/content_craftitem.cpp:489 src/content_mapnode_plants.cpp:565
 msgid "Cactus Berry"
-msgstr "Kaktusfrüchte"
+msgstr "KaktusfrÃ¼chte"
 
 #: src/content_craftitem.cpp:498
 msgid "Mush"
@@ -192,19 +193,19 @@ msgstr "Mus"
 
 #: src/content_craftitem.cpp:507
 msgid "Sliced Pumpkin"
-msgstr "Kürbisstück"
+msgstr "KÃ¼rbisstÃ¼ck"
 
 #: src/content_craftitem.cpp:518
 msgid "Pumpkin Pie Slice"
-msgstr "Kürbiskuchenstück"
+msgstr "KÃ¼rbiskuchenstÃ¼ck"
 
 #: src/content_craftitem.cpp:527
 msgid "Apple Pie Slice"
-msgstr "Apfelkuchenstück"
+msgstr "ApfelkuchenstÃ¼ck"
 
 #: src/content_craftitem.cpp:536
 msgid "Sliced Melon"
-msgstr "Melonenstück"
+msgstr "MelonenstÃ¼ck"
 
 #: src/content_craftitem.cpp:547 src/content_mapnode_farm.cpp:238
 #: src/content_mapnode_farm.cpp:256 src/content_mapnode_farm.cpp:274
@@ -242,15 +243,15 @@ msgstr "Bratkartoffel"
 #: src/content_mapnode_farm.cpp:583 src/content_mapnode_farm.cpp:603
 #: src/content_mapnode_farm.cpp:623
 msgid "Carrot"
-msgstr "Möhre"
+msgstr "MÃ¶hre"
 
 #: src/content_craftitem.cpp:628
 msgid "Raw Carrot Cake"
-msgstr "Möhrenkuchenteig"
+msgstr "MÃ¶hrenkuchenteig"
 
 #: src/content_craftitem.cpp:640
 msgid "Carrot Cake"
-msgstr "Möhrenkuchen"
+msgstr "MÃ¶hrenkuchen"
 
 #: src/content_craftitem.cpp:649 src/content_mapnode_farm.cpp:643
 #: src/content_mapnode_farm.cpp:663 src/content_mapnode_farm.cpp:683
@@ -300,7 +301,7 @@ msgstr "Steinziegel"
 
 #: src/content_mapnode.cpp:274
 msgid "Stone Block"
-msgstr "gemeißelter Stein"
+msgstr "gemeiÃŸelter Stein"
 
 #: src/content_mapnode.cpp:288
 msgid "Rough Stone Brick"
@@ -356,7 +357,7 @@ msgstr "blauer Ton"
 
 #: src/content_mapnode.cpp:501
 msgid "Green Clay"
-msgstr "grüner Ton"
+msgstr "grÃ¼ner Ton"
 
 #: src/content_mapnode.cpp:518
 msgid "Orange Clay"
@@ -404,7 +405,7 @@ msgstr "blaues Glas"
 
 #: src/content_mapnode.cpp:719
 msgid "Green Glass"
-msgstr "grünes Glas"
+msgstr "grÃ¼nes Glas"
 
 #: src/content_mapnode.cpp:741
 msgid "Orange Glass"
@@ -436,7 +437,7 @@ msgstr "blaue Glasscheibe"
 
 #: src/content_mapnode.cpp:918
 msgid "Green Glass Pane"
-msgstr "grüne Glasscheibe"
+msgstr "grÃ¼ne Glasscheibe"
 
 #: src/content_mapnode.cpp:952
 msgid "Orange Glass Pane"
@@ -460,7 +461,7 @@ msgstr "schwarze Glasscheibe"
 
 #: src/content_mapnode.cpp:1122
 msgid "Glass Light"
-msgstr "Glühwürmchenlampe"
+msgstr "GlÃ¼hwÃ¼rmchenlampe"
 
 #: src/content_mapnode.cpp:1145
 msgid "Wood"
@@ -500,11 +501,11 @@ msgstr "Apfelkuchen"
 
 #: src/content_mapnode.cpp:1412
 msgid "Raw Pumpkin Pie"
-msgstr "Kürbiskuchenteig"
+msgstr "KÃ¼rbiskuchenteig"
 
 #: src/content_mapnode.cpp:1440
 msgid "Pumpkin Pie"
-msgstr "Kürbiskuchen"
+msgstr "KÃ¼rbiskuchen"
 
 #: src/content_mapnode.cpp:1531 src/content_mapnode_farm.cpp:962
 msgid "Dead Vine"
@@ -530,7 +531,7 @@ msgstr "blaue Baumwolle"
 
 #: src/content_mapnode.cpp:1697
 msgid "Green Cotton"
-msgstr "grüne Baumwolle"
+msgstr "grÃ¼ne Baumwolle"
 
 #: src/content_mapnode.cpp:1714
 msgid "Orange Cotton"
@@ -562,7 +563,7 @@ msgstr "blauer Teppich"
 
 #: src/content_mapnode.cpp:1844
 msgid "Green Carpet"
-msgstr "grüner Teppich"
+msgstr "grÃ¼ner Teppich"
 
 #: src/content_mapnode.cpp:1867
 msgid "Orange Carpet"
@@ -674,7 +675,7 @@ msgstr "Solarzelle"
 
 #: src/content_mapnode_circuit.cpp:142
 msgid "Water Wheel"
-msgstr "Wassermühle"
+msgstr "WassermÃ¼hle"
 
 #: src/content_mapnode_circuit.cpp:175
 msgid "Switch"
@@ -698,7 +699,7 @@ msgstr "NOT Gatter"
 
 #: src/content_mapnode_circuit.cpp:325
 msgid "Repeater"
-msgstr "Verstärker"
+msgstr "VerstÃ¤rker"
 
 #: src/content_mapnode_circuit.cpp:355 src/content_mapnode_circuit.cpp:379
 msgid "Electric Lamp"
@@ -729,52 +730,52 @@ msgstr "Arm des klebrigen Kolben"
 #: src/content_mapnode_door.cpp:38 src/content_mapnode_door.cpp:61
 #: src/content_mapnode_door.cpp:567 src/content_mapnode_door.cpp:589
 msgid "Wood Door"
-msgstr "Holztür"
+msgstr "HolztÃ¼r"
 
 #: src/content_mapnode_door.cpp:89 src/content_mapnode_door.cpp:113
 #: src/content_mapnode_door.cpp:657 src/content_mapnode_door.cpp:680
 msgid "Steel Door"
-msgstr "Stahltür"
+msgstr "StahltÃ¼r"
 
 #: src/content_mapnode_door.cpp:142 src/content_mapnode_door.cpp:165
 #: src/content_mapnode_door.cpp:612 src/content_mapnode_door.cpp:634
 msgid "Glass Door"
-msgstr "Glastür"
+msgstr "GlastÃ¼r"
 
 #: src/content_mapnode_door.cpp:193 src/content_mapnode_door.cpp:217
 #: src/content_mapnode_door.cpp:704 src/content_mapnode_door.cpp:726
 msgid "Wood Windowed Door"
-msgstr "Holztür mit Fenster"
+msgstr "HolztÃ¼r mit Fenster"
 
 #: src/content_mapnode_door.cpp:247 src/content_mapnode_door.cpp:272
 #: src/content_mapnode_door.cpp:749 src/content_mapnode_door.cpp:772
 msgid "Steel Windowed Door"
-msgstr "Stahltür mit Fenster"
+msgstr "StahltÃ¼r mit Fenster"
 
 #: src/content_mapnode_door.cpp:304 src/content_mapnode_door.cpp:327
 #: src/content_mapnode_door.cpp:797 src/content_mapnode_door.cpp:821
 msgid "Right Hanging Wood Door"
-msgstr "rechts befestigte Holztür"
+msgstr "rechts befestigte HolztÃ¼r"
 
 #: src/content_mapnode_door.cpp:354 src/content_mapnode_door.cpp:378
 #: src/content_mapnode_door.cpp:846 src/content_mapnode_door.cpp:870
 msgid "Right Hanging Glass Door"
-msgstr "rechts befestigte Glastür"
+msgstr "rechts befestigte GlastÃ¼r"
 
 #: src/content_mapnode_door.cpp:406 src/content_mapnode_door.cpp:430
 #: src/content_mapnode_door.cpp:895 src/content_mapnode_door.cpp:920
 msgid "Right Hanging Steel Door"
-msgstr "rechts befestigte Stahltür"
+msgstr "rechts befestigte StahltÃ¼r"
 
 #: src/content_mapnode_door.cpp:458 src/content_mapnode_door.cpp:482
 #: src/content_mapnode_door.cpp:946 src/content_mapnode_door.cpp:970
 msgid "Right Hanging Wood Windowed Door"
-msgstr "rechts befestigte Holztür mit Fenster"
+msgstr "rechts befestigte HolztÃ¼r mit Fenster"
 
 #: src/content_mapnode_door.cpp:511 src/content_mapnode_door.cpp:536
 #: src/content_mapnode_door.cpp:995 src/content_mapnode_door.cpp:1020
 msgid "Right Hanging Steel Windowed Door"
-msgstr "rechts befestigte Stahltür mit Fenster"
+msgstr "rechts befestigte StahltÃ¼r mit Fenster"
 
 #: src/content_mapnode_door.cpp:1047 src/content_mapnode_door.cpp:1208
 #: src/content_mapnode_door.cpp:1259
@@ -808,7 +809,7 @@ msgstr "Beeterde"
 
 #: src/content_mapnode_farm.cpp:48
 msgid "Fertilizer"
-msgstr "Dünger"
+msgstr "DÃ¼nger"
 
 #: src/content_mapnode_farm.cpp:68 src/content_mapnode_farm.cpp:878
 #: src/content_mapnode_farm.cpp:898 src/content_mapnode_farm.cpp:918
@@ -826,7 +827,7 @@ msgstr "Melonensamen"
 
 #: src/content_mapnode_farm.cpp:128
 msgid "Pumpkin Seeds"
-msgstr "Kürbissamen"
+msgstr "KÃ¼rbissamen"
 
 #: src/content_mapnode_farm.cpp:147
 msgid "Potato Seeds"
@@ -834,7 +835,7 @@ msgstr "Kartoffelsamen"
 
 #: src/content_mapnode_farm.cpp:165
 msgid "Carrot Seeds"
-msgstr "Möhrensamen"
+msgstr "MÃ¶hrensamen"
 
 #: src/content_mapnode_farm.cpp:183
 msgid "Beetroot Seeds"
@@ -856,11 +857,11 @@ msgstr "Melone"
 #: src/content_mapnode_farm.cpp:388 src/content_mapnode_farm.cpp:407
 #: src/content_mapnode_farm.cpp:426 src/content_mapnode_farm.cpp:446
 msgid "Pumpkin"
-msgstr "Kürbis"
+msgstr "KÃ¼rbis"
 
 #: src/content_mapnode_farm.cpp:461
 msgid "Jack' O Lantern"
-msgstr "Kürbislaterne"
+msgstr "KÃ¼rbislaterne"
 
 #: src/content_mapnode_farm.cpp:723 src/content_mapnode_farm.cpp:743
 #: src/content_mapnode_farm.cpp:763 src/content_mapnode_farm.cpp:783
@@ -869,7 +870,7 @@ msgstr "Trauben"
 
 #: src/content_mapnode_furniture.cpp:36
 msgid "Book Shelf"
-msgstr "Bücherregal"
+msgstr "BÃ¼cherregal"
 
 #: src/content_mapnode_furniture.cpp:80 src/content_mapnode_furniture.cpp:98
 #: src/content_mapnode_furniture.cpp:116 src/content_mapnode_furniture.cpp:134
@@ -887,7 +888,7 @@ msgstr "blaues Sofa"
 #: src/content_mapnode_furniture.cpp:346 src/content_mapnode_furniture.cpp:364
 #: src/content_mapnode_furniture.cpp:382 src/content_mapnode_furniture.cpp:400
 msgid "Green Couch"
-msgstr "grünes Sofa"
+msgstr "grÃ¼nes Sofa"
 
 #: src/content_mapnode_furniture.cpp:422 src/content_mapnode_furniture.cpp:440
 #: src/content_mapnode_furniture.cpp:458 src/content_mapnode_furniture.cpp:476
@@ -940,7 +941,7 @@ msgstr "blaues Bett"
 #: src/content_mapnode_furniture.cpp:1196
 #: src/content_mapnode_furniture.cpp:1225
 msgid "Green Bed"
-msgstr "grünes Bett"
+msgstr "grÃ¼nes Bett"
 
 #: src/content_mapnode_furniture.cpp:1251
 #: src/content_mapnode_furniture.cpp:1280
@@ -1009,19 +1010,19 @@ msgstr "Conifere"
 
 #: src/content_mapnode_plants.cpp:128
 msgid "Young Tree"
-msgstr "Bäumchen"
+msgstr "BÃ¤umchen"
 
 #: src/content_mapnode_plants.cpp:147
 msgid "Young Jungle Tree"
-msgstr "Junglebaumsprößling"
+msgstr "JunglebaumsprÃ¶ÃŸling"
 
 #: src/content_mapnode_plants.cpp:166
 msgid "Young Apple Tree"
-msgstr "Apfelbäumchen"
+msgstr "ApfelbÃ¤umchen"
 
 #: src/content_mapnode_plants.cpp:185
 msgid "Young Conifer Tree"
-msgstr "Conifersprößling"
+msgstr "ConifersprÃ¶ÃŸling"
 
 #: src/content_mapnode_plants.cpp:204
 msgid "Jungle Grass"
@@ -1029,47 +1030,47 @@ msgstr "Junglegras"
 
 #: src/content_mapnode_plants.cpp:225
 msgid "Leaves"
-msgstr "Blätter"
+msgstr "BlÃ¤tter"
 
 #: src/content_mapnode_plants.cpp:257
 msgid "Apple Tree Leaves"
-msgstr "Apfelbaumblätter"
+msgstr "ApfelbaumblÃ¤tter"
 
 #: src/content_mapnode_plants.cpp:289
 msgid "Jungle Leaves"
-msgstr "Jungelbaumblätter"
+msgstr "JungelbaumblÃ¤tter"
 
 #: src/content_mapnode_plants.cpp:321
 msgid "Conifer Leaves"
-msgstr "Coniferenblätter"
+msgstr "ConiferenblÃ¤tter"
 
 #: src/content_mapnode_plants.cpp:353
 msgid "Trimmed Leaves"
-msgstr "gepresste Blätter"
+msgstr "gepresste BlÃ¤tter"
 
 #: src/content_mapnode_plants.cpp:382
 msgid "Trimmed Apple Tree Leaves"
-msgstr "gepresste Apfelbaumblätter"
+msgstr "gepresste ApfelbaumblÃ¤tter"
 
 #: src/content_mapnode_plants.cpp:411
 msgid "Trimmed Jungle Leaves"
-msgstr "gepresste Junglebaumblätter"
+msgstr "gepresste JunglebaumblÃ¤tter"
 
 #: src/content_mapnode_plants.cpp:440
 msgid "Trimmed Conifer Leaves"
-msgstr "gepresste Coniferenblätter"
+msgstr "gepresste ConiferenblÃ¤tter"
 
 #: src/content_mapnode_plants.cpp:469
 msgid "Apple Tree Blossom"
-msgstr "Apfelbaumblüten"
+msgstr "ApfelbaumblÃ¼ten"
 
 #: src/content_mapnode_plants.cpp:498
 msgid "Trimmed Apple Tree Blossom"
-msgstr "gepresste Apfelbaumblüten"
+msgstr "gepresste ApfelbaumblÃ¼ten"
 
 #: src/content_mapnode_plants.cpp:524
 msgid "Cactus Blossom"
-msgstr "Kaktusblüte"
+msgstr "KaktusblÃ¼te"
 
 #: src/content_mapnode_plants.cpp:544
 msgid "Cactus Flower"
@@ -1165,7 +1166,7 @@ msgstr "blaue Glasplatte"
 
 #: src/content_mapnode_slab.cpp:231 src/content_mapnode_slab.cpp:544
 msgid "Green Glass Slab"
-msgstr "grüne Glasplatte"
+msgstr "grÃ¼ne Glasplatte"
 
 #: src/content_mapnode_slab.cpp:257 src/content_mapnode_slab.cpp:566
 msgid "Orange Glass Slab"
@@ -1221,7 +1222,7 @@ msgstr "blaue Glasdachziegel"
 
 #: src/content_mapnode_special.cpp:215
 msgid "Green Glass Roof Tile"
-msgstr "grüne Glasdachziegel"
+msgstr "grÃ¼ne Glasdachziegel"
 
 #: src/content_mapnode_special.cpp:238
 msgid "Orange Glass Roof Tile"
@@ -1332,7 +1333,7 @@ msgstr "privater Ofen"
 
 #: src/content_mapnode_special.cpp:1213
 msgid "Incinerator"
-msgstr "Müllverbrennungsanlage"
+msgstr "MÃ¼llverbrennungsanlage"
 
 #: src/content_mapnode_special.cpp:1233
 msgid "Nyan Cat"
@@ -1376,7 +1377,7 @@ msgstr "TNT"
 
 #: src/content_mapnode_special.cpp:1511
 msgid "In-Progress explosion - how did you get this???"
-msgstr "aktivierte Explosion - möchtest du das???"
+msgstr "aktivierte Explosion - mÃ¶chtest du das???"
 
 #: src/content_mapnode_special.cpp:1531
 msgid "Steam"
@@ -1392,7 +1393,7 @@ msgstr "blaue Markierungsfahne"
 
 #: src/content_mapnode_special.cpp:1629
 msgid "Green Home Flag"
-msgstr "grüne Markierungsfahne"
+msgstr "grÃ¼ne Markierungsfahne"
 
 #: src/content_mapnode_special.cpp:1657
 msgid "Orange Home Flag"
@@ -1528,11 +1529,11 @@ msgstr "Zinneimer"
 
 #: src/content_toolitem.cpp:383
 msgid "Wooden Bucket of Water"
-msgstr "Wasser gefüllter Holzeimer"
+msgstr "Wasser gefÃ¼llter Holzeimer"
 
 #: src/content_toolitem.cpp:392
 msgid "Tin Bucket of Water"
-msgstr "Wasser gefüllter Zinneimer"
+msgstr "Wasser gefÃ¼llter Zinneimer"
 
 #: src/content_toolitem.cpp:401
 msgid "Steel Bucket"
@@ -1540,11 +1541,11 @@ msgstr "Stahleimer"
 
 #: src/content_toolitem.cpp:415
 msgid "Steel Bucket of Water"
-msgstr "Wasser gefüllter Stahleimer"
+msgstr "Wasser gefÃ¼llter Stahleimer"
 
 #: src/content_toolitem.cpp:424
 msgid "Steel Bucket of Lava"
-msgstr "Lave gefüllter Stahleimer"
+msgstr "Lave gefÃ¼llter Stahleimer"
 
 #: src/content_toolitem.cpp:434
 msgid "Fire Starter"
@@ -1556,7 +1557,7 @@ msgstr "Brecheisen"
 
 #: src/content_toolitem.cpp:457
 msgid "Key"
-msgstr "Schlüssel"
+msgstr "SchlÃ¼ssel"
 
 #: src/game.cpp:784
 msgid "Loading..."
@@ -1572,7 +1573,7 @@ msgstr "Erzeuge Client ..."
 
 #: src/game.cpp:809
 msgid "Resolving address..."
-msgstr "Überprüfe Adresse ..."
+msgstr "ÃœberprÃ¼fe Adresse ..."
 
 #: src/game.cpp:855
 msgid "Connecting to server... (timeout in "
@@ -1608,11 +1609,11 @@ msgstr "Tastaturbelegung"
 
 #: src/guiKeyChangeMenu.cpp:100
 msgid "Forward"
-msgstr "Forwärts"
+msgstr "ForwÃ¤rts"
 
 #: src/guiKeyChangeMenu.cpp:117
 msgid "Backward"
-msgstr "Rückwärts"
+msgstr "RÃ¼ckwÃ¤rts"
 
 #: src/guiKeyChangeMenu.cpp:133 src/keycode.cpp:227
 msgid "Left"
@@ -1678,7 +1679,7 @@ msgstr "Abbruch"
 #: src/guiKeyChangeMenu.cpp:610 src/guiKeyChangeMenu.cpp:615
 #: src/guiKeyChangeMenu.cpp:620 src/guiKeyChangeMenu.cpp:625
 msgid "press Key"
-msgstr "drücke Taste"
+msgstr "drÃ¼cke Taste"
 
 #: src/guiMainMenu.cpp:362
 msgid "Single Player"
@@ -1714,7 +1715,7 @@ msgstr "Verbinde"
 
 #: src/guiMainMenu.cpp:493
 msgid "Fancy trees"
-msgstr "detailiertere Bäume"
+msgstr "detailiertere BÃ¤ume"
 
 #: src/guiMainMenu.cpp:499
 msgid "Smooth Lighting"
@@ -1726,7 +1727,7 @@ msgstr "3D Wolken"
 
 #: src/guiMainMenu.cpp:511
 msgid "Opaque water"
-msgstr "trübes Wasser"
+msgstr "trÃ¼bes Wasser"
 
 #: src/guiMainMenu.cpp:517
 msgid "Fullscreen"
@@ -1754,7 +1755,7 @@ msgstr "Anisotropic Filtering"
 
 #: src/guiMainMenu.cpp:555
 msgid "Change keys"
-msgstr "Ändere Tastenbelegung"
+msgstr "Ã„ndere Tastenbelegung"
 
 #: src/guiMainMenu.cpp:572 src/guiMainMenu.cpp:616 src/guiMainMenu.cpp:716
 msgid "Creative Mode"
@@ -1766,7 +1767,7 @@ msgstr "Abenteuermodus"
 
 #: src/guiMainMenu.cpp:574 src/guiMainMenu.cpp:618 src/guiMainMenu.cpp:718
 msgid "Survival Mode"
-msgstr "Überlebensmodus"
+msgstr "Ãœberlebensmodus"
 
 #: src/guiMainMenu.cpp:587 src/guiMainMenu.cpp:731
 msgid "Advanced Settings"
@@ -1814,7 +1815,7 @@ msgstr "unendlich Material"
 
 #: src/guiMainMenu.cpp:688
 msgid "Initial Inventory"
-msgstr "Startausrüstung"
+msgstr "StartausrÃ¼stung"
 
 #: src/guiMainMenu.cpp:693
 msgid "Droppable Inventory"
@@ -1830,7 +1831,7 @@ msgstr "Erzeuge neue Karte"
 
 #: src/guiMainMenu.cpp:748
 msgid "Warning! Your old map will be deleted!"
-msgstr "Warnung! Deine alte Karte wird gelöscht!"
+msgstr "Warnung! Deine alte Karte wird gelÃ¶scht!"
 
 #: src/guiMainMenu.cpp:754
 msgid "Use Fixed Seed"
@@ -1846,7 +1847,7 @@ msgstr "reinige Karte"
 
 #: src/guiMainMenu.cpp:780
 msgid "Warning! This will delete all construction from your map!"
-msgstr "Warnung! Dies wird alle Bauten und Veränderungen von der Karte entfernen!"
+msgstr "Warnung! Dies wird alle Bauten und VerÃ¤nderungen von der Karte entfernen!"
 
 #: src/guiMessageMenu.cpp:107 src/guiPauseMenu.cpp:177
 msgid "Continue"
@@ -1866,15 +1867,15 @@ msgstr "Wiederhole Passwort"
 
 #: src/guiPasswordChange.cpp:159
 msgid "Change"
-msgstr "Verändere"
+msgstr "VerÃ¤ndere"
 
 #: src/guiPasswordChange.cpp:168
 msgid "Passwords do not match!"
-msgstr "Passwort stimmt nicht überein!"
+msgstr "Passwort stimmt nicht Ã¼berein!"
 
 #: src/guiPauseMenu.cpp:184
 msgid "Change Password"
-msgstr "Ändere Passwort"
+msgstr "Ã„ndere Passwort"
 
 #: src/guiPauseMenu.cpp:191
 msgid "Disconnect"
@@ -1934,7 +1935,7 @@ msgstr "Kana"
 
 #: src/keycode.cpp:224
 msgid "Menu"
-msgstr "Menü"
+msgstr "MenÃ¼"
 
 #: src/keycode.cpp:224
 msgid "Pause"
