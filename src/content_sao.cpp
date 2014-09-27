@@ -1035,7 +1035,7 @@ bool MobSAO::checkFreePosition(v3s16 p0)
 		v3s16 dp(dx, dy, dz);
 		v3s16 p = p0 + dp;
 		MapNode n = map->getNodeNoEx(p);
-		if(n.getContent() != clear)
+		if (n.getContent() != clear)
 			return false;
 	}
 	MapNode n = map->getNodeNoEx(p0+v3s16(0,-1,0));

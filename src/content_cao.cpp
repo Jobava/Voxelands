@@ -301,7 +301,7 @@ void MobCAO::addToScene(scene::ISceneManager *smgr)
 		bill->setMaterialFlag(video::EMF_FOG_ENABLE, true);
 		bill->setColor(video::SColor(255,0,0,0));
 		bill->setVisible(true);
-		bill->setSize(BS,BS,BS);
+		bill->setSize(m.model_scale.X*BS,m.model_scale.Y*BS,m.model_scale.Z*BS);
 		m_node = (scene::IMeshSceneNode*)bill;
 		m_draw_type = MDT_SPRITE;
 	}

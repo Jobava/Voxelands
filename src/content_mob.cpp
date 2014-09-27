@@ -194,8 +194,9 @@ void content_mob_init()
 	f = &g_content_mob_features[i];
 	f->content = i;
 	f->level = MOB_PASSIVE;
-	f->model = "rat.x";
-	f->setTexture("ob_firefly.png");
+	//f->model = "rat.x";
+	f->model_scale = v3f(0.5,0.5,0.5);
+	f->setTexture("mob_firefly.png");
 	f->punch_action = MPA_PICKUP;
 	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_FIREFLY)+" 1";
 	f->motion = MM_WANDER;
@@ -206,7 +207,7 @@ void content_mob_init()
 	f->spawn_min_height = -5;
 	f->spawn_max_height = 20;
 	f->spawn_max_light = LIGHT_MAX/3;
-	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.));
+	f->setCollisionBox(aabb3f(-BS/4.,-BS/6.,-BS/4., BS/4.,BS/6.,BS/4.));
 
 	i = CONTENT_MOB_OERKKI;
 	f = &g_content_mob_features[i];
