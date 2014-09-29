@@ -35,7 +35,8 @@ enum MobPunchAction
 	MPA_IGNORE = 0,
 	MPA_DIE,
 	MPA_HARM,
-	MPA_PICKUP
+	MPA_PICKUP,
+	MPA_MOVE
 };
 
 enum MobMotion
@@ -45,7 +46,8 @@ enum MobMotion
 	MM_SEEKER,
 	MM_SENTRY,
 	MM_THROWN,
-	MM_CONSTANT
+	MM_CONSTANT,
+	MM_FOLLOW
 };
 
 enum MobMotionType

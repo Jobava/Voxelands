@@ -380,8 +380,13 @@ void MobCAO::step(float dtime, ClientEnvironment *env)
 
 		if (
 			fabs(m_position.X - playerpos.X) < m.attack_player_range.X*BS
-			&& fabs(m_position.Y - playerpos.Y) < m.attack_player_range.Y*BS
-			&& fabs(m_position.Z - playerpos.Z) < m.attack_player_range.Z*BS
+			&& (
+				fabs(m_position.Y - playerpos.Y) < m.attack_player_range.Y*BS
+				|| (
+					m_position.Y > playerpos.Y
+					&& fabs(m_position.Y-(playerpos.Y+BS)) < m.attack_player_range.Y*BS
+				)
+			) && fabs(m_position.Z - playerpos.Z) < m.attack_player_range.Z*BS
 		) {
 			env->damageLocalPlayer(m.attack_player_damage);
 			m_player_hit_timer = 3.0;

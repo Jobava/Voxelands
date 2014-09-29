@@ -519,11 +519,6 @@ void MobSAO::stepMotionWander(float dtime)
 	MobFeatures m = content_mob_features(m_content);
 	v3s16 pos_i = floatToInt(m_base_position, BS);
 	v3s16 pos_size_off(0,0,0);
-	v3f s = m.getSize();
-	if (m.getSize().X >= 2.5) {
-		pos_size_off.X = -1;
-		pos_size_off.Y = -1;
-	}
 
 	if (m.motion_type == MMT_WALK) {
 		if (!m_next_pos_exists) {
@@ -675,11 +670,6 @@ void MobSAO::stepMotionSeeker(float dtime)
 {
 	MobFeatures m = content_mob_features(m_content);
 	v3s16 pos_i = floatToInt(m_base_position, BS);
-	v3s16 pos_size_off(0,0,0);
-	if (m.getSize().X >= 2.5) {
-		pos_size_off.X = -1;
-		pos_size_off.Y = -1;
-	}
 	Player *disturbing_player = m_env->getPlayer(m_disturbing_player.c_str());
 	if (!disturbing_player) {
 		m_next_pos_exists = false;
@@ -691,7 +681,7 @@ void MobSAO::stepMotionSeeker(float dtime)
 	if (m.motion_type == MMT_WALK) {
 		if (!m_next_pos_exists) {
 			/* Check whether to drop down */
-			if (checkFreePosition(pos_i + pos_size_off + v3s16(0,-1,0))) {
+			if (checkFreePosition(pos_i + v3s16(0,-1,0))) {
 				m_next_pos_i = pos_i + v3s16(0,-1,0);
 				m_next_pos_exists = true;
 				m_falling = true;
@@ -719,7 +709,7 @@ void MobSAO::stepMotionSeeker(float dtime)
 			get_random_u32_array(order, num_dps);
 			for (int i=0; i<num_dps; i++) {
 				v3s16 p = dps[order[i]] + pos_i;
-				if (!checkFreeAndWalkablePosition(p + pos_size_off))
+				if (!checkFreeAndWalkablePosition(p))
 					continue;
 				m_next_pos_i = p;
 				m_next_pos_exists = true;
@@ -731,7 +721,7 @@ void MobSAO::stepMotionSeeker(float dtime)
 		bool raising = false;
 		if (!m_next_pos_exists) {
 			u16 above;
-			v3s16 p = pos_i + pos_size_off;
+			v3s16 p = pos_i;
 			for (above=0; above < 14; above++) {
 				p.Y--;
 				if (!checkFreePosition(p))
@@ -739,13 +729,13 @@ void MobSAO::stepMotionSeeker(float dtime)
 			}
 			if (above > 12) {
 				/* Check whether to drop down */
-				if (checkFreePosition(pos_i + pos_size_off + v3s16(0,-1,0))) {
+				if (checkFreePosition(pos_i + v3s16(0,-1,0))) {
 					m_next_pos_i = pos_i + v3s16(0,-1,0);
 					falling = true;
 				}
 			}else if (above < 8) {
 				/* Check whether to rise up */
-				if (checkFreePosition(pos_i + pos_size_off + v3s16(0,1,0))) {
+				if (checkFreePosition(pos_i + v3s16(0,1,0))) {
 					m_next_pos_i = pos_i + v3s16(0,1,0);
 					raising = true;
 				}
@@ -775,7 +765,7 @@ void MobSAO::stepMotionSeeker(float dtime)
 			get_random_u32_array(order, num_dps);
 			for (int i=0; i<num_dps; i++) {
 				v3s16 p = dps[order[i]] + pos_i;
-				if (!checkFreePosition(p + pos_size_off))
+				if (!checkFreePosition(p))
 					continue;
 				m_next_pos_i = p;
 				m_next_pos_exists = true;
@@ -787,7 +777,7 @@ void MobSAO::stepMotionSeeker(float dtime)
 		bool raising = false;
 		if (!m_next_pos_exists) {
 			u16 above;
-			v3s16 p = pos_i + pos_size_off;
+			v3s16 p = pos_i;
 			for (above=0; above < 6; above++) {
 				p.Y--;
 				if (!checkFreePosition(p))
@@ -795,13 +785,13 @@ void MobSAO::stepMotionSeeker(float dtime)
 			}
 			if (above > 5) {
 				/* Check whether to drop down */
-				if (checkFreePosition(pos_i + pos_size_off + v3s16(0,-1,0))) {
+				if (checkFreePosition(pos_i + v3s16(0,-1,0))) {
 					m_next_pos_i = pos_i + v3s16(0,-1,0);
 					falling = true;
 				}
 			}else if (above < 2) {
 				/* Check whether to rise up */
-				if (checkFreePosition(pos_i + pos_size_off + v3s16(0,1,0))) {
+				if (checkFreePosition(pos_i + v3s16(0,1,0))) {
 					m_next_pos_i = pos_i + v3s16(0,1,0);
 					raising = true;
 				}
@@ -831,7 +821,7 @@ void MobSAO::stepMotionSeeker(float dtime)
 			get_random_u32_array(order, num_dps);
 			for (int i=0; i<num_dps; i++) {
 				v3s16 p = dps[order[i]] + pos_i;
-				if (!checkFreePosition(p + pos_size_off))
+				if (!checkFreePosition(p))
 					continue;
 				m_next_pos_i = p;
 				m_next_pos_exists = true;
@@ -844,16 +834,11 @@ void MobSAO::stepMotionSentry(float dtime)
 {
 	MobFeatures m = content_mob_features(m_content);
 	v3s16 pos_i = floatToInt(m_base_position, BS);
-	v3s16 pos_size_off(0,0,0);
-	if (m.getSize().X >= 2.5) {
-		pos_size_off.X = -1;
-		pos_size_off.Y = -1;
-	}
 
 	if (m.motion_type == MMT_WALK) {
 		if (!m_next_pos_exists) {
 			/* Check whether to drop down */
-			if (checkFreePosition(pos_i + pos_size_off + v3s16(0,-1,0))) {
+			if (checkFreePosition(pos_i + v3s16(0,-1,0))) {
 				m_next_pos_i = pos_i + v3s16(0,-1,0);
 				m_next_pos_exists = true;
 				m_falling = true;
@@ -881,7 +866,7 @@ void MobSAO::stepMotionSentry(float dtime)
 			get_random_u32_array(order, num_dps);
 			for (int i=0; i<num_dps; i++) {
 				v3s16 p = dps[order[i]] + pos_i;
-				if (!checkFreeAndWalkablePosition(p + pos_size_off))
+				if (!checkFreeAndWalkablePosition(p))
 					continue;
 				m_next_pos_i = p;
 				m_next_pos_exists = true;
@@ -893,7 +878,7 @@ void MobSAO::stepMotionSentry(float dtime)
 		bool raising = false;
 		if (!m_next_pos_exists) {
 			u16 above;
-			v3s16 p = pos_i + pos_size_off;
+			v3s16 p = pos_i;
 			for (above=0; above < 14; above++) {
 				p.Y--;
 				if (!checkFreePosition(p))
@@ -901,13 +886,13 @@ void MobSAO::stepMotionSentry(float dtime)
 			}
 			if (above > 12) {
 				/* Check whether to drop down */
-				if (checkFreePosition(pos_i + pos_size_off + v3s16(0,-1,0))) {
+				if (checkFreePosition(pos_i + v3s16(0,-1,0))) {
 					m_next_pos_i = pos_i + v3s16(0,-1,0);
 					falling = true;
 				}
 			}else if (above < 8) {
 				/* Check whether to rise up */
-				if (checkFreePosition(pos_i + pos_size_off + v3s16(0,1,0))) {
+				if (checkFreePosition(pos_i + v3s16(0,1,0))) {
 					m_next_pos_i = pos_i + v3s16(0,1,0);
 					raising = true;
 				}
@@ -937,7 +922,7 @@ void MobSAO::stepMotionSentry(float dtime)
 			get_random_u32_array(order, num_dps);
 			for (int i=0; i<num_dps; i++) {
 				v3s16 p = dps[order[i]] + pos_i;
-				if (!checkFreePosition(p + pos_size_off))
+				if (!checkFreePosition(p))
 					continue;
 				m_next_pos_i = p;
 				m_next_pos_exists = true;
@@ -948,7 +933,7 @@ void MobSAO::stepMotionSentry(float dtime)
 		bool falling = false;
 		if (!m_next_pos_exists) {
 			/* Check whether to drop down */
-			if (checkFreePosition(pos_i + pos_size_off + v3s16(0,-1,0))) {
+			if (checkFreePosition(pos_i + v3s16(0,-1,0))) {
 				m_next_pos_i = pos_i + v3s16(0,-1,0);
 				falling = true;
 			}
@@ -975,7 +960,7 @@ void MobSAO::stepMotionSentry(float dtime)
 			get_random_u32_array(order, num_dps);
 			for (int i=0; i<num_dps; i++) {
 				v3s16 p = dps[order[i]] + pos_i;
-				if (!checkFreePosition(p + pos_size_off))
+				if (!checkFreePosition(p))
 					continue;
 				m_next_pos_i = p;
 				m_next_pos_exists = true;
@@ -991,12 +976,7 @@ void MobSAO::stepMotionThrown(float dtime)
 	m_base_position.Y -= 0.1*BS*dtime;
 
 	v3s16 pos_i = floatToInt(m_base_position, BS);
-	v3s16 pos_size_off(0,0,0);
-	if (m.getSize().X >= 2.5) {
-		pos_size_off.X = -1;
-		pos_size_off.Y = -1;
-	}
-	if (!checkFreePosition(pos_i + pos_size_off)) {
+	if (!checkFreePosition(pos_i)) {
 		if (m.contact_explosion_diameter > 0)
 			explodeSquare(pos_i, v3s16(m.contact_explosion_diameter,m.contact_explosion_diameter,m.contact_explosion_diameter));
 		m_removed = true;
@@ -1009,12 +989,7 @@ void MobSAO::stepMotionConstant(float dtime)
 	m_base_position += m_speed * dtime;
 
 	v3s16 pos_i = floatToInt(m_base_position, BS);
-	v3s16 pos_size_off(0,0,0);
-	if (m.getSize().X >= 2.5) {
-		pos_size_off.X = -1;
-		pos_size_off.Y = -1;
-	}
-	if (!checkFreePosition(pos_i + pos_size_off)) {
+	if (!checkFreePosition(pos_i)) {
 		if (m.contact_explosion_diameter > 0)
 			explodeSquare(pos_i, v3s16(m.contact_explosion_diameter,m.contact_explosion_diameter,m.contact_explosion_diameter));
 		m_removed = true;
