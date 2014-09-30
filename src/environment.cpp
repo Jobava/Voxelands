@@ -949,10 +949,8 @@ void ServerEnvironment::step(float dtime)
 				v3s16 p = p0 + block->getPosRelative();
 				MapNode n = block->getNodeNoEx(p0);
 
-				if (active_object_count_wider < 3 && myrand()%100 == 0) {
-					if (content_mob_spawn(this,p))
-						active_object_count_wider++;
-				}
+				if (content_mob_spawn(this,p,active_object_count_wider))
+					active_object_count_wider++;
 
 				switch(n.getContent()) {
 				case CONTENT_GRASS_FOOTSTEPS:

@@ -97,7 +97,7 @@ void MobFeatures::setAnimationFrames(MobAnimation type, int start, int end)
 
 #define PP(x) "("<<(x).X<<","<<(x).Y<<","<<(x).Z<<")"
 
-bool content_mob_spawn(ServerEnvironment *env, v3s16 pos)
+bool content_mob_spawn(ServerEnvironment *env, v3s16 pos, u32 active_object_count)
 {
 	assert(env);
 	Map *map = &env->getMap();
@@ -119,6 +119,8 @@ bool content_mob_spawn(ServerEnvironment *env, v3s16 pos)
 		MobFeatures m = i->second;
 		if (m.spawn_in == CONTENT_IGNORE && m.spawn_on == CONTENT_IGNORE)
 			continue;
+		if (m.spawn_max_nearby_mobs > active_object_count)
+			continue;
 		if (m.spawn_min_height > pos.Y)
 			continue;
 		if (m.spawn_max_height < pos.Y)
@@ -138,6 +140,8 @@ bool content_mob_spawn(ServerEnvironment *env, v3s16 pos)
 		if (m.spawn_max_light < light)
 			continue;
 		if (m.level > level)
+			continue;
+		if (myrand_range(0,m.spawn_chance) != 0)
 			continue;
 		can.push_back(i->first);
 	}

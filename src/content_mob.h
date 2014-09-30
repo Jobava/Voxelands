@@ -130,6 +130,8 @@ struct MobFeatures {
 	u8 spawn_max_light;
 	s16 spawn_min_height;
 	s16 spawn_max_height;
+	u8 spawn_max_nearby_mobs;
+	s16 spawn_chance;
 
 	MobFeatures()
 	{
@@ -236,6 +238,8 @@ struct MobFeatures {
 		spawn_max_light = LIGHT_MAX;
 		spawn_min_height = -20000;
 		spawn_max_height = 100;
+		spawn_max_nearby_mobs = 3;
+		spawn_chance = 100;
 	}
 };
 
@@ -258,7 +262,7 @@ inline std::string mobLevelS(u8 level)
 }
 
 class ServerEnvironment;
-bool content_mob_spawn(ServerEnvironment *env, v3s16 pos);
+bool content_mob_spawn(ServerEnvironment *env, v3s16 pos, u32 active_object_count);
 
 MobFeatures & content_mob_features(content_t i);
 void content_mob_init();
