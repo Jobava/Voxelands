@@ -340,7 +340,8 @@ void MobSAO::step(float dtime, bool send_recommended)
 
 	m_age += dtime;
 
-	if (m.lifetime > 0.0 && m_age >= m.lifetime) {
+	/* die, but not in the middle of attacking someone */
+	if (m.lifetime > 0.0 && m_age >= m.lifetime && (!m.notices_player || m_disturbing_player == "")) {
 		m_removed = true;
 		return;
 	}
@@ -450,16 +451,16 @@ void MobSAO::step(float dtime, bool send_recommended)
 		if (m_walk_around_timer <= 0.0) {
 			if (m.motion_type == MMT_FLY || (disturbing_player && m.motion == MM_SEEKER)) {
 				if (!m_walk_around) {
-					m_walk_around_timer = 0.5;
+					m_walk_around_timer = 0.2;
 					m_walk_around = true;
 				}
 			}else{
 				m_walk_around = !m_walk_around;
 				if (m_walk_around) {
 					if (!disturbing_player || m.motion != MM_SEEKER)
-					m_walk_around_timer = 0.1*myrand_range(10,30);
+					m_walk_around_timer = 0.1*myrand_range(5,15);
 				}else{
-					m_walk_around_timer = 0.1*myrand_range(30,70);
+					m_walk_around_timer = 0.1*myrand_range(20,40);
 				}
 			}
 		}
@@ -473,9 +474,9 @@ void MobSAO::step(float dtime, bool send_recommended)
 			v3f diff = next_pos_f - pos_f;
 			v3f dir = diff;
 			dir.normalize();
-			float speed = BS * 0.5;
+			float speed = BS;
 			if (m.motion == MM_SEEKER && disturbing_player)
-				speed = BS;
+				speed = BS * 2.0;
 			if (m_falling)
 				speed = BS * 3.0;
 			dir *= dtime * speed;

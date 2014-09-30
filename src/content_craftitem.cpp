@@ -695,4 +695,28 @@ void content_craftitem_init()
 	f->description = wgettext("Oerkki Dust");
 	f->drop_count = 1;
 	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_FISH;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_FISH;
+	f->texture = "fish.png";
+	f->name = "fish";
+	f->description = wgettext("Fish");
+	f->cook_result = "CraftItem cooked_fish 1";
+	f->drop_count = 1;
+	f->drop_item = CONTENT_MOB_FISH;
+	lists::add("creative",i);
+	lists::add("cooking",i);
+
+	i = CONTENT_CRAFTITEM_COOKED_FISH;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_COOKED_FISH;
+	f->texture = "cooked_fish.png";
+	f->name = "cooked_fish";
+	f->description = wgettext("Cooked Fish");
+	f->cook_result = "CraftItem ash 1";
+	f->edible = 6;
+	lists::add("creative",i);
+	lists::add("cooking",i);
+
 }

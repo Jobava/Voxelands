@@ -109,7 +109,7 @@ bool content_mob_spawn(ServerEnvironment *env, v3s16 pos, u32 active_object_coun
 	content_t c0 = n.getContent();
 	content_t c1 = a1.getContent();
 	content_t c2 = a2.getContent();
-	u8 light = n.getLightBlend(env->getDayNightRatio());
+	u8 light = a1.getLightBlend(env->getDayNightRatio());
 	u8 level = mobLevelI(g_settings->get("max_mob_level"));
 
 	if (c0 == CONTENT_IGNORE || c1 == CONTENT_IGNORE || c2 == CONTENT_IGNORE)
@@ -190,8 +190,10 @@ void content_mob_init()
 	f->motion = MM_WANDER;
 	f->spawn_on = CONTENT_GRASS;
 	f->spawn_in = CONTENT_AIR;
-	f->spawn_max_height = 20;
+	f->spawn_max_height = -10;
 	f->spawn_max_light = LIGHT_MAX/2;
+	f->spawn_max_nearby_mobs = 4;
+	f->lifetime = 1200.0;
 	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.));
 
 	i = CONTENT_MOB_FIREFLY;
@@ -211,6 +213,8 @@ void content_mob_init()
 	f->spawn_min_height = -5;
 	f->spawn_max_height = 20;
 	f->spawn_max_light = LIGHT_MAX/3;
+	f->spawn_max_nearby_mobs = 5;
+	f->lifetime = 1200.0;
 	f->setCollisionBox(aabb3f(-BS/4.,-BS/6.,-BS/4., BS/4.,BS/6.,BS/4.));
 
 	i = CONTENT_MOB_OERKKI;
@@ -228,9 +232,11 @@ void content_mob_init()
 	f->spawn_in = CONTENT_AIR;
 	f->spawn_max_height = 2;
 	f->spawn_max_light = LIGHT_MAX/4;
+	f->spawn_max_nearby_mobs = 2;
 	f->notices_player = true;
 	f->attack_player_damage = 3;
 	f->attack_player_range = v3f(1,1,1);
+	f->lifetime = 600.0;
 	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS*2.,BS/3.));
 
 	i = CONTENT_MOB_DUNGEON_MASTER;
@@ -248,11 +254,13 @@ void content_mob_init()
 	f->motion = MM_SENTRY;
 	f->spawn_on = CONTENT_STONE;
 	f->spawn_in = CONTENT_AIR;
-	f->spawn_max_light = LIGHT_MAX/2;
+	f->spawn_max_light = LIGHT_MAX/3;
+	f->spawn_max_nearby_mobs = 1;
 	f->notices_player = true;
 	f->attack_throw_object = CONTENT_MOB_FIREBALL;
 	f->attack_glow_light = LIGHT_MAX-1;
 	f->attack_throw_offset = v3f(0,1.4,-1.0);
+	f->lifetime = 600.0;
 	f->setCollisionBox(aabb3f(-0.75*BS, 0.*BS, -0.75*BS, 0.75*BS, 2.0*BS, 0.75*BS));
 
 	i = CONTENT_MOB_FIREBALL;
@@ -288,13 +296,17 @@ void content_mob_init()
 	f->setTexture("mob_fish.png");
 	f->setAnimationFrames(MA_STAND,1,80);
 	f->setAnimationFrames(MA_MOVE,81,155);
+	f->punch_action = MPA_PICKUP;
+	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_FISH)+" 1";
 	f->motion = MM_WANDER;
 	f->motion_type = MMT_SWIM;
 	f->spawn_on = CONTENT_SAND;
 	f->spawn_in = CONTENT_WATERSOURCE;
 	f->spawn_min_height = -30;
 	f->spawn_max_height = -2;
-	f->setCollisionBox(aabb3f(-0.25*BS, 0., -0.25*BS, 0.25*BS, 0.5*BS, 0.25*BS));
+	f->spawn_max_nearby_mobs = 5;
+	f->lifetime = 1200.0;
+	f->setCollisionBox(aabb3f(-0.25*BS, 0.25*BS, -0.25*BS, 0.25*BS, 0.75*BS, 0.25*BS));
 
 	i = CONTENT_MOB_SHARK;
 	f = &g_content_mob_features[i];
@@ -316,13 +328,39 @@ void content_mob_init()
 	f->spawn_in = CONTENT_WATERSOURCE;
 	f->spawn_min_height = -30;
 	f->spawn_max_height = -2;
+	f->spawn_max_nearby_mobs = 3;
 	f->notices_player = true;
 	f->attack_player_damage = 3;
 	f->attack_player_range = v3f(1,1,1);
+	f->lifetime = 600.0;
 	f->setCollisionBox(aabb3f(-0.75*BS, 0., -0.75*BS, 0.75*BS, 1.*BS, 0.75*BS));
 
 	i = CONTENT_MOB_WOLF;
 	f = &g_content_mob_features[i];
-	//f->content = i;
+	f->content = i;
+	f->level = MOB_AGGRESSIVE;
+	f->hp = 40;
+	f->model = "wolf.b3d";
+	f->model_scale = v3f(1,1,1);
+	f->model_rotation = v3f(0,-90,0);
+	f->model_offset = v3f(0,0.5,0);
+	f->setTexture("mob_wolf.png");
+	f->setAnimationFrames(MA_STAND,1,60);
+	f->setAnimationFrames(MA_MOVE,61,120);
+	f->setAnimationFrames(MA_ATTACK,61,120);
+	f->punch_action = MPA_HARM;
+	f->motion = MM_SEEKER;
+	f->motion_type = MMT_WALK;
+	f->spawn_on = CONTENT_WILDGRASS_LONG;
+	f->spawn_in = CONTENT_AIR;
+	f->spawn_min_height = 0;
+	f->spawn_max_height = 30;
+	f->spawn_max_light = LIGHT_MAX/2;
+	f->spawn_max_nearby_mobs = 3;
+	f->notices_player = true;
+	f->attack_player_damage = 3;
+	f->attack_player_range = v3f(1,1,1);
+	f->lifetime = 900.0;
+	f->setCollisionBox(aabb3f(-0.5*BS, 0., -0.5*BS, 0.5*BS, 1.*BS, 0.5*BS));
 
 }
