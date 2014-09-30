@@ -760,6 +760,8 @@ struct MapNode
 		//u8 dir;
 	};
 
+	u32 envticks;
+
 	MapNode(const MapNode & n)
 	{
 		*this = n;
@@ -770,6 +772,7 @@ struct MapNode
 		//param0 = a_param0;
 		param1 = a_param1;
 		param2 = a_param2;
+		envticks = 0;
 		// Set after other params because this needs to override part of param2
 		setContent(content);
 	}
@@ -803,6 +806,7 @@ struct MapNode
 			param2 &= ~(0xf0);
 			param2 |= (c&0x0f)<<4;
 		}
+		envticks = 0;
 	}
 
 	/*

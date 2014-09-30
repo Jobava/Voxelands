@@ -947,6 +947,7 @@ void ServerEnvironment::step(float dtime)
 			for(p0.Z=0; p0.Z<MAP_BLOCKSIZE; p0.Z++)
 			{
 				v3s16 p = p0 + block->getPosRelative();
+				block->incNodeTicks(p0);
 				MapNode n = block->getNodeNoEx(p0);
 
 				if (content_mob_spawn(this,p,active_object_count_wider))
@@ -955,20 +956,18 @@ void ServerEnvironment::step(float dtime)
 				switch(n.getContent()) {
 				case CONTENT_GRASS_FOOTSTEPS:
 				{
-					if (myrand()%5 == 0) {
+					if (n.envticks > 3) {
 						n.setContent(CONTENT_GRASS);
 						m_map->addNodeWithEvent(p, n);
 					}
 					break;
 				}
-
 				/*
-					Test something:
 					Convert mud under proper lighting to grass
 				*/
 				case CONTENT_MUD:
 				{
-					if (myrand()%20 == 0) {
+					if (n.envticks > 3) {
 						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
 						if (content_features(n_top).air_equivalent) {
 							if (p.Y > 50 && p.Y < 200) {
@@ -1059,8 +1058,7 @@ void ServerEnvironment::step(float dtime)
 				// Grow stuff on farm dirt
 				case CONTENT_FARM_DIRT:
 				{
-					if (myrand()%25 == 0)
-					{
+					if (n.envticks%10 == 0) {
 						s16 max_d = 1;
 						s16 max_growth = 2;
 						v3s16 temp_p = p;
@@ -1403,7 +1401,7 @@ void ServerEnvironment::step(float dtime)
 				case CONTENT_FARM_GRAPEVINE_3:
 				case CONTENT_FARM_GRAPEVINE:
 				{
-					if (myrand()%5 == 0) {
+					if (n.envticks%3 == 0) {
 						MapNode n_btm = m_map->getNodeNoEx(p+v3s16(0,-1,0));
 						if (
 							n_btm.getContent() != CONTENT_FARM_GRAPEVINE
@@ -1421,7 +1419,7 @@ void ServerEnvironment::step(float dtime)
 				case CONTENT_FARM_TRELLIS_GRAPE_3:
 				case CONTENT_FARM_TRELLIS_GRAPE:
 				{
-					if (myrand()%5 == 0) {
+					if (n.envticks%3 == 0) {
 						MapNode n_btm = m_map->getNodeNoEx(p+v3s16(0,-1,0));
 						if (
 							n_btm.getContent() != CONTENT_FARM_TRELLIS_GRAPE
@@ -1441,7 +1439,6 @@ void ServerEnvironment::step(float dtime)
 
 				case CONTENT_MUDSNOW:
 				{
-					//if(myrand()%20 == 0)
 					{
 						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
 						if (
@@ -1460,7 +1457,7 @@ void ServerEnvironment::step(float dtime)
 				}
 				case CONTENT_GRASS:
 				{
-					if (myrand()%20 == 0) {
+					if (n.envticks > 2) {
 						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
 						if (content_features(n_top).air_equivalent) {
 							if (p.Y > 50 && p.Y < 200) {
@@ -1500,7 +1497,7 @@ void ServerEnvironment::step(float dtime)
 				{
 					MapNode n_btm = m_map->getNodeNoEx(p+v3s16(0,-1,0));
 					if (n_btm.getContent() == CONTENT_GRASS || n_btm.getContent() == CONTENT_MUD) {
-						if (p.Y > -1 && myrand()%200 == 0) {
+						if (p.Y > -1 && n.envticks > 30) {
 							MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
 							if (n_btm.getContent() == CONTENT_GRASS) {
 								if (n_top.getLightBlend(getDayNightRatio()) >= 13) {
@@ -1523,7 +1520,7 @@ void ServerEnvironment::step(float dtime)
 
 				case CONTENT_WILDGRASS_LONG:
 				{
-					if (p.Y > -1 && myrand()%200 == 0) {
+					if (p.Y > -1 && n.envticks > 30) {
 						n.setContent(CONTENT_DEADGRASS);
 						m_map->addNodeWithEvent(p, n);
 					}
@@ -1542,7 +1539,7 @@ void ServerEnvironment::step(float dtime)
 					if (n_btm.getContent() == CONTENT_FARM_DIRT)
 						ch = 50;
 					if (ch) {
-						if ((ch == 50 || p.Y > -1) && myrand()%100 == 0) {
+						if ((ch == 50 || p.Y > -1) && n.envticks > 30) {
 							MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
 							if (n_top.getLightBlend(getDayNightRatio()) >= 13) {
 								switch (myrand()%3) {
@@ -1570,7 +1567,7 @@ void ServerEnvironment::step(float dtime)
 
 				case CONTENT_DEADGRASS:
 				{
-					if (p.Y > -1 && myrand()%200 == 0)
+					if (p.Y > -1 && n.envticks > 30)
 						m_map->removeNodeWithEvent(p);
 					break;
 				}
@@ -1581,7 +1578,7 @@ void ServerEnvironment::step(float dtime)
 				{
 					MapNode n_under = m_map->getNodeNoEx(p+v3s16(0,-1,0));
 					if (n_under.getContent() == CONTENT_GRASS) {
-						if (myrand()%200 == 0) {
+						if (n.envticks > 60) {
 							n.setContent(CONTENT_WILDGRASS_SHORT);
 							m_map->addNodeWithEvent(p, n);
 						}
@@ -1595,7 +1592,7 @@ void ServerEnvironment::step(float dtime)
 				// cactus flowers and fruit
 				case CONTENT_CACTUS:
 				{
-					if (myrand()%50 == 0) {
+					if (n.envticks > 30) {
 						bool fully_grown = false;
 						int found = 1;
 						v3s16 p_test = p;
@@ -1648,7 +1645,7 @@ void ServerEnvironment::step(float dtime)
 
 				case CONTENT_CACTUS_BLOSSOM:
 				{
-					if (myrand()%10 == 0) {
+					if (n.envticks > 30) {
 						MapNode n_test=m_map->getNodeNoEx(v3s16(p.X, p.Y-1, p.Z));
 						if (n_test.getContent() == CONTENT_CACTUS) {
 							n.setContent(CONTENT_CACTUS_FLOWER);
@@ -1660,7 +1657,7 @@ void ServerEnvironment::step(float dtime)
 
 				case CONTENT_CACTUS_FLOWER:
 				{
-					if (myrand()%10 == 0) {
+					if (n.envticks > 30) {
 						MapNode n_test=m_map->getNodeNoEx(v3s16(p.X, p.Y-1, p.Z));
 						// sometimes fruit, sometimes the flower dies
 						if (n_test.getContent() == CONTENT_CACTUS && myrand()%10 < 6) {
@@ -1675,7 +1672,7 @@ void ServerEnvironment::step(float dtime)
 
 				case CONTENT_CACTUS_FRUIT:
 				{
-					if (myrand()%200 == 0) {
+					if (n.envticks > 60) {
 						MapNode n_test=m_map->getNodeNoEx(v3s16(p.X, p.Y-1, p.Z));
 						// when the fruit dies, sometimes a new blossom appears
 						if (n_test.getContent() == CONTENT_CACTUS && myrand()%10 == 0) {
@@ -1697,7 +1694,7 @@ void ServerEnvironment::step(float dtime)
 				// growing apples!
 				case CONTENT_APPLE_LEAVES:
 				{
-					if (myrand()%10 == 0) {
+					if (n.envticks%30 == 0) {
 						if (searchNear(p,v3s16(3,3,3),CONTENT_APPLE_TREE,NULL)) {
 							if (!searchNear(p,v3s16(1,1,1),CONTENT_APPLE_BLOSSOM,NULL)) {
 								n.setContent(CONTENT_APPLE_BLOSSOM);
@@ -1714,8 +1711,7 @@ void ServerEnvironment::step(float dtime)
 				case CONTENT_JUNGLELEAVES:
 				case CONTENT_CONIFER_LEAVES:
 				{
-					if (myrand()%8 == 0)
-					{
+					if (myrand()%8 == 0) {
 						v3s16 leaf_p = p;
 						std::vector<content_t> search;
 						search.push_back(CONTENT_TREE);
@@ -1754,7 +1750,7 @@ void ServerEnvironment::step(float dtime)
 
 				case CONTENT_APPLE_BLOSSOM:
 				{
-					if(myrand()%20 == 0) {
+					if (n.envticks > 30) {
 						// don't turn all blossoms to apples
 						// blossoms look nice
 						if (searchNear(p,v3s16(3,3,3),CONTENT_APPLE_TREE,NULL)) {
@@ -1791,7 +1787,7 @@ void ServerEnvironment::step(float dtime)
 				// fire that goes out
 				case CONTENT_FIRE_SHORTTERM:
 				{
-					if (myrand()%10 == 0) {
+					if (n.envticks > 10) {
 						m_map->removeNodeWithEvent(p);
 						v3f ash_pos = intToFloat(p, BS);
 						ash_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
@@ -1807,7 +1803,7 @@ void ServerEnvironment::step(float dtime)
 					MapNode n_below = m_map->getNodeNoEx(p+v3s16(0,-1,0));
 					if (!content_features(n_below).flammable) {
 						m_map->removeNodeWithEvent(p);
-					}else if (myrand()%10) {
+					}else if (n.envticks > 10) {
 						s16 bs_rad = g_settings->getS16("borderstone_radius");
 						bs_rad += 2;
 						// if any node is border stone protected, don't spread
@@ -1931,7 +1927,7 @@ void ServerEnvironment::step(float dtime)
 					pp.Y = p.Y;
 					pp.Z = p.Z;
 					Player *nearest = getNearestConnectedPlayer(pp);
-					if (nearest == NULL || nearest->getPosition().getDistanceFrom(pp*BS)/BS > 6.0) {
+					if (nearest == NULL || nearest->getPosition().getDistanceFrom(pp*BS) > 6.0*BS) {
 						n.setContent(CONTENT_MESE);
 						m_map->addNodeWithEvent(p, n);
 					}
@@ -1941,7 +1937,7 @@ void ServerEnvironment::step(float dtime)
 				// cobble becomes mossy underwater
 				case CONTENT_COBBLE:
 				{
-					if (myrand()%20 == 0) {
+					if (n.envticks > 30 && n.envticks%4 == 0) {
 						MapNode a = m_map->getNodeNoEx(p+v3s16(0,1,0));
 						if (a.getContent() == CONTENT_WATERSOURCE) {
 							n.setContent(CONTENT_MOSSYCOBBLE);
@@ -1965,7 +1961,7 @@ void ServerEnvironment::step(float dtime)
 				// Make trees from saplings!
 				case CONTENT_SAPLING:
 				{
-					if (myrand()%5 == 0) {
+					if (n.envticks > 15) {
 						std::vector<content_t> search;
 						search.push_back(CONTENT_AIR);
 						search.push_back(CONTENT_TREE);
@@ -1999,7 +1995,7 @@ void ServerEnvironment::step(float dtime)
 				break;
 				case CONTENT_YOUNG_TREE:
 				{
-					if (myrand()%5 == 0) {
+					if (n.envticks > 15) {
 						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
 						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_GRASS_FOOTSTEPS) {
 							content_t above = m_map->getNodeNoEx(p+v3s16(0,1,0)).getContent();
@@ -2034,7 +2030,7 @@ void ServerEnvironment::step(float dtime)
 									m_map->addNodeWithEvent(p+v3s16(0,2,1),nn);
 									m_map->addNodeWithEvent(p+v3s16(0,2,-1),nn);
 								}
-							}else if (above == CONTENT_YOUNG_TREE) {
+							}else if (above == CONTENT_YOUNG_TREE && n.envticks > 40) {
 								content_t abv = m_map->getNodeNoEx(p+v3s16(0,2,0)).getContent();
 								content_t top = m_map->getNodeNoEx(p+v3s16(0,3,0)).getContent();
 								if (abv == CONTENT_YOUNG_TREE && top == CONTENT_LEAVES) {
@@ -2092,7 +2088,7 @@ void ServerEnvironment::step(float dtime)
 
 				case CONTENT_APPLE_SAPLING:
 				{
-					if (myrand()%5 == 0) {
+					if (n.envticks > 15) {
 						std::vector<content_t> search;
 						search.push_back(CONTENT_AIR);
 						search.push_back(CONTENT_TREE);
@@ -2126,7 +2122,7 @@ void ServerEnvironment::step(float dtime)
 				break;
 				case CONTENT_YOUNG_APPLE_TREE:
 				{
-					if (myrand()%5 == 0) {
+					if (n.envticks > 15) {
 						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
 						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_GRASS_FOOTSTEPS) {
 							content_t above = m_map->getNodeNoEx(p+v3s16(0,1,0)).getContent();
@@ -2161,7 +2157,7 @@ void ServerEnvironment::step(float dtime)
 									m_map->addNodeWithEvent(p+v3s16(0,2,1),nn);
 									m_map->addNodeWithEvent(p+v3s16(0,2,-1),nn);
 								}
-							}else if (above == CONTENT_YOUNG_APPLE_TREE) {
+							}else if (above == CONTENT_YOUNG_APPLE_TREE && n.envticks > 40) {
 								content_t abv = m_map->getNodeNoEx(p+v3s16(0,2,0)).getContent();
 								content_t top = m_map->getNodeNoEx(p+v3s16(0,3,0)).getContent();
 								if (abv == CONTENT_YOUNG_APPLE_TREE && top == CONTENT_APPLE_LEAVES) {
@@ -2214,7 +2210,7 @@ void ServerEnvironment::step(float dtime)
 
 				case CONTENT_JUNGLESAPLING:
 				{
-					if (myrand()%5 == 0) {
+					if (n.envticks > 15) {
 						std::vector<content_t> search;
 						search.push_back(CONTENT_AIR);
 						search.push_back(CONTENT_TREE);
@@ -2248,7 +2244,7 @@ void ServerEnvironment::step(float dtime)
 				break;
 				case CONTENT_YOUNG_JUNGLETREE:
 				{
-					if (myrand()%5 == 0) {
+					if (n.envticks > 15) {
 						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
 						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_GRASS_FOOTSTEPS) {
 							content_t above = m_map->getNodeNoEx(p+v3s16(0,1,0)).getContent();
@@ -2284,7 +2280,7 @@ void ServerEnvironment::step(float dtime)
 									m_map->addNodeWithEvent(p+v3s16(0,3,1),nn);
 									m_map->addNodeWithEvent(p+v3s16(0,3,-1),nn);
 								}
-							}else if (above == CONTENT_YOUNG_JUNGLETREE) {
+							}else if (above == CONTENT_YOUNG_JUNGLETREE && n.envticks > 40) {
 								content_t abv = m_map->getNodeNoEx(p+v3s16(0,2,0)).getContent();
 								content_t abv1 = m_map->getNodeNoEx(p+v3s16(0,3,0)).getContent();
 								content_t top = m_map->getNodeNoEx(p+v3s16(0,4,0)).getContent();
@@ -2338,7 +2334,7 @@ void ServerEnvironment::step(float dtime)
 
 				case CONTENT_CONIFER_SAPLING:
 				{
-					if (myrand()%5 == 0) {
+					if (n.envticks > 15) {
 						std::vector<content_t> search;
 						search.push_back(CONTENT_AIR);
 						search.push_back(CONTENT_TREE);
@@ -2372,7 +2368,7 @@ void ServerEnvironment::step(float dtime)
 				break;
 				case CONTENT_YOUNG_CONIFER_TREE:
 				{
-					if (myrand()%5 == 0) {
+					if (n.envticks > 15) {
 						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
 						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_GRASS_FOOTSTEPS) {
 							content_t above = m_map->getNodeNoEx(p+v3s16(0,1,0)).getContent();
@@ -2408,7 +2404,7 @@ void ServerEnvironment::step(float dtime)
 									m_map->addNodeWithEvent(p+v3s16(0,2,1),nn);
 									m_map->addNodeWithEvent(p+v3s16(0,2,-1),nn);
 								}
-							}else if (above == CONTENT_YOUNG_CONIFER_TREE) {
+							}else if (above == CONTENT_YOUNG_CONIFER_TREE && n.envticks > 40) {
 								content_t abv = m_map->getNodeNoEx(p+v3s16(0,2,0)).getContent();
 								content_t top = m_map->getNodeNoEx(p+v3s16(0,3,0)).getContent();
 								if (abv == CONTENT_YOUNG_CONIFER_TREE && top == CONTENT_CONIFER_LEAVES) {
@@ -2472,7 +2468,7 @@ void ServerEnvironment::step(float dtime)
 						apple_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
 						ServerActiveObject *obj = new ItemSAO(this, 0, apple_pos, "CraftItem apple 1");
 						addActiveObject(obj);
-					}else if (myrand()%200 == 0 && active_object_count_wider < 10) {
+					}else if (n.envticks > 600 && active_object_count_wider < 10) {
 						n.setContent(CONTENT_APPLE_LEAVES);
 						m_map->addNodeWithEvent(p,n);
 						v3f rot_pos = intToFloat(p, BS);
@@ -2486,8 +2482,7 @@ void ServerEnvironment::step(float dtime)
 				// grow junglegrass on sand near water
 				case CONTENT_SAND:
 				{
-					if(myrand()%200 == 0)
-					{
+					if (n.envticks%30 == 0 && myrand()%200 == 0) {
 						MapNode n_top1 = m_map->getNodeNoEx(p+v3s16(0,1,0));
 						MapNode n_top2 = m_map->getNodeNoEx(p+v3s16(0,2,0));
 						if (
@@ -2558,8 +2553,7 @@ void ServerEnvironment::step(float dtime)
 				// make papyrus grow near water
 				case CONTENT_PAPYRUS:
 				{
-					if(myrand()%300 == 0)
-					{
+					if (n.envticks%30 == 0) {
 						MapNode n_top1 = m_map->getNodeNoEx(p+v3s16(0,1,0));
 						MapNode n_top2 = m_map->getNodeNoEx(p+v3s16(0,2,0));
 						if (

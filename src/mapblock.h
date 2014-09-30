@@ -330,6 +330,19 @@ public:
 		setNode(p.X, p.Y, p.Z, n);
 	}
 
+	void incNodeTicks(v3s16 p)
+	{
+		if (data == NULL)
+			return;
+		if (p.X < 0 || p.X >= MAP_BLOCKSIZE)
+			return;
+		if (p.Y < 0 || p.Y >= MAP_BLOCKSIZE)
+			return;
+		if (p.Z < 0 || p.Z >= MAP_BLOCKSIZE)
+			return;
+		data[p.Z*MAP_BLOCKSIZE*MAP_BLOCKSIZE + p.Y*MAP_BLOCKSIZE + p.X].envticks++;
+	}
+
 	/*
 		Non-checking variants of the above
 	*/

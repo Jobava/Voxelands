@@ -119,7 +119,7 @@ bool content_mob_spawn(ServerEnvironment *env, v3s16 pos, u32 active_object_coun
 		MobFeatures m = i->second;
 		if (m.spawn_in == CONTENT_IGNORE && m.spawn_on == CONTENT_IGNORE)
 			continue;
-		if (m.spawn_max_nearby_mobs > active_object_count)
+		if (m.spawn_max_nearby_mobs < active_object_count)
 			continue;
 		if (m.spawn_min_height > pos.Y)
 			continue;
