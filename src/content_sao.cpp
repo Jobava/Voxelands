@@ -1001,17 +1001,26 @@ bool MobSAO::checkFreePosition(v3s16 p0)
 	assert(m_env);
 	Map *map = &m_env->getMap();
 	v3s16 size = content_mob_features(m_content).getSizeBlocks();
-	content_t clear = CONTENT_AIR;
-	if (content_mob_features(m_content).motion_type == MMT_SWIM)
-		clear = CONTENT_WATERSOURCE;
-	for (int dx=0; dx<size.X; dx++)
-	for (int dy=0; dy<size.Y; dy++)
-	for (int dz=0; dz<size.Z; dz++) {
-		v3s16 dp(dx, dy, dz);
-		v3s16 p = p0 + dp;
-		MapNode n = map->getNodeNoEx(p);
-		if (n.getContent() != clear)
-			return false;
+	if (content_mob_features(m_content).motion_type == MMT_SWIM) {
+		for (int dx=0; dx<size.X; dx++)
+		for (int dy=0; dy<size.Y; dy++)
+		for (int dz=0; dz<size.Z; dz++) {
+			v3s16 dp(dx, dy, dz);
+			v3s16 p = p0 + dp;
+			MapNode n = map->getNodeNoEx(p);
+			if (n.getContent() != CONTENT_WATERSOURCE)
+				return false;
+		}
+	}else{
+		for (int dx=0; dx<size.X; dx++)
+		for (int dy=0; dy<size.Y; dy++)
+		for (int dz=0; dz<size.Z; dz++) {
+			v3s16 dp(dx, dy, dz);
+			v3s16 p = p0 + dp;
+			MapNode n = map->getNodeNoEx(p);
+			if (n.getContent() != CONTENT_AIR && content_features(n).walkable)
+				return false;
+		}
 	}
 	MapNode n = map->getNodeNoEx(p0+v3s16(0,-1,0));
 	if (!content_features(n).jumpable)
@@ -1024,7 +1033,7 @@ bool MobSAO::checkWalkablePosition(v3s16 p0)
 	v3s16 p = p0 + v3s16(0,-1,0);
 	MapNode n = m_env->getMap().getNodeNoEx(p);
 	if (n.getContent() != CONTENT_AIR) {
-		if (content_features(n).liquid_type == LIQUID_NONE)
+		if (content_features(n).liquid_type == LIQUID_NONE && content_features(n).walkable)
 			return true;
 	}
 	return false;
