@@ -258,6 +258,8 @@ bool CraftItem::use(ServerEnvironment *env, Player *player)
 				if (player->hunger + (hp_change*2) > 20) {
 					hp_change -= 20-player->hunger;
 					player->hunger = 20;
+					if (hp_change < 0)
+						hp_change = 0;
 				}else{
 					player->hunger += (hp_change*2);
 					hp_change = 0;
