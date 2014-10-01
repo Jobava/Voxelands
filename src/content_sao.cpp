@@ -239,6 +239,7 @@ MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, content_t type):
 	m_next_pos_exists(false),
 	m_age(0),
 	m_hp(10),
+	m_angry(false),
 	m_disturb_timer(100000),
 	m_random_disturb_timer(0),
 	m_walk_around(false),
@@ -265,6 +266,7 @@ MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, v3f speed, content_t typ
 	m_next_pos_exists(false),
 	m_age(0),
 	m_hp(10),
+	m_angry(false),
 	m_disturb_timer(100000),
 	m_random_disturb_timer(0),
 	m_walk_around(false),
@@ -384,6 +386,8 @@ void MobSAO::step(float dtime, bool send_recommended)
 				disturbing_player_norm.normalize();
 				disturbing_player_dir = 180./PI*atan2(disturbing_player_norm.Z,disturbing_player_norm.X);
 			}
+		}else if (m_angry) {
+			m_angry = false;
 		}
 		m_disturb_timer += dtime;
 
@@ -446,10 +450,12 @@ void MobSAO::step(float dtime, bool send_recommended)
 		}
 	}
 
-	if (m.motion != MM_CONSTANT && m.motion != MM_STATIC && !m_shooting) {
+	MobMotion mot = getMotion();
+
+	if (mot != MM_CONSTANT && mot != MM_STATIC) {
 		m_walk_around_timer -= dtime;
 		if (m_walk_around_timer <= 0.0) {
-			if (m.motion_type == MMT_FLY || (disturbing_player && m.motion == MM_SEEKER)) {
+			if (m.motion_type == MMT_FLY || (disturbing_player && mot == MM_SEEKER)) {
 				if (!m_walk_around) {
 					m_walk_around_timer = 0.2;
 					m_walk_around = true;
@@ -457,7 +463,7 @@ void MobSAO::step(float dtime, bool send_recommended)
 			}else{
 				m_walk_around = !m_walk_around;
 				if (m_walk_around) {
-					if (!disturbing_player || m.motion != MM_SEEKER)
+					if (!disturbing_player || mot != MM_SEEKER)
 					m_walk_around_timer = 0.1*myrand_range(5,15);
 				}else{
 					m_walk_around_timer = 0.1*myrand_range(20,40);
@@ -475,7 +481,7 @@ void MobSAO::step(float dtime, bool send_recommended)
 			v3f dir = diff;
 			dir.normalize();
 			float speed = BS;
-			if (m.motion == MM_SEEKER && disturbing_player)
+			if (mot == MM_SEEKER && m.level == MOB_AGGRESSIVE && disturbing_player)
 				speed = BS * 2.0;
 			if (m_falling)
 				speed = BS * 3.0;
@@ -493,19 +499,21 @@ void MobSAO::step(float dtime, bool send_recommended)
 		}
 	}
 
-	if (m.motion == MM_WANDER) {
+	mot = getMotion();
+
+	if (mot == MM_WANDER) {
 		stepMotionWander(dtime);
-	}else if (m.motion == MM_SEEKER) {
+	}else if (mot == MM_SEEKER) {
 		if (!disturbing_player) {
 			stepMotionWander(dtime);
 		}else{
 			stepMotionSeeker(dtime);
 		}
-	}else if (m.motion == MM_SENTRY) {
+	}else if (mot == MM_SENTRY) {
 		stepMotionSentry(dtime);
-	}else if (m.motion == MM_THROWN) {
+	}else if (mot == MM_THROWN) {
 		stepMotionThrown(dtime);
-	}else if (m.motion == MM_CONSTANT) {
+	}else if (mot == MM_CONSTANT) {
 		stepMotionConstant(dtime);
 	}
 
@@ -1104,6 +1112,7 @@ u16 MobSAO::punch(const std::string &toolname, v3f dir, const std::string &playe
 		m_disturb_timer = 0;
 		m_disturbing_player = playername;
 		m_next_pos_exists = false; // Cancel moving immediately
+		m_angry = true;
 
 		m_yaw = wrapDegrees_180(180./PI*atan2(dir.Z, dir.X) + 180.);
 		v3f new_base_position = m_base_position + dir * BS;

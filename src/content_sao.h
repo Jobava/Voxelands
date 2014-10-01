@@ -23,6 +23,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "serverobject.h"
 #include "mapnode.h"
 #include "content_object.h"
+#include "content_mob.h"
 
 class ItemSAO : public ServerActiveObject
 {
@@ -66,6 +67,13 @@ private:
 	void sendPosition();
 	void doDamage(u16 d);
 
+	MobMotion getMotion()
+	{
+		if (m_angry)
+			return content_mob_features(m_content).angry_motion;
+		return content_mob_features(m_content).motion;
+	}
+
 	void stepMotionWander(float dtime);
 	void stepMotionSeeker(float dtime);
 	void stepMotionSentry(float dtime);
@@ -90,6 +98,7 @@ private:
 
 	float m_age;
 	u8 m_hp;
+	bool m_angry;
 
 	float m_disturb_timer;
 	std::string m_disturbing_player;

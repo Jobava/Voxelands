@@ -279,12 +279,60 @@ void content_mob_init()
 	f->contact_explosion_diameter = 3;
 	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.));
 
-	i = CONTENT_MOB_DEER;
+	i = CONTENT_MOB_DOE;
 	f = &g_content_mob_features[i];
-	//f->content = i;
-	i = CONTENT_MOB_SHEEP;
+	f->content = i;
+	f->level = MOB_PASSIVE;
+	f->hp = 30;
+	f->model = "doe.b3d";
+	f->model_scale = v3f(0.8,0.8,0.8);
+	f->model_rotation = v3f(0,-90,0);
+	f->model_offset = v3f(0,0.9,0);
+	f->setTexture("mob_doe.png");
+	f->setAnimationFrames(MA_STAND,61,120);
+	f->setAnimationFrames(MA_MOVE,0,60);
+	f->setAnimationFrames(MA_ATTACK,0,60);
+	f->punch_action = MPA_HARM;
+	f->motion = MM_SEEKER;
+	f->motion_type = MMT_WALK;
+	f->spawn_on = CONTENT_WILDGRASS_SHORT;
+	f->spawn_in = CONTENT_AIR;
+	f->spawn_min_height = -5;
+	f->spawn_max_height = 30;
+	f->spawn_min_light = LIGHT_MAX/2;
+	f->spawn_max_nearby_mobs = 3;
+	f->lifetime = 900.0;
+	f->setCollisionBox(aabb3f(-0.6*BS, 0., -0.6*BS, 0.6*BS, 1.25*BS, 0.6*BS));
+
+	i = CONTENT_MOB_STAG;
 	f = &g_content_mob_features[i];
-	//f->content = i;
+	f->content = i;
+	f->level = MOB_AGGRESSIVE;
+	f->hp = 40;
+	f->model = "stag.b3d";
+	f->model_scale = v3f(1,1,1);
+	f->model_rotation = v3f(0,-90,0);
+	f->model_offset = v3f(0,1.1,0);
+	f->setTexture("mob_stag.png");
+	f->setAnimationFrames(MA_STAND,61,120);
+	f->setAnimationFrames(MA_MOVE,0,60);
+	f->setAnimationFrames(MA_ATTACK,0,60);
+	f->punch_action = MPA_HARM;
+	f->motion = MM_WANDER;
+	f->motion_type = MMT_WALK;
+	f->angry_motion = MM_SEEKER;
+	f->spawn_on = CONTENT_WILDGRASS_SHORT;
+	f->spawn_in = CONTENT_AIR;
+	f->spawn_min_height = -5;
+	f->spawn_max_height = 30;
+	f->spawn_min_light = LIGHT_MAX/2;
+	f->spawn_max_nearby_mobs = 3;
+	f->spawn_chance = 150;
+	f->notices_player = true;
+	f->attack_player_damage = 3;
+	f->attack_player_range = v3f(1,1,1);
+	f->lifetime = 900.0;
+	f->setCollisionBox(aabb3f(-0.7*BS, 0., -0.7*BS, 0.7*BS, 1.5*BS, 0.7*BS));
 
 	i = CONTENT_MOB_FISH;
 	f = &g_content_mob_features[i];
@@ -363,4 +411,7 @@ void content_mob_init()
 	f->lifetime = 900.0;
 	f->setCollisionBox(aabb3f(-0.5*BS, 0., -0.5*BS, 0.5*BS, 1.*BS, 0.5*BS));
 
+	i = CONTENT_MOB_SHEEP;
+	f = &g_content_mob_features[i];
+	//f->content = i;
 }

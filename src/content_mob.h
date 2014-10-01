@@ -58,12 +58,6 @@ enum MobMotionType
 	MMT_SWIM
 };
 
-enum MobState
-{
-	MS_WILD = 0,
-	MS_TAME
-};
-
 enum MobAnimation
 {
 	MA_STAND = 0,
@@ -109,7 +103,7 @@ struct MobFeatures {
 	MobPunchAction punch_action;
 	MobMotion motion;
 	MobMotionType motion_type;
-	MobState spawn_state;
+	MobMotion angry_motion;
 	bool is_tamable;
 	bool notices_player;
 	content_t tamed_mob;
@@ -218,7 +212,7 @@ struct MobFeatures {
 		punch_action = MPA_DIE;
 		motion = MM_STATIC;
 		motion_type = MMT_WALK;
-		spawn_state = MS_WILD;
+		angry_motion = MM_STATIC;
 		is_tamable = false;
 		notices_player = false;
 		tamed_mob = CONTENT_IGNORE;
@@ -272,11 +266,12 @@ void content_mob_init();
 #define CONTENT_MOB_OERKKI (CONTENT_MOB_MASK | 0x03)
 #define CONTENT_MOB_DUNGEON_MASTER (CONTENT_MOB_MASK | 0x04)
 #define CONTENT_MOB_FIREBALL (CONTENT_MOB_MASK | 0x05)
-#define CONTENT_MOB_DEER (CONTENT_MOB_MASK | 0x06)
-#define CONTENT_MOB_SHEEP (CONTENT_MOB_MASK | 0x07)
+#define CONTENT_MOB_DOE (CONTENT_MOB_MASK | 0x06)
+#define CONTENT_MOB_STAG (CONTENT_MOB_MASK | 0x07)
 #define CONTENT_MOB_FISH (CONTENT_MOB_MASK | 0x08)
 #define CONTENT_MOB_SHARK (CONTENT_MOB_MASK | 0x09)
 #define CONTENT_MOB_WOLF (CONTENT_MOB_MASK | 0x0A)
 #define CONTENT_MOB_TAMEWOLF (CONTENT_MOB_MASK | 0x0B)
+#define CONTENT_MOB_SHEEP (CONTENT_MOB_MASK | 0x0C)
 
 #endif
