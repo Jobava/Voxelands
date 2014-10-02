@@ -2097,22 +2097,37 @@ void the_game(
 			static float endscenetime_avg = 0;
 			endscenetime_avg = endscenetime_avg * 0.95 + (float)endscenetime*0.05;*/
 
-			char temptext[300];
-			snprintf(temptext, 300, "%s ("
-					"R: range_all=%i"
-					")"
-					" drawtime=%.0f, dtime_jitter = % .1f %%"
-					", v_range = %.1f, RTT = %.3f",
-					program_name_and_version,
-					draw_control.range_all,
-					drawtime_avg,
-					dtime_jitter1_max_fraction * 100.0,
-					draw_control.wanted_range,
-					client.getRTT()
-					);
+			{
+				char temptext[300];
+				snprintf(temptext, 300, "%s ("
+						"R: range_all=%i"
+						")"
+						" drawtime=%.0f, dtime_jitter = % .1f %%"
+						", v_range = %.1f, RTT = %.3f",
+						program_name_and_version,
+						draw_control.range_all,
+						drawtime_avg,
+						dtime_jitter1_max_fraction * 100.0,
+						draw_control.wanted_range,
+						client.getRTT()
+						);
 
-			guitext->setText(narrow_to_wide(temptext).c_str());
-			guitext->setVisible(true);
+				guitext->setText(narrow_to_wide(temptext).c_str());
+				guitext->setVisible(true);
+			}
+			{
+				char temptext[300];
+				snprintf(temptext, 300,
+						"(% .1f, % .1f, % .1f)"
+						" (yaw = %.1f)",
+						player_position.X/BS,
+						player_position.Y/BS,
+						player_position.Z/BS,
+						wrapDegrees_0_360(camera_yaw));
+
+				guitext2->setText(narrow_to_wide(temptext).c_str());
+				guitext2->setVisible(true);
+			}
 		}
 		else if(show_hud || show_chat)
 		{
