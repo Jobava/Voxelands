@@ -69,8 +69,7 @@ InventoryItem* InventoryItem::deSerialize(std::istream &is)
 	std::string name;
 	std::getline(is, name, ' ');
 
-	if(name == "MaterialItem")
-	{
+	if (name == "MaterialItem") {
 		// u16 reads directly as a number (u8 doesn't)
 		u16 material;
 		is>>material;
@@ -84,9 +83,7 @@ InventoryItem* InventoryItem::deSerialize(std::istream &is)
 		if(material > MAX_CONTENT)
 			throw SerializationError("Too large material number");
 		return new MaterialItem(material, count);
-	}
-	else if(name == "MaterialItem2")
-	{
+	}else if(name == "MaterialItem2") {
 		u16 material;
 		is>>material;
 		u16 count;
@@ -94,47 +91,37 @@ InventoryItem* InventoryItem::deSerialize(std::istream &is)
 		if(material > MAX_CONTENT)
 			throw SerializationError("Too large material number");
 		return new MaterialItem(material, count);
-	}
-	else if(name == "MBOItem")
-	{
+	}else if(name == "MBOItem") {
 		std::string inventorystring;
 		std::getline(is, inventorystring, '|');
 		throw SerializationError("MBOItem not supported anymore");
-	}
-	else if(name == "CraftItem")
-	{
+	}else if(name == "CraftItem") {
 		std::string subname;
 		std::getline(is, subname, ' ');
 		u16 count;
 		is>>count;
 		return new CraftItem(subname, count);
-	}
-	else if(name == "CraftItem2")
-	{
+	}else if(name == "CraftItem2") {
 		u16 material;
 		is>>material;
 		u16 count;
 		is>>count;
 		return new CraftItem(material, count);
-	}
-	else if(name == "ToolItem")
-	{
+	}else if(name == "ToolItem") {
 		std::string toolname;
 		std::getline(is, toolname, ' ');
 		u16 wear;
 		is>>wear;
 		return new ToolItem(toolname, wear);
-	}
-	else if(name == "ToolItem2")
-	{
+	}else if(name == "ToolItem2") {
 		u16 material;
 		is>>material;
 		u16 wear;
 		is>>wear;
 		return new ToolItem(material, wear);
-	}
-	else
-	{
+	}else if (name == "") {
+		return NULL;
+	}else{
 		infostream<<"Unknown InventoryItem name=\""<<name<<"\""<<std::endl;
 		throw SerializationError("Unknown InventoryItem name");
 	}
