@@ -111,7 +111,7 @@ SoundBuffer* loadOggFile(const std::string &filepath)
 	OggVorbis_File oggFile;
 
 	// Try opening the given file
-	if (ov_fopen(filepath.c_str(), &oggFile) != 0) {
+	if (ov_fopen((char*)filepath.c_str(), &oggFile) != 0) {
 		infostream<<"Audio: Error opening "<<filepath<<" for decoding"<<std::endl;
 		return NULL;
 	}
