@@ -668,9 +668,9 @@ bool ServerEnvironment::searchNear(v3s16 pos, v3s16 radius_min, v3s16 radius_max
 	v3s16 p;
 	v3s16 bp;
 
-	for(s16 x=-radius_min.X; x<=radius_max.X; x++) {
-		for(s16 y=-radius_min.Y; y<=radius_max.Y; y++) {
-			for(s16 z=-radius_min.Z; z<=radius_max.Z; z++) {
+	for(s16 x=radius_min.X; x<=radius_max.X; x++) {
+		for(s16 y=radius_min.Y; y<=radius_max.Y; y++) {
+			for(s16 z=radius_min.Z; z<=radius_max.Z; z++) {
 				if (!x && !y && !z)
 					continue;
 				p = pos+v3s16(x,y,z);
@@ -2677,7 +2677,11 @@ void ServerEnvironment::step(float dtime)
 						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
 						// check that it's on top, and somewhere snow could fall
 						// not 100% because torches
-						if (n_top.getContent() == CONTENT_AIR && n_top.getLightBlend(getDayNightRatio()) >= 13) {
+						if (
+							n_top.getContent() == CONTENT_AIR
+							&& n_top.getLightBlend(getDayNightRatio()) >= 13
+							&& !searchNear(p,v3s16(3,3,3),CONTENT_FIRE,NULL)
+						) {
 							n_top.setContent(CONTENT_SNOW);
 							m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top);
 						}
@@ -3851,9 +3855,9 @@ void ClientEnvironment::step(float dtime)
 		}else{
 			f32 speed = lplayer->getSpeed().getLength();
 			s8 hungry = 0;
-			s32 chance = 100;
+			s32 chance = 200;
 			if (speed > 1.0) {
-				chance = 10;
+				chance = 20;
 				if (speed > 50.0) {
 					chance = 0;
 					hungry = 1;
@@ -4155,16 +4159,31 @@ ClientEnvEvent ClientEnvironment::getClientEvent()
 
 bool ClientEnvironment::searchNear(v3s16 pos, v3s16 radius_min, v3s16 radius_max, std::vector<content_t> c, v3s16 *found)
 {
-	for(s16 x=-radius_min.X; x<=radius_max.X; x++) {
-		for(s16 y=-radius_min.Y; y<=radius_max.Y; y++) {
-			for(s16 z=-radius_min.Z; z<=radius_max.Z; z++) {
+	v3s16 blockpos = getNodeBlockPos(pos);
+	MapBlock *block = m_map->getBlockNoCreateNoEx(blockpos);
+	if (block == NULL)
+		return false;
+	v3s16 relpos = blockpos*MAP_BLOCKSIZE;
+	v3s16 p;
+	v3s16 bp;
+
+	for(s16 x=radius_min.X; x<=radius_max.X; x++) {
+		for(s16 y=radius_min.Y; y<=radius_max.Y; y++) {
+			for(s16 z=radius_min.Z; z<=radius_max.Z; z++) {
 				if (!x && !y && !z)
 					continue;
-				MapNode n_test = m_map->getNodeNoEx(pos+v3s16(x,y,z));
+				p = pos+v3s16(x,y,z);
+				MapNode n_test;
+				bp = getNodeBlockPos(p);
+				if (bp == blockpos) {
+					n_test = block->getNodeNoCheck(p-relpos);
+				}else{
+					n_test = m_map->getNodeNoEx(p);
+				}
 				for (std::vector<content_t>::iterator i=c.begin(); i != c.end(); i++) {
 					if (n_test.getContent() == *i) {
 						if (found != NULL)
-							*found = pos+v3s16(x,y,z);
+							*found = p;
 						return true;
 					}
 				}
@@ -4176,12 +4195,26 @@ bool ClientEnvironment::searchNear(v3s16 pos, v3s16 radius_min, v3s16 radius_max
 
 bool ClientEnvironment::searchNearInv(v3s16 pos, v3s16 radius_min, v3s16 radius_max, std::vector<content_t> c, v3s16 *found)
 {
+	v3s16 blockpos = getNodeBlockPos(pos);
+	MapBlock *block = m_map->getBlockNoCreateNoEx(blockpos);
+	if (block == NULL)
+		return false;
+	v3s16 relpos = blockpos*MAP_BLOCKSIZE;
+	v3s16 p;
+	v3s16 bp;
 	for(s16 x=radius_min.X; x<=radius_max.X; x++) {
 		for(s16 y=radius_min.Y; y<=radius_max.Y; y++) {
 			for(s16 z=radius_min.Z; z<=radius_max.Z; z++) {
 				if (!x && !y && !z)
 					continue;
-				MapNode n_test = m_map->getNodeNoEx(pos+v3s16(x,y,z));
+				p = pos+v3s16(x,y,z);
+				MapNode n_test;
+				bp = getNodeBlockPos(p);
+				if (bp == blockpos) {
+					n_test = block->getNodeNoCheck(p-relpos);
+				}else{
+					n_test = m_map->getNodeNoEx(p);
+				}
 				bool s = false;
 				for (std::vector<content_t>::iterator i=c.begin(); i != c.end(); i++) {
 					if (n_test.getContent() == *i) {
@@ -4191,7 +4224,7 @@ bool ClientEnvironment::searchNearInv(v3s16 pos, v3s16 radius_min, v3s16 radius_
 				}
 				if (!s) {
 					if (found != NULL)
-						*found = pos+v3s16(x,y,z);
+						*found = p;
 					return true;
 				}
 			}

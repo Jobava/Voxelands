@@ -40,7 +40,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "activeobject.h"
 
 class Server;
-class ActiveBlockModifier;
 class ServerActiveObject;
 
 class Environment
@@ -215,13 +214,6 @@ public:
 	*/
 	void activateBlock(MapBlock *block, u32 additional_dtime=0);
 
-	/*
-		ActiveBlockModifiers (TODO)
-		-------------------------------------------
-	*/
-
-	void addActiveBlockModifier(ActiveBlockModifier *abm);
-
 	/* Other stuff */
 
 	// Clear all objects, loading and going through every MapBlock
@@ -232,25 +224,25 @@ public:
 	bool searchNear(v3s16 pos, v3s16 radius_min, v3s16 radius_max, std::vector<content_t> c, v3s16 *found);
 	bool searchNear(v3s16 pos, v3s16 radius, std::vector<content_t> c, v3s16 *found)
 	{
-		return searchNear(pos,radius,radius,c,found);
+		return searchNear(pos,-radius,radius,c,found);
 	}
 	bool searchNear(v3s16 pos, v3s16 radius, content_t c, v3s16 *found)
 	{
 		std::vector<content_t> search;
 		search.push_back(c);
-		return searchNear(pos,radius,radius,search,found);
+		return searchNear(pos,-radius,radius,search,found);
 	}
 	// search for not c within radius of pos
 	bool searchNearInv(v3s16 pos, v3s16 radius_min, v3s16 radius_max, std::vector<content_t> c, v3s16 *found);
 	bool searchNearInv(v3s16 pos, v3s16 radius, std::vector<content_t> c, v3s16 *found)
 	{
-		return searchNearInv(pos,radius,radius,c,found);
+		return searchNearInv(pos,-radius,radius,c,found);
 	}
 	bool searchNearInv(v3s16 pos, v3s16 radius, content_t c, v3s16 *found)
 	{
 		std::vector<content_t> search;
 		search.push_back(c);
-		return searchNearInv(pos,radius,radius,search,found);
+		return searchNearInv(pos,-radius,radius,search,found);
 	}
 
 private:
@@ -438,25 +430,25 @@ public:
 	bool searchNear(v3s16 pos, v3s16 radius_min, v3s16 radius_max, std::vector<content_t> c, v3s16 *found);
 	bool searchNear(v3s16 pos, v3s16 radius, std::vector<content_t> c, v3s16 *found)
 	{
-		return searchNear(pos,radius,radius,c,found);
+		return searchNear(pos,-radius,radius,c,found);
 	}
 	bool searchNear(v3s16 pos, v3s16 radius, content_t c, v3s16 *found)
 	{
 		std::vector<content_t> search;
 		search.push_back(c);
-		return searchNear(pos,radius,radius,search,found);
+		return searchNear(pos,-radius,radius,search,found);
 	}
 	// search for not c within radius of pos
 	bool searchNearInv(v3s16 pos, v3s16 radius_min, v3s16 radius_max, std::vector<content_t> c, v3s16 *found);
 	bool searchNearInv(v3s16 pos, v3s16 radius, std::vector<content_t> c, v3s16 *found)
 	{
-		return searchNearInv(pos,radius,radius,c,found);
+		return searchNearInv(pos,-radius,radius,c,found);
 	}
 	bool searchNearInv(v3s16 pos, v3s16 radius, content_t c, v3s16 *found)
 	{
 		std::vector<content_t> search;
 		search.push_back(c);
-		return searchNearInv(pos,radius,radius,search,found);
+		return searchNearInv(pos,-radius,radius,search,found);
 	}
 
 private:
