@@ -22,6 +22,7 @@
 #include "serverobject.h"
 #include "content_sao.h"
 #include "content_mob.h"
+#include "content_craftitem.h"
 #include "main.h"
 #include "settings.h"
 #include "environment.h"
@@ -111,6 +112,12 @@ bool content_mob_spawn(ServerEnvironment *env, v3s16 pos, u32 active_object_coun
 	content_t c2 = a2.getContent();
 	u8 light = a1.getLightBlend(env->getDayNightRatio());
 	u8 level = mobLevelI(g_settings->get("max_mob_level"));
+	v3f pf = intToFloat(pos,BS);
+	Player *nearest = env->getNearestConnectedPlayer(pf);
+	f32 distance = 30000.0;
+	if (nearest)
+		distance = pf.getDistanceFrom(nearest->getPosition());
+
 
 	if (c0 == CONTENT_IGNORE || c1 == CONTENT_IGNORE || c2 == CONTENT_IGNORE)
 		return false;
@@ -121,6 +128,12 @@ bool content_mob_spawn(ServerEnvironment *env, v3s16 pos, u32 active_object_coun
 			continue;
 		if (m.spawn_max_nearby_mobs < active_object_count)
 			continue;
+		if (m.spawn_nearest_player != m.spawn_farthest_player) {
+			if (m.spawn_nearest_player > distance)
+				continue;
+			if (m.spawn_farthest_player < distance)
+				continue;
+		}
 		if (m.spawn_min_height > pos.Y)
 			continue;
 		if (m.spawn_max_height < pos.Y)
@@ -200,7 +213,6 @@ void content_mob_init()
 	f = &g_content_mob_features[i];
 	f->content = i;
 	f->level = MOB_PASSIVE;
-	//f->model = "rat.x";
 	f->model_scale = v3f(0.5,0.5,0.5);
 	f->setTexture("mob_firefly.png");
 	f->punch_action = MPA_PICKUP;
@@ -227,6 +239,7 @@ void content_mob_init()
 	f->setAnimationFrames(MA_STAND,24,36);
 	f->setAnimationFrames(MA_ATTACK,37,49);
 	f->punch_action = MPA_HARM;
+	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_OERKKI_DUST)+" 2";
 	f->motion = MM_SEEKER;
 	f->spawn_on = CONTENT_STONE;
 	f->spawn_in = CONTENT_AIR;
@@ -251,11 +264,13 @@ void content_mob_init()
 	f->setAnimationFrames(MA_MOVE,31,60);
 	f->setAnimationFrames(MA_ATTACK,61,90);
 	f->punch_action = MPA_HARM;
+	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_GUNPOWDER)+" 4";
 	f->motion = MM_SENTRY;
 	f->spawn_on = CONTENT_STONE;
 	f->spawn_in = CONTENT_AIR;
 	f->spawn_max_light = LIGHT_MAX/3;
 	f->spawn_max_nearby_mobs = 1;
+	f->spawn_farthest_player = 20.0*BS;
 	f->notices_player = true;
 	f->attack_throw_object = CONTENT_MOB_FIREBALL;
 	f->attack_glow_light = LIGHT_MAX-1;
@@ -267,7 +282,6 @@ void content_mob_init()
 	f = &g_content_mob_features[i];
 	f->content = i;
 	f->level = MOB_DESTRUCTIVE;
-	//f->model = "rat.x";
 	f->setTexture("mob_fireball.png");
 	f->punch_action = MPA_IGNORE;
 	f->motion = MM_CONSTANT;
@@ -293,6 +307,7 @@ void content_mob_init()
 	f->setAnimationFrames(MA_MOVE,0,60);
 	f->setAnimationFrames(MA_ATTACK,0,60);
 	f->punch_action = MPA_HARM;
+	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_FUR)+" 2";
 	f->motion = MM_SEEKER;
 	f->motion_type = MMT_WALK;
 	f->spawn_on = CONTENT_WILDGRASS_SHORT;
@@ -318,6 +333,7 @@ void content_mob_init()
 	f->setAnimationFrames(MA_MOVE,0,60);
 	f->setAnimationFrames(MA_ATTACK,0,60);
 	f->punch_action = MPA_HARM;
+	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_MEAT)+" 2";
 	f->motion = MM_WANDER;
 	f->motion_type = MMT_WALK;
 	f->angry_motion = MM_SEEKER;
@@ -370,6 +386,7 @@ void content_mob_init()
 	f->setAnimationFrames(MA_MOVE,80,160);
 	f->setAnimationFrames(MA_ATTACK,80,160);
 	f->punch_action = MPA_HARM;
+	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_MEAT)+" 2";
 	f->motion = MM_SEEKER;
 	f->motion_type = MMT_SWIM;
 	f->spawn_on = CONTENT_SAND;
@@ -413,5 +430,29 @@ void content_mob_init()
 
 	i = CONTENT_MOB_SHEEP;
 	f = &g_content_mob_features[i];
-	//f->content = i;
+	f->content = i;
+	f->level = MOB_PASSIVE;
+	f->hp = 30;
+	f->model = "sheep.b3d";
+	f->model_scale = v3f(0.8,0.8,0.8);
+	f->model_rotation = v3f(0,-90,0);
+	f->model_offset = v3f(0,0.6,0);
+	f->setTexture("mob_sheep.png");
+	f->setAnimationFrames(MA_STAND,61,120);
+	f->setAnimationFrames(MA_MOVE,0,60);
+	f->setAnimationFrames(MA_ATTACK,0,60);
+	f->punch_action = MPA_HARM;
+	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_MEAT)+" 2";
+	f->special_punch_item = TT_SHEAR;
+	f->special_dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_STRING)+" 4";
+	f->motion = MM_SEEKER;
+	f->motion_type = MMT_WALK;
+	f->spawn_on = CONTENT_WILDGRASS_SHORT;
+	f->spawn_in = CONTENT_AIR;
+	f->spawn_min_height = 2;
+	f->spawn_max_height = 20;
+	f->spawn_min_light = LIGHT_MAX/2;
+	f->spawn_max_nearby_mobs = 3;
+	f->lifetime = 900.0;
+	f->setCollisionBox(aabb3f(-0.4*BS, 0., -0.4*BS, 0.4*BS, 1.*BS, 0.4*BS));
 }

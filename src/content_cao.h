@@ -1,21 +1,27 @@
-/*
-Minetest-c55
-Copyright (C) 2010-2011 celeron55, Perttu Ahola <celeron55@gmail.com>
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along
-with this program; if not, write to the Free Software Foundation, Inc.,
-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-*/
+/************************************************************************
+* Minetest-c55
+* Copyright (C) 2010-2011 celeron55, Perttu Ahola <celeron55@gmail.com>
+*
+* content_cao.h
+* voxelands - 3d voxel world sandbox game
+* Copyright (C) Lisa 'darkrose' Milne 2013-2014 <lisa@ltmnet.com>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but
+* WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+* See the GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>
+*
+* License updated from GPLv2 or later to GPLv3 or later by Lisa Milne
+* for Voxelands.
+************************************************************************/
 
 #ifndef CONTENT_CAO_HEADER
 #define CONTENT_CAO_HEADER
@@ -40,6 +46,9 @@ struct SmoothTranslator
 	f32 anim_counter;
 	f32 anim_time;
 	f32 anim_time_counter;
+	f32 yaw_old;
+	f32 yaw_show;
+	f32 yaw_aim;
 
 	SmoothTranslator():
 		vect_old(0,0,0),
@@ -47,7 +56,10 @@ struct SmoothTranslator
 		vect_aim(0,0,0),
 		anim_counter(0),
 		anim_time(0),
-		anim_time_counter(0)
+		anim_time_counter(0),
+		yaw_old(0),
+		yaw_show(0),
+		yaw_aim(0)
 	{}
 
 	void init(v3f vect)
@@ -58,6 +70,9 @@ struct SmoothTranslator
 		anim_counter = 0;
 		anim_time = 0;
 		anim_time_counter = 0;
+		yaw_old = 0;
+		yaw_show = 0;
+		yaw_aim = 0;
 	}
 
 	void sharpen()
@@ -65,14 +80,17 @@ struct SmoothTranslator
 		init(vect_show);
 	}
 
-	void update(v3f vect_new)
+	void update(v3f vect_new,f32 yaw_new)
 	{
 		vect_old = vect_show;
 		vect_aim = vect_new;
-		if(anim_time < 0.001 || anim_time > 1.0)
+		yaw_old = yaw_show;
+		yaw_aim = wrapDegrees_0_360(yaw_new);
+		if (anim_time < 0.001 || anim_time > 1.0) {
 			anim_time = anim_time_counter;
-		else
+		}else{
 			anim_time = anim_time * 0.9 + anim_time_counter * 0.1;
+		}
 		anim_time_counter = 0;
 		anim_counter = 0;
 	}
@@ -82,14 +100,21 @@ struct SmoothTranslator
 		anim_time_counter = anim_time_counter + dtime;
 		anim_counter = anim_counter + dtime;
 		v3f vect_move = vect_aim - vect_old;
+		f32 yaw_move = yaw_aim - yaw_old;
+		if (yaw_move > 200) {
+			yaw_move -= 180;
+		}else if (yaw_move < -200) {
+			yaw_move += 180;
+		}
 		f32 moveratio = 1.0;
-		if(anim_time > 0.001)
+		if (anim_time > 0.001)
 			moveratio = anim_time_counter / anim_time;
 		// Move a bit less than should, to avoid oscillation
 		moveratio = moveratio * 0.5;
-		if(moveratio > 1.5)
+		if (moveratio > 1.5)
 			moveratio = 1.5;
 		vect_show = vect_old + vect_move * moveratio;
+		yaw_show = yaw_old + yaw_move * moveratio;
 	}
 
 	bool is_moving()

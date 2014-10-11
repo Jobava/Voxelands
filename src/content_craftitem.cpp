@@ -719,4 +719,33 @@ void content_craftitem_init()
 	lists::add("creative",i);
 	lists::add("cooking",i);
 
+	i = CONTENT_CRAFTITEM_FUR;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_FUR;
+	f->texture = "fur.png";
+	f->name = "fur";
+	f->description = wgettext("Fur");
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_MEAT;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_MEAT;
+	f->texture = "meat.png";
+	f->name = "meat";
+	f->description = wgettext("Meat");
+	f->cook_result = "CraftItem cooked_meat 1";
+	lists::add("creative",i);
+	lists::add("cooking",i);
+
+	i = CONTENT_CRAFTITEM_COOKED_MEAT;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_COOKED_MEAT;
+	f->texture = "cooked_meat.png";
+	f->name = "cooked_meat";
+	f->description = wgettext("Cooked Meat");
+	f->cook_result = "CraftItem ash 1";
+	f->edible = 6;
+	lists::add("creative",i);
+	lists::add("cooking",i);
+
 }

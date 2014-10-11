@@ -1,21 +1,27 @@
-/*
-Minetest-c55
-Copyright (C) 2010-2011 celeron55, Perttu Ahola <celeron55@gmail.com>
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along
-with this program; if not, write to the Free Software Foundation, Inc.,
-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-*/
+/************************************************************************
+* Minetest-c55
+* Copyright (C) 2010-2011 celeron55, Perttu Ahola <celeron55@gmail.com>
+*
+* server.cpp
+* voxelands - 3d voxel world sandbox game
+* Copyright (C) Lisa 'darkrose' Milne 2013-2014 <lisa@ltmnet.com>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but
+* WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+* See the GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>
+*
+* License updated from GPLv2 or later to GPLv3 or later by Lisa Milne
+* for Voxelands.
+************************************************************************/
 
 #include "server.h"
 #include "utility.h"
@@ -30,6 +36,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "config.h"
 #include "servercommand.h"
 #include "filesys.h"
+#include "content_object.h"
 #include "content_mapnode.h"
 #include "content_craft.h"
 #include "content_craftitem.h"
@@ -2291,10 +2298,22 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		// Left click, pick object up (usually)
 		if(button == 0)
 		{
+			content_t wield_item = CONTENT_IGNORE;
+			ToolItem *titem = NULL;
+
+			InventoryList *mlist = player->inventory.getList("main");
+			if (mlist != NULL) {
+				InventoryItem *item = mlist->getItem(item_i);
+				if (item) {
+					wield_item = item->getContent();
+					if ((wield_item&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK)
+						titem = (ToolItem*)item;
+				}
+			}
 			/*
 				Try creating inventory item
 			*/
-			InventoryItem *item = obj->createPickedUpItem();
+			InventoryItem *item = obj->createPickedUpItem(wield_item);
 
 			if (item) {
 				InventoryList *ilist = player->inventory.getList("main");
@@ -2315,7 +2334,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					}
 
 					// Remove object from environment
-					obj->m_removed = true;
+					if (obj->getType() != ACTIVEOBJECT_TYPE_MOB)
+						obj->m_removed = true;
 				}
 			}else{
 				/*
@@ -2325,24 +2345,12 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				actionstream<<player->getName()<<" punches object "
 						<<obj->getId()<<std::endl;
 
-				ToolItem *titem = NULL;
-				std::string toolname = "";
-
-				InventoryList *mlist = player->inventory.getList("main");
-				if (mlist != NULL) {
-					InventoryItem *item = mlist->getItem(item_i);
-					if (item && (std::string)item->getName() == "ToolItem") {
-						titem = (ToolItem*)item;
-						toolname = titem->getToolName();
-					}
-				}
-
 				v3f playerpos = player->getPosition();
 				v3f objpos = obj->getBasePosition();
 				v3f dir = (objpos - playerpos).normalize();
 
-				u16 wear = obj->punch(toolname, dir, player->getName());
-				item = obj->createPickedUpItem();
+				u16 wear = obj->punch(wield_item, dir, player->getName());
+				item = obj->createPickedUpItem(wield_item);
 				/* killing something might have caused a drop */
 				if (item) {
 					InventoryList *ilist = player->inventory.getList("main");
@@ -2365,8 +2373,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				}
 
 				if (titem && g_settings->getBool("tool_wear")) {
-					bool weared_out = titem->addWear(wear);
-					if(weared_out)
+					if (titem->addWear(wear))
 						mlist->deleteItem(item_i);
 					SendInventory(player->peer_id);
 				}

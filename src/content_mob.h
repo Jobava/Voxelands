@@ -24,6 +24,7 @@
 
 #include "mapnode.h"
 #include "serverobject.h"
+#include "content_toolitem.h"
 #ifndef SERVER
 #include "common_irrlicht.h"
 #endif
@@ -105,6 +106,8 @@ struct MobFeatures {
 	MobMotionType motion_type;
 	MobMotion angry_motion;
 	bool is_tamable;
+	content_t hunted_node;
+	content_t fleed_node;
 	bool notices_player;
 	content_t tamed_mob;
 	content_t attack_throw_object;
@@ -115,6 +118,8 @@ struct MobFeatures {
 	u8 attack_glow_light;
 	u16 hp;
 	std::string dropped_item;
+	ToolType special_punch_item;
+	std::string special_dropped_item;
 	f32 lifetime;
 	u16 contact_explosion_diameter;
 
@@ -126,6 +131,8 @@ struct MobFeatures {
 	s16 spawn_max_height;
 	u8 spawn_max_nearby_mobs;
 	s16 spawn_chance;
+	s16 spawn_nearest_player;
+	s16 spawn_farthest_player;
 
 	MobFeatures()
 	{
@@ -214,6 +221,8 @@ struct MobFeatures {
 		motion_type = MMT_WALK;
 		angry_motion = MM_STATIC;
 		is_tamable = false;
+		hunted_node = CONTENT_IGNORE;
+		fleed_node = CONTENT_IGNORE;
 		notices_player = false;
 		tamed_mob = CONTENT_IGNORE;
 		attack_throw_object = CONTENT_IGNORE;
@@ -224,6 +233,8 @@ struct MobFeatures {
 		attack_glow_light = 0;
 		hp = 20;
 		dropped_item = "";
+		special_punch_item = TT_NONE;
+		special_dropped_item = "";
 		lifetime = 0.0;
 		contact_explosion_diameter = 0;
 		spawn_on = CONTENT_IGNORE;
@@ -234,6 +245,8 @@ struct MobFeatures {
 		spawn_max_height = 100;
 		spawn_max_nearby_mobs = 3;
 		spawn_chance = 100;
+		spawn_nearest_player = 0;
+		spawn_farthest_player = 0;
 	}
 };
 

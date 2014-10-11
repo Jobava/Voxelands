@@ -1,21 +1,27 @@
-/*
-Minetest-c55
-Copyright (C) 2010-2011 celeron55, Perttu Ahola <celeron55@gmail.com>
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along
-with this program; if not, write to the Free Software Foundation, Inc.,
-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-*/
+/************************************************************************
+* Minetest-c55
+* Copyright (C) 2010-2011 celeron55, Perttu Ahola <celeron55@gmail.com>
+*
+* content_sao.cpp
+* voxelands - 3d voxel world sandbox game
+* Copyright (C) Lisa 'darkrose' Milne 2013-2014 <lisa@ltmnet.com>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but
+* WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+* See the GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>
+*
+* License updated from GPLv2 or later to GPLv3 or later by Lisa Milne
+* for Voxelands.
+************************************************************************/
 
 #include "content_sao.h"
 #include "content_mob.h"
@@ -473,10 +479,7 @@ void MobSAO::step(float dtime, bool send_recommended)
 		if (m_next_pos_exists) {
 			v3f pos_f = m_base_position;
 			v3f next_pos_f = intToFloat(m_next_pos_i, BS);
-
 			v3f v = next_pos_f - pos_f;
-			m_yaw = atan2(v.Z, v.X) / PI * 180;
-
 			v3f diff = next_pos_f - pos_f;
 			v3f dir = diff;
 			dir.normalize();
@@ -485,6 +488,7 @@ void MobSAO::step(float dtime, bool send_recommended)
 				speed = BS * 2.0;
 			if (m_falling)
 				speed = BS * 3.0;
+
 			dir *= dtime * speed;
 			bool arrived = false;
 			if (dir.getLength() > diff.getLength()) {
@@ -492,6 +496,7 @@ void MobSAO::step(float dtime, bool send_recommended)
 				arrived = true;
 			}
 			pos_f += dir;
+			m_yaw = wrapDegrees_180(180./PI*atan2(dir.Z, dir.X));
 			m_base_position = pos_f;
 
 			if ((pos_f - next_pos_f).getLength() < 0.1 || arrived)
@@ -556,8 +561,11 @@ void MobSAO::stepMotionWander(float dtime)
 			}
 			u32 order[3*3*3];
 			get_random_u32_array(order, num_dps);
+			v3s16 op = floatToInt(m_oldpos,BS);
 			for (int i=0; i<num_dps; i++) {
 				v3s16 p = dps[order[i]] + pos_i;
+				if (p == op)
+					continue;
 				if (!checkFreeAndWalkablePosition(p + pos_size_off))
 					continue;
 				m_next_pos_i = p;
@@ -610,8 +618,11 @@ void MobSAO::stepMotionWander(float dtime)
 			}
 			u32 order[3*3*3];
 			get_random_u32_array(order, num_dps);
+			v3s16 op = floatToInt(m_oldpos,BS);
 			for (int i=0; i<num_dps; i++) {
 				v3s16 p = dps[order[i]] + pos_i;
+				if (p == op)
+					continue;
 				if (!checkFreePosition(p + pos_size_off))
 					continue;
 				m_next_pos_i = p;
@@ -664,8 +675,11 @@ void MobSAO::stepMotionWander(float dtime)
 			}
 			u32 order[3*3*3];
 			get_random_u32_array(order, num_dps);
+			v3s16 op = floatToInt(m_oldpos,BS);
 			for (int i=0; i<num_dps; i++) {
 				v3s16 p = dps[order[i]] + pos_i;
+				if (p == op)
+					continue;
 				if (!checkFreePosition(p + pos_size_off))
 					continue;
 				m_next_pos_i = p;
@@ -716,8 +730,11 @@ void MobSAO::stepMotionSeeker(float dtime)
 			}
 			u32 order[3*3*3];
 			get_random_u32_array(order, num_dps);
+			v3s16 op = floatToInt(m_oldpos,BS);
 			for (int i=0; i<num_dps; i++) {
 				v3s16 p = dps[order[i]] + pos_i;
+				if (p == op)
+					continue;
 				if (!checkFreeAndWalkablePosition(p))
 					continue;
 				m_next_pos_i = p;
@@ -772,8 +789,11 @@ void MobSAO::stepMotionSeeker(float dtime)
 			}
 			u32 order[3*3*3];
 			get_random_u32_array(order, num_dps);
+			v3s16 op = floatToInt(m_oldpos,BS);
 			for (int i=0; i<num_dps; i++) {
 				v3s16 p = dps[order[i]] + pos_i;
+				if (p == op)
+					continue;
 				if (!checkFreePosition(p))
 					continue;
 				m_next_pos_i = p;
@@ -828,8 +848,11 @@ void MobSAO::stepMotionSeeker(float dtime)
 			}
 			u32 order[3*3*3];
 			get_random_u32_array(order, num_dps);
+			v3s16 op = floatToInt(m_oldpos,BS);
 			for (int i=0; i<num_dps; i++) {
 				v3s16 p = dps[order[i]] + pos_i;
+				if (p == op)
+					continue;
 				if (!checkFreePosition(p))
 					continue;
 				m_next_pos_i = p;
@@ -1083,12 +1106,19 @@ void MobSAO::explodeSquare(v3s16 p0, v3s16 size)
 	}
 	map->dispatchEvent(&event);
 }
-InventoryItem* MobSAO::createPickedUpItem()
+InventoryItem* MobSAO::createPickedUpItem(content_t punch_item)
 {
 	MobFeatures m = content_mob_features(m_content);
+	ToolItemFeatures f = content_toolitem_features(punch_item);
 	if (m.punch_action != MPA_PICKUP) {
-		if (!m_removed)
+		if (!m_removed) {
+			if (m.special_dropped_item != "" && (m.special_punch_item == TT_NONE || f.type == m.special_punch_item)) {
+				std::istringstream is(m.special_dropped_item, std::ios_base::binary);
+				InventoryItem *item = InventoryItem::deSerialize(is);
+				return item;
+			}
 			return NULL;
+		}
 	}
 	if (m.dropped_item == "")
 		return NULL;
@@ -1098,14 +1128,15 @@ InventoryItem* MobSAO::createPickedUpItem()
 		m_removed = true;
 	return item;
 }
-u16 MobSAO::punch(const std::string &toolname, v3f dir, const std::string &playername)
+u16 MobSAO::punch(content_t punch_item, v3f dir, const std::string &playername)
 {
 	MobFeatures m = content_mob_features(m_content);
 	if (m.punch_action == MPA_IGNORE)
 		return 0;
+	ToolItemFeatures f = content_toolitem_features(punch_item);
 
 	actionstream<<playername<<" punches mob id="<<m_id
-			<<" with a \""<<toolname<<"\" at "
+			<<" with a \""<<wide_to_narrow(f.description)<<"\" at "
 			<<PP(m_base_position/BS)<<std::endl;
 
 	if (m.punch_action == MPA_HARM) {
@@ -1130,7 +1161,6 @@ u16 MobSAO::punch(const std::string &toolname, v3f dir, const std::string &playe
 		sendPosition();
 
 
-		ToolItemFeatures f = content_toolitem_features(toolname);
 		u16 amount = 2;
 		if (f.type == TT_SWORD) {
 			amount = 4*((f.hardness/100)+1);

@@ -1,21 +1,27 @@
-/*
-Minetest-c55
-Copyright (C) 2010-2011 celeron55, Perttu Ahola <celeron55@gmail.com>
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along
-with this program; if not, write to the Free Software Foundation, Inc.,
-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-*/
+/************************************************************************
+* Minetest-c55
+* Copyright (C) 2010-2011 celeron55, Perttu Ahola <celeron55@gmail.com>
+*
+* content_cao.cpp
+* voxelands - 3d voxel world sandbox game
+* Copyright (C) Lisa 'darkrose' Milne 2013-2014 <lisa@ltmnet.com>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but
+* WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+* See the GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>
+*
+* License updated from GPLv2 or later to GPLv3 or later by Lisa Milne
+* for Voxelands.
+************************************************************************/
 
 #include "content_cao.h"
 #include "content_mob.h"
@@ -354,9 +360,9 @@ void MobCAO::updateNodePos()
 
 	v3f rot = m_node->getRotation();
 	if (m_draw_type == MDT_MODEL) {
-		rot.Y = (90-m_yaw)+content_mob_features(m_content).model_rotation.Y;
+		rot.Y = (90-pos_translator.yaw_show)+content_mob_features(m_content).model_rotation.Y;
 	}else if (m_draw_type == MDT_SPRITE) {
-		rot.Y = m_yaw+content_mob_features(m_content).model_rotation.Y;
+		rot.Y = pos_translator.yaw_show+content_mob_features(m_content).model_rotation.Y;
 	}
 	m_node->setRotation(rot);
 }
@@ -439,9 +445,9 @@ void MobCAO::processMessage(const std::string &data)
 	if (cmd == 0) {
 		// pos
 		m_position = readV3F1000(is);
-		pos_translator.update(m_position);
 		// yaw
 		m_yaw = readF1000(is);
+		pos_translator.update(m_position,m_yaw);
 
 		if (!m_walking) {
 			m_walking = true;
@@ -521,7 +527,7 @@ bool MobCAO::directReportPunch(const std::string &toolname, v3f dir)
 
 	m_position += dir * BS;
 	pos_translator.sharpen();
-	pos_translator.update(m_position);
+	pos_translator.update(m_position,m_yaw);
 	updateNodePos();
 
 	return false;
