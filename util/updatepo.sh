@@ -15,8 +15,8 @@
 
 # an auxiliary function to abort processing with an optional error message
 abort() {
-        test -n "$1" && echo >&2 "$1"
-        exit 1
+	test -n "$1" && echo >&2 "$1"
+	exit 1
 }
 
 # The po/ directory is assumed to be parallel to the directory where
@@ -44,10 +44,10 @@ cd po || abort "couldn't change directory to po!"
 langs=""
 
 for lang in * ; do
-        if test ! -d $lang; then
-                continue
-        fi
-        langs="$langs $lang"
+	if test ! -d $lang; then
+		continue
+	fi
+	langs="$langs $lang"
 done
 
 # go to parent dir of po/ and src/
@@ -61,13 +61,13 @@ xgettext --package-name=voxelands --copyright-holder="Lisa 'darkrose' Milne" -kN
 # Now iterate on all language dirs and create the po file if missing, or update it
 # if it exists already
 for lang in $langs ; do # note the missing quotes around $langs
-        pofile=po/$lang/voxelands.po
-        if test -e $pofile; then
-                echo "[$lang]: updating strings"
-                msgmerge -F -U $pofile $potfile
-        else
-                # This will ask for the translator identity
-                echo "[$lang]: creating $lang localization files"
-                msginit -l $lang -o $pofile -i $potfile
-        fi
+	pofile=po/$lang/voxelands.po
+	if test -e $pofile; then
+		echo "[$lang]: updating strings"
+		msgmerge -F -U $pofile $potfile
+	else
+		# This will ask for the translator identity
+		echo "[$lang]: creating $lang localization files"
+		msginit -l $lang -o $pofile -i $potfile
+	fi
 done
