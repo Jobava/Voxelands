@@ -1,13 +1,25 @@
 #!/bin/sh
 
 #
-# Update/create voxelands po files
+# Update/create voxelands po and pot files
 #
-# To update source texts in the po files, simply execute this script with
-# `./updatepo.sh`
+# To update only the pot file, execute this script with `./updatepot.sh`.
+# You should do this with each modification, addition, or deletion of a
+# translatable string in the source code, to give translators the most amount
+# of time possible to translate it before the next release. (Transifex
+# automatically pulls that file)
+#
+# To update the pot file and source texts in the po files, execute this script
+# with `./updatepot.sh --po`. Though so long as we use Transifex, we shouldn't
+# need to use this option.
 #
 # To start a localization for a new language, create a directory for it in po/
-# named as it's language code, then execute this script with `./updatepo.sh`
+# named as it's language code, then execute this script with
+# `./updatepot.sh --po`. But again, as long as we use Transifex, we shouldn't
+# need to use this option.
+#
+# In the above examples, I execute this script from the current directory,
+# however it can actually be executed from any directory.
 #
 # Because we use the --package-name flag, you must have xgettext>=0.17 for
 # this script to work. Use `xgettext -V` to check which version you have.
@@ -18,6 +30,14 @@ abort() {
 	test -n "$1" && echo >&2 "$1"
 	exit 1
 }
+
+# If flags exist, and are written incorrectly, abort.
+# Because this is currently the only flag available, I simply used a couple
+# if statements to make it work. However in the future, if we want more
+# options, we may need to switch to something more advanced, like getopt.
+if [[ -n $1 ]] && [[ ! $1 == "--po" ]]; then
+	abort "'$1' is not a valid option"
+fi
 
 # The po/ directory is assumed to be parallel to the directory where
 # this script is. Relative paths are fine for us so we can just
@@ -50,24 +70,29 @@ for lang in * ; do
 	langs="$langs $lang"
 done
 
+# First thing first, update the .pot template. We place it in the po/
+# directory at the top level.
+echo "updating the pot file"
+
 # go to parent dir of po/ and src/
 cd ..
 
-# First thing first, update the .pot template. We place it in the po/
-# directory at the top level.
 potfile=po/voxelands.pot
 xgettext --package-name=voxelands --copyright-holder="Lisa 'darkrose' Milne" -kN_ -kwgettext -F -n -o $potfile src/*.cpp src/*.h
 
-# Now iterate on all language dirs and create the po file if missing, or update it
-# if it exists already
-for lang in $langs ; do # note the missing quotes around $langs
-	pofile=po/$lang/voxelands.po
-	if test -e $pofile; then
-		echo "[$lang]: updating strings"
-		msgmerge -F -U $pofile $potfile
-	else
-		# This will ask for the translator identity
-		echo "[$lang]: creating $lang localization files"
-		msginit -l $lang -o $pofile -i $potfile
-	fi
-done
+# We just updated the pot file, now update po files if --po was specified.
+if [[ $1 == "--po" ]]; then
+	# Now iterate on all language dirs in po/ and create the po file if
+	# nonexistent, or update it if it exists already
+	for lang in $langs ; do # note the missing quotes around $langs
+		pofile=po/$lang/voxelands.po
+		if test -e $pofile; then
+			echo "[$lang]: updating strings"
+			msgmerge -F -U $pofile $potfile
+		else
+			# This creates a new po file and asks for the translator's identity
+			echo "[$lang]: creating $lang localization files"
+			msginit -l $lang -o $pofile -i $potfile
+		fi
+	done
+fi
