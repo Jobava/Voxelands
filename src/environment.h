@@ -39,6 +39,7 @@
 
 #include <list>
 #include <map>
+#include <vector>
 #include "common_irrlicht.h"
 #include "player.h"
 #include "map.h"
@@ -301,7 +302,7 @@ private:
 	// Pointer to server (which is handling this environment)
 	Server *m_server;
 	// Active object list
-	core::map<u16, ServerActiveObject*> m_active_objects;
+	std::map<u16, ServerActiveObject*> m_active_objects;
 	// Outgoing network message buffer for active objects
 	Queue<ActiveObjectMessage> m_active_object_messages;
 	// Some timers
@@ -425,8 +426,7 @@ public:
 	*/
 
 	// Get all nearby objects
-	void getActiveObjects(v3f origin, f32 max_d,
-			core::array<DistanceSortedActiveObject> &dest);
+	void getActiveObjects(v3f origin, f32 max_d, core::array<DistanceSortedActiveObject> &dest);
 
 	void updateObjectsCameraOffset(v3s16 camera_offset);
 
@@ -462,7 +462,7 @@ private:
 	Client *m_client;
 	ClientMap *m_map;
 	scene::ISceneManager *m_smgr;
-	core::map<u16, ClientActiveObject*> m_active_objects;
+	std::map<u16, ClientActiveObject*> m_active_objects;
 	Queue<ClientEnvEvent> m_client_event_queue;
 	IntervalLimiter m_active_object_light_update_interval;
 	IntervalLimiter m_lava_hurt_interval;

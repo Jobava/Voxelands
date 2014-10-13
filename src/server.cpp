@@ -1255,23 +1255,6 @@ void Server::AsyncRunStep()
 
 		core::map<v3s16, MapBlock*> modified_blocks;
 		m_env.getMap().transformLiquids(modified_blocks);
-#if 0
-		/*
-			Update lighting
-		*/
-		core::map<v3s16, MapBlock*> lighting_modified_blocks;
-		ServerMap &map = ((ServerMap&)m_env.getMap());
-		map.updateLighting(modified_blocks, lighting_modified_blocks);
-
-		// Add blocks modified by lighting to modified_blocks
-		for(core::map<v3s16, MapBlock*>::Iterator
-				i = lighting_modified_blocks.getIterator();
-				i.atEnd() == false; i++)
-		{
-			MapBlock *block = i.getNode()->getValue();
-			modified_blocks.insert(block->getPos(), block);
-		}
-#endif
 		/*
 			Set the modified blocks unsent for all the clients
 		*/

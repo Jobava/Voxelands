@@ -32,11 +32,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #endif
 
 #ifdef NDEBUG
-	#ifdef _WIN32
-		#pragma message ("Disabling unit tests")
-	#else
-		#warning "Disabling unit tests"
-	#endif
 	// Disable unit tests
 	#define ENABLE_TESTS 0
 #else
