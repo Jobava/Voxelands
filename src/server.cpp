@@ -1319,32 +1319,22 @@ void Server::AsyncRunStep()
 		s16 radius = g_settings->getS16("active_object_send_range_blocks");
 		radius *= MAP_BLOCKSIZE;
 
-		for(core::map<u16, RemoteClient*>::Iterator
-			i = m_clients.getIterator();
-			i.atEnd() == false; i++)
-		{
+		for (core::map<u16, RemoteClient*>::Iterator i = m_clients.getIterator(); i.atEnd() == false; i++) {
 			RemoteClient *client = i.getNode()->getValue();
 			Player *player = m_env.getPlayer(client->peer_id);
-			if(player==NULL)
-			{
+			if (player==NULL) {
 				// This can happen if the client timeouts somehow
-				/*infostream<<"WARNING: "<<__FUNCTION_NAME<<": Client "
-						<<client->peer_id
-						<<" has no associated player"<<std::endl;*/
 				continue;
 			}
 			v3s16 pos = floatToInt(player->getPosition(), BS);
 
 			core::map<u16, bool> removed_objects;
 			core::map<u16, bool> added_objects;
-			m_env.getRemovedActiveObjects(pos, radius,
-					client->m_known_objects, removed_objects);
-			m_env.getAddedActiveObjects(pos, radius,
-					client->m_known_objects, added_objects);
+			m_env.getRemovedActiveObjects(pos, radius, client->m_known_objects, removed_objects);
+			m_env.getAddedActiveObjects(pos, radius, client->m_known_objects, added_objects);
 
 			// Ignore if nothing happened
-			if(removed_objects.size() == 0 && added_objects.size() == 0)
-			{
+			if (removed_objects.size() == 0 && added_objects.size() == 0) {
 				//infostream<<"active objects: none changed"<<std::endl;
 				continue;
 			}
@@ -1356,10 +1346,7 @@ void Server::AsyncRunStep()
 			// Handle removed objects
 			writeU16((u8*)buf, removed_objects.size());
 			data_buffer.append(buf, 2);
-			for(core::map<u16, bool>::Iterator
-					i = removed_objects.getIterator();
-					i.atEnd()==false; i++)
-			{
+			for (core::map<u16, bool>::Iterator i = removed_objects.getIterator(); i.atEnd()==false; i++) {
 				// Get object
 				u16 id = i.getNode()->getKey();
 				ServerActiveObject* obj = m_env.getActiveObject(id);
@@ -1371,7 +1358,7 @@ void Server::AsyncRunStep()
 				// Remove from known objects
 				client->m_known_objects.remove(i.getNode()->getKey());
 
-				if(obj && obj->m_known_by_count > 0)
+				if (obj && obj->m_known_by_count > 0)
 					obj->m_known_by_count--;
 			}
 
@@ -1406,7 +1393,7 @@ void Server::AsyncRunStep()
 				// Add to known objects
 				client->m_known_objects.insert(i.getNode()->getKey(), false);
 
-				if(obj)
+				if (obj)
 					obj->m_known_by_count++;
 			}
 
@@ -2246,10 +2233,10 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 	}
 	else if(command == TOSERVER_CLICK_ACTIVEOBJECT)
 	{
-		if(datasize < 7)
+		if (datasize < 7)
 			return;
 
-		if((getPlayerPrivs(player) & PRIV_BUILD) == 0)
+		if ((getPlayerPrivs(player) & PRIV_BUILD) == 0)
 			return;
 
 		/*
@@ -2265,22 +2252,23 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 		ServerActiveObject *obj = m_env.getActiveObject(id);
 
-		if(obj == NULL)
-		{
+		if (obj == NULL) {
 			infostream<<"Server: CLICK_ACTIVEOBJECT: object not found"
 					<<std::endl;
 			return;
 		}
 
 		// Skip if object has been removed
-		if(obj->m_removed)
+		if (obj->m_removed) {
+			infostream<<"Server: CLICK_ACTIVEOBJECT: object has been removed"
+					<<std::endl;
 			return;
+		}
 
 		//TODO: Check that object is reasonably close
 
 		// Left click, pick object up (usually)
-		if(button == 0)
-		{
+		if (button == 0) {
 			content_t wield_item = CONTENT_IGNORE;
 			ToolItem *titem = NULL;
 
@@ -5860,15 +5848,12 @@ void Server::handlePeerChange(PeerChange &c)
 		*/
 		RemoteClient *client = n->getValue();
 		// Handle objects
-		for(core::map<u16, bool>::Iterator
-				i = client->m_known_objects.getIterator();
-				i.atEnd()==false; i++)
-		{
+		for (core::map<u16, bool>::Iterator i = client->m_known_objects.getIterator(); i.atEnd()==false; i++) {
 			// Get object
 			u16 id = i.getNode()->getKey();
 			ServerActiveObject* obj = m_env.getActiveObject(id);
 
-			if(obj && obj->m_known_by_count > 0)
+			if (obj && obj->m_known_by_count > 0)
 				obj->m_known_by_count--;
 		}
 
@@ -5876,13 +5861,12 @@ void Server::handlePeerChange(PeerChange &c)
 		std::wstring message;
 		{
 			Player *player = m_env.getPlayer(c.peer_id);
-			if(player != NULL)
-			{
+			if (player != NULL) {
 				std::wstring name = narrow_to_wide(player->getName());
 				message += L"*** ";
 				message += name;
 				message += L" left game";
-				if(c.timeout)
+				if (c.timeout)
 					message += L" (timed out)";
 			}
 		}
@@ -5895,26 +5879,22 @@ void Server::handlePeerChange(PeerChange &c)
 		// Set player client disconnected
 		{
 			Player *player = m_env.getPlayer(c.peer_id);
-			if(player != NULL)
+			if (player != NULL)
 				player->peer_id = 0;
 
 			/*
 				Print out action
 			*/
-			if(player != NULL)
-			{
+			if (player != NULL) {
 				std::ostringstream os(std::ios_base::binary);
-				for(core::map<u16, RemoteClient*>::Iterator
-					i = m_clients.getIterator();
-					i.atEnd() == false; i++)
-				{
+				for (core::map<u16, RemoteClient*>::Iterator i = m_clients.getIterator(); i.atEnd() == false; i++) {
 					RemoteClient *client = i.getNode()->getValue();
 					assert(client->peer_id == i.getNode()->getKey());
-					if(client->serialization_version == SER_FMT_VER_INVALID)
+					if (client->serialization_version == SER_FMT_VER_INVALID)
 						continue;
 					// Get player
 					Player *player = m_env.getPlayer(client->peer_id);
-					if(!player)
+					if (!player)
 						continue;
 					// Get name of player
 					os<<player->getName()<<" ";

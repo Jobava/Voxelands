@@ -2711,8 +2711,7 @@ void ServerEnvironment::step(float dtime)
 		bool send_recommended = false;
 		u8 mob_level = mobLevelI(g_settings->get("max_mob_level"));
 		m_send_recommended_timer += dtime;
-		if(m_send_recommended_timer > 0.10)
-		{
+		if (m_send_recommended_timer > 0.10) {
 			m_send_recommended_timer = 0;
 			send_recommended = true;
 		}
@@ -2723,8 +2722,11 @@ void ServerEnvironment::step(float dtime)
 			if (obj->level() > mob_level)
 				obj->m_removed = true;
 			// Don't step if is to be removed or stored statically
-			if (obj->m_removed || obj->m_pending_deactivation)
+			if (obj->m_removed || obj->m_pending_deactivation) {
+				// be sure m_removed is set in case m_pending_deactivation is
+				obj->m_removed = true;
 				continue;
+			}
 			// Step object
 			obj->step(dtime, send_recommended);
 			// Read messages from object
@@ -3161,25 +3163,18 @@ void ServerEnvironment::getRemovedActiveObjects(v3s16 pos, s16 radius,
 		- object has m_removed=true, or
 		- object is too far away
 	*/
-	for(core::map<u16, bool>::Iterator
-			i = current_objects.getIterator();
-			i.atEnd()==false; i++)
-	{
+	for (core::map<u16, bool>::Iterator i = current_objects.getIterator(); i.atEnd()==false; i++) {
 		u16 id = i.getNode()->getKey();
 		ServerActiveObject *object = getActiveObject(id);
-		if(object == NULL)
-		{
+		if (object == NULL) {
 			infostream<<"ServerEnvironment::getRemovedActiveObjects():"
 					<<" object in current_objects is NULL"<<std::endl;
-		}
-		else if(object->m_removed == false)
-		{
+		}else if (object->m_removed == false) {
 			f32 distance_f = object->getBasePosition().getDistanceFrom(pos_f);
 			/*infostream<<"removed == false"
 					<<"distance_f = "<<distance_f
 					<<", radius_f = "<<radius_f<<std::endl;*/
-			if(distance_f < radius_f)
-			{
+			if (distance_f < radius_f) {
 				// Not removed
 				continue;
 			}
@@ -3284,6 +3279,9 @@ void ServerEnvironment::removeRemovedObjects()
 		*/
 		if (obj->m_removed == false && obj->m_pending_deactivation == false)
 			continue;
+
+		// be sure m_removed is set in case m_pending_deactivation is
+		obj->m_removed = true;
 
 		/*
 			Delete static data from block if is marked as removed
@@ -3443,8 +3441,11 @@ void ServerEnvironment::deactivateFarObjects(bool force_delete)
 		}
 
 		// If pending deactivation, let removeRemovedObjects() do it
-		if (obj->m_pending_deactivation)
+		if (obj->m_pending_deactivation) {
+			// be sure m_removed is set in case m_pending_deactivation is
+			obj->m_removed = true;
 			continue;
+		}
 
 		u16 id = i->first;
 		v3f objectpos = obj->getBasePosition();

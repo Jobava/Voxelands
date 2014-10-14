@@ -75,8 +75,9 @@ private:
 
 	MobMotion getMotion()
 	{
-		if (m_angry)
-			return content_mob_features(m_content).angry_motion;
+		MobMotion m = content_mob_features(m_content).angry_motion;
+		if (m_angry && m != MM_STATIC)
+			return m;
 		return content_mob_features(m_content).motion;
 	}
 

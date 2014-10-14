@@ -475,6 +475,9 @@ void MobSAO::step(float dtime, bool send_recommended)
 					m_walk_around_timer = 0.1*myrand_range(20,40);
 				}
 			}
+		}else if (m_walk_around_timer > 10.0) {
+			m_walk_around_timer = 0.2;
+			m_walk_around = true;
 		}
 		if (m_next_pos_exists) {
 			v3f pos_f = m_base_position;
@@ -1196,7 +1199,7 @@ void MobSAO::sendPosition()
 }
 void MobSAO::doDamage(u16 d)
 {
-	infostream<<"MobV2 hp="<<m_hp<<" damage="<<d<<std::endl;
+	infostream<<"Mob hp="<<((int)m_hp)<<" damage="<<((int)d)<<" age="<<((int)m_age)<<std::endl;
 
 	if (d < m_hp) {
 		m_hp -= d;
