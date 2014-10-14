@@ -333,6 +333,7 @@ void content_mob_init()
 	f->setAnimationFrames(MA_MOVE,0,60);
 	f->setAnimationFrames(MA_ATTACK,0,60);
 	f->punch_action = MPA_HARM;
+	f->tamed_mob = CONTENT_MOB_TAMESTAG;
 	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_MEAT)+" 2";
 	f->motion = MM_WANDER;
 	f->motion_type = MMT_WALK;
@@ -347,6 +348,27 @@ void content_mob_init()
 	f->notices_player = true;
 	f->attack_player_damage = 3;
 	f->attack_player_range = v3f(1,1,1);
+	f->lifetime = 900.0;
+	f->setCollisionBox(aabb3f(-0.7*BS, 0., -0.7*BS, 0.7*BS, 1.5*BS, 0.7*BS));
+
+	i = CONTENT_MOB_TAMESTAG;
+	f = &g_content_mob_features[i];
+	f->content = i;
+	f->level = MOB_PASSIVE;
+	f->hp = 40;
+	f->model = "stag.b3d";
+	f->model_scale = v3f(1,1,1);
+	f->model_rotation = v3f(0,-90,0);
+	f->model_offset = v3f(0,1.1,0);
+	f->setTexture("mob_tamestag.png");
+	f->setAnimationFrames(MA_STAND,61,120);
+	f->setAnimationFrames(MA_MOVE,0,60);
+	f->setAnimationFrames(MA_ATTACK,0,60);
+	f->punch_action = MPA_HARM;
+	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_FUR)+" 2";
+	f->motion = MM_SEEKER;
+	f->motion_type = MMT_WALK;
+	f->notices_player = true;
 	f->lifetime = 900.0;
 	f->setCollisionBox(aabb3f(-0.7*BS, 0., -0.7*BS, 0.7*BS, 1.5*BS, 0.7*BS));
 
@@ -414,6 +436,7 @@ void content_mob_init()
 	f->setAnimationFrames(MA_MOVE,61,120);
 	f->setAnimationFrames(MA_ATTACK,61,120);
 	f->punch_action = MPA_HARM;
+	f->tamed_mob = CONTENT_MOB_TAMEWOLF;
 	f->motion = MM_SEEKER;
 	f->motion_type = MMT_WALK;
 	f->spawn_on = CONTENT_WILDGRASS_LONG;
@@ -425,6 +448,27 @@ void content_mob_init()
 	f->notices_player = true;
 	f->attack_player_damage = 3;
 	f->attack_player_range = v3f(1,1,1);
+	f->lifetime = 900.0;
+	f->setCollisionBox(aabb3f(-0.5*BS, 0., -0.5*BS, 0.5*BS, 1.*BS, 0.5*BS));
+
+	i = CONTENT_MOB_TAMEWOLF;
+	f = &g_content_mob_features[i];
+	f->content = i;
+	f->level = MOB_PASSIVE;
+	f->hp = 40;
+	f->model = "wolf.b3d";
+	f->model_scale = v3f(1,1,1);
+	f->model_rotation = v3f(0,-90,0);
+	f->model_offset = v3f(0,0.5,0);
+	f->setTexture("mob_tamewolf.png");
+	f->setAnimationFrames(MA_STAND,1,60);
+	f->setAnimationFrames(MA_MOVE,61,120);
+	f->setAnimationFrames(MA_ATTACK,61,120);
+	f->punch_action = MPA_HARM;
+	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_FUR)+" 2";
+	f->motion = MM_SEEKER;
+	f->motion_type = MMT_WALK;
+	f->notices_player = true;
 	f->lifetime = 900.0;
 	f->setCollisionBox(aabb3f(-0.5*BS, 0., -0.5*BS, 0.5*BS, 1.*BS, 0.5*BS));
 
@@ -444,7 +488,9 @@ void content_mob_init()
 	f->punch_action = MPA_HARM;
 	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_MEAT)+" 2";
 	f->special_punch_item = TT_SHEAR;
-	f->special_dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_STRING)+" 4";
+	f->special_dropped_item = CONTENT_CRAFTITEM_STRING;
+	f->special_dropped_count = 4;
+	f->special_dropped_max = 8;
 	f->motion = MM_SEEKER;
 	f->motion_type = MMT_WALK;
 	f->spawn_on = CONTENT_WILDGRASS_SHORT;

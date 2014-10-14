@@ -105,7 +105,6 @@ struct MobFeatures {
 	MobMotion motion;
 	MobMotionType motion_type;
 	MobMotion angry_motion;
-	bool is_tamable;
 	content_t hunted_node;
 	content_t fleed_node;
 	bool notices_player;
@@ -119,7 +118,9 @@ struct MobFeatures {
 	u16 hp;
 	std::string dropped_item;
 	ToolType special_punch_item;
-	std::string special_dropped_item;
+	content_t special_dropped_item;
+	u16 special_dropped_count;
+	u16 special_dropped_max;
 	f32 lifetime;
 	u16 contact_explosion_diameter;
 
@@ -220,7 +221,6 @@ struct MobFeatures {
 		motion = MM_STATIC;
 		motion_type = MMT_WALK;
 		angry_motion = MM_STATIC;
-		is_tamable = false;
 		hunted_node = CONTENT_IGNORE;
 		fleed_node = CONTENT_IGNORE;
 		notices_player = false;
@@ -234,7 +234,9 @@ struct MobFeatures {
 		hp = 20;
 		dropped_item = "";
 		special_punch_item = TT_NONE;
-		special_dropped_item = "";
+		special_dropped_item = CONTENT_IGNORE;
+		special_dropped_count = 0;
+		special_dropped_max = 0;
 		lifetime = 0.0;
 		contact_explosion_diameter = 0;
 		spawn_on = CONTENT_IGNORE;
@@ -281,10 +283,11 @@ void content_mob_init();
 #define CONTENT_MOB_FIREBALL (CONTENT_MOB_MASK | 0x05)
 #define CONTENT_MOB_DOE (CONTENT_MOB_MASK | 0x06)
 #define CONTENT_MOB_STAG (CONTENT_MOB_MASK | 0x07)
-#define CONTENT_MOB_FISH (CONTENT_MOB_MASK | 0x08)
-#define CONTENT_MOB_SHARK (CONTENT_MOB_MASK | 0x09)
-#define CONTENT_MOB_WOLF (CONTENT_MOB_MASK | 0x0A)
-#define CONTENT_MOB_TAMEWOLF (CONTENT_MOB_MASK | 0x0B)
-#define CONTENT_MOB_SHEEP (CONTENT_MOB_MASK | 0x0C)
+#define CONTENT_MOB_TAMESTAG (CONTENT_MOB_MASK | 0x08)
+#define CONTENT_MOB_FISH (CONTENT_MOB_MASK | 0x09)
+#define CONTENT_MOB_SHARK (CONTENT_MOB_MASK | 0x0A)
+#define CONTENT_MOB_WOLF (CONTENT_MOB_MASK | 0x0B)
+#define CONTENT_MOB_TAMEWOLF (CONTENT_MOB_MASK | 0x0C)
+#define CONTENT_MOB_SHEEP (CONTENT_MOB_MASK | 0x0D)
 
 #endif

@@ -188,12 +188,12 @@ InventoryItem * ItemSAO::createInventoryItem()
 	}
 }
 
-void ItemSAO::rightClick(Player *player)
+bool ItemSAO::rightClick(Player *player)
 {
 	infostream<<__FUNCTION_NAME<<std::endl;
 	InventoryItem *item = createInventoryItem();
-	if(item == NULL)
-		return;
+	if (item == NULL)
+		return false;
 
 	bool to_be_deleted = item->use(m_env, player);
 
@@ -204,6 +204,7 @@ void ItemSAO::rightClick(Player *player)
 		m_inventorystring = item->getItemString();
 
 	delete item;
+	return false;
 }
 
 static void get_random_u32_array(u32 a[], u32 len)
@@ -246,6 +247,7 @@ MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, content_t type):
 	m_age(0),
 	m_hp(10),
 	m_angry(false),
+	m_special_count(0),
 	m_disturb_timer(100000),
 	m_random_disturb_timer(0),
 	m_walk_around(false),
@@ -256,8 +258,10 @@ MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, content_t type):
 	m_shoot_y(0)
 {
 	ServerActiveObject::registerType(getType(), create);
-	if ((type&CONTENT_MOB_MASK) == CONTENT_MOB_MASK)
+	if ((type&CONTENT_MOB_MASK) == CONTENT_MOB_MASK) {
 		m_hp = content_mob_features(type).hp;
+		m_special_count = content_mob_features(type).special_dropped_max;
+	}
 }
 MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, v3f speed, content_t type):
 	ServerActiveObject(env, id, pos),
@@ -273,6 +277,7 @@ MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, v3f speed, content_t typ
 	m_age(0),
 	m_hp(10),
 	m_angry(false),
+	m_special_count(0),
 	m_disturb_timer(100000),
 	m_random_disturb_timer(0),
 	m_walk_around(false),
@@ -283,8 +288,10 @@ MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, v3f speed, content_t typ
 	m_shoot_y(0)
 {
 	ServerActiveObject::registerType(getType(), create);
-	if ((type&CONTENT_MOB_MASK) == CONTENT_MOB_MASK)
+	if ((type&CONTENT_MOB_MASK) == CONTENT_MOB_MASK) {
 		m_hp = content_mob_features(type).hp;
+		m_special_count = content_mob_features(type).special_dropped_max;
+	}
 }
 MobSAO::~MobSAO()
 {
@@ -353,6 +360,9 @@ void MobSAO::step(float dtime, bool send_recommended)
 		m_removed = true;
 		return;
 	}
+
+	if (m.special_dropped_max > 0 && m_special_count < m.special_dropped_max && myrand_range(0,50) == 0)
+		m_special_count++;
 
 	m_random_disturb_timer += dtime;
 	if (m.notices_player) {
@@ -1115,10 +1125,21 @@ InventoryItem* MobSAO::createPickedUpItem(content_t punch_item)
 	ToolItemFeatures f = content_toolitem_features(punch_item);
 	if (m.punch_action != MPA_PICKUP) {
 		if (!m_removed) {
-			if (m.special_dropped_item != "" && (m.special_punch_item == TT_NONE || f.type == m.special_punch_item)) {
-				std::istringstream is(m.special_dropped_item, std::ios_base::binary);
-				InventoryItem *item = InventoryItem::deSerialize(is);
-				return item;
+			if (m.special_dropped_item != CONTENT_IGNORE && (m.special_punch_item == TT_NONE || f.type == m.special_punch_item)) {
+				if (m_special_count < m.special_dropped_count)
+					return NULL;
+				m_special_count -= m.special_dropped_count;
+				if (m_special_count < 0) {
+					m_special_count = 0;
+					return NULL;
+				}
+				if ((m.special_dropped_item&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
+					return new CraftItem(m.special_dropped_item,m.special_dropped_count);
+				}else if ((m.special_dropped_item&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+					return new ToolItem(m.special_dropped_item,0);
+				}else{
+					return new MaterialItem(m.special_dropped_item,m.special_dropped_count);
+				}
 			}
 			return NULL;
 		}
@@ -1141,6 +1162,9 @@ u16 MobSAO::punch(content_t punch_item, v3f dir, const std::string &playername)
 	actionstream<<playername<<" punches mob id="<<m_id
 			<<" with a \""<<wide_to_narrow(f.description)<<"\" at "
 			<<PP(m_base_position/BS)<<std::endl;
+
+	if (m.special_dropped_item != CONTENT_IGNORE && (m.special_punch_item == TT_NONE || f.type == m.special_punch_item))
+		return 0;
 
 	if (m.punch_action == MPA_HARM) {
 		m_disturb_timer = 0;
@@ -1177,6 +1201,56 @@ u16 MobSAO::punch(content_t punch_item, v3f dir, const std::string &playername)
 	}
 
 	return 655;
+}
+bool MobSAO::rightClick(Player *player)
+{
+	// so get the player
+	if (!player)
+		return false;
+	// see if mob is tamable
+	MobFeatures m = content_mob_features(m_content);
+	if (m.tamed_mob == CONTENT_IGNORE)
+		return false;
+	// get the wielded item
+	u16 item_i = player->getSelectedItem();
+	InventoryList *ilist = player->inventory.getList("main");
+	if (ilist == NULL)
+		return false;
+	InventoryItem *item = ilist->getItem(item_i);
+	if (!item)
+		return false;
+	// check if it's a craft item
+	content_t c = item->getContent();
+	if ((c&CONTENT_CRAFTITEM_MASK) != CONTENT_CRAFTITEM_MASK)
+		return false;
+	CraftItemFeatures f = content_craftitem_features(c);
+	if (f.content != c)
+		return false;
+	// and edible
+	if (!f.edible)
+		return false;
+	// feed the mob
+	// after this always return true as inventory has been modified
+	if (g_settings->getBool("infinite_inventory") == false && ilist) {
+		// Remove from inventory
+		if (item->getCount() == 1) {
+			ilist->deleteItem(item_i);
+		}else{
+			item->remove(1);
+		}
+	}
+	// tame it maybe
+	if (m.level < MOB_AGGRESSIVE || myrand_range(0,m.level*2) == 0)
+		return true;
+
+	// add new tamed mob
+	ServerActiveObject *obj = new MobSAO(m_env, 0, m_base_position, m.tamed_mob);
+	if (obj)
+		m_env->addActiveObject(obj);
+	// delete this one
+	m_removed = true;
+
+	return true;
 }
 u8 MobSAO::level()
 {

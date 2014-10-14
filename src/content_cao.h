@@ -207,7 +207,7 @@ public:
 	//bool doShowSelectionBox(){return false;}
 
 	// If returns true, punch will not be sent to the server
-	bool directReportPunch(const std::string &toolname, v3f dir);
+	bool directReportPunch(content_t punch_item, v3f dir);
 private:
 	void setAnimation(MobAnimation anim);
 	aabb3f m_selection_box;

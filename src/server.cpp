@@ -1322,7 +1322,7 @@ void Server::AsyncRunStep()
 		for (core::map<u16, RemoteClient*>::Iterator i = m_clients.getIterator(); i.atEnd() == false; i++) {
 			RemoteClient *client = i.getNode()->getValue();
 			Player *player = m_env.getPlayer(client->peer_id);
-			if (player==NULL) {
+			if (player == NULL) {
 				// This can happen if the client timeouts somehow
 				continue;
 			}
@@ -2351,8 +2351,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			}
 		}
 		// Right click, do something with object
-		if(button == 1)
-		{
+		if (button == 1) {
 			actionstream<<player->getName()<<" right clicks object "
 					<<obj->getId()<<std::endl;
 
@@ -2361,8 +2360,11 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			u16 oldair = player->air;
 			u16 oldhunger = player->hunger;
 
-			// Do stuff
-			obj->rightClick(player);
+			// Do stuff - resend inventory if returns true
+			if (obj->rightClick(player)) {
+				UpdateCrafting(peer_id);
+				SendInventory(peer_id);
+			}
 
 			// Send back stuff
 			if (player->hp != oldhp || player->air != oldair || player->hunger != oldhunger)
@@ -3898,7 +3900,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				InventoryList *ilist = player->inventory.getList("main");
 				if(g_settings->getBool("infinite_inventory") == false && ilist) {
 					// Remove from inventory and send inventory
-					if(mitem->getCount() == 1)
+					if (mitem->getCount() == 1)
 						ilist->deleteItem(item_i);
 					else
 						mitem->remove(1);

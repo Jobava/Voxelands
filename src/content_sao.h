@@ -45,7 +45,7 @@ public:
 	std::string getStaticData();
 	InventoryItem* createInventoryItem();
 	InventoryItem* createPickedUpItem(content_t punch_item){return createInventoryItem();}
-	void rightClick(Player *player);
+	bool rightClick(Player *player);
 private:
 	std::string m_inventorystring;
 	v3f m_speed_f;
@@ -68,6 +68,7 @@ public:
 	void step(float dtime, bool send_recommended);
 	InventoryItem* createPickedUpItem(content_t punch_item);
 	u16 punch(content_t punch_item, v3f dir, const std::string &playername);
+	bool rightClick(Player *player);
 	u8 level();
 private:
 	void sendPosition();
@@ -106,6 +107,7 @@ private:
 	float m_age;
 	u8 m_hp;
 	bool m_angry;
+	u16 m_special_count;
 
 	float m_disturb_timer;
 	std::string m_disturbing_player;

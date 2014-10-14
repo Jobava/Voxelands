@@ -31,9 +31,10 @@
 #include "mapnode.h"
 #include "utility.h"
 
-#define MOB_PASSIVE 0
-#define MOB_AGGRESSIVE 1
-#define MOB_DESTRUCTIVE 2
+#define MOB_NONE 0
+#define MOB_PASSIVE 1
+#define MOB_AGGRESSIVE 2
+#define MOB_DESTRUCTIVE 3
 
 /*
 
@@ -118,8 +119,9 @@ public:
 	virtual u16 punch(content_t punch_item, v3f dir, const std::string &playername) {return 0;}
 
 	/*
+		return true if inventory is modified
 	*/
-	virtual void rightClick(Player *player){}
+	virtual bool rightClick(Player *player) {return false;}
 
 	virtual u8 level(){return MOB_PASSIVE;}
 

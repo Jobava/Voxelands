@@ -22,6 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "common_irrlicht.h"
 #include "activeobject.h"
+#include "mapnode.h"
 
 /*
 
@@ -72,7 +73,7 @@ public:
 	static ClientActiveObject* create(u8 type);
 
 	// If returns true, punch will not be sent to the server
-	virtual bool directReportPunch(const std::string &toolname, v3f dir)
+	virtual bool directReportPunch(content_t punch_item, v3f dir)
 	{ return false; }
 
 protected:

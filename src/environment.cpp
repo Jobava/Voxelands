@@ -3453,38 +3453,9 @@ void ServerEnvironment::deactivateFarObjects(bool force_delete)
 		// The block in which the object resides in
 		v3s16 blockpos_o = getNodeBlockPos(floatToInt(objectpos, BS));
 
-		// If known by some client, don't immediately delete.
-		bool pending_delete = (obj->m_known_by_count > 0 && !force_delete);
-
 		// If block is active, don't remove
-		if (m_active_blocks.contains(blockpos_o)) {
-			if (obj->m_static_exists && blockpos_o != obj->m_static_block) {
-				std::string staticdata_new = obj->getStaticData();
-				StaticObject s_obj(obj->getType(), objectpos, staticdata_new);
-
-				MapBlock *block = m_map->emergeBlock(obj->m_static_block, false);
-				if (block) {
-					block->m_static_objects.remove(id);
-					obj->m_static_exists = false;
-					block->raiseModified(MOD_STATE_WRITE_NEEDED);
-				}
-				block = m_map->emergeBlock(blockpos_o);
-				if (block) {
-					if (block->m_static_objects.m_stored.size() < 50) {
-						u16 new_id = pending_delete ? id : 0;
-						block->m_static_objects.insert(new_id, s_obj);
-
-						block->raiseModified(MOD_STATE_WRITE_NEEDED);
-
-						obj->m_static_exists = true;
-						obj->m_static_block = block->getPos();
-					}else{
-						obj->m_removed = true;
-					}
-				}
-			}
+		if (m_active_blocks.contains(blockpos_o))
 			continue;
-		}
 
 		verbosestream<<"ServerEnvironment::deactivateFarObjects(): "
 				<<"deactivating object id="<<id<<" on inactive block "
@@ -3532,6 +3503,9 @@ void ServerEnvironment::deactivateFarObjects(bool force_delete)
 					block->raiseModified(MOD_STATE_WRITE_NEEDED);
 			}
 		}
+
+		// If known by some client, don't immediately delete.
+		bool pending_delete = (obj->m_known_by_count > 0 && !force_delete);
 
 		// Add to the block where the object is located in
 		v3s16 blockpos = getNodeBlockPos(floatToInt(objectpos, BS));

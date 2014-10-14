@@ -509,10 +509,16 @@ void MobCAO::initialize(const std::string &data)
 
 	updateNodePos();
 }
-bool MobCAO::directReportPunch(const std::string &toolname, v3f dir)
+bool MobCAO::directReportPunch(content_t punch_item, v3f dir)
 {
-	if (content_mob_features(m_content).punch_action == MPA_IGNORE)
+	MobFeatures m = content_mob_features(m_content);
+	if (m.punch_action == MPA_IGNORE)
 		return false;
+
+	ToolItemFeatures f = content_toolitem_features(punch_item);
+	if (m.special_dropped_item != CONTENT_IGNORE && (m.special_punch_item == TT_NONE || f.type == m.special_punch_item))
+		return false;
+
 	video::SColor color(255,255,0,0);
 
 	if (m_node != NULL) {

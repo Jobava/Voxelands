@@ -1536,7 +1536,7 @@ void Client::groundAction(u8 action, v3s16 nodepos_undersurface,
 
 void Client::clickActiveObject(u8 button, u16 id, u16 item_i)
 {
-	if(connectedAndInitialized() == false){
+	if (connectedAndInitialized() == false) {
 		infostream<<"Client::clickActiveObject() "
 				"cancelled (not connected)"
 				<<std::endl;
@@ -1544,33 +1544,26 @@ void Client::clickActiveObject(u8 button, u16 id, u16 item_i)
 	}
 
 	Player *player = m_env.getLocalPlayer();
-	if(player == NULL)
+	if (player == NULL)
 		return;
 
 	ClientActiveObject *obj = m_env.getActiveObject(id);
-	if(obj){
-		if(button == 0){
-			ToolItem *titem = NULL;
-			std::string toolname = "";
+	if (obj) {
+		if (button == 0) {
+			content_t punch_item = CONTENT_IGNORE;
 
 			InventoryList *mlist = player->inventory.getList("main");
-			if(mlist != NULL)
-			{
+			if (mlist != NULL) {
 				InventoryItem *item = mlist->getItem(item_i);
-				if(item && (std::string)item->getName() == "ToolItem")
-				{
-					titem = (ToolItem*)item;
-					toolname = titem->getToolName();
-				}
+				if (item)
+					punch_item = item->getContent();
 			}
 
 			v3f playerpos = player->getPosition();
 			v3f objpos = obj->getPosition();
 			v3f dir = (objpos - playerpos).normalize();
 
-			bool disable_send = obj->directReportPunch(toolname, dir);
-
-			if(disable_send)
+			if (obj->directReportPunch(punch_item, dir))
 				return;
 		}
 	}

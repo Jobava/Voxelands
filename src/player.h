@@ -126,6 +126,7 @@ public:
 			return list->getItem(m_selected_item);
 		return NULL;
 	}
+	virtual u16 getSelectedItem() {return m_selected_item;}
 
 	const char * getName()
 	{
