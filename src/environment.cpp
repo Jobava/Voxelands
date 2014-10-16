@@ -3399,6 +3399,15 @@ void ServerEnvironment::activateObjects(MapBlock *block)
 		Thus, do not call block->setChangedFlag().
 		Otherwise there would be a huge amount of unnecessary I/O.
 	*/
+
+	// Turn the active counterparts of activated objects not pending for deactivation
+	for (core::map<u16, StaticObject>::Iterator i = block->m_static_objects.m_active.getIterator(); i.atEnd()==false; i++) {
+		u16 id = i.getNode()->getKey();
+		ServerActiveObject *object = getActiveObject(id);
+		if (!object)
+			continue;
+		object->m_pending_deactivation = false;
+	}
 }
 
 /*

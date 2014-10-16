@@ -5632,24 +5632,15 @@ void Server::notifyPlayers(const std::wstring msg)
 
 v3f findSpawnPos(ServerMap &map)
 {
-	if (g_settings->exists("static_spawnpoint"))
-	{
+	if (g_settings->exists("static_spawnpoint")) {
 		v3f pos = g_settings->getV3F("static_spawnpoint");
 		return pos*BS;
 	}
 
 	v2s16 nodepos;
 	s16 groundheight = 0;
-
-#if 0
-	nodepos = v2s16(0,0);
-	groundheight = 20;
-#endif
-
-#if 1
 	// Try to find a good place a few times
-	for(s32 i=0; i<1000; i++)
-	{
+	for (s32 i=0; i<1000; i++) {
 		s32 range = 1 + i;
 		// We're going to try to throw the player to this position
 		nodepos = v2s16(-range + (myrand()%(range*2)),
@@ -5660,14 +5651,12 @@ v3f findSpawnPos(ServerMap &map)
 		// Get ground height at point (fallbacks to heightmap function)
 		groundheight = map.findGroundLevel(nodepos);
 		// Don't go underwater
-		if(groundheight < WATER_LEVEL)
-		{
+		if (groundheight < WATER_LEVEL) {
 			//infostream<<"-> Underwater"<<std::endl;
 			continue;
 		}
 		// Don't go to high places
-		if(groundheight > WATER_LEVEL + 4)
-		{
+		if (groundheight > WATER_LEVEL + 4) {
 			//infostream<<"-> Underwater"<<std::endl;
 			continue;
 		}
@@ -5676,17 +5665,12 @@ v3f findSpawnPos(ServerMap &map)
 		//infostream<<"Searched through "<<i<<" places."<<std::endl;
 		break;
 	}
-#endif
 
 	// If no suitable place was not found, go above water at least.
-	if(groundheight < WATER_LEVEL)
+	if (groundheight < WATER_LEVEL)
 		groundheight = WATER_LEVEL;
 
-	return intToFloat(v3s16(
-			nodepos.X,
-			groundheight + 3,
-			nodepos.Y
-			), BS);
+	return intToFloat(v3s16(nodepos.X,groundheight + 3,nodepos.Y), BS);
 }
 
 Player *Server::emergePlayer(const char *name, const char *password, u16 peer_id)
