@@ -209,7 +209,7 @@ u32 Environment::getDayNightRatio()
 	ActiveBlockList
 */
 
-void fillRadiusBlock(v3s16 p0, s16 r, core::map<v3s16, bool> &list)
+void fillRadiusBlock(v3s16 p0, s16 r, std::map<v3s16, bool> &list)
 {
 	v3s16 p;
 	for(p.X=p0.X-r; p.X<=p0.X+r; p.X++)
@@ -221,18 +221,16 @@ void fillRadiusBlock(v3s16 p0, s16 r, core::map<v3s16, bool> &list)
 	}
 }
 
-void ActiveBlockList::update(core::list<v3s16> &active_positions,
+void ActiveBlockList::update(std::vector<v3s16> &active_positions,
 		s16 radius,
-		core::map<v3s16, bool> &blocks_removed,
-		core::map<v3s16, bool> &blocks_added)
+		std::map<v3s16, bool> &blocks_removed,
+		std::map<v3s16, bool> &blocks_added)
 {
 	/*
 		Create the new list
 	*/
-	core::map<v3s16, bool> newlist;
-	for(core::list<v3s16>::Iterator i = active_positions.begin();
-			i != active_positions.end(); i++)
-	{
+	std::map<v3s16, bool> newlist;
+	for (std::vector<v3s16>::iterator i = active_positions.begin(); i != active_positions.end(); i++) {
 		fillRadiusBlock(*i, radius, newlist);
 	}
 
@@ -240,37 +238,31 @@ void ActiveBlockList::update(core::list<v3s16> &active_positions,
 		Find out which blocks on the old list are not on the new list
 	*/
 	// Go through old list
-	for(core::map<v3s16, bool>::Iterator i = m_list.getIterator();
-			i.atEnd()==false; i++)
-	{
-		v3s16 p = i.getNode()->getKey();
+	for (std::map<v3s16, bool>::iterator i = m_list.begin(); i != m_list.end(); i++) {
+		v3s16 p = i->first;
 		// If not on new list, it's been removed
-		if(newlist.find(p) == NULL)
-			blocks_removed.insert(p, true);
+		if (newlist.find(p) == newlist.end())
+			blocks_removed[p] = true;
 	}
 
 	/*
 		Find out which blocks on the new list are not on the old list
 	*/
 	// Go through new list
-	for(core::map<v3s16, bool>::Iterator i = newlist.getIterator();
-			i.atEnd()==false; i++)
-	{
-		v3s16 p = i.getNode()->getKey();
+	for (std::map<v3s16, bool>::iterator i = newlist.begin(); i != newlist.end(); i++) {
+		v3s16 p = i->first;
 		// If not on old list, it's been added
-		if(m_list.find(p) == NULL)
-			blocks_added.insert(p, true);
+		if (m_list.find(p) == m_list.end())
+			blocks_added[p] = true;
 	}
 
 	/*
 		Update m_list
 	*/
 	m_list.clear();
-	for(core::map<v3s16, bool>::Iterator i = newlist.getIterator();
-			i.atEnd()==false; i++)
-	{
-		v3s16 p = i.getNode()->getKey();
-		m_list.insert(p, true);
+	for (std::map<v3s16, bool>::iterator i = newlist.begin(); i != newlist.end(); i++) {
+		v3s16 p = i->first;
+		m_list[p] = true;
 	}
 }
 
@@ -756,7 +748,7 @@ void ServerEnvironment::step(float dtime)
 
 
 	bool blockstep = m_active_blocks_management_interval.step(dtime, 2.0);
-	core::list<v3s16> players_blockpos;
+	std::vector<v3s16> players_blockpos;
 
 	/*
 		Handle players
@@ -804,8 +796,7 @@ void ServerEnvironment::step(float dtime)
 				Get player block positions
 			*/
 			if (blockstep) {
-				v3s16 blockpos = getNodeBlockPos(
-						floatToInt(player->getPosition(), BS));
+				v3s16 blockpos = getNodeBlockPos(floatToInt(playerpos, BS));
 				players_blockpos.push_back(blockpos);
 			}
 		}
@@ -821,8 +812,8 @@ void ServerEnvironment::step(float dtime)
 			Update list of active blocks, collecting changes
 		*/
 		const s16 active_block_range = g_settings->getS16("active_block_range");
-		core::map<v3s16, bool> blocks_removed;
-		core::map<v3s16, bool> blocks_added;
+		std::map<v3s16, bool> blocks_removed;
+		std::map<v3s16, bool> blocks_added;
 		m_active_blocks.update(players_blockpos, active_block_range,
 				blocks_removed, blocks_added);
 
@@ -833,14 +824,14 @@ void ServerEnvironment::step(float dtime)
 		// Convert active objects that are no more in active blocks to static
 		deactivateFarObjects(false);
 
-		for (core::map<v3s16, bool>::Iterator i = blocks_removed.getIterator(); i.atEnd()==false; i++) {
-			v3s16 p = i.getNode()->getKey();
+		for (std::map<v3s16, bool>::iterator i = blocks_removed.begin(); i != blocks_removed.end(); i++) {
+			v3s16 p = i->first;
 
 			/*infostream<<"Server: Block ("<<p.X<<","<<p.Y<<","<<p.Z
 					<<") became inactive"<<std::endl;*/
 
 			MapBlock *block = m_map->getBlockNoCreateNoEx(p);
-			if(block==NULL)
+			if (block == NULL)
 				continue;
 
 			// Set current time as timestamp (and let it set ChangedFlag)
@@ -851,14 +842,14 @@ void ServerEnvironment::step(float dtime)
 			Handle added blocks
 		*/
 
-		for (core::map<v3s16, bool>::Iterator i = blocks_added.getIterator(); i.atEnd()==false; i++) {
-			v3s16 p = i.getNode()->getKey();
+		for (std::map<v3s16, bool>::iterator i = blocks_added.begin(); i != blocks_added.end(); i++) {
+			v3s16 p = i->first;
 
 			/*infostream<<"Server: Block ("<<p.X<<","<<p.Y<<","<<p.Z
 					<<") became active"<<std::endl;*/
 
 			MapBlock *block = m_map->getBlockNoCreateNoEx(p);
-			if(block==NULL)
+			if (block == NULL)
 				continue;
 
 			activateBlock(block);
@@ -875,11 +866,11 @@ void ServerEnvironment::step(float dtime)
 	if (circuitstep || metastep || nodestep) {
 		float circuit_dtime = 0.2;
 		float meta_dtime = 1.0;
-		for (core::map<v3s16, bool>::Iterator i = m_active_blocks.m_list.getIterator(); i.atEnd()==false; i++) {
-			v3s16 p = i.getNode()->getKey();
+		for (std::map<v3s16, bool>::iterator i = m_active_blocks.m_list.begin(); i != m_active_blocks.m_list.end(); i++) {
+			v3s16 p = i->first;
 
 			MapBlock *block = m_map->getBlockNoCreateNoEx(p);
-			if (block==NULL)
+			if (block == NULL)
 				continue;
 
 			// Reset block usage timer
@@ -2722,11 +2713,8 @@ void ServerEnvironment::step(float dtime)
 			if (obj->level() > mob_level)
 				obj->m_removed = true;
 			// Don't step if is to be removed or stored statically
-			if (obj->m_removed || obj->m_pending_deactivation) {
-				// be sure m_removed is set in case m_pending_deactivation is
-				obj->m_removed = true;
+			if (obj->m_removed || obj->m_pending_deactivation)
 				continue;
-			}
 			// Step object
 			obj->step(dtime, send_recommended);
 			// Read messages from object
@@ -3110,8 +3098,8 @@ bool ServerEnvironment::addActiveObjectAsStatic(ServerActiveObject *obj)
 	inside a radius around a position
 */
 void ServerEnvironment::getAddedActiveObjects(v3s16 pos, s16 radius,
-		core::map<u16, bool> &current_objects,
-		core::map<u16, bool> &added_objects)
+		std::map<u16, bool> &current_objects,
+		std::map<u16, bool> &added_objects)
 {
 	v3f pos_f = intToFloat(pos, BS);
 	f32 radius_f = radius * BS;
@@ -3136,12 +3124,11 @@ void ServerEnvironment::getAddedActiveObjects(v3s16 pos, s16 radius,
 		if (distance_f > radius_f)
 			continue;
 		// Discard if already on current_objects
-		core::map<u16, bool>::Node *n;
-		n = current_objects.find(id);
-		if (n != NULL)
+		std::map<u16, bool>::iterator c = current_objects.find(id);
+		if (c != current_objects.end())
 			continue;
 		// Add to added_objects
-		added_objects.insert(id, false);
+		added_objects[id] = false;
 	}
 }
 
@@ -3150,26 +3137,29 @@ void ServerEnvironment::getAddedActiveObjects(v3s16 pos, s16 radius,
 	inside a radius around a position
 */
 void ServerEnvironment::getRemovedActiveObjects(v3s16 pos, s16 radius,
-		core::map<u16, bool> &current_objects,
-		core::map<u16, bool> &removed_objects)
+		std::map<u16, bool> &current_objects,
+		std::map<u16, bool> &removed_objects)
 {
 	v3f pos_f = intToFloat(pos, BS);
-	f32 radius_f = radius * BS;
+	// bigger radius for removing than adding
+	// this gives us a buffer to prevent anything getting lost
+	f32 radius_f = radius * BS * 2.0;
 	/*
 		Go through current_objects; object is removed if:
 		- object is not found in m_active_objects (this is actually an
 		  error condition; objects should be set m_removed=true and removed
 		  only after all clients have been informed about removal), or
 		- object has m_removed=true, or
+		- object has m_pending_deactivation=true, or
 		- object is too far away
 	*/
-	for (core::map<u16, bool>::Iterator i = current_objects.getIterator(); i.atEnd()==false; i++) {
-		u16 id = i.getNode()->getKey();
+	for (std::map<u16, bool>::iterator i = current_objects.begin(); i != current_objects.end(); i++) {
+		u16 id = i->first;
 		ServerActiveObject *object = getActiveObject(id);
 		if (object == NULL) {
 			infostream<<"ServerEnvironment::getRemovedActiveObjects():"
 					<<" object in current_objects is NULL"<<std::endl;
-		}else if (object->m_removed == false) {
+		}else if (object->m_removed == false && object->m_pending_deactivation == false) {
 			f32 distance_f = object->getBasePosition().getDistanceFrom(pos_f);
 			/*infostream<<"removed == false"
 					<<"distance_f = "<<distance_f
@@ -3179,7 +3169,7 @@ void ServerEnvironment::getRemovedActiveObjects(v3s16 pos, s16 radius,
 				continue;
 			}
 		}
-		removed_objects.insert(id, false);
+		removed_objects[id] = false;
 	}
 }
 
@@ -3274,14 +3264,11 @@ void ServerEnvironment::removeRemovedObjects()
 		}
 
 		/*
-			We will delete objects that are marked as removed or thatare
+			We will delete objects that are marked as removed or that are
 			waiting for deletion after deactivation
 		*/
 		if (obj->m_removed == false && obj->m_pending_deactivation == false)
 			continue;
-
-		// be sure m_removed is set in case m_pending_deactivation is
-		obj->m_removed = true;
 
 		/*
 			Delete static data from block if is marked as removed
@@ -3349,7 +3336,7 @@ static void print_hexdump(std::ostream &o, const std::string &data)
 */
 void ServerEnvironment::activateObjects(MapBlock *block)
 {
-	if (block==NULL)
+	if (block == NULL)
 		return;
 	// Ignore if no stored objects (to not set changed flag)
 	if (block->m_static_objects.m_stored.size() == 0)
@@ -3373,10 +3360,7 @@ void ServerEnvironment::activateObjects(MapBlock *block)
 	// reason. They will be stored back.
 	std::vector<StaticObject> new_stored;
 	// Loop through stored static objects
-	for (core::list<StaticObject>::Iterator
-			i = block->m_static_objects.m_stored.begin();
-			i != block->m_static_objects.m_stored.end(); i++)
-	{
+	for (core::list<StaticObject>::Iterator i = block->m_static_objects.m_stored.begin(); i != block->m_static_objects.m_stored.end(); i++) {
 		/*infostream<<"Server: Creating an active object from "
 				<<"static data"<<std::endl;*/
 		StaticObject &s_obj = *i;
@@ -3441,11 +3425,8 @@ void ServerEnvironment::deactivateFarObjects(bool force_delete)
 		}
 
 		// If pending deactivation, let removeRemovedObjects() do it
-		if (obj->m_pending_deactivation) {
-			// be sure m_removed is set in case m_pending_deactivation is
-			obj->m_removed = true;
+		if (obj->m_pending_deactivation && obj->m_known_by_count > 0)
 			continue;
-		}
 
 		u16 id = i->first;
 		v3f objectpos = obj->getBasePosition();
@@ -3649,15 +3630,15 @@ void ClientEnvironment::step(float dtime)
 	// Maximum time increment (for collision detection etc)
 	// time = distance / speed
 	f32 dtime_max_increment = 1;
-	if(player_speed > 0.001)
+	if (player_speed > 0.001)
 		dtime_max_increment = position_max_increment / player_speed;
 
 	// Maximum time increment is 10ms or lower
-	if(dtime_max_increment > 0.01)
+	if (dtime_max_increment > 0.01)
 		dtime_max_increment = 0.01;
 
 	// Don't allow overly huge dtime
-	if(dtime > 0.5)
+	if (dtime > 0.5)
 		dtime = 0.5;
 
 	f32 dtime_downcount = dtime;
@@ -3667,18 +3648,14 @@ void ClientEnvironment::step(float dtime)
 	*/
 
 	u32 loopcount = 0;
-	do
-	{
+	do {
 		loopcount++;
 
 		f32 dtime_part;
-		if(dtime_downcount > dtime_max_increment)
-		{
+		if (dtime_downcount > dtime_max_increment) {
 			dtime_part = dtime_max_increment;
 			dtime_downcount -= dtime_part;
-		}
-		else
-		{
+		}else{
 			dtime_part = dtime_downcount;
 			/*
 				Setting this to 0 (no -=dtime_part) disables an infinite loop
@@ -3696,24 +3673,21 @@ void ClientEnvironment::step(float dtime)
 			v3f lplayerpos = lplayer->getPosition();
 
 			// Apply physics
-			if(free_move == false && is_climbing == false)
-			{
+			if (free_move == false && is_climbing == false) {
 				// Gravity
 				v3f speed = lplayer->getSpeed();
-				if(lplayer->swimming_up == false)
+				if (lplayer->swimming_up == false)
 					speed.Y -= 9.81 * BS * dtime_part * 2;
 
 				// Water resistance
-				if(lplayer->in_water_stable || lplayer->in_water)
-				{
+				if (lplayer->in_water_stable || lplayer->in_water) {
 					f32 max_down = 2.0*BS;
-					if(speed.Y < -max_down) speed.Y = -max_down;
+					if (speed.Y < -max_down)
+						speed.Y = -max_down;
 
 					f32 max = 2.5*BS;
-					if(speed.getLength() > max)
-					{
+					if (speed.getLength() > max)
 						speed = speed / speed.getLength() * max;
-					}
 				}
 
 				lplayer->setSpeed(speed);
@@ -3731,10 +3705,7 @@ void ClientEnvironment::step(float dtime)
 
 	//std::cout<<"Looped "<<loopcount<<" times."<<std::endl;
 
-	for(core::list<CollisionInfo>::Iterator
-			i = player_collisions.begin();
-			i != player_collisions.end(); i++)
-	{
+	for (core::list<CollisionInfo>::Iterator i = player_collisions.begin(); i != player_collisions.end(); i++) {
 		CollisionInfo &info = *i;
 		if (info.t == COLLISION_FALL) {
 			//f32 tolerance = BS*10; // 2 without damage
@@ -3742,14 +3713,14 @@ void ClientEnvironment::step(float dtime)
 			f32 factor = 1;
 			if (info.speed > tolerance/2.0)
 				m_client->playStepSound();
-			if(info.speed > tolerance)
-			{
+			if (info.speed > tolerance) {
 				f32 damage_f = (info.speed - tolerance)/BS*factor;
 				u16 damage = (u16)(damage_f+0.5);
-				if(lplayer->hp > damage)
+				if (lplayer->hp > damage) {
 					lplayer->hp -= damage;
-				else
+				}else{
 					lplayer->hp = 0;
+				}
 
 				ClientEnvEvent event;
 				event.type = CEE_PLAYER_DAMAGE;
@@ -3814,9 +3785,9 @@ void ClientEnvironment::step(float dtime)
 		}else{
 			f32 speed = lplayer->getSpeed().getLength();
 			s8 hungry = 0;
-			s32 chance = 200;
+			s32 chance = 500;
 			if (speed > 1.0) {
-				chance = 20;
+				chance = 40;
 				if (speed > 50.0) {
 					chance = 0;
 					hungry = 1;
@@ -3836,20 +3807,16 @@ void ClientEnvironment::step(float dtime)
 	/*
 		Stuff that can be done in an arbitarily large dtime
 	*/
-	for(core::list<Player*>::Iterator i = m_players.begin();
-			i != m_players.end(); i++)
-	{
+	for (core::list<Player*>::Iterator i = m_players.begin(); i != m_players.end(); i++) {
 		Player *player = *i;
 		v3f playerpos = player->getPosition();
 
 		/*
 			Handle non-local players
 		*/
-		if(player->isLocal() == false)
-		{
+		if (player->isLocal() == false) {
 			// Move
 			player->move(dtime, *m_map, 100*BS);
-
 		}
 
 		// Update lighting on all players on client
@@ -3859,36 +3826,29 @@ void ClientEnvironment::step(float dtime)
 			v3s16 p = player->getLightPosition();
 			MapNode n = m_map->getNode(p);
 			light = n.getLightBlend(getDayNightRatio());
-		}
-		catch(InvalidPositionException &e) {}
+		}catch(InvalidPositionException &e) {}
 		player->updateLight(light);
 
 		/*
 			Add footsteps to grass
 		*/
-		if(footprints)
-		{
+		if (footprints) {
 			// Get node that is at BS/4 under player
 			v3s16 bottompos = floatToInt(playerpos + v3f(0,-BS/4,0), BS);
 			try{
 				MapNode n = m_map->getNode(bottompos);
-				if(n.getContent() == CONTENT_GRASS)
-				{
+				if (n.getContent() == CONTENT_GRASS) {
 					n.setContent(CONTENT_GRASS_FOOTSTEPS);
 					m_map->setNode(bottompos, n);
 					// Update mesh on client
-					if(m_map->mapType() == MAPTYPE_CLIENT)
-					{
+					if (m_map->mapType() == MAPTYPE_CLIENT) {
 						v3s16 p_blocks = getNodeBlockPos(bottompos);
 						MapBlock *b = m_map->getBlockNoCreate(p_blocks);
 						//b->updateMesh(getDayNightRatio());
 						b->setMeshExpired(true);
 					}
 				}
-			}
-			catch(InvalidPositionException &e)
-			{
-			}
+			}catch(InvalidPositionException &e) {}
 		}
 	}
 
@@ -3903,15 +3863,13 @@ void ClientEnvironment::step(float dtime)
 
 		if (m_active_object_light_update_interval.step(dtime, 0.21)) {
 			// Update lighting
-			//u8 light = LIGHT_MAX;
 			u8 light = 0;
 			try{
 				// Get node at head
 				v3s16 p = obj->getLightPosition();
 				MapNode n = m_map->getNode(p);
 				light = n.getLightBlend(getDayNightRatio());
-			}
-			catch(InvalidPositionException &e) {}
+			}catch(InvalidPositionException &e) {}
 			obj->updateLight(light);
 		}
 	}

@@ -292,10 +292,11 @@ void Client::step(float dtime)
 	if(dtime > 2.0)
 		dtime = 2.0;
 
-	if(m_ignore_damage_timer > dtime)
+	if (m_ignore_damage_timer > dtime) {
 		m_ignore_damage_timer -= dtime;
-	else
+	}else{
 		m_ignore_damage_timer = 0.0;
+	}
 
 	//infostream<<"Client steps "<<dtime<<std::endl;
 
@@ -318,10 +319,8 @@ void Client::step(float dtime)
 	{
 		float &counter = m_packetcounter_timer;
 		counter -= dtime;
-		if(counter <= 0.0)
-		{
+		if (counter <= 0.0) {
 			counter = 20.0;
-
 			infostream<<"Client packetcounter (20s):"<<std::endl;
 			m_packetcounter.print(infostream);
 			m_packetcounter.clear();
@@ -331,103 +330,10 @@ void Client::step(float dtime)
 	// Get connection status
 	bool connected = connectedAndInitialized();
 
-#if 0
-	{
-		/*
-			Delete unused sectors
-
-			NOTE: This jams the game for a while because deleting sectors
-			      clear caches
-		*/
-
-		float &counter = m_delete_unused_sectors_timer;
-		counter -= dtime;
-		if(counter <= 0.0)
-		{
-			// 3 minute interval
-			//counter = 180.0;
-			counter = 60.0;
-
-			//JMutexAutoLock lock(m_env_mutex); //bulk comment-out
-
-			core::list<v3s16> deleted_blocks;
-
-			float delete_unused_sectors_timeout =
-				g_settings->getFloat("client_delete_unused_sectors_timeout");
-
-			// Delete sector blocks
-			/*u32 num = m_env.getMap().unloadUnusedData
-					(delete_unused_sectors_timeout,
-					true, &deleted_blocks);*/
-
-			// Delete whole sectors
-			m_env.getMap().unloadUnusedData
-					(delete_unused_sectors_timeout,
-					&deleted_blocks);
-
-			if(deleted_blocks.size() > 0)
-			{
-				/*infostream<<"Client: Deleted blocks of "<<num
-						<<" unused sectors"<<std::endl;*/
-				/*infostream<<"Client: Deleted "<<num
-						<<" unused sectors"<<std::endl;*/
-
-				/*
-					Send info to server
-				*/
-
-				// Env is locked so con can be locked.
-				//JMutexAutoLock lock(m_con_mutex); //bulk comment-out
-
-				core::list<v3s16>::Iterator i = deleted_blocks.begin();
-				core::list<v3s16> sendlist;
-				for(;;)
-				{
-					if(sendlist.size() == 255 || i == deleted_blocks.end())
-					{
-						if(sendlist.size() == 0)
-							break;
-						/*
-							[0] u16 command
-							[2] u8 count
-							[3] v3s16 pos_0
-							[3+6] v3s16 pos_1
-							...
-						*/
-						u32 replysize = 2+1+6*sendlist.size();
-						SharedBuffer<u8> reply(replysize);
-						writeU16(&reply[0], TOSERVER_DELETEDBLOCKS);
-						reply[2] = sendlist.size();
-						u32 k = 0;
-						for(core::list<v3s16>::Iterator
-								j = sendlist.begin();
-								j != sendlist.end(); j++)
-						{
-							writeV3S16(&reply[2+1+6*k], *j);
-							k++;
-						}
-						m_con.Send(PEER_ID_SERVER, 1, reply, true);
-
-						if(i == deleted_blocks.end())
-							break;
-
-						sendlist.clear();
-					}
-
-					sendlist.push_back(*i);
-					i++;
-				}
-			}
-		}
-	}
-#endif
-
-	if(connected == false)
-	{
+	if (connected == false) {
 		float &counter = m_connection_reinit_timer;
 		counter -= dtime;
-		if(counter <= 0.0)
-		{
+		if (counter <= 0.0) {
 			counter = 2.0;
 
 			//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
@@ -473,8 +379,7 @@ void Client::step(float dtime)
 		Run Map's timers and unload unused data
 	*/
 	const float map_timer_and_unload_dtime = 5.25;
-	if(m_map_timer_and_unload_interval.step(dtime, map_timer_and_unload_dtime))
-	{
+	if (m_map_timer_and_unload_interval.step(dtime, map_timer_and_unload_dtime)) {
 		ScopeProfiler sp(g_profiler, "Client: map timer and unload");
 		core::list<v3s16> deleted_blocks;
 		m_env.getMap().timerUpdate(map_timer_and_unload_dtime,
@@ -492,11 +397,9 @@ void Client::step(float dtime)
 
 		core::list<v3s16>::Iterator i = deleted_blocks.begin();
 		core::list<v3s16> sendlist;
-		for(;;)
-		{
-			if(sendlist.size() == 255 || i == deleted_blocks.end())
-			{
-				if(sendlist.size() == 0)
+		for (;;) {
+			if (sendlist.size() == 255 || i == deleted_blocks.end()) {
+				if (sendlist.size() == 0)
 					break;
 				/*
 					[0] u16 command
@@ -510,16 +413,13 @@ void Client::step(float dtime)
 				writeU16(&reply[0], TOSERVER_DELETEDBLOCKS);
 				reply[2] = sendlist.size();
 				u32 k = 0;
-				for(core::list<v3s16>::Iterator
-						j = sendlist.begin();
-						j != sendlist.end(); j++)
-				{
+				for (core::list<v3s16>::Iterator j = sendlist.begin(); j != sendlist.end(); j++) {
 					writeV3S16(&reply[2+1+6*k], *j);
 					k++;
 				}
 				m_con.Send(PEER_ID_SERVER, 1, reply, true);
 
-				if(i == deleted_blocks.end())
+				if (i == deleted_blocks.end())
 					break;
 
 				sendlist.clear();
@@ -604,8 +504,7 @@ void Client::step(float dtime)
 	{
 		float &counter = m_avg_rtt_timer;
 		counter += dtime;
-		if(counter >= 10)
-		{
+		if (counter >= 10) {
 			counter = 0.0;
 			//JMutexAutoLock lock(m_con_mutex); //bulk comment-out
 			// connectedAndInitialized() is true, peer exists.
@@ -620,8 +519,7 @@ void Client::step(float dtime)
 	{
 		float &counter = m_playerpos_send_timer;
 		counter += dtime;
-		if(counter >= 0.2)
-		{
+		if (counter >= 0.2) {
 			counter = 0.0;
 			sendPlayerPos();
 		}
@@ -640,16 +538,12 @@ void Client::step(float dtime)
 				<<m_mesh_update_thread.m_queue_out.size()
 				<<std::endl;*/
 
-		while(m_mesh_update_thread.m_queue_out.size() > 0)
-		{
+		while (m_mesh_update_thread.m_queue_out.size() > 0) {
 			MeshUpdateResult r = m_mesh_update_thread.m_queue_out.pop_front();
 			MapBlock *block = m_env.getMap().getBlockNoCreateNoEx(r.p);
-			if(block)
-			{
+			if (block)
 				block->replaceMesh(r.mesh);
-			}
-			if(r.ack_block_to_server)
-			{
+			if (r.ack_block_to_server) {
 				/*infostream<<"Client: ACK block ("<<r.p.X<<","<<r.p.Y
 						<<","<<r.p.Z<<")"<<std::endl;*/
 				/*
@@ -1264,104 +1158,85 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 	}
 	else if(command == TOCLIENT_ACTIVE_OBJECT_REMOVE_ADD)
 	{
-		//if(g_settings->getBool("enable_experimental"))
-		{
-			/*
-				u16 command
-				u16 count of removed objects
-				for all removed objects {
-					u16 id
-				}
-				u16 count of added objects
-				for all added objects {
-					u16 id
-					u8 type
-					u32 initialization data length
-					string initialization data
-				}
-			*/
-
-			char buf[6];
-			// Get all data except the command number
-			std::string datastring((char*)&data[2], datasize-2);
-			// Throw them in an istringstream
-			std::istringstream is(datastring, std::ios_base::binary);
-
-			// Read stuff
-
-			// Read removed objects
-			is.read(buf, 2);
-			u16 removed_count = readU16((u8*)buf);
-			for(u16 i=0; i<removed_count; i++)
-			{
-				is.read(buf, 2);
-				u16 id = readU16((u8*)buf);
-				// Remove it
-				{
-					//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
-					m_env.removeActiveObject(id);
-				}
+		/*
+			u16 command
+			u16 count of removed objects
+			for all removed objects {
+				u16 id
 			}
-
-			// Read added objects
-			is.read(buf, 2);
-			u16 added_count = readU16((u8*)buf);
-			for(u16 i=0; i<added_count; i++)
-			{
-				is.read(buf, 2);
-				u16 id = readU16((u8*)buf);
-				is.read(buf, 1);
-				u8 type = readU8((u8*)buf);
-				std::string data = deSerializeLongString(is);
-				// Add it
-				{
-					//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
-					m_env.addActiveObject(id, type, data);
-				}
+			u16 count of added objects
+			for all added objects {
+				u16 id
+				u8 type
+				u32 initialization data length
+				string initialization data
 			}
+		*/
+
+		char buf[6];
+		// Get all data except the command number
+		std::string datastring((char*)&data[2], datasize-2);
+		// Throw them in an istringstream
+		std::istringstream is(datastring, std::ios_base::binary);
+
+		// Read stuff
+
+		// Read removed objects
+		is.read(buf, 2);
+		u16 removed_count = readU16((u8*)buf);
+		for (u16 i=0; i<removed_count; i++) {
+			is.read(buf, 2);
+			u16 id = readU16((u8*)buf);
+			// Remove it
+			m_env.removeActiveObject(id);
+		}
+
+		// Read added objects
+		is.read(buf, 2);
+		u16 added_count = readU16((u8*)buf);
+		for (u16 i=0; i<added_count; i++) {
+			is.read(buf, 2);
+			u16 id = readU16((u8*)buf);
+			is.read(buf, 1);
+			u8 type = readU8((u8*)buf);
+			std::string data = deSerializeLongString(is);
+			// Add it
+			m_env.addActiveObject(id, type, data);
 		}
 	}
 	else if(command == TOCLIENT_ACTIVE_OBJECT_MESSAGES)
 	{
-		//if(g_settings->getBool("enable_experimental"))
-		{
-			/*
-				u16 command
-				for all objects
-				{
-					u16 id
-					u16 message length
-					string message
-				}
-			*/
-			char buf[6];
-			// Get all data except the command number
-			std::string datastring((char*)&data[2], datasize-2);
-			// Throw them in an istringstream
-			std::istringstream is(datastring, std::ios_base::binary);
-
-			while(is.eof() == false)
+		/*
+			u16 command
+			for all objects
 			{
-				// Read stuff
-				is.read(buf, 2);
-				u16 id = readU16((u8*)buf);
-				if(is.eof())
-					break;
-				is.read(buf, 2);
-				u16 message_size = readU16((u8*)buf);
-				std::string message;
-				message.reserve(message_size);
-				for(u16 i=0; i<message_size; i++)
-				{
-					is.read(buf, 1);
-					message.append(buf, 1);
-				}
-				// Pass on to the environment
-				{
-					//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
-					m_env.processActiveObjectMessage(id, message);
-				}
+				u16 id
+				u16 message length
+				string message
 			}
+		*/
+		char buf[6];
+		// Get all data except the command number
+		std::string datastring((char*)&data[2], datasize-2);
+		// Throw them in an istringstream
+		std::istringstream is(datastring, std::ios_base::binary);
+
+		while (is.eof() == false) {
+			// Read stuff
+			is.read(buf, 2);
+			u16 id = readU16((u8*)buf);
+			if (is.eof())
+				break;
+			is.read(buf, 2);
+			u16 message_size = readU16((u8*)buf);
+			std::string message;
+			message.reserve(message_size);
+			for (u16 i=0; i<message_size; i++) {
+				is.read(buf, 1);
+				message.append(buf, 1);
+			}
+			// Pass on to the environment
+			m_env.processActiveObjectMessage(id, message);
 		}
 	}
 	else if(command == TOCLIENT_HP)

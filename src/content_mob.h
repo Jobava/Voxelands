@@ -258,6 +258,8 @@ inline u8 mobLevelI(std::string level)
 		return MOB_DESTRUCTIVE;
 	if (level == "aggressive")
 		return MOB_AGGRESSIVE;
+	if (level == "none")
+		return MOB_NONE;
 	return MOB_PASSIVE;
 }
 
@@ -267,6 +269,8 @@ inline std::string mobLevelS(u8 level)
 		return std::string("destructive");
 	if (level == MOB_AGGRESSIVE)
 		return std::string("aggressive");
+	if (level == MOB_NONE)
+		return std::string("none");
 	return std::string("passive");
 }
 

@@ -110,20 +110,20 @@ protected:
 class ActiveBlockList
 {
 public:
-	void update(core::list<v3s16> &active_positions,
+	void update(std::vector<v3s16> &active_positions,
 			s16 radius,
-			core::map<v3s16, bool> &blocks_removed,
-			core::map<v3s16, bool> &blocks_added);
+			std::map<v3s16, bool> &blocks_removed,
+			std::map<v3s16, bool> &blocks_added);
 
 	bool contains(v3s16 p){
-		return (m_list.find(p) != NULL);
+		return (m_list.find(p) != m_list.end());
 	}
 
 	void clear(){
 		m_list.clear();
 	}
 
-	core::map<v3s16, bool> m_list;
+	std::map<v3s16, bool> m_list;
 
 private:
 };
@@ -199,16 +199,16 @@ public:
 		inside a radius around a position
 	*/
 	void getAddedActiveObjects(v3s16 pos, s16 radius,
-			core::map<u16, bool> &current_objects,
-			core::map<u16, bool> &added_objects);
+			std::map<u16, bool> &current_objects,
+			std::map<u16, bool> &added_objects);
 
 	/*
 		Find out what new objects have been removed from
 		inside a radius around a position
 	*/
 	void getRemovedActiveObjects(v3s16 pos, s16 radius,
-			core::map<u16, bool> &current_objects,
-			core::map<u16, bool> &removed_objects);
+			std::map<u16, bool> &current_objects,
+			std::map<u16, bool> &removed_objects);
 
 	/*
 		Get the next message emitted by some active object.

@@ -1302,9 +1302,6 @@ void Server::AsyncRunStep()
 		}
 	}
 
-	//if(g_settings->getBool("enable_experimental"))
-	{
-
 	/*
 		Check added and deleted active objects
 	*/
@@ -1328,8 +1325,8 @@ void Server::AsyncRunStep()
 			}
 			v3s16 pos = floatToInt(player->getPosition(), BS);
 
-			core::map<u16, bool> removed_objects;
-			core::map<u16, bool> added_objects;
+			std::map<u16, bool> removed_objects;
+			std::map<u16, bool> added_objects;
 			m_env.getRemovedActiveObjects(pos, radius, client->m_known_objects, removed_objects);
 			m_env.getAddedActiveObjects(pos, radius, client->m_known_objects, added_objects);
 
@@ -1346,28 +1343,31 @@ void Server::AsyncRunStep()
 			// Handle removed objects
 			writeU16((u8*)buf, removed_objects.size());
 			data_buffer.append(buf, 2);
-			for (core::map<u16, bool>::Iterator i = removed_objects.getIterator(); i.atEnd()==false; i++) {
+			for (std::map<u16, bool>::iterator i = removed_objects.begin(); i != removed_objects.end(); i++) {
 				// Get object
-				u16 id = i.getNode()->getKey();
+				u16 id = i->first;
 				ServerActiveObject* obj = m_env.getActiveObject(id);
 
 				// Add to data buffer for sending
-				writeU16((u8*)buf, i.getNode()->getKey());
+				writeU16((u8*)buf, id);
 				data_buffer.append(buf, 2);
 
 				// Remove from known objects
-				client->m_known_objects.remove(i.getNode()->getKey());
+				client->m_known_objects.erase(id);
 
-				if (obj && obj->m_known_by_count > 0)
+				if (obj && obj->m_known_by_count > 0) {
 					obj->m_known_by_count--;
+					if (obj->m_known_by_count < 1 && obj->m_pending_deactivation == true)
+						obj->m_pending_deactivation = false;
+				}
 			}
 
 			// Handle added objects
 			writeU16((u8*)buf, added_objects.size());
 			data_buffer.append(buf, 2);
-			for (core::map<u16, bool>::Iterator i = added_objects.getIterator(); i.atEnd()==false; i++) {
+			for (std::map<u16, bool>::iterator i = added_objects.begin(); i != added_objects.end(); i++) {
 				// Get object
-				u16 id = i.getNode()->getKey();
+				u16 id = i->first;
 				ServerActiveObject* obj = m_env.getActiveObject(id);
 
 				// Get object type
@@ -1391,7 +1391,7 @@ void Server::AsyncRunStep()
 					data_buffer.append(serializeLongString(""));
 				}
 				// Add to known objects
-				client->m_known_objects.insert(i.getNode()->getKey(), false);
+				client->m_known_objects[id] = false;
 
 				if (obj)
 					obj->m_known_by_count++;
@@ -1409,33 +1409,6 @@ void Server::AsyncRunStep()
 					<<added_objects.size()<<" added, "
 					<<"packet size is "<<reply.getSize()<<std::endl;
 		}
-
-#if 0
-		/*
-			Collect a list of all the objects known by the clients
-			and report it back to the environment.
-		*/
-
-		core::map<u16, bool> all_known_objects;
-
-		for(core::map<u16, RemoteClient*>::Iterator
-			i = m_clients.getIterator();
-			i.atEnd() == false; i++)
-		{
-			RemoteClient *client = i.getNode()->getValue();
-			// Go through all known objects of client
-			for(core::map<u16, bool>::Iterator
-					i = client->m_known_objects.getIterator();
-					i.atEnd()==false; i++)
-			{
-				u16 id = i.getNode()->getKey();
-				all_known_objects[id] = true;
-			}
-		}
-
-		m_env.setKnownActiveObjects(whatever);
-#endif
-
 	}
 
 	/*
@@ -1488,7 +1461,7 @@ void Server::AsyncRunStep()
 			{
 				// If object is not known by client, skip it
 				u16 id = j.getNode()->getKey();
-				if(client->m_known_objects.find(id) == NULL)
+				if (client->m_known_objects.find(id) == client->m_known_objects.end())
 					continue;
 				// Get message list of object
 				core::list<ActiveObjectMessage>* list = j.getNode()->getValue();
@@ -1552,8 +1525,6 @@ void Server::AsyncRunStep()
 			delete i.getNode()->getValue();
 		}
 	}
-
-	} // enable_experimental
 
 	/*
 		Send queued-for-sending map edit events.
@@ -5850,13 +5821,16 @@ void Server::handlePeerChange(PeerChange &c)
 		*/
 		RemoteClient *client = n->getValue();
 		// Handle objects
-		for (core::map<u16, bool>::Iterator i = client->m_known_objects.getIterator(); i.atEnd()==false; i++) {
+		for (std::map<u16, bool>::iterator i = client->m_known_objects.begin(); i != client->m_known_objects.end(); i++) {
 			// Get object
-			u16 id = i.getNode()->getKey();
+			u16 id = i->first;
 			ServerActiveObject* obj = m_env.getActiveObject(id);
 
-			if (obj && obj->m_known_by_count > 0)
+			if (obj && obj->m_known_by_count > 0) {
 				obj->m_known_by_count--;
+				if (obj->m_known_by_count < 1 && obj->m_pending_deactivation == true)
+					obj->m_pending_deactivation = false;
+			}
 		}
 
 		// Collect information about leaving in chat

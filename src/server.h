@@ -24,6 +24,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "environment.h"
 #include "common_irrlicht.h"
 #include <string>
+#include <map>
 #include "porting.h"
 #include "map.h"
 #include "inventory.h"
@@ -318,7 +319,7 @@ public:
 		List of active objects that the client knows of.
 		Value is dummy.
 	*/
-	core::map<u16, bool> m_known_objects;
+	std::map<u16, bool> m_known_objects;
 
 private:
 	/*
