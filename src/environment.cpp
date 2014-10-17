@@ -580,16 +580,16 @@ void ServerEnvironment::clearAllObjects()
 		u16 id = i->first;
 		v3f objectpos = obj->getBasePosition();
 		// Delete static object if block is loaded
-		if(obj->m_static_exists){
+		if (obj->m_static_exists) {
 			MapBlock *block = m_map->getBlockNoCreateNoEx(obj->m_static_block);
-			if(block){
+			if (block) {
 				block->m_static_objects.remove(id);
 				block->raiseModified(MOD_STATE_WRITE_NEEDED);
 				obj->m_static_exists = false;
 			}
 		}
 		// If known by some client, don't delete immediately
-		if(obj->m_known_by_count > 0){
+		if (obj->m_known_by_count > 0) {
 			obj->m_pending_deactivation = true;
 			obj->m_removed = true;
 			continue;
@@ -2727,8 +2727,7 @@ void ServerEnvironment::step(float dtime)
 	/*
 		Manage active objects
 	*/
-	if(m_object_management_interval.step(dtime, 0.5))
-	{
+	if (m_object_management_interval.step(dtime, 0.5)) {
 		ScopeProfiler sp(g_profiler, "SEnv: remove removed objs avg /.5s", SPT_AVG);
 		/*
 			Remove objects that satisfy (m_removed && m_known_by_count==0)
@@ -3161,9 +3160,6 @@ void ServerEnvironment::getRemovedActiveObjects(v3s16 pos, s16 radius,
 					<<" object in current_objects is NULL"<<std::endl;
 		}else if (object->m_removed == false && object->m_pending_deactivation == false) {
 			f32 distance_f = object->getBasePosition().getDistanceFrom(pos_f);
-			/*infostream<<"removed == false"
-					<<"distance_f = "<<distance_f
-					<<", radius_f = "<<radius_f<<std::endl;*/
 			if (distance_f < radius_f) {
 				// Not removed
 				continue;
@@ -3293,7 +3289,8 @@ void ServerEnvironment::removeRemovedObjects()
 	}
 	// Remove references from m_active_objects
 	for (std::vector<u16>::iterator i = objects_to_remove.begin(); i != objects_to_remove.end(); i++) {
-		m_active_objects.erase(*i);
+		u16 id = *i;
+		m_active_objects.erase(id);
 	}
 }
 
@@ -3421,7 +3418,6 @@ void ServerEnvironment::activateObjects(MapBlock *block)
 */
 void ServerEnvironment::deactivateFarObjects(bool force_delete)
 {
-	std::vector<u16> objects_to_remove;
 	for (std::map<u16, ServerActiveObject*>::iterator i = m_active_objects.begin(); i != m_active_objects.end(); i++) {
 		ServerActiveObject* obj = i->second;
 
@@ -3511,6 +3507,7 @@ void ServerEnvironment::deactivateFarObjects(bool force_delete)
 						<<" (over 49) objects."
 						<<" Forcing delete."<<std::endl;
 				force_delete = true;
+				pending_delete = false;
 			}else{
 				u16 new_id = pending_delete ? id : 0;
 				block->m_static_objects.insert(new_id, s_obj);
@@ -3548,13 +3545,7 @@ void ServerEnvironment::deactivateFarObjects(bool force_delete)
 				<<"; deleting"<<std::endl;
 		// Delete active object
 		delete obj;
-		// Id to be removed from m_active_objects
-		objects_to_remove.push_back(id);
-	}
-
-	// Remove references from m_active_objects
-	for (std::vector<u16>::iterator i = objects_to_remove.begin(); i != objects_to_remove.end(); i++) {
-		m_active_objects.erase(*i);
+		m_active_objects.erase(id);
 	}
 }
 

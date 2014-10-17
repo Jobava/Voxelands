@@ -102,9 +102,9 @@ struct SmoothTranslator
 		v3f vect_move = vect_aim - vect_old;
 		f32 yaw_move = yaw_aim - yaw_old;
 		if (yaw_move > 200) {
-			yaw_move -= 180;
+			yaw_move -= 360;
 		}else if (yaw_move < -200) {
-			yaw_move += 180;
+			yaw_move += 360;
 		}
 		f32 moveratio = 1.0;
 		if (anim_time > 0.001)
