@@ -452,6 +452,16 @@ void setShovelRecipe(u16 input, u16 result)
 	};
 	setRecipe(r2,result,1);
 }
+// spear recipe, input is blade yields one result
+void setSpearRecipe(u16 input, u16 result)
+{
+	u16 r[9] = {
+		CONTENT_IGNORE,	input,				CONTENT_IGNORE,
+		CONTENT_IGNORE,	CONTENT_CRAFTITEM_STICK,	CONTENT_IGNORE,
+		CONTENT_IGNORE,	CONTENT_CRAFTITEM_STICK,	CONTENT_IGNORE
+	};
+	setRecipe(r,result,1);
+}
 // axe recipe, input is blade yields one result
 void setAxeRecipe(u16 input, u16 result)
 {

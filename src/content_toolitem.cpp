@@ -87,6 +87,10 @@ DiggingProperties getDiggingProperties(content_t content, content_t tool)
 			if (c_features.type != CMT_LIQUID)
 				time = 10.;
 			break;
+		case TT_SPEAR:
+			if (c_features.type == CMT_DIRT)
+				time *= 2.0;
+			break;
 		case TT_NONE:
 			if (c_features.type == CMT_DIRT)
 				time *= 0.75;
@@ -458,4 +462,43 @@ void content_toolitem_init()
 	f->type = TT_SPECIAL;
 	crafting::set1To1Recipe(CONTENT_CRAFTITEM_GOLD_INGOT,CONTENT_TOOLITEM_KEY);
 	lists::add("craftguide",i);
+
+	i = CONTENT_TOOLITEM_STONESPEAR;
+	f = &g_content_toolitem_features[i];
+	f->content = i;
+	f->texture = "tool_stonespear.png";
+	f->name = "stone_spear";
+	f->description = wgettext("Stone Spear");
+	f->type = TT_SPEAR;
+	f->hardness = 150.;
+	f->dig_time = 0.2;
+	crafting::setSpearRecipe(CONTENT_ROUGHSTONE,CONTENT_TOOLITEM_STONESPEAR);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_TOOLITEM_FLINTSPEAR;
+	f = &g_content_toolitem_features[i];
+	f->content = i;
+	f->texture = "tool_flintspear.png";
+	f->name = "flint_spear";
+	f->description = wgettext("Flint Spear");
+	f->type = TT_SPEAR;
+	f->hardness = 250.;
+	f->dig_time = 0.17;
+	crafting::setSpearRecipe(CONTENT_CRAFTITEM_FLINT,CONTENT_TOOLITEM_FLINTSPEAR);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_TOOLITEM_STEELSPEAR;
+	f = &g_content_toolitem_features[i];
+	f->content = i;
+	f->texture = "tool_steelspear.png";
+	f->name = "steel_spear";
+	f->description = wgettext("Steel Spear");
+	f->type = TT_SPEAR;
+	f->hardness = 400.;
+	f->dig_time = 0.15;
+	crafting::setSpearRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_STEELSPEAR);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 }

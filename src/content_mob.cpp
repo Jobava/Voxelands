@@ -100,6 +100,8 @@ void MobFeatures::setAnimationFrames(MobAnimation type, int start, int end)
 
 bool content_mob_spawn(ServerEnvironment *env, v3s16 pos, u32 active_object_count)
 {
+	if (active_object_count > 20)
+		return false;
 	assert(env);
 	Map *map = &env->getMap();
 
@@ -344,7 +346,7 @@ void content_mob_init()
 	f->spawn_max_height = 30;
 	f->spawn_min_light = LIGHT_MAX/2;
 	f->spawn_max_nearby_mobs = 3;
-	f->spawn_chance = 150;
+	f->spawn_chance = 1000;
 	f->notices_player = true;
 	f->attack_player_damage = 3;
 	f->attack_player_range = v3f(1,1,1);
@@ -382,8 +384,11 @@ void content_mob_init()
 	f->setTexture("mob_fish.png");
 	f->setAnimationFrames(MA_STAND,1,80);
 	f->setAnimationFrames(MA_MOVE,81,155);
-	f->punch_action = MPA_PICKUP;
-	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_FISH)+" 1";
+	f->punch_action = MPA_HARM;
+	f->special_punch_item = TT_SPEAR;
+	f->special_dropped_item = CONTENT_CRAFTITEM_FISH;
+	f->special_dropped_count = 1;
+	f->special_dropped_max = 0;
 	f->motion = MM_WANDER;
 	f->motion_type = MMT_SWIM;
 	f->spawn_on = CONTENT_SAND;
@@ -391,6 +396,7 @@ void content_mob_init()
 	f->spawn_min_height = -30;
 	f->spawn_max_height = -2;
 	f->spawn_max_nearby_mobs = 5;
+	f->hp = 5;
 	f->lifetime = 1200.0;
 	f->setCollisionBox(aabb3f(-0.25*BS, 0.25*BS, -0.25*BS, 0.25*BS, 0.75*BS, 0.25*BS));
 

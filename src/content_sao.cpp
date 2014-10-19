@@ -1126,12 +1126,16 @@ InventoryItem* MobSAO::createPickedUpItem(content_t punch_item)
 	if (m.punch_action != MPA_PICKUP) {
 		if (!m_removed) {
 			if (m.special_dropped_item != CONTENT_IGNORE && (m.special_punch_item == TT_NONE || f.type == m.special_punch_item)) {
-				if (m_special_count < m.special_dropped_count)
-					return NULL;
-				m_special_count -= m.special_dropped_count;
-				if (m_special_count < 0) {
-					m_special_count = 0;
-					return NULL;
+				if (m.special_dropped_max > 0) {
+					if (m_special_count < m.special_dropped_count)
+						return NULL;
+					m_special_count -= m.special_dropped_count;
+					if (m_special_count < 0) {
+						m_special_count = 0;
+						return NULL;
+					}
+				}else{
+					m_removed = true;
 				}
 				if ((m.special_dropped_item&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
 					return new CraftItem(m.special_dropped_item,m.special_dropped_count);
@@ -1158,6 +1162,7 @@ u16 MobSAO::punch(content_t punch_item, v3f dir, const std::string &playername)
 	if (m.punch_action == MPA_IGNORE)
 		return 0;
 	ToolItemFeatures f = content_toolitem_features(punch_item);
+	u16 wear = 655;
 
 	actionstream<<playername<<" punches mob id="<<m_id
 			<<" with a \""<<wide_to_narrow(f.description)<<"\" at "
@@ -1189,10 +1194,11 @@ u16 MobSAO::punch(content_t punch_item, v3f dir, const std::string &playername)
 
 
 		u16 amount = 2;
-		if (f.type == TT_SWORD) {
+		if (f.type == TT_SWORD || f.type == TT_SPEAR) {
 			amount = 4*((f.hardness/100)+1);
+			wear = 65535/f.hardness;
 		}else if (f.type == TT_AXE || f.type == TT_PICK) {
-			amount = 2*((f.hardness/200)+1);
+			amount = ((f.hardness/200)+1);
 		}
 		doDamage(amount);
 	}else if (m.punch_action == MPA_DIE) {
@@ -1200,7 +1206,7 @@ u16 MobSAO::punch(content_t punch_item, v3f dir, const std::string &playername)
 		m_removed = true;
 	}
 
-	return 655;
+	return wear;
 }
 bool MobSAO::rightClick(Player *player)
 {
@@ -1240,7 +1246,7 @@ bool MobSAO::rightClick(Player *player)
 		}
 	}
 	// tame it maybe
-	if (m.level < MOB_AGGRESSIVE || myrand_range(0,m.level*2) == 0)
+	if (m.level < MOB_AGGRESSIVE || myrand_range(0,m.level*5) == 0)
 		return true;
 
 	// add new tamed mob

@@ -246,7 +246,7 @@ struct MobFeatures {
 		spawn_min_height = -20000;
 		spawn_max_height = 100;
 		spawn_max_nearby_mobs = 3;
-		spawn_chance = 100;
+		spawn_chance = 500;
 		spawn_nearest_player = 0;
 		spawn_farthest_player = 0;
 	}

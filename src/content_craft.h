@@ -236,6 +236,8 @@ namespace crafting {
 	void setSignRecipe(u16 input, u16 result);
 	// shears recipe, input is blade yields one result
 	void setShearsRecipe(u16 input, u16 result);
+	// spear recipe, input is blade yields one result
+	void setSpearRecipe(u16 input, u16 result);
 	// shovel recipe, input is blade yields one result
 	void setShovelRecipe(u16 input, u16 result);
 	// axe recipe, input is blade yields one result
