@@ -1337,7 +1337,6 @@ void Server::AsyncRunStep()
 			}
 
 			std::string data_buffer;
-
 			char buf[4];
 
 			// Handle removed objects
@@ -1353,7 +1352,8 @@ void Server::AsyncRunStep()
 				data_buffer.append(buf, 2);
 
 				// Remove from known objects
-				client->m_known_objects.erase(id);
+				std::map<u16, bool>::iterator c = client->m_known_objects.find(id);
+				client->m_known_objects.erase(c);
 
 				if (obj && obj->m_known_by_count > 0) {
 					obj->m_known_by_count--;
@@ -1391,7 +1391,7 @@ void Server::AsyncRunStep()
 					data_buffer.append(serializeLongString(""));
 				}
 				// Add to known objects
-				client->m_known_objects[id] = false;
+				client->m_known_objects[id] = true;
 
 				if (obj)
 					obj->m_known_by_count++;
