@@ -137,6 +137,7 @@ set(common_SRCS
 	content_nodemeta.cpp
 	content_craft.cpp
 	content_craftitem.cpp
+	content_clothesitem.cpp
 	content_toolitem.cpp
 	content_mob.cpp
 	content_mapnode.cpp

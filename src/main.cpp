@@ -64,6 +64,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "log.h"
 // for the init functions
 #include "content_craft.h"
+#include "content_clothesitem.h"
 #include "content_craftitem.h"
 #include "content_toolitem.h"
 #include "content_mob.h"
@@ -887,6 +888,7 @@ int main(int argc, char *argv[])
 	*/
 
 	crafting::initCrafting();
+	content_clothesitem_init();
 	content_craftitem_init();
 	content_toolitem_init();
 	content_mob_init();

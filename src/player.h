@@ -54,6 +54,7 @@ public:
 	virtual ~Player();
 
 	void resetInventory();
+	void checkInventory();
 
 	//void move(f32 dtime, Map &map);
 	virtual void move(f32 dtime, Map &map, f32 pos_max_d) = 0;
@@ -188,6 +189,52 @@ public:
 	void setHome(v3f h);
 	void unsetHome() {m_hashome = false;}
 
+	f32 getArmourProtection()
+	{
+		f32 v = 0;
+		const char* list[4] = {"hat","shirt","pants","boots"};
+		for (int j=0; j<4; j++) {
+			InventoryList *l = inventory.getList(list[j]);
+			if (l == NULL)
+				continue;
+			InventoryItem *i = l->getItem(0);
+			if (i == NULL)
+				continue;
+			v += content_clothesitem_features(i->getContent()).armour;
+		}
+		return v;
+	}
+	f32 getWarmthProtection()
+	{
+		f32 v = 0;
+		const char* list[4] = {"hat","shirt","pants","boots"};
+		for (int j=0; j<4; j++) {
+			InventoryList *l = inventory.getList(list[j]);
+			if (l == NULL)
+				continue;
+			InventoryItem *i = l->getItem(0);
+			if (i == NULL)
+				continue;
+			v += content_clothesitem_features(i->getContent()).warmth;
+		}
+		return v;
+	}
+	f32 getVacuumProtection()
+	{
+		f32 v = 0;
+		const char* list[4] = {"hat","shirt","pants","boots"};
+		for (int j=0; j<4; j++) {
+			InventoryList *l = inventory.getList(list[j]);
+			if (l == NULL)
+				continue;
+			InventoryItem *i = l->getItem(0);
+			if (i == NULL)
+				continue;
+			v += content_clothesitem_features(i->getContent()).vacuum;
+		}
+		return v;
+	}
+
 protected:
 	char m_name[PLAYERNAME_SIZE];
 	u16 m_selected_item;
@@ -246,6 +293,8 @@ private:
 };
 
 #ifndef SERVER
+#include "path.h"
+#include "mesh.h"
 
 /*
 	All the other players on the client are these
@@ -325,6 +374,7 @@ public:
 		u8 li = decode_light(light_at_pos);
 		video::SColor color(255,li,li,li);
 		setMeshVerticesColor(m_node->getMesh(), color);
+		m_wield->updateLight(li);
 	}
 
 	void updateCameraOffset(v3s16 camera_offset)
@@ -333,6 +383,31 @@ public:
 	}
 
 	void move(f32 dtime, Map &map, f32 pos_max_d);
+
+	std::string getSkin()
+	{
+		std::string tex = std::string("player_") + m_name + ".png";
+		std::string ptex = getPath("player",tex,true);
+		printf("'%s' '%s'\n",tex.c_str(),ptex.c_str());
+		if (ptex == "")
+			return "character.png";
+		return tex;
+	}
+	video::ITexture* getTexture()
+	{
+		const char* list[4] = {"hat","shirt","pants","boots"};
+		std::string tex = getSkin();
+		for (int j=0; j<4; j++) {
+			InventoryList *l = inventory.getList(list[j]);
+			if (l == NULL)
+				continue;
+			InventoryItem *i = l->getItem(0);
+			if (i == NULL)
+				continue;
+			tex += "^" + content_clothesitem_features(i->getContent()).overlay_texture;
+		}
+		return g_texturesource->getTextureRaw(tex);
+	}
 
 private:
 	scene::IAnimatedMeshSceneNode *m_node;

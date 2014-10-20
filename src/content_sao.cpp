@@ -1137,13 +1137,7 @@ InventoryItem* MobSAO::createPickedUpItem(content_t punch_item)
 				}else{
 					m_removed = true;
 				}
-				if ((m.special_dropped_item&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
-					return new CraftItem(m.special_dropped_item,m.special_dropped_count);
-				}else if ((m.special_dropped_item&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
-					return new ToolItem(m.special_dropped_item,0);
-				}else{
-					return new MaterialItem(m.special_dropped_item,m.special_dropped_count);
-				}
+				return InventoryItem::create(m.special_dropped_item,m.special_dropped_count);
 			}
 			return NULL;
 		}
@@ -1187,7 +1181,7 @@ u16 MobSAO::punch(content_t punch_item, v3f dir, const std::string &playername)
 				pos_size_off.Y = -1;
 			}
 			bool free = checkFreePosition(pos_i + pos_size_off);
-			if(free)
+			if (free)
 				m_base_position = new_base_position;
 		}
 		sendPosition();
@@ -1246,7 +1240,7 @@ bool MobSAO::rightClick(Player *player)
 		}
 	}
 	// tame it maybe
-	if (m.level < MOB_AGGRESSIVE || myrand_range(0,m.level*5) == 0)
+	if (m.level > MOB_PASSIVE && myrand_range(0,m.level*5) != 0)
 		return true;
 
 	// add new tamed mob

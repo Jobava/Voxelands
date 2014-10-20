@@ -349,13 +349,7 @@ NodeMetadata* CreativeChestNodeMetadata::clone()
 	l->clearItems();
 	std::vector<content_t> &list = lists::get("creative");
 	for (u16 i=0; i<list.size() && i < 32; i++) {
-		if ((list[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
-			t = new CraftItem(list[i],1);
-		}else if ((list[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
-			t = new ToolItem(list[i],1);
-		}else{
-			t = new MaterialItem(list[i],1);
-		}
+		t = InventoryItem::create(list[i],1);
 		l->addItem(t);
 	}
 	return d;
@@ -394,13 +388,7 @@ bool CreativeChestNodeMetadata::receiveFields(std::string formname, std::map<std
 	if (end > list.size())
 		end = list.size();
 	for (u16 i=start; i<end; i++) {
-		if ((list[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
-			t = new CraftItem(list[i],1);
-		}else if ((list[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
-			t = new ToolItem(list[i],1);
-		}else{
-			t = new MaterialItem(list[i],1);
-		}
+		t = InventoryItem::create(list[i],1);
 		l->addItem(t);
 	}
 	return true;
@@ -1122,13 +1110,7 @@ NodeMetadata* CraftGuideNodeMetadata::clone()
 	if (end > list.size())
 		end = list.size();
 	for (int i=start; i<end; i++) {
-		if ((list[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
-			t = new CraftItem(list[i],1);
-		}else if ((list[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
-			t = new ToolItem(list[i],1);
-		}else{
-			t = new MaterialItem(list[i],1);
-		}
+		t = InventoryItem::create(list[i],1);
 		r = crafting::getRecipe(t);
 		if (!r) {
 			delete t;
@@ -1183,13 +1165,7 @@ bool CraftGuideNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env
 	for (int i=0; i<9; i++) {
 		if (r[i] == CONTENT_IGNORE)
 			continue;
-		if ((r[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
-			t = new CraftItem(r[i],1);
-		}else if ((r[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
-			t = new ToolItem(r[i],1);
-		}else{
-			t = new MaterialItem(r[i],1);
-		}
+		t = InventoryItem::create(r[i],1);
 		l->addItem(i,t);
 	}
 
@@ -1216,13 +1192,7 @@ bool CraftGuideNodeMetadata::import(NodeMetadata *meta)
 	if (end > list.size())
 		end = list.size();
 	for (int i=start; i<end; i++) {
-		if ((list[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
-			t = new CraftItem(list[i],1);
-		}else if ((list[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
-			t = new ToolItem(list[i],1);
-		}else{
-			t = new MaterialItem(list[i],1);
-		}
+		t = InventoryItem::create(list[i],1);
 		r = crafting::getRecipe(t);
 		if (!r) {
 			delete t;
@@ -1269,13 +1239,7 @@ bool CraftGuideNodeMetadata::receiveFields(std::string formname, std::map<std::s
 	if (end > list.size())
 		end = list.size();
 	for (int i=start; i<end; i++) {
-		if ((list[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
-			t = new CraftItem(list[i],1);
-		}else if ((list[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
-			t = new ToolItem(list[i],1);
-		}else{
-			t = new MaterialItem(list[i],1);
-		}
+		t = InventoryItem::create(list[i],1);
 		r = crafting::getRecipe(t);
 		if (!r) {
 			delete t;
@@ -1369,13 +1333,7 @@ NodeMetadata* CookBookNodeMetadata::clone()
 	if (end > list.size())
 		end = list.size();
 	for (int i=start; i<end; i++) {
-		if ((list[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
-			t = new CraftItem(list[i],1);
-		}else if ((list[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
-			t = new ToolItem(list[i],1);
-		}else{
-			t = new MaterialItem(list[i],1);
-		}
+		t = InventoryItem::create(list[i],1);
 		InventoryItem *cookresult = t->createCookResult();
 		if (!cookresult || cookresult->getContent() == CONTENT_IGNORE) {
 			delete t;
@@ -1442,13 +1400,7 @@ bool CookBookNodeMetadata::import(NodeMetadata *meta)
 	if (end > list.size())
 		end = list.size();
 	for (int i=start; i<end; i++) {
-		if ((list[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
-			t = new CraftItem(list[i],1);
-		}else if ((list[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
-			t = new ToolItem(list[i],1);
-		}else{
-			t = new MaterialItem(list[i],1);
-		}
+		t = InventoryItem::create(list[i],1);
 		InventoryItem *cookresult = t->createCookResult();
 		if (!cookresult || cookresult->getContent() == CONTENT_IGNORE) {
 			delete t;
@@ -1481,13 +1433,7 @@ bool CookBookNodeMetadata::receiveFields(std::string formname, std::map<std::str
 	if (end > list.size())
 		end = list.size();
 	for (int i=start; i<end; i++) {
-		if ((list[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
-			t = new CraftItem(list[i],1);
-		}else if ((list[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
-			t = new ToolItem(list[i],1);
-		}else{
-			t = new MaterialItem(list[i],1);
-		}
+		t = InventoryItem::create(list[i],1);
 		InventoryItem *cookresult = t->createCookResult();
 		if (!cookresult || cookresult->getContent() == CONTENT_IGNORE) {
 			delete t;
@@ -1568,6 +1514,8 @@ NodeMetadata* DeCraftNodeMetadata::clone()
 			continue;
 		if ((list[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK)
 			continue;
+		if ((list[i]&CONTENT_CLOTHESITEM_MASK) == CONTENT_CLOTHESITEM_MASK)
+			continue;
 		if (content_features(list[i]).dug_item == "" && content_features(list[i]).extra_dug_item == "")
 			continue;
 
@@ -1607,6 +1555,8 @@ bool DeCraftNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 	if ((t->getContent()&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK)
 		return false;
 	if ((t->getContent()&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK)
+		return false;
+	if ((t->getContent()&CONTENT_CLOTHESITEM_MASK) == CONTENT_CLOTHESITEM_MASK)
 		return false;
 	if (content_features(t->getContent()).dug_item == "" && content_features(t->getContent()).extra_dug_item == "")
 		return false;
@@ -1660,6 +1610,8 @@ bool DeCraftNodeMetadata::import(NodeMetadata *meta)
 			continue;
 		if ((list[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK)
 			continue;
+		if ((list[i]&CONTENT_CLOTHESITEM_MASK) == CONTENT_CLOTHESITEM_MASK)
+			continue;
 		if (content_features(list[i]).dug_item == "" && content_features(list[i]).extra_dug_item == "")
 			continue;
 
@@ -1692,6 +1644,8 @@ bool DeCraftNodeMetadata::receiveFields(std::string formname, std::map<std::stri
 		if ((list[i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK)
 			continue;
 		if ((list[i]&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK)
+			continue;
+		if ((list[i]&CONTENT_CLOTHESITEM_MASK) == CONTENT_CLOTHESITEM_MASK)
 			continue;
 		if (content_features(list[i]).dug_item == "" && content_features(list[i]).extra_dug_item == "")
 			continue;

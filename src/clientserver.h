@@ -78,7 +78,7 @@ enum ToClientCommand
 		[N] char[20] name
 	*/
 
-	TOCLIENT_PLAYER_ANIMATION = 0x25, // stolen from TOCLIENT_OPT_BLOCK_NOT_FOUND
+	TOCLIENT_PLAYER_ANIMATION = 0x25,
 	/*
 		[0] u16 command
 		[2] u16 peer_id
@@ -178,7 +178,7 @@ enum ToClientCommand
 		wstring reason
 	*/
 
-	TOCLIENT_PLAYERITEM = 0x36,
+	TOCLIENT_PLAYERITEM = 0x36, // Obsolete, see TOCLIENT_PLAYERITEMS
 	/*
 		u16 command
 		u16 count of player items
@@ -201,6 +201,21 @@ enum ToClientCommand
 		u16 command
 		u16 textlen
 		textdata
+	*/
+
+	TOCLIENT_PLAYERITEMS = 0x39,
+	/*
+		u16 command
+		u16 count of players
+		u16 count of items
+		for all players {
+			u16 peer id
+			u16 wield
+			u16 hat
+			u16 shirt
+			u16 pants
+			u16 boots
+		}
 	*/
 };
 
@@ -296,13 +311,10 @@ enum ToServerCommand
 		s8 hunger_amount
 	*/
 
-	TOSERVER_SIGNTEXT = 0x30, // Old signs
+	TOSERVER_PLAYERWEAR = 0x30,
 	/*
 		u16 command
-		v3s16 blockpos
-		s16 id
-		u16 textlen
-		textdata
+		s8 amount
 	*/
 
 	TOSERVER_INVENTORY_ACTION = 0x31,

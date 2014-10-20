@@ -79,11 +79,9 @@ InventoryItem* InventoryItem::deSerialize(std::istream &is)
 		u16 count;
 		is>>count;
 		// Convert old materials
-		if(material <= 0xff)
-		{
+		if (material <= 0xff)
 			material = content_translate_from_19_to_internal(material);
-		}
-		if(material > MAX_CONTENT)
+		if (material > MAX_CONTENT)
 			throw SerializationError("Too large material number");
 		return new MaterialItem(material, count);
 	}else if(name == "MaterialItem2") {
@@ -122,12 +120,31 @@ InventoryItem* InventoryItem::deSerialize(std::istream &is)
 		u16 wear;
 		is>>wear;
 		return new ToolItem(material, wear);
+	}else if(name == "ClothesItem") {
+		u16 material;
+		is>>material;
+		u16 wear;
+		is>>wear;
+		return new ClothesItem(material, wear);
 	}else if (name == "") {
 		return NULL;
 	}else{
 		infostream<<"Unknown InventoryItem name=\""<<name<<"\""<<std::endl;
 		throw SerializationError("Unknown InventoryItem name");
 	}
+}
+
+InventoryItem* InventoryItem::create(content_t c, u16 count, u16 wear)
+{
+	if ((c&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
+		return new CraftItem(c,count);
+	}else if ((c&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+		return new ToolItem(c,wear);
+	}else if ((c&CONTENT_CLOTHESITEM_MASK) == CONTENT_CLOTHESITEM_MASK) {
+		return new ClothesItem(c,wear);
+	}
+
+	return new MaterialItem(c,count);
 }
 
 std::string InventoryItem::getItemString() {
@@ -434,18 +451,14 @@ InventoryList & InventoryList::operator = (const InventoryList &other)
 	m_name = other.m_name;
 	m_size = other.m_size;
 	clearItems();
-	for(u32 i=0; i<other.m_items.size(); i++)
-	{
+	for (u32 i=0; i<other.m_items.size(); i++) {
 		InventoryItem *item = other.m_items[i];
-		if(item != NULL)
-		{
+		if (item != NULL)
 			m_items[i] = item->clone();
-		}
 	}
 	m_stackable = other.m_stackable;
 	m_allowed = other.m_allowed;
 	m_denied = other.m_denied;
-	//setDirty(true);
 
 	return *this;
 }
@@ -463,10 +476,9 @@ u32 InventoryList::getSize()
 u32 InventoryList::getUsedSlots()
 {
 	u32 num = 0;
-	for(u32 i=0; i<m_items.size(); i++)
-	{
+	for (u32 i=0; i<m_items.size(); i++) {
 		InventoryItem *item = m_items[i];
-		if(item != NULL)
+		if (item != NULL)
 			num++;
 	}
 	return num;
@@ -479,14 +491,14 @@ u32 InventoryList::getFreeSlots()
 
 const InventoryItem * InventoryList::getItem(u32 i) const
 {
-	if(i > m_items.size() - 1)
+	if (i > m_items.size() - 1)
 		return NULL;
 	return m_items[i];
 }
 
 InventoryItem * InventoryList::getItem(u32 i)
 {
-	if(i > m_items.size() - 1)
+	if (i > m_items.size() - 1)
 		return NULL;
 	return m_items[i];
 }
@@ -494,10 +506,11 @@ InventoryItem * InventoryList::getItem(u32 i)
 InventoryItem * InventoryList::changeItem(u32 i, InventoryItem *newitem)
 {
 	assert(i < m_items.size());
+	if (newitem != NULL && !isAllowed(newitem))
+		return newitem;
 
 	InventoryItem *olditem = m_items[i];
 	m_items[i] = newitem;
-	//setDirty(true);
 	return olditem;
 }
 
@@ -505,13 +518,13 @@ void InventoryList::deleteItem(u32 i)
 {
 	assert(i < m_items.size());
 	InventoryItem *item = changeItem(i, NULL);
-	if(item)
+	if (item)
 		delete item;
 }
 
 InventoryItem * InventoryList::addItem(InventoryItem *newitem)
 {
-	if(newitem == NULL)
+	if (newitem == NULL)
 		return NULL;
 
 	if (!isAllowed(newitem))
@@ -602,20 +615,16 @@ bool InventoryList::itemFits(const u32 i, const InventoryItem *newitem)
 {
 	// If it is an empty position, it's an easy job.
 	const InventoryItem *to_item = getItem(i);
-	if(to_item == NULL)
-	{
+	if (to_item == NULL)
 		return true;
-	}
 
 	// If not addable, fail
-	if(newitem->addableTo(to_item) == false)
+	if (newitem->addableTo(to_item) == false)
 		return false;
 
 	// If the item fits fully in the slot, pass
-	if(newitem->getCount() <= to_item->freeSpace())
-	{
+	if (newitem->getCount() <= to_item->freeSpace())
 		return true;
-	}
 
 	return false;
 }
@@ -642,23 +651,18 @@ bool InventoryList::roomForCookedItem(const InventoryItem *item)
 
 InventoryItem * InventoryList::takeItem(u32 i, u32 count)
 {
-	if(count == 0)
+	if (count == 0)
 		return NULL;
-
-	//setDirty(true);
 
 	InventoryItem *item = getItem(i);
 	// If it is an empty position, return NULL
-	if(item == NULL)
+	if (item == NULL)
 		return NULL;
 
-	if(count >= item->getCount())
-	{
+	if (count >= item->getCount()) {
 		// Get the item by swapping NULL to its place
 		return changeItem(i, NULL);
-	}
-	else
-	{
+	}else{
 		InventoryItem *item2 = item->clone();
 		item->remove(count);
 		item2->setCount(count);
@@ -670,10 +674,9 @@ InventoryItem * InventoryList::takeItem(u32 i, u32 count)
 
 void InventoryList::decrementMaterials(u16 count)
 {
-	for(u32 i=0; i<m_items.size(); i++)
-	{
+	for (u32 i=0; i<m_items.size(); i++) {
 		InventoryItem *item = takeItem(i, count);
-		if(item)
+		if (item)
 			delete item;
 	}
 }
@@ -681,15 +684,13 @@ void InventoryList::decrementMaterials(u16 count)
 void InventoryList::print(std::ostream &o)
 {
 	o<<"InventoryList:"<<std::endl;
-	for(u32 i=0; i<m_items.size(); i++)
-	{
+	for( u32 i=0; i<m_items.size(); i++) {
 		InventoryItem *item = m_items[i];
-		if(item != NULL)
-		{
-			o<<i<<": ";
-			item->serialize(o);
-			o<<"\n";
-		}
+		if (item == NULL)
+			continue;
+		o<<i<<": ";
+		item->serialize(o);
+		o<<"\n";
 	}
 }
 
@@ -704,8 +705,7 @@ Inventory::~Inventory()
 
 void Inventory::clear()
 {
-	for(u32 i=0; i<m_lists.size(); i++)
-	{
+	for (u32 i=0; i<m_lists.size(); i++) {
 		delete m_lists[i];
 	}
 	m_lists.clear();
@@ -723,8 +723,7 @@ Inventory::Inventory(const Inventory &other)
 Inventory & Inventory::operator = (const Inventory &other)
 {
 	clear();
-	for(u32 i=0; i<other.m_lists.size(); i++)
-	{
+	for (u32 i=0; i<other.m_lists.size(); i++) {
 		m_lists.push_back(new InventoryList(*other.m_lists[i]));
 	}
 	return *this;
@@ -732,8 +731,7 @@ Inventory & Inventory::operator = (const Inventory &other)
 
 void Inventory::serialize(std::ostream &os) const
 {
-	for(u32 i=0; i<m_lists.size(); i++)
-	{
+	for (u32 i=0; i<m_lists.size(); i++) {
 		InventoryList *list = m_lists[i];
 		os<<"List "<<list->getName()<<" "<<list->getSize()<<"\n";
 		list->serialize(os);
@@ -746,8 +744,7 @@ void Inventory::deSerialize(std::istream &is)
 {
 	clear();
 
-	for(;;)
-	{
+	for (;;) {
 		std::string line;
 		std::getline(is, line, '\n');
 
@@ -756,17 +753,13 @@ void Inventory::deSerialize(std::istream &is)
 		std::string name;
 		std::getline(iss, name, ' ');
 
-		if(name == "EndInventory")
-		{
+		if (name == "EndInventory") {
 			break;
 		}
 		// This is a temporary backwards compatibility fix
-		else if(name == "end")
-		{
+		else if (name == "end") {
 			break;
-		}
-		else if(name == "List")
-		{
+		}else if(name == "List") {
 			std::string listname;
 			u32 listsize;
 
@@ -777,9 +770,7 @@ void Inventory::deSerialize(std::istream &is)
 			list->deSerialize(is);
 
 			m_lists.push_back(list);
-		}
-		else
-		{
+		}else{
 			throw SerializationError("Unknown inventory identifier");
 		}
 	}
@@ -788,17 +779,13 @@ void Inventory::deSerialize(std::istream &is)
 InventoryList * Inventory::addList(const std::string &name, u32 size)
 {
 	s32 i = getListIndex(name);
-	if(i != -1)
-	{
-		if(m_lists[i]->getSize() != size)
-		{
+	if (i != -1) {
+		if (m_lists[i]->getSize() != size) {
 			delete m_lists[i];
 			m_lists[i] = new InventoryList(name, size);
 		}
 		return m_lists[i];
-	}
-	else
-	{
+	}else{
 		m_lists.push_back(new InventoryList(name, size));
 		return m_lists.getLast();
 	}
@@ -807,7 +794,7 @@ InventoryList * Inventory::addList(const std::string &name, u32 size)
 InventoryList * Inventory::getList(const std::string &name)
 {
 	s32 i = getListIndex(name);
-	if(i == -1)
+	if (i == -1)
 		return NULL;
 	return m_lists[i];
 }
@@ -815,14 +802,14 @@ InventoryList * Inventory::getList(const std::string &name)
 const InventoryList * Inventory::getList(const std::string &name) const
 {
 	s32 i = getListIndex(name);
-	if(i == -1)
+	if (i == -1)
 		return NULL;
 	return m_lists[i];
 }
 
 const s32 Inventory::getListIndex(const std::string &name) const
 {
-	for(u32 i=0; i<m_lists.size(); i++) {
+	for (u32 i=0; i<m_lists.size(); i++) {
 		if (m_lists[i]->getName() == name)
 			return i;
 	}
@@ -838,7 +825,7 @@ InventoryAction * InventoryAction::deSerialize(std::istream &is)
 	std::string type;
 	std::getline(is, type, ' ');
 
-	if(type == "Move")
+	if (type == "Move")
 		return new IMoveAction(is);
 
 	return NULL;
@@ -846,7 +833,7 @@ InventoryAction * InventoryAction::deSerialize(std::istream &is)
 
 static std::string describeC(const struct InventoryContext *c)
 {
-	if(c->current_player == NULL) {
+	if (c->current_player == NULL) {
 		return "current_player=NULL";
 	}else{
 		return std::string("current_player=") + c->current_player->getName();
@@ -906,6 +893,9 @@ void IMoveAction::apply(InventoryContext *c, InventoryManager *mgr)
 		return;
 	}
 
+	if (count == 0 && list_to->getStackable() == false)
+		count = 1;
+
 	// Take item from source list
 	InventoryItem *item1 = NULL;
 	if (count == 0) {
@@ -942,7 +932,7 @@ void IMoveAction::apply(InventoryContext *c, InventoryManager *mgr)
 	}
 
 	mgr->inventoryModified(c, from_inv);
-	if(from_inv != to_inv)
+	if (from_inv != to_inv)
 		mgr->inventoryModified(c, to_inv);
 
 	infostream<<"IMoveAction::apply(): moved at "
@@ -969,7 +959,7 @@ std::string InventoryLocation::dump() const
 
 void InventoryLocation::serialize(std::ostream &os) const
 {
-        switch(type) {
+        switch (type) {
         case InventoryLocation::UNDEFINED:
         {
 		os<<"undefined";
@@ -1024,60 +1014,6 @@ void InventoryLocation::deSerialize(std::string s)
 {
 	std::istringstream is(s, std::ios::binary);
 	deSerialize(is);
-}
-
-/*
-	Craft checking system
-*/
-
-bool ItemSpec::checkItem(const InventoryItem *item) const
-{
-	if(type == ITEM_NONE)
-	{
-		// Has to be no item
-		if(item != NULL)
-			return false;
-		return true;
-	}
-
-	// There should be an item
-	if(item == NULL)
-		return false;
-
-	std::string itemname = item->getName();
-
-	if(type == ITEM_MATERIAL)
-	{
-		if(itemname != "MaterialItem")
-			return false;
-		MaterialItem *mitem = (MaterialItem*)item;
-		if(mitem->getMaterial() != num)
-			return false;
-	}
-	else if(type == ITEM_CRAFT)
-	{
-		if(itemname != "CraftItem")
-			return false;
-		CraftItem *mitem = (CraftItem*)item;
-		if(mitem->getSubName() != name)
-			return false;
-	}
-	else if(type == ITEM_TOOL)
-	{
-		// Not supported yet
-		assert(0);
-	}
-	else if(type == ITEM_MBO)
-	{
-		// Not supported yet
-		assert(0);
-	}
-	else
-	{
-		// Not supported yet
-		assert(0);
-	}
-	return true;
 }
 
 //END

@@ -3758,11 +3758,13 @@ void ClientEnvironment::step(float dtime)
 			damage_per_second = MYMAX(damage_per_second,content_features(n4).damage_per_second);
 		}
 		// cold zone
-		if (damage_per_second == 0 && pp.Y > 60 && pp.Y < 200 && myrand()%10 == 0) {
+		if (damage_per_second == 0 && pp.Y > 60 && pp.Y < 1000 && myrand()%10 == 0) {
 			std::vector<content_t> search;
 			search.push_back(CONTENT_FIRE);
-			if (!searchNear(pp,v3s16(-4,-2,-4),v3s16(5,5,5),search,NULL))
-				damage_per_second = MYMAX(damage_per_second,1);
+			if (!searchNear(pp,v3s16(-4,-2,-4),v3s16(5,5,5),search,NULL)) {
+				damageLocalPlayerWithWarmth(1);
+				damage_per_second = 0;
+			}
 		}
 
 		if (damage_per_second != 0) {
@@ -3998,8 +4000,7 @@ void ClientEnvironment::processActiveObjectMessage(u16 id,
 		const std::string &data)
 {
 	ClientActiveObject* obj = getActiveObject(id);
-	if(obj == NULL)
-	{
+	if (obj == NULL) {
 		infostream<<"ClientEnvironment::processActiveObjectMessage():"
 				<<" got message for id="<<id<<", which doesn't exist."
 				<<std::endl;
@@ -4014,13 +4015,127 @@ void ClientEnvironment::processActiveObjectMessage(u16 id,
 
 void ClientEnvironment::damageLocalPlayer(u8 damage)
 {
+	if (!m_client->getServerDamage())
+		return;
 	LocalPlayer *lplayer = getLocalPlayer();
 	assert(lplayer);
 
-	if(lplayer->hp > damage)
+	if (lplayer->hp > damage) {
 		lplayer->hp -= damage;
-	else
+	}else{
 		lplayer->hp = 0;
+	}
+
+	ClientEnvEvent event;
+	event.type = CEE_PLAYER_DAMAGE;
+	event.player_damage.amount = damage;
+	m_client_event_queue.push_back(event);
+}
+
+void ClientEnvironment::damageLocalPlayerWithArmour(u8 damage)
+{
+	if (!m_client->getServerDamage())
+		return;
+	LocalPlayer *lplayer = getLocalPlayer();
+	assert(lplayer);
+	f32 effect = lplayer->getArmourProtection();
+	f32 f_damage = damage;
+
+	if (damage > 0 && effect > 0.0) {
+		f_damage -= f_damage*effect;
+		ClientEnvEvent event;
+		event.type = CEE_PLAYER_WEARCLOTHES;
+		event.player_wear.amount = damage*(500*(2.0-effect));
+		m_client_event_queue.push_back(event);
+		if (f_damage < 1.0 && f_damage > 0.0) {
+			damage = 1.0/f_damage;
+			if (myrand_range(0,damage) == 0)
+				f_damage = 1.0;
+		}
+		damage = f_damage;
+		if (damage < 1)
+			return;
+	}
+
+	if (lplayer->hp > damage) {
+		lplayer->hp -= damage;
+	}else{
+		lplayer->hp = 0;
+	}
+
+	ClientEnvEvent event;
+	event.type = CEE_PLAYER_DAMAGE;
+	event.player_damage.amount = damage;
+	m_client_event_queue.push_back(event);
+}
+
+void ClientEnvironment::damageLocalPlayerWithWarmth(u8 damage)
+{
+	if (!m_client->getServerDamage())
+		return;
+	LocalPlayer *lplayer = getLocalPlayer();
+	assert(lplayer);
+	f32 effect = lplayer->getWarmthProtection();
+	f32 f_damage = damage;
+
+	if (damage > 0 && effect > 0.0) {
+		f_damage -= f_damage*effect;
+		ClientEnvEvent event;
+		event.type = CEE_PLAYER_WEARCLOTHES;
+		event.player_wear.amount = damage*(500*(2.0-effect));
+		m_client_event_queue.push_back(event);
+		if (f_damage < 1.0 && f_damage > 0.0) {
+			damage = 1.0/f_damage;
+			if (myrand_range(0,damage) == 0)
+				f_damage = 1.0;
+		}
+		damage = f_damage;
+		if (damage < 1)
+			return;
+	}
+
+	if (lplayer->hp > damage) {
+		lplayer->hp -= damage;
+	}else{
+		lplayer->hp = 0;
+	}
+
+	ClientEnvEvent event;
+	event.type = CEE_PLAYER_DAMAGE;
+	event.player_damage.amount = damage;
+	m_client_event_queue.push_back(event);
+}
+
+void ClientEnvironment::damageLocalPlayerWithVacuum(u8 damage)
+{
+	if (!m_client->getServerDamage())
+		return;
+	LocalPlayer *lplayer = getLocalPlayer();
+	assert(lplayer);
+	f32 effect = lplayer->getVacuumProtection();
+	f32 f_damage = damage;
+
+	if (damage > 0 && effect > 0.0) {
+		f_damage -= f_damage*effect;
+		ClientEnvEvent event;
+		event.type = CEE_PLAYER_WEARCLOTHES;
+		event.player_wear.amount = damage*(500*(2.0-effect));
+		m_client_event_queue.push_back(event);
+		if (f_damage < 1.0 && f_damage > 0.0) {
+			damage = 1.0/f_damage;
+			if (myrand_range(0,damage) == 0)
+				f_damage = 1.0;
+		}
+		damage = f_damage;
+		if (damage < 1)
+			return;
+	}
+
+	if (lplayer->hp > damage) {
+		lplayer->hp -= damage;
+	}else{
+		lplayer->hp = 0;
+	}
 
 	ClientEnvEvent event;
 	event.type = CEE_PLAYER_DAMAGE;

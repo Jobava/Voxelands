@@ -534,11 +534,12 @@ private:
 	void SendObjectData(float dtime);
 	void SendPlayerInfos();
 	void SendInventory(u16 peer_id);
-	// send wielded item info about player to all
-	void SendWieldedItem(const Player *player);
+	// send animation info about player to all
 	void SendPlayerAnim(const Player *player, u8 animation_id);
 	// send wielded item info about all players to all players
 	void SendPlayerItems();
+	// send wielded item info about a player to all players
+	void SendPlayerItems(Player *player);
 	void SendChatMessage(u16 peer_id, const std::wstring &message);
 	void BroadcastChatMessage(const std::wstring &message);
 	void SendPlayerHP(Player *player);

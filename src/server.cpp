@@ -4282,10 +4282,31 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			HandlePlayerHP(player, damage, suffocate, hunger);
 		}
 	}
-	else if(command == TOSERVER_SIGNTEXT)
+	else if(command == TOSERVER_PLAYERWEAR)
 	{
-		infostream<<"Server: TOSERVER_SIGNTEXT not supported anymore"
-				<<std::endl;
+		std::string datastring((char*)&data[2], datasize-2);
+		std::istringstream is(datastring, std::ios_base::binary);
+		u16 wear = readU16(is);
+		if (!g_settings->getBool("enable_damage"))
+			return;
+
+		const char* list[4] = {"hat","shirt","pants","boots"};
+		for (int j=0; j<4; j++) {
+			InventoryList *l = player->inventory.getList(list[j]);
+			if (l == NULL)
+				continue;
+			ClothesItem *i = (ClothesItem*)l->getItem(0);
+			if (i == NULL)
+				continue;
+			u16 w = wear;
+			if (content_clothesitem_features(i->getContent()).durability > 1)
+				w /= content_clothesitem_features(i->getContent()).durability;
+			if (w < 150)
+				w = 150;
+			if (i->addWear(w))
+				l->deleteItem(0);
+		}
+		SendInventory(player->peer_id);
 		return;
 	}
 	else if(command == TOSERVER_SIGNNODETEXT)
@@ -4671,7 +4692,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 		u16 item = readU16(&data[2]);
 		player->wieldItem(item);
-		SendWieldedItem(player);
+		SendPlayerItems(player);
 	}
 	else if(command == TOSERVER_RESPAWN)
 	{
@@ -5040,26 +5061,6 @@ std::string getWieldedItemString(const Player *player)
 	return os.str();
 }
 
-void Server::SendWieldedItem(const Player* player)
-{
-	DSTACK(__FUNCTION_NAME);
-
-	assert(player);
-
-	std::ostringstream os(std::ios_base::binary);
-
-	writeU16(os, TOCLIENT_PLAYERITEM);
-	writeU16(os, 1);
-	writeU16(os, player->peer_id);
-	os<<serializeString(getWieldedItemString(player));
-
-	// Make data buffer
-	std::string s = os.str();
-	SharedBuffer<u8> data((u8*)s.c_str(), s.size());
-
-	m_con.SendToAll(0, data, true);
-}
-
 void Server::SendPlayerAnim(const Player* player, u8 animation_id)
 {
 	DSTACK(__FUNCTION_NAME);
@@ -5086,14 +5087,66 @@ void Server::SendPlayerItems()
 	std::ostringstream os(std::ios_base::binary);
 	core::list<Player *> players = m_env.getPlayers(true);
 
-	writeU16(os, TOCLIENT_PLAYERITEM);
+	writeU16(os, TOCLIENT_PLAYERITEMS);
 	writeU16(os, players.size());
-	core::list<Player *>::Iterator i;
-	for(i = players.begin(); i != players.end(); ++i)
-	{
+	writeU16(os, 5);
+	for (core::list<Player *>::Iterator i = players.begin(); i != players.end(); ++i) {
 		Player *p = *i;
 		writeU16(os, p->peer_id);
-		os<<serializeString(getWieldedItemString(p));
+		InventoryItem *item = (InventoryItem*)p->getWieldItem();
+		if (item == NULL) {
+			writeU16(os,CONTENT_IGNORE);
+		}else{
+			writeU16(os,item->getContent());
+		}
+		const char* list[4] = {"hat","shirt","pants","boots"};
+		for (int j=0; j<4; j++) {
+			InventoryList *l = p->inventory.getList(list[j]);
+			if (l == NULL)
+				continue;
+			InventoryItem *itm = l->getItem(0);
+			if (itm == NULL) {
+				writeU16(os,CONTENT_IGNORE);
+				continue;
+			}
+			writeU16(os,itm->getContent());
+		}
+	}
+
+	// Make data buffer
+	std::string s = os.str();
+	SharedBuffer<u8> data((u8*)s.c_str(), s.size());
+
+	m_con.SendToAll(0, data, true);
+}
+
+void Server::SendPlayerItems(Player *player)
+{
+	DSTACK(__FUNCTION_NAME);
+
+	std::ostringstream os(std::ios_base::binary);
+
+	writeU16(os, TOCLIENT_PLAYERITEMS);
+	writeU16(os, 1);
+	writeU16(os, 5);
+	writeU16(os, player->peer_id);
+	InventoryItem *item = (InventoryItem*)player->getWieldItem();
+	if (item == NULL) {
+		writeU16(os,CONTENT_IGNORE);
+	}else{
+		writeU16(os,item->getContent());
+	}
+	const char* list[4] = {"hat","shirt","pants","boots"};
+	for (int j=0; j<4; j++) {
+		InventoryList *l = player->inventory.getList(list[j]);
+		if (l == NULL)
+			continue;
+		InventoryItem *itm = l->getItem(0);
+		if (itm == NULL) {
+			writeU16(os,CONTENT_IGNORE);
+			continue;
+		}
+		writeU16(os,itm->getContent());
 	}
 
 	// Make data buffer

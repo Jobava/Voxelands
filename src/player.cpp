@@ -1,21 +1,27 @@
-/*
-Minetest-c55
-Copyright (C) 2010-2011 celeron55, Perttu Ahola <celeron55@gmail.com>
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along
-with this program; if not, write to the Free Software Foundation, Inc.,
-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-*/
+/************************************************************************
+* Minetest-c55
+* Copyright (C) 2010-2011 celeron55, Perttu Ahola <celeron55@gmail.com>
+*
+* player.cpp
+* voxelands - 3d voxel world sandbox game
+* Copyright (C) Lisa 'darkrose' Milne 2013-2014 <lisa@ltmnet.com>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but
+* WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+* See the GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>
+*
+* License updated from GPLv2 or later to GPLv3 or later by Lisa Milne
+* for Voxelands.
+************************************************************************/
 
 #include "player.h"
 #include "map.h"
@@ -66,10 +72,51 @@ void Player::wieldItem(u16 item)
 void Player::resetInventory()
 {
 	inventory.clear();
-	inventory.addList("main", PLAYER_INVENTORY_SIZE);
-	inventory.addList("discard",1);
-	inventory.addList("craft", 9);
-	inventory.addList("craftresult", 1);
+	checkInventory();
+}
+
+void Player::checkInventory()
+{
+	if (!inventory.getList("main"))
+		inventory.addList("main", PLAYER_INVENTORY_SIZE);
+	if (!inventory.getList("hat"))
+		inventory.addList("hat",1);
+	{
+		InventoryList *l = inventory.getList("hat");
+		l->setStackable(false);
+		l->clearAllowed();
+		l->addAllowed(CONTENT_CLOTHESITEM_FUR_HAT);
+	}
+	if (!inventory.getList("shirt"))
+		inventory.addList("shirt",1);
+	{
+		InventoryList *l = inventory.getList("shirt");
+		l->setStackable(false);
+		l->clearAllowed();
+		l->addAllowed(CONTENT_CLOTHESITEM_FUR_SHIRT);
+	}
+	if (!inventory.getList("pants"))
+		inventory.addList("pants",1);
+	{
+		InventoryList *l = inventory.getList("pants");
+		l->setStackable(false);
+		l->clearAllowed();
+		l->addAllowed(CONTENT_CLOTHESITEM_FUR_PANTS);
+	}
+	if (!inventory.getList("boots"))
+		inventory.addList("boots",1);
+	{
+		InventoryList *l = inventory.getList("boots");
+		l->setStackable(false);
+		l->clearAllowed();
+		l->addAllowed(CONTENT_CLOTHESITEM_FUR_BOOTS);
+	}
+	if (!inventory.getList("discard"))
+		inventory.addList("discard",1);
+	if (!inventory.getList("craft"))
+		inventory.addList("craft", 9);
+	if (!inventory.getList("craftresult"))
+		inventory.addList("craftresult", 1);
 }
 
 // Y direction is ignored
@@ -132,24 +179,24 @@ void Player::serialize(std::ostream &os)
 
 	// If actual inventory is backed up due to creative mode, save it
 	// instead of the dummy creative mode inventory
-	if(inventory_backup)
+	if (inventory_backup) {
 		inventory_backup->serialize(os);
-	else
+	}else{
 		inventory.serialize(os);
+	}
 }
 
 void Player::deSerialize(std::istream &is)
 {
 	Settings args;
 
-	for(;;)
-	{
-		if(is.eof())
+	for (;;) {
+		if (is.eof())
 			return;
 		std::string line;
 		std::getline(is, line);
 		std::string trimmedline = trim(line);
-		if(trimmedline == "PlayerArgsEnd")
+		if (trimmedline == "PlayerArgsEnd")
 			break;
 		args.parseConfigLine(line);
 	}
@@ -204,14 +251,7 @@ void Player::deSerialize(std::istream &is)
 	}*/
 
 	inventory.deSerialize(is);
-	if (!inventory.getList("main"))
-		inventory.addList("main", PLAYER_INVENTORY_SIZE);
-	if (!inventory.getList("discard"))
-		inventory.addList("discard",1);
-	if (!inventory.getList("craft"))
-		inventory.addList("craft", 9);
-	if (!inventory.getList("craftresult"))
-		inventory.addList("craftresult", 1);
+	checkInventory();
 }
 
 bool Player::getHome(v3f &h)
@@ -299,22 +339,17 @@ RemotePlayer::~RemotePlayer()
 
 void RemotePlayer::updateName(const char *name)
 {
-	Player::updateName(name);
-	if (m_text != NULL) {
-		wchar_t wname[PLAYERNAME_SIZE];
-		mbstowcs(wname, m_name, strlen(m_name)+1);
-		m_text->setText(wname);
+	if (name != NULL) {
+		Player::updateName(name);
+		if (m_text != NULL) {
+			wchar_t wname[PLAYERNAME_SIZE];
+			mbstowcs(wname, m_name, strlen(m_name)+1);
+			m_text->setText(wname);
+		}
 	}
 	if (m_node != NULL && !isLocal()) {
-		std::string tex = std::string("player_") + m_name + ".png";
-		std::string ptex = getPath("player",tex,true);
-		printf("'%s' '%s'\n",tex.c_str(),ptex.c_str());
-		if (ptex == "")
-			return;
 		// Set material flags and texture
-		scene::ISceneManager* mgr = SceneManager;
-		video::IVideoDriver* driver = mgr->getVideoDriver();
-		m_node->setMaterialTexture( 0, driver->getTexture(ptex.c_str()));
+		m_node->setMaterialTexture( 0, getTexture());
 		video::SMaterial& material = m_node->getMaterial(0);
 		material.setFlag(video::EMF_LIGHTING, false);
 		material.setFlag(video::EMF_BILINEAR_FILTER, false);

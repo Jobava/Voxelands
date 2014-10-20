@@ -210,6 +210,7 @@ public:
 	void sendChangePassword(const std::wstring oldpassword,
 		const std::wstring newpassword);
 	void sendDamage(s8 damage, s8 suffocate, s8 hunger);
+	void sendClothesWear(u16 wear);
 	void sendRespawn();
 	void sendWantCookie();
 

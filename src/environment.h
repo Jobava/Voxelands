@@ -339,7 +339,8 @@ enum ClientEnvEventType
 	CEE_NONE,
 	CEE_PLAYER_DAMAGE,
 	CEE_PLAYER_SUFFOCATE,
-	CEE_PLAYER_HUNGER
+	CEE_PLAYER_HUNGER,
+	CEE_PLAYER_WEARCLOTHES
 };
 
 struct ClientEnvEvent
@@ -351,6 +352,9 @@ struct ClientEnvEvent
 		struct{
 			u8 amount;
 		} player_damage;
+		struct {
+			u16 amount;
+		} player_wear;
 	};
 };
 
@@ -418,8 +422,10 @@ public:
 	/*
 		Callbacks for activeobjects
 	*/
-
 	void damageLocalPlayer(u8 damage);
+	void damageLocalPlayerWithArmour(u8 damage);
+	void damageLocalPlayerWithWarmth(u8 damage);
+	void damageLocalPlayerWithVacuum(u8 damage);
 
 	/*
 		Client likes to call these

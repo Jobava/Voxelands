@@ -213,12 +213,17 @@ public:
 	std::string getForm()
 	{
 		return
-			"size[8,7]"
-			"list[current_player;main;0,3;8,4;]"
-			"label[0.2,0.7;Drop to Ground]"
-			"list[current_player;discard;0.5,1;1,1;]"
-			"list[current_player;craft;3,0;3,3;]"
-			"list[current_player;craftresult;6.5,1;1,1;]";
+			"size[8,9]"
+			"list[current_player;main;0,5;8,4;]"
+			"label[0.3,0.2;Clothes]"
+			"list[current_player;hat;0,0.5;1,1;]"
+			"list[current_player;shirt;0,1.5;1,1;]"
+			"list[current_player;pants;0,2.5;1,1;]"
+			"list[current_player;boots;0,3.5;1,1;]"
+			"label[1.4,1.7;Drop to Ground]"
+			"list[current_player;discard;1.75,2;1,1;]"
+			"list[current_player;craft;3.5,1;3,3;]"
+			"list[current_player;craftresult;7,2;1,1;]";
 	}
 
 	Client *m_client;

@@ -38,6 +38,7 @@
 // for mapping to old subname
 #include "content_craftitem.h"
 #include "content_toolitem.h"
+#include "content_clothesitem.h"
 #include "content_mapnode.h"
 
 #define QUANTITY_ITEM_MAX_COUNT 99
@@ -53,6 +54,7 @@ public:
 	virtual ~InventoryItem();
 
 	static InventoryItem* deSerialize(std::istream &is);
+	static InventoryItem* create(content_t c, u16 count, u16 wear=0);
 
 	virtual const char* getName() const = 0;
 	// Shall write the name and the parameters
@@ -424,6 +426,97 @@ private:
 	u16 m_wear;
 };
 
+class ClothesItem : public InventoryItem
+{
+public:
+	ClothesItem(content_t content, u16 wear):
+		InventoryItem(1)
+	{
+		m_wear = wear;
+		m_content = content_clothesitem_features(content).content;
+	}
+	/*
+		Implementation interface
+	*/
+	virtual const char* getName() const
+	{
+		return "ClothesItem";
+	}
+	virtual void serialize(std::ostream &os) const
+	{
+		os<<"ClothesItem";
+		os<<" ";
+		os<<(unsigned int)m_content;
+		os<<" ";
+		os<<m_wear;
+	}
+	virtual InventoryItem* clone()
+	{
+		return new ClothesItem(m_content, m_wear);
+	}
+#ifndef SERVER
+	std::string getBasename() const {
+		return content_clothesitem_features(m_content).texture;
+	}
+
+	video::ITexture * getImage() const
+	{
+		if (g_texturesource == NULL)
+			return NULL;
+
+		std::string basename = getBasename();
+
+		/*
+			Calculate a progress value with sane amount of
+			maximum states
+		*/
+		u32 maxprogress = 30;
+		u32 toolprogress = (65535-m_wear)/(65535/maxprogress);
+
+		float value_f = (float)toolprogress / (float)maxprogress;
+		std::ostringstream os;
+		os<<basename<<"^[progressbar"<<value_f;
+
+		return g_texturesource->getTextureRaw(os.str());
+	}
+
+	video::ITexture * getImageRaw() const
+	{
+		if (g_texturesource == NULL)
+			return NULL;
+
+		return g_texturesource->getTextureRaw(getBasename());
+	}
+#endif
+	std::wstring getGuiName() {
+		return content_clothesitem_features(m_content).description;
+	}
+	std::string getText()
+	{
+		return "";
+	}
+	/*
+		Special methods
+	*/
+	u16 getWear()
+	{
+		return m_wear;
+	}
+	// Returns true if weared out
+	bool addWear(u16 add)
+	{
+		if (m_wear >= 65535 - add) {
+			m_wear = 65535;
+			return true;
+		}else{
+			m_wear += add;
+			return false;
+		}
+	}
+private:
+	u16 m_wear;
+};
+
 class InventoryList
 {
 public:
@@ -720,46 +813,6 @@ struct InventoryLocation
 	void serialize(std::ostream &os) const;
 	void deSerialize(std::istream &is);
 	void deSerialize(std::string s);
-};
-
-/*
-	Craft checking system
-*/
-
-enum ItemSpecType
-{
-	ITEM_NONE,
-	ITEM_MATERIAL,
-	ITEM_CRAFT,
-	ITEM_TOOL,
-	ITEM_MBO
-};
-
-struct ItemSpec
-{
-	enum ItemSpecType type;
-	// Only other one of these is used
-	std::string name;
-	u16 num;
-
-	ItemSpec():
-		type(ITEM_NONE)
-	{
-	}
-	ItemSpec(enum ItemSpecType a_type, std::string a_name):
-		type(a_type),
-		name(a_name),
-		num(65535)
-	{
-	}
-	ItemSpec(enum ItemSpecType a_type, u16 a_num):
-		type(a_type),
-		name(""),
-		num(a_num)
-	{
-	}
-
-	bool checkItem(const InventoryItem *item) const;
 };
 
 #endif

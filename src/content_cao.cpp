@@ -394,7 +394,7 @@ void MobCAO::step(float dtime, ClientEnvironment *env)
 				)
 			) && fabs(m_position.Z - playerpos.Z) < m.attack_player_range.Z*BS
 		) {
-			env->damageLocalPlayer(m.attack_player_damage);
+			env->damageLocalPlayerWithArmour(m.attack_player_damage);
 			m_player_hit_timer = 3.0;
 		}
 	}

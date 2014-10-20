@@ -21,6 +21,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "inventory.h"
 #include "content_mapnode.h"
 #include "content_craftitem.h"
+#include "content_clothesitem.h"
 #include "content_toolitem.h"
 #include "content_list.h"
 #include "player.h"
@@ -428,7 +429,7 @@ void setShearsRecipe(u16 input, u16 result)
 		CONTENT_IGNORE,			input,		CONTENT_IGNORE,
 		CONTENT_CRAFTITEM_STICK,	CONTENT_IGNORE,	CONTENT_CRAFTITEM_STICK
 	};
-	setRecipe(r,result,1);
+	setRecipe(r,result,0);
 }
 // shovel recipe, input is blade yields one result
 void setShovelRecipe(u16 input, u16 result)
@@ -438,19 +439,19 @@ void setShovelRecipe(u16 input, u16 result)
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_IGNORE,
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_IGNORE
 	};
-	setRecipe(r,result,1);
+	setRecipe(r,result,0);
 	u16 r1[9] = {
 		CONTENT_IGNORE,	input,				CONTENT_IGNORE,
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_WOOD_PLANK,	CONTENT_IGNORE,
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_WOOD_PLANK,	CONTENT_IGNORE
 	};
-	setRecipe(r1,result,1);
+	setRecipe(r1,result,0);
 	u16 r2[9] = {
 		CONTENT_IGNORE,	input,				CONTENT_IGNORE,
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_WOOD_PLANK,	CONTENT_IGNORE,
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_WOOD_PLANK,	CONTENT_IGNORE
 	};
-	setRecipe(r2,result,1);
+	setRecipe(r2,result,0);
 }
 // spear recipe, input is blade yields one result
 void setSpearRecipe(u16 input, u16 result)
@@ -460,7 +461,7 @@ void setSpearRecipe(u16 input, u16 result)
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_STICK,	CONTENT_IGNORE,
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_STICK,	CONTENT_IGNORE
 	};
-	setRecipe(r,result,1);
+	setRecipe(r,result,0);
 }
 // axe recipe, input is blade yields one result
 void setAxeRecipe(u16 input, u16 result)
@@ -470,37 +471,37 @@ void setAxeRecipe(u16 input, u16 result)
 		input,		CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_IGNORE,
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_IGNORE
 	};
-	setRecipe(r,result,1);
+	setRecipe(r,result,0);
 	u16 r1[9] = {
 		CONTENT_IGNORE,	input,				input,
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_PINE_PLANK,	input,
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_IGNORE
 	};
-	setRecipe(r1,result,1);
+	setRecipe(r1,result,0);
 	u16 r2[9] = {
 		input,		input,				CONTENT_IGNORE,
 		input,		CONTENT_CRAFTITEM_WOOD_PLANK,	CONTENT_IGNORE,
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_WOOD_PLANK,	CONTENT_IGNORE
 	};
-	setRecipe(r2,result,1);
+	setRecipe(r2,result,0);
 	u16 r3[9] = {
 		CONTENT_IGNORE,	input,				input,
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_WOOD_PLANK,	input,
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_WOOD_PLANK,	CONTENT_IGNORE
 	};
-	setRecipe(r3,result,1);
+	setRecipe(r3,result,0);
 	u16 r4[9] = {
 		input,		input,				CONTENT_IGNORE,
 		input,		CONTENT_CRAFTITEM_JUNGLE_PLANK,	CONTENT_IGNORE,
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_JUNGLE_PLANK,	CONTENT_IGNORE
 	};
-	setRecipe(r4,result,1);
+	setRecipe(r4,result,0);
 	u16 r5[9] = {
 		CONTENT_IGNORE,	input,				input,
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_JUNGLE_PLANK,	input,
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_JUNGLE_PLANK,	CONTENT_IGNORE
 	};
-	setRecipe(r5,result,1);
+	setRecipe(r5,result,0);
 }
 // pick recipe, input is blade yields one result
 void setPickRecipe(u16 input, u16 result)
@@ -510,19 +511,19 @@ void setPickRecipe(u16 input, u16 result)
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_IGNORE,
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_IGNORE
 	};
-	setRecipe(r,result,1);
+	setRecipe(r,result,0);
 	u16 r1[9] = {
 		input,		input,				input,
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_WOOD_PLANK,	CONTENT_IGNORE,
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_WOOD_PLANK,	CONTENT_IGNORE
 	};
-	setRecipe(r1,result,1);
+	setRecipe(r1,result,0);
 	u16 r2[9] = {
 		input,		input,				input,
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_JUNGLE_PLANK,	CONTENT_IGNORE,
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_JUNGLE_PLANK,	CONTENT_IGNORE
 	};
-	setRecipe(r2,result,1);
+	setRecipe(r2,result,0);
 }
 // sword recipe, input is blade yields one result
 void setSwordRecipe(u16 input, u16 result)
@@ -532,19 +533,19 @@ void setSwordRecipe(u16 input, u16 result)
 		CONTENT_IGNORE,	input,				CONTENT_IGNORE,
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_PINE_PLANK,	CONTENT_IGNORE
 	};
-	setRecipe(r,result,1);
+	setRecipe(r,result,0);
 	u16 r1[9] = {
 		CONTENT_IGNORE,	input,				CONTENT_IGNORE,
 		CONTENT_IGNORE,	input,				CONTENT_IGNORE,
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_WOOD_PLANK,	CONTENT_IGNORE
 	};
-	setRecipe(r1,result,1);
+	setRecipe(r1,result,0);
 	u16 r2[9] = {
 		CONTENT_IGNORE,	input,				CONTENT_IGNORE,
 		CONTENT_IGNORE,	input,				CONTENT_IGNORE,
 		CONTENT_IGNORE,	CONTENT_CRAFTITEM_JUNGLE_PLANK,	CONTENT_IGNORE
 	};
-	setRecipe(r2,result,1);
+	setRecipe(r2,result,0);
 }
 // gate recipe 1 2 1 in two rows yields one result
 void setGateRecipe(u16 input1, u16 input2, u16 result)
@@ -561,27 +562,13 @@ InventoryItem *getResult(InventoryItem **items)
 {
 	for (std::vector<CraftDef>::iterator i=shaped_recipes.begin(); i!=shaped_recipes.end(); i++) {
 		CraftDef d = *i;
-		if (d == items) {
-			if ((d.result&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
-				return new CraftItem(d.result,d.result_count);
-			}else if ((d.result&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
-				return new ToolItem(d.result,d.result_count);
-			}else{
-				return new MaterialItem(d.result,d.result_count);
-			}
-		}
+		if (d == items)
+			return InventoryItem::create(d.result,d.result_count);
 	}
 	for (std::vector<CraftDefShapeless>::iterator i=shapeless_recipes.begin(); i!=shapeless_recipes.end(); i++) {
 		CraftDefShapeless d = *i;
-		if (d == items) {
-			if ((d.result&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
-				return new CraftItem(d.result,d.result_count);
-			}else if ((d.result&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
-				return new ToolItem(d.result,d.result_count);
-			}else{
-				return new MaterialItem(d.result,d.result_count);
-			}
-		}
+		if (d == items)
+			return InventoryItem::create(d.result,d.result_count);
 	}
 
 	return NULL;
