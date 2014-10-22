@@ -5090,7 +5090,7 @@ void Server::SendPlayerItems()
 	writeU16(os, TOCLIENT_PLAYERITEMS);
 	writeU16(os, players.size());
 	writeU16(os, 5);
-	for (core::list<Player *>::Iterator i = players.begin(); i != players.end(); ++i) {
+	for (core::list<Player *>::Iterator i = players.begin(); i != players.end(); i++) {
 		Player *p = *i;
 		writeU16(os, p->peer_id);
 		InventoryItem *item = (InventoryItem*)p->getWieldItem();

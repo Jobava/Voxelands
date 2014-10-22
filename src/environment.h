@@ -39,6 +39,7 @@
 
 #include <list>
 #include <map>
+#include <set>
 #include <vector>
 #include "common_irrlicht.h"
 #include "player.h"
@@ -110,10 +111,10 @@ protected:
 class ActiveBlockList
 {
 public:
-	void update(std::vector<v3s16> &active_positions,
+	void update(std::list<v3s16> &active_positions,
 			s16 radius,
-			std::map<v3s16, bool> &blocks_removed,
-			std::map<v3s16, bool> &blocks_added);
+			std::set<v3s16> &blocks_removed,
+			std::set<v3s16> &blocks_added);
 
 	bool contains(v3s16 p){
 		return (m_list.find(p) != m_list.end());
@@ -123,7 +124,7 @@ public:
 		m_list.clear();
 	}
 
-	std::map<v3s16, bool> m_list;
+	std::set<v3s16> m_list;
 
 private:
 };
