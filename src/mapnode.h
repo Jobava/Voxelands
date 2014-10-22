@@ -81,10 +81,15 @@ void init_mapnode();
 #define CONTENT_IGNORE_DEFAULT_PARAM 0
 
 /*
+	The common material above y=1000 through which the player can
+	walk and which is transparent to light, but kills fast without
+	a pressure suit
+*/
+#define CONTENT_VACUUM 125
+/*
 	The common material through which the player can walk and which
 	is transparent to light
 */
-//#define CONTENT_AIR 254
 #define CONTENT_AIR 126
 
 /*

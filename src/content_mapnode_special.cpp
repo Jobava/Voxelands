@@ -1791,4 +1791,20 @@ void content_mapnode_special(bool repeat)
 		f->initial_metadata = new FlagNodeMetadata();
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+
+	i = CONTENT_LIFE_SUPPORT;
+	f = &content_features(i);
+	f->description = wgettext("Life Support System");
+	f->setAllTextures("life_support.png");
+	f->setTexture(0, "life_support_top.png");
+	f->setTexture(1, "life_support_bottom.png");
+	f->setInventoryTextureCube("life_support_top.png", "life_support.png", "life_support.png");
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	crafting::set1over1Recipe(CONTENT_SPONGE,CONTENT_MESE,CONTENT_LIFE_SUPPORT);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 }

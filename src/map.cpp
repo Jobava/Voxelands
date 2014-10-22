@@ -1919,16 +1919,32 @@ ServerMap::ServerMap(std::string savedir):
 
 	//m_chunksize = 8; // Takes a few seconds
 
-	if (g_settings->get("fixed_map_seed").empty())
-	{
+	if (g_settings->get("fixed_map_seed").empty()) {
 		m_seed = (((uint64_t)(myrand()%0xffff)<<0)
 				+ ((uint64_t)(myrand()%0xffff)<<16)
 				+ ((uint64_t)(myrand()%0xffff)<<32)
 				+ ((uint64_t)(myrand()%0xffff)<<48));
-	}
-	else
-	{
+	}else{
 		m_seed = g_settings->getU64("fixed_map_seed");
+	}
+	m_type = MGT_DEFAULT;
+	if (g_settings->exists("mapgen_type")) {
+		std::string type = g_settings->get("mapgen_type");
+		if (type == "flat") {
+			m_type = MGT_FLAT;
+		}else if (type == "flatter") {
+			m_type = MGT_FLATTER;
+		}else if (type == "smoother") {
+			m_type = MGT_SMOOTHER;
+		}else if (type == "hilly") {
+			m_type = MGT_HILLY;
+		}else if (type == "mountains") {
+			m_type = MGT_MOUNTAINS;
+		}else if (type == "crazy") {
+			m_type = MGT_CRAZY;
+		}else if (type == "crazyhills") {
+			m_type = MGT_CRAZYHILLS;
+		}
 	}
 
 	/*
@@ -1960,7 +1976,7 @@ ServerMap::ServerMap(std::string savedir):
 			else
 			{
 				try{
-					// Load map metadata (seed, chunksize)
+					// Load map metadata (seed, type, chunksize)
 					loadMapMeta();
 				}
 				catch(FileNotGoodException &e){
@@ -2067,20 +2083,22 @@ ServerMap::~ServerMap()
 void ServerMap::initBlockMake(mapgen::BlockMakeData *data, v3s16 blockpos)
 {
 	bool enable_mapgen_debug_info = g_settings->getBool("enable_mapgen_debug_info");
-	if(enable_mapgen_debug_info)
+	if (enable_mapgen_debug_info)
 		infostream<<"initBlockMake(): ("<<blockpos.X<<","<<blockpos.Y<<","
 				<<blockpos.Z<<")"<<std::endl;
 
 	// Do nothing if not inside limits (+-1 because of neighbors)
-	if(blockpos_over_limit(blockpos - v3s16(1,1,1)) ||
-		blockpos_over_limit(blockpos + v3s16(1,1,1)))
-	{
+	if (
+		blockpos_over_limit(blockpos - v3s16(1,1,1))
+		|| blockpos_over_limit(blockpos + v3s16(1,1,1))
+	) {
 		data->no_op = true;
 		return;
 	}
 
 	data->no_op = false;
 	data->seed = m_seed;
+	data->type = m_type;
 	data->blockpos = blockpos;
 
 	/*
@@ -2089,23 +2107,20 @@ void ServerMap::initBlockMake(mapgen::BlockMakeData *data, v3s16 blockpos)
 	{
 		//TimeTaker timer("initBlockMake() create area");
 
-		for(s16 x=-1; x<=1; x++)
-		for(s16 z=-1; z<=1; z++)
-		{
+		for (s16 x=-1; x<=1; x++)
+		for (s16 z=-1; z<=1; z++) {
 			v2s16 sectorpos(blockpos.X+x, blockpos.Z+z);
 			// Sector metadata is loaded from disk if not already loaded.
 			ServerMapSector *sector = createSector(sectorpos);
 			assert(sector);
 
-			for(s16 y=-1; y<=1; y++)
-			{
+			for (s16 y=-1; y<=1; y++) {
 				v3s16 p(blockpos.X+x, blockpos.Y+y, blockpos.Z+z);
 				//MapBlock *block = createBlock(p);
 				// 1) get from memory, 2) load from disk
 				MapBlock *block = emergeBlock(p, false);
 				// 3) create a blank one
-				if(block == NULL)
-				{
+				if (block == NULL) {
 					block = createBlock(p);
 
 					/*
@@ -2113,14 +2128,12 @@ void ServerMap::initBlockMake(mapgen::BlockMakeData *data, v3s16 blockpos)
 
 						Refer to the map generator heuristics.
 					*/
-					bool ug = mapgen::block_is_underground(data->seed, p);
+					bool ug = mapgen::block_is_underground(data, p);
 					block->setIsUnderground(ug);
 				}
 
 				// Lighting will not be valid after make_chunk is called
 				block->setLightingExpired(true);
-				// Lighting will be calculated
-				//block->setLightingExpired(false);
 			}
 		}
 	}
@@ -2137,7 +2150,6 @@ void ServerMap::initBlockMake(mapgen::BlockMakeData *data, v3s16 blockpos)
 	v3s16 bigarea_blocks_max = blockpos + v3s16(1,1,1);
 
 	data->vmanip = new ManualMapVoxelManipulator(this);
-	//data->vmanip->setMap(this);
 
 	// Add the area
 	{
@@ -2628,8 +2640,11 @@ plan_b:
 	/*
 		Determine from map generator noise functions
 	*/
+	mapgen::BlockMakeData d;
+	d.type = m_type;
+	d.seed = m_seed;
 
-	s16 level = mapgen::find_ground_level_from_noise(m_seed, p2d, 1);
+	s16 level = mapgen::find_ground_level_from_noise(&d, p2d, 1);
 	return level;
 
 	//double level = base_rock_level_2d(m_seed, p2d) + AVERAGE_MUD_AMOUNT;
@@ -2936,6 +2951,31 @@ void ServerMap::saveMapMeta()
 
 	Settings params;
 	params.setU64("seed", m_seed);
+	switch (m_type) {
+	case MGT_FLAT:
+		params.set("type","flat");
+		break;
+	case MGT_FLATTER:
+		params.set("type","flatter");
+		break;
+	case MGT_SMOOTHER:
+		params.set("type","smoother");
+		break;
+	case MGT_HILLY:
+		params.set("type","hilly");
+		break;
+	case MGT_MOUNTAINS:
+		params.set("type","mountains");
+		break;
+	case MGT_CRAZY:
+		params.set("type","crazy");
+		break;
+	case MGT_CRAZYHILLS:
+		params.set("type","crazyhills");
+		break;
+	default:
+		params.set("type","default");
+	}
 
 	params.writeLines(os);
 
@@ -2953,8 +2993,7 @@ void ServerMap::loadMapMeta()
 
 	std::string fullpath = m_savedir + DIR_DELIM + "map_meta.txt";
 	std::ifstream is(fullpath.c_str(), std::ios_base::binary);
-	if(is.good() == false)
-	{
+	if (is.good() == false) {
 		infostream<<"ERROR: ServerMap::loadMapMeta(): "
 				<<"could not open"<<fullpath<<std::endl;
 		throw FileNotGoodException("Cannot open map metadata");
@@ -2962,20 +3001,38 @@ void ServerMap::loadMapMeta()
 
 	Settings params;
 
-	for(;;)
-	{
+	for (;;) {
 		if(is.eof())
 			throw SerializationError
 					("ServerMap::loadMapMeta(): [end_of_params] not found");
 		std::string line;
 		std::getline(is, line);
 		std::string trimmedline = trim(line);
-		if(trimmedline == "[end_of_params]")
+		if (trimmedline == "[end_of_params]")
 			break;
 		params.parseConfigLine(line);
 	}
 
 	m_seed = params.getU64("seed");
+	m_type = MGT_DEFAULT;
+	{
+		std::string type = params.get("type");
+		if (type == "flat") {
+			m_type = MGT_FLAT;
+		}else if (type == "flatter") {
+			m_type = MGT_FLATTER;
+		}else if (type == "smoother") {
+			m_type = MGT_SMOOTHER;
+		}else if (type == "hilly") {
+			m_type = MGT_HILLY;
+		}else if (type == "mountains") {
+			m_type = MGT_MOUNTAINS;
+		}else if (type == "crazy") {
+			m_type = MGT_CRAZY;
+		}else if (type == "crazyhills") {
+			m_type = MGT_CRAZYHILLS;
+		}
+	}
 
 	infostream<<"ServerMap::loadMapMeta(): "<<"seed="<<m_seed<<std::endl;
 }

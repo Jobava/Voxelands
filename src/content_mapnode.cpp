@@ -1992,6 +1992,21 @@ void content_mapnode_init(bool repeat)
 	f->air_equivalent = true;
 	f->pressure_type = CST_CRUSHED;
 
+	i = CONTENT_VACUUM;
+	f = &content_features(i);
+	f->description = wgettext("Vacuum");
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_AIRLIKE;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0;
+	f->walkable = false;
+	f->pointable = false;
+	f->diggable = false;
+	f->buildable_to = true;
+	f->air_equivalent = true;
+	f->pressure_type = CST_CRUSHED;
+
 	i = CONTENT_WATER;
 	f = &content_features(i);
 	f->description = wgettext("Water");

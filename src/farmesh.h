@@ -26,6 +26,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 */
 
 #include "common_irrlicht.h"
+#include "mapgen.h"
 
 #define FARMESH_MATERIAL_COUNT 2
 
@@ -39,6 +40,7 @@ public:
 			scene::ISceneManager* mgr,
 			s32 id,
 			uint64_t seed,
+			MapGenType type,
 			Client *client
 	);
 
@@ -75,6 +77,7 @@ private:
 	float m_cloud_y;
 	float m_brightness;
 	uint64_t m_seed;
+	MapGenType m_type;
 	v2f m_camera_pos;
 	float m_time;
 	Client *m_client;

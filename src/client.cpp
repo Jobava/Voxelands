@@ -213,6 +213,7 @@ Client::Client(
 	m_pointed_node(-32768,-32768,-32768),
 	m_time_of_day(0),
 	m_map_seed(0),
+	m_map_type(MGT_DEFAULT),
 	m_password(password),
 	m_access_denied(false)
 {
@@ -654,9 +655,8 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 
 	//infostream<<"Client received command="<<(int)command<<std::endl;
 
-	if(command == TOCLIENT_INIT)
-	{
-		if(datasize < 3)
+	if (command == TOCLIENT_INIT) {
+		if (datasize < 3)
 			return;
 
 		u8 deployed = data[2];
@@ -664,9 +664,7 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		infostream<<"Client: TOCLIENT_INIT received with "
 				"deployed="<<((int)deployed&0xff)<<std::endl;
 
-		if(deployed < SER_FMT_VER_LOWEST
-				|| deployed > SER_FMT_VER_HIGHEST)
-		{
+		if (deployed < SER_FMT_VER_LOWEST || deployed > SER_FMT_VER_HIGHEST) {
 			infostream<<"Client: TOCLIENT_INIT: Server sent "
 					<<"unsupported ser_fmt_ver"<<std::endl;
 			return;
@@ -676,7 +674,7 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 
 		// Get player position
 		v3s16 playerpos_s16(0, BS*2+BS*20, 0);
-		if(datasize >= 2+1+6)
+		if (datasize >= 2+1+6)
 			playerpos_s16 = readV3S16(&data[2+1]);
 		v3f playerpos_f = intToFloat(playerpos_s16, BS) - v3f(0, BS/2, 0);
 
@@ -689,11 +687,17 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 			player->setPosition(playerpos_f);
 		}
 
-		if(datasize >= 2+1+6+8)
-		{
+		if (datasize >= 2+1+6+8) {
 			// Get map seed
 			m_map_seed = readU64(&data[2+1+6]);
 			infostream<<"Client: received map seed: "<<m_map_seed<<std::endl;
+		}
+
+		if (datasize >= 2+1+6+8+2) {
+			// Get map seed
+			u16 type = readU16(&data[2+1+6+8]);
+			m_map_type = (MapGenType)type;
+			infostream<<"Client: received map type: "<<m_map_type<<std::endl;
 		}
 
 		// Reply to server

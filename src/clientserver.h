@@ -29,7 +29,7 @@
 
 #include "utility.h"
 
-#define PROTOCOL_VERSION 6
+#define PROTOCOL_VERSION 7
 /* the last protocol version used by 0.3.x minetest-c55 clients */
 #define PROTOCOL_DOTTHREE 3
 /* this is the oldest protocol that we will allow to connect

@@ -939,7 +939,7 @@ void the_game(
 	FarMesh *farmesh = NULL;
 	if(g_settings->getBool("enable_farmesh"))
 	{
-		farmesh = new FarMesh(smgr->getRootSceneNode(), smgr, -1, client.getMapSeed(), &client);
+		farmesh = new FarMesh(smgr->getRootSceneNode(), smgr, -1, client.getMapSeed(), client.getMapType(), &client);
 	}
 
 	/*

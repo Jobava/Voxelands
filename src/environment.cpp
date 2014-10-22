@@ -2655,6 +2655,38 @@ void ServerEnvironment::step(float dtime)
 
 					break;
 				}
+				case CONTENT_AIR:
+				{
+					if (p.Y >= 1024 && n.envticks > 1 && !searchNear(p,v3s16(5,5,5),CONTENT_LIFE_SUPPORT,NULL)) {
+						n.setContent(CONTENT_VACUUM);
+						m_map->addNodeWithEvent(p,n);
+					}
+					break;
+				}
+				case CONTENT_VACUUM:
+				{
+					if (p.Y < 1024) {
+						n.setContent(CONTENT_AIR);
+						m_map->addNodeWithEvent(p,n);
+					}
+					break;
+				}
+				case CONTENT_LIFE_SUPPORT:
+				{
+					MapNode testnode;
+					v3s16 testpos;
+					for (u16 x=-5; x<5; x++)
+					for (u16 y=-5; y<5; x++)
+					for (u16 z=-5; z<5; x++) {
+						testpos= p+v3s16(x,y,z);
+						testnode = m_map->getNodeNoEx(testpos);
+						if (testnode.getContent() != CONTENT_VACUUM)
+							continue;
+						testnode.setContent(CONTENT_AIR);
+						m_map->addNodeWithEvent(testpos,testnode);
+					}
+					break;
+				}
 				}
 
 				if (
@@ -3693,11 +3725,16 @@ void ClientEnvironment::step(float dtime)
 			damage_per_second = MYMAX(damage_per_second,content_features(n4).damage_per_second);
 		}
 		// cold zone
-		if (damage_per_second == 0 && pp.Y > 60 && pp.Y < 1000 && myrand()%10 == 0) {
-			std::vector<content_t> search;
-			search.push_back(CONTENT_FIRE);
-			if (!searchNear(pp,v3s16(-4,-2,-4),v3s16(5,5,5),search,NULL)) {
-				damageLocalPlayerWithWarmth(1);
+		if (damage_per_second == 0 && pp.Y > 60 && myrand()%10 == 0) {
+			if (pp.Y < 1024) {
+				std::vector<content_t> search;
+				search.push_back(CONTENT_FIRE);
+				if (!searchNear(pp,v3s16(-4,-2,-4),v3s16(5,5,5),search,NULL)) {
+					damageLocalPlayerWithWarmth(1);
+					damage_per_second = 0;
+				}
+			}else if (n1.getContent() == CONTENT_VACUUM || n2.getContent() == CONTENT_VACUUM || n3.getContent() == CONTENT_VACUUM) {
+				damageLocalPlayerWithVacuum(10);
 				damage_per_second = 0;
 			}
 		}

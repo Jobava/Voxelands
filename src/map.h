@@ -433,10 +433,12 @@ public:
 	bool isSavingEnabled(){ return m_map_saving_enabled; }
 
 	uint64_t getSeed(){ return m_seed; }
+	MapGenType getType() {return m_type;}
 
 private:
 	// Seed used for all kinds of randomness
 	uint64_t m_seed;
+	MapGenType m_type;
 
 	std::string m_savedir;
 	bool m_map_saving_enabled;

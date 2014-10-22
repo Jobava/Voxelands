@@ -83,14 +83,10 @@ public:
 	*/
 	void insert(u16 id, StaticObject obj)
 	{
-		if(id == 0)
-		{
+		if (id == 0) {
 			m_stored.push_back(obj);
-		}
-		else
-		{
-			if(m_active.find(id) != NULL)
-			{
+		}else{
+			if (m_active.find(id) != NULL) {
 				dstream<<"ERROR: StaticObjectList::insert(): "
 						<<"id already exists"<<std::endl;
 				assert(0);
@@ -103,8 +99,7 @@ public:
 	void remove(u16 id)
 	{
 		assert(id != 0);
-		if(m_active.find(id) == NULL)
-		{
+		if (m_active.find(id) == NULL) {
 			dstream<<"WARNING: StaticObjectList::remove(): id="<<id
 					<<" not found"<<std::endl;
 			return;
@@ -122,17 +117,11 @@ public:
 		u16 count = m_stored.size() + m_active.size();
 		writeU16((u8*)buf, count);
 		os.write(buf, 2);
-		for(core::list<StaticObject>::Iterator
-				i = m_stored.begin();
-				i != m_stored.end(); i++)
-		{
+		for (core::list<StaticObject>::Iterator i = m_stored.begin(); i != m_stored.end(); i++) {
 			StaticObject &s_obj = *i;
 			s_obj.serialize(os);
 		}
-		for(core::map<u16, StaticObject>::Iterator
-				i = m_active.getIterator();
-				i.atEnd()==false; i++)
-		{
+		for (core::map<u16, StaticObject>::Iterator i = m_active.getIterator(); i.atEnd()==false; i++) {
 			StaticObject s_obj = i.getNode()->getValue();
 			s_obj.serialize(os);
 		}
@@ -147,8 +136,7 @@ public:
 		// count
 		is.read(buf, 2);
 		u16 count = readU16((u8*)buf);
-		for(u16 i=0; i<count; i++)
-		{
+		for (u16 i=0; i<count; i++) {
 			StaticObject s_obj;
 			s_obj.deSerialize(is, version);
 			if (!drop)

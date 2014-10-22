@@ -302,7 +302,8 @@ public:
 				(std::wstring)L"<"+name+L"> "+message);
 	}
 
-	uint64_t getMapSeed(){ return m_map_seed; }
+	uint64_t getMapSeed() {return m_map_seed;}
+	MapGenType getMapType() {return m_map_type;}
 
 	void addUpdateMeshTask(v3s16 blockpos, bool ack_to_server=false);
 	// Including blocks at appropriate edges
@@ -398,6 +399,7 @@ private:
 
 	// The seed returned by the server in TOCLIENT_INIT is stored here
 	uint64_t m_map_seed;
+	MapGenType m_map_type;
 
 	std::string m_password;
 	bool m_access_denied;
