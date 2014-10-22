@@ -198,6 +198,16 @@
 #strict_protocol_version_checking = false
 # A chosen map seed for a new map, leave empty for random
 #fixed_map_seed =
+# The type of map to create:
+#  flat - a completely flat map, with some caves cut in
+#  flatter - not as hilly as default
+#  smoother - less crazy terrain than default
+#  default - the original
+#  hilly - generally higher terrain
+#  mountains - big hills and deep oceans
+#  crazy - exaggerated crazy terrain
+#  crazyhills - a mix of 'crazy' and 'mountains'
+#mapgen_type = default
 # New users need to input this password
 #default_password =
 # Don't let players join with an empty password

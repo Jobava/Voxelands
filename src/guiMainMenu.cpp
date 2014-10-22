@@ -105,6 +105,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	bool clear_map;
 	bool use_fixed_seed;
 	std::wstring fixed_seed;
+	std::string map_type;
 
 	m_screensize = screensize;
 
@@ -332,6 +333,39 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			fixed_seed = e->getText();
 		else
 			fixed_seed = m_data->fixed_seed;
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_MAP_TYPE_COMBO);
+		if (e != NULL && e->getType() == gui::EGUIET_COMBO_BOX) {
+			gui::IGUIComboBox *c = (gui::IGUIComboBox*)e;
+			switch (c->getItemData(c->getSelected())) {
+			case GUI_ID_MAP_TYPE_FLAT:
+				map_type = "flat";
+				break;
+			case GUI_ID_MAP_TYPE_FLATTER:
+				map_type = "flatter";
+				break;
+			case GUI_ID_MAP_TYPE_SMOOTHER:
+				map_type = "smoother";
+				break;
+			case GUI_ID_MAP_TYPE_HILLY:
+				map_type = "hilly";
+				break;
+			case GUI_ID_MAP_TYPE_MOUNTAINS:
+				map_type = "mountains";
+				break;
+			case GUI_ID_MAP_TYPE_CRAZY:
+				map_type = "crazy";
+				break;
+			case GUI_ID_MAP_TYPE_CRAZYHILLS:
+				map_type = "crazyhills";
+				break;
+			default:
+				map_type = "default";
+			}
+		}else{
+			map_type = m_data->map_type;
+		}
 	}
 
 	/*
@@ -749,21 +783,57 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 					rect, false, true, this, -1);
 			}
 			{
+				core::rect<s32> rect(0, 0, 110, 20);
+				rect += topleft_content + v2s32(40, 195);
+				Environment->addStaticText(wgettext("Map Type"),
+					rect, false, true, this, -1);
+			}
+			{
+				core::rect<s32> rect(0, 0, 240, 30);
+				rect += topleft_content + v2s32(120, 190);
+				gui::IGUIComboBox *c = Environment->addComboBox(rect, this, GUI_ID_MAP_TYPE_COMBO);
+				u32 m1 = c->addItem(wgettext("Flat"),GUI_ID_MAP_TYPE_FLAT);
+				u32 m2 = c->addItem(wgettext("Flatter"),GUI_ID_MAP_TYPE_FLATTER);
+				u32 m3 = c->addItem(wgettext("Smoother"),GUI_ID_MAP_TYPE_SMOOTHER);
+				u32 m4 = c->addItem(wgettext("Default"),GUI_ID_MAP_TYPE_DEFAULT);
+				u32 m5 = c->addItem(wgettext("Hilly"),GUI_ID_MAP_TYPE_HILLY);
+				u32 m6 = c->addItem(wgettext("Mountains"),GUI_ID_MAP_TYPE_MOUNTAINS);
+				u32 m7 = c->addItem(wgettext("Crazy"),GUI_ID_MAP_TYPE_CRAZY);
+				u32 m8 = c->addItem(wgettext("Crazy Hills"),GUI_ID_MAP_TYPE_CRAZYHILLS);
+				if (map_type == "flat") {
+					c->setSelected(m1);
+				}else if (map_type == "flatter") {
+					c->setSelected(m2);
+				}else if (map_type == "smoother") {
+					c->setSelected(m3);
+				}else if (map_type == "hilly") {
+					c->setSelected(m5);
+				}else if (map_type == "mountains") {
+					c->setSelected(m6);
+				}else if (map_type == "crazy") {
+					c->setSelected(m7);
+				}else if (map_type == "crazyhills") {
+					c->setSelected(m8);
+				}else{
+					c->setSelected(m4);
+				}
+			}
+			{
 				core::rect<s32> rect(0, 0, 200, 30);
-				rect += topleft_content + v2s32(70, 190);
+				rect += topleft_content + v2s32(70, 230);
 				Environment->addCheckBox(use_fixed_seed, rect, this, GUI_ID_MAP_SEED_CB, wgettext("Use Fixed Seed"));
 			}
 			if (use_fixed_seed) {
 				{
 					core::rect<s32> rect(0, 0, 110, 20);
-					rect += topleft_content + v2s32(70, 225);
+					rect += topleft_content + v2s32(70, 265);
 					Environment->addStaticText(wgettext("Map Seed"),
 						rect, false, true, this, -1);
 				}
 				changeCtype("C");
 				{
 					core::rect<s32> rect(0, 0, 190, 30);
-					rect += topleft_content + v2s32(140, 220);
+					rect += topleft_content + v2s32(140, 260);
 					Environment->addEditBox(fixed_seed.c_str(), rect, false, this, GUI_ID_MAP_SEED_INPUT);
 				}
 				changeCtype("");
@@ -784,7 +854,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		// Start game button
 		{
 			core::rect<s32> rect(0, 0, 180, 30);
-			rect += topleft_content + v2s32(110, 280);
+			rect += topleft_content + v2s32(110, 310);
 			Environment->addButton(rect, this, GUI_ID_JOIN_GAME_BUTTON, wgettext("Start Game"));
 		}
 	}else if(m_data->selected_tab == TAB_CREDITS) {
@@ -1120,6 +1190,37 @@ void GUIMainMenu::acceptInput()
 		gui::IGUIElement *e = getElementFromId(GUI_ID_MAP_SEED_INPUT);
 		if(e != NULL)
 			m_data->fixed_seed = e->getText();
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_MAP_TYPE_COMBO);
+		if (e != NULL && e->getType() == gui::EGUIET_COMBO_BOX) {
+			gui::IGUIComboBox *c = (gui::IGUIComboBox*)e;
+			switch (c->getItemData(c->getSelected())) {
+			case GUI_ID_MAP_TYPE_FLAT:
+				m_data->map_type = "flat";
+				break;
+			case GUI_ID_MAP_TYPE_FLATTER:
+				m_data->map_type = "flatter";
+				break;
+			case GUI_ID_MAP_TYPE_SMOOTHER:
+				m_data->map_type = "smoother";
+				break;
+			case GUI_ID_MAP_TYPE_HILLY:
+				m_data->map_type = "hilly";
+				break;
+			case GUI_ID_MAP_TYPE_MOUNTAINS:
+				m_data->map_type = "mountains";
+				break;
+			case GUI_ID_MAP_TYPE_CRAZY:
+				m_data->map_type = "crazy";
+				break;
+			case GUI_ID_MAP_TYPE_CRAZYHILLS:
+				m_data->map_type = "crazyhills";
+				break;
+			default:
+				m_data->map_type = "default";
+			}
+		}
 	}
 
 	m_accepted = true;

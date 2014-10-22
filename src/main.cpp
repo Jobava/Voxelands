@@ -1215,6 +1215,8 @@ int main(int argc, char *argv[])
 					if (menudata.fixed_seed != L"")
 						menudata.use_fixed_seed = true;
 				}
+				if (g_settings->exists("mapgen_type"))
+					menudata.map_type = g_settings->get("mapgen_type");
 
 				GUIMainMenu *menu =
 						new GUIMainMenu(guienv, guiroot, -1,
@@ -1273,6 +1275,7 @@ int main(int argc, char *argv[])
 					}
 					if (menudata.use_fixed_seed)
 						g_settings->set("fixed_map_seed",wide_to_narrow(menudata.fixed_seed));
+					g_settings->set("mapgen_type",menudata.map_type);
 				}else if (menudata.clear_map) {
 					std::string map_file = map_dir+DIR_DELIM+"map.sqlite";
 					bool r = fs::RecursiveDelete(map_file);

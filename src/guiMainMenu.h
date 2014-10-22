@@ -66,6 +66,15 @@ enum {
 	GUI_ID_MAP_CLEAR_CB,
 	GUI_ID_MAP_SEED_CB,
 	GUI_ID_MAP_SEED_INPUT,
+	GUI_ID_MAP_TYPE_COMBO,
+	GUI_ID_MAP_TYPE_FLAT,
+	GUI_ID_MAP_TYPE_FLATTER,
+	GUI_ID_MAP_TYPE_SMOOTHER,
+	GUI_ID_MAP_TYPE_DEFAULT,
+	GUI_ID_MAP_TYPE_HILLY,
+	GUI_ID_MAP_TYPE_MOUNTAINS,
+	GUI_ID_MAP_TYPE_CRAZY,
+	GUI_ID_MAP_TYPE_CRAZYHILLS,
 	GUI_ID_TAB_SINGLEPLAYER,
 	GUI_ID_TAB_MULTIPLAYER,
 	GUI_ID_TAB_SETTINGS,
@@ -106,7 +115,8 @@ struct MainMenuData
 		delete_map(false),
 		clear_map(false),
 		use_fixed_seed(false),
-		fixed_seed(L"")
+		fixed_seed(L""),
+		map_type("default")
 	{}
 
 	// These are in the native format of the gui elements
@@ -144,6 +154,7 @@ struct MainMenuData
 	bool clear_map;
 	bool use_fixed_seed;
 	std::wstring fixed_seed;
+	std:: string map_type;
 };
 
 class GUIMainMenu : public GUIModalMenu
