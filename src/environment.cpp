@@ -2675,10 +2675,10 @@ void ServerEnvironment::step(float dtime)
 				{
 					MapNode testnode;
 					v3s16 testpos;
-					for (u16 x=-5; x<5; x++)
-					for (u16 y=-5; y<5; x++)
-					for (u16 z=-5; z<5; x++) {
-						testpos= p+v3s16(x,y,z);
+					for (s16 x=-5; x<5; x++)
+					for (s16 y=-5; y<5; y++)
+					for (s16 z=-5; z<5; z++) {
+						testpos = p+v3s16(x,y,z);
 						testnode = m_map->getNodeNoEx(testpos);
 						if (testnode.getContent() != CONTENT_VACUUM)
 							continue;

@@ -3015,7 +3015,7 @@ void ServerMap::loadMapMeta()
 
 	m_seed = params.getU64("seed");
 	m_type = MGT_DEFAULT;
-	{
+	if (params.exists("type")) {
 		std::string type = params.get("type");
 		if (type == "flat") {
 			m_type = MGT_FLAT;
