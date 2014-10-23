@@ -993,7 +993,7 @@ void ServerEnvironment::step(float dtime)
 					if (n.envticks > 3) {
 						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
 						if (content_features(n_top).air_equivalent) {
-							if (p.Y > 50 && p.Y < 200) {
+							if (p.Y > 50 && p.Y < 1024) {
 								n.setContent(CONTENT_MUDSNOW);
 								m_map->addNodeWithEvent(p, n);
 							}else if (n_top.getLightBlend(getDayNightRatio()) >= 13) {
@@ -1008,7 +1008,7 @@ void ServerEnvironment::step(float dtime)
 				case CONTENT_WATER:
 				case CONTENT_WATERSOURCE:
 				{
-					if (p.Y > 60 && p.Y < 200) {
+					if (p.Y > 60 && p.Y < 1024) {
 						s16 range = (p.Y > 60) ? 2 : 4;
 						std::vector<content_t> search;
 						search.push_back(CONTENT_LAVASOURCE);
@@ -1483,7 +1483,7 @@ void ServerEnvironment::step(float dtime)
 					if (n.envticks > 2) {
 						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
 						if (content_features(n_top).air_equivalent) {
-							if (p.Y > 50 && p.Y < 200) {
+							if (p.Y > 50 && p.Y < 1024) {
 								n.setContent(CONTENT_MUDSNOW);
 								m_map->addNodeWithEvent(p, n);
 							}
@@ -2621,7 +2621,7 @@ void ServerEnvironment::step(float dtime)
 					bool found = false;
 					search.push_back(CONTENT_WATER);
 					search.push_back(CONTENT_WATERSOURCE);
-					if (p.Y > 60 && p.Y < 200) {
+					if (p.Y > 60 && p.Y < 1024) {
 						found = true;
 					}else if (searchNear(p,v3s16(1,1,1),search,&test_p)) {
 						testnode = m_map->getNodeNoEx(test_p);
@@ -2722,7 +2722,7 @@ void ServerEnvironment::step(float dtime)
 				if (
 					n.getContent() != CONTENT_GRASS
 					&& n.getContent() != CONTENT_MUD
-					&& p.Y > 55 && p.Y < 200
+					&& p.Y > 55 && p.Y < 1024
 					&& (
 						content_features(n).draw_type == CDT_CUBELIKE
 						|| content_features(n).draw_type == CDT_GLASSLIKE
