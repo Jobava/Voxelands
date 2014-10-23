@@ -246,6 +246,8 @@ public:
 		return searchNearInv(pos,-radius,radius,search,found);
 	}
 
+	void setPostStepNodeSwap(v3s16 pos, MapNode n) {m_poststep_nodeswaps[pos] = n;}
+
 private:
 
 	/*
@@ -294,6 +296,8 @@ private:
 	ServerMap *m_map;
 	// Pointer to server (which is handling this environment)
 	Server *m_server;
+	// used by node/circuit step to swap a node after stepping is complete
+	std::map<v3s16,MapNode>m_poststep_nodeswaps;
 	// Active object list
 	std::map<u16, ServerActiveObject*> m_active_objects;
 	// Outgoing network message buffer for active objects

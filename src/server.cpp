@@ -2744,7 +2744,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						meta->energise(energy,p_under,p_under,p_under);
 					}
 				}
-			}else if (n.getContent() == CONTENT_INCINERATOR) {
+			}else if (n.getContent() == CONTENT_INCINERATOR_ACTIVE) {
 				NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
 				if (!meta)
 					return;

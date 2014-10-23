@@ -286,6 +286,7 @@ public:
 	virtual std::string infoText();
 	virtual Inventory* getInventory() {return m_inventory;}
 	virtual void inventoryModified();
+	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool nodeRemovalDisabled();
 	virtual std::string getDrawSpecString();
 

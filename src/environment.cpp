@@ -883,6 +883,8 @@ void ServerEnvironment::step(float dtime)
 
 			bool blockchanged = false;
 
+			m_poststep_nodeswaps.clear();
+
 			if (circuitstep) {
 				// Run node metadata
 				bool changed = block->m_node_metadata.stepCircuit(circuit_dtime, block->getPosRelative(), this);
@@ -904,6 +906,34 @@ void ServerEnvironment::step(float dtime)
 				m_map->dispatchEvent(&event);
 
 				block->setChangedFlag();
+			}
+
+			if (m_poststep_nodeswaps.size() > 0) {
+				for (std::map<v3s16,MapNode>::iterator i = m_poststep_nodeswaps.begin(); i != m_poststep_nodeswaps.end(); i++) {
+					v3s16 p = i->first;
+					MapNode n = i->second;
+					NodeMetadata *meta = NULL;
+					std::string n_owner = "";
+					std::string i_owner = "";
+					meta = m_map->getNodeMetadata(p);
+					if (meta) {
+						n_owner = meta->getOwner();
+						i_owner = meta->getInventoryOwner();
+						meta = meta->clone();
+					}
+					m_map->addNodeWithEvent(p, n);
+					if (meta) {
+						m_map->setNodeMetadata(p,meta);
+						meta = m_map->getNodeMetadata(p);
+						if (meta) {
+							if (n_owner != "")
+								meta->setOwner(n_owner);
+							if (i_owner != "")
+								meta->setInventoryOwner(i_owner);
+						}
+					}
+				}
+				m_poststep_nodeswaps.clear();
 			}
 
 			if (!nodestep)

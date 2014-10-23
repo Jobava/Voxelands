@@ -482,6 +482,10 @@ NodeMetadata* FurnaceNodeMetadata::clone()
 {
 	FurnaceNodeMetadata *d = new FurnaceNodeMetadata();
 	*d->m_inventory = *m_inventory;
+	d->m_fuel_totaltime = m_fuel_totaltime;
+	d->m_fuel_time = m_fuel_time;
+	d->m_src_totaltime = m_src_totaltime;
+	d->m_src_time = m_src_time;
 	return d;
 }
 NodeMetadata* FurnaceNodeMetadata::create(std::istream &is)
@@ -564,8 +568,8 @@ bool FurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 	const float interval = 2.0;
 	m_step_accumulator += dtime;
 	bool changed = false;
-	while(m_step_accumulator > interval)
-	{
+	MapNode n = env->getMap().getNodeNoEx(pos);
+	while (m_step_accumulator > interval) {
 		m_step_accumulator -= interval;
 		dtime = interval;
 
@@ -597,6 +601,10 @@ bool FurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 			If item finishes cooking, move it to result.
 		*/
 		if (m_fuel_time < m_fuel_totaltime) {
+			if (n.getContent() == CONTENT_FURNACE) {
+				n.setContent(CONTENT_FURNACE_ACTIVE);
+				env->setPostStepNodeSwap(pos,n);
+			}
 			//infostream<<"Furnace is active"<<std::endl;
 			m_fuel_time += dtime;
 			m_src_time += dtime;
@@ -610,8 +618,15 @@ bool FurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 			changed = true;
 
 			// If the fuel was not used up this step, just keep burning it
-			if (m_fuel_time < m_fuel_totaltime)
+			if (m_fuel_time < m_fuel_totaltime) {
 				continue;
+			}else if (n.getContent() == CONTENT_FURNACE_ACTIVE) {
+				n.setContent(CONTENT_FURNACE);
+				env->setPostStepNodeSwap(pos,n);
+			}
+		}else if (n.getContent() == CONTENT_FURNACE_ACTIVE) {
+			n.setContent(CONTENT_FURNACE);
+			env->setPostStepNodeSwap(pos,n);
 		}
 
 		/*
@@ -623,9 +638,12 @@ bool FurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 			If there is no source item, or the source item is not cookable,
 			or the furnace is still cooking, or the furnace became overloaded, stop loop.
 		*/
-		if(src_item == NULL || !room_available || m_fuel_time < m_fuel_totaltime ||
-			dst_list->roomForCookedItem(src_item) == false)
-		{
+		if (
+			src_item == NULL
+			|| !room_available
+			|| m_fuel_time < m_fuel_totaltime
+			|| dst_list->roomForCookedItem(src_item) == false
+		) {
 			m_step_accumulator = 0;
 			break;
 		}
@@ -652,6 +670,11 @@ bool FurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 			changed = true;
 		}else{
 			m_step_accumulator = 0;
+			MapNode n = env->getMap().getNodeNoEx(pos).getContent();
+			if (n.getContent() == CONTENT_FURNACE_ACTIVE) {
+				n.setContent(CONTENT_FURNACE);
+				env->setPostStepNodeSwap(pos,n);
+			}
 		}
 	}
 	return changed;
@@ -709,6 +732,10 @@ NodeMetadata* LockingFurnaceNodeMetadata::clone()
 {
 	LockingFurnaceNodeMetadata *d = new LockingFurnaceNodeMetadata();
 	*d->m_inventory = *m_inventory;
+	d->m_fuel_totaltime = m_fuel_totaltime;
+	d->m_fuel_time = m_fuel_time;
+	d->m_src_totaltime = m_src_totaltime;
+	d->m_src_time = m_src_time;
 	return d;
 }
 NodeMetadata* LockingFurnaceNodeMetadata::create(std::istream &is)
@@ -795,14 +822,14 @@ void LockingFurnaceNodeMetadata::inventoryModified()
 }
 bool LockingFurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 {
-	if(dtime > 60.0)
+	if (dtime > 60.0)
 		infostream<<"LockingFurnace stepping a long time ("<<dtime<<")"<<std::endl;
 	// Update at a fixed frequency
 	const float interval = 2.0;
 	m_step_accumulator += dtime;
 	bool changed = false;
-	while(m_step_accumulator > interval)
-	{
+	MapNode n = env->getMap().getNodeNoEx(pos);
+	while(m_step_accumulator > interval) {
 		m_step_accumulator -= interval;
 		dtime = interval;
 
@@ -843,6 +870,11 @@ bool LockingFurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment 
 			If item finishes cooking, move it to result.
 		*/
 		if (m_fuel_time < m_fuel_totaltime) {
+			if (n.getContent() == CONTENT_LOCKABLE_FURNACE) {
+				n.setContent(CONTENT_LOCKABLE_FURNACE_ACTIVE);
+				env->setPostStepNodeSwap(pos,n);
+				changed = true;
+			}
 			//infostream<<"Furnace is active"<<std::endl;
 			m_fuel_time += dtime;
 			m_src_time += dtime;
@@ -856,8 +888,17 @@ bool LockingFurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment 
 			changed = true;
 
 			// If the fuel was not used up this step, just keep burning it
-			if (m_fuel_time < m_fuel_totaltime)
+			if (m_fuel_time < m_fuel_totaltime) {
 				continue;
+			}else if (n.getContent() == CONTENT_LOCKABLE_FURNACE_ACTIVE) {
+				n.setContent(CONTENT_LOCKABLE_FURNACE);
+				env->setPostStepNodeSwap(pos,n);
+				changed = true;
+			}
+		}else if (n.getContent() == CONTENT_LOCKABLE_FURNACE_ACTIVE) {
+			n.setContent(CONTENT_LOCKABLE_FURNACE);
+			env->setPostStepNodeSwap(pos,n);
+			changed = true;
 		}
 
 		/*
@@ -898,6 +939,11 @@ bool LockingFurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment 
 			changed = true;
 		}else{
 			m_step_accumulator = 0;
+			if (n.getContent() == CONTENT_LOCKABLE_FURNACE_ACTIVE) {
+				n.setContent(CONTENT_LOCKABLE_FURNACE);
+				env->setPostStepNodeSwap(pos,n);
+				changed = true;
+			}
 		}
 	}
 	return changed;
@@ -1057,6 +1103,25 @@ bool IncineratorNodeMetadata::nodeRemovalDisabled()
 void IncineratorNodeMetadata::inventoryModified()
 {
 	infostream<<"Incinerator inventory modification callback"<<std::endl;
+}
+bool IncineratorNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
+{
+	MapNode n = env->getMap().getNodeNoEx(pos);
+	InventoryList *list = m_inventory->getList("fuel");
+	InventoryItem *fitem;
+
+	if (list && list->getUsedSlots() > 0 && (fitem = list->getItem(0)) != NULL && fitem->isFuel()) {
+		if (n.getContent() == CONTENT_INCINERATOR) {
+			n.setContent(CONTENT_INCINERATOR_ACTIVE);
+			env->setPostStepNodeSwap(pos,n);
+			return true;
+		}
+	}else if (n.getContent() == CONTENT_INCINERATOR_ACTIVE) {
+		n.setContent(CONTENT_INCINERATOR);
+		env->setPostStepNodeSwap(pos,n);
+		return true;
+	}
+	return false;
 }
 std::string IncineratorNodeMetadata::getDrawSpecString()
 {
@@ -2825,7 +2890,7 @@ bool DoorNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *en
 			content_t c = n.getContent();
 			if ((c&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
 				n.setContent(n.getContent()&~CONTENT_DOOR_OPEN_MASK);
-				env->getMap().addNodeWithEvent(pos,n);
+				env->setPostStepNodeSwap(pos,n);
 				return true;
 			}
 			return false;
@@ -2837,7 +2902,7 @@ bool DoorNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *en
 		content_t c = n.getContent();
 		if ((c&CONTENT_DOOR_OPEN_MASK) != CONTENT_DOOR_OPEN_MASK) {
 			n.setContent(n.getContent()|CONTENT_DOOR_OPEN_MASK);
-			env->getMap().addNodeWithEvent(pos,n);
+			env->setPostStepNodeSwap(pos,n);
 		}
 	}
 	if (m_ptime < 0.3)
@@ -2919,6 +2984,9 @@ NodeMetadata* PistonNodeMetadata::create(std::istream &is)
 NodeMetadata* PistonNodeMetadata::clone()
 {
 	PistonNodeMetadata *d = new PistonNodeMetadata();
+	d->m_energy = m_energy;
+	d->m_ptime = m_ptime;
+	d->m_sources = m_sources;
 	return d;
 }
 void PistonNodeMetadata::serializeBody(std::ostream &os)
@@ -2950,19 +3018,19 @@ bool PistonNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *
 				dir = v3s16(1,0,0);
 			}
 			n.setContent(CONTENT_CIRCUIT_PISTON_OFF);
-			env->getMap().addNodeWithEvent(pos,n);
+			env->setPostStepNodeSwap(pos,n);
 			contract(pos,dir,false,env);
 			return true;
 		}else if (n.getContent() == CONTENT_CIRCUIT_PISTON_UP) {
 			dir = v3s16(0,1,0);
 			n.setContent(CONTENT_CIRCUIT_PISTON_UP_OFF);
-			env->getMap().addNodeWithEvent(pos,n);
+			env->setPostStepNodeSwap(pos,n);
 			contract(pos,dir,false,env);
 			return true;
 		}else if (n.getContent() == CONTENT_CIRCUIT_PISTON_DOWN) {
 			dir = v3s16(0,-1,0);
 			n.setContent(CONTENT_CIRCUIT_PISTON_DOWN_OFF);
-			env->getMap().addNodeWithEvent(pos,n);
+			env->setPostStepNodeSwap(pos,n);
 			contract(pos,dir,false,env);
 			return true;
 		}else if (n.getContent() == CONTENT_CIRCUIT_STICKYPISTON) {
@@ -2976,19 +3044,19 @@ bool PistonNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *
 				dir = v3s16(1,0,0);
 			}
 			n.setContent(CONTENT_CIRCUIT_STICKYPISTON_OFF);
-			env->getMap().addNodeWithEvent(pos,n);
+			env->setPostStepNodeSwap(pos,n);
 			contract(pos,dir,true,env);
 			return true;
 		}else if (n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_UP) {
 			dir = v3s16(0,1,0);
 			n.setContent(CONTENT_CIRCUIT_STICKYPISTON_UP_OFF);
-			env->getMap().addNodeWithEvent(pos,n);
+			env->setPostStepNodeSwap(pos,n);
 			contract(pos,dir,true,env);
 			return true;
 		}else if (n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_DOWN) {
 			dir = v3s16(0,-1,0);
 			n.setContent(CONTENT_CIRCUIT_STICKYPISTON_DOWN_OFF);
-			env->getMap().addNodeWithEvent(pos,n);
+			env->setPostStepNodeSwap(pos,n);
 			contract(pos,dir,true,env);
 			return true;
 		}
@@ -3008,19 +3076,19 @@ bool PistonNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *
 			}
 			if (extend(pos,dir,CONTENT_CIRCUIT_PISTON_ARM,env)) {
 				n.setContent(CONTENT_CIRCUIT_PISTON);
-				env->getMap().addNodeWithEvent(pos,n);
+				env->setPostStepNodeSwap(pos,n);
 			}
 		}else if (n.getContent() == CONTENT_CIRCUIT_PISTON_UP_OFF) {
 			dir = v3s16(0,1,0);
 			if (extend(pos,dir,CONTENT_CIRCUIT_PISTON_UP_ARM,env)) {
 				n.setContent(CONTENT_CIRCUIT_PISTON_UP);
-				env->getMap().addNodeWithEvent(pos,n);
+				env->setPostStepNodeSwap(pos,n);
 			}
 		}else if (n.getContent() == CONTENT_CIRCUIT_PISTON_DOWN_OFF) {
 			dir = v3s16(0,-1,0);
 			if (extend(pos,dir,CONTENT_CIRCUIT_PISTON_DOWN_ARM,env)) {
 				n.setContent(CONTENT_CIRCUIT_PISTON_DOWN);
-				env->getMap().addNodeWithEvent(pos,n);
+				env->setPostStepNodeSwap(pos,n);
 			}
 		}else if (n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_OFF) {
 			if (dir == v3s16(1,1,1)) {
@@ -3034,19 +3102,19 @@ bool PistonNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *
 			}
 			if (extend(pos,dir,CONTENT_CIRCUIT_STICKYPISTON_ARM,env)) {
 				n.setContent(CONTENT_CIRCUIT_STICKYPISTON);
-				env->getMap().addNodeWithEvent(pos,n);
+				env->setPostStepNodeSwap(pos,n);
 			}
 		}else if (n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_UP_OFF) {
 			dir = v3s16(0,1,0);
 			if (extend(pos,dir,CONTENT_CIRCUIT_STICKYPISTON_UP_ARM,env)) {
 				n.setContent(CONTENT_CIRCUIT_STICKYPISTON_UP);
-				env->getMap().addNodeWithEvent(pos,n);
+				env->setPostStepNodeSwap(pos,n);
 			}
 		}else if (n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_DOWN_OFF) {
 			dir = v3s16(0,-1,0);
 			if (extend(pos,dir,CONTENT_CIRCUIT_STICKYPISTON_DOWN_ARM,env)) {
 				n.setContent(CONTENT_CIRCUIT_STICKYPISTON_DOWN);
-				env->getMap().addNodeWithEvent(pos,n);
+				env->setPostStepNodeSwap(pos,n);
 			}
 		}
 	}

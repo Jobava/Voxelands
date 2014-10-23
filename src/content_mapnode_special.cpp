@@ -1187,6 +1187,24 @@ void content_mapnode_special(bool repeat)
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
+	i = CONTENT_FURNACE_ACTIVE;
+	f = &content_features(i);
+	f->description = wgettext("Furnace");
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_CUBELIKE;
+	f->light_source = LIGHT_MAX/2;
+	f->setAllTextures("furnace_side.png");
+	f->setTexture(0, "furnace_top.png");
+	f->setTexture(1, "furnace_top.png");
+	f->setTexture(5, "furnace_front_active.png"); // Z-
+	f->setInventoryTextureCube("furnace_top.png", "furnace_front_active.png", "furnace_side.png");
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FURNACE)+" 1";
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new FurnaceNodeMetadata();
+	f->type = CMT_STONE;
+	f->hardness = 3.0;
+	f->pressure_type = CST_SOLID;
+
 	i = CONTENT_LOCKABLE_FURNACE;
 	f = &content_features(i);
 	f->description = wgettext("Locking Furnace");
@@ -1208,6 +1226,23 @@ void content_mapnode_special(bool repeat)
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
+	i = CONTENT_LOCKABLE_FURNACE_ACTIVE;
+	f = &content_features(i);
+	f->description = wgettext("Locking Furnace");
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_CUBELIKE;
+	f->light_source = LIGHT_MAX/2;
+	f->setAllTextures("furnace_side.png");
+	f->setTexture(0, "furnace_top.png");
+	f->setTexture(1, "furnace_top.png");
+	f->setTexture(5, "furnace_lock_active.png"); // Z-
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_LOCKABLE_FURNACE)+" 1";
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new LockingFurnaceNodeMetadata();
+	f->type = CMT_STONE;
+	f->hardness = 3.0;
+	f->pressure_type = CST_SOLID;
+
 	i = CONTENT_INCINERATOR;
 	f = &content_features(i);
 	f->description = wgettext("Incinerator");
@@ -1227,6 +1262,22 @@ void content_mapnode_special(bool repeat)
 	crafting::setFilledRoundRecipe(CONTENT_ROUGHSTONE,CONTENT_MESE,CONTENT_INCINERATOR);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+
+	i = CONTENT_INCINERATOR_ACTIVE;
+	f = &content_features(i);
+	f->description = wgettext("Incinerator");
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_CUBELIKE;
+	f->setAllTextures("incinerator_side.png");
+	f->setTexture(0, "incinerator_top.png"); // Z-
+	f->setTexture(1, "incinerator_top.png"); // Z-
+	f->setTexture(5, "incinerator_front_active.png"); // Z-
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_INCINERATOR)+" 1";
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new IncineratorNodeMetadata();
+	f->type = CMT_STONE;
+	f->hardness = 0.4;
+	f->pressure_type = CST_SOLID;
 
 	i = CONTENT_NC;
 	f = &content_features(i);

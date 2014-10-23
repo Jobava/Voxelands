@@ -69,7 +69,9 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_LOCKABLE_SIGN 23
 #define CONTENT_LOCKABLE_SIGN_UD 24
 #define CONTENT_CREATIVE_CHEST 25
-// FREE 26-29
+#define CONTENT_FURNACE_ACTIVE 26
+#define CONTENT_LOCKABLE_FURNACE_ACTIVE 27
+// FREE 28-29
 #define CONTENT_RAIL 30
 // deprecated, just here for backwards compat
 #define CONTENT_LADDER_LEGACY 31
@@ -529,6 +531,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_WOOD_PINE 0xC08
 #define CONTENT_CONIFER_TREE 0xC09
 #define CONTENT_LIFE_SUPPORT 0xC0A
+#define CONTENT_INCINERATOR_ACTIVE 0xC0B
 // FREE C0B-C0F
 // beds
 #define CONTENT_BED_HEAD 0xC10
