@@ -420,9 +420,8 @@ void make_papyrus(VoxelManipulator &vmanip, v3s16 p0)
 
 	s16 trunk_h = myrand_range(2, 3);
 	v3s16 p1 = p0;
-	for(s16 ii=0; ii<trunk_h; ii++)
-	{
-		if(vmanip.m_area.contains(p1))
+	for (s16 ii=0; ii<trunk_h; ii++) {
+		if (vmanip.m_area.contains(p1))
 			vmanip.m_data[vmanip.m_area.index(p1)] = papyrusnode;
 		p1.Y++;
 	}
@@ -436,9 +435,8 @@ void make_cactus(VoxelManipulator &vmanip, v3s16 p0)
 	if (myrand()%5000 == 0)
 		trunk_h = 4;
 	v3s16 p1 = p0;
-	for(s16 ii=0; ii<trunk_h; ii++)
-	{
-		if(vmanip.m_area.contains(p1))
+	for (s16 ii=0; ii<trunk_h; ii++) {
+		if (vmanip.m_area.contains(p1))
 			vmanip.m_data[vmanip.m_area.index(p1)] = cactusnode;
 		p1.Y++;
 	}
@@ -456,84 +454,80 @@ void make_cactus(VoxelManipulator &vmanip, v3s16 p0)
 static void make_room1(VoxelManipulator &vmanip, v3s16 roomsize, v3s16 roomplace)
 {
 	// Make +-X walls
-	for(s16 z=0; z<roomsize.Z; z++)
-	for(s16 y=0; y<roomsize.Y; y++)
-	{
+	for (s16 z=0; z<roomsize.Z; z++)
+	for (s16 y=0; y<roomsize.Y; y++) {
 		{
 			v3s16 p = roomplace + v3s16(0,y,z);
-			if(vmanip.m_area.contains(p) == false)
+			if (vmanip.m_area.contains(p) == false)
 				continue;
 			u32 vi = vmanip.m_area.index(p);
-			if(vmanip.m_flags[vi] & VMANIP_FLAG_DUNGEON_UNTOUCHABLE)
+			if (vmanip.m_flags[vi] & VMANIP_FLAG_DUNGEON_UNTOUCHABLE)
 				continue;
 			vmanip.m_data[vi] = MapNode(CONTENT_COBBLE);
 		}
 		{
 			v3s16 p = roomplace + v3s16(roomsize.X-1,y,z);
-			if(vmanip.m_area.contains(p) == false)
+			if (vmanip.m_area.contains(p) == false)
 				continue;
 			u32 vi = vmanip.m_area.index(p);
-			if(vmanip.m_flags[vi] & VMANIP_FLAG_DUNGEON_UNTOUCHABLE)
+			if (vmanip.m_flags[vi] & VMANIP_FLAG_DUNGEON_UNTOUCHABLE)
 				continue;
 			vmanip.m_data[vi] = MapNode(CONTENT_COBBLE);
 		}
 	}
 
 	// Make +-Z walls
-	for(s16 x=0; x<roomsize.X; x++)
-	for(s16 y=0; y<roomsize.Y; y++)
-	{
+	for (s16 x=0; x<roomsize.X; x++)
+	for (s16 y=0; y<roomsize.Y; y++) {
 		{
 			v3s16 p = roomplace + v3s16(x,y,0);
-			if(vmanip.m_area.contains(p) == false)
+			if (vmanip.m_area.contains(p) == false)
 				continue;
 			u32 vi = vmanip.m_area.index(p);
-			if(vmanip.m_flags[vi] & VMANIP_FLAG_DUNGEON_UNTOUCHABLE)
+			if (vmanip.m_flags[vi] & VMANIP_FLAG_DUNGEON_UNTOUCHABLE)
 				continue;
 			vmanip.m_data[vi] = MapNode(CONTENT_COBBLE);
 		}
 		{
 			v3s16 p = roomplace + v3s16(x,y,roomsize.Z-1);
-			if(vmanip.m_area.contains(p) == false)
+			if (vmanip.m_area.contains(p) == false)
 				continue;
 			u32 vi = vmanip.m_area.index(p);
-			if(vmanip.m_flags[vi] & VMANIP_FLAG_DUNGEON_UNTOUCHABLE)
+			if (vmanip.m_flags[vi] & VMANIP_FLAG_DUNGEON_UNTOUCHABLE)
 				continue;
 			vmanip.m_data[vi] = MapNode(CONTENT_COBBLE);
 		}
 	}
 
 	// Make +-Y walls (floor and ceiling)
-	for(s16 z=0; z<roomsize.Z; z++)
-	for(s16 x=0; x<roomsize.X; x++)
-	{
+	for (s16 z=0; z<roomsize.Z; z++)
+	for (s16 x=0; x<roomsize.X; x++) {
 		{
 			v3s16 p = roomplace + v3s16(x,0,z);
-			if(vmanip.m_area.contains(p) == false)
+			if (vmanip.m_area.contains(p) == false)
 				continue;
 			u32 vi = vmanip.m_area.index(p);
-			if(vmanip.m_flags[vi] & VMANIP_FLAG_DUNGEON_UNTOUCHABLE)
+			if (vmanip.m_flags[vi] & VMANIP_FLAG_DUNGEON_UNTOUCHABLE)
 				continue;
 			vmanip.m_data[vi] = MapNode(CONTENT_COBBLE);
 		}
 		{
 			v3s16 p = roomplace + v3s16(x,roomsize.Y-1,z);
-			if(vmanip.m_area.contains(p) == false)
+			if (vmanip.m_area.contains(p) == false)
 				continue;
 			u32 vi = vmanip.m_area.index(p);
-			if(vmanip.m_flags[vi] & VMANIP_FLAG_DUNGEON_UNTOUCHABLE)
+			if (vmanip.m_flags[vi] & VMANIP_FLAG_DUNGEON_UNTOUCHABLE)
 				continue;
 			vmanip.m_data[vi] = MapNode(CONTENT_COBBLE);
 		}
 	}
 
 	// Fill with air
-	for(s16 z=1; z<roomsize.Z-1; z++)
-	for(s16 y=1; y<roomsize.Y-1; y++)
-	for(s16 x=1; x<roomsize.X-1; x++)
-	{
+	for (s16 z=1; z<roomsize.Z-1; z++)
+	for (s16 y=1; y<roomsize.Y-1; y++)
+	for (s16 x=1; x<roomsize.X-1; x++) {
 		v3s16 p = roomplace + v3s16(x,y,z);
-		if(vmanip.m_area.contains(p) == false)
+		if (vmanip.m_area.contains(p) == false)
 			continue;
 		u32 vi = vmanip.m_area.index(p);
 		vmanip.m_flags[vi] |= VMANIP_FLAG_DUNGEON_UNTOUCHABLE;
@@ -544,15 +538,22 @@ static void make_room1(VoxelManipulator &vmanip, v3s16 roomsize, v3s16 roomplace
 static void make_fill(VoxelManipulator &vmanip, v3s16 place, v3s16 size,
 		u8 avoid_flags, MapNode n, u8 or_flags)
 {
-	for(s16 z=0; z<size.Z; z++)
-	for(s16 y=0; y<size.Y; y++)
-	for(s16 x=0; x<size.X; x++)
-	{
+	for (s16 z=0; z<size.Z; z++)
+	for (s16 y=0; y<size.Y; y++)
+	for (s16 x=0; x<size.X; x++) {
 		v3s16 p = place + v3s16(x,y,z);
-		if(vmanip.m_area.contains(p) == false)
+		if (vmanip.m_area.contains(p) == false)
 			continue;
 		u32 vi = vmanip.m_area.index(p);
-		if(vmanip.m_flags[vi] & avoid_flags)
+		if (vmanip.m_flags[vi] & avoid_flags)
+			continue;
+		if (
+			vmanip.m_data[vi].getContent() != CONTENT_STONE
+			&& vmanip.m_data[vi].getContent() != CONTENT_SAND
+			&& vmanip.m_data[vi].getContent() != CONTENT_GRAVEL
+			&& vmanip.m_data[vi].getContent() != CONTENT_COBBLE
+			&& vmanip.m_data[vi].getContent() != CONTENT_IGNORE
+		)
 			continue;
 		vmanip.m_flags[vi] |= or_flags;
 		vmanip.m_data[vi] = n;
@@ -561,37 +562,32 @@ static void make_fill(VoxelManipulator &vmanip, v3s16 place, v3s16 size,
 
 static void make_hole1(VoxelManipulator &vmanip, v3s16 place)
 {
-	make_fill(vmanip, place, v3s16(1,2,1), 0, MapNode(CONTENT_AIR),
-			VMANIP_FLAG_DUNGEON_INSIDE);
+	make_fill(vmanip, place, v3s16(1,2,1), 0, MapNode(CONTENT_AIR), VMANIP_FLAG_DUNGEON_INSIDE);
 }
 
 static void make_door1(VoxelManipulator &vmanip, v3s16 doorplace, v3s16 doordir)
 {
 	make_hole1(vmanip, doorplace);
-	// Place torch (for testing)
-	//vmanip.m_data[vmanip.m_area.index(doorplace)] = MapNode(CONTENT_TORCH);
 }
 
 static v3s16 rand_ortho_dir(PseudoRandom &random)
 {
-	if(random.next()%2==0)
+	if (random.next()%2==0) {
 		return random.next()%2 ? v3s16(-1,0,0) : v3s16(1,0,0);
-	else
+	}else{
 		return random.next()%2 ? v3s16(0,0,-1) : v3s16(0,0,1);
+	}
 }
 
 static v3s16 turn_xz(v3s16 olddir, int t)
 {
 	v3s16 dir;
-	if(t == 0)
-	{
+	if (t == 0) {
 		// Turn right
 		dir.X = olddir.Z;
 		dir.Z = -olddir.X;
 		dir.Y = olddir.Y;
-	}
-	else
-	{
+	}else{
 		// Turn left
 		dir.X = -olddir.Z;
 		dir.Z = olddir.X;
@@ -604,17 +600,16 @@ static v3s16 random_turn(PseudoRandom &random, v3s16 olddir)
 {
 	int turn = random.range(0,2);
 	v3s16 dir;
-	if(turn == 0)
-	{
+	if (turn == 0) {
 		// Go straight
 		dir = olddir;
-	}
-	else if(turn == 1)
+	}else if (turn == 1) {
 		// Turn right
 		dir = turn_xz(olddir, 0);
-	else
+	}else{
 		// Turn left
 		dir = turn_xz(olddir, 1);
+	}
 	return dir;
 }
 
@@ -626,55 +621,35 @@ static void make_corridor(VoxelManipulator &vmanip, v3s16 doorplace,
 	v3s16 p0 = doorplace;
 	v3s16 dir = doordir;
 	u32 length;
-	if(random.next()%2)
+	if (random.next()%2) {
 		length = random.range(1,13);
-	else
+	}else{
 		length = random.range(1,6);
+	}
 	length = random.range(1,13);
 	u32 partlength = random.range(1,13);
 	u32 partcount = 0;
 	s16 make_stairs = 0;
-	if(random.next()%2 == 0 && partlength >= 3)
+	if (random.next()%2 == 0 && partlength >= 3)
 		make_stairs = random.next()%2 ? 1 : -1;
-	for(u32 i=0; i<length; i++)
-	{
+
+	for (u32 i=0; i<length; i++) {
 		v3s16 p = p0 + dir;
-		if(partcount != 0)
+		if (partcount != 0)
 			p.Y += make_stairs;
 
-		/*// If already empty
-		if(vmanip.getNodeNoExNoEmerge(p).getContent()
-				== CONTENT_AIR
-		&& vmanip.getNodeNoExNoEmerge(p+v3s16(0,1,0)).getContent()
-				== CONTENT_AIR)
-		{
-		}*/
-
-		if(vmanip.m_area.contains(p) == true
-				&& vmanip.m_area.contains(p+v3s16(0,1,0)) == true)
-		{
-			if(make_stairs)
-			{
-				make_fill(vmanip, p+v3s16(-1,-1,-1), v3s16(3,5,3),
-						VMANIP_FLAG_DUNGEON_UNTOUCHABLE, MapNode(CONTENT_COBBLE), 0);
-				make_fill(vmanip, p, v3s16(1,2,1), 0, MapNode(CONTENT_AIR),
-						VMANIP_FLAG_DUNGEON_INSIDE);
-				make_fill(vmanip, p-dir, v3s16(1,2,1), 0, MapNode(CONTENT_AIR),
-						VMANIP_FLAG_DUNGEON_INSIDE);
-			}
-			else
-			{
-				make_fill(vmanip, p+v3s16(-1,-1,-1), v3s16(3,4,3),
-						VMANIP_FLAG_DUNGEON_UNTOUCHABLE, MapNode(CONTENT_COBBLE), 0);
+		if (vmanip.m_area.contains(p) == true && vmanip.m_area.contains(p+v3s16(0,1,0)) == true) {
+			if (make_stairs) {
+				make_fill(vmanip, p+v3s16(-1,-1,-1), v3s16(3,5,3), VMANIP_FLAG_DUNGEON_UNTOUCHABLE, MapNode(CONTENT_COBBLE), 0);
+				make_fill(vmanip, p, v3s16(1,2,1), 0, MapNode(CONTENT_AIR), VMANIP_FLAG_DUNGEON_INSIDE);
+				make_fill(vmanip, p-dir, v3s16(1,2,1), 0, MapNode(CONTENT_AIR), VMANIP_FLAG_DUNGEON_INSIDE);
+			}else{
+				make_fill(vmanip, p+v3s16(-1,-1,-1), v3s16(3,4,3), VMANIP_FLAG_DUNGEON_UNTOUCHABLE, MapNode(CONTENT_COBBLE), 0);
 				make_hole1(vmanip, p);
-				/*make_fill(vmanip, p, v3s16(1,2,1), 0, MapNode(CONTENT_AIR),
-						VMANIP_FLAG_DUNGEON_INSIDE);*/
 			}
 
 			p0 = p;
-		}
-		else
-		{
+		}else{
 			// Can't go here, turn away
 			dir = turn_xz(dir, random.range(0,1));
 			make_stairs = -make_stairs;
@@ -684,8 +659,7 @@ static void make_corridor(VoxelManipulator &vmanip, v3s16 doorplace,
 		}
 
 		partcount++;
-		if(partcount >= partlength)
-		{
+		if (partcount >= partlength) {
 			partcount = 0;
 
 			dir = random_turn(random, dir);
@@ -693,7 +667,7 @@ static void make_corridor(VoxelManipulator &vmanip, v3s16 doorplace,
 			partlength = random.range(1,length);
 
 			make_stairs = 0;
-			if(random.next()%2 == 0 && partlength >= 3)
+			if (random.next()%2 == 0 && partlength >= 3)
 				make_stairs = random.next()%2 ? 1 : -1;
 		}
 	}
@@ -730,22 +704,21 @@ public:
 
 	bool findPlaceForDoor(v3s16 &result_place, v3s16 &result_dir)
 	{
-		for(u32 i=0; i<100; i++)
-		{
+		for (u32 i=0; i<100; i++) {
 			v3s16 p = m_pos + m_dir;
 			v3s16 p1 = p + v3s16(0,1,0);
-			if(vmanip.m_area.contains(p) == false
-					|| vmanip.m_area.contains(p1) == false
-					|| i % 4 == 0)
-			{
+			if (
+				vmanip.m_area.contains(p) == false
+				|| vmanip.m_area.contains(p1) == false
+				|| i % 4 == 0
+			) {
 				randomizeDir();
 				continue;
 			}
-			if(vmanip.getNodeNoExNoEmerge(p).getContent()
-					== CONTENT_COBBLE
-			&& vmanip.getNodeNoExNoEmerge(p1).getContent()
-					== CONTENT_COBBLE)
-			{
+			if (
+				vmanip.getNodeNoExNoEmerge(p).getContent() == CONTENT_COBBLE
+				&& vmanip.getNodeNoExNoEmerge(p1).getContent() == CONTENT_COBBLE
+			) {
 				// Found wall, this is a good place!
 				result_place = p;
 				result_dir = m_dir;
@@ -757,27 +730,24 @@ public:
 				Determine where to move next
 			*/
 			// Jump one up if the actual space is there
-			if(vmanip.getNodeNoExNoEmerge(p+v3s16(0,0,0)).getContent()
-					== CONTENT_COBBLE
-			&& vmanip.getNodeNoExNoEmerge(p+v3s16(0,1,0)).getContent()
-					== CONTENT_AIR
-			&& vmanip.getNodeNoExNoEmerge(p+v3s16(0,2,0)).getContent()
-					== CONTENT_AIR)
+			if (
+				vmanip.getNodeNoExNoEmerge(p+v3s16(0,0,0)).getContent() == CONTENT_COBBLE
+				&& vmanip.getNodeNoExNoEmerge(p+v3s16(0,1,0)).getContent() == CONTENT_AIR
+				&& vmanip.getNodeNoExNoEmerge(p+v3s16(0,2,0)).getContent() == CONTENT_AIR
+			)
 				p += v3s16(0,1,0);
 			// Jump one down if the actual space is there
-			if(vmanip.getNodeNoExNoEmerge(p+v3s16(0,1,0)).getContent()
-					== CONTENT_COBBLE
-			&& vmanip.getNodeNoExNoEmerge(p+v3s16(0,0,0)).getContent()
-					== CONTENT_AIR
-			&& vmanip.getNodeNoExNoEmerge(p+v3s16(0,-1,0)).getContent()
-					== CONTENT_AIR)
+			if (
+				vmanip.getNodeNoExNoEmerge(p+v3s16(0,1,0)).getContent() == CONTENT_COBBLE
+				&& vmanip.getNodeNoExNoEmerge(p+v3s16(0,0,0)).getContent() == CONTENT_AIR
+				&& vmanip.getNodeNoExNoEmerge(p+v3s16(0,-1,0)).getContent() == CONTENT_AIR
+			)
 				p += v3s16(0,-1,0);
 			// Check if walking is now possible
-			if(vmanip.getNodeNoExNoEmerge(p).getContent()
-					!= CONTENT_AIR
-			|| vmanip.getNodeNoExNoEmerge(p+v3s16(0,1,0)).getContent()
-					!= CONTENT_AIR)
-			{
+			if (
+				vmanip.getNodeNoExNoEmerge(p).getContent() != CONTENT_AIR
+				|| vmanip.getNodeNoExNoEmerge(p+v3s16(0,1,0)).getContent() != CONTENT_AIR
+			) {
 				// Cannot continue walking here
 				randomizeDir();
 				continue;
@@ -788,57 +758,43 @@ public:
 		return false;
 	}
 
-	bool findPlaceForRoomDoor(v3s16 roomsize, v3s16 &result_doorplace,
-			v3s16 &result_doordir, v3s16 &result_roomplace)
+	bool findPlaceForRoomDoor(v3s16 roomsize, v3s16 &result_doorplace, v3s16 &result_doordir, v3s16 &result_roomplace)
 	{
-		for(s16 trycount=0; trycount<30; trycount++)
-		{
+		for (s16 trycount=0; trycount<30; trycount++) {
 			v3s16 doorplace;
 			v3s16 doordir;
 			bool r = findPlaceForDoor(doorplace, doordir);
-			if(r == false)
+			if (r == false)
 				continue;
 			v3s16 roomplace;
 			// X east, Z north, Y up
-#if 1
-			if(doordir == v3s16(1,0,0)) // X+
-				roomplace = doorplace +
-						v3s16(0,-1,m_random.range(-roomsize.Z+2,-2));
-			if(doordir == v3s16(-1,0,0)) // X-
-				roomplace = doorplace +
-						v3s16(-roomsize.X+1,-1,m_random.range(-roomsize.Z+2,-2));
-			if(doordir == v3s16(0,0,1)) // Z+
-				roomplace = doorplace +
-						v3s16(m_random.range(-roomsize.X+2,-2),-1,0);
-			if(doordir == v3s16(0,0,-1)) // Z-
-				roomplace = doorplace +
-						v3s16(m_random.range(-roomsize.X+2,-2),-1,-roomsize.Z+1);
-#endif
+			if (doordir == v3s16(1,0,0)) // X+
+				roomplace = doorplace + v3s16(0,-1,m_random.range(-roomsize.Z+2,-2));
+			if (doordir == v3s16(-1,0,0)) // X-
+				roomplace = doorplace + v3s16(-roomsize.X+1,-1,m_random.range(-roomsize.Z+2,-2));
+			if (doordir == v3s16(0,0,1)) // Z+
+				roomplace = doorplace + v3s16(m_random.range(-roomsize.X+2,-2),-1,0);
+			if (doordir == v3s16(0,0,-1)) // Z-
+				roomplace = doorplace + v3s16(m_random.range(-roomsize.X+2,-2),-1,-roomsize.Z+1);
 
 			// Check fit
 			bool fits = true;
-			for(s16 z=1; z<roomsize.Z-1; z++)
-			for(s16 y=1; y<roomsize.Y-1; y++)
-			for(s16 x=1; x<roomsize.X-1; x++)
-			{
+			for (s16 z=1; z<roomsize.Z-1; z++)
+			for (s16 y=1; y<roomsize.Y-1; y++)
+			for (s16 x=1; x<roomsize.X-1; x++) {
 				v3s16 p = roomplace + v3s16(x,y,z);
-				if(vmanip.m_area.contains(p) == false)
-				{
+				if (vmanip.m_area.contains(p) == false) {
 					fits = false;
 					break;
 				}
-				if(vmanip.m_flags[vmanip.m_area.index(p)]
-						& VMANIP_FLAG_DUNGEON_INSIDE)
-				{
+				if (vmanip.m_flags[vmanip.m_area.index(p)] & VMANIP_FLAG_DUNGEON_INSIDE) {
 					fits = false;
 					break;
 				}
 			}
-			if(fits == false)
-			{
-				// Find new place
+			// Find new place
+			if (fits == false)
 				continue;
-			}
 			result_doorplace = doorplace;
 			result_doordir = doordir;
 			result_roomplace = roomplace;
@@ -864,40 +820,37 @@ static void make_dungeon1(VoxelManipulator &vmanip, PseudoRandom &random)
 		Find place for first room
 	*/
 	bool fits = false;
-	for(u32 i=0; i<100; i++)
-	{
+	for (u32 i=0; i<100; i++) {
 		roomsize = v3s16(random.range(4,8),random.range(4,6),random.range(4,8));
 		roomplace = vmanip.m_area.MinEdge + v3s16(
-				random.range(0,areasize.X-roomsize.X-1),
-				random.range(0,areasize.Y-roomsize.Y-1),
-				random.range(0,areasize.Z-roomsize.Z-1));
+			random.range(0,areasize.X-roomsize.X-1),
+			random.range(0,areasize.Y-roomsize.Y-1),
+			random.range(0,areasize.Z-roomsize.Z-1)
+		);
 		/*
 			Check that we're not putting the room to an unknown place,
 			otherwise it might end up floating in the air
 		*/
 		fits = true;
-		for(s16 z=1; z<roomsize.Z-1; z++)
-		for(s16 y=1; y<roomsize.Y-1; y++)
-		for(s16 x=1; x<roomsize.X-1; x++)
-		{
+		for (s16 z=1; z<roomsize.Z-1; z++)
+		for (s16 y=1; y<roomsize.Y-1; y++)
+		for (s16 x=1; x<roomsize.X-1; x++) {
 			v3s16 p = roomplace + v3s16(x,y,z);
 			u32 vi = vmanip.m_area.index(p);
-			if(vmanip.m_flags[vi] & VMANIP_FLAG_DUNGEON_INSIDE)
-			{
+			if (vmanip.m_flags[vi] & VMANIP_FLAG_DUNGEON_INSIDE) {
 				fits = false;
 				break;
 			}
-			if(vmanip.m_data[vi].getContent() == CONTENT_IGNORE)
-			{
+			if (vmanip.m_data[vi].getContent() == CONTENT_IGNORE) {
 				fits = false;
 				break;
 			}
 		}
-		if(fits)
+		if (fits)
 			break;
 	}
 	// No place found
-	if(fits == false)
+	if (fits == false)
 		return;
 
 	/*
@@ -908,8 +861,7 @@ static void make_dungeon1(VoxelManipulator &vmanip, PseudoRandom &random)
 	v3s16 last_room_center = roomplace+v3s16(roomsize.X/2,1,roomsize.Z/2);
 
 	u32 room_count = random.range(2,7);
-	for(u32 i=0; i<room_count; i++)
-	{
+	for (u32 i=0; i<room_count; i++) {
 
 		v3s16 room_center = roomplace + v3s16(roomsize.X/2,1,roomsize.Z/2);
 
@@ -925,7 +877,7 @@ static void make_dungeon1(VoxelManipulator &vmanip, PseudoRandom &random)
 		//vmanip.m_data[vmanip.m_area.index(room_center)] = MapNode(CONTENT_TORCH);
 
 		// Quit if last room
-		if(i == room_count-1)
+		if (i == room_count-1)
 			break;
 
 		// Determine walker start position
@@ -935,12 +887,9 @@ static void make_dungeon1(VoxelManipulator &vmanip, PseudoRandom &random)
 
 		v3s16 walker_start_place;
 
-		if(start_in_last_room)
-		{
+		if (start_in_last_room) {
 			walker_start_place = last_room_center;
-		}
-		else
-		{
+		}else{
 			walker_start_place = room_center;
 			// Store center of current room as the last one
 			last_room_center = room_center;
@@ -951,37 +900,37 @@ static void make_dungeon1(VoxelManipulator &vmanip, PseudoRandom &random)
 		v3s16 doorplace;
 		v3s16 doordir;
 		bool r = walker.findPlaceForDoor(doorplace, doordir);
-		if(r == false)
+		if (r == false)
 			return;
 
-		if(random.range(0,1)==0)
+		if (random.range(0,1)==0) {
 			// Make the door
 			make_door1(vmanip, doorplace, doordir);
-		else
+		}else{
 			// Don't actually make a door
 			doorplace -= doordir;
+		}
 
 		// Make a random corridor starting from the door
 		v3s16 corridor_end;
 		v3s16 corridor_end_dir;
-		make_corridor(vmanip, doorplace, doordir, corridor_end,
-				corridor_end_dir, random);
+		make_corridor(vmanip, doorplace, doordir, corridor_end, corridor_end_dir, random);
 
 		// Find a place for a random sized room
 		roomsize = v3s16(random.range(4,8),random.range(4,6),random.range(4,8));
 		walker.setPos(corridor_end);
 		walker.setDir(corridor_end_dir);
 		r = walker.findPlaceForRoomDoor(roomsize, doorplace, doordir, roomplace);
-		if(r == false)
+		if (r == false)
 			return;
 
-		if(random.range(0,1)==0)
+		if (random.range(0,1)==0) {
 			// Make the door
 			make_door1(vmanip, doorplace, doordir);
-		else
+		}else{
 			// Don't actually make a door
 			roomplace -= doordir;
-
+		}
 	}
 }
 
@@ -990,19 +939,19 @@ static void make_nc(VoxelManipulator &vmanip, PseudoRandom &random)
 	v3s16 dir;
 	u8 facedir_i = 0;
 	s32 r = random.range(0, 3);
-	if(r == 0){
+	if (r == 0) {
 		dir = v3s16( 1, 0, 0);
 		facedir_i = 3;
 	}
-	if(r == 1){
+	if (r == 1) {
 		dir = v3s16(-1, 0, 0);
 		facedir_i = 1;
 	}
-	if(r == 2){
+	if (r == 2) {
 		dir = v3s16( 0, 0, 1);
 		facedir_i = 2;
 	}
-	if(r == 3){
+	if (r == 3) {
 		dir = v3s16( 0, 0,-1);
 		facedir_i = 0;
 	}
@@ -1012,8 +961,7 @@ static void make_nc(VoxelManipulator &vmanip, PseudoRandom &random)
 			16+random.range(0,15));
 	vmanip.m_data[vmanip.m_area.index(p)] = MapNode(CONTENT_NC, facedir_i);
 	u32 length = random.range(3,15);
-	for(u32 j=0; j<length; j++)
-	{
+	for (u32 j=0; j<length; j++) {
 		p -= dir;
 		vmanip.m_data[vmanip.m_area.index(p)] = MapNode(CONTENT_NC_RB);
 	}
@@ -1189,14 +1137,6 @@ bool val_is_ground_crazyhills(double ground_noise1_val, v3s16 p, uint64_t seed)
 
 typedef bool (*val_is_ground_fn)(double,v3s16,uint64_t);
 
-	//MGT_FLAT = 0,
-	//MGT_FLATTER,
-	//MGT_SMOOTHER,
-	//MGT_DEFAULT,
-	//MGT_HILLY,
-	//MGT_MOUNTAINS,
-	//MGT_CRAZY,
-	//MGT_CRAZYHILLS
 static val_is_ground_fn val_is_ground[8] = {
 	val_is_ground_flat,
 	val_is_ground_flatter,
