@@ -260,6 +260,16 @@ void setRow1Recipe(u16 input, u16 result)
 	};
 	setRecipe(r,result,1);
 }
+// three input in a horizontal row yields two result
+void setRow2Recipe(u16 input, u16 result)
+{
+	u16 r[9] = {
+		input,		input,		input,
+		CONTENT_IGNORE,	CONTENT_IGNORE,	CONTENT_IGNORE,
+		CONTENT_IGNORE,	CONTENT_IGNORE,	CONTENT_IGNORE
+	};
+	setRecipe(r,result,2);
+}
 // three input in a horizontal row yields three result
 void setRow3Recipe(u16 input, u16 result)
 {
@@ -279,6 +289,16 @@ void setCol1Recipe(u16 input, u16 result)
 		CONTENT_IGNORE,	input,		CONTENT_IGNORE
 	};
 	setRecipe(r,result,1);
+}
+// three input in a vertical row yields two result
+void setCol2Recipe(u16 input, u16 result)
+{
+	u16 r[9] = {
+		CONTENT_IGNORE,	input,		CONTENT_IGNORE,
+		CONTENT_IGNORE,	input,		CONTENT_IGNORE,
+		CONTENT_IGNORE,	input,		CONTENT_IGNORE
+	};
+	setRecipe(r,result,2);
 }
 // three input in a vertical row yields three result
 void setCol3Recipe(u16 input, u16 result)
@@ -554,6 +574,66 @@ void setGateRecipe(u16 input1, u16 input2, u16 result)
 		input1,		input2,		input1,
 		input1,		input2,		input1,
 		CONTENT_IGNORE,	CONTENT_IGNORE,	CONTENT_IGNORE
+	};
+	setRecipe(r,result,1);
+}
+// pants recipe 7 input in an upside-down U yields one result
+void setPantsRecipe(u16 input, u16 result)
+{
+	u16 r[9] = {
+		input,		input,		input,
+		input,		CONTENT_IGNORE,	input,
+		input,		CONTENT_IGNORE,	input
+	};
+	setRecipe(r,result,1);
+}
+// shirt recipe 5 input in a T yields one result
+void setShirtRecipe(u16 input, u16 result)
+{
+	u16 r[9] = {
+		input,		input,	input,
+		CONTENT_IGNORE,	input,	CONTENT_IGNORE,
+		CONTENT_IGNORE,	input,	CONTENT_IGNORE
+	};
+	setRecipe(r,result,1);
+}
+// shirt recipe 5 input in a t yields one result
+void setTShirtRecipe(u16 input, u16 result)
+{
+	u16 r[9] = {
+		CONTENT_IGNORE,	input,	CONTENT_IGNORE,
+		input,		input,	input,
+		CONTENT_IGNORE,	input,	CONTENT_IGNORE
+	};
+	setRecipe(r,result,1);
+}
+// boots recipe 4 input in 2 separated columns yields one result
+void setBootsRecipe(u16 input, u16 result)
+{
+	u16 r[9] = {
+		input,		CONTENT_IGNORE,	input,
+		input,		CONTENT_IGNORE,	input,
+		CONTENT_IGNORE,	CONTENT_IGNORE,	CONTENT_IGNORE
+	};
+	setRecipe(r,result,1);
+}
+// hat recipe, 5 input in an upside down u yields one result
+void setHatRecipe(u16 input, u16 result)
+{
+	u16 r[9] = {
+		input,		input,		input,
+		input,		CONTENT_IGNORE,	input,
+		CONTENT_IGNORE,	CONTENT_IGNORE,	CONTENT_IGNORE
+	};
+	setRecipe(r,result,1);
+}
+// helmet recipe, 5 input in an upside down u around a glass pane yields one result
+void setHelmetRecipe(u16 input, u16 result)
+{
+	u16 r[9] = {
+		input,		input,			input,
+		input,		CONTENT_GLASS_PANE,	input,
+		CONTENT_IGNORE,	CONTENT_IGNORE,		CONTENT_IGNORE
 	};
 	setRecipe(r,result,1);
 }

@@ -179,6 +179,15 @@ enum ContentPressureType {
 	CST_CRUSHED	// node is always obliterated when pushed
 };
 
+enum NodeTextureIndex {
+	NODETEXTURE_TOP = 0,
+	NODETEXTURE_BOTTOM,
+	NODETEXTURE_RIGHT,
+	NODETEXTURE_LEFT,
+	NODETEXTURE_BACK,
+	NODETEXTURE_FRONT
+};
+
 struct MapNode;
 class NodeMetadata;
 

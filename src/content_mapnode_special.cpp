@@ -1236,7 +1236,7 @@ void content_mapnode_special(bool repeat)
 	f->setAllTextures("nc_side.png");
 	f->setTexture(5, "nc_front.png"); // Z-
 	f->setTexture(4, "nc_back.png"); // Z+
-	f->setInventoryTextureCube("nc_front.png", "nc_side.png", "nc_side.png");
+	f->setInventoryTextureCube("nc_side.png", "nc_front.png", "nc_side.png");
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_STONE;
 	f->hardness = 3.0;

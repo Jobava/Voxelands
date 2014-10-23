@@ -678,6 +678,8 @@ void content_craftitem_init()
 	f->description = wgettext("Mese Dust");
 	f->drop_count = 1;
 	crafting::set1To2Recipe(CONTENT_MESE,CONTENT_CRAFTITEM_MESEDUST);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 
 	i = CONTENT_CRAFTITEM_RESIN;
 	f = &g_content_craftitem_features[i];
@@ -686,6 +688,8 @@ void content_craftitem_init()
 	f->name = "lump_of_resin";
 	f->description = wgettext("Resin");
 	f->drop_count = 1;
+	lists::add("cooking",i);
+	lists::add("creative",i);
 
 	i = CONTENT_CRAFTITEM_OERKKI_DUST;
 	f = &g_content_craftitem_features[i];
@@ -719,14 +723,6 @@ void content_craftitem_init()
 	lists::add("creative",i);
 	lists::add("cooking",i);
 
-	i = CONTENT_CRAFTITEM_FUR;
-	f = &g_content_craftitem_features[i];
-	f->content = CONTENT_CRAFTITEM_FUR;
-	f->texture = "fur.png";
-	f->name = "fur";
-	f->description = wgettext("Fur");
-	lists::add("creative",i);
-
 	i = CONTENT_CRAFTITEM_MEAT;
 	f = &g_content_craftitem_features[i];
 	f->content = CONTENT_CRAFTITEM_MEAT;
@@ -748,4 +744,371 @@ void content_craftitem_init()
 	lists::add("creative",i);
 	lists::add("cooking",i);
 
+	i = CONTENT_CRAFTITEM_COTTON_SHEET;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_COTTON_SHEET;
+	f->texture = "cotton_sheet.png";
+	f->name = "cotton_sheet";
+	f->description = wgettext("Cotton Sheet");
+	crafting::setRow2Recipe(CONTENT_CRAFTITEM_STRING,CONTENT_CRAFTITEM_COTTON_SHEET);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_STARCH,CONTENT_CRAFTITEM_COTTON_SHEET_BLUE,CONTENT_CRAFTITEM_COTTON_SHEET);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_STARCH,CONTENT_CRAFTITEM_COTTON_SHEET_GREEN,CONTENT_CRAFTITEM_COTTON_SHEET);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_STARCH,CONTENT_CRAFTITEM_COTTON_SHEET_ORANGE,CONTENT_CRAFTITEM_COTTON_SHEET);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_STARCH,CONTENT_CRAFTITEM_COTTON_SHEET_PURPLE,CONTENT_CRAFTITEM_COTTON_SHEET);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_STARCH,CONTENT_CRAFTITEM_COTTON_SHEET_RED,CONTENT_CRAFTITEM_COTTON_SHEET);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_STARCH,CONTENT_CRAFTITEM_COTTON_SHEET_YELLOW,CONTENT_CRAFTITEM_COTTON_SHEET);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_STARCH,CONTENT_CRAFTITEM_COTTON_SHEET_BLACK,CONTENT_CRAFTITEM_COTTON_SHEET);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_COTTON_SHEET_BLUE;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_COTTON_SHEET_BLUE;
+	f->texture = "cotton_sheet_blue.png";
+	f->name = "cotton_sheet_blue";
+	f->description = wgettext("Blue Cotton Sheet");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_COTTON_SHEET,CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_CRAFTITEM_COTTON_SHEET_BLUE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_COTTON_SHEET_GREEN;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_COTTON_SHEET_GREEN;
+	f->texture = "cotton_sheet_green.png";
+	f->name = "cotton_sheet_green";
+	f->description = wgettext("Green Cotton Sheet");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_COTTON_SHEET,CONTENT_CRAFTITEM_DYE_GREEN,CONTENT_CRAFTITEM_COTTON_SHEET_GREEN);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_COTTON_SHEET_ORANGE;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_COTTON_SHEET_ORANGE;
+	f->texture = "cotton_sheet_orange.png";
+	f->name = "cotton_sheet_orange";
+	f->description = wgettext("Orange Cotton Sheet");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_COTTON_SHEET,CONTENT_CRAFTITEM_DYE_ORANGE,CONTENT_CRAFTITEM_COTTON_SHEET_ORANGE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_COTTON_SHEET_PURPLE;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_COTTON_SHEET_PURPLE;
+	f->texture = "cotton_sheet_purple.png";
+	f->name = "cotton_sheet_purple";
+	f->description = wgettext("Purple Cotton Sheet");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_COTTON_SHEET,CONTENT_CRAFTITEM_DYE_PURPLE,CONTENT_CRAFTITEM_COTTON_SHEET_PURPLE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_COTTON_SHEET_RED;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_COTTON_SHEET_RED;
+	f->texture = "cotton_sheet_red.png";
+	f->name = "cotton_sheet_red";
+	f->description = wgettext("Red Cotton Sheet");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_COTTON_SHEET,CONTENT_CRAFTITEM_DYE_RED,CONTENT_CRAFTITEM_COTTON_SHEET_RED);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_COTTON_SHEET_YELLOW;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_COTTON_SHEET_YELLOW;
+	f->texture = "cotton_sheet_yellow.png";
+	f->name = "cotton_sheet_yellow";
+	f->description = wgettext("Yellow Cotton Sheet");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_COTTON_SHEET,CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_CRAFTITEM_COTTON_SHEET_YELLOW);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_COTTON_SHEET_BLACK;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_COTTON_SHEET_BLACK;
+	f->texture = "cotton_sheet_black.png";
+	f->name = "cotton_sheet_black";
+	f->description = wgettext("Black Cotton Sheet");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_COTTON_SHEET,CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_CRAFTITEM_COTTON_SHEET_BLACK);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_CANVAS_SHEET;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_CANVAS_SHEET;
+	f->texture = "canvas_sheet.png";
+	f->name = "canvas_sheet";
+	f->description = wgettext("Canvas Sheet");
+	crafting::setCol2Recipe(CONTENT_CRAFTITEM_COTTON_SHEET,CONTENT_CRAFTITEM_CANVAS_SHEET);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_STARCH,CONTENT_CRAFTITEM_CANVAS_SHEET_BLUE,CONTENT_CRAFTITEM_CANVAS_SHEET);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_STARCH,CONTENT_CRAFTITEM_CANVAS_SHEET_GREEN,CONTENT_CRAFTITEM_CANVAS_SHEET);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_STARCH,CONTENT_CRAFTITEM_CANVAS_SHEET_ORANGE,CONTENT_CRAFTITEM_CANVAS_SHEET);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_STARCH,CONTENT_CRAFTITEM_CANVAS_SHEET_PURPLE,CONTENT_CRAFTITEM_CANVAS_SHEET);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_STARCH,CONTENT_CRAFTITEM_CANVAS_SHEET_RED,CONTENT_CRAFTITEM_CANVAS_SHEET);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_STARCH,CONTENT_CRAFTITEM_CANVAS_SHEET_YELLOW,CONTENT_CRAFTITEM_CANVAS_SHEET);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_STARCH,CONTENT_CRAFTITEM_CANVAS_SHEET_BLACK,CONTENT_CRAFTITEM_CANVAS_SHEET);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_CANVAS_SHEET_BLUE;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_CANVAS_SHEET_BLUE;
+	f->texture = "canvas_sheet_blue.png";
+	f->name = "canvas_sheet_blue";
+	f->description = wgettext("Blue Canvas Sheet");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_CANVAS_SHEET,CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_CRAFTITEM_CANVAS_SHEET_BLUE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_CANVAS_SHEET_GREEN;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_CANVAS_SHEET_GREEN;
+	f->texture = "canvas_sheet_green.png";
+	f->name = "canvas_sheet_green";
+	f->description = wgettext("Green Canvas Sheet");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_CANVAS_SHEET,CONTENT_CRAFTITEM_DYE_GREEN,CONTENT_CRAFTITEM_CANVAS_SHEET_GREEN);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_CANVAS_SHEET_ORANGE;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_CANVAS_SHEET_ORANGE;
+	f->texture = "canvas_sheet_orange.png";
+	f->name = "canvas_sheet_orange";
+	f->description = wgettext("Orange Canvas Sheet");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_CANVAS_SHEET,CONTENT_CRAFTITEM_DYE_ORANGE,CONTENT_CRAFTITEM_CANVAS_SHEET_ORANGE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_CANVAS_SHEET_PURPLE;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_CANVAS_SHEET_PURPLE;
+	f->texture = "canvas_sheet_purple.png";
+	f->name = "canvas_sheet_purple";
+	f->description = wgettext("Purple Canvas Sheet");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_CANVAS_SHEET,CONTENT_CRAFTITEM_DYE_PURPLE,CONTENT_CRAFTITEM_CANVAS_SHEET_PURPLE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_CANVAS_SHEET_RED;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_CANVAS_SHEET_RED;
+	f->texture = "canvas_sheet_red.png";
+	f->name = "canvas_sheet_red";
+	f->description = wgettext("Red Canvas Sheet");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_CANVAS_SHEET,CONTENT_CRAFTITEM_DYE_RED,CONTENT_CRAFTITEM_CANVAS_SHEET_RED);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_CANVAS_SHEET_YELLOW;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_CANVAS_SHEET_YELLOW;
+	f->texture = "canvas_sheet_yellow.png";
+	f->name = "canvas_sheet_yellow";
+	f->description = wgettext("Yellow Canvas Sheet");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_CANVAS_SHEET,CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_CRAFTITEM_CANVAS_SHEET_YELLOW);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_CANVAS_SHEET_BLACK;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_CANVAS_SHEET_BLACK;
+	f->texture = "canvas_sheet_black.png";
+	f->name = "canvas_sheet_black";
+	f->description = wgettext("Black Canvas Sheet");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_CANVAS_SHEET,CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_CRAFTITEM_CANVAS_SHEET_BLACK);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_FUR;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_FUR;
+	f->texture = "fur.png";
+	f->name = "fur";
+	f->description = wgettext("Fur");
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_FUR_WHITE;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_FUR_WHITE;
+	f->texture = "fur_white.png";
+	f->name = "fur_white";
+	f->description = wgettext("White Fur");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_FUR,CONTENT_CRAFTITEM_DYE_WHITE,CONTENT_CRAFTITEM_FUR_WHITE);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_FUR,CONTENT_CRAFTITEM_STARCH,CONTENT_CRAFTITEM_FUR_WHITE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_FUR_BLUE;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_FUR_BLUE;
+	f->texture = "fur_blue.png";
+	f->name = "fur_blue";
+	f->description = wgettext("Blue Fur");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_FUR_WHITE,CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_CRAFTITEM_FUR_BLUE);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_FUR,CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_CRAFTITEM_FUR_BLUE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_FUR_GREEN;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_FUR_GREEN;
+	f->texture = "fur_green.png";
+	f->name = "fur_green";
+	f->description = wgettext("Green Fur");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_FUR_WHITE,CONTENT_CRAFTITEM_DYE_GREEN,CONTENT_CRAFTITEM_FUR_GREEN);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_FUR,CONTENT_CRAFTITEM_DYE_GREEN,CONTENT_CRAFTITEM_FUR_GREEN);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_FUR_ORANGE;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_FUR_ORANGE;
+	f->texture = "fur_orange.png";
+	f->name = "fur_orange";
+	f->description = wgettext("Orange Fur");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_FUR_WHITE,CONTENT_CRAFTITEM_DYE_ORANGE,CONTENT_CRAFTITEM_FUR_ORANGE);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_FUR,CONTENT_CRAFTITEM_DYE_ORANGE,CONTENT_CRAFTITEM_FUR_ORANGE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_FUR_PURPLE;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_FUR_PURPLE;
+	f->texture = "fur_purple.png";
+	f->name = "fur_purple";
+	f->description = wgettext("Purple Fur");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_FUR_WHITE,CONTENT_CRAFTITEM_DYE_PURPLE,CONTENT_CRAFTITEM_FUR_PURPLE);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_FUR,CONTENT_CRAFTITEM_DYE_PURPLE,CONTENT_CRAFTITEM_FUR_PURPLE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_FUR_RED;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_FUR_RED;
+	f->texture = "fur_red.png";
+	f->name = "fur_red";
+	f->description = wgettext("Red Fur");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_FUR_WHITE,CONTENT_CRAFTITEM_DYE_RED,CONTENT_CRAFTITEM_FUR_RED);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_FUR,CONTENT_CRAFTITEM_DYE_RED,CONTENT_CRAFTITEM_FUR_RED);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_FUR_YELLOW;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_FUR_YELLOW;
+	f->texture = "fur_yellow.png";
+	f->name = "fur_yellow";
+	f->description = wgettext("Yellow Fur");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_FUR_WHITE,CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_CRAFTITEM_FUR_YELLOW);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_FUR,CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_CRAFTITEM_FUR_YELLOW);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_FUR_BLACK;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_FUR_BLACK;
+	f->texture = "fur_black.png";
+	f->name = "fur_black";
+	f->description = wgettext("Black Fur");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_FUR_WHITE,CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_CRAFTITEM_FUR_BLACK);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_FUR,CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_CRAFTITEM_FUR_BLACK);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_LEATHER;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_LEATHER;
+	f->texture = "leather.png";
+	f->name = "leather";
+	f->description = wgettext("Leather");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_FUR,CONTENT_CRAFTITEM_ASH,CONTENT_CRAFTITEM_LEATHER);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_FUR,CONTENT_CRAFTITEM_MUSH,CONTENT_CRAFTITEM_LEATHER);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_LEATHER_WHITE;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_LEATHER_WHITE;
+	f->texture = "leather_white.png";
+	f->name = "leather_white";
+	f->description = wgettext("White Leather");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_LEATHER,CONTENT_CRAFTITEM_DYE_WHITE,CONTENT_CRAFTITEM_LEATHER_WHITE);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_LEATHER,CONTENT_CRAFTITEM_STARCH,CONTENT_CRAFTITEM_LEATHER_WHITE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_LEATHER_BLUE;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_LEATHER_BLUE;
+	f->texture = "leather_blue.png";
+	f->name = "leather_blue";
+	f->description = wgettext("Blue Leather");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_LEATHER_WHITE,CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_CRAFTITEM_LEATHER_BLUE);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_LEATHER,CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_CRAFTITEM_LEATHER_BLUE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_LEATHER_GREEN;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_LEATHER_GREEN;
+	f->texture = "leather_green.png";
+	f->name = "leather_green";
+	f->description = wgettext("Green Leather");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_LEATHER_WHITE,CONTENT_CRAFTITEM_DYE_GREEN,CONTENT_CRAFTITEM_LEATHER_GREEN);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_LEATHER,CONTENT_CRAFTITEM_DYE_GREEN,CONTENT_CRAFTITEM_LEATHER_GREEN);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_LEATHER_ORANGE;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_LEATHER_ORANGE;
+	f->texture = "leather_orange.png";
+	f->name = "leather_orange";
+	f->description = wgettext("Orange Leather");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_LEATHER_WHITE,CONTENT_CRAFTITEM_DYE_ORANGE,CONTENT_CRAFTITEM_LEATHER_ORANGE);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_LEATHER,CONTENT_CRAFTITEM_DYE_ORANGE,CONTENT_CRAFTITEM_LEATHER_ORANGE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_LEATHER_PURPLE;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_LEATHER_PURPLE;
+	f->texture = "leather_purple.png";
+	f->name = "leather_purple";
+	f->description = wgettext("Purple Leather");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_LEATHER_WHITE,CONTENT_CRAFTITEM_DYE_PURPLE,CONTENT_CRAFTITEM_LEATHER_PURPLE);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_LEATHER,CONTENT_CRAFTITEM_DYE_PURPLE,CONTENT_CRAFTITEM_LEATHER_PURPLE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_LEATHER_RED;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_LEATHER_RED;
+	f->texture = "leather_red.png";
+	f->name = "leather_red";
+	f->description = wgettext("Red Leather");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_LEATHER_WHITE,CONTENT_CRAFTITEM_DYE_RED,CONTENT_CRAFTITEM_LEATHER_RED);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_LEATHER,CONTENT_CRAFTITEM_DYE_RED,CONTENT_CRAFTITEM_LEATHER_RED);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_LEATHER_YELLOW;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_LEATHER_YELLOW;
+	f->texture = "leather_yellow.png";
+	f->name = "leather_yellow";
+	f->description = wgettext("Yellow Leather");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_LEATHER_WHITE,CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_CRAFTITEM_LEATHER_YELLOW);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_LEATHER,CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_CRAFTITEM_LEATHER_YELLOW);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_LEATHER_BLACK;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_LEATHER_BLACK;
+	f->texture = "leather_black.png";
+	f->name = "leather_black";
+	f->description = wgettext("Black Leather");
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_LEATHER_WHITE,CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_CRAFTITEM_LEATHER_BLACK);
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_LEATHER,CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_CRAFTITEM_LEATHER_BLACK);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 }

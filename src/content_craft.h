@@ -202,10 +202,14 @@ namespace crafting {
 	void setURecipe(u16 input, u16 result);
 	// three input in a horizontal row yields one result
 	void setRow1Recipe(u16 input, u16 result);
+	// three input in a horizontal row yields two result
+	void setRow2Recipe(u16 input, u16 result);
 	// three input in a horizontal row yields three result
 	void setRow3Recipe(u16 input, u16 result);
 	// three input in a vertical row yields one result
 	void setCol1Recipe(u16 input, u16 result);
+	// three input in a vertical row yields two result
+	void setCol2Recipe(u16 input, u16 result);
 	// three input in a vertical row yields three result
 	void setCol3Recipe(u16 input, u16 result);
 	// six input as a stair yields six result
@@ -248,6 +252,18 @@ namespace crafting {
 	void setSwordRecipe(u16 input, u16 result);
 	// gate recipe 1 2 1 in two rows yields one result
 	void setGateRecipe(u16 input1, u16 input2, u16 result);
+	// pants recipe 7 input in an upside-down U yields one result
+	void setPantsRecipe(u16 input, u16 result);
+	// shirt recipe 5 input in a T yields one result
+	void setShirtRecipe(u16 input, u16 result);
+	// shirt recipe 5 input in a t yields one result
+	void setTShirtRecipe(u16 input, u16 result);
+	// boots recipe 4 input in 2 separated columns yields one result
+	void setBootsRecipe(u16 input, u16 result);
+	// hat recipe, 5 input in an upside down u yields one result
+	void setHatRecipe(u16 input, u16 result);
+	// helmet recipe, 5 input in an upside down u around a glass pane yields one result
+	void setHelmetRecipe(u16 input, u16 result);
 
 	InventoryItem *getResult(InventoryItem **items);
 	content_t *getRecipe(InventoryItem *item);

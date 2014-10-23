@@ -55,14 +55,7 @@ void content_clothesitem_init()
 	f->armour = 0.10;
 	f->warmth = 0.30;
 	f->vacuum = 0.05;
-	{
-		content_t r[9] = {
-			CONTENT_CRAFTITEM_FUR,	CONTENT_CRAFTITEM_FUR,	CONTENT_CRAFTITEM_FUR,
-			CONTENT_CRAFTITEM_FUR,	CONTENT_IGNORE,		CONTENT_CRAFTITEM_FUR,
-			CONTENT_CRAFTITEM_FUR,	CONTENT_IGNORE,		CONTENT_CRAFTITEM_FUR
-		};
-		crafting::setRecipe(r,i,1);
-	}
+	crafting::setPantsRecipe(CONTENT_CRAFTITEM_FUR,i);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -76,14 +69,7 @@ void content_clothesitem_init()
 	f->armour = 0.10;
 	f->warmth = 0.30;
 	f->vacuum = 0.05;
-	{
-		content_t r[9] = {
-			CONTENT_CRAFTITEM_FUR,	CONTENT_CRAFTITEM_FUR,	CONTENT_CRAFTITEM_FUR,
-			CONTENT_IGNORE,		CONTENT_CRAFTITEM_FUR,	CONTENT_IGNORE,
-			CONTENT_IGNORE,		CONTENT_CRAFTITEM_FUR,	CONTENT_IGNORE
-		};
-		crafting::setRecipe(r,i,1);
-	}
+	crafting::setShirtRecipe(CONTENT_CRAFTITEM_FUR,i);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -97,14 +83,7 @@ void content_clothesitem_init()
 	f->armour = 0.05;
 	f->warmth = 0.20;
 	f->vacuum = 0.05;
-	{
-		content_t r[9] = {
-			CONTENT_CRAFTITEM_FUR,	CONTENT_CRAFTITEM_FUR,	CONTENT_CRAFTITEM_FUR,
-			CONTENT_CRAFTITEM_FUR,	CONTENT_IGNORE,		CONTENT_CRAFTITEM_FUR,
-			CONTENT_IGNORE,		CONTENT_IGNORE,		CONTENT_IGNORE
-		};
-		crafting::setRecipe(r,i,1);
-	}
+	crafting::setHatRecipe(CONTENT_CRAFTITEM_FUR,i);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -118,14 +97,63 @@ void content_clothesitem_init()
 	f->armour = 0.05;
 	f->warmth = 0.20;
 	f->vacuum = 0.05;
-	{
-		content_t r[9] = {
-			CONTENT_CRAFTITEM_FUR,	CONTENT_IGNORE,		CONTENT_CRAFTITEM_FUR,
-			CONTENT_CRAFTITEM_FUR,	CONTENT_IGNORE,		CONTENT_CRAFTITEM_FUR,
-			CONTENT_IGNORE,		CONTENT_IGNORE,		CONTENT_IGNORE
-		};
-		crafting::setRecipe(r,i,1);
-	}
+	crafting::setBootsRecipe(CONTENT_CRAFTITEM_FUR,i);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = COTNENT_CLOTHESITEM_SPACESUIT_PANTS;
+	f = &g_content_clothesitem_features[i];
+	f->content = i;
+	f->texture = "clothes_spacepants.png";
+	f->overlay_texture = "clothes_player_spacepants.png";
+	f->description = wgettext("Space Suit Pants");
+	f->type = CT_PANTS;
+	f->armour = 0.10;
+	f->warmth = 0.15;
+	f->vacuum = 0.30;
+	crafting::setPantsRecipe(CONTENT_CRAFTITEM_CANVAS_SHEET,i);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = COTNENT_CLOTHESITEM_SPACESUIT_SHIRT;
+	f = &g_content_clothesitem_features[i];
+	f->content = i;
+	f->texture = "clothes_spaceshirt.png";
+	f->overlay_texture = "clothes_player_spaceshirt.png";
+	f->description = wgettext("Space Suit Shirt");
+	f->type = CT_SHIRT;
+	f->armour = 0.10;
+	f->warmth = 0.15;
+	f->vacuum = 0.30;
+	crafting::setShirtRecipe(CONTENT_CRAFTITEM_CANVAS_SHEET,i);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = COTNENT_CLOTHESITEM_SPACESUIT_HELMET;
+	f = &g_content_clothesitem_features[i];
+	f->content = i;
+	f->texture = "clothes_spacehelmet.png";
+	f->overlay_texture = "clothes_player_spacehelmet.png";
+	f->description = wgettext("Space Suit Helmet");
+	f->type = CT_HAT;
+	f->armour = 0.05;
+	f->warmth = 0.10;
+	f->vacuum = 0.20;
+	crafting::setHelmetRecipe(CONTENT_CRAFTITEM_CANVAS_SHEET,i);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = COTNENT_CLOTHESITEM_SPACESUIT_BOOTS;
+	f = &g_content_clothesitem_features[i];
+	f->content = i;
+	f->texture = "clothes_spaceboots.png";
+	f->overlay_texture = "clothes_player_spaceboots.png";
+	f->description = wgettext("Space Suit Boots");
+	f->type = CT_BOOTS;
+	f->armour = 0.05;
+	f->warmth = 0.10;
+	f->vacuum = 0.20;
+	crafting::setBootsRecipe(CONTENT_CRAFTITEM_CANVAS_SHEET,i);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 }

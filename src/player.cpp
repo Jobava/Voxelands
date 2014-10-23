@@ -34,6 +34,7 @@
 #endif
 #include "settings.h"
 #include "path.h"
+#include "content_clothesitem.h"
 
 Player::Player():
 	touching_ground(false),
@@ -81,35 +82,49 @@ void Player::checkInventory()
 		inventory.addList("main", PLAYER_INVENTORY_SIZE);
 	if (!inventory.getList("hat"))
 		inventory.addList("hat",1);
-	{
-		InventoryList *l = inventory.getList("hat");
-		l->setStackable(false);
-		l->clearAllowed();
-		l->addAllowed(CONTENT_CLOTHESITEM_FUR_HAT);
-	}
 	if (!inventory.getList("shirt"))
 		inventory.addList("shirt",1);
-	{
-		InventoryList *l = inventory.getList("shirt");
-		l->setStackable(false);
-		l->clearAllowed();
-		l->addAllowed(CONTENT_CLOTHESITEM_FUR_SHIRT);
-	}
 	if (!inventory.getList("pants"))
 		inventory.addList("pants",1);
-	{
-		InventoryList *l = inventory.getList("pants");
-		l->setStackable(false);
-		l->clearAllowed();
-		l->addAllowed(CONTENT_CLOTHESITEM_FUR_PANTS);
-	}
 	if (!inventory.getList("boots"))
 		inventory.addList("boots",1);
+	// this allows only the correct clothing type in a player's
+	// relevant clothing slot
 	{
-		InventoryList *l = inventory.getList("boots");
-		l->setStackable(false);
-		l->clearAllowed();
-		l->addAllowed(CONTENT_CLOTHESITEM_FUR_BOOTS);
+		InventoryList *h = inventory.getList("hat");
+		InventoryList *s = inventory.getList("shirt");
+		InventoryList *p = inventory.getList("pants");
+		InventoryList *b = inventory.getList("boots");
+		h->setStackable(false);
+		h->clearAllowed();
+		s->setStackable(false);
+		s->clearAllowed();
+		p->setStackable(false);
+		p->clearAllowed();
+		b->setStackable(false);
+		b->clearAllowed();
+		for (
+			std::map<content_t,struct ClothesItemFeatures>::iterator i = g_content_clothesitem_features.begin();
+			i != g_content_clothesitem_features.end();
+			i++
+		) {
+			ClothesItemFeatures c = i->second;
+			switch (c.type) {
+			case CT_HAT:
+				h->addAllowed(c.content);
+				break;
+			case CT_SHIRT:
+				s->addAllowed(c.content);
+				break;
+			case CT_PANTS:
+				p->addAllowed(c.content);
+				break;
+			case CT_BOOTS:
+				b->addAllowed(c.content);
+				break;
+			default:;
+			}
+		}
 	}
 	if (!inventory.getList("discard"))
 		inventory.addList("discard",1);

@@ -2,6 +2,7 @@
 #define CONTENT_CLOTHESITEM_HEADER
 
 #include "mapnode.h"
+#include <map>
 
 #define CONTENT_CLOTHESITEM_MASK 0x1000
 
@@ -45,6 +46,7 @@ struct ClothesItemFeatures {
 	{}
 };
 
+extern std::map<content_t,struct ClothesItemFeatures> g_content_clothesitem_features;
 // For getting the default properties, set id=CONTENT_IGNORE
 void content_clothesitem_init();
 ClothesItemFeatures & content_clothesitem_features(content_t i);
@@ -53,5 +55,9 @@ ClothesItemFeatures & content_clothesitem_features(content_t i);
 #define CONTENT_CLOTHESITEM_FUR_SHIRT (CONTENT_CLOTHESITEM_MASK | 0x02)
 #define CONTENT_CLOTHESITEM_FUR_HAT (CONTENT_CLOTHESITEM_MASK | 0x03)
 #define CONTENT_CLOTHESITEM_FUR_BOOTS (CONTENT_CLOTHESITEM_MASK | 0x04)
+#define COTNENT_CLOTHESITEM_SPACESUIT_PANTS (CONTENT_CLOTHESITEM_MASK | 0x05)
+#define COTNENT_CLOTHESITEM_SPACESUIT_SHIRT (CONTENT_CLOTHESITEM_MASK | 0x06)
+#define COTNENT_CLOTHESITEM_SPACESUIT_HELMET (CONTENT_CLOTHESITEM_MASK | 0x07)
+#define COTNENT_CLOTHESITEM_SPACESUIT_BOOTS (CONTENT_CLOTHESITEM_MASK | 0x08)
 
 #endif
