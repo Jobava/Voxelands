@@ -303,7 +303,11 @@ void Camera::update(LocalPlayer* player, f32 frametime, v2u32 screensize)
 	}
 	m_wieldnode->setPosition(wield_position);
 	m_wieldnode->setRotation(wield_rotation);
-	m_wieldnode->updateLight(player->light);
+
+	u8 li = decode_light(player->light);
+	// Set brightness one lower than incoming light
+	diminish_light(li);
+	m_wieldnode->updateLight(li);
 
 	// Render distance feedback loop
 	updateViewingRange(frametime);

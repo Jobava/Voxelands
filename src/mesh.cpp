@@ -756,11 +756,7 @@ void ExtrudedSpriteSceneNode::setArm()
 void ExtrudedSpriteSceneNode::updateLight(u8 light)
 {
 	m_light = light;
-
-	u8 li = decode_light(light);
-	// Set brightness one lower than incoming light
-	diminish_light(li);
-	video::SColor color(255,li,li,li);
+	video::SColor color(255,light,light,light);
 	setMeshVerticesColor(m_meshnode->getMesh(), color);
 }
 
