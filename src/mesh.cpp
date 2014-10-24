@@ -701,7 +701,7 @@ void ExtrudedSpriteSceneNode::setNodeBox(content_t c)
 	updateLight(m_light);
 }
 
-void ExtrudedSpriteSceneNode::setArm()
+void ExtrudedSpriteSceneNode::setArm(video::ITexture *texture)
 {
 	const v3f cube_scale(0.3, 1.0, 0.3);
 	if (m_cubemesh)
@@ -713,13 +713,15 @@ void ExtrudedSpriteSceneNode::setArm()
 	m_meshnode->setScale(v3f(1));
 
 	// Get the tile texture and atlas transformation
-	std::string tex;
-	if (getTexturePath("player.png") != "") {
-		tex = "player.png^[forcesingle";
-	}else{
-		tex = "character.png^[forcesingle";
+	if (texture == NULL) {
+		std::string tex;
+		if (getTexturePath("player.png") != "") {
+			tex = "player.png^[forcesingle";
+		}else{
+			tex = "character.png^[forcesingle";
+		}
+		texture = g_texturesource->getTextureRaw(tex);
 	}
-	video::ITexture* atlas = g_texturesource->getTextureRaw(tex);
 	v2f pos(0.625,0.5);
 	v2f size(0.0625,-0.0625);
 
@@ -729,7 +731,7 @@ void ExtrudedSpriteSceneNode::setArm()
 	material.setFlag(video::EMF_BILINEAR_FILTER, false);
 	material.MaterialType = video::EMT_SOLID;
 	material.BackfaceCulling = true;
-	material.setTexture(0, atlas);
+	material.setTexture(0, texture);
 	material.getTextureMatrix(0).setTextureTranslate(pos.X, pos.Y);
 	material.getTextureMatrix(0).setTextureScale(size.X, size.Y);
 
@@ -744,7 +746,7 @@ void ExtrudedSpriteSceneNode::setArm()
 		material.setFlag(video::EMF_BILINEAR_FILTER, false);
 		material.MaterialType = video::EMT_SOLID;
 		material.BackfaceCulling = true;
-		material.setTexture(0, atlas);
+		material.setTexture(0, texture);
 		material.getTextureMatrix(0).setTextureTranslate(pos.X, pos.Y);
 		material.getTextureMatrix(0).setTextureScale(size.X, size.Y);
 	}

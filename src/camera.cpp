@@ -462,8 +462,7 @@ void Camera::updateViewingRange(f32 frametime_in)
 
 void Camera::wield(const InventoryItem* item)
 {
-	if (item != NULL)
-	{
+	if (item != NULL) {
 		bool haveWield = false;
 		m_wieldnode_baserotation = v3f(-100, 110, -100);
 		m_wieldnode_baseposition = v3f(45, -35, 65);
@@ -500,11 +499,9 @@ void Camera::wield(const InventoryItem* item)
 		}
 
 		m_wieldnode->setVisible(true);
-	}
-	else
-	{
+	}else{
 		// Bare hands
-		m_wieldnode->setArm();
+		m_wieldnode->setArm(m_client->getLocalPlayer()->getTexture());
 		m_wieldnode_baserotation = v3f(-30, 130, 20);
 		m_wieldnode_baseposition = v3f(45, -43, 60);
 		m_wieldnode->setScale(v3f(40));

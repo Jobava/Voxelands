@@ -127,7 +127,7 @@ public:
 	void setSprite(video::ITexture* texture);
 	void setCube(const TileSpec tiles[6]);
 	void setNodeBox(content_t c);
-	void setArm();
+	void setArm(video::ITexture *texture = NULL);
 
 	f32 getSpriteThickness() const { return m_thickness; }
 	void setSpriteThickness(f32 thickness);

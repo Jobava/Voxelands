@@ -491,6 +491,31 @@ public:
 
 	void applyControl(float dtime);
 
+	std::string getSkin()
+	{
+		std::string tex = std::string("player_") + m_name + ".png";
+		std::string ptex = getPath("player",tex,true);
+		printf("'%s' '%s'\n",tex.c_str(),ptex.c_str());
+		if (ptex == "")
+			return "character.png";
+		return tex;
+	}
+	video::ITexture* getTexture()
+	{
+		const char* list[4] = {"hat","shirt","pants","boots"};
+		std::string tex = getSkin();
+		for (int j=0; j<4; j++) {
+			InventoryList *l = inventory.getList(list[j]);
+			if (l == NULL)
+				continue;
+			InventoryItem *i = l->getItem(0);
+			if (i == NULL)
+				continue;
+			tex += "^" + content_clothesitem_features(i->getContent()).overlay_texture;
+		}
+		return g_texturesource->getTextureRaw(tex);
+	}
+
 	PlayerControl control;
 
 private:
