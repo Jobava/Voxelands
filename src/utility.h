@@ -981,6 +981,13 @@ inline std::string itos(s32 i)
 	return o.str();
 }
 
+inline std::wstring itows(s32 i)
+{
+	std::wstringstream o;
+	o<<i;
+	return o.str();
+}
+
 inline std::string ftos(float f)
 {
 	std::ostringstream o;

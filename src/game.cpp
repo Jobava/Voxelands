@@ -213,14 +213,14 @@ public:
 	std::string getForm()
 	{
 		return
-			"size[8,9]"
+			std::string("size[8,9]"
 			"list[current_player;main;0,5;8,4;]"
-			"label[0.3,0.2;Clothes]"
+			"label[0.3,0.2;")+gettext("Clothes")+"]"
 			"list[current_player;hat;0,0.5;1,1;]"
 			"list[current_player;shirt;0,1.5;1,1;]"
 			"list[current_player;pants;0,2.5;1,1;]"
 			"list[current_player;boots;0,3.5;1,1;]"
-			"label[1.4,1.7;Drop to Ground]"
+			"label[1.4,1.7;"+gettext("Drop to Ground")+"]"
 			"list[current_player;discard;1.75,2;1,1;]"
 			"list[current_player;craft;3.5,1;3,3;]"
 			"list[current_player;craftresult;7,2;1,1;]";
@@ -716,7 +716,7 @@ void drawLoadingScreen(video::IVideoDriver* driver, const std::wstring msg)
 		if (msg != L"") {
 			m = msg;
 		}else{
-			m = L"Loading";
+			m = wgettext("Loading");
 		}
 		core::dimension2d<u32> textsize = guienv->getSkin()->getFont()->getDimension(m.c_str());
 		core::rect<s32> rect(x-(textsize.Width/2), y+50, x+textsize.Width, y+50+textsize.Height);
@@ -829,7 +829,7 @@ void the_game(
 	catch(ResolveError &e)
 	{
 		errorstream<<"Couldn't resolve address"<<std::endl;
-		error_message = L"Couldn't resolve address";
+		error_message = wgettext("Couldn't resolve address");
 		return;
 	}
 
@@ -890,14 +890,14 @@ void the_game(
 
 	if (could_connect == false) {
 		if (client.accessDenied()) {
-			error_message = L"Access denied. Reason: "
+			error_message = wgettext("Access denied. Reason: ")
 					+client.accessDeniedReason();
 			errorstream<<wide_to_narrow(error_message)<<std::endl;
 		}else if (server != NULL) {
-			error_message = L"Unable to Connect (port already in use?).";
+			error_message = wgettext("Unable to Connect (port already in use?).");
 			errorstream<<"Timed out."<<std::endl;
 		}else{
-			error_message = L"Connection timed out.";
+			error_message = wgettext("Connection timed out.");
 			errorstream<<"Timed out."<<std::endl;
 		}
 		return;
@@ -1053,7 +1053,7 @@ void the_game(
 
 		if(client.accessDenied())
 		{
-			error_message = L"Access denied. Reason: "
+			error_message = wgettext("Access denied. Reason: ")
 					+client.accessDeniedReason();
 			errorstream<<wide_to_narrow(error_message)<<std::endl;
 			break;
@@ -1313,38 +1313,29 @@ void the_game(
 					&g_menumgr, dest,
 					L"/"))->drop();
 		}
-		else if(input->wasKeyDown(getKeySetting("keymap_freemove")))
-		{
-			if(g_settings->getBool("free_move"))
-			{
+		else if(input->wasKeyDown(getKeySetting("keymap_freemove"))) {
+			if (g_settings->getBool("free_move")) {
 				g_settings->set("free_move","false");
-				statustext = L"free_move disabled";
+				statustext = wgettext("free_move disabled");
 				statustext_time = 0;
-			}
-			else
-			{
+			}else{
 				g_settings->set("free_move","true");
-				statustext = L"free_move enabled";
+				statustext = wgettext("free_move enabled");
 				statustext_time = 0;
 			}
 		}
-		else if(input->wasKeyDown(getKeySetting("keymap_fastmove")))
-		{
-			if(g_settings->getBool("fast_move"))
-			{
+		else if(input->wasKeyDown(getKeySetting("keymap_fastmove"))) {
+			if (g_settings->getBool("fast_move")) {
 				g_settings->set("fast_move","false");
-				statustext = L"fast_move disabled";
+				statustext = wgettext("fast_move disabled");
 				statustext_time = 0;
-			}
-			else
-			{
+			}else{
 				g_settings->set("fast_move","true");
-				statustext = L"fast_move enabled";
+				statustext = wgettext("fast_move enabled");
 				statustext_time = 0;
 			}
 		}
-		else if(input->wasKeyDown(getKeySetting("keymap_screenshot")))
-		{
+		else if(input->wasKeyDown(getKeySetting("keymap_screenshot"))) {
 			irr::video::IImage* const image = driver->createScreenShot();
 			if (image) {
 				irr::c8 filename[256];
@@ -1353,121 +1344,106 @@ void the_game(
 						 device->getTimer()->getRealTime());
 				if (driver->writeImageToFile(image, filename)) {
 					std::wstringstream sstr;
-					sstr<<"Saved screenshot to '"<<filename<<"'";
+					sstr<<wgettext("Saved screenshot to '")<<filename<<"'";
 					infostream<<"Saved screenshot to '"<<filename<<"'"<<std::endl;
 					statustext = sstr.str();
 					statustext_time = 0;
-				} else{
+				}else{
 					infostream<<"Failed to save screenshot '"<<filename<<"'"<<std::endl;
 				}
 				image->drop();
 			}
 		}
-		else if(input->wasKeyDown(getKeySetting("keymap_toggle_hud")))
-		{
+		else if (input->wasKeyDown(getKeySetting("keymap_toggle_hud"))) {
 			show_hud = !show_hud;
-			if(show_hud)
-				statustext = L"HUD shown";
-			else
-				statustext = L"HUD hidden";
+			if (show_hud) {
+				statustext = wgettext("HUD shown");
+			}else{
+				statustext = wgettext("HUD hidden");
+			}
 			statustext_time = 0;
 		}
-		else if(input->wasKeyDown(getKeySetting("keymap_toggle_chat")))
- 		{
+		else if (input->wasKeyDown(getKeySetting("keymap_toggle_chat"))) {
 			show_chat = !show_chat;
-			if(show_chat)
-				statustext = L"Chat shown";
-			else
-				statustext = L"Chat hidden";
+			if (show_chat) {
+				statustext = wgettext("Chat shown");
+			}else{
+				statustext = wgettext("Chat hidden");
+			}
 			statustext_time = 0;
 		}
-		else if(input->wasKeyDown(getKeySetting("keymap_toggle_force_fog_off")))
-		{
+		else if (input->wasKeyDown(getKeySetting("keymap_toggle_force_fog_off"))) {
 			force_fog_off = !force_fog_off;
-			if(force_fog_off)
-				statustext = L"Fog disabled";
-			else
-				statustext = L"Fog enabled";
+			if (force_fog_off) {
+				statustext = wgettext("Fog disabled");
+			}else{
+				statustext = wgettext("Fog enabled");
+			}
 			statustext_time = 0;
 		}
-		else if(input->wasKeyDown(getKeySetting("keymap_toggle_update_camera")))
-		{
+		else if (input->wasKeyDown(getKeySetting("keymap_toggle_update_camera"))) {
 			disable_camera_update = !disable_camera_update;
-			if(disable_camera_update)
-				statustext = L"Camera update disabled";
-			else
-				statustext = L"Camera update enabled";
+			if (disable_camera_update) {
+				statustext = wgettext("Camera update disabled");
+			}else{
+				statustext = wgettext("Camera update enabled");
+			}
 			statustext_time = 0;
 		}
-		else if(input->wasKeyDown(getKeySetting("keymap_toggle_debug")))
-		{
+		else if (input->wasKeyDown(getKeySetting("keymap_toggle_debug"))) {
 			// Initial / 3x toggle: Chat only
 			// 1x toggle: Debug text with chat
 			// 2x toggle: Debug text with frametime
-			if(!show_debug)
-			{
+			if (!show_debug) {
 				show_debug = true;
 				show_debug_frametime = false;
-				statustext = L"Debug info shown";
+				statustext = wgettext("Debug info shown");
 				statustext_time = 0;
 			}
-			else if(show_debug_frametime)
-			{
+			else if (show_debug_frametime) {
 				show_debug = false;
 				show_debug_frametime = false;
-				statustext = L"Debug info and frametime graph hidden";
+				statustext = wgettext("Debug info and frametime graph hidden");
 				statustext_time = 0;
-			}
-			else
-			{
+			}else{
 				show_debug_frametime = true;
-				statustext = L"Frametime graph shown";
+				statustext = wgettext("Frametime graph shown");
 				statustext_time = 0;
 			}
 		}
-		else if(input->wasKeyDown(getKeySetting("keymap_toggle_profiler")))
-		{
+		else if (input->wasKeyDown(getKeySetting("keymap_toggle_profiler"))) {
 			show_profiler = (show_profiler + 1) % (show_profiler_max + 1);
 
 			// FIXME: This updates the profiler with incomplete values
 			update_profiler_gui(guitext_profiler, font, text_height,
 					show_profiler, show_profiler_max);
 
-			if(show_profiler != 0)
-			{
+			if (show_profiler != 0) {
 				std::wstringstream sstr;
-				sstr<<"Profiler shown (page "<<show_profiler
+				sstr<<wgettext("Profiler shown (page ")<<show_profiler
 					<<" of "<<show_profiler_max<<")";
 				statustext = sstr.str();
 				statustext_time = 0;
-			}
-			else
-			{
-				statustext = L"Profiler hidden";
+			}else{
+				statustext = wgettext("Profiler hidden");
 				statustext_time = 0;
 			}
 		}
-		else if(input->wasKeyDown(getKeySetting("keymap_increase_viewing_range_min")))
-		{
+		else if (input->wasKeyDown(getKeySetting("keymap_increase_viewing_range_min"))) {
 			s16 range = g_settings->getS16("viewing_range_nodes_min");
 			s16 range_new = range + 10;
 			g_settings->set("viewing_range_nodes_min", itos(range_new));
-			statustext = narrow_to_wide(
-					"Minimum viewing range changed to "
-					+ itos(range_new));
+			statustext = wgettext("Minimum viewing range changed to ") + narrow_to_wide(itos(range_new));
 			statustext_time = 0;
 		}
-		else if(input->wasKeyDown(getKeySetting("keymap_decrease_viewing_range_min")))
-		{
+		else if (input->wasKeyDown(getKeySetting("keymap_decrease_viewing_range_min"))) {
 			s16 range = g_settings->getS16("viewing_range_nodes_min");
 			s16 range_new = range - 10;
-			if(range_new < 0)
+			if (range_new < 0)
 				range_new = range;
 			g_settings->set("viewing_range_nodes_min",
 					itos(range_new));
-			statustext = narrow_to_wide(
-					"Minimum viewing range changed to "
-					+ itos(range_new));
+			statustext = wgettext("Minimum viewing range changed to ") + narrow_to_wide(itos(range_new));
 			statustext_time = 0;
 		}
 
@@ -1477,59 +1453,49 @@ void the_game(
 			u16 max_item = MYMIN(PLAYER_INVENTORY_SIZE-1,
 					hotbar_itemcount-1);
 
-			if(wheel < 0)
-			{
-				if(g_selected_item < max_item)
+			if (wheel < 0) {
+				if (g_selected_item < max_item) {
 					g_selected_item++;
-				else
+				}else{
 					g_selected_item = 0;
-			}
-			else if(wheel > 0)
-			{
-				if(g_selected_item > 0)
+				}
+			}else if (wheel > 0) {
+				if (g_selected_item > 0) {
 					g_selected_item--;
-				else
+				}else{
 					g_selected_item = max_item;
+				}
 			}
 		}
 
 		// Item selection
-		for(u16 i=0; i<10; i++)
-		{
+		for (u16 i=0; i<10; i++) {
 			const KeyPress *kp = NumberKey + (i + 1) % 10;
-			if(input->wasKeyDown(*kp))
-			{
-				if(i < PLAYER_INVENTORY_SIZE && i < hotbar_itemcount)
-				{
+			if (input->wasKeyDown(*kp)) {
+				if (i < PLAYER_INVENTORY_SIZE && i < hotbar_itemcount) {
 					g_selected_item = i;
 
-					infostream<<"Selected item: "
-							<<g_selected_item<<std::endl;
+					infostream<<"Selected item: "<<g_selected_item<<std::endl;
 				}
 			}
 		}
 
 		// Viewing range selection
-		if(input->wasKeyDown(getKeySetting("keymap_rangeselect")))
-		{
+		if (input->wasKeyDown(getKeySetting("keymap_rangeselect"))) {
 			draw_control.range_all = !draw_control.range_all;
-			if(draw_control.range_all)
-			{
+			if (draw_control.range_all) {
 				infostream<<"Enabled full viewing range"<<std::endl;
-				statustext = L"Enabled full viewing range";
+				statustext = wgettext("Enabled full viewing range");
 				statustext_time = 0;
-			}
-			else
-			{
+			}else{
 				infostream<<"Disabled full viewing range"<<std::endl;
-				statustext = L"Disabled full viewing range";
+				statustext = wgettext("Disabled full viewing range");
 				statustext_time = 0;
 			}
 		}
 
 		// Print debug stacks
-		if(input->wasKeyDown(getKeySetting("keymap_print_debug_stacks")))
-		{
+		if (input->wasKeyDown(getKeySetting("keymap_print_debug_stacks"))) {
 			dstream<<"-----------------------------------------"
 					<<std::endl;
 			dstream<<DTIME<<"Printing debug stacks:"<<std::endl;
@@ -1543,23 +1509,20 @@ void the_game(
 			NOTE: Do this before client.setPlayerControl() to not cause a camera lag of one frame
 		*/
 
-		if((device->isWindowActive() && noMenuActive()) || random_input)
-		{
-			if(!random_input)
-			{
+		if ((device->isWindowActive() && noMenuActive()) || random_input) {
+			if (!random_input) {
 				// Mac OSX gets upset if this is set every frame
-				if(device->getCursorControl()->isVisible())
+				if (device->getCursorControl()->isVisible())
 					device->getCursorControl()->setVisible(false);
 			}
 
-			if(first_loop_after_window_activation){
+			if (first_loop_after_window_activation) {
 				//infostream<<"window active, first loop"<<std::endl;
 				first_loop_after_window_activation = false;
-			}
-			else{
+			}else{
 				s32 dx = input->getMousePos().X - displaycenter.X;
 				s32 dy = input->getMousePos().Y - displaycenter.Y;
-				if(invert_mouse)
+				if (invert_mouse)
 					dy = -dy;
 
 				float d = g_settings->getFloat("mouse_sensitivity");
@@ -1567,14 +1530,13 @@ void the_game(
 
 				camera_yaw -= dx*d;
 				camera_pitch += dy*d;
-				if(camera_pitch < -89.5) camera_pitch = -89.5;
-				if(camera_pitch > 89.5) camera_pitch = 89.5;
+				if (camera_pitch < -89.5) camera_pitch = -89.5;
+				if (camera_pitch > 89.5) camera_pitch = 89.5;
 			}
 			input->setMousePos(displaycenter.X, displaycenter.Y);
-		}
-		else{
+		}else{
 			// Mac OSX gets upset if this is set every frame
-			if(device->getCursorControl()->isVisible() == false)
+			if (device->getCursorControl()->isVisible() == false)
 				device->getCursorControl()->setVisible(true);
 
 			//infostream<<"window inactive"<<std::endl;
@@ -1585,8 +1547,7 @@ void the_game(
 			Player speed control
 		*/
 
-		if(!noMenuActive() || !device->isWindowActive())
-		{
+		if (!noMenuActive() || !device->isWindowActive()) {
 			PlayerControl control(
 				false,
 				false,
@@ -1599,9 +1560,7 @@ void the_game(
 				camera_yaw
 			);
 			client.setPlayerControl(control);
-		}
-		else
-		{
+		}else{
 			/*bool a_up,
 			bool a_down,
 			bool a_left,
@@ -1629,10 +1588,8 @@ void the_game(
 			Run server
 		*/
 
-		if(server != NULL)
-		{
+		if (server != NULL)
 			server->step(dtime);
-		}
 
 		/*
 			Process environment
@@ -1644,7 +1601,7 @@ void the_game(
 
 		{
 			// Read client events
-			for(;;) {
+			for (;;) {
 				ClientEvent event = client.getClientEvent();
 				if (event.type == CE_NONE) {
 					break;
@@ -1787,14 +1744,13 @@ void the_game(
 				nodepos, neighbourpos, camera_offset,
 				nodehilightbox, d);
 
-		if(!nodefound){
-			if(nodepos_old != v3s16(-32768,-32768,-32768))
-			{
+		if (!nodefound) {
+			if (nodepos_old != v3s16(-32768,-32768,-32768)) {
 				client.clearTempMod(nodepos_old);
 				dig_time = 0.0;
 				nodepos_old = v3s16(-32768,-32768,-32768);
 			}
-		} else {
+		}else{
 
 			/*
 				Check information text of node
@@ -1803,17 +1759,14 @@ void the_game(
 			if (nodepos != nodepos_old && nodepos_old != v3s16(-32768,-32768,-32768))
 				client.clearTempMod(nodepos_old);
 			NodeMetadata *meta = client.getNodeMetadata(nodepos);
-			if(meta)
-			{
-				infotext = narrow_to_wide(meta->infoText());
-			}
+			if (meta)
+				infotext = meta->infoText();
 
 			/*
 				Handle digging
 			*/
 
-			if(input->getLeftReleased())
-			{
+			if (input->getLeftReleased()) {
 				client.clearTempMod(nodepos);
 				dig_time = 0.0;
 			}
@@ -1827,47 +1780,35 @@ void the_game(
 				client.setTempMod(nodepos, NodeMod(NODEMOD_SELECTION));
 			}
 
-			if(nodig_delay_counter > 0.0)
-			{
+			if (nodig_delay_counter > 0.0) {
 				nodig_delay_counter -= dtime;
-			}
-			else
-			{
-				if(nodepos != nodepos_old)
-				{
+			}else{
+				if (nodepos != nodepos_old) {
 					infostream<<"Pointing at ("<<nodepos.X<<","
 							<<nodepos.Y<<","<<nodepos.Z<<")"<<std::endl;
 
-					if(nodepos_old != v3s16(-32768,-32768,-32768))
-					{
+					if (nodepos_old != v3s16(-32768,-32768,-32768)) {
 						client.clearTempMod(nodepos_old);
 						dig_time = 0.0;
 						nodepos_old = v3s16(-32768,-32768,-32768);
 					}
 				}
 
-				if(input->getLeftClicked() ||
-						(input->getLeftState() && nodepos != nodepos_old))
-				{
+				if (input->getLeftClicked() || (input->getLeftState() && nodepos != nodepos_old)) {
 					infostream<<"Started digging"<<std::endl;
 					client.groundAction(0, nodepos, neighbourpos, g_selected_item);
 				}
-				if(input->getLeftClicked())
-				{
+				if (input->getLeftClicked())
 					client.setTempMod(nodepos, NodeMod(NODEMOD_CRACK, 0));
-				}
-				if(input->getLeftState())
-				{
+				if (input->getLeftState()) {
 					MapNode n = client.getNode(nodepos);
 
 					// Get tool name. Default is "" = bare hands
 					content_t toolid = CONTENT_IGNORE;
 					InventoryList *mlist = local_inventory.getList("main");
-					if(mlist != NULL)
-					{
+					if (mlist != NULL) {
 						InventoryItem *item = mlist->getItem(g_selected_item);
-						if(item && (std::string)item->getName() == "ToolItem")
-						{
+						if (item && (std::string)item->getName() == "ToolItem") {
 							ToolItem *titem = (ToolItem*)item;
 							toolid = titem->getContent();
 						}
@@ -1887,23 +1828,17 @@ void the_game(
 						if (g_settings->getBool("enable_particles"))
 							addPunchingParticles(smgr, player, nodepos, content_features(n).tiles);
 
-						if(dig_time_complete >= 0.001)
-						{
+						if (dig_time_complete >= 0.001) {
 							dig_index = (u16)((float)CRACK_ANIMATION_LENGTH
 									* dig_time/dig_time_complete);
-						}
-						// This is for torches
-						else
-						{
+						}else {
+							// This is for torches
 							dig_index = CRACK_ANIMATION_LENGTH;
 						}
 
-						if(dig_index < CRACK_ANIMATION_LENGTH)
-						{
+						if (dig_index < CRACK_ANIMATION_LENGTH) {
 							client.setTempMod(nodepos, NodeMod(NODEMOD_CRACK, dig_index));
-						}
-						else
-						{
+						}else{
 							infostream<<"Digging completed"<<std::endl;
 							client.groundAction(3, nodepos, neighbourpos, g_selected_item);
 							client.clearTempMod(nodepos);
@@ -1919,12 +1854,12 @@ void the_game(
 
 							// We don't want a corresponding delay to
 							// very time consuming nodes
-							if(nodig_delay_counter > 0.5)
+							if (nodig_delay_counter > 0.5)
 								nodig_delay_counter = 0.5;
 							// We want a slight delay to very little
 							// time consuming nodes
 							float mindelay = 0.15;
-							if(nodig_delay_counter < mindelay)
+							if (nodig_delay_counter < mindelay)
 								nodig_delay_counter = mindelay;
 						}
 					}

@@ -112,10 +112,7 @@ void GUIPauseMenu::regenerateGui(v2u32 screensize)
 			max_texture_size = driver->getMaxTextureSize();
 		}
 
-		std::ostringstream os;
-		os<<"Voxelands by darkrose and contributors";
-
-		Environment->addStaticText(narrow_to_wide(os.str()).c_str(), rect, false, true, this, 259);
+		Environment->addStaticText(wgettext("Voxelands by darkrose and contributors"), rect, false, true, this, 259);
 	}
 	{
 		core::rect<s32> rect(0, 0, 200, 20);
@@ -127,10 +124,7 @@ void GUIPauseMenu::regenerateGui(v2u32 screensize)
 			max_texture_size = driver->getMaxTextureSize();
 		}
 
-		std::ostringstream os;
-		os<<"www.voxelands.com";
-
-		Environment->addStaticText(narrow_to_wide(os.str()).c_str(), rect, false, true, this, 259);
+		Environment->addStaticText(L"www.voxelands.com", rect, false, true, this, 259);
 	}
 	{
 		core::rect<s32> rect(0, 0, 205, 20);
@@ -142,25 +136,7 @@ void GUIPauseMenu::regenerateGui(v2u32 screensize)
 			max_texture_size = driver->getMaxTextureSize();
 		}
 
-		std::ostringstream os;
-		os<<"darkrose@voxelands.com";
-
-		Environment->addStaticText(narrow_to_wide(os.str()).c_str(), rect, false, true, this, 259);
-	}
-	{
-		core::rect<s32> rect(0, 0, 250, 20);
-		rect = rect + v2s32(40,70);
-
-		v2u32 max_texture_size;
-		{
-			video::IVideoDriver* driver = Environment->getVideoDriver();
-			max_texture_size = driver->getMaxTextureSize();
-		}
-
-		std::ostringstream os;
-		os<<"Based on Minetest-C55 by Perttu Ahola";
-
-		Environment->addStaticText(narrow_to_wide(os.str()).c_str(), rect, false, true, this, 259);
+		Environment->addStaticText(L"darkrose@voxelands.com", rect, false, true, this, 259);
 	}
 
 	/*
@@ -173,29 +149,25 @@ void GUIPauseMenu::regenerateGui(v2u32 screensize)
 	{
 		core::rect<s32> rect(0, 0, 140, btn_height);
 		rect = rect + v2s32(size.X/2-140/2, btn_y);
-		Environment->addButton(rect, this, 256,
-			wgettext("Continue"));
+		Environment->addButton(rect, this, 256, wgettext("Continue"));
 	}
 	btn_y += btn_height + btn_gap;
 	{
 		core::rect<s32> rect(0, 0, 140, btn_height);
 		rect = rect + v2s32(size.X/2-140/2, btn_y);
-		Environment->addButton(rect, this, 261,
-			wgettext("Change Password"));
+		Environment->addButton(rect, this, 261, wgettext("Change Password"));
 	}
 	btn_y += btn_height + btn_gap;
 	{
 		core::rect<s32> rect(0, 0, 140, btn_height);
 		rect = rect + v2s32(size.X/2-140/2, btn_y);
-		Environment->addButton(rect, this, 260,
-			wgettext("Disconnect"));
+		Environment->addButton(rect, this, 260, wgettext("Disconnect"));
 	}
 	btn_y += btn_height + btn_gap;
 	{
 		core::rect<s32> rect(0, 0, 140, btn_height);
 		rect = rect + v2s32(size.X/2-140/2, btn_y);
-		Environment->addButton(rect, this, 257,
-			wgettext("Exit to OS"));
+		Environment->addButton(rect, this, 257, wgettext("Exit to OS"));
 	}
 
 	//{

@@ -21,6 +21,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define CONTENT_NODEMETA_HEADER
 
 #include "nodemetadata.h"
+#include "gettext.h"
 
 class ServerEnvironment;
 class Inventory;
@@ -35,7 +36,7 @@ public:
 	static NodeMetadata* create(std::istream &is);
 	virtual NodeMetadata* clone();
 	virtual void serializeBody(std::ostream &os);
-	virtual std::string infoText();
+	virtual std::wstring infoText();
 
 	std::string getText(){ return m_text; }
 	void setText(std::string t){ m_text = t; }
@@ -62,7 +63,7 @@ public:
 	static NodeMetadata* create(std::istream &is);
 	virtual NodeMetadata* clone();
 	virtual void serializeBody(std::ostream &os);
-	virtual std::string infoText();
+	virtual std::wstring infoText();
 
 	virtual std::string getOwner(){ return m_owner; }
 	virtual void setOwner(std::string t){ m_owner = t; }
@@ -91,7 +92,7 @@ public:
 	static NodeMetadata* create(std::istream &is);
 	virtual NodeMetadata* clone();
 	virtual void serializeBody(std::ostream &os);
-	virtual std::string infoText();
+	virtual std::wstring infoText();
 
 	virtual std::string getOwner(){ return m_owner; }
 	virtual void setOwner(std::string t){ m_owner = t; }
@@ -110,7 +111,7 @@ public:
 	static NodeMetadata* create(std::istream &is);
 	virtual NodeMetadata* clone();
 	virtual void serializeBody(std::ostream &os);
-	virtual std::string infoText();
+	virtual std::wstring infoText();
 	virtual Inventory* getInventory() {return m_inventory;}
 	virtual bool nodeRemovalDisabled();
 	virtual std::string getDrawSpecString();
@@ -131,7 +132,7 @@ public:
 	static NodeMetadata* create(std::istream &is);
 	virtual NodeMetadata* clone();
 	virtual void serializeBody(std::ostream &os);
-	virtual std::string infoText();
+	virtual std::wstring infoText();
 	virtual Inventory* getInventory() {return m_inventory;}
 	virtual bool nodeRemovalDisabled();
 	virtual std::string getDrawSpecString();
@@ -158,7 +159,7 @@ public:
 	static NodeMetadata* create(std::istream &is);
 	virtual NodeMetadata* clone();
 	virtual void serializeBody(std::ostream &os);
-	virtual std::string infoText();
+	virtual std::wstring infoText();
 	virtual Inventory* getInventory() {return m_inventory;}
 	virtual bool nodeRemovalDisabled();
 	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
@@ -179,7 +180,7 @@ public:
 	static NodeMetadata* create(std::istream &is);
 	virtual NodeMetadata* clone();
 	virtual void serializeBody(std::ostream &os);
-	virtual std::string infoText();
+	virtual std::wstring infoText();
 
 	virtual std::string getOwner(){ return m_text; }
 	virtual void setOwner(std::string t){ m_text = t; }
@@ -198,7 +199,7 @@ public:
 	virtual NodeMetadata* clone();
 	static NodeMetadata* create(std::istream &is);
 	virtual void serializeBody(std::ostream &os);
-	virtual std::string infoText();
+	virtual std::wstring infoText();
 	virtual Inventory* getInventory() {return m_inventory;}
 	virtual void inventoryModified();
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
@@ -226,7 +227,7 @@ public:
 	virtual NodeMetadata* clone();
 	static NodeMetadata* create(std::istream &is);
 	virtual void serializeBody(std::ostream &os);
-	virtual std::string infoText();
+	virtual std::wstring infoText();
 	virtual Inventory* getInventory() {return m_inventory;}
 	virtual void inventoryModified();
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
@@ -262,7 +263,7 @@ public:
 	static NodeMetadata* create(std::istream &is);
 	virtual NodeMetadata* clone();
 	virtual void serializeBody(std::ostream &os);
-	virtual std::string infoText();
+	virtual std::wstring infoText();
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
 
 	virtual bool energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos);
@@ -283,7 +284,7 @@ public:
 	virtual NodeMetadata* clone();
 	static NodeMetadata* create(std::istream &is);
 	virtual void serializeBody(std::ostream &os);
-	virtual std::string infoText();
+	virtual std::wstring infoText();
 	virtual Inventory* getInventory() {return m_inventory;}
 	virtual void inventoryModified();
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
@@ -305,7 +306,7 @@ public:
 	NodeMetadata* clone();
 	static NodeMetadata* create(std::istream &is);
 	virtual void serializeBody(std::ostream &os);
-	virtual std::string infoText() {return std::string("Craft Guide");}
+	virtual std::wstring infoText() {return wgettext("Craft Guide");}
 	virtual Inventory* getInventory() {return m_inventory;}
 	virtual bool nodeRemovalDisabled();
 	virtual void inventoryModified();
@@ -332,7 +333,7 @@ public:
 	NodeMetadata* clone();
 	static NodeMetadata* create(std::istream &is);
 	virtual void serializeBody(std::ostream &os);
-	virtual std::string infoText() {return std::string("Cooking Guide");}
+	virtual std::wstring infoText() {return wgettext("Cooking Guide");}
 	virtual Inventory* getInventory() {return m_inventory;}
 	virtual bool nodeRemovalDisabled();
 	virtual void inventoryModified();
@@ -358,7 +359,7 @@ public:
 	NodeMetadata* clone();
 	static NodeMetadata* create(std::istream &is);
 	virtual void serializeBody(std::ostream &os);
-	virtual std::string infoText() {return std::string("Decrafting Guide");}
+	virtual std::wstring infoText() {return wgettext("Decrafting Guide");}
 	virtual Inventory* getInventory() {return m_inventory;}
 	virtual bool nodeRemovalDisabled();
 	virtual void inventoryModified();
@@ -383,7 +384,7 @@ public:
 	NodeMetadata* clone();
 	static NodeMetadata* create(std::istream &is);
 	virtual void serializeBody(std::ostream &os);
-	virtual std::string infoText() {return m_title;}
+	virtual std::wstring infoText() {return narrow_to_wide(m_title);}
 	virtual bool nodeRemovalDisabled();
 	virtual bool import(NodeMetadata *meta);
 	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
@@ -405,7 +406,7 @@ public:
 	NodeMetadata* clone();
 	static NodeMetadata* create(std::istream &is);
 	virtual void serializeBody(std::ostream &os);
-	virtual std::string infoText() {return m_title;}
+	virtual std::wstring infoText() {return narrow_to_wide(m_title);}
 	virtual bool nodeRemovalDisabled();
 	virtual bool import(NodeMetadata *meta);
 	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
@@ -430,7 +431,7 @@ public:
 	NodeMetadata* clone();
 	static NodeMetadata* create(std::istream &is);
 	virtual void serializeBody(std::ostream &os);
-	virtual std::string infoText() {return m_title;}
+	virtual std::wstring infoText() {return narrow_to_wide(m_title);}
 	virtual bool nodeRemovalDisabled();
 	virtual bool import(NodeMetadata *meta);
 

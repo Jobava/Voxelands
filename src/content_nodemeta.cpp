@@ -58,9 +58,9 @@ void SignNodeMetadata::serializeBody(std::ostream &os)
 {
 	os<<serializeString(m_text);
 }
-std::string SignNodeMetadata::infoText()
+std::wstring SignNodeMetadata::infoText()
 {
-	return std::string("\"")+m_text+"\"";
+	return narrow_to_wide(std::string("\"")+m_text+"\"");
 }
 std::string SignNodeMetadata::getDrawSpecString()
 {
@@ -107,9 +107,9 @@ void LockingSignNodeMetadata::serializeBody(std::ostream &os)
 	os<<serializeString(m_text);
 	os<<serializeString(m_owner);
 }
-std::string LockingSignNodeMetadata::infoText()
+std::wstring LockingSignNodeMetadata::infoText()
 {
-	return std::string("(")+m_owner+") \""+m_text+"\"";
+	return narrow_to_wide(std::string("(")+m_owner+") \""+m_text+"\"");
 }
 bool LockingSignNodeMetadata::receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player)
 {
@@ -162,9 +162,9 @@ void FlagNodeMetadata::serializeBody(std::ostream &os)
 {
 	os<<serializeString(m_owner);
 }
-std::string FlagNodeMetadata::infoText()
+std::wstring FlagNodeMetadata::infoText()
 {
-	return std::string("")+m_owner+"'s Home Flag";
+	return narrow_to_wide(m_owner)+wgettext("'s Home Flag");
 }
 
 /*
@@ -205,9 +205,9 @@ void ChestNodeMetadata::serializeBody(std::ostream &os)
 {
 	m_inventory->serialize(os);
 }
-std::string ChestNodeMetadata::infoText()
+std::wstring ChestNodeMetadata::infoText()
 {
-	return "Chest";
+	return wgettext("Chest");
 }
 bool ChestNodeMetadata::nodeRemovalDisabled()
 {
@@ -277,9 +277,9 @@ void LockingChestNodeMetadata::serializeBody(std::ostream &os)
 	os<<serializeString(m_owner);
 	m_inventory->serialize(os);
 }
-std::string LockingChestNodeMetadata::infoText()
+std::wstring LockingChestNodeMetadata::infoText()
 {
-	return std::string("Locking Chest owned by '")+m_owner+"'";
+	return wgettext("Locking Chest owned by '")+narrow_to_wide(m_owner)+L"'";
 }
 bool LockingChestNodeMetadata::nodeRemovalDisabled()
 {
@@ -359,9 +359,9 @@ void CreativeChestNodeMetadata::serializeBody(std::ostream &os)
 	m_inventory->serialize(os);
 	os<<itos(m_page) << " ";
 }
-std::string CreativeChestNodeMetadata::infoText()
+std::wstring CreativeChestNodeMetadata::infoText()
 {
-	return "Creative Chest";
+	return wgettext("Creative Chest");
 }
 bool CreativeChestNodeMetadata::nodeRemovalDisabled()
 {
@@ -398,13 +398,21 @@ std::string CreativeChestNodeMetadata::getDrawSpecString()
 	std::vector<content_t> &list = lists::get("creative");
 	std::string spec("size[8,10]");
 		spec += "list[current_name;0;0,0.5;8,4;]";
-		spec += "button[0.25,5;2.5,0.75;prev;<< Previous Page]";
-		spec += "label[3.5,5;Page ";
+		spec += "button[0.25,5;2.5,0.75;prev;";
+		spec += gettext("<< Previous Page");
+		spec += "]";
+		spec += "label[3.5,5;";
+		spec += gettext("Page");
+		spec += " ";
 		spec += itos(m_page+1);
-		spec +=" of ";
+		spec += " ";
+		spec += gettext("of");
+		spec += " ";
 		spec += itos((list.size()/32)+1);
 		spec += "]";
-		spec += "button[6,5;2.5,0.75;next;Next Page >>]";
+		spec += "button[6,5;2.5,0.75;next;";
+		spec += gettext("Next Page >>");
+		spec += "]";
 		spec += "list[current_player;main;0,6;8,4;]";
 
 	return spec;
@@ -443,9 +451,9 @@ void BorderStoneNodeMetadata::serializeBody(std::ostream &os)
 {
 	os<<serializeString(m_text);
 }
-std::string BorderStoneNodeMetadata::infoText()
+std::wstring BorderStoneNodeMetadata::infoText()
 {
-	return std::string("Border Stone owned by '")+m_text+"'";
+	return wgettext("Border Stone owned by '")+narrow_to_wide(m_text)+L"'";
 }
 
 /*
@@ -508,32 +516,29 @@ void FurnaceNodeMetadata::serializeBody(std::ostream &os)
 	os<<itos(m_fuel_totaltime*10)<<" ";
 	os<<itos(m_fuel_time*10)<<" ";
 }
-std::string FurnaceNodeMetadata::infoText()
+std::wstring FurnaceNodeMetadata::infoText()
 {
 	//return "Furnace";
-	if(m_fuel_time >= m_fuel_totaltime)
-	{
+	if (m_fuel_time >= m_fuel_totaltime) {
 		const InventoryList *src_list = m_inventory->getList("src");
 		assert(src_list);
 		const InventoryItem *src_item = src_list->getItem(0);
 
-		if(src_item && src_item->isCookable()) {
+		if (src_item && src_item->isCookable()) {
 			InventoryList *dst_list = m_inventory->getList("dst");
 			if(!dst_list->roomForCookedItem(src_item))
-				return "Furnace is overloaded";
-			return "Furnace is out of fuel";
+				return wgettext("Furnace is overloaded");
+			return wgettext("Furnace is out of fuel");
+		}else{
+			return wgettext("Furnace is inactive");
 		}
-		else
-			return "Furnace is inactive";
-	}
-	else
-	{
-		std::string s = "Furnace is active";
+	}else{
+		std::wstring s = wgettext("Furnace is active");
 		// Do this so it doesn't always show (0%) for weak fuel
-		if(m_fuel_totaltime > 3) {
-			s += " (";
-			s += itos(m_fuel_time/m_fuel_totaltime*100);
-			s += "%)";
+		if (m_fuel_totaltime > 3) {
+			s += L" (";
+			s += itows(m_fuel_time/m_fuel_totaltime*100);
+			s += L"%)";
 		}
 		return s;
 	}
@@ -546,10 +551,10 @@ bool FurnaceNodeMetadata::nodeRemovalDisabled()
 	InventoryList *list[3] = {m_inventory->getList("src"),
 	m_inventory->getList("dst"), m_inventory->getList("fuel")};
 
-	for(int i = 0; i < 3; i++) {
-		if(list[i] == NULL)
+	for (int i = 0; i < 3; i++) {
+		if (list[i] == NULL)
 			continue;
-		if(list[i]->getUsedSlots() == 0)
+		if (list[i]->getUsedSlots() == 0)
 			continue;
 		return true;
 	}
@@ -765,35 +770,32 @@ void LockingFurnaceNodeMetadata::serializeBody(std::ostream &os)
 	os<<itos(m_fuel_time*10)<<" ";
 	os<<itos(m_lock*10)<<" ";
 }
-std::string LockingFurnaceNodeMetadata::infoText()
+std::wstring LockingFurnaceNodeMetadata::infoText()
 {
 	//return "Furnace";
 	std::string ostr = m_owner;
 	if (m_inv_owner != "")
 		ostr += ","+m_inv_owner;
-	if(m_fuel_time >= m_fuel_totaltime)
-	{
+	if (m_fuel_time >= m_fuel_totaltime) {
 		const InventoryList *src_list = m_inventory->getList("src");
 		assert(src_list);
 		const InventoryItem *src_item = src_list->getItem(0);
 
 		if(src_item && src_item->isCookable()) {
 			InventoryList *dst_list = m_inventory->getList("dst");
-			if(!dst_list->roomForCookedItem(src_item))
-				return std::string("Locking Furnace (")+ostr+") is overloaded";
-			return std::string("Locking Furnace (")+ostr+") is out of fuel";
+			if (!dst_list->roomForCookedItem(src_item))
+				return wgettext("Locking Furnace is overloaded (")+narrow_to_wide(ostr)+L")";
+			return wgettext("Locking Furnace is out of fuel (")+narrow_to_wide(ostr)+L")";
+		}else{
+			return wgettext("Locking Furnace is inactive (")+narrow_to_wide(ostr)+L")";
 		}
-		else
-			return std::string("Locking Furnace (")+ostr+") is inactive";
-	}
-	else
-	{
-		std::string s = std::string("Locking Furnace (")+ostr+") is active";
+	}else{
+		std::wstring s = wgettext("Locking Furnace is active (")+narrow_to_wide(ostr)+L")";
 		// Do this so it doesn't always show (0%) for weak fuel
-		if(m_fuel_totaltime > 3) {
-			s += " (";
-			s += itos(m_fuel_time/m_fuel_totaltime*100);
-			s += "%)";
+		if (m_fuel_totaltime > 3) {
+			s += L" (";
+			s += itows(m_fuel_time/m_fuel_totaltime*100);
+			s += L"%)";
 		}
 		return s;
 	}
@@ -1027,16 +1029,16 @@ void TNTNodeMetadata::serializeBody(std::ostream &os)
 	os<<itos(m_time*10) << " ";
 	os<<itos(m_armed) << " ";
 }
-std::string TNTNodeMetadata::infoText()
+std::wstring TNTNodeMetadata::infoText()
 {
 	if (!m_armed)
-		return std::string("");
+		return L"";
 
 	int s = (int)ceil(m_time);
 	if (s < 1)
-		return std::string("Armed Explosive: about to detonate");
+		return wgettext("Armed Explosive: about to detonate");
 
-	return std::string("Armed Explosive: ")+itos(s)+" seconds till detonation";
+	return wgettext("Armed Explosive: ")+itows(s)+wgettext(" seconds till detonation");
 }
 
 /*
@@ -1079,14 +1081,14 @@ void IncineratorNodeMetadata::serializeBody(std::ostream &os)
 {
 	m_inventory->serialize(os);
 }
-std::string IncineratorNodeMetadata::infoText()
+std::wstring IncineratorNodeMetadata::infoText()
 {
 	InventoryList *list = m_inventory->getList("fuel");
 	InventoryItem *fitem;
 
 	if (list && list->getUsedSlots() > 0 && (fitem = list->getItem(0)) != NULL && fitem->isFuel())
-		return "Incinerator is active";
-	return "Incinerator is inactive";
+		return wgettext("Incinerator is active");
+	return wgettext("Incinerator is inactive");
 }
 bool IncineratorNodeMetadata::nodeRemovalDisabled()
 {
@@ -1126,8 +1128,8 @@ bool IncineratorNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *en
 std::string IncineratorNodeMetadata::getDrawSpecString()
 {
 	return
-		"size[8,7]"
-		"label[1,0.5;Add fuel, then punch to incinerate wielded item]"
+		std::string("size[8,7]"
+		"label[1,0.5;")+gettext("Add fuel, then punch to incinerate wielded item")+"]"
 		"label[3.5,1.5;Fuel]"
 		"list[current_name;fuel;4,1;1,1;]"
 		"list[current_player;main;0,3;8,4;]";
@@ -1327,11 +1329,15 @@ std::string CraftGuideNodeMetadata::getDrawSpecString()
 	}
 
 	std::string spec("size[8,10]");
-	spec +=	"label[0.5,0.75;Add item here to see recipe]";
+	spec +=	"label[0.5,0.75;";
+	spec += gettext("Add item here to see recipe");
+	spec += "]";
 	spec +=	"list[current_name;result;2,1;1,1;]";
 	if (rc > 1) {
 		spec += "button[2.5,3.5;1,0.75;rprev;<<]";
-		spec += "label[3.5,3.5;Recipe ";
+		spec += "label[3.5,3.5;";
+		spec += gettext("Recipe");
+		spec += " ";
 		spec += itos(m_recipe+1);
 		spec += " of ";
 		spec += itos(rc);
@@ -1339,7 +1345,9 @@ std::string CraftGuideNodeMetadata::getDrawSpecString()
 		spec += "button[5.5,3.5;1,0.75;rnext;>>]";
 	}
 	if (q && tr) {
-		spec += "label[1,1.5;Gives ";
+		spec += "label[1,1.5;";
+		spec += gettext("Gives");
+		spec += " ";
 		spec += itos(tr);
 		// this overflows into the craft grid... but could be cool
 		//spec += " ";
@@ -1347,13 +1355,21 @@ std::string CraftGuideNodeMetadata::getDrawSpecString()
 		spec += "]";
 	}
 	spec +=	"list[current_name;recipe;4,0;3,3;]";
-	spec +=	"button[0.25,4.5;2.5,0.75;prev;<< Previous Page]";
-	spec +=	"label[3.5,4.5;Page ";
+	spec +=	"button[0.25,4.5;2.5,0.75;prev;";
+	spec += gettext("<< Previous Page");
+	spec += "]";
+	spec +=	"label[3.5,4.5;";
+	spec += gettext("Page");
+	spec += " ";
 	spec += itos(m_page+1);
-	spec +=" of ";
+	spec += " ";
+	spec += gettext("of");
+	spec += " ";
 	spec += itos((list.size()/40)+1);
 	spec += "]";
-	spec +=	"button[6,4.5;2.5,0.75;next;Next Page >>]";
+	spec +=	"button[6,4.5;2.5,0.75;next;";
+	spec += gettext("Next Page >>");
+	spec += "]";
 	spec +=	"list[current_name;list;0,5;8,5;]";
 	return spec;
 }
@@ -1520,16 +1536,26 @@ std::string CookBookNodeMetadata::getDrawSpecString()
 		tr = crafting::getResultCount(q);
 
 	std::string spec("size[8,9]");
-	spec +=	"label[0.5,0.75;Add item here to see cook result]";
+	spec +=	"label[0.5,0.75;";
+	spec += gettext("Add item here to see cook result");
+	spec += "]";
 	spec +=	"list[current_name;result;2,1;1,1;]";
 	spec +=	"list[current_name;recipe;4,1;1,1;]";
-	spec +=	"button[0.25,3.5;2.5,0.75;prev;<< Previous Page]";
-	spec +=	"label[3.5,3.5;Page ";
+	spec +=	"button[0.25,3.5;2.5,0.75;prev;";
+	spec += gettext("<< Previous Page");
+	spec += "]";
+	spec +=	"label[3.5,3.5;";
+	spec += gettext("Page");
+	spec += " ";
 	spec += itos(m_page+1);
-	spec +=" of ";
+	spec += " ";
+	spec += gettext("of");
+	spec += " ";
 	spec += itos((list.size()/40)+1);
 	spec += "]";
-	spec +=	"button[6,3.5;2.5,0.75;next;Next Page >>]";
+	spec +=	"button[6,3.5;2.5,0.75;next;";
+	spec += gettext("Next Page >>");
+	spec += "]";
 	spec +=	"list[current_name;list;0,4;8,5;]";
 	return spec;
 }
@@ -1725,19 +1751,33 @@ std::string DeCraftNodeMetadata::getDrawSpecString()
 	std::vector<content_t> &list = lists::get("decrafting");
 
 	std::string spec("size[8,9]");
-	spec +=	"label[0.5,0.75;Add item here to see dig result]";
+	spec +=	"label[0.5,0.75;";
+	spec += gettext("Add item here to see dig result");
+	spec += "]";
 	spec +=	"list[current_name;result;2,1;1,1;]";
-	spec +=	"label[5,1;Dig Result]";
+	spec +=	"label[5,1;";
+	spec += gettext("Dig Result");
+	spec += "]";
 	spec +=	"list[current_name;recipe;6.5,0.5;1,1;]";
-	spec +=	"label[5,2;Random Drop]";
+	spec +=	"label[5,2;";
+	spec += gettext("Random Drop");
+	spec += "]";
 	spec +=	"list[current_name;random;6.5,1.5;1,1;]";
-	spec +=	"button[0.25,3.5;2.5,0.75;prev;<< Previous Page]";
-	spec +=	"label[3.5,3.5;Page ";
+	spec +=	"button[0.25,3.5;2.5,0.75;prev;";
+	spec += gettext("<< Previous Page");
+	spec += "]";
+	spec +=	"label[3.5,3.5;";
+	spec += gettext("Page");
+	spec += " ";
 	spec += itos(m_page+1);
-	spec +=" of ";
+	spec += " ";
+	spec += gettext("of");
+	spec += " ";
 	spec += itos((list.size()/40)+1);
 	spec += "]";
-	spec +=	"button[6,3.5;2.5,0.75;next;Next Page >>]";
+	spec +=	"button[6,3.5;2.5,0.75;next;";
+	spec += gettext("Next Page >>");
+	spec += "]";
 	spec +=	"list[current_name;list;0,4;8,5;]";
 	return spec;
 }
@@ -1792,7 +1832,7 @@ bool BookNodeMetadata::import(NodeMetadata *meta)
 		return false;
 
 	ClosedBookNodeMetadata *m = (ClosedBookNodeMetadata*)meta;
-	m_title = m->infoText();
+	m_title = wide_to_narrow(m->infoText());
 	m_content = m->getContent();
 	return true;
 }
@@ -1817,13 +1857,19 @@ bool BookNodeMetadata::receiveFields(std::string formname, std::map<std::string,
 std::string BookNodeMetadata::getDrawSpecString()
 {
 	std::string spec("size[6,6]");
-	spec += "field[1,1;5,1;title;Title;";
+	spec += "field[1,1;5,1;title;";
+	spec += gettext("Title");
+	spec += ";";
 	spec += m_title;
 	spec += "]";
-	spec += "field[1,2;5,2;content;Content;";
+	spec += "field[1,2;5,2;content;";
+	spec += gettext("Content");
+	spec += ";";
 	spec += m_content;
 	spec += "]";
-	spec += "button_exit[2,5;3,1;submit;Save]";
+	spec += "button_exit[2,5;3,1;submit;";
+	spec += gettext("Save");
+	spec += "]";
 	return spec;
 }
 
@@ -1838,7 +1884,7 @@ DiaryNodeMetadata::DiaryNodeMetadata()
 {
 	NodeMetadata::registerType(typeId(), create);
 
-	m_title = "Diary";
+	m_title = gettext("Diary");
 	m_content = "";
 }
 
@@ -1881,7 +1927,7 @@ bool DiaryNodeMetadata::import(NodeMetadata *meta)
 
 	ClosedBookNodeMetadata *m = (ClosedBookNodeMetadata*)meta;
 	m_owner = m->getOwner();
-	m_title = m->infoText();
+	m_title = wide_to_narrow(m->infoText());
 	m_content = m->getContent();
 	return true;
 }
@@ -1910,13 +1956,19 @@ bool DiaryNodeMetadata::receiveFields(std::string formname, std::map<std::string
 std::string DiaryNodeMetadata::getDrawSpecString()
 {
 	std::string spec("size[6,6]");
-	spec += "field[1,1;5,1;title;Title;";
+	spec += "field[1,1;5,1;title;";
+	spec += gettext("Title");
+	spec += ";";
 	spec += m_title;
 	spec += "]";
-	spec += "field[1,2;5,2;content;Content;";
+	spec += "field[1,2;5,2;content;";
+	spec += gettext("Content");
+	spec += ";";
 	spec += m_content;
 	spec += "]";
-	spec += "button_exit[2,5;3,1;submit;Save]";
+	spec += "button_exit[2,5;3,1;submit;";
+	spec += gettext("Save");
+	spec += "]";
 	return spec;
 }
 
@@ -1978,20 +2030,20 @@ bool ClosedBookNodeMetadata::import(NodeMetadata *meta)
 	{
 		CraftGuideNodeMetadata *cm = (CraftGuideNodeMetadata*)meta;
 		m_page = cm->getPage();
-		m_title = cm->infoText();
+		m_title = wide_to_narrow(cm->infoText());
 		break;
 	}
 	case CONTENT_DECRAFT_BOOK_OPEN:
 	{
 		DeCraftNodeMetadata *cm = (DeCraftNodeMetadata*)meta;
 		m_page = cm->getPage();
-		m_title = cm->infoText();
+		m_title = wide_to_narrow(cm->infoText());
 		break;
 	}
 	case CONTENT_BOOK_OPEN:
 	{
 		BookNodeMetadata *bm = (BookNodeMetadata*)meta;
-		m_title = bm->infoText();
+		m_title = wide_to_narrow(bm->infoText());
 		m_content = bm->getContent();
 		break;
 	}
@@ -1999,7 +2051,7 @@ bool ClosedBookNodeMetadata::import(NodeMetadata *meta)
 	{
 		DiaryNodeMetadata *dm = (DiaryNodeMetadata*)meta;
 		m_owner = dm->getOwner();
-		m_title = dm->infoText();
+		m_title = wide_to_narrow(dm->infoText());
 		m_content = dm->getContent();
 		break;
 	}

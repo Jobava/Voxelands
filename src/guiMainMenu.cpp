@@ -452,8 +452,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		{
 			core::rect<s32> rect(0, 0, 400, 20);
 			rect += topleft_content + v2s32(0, 20);
-			const wchar_t *text = L"Multi Player";
-			gui::IGUIStaticText *t = Environment->addStaticText(text, rect, false, true, this, -1);
+			gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Multi Player"), rect, false, true, this, -1);
 			t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 		}
 
@@ -516,85 +515,72 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		{
 			core::rect<s32> rect(0, 0, 400, 20);
 			rect += topleft_content + v2s32(0, 20);
-			const wchar_t *text = L"Settings";
-			gui::IGUIStaticText *t = Environment->addStaticText(text, rect, false, true, this, -1);
+			gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Settings"), rect, false, true, this, -1);
 			t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
 			rect += topleft_content + v2s32(40, 60);
-			Environment->addCheckBox(fancy_trees, rect, this, GUI_ID_FANCYTREE_CB,
-				wgettext("Fancy trees"));
+			Environment->addCheckBox(fancy_trees, rect, this, GUI_ID_FANCYTREE_CB, wgettext("Fancy trees"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
 			rect += topleft_content + v2s32(40, 90);
-			Environment->addCheckBox(smooth_lighting, rect, this, GUI_ID_SMOOTH_LIGHTING_CB,
-					wgettext("Smooth Lighting"));
+			Environment->addCheckBox(smooth_lighting, rect, this, GUI_ID_SMOOTH_LIGHTING_CB, wgettext("Smooth Lighting"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
 			rect += topleft_content + v2s32(40, 120);
-			Environment->addCheckBox(clouds_3d, rect, this, GUI_ID_3D_CLOUDS_CB,
-					wgettext("3D Clouds"));
+			Environment->addCheckBox(clouds_3d, rect, this, GUI_ID_3D_CLOUDS_CB, wgettext("3D Clouds"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
 			rect += topleft_content + v2s32(40, 150);
-			Environment->addCheckBox(opaque_water, rect, this, GUI_ID_OPAQUE_WATER_CB,
-					wgettext("Opaque water"));
+			Environment->addCheckBox(opaque_water, rect, this, GUI_ID_OPAQUE_WATER_CB, wgettext("Opaque water"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
 			rect += topleft_content + v2s32(200, 60);
-			Environment->addCheckBox(fullscreen, rect, this, GUI_ID_FULLSCREEN_CB,
-					wgettext("Fullscreen"));
+			Environment->addCheckBox(fullscreen, rect, this, GUI_ID_FULLSCREEN_CB, wgettext("Fullscreen"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
 			rect += topleft_content + v2s32(200, 90);
-			Environment->addCheckBox(particles, rect, this, GUI_ID_PARTICLES_CB,
-					wgettext("Particles"));
+			Environment->addCheckBox(particles, rect, this, GUI_ID_PARTICLES_CB, wgettext("Particles"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
 			rect += topleft_content + v2s32(200, 120);
-			Environment->addCheckBox(mipmap, rect, this, GUI_ID_MIPMAP_CB,
-					wgettext("Mip-Mapping"));
+			Environment->addCheckBox(mipmap, rect, this, GUI_ID_MIPMAP_CB, wgettext("Mip-Mapping"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
 			rect += topleft_content + v2s32(200, 150);
-			Environment->addCheckBox(bilinear, rect, this, GUI_ID_BILINEAR_CB,
-					wgettext("Bi-Linear Filtering"));
+			Environment->addCheckBox(bilinear, rect, this, GUI_ID_BILINEAR_CB, wgettext("Bi-Linear Filtering"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
 			rect += topleft_content + v2s32(200, 180);
-			Environment->addCheckBox(trilinear, rect, this, GUI_ID_TRILINEAR_CB,
-					wgettext("Tri-Linear Filtering"));
+			Environment->addCheckBox(trilinear, rect, this, GUI_ID_TRILINEAR_CB, wgettext("Tri-Linear Filtering"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
 			rect += topleft_content + v2s32(200, 210);
-			Environment->addCheckBox(anisotropic, rect, this, GUI_ID_ANISOTROPIC_CB,
-					wgettext("Anisotropic Filtering"));
+			Environment->addCheckBox(anisotropic, rect, this, GUI_ID_ANISOTROPIC_CB, wgettext("Anisotropic Filtering"));
 		}
 
 		// Key change button
 		{
 			core::rect<s32> rect(0, 0, 130, 30);
 			rect += topleft_content + v2s32(140, 280);
-			Environment->addButton(rect, this, GUI_ID_CHANGE_KEYS_BUTTON,
-				wgettext("Change keys"));
+			Environment->addButton(rect, this, GUI_ID_CHANGE_KEYS_BUTTON, wgettext("Change keys"));
 		}
 	}else if (m_data->selected_tab == TAB_SINGLEPLAYER) {
 		changeCtype("");
 		{
 			core::rect<s32> rect(0, 0, 400, 20);
 			rect += topleft_content + v2s32(0, 20);
-			const wchar_t *text = L"Single Player";
-			gui::IGUIStaticText *t = Environment->addStaticText(text, rect, false, true, this, -1);
+			gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Single Player"), rect, false, true, this, -1);
 			t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 		}
 
@@ -637,8 +623,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		{
 			core::rect<s32> rect(0, 0, 400, 20);
 			rect += topleft_content + v2s32(0, 20);
-			const wchar_t *text = L"Single Player";
-			gui::IGUIStaticText *t = Environment->addStaticText(text, rect, false, true, this, -1);
+			gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Single Player"), rect, false, true, this, -1);
 			t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 		}
 
@@ -673,8 +658,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		{
 			core::rect<s32> rect(0, 0, 100, 20);
 			rect += topleft_content + v2s32(40, 160);
-			const wchar_t *text = L"Creatures";
-			Environment->addStaticText(text, rect, false, true, this, -1);
+			Environment->addStaticText(wgettext("Creatures"), rect, false, true, this, -1);
 		}
 		{
 			core::rect<s32> rect(0, 0, 240, 30);
@@ -737,8 +721,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		{
 			core::rect<s32> rect(0, 0, 400, 20);
 			rect += topleft_content + v2s32(0, 20);
-			const wchar_t *text = L"Single Player";
-			gui::IGUIStaticText *t = Environment->addStaticText(text, rect, false, true, this, -1);
+			gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Single Player"), rect, false, true, this, -1);
 			t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 		}
 
@@ -862,15 +845,14 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		{
 			core::rect<s32> rect(0, 0, 400, 20);
 			rect += topleft_content + v2s32(0, 20);
-			const wchar_t *text = L"Credits";
-			gui::IGUIStaticText *t = Environment->addStaticText(text, rect, false, true, this, -1);
+			gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Credits"), rect, false, true, this, -1);
 			t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 		}
 		{
 			core::rect<s32> rect(0, 0, 400, 350);
 			rect += topleft_content + v2s32(0, 50);
 			gui::IGUIStaticText *t = Environment->addStaticText(
-				narrow_to_wide(
+				wgettext(
 					"Voxelands\n"
 					"http://www.voxelands.com/\n"
 					"\n"
@@ -880,7 +862,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 					"Based on Minetest-C55\n"
 					"by Perttu Ahola <celeron55@gmail.com>\n"
 					"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
-				).c_str(),
+				),
 				rect,
 				false,
 				true,
