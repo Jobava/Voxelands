@@ -36,6 +36,12 @@
 #include "path.h"
 #include "content_clothesitem.h"
 
+/* character def:
+gender:Yscale:XZscale:skintone:eyes:hairtone:hair:face
+the old default:
+M:10:10:fair:blue:brown:medium:normal
+*/
+
 Player::Player():
 	touching_ground(false),
 	in_water(false),
@@ -54,7 +60,8 @@ Player::Player():
 	m_speed(0,0,0),
 	m_position(0,0,0),
 	m_home(0,0,0),
-	m_hashome(false)
+	m_hashome(false),
+	m_character("M:10:10:fair:blue:brown:medium:normal")
 {
 	updateName("<not set>");
 	resetInventory();
@@ -148,27 +155,6 @@ void Player::accelerate(v3f target_speed, f32 max_increase)
 
 	m_speed.X += d.X;
 	m_speed.Z += d.Z;
-	//m_speed += d;
-
-#if 0 // old code
-	if(m_speed.X < target_speed.X - max_increase)
-		m_speed.X += max_increase;
-	else if(m_speed.X > target_speed.X + max_increase)
-		m_speed.X -= max_increase;
-	else if(m_speed.X < target_speed.X)
-		m_speed.X = target_speed.X;
-	else if(m_speed.X > target_speed.X)
-		m_speed.X = target_speed.X;
-
-	if(m_speed.Z < target_speed.Z - max_increase)
-		m_speed.Z += max_increase;
-	else if(m_speed.Z > target_speed.Z + max_increase)
-		m_speed.Z -= max_increase;
-	else if(m_speed.Z < target_speed.Z)
-		m_speed.Z = target_speed.Z;
-	else if(m_speed.Z > target_speed.Z)
-		m_speed.Z = target_speed.Z;
-#endif
 }
 
 void Player::serialize(std::ostream &os)
@@ -177,7 +163,6 @@ void Player::serialize(std::ostream &os)
 	Settings args;
 	args.setS32("version", 1);
 	args.set("name", m_name);
-	//args.set("password", m_password);
 	args.setFloat("pitch", m_pitch);
 	args.setFloat("yaw", m_yaw);
 	args.setV3F("position", m_position);
@@ -219,10 +204,6 @@ void Player::deSerialize(std::istream &is)
 	//args.getS32("version");
 	std::string name = args.get("name");
 	updateName(name.c_str());
-	/*std::string password = "";
-	if(args.exists("password"))
-		password = args.get("password");
-	updatePassword(password.c_str());*/
 	m_pitch = args.getFloat("pitch");
 	m_yaw = args.getFloat("yaw");
 	m_position = args.getV3F("position");
@@ -250,20 +231,6 @@ void Player::deSerialize(std::istream &is)
 		m_home = args.getV3F("home");
 		m_hashome = true;
 	}
-	/*try{
-		std::string sprivs = args.get("privs");
-		if(sprivs == "all")
-		{
-			privs = PRIV_ALL;
-		}
-		else
-		{
-			std::istringstream ss(sprivs);
-			ss>>privs;
-		}
-	}catch(SettingNotFoundException &e){
-		privs = PRIV_DEFAULT;
-	}*/
 
 	inventory.deSerialize(is);
 	checkInventory();
@@ -281,6 +248,69 @@ void Player::setHome(v3f h)
 {
 	m_home = h;
 	m_hashome = true;
+}
+
+v3f Player::getScale()
+{
+	if (m_character == "")
+		m_character = std::string("M:10:10:fair:blue:brown:medium:normal");
+	Strfnd f(m_character);
+
+	std::string gender = f.next(":");
+	std::string y = f.next(":"); // y scale
+	std::string xz = f.next(":"); // xz scale
+
+	f32 y_f = mystof(y)/10.0;
+	if (y_f < 0.8)
+		y_f = 0.8;
+	if (y_f > 1.1)
+		y_f = 1.1;
+	f32 xz_f = mystof(xz)/10.0;
+	if (xz_f < 0.8)
+		xz_f = 0.8;
+	if (xz_f > 1.1)
+		xz_f = 1.1;
+
+	return v3f(xz_f,y_f,xz_f);
+}
+
+//gender:Yscale:XZscale:skintone:eyes:hairtone:hair:face
+//M:10:10:fair:blue:brown:medium:normal
+std::string Player::getSkin()
+{
+	if (m_character == "")
+		m_character = std::string("M:10:10:fair:blue:brown:medium:normal");
+	Strfnd f(m_character);
+
+	std::string gender = f.next(":");
+	f.next(":"); // y scale
+	f.next(":"); // xz scale
+	std::string skintone = f.next(":");
+	std::string eyes = f.next(":");
+	std::string hairtone = f.next(":");
+	std::string hair = f.next(":");
+	std::string face = f.next(":");
+
+	if (gender != "M" && gender != "F")
+		gender = "M";
+	if (getPath("skin",std::string("skintone_")+skintone+"_"+gender+".png",true) == "")
+		skintone = "fair";
+	if (getPath("skin",std::string("eyes_")+eyes+".png",true) == "")
+		eyes = "blue";
+	if (hairtone == "" || hair == "" || getPath("skin",std::string("hair_")+hair+"_"+hairtone+"_"+gender+".png",true) == "") {
+		hairtone = "brown";
+		hair = "medium";
+	}
+	if (getPath("skin",std::string("face_")+face+gender+".png",true) == "")
+		face = "normal";
+
+	std::string tex = "";
+	tex += std::string("skins")+DIR_DELIM+"skintone_"+skintone+"_"+gender+".png";
+	tex += std::string("^skins")+DIR_DELIM+"face_"+face+"_"+gender+".png";
+	tex += std::string("^skins")+DIR_DELIM+"eyes_"+eyes+".png";
+	tex += std::string("^skins")+DIR_DELIM+"hair_"+hair+"_"+hairtone+"_"+gender+".png";
+
+	return tex;
 }
 
 /*
@@ -324,7 +354,7 @@ RemotePlayer::RemotePlayer(
 
 		if (m_node) {
 			m_node->setFrameLoop(0,79);
-			m_node->setScale(v3f(1.0,1.0,1.0));
+			m_node->setScale(Player::getScale());
 			setMeshColor(m_node->getMesh(), video::SColor(255,255,255,255));
 
 			// Set material flags and texture

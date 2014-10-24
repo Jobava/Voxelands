@@ -245,6 +245,15 @@ public:
 		return content_clothesitem_features(i->getContent()).suffocate;
 	}
 
+	// character def used for skin creation and model scaling
+	void setCharDef(std::string d) {m_character = d;}
+	std::string getCharDef() {return m_character;}
+
+	v3f getScale();
+
+	// the unclothed player skin
+	std::string getSkin();
+
 protected:
 	char m_name[PLAYERNAME_SIZE];
 	u16 m_selected_item;
@@ -254,6 +263,7 @@ protected:
 	v3f m_position;
 	v3f m_home;
 	bool m_hashome;
+	std::string m_character;
 
 public:
 
@@ -394,15 +404,6 @@ public:
 
 	void move(f32 dtime, Map &map, f32 pos_max_d);
 
-	std::string getSkin()
-	{
-		std::string tex = std::string("player_") + m_name + ".png";
-		std::string ptex = getPath("player",tex,true);
-		printf("'%s' '%s'\n",tex.c_str(),ptex.c_str());
-		if (ptex == "")
-			return "character.png";
-		return tex;
-	}
 	video::ITexture* getTexture()
 	{
 		const char* list[4] = {"hat","shirt","pants","boots"};
@@ -501,15 +502,6 @@ public:
 
 	void applyControl(float dtime);
 
-	std::string getSkin()
-	{
-		std::string tex = std::string("player_") + m_name + ".png";
-		std::string ptex = getPath("player",tex,true);
-		printf("'%s' '%s'\n",tex.c_str(),ptex.c_str());
-		if (ptex == "")
-			return "character.png";
-		return tex;
-	}
 	video::ITexture* getTexture()
 	{
 		const char* list[4] = {"hat","shirt","pants","boots"};

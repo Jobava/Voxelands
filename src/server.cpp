@@ -2013,12 +2013,19 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 	if(command == TOSERVER_INIT2)
 	{
-		infostream<<"Server: Got TOSERVER_INIT2 from "
-				<<peer_id<<std::endl;
+		infostream<<"Server: Got TOSERVER_INIT2 from "<<peer_id<<std::endl;
 
 
-		getClient(peer_id)->serialization_version
-				= getClient(peer_id)->pending_serialization_version;
+		getClient(peer_id)->serialization_version = getClient(peer_id)->pending_serialization_version;
+
+		std::string datastring((char*)&data[2], datasize-2);
+		std::istringstream is(datastring, std::ios_base::binary);
+		// Read character definition
+		std::string chardef = deSerializeString(is);
+
+		Player *player = m_env.getPlayer(peer_id);
+		// set the player's character definition
+		player->setCharDef(chardef);
 
 		/*
 			Send some initialization data
@@ -2034,15 +2041,12 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		// Send player items to all players
 		SendPlayerItems();
 
-		Player *player = m_env.getPlayer(peer_id);
-
 		// Send HP
 		SendPlayerHP(player);
 
 		// Send time of day
 		{
-			SharedBuffer<u8> data = makePacket_TOCLIENT_TIME_OF_DAY(
-					m_env.getTimeOfDay());
+			SharedBuffer<u8> data = makePacket_TOCLIENT_TIME_OF_DAY(m_env.getTimeOfDay());
 			m_con.Send(peer_id, 0, data, true);
 		}
 
@@ -2053,7 +2057,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		{
 			std::wstring name = L"unknown";
 			Player *player = m_env.getPlayer(peer_id);
-			if(player != NULL)
+			if (player != NULL)
 				name = narrow_to_wide(player->getName());
 
 			std::wstring message;
@@ -2083,17 +2087,14 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		*/
 		{
 			std::ostringstream os(std::ios_base::binary);
-			for(core::map<u16, RemoteClient*>::Iterator
-				i = m_clients.getIterator();
-				i.atEnd() == false; i++)
-			{
+			for (core::map<u16, RemoteClient*>::Iterator i = m_clients.getIterator(); i.atEnd() == false; i++) {
 				RemoteClient *client = i.getNode()->getValue();
 				assert(client->peer_id == i.getNode()->getKey());
-				if(client->serialization_version == SER_FMT_VER_INVALID)
+				if (client->serialization_version == SER_FMT_VER_INVALID)
 					continue;
 				// Get player
 				Player *player = m_env.getPlayer(client->peer_id);
-				if(!player)
+				if (!player)
 					continue;
 				// Get name of player
 				os<<player->getName()<<" ";
@@ -4998,29 +4999,23 @@ void Server::SendPlayerInfos()
 	// Get connected players
 	core::list<Player*> players = m_env.getPlayers(true);
 
-	u32 player_count = players.getSize();
-	u32 datasize = 2+(2+PLAYERNAME_SIZE)*player_count;
+	std::ostringstream os(std::ios_base::binary);
+	writeU16(os, TOCLIENT_PLAYERINFO);
+	writeU16(os,(u16)players.size());
+	char name[PLAYERNAME_SIZE];
 
-	SharedBuffer<u8> data(datasize);
-	writeU16(&data[0], TOCLIENT_PLAYERINFO);
-
-	u32 start = 2;
-	core::list<Player*>::Iterator i;
-	for(i = players.begin();
-			i != players.end(); i++)
-	{
+	for (core::list<Player*>::Iterator i = players.begin(); i != players.end(); i++) {
 		Player *player = *i;
 
-		/*infostream<<"Server sending player info for player with "
-				"peer_id="<<player->peer_id<<std::endl;*/
-
-		writeU16(&data[start], player->peer_id);
-		memset((char*)&data[start+2], 0, PLAYERNAME_SIZE);
-		snprintf((char*)&data[start+2], PLAYERNAME_SIZE, "%s", player->getName());
-		start += 2+PLAYERNAME_SIZE;
+		writeU16(os, player->peer_id);
+		memset(name, 0, PLAYERNAME_SIZE);
+		snprintf(name, PLAYERNAME_SIZE, "%s", player->getName());
+		os.write(name,PLAYERNAME_SIZE);
+		os<<serializeString(player->getCharDef());
 	}
 
-	//JMutexAutoLock conlock(m_con_mutex);
+	std::string s = os.str();
+	SharedBuffer<u8> data((u8*)s.c_str(), s.size());
 
 	// Send as reliable
 	m_con.SendToAll(0, data, true);
@@ -5038,7 +5033,6 @@ void Server::SendInventory(u16 peer_id)
 	*/
 
 	std::ostringstream os;
-	//os.imbue(std::locale("C"));
 
 	player->inventory.serialize(os);
 

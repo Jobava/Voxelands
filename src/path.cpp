@@ -129,6 +129,8 @@ std::string getPath(const char* tp, const std::string &filename, bool must_exist
 		rel_path += std::string("html")+DIR_DELIM+filename;
 	}else if (type == "player") {
 		rel_path += std::string("textures")+DIR_DELIM+"players"+DIR_DELIM+filename;
+	}else if (type == "skin") {
+		rel_path += std::string("textures")+DIR_DELIM+"skins"+DIR_DELIM+filename;
 	}else if (type == "sound") {
 		rel_path += std::string("sounds")+DIR_DELIM+filename;
 	}else{

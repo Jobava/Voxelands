@@ -29,12 +29,12 @@
 
 #include "utility.h"
 
-#define PROTOCOL_VERSION 7
+#define PROTOCOL_VERSION 8
 /* the last protocol version used by 0.3.x minetest-c55 clients */
 #define PROTOCOL_DOTTHREE 3
 /* this is the oldest protocol that we will allow to connect
  * even with strict_protocol_version_checking = false */
-#define PROTOCOL_OLDEST 7
+#define PROTOCOL_OLDEST 8
 
 #define PROTOCOL_ID 0x4f457403
 
@@ -72,10 +72,12 @@ enum ToClientCommand
 	TOCLIENT_PLAYERINFO = 0x24,
 	/*
 		[0] u16 command
-		// Followed by an arbitary number of these:
-		// Number is determined from packet length.
-		[N] u16 peer_id
-		[N] char[20] name
+		[2] u16 player count
+		for each player:
+			u16 peer_id
+			char[20] name
+			u16 length of serialized chardef
+			string serialized character definition
 	*/
 
 	TOCLIENT_PLAYER_ANIMATION = 0x25,

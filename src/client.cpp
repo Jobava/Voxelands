@@ -700,12 +700,28 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 			infostream<<"Client: received map type: "<<m_map_type<<std::endl;
 		}
 
-		// Reply to server
-		u32 replysize = 2;
-		SharedBuffer<u8> reply(replysize);
-		writeU16(&reply[0], TOSERVER_INIT2);
-		// Send as reliable
-		m_con.Send(PEER_ID_SERVER, 1, reply, true);
+		{
+			// Reply to server
+			std::string chardef = "M:10:10:fair:blue:brown:medium:normal";
+			if (g_settings->exists("character_definition"))
+				chardef = g_settings->get("character_definition");
+
+			std::ostringstream os(std::ios_base::binary);
+			u8 buf[12];
+
+			// Write command
+			writeU16(buf, TOSERVER_INIT2);
+			os.write((char*)buf, 2);
+
+			// Write chardef
+			os<<serializeString(chardef);
+
+			// Make data buffer
+			std::string s = os.str();
+			SharedBuffer<u8> data((u8*)s.c_str(), s.size());
+			// Send as reliable
+			m_con.Send(PEER_ID_SERVER, 1, data, true);
+		}
 		sendWantCookie();
 
 		return;
@@ -873,32 +889,32 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 
 		// Cancel if we don't have a peer id
 		if (our_peer_id == PEER_ID_INEXISTENT) {
-			infostream<<"TOCLIENT_PLAYERINFO cancelled: "
-					"we have no peer id"
-					<<std::endl;
+			infostream<<"TOCLIENT_PLAYERINFO cancelled: we have no peer id"<<std::endl;
 			return;
 		}
 
 		{
+			std::string datastring((char*)&data[2], datasize-2);
+			std::istringstream is(datastring, std::ios_base::binary);
+			char pname[PLAYERNAME_SIZE];
+			std::string chardef;
 
-			u32 item_size = 2+PLAYERNAME_SIZE;
-			u32 player_count = (datasize-2) / item_size;
-			u32 start = 2;
+			u16 player_count = readU16(is);
+
 			// peer_ids
 			core::list<u16> players_alive;
-			for (u32 i=0; i<player_count; i++) {
-				// Make sure the name ends in '\0'
-				data[start+2+20-1] = 0;
-
-				u16 peer_id = readU16(&data[start]);
+			for (u16 i=0; i<player_count; i++) {
+				u16 peer_id = readU16(is);
 
 				players_alive.push_back(peer_id);
+				is.read(pname,PLAYERNAME_SIZE);
+				pname[PLAYERNAME_SIZE-1] = '\0';
+				chardef = deSerializeString(is);
+printf("playerinfo: '%s' '%s'\n",pname,chardef.c_str());
 
 				// Don't update the info of the local player
-				if (peer_id == our_peer_id) {
-					start += item_size;
+				if (peer_id == our_peer_id)
 					continue;
-				}
 
 				Player *player = m_env.getPlayer(peer_id);
 
@@ -914,11 +930,10 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 					infostream<<"Client: Adding new player "<<peer_id<<std::endl;
 				}
 
-				player->updateName((char*)&data[start+2]);
-				std::string p_name((char*)&data[start+2]);
+				player->setCharDef(chardef);
+				player->updateName(pname);
+				std::string p_name(pname);
 				m_httpclient->pushRequest(HTTPREQUEST_SKIN_HASH,p_name);
-
-				start += item_size;
 			}
 
 			/*
