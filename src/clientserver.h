@@ -34,7 +34,7 @@
 #define PROTOCOL_DOTTHREE 3
 /* this is the oldest protocol that we will allow to connect
  * even with strict_protocol_version_checking = false */
-#define PROTOCOL_OLDEST 3
+#define PROTOCOL_OLDEST 7
 
 #define PROTOCOL_ID 0x4f457403
 

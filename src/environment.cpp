@@ -868,9 +868,9 @@ void ServerEnvironment::step(float dtime)
 		float circuit_dtime = 0.2;
 		float meta_dtime = 1.0;
 		for (std::set<v3s16>::iterator i = m_active_blocks.m_list.begin(); i != m_active_blocks.m_list.end(); i++) {
-			v3s16 p = *i;
+			v3s16 bp = *i;
 
-			MapBlock *block = m_map->getBlockNoCreateNoEx(p);
+			MapBlock *block = m_map->getBlockNoCreateNoEx(bp);
 			if (block == NULL)
 				continue;
 
@@ -902,7 +902,7 @@ void ServerEnvironment::step(float dtime)
 			if (blockchanged) {
 				MapEditEvent event;
 				event.type = MEET_BLOCK_NODE_METADATA_CHANGED;
-				event.p = p;
+				event.p = bp;
 				m_map->dispatchEvent(&event);
 
 				block->setChangedFlag();
@@ -910,21 +910,21 @@ void ServerEnvironment::step(float dtime)
 
 			if (m_poststep_nodeswaps.size() > 0) {
 				for (std::map<v3s16,MapNode>::iterator i = m_poststep_nodeswaps.begin(); i != m_poststep_nodeswaps.end(); i++) {
-					v3s16 p = i->first;
+					v3s16 sp = i->first;
 					MapNode n = i->second;
 					NodeMetadata *meta = NULL;
 					std::string n_owner = "";
 					std::string i_owner = "";
-					meta = m_map->getNodeMetadata(p);
+					meta = m_map->getNodeMetadata(sp);
 					if (meta) {
 						n_owner = meta->getOwner();
 						i_owner = meta->getInventoryOwner();
 						meta = meta->clone();
 					}
-					m_map->addNodeWithEvent(p, n);
+					m_map->addNodeWithEvent(sp, n);
 					if (meta) {
-						m_map->setNodeMetadata(p,meta);
-						meta = m_map->getNodeMetadata(p);
+						m_map->setNodeMetadata(sp,meta);
+						meta = m_map->getNodeMetadata(sp);
 						if (meta) {
 							if (n_owner != "")
 								meta->setOwner(n_owner);
@@ -956,7 +956,7 @@ void ServerEnvironment::step(float dtime)
 			for(s16 y=-1; y<=1; y++)
 			for(s16 z=-1; z<=1; z++)
 			{
-				MapBlock *block = m_map->getBlockNoCreateNoEx(p+v3s16(x,y,z));
+				MapBlock *block = m_map->getBlockNoCreateNoEx(bp+v3s16(x,y,z));
 				if(block==NULL)
 					continue;
 				active_object_count_wider +=
