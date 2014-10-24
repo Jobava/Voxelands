@@ -30,6 +30,8 @@ struct ClothesItemFeatures {
 	f32 warmth;
 	// the effectiveness against vacuum / space
 	f32 vacuum;
+	// the effectiveness against suffocation
+	f32 suffocate;
 	// this determines how fast the item wears out from use
 	u8 durability;
 
@@ -42,6 +44,7 @@ struct ClothesItemFeatures {
 		armour(0.),
 		warmth(0.),
 		vacuum(0.),
+		suffocate(0.),
 		durability(10)
 	{}
 };

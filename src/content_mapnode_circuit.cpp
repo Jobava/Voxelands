@@ -48,6 +48,7 @@ void content_mapnode_circuit(bool repeat)
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	content_nodebox_carpet(f);
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new CircuitNodeMetadata();
@@ -71,6 +72,7 @@ void content_mapnode_circuit(bool repeat)
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	content_nodebox_carpet(f);
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new CircuitNodeMetadata();
@@ -99,6 +101,7 @@ void content_mapnode_circuit(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_WOOD;
 	f->hardness = 0.10;
+	f->suffocation_per_second = 0;
 	content_nodebox_battery(f);
 	f->setInventoryTextureNodeBox(i,"circuit_reactor_top.png","circuit_reactor.png","circuit_reactor.png");
 	if (f->initial_metadata == NULL)
@@ -122,6 +125,7 @@ void content_mapnode_circuit(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_WOOD;
 	f->hardness = 0.10;
+	f->suffocation_per_second = 0;
 	content_nodebox_carpet(f);
 	f->setInventoryTextureNodeBox(i,"circuit_solarpanel_top.png","wood.png","wood.png");
 	if (f->initial_metadata == NULL)
@@ -189,6 +193,7 @@ void content_mapnode_circuit(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
+	f->suffocation_per_second = 0;
 	content_nodebox_switch(f);
 	f->setInventoryTextureNodeBox(i,"stone.png","circuit_switch_front.png","stone.png");
 	if (f->initial_metadata == NULL)
@@ -219,6 +224,7 @@ void content_mapnode_circuit(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
+	f->suffocation_per_second = 0;
 	content_nodebox_button(f);
 	f->setInventoryTextureNodeBox(i,"stone.png","stone.png","stone.png");
 	if (f->initial_metadata == NULL)
@@ -247,6 +253,7 @@ void content_mapnode_circuit(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
+	f->suffocation_per_second = 0;
 	content_nodebox_carpet(f);
 	f->setInventoryTextureNodeBox(i,"pressureplate_stone_top.png","stone.png","stone.png");
 	if (f->initial_metadata == NULL)
@@ -275,6 +282,7 @@ void content_mapnode_circuit(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
+	f->suffocation_per_second = 0;
 	content_nodebox_carpet(f);
 	f->setInventoryTextureNodeBox(i,"pressureplate_wood_top.png","stone.png","stone.png");
 	if (f->initial_metadata == NULL)
@@ -305,6 +313,7 @@ void content_mapnode_circuit(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
+	f->suffocation_per_second = 0;
 	content_nodebox_logicgate(f);
 	f->setInventoryTextureNodeBox(i,"circuit_gate_top.png","circuit_gate.png","circuit_gate.png");
 	if (f->initial_metadata == NULL)
@@ -335,6 +344,7 @@ void content_mapnode_circuit(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
+	f->suffocation_per_second = 0;
 	content_nodebox_logicgate(f);
 	f->setInventoryTextureNodeBox(i,"circuit_repeater_top.png","circuit_repeater.png","circuit_repeater.png");
 	if (f->initial_metadata == NULL)
@@ -492,6 +502,7 @@ void content_mapnode_circuit(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 
 	// push up
 	i = CONTENT_CIRCUIT_PISTON_UP_OFF;
@@ -555,6 +566,7 @@ void content_mapnode_circuit(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 
 	// push down
 	i = CONTENT_CIRCUIT_PISTON_DOWN_OFF;
@@ -618,6 +630,7 @@ void content_mapnode_circuit(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 
 	// sticky piston
 	i = CONTENT_CIRCUIT_STICKYPISTON_OFF;
@@ -697,6 +710,7 @@ void content_mapnode_circuit(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 
 	// push up
 	i = CONTENT_CIRCUIT_STICKYPISTON_UP_OFF;
@@ -760,6 +774,7 @@ void content_mapnode_circuit(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 
 	// push down
 	i = CONTENT_CIRCUIT_STICKYPISTON_DOWN_OFF;
@@ -823,4 +838,5 @@ void content_mapnode_circuit(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 }

@@ -109,7 +109,7 @@ void content_clothesitem_init()
 	f->description = wgettext("Space Suit Pants");
 	f->type = CT_PANTS;
 	f->armour = 0.10;
-	f->warmth = 0.15;
+	f->warmth = 0.20;
 	f->vacuum = 0.30;
 	crafting::setPantsRecipe(CONTENT_CRAFTITEM_CANVAS_SHEET,i);
 	lists::add("craftguide",i);
@@ -123,7 +123,7 @@ void content_clothesitem_init()
 	f->description = wgettext("Space Suit Shirt");
 	f->type = CT_SHIRT;
 	f->armour = 0.10;
-	f->warmth = 0.15;
+	f->warmth = 0.20;
 	f->vacuum = 0.30;
 	crafting::setShirtRecipe(CONTENT_CRAFTITEM_CANVAS_SHEET,i);
 	lists::add("craftguide",i);
@@ -137,8 +137,9 @@ void content_clothesitem_init()
 	f->description = wgettext("Space Suit Helmet");
 	f->type = CT_HAT;
 	f->armour = 0.05;
-	f->warmth = 0.10;
+	f->warmth = 0.15;
 	f->vacuum = 0.20;
+	f->suffocate = 1.0;
 	crafting::setHelmetRecipe(CONTENT_CRAFTITEM_CANVAS_SHEET,i);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -151,7 +152,7 @@ void content_clothesitem_init()
 	f->description = wgettext("Space Suit Boots");
 	f->type = CT_BOOTS;
 	f->armour = 0.05;
-	f->warmth = 0.10;
+	f->warmth = 0.20;
 	f->vacuum = 0.20;
 	crafting::setBootsRecipe(CONTENT_CRAFTITEM_CANVAS_SHEET,i);
 	lists::add("craftguide",i);

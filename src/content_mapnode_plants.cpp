@@ -140,6 +140,7 @@ void content_mapnode_plants(bool repeat)
 	f->fuel_time = 20;
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
 	i = CONTENT_YOUNG_JUNGLETREE;
@@ -159,6 +160,7 @@ void content_mapnode_plants(bool repeat)
 	f->fuel_time = 20;
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
 	i = CONTENT_YOUNG_APPLE_TREE;
@@ -178,6 +180,7 @@ void content_mapnode_plants(bool repeat)
 	f->fuel_time = 20;
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
 	i = CONTENT_YOUNG_CONIFER_TREE;
@@ -197,6 +200,7 @@ void content_mapnode_plants(bool repeat)
 	f->fuel_time = 20;
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
 	i = CONTENT_JUNGLEGRASS;
@@ -218,6 +222,7 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.10;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
 	i = CONTENT_LEAVES;
@@ -249,6 +254,7 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("decrafting",i);
 	lists::add("cooking",i);
 
@@ -281,6 +287,7 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("decrafting",i);
 	lists::add("cooking",i);
 
@@ -313,6 +320,7 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("decrafting",i);
 	lists::add("cooking",i);
 
@@ -345,6 +353,7 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("decrafting",i);
 	lists::add("cooking",i);
 
@@ -374,6 +383,7 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 	lists::add("cooking",i);
 
@@ -403,6 +413,7 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 	lists::add("cooking",i);
 
@@ -432,6 +443,7 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 	lists::add("cooking",i);
 
@@ -461,6 +473,7 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 	lists::add("cooking",i);
 
@@ -491,6 +504,7 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("decrafting",i);
 
 	i = CONTENT_TRIMMED_APPLE_BLOSSOM;
@@ -517,6 +531,7 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
 	i = CONTENT_CACTUS_BLOSSOM;
@@ -537,6 +552,7 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.10;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
 	i = CONTENT_CACTUS_FLOWER;
@@ -557,6 +573,7 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.10;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 	lists::add("decrafting",i);
 
@@ -578,6 +595,7 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.10;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
 	i = CONTENT_CACTUS;
@@ -660,6 +678,7 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
 	i = CONTENT_SAPLING;
@@ -679,6 +698,8 @@ void content_mapnode_plants(bool repeat)
 	f->fuel_time = 1;
 	f->type = CMT_WOOD;
 	f->hardness = 0.0;
+	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
 	i = CONTENT_APPLE_SAPLING;
@@ -699,6 +720,7 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.0;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
 	i = CONTENT_JUNGLESAPLING;
@@ -719,6 +741,7 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.0;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
 	i = CONTENT_CONIFER_SAPLING;
@@ -739,6 +762,7 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.0;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
 	i = CONTENT_APPLE;
@@ -760,6 +784,7 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.0;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
 	// plants
@@ -785,6 +810,7 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.10;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_WILDGRASS_LONG;
 	f = &content_features(i);
@@ -807,6 +833,7 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.10;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_DEADGRASS;
 	f = &content_features(i);
@@ -829,6 +856,7 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.10;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FLOWER_STEM;
 	f = &content_features(i);
@@ -851,6 +879,7 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.10;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FLOWER_ROSE;
 	f = &content_features(i);
@@ -873,6 +902,7 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.10;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
 	i = CONTENT_FLOWER_DAFFODIL;
@@ -896,6 +926,7 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.10;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
 	i = CONTENT_FLOWER_TULIP;
@@ -919,5 +950,6 @@ void content_mapnode_plants(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.10;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 }

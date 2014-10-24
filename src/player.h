@@ -234,6 +234,16 @@ public:
 		}
 		return v;
 	}
+	f32 getSuffocationProtection()
+	{
+		InventoryList *l = inventory.getList("hat");
+		if (l == NULL)
+			return 0;
+		InventoryItem *i = l->getItem(0);
+		if (i == NULL)
+			return 0;
+		return content_clothesitem_features(i->getContent()).suffocate;
+	}
 
 protected:
 	char m_name[PLAYERNAME_SIZE];

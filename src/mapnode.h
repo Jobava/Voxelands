@@ -323,8 +323,14 @@ struct ContentFeatures
 	// for pistons
 	ContentPressureType pressure_type;
 
-	// how much does this hurt?
+	// damage player with no protection
 	u32 damage_per_second;
+	// damage player with suffocation
+	u32 suffocation_per_second;
+	// damage player with cold/heat
+	u32 warmth_per_second;
+	// damage player with pressure (vacuum)
+	u32 pressure_per_second;
 
 	// can be used to set the users respawn position
 	bool home_node;
@@ -395,6 +401,9 @@ struct ContentFeatures
 		hardness = 1.0;
 		pressure_type = CST_MOVABLE;
 		damage_per_second = 0;
+		suffocation_per_second = 4;
+		warmth_per_second = 0;
+		pressure_per_second = 0;
 		home_node = false;
 	}
 

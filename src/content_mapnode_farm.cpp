@@ -59,6 +59,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_DIRT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	crafting::set2Any2Recipe(CONTENT_CRAFTITEM_MUSH,CONTENT_CRAFTITEM_ASH,CONTENT_FERTILIZER);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -81,6 +82,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	crafting::set5Recipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_TRELLIS);
 	crafting::set5Recipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_TRELLIS);
 	lists::add("craftguide",i);
@@ -102,6 +104,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
 	i = CONTENT_SEEDS_MELON;
@@ -120,6 +123,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	crafting::set1To1Recipe(CONTENT_CRAFTITEM_MELONSLICE,CONTENT_SEEDS_MELON);
 	lists::add("creative",i);
 
@@ -139,6 +143,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	crafting::set1To1Recipe(CONTENT_CRAFTITEM_PUMPKINSLICE,CONTENT_SEEDS_PUMPKIN);
 	lists::add("creative",i);
 
@@ -158,6 +163,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
 	i = CONTENT_SEEDS_CARROT;
@@ -176,6 +182,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
 	i = CONTENT_SEEDS_BEETROOT;
@@ -194,6 +201,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
 	i = CONTENT_SEEDS_GRAPE;
@@ -212,6 +220,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	crafting::set1To2Recipe(CONTENT_CRAFTITEM_GRAPE,CONTENT_SEEDS_GRAPE);
 	lists::add("creative",i);
 
@@ -231,6 +240,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
 	i = CONTENT_FARM_WHEAT_1;
@@ -250,6 +260,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_WHEAT_2;
 	f = &content_features(i);
@@ -268,6 +279,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_WHEAT_3;
 	f = &content_features(i);
@@ -288,6 +300,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_WHEAT;
 	f = &content_features(i);
@@ -308,6 +321,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_MELON_1;
 	f = &content_features(i);
@@ -328,6 +342,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_MELON_2;
 	f = &content_features(i);
@@ -348,6 +363,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_MELON_3;
 	f = &content_features(i);
@@ -401,6 +417,7 @@ void content_mapnode_farm(bool repeat)
 	content_nodebox_plant_1(f);
 	f->type = CMT_PLANT;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_PUMPKIN_2;
 	f = &content_features(i);
@@ -420,6 +437,7 @@ void content_mapnode_farm(bool repeat)
 	content_nodebox_plant_2(f);
 	f->type = CMT_PLANT;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_PUMPKIN_3;
 	f = &content_features(i);
@@ -497,6 +515,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_POTATO_2;
 	f = &content_features(i);
@@ -517,6 +536,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_POTATO_3;
 	f = &content_features(i);
@@ -537,6 +557,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_POTATO;
 	f = &content_features(i);
@@ -557,6 +578,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_CARROT_1;
 	f = &content_features(i);
@@ -577,6 +599,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_CARROT_2;
 	f = &content_features(i);
@@ -597,6 +620,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_CARROT_3;
 	f = &content_features(i);
@@ -617,6 +641,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_CARROT;
 	f = &content_features(i);
@@ -637,6 +662,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_BEETROOT_1;
 	f = &content_features(i);
@@ -657,6 +683,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_BEETROOT_2;
 	f = &content_features(i);
@@ -677,6 +704,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_BEETROOT_3;
 	f = &content_features(i);
@@ -697,6 +725,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_BEETROOT;
 	f = &content_features(i);
@@ -717,6 +746,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_GRAPEVINE_1;
 	f = &content_features(i);
@@ -737,6 +767,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_GRAPEVINE_2;
 	f = &content_features(i);
@@ -757,6 +788,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_GRAPEVINE_3;
 	f = &content_features(i);
@@ -777,6 +809,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_GRAPEVINE;
 	f = &content_features(i);
@@ -795,6 +828,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_COTTON_1;
 	f = &content_features(i);
@@ -813,6 +847,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_COTTON_2;
 	f = &content_features(i);
@@ -832,6 +867,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_COTTON_3;
 	f = &content_features(i);
@@ -852,6 +888,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_COTTON;
 	f = &content_features(i);
@@ -872,6 +909,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_TRELLIS_GRAPE_1;
 	f = &content_features(i);
@@ -892,6 +930,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_TRELLIS_GRAPE_2;
 	f = &content_features(i);
@@ -912,6 +951,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_TRELLIS_GRAPE_3;
 	f = &content_features(i);
@@ -934,6 +974,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_FARM_TRELLIS_GRAPE;
 	f = &content_features(i);
@@ -956,6 +997,7 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_TRELLIS_DEAD_VINE;
 	f = &content_features(i);
@@ -976,4 +1018,5 @@ void content_mapnode_farm(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.3;
 	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
 }

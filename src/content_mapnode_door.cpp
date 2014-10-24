@@ -55,6 +55,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	i = CONTENT_WOOD_DOOR_LT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -78,6 +79,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	crafting::set1over1Recipe(CONTENT_WOOD_HATCH,CONTENT_WOOD_HATCH,CONTENT_WOOD_DOOR_LT);
 	crafting::set1To1Recipe(CONTENT_WOOD_DOOR_RT,CONTENT_WOOD_DOOR_LT);
 	lists::add("craftguide",i);
@@ -104,6 +106,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	f->energy_type = CET_CONDUCTIVE;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DoorNodeMetadata();
@@ -128,6 +131,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	f->energy_type = CET_CONDUCTIVE;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DoorNodeMetadata();
@@ -159,6 +163,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	i = CONTENT_GLASS_DOOR_LT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -182,6 +187,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	crafting::set1over1Recipe(CONTENT_GLASS_PANE,CONTENT_GLASS_PANE,CONTENT_GLASS_DOOR_LT);
 	crafting::set1To1Recipe(CONTENT_GLASS_DOOR_RT,CONTENT_GLASS_DOOR_LT);
 	lists::add("craftguide",i);
@@ -211,6 +217,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	i = CONTENT_WOOD_W_DOOR_LT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -235,6 +242,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	crafting::set1over1Recipe(CONTENT_WOOD_W_HATCH,CONTENT_WOOD_HATCH,CONTENT_WOOD_W_DOOR_LT);
 	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_WOOD_DOOR_LT,CONTENT_WOOD_W_DOOR_LT);
 	crafting::set1To1Recipe(CONTENT_WOOD_W_DOOR_RT,CONTENT_WOOD_W_DOOR_LT);
@@ -263,6 +271,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	f->energy_type = CET_CONDUCTIVE;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DoorNodeMetadata();
@@ -288,6 +297,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	f->energy_type = CET_CONDUCTIVE;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DoorNodeMetadata();
@@ -321,6 +331,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	i = CONTENT_WOOD_DOOR_RT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -344,6 +355,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	crafting::set1To1Recipe(CONTENT_WOOD_DOOR_LT,CONTENT_WOOD_DOOR_RT);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -372,6 +384,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	i = CONTENT_GLASS_DOOR_RT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -396,6 +409,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	crafting::set1To1Recipe(CONTENT_GLASS_DOOR_LT,CONTENT_GLASS_DOOR_RT);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -421,6 +435,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	f->energy_type = CET_CONDUCTIVE;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DoorNodeMetadata();
@@ -445,6 +460,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	f->energy_type = CET_CONDUCTIVE;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DoorNodeMetadata();
@@ -476,6 +492,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	i = CONTENT_WOOD_W_DOOR_RT;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -500,6 +517,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	crafting::set1To1Recipe(CONTENT_WOOD_W_DOOR_LT,CONTENT_WOOD_W_DOOR_RT);
 	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_WOOD_DOOR_RT,CONTENT_WOOD_W_DOOR_RT);
 	lists::add("craftguide",i);
@@ -527,6 +545,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	f->energy_type = CET_CONDUCTIVE;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DoorNodeMetadata();
@@ -552,6 +571,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	f->energy_type = CET_CONDUCTIVE;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DoorNodeMetadata();
@@ -583,6 +603,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	i = CONTENT_WOOD_DOOR_LT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -605,6 +626,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_GLASS_DOOR_LB_OPEN;
 	f = &content_features(i);
@@ -628,6 +650,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	i = CONTENT_GLASS_DOOR_LT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -650,6 +673,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_STEEL_DOOR_LB_OPEN;
 	f = &content_features(i);
@@ -671,6 +695,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	f->energy_type = CET_CONDUCTIVE;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DoorNodeMetadata();
@@ -694,6 +719,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	f->energy_type = CET_CONDUCTIVE;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DoorNodeMetadata();
@@ -720,6 +746,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	i = CONTENT_WOOD_W_DOOR_LT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -742,6 +769,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_STEEL_W_DOOR_LB_OPEN;
 	f = &content_features(i);
@@ -763,6 +791,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	f->energy_type = CET_CONDUCTIVE;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DoorNodeMetadata();
@@ -786,6 +815,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	f->energy_type = CET_CONDUCTIVE;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DoorNodeMetadata();
@@ -815,6 +845,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	i = CONTENT_WOOD_DOOR_RT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -839,6 +870,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_GLASS_DOOR_RB_OPEN;
 	f = &content_features(i);
@@ -864,6 +896,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	i = CONTENT_GLASS_DOOR_RT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -888,6 +921,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_STEEL_DOOR_RB_OPEN;
 	f = &content_features(i);
@@ -911,6 +945,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	f->energy_type = CET_CONDUCTIVE;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DoorNodeMetadata();
@@ -936,6 +971,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	f->energy_type = CET_CONDUCTIVE;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DoorNodeMetadata();
@@ -964,6 +1000,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	i = CONTENT_WOOD_W_DOOR_RT_OPEN;
 	f = &content_features(i);
 	f->param2_type = CPT_FACEDIR_SIMPLE;
@@ -988,6 +1025,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_STEEL_W_DOOR_RB_OPEN;
 	f = &content_features(i);
@@ -1011,6 +1049,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	f->energy_type = CET_CONDUCTIVE;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DoorNodeMetadata();
@@ -1036,6 +1075,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	f->energy_type = CET_CONDUCTIVE;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DoorNodeMetadata();
@@ -1060,6 +1100,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_WOOD_HATCH);
 	crafting::setSoftBlockRecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_WOOD_HATCH);
 	lists::add("craftguide",i);
@@ -1082,6 +1123,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	f->energy_type = CET_CONDUCTIVE;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DoorNodeMetadata();
@@ -1111,6 +1153,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_WOOD_HATCH,CONTENT_WOOD_W_HATCH);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -1135,6 +1178,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	f->energy_type = CET_CONDUCTIVE;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DoorNodeMetadata();
@@ -1166,6 +1210,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	crafting::setGateRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_WOOD,CONTENT_WOOD_GATE);
 	crafting::setGateRecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_JUNGLEWOOD,CONTENT_WOOD_GATE);
 	crafting::setGateRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_JUNGLEWOOD,CONTENT_WOOD_GATE);
@@ -1194,6 +1239,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	f->energy_type = CET_CONDUCTIVE;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DoorNodeMetadata();
@@ -1226,6 +1272,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_STEEL_HATCH_OPEN;
 	f = &content_features(i);
@@ -1249,6 +1296,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	f->energy_type = CET_CONDUCTIVE;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DoorNodeMetadata();
@@ -1277,6 +1325,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_STEEL_W_HATCH_OPEN;
 	f = &content_features(i);
@@ -1300,6 +1349,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	f->energy_type = CET_CONDUCTIVE;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DoorNodeMetadata();
@@ -1327,6 +1377,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_STEEL_GATE_OPEN;
 	f = &content_features(i);
@@ -1348,6 +1399,7 @@ void content_mapnode_door(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
 	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
 	f->energy_type = CET_CONDUCTIVE;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DoorNodeMetadata();

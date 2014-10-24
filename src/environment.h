@@ -423,6 +423,7 @@ public:
 	void damageLocalPlayerWithArmour(u8 damage);
 	void damageLocalPlayerWithWarmth(u8 damage);
 	void damageLocalPlayerWithVacuum(u8 damage);
+	void damageLocalPlayerWithSuffocation(u8 damage);
 
 	/*
 		Client likes to call these
@@ -468,7 +469,8 @@ private:
 	std::map<u16, ClientActiveObject*> m_active_objects;
 	Queue<ClientEnvEvent> m_client_event_queue;
 	IntervalLimiter m_active_object_light_update_interval;
-	IntervalLimiter m_lava_hurt_interval;
+	IntervalLimiter m_damage_interval;
+	IntervalLimiter m_hunger_interval;
 };
 
 #endif

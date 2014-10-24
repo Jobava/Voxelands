@@ -187,6 +187,7 @@ void content_mapnode_stair(bool repeat)
 	f->setInventoryTextureNodeBox(i,"roughstone.png", "roughstone.png", "roughstone.png");
 	f->type = CMT_STONE;
 	f->hardness = 0.9;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_COBBLE_STAIR_UD;
 	f = &content_features(i);
@@ -200,6 +201,7 @@ void content_mapnode_stair(bool repeat)
 	f->setInventoryTextureNodeBox(i,"cobble.png", "cobble.png", "cobble.png");
 	f->type = CMT_STONE;
 	f->hardness = 0.9;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_MOSSYCOBBLE_STAIR_UD;
 	f = &content_features(i);
@@ -213,6 +215,7 @@ void content_mapnode_stair(bool repeat)
 	f->setInventoryTextureNodeBox(i,"mossycobble.png", "mossycobble.png", "mossycobble.png");
 	f->type = CMT_STONE;
 	f->hardness = 0.8;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_STONE_STAIR_UD;
 	f = &content_features(i);
@@ -226,6 +229,7 @@ void content_mapnode_stair(bool repeat)
 	f->setInventoryTextureNodeBox(i,"stone.png", "stone.png", "stone.png");
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_WOOD_STAIR_UD;
 	f = &content_features(i);
@@ -241,6 +245,7 @@ void content_mapnode_stair(bool repeat)
 	f->fuel_time = 30;
 	f->type = CMT_WOOD;
 	f->hardness = 0.75;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_JUNGLE_STAIR_UD;
 	f = &content_features(i);
@@ -256,6 +261,7 @@ void content_mapnode_stair(bool repeat)
 	f->fuel_time = 30;
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_BRICK_STAIR_UD;
 	f = &content_features(i);
@@ -269,6 +275,7 @@ void content_mapnode_stair(bool repeat)
 	f->setInventoryTextureNodeBox(i,"brick.png", "brick.png", "brick.png");
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
+	f->suffocation_per_second = 0;
 
 	i = CONTENT_SANDSTONE_STAIR_UD;
 	f = &content_features(i);
@@ -282,4 +289,5 @@ void content_mapnode_stair(bool repeat)
 	f->setInventoryTextureNodeBox(i,"sandstone.png", "sandstone.png", "sandstone.png");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
+	f->suffocation_per_second = 0;
 }
