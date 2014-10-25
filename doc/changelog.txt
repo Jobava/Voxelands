@@ -3,6 +3,57 @@ Voxelands changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1410.00: (release 2014-10-25)
+- a couple of pistons bugfixes
+- install the html files needed by the server properly
+- rework player damage system
+- wrap gettext around various forgotten strings
+- make player wield arm show correct clothing appearance
+- stop wield items glowing in the dark
+- move coldzone to 60-1024, add space above 1024
+- implement active furnaces/incinerators
+- use misc/freedesktop/ and add more icon sizes
+- add space suit
+- add cotton/canvas/leather/fur sheet materials for clothes system
+- add life support system for creating air in space
+- add space to mapgen
+- add multiple mapgen types
+- stop objects disappearing, reimplement object activation/deactivation
+- add clothes system
+- add spear tools
+- stop objects freezing
+- updatepo.sh should update only the pot file by default
+- fix bug in client searchNear
+- fix compile failing with older openal libs
+- fix empty strings in inventory deserialization crashing the server
+- fix debug info hiding player position
+- remove a lot of randomness from the env loop
+- stop eating damaging players
+- implement MobCAO
+ - add sheep - punch with shears to get string -> cotton
+ - add deer
+  - add doe
+   - kill to get fur
+  - add stag
+   - attacks when punched
+   - kill to get meat
+   - feed to tame
+ - add wolves
+  - hunts player
+  - feed to tame
+ - add fish
+  - catchable with spear
+  - cook to make edible
+ - add sharks
+  - hunts player, kill to get meat
+ - reimplement dungeon master convert old mob to new
+  - kill to get gunpowder
+ - reimplement rat convert old mob to new
+  - catchable with punch
+  - cook to make edible
+ - reimplement oerkki convert old mob to new
+  - kill to get oerkki dust to teleport home
+
 1409.00: (release 2014-09-27)
 - make compiling work on OSX
 - update some nodeboxes
