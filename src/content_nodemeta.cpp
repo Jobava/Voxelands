@@ -3069,21 +3069,24 @@ bool PistonNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *
 			}else if (dir == v3s16(1,1,-1)) {
 				dir = v3s16(1,0,0);
 			}
-			n.setContent(CONTENT_CIRCUIT_PISTON_OFF);
-			env->setPostStepNodeSwap(pos,n);
-			contract(pos,dir,false,env);
+			if (contract(pos,dir,false,env)) {
+				n.setContent(CONTENT_CIRCUIT_PISTON_OFF);
+				env->setPostStepNodeSwap(pos,n);
+			}
 			return true;
 		}else if (n.getContent() == CONTENT_CIRCUIT_PISTON_UP) {
 			dir = v3s16(0,1,0);
-			n.setContent(CONTENT_CIRCUIT_PISTON_UP_OFF);
-			env->setPostStepNodeSwap(pos,n);
-			contract(pos,dir,false,env);
+			if (contract(pos,dir,false,env)) {
+				n.setContent(CONTENT_CIRCUIT_PISTON_UP_OFF);
+				env->setPostStepNodeSwap(pos,n);
+			}
 			return true;
 		}else if (n.getContent() == CONTENT_CIRCUIT_PISTON_DOWN) {
 			dir = v3s16(0,-1,0);
-			n.setContent(CONTENT_CIRCUIT_PISTON_DOWN_OFF);
-			env->setPostStepNodeSwap(pos,n);
-			contract(pos,dir,false,env);
+			if (contract(pos,dir,false,env)) {
+				n.setContent(CONTENT_CIRCUIT_PISTON_DOWN_OFF);
+				env->setPostStepNodeSwap(pos,n);
+			}
 			return true;
 		}else if (n.getContent() == CONTENT_CIRCUIT_STICKYPISTON) {
 			if (dir == v3s16(1,1,1)) {
@@ -3095,21 +3098,24 @@ bool PistonNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *
 			}else if (dir == v3s16(1,1,-1)) {
 				dir = v3s16(1,0,0);
 			}
-			n.setContent(CONTENT_CIRCUIT_STICKYPISTON_OFF);
-			env->setPostStepNodeSwap(pos,n);
-			contract(pos,dir,true,env);
+			if (contract(pos,dir,true,env)) {
+				n.setContent(CONTENT_CIRCUIT_STICKYPISTON_OFF);
+				env->setPostStepNodeSwap(pos,n);
+			}
 			return true;
 		}else if (n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_UP) {
 			dir = v3s16(0,1,0);
-			n.setContent(CONTENT_CIRCUIT_STICKYPISTON_UP_OFF);
-			env->setPostStepNodeSwap(pos,n);
-			contract(pos,dir,true,env);
+			if (contract(pos,dir,true,env)) {
+				n.setContent(CONTENT_CIRCUIT_STICKYPISTON_UP_OFF);
+				env->setPostStepNodeSwap(pos,n);
+			}
 			return true;
 		}else if (n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_DOWN) {
 			dir = v3s16(0,-1,0);
-			n.setContent(CONTENT_CIRCUIT_STICKYPISTON_DOWN_OFF);
-			env->setPostStepNodeSwap(pos,n);
-			contract(pos,dir,true,env);
+			if (contract(pos,dir,true,env)) {
+				n.setContent(CONTENT_CIRCUIT_STICKYPISTON_DOWN_OFF);
+				env->setPostStepNodeSwap(pos,n);
+			}
 			return true;
 		}
 		return false;
@@ -3294,7 +3300,7 @@ bool PistonNodeMetadata::contract(v3s16 pos, v3s16 dir, bool sticky, ServerEnvir
 	for (int i=0; i<16; i++) {
 		MapNode n = env->getMap().getNodeNoEx(p_next);
 		if (n.getContent() == CONTENT_IGNORE)
-			break;
+			return false;
 		ContentFeatures &f = content_features(n);
 		if (f.pressure_type == CST_SOLID)
 			break;
