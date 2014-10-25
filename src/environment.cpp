@@ -953,23 +953,32 @@ void ServerEnvironment::step(float dtime)
 				searching loop to keep things fast.
 			*/
 			u32 active_object_count_wider = 0;
-			for(s16 x=-1; x<=1; x++)
-			for(s16 y=-1; y<=1; y++)
-			for(s16 z=-1; z<=1; z++)
-			{
+			for (s16 x=-1; x<=1; x++)
+			for (s16 y=-1; y<=1; y++)
+			for (s16 z=-1; z<=1; z++) {
 				MapBlock *wblock = m_map->getBlockNoCreateNoEx(bp+v3s16(x,y,z));
 				if (wblock == NULL)
 					continue;
-				active_object_count_wider +=
-						wblock->m_static_objects.m_active.size()
-						+ wblock->m_static_objects.m_stored.size();
+				active_object_count_wider += wblock->m_static_objects.m_stored.size();
+			}
+			for (std::map<u16, ServerActiveObject*>::iterator i = m_active_objects.begin(); i != m_active_objects.end(); i++) {
+				ServerActiveObject* obj = i->second;
+				if (obj->m_removed)
+					continue;
+				v3s16 obp = getNodeBlockPos(floatToInt(obj->getBasePosition(), BS));
+				if (obp.X > bp.X+1 || obp.X < bp.X-1)
+					continue;
+				if (obp.Y > bp.Y+1 || obp.Y < bp.Y-1)
+					continue;
+				if (obp.Z > bp.Z+1 || obp.Z < bp.Z-1)
+					continue;
+				active_object_count_wider++;
 			}
 
 			v3s16 p0;
-			for(p0.X=0; p0.X<MAP_BLOCKSIZE; p0.X++)
-			for(p0.Y=0; p0.Y<MAP_BLOCKSIZE; p0.Y++)
-			for(p0.Z=0; p0.Z<MAP_BLOCKSIZE; p0.Z++)
-			{
+			for (p0.X=0; p0.X<MAP_BLOCKSIZE; p0.X++)
+			for (p0.Y=0; p0.Y<MAP_BLOCKSIZE; p0.Y++)
+			for (p0.Z=0; p0.Z<MAP_BLOCKSIZE; p0.Z++) {
 				v3s16 p = p0 + block->getPosRelative();
 				block->incNodeTicks(p0);
 				MapNode n = block->getNodeNoEx(p0);
