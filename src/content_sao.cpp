@@ -1075,6 +1075,8 @@ bool MobSAO::checkFreePosition(v3s16 p0)
 			MapNode n = map->getNodeNoEx(p);
 			if (n.getContent() != CONTENT_AIR && content_features(n).walkable)
 				return false;
+			if (content_features(n).liquid_type == LIQUID_SOURCE)
+				return false;
 		}
 	}
 	MapNode n = map->getNodeNoEx(p0+v3s16(0,-1,0));
