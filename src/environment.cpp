@@ -863,7 +863,6 @@ void ServerEnvironment::step(float dtime)
 	bool circuitstep = m_active_blocks_circuit_interval.step(dtime, 0.2);
 	bool metastep = m_active_blocks_nodemetadata_interval.step(dtime, 1.0);
 	bool nodestep = m_active_blocks_test_interval.step(dtime, 10.0);
-	bool has_spawned_mob = false;
 
 	if (circuitstep || metastep || nodestep) {
 		float circuit_dtime = 0.2;
@@ -983,10 +982,8 @@ void ServerEnvironment::step(float dtime)
 				block->incNodeTicks(p0);
 				MapNode n = block->getNodeNoEx(p0);
 
-				if (!has_spawned_mob && content_mob_spawn(this,p,active_object_count_wider)) {
-					has_spawned_mob = true;
+				if (content_mob_spawn(this,p,active_object_count_wider))
 					active_object_count_wider++;
-				}
 
 				switch(n.getContent()) {
 				case CONTENT_GRASS_FOOTSTEPS:
@@ -1505,12 +1502,9 @@ void ServerEnvironment::step(float dtime)
 					if (p.Y > 1 && myrand()%f == 0) {
 						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
 						if (n_top.getContent() == CONTENT_AIR && n_top.getLightBlend(getDayNightRatio()) >= 13) {
-							v3f pp;
-							pp.X = p.X;
-							pp.Y = p.Y;
-							pp.Z = p.Z;
+							v3f pp = intToFloat(p,BS);
 							Player *nearest = getNearestConnectedPlayer(pp);
-							if (nearest == NULL || nearest->getPosition().getDistanceFrom(pp*BS)/BS > 20.0) {
+							if (nearest == NULL || nearest->getPosition().getDistanceFrom(pp)/BS > 20.0) {
 								std::vector<content_t> search;
 								search.push_back(CONTENT_WILDGRASS_SHORT);
 								search.push_back(CONTENT_WILDGRASS_LONG);
@@ -1532,7 +1526,7 @@ void ServerEnvironment::step(float dtime)
 				{
 					MapNode n_btm = m_map->getNodeNoEx(p+v3s16(0,-1,0));
 					if (n_btm.getContent() == CONTENT_GRASS || n_btm.getContent() == CONTENT_MUD) {
-						if (p.Y > -1 && n.envticks > 30) {
+						if (p.Y > -1 && n.envticks > 10) {
 							MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
 							if (n_btm.getContent() == CONTENT_GRASS) {
 								if (n_top.getLightBlend(getDayNightRatio()) >= 13) {
@@ -1574,7 +1568,7 @@ void ServerEnvironment::step(float dtime)
 					if (n_btm.getContent() == CONTENT_FARM_DIRT)
 						ch = 50;
 					if (ch) {
-						if ((ch == 50 || p.Y > -1) && n.envticks > 30) {
+						if ((ch == 50 || p.Y > -1) && n.envticks > 20) {
 							MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
 							if (n_top.getLightBlend(getDayNightRatio()) >= 13) {
 								switch (myrand()%3) {
@@ -1602,7 +1596,7 @@ void ServerEnvironment::step(float dtime)
 
 				case CONTENT_DEADGRASS:
 				{
-					if (p.Y > -1 && n.envticks > 30)
+					if (p.Y > -1 && n.envticks > 20)
 						m_map->removeNodeWithEvent(p);
 					break;
 				}
