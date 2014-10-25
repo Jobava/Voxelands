@@ -226,7 +226,7 @@ void content_mob_init()
 	f->spawn_in = CONTENT_AIR;
 	f->spawn_min_height = -5;
 	f->spawn_max_height = 20;
-	f->spawn_max_light = LIGHT_MAX/3;
+	f->spawn_max_light = LIGHT_MAX/2;
 	f->spawn_max_nearby_mobs = 5;
 	f->lifetime = 1200.0;
 	f->setCollisionBox(aabb3f(-BS/4.,-BS/6.,-BS/4., BS/4.,BS/6.,BS/4.));
