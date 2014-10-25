@@ -361,6 +361,16 @@ void MobSAO::step(float dtime, bool send_recommended)
 		return;
 	}
 
+	/* if it isn't a swimmer, kill it in liquid */
+	if (m.motion_type != MMT_SWIM) {
+		v3s16 p = floatToInt(m_base_position,BS);
+		MapNode n = m_env->getMap().getNodeNoEx(p);
+		if (content_features(n).liquid_type != LIQUID_NONE) {
+			m_removed = true;
+			return;
+		}
+	}
+
 	if (m.special_dropped_max > 0 && m_special_count < m.special_dropped_max && myrand_range(0,50) == 0)
 		m_special_count++;
 

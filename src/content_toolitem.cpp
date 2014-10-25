@@ -79,6 +79,9 @@ DiggingProperties getDiggingProperties(content_t content, content_t tool)
 				time *= 10.;
 			break;
 		case TT_SWORD:
+			if (c_features.type != CMT_PLANT)
+				time = 10.;
+			break;
 		case TT_SHEAR:
 			if (c_features.type != CMT_PLANT)
 				time *= 10.;
@@ -88,8 +91,8 @@ DiggingProperties getDiggingProperties(content_t content, content_t tool)
 				time = 10.;
 			break;
 		case TT_SPEAR:
-			if (c_features.type == CMT_DIRT)
-				time *= 2.0;
+			if (c_features.type != CMT_DIRT)
+				time = 10.;
 			break;
 		case TT_NONE:
 			if (c_features.type == CMT_DIRT)
@@ -291,7 +294,7 @@ void content_toolitem_init()
 	f->name = "WSword";
 	f->description = wgettext("Wooden Sword");
 	f->type = TT_SWORD;
-	f->hardness = 20.;
+	f->hardness = 120.;
 	f->dig_time = 1.5;
 	crafting::setSwordRecipe(CONTENT_WOOD,CONTENT_TOOLITEM_WSWORD);
 	crafting::setSwordRecipe(CONTENT_JUNGLEWOOD,CONTENT_TOOLITEM_WSWORD);
@@ -305,7 +308,7 @@ void content_toolitem_init()
 	f->name = "STSword";
 	f->description = wgettext("Stone Sword");
 	f->type = TT_SWORD;
-	f->hardness = 50.;
+	f->hardness = 300.;
 	f->dig_time = 1.0;
 	crafting::setSwordRecipe(CONTENT_ROUGHSTONE,CONTENT_TOOLITEM_STSWORD);
 	lists::add("craftguide",i);
@@ -318,7 +321,7 @@ void content_toolitem_init()
 	f->name = "SteelSword";
 	f->description = wgettext("Steel Sword");
 	f->type = TT_SWORD;
-	f->hardness = 80.;
+	f->hardness = 380.;
 	f->dig_time = 0.5;
 	crafting::setSwordRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_STEELSWORD);
 	lists::add("craftguide",i);

@@ -863,6 +863,7 @@ void ServerEnvironment::step(float dtime)
 	bool circuitstep = m_active_blocks_circuit_interval.step(dtime, 0.2);
 	bool metastep = m_active_blocks_nodemetadata_interval.step(dtime, 1.0);
 	bool nodestep = m_active_blocks_test_interval.step(dtime, 10.0);
+	bool has_spawned_mob = false;
 
 	if (circuitstep || metastep || nodestep) {
 		float circuit_dtime = 0.2;
@@ -956,12 +957,12 @@ void ServerEnvironment::step(float dtime)
 			for(s16 y=-1; y<=1; y++)
 			for(s16 z=-1; z<=1; z++)
 			{
-				MapBlock *block = m_map->getBlockNoCreateNoEx(bp+v3s16(x,y,z));
-				if(block==NULL)
+				MapBlock *wblock = m_map->getBlockNoCreateNoEx(bp+v3s16(x,y,z));
+				if (wblock == NULL)
 					continue;
 				active_object_count_wider +=
-						block->m_static_objects.m_active.size()
-						+ block->m_static_objects.m_stored.size();
+						wblock->m_static_objects.m_active.size()
+						+ wblock->m_static_objects.m_stored.size();
 			}
 
 			v3s16 p0;
@@ -973,8 +974,10 @@ void ServerEnvironment::step(float dtime)
 				block->incNodeTicks(p0);
 				MapNode n = block->getNodeNoEx(p0);
 
-				if (content_mob_spawn(this,p,active_object_count_wider))
+				if (!has_spawned_mob && content_mob_spawn(this,p,active_object_count_wider)) {
+					has_spawned_mob = true;
 					active_object_count_wider++;
+				}
 
 				switch(n.getContent()) {
 				case CONTENT_GRASS_FOOTSTEPS:
