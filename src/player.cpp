@@ -306,7 +306,7 @@ std::string Player::getSkin()
 
 	std::string tex = "";
 	tex += std::string("skins")+DIR_DELIM+"skintone_"+skintone+"_"+gender+".png";
-	tex += std::string("^skins")+DIR_DELIM+"face_"+face+"_"+gender+".png";
+	tex += std::string("^skins")+DIR_DELIM+"face_"+face+"_"+skintone+"_"+gender+".png";
 	tex += std::string("^skins")+DIR_DELIM+"eyes_"+eyes+".png";
 	tex += std::string("^skins")+DIR_DELIM+"hair_"+hair+"_"+hairtone+"_"+gender+".png";
 
