@@ -360,8 +360,6 @@ if(BUILD_CLIENT)
 	file(GLOB modelsx
 "${CMAKE_CURRENT_SOURCE_DIR}/../data/models/*.x")
 	install(FILES ${modelsx} DESTINATION ${SHAREDIR}/models)
-	file(GLOB html "${CMAKE_CURRENT_SOURCE_DIR}/../data/html/*.html")
-	install(FILES ${html} DESTINATION ${SHAREDIR}/html)
 	file(GLOB sounds "${CMAKE_CURRENT_SOURCE_DIR}/../data/sounds/*.ogg")
 	install(FILES ${sounds} DESTINATION ${SHAREDIR}/sounds)
 
@@ -447,6 +445,8 @@ endif(BUILD_CLIENT)
 
 if(BUILD_SERVER)
 	install(TARGETS ${PROJECT_NAME}-server DESTINATION ${BINDIR})
+	file(GLOB html "${CMAKE_CURRENT_SOURCE_DIR}/../data/html/*.html")
+	install(FILES ${html} DESTINATION ${SHAREDIR}/html)
 endif(BUILD_SERVER)
 
 if (USE_GETTEXT)
