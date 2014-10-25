@@ -276,7 +276,7 @@ v3f Player::getScale()
 
 //gender:Yscale:XZscale:skintone:eyes:hairtone:hair:face
 //M:10:10:fair:blue:brown:medium:normal
-std::string Player::getSkin()
+void Player::getSkin(std::vector<std::string> &parts)
 {
 	if (m_character == "")
 		m_character = std::string("M:10:10:fair:blue:brown:medium:normal");
@@ -304,11 +304,21 @@ std::string Player::getSkin()
 	if (getPath("skin",std::string("face_")+face+gender+".png",true) == "")
 		face = "normal";
 
+	parts.push_back(std::string("skins")+DIR_DELIM+"skintone_"+skintone+"_"+gender+".png");
+	parts.push_back(std::string("skins")+DIR_DELIM+"face_"+face+"_"+skintone+"_"+gender+".png");
+	parts.push_back(std::string("skins")+DIR_DELIM+"eyes_"+eyes+".png");
+	parts.push_back(std::string("skins")+DIR_DELIM+"hair_"+hair+"_"+hairtone+"_"+gender+".png");
+}
+std::string Player::getSkin()
+{
+	std::vector<std::string> parts;
+	getSkin(parts);
+
 	std::string tex = "";
-	tex += std::string("skins")+DIR_DELIM+"skintone_"+skintone+"_"+gender+".png";
-	tex += std::string("^skins")+DIR_DELIM+"face_"+face+"_"+skintone+"_"+gender+".png";
-	tex += std::string("^skins")+DIR_DELIM+"eyes_"+eyes+".png";
-	tex += std::string("^skins")+DIR_DELIM+"hair_"+hair+"_"+hairtone+"_"+gender+".png";
+
+	for (std::vector<std::string>::iterator i = parts.begin(); i != parts.end(); i++) {
+		tex += *i;
+	}
 
 	return tex;
 }
