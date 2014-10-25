@@ -372,6 +372,16 @@ void MobSAO::step(float dtime, bool send_recommended)
 				return;
 			}
 		}
+	}else{
+		v3s16 p = floatToInt(m_base_position,BS);
+		MapNode n = m_env->getMap().getNodeNoEx(p);
+		if (content_features(n).liquid_type == LIQUID_NONE) {
+			m_hp--;
+			if (m_hp < 1) {
+				m_removed = true;
+				return;
+			}
+		}
 	}
 
 	if (m.special_dropped_max > 0 && m_special_count < m.special_dropped_max && myrand_range(0,50) == 0)
