@@ -366,8 +366,11 @@ void MobSAO::step(float dtime, bool send_recommended)
 		v3s16 p = floatToInt(m_base_position,BS);
 		MapNode n = m_env->getMap().getNodeNoEx(p);
 		if (content_features(n).liquid_type != LIQUID_NONE) {
-			m_removed = true;
-			return;
+			m_hp--;
+			if (m_hp < 1) {
+				m_removed = true;
+				return;
+			}
 		}
 	}
 
