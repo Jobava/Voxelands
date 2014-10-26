@@ -748,28 +748,16 @@ int main(int argc, char *argv[])
 
 	bool ret = cmd_args.parseCommandLine(argc, argv, allowed_options);
 
-	if(ret == false || cmd_args.getFlag("help"))
-	{
+	if (ret == false || cmd_args.getFlag("help")) {
 		dstream<<"Allowed options:"<<std::endl;
-		for(core::map<std::string, ValueSpec>::Iterator
-				i = allowed_options.getIterator();
-				i.atEnd() == false; i++)
-		{
+		for (core::map<std::string, ValueSpec>::Iterator i = allowed_options.getIterator(); i.atEnd() == false; i++) {
 			dstream<<"  --"<<i.getNode()->getKey();
-			if(i.getNode()->getValue().type == VALUETYPE_FLAG)
-			{
-			}
-			else
-			{
+			if(i.getNode()->getValue().type != VALUETYPE_FLAG)
 				dstream<<" <value>";
-			}
 			dstream<<std::endl;
 
-			if(i.getNode()->getValue().help != NULL)
-			{
-				dstream<<"      "<<i.getNode()->getValue().help
-						<<std::endl;
-			}
+			if (i.getNode()->getValue().help != NULL)
+				dstream<<"      "<<i.getNode()->getValue().help<<std::endl;
 		}
 
 		return cmd_args.getFlag("help") ? 0 : 1;
@@ -781,11 +769,11 @@ int main(int argc, char *argv[])
 
 	bool disable_stderr = false;
 #ifdef _WIN32
-	if(cmd_args.getFlag("dstream-on-stderr") == false)
+	if (cmd_args.getFlag("dstream-on-stderr") == false)
 		disable_stderr = true;
 #endif
 
-	if(cmd_args.getFlag("info-on-stderr"))
+	if (cmd_args.getFlag("info-on-stderr"))
 		log_add_output(&main_stderr_log_out, LMT_INFO);
 
 	porting::signal_handler_init();
@@ -841,19 +829,15 @@ int main(int argc, char *argv[])
 	// Path of configuration file in use
 	std::string configpath = "";
 
-	if(cmd_args.exists("config"))
-	{
+	if (cmd_args.exists("config")) {
 		bool r = g_settings->readConfigFile(cmd_args.get("config").c_str());
-		if(r == false)
-		{
+		if (r == false) {
 			errorstream<<"Could not read configuration from \""
 					<<cmd_args.get("config")<<"\""<<std::endl;
 			return 1;
 		}
 		configpath = cmd_args.get("config");
-	}
-	else
-	{
+	}else{
 		core::array<std::string> filenames;
 		filenames.push_back(porting::path_userdata +
 				DIR_DELIM + "voxelands.conf");
@@ -862,18 +846,16 @@ int main(int argc, char *argv[])
 				DIR_DELIM + ".." + DIR_DELIM + "voxelands.conf");
 #endif
 
-		for(u32 i=0; i<filenames.size(); i++)
-		{
+		for (u32 i=0; i<filenames.size(); i++) {
 			bool r = g_settings->readConfigFile(filenames[i].c_str());
-			if(r)
-			{
+			if (r) {
 				configpath = filenames[i];
 				break;
 			}
 		}
 
 		// If no path found, use the first one (menu creates the file)
-		if(configpath == "")
+		if (configpath == "")
 			configpath = filenames[0];
 	}
 
@@ -904,11 +886,11 @@ int main(int argc, char *argv[])
 		Run unit tests
 	*/
 
-	if((ENABLE_TESTS && cmd_args.getFlag("disable-unittests") == false)
-			|| cmd_args.getFlag("enable-unittests") == true)
-	{
+	if (
+		(ENABLE_TESTS && cmd_args.getFlag("disable-unittests") == false)
+		|| cmd_args.getFlag("enable-unittests") == true
+	)
 		run_tests();
-	}
 
 	/*for(s16 y=-100; y<100; y++)
 	for(s16 x=-100; x<100; x++)
@@ -923,23 +905,24 @@ int main(int argc, char *argv[])
 
 	// Port
 	u16 port = 30000;
-	if(cmd_args.exists("port"))
+	if (cmd_args.exists("port")) {
 		port = cmd_args.getU16("port");
-	else if(g_settings->exists("port"))
+	}else if (g_settings->exists("port")) {
 		port = g_settings->getU16("port");
-	if(port == 0)
+	}
+	if (port == 0)
 		port = 30000;
 
 	// Map directory
 	std::string map_dir = porting::path_userdata+DIR_DELIM+"world";
-	if(cmd_args.exists("map-dir"))
+	if (cmd_args.exists("map-dir")) {
 		map_dir = cmd_args.get("map-dir");
-	else if(g_settings->exists("map-dir"))
+	}else if (g_settings->exists("map-dir")) {
 		map_dir = g_settings->get("map-dir");
+	}
 
 	// Run dedicated server if asked to
-	if(cmd_args.getFlag("server"))
-	{
+	if (cmd_args.getFlag("server")) {
 		DSTACK("Dedicated server branch");
 
 		// Create time getter
@@ -963,12 +946,9 @@ int main(int argc, char *argv[])
 	// Address to connect to
 	std::string address = "";
 
-	if(cmd_args.exists("address"))
-	{
+	if (cmd_args.exists("address")) {
 		address = cmd_args.get("address");
-	}
-	else
-	{
+	}else{
 		address = g_settings->get("address");
 	}
 
@@ -996,20 +976,19 @@ int main(int argc, char *argv[])
 
 	std::string driverstring = g_settings->get("video_driver");
 
-	if(driverstring == "null")
+	if (driverstring == "null") {
 		driverType = video::EDT_NULL;
-	else if(driverstring == "software")
+	}else if (driverstring == "software") {
 		driverType = video::EDT_SOFTWARE;
-	else if(driverstring == "burningsvideo")
+	}else if (driverstring == "burningsvideo") {
 		driverType = video::EDT_BURNINGSVIDEO;
-	else if(driverstring == "direct3d8")
+	}else if (driverstring == "direct3d8") {
 		driverType = video::EDT_DIRECT3D8;
-	else if(driverstring == "direct3d9")
+	}else if (driverstring == "direct3d9") {
 		driverType = video::EDT_DIRECT3D9;
-	else if(driverstring == "opengl")
+	}else if (driverstring == "opengl") {
 		driverType = video::EDT_OPENGL;
-	else
-	{
+	}else{
 		errorstream<<"WARNING: Invalid video_driver specified; defaulting "
 				"to opengl"<<std::endl;
 		driverType = video::EDT_OPENGL;
@@ -1074,8 +1053,7 @@ int main(int argc, char *argv[])
 	/*
 		Speed tests (done after irrlicht is loaded to get timer)
 	*/
-	if(cmd_args.getFlag("speedtests"))
-	{
+	if (cmd_args.getFlag("speedtests")) {
 		dstream<<"Running speed tests"<<std::endl;
 		SpeedTests();
 		return 0;
@@ -1086,21 +1064,22 @@ int main(int argc, char *argv[])
 	bool random_input = g_settings->getBool("random_input")
 			|| cmd_args.getFlag("random-input");
 	InputHandler *input = NULL;
-	if(random_input)
+	if (random_input) {
 		input = new RandomInputHandler();
-	else
+	}else{
 		input = new RealInputHandler(device, &receiver);
+	}
 
 	scene::ISceneManager* smgr = device->getSceneManager();
 
 	guienv = device->getGUIEnvironment();
 	gui::IGUISkin* skin = guienv->getSkin();
 	gui::IGUIFont* font = guienv->getFont(getTexturePath("fontlucida.png").c_str());
-	if(font)
+	if (font) {
 		skin->setFont(font);
-	else
-		errorstream<<"WARNING: Font file was not found."
-				" Using default font."<<std::endl;
+	}else{
+		errorstream<<"WARNING: Font file was not found. Using default font."<<std::endl;
+	}
 	// If font was not found, this will get us one
 	font = skin->getFont();
 	assert(font);
@@ -1146,15 +1125,16 @@ int main(int argc, char *argv[])
 	// The password entered during the menu screen,
 	std::string password;
 
+	// if there's no chardef then put the player directly into the character creator
+	bool character_creator = !g_settings->exists("character_definition");
+
 	/*
 		Menu-game loop
 	*/
-	while(device->run() && kill == false)
-	{
+	while (device->run() && kill == false) {
 
 		// This is used for catching disconnects
-		try
-		{
+		try{
 
 			/*
 				Clear everything from the GUIEnvironment
@@ -1166,16 +1146,14 @@ int main(int argc, char *argv[])
 				custom gui elements directly on the screen.
 				Otherwise they won't be automatically drawn.
 			*/
-			guiroot = guienv->addStaticText(L"",
-					core::rect<s32>(0, 0, 10000, 10000));
+			guiroot = guienv->addStaticText(L"",core::rect<s32>(0, 0, 10000, 10000));
 
 			/*
 				Out-of-game menu loop.
-
 				Loop quits when menu returns proper parameters.
+				break out immediately if we should be in the character creator
 			*/
-			while(kill == false)
-			{
+			while (kill == false && character_creator == false) {
 				// Cursor can be non-visible when coming from the game
 				device->getCursorControl()->setVisible(true);
 				// Some stuff are left to scene manager when coming from the game
@@ -1223,8 +1201,7 @@ int main(int argc, char *argv[])
 							&g_menumgr, &menudata, g_gamecallback);
 				menu->allowFocusRemoval(true);
 
-				if(error_message != L"")
-				{
+				if (error_message != L"") {
 					errorstream<<"error_message = "
 							<<wide_to_narrow(error_message)<<std::endl;
 
@@ -1239,9 +1216,8 @@ int main(int argc, char *argv[])
 
 				infostream<<"Created main menu"<<std::endl;
 
-				while(device->run() && kill == false)
-				{
-					if(menu->getStatus() == true)
+				while (device->run() && kill == false) {
+					if (menu->getStatus() == true)
 						break;
 
 					//driver->beginScene(true, true, video::SColor(255,0,0,0));
@@ -1259,12 +1235,17 @@ int main(int argc, char *argv[])
 				}
 
 				// Break out of menu-game loop to shut down cleanly
-				if(device->run() == false || kill == true)
+				if (device->run() == false || kill == true)
 					break;
 
 				infostream<<"Dropping main menu"<<std::endl;
 
 				menu->drop();
+
+				character_creator = menudata.character_creator;
+
+				if (character_creator)
+					break;
 
 				// Delete map if requested
 				if (menudata.delete_map) {
@@ -1293,7 +1274,7 @@ int main(int argc, char *argv[])
 
 				address = wide_to_narrow(menudata.address);
 				int newport = mywstoi(menudata.port);
-				if(newport != 0)
+				if (newport != 0)
 					port = newport;
 				g_settings->set("new_style_leaves", itos(menudata.fancy_trees));
 				g_settings->set("smooth_lighting", itos(menudata.smooth_lighting));
@@ -1320,7 +1301,7 @@ int main(int argc, char *argv[])
 				g_settings->set("address", address);
 				g_settings->set("port", itos(port));
 				// Update configuration file
-				if(configpath != "")
+				if (configpath != "")
 					g_settings->updateConfigFile(configpath.c_str());
 
 				// Continue to game
@@ -1328,9 +1309,13 @@ int main(int argc, char *argv[])
 			}
 
 			// Break out of menu-game loop to shut down cleanly
-			if(device->run() == false)
+			if (device->run() == false)
 				break;
 
+			if (character_creator) {
+				character_creator = false;
+				continue;
+			}
 			// Initialize mapnode again to enable changed graphics settings
 			init_mapnode(driver);
 

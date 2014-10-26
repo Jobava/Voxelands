@@ -75,6 +75,7 @@ enum {
 	GUI_ID_MAP_TYPE_MOUNTAINS,
 	GUI_ID_MAP_TYPE_CRAZY,
 	GUI_ID_MAP_TYPE_CRAZYHILLS,
+	GUI_ID_CHARACTER_CREATOR,
 	GUI_ID_TAB_SINGLEPLAYER,
 	GUI_ID_TAB_MULTIPLAYER,
 	GUI_ID_TAB_SETTINGS,
@@ -116,7 +117,8 @@ struct MainMenuData
 		clear_map(false),
 		use_fixed_seed(false),
 		fixed_seed(L""),
-		map_type("default")
+		map_type("default"),
+		character_creator(false)
 	{}
 
 	// These are in the native format of the gui elements
@@ -155,6 +157,8 @@ struct MainMenuData
 	bool use_fixed_seed;
 	std::wstring fixed_seed;
 	std:: string map_type;
+	// go to character creator, not the game
+	bool character_creator;
 };
 
 class GUIMainMenu : public GUIModalMenu

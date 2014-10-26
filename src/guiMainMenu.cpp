@@ -377,7 +377,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		Calculate new sizes and positions
 	*/
 
-	v2s32 size(600, 500);
+	v2s32 size(800, 500);
 
 	core::rect<s32> rect(
 			screensize.X/2 - size.X/2,
@@ -389,38 +389,44 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	DesiredRect = rect;
 	recalculateAbsolutePosition(false);
 
+	// Character Creator button
+	{
+		core::rect<s32> rect(0, 0, 200, 40);
+		rect += v2s32(25, 200);
+		Environment->addButton(rect, this, GUI_ID_CHARACTER_CREATOR, wgettext("Character Creator"));
+	}
 	// Single Player button
 	{
-		core::rect<s32> rect(0, 0, 150, 30);
-		rect += v2s32(25, 200);
+		core::rect<s32> rect(0, 0, 200, 40);
+		rect += v2s32(25, 260);
 		Environment->addButton(rect, this, GUI_ID_TAB_SINGLEPLAYER, wgettext("Single Player"));
 	}
 	// Multi Player button
 	{
-		core::rect<s32> rect(0, 0, 150, 30);
-		rect += v2s32(25, 240);
+		core::rect<s32> rect(0, 0, 200, 40);
+		rect += v2s32(25, 305);
 		Environment->addButton(rect, this, GUI_ID_TAB_MULTIPLAYER, wgettext("Multi Player"));
 	}
 	// Settings button
 	{
-		core::rect<s32> rect(0, 0, 130, 30);
-		rect += v2s32(35, 280);
+		core::rect<s32> rect(0, 0, 180, 40);
+		rect += v2s32(35, 350);
 		Environment->addButton(rect, this, GUI_ID_TAB_SETTINGS, wgettext("Settings"));
 	}
 	// Credits button
 	{
-		core::rect<s32> rect(0, 0, 130, 30);
-		rect += v2s32(35, 320);
+		core::rect<s32> rect(0, 0, 180, 40);
+		rect += v2s32(35, 395);
 		Environment->addButton(rect, this, GUI_ID_TAB_CREDITS, wgettext("Credits"));
 	}
 	// Quit button
 	{
-		core::rect<s32> rect(0, 0, 130, 30);
-		rect += v2s32(35, 360);
+		core::rect<s32> rect(0, 0, 180, 40);
+		rect += v2s32(35, 440);
 		Environment->addButton(rect, this, GUI_ID_TAB_QUIT, wgettext("Quit"));
 	}
 
-	v2s32 topleft_content(200, 0);
+	v2s32 topleft_content(250, 0);
 	v2s32 size_content = size - v2s32(300, 0);
 
 	//v2s32 size = rect.getSize();
@@ -450,7 +456,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	if (m_data->selected_tab == TAB_MULTIPLAYER) {
 		changeCtype("");
 		{
-			core::rect<s32> rect(0, 0, 400, 20);
+			core::rect<s32> rect(0, 0, 550, 20);
 			rect += topleft_content + v2s32(0, 20);
 			gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Multi Player"), rect, false, true, this, -1);
 			t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
@@ -459,25 +465,25 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		// Nickname + password
 		{
 			core::rect<s32> rect(0, 0, 110, 20);
-			rect += topleft_content + v2s32(70, 60);
+			rect += topleft_content + v2s32(120, 60);
 			Environment->addStaticText(wgettext("Name/Password"), rect, false, true, this, -1);
 		}
 		changeCtype("C");
 		{
 			core::rect<s32> rect(0, 0, 230, 30);
-			rect += topleft_content + v2s32(85, 90);
+			rect += topleft_content + v2s32(135, 90);
 			gui::IGUIElement *e =
 			Environment->addEditBox(text_name.c_str(), rect, false, this, GUI_ID_NAME_INPUT);
-			if(text_name == L"")
+			if (text_name == L"")
 				Environment->setFocus(e);
 		}
 		{
 			core::rect<s32> rect(0, 0, 230, 30);
-			rect += topleft_content + v2s32(85, 125);
+			rect += topleft_content + v2s32(135, 125);
 			gui::IGUIEditBox *e =
 			Environment->addEditBox(L"", rect, false, this, 264);
 			e->setPasswordBox(true);
-			if(text_name != L"" && text_address != L"")
+			if (text_name != L"" && text_address != L"")
 				Environment->setFocus(e);
 
 		}
@@ -485,100 +491,99 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		// Address + port
 		{
 			core::rect<s32> rect(0, 0, 110, 20);
-			rect += topleft_content + v2s32(70, 170);
-			Environment->addStaticText(wgettext("Address/Port"),
-				rect, false, true, this, -1);
+			rect += topleft_content + v2s32(120, 170);
+			Environment->addStaticText(wgettext("Address/Port"), rect, false, true, this, -1);
 		}
 		changeCtype("C");
 		{
 			core::rect<s32> rect(0, 0, 230, 30);
-			rect += topleft_content + v2s32(85, 200);
+			rect += topleft_content + v2s32(135, 200);
 			gui::IGUIElement *e =
 			Environment->addEditBox(text_address.c_str(), rect, false, this, GUI_ID_ADDRESS_INPUT);
-			if(text_name != L"" && text_address == L"")
+			if (text_name != L"" && text_address == L"")
 				Environment->setFocus(e);
 		}
 		{
 			core::rect<s32> rect(0, 0, 120, 30);
-			rect += topleft_content + v2s32(195, 240);
+			rect += topleft_content + v2s32(245, 240);
 			Environment->addEditBox(text_port.c_str(), rect, false, this, GUI_ID_PORT_INPUT);
 		}
 		changeCtype("");
 		// Start game button
 		{
 			core::rect<s32> rect(0, 0, 180, 30);
-			rect += topleft_content + v2s32(110, 290);
+			rect += topleft_content + v2s32(160, 290);
 			Environment->addButton(rect, this, GUI_ID_JOIN_GAME_BUTTON, wgettext("Connect"));
 		}
 	}else if (m_data->selected_tab == TAB_SETTINGS) {
 		changeCtype("");
 		{
-			core::rect<s32> rect(0, 0, 400, 20);
+			core::rect<s32> rect(0, 0, 550, 20);
 			rect += topleft_content + v2s32(0, 20);
 			gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Settings"), rect, false, true, this, -1);
 			t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(40, 60);
+			rect += topleft_content + v2s32(80, 60);
 			Environment->addCheckBox(fancy_trees, rect, this, GUI_ID_FANCYTREE_CB, wgettext("Fancy trees"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(40, 90);
+			rect += topleft_content + v2s32(80, 90);
 			Environment->addCheckBox(smooth_lighting, rect, this, GUI_ID_SMOOTH_LIGHTING_CB, wgettext("Smooth Lighting"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(40, 120);
+			rect += topleft_content + v2s32(80, 120);
 			Environment->addCheckBox(clouds_3d, rect, this, GUI_ID_3D_CLOUDS_CB, wgettext("3D Clouds"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(40, 150);
+			rect += topleft_content + v2s32(80, 150);
 			Environment->addCheckBox(opaque_water, rect, this, GUI_ID_OPAQUE_WATER_CB, wgettext("Opaque water"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(200, 60);
+			rect += topleft_content + v2s32(290, 60);
 			Environment->addCheckBox(fullscreen, rect, this, GUI_ID_FULLSCREEN_CB, wgettext("Fullscreen"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(200, 90);
+			rect += topleft_content + v2s32(290, 90);
 			Environment->addCheckBox(particles, rect, this, GUI_ID_PARTICLES_CB, wgettext("Particles"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(200, 120);
+			rect += topleft_content + v2s32(290, 120);
 			Environment->addCheckBox(mipmap, rect, this, GUI_ID_MIPMAP_CB, wgettext("Mip-Mapping"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(200, 150);
+			rect += topleft_content + v2s32(290, 150);
 			Environment->addCheckBox(bilinear, rect, this, GUI_ID_BILINEAR_CB, wgettext("Bi-Linear Filtering"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(200, 180);
+			rect += topleft_content + v2s32(290, 180);
 			Environment->addCheckBox(trilinear, rect, this, GUI_ID_TRILINEAR_CB, wgettext("Tri-Linear Filtering"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(200, 210);
+			rect += topleft_content + v2s32(290, 210);
 			Environment->addCheckBox(anisotropic, rect, this, GUI_ID_ANISOTROPIC_CB, wgettext("Anisotropic Filtering"));
 		}
 
 		// Key change button
 		{
 			core::rect<s32> rect(0, 0, 130, 30);
-			rect += topleft_content + v2s32(140, 280);
+			rect += topleft_content + v2s32(210, 280);
 			Environment->addButton(rect, this, GUI_ID_CHANGE_KEYS_BUTTON, wgettext("Change keys"));
 		}
 	}else if (m_data->selected_tab == TAB_SINGLEPLAYER) {
 		changeCtype("");
 		{
-			core::rect<s32> rect(0, 0, 400, 20);
+			core::rect<s32> rect(0, 0, 550, 20);
 			rect += topleft_content + v2s32(0, 20);
 			gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Single Player"), rect, false, true, this, -1);
 			t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
@@ -587,7 +592,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		// Server parameters
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(100, 60);
+			rect += topleft_content + v2s32(175, 60);
 			gui::IGUIComboBox *c = Environment->addComboBox(rect, this, GUI_ID_GAME_MODE_COMBO);
 			u32 cm = c->addItem(wgettext("Creative Mode"),GUI_ID_GAME_MODE_CREATIVE);
 			u32 am = c->addItem(wgettext("Adventure Mode"),GUI_ID_GAME_MODE_ADVENTURE);
@@ -602,26 +607,26 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		}
 		// Advanced settings button
 		{
-			core::rect<s32> rect(0, 0, 130, 30);
-			rect += topleft_content + v2s32(40, 100);
+			core::rect<s32> rect(0, 0, 170, 30);
+			rect += topleft_content + v2s32(90, 100);
 			Environment->addButton(rect, this, GUI_ID_GAME_SETTINGS_ADV, wgettext("Advanced Settings"));
 		}
 		// Map options button
 		{
-			core::rect<s32> rect(0, 0, 130, 30);
-			rect += topleft_content + v2s32(200, 100);
+			core::rect<s32> rect(0, 0, 170, 30);
+			rect += topleft_content + v2s32(290, 100);
 			Environment->addButton(rect, this, GUI_ID_MAP_OPTIONS_BUTTON, wgettext("Map Options"));
 		}
 		// Start game button
 		{
 			core::rect<s32> rect(0, 0, 180, 30);
-			rect += topleft_content + v2s32(110, 170);
+			rect += topleft_content + v2s32(185, 170);
 			Environment->addButton(rect, this, GUI_ID_JOIN_GAME_BUTTON, wgettext("Start Game"));
 		}
 	}else if (m_data->selected_tab == TAB_SINGLEPLAYER_ADVANCED) {
 		changeCtype("");
 		{
-			core::rect<s32> rect(0, 0, 400, 20);
+			core::rect<s32> rect(0, 0, 550, 20);
 			rect += topleft_content + v2s32(0, 20);
 			gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Single Player"), rect, false, true, this, -1);
 			t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
@@ -630,39 +635,40 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		// Server parameters
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(100, 60);
+			rect += topleft_content + v2s32(175, 60);
 			gui::IGUIComboBox *c = Environment->addComboBox(rect, this, GUI_ID_GAME_MODE_COMBO);
 			u32 cm = c->addItem(wgettext("Creative Mode"),GUI_ID_GAME_MODE_CREATIVE);
 			u32 am = c->addItem(wgettext("Adventure Mode"),GUI_ID_GAME_MODE_ADVENTURE);
 			u32 sm = c->addItem(wgettext("Survival Mode"),GUI_ID_GAME_MODE_SURVIVAL);
 			if (game_mode == L"creative") {
 				c->setSelected(cm);
+			}else if (game_mode == L"adventure") {
+				c->setSelected(am);
 			}else if (game_mode == L"survival") {
 				c->setSelected(sm);
-			}else{
-				c->setSelected(am);
 			}
 		}
 		// Basic settings button
 		{
-			core::rect<s32> rect(0, 0, 150, 30);
-			rect += topleft_content + v2s32(40, 100);
+			core::rect<s32> rect(0, 0, 170, 30);
+			rect += topleft_content + v2s32(90, 100);
 			Environment->addButton(rect, this, GUI_ID_GAME_SETTINGS_BASIC, wgettext("Hide Advanced Settings"));
 		}
 		// Map options button
 		{
-			core::rect<s32> rect(0, 0, 130, 30);
-			rect += topleft_content + v2s32(200, 100);
+			core::rect<s32> rect(0, 0, 170, 30);
+			rect += topleft_content + v2s32(290, 100);
 			Environment->addButton(rect, this, GUI_ID_MAP_OPTIONS_BUTTON, wgettext("Map Options"));
 		}
 		{
-			core::rect<s32> rect(0, 0, 100, 20);
+			core::rect<s32> rect(0, 0, 125, 20);
 			rect += topleft_content + v2s32(40, 160);
-			Environment->addStaticText(wgettext("Creatures"), rect, false, true, this, -1);
+			gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Creatures"), rect, false, true, this, -1);
+			t->setTextAlignment(gui::EGUIA_LOWERRIGHT, gui::EGUIA_UPPERLEFT);
 		}
 		{
 			core::rect<s32> rect(0, 0, 240, 30);
-			rect += topleft_content + v2s32(120, 155);
+			rect += topleft_content + v2s32(170, 155);
 			gui::IGUIComboBox *c = Environment->addComboBox(rect, this, GUI_ID_MOBS_COMBO);
 			u32 pm = c->addItem(wgettext("Passive"),GUI_ID_MOBS_PASSIVE);
 			u32 am = c->addItem(wgettext("Passive & Aggressive"),GUI_ID_MOBS_AGGRESSIVE);
@@ -677,49 +683,49 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(40, 200);
+			rect += topleft_content + v2s32(70, 200);
 			Environment->addCheckBox(enable_damage, rect, this, GUI_ID_DAMAGE_CB, wgettext("Player Damage"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(50, 230);
+			rect += topleft_content + v2s32(80, 230);
 			Environment->addCheckBox(suffocation, rect, this, GUI_ID_SUFFOCATE_CB, wgettext("Suffocation/Drowning"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(50, 260);
+			rect += topleft_content + v2s32(80, 260);
 			Environment->addCheckBox(hunger, rect, this, GUI_ID_HUNGER_CB, wgettext("Hunger"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(40, 290);
+			rect += topleft_content + v2s32(70, 290);
 			Environment->addCheckBox(tool_wear, rect, this, GUI_ID_TOOL_WEAR_CB, wgettext("Tool Wear"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(220, 200);
+			rect += topleft_content + v2s32(300, 200);
 			Environment->addCheckBox(infinite_inventory, rect, this, GUI_ID_INFINITE_INV_CB, wgettext("Infinite Inventory"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(230, 230);
+			rect += topleft_content + v2s32(310, 230);
 			Environment->addCheckBox(initial_inventory, rect, this, GUI_ID_INITIAL_INV_CB, wgettext("Initial Inventory"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(220, 260);
+			rect += topleft_content + v2s32(300, 260);
 			Environment->addCheckBox(droppable_inventory, rect, this, GUI_ID_DROPPABLE_INV_CB, wgettext("Droppable Inventory"));
 		}
 		// Start game button
 		{
 			core::rect<s32> rect(0, 0, 180, 30);
-			rect += topleft_content + v2s32(110, 340);
+			rect += topleft_content + v2s32(185, 340);
 			Environment->addButton(rect, this, GUI_ID_JOIN_GAME_BUTTON, wgettext("Start Game"));
 		}
 	}else if (m_data->selected_tab == TAB_SINGLEPLAYER_MAP) {
 		changeCtype("");
 		{
-			core::rect<s32> rect(0, 0, 400, 20);
+			core::rect<s32> rect(0, 0, 550, 20);
 			rect += topleft_content + v2s32(0, 20);
 			gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Single Player"), rect, false, true, this, -1);
 			t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
@@ -728,7 +734,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		// Server parameters
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(100, 60);
+			rect += topleft_content + v2s32(175, 60);
 			gui::IGUIComboBox *c = Environment->addComboBox(rect, this, GUI_ID_GAME_MODE_COMBO);
 			u32 cm = c->addItem(wgettext("Creative Mode"),GUI_ID_GAME_MODE_CREATIVE);
 			u32 am = c->addItem(wgettext("Adventure Mode"),GUI_ID_GAME_MODE_ADVENTURE);
@@ -743,37 +749,37 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		}
 		// Advanced settings button
 		{
-			core::rect<s32> rect(0, 0, 150, 30);
-			rect += topleft_content + v2s32(40, 100);
+			core::rect<s32> rect(0, 0, 170, 30);
+			rect += topleft_content + v2s32(90, 100);
 			Environment->addButton(rect, this, GUI_ID_GAME_SETTINGS_ADV, wgettext("Advanced Settings"));
 		}
 		// Basic settings button
 		{
-			core::rect<s32> rect(0, 0, 150, 30);
-			rect += topleft_content + v2s32(200, 100);
+			core::rect<s32> rect(0, 0, 170, 30);
+			rect += topleft_content + v2s32(290, 100);
 			Environment->addButton(rect, this, GUI_ID_GAME_SETTINGS_BASIC, wgettext("Hide Map Options"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(100, 130);
+			rect += topleft_content + v2s32(150, 130);
 			Environment->addCheckBox(delete_map, rect, this, GUI_ID_MAP_DELETE_CB, wgettext("Create New Map"));
 		}
 		if (delete_map) {
 			{
 				core::rect<s32> rect(0, 0, 300, 20);
-				rect += topleft_content + v2s32(70, 160);
+				rect += topleft_content + v2s32(120, 160);
 				Environment->addStaticText(wgettext("Warning! Your old map will be deleted!"),
 					rect, false, true, this, -1);
 			}
 			{
-				core::rect<s32> rect(0, 0, 110, 20);
-				rect += topleft_content + v2s32(40, 195);
-				Environment->addStaticText(wgettext("Map Type"),
-					rect, false, true, this, -1);
+				core::rect<s32> rect(0, 0, 120, 20);
+				rect += topleft_content + v2s32(45, 195);
+				gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Map Type"), rect, false, true, this, -1);
+				t->setTextAlignment(gui::EGUIA_LOWERRIGHT, gui::EGUIA_UPPERLEFT);
 			}
 			{
 				core::rect<s32> rect(0, 0, 240, 30);
-				rect += topleft_content + v2s32(120, 190);
+				rect += topleft_content + v2s32(170, 190);
 				gui::IGUIComboBox *c = Environment->addComboBox(rect, this, GUI_ID_MAP_TYPE_COMBO);
 				u32 m1 = c->addItem(wgettext("Flat"),GUI_ID_MAP_TYPE_FLAT);
 				u32 m2 = c->addItem(wgettext("Flatter"),GUI_ID_MAP_TYPE_FLATTER);
@@ -803,20 +809,20 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			}
 			{
 				core::rect<s32> rect(0, 0, 200, 30);
-				rect += topleft_content + v2s32(70, 230);
+				rect += topleft_content + v2s32(150, 230);
 				Environment->addCheckBox(use_fixed_seed, rect, this, GUI_ID_MAP_SEED_CB, wgettext("Use Fixed Seed"));
 			}
 			if (use_fixed_seed) {
 				{
-					core::rect<s32> rect(0, 0, 110, 20);
-					rect += topleft_content + v2s32(70, 265);
-					Environment->addStaticText(wgettext("Map Seed"),
-						rect, false, true, this, -1);
+					core::rect<s32> rect(0, 0, 120, 20);
+					rect += topleft_content + v2s32(65, 265);
+					gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Map Seed"), rect, false, true, this, -1);
+					t->setTextAlignment(gui::EGUIA_LOWERRIGHT, gui::EGUIA_UPPERLEFT);
 				}
 				changeCtype("C");
 				{
 					core::rect<s32> rect(0, 0, 190, 30);
-					rect += topleft_content + v2s32(140, 260);
+					rect += topleft_content + v2s32(190, 260);
 					Environment->addEditBox(fixed_seed.c_str(), rect, false, this, GUI_ID_MAP_SEED_INPUT);
 				}
 				changeCtype("");
@@ -824,12 +830,12 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		}else{
 			{
 				core::rect<s32> rect(0, 0, 200, 30);
-				rect += topleft_content + v2s32(100, 160);
+				rect += topleft_content + v2s32(150, 160);
 				Environment->addCheckBox(clear_map, rect, this, GUI_ID_MAP_CLEAR_CB, wgettext("Clear Map"));
 			}
 			if (clear_map) {
 				core::rect<s32> rect(0, 0, 300, 40);
-				rect += topleft_content + v2s32(70, 190);
+				rect += topleft_content + v2s32(120, 190);
 				Environment->addStaticText(wgettext("Warning! This will delete all construction from your map!"),
 						rect, false, true, this, -1);
 			}
@@ -837,19 +843,19 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		// Start game button
 		{
 			core::rect<s32> rect(0, 0, 180, 30);
-			rect += topleft_content + v2s32(110, 310);
+			rect += topleft_content + v2s32(185, 310);
 			Environment->addButton(rect, this, GUI_ID_JOIN_GAME_BUTTON, wgettext("Start Game"));
 		}
 	}else if(m_data->selected_tab == TAB_CREDITS) {
 		// CREDITS
 		{
-			core::rect<s32> rect(0, 0, 400, 20);
+			core::rect<s32> rect(0, 0, 550, 20);
 			rect += topleft_content + v2s32(0, 20);
 			gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Credits"), rect, false, true, this, -1);
 			t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 		}
 		{
-			core::rect<s32> rect(0, 0, 400, 350);
+			core::rect<s32> rect(0, 0, 550, 350);
 			rect += topleft_content + v2s32(0, 50);
 			gui::IGUIStaticText *t = Environment->addStaticText(
 				wgettext(
@@ -886,11 +892,11 @@ void GUIMainMenu::drawMenu()
 		core::rect<s32> left(
 			AbsoluteRect.UpperLeftCorner.X,
 			AbsoluteRect.UpperLeftCorner.Y,
-			AbsoluteRect.LowerRightCorner.X-400,
+			AbsoluteRect.LowerRightCorner.X-550,
 			AbsoluteRect.LowerRightCorner.Y
 		);
 		core::rect<s32> right(
-			AbsoluteRect.UpperLeftCorner.X+200,
+			AbsoluteRect.UpperLeftCorner.X+250,
 			AbsoluteRect.UpperLeftCorner.Y,
 			AbsoluteRect.LowerRightCorner.X,
 			AbsoluteRect.LowerRightCorner.Y
@@ -901,9 +907,9 @@ void GUIMainMenu::drawMenu()
 		if (texture != 0) {
 			const core::dimension2d<u32>& img_origsize = texture->getOriginalSize();
 			core::rect<s32> logo(
-				AbsoluteRect.UpperLeftCorner.X,
+				AbsoluteRect.UpperLeftCorner.X+25,
 				AbsoluteRect.UpperLeftCorner.Y,
-				AbsoluteRect.UpperLeftCorner.X+200,
+				AbsoluteRect.UpperLeftCorner.X+225,
 				AbsoluteRect.UpperLeftCorner.Y+200
 			);
 			const video::SColor color(255,255,255,255);
