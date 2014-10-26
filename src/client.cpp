@@ -900,6 +900,7 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 			std::string chardef;
 
 			u16 player_count = readU16(is);
+			u16 field_count = readU16(is);
 
 			// peer_ids
 			core::list<u16> players_alive;
@@ -910,7 +911,9 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 				is.read(pname,PLAYERNAME_SIZE);
 				pname[PLAYERNAME_SIZE-1] = '\0';
 				chardef = deSerializeString(is);
-printf("playerinfo: '%s' '%s'\n",pname,chardef.c_str());
+				for (u16 j=1; j<field_count; j++) {
+					std::string dump = deSerializeString(is);
+				}
 
 				// Don't update the info of the local player
 				if (peer_id == our_peer_id)

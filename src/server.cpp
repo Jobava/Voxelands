@@ -5002,6 +5002,8 @@ void Server::SendPlayerInfos()
 	std::ostringstream os(std::ios_base::binary);
 	writeU16(os, TOCLIENT_PLAYERINFO);
 	writeU16(os,(u16)players.size());
+	// this is the number of serialized string sent below
+	writeU16(os,1);
 	char name[PLAYERNAME_SIZE];
 
 	for (core::list<Player*>::Iterator i = players.begin(); i != players.end(); i++) {
@@ -5012,6 +5014,7 @@ void Server::SendPlayerInfos()
 		snprintf(name, PLAYERNAME_SIZE, "%s", player->getName());
 		os.write(name,PLAYERNAME_SIZE);
 		os<<serializeString(player->getCharDef());
+		// space seperated serialized strings can be added here
 	}
 
 	std::string s = os.str();
