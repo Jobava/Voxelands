@@ -48,8 +48,8 @@ void content_clothesitem_init()
 	i = CONTENT_CLOTHESITEM_FUR_PANTS;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
-	f->texture = "clothes_furpants.png";
-	f->overlay_texture = "clothes_player_furpants.png";
+	f->texture = "clothes_pants_fur.png";
+	f->overlay_texture = "clothes_player_pants_fur.png";
 	f->description = wgettext("Fur Pants");
 	f->type = CT_PANTS;
 	f->armour = 0.10;
@@ -62,8 +62,8 @@ void content_clothesitem_init()
 	i = CONTENT_CLOTHESITEM_FUR_SHIRT;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
-	f->texture = "clothes_furshirt.png";
-	f->overlay_texture = "clothes_player_furshirt.png";
+	f->texture = "clothes_shirt_fur.png";
+	f->overlay_texture = "clothes_player_shirt_fur.png";
 	f->description = wgettext("Fur Shirt");
 	f->type = CT_SHIRT;
 	f->armour = 0.10;
@@ -76,8 +76,8 @@ void content_clothesitem_init()
 	i = CONTENT_CLOTHESITEM_FUR_HAT;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
-	f->texture = "clothes_furhat.png";
-	f->overlay_texture = "clothes_player_furhat.png";
+	f->texture = "clothes_hat_fur.png";
+	f->overlay_texture = "clothes_player_hat_fur.png";
 	f->description = wgettext("Fur Hat");
 	f->type = CT_HAT;
 	f->armour = 0.05;
@@ -90,8 +90,8 @@ void content_clothesitem_init()
 	i = CONTENT_CLOTHESITEM_FUR_BOOTS;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
-	f->texture = "clothes_furboots.png";
-	f->overlay_texture = "clothes_player_furboots.png";
+	f->texture = "clothes_boots_fur.png";
+	f->overlay_texture = "clothes_player_boots_fur.png";
 	f->description = wgettext("Fur Boots");
 	f->type = CT_BOOTS;
 	f->armour = 0.05;
@@ -104,8 +104,8 @@ void content_clothesitem_init()
 	i = COTNENT_CLOTHESITEM_SPACESUIT_PANTS;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
-	f->texture = "clothes_spacepants.png";
-	f->overlay_texture = "clothes_player_spacepants.png";
+	f->texture = "clothes_pants_space.png";
+	f->overlay_texture = "clothes_player_pants_space.png";
 	f->description = wgettext("Space Suit Pants");
 	f->type = CT_PANTS;
 	f->armour = 0.10;
@@ -118,8 +118,8 @@ void content_clothesitem_init()
 	i = COTNENT_CLOTHESITEM_SPACESUIT_SHIRT;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
-	f->texture = "clothes_spaceshirt.png";
-	f->overlay_texture = "clothes_player_spaceshirt.png";
+	f->texture = "clothes_shirt_space.png";
+	f->overlay_texture = "clothes_player_shirt_space.png";
 	f->description = wgettext("Space Suit Shirt");
 	f->type = CT_SHIRT;
 	f->armour = 0.10;
@@ -132,8 +132,8 @@ void content_clothesitem_init()
 	i = COTNENT_CLOTHESITEM_SPACESUIT_HELMET;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
-	f->texture = "clothes_spacehelmet.png";
-	f->overlay_texture = "clothes_player_spacehelmet.png";
+	f->texture = "clothes_helmet_space.png";
+	f->overlay_texture = "clothes_player_helmet_space.png";
 	f->description = wgettext("Space Suit Helmet");
 	f->type = CT_HAT;
 	f->armour = 0.05;
@@ -147,8 +147,8 @@ void content_clothesitem_init()
 	i = COTNENT_CLOTHESITEM_SPACESUIT_BOOTS;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
-	f->texture = "clothes_spaceboots.png";
-	f->overlay_texture = "clothes_player_spaceboots.png";
+	f->texture = "clothes_boots_space.png";
+	f->overlay_texture = "clothes_player_boots_space.png";
 	f->description = wgettext("Space Suit Boots");
 	f->type = CT_BOOTS;
 	f->armour = 0.05;

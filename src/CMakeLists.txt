@@ -218,6 +218,7 @@ set(voxelands_SRCS
 	guiPauseMenu.cpp
 	guiPasswordChange.cpp
 	guiDeathScreen.cpp
+	character_creator.cpp
 	mesh.cpp
 	client.cpp
 	tile.cpp

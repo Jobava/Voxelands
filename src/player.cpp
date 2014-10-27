@@ -37,9 +37,9 @@
 #include "content_clothesitem.h"
 
 /* character def:
-gender:Yscale:XZscale:skintone:eyes:hairtone:hair:face
+gender:Yscale:XZscale:skintone:eyes:hairtone:hair:face:shirt-colour:pants-colour:shoe-type
 the old default:
-M:10:10:fair:blue:brown:medium:normal
+M:10:10:fair:blue:brown:medium:normal:green:blue:leather
 */
 
 Player::Player():
@@ -61,7 +61,7 @@ Player::Player():
 	m_position(0,0,0),
 	m_home(0,0,0),
 	m_hashome(false),
-	m_character("M:10:10:fair:blue:brown:medium:normal")
+	m_character(PLAYER_DEFAULT_CHARDEF)
 {
 	updateName("<not set>");
 	resetInventory();
@@ -253,7 +253,7 @@ void Player::setHome(v3f h)
 v3f Player::getScale()
 {
 	if (m_character == "")
-		m_character = std::string("M:10:10:fair:blue:brown:medium:normal");
+		m_character = std::string(PLAYER_DEFAULT_CHARDEF);
 	Strfnd f(m_character);
 
 	std::string gender = f.next(":");
@@ -279,7 +279,7 @@ v3f Player::getScale()
 void Player::getSkin(std::vector<std::string> &parts)
 {
 	if (m_character == "")
-		m_character = std::string("M:10:10:fair:blue:brown:medium:normal");
+		m_character = std::string(PLAYER_DEFAULT_CHARDEF);
 	Strfnd f(m_character);
 
 	std::string gender = f.next(":");
@@ -302,7 +302,7 @@ void Player::getSkin(std::vector<std::string> &parts)
 		hair = "medium";
 	}
 	if (getPath("skin",std::string("face_")+face+gender+".png",true) == "")
-		face = "normal";
+		face = "human";
 
 	parts.push_back(std::string("skins")+DIR_DELIM+"skintone_"+skintone+"_"+gender+".png");
 	parts.push_back(std::string("skins")+DIR_DELIM+"face_"+face+"_"+skintone+"_"+gender+".png");
@@ -317,6 +317,7 @@ std::string Player::getSkin()
 	std::string tex = "";
 
 	for (std::vector<std::string>::iterator i = parts.begin(); i != parts.end(); i++) {
+		tex += "^";
 		tex += *i;
 	}
 
@@ -495,6 +496,38 @@ void RemotePlayer::move(f32 dtime, Map &map, f32 pos_max_d)
 	}
 
 	ISceneNode::setPosition(m_showpos-m_camera_offset);
+}
+
+video::ITexture* RemotePlayer::getTexture()
+{
+	std::string clothes[4];
+	const char* list[4] = {"hat","shirt","pants","boots"};
+	std::vector<std::string> parts;
+	getSkin(parts);
+	for (int j=0; j<4; j++) {
+		InventoryList *l = inventory.getList(list[j]);
+		if (l == NULL)
+			continue;
+		InventoryItem *i = l->getItem(0);
+		if (i == NULL)
+			continue;
+		clothes[j] = content_clothesitem_features(i->getContent()).overlay_texture;
+	}
+
+	std::string tex = "";
+
+	tex += parts[0];         // skin
+	tex += "^" + parts[1];   // face
+	tex += "^" + parts[2];   // eyes
+	tex += "^" + clothes[2]; // pants
+	tex += "^" + clothes[1]; // shirt
+				 // deco
+				 // jacket
+	tex += "^" + clothes[3]; // boots
+	tex += "^" + parts[3];   // hair
+	tex += "^" + clothes[0]; // hat
+
+	return g_texturesource->getTextureRaw(tex);
 }
 
 #endif

@@ -702,7 +702,7 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 
 		{
 			// Reply to server
-			std::string chardef = "M:10:10:fair:blue:brown:medium:normal";
+			std::string chardef = std::string(PLAYER_DEFAULT_CHARDEF);
 			if (g_settings->exists("character_definition"))
 				chardef = g_settings->get("character_definition");
 

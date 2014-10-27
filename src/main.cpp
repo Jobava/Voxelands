@@ -1,22 +1,27 @@
-/*
-Minetest-c55
-Copyright (C) 2010-2011 celeron55, Perttu Ahola <celeron55@gmail.com>
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along
-with this program; if not, write to the Free Software Foundation, Inc.,
-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-*/
-
+/************************************************************************
+* Minetest-c55
+* Copyright (C) 2010-2011 celeron55, Perttu Ahola <celeron55@gmail.com>
+*
+* main.cpp
+* voxelands - 3d voxel world sandbox game
+* Copyright (C) Lisa 'darkrose' Milne 2013-2014 <lisa@ltmnet.com>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but
+* WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+* See the GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>
+*
+* License updated from GPLv2 or later to GPLv3 or later by Lisa Milne
+* for Voxelands.
+************************************************************************/
 
 #ifdef NDEBUG
 	// Disable unit tests
@@ -70,6 +75,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "content_mob.h"
 #include "path.h"
 #include "gui_colours.h"
+#include "character_creator.h"
 
 // This makes textures
 ITextureSource *g_texturesource = NULL;
@@ -1314,6 +1320,29 @@ int main(int argc, char *argv[])
 
 			if (character_creator) {
 				character_creator = false;
+				video::IVideoDriver* driver = device->getVideoDriver();
+
+				GUICharDefMenu *menu = new GUICharDefMenu(device, guienv, guiroot, -1, &g_menumgr, g_gamecallback);
+				menu->allowFocusRemoval(true);
+
+				while (device->run() && kill == false) {
+					if (menu->getStatus() == true)
+						break;
+
+					driver->beginScene(true, true, video::SColor(255,0,0,0));
+
+					smgr->drawAll();
+					guienv->drawAll();
+
+					driver->endScene();
+
+					// On some computers framerate doesn't seem to be
+					// automatically limited
+					sleep_ms(25);
+				}
+
+				menu->drop();
+
 				continue;
 			}
 			// Initialize mapnode again to enable changed graphics settings
