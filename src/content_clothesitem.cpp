@@ -101,7 +101,7 @@ void content_clothesitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = COTNENT_CLOTHESITEM_SPACESUIT_PANTS;
+	i = CONTENT_CLOTHESITEM_SPACESUIT_PANTS;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
 	f->texture = "clothes_pants_space.png";
@@ -115,7 +115,7 @@ void content_clothesitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = COTNENT_CLOTHESITEM_SPACESUIT_SHIRT;
+	i = CONTENT_CLOTHESITEM_SPACESUIT_SHIRT;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
 	f->texture = "clothes_shirt_space.png";
@@ -129,7 +129,7 @@ void content_clothesitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = COTNENT_CLOTHESITEM_SPACESUIT_HELMET;
+	i = CONTENT_CLOTHESITEM_SPACESUIT_HELMET;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
 	f->texture = "clothes_helmet_space.png";
@@ -144,7 +144,7 @@ void content_clothesitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = COTNENT_CLOTHESITEM_SPACESUIT_BOOTS;
+	i = CONTENT_CLOTHESITEM_SPACESUIT_BOOTS;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
 	f->texture = "clothes_boots_space.png";
