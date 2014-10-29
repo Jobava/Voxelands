@@ -69,15 +69,12 @@ enum ToClientCommand
 		u8 enable_hunger
 	*/
 
-	TOCLIENT_PLAYERINFO = 0x24,
+	TOCLIENT_PLAYERINFO = 0x24, // deprecated, see TOCLIENT_PLAYERDATA
 	/*
 		[0] u16 command
-		[2] u16 player count
 		for each player:
 			u16 peer_id
 			char[20] name
-			u16 length of serialized chardef
-			string serialized character definition
 	*/
 
 	TOCLIENT_PLAYER_ANIMATION = 0x25,
@@ -218,6 +215,18 @@ enum ToClientCommand
 			u16 pants
 			u16 boots
 		}
+	*/
+
+	TOCLIENT_PLAYERDATA = 0x40,
+	/*
+		[0] u16 command
+		[2] u16 player count
+		[4] u16 field count
+		for each player:
+			u16 peer_id
+			char[20] name
+			u16 length of serialized chardef
+			string serialized character definition
 	*/
 };
 

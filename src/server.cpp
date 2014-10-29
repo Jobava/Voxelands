@@ -2017,11 +2017,14 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 
 		getClient(peer_id)->serialization_version = getClient(peer_id)->pending_serialization_version;
+		std::string chardef = PLAYER_DEFAULT_CHARDEF;
 
-		std::string datastring((char*)&data[2], datasize-2);
-		std::istringstream is(datastring, std::ios_base::binary);
-		// Read character definition
-		std::string chardef = deSerializeString(is);
+		if (datasize > 2) {
+			std::string datastring((char*)&data[2], datasize-2);
+			std::istringstream is(datastring, std::ios_base::binary);
+			// Read character definition
+			chardef = deSerializeString(is);
+		}
 
 		Player *player = m_env.getPlayer(peer_id);
 		// set the player's character definition
@@ -5000,9 +5003,9 @@ void Server::SendPlayerInfos()
 	core::list<Player*> players = m_env.getPlayers(true);
 
 	std::ostringstream os(std::ios_base::binary);
-	writeU16(os, TOCLIENT_PLAYERINFO);
+	writeU16(os, TOCLIENT_PLAYERDATA);
 	writeU16(os,(u16)players.size());
-	// this is the number of serialized string sent below
+	// this is the number of serialized strings sent below
 	writeU16(os,1);
 	char name[PLAYERNAME_SIZE];
 
@@ -5014,7 +5017,7 @@ void Server::SendPlayerInfos()
 		snprintf(name, PLAYERNAME_SIZE, "%s", player->getName());
 		os.write(name,PLAYERNAME_SIZE);
 		os<<serializeString(player->getCharDef());
-		// space seperated serialized strings can be added here
+		// serialized strings can be added here
 	}
 
 	std::string s = os.str();
