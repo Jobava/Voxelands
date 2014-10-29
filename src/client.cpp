@@ -963,6 +963,75 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 	case TOCLIENT_PLAYERDATA:
 	{
 		u16 our_peer_id = m_con.GetPeerID();
+		// Cancel if we don't have a peer id
+		if (our_peer_id == PEER_ID_INEXISTENT) {
+			infostream<<"TOCLIENT_PLAYERINFO cancelled: we have no peer id"<<std::endl;
+			return;
+		}
+		{
+			u32 item_size = 2+PLAYERNAME_SIZE;
+			u32 player_count = (datasize-2) / item_size;
+			u32 start = 2;
+			// peer_ids
+			core::list<u16> players_alive;
+			for (u32 i=0; i<player_count; i++) {
+				// Make sure the name ends in '\0'
+				data[start+2+20-1] = 0;
+				u16 peer_id = readU16(&data[start]);
+				players_alive.push_back(peer_id);
+				// Don't update the info of the local player
+				if (peer_id == our_peer_id) {
+					start += item_size;
+					continue;
+				}
+				Player *player = m_env.getPlayer(peer_id);
+				// Create a player if it doesn't exist
+				if (player == NULL) {
+					player = new RemotePlayer(
+						m_device->getSceneManager()->getRootSceneNode(),
+						m_device,
+						-1
+					);
+					player->peer_id = peer_id;
+					m_env.addPlayer(player);
+					infostream<<"Client: Adding new player "<<peer_id<<std::endl;
+				}
+				player->updateName((char*)&data[start+2]);
+				std::string p_name((char*)&data[start+2]);
+				m_httpclient->pushRequest(HTTPREQUEST_SKIN_HASH,p_name);
+				start += item_size;
+			}
+			/*
+			Remove those players from the environment that
+			weren't listed by the server.
+			*/
+			core::list<Player*> players = m_env.getPlayers();
+			core::list<Player*>::Iterator ip;
+			for (ip=players.begin(); ip!=players.end(); ip++) {
+				// Ignore local player
+				if ((*ip)->isLocal())
+					continue;
+				// Warn about a special case
+				if ((*ip)->peer_id == 0)
+					infostream<<"Client: Removing dead player with id=0"<<std::endl;
+				bool is_alive = false;
+				core::list<u16>::Iterator i;
+				for (i=players_alive.begin(); i!=players_alive.end(); i++) {
+					if ((*ip)->peer_id == *i) {
+						is_alive = true;
+						break;
+					}
+				}
+				if (is_alive)
+					continue;
+				infostream<<"Removing dead player "<<(*ip)->peer_id<<std::endl;
+				m_env.removePlayer((*ip)->peer_id);
+			}
+		} //envlock
+	}
+	else if(command == TOCLIENT_PLAYERDATA)
+	{
+		u16 our_peer_id = m_con.GetPeerID();
 
 		// Cancel if we don't have a peer id
 		if (our_peer_id == PEER_ID_INEXISTENT) {
