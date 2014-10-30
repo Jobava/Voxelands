@@ -1949,24 +1949,21 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		}
 
 		// Add player to auth manager
-		if(m_authmanager.exists(playername) == false)
-		{
-			infostream<<"Server: adding player "<<playername
-					<<" to auth manager"<<std::endl;
+		if (m_authmanager.exists(playername) == false) {
+			infostream<<"Server: adding player "<<playername<<" to auth manager"<<std::endl;
 			m_authmanager.add(playername);
 			m_authmanager.setPassword(playername, checkpwd);
-			m_authmanager.setPrivs(playername,
-					stringToPrivs(g_settings->get("default_privs")));
+			m_authmanager.setPrivs(playername, stringToPrivs(g_settings->get("default_privs")));
 			m_authmanager.save();
 		}
 
 		// Enforce user limit.
 		// Don't enforce for users that have some admin right
-		if(m_clients.size() >= g_settings->getU16("max_users") &&
-				(m_authmanager.getPrivs(playername)
-					& (PRIV_SERVER|PRIV_BAN|PRIV_PRIVS)) == 0 &&
-				playername != g_settings->get("name"))
-		{
+		if (
+			m_clients.size() >= g_settings->getU16("max_users")
+			&& (m_authmanager.getPrivs(playername) & (PRIV_SERVER|PRIV_BAN|PRIV_PRIVS)) == 0
+			&& playername != g_settings->get("name")
+		) {
 			SendAccessDenied(m_con, peer_id, L"Too many users.");
 			return;
 		}
@@ -1975,12 +1972,11 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		Player *player = emergePlayer(playername, password, peer_id);
 
 		// If failed, cancel
-		if(player == NULL)
-		{
-			infostream<<"Server: peer_id="<<peer_id
-					<<": failed to emerge player"<<std::endl;
+		if (player == NULL) {
+			infostream<<"Server: peer_id="<<peer_id<<": failed to emerge player"<<std::endl;
 			return;
 		}
+
 		{
 			Address address = getPeerAddress(peer_id);
 			std::string ip_string = address.serializeString();

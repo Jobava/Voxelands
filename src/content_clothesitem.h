@@ -14,7 +14,8 @@ enum ClothesType {
 	CT_BOOTS,
 	CT_JACKET,
 	CT_BELT,
-	CT_DECORATIVE
+	CT_DECORATIVE,
+	CT_MEDALLION
 };
 
 struct ClothesItemFeatures {

@@ -137,6 +137,7 @@ void Player::checkInventory()
 				s->addAllowed(c.content);
 				break;
 			case CT_DECORATIVE:
+			case CT_MEDALLION:
 				d->addAllowed(c.content);
 				break;
 			case CT_BELT:
@@ -378,6 +379,71 @@ void ServerRemotePlayer::setCharDef(std::string d)
 	std::string shirt = f.next(":");
 	std::string pants = f.next(":");
 	std::string shoes = f.next(":");
+
+	{
+		InventoryList *l = inventory.getList("shirt");
+		if (!l)
+			return;
+		InventoryItem *item = NULL;
+		if (shirt == "white") {
+			item = new ClothesItem(CONTENT_CLOTHESITEM_COTTON_TSHIRT,0);
+		}else if (shirt == "blue") {
+			item = new ClothesItem(CONTENT_CLOTHESITEM_COTTON_TSHIRT_BLUE,0);
+		}else if (shirt == "orange") {
+			item = new ClothesItem(CONTENT_CLOTHESITEM_COTTON_TSHIRT_ORANGE,0);
+		}else if (shirt == "purple") {
+			item = new ClothesItem(CONTENT_CLOTHESITEM_COTTON_TSHIRT_PURPLE,0);
+		}else if (shirt == "red") {
+			item = new ClothesItem(CONTENT_CLOTHESITEM_COTTON_TSHIRT_RED,0);
+		}else if (shirt == "yellow") {
+			item = new ClothesItem(CONTENT_CLOTHESITEM_COTTON_TSHIRT_YELLOW,0);
+		}else if (shirt == "black") {
+			item = new ClothesItem(CONTENT_CLOTHESITEM_COTTON_TSHIRT_BLACK,0);
+		}
+		if (item == NULL)
+			item = new ClothesItem(CONTENT_CLOTHESITEM_COTTON_TSHIRT_GREEN,0);
+		l->addItem(0,item);
+	}
+	{
+		InventoryList *l = inventory.getList("pants");
+		if (!l)
+			return;
+		InventoryItem *item = NULL;
+		if (shirt == "white") {
+			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS,0);
+		}else if (shirt == "green") {
+			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_GREEN,0);
+		}else if (shirt == "orange") {
+			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_ORANGE,0);
+		}else if (shirt == "purple") {
+			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_PURPLE,0);
+		}else if (shirt == "red") {
+			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_RED,0);
+		}else if (shirt == "yellow") {
+			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_YELLOW,0);
+		}else if (shirt == "black") {
+			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_BLACK,0);
+		}
+		if (item == NULL)
+			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_BLUE,0);
+		l->addItem(0,item);
+	}
+	{
+		InventoryList *l = inventory.getList("boots");
+		if (!l)
+			return;
+		InventoryItem *item = NULL;
+		if (shirt == "fur") {
+			item = new ClothesItem(CONTENT_CLOTHESITEM_FUR_SHOES,0);
+		}else if (shirt == "canvas") {
+			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_SHOES,0);
+		}
+		if (item == NULL)
+			item = new ClothesItem(CONTENT_CLOTHESITEM_LEATHER_SHOES,0);
+		l->addItem(0,item);
+	}
+
+	m_given_clothes = true;
 }
 
 /*
@@ -556,11 +622,11 @@ void RemotePlayer::move(f32 dtime, Map &map, f32 pos_max_d)
 
 video::ITexture* RemotePlayer::getTexture()
 {
-	std::string clothes[4];
-	const char* list[4] = {"hat","shirt","pants","boots"};
+	std::string clothes[7];
+	const char* list[7] = {"hat","shirt","jacket","decorative","belt","pants","boots"};
 	std::vector<std::string> parts;
 	getSkin(parts);
-	for (int j=0; j<4; j++) {
+	for (int j=0; j<7; j++) {
 		InventoryList *l = inventory.getList(list[j]);
 		if (l == NULL)
 			continue;
@@ -575,12 +641,13 @@ video::ITexture* RemotePlayer::getTexture()
 	tex += parts[0];         // skin
 	tex += "^" + parts[1];   // face
 	tex += "^" + parts[2];   // eyes
-	tex += "^" + clothes[2]; // pants
+	tex += "^" + clothes[5]; // pants
 	tex += "^" + clothes[1]; // shirt
-				 // deco
-				 // jacket
-	tex += "^" + clothes[3]; // boots
+	tex += "^" + clothes[4]; // belt
+	tex += "^" + clothes[3]; // deco
 	tex += "^" + parts[3];   // hair
+	tex += "^" + clothes[2]; // jacket
+	tex += "^" + clothes[6]; // boots
 	tex += "^" + clothes[0]; // hat
 
 	return g_texturesource->getTextureRaw(tex);
