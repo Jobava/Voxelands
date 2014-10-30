@@ -33,32 +33,32 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 GUITextInputMenu::GUITextInputMenu(gui::IGUIEnvironment* env,
 		gui::IGUIElement* parent, s32 id,
 		IMenuManager *menumgr,
-		TextDest *dest,
+		FormIO *io,
 		std::wstring initial_text
 ):
 	GUIModalMenu(env, parent, id, menumgr),
-	m_dest(dest),
+	m_io(io),
 	m_initial_text(initial_text)
 {
 }
 
 GUITextInputMenu::~GUITextInputMenu()
 {
+	if (m_io)
+		delete m_io;
 	removeChildren();
-	if(m_dest)
-		delete m_dest;
 }
 
 void GUITextInputMenu::removeChildren()
 {
 	{
 		gui::IGUIElement *e = getElementFromId(256);
-		if(e != NULL)
+		if (e != NULL)
 			e->remove();
 	}
 	{
 		gui::IGUIElement *e = getElementFromId(257);
-		if(e != NULL)
+		if (e != NULL)
 			e->remove();
 	}
 }
@@ -69,12 +69,9 @@ void GUITextInputMenu::regenerateGui(v2u32 screensize)
 
 	{
 		gui::IGUIElement *e = getElementFromId(256);
-		if(e != NULL)
-		{
+		if (e != NULL) {
 			text = e->getText();
-		}
-		else
-		{
+		}else{
 			text = m_initial_text;
 			m_initial_text = L"";
 		}
@@ -148,51 +145,42 @@ void GUITextInputMenu::drawMenu()
 
 void GUITextInputMenu::acceptInput()
 {
-	if(m_dest)
-	{
+	if (m_io) {
 		gui::IGUIElement *e = getElementFromId(256);
-		if(e != NULL)
-		{
-			m_dest->gotText(e->getText());
+		if (e != NULL) {
+			std::map<std::string,std::wstring> fields;
+			fields["text"] = e->getText();
+			m_io->gotText(fields);
 		}
-		delete m_dest;
-		m_dest = NULL;
+		delete m_io;
+		m_io = NULL;
 	}
 }
 
 bool GUITextInputMenu::OnEvent(const SEvent& event)
 {
-	if(event.EventType==EET_KEY_INPUT_EVENT)
-	{
-		if(event.KeyInput.Key==KEY_ESCAPE && event.KeyInput.PressedDown)
-		{
+	if (event.EventType==EET_KEY_INPUT_EVENT) {
+		if (event.KeyInput.Key==KEY_ESCAPE && event.KeyInput.PressedDown) {
 			quitMenu();
 			return true;
 		}
-		if(event.KeyInput.Key==KEY_RETURN && event.KeyInput.PressedDown)
-		{
+		if (event.KeyInput.Key==KEY_RETURN && event.KeyInput.PressedDown) {
 			acceptInput();
 			quitMenu();
 			return true;
 		}
 	}
-	if(event.EventType==EET_GUI_EVENT)
-	{
-		if(event.GUIEvent.EventType==gui::EGET_ELEMENT_FOCUS_LOST
-				&& isVisible())
-		{
-			if(!canTakeFocus(event.GUIEvent.Element))
-			{
+	if (event.EventType==EET_GUI_EVENT) {
+		if (event.GUIEvent.EventType==gui::EGET_ELEMENT_FOCUS_LOST && isVisible()) {
+			if (!canTakeFocus(event.GUIEvent.Element)) {
 				dstream<<"GUITextInputMenu: Not allowing focus change."
 						<<std::endl;
 				// Returning true disables focus change
 				return true;
 			}
 		}
-		if(event.GUIEvent.EventType==gui::EGET_BUTTON_CLICKED)
-		{
-			switch(event.GUIEvent.Caller->getID())
-			{
+		if (event.GUIEvent.EventType==gui::EGET_BUTTON_CLICKED) {
+			switch (event.GUIEvent.Caller->getID()) {
 			case 257:
 				acceptInput();
 				quitMenu();
@@ -200,10 +188,8 @@ bool GUITextInputMenu::OnEvent(const SEvent& event)
 				return true;
 			}
 		}
-		if(event.GUIEvent.EventType==gui::EGET_EDITBOX_ENTER)
-		{
-			switch(event.GUIEvent.Caller->getID())
-			{
+		if (event.GUIEvent.EventType==gui::EGET_EDITBOX_ENTER) {
+			switch (event.GUIEvent.Caller->getID()) {
 			case 256:
 				acceptInput();
 				quitMenu();

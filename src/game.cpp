@@ -103,55 +103,31 @@ u16 g_selected_item = 0;
 	Text input system
 */
 
-struct TextDestChat : public TextDest
+class ChatFormIO : public FormIO
 {
-	TextDestChat(Client *client)
+public:
+	ChatFormIO(Client *client)
 	{
 		m_client = client;
 	}
-	void gotText(std::wstring text)
+
+	void gotText(std::map<std::string, std::wstring> fields)
 	{
 		// Discard empty line
-		if(text == L"")
+		if (fields["text"] == L"")
 			return;
 
 		// Send to others
-		m_client->sendChatMessage(text);
+		m_client->sendChatMessage(fields["text"]);
 		// Show locally
-		m_client->addChatMessage(text);
+		m_client->addChatMessage(fields["text"]);
 	}
 
-	void gotText(std::map<std::string, std::string> fields)
+	std::string getForm()
 	{
-		gotText(narrow_to_wide(fields["text"]));
+		return "";
 	}
 
-	Client *m_client;
-};
-
-struct TextDestNodeMetadata : public TextDest
-{
-	TextDestNodeMetadata(v3s16 p, Client *client)
-	{
-		m_p = p;
-		m_client = client;
-	}
-	// This is deprecated I guess? -celeron55
-	void gotText(std::wstring text)
-	{
-		std::string ntext = wide_to_narrow(text);
-		infostream<<"Submitting 'text' field of node at ("<<m_p.X<<","
-			<<m_p.Y<<","<<m_p.Z<<"): "<<ntext<<std::endl;
-		std::map<std::string, std::string> fields;
-		fields["text"] = ntext;
-		m_client->sendNodemetaFields(m_p, "", fields);
-	}
-	void gotText(std::map<std::string, std::string> fields)
-	{
-		m_client->sendNodemetaFields(m_p, "", fields);
-	}
-
-	v3s16 m_p;
 	Client *m_client;
 };
 
@@ -177,18 +153,18 @@ private:
 
 /* Form update callback */
 
-class NodeMetadataFormSource: public IFormSource
+class NodeMetadataFormIO: public FormIO
 {
 public:
-	NodeMetadataFormSource(ClientMap *map, v3s16 p):
-		m_map(map),
+	NodeMetadataFormIO(v3s16 p, Client *client):
+		m_client(client),
 		m_p(p)
 	{
 	}
 
 	std::string getForm()
 	{
-		NodeMetadata *meta = m_map->getNodeMetadata(m_p);
+		NodeMetadata *meta = m_client->getEnv().getMap().getNodeMetadata(m_p);
 		if (!meta)
 			return "";
 		return meta->getDrawSpecString();
@@ -196,18 +172,24 @@ public:
 
 	NodeMetadata *getMeta()
 	{
-		return m_map->getNodeMetadata(m_p);
+		return m_client->getEnv().getMap().getNodeMetadata(m_p);
 	}
 
-	ClientMap *m_map;
+	void gotText(std::map<std::string, std::wstring> fields)
+	{
+		m_client->sendNodemetaFields(m_p, "", fields);
+	}
+
+	Client *m_client;
 	v3s16 m_p;
 };
 
-class PlayerInventoryFormSource: public IFormSource
+class PlayerInventoryFormIO: public FormIO
 {
 public:
-	PlayerInventoryFormSource(Client *client):
-	m_client(client)
+	PlayerInventoryFormIO(Client *client):
+		m_show_appearance(false),
+		m_client(client)
 	{
 	}
 	std::string getForm()
@@ -226,6 +208,16 @@ public:
 			"list[current_player;craftresult;7,2;1,1;]";
 	}
 
+	void gotText(std::map<std::string, std::wstring> fields)
+	{
+		if (fields["show_appearance"] != L"") {
+			m_show_appearance = true;
+		}else{
+			m_show_appearance = false;
+		}
+	}
+
+	bool m_show_appearance;
 	Client *m_client;
 };
 
@@ -1280,10 +1272,10 @@ void the_game(
 			InventoryLocation inventoryloc;
 			inventoryloc.setCurrentPlayer();
 
-			PlayerInventoryFormSource *src = new PlayerInventoryFormSource(&client);
-			assert(src);
-			menu->setFormSpec(src->getForm(), inventoryloc);
-			menu->setFormSource(src);
+			PlayerInventoryFormIO *fio = new PlayerInventoryFormIO(&client);
+			assert(fio);
+			menu->setFormSpec(fio->getForm(), inventoryloc);
+			menu->setFormIO(fio);
 			menu->drop();
 		}
 		else if(input->wasKeyDown(EscapeKey))
@@ -1299,19 +1291,15 @@ void the_game(
 		}
 		else if(input->wasKeyDown(getKeySetting("keymap_chat")))
 		{
-			TextDest *dest = new TextDestChat(&client);
+			FormIO *fio = new ChatFormIO(&client);
 
-			(new GUITextInputMenu(guienv, guiroot, -1,
-					&g_menumgr, dest,
-					L""))->drop();
+			(new GUITextInputMenu(guienv, guiroot, -1, &g_menumgr, fio, L""))->drop();
 		}
 		else if(input->wasKeyDown(getKeySetting("keymap_cmd")))
 		{
-			TextDest *dest = new TextDestChat(&client);
+			FormIO *fio = new ChatFormIO(&client);
 
-			(new GUITextInputMenu(guienv, guiroot, -1,
-					&g_menumgr, dest,
-					L"/"))->drop();
+			(new GUITextInputMenu(guienv, guiroot, -1, &g_menumgr, fio, L"/"))->drop();
 		}
 		else if(input->wasKeyDown(getKeySetting("keymap_freemove"))) {
 			if (g_settings->getBool("free_move")) {
@@ -1871,13 +1859,11 @@ void the_game(
 			}
 
 
-			if(input->getRightClicked())
-			{
+			if (input->getRightClicked()) {
 				infostream<<"Ground right-clicked"<<std::endl;
 
 				// If metadata provides an inventory view, activate it
-				if(meta && meta->getDrawSpecString() != "" && !random_input)
-				{
+				if (meta && meta->getDrawSpecString() != "" && !random_input) {
 					infostream<<"Launching custom inventory view"<<std::endl;
 
 					InventoryLocation inventoryloc;
@@ -1885,19 +1871,12 @@ void the_game(
 
 					/* Create menu */
 
-					GUIFormSpecMenu *menu =
-						new GUIFormSpecMenu(guienv, guiroot, -1,
-						&g_menumgr,
-						&client);
+					GUIFormSpecMenu *menu = new GUIFormSpecMenu(guienv, guiroot, -1, &g_menumgr, &client);
 					menu->setFormSpec(meta->getDrawSpecString(), inventoryloc);
-					menu->setFormSource(new NodeMetadataFormSource(
-						&client.getEnv().getClientMap(), nodepos));
-					menu->setTextDest(new TextDestNodeMetadata(nodepos, &client));
+					menu->setFormIO(new NodeMetadataFormIO(nodepos, &client));
 					menu->drop();
 
-				}
-				else
-				{
+				}else{
 					client.groundAction(1, nodepos, neighbourpos, g_selected_item);
 					camera.setDigging(1);  // right click animation
 				}
@@ -1908,22 +1887,18 @@ void the_game(
 
 		} // selected_object == NULL
 
-		if(left_punch || (input->getLeftClicked() && !left_punch_muted))
-		{
+		if (left_punch || (input->getLeftClicked() && !left_punch_muted))
 			camera.setDigging(0); // left click animation
-		}
 
 		input->resetLeftClicked();
 		input->resetRightClicked();
 
-		if(input->getLeftReleased())
-		{
+		if (input->getLeftReleased()) {
 			infostream<<"Left button released (stopped digging)"
 					<<std::endl;
 			client.groundAction(2, v3s16(0,0,0), v3s16(0,0,0), 0);
 		}
-		if(input->getRightReleased())
-		{
+		if (input->getRightReleased()) {
 			// Nothing here
 		}
 
@@ -1947,33 +1922,29 @@ void the_game(
 		/*
 			Update skybox
 		*/
-		if(fabs(brightness - old_brightness) > 0.01)
+		if (fabs(brightness - old_brightness) > 0.01)
 			update_skybox(driver, smgr, skybox, brightness);
 
 		/*
 			Update clouds
 		*/
-		if(clouds)
-		{
+		if (clouds) {
 			clouds->step(dtime);
-			clouds->update(v2f(player_position.X, player_position.Z),
-					0.05+brightness*0.95);
+			clouds->update(v2f(player_position.X, player_position.Z), 0.05+brightness*0.95);
 		}
 
 		/*
 			Update farmesh
 		*/
-		if(farmesh)
-		{
+		if (farmesh) {
 			farmesh_range = draw_control.wanted_range * 10;
-			if(draw_control.range_all && farmesh_range < 500)
+			if (draw_control.range_all && farmesh_range < 500)
 				farmesh_range = 500;
-			if(farmesh_range > 1000)
+			if (farmesh_range > 1000)
 				farmesh_range = 1000;
 
 			farmesh->step(dtime);
-			farmesh->update(v2f(player_position.X, player_position.Z),
-					0.05+brightness*0.95, farmesh_range);
+			farmesh->update(v2f(player_position.X, player_position.Z), 0.05+brightness*0.95, farmesh_range);
 		}
 
 		/*

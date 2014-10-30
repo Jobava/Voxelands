@@ -204,7 +204,7 @@ public:
 	void clickActiveObject(u8 button, u16 id, u16 item_i);
 
 	void sendNodemetaFields(v3s16 p, const std::string &formname,
-			const std::map<std::string, std::string> &fields);
+			const std::map<std::string, std::wstring> &fields);
 	void sendInventoryAction(InventoryAction *a);
 	void sendChatMessage(const std::wstring &message);
 	void sendChangePassword(const std::wstring oldpassword,

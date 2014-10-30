@@ -32,7 +32,7 @@ public:
 	GUITextInputMenu(gui::IGUIEnvironment* env,
 			gui::IGUIElement* parent, s32 id,
 			IMenuManager *menumgr,
-			TextDest *dest,
+			FormIO *io,
 			std::wstring initial_text);
 	~GUITextInputMenu();
 
@@ -49,7 +49,7 @@ public:
 	bool OnEvent(const SEvent& event);
 
 private:
-	TextDest *m_dest;
+	FormIO *m_io;
 	std::wstring m_initial_text;
 };
 

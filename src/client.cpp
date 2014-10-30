@@ -1569,7 +1569,7 @@ void Client::clickActiveObject(u8 button, u16 id, u16 item_i)
 }
 
 void Client::sendNodemetaFields(v3s16 p, const std::string &formname,
-		const std::map<std::string, std::string> &fields)
+		const std::map<std::string, std::wstring> &fields)
 {
 	std::ostringstream os(std::ios_base::binary);
 	u8 buf[12];
@@ -1587,11 +1587,11 @@ void Client::sendNodemetaFields(v3s16 p, const std::string &formname,
 	// Write number of fields
 	writeU16(buf, fields.size());
 	os.write((char*)buf, 2);
-	for (std::map<std::string, std::string>::const_iterator i = fields.begin(); i != fields.end(); i++) {
+	for (std::map<std::string, std::wstring>::const_iterator i = fields.begin(); i != fields.end(); i++) {
 		const std::string &name = i->first;
-		const std::string &value = i->second;
+		const std::wstring &value = i->second;
 		os<<serializeString(name);
-		os<<serializeLongString(value);
+		os<<serializeLongWideString(value);
 	}
 
 	// Make data buffer

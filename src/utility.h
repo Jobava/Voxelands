@@ -1643,6 +1643,41 @@ inline std::string deSerializeLongString(std::istream &is)
 	return s;
 }
 
+// Creates a string with the length as the first four bytes
+inline std::string serializeLongWideString(const std::wstring &plain)
+{
+	//assert(plain.size() <= 65535);
+	char buf[4];
+	writeU32((u8*)buf, plain.size());
+	std::string s;
+	s.append(buf, 4);
+	for (u32 i=0; i<plain.size(); i++) {
+		writeU16((u8*)buf, plain[i]);
+		s.append(buf, 2);
+	}
+	return s;
+}
+
+// Reads a string with the length as the first four bytes
+inline std::wstring deSerializeLongWideString(std::istream &is)
+{
+	char buf[4];
+	is.read(buf, 4);
+	if(is.gcount() != 4)
+		throw SerializationError("deSerializeLongWideString: size not read");
+	u16 s_size = readU32((u8*)buf);
+	if(s_size == 0)
+		return L"";
+	std::wstring s;
+	s.reserve(s_size);
+	for (u32 i=0; i<s_size; i++) {
+		is.read(&buf[0], 2);
+		wchar_t c16 = readU16((u8*)buf);
+		s.append(&c16, 1);
+	}
+	return s;
+}
+
 //
 
 inline u32 time_to_daynight_ratio(u32 time_of_day)

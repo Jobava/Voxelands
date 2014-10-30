@@ -30,21 +30,13 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 class InventoryManager;
 
-struct TextDest
-{
-	virtual ~TextDest() {};
-	// This is deprecated I guess? -celeron55
-	virtual void gotText(std::wstring text) = 0;
-	virtual void gotText(std::map<std::string, std::string> fields) = 0;
-};
-
-class IFormSource
+class FormIO
 {
 public:
-	virtual ~IFormSource(){}
+	virtual ~FormIO(){}
 	virtual std::string getForm() = 0;
-	// Fill in variables in field text
 	virtual std::string resolveText(std::string str){ return str; }
+	virtual void gotText(std::map<std::string, std::wstring> fields) = 0;
 };
 
 void drawInventoryItem(video::IVideoDriver *driver,
@@ -158,15 +150,9 @@ public:
 	}
 
 	// form_src is deleted by this GUIFormSpecMenu
-	void setFormSource(IFormSource *form_src)
+	void setFormIO(FormIO *form_io)
 	{
-		m_form_src = form_src;
-	}
-
-	// text_dst is deleted by this GUIFormSpecMenu
-	void setTextDest(TextDest *text_dst)
-	{
-		m_text_dst = text_dst;
+		m_form_io = form_io;
 	}
 
 	void removeChildren();
@@ -196,8 +182,7 @@ protected:
 
 	std::string m_formspec_string;
 	InventoryLocation m_current_inventory_location;
-	IFormSource *m_form_src;
-	TextDest *m_text_dst;
+	FormIO *m_form_io;
 
 	core::array<ListDrawSpec> m_inventorylists;
 	core::array<ImageDrawSpec> m_images;

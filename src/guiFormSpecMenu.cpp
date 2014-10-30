@@ -97,8 +97,7 @@ GUIFormSpecMenu::GUIFormSpecMenu(gui::IGUIEnvironment* env,
 ):
 	GUIModalMenu(env, parent, id, menumgr),
 	m_invmgr(invmgr),
-	m_form_src(NULL),
-	m_text_dst(NULL),
+	m_form_io(NULL),
 	m_selected_item(NULL),
 	m_selected_amount(0),
 	m_selected_dragging(false),
@@ -111,8 +110,7 @@ GUIFormSpecMenu::~GUIFormSpecMenu()
 	removeChildren();
 
 	delete m_selected_item;
-	delete m_form_src;
-	delete m_text_dst;
+	delete m_form_io;
 }
 
 void GUIFormSpecMenu::removeChildren()
@@ -297,10 +295,11 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 
 			// fdefault may contain a variable reference, which
 			// needs to be resolved from the node metadata
-			if(m_form_src)
-				fdefault = m_form_src->resolveText(odefault);
-			else
+			if (m_form_io) {
+				fdefault = m_form_io->resolveText(odefault);
+			}else{
 				fdefault = odefault;
+			}
 
 			FieldSpec spec = FieldSpec(
 				narrow_to_wide(fname.c_str()),
@@ -579,8 +578,8 @@ void GUIFormSpecMenu::drawList(const ListDrawSpec &s, int phase)
 
 void GUIFormSpecMenu::drawMenu()
 {
-	if (m_form_src) {
-		std::string newform = m_form_src->getForm();
+	if (m_form_io) {
+		std::string newform = m_form_io->getForm();
 		if (newform != m_formspec_string) {
 			m_formspec_string = newform;
 			regenerateGui(m_screensize_old);
@@ -632,30 +631,22 @@ void GUIFormSpecMenu::drawMenu()
 
 void GUIFormSpecMenu::acceptInput()
 {
-	if(m_text_dst)
-	{
-		std::map<std::string, std::string> fields;
+	if (m_form_io) {
+		std::map<std::string, std::wstring> fields;
 		gui::IGUIElement *e;
-		for(u32 i=0; i<m_fields.size(); i++)
-		{
+		for (u32 i=0; i<m_fields.size(); i++) {
 			const FieldSpec &s = m_fields[i];
-			if(s.send)
-			{
-				if(s.is_button)
-				{
-					fields[wide_to_narrow(s.fname.c_str())] = wide_to_narrow(s.flabel.c_str());
-				}
-				else
-				{
+			if (s.send) {
+				if (s.is_button) {
+					fields[wide_to_narrow(s.fname.c_str())] = s.flabel.c_str();
+				}else{
 					e = getElementFromId(s.fid);
-					if(e != NULL)
-					{
-						fields[wide_to_narrow(s.fname.c_str())] = wide_to_narrow(e->getText());
-					}
+					if (e != NULL)
+						fields[wide_to_narrow(s.fname.c_str())] = e->getText();
 				}
 			}
 		}
-		m_text_dst->gotText(fields);
+		m_form_io->gotText(fields);
 	}
 }
 
