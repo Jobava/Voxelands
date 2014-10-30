@@ -1591,7 +1591,7 @@ void Client::sendNodemetaFields(v3s16 p, const std::string &formname,
 		const std::string &name = i->first;
 		const std::wstring &value = i->second;
 		os<<serializeString(name);
-		os<<serializeLongWideString(value);
+		os<<serializeLongString(wide_to_narrow(value));
 	}
 
 	// Make data buffer
