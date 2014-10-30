@@ -247,7 +247,7 @@ public:
 	}
 
 	// character def used for skin creation and model scaling
-	void setCharDef(std::string d) {m_character = d;}
+	virtual void setCharDef(std::string d) {m_character = d;}
 	std::string getCharDef() {return m_character;}
 
 	v3f getScale();
@@ -266,6 +266,7 @@ protected:
 	v3f m_home;
 	bool m_hashome;
 	std::string m_character;
+	bool m_given_clothes;
 
 public:
 
@@ -298,6 +299,8 @@ public:
 
 	void setAddress(std::string addr) {m_addr = addr;}
 	std::string getAddress() {return m_addr;}
+
+	virtual void setCharDef(std::string d);
 
 private:
 	virtual std::string getCookie()

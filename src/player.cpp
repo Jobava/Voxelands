@@ -61,7 +61,8 @@ Player::Player():
 	m_position(0,0,0),
 	m_home(0,0,0),
 	m_hashome(false),
-	m_character(PLAYER_DEFAULT_CHARDEF)
+	m_character(PLAYER_DEFAULT_CHARDEF),
+	m_given_clothes(false)
 {
 	updateName("<not set>");
 	resetInventory();
@@ -89,8 +90,14 @@ void Player::checkInventory()
 		inventory.addList("main", PLAYER_INVENTORY_SIZE);
 	if (!inventory.getList("hat"))
 		inventory.addList("hat",1);
+	if (!inventory.getList("jacket"))
+		inventory.addList("jacket",1);
 	if (!inventory.getList("shirt"))
 		inventory.addList("shirt",1);
+	if (!inventory.getList("decorative"))
+		inventory.addList("decorative",1);
+	if (!inventory.getList("belt"))
+		inventory.addList("belt",1);
 	if (!inventory.getList("pants"))
 		inventory.addList("pants",1);
 	if (!inventory.getList("boots"))
@@ -99,7 +106,10 @@ void Player::checkInventory()
 	// relevant clothing slot
 	{
 		InventoryList *h = inventory.getList("hat");
+		InventoryList *j = inventory.getList("jacket");
 		InventoryList *s = inventory.getList("shirt");
+		InventoryList *d = inventory.getList("decorative");
+		InventoryList *t = inventory.getList("belt");
 		InventoryList *p = inventory.getList("pants");
 		InventoryList *b = inventory.getList("boots");
 		h->setStackable(false);
@@ -120,8 +130,17 @@ void Player::checkInventory()
 			case CT_HAT:
 				h->addAllowed(c.content);
 				break;
+			case CT_JACKET:
+				j->addAllowed(c.content);
+				break;
 			case CT_SHIRT:
 				s->addAllowed(c.content);
+				break;
+			case CT_DECORATIVE:
+				d->addAllowed(c.content);
+				break;
+			case CT_BELT:
+				t->addAllowed(c.content);
 				break;
 			case CT_PANTS:
 				p->addAllowed(c.content);
@@ -172,6 +191,8 @@ void Player::serialize(std::ostream &os)
 	args.setS32("hunger", hunger);
 	if (m_hashome)
 		args.setV3F("home",m_home);
+	if (m_given_clothes)
+		args.set("clothes_given","true");
 
 	args.writeLines(os);
 
@@ -207,29 +228,36 @@ void Player::deSerialize(std::istream &is)
 	m_pitch = args.getFloat("pitch");
 	m_yaw = args.getFloat("yaw");
 	m_position = args.getV3F("position");
-	try{
+	if (args.exists("craftresult_is_preview")) {
 		craftresult_is_preview = args.getBool("craftresult_is_preview");
-	}catch(SettingNotFoundException &e){
+	}else{
 		craftresult_is_preview = true;
 	}
-	try{
+	if (args.exists("hp")) {
 		hp = args.getS32("hp");
-	}catch(SettingNotFoundException &e){
+	}else{
 		hp = 20;
 	}
-	try{
+	if (args.exists("air")) {
 		air = args.getS32("air");
-	}catch(SettingNotFoundException &e){
+	}else{
 		air = 20;
 	}
-	try{
+	if (args.exists("hunger")) {
 		hunger = args.getS32("hunger");
-	}catch(SettingNotFoundException &e){
+	}else{
 		hunger = 20;
 	}
 	if (args.exists("home")) {
 		m_home = args.getV3F("home");
 		m_hashome = true;
+	}else{
+		m_hashome = false;
+	}
+	if (args.exists("clothes_given")) {
+		m_given_clothes = args.getBool("clothes_given");
+	}else{
+		m_given_clothes = false;
 	}
 
 	inventory.deSerialize(is);
@@ -274,8 +302,8 @@ v3f Player::getScale()
 	return v3f(xz_f,y_f,xz_f);
 }
 
-//gender:Yscale:XZscale:skintone:eyes:hairtone:hair:face
-//M:10:10:fair:blue:brown:medium:normal
+//gender:Yscale:XZscale:skintone:eyes:hairtone:hair:face:shirt-colour:pants-colour:shoe-type
+//M:10:10:fair:blue:brown:medium:human:green:blue:leather
 void Player::getSkin(std::vector<std::string> &parts)
 {
 	if (m_character == "")
@@ -322,6 +350,34 @@ std::string Player::getSkin()
 	}
 
 	return tex;
+}
+
+/*
+	ServerRemotePlayer
+*/
+
+//gender:Yscale:XZscale:skintone:eyes:hairtone:hair:face:shirt-colour:pants-colour:shoe-type
+//M:10:10:fair:blue:brown:medium:human:green:blue:leather
+void ServerRemotePlayer::setCharDef(std::string d)
+{
+	m_character = d;
+	if (m_given_clothes)
+		return;
+	if (m_character == "")
+		m_character = std::string(PLAYER_DEFAULT_CHARDEF);
+	Strfnd f(m_character);
+
+	f.next(":"); // gender
+	f.next(":"); // y scale
+	f.next(":"); // xz scale
+	f.next(":"); // skintone
+	f.next(":"); // eyes
+	f.next(":"); // hairtone
+	f.next(":"); // hair
+	f.next(":"); // face
+	std::string shirt = f.next(":");
+	std::string pants = f.next(":");
+	std::string shoes = f.next(":");
 }
 
 /*
