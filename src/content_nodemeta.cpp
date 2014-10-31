@@ -2299,7 +2299,7 @@ void CircuitNodeMetadata::serializeBody(std::ostream &os)
 bool CircuitNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *env)
 {
 	m_ptime += dtime;
-	if (!m_energy || m_ptime < 0.3)
+	if (!m_energy || m_ptime < 0.6)
 		return false;
 	m_energy = 0;
 	MapNode n = env->getMap().getNodeNoEx(pos);
@@ -2736,7 +2736,7 @@ NodeMetadata* NotGateNodeMetadata::clone()
 bool NotGateNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *env)
 {
 	m_ptime += dtime;
-	if (m_ptime < 0.3)
+	if (m_ptime < 0.6)
 		return false;
 
 	m_energy = 0;
@@ -3176,7 +3176,7 @@ bool PistonNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *
 			}
 		}
 	}
-	if (m_ptime < 0.3)
+	if (m_ptime < 1.0)
 		return false;
 	m_energy = 0;
 	return true;

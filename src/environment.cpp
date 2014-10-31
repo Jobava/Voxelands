@@ -860,12 +860,12 @@ void ServerEnvironment::step(float dtime)
 	/*
 		Mess around in active blocks
 	*/
-	bool circuitstep = m_active_blocks_circuit_interval.step(dtime, 0.2);
+	bool circuitstep = m_active_blocks_circuit_interval.step(dtime, 0.5);
 	bool metastep = m_active_blocks_nodemetadata_interval.step(dtime, 1.0);
 	bool nodestep = m_active_blocks_test_interval.step(dtime, 10.0);
 
 	if (circuitstep || metastep || nodestep) {
-		float circuit_dtime = 0.2;
+		float circuit_dtime = 0.5;
 		float meta_dtime = 1.0;
 		for (std::set<v3s16>::iterator i = m_active_blocks.m_list.begin(); i != m_active_blocks.m_list.end(); i++) {
 			v3s16 bp = *i;
