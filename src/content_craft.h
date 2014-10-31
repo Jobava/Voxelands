@@ -264,6 +264,10 @@ namespace crafting {
 	void setHatRecipe(u16 input, u16 result);
 	// helmet recipe, 5 input in an upside down u around a glass pane yields one result
 	void setHelmetRecipe(u16 input, u16 result);
+	// like boots, but the top 2 input are replaced with string
+	void setShoesRecipe(u16 input, u16 result);
+	// pants recipe 5 input in an upside-down V yields one result
+	void setShortsRecipe(u16 input, u16 result);
 
 	InventoryItem *getResult(InventoryItem **items);
 	content_t *getRecipe(InventoryItem *item);

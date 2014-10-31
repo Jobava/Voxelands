@@ -713,17 +713,10 @@ void ExtrudedSpriteSceneNode::setArm(video::ITexture *texture)
 	m_meshnode->setScale(v3f(1));
 
 	// Get the tile texture and atlas transformation
-	if (texture == NULL) {
-		std::string tex;
-		if (getTexturePath("player.png") != "") {
-			tex = "player.png^[forcesingle";
-		}else{
-			tex = "character.png^[forcesingle";
-		}
-		texture = g_texturesource->getTextureRaw(tex);
-	}
-	v2f pos(0.625,0.5);
-	v2f size(0.0625,-0.0625);
+	if (texture == NULL)
+		texture = g_texturesource->getTextureRaw("character.png");
+	v2f pos(0.75,0.5);
+	v2f size(0.0625,0.125);
 
 	// Set material flags and texture
 	video::SMaterial& material = m_meshnode->getMaterial(0);
@@ -737,7 +730,7 @@ void ExtrudedSpriteSceneNode::setArm(video::ITexture *texture)
 
 	for (int i = 1; i < 6; ++i) {
 		// Get the tile texture and atlas transformation
-		v2f pos(0.625,1);
+		v2f pos(0.75,1.);
 		v2f size(0.0625,-0.375);
 
 		// Set material flags and texture

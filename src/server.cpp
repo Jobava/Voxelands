@@ -5086,7 +5086,7 @@ void Server::SendPlayerItems()
 
 	writeU16(os, TOCLIENT_PLAYERITEMS);
 	writeU16(os, players.size());
-	writeU16(os, 5);
+	writeU16(os, 8);
 	for (core::list<Player *>::Iterator i = players.begin(); i != players.end(); i++) {
 		Player *p = *i;
 		writeU16(os, p->peer_id);
@@ -5096,8 +5096,8 @@ void Server::SendPlayerItems()
 		}else{
 			writeU16(os,item->getContent());
 		}
-		const char* list[4] = {"hat","shirt","pants","boots"};
-		for (int j=0; j<4; j++) {
+		const char* list[7] = {"hat","shirt","pants","boots","decorative","jacket","belt"};
+		for (int j=0; j<7; j++) {
 			InventoryList *l = p->inventory.getList(list[j]);
 			if (l == NULL)
 				continue;
@@ -5125,7 +5125,7 @@ void Server::SendPlayerItems(Player *player)
 
 	writeU16(os, TOCLIENT_PLAYERITEMS);
 	writeU16(os, 1);
-	writeU16(os, 5);
+	writeU16(os, 8);
 	writeU16(os, player->peer_id);
 	InventoryItem *item = (InventoryItem*)player->getWieldItem();
 	if (item == NULL) {
@@ -5133,8 +5133,8 @@ void Server::SendPlayerItems(Player *player)
 	}else{
 		writeU16(os,item->getContent());
 	}
-	const char* list[4] = {"hat","shirt","pants","boots"};
-	for (int j=0; j<4; j++) {
+	const char* list[7] = {"hat","shirt","pants","boots","decorative","jacket","belt"};
+	for (int j=0; j<7; j++) {
 		InventoryList *l = player->inventory.getList(list[j]);
 		if (l == NULL)
 			continue;

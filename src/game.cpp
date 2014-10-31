@@ -194,16 +194,33 @@ public:
 	}
 	std::string getForm()
 	{
+		if (m_show_appearance) {
+			return
+				std::string("size[8,9]"
+				"list[current_player;main;0,5;8,4;]"
+				"button[0.5,3;3,1;show_craft;Show Crafting]"
+				"label[1,2;")+gettext("Clothes")+"]"
+				"label[4.9,-0.1;Hat/Helmet]"
+				"list[current_player;hat;5,0;1,1;]"
+				"label[6.6,1.2;Jacket]"
+				"list[current_player;jacket;6.3,1.3;1,1;]"
+				"label[3.7,0.9;Decorative]"
+				"list[current_player;decorative;3.7,1;1,1;]"
+				"label[5.4,1.2;Shirt]"
+				"list[current_player;shirt;5,1.3;1,1;]"
+				"label[4.1,2.2;Belt]"
+				"list[current_player;belt;3.7,2.3;1,1;]"
+				"label[5.3,2.5;Pants]"
+				"list[current_player;pants;5,2.6;1,1;]"
+				"label[5.3,3.8;Boots]"
+				"list[current_player;boots;5,3.9;1,1;]";
+		}
 		return
 			std::string("size[8,9]"
 			"list[current_player;main;0,5;8,4;]"
-			"label[0.3,0.2;")+gettext("Clothes")+"]"
-			"list[current_player;hat;0,0.5;1,1;]"
-			"list[current_player;shirt;0,1.5;1,1;]"
-			"list[current_player;pants;0,2.5;1,1;]"
-			"list[current_player;boots;0,3.5;1,1;]"
-			"label[1.4,1.7;"+gettext("Drop to Ground")+"]"
-			"list[current_player;discard;1.75,2;1,1;]"
+			"label[1,1.7;")+gettext("Drop to Ground")+"]"
+			"list[current_player;discard;1.2,2;1,1;]"
+			"button[0.5,3.5;3,1;show_appearance;Change Clothing]"
 			"list[current_player;craft;3.5,1;3,3;]"
 			"list[current_player;craftresult;7,2;1,1;]";
 	}
@@ -640,17 +657,14 @@ void update_skybox(video::IVideoDriver* driver,
 		scene::ISceneManager* smgr, scene::ISceneNode* &skybox,
 		float brightness)
 {
-	if(skybox)
-	{
+	if (skybox)
 		skybox->remove();
-	}
 
 	/*// Disable skybox if FarMesh is enabled
 	if(g_settings->getBool("enable_farmesh"))
 		return;*/
 
-	if(brightness >= 0.5)
-	{
+	if (brightness >= 0.5) {
 		skybox = smgr->addSkyBoxSceneNode(
 			driver->getTexture(getTexturePath("skybox2.png").c_str()),
 			driver->getTexture(getTexturePath("skybox3.png").c_str()),
@@ -658,9 +672,7 @@ void update_skybox(video::IVideoDriver* driver,
 			driver->getTexture(getTexturePath("skybox1.png").c_str()),
 			driver->getTexture(getTexturePath("skybox1.png").c_str()),
 			driver->getTexture(getTexturePath("skybox1.png").c_str()));
-	}
-	else if(brightness >= 0.2)
-	{
+	}else if(brightness >= 0.2) {
 		skybox = smgr->addSkyBoxSceneNode(
 			driver->getTexture(getTexturePath("skybox2_dawn.png").c_str()),
 			driver->getTexture(getTexturePath("skybox3_dawn.png").c_str()),
@@ -668,9 +680,7 @@ void update_skybox(video::IVideoDriver* driver,
 			driver->getTexture(getTexturePath("skybox1_dawn.png").c_str()),
 			driver->getTexture(getTexturePath("skybox1_dawn.png").c_str()),
 			driver->getTexture(getTexturePath("skybox1_dawn.png").c_str()));
-	}
-	else
-	{
+	}else{
 		skybox = smgr->addSkyBoxSceneNode(
 			driver->getTexture(getTexturePath("skybox2_night.png").c_str()),
 			driver->getTexture(getTexturePath("skybox3_night.png").c_str()),
@@ -726,12 +736,9 @@ void update_profiler_gui(gui::IGUIStaticText *guitext_profiler,
 		gui::IGUIFont *font, u32 text_height,
 		u32 show_profiler, u32 show_profiler_max)
 {
-	if(show_profiler == 0)
-	{
+	if (show_profiler == 0) {
 		guitext_profiler->setVisible(false);
-	}
-	else
-	{
+	}else{
 
 		std::ostringstream os(std::ios_base::binary);
 		g_profiler->printPage(os, show_profiler, show_profiler_max);

@@ -637,6 +637,26 @@ void setHelmetRecipe(u16 input, u16 result)
 	};
 	setRecipe(r,result,1);
 }
+// like boots, but the top 2 input are replaced with string
+void setShoesRecipe(u16 input, u16 result)
+{
+	u16 r[9] = {
+		CONTENT_CRAFTITEM_STRING,	CONTENT_IGNORE,	CONTENT_CRAFTITEM_STRING,
+		input,				CONTENT_IGNORE,	input,
+		CONTENT_IGNORE,			CONTENT_IGNORE,	CONTENT_IGNORE
+	};
+	setRecipe(r,result,1);
+}
+// pants recipe 5 input in an upside-down V yields one result
+void setShortsRecipe(u16 input, u16 result)
+{
+	u16 r[9] = {
+		CONTENT_IGNORE,	input,		CONTENT_IGNORE,
+		input,		CONTENT_IGNORE,	input,
+		input,		CONTENT_IGNORE,	input
+	};
+	setRecipe(r,result,1);
+}
 
 InventoryItem *getResult(InventoryItem **items)
 {

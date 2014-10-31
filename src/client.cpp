@@ -1421,6 +1421,15 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 					case 4:
 						inv = player->inventory.getList("boots");
 						break;
+					case 5:
+						inv = player->inventory.getList("decorative");
+						break;
+					case 6:
+						inv = player->inventory.getList("jacket");
+						break;
+					case 7:
+						inv = player->inventory.getList("belt");
+						break;
 					}
 					if (inv == NULL)
 						continue;

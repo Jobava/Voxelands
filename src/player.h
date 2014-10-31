@@ -493,21 +493,7 @@ public:
 
 	void applyControl(float dtime);
 
-	video::ITexture* getTexture()
-	{
-		const char* list[4] = {"hat","shirt","pants","boots"};
-		std::string tex = getSkin();
-		for (int j=0; j<4; j++) {
-			InventoryList *l = inventory.getList(list[j]);
-			if (l == NULL)
-				continue;
-			InventoryItem *i = l->getItem(0);
-			if (i == NULL)
-				continue;
-			tex += "^" + content_clothesitem_features(i->getContent()).overlay_texture;
-		}
-		return g_texturesource->getTextureRaw(tex);
-	}
+	video::ITexture* getTexture();
 
 	PlayerControl control;
 

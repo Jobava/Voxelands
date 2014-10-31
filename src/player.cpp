@@ -114,8 +114,14 @@ void Player::checkInventory()
 		InventoryList *b = inventory.getList("boots");
 		h->setStackable(false);
 		h->clearAllowed();
+		j->setStackable(false);
+		j->clearAllowed();
 		s->setStackable(false);
 		s->clearAllowed();
+		d->setStackable(false);
+		d->clearAllowed();
+		t->setStackable(false);
+		t->clearAllowed();
 		p->setStackable(false);
 		p->clearAllowed();
 		b->setStackable(false);
@@ -668,6 +674,7 @@ LocalPlayer::LocalPlayer():
 	// doesn't support health points
 	hp = 0;
 	hunger = 0;
+	m_character = g_settings->get("character_definition");
 }
 
 LocalPlayer::~LocalPlayer()
@@ -1040,6 +1047,39 @@ void LocalPlayer::applyControl(float dtime)
 
 	// Accelerate to target speed with maximum increment
 	accelerate(speed, inc);
+}
+
+video::ITexture* LocalPlayer::getTexture()
+{
+	std::string clothes[7];
+	const char* list[7] = {"hat","shirt","jacket","decorative","belt","pants","boots"};
+	std::vector<std::string> parts;
+	getSkin(parts);
+	for (int j=0; j<7; j++) {
+		InventoryList *l = inventory.getList(list[j]);
+		if (l == NULL)
+			continue;
+		InventoryItem *i = l->getItem(0);
+		if (i == NULL)
+			continue;
+		clothes[j] = content_clothesitem_features(i->getContent()).overlay_texture;
+	}
+
+	std::string tex = "";
+
+	tex += parts[0];         // skin
+	tex += "^" + parts[1];   // face
+	tex += "^" + parts[2];   // eyes
+	tex += "^" + clothes[5]; // pants
+	tex += "^" + clothes[1]; // shirt
+	tex += "^" + clothes[4]; // belt
+	tex += "^" + clothes[3]; // deco
+	tex += "^" + parts[3];   // hair
+	tex += "^" + clothes[2]; // jacket
+	tex += "^" + clothes[6]; // boots
+	tex += "^" + clothes[0]; // hat
+
+	return g_texturesource->getTextureRaw(tex);
 }
 #endif
 
