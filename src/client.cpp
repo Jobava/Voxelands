@@ -727,15 +727,13 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		return;
 	}
 
-	if(command == TOCLIENT_ACCESS_DENIED)
-	{
+	if (command == TOCLIENT_ACCESS_DENIED) {
 		// The server didn't like our password. Note, this needs
 		// to be processed even if the serialisation format has
 		// not been agreed yet, the same as TOCLIENT_INIT.
 		m_access_denied = true;
 		m_access_denied_reason = L"Unknown";
-		if(datasize >= 4)
-		{
+		if (datasize >= 4) {
 			std::string datastring((char*)&data[2], datasize-2);
 			std::istringstream is(datastring, std::ios_base::binary);
 			m_access_denied_reason = deSerializeWideString(is);
@@ -743,8 +741,7 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		return;
 	}
 
-	if(ser_version == SER_FMT_VER_INVALID)
-	{
+	if (ser_version == SER_FMT_VER_INVALID) {
 		infostream<<"Client: Server serialization"
 				" format invalid or not initialized."
 				" Skipping incoming command="<<command<<std::endl;
@@ -755,7 +752,8 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 	// making some copypasta
 	{}
 
-	if(command == TOCLIENT_REMOVENODE)
+	switch (command) {
+	case TOCLIENT_REMOVENODE:
 	{
 		if(datasize < 8)
 			return;
@@ -771,7 +769,8 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 
 		removeNode(p);
 	}
-	else if(command == TOCLIENT_ADDNODE)
+	break;
+	case TOCLIENT_ADDNODE:
 	{
 		if(datasize < 8 + MapNode::serializedLength(ser_version))
 			return;
@@ -788,7 +787,8 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 
 		addNode(p, n);
 	}
-	else if(command == TOCLIENT_BLOCKDATA)
+	break;
+	case TOCLIENT_BLOCKDATA:
 	{
 		// Ignore too small packet
 		if(datasize < 8)
@@ -872,7 +872,8 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		//infostream<<"Adding mesh update task for received block"<<std::endl;
 		addUpdateMeshTaskWithEdge(p, true);
 	}
-	else if(command == TOCLIENT_SERVERSETTINGS)
+	break;
+	case TOCLIENT_SERVERSETTINGS:
 	{
 		std::string datastring((char*)&data[2], datasize-2);
 		std::istringstream is(datastring, std::ios_base::binary);
@@ -883,7 +884,8 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 
 		setServerSettings(damage,suffocation,hunger);
 	}
-	else if(command == TOCLIENT_PLAYERINFO)
+	break;
+	case TOCLIENT_PLAYERINFO:
 	{
 		u16 our_peer_id = m_con.GetPeerID();
 		// Cancel if we don't have a peer id
@@ -952,7 +954,8 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 			}
 		} //envlock
 	}
-	else if(command == TOCLIENT_PLAYERDATA)
+	break;
+	case TOCLIENT_PLAYERDATA:
 	{
 		u16 our_peer_id = m_con.GetPeerID();
 
@@ -1039,7 +1042,8 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 			}
 		} //envlock
 	}
-	else if(command == TOCLIENT_PLAYER_ANIMATION)
+	break;
+	case TOCLIENT_PLAYER_ANIMATION:
 	{
 		u16 peer_id = readU16(&data[2]);
 		u8 anim_id = readU8(&data[4]);
@@ -1059,7 +1063,8 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 
 		player->updateAnim(anim_id);
 	}
-	else if(command == TOCLIENT_PLAYERHP)
+	break;
+	case TOCLIENT_PLAYERHP:
 	{
 		std::string datastring((char*)&data[2], datasize-2);
 		std::istringstream is(datastring, std::ios_base::binary);
@@ -1075,7 +1080,8 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		if (m_server_hunger)
 			player->hunger = hunger;
 	}
-	else if(command == TOCLIENT_INVENTORY)
+	break;
+	case TOCLIENT_INVENTORY:
 	{
 		if (datasize < 3)
 			return;
@@ -1092,7 +1098,8 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		}
 	}
 	//DEBUG
-	else if(command == TOCLIENT_OBJECTDATA)
+	break;
+	case TOCLIENT_OBJECTDATA:
 	{
 		// Strip command word and create a stringstream
 		std::string datastring((char*)&data[2], datasize-2);
@@ -1152,7 +1159,8 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 			return;
 		}
 	}
-	else if(command == TOCLIENT_TIME_OF_DAY)
+	break;
+	case TOCLIENT_TIME_OF_DAY:
 	{
 		if(datasize < 4)
 			return;
@@ -1177,7 +1185,8 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		}
 
 	}
-	else if(command == TOCLIENT_CHAT_MESSAGE)
+	break;
+	case TOCLIENT_CHAT_MESSAGE:
 	{
 		/*
 			u16 command
@@ -1204,7 +1213,8 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 
 		m_chat_queue.push_back(message);
 	}
-	else if(command == TOCLIENT_ACTIVE_OBJECT_REMOVE_ADD)
+	break;
+	case TOCLIENT_ACTIVE_OBJECT_REMOVE_ADD:
 	{
 		/*
 			u16 command
@@ -1252,7 +1262,8 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 			m_env.addActiveObject(id, type, data);
 		}
 	}
-	else if(command == TOCLIENT_ACTIVE_OBJECT_MESSAGES)
+	break;
+	case TOCLIENT_ACTIVE_OBJECT_MESSAGES:
 	{
 		/*
 			u16 command
@@ -1287,7 +1298,8 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 			m_env.processActiveObjectMessage(id, message);
 		}
 	}
-	else if(command == TOCLIENT_HP)
+	break;
+	case TOCLIENT_HP:
 	{
 		infostream<<"Client received DEPRECATED TOCLIENT_HP"<<std::endl;
 		std::string datastring((char*)&data[2], datasize-2);
@@ -1297,7 +1309,8 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		u8 hp = readU8(is);
 		player->hp = hp;
 	}
-	else if(command == TOCLIENT_MOVE_PLAYER)
+	break;
+	case TOCLIENT_MOVE_PLAYER:
 	{
 		std::string datastring((char*)&data[2], datasize-2);
 		std::istringstream is(datastring, std::ios_base::binary);
@@ -1332,7 +1345,8 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		// get damage from falling on ground
 		m_ignore_damage_timer = 3.0;
 	}
-	else if(command == TOCLIENT_PLAYERITEM)
+	break;
+	case TOCLIENT_PLAYERITEM:
 	{
 		std::string datastring((char*)&data[2], datasize-2);
 		std::istringstream is(datastring, std::ios_base::binary);
@@ -1373,7 +1387,8 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 			}
 		}
 	}
-	else if(command == TOCLIENT_PLAYERITEMS)
+	break;
+	case TOCLIENT_PLAYERITEMS:
 	{
 		std::string datastring((char*)&data[2], datasize-2);
 		std::istringstream is(datastring, std::ios_base::binary);
@@ -1444,7 +1459,8 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 			}
 		}
 	}
-	else if(command == TOCLIENT_DEATHSCREEN)
+	break;
+	case TOCLIENT_DEATHSCREEN:
 	{
 		std::string datastring((char*)&data[2], datasize-2);
 		std::istringstream is(datastring, std::ios_base::binary);
@@ -1460,7 +1476,8 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		event.deathscreen.camera_point_target_z = camera_point_target.Z;
 		m_client_event_queue.push_back(event);
 	}
-	else if(command == TOCLIENT_HAVECOOKIE)
+	break;
+	case TOCLIENT_HAVECOOKIE:
 	{
 		/*
 			u16 command
@@ -1479,10 +1496,12 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		m_httpclient->setCookie(c);
 		m_httpclient->pushRequest(HTTPREQUEST_SKIN_HASH,p);
 	}
-	else
+	break;
+	default:
 	{
 		infostream<<"Client: Ignoring unknown command "
 				<<command<<std::endl;
+	}
 	}
 }
 

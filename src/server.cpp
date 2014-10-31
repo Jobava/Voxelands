@@ -1804,18 +1804,16 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 	ToServerCommand command = (ToServerCommand)readU16(&data[0]);
 
-	if(command == TOSERVER_INIT)
-	{
+	if (command == TOSERVER_INIT) {
 		// [0] u16 TOSERVER_INIT
 		// [2] u8 SER_FMT_VER_HIGHEST
 		// [3] u8[20] player_name
 		// [23] u8[28] password <--- can be sent without this, from old versions
 
-		if(datasize < 2+1+PLAYERNAME_SIZE)
+		if (datasize < 2+1+PLAYERNAME_SIZE)
 			return;
 
-		infostream<<"Server: Got TOSERVER_INIT from "
-				<<peer_id<<std::endl;
+		infostream<<"Server: Got TOSERVER_INIT from "<<peer_id<<std::endl;
 
 		// First byte after command is maximum supported
 		// serialization version
@@ -1824,19 +1822,17 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		// Use the highest version supported by both
 		u8 deployed = core::min_(client_max, our_max);
 		// If it's lower than the lowest supported, give up.
-		if(deployed < SER_FMT_VER_LOWEST)
+		if (deployed < SER_FMT_VER_LOWEST)
 			deployed = SER_FMT_VER_INVALID;
 
 		//peer->serialization_version = deployed;
 		getClient(peer_id)->pending_serialization_version = deployed;
 
-		if(deployed == SER_FMT_VER_INVALID)
-		{
+		if (deployed == SER_FMT_VER_INVALID) {
 			infostream<<"Server: Cannot negotiate "
 					"serialization version with peer "
 					<<peer_id<<std::endl;
-			SendAccessDenied(m_con, peer_id,
-					L"Your client is too old (map format)");
+			SendAccessDenied(m_con, peer_id, L"Your client is too old (map format)");
 			return;
 		}
 
@@ -1845,26 +1841,20 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		*/
 
 		u16 net_proto_version = 0;
-		if(datasize >= 2+1+PLAYERNAME_SIZE+PASSWORD_SIZE+2)
-		{
+		if (datasize >= 2+1+PLAYERNAME_SIZE+PASSWORD_SIZE+2)
 			net_proto_version = readU16(&data[2+1+PLAYERNAME_SIZE+PASSWORD_SIZE]);
-		}
 
 		getClient(peer_id)->net_proto_version = net_proto_version;
 
 		if (net_proto_version < PROTOCOL_OLDEST) {
-			SendAccessDenied(m_con, peer_id,
-					L"Your client is too old. Please upgrade.");
+			SendAccessDenied(m_con, peer_id, L"Your client is too old. Please upgrade.");
 			return;
 		}
 
 		/* Uhh... this should actually be a warning but let's do it like this */
-		if(g_settings->getBool("strict_protocol_version_checking"))
-		{
-			if(net_proto_version < PROTOCOL_VERSION)
-			{
-				SendAccessDenied(m_con, peer_id,
-						L"Your client is too old. Please upgrade.");
+		if (g_settings->getBool("strict_protocol_version_checking")) {
+			if (net_proto_version < PROTOCOL_VERSION) {
+				SendAccessDenied(m_con, peer_id, L"Your client is too old. Please upgrade.");
 				return;
 			}
 		}
@@ -1875,39 +1865,30 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 		// Get player name
 		char playername[PLAYERNAME_SIZE];
-		for(u32 i=0; i<PLAYERNAME_SIZE-1; i++)
-		{
+		for (u32 i=0; i<PLAYERNAME_SIZE-1; i++) {
 			playername[i] = data[3+i];
 		}
 		playername[PLAYERNAME_SIZE-1] = 0;
 
-		if(playername[0]=='\0')
-		{
+		if (playername[0]=='\0') {
 			infostream<<"Server: Player has empty name"<<std::endl;
-			SendAccessDenied(m_con, peer_id,
-					L"Empty name");
+			SendAccessDenied(m_con, peer_id, L"Empty name");
 			return;
 		}
 
-		if(string_allowed(playername, PLAYERNAME_ALLOWED_CHARS)==false)
-		{
+		if (string_allowed(playername, PLAYERNAME_ALLOWED_CHARS)==false) {
 			infostream<<"Server: Player has invalid name"<<std::endl;
-			SendAccessDenied(m_con, peer_id,
-					L"Name contains unallowed characters");
+			SendAccessDenied(m_con, peer_id, L"Name contains unallowed characters");
 			return;
 		}
 
 		// Get password
 		char password[PASSWORD_SIZE];
-		if(datasize < 2+1+PLAYERNAME_SIZE+PASSWORD_SIZE)
-		{
+		if (datasize < 2+1+PLAYERNAME_SIZE+PASSWORD_SIZE) {
 			// old version - assume blank password
 			password[0] = 0;
-		}
-		else
-		{
-				for(u32 i=0; i<PASSWORD_SIZE-1; i++)
-				{
+		}else{
+				for (u32 i=0; i<PASSWORD_SIZE-1; i++) {
 					password[i] = data[23+i];
 				}
 				password[PASSWORD_SIZE-1] = 0;
@@ -2007,8 +1988,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		return;
 	}
 
-	if(command == TOSERVER_INIT2)
-	{
+	if (command == TOSERVER_INIT2) {
 		infostream<<"Server: Got TOSERVER_INIT2 from "<<peer_id<<std::endl;
 
 
@@ -2106,8 +2086,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		return;
 	}
 
-	if(peer_ser_ver == SER_FMT_VER_INVALID)
-	{
+	if (peer_ser_ver == SER_FMT_VER_INVALID) {
 		infostream<<"Server::ProcessData(): Cancelling: Peer"
 				" serialization format invalid or not initialized."
 				" Skipping incoming command="<<command<<std::endl;
@@ -2116,13 +2095,14 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 	Player *player = m_env.getPlayer(peer_id);
 
-	if(player == NULL){
+	if (player == NULL) {
 		infostream<<"Server::ProcessData(): Cancelling: "
 				"No player for peer_id="<<peer_id
 				<<std::endl;
 		return;
 	}
-	if(command == TOSERVER_PLAYERPOS)
+	switch (command) {
+	case TOSERVER_PLAYERPOS:
 	{
 		if(datasize < 2+12+12+4+4)
 			return;
@@ -2146,7 +2126,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				<<"("<<position.X<<","<<position.Y<<","<<position.Z<<")"
 				<<" pitch="<<pitch<<" yaw="<<yaw<<std::endl;*/
 	}
-	else if(command == TOSERVER_GOTBLOCKS)
+	break;
+	case TOSERVER_GOTBLOCKS:
 	{
 		if(datasize < 2+1)
 			return;
@@ -2172,7 +2153,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			client->GotBlock(p);
 		}
 	}
-	else if(command == TOSERVER_DELETEDBLOCKS)
+	break;
+	case TOSERVER_DELETEDBLOCKS:
 	{
 		if(datasize < 2+1)
 			return;
@@ -2198,12 +2180,14 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			client->SetBlockNotSent(p);
 		}
 	}
-	else if(command == TOSERVER_CLICK_OBJECT)
+	break;
+	case TOSERVER_CLICK_OBJECT:
 	{
 		infostream<<"Server: CLICK_OBJECT not supported anymore"<<std::endl;
 		return;
 	}
-	else if(command == TOSERVER_CLICK_ACTIVEOBJECT)
+	break;
+	case TOSERVER_CLICK_ACTIVEOBJECT:
 	{
 		if (datasize < 7)
 			return;
@@ -2343,7 +2327,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				SendPlayerHP(player);
 		}
 	}
-	else if(command == TOSERVER_GROUND_ACTION)
+	break;
+	case TOSERVER_GROUND_ACTION:
 	{
 		if(datasize < 17)
 			return;
@@ -4243,7 +4228,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					<<action<<std::endl;
 		}
 	}
-	else if(command == TOSERVER_PLAYERDAMAGE)
+	break;
+	case TOSERVER_PLAYERDAMAGE:
 	{
 		std::string datastring((char*)&data[2], datasize-2);
 		std::istringstream is(datastring, std::ios_base::binary);
@@ -4283,7 +4269,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			HandlePlayerHP(player, damage, suffocate, hunger);
 		}
 	}
-	else if(command == TOSERVER_PLAYERWEAR)
+	break;
+	case TOSERVER_PLAYERWEAR:
 	{
 		std::string datastring((char*)&data[2], datasize-2);
 		std::istringstream is(datastring, std::ios_base::binary);
@@ -4310,13 +4297,15 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		SendInventory(player->peer_id);
 		return;
 	}
-	else if(command == TOSERVER_SIGNNODETEXT)
+	break;
+	case TOSERVER_SIGNNODETEXT:
 	{
 		infostream<<"Server: TOSERVER_SIGNNODETEXT not supported anymore"
 				<<std::endl;
 		return;
 	}
-	else if(command == TOSERVER_INVENTORY_ACTION)
+	break;
+	case TOSERVER_INVENTORY_ACTION:
 	{
 		// Strip command and create a stream
 		std::string datastring((char*)&data[2], datasize-2);
@@ -4487,7 +4476,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					<<std::endl;
 		}
 	}
-	else if(command == TOSERVER_CHAT_MESSAGE)
+	break;
+	case TOSERVER_CHAT_MESSAGE:
 	{
 		/*
 			u16 command
@@ -4601,7 +4591,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			}
 		}
 	}
-	else if(command == TOSERVER_DAMAGE)
+	break;
+	case TOSERVER_DAMAGE:
 	{
 		std::string datastring((char*)&data[2], datasize-2);
 		std::istringstream is(datastring, std::ios_base::binary);
@@ -4618,7 +4609,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			SendPlayerHP(player);
 		}
 	}
-	else if(command == TOSERVER_PASSWORD)
+	break;
+	case TOSERVER_PASSWORD:
 	{
 		/*
 			[0] u16 TOSERVER_PASSWORD
@@ -4686,7 +4678,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				<<std::endl;
 		SendChatMessage(peer_id, L"Password change successful");
 	}
-	else if(command == TOSERVER_PLAYERITEM)
+	break;
+	case TOSERVER_PLAYERITEM:
 	{
 		if (datasize < 2+2)
 			return;
@@ -4695,7 +4688,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		player->wieldItem(item);
 		SendPlayerItems(player);
 	}
-	else if(command == TOSERVER_RESPAWN)
+	break;
+	case TOSERVER_RESPAWN:
 	{
 		if(player->hp != 0)
 			return;
@@ -4705,11 +4699,13 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		actionstream<<player->getName()<<" respawns at "
 				<<PP(player->getPosition()/BS)<<std::endl;
 	}
-	else if(command == TOSERVER_WANTCOOKIE)
+	break;
+	case TOSERVER_WANTCOOKIE:
 	{
 		SendPlayerCookie(player);
 	}
-	else if(command == TOSERVER_NODEMETA_FIELDS)
+	break;
+	case TOSERVER_NODEMETA_FIELDS:
 	{
 		std::string datastring((char*)&data[2], datasize-2);
 		std::istringstream is(datastring, std::ios_base::binary);
@@ -4734,7 +4730,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		}
 
 		NodeMetadata *meta = m_env.getMap().getNodeMetadata(p);
-		if(!meta)
+		if (!meta)
 			return;
 
 		if (meta->receiveFields(formname,fields,player)) {
@@ -4752,10 +4748,12 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			}
 		}
 	}
-	else
+	break;
+	default:
 	{
 		infostream<<"Server::ProcessData(): Ignoring "
 				"unknown command "<<command<<std::endl;
+	}
 	}
 
 	} //try
