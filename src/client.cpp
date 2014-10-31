@@ -40,6 +40,7 @@
 #include "log.h"
 #include "http.h"
 #include "sound.h"
+#include "content_clothesitem.h"
 
 /*
 	QueuedMeshUpdate
@@ -1451,7 +1452,45 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 					if (itm == CONTENT_IGNORE) {
 						inv->deleteItem(0);
 					}else{
-						delete inv->changeItem(0, InventoryItem::create(itm,1));
+						InventoryItem *item = inv->changeItem(0, InventoryItem::create(itm,1));
+						if (item)
+							delete item;
+					}
+				}
+				// for 1409 servers, this stops players appearing naked
+				if (icount == 5) {
+					{
+						InventoryList *inv = player->inventory.getList("shirt");
+						if (!inv->getItem(0)) {
+							InventoryItem *item = inv->changeItem(
+								0,
+								InventoryItem::create(CONTENT_CLOTHESITEM_COTTON_TSHIRT_GREEN,1)
+							);
+							if (item)
+								delete item;
+						}
+					}
+					{
+						InventoryList *inv = player->inventory.getList("pants");
+						if (!inv->getItem(0)) {
+							InventoryItem *item = inv->changeItem(
+								0,
+								InventoryItem::create(CONTENT_CLOTHESITEM_CANVAS_PANTS_BLUE,1)
+							);
+							if (item)
+								delete item;
+						}
+					}
+					{
+						InventoryList *inv = player->inventory.getList("boots");
+						if (!inv->getItem(0)) {
+							InventoryItem *item = inv->changeItem(
+								0,
+								InventoryItem::create(CONTENT_CLOTHESITEM_LEATHER_SHOES,1)
+							);
+							if (item)
+								delete item;
+						}
 					}
 				}
 				player->wieldItem(0);

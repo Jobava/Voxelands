@@ -591,11 +591,12 @@ void RemotePlayer::move(f32 dtime, Map &map, f32 pos_max_d)
 	m_pos_animation_counter += dtime;
 	v3f movevector = m_position - m_oldpos;
 	f32 moveratio;
-	if(m_pos_animation_time < 0.001)
+	if (m_pos_animation_time < 0.001) {
 		moveratio = 1.0;
-	else
+	}else{
 		moveratio = m_pos_animation_counter / m_pos_animation_time;
-	if(moveratio > 1.5)
+	}
+	if (moveratio > 1.5)
 		moveratio = 1.5;
 	m_showpos = m_oldpos + movevector * moveratio;
 
