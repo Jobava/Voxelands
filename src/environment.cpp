@@ -982,7 +982,7 @@ void ServerEnvironment::step(float dtime)
 				block->incNodeTicks(p0);
 				MapNode n = block->getNodeNoEx(p0);
 
-				if (content_mob_spawn(this,p,active_object_count_wider))
+				if (active_object_count_wider < 20 && content_mob_spawn(this,p,active_object_count_wider))
 					active_object_count_wider++;
 
 				switch(n.getContent()) {
@@ -3482,7 +3482,7 @@ void ServerEnvironment::deactivateFarObjects(bool force_delete)
 				block = m_map->emergeBlock(blockpos, false);
 
 			if (block) {
-				block->m_static_objects.insert(id, s_obj);
+				block->m_static_objects.insert(0, s_obj);
 				block->raiseModified(MOD_STATE_WRITE_NEEDED);
 			}
 
