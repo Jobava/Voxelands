@@ -862,12 +862,10 @@ void the_game(
 				break;
 			}
 
-			std::wostringstream ss;
-			ss<<wgettext("Connecting to server... (timeout in ");
-			ss<<(int)(10.0 - time_counter + 1.0);
-			ss<<wgettext(" seconds)");
+			wchar_t buff[512];
+			swprintf(buff,512,L"Connecting to server... (timeout in %d seconds)",(int)(10.0 - time_counter + 1.0));
 			//draw_load_screen(ss.str(), driver, font);
-			drawLoadingScreen(driver,ss.str());
+			drawLoadingScreen(driver,std::wstring(buff));
 
 			// Update client and server
 			client.step(0.1);
@@ -889,8 +887,9 @@ void the_game(
 
 	if (could_connect == false) {
 		if (client.accessDenied()) {
-			error_message = wgettext("Access denied. Reason: ")
-					+client.accessDeniedReason();
+			wchar_t buff[512];
+			swprintf(buff,512,wgettext("Access denied. Reason: %ls"),client.accessDeniedReason().c_str());
+			error_message = std::wstring(buff);
 			errorstream<<wide_to_narrow(error_message)<<std::endl;
 		}else if (server != NULL) {
 			error_message = wgettext("Unable to Connect (port already in use?).");
@@ -1338,10 +1337,10 @@ void the_game(
 						 g_settings->get("screenshot_path").c_str(),
 						 device->getTimer()->getRealTime());
 				if (driver->writeImageToFile(image, filename)) {
-					std::wstringstream sstr;
-					sstr<<wgettext("Saved screenshot to '")<<filename<<"'";
+					wchar_t buff[512];
+					swprintf(buff,512,wgettext("Saved screenshot to '%s'"),filename);
 					infostream<<"Saved screenshot to '"<<filename<<"'"<<std::endl;
-					statustext = sstr.str();
+					statustext = std::wstring(buff);
 					statustext_time = 0;
 				}else{
 					infostream<<"Failed to save screenshot '"<<filename<<"'"<<std::endl;
@@ -1414,10 +1413,9 @@ void the_game(
 					show_profiler, show_profiler_max);
 
 			if (show_profiler != 0) {
-				std::wstringstream sstr;
-				sstr<<wgettext("Profiler shown (page ")<<show_profiler
-					<<" of "<<show_profiler_max<<")";
-				statustext = sstr.str();
+				wchar_t buff[512];
+				swprintf(buff,512,wgettext("Profiler shown (page %d of %d)"),show_profiler,show_profiler_max);
+				statustext = std::wstring(buff);
 				statustext_time = 0;
 			}else{
 				statustext = wgettext("Profiler hidden");
@@ -1428,7 +1426,9 @@ void the_game(
 			s16 range = g_settings->getS16("viewing_range_nodes_min");
 			s16 range_new = range + 10;
 			g_settings->set("viewing_range_nodes_min", itos(range_new));
-			statustext = wgettext("Minimum viewing range changed to ") + narrow_to_wide(itos(range_new));
+			wchar_t buff[512];
+			swprintf(buff,512,wgettext("Minimum viewing range changed to %d"),range_new);
+			statustext = std::wstring(buff);
 			statustext_time = 0;
 		}
 		else if (input->wasKeyDown(getKeySetting("keymap_decrease_viewing_range_min"))) {
@@ -1438,7 +1438,9 @@ void the_game(
 				range_new = range;
 			g_settings->set("viewing_range_nodes_min",
 					itos(range_new));
-			statustext = wgettext("Minimum viewing range changed to ") + narrow_to_wide(itos(range_new));
+			wchar_t buff[512];
+			swprintf(buff,512,wgettext("Minimum viewing range changed to %d"),range_new);
+			statustext = std::wstring(buff);
 			statustext_time = 0;
 		}
 

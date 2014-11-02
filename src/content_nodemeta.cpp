@@ -164,7 +164,9 @@ void FlagNodeMetadata::serializeBody(std::ostream &os)
 }
 std::wstring FlagNodeMetadata::infoText()
 {
-	return narrow_to_wide(m_owner)+wgettext("'s Home Flag");
+	char buff[256];
+	snprintf(buff,256,gettext("%s's Home Flag"),m_owner.c_str());
+	return narrow_to_wide(buff);
 }
 
 /*
@@ -279,7 +281,9 @@ void LockingChestNodeMetadata::serializeBody(std::ostream &os)
 }
 std::wstring LockingChestNodeMetadata::infoText()
 {
-	return wgettext("Locking Chest owned by '")+narrow_to_wide(m_owner)+L"'";
+	char buff[256];
+	snprintf(buff,256,gettext("Locking Chest owned by '%s'"),m_owner.c_str());
+	return narrow_to_wide(buff);
 }
 bool LockingChestNodeMetadata::nodeRemovalDisabled()
 {
@@ -395,20 +399,16 @@ bool CreativeChestNodeMetadata::receiveFields(std::string formname, std::map<std
 }
 std::string CreativeChestNodeMetadata::getDrawSpecString()
 {
+	char buff[256];
 	std::vector<content_t> &list = lists::get("creative");
+	snprintf(buff,256,gettext("Page %d of %d"),(int)(m_page+1),(int)((list.size()/32)+1));
 	std::string spec("size[8,10]");
 		spec += "list[current_name;0;0,0.5;8,4;]";
 		spec += "button[0.25,5;2.5,0.75;prev;";
 		spec += gettext("<< Previous Page");
 		spec += "]";
 		spec += "label[3.5,5;";
-		spec += gettext("Page");
-		spec += " ";
-		spec += itos(m_page+1);
-		spec += " ";
-		spec += gettext("of");
-		spec += " ";
-		spec += itos((list.size()/32)+1);
+		spec += buff;
 		spec += "]";
 		spec += "button[6,5;2.5,0.75;next;";
 		spec += gettext("Next Page >>");
@@ -453,7 +453,9 @@ void BorderStoneNodeMetadata::serializeBody(std::ostream &os)
 }
 std::wstring BorderStoneNodeMetadata::infoText()
 {
-	return wgettext("Border Stone owned by '")+narrow_to_wide(m_text)+L"'";
+	char buff[256];
+	snprintf(buff,256,gettext("Border Stone owned by '%s'"),m_text.c_str());
+	return narrow_to_wide(buff);
 }
 
 /*
@@ -784,13 +786,13 @@ std::wstring LockingFurnaceNodeMetadata::infoText()
 		if(src_item && src_item->isCookable()) {
 			InventoryList *dst_list = m_inventory->getList("dst");
 			if (!dst_list->roomForCookedItem(src_item))
-				return wgettext("Locking Furnace is overloaded (")+narrow_to_wide(ostr)+L")";
-			return wgettext("Locking Furnace is out of fuel (")+narrow_to_wide(ostr)+L")";
+				return wgettext("Locking Furnace is overloaded")+std::wstring(L" (")+narrow_to_wide(ostr)+L")";
+			return wgettext("Locking Furnace is out of fuel")+std::wstring(L" (")+narrow_to_wide(ostr)+L")";
 		}else{
-			return wgettext("Locking Furnace is inactive (")+narrow_to_wide(ostr)+L")";
+			return wgettext("Locking Furnace is inactive")+std::wstring(L" (")+narrow_to_wide(ostr)+L")";
 		}
 	}else{
-		std::wstring s = wgettext("Locking Furnace is active (")+narrow_to_wide(ostr)+L")";
+		std::wstring s = wgettext("Locking Furnace is active")+std::wstring(L" (")+narrow_to_wide(ostr)+L")";
 		// Do this so it doesn't always show (0%) for weak fuel
 		if (m_fuel_totaltime > 3) {
 			s += L" (";
@@ -1038,7 +1040,9 @@ std::wstring TNTNodeMetadata::infoText()
 	if (s < 1)
 		return wgettext("Armed Explosive: about to detonate");
 
-	return wgettext("Armed Explosive: ")+itows(s)+wgettext(" seconds till detonation");
+	char buff[512];
+	snprintf(buff,512,gettext("Armed Explosive: %d seconds till detonation"),s);
+	return narrow_to_wide(buff);
 }
 
 /*
@@ -1328,19 +1332,20 @@ std::string CraftGuideNodeMetadata::getDrawSpecString()
 		rc = crafting::getRecipeCount(q);
 	}
 
+	char buff[256];
+	snprintf(buff,256,gettext("Page %d of %d"),(int)(m_page+1),(int)((list.size()/40)+1));
+
 	std::string spec("size[8,10]");
 	spec +=	"label[0.5,0.75;";
 	spec += gettext("Add item here to see recipe");
 	spec += "]";
 	spec +=	"list[current_name;result;2,1;1,1;]";
 	if (rc > 1) {
+		char rbuff[256];
+		snprintf(rbuff,256,gettext("Recipe %d of %d"),(int)(m_recipe+1),rc);
 		spec += "button[2.5,3.5;1,0.75;rprev;<<]";
 		spec += "label[3.5,3.5;";
-		spec += gettext("Recipe");
-		spec += " ";
-		spec += itos(m_recipe+1);
-		spec += " of ";
-		spec += itos(rc);
+		spec += buff;
 		spec += "]";
 		spec += "button[5.5,3.5;1,0.75;rnext;>>]";
 	}
@@ -1359,13 +1364,7 @@ std::string CraftGuideNodeMetadata::getDrawSpecString()
 	spec += gettext("<< Previous Page");
 	spec += "]";
 	spec +=	"label[3.5,4.5;";
-	spec += gettext("Page");
-	spec += " ";
-	spec += itos(m_page+1);
-	spec += " ";
-	spec += gettext("of");
-	spec += " ";
-	spec += itos((list.size()/40)+1);
+	spec += buff;
 	spec += "]";
 	spec +=	"button[6,4.5;2.5,0.75;next;";
 	spec += gettext("Next Page >>");
@@ -1535,6 +1534,9 @@ std::string CookBookNodeMetadata::getDrawSpecString()
 	if (q && q->getContent() != CONTENT_IGNORE)
 		tr = crafting::getResultCount(q);
 
+	char buff[256];
+	snprintf(buff,256,gettext("Page %d of %d"),(int)(m_page+1),(int)((list.size()/40)+1));
+
 	std::string spec("size[8,9]");
 	spec +=	"label[0.5,0.75;";
 	spec += gettext("Add item here to see cook result");
@@ -1545,13 +1547,7 @@ std::string CookBookNodeMetadata::getDrawSpecString()
 	spec += gettext("<< Previous Page");
 	spec += "]";
 	spec +=	"label[3.5,3.5;";
-	spec += gettext("Page");
-	spec += " ";
-	spec += itos(m_page+1);
-	spec += " ";
-	spec += gettext("of");
-	spec += " ";
-	spec += itos((list.size()/40)+1);
+	spec += buff;
 	spec += "]";
 	spec +=	"button[6,3.5;2.5,0.75;next;";
 	spec += gettext("Next Page >>");
@@ -1749,6 +1745,8 @@ bool DeCraftNodeMetadata::receiveFields(std::string formname, std::map<std::stri
 std::string DeCraftNodeMetadata::getDrawSpecString()
 {
 	std::vector<content_t> &list = lists::get("decrafting");
+	char buff[256];
+	snprintf(buff,256,gettext("Page %d of %d"),(int)(m_page+1),(int)((list.size()/40)+1));
 
 	std::string spec("size[8,9]");
 	spec +=	"label[0.5,0.75;";
@@ -1767,13 +1765,7 @@ std::string DeCraftNodeMetadata::getDrawSpecString()
 	spec += gettext("<< Previous Page");
 	spec += "]";
 	spec +=	"label[3.5,3.5;";
-	spec += gettext("Page");
-	spec += " ";
-	spec += itos(m_page+1);
-	spec += " ";
-	spec += gettext("of");
-	spec += " ";
-	spec += itos((list.size()/40)+1);
+	spec += buff;
 	spec += "]";
 	spec +=	"button[6,3.5;2.5,0.75;next;";
 	spec += gettext("Next Page >>");

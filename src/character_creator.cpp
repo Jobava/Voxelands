@@ -94,14 +94,14 @@ GUICharDefMenu::GUICharDefMenu(
 	m_eyes_types["yellow"] = wgettext("Yellow Eyes");
 	m_eyes_types["black"] = wgettext("Black Eyes");
 
-	m_shirt_types["white"] = wgettext("White Shirt");
-	m_shirt_types["blue"] = wgettext("Blue Shirt");
-	m_shirt_types["green"] = wgettext("Green Shirt");
-	m_shirt_types["orange"] = wgettext("Orange Shirt");
-	m_shirt_types["purple"] = wgettext("Purple Shirt");
-	m_shirt_types["red"] = wgettext("Red Shirt");
-	m_shirt_types["yellow"] = wgettext("Yellow Shirt");
-	m_shirt_types["black"] = wgettext("Black Shirt");
+	m_shirt_types["white"] = wgettext("White T-Shirt");
+	m_shirt_types["blue"] = wgettext("Blue T-Shirt");
+	m_shirt_types["green"] = wgettext("Green T-Shirt");
+	m_shirt_types["orange"] = wgettext("Orange T-Shirt");
+	m_shirt_types["purple"] = wgettext("Purple T-Shirt");
+	m_shirt_types["red"] = wgettext("Red T-Shirt");
+	m_shirt_types["yellow"] = wgettext("Yellow T-Shirt");
+	m_shirt_types["black"] = wgettext("Black T-Shirt");
 
 	m_pants_types["white"] = wgettext("White Pants");
 	m_pants_types["blue"] = wgettext("Blue Pants");
@@ -167,8 +167,8 @@ void GUICharDefMenu::removeChildren()
 	}
 }
 
-//gender:Yscale:XZscale:skintone:eyes:hairtone:hair:face
-//M:10:10:fair:blue:brown:medium:normal
+//gender:Yscale:XZscale:skintone:eyes:hairtone:hair:face:shirt-colour:pants-colour:shoe-type
+//M:10:10:fair:blue:brown:medium:normal:green:blue:leather
 
 void GUICharDefMenu::regenerateGui(v2u32 screensize)
 {
