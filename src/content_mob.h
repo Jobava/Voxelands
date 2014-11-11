@@ -124,6 +124,10 @@ struct MobFeatures {
 	f32 lifetime;
 	u16 contact_explosion_diameter;
 
+	std::string sound_death;
+	std::string sound_attack;
+	std::string sound_punch;
+
 	content_t spawn_on;
 	content_t spawn_in;
 	u8 spawn_min_light;
@@ -239,6 +243,9 @@ struct MobFeatures {
 		special_dropped_max = 0;
 		lifetime = 0.0;
 		contact_explosion_diameter = 0;
+		sound_death = "";
+		sound_attack = "";
+		sound_punch = "mob-dig";
 		spawn_on = CONTENT_IGNORE;
 		spawn_in = CONTENT_IGNORE;
 		spawn_min_light = 0;

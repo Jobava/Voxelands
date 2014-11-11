@@ -2334,8 +2334,12 @@ void Client::playDigSound(content_t c)
 	volume /= 100.0;
 	if (c == CONTENT_IGNORE) {
 		c = getPointedContent();
-		if ((c&CONTENT_MOB_MASK) != 0)
+		printf("dig: %X\n",c);
+		if ((c&CONTENT_MOB_MASK) != 0) {
+			if (content_mob_features(c).sound_punch != "")
+				m_sound->playSound(content_mob_features(c).sound_punch,false,volume);
 			return;
+		}
 	}
 	switch (content_features(c).type) {
 	case CMT_PLANT:
@@ -2353,7 +2357,8 @@ void Client::playDigSound(content_t c)
 	case CMT_WOOD:
 		m_sound->playSound("wood-dig",false,volume);
 		break;
-	default:;
+	default:
+		m_sound->playSound("miss-dig",false,volume);
 	}
 }
 

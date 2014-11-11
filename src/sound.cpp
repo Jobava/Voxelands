@@ -62,6 +62,10 @@ void init_sounds(ISoundManager *sound)
 	sound->loadSound("liquid-dig","dig_liquid.1.ogg");
 	// CMT_WOOD
 	sound->loadSound("wood-dig","dig_wood.1.ogg");
+	// mobs
+	sound->loadSound("mob-dig","dig_mob.ogg");
+	// miss
+	sound->loadSound("miss-dig","dig_miss.ogg");
 
 	// placing
 	sound->loadSound("place","place_node.1.ogg");
