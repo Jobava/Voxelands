@@ -27,6 +27,7 @@
 #include "settings.h"
 #include "environment.h"
 #include "map.h"
+#include "profiler.h"
 
 std::map<content_t,struct MobFeatures> g_content_mob_features;
 
@@ -100,6 +101,7 @@ void MobFeatures::setAnimationFrames(MobAnimation type, int start, int end)
 
 bool content_mob_spawn(ServerEnvironment *env, v3s16 pos, u32 active_object_count)
 {
+	ScopeProfiler sp(g_profiler, "SEnv: content_mob_spawn");
 	if (active_object_count > 20)
 		return false;
 	assert(env);
@@ -112,6 +114,13 @@ bool content_mob_spawn(ServerEnvironment *env, v3s16 pos, u32 active_object_coun
 	content_t c0 = n.getContent();
 	content_t c1 = a1.getContent();
 	content_t c2 = a2.getContent();
+
+	if (c0 == CONTENT_IGNORE || c1 == CONTENT_IGNORE || c2 == CONTENT_IGNORE)
+		return false;
+
+	if ((c1 != CONTENT_AIR && c1 != CONTENT_WATERSOURCE) && c1 != c2)
+		return false;
+
 	u8 light = a1.getLightBlend(env->getDayNightRatio());
 	u8 level = mobLevelI(g_settings->get("max_mob_level"));
 	v3f pf = intToFloat(pos,BS);
@@ -119,23 +128,15 @@ bool content_mob_spawn(ServerEnvironment *env, v3s16 pos, u32 active_object_coun
 	f32 distance = 30000.0;
 	if (nearest)
 		distance = pf.getDistanceFrom(nearest->getPosition());
+	int rand = myrand();
 
-
-	if (c0 == CONTENT_IGNORE || c1 == CONTENT_IGNORE || c2 == CONTENT_IGNORE)
-		return false;
-
+	/* TODO: this loop is what's causing lag */
 	for (std::map<content_t,struct MobFeatures>::iterator i = g_content_mob_features.begin(); i != g_content_mob_features.end(); i++) {
 		MobFeatures m = i->second;
 		if (m.spawn_in == CONTENT_IGNORE && m.spawn_on == CONTENT_IGNORE)
 			continue;
 		if (m.spawn_max_nearby_mobs < active_object_count)
 			continue;
-		if (m.spawn_nearest_player != m.spawn_farthest_player) {
-			if (m.spawn_nearest_player > distance)
-				continue;
-			if (m.spawn_farthest_player < distance)
-				continue;
-		}
 		if (m.spawn_min_height > pos.Y)
 			continue;
 		if (m.spawn_max_height < pos.Y)
@@ -156,7 +157,13 @@ bool content_mob_spawn(ServerEnvironment *env, v3s16 pos, u32 active_object_coun
 			continue;
 		if (m.level > level)
 			continue;
-		if (myrand_range(0,m.spawn_chance) != 0)
+		if (m.notices_player && m.spawn_nearest_player != m.spawn_farthest_player) {
+			if (m.spawn_nearest_player > distance)
+				continue;
+			if (m.spawn_farthest_player < distance)
+				continue;
+		}
+		if (rand%m.spawn_chance != 0)
 			continue;
 		can.push_back(i->first);
 	}

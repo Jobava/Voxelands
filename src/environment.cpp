@@ -867,6 +867,7 @@ void ServerEnvironment::step(float dtime)
 	if (circuitstep || metastep || nodestep) {
 		float circuit_dtime = 0.5;
 		float meta_dtime = 1.0;
+		bool has_spawned = false;
 		for (std::set<v3s16>::iterator i = m_active_blocks.m_list.begin(); i != m_active_blocks.m_list.end(); i++) {
 			v3s16 bp = *i;
 
@@ -982,8 +983,10 @@ void ServerEnvironment::step(float dtime)
 				block->incNodeTicks(p0);
 				MapNode n = block->getNodeNoEx(p0);
 
-				if (active_object_count_wider < 20 && content_mob_spawn(this,p,active_object_count_wider))
+				if (!has_spawned && active_object_count_wider < 20 && content_mob_spawn(this,p,active_object_count_wider)) {
+					has_spawned = true;
 					active_object_count_wider++;
+				}
 
 				switch(n.getContent()) {
 				case CONTENT_GRASS_FOOTSTEPS:

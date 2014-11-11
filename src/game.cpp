@@ -1969,18 +1969,14 @@ void the_game(
 			Fog
 		*/
 
-		if(g_settings->getBool("enable_fog") == true && !force_fog_off)
-		{
+		if (g_settings->getBool("enable_fog") == true && !force_fog_off) {
 			f32 range;
-			if(farmesh)
-			{
+			if (farmesh) {
 				range = BS*farmesh_range;
-			}
-			else
-			{
+			}else{
 				range = draw_control.wanted_range*BS + MAP_BLOCKSIZE*BS*1.5;
 				range *= 0.9;
-				if(draw_control.range_all)
+				if (draw_control.range_all)
 					range = 100000*BS;
 			}
 
@@ -1993,9 +1989,7 @@ void the_game(
 				false, // pixel fog
 				false // range fog
 			);
-		}
-		else
-		{
+		}else{
 			driver->setFog(
 				bgcolor,
 				video::EFT_FOG_LINEAR,
@@ -2012,16 +2006,9 @@ void the_game(
 		*/
 		const char program_name_and_version[] =
 			"Voxelands " VERSION_STRING;
-		if(show_debug)
-		{
+		if (show_debug) {
 			static float drawtime_avg = 0;
 			drawtime_avg = drawtime_avg * 0.95 + (float)drawtime*0.05;
-			/*static float beginscenetime_avg = 0;
-			beginscenetime_avg = beginscenetime_avg * 0.95 + (float)beginscenetime*0.05;
-			static float scenetime_avg = 0;
-			scenetime_avg = scenetime_avg * 0.95 + (float)scenetime*0.05;
-			static float endscenetime_avg = 0;
-			endscenetime_avg = endscenetime_avg * 0.95 + (float)endscenetime*0.05;*/
 
 			{
 				char temptext[300];
@@ -2054,9 +2041,7 @@ void the_game(
 				guitext2->setText(narrow_to_wide(temptext).c_str());
 				guitext2->setVisible(true);
 			}
-		}
-		else if(show_hud || show_chat)
-		{
+		}else if (show_hud || show_chat) {
 			char temptext[300];
 			snprintf(temptext, 300,
 					"(% .1f, % .1f, % .1f)"
@@ -2070,30 +2055,23 @@ void the_game(
 			guitext2->setVisible(true);
 			guitext->setText(narrow_to_wide(program_name_and_version).c_str());
 			guitext->setVisible(true);
-		}
-		else
-		{
+		}else{
 			guitext->setVisible(false);
 			guitext2->setVisible(false);
 		}
 
-		if(show_debug)
-		{
-
-		}
-		else
-		{
+		if (show_debug) {
+			// nothing
+		}else if (g_menumgr.menuCount() == 0) {
 			guitext_info->setText(infotext.c_str());
 			guitext_info->setVisible(show_hud);
 		}
 
 		{
 			float statustext_time_max = 3.0;
-			if(!statustext.empty())
-			{
+			if (!statustext.empty()) {
 				statustext_time += dtime;
-				if(statustext_time >= statustext_time_max)
-				{
+				if (statustext_time >= statustext_time_max) {
 					statustext = L"";
 					statustext_time = 0;
 				}
@@ -2101,28 +2079,27 @@ void the_game(
 			guitext_status->setText(statustext.c_str());
 			guitext_status->setVisible(!statustext.empty());
 
-			if(!statustext.empty())
-			{
+			if (!statustext.empty()) {
 				s32 status_y = screensize.Y - 130;
 				core::rect<s32> rect(
-						10,
-						status_y - guitext_status->getTextHeight(),
-						screensize.X - 10,
-						status_y
+					10,
+					status_y - guitext_status->getTextHeight(),
+					screensize.X - 10,
+					status_y
 				);
 				guitext_status->setRelativePosition(rect);
 
 				// Fade out
 				video::SColor initial_color(255,0,0,0);
-				if(guienv->getSkin())
+				if (guienv->getSkin())
 					initial_color = guienv->getSkin()->getColor(gui::EGDC_BUTTON_TEXT);
 				video::SColor final_color = initial_color;
 				final_color.setAlpha(0);
-				video::SColor fade_color =
-					initial_color.getInterpolated_quadratic(
-						initial_color,
-						final_color,
-						statustext_time / (float) statustext_time_max);
+				video::SColor fade_color = initial_color.getInterpolated_quadratic(
+					initial_color,
+					final_color,
+					statustext_time / (float) statustext_time_max
+				);
 				guitext_status->setOverrideColor(fade_color);
 				guitext_status->enableOverrideColor(true);
 			}
@@ -2134,8 +2111,7 @@ void the_game(
 		{
 			// Get new messages
 			std::wstring message;
-			while(client.getChatMessage(message))
-			{
+			while (client.getChatMessage(message)) {
 				chat_lines.push_back(ChatLine(message));
 			}
 			// Append them to form the whole static text and throw
@@ -2146,10 +2122,7 @@ void the_game(
 			s16 line_number = chat_lines.size();
 			// Count of messages to be removed from the top
 			u16 to_be_removed_count = 0;
-			for(core::list<ChatLine>::Iterator
-					i = chat_lines.begin();
-					i != chat_lines.end(); i++)
-			{
+			for (core::list<ChatLine>::Iterator i = chat_lines.begin(); i != chat_lines.end(); i++) {
 				// After this, line number is valid for this loop
 				line_number--;
 				// Increment age
@@ -2160,17 +2133,14 @@ void the_game(
 				*/
 				float allowed_age = (6-line_number) * 60.0;
 
-				if((*i).age > allowed_age)
-				{
+				if ((*i).age > allowed_age) {
 					to_be_removed_count++;
 					continue;
 				}
 				whole += (*i).text + L'\n';
 			}
-			for(u16 i=0; i<to_be_removed_count; i++)
-			{
-				core::list<ChatLine>::Iterator
-						it = chat_lines.begin();
+			for (u16 i=0; i<to_be_removed_count; i++) {
+				core::list<ChatLine>::Iterator it = chat_lines.begin();
 				chat_lines.erase(it);
 			}
 			guitext_chat->setText(whole.c_str());
@@ -2179,10 +2149,10 @@ void the_game(
 
 			s32 chat_y = 5+(2*text_height);
 			core::rect<s32> rect(
-					10,
-					chat_y,
-					screensize.X - 10,
-					chat_y + guitext_chat->getTextHeight()
+				10,
+				chat_y,
+				screensize.X - 10,
+				chat_y + guitext_chat->getTextHeight()
 			);
 
 			guitext_chat->setRelativePosition(rect);
@@ -2197,9 +2167,7 @@ void the_game(
 		*/
 
 		static u16 old_selected_item = 65535;
-		if(client.getLocalInventoryUpdated()
-				|| g_selected_item != old_selected_item)
-		{
+		if (client.getLocalInventoryUpdated() || g_selected_item != old_selected_item) {
 			client.selectPlayerItem(g_selected_item);
 			old_selected_item = g_selected_item;
 			client.getLocalInventory(local_inventory);
@@ -2207,7 +2175,7 @@ void the_game(
 			// Update wielded tool
 			InventoryList *mlist = local_inventory.getList("main");
 			InventoryItem *item = NULL;
-			if(mlist != NULL)
+			if (mlist != NULL)
 				item = mlist->getItem(g_selected_item);
 			camera.wield(item);
 		}
@@ -2215,8 +2183,7 @@ void the_game(
 		/*
 			Send actions returned by the inventory menu
 		*/
-		while(inventory_action_queue.size() != 0)
-		{
+		while (inventory_action_queue.size() != 0) {
 			InventoryAction *a = inventory_action_queue.pop_front();
 
 			client.sendInventoryAction(a);
@@ -2253,16 +2220,8 @@ void the_game(
 
 		driver->setTransform(video::ETS_WORLD, core::IdentityMatrix);
 
-		if(show_hud)
-		{
-			for(core::list<aabb3f>::Iterator i=hilightboxes.begin();
-					i != hilightboxes.end(); i++)
-			{
-				/*infostream<<"hilightbox min="
-						<<"("<<i->MinEdge.X<<","<<i->MinEdge.Y<<","<<i->MinEdge.Z<<")"
-						<<" max="
-						<<"("<<i->MaxEdge.X<<","<<i->MaxEdge.Y<<","<<i->MaxEdge.Z<<")"
-						<<std::endl;*/
+		if (show_hud) {
+			for (core::list<aabb3f>::Iterator i=hilightboxes.begin(); i != hilightboxes.end(); i++) {
 				driver->draw3DBox(*i, video::SColor(255,0,0,0));
 			}
 		}
@@ -2270,8 +2229,7 @@ void the_game(
 		/*
 			Wielded tool
 		*/
-		if(show_hud)
-		{
+		if (show_hud) {
 			// Warning: This clears the Z buffer.
 			camera.drawWieldedTool();
 		}
@@ -2286,18 +2244,15 @@ void the_game(
 		/*
 			Frametime log
 		*/
-		if(show_debug_frametime)
-		{
+		if (show_debug_frametime) {
 			s32 x = 10;
 			s32 y = screensize.Y - 10;
-			for(core::list<float>::Iterator
-					i = frametime_log.begin();
-					i != frametime_log.end();
-					i++)
-			{
-				driver->draw2DLine(v2s32(x,y),
-						v2s32(x,y+(*i)*1000),
-						video::SColor(255,255,255,255));
+			for (core::list<float>::Iterator i = frametime_log.begin(); i != frametime_log.end(); i++) {
+				driver->draw2DLine(
+					v2s32(x,y),
+					v2s32(x,y+(*i)*1000),
+					video::SColor(255,255,255,255)
+				);
 				x++;
 			}
 		}
@@ -2364,8 +2319,7 @@ void the_game(
 		static s16 lastFPS = 0;
 		u16 fps = (1.0/dtime_avg1);
 
-		if (lastFPS != fps)
-		{
+		if (lastFPS != fps) {
 			core::stringw str = L"Voxelands [";
 			str += driver->getName();
 			str += "] FPS=";
@@ -2379,7 +2333,7 @@ void the_game(
 	/*
 		Drop stuff
 	*/
-	if(clouds)
+	if (clouds)
 		clouds->drop();
 
 	clear_particles();
