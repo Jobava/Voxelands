@@ -212,10 +212,9 @@ void content_mob_init()
 	f->punch_action = MPA_PICKUP;
 	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_RAT)+" 1";
 	f->motion = MM_WANDER;
-	f->spawn_on = CONTENT_GRASS;
+	f->spawn_on = CONTENT_STONE;
 	f->spawn_in = CONTENT_AIR;
 	f->spawn_max_height = -10;
-	f->spawn_max_light = LIGHT_MAX/2;
 	f->spawn_max_nearby_mobs = 4;
 	f->lifetime = 1200.0;
 	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.));
@@ -277,7 +276,7 @@ void content_mob_init()
 	f->punch_action = MPA_HARM;
 	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_GUNPOWDER)+" 4";
 	f->motion = MM_SENTRY;
-	f->spawn_on = CONTENT_STONE;
+	f->spawn_on = CONTENT_MOSSYCOBBLE;
 	f->spawn_in = CONTENT_AIR;
 	f->spawn_max_light = LIGHT_MAX/3;
 	f->spawn_max_nearby_mobs = 1;
