@@ -498,6 +498,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_MUSH;
 	f->texture = "mush.png";
 	f->name = "mush";
+	f->cook_result = "CraftItem ash 1";
 	f->description = wgettext("Mush");
 	f->edible = -1;
 	lists::add("creative",i);
