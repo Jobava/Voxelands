@@ -185,7 +185,7 @@ struct MobFeatures {
 	v3s16 getSizeBlocks()
 	{
 		v3f s = getSize();
-		return v3s16(s.X+0.5,s.Y+0.5,s.Z+0.5);
+		return v3s16(MYMAX(s.X+0.5,1.0),MYMAX(s.Y+0.5,1.0),MYMAX(s.Z+0.5,1.0));
 	}
 
 	void getAnimationFrames(MobAnimation type, int *start, int *end);
@@ -246,7 +246,7 @@ struct MobFeatures {
 		spawn_min_height = -20000;
 		spawn_max_height = 100;
 		spawn_max_nearby_mobs = 3;
-		spawn_chance = 500;
+		spawn_chance = 1;
 		spawn_nearest_player = 0;
 		spawn_farthest_player = 0;
 	}

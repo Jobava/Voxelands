@@ -677,7 +677,10 @@ void MobSAO::stepMotionWander(float dtime)
 				if (!checkFreePosition(p))
 					break;
 			}
-			if (above > 5) {
+			if (!above) {
+				m_next_pos_i = pos_i + v3s16(0,1,0);
+				raising = true;
+			}else if (above > 5) {
 				/* Check whether to drop down */
 				if (checkFreePosition(pos_i + pos_size_off + v3s16(0,-1,0))) {
 					m_next_pos_i = pos_i + v3s16(0,-1,0);

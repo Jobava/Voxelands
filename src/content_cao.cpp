@@ -310,6 +310,7 @@ void MobCAO::addToScene(scene::ISceneManager *smgr)
 		bill->setSize(m.model_scale.X*BS,m.model_scale.Y*BS,m.model_scale.Z*BS);
 		m_node = (scene::IMeshSceneNode*)bill;
 		m_draw_type = MDT_SPRITE;
+		updateNodePos();
 	}
 }
 void MobCAO::removeFromScene()
@@ -323,14 +324,11 @@ void MobCAO::updateLight(u8 light_at_pos)
 {
 	MobFeatures m = content_mob_features(m_content);
 	if (m.glow_light)
-		light_at_pos = decode_light(m.glow_light);
+		light_at_pos = m.glow_light;
 	if (m_shooting && m.attack_glow_light)
-		light_at_pos = decode_light(m.attack_glow_light);
+		light_at_pos = m.attack_glow_light;
 
 	m_last_light = light_at_pos;
-
-	//if (m_damage_visual_timer > 0)
-		//return;
 
 	u8 li = decode_light(light_at_pos);
 	video::SColor color(255,li,li,li);

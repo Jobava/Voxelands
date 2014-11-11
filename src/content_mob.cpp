@@ -104,6 +104,9 @@ bool content_mob_spawn(ServerEnvironment *env, v3s16 pos, u32 active_object_coun
 	ScopeProfiler sp(g_profiler, "SEnv: content_mob_spawn");
 	if (active_object_count > 20)
 		return false;
+	int rand = myrand();
+	if (rand%500 != 0)
+		return false;
 	assert(env);
 	Map *map = &env->getMap();
 
@@ -128,7 +131,6 @@ bool content_mob_spawn(ServerEnvironment *env, v3s16 pos, u32 active_object_coun
 	f32 distance = 30000.0;
 	if (nearest)
 		distance = pf.getDistanceFrom(nearest->getPosition());
-	int rand = myrand();
 
 	/* TODO: this loop is what's causing lag */
 	for (std::map<content_t,struct MobFeatures>::iterator i = g_content_mob_features.begin(); i != g_content_mob_features.end(); i++) {
@@ -163,7 +165,7 @@ bool content_mob_spawn(ServerEnvironment *env, v3s16 pos, u32 active_object_coun
 			if (m.spawn_farthest_player < distance)
 				continue;
 		}
-		if (rand%m.spawn_chance != 0)
+		if (m.spawn_chance > 1 && rand%m.spawn_chance != 0)
 			continue;
 		can.push_back(i->first);
 	}
@@ -232,7 +234,7 @@ void content_mob_init()
 	f->spawn_on = CONTENT_JUNGLETREE;
 	f->spawn_in = CONTENT_AIR;
 	f->spawn_min_height = -5;
-	f->spawn_max_height = 20;
+	f->spawn_max_height = 50;
 	f->spawn_max_light = LIGHT_MAX/2;
 	f->spawn_max_nearby_mobs = 5;
 	f->lifetime = 1200.0;
@@ -353,7 +355,7 @@ void content_mob_init()
 	f->spawn_max_height = 30;
 	f->spawn_min_light = LIGHT_MAX/2;
 	f->spawn_max_nearby_mobs = 3;
-	f->spawn_chance = 1000;
+	f->spawn_chance = 2;
 	f->notices_player = true;
 	f->attack_player_damage = 3;
 	f->attack_player_range = v3f(1,1,1);
