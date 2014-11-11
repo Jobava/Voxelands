@@ -59,14 +59,42 @@ void accelerate_xz(v3f &speed, v3f target_speed, f32 max_increase)
 // Prototype
 ItemSAO proto_ItemSAO(NULL, 0, v3f(0,0,0), "");
 
-ItemSAO::ItemSAO(ServerEnvironment *env, u16 id, v3f pos,
-		const std::string inventorystring):
+ItemSAO::ItemSAO(ServerEnvironment *env, u16 id, v3f pos, const std::string inventorystring):
 	ServerActiveObject(env, id, pos),
 	m_inventorystring(inventorystring),
 	m_speed_f(0,0,0),
-	m_last_sent_position(0,0,0)
+	m_last_sent_position(0,0,0),
+	m_age(600.0)
 {
 	ServerActiveObject::registerType(getType(), create);
+	std::istringstream is(m_inventorystring, std::ios_base::binary);
+	try{
+		InventoryItem *item = NULL;
+		item = InventoryItem::deSerialize(is);
+		if (item) {
+			m_content = item->getContent();
+			delete item;
+		}
+	}catch(SerializationError &e) {}
+}
+
+ItemSAO::ItemSAO(ServerEnvironment *env, u16 id, v3f pos, float age, const std::string inventorystring):
+	ServerActiveObject(env, id, pos),
+	m_inventorystring(inventorystring),
+	m_speed_f(0,0,0),
+	m_last_sent_position(0,0,0),
+	m_age(age)
+{
+	ServerActiveObject::registerType(getType(), create);
+	std::istringstream is(m_inventorystring, std::ios_base::binary);
+	try{
+		InventoryItem *item = NULL;
+		item = InventoryItem::deSerialize(is);
+		if (item) {
+			m_content = item->getContent();
+			delete item;
+		}
+	}catch(SerializationError &e) {}
 }
 
 ServerActiveObject* ItemSAO::create(ServerEnvironment *env, u16 id, v3f pos,
@@ -77,13 +105,17 @@ ServerActiveObject* ItemSAO::create(ServerEnvironment *env, u16 id, v3f pos,
 	// read version
 	is.read(buf, 1);
 	u8 version = buf[0];
+	float age = 600.0;
 	// check if version is supported
-	if(version != 0)
+	if (version == 1) {
+		age = readF1000(is);
+	}else if (version != 0) {
 		return NULL;
+	}
+
 	std::string inventorystring = deSerializeString(is);
-	infostream<<"ItemSAO::create(): Creating item \""
-			<<inventorystring<<"\""<<std::endl;
-	return new ItemSAO(env, id, pos, inventorystring);
+	infostream<<"ItemSAO::create(): Creating item \""<<inventorystring<<"\""<<std::endl;
+	return new ItemSAO(env, id, pos, age, inventorystring);
 }
 
 void ItemSAO::step(float dtime, bool send_recommended)
@@ -92,8 +124,20 @@ void ItemSAO::step(float dtime, bool send_recommended)
 
 	assert(m_env);
 
+	// craftitems, and materialitems should die after a while
+	if (
+		(m_content&CONTENT_TOOLITEM_MASK) == 0
+		&& (m_content&CONTENT_CLOTHESITEM_MASK) == 0
+	) {
+		m_age -= dtime;
+		if (m_age < 0.0) {
+			m_removed = true;
+			return;
+		}
+	}
+
 	const float interval = 0.2;
-	if(m_move_interval.step(dtime, interval)==false)
+	if (m_move_interval.step(dtime, interval) == false)
 		return;
 	dtime = interval;
 
@@ -112,11 +156,10 @@ void ItemSAO::step(float dtime, bool send_recommended)
 	moveresult = collisionMoveSimple(&m_env->getMap(), pos_max_d,
 			box, 0.0, dtime, pos_f, m_speed_f, accel_f);
 
-	if(send_recommended == false)
+	if (send_recommended == false)
 		return;
 
-	if(pos_f.getDistanceFrom(m_last_sent_position) > 0.05*BS)
-	{
+	if (pos_f.getDistanceFrom(m_last_sent_position) > 0.05*BS) {
 		setBasePosition(pos_f);
 		m_last_sent_position = pos_f;
 
@@ -143,8 +186,10 @@ std::string ItemSAO::getClientInitializationData()
 	std::ostringstream os(std::ios::binary);
 	char buf[6];
 	// version
-	buf[0] = 0;
+	buf[0] = 1;
 	os.write(buf, 1);
+	// age
+	writeF1000(os,m_age);
 	// pos
 	writeS32((u8*)buf, m_base_position.X*1000);
 	os.write(buf, 4);
@@ -163,8 +208,10 @@ std::string ItemSAO::getStaticData()
 	std::ostringstream os(std::ios::binary);
 	char buf[1];
 	// version
-	buf[0] = 0;
+	buf[0] = 1;
 	os.write(buf, 1);
+	// age
+	writeF1000(os,m_age);
 	// inventorystring
 	os<<serializeString(m_inventorystring);
 	return os.str();

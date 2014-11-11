@@ -105,8 +105,12 @@ bool content_mob_spawn(ServerEnvironment *env, v3s16 pos, u32 active_object_coun
 	if (active_object_count > 20)
 		return false;
 	int rand = myrand();
-	if (rand%500 != 0)
+	if (pos.Y < 0) {
+		if (rand%1000 != 0)
+			return false;
+	}else if (rand%500 != 0) {
 		return false;
+	}
 	assert(env);
 	Map *map = &env->getMap();
 

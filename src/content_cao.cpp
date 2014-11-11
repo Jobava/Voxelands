@@ -142,8 +142,11 @@ void ItemCAO::initialize(const std::string &data)
 		// version
 		u8 version = readU8(is);
 		// check version
-		if(version != 0)
+		if (version == 1) {
+			readF1000(is);
+		}else if (version != 0) {
 			return;
+		}
 		// pos
 		m_position = readV3F1000(is);
 		// inventorystring

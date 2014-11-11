@@ -34,8 +34,8 @@
 class ItemSAO : public ServerActiveObject
 {
 public:
-	ItemSAO(ServerEnvironment *env, u16 id, v3f pos,
-			const std::string inventorystring);
+	ItemSAO(ServerEnvironment *env, u16 id, v3f pos, const std::string inventorystring);
+	ItemSAO(ServerEnvironment *env, u16 id, v3f pos, float age, const std::string inventorystring);
 	u8 getType() const
 		{return ACTIVEOBJECT_TYPE_ITEM;}
 	static ServerActiveObject* create(ServerEnvironment *env, u16 id, v3f pos,
@@ -51,6 +51,8 @@ private:
 	v3f m_speed_f;
 	v3f m_last_sent_position;
 	IntervalLimiter m_move_interval;
+	float m_age;
+	content_t m_content;
 };
 
 class MobSAO : public ServerActiveObject
