@@ -37,14 +37,11 @@ class MainMenuManager : public IMenuManager
 public:
 	virtual void createdMenu(GUIModalMenu *menu)
 	{
-		for(core::list<GUIModalMenu*>::Iterator
-				i = m_stack.begin();
-				i != m_stack.end(); i++)
-		{
+		for (core::list<GUIModalMenu*>::Iterator i = m_stack.begin(); i != m_stack.end(); i++) {
 			assert(*i != menu);
 		}
 
-		if(m_stack.size() != 0)
+		if (m_stack.size() != 0)
 			(*m_stack.getLast())->setVisible(false);
 		m_stack.push_back(menu);
 	}
@@ -55,24 +52,16 @@ public:
 		bool removed_entry;
 		do{
 			removed_entry = false;
-			for(core::list<GUIModalMenu*>::Iterator
-					i = m_stack.begin();
-					i != m_stack.end(); i++)
-			{
-				if(*i == menu)
-				{
+			for (core::list<GUIModalMenu*>::Iterator i = m_stack.begin(); i != m_stack.end(); i++) {
+				if (*i == menu) {
 					m_stack.erase(i);
 					removed_entry = true;
 					break;
 				}
 			}
-		}while(removed_entry);
+		} while(removed_entry);
 
-		/*core::list<GUIModalMenu*>::Iterator i = m_stack.getLast();
-		assert(*i == menu);
-		m_stack.erase(i);*/
-
-		if(m_stack.size() != 0)
+		if (m_stack.size() != 0)
 			(*m_stack.getLast())->setVisible(true);
 	}
 

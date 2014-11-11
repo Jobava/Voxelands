@@ -33,6 +33,7 @@
 #include "content_mob.h"
 class Settings;
 #include <IBillboardSceneNode.h>
+#include "mesh.h"
 
 /*
 	SmoothTranslator
@@ -160,12 +161,18 @@ public:
 		m_camera_offset = camera_offset;
 	}
 
+	virtual content_t getContent() {return m_content;}
+
 private:
+	void updateVisual();
+
 	core::aabbox3d<f32> m_selection_box;
-	scene::IMeshSceneNode *m_node;
+	ExtrudedSpriteSceneNode *m_node;
 	v3f m_position;
 	v3s16 m_camera_offset;
 	std::string m_inventorystring;
+	content_t m_content;
+	f32 m_rot;
 };
 
 /*
@@ -208,6 +215,8 @@ public:
 
 	// If returns true, punch will not be sent to the server
 	bool directReportPunch(content_t punch_item, v3f dir);
+
+	virtual content_t getContent() {return m_content;}
 private:
 	void setAnimation(MobAnimation anim);
 	aabb3f m_selection_box;

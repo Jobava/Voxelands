@@ -383,6 +383,8 @@ void getPointedNode(Client *client, v3f player_position,
 	bool wield_is_craft = (wield && wield->getContent()&CONTENT_CRAFTITEM_MASK);
 	bool wield_is_material = (!wield_is_hand && !wield_is_tool && !wield_is_craft);
 
+	content_t content = CONTENT_IGNORE;
+
 	for(s16 y = ystart; y <= yend; y++)
 	for(s16 z = zstart; z <= zend; z++)
 	for(s16 x = xstart; x <= xend; x++)
@@ -463,6 +465,7 @@ void getPointedNode(Client *client, v3f player_position,
 				{
 					nodefound = true;
 					nodepos = np;
+					content = n.getContent();
 					neighbourpos = np;
 					mindistance = distance;
 					box.MinEdge -= intToFloat(camera_offset,BS);
@@ -500,6 +503,7 @@ void getPointedNode(Client *client, v3f player_position,
 				{
 					nodefound = true;
 					nodepos = np;
+					content = n.getContent();
 					neighbourpos = np;
 					mindistance = distance;
 					box.MinEdge -= intToFloat(camera_offset,BS);
@@ -576,6 +580,7 @@ void getPointedNode(Client *client, v3f player_position,
 								{
 									nodefound = true;
 									nodepos = np;
+									content = n.getContent();
 									neighbourpos = np + dirs[i];
 									mindistance = distance;
 
@@ -632,6 +637,7 @@ void getPointedNode(Client *client, v3f player_position,
 					{
 						nodefound = true;
 						nodepos = np;
+						content = n.getContent();
 						neighbourpos = np + dirs[i];
 						mindistance = distance;
 
@@ -649,8 +655,12 @@ void getPointedNode(Client *client, v3f player_position,
 			} // for dirs
 		} // regular block
 	} // for coords
-	if (nodefound)
+	if (nodefound) {
 		client->setPointedNode(nodepos);
+		client->setPointedContent(content);
+	}else{
+		client->setPointedContent(CONTENT_IGNORE);
+	}
 }
 
 void update_skybox(video::IVideoDriver* driver,
@@ -1667,11 +1677,10 @@ void the_game(
 		bool left_punch = false;
 		bool left_punch_muted = false;
 
-		if(selected_active_object != NULL)
-		{
+		if (selected_active_object != NULL) {
+			client.setPointedContent(selected_active_object->getContent());
 			/* Clear possible cracking animation */
-			if(nodepos_old != v3s16(-32768,-32768,-32768))
-			{
+			if (nodepos_old != v3s16(-32768,-32768,-32768)) {
 				client.clearTempMod(nodepos_old);
 				dig_time = 0.0;
 				nodepos_old = v3s16(-32768,-32768,-32768);
@@ -2060,11 +2069,11 @@ void the_game(
 			guitext2->setVisible(false);
 		}
 
-		if (show_debug) {
-			// nothing
-		}else if (g_menumgr.menuCount() == 0) {
+		if (!show_debug && g_menumgr.menuCount() == 0) {
 			guitext_info->setText(infotext.c_str());
 			guitext_info->setVisible(show_hud);
+		}else{
+			guitext_info->setVisible(false);
 		}
 
 		{

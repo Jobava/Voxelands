@@ -41,6 +41,9 @@
 #include "http.h"
 #include "sound.h"
 #include "content_clothesitem.h"
+#include "content_toolitem.h"
+#include "content_craftitem.h"
+#include "content_mob.h"
 
 /*
 	QueuedMeshUpdate
@@ -212,6 +215,7 @@ Client::Client(
 	m_server_ser_ver(SER_FMT_VER_INVALID),
 	m_inventory_updated(false),
 	m_pointed_node(-32768,-32768,-32768),
+	m_pointed_content(CONTENT_IGNORE),
 	m_time_of_day(0),
 	m_map_seed(0),
 	m_map_type(MGT_DEFAULT),
@@ -1581,8 +1585,10 @@ void Client::groundAction(u8 action, v3s16 nodepos_undersurface,
 	writeV3S16(&data[9], nodepos_oversurface);
 	writeU16(&data[15], item);
 	Send(0, data, true);
-	if (action == 3)
-		playDigSound();
+	if (action == 3) {
+		content_t c = m_env.getMap().getNodeNoEx(nodepos_undersurface).getContent();
+		playDigSound(c);
+	}
 }
 
 void Client::clickActiveObject(u8 button, u16 id, u16 item_i)
@@ -2086,18 +2092,15 @@ ClientActiveObject * Client::getSelectedActiveObject(
 
 	m_env.getActiveObjects(from_pos_f_on_map, max_d, objects);
 
-	//infostream<<"Collected "<<objects.size()<<" nearby objects"<<std::endl;
-
 	// Sort them.
 	// After this, the closest object is the first in the array.
 	objects.sort();
 
-	for(u32 i=0; i<objects.size(); i++)
-	{
+	for (u32 i=0; i<objects.size(); i++) {
 		ClientActiveObject *obj = objects[i].obj;
 
 		core::aabbox3d<f32> *selection_box = obj->getSelectionBox();
-		if(selection_box == NULL)
+		if (selection_box == NULL)
 			continue;
 
 		v3f pos = obj->getPosition();
@@ -2107,31 +2110,19 @@ ClientActiveObject * Client::getSelectedActiveObject(
 				selection_box->MaxEdge + pos
 		);
 
-		if(offsetted_box.intersectsWithLine(shootline_on_map))
-		{
-			//infostream<<"Returning selected object"<<std::endl;
+		if (offsetted_box.intersectsWithLine(shootline_on_map))
 			return obj;
-		}
 	}
 
-	//infostream<<"No object selected; returning NULL."<<std::endl;
 	return NULL;
 }
 
 void Client::printDebugInfo(std::ostream &os)
 {
-	//JMutexAutoLock lock1(m_fetchblock_mutex);
-	/*JMutexAutoLock lock2(m_incoming_queue_mutex);
-
-	os<<"m_incoming_queue.getSize()="<<m_incoming_queue.getSize()
-		//<<", m_fetchblock_history.size()="<<m_fetchblock_history.size()
-		//<<", m_opt_not_found_history.size()="<<m_opt_not_found_history.size()
-		<<std::endl;*/
 }
 
 u32 Client::getDayNightRatio()
 {
-	//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
 	return m_env.getDayNightRatio();
 }
 
@@ -2330,7 +2321,7 @@ void Client::playStepSound()
 	}
 }
 
-void Client::playDigSound()
+void Client::playDigSound(content_t c)
 {
 	if (!m_sound)
 		return;
@@ -2341,9 +2332,12 @@ void Client::playDigSound()
 	if (volume > 100.0)
 		volume = 100.0;
 	volume /= 100.0;
-	v3s16 p = getPointedNode();
-	MapNode n = m_env.getMap().getNodeNoEx(p);
-	switch (content_features(n).type) {
+	if (c == CONTENT_IGNORE) {
+		c = getPointedContent();
+		if ((c&CONTENT_MOB_MASK) != 0)
+			return;
+	}
+	switch (content_features(c).type) {
 	case CMT_PLANT:
 		m_sound->playSound("plant-dig",false,volume);
 		break;
@@ -2363,7 +2357,7 @@ void Client::playDigSound()
 	}
 }
 
-void Client::playPlaceSound()
+void Client::playPlaceSound(content_t c)
 {
 	if (!m_sound)
 		return;

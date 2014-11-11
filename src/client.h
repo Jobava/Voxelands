@@ -328,11 +328,14 @@ public:
 	virtual ISoundManager* getSoundManager();
 
 	void playStepSound();
-	void playDigSound();
-	void playPlaceSound();
+	void playDigSound(content_t c);
+	void playPlaceSound(content_t c);
 
 	void setPointedNode(v3s16 p) {m_pointed_node = p;}
 	v3s16 getPointedNode() {return m_pointed_node;}
+
+	void setPointedContent(content_t c) {m_pointed_content = c;}
+	content_t getPointedContent() {return m_pointed_content;}
 
 	bool getServerDamage() {return m_server_damage;}
 	bool getServerSuffocation() {return m_server_suffocation;}
@@ -385,6 +388,7 @@ private:
 
 	core::map<v3s16, bool> m_active_blocks;
 	v3s16 m_pointed_node;
+	content_t m_pointed_content;
 
 	PacketCounter m_packetcounter;
 

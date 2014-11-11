@@ -82,6 +82,9 @@ public:
 	virtual bool directReportPunch(content_t punch_item, v3f dir)
 	{ return false; }
 
+	// get the content type of whatever this is
+	virtual content_t getContent() {return CONTENT_IGNORE;}
+
 protected:
 	// Used for creating objects based on type
 	typedef ClientActiveObject* (*Factory)();

@@ -177,9 +177,9 @@ void Camera::step(f32 dtime)
 		float lim = 0.15;
 		if (m_digging_anim_was < lim && m_digging_anim >= lim) {
 			if (m_digging_button == 0) {
-				m_client->playDigSound();
+				m_client->playDigSound(CONTENT_IGNORE);
 			}else if(m_digging_button == 1) {
-				m_client->playPlaceSound();
+				m_client->playPlaceSound(CONTENT_IGNORE);
 			}
 		}
 	}

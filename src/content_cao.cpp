@@ -47,9 +47,11 @@ ItemCAO::ItemCAO():
 	m_selection_box(-BS/3.,0.0,-BS/3., BS/3.,BS*2./3.,BS/3.),
 	m_node(NULL),
 	m_position(v3f(0,10*BS,0)),
-	m_camera_offset(v3s16(0,0,0))
+	m_camera_offset(v3s16(0,0,0)),
+	m_content(CONTENT_IGNORE)
 {
 	ClientActiveObject::registerType(getType(), create);
+	m_rot = myrand_range(0,360);
 }
 
 ItemCAO::~ItemCAO()
@@ -63,80 +65,17 @@ ClientActiveObject* ItemCAO::create()
 
 void ItemCAO::addToScene(scene::ISceneManager *smgr)
 {
-	if(m_node != NULL)
-		return;
-
-	video::IVideoDriver* driver = smgr->getVideoDriver();
-
-	scene::SMesh *mesh = new scene::SMesh();
-	scene::IMeshBuffer *buf = new scene::SMeshBuffer();
-	video::SColor c(255,255,255,255);
-	video::S3DVertex vertices[4] =
-	{
-		/*video::S3DVertex(-BS/2,-BS/4,0, 0,0,0, c, 0,1),
-		video::S3DVertex(BS/2,-BS/4,0, 0,0,0, c, 1,1),
-		video::S3DVertex(BS/2,BS/4,0, 0,0,0, c, 1,0),
-		video::S3DVertex(-BS/2,BS/4,0, 0,0,0, c, 0,0),*/
-		video::S3DVertex(BS/3.,0,0, 0,0,0, c, 0,1),
-		video::S3DVertex(-BS/3.,0,0, 0,0,0, c, 1,1),
-		video::S3DVertex(-BS/3.,0+BS*2./3.,0, 0,0,0, c, 1,0),
-		video::S3DVertex(BS/3.,0+BS*2./3.,0, 0,0,0, c, 0,0),
-	};
-	u16 indices[] = {0,1,2,2,3,0};
-	buf->append(vertices, 4, indices, 6);
-	// Set material
-	buf->getMaterial().setFlag(video::EMF_LIGHTING, false);
-	buf->getMaterial().setFlag(video::EMF_BACK_FACE_CULLING, false);
-	//buf->getMaterial().setTexture(0, NULL);
-	// Initialize with the stick texture
-	buf->getMaterial().setTexture
-			(0, driver->getTexture(getTexturePath("stick.png").c_str()));
-	buf->getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
-	buf->getMaterial().setFlag(video::EMF_FOG_ENABLE, true);
-	buf->getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL;
-	// Add to mesh
-	mesh->addMeshBuffer(buf);
-	buf->drop();
-	m_node = smgr->addMeshSceneNode(mesh, NULL);
-	mesh->drop();
-	// Set it to use the materials of the meshbuffers directly.
-	// This is needed for changing the texture in the future
-	m_node->setReadOnlyMaterials(true);
-	updateNodePos();
-
-	/*
-		Update image of node
-	*/
-
-	// Create an inventory item to see what is its image
-	std::istringstream is(m_inventorystring, std::ios_base::binary);
-	video::ITexture *texture = NULL;
-	try{
-		InventoryItem *item = NULL;
-		item = InventoryItem::deSerialize(is);
-		infostream<<__FUNCTION_NAME<<": m_inventorystring=\""
-				<<m_inventorystring<<"\" -> item="<<item
-				<<std::endl;
-		if(item)
-		{
-			texture = item->getImage();
-			delete item;
-		}
-	}
-	catch(SerializationError &e)
-	{
-		infostream<<"WARNING: "<<__FUNCTION_NAME
-				<<": error deSerializing inventorystring \""
-				<<m_inventorystring<<"\""<<std::endl;
+	if (m_node == NULL) {
+		m_node = new ExtrudedSpriteSceneNode(smgr->getRootSceneNode(),smgr,-1,v3f(0,0,0),v3f(0,0,0),v3f(5,5,5));
+		m_node->setVisible(false);
 	}
 
-	// Set meshbuffer texture
-	buf->getMaterial().setTexture(0, texture);
+	updateVisual();
 }
 
 void ItemCAO::removeFromScene()
 {
-	if(m_node == NULL)
+	if (m_node == NULL)
 		return;
 
 	m_node->remove();
@@ -145,12 +84,11 @@ void ItemCAO::removeFromScene()
 
 void ItemCAO::updateLight(u8 light_at_pos)
 {
-	if(m_node == NULL)
+	if (m_node == NULL)
 		return;
 
 	u8 li = decode_light(light_at_pos);
-	video::SColor color(255,li,li,li);
-	setMeshVerticesColor(m_node->getMesh(), color);
+	m_node->updateLight(li);
 }
 
 v3s16 ItemCAO::getLightPosition()
@@ -160,25 +98,26 @@ v3s16 ItemCAO::getLightPosition()
 
 void ItemCAO::updateNodePos()
 {
-	if(m_node == NULL)
+	if (m_node == NULL)
 		return;
 
-	m_node->setPosition(m_position-intToFloat(m_camera_offset, BS));
+	m_node->setPosition(m_position-intToFloat(m_camera_offset, BS)+v3f(0,3,0));
 }
 
 void ItemCAO::step(float dtime, ClientEnvironment *env)
 {
-	if(m_node)
-	{
-		/*v3f rot = m_node->getRotation();
-		rot.Y += dtime * 120;
-		m_node->setRotation(rot);*/
-		LocalPlayer *player = env->getLocalPlayer();
-		assert(player);
-		v3f rot = m_node->getRotation();
-		rot.Y = 180.0 - (player->getYaw());
-		m_node->setRotation(rot);
-	}
+	if (m_node == NULL)
+		return;
+
+	updateVisual();
+
+	LocalPlayer *player = env->getLocalPlayer();
+	assert(player);
+	v3f rot = m_node->getRotation();
+	rot.Y = m_rot++;
+	if (m_rot > 360)
+		m_rot -= 360;
+	m_node->setRotation(rot);
 }
 
 void ItemCAO::processMessage(const std::string &data)
@@ -187,8 +126,7 @@ void ItemCAO::processMessage(const std::string &data)
 	std::istringstream is(data, std::ios::binary);
 	// command
 	u8 cmd = readU8(is);
-	if(cmd == 0)
-	{
+	if (cmd == 0) {
 		// pos
 		m_position = readV3F1000(is);
 		updateNodePos();
@@ -213,6 +151,61 @@ void ItemCAO::initialize(const std::string &data)
 	}
 
 	updateNodePos();
+}
+
+void ItemCAO::updateVisual()
+{
+	InventoryItem *item = NULL;
+
+	// Create an inventory item to see what is its image
+	std::istringstream is(m_inventorystring, std::ios_base::binary);
+	try{
+		item = InventoryItem::deSerialize(is);
+		infostream<<__FUNCTION_NAME<<": m_inventorystring=\""
+				<<m_inventorystring<<"\" -> item="<<item
+				<<std::endl;
+	}
+	catch(SerializationError &e)
+	{
+		infostream<<"WARNING: "<<__FUNCTION_NAME
+				<<": error deSerializing inventorystring \""
+				<<m_inventorystring<<"\""<<std::endl;
+	}
+	if (item == NULL)
+		return;
+
+	bool haveWield = false;
+
+	// Try to make a MaterialItem cube.
+	if (std::string(item->getName()) == "MaterialItem") {
+		// A block-type material
+		MaterialItem* mat_item = (MaterialItem*)item;
+		content_t content = mat_item->getMaterial();
+		if (content_features(content).solidness || content_features(content).visual_solidness) {
+			m_node->setCube(content_features(content).tiles);
+			haveWield = true;
+		}else if (
+			(
+				content_features(content).draw_type == CDT_NODEBOX
+				|| content_features(content).draw_type == CDT_NODEBOX_META
+				|| content_features(content).draw_type == CDT_FENCELIKE
+				|| content_features(content).draw_type == CDT_WALLLIKE
+			)
+			&& content_features(content).wield_nodebox == true
+		) {
+			m_node->setNodeBox(content);
+			haveWield = true;
+		}
+	}
+
+	// If that failed, make an extruded sprite.
+	if (!haveWield)
+		m_node->setSprite(item->getImageRaw());
+
+	m_node->setVisible(true);
+	updateNodePos();
+	m_content = item->getContent();
+	delete item;
 }
 
 /*
