@@ -81,8 +81,7 @@ GUICharDefMenu::GUICharDefMenu(
 	m_hair_types["short"] = wgettext("Short Hair");
 	m_hair_types["medium"] = wgettext("Medium Hair");
 	m_hair_types["long"] = wgettext("Long Hair");
-	m_hair_types["tail"] = wgettext("Pony Tail");
-	m_hair_types["braids"] = wgettext("Braided Hair");
+	m_hair_types["special"] = wgettext("Styled Hair");
 
 	m_eyes_types["white"] = wgettext("White Eyes");
 	m_eyes_types["blue"] = wgettext("Blue Eyes");
@@ -810,13 +809,14 @@ std::string GUICharDefMenu::getPlayerSkin()
 {
 	std::string tex = "";
 
-	tex += std::string("skins")+DIR_DELIM+"skintone_"+m_parts["skintone"]+"_"+m_parts["gender"]+".png";
+	tex += std::string("skins")+DIR_DELIM+"skintone_"+m_parts["skintone"]+".png";
+	tex += std::string("^skins")+DIR_DELIM+"gender_"+m_parts["gender"]+".png";
 	tex += std::string("^skins")+DIR_DELIM+"face_"+m_parts["face"]+"_"+m_parts["skintone"]+"_"+m_parts["gender"]+".png";
 	tex += std::string("^skins")+DIR_DELIM+"eyes_"+m_parts["eyes"]+".png";
-	tex += std::string("^")+"clothes_player_pants_canvas_"+m_parts["pants"]+".png";
-	tex += std::string("^")+"clothes_player_tshirt_cotton_"+m_parts["shirt"]+".png";
+	tex += std::string("^clothes_player_pants_canvas_")+m_parts["pants"]+".png";
+	tex += std::string("^clothes_player_tshirt_cotton_")+m_parts["shirt"]+".png";
 	tex += std::string("^skins")+DIR_DELIM+"hair_"+m_parts["hair"]+"_"+m_parts["hairtone"]+"_"+m_parts["gender"]+".png";
-	tex += std::string("^")+"clothes_player_shoes_"+m_parts["shoes"]+".png";
+	tex += std::string("^clothes_player_shoes_")+m_parts["shoes"]+".png";
 
 	return tex;
 }

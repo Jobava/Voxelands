@@ -193,8 +193,8 @@ public:
 	f32 getArmourProtection()
 	{
 		f32 v = 0;
-		const char* list[4] = {"hat","shirt","pants","boots"};
-		for (int j=0; j<4; j++) {
+		const char* list[7] = {"hat","shirt","jacket","decorative","belt","pants","boots"};
+		for (int j=0; j<7; j++) {
 			InventoryList *l = inventory.getList(list[j]);
 			if (l == NULL)
 				continue;
@@ -203,13 +203,15 @@ public:
 				continue;
 			v += content_clothesitem_features(i->getContent()).armour;
 		}
+		if (v > 1.0)
+			return 1.0;
 		return v;
 	}
 	f32 getWarmthProtection()
 	{
 		f32 v = 0;
-		const char* list[4] = {"hat","shirt","pants","boots"};
-		for (int j=0; j<4; j++) {
+		const char* list[7] = {"hat","shirt","jacket","decorative","belt","pants","boots"};
+		for (int j=0; j<7; j++) {
 			InventoryList *l = inventory.getList(list[j]);
 			if (l == NULL)
 				continue;
@@ -218,13 +220,15 @@ public:
 				continue;
 			v += content_clothesitem_features(i->getContent()).warmth;
 		}
+		if (v > 1.0)
+			return 1.0;
 		return v;
 	}
 	f32 getVacuumProtection()
 	{
 		f32 v = 0;
-		const char* list[4] = {"hat","shirt","pants","boots"};
-		for (int j=0; j<4; j++) {
+		const char* list[7] = {"hat","shirt","jacket","decorative","belt","pants","boots"};
+		for (int j=0; j<7; j++) {
 			InventoryList *l = inventory.getList(list[j]);
 			if (l == NULL)
 				continue;
@@ -233,6 +237,8 @@ public:
 				continue;
 			v += content_clothesitem_features(i->getContent()).vacuum;
 		}
+		if (v > 1.0)
+			return 1.0;
 		return v;
 	}
 	f32 getSuffocationProtection()

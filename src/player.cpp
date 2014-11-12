@@ -339,7 +339,10 @@ void Player::getSkin(std::vector<std::string> &parts)
 	if (getPath("skin",std::string("face_")+face+gender+".png",true) == "")
 		face = "human";
 
-	parts.push_back(std::string("skins")+DIR_DELIM+"skintone_"+skintone+"_"+gender+".png");
+	//parts.push_back(std::string("skins")+DIR_DELIM+"skintone_"+skintone+"_"+gender+".png");
+
+	parts.push_back(std::string("skins")+DIR_DELIM+"skintone_"+skintone+".png");
+	parts.push_back(std::string("skins")+DIR_DELIM+"gender_"+gender+".png");
 	parts.push_back(std::string("skins")+DIR_DELIM+"face_"+face+"_"+skintone+"_"+gender+".png");
 	parts.push_back(std::string("skins")+DIR_DELIM+"eyes_"+eyes+".png");
 	parts.push_back(std::string("skins")+DIR_DELIM+"hair_"+hair+"_"+hairtone+"_"+gender+".png");
@@ -646,13 +649,14 @@ video::ITexture* RemotePlayer::getTexture()
 	std::string tex = "";
 
 	tex += parts[0];         // skin
-	tex += "^" + parts[1];   // face
-	tex += "^" + parts[2];   // eyes
+	tex += "^" + parts[1];   // underwear
+	tex += "^" + parts[2];   // face
+	tex += "^" + parts[3];   // eyes
 	tex += "^" + clothes[5]; // pants
 	tex += "^" + clothes[1]; // shirt
 	tex += "^" + clothes[4]; // belt
 	tex += "^" + clothes[3]; // deco
-	tex += "^" + parts[3];   // hair
+	tex += "^" + parts[4];   // hair
 	tex += "^" + clothes[2]; // jacket
 	tex += "^" + clothes[6]; // boots
 	tex += "^" + clothes[0]; // hat

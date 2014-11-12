@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-02 17:16+1000\n"
+"POT-Creation-Date: 2014-11-12 19:10+1000\n"
 "PO-Revision-Date: 2011-07-21 15:48+0200\n"
 "Last-Translator: Cyriaque 'Cisoun' Skrapits <cysoun@gmail.com>\n"
 "Language-Team: Français <>\n"
@@ -110,127 +110,123 @@ msgid "Long Hair"
 msgstr ""
 
 #: src/character_creator.cpp:84
-msgid "Pony Tail"
+msgid "Styled Hair"
 msgstr ""
 
-#: src/character_creator.cpp:85
-msgid "Braided Hair"
-msgstr ""
-
-#: src/character_creator.cpp:87
+#: src/character_creator.cpp:86
 msgid "White Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:88
+#: src/character_creator.cpp:87
 msgid "Blue Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:89
+#: src/character_creator.cpp:88
 msgid "Green Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:90
+#: src/character_creator.cpp:89
 #, fuzzy
 msgid "Orange Eyes"
 msgstr "Changer touches"
 
-#: src/character_creator.cpp:91
+#: src/character_creator.cpp:90
 msgid "Brown Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:92
+#: src/character_creator.cpp:91
 msgid "Purple Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:93
+#: src/character_creator.cpp:92
 msgid "Red Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:94
+#: src/character_creator.cpp:93
 msgid "Yellow Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:95
+#: src/character_creator.cpp:94
 msgid "Black Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:97
+#: src/character_creator.cpp:96
 msgid "White T-Shirt"
 msgstr ""
 
-#: src/character_creator.cpp:98
+#: src/character_creator.cpp:97
 msgid "Blue T-Shirt"
 msgstr ""
 
-#: src/character_creator.cpp:99
+#: src/character_creator.cpp:98
 msgid "Green T-Shirt"
 msgstr ""
 
-#: src/character_creator.cpp:100
+#: src/character_creator.cpp:99
 msgid "Orange T-Shirt"
 msgstr ""
 
-#: src/character_creator.cpp:101
+#: src/character_creator.cpp:100
 msgid "Purple T-Shirt"
 msgstr ""
 
-#: src/character_creator.cpp:102
+#: src/character_creator.cpp:101
 msgid "Red T-Shirt"
 msgstr ""
 
-#: src/character_creator.cpp:103
+#: src/character_creator.cpp:102
 msgid "Yellow T-Shirt"
 msgstr ""
 
-#: src/character_creator.cpp:104
+#: src/character_creator.cpp:103
 msgid "Black T-Shirt"
 msgstr ""
 
-#: src/character_creator.cpp:106
+#: src/character_creator.cpp:105
 msgid "White Pants"
 msgstr ""
 
-#: src/character_creator.cpp:107
+#: src/character_creator.cpp:106
 msgid "Blue Pants"
 msgstr ""
 
-#: src/character_creator.cpp:108
+#: src/character_creator.cpp:107
 msgid "Green Pants"
 msgstr ""
 
-#: src/character_creator.cpp:109
+#: src/character_creator.cpp:108
 msgid "Orange Pants"
 msgstr ""
 
-#: src/character_creator.cpp:110
+#: src/character_creator.cpp:109
 msgid "Purple Pants"
 msgstr ""
 
-#: src/character_creator.cpp:111
+#: src/character_creator.cpp:110
 msgid "Red Pants"
 msgstr ""
 
-#: src/character_creator.cpp:112
+#: src/character_creator.cpp:111
 msgid "Yellow Pants"
 msgstr ""
 
-#: src/character_creator.cpp:113
+#: src/character_creator.cpp:112
 msgid "Black Pants"
 msgstr ""
 
-#: src/character_creator.cpp:115 src/content_clothesitem.cpp:1768
+#: src/character_creator.cpp:114 src/content_clothesitem.cpp:1768
 msgid "Leather Shoes"
 msgstr ""
 
-#: src/character_creator.cpp:116 src/content_clothesitem.cpp:2530
+#: src/character_creator.cpp:115 src/content_clothesitem.cpp:2530
 msgid "Fur Shoes"
 msgstr ""
 
-#: src/character_creator.cpp:117 src/content_clothesitem.cpp:1034
+#: src/character_creator.cpp:116 src/content_clothesitem.cpp:1034
 msgid "Canvas Shoes"
 msgstr ""
 
-#: src/character_creator.cpp:207
+#: src/character_creator.cpp:206
 msgid ""
 "Here you can create your default character, this is how other players will "
 "see you in-game. When you join a new server you will start with the clothing "
@@ -239,39 +235,39 @@ msgid ""
 "You can return here from the main menu anytime to change your character."
 msgstr ""
 
-#: src/character_creator.cpp:228
+#: src/character_creator.cpp:227
 msgid "Create Your Character"
 msgstr ""
 
-#: src/character_creator.cpp:236
+#: src/character_creator.cpp:235
 msgid "Male"
 msgstr ""
 
-#: src/character_creator.cpp:241
+#: src/character_creator.cpp:240
 msgid "Female"
 msgstr ""
 
-#: src/character_creator.cpp:248
+#: src/character_creator.cpp:247
 msgid "Taller"
 msgstr ""
 
-#: src/character_creator.cpp:253
+#: src/character_creator.cpp:252
 msgid "Shorter"
 msgstr ""
 
-#: src/character_creator.cpp:260
+#: src/character_creator.cpp:259
 msgid "Wider"
 msgstr ""
 
-#: src/character_creator.cpp:265
+#: src/character_creator.cpp:264
 msgid "Thinner"
 msgstr ""
 
-#: src/character_creator.cpp:440
+#: src/character_creator.cpp:439
 msgid "Done"
 msgstr ""
 
-#: src/character_creator.cpp:445 src/guiKeyChangeMenu.cpp:321
+#: src/character_creator.cpp:444 src/guiKeyChangeMenu.cpp:321
 #: src/keycode.cpp:222
 msgid "Cancel"
 msgstr ""
@@ -1260,247 +1256,247 @@ msgstr ""
 msgid "Cactus Berry"
 msgstr ""
 
-#: src/content_craftitem.cpp:501
+#: src/content_craftitem.cpp:502
 msgid "Mush"
 msgstr ""
 
-#: src/content_craftitem.cpp:510
+#: src/content_craftitem.cpp:511
 msgid "Sliced Pumpkin"
 msgstr ""
 
-#: src/content_craftitem.cpp:521
+#: src/content_craftitem.cpp:522
 msgid "Pumpkin Pie Slice"
 msgstr ""
 
-#: src/content_craftitem.cpp:530
+#: src/content_craftitem.cpp:531
 msgid "Apple Pie Slice"
 msgstr ""
 
-#: src/content_craftitem.cpp:539
+#: src/content_craftitem.cpp:540
 msgid "Sliced Melon"
 msgstr ""
 
-#: src/content_craftitem.cpp:550 src/content_mapnode_farm.cpp:248
+#: src/content_craftitem.cpp:551 src/content_mapnode_farm.cpp:248
 #: src/content_mapnode_farm.cpp:267 src/content_mapnode_farm.cpp:286
 #: src/content_mapnode_farm.cpp:307
 msgid "Wheat"
 msgstr ""
 
-#: src/content_craftitem.cpp:559
+#: src/content_craftitem.cpp:560
 msgid "Flour"
 msgstr ""
 
-#: src/content_craftitem.cpp:570
+#: src/content_craftitem.cpp:571
 msgid "Dough"
 msgstr ""
 
-#: src/content_craftitem.cpp:583
+#: src/content_craftitem.cpp:584
 msgid "Bread"
 msgstr ""
 
-#: src/content_craftitem.cpp:592 src/content_mapnode_farm.cpp:501
+#: src/content_craftitem.cpp:593 src/content_mapnode_farm.cpp:501
 #: src/content_mapnode_farm.cpp:522 src/content_mapnode_farm.cpp:543
 #: src/content_mapnode_farm.cpp:564
 msgid "Potato"
 msgstr ""
 
-#: src/content_craftitem.cpp:603
+#: src/content_craftitem.cpp:604
 msgid "Potato Starch"
 msgstr ""
 
-#: src/content_craftitem.cpp:613
+#: src/content_craftitem.cpp:614
 msgid "Roast Potato"
 msgstr ""
 
-#: src/content_craftitem.cpp:622 src/content_mapnode_farm.cpp:585
+#: src/content_craftitem.cpp:623 src/content_mapnode_farm.cpp:585
 #: src/content_mapnode_farm.cpp:606 src/content_mapnode_farm.cpp:627
 #: src/content_mapnode_farm.cpp:648
 msgid "Carrot"
 msgstr ""
 
-#: src/content_craftitem.cpp:631
+#: src/content_craftitem.cpp:632
 msgid "Raw Carrot Cake"
 msgstr ""
 
-#: src/content_craftitem.cpp:643
+#: src/content_craftitem.cpp:644
 msgid "Carrot Cake"
 msgstr ""
 
-#: src/content_craftitem.cpp:652 src/content_mapnode_farm.cpp:669
+#: src/content_craftitem.cpp:653 src/content_mapnode_farm.cpp:669
 #: src/content_mapnode_farm.cpp:690 src/content_mapnode_farm.cpp:711
 #: src/content_mapnode_farm.cpp:732
 msgid "Beetroot"
 msgstr ""
 
-#: src/content_craftitem.cpp:661
+#: src/content_craftitem.cpp:662
 msgid "Bunch of Grapes"
 msgstr ""
 
-#: src/content_craftitem.cpp:670
+#: src/content_craftitem.cpp:671
 msgid "String"
 msgstr ""
 
-#: src/content_craftitem.cpp:678
+#: src/content_craftitem.cpp:679
 msgid "Mese Dust"
 msgstr ""
 
-#: src/content_craftitem.cpp:689
+#: src/content_craftitem.cpp:690
 msgid "Resin"
 msgstr ""
 
-#: src/content_craftitem.cpp:699
+#: src/content_craftitem.cpp:700
 msgid "Oerkki Dust"
 msgstr ""
 
-#: src/content_craftitem.cpp:708
+#: src/content_craftitem.cpp:709
 msgid "Fish"
 msgstr ""
 
-#: src/content_craftitem.cpp:720
+#: src/content_craftitem.cpp:721
 msgid "Cooked Fish"
 msgstr ""
 
-#: src/content_craftitem.cpp:731
+#: src/content_craftitem.cpp:732
 msgid "Meat"
 msgstr ""
 
-#: src/content_craftitem.cpp:741
+#: src/content_craftitem.cpp:742
 msgid "Cooked Meat"
 msgstr ""
 
-#: src/content_craftitem.cpp:752
+#: src/content_craftitem.cpp:753
 msgid "Cotton Sheet"
 msgstr ""
 
-#: src/content_craftitem.cpp:769
+#: src/content_craftitem.cpp:770
 msgid "Blue Cotton Sheet"
 msgstr ""
 
-#: src/content_craftitem.cpp:779
+#: src/content_craftitem.cpp:780
 msgid "Green Cotton Sheet"
 msgstr ""
 
-#: src/content_craftitem.cpp:789
+#: src/content_craftitem.cpp:790
 msgid "Orange Cotton Sheet"
 msgstr ""
 
-#: src/content_craftitem.cpp:799
+#: src/content_craftitem.cpp:800
 msgid "Purple Cotton Sheet"
 msgstr ""
 
-#: src/content_craftitem.cpp:809
+#: src/content_craftitem.cpp:810
 msgid "Red Cotton Sheet"
 msgstr ""
 
-#: src/content_craftitem.cpp:819
+#: src/content_craftitem.cpp:820
 msgid "Yellow Cotton Sheet"
 msgstr ""
 
-#: src/content_craftitem.cpp:829
+#: src/content_craftitem.cpp:830
 msgid "Black Cotton Sheet"
 msgstr ""
 
-#: src/content_craftitem.cpp:839
+#: src/content_craftitem.cpp:840
 msgid "Canvas Sheet"
 msgstr ""
 
-#: src/content_craftitem.cpp:856
+#: src/content_craftitem.cpp:857
 msgid "Blue Canvas Sheet"
 msgstr ""
 
-#: src/content_craftitem.cpp:866
+#: src/content_craftitem.cpp:867
 msgid "Green Canvas Sheet"
 msgstr ""
 
-#: src/content_craftitem.cpp:876
+#: src/content_craftitem.cpp:877
 msgid "Orange Canvas Sheet"
 msgstr ""
 
-#: src/content_craftitem.cpp:886
+#: src/content_craftitem.cpp:887
 msgid "Purple Canvas Sheet"
 msgstr ""
 
-#: src/content_craftitem.cpp:896
+#: src/content_craftitem.cpp:897
 msgid "Red Canvas Sheet"
 msgstr ""
 
-#: src/content_craftitem.cpp:906
+#: src/content_craftitem.cpp:907
 msgid "Yellow Canvas Sheet"
 msgstr ""
 
-#: src/content_craftitem.cpp:916
+#: src/content_craftitem.cpp:917
 msgid "Black Canvas Sheet"
 msgstr ""
 
-#: src/content_craftitem.cpp:926
+#: src/content_craftitem.cpp:927
 msgid "Fur"
 msgstr ""
 
-#: src/content_craftitem.cpp:934
+#: src/content_craftitem.cpp:935
 msgid "White Fur"
 msgstr ""
 
-#: src/content_craftitem.cpp:945
+#: src/content_craftitem.cpp:946
 msgid "Blue Fur"
 msgstr ""
 
-#: src/content_craftitem.cpp:956
+#: src/content_craftitem.cpp:957
 msgid "Green Fur"
 msgstr ""
 
-#: src/content_craftitem.cpp:967
+#: src/content_craftitem.cpp:968
 msgid "Orange Fur"
 msgstr ""
 
-#: src/content_craftitem.cpp:978
+#: src/content_craftitem.cpp:979
 msgid "Purple Fur"
 msgstr ""
 
-#: src/content_craftitem.cpp:989
+#: src/content_craftitem.cpp:990
 msgid "Red Fur"
 msgstr ""
 
-#: src/content_craftitem.cpp:1000
+#: src/content_craftitem.cpp:1001
 msgid "Yellow Fur"
 msgstr ""
 
-#: src/content_craftitem.cpp:1011
+#: src/content_craftitem.cpp:1012
 msgid "Black Fur"
 msgstr ""
 
-#: src/content_craftitem.cpp:1022
+#: src/content_craftitem.cpp:1023
 msgid "Leather"
 msgstr ""
 
-#: src/content_craftitem.cpp:1032
+#: src/content_craftitem.cpp:1033
 msgid "White Leather"
 msgstr ""
 
-#: src/content_craftitem.cpp:1043
+#: src/content_craftitem.cpp:1044
 msgid "Blue Leather"
 msgstr ""
 
-#: src/content_craftitem.cpp:1054
+#: src/content_craftitem.cpp:1055
 msgid "Green Leather"
 msgstr ""
 
-#: src/content_craftitem.cpp:1065
+#: src/content_craftitem.cpp:1066
 msgid "Orange Leather"
 msgstr ""
 
-#: src/content_craftitem.cpp:1076
+#: src/content_craftitem.cpp:1077
 msgid "Purple Leather"
 msgstr ""
 
-#: src/content_craftitem.cpp:1087
+#: src/content_craftitem.cpp:1088
 msgid "Red Leather"
 msgstr ""
 
-#: src/content_craftitem.cpp:1098
+#: src/content_craftitem.cpp:1099
 msgid "Yellow Leather"
 msgstr ""
 
-#: src/content_craftitem.cpp:1109
+#: src/content_craftitem.cpp:1110
 msgid "Black Leather"
 msgstr ""
 
@@ -2942,135 +2938,135 @@ msgstr ""
 msgid "Drop to Ground"
 msgstr ""
 
-#: src/game.cpp:721
+#: src/game.cpp:731
 msgid "Loading"
 msgstr ""
 
-#: src/game.cpp:795
+#: src/game.cpp:805
 msgid "Loading..."
 msgstr ""
 
-#: src/game.cpp:804
+#: src/game.cpp:814
 msgid "Creating server..."
 msgstr ""
 
-#: src/game.cpp:815
+#: src/game.cpp:825
 msgid "Creating client..."
 msgstr ""
 
-#: src/game.cpp:820
+#: src/game.cpp:830
 msgid "Resolving address..."
 msgstr ""
 
-#: src/game.cpp:831
+#: src/game.cpp:841
 msgid "Couldn't resolve address"
 msgstr ""
 
-#: src/game.cpp:891
+#: src/game.cpp:901
 #, c-format
 msgid "Access denied. Reason: %ls"
 msgstr ""
 
-#: src/game.cpp:895
+#: src/game.cpp:905
 msgid "Unable to Connect (port already in use?)."
 msgstr ""
 
-#: src/game.cpp:898
+#: src/game.cpp:908
 msgid "Connection timed out."
 msgstr ""
 
-#: src/game.cpp:1054
+#: src/game.cpp:1064
 msgid "Access denied. Reason: "
 msgstr ""
 
-#: src/game.cpp:1313
+#: src/game.cpp:1323
 msgid "free_move disabled"
 msgstr ""
 
-#: src/game.cpp:1317
+#: src/game.cpp:1327
 msgid "free_move enabled"
 msgstr ""
 
-#: src/game.cpp:1324
+#: src/game.cpp:1334
 msgid "fast_move disabled"
 msgstr ""
 
-#: src/game.cpp:1328
+#: src/game.cpp:1338
 msgid "fast_move enabled"
 msgstr ""
 
-#: src/game.cpp:1341
+#: src/game.cpp:1351
 #, c-format
 msgid "Saved screenshot to '%s'"
 msgstr ""
 
-#: src/game.cpp:1354
+#: src/game.cpp:1364
 msgid "HUD shown"
 msgstr ""
 
-#: src/game.cpp:1356
+#: src/game.cpp:1366
 msgid "HUD hidden"
 msgstr ""
 
-#: src/game.cpp:1363
+#: src/game.cpp:1373
 msgid "Chat shown"
 msgstr ""
 
-#: src/game.cpp:1365
+#: src/game.cpp:1375
 msgid "Chat hidden"
 msgstr ""
 
-#: src/game.cpp:1372
+#: src/game.cpp:1382
 msgid "Fog disabled"
 msgstr ""
 
-#: src/game.cpp:1374
+#: src/game.cpp:1384
 msgid "Fog enabled"
 msgstr ""
 
-#: src/game.cpp:1381
+#: src/game.cpp:1391
 msgid "Camera update disabled"
 msgstr ""
 
-#: src/game.cpp:1383
+#: src/game.cpp:1393
 msgid "Camera update enabled"
 msgstr ""
 
-#: src/game.cpp:1394
+#: src/game.cpp:1404
 msgid "Debug info shown"
 msgstr ""
 
-#: src/game.cpp:1400
+#: src/game.cpp:1410
 msgid "Debug info and frametime graph hidden"
 msgstr ""
 
-#: src/game.cpp:1404
+#: src/game.cpp:1414
 msgid "Frametime graph shown"
 msgstr ""
 
-#: src/game.cpp:1417
+#: src/game.cpp:1427
 #, c-format
 msgid "Profiler shown (page %d of %d)"
 msgstr ""
 
-#: src/game.cpp:1421
+#: src/game.cpp:1431
 msgid "Profiler hidden"
 msgstr ""
 
-#: src/game.cpp:1430 src/game.cpp:1442
+#: src/game.cpp:1440 src/game.cpp:1452
 #, c-format
 msgid "Minimum viewing range changed to %d"
 msgstr ""
 
-#: src/game.cpp:1485
+#: src/game.cpp:1495
 msgid "Enabled full viewing range"
 msgstr ""
 
-#: src/game.cpp:1489
+#: src/game.cpp:1499
 msgid "Disabled full viewing range"
 msgstr ""
 
-#: src/game.cpp:2392
+#: src/game.cpp:2355
 msgid "Shutting down..."
 msgstr ""
 
@@ -3740,15 +3736,15 @@ msgstr ""
 msgid "Zoom"
 msgstr ""
 
-#: src/main.cpp:1092
+#: src/main.cpp:1130
 msgid "Setting Up UI"
 msgstr ""
 
-#: src/main.cpp:1115
+#: src/main.cpp:1153
 msgid "Loading MapNodes"
 msgstr ""
 
-#: src/main.cpp:1117
+#: src/main.cpp:1155
 msgid "Loading Creatures"
 msgstr ""
 
@@ -3780,15 +3776,6 @@ msgstr ""
 msgid "Loading Special MapNodes"
 msgstr ""
 
-#~ msgid "Leave address blank to start a local server."
-#~ msgstr "Laisser l'adresse vide pour lancer un serveur local."
-
-#~ msgid "Delete map"
-#~ msgstr "Supprimer carte"
-
-#~ msgid "Proceed"
-#~ msgstr "OK"
-
 #, fuzzy
 #~ msgid ""
 #~ "Default Controls:\n"
@@ -3813,3 +3800,12 @@ msgstr ""
 #~ "- R: Active la vue de tous les blocs\n"
 #~ "- I: Inventaire\n"
 #~ "- T: Chat\n"
+
+#~ msgid "Proceed"
+#~ msgstr "OK"
+
+#~ msgid "Delete map"
+#~ msgstr "Supprimer carte"
+
+#~ msgid "Leave address blank to start a local server."
+#~ msgstr "Laisser l'adresse vide pour lancer un serveur local."
