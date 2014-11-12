@@ -670,23 +670,61 @@ void drawMenuBackground(video::IVideoDriver* driver)
 {
 	core::dimension2d<u32> screensize = driver->getScreenSize();
 
-	video::ITexture *bgtexture =
-			driver->getTexture(getTexturePath("mud.png").c_str());
-	if(bgtexture)
-	{
+	video::ITexture *mud = driver->getTexture(getTexturePath("mud.png").c_str());
+	video::ITexture *stone = driver->getTexture(getTexturePath("stone.png").c_str());
+	video::ITexture *grass = driver->getTexture(getTexturePath("grass_side.png").c_str());
+	if (mud && stone && grass) {
+		video::ITexture *texture;
 		s32 texturesize = 128;
 		s32 tiled_y = screensize.Height / texturesize + 1;
 		s32 tiled_x = screensize.Width / texturesize + 1;
+		s32 grassline = (tiled_y/4)*3;
 
-		for(s32 y=0; y<tiled_y; y++)
-		for(s32 x=0; x<tiled_x; x++)
-		{
-			core::rect<s32> rect(0,0,texturesize,texturesize);
-			rect += v2s32(x*texturesize, y*texturesize);
-			driver->draw2DImage(bgtexture, rect,
-				core::rect<s32>(core::position2d<s32>(0,0),
-				core::dimension2di(bgtexture->getSize())),
-				NULL, NULL, true);
+		texture = stone;
+
+		for (s32 y=0; y<tiled_y; y++)
+		for (s32 x=0; x<tiled_x; x++) {
+			if (y == grassline) {
+				core::rect<s32> rect(0,0,texturesize,texturesize);
+				rect += v2s32(x*texturesize, y*texturesize);
+				driver->draw2DImage(
+					mud,
+					rect,
+					core::rect<s32>(
+						core::position2d<s32>(0,0),
+						core::dimension2di(mud->getSize())
+					),
+					NULL,
+					NULL,
+					true
+				);
+				driver->draw2DImage(
+					grass,
+					rect,
+					core::rect<s32>(
+						core::position2d<s32>(0,0),
+						core::dimension2di(grass->getSize())
+					),
+					NULL,
+					NULL,
+					true
+				);
+				texture = mud;
+			}else{
+				core::rect<s32> rect(0,0,texturesize,texturesize);
+				rect += v2s32(x*texturesize, y*texturesize);
+				driver->draw2DImage(
+					texture,
+					rect,
+					core::rect<s32>(
+						core::position2d<s32>(0,0),
+						core::dimension2di(texture->getSize())
+					),
+					NULL,
+					NULL,
+					true
+				);
+			}
 		}
 	}
 }
@@ -1227,7 +1265,7 @@ int main(int argc, char *argv[])
 						break;
 
 					//driver->beginScene(true, true, video::SColor(255,0,0,0));
-					driver->beginScene(true, true, video::SColor(255,128,128,128));
+					driver->beginScene(true, true, video::SColor(255,170,230,255));
 
 					drawMenuBackground(driver);
 
