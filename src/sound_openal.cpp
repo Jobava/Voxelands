@@ -181,6 +181,7 @@ private:
 	int m_next_id;
 	std::map<std::string, std::vector<SoundBuffer*> > m_buffers;
 	std::map<int, PlayingSound*> m_sounds_playing;
+	std::map<std::string, int> m_indexes;
 public:
 	OpenALSoundManager():
 		m_device(NULL),
@@ -272,7 +273,12 @@ public:
 		if (i == m_buffers.end())
 			return NULL;
 		std::vector<SoundBuffer*> &bufs = i->second;
-		int j = myrand() % bufs.size();
+		u32 j = m_indexes[name];
+		if (j+1 >= bufs.size()) {
+			m_indexes[name] = 0;
+		}else{
+			m_indexes[name] = j+1;
+		}
 		return bufs[j];
 	}
 
