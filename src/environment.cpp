@@ -672,7 +672,8 @@ bool ServerEnvironment::searchNear(v3s16 pos, v3s16 radius_min, v3s16 radius_max
 				MapNode n_test;
 				bp = getNodeBlockPos(p);
 				if (bp == blockpos) {
-					n_test = block->getNodeNoCheck(p-relpos);
+					bool pos_ok;
+					n_test = block->getNodeNoCheck(p-relpos,&pos_ok);
 				}else{
 					n_test = m_map->getNodeNoEx(p);
 				}
@@ -707,7 +708,8 @@ bool ServerEnvironment::searchNearInv(v3s16 pos, v3s16 radius_min, v3s16 radius_
 				MapNode n_test;
 				bp = getNodeBlockPos(p);
 				if (bp == blockpos) {
-					n_test = block->getNodeNoCheck(p-relpos);
+					bool pos_ok;
+					n_test = block->getNodeNoCheck(p-relpos,&pos_ok);
 				}else{
 					n_test = m_map->getNodeNoEx(p);
 				}
@@ -775,24 +777,22 @@ void ServerEnvironment::step(float dtime)
 			if (footprints) {
 				// Get node that is at BS/4 under player
 				v3s16 bottompos = floatToInt(playerpos + v3f(0,-BS/4,0), BS);
-				try{
-					MapNode n = m_map->getNode(bottompos);
-					if (n.getContent() == CONTENT_GRASS) {
-						n.setContent(CONTENT_GRASS_FOOTSTEPS);
-						m_map->setNode(bottompos, n);
-					}else{
-						bottompos.Y += 1;
-						MapNode n = m_map->getNode(bottompos);
-						if (
-							n.getContent() == CONTENT_CIRCUIT_PRESSUREPLATE_STONE
-							|| n.getContent() == CONTENT_CIRCUIT_PRESSUREPLATE_WOOD
-						) {
-							NodeMetadata *meta = m_map->getNodeMetadata(bottompos);
-							if (meta && !meta->getEnergy())
-								meta->energise(ENERGY_MAX,bottompos,bottompos,bottompos);
-						}
+				MapNode n = m_map->getNodeNoEx(bottompos);
+				if (n.getContent() == CONTENT_GRASS) {
+					n.setContent(CONTENT_GRASS_FOOTSTEPS);
+					m_map->setNode(bottompos, n);
+				}else{
+					bottompos.Y += 1;
+					MapNode n = m_map->getNodeNoEx(bottompos);
+					if (
+						n.getContent() == CONTENT_CIRCUIT_PRESSUREPLATE_STONE
+						|| n.getContent() == CONTENT_CIRCUIT_PRESSUREPLATE_WOOD
+					) {
+						NodeMetadata *meta = m_map->getNodeMetadata(bottompos);
+						if (meta && !meta->getEnergy())
+							meta->energise(ENERGY_MAX,bottompos,bottompos,bottompos);
 					}
-				}catch (InvalidPositionException &e) {}
+				}
 			}
 			/*
 				Get player block positions
@@ -3832,12 +3832,14 @@ void ClientEnvironment::step(float dtime)
 
 		// Update lighting on all players on client
 		u8 light = LIGHT_MAX;
-		try{
+		{
 			// Get node at head
+			bool pos_ok;
 			v3s16 p = player->getLightPosition();
-			MapNode n = m_map->getNode(p);
-			light = n.getLightBlend(getDayNightRatio());
-		}catch(InvalidPositionException &e) {}
+			MapNode n = m_map->getNodeNoEx(p,&pos_ok);
+			if (pos_ok)
+				light = n.getLightBlend(getDayNightRatio());
+		}
 		player->updateLight(light);
 
 		/*
@@ -3846,20 +3848,18 @@ void ClientEnvironment::step(float dtime)
 		if (footprints) {
 			// Get node that is at BS/4 under player
 			v3s16 bottompos = floatToInt(playerpos + v3f(0,-BS/4,0), BS);
-			try{
-				MapNode n = m_map->getNode(bottompos);
-				if (n.getContent() == CONTENT_GRASS) {
-					n.setContent(CONTENT_GRASS_FOOTSTEPS);
-					m_map->setNode(bottompos, n);
-					// Update mesh on client
-					if (m_map->mapType() == MAPTYPE_CLIENT) {
-						v3s16 p_blocks = getNodeBlockPos(bottompos);
-						MapBlock *b = m_map->getBlockNoCreate(p_blocks);
-						//b->updateMesh(getDayNightRatio());
-						b->setMeshExpired(true);
-					}
+			MapNode n = m_map->getNodeNoEx(bottompos);
+			if (n.getContent() == CONTENT_GRASS) {
+				n.setContent(CONTENT_GRASS_FOOTSTEPS);
+				m_map->setNode(bottompos, n);
+				// Update mesh on client
+				if (m_map->mapType() == MAPTYPE_CLIENT) {
+					v3s16 p_blocks = getNodeBlockPos(bottompos);
+					MapBlock *b = m_map->getBlockNoCreate(p_blocks);
+					//b->updateMesh(getDayNightRatio());
+					b->setMeshExpired(true);
 				}
-			}catch(InvalidPositionException &e) {}
+			}
 		}
 	}
 
@@ -3873,14 +3873,12 @@ void ClientEnvironment::step(float dtime)
 		obj->step(dtime, this);
 
 		if (m_active_object_light_update_interval.step(dtime, 0.21)) {
-			// Update lighting
 			u8 light = 0;
-			try{
-				// Get node at head
-				v3s16 p = obj->getLightPosition();
-				MapNode n = m_map->getNode(p);
+			bool pos_ok;
+			v3s16 p = obj->getLightPosition();
+			MapNode n = m_map->getNodeNoEx(p,&pos_ok);
+			if (pos_ok)
 				light = n.getLightBlend(getDayNightRatio());
-			}catch(InvalidPositionException &e) {}
 			obj->updateLight(light);
 		}
 	}
@@ -3960,13 +3958,11 @@ u16 ClientEnvironment::addActiveObject(ClientActiveObject *object)
 	object->addToScene(m_smgr);
 	{ // Update lighting immediately
 		u8 light = 0;
-		try{
-			// Get node at head
-			v3s16 p = object->getLightPosition();
-			MapNode n = m_map->getNode(p);
+		bool pos_ok;
+		v3s16 p = object->getLightPosition();
+		MapNode n = m_map->getNodeNoEx(p,&pos_ok);
+		if (pos_ok)
 			light = n.getLightBlend(getDayNightRatio());
-		}
-		catch(InvalidPositionException &e) {}
 		object->updateLight(light);
 	}
 	return object->getId();
@@ -4233,7 +4229,8 @@ bool ClientEnvironment::searchNear(v3s16 pos, v3s16 radius_min, v3s16 radius_max
 				MapNode n_test;
 				bp = getNodeBlockPos(p);
 				if (bp == blockpos) {
-					n_test = block->getNodeNoCheck(p-relpos);
+					bool pos_ok;
+					n_test = block->getNodeNoCheck(p-relpos,&pos_ok);
 				}else{
 					n_test = m_map->getNodeNoEx(p);
 				}
@@ -4268,7 +4265,8 @@ bool ClientEnvironment::searchNearInv(v3s16 pos, v3s16 radius_min, v3s16 radius_
 				MapNode n_test;
 				bp = getNodeBlockPos(p);
 				if (bp == blockpos) {
-					n_test = block->getNodeNoCheck(p-relpos);
+					bool pos_ok;
+					n_test = block->getNodeNoCheck(p-relpos,&pos_ok);
 				}else{
 					n_test = m_map->getNodeNoEx(p);
 				}

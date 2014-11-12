@@ -178,14 +178,21 @@ bool Map::isValidPosition(v3s16 p)
 }
 
 // Returns a CONTENT_IGNORE node if not found
-MapNode Map::getNodeNoEx(v3s16 p)
+MapNode Map::getNodeNoEx(v3s16 p, bool *is_valid_position)
 {
 	v3s16 blockpos = getNodeBlockPos(p);
 	MapBlock *block = getBlockNoCreateNoEx(blockpos);
-	if(block == NULL)
+	if (block == NULL) {
+		if (is_valid_position)
+			*is_valid_position = false;
 		return MapNode(CONTENT_IGNORE);
+	}
 	v3s16 relpos = p - blockpos*MAP_BLOCKSIZE;
-	return block->getNodeNoCheck(relpos);
+	bool is_valid_p;
+	MapNode node = block->getNodeNoCheck(relpos, &is_valid_p);
+	if (is_valid_position != NULL)
+		*is_valid_position = is_valid_p;
+	return node;
 }
 
 // throws InvalidPositionException if not found
@@ -193,10 +200,14 @@ MapNode Map::getNode(v3s16 p)
 {
 	v3s16 blockpos = getNodeBlockPos(p);
 	MapBlock *block = getBlockNoCreateNoEx(blockpos);
-	if(block == NULL)
+	if (block == NULL)
 		throw InvalidPositionException();
 	v3s16 relpos = p - blockpos*MAP_BLOCKSIZE;
-	return block->getNodeNoCheck(relpos);
+	bool is_valid_position;
+	MapNode node = block->getNodeNoCheck(relpos, &is_valid_position);
+	if (!is_valid_position)
+		throw InvalidPositionException();
+	return node;
 }
 
 // throws InvalidPositionException if not found
@@ -277,107 +288,91 @@ void Map::unspreadLight(enum LightBank bank,
 			continue;
 		}
 
-		if(block->isDummy())
+		if (block->isDummy())
 			continue;
 
 		// Calculate relative position in block
 		v3s16 relpos = pos - blockpos_last * MAP_BLOCKSIZE;
 
-		// Get node straight from the block
-		MapNode n = block->getNode(relpos);
-
 		u8 oldlight = j.getNode()->getValue();
 
 		// Loop through 6 neighbors
-		for(u16 i=0; i<6; i++)
-		{
+		for (u16 i=0; i<6; i++) {
 			// Get the position of the neighbor node
 			v3s16 n2pos = pos + dirs[i];
 
 			// Get the block where the node is located
 			v3s16 blockpos = getNodeBlockPos(n2pos);
 
-			try
-			{
-				// Only fetch a new block if the block position has changed
-				try{
-					if(block == NULL || blockpos != blockpos_last){
-						block = getBlockNoCreate(blockpos);
-						blockpos_last = blockpos;
+			// Only fetch a new block if the block position has changed
+			try{
+				if (block == NULL || blockpos != blockpos_last) {
+					block = getBlockNoCreate(blockpos);
+					blockpos_last = blockpos;
 
-						block_checked_in_modified = false;
-						blockchangecount++;
-					}
+					block_checked_in_modified = false;
+					blockchangecount++;
 				}
-				catch(InvalidPositionException &e)
-				{
-					continue;
-				}
-
-				// Calculate relative position in block
-				v3s16 relpos = n2pos - blockpos * MAP_BLOCKSIZE;
-				// Get node straight from the block
-				MapNode n2 = block->getNode(relpos);
-
-				bool changed = false;
-
-				//TODO: Optimize output by optimizing light_sources?
-
-				/*
-					If the neighbor is dimmer than what was specified
-					as oldlight (the light of the previous node)
-				*/
-				if(n2.getLight(bank) < oldlight)
-				{
-					/*
-						And the neighbor is transparent and it has some light
-					*/
-					if(n2.light_propagates() && n2.getLight(bank) != 0)
-					{
-						/*
-							Set light to 0 and add to queue
-						*/
-
-						u8 current_light = n2.getLight(bank);
-						n2.setLight(bank, 0);
-						block->setNode(relpos, n2);
-
-						unlighted_nodes.insert(n2pos, current_light);
-						changed = true;
-
-						/*
-							Remove from light_sources if it is there
-							NOTE: This doesn't happen nearly at all
-						*/
-						/*if(light_sources.find(n2pos))
-						{
-							infostream<<"Removed from light_sources"<<std::endl;
-							light_sources.remove(n2pos);
-						}*/
-					}
-
-					/*// DEBUG
-					if(light_sources.find(n2pos) != NULL)
-						light_sources.remove(n2pos);*/
-				}
-				else{
-					light_sources.insert(n2pos, true);
-				}
-
-				// Add to modified_blocks
-				if(changed == true && block_checked_in_modified == false)
-				{
-					// If the block is not found in modified_blocks, add.
-					if(modified_blocks.find(blockpos) == NULL)
-					{
-						modified_blocks.insert(blockpos, block);
-					}
-					block_checked_in_modified = true;
-				}
-			}
-			catch(InvalidPositionException &e)
-			{
+			}catch(InvalidPositionException &e) {
 				continue;
+			}
+
+			// Calculate relative position in block
+			v3s16 relpos = n2pos - blockpos * MAP_BLOCKSIZE;
+			// Get node straight from the block
+			bool is_valid_position;
+			MapNode n2 = block->getNode(relpos, &is_valid_position);
+			if (!is_valid_position)
+				continue;
+
+			bool changed = false;
+
+			//TODO: Optimize output by optimizing light_sources?
+
+			/*
+				If the neighbor is dimmer than what was specified
+				as oldlight (the light of the previous node)
+			*/
+			if (n2.getLight(bank) < oldlight) {
+				/*
+					And the neighbor is transparent and it has some light
+				*/
+				if (n2.light_propagates() && n2.getLight(bank) != 0) {
+					/*
+						Set light to 0 and add to queue
+					*/
+
+					u8 current_light = n2.getLight(bank);
+					n2.setLight(bank, 0);
+					block->setNode(relpos, n2);
+
+					unlighted_nodes.insert(n2pos, current_light);
+					changed = true;
+
+					/*
+						Remove from light_sources if it is there
+						NOTE: This doesn't happen nearly at all
+					*/
+					/*if(light_sources.find(n2pos))
+					{
+						infostream<<"Removed from light_sources"<<std::endl;
+						light_sources.remove(n2pos);
+					}*/
+				}
+
+				/*// DEBUG
+				if(light_sources.find(n2pos) != NULL)
+					light_sources.remove(n2pos);*/
+			}else{
+				light_sources.insert(n2pos, true);
+			}
+
+			// Add to modified_blocks
+			if (changed == true && block_checked_in_modified == false) {
+				// If the block is not found in modified_blocks, add.
+				if (modified_blocks.find(blockpos) == NULL)
+					modified_blocks.insert(blockpos, block);
+				block_checked_in_modified = true;
 			}
 		}
 	}
@@ -469,82 +464,70 @@ void Map::spreadLight(enum LightBank bank,
 		v3s16 relpos = pos - blockpos_last * MAP_BLOCKSIZE;
 
 		// Get node straight from the block
-		MapNode n = block->getNode(relpos);
+		bool is_valid_position;
+		MapNode n = block->getNode(relpos, &is_valid_position);
 
 		u8 oldlight = n.getLight(bank);
 		u8 newlight = diminish_light(oldlight);
 
 		// Loop through 6 neighbors
-		for(u16 i=0; i<6; i++){
+		for (u16 i=0; i<6; i++) {
 			// Get the position of the neighbor node
 			v3s16 n2pos = pos + dirs[i];
 
 			// Get the block where the node is located
 			v3s16 blockpos = getNodeBlockPos(n2pos);
 
-			try
-			{
-				// Only fetch a new block if the block position has changed
-				try{
-					if(block == NULL || blockpos != blockpos_last){
-						block = getBlockNoCreate(blockpos);
-						blockpos_last = blockpos;
+			// Only fetch a new block if the block position has changed
+			try{
+				if (block == NULL || blockpos != blockpos_last) {
+					block = getBlockNoCreate(blockpos);
+					blockpos_last = blockpos;
 
-						block_checked_in_modified = false;
-						blockchangecount++;
-					}
+					block_checked_in_modified = false;
+					blockchangecount++;
 				}
-				catch(InvalidPositionException &e)
-				{
-					continue;
-				}
+			}catch(InvalidPositionException &e) {
+				continue;
+			}
 
-				// Calculate relative position in block
-				v3s16 relpos = n2pos - blockpos * MAP_BLOCKSIZE;
-				// Get node straight from the block
-				MapNode n2 = block->getNode(relpos);
+			// Calculate relative position in block
+			v3s16 relpos = n2pos - blockpos * MAP_BLOCKSIZE;
+			// Get node straight from the block
+			MapNode n2 = block->getNode(relpos, &is_valid_position);
+			if (!is_valid_position)
+				continue;
 
-				bool changed = false;
-				/*
-					If the neighbor is brighter than the current node,
-					add to list (it will light up this node on its turn)
-				*/
-				if(n2.getLight(bank) > undiminish_light(oldlight))
-				{
+			bool changed = false;
+			/*
+				If the neighbor is brighter than the current node,
+				add to list (it will light up this node on its turn)
+			*/
+			if (n2.getLight(bank) > undiminish_light(oldlight)) {
+				lighted_nodes.insert(n2pos, true);
+				//lighted_nodes.push_back(n2pos);
+				changed = true;
+			}
+			/*
+				If the neighbor is dimmer than how much light this node
+				would spread on it, add to list
+			*/
+			if (n2.getLight(bank) < newlight) {
+				if (n2.light_propagates()) {
+					n2.setLight(bank, newlight);
+					block->setNode(relpos, n2);
 					lighted_nodes.insert(n2pos, true);
 					//lighted_nodes.push_back(n2pos);
 					changed = true;
 				}
-				/*
-					If the neighbor is dimmer than how much light this node
-					would spread on it, add to list
-				*/
-				if(n2.getLight(bank) < newlight)
-				{
-					if(n2.light_propagates())
-					{
-						n2.setLight(bank, newlight);
-						block->setNode(relpos, n2);
-						lighted_nodes.insert(n2pos, true);
-						//lighted_nodes.push_back(n2pos);
-						changed = true;
-					}
-				}
-
-				// Add to modified_blocks
-				if(changed == true && block_checked_in_modified == false)
-				{
-					// If the block is not found in modified_blocks, add.
-					if(modified_blocks.find(blockpos) == NULL)
-					{
-						modified_blocks.insert(blockpos, block);
-					}
-					block_checked_in_modified = true;
-				}
 			}
-			catch(InvalidPositionException &e)
-			{
-				continue;
+
+			// Add to modified_blocks
+			if (changed == true && block_checked_in_modified == false) {
+				// If the block is not found in modified_blocks, add.
+				if (modified_blocks.find(blockpos) == NULL)
+					modified_blocks.insert(blockpos, block);
+				block_checked_in_modified = true;
 			}
 		}
 	}
@@ -554,7 +537,7 @@ void Map::spreadLight(enum LightBank bank,
 			<<" for "<<from_nodes.size()<<" nodes"
 			<<std::endl;*/
 
-	if(lighted_nodes.size() > 0)
+	if (lighted_nodes.size() > 0)
 		spreadLight(bank, lighted_nodes, modified_blocks);
 }
 
@@ -589,15 +572,11 @@ v3s16 Map::getBrightestNeighbour(enum LightBank bank, v3s16 p)
 	for(u16 i=0; i<6; i++){
 		// Get the position of the neighbor node
 		v3s16 n2pos = p + dirs[i];
-		MapNode n2;
-		try{
-			n2 = getNode(n2pos);
-		}
-		catch(InvalidPositionException &e)
-		{
+		bool pos_ok;
+		MapNode n2 = getNodeNoEx(n2pos,&pos_ok);
+		if (!pos_ok)
 			continue;
-		}
-		if(n2.getLight(bank) > brightest_light || found_something == false){
+		if (n2.getLight(bank) > brightest_light || found_something == false) {
 			brightest_light = n2.getLight(bank);
 			brightest_pos = n2pos;
 			found_something = true;
@@ -622,40 +601,29 @@ s16 Map::propagateSunlight(v3s16 start,
 		core::map<v3s16, MapBlock*> & modified_blocks)
 {
 	s16 y = start.Y;
-	for(; ; y--)
-	{
+	for (; ; y--) {
 		v3s16 pos(start.X, y, start.Z);
 
 		v3s16 blockpos = getNodeBlockPos(pos);
 		MapBlock *block;
 		try{
 			block = getBlockNoCreate(blockpos);
-		}
-		catch(InvalidPositionException &e)
-		{
+		}catch(InvalidPositionException &e) {
 			break;
 		}
 
 		v3s16 relpos = pos - blockpos*MAP_BLOCKSIZE;
-		MapNode n = block->getNode(relpos);
+		bool is_valid_position;
+		MapNode n = block->getNode(relpos, &is_valid_position);
+		if (!is_valid_position)
+			continue;
 
-		if(n.sunlight_propagates())
-		{
+		if (n.sunlight_propagates()) {
 			n.setLight(LIGHTBANK_DAY, LIGHT_SUN);
 			block->setNode(relpos, n);
 
 			modified_blocks.insert(blockpos, block);
-		}
-		else
-		{
-			/*// Turn mud into grass
-			if(n.getContent() == CONTENT_MUD)
-			{
-				n.setContent(CONTENT_GRASS);
-				block->setNode(relpos, n);
-				modified_blocks.insert(blockpos, block);
-			}*/
-
+		}else{
 			// Sunlight goes no further
 			break;
 		}
@@ -672,10 +640,6 @@ void Map::updateLighting(enum LightBank bank,
 
 	//TimeTaker timer("updateLighting");
 
-	// For debugging
-	//bool debug=true;
-	//u32 count_was = modified_blocks.size();
-
 	core::map<v3s16, MapBlock*> blocks_to_update;
 
 	core::map<v3s16, bool> light_sources;
@@ -684,14 +648,12 @@ void Map::updateLighting(enum LightBank bank,
 
 	core::map<v3s16, MapBlock*>::Iterator i;
 	i = a_blocks.getIterator();
-	for(; i.atEnd() == false; i++)
-	{
+	for (; i.atEnd() == false; i++) {
 		MapBlock *block = i.getNode()->getValue();
 
-		for(;;)
-		{
+		for (;;) {
 			// Don't bother with dummy blocks.
-			if(block->isDummy())
+			if (block->isDummy())
 				break;
 
 			v3s16 pos = block->getPos();
@@ -702,123 +664,57 @@ void Map::updateLighting(enum LightBank bank,
 			/*
 				Clear all light from block
 			*/
-			for(s16 z=0; z<MAP_BLOCKSIZE; z++)
-			for(s16 x=0; x<MAP_BLOCKSIZE; x++)
-			for(s16 y=0; y<MAP_BLOCKSIZE; y++)
-			{
-
-				try{
+			for (s16 z=0; z<MAP_BLOCKSIZE; z++)
+			for (s16 x=0; x<MAP_BLOCKSIZE; x++)
+			for (s16 y=0; y<MAP_BLOCKSIZE; y++) {
 					v3s16 p(x,y,z);
-					MapNode n = block->getNode(v3s16(x,y,z));
+					bool is_valid_position;
+					MapNode n = block->getNode(v3s16(x,y,z),&is_valid_position);
+					if (!is_valid_position)
+						continue;
 					u8 oldlight = n.getLight(bank);
 					n.setLight(bank, 0);
 					block->setNode(v3s16(x,y,z), n);
 
 					// Collect borders for unlighting
-					if(x==0 || x == MAP_BLOCKSIZE-1
-					|| y==0 || y == MAP_BLOCKSIZE-1
-					|| z==0 || z == MAP_BLOCKSIZE-1)
-					{
+					if (
+						x==0 || x == MAP_BLOCKSIZE-1
+						|| y==0 || y == MAP_BLOCKSIZE-1
+						|| z==0 || z == MAP_BLOCKSIZE-1
+					) {
 						v3s16 p_map = p + v3s16(
 								MAP_BLOCKSIZE*pos.X,
 								MAP_BLOCKSIZE*pos.Y,
 								MAP_BLOCKSIZE*pos.Z);
 						unlight_from.insert(p_map, oldlight);
 					}
-				}
-				catch(InvalidPositionException &e)
-				{
-					/*
-						This would happen when dealing with a
-						dummy block.
-					*/
-					//assert(0);
-					infostream<<"updateLighting(): InvalidPositionException"
-							<<std::endl;
-				}
 			}
 
-			if(bank == LIGHTBANK_DAY)
-			{
+			if (bank == LIGHTBANK_DAY) {
 				bool bottom_valid = block->propagateSunlight(light_sources);
 
 				// If bottom is valid, we're done.
 				if(bottom_valid)
 					break;
-			}
-			else if(bank == LIGHTBANK_NIGHT)
-			{
+			}else if (bank == LIGHTBANK_NIGHT) {
 				// For night lighting, sunlight is not propagated
 				break;
-			}
-			else
-			{
+			}else{
 				// Invalid lighting bank
 				assert(0);
 			}
-
-			/*infostream<<"Bottom for sunlight-propagated block ("
-					<<pos.X<<","<<pos.Y<<","<<pos.Z<<") not valid"
-					<<std::endl;*/
 
 			// Bottom sunlight is not valid; get the block and loop to it
 
 			pos.Y--;
 			try{
 				block = getBlockNoCreate(pos);
-			}
-			catch(InvalidPositionException &e)
-			{
+			}catch(InvalidPositionException &e) {
 				assert(0);
 			}
 
 		}
 	}
-
-	/*
-		Enable this to disable proper lighting for speeding up map
-		generation for testing or whatever
-	*/
-#if 0
-	//if(g_settings->get(""))
-	{
-		core::map<v3s16, MapBlock*>::Iterator i;
-		i = blocks_to_update.getIterator();
-		for(; i.atEnd() == false; i++)
-		{
-			MapBlock *block = i.getNode()->getValue();
-			v3s16 p = block->getPos();
-			block->setLightingExpired(false);
-		}
-		return;
-	}
-#endif
-
-#if 0
-	{
-		TimeTaker timer("unspreadLight");
-		unspreadLight(bank, unlight_from, light_sources, modified_blocks);
-	}
-
-	if(debug)
-	{
-		u32 diff = modified_blocks.size() - count_was;
-		count_was = modified_blocks.size();
-		infostream<<"unspreadLight modified "<<diff<<std::endl;
-	}
-
-	{
-		TimeTaker timer("spreadLight");
-		spreadLight(bank, light_sources, modified_blocks);
-	}
-
-	if(debug)
-	{
-		u32 diff = modified_blocks.size() - count_was;
-		count_was = modified_blocks.size();
-		infostream<<"spreadLight modified "<<diff<<std::endl;
-	}
-#endif
 
 	{
 		//MapVoxelManipulator vmanip(this);
@@ -828,33 +724,12 @@ void Map::updateLighting(enum LightBank bank,
 		ManualMapVoxelManipulator vmanip(this);
 		core::map<v3s16, MapBlock*>::Iterator i;
 		i = blocks_to_update.getIterator();
-		for(; i.atEnd() == false; i++)
-		{
+		for (; i.atEnd() == false; i++) {
 			MapBlock *block = i.getNode()->getValue();
 			v3s16 p = block->getPos();
 
 			// Add all surrounding blocks
 			vmanip.initialEmerge(p - v3s16(1,1,1), p + v3s16(1,1,1));
-
-			/*
-				Add all surrounding blocks that have up-to-date lighting
-				NOTE: This doesn't quite do the job (not everything
-					  appropriate is lighted)
-			*/
-			/*for(s16 z=-1; z<=1; z++)
-			for(s16 y=-1; y<=1; y++)
-			for(s16 x=-1; x<=1; x++)
-			{
-				v3s16 p(x,y,z);
-				MapBlock *block = getBlockNoCreateNoEx(p);
-				if(block == NULL)
-					continue;
-				if(block->isDummy())
-					continue;
-				if(block->getLightingExpired())
-					continue;
-				vmanip.initialEmerge(p, p);
-			}*/
 
 			// Lighting of block will be updated completely
 			block->setLightingExpired(false);
@@ -872,8 +747,6 @@ void Map::updateLighting(enum LightBank bank,
 			//TimeTaker timer("blitBack");
 			vmanip.blitBack(modified_blocks);
 		}
-		/*infostream<<"emerge_time="<<emerge_time<<std::endl;
-		emerge_time = 0;*/
 	}
 
 	//m_dout<<"Done ("<<getTimestamp()<<")"<<std::endl;
@@ -925,34 +798,25 @@ void Map::addNodeAndUpdate(v3s16 p, MapNode n,
 
 		Otherwise there probably is.
 	*/
-	try{
-		MapNode topnode = getNode(toppos);
-
-		if(topnode.getLight(LIGHTBANK_DAY) != LIGHT_SUN)
-			node_under_sunlight = false;
-	}
-	catch(InvalidPositionException &e)
 	{
+		bool pos_ok;
+		MapNode topnode = getNodeNoEx(toppos,&pos_ok);
+
+		if (pos_ok && topnode.getLight(LIGHTBANK_DAY) != LIGHT_SUN)
+			node_under_sunlight = false;
 	}
 
 #if 0
 	/*
 		If the new node is solid and there is grass below, change it to mud
 	*/
-	if(content_features(n).walkable == true)
-	{
-		try{
-			MapNode bottomnode = getNode(bottompos);
+	if (content_features(n).walkable == true) {
+		bool pos_ok;
+		MapNode bottomnode = getNodeNoEx(bottompos,&pos_ok);
 
-			if(bottomnode.getContent() == CONTENT_GRASS
-					|| bottomnode.getContent() == CONTENT_GRASS_FOOTSTEPS)
-			{
-				bottomnode.setContent(CONTENT_MUD);
-				setNode(bottompos, bottomnode);
-			}
-		}
-		catch(InvalidPositionException &e)
-		{
+		if (pos_ok && (bottomnode.getContent() == CONTENT_GRASS || bottomnode.getContent() == CONTENT_GRASS_FOOTSTEPS)) {
+			bottomnode.setContent(CONTENT_MUD);
+			setNode(bottompos, bottomnode);
 		}
 	}
 #endif
@@ -1005,10 +869,8 @@ void Map::addNodeAndUpdate(v3s16 p, MapNode n,
 		If node lets sunlight through and is under sunlight, it has
 		sunlight too.
 	*/
-	if(node_under_sunlight && content_features(n).sunlight_propagates)
-	{
+	if (node_under_sunlight && content_features(n).sunlight_propagates)
 		n.setLight(LIGHTBANK_DAY, LIGHT_SUN);
-	}
 
 	/*
 		Set the node on the map
@@ -1021,8 +883,7 @@ void Map::addNodeAndUpdate(v3s16 p, MapNode n,
 	*/
 
 	NodeMetadata *meta_proto = content_features(n).initial_metadata;
-	if(meta_proto)
-	{
+	if (meta_proto) {
 		NodeMetadata *meta = meta_proto->clone();
 		meta->setOwner(player_name);
 		setNodeMetadata(p, meta);
@@ -1035,24 +896,18 @@ void Map::addNodeAndUpdate(v3s16 p, MapNode n,
 		TODO: This could be optimized by mass-unlighting instead
 			  of looping
 	*/
-	if(node_under_sunlight && !content_features(n).sunlight_propagates)
-	{
+	if (node_under_sunlight && !content_features(n).sunlight_propagates) {
 		s16 y = p.Y - 1;
-		for(;; y--){
+		for (;; y--) {
 			//m_dout<<DTIME<<"y="<<y<<std::endl;
 			v3s16 n2pos(p.X, y, p.Z);
+			bool pos_ok;
 
-			MapNode n2;
-			try{
-				n2 = getNode(n2pos);
-			}
-			catch(InvalidPositionException &e)
-			{
+			MapNode n2 = getNodeNoEx(n2pos,&pos_ok);
+			if (!pos_ok)
 				break;
-			}
 
-			if(n2.getLight(LIGHTBANK_DAY) == LIGHT_SUN)
-			{
+			if (n2.getLight(LIGHTBANK_DAY) == LIGHT_SUN) {
 				unLightNeighbors(LIGHTBANK_DAY,
 						n2pos, n2.getLight(LIGHTBANK_DAY),
 						light_sources, modified_blocks);
@@ -1064,8 +919,7 @@ void Map::addNodeAndUpdate(v3s16 p, MapNode n,
 		}
 	}
 
-	for(s32 i=0; i<2; i++)
-	{
+	for (s32 i=0; i<2; i++) {
 		enum LightBank bank = banks[i];
 
 		/*
@@ -1098,22 +952,12 @@ void Map::addNodeAndUpdate(v3s16 p, MapNode n,
 		v3s16(0,-1,0), // bottom
 		v3s16(-1,0,0), // left
 	};
-	for(u16 i=0; i<7; i++)
-	{
-		try
-		{
-
+	for (u16 i=0; i<7; i++) {
 		v3s16 p2 = p + dirs[i];
-
-		MapNode n2 = getNode(p2);
-		if(content_liquid(n2.getContent()) || n2.getContent() == CONTENT_AIR)
-		{
+		bool pos_ok;
+		MapNode n2 = getNodeNoEx(p2,&pos_ok);
+		if (pos_ok && (content_liquid(n2.getContent()) || n2.getContent() == CONTENT_AIR))
 			m_transforming_liquid.push_back(p2);
-		}
-
-		}catch(InvalidPositionException &e)
-		{
-		}
 	}
 }
 
@@ -1137,25 +981,21 @@ void Map::removeNodeAndUpdate(v3s16 p,
 		If there is a node at top and it doesn't have sunlight,
 		there will be no sunlight going down.
 	*/
-	try{
-		MapNode topnode = getNode(toppos);
-
-		if(topnode.getLight(LIGHTBANK_DAY) != LIGHT_SUN)
-			node_under_sunlight = false;
-	}
-	catch(InvalidPositionException &e)
 	{
+		bool pos_ok;
+		MapNode topnode = getNodeNoEx(toppos,&pos_ok);
+
+		if (pos_ok && topnode.getLight(LIGHTBANK_DAY) != LIGHT_SUN)
+			node_under_sunlight = false;
 	}
 
 	core::map<v3s16, bool> light_sources;
 
-	enum LightBank banks[] =
-	{
+	enum LightBank banks[] = {
 		LIGHTBANK_DAY,
 		LIGHTBANK_NIGHT
 	};
-	for(s32 i=0; i<2; i++)
-	{
+	for (s32 i=0; i<2; i++) {
 		enum LightBank bank = banks[i];
 
 		/*
@@ -1181,8 +1021,7 @@ void Map::removeNodeAndUpdate(v3s16 p,
 	n.setContent(replace_material);
 	setNode(p, n);
 
-	for(s32 i=0; i<2; i++)
-	{
+	for (s32 i=0; i<2; i++) {
 		enum LightBank bank = banks[i];
 
 		/*
@@ -1202,50 +1041,39 @@ void Map::removeNodeAndUpdate(v3s16 p,
 		sunlight down from it and then light all neighbors
 		of the propagated blocks.
 	*/
-	if(node_under_sunlight)
-	{
+	if (node_under_sunlight) {
 		s16 ybottom = propagateSunlight(p, modified_blocks);
 		/*m_dout<<DTIME<<"Node was under sunlight. "
 				"Propagating sunlight";
 		m_dout<<DTIME<<" -> ybottom="<<ybottom<<std::endl;*/
 		s16 y = p.Y;
-		for(; y >= ybottom; y--)
-		{
+		for (; y >= ybottom; y--) {
 			v3s16 p2(p.X, y, p.Z);
 			/*m_dout<<DTIME<<"lighting neighbors of node ("
 					<<p2.X<<","<<p2.Y<<","<<p2.Z<<")"
 					<<std::endl;*/
 			lightNeighbors(LIGHTBANK_DAY, p2, modified_blocks);
 		}
-	}
-	else
-	{
+	}else{
 		// Set the lighting of this node to 0
 		// TODO: Is this needed? Lighting is cleared up there already.
-		try{
-			MapNode n = getNode(p);
+		bool pos_ok;
+		MapNode n = getNodeNoEx(p,&pos_ok);
+		if (pos_ok) {
 			n.setLight(LIGHTBANK_DAY, 0);
 			setNode(p, n);
 		}
-		catch(InvalidPositionException &e)
-		{
-			assert(0);
-		}
 	}
 
-	for(s32 i=0; i<2; i++)
-	{
+	for (s32 i=0; i<2; i++) {
 		enum LightBank bank = banks[i];
 
 		// Get the brightest neighbour node and propagate light from it
 		v3s16 n2p = getBrightestNeighbour(bank, p);
-		try{
-			MapNode n2 = getNode(n2p);
+		bool pos_ok;
+		MapNode n2 = getNodeNoEx(n2p,&pos_ok);
+		if (pos_ok)
 			lightNeighbors(bank, n2p, modified_blocks);
-		}
-		catch(InvalidPositionException &e)
-		{
-		}
 	}
 
 	/*
@@ -1272,22 +1100,14 @@ void Map::removeNodeAndUpdate(v3s16 p,
 		v3s16(-1,0,0), // left
 		v3s16(0,0,0), // self
 	};
-	for(u16 i=0; i<7; i++)
-	{
-		try
-		{
+	for (u16 i=0; i<7; i++) {
+		bool pos_ok;
 
 		v3s16 p2 = p + dirs[i];
 
-		MapNode n2 = getNode(p2);
-		if(content_liquid(n2.getContent()) || n2.getContent() == CONTENT_AIR)
-		{
+		MapNode n2 = getNodeNoEx(p2,&pos_ok);
+		if (pos_ok && (content_liquid(n2.getContent()) || n2.getContent() == CONTENT_AIR))
 			m_transforming_liquid.push_back(p2);
-		}
-
-		}catch(InvalidPositionException &e)
-		{
-		}
 	}
 }
 
@@ -4370,10 +4190,9 @@ void MapVoxelManipulator::emerge(VoxelArea a, s32 caller_id)
 	      This will make it interfere less with important stuff if
 		  run on background.
 */
-void MapVoxelManipulator::blitBack
-		(core::map<v3s16, MapBlock*> & modified_blocks)
+void MapVoxelManipulator::blitBack(core::map<v3s16, MapBlock*> & modified_blocks)
 {
-	if(m_area.getExtent() == v3s16(0,0,0))
+	if (m_area.getExtent() == v3s16(0,0,0))
 		return;
 
 	//TimeTaker timer1("blitBack");
@@ -4388,50 +4207,42 @@ void MapVoxelManipulator::blitBack
 	MapBlock *block = NULL;
 	bool block_checked_in_modified = false;
 
-	for(s32 z=m_area.MinEdge.Z; z<=m_area.MaxEdge.Z; z++)
-	for(s32 y=m_area.MinEdge.Y; y<=m_area.MaxEdge.Y; y++)
-	for(s32 x=m_area.MinEdge.X; x<=m_area.MaxEdge.X; x++)
-	{
+	for (s32 z=m_area.MinEdge.Z; z<=m_area.MaxEdge.Z; z++)
+	for (s32 y=m_area.MinEdge.Y; y<=m_area.MaxEdge.Y; y++)
+	for (s32 x=m_area.MinEdge.X; x<=m_area.MaxEdge.X; x++) {
 		v3s16 p(x,y,z);
 
 		u8 f = m_flags[m_area.index(p)];
-		if(f & (VOXELFLAG_NOT_LOADED|VOXELFLAG_INEXISTENT))
+		if (f & (VOXELFLAG_NOT_LOADED|VOXELFLAG_INEXISTENT))
 			continue;
 
 		MapNode &n = m_data[m_area.index(p)];
 
 		v3s16 blockpos = getNodeBlockPos(p);
 
-		try
-		{
-			// Get block
-			if(block == NULL || blockpos != blockpos_last){
-				block = m_map->getBlockNoCreate(blockpos);
-				blockpos_last = blockpos;
-				block_checked_in_modified = false;
-			}
-
-			// Calculate relative position in block
-			v3s16 relpos = p - blockpos * MAP_BLOCKSIZE;
-
-			// Don't continue if nothing has changed here
-			if(block->getNode(relpos) == n)
-				continue;
-
-			//m_map->setNode(m_area.MinEdge + p, n);
-			block->setNode(relpos, n);
-
-			/*
-				Make sure block is in modified_blocks
-			*/
-			if(block_checked_in_modified == false)
-			{
-				modified_blocks[blockpos] = block;
-				block_checked_in_modified = true;
-			}
+		if (block == NULL || blockpos != blockpos_last) {
+			block = m_map->getBlockNoCreate(blockpos);
+			blockpos_last = blockpos;
+			block_checked_in_modified = false;
 		}
-		catch(InvalidPositionException &e)
-		{
+
+		// Calculate relative position in block
+		v3s16 relpos = p - blockpos * MAP_BLOCKSIZE;
+
+		// Don't continue if nothing has changed here
+		bool is_valid_position;
+		if (block->getNode(relpos,&is_valid_position) == n || !is_valid_position)
+			continue;
+
+		//m_map->setNode(m_area.MinEdge + p, n);
+		block->setNode(relpos, n);
+
+		/*
+			Make sure block is in modified_blocks
+		*/
+		if (block_checked_in_modified == false) {
+			modified_blocks[blockpos] = block;
+			block_checked_in_modified = true;
 		}
 	}
 }

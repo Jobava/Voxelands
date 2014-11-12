@@ -173,7 +173,7 @@ public:
 	void setNode(v3s16 p, MapNode & n);
 
 	// Returns a CONTENT_IGNORE node if not found
-	MapNode getNodeNoEx(v3s16 p);
+	MapNode getNodeNoEx(v3s16 p, bool *is_valid_position = NULL);
 
 	void unspreadLight(enum LightBank bank,
 			core::map<v3s16, u8> & from_nodes,

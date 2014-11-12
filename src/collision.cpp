@@ -236,58 +236,54 @@ collisionMoveResult collisionMoveSimple(Map *map,
 		for(s16 z = min_z; z <= max_z; z++)
 		{
 			v3s16 p(x,y,z);
-			try{
-				// Object collides into walkable nodes
-				MapNode n = map->getNode(p);
-				const ContentFeatures &f = content_features(n);
-				if(f.walkable == false)
-					continue;
+			bool pos_ok;
+			// Object collides into walkable nodes
+			MapNode n = map->getNodeNoEx(p,&pos_ok);
+			if (!pos_ok) {
+				// Collide with unloaded nodes
+				aabb3f box = getNodeBox(p, BS);
+				cboxes.push_back(box);
+				is_unloaded.push_back(true);
+				is_step_up.push_back(false);
+				node_positions.push_back(p);
+				is_object.push_back(false);
+				continue;
+			}
+			const ContentFeatures &f = content_features(n);
+			if(f.walkable == false)
+				continue;
 
-				std::vector<aabb3f> nodeboxes = f.getNodeBoxes(n);
+			std::vector<aabb3f> nodeboxes = f.getNodeBoxes(n);
 
 #ifndef SERVER
-				if (f.draw_type == CDT_FENCELIKE || f.draw_type == CDT_WALLLIKE) {
-					static const int boxcheck[4][2] = {
-						{0,2},
-						{0,3},
-						{1,2},
-						{1,3}
-					};
-					int bps = ((nodeboxes.size()-2)/4); // boxes per section
-					u8 np = 1;
-					{
-						aabb3f box = nodeboxes[0];
-						box.MinEdge += v3f(x, y, z)*BS;
-						if (f.jumpable == false)
-							box.MaxEdge.Y = 1.0*BS;
-						box.MaxEdge += v3f(x, y, z)*BS;
-						cboxes.push_back(box);
-						is_unloaded.push_back(false);
-						is_step_up.push_back(false);
-						node_positions.push_back(p);
-						is_object.push_back(false);
-					}
-					for (int k=0; k<8; k++) {
-						if ((n.param2&(np<<k)) == 0)
-							continue;
-						if (k > 3) {
-							for (int j=0; j<2; j++) {
-								for (int i=0; i<bps; i++) {
-									aabb3f box = nodeboxes[i+2+(bps*boxcheck[k%4][j])];
-									box.MinEdge += v3f(x, y, z)*BS;
-									if (f.jumpable == false)
-										box.MaxEdge.Y = 1.0*BS;
-									box.MaxEdge += v3f(x, y, z)*BS;
-									cboxes.push_back(box);
-									is_unloaded.push_back(false);
-									is_step_up.push_back(false);
-									node_positions.push_back(p);
-									is_object.push_back(false);
-								}
-							}
-						}else{
+			if (f.draw_type == CDT_FENCELIKE || f.draw_type == CDT_WALLLIKE) {
+				static const int boxcheck[4][2] = {
+					{0,2},
+					{0,3},
+					{1,2},
+					{1,3}
+				};
+				int bps = ((nodeboxes.size()-2)/4); // boxes per section
+				u8 np = 1;
+				{
+					aabb3f box = nodeboxes[0];
+					box.MinEdge += v3f(x, y, z)*BS;
+					if (f.jumpable == false)
+						box.MaxEdge.Y = 1.0*BS;
+					box.MaxEdge += v3f(x, y, z)*BS;
+					cboxes.push_back(box);
+					is_unloaded.push_back(false);
+					is_step_up.push_back(false);
+					node_positions.push_back(p);
+					is_object.push_back(false);
+				}
+				for (int k=0; k<8; k++) {
+					if ((n.param2&(np<<k)) == 0)
+						continue;
+					if (k > 3) {
+						for (int j=0; j<2; j++) {
 							for (int i=0; i<bps; i++) {
-								aabb3f box = nodeboxes[i+2+(bps*(k%4))];
+								aabb3f box = nodeboxes[i+2+(bps*boxcheck[k%4][j])];
 								box.MinEdge += v3f(x, y, z)*BS;
 								if (f.jumpable == false)
 									box.MaxEdge.Y = 1.0*BS;
@@ -299,38 +295,41 @@ collisionMoveResult collisionMoveSimple(Map *map,
 								is_object.push_back(false);
 							}
 						}
+					}else{
+						for (int i=0; i<bps; i++) {
+							aabb3f box = nodeboxes[i+2+(bps*(k%4))];
+							box.MinEdge += v3f(x, y, z)*BS;
+							if (f.jumpable == false)
+								box.MaxEdge.Y = 1.0*BS;
+							box.MaxEdge += v3f(x, y, z)*BS;
+							cboxes.push_back(box);
+							is_unloaded.push_back(false);
+							is_step_up.push_back(false);
+							node_positions.push_back(p);
+							is_object.push_back(false);
+						}
 					}
-					nodeboxes.clear();
-				}else
-#endif
-				{
-					for(std::vector<aabb3f>::iterator
-					i = nodeboxes.begin();
-					i != nodeboxes.end(); i++)
-					{
-						aabb3f box = *i;
-						box.MinEdge += v3f(x, y, z)*BS;
-						if (f.jumpable == false)
-							box.MaxEdge.Y = 1.0*BS;
-						box.MaxEdge += v3f(x, y, z)*BS;
-						cboxes.push_back(box);
-						is_unloaded.push_back(false);
-						is_step_up.push_back(false);
-						node_positions.push_back(p);
-						is_object.push_back(false);
-					}
-					nodeboxes.clear();
 				}
-			}
-			catch(InvalidPositionException &e)
+				nodeboxes.clear();
+			}else
+#endif
 			{
-				// Collide with unloaded nodes
-				aabb3f box = getNodeBox(p, BS);
-				cboxes.push_back(box);
-				is_unloaded.push_back(true);
-				is_step_up.push_back(false);
-				node_positions.push_back(p);
-				is_object.push_back(false);
+				for(std::vector<aabb3f>::iterator
+				i = nodeboxes.begin();
+				i != nodeboxes.end(); i++)
+				{
+					aabb3f box = *i;
+					box.MinEdge += v3f(x, y, z)*BS;
+					if (f.jumpable == false)
+						box.MaxEdge.Y = 1.0*BS;
+					box.MaxEdge += v3f(x, y, z)*BS;
+					cboxes.push_back(box);
+					is_unloaded.push_back(false);
+					is_step_up.push_back(false);
+					node_positions.push_back(p);
+					is_object.push_back(false);
+				}
+				nodeboxes.clear();
 			}
 		}
 	} // tt2

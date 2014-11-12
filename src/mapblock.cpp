@@ -79,62 +79,31 @@ MapBlock::~MapBlock()
 
 bool MapBlock::isValidPositionParent(v3s16 p)
 {
-	if(isValidPosition(p))
-	{
+	if (isValidPosition(p.X,p.Y,p.Z))
 		return true;
-	}
-	else{
-		return m_parent->isValidPosition(getPosRelative() + p);
-	}
+	return m_parent->isValidPosition(getPosRelative() + p);
 }
 
-MapNode MapBlock::getNodeParent(v3s16 p)
+MapNode MapBlock::getNodeParent(v3s16 p, bool *is_valid_position)
 {
-	if(isValidPosition(p) == false)
-	{
-		return m_parent->getNode(getPosRelative() + p);
+	if (isValidPosition(p.X,p.Y,p.Z) == false)
+		return m_parent->getNodeNoEx(getPosRelative() + p, is_valid_position);
+	if (data == NULL) {
+		if (is_valid_position)
+			*is_valid_position = false;
+		return MapNode(CONTENT_IGNORE);
 	}
-	else
-	{
-		if(data == NULL)
-			throw InvalidPositionException();
-		return data[p.Z*MAP_BLOCKSIZE*MAP_BLOCKSIZE + p.Y*MAP_BLOCKSIZE + p.X];
-	}
+	if (is_valid_position)
+		*is_valid_position = true;
+	return data[p.Z*MAP_BLOCKSIZE*MAP_BLOCKSIZE + p.Y*MAP_BLOCKSIZE + p.X];
 }
 
 void MapBlock::setNodeParent(v3s16 p, MapNode & n)
 {
-	if(isValidPosition(p) == false)
-	{
+	if (isValidPosition(p.X,p.Y,p.Z) == false) {
 		m_parent->setNode(getPosRelative() + p, n);
-	}
-	else
-	{
-		if(data == NULL)
-			throw InvalidPositionException();
+	}else{
 		data[p.Z*MAP_BLOCKSIZE*MAP_BLOCKSIZE + p.Y*MAP_BLOCKSIZE + p.X] = n;
-	}
-}
-
-MapNode MapBlock::getNodeParentNoEx(v3s16 p)
-{
-	if(isValidPosition(p) == false)
-	{
-		try{
-			return m_parent->getNode(getPosRelative() + p);
-		}
-		catch(InvalidPositionException &e)
-		{
-			return MapNode(CONTENT_IGNORE);
-		}
-	}
-	else
-	{
-		if(data == NULL)
-		{
-			return MapNode(CONTENT_IGNORE);
-		}
-		return data[p.Z*MAP_BLOCKSIZE*MAP_BLOCKSIZE + p.Y*MAP_BLOCKSIZE + p.X];
 	}
 }
 
@@ -248,36 +217,27 @@ bool MapBlock::propagateSunlight(core::map<v3s16, bool> & light_sources,
 			bool no_sunlight = false;
 			bool no_top_block = false;
 			// Check if node above block has sunlight
-			try{
-				MapNode n = getNodeParent(v3s16(x, MAP_BLOCKSIZE, z));
-				if(n.getContent() == CONTENT_IGNORE)
-				{
+			bool is_valid_position;
+			MapNode n = getNodeParent(v3s16(x, MAP_BLOCKSIZE, z), &is_valid_position);
+			if (is_valid_position) {
+				if (n.getContent() == CONTENT_IGNORE) {
 					// Trust heuristics
 					no_sunlight = is_underground;
-				}
-				else if(n.getLight(LIGHTBANK_DAY) != LIGHT_SUN)
-				{
+				}else if (n.getLight(LIGHTBANK_DAY) != LIGHT_SUN) {
 					no_sunlight = true;
 				}
-			}
-			catch(InvalidPositionException &e)
-			{
+			}else{
 				no_top_block = true;
 
 				// NOTE: This makes over-ground roofed places sunlighted
 				// Assume sunlight, unless is_underground==true
-				if(is_underground)
-				{
+				if (is_underground) {
 					no_sunlight = true;
-				}
-				else
-				{
-					MapNode n = getNode(v3s16(x, MAP_BLOCKSIZE-1, z));
+				}else{
+					MapNode n = getNodeNoEx(v3s16(x, MAP_BLOCKSIZE-1, z));
 					//if(n.getContent() == CONTENT_WATER || n.getContent() == CONTENT_WATERSOURCE)
-					if(content_features(n).sunlight_propagates == false)
-					{
+					if (content_features(n).sunlight_propagates == false)
 						no_sunlight = true;
-					}
 				}
 				// NOTE: As of now, this just would make everything dark.
 				// No sunlight here
@@ -948,7 +908,7 @@ std::string analyze_block(MapBlock *block)
 		for(s16 x0=0; x0<MAP_BLOCKSIZE; x0++)
 		{
 			v3s16 p(x0,y0,z0);
-			MapNode n = block->getNode(p);
+			MapNode n = block->getNodeNoEx(p);
 			content_t c = n.getContent();
 			if(c == CONTENT_IGNORE)
 				some_ignore = true;

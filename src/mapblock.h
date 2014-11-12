@@ -288,46 +288,43 @@ public:
 		Regular MapNode get-setters
 	*/
 
-	bool isValidPosition(v3s16 p)
+	bool isValidPosition(s16 x, s16 y, s16 z)
 	{
-		if(data == NULL)
+		if (data == NULL)
 			return false;
-		return (p.X >= 0 && p.X < MAP_BLOCKSIZE
-				&& p.Y >= 0 && p.Y < MAP_BLOCKSIZE
-				&& p.Z >= 0 && p.Z < MAP_BLOCKSIZE);
+		return (
+			x >= 0 && x < MAP_BLOCKSIZE
+			&& y >= 0 && y < MAP_BLOCKSIZE
+			&& z >= 0 && z < MAP_BLOCKSIZE
+		);
 	}
 
-	MapNode getNode(s16 x, s16 y, s16 z)
+	MapNode getNode(s16 x, s16 y, s16 z, bool *valid_position)
 	{
-		if(data == NULL)
-			throw InvalidPositionException();
-		if(x < 0 || x >= MAP_BLOCKSIZE) throw InvalidPositionException();
-		if(y < 0 || y >= MAP_BLOCKSIZE) throw InvalidPositionException();
-		if(z < 0 || z >= MAP_BLOCKSIZE) throw InvalidPositionException();
+		*valid_position = isValidPosition(x, y, z);
+		if (!*valid_position)
+			return MapNode(CONTENT_IGNORE);
 		return data[z*MAP_BLOCKSIZE*MAP_BLOCKSIZE + y*MAP_BLOCKSIZE + x];
 	}
 
-	MapNode getNode(v3s16 p)
+	MapNode getNode(v3s16 p, bool *valid_position)
 	{
-		return getNode(p.X, p.Y, p.Z);
+		return getNode(p.X, p.Y, p.Z, valid_position);
 	}
 
 	MapNode getNodeNoEx(v3s16 p)
 	{
-		try{
-			return getNode(p.X, p.Y, p.Z);
-		}catch(InvalidPositionException &e){
+		bool is_valid;
+		MapNode node = getNode(p.X, p.Y, p.Z, &is_valid);
+		if (!is_valid)
 			return MapNode(CONTENT_IGNORE);
-		}
+		return node;
 	}
 
 	void setNode(s16 x, s16 y, s16 z, MapNode & n)
 	{
-		if(data == NULL)
+		if (!isValidPosition(x,y,z))
 			throw InvalidPositionException();
-		if(x < 0 || x >= MAP_BLOCKSIZE) throw InvalidPositionException();
-		if(y < 0 || y >= MAP_BLOCKSIZE) throw InvalidPositionException();
-		if(z < 0 || z >= MAP_BLOCKSIZE) throw InvalidPositionException();
 		data[z*MAP_BLOCKSIZE*MAP_BLOCKSIZE + y*MAP_BLOCKSIZE + x] = n;
 		raiseModified(MOD_STATE_WRITE_NEEDED);
 	}
@@ -339,13 +336,7 @@ public:
 
 	void incNodeTicks(v3s16 p)
 	{
-		if (data == NULL)
-			return;
-		if (p.X < 0 || p.X >= MAP_BLOCKSIZE)
-			return;
-		if (p.Y < 0 || p.Y >= MAP_BLOCKSIZE)
-			return;
-		if (p.Z < 0 || p.Z >= MAP_BLOCKSIZE)
+		if (!isValidPosition(p.X,p.Y,p.Z))
 			return;
 		data[p.Z*MAP_BLOCKSIZE*MAP_BLOCKSIZE + p.Y*MAP_BLOCKSIZE + p.X].envticks++;
 	}
@@ -354,16 +345,17 @@ public:
 		Non-checking variants of the above
 	*/
 
-	MapNode getNodeNoCheck(s16 x, s16 y, s16 z)
+	MapNode getNodeNoCheck(s16 x, s16 y, s16 z, bool *valid_position)
 	{
-		if(data == NULL)
-			throw InvalidPositionException();
+		*valid_position = isValidPosition(x, y, z);
+		if (!*valid_position)
+			return MapNode(CONTENT_IGNORE);
 		return data[z*MAP_BLOCKSIZE*MAP_BLOCKSIZE + y*MAP_BLOCKSIZE + x];
 	}
 
-	MapNode getNodeNoCheck(v3s16 p)
+	MapNode getNodeNoCheck(v3s16 p, bool *valid_position)
 	{
-		return getNodeNoCheck(p.X, p.Y, p.Z);
+		return getNodeNoCheck(p.X, p.Y, p.Z, valid_position);
 	}
 
 	void setNodeNoCheck(s16 x, s16 y, s16 z, MapNode & n)
@@ -384,9 +376,8 @@ public:
 		is not valid on this MapBlock.
 	*/
 	bool isValidPositionParent(v3s16 p);
-	MapNode getNodeParent(v3s16 p);
+	MapNode getNodeParent(v3s16 p, bool *is_valid_position = NULL);
 	void setNodeParent(v3s16 p, MapNode & n);
-	MapNode getNodeParentNoEx(v3s16 p);
 
 	void drawbox(s16 x0, s16 y0, s16 z0, s16 w, s16 h, s16 d, MapNode node)
 	{
@@ -414,8 +405,8 @@ public:
 	u8 getFaceLight2(u32 daynight_ratio, v3s16 p, v3s16 face_dir)
 	{
 		return getFaceLight(daynight_ratio,
-				getNodeParentNoEx(p),
-				getNodeParentNoEx(p + face_dir),
+				getNodeParent(p),
+				getNodeParent(p + face_dir),
 				face_dir);
 	}
 

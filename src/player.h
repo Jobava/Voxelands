@@ -86,9 +86,8 @@ public:
 	v3f getEyeOffset()
 	{
 		// This is at the height of the eyes of the current figure
-		// return v3f(0, BS+BS/2, 0);
-		// This is more like in minecraft
-		return v3f(0,BS+(5*BS)/8,0);
+		v3f s = getScale();
+		return v3f(0,(BS+((5*BS)/8))*s.Y,0);
 	}
 
 	v3f getEyePosition()
