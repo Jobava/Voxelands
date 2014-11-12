@@ -473,8 +473,8 @@ void content_toolitem_init()
 	f->name = "stone_spear";
 	f->description = wgettext("Stone Spear");
 	f->type = TT_SPEAR;
-	f->hardness = 150.;
-	f->dig_time = 0.2;
+	f->hardness = 100.;
+	f->dig_time = 1.5;
 	crafting::setSpearRecipe(CONTENT_ROUGHSTONE,CONTENT_TOOLITEM_STONESPEAR);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -486,8 +486,8 @@ void content_toolitem_init()
 	f->name = "flint_spear";
 	f->description = wgettext("Flint Spear");
 	f->type = TT_SPEAR;
-	f->hardness = 250.;
-	f->dig_time = 0.17;
+	f->hardness = 200.;
+	f->dig_time = 1.0;
 	crafting::setSpearRecipe(CONTENT_CRAFTITEM_FLINT,CONTENT_TOOLITEM_FLINTSPEAR);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -499,8 +499,8 @@ void content_toolitem_init()
 	f->name = "steel_spear";
 	f->description = wgettext("Steel Spear");
 	f->type = TT_SPEAR;
-	f->hardness = 400.;
-	f->dig_time = 0.15;
+	f->hardness = 300.;
+	f->dig_time = 0.5;
 	crafting::setSpearRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_STEELSPEAR);
 	lists::add("craftguide",i);
 	lists::add("creative",i);

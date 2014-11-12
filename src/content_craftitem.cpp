@@ -236,7 +236,7 @@ void content_craftitem_init()
 	f->texture = "cooked_rat.png";
 	f->name = "cooked_rat";
 	f->description = wgettext("Cooked Rat");
-	f->cook_result = "CraftItem ash 1";
+	f->cook_result = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_ASH)+" 1";
 	f->edible = 6;
 	lists::add("creative",i);
 	lists::add("cooking",i);
@@ -498,7 +498,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_MUSH;
 	f->texture = "mush.png";
 	f->name = "mush";
-	f->cook_result = "CraftItem ash 1";
+	f->cook_result = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_ASH)+" 1";
 	f->description = wgettext("Mush");
 	f->edible = -1;
 	lists::add("creative",i);
@@ -719,7 +719,7 @@ void content_craftitem_init()
 	f->texture = "cooked_fish.png";
 	f->name = "cooked_fish";
 	f->description = wgettext("Cooked Fish");
-	f->cook_result = "CraftItem ash 1";
+	f->cook_result = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_ASH)+" 1";
 	f->edible = 6;
 	lists::add("creative",i);
 	lists::add("cooking",i);
@@ -740,7 +740,7 @@ void content_craftitem_init()
 	f->texture = "cooked_meat.png";
 	f->name = "cooked_meat";
 	f->description = wgettext("Cooked Meat");
-	f->cook_result = "CraftItem ash 1";
+	f->cook_result = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_ASH)+" 1";
 	f->edible = 6;
 	lists::add("creative",i);
 	lists::add("cooking",i);
