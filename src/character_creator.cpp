@@ -816,7 +816,10 @@ std::string GUICharDefMenu::getPlayerSkin()
 	tex += std::string("^clothes_player_pants_canvas_")+m_parts["pants"]+".png";
 	tex += std::string("^clothes_player_tshirt_cotton_")+m_parts["shirt"]+".png";
 	tex += std::string("^skins")+DIR_DELIM+"hair_"+m_parts["hair"]+"_"+m_parts["hairtone"]+"_"+m_parts["gender"]+".png";
-	tex += std::string("^clothes_player_shoes_")+m_parts["shoes"]+".png";
+	std::string c = "brown";
+	if (m_parts["shoes"] == "canvas")
+		c = "black";
+	tex += std::string("^clothes_player_shoes_")+m_parts["shoes"]+"_"+c+".png";
 
 	return tex;
 }
@@ -878,7 +881,10 @@ void GUICharDefMenu::fetchPlayerSkin()
 		m_parts["shirt"] = "green";
 	if (getPath("texture",std::string("clothes_player_pants_canvas_")+m_parts["pants"]+".png",true) == "")
 		m_parts["pants"] = "blue";
-	if (getPath("texture",std::string("clothes_player_shoes_")+m_parts["shoes"]+".png",true) == "")
+	std::string c = "brown";
+	if (m_parts["shoes"] == "canvas")
+		c = "black";
+	if (getPath("texture",std::string("clothes_player_shoes_")+m_parts["shoes"]+"_"+c+".png",true) == "")
 		m_parts["shoes"] = "leather";
 }
 
