@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: minetest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-12 19:10+1000\n"
+"POT-Creation-Date: 2014-11-13 23:58+1000\n"
 "PO-Revision-Date: 2011-07-24 18:56+0200\n"
 "Last-Translator: Giuseppe Bilotta <giuseppe.bilotta@gmail.com>\n"
 "Language-Team: Italian\n"
@@ -214,15 +214,15 @@ msgstr ""
 msgid "Black Pants"
 msgstr ""
 
-#: src/character_creator.cpp:114 src/content_clothesitem.cpp:1768
+#: src/character_creator.cpp:114 src/content_clothesitem.cpp:1655
 msgid "Leather Shoes"
 msgstr ""
 
-#: src/character_creator.cpp:115 src/content_clothesitem.cpp:2530
+#: src/character_creator.cpp:115 src/content_clothesitem.cpp:2417
 msgid "Fur Shoes"
 msgstr ""
 
-#: src/character_creator.cpp:116 src/content_clothesitem.cpp:1034
+#: src/character_creator.cpp:116 src/content_clothesitem.cpp:921
 msgid "Canvas Shoes"
 msgstr ""
 
@@ -353,738 +353,706 @@ msgid "Black Cotton Shirt"
 msgstr ""
 
 #: src/content_clothesitem.cpp:356
-msgid "Cotton Pants"
-msgstr ""
-
-#: src/content_clothesitem.cpp:370
-msgid "Blue Cotton Pants"
-msgstr ""
-
-#: src/content_clothesitem.cpp:384
-msgid "Green Cotton Pants"
-msgstr ""
-
-#: src/content_clothesitem.cpp:398
-msgid "Orange Cotton Pants"
-msgstr ""
-
-#: src/content_clothesitem.cpp:412
-msgid "Purple Cotton Pants"
-msgstr ""
-
-#: src/content_clothesitem.cpp:426
-msgid "Red Cotton Pants"
-msgstr ""
-
-#: src/content_clothesitem.cpp:440
-msgid "Yellow Cotton Pants"
-msgstr ""
-
-#: src/content_clothesitem.cpp:454
-msgid "Black Cotton Pants"
-msgstr ""
-
-#: src/content_clothesitem.cpp:469
 msgid "Cotton Shorts"
 msgstr ""
 
-#: src/content_clothesitem.cpp:483
+#: src/content_clothesitem.cpp:370
 msgid "Blue Cotton Shorts"
 msgstr ""
 
-#: src/content_clothesitem.cpp:497
+#: src/content_clothesitem.cpp:384
 msgid "Green Cotton Shorts"
 msgstr ""
 
-#: src/content_clothesitem.cpp:511
+#: src/content_clothesitem.cpp:398
 msgid "Orange Cotton Shorts"
 msgstr ""
 
-#: src/content_clothesitem.cpp:525
+#: src/content_clothesitem.cpp:412
 msgid "Purple Cotton Shorts"
 msgstr ""
 
-#: src/content_clothesitem.cpp:539
+#: src/content_clothesitem.cpp:426
 msgid "Red Cotton Shorts"
 msgstr ""
 
-#: src/content_clothesitem.cpp:553
+#: src/content_clothesitem.cpp:440
 msgid "Yellow Cotton Shorts"
 msgstr ""
 
-#: src/content_clothesitem.cpp:567
+#: src/content_clothesitem.cpp:454
 msgid "Black Cotton Shorts"
 msgstr ""
 
-#: src/content_clothesitem.cpp:582
+#: src/content_clothesitem.cpp:469
 msgid "Cotton Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:596
+#: src/content_clothesitem.cpp:483
 msgid "Blue Cotton Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:610
+#: src/content_clothesitem.cpp:497
 msgid "Green Cotton Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:624
+#: src/content_clothesitem.cpp:511
 msgid "Orange Cotton Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:638
+#: src/content_clothesitem.cpp:525
 msgid "Purple Cotton Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:652
+#: src/content_clothesitem.cpp:539
 msgid "Red Cotton Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:666
+#: src/content_clothesitem.cpp:553
 msgid "Yellow Cotton Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:680
+#: src/content_clothesitem.cpp:567
 msgid "Black Cotton Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:695
+#: src/content_clothesitem.cpp:582
 msgid "Cotton Tie"
 msgstr ""
 
-#: src/content_clothesitem.cpp:709
+#: src/content_clothesitem.cpp:596
 msgid "Blue Cotton Tie"
 msgstr ""
 
-#: src/content_clothesitem.cpp:723
+#: src/content_clothesitem.cpp:610
 msgid "Green Cotton Tie"
 msgstr ""
 
-#: src/content_clothesitem.cpp:737
+#: src/content_clothesitem.cpp:624
 msgid "Orange Cotton Tie"
 msgstr ""
 
-#: src/content_clothesitem.cpp:751
+#: src/content_clothesitem.cpp:638
 msgid "Purple Cotton Tie"
 msgstr ""
 
-#: src/content_clothesitem.cpp:765
+#: src/content_clothesitem.cpp:652
 msgid "Red Cotton Tie"
 msgstr ""
 
-#: src/content_clothesitem.cpp:779
+#: src/content_clothesitem.cpp:666
 msgid "Yellow Cotton Tie"
 msgstr ""
 
-#: src/content_clothesitem.cpp:793
+#: src/content_clothesitem.cpp:680
 msgid "Black Cotton Tie"
 msgstr ""
 
-#: src/content_clothesitem.cpp:808
+#: src/content_clothesitem.cpp:695
 msgid "Canvas Shirt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:822
+#: src/content_clothesitem.cpp:709
 msgid "Blue Canvas Shirt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:836
+#: src/content_clothesitem.cpp:723
 msgid "Green Canvas Shirt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:850
+#: src/content_clothesitem.cpp:737
 msgid "Orange Canvas Shirt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:864
+#: src/content_clothesitem.cpp:751
 msgid "Purple Canvas Shirt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:878
+#: src/content_clothesitem.cpp:765
 msgid "Red Canvas Shirt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:892
+#: src/content_clothesitem.cpp:779
 msgid "Yellow Canvas Shirt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:906
+#: src/content_clothesitem.cpp:793
 msgid "Black Canvas Shirt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:921
+#: src/content_clothesitem.cpp:808
 msgid "Canvas Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:935
+#: src/content_clothesitem.cpp:822
 msgid "Blue Canvas Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:949
+#: src/content_clothesitem.cpp:836
 msgid "Green Canvas Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:963
+#: src/content_clothesitem.cpp:850
 msgid "Orange Canvas Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:977
+#: src/content_clothesitem.cpp:864
 msgid "Purple Canvas Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:991
+#: src/content_clothesitem.cpp:878
 msgid "Red Canvas Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1005
+#: src/content_clothesitem.cpp:892
 msgid "Yellow Canvas Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1019
+#: src/content_clothesitem.cpp:906
 msgid "Black Canvas Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1048
+#: src/content_clothesitem.cpp:935
 msgid "Blue Canvas Shoes"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1062
+#: src/content_clothesitem.cpp:949
 msgid "Green Canvas Shoes"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1076
+#: src/content_clothesitem.cpp:963
 msgid "Orange Canvas Shoes"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1090
+#: src/content_clothesitem.cpp:977
 msgid "Purple Canvas Shoes"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1104
+#: src/content_clothesitem.cpp:991
 msgid "Red Canvas Shoes"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1118
+#: src/content_clothesitem.cpp:1005
 msgid "Yellow Canvas Shoes"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1132
+#: src/content_clothesitem.cpp:1019
 msgid "Black Canvas Shoes"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1147
+#: src/content_clothesitem.cpp:1034
 msgid "Canvas Belt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1161
+#: src/content_clothesitem.cpp:1048
 msgid "Blue Canvas Belt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1175
+#: src/content_clothesitem.cpp:1062
 msgid "Green Canvas Belt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1189
+#: src/content_clothesitem.cpp:1076
 msgid "Orange Canvas Belt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1203
+#: src/content_clothesitem.cpp:1090
 msgid "Purple Canvas Belt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1217
+#: src/content_clothesitem.cpp:1104
 msgid "Red Canvas Belt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1231
+#: src/content_clothesitem.cpp:1118
 msgid "Yellow Canvas Belt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1245
+#: src/content_clothesitem.cpp:1132
 msgid "Black Canvas Belt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1260
-msgid "Leather Shirt"
+#: src/content_clothesitem.cpp:1147
+msgid "Leather Jacket"
+msgstr ""
+
+#: src/content_clothesitem.cpp:1161
+msgid "White Leather Jacket"
+msgstr ""
+
+#: src/content_clothesitem.cpp:1175
+msgid "Blue Leather Jacket"
+msgstr ""
+
+#: src/content_clothesitem.cpp:1189
+msgid "Green Leather Jacket"
+msgstr ""
+
+#: src/content_clothesitem.cpp:1203
+msgid "Orange Leather Jacket"
+msgstr ""
+
+#: src/content_clothesitem.cpp:1217
+msgid "Purple Leather Jacket"
+msgstr ""
+
+#: src/content_clothesitem.cpp:1231
+msgid "Red Leather Jacket"
+msgstr ""
+
+#: src/content_clothesitem.cpp:1245
+msgid "Yellow Leather Jacket"
+msgstr ""
+
+#: src/content_clothesitem.cpp:1259
+msgid "Black Leather Jacket"
 msgstr ""
 
 #: src/content_clothesitem.cpp:1274
-msgid "White Leather Shirt"
-msgstr ""
-
-#: src/content_clothesitem.cpp:1288
-msgid "Blue Leather Shirt"
-msgstr ""
-
-#: src/content_clothesitem.cpp:1302
-msgid "Green Leather Shirt"
-msgstr ""
-
-#: src/content_clothesitem.cpp:1316
-msgid "Orange Leather Shirt"
-msgstr ""
-
-#: src/content_clothesitem.cpp:1330
-msgid "Purple Leather Shirt"
-msgstr ""
-
-#: src/content_clothesitem.cpp:1344
-msgid "Red Leather Shirt"
-msgstr ""
-
-#: src/content_clothesitem.cpp:1358
-msgid "Yellow Leather Shirt"
-msgstr ""
-
-#: src/content_clothesitem.cpp:1372
-msgid "Black Leather Shirt"
-msgstr ""
-
-#: src/content_clothesitem.cpp:1387
 msgid "Leather Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1401
+#: src/content_clothesitem.cpp:1288
 msgid "White Leather Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1415
+#: src/content_clothesitem.cpp:1302
 msgid "Blue Leather Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1429
+#: src/content_clothesitem.cpp:1316
 msgid "Green Leather Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1443
+#: src/content_clothesitem.cpp:1330
 msgid "Orange Leather Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1457
+#: src/content_clothesitem.cpp:1344
 msgid "Purple Leather Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1471
+#: src/content_clothesitem.cpp:1358
 msgid "Red Leather Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1485
+#: src/content_clothesitem.cpp:1372
 msgid "Yellow Leather Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1499
+#: src/content_clothesitem.cpp:1386
 msgid "Black Leather Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1514
+#: src/content_clothesitem.cpp:1401
 msgid "Leather Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1528
+#: src/content_clothesitem.cpp:1415
 msgid "White Leather Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1542
+#: src/content_clothesitem.cpp:1429
 msgid "Blue Leather Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1556
+#: src/content_clothesitem.cpp:1443
 msgid "Green Leather Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1570
+#: src/content_clothesitem.cpp:1457
 msgid "Orange Leather Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1584
+#: src/content_clothesitem.cpp:1471
 msgid "Purple Leather Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1598
+#: src/content_clothesitem.cpp:1485
 msgid "Red Leather Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1612
+#: src/content_clothesitem.cpp:1499
 msgid "Yellow Leather Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1626
+#: src/content_clothesitem.cpp:1513
 msgid "Black Leather Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1641
+#: src/content_clothesitem.cpp:1528
 msgid "Leather Helmet"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1655
+#: src/content_clothesitem.cpp:1542
 msgid "White Leather Helmet"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1669
+#: src/content_clothesitem.cpp:1556
 msgid "Blue Leather Helmet"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1683
+#: src/content_clothesitem.cpp:1570
 msgid "Green Leather Helmet"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1697
+#: src/content_clothesitem.cpp:1584
 msgid "Orange Leather Helmet"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1711
+#: src/content_clothesitem.cpp:1598
 msgid "Purple Leather Helmet"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1725
+#: src/content_clothesitem.cpp:1612
 msgid "Red Leather Helmet"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1739
+#: src/content_clothesitem.cpp:1626
 msgid "Yellow Leather Helmet"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1753
+#: src/content_clothesitem.cpp:1640
 msgid "Black Leather Helmet"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1782
+#: src/content_clothesitem.cpp:1669
 msgid "White Leather Shoes"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1796
+#: src/content_clothesitem.cpp:1683
 msgid "Blue Leather Shoes"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1810
+#: src/content_clothesitem.cpp:1697
 msgid "Green Leather Shoes"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1824
+#: src/content_clothesitem.cpp:1711
 msgid "Orange Leather Shoes"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1838
+#: src/content_clothesitem.cpp:1725
 msgid "Purple Leather Shoes"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1852
+#: src/content_clothesitem.cpp:1739
 msgid "Red Leather Shoes"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1866
+#: src/content_clothesitem.cpp:1753
 msgid "Yellow Leather Shoes"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1880
+#: src/content_clothesitem.cpp:1767
 msgid "Black Leather Shoes"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1895
+#: src/content_clothesitem.cpp:1782
 msgid "Leather Boots"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1909
+#: src/content_clothesitem.cpp:1796
 msgid "White Leather Boots"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1923
+#: src/content_clothesitem.cpp:1810
 msgid "Blue Leather Boots"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1937
+#: src/content_clothesitem.cpp:1824
 msgid "Green Leather Boots"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1951
+#: src/content_clothesitem.cpp:1838
 msgid "Orange Leather Boots"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1965
+#: src/content_clothesitem.cpp:1852
 msgid "Purple Leather Boots"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1979
+#: src/content_clothesitem.cpp:1866
 msgid "Red Leather Boots"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1993
+#: src/content_clothesitem.cpp:1880
 msgid "Yellow Leather Boots"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2007
+#: src/content_clothesitem.cpp:1894
 msgid "Black Leather Boots"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2022
+#: src/content_clothesitem.cpp:1909
 msgid "Leather Belt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2036
+#: src/content_clothesitem.cpp:1923
 msgid "White Leather Belt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2050
+#: src/content_clothesitem.cpp:1937
 msgid "Blue Leather Belt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2064
+#: src/content_clothesitem.cpp:1951
 msgid "Green Leather Belt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2078
+#: src/content_clothesitem.cpp:1965
 msgid "Orange Leather Belt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2092
+#: src/content_clothesitem.cpp:1979
 msgid "Purple Leather Belt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2106
+#: src/content_clothesitem.cpp:1993
 msgid "Red Leather Belt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2120
+#: src/content_clothesitem.cpp:2007
 msgid "Yellow Leather Belt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2134
+#: src/content_clothesitem.cpp:2021
 msgid "Black Leather Belt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2149
-msgid "Fur Shirt"
+#: src/content_clothesitem.cpp:2036
+msgid "Fur Coat"
+msgstr ""
+
+#: src/content_clothesitem.cpp:2050
+msgid "White Fur Coat"
+msgstr ""
+
+#: src/content_clothesitem.cpp:2064
+msgid "Blue Fur Coat"
+msgstr ""
+
+#: src/content_clothesitem.cpp:2078
+msgid "Green Fur Coat"
+msgstr ""
+
+#: src/content_clothesitem.cpp:2092
+msgid "Orange Fur Coat"
+msgstr ""
+
+#: src/content_clothesitem.cpp:2106
+msgid "Purple Fur Coat"
+msgstr ""
+
+#: src/content_clothesitem.cpp:2120
+msgid "Red Fur Coat"
+msgstr ""
+
+#: src/content_clothesitem.cpp:2134
+msgid "Yellow Fur Coat"
+msgstr ""
+
+#: src/content_clothesitem.cpp:2148
+msgid "Black Fur Coat"
 msgstr ""
 
 #: src/content_clothesitem.cpp:2163
-msgid "White Fur Shirt"
-msgstr ""
-
-#: src/content_clothesitem.cpp:2177
-msgid "Blue Fur Shirt"
-msgstr ""
-
-#: src/content_clothesitem.cpp:2191
-msgid "Green Fur Shirt"
-msgstr ""
-
-#: src/content_clothesitem.cpp:2205
-msgid "Orange Fur Shirt"
-msgstr ""
-
-#: src/content_clothesitem.cpp:2219
-msgid "Purple Fur Shirt"
-msgstr ""
-
-#: src/content_clothesitem.cpp:2233
-msgid "Red Fur Shirt"
-msgstr ""
-
-#: src/content_clothesitem.cpp:2247
-msgid "Yellow Fur Shirt"
-msgstr ""
-
-#: src/content_clothesitem.cpp:2261
-msgid "Black Fur Shirt"
-msgstr ""
-
-#: src/content_clothesitem.cpp:2276
 msgid "Fur Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2290
+#: src/content_clothesitem.cpp:2177
 msgid "White Fur Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2304
+#: src/content_clothesitem.cpp:2191
 msgid "Blue Fur Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2318
+#: src/content_clothesitem.cpp:2205
 msgid "Green Fur Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2332
+#: src/content_clothesitem.cpp:2219
 msgid "Orange Fur Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2346
+#: src/content_clothesitem.cpp:2233
 msgid "Purple Fur Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2360
+#: src/content_clothesitem.cpp:2247
 msgid "Red Fur Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2374
+#: src/content_clothesitem.cpp:2261
 msgid "Yellow Fur Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2388
+#: src/content_clothesitem.cpp:2275
 msgid "Black Fur Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2403
+#: src/content_clothesitem.cpp:2290
 msgid "Fur Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2417
+#: src/content_clothesitem.cpp:2304
 msgid "White Fur Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2431
+#: src/content_clothesitem.cpp:2318
 msgid "Blue Fur Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2445
+#: src/content_clothesitem.cpp:2332
 msgid "Green Fur Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2459
+#: src/content_clothesitem.cpp:2346
 msgid "Orange Fur Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2473
+#: src/content_clothesitem.cpp:2360
 msgid "Purple Fur Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2487
+#: src/content_clothesitem.cpp:2374
 msgid "Red Fur Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2501
+#: src/content_clothesitem.cpp:2388
 msgid "Yellow Fur Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2515
+#: src/content_clothesitem.cpp:2402
 msgid "Black Fur Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2544
+#: src/content_clothesitem.cpp:2431
 msgid "White Fur Shoes"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2558
+#: src/content_clothesitem.cpp:2445
 msgid "Blue Fur Shoes"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2572
+#: src/content_clothesitem.cpp:2459
 msgid "Green Fur Shoes"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2586
+#: src/content_clothesitem.cpp:2473
 msgid "Orange Fur Shoes"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2600
+#: src/content_clothesitem.cpp:2487
 msgid "Purple Fur Shoes"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2614
+#: src/content_clothesitem.cpp:2501
 msgid "Red Fur Shoes"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2628
+#: src/content_clothesitem.cpp:2515
 msgid "Yellow Fur Shoes"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2642
+#: src/content_clothesitem.cpp:2529
 msgid "Black Fur Shoes"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2657
+#: src/content_clothesitem.cpp:2544
 msgid "Fur Boots"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2671
+#: src/content_clothesitem.cpp:2558
 msgid "White Fur Boots"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2685
+#: src/content_clothesitem.cpp:2572
 msgid "Blue Fur Boots"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2699
+#: src/content_clothesitem.cpp:2586
 msgid "Green Fur Boots"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2713
+#: src/content_clothesitem.cpp:2600
 msgid "Orange Fur Boots"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2727
+#: src/content_clothesitem.cpp:2614
 msgid "Purple Fur Boots"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2741
+#: src/content_clothesitem.cpp:2628
 msgid "Red Fur Boots"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2755
+#: src/content_clothesitem.cpp:2642
 msgid "Yellow Fur Boots"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2769
+#: src/content_clothesitem.cpp:2656
 msgid "Black Fur Boots"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2784
+#: src/content_clothesitem.cpp:2671
 msgid "Leather Necklace"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2806
+#: src/content_clothesitem.cpp:2693
 msgid "Gold Medallion"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2820
+#: src/content_clothesitem.cpp:2707
 msgid "Copper Medallion"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2834
+#: src/content_clothesitem.cpp:2721
 msgid "Silver Medallion"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2848
+#: src/content_clothesitem.cpp:2735
 msgid "Tin Medallion"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2862
+#: src/content_clothesitem.cpp:2749
 msgid "Iron Medallion"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2876
+#: src/content_clothesitem.cpp:2763
 msgid "Quartz Medallion"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2891
+#: src/content_clothesitem.cpp:2778
 msgid "Steel Helmet"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2905
+#: src/content_clothesitem.cpp:2792
 msgid "Steel Chest Armour"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2919
+#: src/content_clothesitem.cpp:2806
 msgid "Steel Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2933
+#: src/content_clothesitem.cpp:2820
 msgid "Steel Boots"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2947
+#: src/content_clothesitem.cpp:2834
 msgid "Copper Helmet"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2961
+#: src/content_clothesitem.cpp:2848
 msgid "Copper Chest Armour"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2975
+#: src/content_clothesitem.cpp:2862
 msgid "Copper Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2989
+#: src/content_clothesitem.cpp:2876
 msgid "Copper Boots"
 msgstr ""
 

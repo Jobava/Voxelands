@@ -346,119 +346,6 @@ void content_clothesitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	// cotton pants
-	i = CONTENT_CLOTHESITEM_COTTON_PANTS;
-	f = &g_content_clothesitem_features[i];
-	f->content = i;
-	f->type = CT_PANTS;
-	f->texture = "clothes_pants_cotton.png";
-	f->overlay_texture = "clothes_player_pants_cotton.png";
-	f->description = wgettext("Cotton Pants");
-	f->armour = 0.0;
-	f->warmth = 0.0;
-	f->vacuum = 0.0;
-	crafting::setPantsRecipe(CONTENT_CRAFTITEM_COTTON_SHEET,i);
-	lists::add("craftguide",i);
-	lists::add("creative",i);
-
-	i = CONTENT_CLOTHESITEM_COTTON_PANTS_BLUE;
-	f = &g_content_clothesitem_features[i];
-	f->content = i;
-	f->type = CT_PANTS;
-	f->texture = "clothes_pants_cotton_blue.png";
-	f->overlay_texture = "clothes_player_pants_cotton_blue.png";
-	f->description = wgettext("Blue Cotton Pants");
-	f->armour = 0.0;
-	f->warmth = 0.0;
-	f->vacuum = 0.0;
-	crafting::setPantsRecipe(CONTENT_CRAFTITEM_COTTON_SHEET_BLUE,i);
-	lists::add("craftguide",i);
-	lists::add("creative",i);
-
-	i = CONTENT_CLOTHESITEM_COTTON_PANTS_GREEN;
-	f = &g_content_clothesitem_features[i];
-	f->content = i;
-	f->type = CT_PANTS;
-	f->texture = "clothes_pants_cotton_green.png";
-	f->overlay_texture = "clothes_player_pants_cotton_green.png";
-	f->description = wgettext("Green Cotton Pants");
-	f->armour = 0.0;
-	f->warmth = 0.0;
-	f->vacuum = 0.0;
-	crafting::setPantsRecipe(CONTENT_CRAFTITEM_COTTON_SHEET_GREEN,i);
-	lists::add("craftguide",i);
-	lists::add("creative",i);
-
-	i = CONTENT_CLOTHESITEM_COTTON_PANTS_ORANGE;
-	f = &g_content_clothesitem_features[i];
-	f->content = i;
-	f->type = CT_PANTS;
-	f->texture = "clothes_pants_cotton_orange.png";
-	f->overlay_texture = "clothes_player_pants_cotton_orange.png";
-	f->description = wgettext("Orange Cotton Pants");
-	f->armour = 0.0;
-	f->warmth = 0.0;
-	f->vacuum = 0.0;
-	crafting::setPantsRecipe(CONTENT_CRAFTITEM_COTTON_SHEET_ORANGE,i);
-	lists::add("craftguide",i);
-	lists::add("creative",i);
-
-	i = CONTENT_CLOTHESITEM_COTTON_PANTS_PURPLE;
-	f = &g_content_clothesitem_features[i];
-	f->content = i;
-	f->type = CT_PANTS;
-	f->texture = "clothes_pants_cotton_purple.png";
-	f->overlay_texture = "clothes_player_pants_cotton_purple.png";
-	f->description = wgettext("Purple Cotton Pants");
-	f->armour = 0.0;
-	f->warmth = 0.0;
-	f->vacuum = 0.0;
-	crafting::setPantsRecipe(CONTENT_CRAFTITEM_COTTON_SHEET_PURPLE,i);
-	lists::add("craftguide",i);
-	lists::add("creative",i);
-
-	i = CONTENT_CLOTHESITEM_COTTON_PANTS_RED;
-	f = &g_content_clothesitem_features[i];
-	f->content = i;
-	f->type = CT_PANTS;
-	f->texture = "clothes_pants_cotton_red.png";
-	f->overlay_texture = "clothes_player_pants_cotton_red.png";
-	f->description = wgettext("Red Cotton Pants");
-	f->armour = 0.0;
-	f->warmth = 0.0;
-	f->vacuum = 0.0;
-	crafting::setPantsRecipe(CONTENT_CRAFTITEM_COTTON_SHEET_RED,i);
-	lists::add("craftguide",i);
-	lists::add("creative",i);
-
-	i = CONTENT_CLOTHESITEM_COTTON_PANTS_YELLOW;
-	f = &g_content_clothesitem_features[i];
-	f->content = i;
-	f->type = CT_PANTS;
-	f->texture = "clothes_pants_cotton_yellow.png";
-	f->overlay_texture = "clothes_player_pants_cotton_yellow.png";
-	f->description = wgettext("Yellow Cotton Pants");
-	f->armour = 0.0;
-	f->warmth = 0.0;
-	f->vacuum = 0.0;
-	crafting::setPantsRecipe(CONTENT_CRAFTITEM_COTTON_SHEET_YELLOW,i);
-	lists::add("craftguide",i);
-	lists::add("creative",i);
-
-	i = CONTENT_CLOTHESITEM_COTTON_PANTS_BLACK;
-	f = &g_content_clothesitem_features[i];
-	f->content = i;
-	f->type = CT_PANTS;
-	f->texture = "clothes_pants_cotton_black.png";
-	f->overlay_texture = "clothes_player_pants_cotton_black.png";
-	f->description = wgettext("Black Cotton Pants");
-	f->armour = 0.0;
-	f->warmth = 0.0;
-	f->vacuum = 0.0;
-	crafting::setPantsRecipe(CONTENT_CRAFTITEM_COTTON_SHEET_BLACK,i);
-	lists::add("craftguide",i);
-	lists::add("creative",i);
-
 	// cotton shorts
 	i = CONTENT_CLOTHESITEM_COTTON_SHORTS;
 	f = &g_content_clothesitem_features[i];
@@ -1251,13 +1138,13 @@ void content_clothesitem_init()
 	lists::add("creative",i);
 
 	// leather shirts
-	i = CONTENT_CLOTHESITEM_LEATHER_SHIRT;
+	i = CONTENT_CLOTHESITEM_LEATHER_JACKET;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
-	f->type = CT_SHIRT;
-	f->texture = "clothes_shirt_leather.png";
-	f->overlay_texture = "clothes_player_shirt_leather.png";
-	f->description = wgettext("Leather Shirt");
+	f->type = CT_JACKET;
+	f->texture = "clothes_jacket_leather.png";
+	f->overlay_texture = "clothes_player_jacket_leather.png";
+	f->description = wgettext("Leather Jacket");
 	f->armour = 0.0;
 	f->warmth = 0.0;
 	f->vacuum = 0.0;
@@ -1265,13 +1152,13 @@ void content_clothesitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = CONTENT_CLOTHESITEM_LEATHER_SHIRT_WHITE;
+	i = CONTENT_CLOTHESITEM_LEATHER_JACKET_WHITE;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
-	f->type = CT_SHIRT;
-	f->texture = "clothes_shirt_leather_white.png";
-	f->overlay_texture = "clothes_player_shirt_leather_white.png";
-	f->description = wgettext("White Leather Shirt");
+	f->type = CT_JACKET;
+	f->texture = "clothes_jacket_leather_white.png";
+	f->overlay_texture = "clothes_player_jacket_leather_white.png";
+	f->description = wgettext("White Leather Jacket");
 	f->armour = 0.0;
 	f->warmth = 0.0;
 	f->vacuum = 0.0;
@@ -1279,13 +1166,13 @@ void content_clothesitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = CONTENT_CLOTHESITEM_LEATHER_SHIRT_BLUE;
+	i = CONTENT_CLOTHESITEM_LEATHER_JACKET_BLUE;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
-	f->type = CT_SHIRT;
-	f->texture = "clothes_shirt_leather_blue.png";
-	f->overlay_texture = "clothes_player_shirt_leather_blue.png";
-	f->description = wgettext("Blue Leather Shirt");
+	f->type = CT_JACKET;
+	f->texture = "clothes_jacket_leather_blue.png";
+	f->overlay_texture = "clothes_player_jacket_leather_blue.png";
+	f->description = wgettext("Blue Leather Jacket");
 	f->armour = 0.0;
 	f->warmth = 0.0;
 	f->vacuum = 0.0;
@@ -1293,13 +1180,13 @@ void content_clothesitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = CONTENT_CLOTHESITEM_LEATHER_SHIRT_GREEN;
+	i = CONTENT_CLOTHESITEM_LEATHER_JACKET_GREEN;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
-	f->type = CT_SHIRT;
-	f->texture = "clothes_shirt_leather_green.png";
-	f->overlay_texture = "clothes_player_shirt_leather_green.png";
-	f->description = wgettext("Green Leather Shirt");
+	f->type = CT_JACKET;
+	f->texture = "clothes_jacket_leather_green.png";
+	f->overlay_texture = "clothes_player_jacket_leather_green.png";
+	f->description = wgettext("Green Leather Jacket");
 	f->armour = 0.0;
 	f->warmth = 0.0;
 	f->vacuum = 0.0;
@@ -1307,13 +1194,13 @@ void content_clothesitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = CONTENT_CLOTHESITEM_LEATHER_SHIRT_ORANGE;
+	i = CONTENT_CLOTHESITEM_LEATHER_JACKET_ORANGE;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
-	f->type = CT_SHIRT;
-	f->texture = "clothes_shirt_leather_orange.png";
-	f->overlay_texture = "clothes_player_shirt_leather_orange.png";
-	f->description = wgettext("Orange Leather Shirt");
+	f->type = CT_JACKET;
+	f->texture = "clothes_jacket_leather_orange.png";
+	f->overlay_texture = "clothes_player_jacket_leather_orange.png";
+	f->description = wgettext("Orange Leather Jacket");
 	f->armour = 0.0;
 	f->warmth = 0.0;
 	f->vacuum = 0.0;
@@ -1321,13 +1208,13 @@ void content_clothesitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = CONTENT_CLOTHESITEM_LEATHER_SHIRT_PURPLE;
+	i = CONTENT_CLOTHESITEM_LEATHER_JACKET_PURPLE;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
-	f->type = CT_SHIRT;
-	f->texture = "clothes_shirt_leather_purple.png";
-	f->overlay_texture = "clothes_player_shirt_leather_purple.png";
-	f->description = wgettext("Purple Leather Shirt");
+	f->type = CT_JACKET;
+	f->texture = "clothes_jacket_leather_purple.png";
+	f->overlay_texture = "clothes_player_jacket_leather_purple.png";
+	f->description = wgettext("Purple Leather Jacket");
 	f->armour = 0.0;
 	f->warmth = 0.0;
 	f->vacuum = 0.0;
@@ -1335,13 +1222,13 @@ void content_clothesitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = CONTENT_CLOTHESITEM_LEATHER_SHIRT_RED;
+	i = CONTENT_CLOTHESITEM_LEATHER_JACKET_RED;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
-	f->type = CT_SHIRT;
-	f->texture = "clothes_shirt_leather_red.png";
-	f->overlay_texture = "clothes_player_shirt_leather_red.png";
-	f->description = wgettext("Red Leather Shirt");
+	f->type = CT_JACKET;
+	f->texture = "clothes_jacket_leather_red.png";
+	f->overlay_texture = "clothes_player_jacket_leather_red.png";
+	f->description = wgettext("Red Leather Jacket");
 	f->armour = 0.0;
 	f->warmth = 0.0;
 	f->vacuum = 0.0;
@@ -1349,13 +1236,13 @@ void content_clothesitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = CONTENT_CLOTHESITEM_LEATHER_SHIRT_YELLOW;
+	i = CONTENT_CLOTHESITEM_LEATHER_JACKET_YELLOW;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
-	f->type = CT_SHIRT;
-	f->texture = "clothes_shirt_leather_yellow.png";
-	f->overlay_texture = "clothes_player_shirt_leather_yellow.png";
-	f->description = wgettext("Yellow Leather Shirt");
+	f->type = CT_JACKET;
+	f->texture = "clothes_jacket_leather_yellow.png";
+	f->overlay_texture = "clothes_player_jacket_leather_yellow.png";
+	f->description = wgettext("Yellow Leather Jacket");
 	f->armour = 0.0;
 	f->warmth = 0.0;
 	f->vacuum = 0.0;
@@ -1363,13 +1250,13 @@ void content_clothesitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = CONTENT_CLOTHESITEM_LEATHER_SHIRT_BLACK;
+	i = CONTENT_CLOTHESITEM_LEATHER_JACKET_BLACK;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
-	f->type = CT_SHIRT;
-	f->texture = "clothes_shirt_leather_black.png";
-	f->overlay_texture = "clothes_player_shirt_leather_black.png";
-	f->description = wgettext("Black Leather Shirt");
+	f->type = CT_JACKET;
+	f->texture = "clothes_jacket_leather_black.png";
+	f->overlay_texture = "clothes_player_jacket_leather_black.png";
+	f->description = wgettext("Black Leather Jacket");
 	f->armour = 0.0;
 	f->warmth = 0.0;
 	f->vacuum = 0.0;
@@ -2140,13 +2027,13 @@ void content_clothesitem_init()
 	lists::add("creative",i);
 
 	// fur shirts
-	i = CONTENT_CLOTHESITEM_FUR_SHIRT;
+	i = CONTENT_CLOTHESITEM_FUR_JACKET;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
 	f->type = CT_JACKET;
-	f->texture = "clothes_shirt_fur.png";
-	f->overlay_texture = "clothes_player_shirt_fur.png";
-	f->description = wgettext("Fur Shirt");
+	f->texture = "clothes_jacket_fur.png";
+	f->overlay_texture = "clothes_player_jacket_fur.png";
+	f->description = wgettext("Fur Coat");
 	f->armour = 0.10;
 	f->warmth = 0.30;
 	f->vacuum = 0.05;
@@ -2154,13 +2041,13 @@ void content_clothesitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = CONTENT_CLOTHESITEM_FUR_SHIRT_WHITE;
+	i = CONTENT_CLOTHESITEM_FUR_JACKET_WHITE;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
 	f->type = CT_JACKET;
-	f->texture = "clothes_shirt_fur_white.png";
-	f->overlay_texture = "clothes_player_shirt_fur_white.png";
-	f->description = wgettext("White Fur Shirt");
+	f->texture = "clothes_jacket_fur_white.png";
+	f->overlay_texture = "clothes_player_jacket_fur_white.png";
+	f->description = wgettext("White Fur Coat");
 	f->armour = 0.10;
 	f->warmth = 0.30;
 	f->vacuum = 0.05;
@@ -2168,13 +2055,13 @@ void content_clothesitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = CONTENT_CLOTHESITEM_FUR_SHIRT_BLUE;
+	i = CONTENT_CLOTHESITEM_FUR_JACKET_BLUE;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
 	f->type = CT_JACKET;
-	f->texture = "clothes_shirt_fur_blue.png";
-	f->overlay_texture = "clothes_player_shirt_fur_blue.png";
-	f->description = wgettext("Blue Fur Shirt");
+	f->texture = "clothes_jacket_fur_blue.png";
+	f->overlay_texture = "clothes_player_jacket_fur_blue.png";
+	f->description = wgettext("Blue Fur Coat");
 	f->armour = 0.10;
 	f->warmth = 0.30;
 	f->vacuum = 0.05;
@@ -2182,13 +2069,13 @@ void content_clothesitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = CONTENT_CLOTHESITEM_FUR_SHIRT_GREEN;
+	i = CONTENT_CLOTHESITEM_FUR_JACKET_GREEN;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
 	f->type = CT_JACKET;
-	f->texture = "clothes_shirt_fur_green.png";
-	f->overlay_texture = "clothes_player_shirt_fur_green.png";
-	f->description = wgettext("Green Fur Shirt");
+	f->texture = "clothes_jacket_fur_green.png";
+	f->overlay_texture = "clothes_player_jacket_fur_green.png";
+	f->description = wgettext("Green Fur Coat");
 	f->armour = 0.10;
 	f->warmth = 0.30;
 	f->vacuum = 0.05;
@@ -2196,13 +2083,13 @@ void content_clothesitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = CONTENT_CLOTHESITEM_FUR_SHIRT_ORANGE;
+	i = CONTENT_CLOTHESITEM_FUR_JACKET_ORANGE;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
 	f->type = CT_JACKET;
-	f->texture = "clothes_shirt_fur_orange.png";
-	f->overlay_texture = "clothes_player_shirt_fur_orange.png";
-	f->description = wgettext("Orange Fur Shirt");
+	f->texture = "clothes_jacket_fur_orange.png";
+	f->overlay_texture = "clothes_player_jacket_fur_orange.png";
+	f->description = wgettext("Orange Fur Coat");
 	f->armour = 0.10;
 	f->warmth = 0.30;
 	f->vacuum = 0.05;
@@ -2210,13 +2097,13 @@ void content_clothesitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = CONTENT_CLOTHESITEM_FUR_SHIRT_PURPLE;
+	i = CONTENT_CLOTHESITEM_FUR_JACKET_PURPLE;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
 	f->type = CT_JACKET;
-	f->texture = "clothes_shirt_fur_purple.png";
-	f->overlay_texture = "clothes_player_shirt_fur_purple.png";
-	f->description = wgettext("Purple Fur Shirt");
+	f->texture = "clothes_jacket_fur_purple.png";
+	f->overlay_texture = "clothes_player_jacket_fur_purple.png";
+	f->description = wgettext("Purple Fur Coat");
 	f->armour = 0.10;
 	f->warmth = 0.30;
 	f->vacuum = 0.05;
@@ -2224,13 +2111,13 @@ void content_clothesitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = CONTENT_CLOTHESITEM_FUR_SHIRT_RED;
+	i = CONTENT_CLOTHESITEM_FUR_JACKET_RED;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
 	f->type = CT_JACKET;
-	f->texture = "clothes_shirt_fur_red.png";
-	f->overlay_texture = "clothes_player_shirt_fur_red.png";
-	f->description = wgettext("Red Fur Shirt");
+	f->texture = "clothes_jacket_fur_red.png";
+	f->overlay_texture = "clothes_player_jacket_fur_red.png";
+	f->description = wgettext("Red Fur Coat");
 	f->armour = 0.10;
 	f->warmth = 0.30;
 	f->vacuum = 0.05;
@@ -2238,13 +2125,13 @@ void content_clothesitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = CONTENT_CLOTHESITEM_FUR_SHIRT_YELLOW;
+	i = CONTENT_CLOTHESITEM_FUR_JACKET_YELLOW;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
 	f->type = CT_JACKET;
-	f->texture = "clothes_shirt_fur_yellow.png";
-	f->overlay_texture = "clothes_player_shirt_fur_yellow.png";
-	f->description = wgettext("Yellow Fur Shirt");
+	f->texture = "clothes_jacket_fur_yellow.png";
+	f->overlay_texture = "clothes_player_jacket_fur_yellow.png";
+	f->description = wgettext("Yellow Fur Coat");
 	f->armour = 0.10;
 	f->warmth = 0.30;
 	f->vacuum = 0.05;
@@ -2252,13 +2139,13 @@ void content_clothesitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = CONTENT_CLOTHESITEM_FUR_SHIRT_BLACK;
+	i = CONTENT_CLOTHESITEM_FUR_JACKET_BLACK;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
 	f->type = CT_JACKET;
-	f->texture = "clothes_shirt_fur_black.png";
-	f->overlay_texture = "clothes_player_shirt_fur_black.png";
-	f->description = wgettext("Black Fur Shirt");
+	f->texture = "clothes_jacket_fur_black.png";
+	f->overlay_texture = "clothes_player_jacket_fur_black.png";
+	f->description = wgettext("Black Fur Coat");
 	f->armour = 0.10;
 	f->warmth = 0.30;
 	f->vacuum = 0.05;

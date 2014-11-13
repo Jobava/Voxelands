@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-12 19:10+1000\n"
+"POT-Creation-Date: 2014-11-13 23:58+1000\n"
 "PO-Revision-Date: 2014-10-24 12:33+0000\n"
 "Last-Translator: Jay <joeyxtreme@hotmail.nl>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/"
@@ -249,16 +249,16 @@ msgstr "Geel Glas"
 msgid "Black Pants"
 msgstr "Zwart Glas"
 
-#: src/character_creator.cpp:114 src/content_clothesitem.cpp:1768
+#: src/character_creator.cpp:114 src/content_clothesitem.cpp:1655
 #, fuzzy
 msgid "Leather Shoes"
 msgstr "Leer"
 
-#: src/character_creator.cpp:115 src/content_clothesitem.cpp:2530
+#: src/character_creator.cpp:115 src/content_clothesitem.cpp:2417
 msgid "Fur Shoes"
 msgstr ""
 
-#: src/character_creator.cpp:116 src/content_clothesitem.cpp:1034
+#: src/character_creator.cpp:116 src/content_clothesitem.cpp:921
 msgid "Canvas Shoes"
 msgstr ""
 
@@ -406,906 +406,867 @@ msgstr "Zwart Katoen"
 
 #: src/content_clothesitem.cpp:356
 #, fuzzy
-msgid "Cotton Pants"
+msgid "Cotton Shorts"
 msgstr "Katoen"
 
 #: src/content_clothesitem.cpp:370
 #, fuzzy
-msgid "Blue Cotton Pants"
+msgid "Blue Cotton Shorts"
 msgstr "Blauw Katoen"
 
 #: src/content_clothesitem.cpp:384
 #, fuzzy
-msgid "Green Cotton Pants"
+msgid "Green Cotton Shorts"
 msgstr "Groen Katoen"
 
 #: src/content_clothesitem.cpp:398
 #, fuzzy
-msgid "Orange Cotton Pants"
+msgid "Orange Cotton Shorts"
 msgstr "Oranje Katoen"
 
 #: src/content_clothesitem.cpp:412
 #, fuzzy
-msgid "Purple Cotton Pants"
+msgid "Purple Cotton Shorts"
 msgstr "Paars Katoen"
 
 #: src/content_clothesitem.cpp:426
 #, fuzzy
-msgid "Red Cotton Pants"
+msgid "Red Cotton Shorts"
 msgstr "Rood Katoen"
 
 #: src/content_clothesitem.cpp:440
 #, fuzzy
-msgid "Yellow Cotton Pants"
+msgid "Yellow Cotton Shorts"
 msgstr "Geel Katoen"
 
 #: src/content_clothesitem.cpp:454
 #, fuzzy
-msgid "Black Cotton Pants"
+msgid "Black Cotton Shorts"
 msgstr "Zwart Katoen"
 
 #: src/content_clothesitem.cpp:469
 #, fuzzy
-msgid "Cotton Shorts"
+msgid "Cotton Hat"
 msgstr "Katoen"
 
 #: src/content_clothesitem.cpp:483
 #, fuzzy
-msgid "Blue Cotton Shorts"
+msgid "Blue Cotton Hat"
 msgstr "Blauw Katoen"
 
 #: src/content_clothesitem.cpp:497
 #, fuzzy
-msgid "Green Cotton Shorts"
+msgid "Green Cotton Hat"
 msgstr "Groen Katoen"
 
 #: src/content_clothesitem.cpp:511
 #, fuzzy
-msgid "Orange Cotton Shorts"
+msgid "Orange Cotton Hat"
 msgstr "Oranje Katoen"
 
 #: src/content_clothesitem.cpp:525
 #, fuzzy
-msgid "Purple Cotton Shorts"
+msgid "Purple Cotton Hat"
 msgstr "Paars Katoen"
 
 #: src/content_clothesitem.cpp:539
 #, fuzzy
-msgid "Red Cotton Shorts"
+msgid "Red Cotton Hat"
 msgstr "Rood Katoen"
 
 #: src/content_clothesitem.cpp:553
 #, fuzzy
-msgid "Yellow Cotton Shorts"
+msgid "Yellow Cotton Hat"
 msgstr "Geel Katoen"
 
 #: src/content_clothesitem.cpp:567
 #, fuzzy
-msgid "Black Cotton Shorts"
+msgid "Black Cotton Hat"
 msgstr "Zwart Katoen"
 
 #: src/content_clothesitem.cpp:582
 #, fuzzy
-msgid "Cotton Hat"
+msgid "Cotton Tie"
 msgstr "Katoen"
 
 #: src/content_clothesitem.cpp:596
 #, fuzzy
-msgid "Blue Cotton Hat"
+msgid "Blue Cotton Tie"
 msgstr "Blauw Katoen"
 
 #: src/content_clothesitem.cpp:610
 #, fuzzy
-msgid "Green Cotton Hat"
+msgid "Green Cotton Tie"
 msgstr "Groen Katoen"
 
 #: src/content_clothesitem.cpp:624
 #, fuzzy
-msgid "Orange Cotton Hat"
+msgid "Orange Cotton Tie"
 msgstr "Oranje Katoen"
 
 #: src/content_clothesitem.cpp:638
 #, fuzzy
-msgid "Purple Cotton Hat"
+msgid "Purple Cotton Tie"
 msgstr "Paars Katoen"
 
 #: src/content_clothesitem.cpp:652
 #, fuzzy
-msgid "Red Cotton Hat"
+msgid "Red Cotton Tie"
 msgstr "Rood Katoen"
 
 #: src/content_clothesitem.cpp:666
 #, fuzzy
-msgid "Yellow Cotton Hat"
+msgid "Yellow Cotton Tie"
 msgstr "Geel Katoen"
 
 #: src/content_clothesitem.cpp:680
 #, fuzzy
-msgid "Black Cotton Hat"
-msgstr "Zwart Katoen"
-
-#: src/content_clothesitem.cpp:695
-#, fuzzy
-msgid "Cotton Tie"
-msgstr "Katoen"
-
-#: src/content_clothesitem.cpp:709
-#, fuzzy
-msgid "Blue Cotton Tie"
-msgstr "Blauw Katoen"
-
-#: src/content_clothesitem.cpp:723
-#, fuzzy
-msgid "Green Cotton Tie"
-msgstr "Groen Katoen"
-
-#: src/content_clothesitem.cpp:737
-#, fuzzy
-msgid "Orange Cotton Tie"
-msgstr "Oranje Katoen"
-
-#: src/content_clothesitem.cpp:751
-#, fuzzy
-msgid "Purple Cotton Tie"
-msgstr "Paars Katoen"
-
-#: src/content_clothesitem.cpp:765
-#, fuzzy
-msgid "Red Cotton Tie"
-msgstr "Rood Katoen"
-
-#: src/content_clothesitem.cpp:779
-#, fuzzy
-msgid "Yellow Cotton Tie"
-msgstr "Geel Katoen"
-
-#: src/content_clothesitem.cpp:793
-#, fuzzy
 msgid "Black Cotton Tie"
 msgstr "Zwart Katoen"
 
-#: src/content_clothesitem.cpp:808
+#: src/content_clothesitem.cpp:695
 msgid "Canvas Shirt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:822
+#: src/content_clothesitem.cpp:709
 #, fuzzy
 msgid "Blue Canvas Shirt"
 msgstr "Blauw Tapijt"
 
-#: src/content_clothesitem.cpp:836
+#: src/content_clothesitem.cpp:723
 #, fuzzy
 msgid "Green Canvas Shirt"
 msgstr "Groen Tapijt"
 
-#: src/content_clothesitem.cpp:850
+#: src/content_clothesitem.cpp:737
 #, fuzzy
 msgid "Orange Canvas Shirt"
 msgstr "Oranje Tapijt"
 
-#: src/content_clothesitem.cpp:864
+#: src/content_clothesitem.cpp:751
 #, fuzzy
 msgid "Purple Canvas Shirt"
 msgstr "Paars Tapijt"
 
-#: src/content_clothesitem.cpp:878
+#: src/content_clothesitem.cpp:765
 #, fuzzy
 msgid "Red Canvas Shirt"
 msgstr "Rood Tapijt"
 
-#: src/content_clothesitem.cpp:892
+#: src/content_clothesitem.cpp:779
 #, fuzzy
 msgid "Yellow Canvas Shirt"
 msgstr "Geel Tapijt"
 
-#: src/content_clothesitem.cpp:906
+#: src/content_clothesitem.cpp:793
 #, fuzzy
 msgid "Black Canvas Shirt"
 msgstr "Zwart Tapijt"
 
-#: src/content_clothesitem.cpp:921
+#: src/content_clothesitem.cpp:808
 msgid "Canvas Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:935
+#: src/content_clothesitem.cpp:822
 #, fuzzy
 msgid "Blue Canvas Pants"
 msgstr "Blauwe Glazen Ruit"
 
-#: src/content_clothesitem.cpp:949
+#: src/content_clothesitem.cpp:836
 #, fuzzy
 msgid "Green Canvas Pants"
 msgstr "Groene Glazen Ruit"
 
-#: src/content_clothesitem.cpp:963
+#: src/content_clothesitem.cpp:850
 #, fuzzy
 msgid "Orange Canvas Pants"
 msgstr "Oranje Glazen Ruit"
 
-#: src/content_clothesitem.cpp:977
+#: src/content_clothesitem.cpp:864
 #, fuzzy
 msgid "Purple Canvas Pants"
 msgstr "Paarse Glazen Ruit"
 
-#: src/content_clothesitem.cpp:991
+#: src/content_clothesitem.cpp:878
 #, fuzzy
 msgid "Red Canvas Pants"
 msgstr "Rode Glazen Ruit"
 
-#: src/content_clothesitem.cpp:1005
+#: src/content_clothesitem.cpp:892
 #, fuzzy
 msgid "Yellow Canvas Pants"
 msgstr "Gele Glazen Ruit"
 
-#: src/content_clothesitem.cpp:1019
+#: src/content_clothesitem.cpp:906
 #, fuzzy
 msgid "Black Canvas Pants"
 msgstr "Zwarte Glazen Ruit"
 
-#: src/content_clothesitem.cpp:1048
+#: src/content_clothesitem.cpp:935
 msgid "Blue Canvas Shoes"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1062
+#: src/content_clothesitem.cpp:949
 #, fuzzy
 msgid "Green Canvas Shoes"
 msgstr "Groen Glas"
 
-#: src/content_clothesitem.cpp:1076
+#: src/content_clothesitem.cpp:963
 #, fuzzy
 msgid "Orange Canvas Shoes"
 msgstr "Oranje Glas"
 
-#: src/content_clothesitem.cpp:1090
+#: src/content_clothesitem.cpp:977
 #, fuzzy
 msgid "Purple Canvas Shoes"
 msgstr "Paars Glas"
 
-#: src/content_clothesitem.cpp:1104
+#: src/content_clothesitem.cpp:991
 msgid "Red Canvas Shoes"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1118
+#: src/content_clothesitem.cpp:1005
 #, fuzzy
 msgid "Yellow Canvas Shoes"
 msgstr "Geel Glas"
 
-#: src/content_clothesitem.cpp:1132
+#: src/content_clothesitem.cpp:1019
 #, fuzzy
 msgid "Black Canvas Shoes"
 msgstr "Zwart Glas"
 
-#: src/content_clothesitem.cpp:1147
+#: src/content_clothesitem.cpp:1034
 msgid "Canvas Belt"
 msgstr ""
 
-#: src/content_clothesitem.cpp:1161
+#: src/content_clothesitem.cpp:1048
 #, fuzzy
 msgid "Blue Canvas Belt"
 msgstr "Blauw Tapijt"
 
-#: src/content_clothesitem.cpp:1175
+#: src/content_clothesitem.cpp:1062
 #, fuzzy
 msgid "Green Canvas Belt"
 msgstr "Groen Tapijt"
 
-#: src/content_clothesitem.cpp:1189
+#: src/content_clothesitem.cpp:1076
 #, fuzzy
 msgid "Orange Canvas Belt"
 msgstr "Oranje Tapijt"
 
-#: src/content_clothesitem.cpp:1203
+#: src/content_clothesitem.cpp:1090
 #, fuzzy
 msgid "Purple Canvas Belt"
 msgstr "Paars Tapijt"
 
-#: src/content_clothesitem.cpp:1217
+#: src/content_clothesitem.cpp:1104
 #, fuzzy
 msgid "Red Canvas Belt"
 msgstr "Rood Tapijt"
 
-#: src/content_clothesitem.cpp:1231
+#: src/content_clothesitem.cpp:1118
 #, fuzzy
 msgid "Yellow Canvas Belt"
 msgstr "Geel Tapijt"
 
-#: src/content_clothesitem.cpp:1245
+#: src/content_clothesitem.cpp:1132
 #, fuzzy
 msgid "Black Canvas Belt"
 msgstr "Zwart Tapijt"
 
-#: src/content_clothesitem.cpp:1260
+#: src/content_clothesitem.cpp:1147
 #, fuzzy
-msgid "Leather Shirt"
+msgid "Leather Jacket"
 msgstr "Leer"
 
-#: src/content_clothesitem.cpp:1274
+#: src/content_clothesitem.cpp:1161
 #, fuzzy
-msgid "White Leather Shirt"
+msgid "White Leather Jacket"
 msgstr "Wit Leer"
 
-#: src/content_clothesitem.cpp:1288
+#: src/content_clothesitem.cpp:1175
 #, fuzzy
-msgid "Blue Leather Shirt"
+msgid "Blue Leather Jacket"
 msgstr "Blauw Leer"
 
-#: src/content_clothesitem.cpp:1302
+#: src/content_clothesitem.cpp:1189
 #, fuzzy
-msgid "Green Leather Shirt"
+msgid "Green Leather Jacket"
 msgstr "Groen Leer"
 
-#: src/content_clothesitem.cpp:1316
+#: src/content_clothesitem.cpp:1203
 #, fuzzy
-msgid "Orange Leather Shirt"
+msgid "Orange Leather Jacket"
 msgstr "Oranje Leer"
 
-#: src/content_clothesitem.cpp:1330
+#: src/content_clothesitem.cpp:1217
 #, fuzzy
-msgid "Purple Leather Shirt"
+msgid "Purple Leather Jacket"
 msgstr "Paars Leer"
 
-#: src/content_clothesitem.cpp:1344
+#: src/content_clothesitem.cpp:1231
 #, fuzzy
-msgid "Red Leather Shirt"
+msgid "Red Leather Jacket"
 msgstr "Rood Leer"
 
-#: src/content_clothesitem.cpp:1358
+#: src/content_clothesitem.cpp:1245
 #, fuzzy
-msgid "Yellow Leather Shirt"
+msgid "Yellow Leather Jacket"
 msgstr "Geel Leer"
 
-#: src/content_clothesitem.cpp:1372
+#: src/content_clothesitem.cpp:1259
 #, fuzzy
-msgid "Black Leather Shirt"
+msgid "Black Leather Jacket"
 msgstr "Zwart Leer"
 
-#: src/content_clothesitem.cpp:1387
+#: src/content_clothesitem.cpp:1274
 #, fuzzy
 msgid "Leather Pants"
 msgstr "Leer"
 
-#: src/content_clothesitem.cpp:1401
+#: src/content_clothesitem.cpp:1288
 #, fuzzy
 msgid "White Leather Pants"
 msgstr "Wit Leer"
 
-#: src/content_clothesitem.cpp:1415
+#: src/content_clothesitem.cpp:1302
 #, fuzzy
 msgid "Blue Leather Pants"
 msgstr "Blauw Leer"
 
-#: src/content_clothesitem.cpp:1429
+#: src/content_clothesitem.cpp:1316
 #, fuzzy
 msgid "Green Leather Pants"
 msgstr "Groen Leer"
 
-#: src/content_clothesitem.cpp:1443
+#: src/content_clothesitem.cpp:1330
 #, fuzzy
 msgid "Orange Leather Pants"
 msgstr "Oranje Leer"
 
-#: src/content_clothesitem.cpp:1457
+#: src/content_clothesitem.cpp:1344
 #, fuzzy
 msgid "Purple Leather Pants"
 msgstr "Paars Leer"
 
-#: src/content_clothesitem.cpp:1471
+#: src/content_clothesitem.cpp:1358
 #, fuzzy
 msgid "Red Leather Pants"
 msgstr "Rood Leer"
 
-#: src/content_clothesitem.cpp:1485
+#: src/content_clothesitem.cpp:1372
 #, fuzzy
 msgid "Yellow Leather Pants"
 msgstr "Geel Leer"
 
-#: src/content_clothesitem.cpp:1499
+#: src/content_clothesitem.cpp:1386
 #, fuzzy
 msgid "Black Leather Pants"
 msgstr "Zwart Leer"
 
-#: src/content_clothesitem.cpp:1514
+#: src/content_clothesitem.cpp:1401
 #, fuzzy
 msgid "Leather Hat"
 msgstr "Leer"
 
-#: src/content_clothesitem.cpp:1528
+#: src/content_clothesitem.cpp:1415
 #, fuzzy
 msgid "White Leather Hat"
 msgstr "Wit Leer"
 
-#: src/content_clothesitem.cpp:1542
+#: src/content_clothesitem.cpp:1429
 #, fuzzy
 msgid "Blue Leather Hat"
 msgstr "Blauw Leer"
 
-#: src/content_clothesitem.cpp:1556
+#: src/content_clothesitem.cpp:1443
 #, fuzzy
 msgid "Green Leather Hat"
 msgstr "Groen Leer"
 
-#: src/content_clothesitem.cpp:1570
+#: src/content_clothesitem.cpp:1457
 #, fuzzy
 msgid "Orange Leather Hat"
 msgstr "Oranje Leer"
 
-#: src/content_clothesitem.cpp:1584
+#: src/content_clothesitem.cpp:1471
 #, fuzzy
 msgid "Purple Leather Hat"
 msgstr "Paars Leer"
 
-#: src/content_clothesitem.cpp:1598
+#: src/content_clothesitem.cpp:1485
 #, fuzzy
 msgid "Red Leather Hat"
 msgstr "Rood Leer"
 
-#: src/content_clothesitem.cpp:1612
+#: src/content_clothesitem.cpp:1499
 #, fuzzy
 msgid "Yellow Leather Hat"
 msgstr "Geel Leer"
 
-#: src/content_clothesitem.cpp:1626
+#: src/content_clothesitem.cpp:1513
 #, fuzzy
 msgid "Black Leather Hat"
 msgstr "Zwart Leer"
 
-#: src/content_clothesitem.cpp:1641
+#: src/content_clothesitem.cpp:1528
 #, fuzzy
 msgid "Leather Helmet"
 msgstr "Leer"
 
-#: src/content_clothesitem.cpp:1655
+#: src/content_clothesitem.cpp:1542
 #, fuzzy
 msgid "White Leather Helmet"
 msgstr "Wit Leer"
 
-#: src/content_clothesitem.cpp:1669
+#: src/content_clothesitem.cpp:1556
 #, fuzzy
 msgid "Blue Leather Helmet"
 msgstr "Blauw Leer"
 
-#: src/content_clothesitem.cpp:1683
+#: src/content_clothesitem.cpp:1570
 #, fuzzy
 msgid "Green Leather Helmet"
 msgstr "Groen Leer"
 
-#: src/content_clothesitem.cpp:1697
+#: src/content_clothesitem.cpp:1584
 #, fuzzy
 msgid "Orange Leather Helmet"
 msgstr "Oranje Leer"
 
-#: src/content_clothesitem.cpp:1711
+#: src/content_clothesitem.cpp:1598
 #, fuzzy
 msgid "Purple Leather Helmet"
 msgstr "Paars Leer"
 
-#: src/content_clothesitem.cpp:1725
+#: src/content_clothesitem.cpp:1612
 #, fuzzy
 msgid "Red Leather Helmet"
 msgstr "Rood Leer"
 
-#: src/content_clothesitem.cpp:1739
+#: src/content_clothesitem.cpp:1626
 #, fuzzy
 msgid "Yellow Leather Helmet"
 msgstr "Geel Leer"
 
-#: src/content_clothesitem.cpp:1753
+#: src/content_clothesitem.cpp:1640
 #, fuzzy
 msgid "Black Leather Helmet"
 msgstr "Zwart Leer"
 
-#: src/content_clothesitem.cpp:1782
+#: src/content_clothesitem.cpp:1669
 #, fuzzy
 msgid "White Leather Shoes"
 msgstr "Wit Leer"
 
-#: src/content_clothesitem.cpp:1796
+#: src/content_clothesitem.cpp:1683
 #, fuzzy
 msgid "Blue Leather Shoes"
 msgstr "Blauw Leer"
 
-#: src/content_clothesitem.cpp:1810
+#: src/content_clothesitem.cpp:1697
 #, fuzzy
 msgid "Green Leather Shoes"
 msgstr "Groen Leer"
 
-#: src/content_clothesitem.cpp:1824
+#: src/content_clothesitem.cpp:1711
 #, fuzzy
 msgid "Orange Leather Shoes"
 msgstr "Oranje Leer"
 
-#: src/content_clothesitem.cpp:1838
+#: src/content_clothesitem.cpp:1725
 #, fuzzy
 msgid "Purple Leather Shoes"
 msgstr "Paars Leer"
 
-#: src/content_clothesitem.cpp:1852
+#: src/content_clothesitem.cpp:1739
 #, fuzzy
 msgid "Red Leather Shoes"
 msgstr "Rood Leer"
 
-#: src/content_clothesitem.cpp:1866
+#: src/content_clothesitem.cpp:1753
 #, fuzzy
 msgid "Yellow Leather Shoes"
 msgstr "Geel Leer"
 
-#: src/content_clothesitem.cpp:1880
+#: src/content_clothesitem.cpp:1767
 #, fuzzy
 msgid "Black Leather Shoes"
 msgstr "Zwart Leer"
 
-#: src/content_clothesitem.cpp:1895
+#: src/content_clothesitem.cpp:1782
 #, fuzzy
 msgid "Leather Boots"
 msgstr "Leer"
 
-#: src/content_clothesitem.cpp:1909
+#: src/content_clothesitem.cpp:1796
 #, fuzzy
 msgid "White Leather Boots"
 msgstr "Wit Leer"
 
-#: src/content_clothesitem.cpp:1923
+#: src/content_clothesitem.cpp:1810
 #, fuzzy
 msgid "Blue Leather Boots"
 msgstr "Blauw Leer"
 
-#: src/content_clothesitem.cpp:1937
+#: src/content_clothesitem.cpp:1824
 #, fuzzy
 msgid "Green Leather Boots"
 msgstr "Groen Leer"
 
-#: src/content_clothesitem.cpp:1951
+#: src/content_clothesitem.cpp:1838
 #, fuzzy
 msgid "Orange Leather Boots"
 msgstr "Oranje Leer"
 
-#: src/content_clothesitem.cpp:1965
+#: src/content_clothesitem.cpp:1852
 #, fuzzy
 msgid "Purple Leather Boots"
 msgstr "Paars Leer"
 
-#: src/content_clothesitem.cpp:1979
+#: src/content_clothesitem.cpp:1866
 #, fuzzy
 msgid "Red Leather Boots"
 msgstr "Rood Leer"
 
-#: src/content_clothesitem.cpp:1993
+#: src/content_clothesitem.cpp:1880
 #, fuzzy
 msgid "Yellow Leather Boots"
 msgstr "Geel Leer"
 
-#: src/content_clothesitem.cpp:2007
+#: src/content_clothesitem.cpp:1894
 #, fuzzy
 msgid "Black Leather Boots"
 msgstr "Zwart Leer"
 
-#: src/content_clothesitem.cpp:2022
+#: src/content_clothesitem.cpp:1909
 #, fuzzy
 msgid "Leather Belt"
 msgstr "Leer"
 
-#: src/content_clothesitem.cpp:2036
+#: src/content_clothesitem.cpp:1923
 #, fuzzy
 msgid "White Leather Belt"
 msgstr "Wit Leer"
 
-#: src/content_clothesitem.cpp:2050
+#: src/content_clothesitem.cpp:1937
 #, fuzzy
 msgid "Blue Leather Belt"
 msgstr "Blauw Leer"
 
-#: src/content_clothesitem.cpp:2064
+#: src/content_clothesitem.cpp:1951
 #, fuzzy
 msgid "Green Leather Belt"
 msgstr "Groen Leer"
 
-#: src/content_clothesitem.cpp:2078
+#: src/content_clothesitem.cpp:1965
 #, fuzzy
 msgid "Orange Leather Belt"
 msgstr "Oranje Leer"
 
-#: src/content_clothesitem.cpp:2092
+#: src/content_clothesitem.cpp:1979
 #, fuzzy
 msgid "Purple Leather Belt"
 msgstr "Paars Leer"
 
-#: src/content_clothesitem.cpp:2106
+#: src/content_clothesitem.cpp:1993
 #, fuzzy
 msgid "Red Leather Belt"
 msgstr "Rood Leer"
 
-#: src/content_clothesitem.cpp:2120
+#: src/content_clothesitem.cpp:2007
 #, fuzzy
 msgid "Yellow Leather Belt"
 msgstr "Geel Leer"
 
-#: src/content_clothesitem.cpp:2134
+#: src/content_clothesitem.cpp:2021
 #, fuzzy
 msgid "Black Leather Belt"
 msgstr "Zwart Leer"
 
-#: src/content_clothesitem.cpp:2149
-msgid "Fur Shirt"
-msgstr ""
-
-#: src/content_clothesitem.cpp:2163
+#: src/content_clothesitem.cpp:2036
 #, fuzzy
-msgid "White Fur Shirt"
-msgstr "Witte Vacht"
-
-#: src/content_clothesitem.cpp:2177
-#, fuzzy
-msgid "Blue Fur Shirt"
-msgstr "Blauwe Vacht"
-
-#: src/content_clothesitem.cpp:2191
-#, fuzzy
-msgid "Green Fur Shirt"
-msgstr "Groene Vacht"
-
-#: src/content_clothesitem.cpp:2205
-#, fuzzy
-msgid "Orange Fur Shirt"
-msgstr "Oranje Vacht"
-
-#: src/content_clothesitem.cpp:2219
-#, fuzzy
-msgid "Purple Fur Shirt"
-msgstr "Paarse Vacht"
-
-#: src/content_clothesitem.cpp:2233
-#, fuzzy
-msgid "Red Fur Shirt"
+msgid "Fur Coat"
 msgstr "Rode Vacht"
 
-#: src/content_clothesitem.cpp:2247
+#: src/content_clothesitem.cpp:2050
 #, fuzzy
-msgid "Yellow Fur Shirt"
+msgid "White Fur Coat"
+msgstr "Witte Vacht"
+
+#: src/content_clothesitem.cpp:2064
+#, fuzzy
+msgid "Blue Fur Coat"
+msgstr "Blauwe Vacht"
+
+#: src/content_clothesitem.cpp:2078
+#, fuzzy
+msgid "Green Fur Coat"
+msgstr "Groene Vacht"
+
+#: src/content_clothesitem.cpp:2092
+#, fuzzy
+msgid "Orange Fur Coat"
+msgstr "Oranje Vacht"
+
+#: src/content_clothesitem.cpp:2106
+#, fuzzy
+msgid "Purple Fur Coat"
+msgstr "Paarse Vacht"
+
+#: src/content_clothesitem.cpp:2120
+#, fuzzy
+msgid "Red Fur Coat"
+msgstr "Rode Vacht"
+
+#: src/content_clothesitem.cpp:2134
+#, fuzzy
+msgid "Yellow Fur Coat"
 msgstr "Gele Vacht"
 
-#: src/content_clothesitem.cpp:2261
+#: src/content_clothesitem.cpp:2148
 #, fuzzy
-msgid "Black Fur Shirt"
+msgid "Black Fur Coat"
 msgstr "Zwarte Vacht"
 
-#: src/content_clothesitem.cpp:2276
+#: src/content_clothesitem.cpp:2163
 msgid "Fur Pants"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2290
+#: src/content_clothesitem.cpp:2177
 #, fuzzy
 msgid "White Fur Pants"
 msgstr "Witte Vacht"
 
-#: src/content_clothesitem.cpp:2304
+#: src/content_clothesitem.cpp:2191
 #, fuzzy
 msgid "Blue Fur Pants"
 msgstr "Blauwe Vacht"
 
-#: src/content_clothesitem.cpp:2318
+#: src/content_clothesitem.cpp:2205
 #, fuzzy
 msgid "Green Fur Pants"
 msgstr "Groene Vacht"
 
-#: src/content_clothesitem.cpp:2332
+#: src/content_clothesitem.cpp:2219
 #, fuzzy
 msgid "Orange Fur Pants"
 msgstr "Oranje Vacht"
 
-#: src/content_clothesitem.cpp:2346
+#: src/content_clothesitem.cpp:2233
 #, fuzzy
 msgid "Purple Fur Pants"
 msgstr "Paarse Vacht"
 
-#: src/content_clothesitem.cpp:2360
+#: src/content_clothesitem.cpp:2247
 #, fuzzy
 msgid "Red Fur Pants"
 msgstr "Rode Vacht"
 
-#: src/content_clothesitem.cpp:2374
+#: src/content_clothesitem.cpp:2261
 #, fuzzy
 msgid "Yellow Fur Pants"
 msgstr "Gele Vacht"
 
-#: src/content_clothesitem.cpp:2388
+#: src/content_clothesitem.cpp:2275
 #, fuzzy
 msgid "Black Fur Pants"
 msgstr "Zwarte Vacht"
 
-#: src/content_clothesitem.cpp:2403
+#: src/content_clothesitem.cpp:2290
 msgid "Fur Hat"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2417
+#: src/content_clothesitem.cpp:2304
 #, fuzzy
 msgid "White Fur Hat"
 msgstr "Witte Vacht"
 
-#: src/content_clothesitem.cpp:2431
+#: src/content_clothesitem.cpp:2318
 #, fuzzy
 msgid "Blue Fur Hat"
 msgstr "Blauwe Vacht"
 
-#: src/content_clothesitem.cpp:2445
+#: src/content_clothesitem.cpp:2332
 #, fuzzy
 msgid "Green Fur Hat"
 msgstr "Groene Vacht"
 
-#: src/content_clothesitem.cpp:2459
+#: src/content_clothesitem.cpp:2346
 #, fuzzy
 msgid "Orange Fur Hat"
 msgstr "Oranje Vacht"
 
-#: src/content_clothesitem.cpp:2473
+#: src/content_clothesitem.cpp:2360
 #, fuzzy
 msgid "Purple Fur Hat"
 msgstr "Paarse Vacht"
 
-#: src/content_clothesitem.cpp:2487
+#: src/content_clothesitem.cpp:2374
 #, fuzzy
 msgid "Red Fur Hat"
 msgstr "Rode Vacht"
 
-#: src/content_clothesitem.cpp:2501
+#: src/content_clothesitem.cpp:2388
 #, fuzzy
 msgid "Yellow Fur Hat"
 msgstr "Gele Vacht"
 
-#: src/content_clothesitem.cpp:2515
+#: src/content_clothesitem.cpp:2402
 #, fuzzy
 msgid "Black Fur Hat"
 msgstr "Zwarte Vacht"
 
-#: src/content_clothesitem.cpp:2544
+#: src/content_clothesitem.cpp:2431
 #, fuzzy
 msgid "White Fur Shoes"
 msgstr "Witte Vacht"
 
-#: src/content_clothesitem.cpp:2558
+#: src/content_clothesitem.cpp:2445
 #, fuzzy
 msgid "Blue Fur Shoes"
 msgstr "Blauwe Vacht"
 
-#: src/content_clothesitem.cpp:2572
+#: src/content_clothesitem.cpp:2459
 #, fuzzy
 msgid "Green Fur Shoes"
 msgstr "Groene Vacht"
 
-#: src/content_clothesitem.cpp:2586
+#: src/content_clothesitem.cpp:2473
 #, fuzzy
 msgid "Orange Fur Shoes"
 msgstr "Oranje Vacht"
 
-#: src/content_clothesitem.cpp:2600
+#: src/content_clothesitem.cpp:2487
 #, fuzzy
 msgid "Purple Fur Shoes"
 msgstr "Paarse Vacht"
 
-#: src/content_clothesitem.cpp:2614
+#: src/content_clothesitem.cpp:2501
 #, fuzzy
 msgid "Red Fur Shoes"
 msgstr "Rode Vacht"
 
-#: src/content_clothesitem.cpp:2628
+#: src/content_clothesitem.cpp:2515
 #, fuzzy
 msgid "Yellow Fur Shoes"
 msgstr "Gele Vacht"
 
-#: src/content_clothesitem.cpp:2642
+#: src/content_clothesitem.cpp:2529
 #, fuzzy
 msgid "Black Fur Shoes"
 msgstr "Zwarte Vacht"
 
-#: src/content_clothesitem.cpp:2657
+#: src/content_clothesitem.cpp:2544
 msgid "Fur Boots"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2671
+#: src/content_clothesitem.cpp:2558
 #, fuzzy
 msgid "White Fur Boots"
 msgstr "Witte Vacht"
 
-#: src/content_clothesitem.cpp:2685
+#: src/content_clothesitem.cpp:2572
 #, fuzzy
 msgid "Blue Fur Boots"
 msgstr "Blauwe Vacht"
 
-#: src/content_clothesitem.cpp:2699
+#: src/content_clothesitem.cpp:2586
 #, fuzzy
 msgid "Green Fur Boots"
 msgstr "Groene Vacht"
 
-#: src/content_clothesitem.cpp:2713
+#: src/content_clothesitem.cpp:2600
 #, fuzzy
 msgid "Orange Fur Boots"
 msgstr "Oranje Vacht"
 
-#: src/content_clothesitem.cpp:2727
+#: src/content_clothesitem.cpp:2614
 #, fuzzy
 msgid "Purple Fur Boots"
 msgstr "Paarse Vacht"
 
-#: src/content_clothesitem.cpp:2741
+#: src/content_clothesitem.cpp:2628
 #, fuzzy
 msgid "Red Fur Boots"
 msgstr "Rode Vacht"
 
-#: src/content_clothesitem.cpp:2755
+#: src/content_clothesitem.cpp:2642
 #, fuzzy
 msgid "Yellow Fur Boots"
 msgstr "Gele Vacht"
 
-#: src/content_clothesitem.cpp:2769
+#: src/content_clothesitem.cpp:2656
 #, fuzzy
 msgid "Black Fur Boots"
 msgstr "Zwarte Vacht"
 
-#: src/content_clothesitem.cpp:2784
+#: src/content_clothesitem.cpp:2671
 #, fuzzy
 msgid "Leather Necklace"
 msgstr "Leer"
 
-#: src/content_clothesitem.cpp:2806
+#: src/content_clothesitem.cpp:2693
 #, fuzzy
 msgid "Gold Medallion"
 msgstr "Gesneden Meloen"
 
-#: src/content_clothesitem.cpp:2820
+#: src/content_clothesitem.cpp:2707
 msgid "Copper Medallion"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2834
+#: src/content_clothesitem.cpp:2721
 msgid "Silver Medallion"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2848
+#: src/content_clothesitem.cpp:2735
 msgid "Tin Medallion"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2862
+#: src/content_clothesitem.cpp:2749
 msgid "Iron Medallion"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2876
+#: src/content_clothesitem.cpp:2763
 #, fuzzy
 msgid "Quartz Medallion"
 msgstr "Kwarts kristal"
 
-#: src/content_clothesitem.cpp:2891
+#: src/content_clothesitem.cpp:2778
 #, fuzzy
 msgid "Steel Helmet"
 msgstr "Stalen Schep"
 
-#: src/content_clothesitem.cpp:2905
+#: src/content_clothesitem.cpp:2792
 #, fuzzy
 msgid "Steel Chest Armour"
 msgstr "Stalen Schaar"
 
-#: src/content_clothesitem.cpp:2919
+#: src/content_clothesitem.cpp:2806
 #, fuzzy
 msgid "Steel Pants"
 msgstr "Ijzerstaaf"
 
-#: src/content_clothesitem.cpp:2933
+#: src/content_clothesitem.cpp:2820
 #, fuzzy
 msgid "Steel Boots"
 msgstr "Staalblok"
 
-#: src/content_clothesitem.cpp:2947
+#: src/content_clothesitem.cpp:2834
 #, fuzzy
 msgid "Copper Helmet"
 msgstr "Koperstaaf"
 
-#: src/content_clothesitem.cpp:2961
+#: src/content_clothesitem.cpp:2848
 msgid "Copper Chest Armour"
 msgstr ""
 
-#: src/content_clothesitem.cpp:2975
+#: src/content_clothesitem.cpp:2862
 #, fuzzy
 msgid "Copper Pants"
 msgstr "Koperstaaf"
 
-#: src/content_clothesitem.cpp:2989
+#: src/content_clothesitem.cpp:2876
 #, fuzzy
 msgid "Copper Boots"
 msgstr "Koperstaaf"
@@ -3988,6 +3949,106 @@ msgstr ""
 #: src/mapnode.cpp:298
 msgid "Loading Special MapNodes"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Cotton Pants"
+#~ msgstr "Katoen"
+
+#, fuzzy
+#~ msgid "Blue Cotton Pants"
+#~ msgstr "Blauw Katoen"
+
+#, fuzzy
+#~ msgid "Green Cotton Pants"
+#~ msgstr "Groen Katoen"
+
+#, fuzzy
+#~ msgid "Orange Cotton Pants"
+#~ msgstr "Oranje Katoen"
+
+#, fuzzy
+#~ msgid "Purple Cotton Pants"
+#~ msgstr "Paars Katoen"
+
+#, fuzzy
+#~ msgid "Red Cotton Pants"
+#~ msgstr "Rood Katoen"
+
+#, fuzzy
+#~ msgid "Yellow Cotton Pants"
+#~ msgstr "Geel Katoen"
+
+#, fuzzy
+#~ msgid "Black Cotton Pants"
+#~ msgstr "Zwart Katoen"
+
+#, fuzzy
+#~ msgid "Leather Shirt"
+#~ msgstr "Leer"
+
+#, fuzzy
+#~ msgid "White Leather Shirt"
+#~ msgstr "Wit Leer"
+
+#, fuzzy
+#~ msgid "Blue Leather Shirt"
+#~ msgstr "Blauw Leer"
+
+#, fuzzy
+#~ msgid "Green Leather Shirt"
+#~ msgstr "Groen Leer"
+
+#, fuzzy
+#~ msgid "Orange Leather Shirt"
+#~ msgstr "Oranje Leer"
+
+#, fuzzy
+#~ msgid "Purple Leather Shirt"
+#~ msgstr "Paars Leer"
+
+#, fuzzy
+#~ msgid "Red Leather Shirt"
+#~ msgstr "Rood Leer"
+
+#, fuzzy
+#~ msgid "Yellow Leather Shirt"
+#~ msgstr "Geel Leer"
+
+#, fuzzy
+#~ msgid "Black Leather Shirt"
+#~ msgstr "Zwart Leer"
+
+#, fuzzy
+#~ msgid "White Fur Shirt"
+#~ msgstr "Witte Vacht"
+
+#, fuzzy
+#~ msgid "Blue Fur Shirt"
+#~ msgstr "Blauwe Vacht"
+
+#, fuzzy
+#~ msgid "Green Fur Shirt"
+#~ msgstr "Groene Vacht"
+
+#, fuzzy
+#~ msgid "Orange Fur Shirt"
+#~ msgstr "Oranje Vacht"
+
+#, fuzzy
+#~ msgid "Purple Fur Shirt"
+#~ msgstr "Paarse Vacht"
+
+#, fuzzy
+#~ msgid "Red Fur Shirt"
+#~ msgstr "Rode Vacht"
+
+#, fuzzy
+#~ msgid "Yellow Fur Shirt"
+#~ msgstr "Gele Vacht"
+
+#, fuzzy
+#~ msgid "Black Fur Shirt"
+#~ msgstr "Zwarte Vacht"
 
 #~ msgid "Connecting to server... (timeout in "
 #~ msgstr "Verbinden met server (timeout in"
