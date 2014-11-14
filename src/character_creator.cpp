@@ -182,7 +182,7 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 	/*
 		Calculate new sizes and positions
 	*/
-	v2s32 size(200, 500);
+	v2s32 size(250, 500);
 
 	core::rect<s32> rect(
 			10,
@@ -199,7 +199,7 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 
 	changeCtype("");
 	{
-		core::rect<s32> rect(0, 0, 180, 300);
+		core::rect<s32> rect(0, 0, 230, 300);
 		rect += leftside + v2s32(10, 220);
 		gui::IGUIStaticText *t = Environment->addStaticText(
 			wgettext(
@@ -222,7 +222,7 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 	}
 
 	{
-		core::rect<s32> rect(0, 0, 200, 20);
+		core::rect<s32> rect(0, 0, 250, 20);
 		rect += rightside + v2s32(0, 20);
 		gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Create Your Character"), rect, false, true, this, -1);
 		t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
@@ -230,37 +230,38 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 	changeCtype("C");
 	// gender
 	{
-		core::rect<s32> rect(0, 0, 80, 30);
+		core::rect<s32> rect(0, 0, 105, 30);
 		rect += rightside + v2s32(15, 50);
 		Environment->addButton(rect, this, GUI_ID_CD_MALE_BUTTON, wgettext("Male"));
 	}
 	{
-		core::rect<s32> rect(0, 0, 80, 30);
-		rect += rightside + v2s32(105, 50);
+		core::rect<s32> rect(0, 0, 105, 30);
+		rect += rightside + v2s32(130, 50);
 		Environment->addButton(rect, this, GUI_ID_CD_FEMALE_BUTTON, wgettext("Female"));
 	}
 
 	// Yscale
 	{
-		core::rect<s32> rect(0, 0, 80, 30);
+		core::rect<s32> rect(0, 0, 105, 30);
 		rect += rightside + v2s32(15, 95);
-		Environment->addButton(rect, this, GUI_ID_CD_TALLER_BUTTON, wgettext("Taller"));
+		std::wstring txt = wgettext("Taller");
+		Environment->addButton(rect, this, GUI_ID_CD_TALLER_BUTTON, txt.c_str());
 	}
 	{
-		core::rect<s32> rect(0, 0, 80, 30);
+		core::rect<s32> rect(0, 0, 105, 30);
 		rect += rightside + v2s32(15, 130);
 		Environment->addButton(rect, this, GUI_ID_CD_SHORTER_BUTTON, wgettext("Shorter"));
 	}
 
 	// XZscale
 	{
-		core::rect<s32> rect(0, 0, 80, 30);
-		rect += rightside + v2s32(105, 95);
+		core::rect<s32> rect(0, 0, 105, 30);
+		rect += rightside + v2s32(130, 95);
 		Environment->addButton(rect, this, GUI_ID_CD_WIDER_BUTTON, wgettext("Wider"));
 	}
 	{
-		core::rect<s32> rect(0, 0, 80, 30);
-		rect += rightside + v2s32(105, 130);
+		core::rect<s32> rect(0, 0, 105, 30);
+		rect += rightside + v2s32(130, 130);
 		Environment->addButton(rect, this, GUI_ID_CD_THINNER_BUTTON, wgettext("Thinner"));
 	}
 
@@ -268,7 +269,7 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 	//185
 	changeCtype("");
 	{
-		core::rect<s32> rect(0, 0, 110, 20);
+		core::rect<s32> rect(0, 0, 160, 20);
 		rect += rightside + v2s32(45, 170);
 		gui::IGUIStaticText *t = Environment->addStaticText(m_skintone_types[m_parts["skintone"]].c_str(), rect, false, true, this, -1);
 		t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
@@ -281,7 +282,7 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 	}
 	{
 		core::rect<s32> rect(0, 0, 30, 30);
-		rect += rightside + v2s32(155, 165);
+		rect += rightside + v2s32(205, 165);
 		Environment->addButton(rect, this, GUI_ID_CD_SKINTONE_NEXT_BUTTON, L">>");
 	}
 
@@ -289,7 +290,7 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 	//220
 	changeCtype("");
 	{
-		core::rect<s32> rect(0, 0, 110, 20);
+		core::rect<s32> rect(0, 0, 160, 20);
 		rect += rightside + v2s32(45, 205);
 		gui::IGUIStaticText *t = Environment->addStaticText(m_face_types[m_parts["face"]].c_str(), rect, false, true, this, -1);
 		t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
@@ -302,7 +303,7 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 	}
 	{
 		core::rect<s32> rect(0, 0, 30, 30);
-		rect += rightside + v2s32(155, 200);
+		rect += rightside + v2s32(205, 200);
 		Environment->addButton(rect, this, GUI_ID_CD_FACE_NEXT_BUTTON, L">>");
 	}
 
@@ -310,7 +311,7 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 	//255
 	changeCtype("");
 	{
-		core::rect<s32> rect(0, 0, 110, 20);
+		core::rect<s32> rect(0, 0, 160, 20);
 		rect += rightside + v2s32(45, 240);
 		gui::IGUIStaticText *t = Environment->addStaticText(m_hairtone_types[m_parts["hairtone"]].c_str(), rect, false, true, this, -1);
 		t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
@@ -323,7 +324,7 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 	}
 	{
 		core::rect<s32> rect(0, 0, 30, 30);
-		rect += rightside + v2s32(155, 235);
+		rect += rightside + v2s32(205, 235);
 		Environment->addButton(rect, this, GUI_ID_CD_HAIRTONE_NEXT_BUTTON, L">>");
 	}
 
@@ -331,7 +332,7 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 	//290
 	changeCtype("");
 	{
-		core::rect<s32> rect(0, 0, 110, 20);
+		core::rect<s32> rect(0, 0, 160, 20);
 		rect += rightside + v2s32(45, 275);
 		gui::IGUIStaticText *t = Environment->addStaticText(m_hair_types[m_parts["hair"]].c_str(), rect, false, true, this, -1);
 		t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
@@ -344,7 +345,7 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 	}
 	{
 		core::rect<s32> rect(0, 0, 30, 30);
-		rect += rightside + v2s32(155, 270);
+		rect += rightside + v2s32(205, 270);
 		Environment->addButton(rect, this, GUI_ID_CD_HAIR_NEXT_BUTTON, L">>");
 	}
 
@@ -352,7 +353,7 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 	//325
 	changeCtype("");
 	{
-		core::rect<s32> rect(0, 0, 110, 20);
+		core::rect<s32> rect(0, 0, 160, 20);
 		rect += rightside + v2s32(45, 315);
 		gui::IGUIStaticText *t = Environment->addStaticText(m_eyes_types[m_parts["eyes"]].c_str(), rect, false, true, this, -1);
 		t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
@@ -365,7 +366,7 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 	}
 	{
 		core::rect<s32> rect(0, 0, 30, 30);
-		rect += rightside + v2s32(155, 305);
+		rect += rightside + v2s32(205, 305);
 		Environment->addButton(rect, this, GUI_ID_CD_EYES_NEXT_BUTTON, L">>");
 	}
 
@@ -373,7 +374,7 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 	//370
 	changeCtype("");
 	{
-		core::rect<s32> rect(0, 0, 110, 20);
+		core::rect<s32> rect(0, 0, 160, 20);
 		rect += rightside + v2s32(45, 355);
 		gui::IGUIStaticText *t = Environment->addStaticText(m_shirt_types[m_parts["shirt"]].c_str(), rect, false, true, this, -1);
 		t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
@@ -386,7 +387,7 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 	}
 	{
 		core::rect<s32> rect(0, 0, 30, 30);
-		rect += rightside + v2s32(155, 350);
+		rect += rightside + v2s32(205, 350);
 		Environment->addButton(rect, this, GUI_ID_CD_SHIRT_NEXT_BUTTON, L">>");
 	}
 
@@ -394,7 +395,7 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 	//405
 	changeCtype("");
 	{
-		core::rect<s32> rect(0, 0, 110, 20);
+		core::rect<s32> rect(0, 0, 160, 20);
 		rect += rightside + v2s32(45, 390);
 		gui::IGUIStaticText *t = Environment->addStaticText(m_pants_types[m_parts["pants"]].c_str(), rect, false, true, this, -1);
 		t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
@@ -407,7 +408,7 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 	}
 	{
 		core::rect<s32> rect(0, 0, 30, 30);
-		rect += rightside + v2s32(155, 385);
+		rect += rightside + v2s32(205, 385);
 		Environment->addButton(rect, this, GUI_ID_CD_PANTS_NEXT_BUTTON, L">>");
 	}
 
@@ -415,7 +416,7 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 	//440
 	changeCtype("");
 	{
-		core::rect<s32> rect(0, 0, 110, 20);
+		core::rect<s32> rect(0, 0, 160, 20);
 		rect += rightside + v2s32(45, 425);
 		gui::IGUIStaticText *t = Environment->addStaticText(m_shoes_types[m_parts["shoes"]].c_str(), rect, false, true, this, -1);
 		t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
@@ -428,19 +429,19 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 	}
 	{
 		core::rect<s32> rect(0, 0, 30, 30);
-		rect += rightside + v2s32(155, 420);
+		rect += rightside + v2s32(205, 420);
 		Environment->addButton(rect, this, GUI_ID_CD_SHOES_NEXT_BUTTON, L">>");
 	}
 
 	// save/cancel
 	{
-		core::rect<s32> rect(0, 0, 80, 30);
+		core::rect<s32> rect(0, 0, 105, 30);
 		rect += rightside + v2s32(15, 460);
 		Environment->addButton(rect, this, GUI_ID_CD_SAVE_BUTTON, wgettext("Done"));
 	}
 	{
-		core::rect<s32> rect(0, 0, 80, 30);
-		rect += rightside + v2s32(105, 460);
+		core::rect<s32> rect(0, 0, 105, 30);
+		rect += rightside + v2s32(130, 460);
 		Environment->addButton(rect, this, GUI_ID_CD_QUIT_BUTTON, wgettext("Cancel"));
 	}
 }
@@ -456,11 +457,11 @@ void GUICharDefMenu::drawMenu()
 	core::rect<s32> left(
 		AbsoluteRect.UpperLeftCorner.X,
 		AbsoluteRect.UpperLeftCorner.Y,
-		AbsoluteRect.UpperLeftCorner.X+200,
+		AbsoluteRect.UpperLeftCorner.X+250,
 		AbsoluteRect.LowerRightCorner.Y
 	);
 	core::rect<s32> right(
-		AbsoluteRect.LowerRightCorner.X-180,
+		AbsoluteRect.LowerRightCorner.X-230,
 		AbsoluteRect.UpperLeftCorner.Y,
 		AbsoluteRect.LowerRightCorner.X,
 		AbsoluteRect.LowerRightCorner.Y
@@ -476,9 +477,9 @@ void GUICharDefMenu::drawMenu()
 	if (texture != 0) {
 		const core::dimension2d<u32>& img_origsize = texture->getOriginalSize();
 		core::rect<s32> logo(
-			AbsoluteRect.UpperLeftCorner.X,
+			AbsoluteRect.UpperLeftCorner.X+25,
 			AbsoluteRect.UpperLeftCorner.Y,
-			AbsoluteRect.UpperLeftCorner.X+200,
+			AbsoluteRect.UpperLeftCorner.X+225,
 			AbsoluteRect.UpperLeftCorner.Y+200
 		);
 		const video::SColor color(255,255,255,255);

@@ -608,14 +608,14 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		}
 		// Advanced settings button
 		{
-			core::rect<s32> rect(0, 0, 170, 30);
-			rect += topleft_content + v2s32(90, 100);
+			core::rect<s32> rect(0, 0, 220, 30);
+			rect += topleft_content + v2s32(50, 100);
 			Environment->addButton(rect, this, GUI_ID_GAME_SETTINGS_ADV, wgettext("Advanced Settings"));
 		}
 		// Map options button
 		{
-			core::rect<s32> rect(0, 0, 170, 30);
-			rect += topleft_content + v2s32(290, 100);
+			core::rect<s32> rect(0, 0, 220, 30);
+			rect += topleft_content + v2s32(280, 100);
 			Environment->addButton(rect, this, GUI_ID_MAP_OPTIONS_BUTTON, wgettext("Map Options"));
 		}
 		// Start game button
@@ -651,14 +651,14 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		}
 		// Basic settings button
 		{
-			core::rect<s32> rect(0, 0, 170, 30);
-			rect += topleft_content + v2s32(90, 100);
+			core::rect<s32> rect(0, 0, 220, 30);
+			rect += topleft_content + v2s32(50, 100);
 			Environment->addButton(rect, this, GUI_ID_GAME_SETTINGS_BASIC, wgettext("Hide Advanced Settings"));
 		}
 		// Map options button
 		{
-			core::rect<s32> rect(0, 0, 170, 30);
-			rect += topleft_content + v2s32(290, 100);
+			core::rect<s32> rect(0, 0, 220, 30);
+			rect += topleft_content + v2s32(280, 100);
 			Environment->addButton(rect, this, GUI_ID_MAP_OPTIONS_BUTTON, wgettext("Map Options"));
 		}
 		{
@@ -750,14 +750,14 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		}
 		// Advanced settings button
 		{
-			core::rect<s32> rect(0, 0, 170, 30);
-			rect += topleft_content + v2s32(90, 100);
+			core::rect<s32> rect(0, 0, 220, 30);
+			rect += topleft_content + v2s32(50, 100);
 			Environment->addButton(rect, this, GUI_ID_GAME_SETTINGS_ADV, wgettext("Advanced Settings"));
 		}
 		// Basic settings button
 		{
-			core::rect<s32> rect(0, 0, 170, 30);
-			rect += topleft_content + v2s32(290, 100);
+			core::rect<s32> rect(0, 0, 220, 30);
+			rect += topleft_content + v2s32(280, 100);
 			Environment->addButton(rect, this, GUI_ID_GAME_SETTINGS_BASIC, wgettext("Hide Map Options"));
 		}
 		{

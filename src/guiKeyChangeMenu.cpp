@@ -80,27 +80,24 @@ void GUIKeyChangeMenu::regenerateGui(v2u32 screensize)
 	v2s32 topleft(0, 0);
 	changeCtype("");
 	{
-		core::rect < s32 > rect(0, 0, 125, 20);
-		rect += topleft + v2s32(25, 3);
-		//gui::IGUIStaticText *t =
-		Environment->addStaticText(wgettext("KEYBINDINGS"),
-				rect, false, true, this, -1);
-		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		core::rect < s32 > rect(0, 0, 620, 20);
+		rect += topleft + v2s32(0, 10);
+		gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Controls"), rect, false, true, this, -1);
+		t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
 	v2s32 offset(25, 40);
 	// buttons
 
 	{
-		core::rect < s32 > rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 130, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment->addStaticText(wgettext("Forward"),
-				rect, false, true, this, -1);
-		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Forward"), rect, false, true, this, -1);
+		t->setTextAlignment(gui::EGUIA_LOWERRIGHT, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 > rect(0, 0, 100, 30);
-		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
+		core::rect < s32 > rect(0, 0, 120, 30);
+		rect += topleft + v2s32(offset.X + 135, offset.Y - 5);
 		this->forward = Environment->addButton(rect, this,
 				GUI_ID_KEY_FORWARD_BUTTON,
 				wgettext(key_forward.name()));
@@ -108,186 +105,177 @@ void GUIKeyChangeMenu::regenerateGui(v2u32 screensize)
 
 	offset += v2s32(0, 33);
 	{
-		core::rect < s32 > rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 130, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment->addStaticText(wgettext("Backward"),
-				rect, false, true, this, -1);
-		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Backward"), rect, false, true, this, -1);
+		t->setTextAlignment(gui::EGUIA_LOWERRIGHT, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 > rect(0, 0, 100, 30);
-		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
+		core::rect < s32 > rect(0, 0, 120, 30);
+		rect += topleft + v2s32(offset.X + 135, offset.Y - 5);
 		this->backward = Environment->addButton(rect, this,
 				GUI_ID_KEY_BACKWARD_BUTTON,
 				wgettext(key_backward.name()));
 	}
 	offset += v2s32(0, 33);
 	{
-		core::rect < s32 > rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 130, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment->addStaticText(wgettext("Left"),
-				rect, false, true, this, -1);
-		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Left"), rect, false, true, this, -1);
+		t->setTextAlignment(gui::EGUIA_LOWERRIGHT, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 > rect(0, 0, 100, 30);
-		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
+		core::rect < s32 > rect(0, 0, 120, 30);
+		rect += topleft + v2s32(offset.X + 135, offset.Y - 5);
 		this->left = Environment->addButton(rect, this, GUI_ID_KEY_LEFT_BUTTON,
 				wgettext(key_left.name()));
 	}
 	offset += v2s32(0, 33);
 	{
-		core::rect < s32 > rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 130, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment->addStaticText(wgettext("Right"),
-				rect, false, true, this, -1);
-		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Right"), rect, false, true, this, -1);
+		t->setTextAlignment(gui::EGUIA_LOWERRIGHT, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 > rect(0, 0, 100, 30);
-		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
+		core::rect < s32 > rect(0, 0, 120, 30);
+		rect += topleft + v2s32(offset.X + 135, offset.Y - 5);
 		this->right = Environment->addButton(rect, this,
 				GUI_ID_KEY_RIGHT_BUTTON,
 				wgettext(key_right.name()));
 	}
 	offset += v2s32(0, 33);
 	{
-		core::rect < s32 > rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 130, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment->addStaticText(wgettext("Use"),
-				rect, false, true, this, -1);
-		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Use"), rect, false, true, this, -1);
+		t->setTextAlignment(gui::EGUIA_LOWERRIGHT, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 > rect(0, 0, 100, 30);
-		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
+		core::rect < s32 > rect(0, 0, 120, 30);
+		rect += topleft + v2s32(offset.X + 135, offset.Y - 5);
 		this->use = Environment->addButton(rect, this, GUI_ID_KEY_USE_BUTTON,
 				wgettext(key_use.name()));
 	}
 	offset += v2s32(0, 33);
 	{
-		core::rect < s32 > rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 130, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment->addStaticText(wgettext("Sneak"),
-				rect, false, true, this, -1);
-		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Sneak"), rect, false, true, this, -1);
+		t->setTextAlignment(gui::EGUIA_LOWERRIGHT, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 > rect(0, 0, 100, 30);
-		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
+		core::rect < s32 > rect(0, 0, 120, 30);
+		rect += topleft + v2s32(offset.X + 135, offset.Y - 5);
 		this->sneak = Environment->addButton(rect, this,
 				GUI_ID_KEY_SNEAK_BUTTON,
 				wgettext(key_sneak.name()));
 	}
 	offset += v2s32(0, 33);
 	{
-		core::rect < s32 > rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 130, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment->addStaticText(wgettext("Jump"), rect, false, true, this, -1);
-		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Jump"), rect, false, true, this, -1);
+		t->setTextAlignment(gui::EGUIA_LOWERRIGHT, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 > rect(0, 0, 100, 30);
-		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
+		core::rect < s32 > rect(0, 0, 120, 30);
+		rect += topleft + v2s32(offset.X + 135, offset.Y - 5);
 		this->jump = Environment->addButton(rect, this, GUI_ID_KEY_JUMP_BUTTON,
 				wgettext(key_jump.name()));
 	}
 
 	offset += v2s32(0, 33);
 	{
-		core::rect < s32 > rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 130, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment->addStaticText(wgettext("Inventory"),
-				rect, false, true, this, -1);
-		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Inventory"), rect, false, true, this, -1);
+		t->setTextAlignment(gui::EGUIA_LOWERRIGHT, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 > rect(0, 0, 100, 30);
-		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
+		core::rect < s32 > rect(0, 0, 120, 30);
+		rect += topleft + v2s32(offset.X + 135, offset.Y - 5);
 		this->inventory = Environment->addButton(rect, this,
 				GUI_ID_KEY_INVENTORY_BUTTON,
 				wgettext(key_inventory.name()));
 	}
 	offset += v2s32(0, 33);
 	{
-		core::rect < s32 > rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 130, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment->addStaticText(wgettext("Chat"), rect, false, true, this, -1);
-		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Chat"), rect, false, true, this, -1);
+		t->setTextAlignment(gui::EGUIA_LOWERRIGHT, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 > rect(0, 0, 100, 30);
-		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
+		core::rect < s32 > rect(0, 0, 120, 30);
+		rect += topleft + v2s32(offset.X + 135, offset.Y - 5);
 		this->chat = Environment->addButton(rect, this, GUI_ID_KEY_CHAT_BUTTON,
 				wgettext(key_chat.name()));
 	}
 	offset += v2s32(0, 33);
 	{
-		core::rect < s32 > rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 130, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment->addStaticText(wgettext("Command"), rect, false, true, this, -1);
-		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Command"), rect, false, true, this, -1);
+		t->setTextAlignment(gui::EGUIA_LOWERRIGHT, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 > rect(0, 0, 100, 30);
-		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
+		core::rect < s32 > rect(0, 0, 120, 30);
+		rect += topleft + v2s32(offset.X + 135, offset.Y - 5);
 		this->cmd = Environment->addButton(rect, this, GUI_ID_KEY_CMD_BUTTON,
 				wgettext(key_cmd.name()));
 	}
 
 
 	//next col
-	offset = v2s32(250, 40);
+	offset = v2s32(350, 40);
 	{
-		core::rect < s32 > rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 130, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment->addStaticText(wgettext("Toggle fly"),
-				rect, false, true, this, -1);
-		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Toggle fly"), rect, false, true, this, -1);
+		t->setTextAlignment(gui::EGUIA_LOWERRIGHT, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 > rect(0, 0, 100, 30);
-		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
+		core::rect < s32 > rect(0, 0, 120, 30);
+		rect += topleft + v2s32(offset.X + 135, offset.Y - 5);
 		this->fly = Environment->addButton(rect, this, GUI_ID_KEY_FLY_BUTTON,
 				wgettext(key_fly.name()));
 	}
 	offset += v2s32(0, 33);
 	{
-		core::rect < s32 > rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 130, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment->addStaticText(wgettext("Toggle fast"),
-				rect, false, true, this, -1);
-		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Toggle fast"), rect, false, true, this, -1);
+		t->setTextAlignment(gui::EGUIA_LOWERRIGHT, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 > rect(0, 0, 100, 30);
-		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
+		core::rect < s32 > rect(0, 0, 120, 30);
+		rect += topleft + v2s32(offset.X + 135, offset.Y - 5);
 		this->fast = Environment->addButton(rect, this, GUI_ID_KEY_FAST_BUTTON,
 				wgettext(key_fast.name()));
 	}
 	offset += v2s32(0, 33);
 	{
-		core::rect < s32 > rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 130, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment->addStaticText(wgettext("Range select"),
-				rect, false, true, this, -1);
-		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Range select"), rect, false, true, this, -1);
+		t->setTextAlignment(gui::EGUIA_LOWERRIGHT, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 > rect(0, 0, 100, 30);
-		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
+		core::rect < s32 > rect(0, 0, 120, 30);
+		rect += topleft + v2s32(offset.X + 135, offset.Y - 5);
 		this->range = Environment->addButton(rect, this,
 				GUI_ID_KEY_RANGE_BUTTON,
 				wgettext(key_range.name()));
@@ -295,28 +283,27 @@ void GUIKeyChangeMenu::regenerateGui(v2u32 screensize)
 
 	offset += v2s32(0, 33);
 	{
-		core::rect < s32 > rect(0, 0, 100, 20);
+		core::rect < s32 > rect(0, 0, 130, 20);
 		rect += topleft + v2s32(offset.X, offset.Y);
-		Environment->addStaticText(wgettext("Print stacks"),
-				rect, false, true, this, -1);
-		//t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Print stacks"), rect, false, true, this, -1);
+		t->setTextAlignment(gui::EGUIA_LOWERRIGHT, gui::EGUIA_UPPERLEFT);
 	}
 
 	{
-		core::rect < s32 > rect(0, 0, 100, 30);
-		rect += topleft + v2s32(offset.X + 105, offset.Y - 5);
+		core::rect < s32 > rect(0, 0, 120, 30);
+		rect += topleft + v2s32(offset.X + 135, offset.Y - 5);
 		this->dump = Environment->addButton(rect, this, GUI_ID_KEY_DUMP_BUTTON,
 				wgettext(key_dump.name()));
 	}
 	{
-		core::rect < s32 > rect(0, 0, 100, 30);
-		rect += topleft + v2s32(size.X - 100 - 20, size.Y - 40);
+		core::rect < s32 > rect(0, 0, 120, 30);
+		rect += topleft + v2s32(size.X - 120 - 20, size.Y - 40);
 		Environment->addButton(rect, this, GUI_ID_BACK_BUTTON,
 		wgettext("Save"));
 	}
 	{
-		core::rect < s32 > rect(0, 0, 100, 30);
-		rect += topleft + v2s32(size.X - 100 - 20 - 100 - 20, size.Y - 40);
+		core::rect < s32 > rect(0, 0, 120, 30);
+		rect += topleft + v2s32(size.X - 120 - 20 - 120 - 20, size.Y - 40);
 		Environment->addButton(rect, this, GUI_ID_ABORT_BUTTON,
 		wgettext("Cancel"));
 	}
