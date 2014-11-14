@@ -366,14 +366,14 @@ public:
 		return true;
 	}
 
-	void set(std::string name, std::string value)
+	virtual void set(std::string name, std::string value)
 	{
 		JMutexAutoLock lock(m_mutex);
 
 		m_settings[name] = value;
 	}
 
-	void set(std::string name, const char *value)
+	virtual void set(std::string name, const char *value)
 	{
 		JMutexAutoLock lock(m_mutex);
 
@@ -648,12 +648,13 @@ public:
 
 		return *this;
 	}
-
-private:
+protected:
 	core::map<std::string, std::string> m_settings;
-	core::map<std::string, std::string> m_defaults;
 	// All methods that access m_settings/m_defaults directly should lock this.
 	JMutex m_mutex;
+
+private:
+	core::map<std::string, std::string> m_defaults;
 };
 
 class GameSettings : public Settings
@@ -667,16 +668,22 @@ public:
 	// you'll find this in defaultsettings.cpp
 	void setGameDefaults(std::string mode);
 
-	void set(std::string name, std::string value)
+	virtual void set(std::string name, std::string value)
 	{
-		Settings::set(name,value);
+		{
+			JMutexAutoLock lock(m_mutex);
+			m_settings[name] = value;
+		}
 		if (name == "game_mode")
 			setGameDefaults(value);
 	}
 
-	void set(std::string name, const char *value)
+	virtual void set(std::string name, const char *value)
 	{
-		Settings::set(name,value);
+		{
+			JMutexAutoLock lock(m_mutex);
+			m_settings[name] = value;
+		}
 		if (name == "game_mode")
 			setGameDefaults(value);
 	}
