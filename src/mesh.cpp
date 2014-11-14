@@ -185,15 +185,14 @@ scene::IAnimatedMesh* createModelMesh(scene::ISceneManager* smgr, std::string mo
 static scene::IAnimatedMesh* extrudeARGB(u32 twidth, u32 theight, u8 *data)
 {
 	const s32 argb_wstep = 4 * twidth;
-	const s32 alpha_threshold = 1;
+	const s32 alpha_threshold = 64;
 
 	scene::IMeshBuffer *buf = new scene::SMeshBuffer();
 	video::SColor c(255,255,255,255);
 
 	// Front and back
 	{
-		video::S3DVertex vertices[8] =
-		{
+		video::S3DVertex vertices[8] = {
 			video::S3DVertex(-0.5,-0.5,-0.5, 0,0,-1, c, 0,1),
 			video::S3DVertex(-0.5,+0.5,-0.5, 0,0,-1, c, 0,0),
 			video::S3DVertex(+0.5,+0.5,-0.5, 0,0,-1, c, 1,0),
@@ -211,20 +210,18 @@ static scene::IAnimatedMesh* extrudeARGB(u32 twidth, u32 theight, u8 *data)
 	// (add faces where a solid pixel is next to a transparent one)
 	u8 *solidity = new u8[(twidth+2) * (theight+2)];
 	u32 wstep = twidth + 2;
-	for (u32 y = 0; y < theight + 2; ++y)
-	{
+	for (u32 y = 0; y < theight + 2; ++y) {
 		u8 *scanline = solidity + y * wstep;
-		if (y == 0 || y == theight + 1)
-		{
-			for (u32 x = 0; x < twidth + 2; ++x)
+		if (y == 0 || y == theight + 1) {
+			for (u32 x = 0; x < twidth + 2; ++x) {
 				scanline[x] = 0;
-		}
-		else
-		{
+			}
+		}else{
 			scanline[0] = 0;
 			u8 *argb_scanline = data + (y - 1) * argb_wstep;
-			for (u32 x = 0; x < twidth; ++x)
+			for (u32 x = 0; x < twidth; ++x) {
 				scanline[x+1] = (argb_scanline[x*4+3] >= alpha_threshold);
+			}
 			scanline[twidth + 1] = 0;
 		}
 	}
@@ -232,24 +229,21 @@ static scene::IAnimatedMesh* extrudeARGB(u32 twidth, u32 theight, u8 *data)
 	// without this, there would be occasional "holes" in the mesh
 	f32 eps = 0.01;
 
-	for (u32 y = 0; y <= theight; ++y)
-	{
+	for (u32 y = 0; y <= theight; ++y) {
 		u8 *scanline = solidity + y * wstep + 1;
-		for (u32 x = 0; x <= twidth; ++x)
-		{
-			if (scanline[x] && !scanline[x + wstep])
-			{
+		for (u32 x = 0; x <= twidth; ++x) {
+			if (scanline[x] && !scanline[x + wstep]) {
 				u32 xx = x + 1;
-				while (scanline[xx] && !scanline[xx + wstep])
+				while (scanline[xx] && !scanline[xx + wstep]) {
 					++xx;
+				}
 				f32 vx1 = (x - eps) / (f32) twidth - 0.5;
 				f32 vx2 = (xx + eps) / (f32) twidth - 0.5;
 				f32 vy = 0.5 - (y - eps) / (f32) theight;
 				f32 tx1 = x / (f32) twidth;
 				f32 tx2 = xx / (f32) twidth;
 				f32 ty = (y - 0.5) / (f32) theight;
-				video::S3DVertex vertices[8] =
-				{
+				video::S3DVertex vertices[8] = {
 					video::S3DVertex(vx1,vy,-0.5, 0,-1,0, c, tx1,ty),
 					video::S3DVertex(vx2,vy,-0.5, 0,-1,0, c, tx2,ty),
 					video::S3DVertex(vx2,vy,+0.5, 0,-1,0, c, tx2,ty),
@@ -259,19 +253,18 @@ static scene::IAnimatedMesh* extrudeARGB(u32 twidth, u32 theight, u8 *data)
 				buf->append(vertices, 4, indices, 6);
 				x = xx - 1;
 			}
-			if (!scanline[x] && scanline[x + wstep])
-			{
+			if (!scanline[x] && scanline[x + wstep]) {
 				u32 xx = x + 1;
-				while (!scanline[xx] && scanline[xx + wstep])
+				while (!scanline[xx] && scanline[xx + wstep]) {
 					++xx;
+				}
 				f32 vx1 = (x - eps) / (f32) twidth - 0.5;
 				f32 vx2 = (xx + eps) / (f32) twidth - 0.5;
 				f32 vy = 0.5 - (y + eps) / (f32) theight;
 				f32 tx1 = x / (f32) twidth;
 				f32 tx2 = xx / (f32) twidth;
 				f32 ty = (y + 0.5) / (f32) theight;
-				video::S3DVertex vertices[8] =
-				{
+				video::S3DVertex vertices[8] = {
 					video::S3DVertex(vx1,vy,-0.5, 0,1,0, c, tx1,ty),
 					video::S3DVertex(vx1,vy,+0.5, 0,1,0, c, tx1,ty),
 					video::S3DVertex(vx2,vy,+0.5, 0,1,0, c, tx2,ty),
@@ -284,24 +277,21 @@ static scene::IAnimatedMesh* extrudeARGB(u32 twidth, u32 theight, u8 *data)
 		}
 	}
 
-	for (u32 x = 0; x <= twidth; ++x)
-	{
+	for (u32 x = 0; x <= twidth; ++x) {
 		u8 *scancol = solidity + x + wstep;
-		for (u32 y = 0; y <= theight; ++y)
-		{
-			if (scancol[y * wstep] && !scancol[y * wstep + 1])
-			{
+		for (u32 y = 0; y <= theight; ++y) {
+			if (scancol[y * wstep] && !scancol[y * wstep + 1]) {
 				u32 yy = y + 1;
-				while (scancol[yy * wstep] && !scancol[yy * wstep + 1])
+				while (scancol[yy * wstep] && !scancol[yy * wstep + 1]) {
 					++yy;
+				}
 				f32 vx = (x - eps) / (f32) twidth - 0.5;
 				f32 vy1 = 0.5 - (y - eps) / (f32) theight;
 				f32 vy2 = 0.5 - (yy + eps) / (f32) theight;
 				f32 tx = (x - 0.5) / (f32) twidth;
 				f32 ty1 = y / (f32) theight;
 				f32 ty2 = yy / (f32) theight;
-				video::S3DVertex vertices[8] =
-				{
+				video::S3DVertex vertices[8] = {
 					video::S3DVertex(vx,vy1,-0.5, 1,0,0, c, tx,ty1),
 					video::S3DVertex(vx,vy1,+0.5, 1,0,0, c, tx,ty1),
 					video::S3DVertex(vx,vy2,+0.5, 1,0,0, c, tx,ty2),
@@ -311,19 +301,18 @@ static scene::IAnimatedMesh* extrudeARGB(u32 twidth, u32 theight, u8 *data)
 				buf->append(vertices, 4, indices, 6);
 				y = yy - 1;
 			}
-			if (!scancol[y * wstep] && scancol[y * wstep + 1])
-			{
+			if (!scancol[y * wstep] && scancol[y * wstep + 1]) {
 				u32 yy = y + 1;
-				while (!scancol[yy * wstep] && scancol[yy * wstep + 1])
+				while (!scancol[yy * wstep] && scancol[yy * wstep + 1]) {
 					++yy;
+				}
 				f32 vx = (x + eps) / (f32) twidth - 0.5;
 				f32 vy1 = 0.5 - (y - eps) / (f32) theight;
 				f32 vy2 = 0.5 - (yy + eps) / (f32) theight;
 				f32 tx = (x + 0.5) / (f32) twidth;
 				f32 ty1 = y / (f32) theight;
 				f32 ty2 = yy / (f32) theight;
-				video::S3DVertex vertices[8] =
-				{
+				video::S3DVertex vertices[8] = {
 					video::S3DVertex(vx,vy1,-0.5, -1,0,0, c, tx,ty1),
 					video::S3DVertex(vx,vy2,-0.5, -1,0,0, c, tx,ty2),
 					video::S3DVertex(vx,vy2,+0.5, -1,0,0, c, tx,ty2),
@@ -335,6 +324,8 @@ static scene::IAnimatedMesh* extrudeARGB(u32 twidth, u32 theight, u8 *data)
 			}
 		}
 	}
+
+	delete[] solidity;
 
 	// Add to mesh
 	scene::SMesh *mesh = new scene::SMesh();
@@ -351,8 +342,7 @@ scene::IAnimatedMesh* createExtrudedMesh(video::ITexture *texture,
 	scene::IAnimatedMesh *mesh = NULL;
 	core::dimension2d<u32> size = texture->getSize();
 	video::ECOLOR_FORMAT format = texture->getColorFormat();
-	if (format == video::ECF_A8R8G8B8)
-	{
+	if (format == video::ECF_A8R8G8B8) {
 		// Texture is in the correct color format, we can pass it
 		// to extrudeARGB right away.
 		void *data = texture->lock(MY_ETLM_READ_ONLY);
@@ -360,17 +350,14 @@ scene::IAnimatedMesh* createExtrudedMesh(video::ITexture *texture,
 			return NULL;
 		mesh = extrudeARGB(size.Width, size.Height, (u8*) data);
 		texture->unlock();
-	}
-	else
-	{
+	}else{
 		video::IImage *img1 = driver->createImageFromData(format, size, texture->lock(MY_ETLM_READ_ONLY));
 		if (img1 == NULL)
 			return NULL;
 
 		// img1 is in the texture's color format, convert to 8-bit ARGB
 		video::IImage *img2 = driver->createImage(video::ECF_A8R8G8B8, size);
-		if (img2 != NULL)
-		{
+		if (img2 != NULL) {
 			img1->copyTo(img2);
 
 			mesh = extrudeARGB(size.Width, size.Height, (u8*) img2->lock());
