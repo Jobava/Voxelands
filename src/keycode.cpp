@@ -1,27 +1,34 @@
-/*
-Minetest-c55
-Copyright (C) 2010-2011 celeron55, Perttu Ahola <celeron55@gmail.com>
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along
-with this program; if not, write to the Free Software Foundation, Inc.,
-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-*/
+/************************************************************************
+* Minetest-c55
+* Copyright (C) 2010-2011 celeron55, Perttu Ahola <celeron55@gmail.com>
+*
+* keycode.cpp
+* voxelands - 3d voxel world sandbox game
+* Copyright (C) Lisa 'darkrose' Milne 2013-2014 <lisa@ltmnet.com>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but
+* WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+* See the GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>
+*
+* License updated from GPLv2 or later to GPLv3 or later by Lisa Milne
+* for Voxelands.
+************************************************************************/
 
 #include "keycode.h"
 #include "main.h" // For g_settings
 #include "exceptions.h"
 #include "settings.h"
 #include "hex.h"
+#include <map>
 
 class UnknownKeycode : public BaseException
 {
@@ -182,13 +189,13 @@ irr::EKEY_CODE keyname_to_keycode(const char *name)
 }
 
 static const char *KeyNames[] =
-{ "-", "KEY_LBUTTON", "KEY_RBUTTON", "Cancel", "Middle Button", "X Button 1",
-		"X Button 2", "-", "Back", "Tab", "-", "-", "Clear", "Return", "-",
-		"-", "KEY_SHIFT", "Control", "Menu", "Pause", "Capital", "Kana", "-",
-		"Junja", "Final", "Kanji", "-", "Escape", "Convert", "Nonconvert",
-		"Accept", "Mode Change", "KEY_SPACE", "Priot", "Next", "KEY_END",
-		"KEY_HOME", "Left", "Up", "Right", "Down", "Select", "KEY_PRINT",
-		"Execute", "Snapshot", "Insert", "Delete", "Help", "KEY_KEY_0",
+{ "-", "KEY_LBUTTON", "KEY_RBUTTON", "KEY_CANCEL", "KEY_MBUTTON", "KEY_XBUTTON1",
+		"KEY_XBUTTON2", "-", "KEY_BACK", "KEY_TAB", "-", "-", "KEY_CLEAR", "KEY_RETURN", "-",
+		"-", "KEY_SHIFT", "KEY_CONTROL", "KEY_MENU", "KEY_PAUSE", "KEY_CAPITAL", "KEY_KANA", "-",
+		"KEY_JUNJA", "KEY_FINAL", "KEY_KANJI", "-", "KEY_ESCAPE", "KEY_CONVERT", "KEY_NONCONVERT",
+		"KEY_ACCEPT", "KEY_MODECHANGE", "KEY_SPACE", "KEY_PRIOR", "KEY_NEXT", "KEY_END",
+		"KEY_HOME", "KEY_LEFT", "KEY_UP", "KEY_RIGHT", "KEY_DOWN", "KEY_SELECT", "KEY_PRINT",
+		"KEY_EXECUTE", "KEY_SNAPSHOT", "KEY_INSERT", "KEY_DELETE", "KEY_HELP", "KEY_KEY_0",
 		"KEY_KEY_1", "KEY_KEY_2", "KEY_KEY_3", "KEY_KEY_4", "KEY_KEY_5",
 		"KEY_KEY_6", "KEY_KEY_7", "KEY_KEY_8", "KEY_KEY_9", "-", "-", "-", "-",
 		"-", "-", "-", "KEY_KEY_A", "KEY_KEY_B", "KEY_KEY_C", "KEY_KEY_D",
@@ -196,25 +203,25 @@ static const char *KeyNames[] =
 		"KEY_KEY_J", "KEY_KEY_K", "KEY_KEY_L", "KEY_KEY_M", "KEY_KEY_N",
 		"KEY_KEY_O", "KEY_KEY_P", "KEY_KEY_Q", "KEY_KEY_R", "KEY_KEY_S",
 		"KEY_KEY_T", "KEY_KEY_U", "KEY_KEY_V", "KEY_KEY_W", "KEY_KEY_X",
-		"KEY_KEY_Y", "KEY_KEY_Z", "Left Windows", "Right Windows", "Apps", "-",
-		"Sleep", "KEY_NUMPAD0", "KEY_NUMPAD1", "KEY_NUMPAD2", "KEY_NUMPAD3",
+		"KEY_KEY_Y", "KEY_KEY_Z", "KEY_LWIN", "KEY_RWIN", "KEY_APPS", "-",
+		"KEY_SLEEP", "KEY_NUMPAD0", "KEY_NUMPAD1", "KEY_NUMPAD2", "KEY_NUMPAD3",
 		"KEY_NUMPAD4", "KEY_NUMPAD5", "KEY_NUMPAD6", "KEY_NUMPAD7",
-		"KEY_NUMPAD8", "KEY_NUMPAD9", "Numpad *", "Numpad +", "Numpad /",
-		"Numpad -", "Numpad .", "Numpad /", "KEY_F1", "KEY_F2", "KEY_F3",
+		"KEY_NUMPAD8", "KEY_NUMPAD9", "KEY_MULTIPLY", "KEY_ADD", "KEY_SEPERATOR",
+		"KEY_SUBTRACT", "KEY_DECIMAL", "KEY_DIVIDE", "KEY_F1", "KEY_F2", "KEY_F3",
 		"KEY_F4", "KEY_F5", "KEY_F6", "KEY_F7", "KEY_F8", "KEY_F9", "KEY_F10",
 		"KEY_F11", "KEY_F12", "KEY_F13", "KEY_F14", "KEY_F15", "KEY_F16",
 		"KEY_F17", "KEY_F18", "KEY_F19", "KEY_F20", "KEY_F21", "KEY_F22",
 		"KEY_F23", "KEY_F24", "-", "-", "-", "-", "-", "-", "-", "-",
-		"Num Lock", "Scroll Lock", "-", "-", "-", "-", "-", "-", "-", "-", "-",
-		"-", "-", "-", "-", "-", "KEY_LSHIFT", "KEY_RSHIFT", "Left Control",
-		"Right Control", "Left Menu", "Right Menu", "-", "-", "-", "-", "-",
+		"KEY_NUMLOCK", "KEY_SCROLL", "-", "-", "-", "-", "-", "-", "-", "-", "-",
+		"-", "-", "-", "-", "-", "KEY_LSHIFT", "KEY_RSHIFT", "KEY_LCONTROL",
+		"KEY_RCONTROL", "KEY_LMENU", "KEY_RMENU", "-", "-", "-", "-", "-",
 		"-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-",
-		"-", "-", "Plus", "Comma", "Minus", "Period", "-", "-", "-", "-", "-",
+		"-", "-", "KEY_PLUS", "KEY_COMMA", "KEY_MINUS", "KEY_PERIOD", "-", "-", "-", "-", "-",
 		"-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-",
 		"-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-",
 		"-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-",
-		"-", "-", "-", "-", "-", "-", "-", "-", "Attn", "CrSel", "ExSel",
-		"Erase OEF", "Play", "Zoom", "PA1", "OEM Clear", "-" };
+		"-", "-", "-", "-", "-", "-", "-", "-", "KEY_ATTN", "KEY_CRSEL", "KEY_EXSEL",
+		"KEY_EREOF", "KEY_PLAY", "KEY_ZOOM", "KEY_PA1", "KEY_OEM_CLEAR", "-" };
 
 #define N_(text) text
 
@@ -287,17 +294,27 @@ KeyPress::KeyPress(const char *name)
 	m_name = name[0];
 }
 
-KeyPress::KeyPress(const irr::SEvent::SKeyInput &in)
+KeyPress::KeyPress(const irr::SEvent::SKeyInput &in, bool prefer_character)
 {
 	Key = in.Key;
 	Char = in.Char;
+
+	if(prefer_character){
+		m_name.resize(MB_CUR_MAX+1, '\0');
+		int written = wctomb(&m_name[0], Char);
+		if(written > 0){
+			infostream<<"KeyPress: Preferring character for "<<m_name<<std::endl;
+			Key = irr::KEY_KEY_CODES_COUNT;
+			return;
+		}
+	}
+
 	if (valid_kcode(Key)) {
 		m_name = KeyNames[Key];
 	} else {
-		size_t maxlen = wctomb(NULL, Char);
-		m_name.resize(maxlen+1, '\0');
-		maxlen = wctomb(&m_name[0], Char);
-		if(maxlen < 0){
+		m_name.resize(MB_CUR_MAX+1, '\0');
+		int written = wctomb(&m_name[0], Char);
+		if(written < 0){
 			std::string hexstr = hex_encode((const char*)&Char, sizeof(Char));
 			errorstream<<"KeyPress: Unexpected multibyte character "<<hexstr<<std::endl;
 		}
@@ -323,6 +340,7 @@ const char *KeyPress::name() const
 }
 
 const KeyPress EscapeKey("KEY_ESCAPE");
+const KeyPress CancelKey("KEY_CANCEL");
 const KeyPress NumberKey[] = {
 	KeyPress("KEY_KEY_0"), KeyPress("KEY_KEY_1"), KeyPress("KEY_KEY_2"),
 	KeyPress("KEY_KEY_3"), KeyPress("KEY_KEY_4"), KeyPress("KEY_KEY_5"),
@@ -334,17 +352,16 @@ const KeyPress NumberKey[] = {
 */
 
 // A simple cache for quicker lookup
-core::map<std::string, KeyPress> g_key_setting_cache;
+std::map<std::string, KeyPress> g_key_setting_cache;
 
 KeyPress getKeySetting(const char *settingname)
 {
-	core::map<std::string, KeyPress>::Node *n;
+	std::map<std::string, KeyPress>::iterator n;
 	n = g_key_setting_cache.find(settingname);
-	if(n)
-		return n->getValue();
-	g_key_setting_cache.insert(settingname,
-			g_settings->get(settingname).c_str());
-	return g_key_setting_cache.find(settingname)->getValue();
+	if(n != g_key_setting_cache.end())
+		return n->second;
+	g_key_setting_cache[settingname] = g_settings->get(settingname).c_str();
+	return g_key_setting_cache.find(settingname)->second;
 }
 
 void clearKeyCache()
