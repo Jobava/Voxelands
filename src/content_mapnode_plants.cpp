@@ -95,29 +95,13 @@ void content_mapnode_plants(bool repeat)
 	f->setAllTextures("conifer_tree.png");
 	f->setTexture(0, "conifer_tree_top.png");
 	f->setTexture(1, "conifer_tree_top.png");
+	f->setInventoryTextureCube("conifer_tree_top.png", "conifer_tree.png", "conifer_tree.png");
+	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->flammable = 2; // can be set on fire
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->cook_result = std::string("CraftItem lump_of_charcoal 1");
-	f->fuel_time = 30;
-	f->draw_type = CDT_NODEBOX;
-	f->param_type = CPT_LIGHT;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->is_ground_content = true;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->visual_solidness = 0;
 	f->fuel_time = 25;
-	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.4375*BS,
-		-0.5*BS,
-		-0.4375*BS,
-		0.4375*BS,
-		0.5*BS,
-		0.4375*BS
-	));
-	f->setInventoryTextureNodeBox(i,"conifer_tree_top.png", "conifer_tree.png", "conifer_tree.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.8;
 	lists::add("creative",i);
