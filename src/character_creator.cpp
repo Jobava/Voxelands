@@ -244,8 +244,7 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 	{
 		core::rect<s32> rect(0, 0, 105, 30);
 		rect += rightside + v2s32(15, 95);
-		std::wstring txt = wgettext("Taller");
-		Environment->addButton(rect, this, GUI_ID_CD_TALLER_BUTTON, txt.c_str());
+		Environment->addButton(rect, this, GUI_ID_CD_TALLER_BUTTON, wgettext("Taller"));
 	}
 	{
 		core::rect<s32> rect(0, 0, 105, 30);
