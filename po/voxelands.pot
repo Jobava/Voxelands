@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voxelands\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-13 23:58+1000\n"
+"POT-Creation-Date: 2014-11-14 20:51+1000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
 #: src/character_creator.cpp:58
 msgid "White Skin"
@@ -238,35 +239,35 @@ msgstr ""
 msgid "Create Your Character"
 msgstr ""
 
-#: src/character_creator.cpp:235
+#: src/character_creator.cpp:234
 msgid "Male"
 msgstr ""
 
-#: src/character_creator.cpp:240
+#: src/character_creator.cpp:239
 msgid "Female"
 msgstr ""
 
-#: src/character_creator.cpp:247
+#: src/character_creator.cpp:246
 msgid "Taller"
 msgstr ""
 
-#: src/character_creator.cpp:252
+#: src/character_creator.cpp:251
 msgid "Shorter"
 msgstr ""
 
-#: src/character_creator.cpp:259
+#: src/character_creator.cpp:258
 msgid "Wider"
 msgstr ""
 
-#: src/character_creator.cpp:264
+#: src/character_creator.cpp:263
 msgid "Thinner"
 msgstr ""
 
-#: src/character_creator.cpp:439
+#: src/character_creator.cpp:422
 msgid "Done"
 msgstr ""
 
-#: src/character_creator.cpp:444 src/guiKeyChangeMenu.cpp:321
+#: src/character_creator.cpp:427 src/guiKeyChangeMenu.cpp:308
 #: src/keycode.cpp:222
 msgid "Cancel"
 msgstr ""
@@ -2714,8 +2715,10 @@ msgstr ""
 
 #: src/content_nodemeta.cpp:1044
 #, c-format
-msgid "Armed Explosive: %d seconds till detonation"
-msgstr ""
+msgid "Armed Explosive: %d second till detonation"
+msgid_plural "Armed Explosive: %d seconds till detonation"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/content_nodemeta.cpp:1094
 msgid "Incinerator is active"
@@ -2767,7 +2770,7 @@ msgid "Content"
 msgstr ""
 
 #: src/content_nodemeta.cpp:1863 src/content_nodemeta.cpp:1962
-#: src/guiKeyChangeMenu.cpp:315
+#: src/guiKeyChangeMenu.cpp:302
 msgid "Save"
 msgstr ""
 
@@ -2895,143 +2898,143 @@ msgstr ""
 msgid "Steel Spear"
 msgstr ""
 
-#: src/game.cpp:202
+#: src/game.cpp:207
 msgid "Clothes"
 msgstr ""
 
-#: src/game.cpp:221
+#: src/game.cpp:226
 msgid "Drop to Ground"
 msgstr ""
 
-#: src/game.cpp:731
+#: src/game.cpp:737
 msgid "Loading"
 msgstr ""
 
-#: src/game.cpp:805
+#: src/game.cpp:811
 msgid "Loading..."
 msgstr ""
 
-#: src/game.cpp:814
+#: src/game.cpp:820
 msgid "Creating server..."
 msgstr ""
 
-#: src/game.cpp:825
+#: src/game.cpp:831
 msgid "Creating client..."
 msgstr ""
 
-#: src/game.cpp:830
+#: src/game.cpp:836
 msgid "Resolving address..."
 msgstr ""
 
-#: src/game.cpp:841
+#: src/game.cpp:847
 msgid "Couldn't resolve address"
 msgstr ""
 
-#: src/game.cpp:901
+#: src/game.cpp:917
 #, c-format
 msgid "Access denied. Reason: %ls"
 msgstr ""
 
-#: src/game.cpp:905
+#: src/game.cpp:921
 msgid "Unable to Connect (port already in use?)."
 msgstr ""
 
-#: src/game.cpp:908
+#: src/game.cpp:924
 msgid "Connection timed out."
 msgstr ""
 
-#: src/game.cpp:1064
+#: src/game.cpp:1080
 msgid "Access denied. Reason: "
 msgstr ""
 
-#: src/game.cpp:1323
+#: src/game.cpp:1339
 msgid "free_move disabled"
 msgstr ""
 
-#: src/game.cpp:1327
+#: src/game.cpp:1343
 msgid "free_move enabled"
 msgstr ""
 
-#: src/game.cpp:1334
+#: src/game.cpp:1350
 msgid "fast_move disabled"
 msgstr ""
 
-#: src/game.cpp:1338
+#: src/game.cpp:1354
 msgid "fast_move enabled"
 msgstr ""
 
-#: src/game.cpp:1351
+#: src/game.cpp:1367
 #, c-format
 msgid "Saved screenshot to '%s'"
 msgstr ""
 
-#: src/game.cpp:1364
+#: src/game.cpp:1380
 msgid "HUD shown"
 msgstr ""
 
-#: src/game.cpp:1366
+#: src/game.cpp:1382
 msgid "HUD hidden"
 msgstr ""
 
-#: src/game.cpp:1373
+#: src/game.cpp:1389
 msgid "Chat shown"
 msgstr ""
 
-#: src/game.cpp:1375
+#: src/game.cpp:1391
 msgid "Chat hidden"
 msgstr ""
 
-#: src/game.cpp:1382
+#: src/game.cpp:1398
 msgid "Fog disabled"
 msgstr ""
 
-#: src/game.cpp:1384
+#: src/game.cpp:1400
 msgid "Fog enabled"
 msgstr ""
 
-#: src/game.cpp:1391
+#: src/game.cpp:1407
 msgid "Camera update disabled"
 msgstr ""
 
-#: src/game.cpp:1393
+#: src/game.cpp:1409
 msgid "Camera update enabled"
 msgstr ""
 
-#: src/game.cpp:1404
+#: src/game.cpp:1420
 msgid "Debug info shown"
 msgstr ""
 
-#: src/game.cpp:1410
+#: src/game.cpp:1426
 msgid "Debug info and frametime graph hidden"
 msgstr ""
 
-#: src/game.cpp:1414
+#: src/game.cpp:1430
 msgid "Frametime graph shown"
 msgstr ""
 
-#: src/game.cpp:1427
+#: src/game.cpp:1443
 #, c-format
 msgid "Profiler shown (page %d of %d)"
 msgstr ""
 
-#: src/game.cpp:1431
+#: src/game.cpp:1447
 msgid "Profiler hidden"
 msgstr ""
 
-#: src/game.cpp:1440 src/game.cpp:1452
+#: src/game.cpp:1456 src/game.cpp:1468
 #, c-format
 msgid "Minimum viewing range changed to %d"
 msgstr ""
 
-#: src/game.cpp:1495
+#: src/game.cpp:1511
 msgid "Enabled full viewing range"
 msgstr ""
 
-#: src/game.cpp:1499
+#: src/game.cpp:1515
 msgid "Disabled full viewing range"
 msgstr ""
 
-#: src/game.cpp:2355
+#: src/game.cpp:2371
 msgid "Shutting down..."
 msgstr ""
 
@@ -3043,81 +3046,81 @@ msgstr ""
 msgid "Respawn"
 msgstr ""
 
-#: src/guiFormSpecMenu.cpp:454
+#: src/guiFormSpecMenu.cpp:459
 msgid "Left click: Move all items, Right click: Move single item"
 msgstr ""
 
-#: src/guiFormSpecMenu.cpp:479 src/guiTextInputMenu.cpp:126
+#: src/guiFormSpecMenu.cpp:482 src/guiTextInputMenu.cpp:126
 msgid "Write It"
 msgstr ""
 
-#: src/guiKeyChangeMenu.cpp:86
-msgid "KEYBINDINGS"
+#: src/guiKeyChangeMenu.cpp:85
+msgid "Controls"
 msgstr ""
 
-#: src/guiKeyChangeMenu.cpp:96
+#: src/guiKeyChangeMenu.cpp:94
 msgid "Forward"
 msgstr ""
 
-#: src/guiKeyChangeMenu.cpp:113
+#: src/guiKeyChangeMenu.cpp:110
 msgid "Backward"
 msgstr ""
 
-#: src/guiKeyChangeMenu.cpp:129 src/keycode.cpp:227
+#: src/guiKeyChangeMenu.cpp:125 src/keycode.cpp:227
 msgid "Left"
 msgstr ""
 
-#: src/guiKeyChangeMenu.cpp:144 src/keycode.cpp:227
+#: src/guiKeyChangeMenu.cpp:139 src/keycode.cpp:227
 msgid "Right"
 msgstr ""
 
-#: src/guiKeyChangeMenu.cpp:160
+#: src/guiKeyChangeMenu.cpp:154
 msgid "Use"
 msgstr ""
 
-#: src/guiKeyChangeMenu.cpp:175
+#: src/guiKeyChangeMenu.cpp:168
 msgid "Sneak"
 msgstr ""
 
-#: src/guiKeyChangeMenu.cpp:191
+#: src/guiKeyChangeMenu.cpp:183
 msgid "Jump"
 msgstr ""
 
-#: src/guiKeyChangeMenu.cpp:206
+#: src/guiKeyChangeMenu.cpp:198
 msgid "Inventory"
 msgstr ""
 
-#: src/guiKeyChangeMenu.cpp:222
+#: src/guiKeyChangeMenu.cpp:213
 msgid "Chat"
 msgstr ""
 
-#: src/guiKeyChangeMenu.cpp:236
+#: src/guiKeyChangeMenu.cpp:227
 msgid "Command"
 msgstr ""
 
-#: src/guiKeyChangeMenu.cpp:253
+#: src/guiKeyChangeMenu.cpp:244
 msgid "Toggle fly"
 msgstr ""
 
-#: src/guiKeyChangeMenu.cpp:268
+#: src/guiKeyChangeMenu.cpp:258
 msgid "Toggle fast"
 msgstr ""
 
-#: src/guiKeyChangeMenu.cpp:283
+#: src/guiKeyChangeMenu.cpp:272
 msgid "Range select"
 msgstr ""
 
-#: src/guiKeyChangeMenu.cpp:300
+#: src/guiKeyChangeMenu.cpp:288
 msgid "Print stacks"
 msgstr ""
 
-#: src/guiKeyChangeMenu.cpp:556 src/guiKeyChangeMenu.cpp:561
-#: src/guiKeyChangeMenu.cpp:566 src/guiKeyChangeMenu.cpp:571
-#: src/guiKeyChangeMenu.cpp:576 src/guiKeyChangeMenu.cpp:581
-#: src/guiKeyChangeMenu.cpp:586 src/guiKeyChangeMenu.cpp:591
-#: src/guiKeyChangeMenu.cpp:596 src/guiKeyChangeMenu.cpp:601
-#: src/guiKeyChangeMenu.cpp:606 src/guiKeyChangeMenu.cpp:611
-#: src/guiKeyChangeMenu.cpp:616 src/guiKeyChangeMenu.cpp:621
+#: src/guiKeyChangeMenu.cpp:543 src/guiKeyChangeMenu.cpp:548
+#: src/guiKeyChangeMenu.cpp:553 src/guiKeyChangeMenu.cpp:558
+#: src/guiKeyChangeMenu.cpp:563 src/guiKeyChangeMenu.cpp:568
+#: src/guiKeyChangeMenu.cpp:573 src/guiKeyChangeMenu.cpp:578
+#: src/guiKeyChangeMenu.cpp:583 src/guiKeyChangeMenu.cpp:588
+#: src/guiKeyChangeMenu.cpp:593 src/guiKeyChangeMenu.cpp:598
+#: src/guiKeyChangeMenu.cpp:603 src/guiKeyChangeMenu.cpp:608
 msgid "press Key"
 msgstr ""
 
@@ -3125,12 +3128,12 @@ msgstr ""
 msgid "Character Creator"
 msgstr ""
 
-#: src/guiMainMenu.cpp:403 src/guiMainMenu.cpp:589 src/guiMainMenu.cpp:632
-#: src/guiMainMenu.cpp:731
+#: src/guiMainMenu.cpp:403 src/guiMainMenu.cpp:588 src/guiMainMenu.cpp:630
+#: src/guiMainMenu.cpp:728
 msgid "Single Player"
 msgstr ""
 
-#: src/guiMainMenu.cpp:409 src/guiMainMenu.cpp:462
+#: src/guiMainMenu.cpp:409 src/guiMainMenu.cpp:463
 msgid "Multi Player"
 msgstr ""
 
@@ -3138,7 +3141,7 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: src/guiMainMenu.cpp:421 src/guiMainMenu.cpp:855
+#: src/guiMainMenu.cpp:421 src/guiMainMenu.cpp:852
 msgid "Credits"
 msgstr ""
 
@@ -3146,15 +3149,15 @@ msgstr ""
 msgid "Quit"
 msgstr ""
 
-#: src/guiMainMenu.cpp:470
+#: src/guiMainMenu.cpp:471
 msgid "Name/Password"
 msgstr ""
 
-#: src/guiMainMenu.cpp:496
+#: src/guiMainMenu.cpp:497
 msgid "Address/Port"
 msgstr ""
 
-#: src/guiMainMenu.cpp:517
+#: src/guiMainMenu.cpp:518
 msgid "Connect"
 msgstr ""
 
@@ -3202,143 +3205,143 @@ msgstr ""
 msgid "Change keys"
 msgstr ""
 
-#: src/guiMainMenu.cpp:598 src/guiMainMenu.cpp:641 src/guiMainMenu.cpp:740
+#: src/guiMainMenu.cpp:597 src/guiMainMenu.cpp:639 src/guiMainMenu.cpp:737
 msgid "Creative Mode"
 msgstr ""
 
-#: src/guiMainMenu.cpp:599 src/guiMainMenu.cpp:642 src/guiMainMenu.cpp:741
+#: src/guiMainMenu.cpp:598 src/guiMainMenu.cpp:640 src/guiMainMenu.cpp:738
 msgid "Adventure Mode"
 msgstr ""
 
-#: src/guiMainMenu.cpp:600 src/guiMainMenu.cpp:643 src/guiMainMenu.cpp:742
+#: src/guiMainMenu.cpp:599 src/guiMainMenu.cpp:641 src/guiMainMenu.cpp:739
 msgid "Survival Mode"
 msgstr ""
 
-#: src/guiMainMenu.cpp:613 src/guiMainMenu.cpp:755
+#: src/guiMainMenu.cpp:612 src/guiMainMenu.cpp:752
 msgid "Advanced Settings"
 msgstr ""
 
-#: src/guiMainMenu.cpp:619 src/guiMainMenu.cpp:662
+#: src/guiMainMenu.cpp:618 src/guiMainMenu.cpp:660
 msgid "Map Options"
 msgstr ""
 
-#: src/guiMainMenu.cpp:625 src/guiMainMenu.cpp:724 src/guiMainMenu.cpp:848
+#: src/guiMainMenu.cpp:624 src/guiMainMenu.cpp:722 src/guiMainMenu.cpp:845
 msgid "Start Game"
 msgstr ""
 
-#: src/guiMainMenu.cpp:656
+#: src/guiMainMenu.cpp:654
 msgid "Hide Advanced Settings"
 msgstr ""
 
-#: src/guiMainMenu.cpp:667
+#: src/guiMainMenu.cpp:665
 msgid "Creatures"
 msgstr ""
 
-#: src/guiMainMenu.cpp:674
+#: src/guiMainMenu.cpp:672
 msgid "Passive"
 msgstr ""
 
-#: src/guiMainMenu.cpp:675
+#: src/guiMainMenu.cpp:673
 msgid "Passive & Aggressive"
 msgstr ""
 
-#: src/guiMainMenu.cpp:676
+#: src/guiMainMenu.cpp:674
 msgid "Passive, Aggressive, & Destructive"
 msgstr ""
 
-#: src/guiMainMenu.cpp:688
+#: src/guiMainMenu.cpp:686
 msgid "Player Damage"
 msgstr ""
 
-#: src/guiMainMenu.cpp:693
+#: src/guiMainMenu.cpp:691
 msgid "Suffocation/Drowning"
 msgstr ""
 
-#: src/guiMainMenu.cpp:698
+#: src/guiMainMenu.cpp:696
 msgid "Hunger"
 msgstr ""
 
-#: src/guiMainMenu.cpp:703
+#: src/guiMainMenu.cpp:701
 msgid "Tool Wear"
 msgstr ""
 
-#: src/guiMainMenu.cpp:708
+#: src/guiMainMenu.cpp:706
 msgid "Infinite Inventory"
 msgstr ""
 
-#: src/guiMainMenu.cpp:713
+#: src/guiMainMenu.cpp:711
 msgid "Initial Inventory"
 msgstr ""
 
-#: src/guiMainMenu.cpp:718
+#: src/guiMainMenu.cpp:716
 msgid "Droppable Inventory"
 msgstr ""
 
-#: src/guiMainMenu.cpp:761
+#: src/guiMainMenu.cpp:758
 msgid "Hide Map Options"
 msgstr ""
 
-#: src/guiMainMenu.cpp:766
+#: src/guiMainMenu.cpp:763
 msgid "Create New Map"
 msgstr ""
 
-#: src/guiMainMenu.cpp:772
+#: src/guiMainMenu.cpp:769
 msgid "Warning! Your old map will be deleted!"
 msgstr ""
 
-#: src/guiMainMenu.cpp:778
+#: src/guiMainMenu.cpp:775
 msgid "Map Type"
 msgstr ""
 
-#: src/guiMainMenu.cpp:785
+#: src/guiMainMenu.cpp:782
 msgid "Flat"
 msgstr ""
 
-#: src/guiMainMenu.cpp:786
+#: src/guiMainMenu.cpp:783
 msgid "Flatter"
 msgstr ""
 
-#: src/guiMainMenu.cpp:787
+#: src/guiMainMenu.cpp:784
 msgid "Smoother"
 msgstr ""
 
-#: src/guiMainMenu.cpp:788
+#: src/guiMainMenu.cpp:785
 msgid "Default"
 msgstr ""
 
-#: src/guiMainMenu.cpp:789
+#: src/guiMainMenu.cpp:786
 msgid "Hilly"
 msgstr ""
 
-#: src/guiMainMenu.cpp:790
+#: src/guiMainMenu.cpp:787
 msgid "Mountains"
 msgstr ""
 
-#: src/guiMainMenu.cpp:791
+#: src/guiMainMenu.cpp:788
 msgid "Crazy"
 msgstr ""
 
-#: src/guiMainMenu.cpp:792
+#: src/guiMainMenu.cpp:789
 msgid "Crazy Hills"
 msgstr ""
 
-#: src/guiMainMenu.cpp:814
+#: src/guiMainMenu.cpp:811
 msgid "Use Fixed Seed"
 msgstr ""
 
-#: src/guiMainMenu.cpp:820
+#: src/guiMainMenu.cpp:817
 msgid "Map Seed"
 msgstr ""
 
-#: src/guiMainMenu.cpp:835
+#: src/guiMainMenu.cpp:832
 msgid "Clear Map"
 msgstr ""
 
-#: src/guiMainMenu.cpp:840
+#: src/guiMainMenu.cpp:837
 msgid "Warning! This will delete all construction from your map!"
 msgstr ""
 
-#: src/guiMainMenu.cpp:863
+#: src/guiMainMenu.cpp:860
 msgid ""
 "Voxelands\n"
 "http://www.voxelands.com/\n"
@@ -3694,15 +3697,15 @@ msgstr ""
 msgid "Zoom"
 msgstr ""
 
-#: src/main.cpp:1130
+#: src/main.cpp:1138
 msgid "Setting Up UI"
 msgstr ""
 
-#: src/main.cpp:1153
+#: src/main.cpp:1161
 msgid "Loading MapNodes"
 msgstr ""
 
-#: src/main.cpp:1155
+#: src/main.cpp:1163
 msgid "Loading Creatures"
 msgstr ""
 

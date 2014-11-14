@@ -878,7 +878,17 @@ void the_game(
 			}
 
 			wchar_t buff[512];
-			swprintf(buff,512,L"Connecting to server... (timeout in %d seconds)",(int)(10.0 - time_counter + 1.0));
+			int tot = (10.0 - time_counter + 1.0);
+			swprintf(
+				buff,
+				512,
+				wngettext(
+					"Connecting to server... (timeout in %d second)",
+					"Connecting to server... (timeout in %d seconds)",
+					tot
+				),
+				tot
+			);
 			//draw_load_screen(ss.str(), driver, font);
 			drawLoadingScreen(driver,std::wstring(buff));
 

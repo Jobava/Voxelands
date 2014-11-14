@@ -1041,7 +1041,7 @@ std::wstring TNTNodeMetadata::infoText()
 		return wgettext("Armed Explosive: about to detonate");
 
 	char buff[512];
-	snprintf(buff,512,gettext("Armed Explosive: %d seconds till detonation"),s);
+	snprintf(buff,512,ngettext("Armed Explosive: %d second till detonation","Armed Explosive: %d seconds till detonation",s),s);
 	return narrow_to_wide(buff);
 }
 
