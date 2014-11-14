@@ -61,6 +61,11 @@
 #include "content_mapnode.h"
 #include "content_nodemeta.h"
 
+/* because windows sucks */
+#if _WIN32
+#define swprintf _snwprintf
+#endif
+
 /*
 	Setting this to 1 enables a special camera mode that forces
 	the renderers to think that the camera statically points from
