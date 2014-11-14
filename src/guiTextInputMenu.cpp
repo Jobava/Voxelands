@@ -90,16 +90,16 @@ void GUITextInputMenu::regenerateGui(v2u32 screensize)
 		Calculate new sizes and positions
 	*/
 	//core::rect<s32> rect(
-			//screensize.X/2 - 580/2,
-			//screensize.Y/2 - 300/2,
-			//screensize.X/2 + 580/2,
-			//screensize.Y/2 + 300/2
+			//screensize.X/2 - 160,
+			//screensize.Y/2 - 60,
+			//screensize.X/2 + 160,
+			//screensize.Y/2 + 60
 	//);
 	core::rect<s32> rect(
-			screensize.X/2 - 160,
-			screensize.Y/2 - 60,
-			screensize.X/2 + 160,
-			screensize.Y/2 + 60
+			100,
+			screensize.Y - 100,
+			400,
+			screensize.Y - 70
 	);
 
 	DesiredRect = rect;
@@ -111,10 +111,10 @@ void GUITextInputMenu::regenerateGui(v2u32 screensize)
 		Add stuff
 	*/
 	{
-		core::rect<s32> rect(0, 0, 300, 30);
-		rect = rect + v2s32(size.X/2-300/2, size.Y/2-30/2-25);
-		gui::IGUIElement *e =
-		Environment->addEditBox(text.c_str(), rect, false, this, 256);
+		//core::rect<s32> rect(0, 0, 300, 30);
+		//rect = rect + v2s32(size.X/2-300/2, size.Y/2-30/2-25);
+		core::rect<s32> rect(5, 0, 290, 30);
+		gui::IGUIElement *e = Environment->addEditBox(text.c_str(), rect, false, this, 256);
 		Environment->setFocus(e);
 
 
@@ -124,14 +124,14 @@ void GUITextInputMenu::regenerateGui(v2u32 screensize)
 		evt.KeyInput.PressedDown = true;
 		e->OnEvent(evt);
 	}
-	changeCtype("");
-	{
-		core::rect<s32> rect(0, 0, 140, 30);
-		rect = rect + v2s32(size.X/2-140/2, size.Y/2-30/2+25);
-		Environment->addButton(rect, this, 257,
-			wgettext("Write It"));
-	}
-	changeCtype("C");
+	//changeCtype("");
+	//{
+		//core::rect<s32> rect(0, 0, 140, 30);
+		//rect = rect + v2s32(size.X/2-140/2, size.Y/2-30/2+25);
+		//Environment->addButton(rect, this, 257,
+			//wgettext("Write It"));
+	//}
+	//changeCtype("C");
 }
 
 void GUITextInputMenu::drawMenu()
@@ -141,10 +141,23 @@ void GUITextInputMenu::drawMenu()
 		return;
 	video::IVideoDriver* driver = Environment->getVideoDriver();
 
-	driver->draw2DRectangle(AbsoluteRect, GUI_BG_TOP, GUI_BG_TOP, GUI_BG_BTM, GUI_BG_BTM, &AbsoluteClippingRect);
-	driver->draw2DRectangleOutline(AbsoluteRect, GUI_BORDER);
+	video::SColor c(64,0,0,0);
+
+	driver->draw2DRectangle(AbsoluteRect, c, c, c, c, &AbsoluteClippingRect);
+
+#if (IRRLICHT_VERSION_MAJOR >= 1 && IRRLICHT_VERSION_MINOR >= 8) || IRRLICHT_VERSION_MAJOR >= 2
+	// Irrlicht 1.8 input colours
+	skin->setColor(gui::EGDC_FOCUSED_EDITABLE, video::SColor(0,0,0,0));
+	skin->setColor(gui::EGDC_EDITABLE, video::SColor(0,0,0,0));
+#endif
 
 	gui::IGUIElement::draw();
+
+#if (IRRLICHT_VERSION_MAJOR >= 1 && IRRLICHT_VERSION_MINOR >= 8) || IRRLICHT_VERSION_MAJOR >= 2
+	// Irrlicht 1.8 input colours
+	skin->setColor(gui::EGDC_EDITABLE, GUI_EDITABLE);
+	skin->setColor(gui::EGDC_FOCUSED_EDITABLE, GUI_FOCUSED_EDITABLE);
+#endif
 }
 
 void GUITextInputMenu::acceptInput()
