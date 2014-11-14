@@ -760,11 +760,6 @@ int main(int argc, char *argv[])
 
 	log_register_thread("main");
 
-	// Set locale. This is for forcing '.' as the decimal point.
-	std::locale::global(std::locale("C"));
-	// This enables printing all characters in bitmap font
-	setlocale(LC_CTYPE, "en_US");
-
 	/*
 		Parse command line
 	*/
