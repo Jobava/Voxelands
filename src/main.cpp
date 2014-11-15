@@ -76,6 +76,9 @@
 #include "path.h"
 #include "gui_colours.h"
 #include "character_creator.h"
+#if USE_FREETYPE
+#include "xCGUITTFont.h"
+#endif
 
 // This makes textures
 ITextureSource *g_texturesource = NULL;
@@ -1113,7 +1116,12 @@ int main(int argc, char *argv[])
 
 	guienv = device->getGUIEnvironment();
 	gui::IGUISkin* skin = guienv->getSkin();
+#if USE_FREETYPE
+	u16 font_size = g_settings->getU16("font_size");
+	gui::IGUIFont* font = gui::CGUITTFont::createTTFont(guienv, getPath("font","liberationsans.ttf",false).c_str(), font_size, true, true, 1, 128);
+#else
 	gui::IGUIFont* font = guienv->getFont(getTexturePath("fontlucida.png").c_str());
+#endif
 	if (font) {
 		skin->setFont(font);
 	}else{
