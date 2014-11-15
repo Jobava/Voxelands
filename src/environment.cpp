@@ -983,7 +983,7 @@ void ServerEnvironment::step(float dtime)
 				block->incNodeTicks(p0);
 				MapNode n = block->getNodeNoEx(p0);
 
-				if (!has_spawned && active_object_count_wider < 20 && content_mob_spawn(this,p,active_object_count_wider)) {
+				if (!has_spawned && active_object_count_wider < 10 && content_mob_spawn(this,p,active_object_count_wider)) {
 					has_spawned = true;
 					active_object_count_wider++;
 				}
