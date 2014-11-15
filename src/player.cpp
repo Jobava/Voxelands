@@ -418,19 +418,19 @@ void ServerRemotePlayer::setCharDef(std::string d)
 		if (!l)
 			return;
 		InventoryItem *item = NULL;
-		if (shirt == "white") {
+		if (pants == "white") {
 			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS,0);
-		}else if (shirt == "green") {
+		}else if (pants == "green") {
 			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_GREEN,0);
-		}else if (shirt == "orange") {
+		}else if (pants == "orange") {
 			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_ORANGE,0);
-		}else if (shirt == "purple") {
+		}else if (pants == "purple") {
 			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_PURPLE,0);
-		}else if (shirt == "red") {
+		}else if (pants == "red") {
 			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_RED,0);
-		}else if (shirt == "yellow") {
+		}else if (pants == "yellow") {
 			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_YELLOW,0);
-		}else if (shirt == "black") {
+		}else if (pants == "black") {
 			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_BLACK,0);
 		}
 		if (item == NULL)
