@@ -2334,7 +2334,6 @@ void Client::playDigSound(content_t c)
 	volume /= 100.0;
 	if (c == CONTENT_IGNORE) {
 		c = getPointedContent();
-		printf("dig: %X\n",c);
 		if ((c&CONTENT_MOB_MASK) != 0) {
 			if (content_mob_features(c).sound_punch != "")
 				m_sound->playSound(content_mob_features(c).sound_punch,false,volume);
