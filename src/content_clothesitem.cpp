@@ -2786,7 +2786,7 @@ void content_clothesitem_init()
 	i = CONTENT_CLOTHESITEM_STEEL_SHIRT;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
-	f->type = CT_SHIRT;
+	f->type = CT_JACKET;
 	f->texture = "clothes_shirt_steel.png";
 	f->overlay_texture = "clothes_player_shirt_steel.png";
 	f->description = wgettext("Steel Chest Armour");
@@ -2842,7 +2842,7 @@ void content_clothesitem_init()
 	i = CONTENT_CLOTHESITEM_COPPER_SHIRT;
 	f = &g_content_clothesitem_features[i];
 	f->content = i;
-	f->type = CT_SHIRT;
+	f->type = CT_JACKET;
 	f->texture = "clothes_shirt_copper.png";
 	f->overlay_texture = "clothes_player_shirt_copper.png";
 	f->description = wgettext("Copper Chest Armour");
