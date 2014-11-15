@@ -19,6 +19,7 @@
 
 #include "content_toolitem.h"
 #include "content_craftitem.h"
+#include "content_clothesitem.h"
 #include "content_craft.h"
 #include "content_list.h"
 #include "content_mapnode.h"
@@ -56,7 +57,7 @@ DiggingProperties getDiggingProperties(content_t content, content_t tool)
 	if (t_features.hardness && c_features.hardness)
 		wear = 65535/t_features.hardness*c_features.hardness;
 	f32 diggable = true;
-	if (c_features.type == CMT_STONE && t_features.type != TT_PICK) {
+	if ((tool&CONTENT_CLOTHESITEM_MASK) == CONTENT_CLOTHESITEM_MASK || (c_features.type == CMT_STONE && t_features.type != TT_PICK)) {
 		diggable = false;
 	}else{
 		switch (t_features.type) {
