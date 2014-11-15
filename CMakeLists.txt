@@ -9,7 +9,7 @@ project(voxelands)
 
 # Also remember to set PROTOCOL_VERSION in clientserver.h when releasing
 set(VERSION_MAJOR 1411)
-set(VERSION_MINOR 01)
+set(VERSION_MINOR 02)
 set(VERSION_EXTRA "")
 set(VERSION_STRING "${VERSION_MAJOR}.${VERSION_MINOR}${VERSION_EXTRA}")
 
