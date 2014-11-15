@@ -6,6 +6,7 @@
 #include <libintl.h>
 #else
 #define gettext(String) String
+#define ngettext(String1,String2,Int) String2
 #endif
 
 #define _(String) gettext(String)
