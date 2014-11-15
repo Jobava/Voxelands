@@ -107,7 +107,7 @@ Compiling on Mac OS X
         -DBUILD_SERVER=0 -DRUN_IN_PLACE=0 \
         -DCUSTOM_GETTEXT_PATH=/usr/local/Cellar/gettext/0.19.2/ \
         -DCMAKE_OSX_ARCHITECTURES=x86_64 \
-        -G Xcode . 
+        -G Xcode .
 	* build XCode project from commandline (NOTE: if you're using the GUI, make sure to select "package" as build target)
 		- xcodebuild -project voxelands.xcodeproj -target package
     * open the .dmg app to install voxelands (NOTE: after installing it will show up in the dashboard)
@@ -227,7 +227,7 @@ $ sh ./build-minetest-classic-win32.sh
 
 this script will install and compile the build-chain and all libraries needed for Voxelands
 
-License of Voxelands textures
+License of Voxelands textures and models
 --------------------------------
 
 This does not apply to texture packs made by others.
@@ -235,30 +235,35 @@ This does not apply to texture packs made by others.
 Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
 http://creativecommons.org/licenses/by-sa/3.0/
 
+Artists include:
+sdzen
+darkrose
+sapier
+
 License of Voxelands
 -----------------------
 
-Voxelands
-Copyright (C) 2010-2013 celeron55, Perttu Ahola <celeron55@gmail.com>
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along
-with this program; if not, write to the Free Software Foundation, Inc.,
-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
-
-Minetest-c55 was licensed under GPLv2 or later, the 'or later' option
- was taken by Lisa 'darkrose' Milne when forking Voxelands, thus
- updating the license to GPLv3
+* Minetest-c55
+* Copyright (C) 2010-2011 celeron55, Perttu Ahola <celeron55@gmail.com>
+*
+* Voxelands
+* Copyright (C) Lisa 'darkrose' Milne 2013-2014 <lisa@ltmnet.com>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but
+* WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+* See the GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>
+*
+* License updated from GPLv2 or later to GPLv3 or later by Lisa Milne
+* for Voxelands.
 
 Irrlicht
 ---------------
