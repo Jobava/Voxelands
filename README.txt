@@ -75,7 +75,7 @@ $ tar xf voxelands-*-src.tar.bz2
 $ cd voxelands
 
 Build a version that runs directly from the source directory:
-$ cmake . -DRUN_IN_PLACE=1
+$ cmake . -DRUN_IN_PLACE=1 -DENABLE_FREETYPE=1
 $ make -j2
 
 Run it:
@@ -107,6 +107,7 @@ Compiling on Mac OS X
         -DBUILD_SERVER=0 -DRUN_IN_PLACE=0 \
         -DCUSTOM_GETTEXT_PATH=/usr/local/Cellar/gettext/0.19.2/ \
         -DCMAKE_OSX_ARCHITECTURES=x86_64 \
+        -DENABLE_FREETYPE=1 \
         -G Xcode .
 	* build XCode project from commandline (NOTE: if you're using the GUI, make sure to select "package" as build target)
 		- xcodebuild -project voxelands.xcodeproj -target package

@@ -3,6 +3,36 @@ Voxelands changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1411.00: (release 2014-11-16)
+ - make pine tile better
+ - modify guiTextInputMenu
+ - switch conifers to standard cube shape
+ - a bunch of translation improvements
+ - add plurals to some translated strings
+ - add freetype2 support and make special characters actually work
+ - fix sprite extruded not extruding correctly
+ - some map speedups
+ - pretty up menu background a little
+ - rebalance tools for attacking creatures
+ - make some ItemCAO's 'die' after a few minutes
+ - add miss sound for digging while pointing at air
+ - add mob punch sound effect
+ - stop menu text duplicating on window resize
+ - create up2date.sh
+ - make ItemCAO 3D
+ - make mush cookable to ash
+ - reduce mob spawn lag more
+ - fix bug with small mobs trying to fly in stone
+ - slight optimisation of server and client data processing
+ - merge IFormSource and TextDest into FormIO
+ - servers give player their default clothes on first joining
+ - add more clothes items
+ - implement character creator working
+ - widen main menu so longer translations fit
+ - expand clothing system to also support layers
+ - allow skins to be fetched as parts
+ - fix infotext being written over top of forms
+
 1410.00: (release 2014-10-25)
 - a couple of pistons bugfixes
 - install the html files needed by the server properly
