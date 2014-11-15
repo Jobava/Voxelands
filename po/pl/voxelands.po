@@ -1,38 +1,34 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Lisa 'darkrose' Milne
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Robert Wolniak <robert.wolniak@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-13 23:58+1000\n"
-"PO-Revision-Date: 2014-10-24 12:03+0000\n"
+"POT-Creation-Date: 2014-11-14 20:51+1000\n"
+"PO-Revision-Date: 2014-11-14 10:54+0000\n"
 "Last-Translator: Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
-"Language-Team: Polish (http://www.transifex.com/projects/p/voxelands/"
-"language/pl/)\n"
-"Language: pl\n"
+"Language-Team: Polish (http://www.transifex.com/projects/p/voxelands/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
+"Language: pl\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: src/character_creator.cpp:58
-#, fuzzy
 msgid "White Skin"
-msgstr "Biały Barwnik"
+msgstr ""
 
 #: src/character_creator.cpp:59
 msgid "Red Skin"
 msgstr ""
 
 #: src/character_creator.cpp:60
-#, fuzzy
 msgid "Green Skin"
-msgstr "Zielona Bawełna"
+msgstr ""
 
 #: src/character_creator.cpp:61
 msgid "Fair Skin"
@@ -47,9 +43,8 @@ msgid "Dark Skin"
 msgstr ""
 
 #: src/character_creator.cpp:64
-#, fuzzy
 msgid "Black Skin"
-msgstr "Czarna Bawełna"
+msgstr ""
 
 #: src/character_creator.cpp:66
 msgid "Human Face"
@@ -68,47 +63,40 @@ msgid "Alien Face"
 msgstr ""
 
 #: src/character_creator.cpp:71
-#, fuzzy
 msgid "White Hair"
-msgstr "Biały Barwnik"
+msgstr ""
 
 #: src/character_creator.cpp:72
-#, fuzzy
 msgid "Blue Hair"
-msgstr "Niebieski Dywan"
+msgstr ""
 
 #: src/character_creator.cpp:73
-#, fuzzy
 msgid "Green Hair"
-msgstr "Zielony Dywan"
+msgstr ""
 
 #: src/character_creator.cpp:74
-#, fuzzy
 msgid "Orange Hair"
-msgstr "Pomarańczowy Dywan"
+msgstr ""
 
 #: src/character_creator.cpp:75
 msgid "Brown Hair"
 msgstr ""
 
 #: src/character_creator.cpp:76
-#, fuzzy
 msgid "Purple Hair"
-msgstr "Fioletowy Dywan"
+msgstr ""
 
 #: src/character_creator.cpp:77
-#, fuzzy
 msgid "Red Hair"
-msgstr "Czerwony Dywan"
+msgstr ""
 
 #: src/character_creator.cpp:78
 msgid "Blonde Hair"
 msgstr ""
 
 #: src/character_creator.cpp:79
-#, fuzzy
 msgid "Black Hair"
-msgstr "Czarny Dywan"
+msgstr ""
 
 #: src/character_creator.cpp:81
 msgid "Short Hair"
@@ -123,131 +111,108 @@ msgid "Long Hair"
 msgstr ""
 
 #: src/character_creator.cpp:84
-#, fuzzy
 msgid "Styled Hair"
-msgstr "Czerwony Dywan"
+msgstr ""
 
 #: src/character_creator.cpp:86
-#, fuzzy
 msgid "White Eyes"
-msgstr "Biały Barwnik"
+msgstr ""
 
 #: src/character_creator.cpp:87
-#, fuzzy
 msgid "Blue Eyes"
-msgstr "Niebieski Barwnik"
+msgstr ""
 
 #: src/character_creator.cpp:88
-#, fuzzy
 msgid "Green Eyes"
-msgstr "Zielony Barwnik"
+msgstr ""
 
 #: src/character_creator.cpp:89
-#, fuzzy
 msgid "Orange Eyes"
-msgstr "Pomarańczowy Barwnik"
+msgstr ""
 
 #: src/character_creator.cpp:90
 msgid "Brown Eyes"
 msgstr ""
 
 #: src/character_creator.cpp:91
-#, fuzzy
 msgid "Purple Eyes"
-msgstr "Fioletowy Barwnik"
+msgstr ""
 
 #: src/character_creator.cpp:92
-#, fuzzy
 msgid "Red Eyes"
-msgstr "Czerwony Barwnik"
+msgstr ""
 
 #: src/character_creator.cpp:93
-#, fuzzy
 msgid "Yellow Eyes"
-msgstr "Żółty Barwnik"
+msgstr ""
 
 #: src/character_creator.cpp:94
-#, fuzzy
 msgid "Black Eyes"
-msgstr "Czarny Barwnik"
+msgstr ""
 
 #: src/character_creator.cpp:96
 msgid "White T-Shirt"
 msgstr ""
 
 #: src/character_creator.cpp:97
-#, fuzzy
 msgid "Blue T-Shirt"
-msgstr "Niebieski Dywan"
+msgstr ""
 
 #: src/character_creator.cpp:98
-#, fuzzy
 msgid "Green T-Shirt"
-msgstr "Zielony Dywan"
+msgstr ""
 
 #: src/character_creator.cpp:99
-#, fuzzy
 msgid "Orange T-Shirt"
-msgstr "Pomarańczowy Dywan"
+msgstr ""
 
 #: src/character_creator.cpp:100
-#, fuzzy
 msgid "Purple T-Shirt"
-msgstr "Fioletowy Dywan"
+msgstr ""
 
 #: src/character_creator.cpp:101
 msgid "Red T-Shirt"
 msgstr ""
 
 #: src/character_creator.cpp:102
-#, fuzzy
 msgid "Yellow T-Shirt"
-msgstr "Żółty Dywan"
+msgstr ""
 
 #: src/character_creator.cpp:103
-#, fuzzy
 msgid "Black T-Shirt"
-msgstr "Czarny Dywan"
+msgstr ""
 
 #: src/character_creator.cpp:105
-#, fuzzy
 msgid "White Pants"
-msgstr "Napisz"
+msgstr ""
 
 #: src/character_creator.cpp:106
-#, fuzzy
 msgid "Blue Pants"
-msgstr "Niebieskie Szkło"
+msgstr ""
 
 #: src/character_creator.cpp:107
-#, fuzzy
 msgid "Green Pants"
-msgstr "Zielone Szkło"
+msgstr ""
 
 #: src/character_creator.cpp:108
-#, fuzzy
 msgid "Orange Pants"
-msgstr "Pomarańczowe Szkło"
+msgstr ""
 
 #: src/character_creator.cpp:109
-#, fuzzy
 msgid "Purple Pants"
-msgstr "Fioletowe Szkło"
+msgstr ""
 
 #: src/character_creator.cpp:110
-#, fuzzy
 msgid "Red Pants"
-msgstr "Czerwone Szkło"
+msgstr ""
 
 #: src/character_creator.cpp:111
-#, fuzzy
 msgid "Yellow Pants"
-msgstr "Żółte Szkło"
+msgstr ""
 
 #: src/character_creator.cpp:112
-#, fuzzy
 msgid "Black Pants"
-msgstr "Czarne Szkło"
+msgstr ""
 
 #: src/character_creator.cpp:114 src/content_clothesitem.cpp:1655
 msgid "Leather Shoes"
@@ -263,10 +228,7 @@ msgstr ""
 
 #: src/character_creator.cpp:206
 msgid ""
-"Here you can create your default character, this is how other players will "
-"see you in-game. When you join a new server you will start with the clothing "
-"you select here. Additional clothing, both protective and decorative, can be "
-"crafted in-game.\n"
+"Here you can create your default character, this is how other players will see you in-game. When you join a new server you will start with the clothing you select here. Additional clothing, both protective and decorative, can be crafted in-game.\n"
 "You can return here from the main menu anytime to change your character."
 msgstr ""
 
@@ -274,35 +236,35 @@ msgstr ""
 msgid "Create Your Character"
 msgstr ""
 
-#: src/character_creator.cpp:235
+#: src/character_creator.cpp:234
 msgid "Male"
 msgstr ""
 
-#: src/character_creator.cpp:240
+#: src/character_creator.cpp:239
 msgid "Female"
 msgstr ""
 
-#: src/character_creator.cpp:247
+#: src/character_creator.cpp:246
 msgid "Taller"
 msgstr ""
 
-#: src/character_creator.cpp:252
+#: src/character_creator.cpp:251
 msgid "Shorter"
 msgstr ""
 
-#: src/character_creator.cpp:259
+#: src/character_creator.cpp:258
 msgid "Wider"
 msgstr ""
 
-#: src/character_creator.cpp:264
+#: src/character_creator.cpp:263
 msgid "Thinner"
 msgstr ""
 
-#: src/character_creator.cpp:439
+#: src/character_creator.cpp:422
 msgid "Done"
 msgstr ""
 
-#: src/character_creator.cpp:444 src/guiKeyChangeMenu.cpp:321
+#: src/character_creator.cpp:427 src/guiKeyChangeMenu.cpp:308
 #: src/keycode.cpp:222
 msgid "Cancel"
 msgstr "Anuluj"
@@ -324,399 +286,324 @@ msgid "Space Suit Boots"
 msgstr ""
 
 #: src/content_clothesitem.cpp:130
-#, fuzzy
 msgid "Cotton T-Shirt"
-msgstr "Nasiona Bawełny"
+msgstr ""
 
 #: src/content_clothesitem.cpp:144
-#, fuzzy
 msgid "Blue Cotton T-Shirt"
-msgstr "Niebieska Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:158
-#, fuzzy
 msgid "Green Cotton T-Shirt"
-msgstr "Zielona Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:172
-#, fuzzy
 msgid "Orange Cotton Tshirt"
-msgstr "Pomarańczowa Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:186
-#, fuzzy
 msgid "Purple Cotton T-Shirt"
-msgstr "Fioletowa Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:200
-#, fuzzy
 msgid "Red Cotton T-Shirt"
-msgstr "Czerwona Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:214
-#, fuzzy
 msgid "Yellow Cotton T-Shirt"
-msgstr "Żółta Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:228
-#, fuzzy
 msgid "Black Cotton T-Shirt"
-msgstr "Czarna Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:243
-#, fuzzy
 msgid "Cotton Shirt"
-msgstr "Nasiona Bawełny"
+msgstr ""
 
 #: src/content_clothesitem.cpp:257
-#, fuzzy
 msgid "Blue Cotton Shirt"
-msgstr "Niebieska Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:271
-#, fuzzy
 msgid "Green Cotton Shirt"
-msgstr "Zielona Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:285
-#, fuzzy
 msgid "Orange Cotton Shirt"
-msgstr "Pomarańczowa Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:299
-#, fuzzy
 msgid "Purple Cotton Shirt"
-msgstr "Fioletowa Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:313
-#, fuzzy
 msgid "Red Cotton Shirt"
-msgstr "Czerwona Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:327
-#, fuzzy
 msgid "Yellow Cotton Shirt"
-msgstr "Żółta Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:341
-#, fuzzy
 msgid "Black Cotton Shirt"
-msgstr "Czarna Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:356
-#, fuzzy
 msgid "Cotton Shorts"
-msgstr "Nasiona Bawełny"
+msgstr ""
 
 #: src/content_clothesitem.cpp:370
-#, fuzzy
 msgid "Blue Cotton Shorts"
-msgstr "Niebieska Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:384
-#, fuzzy
 msgid "Green Cotton Shorts"
-msgstr "Zielona Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:398
-#, fuzzy
 msgid "Orange Cotton Shorts"
-msgstr "Pomarańczowa Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:412
-#, fuzzy
 msgid "Purple Cotton Shorts"
-msgstr "Fioletowa Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:426
-#, fuzzy
 msgid "Red Cotton Shorts"
-msgstr "Czerwona Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:440
-#, fuzzy
 msgid "Yellow Cotton Shorts"
-msgstr "Żółta Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:454
-#, fuzzy
 msgid "Black Cotton Shorts"
-msgstr "Czarna Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:469
-#, fuzzy
 msgid "Cotton Hat"
-msgstr "Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:483
-#, fuzzy
 msgid "Blue Cotton Hat"
-msgstr "Niebieska Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:497
-#, fuzzy
 msgid "Green Cotton Hat"
-msgstr "Zielona Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:511
-#, fuzzy
 msgid "Orange Cotton Hat"
-msgstr "Pomarańczowa Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:525
-#, fuzzy
 msgid "Purple Cotton Hat"
-msgstr "Fioletowa Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:539
-#, fuzzy
 msgid "Red Cotton Hat"
-msgstr "Czerwona Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:553
-#, fuzzy
 msgid "Yellow Cotton Hat"
-msgstr "Żółta Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:567
-#, fuzzy
 msgid "Black Cotton Hat"
-msgstr "Czarna Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:582
-#, fuzzy
 msgid "Cotton Tie"
-msgstr "Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:596
-#, fuzzy
 msgid "Blue Cotton Tie"
-msgstr "Niebieska Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:610
-#, fuzzy
 msgid "Green Cotton Tie"
-msgstr "Zielona Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:624
-#, fuzzy
 msgid "Orange Cotton Tie"
-msgstr "Pomarańczowa Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:638
-#, fuzzy
 msgid "Purple Cotton Tie"
-msgstr "Fioletowa Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:652
-#, fuzzy
 msgid "Red Cotton Tie"
-msgstr "Czerwona Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:666
-#, fuzzy
 msgid "Yellow Cotton Tie"
-msgstr "Żółta Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:680
-#, fuzzy
 msgid "Black Cotton Tie"
-msgstr "Czarna Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:695
 msgid "Canvas Shirt"
 msgstr ""
 
 #: src/content_clothesitem.cpp:709
-#, fuzzy
 msgid "Blue Canvas Shirt"
-msgstr "Niebieski Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:723
-#, fuzzy
 msgid "Green Canvas Shirt"
-msgstr "Zielony Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:737
-#, fuzzy
 msgid "Orange Canvas Shirt"
-msgstr "Pomarańczowy Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:751
-#, fuzzy
 msgid "Purple Canvas Shirt"
-msgstr "Fioletowy Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:765
-#, fuzzy
 msgid "Red Canvas Shirt"
-msgstr "Czerwony Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:779
-#, fuzzy
 msgid "Yellow Canvas Shirt"
-msgstr "Żółty Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:793
-#, fuzzy
 msgid "Black Canvas Shirt"
-msgstr "Czarny Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:808
 msgid "Canvas Pants"
 msgstr ""
 
 #: src/content_clothesitem.cpp:822
-#, fuzzy
 msgid "Blue Canvas Pants"
-msgstr "Niebieska Szyba"
+msgstr ""
 
 #: src/content_clothesitem.cpp:836
-#, fuzzy
 msgid "Green Canvas Pants"
-msgstr "Zielona Szyba"
+msgstr ""
 
 #: src/content_clothesitem.cpp:850
-#, fuzzy
 msgid "Orange Canvas Pants"
-msgstr "Pomarańczowa Szyba"
+msgstr ""
 
 #: src/content_clothesitem.cpp:864
-#, fuzzy
 msgid "Purple Canvas Pants"
-msgstr "Fioletowa Szyba"
+msgstr ""
 
 #: src/content_clothesitem.cpp:878
-#, fuzzy
 msgid "Red Canvas Pants"
-msgstr "Czerwona Szyba"
+msgstr ""
 
 #: src/content_clothesitem.cpp:892
-#, fuzzy
 msgid "Yellow Canvas Pants"
-msgstr "Żółta Szyba"
+msgstr ""
 
 #: src/content_clothesitem.cpp:906
-#, fuzzy
 msgid "Black Canvas Pants"
-msgstr "Czarna Szyba"
+msgstr ""
 
 #: src/content_clothesitem.cpp:935
 msgid "Blue Canvas Shoes"
 msgstr ""
 
 #: src/content_clothesitem.cpp:949
-#, fuzzy
 msgid "Green Canvas Shoes"
-msgstr "Zielone Szkło"
+msgstr ""
 
 #: src/content_clothesitem.cpp:963
-#, fuzzy
 msgid "Orange Canvas Shoes"
-msgstr "Pomarańczowe Szkło"
+msgstr ""
 
 #: src/content_clothesitem.cpp:977
-#, fuzzy
 msgid "Purple Canvas Shoes"
-msgstr "Fioletowe Szkło"
+msgstr ""
 
 #: src/content_clothesitem.cpp:991
 msgid "Red Canvas Shoes"
 msgstr ""
 
 #: src/content_clothesitem.cpp:1005
-#, fuzzy
 msgid "Yellow Canvas Shoes"
-msgstr "Żółte Szkło"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1019
-#, fuzzy
 msgid "Black Canvas Shoes"
-msgstr "Czarne Szkło"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1034
 msgid "Canvas Belt"
 msgstr ""
 
 #: src/content_clothesitem.cpp:1048
-#, fuzzy
 msgid "Blue Canvas Belt"
-msgstr "Niebieski Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1062
-#, fuzzy
 msgid "Green Canvas Belt"
-msgstr "Zielony Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1076
-#, fuzzy
 msgid "Orange Canvas Belt"
-msgstr "Pomarańczowy Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1090
-#, fuzzy
 msgid "Purple Canvas Belt"
-msgstr "Fioletowy Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1104
-#, fuzzy
 msgid "Red Canvas Belt"
-msgstr "Czerwony Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1118
-#, fuzzy
 msgid "Yellow Canvas Belt"
-msgstr "Żółty Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1132
-#, fuzzy
 msgid "Black Canvas Belt"
-msgstr "Czarny Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1147
-#, fuzzy
 msgid "Leather Jacket"
-msgstr "Lewy Shift"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1161
-#, fuzzy
 msgid "White Leather Jacket"
-msgstr "Czerwony Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1175
-#, fuzzy
 msgid "Blue Leather Jacket"
-msgstr "Niebieski Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1189
-#, fuzzy
 msgid "Green Leather Jacket"
-msgstr "Zielony Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1203
-#, fuzzy
 msgid "Orange Leather Jacket"
-msgstr "Pomarańczowy Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1217
-#, fuzzy
 msgid "Purple Leather Jacket"
-msgstr "Fioletowy Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1231
-#, fuzzy
 msgid "Red Leather Jacket"
-msgstr "Czerwony Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1245
-#, fuzzy
 msgid "Yellow Leather Jacket"
-msgstr "Żółty Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1259
-#, fuzzy
 msgid "Black Leather Jacket"
-msgstr "Czarny Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1274
 msgid "Leather Pants"
@@ -727,38 +614,32 @@ msgid "White Leather Pants"
 msgstr ""
 
 #: src/content_clothesitem.cpp:1302
-#, fuzzy
 msgid "Blue Leather Pants"
-msgstr "Malowidło Z Niebieskimi Kwiatami"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1316
-#, fuzzy
 msgid "Green Leather Pants"
-msgstr "Zielona Szyba"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1330
-#, fuzzy
 msgid "Orange Leather Pants"
-msgstr "Pomarańczowa Szyba"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1344
-#, fuzzy
 msgid "Purple Leather Pants"
-msgstr "Fioletowa Szyba"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1358
 msgid "Red Leather Pants"
 msgstr ""
 
 #: src/content_clothesitem.cpp:1372
-#, fuzzy
 msgid "Yellow Leather Pants"
-msgstr "Żółta Szyba"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1386
-#, fuzzy
 msgid "Black Leather Pants"
-msgstr "Czarna Szyba"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1401
 msgid "Leather Hat"
@@ -773,33 +654,28 @@ msgid "Blue Leather Hat"
 msgstr ""
 
 #: src/content_clothesitem.cpp:1443
-#, fuzzy
 msgid "Green Leather Hat"
-msgstr "Zielony Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1457
-#, fuzzy
 msgid "Orange Leather Hat"
-msgstr "Pomarańczowy Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1471
-#, fuzzy
 msgid "Purple Leather Hat"
-msgstr "Fioletowy Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1485
 msgid "Red Leather Hat"
 msgstr ""
 
 #: src/content_clothesitem.cpp:1499
-#, fuzzy
 msgid "Yellow Leather Hat"
-msgstr "Żółty Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1513
-#, fuzzy
 msgid "Black Leather Hat"
-msgstr "Czarny Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1528
 msgid "Leather Helmet"
@@ -810,38 +686,32 @@ msgid "White Leather Helmet"
 msgstr ""
 
 #: src/content_clothesitem.cpp:1556
-#, fuzzy
 msgid "Blue Leather Helmet"
-msgstr "Niebieski Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1570
-#, fuzzy
 msgid "Green Leather Helmet"
-msgstr "Zielony Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1584
-#, fuzzy
 msgid "Orange Leather Helmet"
-msgstr "Pomarańczowy Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1598
-#, fuzzy
 msgid "Purple Leather Helmet"
-msgstr "Fioletowy Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1612
 msgid "Red Leather Helmet"
 msgstr ""
 
 #: src/content_clothesitem.cpp:1626
-#, fuzzy
 msgid "Yellow Leather Helmet"
-msgstr "Żółty Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1640
-#, fuzzy
 msgid "Black Leather Helmet"
-msgstr "Czarny Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1669
 msgid "White Leather Shoes"
@@ -856,23 +726,20 @@ msgid "Green Leather Shoes"
 msgstr ""
 
 #: src/content_clothesitem.cpp:1711
-#, fuzzy
 msgid "Orange Leather Shoes"
-msgstr "Pomarańczowy Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1725
-#, fuzzy
 msgid "Purple Leather Shoes"
-msgstr "Fioletowy Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1739
 msgid "Red Leather Shoes"
 msgstr ""
 
 #: src/content_clothesitem.cpp:1753
-#, fuzzy
 msgid "Yellow Leather Shoes"
-msgstr "Żółty Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1767
 msgid "Black Leather Shoes"
@@ -895,23 +762,20 @@ msgid "Green Leather Boots"
 msgstr ""
 
 #: src/content_clothesitem.cpp:1838
-#, fuzzy
 msgid "Orange Leather Boots"
-msgstr "Pomarańczowy Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1852
-#, fuzzy
 msgid "Purple Leather Boots"
-msgstr "Fioletowy Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1866
 msgid "Red Leather Boots"
 msgstr ""
 
 #: src/content_clothesitem.cpp:1880
-#, fuzzy
 msgid "Yellow Leather Boots"
-msgstr "Żółty Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1894
 msgid "Black Leather Boots"
@@ -926,84 +790,68 @@ msgid "White Leather Belt"
 msgstr ""
 
 #: src/content_clothesitem.cpp:1937
-#, fuzzy
 msgid "Blue Leather Belt"
-msgstr "Niebieski Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1951
-#, fuzzy
 msgid "Green Leather Belt"
-msgstr "Zielony Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1965
-#, fuzzy
 msgid "Orange Leather Belt"
-msgstr "Pomarańczowy Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1979
-#, fuzzy
 msgid "Purple Leather Belt"
-msgstr "Fioletowy Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:1993
-#, fuzzy
 msgid "Red Leather Belt"
-msgstr "Czerwony Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2007
-#, fuzzy
 msgid "Yellow Leather Belt"
-msgstr "Żółty Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2021
-#, fuzzy
 msgid "Black Leather Belt"
-msgstr "Czarny Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2036
-#, fuzzy
 msgid "Fur Coat"
-msgstr "Malowidło Z Niebieskimi Kwiatami"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2050
-#, fuzzy
 msgid "White Fur Coat"
-msgstr "Napisz"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2064
-#, fuzzy
 msgid "Blue Fur Coat"
-msgstr "Malowidło Z Niebieskimi Kwiatami"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2078
-#, fuzzy
 msgid "Green Fur Coat"
-msgstr "Zielony Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2092
-#, fuzzy
 msgid "Orange Fur Coat"
-msgstr "Pomarańczowy Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2106
-#, fuzzy
 msgid "Purple Fur Coat"
-msgstr "Fioletowy Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2120
-#, fuzzy
 msgid "Red Fur Coat"
-msgstr "Malowidło Z Czerwonymi Różami"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2134
-#, fuzzy
 msgid "Yellow Fur Coat"
-msgstr "Żółty Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2148
-#, fuzzy
 msgid "Black Fur Coat"
-msgstr "Czarny Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2163
 msgid "Fur Pants"
@@ -1014,39 +862,32 @@ msgid "White Fur Pants"
 msgstr ""
 
 #: src/content_clothesitem.cpp:2191
-#, fuzzy
 msgid "Blue Fur Pants"
-msgstr "Malowidło Z Niebieskimi Kwiatami"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2205
-#, fuzzy
 msgid "Green Fur Pants"
-msgstr "Zielona Szyba"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2219
-#, fuzzy
 msgid "Orange Fur Pants"
-msgstr "Pomarańczowa Szyba"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2233
-#, fuzzy
 msgid "Purple Fur Pants"
-msgstr "Fioletowa Szyba"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2247
-#, fuzzy
 msgid "Red Fur Pants"
-msgstr "Malowidło Z Czerwonymi Różami"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2261
-#, fuzzy
 msgid "Yellow Fur Pants"
-msgstr "Żółta Szyba"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2275
-#, fuzzy
 msgid "Black Fur Pants"
-msgstr "Czarna Szyba"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2290
 msgid "Fur Hat"
@@ -1057,38 +898,32 @@ msgid "White Fur Hat"
 msgstr ""
 
 #: src/content_clothesitem.cpp:2318
-#, fuzzy
 msgid "Blue Fur Hat"
-msgstr "Malowidło Z Niebieskimi Kwiatami"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2332
-#, fuzzy
 msgid "Green Fur Hat"
-msgstr "Zielony Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2346
-#, fuzzy
 msgid "Orange Fur Hat"
-msgstr "Pomarańczowy Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2360
-#, fuzzy
 msgid "Purple Fur Hat"
-msgstr "Fioletowy Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2374
 msgid "Red Fur Hat"
 msgstr ""
 
 #: src/content_clothesitem.cpp:2388
-#, fuzzy
 msgid "Yellow Fur Hat"
-msgstr "Żółty Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2402
-#, fuzzy
 msgid "Black Fur Hat"
-msgstr "Czarny Dywan"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2431
 msgid "White Fur Shoes"
@@ -1099,33 +934,28 @@ msgid "Blue Fur Shoes"
 msgstr ""
 
 #: src/content_clothesitem.cpp:2459
-#, fuzzy
 msgid "Green Fur Shoes"
-msgstr "Zielona Kanapa"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2473
-#, fuzzy
 msgid "Orange Fur Shoes"
-msgstr "Pomarańczowa Kanapa"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2487
-#, fuzzy
 msgid "Purple Fur Shoes"
-msgstr "Fioletowa Kanapa"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2501
 msgid "Red Fur Shoes"
 msgstr ""
 
 #: src/content_clothesitem.cpp:2515
-#, fuzzy
 msgid "Yellow Fur Shoes"
-msgstr "Żółta Kanapa"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2529
-#, fuzzy
 msgid "Black Fur Shoes"
-msgstr "Czarna Kanapa"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2544
 msgid "Fur Boots"
@@ -1144,23 +974,20 @@ msgid "Green Fur Boots"
 msgstr ""
 
 #: src/content_clothesitem.cpp:2600
-#, fuzzy
 msgid "Orange Fur Boots"
-msgstr "Pomarańczowa Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2614
-#, fuzzy
 msgid "Purple Fur Boots"
-msgstr "Fioletowa Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2628
 msgid "Red Fur Boots"
 msgstr ""
 
 #: src/content_clothesitem.cpp:2642
-#, fuzzy
 msgid "Yellow Fur Boots"
-msgstr "Żółta Bawełna"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2656
 msgid "Black Fur Boots"
@@ -1171,19 +998,16 @@ msgid "Leather Necklace"
 msgstr ""
 
 #: src/content_clothesitem.cpp:2693
-#, fuzzy
 msgid "Gold Medallion"
-msgstr "Krojony Melon"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2707
-#, fuzzy
 msgid "Copper Medallion"
-msgstr "Blok Z Miedzi"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2721
-#, fuzzy
 msgid "Silver Medallion"
-msgstr "Blok Ze Srebra"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2735
 msgid "Tin Medallion"
@@ -1194,48 +1018,40 @@ msgid "Iron Medallion"
 msgstr ""
 
 #: src/content_clothesitem.cpp:2763
-#, fuzzy
 msgid "Quartz Medallion"
-msgstr "Blok Kwarcu"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2778
-#, fuzzy
 msgid "Steel Helmet"
-msgstr "Stalowy Właz"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2792
-#, fuzzy
 msgid "Steel Chest Armour"
-msgstr "Stalowe Nożyce"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2806
-#, fuzzy
 msgid "Steel Pants"
-msgstr "Stalowa Furtka"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2820
-#, fuzzy
 msgid "Steel Boots"
-msgstr "Stalowe Drzwi"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2834
-#, fuzzy
 msgid "Copper Helmet"
-msgstr "Bryła Miedzi"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2848
 msgid "Copper Chest Armour"
 msgstr ""
 
 #: src/content_clothesitem.cpp:2862
-#, fuzzy
 msgid "Copper Pants"
-msgstr "Sztabka Miedzi"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2876
-#, fuzzy
 msgid "Copper Boots"
-msgstr "Blok Z Miedzi"
+msgstr ""
 
 #: src/content_craftitem.cpp:74
 msgid "Paper"
@@ -2828,14 +2644,14 @@ msgid "Sand Stone Stair"
 msgstr "Schody Z Piaskowca"
 
 #: src/content_nodemeta.cpp:168
-#, fuzzy, c-format
+#, c-format
 msgid "%s's Home Flag"
-msgstr "Flaga Domu"
+msgstr ""
 
 #: src/content_nodemeta.cpp:285
-#, fuzzy, c-format
+#, c-format
 msgid "Locking Chest owned by '%s'"
-msgstr "Blokujący Kufer"
+msgstr ""
 
 #: src/content_nodemeta.cpp:404 src/content_nodemeta.cpp:1336
 #: src/content_nodemeta.cpp:1538 src/content_nodemeta.cpp:1749
@@ -2854,9 +2670,9 @@ msgid "Next Page >>"
 msgstr ""
 
 #: src/content_nodemeta.cpp:457
-#, fuzzy, c-format
+#, c-format
 msgid "Border Stone owned by '%s'"
-msgstr "Kamień Graniczny"
+msgstr ""
 
 #: src/content_nodemeta.cpp:532
 msgid "Furnace is overloaded"
@@ -2875,24 +2691,20 @@ msgid "Furnace is active"
 msgstr ""
 
 #: src/content_nodemeta.cpp:789
-#, fuzzy
 msgid "Locking Furnace is overloaded"
-msgstr "Blokujący Piec"
+msgstr ""
 
 #: src/content_nodemeta.cpp:790
-#, fuzzy
 msgid "Locking Furnace is out of fuel"
-msgstr "Blokujący Piec"
+msgstr ""
 
 #: src/content_nodemeta.cpp:792
-#, fuzzy
 msgid "Locking Furnace is inactive"
-msgstr "Blokujący Piec"
+msgstr ""
 
 #: src/content_nodemeta.cpp:795
-#, fuzzy
 msgid "Locking Furnace is active"
-msgstr "Blokujący Piec"
+msgstr ""
 
 #: src/content_nodemeta.cpp:1041
 msgid "Armed Explosive: about to detonate"
@@ -2900,8 +2712,11 @@ msgstr ""
 
 #: src/content_nodemeta.cpp:1044
 #, c-format
-msgid "Armed Explosive: %d seconds till detonation"
-msgstr ""
+msgid "Armed Explosive: %d second till detonation"
+msgid_plural "Armed Explosive: %d seconds till detonation"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: src/content_nodemeta.cpp:1094
 msgid "Incinerator is active"
@@ -2953,7 +2768,7 @@ msgid "Content"
 msgstr ""
 
 #: src/content_nodemeta.cpp:1863 src/content_nodemeta.cpp:1962
-#: src/guiKeyChangeMenu.cpp:315
+#: src/guiKeyChangeMenu.cpp:302
 msgid "Save"
 msgstr "Zapis"
 
@@ -3081,143 +2896,143 @@ msgstr ""
 msgid "Steel Spear"
 msgstr ""
 
-#: src/game.cpp:202
+#: src/game.cpp:207
 msgid "Clothes"
 msgstr ""
 
-#: src/game.cpp:221
+#: src/game.cpp:226
 msgid "Drop to Ground"
 msgstr ""
 
-#: src/game.cpp:731
+#: src/game.cpp:737
 msgid "Loading"
 msgstr ""
 
-#: src/game.cpp:805
+#: src/game.cpp:811
 msgid "Loading..."
 msgstr "Wczytywanie..."
 
-#: src/game.cpp:814
+#: src/game.cpp:820
 msgid "Creating server..."
 msgstr "Tworzenie serwera..."
 
-#: src/game.cpp:825
+#: src/game.cpp:831
 msgid "Creating client..."
 msgstr "Tworzenie klienta..."
 
-#: src/game.cpp:830
+#: src/game.cpp:836
 msgid "Resolving address..."
 msgstr "Rozwiązywanie adresu..."
 
-#: src/game.cpp:841
+#: src/game.cpp:847
 msgid "Couldn't resolve address"
 msgstr ""
 
-#: src/game.cpp:901
+#: src/game.cpp:917
 #, c-format
 msgid "Access denied. Reason: %ls"
 msgstr ""
 
-#: src/game.cpp:905
+#: src/game.cpp:921
 msgid "Unable to Connect (port already in use?)."
 msgstr ""
 
-#: src/game.cpp:908
+#: src/game.cpp:924
 msgid "Connection timed out."
 msgstr ""
 
-#: src/game.cpp:1064
+#: src/game.cpp:1080
 msgid "Access denied. Reason: "
 msgstr ""
 
-#: src/game.cpp:1323
+#: src/game.cpp:1339
 msgid "free_move disabled"
 msgstr ""
 
-#: src/game.cpp:1327
+#: src/game.cpp:1343
 msgid "free_move enabled"
 msgstr ""
 
-#: src/game.cpp:1334
+#: src/game.cpp:1350
 msgid "fast_move disabled"
 msgstr ""
 
-#: src/game.cpp:1338
+#: src/game.cpp:1354
 msgid "fast_move enabled"
 msgstr ""
 
-#: src/game.cpp:1351
+#: src/game.cpp:1367
 #, c-format
 msgid "Saved screenshot to '%s'"
 msgstr ""
 
-#: src/game.cpp:1364
+#: src/game.cpp:1380
 msgid "HUD shown"
 msgstr ""
 
-#: src/game.cpp:1366
+#: src/game.cpp:1382
 msgid "HUD hidden"
 msgstr ""
 
-#: src/game.cpp:1373
+#: src/game.cpp:1389
 msgid "Chat shown"
 msgstr ""
 
-#: src/game.cpp:1375
+#: src/game.cpp:1391
 msgid "Chat hidden"
 msgstr ""
 
-#: src/game.cpp:1382
+#: src/game.cpp:1398
 msgid "Fog disabled"
 msgstr ""
 
-#: src/game.cpp:1384
+#: src/game.cpp:1400
 msgid "Fog enabled"
 msgstr ""
 
-#: src/game.cpp:1391
+#: src/game.cpp:1407
 msgid "Camera update disabled"
 msgstr ""
 
-#: src/game.cpp:1393
+#: src/game.cpp:1409
 msgid "Camera update enabled"
 msgstr ""
 
-#: src/game.cpp:1404
+#: src/game.cpp:1420
 msgid "Debug info shown"
 msgstr ""
 
-#: src/game.cpp:1410
+#: src/game.cpp:1426
 msgid "Debug info and frametime graph hidden"
 msgstr ""
 
-#: src/game.cpp:1414
+#: src/game.cpp:1430
 msgid "Frametime graph shown"
 msgstr ""
 
-#: src/game.cpp:1427
+#: src/game.cpp:1443
 #, c-format
 msgid "Profiler shown (page %d of %d)"
 msgstr ""
 
-#: src/game.cpp:1431
+#: src/game.cpp:1447
 msgid "Profiler hidden"
 msgstr ""
 
-#: src/game.cpp:1440 src/game.cpp:1452
+#: src/game.cpp:1456 src/game.cpp:1468
 #, c-format
 msgid "Minimum viewing range changed to %d"
 msgstr ""
 
-#: src/game.cpp:1495
+#: src/game.cpp:1511
 msgid "Enabled full viewing range"
 msgstr ""
 
-#: src/game.cpp:1499
+#: src/game.cpp:1515
 msgid "Disabled full viewing range"
 msgstr ""
 
-#: src/game.cpp:2355
+#: src/game.cpp:2371
 msgid "Shutting down..."
 msgstr "Wyłączanie..."
 
@@ -3229,83 +3044,81 @@ msgstr "Zginąłeś."
 msgid "Respawn"
 msgstr "Odradzanie się"
 
-#: src/guiFormSpecMenu.cpp:454
+#: src/guiFormSpecMenu.cpp:459
 msgid "Left click: Move all items, Right click: Move single item"
-msgstr ""
-"Kliknięcie lewym przyciskiem myszy: Przenieś wszystkie przedmioty, "
-"Kliknięcie prawym przyciskiem myszy: Przenieś pojedynczy przedmiot"
+msgstr "Kliknięcie lewym przyciskiem myszy: Przenieś wszystkie przedmioty, Kliknięcie prawym przyciskiem myszy: Przenieś pojedynczy przedmiot"
 
-#: src/guiFormSpecMenu.cpp:479 src/guiTextInputMenu.cpp:126
+#: src/guiFormSpecMenu.cpp:482 src/guiTextInputMenu.cpp:126
 msgid "Write It"
 msgstr "Napisz"
 
-#: src/guiKeyChangeMenu.cpp:86
-msgid "KEYBINDINGS"
-msgstr "Przypisanie do klawiszy"
+#: src/guiKeyChangeMenu.cpp:85
+msgid "Controls"
+msgstr ""
 
-#: src/guiKeyChangeMenu.cpp:96
+#: src/guiKeyChangeMenu.cpp:94
 msgid "Forward"
 msgstr "Naprzód"
 
-#: src/guiKeyChangeMenu.cpp:113
+#: src/guiKeyChangeMenu.cpp:110
 msgid "Backward"
 msgstr "Do tyłu"
 
-#: src/guiKeyChangeMenu.cpp:129 src/keycode.cpp:227
+#: src/guiKeyChangeMenu.cpp:125 src/keycode.cpp:227
 msgid "Left"
 msgstr "Lewo"
 
-#: src/guiKeyChangeMenu.cpp:144 src/keycode.cpp:227
+#: src/guiKeyChangeMenu.cpp:139 src/keycode.cpp:227
 msgid "Right"
 msgstr "Prawo"
 
-#: src/guiKeyChangeMenu.cpp:160
+#: src/guiKeyChangeMenu.cpp:154
 msgid "Use"
 msgstr "Użyj"
 
-#: src/guiKeyChangeMenu.cpp:175
+#: src/guiKeyChangeMenu.cpp:168
 msgid "Sneak"
 msgstr "Skradanie"
 
-#: src/guiKeyChangeMenu.cpp:191
+#: src/guiKeyChangeMenu.cpp:183
 msgid "Jump"
 msgstr "Skok"
 
-#: src/guiKeyChangeMenu.cpp:206
+#: src/guiKeyChangeMenu.cpp:198
 msgid "Inventory"
 msgstr "Inwentarz"
 
-#: src/guiKeyChangeMenu.cpp:222
+#: src/guiKeyChangeMenu.cpp:213
 msgid "Chat"
 msgstr "Czat"
 
-#: src/guiKeyChangeMenu.cpp:236
+#: src/guiKeyChangeMenu.cpp:227
 msgid "Command"
 msgstr "Komenda"
 
-#: src/guiKeyChangeMenu.cpp:253
+#: src/guiKeyChangeMenu.cpp:244
 msgid "Toggle fly"
 msgstr "Włącz lot"
 
-#: src/guiKeyChangeMenu.cpp:268
+#: src/guiKeyChangeMenu.cpp:258
 msgid "Toggle fast"
 msgstr "Włącz prędkość"
 
-#: src/guiKeyChangeMenu.cpp:283
+#: src/guiKeyChangeMenu.cpp:272
 msgid "Range select"
 msgstr "Wybór odległości"
 
-#: src/guiKeyChangeMenu.cpp:300
+#: src/guiKeyChangeMenu.cpp:288
 msgid "Print stacks"
 msgstr "Print stacks"
 
-#: src/guiKeyChangeMenu.cpp:556 src/guiKeyChangeMenu.cpp:561
-#: src/guiKeyChangeMenu.cpp:566 src/guiKeyChangeMenu.cpp:571
-#: src/guiKeyChangeMenu.cpp:576 src/guiKeyChangeMenu.cpp:581
-#: src/guiKeyChangeMenu.cpp:586 src/guiKeyChangeMenu.cpp:591
-#: src/guiKeyChangeMenu.cpp:596 src/guiKeyChangeMenu.cpp:601
-#: src/guiKeyChangeMenu.cpp:606 src/guiKeyChangeMenu.cpp:611
-#: src/guiKeyChangeMenu.cpp:616 src/guiKeyChangeMenu.cpp:621
+#: src/guiKeyChangeMenu.cpp:543 src/guiKeyChangeMenu.cpp:548
+#: src/guiKeyChangeMenu.cpp:553 src/guiKeyChangeMenu.cpp:558
+#: src/guiKeyChangeMenu.cpp:563 src/guiKeyChangeMenu.cpp:568
+#: src/guiKeyChangeMenu.cpp:573 src/guiKeyChangeMenu.cpp:578
+#: src/guiKeyChangeMenu.cpp:583 src/guiKeyChangeMenu.cpp:588
+#: src/guiKeyChangeMenu.cpp:593 src/guiKeyChangeMenu.cpp:598
+#: src/guiKeyChangeMenu.cpp:603 src/guiKeyChangeMenu.cpp:608
 msgid "press Key"
 msgstr "naciśnij Przycisk"
 
@@ -3313,12 +3126,12 @@ msgstr "naciśnij Przycisk"
 msgid "Character Creator"
 msgstr ""
 
-#: src/guiMainMenu.cpp:403 src/guiMainMenu.cpp:589 src/guiMainMenu.cpp:632
-#: src/guiMainMenu.cpp:731
+#: src/guiMainMenu.cpp:403 src/guiMainMenu.cpp:588 src/guiMainMenu.cpp:630
+#: src/guiMainMenu.cpp:728
 msgid "Single Player"
 msgstr "Gra jednoosobowa"
 
-#: src/guiMainMenu.cpp:409 src/guiMainMenu.cpp:462
+#: src/guiMainMenu.cpp:409 src/guiMainMenu.cpp:463
 msgid "Multi Player"
 msgstr "Tryb dla wielu graczy"
 
@@ -3326,7 +3139,7 @@ msgstr "Tryb dla wielu graczy"
 msgid "Settings"
 msgstr "Opcje"
 
-#: src/guiMainMenu.cpp:421 src/guiMainMenu.cpp:855
+#: src/guiMainMenu.cpp:421 src/guiMainMenu.cpp:852
 msgid "Credits"
 msgstr "Twórcy"
 
@@ -3334,15 +3147,15 @@ msgstr "Twórcy"
 msgid "Quit"
 msgstr "Zamknij"
 
-#: src/guiMainMenu.cpp:470
+#: src/guiMainMenu.cpp:471
 msgid "Name/Password"
 msgstr "Nazwa/Hasło"
 
-#: src/guiMainMenu.cpp:496
+#: src/guiMainMenu.cpp:497
 msgid "Address/Port"
 msgstr "Adres/Port"
 
-#: src/guiMainMenu.cpp:517
+#: src/guiMainMenu.cpp:518
 msgid "Connect"
 msgstr "Połącz"
 
@@ -3390,156 +3203,153 @@ msgstr "Filtrowanie Anizotropowe"
 msgid "Change keys"
 msgstr "Zmień klawisze"
 
-#: src/guiMainMenu.cpp:598 src/guiMainMenu.cpp:641 src/guiMainMenu.cpp:740
+#: src/guiMainMenu.cpp:597 src/guiMainMenu.cpp:639 src/guiMainMenu.cpp:737
 msgid "Creative Mode"
 msgstr "Tryb Kreatywny"
 
-#: src/guiMainMenu.cpp:599 src/guiMainMenu.cpp:642 src/guiMainMenu.cpp:741
+#: src/guiMainMenu.cpp:598 src/guiMainMenu.cpp:640 src/guiMainMenu.cpp:738
 msgid "Adventure Mode"
 msgstr "Tryb Przygodowy"
 
-#: src/guiMainMenu.cpp:600 src/guiMainMenu.cpp:643 src/guiMainMenu.cpp:742
+#: src/guiMainMenu.cpp:599 src/guiMainMenu.cpp:641 src/guiMainMenu.cpp:739
 msgid "Survival Mode"
 msgstr "Tryb Przetrwania"
 
-#: src/guiMainMenu.cpp:613 src/guiMainMenu.cpp:755
+#: src/guiMainMenu.cpp:612 src/guiMainMenu.cpp:752
 msgid "Advanced Settings"
 msgstr "Ustawienia Zaawansowane"
 
-#: src/guiMainMenu.cpp:619 src/guiMainMenu.cpp:662
+#: src/guiMainMenu.cpp:618 src/guiMainMenu.cpp:660
 msgid "Map Options"
 msgstr "Ustawienia Mapy"
 
-#: src/guiMainMenu.cpp:625 src/guiMainMenu.cpp:724 src/guiMainMenu.cpp:848
+#: src/guiMainMenu.cpp:624 src/guiMainMenu.cpp:722 src/guiMainMenu.cpp:845
 msgid "Start Game"
 msgstr "Rozpocznij Grę"
 
-#: src/guiMainMenu.cpp:656
+#: src/guiMainMenu.cpp:654
 msgid "Hide Advanced Settings"
 msgstr "Ukryj Opcje Zaawansowane"
 
-#: src/guiMainMenu.cpp:667
+#: src/guiMainMenu.cpp:665
 msgid "Creatures"
 msgstr ""
 
-#: src/guiMainMenu.cpp:674
+#: src/guiMainMenu.cpp:672
 msgid "Passive"
 msgstr "Bierny"
 
-#: src/guiMainMenu.cpp:675
+#: src/guiMainMenu.cpp:673
 msgid "Passive & Aggressive"
 msgstr "Bierny i Agresywny"
 
-#: src/guiMainMenu.cpp:676
+#: src/guiMainMenu.cpp:674
 msgid "Passive, Aggressive, & Destructive"
 msgstr ""
 
-#: src/guiMainMenu.cpp:688
+#: src/guiMainMenu.cpp:686
 msgid "Player Damage"
 msgstr "Obrażenia Gracza"
 
-#: src/guiMainMenu.cpp:693
+#: src/guiMainMenu.cpp:691
 msgid "Suffocation/Drowning"
 msgstr "Duszenie się/Tonięcie"
 
-#: src/guiMainMenu.cpp:698
+#: src/guiMainMenu.cpp:696
 msgid "Hunger"
 msgstr "Głód"
 
-#: src/guiMainMenu.cpp:703
+#: src/guiMainMenu.cpp:701
 msgid "Tool Wear"
 msgstr "Trzymanie Narzędzi"
 
-#: src/guiMainMenu.cpp:708
+#: src/guiMainMenu.cpp:706
 msgid "Infinite Inventory"
 msgstr "Nieskończony Inwentarz"
 
-#: src/guiMainMenu.cpp:713
+#: src/guiMainMenu.cpp:711
 msgid "Initial Inventory"
 msgstr "Początkowy Inwentarz"
 
-#: src/guiMainMenu.cpp:718
+#: src/guiMainMenu.cpp:716
 msgid "Droppable Inventory"
 msgstr "Możliwy do wyrzucenia Inwentarz"
 
-#: src/guiMainMenu.cpp:761
+#: src/guiMainMenu.cpp:758
 msgid "Hide Map Options"
 msgstr "Ukryj Opcje Mapy"
 
-#: src/guiMainMenu.cpp:766
+#: src/guiMainMenu.cpp:763
 msgid "Create New Map"
 msgstr "Stwórz Nową Mapę"
 
-#: src/guiMainMenu.cpp:772
+#: src/guiMainMenu.cpp:769
 msgid "Warning! Your old map will be deleted!"
 msgstr "Uwaga! Stara mapa zostanie usunięta!"
 
-#: src/guiMainMenu.cpp:778
+#: src/guiMainMenu.cpp:775
 msgid "Map Type"
 msgstr ""
 
-#: src/guiMainMenu.cpp:785
+#: src/guiMainMenu.cpp:782
 msgid "Flat"
 msgstr ""
 
-#: src/guiMainMenu.cpp:786
+#: src/guiMainMenu.cpp:783
 msgid "Flatter"
 msgstr ""
 
-#: src/guiMainMenu.cpp:787
+#: src/guiMainMenu.cpp:784
 msgid "Smoother"
 msgstr ""
 
-#: src/guiMainMenu.cpp:788
+#: src/guiMainMenu.cpp:785
 msgid "Default"
 msgstr ""
 
-#: src/guiMainMenu.cpp:789
+#: src/guiMainMenu.cpp:786
 msgid "Hilly"
 msgstr ""
 
-#: src/guiMainMenu.cpp:790
+#: src/guiMainMenu.cpp:787
 msgid "Mountains"
 msgstr ""
 
-#: src/guiMainMenu.cpp:791
+#: src/guiMainMenu.cpp:788
 msgid "Crazy"
 msgstr ""
 
-#: src/guiMainMenu.cpp:792
+#: src/guiMainMenu.cpp:789
 msgid "Crazy Hills"
 msgstr ""
 
-#: src/guiMainMenu.cpp:814
+#: src/guiMainMenu.cpp:811
 msgid "Use Fixed Seed"
 msgstr "Użyj Naprawionych Seed'ów"
 
-#: src/guiMainMenu.cpp:820
+#: src/guiMainMenu.cpp:817
 msgid "Map Seed"
 msgstr "Seed Mapy"
 
-#: src/guiMainMenu.cpp:835
+#: src/guiMainMenu.cpp:832
 msgid "Clear Map"
 msgstr "Wyczyść Mapę"
 
-#: src/guiMainMenu.cpp:840
+#: src/guiMainMenu.cpp:837
 msgid "Warning! This will delete all construction from your map!"
 msgstr "Uwaga! Ta opcja usunie wszystkie budowle z twojej mapy!"
 
-#: src/guiMainMenu.cpp:863
+#: src/guiMainMenu.cpp:860
 msgid ""
 "Voxelands\n"
 "http://www.voxelands.com/\n"
 "\n"
 "By Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
-"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, "
-"tiemay, Szkodnix, soognarf, Tapoky, Wuzzy\n"
+"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, tiemay, Szkodnix, soognarf, Tapoky, Wuzzy\n"
 "\n"
 "Based on Minetest-C55\n"
 "by Perttu Ahola <celeron55@gmail.com>\n"
-"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
-"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
-"Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
+"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
 msgstr ""
 
 #: src/guiMessageMenu.cpp:107 src/guiPauseMenu.cpp:130
@@ -3882,15 +3692,15 @@ msgstr "Graj"
 msgid "Zoom"
 msgstr "Przybliżenie"
 
-#: src/main.cpp:1130
+#: src/main.cpp:1138
 msgid "Setting Up UI"
 msgstr "Ustawianie Interfejsu"
 
-#: src/main.cpp:1153
+#: src/main.cpp:1161
 msgid "Loading MapNodes"
 msgstr "Wczytywanie Węzłów"
 
-#: src/main.cpp:1155
+#: src/main.cpp:1163
 msgid "Loading Creatures"
 msgstr ""
 
@@ -3921,73 +3731,3 @@ msgstr "Wczytywanie Węzłów Interakcji"
 #: src/mapnode.cpp:298
 msgid "Loading Special MapNodes"
 msgstr "Wczytywanie Węzłów Specjalnych"
-
-#, fuzzy
-#~ msgid "Cotton Pants"
-#~ msgstr "Nasiona Bawełny"
-
-#, fuzzy
-#~ msgid "Blue Cotton Pants"
-#~ msgstr "Niebieska Bawełna"
-
-#, fuzzy
-#~ msgid "Green Cotton Pants"
-#~ msgstr "Zielona Bawełna"
-
-#, fuzzy
-#~ msgid "Orange Cotton Pants"
-#~ msgstr "Pomarańczowa Bawełna"
-
-#, fuzzy
-#~ msgid "Purple Cotton Pants"
-#~ msgstr "Fioletowa Bawełna"
-
-#, fuzzy
-#~ msgid "Red Cotton Pants"
-#~ msgstr "Czerwona Bawełna"
-
-#, fuzzy
-#~ msgid "Yellow Cotton Pants"
-#~ msgstr "Żółta Bawełna"
-
-#, fuzzy
-#~ msgid "Black Cotton Pants"
-#~ msgstr "Czarna Bawełna"
-
-#, fuzzy
-#~ msgid "Orange Leather Shirt"
-#~ msgstr "Pomarańczowy Dywan"
-
-#, fuzzy
-#~ msgid "Purple Leather Shirt"
-#~ msgstr "Fioletowy Dywan"
-
-#, fuzzy
-#~ msgid "Yellow Leather Shirt"
-#~ msgstr "Żółty Dywan"
-
-#, fuzzy
-#~ msgid "Green Fur Shirt"
-#~ msgstr "Zielona Kanapa"
-
-#, fuzzy
-#~ msgid "Orange Fur Shirt"
-#~ msgstr "Pomarańczowa Kanapa"
-
-#, fuzzy
-#~ msgid "Purple Fur Shirt"
-#~ msgstr "Fioletowa Kanapa"
-
-#, fuzzy
-#~ msgid "Yellow Fur Shirt"
-#~ msgstr "Żółta Kanapa"
-
-#, fuzzy
-#~ msgid "Black Fur Shirt"
-#~ msgstr "Czarna Kanapa"
-
-#~ msgid "Connecting to server... (timeout in "
-#~ msgstr "Łączenie z serwerem... (czas minie za"
-
-#~ msgid " seconds)"
-#~ msgstr "sekund/y)"
