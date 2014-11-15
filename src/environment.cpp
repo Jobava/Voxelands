@@ -3813,6 +3813,20 @@ void ClientEnvironment::step(float dtime)
 			event.player_damage.amount = hungry;
 			m_client_event_queue.push_back(event);
 		}
+		// a little discouragement for running around naked
+		{
+			bool safe = false;
+			InventoryList *sl = lplayer->inventory.getList("shirt");
+			InventoryList *pl = lplayer->inventory.getList("pants");
+			if (sl && pl) {
+				InventoryItem *si = sl->getItem(0);
+				InventoryItem *pi = pl->getItem(0);
+				if (si && pi)
+					safe = true;
+			}
+			if (!safe)
+				damageLocalPlayer(1);
+		}
 	}
 
 	/*

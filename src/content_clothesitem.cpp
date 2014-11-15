@@ -2694,6 +2694,7 @@ void content_clothesitem_init()
 	f->armour = 0.0;
 	f->warmth = 0.0;
 	f->vacuum = 0.0;
+	f->effect = 1.8;
 	crafting::set1over1Recipe(CONTENT_CLOTHESITEM_LEATHER_NECKLACE,CONTENT_CRAFTITEM_GOLD_INGOT,i);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -2708,6 +2709,7 @@ void content_clothesitem_init()
 	f->armour = 0.0;
 	f->warmth = 0.0;
 	f->vacuum = 0.0;
+	f->effect = 1.4;
 	crafting::set1over1Recipe(CONTENT_CLOTHESITEM_LEATHER_NECKLACE,CONTENT_CRAFTITEM_COPPER_INGOT,i);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -2722,6 +2724,7 @@ void content_clothesitem_init()
 	f->armour = 0.0;
 	f->warmth = 0.0;
 	f->vacuum = 0.0;
+	f->effect = 2.0;
 	crafting::set1over1Recipe(CONTENT_CLOTHESITEM_LEATHER_NECKLACE,CONTENT_CRAFTITEM_SILVER_INGOT,i);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -2736,6 +2739,7 @@ void content_clothesitem_init()
 	f->armour = 0.0;
 	f->warmth = 0.0;
 	f->vacuum = 0.0;
+	f->effect = 1.2;
 	crafting::set1over1Recipe(CONTENT_CLOTHESITEM_LEATHER_NECKLACE,CONTENT_CRAFTITEM_TIN_INGOT,i);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -2750,6 +2754,7 @@ void content_clothesitem_init()
 	f->armour = 0.0;
 	f->warmth = 0.0;
 	f->vacuum = 0.0;
+	f->effect = 1.6;
 	crafting::set1over1Recipe(CONTENT_CLOTHESITEM_LEATHER_NECKLACE,CONTENT_CRAFTITEM_STEEL_INGOT,i);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -2764,6 +2769,7 @@ void content_clothesitem_init()
 	f->armour = 0.0;
 	f->warmth = 0.0;
 	f->vacuum = 0.0;
+	f->effect = 2.2;
 	crafting::set1over1Recipe(CONTENT_CLOTHESITEM_LEATHER_NECKLACE,CONTENT_CRAFTITEM_QUARTZ,i);
 	lists::add("craftguide",i);
 	lists::add("creative",i);

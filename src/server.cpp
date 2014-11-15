@@ -4278,8 +4278,19 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		if (!g_settings->getBool("enable_damage"))
 			return;
 
-		const char* list[4] = {"hat","shirt","pants","boots"};
-		for (int j=0; j<4; j++) {
+		f32 bonus = 1.0;
+		{
+			InventoryList *l = player->inventory.getList("decorative");
+			if (l) {
+				ClothesItem *i = (ClothesItem*)l->getItem(0);
+				if (i) {
+					bonus = content_clothesitem_features(i->getContent()).effect;
+				}
+			}
+		}
+
+		const char* list[7] = {"hat","shirt","jacket","decorative","belt","pants","boots"};
+		for (int j=0; j<7; j++) {
 			InventoryList *l = player->inventory.getList(list[j]);
 			if (l == NULL)
 				continue;
@@ -4291,6 +4302,11 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				w /= content_clothesitem_features(i->getContent()).durability;
 			if (w < 150)
 				w = 150;
+			if (bonus > 0.0) {
+				f32 fw = w;
+				fw /= bonus;
+				w = fw;
+			}
 			if (i->addWear(w))
 				l->deleteItem(0);
 		}

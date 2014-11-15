@@ -38,6 +38,8 @@ struct ClothesItemFeatures {
 	f32 suffocate;
 	// this determines how fast the item wears out from use
 	u8 durability;
+	// for medallions, how much the affect durability of other items
+	f32 effect;
 
 	ClothesItemFeatures():
 		content(CONTENT_IGNORE),
@@ -49,7 +51,8 @@ struct ClothesItemFeatures {
 		warmth(0.),
 		vacuum(0.),
 		suffocate(0.),
-		durability(10)
+		durability(10),
+		effect(1.)
 	{}
 };
 
