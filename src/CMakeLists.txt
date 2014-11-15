@@ -67,6 +67,12 @@ else()
 	set(audio_SRCS sound.cpp)
 endif(USE_AUDIO)
 
+option(ENABLE_FREETYPE "Enable freetype2 (truetype fonts and basic unicode support)" OFF)
+set(USE_FREETYPE 0)
+if(ENABLE_FREETYPE)
+	set(USE_FREETYPE 1)
+endif(ENABLE_FREETYPE)
+
 if(NOT MSVC)
 	set(USE_GPROF 0 CACHE BOOL "Use -pg flag for g++")
 endif()
@@ -91,6 +97,14 @@ if(WIN32)
 			CACHE FILEPATH "Path to zlibwapi.dll (for installation)")
 	set(IRRLICHT_SOURCE_DIR "${PROJECT_SOURCE_DIR}/../../irrlicht-1.7.2"
 			CACHE PATH "irrlicht dir")
+	if(USE_FREETYPE)
+		set(FREETYPE_INCLUDE_DIR_ft2build "${PROJECT_SOURCE_DIR}/../../freetype2/include/"
+				CACHE PATH "freetype include dir")
+		set(FREETYPE_INCLUDE_DIR_freetype2 "${PROJECT_SOURCE_DIR}/../../freetype2/include/freetype"
+				CACHE PATH "freetype include dir")
+		set(FREETYPE_LIBRARY "${PROJECT_SOURCE_DIR}/../../freetype2/objs/win32/vc2005/freetype247.lib"
+				CACHE FILEPATH "Path to freetype247.lib")
+	endif(USE_FREETYPE)
 else()
 	# Unix probably
 	if(BUILD_CLIENT)
@@ -124,6 +138,27 @@ endif()
 
 find_package(Jthread REQUIRED)
 find_package(Sqlite3 REQUIRED)
+
+if(USE_FREETYPE)
+	if(UNIX)
+		include(FindPkgConfig)
+		if(PKG_CONFIG_FOUND)
+			pkg_check_modules(FREETYPE QUIET freetype2)
+			if(FREETYPE_FOUND)
+				SET(FREETYPE_PKGCONFIG_FOUND TRUE)
+				SET(FREETYPE_LIBRARY ${FREETYPE_LIBRARIES})
+				# because cmake is idiotic
+				string(REPLACE ";" " " FREETYPE_CFLAGS_STR ${FREETYPE_CFLAGS})
+				string(REPLACE ";" " " FREETYPE_LDFLAGS_STR ${FREETYPE_LDFLAGS})
+			endif(FREETYPE_FOUND)
+		endif(PKG_CONFIG_FOUND)
+	endif(UNIX)
+	if(NOT FREETYPE_FOUND)
+		find_package(Freetype REQUIRED)
+	endif(NOT FREETYPE_FOUND)
+	set(CGUITTFONT_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/cguittfont")
+	set(CGUITTFONT_LIBRARY cguittfont)
+endif(USE_FREETYPE)
 
 configure_file(
 	"${PROJECT_SOURCE_DIR}/cmake_config.h.in"
@@ -245,6 +280,13 @@ include_directories(
 	${SQLITE3_INCLUDE_DIR}
 )
 
+if(USE_FREETYPE)
+	include_directories(
+		${FREETYPE_INCLUDE_DIRS}
+		${CGUITTFONT_INCLUDE_DIR}
+	)
+endif(USE_FREETYPE)
+
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_SOURCE_DIR}/bin")
 
 if(BUILD_CLIENT)
@@ -265,6 +307,19 @@ if(BUILD_CLIENT)
 		${PLATFORM_LIBS}
 		${CLIENT_PLATFORM_LIBS}
 	)
+	if(USE_FREETYPE)
+		if(FREETYPE_PKGCONFIG_FOUND)
+			set_target_properties(${PROJECT_NAME}
+				PROPERTIES
+				COMPILE_FLAGS "${FREETYPE_CFLAGS_STR}"
+			)
+		endif(FREETYPE_PKGCONFIG_FOUND)
+		target_link_libraries(
+			${PROJECT_NAME}
+			${FREETYPE_LIBRARY}
+			${CGUITTFONT_LIBRARY}
+		)
+	endif(USE_FREETYPE)
 endif(BUILD_CLIENT)
 
 if(BUILD_SERVER)
@@ -379,6 +434,9 @@ if(BUILD_CLIENT)
 		if(DEFINED ZLIB_DLL)
 			install(FILES ${ZLIB_DLL} DESTINATION ${BINDIR})
 		endif()
+		if(FREETYPE_DLL)
+			install(FILES ${FREETYPE_DLL} DESTINATION ${BINDIR})
+		endif()
 		if(USE_AUDIO)
 			if(DEFINED VORBIS_DLL)
 				install(FILES ${VORBIS_DLL} DESTINATION ${BINDIR})
@@ -482,6 +540,10 @@ if (JTHREAD_FOUND)
 else (JTHREAD_FOUND)
 	add_subdirectory(jthread)
 endif (JTHREAD_FOUND)
+
+if (BUILD_CLIENT AND USE_FREETYPE)
+	add_subdirectory(cguittfont)
+endif (BUILD_CLIENT AND USE_FREETYPE)
 
 if (SQLITE3_FOUND)
 else (SQLITE3_FOUND)
