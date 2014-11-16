@@ -418,6 +418,8 @@ if(BUILD_CLIENT)
 	install(FILES ${modelsx} DESTINATION ${SHAREDIR}/models)
 	file(GLOB sounds "${CMAKE_CURRENT_SOURCE_DIR}/../data/sounds/*.ogg")
 	install(FILES ${sounds} DESTINATION ${SHAREDIR}/sounds)
+	file(GLOB fonts "${CMAKE_CURRENT_SOURCE_DIR}/../data/fonts/*.ttf")
+	install(FILES ${fonts} DESTINATION ${SHAREDIR}/fonts)
 
 	if(USE_GETTEXT)
 		foreach(LOCALE ${GETTEXT_AVAILABLE_LOCALES})

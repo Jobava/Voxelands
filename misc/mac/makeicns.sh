@@ -11,7 +11,7 @@ sips=$(which sips)
 iconutil=$(which iconutil)
 inkscape="/Applications/Inkscape.app/Contents/Resources/bin/inkscape"
 if [ ! -f "$mac_dir"/voxelands-1024x1024.png ]; then
-    "$inkscape" --export-png "$orig_img" -w 1024 -h 1024 "$proj_dir"/voxelands.svg
+    "$inkscape" --export-png "$orig_img" -w 1024 -h 1024 "$proj_dir"/misc/freedesktop/icons/scalable/apps/voxelands.svg
 fi
 mkdir "$iconset_dir"
 "$sips" -z "${sizes[0]}" "${sizes[0]}" "$orig_img" --out "$iconset_dir"/icon_"${sizes[0]}"x"${sizes[0]}".png
