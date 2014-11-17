@@ -85,10 +85,9 @@ void GUIPauseMenu::regenerateGui(v2u32 screensize)
 	recalculateAbsolutePosition(false);
 
 	v2s32 size = rect.getSize();
-	changeCtype("");
 	{
-		core::rect<s32> rect(0, 0, 380, 20);
-		rect = rect + v2s32(20 , 10);
+		core::rect<s32> rect(0, 0, 340, 20);
+		rect = rect + v2s32(0 , 10);
 
 		v2u32 max_texture_size;
 		{
@@ -99,8 +98,8 @@ void GUIPauseMenu::regenerateGui(v2u32 screensize)
 		Environment->addStaticText(wgettext("Voxelands by darkrose and contributors"), rect, false, true, this, 259);
 	}
 	{
-		core::rect<s32> rect(0, 0, 200, 20);
-		rect = rect + v2s32(85 , 30);
+		core::rect<s32> rect(0, 0, 340, 20);
+		rect = rect + v2s32(0 , 30);
 
 		v2u32 max_texture_size;
 		{
@@ -111,8 +110,8 @@ void GUIPauseMenu::regenerateGui(v2u32 screensize)
 		Environment->addStaticText(L"www.voxelands.com", rect, false, true, this, 259);
 	}
 	{
-		core::rect<s32> rect(0, 0, 205, 20);
-		rect = rect + v2s32(70,50);
+		core::rect<s32> rect(0, 0, 340, 20);
+		rect = rect + v2s32(0,50);
 
 		v2u32 max_texture_size;
 		{
@@ -131,47 +130,28 @@ void GUIPauseMenu::regenerateGui(v2u32 screensize)
 	const s32 btn_num = 4;
 	s32 btn_y = (size.Y/2-((btn_num*btn_height+(btn_num-1)*btn_gap))/2)+40;
 	{
-		core::rect<s32> rect(0, 0, 140, btn_height);
-		rect = rect + v2s32(size.X/2-140/2, btn_y);
+		core::rect<s32> rect(0, 0, 180, btn_height);
+		rect = rect + v2s32(size.X/2-180/2, btn_y);
 		Environment->addButton(rect, this, 256, wgettext("Continue"));
 	}
 	btn_y += btn_height + btn_gap;
 	{
-		core::rect<s32> rect(0, 0, 140, btn_height);
-		rect = rect + v2s32(size.X/2-140/2, btn_y);
+		core::rect<s32> rect(0, 0, 180, btn_height);
+		rect = rect + v2s32(size.X/2-180/2, btn_y);
 		Environment->addButton(rect, this, 261, wgettext("Change Password"));
 	}
 	btn_y += btn_height + btn_gap;
 	{
-		core::rect<s32> rect(0, 0, 140, btn_height);
-		rect = rect + v2s32(size.X/2-140/2, btn_y);
+		core::rect<s32> rect(0, 0, 180, btn_height);
+		rect = rect + v2s32(size.X/2-180/2, btn_y);
 		Environment->addButton(rect, this, 260, wgettext("Disconnect"));
 	}
 	btn_y += btn_height + btn_gap;
 	{
-		core::rect<s32> rect(0, 0, 140, btn_height);
-		rect = rect + v2s32(size.X/2-140/2, btn_y);
+		core::rect<s32> rect(0, 0, 180, btn_height);
+		rect = rect + v2s32(size.X/2-180/2, btn_y);
 		Environment->addButton(rect, this, 257, wgettext("Exit to OS"));
 	}
-
-	//{
-		//core::rect<s32> rect(0, 0, 180, 240);
-		//rect = rect + v2s32(size.X/2 + 90, size.Y/2-rect.getHeight()/2);
-		//Environment->addStaticText(chartowchar_t(gettext(
-		//"Default Controls:\n"
-		//"- WASD: Walk\n"
-		//"- Mouse left: dig/hit\n"
-		//"- Mouse right: place/use\n"
-		//"- Mouse wheel: select item\n"
-		//"- 0...9: select item\n"
-		//"- Shift: sneak\n"
-		//"- R: Toggle viewing all loaded chunks\n"
-		//"- I: Inventory menu\n"
-		//"- ESC: This menu\n"
-		//"- T: Chat\n"
-		//)), rect, false, true, this, 258);
-	//}
-	changeCtype("C");
 }
 
 void GUIPauseMenu::drawMenu()

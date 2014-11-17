@@ -39,8 +39,10 @@
 #include "tile.h" // ITextureSource
 #include "path.h"
 #include "gui_colours.h"
-
 #include "gettext.h"
+#if USE_FREETYPE
+#include "intlGUIEditBox.h"
+#endif
 
 void drawInventoryItem(video::IVideoDriver *driver,
 		gui::IGUIFont *font,
@@ -316,7 +318,12 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 			// three cases: field and no label, label and no field, label and field
 			if (flabel == "") {
 				spec.send = true;
-				gui::IGUIEditBox *e = Environment->addEditBox(spec.fdefault.c_str(), rect, false, this, spec.fid);
+				gui::IGUIEditBox *e;
+#if USE_FREETYPE
+				e = (gui::IGUIEditBox *) new gui::intlGUIEditBox(spec.fdefault.c_str(), true, Environment, this, spec.fid, rect);
+#else
+				e = Environment->addEditBox(spec.fdefault.c_str(), rect, false, this, spec.fid);
+#endif
 				if (multi) {
 					e->setMultiLine(true);
 					e->setTextAlignment(gui::EGUIA_UPPERLEFT, gui::EGUIA_UPPERLEFT);
@@ -333,7 +340,12 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 				Environment->addStaticText(spec.flabel.c_str(), rect, false, true, this, spec.fid);
 			}else{
 				spec.send = true;
-				gui::IGUIEditBox *e = Environment->addEditBox(spec.fdefault.c_str(), rect, false, this, spec.fid);
+				gui::IGUIEditBox *e;
+#if USE_FREETYPE
+				e = (gui::IGUIEditBox *) new gui::intlGUIEditBox(spec.fdefault.c_str(), true, Environment, this, spec.fid, rect);
+#else
+				e = Environment->addEditBox(spec.fdefault.c_str(), rect, false, this, spec.fid);
+#endif
 				if (multi) {
 					e->setMultiLine(true);
 					e->setWordWrap(true);
@@ -452,13 +464,11 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 	// If there's inventory, put the usage string at the bottom
 	if (m_inventorylists.size())
 	{
-		changeCtype("");
 		core::rect<s32> rect(0, 0, size.X-padding.X*2, helptext_h);
 		rect = rect + v2s32(size.X/2 - rect.getWidth()/2,
 				size.Y-rect.getHeight()-5);
 		const wchar_t *text = wgettext("Left click: Move all items, Right click: Move single item");
 		Environment->addStaticText(text, rect, false, true, this, 256);
-		changeCtype("C");
 	}
 	// If there's fields, add a Proceed button
 	if (m_fields.size() && bp_set != 2)
@@ -474,7 +484,6 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 		recalculateAbsolutePosition(false);
 		basepos = getBasePos();
 
-		changeCtype("");
 		{
 			v2s32 pos = basepos;
 			pos.Y = ((m_fields.size()+1)*50);
@@ -483,7 +492,6 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 			rect = core::rect<s32>(size.X/2-70, pos.Y, (size.X/2-70)+140, pos.Y+25);
 			Environment->addButton(rect, this, 257, wgettext("Write It"));
 		}
-		changeCtype("C");
 	}
 	// Add tooltip
 	{

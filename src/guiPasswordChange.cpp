@@ -33,9 +33,11 @@
 #include <IGUIButton.h>
 #include <IGUIStaticText.h>
 #include <IGUIFont.h>
-
 #include "gettext.h"
 #include "gui_colours.h"
+#if USE_FREETYPE
+#include "intlGUIEditBox.h"
+#endif
 
 const int ID_oldPassword = 256;
 const int ID_newPassword1 = 257;
@@ -98,57 +100,59 @@ void GUIPasswordChange::regenerateGui(v2u32 screensize)
 		Add stuff
 	*/
 	s32 ypos = 30;
-	changeCtype("");
 	{
 		core::rect<s32> rect(0, 0, 110, 20);
 		rect += topleft_client + v2s32(35, ypos+6);
-		Environment->addStaticText(wgettext("Old Password"),
-			rect, false, true, this, -1);
+		Environment->addStaticText(wgettext("Old Password"), rect, false, true, this, -1);
 	}
-	changeCtype("C");
 	{
 		core::rect<s32> rect(0, 0, 230, 30);
 		rect += topleft_client + v2s32(160, ypos);
-		gui::IGUIEditBox *e =
-		Environment->addEditBox(L"", rect, false, this, ID_oldPassword);
+		gui::IGUIEditBox *e;
+#if USE_FREETYPE
+		e = (gui::IGUIEditBox *) new gui::intlGUIEditBox(L"", true, Environment, this, ID_oldPassword, rect);
+#else
+		e = Environment->addEditBox(L"", rect, false, this, ID_oldPassword);
+#endif
 		Environment->setFocus(e);
 		e->setPasswordBox(true);
 	}
 	ypos += 50;
-	changeCtype("");
 	{
 		core::rect<s32> rect(0, 0, 110, 20);
 		rect += topleft_client + v2s32(35, ypos+6);
-		Environment->addStaticText(wgettext("New Password"),
-			rect, false, true, this, -1);
+		Environment->addStaticText(wgettext("New Password"), rect, false, true, this, -1);
 	}
-	changeCtype("C");
 	{
 		core::rect<s32> rect(0, 0, 230, 30);
 		rect += topleft_client + v2s32(160, ypos);
-		gui::IGUIEditBox *e =
-		Environment->addEditBox(L"", rect, false, this, ID_newPassword1);
+		gui::IGUIEditBox *e;
+#if USE_FREETYPE
+		e = (gui::IGUIEditBox *) new gui::intlGUIEditBox(L"", true, Environment, this, ID_newPassword1, rect);
+#else
+		e = Environment->addEditBox(L"", rect, false, this, ID_newPassword1);
+#endif
 		e->setPasswordBox(true);
 	}
 	ypos += 50;
-	changeCtype("");
 	{
 		core::rect<s32> rect(0, 0, 110, 20);
 		rect += topleft_client + v2s32(35, ypos+6);
-		Environment->addStaticText(wgettext("Confirm Password"),
-			rect, false, true, this, -1);
+		Environment->addStaticText(wgettext("Confirm Password"), rect, false, true, this, -1);
 	}
-	changeCtype("C");
 	{
 		core::rect<s32> rect(0, 0, 230, 30);
 		rect += topleft_client + v2s32(160, ypos);
-		gui::IGUIEditBox *e =
-		Environment->addEditBox(L"", rect, false, this, ID_newPassword2);
+		gui::IGUIEditBox *e;
+#if USE_FREETYPE
+		e = (gui::IGUIEditBox *) new gui::intlGUIEditBox(L"", true, Environment, this, ID_newPassword2, rect);
+#else
+		e = Environment->addEditBox(L"", rect, false, this, ID_newPassword2);
+#endif
 		e->setPasswordBox(true);
 	}
 
 	ypos += 50;
-	changeCtype("");
 	{
 		core::rect<s32> rect(0, 0, 140, 30);
 		rect = rect + v2s32(size.X/2-140/2, ypos);
@@ -160,12 +164,9 @@ void GUIPasswordChange::regenerateGui(v2u32 screensize)
 		core::rect<s32> rect(0, 0, 300, 20);
 		rect += topleft_client + v2s32(35, ypos);
 		IGUIElement *e =
-		Environment->addStaticText(
-			wgettext("Passwords do not match!"),
-			rect, false, true, this, ID_message);
+		Environment->addStaticText(wgettext("Passwords do not match!"), rect, false, true, this, ID_message);
 		e->setVisible(false);
 	}
-	changeCtype("C");
 
 }
 

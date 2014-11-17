@@ -55,7 +55,6 @@ GUICharDefMenu::GUICharDefMenu(
 
 	fetchPlayerSkin();
 
-	changeCtype("");
 	m_skintone_types["white"] = wgettext("White Skin");
 	m_skintone_types["red"] = wgettext("Red Skin");
 	m_skintone_types["green"] = wgettext("Green Skin");
@@ -115,7 +114,6 @@ GUICharDefMenu::GUICharDefMenu(
 	m_shoes_types["leather"] = wgettext("Leather Shoes");
 	m_shoes_types["fur"] = wgettext("Fur Shoes");
 	m_shoes_types["canvas"] = wgettext("Canvas Shoes");
-	changeCtype("C");
 
 	scene::ISceneManager* smgr = device->getSceneManager();
 
@@ -199,7 +197,6 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 	DesiredRect = rect;
 	recalculateAbsolutePosition(false);
 
-	changeCtype("");
 	{
 		core::rect<s32> rect(0, 0, 230, 300);
 		rect += leftside + v2s32(10, 220);
@@ -229,7 +226,6 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 		gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Create Your Character"), rect, false, true, this, -1);
 		t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
-	//changeCtype("C");
 	// gender
 	{
 		core::rect<s32> rect(0, 0, 105, 30);
@@ -268,14 +264,12 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 
 	// skintone
 	//185
-	//changeCtype("");
 	{
 		core::rect<s32> rect(0, 0, 160, 20);
 		rect += rightside + v2s32(45, 170);
 		gui::IGUIStaticText *t = Environment->addStaticText(m_skintone_types[m_parts["skintone"]].c_str(), rect, false, true, this, -1);
 		t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
-	//changeCtype("C");
 	{
 		core::rect<s32> rect(0, 0, 30, 30);
 		rect += rightside + v2s32(15, 165);
@@ -289,14 +283,12 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 
 	// face
 	//220
-	//changeCtype("");
 	{
 		core::rect<s32> rect(0, 0, 160, 20);
 		rect += rightside + v2s32(45, 205);
 		gui::IGUIStaticText *t = Environment->addStaticText(m_face_types[m_parts["face"]].c_str(), rect, false, true, this, -1);
 		t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
-	//changeCtype("C");
 	{
 		core::rect<s32> rect(0, 0, 30, 30);
 		rect += rightside + v2s32(15, 200);
@@ -310,14 +302,12 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 
 	// hairtone
 	//255
-	//changeCtype("");
 	{
 		core::rect<s32> rect(0, 0, 160, 20);
 		rect += rightside + v2s32(45, 240);
 		gui::IGUIStaticText *t = Environment->addStaticText(m_hairtone_types[m_parts["hairtone"]].c_str(), rect, false, true, this, -1);
 		t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
-	//changeCtype("C");
 	{
 		core::rect<s32> rect(0, 0, 30, 30);
 		rect += rightside + v2s32(15, 235);
@@ -331,14 +321,12 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 
 	// hair
 	//290
-	//changeCtype("");
 	{
 		core::rect<s32> rect(0, 0, 160, 20);
 		rect += rightside + v2s32(45, 275);
 		gui::IGUIStaticText *t = Environment->addStaticText(m_hair_types[m_parts["hair"]].c_str(), rect, false, true, this, -1);
 		t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
-	//changeCtype("C");
 	{
 		core::rect<s32> rect(0, 0, 30, 30);
 		rect += rightside + v2s32(15, 270);
@@ -352,14 +340,12 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 
 	// eyes
 	//325
-	//changeCtype("");
 	{
 		core::rect<s32> rect(0, 0, 160, 20);
 		rect += rightside + v2s32(45, 315);
 		gui::IGUIStaticText *t = Environment->addStaticText(m_eyes_types[m_parts["eyes"]].c_str(), rect, false, true, this, -1);
 		t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
-	//changeCtype("C");
 	{
 		core::rect<s32> rect(0, 0, 30, 30);
 		rect += rightside + v2s32(15, 305);
@@ -373,14 +359,12 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 
 	// t-shirt
 	//370
-	//changeCtype("");
 	{
 		core::rect<s32> rect(0, 0, 160, 20);
 		rect += rightside + v2s32(45, 355);
 		gui::IGUIStaticText *t = Environment->addStaticText(m_shirt_types[m_parts["shirt"]].c_str(), rect, false, true, this, -1);
 		t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
-	//changeCtype("C");
 	{
 		core::rect<s32> rect(0, 0, 30, 30);
 		rect += rightside + v2s32(15, 350);
@@ -394,14 +378,12 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 
 	// pants
 	//405
-	//changeCtype("");
 	{
 		core::rect<s32> rect(0, 0, 160, 20);
 		rect += rightside + v2s32(45, 390);
 		gui::IGUIStaticText *t = Environment->addStaticText(m_pants_types[m_parts["pants"]].c_str(), rect, false, true, this, -1);
 		t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
-	//changeCtype("C");
 	{
 		core::rect<s32> rect(0, 0, 30, 30);
 		rect += rightside + v2s32(15, 385);
@@ -415,14 +397,12 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 
 	// shoes
 	//440
-	//changeCtype("");
 	{
 		core::rect<s32> rect(0, 0, 160, 20);
 		rect += rightside + v2s32(45, 425);
 		gui::IGUIStaticText *t = Environment->addStaticText(m_shoes_types[m_parts["shoes"]].c_str(), rect, false, true, this, -1);
 		t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
-	//changeCtype("C");
 	{
 		core::rect<s32> rect(0, 0, 30, 30);
 		rect += rightside + v2s32(15, 420);
@@ -445,7 +425,6 @@ void GUICharDefMenu::regenerateGui(v2u32 screensize)
 		rect += rightside + v2s32(130, 460);
 		Environment->addButton(rect, this, GUI_ID_CD_QUIT_BUTTON, wgettext("Cancel"));
 	}
-	changeCtype("C");
 }
 
 void GUICharDefMenu::drawMenu()

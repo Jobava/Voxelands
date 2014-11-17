@@ -281,6 +281,10 @@ include_directories(
 )
 
 if(USE_FREETYPE)
+	set(voxelands_SRCS
+		${voxelands_SRCS}
+		intlGUIEditBox.cpp
+	)
 	include_directories(
 		${FREETYPE_INCLUDE_DIRS}
 		${CGUITTFONT_INCLUDE_DIR}

@@ -32,9 +32,11 @@
 #include <IGUIButton.h>
 #include <IGUIStaticText.h>
 #include <IGUIFont.h>
-
 #include "gettext.h"
 #include "gui_colours.h"
+#if USE_FREETYPE
+#include "intlGUIEditBox.h"
+#endif
 
 GUITextInputMenu::GUITextInputMenu(gui::IGUIEnvironment* env,
 		gui::IGUIElement* parent, s32 id,
@@ -111,10 +113,13 @@ void GUITextInputMenu::regenerateGui(v2u32 screensize)
 		Add stuff
 	*/
 	{
-		//core::rect<s32> rect(0, 0, 300, 30);
-		//rect = rect + v2s32(size.X/2-300/2, size.Y/2-30/2-25);
 		core::rect<s32> rect(5, 0, 290, 30);
-		gui::IGUIElement *e = Environment->addEditBox(text.c_str(), rect, false, this, 256);
+		gui::IGUIEditBox *e;
+#if USE_FREETYPE
+		e = (gui::IGUIEditBox *) new gui::intlGUIEditBox(text.c_str(), true, Environment, this, 256, rect);
+#else
+		e = Environment->addEditBox(text.c_str(), rect, false, this, 256);
+#endif
 		Environment->setFocus(e);
 
 
@@ -124,14 +129,6 @@ void GUITextInputMenu::regenerateGui(v2u32 screensize)
 		evt.KeyInput.PressedDown = true;
 		e->OnEvent(evt);
 	}
-	//changeCtype("");
-	//{
-		//core::rect<s32> rect(0, 0, 140, 30);
-		//rect = rect + v2s32(size.X/2-140/2, size.Y/2-30/2+25);
-		//Environment->addButton(rect, this, 257,
-			//wgettext("Write It"));
-	//}
-	//changeCtype("C");
 }
 
 void GUITextInputMenu::drawMenu()

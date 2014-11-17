@@ -84,7 +84,6 @@ void GUIKeyChangeMenu::regenerateGui(v2u32 screensize)
 	recalculateAbsolutePosition(false);
 
 	v2s32 topleft(0, 0);
-	changeCtype("");
 	{
 		core::rect < s32 > rect(0, 0, 620, 20);
 		rect += topleft + v2s32(0, 10);
@@ -313,7 +312,6 @@ void GUIKeyChangeMenu::regenerateGui(v2u32 screensize)
 		Environment->addButton(rect, this, GUI_ID_ABORT_BUTTON,
 		wgettext("Cancel"));
 	}
-	changeCtype("C");
 }
 
 void GUIKeyChangeMenu::drawMenu()
@@ -436,7 +434,6 @@ bool GUIKeyChangeMenu::OnEvent(const SEvent& event)
 	if (event.EventType == EET_KEY_INPUT_EVENT && activeKey >= 0
 			&& event.KeyInput.PressedDown)
 	{
-		changeCtype("");
 		KeyPress kp(event.KeyInput);
 
 		if (activeKey == GUI_ID_KEY_FORWARD_BUTTON)
@@ -509,7 +506,6 @@ bool GUIKeyChangeMenu::OnEvent(const SEvent& event)
 			this->dump->setText(wgettext(kp.name()));
 			this->key_dump = kp;
 		}
-		changeCtype("C");
 		activeKey = -1;
 		return true;
 	}
@@ -528,11 +524,6 @@ bool GUIKeyChangeMenu::OnEvent(const SEvent& event)
 		}
 		if (event.GUIEvent.EventType == gui::EGET_BUTTON_CLICKED)
 		{
-			if(event.GUIEvent.Caller->getID() != GUI_ID_BACK_BUTTON &&
-				event.GUIEvent.Caller->getID() != GUI_ID_ABORT_BUTTON)
-			{
-				changeCtype("");
-			}
 
 			switch (event.GUIEvent.Caller->getID())
 			{
@@ -614,8 +605,6 @@ bool GUIKeyChangeMenu::OnEvent(const SEvent& event)
 				this->range->setText(wgettext("press Key"));
 				break;
 			}
-			//Buttons
-			changeCtype("C");
 
 		}
 	}

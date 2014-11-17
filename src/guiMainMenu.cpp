@@ -38,6 +38,9 @@
 #include <IGUIFont.h>
 #include "path.h"
 #include "gui_colours.h"
+#if USE_FREETYPE
+#include "intlGUIEditBox.h"
+#endif
 
 #include "gettext.h"
 
@@ -390,7 +393,6 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	DesiredRect = rect;
 	recalculateAbsolutePosition(false);
 
-	changeCtype("");
 	// Character Creator button
 	{
 		core::rect<s32> rect(0, 0, 200, 40);
@@ -427,7 +429,6 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		rect += v2s32(35, 440);
 		Environment->addButton(rect, this, GUI_ID_TAB_QUIT, wgettext("Quit"));
 	}
-	changeCtype("C");
 
 	v2s32 topleft_content(250, 0);
 	v2s32 size_content = size - v2s32(300, 0);
@@ -457,7 +458,6 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	}
 
 	if (m_data->selected_tab == TAB_MULTIPLAYER) {
-		changeCtype("");
 		{
 			core::rect<s32> rect(0, 0, 550, 20);
 			rect += topleft_content + v2s32(0, 20);
@@ -471,47 +471,60 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			rect += topleft_content + v2s32(120, 60);
 			Environment->addStaticText(wgettext("Name/Password"), rect, false, true, this, -1);
 		}
-		changeCtype("C");
 		{
 			core::rect<s32> rect(0, 0, 230, 30);
 			rect += topleft_content + v2s32(135, 90);
-			gui::IGUIElement *e =
-			Environment->addEditBox(text_name.c_str(), rect, false, this, GUI_ID_NAME_INPUT);
+			gui::IGUIEditBox *e;
+#if USE_FREETYPE
+			e = (gui::IGUIEditBox *) new gui::intlGUIEditBox(text_name.c_str(), true, Environment, this, GUI_ID_NAME_INPUT, rect);
+#else
+			e = Environment->addEditBox(text_name.c_str(), rect, false, this, GUI_ID_NAME_INPUT);
+#endif
 			if (text_name == L"")
 				Environment->setFocus(e);
 		}
 		{
 			core::rect<s32> rect(0, 0, 230, 30);
 			rect += topleft_content + v2s32(135, 125);
-			gui::IGUIEditBox *e =
-			Environment->addEditBox(L"", rect, false, this, 264);
+			gui::IGUIEditBox *e;
+#if USE_FREETYPE
+			e = (gui::IGUIEditBox *) new gui::intlGUIEditBox(L"", true, Environment, this, GUI_ID_PW_INPUT, rect);
+#else
+			*e = Environment->addEditBox(L"", rect, false, this, GUI_ID_PW_INPUT);
+#endif
 			e->setPasswordBox(true);
 			if (text_name != L"" && text_address != L"")
 				Environment->setFocus(e);
 
 		}
-		changeCtype("");
 		// Address + port
 		{
 			core::rect<s32> rect(0, 0, 110, 20);
 			rect += topleft_content + v2s32(120, 170);
 			Environment->addStaticText(wgettext("Address/Port"), rect, false, true, this, -1);
 		}
-		changeCtype("C");
 		{
 			core::rect<s32> rect(0, 0, 230, 30);
 			rect += topleft_content + v2s32(135, 200);
-			gui::IGUIElement *e =
-			Environment->addEditBox(text_address.c_str(), rect, false, this, GUI_ID_ADDRESS_INPUT);
+			gui::IGUIEditBox *e;
+#if USE_FREETYPE
+			e = (gui::IGUIEditBox *) new gui::intlGUIEditBox(text_address.c_str(), true, Environment, this, GUI_ID_ADDRESS_INPUT, rect);
+#else
+			e = Environment->addEditBox(text_address.c_str(), rect, false, this, GUI_ID_ADDRESS_INPUT);
+#endif
 			if (text_name != L"" && text_address == L"")
 				Environment->setFocus(e);
 		}
 		{
 			core::rect<s32> rect(0, 0, 120, 30);
 			rect += topleft_content + v2s32(245, 240);
-			Environment->addEditBox(text_port.c_str(), rect, false, this, GUI_ID_PORT_INPUT);
+			gui::IGUIEditBox *e;
+#if USE_FREETYPE
+			e = (gui::IGUIEditBox *) new gui::intlGUIEditBox(text_port.c_str(), true, Environment, this, GUI_ID_PORT_INPUT, rect);
+#else
+			e = Environment->addEditBox(text_port.c_str(), rect, false, this, GUI_ID_PORT_INPUT);
+#endif
 		}
-		changeCtype("");
 		// Start game button
 		{
 			core::rect<s32> rect(0, 0, 180, 30);
@@ -519,7 +532,6 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			Environment->addButton(rect, this, GUI_ID_JOIN_GAME_BUTTON, wgettext("Connect"));
 		}
 	}else if (m_data->selected_tab == TAB_SETTINGS) {
-		changeCtype("");
 		{
 			core::rect<s32> rect(0, 0, 550, 20);
 			rect += topleft_content + v2s32(0, 20);
@@ -584,7 +596,6 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			Environment->addButton(rect, this, GUI_ID_CHANGE_KEYS_BUTTON, wgettext("Change keys"));
 		}
 	}else if (m_data->selected_tab == TAB_SINGLEPLAYER) {
-		changeCtype("");
 		{
 			core::rect<s32> rect(0, 0, 550, 20);
 			rect += topleft_content + v2s32(0, 20);
@@ -627,7 +638,6 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			Environment->addButton(rect, this, GUI_ID_JOIN_GAME_BUTTON, wgettext("Start Game"));
 		}
 	}else if (m_data->selected_tab == TAB_SINGLEPLAYER_ADVANCED) {
-		changeCtype("");
 		{
 			core::rect<s32> rect(0, 0, 550, 20);
 			rect += topleft_content + v2s32(0, 20);
@@ -726,7 +736,6 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			Environment->addButton(rect, this, GUI_ID_JOIN_GAME_BUTTON, wgettext("Start Game"));
 		}
 	}else if (m_data->selected_tab == TAB_SINGLEPLAYER_MAP) {
-		changeCtype("");
 		{
 			core::rect<s32> rect(0, 0, 550, 20);
 			rect += topleft_content + v2s32(0, 20);
@@ -822,13 +831,16 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 					gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Map Seed"), rect, false, true, this, -1);
 					t->setTextAlignment(gui::EGUIA_LOWERRIGHT, gui::EGUIA_UPPERLEFT);
 				}
-				changeCtype("C");
 				{
 					core::rect<s32> rect(0, 0, 190, 30);
 					rect += topleft_content + v2s32(190, 260);
-					Environment->addEditBox(fixed_seed.c_str(), rect, false, this, GUI_ID_MAP_SEED_INPUT);
+					gui::IGUIEditBox *e;
+#if USE_FREETYPE
+					e = (gui::IGUIEditBox *) new gui::intlGUIEditBox(fixed_seed.c_str(), true, Environment, this, GUI_ID_MAP_SEED_INPUT, rect);
+#else
+					e = Environment->addEditBox(fixed_seed.c_str(), rect, false, this, GUI_ID_MAP_SEED_INPUT);
+#endif
 				}
-				changeCtype("");
 			}
 		}else{
 			{
@@ -882,7 +894,6 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 		}
 	}
-	changeCtype("C");
 }
 
 void GUIMainMenu::drawMenu()
@@ -936,7 +947,7 @@ void GUIMainMenu::acceptInput()
 		}
 	}
 	{
-		gui::IGUIElement *e = getElementFromId(264);
+		gui::IGUIElement *e = getElementFromId(GUI_ID_PW_INPUT);
 		if(e != NULL)
 			m_data->password = e->getText();
 	}
@@ -1363,7 +1374,7 @@ bool GUIMainMenu::OnEvent(const SEvent& event)
 			case GUI_ID_ADDRESS_INPUT:
 			case GUI_ID_PORT_INPUT:
 			case GUI_ID_NAME_INPUT:
-			case 264:
+			case GUI_ID_PW_INPUT:
 				acceptInput();
 				quitMenu();
 				return true;

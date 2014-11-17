@@ -18,22 +18,10 @@ inline void init_gettext(const char *path) {
 	// don't do this if MSVC compiler is used, it gives an assertion fail
 	#ifndef _MSC_VER
 		setlocale(LC_MESSAGES, "");
+		setlocale(LC_CTYPE, "");
 	#endif
 	bindtextdomain(PROJECT_NAME, path);
 	textdomain(PROJECT_NAME);
-#endif
-}
-
-inline void changeCtype(const char *l)
-{
-	char *ret = NULL;
-	ret = setlocale(LC_CTYPE, l);
-#ifndef NDEBUG
-	if (ret == NULL) {
-		std::cout<<"locale could not be set"<<std::endl;
-	}else{
-		std::cout<<"locale has been set to:"<<ret<<std::endl;
-	}
 #endif
 }
 
@@ -47,17 +35,13 @@ inline wchar_t* chartowchar_t(const char *str)
 
 inline wchar_t* wgettext(const char *str)
 {
-	changeCtype("");
 	wchar_t *r = chartowchar_t(gettext(str));
-	changeCtype("C");
 	return r;
 }
 
 inline wchar_t* wngettext(const char *str1, const char *str2, int n)
 {
-	changeCtype("");
 	wchar_t *r = chartowchar_t(ngettext(str1,str2,n));
-	changeCtype("C");
 	return r;
 }
 #define GETTEXT_HEADER
