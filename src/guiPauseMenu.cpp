@@ -95,7 +95,8 @@ void GUIPauseMenu::regenerateGui(v2u32 screensize)
 			max_texture_size = driver->getMaxTextureSize();
 		}
 
-		Environment->addStaticText(wgettext("Voxelands by darkrose and contributors"), rect, false, true, this, 259);
+		gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Voxelands by darkrose and contributors"), rect, false, true, this, 259);
+		t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
 	{
 		core::rect<s32> rect(0, 0, 340, 20);
@@ -107,7 +108,8 @@ void GUIPauseMenu::regenerateGui(v2u32 screensize)
 			max_texture_size = driver->getMaxTextureSize();
 		}
 
-		Environment->addStaticText(L"www.voxelands.com", rect, false, true, this, 259);
+		gui::IGUIStaticText *t = Environment->addStaticText(L"www.voxelands.com", rect, false, true, this, 259);
+		t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
 	{
 		core::rect<s32> rect(0, 0, 340, 20);
@@ -119,7 +121,8 @@ void GUIPauseMenu::regenerateGui(v2u32 screensize)
 			max_texture_size = driver->getMaxTextureSize();
 		}
 
-		Environment->addStaticText(L"darkrose@voxelands.com", rect, false, true, this, 259);
+		gui::IGUIStaticText *t = Environment->addStaticText(L"darkrose@voxelands.com", rect, false, true, this, 259);
+		t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 	}
 
 	/*

@@ -41,7 +41,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define MY_ETLM_READ_ONLY video::ETLM_READ_ONLY
 #endif
 
-/* TODO: angles */
 scene::IAnimatedMesh* createNodeBoxMesh(std::vector<NodeBox> nodeboxes, v3f scale)
 {
 	video::SColor c(255,255,255,255);
