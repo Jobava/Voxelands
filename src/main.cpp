@@ -1130,7 +1130,9 @@ int main(int argc, char *argv[])
 	// If font was not found, this will get us one
 	font = skin->getFont();
 	assert(font);
+	changeCtype("");
 	drawLoadingScreen(driver,wgettext("Setting Up UI"));
+	changeCtype("C");
 
 	u32 text_height = font->getDimension(L"Hello, world!").Height;
 	infostream<<"text_height="<<text_height<<std::endl;
@@ -1153,9 +1155,13 @@ int main(int argc, char *argv[])
 		Preload some textures and stuff
 	*/
 
+	changeCtype("");
 	drawLoadingScreen(driver,wgettext("Loading MapNodes"));
+	changeCtype("C");
 	init_mapnode(driver); // Second call with g_texturesource set
+	changeCtype("");
 	drawLoadingScreen(driver,wgettext("Loading Creatures"));
+	changeCtype("C");
 	content_mob_init();
 
 	/*

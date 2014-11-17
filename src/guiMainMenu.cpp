@@ -390,6 +390,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	DesiredRect = rect;
 	recalculateAbsolutePosition(false);
 
+	changeCtype("");
 	// Character Creator button
 	{
 		core::rect<s32> rect(0, 0, 200, 40);
@@ -426,6 +427,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		rect += v2s32(35, 440);
 		Environment->addButton(rect, this, GUI_ID_TAB_QUIT, wgettext("Quit"));
 	}
+	changeCtype("C");
 
 	v2s32 topleft_content(250, 0);
 	v2s32 size_content = size - v2s32(300, 0);

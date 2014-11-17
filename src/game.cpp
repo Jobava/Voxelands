@@ -265,7 +265,7 @@ void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 
 	core::rect<s32> imgrect(0,0,imgsize,imgsize);
 
-	std::string selected = "";
+	std::wstring selected = L"";
 
 	for(s32 i=0; i<itemcount; i++)
 	{
@@ -288,7 +288,7 @@ void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 				drawInventoryItem(driver, font, item, rect, NULL);
 				std::wstring name = item->getGuiName();
 				if (name != L"")
-					selected = wide_to_narrow(name);
+					selected = name;
 			}
 		}else{
 			video::SColor bgcolor2(128,0,0,0);
@@ -343,8 +343,8 @@ void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 		}
 		bar_base.Y -= 20;
 	}
-	if (selected != "") {
-		v2u32 dim = font->getDimension(narrow_to_wide(selected).c_str());
+	if (selected != L"") {
+		v2u32 dim = font->getDimension(selected.c_str());
 		v2s32 sdim(dim.X,dim.Y);
 		v2s32 p = pos + v2s32(170, -(24+(sdim.Y-16)));
 
@@ -352,8 +352,9 @@ void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 			p,
 			sdim
 		);
-		font->draw(selected.c_str(), rect2,
-			video::SColor(255,255,255,255), false, false, NULL);
+		changeCtype("");
+		font->draw(selected.c_str(), rect2, video::SColor(255,255,255,255), false, false, NULL);
+		changeCtype("C");
 	}
 }
 
@@ -730,6 +731,7 @@ void drawLoadingScreen(video::IVideoDriver* driver, const std::wstring msg)
 	}
 	if (guienv) {
 		std::wstring m;
+		changeCtype("");
 		if (msg != L"") {
 			m = msg;
 		}else{
@@ -740,6 +742,7 @@ void drawLoadingScreen(video::IVideoDriver* driver, const std::wstring msg)
 		gui::IGUIStaticText *guitext = guienv->addStaticText(m.c_str(),rect);
 		guienv->drawAll();
 		guitext->remove();
+		changeCtype("C");
 	}
 
 	driver->endScene();
@@ -807,7 +810,9 @@ void the_game(
 		Draw "Loading" screen
 	*/
 	//draw_load_screen(L"Loading...", driver, font);
+	changeCtype("");
 	drawLoadingScreen(driver,wgettext("Loading..."));
+	changeCtype("C");
 
 	/*
 		Create server.
@@ -816,7 +821,9 @@ void the_game(
 	SharedPtr<Server> server;
 	if(address == ""){
 		//draw_load_screen(L"Creating server...", driver, font);
+		changeCtype("");
 		drawLoadingScreen(driver,wgettext("Creating server..."));
+		changeCtype("C");
 		infostream<<"Creating server"<<std::endl;
 		server = new Server(map_dir, configpath);
 		server->start(port);
@@ -827,12 +834,16 @@ void the_game(
 	*/
 
 	//draw_load_screen(L"Creating client...", driver, font);
+	changeCtype("");
 	drawLoadingScreen(driver,wgettext("Creating client..."));
+	changeCtype("C");
 	infostream<<"Creating client"<<std::endl;
 	MapDrawControl draw_control;
 	Client client(device, playername.c_str(), password, draw_control, sound);
 
+	changeCtype("");
 	drawLoadingScreen(driver,wgettext("Resolving address..."));
+	changeCtype("C");
 	Address connect_address(0,0,0,0, port);
 	try{
 		if(address == "")
@@ -877,6 +888,7 @@ void the_game(
 				break;
 			}
 
+			changeCtype("");
 			wchar_t buff[512];
 			int tot = (10.0 - time_counter + 1.0);
 			swprintf(
@@ -891,7 +903,7 @@ void the_game(
 			);
 			//draw_load_screen(ss.str(), driver, font);
 			drawLoadingScreen(driver,std::wstring(buff));
-
+			changeCtype("C");
 			// Update client and server
 			client.step(0.1);
 
@@ -2367,7 +2379,9 @@ void the_game(
 		generator and other stuff quits
 	*/
 	{
+		changeCtype("");
 		drawLoadingScreen(driver,wgettext("Shutting down..."));
+		changeCtype("C");
 	}
 }
 

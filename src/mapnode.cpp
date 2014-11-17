@@ -271,31 +271,45 @@ void init_mapnode()
 		Initialize mapnode content
 	*/
 #ifndef SERVER
+	changeCtype("");
 	drawLoadingScreen(driver,wgettext("Loading Base MapNodes"));
+	changeCtype("C");
 #endif
 	content_mapnode_init(repeat);
 #ifndef SERVER
+	changeCtype("");
 	drawLoadingScreen(driver,wgettext("Loading Circuit MapNodes"));
+	changeCtype("C");
 #endif
 	content_mapnode_circuit(repeat);
 #ifndef SERVER
+	changeCtype("");
 	drawLoadingScreen(driver,wgettext("Loading Plant MapNodes"));
+	changeCtype("C");
 #endif
 	content_mapnode_plants(repeat);
 #ifndef SERVER
+	changeCtype("");
 	drawLoadingScreen(driver,wgettext("Loading Farming MapNodes"));
+	changeCtype("C");
 #endif
 	content_mapnode_farm(repeat);
 #ifndef SERVER
+	changeCtype("");
 	drawLoadingScreen(driver,wgettext("Loading Decorative MapNodes"));
+	changeCtype("C");
 #endif
 	content_mapnode_furniture(repeat);
 #ifndef SERVER
+	changeCtype("");
 	drawLoadingScreen(driver,wgettext("Loading Interactive MapNodes"));
+	changeCtype("C");
 #endif
 	content_mapnode_door(repeat);
 #ifndef SERVER
+	changeCtype("");
 	drawLoadingScreen(driver,wgettext("Loading Special MapNodes"));
+	changeCtype("C");
 #endif
 	content_mapnode_stair(repeat);
 	content_mapnode_slab(repeat);

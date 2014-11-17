@@ -24,6 +24,16 @@ inline void init_gettext(const char *path) {
 #endif
 }
 
+inline void changeCtype(const char *l)
+{
+	char *ret = NULL;
+	ret = setlocale(LC_CTYPE, l);
+	if(ret == NULL)
+		std::cout<<"locale could not be set"<<std::endl;
+	else
+		std::cout<<"locale has been set to:"<<ret<<std::endl;
+}
+
 inline wchar_t* chartowchar_t(const char *str)
 {
 	size_t l = strlen(str)+1;
@@ -34,22 +44,18 @@ inline wchar_t* chartowchar_t(const char *str)
 
 inline wchar_t* wgettext(const char *str)
 {
-	return chartowchar_t(gettext(str));
+	changeCtype("");
+	wchar_t *r = chartowchar_t(gettext(str));
+	changeCtype("C");
+	return r;
 }
 
 inline wchar_t* wngettext(const char *str1, const char *str2, int n)
 {
-	return chartowchar_t(ngettext(str1,str2,n));
-}
-
-inline void changeCtype(const char *l)
-{
-	char *ret = NULL;
-	ret = setlocale(LC_CTYPE, l);
-	if(ret == NULL)
-		std::cout<<"locale could not be set"<<std::endl;
-	else
-		std::cout<<"locale has been set to:"<<ret<<std::endl;
+	changeCtype("");
+	wchar_t *r = chartowchar_t(ngettext(str1,str2,n));
+	changeCtype("C");
+	return r;
 }
 #define GETTEXT_HEADER
 #endif
