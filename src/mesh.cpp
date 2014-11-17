@@ -105,6 +105,17 @@ scene::IAnimatedMesh* createNodeBoxMesh(std::vector<NodeBox> nodeboxes, v3f scal
 			video::S3DVertex(min.X/BS,min.Y/BS,min.Z/BS, 0,0,-1, c, txc[20],txc[23]),
 		};
 
+		if (box.m_angle != v3s16(0,0,0)) {
+			for (s32 j=0; j<24; j++) {
+				if (box.m_angle.Y)
+					vertices[j].Pos.rotateXZBy(box.m_angle.Y);
+				if (box.m_angle.X)
+					vertices[j].Pos.rotateYZBy(box.m_angle.X);
+				if (box.m_angle.Z)
+					vertices[j].Pos.rotateXYBy(box.m_angle.Z);
+			}
+		}
+
 		u16 indices[6] = {0,1,2,2,3,0};
 		for (u32 i=0; i<6; ++i) {
 			scene::IMeshBuffer *buf = new scene::SMeshBuffer();
