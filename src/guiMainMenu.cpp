@@ -867,7 +867,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 					"\n"
 					"By Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
 					"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, tiemay, Szkodnix,"
-					" soognarf, Tapoky, Wuzzy, JHeaton, Akien\n"
+					" soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound\n"
 					"\n"
 					"Based on Minetest-C55\n"
 					"by Perttu Ahola <celeron55@gmail.com>\n"
