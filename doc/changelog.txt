@@ -3,6 +3,12 @@ Voxelands changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1411.03: (release 2014-11-16)
+ - fix some internationalization bugs
+ - fix font path finding
+ - fix skin path finding
+ - include skins in install
+
 1411.01: (release 2014-11-16)
  - for to enable compiling if gettext is disabled
  - give the player some pants
