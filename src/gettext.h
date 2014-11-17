@@ -28,10 +28,13 @@ inline void changeCtype(const char *l)
 {
 	char *ret = NULL;
 	ret = setlocale(LC_CTYPE, l);
-	if(ret == NULL)
+#ifndef NDEBUG
+	if (ret == NULL) {
 		std::cout<<"locale could not be set"<<std::endl;
-	else
+	}else{
 		std::cout<<"locale has been set to:"<<ret<<std::endl;
+	}
+#endif
 }
 
 inline wchar_t* chartowchar_t(const char *str)
