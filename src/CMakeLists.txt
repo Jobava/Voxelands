@@ -410,6 +410,8 @@ if(BUILD_CLIENT)
 
 	file(GLOB images "${CMAKE_CURRENT_SOURCE_DIR}/../data/textures/*.png")
 	install(FILES ${images} DESTINATION ${SHAREDIR}/textures)
+	file(GLOB skins "${CMAKE_CURRENT_SOURCE_DIR}/../data/textures/skins/*.png")
+	install(FILES ${skins} DESTINATION ${SHAREDIR}/textures/skins)
 	file(GLOB models
 "${CMAKE_CURRENT_SOURCE_DIR}/../data/models/*.b3d")
 	install(FILES ${models} DESTINATION ${SHAREDIR}/models)
