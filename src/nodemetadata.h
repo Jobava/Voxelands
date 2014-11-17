@@ -85,7 +85,7 @@ public:
 	// import data from another nodemetadata. Returns true if metadata changed.
 	virtual bool import(NodeMetadata *meta) {return false;}
 	// get nodeboxes for CDT_NODEBOX_META
-	virtual std::vector<aabb3f> getNodeBoxes(MapNode &n) {return std::vector<aabb3f>();}
+	virtual std::vector<NodeBox> getNodeBoxes(MapNode &n) {return std::vector<NodeBox>();}
 	// used by tnt to arm it, but also for future circuitry
 	// level is the amount of power
 	// powersrc is the generator or such that created the power

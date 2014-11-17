@@ -35,10 +35,10 @@ ContentFeatures::~ContentFeatures()
 	delete initial_metadata;
 }
 
-std::vector<aabb3f> transformNodeBox(MapNode &n,
-		const std::vector<aabb3f> &nodebox)
+std::vector<NodeBox> transformNodeBox(MapNode &n,
+		const std::vector<NodeBox> &nodebox)
 {
-	std::vector<aabb3f> boxes;
+	std::vector<NodeBox> boxes;
 	int facedir = 0;
 	if (
 		content_features(n).param2_type == CPT_FACEDIR_SIMPLE
@@ -51,43 +51,40 @@ std::vector<aabb3f> transformNodeBox(MapNode &n,
 	) {
 		facedir = n.param1;
 	}
-	for(std::vector<aabb3f>::const_iterator
-		i = nodebox.begin();
-		i != nodebox.end(); i++)
-	{
-		aabb3f box = *i;
+	for(std::vector<NodeBox>::const_iterator i = nodebox.begin(); i != nodebox.end(); i++) {
+		NodeBox box = *i;
 		if (facedir == 1) {
-			box.MinEdge.rotateXZBy(-90);
-			box.MaxEdge.rotateXZBy(-90);
-			box.repair();
+			box.m_box.MinEdge.rotateXZBy(-90);
+			box.m_box.MaxEdge.rotateXZBy(-90);
+			box.m_box.repair();
 		}else if (facedir == 2) {
-			box.MinEdge.rotateXZBy(180);
-			box.MaxEdge.rotateXZBy(180);
-			box.repair();
+			box.m_box.MinEdge.rotateXZBy(180);
+			box.m_box.MaxEdge.rotateXZBy(180);
+			box.m_box.repair();
 		}else if (facedir == 3) {
-			box.MinEdge.rotateXZBy(90);
-			box.MaxEdge.rotateXZBy(90);
-			box.repair();
+			box.m_box.MinEdge.rotateXZBy(90);
+			box.m_box.MaxEdge.rotateXZBy(90);
+			box.m_box.repair();
 		}else if (facedir == 4) {
-			box.MinEdge.rotateXYBy(-90);
-			box.MaxEdge.rotateXYBy(-90);
-			box.repair();
+			box.m_box.MinEdge.rotateXYBy(-90);
+			box.m_box.MaxEdge.rotateXYBy(-90);
+			box.m_box.repair();
 		}else if (facedir == 5) {
-			box.MinEdge.rotateXYBy(90);
-			box.MaxEdge.rotateXYBy(90);
-			box.repair();
+			box.m_box.MinEdge.rotateXYBy(90);
+			box.m_box.MaxEdge.rotateXYBy(90);
+			box.m_box.repair();
 		}
 		boxes.push_back(box);
 	}
 	return boxes;
 }
 
-std::vector<aabb3f> ContentFeatures::getNodeBoxes(MapNode &n) const
+std::vector<NodeBox> ContentFeatures::getNodeBoxes(MapNode &n) const
 {
         return transformNodeBox(n, nodeboxes);
 }
 
-std::vector<aabb3f> ContentFeatures::getWieldNodeBoxes() const
+std::vector<NodeBox> ContentFeatures::getWieldNodeBoxes() const
 {
 	if (wield_nodeboxes.size() > 0)
 		return wield_nodeboxes;

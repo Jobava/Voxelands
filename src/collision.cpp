@@ -253,7 +253,7 @@ collisionMoveResult collisionMoveSimple(Map *map,
 			if(f.walkable == false)
 				continue;
 
-			std::vector<aabb3f> nodeboxes = f.getNodeBoxes(n);
+			std::vector<NodeBox> nodeboxes = f.getNodeBoxes(n);
 
 #ifndef SERVER
 			if (f.draw_type == CDT_FENCELIKE || f.draw_type == CDT_WALLLIKE) {
@@ -266,7 +266,7 @@ collisionMoveResult collisionMoveSimple(Map *map,
 				int bps = ((nodeboxes.size()-2)/4); // boxes per section
 				u8 np = 1;
 				{
-					aabb3f box = nodeboxes[0];
+					aabb3f box = nodeboxes[0].m_box;
 					box.MinEdge += v3f(x, y, z)*BS;
 					if (f.jumpable == false)
 						box.MaxEdge.Y = 1.0*BS;
@@ -283,7 +283,7 @@ collisionMoveResult collisionMoveSimple(Map *map,
 					if (k > 3) {
 						for (int j=0; j<2; j++) {
 							for (int i=0; i<bps; i++) {
-								aabb3f box = nodeboxes[i+2+(bps*boxcheck[k%4][j])];
+								aabb3f box = nodeboxes[i+2+(bps*boxcheck[k%4][j])].m_box;
 								box.MinEdge += v3f(x, y, z)*BS;
 								if (f.jumpable == false)
 									box.MaxEdge.Y = 1.0*BS;
@@ -297,7 +297,7 @@ collisionMoveResult collisionMoveSimple(Map *map,
 						}
 					}else{
 						for (int i=0; i<bps; i++) {
-							aabb3f box = nodeboxes[i+2+(bps*(k%4))];
+							aabb3f box = nodeboxes[i+2+(bps*(k%4))].m_box;
 							box.MinEdge += v3f(x, y, z)*BS;
 							if (f.jumpable == false)
 								box.MaxEdge.Y = 1.0*BS;
@@ -314,11 +314,9 @@ collisionMoveResult collisionMoveSimple(Map *map,
 			}else
 #endif
 			{
-				for(std::vector<aabb3f>::iterator
-				i = nodeboxes.begin();
-				i != nodeboxes.end(); i++)
-				{
-					aabb3f box = *i;
+				/* TODO: obb for rotated nodeboxes */
+				for (std::vector<NodeBox>::iterator i = nodeboxes.begin(); i != nodeboxes.end(); i++) {
+					aabb3f box = (*i).m_box;
 					box.MinEdge += v3f(x, y, z)*BS;
 					if (f.jumpable == false)
 						box.MaxEdge.Y = 1.0*BS;

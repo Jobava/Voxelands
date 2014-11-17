@@ -1193,25 +1193,23 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			getLights(blockpos_nodes+p,c,data,smooth_lighting);
 
 			v3f pos = intToFloat(p, BS);
-			std::vector<aabb3f> boxes = content_features(n).getNodeBoxes(n);
+			std::vector<NodeBox> boxes = content_features(n).getNodeBoxes(n);
 			v3s16 p2 = p;
 			p2.Y++;
 			MapNode n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
-			aabb3f box;
+			NodeBox box;
 			u8 d[8];
 			int bi = mapblock_mesh_check_walllike(data,n,p+blockpos_nodes,d);
 			{
 				box = boxes[bi];
 
 				// Compute texture coords
-				f32 tx1 = (box.MinEdge.X/BS)+0.5;
-				f32 ty1 = (box.MinEdge.Y/BS)+0.5;
-				f32 tz1 = (box.MinEdge.Z/BS)+0.5;
-				f32 tx2 = (box.MaxEdge.X/BS)+0.5;
-				f32 ty2 = (box.MaxEdge.Y/BS)+0.5;
-				f32 tz2 = (box.MaxEdge.Z/BS)+0.5;
-				box.MinEdge += pos;
-				box.MaxEdge += pos;
+				f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
+				f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
+				f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
+				f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
+				f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
+				f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
 				f32 txc[24] = {
 					// up
 					tx1, 1-tz2, tx2, 1-tz1,
@@ -1226,7 +1224,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					// front
 					tx1, 1-ty2, tx2, 1-ty1,
 				};
-				makeCuboid(&collector, box, tiles, 6,  c, txc);
+				makeAngledCuboid(&collector,pos,box.m_box,tiles,6,c,txc,0);
 			}
 
 			int bps = ((boxes.size()-3)/4); // boxes per section
@@ -1236,15 +1234,15 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				if (d[k]) {
 					n.param2 |= (np<<k);
 					for (int i=0; i<bps; i++) {
-						aabb3f box = boxes[i+3+(bps*(k%4))];
+						box = boxes[i+3+(bps*(k%4))];
 
 						// Compute texture coords
-						f32 tx1 = (box.MinEdge.X/BS)+0.5;
-						f32 ty1 = (box.MinEdge.Y/BS)+0.5;
-						f32 tz1 = (box.MinEdge.Z/BS)+0.5;
-						f32 tx2 = (box.MaxEdge.X/BS)+0.5;
-						f32 ty2 = (box.MaxEdge.Y/BS)+0.5;
-						f32 tz2 = (box.MaxEdge.Z/BS)+0.5;
+						f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
+						f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
+						f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
+						f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
+						f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
+						f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
 						f32 txc[24] = {
 							// up
 							tx1, 1-tz2, tx2, 1-tz1,
@@ -1262,21 +1260,21 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						if (k > 3) {
 							switch (k) {
 							case 4:
-								box.MaxEdge.X *= 1.414;
+								box.m_box.MaxEdge.X *= 1.414;
 								break;
 							case 5:
-								box.MinEdge.X *= 1.414;
+								box.m_box.MinEdge.X *= 1.414;
 								break;
 							case 6:
-								box.MaxEdge.Z *= 1.414;
+								box.m_box.MaxEdge.Z *= 1.414;
 								break;
 							case 7:
-								box.MinEdge.Z *= 1.414;
+								box.m_box.MinEdge.Z *= 1.414;
 								break;
 							default:;
 							}
 						}
-						makeAngledCuboid(&collector, pos, box, tiles, 6,  c, txc, shown_angles[k]);
+						makeAngledCuboid(&collector, pos, box.m_box, tiles, 6,  c, txc, shown_angles[k]);
 					}
 				}
 			}
@@ -1325,7 +1323,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			getLights(blockpos_nodes+p,c,data,smooth_lighting);
 
 			v3f pos = intToFloat(p, BS);
-			std::vector<aabb3f> boxes = content_features(n).getNodeBoxes(n);
+			std::vector<NodeBox> boxes = content_features(n).getNodeBoxes(n);
 			int bi = 1;
 			v3s16 p2 = p;
 			p2.Y++;
@@ -1335,17 +1333,15 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			if (f2->draw_type == CDT_AIRLIKE || f2->draw_type == CDT_TORCHLIKE)
 				bi = 0;
 			{
-				aabb3f box = boxes[bi];
+				NodeBox box = boxes[bi];
 
 				// Compute texture coords
-				f32 tx1 = (box.MinEdge.X/BS)+0.5;
-				f32 ty1 = (box.MinEdge.Y/BS)+0.5;
-				f32 tz1 = (box.MinEdge.Z/BS)+0.5;
-				f32 tx2 = (box.MaxEdge.X/BS)+0.5;
-				f32 ty2 = (box.MaxEdge.Y/BS)+0.5;
-				f32 tz2 = (box.MaxEdge.Z/BS)+0.5;
-				box.MinEdge += pos;
-				box.MaxEdge += pos;
+				f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
+				f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
+				f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
+				f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
+				f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
+				f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
 				f32 txc[24] = {
 					// up
 					tx1, 1-tz2, tx2, 1-tz1,
@@ -1360,7 +1356,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					// front
 					tx1, 1-ty2, tx2, 1-ty1,
 				};
-				makeCuboid(&collector, box, tiles, 6,  c, txc);
+				makeAngledCuboid(&collector, pos, box.m_box, tiles, 6,  c, txc, 0);
 			}
 
 			int bps = ((boxes.size()-2)/4); // boxes per section
@@ -1387,15 +1383,15 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					shown_dirs[k] = true;
 					n.param2 |= (np<<k);
 					for (int i=0; i<bps; i++) {
-						aabb3f box = boxes[i+2+(bps*(k%4))];
+						NodeBox box = boxes[i+2+(bps*(k%4))];
 
 						// Compute texture coords
-						f32 tx1 = (box.MinEdge.X/BS)+0.5;
-						f32 ty1 = (box.MinEdge.Y/BS)+0.5;
-						f32 tz1 = (box.MinEdge.Z/BS)+0.5;
-						f32 tx2 = (box.MaxEdge.X/BS)+0.5;
-						f32 ty2 = (box.MaxEdge.Y/BS)+0.5;
-						f32 tz2 = (box.MaxEdge.Z/BS)+0.5;
+						f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
+						f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
+						f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
+						f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
+						f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
+						f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
 						f32 txc[24] = {
 							// up
 							tx1, 1-tz2, tx2, 1-tz1,
@@ -1413,21 +1409,21 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						if (k > 3) {
 							switch (k) {
 							case 4:
-								box.MaxEdge.X *= 1.414;
+								box.m_box.MaxEdge.X *= 1.414;
 								break;
 							case 5:
-								box.MinEdge.X *= 1.414;
+								box.m_box.MinEdge.X *= 1.414;
 								break;
 							case 6:
-								box.MaxEdge.Z *= 1.414;
+								box.m_box.MaxEdge.Z *= 1.414;
 								break;
 							case 7:
-								box.MinEdge.Z *= 1.414;
+								box.m_box.MinEdge.Z *= 1.414;
 								break;
 							default:;
 							}
 						}
-						makeAngledCuboid(&collector, pos, box, tiles, 6,  c, txc, shown_angles[k]);
+						makeAngledCuboid(&collector, pos, box.m_box, tiles, 6,  c, txc, shown_angles[k]);
 					}
 				}
 			}
@@ -3659,19 +3655,17 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			getLights(blockpos_nodes+p,c,data,smooth_lighting);
 
 			v3f pos = intToFloat(p, BS);
-			std::vector<aabb3f> boxes = content_features(n).getNodeBoxes(n);
-			for (std::vector<aabb3f>::iterator i = boxes.begin(); i != boxes.end(); i++) {
-				aabb3f box = *i;
-				box.MinEdge += pos;
-				box.MaxEdge += pos;
+			std::vector<NodeBox> boxes = content_features(n).getNodeBoxes(n);
+			for (std::vector<NodeBox>::iterator i = boxes.begin(); i != boxes.end(); i++) {
+				NodeBox box = *i;
 
 				// Compute texture coords
-				f32 tx1 = (i->MinEdge.X/BS)+0.5;
-				f32 ty1 = (i->MinEdge.Y/BS)+0.5;
-				f32 tz1 = (i->MinEdge.Z/BS)+0.5;
-				f32 tx2 = (i->MaxEdge.X/BS)+0.5;
-				f32 ty2 = (i->MaxEdge.Y/BS)+0.5;
-				f32 tz2 = (i->MaxEdge.Z/BS)+0.5;
+				f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
+				f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
+				f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
+				f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
+				f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
+				f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
 				f32 txc[24] = {
 					// up
 					tx1, 1-tz2, tx2, 1-tz1,
@@ -3686,7 +3680,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					// front
 					tx1, 1-ty2, tx2, 1-ty1,
 				};
-				makeCuboid(&collector, box, tiles, 6,  c, txc);
+				makeRotatedCuboid(&collector, pos, box.m_box, tiles, 6, c, txc, box.m_angle);
 			}
 			if (content_features(n).draw_type == CDT_NODEBOX_META) {
 				NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+blockpos_nodes);
@@ -3698,18 +3692,16 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						// Handles facedir rotation for textures
 						tiles[i] = getMetaTile(n,p,tile_dirs[i],data->m_temp_mods);
 					}
-					for (std::vector<aabb3f>::iterator i = boxes.begin(); i != boxes.end(); i++) {
-						aabb3f box = *i;
-						box.MinEdge += pos;
-						box.MaxEdge += pos;
+					for (std::vector<NodeBox>::iterator i = boxes.begin(); i != boxes.end(); i++) {
+						NodeBox box = *i;
 
 						// Compute texture coords
-						f32 tx1 = (i->MinEdge.X/BS)+0.5;
-						f32 ty1 = (i->MinEdge.Y/BS)+0.5;
-						f32 tz1 = (i->MinEdge.Z/BS)+0.5;
-						f32 tx2 = (i->MaxEdge.X/BS)+0.5;
-						f32 ty2 = (i->MaxEdge.Y/BS)+0.5;
-						f32 tz2 = (i->MaxEdge.Z/BS)+0.5;
+						f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
+						f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
+						f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
+						f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
+						f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
+						f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
 						f32 txc[24] = {
 							// up
 							tx1, 1-tz2, tx2, 1-tz1,
@@ -3724,7 +3716,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 							// front
 							tx1, 1-ty2, tx2, 1-ty1,
 						};
-						makeCuboid(&collector, box, tiles, 6,  c, txc);
+						makeRotatedCuboid(&collector, pos, box.m_box, tiles, 6, c, txc, box.m_angle);
 					}
 				}
 			}

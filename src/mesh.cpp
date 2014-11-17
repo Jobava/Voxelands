@@ -41,22 +41,23 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define MY_ETLM_READ_ONLY video::ETLM_READ_ONLY
 #endif
 
-scene::IAnimatedMesh* createNodeBoxMesh(std::vector<aabb3f> nodeboxes, v3f scale)
+/* TODO: angles */
+scene::IAnimatedMesh* createNodeBoxMesh(std::vector<NodeBox> nodeboxes, v3f scale)
 {
 	video::SColor c(255,255,255,255);
 
 	scene::SMesh *mesh = new scene::SMesh();
-	for (std::vector<aabb3f>::const_iterator n = nodeboxes.begin(); n != nodeboxes.end(); n++) {
-		aabb3f box = *n;
-		v3f min = box.MinEdge;
-		v3f max = box.MaxEdge;
+	for (std::vector<NodeBox>::const_iterator n = nodeboxes.begin(); n != nodeboxes.end(); n++) {
+		NodeBox box = *n;
+		v3f min = box.m_box.MinEdge;
+		v3f max = box.m_box.MaxEdge;
 		// Compute texture coords
-		f32 tx1 = (n->MinEdge.X/BS)+0.5;
-		f32 ty1 = (n->MinEdge.Y/BS)+0.5;
-		f32 tz1 = (n->MinEdge.Z/BS)+0.5;
-		f32 tx2 = (n->MaxEdge.X/BS)+0.5;
-		f32 ty2 = (n->MaxEdge.Y/BS)+0.5;
-		f32 tz2 = (n->MaxEdge.Z/BS)+0.5;
+		f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
+		f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
+		f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
+		f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
+		f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
+		f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
 		f32 txc[24] = {
 			// up
 			tx1, 1-tz2, tx2, 1-tz1,
@@ -126,9 +127,9 @@ scene::IAnimatedMesh* createNodeBoxMesh(std::vector<aabb3f> nodeboxes, v3f scale
 
 scene::IAnimatedMesh* createCubeMesh(v3f scale)
 {
-	std::vector<aabb3f> nodeboxes;
+	std::vector<NodeBox> nodeboxes;
 	nodeboxes.clear();
-	nodeboxes.push_back(core::aabbox3d<f32>(
+	nodeboxes.push_back(NodeBox(
 		-0.5*BS,
 		-0.5*BS,
 		-0.5*BS,
@@ -662,7 +663,7 @@ void ExtrudedSpriteSceneNode::setNodeBox(content_t c)
 	if (m_cubemesh)
 		m_cubemesh->drop();
 
-	std::vector<aabb3f> boxes = content_features(c).getWieldNodeBoxes();
+	std::vector<NodeBox> boxes = content_features(c).getWieldNodeBoxes();
 	m_cubemesh = createNodeBoxMesh(boxes,cube_scale);
 
 	for (u16 i=0; i < boxes.size(); i++) {

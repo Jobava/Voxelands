@@ -191,8 +191,40 @@ enum NodeTextureIndex {
 struct MapNode;
 class NodeMetadata;
 
-std::vector<aabb3f> transformNodeBox(MapNode &n,
-		const std::vector<aabb3f> &nodebox);
+class NodeBox
+{
+public:
+	NodeBox():
+		m_angle(0,0,0),
+		m_box(0.0,0.0,0.0,0.0,0.0,0.0)
+	{
+	}
+	NodeBox(v3s16 angle, aabb3f box):
+		m_angle(angle),
+		m_box(box)
+	{
+	}
+	NodeBox(v3s16 angle, f32 tlx, f32 tly, f32 tlz, f32 brx, f32 bry, f32 brz):
+		m_angle(angle),
+		m_box(tlx,tly,tlz,brx,bry,brz)
+	{
+	}
+	NodeBox(aabb3f box):
+		m_angle(0,0,0),
+		m_box(box)
+	{
+	}
+	NodeBox(f32 tlx, f32 tly, f32 tlz, f32 brx, f32 bry, f32 brz):
+		m_angle(0,0,0),
+		m_box(tlx,tly,tlz,brx,bry,brz)
+	{
+	}
+	v3s16 m_angle;
+	aabb3f m_box;
+};
+
+std::vector<NodeBox> transformNodeBox(MapNode &n,
+		const std::vector<NodeBox> &nodebox);
 
 struct ContentFeatures
 {
@@ -219,8 +251,8 @@ struct ContentFeatures
 	bool rotate_tile_with_nodebox;
 	bool wield_nodebox;
 	std::wstring description;
-	std::vector<aabb3f> nodeboxes;
-	std::vector<aabb3f> wield_nodeboxes;
+	std::vector<NodeBox> nodeboxes;
+	std::vector<NodeBox> wield_nodeboxes;
 
 	// List of all block textures that have been used (value is dummy)
 	// Exists on server too for cleaner code in content_mapnode.cpp
@@ -349,7 +381,7 @@ struct ContentFeatures
 		wield_nodebox = true;
 		description = std::wstring(L"");
 		nodeboxes.clear();
-		nodeboxes.push_back(core::aabbox3d<f32>(
+		nodeboxes.push_back(NodeBox(
 			-0.5*BS,
 			-0.5*BS,
 			-0.5*BS,
@@ -421,30 +453,30 @@ struct ContentFeatures
 	/*
 		Gets list of node boxes (used for collision)
 	*/
-        std::vector<aabb3f> getNodeBoxes(MapNode &n) const;
+        std::vector<NodeBox> getNodeBoxes(MapNode &n) const;
 
-	void setNodeBox(core::aabbox3d<f32> bb)
+	void setNodeBox(NodeBox nb)
 	{
 		nodeboxes.clear();
-		nodeboxes.push_back(bb);
+		nodeboxes.push_back(nb);
 	}
 
-	void addNodeBox(core::aabbox3d<f32> bb)
+	void addNodeBox(NodeBox nb)
 	{
-		nodeboxes.push_back(bb);
+		nodeboxes.push_back(nb);
 	}
 
-        std::vector<aabb3f> getWieldNodeBoxes() const;
+        std::vector<NodeBox> getWieldNodeBoxes() const;
 
-	void setWieldNodeBox(core::aabbox3d<f32> bb)
+	void setWieldNodeBox(NodeBox nb)
 	{
 		wield_nodeboxes.clear();
-		wield_nodeboxes.push_back(bb);
+		wield_nodeboxes.push_back(nb);
 	}
 
-	void addWieldNodeBox(core::aabbox3d<f32> bb)
+	void addWieldNodeBox(NodeBox nb)
 	{
-		wield_nodeboxes.push_back(bb);
+		wield_nodeboxes.push_back(nb);
 	}
 
 	/*

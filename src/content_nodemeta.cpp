@@ -2122,8 +2122,8 @@ std::string BookShelfNodeMetadata::getDrawSpecString()
 		"list[current_name;0;0.5,0;7,2;]"
 		"list[current_player;main;0,3;8,4;]";
 }
-std::vector<aabb3f> BookShelfNodeMetadata::getNodeBoxes(MapNode &n) {
-	std::vector<aabb3f> boxes;
+std::vector<NodeBox> BookShelfNodeMetadata::getNodeBoxes(MapNode &n) {
+	std::vector<NodeBox> boxes;
 	boxes.clear();
 
 	InventoryList *list = m_inventory->getList("0");
@@ -2143,10 +2143,10 @@ std::vector<aabb3f> BookShelfNodeMetadata::getNodeBoxes(MapNode &n) {
 		y = (i/7)*-0.5;
 		h = ((i%7)%2)*0.0625;
 
-		boxes.push_back(aabb3f(
+		boxes.push_back(NodeBox(
 			(-0.4375+x)*BS,(0.0625+y)*BS,-0.4375*BS,(-0.3125+x)*BS,(0.375+y+h)*BS,-0.0625*BS
 		));
-		boxes.push_back(aabb3f(
+		boxes.push_back(NodeBox(
 			(0.3125-x)*BS,(0.0625+y)*BS,0.0625*BS,(0.4375-x)*BS,(0.375+y+h)*BS,0.4375*BS
 		));
 	}
@@ -2187,8 +2187,8 @@ void ClockNodeMetadata::serializeBody(std::ostream &os)
 {
 	os<<itos(m_time) << " ";
 }
-std::vector<aabb3f> ClockNodeMetadata::getNodeBoxes(MapNode &n) {
-	std::vector<aabb3f> boxes;
+std::vector<NodeBox> ClockNodeMetadata::getNodeBoxes(MapNode &n) {
+	std::vector<NodeBox> boxes;
 	boxes.clear();
 
 	u16 h = m_time/100;
@@ -2206,19 +2206,19 @@ std::vector<aabb3f> ClockNodeMetadata::getNodeBoxes(MapNode &n) {
 
 	for (int i=0; i<4; i++) {
 		if ((b[v[i]]&0x80))
-			boxes.push_back(aabb3f((-0.25+x[i])*BS,0.0625*BS,-0.125*BS,(-0.0625+x[i])*BS,0.125*BS,-0.0625*BS));
+			boxes.push_back(NodeBox((-0.25+x[i])*BS,0.0625*BS,-0.125*BS,(-0.0625+x[i])*BS,0.125*BS,-0.0625*BS));
 		if ((b[v[i]]&0x04))
-			boxes.push_back(aabb3f((-0.125+x[i])*BS,-0.0625*BS,-0.125*BS,(-0.0625+x[i])*BS,0.0625*BS,-0.0625*BS));
+			boxes.push_back(NodeBox((-0.125+x[i])*BS,-0.0625*BS,-0.125*BS,(-0.0625+x[i])*BS,0.0625*BS,-0.0625*BS));
 		if ((b[v[i]]&0x08))
-			boxes.push_back(aabb3f((-0.125+x[i])*BS,-0.25*BS,-0.125*BS,(-0.0625+x[i])*BS,-0.125*BS,-0.0625*BS));
+			boxes.push_back(NodeBox((-0.125+x[i])*BS,-0.25*BS,-0.125*BS,(-0.0625+x[i])*BS,-0.125*BS,-0.0625*BS));
 		if ((b[v[i]]&0x10))
-			boxes.push_back(aabb3f((-0.25+x[i])*BS,-0.3125*BS,-0.125*BS,(-0.0625+x[i])*BS,-0.25*BS,-0.0625*BS));
+			boxes.push_back(NodeBox((-0.25+x[i])*BS,-0.3125*BS,-0.125*BS,(-0.0625+x[i])*BS,-0.25*BS,-0.0625*BS));
 		if ((b[v[i]]&0x20))
-			boxes.push_back(aabb3f((-0.25+x[i])*BS,-0.25*BS,-0.125*BS,(-0.1875+x[i])*BS,-0.125*BS,-0.0625*BS));
+			boxes.push_back(NodeBox((-0.25+x[i])*BS,-0.25*BS,-0.125*BS,(-0.1875+x[i])*BS,-0.125*BS,-0.0625*BS));
 		if ((b[v[i]]&0x40))
-			boxes.push_back(aabb3f((-0.25+x[i])*BS,-0.0625*BS,-0.125*BS,(-0.1875+x[i])*BS,0.0625*BS,-0.0625*BS));
+			boxes.push_back(NodeBox((-0.25+x[i])*BS,-0.0625*BS,-0.125*BS,(-0.1875+x[i])*BS,0.0625*BS,-0.0625*BS));
 		if ((b[v[i]]&0x02))
-			boxes.push_back(aabb3f((-0.1875+x[i])*BS,-0.125*BS,-0.125*BS,(-0.125+x[i])*BS,-0.0625*BS,-0.0625*BS));
+			boxes.push_back(NodeBox((-0.1875+x[i])*BS,-0.125*BS,-0.125*BS,(-0.125+x[i])*BS,-0.0625*BS,-0.0625*BS));
 	}
 
 	return transformNodeBox(n,boxes);
@@ -2395,17 +2395,17 @@ bool SwitchNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s
 	m_energy = level;
 	return true;
 }
-std::vector<aabb3f>  SwitchNodeMetadata::getNodeBoxes(MapNode &n)
+std::vector<NodeBox>  SwitchNodeMetadata::getNodeBoxes(MapNode &n)
 {
-	std::vector<aabb3f> boxes;
+	std::vector<NodeBox> boxes;
 	boxes.clear();
 
 	if (m_energy) {
-		boxes.push_back(core::aabbox3d<f32>(
+		boxes.push_back(NodeBox(
 			-0.125*BS,0.*BS,0.375*BS,-0.0625*BS,0.0625*BS,0.4375*BS
 		));
 	}else{
-		boxes.push_back(core::aabbox3d<f32>(
+		boxes.push_back(NodeBox(
 			0.0625*BS,0.*BS,0.375*BS,0.125*BS,0.0625*BS,0.4375*BS
 		));
 	}

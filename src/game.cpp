@@ -532,9 +532,9 @@ void getPointedNode(Client *client, v3f player_position,
 				aabb3f box;
 				aabb3f nhbox(0.5*BS,0.5*BS,0.5*BS,-0.5*BS,-0.5*BS,-0.5*BS);
 				bool hit = false;
-				std::vector<aabb3f> boxes = content_features(n).getNodeBoxes(n);
-				for (std::vector<aabb3f>::iterator b = boxes.begin(); b != boxes.end(); b++) {
-					box = *b;
+				std::vector<NodeBox> boxes = content_features(n).getNodeBoxes(n);
+				for (std::vector<NodeBox>::iterator b = boxes.begin(); b != boxes.end(); b++) {
+					box = b->m_box;
 
 					if (nhbox.MinEdge.X > box.MinEdge.X)
 						nhbox.MinEdge.X = box.MinEdge.X;

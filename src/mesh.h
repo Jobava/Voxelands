@@ -43,7 +43,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 	The resulting mesh has 6 materials (up, down, right, left, back, front)
 	which must be defined by the caller.
 */
-scene::IAnimatedMesh* createNodeBoxMesh(std::vector<aabb3f> nodeboxes, v3f scale);
+scene::IAnimatedMesh* createNodeBoxMesh(std::vector<NodeBox> nodeboxes, v3f scale);
 scene::IAnimatedMesh* createCubeMesh(v3f scale);
 #ifndef SERVER
 scene::IAnimatedMesh* createModelMesh(scene::ISceneManager* smgr, std::string model, bool unique);
