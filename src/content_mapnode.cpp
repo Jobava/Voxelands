@@ -690,7 +690,7 @@ void content_mapnode_init(bool repeat)
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	f->setInventoryTextureCube("glass.png", "glass.png", "glass.png");
-	f->type = CMT_WOOD;
+	f->type = CMT_GLASS;
 	f->hardness = 0.15;
 	lists::add("creative",i);
 
@@ -710,7 +710,7 @@ void content_mapnode_init(bool repeat)
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	f->setInventoryTextureCube("glass_blue.png", "glass_blue.png", "glass_blue.png");
-	f->type = CMT_WOOD;
+	f->type = CMT_GLASS;
 	f->hardness = 0.15;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_GLASS,CONTENT_GLASS_BLUE);
 	lists::add("craftguide",i);
@@ -732,7 +732,7 @@ void content_mapnode_init(bool repeat)
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	f->setInventoryTextureCube("glass_green.png", "glass_green.png", "glass_green.png");
-	f->type = CMT_WOOD;
+	f->type = CMT_GLASS;
 	f->hardness = 0.15;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_GREEN,CONTENT_GLASS,CONTENT_GLASS_GREEN);
 	lists::add("craftguide",i);
@@ -754,7 +754,7 @@ void content_mapnode_init(bool repeat)
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	f->setInventoryTextureCube("glass_orange.png", "glass_orange.png", "glass_orange.png");
-	f->type = CMT_WOOD;
+	f->type = CMT_GLASS;
 	f->hardness = 0.15;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_ORANGE,CONTENT_GLASS,CONTENT_GLASS_ORANGE);
 	lists::add("craftguide",i);
@@ -776,7 +776,7 @@ void content_mapnode_init(bool repeat)
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	f->setInventoryTextureCube("glass_purple.png", "glass_purple.png", "glass_purple.png");
-	f->type = CMT_WOOD;
+	f->type = CMT_GLASS;
 	f->hardness = 0.15;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_PURPLE,CONTENT_GLASS,CONTENT_GLASS_PURPLE);
 	lists::add("craftguide",i);
@@ -798,7 +798,7 @@ void content_mapnode_init(bool repeat)
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	f->setInventoryTextureCube("glass_red.png", "glass_red.png", "glass_red.png");
-	f->type = CMT_WOOD;
+	f->type = CMT_GLASS;
 	f->hardness = 0.15;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_RED,CONTENT_GLASS,CONTENT_GLASS_RED);
 	lists::add("craftguide",i);
@@ -820,7 +820,7 @@ void content_mapnode_init(bool repeat)
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	f->setInventoryTextureCube("glass_yellow.png", "glass_yellow.png", "glass_yellow.png");
-	f->type = CMT_WOOD;
+	f->type = CMT_GLASS;
 	f->hardness = 0.15;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_GLASS,CONTENT_GLASS_YELLOW);
 	lists::add("craftguide",i);
@@ -842,7 +842,7 @@ void content_mapnode_init(bool repeat)
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	f->setInventoryTextureCube("glass_black.png", "glass_black.png", "glass_black.png");
-	f->type = CMT_WOOD;
+	f->type = CMT_GLASS;
 	f->hardness = 0.15;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_GLASS,CONTENT_GLASS_BLACK);
 	lists::add("craftguide",i);
@@ -874,7 +874,7 @@ void content_mapnode_init(bool repeat)
 		0.05*BS
 	));
 	f->setInventoryTextureNodeBox(i,"glass_pane_side.png", "glass.png", "glass_pane_side.png");
-	f->type = CMT_WOOD;
+	f->type = CMT_GLASS;
 	f->hardness = 0.15;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
@@ -908,7 +908,7 @@ void content_mapnode_init(bool repeat)
 		0.05*BS
 	));
 	f->setInventoryTextureNodeBox(i,"glass_pane_blue_side.png", "glass_blue.png", "glass_pane_blue_side.png");
-	f->type = CMT_WOOD;
+	f->type = CMT_GLASS;
 	f->hardness = 0.15;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
@@ -943,7 +943,7 @@ void content_mapnode_init(bool repeat)
 		0.05*BS
 	));
 	f->setInventoryTextureNodeBox(i,"glass_pane_green_side.png", "glass_green.png", "glass_pane_green_side.png");
-	f->type = CMT_WOOD;
+	f->type = CMT_GLASS;
 	f->hardness = 0.15;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
@@ -978,7 +978,7 @@ void content_mapnode_init(bool repeat)
 		0.05*BS
 	));
 	f->setInventoryTextureNodeBox(i,"glass_pane_orange_side.png", "glass_orange.png", "glass_pane_orange_side.png");
-	f->type = CMT_WOOD;
+	f->type = CMT_GLASS;
 	f->hardness = 0.15;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
@@ -1013,7 +1013,7 @@ void content_mapnode_init(bool repeat)
 		0.05*BS
 	));
 	f->setInventoryTextureNodeBox(i,"glass_pane_purple_side.png", "glass_purple.png", "glass_pane_purple_side.png");
-	f->type = CMT_WOOD;
+	f->type = CMT_GLASS;
 	f->hardness = 0.15;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
@@ -1048,7 +1048,7 @@ void content_mapnode_init(bool repeat)
 		0.05*BS
 	));
 	f->setInventoryTextureNodeBox(i,"glass_pane_red_side.png", "glass_red.png", "glass_pane_red_side.png");
-	f->type = CMT_WOOD;
+	f->type = CMT_GLASS;
 	f->hardness = 0.15;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
@@ -1083,7 +1083,7 @@ void content_mapnode_init(bool repeat)
 		0.05*BS
 	));
 	f->setInventoryTextureNodeBox(i,"glass_pane_yellow_side.png", "glass_yellow.png", "glass_pane_yellow_side.png");
-	f->type = CMT_WOOD;
+	f->type = CMT_GLASS;
 	f->hardness = 0.15;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
@@ -1118,7 +1118,7 @@ void content_mapnode_init(bool repeat)
 		0.05*BS
 	));
 	f->setInventoryTextureNodeBox(i,"glass_pane_black_side.png", "glass_black.png", "glass_pane_black_side.png");
-	f->type = CMT_WOOD;
+	f->type = CMT_GLASS;
 	f->hardness = 0.15;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
@@ -1143,7 +1143,7 @@ void content_mapnode_init(bool repeat)
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
 	f->setInventoryTextureCube("glasslight.png", "glasslight.png", "glasslight.png");
-	f->type = CMT_WOOD;
+	f->type = CMT_GLASS;
 	f->hardness = 0.15;
 	f->light_source = LIGHT_MAX-1;
 	crafting::setSurroundRecipe(CONTENT_GLASS,CONTENT_CRAFTITEM_FIREFLY,CONTENT_GLASSLIGHT);

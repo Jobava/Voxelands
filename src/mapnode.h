@@ -152,7 +152,8 @@ enum ContentMaterialType {
 	CMT_STONE,
 	CMT_LIQUID,
 	CMT_PLANT,
-	CMT_DIRT
+	CMT_DIRT,
+	CMT_GLASS
 };
 
 /*

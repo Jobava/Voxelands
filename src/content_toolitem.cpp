@@ -67,7 +67,7 @@ DiggingProperties getDiggingProperties(content_t content, content_t tool)
 		case TT_AXE:
 			if (c_features.type == CMT_PLANT) {
 				time *= 2.;
-			}else if (c_features.type != CMT_WOOD) {
+			}else if (c_features.type != CMT_WOOD && c_features.type != CMT_GLASS) {
 				time *= 10.;
 			}
 			break;

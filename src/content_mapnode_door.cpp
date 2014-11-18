@@ -160,7 +160,7 @@ void content_mapnode_door(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_nodebox_door(f);
-	f->type = CMT_WOOD;
+	f->type = CMT_GLASS;
 	f->hardness = 0.15;
 	f->pressure_type = CST_SOLID;
 	f->suffocation_per_second = 0;
@@ -184,7 +184,7 @@ void content_mapnode_door(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	content_nodebox_door(f);
-	f->type = CMT_WOOD;
+	f->type = CMT_GLASS;
 	f->hardness = 0.15;
 	f->pressure_type = CST_SOLID;
 	f->suffocation_per_second = 0;
@@ -381,7 +381,7 @@ void content_mapnode_door(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_nodebox_door(f);
-	f->type = CMT_WOOD;
+	f->type = CMT_GLASS;
 	f->hardness = 0.15;
 	f->pressure_type = CST_SOLID;
 	f->suffocation_per_second = 0;
@@ -406,7 +406,7 @@ void content_mapnode_door(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_nodebox_door(f);
-	f->type = CMT_WOOD;
+	f->type = CMT_GLASS;
 	f->hardness = 0.15;
 	f->pressure_type = CST_SOLID;
 	f->suffocation_per_second = 0;
@@ -893,7 +893,7 @@ void content_mapnode_door(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_nodebox_dooror(f);
-	f->type = CMT_WOOD;
+	f->type = CMT_GLASS;
 	f->hardness = 0.15;
 	f->pressure_type = CST_SOLID;
 	f->suffocation_per_second = 0;
@@ -918,7 +918,7 @@ void content_mapnode_door(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_nodebox_dooror(f);
-	f->type = CMT_WOOD;
+	f->type = CMT_GLASS;
 	f->hardness = 0.15;
 	f->pressure_type = CST_SOLID;
 	f->suffocation_per_second = 0;
