@@ -490,7 +490,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 #if USE_FREETYPE
 			e = (gui::IGUIEditBox *) new gui::intlGUIEditBox(L"", true, Environment, this, GUI_ID_PW_INPUT, rect);
 #else
-			*e = Environment->addEditBox(L"", rect, false, this, GUI_ID_PW_INPUT);
+			e = Environment->addEditBox(L"", rect, false, this, GUI_ID_PW_INPUT);
 #endif
 			e->setPasswordBox(true);
 			if (text_name != L"" && text_address != L"")
