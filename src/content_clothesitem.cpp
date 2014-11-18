@@ -1,5 +1,5 @@
 /************************************************************************
-* content_toolitem.cpp
+* content_clothesitem.cpp
 * voxelands - 3d voxel world sandbox game
 * Copyright (C) Lisa Milne 2014 <lisa@ltmnet.com>
 *
