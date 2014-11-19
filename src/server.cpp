@@ -1063,14 +1063,6 @@ Server::~Server()
 			i = m_clients.getIterator();
 			i.atEnd() == false; i++)
 		{
-			/*// Delete player
-			// NOTE: These are removed by env destructor
-			{
-				u16 peer_id = i.getNode()->getKey();
-				JMutexAutoLock envlock(m_env_mutex);
-				m_env.removePlayer(peer_id);
-			}*/
-
 			// Delete client
 			delete i.getNode()->getValue();
 		}
@@ -5754,6 +5746,7 @@ Player *Server::emergePlayer(const char *name, const char *password, u16 peer_id
 
 		// Got one.
 		player->peer_id = peer_id;
+		m_env.addConnectedPlayer(name);
 
 		// Reset inventory to creative if in creative mode
 		if (g_settings->getBool("infinite_inventory")) {
@@ -5808,6 +5801,7 @@ Player *Server::emergePlayer(const char *name, const char *password, u16 peer_id
 		*/
 
 		m_env.addPlayer(player);
+		m_env.addConnectedPlayer(name);
 
 		/*
 			Add stuff to inventory
@@ -5892,24 +5886,12 @@ void Server::handlePeerChange(PeerChange &c)
 				message += L" left game";
 				if (c.timeout)
 					message += L" (timed out)";
-			}
-		}
 
-		/*// Delete player
-		{
-			m_env.removePlayer(c.peer_id);
-		}*/
+				m_env.removeConnectedPlayer(player->getName());
 
-		// Set player client disconnected
-		{
-			Player *player = m_env.getPlayer(c.peer_id);
-			if (player != NULL)
-				player->peer_id = 0;
-
-			/*
-				Print out action
-			*/
-			if (player != NULL) {
+				/*
+					Print out action
+				*/
 				std::ostringstream os(std::ios_base::binary);
 				for (core::map<u16, RemoteClient*>::Iterator i = m_clients.getIterator(); i.atEnd() == false; i++) {
 					RemoteClient *client = i.getNode()->getValue();

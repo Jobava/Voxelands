@@ -71,12 +71,21 @@ public:
 	virtual void addPlayer(Player *player);
 	void removePlayer(u16 peer_id);
 	Player * getPlayer(u16 peer_id);
-	Player * getPlayer(const char *name);
+	Player * getPlayer(const char* name);
 	Player * getRandomConnectedPlayer();
 	Player * getNearestConnectedPlayer(v3f pos);
 	core::list<Player*> getPlayers();
 	core::list<Player*> getPlayers(bool ignore_disconnected);
 	void printPlayers(std::ostream &o);
+	void addConnectedPlayer(const char* name)
+	{
+		m_connected_players[std::string(name)] = m_players[name];
+	}
+	void removeConnectedPlayer(const char* name)
+	{
+		m_connected_players[std::string(name)]->peer_id = 0;
+		m_connected_players.erase(name);
+	}
 	virtual bool propogateEnergy(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos) {return false;};
 
 	//void setDayNightRatio(u32 r);
@@ -95,7 +104,8 @@ public:
 
 protected:
 	// peer_ids in here should be unique, except that there may be many 0s
-	core::list<Player*> m_players;
+	std::map<std::string,Player*> m_players;
+	std::map<std::string,Player*> m_connected_players;
 	// Brightness
 	//u32 m_daynight_ratio;
 	// Time of day in milli-hours (0-23999); determines day and night

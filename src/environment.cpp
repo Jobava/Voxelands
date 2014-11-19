@@ -51,10 +51,8 @@ Environment::Environment():
 Environment::~Environment()
 {
 	// Deallocate players
-	for(core::list<Player*>::Iterator i = m_players.begin();
-			i != m_players.end(); i++)
-	{
-		delete (*i);
+	for (std::map<std::string,Player*>::iterator i = m_players.begin(); i != m_players.end(); i++) {
+		delete (i->second);
 	}
 }
 
@@ -72,19 +70,19 @@ void Environment::addPlayer(Player *player)
 	// Name has to be unique.
 	assert(getPlayer(player->getName()) == NULL);
 	// Add.
-	m_players.push_back(player);
+	m_players[player->getName()] = player;
 }
 
 void Environment::removePlayer(u16 peer_id)
 {
 	DSTACK(__FUNCTION_NAME);
 re_search:
-	for(core::list<Player*>::Iterator i = m_players.begin();
-			i != m_players.end(); i++)
-	{
-		Player *player = *i;
-		if(player->peer_id != peer_id)
+	for (std::map<std::string,Player*>::iterator i = m_players.begin(); i != m_players.end(); i++) {
+		Player *player = i->second;
+		if (player->peer_id != peer_id)
 			continue;
+
+		removeConnectedPlayer(player->getName());
 
 		delete player;
 		m_players.erase(i);
@@ -96,11 +94,11 @@ re_search:
 
 Player * Environment::getPlayer(u16 peer_id)
 {
-	for(core::list<Player*>::Iterator i = m_players.begin();
-			i != m_players.end(); i++)
-	{
-		Player *player = *i;
-		if(player->peer_id == peer_id)
+	if (!peer_id)
+		return NULL;
+	for (std::map<std::string,Player*>::iterator i = m_connected_players.begin(); i != m_connected_players.end(); i++) {
+		Player *player = i->second;
+		if (player->peer_id == peer_id)
 			return player;
 	}
 	return NULL;
@@ -108,28 +106,19 @@ Player * Environment::getPlayer(u16 peer_id)
 
 Player * Environment::getPlayer(const char *name)
 {
-	for(core::list<Player*>::Iterator i = m_players.begin();
-			i != m_players.end(); i++)
-	{
-		Player *player = *i;
-		if(strcmp(player->getName(), name) == 0)
-			return player;
-	}
+	std::map<std::string,Player*>::iterator i = m_players.find(std::string(name));
+	if (i != m_players.end())
+			return i->second;
 	return NULL;
 }
 
 Player * Environment::getRandomConnectedPlayer()
 {
-	core::list<Player*> connected_players = getPlayers(true);
-	u32 chosen_one = myrand() % connected_players.size();
+	u32 chosen_one = myrand() % m_connected_players.size();
 	u32 j = 0;
-	for(core::list<Player*>::Iterator
-			i = connected_players.begin();
-			i != connected_players.end(); i++)
-	{
-		if(j == chosen_one)
-		{
-			Player *player = *i;
+	for (std::map<std::string,Player*>::iterator i = m_connected_players.begin(); i != m_connected_players.end(); i++) {
+		if (j == chosen_one) {
+			Player *player = i->second;
 			return player;
 		}
 		j++;
@@ -139,17 +128,12 @@ Player * Environment::getRandomConnectedPlayer()
 
 Player * Environment::getNearestConnectedPlayer(v3f pos)
 {
-	core::list<Player*> connected_players = getPlayers(true);
 	f32 nearest_d = 0;
 	Player *nearest_player = NULL;
-	for(core::list<Player*>::Iterator
-			i = connected_players.begin();
-			i != connected_players.end(); i++)
-	{
-		Player *player = *i;
+	for (std::map<std::string,Player*>::iterator i = m_connected_players.begin(); i != m_connected_players.end(); i++) {
+		Player *player = i->second;
 		f32 d = player->getPosition().getDistanceFrom(pos);
-		if(d < nearest_d || nearest_player == NULL)
-		{
+		if (d < nearest_d || nearest_player == NULL) {
 			nearest_d = d;
 			nearest_player = player;
 		}
@@ -159,26 +143,22 @@ Player * Environment::getNearestConnectedPlayer(v3f pos)
 
 core::list<Player*> Environment::getPlayers()
 {
-	return m_players;
+	return getPlayers(false);
 }
 
 core::list<Player*> Environment::getPlayers(bool ignore_disconnected)
 {
 	core::list<Player*> newlist;
-	for(core::list<Player*>::Iterator
-			i = m_players.begin();
-			i != m_players.end(); i++)
-	{
-		Player *player = *i;
-
-		if(ignore_disconnected)
-		{
-			// Ignore disconnected players
-			if(player->peer_id == 0)
-				continue;
+	if (ignore_disconnected) {
+		for (std::map<std::string,Player*>::iterator i = m_connected_players.begin(); i != m_connected_players.end(); i++) {
+			Player *player = i->second;
+			newlist.push_back(player);
 		}
-
-		newlist.push_back(player);
+	}else{
+		for (std::map<std::string,Player*>::iterator i = m_players.begin(); i != m_players.end(); i++) {
+			Player *player = i->second;
+			newlist.push_back(player);
+		}
 	}
 	return newlist;
 }
@@ -186,10 +166,8 @@ core::list<Player*> Environment::getPlayers(bool ignore_disconnected)
 void Environment::printPlayers(std::ostream &o)
 {
 	o<<"Players in environment:"<<std::endl;
-	for(core::list<Player*>::Iterator i = m_players.begin();
-			i != m_players.end(); i++)
-	{
-		Player *player = *i;
+	for (std::map<std::string,Player*>::iterator i = m_players.begin(); i != m_players.end(); i++) {
+		Player *player = i->second;
 		o<<"Player peer_id="<<player->peer_id<<std::endl;
 	}
 }
@@ -351,10 +329,8 @@ void ServerEnvironment::serializePlayers(const std::string &savedir)
 		}
 	}
 
-	for(core::list<Player*>::Iterator i = m_players.begin();
-			i != m_players.end(); i++)
-	{
-		Player *player = *i;
+	for (std::map<std::string,Player*>::iterator i = m_players.begin(); i != m_players.end(); i++) {
+		Player *player = i->second;
 		if(saved_players.find(player) != NULL)
 		{
 			/*infostream<<"Player "<<player->getName()
@@ -759,8 +735,8 @@ void ServerEnvironment::step(float dtime)
 	*/
 	{
 		ScopeProfiler sp(g_profiler, "SEnv: handle players avg", SPT_AVG);
-		for (core::list<Player*>::Iterator i = m_players.begin(); i != m_players.end(); i++) {
-			Player *player = *i;
+		for (std::map<std::string,Player*>::iterator i = m_connected_players.begin(); i != m_connected_players.end(); i++) {
+			Player *player = i->second;
 
 			// Ignore disconnected players
 			if (player->peer_id == 0)
@@ -3597,11 +3573,9 @@ void ClientEnvironment::addPlayer(Player *player)
 
 LocalPlayer * ClientEnvironment::getLocalPlayer()
 {
-	for(core::list<Player*>::Iterator i = m_players.begin();
-			i != m_players.end(); i++)
-	{
-		Player *player = *i;
-		if(player->isLocal())
+	for (std::map<std::string,Player*>::iterator i = m_players.begin(); i != m_players.end(); i++) {
+		Player *player = i->second;
+		if (player->isLocal())
 			return (LocalPlayer*)player;
 	}
 	return NULL;
@@ -3833,8 +3807,8 @@ void ClientEnvironment::step(float dtime)
 	/*
 		Stuff that can be done in an arbitarily large dtime
 	*/
-	for (core::list<Player*>::Iterator i = m_players.begin(); i != m_players.end(); i++) {
-		Player *player = *i;
+	for (std::map<std::string,Player*>::iterator i = m_players.begin(); i != m_players.end(); i++) {
+		Player *player = i->second;
 		v3f playerpos = player->getPosition();
 
 		/*
@@ -4310,10 +4284,8 @@ void ClientEnvironment::updateObjectsCameraOffset(v3s16 camera_offset)
 		obj->updateCameraOffset(camera_offset);
 	}
 
-	for (core::list<Player*>::Iterator i = m_players.begin();
-			i != m_players.end(); i++)
-	{
-		Player *player = *i;
+	for (std::map<std::string,Player*>::iterator i = m_players.begin(); i != m_players.end(); i++) {
+		Player *player = i->second;
 		if (!player->isLocal())
 			((RemotePlayer*)player)->updateCameraOffset(camera_offset);
 	}
