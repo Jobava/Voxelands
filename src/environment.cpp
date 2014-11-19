@@ -96,11 +96,19 @@ Player * Environment::getPlayer(u16 peer_id)
 {
 	if (!peer_id)
 		return NULL;
+#if SERVER
 	for (std::map<std::string,Player*>::iterator i = m_connected_players.begin(); i != m_connected_players.end(); i++) {
 		Player *player = i->second;
 		if (player->peer_id == peer_id)
 			return player;
 	}
+#else
+	for (std::map<std::string,Player*>::iterator i = m_players.begin(); i != m_players.end(); i++) {
+		Player *player = i->second;
+		if (player->peer_id == peer_id)
+			return player;
+	}
+#endif
 	return NULL;
 }
 
