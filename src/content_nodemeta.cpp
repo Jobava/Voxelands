@@ -3001,6 +3001,7 @@ PistonNodeMetadata::PistonNodeMetadata()
 {
 	m_energy = 0;
 	m_ptime = 0;
+	m_otime = 0;
 	m_sources.clear();
 	NodeMetadata::registerType(typeId(), create);
 }
@@ -3057,7 +3058,9 @@ bool PistonNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *
 	if (!m_energy) {
 		MapNode n = env->getMap().getNodeNoEx(pos);
 		v3s16 dir = n.getRotation();
-		if (n.getContent() == CONTENT_CIRCUIT_PISTON) {
+		switch (n.getContent()) {
+		case CONTENT_CIRCUIT_PISTON:
+		{
 			if (dir == v3s16(1,1,1)) {
 				dir = v3s16(0,0,-1);
 			}else if (dir == v3s16(-1,1,1)) {
@@ -3072,21 +3075,27 @@ bool PistonNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *
 				env->setPostStepNodeSwap(pos,n);
 			}
 			return true;
-		}else if (n.getContent() == CONTENT_CIRCUIT_PISTON_UP) {
+		}
+		case CONTENT_CIRCUIT_PISTON_UP:
+		{
 			dir = v3s16(0,1,0);
 			if (contract(pos,dir,false,env)) {
 				n.setContent(CONTENT_CIRCUIT_PISTON_UP_OFF);
 				env->setPostStepNodeSwap(pos,n);
 			}
 			return true;
-		}else if (n.getContent() == CONTENT_CIRCUIT_PISTON_DOWN) {
+		}
+		case CONTENT_CIRCUIT_PISTON_DOWN:
+		{
 			dir = v3s16(0,-1,0);
 			if (contract(pos,dir,false,env)) {
 				n.setContent(CONTENT_CIRCUIT_PISTON_DOWN_OFF);
 				env->setPostStepNodeSwap(pos,n);
 			}
 			return true;
-		}else if (n.getContent() == CONTENT_CIRCUIT_STICKYPISTON) {
+		}
+		case CONTENT_CIRCUIT_STICKYPISTON:
+		{
 			if (dir == v3s16(1,1,1)) {
 				dir = v3s16(0,0,-1);
 			}else if (dir == v3s16(-1,1,1)) {
@@ -3101,14 +3110,18 @@ bool PistonNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *
 				env->setPostStepNodeSwap(pos,n);
 			}
 			return true;
-		}else if (n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_UP) {
+		}
+		case CONTENT_CIRCUIT_STICKYPISTON_UP:
+		{
 			dir = v3s16(0,1,0);
 			if (contract(pos,dir,true,env)) {
 				n.setContent(CONTENT_CIRCUIT_STICKYPISTON_UP_OFF);
 				env->setPostStepNodeSwap(pos,n);
 			}
 			return true;
-		}else if (n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_DOWN) {
+		}
+		case CONTENT_CIRCUIT_STICKYPISTON_DOWN:
+		{
 			dir = v3s16(0,-1,0);
 			if (contract(pos,dir,true,env)) {
 				n.setContent(CONTENT_CIRCUIT_STICKYPISTON_DOWN_OFF);
@@ -3116,11 +3129,84 @@ bool PistonNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *
 			}
 			return true;
 		}
+		case CONTENT_CIRCUIT_PISTON_OFF:
+		{
+			if (dir == v3s16(1,1,1)) {
+				dir = v3s16(0,0,-1);
+			}else if (dir == v3s16(-1,1,1)) {
+				dir = v3s16(-1,0,0);
+			}else if (dir == v3s16(-1,1,-1)) {
+				dir = v3s16(0,0,1);
+			}else if (dir == v3s16(1,1,-1)) {
+				dir = v3s16(1,0,0);
+			}
+			if (env->getMap().getNodeNoEx(pos+dir).getContent() == CONTENT_CIRCUIT_PISTON_ARM && contract(pos,dir,false,env)) {
+				n.setContent(CONTENT_CIRCUIT_PISTON_OFF);
+				env->setPostStepNodeSwap(pos,n);
+			}
+			return true;
+		}
+		case CONTENT_CIRCUIT_PISTON_UP_OFF:
+		{
+			dir = v3s16(0,1,0);
+			if (env->getMap().getNodeNoEx(pos+dir).getContent() == CONTENT_CIRCUIT_PISTON_UP_ARM && contract(pos,dir,false,env)) {
+				n.setContent(CONTENT_CIRCUIT_PISTON_UP_OFF);
+				env->setPostStepNodeSwap(pos,n);
+			}
+			return true;
+		}
+		case CONTENT_CIRCUIT_PISTON_DOWN_OFF:
+		{
+			dir = v3s16(0,-1,0);
+			if (env->getMap().getNodeNoEx(pos+dir).getContent() == CONTENT_CIRCUIT_PISTON_DOWN_ARM) {
+				contract(pos,dir,false,env);
+			}
+			return true;
+		}
+		case CONTENT_CIRCUIT_STICKYPISTON_OFF:
+		{
+			if (dir == v3s16(1,1,1)) {
+				dir = v3s16(0,0,-1);
+			}else if (dir == v3s16(-1,1,1)) {
+				dir = v3s16(-1,0,0);
+			}else if (dir == v3s16(-1,1,-1)) {
+				dir = v3s16(0,0,1);
+			}else if (dir == v3s16(1,1,-1)) {
+				dir = v3s16(1,0,0);
+			}
+			if (env->getMap().getNodeNoEx(pos+dir).getContent() == CONTENT_CIRCUIT_STICKYPISTON_ARM) {
+				contract(pos,dir,true,env);
+			}
+			return true;
+		}
+		case CONTENT_CIRCUIT_STICKYPISTON_UP_OFF:
+		{
+			dir = v3s16(0,1,0);
+			if (env->getMap().getNodeNoEx(pos+dir).getContent() == CONTENT_CIRCUIT_STICKYPISTON_UP_ARM) {
+				contract(pos,dir,true,env);
+			}
+			return true;
+		}
+		case CONTENT_CIRCUIT_STICKYPISTON_DOWN_OFF:
+		{
+			dir = v3s16(0,-1,0);
+			if (env->getMap().getNodeNoEx(pos+dir).getContent() == CONTENT_CIRCUIT_STICKYPISTON_DOWN_ARM) {
+				contract(pos,dir,true,env);
+			}
+			return true;
+		}
+		default:;
+		}
 		return false;
 	}else{
+		m_otime += dtime;
+		if (m_otime < 1.5)
+			return false;
 		MapNode n = env->getMap().getNodeNoEx(pos);
 		v3s16 dir = n.getRotation();
-		if (n.getContent() == CONTENT_CIRCUIT_PISTON_OFF) {
+		switch (n.getContent()) {
+		case CONTENT_CIRCUIT_PISTON_OFF:
+		{
 			if (dir == v3s16(1,1,1)) {
 				dir = v3s16(0,0,-1);
 			}else if (dir == v3s16(-1,1,1)) {
@@ -3134,19 +3220,28 @@ bool PistonNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *
 				n.setContent(CONTENT_CIRCUIT_PISTON);
 				env->setPostStepNodeSwap(pos,n);
 			}
-		}else if (n.getContent() == CONTENT_CIRCUIT_PISTON_UP_OFF) {
+			break;
+		}
+		case CONTENT_CIRCUIT_PISTON_UP_OFF:
+		{
 			dir = v3s16(0,1,0);
 			if (extend(pos,dir,CONTENT_CIRCUIT_PISTON_UP_ARM,env)) {
 				n.setContent(CONTENT_CIRCUIT_PISTON_UP);
 				env->setPostStepNodeSwap(pos,n);
 			}
-		}else if (n.getContent() == CONTENT_CIRCUIT_PISTON_DOWN_OFF) {
+			break;
+		}
+		case CONTENT_CIRCUIT_PISTON_DOWN_OFF:
+		{
 			dir = v3s16(0,-1,0);
 			if (extend(pos,dir,CONTENT_CIRCUIT_PISTON_DOWN_ARM,env)) {
 				n.setContent(CONTENT_CIRCUIT_PISTON_DOWN);
 				env->setPostStepNodeSwap(pos,n);
 			}
-		}else if (n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_OFF) {
+			break;
+		}
+		case CONTENT_CIRCUIT_STICKYPISTON_OFF:
+		{
 			if (dir == v3s16(1,1,1)) {
 				dir = v3s16(0,0,-1);
 			}else if (dir == v3s16(-1,1,1)) {
@@ -3160,22 +3255,34 @@ bool PistonNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *
 				n.setContent(CONTENT_CIRCUIT_STICKYPISTON);
 				env->setPostStepNodeSwap(pos,n);
 			}
-		}else if (n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_UP_OFF) {
+			break;
+		}
+		case CONTENT_CIRCUIT_STICKYPISTON_UP_OFF:
+		{
 			dir = v3s16(0,1,0);
 			if (extend(pos,dir,CONTENT_CIRCUIT_STICKYPISTON_UP_ARM,env)) {
 				n.setContent(CONTENT_CIRCUIT_STICKYPISTON_UP);
 				env->setPostStepNodeSwap(pos,n);
 			}
-		}else if (n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_DOWN_OFF) {
+			break;
+		}
+		case CONTENT_CIRCUIT_STICKYPISTON_DOWN_OFF:
+		{
 			dir = v3s16(0,-1,0);
 			if (extend(pos,dir,CONTENT_CIRCUIT_STICKYPISTON_DOWN_ARM,env)) {
 				n.setContent(CONTENT_CIRCUIT_STICKYPISTON_DOWN);
 				env->setPostStepNodeSwap(pos,n);
 			}
+			break;
+		}
+		default:;
 		}
 	}
-	if (m_ptime < 1.0)
+	if (m_ptime < 1.5)
 		return false;
+	//m_otime += dtime;
+	//if (m_otime < 1.0)
+		//return false;
 	m_energy = 0;
 	return true;
 }
@@ -3200,6 +3307,8 @@ bool PistonNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s
 			}
 		}
 	}
+	if (level)
+		m_otime = 0;
 	return true;
 }
 bool PistonNodeMetadata::extend(v3s16 pos, v3s16 dir, content_t arm, ServerEnvironment *env)

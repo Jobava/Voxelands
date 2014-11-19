@@ -613,6 +613,7 @@ public:
 private:
 	bool extend(v3s16 pos, v3s16 dir, content_t arm, ServerEnvironment *env);
 	bool contract(v3s16 pos, v3s16 dir, bool sticky, ServerEnvironment *env);
+	f32 m_otime;
 };
 
 #endif
