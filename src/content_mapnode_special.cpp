@@ -62,6 +62,55 @@ void content_mapnode_special(bool repeat)
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
+	i = CONTENT_STEEL_FENCE;
+	f = &content_features(i);
+	f->description = wgettext("Steel Fence");
+	f->setAllTextures("fence_steel.png");
+	f->setTexture(0,"fence_steel_top.png");
+	f->setTexture(1,"fence_steel_top.png");
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_SPECIAL;
+	f->draw_type = CDT_FENCELIKE;
+	f->is_ground_content = true;
+	f->jumpable = false;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->air_equivalent = true; // grass grows underneath
+	f->special_alternate_node = CONTENT_STEEL;
+	f->type = CMT_STONE;
+	f->hardness = 0.75;
+	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
+	content_nodebox_fence_inv(f);
+	content_nodebox_fence(f);
+	f->setInventoryTextureNodeBox(i,"fence_steel.png","fence_steel_top.png","fence_steel.png");
+	crafting::setWallRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_STEEL_FENCE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_STEEL_BARS;
+	f = &content_features(i);
+	f->description = wgettext("Steel Bars");
+	f->setAllTextures("steel_block.png");
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->air_equivalent = true; // grass grows underneath
+	f->special_alternate_node = CONTENT_STEEL;
+	f->type = CMT_STONE;
+	f->hardness = 0.75;
+	f->pressure_type = CST_SOLID;
+	f->suffocation_per_second = 0;
+	content_nodebox_bars(f);
+	f->setInventoryTextureNodeBox(i,"steel_block.png","steel_block.png","steel_block.png");
+	crafting::setHatRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_STEEL_BARS);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
 	i = CONTENT_RAIL;
 	f = &content_features(i);
 	f->description = wgettext("Rail");

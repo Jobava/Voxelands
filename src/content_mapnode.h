@@ -77,7 +77,8 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_CREATIVE_CHEST 25
 #define CONTENT_FURNACE_ACTIVE 26
 #define CONTENT_LOCKABLE_FURNACE_ACTIVE 27
-// FREE 28-29
+#define CONTENT_STEEL_FENCE 28
+#define CONTENT_STEEL_BARS 29
 #define CONTENT_RAIL 30
 // deprecated, just here for backwards compat
 #define CONTENT_LADDER_LEGACY 31
