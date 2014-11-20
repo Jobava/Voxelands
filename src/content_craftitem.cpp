@@ -650,6 +650,8 @@ void content_craftitem_init()
 	f->texture = "string.png";
 	f->name = "string";
 	f->description = wgettext("String");
+	crafting::set1To4Recipe(CONTENT_COTTON,CONTENT_CRAFTITEM_STRING);
+	lists::add("craftguide",i);
 	lists::add("creative",i);
 
 	i = CONTENT_CRAFTITEM_MESEDUST;
