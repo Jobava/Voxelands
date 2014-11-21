@@ -44,6 +44,7 @@
 #include "content_nodemeta.h"
 #include "mapblock.h"
 #include "serverobject.h"
+#include "content_sao.h"
 #include "settings.h"
 #include "profiler.h"
 #include "log.h"
@@ -2102,9 +2103,77 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		return;
 	}
 	switch (command) {
+	case TOSERVER_THROWITEM:
+	{
+		if (datasize < 2+12+12+2)
+			return;
+		v3s32 ps = readV3S32(&data[2]);
+		v3s32 ss = readV3S32(&data[2+12]);
+
+		u16 item_i = readU16(&data[2+12+12]);
+
+		InventoryList *ilist = player->inventory.getList("main");
+		if (ilist == NULL)
+			return;
+
+		// Get item
+		InventoryItem *item = ilist->getItem(item_i);
+
+		// If there is no item, it is not possible to throw it
+		if (item == NULL)
+			return;
+
+		content_t thrown = content_craftitem_features(item->getContent()).thrown_item;
+		// We can throw it, right?
+		if (thrown == CONTENT_IGNORE)
+			return;
+
+		if (g_settings->getBool("droppable_inventory") == false || (getPlayerPrivs(player) & PRIV_BUILD) == 0) {
+			infostream<<"Not allowing player to drop item: creative mode and no build privs"<<std::endl;
+			return;
+		}
+
+		v3f pf((f32)ps.X/100., (f32)ps.Y/100., (f32)ps.Z/100.);
+		v3f sf((f32)ss.X/100., (f32)ss.Y/100., (f32)ss.Z/100.);
+
+		ServerActiveObject *obj = new MobSAO(&m_env, 0, pf, sf*content_mob_features(thrown).static_thrown_speed*BS, thrown);
+
+		if (obj == NULL) {
+			infostream<<"WARNING: item resulted in NULL object, "
+							<<"not throwing into map"
+							<<std::endl;
+		}else{
+			actionstream<<player->getName()<<" throws "<<thrown<<" at "<<PP(pf/BS)<<" ("<<PP(sf/BS)")"<<std::endl;
+
+			// Add the object to the environment
+			m_env.addActiveObject(obj);
+		}
+		if (g_settings->getBool("infinite_inventory") == false) {
+			// Delete the right amount of items from the slot
+
+			// Delete item if all gone
+			if (item->getCount() <= 1) {
+				if (item->getCount() < 1)
+					infostream<<"WARNING: Server: dropped more items"
+							<<" than the slot contains"<<std::endl;
+
+				InventoryList *ilist = player->inventory.getList("main");
+				if (ilist)
+					// Remove from inventory and send inventory
+					ilist->deleteItem(item_i);
+			}else{
+				item->remove(1);
+			}
+
+			// Send inventory
+			UpdateCrafting(peer_id);
+			SendInventory(peer_id);
+		}
+	}
+	break;
 	case TOSERVER_PLAYERPOS:
 	{
-		if(datasize < 2+12+12+4+4)
+		if (datasize < 2+12+12+4+4)
 			return;
 
 		u32 start = 0;

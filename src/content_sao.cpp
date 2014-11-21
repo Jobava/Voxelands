@@ -1091,12 +1091,24 @@ void MobSAO::stepMotionThrown(float dtime)
 {
 	MobFeatures m = content_mob_features(m_content);
 	m_base_position += m_speed * dtime;
-	m_base_position.Y -= 0.1*BS*dtime;
+	m_speed.Y -= 10.0*BS*dtime;
 
 	v3s16 pos_i = floatToInt(m_base_position, BS);
 	if (!checkFreePosition(pos_i)) {
 		if (m.contact_explosion_diameter > 0)
 			explodeSquare(pos_i, v3s16(m.contact_explosion_diameter,m.contact_explosion_diameter,m.contact_explosion_diameter));
+		if (m.contact_place_node != CONTENT_IGNORE && checkFreeAndWalkablePosition(pos_i+v3s16(0,1,0))) {
+			v3s16 pos = pos_i+v3s16(0,1,0);
+			m_env->getMap().addNodeWithEvent(pos,MapNode(m.contact_place_node));
+		}else if (m.contact_drop_item != CONTENT_IGNORE) {
+			v3f pos = intToFloat(pos_i+v3s16(0,1,0),BS);
+			InventoryItem *i = InventoryItem::create(m.contact_drop_item,1);
+			if (i) {
+				ServerActiveObject *obj = i->createSAO(m_env,0,m_base_position);
+				if (obj)
+					m_env->addActiveObject(obj);
+			}
+		}
 		m_removed = true;
 		return;
 	}

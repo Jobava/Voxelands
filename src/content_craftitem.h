@@ -44,6 +44,8 @@ struct CraftItemFeatures {
 	s16 drop_count;
 	// used by mobs that are picked up
 	content_t drop_item;
+	// used by snowballs and such... things that are thrown
+	content_t thrown_item;
 
 	CraftItemFeatures():
 		content(CONTENT_IGNORE),
@@ -54,7 +56,8 @@ struct CraftItemFeatures {
 		fuel_time(0.0),
 		edible(0),
 		drop_count(-1),
-		drop_item(CONTENT_IGNORE)
+		drop_item(CONTENT_IGNORE),
+		thrown_item(CONTENT_IGNORE)
 	{}
 };
 

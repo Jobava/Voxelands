@@ -105,6 +105,7 @@ struct MobFeatures {
 	MobMotion motion;
 	MobMotionType motion_type;
 	MobMotion angry_motion;
+	f32 static_thrown_speed;
 	content_t hunted_node;
 	content_t fleed_node;
 	bool notices_player;
@@ -123,6 +124,8 @@ struct MobFeatures {
 	u16 special_dropped_max;
 	f32 lifetime;
 	u16 contact_explosion_diameter;
+	content_t contact_place_node;
+	content_t contact_drop_item;
 
 	std::string sound_death;
 	std::string sound_attack;
@@ -225,6 +228,7 @@ struct MobFeatures {
 		motion = MM_STATIC;
 		motion_type = MMT_WALK;
 		angry_motion = MM_STATIC;
+		static_thrown_speed = 20.0;
 		hunted_node = CONTENT_IGNORE;
 		fleed_node = CONTENT_IGNORE;
 		notices_player = false;
@@ -243,6 +247,8 @@ struct MobFeatures {
 		special_dropped_max = 0;
 		lifetime = 0.0;
 		contact_explosion_diameter = 0;
+		contact_place_node = CONTENT_IGNORE;
+		contact_drop_item = CONTENT_IGNORE;
 		sound_death = "";
 		sound_attack = "";
 		sound_punch = "mob-dig";
@@ -300,5 +306,6 @@ void content_mob_init();
 #define CONTENT_MOB_WOLF (CONTENT_MOB_MASK | 0x0B)
 #define CONTENT_MOB_TAMEWOLF (CONTENT_MOB_MASK | 0x0C)
 #define CONTENT_MOB_SHEEP (CONTENT_MOB_MASK | 0x0D)
+#define CONTENT_MOB_SNOWBALL (CONTENT_MOB_MASK | 0x0E)
 
 #endif

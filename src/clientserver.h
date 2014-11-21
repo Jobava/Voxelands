@@ -251,6 +251,14 @@ enum ToServerCommand
 		[0] u16 TOSERVER_INIT2
 	*/
 
+	TOSERVER_THROWITEM = 0x12,
+	/*
+		[0] u16 command
+		[2] v3s32 position*100
+		[14] v3s32 speed*100
+		[26] u16 item
+	*/
+
 	TOSERVER_GETBLOCK=0x20, // Obsolete
 	TOSERVER_ADDNODE = 0x21, // Obsolete
 	TOSERVER_REMOVENODE = 0x22, // Obsolete

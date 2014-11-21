@@ -1591,6 +1591,39 @@ void Client::groundAction(u8 action, v3s16 nodepos_undersurface,
 	}
 }
 
+void Client::throwItem(v3f dir, u16 item)
+{
+	std::ostringstream os(std::ios_base::binary);
+	u8 buf[15];
+
+	LocalPlayer* player = m_env.getLocalPlayer();
+
+	// Write command
+	writeU16(buf, TOSERVER_THROWITEM);
+	os.write((char*)buf, 2);
+
+	// Write position
+	v3f pf = player->getEyePosition();
+	v3s32 position(pf.X*100, pf.Y*100, pf.Z*100);
+	writeV3S32(buf,position);
+	os.write((char*)buf, 12);
+
+	// Write speed/direction
+	v3s32 dir_i(dir.X*100, dir.Y*100, dir.Z*100);
+	writeV3S32(buf,dir_i);
+	os.write((char*)buf, 12);
+
+	// Write item
+	writeU16(buf, item);
+	os.write((char*)buf, 2);
+
+	// Make data buffer
+	std::string s = os.str();
+	SharedBuffer<u8> data((u8*)s.c_str(), s.size());
+	// Send as reliable
+	Send(0, data, true);
+}
+
 void Client::clickActiveObject(u8 button, u16 id, u16 item_i)
 {
 	if (connectedAndInitialized() == false) {

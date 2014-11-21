@@ -375,6 +375,7 @@ void content_craftitem_init()
 	f->texture = "snow_ball.png";
 	f->name = "snow_ball";
 	f->description = wgettext("Snow Ball");
+	f->thrown_item = CONTENT_MOB_SNOWBALL;
 
 	i = CONTENT_CRAFTITEM_STICK;
 	f = &g_content_craftitem_features[i];

@@ -207,6 +207,7 @@ public:
 
 	void groundAction(u8 action, v3s16 nodepos_undersurface,
 			v3s16 nodepos_oversurface, u16 item);
+	void throwItem(v3f dir, u16 item);
 	void clickActiveObject(u8 button, u16 id, u16 item_i);
 
 	void sendNodemetaFields(v3s16 p, const std::string &formname,

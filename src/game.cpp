@@ -1621,7 +1621,7 @@ void the_game(
 
 		{
 			// Read client events
-			for (;;) {
+			while (1) {
 				ClientEvent event = client.getClientEvent();
 				if (event.type == CE_NONE) {
 					break;
@@ -1665,9 +1665,8 @@ void the_game(
 
 		//bool camera_offset_changed = (camera_offset != old_camera_offset);
 
-		if(!disable_camera_update){
-			client.updateCamera(camera_position,
-				camera_direction, camera_fov, camera_offset);
+		if (!disable_camera_update) {
+			client.updateCamera(camera_position, camera_direction, camera_fov, camera_offset);
 			client.updateCameraOffset(camera_offset);
 			client.getEnv().updateObjectsCameraOffset(camera_offset);
 			update_particles_camera_offset(camera_offset);
@@ -1675,248 +1674,251 @@ void the_game(
 				clouds->updateCameraOffset(camera_offset);
 		}
 
-		/*
-			Calculate what block is the crosshair pointing to
-		*/
-
-		f32 d = 4; // max. distance
-		core::line3d<f32> shootline(camera_position,
-				camera_position + camera_direction * BS * (d+1));
-
-		ClientActiveObject *selected_active_object
-				= client.getSelectedActiveObject
-					(d*BS, camera_position, shootline);
-
 		bool left_punch = false;
 		bool left_punch_muted = false;
 
-		if (selected_active_object != NULL) {
-			client.setPointedContent(selected_active_object->getContent());
-			/* Clear possible cracking animation */
-			if (nodepos_old != v3s16(-32768,-32768,-32768)) {
-				client.clearTempMod(nodepos_old);
-				dig_time = 0.0;
-				nodepos_old = v3s16(-32768,-32768,-32768);
-			}
-
-			core::aabbox3d<f32> *selection_box
-					= selected_active_object->getSelectionBox();
-			// Box should exist because object was returned in the
-			// first place
-			assert(selection_box);
-
-			v3f pos = selected_active_object->getPosition()-intToFloat(camera_offset,BS);
-
-			core::aabbox3d<f32> box_on_map(
-					selection_box->MinEdge + pos,
-					selection_box->MaxEdge + pos
-			);
-
-			if(selected_active_object->doShowSelectionBox())
-				hilightboxes.push_back(box_on_map);
-
-			infotext = narrow_to_wide(selected_active_object->infoText());
-
-			if(input->getLeftState())
-			{
-				bool do_punch = false;
-				bool do_punch_damage = false;
-				if(object_hit_delay_timer <= 0.0){
-					do_punch = true;
-					do_punch_damage = true;
-					object_hit_delay_timer = object_hit_delay;
-				}
-				if(input->getLeftClicked()){
-					do_punch = true;
-				}
-				if(do_punch){
-					infostream<<"Left-clicked object"<<std::endl;
-					left_punch = true;
-				}
-				if(do_punch_damage){
-					client.clickActiveObject(0,
-							selected_active_object->getId(), g_selected_item);
-				}
-			}
-			else if(input->getRightClicked())
-			{
-				infostream<<"Right-clicked object"<<std::endl;
-				client.clickActiveObject(1,
-						selected_active_object->getId(), g_selected_item);
-			}
-		}
-		else // selected_object == NULL
-		{
-
-		/*
-			Find out which node we are pointing at
-		*/
-
-		bool nodefound = false;
-		v3s16 nodepos;
-		v3s16 neighbourpos;
-		core::aabbox3d<f32> nodehilightbox;
-
-		getPointedNode(&client, player_position,
-				camera_direction, camera_position,
-				nodefound, shootline,
-				nodepos, neighbourpos, camera_offset,
-				nodehilightbox, d);
-
-		if (!nodefound) {
-			if (nodepos_old != v3s16(-32768,-32768,-32768)) {
-				client.clearTempMod(nodepos_old);
-				dig_time = 0.0;
-				nodepos_old = v3s16(-32768,-32768,-32768);
-			}
+		InventoryItem *wield = (InventoryItem*)client.getLocalPlayer()->getWieldItem();
+		if (
+			wield
+			&& (
+				content_craftitem_features(wield->getContent()).thrown_item != CONTENT_IGNORE
+				//|| (
+					//content_toolitem_features(wield->getContent()).thrown_item != CONTENT_IGNORE
+					//&& client.getLocalPlayer()->inventory.find(content_toolitem_features(wield->getContent()).thrown_item) > -1
+				//)
+			) && input->getLeftClicked()
+		) {
+			client.throwItem(camera_direction,g_selected_item);
 		}else{
-
 			/*
-				Check information text of node
+				Calculate what block is the crosshair pointing to
 			*/
 
-			if (nodepos != nodepos_old && nodepos_old != v3s16(-32768,-32768,-32768))
-				client.clearTempMod(nodepos_old);
-			NodeMetadata *meta = client.getNodeMetadata(nodepos);
-			if (meta)
-				infotext = meta->infoText();
+			f32 d = 4; // max. distance
+			core::line3d<f32> shootline(camera_position, camera_position + camera_direction * BS * (d+1));
 
-			/*
-				Handle digging
-			*/
+			ClientActiveObject *selected_active_object = client.getSelectedActiveObject(d*BS, camera_position, shootline);
 
-			if (input->getLeftReleased()) {
-				client.clearTempMod(nodepos);
-				dig_time = 0.0;
-			}
-			/*
-				Visualize selection
-			*/
+			if (selected_active_object != NULL) {
+				client.setPointedContent(selected_active_object->getContent());
+				/* Clear possible cracking animation */
+				if (nodepos_old != v3s16(-32768,-32768,-32768)) {
+					client.clearTempMod(nodepos_old);
+					dig_time = 0.0;
+					nodepos_old = v3s16(-32768,-32768,-32768);
+				}
 
-			if (g_settings->exists("selected_node") && g_settings->get("selected_node") == "outline") {
-				hilightboxes.push_back(nodehilightbox);
-			}else{
-				client.setTempMod(nodepos, NodeMod(NODEMOD_SELECTION));
-			}
+				core::aabbox3d<f32> *selection_box
+						= selected_active_object->getSelectionBox();
+				// Box should exist because object was returned in the
+				// first place
+				assert(selection_box);
 
-			if (nodig_delay_counter > 0.0) {
-				nodig_delay_counter -= dtime;
-			}else{
-				if (nodepos != nodepos_old) {
-					infostream<<"Pointing at ("<<nodepos.X<<","
-							<<nodepos.Y<<","<<nodepos.Z<<")"<<std::endl;
+				v3f pos = selected_active_object->getPosition()-intToFloat(camera_offset,BS);
 
+				core::aabbox3d<f32> box_on_map(
+						selection_box->MinEdge + pos,
+						selection_box->MaxEdge + pos
+				);
+
+				if (selected_active_object->doShowSelectionBox())
+					hilightboxes.push_back(box_on_map);
+
+				infotext = narrow_to_wide(selected_active_object->infoText());
+
+				if (input->getLeftState()) {
+					bool do_punch = false;
+					bool do_punch_damage = false;
+					if (object_hit_delay_timer <= 0.0){
+						do_punch = true;
+						do_punch_damage = true;
+						object_hit_delay_timer = object_hit_delay;
+					}
+					if (input->getLeftClicked()) {
+						do_punch = true;
+					}
+					if (do_punch) {
+						infostream<<"Left-clicked object"<<std::endl;
+						left_punch = true;
+					}
+					if (do_punch_damage) {
+						client.clickActiveObject(0, selected_active_object->getId(), g_selected_item);
+					}
+				}else if (input->getRightClicked()) {
+					infostream<<"Right-clicked object"<<std::endl;
+					client.clickActiveObject(1, selected_active_object->getId(), g_selected_item);
+				}
+			}else{ // selected_object == NULL
+				/*
+					Find out which node we are pointing at
+				*/
+
+				bool nodefound = false;
+				v3s16 nodepos;
+				v3s16 neighbourpos;
+				core::aabbox3d<f32> nodehilightbox;
+
+				getPointedNode(&client, player_position,
+						camera_direction, camera_position,
+						nodefound, shootline,
+						nodepos, neighbourpos, camera_offset,
+						nodehilightbox, d);
+
+				if (!nodefound) {
 					if (nodepos_old != v3s16(-32768,-32768,-32768)) {
 						client.clearTempMod(nodepos_old);
 						dig_time = 0.0;
 						nodepos_old = v3s16(-32768,-32768,-32768);
 					}
-				}
-
-				if (input->getLeftClicked() || (input->getLeftState() && nodepos != nodepos_old)) {
-					infostream<<"Started digging"<<std::endl;
-					client.groundAction(0, nodepos, neighbourpos, g_selected_item);
-				}
-				if (input->getLeftClicked())
-					client.setTempMod(nodepos, NodeMod(NODEMOD_CRACK, 0));
-				if (input->getLeftState()) {
-					MapNode n = client.getNode(nodepos);
-
-					// Get tool name. Default is "" = bare hands
-					content_t toolid = CONTENT_IGNORE;
-					InventoryList *mlist = local_inventory.getList("main");
-					if (mlist != NULL) {
-						InventoryItem *item = mlist->getItem(g_selected_item);
-						if (item && (std::string)item->getName() == "ToolItem") {
-							ToolItem *titem = (ToolItem*)item;
-							toolid = titem->getContent();
-						}
-					}
-
-					// Get digging properties for material and tool
-					content_t material = n.getContent();
-					DiggingProperties prop = getDiggingProperties(material, toolid);
-
-					float dig_time_complete = 0.0;
-
-					if (prop.diggable == false) {
-						dig_time_complete = 10000000.0;
-						client.clearTempMod(nodepos);
-					}else{
-						dig_time_complete = prop.time;
-						if (g_settings->getBool("enable_particles"))
-							addPunchingParticles(smgr, player, nodepos, content_features(n).tiles);
-
-						if (dig_time_complete >= 0.001) {
-							dig_index = (u16)((float)CRACK_ANIMATION_LENGTH
-									* dig_time/dig_time_complete);
-						}else {
-							// This is for torches
-							dig_index = CRACK_ANIMATION_LENGTH;
-						}
-
-						if (dig_index < CRACK_ANIMATION_LENGTH) {
-							client.setTempMod(nodepos, NodeMod(NODEMOD_CRACK, dig_index));
-						}else{
-							infostream<<"Digging completed"<<std::endl;
-							client.groundAction(3, nodepos, neighbourpos, g_selected_item);
-							client.clearTempMod(nodepos);
-							client.removeNode(nodepos);
-
-							if (g_settings->getBool("enable_particles"))
-								addDiggingParticles(smgr, player, nodepos, content_features(n).tiles);
-
-							dig_time = 0;
-
-							nodig_delay_counter = dig_time_complete
-									/ (float)CRACK_ANIMATION_LENGTH;
-
-							// We don't want a corresponding delay to
-							// very time consuming nodes
-							if (nodig_delay_counter > 0.5)
-								nodig_delay_counter = 0.5;
-							// We want a slight delay to very little
-							// time consuming nodes
-							float mindelay = 0.15;
-							if (nodig_delay_counter < mindelay)
-								nodig_delay_counter = mindelay;
-						}
-					}
-
-					dig_time += dtime;
-
-					camera.setDigging(0);  // left click animation
-				}
-			}
-
-
-			if (input->getRightClicked()) {
-				infostream<<"Ground right-clicked"<<std::endl;
-
-				// If metadata provides an inventory view, activate it
-				if (meta && meta->getDrawSpecString() != "" && !random_input) {
-					infostream<<"Launching custom inventory view"<<std::endl;
-
-					InventoryLocation inventoryloc;
-					inventoryloc.setNodeMeta(nodepos);
-
-					/* Create menu */
-
-					GUIFormSpecMenu *menu = new GUIFormSpecMenu(guienv, guiroot, -1, &g_menumgr, &client);
-					menu->setFormSpec(meta->getDrawSpecString(), inventoryloc);
-					menu->setFormIO(new NodeMetadataFormIO(nodepos, &client));
-					menu->drop();
-
 				}else{
-					client.groundAction(1, nodepos, neighbourpos, g_selected_item);
-					camera.setDigging(1);  // right click animation
+
+					/*
+						Check information text of node
+					*/
+
+					if (nodepos != nodepos_old && nodepos_old != v3s16(-32768,-32768,-32768))
+						client.clearTempMod(nodepos_old);
+					NodeMetadata *meta = client.getNodeMetadata(nodepos);
+					if (meta)
+						infotext = meta->infoText();
+
+					/*
+						Handle digging
+					*/
+
+					if (input->getLeftReleased()) {
+						client.clearTempMod(nodepos);
+						dig_time = 0.0;
+					}
+					/*
+						Visualize selection
+					*/
+
+					if (g_settings->exists("selected_node") && g_settings->get("selected_node") == "outline") {
+						hilightboxes.push_back(nodehilightbox);
+					}else{
+						client.setTempMod(nodepos, NodeMod(NODEMOD_SELECTION));
+					}
+
+					if (nodig_delay_counter > 0.0) {
+						nodig_delay_counter -= dtime;
+					}else{
+						if (nodepos != nodepos_old) {
+							infostream<<"Pointing at ("<<nodepos.X<<","
+									<<nodepos.Y<<","<<nodepos.Z<<")"<<std::endl;
+
+							if (nodepos_old != v3s16(-32768,-32768,-32768)) {
+								client.clearTempMod(nodepos_old);
+								dig_time = 0.0;
+								nodepos_old = v3s16(-32768,-32768,-32768);
+							}
+						}
+
+						if (input->getLeftClicked() || (input->getLeftState() && nodepos != nodepos_old)) {
+							infostream<<"Started digging"<<std::endl;
+							client.groundAction(0, nodepos, neighbourpos, g_selected_item);
+						}
+						if (input->getLeftClicked())
+							client.setTempMod(nodepos, NodeMod(NODEMOD_CRACK, 0));
+						if (input->getLeftState()) {
+							MapNode n = client.getNode(nodepos);
+
+							// Get tool name. Default is "" = bare hands
+							content_t toolid = CONTENT_IGNORE;
+							InventoryList *mlist = local_inventory.getList("main");
+							if (mlist != NULL) {
+								InventoryItem *item = mlist->getItem(g_selected_item);
+								if (item && (std::string)item->getName() == "ToolItem") {
+									ToolItem *titem = (ToolItem*)item;
+									toolid = titem->getContent();
+								}
+							}
+
+							// Get digging properties for material and tool
+							content_t material = n.getContent();
+							DiggingProperties prop = getDiggingProperties(material, toolid);
+
+							float dig_time_complete = 0.0;
+
+							if (prop.diggable == false) {
+								dig_time_complete = 10000000.0;
+								client.clearTempMod(nodepos);
+							}else{
+								dig_time_complete = prop.time;
+								if (g_settings->getBool("enable_particles"))
+									addPunchingParticles(smgr, player, nodepos, content_features(n).tiles);
+
+								if (dig_time_complete >= 0.001) {
+									dig_index = (u16)((float)CRACK_ANIMATION_LENGTH
+											* dig_time/dig_time_complete);
+								}else {
+									// This is for torches
+									dig_index = CRACK_ANIMATION_LENGTH;
+								}
+
+								if (dig_index < CRACK_ANIMATION_LENGTH) {
+									client.setTempMod(nodepos, NodeMod(NODEMOD_CRACK, dig_index));
+								}else{
+									infostream<<"Digging completed"<<std::endl;
+									client.groundAction(3, nodepos, neighbourpos, g_selected_item);
+									client.clearTempMod(nodepos);
+									client.removeNode(nodepos);
+
+									if (g_settings->getBool("enable_particles"))
+										addDiggingParticles(smgr, player, nodepos, content_features(n).tiles);
+
+									dig_time = 0;
+
+									nodig_delay_counter = dig_time_complete
+											/ (float)CRACK_ANIMATION_LENGTH;
+
+									// We don't want a corresponding delay to
+									// very time consuming nodes
+									if (nodig_delay_counter > 0.5)
+										nodig_delay_counter = 0.5;
+									// We want a slight delay to very little
+									// time consuming nodes
+									float mindelay = 0.15;
+									if (nodig_delay_counter < mindelay)
+										nodig_delay_counter = mindelay;
+								}
+							}
+
+							dig_time += dtime;
+
+							camera.setDigging(0);  // left click animation
+						}
+					}
+
+
+					if (input->getRightClicked()) {
+						infostream<<"Ground right-clicked"<<std::endl;
+
+						// If metadata provides an inventory view, activate it
+						if (meta && meta->getDrawSpecString() != "" && !random_input) {
+							infostream<<"Launching custom inventory view"<<std::endl;
+
+							InventoryLocation inventoryloc;
+							inventoryloc.setNodeMeta(nodepos);
+
+							/* Create menu */
+
+							GUIFormSpecMenu *menu = new GUIFormSpecMenu(guienv, guiroot, -1, &g_menumgr, &client);
+							menu->setFormSpec(meta->getDrawSpecString(), inventoryloc);
+							menu->setFormIO(new NodeMetadataFormIO(nodepos, &client));
+							menu->drop();
+
+						}else{
+							client.groundAction(1, nodepos, neighbourpos, g_selected_item);
+							camera.setDigging(1);  // right click animation
+						}
+					}
+
+					nodepos_old = nodepos;
 				}
-			}
 
-			nodepos_old = nodepos;
+			} // selected_object == NULL
 		}
-
-		} // selected_object == NULL
 
 		if (left_punch || (input->getLeftClicked() && !left_punch_muted))
 			camera.setDigging(0); // left click animation
@@ -2026,8 +2028,7 @@ void the_game(
 		/*
 			Update gui stuff (0ms)
 		*/
-		const char program_name_and_version[] =
-			"Voxelands " VERSION_STRING;
+		const char program_name_and_version[] = "Voxelands " VERSION_STRING;
 		if (show_debug) {
 			static float drawtime_avg = 0;
 			drawtime_avg = drawtime_avg * 0.95 + (float)drawtime*0.05;
