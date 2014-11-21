@@ -591,6 +591,9 @@ public:
 	// Returns NULL if couldn't take any.
 	InventoryItem * takeItem(u32 i, u32 count);
 
+	// find a stack containing an item
+	InventoryItem *findItem(content_t item, u16 *item_i = NULL);
+
 	// Decrements amount of every material item
 	void decrementMaterials(u16 count);
 

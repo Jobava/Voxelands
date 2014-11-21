@@ -672,6 +672,19 @@ InventoryItem * InventoryList::takeItem(u32 i, u32 count)
 	return NULL;
 }
 
+InventoryItem * InventoryList::findItem(content_t c, u16 *item_i)
+{
+	for (u32 i=0; i<m_items.size(); i++) {
+		InventoryItem *item = getItem(i);
+		if (item && item->getContent() == c) {
+			if (item_i)
+				*item_i = i;
+			return item;
+		}
+	}
+	return NULL;
+}
+
 void InventoryList::decrementMaterials(u16 count)
 {
 	for (u32 i=0; i<m_items.size(); i++) {

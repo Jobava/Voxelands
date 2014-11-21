@@ -79,10 +79,13 @@ enum MobAnimationKey
 enum MobDrawType
 {
 	MDT_NOTHING = 0,
+	MDT_AUTO,
 	MDT_MODEL,
 	MDT_BLOCK,
-	MDT_SPRITE
+	MDT_SPRITE,
+	MDT_EXTRUDED
 };
+
 
 #define CONTENT_MOB_MASK 0x2000
 
@@ -93,6 +96,7 @@ struct MobFeatures {
 	TileSpec tiles[6];
 #endif
 	std::string texture;
+	MobDrawType texture_display;
 	std::string model;
 	std::map<MobAnimationKey,int> animations;
 	v3f model_scale;
@@ -219,6 +223,7 @@ struct MobFeatures {
 	{
 		content = CONTENT_IGNORE;
 		texture = "";
+		texture_display = MDT_AUTO;
 		model = "";
 		model_scale = v3f(1.0,1.0,1.0);
 		model_offset = v3f(0,0,0);
@@ -307,5 +312,6 @@ void content_mob_init();
 #define CONTENT_MOB_TAMEWOLF (CONTENT_MOB_MASK | 0x0C)
 #define CONTENT_MOB_SHEEP (CONTENT_MOB_MASK | 0x0D)
 #define CONTENT_MOB_SNOWBALL (CONTENT_MOB_MASK | 0x0E)
+#define CONTENT_MOB_ARROW (CONTENT_MOB_MASK | 0x0F)
 
 #endif

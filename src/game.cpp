@@ -1678,14 +1678,16 @@ void the_game(
 		bool left_punch_muted = false;
 
 		InventoryItem *wield = (InventoryItem*)client.getLocalPlayer()->getWieldItem();
+		InventoryList *ilist;
 		if (
 			wield
 			&& (
 				content_craftitem_features(wield->getContent()).thrown_item != CONTENT_IGNORE
-				//|| (
-					//content_toolitem_features(wield->getContent()).thrown_item != CONTENT_IGNORE
-					//&& client.getLocalPlayer()->inventory.find(content_toolitem_features(wield->getContent()).thrown_item) > -1
-				//)
+				|| (
+					content_toolitem_features(wield->getContent()).thrown_item != CONTENT_IGNORE
+					&& (ilist = client.getLocalPlayer()->inventory.getList("main")) != NULL
+					&& ilist->findItem(content_toolitem_features(wield->getContent()).thrown_item) != NULL
+				)
 			) && input->getLeftClicked()
 		) {
 			client.throwItem(camera_direction,g_selected_item);

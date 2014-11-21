@@ -505,4 +505,23 @@ void content_toolitem_init()
 	crafting::setSpearRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_STEELSPEAR);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+
+	i = CONTENT_TOOLITEM_BOW;
+	f = &g_content_toolitem_features[i];
+	f->content = i;
+	f->texture = "tool_bow.png";
+	f->name = "bow";
+	f->description = wgettext("Bow");
+	f->type = TT_SPECIAL;
+	f->thrown_item = CONTENT_CRAFTITEM_ARROW;
+	{
+		content_t r[9] = {
+			CONTENT_CRAFTITEM_STRING,	CONTENT_CRAFTITEM_STICK,	CONTENT_IGNORE,
+			CONTENT_CRAFTITEM_STRING,	CONTENT_IGNORE,			CONTENT_CRAFTITEM_STICK,
+			CONTENT_CRAFTITEM_STRING,	CONTENT_CRAFTITEM_STICK,	CONTENT_IGNORE
+		};
+		crafting::setRecipe(r,i,1);
+	}
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 }

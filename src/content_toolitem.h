@@ -40,6 +40,8 @@ struct ToolItemFeatures {
 	f32 hardness;
 	// the dig time of this tool
 	f32 dig_time;
+	// used for eg. bows throwing an arrow
+	content_t thrown_item;
 
 	ToolItemFeatures():
 		content(CONTENT_IGNORE),
@@ -53,7 +55,8 @@ struct ToolItemFeatures {
 		liquids_pointable(false),
 		type(TT_NONE),
 		hardness(0.),
-		dig_time(3.)
+		dig_time(3.),
+		thrown_item(CONTENT_IGNORE)
 	{}
 };
 struct DiggingProperties
@@ -114,5 +117,6 @@ ToolItemFeatures & content_toolitem_features(std::string subname);
 #define CONTENT_TOOLITEM_STONESPEAR (CONTENT_TOOLITEM_MASK | 0x1D)
 #define CONTENT_TOOLITEM_FLINTSPEAR (CONTENT_TOOLITEM_MASK | 0x1E)
 #define CONTENT_TOOLITEM_STEELSPEAR (CONTENT_TOOLITEM_MASK | 0x1F)
+#define CONTENT_TOOLITEM_BOW (CONTENT_TOOLITEM_MASK | 0x20)
 
 #endif

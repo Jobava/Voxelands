@@ -46,6 +46,8 @@ struct CraftItemFeatures {
 	content_t drop_item;
 	// used by snowballs and such... things that are thrown
 	content_t thrown_item;
+	// used by arrows and such... things that are shot by a tool
+	content_t shot_item;
 
 	CraftItemFeatures():
 		content(CONTENT_IGNORE),
@@ -57,7 +59,8 @@ struct CraftItemFeatures {
 		edible(0),
 		drop_count(-1),
 		drop_item(CONTENT_IGNORE),
-		thrown_item(CONTENT_IGNORE)
+		thrown_item(CONTENT_IGNORE),
+		shot_item(CONTENT_IGNORE)
 	{}
 };
 
@@ -166,5 +169,6 @@ CraftItemFeatures & content_craftitem_features(std::string subname);
 #define CONTENT_CRAFTITEM_LEATHER_RED (CONTENT_CRAFTITEM_MASK | 0x68)
 #define CONTENT_CRAFTITEM_LEATHER_YELLOW (CONTENT_CRAFTITEM_MASK | 0x69)
 #define CONTENT_CRAFTITEM_LEATHER_BLACK (CONTENT_CRAFTITEM_MASK | 0x6A)
+#define CONTENT_CRAFTITEM_ARROW (CONTENT_CRAFTITEM_MASK | 0x6B)
 
 #endif

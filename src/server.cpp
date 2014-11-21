@@ -2125,8 +2125,20 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 		content_t thrown = content_craftitem_features(item->getContent()).thrown_item;
 		// We can throw it, right?
-		if (thrown == CONTENT_IGNORE)
-			return;
+		if (thrown == CONTENT_IGNORE) {
+			// it may be a tool that throws something else
+			thrown = content_toolitem_features(item->getContent()).thrown_item;
+			if (thrown == CONTENT_IGNORE)
+				return;
+			u16 i;
+			item = ilist->findItem(thrown,&i);
+			if (!item)
+				return;
+			// We can throw it, right?
+			thrown = content_craftitem_features(item->getContent()).shot_item;
+			if (thrown == CONTENT_IGNORE)
+				return;
+		}
 
 		if (g_settings->getBool("droppable_inventory") == false || (getPlayerPrivs(player) & PRIV_BUILD) == 0) {
 			infostream<<"Not allowing player to drop item: creative mode and no build privs"<<std::endl;

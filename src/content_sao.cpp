@@ -1093,6 +1093,8 @@ void MobSAO::stepMotionThrown(float dtime)
 	m_base_position += m_speed * dtime;
 	m_speed.Y -= 10.0*BS*dtime;
 
+	m_yaw = wrapDegrees_180(180./PI*atan2(m_speed.Z, m_speed.X));
+
 	v3s16 pos_i = floatToInt(m_base_position, BS);
 	if (!checkFreePosition(pos_i)) {
 		if (m.contact_explosion_diameter > 0)
@@ -1117,6 +1119,8 @@ void MobSAO::stepMotionConstant(float dtime)
 {
 	MobFeatures m = content_mob_features(m_content);
 	m_base_position += m_speed * dtime;
+
+	m_yaw = wrapDegrees_180(180./PI*atan2(m_speed.Z, m_speed.X));
 
 	v3s16 pos_i = floatToInt(m_base_position, BS);
 	if (!checkFreePosition(pos_i)) {

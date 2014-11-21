@@ -530,4 +530,21 @@ void content_mob_init()
 	f->contact_place_node = CONTENT_SNOW;
 	f->contact_drop_item = CONTENT_CRAFTITEM_SNOW_BALL;
 	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.));
+
+	i = CONTENT_MOB_ARROW;
+	f = &g_content_mob_features[i];
+	f->content = i;
+	f->level = MOB_AGGRESSIVE;
+	f->setTexture("arrow.png");
+	f->texture_display = MDT_EXTRUDED;
+	f->model_offset = v3f(0,0.2,0);
+	f->punch_action = MPA_IGNORE;
+	f->motion = MM_THROWN;
+	f->motion_type = MMT_FLY;
+	f->notices_player = true;
+	f->attack_player_damage = 1;
+	f->attack_player_range = v3f(1,1,1);
+	f->lifetime = 20.0;
+	f->contact_drop_item = CONTENT_CRAFTITEM_ARROW;
+	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.));
 }

@@ -233,7 +233,7 @@ MobCAO::MobCAO():
 	m_shooting_unset_timer(0),
 	m_walking(false),
 	m_walking_unset_timer(0),
-	m_draw_type(MDT_NOTHING)
+	m_draw_type(MDT_AUTO)
 {
 	ClientActiveObject::registerType(getType(), create);
 }
@@ -251,14 +251,19 @@ void MobCAO::addToScene(scene::ISceneManager *smgr)
 
 	video::IVideoDriver* driver = smgr->getVideoDriver();
 	MobFeatures m = content_mob_features(m_content);
-	if (m.model != "") {
+	if (m.texture_display == MDT_EXTRUDED) {
+		ExtrudedSpriteSceneNode *node = new ExtrudedSpriteSceneNode(smgr->getRootSceneNode(),smgr,-1,v3f(0,0,0),v3f(0,0,0),v3f(5,5,5));
+		node->setVisible(true);
+		node->setSprite(g_texturesource->getTextureRaw(m.texture));
+		m_node = (scene::IMeshSceneNode*)node;
+		m_draw_type = MDT_EXTRUDED;
+		updateNodePos();
+	}else if (m.model != "") {
 		scene::IAnimatedMesh* mesh = createModelMesh(smgr,m.model.c_str(),true);
 		if (!mesh)
 			return;
 
-		scene::IAnimatedMeshSceneNode* node;
-
-		node = smgr->addAnimatedMeshSceneNode(mesh);
+		scene::IAnimatedMeshSceneNode* node = smgr->addAnimatedMeshSceneNode(mesh);
 
 		if (node) {
 			int s;
@@ -334,6 +339,8 @@ void MobCAO::updateLight(u8 light_at_pos)
 			setMeshVerticesColor(((scene::IAnimatedMeshSceneNode*)m_node)->getMesh(), color);
 		}else if (m_draw_type == MDT_SPRITE) {
 			((scene::IBillboardSceneNode*)m_node)->setColor(color);
+		}else if (m_draw_type == MDT_EXTRUDED) {
+			((ExtrudedSpriteSceneNode*)m_node)->updateLight(li);
 		}
 	}
 }
@@ -357,6 +364,8 @@ void MobCAO::updateNodePos()
 		rot.Y = (90-pos_translator.yaw_show)+content_mob_features(m_content).model_rotation.Y;
 	}else if (m_draw_type == MDT_SPRITE) {
 		rot.Y = pos_translator.yaw_show+content_mob_features(m_content).model_rotation.Y;
+	}else if (m_draw_type == MDT_EXTRUDED) {
+		rot.Y = (180-pos_translator.yaw_show)+content_mob_features(m_content).model_rotation.Y;
 	}
 	m_node->setRotation(rot);
 }
@@ -488,6 +497,7 @@ void MobCAO::initialize(const std::string &data)
 		pos_translator.init(m_position);
 		// content
 		m_content = readU16(is);
+		m_draw_type = content_mob_features(m_content).texture_display;
 		// yaw
 		m_yaw = readF1000(is);
 		// speed

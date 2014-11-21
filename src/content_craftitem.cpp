@@ -1096,4 +1096,15 @@ void content_craftitem_init()
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_LEATHER,CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_CRAFTITEM_LEATHER_BLACK);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_ARROW;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_ARROW;
+	f->texture = "arrow.png";
+	f->name = "arrow";
+	f->description = wgettext("Arrow");
+	f->shot_item = CONTENT_MOB_ARROW;
+	crafting::set1over4Recipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_CRAFTITEM_STICK,CONTENT_CRAFTITEM_ARROW);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 }

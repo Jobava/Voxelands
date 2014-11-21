@@ -1602,8 +1602,9 @@ void Client::throwItem(v3f dir, u16 item)
 	writeU16(buf, TOSERVER_THROWITEM);
 	os.write((char*)buf, 2);
 
-	// Write position
-	v3f pf = player->getEyePosition();
+	// Write position - this is one node ahead of the player
+	// to prevent damage occurring to the thrower
+	v3f pf = player->getEyePosition()+(dir*BS);
 	v3s32 position(pf.X*100, pf.Y*100, pf.Z*100);
 	writeV3S32(buf,position);
 	os.write((char*)buf, 12);
