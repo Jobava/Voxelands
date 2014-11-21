@@ -876,12 +876,12 @@ void the_game(
 				break;
 			}
 
-			wchar_t buff[512];
+			char buff[512];
 			int tot = (10.0 - time_counter + 1.0);
-			swprintf(
+			snprintf(
 				buff,
 				512,
-				wngettext(
+				ngettext(
 					"Connecting to server... (timeout in %d second)",
 					"Connecting to server... (timeout in %d seconds)",
 					tot
@@ -889,7 +889,7 @@ void the_game(
 				tot
 			);
 			//draw_load_screen(ss.str(), driver, font);
-			drawLoadingScreen(driver,std::wstring(buff));
+			drawLoadingScreen(driver,narrow_to_wide(buff));
 			// Update client and server
 			client.step(0.1);
 
