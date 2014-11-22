@@ -2112,6 +2112,10 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 		u16 item_i = readU16(&data[2+12+12]);
 
+		if ((getPlayerPrivs(player) & PRIV_BUILD) == 0)
+			return;
+
+		ToolItem *titem = NULL;
 		InventoryList *ilist = player->inventory.getList("main");
 		if (ilist == NULL)
 			return;
@@ -2130,6 +2134,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			thrown = content_toolitem_features(item->getContent()).thrown_item;
 			if (thrown == CONTENT_IGNORE)
 				return;
+			titem = (ToolItem*)item;
 			u16 i;
 			item = ilist->findItem(thrown,&i);
 			if (!item)
@@ -2138,6 +2143,15 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			thrown = content_craftitem_features(item->getContent()).shot_item;
 			if (thrown == CONTENT_IGNORE)
 				return;
+			item_i = i;
+			if (g_settings->getBool("tool_wear")) {
+				bool weared_out = titem->addWear(1000);
+				if (weared_out) {
+					InventoryList *mlist = player->inventory.getList("main");
+					mlist->deleteItem(item_i);
+				}
+				SendInventory(player->peer_id);
+			}
 		}
 
 		if (g_settings->getBool("droppable_inventory") == false || (getPlayerPrivs(player) & PRIV_BUILD) == 0) {
