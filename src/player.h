@@ -174,8 +174,6 @@ public:
 	u8 light;
 
 	Inventory inventory;
-	// Actual inventory is backed up here when creative mode is used
-	Inventory *inventory_backup;
 
 	bool craftresult_is_preview;
 
@@ -254,6 +252,7 @@ public:
 	// character def used for skin creation and model scaling
 	virtual void setCharDef(std::string d) {m_character = d;}
 	std::string getCharDef() {return m_character;}
+	void setClothesGiven(bool v) {m_given_clothes = v;}
 
 	v3f getScale();
 

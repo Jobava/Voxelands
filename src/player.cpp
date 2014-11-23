@@ -48,7 +48,6 @@ Player::Player():
 	in_water_stable(false),
 	is_climbing(false),
 	swimming_up(false),
-	inventory_backup(NULL),
 	craftresult_is_preview(true),
 	hp(20),
 	air(20),
@@ -70,7 +69,6 @@ Player::Player():
 
 Player::~Player()
 {
-	delete inventory_backup;
 }
 
 void Player::wieldItem(u16 item)
@@ -205,13 +203,7 @@ void Player::serialize(std::ostream &os)
 
 	os<<"PlayerArgsEnd\n";
 
-	// If actual inventory is backed up due to creative mode, save it
-	// instead of the dummy creative mode inventory
-	if (inventory_backup) {
-		inventory_backup->serialize(os);
-	}else{
-		inventory.serialize(os);
-	}
+	inventory.serialize(os);
 }
 
 void Player::deSerialize(std::istream &is)

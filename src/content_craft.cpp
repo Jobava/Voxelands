@@ -778,6 +778,14 @@ void giveCreative(Player *player)
 {
 	std::vector<content_t> &creativeinv = lists::get("player-creative");
 
+	InventoryList *l = player->inventory.getList("main");
+
+	// if the player doesn't have a creative chest, reset their inventory
+	if (!l || l->findItem(CONTENT_CREATIVE_CHEST,NULL) != NULL)
+		return;
+
+	// this stops the player being naked when the inventory is reset
+	player->setClothesGiven(false);
 	player->resetInventory();
 
 	for(u8 i=0; i<creativeinv.size(); i++) {
