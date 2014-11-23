@@ -62,7 +62,8 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_TORCH 7
 #define CONTENT_TABLE 8
 #define CONTENT_WATERSOURCE 9
-// FREE 10-13
+// FREE 10-12
+#define CONTENT_SAFE 13
 #define CONTENT_SIGN_WALL 14
 #define CONTENT_CHEST 15
 #define CONTENT_FURNACE 16

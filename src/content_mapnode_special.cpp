@@ -82,6 +82,7 @@ void content_mapnode_special(bool repeat)
 	f->hardness = 0.75;
 	f->pressure_type = CST_SOLID;
 	f->suffocation_per_second = 0;
+	f->destructive_mob_safe = true;
 	content_nodebox_fence_inv(f);
 	content_nodebox_fence(f);
 	f->setInventoryTextureNodeBox(i,"fence_steel.png","fence_steel_top.png","fence_steel.png");
@@ -1250,6 +1251,28 @@ void content_mapnode_special(bool repeat)
 	crafting::setFilledRoundRecipe(CONTENT_WOOD,CONTENT_CRAFTITEM_SILVER_INGOT,CONTENT_LOCKABLE_CHEST);
 	crafting::setFilledRoundRecipe(CONTENT_JUNGLEWOOD,CONTENT_CRAFTITEM_SILVER_INGOT,CONTENT_LOCKABLE_CHEST);
 	crafting::set1Any2Recipe(CONTENT_CHEST,CONTENT_CRAFTITEM_SILVER_INGOT,CONTENT_LOCKABLE_CHEST);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_SAFE;
+	f = &content_features(i);
+	f->description = wgettext("Safe");
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_CUBELIKE;
+	f->setAllTextures("safe_side.png");
+	f->setTexture(0, "safe_top.png");
+	f->setTexture(1, "safe_top.png");
+	f->setTexture(5, "safe_lock.png"); // Z-
+	f->setInventoryTexture("safe_lock.png");
+	f->setInventoryTextureCube("safe_top.png", "safe_lock.png", "safe_side.png");
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	if(f->initial_metadata == NULL)
+		f->initial_metadata = new SafeNodeMetadata();
+	f->type = CMT_WOOD;
+	f->hardness = 1.0;
+	f->pressure_type = CST_SOLID;
+	f->destructive_mob_safe = true;
+	crafting::setFilledRoundRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_CRAFTITEM_COPPER_INGOT,CONTENT_LOCKABLE_CHEST);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 

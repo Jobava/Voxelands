@@ -155,6 +155,33 @@ private:
 	std::string m_owner;
 };
 
+class SafeNodeMetadata : public NodeMetadata
+{
+public:
+	SafeNodeMetadata();
+	~SafeNodeMetadata();
+
+	virtual u16 typeId() const;
+	static NodeMetadata* create(std::istream &is);
+	virtual NodeMetadata* clone();
+	virtual void serializeBody(std::ostream &os);
+	virtual std::wstring infoText();
+	virtual Inventory* getInventory() {return m_inventory;}
+	virtual bool nodeRemovalDisabled();
+	virtual std::string getDrawSpecString();
+
+	virtual bool import(NodeMetadata *meta);
+
+	virtual std::string getOwner(){ return m_owner; }
+	virtual void setOwner(std::string t){ m_owner = t; }
+	virtual std::string getInventoryOwner(){ return m_owner; }
+	virtual void setInventoryOwner(std::string t){ m_owner = t; }
+
+private:
+	Inventory *m_inventory;
+	std::string m_owner;
+};
+
 class CreativeChestNodeMetadata : public NodeMetadata
 {
 public:

@@ -1196,7 +1196,7 @@ void MobSAO::explodeSquare(v3s16 p0, v3s16 size)
 		MapNode n = map->getNodeNoEx(p);
 		if (n.getContent() == CONTENT_IGNORE)
 			continue;
-		if (content_features(n).pressure_type == CST_SOLID && content_features(n).draw_type == CDT_CUBELIKE)
+		if (content_features(n).destructive_mob_safe)
 			continue;
 		map->removeNodeAndUpdate(p, modified_blocks);
 	}

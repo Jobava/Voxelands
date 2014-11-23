@@ -300,6 +300,8 @@ struct ContentFeatures
 	// Used for texture atlas creation.
 	// Currently only enabled for CONTENT_STONE.
 	bool often_contains_mineral;
+	// Whether destructive mobs can destroy this node
+	bool destructive_mob_safe;
 
 	// Inventory item string as which the node appears in inventory when dug.
 	// Mineral overrides this.
@@ -412,6 +414,7 @@ struct ContentFeatures
 		liquid_type = LIQUID_NONE;
 		air_equivalent = false;
 		often_contains_mineral = false;
+		destructive_mob_safe = false;
 		dug_item = "";
 		extra_dug_item = "";
 		extra_dug_item_rarity = 2;

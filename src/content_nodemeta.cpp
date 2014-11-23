@@ -320,7 +320,81 @@ bool LockingChestNodeMetadata::import(NodeMetadata *meta)
 }
 
 /*
-	ChestNodeMetadata
+	SafeNodeMetadata
+*/
+
+// Prototype
+SafeNodeMetadata proto_SafeNodeMetadata;
+
+SafeNodeMetadata::SafeNodeMetadata()
+{
+	NodeMetadata::registerType(typeId(), create);
+
+	m_inventory = new Inventory();
+	m_inventory->addList("0", 8*4);
+}
+SafeNodeMetadata::~SafeNodeMetadata()
+{
+	delete m_inventory;
+}
+u16 SafeNodeMetadata::typeId() const
+{
+	return CONTENT_SAFE;
+}
+NodeMetadata* SafeNodeMetadata::create(std::istream &is)
+{
+	SafeNodeMetadata *d = new SafeNodeMetadata();
+	d->setOwner(deSerializeString(is));
+	d->m_inventory->deSerialize(is);
+	return d;
+}
+NodeMetadata* SafeNodeMetadata::clone()
+{
+	SafeNodeMetadata *d = new SafeNodeMetadata();
+	*d->m_inventory = *m_inventory;
+	return d;
+}
+void SafeNodeMetadata::serializeBody(std::ostream &os)
+{
+	os<<serializeString(m_owner);
+	m_inventory->serialize(os);
+}
+std::wstring SafeNodeMetadata::infoText()
+{
+	char buff[256];
+	snprintf(buff,256,gettext("Safe owned by '%s'"),m_owner.c_str());
+	return narrow_to_wide(buff);
+}
+bool SafeNodeMetadata::nodeRemovalDisabled()
+{
+	/*
+		Disable removal if chest contains something
+	*/
+	InventoryList *list = m_inventory->getList("0");
+	if(list == NULL)
+		return false;
+	if(list->getUsedSlots() == 0)
+		return false;
+	return true;
+}
+std::string SafeNodeMetadata::getDrawSpecString()
+{
+	return
+		"size[8,9]"
+		"list[current_name;0;0,0;8,4;]"
+		"list[current_player;main;0,5;8,4;]";
+}
+bool SafeNodeMetadata::import(NodeMetadata *meta)
+{
+	if (meta->typeId() != CONTENT_CHEST)
+		return false;
+	ChestNodeMetadata *l = (ChestNodeMetadata*)meta;
+	*m_inventory = *l->getInventory();
+	return true;
+}
+
+/*
+	CreativeChestNodeMetadata
 */
 
 // Prototype

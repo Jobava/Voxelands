@@ -34,17 +34,16 @@ void content_nodedef_knob(content_t nodeid, content_t source_node, ContentMateri
 	features->type = CMT_STONE;
 	features->hardness = 0.8;
 	features->climbable = true;
-	if(material_type == CMT_WOOD)
-	{
+	features->suffocation_per_second = 0;
+	if (material_type == CMT_WOOD) {
 		content_t recipe[9] = {
-		CONTENT_IGNORE, CONTENT_IGNORE, CONTENT_IGNORE,
-		source_node   , source_node   , CONTENT_IGNORE,
-		CONTENT_IGNORE, CONTENT_IGNORE, CONTENT_IGNORE};
+			CONTENT_IGNORE, CONTENT_IGNORE, CONTENT_IGNORE,
+			source_node   , source_node   , CONTENT_IGNORE,
+			CONTENT_IGNORE, CONTENT_IGNORE, CONTENT_IGNORE
+		};
 
 		crafting::setRecipe(recipe, nodeid, 2);
-	}
-	else
-	{
+	}else{
 		crafting::set1To4Recipe(source_node,nodeid);
 	}
 	content_nodebox_knob(features);
