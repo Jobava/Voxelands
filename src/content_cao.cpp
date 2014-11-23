@@ -158,6 +158,8 @@ void ItemCAO::initialize(const std::string &data)
 
 void ItemCAO::updateVisual()
 {
+	if (m_node == NULL)
+		return;
 	InventoryItem *item = NULL;
 
 	// Create an inventory item to see what is its image
