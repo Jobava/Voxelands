@@ -177,6 +177,9 @@ public:
 
 	ServerActiveObject* getActiveObject(u16 id);
 
+	// Get all nearby objects
+	void getActiveObjects(v3f origin, f32 max_d, core::array<DistanceSortedActiveObject> &dest);
+
 	/*
 		Add an active object to the environment.
 		Environment handles deletion of object.

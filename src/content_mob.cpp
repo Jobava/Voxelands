@@ -105,6 +105,8 @@ bool content_mob_spawn(ServerEnvironment *env, v3s16 pos, u32 active_object_coun
 	if (active_object_count > 20)
 		return false;
 	int rand = myrand();
+	if (pos.Y < 0 && rand%2 == 0)
+		return false;
 	assert(env);
 	Map *map = &env->getMap();
 
@@ -321,7 +323,7 @@ void content_mob_init()
 	f->spawn_on = CONTENT_WILDGRASS_SHORT;
 	f->spawn_in = CONTENT_AIR;
 	f->spawn_min_height = -5;
-	f->spawn_max_height = 30;
+	f->spawn_max_height = 40;
 	f->spawn_min_light = LIGHT_MAX/2;
 	f->spawn_max_nearby_mobs = 3;
 	f->lifetime = 900.0;
@@ -349,7 +351,7 @@ void content_mob_init()
 	f->spawn_on = CONTENT_WILDGRASS_SHORT;
 	f->spawn_in = CONTENT_AIR;
 	f->spawn_min_height = -5;
-	f->spawn_max_height = 30;
+	f->spawn_max_height = 40;
 	f->spawn_min_light = LIGHT_MAX/2;
 	f->spawn_max_nearby_mobs = 3;
 	f->spawn_chance = 2;
@@ -454,7 +456,7 @@ void content_mob_init()
 	f->spawn_on = CONTENT_WILDGRASS_LONG;
 	f->spawn_in = CONTENT_AIR;
 	f->spawn_min_height = 0;
-	f->spawn_max_height = 30;
+	f->spawn_max_height = 40;
 	f->spawn_max_light = LIGHT_MAX/2;
 	f->spawn_max_nearby_mobs = 3;
 	f->notices_player = true;
@@ -481,6 +483,8 @@ void content_mob_init()
 	f->motion = MM_SEEKER;
 	f->motion_type = MMT_WALK;
 	f->notices_player = true;
+	f->attack_mob_damage = 5;
+	f->attack_mob_range = v3f(1,1,1);
 	f->lifetime = 900.0;
 	f->setCollisionBox(aabb3f(-0.5*BS, 0., -0.5*BS, 0.5*BS, 1.*BS, 0.5*BS));
 
@@ -508,7 +512,7 @@ void content_mob_init()
 	f->spawn_on = CONTENT_WILDGRASS_SHORT;
 	f->spawn_in = CONTENT_AIR;
 	f->spawn_min_height = 2;
-	f->spawn_max_height = 20;
+	f->spawn_max_height = 50;
 	f->spawn_min_light = LIGHT_MAX/2;
 	f->spawn_max_nearby_mobs = 3;
 	f->lifetime = 900.0;
@@ -526,6 +530,8 @@ void content_mob_init()
 	f->notices_player = true;
 	f->attack_player_damage = 1;
 	f->attack_player_range = v3f(1,1,1);
+	f->attack_mob_damage = 5;
+	f->attack_mob_range = v3f(1,1,1);
 	f->lifetime = 10.0;
 	f->contact_place_node = CONTENT_SNOW;
 	f->contact_drop_item = CONTENT_CRAFTITEM_SNOW_BALL;
@@ -544,6 +550,8 @@ void content_mob_init()
 	f->notices_player = true;
 	f->attack_player_damage = 1;
 	f->attack_player_range = v3f(1,1,1);
+	f->attack_mob_damage = 20;
+	f->attack_mob_range = v3f(1,1,1);
 	f->lifetime = 20.0;
 	f->contact_drop_item = CONTENT_CRAFTITEM_ARROW;
 	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.));

@@ -72,9 +72,9 @@ public:
 	u16 punch(content_t punch_item, v3f dir, const std::string &playername);
 	bool rightClick(Player *player);
 	u8 level();
+	void doDamage(u16 d);
 private:
 	void sendPosition();
-	void doDamage(u16 d);
 
 	MobMotion getMotion()
 	{

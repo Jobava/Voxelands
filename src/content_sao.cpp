@@ -450,7 +450,7 @@ void MobSAO::step(float dtime, bool send_recommended)
 					v3f playerpos = player->getPosition();
 					f32 dist = m_base_position.getDistanceFrom(playerpos);
 					if (dist < BS*16) {
-						if (dist < BS*3 || myrand_range(0,3) == 0) {
+						if (dist < BS*8 || myrand_range(0,2) == 0) {
 							actionstream<<"Mob id="<<m_id<<" at "
 									<<PP(m_base_position/BS)
 									<<" got randomly disturbed by "
@@ -532,6 +532,32 @@ void MobSAO::step(float dtime, bool send_recommended)
 					ActiveObjectMessage aom(getId(), false, os.str());
 					m_messages_out.push_back(aom);
 				}
+			}
+		}
+	}
+
+	if (m.attack_mob_damage > 0) {
+		core::array<DistanceSortedActiveObject> objects;
+		f32 range = m.attack_mob_range.X;
+		if (m.attack_mob_range.Y > range)
+			range = m.attack_mob_range.Y;
+		if (m.attack_mob_range.Z > range)
+			range = m.attack_mob_range.Z;
+
+		m_env->getActiveObjects(m_base_position, range*BS, objects);
+
+		// Sort them.
+		// After this, the closest object is the first in the array.
+		objects.sort();
+
+		for (u32 i=0; i<objects.size(); i++) {
+			ServerActiveObject *obj = (ServerActiveObject*)objects[i].obj;
+			if (obj->getId() == m_id)
+				continue;
+			if (obj->getType() == ACTIVEOBJECT_TYPE_MOB) {
+				((MobSAO*)obj)->doDamage(m.attack_mob_damage);
+			}else if (obj->getType() == ACTIVEOBJECT_TYPE_ITEM) {
+				((ItemSAO*)obj)->m_removed = true;
 			}
 		}
 	}
@@ -1187,6 +1213,11 @@ void MobSAO::explodeSquare(v3s16 p0, v3s16 size)
 	assert(m_env);
 	Map *map = &m_env->getMap();
 	core::map<v3s16, MapBlock*> modified_blocks;
+
+	if (content_mob_features(m_content).level != MOB_DESTRUCTIVE) {
+		if (m_env->searchNear(p0,size+v3s16(5,5,5),CONTENT_BORDERSTONE,NULL))
+			return;
+	}
 
 	for (int dx=0; dx<size.X; dx++)
 	for (int dy=0; dy<size.Y; dy++)

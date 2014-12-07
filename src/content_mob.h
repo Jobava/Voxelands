@@ -118,6 +118,8 @@ struct MobFeatures {
 	v3f attack_throw_offset;
 	u8 attack_player_damage;
 	v3f attack_player_range;
+	u8 attack_mob_damage;
+	v3f attack_mob_range;
 	u8 glow_light;
 	u8 attack_glow_light;
 	u16 hp;
@@ -242,6 +244,8 @@ struct MobFeatures {
 		attack_throw_offset = v3f(0,0,0);
 		attack_player_damage = 0;
 		attack_player_range = v3f(0,0,0);
+		attack_mob_damage = 0;
+		attack_mob_range = v3f(0,0,0);
 		glow_light = 0;
 		attack_glow_light = 0;
 		hp = 20;

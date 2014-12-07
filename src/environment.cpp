@@ -2824,6 +2824,22 @@ ServerActiveObject* ServerEnvironment::getActiveObject(u16 id)
 	return i->second;
 }
 
+void ServerEnvironment::getActiveObjects(v3f origin, f32 max_d, core::array<DistanceSortedActiveObject> &dest)
+{
+	for (std::map<u16, ServerActiveObject*>::iterator i = m_active_objects.begin(); i != m_active_objects.end(); i++) {
+		ServerActiveObject* obj = i->second;
+
+		f32 d = (obj->getBasePosition() - origin).getLength();
+
+		if (d > max_d)
+			continue;
+
+		DistanceSortedActiveObject dso(obj, d);
+
+		dest.push_back(dso);
+	}
+}
+
 bool ServerEnvironment::propogateEnergy(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
 {
 	MapNode n = m_map->getNodeNoEx(pos);

@@ -94,22 +94,5 @@ private:
 	static core::map<u16, Factory> m_types;
 };
 
-struct DistanceSortedActiveObject
-{
-	ClientActiveObject *obj;
-	f32 d;
-
-	DistanceSortedActiveObject(ClientActiveObject *a_obj, f32 a_d)
-	{
-		obj = a_obj;
-		d = a_d;
-	}
-
-	bool operator < (DistanceSortedActiveObject &other)
-	{
-		return d < other.d;
-	}
-};
-
 #endif
 

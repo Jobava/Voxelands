@@ -73,5 +73,22 @@ protected:
 	u16 m_id; // 0 is invalid, "no id"
 };
 
+struct DistanceSortedActiveObject
+{
+	ActiveObject *obj;
+	f32 d;
+
+	DistanceSortedActiveObject(ActiveObject *a_obj, f32 a_d)
+	{
+		obj = a_obj;
+		d = a_d;
+	}
+
+	bool operator < (DistanceSortedActiveObject &other)
+	{
+		return d < other.d;
+	}
+};
+
 #endif
 

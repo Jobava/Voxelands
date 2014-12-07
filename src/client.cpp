@@ -2131,7 +2131,7 @@ ClientActiveObject * Client::getSelectedActiveObject(
 	objects.sort();
 
 	for (u32 i=0; i<objects.size(); i++) {
-		ClientActiveObject *obj = objects[i].obj;
+		ClientActiveObject *obj = (ClientActiveObject*)objects[i].obj;
 
 		core::aabbox3d<f32> *selection_box = obj->getSelectionBox();
 		if (selection_box == NULL)

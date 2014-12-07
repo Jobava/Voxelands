@@ -312,7 +312,7 @@ void cmd_clearobjects(std::wostringstream &os,
 
 	{
 		std::wstring msg;
-		msg += L"Clearing all objects. This may take long.";
+		msg += L"Clearing all objects. This may take a long time.";
 		msg += L" You may experience a timeout. (by ";
 		msg += narrow_to_wide(ctx->player->getName());
 		msg += L")";
