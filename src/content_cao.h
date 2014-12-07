@@ -63,7 +63,7 @@ struct SmoothTranslator
 		yaw_aim(0)
 	{}
 
-	void init(v3f vect)
+	void init(v3f vect, f32 yaw = 0)
 	{
 		vect_old = vect;
 		vect_show = vect;
@@ -71,9 +71,9 @@ struct SmoothTranslator
 		anim_counter = 0;
 		anim_time = 0;
 		anim_time_counter = 0;
-		yaw_old = 0;
-		yaw_show = 0;
-		yaw_aim = 0;
+		yaw_old = yaw;
+		yaw_show = yaw;
+		yaw_aim = yaw;
 	}
 
 	void sharpen()

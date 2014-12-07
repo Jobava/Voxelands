@@ -109,8 +109,6 @@ void ItemCAO::step(float dtime, ClientEnvironment *env)
 	if (m_node == NULL)
 		return;
 
-	updateVisual();
-
 	LocalPlayer *player = env->getLocalPlayer();
 	assert(player);
 	v3f rot = m_node->getRotation();
@@ -153,6 +151,8 @@ void ItemCAO::initialize(const std::string &data)
 		m_inventorystring = deSerializeString(is);
 	}
 
+
+	updateVisual();
 	updateNodePos();
 }
 
@@ -496,12 +496,12 @@ void MobCAO::initialize(const std::string &data)
 			return;
 		// pos
 		m_position = readV3F1000(is);
-		pos_translator.init(m_position);
 		// content
 		m_content = readU16(is);
 		m_draw_type = content_mob_features(m_content).texture_display;
 		// yaw
 		m_yaw = readF1000(is);
+		pos_translator.init(m_position,m_yaw);
 		// speed
 		v3f speed = readV3F1000(is);
 		// age
