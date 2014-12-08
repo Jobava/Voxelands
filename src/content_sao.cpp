@@ -549,17 +549,22 @@ void MobSAO::step(float dtime, bool send_recommended)
 		// Sort them.
 		// After this, the closest object is the first in the array.
 		objects.sort();
+		bool hit = false;
 
-		for (u32 i=0; i<objects.size(); i++) {
+		for (u32 i=0; i<objects.size() && !hit; i++) {
 			ServerActiveObject *obj = (ServerActiveObject*)objects[i].obj;
 			if (obj->getId() == m_id)
 				continue;
 			if (obj->getType() == ACTIVEOBJECT_TYPE_MOB) {
 				((MobSAO*)obj)->doDamage(m.attack_mob_damage);
+				hit = true;
 			}else if (obj->getType() == ACTIVEOBJECT_TYPE_ITEM) {
 				((ItemSAO*)obj)->m_removed = true;
+				hit = true;
 			}
 		}
+		if (hit)
+			m_removed = true;
 	}
 
 	MobMotion mot = getMotion();
@@ -1122,7 +1127,7 @@ void MobSAO::stepMotionThrown(float dtime)
 	m_yaw = wrapDegrees_180(180./PI*atan2(m_speed.Z, m_speed.X));
 
 	v3s16 pos_i = floatToInt(m_base_position, BS);
-	if (!checkFreePosition(pos_i)) {
+	if (!checkFreePosition(pos_i) || m_removed) {
 		if (m.contact_explosion_diameter > 0)
 			explodeSquare(pos_i, v3s16(m.contact_explosion_diameter,m.contact_explosion_diameter,m.contact_explosion_diameter));
 		if (m.contact_place_node != CONTENT_IGNORE && checkFreeAndWalkablePosition(pos_i+v3s16(0,1,0))) {

@@ -528,8 +528,6 @@ void content_mob_init()
 	f->motion = MM_THROWN;
 	f->motion_type = MMT_FLY;
 	f->notices_player = true;
-	f->attack_player_damage = 1;
-	f->attack_player_range = v3f(1,1,1);
 	f->attack_mob_damage = 5;
 	f->attack_mob_range = v3f(1,1,1);
 	f->lifetime = 10.0;
@@ -541,15 +539,13 @@ void content_mob_init()
 	f = &g_content_mob_features[i];
 	f->content = i;
 	f->level = MOB_AGGRESSIVE;
-	f->setTexture("arrow.png");
+	f->setTexture("mob_arrow.png");
 	f->texture_display = MDT_EXTRUDED;
 	f->model_offset = v3f(0,0.2,0);
 	f->punch_action = MPA_IGNORE;
 	f->motion = MM_THROWN;
 	f->motion_type = MMT_FLY;
 	f->notices_player = true;
-	f->attack_player_damage = 1;
-	f->attack_player_range = v3f(1,1,1);
 	f->attack_mob_damage = 20;
 	f->attack_mob_range = v3f(1,1,1);
 	f->lifetime = 20.0;

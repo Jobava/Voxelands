@@ -1272,7 +1272,7 @@ void content_mapnode_special(bool repeat)
 	f->hardness = 1.0;
 	f->pressure_type = CST_SOLID;
 	f->destructive_mob_safe = true;
-	crafting::setFilledRoundRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_CRAFTITEM_COPPER_INGOT,CONTENT_LOCKABLE_CHEST);
+	crafting::setFilledRoundRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_CRAFTITEM_COPPER_INGOT,CONTENT_SAFE);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
