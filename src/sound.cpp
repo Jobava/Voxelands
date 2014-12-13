@@ -56,6 +56,8 @@ void init_sounds(ISoundManager *sound)
 	sound->loadSound("wood-walk","wood_footstep.2.ogg");
 	sound->loadSound("wood-walk","wood_footstep.3.ogg");
 	sound->loadSound("wood-walk","wood_footstep.4.ogg");
+	// CMT_GLASS
+	sound->loadSound("glass-walk","glass_footstep.1.ogg");
 
 	// digging
 	// CMT_DIRT
@@ -68,6 +70,8 @@ void init_sounds(ISoundManager *sound)
 	sound->loadSound("liquid-dig","dig_liquid.1.ogg");
 	// CMT_WOOD
 	sound->loadSound("wood-dig","dig_wood.1.ogg");
+	// CMT_GLASS
+	sound->loadSound("glass-dig","dig_glass.1.ogg");
 	// mobs
 	sound->loadSound("mob-dig","dig_mob.ogg");
 	// miss
@@ -82,6 +86,7 @@ void init_sounds(ISoundManager *sound)
 	// CMT_PLANT
 	// CMT_LIQUID
 	// CMT_WOOD
+	// CMT_GLASS
 }
 
 

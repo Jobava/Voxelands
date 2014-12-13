@@ -2351,6 +2351,9 @@ void Client::playStepSound()
 	case CMT_WOOD:
 		m_sound->playSound("wood-walk",false,volume);
 		break;
+	case CMT_GLASS:
+		m_sound->playSound("glass-walk",false,volume);
+		break;
 	default:;
 	}
 }
@@ -2389,6 +2392,9 @@ void Client::playDigSound(content_t c)
 		break;
 	case CMT_WOOD:
 		m_sound->playSound("wood-dig",false,volume);
+		break;
+	case CMT_GLASS:
+		m_sound->playSound("glass-dig",false,volume);
 		break;
 	default:
 		m_sound->playSound("miss-dig",false,volume);
