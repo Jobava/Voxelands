@@ -203,21 +203,21 @@ public:
 			return
 				std::string("size[8,9]"
 				"list[current_player;main;0,5;8,4;]"
-				"button[0.5,3;3,1;show_craft;Show Crafting]"
-				"label[1,2;")+gettext("Clothes")+"]"
-				"label[4.9,-0.1;Hat/Helmet]"
+				"button[0.5,3;3,1;show_craft;")+gettext("Show Crafting")+"]"
+				"label[1,2;"+gettext("Clothes")+"]"
+				"label[4.9,-0.1;"+gettext("Hat/Helmet")+"]"
 				"list[current_player;hat;5,0;1,1;]"
-				"label[6.6,1.2;Jacket]"
+				"label[6.6,1.2;"+gettext("Jacket")+"]"
 				"list[current_player;jacket;6.3,1.3;1,1;]"
-				"label[3.7,0.9;Decorative]"
+				"label[3.7,0.9;"+gettext("Decorative")+"]"
 				"list[current_player;decorative;3.7,1;1,1;]"
-				"label[5.4,1.2;Shirt]"
+				"label[5.4,1.2;"+gettext("Shirt")+"]"
 				"list[current_player;shirt;5,1.3;1,1;]"
-				"label[4.1,2.2;Belt]"
+				"label[4.1,2.2;"+gettext("Belt")+"]"
 				"list[current_player;belt;3.7,2.3;1,1;]"
-				"label[5.3,2.5;Pants]"
+				"label[5.3,2.5;"+gettext("Pants")+"]"
 				"list[current_player;pants;5,2.6;1,1;]"
-				"label[5.3,3.8;Boots]"
+				"label[5.3,3.8;"+gettext("Boots")+"]"
 				"list[current_player;boots;5,3.9;1,1;]";
 		}
 		return
@@ -225,7 +225,7 @@ public:
 			"list[current_player;main;0,5;8,4;]"
 			"label[1,1.7;")+gettext("Drop to Ground")+"]"
 			"list[current_player;discard;1.2,2;1,1;]"
-			"button[0.5,3.5;3,1;show_appearance;Change Clothing]"
+			"button[0.5,3.5;3,1;show_appearance;"+gettext("Change Clothing")+"]"
 			"list[current_player;craft;3.5,1;3,3;]"
 			"list[current_player;craftresult;7,2;1,1;]";
 	}
