@@ -310,7 +310,12 @@ void MobCAO::addToScene(scene::ISceneManager *smgr)
 		bill->setMaterialFlag(video::EMF_FOG_ENABLE, true);
 		bill->setColor(video::SColor(255,0,0,0));
 		bill->setVisible(true);
+#if (IRRLICHT_VERSION_MAJOR >= 1 && IRRLICHT_VERSION_MINOR >= 8) || IRRLICHT_VERSION_MAJOR >= 2
 		bill->setSize(m.model_scale.X*BS,m.model_scale.Y*BS,m.model_scale.Z*BS);
+#else
+		v2f bb_size(m.model_scale.X*BS,m.model_scale.Y*BS);
+		bill->setSize(bb_size);
+#endif
 		m_node = (scene::IMeshSceneNode*)bill;
 		m_draw_type = MDT_SPRITE;
 		updateNodePos();
