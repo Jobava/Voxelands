@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Lisa 'darkrose' Milne
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Wuzzy <almikes@aol.com>, 2014
 # Jan Rößler <soognarf@googlemail.com>, 2014
@@ -11,14 +11,13 @@ msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-14 01:45+1000\n"
-"PO-Revision-Date: 2014-11-14 21:04+0000\n"
+"PO-Revision-Date: 2014-12-14 15:40+0000\n"
 "Last-Translator: Wuzzy <almikes@aol.com>\n"
-"Language-Team: German (http://www.transifex.com/projects/p/voxelands/"
-"language/de/)\n"
-"Language: de\n"
+"Language-Team: German (http://www.transifex.com/projects/p/voxelands/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/character_creator.cpp:58
@@ -231,18 +230,9 @@ msgstr "Leinenschuhe"
 
 #: src/character_creator.cpp:205
 msgid ""
-"Here you can create your default character, this is how other players will "
-"see you in-game. When you join a new server you will start with the clothing "
-"you select here. Additional clothing, both protective and decorative, can be "
-"crafted in-game.\n"
+"Here you can create your default character, this is how other players will see you in-game. When you join a new server you will start with the clothing you select here. Additional clothing, both protective and decorative, can be crafted in-game.\n"
 "You can return here from the main menu anytime to change your character."
-msgstr ""
-"Hier können Sie Ihre Standardfigur erstellen; so werden Sie von anderen "
-"Spieler im Spiel gesehen. Wenn Sie einem neuen Server beitreten, werden Sie "
-"mit der hier ausgewählten Kleidung anfangen. Weitere Kleidung, sowohl zum "
-"Schutz als auch zur Dekoration, kann im Spiel angefertigt werden.\n"
-"Sie können jederzeit hierher aus dem Hauptmenü zurückkehren, um Ihre Figur "
-"zu wechseln."
+msgstr "Hier können Sie Ihre Standardfigur erstellen; so werden Sie von anderen Spieler im Spiel gesehen. Wenn Sie einem neuen Server beitreten, werden Sie mit der hier ausgewählten Kleidung anfangen. Weitere Kleidung, sowohl zum Schutz als auch zur Dekoration, kann im Spiel angefertigt werden.\nSie können jederzeit hierher aus dem Hauptmenü zurückkehren, um Ihre Figur zu wechseln."
 
 #: src/character_creator.cpp:226
 msgid "Create Your Character"
@@ -1479,7 +1469,7 @@ msgstr "schwarzes Leder"
 
 #: src/content_craftitem.cpp:1105
 msgid "Arrow"
-msgstr ""
+msgstr "Pfeil"
 
 #: src/content_mapnode.cpp:200
 msgid "Stone"
@@ -2400,14 +2390,12 @@ msgid "Fence"
 msgstr "Zaun"
 
 #: src/content_mapnode_special.cpp:67
-#, fuzzy
 msgid "Steel Fence"
-msgstr "Stahlaxt"
+msgstr "Stahlzaun"
 
 #: src/content_mapnode_special.cpp:95
-#, fuzzy
 msgid "Steel Bars"
-msgstr "Stahlschere"
+msgstr "Stahlstäbe"
 
 #: src/content_mapnode_special.cpp:117
 msgid "Rail"
@@ -2543,7 +2531,7 @@ msgstr "abschließbare Truhe"
 
 #: src/content_mapnode_special.cpp:1259
 msgid "Safe"
-msgstr ""
+msgstr "Tresor"
 
 #: src/content_mapnode_special.cpp:1281 src/content_mapnode_special.cpp:1301
 msgid "Furnace"
@@ -2681,12 +2669,12 @@ msgstr "Heimatflagge von %s"
 #: src/content_nodemeta.cpp:291
 #, c-format
 msgid "Locking Chest owned by '%s'"
-msgstr "abschließbare Truhe im Eigentum von %s"
+msgstr "abschließbare Truhe (Eigentümer: %s)"
 
 #: src/content_nodemeta.cpp:365
-#, fuzzy, c-format
+#, c-format
 msgid "Safe owned by '%s'"
-msgstr "Grenzstein im Eigentum von %s"
+msgstr "Tresor (Eigentümer: %s)"
 
 #: src/content_nodemeta.cpp:484 src/content_nodemeta.cpp:1416
 #: src/content_nodemeta.cpp:1618 src/content_nodemeta.cpp:1829
@@ -2707,7 +2695,7 @@ msgstr "Nächste Seite >>"
 #: src/content_nodemeta.cpp:537
 #, c-format
 msgid "Border Stone owned by '%s'"
-msgstr "Grenzstein im Eigentum von %s"
+msgstr "Grenzstein (Eigentümer: %s)"
 
 #: src/content_nodemeta.cpp:612
 msgid "Furnace is overloaded"
@@ -2762,8 +2750,7 @@ msgstr "Müllverbrennungsanlage ist inaktiv"
 
 #: src/content_nodemeta.cpp:1216
 msgid "Add fuel, then punch to incinerate wielded item"
-msgstr ""
-"Brennstoff zugeben, dann schlagen, um getragenen Gegenstand zu verbrennen"
+msgstr "Brennstoff zugeben, dann schlagen, um getragenen Gegenstand zu verbrennen"
 
 #: src/content_nodemeta.cpp:1420
 msgid "Add item here to see recipe"
@@ -2933,57 +2920,51 @@ msgstr "Stahlspeer"
 
 #: src/content_toolitem.cpp:514
 msgid "Bow"
-msgstr ""
+msgstr "Bogen"
 
 #: src/game.cpp:206
 msgid "Show Crafting"
-msgstr ""
+msgstr "Fertigung anzeigen"
 
 #: src/game.cpp:207
 msgid "Clothes"
 msgstr "Kleidung"
 
 #: src/game.cpp:208
-#, fuzzy
 msgid "Hat/Helmet"
-msgstr "Lederhelm"
+msgstr "Hut/Helm"
 
 #: src/game.cpp:210
-#, fuzzy
 msgid "Jacket"
-msgstr "Lederjacke"
+msgstr "Jacke"
 
 #: src/game.cpp:212
 msgid "Decorative"
-msgstr ""
+msgstr "Deko"
 
 #: src/game.cpp:214
-#, fuzzy
 msgid "Shirt"
-msgstr "rotes T-Shirt"
+msgstr "Hemd"
 
 #: src/game.cpp:216
 msgid "Belt"
-msgstr ""
+msgstr "Gürtel"
 
 #: src/game.cpp:218
-#, fuzzy
 msgid "Pants"
-msgstr "rote Hose"
+msgstr "Hose"
 
 #: src/game.cpp:220
-#, fuzzy
 msgid "Boots"
-msgstr "Pelzstiefel"
+msgstr "Stiefel"
 
 #: src/game.cpp:226
 msgid "Drop to Ground"
 msgstr "Wegwerfen"
 
 #: src/game.cpp:228
-#, fuzzy
 msgid "Change Clothing"
-msgstr "orange Baumwolle"
+msgstr "Umziehen"
 
 #: src/game.cpp:735
 msgid "Loading"
@@ -3013,8 +2994,8 @@ msgstr "Adresse konnte nicht aufgelöst werden"
 #, c-format
 msgid "Connecting to server... (timeout in %d second)"
 msgid_plural "Connecting to server... (timeout in %d seconds)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Zum Server verbinden … (Zeitüberschreitung in %d Sekunde)"
+msgstr[1] "Zum Server verbinden … (Zeitüberschreitung in %d Sekunden)"
 
 #: src/game.cpp:914
 #, c-format
@@ -3134,9 +3115,7 @@ msgstr "Wiederbeleben"
 
 #: src/guiFormSpecMenu.cpp:470
 msgid "Left click: Move all items, Right click: Move single item"
-msgstr ""
-"Linksklick: Alle Gegenstände verschieben, Rechtsklick: 1 Gegenstand "
-"verschieben"
+msgstr "Linksklick: Alle Gegenstände verschieben, Rechtsklick: 1 Gegenstand verschieben"
 
 #: src/guiFormSpecMenu.cpp:493
 msgid "Write It"
@@ -3430,33 +3409,17 @@ msgid "Warning! This will delete all construction from your map!"
 msgstr "Warnung! Dies wird alle Bauten aus Ihrer Karte entfernen!"
 
 #: src/guiMainMenu.cpp:877
-#, fuzzy
 msgid ""
 "Voxelands\n"
 "http://www.voxelands.com/\n"
 "\n"
 "By Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
-"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, "
-"tiemay, Szkodnix, soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound\n"
+"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, tiemay, Szkodnix, soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound\n"
 "\n"
 "Based on Minetest-C55\n"
 "by Perttu Ahola <celeron55@gmail.com>\n"
-"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
-"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
-"Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
-msgstr ""
-"Voxelands\n"
-"http://www.voxelands.com/\n"
-"\n"
-"Von Lisa \"darkrose\" Milne <lisa@ltmnet.com>\n"
-"und Mitwirkenden: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, "
-"tiemay, Szkodnix, soognarf, Tapoky, Wuzzy.\n"
-"\n"
-"Basierend auf on Minetest-C55\n"
-"von Perttu Ahola <celeron55@gmail.com>\n"
-"und Mitwirkenden: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
-"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
-"Neuschafer, thexyz, VanessaE, sfan5 ... und zig weiteren zufälligen Leuten."
+"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
+msgstr "Voxelands\nhttp://www.voxelands.com/\n\nVon Lisa »darkrose« Milne <lisa@ltmnet.com>\nund Mitwirkenden: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, tiemay, Szkodnix, soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound.\n\nBasierend auf Minetest-C55\nvon Perttu Ahola <celeron55@gmail.com>\nund Mitwirkenden: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5 ... und zig weiteren zufälligen Leuten."
 
 #: src/guiMessageMenu.cpp:112 src/guiPauseMenu.cpp:138
 msgid "Continue"

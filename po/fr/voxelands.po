@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-14 01:45+1000\n"
+"POT-Creation-Date: 2014-12-19 05:39+1000\n"
 "PO-Revision-Date: 2011-07-21 15:48+0200\n"
 "Last-Translator: Cyriaque 'Cisoun' Skrapits <cysoun@gmail.com>\n"
 "Language-Team: Français <>\n"
@@ -3814,6 +3814,15 @@ msgstr ""
 msgid "Loading Special MapNodes"
 msgstr ""
 
+#~ msgid "Leave address blank to start a local server."
+#~ msgstr "Laisser l'adresse vide pour lancer un serveur local."
+
+#~ msgid "Delete map"
+#~ msgstr "Supprimer carte"
+
+#~ msgid "Proceed"
+#~ msgstr "OK"
+
 #, fuzzy
 #~ msgid ""
 #~ "Default Controls:\n"
@@ -3838,12 +3847,3 @@ msgstr ""
 #~ "- R: Active la vue de tous les blocs\n"
 #~ "- I: Inventaire\n"
 #~ "- T: Chat\n"
-
-#~ msgid "Proceed"
-#~ msgstr "OK"
-
-#~ msgid "Delete map"
-#~ msgstr "Supprimer carte"
-
-#~ msgid "Leave address blank to start a local server."
-#~ msgstr "Laisser l'adresse vide pour lancer un serveur local."

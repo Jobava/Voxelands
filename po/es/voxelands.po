@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Lisa 'darkrose' Milne
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Pablo Roberto Francisco Lezaeta Reyes <prflr88@gmail.com>, 2014
 msgid ""
@@ -9,14 +9,13 @@ msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-14 01:45+1000\n"
-"PO-Revision-Date: 2014-11-14 10:54+0000\n"
+"PO-Revision-Date: 2014-12-13 15:47+0000\n"
 "Last-Translator: Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
-"Language-Team: Spanish (http://www.transifex.com/projects/p/voxelands/"
-"language/es/)\n"
-"Language: es\n"
+"Language-Team: Spanish (http://www.transifex.com/projects/p/voxelands/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/character_creator.cpp:58
@@ -229,10 +228,7 @@ msgstr "Zapatos de lona"
 
 #: src/character_creator.cpp:205
 msgid ""
-"Here you can create your default character, this is how other players will "
-"see you in-game. When you join a new server you will start with the clothing "
-"you select here. Additional clothing, both protective and decorative, can be "
-"crafted in-game.\n"
+"Here you can create your default character, this is how other players will see you in-game. When you join a new server you will start with the clothing you select here. Additional clothing, both protective and decorative, can be crafted in-game.\n"
 "You can return here from the main menu anytime to change your character."
 msgstr ""
 
@@ -1869,7 +1865,7 @@ msgstr ""
 
 #: src/content_mapnode_circuit.cpp:115
 msgid "Solar Panel"
-msgstr ""
+msgstr "Panel solar"
 
 #: src/content_mapnode_circuit.cpp:146
 msgid "Water Wheel"
@@ -1877,11 +1873,11 @@ msgstr ""
 
 #: src/content_mapnode_circuit.cpp:179
 msgid "Switch"
-msgstr ""
+msgstr "Interruptor"
 
 #: src/content_mapnode_circuit.cpp:214
 msgid "Button"
-msgstr ""
+msgstr "Botón"
 
 #: src/content_mapnode_circuit.cpp:245
 msgid "Stone Pressure Plate"
@@ -1901,7 +1897,7 @@ msgstr ""
 
 #: src/content_mapnode_circuit.cpp:365 src/content_mapnode_circuit.cpp:389
 msgid "Electric Lamp"
-msgstr ""
+msgstr "Lámpara eléctrica"
 
 #: src/content_mapnode_circuit.cpp:423 src/content_mapnode_circuit.cpp:458
 #: src/content_mapnode_circuit.cpp:510 src/content_mapnode_circuit.cpp:531
@@ -2007,7 +2003,7 @@ msgstr ""
 
 #: src/content_mapnode_farm.cpp:48
 msgid "Fertilizer"
-msgstr ""
+msgstr "Fertilizante"
 
 #: src/content_mapnode_farm.cpp:69 src/content_mapnode_farm.cpp:916
 #: src/content_mapnode_farm.cpp:937 src/content_mapnode_farm.cpp:958
@@ -2050,12 +2046,12 @@ msgstr ""
 #: src/content_mapnode_farm.cpp:328 src/content_mapnode_farm.cpp:349
 #: src/content_mapnode_farm.cpp:370 src/content_mapnode_farm.cpp:390
 msgid "Melon"
-msgstr ""
+msgstr "Melón"
 
 #: src/content_mapnode_farm.cpp:404 src/content_mapnode_farm.cpp:424
 #: src/content_mapnode_farm.cpp:444 src/content_mapnode_farm.cpp:464
 msgid "Pumpkin"
-msgstr ""
+msgstr "Calabaza"
 
 #: src/content_mapnode_farm.cpp:479
 msgid "Jack' O Lantern"
@@ -2064,17 +2060,17 @@ msgstr ""
 #: src/content_mapnode_farm.cpp:753 src/content_mapnode_farm.cpp:774
 #: src/content_mapnode_farm.cpp:795 src/content_mapnode_farm.cpp:816
 msgid "Grape"
-msgstr ""
+msgstr "Uva"
 
 #: src/content_mapnode_furniture.cpp:36
 msgid "Book Shelf"
-msgstr ""
+msgstr "Librero"
 
 #: src/content_mapnode_furniture.cpp:81 src/content_mapnode_furniture.cpp:100
 #: src/content_mapnode_furniture.cpp:119 src/content_mapnode_furniture.cpp:138
 #: src/content_mapnode_furniture.cpp:157 src/content_mapnode_furniture.cpp:176
 msgid "Couch"
-msgstr ""
+msgstr "Sofá"
 
 #: src/content_mapnode_furniture.cpp:205 src/content_mapnode_furniture.cpp:224
 #: src/content_mapnode_furniture.cpp:243 src/content_mapnode_furniture.cpp:262
@@ -2121,16 +2117,16 @@ msgstr ""
 
 #: src/content_mapnode_furniture.cpp:1031
 msgid "Chair"
-msgstr ""
+msgstr "Silla"
 
 #: src/content_mapnode_furniture.cpp:1080
 msgid "Table"
-msgstr ""
+msgstr "Mesa"
 
 #: src/content_mapnode_furniture.cpp:1137
 #: src/content_mapnode_furniture.cpp:1167
 msgid "Bed"
-msgstr ""
+msgstr "Cama"
 
 #: src/content_mapnode_furniture.cpp:1194
 #: src/content_mapnode_furniture.cpp:1224
@@ -2189,11 +2185,11 @@ msgstr ""
 
 #: src/content_mapnode_furniture.cpp:1772
 msgid "Clock"
-msgstr ""
+msgstr "Reloj"
 
 #: src/content_mapnode_plants.cpp:42
 msgid "Tree"
-msgstr ""
+msgstr "Árbol"
 
 #: src/content_mapnode_plants.cpp:60
 msgid "Apple Tree"
@@ -2229,7 +2225,7 @@ msgstr ""
 
 #: src/content_mapnode_plants.cpp:214
 msgid "Leaves"
-msgstr ""
+msgstr "Hojas"
 
 #: src/content_mapnode_plants.cpp:247
 msgid "Apple Tree Leaves"
@@ -2277,11 +2273,11 @@ msgstr ""
 
 #: src/content_mapnode_plants.cpp:587
 msgid "Cactus"
-msgstr ""
+msgstr "Cactus"
 
 #: src/content_mapnode_plants.cpp:649
 msgid "Papyrus"
-msgstr ""
+msgstr "Papiro"
 
 #: src/content_mapnode_plants.cpp:670
 msgid "Sapling"
@@ -2313,7 +2309,7 @@ msgstr ""
 
 #: src/content_mapnode_plants.cpp:870
 msgid "Rose"
-msgstr ""
+msgstr "Rosa"
 
 #: src/content_mapnode_plants.cpp:894
 msgid "Daffodil"
@@ -2321,7 +2317,7 @@ msgstr ""
 
 #: src/content_mapnode_plants.cpp:918
 msgid "Tulip"
-msgstr ""
+msgstr "Tulipán"
 
 #: src/content_mapnode_slab.cpp:37
 msgid "Rough Stone Slab"
@@ -2466,11 +2462,11 @@ msgstr ""
 
 #: src/content_mapnode_special.cpp:629
 msgid "Book"
-msgstr ""
+msgstr "Libro"
 
 #: src/content_mapnode_special.cpp:660
 msgid "Cook Book"
-msgstr ""
+msgstr "Libro de cocina"
 
 #: src/content_mapnode_special.cpp:692
 msgid "Decraft Book"
@@ -2479,7 +2475,7 @@ msgstr ""
 #: src/content_mapnode_special.cpp:723 src/content_mapnode_special.cpp:874
 #: src/content_nodemeta.cpp:1959
 msgid "Diary"
-msgstr ""
+msgstr "Diario"
 
 #: src/content_mapnode_special.cpp:754
 msgid "Craft Book"
@@ -2487,7 +2483,7 @@ msgstr ""
 
 #: src/content_mapnode_special.cpp:793
 msgid "Guide"
-msgstr ""
+msgstr "Guía"
 
 #: src/content_mapnode_special.cpp:820 src/content_nodemeta.h:369
 msgid "Cooking Guide"
@@ -2503,16 +2499,16 @@ msgstr ""
 
 #: src/content_mapnode_special.cpp:928 src/content_mapnode_special.cpp:948
 msgid "Fire"
-msgstr ""
+msgstr "Fuego"
 
 #: src/content_mapnode_special.cpp:968 src/content_mapnode_special.cpp:991
 msgid "Torch"
-msgstr ""
+msgstr "Antorcha"
 
 #: src/content_mapnode_special.cpp:1019 src/content_mapnode_special.cpp:1044
 #: src/content_mapnode_special.cpp:1076
 msgid "Sign"
-msgstr ""
+msgstr "Signo"
 
 #: src/content_mapnode_special.cpp:1103 src/content_mapnode_special.cpp:1131
 #: src/content_mapnode_special.cpp:1161
@@ -2521,7 +2517,7 @@ msgstr ""
 
 #: src/content_mapnode_special.cpp:1188 src/content_nodemeta.cpp:218
 msgid "Chest"
-msgstr ""
+msgstr "Cofre"
 
 #: src/content_mapnode_special.cpp:1210 src/content_nodemeta.cpp:448
 msgid "Creative Chest"
@@ -2545,15 +2541,15 @@ msgstr ""
 
 #: src/content_mapnode_special.cpp:1357 src/content_mapnode_special.cpp:1377
 msgid "Incinerator"
-msgstr ""
+msgstr "Incinerador"
 
 #: src/content_mapnode_special.cpp:1393
 msgid "Nyan Cat"
-msgstr ""
+msgstr "Nyan Cat"
 
 #: src/content_mapnode_special.cpp:1407
 msgid "Rainbow"
-msgstr ""
+msgstr "Arcoiris"
 
 #: src/content_mapnode_special.cpp:1419
 msgid "Unbaked Flower Pot"
@@ -2585,19 +2581,19 @@ msgstr ""
 
 #: src/content_mapnode_special.cpp:1657
 msgid "TNT"
-msgstr ""
+msgstr "Dinamita TNT"
 
 #: src/content_mapnode_special.cpp:1677
 msgid "In-Progress explosion - how did you get this???"
-msgstr ""
+msgstr "Explosión en progreso ¿Cómo demonios posees ESTO?"
 
 #: src/content_mapnode_special.cpp:1697
 msgid "Steam"
-msgstr ""
+msgstr "Humo"
 
 #: src/content_mapnode_special.cpp:1718
 msgid "Home Flag"
-msgstr ""
+msgstr "Bandera de casa"
 
 #: src/content_mapnode_special.cpp:1768
 msgid "Blue Home Flag"
@@ -2666,7 +2662,7 @@ msgstr ""
 #: src/content_nodemeta.cpp:174
 #, c-format
 msgid "%s's Home Flag"
-msgstr ""
+msgstr "Bandera de la casa de %s"
 
 #: src/content_nodemeta.cpp:291
 #, c-format
@@ -2682,17 +2678,17 @@ msgstr ""
 #: src/content_nodemeta.cpp:1618 src/content_nodemeta.cpp:1829
 #, c-format
 msgid "Page %d of %d"
-msgstr ""
+msgstr "Página %d de %d"
 
 #: src/content_nodemeta.cpp:488 src/content_nodemeta.cpp:1444
 #: src/content_nodemeta.cpp:1627 src/content_nodemeta.cpp:1845
 msgid "<< Previous Page"
-msgstr ""
+msgstr "<< Página anterior"
 
 #: src/content_nodemeta.cpp:494 src/content_nodemeta.cpp:1450
 #: src/content_nodemeta.cpp:1633 src/content_nodemeta.cpp:1851
 msgid "Next Page >>"
-msgstr ""
+msgstr "Página siguiente >>"
 
 #: src/content_nodemeta.cpp:537
 #, c-format
@@ -2785,16 +2781,16 @@ msgstr ""
 
 #: src/content_nodemeta.cpp:1933 src/content_nodemeta.cpp:2032
 msgid "Title"
-msgstr ""
+msgstr "Título"
 
 #: src/content_nodemeta.cpp:1938 src/content_nodemeta.cpp:2037
 msgid "Content"
-msgstr ""
+msgstr "Contenido"
 
 #: src/content_nodemeta.cpp:1943 src/content_nodemeta.cpp:2042
 #: src/guiKeyChangeMenu.cpp:307
 msgid "Save"
-msgstr ""
+msgstr "Guardar"
 
 #: src/content_toolitem.cpp:123
 msgid "Wooden Pick"
@@ -2906,7 +2902,7 @@ msgstr ""
 
 #: src/content_toolitem.cpp:465
 msgid "Key"
-msgstr ""
+msgstr "Llave"
 
 #: src/content_toolitem.cpp:475
 msgid "Stone Spear"
@@ -2930,7 +2926,7 @@ msgstr ""
 
 #: src/game.cpp:207
 msgid "Clothes"
-msgstr ""
+msgstr "Ropa"
 
 #: src/game.cpp:208
 msgid "Hat/Helmet"
@@ -2945,18 +2941,16 @@ msgid "Decorative"
 msgstr ""
 
 #: src/game.cpp:214
-#, fuzzy
 msgid "Shirt"
-msgstr "Camiseta roja"
+msgstr ""
 
 #: src/game.cpp:216
 msgid "Belt"
 msgstr ""
 
 #: src/game.cpp:218
-#, fuzzy
 msgid "Pants"
-msgstr "Pantalones verdes"
+msgstr ""
 
 #: src/game.cpp:220
 msgid "Boots"
@@ -2972,23 +2966,23 @@ msgstr ""
 
 #: src/game.cpp:735
 msgid "Loading"
-msgstr ""
+msgstr "Cargando"
 
 #: src/game.cpp:809
 msgid "Loading..."
-msgstr ""
+msgstr "Cargando..."
 
 #: src/game.cpp:818
 msgid "Creating server..."
-msgstr ""
+msgstr "Creando servidor..."
 
 #: src/game.cpp:829
 msgid "Creating client..."
-msgstr ""
+msgstr "Creando cliente..."
 
 #: src/game.cpp:834
 msgid "Resolving address..."
-msgstr ""
+msgstr "Resolviendo dirección..."
 
 #: src/game.cpp:845
 msgid "Couldn't resolve address"
@@ -3107,15 +3101,15 @@ msgstr ""
 
 #: src/game.cpp:2371
 msgid "Shutting down..."
-msgstr ""
+msgstr "Apagando..."
 
 #: src/guiDeathScreen.cpp:97
 msgid "You died."
-msgstr ""
+msgstr "Muerto."
 
 #: src/guiDeathScreen.cpp:102
 msgid "Respawn"
-msgstr ""
+msgstr "Reapareciendo"
 
 #: src/guiFormSpecMenu.cpp:470
 msgid "Left click: Move all items, Right click: Move single item"
@@ -3413,34 +3407,17 @@ msgid "Warning! This will delete all construction from your map!"
 msgstr ""
 
 #: src/guiMainMenu.cpp:877
-#, fuzzy
 msgid ""
 "Voxelands\n"
 "http://www.voxelands.com/\n"
 "\n"
 "By Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
-"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, "
-"tiemay, Szkodnix, soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound\n"
+"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, tiemay, Szkodnix, soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound\n"
 "\n"
 "Based on Minetest-C55\n"
 "by Perttu Ahola <celeron55@gmail.com>\n"
-"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
-"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
-"Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
+"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
 msgstr ""
-"Voxelands\n"
-"http://www.voxelands.com/\n"
-"\n"
-"Por Lisa «darkrose» Milne <lisa@ltmnet.com>\n"
-"con la contribución de: sdzen, MichaelEh?, Pentium44, Jordach, Menche, "
-"MavJS, tiemay, Szkodnix, soognarf, Tapoky, Wuzzy.\n"
-"\n"
-"Basado en Minetest-C55\n"
-"Por Perttu Ahola <celeron55@gmail.com>\n"
-"Con la contribución de: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), "
-"darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, "
-"Jonathan Neuschafer, thexyz, VanessaE, sfan5... y una decena de otras "
-"personas."
 
 #: src/guiMessageMenu.cpp:112 src/guiPauseMenu.cpp:138
 msgid "Continue"

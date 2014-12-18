@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Lisa 'darkrose' Milne
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Roman M. Yagodin <roman.yagodin@gmail.com>, 2014
 msgid ""
@@ -9,16 +9,14 @@ msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-14 01:45+1000\n"
-"PO-Revision-Date: 2014-11-14 10:54+0000\n"
-"Last-Translator: Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
-"Language-Team: Russian (http://www.transifex.com/projects/p/voxelands/"
-"language/ru/)\n"
-"Language: ru\n"
+"PO-Revision-Date: 2014-12-18 16:47+0000\n"
+"Last-Translator: Roman M. Yagodin <roman.yagodin@gmail.com>\n"
+"Language-Team: Russian (http://www.transifex.com/projects/p/voxelands/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language: ru\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: src/character_creator.cpp:58
 msgid "White Skin"
@@ -114,7 +112,7 @@ msgstr "Длинные волосы"
 
 #: src/character_creator.cpp:84
 msgid "Styled Hair"
-msgstr ""
+msgstr "Стильная прическа"
 
 #: src/character_creator.cpp:86
 msgid "White Eyes"
@@ -230,18 +228,9 @@ msgstr "Холщовая обувь"
 
 #: src/character_creator.cpp:205
 msgid ""
-"Here you can create your default character, this is how other players will "
-"see you in-game. When you join a new server you will start with the clothing "
-"you select here. Additional clothing, both protective and decorative, can be "
-"crafted in-game.\n"
+"Here you can create your default character, this is how other players will see you in-game. When you join a new server you will start with the clothing you select here. Additional clothing, both protective and decorative, can be crafted in-game.\n"
 "You can return here from the main menu anytime to change your character."
-msgstr ""
-"Здесь можно задать исходный внешний вид своего персонажа. Так он будет "
-"выглядеть для других игроков в начале игры - например, при подключении к "
-"новому серверу. Другие предметы одежды, как защитные, так и декоративные, "
-"могут быть созданы в процессе игры.\n"
-"Вы можете вернуться сюда в любое время из главного меню, чтобы изменить "
-"внешний вид вашего персонажа."
+msgstr "Здесь можно задать исходный внешний вид своего персонажа. Так он будет выглядеть для других игроков в начале игры - например, при подключении к новому серверу. Другие предметы одежды, как защитные, так и декоративные, могут быть созданы в процессе игры.\nВы можете вернуться сюда в любое время из главного меню, чтобы изменить внешний вид вашего персонажа."
 
 #: src/character_creator.cpp:226
 msgid "Create Your Character"
@@ -582,39 +571,39 @@ msgstr "Черный холщовый пояс"
 
 #: src/content_clothesitem.cpp:1171
 msgid "Leather Jacket"
-msgstr ""
+msgstr "Кожаная куртка"
 
 #: src/content_clothesitem.cpp:1186
 msgid "White Leather Jacket"
-msgstr ""
+msgstr "Белая кожаная куртка"
 
 #: src/content_clothesitem.cpp:1201
 msgid "Blue Leather Jacket"
-msgstr ""
+msgstr "Синяя кожаная куртка"
 
 #: src/content_clothesitem.cpp:1216
 msgid "Green Leather Jacket"
-msgstr ""
+msgstr "Зеленая кожаная куртка"
 
 #: src/content_clothesitem.cpp:1231
 msgid "Orange Leather Jacket"
-msgstr ""
+msgstr "Оранжевая кожаная куртка"
 
 #: src/content_clothesitem.cpp:1246
 msgid "Purple Leather Jacket"
-msgstr ""
+msgstr "Фиолетовая кожаная куртка"
 
 #: src/content_clothesitem.cpp:1261
 msgid "Red Leather Jacket"
-msgstr ""
+msgstr "Красная кожаная куртка"
 
 #: src/content_clothesitem.cpp:1276
 msgid "Yellow Leather Jacket"
-msgstr ""
+msgstr "Желтая кожаная куртка"
 
 #: src/content_clothesitem.cpp:1291
 msgid "Black Leather Jacket"
-msgstr ""
+msgstr "Черная кожаная куртка"
 
 #: src/content_clothesitem.cpp:1307
 msgid "Leather Pants"
@@ -830,39 +819,39 @@ msgstr "Черный кожаный пояс"
 
 #: src/content_clothesitem.cpp:2114
 msgid "Fur Coat"
-msgstr ""
+msgstr "Меховое пальто"
 
 #: src/content_clothesitem.cpp:2129
 msgid "White Fur Coat"
-msgstr ""
+msgstr "Белое меховое пальто"
 
 #: src/content_clothesitem.cpp:2144
 msgid "Blue Fur Coat"
-msgstr ""
+msgstr "Синее меховое пальто"
 
 #: src/content_clothesitem.cpp:2159
 msgid "Green Fur Coat"
-msgstr ""
+msgstr "Зеленое меховое пальто"
 
 #: src/content_clothesitem.cpp:2174
 msgid "Orange Fur Coat"
-msgstr ""
+msgstr "Оранжевое меховое пальто"
 
 #: src/content_clothesitem.cpp:2189
 msgid "Purple Fur Coat"
-msgstr ""
+msgstr "Фиолетовое меховое пальто"
 
 #: src/content_clothesitem.cpp:2204
 msgid "Red Fur Coat"
-msgstr ""
+msgstr "Красное меховое пальто"
 
 #: src/content_clothesitem.cpp:2219
 msgid "Yellow Fur Coat"
-msgstr ""
+msgstr "Желтое меховое пальто"
 
 #: src/content_clothesitem.cpp:2234
 msgid "Black Fur Coat"
-msgstr ""
+msgstr "Черное меховое пальто"
 
 #: src/content_clothesitem.cpp:2250
 msgid "Fur Pants"
@@ -1478,7 +1467,7 @@ msgstr "Черная кожа"
 
 #: src/content_craftitem.cpp:1105
 msgid "Arrow"
-msgstr ""
+msgstr "Стрела"
 
 #: src/content_mapnode.cpp:200
 msgid "Stone"
@@ -1710,7 +1699,7 @@ msgstr "Тыквенный пирог"
 
 #: src/content_mapnode.cpp:1557 src/content_mapnode_farm.cpp:1004
 msgid "Dead Vine"
-msgstr "Мертвая лоза"
+msgstr "Сухая лиана"
 
 #: src/content_mapnode.cpp:1576 src/content_mapnode.cpp:1655
 msgid "Snow"
@@ -2232,7 +2221,7 @@ msgstr "Молодое хвойное дерево"
 
 #: src/content_mapnode_plants.cpp:192
 msgid "Jungle Grass"
-msgstr "Трава джунглей"
+msgstr "Папоротник"
 
 #: src/content_mapnode_plants.cpp:214
 msgid "Leaves"
@@ -2396,17 +2385,15 @@ msgstr "Плита черного стекла"
 
 #: src/content_mapnode_special.cpp:37
 msgid "Fence"
-msgstr "Забор"
+msgstr "Ограда"
 
 #: src/content_mapnode_special.cpp:67
-#, fuzzy
 msgid "Steel Fence"
-msgstr "Стальной топор"
+msgstr "Стальная ограда"
 
 #: src/content_mapnode_special.cpp:95
-#, fuzzy
 msgid "Steel Bars"
-msgstr "Стальные ножницы"
+msgstr "Стальные прутья"
 
 #: src/content_mapnode_special.cpp:117
 msgid "Rail"
@@ -2542,7 +2529,7 @@ msgstr "Сундук с запором"
 
 #: src/content_mapnode_special.cpp:1259
 msgid "Safe"
-msgstr ""
+msgstr "Сейф"
 
 #: src/content_mapnode_special.cpp:1281 src/content_mapnode_special.cpp:1301
 msgid "Furnace"
@@ -2683,9 +2670,9 @@ msgid "Locking Chest owned by '%s'"
 msgstr "Сундук с запором принадлежит '%s'"
 
 #: src/content_nodemeta.cpp:365
-#, fuzzy, c-format
+#, c-format
 msgid "Safe owned by '%s'"
-msgstr "Граничный камень принадлежит '%s'"
+msgstr "Сейф принадлежит '%s'"
 
 #: src/content_nodemeta.cpp:484 src/content_nodemeta.cpp:1416
 #: src/content_nodemeta.cpp:1618 src/content_nodemeta.cpp:1829
@@ -2748,9 +2735,9 @@ msgstr "Снаряженная взрывчатка: сейчас рванет"
 #, c-format
 msgid "Armed Explosive: %d second till detonation"
 msgid_plural "Armed Explosive: %d seconds till detonation"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Снаряженная взрывчатка: %d секунда до детонации"
+msgstr[1] "Снаряженная взрывчатка: %d секунды до детонации"
+msgstr[2] "Снаряженная взрывчатка: %d секунд до детонации"
 
 #: src/content_nodemeta.cpp:1174
 msgid "Incinerator is active"
@@ -2932,56 +2919,51 @@ msgstr "Стальное копье"
 
 #: src/content_toolitem.cpp:514
 msgid "Bow"
-msgstr ""
+msgstr "Лук"
 
 #: src/game.cpp:206
 msgid "Show Crafting"
-msgstr ""
+msgstr "Окно сборки"
 
 #: src/game.cpp:207
 msgid "Clothes"
 msgstr "Одежда"
 
 #: src/game.cpp:208
-#, fuzzy
 msgid "Hat/Helmet"
-msgstr "Кожаный шлем"
+msgstr "Шляпа/шлем"
 
 #: src/game.cpp:210
 msgid "Jacket"
-msgstr ""
+msgstr "Куртка"
 
 #: src/game.cpp:212
 msgid "Decorative"
-msgstr ""
+msgstr "Украшения"
 
 #: src/game.cpp:214
-#, fuzzy
 msgid "Shirt"
-msgstr "Красная футболка"
+msgstr "Рубашка"
 
 #: src/game.cpp:216
 msgid "Belt"
-msgstr ""
+msgstr "Пояс"
 
 #: src/game.cpp:218
-#, fuzzy
 msgid "Pants"
-msgstr "Красные штаны"
+msgstr "Штаны"
 
 #: src/game.cpp:220
-#, fuzzy
 msgid "Boots"
-msgstr "Меховые ботинки"
+msgstr "Ботинки"
 
 #: src/game.cpp:226
 msgid "Drop to Ground"
 msgstr "На землю"
 
 #: src/game.cpp:228
-#, fuzzy
 msgid "Change Clothing"
-msgstr "Оранжевый хлопок"
+msgstr "Сменить одежду"
 
 #: src/game.cpp:735
 msgid "Loading"
@@ -3011,9 +2993,9 @@ msgstr "Невозможно определить  адрес"
 #, c-format
 msgid "Connecting to server... (timeout in %d second)"
 msgid_plural "Connecting to server... (timeout in %d seconds)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Соединяемся с сервером... (таймаут %d секунда)"
+msgstr[1] "Соединяемся с сервером... (таймаут %d секунды)"
+msgstr[2] "Соединяемся с сервером... (таймаут %d секунд)"
 
 #: src/game.cpp:914
 #, c-format
@@ -3034,19 +3016,19 @@ msgstr "Доступ запрещен. Причина:"
 
 #: src/game.cpp:1336
 msgid "free_move disabled"
-msgstr "Свободное перемещение отключено"
+msgstr "Режим полета отключен"
 
 #: src/game.cpp:1340
 msgid "free_move enabled"
-msgstr "Свободное перемещение включено"
+msgstr "Режим полета включен"
 
 #: src/game.cpp:1347
 msgid "fast_move disabled"
-msgstr "Быстрое перемещение отключено"
+msgstr "Режим ускорения выключен"
 
 #: src/game.cpp:1351
 msgid "fast_move enabled"
-msgstr "Быстрое перемещение включено"
+msgstr "Режим ускорения включен"
 
 #: src/game.cpp:1364
 #, c-format
@@ -3133,8 +3115,7 @@ msgstr "Возродиться"
 
 #: src/guiFormSpecMenu.cpp:470
 msgid "Left click: Move all items, Right click: Move single item"
-msgstr ""
-"Левый клик: перемещать все предметы, правый клик: перемещать один предмет "
+msgstr "Левый клик: переместить все, Правый клик: переместить один"
 
 #: src/guiFormSpecMenu.cpp:493
 msgid "Write It"
@@ -3142,7 +3123,7 @@ msgstr "Пишите"
 
 #: src/guiKeyChangeMenu.cpp:90
 msgid "Controls"
-msgstr ""
+msgstr "Управление"
 
 #: src/guiKeyChangeMenu.cpp:99
 msgid "Forward"
@@ -3186,11 +3167,11 @@ msgstr "Команда"
 
 #: src/guiKeyChangeMenu.cpp:249
 msgid "Toggle fly"
-msgstr "Режим свободного перемещения"
+msgstr "Режим полета"
 
 #: src/guiKeyChangeMenu.cpp:263
 msgid "Toggle fast"
-msgstr "Режим быстрого перемещения"
+msgstr "Режим ускорения"
 
 #: src/guiKeyChangeMenu.cpp:277
 msgid "Range select"
@@ -3428,34 +3409,17 @@ msgid "Warning! This will delete all construction from your map!"
 msgstr "Предупреждаем! Все сооружения на карте буду уничтожены!"
 
 #: src/guiMainMenu.cpp:877
-#, fuzzy
 msgid ""
 "Voxelands\n"
 "http://www.voxelands.com/\n"
 "\n"
 "By Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
-"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, "
-"tiemay, Szkodnix, soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound\n"
+"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, tiemay, Szkodnix, soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound\n"
 "\n"
 "Based on Minetest-C55\n"
 "by Perttu Ahola <celeron55@gmail.com>\n"
-"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
-"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
-"Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
-msgstr ""
-"Voxelands\n"
-"http://www.voxelands.com/\n"
-"\n"
-"Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
-"и сотоварищи: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, tiemay, "
-"Szkodnix, soognarf, Tapoky, Wuzzy\n"
-"\n"
-"Основано на Minetest-C55,\n"
-"созданном Perttu Ahola <celeron55@gmail.com>\n"
-"и сотоварищи: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
-"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
-"Neuschafer, thexyz, VanessaE, sfan5... и еще десятком-другим случайных "
-"прохожих."
+"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
+msgstr "Voxelands\nhttp://www.voxelands.com/\n\nСоздано Lisa 'darkrose' Milne <lisa@ltmnet.com>\nи сотоварищи: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, tiemay, Szkodnix, soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound\n\nОсновано на Minetest-C55,\nсозданном Perttu Ahola <celeron55@gmail.com>\nи сотоварищи: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... и еще десятком-другим случайных прохожих."
 
 #: src/guiMessageMenu.cpp:112 src/guiPauseMenu.cpp:138
 msgid "Continue"
@@ -3471,7 +3435,7 @@ msgstr "Новый пароль"
 
 #: src/guiPasswordChange.cpp:141
 msgid "Confirm Password"
-msgstr "Подтверждение пароля"
+msgstr "Подтверждение"
 
 #: src/guiPasswordChange.cpp:159
 msgid "Change"
