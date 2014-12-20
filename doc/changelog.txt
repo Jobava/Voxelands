@@ -3,6 +3,33 @@ Voxelands changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1412.00: (release 2014-12-21)
+ - some changes that might make irrlicht 1.7.3 work again
+ - wrap gettext around some player formspecs
+ - Add CMT_GLASS, and update glass nodes (JHeaton)
+ - and add glass sounds
+ - add support for objects damaging other objects
+ - fix segfault when picking up items, check for NULL pointer deref
+ - fix CAO yaw not being set when initialised
+ - add a safe, and make some nodes safe from destructive mobs
+ - don't reset creative inventory, unless player has no creative chest
+ - add support for tools that throw objects, add bow and arrow
+ - add support for throwing objects, add snowball mob
+ - get timeout message working with gettext again
+ - cotton block should be decraftable to string
+ - add steel fences and bars
+ - more piston tweaks
+ - update GPL headers to new style
+ - fix delete key in editbox (sol_invictus)
+ - default to freetype enabled
+ - fix text alignment in pause menu
+ - arbitrary nodebox rotation - wield item support
+ - add support for arbitrary rotation of nodeboxes
+ - fix 7 on french keyboard (sol_invictus - freeminer)
+ - fix utf-8 and numpad in editboxes
+ - add some names to credits
+ - slight path change in cguittfont to support non-standard build path
+
 1411.03: (release 2014-11-16)
  - fix some internationalization bugs
  - fix font path finding
