@@ -191,6 +191,8 @@ struct ContentFeatures g_content_features[MAX_CONTENT+1];
 
 ContentFeatures & content_features(content_t i)
 {
+	if (i > MAX_CONTENT)
+		i = CONTENT_IGNORE;
 	return g_content_features[i];
 }
 ContentFeatures & content_features(MapNode &n)
