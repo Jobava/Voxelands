@@ -3,6 +3,9 @@ Voxelands changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1412.01: (release 2014-12-22)
+ - fix array index overflow in content_features()
+
 1412.00: (release 2014-12-21)
  - some changes that might make irrlicht 1.7.3 work again
  - wrap gettext around some player formspecs
