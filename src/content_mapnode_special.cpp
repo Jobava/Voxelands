@@ -115,7 +115,7 @@ void content_mapnode_special(bool repeat)
 			CONTENT_CRAFTITEM_STEEL_INGOT,	CONTENT_IGNORE,	CONTENT_CRAFTITEM_STEEL_INGOT,
 			CONTENT_CRAFTITEM_STEEL_INGOT,	CONTENT_IGNORE,	CONTENT_CRAFTITEM_STEEL_INGOT
 		};
-		crafting::setRecipe(r,CONTENT_SAFE,6);
+		crafting::setRecipe(r,CONTENT_STEEL_BARS,6);
 	}
 	lists::add("craftguide",i);
 	lists::add("creative",i);
