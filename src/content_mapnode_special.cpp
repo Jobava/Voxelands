@@ -109,6 +109,14 @@ void content_mapnode_special(bool repeat)
 	content_nodebox_bars(f);
 	f->setInventoryTextureNodeBox(i,"steel_block.png","steel_block.png","steel_block.png");
 	crafting::setHatRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_STEEL_BARS);
+	{
+		u16 r[9] = {
+			CONTENT_CRAFTITEM_STEEL_INGOT,	CONTENT_IGNORE,	CONTENT_CRAFTITEM_STEEL_INGOT,
+			CONTENT_CRAFTITEM_STEEL_INGOT,	CONTENT_IGNORE,	CONTENT_CRAFTITEM_STEEL_INGOT,
+			CONTENT_CRAFTITEM_STEEL_INGOT,	CONTENT_IGNORE,	CONTENT_CRAFTITEM_STEEL_INGOT
+		};
+		crafting::setRecipe(r,CONTENT_SAFE,6);
+	}
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
