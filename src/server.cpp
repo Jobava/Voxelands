@@ -3067,6 +3067,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						|| meta->typeId() == CONTENT_FLAG_RED
 						|| meta->typeId() == CONTENT_FLAG_YELLOW
 						|| meta->typeId() == CONTENT_FLAG_BLACK
+						|| meta->typeId() == CONTENT_SAFE
 					)
 					&& meta->getOwner() != player->getName()
 				) {
@@ -4509,6 +4510,11 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 								std::string name = lfm->getInventoryOwner();
 								if (name != "" && name != player->getName() && lfm->getOwner() != player->getName())
 									return;
+							}else if (meta->typeId() == CONTENT_SAFE) {
+								SafeNodeMetadata *sm = (SafeNodeMetadata*)meta;
+								std::string name = sm->getInventoryOwner();
+								if (name != "" && name != player->getName() && sm->getOwner() != player->getName())
+									return;
 							}
 						}
 					}
@@ -4537,6 +4543,11 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 								}else if (name != "" && name != player->getName()) {
 									return;
 								}
+							}else if (meta->typeId() == CONTENT_SAFE) {
+								SafeNodeMetadata *sm = (SafeNodeMetadata*)meta;
+								std::string name = sm->getInventoryOwner();
+								if (name != "" && name != player->getName() && sm->getOwner() != player->getName())
+									return;
 							}
 						}
 					}
