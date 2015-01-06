@@ -689,6 +689,8 @@ bool FurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 		*/
 		if (m_fuel_time < m_fuel_totaltime) {
 			if (n.getContent() == CONTENT_FURNACE) {
+				n.param2 = n.param1;
+				n.param1 = 0;
 				n.setContent(CONTENT_FURNACE_ACTIVE);
 				env->setPostStepNodeSwap(pos,n);
 			}
@@ -708,10 +710,12 @@ bool FurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 			if (m_fuel_time < m_fuel_totaltime) {
 				continue;
 			}else if (n.getContent() == CONTENT_FURNACE_ACTIVE) {
+				n.param1 = n.param2;
 				n.setContent(CONTENT_FURNACE);
 				env->setPostStepNodeSwap(pos,n);
 			}
 		}else if (n.getContent() == CONTENT_FURNACE_ACTIVE) {
+			n.param1 = n.param2;
 			n.setContent(CONTENT_FURNACE);
 			env->setPostStepNodeSwap(pos,n);
 		}
@@ -759,6 +763,7 @@ bool FurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 			m_step_accumulator = 0;
 			MapNode n = env->getMap().getNodeNoEx(pos).getContent();
 			if (n.getContent() == CONTENT_FURNACE_ACTIVE) {
+				n.param1 = n.param2;
 				n.setContent(CONTENT_FURNACE);
 				env->setPostStepNodeSwap(pos,n);
 			}
@@ -955,6 +960,7 @@ bool LockingFurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment 
 		*/
 		if (m_fuel_time < m_fuel_totaltime) {
 			if (n.getContent() == CONTENT_LOCKABLE_FURNACE) {
+				n.param2 = n.param1;
 				n.setContent(CONTENT_LOCKABLE_FURNACE_ACTIVE);
 				env->setPostStepNodeSwap(pos,n);
 				changed = true;
@@ -975,11 +981,13 @@ bool LockingFurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment 
 			if (m_fuel_time < m_fuel_totaltime) {
 				continue;
 			}else if (n.getContent() == CONTENT_LOCKABLE_FURNACE_ACTIVE) {
+				n.param1 = n.param2;
 				n.setContent(CONTENT_LOCKABLE_FURNACE);
 				env->setPostStepNodeSwap(pos,n);
 				changed = true;
 			}
 		}else if (n.getContent() == CONTENT_LOCKABLE_FURNACE_ACTIVE) {
+			n.param1 = n.param2;
 			n.setContent(CONTENT_LOCKABLE_FURNACE);
 			env->setPostStepNodeSwap(pos,n);
 			changed = true;
@@ -1024,6 +1032,7 @@ bool LockingFurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment 
 		}else{
 			m_step_accumulator = 0;
 			if (n.getContent() == CONTENT_LOCKABLE_FURNACE_ACTIVE) {
+				n.param1 = n.param2;
 				n.setContent(CONTENT_LOCKABLE_FURNACE);
 				env->setPostStepNodeSwap(pos,n);
 				changed = true;
@@ -1198,11 +1207,13 @@ bool IncineratorNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *en
 
 	if (list && list->getUsedSlots() > 0 && (fitem = list->getItem(0)) != NULL && fitem->isFuel()) {
 		if (n.getContent() == CONTENT_INCINERATOR) {
+			n.param1 = n.param2;
 			n.setContent(CONTENT_INCINERATOR_ACTIVE);
 			env->setPostStepNodeSwap(pos,n);
 			return true;
 		}
 	}else if (n.getContent() == CONTENT_INCINERATOR_ACTIVE) {
+		n.param2 = n.param1;
 		n.setContent(CONTENT_INCINERATOR);
 		env->setPostStepNodeSwap(pos,n);
 		return true;
