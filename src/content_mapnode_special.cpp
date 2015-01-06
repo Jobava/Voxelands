@@ -1307,9 +1307,10 @@ void content_mapnode_special(bool repeat)
 	i = CONTENT_FURNACE_ACTIVE;
 	f = &content_features(i);
 	f->description = wgettext("Furnace");
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_CUBELIKE;
-	f->light_source = LIGHT_MAX/2;
+	f->light_source = 9;
 	f->setAllTextures("furnace_side.png");
 	f->setTexture(0, "furnace_top.png");
 	f->setTexture(1, "furnace_top.png");
@@ -1346,9 +1347,10 @@ void content_mapnode_special(bool repeat)
 	i = CONTENT_LOCKABLE_FURNACE_ACTIVE;
 	f = &content_features(i);
 	f->description = wgettext("Locking Furnace");
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_CUBELIKE;
-	f->light_source = LIGHT_MAX/2;
+	f->light_source = 9;
 	f->setAllTextures("furnace_side.png");
 	f->setTexture(0, "furnace_top.png");
 	f->setTexture(1, "furnace_top.png");
@@ -1383,8 +1385,10 @@ void content_mapnode_special(bool repeat)
 	i = CONTENT_INCINERATOR_ACTIVE;
 	f = &content_features(i);
 	f->description = wgettext("Incinerator");
-	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
 	f->draw_type = CDT_CUBELIKE;
+	f->light_source = 9;
 	f->setAllTextures("incinerator_side.png");
 	f->setTexture(0, "incinerator_top.png"); // Z-
 	f->setTexture(1, "incinerator_top.png"); // Z-
