@@ -716,11 +716,11 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 		// If in water, the threshold of coming out is at higher y
 		if (in_water) {
 			v3s16 pp = floatToInt(position + v3f(0,BS*0.1,0), BS);
-			in_water = content_liquid(map.getNode(pp).getContent());
+			in_water = content_features(map.getNode(pp).getContent()).liquid_type != LIQUID_NONE;
 		// If not in water, the threshold of going in is at lower y
 		}else{
 			v3s16 pp = floatToInt(position + v3f(0,BS*0.5,0), BS);
-			in_water = content_liquid(map.getNode(pp).getContent());
+			in_water = content_features(map.getNode(pp).getContent()).liquid_type != LIQUID_NONE;
 		}
 	}catch(InvalidPositionException &e) {
 		in_water = false;
@@ -731,7 +731,7 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 	*/
 	try{
 		v3s16 pp = floatToInt(position + v3f(0,0,0), BS);
-		in_water_stable = content_liquid(map.getNode(pp).getContent());
+		in_water_stable = content_features(map.getNode(pp).getContent()).liquid_type != LIQUID_NONE;
 	}catch(InvalidPositionException &e) {
 		in_water_stable = false;
 	}
