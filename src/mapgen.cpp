@@ -204,10 +204,8 @@ void make_conifertree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
 	}
 
 	// p1 is now the last piece of the trunk
-	for (s16 ii=1; ii<=3; ii++) {
-		if (vmanip.m_area.contains(p1+v3s16(0,ii,0)))
-			vmanip.m_data[vmanip.m_area.index(p1+v3s16(0,ii,0))] = leavesnode;
-	}
+	if (vmanip.m_area.contains(p1+v3s16(0,1,0)))
+		vmanip.m_data[vmanip.m_area.index(p1+v3s16(0,1,0))] = leavesnode;
 	for(s16 z=-1; z<=1; z++)
 	for(s16 y=-2; y<=0; y++)
 	for(s16 x=-1; x<=1; x++)
