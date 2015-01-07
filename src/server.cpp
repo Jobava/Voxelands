@@ -3001,11 +3001,9 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				// Get material at position
 				material = n.getContent();
 				// If not yet cancelled
-				if(cannot_remove_node == false)
-				{
+				if (cannot_remove_node == false) {
 					// If it's not diggable, do nothing
-					if(content_diggable(material) == false)
-					{
+					if (content_features(material).diggable == false) {
 						infostream<<"Server: Not finishing digging: "
 								<<"Node not diggable"
 								<<std::endl;
@@ -3013,12 +3011,10 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					}
 				}
 				// If not yet cancelled
-				if(cannot_remove_node == false)
-				{
+				if (cannot_remove_node == false) {
 					// Get node metadata
 					NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
-					if(meta && meta->nodeRemovalDisabled() == true)
-					{
+					if (meta && meta->nodeRemovalDisabled() == true) {
 						infostream<<"Server: Not finishing digging: "
 								<<"Node metadata disables removal"
 								<<std::endl;
