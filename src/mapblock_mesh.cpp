@@ -367,8 +367,6 @@ u8 getSmoothLight(v3s16 p, VoxelManipulator &vmanip, u32 daynight_ratio)
 		MapNode n = vmanip.getNodeNoEx(p - dirs8[i]);
 		if (
 			content_features(n).param_type == CPT_LIGHT
-			// Fast-style leaves look better this way
-			&& content_features(n).solidness != 2
 		) {
 			light += decode_light(n.getLightBlend(daynight_ratio));
 			light_count++;
@@ -379,9 +377,8 @@ u8 getSmoothLight(v3s16 p, VoxelManipulator &vmanip, u32 daynight_ratio)
 			// not quite right, but it gets rid of glowing nodes
 			light += decode_light(n.getLightBlend(daynight_ratio));
 			light_count++;
-		}else{
-			if(n.getContent() != CONTENT_IGNORE)
-				ambient_occlusion++;
+		}else if (n.getContent() != CONTENT_IGNORE) {
+			ambient_occlusion++;
 		}
 	}
 

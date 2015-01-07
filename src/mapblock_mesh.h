@@ -131,6 +131,8 @@ private:
 video::SColor MapBlock_LightColor(u8 alpha, u8 light, bool selected=false);
 TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods);
 TileSpec getMetaTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods);
+u8 getSmoothLight(v3s16 p, VoxelManipulator &vmanip, u32 daynight_ratio);
+u8 getSmoothLight(v3s16 p, v3s16 corner, VoxelManipulator &vmanip, u32 daynight_ratio);
 
 class MapBlock;
 class Environment;

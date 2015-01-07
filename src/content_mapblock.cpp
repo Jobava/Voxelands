@@ -297,47 +297,18 @@ static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool
 		return;
 	}
 	static const v3s16 corners[8] = {
-		v3s16(0,1,1),
+		v3s16(-1,1,1),
 		v3s16(1,1,1),
-		v3s16(1,1,0),
-		v3s16(0,1,0),
-		v3s16(0,0,0),
-		v3s16(1,0,0),
-		v3s16(1,0,1),
-		v3s16(0,0,1)
+		v3s16(1,1,-1),
+		v3s16(-1,1,-1),
+		v3s16(-1,-1,-1),
+		v3s16(1,-1,-1),
+		v3s16(1,-1,1),
+		v3s16(-1,-1,1)
 	};
 	u8 l;
-	u32 lt;
-	u32 ltp;
-	u8 ld;
-	MapNode tn;
 	for (int i=0; i<8; i++) {
-		l = 0;
-		lt = 0;
-		ld = 1;
-		for (s16 tx=-1; tx<1; tx++) {
-		for (s16 ty=-1; ty<1; ty++) {
-		for (s16 tz=-1; tz<1; tz++) {
-			tn = data->m_vmanip.getNodeRO(pos + v3s16(tx,ty,tz) + corners[i]);
-			if (
-				ty<1
-				&& (
-					tn.getContent() != CONTENT_AIR
-					&& content_features(tn).light_source == 0
-					&& content_features(tn).param_type != CPT_LIGHT
-				)
-			)
-				continue;
-			ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
-			if (!ltp)
-				continue;
-			lt += ltp;
-			ld++;
-		}
-		}
-		}
-		if (ld)
-			l = lt/ld;
+		l = getSmoothLight(pos,corners[i],data->m_vmanip,data->m_daynight_ratio);
 		lights[i] = MapBlock_LightColor(vertex_alpha, l, selected);
 	}
 }
