@@ -217,7 +217,7 @@ void content_mapnode_plants(bool repeat)
 	f->param_type = CPT_LIGHT;
 	//f->is_ground_content = true;
 	if (new_style_leaves) {
-		f->draw_type = CDT_GLASSLIKE;
+		f->draw_type = CDT_ROOFLIKE;
 		f->solidness = 0; // drawn separately, makes no faces
 		f->visual_solidness = 1;
 		f->setAllTextures("leaves.png");
@@ -250,7 +250,7 @@ void content_mapnode_plants(bool repeat)
 	f->param_type = CPT_LIGHT;
 	//f->is_ground_content = true;
 	if (new_style_leaves) {
-		f->draw_type = CDT_GLASSLIKE;
+		f->draw_type = CDT_ROOFLIKE;
 		f->solidness = 0; // drawn separately, makes no faces
 		f->visual_solidness = 1;
 		f->setAllTextures("apple_leaves.png");
@@ -283,7 +283,7 @@ void content_mapnode_plants(bool repeat)
 	f->param_type = CPT_LIGHT;
 	//f->is_ground_content = true;
 	if (new_style_leaves) {
-		f->draw_type = CDT_GLASSLIKE;
+		f->draw_type = CDT_ROOFLIKE;
 		f->solidness = 0; // drawn separately, makes no faces
 		f->visual_solidness = 1;
 		f->setAllTextures("jungleleaves.png");
@@ -316,7 +316,7 @@ void content_mapnode_plants(bool repeat)
 	f->param_type = CPT_LIGHT;
 	//f->is_ground_content = true;
 	if (new_style_leaves) {
-		f->draw_type = CDT_GLASSLIKE;
+		f->draw_type = CDT_ROOFLIKE;
 		f->solidness = 0; // drawn separately, makes no faces
 		f->visual_solidness = 1;
 		f->setAllTextures("conifer_leaves.png");
