@@ -243,11 +243,39 @@ void content_mob_init()
 	f = &g_content_mob_features[i];
 	f->content = i;
 	f->level = MOB_AGGRESSIVE;
-	f->model = "oerkki.x";
-	f->model_scale = v3f(4,4,4);
-	f->setTexture("mob_oerkki.png");
-	f->setAnimationFrames(MA_STAND,24,36);
-	f->setAnimationFrames(MA_ATTACK,37,49);
+	if (g_settings->getBool("enable_supernatural")) {
+		f->model = "oerkki.x";
+		f->model_scale = v3f(4,4,4);
+		f->setTexture("mob_oerkki.png");
+		f->setAnimationFrames(MA_STAND,24,36);
+		f->setAnimationFrames(MA_ATTACK,37,49);
+	}else{
+		f->setNodeBox(NodeBox(
+			-0.3125*BS,-0.4375*BS,-0.4375*BS,0.3125*BS,-0.25*BS,0.4375*BS
+		));
+		f->addNodeBox(NodeBox(
+			0.3125*BS,-0.5*BS,0.1875*BS,0.5*BS,-0.1875*BS,0.5*BS
+		));
+		f->addNodeBox(NodeBox(
+			0.3125*BS,-0.5*BS,-0.5*BS,0.5*BS,-0.1875*BS,-0.1875*BS
+		));
+		f->addNodeBox(NodeBox(
+			-0.5*BS,-0.5*BS,0.1875*BS,-0.3125*BS,-0.1875*BS,0.5*BS
+		));
+		f->addNodeBox(NodeBox(
+			-0.5*BS,-0.5*BS,-0.5*BS,-0.3125*BS,-0.1875*BS,-0.1875*BS
+		));
+		f->addNodeBox(NodeBox(
+			-0.125*BS,-0.25*BS,-0.125*BS,0.125*BS,1.*BS,0.125*BS
+		));
+		f->addNodeBox(NodeBox(
+			-0.375*BS,0.6875*BS,-0.5*BS,-0.125*BS,0.9375*BS,0.5*BS
+		));
+		f->addNodeBox(NodeBox(
+			0.125*BS,0.6875*BS,-0.5*BS,0.375*BS,0.9375*BS,0.5*BS
+		));
+		f->setAllBoxTextures("copper_block.png");
+	}
 	f->punch_action = MPA_HARM;
 	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_OERKKI_DUST)+" 2";
 	f->motion = MM_SEEKER;
@@ -266,13 +294,41 @@ void content_mob_init()
 	f = &g_content_mob_features[i];
 	f->content = i;
 	f->level = MOB_DESTRUCTIVE;
-	f->model = "dungeon_master.b3d";
-	f->model_rotation = v3f(0,-90,0);
-	f->model_offset = v3f(0,1.0,0);
-	f->setTexture("mob_dungeon_master.png");
-	f->setAnimationFrames(MA_STAND,1,30);
-	f->setAnimationFrames(MA_MOVE,31,60);
-	f->setAnimationFrames(MA_ATTACK,61,90);
+	if (g_settings->getBool("enable_supernatural")) {
+		f->model = "dungeon_master.b3d";
+		f->model_rotation = v3f(0,-90,0);
+		f->model_offset = v3f(0,1.0,0);
+		f->setTexture("mob_dungeon_master.png");
+		f->setAnimationFrames(MA_STAND,1,30);
+		f->setAnimationFrames(MA_MOVE,31,60);
+		f->setAnimationFrames(MA_ATTACK,61,90);
+	}else{
+		f->setNodeBox(NodeBox(
+			-0.3125*BS,-0.4375*BS,-0.4375*BS,0.3125*BS,-0.25*BS,0.4375*BS
+		));
+		f->addNodeBox(NodeBox(
+			0.3125*BS,-0.5*BS,0.1875*BS,0.5*BS,-0.1875*BS,0.5*BS
+		));
+		f->addNodeBox(NodeBox(
+			0.3125*BS,-0.5*BS,-0.5*BS,0.5*BS,-0.1875*BS,-0.1875*BS
+		));
+		f->addNodeBox(NodeBox(
+			-0.5*BS,-0.5*BS,0.1875*BS,-0.3125*BS,-0.1875*BS,0.5*BS
+		));
+		f->addNodeBox(NodeBox(
+			-0.5*BS,-0.5*BS,-0.5*BS,-0.3125*BS,-0.1875*BS,-0.1875*BS
+		));
+		f->addNodeBox(NodeBox(
+			-0.125*BS,-0.25*BS,-0.125*BS,0.125*BS,1.*BS,0.125*BS
+		));
+		f->addNodeBox(NodeBox(
+			-0.375*BS,0.6875*BS,-0.5*BS,-0.125*BS,0.9375*BS,0.5*BS
+		));
+		f->addNodeBox(NodeBox(
+			0.125*BS,0.6875*BS,-0.5*BS,0.375*BS,0.9375*BS,0.5*BS
+		));
+		f->setAllBoxTextures("steel_block.png");
+	}
 	f->punch_action = MPA_HARM;
 	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_GUNPOWDER)+" 4";
 	f->motion = MM_SENTRY;

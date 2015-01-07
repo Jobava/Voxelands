@@ -24,6 +24,7 @@
 #include "content_list.h"
 #include "content_craft.h"
 #include "content_nodemeta.h"
+#include "settings.h"
 #include "gettext.h"
 
 void content_mapnode_farm(bool repeat)
@@ -476,22 +477,39 @@ void content_mapnode_farm(bool repeat)
 
 	i = CONTENT_FARM_PUMPKIN_JACK;
 	f = &content_features(i);
-	f->description = wgettext("Jack' O Lantern");
+	if (g_settings->getBool("enable_supernatural")) {
+		f->description = wgettext("Jack' O Lantern");
+		f->setAllTextures("farm_pumpkin.png");
+		f->setTexture(0,"farm_pumpkin_top.png");
+		f->setTexture(1,"farm_pumpkin_top.png");
+		f->setTexture(5, "farm_pumpkin_jack.png"); // Z-
+		f->setInventoryTextureCube("farm_pumpkin_top.png","farm_pumpkin_jack.png","farm_pumpkin.png");
+		f->draw_type = CDT_NODEBOX;
+		f->solidness = 0; // drawn separately, makes no faces
+		content_nodebox_jackolantern(f);
+		f->setInventoryTextureNodeBox(i,"farm_pumpkin_top.png","farm_pumpkin_jack.png","farm_pumpkin.png");
+	}else{
+		f->description = wgettext("Glass Light");
+		f->light_propagates = true;
+		f->sunlight_propagates = true;
+		f->param_type = CPT_LIGHT;
+		f->draw_type = CDT_GLASSLIKE;
+		f->is_ground_content = true;
+		f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+		f->solidness = 0; // drawn separately, makes no faces
+		f->visual_solidness = 1;
+		f->setAllTextures("glasslight.png");
+#ifndef SERVER
+		f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
+#endif
+		f->setInventoryTextureCube("glasslight.png", "glasslight.png", "glasslight.png");
+	}
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->setAllTextures("farm_pumpkin.png");
-	f->setTexture(0,"farm_pumpkin_top.png");
-	f->setTexture(1,"farm_pumpkin_top.png");
-	f->setTexture(5, "farm_pumpkin_jack.png"); // Z-
-	f->setInventoryTextureCube("farm_pumpkin_top.png","farm_pumpkin_jack.png","farm_pumpkin.png");
-	f->draw_type = CDT_NODEBOX;
 	f->flammable = 1;
-	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->light_source = LIGHT_MAX-1;
-	content_nodebox_jackolantern(f);
-	f->setInventoryTextureNodeBox(i,"farm_pumpkin_top.png","farm_pumpkin_jack.png","farm_pumpkin.png");
 	crafting::set1Any2Recipe(CONTENT_TORCH,CONTENT_FARM_PUMPKIN,CONTENT_FARM_PUMPKIN_JACK);
 	lists::add("creative", i);
 	f->pressure_type = CST_CRUSHABLE;

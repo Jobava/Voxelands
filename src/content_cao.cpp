@@ -296,6 +296,24 @@ void MobCAO::addToScene(scene::ISceneManager *smgr)
 #endif
 		updateNodePos();
 	}else if (m.nodeboxes.size() > 0) {
+		std::vector<NodeBox> boxes = m.getNodeBoxes();
+		scene::IAnimatedMesh *mesh = createNodeBoxMesh(boxes,m.model_scale*BS);
+		for (u16 i=0; i < boxes.size(); i++) {
+			for (int t=0; t<6; t++) {
+				video::ITexture* atlas = m.tiles[t].texture.atlas;
+				v2f pos = m.tiles[t].texture.pos;
+				v2f size = m.tiles[t].texture.size;
+				video::SMaterial& material = mesh->getMeshBuffer((i*6)+t)->getMaterial();
+				material.setFlag(video::EMF_LIGHTING, false);
+				material.setFlag(video::EMF_BILINEAR_FILTER, false);
+				m.tiles[i].applyMaterialOptions(material);
+				material.setTexture(0, atlas);
+				material.getTextureMatrix(0).setTextureTranslate(pos.X, pos.Y);
+				material.getTextureMatrix(0).setTextureScale(size.X, size.Y);
+			}
+		}
+		m_node = smgr->addMeshSceneNode(mesh, NULL);
+		m_draw_type = MDT_BLOCK;
 	}else if (m.texture != "") {
 		bool use_trilinear_filter = g_settings->getBool("trilinear_filter");
 		bool use_bilinear_filter = g_settings->getBool("bilinear_filter");
@@ -344,6 +362,8 @@ void MobCAO::updateLight(u8 light_at_pos)
 	if (m_node != NULL) {
 		if (m_draw_type == MDT_MODEL) {
 			setMeshVerticesColor(((scene::IAnimatedMeshSceneNode*)m_node)->getMesh(), color);
+		}else if (m_draw_type == MDT_BLOCK) {
+			setMeshVerticesColor(((scene::IMeshSceneNode*)m_node)->getMesh(), color);
 		}else if (m_draw_type == MDT_SPRITE) {
 			((scene::IBillboardSceneNode*)m_node)->setColor(color);
 		}else if (m_draw_type == MDT_EXTRUDED) {
@@ -367,7 +387,7 @@ void MobCAO::updateNodePos()
 	m_node->setPosition(offset-intToFloat(m_camera_offset, BS));
 
 	v3f rot = m_node->getRotation();
-	if (m_draw_type == MDT_MODEL) {
+	if (m_draw_type == MDT_MODEL || m_draw_type == MDT_BLOCK) {
 		rot.Y = (90-pos_translator.yaw_show)+content_mob_features(m_content).model_rotation.Y;
 	}else if (m_draw_type == MDT_SPRITE) {
 		rot.Y = pos_translator.yaw_show+content_mob_features(m_content).model_rotation.Y;
@@ -432,6 +452,8 @@ void MobCAO::step(float dtime, ClientEnvironment *env)
 			video::SColor color(255,li,li,li);
 			if (m_draw_type == MDT_MODEL) {
 				setMeshVerticesColor(((scene::IAnimatedMeshSceneNode*)m_node)->getMesh(), color);
+			}else if (m_draw_type == MDT_BLOCK) {
+				setMeshVerticesColor(((scene::IMeshSceneNode*)m_node)->getMesh(), color);
 			}else if (m_draw_type == MDT_SPRITE) {
 				((scene::IBillboardSceneNode*)m_node)->setColor(color);
 			}
@@ -478,6 +500,8 @@ void MobCAO::processMessage(const std::string &data)
 			if (m_node != NULL) {
 				if (m_draw_type == MDT_MODEL) {
 					setMeshVerticesColor(((scene::IAnimatedMeshSceneNode*)m_node)->getMesh(), color);
+				}else if (m_draw_type == MDT_BLOCK) {
+					setMeshVerticesColor(((scene::IMeshSceneNode*)m_node)->getMesh(), color);
 				}else if (m_draw_type == MDT_SPRITE) {
 					((scene::IBillboardSceneNode*)m_node)->setColor(color);
 				}
@@ -535,6 +559,8 @@ bool MobCAO::directReportPunch(content_t punch_item, v3f dir)
 	if (m_node != NULL) {
 		if (m_draw_type == MDT_MODEL) {
 			setMeshVerticesColor(((scene::IAnimatedMeshSceneNode*)m_node)->getMesh(), color);
+		}else if (m_draw_type == MDT_BLOCK) {
+			setMeshVerticesColor(((scene::IMeshSceneNode*)m_node)->getMesh(), color);
 		}else if (m_draw_type == MDT_SPRITE) {
 			((scene::IBillboardSceneNode*)m_node)->setColor(color);
 		}

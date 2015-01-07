@@ -102,7 +102,7 @@ struct MobFeatures {
 	v3f model_scale;
 	v3f model_offset;
 	v3f model_rotation;
-	std::vector<aabb3f> nodeboxes;
+	std::vector<NodeBox> nodeboxes;
 	aabb3f collisionbox;
 
 	MobPunchAction punch_action;
@@ -156,18 +156,19 @@ struct MobFeatures {
 	/*
 		Gets list of node boxes
 	*/
-        std::vector<aabb3f> getNodeBoxes()
+        std::vector<NodeBox> getNodeBoxes()
         {
 		return nodeboxes;
 	}
 
-	void setNodeBox(aabb3f bb)
+	void setNodeBox(NodeBox bb)
 	{
+		model_offset = v3f(0,0.5,0);
 		nodeboxes.clear();
 		nodeboxes.push_back(bb);
 	}
 
-	void addNodeBox(aabb3f bb)
+	void addNodeBox(NodeBox bb)
 	{
 		nodeboxes.push_back(bb);
 	}
@@ -185,7 +186,7 @@ struct MobFeatures {
 			return collisionbox;
 		if (!nodeboxes.size())
 			return aabb3f(-0.5*BS,0.,-0.5*BS,0.5*BS,BS,0.5*BS);
-		aabb3f b = nodeboxes[0];
+		aabb3f b = nodeboxes[0].m_box;
 		return b;
 	}
 
