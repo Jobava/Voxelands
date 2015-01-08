@@ -44,7 +44,9 @@ void content_mapnode_plants(bool repeat)
 	f->setTexture(0, "tree_top.png");
 	f->setTexture(1, "tree_top.png");
 	f->setInventoryTextureCube("tree_top.png", "tree.png", "tree.png");
-	f->draw_type = CDT_CUBELIKE;
+	f->draw_type = CDT_TRUNKLIKE;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
 	f->is_ground_content = true;
 	f->flammable = 2; // can be set on fire
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -62,7 +64,9 @@ void content_mapnode_plants(bool repeat)
 	f->setTexture(0, "apple_tree_top.png");
 	f->setTexture(1, "apple_tree_top.png");
 	f->setInventoryTextureCube("apple_tree_top.png", "apple_tree.png", "apple_tree.png");
-	f->draw_type = CDT_CUBELIKE;
+	f->draw_type = CDT_TRUNKLIKE;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
 	f->is_ground_content = true;
 	f->flammable = 2; // can be set on fire
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -80,7 +84,9 @@ void content_mapnode_plants(bool repeat)
 	f->setTexture(0, "jungletree_top.png");
 	f->setTexture(1, "jungletree_top.png");
 	f->setInventoryTextureCube("jungletree_top.png", "jungletree.png", "jungletree.png");
-	f->draw_type = CDT_CUBELIKE;
+	f->draw_type = CDT_TRUNKLIKE;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
 	//f->is_ground_content = true;
 	f->flammable = 2; // can be set on fire
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -96,7 +102,9 @@ void content_mapnode_plants(bool repeat)
 	f->setTexture(0, "conifer_tree_top.png");
 	f->setTexture(1, "conifer_tree_top.png");
 	f->setInventoryTextureCube("conifer_tree_top.png", "conifer_tree.png", "conifer_tree.png");
-	f->draw_type = CDT_CUBELIKE;
+	f->draw_type = CDT_TRUNKLIKE;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->visual_solidness = 1;
 	f->is_ground_content = true;
 	f->flammable = 2; // can be set on fire
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";

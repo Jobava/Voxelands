@@ -1083,10 +1083,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 			for(u32 j=0; j<6; j++)
 			{
-				// Check this neighbor
-				v3s16 n2p = blockpos_nodes + p + g_6dirs[j];
-				MapNode n2 = data->m_vmanip.getNodeRO(n2p);
-
 				// The face at Z+
 				video::S3DVertex vertices[4] =
 				{
@@ -3609,6 +3605,363 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				// Add to mesh collector
 				collector.append(tile.getMaterial(), vertices, 4, indices, 6);
 			}
+		}
+		break;
+		case CDT_TRUNKLIKE:
+		{
+			bool x_plus = false;
+			bool x_plus_any = false;
+			bool y_plus = false;
+			bool y_plus_any = false;
+			bool z_plus = false;
+			bool z_plus_any = false;
+			bool x_minus = false;
+			bool x_minus_any = false;
+			bool y_minus = false;
+			bool y_minus_any = false;
+			bool z_minus = false;
+			bool z_minus_any = false;
+			MapNode n2;
+			v3s16 n2p;
+
+			n2p = blockpos_nodes + p + v3s16(1,0,0);
+			n2 = data->m_vmanip.getNodeRO(n2p);
+			if (content_features(n2).draw_type == CDT_TRUNKLIKE) {
+				x_plus = true;
+				x_plus_any = true;
+			}else if (content_features(n2).draw_type == CDT_CUBELIKE) {
+				x_plus_any = true;
+			}
+
+			n2p = blockpos_nodes + p + v3s16(0,1,0);
+			n2 = data->m_vmanip.getNodeRO(n2p);
+			if (content_features(n2).draw_type == CDT_TRUNKLIKE) {
+				y_plus = true;
+				y_plus_any = true;
+			}else if (content_features(n2).draw_type == CDT_CUBELIKE) {
+				y_plus_any = true;
+			}
+
+			n2p = blockpos_nodes + p + v3s16(0,0,1);
+			n2 = data->m_vmanip.getNodeRO(n2p);
+			if (content_features(n2).draw_type == CDT_TRUNKLIKE) {
+				z_plus = true;
+				z_plus_any = true;
+			}else if (content_features(n2).draw_type == CDT_CUBELIKE) {
+				z_plus_any = true;
+			}
+
+			n2p = blockpos_nodes + p + v3s16(-1,0,0);
+			n2 = data->m_vmanip.getNodeRO(n2p);
+			if (content_features(n2).draw_type == CDT_TRUNKLIKE) {
+				x_minus = true;
+				x_minus_any = true;
+			}else if (content_features(n2).draw_type == CDT_CUBELIKE) {
+				x_minus_any = true;
+			}
+
+			n2p = blockpos_nodes + p + v3s16(0,-1,0);
+			n2 = data->m_vmanip.getNodeRO(n2p);
+			if (content_features(n2).draw_type == CDT_TRUNKLIKE) {
+				y_minus = true;
+				y_minus_any = true;
+			}else if (content_features(n2).draw_type == CDT_CUBELIKE) {
+				y_minus_any = true;
+			}
+
+			n2p = blockpos_nodes + p + v3s16(0,0,-1);
+			n2 = data->m_vmanip.getNodeRO(n2p);
+			if (content_features(n2).draw_type == CDT_TRUNKLIKE) {
+				z_minus = true;
+				z_minus_any = true;
+			}else if (content_features(n2).draw_type == CDT_CUBELIKE) {
+				z_minus_any = true;
+			}
+			TileSpec tile = getNodeTile(n,p,v3s16(1,0,0),data->m_temp_mods);
+			video::SColor c(255,255,255,255);
+			TileSpec endtile = getNodeTile(n,p,v3s16(0,1,0),data->m_temp_mods);
+			video::S3DVertex vertices[10] = {
+				video::S3DVertex(0       ,-BS*0.5,BS*0.49 , 0,0,0, c, 0.125, 0.),
+				video::S3DVertex(BS*0.125,-BS*0.5,BS*0.49 , 0,0,0, c, 0.25, 0.),
+				video::S3DVertex(BS*0.375,-BS*0.5,BS*0.375, 0,0,0, c, 0.5, 0.),
+				video::S3DVertex(BS*0.49 ,-BS*0.5,BS*0.125, 0,0,0, c, 0.75, 0.),
+				video::S3DVertex(BS*0.49 ,-BS*0.5,0       , 0,0,0, c, 0.625, 0.),
+
+				video::S3DVertex(0       , BS*0.5,BS*0.49 , 0,0,0, c, 0.125, 1.0),
+				video::S3DVertex(BS*0.125, BS*0.5,BS*0.49 , 0,0,0, c, 0.25, 1.0),
+				video::S3DVertex(BS*0.375, BS*0.5,BS*0.375, 0,0,0, c, 0.5, 1.0),
+				video::S3DVertex(BS*0.49 , BS*0.5,BS*0.125, 0,0,0, c, 0.75, 1.0),
+				video::S3DVertex(BS*0.49 , BS*0.5,0       , 0,0,0, c, 0.625, 1.0)
+			};
+			video::S3DVertex branch_vertices[10] = {
+				video::S3DVertex(0       ,BS*0.125,BS*0.49 , 0,0,0, c, 0.125, 0.625),
+				video::S3DVertex(BS*0.125,BS*0.125,BS*0.49 , 0,0,0, c, 0.25, 0.625),
+				video::S3DVertex(BS*0.375,BS*0.125,BS*0.375, 0,0,0, c, 0.5, 0.625),
+				video::S3DVertex(BS*0.49 ,BS*0.125,BS*0.125, 0,0,0, c, 0.75, 0.625),
+				video::S3DVertex(BS*0.49 ,BS*0.125,0       , 0,0,0, c, 0.625, 0.625),
+
+				video::S3DVertex(0       ,BS*0.5  ,BS*0.49 , 0,0,0, c, 0.125, 1.0),
+				video::S3DVertex(BS*0.125,BS*0.5  ,BS*0.49 , 0,0,0, c, 0.25, 1.0),
+				video::S3DVertex(BS*0.375,BS*0.5  ,BS*0.375, 0,0,0, c, 0.5, 1.0),
+				video::S3DVertex(BS*0.49 ,BS*0.5  ,BS*0.125, 0,0,0, c, 0.75, 1.0),
+				video::S3DVertex(BS*0.49 ,BS*0.5  ,0       , 0,0,0, c, 0.625, 1.0)
+			};
+			u16 indices[24] = {0,1,6,0,6,5,1,2,7,1,7,6,2,3,8,2,8,7,3,4,9,3,9,8};
+			video::S3DVertex end_vertices[6] = {
+				video::S3DVertex(BS*0.5,BS/2,0, 0,0,0, c, 0.5, 0.),
+				video::S3DVertex(BS*0.5,BS/2,BS*0.125, 0,0,0, c, 0.625, 0.),
+				video::S3DVertex(BS*0.375,BS/2,BS*0.375, 0,0,0, c, 0.875, 0.125),
+				video::S3DVertex(BS*0.125,BS/2,BS*0.5, 0,0,0, c, 1.0, 0.375),
+				video::S3DVertex(0,BS/2,BS*0.5, 0,0,0, c, 1.0, 0.5),
+				video::S3DVertex(0,BS/2,0, 0,0,0, c, 0.5, 0.5)
+			};
+			u16 end_indices[12] = {5,1,0,5,2,1,5,3,2,5,4,3};
+			u16 rots[4] = {0,90,180,270};
+
+			if (y_plus || y_minus) { /* vertical trunk */
+				for (u16 j=0; j<4; j++) {
+					video::S3DVertex v[10];
+					for (u16 i=0; i<10; i++) {
+						v[i] = vertices[i];
+						v[i].Pos.rotateXZBy(rots[j]);
+						v[i].Pos += intToFloat(p, BS);
+						v[i].TCoords *= tile.texture.size;
+						v[i].TCoords += tile.texture.pos;
+					}
+					collector.append(tile.getMaterial(), v, 10, indices, 24);
+				}
+				if (!y_plus_any) {
+					for (u16 j=0; j<4; j++) {
+						video::S3DVertex v[6];
+						for (u16 i=0; i<6; i++) {
+							v[i] = end_vertices[i];
+							v[i].Pos.rotateXZBy(rots[j]);
+							v[i].Pos += intToFloat(p, BS);
+							v[i].TCoords *= endtile.texture.size;
+							v[i].TCoords += endtile.texture.pos;
+						}
+						collector.append(endtile.getMaterial(), v, 6, end_indices, 12);
+					}
+				}
+				if (!y_minus_any) {
+					for (u16 j=0; j<4; j++) {
+						video::S3DVertex v[6];
+						for (u16 i=0; i<6; i++) {
+							v[i] = end_vertices[i];
+							v[i].Pos.rotateXYBy(180);
+							v[i].Pos.rotateXZBy(rots[j]);
+							v[i].Pos += intToFloat(p, BS);
+							v[i].TCoords *= endtile.texture.size;
+							v[i].TCoords += endtile.texture.pos;
+						}
+						collector.append(endtile.getMaterial(), v, 6, end_indices, 12);
+					}
+				}
+				if (x_plus) {
+					for (u16 j=0; j<4; j++) {
+						video::S3DVertex v[10];
+						for (u16 i=0; i<10; i++) {
+							v[i] = branch_vertices[i];
+							v[i].Pos += v3f(0,-BS*0.625,0);
+							v[i].Pos.rotateXYBy(90);
+							v[i].Pos.rotateYZBy(rots[j]);
+							v[i].Pos += intToFloat(p, BS);
+							v[i].TCoords *= tile.texture.size;
+							v[i].TCoords += tile.texture.pos;
+						}
+						collector.append(tile.getMaterial(), v, 10, indices, 24);
+					}
+				}
+				if (x_minus) {
+					for (u16 j=0; j<4; j++) {
+						video::S3DVertex v[10];
+						for (u16 i=0; i<10; i++) {
+							v[i] = branch_vertices[i];
+							v[i].Pos.rotateXYBy(90);
+							v[i].Pos.rotateYZBy(rots[j]);
+							v[i].Pos += intToFloat(p, BS);
+							v[i].TCoords *= tile.texture.size;
+							v[i].TCoords += tile.texture.pos;
+						}
+						collector.append(tile.getMaterial(), v, 10, indices, 24);
+					}
+				}
+				if (z_plus) {
+					for (u16 j=0; j<4; j++) {
+						video::S3DVertex v[10];
+						for (u16 i=0; i<10; i++) {
+							v[i] = branch_vertices[i];
+							v[i].Pos.rotateYZBy(90);
+							v[i].Pos.rotateXYBy(rots[j]);
+							v[i].Pos += intToFloat(p, BS);
+							v[i].TCoords *= tile.texture.size;
+							v[i].TCoords += tile.texture.pos;
+						}
+						collector.append(tile.getMaterial(), v, 10, indices, 24);
+					}
+				}
+				if (z_minus) {
+					for (u16 j=0; j<4; j++) {
+						video::S3DVertex v[10];
+						for (u16 i=0; i<10; i++) {
+							v[i] = branch_vertices[i];
+							v[i].Pos += v3f(0,-BS*0.625,0);
+							v[i].Pos.rotateYZBy(90);
+							v[i].Pos.rotateXYBy(rots[j]);
+							v[i].Pos += intToFloat(p, BS);
+							v[i].TCoords *= tile.texture.size;
+							v[i].TCoords += tile.texture.pos;
+						}
+						collector.append(tile.getMaterial(), v, 10, indices, 24);
+					}
+				}
+			}else{ /* horizontal trunk */
+				if ((x_plus && x_minus) || ((x_plus || x_minus) && (!z_plus || !z_minus))) { // centred along X
+					for (u16 j=0; j<4; j++) {
+						video::S3DVertex v[10];
+						for (u16 i=0; i<10; i++) {
+							v[i] = vertices[i];
+							v[i].Pos.rotateXYBy(90);
+							v[i].Pos.rotateYZBy(rots[j]);
+							v[i].Pos += intToFloat(p, BS);
+							v[i].TCoords *= tile.texture.size;
+							v[i].TCoords += tile.texture.pos;
+						}
+						collector.append(tile.getMaterial(), v, 10, indices, 24);
+					}
+					if (!x_plus_any) {
+						for (u16 j=0; j<4; j++) {
+							video::S3DVertex v[6];
+							for (u16 i=0; i<6; i++) {
+								v[i] = end_vertices[i];
+								v[i].Pos.rotateXYBy(-90);
+								v[i].Pos.rotateYZBy(rots[j]);
+								v[i].Pos += intToFloat(p, BS);
+								v[i].TCoords *= endtile.texture.size;
+								v[i].TCoords += endtile.texture.pos;
+							}
+							collector.append(endtile.getMaterial(), v, 6, end_indices, 12);
+						}
+					}
+					if (!x_minus_any) {
+						for (u16 j=0; j<4; j++) {
+							video::S3DVertex v[6];
+							for (u16 i=0; i<6; i++) {
+								v[i] = end_vertices[i];
+								v[i].Pos.rotateXYBy(90);
+								v[i].Pos.rotateYZBy(rots[j]);
+								v[i].Pos += intToFloat(p, BS);
+								v[i].TCoords *= endtile.texture.size;
+								v[i].TCoords += endtile.texture.pos;
+							}
+							collector.append(endtile.getMaterial(), v, 6, end_indices, 12);
+						}
+					}
+					if (z_plus) {
+						for (u16 j=0; j<4; j++) {
+							video::S3DVertex v[10];
+							for (u16 i=0; i<10; i++) {
+								v[i] = branch_vertices[i];
+								v[i].Pos.rotateYZBy(90);
+								v[i].Pos.rotateXYBy(rots[j]);
+								v[i].Pos += intToFloat(p, BS);
+								v[i].TCoords *= tile.texture.size;
+								v[i].TCoords += tile.texture.pos;
+							}
+							collector.append(tile.getMaterial(), v, 10, indices, 24);
+						}
+					}
+					if (z_minus) {
+						for (u16 j=0; j<4; j++) {
+							video::S3DVertex v[10];
+							for (u16 i=0; i<10; i++) {
+								v[i] = branch_vertices[i];
+								v[i].Pos += v3f(0,-BS*0.625,0);
+								v[i].Pos.rotateYZBy(90);
+								v[i].Pos.rotateXYBy(rots[j]);
+								v[i].Pos += intToFloat(p, BS);
+								v[i].TCoords *= tile.texture.size;
+								v[i].TCoords += tile.texture.pos;
+							}
+							collector.append(tile.getMaterial(), v, 10, indices, 24);
+						}
+					}
+				}else{ // centred along Z
+					for (u16 j=0; j<4; j++) {
+						video::S3DVertex v[10];
+						for (u16 i=0; i<10; i++) {
+							v[i] = vertices[i];
+							v[i].Pos.rotateYZBy(90);
+							v[i].Pos.rotateXYBy(rots[j]);
+							v[i].Pos += intToFloat(p, BS);
+							v[i].TCoords *= tile.texture.size;
+							v[i].TCoords += tile.texture.pos;
+						}
+						collector.append(tile.getMaterial(), v, 10, indices, 24);
+					}
+					if (!z_plus_any) {
+						for (u16 j=0; j<4; j++) {
+							video::S3DVertex v[6];
+							for (u16 i=0; i<6; i++) {
+								v[i] = end_vertices[i];
+								v[i].Pos.rotateYZBy(90);
+								v[i].Pos.rotateXYBy(rots[j]);
+								v[i].Pos += intToFloat(p, BS);
+								v[i].TCoords *= endtile.texture.size;
+								v[i].TCoords += endtile.texture.pos;
+							}
+							collector.append(endtile.getMaterial(), v, 6, end_indices, 12);
+						}
+					}
+					if (!z_minus_any) {
+						for (u16 j=0; j<4; j++) {
+							video::S3DVertex v[6];
+							for (u16 i=0; i<6; i++) {
+								v[i] = end_vertices[i];
+								v[i].Pos.rotateYZBy(-90);
+								v[i].Pos.rotateXYBy(rots[j]);
+								v[i].Pos += intToFloat(p, BS);
+								v[i].TCoords *= endtile.texture.size;
+								v[i].TCoords += endtile.texture.pos;
+							}
+							collector.append(endtile.getMaterial(), v, 6, end_indices, 12);
+						}
+					}
+					if (x_plus) {
+						for (u16 j=0; j<4; j++) {
+							video::S3DVertex v[10];
+							for (u16 i=0; i<10; i++) {
+								v[i] = branch_vertices[i];
+								v[i].Pos += v3f(0,-BS*0.625,0);
+								v[i].Pos.rotateXYBy(90);
+								v[i].Pos.rotateYZBy(rots[j]);
+								v[i].Pos += intToFloat(p, BS);
+								v[i].TCoords *= tile.texture.size;
+								v[i].TCoords += tile.texture.pos;
+							}
+							collector.append(tile.getMaterial(), v, 10, indices, 24);
+						}
+					}
+					if (x_minus) {
+						for (u16 j=0; j<4; j++) {
+							video::S3DVertex v[10];
+							for (u16 i=0; i<10; i++) {
+								v[i] = branch_vertices[i];
+								v[i].Pos.rotateXYBy(90);
+								v[i].Pos.rotateYZBy(rots[j]);
+								v[i].Pos += intToFloat(p, BS);
+								v[i].TCoords *= tile.texture.size;
+								v[i].TCoords += tile.texture.pos;
+							}
+							collector.append(tile.getMaterial(), v, 10, indices, 24);
+						}
+					}
+				}
+			}
+		}
+		break;
+		case CDT_DIRTLIKE:
+		{
 		}
 		break;
 		case CDT_NODEBOX:
