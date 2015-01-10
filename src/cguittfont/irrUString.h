@@ -47,6 +47,8 @@
 #define __BIG_ENDIAN 1
 #elif __MACH__
 #include <machine/endian.h>
+#elif __FreeBSD__
+#include <machine/endian.h>
 #else
 #include <endian.h>
 #endif
