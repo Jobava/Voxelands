@@ -3675,12 +3675,19 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 				This has to be done with the mesh_mutex unlocked
 			*/
 			// Pretty random but this should work somewhat nicely
-			if(mesh_expired && (
-					(mesh_update_count < 3
-						&& (d < faraway || mesh_update_count < 2)
+			if (
+				mesh_expired
+				&& (
+					(
+						mesh_update_count < 3
+						&& (
+							d < faraway
+							|| mesh_update_count < 2
+						)
+					) || (
+						m_control.range_all
+						&& mesh_update_count < 20
 					)
-					||
-					(m_control.range_all && mesh_update_count < 20)
 				)
 			)
 			/*if(mesh_expired && mesh_update_count < 6
@@ -3779,18 +3786,13 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 	ScopeProfiler sp(g_profiler, prefix+"drawing blocks", SPT_AVG);
 
 	int timecheck_counter = 0;
-	for(core::map<v3s16, MapBlock*>::Iterator
-			i = drawset.getIterator();
-			i.atEnd() == false; i++)
-	{
+	for (core::map<v3s16, MapBlock*>::Iterator i = drawset.getIterator(); i.atEnd() == false; i++) {
 		{
 			timecheck_counter++;
-			if(timecheck_counter > 50)
-			{
+			if (timecheck_counter > 50) {
 				timecheck_counter = 0;
 				int time2 = time(0);
-				if(time2 > time1 + 4)
-				{
+				if (time2 > time1 + 4) {
 					infostream<<"ClientMap::renderMap(): "
 						"Rendering takes ages, returning."
 						<<std::endl;
@@ -3813,8 +3815,7 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 
 			u32 c = mesh->getMesh()->getMeshBufferCount();
 			bool stuff_actually_drawn = false;
-			for(u32 i=0; i<c; i++)
-			{
+			for (u32 i=0; i<c; i++) {
 				scene::IMeshBuffer *buf = mesh->getMesh()->getMeshBuffer(i);
 				if (buf == NULL)
 					continue;
@@ -3824,13 +3825,11 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 				buf->getMaterial().setFlag(video::EMF_ANISOTROPIC_FILTER, use_anisotropic_filter);
 
 				const video::SMaterial& material = buf->getMaterial();
-				video::IMaterialRenderer* rnd =
-						driver->getMaterialRenderer(material.MaterialType);
+				video::IMaterialRenderer* rnd = driver->getMaterialRenderer(material.MaterialType);
 				bool transparent = (rnd && rnd->isTransparent());
 				// Render transparent on transparent pass and likewise.
-				if(transparent == is_transparent_pass)
-				{
-					if(buf->getVertexCount() == 0)
+				if (transparent == is_transparent_pass) {
+					if (buf->getVertexCount() == 0)
 						errorstream<<"Block ["<<analyze_block(block)
 								<<"] contains an empty meshbuf"<<std::endl;
 					/*
@@ -3845,10 +3844,11 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 					stuff_actually_drawn = true;
 				}
 			}
-			if(stuff_actually_drawn)
+			if (stuff_actually_drawn) {
 				blocks_had_pass_meshbuf++;
-			else
+			}else{
 				blocks_without_stuff++;
+			}
 		}
 	}
 	} // ScopeProfiler

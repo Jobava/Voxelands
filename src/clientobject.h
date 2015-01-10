@@ -52,9 +52,6 @@ public:
 
 	virtual void addToScene(scene::ISceneManager *smgr){}
 	virtual void removeFromScene(){}
-	// 0 <= light_at_pos <= LIGHT_SUN
-	virtual void updateLight(u8 light_at_pos){}
-	virtual v3s16 getLightPosition(){return v3s16(0,0,0);}
 	virtual core::aabbox3d<f32>* getSelectionBox(){return NULL;}
 	virtual core::aabbox3d<f32>* getCollisionBox(){return NULL;}
 	virtual v3f getPosition(){return v3f(0,0,0);}

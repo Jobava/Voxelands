@@ -105,6 +105,7 @@ Profiler *g_profiler = &main_profiler;
 gui::IGUIEnvironment* guienv = NULL;
 gui::IGUIStaticText *guiroot = NULL;
 MainMenuManager g_menumgr;
+scene::ISceneManager* g_smgr;
 
 bool noMenuActive()
 {
@@ -1052,7 +1053,7 @@ int main(int argc, char *argv[])
 	params.Bits          = bits;
 	params.AntiAlias     = fsaa;
 	params.Fullscreen    = fullscreen;
-	params.Stencilbuffer = false;
+	params.Stencilbuffer = true;
 	params.Vsync         = vsync;
 	params.EventReceiver = &receiver;
 	params.HighPrecisionFPU = g_settings->getBool("high_precision_fpu");
@@ -1117,6 +1118,8 @@ int main(int argc, char *argv[])
 	}
 
 	scene::ISceneManager* smgr = device->getSceneManager();
+	g_smgr = smgr;
+	smgr->setAmbientLight(video::SColor(255,20,20,20));
 
 	guienv = device->getGUIEnvironment();
 	gui::IGUISkin* skin = guienv->getSkin();

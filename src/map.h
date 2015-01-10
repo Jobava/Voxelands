@@ -506,6 +506,45 @@ struct MapDrawControl
 class Client;
 
 /*
+	Hardware lighting, these track our light sources
+*/
+class MapLightSource
+{
+public:
+	MapLightSource();
+	~MapLightSource();
+
+	void set(v3s16 pos, u16 brightness, video::SColor colour);
+
+	void activate();
+	void deactivate();
+private:
+	scene::ILightSceneNode* m_light;
+	v3s16 pos;
+	u16 brightness;
+	video::SColor colour;
+};
+
+class MapLightSourceList
+{
+public:
+	MapLightSourceList();
+	~MapLightSourceList();
+
+	void set(v3s16 pos, u16 brightness, video::SColor colour);
+
+	void activate(v3s16 pos);
+	void deactivate(v3s16 pos);
+
+	void activateAll();
+	void deactivateAll();
+
+private:
+	std::vector<MapLightSource> m_active_sources;
+	std::vector<MapLightSource> m_inactive_sources;
+};
+
+/*
 	ClientMap
 
 	This is the only map class that is able to render itself on screen.

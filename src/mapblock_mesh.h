@@ -29,6 +29,7 @@
 #include "common_irrlicht.h"
 #include "mapblock_nodemod.h"
 #include "voxel.h"
+#include <vector>
 
 /*
 	Mesh making stuff
@@ -48,26 +49,24 @@ class MeshCollector
 {
 public:
 	void append(
-			video::SMaterial material,
-			const video::S3DVertex* const vertices,
-			u32 numVertices,
-			const u16* const indices,
-			u32 numIndices
-		)
+		video::SMaterial material,
+		const video::S3DVertex* const vertices,
+		u32 numVertices,
+		const u16* const indices,
+		u32 numIndices
+	)
 	{
 		PreMeshBuffer *p = NULL;
-		for(u32 i=0; i<m_prebuffers.size(); i++)
-		{
+		for (u32 i=0; i<m_prebuffers.size(); i++) {
 			PreMeshBuffer &pp = m_prebuffers[i];
-			if(pp.material != material)
+			if (pp.material != material)
 				continue;
 
 			p = &pp;
 			break;
 		}
 
-		if(p == NULL)
-		{
+		if (p == NULL) {
 			PreMeshBuffer pp;
 			pp.material = material;
 			m_prebuffers.push_back(pp);
@@ -75,18 +74,15 @@ public:
 		}
 
 		u32 vertex_count = p->vertices.size();
-		for(u32 i=0; i<numIndices; i++)
-		{
+		for (u32 i=0; i<numIndices; i++) {
 			u32 j = indices[i] + vertex_count;
-			if(j > 65535)
-			{
+			if (j > 65535) {
 				dstream<<"FIXME: Meshbuffer ran out of indices"<<std::endl;
 				// NOTE: Fix is to just add an another MeshBuffer
 			}
 			p->indices.push_back(j);
 		}
-		for(u32 i=0; i<numVertices; i++)
-		{
+		for (u32 i=0; i<numVertices; i++) {
 			p->vertices.push_back(vertices[i]);
 		}
 	}
@@ -95,8 +91,7 @@ public:
 	{
 		/*dstream<<"Filling mesh with "<<m_prebuffers.size()
 				<<" meshbuffers"<<std::endl;*/
-		for(u32 i=0; i<m_prebuffers.size(); i++)
-		{
+		for (u32 i=0; i<m_prebuffers.size(); i++) {
 			PreMeshBuffer &p = m_prebuffers[i];
 
 			/*dstream<<"p.vertices.size()="<<p.vertices.size()
@@ -137,6 +132,12 @@ u8 getSmoothLight(v3s16 p, v3s16 corner, VoxelManipulator &vmanip, u32 daynight_
 class MapBlock;
 class Environment;
 
+struct MeshLightSource {
+	v3s16 pos;
+	u8 value;
+	video::SColor colour;
+};
+
 struct MeshMakeData
 {
 	u32 m_daynight_ratio;
@@ -144,6 +145,23 @@ struct MeshMakeData
 	VoxelManipulator m_vmanip;
 	v3s16 m_blockpos;
 	Environment *m_env;
+	std::vector<MeshLightSource> m_light_sources;
+
+	void addLight(v3s16 pos, u8 brightness, video::SColor colour)
+	{
+		MeshLightSource l;
+		for (std::vector<MeshLightSource>::iterator i=m_light_sources.begin(); i != m_light_sources.end(); i++) {
+			if ((*i).pos == pos) {
+				(*i).value = brightness;
+				(*i).colour = colour;
+				return;
+			}
+		}
+		l.pos = pos;
+		l.value = brightness;
+		l.colour = colour;
+		m_light_sources.push_back(l);
+	}
 
 	/*
 		Copy central data directly from block, and other data from
@@ -167,6 +185,24 @@ public:
 	}
 
 	void updateCameraOffset(v3s16 camera_offset);
+
+	void addLight(v3s16 pos, u8 brightness, video::SColor colour)
+	{
+		MeshLightSource l;
+		for (std::vector<MeshLightSource>::iterator i=m_light_sources.begin(); i != m_light_sources.end(); i++) {
+			if ((*i).pos == pos) {
+				(*i).value = brightness;
+				(*i).colour = colour;
+				return;
+			}
+		}
+		l.pos = pos;
+		l.value = brightness;
+		l.colour = colour;
+		m_light_sources.push_back(l);
+	}
+
+	std::vector<MeshLightSource> m_light_sources;
 
 private:
 	scene::SMesh *m_mesh;

@@ -30,6 +30,7 @@
 #include <IGUIButton.h>
 #include <IGUIStaticText.h>
 #include <IGUIFont.h>
+#include <ILightSceneNode.h>
 #include "client.h"
 #include "server.h"
 #include "guiPauseMenu.h"
@@ -1067,6 +1068,9 @@ void the_game(
 	// NOTE: So we have to use getTime() and call run()s between them
 	u32 lasttime = device->getTimer()->getTime();
 	v3s16 lastpointed(0,0,0);
+	scene::ILightSceneNode* light = g_smgr->addLightSceneNode( 0, v3f(0,100000,0), video::SColor(255,200,200,200),105000);
+	light->setLightType(video::ELT_POINT);
+	light->setVisible(true);
 
 	while(device->run() && kill == false)
 	{

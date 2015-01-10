@@ -169,7 +169,7 @@ video::SColor MapBlock_LightColor(u8 alpha, u8 light, bool selected)
 		b = MYMAX(0, pow((float)light/lim, power)*lim);
 	}
 
-	return video::SColor(alpha,r,g,b);
+	return video::SColor(255,255,255,255);//alpha,r,g,b);
 }
 
 struct FastFace
@@ -692,7 +692,7 @@ MapBlockMesh::MapBlockMesh(MeshMakeData *data, v3s16 camera_offset):
 		//TimeTaker timer2("updateMesh() mesh building");
 
 		video::SMaterial material;
-		material.setFlag(video::EMF_LIGHTING, false);
+		material.setFlag(video::EMF_LIGHTING, true);
 		material.setFlag(video::EMF_BACK_FACE_CULLING, true);
 		material.setFlag(video::EMF_BILINEAR_FILTER, false);
 		material.setFlag(video::EMF_FOG_ENABLE, true);
@@ -739,6 +739,8 @@ MapBlockMesh::MapBlockMesh(MeshMakeData *data, v3s16 camera_offset):
 	*/
 
 	mapblock_mesh_generate_special(data, collector);
+
+	m_light_sources = data->m_light_sources;
 
 	/*
 		Add stuff from collector to mesh

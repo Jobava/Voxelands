@@ -3861,18 +3861,6 @@ void ClientEnvironment::step(float dtime)
 			player->move(dtime, *m_map, 100*BS);
 		}
 
-		// Update lighting on all players on client
-		u8 light = LIGHT_MAX;
-		{
-			// Get node at head
-			bool pos_ok;
-			v3s16 p = player->getLightPosition();
-			MapNode n = m_map->getNodeNoEx(p,&pos_ok);
-			if (pos_ok)
-				light = n.getLightBlend(getDayNightRatio());
-		}
-		player->updateLight(light);
-
 		/*
 			Add footsteps to grass
 		*/
@@ -3902,16 +3890,6 @@ void ClientEnvironment::step(float dtime)
 		ClientActiveObject* obj = i->second;
 		// Step object
 		obj->step(dtime, this);
-
-		if (m_active_object_light_update_interval.step(dtime, 0.21)) {
-			u8 light = 0;
-			bool pos_ok;
-			v3s16 p = obj->getLightPosition();
-			MapNode n = m_map->getNodeNoEx(p,&pos_ok);
-			if (pos_ok)
-				light = n.getLightBlend(getDayNightRatio());
-			obj->updateLight(light);
-		}
 	}
 }
 
@@ -3987,15 +3965,6 @@ u16 ClientEnvironment::addActiveObject(ClientActiveObject *object)
 			<<"added (id="<<object->getId()<<")"<<std::endl;
 	m_active_objects[object->getId()] = object;
 	object->addToScene(m_smgr);
-	{ // Update lighting immediately
-		u8 light = 0;
-		bool pos_ok;
-		v3s16 p = object->getLightPosition();
-		MapNode n = m_map->getNodeNoEx(p,&pos_ok);
-		if (pos_ok)
-			light = n.getLightBlend(getDayNightRatio());
-		object->updateLight(light);
-	}
 	return object->getId();
 }
 

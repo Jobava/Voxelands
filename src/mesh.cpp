@@ -386,7 +386,7 @@ scene::IAnimatedMesh* createExtrudedMesh(video::ITexture *texture,
 
 	// Set default material
 	mesh->getMeshBuffer(0)->getMaterial().setTexture(0, texture);
-	mesh->getMeshBuffer(0)->getMaterial().setFlag(video::EMF_LIGHTING, false);
+	mesh->getMeshBuffer(0)->getMaterial().setFlag(video::EMF_LIGHTING, true);
 	mesh->getMeshBuffer(0)->getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
 	mesh->getMeshBuffer(0)->getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
 
@@ -634,7 +634,7 @@ void ExtrudedSpriteSceneNode::setSprite(video::ITexture* texture)
 
 	m_meshnode->setScale(v3f(1, 1, m_thickness));
 	m_meshnode->getMaterial(0).setTexture(0, texture);
-	m_meshnode->getMaterial(0).setFlag(video::EMF_LIGHTING, false);
+	m_meshnode->getMaterial(0).setFlag(video::EMF_LIGHTING, true);
 	m_meshnode->getMaterial(0).setFlag(video::EMF_BILINEAR_FILTER, false);
 	m_meshnode->getMaterial(0).MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
 	m_meshnode->setVisible(true);
@@ -661,7 +661,7 @@ void ExtrudedSpriteSceneNode::setCube(const TileSpec tiles[6])
 
 		// Set material flags and texture
 		video::SMaterial& material = m_meshnode->getMaterial(i);
-		material.setFlag(video::EMF_LIGHTING, false);
+		material.setFlag(video::EMF_LIGHTING, true);
 		material.setFlag(video::EMF_BILINEAR_FILTER, false);
 		tiles[i].applyMaterialOptions(material);
 		material.setTexture(0, atlas);
@@ -688,7 +688,7 @@ void ExtrudedSpriteSceneNode::setNodeBox(content_t c)
 			v2f pos = content_features(c).tiles[t].texture.pos;
 			v2f size = content_features(c).tiles[t].texture.size;
 			video::SMaterial& material = m_cubemesh->getMeshBuffer((i*6)+t)->getMaterial();
-			material.setFlag(video::EMF_LIGHTING, false);
+			material.setFlag(video::EMF_LIGHTING, true);
 			material.setFlag(video::EMF_BILINEAR_FILTER, false);
 			content_features(c).tiles[i].applyMaterialOptions(material);
 			material.setTexture(0, atlas);
@@ -724,7 +724,7 @@ void ExtrudedSpriteSceneNode::setArm(video::ITexture *texture)
 
 	// Set material flags and texture
 	video::SMaterial& material = m_meshnode->getMaterial(0);
-	material.setFlag(video::EMF_LIGHTING, false);
+	material.setFlag(video::EMF_LIGHTING, true);
 	material.setFlag(video::EMF_BILINEAR_FILTER, false);
 	material.MaterialType = video::EMT_SOLID;
 	material.BackfaceCulling = true;
@@ -739,7 +739,7 @@ void ExtrudedSpriteSceneNode::setArm(video::ITexture *texture)
 
 		// Set material flags and texture
 		video::SMaterial& material = m_meshnode->getMaterial(i);
-		material.setFlag(video::EMF_LIGHTING, false);
+		material.setFlag(video::EMF_LIGHTING, true);
 		material.setFlag(video::EMF_BILINEAR_FILTER, false);
 		material.MaterialType = video::EMT_SOLID;
 		material.BackfaceCulling = true;

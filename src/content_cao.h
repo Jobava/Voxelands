@@ -143,8 +143,6 @@ public:
 
 	void addToScene(scene::ISceneManager *smgr);
 	void removeFromScene();
-	void updateLight(u8 light_at_pos);
-	v3s16 getLightPosition();
 	void updateNodePos();
 
 	void step(float dtime, ClientEnvironment *env);
@@ -194,8 +192,6 @@ public:
 
 	void addToScene(scene::ISceneManager *smgr);
 	void removeFromScene();
-	void updateLight(u8 light_at_pos);
-	v3s16 getLightPosition();
 	void updateNodePos();
 
 	void step(float dtime, ClientEnvironment *env);

@@ -844,26 +844,6 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 
 		}
 
-#if 0
-		/*
-			Acknowledge block
-		*/
-		/*
-			[0] u16 command
-			[2] u8 count
-			[3] v3s16 pos_0
-			[3+6] v3s16 pos_1
-			...
-		*/
-		u32 replysize = 2+1+6;
-		SharedBuffer<u8> reply(replysize);
-		writeU16(&reply[0], TOSERVER_GOTBLOCKS);
-		reply[2] = 1;
-		writeV3S16(&reply[3], p);
-		// Send as reliable
-		m_con.Send(PEER_ID_SERVER, 1, reply, true);
-#endif
-
 		/*
 			Update Mesh of this block and blocks at x-, y- and z-.
 			Environment should not be locked as it interlocks with the

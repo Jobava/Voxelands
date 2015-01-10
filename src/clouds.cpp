@@ -47,7 +47,7 @@ Clouds::Clouds(
 {
 	dstream<<__FUNCTION_NAME<<std::endl;
 
-	m_material.setFlag(video::EMF_LIGHTING, false);
+	m_material.setFlag(video::EMF_LIGHTING, true);
 	m_material.setFlag(video::EMF_BACK_FACE_CULLING, false);
 	m_material.setFlag(video::EMF_BILINEAR_FILTER, false);
 	m_material.setFlag(video::EMF_FOG_ENABLE, false);
@@ -150,10 +150,10 @@ void Clouds::render()
 
 		video::S3DVertex v[4] =
 		{
-			video::S3DVertex(0,0,0, 0,0,0, c_top, 0, 1),
-			video::S3DVertex(0,0,0, 0,0,0, c_top, 1, 1),
-			video::S3DVertex(0,0,0, 0,0,0, c_top, 1, 0),
-			video::S3DVertex(0,0,0, 0,0,0, c_top, 0, 0)
+			video::S3DVertex(0,0,0, 0,1,0, c_top, 0, 1),
+			video::S3DVertex(0,0,0, 0,1,0, c_top, 1, 1),
+			video::S3DVertex(0,0,0, 0,1,0, c_top, 1, 0),
+			video::S3DVertex(0,0,0, 0,1,0, c_top, 0, 0)
 		};
 
 		f32 rx = cloud_size;

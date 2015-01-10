@@ -38,6 +38,11 @@ extern ITextureSource *g_texturesource;
 class Profiler;
 extern Profiler *g_profiler;
 
+#ifndef SERVER
+#include "common_irrlicht.h"
+extern scene::ISceneManager* g_smgr;
+#endif
+
 // Debug streams
 
 #include <fstream>

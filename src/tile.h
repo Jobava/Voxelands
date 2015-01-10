@@ -272,7 +272,8 @@ enum MaterialType{
 };
 
 // Material flags
-#define MATERIAL_FLAG_BACKFACE_CULLING 0x01
+#define MATERIAL_FLAG_BACKFACE_CULLING	0x01
+#define MATERIAL_FLAG_LIGHT_SOURCE	0x02
 
 /*
 	This fully defines the looks of a tile.
@@ -320,11 +321,16 @@ struct TileSpec
 		else if(material_type == MATERIAL_ALPHA_BLEND)
 			material.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL;
 
-		material.setFlag(video::EMF_LIGHTING, false);
+		material.setFlag(video::EMF_LIGHTING, true);
 		material.setFlag(video::EMF_BILINEAR_FILTER, false);
 		material.setFlag(video::EMF_FOG_ENABLE, true);
 
 		material.BackfaceCulling = (material_flags & MATERIAL_FLAG_BACKFACE_CULLING) ? true : false;
+		if ((material_flags&MATERIAL_FLAG_LIGHT_SOURCE) == MATERIAL_FLAG_LIGHT_SOURCE) {
+			material.EmissiveColor.set(255,255,255,255);
+			material.SpecularColor.set(255,255,255,255);
+			material.AmbientColor.set(255,255,255,255);
+		}
 	}
 
 	video::SMaterial getMaterial()

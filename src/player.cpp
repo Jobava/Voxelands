@@ -494,7 +494,7 @@ RemotePlayer::RemotePlayer(
 			// Set material flags and texture
 			m_node->setMaterialTexture(0, driver->getTexture(getTexturePath("character.png").c_str()));
 			video::SMaterial& material = m_node->getMaterial(0);
-			material.setFlag(video::EMF_LIGHTING, false);
+			material.setFlag(video::EMF_LIGHTING, true);
 			material.setFlag(video::EMF_BILINEAR_FILTER, false);
 			material.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
 
@@ -530,7 +530,7 @@ void RemotePlayer::updateName(const char *name)
 		// Set material flags and texture
 		m_node->setMaterialTexture( 0, getTexture());
 		video::SMaterial& material = m_node->getMaterial(0);
-		material.setFlag(video::EMF_LIGHTING, false);
+		material.setFlag(video::EMF_LIGHTING, true);
 		material.setFlag(video::EMF_BILINEAR_FILTER, false);
 	}
 }
