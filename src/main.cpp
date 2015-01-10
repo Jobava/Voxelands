@@ -922,7 +922,11 @@ int main(int argc, char *argv[])
 	// (for texture atlas making)
 	init_mineral();
 
+#if USE_AUDIO == 1
 	ISoundManager *sound = createSoundManager();
+#else
+	ISoundManager *sound = NULL;
+#endif
 
 	/*
 		Run unit tests
