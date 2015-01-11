@@ -119,80 +119,6 @@ void makeRotatedCuboid(MeshCollector *collector, v3f pos, const aabb3f &box,
 		collector->append(tiles[tileindex].getMaterial(), vertices+j, 4, indices, 6);
 	}
 }
-void makeAngledCuboid(MeshCollector *collector, v3f pos, const aabb3f &box,
-	TileSpec *tiles, int tilecount, video::SColor c, const f32* txc, s16 angle)
-{
-	assert(tilecount >= 1 && tilecount <= 6);
-
-	v3f min = box.MinEdge;
-	v3f max = box.MaxEdge;
-
-	if (txc == NULL) {
-		static const f32 txc_default[24] = {
-			0,0,1,1,
-			0,0,1,1,
-			0,0,1,1,
-			0,0,1,1,
-			0,0,1,1,
-			0,0,1,1
-		};
-		txc = txc_default;
-	}
-
-	video::S3DVertex vertices[24] = {
-		// up
-		video::S3DVertex(min.X,max.Y,max.Z, 0,0,0, c, txc[0],txc[1]),
-		video::S3DVertex(max.X,max.Y,max.Z, 0,0,0, c, txc[2],txc[1]),
-		video::S3DVertex(max.X,max.Y,min.Z, 0,0,0, c, txc[2],txc[3]),
-		video::S3DVertex(min.X,max.Y,min.Z, 0,0,0, c, txc[0],txc[3]),
-		// down
-		video::S3DVertex(min.X,min.Y,min.Z, 0,0,0, c, txc[4],txc[5]),
-		video::S3DVertex(max.X,min.Y,min.Z, 0,0,0, c, txc[6],txc[5]),
-		video::S3DVertex(max.X,min.Y,max.Z, 0,0,0, c, txc[6],txc[7]),
-		video::S3DVertex(min.X,min.Y,max.Z, 0,0,0, c, txc[4],txc[7]),
-		// right
-		video::S3DVertex(max.X,max.Y,min.Z, 0,0,0, c, txc[ 8],txc[9]),
-		video::S3DVertex(max.X,max.Y,max.Z, 0,0,0, c, txc[10],txc[9]),
-		video::S3DVertex(max.X,min.Y,max.Z, 0,0,0, c, txc[10],txc[11]),
-		video::S3DVertex(max.X,min.Y,min.Z, 0,0,0, c, txc[ 8],txc[11]),
-		// left
-		video::S3DVertex(min.X,max.Y,max.Z, 0,0,0, c, txc[12],txc[13]),
-		video::S3DVertex(min.X,max.Y,min.Z, 0,0,0, c, txc[14],txc[13]),
-		video::S3DVertex(min.X,min.Y,min.Z, 0,0,0, c, txc[14],txc[15]),
-		video::S3DVertex(min.X,min.Y,max.Z, 0,0,0, c, txc[12],txc[15]),
-		// back
-		video::S3DVertex(max.X,max.Y,max.Z, 0,0,0, c, txc[16],txc[17]),
-		video::S3DVertex(min.X,max.Y,max.Z, 0,0,0, c, txc[18],txc[17]),
-		video::S3DVertex(min.X,min.Y,max.Z, 0,0,0, c, txc[18],txc[19]),
-		video::S3DVertex(max.X,min.Y,max.Z, 0,0,0, c, txc[16],txc[19]),
-		// front
-		video::S3DVertex(min.X,max.Y,min.Z, 0,0,0, c, txc[20],txc[21]),
-		video::S3DVertex(max.X,max.Y,min.Z, 0,0,0, c, txc[22],txc[21]),
-		video::S3DVertex(max.X,min.Y,min.Z, 0,0,0, c, txc[22],txc[23]),
-		video::S3DVertex(min.X,min.Y,min.Z, 0,0,0, c, txc[20],txc[23]),
-	};
-
-
-	for (s32 j=0; j<24; j++) {
-		int tileindex = MYMIN(j/4, tilecount-1);
-		if (angle)
-			vertices[j].Pos.rotateXZBy(angle);
-		vertices[j].Pos += pos;
-		vertices[j].TCoords *= tiles[tileindex].texture.size;
-		vertices[j].TCoords += tiles[tileindex].texture.pos;
-	}
-	u16 indices[] = {0,1,2,2,3,0};
-	// Add to mesh collector
-	for (s32 j=0; j<24; j+=4) {
-		int tileindex = MYMIN(j/4, tilecount-1);
-		collector->append(tiles[tileindex].getMaterial(), vertices+j, 4, indices, 6);
-	}
-}
-void makeCuboid(MeshCollector *collector, const aabb3f &box,
-	TileSpec *tiles, int tilecount, video::SColor c, const f32* txc)
-{
-	makeAngledCuboid(collector,v3f(0,0,0),box,tiles,tilecount,c,txc,0);
-}
 
 /*
  * makes one tri/poly for a roof section
@@ -1020,7 +946,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					// front
 					tx1, 1-ty2, tx2, 1-ty1,
 				};
-				makeAngledCuboid(&collector,pos,box.m_box,tiles,6,c,txc,0);
+				makeRotatedCuboid(&collector,pos,box.m_box,tiles,6,c,txc,v3s16(0,0,0));
 			}
 
 			int bps = ((boxes.size()-3)/4); // boxes per section
@@ -1070,7 +996,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 							default:;
 							}
 						}
-						makeAngledCuboid(&collector, pos, box.m_box, tiles, 6,  c, txc, shown_angles[k]);
+						makeRotatedCuboid(&collector, pos, box.m_box, tiles, 6,  c, txc, v3s16(0,shown_angles[k],0));
 					}
 				}
 			}
@@ -1151,7 +1077,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					// front
 					tx1, 1-ty2, tx2, 1-ty1,
 				};
-				makeAngledCuboid(&collector, pos, box.m_box, tiles, 6,  c, txc, 0);
+				makeRotatedCuboid(&collector, pos, box.m_box, tiles, 6,  c, txc, v3s16(0,0,0));
 			}
 
 			int bps = ((boxes.size()-2)/4); // boxes per section
@@ -1218,7 +1144,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 							default:;
 							}
 						}
-						makeAngledCuboid(&collector, pos, box.m_box, tiles, 6,  c, txc, shown_angles[k]);
+						makeRotatedCuboid(&collector, pos, box.m_box, tiles, 6,  c, txc, v3s16(0,shown_angles[k],0));
 					}
 				}
 			}
@@ -1753,8 +1679,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			}
 			for (std::vector<aabb3f>::iterator i = boxes.begin(); i != boxes.end(); i++) {
 				aabb3f box = *i;
-				box.MinEdge += pos;
-				box.MaxEdge += pos;
 
 				// Compute texture coords
 				f32 tx1 = (i->MinEdge.X/BS)+0.5;
@@ -1777,7 +1701,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					// front
 					tx1, 1-ty2, tx2, 1-ty1,
 				};
-				makeCuboid(&collector, box, tiles, 6,  c, txc);
+				makeRotatedCuboid(&collector,pos,box,tiles,6,c,txc,v3s16(0,0,0));
 			}
 		}
 		break;
@@ -1963,7 +1887,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					for (int bi=0; bi<6; bi++) {
 						if (bi == 4)
 							tile = &tiles[1];
-						makeAngledCuboid(&collector,pos,track[bi],tile,1,c,NULL,angle);
+						makeRotatedCuboid(&collector,pos,track[bi],tile,1,c,NULL,v3s16(0,angle,0));
 					}
 				}
 				break;
@@ -1996,7 +1920,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				for (int bi=0; bi<20; bi++) {
 					if (bi == 12)
 						tile = &tiles[1];
-					makeAngledCuboid(&collector,pos,track[bi],tile,1,c,NULL,angle+90);
+					makeRotatedCuboid(&collector,pos,track[bi],tile,1,c,NULL,v3s16(0,angle+90,0));
 				}
 				break;
 			}
@@ -2025,7 +1949,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				for (int bi=0; bi<17; bi++) {
 					if (bi == 5)
 						tile = &tiles[1];
-					makeAngledCuboid(&collector,pos,track[bi],tile,1,c,NULL,angle+180);
+					makeRotatedCuboid(&collector,pos,track[bi],tile,1,c,NULL,v3s16(0,angle+180,0));
 				}
 				break;
 			}
@@ -2057,7 +1981,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				for (int bi=0; bi<20; bi++) {
 					if (bi == 7)
 						tile = &tiles[1];
-					makeAngledCuboid(&collector,pos,track[bi],tile,1,c,NULL,angle);
+					makeRotatedCuboid(&collector,pos,track[bi],tile,1,c,NULL,v3s16(0,angle,0));
 				}
 				break;
 			}

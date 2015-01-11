@@ -100,7 +100,6 @@ public:
 
 	void fillMesh(scene::SMesh *mesh)
 	{
-		printf("m_prebuffers.size() = %u\n",m_prebuffers.size());
 		for (u32 i=0; i<m_prebuffers.size(); i++) {
 			PreMeshBuffer &p = m_prebuffers[i];
 

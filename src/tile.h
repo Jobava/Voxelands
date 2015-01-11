@@ -269,6 +269,7 @@ enum MaterialType{
 	MATERIAL_ALPHA_VERTEX,
 	MATERIAL_ALPHA_SIMPLE, // >127 = opaque
 	MATERIAL_ALPHA_BLEND,
+	MATERIAL_ALPHA_COLOR
 };
 
 // Material flags
@@ -320,6 +321,8 @@ struct TileSpec
 			material.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
 		else if(material_type == MATERIAL_ALPHA_BLEND)
 			material.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL;
+		else if(material_type == MATERIAL_ALPHA_COLOR)
+			material.MaterialType = video::EMT_TRANSPARENT_ADD_COLOR;
 
 		material.setFlag(video::EMF_LIGHTING, true);
 		material.setFlag(video::EMF_BILINEAR_FILTER, false);
