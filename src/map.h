@@ -655,6 +655,8 @@ private:
 	// This is the master heightmap mesh
 	//scene::SMesh *mesh;
 	//JMutex mesh_mutex;
+	scene::ISceneManager* m_smgr;
+	video::SColor m_sunlight;
 
 	MapDrawControl &m_control;
 

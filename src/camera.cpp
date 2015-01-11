@@ -87,6 +87,8 @@ Camera::Camera(scene::ISceneManager* smgr, MapDrawControl& draw_control, Client 
 	// This needs to be in its own scene manager. It is drawn after
 	// all other 3D scene nodes and before the GUI.
 	m_wieldmgr = smgr->createNewSceneManager();
+	// TODO: this should get the coloring from the map/environment
+	m_wieldmgr->setAmbientLight(video::SColor(255,200,200,200));
 	m_wieldmgr->addCameraSceneNode();
 	m_wieldnode = new ExtrudedSpriteSceneNode(m_wieldmgr->getRootSceneNode(), m_wieldmgr);
 }

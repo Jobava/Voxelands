@@ -3380,6 +3380,8 @@ ClientMap::ClientMap(
 	Map(dout_client),
 	scene::ISceneNode(parent, mgr, id),
 	m_client(client),
+	m_smgr(mgr),
+	m_sunlight(255,150,150,150),
 	m_control(control),
 	m_camera_position(0,0,0),
 	m_camera_direction(0,0,1),
@@ -3813,6 +3815,11 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 			assert(mesh);
 			assert(mesh->getMesh());
 
+			// lighting
+			bool ug = block->getIsUnderground();
+			if (ug)
+				m_smgr->setAmbientLight(video::SColor(255,20,20,20));
+
 			u32 c = mesh->getMesh()->getMeshBufferCount();
 			bool stuff_actually_drawn = false;
 			for (u32 i=0; i<c; i++) {
@@ -3823,6 +3830,7 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 				buf->getMaterial().setFlag(video::EMF_TRILINEAR_FILTER, use_trilinear_filter);
 				buf->getMaterial().setFlag(video::EMF_BILINEAR_FILTER, use_bilinear_filter);
 				buf->getMaterial().setFlag(video::EMF_ANISOTROPIC_FILTER, use_anisotropic_filter);
+				buf->getMaterial().setFlag(video::EMF_NORMALIZE_NORMALS, true);
 
 				const video::SMaterial& material = buf->getMaterial();
 				video::IMaterialRenderer* rnd = driver->getMaterialRenderer(material.MaterialType);
@@ -3849,6 +3857,8 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 			}else{
 				blocks_without_stuff++;
 			}
+			if (ug)
+				m_smgr->setAmbientLight(m_sunlight);
 		}
 	}
 	} // ScopeProfiler

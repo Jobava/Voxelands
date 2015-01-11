@@ -1071,6 +1071,7 @@ void the_game(
 	scene::ILightSceneNode* light = g_smgr->addLightSceneNode( 0, v3f(0,100000,0), video::SColor(255,200,200,200),105000);
 	light->setLightType(video::ELT_POINT);
 	light->setVisible(true);
+	smgr->setShadowColor(video::SColor(220,0,0,0));
 
 	while(device->run() && kill == false)
 	{
