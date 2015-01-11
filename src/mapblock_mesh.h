@@ -61,6 +61,12 @@ public:
 			PreMeshBuffer &pp = m_prebuffers[i];
 			if (pp.material != material)
 				continue;
+			// mesh buffers have a limit of 65535 (16bit)
+			// for vertices, so don't use a buffer that
+			// doesn't have enough space
+			u32 vc = numVertices+pp.vertices.size();
+			if (vc > 65535)
+				continue;
 
 			p = &pp;
 			break;
@@ -76,10 +82,6 @@ public:
 		u32 vertex_count = p->vertices.size();
 		for (u32 i=0; i<numIndices; i++) {
 			u32 j = indices[i] + vertex_count;
-			if (j > 65535) {
-				dstream<<"FIXME: Meshbuffer ran out of indices"<<std::endl;
-				// NOTE: Fix is to just add an another MeshBuffer
-			}
 			p->indices.push_back(j);
 		}
 		for (u32 i=0; i<numVertices; i++) {
@@ -89,25 +91,17 @@ public:
 
 	void fillMesh(scene::SMesh *mesh)
 	{
-		/*dstream<<"Filling mesh with "<<m_prebuffers.size()
-				<<" meshbuffers"<<std::endl;*/
 		for (u32 i=0; i<m_prebuffers.size(); i++) {
 			PreMeshBuffer &p = m_prebuffers[i];
 
-			/*dstream<<"p.vertices.size()="<<p.vertices.size()
-					<<", p.indices.size()="<<p.indices.size()
-					<<std::endl;*/
+			// calculate normals
 
 			// Create meshbuffer
-
 			// This is a "Standard MeshBuffer",
 			// it's a typedeffed CMeshBuffer<video::S3DVertex>
 			scene::SMeshBuffer *buf = new scene::SMeshBuffer();
 			// Set material
 			buf->Material = p.material;
-			//((scene::SMeshBuffer*)buf)->Material = p.material;
-			// Use VBO
-			//buf->setHardwareMappingHint(scene::EHM_STATIC);
 			// Add to mesh
 			mesh->addMeshBuffer(buf);
 			// Mesh grabbed it

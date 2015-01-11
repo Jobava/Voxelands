@@ -141,35 +141,35 @@ void makeAngledCuboid(MeshCollector *collector, v3f pos, const aabb3f &box,
 
 	video::S3DVertex vertices[24] = {
 		// up
-		video::S3DVertex(min.X,max.Y,max.Z, 0,1,0, c, txc[0],txc[1]),
-		video::S3DVertex(max.X,max.Y,max.Z, 0,1,0, c, txc[2],txc[1]),
-		video::S3DVertex(max.X,max.Y,min.Z, 0,1,0, c, txc[2],txc[3]),
-		video::S3DVertex(min.X,max.Y,min.Z, 0,1,0, c, txc[0],txc[3]),
+		video::S3DVertex(min.X,max.Y,max.Z, 0,0,0, c, txc[0],txc[1]),
+		video::S3DVertex(max.X,max.Y,max.Z, 0,0,0, c, txc[2],txc[1]),
+		video::S3DVertex(max.X,max.Y,min.Z, 0,0,0, c, txc[2],txc[3]),
+		video::S3DVertex(min.X,max.Y,min.Z, 0,0,0, c, txc[0],txc[3]),
 		// down
-		video::S3DVertex(min.X,min.Y,min.Z, 0,-1,0, c, txc[4],txc[5]),
-		video::S3DVertex(max.X,min.Y,min.Z, 0,-1,0, c, txc[6],txc[5]),
-		video::S3DVertex(max.X,min.Y,max.Z, 0,-1,0, c, txc[6],txc[7]),
-		video::S3DVertex(min.X,min.Y,max.Z, 0,-1,0, c, txc[4],txc[7]),
+		video::S3DVertex(min.X,min.Y,min.Z, 0,0,0, c, txc[4],txc[5]),
+		video::S3DVertex(max.X,min.Y,min.Z, 0,0,0, c, txc[6],txc[5]),
+		video::S3DVertex(max.X,min.Y,max.Z, 0,0,0, c, txc[6],txc[7]),
+		video::S3DVertex(min.X,min.Y,max.Z, 0,0,0, c, txc[4],txc[7]),
 		// right
-		video::S3DVertex(max.X,max.Y,min.Z, 1,0,0, c, txc[ 8],txc[9]),
-		video::S3DVertex(max.X,max.Y,max.Z, 1,0,0, c, txc[10],txc[9]),
-		video::S3DVertex(max.X,min.Y,max.Z, 1,0,0, c, txc[10],txc[11]),
-		video::S3DVertex(max.X,min.Y,min.Z, 1,0,0, c, txc[ 8],txc[11]),
+		video::S3DVertex(max.X,max.Y,min.Z, 0,0,0, c, txc[ 8],txc[9]),
+		video::S3DVertex(max.X,max.Y,max.Z, 0,0,0, c, txc[10],txc[9]),
+		video::S3DVertex(max.X,min.Y,max.Z, 0,0,0, c, txc[10],txc[11]),
+		video::S3DVertex(max.X,min.Y,min.Z, 0,0,0, c, txc[ 8],txc[11]),
 		// left
-		video::S3DVertex(min.X,max.Y,max.Z, -1,0,0, c, txc[12],txc[13]),
-		video::S3DVertex(min.X,max.Y,min.Z, -1,0,0, c, txc[14],txc[13]),
-		video::S3DVertex(min.X,min.Y,min.Z, -1,0,0, c, txc[14],txc[15]),
-		video::S3DVertex(min.X,min.Y,max.Z, -1,0,0, c, txc[12],txc[15]),
+		video::S3DVertex(min.X,max.Y,max.Z, 0,0,0, c, txc[12],txc[13]),
+		video::S3DVertex(min.X,max.Y,min.Z, 0,0,0, c, txc[14],txc[13]),
+		video::S3DVertex(min.X,min.Y,min.Z, 0,0,0, c, txc[14],txc[15]),
+		video::S3DVertex(min.X,min.Y,max.Z, 0,0,0, c, txc[12],txc[15]),
 		// back
-		video::S3DVertex(max.X,max.Y,max.Z, 0,0,1, c, txc[16],txc[17]),
-		video::S3DVertex(min.X,max.Y,max.Z, 0,0,1, c, txc[18],txc[17]),
-		video::S3DVertex(min.X,min.Y,max.Z, 0,0,1, c, txc[18],txc[19]),
-		video::S3DVertex(max.X,min.Y,max.Z, 0,0,1, c, txc[16],txc[19]),
+		video::S3DVertex(max.X,max.Y,max.Z, 0,0,0, c, txc[16],txc[17]),
+		video::S3DVertex(min.X,max.Y,max.Z, 0,0,0, c, txc[18],txc[17]),
+		video::S3DVertex(min.X,min.Y,max.Z, 0,0,0, c, txc[18],txc[19]),
+		video::S3DVertex(max.X,min.Y,max.Z, 0,0,0, c, txc[16],txc[19]),
 		// front
-		video::S3DVertex(min.X,max.Y,min.Z, 0,0,-1, c, txc[20],txc[21]),
-		video::S3DVertex(max.X,max.Y,min.Z, 0,0,-1, c, txc[22],txc[21]),
-		video::S3DVertex(max.X,min.Y,min.Z, 0,0,-1, c, txc[22],txc[23]),
-		video::S3DVertex(min.X,min.Y,min.Z, 0,0,-1, c, txc[20],txc[23]),
+		video::S3DVertex(min.X,max.Y,min.Z, 0,0,0, c, txc[20],txc[21]),
+		video::S3DVertex(max.X,max.Y,min.Z, 0,0,0, c, txc[22],txc[21]),
+		video::S3DVertex(max.X,min.Y,min.Z, 0,0,0, c, txc[22],txc[23]),
+		video::S3DVertex(min.X,min.Y,min.Z, 0,0,0, c, txc[20],txc[23]),
 	};
 
 
@@ -546,13 +546,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 
 				video::S3DVertex vertices[4] =
 				{
-					video::S3DVertex(-BS/2,0,BS/2, 0,0,0, c,
+					video::S3DVertex(-BS*0.5,0,BS*0.5, 0,0,0, c,
 							content_features(n).tiles[i].texture.x0(), content_features(n).tiles[i].texture.y1()),
-					video::S3DVertex(BS/2,0,BS/2, 0,0,0, c,
+					video::S3DVertex(BS*0.5,0,BS*0.5, 0,0,0, c,
 							content_features(n).tiles[i].texture.x1(), content_features(n).tiles[i].texture.y1()),
-					video::S3DVertex(BS/2,0,BS/2, 0,0,0, c,
+					video::S3DVertex(BS*0.5,0,BS*0.5, 0,0,0, c,
 							content_features(n).tiles[i].texture.x1(), content_features(n).tiles[i].texture.y0()),
-					video::S3DVertex(-BS/2,0,BS/2, 0,0,0, c,
+					video::S3DVertex(-BS*0.5,0,BS*0.5, 0,0,0, c,
 							content_features(n).tiles[i].texture.x0(), content_features(n).tiles[i].texture.y0()),
 				};
 
@@ -620,13 +620,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			{
 				video::S3DVertex vertices[4] =
 				{
-					video::S3DVertex(-BS/2,0,BS/2, 0,0,0, c,
+					video::S3DVertex(-BS*0.5,0,BS*0.5, 0,0,0, c,
 							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,0,BS/2, 0,0,0, c,
+					video::S3DVertex(BS*0.5,0,BS*0.5, 0,0,0, c,
 							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,0,-BS/2, 0,0,0, c,
+					video::S3DVertex(BS*0.5,0,-BS*0.5, 0,0,0, c,
 							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
-					video::S3DVertex(-BS/2,0,-BS/2, 0,0,0, c,
+					video::S3DVertex(-BS*0.5,0,-BS*0.5, 0,0,0, c,
 							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
 				};
 
@@ -673,13 +673,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				// The face at Z+
 				video::S3DVertex vertices[4] =
 				{
-					video::S3DVertex(-BS/2,-BS/2,BS/2, 0,0,0, c,
+					video::S3DVertex(-BS*0.5,-BS*0.5,BS*0.5, 0,0,0, c,
 						content_features(n).tiles[j].texture.x0(), content_features(n).tiles[j].texture.y1()),
-					video::S3DVertex(BS/2,-BS/2,BS/2, 0,0,0, c,
+					video::S3DVertex(BS*0.5,-BS*0.5,BS*0.5, 0,0,0, c,
 						content_features(n).tiles[j].texture.x1(), content_features(n).tiles[j].texture.y1()),
-					video::S3DVertex(BS/2,BS/2,BS/2, 0,0,0, c,
+					video::S3DVertex(BS*0.5,BS*0.5,BS*0.5, 0,0,0, c,
 						content_features(n).tiles[j].texture.x1(), content_features(n).tiles[j].texture.y0()),
-					video::S3DVertex(-BS/2,BS/2,BS/2, 0,0,0, c,
+					video::S3DVertex(-BS*0.5,BS*0.5,BS*0.5, 0,0,0, c,
 						content_features(n).tiles[j].texture.x0(), content_features(n).tiles[j].texture.y0()),
 				};
 
@@ -748,99 +748,99 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			video::S3DVertex vertices[3][24] = {
 				{ // roof
 					// up
-					video::S3DVertex(-0.1*BS, 0.5*BS,0., 0,1,0, c, txc[4],txc[5]),
-					video::S3DVertex(0.,0.5*BS,0., 0,1,0, c, txc[6],txc[5]),
-					video::S3DVertex(0.,0.5*BS,-0.1*BS, 0,1,0, c, txc[6],txc[7]),
-					video::S3DVertex(-0.1*BS, 0.5*BS,-0.1*BS, 0,1,0, c, txc[4],txc[7]),
+					video::S3DVertex(-0.1*BS, 0.5*BS,0., 0,0,0, c, txc[4],txc[5]),
+					video::S3DVertex(0.,0.5*BS,0., 0,0,0, c, txc[6],txc[5]),
+					video::S3DVertex(0.,0.5*BS,-0.1*BS, 0,0,0, c, txc[6],txc[7]),
+					video::S3DVertex(-0.1*BS, 0.5*BS,-0.1*BS, 0,0,0, c, txc[4],txc[7]),
 					// down
-					video::S3DVertex(0.,-0.1*BS,0., 0,-1,0, c, txc[0],txc[1]),
-					video::S3DVertex(0.1*BS,-0.1*BS,0., 0,-1,0, c, txc[2],txc[1]),
-					video::S3DVertex(0.1*BS,-0.1*BS,0.1*BS, 0,-1,0, c, txc[2],txc[3]),
-					video::S3DVertex(0.,-0.1*BS,0.1*BS, 0,-1,0, c, txc[0],txc[3]),
+					video::S3DVertex(0.,-0.1*BS,0., 0,0,0, c, txc[0],txc[1]),
+					video::S3DVertex(0.1*BS,-0.1*BS,0., 0,0,0, c, txc[2],txc[1]),
+					video::S3DVertex(0.1*BS,-0.1*BS,0.1*BS, 0,0,0, c, txc[2],txc[3]),
+					video::S3DVertex(0.,-0.1*BS,0.1*BS, 0,0,0, c, txc[0],txc[3]),
 					// right
-					video::S3DVertex(0.,0.5*BS,-0.1*BS, 1,0,0, c, txc[ 8],txc[11]),
-					video::S3DVertex(0.,0.5*BS,0., 1,0,0, c, txc[10],txc[11]),
-					video::S3DVertex(0.1*BS,-0.1*BS,0.1*BS, 1,0,0, c, txc[10],txc[9]),
-					video::S3DVertex(0.1*BS,-0.1*BS,0., 1,0,0, c, txc[ 8],txc[9]),
+					video::S3DVertex(0.,0.5*BS,-0.1*BS, 0,0,0, c, txc[ 8],txc[11]),
+					video::S3DVertex(0.,0.5*BS,0., 0,0,0, c, txc[10],txc[11]),
+					video::S3DVertex(0.1*BS,-0.1*BS,0.1*BS, 0,0,0, c, txc[10],txc[9]),
+					video::S3DVertex(0.1*BS,-0.1*BS,0., 0,0,0, c, txc[ 8],txc[9]),
 					// left
-					video::S3DVertex(-0.1*BS,0.5*BS,0., -1,0,0, c, txc[12],txc[15]),
-					video::S3DVertex(-0.1*BS,0.5*BS,-0.1*BS, -1,0,0, c, txc[14],txc[15]),
-					video::S3DVertex(0.,-0.1*BS,0., -1,0,0, c, txc[14],txc[13]),
-					video::S3DVertex(0.,-0.1*BS,0.1*BS, -1,0,0, c, txc[12],txc[13]),
+					video::S3DVertex(-0.1*BS,0.5*BS,0., 0,0,0, c, txc[12],txc[15]),
+					video::S3DVertex(-0.1*BS,0.5*BS,-0.1*BS, 0,0,0, c, txc[14],txc[15]),
+					video::S3DVertex(0.,-0.1*BS,0., 0,0,0, c, txc[14],txc[13]),
+					video::S3DVertex(0.,-0.1*BS,0.1*BS, 0,0,0, c, txc[12],txc[13]),
 					// back
-					video::S3DVertex(0.,0.5*BS,0., 0,0,1, c, txc[16],txc[19]),
-					video::S3DVertex(-0.1*BS,0.5*BS,0., 0,0,1, c, txc[18],txc[19]),
-					video::S3DVertex(0.,-0.1*BS,0.1*BS, 0,0,1, c, txc[18],txc[17]),
-					video::S3DVertex(0.1*BS,-0.1*BS,0.1*BS, 0,0,1, c, txc[16],txc[17]),
+					video::S3DVertex(0.,0.5*BS,0., 0,0,0, c, txc[16],txc[19]),
+					video::S3DVertex(-0.1*BS,0.5*BS,0., 0,0,0, c, txc[18],txc[19]),
+					video::S3DVertex(0.,-0.1*BS,0.1*BS, 0,0,0, c, txc[18],txc[17]),
+					video::S3DVertex(0.1*BS,-0.1*BS,0.1*BS, 0,0,0, c, txc[16],txc[17]),
 					// front
-					video::S3DVertex(-0.1*BS,0.5*BS,-0.1*BS, 0,0,-1, c, txc[20],txc[23]),
-					video::S3DVertex(0.,0.5*BS,-0.1*BS, 0,0,-1, c, txc[22],txc[23]),
-					video::S3DVertex(0.1*BS,-0.1*BS,0., 0,0,-1, c, txc[22],txc[21]),
-					video::S3DVertex(0.,-0.1*BS,0., 0,0,-1, c, txc[20],txc[21]),
+					video::S3DVertex(-0.1*BS,0.5*BS,-0.1*BS, 0,0,0, c, txc[20],txc[23]),
+					video::S3DVertex(0.,0.5*BS,-0.1*BS, 0,0,0, c, txc[22],txc[23]),
+					video::S3DVertex(0.1*BS,-0.1*BS,0., 0,0,0, c, txc[22],txc[21]),
+					video::S3DVertex(0.,-0.1*BS,0., 0,0,0, c, txc[20],txc[21]),
 				},{ // floor
 					// up
-					//video::S3DVertex(min.X,max.Y,max.Z, 0,1,0, c, txc[0],txc[1]),
-					video::S3DVertex(-0.05*BS,0.1*BS,0.05*BS, 0,1,0, c, txc[0],txc[1]),
-					video::S3DVertex(0.05*BS,0.1*BS,0.05*BS, 0,1,0, c, txc[2],txc[1]),
-					video::S3DVertex(0.05*BS,0.1*BS,-0.05*BS, 0,1,0, c, txc[2],txc[3]),
-					video::S3DVertex(-0.05*BS,0.1*BS,-0.05*BS, 0,1,0, c, txc[0],txc[3]),
+					//video::S3DVertex(min.X,max.Y,max.Z, 0,0,0, c, txc[0],txc[1]),
+					video::S3DVertex(-0.05*BS,0.1*BS,0.05*BS, 0,0,0, c, txc[0],txc[1]),
+					video::S3DVertex(0.05*BS,0.1*BS,0.05*BS, 0,0,0, c, txc[2],txc[1]),
+					video::S3DVertex(0.05*BS,0.1*BS,-0.05*BS, 0,0,0, c, txc[2],txc[3]),
+					video::S3DVertex(-0.05*BS,0.1*BS,-0.05*BS, 0,0,0, c, txc[0],txc[3]),
 					// down
-					video::S3DVertex(-0.05*BS,-0.5*BS,-0.05*BS, 0,-1,0, c, txc[4],txc[5]),
-					video::S3DVertex(0.05*BS,-0.5*BS,-0.05*BS, 0,-1,0, c, txc[6],txc[5]),
-					video::S3DVertex(0.05*BS,-0.5*BS,0.05*BS, 0,-1,0, c, txc[6],txc[7]),
-					video::S3DVertex(-0.05*BS,-0.5*BS,0.05*BS, 0,-1,0, c, txc[4],txc[7]),
+					video::S3DVertex(-0.05*BS,-0.5*BS,-0.05*BS, 0,0,0, c, txc[4],txc[5]),
+					video::S3DVertex(0.05*BS,-0.5*BS,-0.05*BS, 0,0,0, c, txc[6],txc[5]),
+					video::S3DVertex(0.05*BS,-0.5*BS,0.05*BS, 0,0,0, c, txc[6],txc[7]),
+					video::S3DVertex(-0.05*BS,-0.5*BS,0.05*BS, 0,0,0, c, txc[4],txc[7]),
 					// right
-					video::S3DVertex(0.05*BS,0.1*BS,-0.05*BS, 1,0,0, c, txc[ 8],txc[9]),
-					video::S3DVertex(0.05*BS,0.1*BS,0.05*BS, 1,0,0, c, txc[10],txc[9]),
-					video::S3DVertex(0.05*BS,-0.5*BS,0.05*BS, 1,0,0, c, txc[10],txc[11]),
-					video::S3DVertex(0.05*BS,-0.5*BS,-0.05*BS, 1,0,0, c, txc[ 8],txc[11]),
+					video::S3DVertex(0.05*BS,0.1*BS,-0.05*BS, 0,0,0, c, txc[ 8],txc[9]),
+					video::S3DVertex(0.05*BS,0.1*BS,0.05*BS, 0,0,0, c, txc[10],txc[9]),
+					video::S3DVertex(0.05*BS,-0.5*BS,0.05*BS, 0,0,0, c, txc[10],txc[11]),
+					video::S3DVertex(0.05*BS,-0.5*BS,-0.05*BS, 0,0,0, c, txc[ 8],txc[11]),
 					// left
-					video::S3DVertex(-0.05*BS,0.1*BS,0.05*BS, -1,0,0, c, txc[12],txc[13]),
-					video::S3DVertex(-0.05*BS,0.1*BS,-0.05*BS, -1,0,0, c, txc[14],txc[13]),
-					video::S3DVertex(-0.05*BS,-0.5*BS,-0.05*BS, -1,0,0, c, txc[14],txc[15]),
-					video::S3DVertex(-0.05*BS,-0.5*BS,0.05*BS, -1,0,0, c, txc[12],txc[15]),
+					video::S3DVertex(-0.05*BS,0.1*BS,0.05*BS, 0,0,0, c, txc[12],txc[13]),
+					video::S3DVertex(-0.05*BS,0.1*BS,-0.05*BS, 0,0,0, c, txc[14],txc[13]),
+					video::S3DVertex(-0.05*BS,-0.5*BS,-0.05*BS, 0,0,0, c, txc[14],txc[15]),
+					video::S3DVertex(-0.05*BS,-0.5*BS,0.05*BS, 0,0,0, c, txc[12],txc[15]),
 					// back
-					video::S3DVertex(0.05*BS,0.1*BS,0.05*BS, 0,0,1, c, txc[16],txc[17]),
-					video::S3DVertex(-0.05*BS,0.1*BS,0.05*BS, 0,0,1, c, txc[18],txc[17]),
-					video::S3DVertex(-0.05*BS,-0.5*BS,0.05*BS, 0,0,1, c, txc[18],txc[19]),
-					video::S3DVertex(0.05*BS,-0.5*BS,0.05*BS, 0,0,1, c, txc[16],txc[19]),
+					video::S3DVertex(0.05*BS,0.1*BS,0.05*BS, 0,0,0, c, txc[16],txc[17]),
+					video::S3DVertex(-0.05*BS,0.1*BS,0.05*BS, 0,0,0, c, txc[18],txc[17]),
+					video::S3DVertex(-0.05*BS,-0.5*BS,0.05*BS, 0,0,0, c, txc[18],txc[19]),
+					video::S3DVertex(0.05*BS,-0.5*BS,0.05*BS, 0,0,0, c, txc[16],txc[19]),
 					// front
-					video::S3DVertex(-0.05*BS,0.1*BS,-0.05*BS, 0,0,-1, c, txc[20],txc[21]),
-					video::S3DVertex(0.05*BS,0.1*BS,-0.05*BS, 0,0,-1, c, txc[22],txc[21]),
-					video::S3DVertex(0.05*BS,-0.5*BS,-0.05*BS, 0,0,-1, c, txc[22],txc[23]),
-					video::S3DVertex(-0.05*BS,-0.5*BS,-0.05*BS, 0,0,-1, c, txc[20],txc[23]),
+					video::S3DVertex(-0.05*BS,0.1*BS,-0.05*BS, 0,0,0, c, txc[20],txc[21]),
+					video::S3DVertex(0.05*BS,0.1*BS,-0.05*BS, 0,0,0, c, txc[22],txc[21]),
+					video::S3DVertex(0.05*BS,-0.5*BS,-0.05*BS, 0,0,0, c, txc[22],txc[23]),
+					video::S3DVertex(-0.05*BS,-0.5*BS,-0.05*BS, 0,0,0, c, txc[20],txc[23]),
 				},{ // wall
 					// up
-					//video::S3DVertex(min.X,max.Y,max.Z, 0,1,0, c, txc[0],txc[1]),
-					video::S3DVertex(-0.05*BS,0.3*BS,0.4*BS, 0,1,0, c, txc[0],txc[1]),
-					video::S3DVertex(0.05*BS,0.3*BS,0.4*BS, 0,1,0, c, txc[2],txc[1]),
-					video::S3DVertex(0.05*BS,0.3*BS,0.3*BS, 0,1,0, c, txc[2],txc[3]),
-					video::S3DVertex(-0.05*BS,0.3*BS,0.3*BS, 0,1,0, c, txc[0],txc[3]),
+					//video::S3DVertex(min.X,max.Y,max.Z, 0,0,0, c, txc[0],txc[1]),
+					video::S3DVertex(-0.05*BS,0.3*BS,0.4*BS, 0,0,0, c, txc[0],txc[1]),
+					video::S3DVertex(0.05*BS,0.3*BS,0.4*BS, 0,0,0, c, txc[2],txc[1]),
+					video::S3DVertex(0.05*BS,0.3*BS,0.3*BS, 0,0,0, c, txc[2],txc[3]),
+					video::S3DVertex(-0.05*BS,0.3*BS,0.3*BS, 0,0,0, c, txc[0],txc[3]),
 					// down
-					video::S3DVertex(-0.05*BS,-0.3*BS,0.4*BS, 0,-1,0, c, txc[4],txc[5]),
-					video::S3DVertex(0.05*BS,-0.3*BS,0.4*BS, 0,-1,0, c, txc[6],txc[5]),
-					video::S3DVertex(0.05*BS,-0.3*BS,0.5*BS, 0,-1,0, c, txc[6],txc[7]),
-					video::S3DVertex(-0.05*BS,-0.3*BS,0.5*BS, 0,-1,0, c, txc[4],txc[7]),
+					video::S3DVertex(-0.05*BS,-0.3*BS,0.4*BS, 0,0,0, c, txc[4],txc[5]),
+					video::S3DVertex(0.05*BS,-0.3*BS,0.4*BS, 0,0,0, c, txc[6],txc[5]),
+					video::S3DVertex(0.05*BS,-0.3*BS,0.5*BS, 0,0,0, c, txc[6],txc[7]),
+					video::S3DVertex(-0.05*BS,-0.3*BS,0.5*BS, 0,0,0, c, txc[4],txc[7]),
 					// right
-					video::S3DVertex(0.05*BS,0.3*BS,0.3*BS, 1,0,0, c, txc[ 8],txc[9]),
-					video::S3DVertex(0.05*BS,0.3*BS,0.4*BS, 1,0,0, c, txc[10],txc[9]),
-					video::S3DVertex(0.05*BS,-0.3*BS,0.5*BS, 1,0,0, c, txc[10],txc[11]),
-					video::S3DVertex(0.05*BS,-0.3*BS,0.4*BS, 1,0,0, c, txc[ 8],txc[11]),
+					video::S3DVertex(0.05*BS,0.3*BS,0.3*BS, 0,0,0, c, txc[ 8],txc[9]),
+					video::S3DVertex(0.05*BS,0.3*BS,0.4*BS, 0,0,0, c, txc[10],txc[9]),
+					video::S3DVertex(0.05*BS,-0.3*BS,0.5*BS, 0,0,0, c, txc[10],txc[11]),
+					video::S3DVertex(0.05*BS,-0.3*BS,0.4*BS, 0,0,0, c, txc[ 8],txc[11]),
 					// left
-					video::S3DVertex(-0.05*BS,0.3*BS,0.4*BS, -1,0,0, c, txc[12],txc[13]),
-					video::S3DVertex(-0.05*BS,0.3*BS,0.3*BS, -1,0,0, c, txc[14],txc[13]),
-					video::S3DVertex(-0.05*BS,-0.3*BS,0.4*BS, -1,0,0, c, txc[14],txc[15]),
-					video::S3DVertex(-0.05*BS,-0.3*BS,0.5*BS, -1,0,0, c, txc[12],txc[15]),
+					video::S3DVertex(-0.05*BS,0.3*BS,0.4*BS, 0,0,0, c, txc[12],txc[13]),
+					video::S3DVertex(-0.05*BS,0.3*BS,0.3*BS, 0,0,0, c, txc[14],txc[13]),
+					video::S3DVertex(-0.05*BS,-0.3*BS,0.4*BS, 0,0,0, c, txc[14],txc[15]),
+					video::S3DVertex(-0.05*BS,-0.3*BS,0.5*BS, 0,0,0, c, txc[12],txc[15]),
 					// back
-					video::S3DVertex(0.05*BS,0.3*BS,0.4*BS, 0,0,1, c, txc[16],txc[17]),
-					video::S3DVertex(-0.05*BS,0.3*BS,0.4*BS, 0,0,1, c, txc[18],txc[17]),
-					video::S3DVertex(-0.05*BS,-0.3*BS,0.5*BS, 0,0,1, c, txc[18],txc[19]),
-					video::S3DVertex(0.05*BS,-0.3*BS,0.5*BS, 0,0,1, c, txc[16],txc[19]),
+					video::S3DVertex(0.05*BS,0.3*BS,0.4*BS, 0,0,0, c, txc[16],txc[17]),
+					video::S3DVertex(-0.05*BS,0.3*BS,0.4*BS, 0,0,0, c, txc[18],txc[17]),
+					video::S3DVertex(-0.05*BS,-0.3*BS,0.5*BS, 0,0,0, c, txc[18],txc[19]),
+					video::S3DVertex(0.05*BS,-0.3*BS,0.5*BS, 0,0,0, c, txc[16],txc[19]),
 					// front
-					video::S3DVertex(-0.05*BS,0.3*BS,0.3*BS, 0,0,-1, c, txc[20],txc[21]),
-					video::S3DVertex(0.05*BS,0.3*BS,0.3*BS, 0,0,-1, c, txc[22],txc[21]),
-					video::S3DVertex(0.05*BS,-0.3*BS,0.4*BS, 0,0,-1, c, txc[22],txc[23]),
-					video::S3DVertex(-0.05*BS,-0.3*BS,0.4*BS, 0,0,-1, c, txc[20],txc[23]),
+					video::S3DVertex(-0.05*BS,0.3*BS,0.3*BS, 0,0,0, c, txc[20],txc[21]),
+					video::S3DVertex(0.05*BS,0.3*BS,0.3*BS, 0,0,0, c, txc[22],txc[21]),
+					video::S3DVertex(0.05*BS,-0.3*BS,0.4*BS, 0,0,0, c, txc[22],txc[23]),
+					video::S3DVertex(-0.05*BS,-0.3*BS,0.4*BS, 0,0,0, c, txc[20],txc[23]),
 				}
 			};
 
@@ -914,10 +914,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			for (u32 j=0; j<6; j++) {
 				// The face at Z+
 				video::S3DVertex vertices[4] = {
-					video::S3DVertex(-BS/2,-BS/2,BS/2, 0,0,0, c, tiles[j].texture.x0(), tiles[j].texture.y1()),
-					video::S3DVertex(BS/2,-BS/2,BS/2, 0,0,0, c,tiles[j].texture.x1(), tiles[j].texture.y1()),
-					video::S3DVertex(BS/2,BS/2,BS/2, 0,0,0, c,tiles[j].texture.x1(), tiles[j].texture.y0()),
-					video::S3DVertex(-BS/2,BS/2,BS/2, 0,0,0, c,tiles[j].texture.x0(), tiles[j].texture.y0()),
+					video::S3DVertex(-BS*0.5,-BS*0.5,BS*0.5, 0,0,0, c, tiles[j].texture.x0(), tiles[j].texture.y1()),
+					video::S3DVertex(BS*0.5,-BS*0.5,BS*0.5, 0,0,0, c,tiles[j].texture.x1(), tiles[j].texture.y1()),
+					video::S3DVertex(BS*0.5,BS*0.5,BS*0.5, 0,0,0, c,tiles[j].texture.x1(), tiles[j].texture.y0()),
+					video::S3DVertex(-BS*0.5,BS*0.5,BS*0.5, 0,0,0, c,tiles[j].texture.x0(), tiles[j].texture.y0()),
 				};
 
 				// Rotations in the g_6dirs format
@@ -1369,13 +1369,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			if (!x_plus && !x_minus && !z_plus && !z_minus) {
 				{
 					video::S3DVertex vertices[4] = {
-						video::S3DVertex(-BS/2,-0.49*BS,BS/2, 0,0,0, c,
+						video::S3DVertex(-BS*0.5,-0.49*BS,BS*0.5, 0,0,0, c,
 							tile.texture.x0(), tile.texture.y0()),
-						video::S3DVertex(BS/2,-0.49*BS,BS/2, 0,0,0, c,
+						video::S3DVertex(BS*0.5,-0.49*BS,BS*0.5, 0,0,0, c,
 							tile.texture.x0(), tile.texture.y1()),
-						video::S3DVertex(BS/2,-0.49*BS,-BS/2, 0,0,0, c,
+						video::S3DVertex(BS*0.5,-0.49*BS,-BS*0.5, 0,0,0, c,
 							tile.texture.x1(), tile.texture.y1()),
-						video::S3DVertex(-BS/2,-0.49*BS,-BS/2, 0,0,0, c,
+						video::S3DVertex(-BS*0.5,-0.49*BS,-BS*0.5, 0,0,0, c,
 							tile.texture.x1(), tile.texture.y0()),
 					};
 					for (u16 i=0; i<4; i++) {
@@ -1387,13 +1387,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				}
 				{
 					video::S3DVertex vertices[4] = {
-						video::S3DVertex(-BS/2,-0.49*BS,BS/2, 0,0,0, c,
+						video::S3DVertex(-BS*0.5,-0.49*BS,BS*0.5, 0,0,0, c,
 							tile.texture.x0(), tile.texture.y1()),
-						video::S3DVertex(BS/2,-0.49*BS,BS/2, 0,0,0, c,
+						video::S3DVertex(BS*0.5,-0.49*BS,BS*0.5, 0,0,0, c,
 							tile.texture.x1(), tile.texture.y1()),
-						video::S3DVertex(BS/2,-0.49*BS,-BS/2, 0,0,0, c,
+						video::S3DVertex(BS*0.5,-0.49*BS,-BS*0.5, 0,0,0, c,
 							tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(-BS/2,-0.49*BS,-BS/2, 0,0,0, c,
+						video::S3DVertex(-BS*0.5,-0.49*BS,-BS*0.5, 0,0,0, c,
 							tile.texture.x0(), tile.texture.y0()),
 					};
 					for (u16 i=0; i<4; i++) {
@@ -1406,14 +1406,14 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			}else{
 				if (x_plus) {
 					video::S3DVertex vertices[4] = {
-						video::S3DVertex(0,-0.49*BS,BS/2, 0,0,0, c,
-							tile.texture.x0(), tile.texture.y0()+(sy/2)),
-						video::S3DVertex(BS/2,-0.49*BS,BS/2, 0,0,0, c,
+						video::S3DVertex(0,-0.49*BS,BS*0.5, 0,0,0, c,
+							tile.texture.x0(), tile.texture.y0()+(sy*0.5)),
+						video::S3DVertex(BS*0.5,-0.49*BS,BS*0.5, 0,0,0, c,
 							tile.texture.x0(), tile.texture.y1()),
-						video::S3DVertex(BS/2,-0.49*BS,-BS/2, 0,0,0, c,
+						video::S3DVertex(BS*0.5,-0.49*BS,-BS*0.5, 0,0,0, c,
 							tile.texture.x1(), tile.texture.y1()),
-						video::S3DVertex(0,-0.49*BS,-BS/2, 0,0,0, c,
-							tile.texture.x1(), tile.texture.y0()+(sy/2)),
+						video::S3DVertex(0,-0.49*BS,-BS*0.5, 0,0,0, c,
+							tile.texture.x1(), tile.texture.y0()+(sy*0.5)),
 					};
 					for (u16 i=0; i<4; i++) {
 						vertices[i].Pos += intToFloat(p, BS);
@@ -1424,13 +1424,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				}
 				if (x_minus) {
 					video::S3DVertex vertices[4] = {
-						video::S3DVertex(-BS/2,-0.49*BS,BS/2, 0,0,0, c,
+						video::S3DVertex(-BS*0.5,-0.49*BS,BS*0.5, 0,0,0, c,
 							tile.texture.x0(), tile.texture.y0()),
-						video::S3DVertex(0,-0.49*BS,BS/2, 0,0,0, c,
-							tile.texture.x0(), tile.texture.y1()-(sy/2)),
-						video::S3DVertex(0,-0.49*BS,-BS/2, 0,0,0, c,
-							tile.texture.x1(), tile.texture.y1()-(sy/2)),
-						video::S3DVertex(-BS/2,-0.49*BS,-BS/2, 0,0,0, c,
+						video::S3DVertex(0,-0.49*BS,BS*0.5, 0,0,0, c,
+							tile.texture.x0(), tile.texture.y1()-(sy*0.5)),
+						video::S3DVertex(0,-0.49*BS,-BS*0.5, 0,0,0, c,
+							tile.texture.x1(), tile.texture.y1()-(sy*0.5)),
+						video::S3DVertex(-BS*0.5,-0.49*BS,-BS*0.5, 0,0,0, c,
 							tile.texture.x1(), tile.texture.y0()),
 					};
 					for (u16 i=0; i<4; i++) {
@@ -1442,14 +1442,14 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				}
 				if (z_plus) {
 					video::S3DVertex vertices[4] = {
-						video::S3DVertex(-BS/2,-0.49*BS,BS/2, 0,0,0, c,
+						video::S3DVertex(-BS*0.5,-0.49*BS,BS*0.5, 0,0,0, c,
 							tile.texture.x0(), tile.texture.y1()),
-						video::S3DVertex(BS/2,-0.49*BS,BS/2, 0,0,0, c,
+						video::S3DVertex(BS*0.5,-0.49*BS,BS*0.5, 0,0,0, c,
 							tile.texture.x1(), tile.texture.y1()),
-						video::S3DVertex(BS/2,-0.49*BS,0, 0,0,0, c,
-							tile.texture.x1(), tile.texture.y0()+(sy/2)),
-						video::S3DVertex(-BS/2,-0.49*BS,0, 0,0,0, c,
-							tile.texture.x0(), tile.texture.y0()+(sy/2)),
+						video::S3DVertex(BS*0.5,-0.49*BS,0, 0,0,0, c,
+							tile.texture.x1(), tile.texture.y0()+(sy*0.5)),
+						video::S3DVertex(-BS*0.5,-0.49*BS,0, 0,0,0, c,
+							tile.texture.x0(), tile.texture.y0()+(sy*0.5)),
 					};
 					for (u16 i=0; i<4; i++) {
 						vertices[i].Pos += intToFloat(p, BS);
@@ -1460,13 +1460,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				}
 				if (z_minus) {
 					video::S3DVertex vertices[4] = {
-						video::S3DVertex(-BS/2,-0.49*BS,0, 0,0,0, c,
-							tile.texture.x0(), tile.texture.y1()-(sy/2)),
-						video::S3DVertex(BS/2,-0.49*BS,0, 0,0,0, c,
-							tile.texture.x1(), tile.texture.y1()-(sy/2)),
-						video::S3DVertex(BS/2,-0.49*BS,-BS/2, 0,0,0, c,
+						video::S3DVertex(-BS*0.5,-0.49*BS,0, 0,0,0, c,
+							tile.texture.x0(), tile.texture.y1()-(sy*0.5)),
+						video::S3DVertex(BS*0.5,-0.49*BS,0, 0,0,0, c,
+							tile.texture.x1(), tile.texture.y1()-(sy*0.5)),
+						video::S3DVertex(BS*0.5,-0.49*BS,-BS*0.5, 0,0,0, c,
 							tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(-BS/2,-0.49*BS,-BS/2, 0,0,0, c,
+						video::S3DVertex(-BS*0.5,-0.49*BS,-BS*0.5, 0,0,0, c,
 							tile.texture.x0(), tile.texture.y0()),
 					};
 					for (u16 i=0; i<4; i++) {
@@ -1478,13 +1478,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				}
 				if (x_plus_y) {
 					video::S3DVertex vertices[4] = {
-						video::S3DVertex(0.49*BS,-BS/2,-BS/2, 0,0,0, c,
+						video::S3DVertex(0.49*BS,-BS*0.5,-BS*0.5, 0,0,0, c,
 							tile.texture.x0(), tile.texture.y1()),
-						video::S3DVertex(0.49*BS,-BS/2,BS/2, 0,0,0, c,
+						video::S3DVertex(0.49*BS,-BS*0.5,BS*0.5, 0,0,0, c,
 							tile.texture.x1(), tile.texture.y1()),
-						video::S3DVertex(0.49*BS,BS/2,BS/2, 0,0,0, c,
+						video::S3DVertex(0.49*BS,BS*0.5,BS*0.5, 0,0,0, c,
 							tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(0.49*BS,BS/2,-BS/2, 0,0,0, c,
+						video::S3DVertex(0.49*BS,BS*0.5,-BS*0.5, 0,0,0, c,
 							tile.texture.x0(), tile.texture.y0()),
 					};
 					for (u16 i=0; i<4; i++) {
@@ -1496,13 +1496,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				}
 				if (x_minus_y) {
 					video::S3DVertex vertices[4] = {
-						video::S3DVertex(-0.49*BS,-BS/2,BS/2, 0,0,0, c,
+						video::S3DVertex(-0.49*BS,-BS*0.5,BS*0.5, 0,0,0, c,
 							tile.texture.x0(), tile.texture.y1()),
-						video::S3DVertex(-0.49*BS,-BS/2,-BS/2, 0,0,0, c,
+						video::S3DVertex(-0.49*BS,-BS*0.5,-BS*0.5, 0,0,0, c,
 							tile.texture.x1(), tile.texture.y1()),
-						video::S3DVertex(-0.49*BS,BS/2,-BS/2, 0,0,0, c,
+						video::S3DVertex(-0.49*BS,BS*0.5,-BS*0.5, 0,0,0, c,
 							tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(-0.49*BS,BS/2,BS/2, 0,0,0, c,
+						video::S3DVertex(-0.49*BS,BS*0.5,BS*0.5, 0,0,0, c,
 							tile.texture.x0(), tile.texture.y0()),
 					};
 					for (u16 i=0; i<4; i++) {
@@ -1514,13 +1514,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				}
 				if (z_plus_y) {
 					video::S3DVertex vertices[4] = {
-						video::S3DVertex(BS/2,-BS/2,0.49*BS, 0,0,0, c,
+						video::S3DVertex(BS*0.5,-BS*0.5,0.49*BS, 0,0,0, c,
 							tile.texture.x0(), tile.texture.y1()),
-						video::S3DVertex(-BS/2,-BS/2,0.49*BS, 0,0,0, c,
+						video::S3DVertex(-BS*0.5,-BS*0.5,0.49*BS, 0,0,0, c,
 							tile.texture.x1(), tile.texture.y1()),
-						video::S3DVertex(-BS/2,BS/2,0.49*BS, 0,0,0, c,
+						video::S3DVertex(-BS*0.5,BS*0.5,0.49*BS, 0,0,0, c,
 							tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(BS/2,BS/2,0.49*BS, 0,0,0, c,
+						video::S3DVertex(BS*0.5,BS*0.5,0.49*BS, 0,0,0, c,
 							tile.texture.x0(), tile.texture.y0()),
 					};
 					for (u16 i=0; i<4; i++) {
@@ -1532,13 +1532,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				}
 				if (z_minus_y) {
 					video::S3DVertex vertices[4] = {
-						video::S3DVertex(-BS/2,-BS/2,-0.49*BS, 0,0,0, c,
+						video::S3DVertex(-BS*0.5,-BS*0.5,-0.49*BS, 0,0,0, c,
 							tile.texture.x0(), tile.texture.y1()),
-						video::S3DVertex(BS/2,-BS/2,-0.49*BS, 0,0,0, c,
+						video::S3DVertex(BS*0.5,-BS*0.5,-0.49*BS, 0,0,0, c,
 							tile.texture.x1(), tile.texture.y1()),
-						video::S3DVertex(BS/2,BS/2,-0.49*BS, 0,0,0, c,
+						video::S3DVertex(BS*0.5,BS*0.5,-0.49*BS, 0,0,0, c,
 							tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(-BS/2,BS/2,-0.49*BS, 0,0,0, c,
+						video::S3DVertex(-BS*0.5,BS*0.5,-0.49*BS, 0,0,0, c,
 							tile.texture.x0(), tile.texture.y0()),
 					};
 					for (u16 i=0; i<4; i++) {
@@ -3005,10 +3005,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				s = 1.0;
 			}
 			video::S3DVertex base_vertices[4] = {
-				base_vertices[0] = video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,tuv[0], tuv[3]),
-				base_vertices[1] = video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,tuv[1], tuv[3]),
-				base_vertices[2] = video::S3DVertex(BS/2,BS/h,0, 0,0,0, c,tuv[1], tuv[2]),
-				base_vertices[3] = video::S3DVertex(-BS/2,BS/h,0, 0,0,0, c,tuv[0], tuv[2])
+				base_vertices[0] = video::S3DVertex(-BS*0.5,-BS*0.5,0, 0,0,0, c,tuv[0], tuv[3]),
+				base_vertices[1] = video::S3DVertex(BS*0.5,-BS*0.5,0, 0,0,0, c,tuv[1], tuv[3]),
+				base_vertices[2] = video::S3DVertex(BS*0.5,BS/h,0, 0,0,0, c,tuv[1], tuv[2]),
+				base_vertices[3] = video::S3DVertex(-BS*0.5,BS/h,0, 0,0,0, c,tuv[0], tuv[2])
 			};
 			for (u32 j=0; j<2; j++) {
 				video::S3DVertex vertices[4] = {
@@ -3061,13 +3061,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			{
 				video::S3DVertex vertices[4] =
 				{
-					video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
+					video::S3DVertex(-BS*0.5,-BS*0.5,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
+					video::S3DVertex(BS*0.5,-BS*0.5,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,BS/2,0, 0,0,0, c,
+					video::S3DVertex(BS*0.5,BS*0.5,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
-					video::S3DVertex(-BS/2,BS/2,0, 0,0,0, c,
+					video::S3DVertex(-BS*0.5,BS*0.5,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
 				};
 
@@ -3111,13 +3111,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			{
 				video::S3DVertex vertices[4] =
 				{
-					video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
+					video::S3DVertex(-BS*0.5,-BS*0.5,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
+					video::S3DVertex(BS*0.5,-BS*0.5,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,BS/2,0, 0,0,0, c,
+					video::S3DVertex(BS*0.5,BS*0.5,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
-					video::S3DVertex(-BS/2,BS/2,0, 0,0,0, c,
+					video::S3DVertex(-BS*0.5,BS*0.5,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
 				};
 
@@ -3163,13 +3163,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			{
 				video::S3DVertex vertices[4] =
 				{
-					video::S3DVertex(-BS/2,-0.5*BS,0, 0,0,0, c,
+					video::S3DVertex(-BS*0.5,-0.5*BS,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,-0.5*BS,0, 0,0,0, c,
+					video::S3DVertex(BS*0.5,-0.5*BS,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,-0.25*BS,0, 0,0,0, c,
+					video::S3DVertex(BS*0.5,-0.25*BS,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x1(), h),
-					video::S3DVertex(-BS/2,-0.25*BS,0, 0,0,0, c,
+					video::S3DVertex(-BS*0.5,-0.25*BS,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x0(), h),
 				};
 
@@ -3214,13 +3214,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			{
 				video::S3DVertex vertices[4] =
 				{
-					video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
+					video::S3DVertex(-BS*0.5,-BS*0.5,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
+					video::S3DVertex(BS*0.5,-BS*0.5,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,0,0, 0,0,0, c,
+					video::S3DVertex(BS*0.5,0,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x1(), h),
-					video::S3DVertex(-BS/2,0,0, 0,0,0, c,
+					video::S3DVertex(-BS*0.5,0,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x0(), h),
 				};
 
@@ -3265,13 +3265,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			{
 				video::S3DVertex vertices[4] =
 				{
-					video::S3DVertex(-BS/2,-0.5*BS,0, 0,0,0, c,
+					video::S3DVertex(-BS*0.5,-0.5*BS,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,-0.5*BS,0, 0,0,0, c,
+					video::S3DVertex(BS*0.5,-0.5*BS,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,0.25*BS,0, 0,0,0, c,
+					video::S3DVertex(BS*0.5,0.25*BS,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x1(), h),
-					video::S3DVertex(-BS/2,0.25*BS,0, 0,0,0, c,
+					video::S3DVertex(-BS*0.5,0.25*BS,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x0(), h),
 				};
 

@@ -1969,7 +1969,7 @@ void the_game(
 		*/
 		if (clouds) {
 			clouds->step(dtime);
-			clouds->update(v2f(player_position.X, player_position.Z), 0.05+brightness*0.95);
+			clouds->update(v2f(player_position.X, player_position.Z));
 		}
 
 		/*
