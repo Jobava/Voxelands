@@ -157,7 +157,6 @@ void content_mapnode_special(bool repeat)
 	f = &content_features(i);
 	f->description = wgettext("Terracotta Roof Tile");
 	f->setAllTextures("rooftile_terracotta.png");
-	f->setAllTextureFlags(0);
 	f->draw_type = CDT_ROOFLIKE;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
@@ -174,7 +173,6 @@ void content_mapnode_special(bool repeat)
 	f = &content_features(i);
 	f->description = wgettext("Wood Roof Tile");
 	f->setAllTextures("rooftile_wood.png");
-	f->setAllTextureFlags(0);
 	f->draw_type = CDT_ROOFLIKE;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
@@ -192,7 +190,6 @@ void content_mapnode_special(bool repeat)
 	f = &content_features(i);
 	f->description = wgettext("Asphalt Roof Tile");
 	f->setAllTextures("rooftile_asphalt.png");
-	f->setAllTextureFlags(0);
 	f->draw_type = CDT_ROOFLIKE;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
@@ -216,7 +213,6 @@ void content_mapnode_special(bool repeat)
 	f = &content_features(i);
 	f->description = wgettext("Stone Roof Tile");
 	f->setAllTextures("rooftile_stone.png");
-	f->setAllTextureFlags(0);
 	f->draw_type = CDT_ROOFLIKE;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
@@ -234,7 +230,6 @@ void content_mapnode_special(bool repeat)
 	f->description = wgettext("Glass Roof Tile");
 	f->setAllTextures("glass.png");
 	f->setTexture(1,"glass_slab.png"); // special texture for top sections
-	f->setAllTextureFlags(0);
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
@@ -257,7 +252,6 @@ void content_mapnode_special(bool repeat)
 	f->description = wgettext("Blue Glass Roof Tile");
 	f->setAllTextures("glass_blue.png");
 	f->setTexture(1,"glass_slab_blue.png"); // special texture for top sections
-	f->setAllTextureFlags(0);
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
@@ -281,7 +275,6 @@ void content_mapnode_special(bool repeat)
 	f->description = wgettext("Green Glass Roof Tile");
 	f->setAllTextures("glass_green.png");
 	f->setTexture(1,"glass_slab_green.png"); // special texture for top sections
-	f->setAllTextureFlags(0);
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
@@ -305,7 +298,6 @@ void content_mapnode_special(bool repeat)
 	f->description = wgettext("Orange Glass Roof Tile");
 	f->setAllTextures("glass_orange.png");
 	f->setTexture(1,"glass_slab_orange.png"); // special texture for top sections
-	f->setAllTextureFlags(0);
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
@@ -329,7 +321,6 @@ void content_mapnode_special(bool repeat)
 	f->description = wgettext("Purple Glass Roof Tile");
 	f->setAllTextures("glass_purple.png");
 	f->setTexture(1,"glass_slab_purple.png"); // special texture for top sections
-	f->setAllTextureFlags(0);
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
@@ -353,7 +344,6 @@ void content_mapnode_special(bool repeat)
 	f->description = wgettext("Red Glass Roof Tile");
 	f->setAllTextures("glass_red.png");
 	f->setTexture(1,"glass_slab_red.png"); // special texture for top sections
-	f->setAllTextureFlags(0);
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
@@ -377,7 +367,6 @@ void content_mapnode_special(bool repeat)
 	f->description = wgettext("Yellow Glass Roof Tile");
 	f->setAllTextures("glass_yellow.png");
 	f->setTexture(1,"glass_slab_yellow.png"); // special texture for top sections
-	f->setAllTextureFlags(0);
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
@@ -401,7 +390,6 @@ void content_mapnode_special(bool repeat)
 	f->description = wgettext("Black Glass Roof Tile");
 	f->setAllTextures("glass_black.png");
 	f->setTexture(1,"glass_slab_black.png"); // special texture for top sections
-	f->setAllTextureFlags(0);
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
@@ -424,7 +412,6 @@ void content_mapnode_special(bool repeat)
 	f = &content_features(i);
 	f->description = wgettext("Thatch Roof Tile");
 	f->setAllTextures("rooftile_thatch.png");
-	f->setAllTextureFlags(0);
 	f->draw_type = CDT_ROOFLIKE;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces

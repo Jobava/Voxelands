@@ -124,6 +124,15 @@ void Clouds::render()
 		center_of_drawing_in_noise_i.Y * cloud_size
 	) + world_cloud_origin_pos_f;
 
+	v3f normals[6] = {
+		v3f(0,1,0),
+		v3f(0,0,-1),
+		v3f(1,0,0),
+		v3f(0,0,1),
+		v3f(-1,0,0),
+		v3f(0,-1,0)
+	};
+
 	for (s16 zi=-cloud_radius_i; zi<cloud_radius_i; zi++)
 	for (s16 xi=-cloud_radius_i; xi<cloud_radius_i; xi++) {
 		v2s16 p_in_noise_i(
@@ -143,10 +152,10 @@ void Clouds::render()
 		video::SColor c(255,255,255,255);
 
 		video::S3DVertex v[4] = {
-			video::S3DVertex(0,0,0, 0,1,0, c, 0, 1),
-			video::S3DVertex(0,0,0, 0,1,0, c, 1, 1),
-			video::S3DVertex(0,0,0, 0,1,0, c, 1, 0),
-			video::S3DVertex(0,0,0, 0,1,0, c, 0, 0)
+			video::S3DVertex(0,0,0, 0,0,0, c, 0, 1),
+			video::S3DVertex(0,0,0, 0,0,0, c, 1, 1),
+			video::S3DVertex(0,0,0, 0,0,0, c, 1, 0),
+			video::S3DVertex(0,0,0, 0,0,0, c, 0, 0)
 		};
 
 		f32 rx = cloud_size;
@@ -197,6 +206,7 @@ void Clouds::render()
 			pos -= intToFloat(m_camera_offset, BS);
 
 			for (u16 k=0; k<4; k++) {
+				v[k].Normal = normals[i];
 				v[k].Pos += pos;
 			}
 			u16 indices[] = {0,1,2,2,3,0};

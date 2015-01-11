@@ -79,22 +79,58 @@ public:
 			p = &m_prebuffers[m_prebuffers.size()-1];
 		}
 
-		u32 vertex_count = p->vertices.size();
+		// optimise vertices by removing duplicates
 		for (u32 i=0; i<numIndices; i++) {
-			u32 j = indices[i] + vertex_count;
-			p->indices.push_back(j);
-		}
-		for (u32 i=0; i<numVertices; i++) {
-			p->vertices.push_back(vertices[i]);
+			video::S3DVertex v = vertices[indices[i]];
+			u32 vc = p->vertices.size();
+			bool dup = false;
+			for (u32 k=0; k<vc; k++) {
+				if (p->vertices[k] == v) {
+					dup = true;
+					p->indices.push_back(k);
+					break;
+				}
+			}
+			if (dup)
+				continue;
+			p->indices.push_back(vc);
+			p->vertices.push_back(v);
 		}
 	}
 
 	void fillMesh(scene::SMesh *mesh)
 	{
+		printf("m_prebuffers.size() = %u\n",m_prebuffers.size());
 		for (u32 i=0; i<m_prebuffers.size(); i++) {
 			PreMeshBuffer &p = m_prebuffers[i];
 
 			// calculate normals
+			u16 numVertices = p.vertices.size();
+			u16 numIndices = p.indices.size();
+			for (u16 k=0; (k+2)<numIndices; k+=3) {
+				u16 i1 = p.indices[k];
+				u16 i2 = p.indices[k+1];
+				u16 i3 = p.indices[k+2];
+				v3f v1 = p.vertices[i1].Pos;
+				v3f v2 = p.vertices[i2].Pos;
+				v3f v3 = p.vertices[i3].Pos;
+
+				v3f b1 = v1-v2;
+				v3f b2 = v2-v3;
+				v3f cp;
+
+				v3f normal;
+
+				cp = b1.crossProduct(b2);
+				normal = cp.normalize();
+
+				p.vertices[i1].Normal += normal;
+				p.vertices[i2].Normal += normal;
+				p.vertices[i3].Normal += normal;
+			}
+			for (u16 k=0; k<numVertices; k++) {
+				p.vertices[k].Normal = p.vertices[k].Normal.normalize();
+			}
 
 			// Create meshbuffer
 			// This is a "Standard MeshBuffer",
@@ -120,8 +156,6 @@ private:
 video::SColor MapBlock_LightColor(u8 alpha, u8 light, bool selected=false);
 TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods);
 TileSpec getMetaTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods);
-u8 getSmoothLight(v3s16 p, VoxelManipulator &vmanip, u32 daynight_ratio);
-u8 getSmoothLight(v3s16 p, v3s16 corner, VoxelManipulator &vmanip, u32 daynight_ratio);
 
 class MapBlock;
 class Environment;

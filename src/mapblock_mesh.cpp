@@ -153,23 +153,18 @@ void getNodeVertexDirs(v3s16 dir, v3s16 *vertex_dirs)
 
 video::SColor MapBlock_LightColor(u8 alpha, u8 light, bool selected)
 {
-	float lim = 80;
-	float power = 0.8;
-	u8 r = light;
-	u8 g = light;
-	u8 b = light;
+	u8 r = 255;
+	u8 g = 255;
+	u8 b = 255;
 	// selected nodes glow a bit
 	if (selected) {
 		// TODO: make this colour a setting
 		r = 128;
 		g = 128;
 		b = 255;
-	}else if (light <= lim) {
-		// Emphase blue a bit in darker places
-		b = MYMAX(0, pow((float)light/lim, power)*lim);
 	}
 
-	return video::SColor(255,255,255,255);//alpha,r,g,b);
+	return video::SColor(alpha,r,g,b);
 }
 
 struct FastFace
@@ -178,10 +173,10 @@ struct FastFace
 	video::S3DVertex vertices[4]; // Precalculated vertices
 };
 
-void makeFastFace(TileSpec tile, u8 li0, u8 li1, u8 li2, u8 li3, v3f p,
-		v3s16 dir, v3f scale, core::array<FastFace> &dest, bool selected)
+void makeFastFace(TileSpec tile, v3f p, v3s16 dir, v3f scale, core::array<FastFace> &dest, bool selected)
 {
 	FastFace face;
+	video::SColor c = MapBlock_LightColor(tile.alpha,0,selected);
 
 	// Position is at the center of the cube.
 	v3f pos = p * BS;
@@ -191,17 +186,10 @@ void makeFastFace(TileSpec tile, u8 li0, u8 li1, u8 li2, u8 li3, v3f p,
 	getNodeVertexDirs(dir, vertex_dirs);
 	for (u16 i=0; i<4; i++) {
 		vertex_pos[i] = v3f(
-				BS/2*vertex_dirs[i].X,
-				BS/2*vertex_dirs[i].Y,
-				BS/2*vertex_dirs[i].Z
-		);
-	}
-
-	for (u16 i=0; i<4; i++) {
-		vertex_pos[i].X *= scale.X;
-		vertex_pos[i].Y *= scale.Y;
-		vertex_pos[i].Z *= scale.Z;
-		vertex_pos[i] += pos;
+				BS*0.5*vertex_dirs[i].X*scale.X,
+				BS*0.5*vertex_dirs[i].Y*scale.Y,
+				BS*0.5*vertex_dirs[i].Z*scale.Z
+		) + pos;
 	}
 
 	f32 abs_scale = 1.;
@@ -213,27 +201,15 @@ void makeFastFace(TileSpec tile, u8 li0, u8 li1, u8 li2, u8 li3, v3f p,
 		abs_scale = scale.Z;
 	}
 
-	v3f zerovector = v3f(0,0,0);
-
-	u8 alpha = tile.alpha;
-
 	float x0 = tile.texture.pos.X;
 	float y0 = tile.texture.pos.Y;
 	float w = tile.texture.size.X;
 	float h = tile.texture.size.Y;
 
-	face.vertices[0] = video::S3DVertex(vertex_pos[0], v3f(0,1,0),
-			MapBlock_LightColor(alpha, li0, selected),
-			core::vector2d<f32>(x0+w*abs_scale, y0+h));
-	face.vertices[1] = video::S3DVertex(vertex_pos[1], v3f(0,1,0),
-			MapBlock_LightColor(alpha, li1, selected),
-			core::vector2d<f32>(x0, y0+h));
-	face.vertices[2] = video::S3DVertex(vertex_pos[2], v3f(0,1,0),
-			MapBlock_LightColor(alpha, li2, selected),
-			core::vector2d<f32>(x0, y0));
-	face.vertices[3] = video::S3DVertex(vertex_pos[3], v3f(0,1,0),
-			MapBlock_LightColor(alpha, li3, selected),
-			core::vector2d<f32>(x0+w*abs_scale, y0));
+	face.vertices[0] = video::S3DVertex(vertex_pos[0], v3f(0,0,0),c,core::vector2d<f32>(x0+w*abs_scale, y0+h));
+	face.vertices[1] = video::S3DVertex(vertex_pos[1], v3f(0,0,0),c,core::vector2d<f32>(x0, y0+h));
+	face.vertices[2] = video::S3DVertex(vertex_pos[2], v3f(0,0,0),c,core::vector2d<f32>(x0, y0));
+	face.vertices[3] = video::S3DVertex(vertex_pos[3], v3f(0,0,0),c,core::vector2d<f32>(x0+w*abs_scale, y0));
 
 	face.tile = tile;
 
@@ -431,7 +407,6 @@ void getTileInfo(
 		bool &makes_face,
 		v3s16 &p_corrected,
 		v3s16 &face_dir_corrected,
-		u8 *lights,
 		TileSpec &tile
 	)
 {
@@ -462,17 +437,6 @@ void getTileInfo(
 	if (equivalent)
 		tile.material_flags |= MATERIAL_FLAG_BACKFACE_CULLING;
 
-	if (smooth_lighting == false) {
-		lights[0] = lights[1] = lights[2] = lights[3] =
-				decode_light(getFaceLight(daynight_ratio, n0, n1, face_dir));
-	}else{
-		v3s16 vertex_dirs[4];
-		getNodeVertexDirs(face_dir_corrected, vertex_dirs);
-		for (u16 i=0; i<4; i++) {
-			lights[i] = getSmoothLight(blockpos_nodes + p_corrected, vertex_dirs[i], vmanip, daynight_ratio);
-		}
-	}
-
 	return;
 }
 
@@ -502,11 +466,10 @@ void updateFastFaceRow(
 	bool makes_face = false;
 	v3s16 p_corrected;
 	v3s16 face_dir_corrected;
-	u8 lights[4] = {0,0,0,0};
 	TileSpec tile;
 	getTileInfo(blockpos_nodes, p, face_dir, daynight_ratio,
 			vmanip, temp_mods, smooth_lighting,
-			makes_face, p_corrected, face_dir_corrected, lights, tile);
+			makes_face, p_corrected, face_dir_corrected, tile);
 
 	for (u16 j=0; j<length; j++) {
 		// If tiling can be done, this is set to false in the next step
@@ -514,10 +477,13 @@ void updateFastFaceRow(
 
 		v3s16 p_next;
 
+		NodeMod mod;
+		temp_mods.get(p_corrected,&mod);
+		bool selected = (mod == NODEMOD_SELECTION);
+
 		bool next_makes_face = false;
 		v3s16 next_p_corrected;
 		v3s16 next_face_dir_corrected;
-		u8 next_lights[4] = {0,0,0,0};
 		TileSpec next_tile;
 
 		// If at last position, there is nothing to compare to and
@@ -528,17 +494,17 @@ void updateFastFaceRow(
 			getTileInfo(blockpos_nodes, p_next, face_dir, daynight_ratio,
 					vmanip, temp_mods, smooth_lighting,
 					next_makes_face, next_p_corrected,
-					next_face_dir_corrected, next_lights,
-					next_tile);
+					next_face_dir_corrected, next_tile);
+			NodeMod next_mod;
+			temp_mods.get(next_p_corrected,&next_mod);
+			bool next_selected = (next_mod == NODEMOD_SELECTION);
 
 			if (
-				next_makes_face == makes_face
+				selected == false
+				&& next_selected == false
+				&& next_makes_face == makes_face
 				&& next_p_corrected == p_corrected + translate_dir
 				&& next_face_dir_corrected == face_dir_corrected
-				&& next_lights[0] == lights[0]
-				&& next_lights[1] == lights[1]
-				&& next_lights[2] == lights[2]
-				&& next_lights[3] == lights[3]
 				&& next_tile == tile
 			) {
 				next_is_different = false;
@@ -578,12 +544,7 @@ void updateFastFaceRow(
 					scale.Y = continuous_tiles_count;
 				if(translate_dir.Z != 0)
 					scale.Z = continuous_tiles_count;
-
-				NodeMod mod;
-				temp_mods.get(p_corrected,&mod);
-				bool selected = (mod == NODEMOD_SELECTION);
-				makeFastFace(tile, lights[0], lights[1], lights[2], lights[3],
-						sp, face_dir_corrected, scale, dest, selected);
+				makeFastFace(tile, sp, face_dir_corrected, scale, dest, selected);
 			}
 
 			continuous_tiles_count = 0;
@@ -591,10 +552,6 @@ void updateFastFaceRow(
 			makes_face = next_makes_face;
 			p_corrected = next_p_corrected;
 			face_dir_corrected = next_face_dir_corrected;
-			lights[0] = next_lights[0];
-			lights[1] = next_lights[1];
-			lights[2] = next_lights[2];
-			lights[3] = next_lights[3];
 			tile = next_tile;
 		}
 

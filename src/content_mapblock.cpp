@@ -68,35 +68,35 @@ void makeRotatedCuboid(MeshCollector *collector, v3f pos, const aabb3f &box,
 
 	video::S3DVertex vertices[24] = {
 		// up
-		video::S3DVertex(min.X,max.Y,max.Z, 0,1,0, c, txc[0],txc[1]),
-		video::S3DVertex(max.X,max.Y,max.Z, 0,1,0, c, txc[2],txc[1]),
-		video::S3DVertex(max.X,max.Y,min.Z, 0,1,0, c, txc[2],txc[3]),
-		video::S3DVertex(min.X,max.Y,min.Z, 0,1,0, c, txc[0],txc[3]),
+		video::S3DVertex(min.X,max.Y,max.Z, 0,0,0, c, txc[0],txc[1]),
+		video::S3DVertex(max.X,max.Y,max.Z, 0,0,0, c, txc[2],txc[1]),
+		video::S3DVertex(max.X,max.Y,min.Z, 0,0,0, c, txc[2],txc[3]),
+		video::S3DVertex(min.X,max.Y,min.Z, 0,0,0, c, txc[0],txc[3]),
 		// down
-		video::S3DVertex(min.X,min.Y,min.Z, 0,-1,0, c, txc[4],txc[5]),
-		video::S3DVertex(max.X,min.Y,min.Z, 0,-1,0, c, txc[6],txc[5]),
-		video::S3DVertex(max.X,min.Y,max.Z, 0,-1,0, c, txc[6],txc[7]),
-		video::S3DVertex(min.X,min.Y,max.Z, 0,-1,0, c, txc[4],txc[7]),
+		video::S3DVertex(min.X,min.Y,min.Z, 0,0,0, c, txc[4],txc[5]),
+		video::S3DVertex(max.X,min.Y,min.Z, 0,0,0, c, txc[6],txc[5]),
+		video::S3DVertex(max.X,min.Y,max.Z, 0,0,0, c, txc[6],txc[7]),
+		video::S3DVertex(min.X,min.Y,max.Z, 0,0,0, c, txc[4],txc[7]),
 		// right
-		video::S3DVertex(max.X,max.Y,min.Z, 1,0,0, c, txc[ 8],txc[9]),
-		video::S3DVertex(max.X,max.Y,max.Z, 1,0,0, c, txc[10],txc[9]),
-		video::S3DVertex(max.X,min.Y,max.Z, 1,0,0, c, txc[10],txc[11]),
-		video::S3DVertex(max.X,min.Y,min.Z, 1,0,0, c, txc[ 8],txc[11]),
+		video::S3DVertex(max.X,max.Y,min.Z, 0,0,0, c, txc[ 8],txc[9]),
+		video::S3DVertex(max.X,max.Y,max.Z, 0,0,0, c, txc[10],txc[9]),
+		video::S3DVertex(max.X,min.Y,max.Z, 0,0,0, c, txc[10],txc[11]),
+		video::S3DVertex(max.X,min.Y,min.Z, 0,0,0, c, txc[ 8],txc[11]),
 		// left
-		video::S3DVertex(min.X,max.Y,max.Z, -1,0,0, c, txc[12],txc[13]),
-		video::S3DVertex(min.X,max.Y,min.Z, -1,0,0, c, txc[14],txc[13]),
-		video::S3DVertex(min.X,min.Y,min.Z, -1,0,0, c, txc[14],txc[15]),
-		video::S3DVertex(min.X,min.Y,max.Z, -1,0,0, c, txc[12],txc[15]),
+		video::S3DVertex(min.X,max.Y,max.Z, 0,0,0, c, txc[12],txc[13]),
+		video::S3DVertex(min.X,max.Y,min.Z, 0,0,0, c, txc[14],txc[13]),
+		video::S3DVertex(min.X,min.Y,min.Z, 0,0,0, c, txc[14],txc[15]),
+		video::S3DVertex(min.X,min.Y,max.Z, 0,0,0, c, txc[12],txc[15]),
 		// back
-		video::S3DVertex(max.X,max.Y,max.Z, 0,0,1, c, txc[16],txc[17]),
-		video::S3DVertex(min.X,max.Y,max.Z, 0,0,1, c, txc[18],txc[17]),
-		video::S3DVertex(min.X,min.Y,max.Z, 0,0,1, c, txc[18],txc[19]),
-		video::S3DVertex(max.X,min.Y,max.Z, 0,0,1, c, txc[16],txc[19]),
+		video::S3DVertex(max.X,max.Y,max.Z, 0,0,0, c, txc[16],txc[17]),
+		video::S3DVertex(min.X,max.Y,max.Z, 0,0,0, c, txc[18],txc[17]),
+		video::S3DVertex(min.X,min.Y,max.Z, 0,0,0, c, txc[18],txc[19]),
+		video::S3DVertex(max.X,min.Y,max.Z, 0,0,0, c, txc[16],txc[19]),
 		// front
-		video::S3DVertex(min.X,max.Y,min.Z, 0,0,-1, c, txc[20],txc[21]),
-		video::S3DVertex(max.X,max.Y,min.Z, 0,0,-1, c, txc[22],txc[21]),
-		video::S3DVertex(max.X,min.Y,min.Z, 0,0,-1, c, txc[22],txc[23]),
-		video::S3DVertex(min.X,min.Y,min.Z, 0,0,-1, c, txc[20],txc[23]),
+		video::S3DVertex(min.X,max.Y,min.Z, 0,0,0, c, txc[20],txc[21]),
+		video::S3DVertex(max.X,max.Y,min.Z, 0,0,0, c, txc[22],txc[21]),
+		video::S3DVertex(max.X,min.Y,min.Z, 0,0,0, c, txc[22],txc[23]),
+		video::S3DVertex(min.X,min.Y,min.Z, 0,0,0, c, txc[20],txc[23]),
 	};
 
 
@@ -209,7 +209,7 @@ void makeRoofTri(MeshCollector *collector, v3f corners[3], v3f pos, TileSpec *ti
 	v2f btm_t[3];
 	for (int i=0; i<3; i++) {
 		top_v[i].X = (corners[i].X*BS)+pos.X;
-		top_v[i].Y = ((corners[i].Y+0.01)*BS)+pos.Y;
+		top_v[i].Y = ((corners[i].Y+0.001)*BS)+pos.Y;
 		top_v[i].Z = (corners[i].Z*BS)+pos.Z;
 		top_t[i].X = (corners[i].X+0.5);
 		top_t[i].Y = (corners[i].Z+0.5);
@@ -220,7 +220,7 @@ void makeRoofTri(MeshCollector *collector, v3f corners[3], v3f pos, TileSpec *ti
 
 		// reverse winding for bottom
 		btm_v[2-i].X = (corners[i].X*BS)+pos.X;
-		btm_v[2-i].Y = ((corners[i].Y-0.01)*BS)+pos.Y;
+		btm_v[2-i].Y = ((corners[i].Y-0.001)*BS)+pos.Y;
 		btm_v[2-i].Z = (corners[i].Z*BS)+pos.Z;
 		btm_t[2-i].X = top_t[i].X;
 		btm_t[2-i].Y = top_t[i].Y;

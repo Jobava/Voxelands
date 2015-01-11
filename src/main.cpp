@@ -1119,7 +1119,7 @@ int main(int argc, char *argv[])
 
 	scene::ISceneManager* smgr = device->getSceneManager();
 	g_smgr = smgr;
-	smgr->setAmbientLight(video::SColor(255,20,20,20));
+	smgr->setAmbientLight(video::SColor(255,150,150,150));
 
 	guienv = device->getGUIEnvironment();
 	gui::IGUISkin* skin = guienv->getSkin();
