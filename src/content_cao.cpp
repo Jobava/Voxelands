@@ -277,6 +277,7 @@ void MobCAO::addToScene(scene::ISceneManager *smgr)
 			m_draw_type = MDT_MODEL;
 		}
 		m_node = (scene::IMeshSceneNode*)node;
+		//m_node->addShadowVolumeSceneNode();
 #if (IRRLICHT_VERSION_MAJOR >= 1 && IRRLICHT_VERSION_MINOR >= 8) || IRRLICHT_VERSION_MAJOR >= 2
 		mesh->drop();
 #endif

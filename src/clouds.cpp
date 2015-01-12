@@ -54,7 +54,7 @@ Clouds::Clouds(
 	m_material.Shininess = .0f;
 	m_material.AmbientColor.set(128,200,200,200);
 	m_material.DiffuseColor.set(128,200,200,200);
-	m_material.EmissiveColor.set(0,0,0,0);
+	m_material.EmissiveColor.set(255,200,200,200);
 	//m_material.setFlag(video::EMF_ANTI_ALIASING, true);
 	//m_material.MaterialType = video::EMT_TRANSPARENT_VERTEX_ALPHA;
 

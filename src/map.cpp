@@ -3815,10 +3815,9 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 			assert(mesh);
 			assert(mesh->getMesh());
 
-			// lighting
+			// lighting varies according to where the block is
+			// what we actually want to know is if sunlight touches the block
 			bool ug = block->getIsUnderground();
-			if (ug)
-				m_smgr->setAmbientLight(video::SColor(255,20,20,20));
 
 			u32 c = mesh->getMesh()->getMeshBufferCount();
 			bool stuff_actually_drawn = false;
@@ -3831,6 +3830,11 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 				buf->getMaterial().setFlag(video::EMF_BILINEAR_FILTER, use_bilinear_filter);
 				buf->getMaterial().setFlag(video::EMF_ANISOTROPIC_FILTER, use_anisotropic_filter);
 				buf->getMaterial().setFlag(video::EMF_NORMALIZE_NORMALS, true);
+				if (ug) {
+					buf->getMaterial().EmissiveColor.set(255,20,20,20);
+				}else{
+					buf->getMaterial().EmissiveColor.set(m_sunlight.getAlpha(),m_sunlight.getRed(),m_sunlight.getGreen(),m_sunlight.getBlue());
+				}
 
 				const video::SMaterial& material = buf->getMaterial();
 				video::IMaterialRenderer* rnd = driver->getMaterialRenderer(material.MaterialType);
@@ -3857,8 +3861,6 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 			}else{
 				blocks_without_stuff++;
 			}
-			if (ug)
-				m_smgr->setAmbientLight(m_sunlight);
 		}
 	}
 	} // ScopeProfiler
