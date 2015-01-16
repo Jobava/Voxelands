@@ -48,26 +48,26 @@ class MeshCollector
 {
 public:
 	void append(
-			video::SMaterial material,
-			const video::S3DVertex* const vertices,
-			u32 numVertices,
-			const u16* const indices,
-			u32 numIndices
-		)
+		video::SMaterial material,
+		const video::S3DVertex* const vertices,
+		u32 numVertices,
+		const u16* const indices,
+		u32 numIndices
+	)
 	{
 		PreMeshBuffer *p = NULL;
-		for(u32 i=0; i<m_prebuffers.size(); i++)
-		{
+		for (u32 i=0; i<m_prebuffers.size(); i++) {
 			PreMeshBuffer &pp = m_prebuffers[i];
-			if(pp.material != material)
+			if (pp.material != material)
+				continue;
+			if (pp.vertices.size() + numVertices > 65535)
 				continue;
 
 			p = &pp;
 			break;
 		}
 
-		if(p == NULL)
-		{
+		if (p == NULL) {
 			PreMeshBuffer pp;
 			pp.material = material;
 			m_prebuffers.push_back(pp);
@@ -75,18 +75,11 @@ public:
 		}
 
 		u32 vertex_count = p->vertices.size();
-		for(u32 i=0; i<numIndices; i++)
-		{
+		for(u32 i=0; i<numIndices; i++) {
 			u32 j = indices[i] + vertex_count;
-			if(j > 65535)
-			{
-				dstream<<"FIXME: Meshbuffer ran out of indices"<<std::endl;
-				// NOTE: Fix is to just add an another MeshBuffer
-			}
 			p->indices.push_back(j);
 		}
-		for(u32 i=0; i<numVertices; i++)
-		{
+		for(u32 i=0; i<numVertices; i++) {
 			p->vertices.push_back(vertices[i]);
 		}
 	}
@@ -98,28 +91,18 @@ public:
 		for(u32 i=0; i<m_prebuffers.size(); i++)
 		{
 			PreMeshBuffer &p = m_prebuffers[i];
-
-			/*dstream<<"p.vertices.size()="<<p.vertices.size()
-					<<", p.indices.size()="<<p.indices.size()
-					<<std::endl;*/
-
 			// Create meshbuffer
-
 			// This is a "Standard MeshBuffer",
 			// it's a typedeffed CMeshBuffer<video::S3DVertex>
 			scene::SMeshBuffer *buf = new scene::SMeshBuffer();
 			// Set material
 			buf->Material = p.material;
-			//((scene::SMeshBuffer*)buf)->Material = p.material;
-			// Use VBO
-			//buf->setHardwareMappingHint(scene::EHM_STATIC);
 			// Add to mesh
 			mesh->addMeshBuffer(buf);
 			// Mesh grabbed it
 			buf->drop();
 
-			buf->append(p.vertices.pointer(), p.vertices.size(),
-					p.indices.pointer(), p.indices.size());
+			buf->append(p.vertices.pointer(), p.vertices.size(), p.indices.pointer(), p.indices.size());
 		}
 	}
 
