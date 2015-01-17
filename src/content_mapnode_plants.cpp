@@ -124,6 +124,8 @@ void content_mapnode_plants(bool repeat)
 	f->fuel_time = 20;
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
+	f->walkable = false;
+	f->climbable = true;
 	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
@@ -144,6 +146,8 @@ void content_mapnode_plants(bool repeat)
 	f->fuel_time = 20;
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
+	f->walkable = false;
+	f->climbable = true;
 	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
@@ -164,6 +168,8 @@ void content_mapnode_plants(bool repeat)
 	f->fuel_time = 20;
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
+	f->walkable = false;
+	f->climbable = true;
 	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
@@ -184,6 +190,8 @@ void content_mapnode_plants(bool repeat)
 	f->fuel_time = 20;
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
+	f->walkable = false;
+	f->climbable = true;
 	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
@@ -214,6 +222,8 @@ void content_mapnode_plants(bool repeat)
 	f->description = wgettext("Leaves");
 	f->light_propagates = true;
 	f->air_equivalent = true;
+	f->walkable = false;
+	f->climbable = true;
 	f->param_type = CPT_LIGHT;
 	//f->is_ground_content = true;
 	if (new_style_leaves) {
@@ -247,6 +257,8 @@ void content_mapnode_plants(bool repeat)
 	f->description = wgettext("Apple Tree Leaves");
 	f->light_propagates = true;
 	f->air_equivalent = true;
+	f->walkable = false;
+	f->climbable = true;
 	f->param_type = CPT_LIGHT;
 	//f->is_ground_content = true;
 	if (new_style_leaves) {
@@ -280,6 +292,8 @@ void content_mapnode_plants(bool repeat)
 	f->description = wgettext("Jungle Leaves");
 	f->light_propagates = true;
 	f->air_equivalent = true;
+	f->walkable = false;
+	f->climbable = true;
 	f->param_type = CPT_LIGHT;
 	//f->is_ground_content = true;
 	if (new_style_leaves) {
@@ -313,6 +327,8 @@ void content_mapnode_plants(bool repeat)
 	f->description = wgettext("Conifer Leaves");
 	f->light_propagates = true;
 	f->air_equivalent = true;
+	f->walkable = false;
+	f->climbable = true;
 	f->param_type = CPT_LIGHT;
 	//f->is_ground_content = true;
 	if (new_style_leaves) {
@@ -346,6 +362,8 @@ void content_mapnode_plants(bool repeat)
 	f->description = wgettext("Trimmed Leaves");
 	f->light_propagates = true;
 	f->air_equivalent = true;
+	f->walkable = false;
+	f->climbable = true;
 	f->param_type = CPT_LIGHT;
 	if (new_style_leaves) {
 		f->draw_type = CDT_GLASSLIKE;
@@ -376,6 +394,8 @@ void content_mapnode_plants(bool repeat)
 	f->description = wgettext("Trimmed Apple Tree Leaves");
 	f->light_propagates = true;
 	f->air_equivalent = true;
+	f->walkable = false;
+	f->climbable = true;
 	f->param_type = CPT_LIGHT;
 	if (new_style_leaves) {
 		f->draw_type = CDT_GLASSLIKE;
@@ -406,6 +426,8 @@ void content_mapnode_plants(bool repeat)
 	f->description = wgettext("Trimmed Jungle Leaves");
 	f->light_propagates = true;
 	f->air_equivalent = true;
+	f->walkable = false;
+	f->climbable = true;
 	f->param_type = CPT_LIGHT;
 	if (new_style_leaves) {
 		f->draw_type = CDT_GLASSLIKE;
@@ -436,6 +458,8 @@ void content_mapnode_plants(bool repeat)
 	f->description = wgettext("Trimmed Conifer Leaves");
 	f->light_propagates = true;
 	f->air_equivalent = true;
+	f->walkable = false;
+	f->climbable = true;
 	f->param_type = CPT_LIGHT;
 	if (new_style_leaves) {
 		f->draw_type = CDT_GLASSLIKE;
@@ -466,6 +490,8 @@ void content_mapnode_plants(bool repeat)
 	f->description = wgettext("Apple Tree Blossom");
 	f->light_propagates = true;
 	f->air_equivalent = true;
+	f->walkable = false;
+	f->climbable = true;
 	f->param_type = CPT_LIGHT;
 	//f->is_ground_content = true;
 	if (new_style_leaves) {
@@ -496,6 +522,8 @@ void content_mapnode_plants(bool repeat)
 	f->description = wgettext("Trimmed Apple Tree Blossom");
 	f->light_propagates = true;
 	f->air_equivalent = true;
+	f->walkable = false;
+	f->climbable = true;
 	f->param_type = CPT_LIGHT;
 	if (new_style_leaves) {
 		f->draw_type = CDT_GLASSLIKE;
