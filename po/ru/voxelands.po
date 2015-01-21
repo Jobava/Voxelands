@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-22 03:53+1000\n"
+"POT-Creation-Date: 2015-01-22 06:22+1000\n"
 "PO-Revision-Date: 2014-12-27 18:22+0000\n"
 "Last-Translator: Roman M. Yagodin <roman.yagodin@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/voxelands/"
@@ -3021,98 +3021,98 @@ msgstr "Невозможно подключиться (порт уже испо�
 msgid "Connection timed out."
 msgstr "Время ожидания соединения истекло."
 
-#: src/game.cpp:1077
+#: src/game.cpp:1081
 msgid "Access denied. Reason: "
 msgstr "Доступ запрещен. Причина:"
 
-#: src/game.cpp:1336
+#: src/game.cpp:1316
 msgid "free_move disabled"
 msgstr "Режим полета отключен"
 
-#: src/game.cpp:1340
+#: src/game.cpp:1320
 msgid "free_move enabled"
 msgstr "Режим полета включен"
 
-#: src/game.cpp:1347
+#: src/game.cpp:1326
 msgid "fast_move disabled"
 msgstr "Режим ускорения выключен"
 
-#: src/game.cpp:1351
+#: src/game.cpp:1330
 msgid "fast_move enabled"
 msgstr "Режим ускорения включен"
 
-#: src/game.cpp:1364
+#: src/game.cpp:1342
 #, c-format
 msgid "Saved screenshot to '%s'"
 msgstr "Снимок экрана сохранен в '%s'"
 
-#: src/game.cpp:1377
+#: src/game.cpp:1354
 msgid "HUD shown"
 msgstr "Интерфейс показан"
 
-#: src/game.cpp:1379
+#: src/game.cpp:1356
 msgid "HUD hidden"
 msgstr "Интерфейс скрыт"
 
-#: src/game.cpp:1386
+#: src/game.cpp:1362
 msgid "Chat shown"
 msgstr "Чат показан"
 
-#: src/game.cpp:1388
+#: src/game.cpp:1364
 msgid "Chat hidden"
 msgstr "Чат скрыт"
 
-#: src/game.cpp:1395
+#: src/game.cpp:1370
 msgid "Fog disabled"
 msgstr "Туман выключен"
 
-#: src/game.cpp:1397
+#: src/game.cpp:1372
 msgid "Fog enabled"
 msgstr "Туман включен"
 
-#: src/game.cpp:1404
+#: src/game.cpp:1378
 msgid "Camera update disabled"
 msgstr "Обновление камеры отключено"
 
-#: src/game.cpp:1406
+#: src/game.cpp:1380
 msgid "Camera update enabled"
 msgstr "Обновление камеры включено"
 
-#: src/game.cpp:1417
+#: src/game.cpp:1390
 msgid "Debug info shown"
 msgstr "Показана отладочная информация"
 
-#: src/game.cpp:1423
+#: src/game.cpp:1395
 msgid "Debug info and frametime graph hidden"
 msgstr "Отладочная информация и график производительности скрыты"
 
-#: src/game.cpp:1427
+#: src/game.cpp:1399
 msgid "Frametime graph shown"
 msgstr "Показан график производительности"
 
-#: src/game.cpp:1440
+#: src/game.cpp:1411
 #, c-format
 msgid "Profiler shown (page %d of %d)"
 msgstr "Показан профайлер (страница %d из %d)"
 
-#: src/game.cpp:1444
+#: src/game.cpp:1415
 msgid "Profiler hidden"
 msgstr "Профайлер скрыт"
 
-#: src/game.cpp:1453 src/game.cpp:1465
+#: src/game.cpp:1423 src/game.cpp:1434
 #, c-format
 msgid "Minimum viewing range changed to %d"
 msgstr "Минимальная дальность обзора установлена в %d"
 
-#: src/game.cpp:1508
+#: src/game.cpp:1477
 msgid "Enabled full viewing range"
 msgstr "Полная дальность обзора включена"
 
-#: src/game.cpp:1512
+#: src/game.cpp:1481
 msgid "Disabled full viewing range"
 msgstr "Полная дальность обзора выключена"
 
-#: src/game.cpp:2371
+#: src/game.cpp:2356
 msgid "Shutting down..."
 msgstr "Завершаем работу..."
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-22 03:53+1000\n"
+"POT-Creation-Date: 2015-01-22 06:22+1000\n"
 "PO-Revision-Date: 2011-07-21 15:48+0200\n"
 "Last-Translator: Cyriaque 'Cisoun' Skrapits <cysoun@gmail.com>\n"
 "Language-Team: Français <>\n"
@@ -3013,98 +3013,98 @@ msgstr ""
 msgid "Connection timed out."
 msgstr ""
 
-#: src/game.cpp:1077
+#: src/game.cpp:1081
 msgid "Access denied. Reason: "
 msgstr ""
 
-#: src/game.cpp:1336
+#: src/game.cpp:1316
 msgid "free_move disabled"
 msgstr ""
 
-#: src/game.cpp:1340
+#: src/game.cpp:1320
 msgid "free_move enabled"
 msgstr ""
 
-#: src/game.cpp:1347
+#: src/game.cpp:1326
 msgid "fast_move disabled"
 msgstr ""
 
-#: src/game.cpp:1351
+#: src/game.cpp:1330
 msgid "fast_move enabled"
 msgstr ""
 
-#: src/game.cpp:1364
+#: src/game.cpp:1342
 #, c-format
 msgid "Saved screenshot to '%s'"
 msgstr ""
 
-#: src/game.cpp:1377
+#: src/game.cpp:1354
 msgid "HUD shown"
 msgstr ""
 
-#: src/game.cpp:1379
+#: src/game.cpp:1356
 msgid "HUD hidden"
 msgstr ""
 
-#: src/game.cpp:1386
+#: src/game.cpp:1362
 msgid "Chat shown"
 msgstr ""
 
-#: src/game.cpp:1388
+#: src/game.cpp:1364
 msgid "Chat hidden"
 msgstr ""
 
-#: src/game.cpp:1395
+#: src/game.cpp:1370
 msgid "Fog disabled"
 msgstr ""
 
-#: src/game.cpp:1397
+#: src/game.cpp:1372
 msgid "Fog enabled"
 msgstr ""
 
-#: src/game.cpp:1404
+#: src/game.cpp:1378
 msgid "Camera update disabled"
 msgstr ""
 
-#: src/game.cpp:1406
+#: src/game.cpp:1380
 msgid "Camera update enabled"
 msgstr ""
 
-#: src/game.cpp:1417
+#: src/game.cpp:1390
 msgid "Debug info shown"
 msgstr ""
 
-#: src/game.cpp:1423
+#: src/game.cpp:1395
 msgid "Debug info and frametime graph hidden"
 msgstr ""
 
-#: src/game.cpp:1427
+#: src/game.cpp:1399
 msgid "Frametime graph shown"
 msgstr ""
 
-#: src/game.cpp:1440
+#: src/game.cpp:1411
 #, c-format
 msgid "Profiler shown (page %d of %d)"
 msgstr ""
 
-#: src/game.cpp:1444
+#: src/game.cpp:1415
 msgid "Profiler hidden"
 msgstr ""
 
-#: src/game.cpp:1453 src/game.cpp:1465
+#: src/game.cpp:1423 src/game.cpp:1434
 #, c-format
 msgid "Minimum viewing range changed to %d"
 msgstr ""
 
-#: src/game.cpp:1508
+#: src/game.cpp:1477
 msgid "Enabled full viewing range"
 msgstr ""
 
-#: src/game.cpp:1512
+#: src/game.cpp:1481
 msgid "Disabled full viewing range"
 msgstr ""
 
-#: src/game.cpp:2371
+#: src/game.cpp:2356
 msgid "Shutting down..."
 msgstr ""
 
@@ -3815,6 +3815,15 @@ msgstr ""
 msgid "Loading Special MapNodes"
 msgstr ""
 
+#~ msgid "Leave address blank to start a local server."
+#~ msgstr "Laisser l'adresse vide pour lancer un serveur local."
+
+#~ msgid "Delete map"
+#~ msgstr "Supprimer carte"
+
+#~ msgid "Proceed"
+#~ msgstr "OK"
+
 #, fuzzy
 #~ msgid ""
 #~ "Default Controls:\n"
@@ -3839,12 +3848,3 @@ msgstr ""
 #~ "- R: Active la vue de tous les blocs\n"
 #~ "- I: Inventaire\n"
 #~ "- T: Chat\n"
-
-#~ msgid "Proceed"
-#~ msgstr "OK"
-
-#~ msgid "Delete map"
-#~ msgstr "Supprimer carte"
-
-#~ msgid "Leave address blank to start a local server."
-#~ msgstr "Laisser l'adresse vide pour lancer un serveur local."
