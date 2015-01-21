@@ -444,6 +444,8 @@ struct PlayerControl
 		jump = false;
 		aux1 = false;
 		sneak = false;
+		fast = false;
+		free = false;
 		pitch = 0;
 		yaw = 0;
 	}
@@ -455,6 +457,8 @@ struct PlayerControl
 		bool a_jump,
 		bool a_aux1,
 		bool a_sneak,
+		bool a_fast,
+		bool a_free,
 		float a_pitch,
 		float a_yaw
 	)
@@ -466,6 +470,8 @@ struct PlayerControl
 		jump = a_jump;
 		aux1 = a_aux1;
 		sneak = a_sneak;
+		fast = a_fast;
+		free = a_free;
 		pitch = a_pitch;
 		yaw = a_yaw;
 	}
@@ -476,6 +482,8 @@ struct PlayerControl
 	bool jump;
 	bool aux1;
 	bool sneak;
+	bool fast;
+	bool free;
 	float pitch;
 	float yaw;
 };

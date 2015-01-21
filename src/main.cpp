@@ -487,7 +487,7 @@ public:
 			if(counter1 < 0.0)
 			{
 				counter1 = 0.1*Rand(1, 40);
-				keydown.toggle(getKeySetting("keymap_jump"));
+				keydown.toggle(getKeySetting(VLKC_JUMP));
 			}
 		}
 		{
@@ -496,7 +496,7 @@ public:
 			if(counter1 < 0.0)
 			{
 				counter1 = 0.1*Rand(1, 40);
-				keydown.toggle(getKeySetting("keymap_special1"));
+				keydown.toggle(getKeySetting(VLKC_USE));
 			}
 		}
 		{
@@ -505,7 +505,7 @@ public:
 			if(counter1 < 0.0)
 			{
 				counter1 = 0.1*Rand(1, 40);
-				keydown.toggle(getKeySetting("keymap_forward"));
+				keydown.toggle(getKeySetting(VLKC_FORWARD));
 			}
 		}
 		{
@@ -514,7 +514,7 @@ public:
 			if(counter1 < 0.0)
 			{
 				counter1 = 0.1*Rand(1, 40);
-				keydown.toggle(getKeySetting("keymap_left"));
+				keydown.toggle(getKeySetting(VLKC_LEFT));
 			}
 		}
 		{

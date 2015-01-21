@@ -87,6 +87,7 @@ private:
 	v2f m_camera_pos;
 	v3s16 m_camera_offset;
 	float m_time;
+	u16 m_face_count;
 };
 
 

@@ -468,6 +468,7 @@ public:
 private:
 	Client *m_client;
 	ClientMap *m_map;
+	LocalPlayer *m_local_player;
 	scene::ISceneManager *m_smgr;
 	std::map<u16, ClientActiveObject*> m_active_objects;
 	Queue<ClientEnvEvent> m_client_event_queue;

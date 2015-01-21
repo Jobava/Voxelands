@@ -68,6 +68,7 @@ Camera::Camera(scene::ISceneManager* smgr, MapDrawControl& draw_control, Client 
 	m_frametime_counter(0),
 	m_time_per_range(30. / 50), // a sane default of 30ms per 50 nodes of range
 
+	m_view_bobbing(true),
 	m_view_bobbing_anim(0),
 	m_view_bobbing_state(0),
 	m_view_bobbing_speed(0),
@@ -75,8 +76,6 @@ Camera::Camera(scene::ISceneManager* smgr, MapDrawControl& draw_control, Client 
 	m_digging_anim(0),
 	m_digging_button(-1)
 {
-	//dstream<<__FUNCTION_NAME<<std::endl;
-
 	// note: making the camera node a child of the player node
 	// would lead to unexpected behaviour, so we don't do that.
 	m_playernode = smgr->addEmptySceneNode(smgr->getRootSceneNode());
@@ -89,6 +88,17 @@ Camera::Camera(scene::ISceneManager* smgr, MapDrawControl& draw_control, Client 
 	m_wieldmgr = smgr->createNewSceneManager();
 	m_wieldmgr->addCameraSceneNode();
 	m_wieldnode = new ExtrudedSpriteSceneNode(m_wieldmgr->getRootSceneNode(), m_wieldmgr);
+
+	// Get FOV setting
+	m_fov = g_settings->getFloat("fov");
+	m_fov = MYMAX(m_fov, 10.0);
+	m_fov = MYMIN(m_fov, 170.0);
+
+	m_view_bobbing_amount = g_settings->getFloat("view_bobbing_amount");
+
+	f32 wanted_fps = g_settings->getFloat("wanted_fps");
+	wanted_fps = MYMAX(wanted_fps, 1.0);
+	m_wanted_frametime = 1.0 / wanted_fps;
 }
 
 Camera::~Camera()
@@ -99,28 +109,23 @@ Camera::~Camera()
 
 bool Camera::successfullyCreated(std::wstring& error_message)
 {
-	if (m_playernode == NULL)
-	{
+	if (m_playernode == NULL) {
 		error_message = L"Failed to create the player scene node";
 		return false;
 	}
-	if (m_headnode == NULL)
-	{
+	if (m_headnode == NULL) {
 		error_message = L"Failed to create the head scene node";
 		return false;
 	}
-	if (m_cameranode == NULL)
-	{
+	if (m_cameranode == NULL) {
 		error_message = L"Failed to create the camera scene node";
 		return false;
 	}
-	if (m_wieldmgr == NULL)
-	{
+	if (m_wieldmgr == NULL) {
 		error_message = L"Failed to create the wielded item scene manager";
 		return false;
 	}
-	if (m_wieldnode == NULL)
-	{
+	if (m_wieldnode == NULL) {
 		error_message = L"Failed to create the wielded item scene node";
 		return false;
 	}
@@ -212,41 +217,20 @@ void Camera::update(LocalPlayer* player, f32 frametime, v2u32 screensize)
 	{
 		f32 bobfrac = my_modf(m_view_bobbing_anim * 2);
 		f32 bobdir = (m_view_bobbing_anim < 0.5) ? 1.0 : -1.0;
-
-#if 1
 		f32 bobknob = 1.2;
 		f32 bobtmp = sin(pow(bobfrac, bobknob) * PI);
-		//f32 bobtmp2 = cos(pow(bobfrac, bobknob) * PI);
 
 		v3f bobvec = v3f(
 			0.3 * bobdir * sin(bobfrac * PI),
 			-0.28 * bobtmp * bobtmp,
 			0.);
 
-		//rel_cam_pos += 0.2 * bobvec;
-		//rel_cam_target += 0.03 * bobvec;
-		//rel_cam_up.rotateXYBy(0.02 * bobdir * bobtmp * PI);
 		float f = 1.0;
-		f *= g_settings->getFloat("view_bobbing_amount");
+		f *= m_view_bobbing_amount;
 		rel_cam_pos += bobvec * f;
-		//rel_cam_target += 0.995 * bobvec * f;
 		rel_cam_target += bobvec * f;
 		rel_cam_target.Z -= 0.005 * bobvec.Z * f;
-		//rel_cam_target.X -= 0.005 * bobvec.X * f;
-		//rel_cam_target.Y -= 0.005 * bobvec.Y * f;
 		rel_cam_up.rotateXYBy(-0.03 * bobdir * bobtmp * PI * f);
-#else
-		f32 angle_deg = 1 * bobdir * sin(bobfrac * PI);
-		f32 angle_rad = angle_deg * PI / 180;
-		f32 r = 0.05;
-		v3f off = v3f(
-			r * sin(angle_rad),
-			r * (cos(angle_rad) - 1),
-			0);
-		rel_cam_pos += off;
-		//rel_cam_target += off;
-		rel_cam_up.rotateXYBy(angle_deg);
-#endif
 
 	}
 
@@ -272,14 +256,9 @@ void Camera::update(LocalPlayer* player, f32 frametime, v2u32 screensize)
 	// *100.0 helps in large map coordinates
 	m_cameranode->setTarget(m_camera_position-intToFloat(m_camera_offset, BS) + 100 * m_camera_direction);
 
-	// Get FOV setting
-	f32 fov_degrees = g_settings->getFloat("fov");
-	fov_degrees = MYMAX(fov_degrees, 10.0);
-	fov_degrees = MYMIN(fov_degrees, 170.0);
-
 	// FOV and aspect ratio
 	m_aspect = (f32)screensize.X / (f32) screensize.Y;
-	m_fov_y = fov_degrees * PI / 180.0;
+	m_fov_y = m_fov * PI / 180.0;
 	m_fov_x = 2 * atan(0.5 * m_aspect * tan(m_fov_y));
 	m_cameranode->setAspectRatio(m_aspect);
 	m_cameranode->setFOV(m_fov_y);
@@ -322,17 +301,16 @@ void Camera::update(LocalPlayer* player, f32 frametime, v2u32 screensize)
 	// view bobbing is enabled and free_move is off,
 	// start (or continue) the view bobbing animation.
 	v3f speed = player->getSpeed();
-	if ((hypot(speed.X, speed.Z) > BS) &&
-		(player->touching_ground) &&
-		(g_settings->getBool("view_bobbing") == true) &&
-		(g_settings->getBool("free_move") == false))
-	{
+	if (
+		(hypot(speed.X, speed.Z) > BS)
+		&& (player->touching_ground)
+		&& m_view_bobbing == true
+		&& player->control.free == false
+	) {
 		// Start animation
 		m_view_bobbing_state = 1;
 		m_view_bobbing_speed = MYMIN(speed.getLength(), 40);
-	}
-	else if (m_view_bobbing_state == 1)
-	{
+	}else if (m_view_bobbing_state == 1) {
 		// Stop animation
 		m_view_bobbing_state = 2;
 		m_view_bobbing_speed = 60;
@@ -353,26 +331,12 @@ void Camera::updateViewingRange(f32 frametime_in)
 		return;
 	m_frametime_counter = 0.2;
 
-	/*dstream<<__FUNCTION_NAME
-			<<": Collected "<<m_added_frames<<" frames, total of "
-			<<m_added_frametime<<"s."<<std::endl;
-
-	dstream<<"m_draw_control.blocks_drawn="
-			<<m_draw_control.blocks_drawn
-			<<", m_draw_control.blocks_would_have_drawn="
-			<<m_draw_control.blocks_would_have_drawn
-			<<std::endl;*/
-
 	// Get current viewing range and FPS settings
 	f32 viewing_range_min = g_settings->getS16("viewing_range_nodes_min");
 	viewing_range_min = MYMAX(5.0, viewing_range_min);
 
 	f32 viewing_range_max = g_settings->getS16("viewing_range_nodes_max");
 	viewing_range_max = MYMAX(viewing_range_min, viewing_range_max);
-
-	f32 wanted_fps = g_settings->getFloat("wanted_fps");
-	wanted_fps = MYMAX(wanted_fps, 1.0);
-	f32 wanted_frametime = 1.0 / wanted_fps;
 
 	m_draw_control.wanted_min_range = viewing_range_min;
 	m_draw_control.wanted_max_blocks = (2.0*m_draw_control.blocks_would_have_drawn)+1;
@@ -381,10 +345,7 @@ void Camera::updateViewingRange(f32 frametime_in)
 
 	f32 block_draw_ratio = 1.0;
 	if (m_draw_control.blocks_would_have_drawn != 0)
-	{
-		block_draw_ratio = (f32)m_draw_control.blocks_drawn
-			/ (f32)m_draw_control.blocks_would_have_drawn;
-	}
+		block_draw_ratio = (f32)m_draw_control.blocks_drawn / (f32)m_draw_control.blocks_would_have_drawn;
 
 	// Calculate the average frametime in the case that all wanted
 	// blocks had been drawn
@@ -393,17 +354,13 @@ void Camera::updateViewingRange(f32 frametime_in)
 	m_added_frametime = 0.0;
 	m_added_frames = 0;
 
-	f32 wanted_frametime_change = wanted_frametime - frametime;
-	//dstream<<"wanted_frametime_change="<<wanted_frametime_change<<std::endl;
+	f32 wanted_frametime_change = m_wanted_frametime - frametime;
 
 	// If needed frametime change is small, just return
 	// This value was 0.4 for many months until 2011-10-18 by c55;
 	// Let's see how this works out.
-	if (fabs(wanted_frametime_change) < wanted_frametime*0.33)
-	{
-		//dstream<<"ignoring small wanted_frametime_change"<<std::endl;
+	if (fabs(wanted_frametime_change) < m_wanted_frametime*0.33)
 		return;
-	}
 
 	f32 range = m_draw_control.wanted_range;
 	f32 new_range = range;
@@ -411,9 +368,7 @@ void Camera::updateViewingRange(f32 frametime_in)
 	f32 d_range = range - m_range_old;
 	f32 d_frametime = frametime - m_frametime_old;
 	if (d_range != 0)
-	{
 		m_time_per_range = d_frametime / d_range;
-	}
 
 	// The minimum allowed calculated frametime-range derivative:
 	// Practically this sets the maximum speed of changing the range.
@@ -422,40 +377,21 @@ void Camera::updateViewingRange(f32 frametime_in)
 	// A high value here results in slow changing range (0.0025)
 	// SUGG: This could be dynamically adjusted so that when
 	//       the camera is turning, this is lower
-	//f32 min_time_per_range = 0.0015;
 	f32 min_time_per_range = 0.0010;
-	//f32 min_time_per_range = 0.05 / range;
-	if(m_time_per_range < min_time_per_range)
-	{
+	if (m_time_per_range < min_time_per_range)
 		m_time_per_range = min_time_per_range;
-		//dstream<<"m_time_per_range="<<m_time_per_range<<" (min)"<<std::endl;
-	}
-	else
-	{
-		//dstream<<"m_time_per_range="<<m_time_per_range<<std::endl;
-	}
 
 	f32 wanted_range_change = wanted_frametime_change / m_time_per_range;
 	// Dampen the change a bit to kill oscillations
-	//wanted_range_change *= 0.9;
-	//wanted_range_change *= 0.75;
 	wanted_range_change *= 0.5;
-	//dstream<<"wanted_range_change="<<wanted_range_change<<std::endl;
 
 	// If needed range change is very small, just return
-	if(fabs(wanted_range_change) < 0.001)
-	{
-		//dstream<<"ignoring small wanted_range_change"<<std::endl;
+	if (fabs(wanted_range_change) < 0.001)
 		return;
-	}
 
 	new_range += wanted_range_change;
-
-	//f32 new_range_unclamped = new_range;
 	new_range = MYMAX(new_range, viewing_range_min);
 	new_range = MYMIN(new_range, viewing_range_max);
-	/*dstream<<"new_range="<<new_range_unclamped
-			<<", clamped to "<<new_range<<std::endl;*/
 
 	m_draw_control.wanted_range = new_range;
 

@@ -947,21 +947,16 @@ void the_game(
 
 	float cloud_height = BS*100;
 	Clouds *clouds = NULL;
-	if(g_settings->getBool("enable_clouds"))
-	{
-		clouds = new Clouds(smgr->getRootSceneNode(), smgr, -1,
-				cloud_height, time(0));
-	}
+	if (g_settings->getBool("enable_clouds"))
+		clouds = new Clouds(smgr->getRootSceneNode(), smgr, -1, cloud_height, time(0));
 
 	/*
 		FarMesh
 	*/
 
 	FarMesh *farmesh = NULL;
-	if(g_settings->getBool("enable_farmesh"))
-	{
+	if (g_settings->getBool("enable_farmesh"))
 		farmesh = new FarMesh(smgr->getRootSceneNode(), smgr, -1, client.getMapSeed(), client.getMapType(), &client);
-	}
 
 	/*
 		Move into game
@@ -1051,6 +1046,17 @@ void the_game(
 	bool show_debug_frametime = false;
 	u32 show_profiler = 0;
 	u32 show_profiler_max = 3;  // Number of pages
+	float fps_max = g_settings->getFloat("fps_max");
+	float profiler_print_interval = g_settings->getFloat("profiler_print_interval");
+
+	bool free_move = g_settings->getBool("free_move");
+	bool fast_move = g_settings->getBool("fast_move");
+	f32 mouse_sensitivity = g_settings->getFloat("mouse_sensitivity");
+	bool highlight_selected_node = true;
+	if (g_settings->exists("selected_node") && g_settings->get("selected_node") == "outline")
+		highlight_selected_node = false;
+	bool enable_particles = g_settings->getBool("enable_particles");
+	bool enable_fog = g_settings->getBool("enable_fog");
 
 	/*
 		Main loop
@@ -1068,26 +1074,22 @@ void the_game(
 	u32 lasttime = device->getTimer()->getTime();
 	v3s16 lastpointed(0,0,0);
 
-	while(device->run() && kill == false)
-	{
+	while (device->run() && kill == false) {
 		//std::cerr<<"frame"<<std::endl;
 
-		if(client.accessDenied())
-		{
+		if (client.accessDenied()) {
 			error_message = wgettext("Access denied. Reason: ")
 					+client.accessDeniedReason();
 			errorstream<<wide_to_narrow(error_message)<<std::endl;
 			break;
 		}
 
-		if(g_gamecallback->disconnect_requested)
-		{
+		if (g_gamecallback->disconnect_requested) {
 			g_gamecallback->disconnect_requested = false;
 			break;
 		}
 
-		if(g_gamecallback->changepassword_requested)
-		{
+		if (g_gamecallback->changepassword_requested) {
 			(new GUIPasswordChange(guienv, guiroot, -1,
 				&g_menumgr, &client))->drop();
 			g_gamecallback->changepassword_requested = false;
@@ -1106,12 +1108,13 @@ void the_game(
 		v2s32 displaycenter(screensize.X/2,screensize.Y/2);
 
 		// Resize hotbar
-		if(screensize.Y <= 800)
+		if (screensize.Y <= 800) {
 			hotbar_imagesize = 32;
-		else if(screensize.Y <= 1280)
+		}else if (screensize.Y <= 1280) {
 			hotbar_imagesize = 48;
-		else
+		}else{
 			hotbar_imagesize = 64;
+		}
 
 		// Hilight boxes collected during the loop and displayed
 		core::list< core::aabbox3d<f32> > hilightboxes;
@@ -1125,10 +1128,11 @@ void the_game(
 		{
 			// not using getRealTime is necessary for wine
 			u32 time = device->getTimer()->getTime();
-			if(time > lasttime)
+			if (time > lasttime) {
 				busytime_u32 = time - lasttime;
-			else
+			}else{
 				busytime_u32 = 0;
+			}
 			busytime = busytime_u32 / 1000.0;
 		}
 
@@ -1140,11 +1144,9 @@ void the_game(
 		*/
 
 		{
-			float fps_max = g_settings->getFloat("fps_max");
 			u32 frametime_min = 1000./fps_max;
 
-			if(busytime_u32 < frametime_min)
-			{
+			if (busytime_u32 < frametime_min) {
 				u32 sleeptime = frametime_min - busytime_u32;
 				device->sleep(sleeptime);
 			}
@@ -1159,10 +1161,11 @@ void the_game(
 		f32 dtime; // in seconds
 
 		u32 time = device->getTimer()->getTime();
-		if(time > lasttime)
+		if (time > lasttime) {
 			dtime = (time - lasttime) / 1000.0;
-		else
+		}else{
 			dtime = 0;
+		}
 		lasttime = time;
 
 		/* Run timers */
@@ -1176,8 +1179,7 @@ void the_game(
 			Log frametime for visualization
 		*/
 		frametime_log.push_back(dtime);
-		if(frametime_log.size() > 100)
-		{
+		if (frametime_log.size() > 100) {
 			core::list<float>::Iterator i = frametime_log.begin();
 			frametime_log.erase(i);
 		}
@@ -1195,15 +1197,13 @@ void the_game(
 		{
 			static f32 jitter1_max = 0.0;
 			static f32 counter = 0.0;
-			if(dtime_jitter1 > jitter1_max)
+			if (dtime_jitter1 > jitter1_max)
 				jitter1_max = dtime_jitter1;
 			counter += dtime;
-			if(counter > 0.0)
-			{
+			if (counter > 0.0) {
 				counter -= 3.0;
 				dtime_jitter1_max_sample = jitter1_max;
-				dtime_jitter1_max_fraction
-						= dtime_jitter1_max_sample / (dtime_avg1+0.001);
+				dtime_jitter1_max_fraction = dtime_jitter1_max_sample / (dtime_avg1+0.001);
 				jitter1_max = 0.0;
 			}
 		}
@@ -1222,12 +1222,12 @@ void the_game(
 			static f32 jitter1_max = 0.0;
 			static f32 jitter1_min = 0.0;
 			static f32 counter = 0.0;
-			if(busytime_jitter1 > jitter1_max)
+			if (busytime_jitter1 > jitter1_max)
 				jitter1_max = busytime_jitter1;
-			if(busytime_jitter1 < jitter1_min)
+			if (busytime_jitter1 < jitter1_min)
 				jitter1_min = busytime_jitter1;
 			counter += dtime;
-			if(counter > 0.0){
+			if (counter > 0.0) {
 				counter -= 3.0;
 				busytime_jitter1_max_sample = jitter1_max;
 				busytime_jitter1_min_sample = jitter1_min;
@@ -1242,8 +1242,7 @@ void the_game(
 		{
 			static float counter = 0.0;
 			counter -= dtime;
-			if(counter < 0)
-			{
+			if (counter < 0) {
 				counter = 30.0;
 				client.printDebugInfo(infostream);
 			}
@@ -1252,16 +1251,13 @@ void the_game(
 		/*
 			Profiler
 		*/
-		float profiler_print_interval =
-				g_settings->getFloat("profiler_print_interval");
 		bool print_to_log = true;
-		if(profiler_print_interval == 0){
+		if (profiler_print_interval == 0) {
 			print_to_log = false;
 			profiler_print_interval = 5;
 		}
-		if(m_profiler_interval.step(dtime, profiler_print_interval))
-		{
-			if(print_to_log){
+		if (m_profiler_interval.step(dtime, profiler_print_interval)) {
+			if (print_to_log) {
 				infostream<<"Profiler:"<<std::endl;
 				g_profiler->print(infostream);
 			}
@@ -1277,10 +1273,8 @@ void the_game(
 		*/
 
 		// Reset input if window not active or some menu is active
-		if(device->isWindowActive() == false || noMenuActive() == false)
-		{
+		if (device->isWindowActive() == false || noMenuActive() == false)
 			input->clear();
-		}
 
 		// Input handler step() (used by the random input generator)
 		input->step(dtime);
@@ -1288,15 +1282,10 @@ void the_game(
 		/*
 			Launch menus according to keys
 		*/
-		if(input->wasKeyDown(getKeySetting("keymap_inventory")))
-		{
-			infostream<<"the_game: "
-					<<"Launching inventory"<<std::endl;
+		if (input->wasKeyDown(getKeySetting(VLKC_INVENTORY))) {
+			infostream<<"the_game: Launching inventory"<<std::endl;
 
-			GUIFormSpecMenu *menu =
-				new GUIFormSpecMenu(guienv, guiroot, -1,
-					&g_menumgr,
-					&client);
+			GUIFormSpecMenu *menu = new GUIFormSpecMenu(guienv, guiroot, -1, &g_menumgr, &client);
 
 			InventoryLocation inventoryloc;
 			inventoryloc.setCurrentPlayer();
@@ -1306,53 +1295,42 @@ void the_game(
 			menu->setFormSpec(fio->getForm(), inventoryloc);
 			menu->setFormIO(fio);
 			menu->drop();
-		}
-		else if(input->wasKeyDown(EscapeKey))
-		{
-			infostream<<"the_game: "
-					<<"Launching pause menu"<<std::endl;
+		}else if (input->wasKeyDown(EscapeKey)) {
+			infostream<<"the_game: Launching pause menu"<<std::endl;
 			// It will delete itself by itself
-			(new GUIPauseMenu(guienv, guiroot, -1, g_gamecallback,
-					&g_menumgr))->drop();
+			(new GUIPauseMenu(guienv, guiroot, -1, g_gamecallback, &g_menumgr))->drop();
 
 			// Move mouse cursor on top of the disconnect button
 			input->setMousePos(displaycenter.X, displaycenter.Y+25);
-		}
-		else if(input->wasKeyDown(getKeySetting("keymap_chat")))
-		{
+		}else if (input->wasKeyDown(getKeySetting(VLKC_CHAT))) {
 			FormIO *fio = new ChatFormIO(&client);
 
 			(new GUITextInputMenu(guienv, guiroot, -1, &g_menumgr, fio, L""))->drop();
-		}
-		else if(input->wasKeyDown(getKeySetting("keymap_cmd")))
-		{
+		}else if (input->wasKeyDown(getKeySetting(VLKC_COMMAND))) {
 			FormIO *fio = new ChatFormIO(&client);
 
 			(new GUITextInputMenu(guienv, guiroot, -1, &g_menumgr, fio, L"/"))->drop();
-		}
-		else if(input->wasKeyDown(getKeySetting("keymap_freemove"))) {
-			if (g_settings->getBool("free_move")) {
-				g_settings->set("free_move","false");
+		}else if(input->wasKeyDown(getKeySetting(VLKC_FREEMOVE))) {
+			if (free_move) {
+				free_move = false;
 				statustext = wgettext("free_move disabled");
 				statustext_time = 0;
 			}else{
-				g_settings->set("free_move","true");
+				free_move = true;
 				statustext = wgettext("free_move enabled");
 				statustext_time = 0;
 			}
-		}
-		else if(input->wasKeyDown(getKeySetting("keymap_fastmove"))) {
-			if (g_settings->getBool("fast_move")) {
-				g_settings->set("fast_move","false");
+		}else if(input->wasKeyDown(getKeySetting(VLKC_FASTMOVE))) {
+			if (fast_move) {
+				fast_move = false;
 				statustext = wgettext("fast_move disabled");
 				statustext_time = 0;
 			}else{
-				g_settings->set("fast_move","true");
+				fast_move = true;
 				statustext = wgettext("fast_move enabled");
 				statustext_time = 0;
 			}
-		}
-		else if(input->wasKeyDown(getKeySetting("keymap_screenshot"))) {
+		}else if(input->wasKeyDown(getKeySetting(VLKC_SCREENSHOT))) {
 			irr::video::IImage* const image = driver->createScreenShot();
 			if (image) {
 				irr::c8 filename[256];
@@ -1370,8 +1348,7 @@ void the_game(
 				}
 				image->drop();
 			}
-		}
-		else if (input->wasKeyDown(getKeySetting("keymap_toggle_hud"))) {
+		}else if (input->wasKeyDown(getKeySetting(VLKC_TOGGLE_HUD))) {
 			show_hud = !show_hud;
 			if (show_hud) {
 				statustext = wgettext("HUD shown");
@@ -1379,8 +1356,7 @@ void the_game(
 				statustext = wgettext("HUD hidden");
 			}
 			statustext_time = 0;
-		}
-		else if (input->wasKeyDown(getKeySetting("keymap_toggle_chat"))) {
+		}else if (input->wasKeyDown(getKeySetting(VLKC_TOGGLE_CHAT))) {
 			show_chat = !show_chat;
 			if (show_chat) {
 				statustext = wgettext("Chat shown");
@@ -1388,8 +1364,7 @@ void the_game(
 				statustext = wgettext("Chat hidden");
 			}
 			statustext_time = 0;
-		}
-		else if (input->wasKeyDown(getKeySetting("keymap_toggle_force_fog_off"))) {
+		}else if (input->wasKeyDown(getKeySetting(VLKC_TOGGLE_FOG))) {
 			force_fog_off = !force_fog_off;
 			if (force_fog_off) {
 				statustext = wgettext("Fog disabled");
@@ -1397,8 +1372,7 @@ void the_game(
 				statustext = wgettext("Fog enabled");
 			}
 			statustext_time = 0;
-		}
-		else if (input->wasKeyDown(getKeySetting("keymap_toggle_update_camera"))) {
+		}else if (input->wasKeyDown(getKeySetting(VLKC_TOGGLE_CAMERA))) {
 			disable_camera_update = !disable_camera_update;
 			if (disable_camera_update) {
 				statustext = wgettext("Camera update disabled");
@@ -1406,8 +1380,7 @@ void the_game(
 				statustext = wgettext("Camera update enabled");
 			}
 			statustext_time = 0;
-		}
-		else if (input->wasKeyDown(getKeySetting("keymap_toggle_debug"))) {
+		}else if (input->wasKeyDown(getKeySetting(VLKC_TOGGLE_DEBUG))) {
 			// Initial / 3x toggle: Chat only
 			// 1x toggle: Debug text with chat
 			// 2x toggle: Debug text with frametime
@@ -1416,8 +1389,7 @@ void the_game(
 				show_debug_frametime = false;
 				statustext = wgettext("Debug info shown");
 				statustext_time = 0;
-			}
-			else if (show_debug_frametime) {
+			}else if (show_debug_frametime) {
 				show_debug = false;
 				show_debug_frametime = false;
 				statustext = wgettext("Debug info and frametime graph hidden");
@@ -1427,8 +1399,7 @@ void the_game(
 				statustext = wgettext("Frametime graph shown");
 				statustext_time = 0;
 			}
-		}
-		else if (input->wasKeyDown(getKeySetting("keymap_toggle_profiler"))) {
+		}else if (input->wasKeyDown(getKeySetting(VLKC_TOGGLE_PROFILER))) {
 			show_profiler = (show_profiler + 1) % (show_profiler_max + 1);
 
 			// FIXME: This updates the profiler with incomplete values
@@ -1444,8 +1415,7 @@ void the_game(
 				statustext = wgettext("Profiler hidden");
 				statustext_time = 0;
 			}
-		}
-		else if (input->wasKeyDown(getKeySetting("keymap_increase_viewing_range_min"))) {
+		}else if (input->wasKeyDown(getKeySetting(VLKC_RANGE_PLUS))) {
 			s16 range = g_settings->getS16("viewing_range_nodes_min");
 			s16 range_new = range + 10;
 			g_settings->set("viewing_range_nodes_min", itos(range_new));
@@ -1453,8 +1423,7 @@ void the_game(
 			swprintf(buff,512,wgettext("Minimum viewing range changed to %d"),range_new);
 			statustext = std::wstring(buff);
 			statustext_time = 0;
-		}
-		else if (input->wasKeyDown(getKeySetting("keymap_decrease_viewing_range_min"))) {
+		}else if (input->wasKeyDown(getKeySetting(VLKC_RANGE_MINUS))) {
 			s16 range = g_settings->getS16("viewing_range_nodes_min");
 			s16 range_new = range - 10;
 			if (range_new < 0)
@@ -1501,7 +1470,7 @@ void the_game(
 		}
 
 		// Viewing range selection
-		if (input->wasKeyDown(getKeySetting("keymap_rangeselect"))) {
+		if (input->wasKeyDown(getKeySetting(VLKC_RANGE))) {
 			draw_control.range_all = !draw_control.range_all;
 			if (draw_control.range_all) {
 				infostream<<"Enabled full viewing range"<<std::endl;
@@ -1515,7 +1484,7 @@ void the_game(
 		}
 
 		// Print debug stacks
-		if (input->wasKeyDown(getKeySetting("keymap_print_debug_stacks"))) {
+		if (input->wasKeyDown(getKeySetting(VLKC_PRINT_DEBUG))) {
 			dstream<<"-----------------------------------------"
 					<<std::endl;
 			dstream<<DTIME<<"Printing debug stacks:"<<std::endl;
@@ -1545,8 +1514,7 @@ void the_game(
 				if (invert_mouse)
 					dy = -dy;
 
-				float d = g_settings->getFloat("mouse_sensitivity");
-				d = rangelim(d, 0.01, 100.0);
+				f32 d = rangelim(mouse_sensitivity, 0.01, 100.0);
 
 				camera_yaw -= dx*d;
 				camera_pitch += dy*d;
@@ -1576,6 +1544,8 @@ void the_game(
 				false,
 				false,
 				false,
+				fast_move,
+				free_move,
 				camera_pitch,
 				camera_yaw
 			);
@@ -1591,13 +1561,15 @@ void the_game(
 			float a_pitch,
 			float a_yaw*/
 			PlayerControl control(
-				input->isKeyDown(getKeySetting("keymap_forward")),
-				input->isKeyDown(getKeySetting("keymap_backward")),
-				input->isKeyDown(getKeySetting("keymap_left")),
-				input->isKeyDown(getKeySetting("keymap_right")),
-				input->isKeyDown(getKeySetting("keymap_jump")),
-				input->isKeyDown(getKeySetting("keymap_special1")),
-				input->isKeyDown(getKeySetting("keymap_sneak")),
+				input->isKeyDown(getKeySetting(VLKC_FORWARD)),
+				input->isKeyDown(getKeySetting(VLKC_BACKWARD)),
+				input->isKeyDown(getKeySetting(VLKC_LEFT)),
+				input->isKeyDown(getKeySetting(VLKC_RIGHT)),
+				input->isKeyDown(getKeySetting(VLKC_JUMP)),
+				input->isKeyDown(getKeySetting(VLKC_USE)),
+				input->isKeyDown(getKeySetting(VLKC_SNEAK)),
+				fast_move,
+				free_move,
 				camera_pitch,
 				camera_yaw
 			);
@@ -1796,10 +1768,10 @@ void the_game(
 						Visualize selection
 					*/
 
-					if (g_settings->exists("selected_node") && g_settings->get("selected_node") == "outline") {
-						hilightboxes.push_back(nodehilightbox);
-					}else{
+					if (highlight_selected_node) {
 						client.setTempMod(nodepos, NodeMod(NODEMOD_SELECTION));
+					}else{
+						hilightboxes.push_back(nodehilightbox);
 					}
 
 					if (nodig_delay_counter > 0.0) {
@@ -1847,7 +1819,7 @@ void the_game(
 								client.clearTempMod(nodepos);
 							}else{
 								dig_time_complete = prop.time;
-								if (g_settings->getBool("enable_particles"))
+								if (enable_particles)
 									addPunchingParticles(smgr, player, nodepos, content_features(n).tiles);
 
 								if (dig_time_complete >= 0.001) {
@@ -1866,7 +1838,7 @@ void the_game(
 									client.clearTempMod(nodepos);
 									client.removeNode(nodepos);
 
-									if (g_settings->getBool("enable_particles"))
+									if (enable_particles)
 										addDiggingParticles(smgr, player, nodepos, content_features(n).tiles);
 
 									dig_time = 0;
@@ -1947,10 +1919,11 @@ void the_game(
 		u32 daynight_ratio = client.getDayNightRatio();
 		u8 l = decode_light((daynight_ratio * LIGHT_SUN) / 1000);
 		video::SColor bgcolor = video::SColor(
-				255,
-				bgcolor_bright.getRed() * l / 255,
-				bgcolor_bright.getGreen() * l / 255,
-				bgcolor_bright.getBlue() * l / 255);
+			255,
+			bgcolor_bright.getRed() * l / 255,
+			bgcolor_bright.getGreen() * l / 255,
+			bgcolor_bright.getBlue() * l / 255
+		);
 
 		float brightness = (float)l/255.0;
 
@@ -1995,7 +1968,7 @@ void the_game(
 			Fog
 		*/
 
-		if (g_settings->getBool("enable_fog") == true && !force_fog_off) {
+		if (enable_fog && !force_fog_off) {
 			f32 range;
 			if (farmesh) {
 				range = BS*farmesh_range;
@@ -2353,6 +2326,18 @@ void the_game(
 			device->setWindowCaption(str.c_str());
 			lastFPS = fps;
 		}
+	}
+
+	// save some settings
+	if (free_move) {
+		g_settings->set("free_move","true");
+	}else{
+		g_settings->set("free_move","false");
+	}
+	if (fast_move) {
+		g_settings->set("fast_move","true");
+	}else{
+		g_settings->set("fast_move","false");
 	}
 
 	/*

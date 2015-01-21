@@ -695,8 +695,7 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 	*/
 
 	// Skip collision detection if a special movement mode is used
-	bool free_move = g_settings->getBool("free_move");
-	if (free_move) {
+	if (control.free) {
 		position += m_speed * dtime;
 		setPosition(position);
 		return;
@@ -744,7 +743,7 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 	        v3s16 pp = floatToInt(position + v3f(0,0.5*BS,0), BS);
 		v3s16 pp2 = floatToInt(position + v3f(0,-0.2*BS,0), BS);
 		is_climbing = ((content_features(map.getNode(pp).getContent()).climbable ||
-				content_features(map.getNode(pp2).getContent()).climbable) && !free_move);
+				content_features(map.getNode(pp2).getContent()).climbable) && !control.free);
 	}catch(InvalidPositionException &e) {
 	        is_climbing = false;
 	}
@@ -921,12 +920,7 @@ void LocalPlayer::applyControl(float dtime)
 
 	v3f speed = v3f(0,0,0);
 
-	bool free_move = g_settings->getBool("free_move");
-	bool fast_move = g_settings->getBool("fast_move");
-	bool continuous_forward = g_settings->getBool("continuous_forward");
-
-	if(free_move || is_climbing)
-	{
+	if (control.free || is_climbing) {
 		v3f speed = getSpeed();
 		speed.Y = 0;
 		setSpeed(speed);
@@ -936,72 +930,50 @@ void LocalPlayer::applyControl(float dtime)
 	bool superspeed = false;
 
 	// If free movement and fast movement, always move fast
-	if(free_move && fast_move)
+	if (control.free && control.fast)
 		superspeed = true;
 
 	// Auxiliary button 1 (E)
-	if(control.aux1)
-	{
-		if(free_move)
-		{
+	if (control.aux1) {
+		if (control.free) {
 			// In free movement mode, aux1 descends
 			v3f speed = getSpeed();
-			if(fast_move)
+			if (control.fast) {
 				speed.Y = -20*BS;
-			else
+			}else{
 				speed.Y = -walkspeed_max;
+			}
 			setSpeed(speed);
-		}
-		else if(is_climbing)
-		{
+		}else if (is_climbing) {
 		        v3f speed = getSpeed();
 			speed.Y = -3*BS;
 			setSpeed(speed);
-		}
-		else
-		{
+		}else{
 			// If not free movement but fast is allowed, aux1 is
 			// "Turbo button"
-			if(fast_move)
+			if (control.fast)
 				superspeed = true;
 		}
 	}
 
-	if(continuous_forward)
+	if (control.up)
 		speed += move_direction;
-
-	if(control.up)
-	{
-		if(continuous_forward)
-			superspeed = true;
-		else
-			speed += move_direction;
-	}
-	if(control.down)
-	{
+	if (control.down)
 		speed -= move_direction;
-	}
-	if(control.left)
-	{
+	if (control.left)
 		speed += move_direction.crossProduct(v3f(0,1,0));
-	}
-	if(control.right)
-	{
+	if (control.right)
 		speed += move_direction.crossProduct(v3f(0,-1,0));
-	}
-	if(control.jump)
-	{
-		if(free_move)
-		{
+	if (control.jump) {
+		if (control.free) {
 			v3f speed = getSpeed();
-			if(fast_move)
+			if (control.fast) {
 				speed.Y = 20*BS;
-			else
+			}else{
 				speed.Y = walkspeed_max;
+			}
 			setSpeed(speed);
-		}
-		else if(touching_ground)
-		{
+		}else if (touching_ground) {
 			v3f speed = getSpeed();
 			/*
 				NOTE: The d value in move() affects jump height by
@@ -1010,18 +982,14 @@ void LocalPlayer::applyControl(float dtime)
 			*/
 			speed.Y = 6.5*BS;
 			setSpeed(speed);
-		}
-		// Use the oscillating value for getting out of water
-		// (so that the player doesn't fly on the surface)
-		else if(in_water)
-		{
+		}else if (in_water) {
+			// Use the oscillating value for getting out of water
+			// (so that the player doesn't fly on the surface)
 			v3f speed = getSpeed();
 			speed.Y = 1.5*BS;
 			setSpeed(speed);
 			swimming_up = true;
-		}
-		else if(is_climbing)
-		{
+		} else if (is_climbing) {
 	                v3f speed = getSpeed();
 			speed.Y = 3*BS;
 			setSpeed(speed);
@@ -1029,17 +997,18 @@ void LocalPlayer::applyControl(float dtime)
 	}
 
 	// The speed of the player (Y is ignored)
-	if(superspeed)
+	if (superspeed) {
 		speed = speed.normalize() * walkspeed_max * 5.0;
-	else if(control.sneak)
+	}else if (control.sneak) {
 		speed = speed.normalize() * walkspeed_max / 3.0;
-	else
+	}else{
 		speed = speed.normalize() * walkspeed_max;
+	}
 
 	f32 inc = walk_acceleration * BS * dtime;
 
 	// Faster acceleration if fast and free movement
-	if(free_move && fast_move)
+	if (control.free && control.fast)
 		inc = walk_acceleration * BS * dtime * 10;
 
 	// Accelerate to target speed with maximum increment

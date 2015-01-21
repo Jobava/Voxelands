@@ -3390,6 +3390,10 @@ ClientMap::ClientMap(
 
 	m_box = core::aabbox3d<f32>(-BS*1000000,-BS*1000000,-BS*1000000,
 			BS*1000000,BS*1000000,BS*1000000);
+
+	m_render_trilinear = g_settings->getBool("trilinear_filter");
+	m_render_bilinear = g_settings->getBool("bilinear_filter");
+	m_render_anisotropic = g_settings->getBool("anisotropic_filter");
 }
 
 ClientMap::~ClientMap()
@@ -3501,22 +3505,17 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 	bool is_transparent_pass = pass == scene::ESNRP_TRANSPARENT;
 
 	std::string prefix;
-	if(pass == scene::ESNRP_SOLID)
+	if (pass == scene::ESNRP_SOLID) {
 		prefix = "CM: solid: ";
-	else
+	}else{
 		prefix = "CM: transparent: ";
+	}
 
 	/*
 		This is called two times per frame, reset on the non-transparent one
 	*/
-	if(pass == scene::ESNRP_SOLID)
-	{
+	if (pass == scene::ESNRP_SOLID)
 		m_last_drawn_sectors.clear();
-	}
-
-	bool use_trilinear_filter = g_settings->getBool("trilinear_filter");
-	bool use_bilinear_filter = g_settings->getBool("bilinear_filter");
-	bool use_anisotropic_filter = g_settings->getBool("anisotropic_filter");
 
 	/*
 		Get time for measuring timeout.
@@ -3819,9 +3818,9 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 				if (buf == NULL)
 					continue;
 
-				buf->getMaterial().setFlag(video::EMF_TRILINEAR_FILTER, use_trilinear_filter);
-				buf->getMaterial().setFlag(video::EMF_BILINEAR_FILTER, use_bilinear_filter);
-				buf->getMaterial().setFlag(video::EMF_ANISOTROPIC_FILTER, use_anisotropic_filter);
+				buf->getMaterial().setFlag(video::EMF_TRILINEAR_FILTER, m_render_trilinear);
+				buf->getMaterial().setFlag(video::EMF_BILINEAR_FILTER, m_render_bilinear);
+				buf->getMaterial().setFlag(video::EMF_ANISOTROPIC_FILTER, m_render_anisotropic);
 
 				const video::SMaterial& material = buf->getMaterial();
 				video::IMaterialRenderer* rnd =
@@ -3893,12 +3892,10 @@ void ClientMap::renderPostFx()
 	// - If the player is in liquid, draw a semi-transparent overlay.
 	ContentFeatures& features = content_features(n);
 	video::SColor post_effect_color = features.post_effect_color;
-	if(features.solidness == 2 && g_settings->getBool("free_move") == false)
-	{
+	if (features.solidness == 2 && m_client->getLocalPlayer()->control.free == false) {
 		post_effect_color = video::SColor(255, 0, 0, 0);
 	}
-	if (post_effect_color.getAlpha() != 0)
-	{
+	if (post_effect_color.getAlpha() != 0) {
 		// Draw a full-screen rectangle
 		video::IVideoDriver* driver = SceneManager->getVideoDriver();
 		v2u32 ss = driver->getScreenSize();

@@ -51,11 +51,12 @@ Clouds::Clouds(
 	m_material.setFlag(video::EMF_BACK_FACE_CULLING, false);
 	m_material.setFlag(video::EMF_BILINEAR_FILTER, false);
 	m_material.setFlag(video::EMF_FOG_ENABLE, false);
-	//m_material.setFlag(video::EMF_ANTI_ALIASING, true);
-	//m_material.MaterialType = video::EMT_TRANSPARENT_VERTEX_ALPHA;
 
-	m_box = core::aabbox3d<f32>(-BS*1000000,cloud_y-BS,-BS*1000000,
-			BS*1000000,cloud_y+BS,BS*1000000);
+	m_box = core::aabbox3d<f32>(-BS*1000000,cloud_y-BS,-BS*1000000, BS*1000000,cloud_y+BS,BS*1000000);
+
+	m_face_count = 1;
+	if (g_settings->getBool("enable_3d_clouds"))
+		m_face_count = 6;
 
 }
 
@@ -66,11 +67,8 @@ Clouds::~Clouds()
 
 void Clouds::OnRegisterSceneNode()
 {
-	if(IsVisible)
-	{
-		//SceneManager->registerNodeForRendering(this, scene::ESNRP_TRANSPARENT);
+	if (IsVisible)
 		SceneManager->registerNodeForRendering(this, scene::ESNRP_SOLID);
-	}
 
 	ISceneNode::OnRegisterSceneNode();
 }
@@ -81,16 +79,10 @@ void Clouds::render()
 {
 	video::IVideoDriver* driver = SceneManager->getVideoDriver();
 
-	/*if(SceneManager->getSceneNodeRenderPass() != scene::ESNRP_TRANSPARENT)
-		return;*/
-	if(SceneManager->getSceneNodeRenderPass() != scene::ESNRP_SOLID)
+	if (SceneManager->getSceneNodeRenderPass() != scene::ESNRP_SOLID)
 		return;
 
 	ScopeProfiler sp(g_profiler, "Rendering of clouds, avg", SPT_AVG);
-
-	int num_faces_to_draw = 1;
-	if(g_settings->getBool("enable_3d_clouds"))
-		num_faces_to_draw = 6;
 
 	driver->setTransform(video::ETS_WORLD, AbsoluteTransformation);
 	driver->setMaterial(m_material);
@@ -120,106 +112,94 @@ void Clouds::render()
 		center_of_drawing_in_noise_i.Y * cloud_size
 	) + world_cloud_origin_pos_f;
 
-	for(s16 zi=-cloud_radius_i; zi<cloud_radius_i; zi++)
-	for(s16 xi=-cloud_radius_i; xi<cloud_radius_i; xi++)
-	{
+	video::SColor c[6] = {
+		video::SColor(128,m_brightness*240,m_brightness*240,m_brightness*255),
+		video::SColor(128,m_brightness*230,m_brightness*230,m_brightness*255),
+		video::SColor(128,m_brightness*220,m_brightness*220,m_brightness*245),
+		video::SColor(128,m_brightness*230,m_brightness*230,m_brightness*255),
+		video::SColor(128,m_brightness*220,m_brightness*220,m_brightness*245),
+		video::SColor(128,m_brightness*205,m_brightness*205,m_brightness*230)
+	};
+
+	for (s16 zi=-cloud_radius_i; zi<cloud_radius_i; zi++)
+	for (s16 xi=-cloud_radius_i; xi<cloud_radius_i; xi++) {
 		v2s16 p_in_noise_i(
 			xi+center_of_drawing_in_noise_i.X,
 			zi+center_of_drawing_in_noise_i.Y
 		);
 
-		/*if((p_in_noise_i.X + p_in_noise_i.Y)%2==0)
-			continue;*/
-		/*if((p_in_noise_i.X/2 + p_in_noise_i.Y/2)%2==0)
-			continue;*/
-
 		v2f p0 = v2f(xi,zi)*cloud_size + world_center_of_drawing_in_noise_f;
 
 		double noise = noise2d_perlin_abs(
-				(float)p_in_noise_i.X*cloud_size/BS/200,
-				(float)p_in_noise_i.Y*cloud_size/BS/200,
-				m_seed, 3, 0.4);
-		if(noise < 0.95)
+			(float)p_in_noise_i.X*cloud_size/BS/200,
+			(float)p_in_noise_i.Y*cloud_size/BS/200,
+			m_seed,
+			3,
+			0.4
+		);
+		if (noise < 0.95)
 			continue;
 
-		float b = m_brightness;
-		video::SColor c_top(128,b*240,b*240,b*255);
-		video::SColor c_side_1(128,b*230,b*230,b*255);
-		video::SColor c_side_2(128,b*220,b*220,b*245);
-		video::SColor c_bottom(128,b*205,b*205,b*230);
-
-		video::S3DVertex v[4] =
-		{
-			video::S3DVertex(0,0,0, 0,0,0, c_top, 0, 1),
-			video::S3DVertex(0,0,0, 0,0,0, c_top, 1, 1),
-			video::S3DVertex(0,0,0, 0,0,0, c_top, 1, 0),
-			video::S3DVertex(0,0,0, 0,0,0, c_top, 0, 0)
+		video::S3DVertex v[4] = {
+			video::S3DVertex(0,0,0, 0,0,0, c[0], 0, 1),
+			video::S3DVertex(0,0,0, 0,0,0, c[0], 1, 1),
+			video::S3DVertex(0,0,0, 0,0,0, c[0], 1, 0),
+			video::S3DVertex(0,0,0, 0,0,0, c[0], 0, 0)
 		};
 
 		f32 rx = cloud_size;
 		f32 ry = 8*BS;
 		f32 rz = cloud_size;
 
-		for(int i=0; i<num_faces_to_draw; i++)
-		{
-			switch(i)
-			{
-				case 0:	// top
-					v[0].Pos.X=-rx; v[0].Pos.Y= ry; v[0].Pos.Z=-rz;
-					v[1].Pos.X=-rx; v[1].Pos.Y= ry; v[1].Pos.Z= rz;
-					v[2].Pos.X= rx; v[2].Pos.Y= ry; v[2].Pos.Z= rz;
-					v[3].Pos.X= rx; v[3].Pos.Y= ry, v[3].Pos.Z=-rz;
-					break;
-				case 1: // back
-					for(int j=0;j<4;j++)
-						v[j].Color=c_side_1;
-					v[0].Pos.X=-rx; v[0].Pos.Y= ry; v[0].Pos.Z=-rz;
-					v[1].Pos.X= rx; v[1].Pos.Y= ry; v[1].Pos.Z=-rz;
-					v[2].Pos.X= rx; v[2].Pos.Y=-ry; v[2].Pos.Z=-rz;
-					v[3].Pos.X=-rx; v[3].Pos.Y=-ry, v[3].Pos.Z=-rz;
-					break;
-				case 2: //right
-					for(int j=0;j<4;j++)
-						v[j].Color=c_side_2;
-					v[0].Pos.X= rx; v[0].Pos.Y= ry; v[0].Pos.Z=-rz;
-					v[1].Pos.X= rx; v[1].Pos.Y= ry; v[1].Pos.Z= rz;
-					v[2].Pos.X= rx; v[2].Pos.Y=-ry; v[2].Pos.Z= rz;
-					v[3].Pos.X= rx; v[3].Pos.Y=-ry, v[3].Pos.Z=-rz;
-					break;
-				case 3: // front
-					for(int j=0;j<4;j++)
-						v[j].Color=c_side_1;
-					v[0].Pos.X= rx; v[0].Pos.Y= ry; v[0].Pos.Z= rz;
-					v[1].Pos.X=-rx; v[1].Pos.Y= ry; v[1].Pos.Z= rz;
-					v[2].Pos.X=-rx; v[2].Pos.Y=-ry; v[2].Pos.Z= rz;
-					v[3].Pos.X= rx; v[3].Pos.Y=-ry, v[3].Pos.Z= rz;
-					break;
-				case 4: // left
-					for(int j=0;j<4;j++)
-						v[j].Color=c_side_2;
-					v[0].Pos.X=-rx; v[0].Pos.Y= ry; v[0].Pos.Z= rz;
-					v[1].Pos.X=-rx; v[1].Pos.Y= ry; v[1].Pos.Z=-rz;
-					v[2].Pos.X=-rx; v[2].Pos.Y=-ry; v[2].Pos.Z=-rz;
-					v[3].Pos.X=-rx; v[3].Pos.Y=-ry, v[3].Pos.Z= rz;
-					break;
-				case 5: // bottom
-					for(int j=0;j<4;j++)
-						v[j].Color=c_bottom;
-					v[0].Pos.X= rx; v[0].Pos.Y=-ry; v[0].Pos.Z= rz;
-					v[1].Pos.X=-rx; v[1].Pos.Y=-ry; v[1].Pos.Z= rz;
-					v[2].Pos.X=-rx; v[2].Pos.Y=-ry; v[2].Pos.Z=-rz;
-					v[3].Pos.X= rx; v[3].Pos.Y=-ry, v[3].Pos.Z=-rz;
-					break;
+		for (int i=0; i<m_face_count; i++) {
+			switch (i) {
+			case 0:	// top
+				v[0].Pos.X=-rx; v[0].Pos.Y= ry; v[0].Pos.Z=-rz;
+				v[1].Pos.X=-rx; v[1].Pos.Y= ry; v[1].Pos.Z= rz;
+				v[2].Pos.X= rx; v[2].Pos.Y= ry; v[2].Pos.Z= rz;
+				v[3].Pos.X= rx; v[3].Pos.Y= ry, v[3].Pos.Z=-rz;
+				break;
+			case 1: // back
+				v[0].Pos.X=-rx; v[0].Pos.Y= ry; v[0].Pos.Z=-rz;
+				v[1].Pos.X= rx; v[1].Pos.Y= ry; v[1].Pos.Z=-rz;
+				v[2].Pos.X= rx; v[2].Pos.Y=-ry; v[2].Pos.Z=-rz;
+				v[3].Pos.X=-rx; v[3].Pos.Y=-ry, v[3].Pos.Z=-rz;
+				break;
+			case 2: //right
+				v[0].Pos.X= rx; v[0].Pos.Y= ry; v[0].Pos.Z=-rz;
+				v[1].Pos.X= rx; v[1].Pos.Y= ry; v[1].Pos.Z= rz;
+				v[2].Pos.X= rx; v[2].Pos.Y=-ry; v[2].Pos.Z= rz;
+				v[3].Pos.X= rx; v[3].Pos.Y=-ry, v[3].Pos.Z=-rz;
+				break;
+			case 3: // front
+				v[0].Pos.X= rx; v[0].Pos.Y= ry; v[0].Pos.Z= rz;
+				v[1].Pos.X=-rx; v[1].Pos.Y= ry; v[1].Pos.Z= rz;
+				v[2].Pos.X=-rx; v[2].Pos.Y=-ry; v[2].Pos.Z= rz;
+				v[3].Pos.X= rx; v[3].Pos.Y=-ry, v[3].Pos.Z= rz;
+				break;
+			case 4: // left
+				v[0].Pos.X=-rx; v[0].Pos.Y= ry; v[0].Pos.Z= rz;
+				v[1].Pos.X=-rx; v[1].Pos.Y= ry; v[1].Pos.Z=-rz;
+				v[2].Pos.X=-rx; v[2].Pos.Y=-ry; v[2].Pos.Z=-rz;
+				v[3].Pos.X=-rx; v[3].Pos.Y=-ry, v[3].Pos.Z= rz;
+				break;
+			case 5: // bottom
+				v[0].Pos.X= rx; v[0].Pos.Y=-ry; v[0].Pos.Z= rz;
+				v[1].Pos.X=-rx; v[1].Pos.Y=-ry; v[1].Pos.Z= rz;
+				v[2].Pos.X=-rx; v[2].Pos.Y=-ry; v[2].Pos.Z=-rz;
+				v[3].Pos.X= rx; v[3].Pos.Y=-ry, v[3].Pos.Z=-rz;
+				break;
 			}
 
 			v3f pos = v3f(p0.X,m_cloud_y,p0.Y);
 			pos -= intToFloat(m_camera_offset, BS);
 
-			for(u16 i=0; i<4; i++)
-				v[i].Pos += pos;
+			for (u16 k=0; k<4; k++) {
+				v[k].Pos += pos;
+				v[k].Color= c[i];
+			}
 			u16 indices[] = {0,1,2,2,3,0};
-			driver->drawVertexPrimitiveList(v, 4, indices, 2,
-					video::EVT_STANDARD, scene::EPT_TRIANGLES, video::EIT_16BIT);
+			driver->drawVertexPrimitiveList(v, 4, indices, 2, video::EVT_STANDARD, scene::EPT_TRIANGLES, video::EIT_16BIT);
 		}
 
 	}

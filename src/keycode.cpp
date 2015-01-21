@@ -351,20 +351,61 @@ const KeyPress NumberKey[] = {
 	Key config
 */
 
-// A simple cache for quicker lookup
-std::map<std::string, KeyPress> g_key_setting_cache;
+static const char* keymap_strings[] = {
+	"keymap_forward",
+	"keymap_backward",
+	"keymap_left",
+	"keymap_right",
+	"keymap_jump",
+	"keymap_sneak",
+	"keymap_inventory",
+	"keymap_special1",
+	"keymap_chat",
+	"keymap_cmd",
+	"keymap_rangeselect",
+	"keymap_freemove",
+	"keymap_fastmove",
+	"keymap_screenshot",
+	"keymap_toggle_hud",
+	"keymap_toggle_chat",
+	"keymap_toggle_force_fog_off",
+	"keymap_toggle_update_camera",
+	"keymap_toggle_debug",
+	"keymap_toggle_profiler",
+	"keymap_increase_viewing_range_min",
+	"keymap_decrease_viewing_range_min",
+	"keymap_print_debug_stacks",
+	NULL
+};
 
-KeyPress getKeySetting(const char *settingname)
+KeyPress *g_key_setting_cache[256];
+static bool key_setting_cache_init = false;
+
+KeyPress getKeySetting(KeyCode code)
 {
-	std::map<std::string, KeyPress>::iterator n;
-	n = g_key_setting_cache.find(settingname);
-	if(n != g_key_setting_cache.end())
-		return n->second;
-	g_key_setting_cache[settingname] = g_settings->get(settingname).c_str();
-	return g_key_setting_cache.find(settingname)->second;
+	if (!key_setting_cache_init)
+		clearKeyCache();
+	if (g_key_setting_cache[code])
+		return *g_key_setting_cache[code];
+
+	g_key_setting_cache[code] = new KeyPress(g_settings->get(keymap_strings[code]).c_str());
+
+	return *g_key_setting_cache[code];
 }
 
 void clearKeyCache()
 {
-	g_key_setting_cache.clear();
+	if (key_setting_cache_init) {
+		for (int i=0; i<VLKC_MAX; i++) {
+			if (g_key_setting_cache[i] == NULL)
+				continue;
+			delete g_key_setting_cache[i];
+			g_key_setting_cache[i] = NULL;
+		}
+	}else{
+		for (int i=0; i<VLKC_MAX; i++) {
+			g_key_setting_cache[i] = NULL;
+		}
+	}
+	key_setting_cache_init = true;
 }

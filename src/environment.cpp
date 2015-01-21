@@ -3582,6 +3582,7 @@ void ServerEnvironment::deactivateFarObjects(bool force_delete)
 ClientEnvironment::ClientEnvironment(Client *client, ClientMap *map, scene::ISceneManager *smgr):
 	m_client(client),
 	m_map(map),
+	m_local_player(NULL),
 	m_smgr(smgr)
 {
 	assert(m_map);
@@ -3606,21 +3607,17 @@ void ClientEnvironment::addPlayer(Player *player)
 		It is a failure if player is local and there already is a local
 		player
 	*/
-	assert(!(player->isLocal() == true && getLocalPlayer() != NULL));
+	if (player->isLocal()) {
+		assert(m_local_player == NULL);
+		m_local_player = (LocalPlayer*)player;
+	}
 
 	Environment::addPlayer(player);
 }
 
 LocalPlayer * ClientEnvironment::getLocalPlayer()
 {
-	for(core::list<Player*>::Iterator i = m_players.begin();
-			i != m_players.end(); i++)
-	{
-		Player *player = *i;
-		if(player->isLocal())
-			return (LocalPlayer*)player;
-	}
-	return NULL;
+	return m_local_player;
 }
 
 void ClientEnvironment::step(float dtime)
@@ -3628,7 +3625,6 @@ void ClientEnvironment::step(float dtime)
 	DSTACK(__FUNCTION_NAME);
 
 	// Get some settings
-	bool free_move = g_settings->getBool("free_move");
 	bool footprints = g_settings->getBool("enable_footprints");
 
 	// Get local player
@@ -3696,7 +3692,7 @@ void ClientEnvironment::step(float dtime)
 			v3f lplayerpos = lplayer->getPosition();
 
 			// Apply physics
-			if (free_move == false && is_climbing == false) {
+			if (lplayer->control.free == false && is_climbing == false) {
 				// Gravity
 				v3f speed = lplayer->getSpeed();
 				if (lplayer->swimming_up == false)

@@ -65,8 +65,36 @@ extern const KeyPress EscapeKey;
 extern const KeyPress CancelKey;
 extern const KeyPress NumberKey[10];
 
+enum KeyCode {
+	VLKC_FORWARD = 0,
+	VLKC_BACKWARD,
+	VLKC_LEFT,
+	VLKC_RIGHT,
+	VLKC_JUMP,
+	VLKC_SNEAK,
+	VLKC_INVENTORY,
+	VLKC_USE,
+	VLKC_CHAT,
+	VLKC_COMMAND,
+	VLKC_RANGE,
+	VLKC_FREEMOVE,
+	VLKC_FASTMOVE,
+	VLKC_SCREENSHOT,
+	VLKC_TOGGLE_HUD,
+	VLKC_TOGGLE_CHAT,
+	VLKC_TOGGLE_FOG,
+	VLKC_TOGGLE_CAMERA,
+	VLKC_TOGGLE_DEBUG,
+	VLKC_TOGGLE_PROFILER,
+	VLKC_RANGE_PLUS,
+	VLKC_RANGE_MINUS,
+	VLKC_PRINT_DEBUG,
+	// put new codes above this
+	VLKC_MAX
+};
+
 // Key configuration getter
-KeyPress getKeySetting(const char *settingname);
+KeyPress getKeySetting(KeyCode code);
 
 // Clear fast lookup cache
 void clearKeyCache();

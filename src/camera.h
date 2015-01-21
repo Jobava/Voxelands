@@ -160,11 +160,13 @@ private:
 	v3s16 m_camera_offset;
 
 	// Field of view and aspect ratio stuff
+	f32 m_fov;
 	f32 m_aspect;
 	f32 m_fov_x;
 	f32 m_fov_y;
 
 	// Stuff for viewing range calculations
+	f32 m_wanted_frametime;
 	f32 m_added_frametime;
 	s16 m_added_frames;
 	f32 m_range_old;
@@ -172,6 +174,7 @@ private:
 	f32 m_frametime_counter;
 	f32 m_time_per_range;
 
+	bool m_view_bobbing;
 	// View bobbing animation frame (0 <= m_view_bobbing_anim < 1)
 	f32 m_view_bobbing_anim;
 	// If 0, view bobbing is off (e.g. player is standing).
@@ -180,6 +183,7 @@ private:
 	s32 m_view_bobbing_state;
 	// Speed of view bobbing animation
 	f32 m_view_bobbing_speed;
+	f32 m_view_bobbing_amount;
 
 	// Digging animation frame (0 <= m_digging_anim < 1)
 	f32 m_digging_anim;

@@ -356,20 +356,20 @@ bool GUIKeyChangeMenu::acceptInput()
 }
 void GUIKeyChangeMenu::init_keys()
 {
-	key_forward = getKeySetting("keymap_forward");
-	key_backward = getKeySetting("keymap_backward");
-	key_left = getKeySetting("keymap_left");
-	key_right = getKeySetting("keymap_right");
-	key_jump = getKeySetting("keymap_jump");
-	key_sneak = getKeySetting("keymap_sneak");
-	key_inventory = getKeySetting("keymap_inventory");
-	key_chat = getKeySetting("keymap_chat");
-	key_cmd = getKeySetting("keymap_cmd");
-	key_range = getKeySetting("keymap_rangeselect");
-	key_fly = getKeySetting("keymap_freemove");
-	key_fast = getKeySetting("keymap_fastmove");
-	key_use = getKeySetting("keymap_special1");
-	key_dump = getKeySetting("keymap_print_debug_stacks");
+	key_forward = getKeySetting(VLKC_FORWARD);
+	key_backward = getKeySetting(VLKC_BACKWARD);
+	key_left = getKeySetting(VLKC_LEFT);
+	key_right = getKeySetting(VLKC_RIGHT);
+	key_jump = getKeySetting(VLKC_JUMP);
+	key_sneak = getKeySetting(VLKC_SNEAK);
+	key_inventory = getKeySetting(VLKC_INVENTORY);
+	key_chat = getKeySetting(VLKC_CHAT);
+	key_cmd = getKeySetting(VLKC_COMMAND);
+	key_range = getKeySetting(VLKC_RANGE);
+	key_fly = getKeySetting(VLKC_FREEMOVE);
+	key_fast = getKeySetting(VLKC_FASTMOVE);
+	key_use = getKeySetting(VLKC_USE);
+	key_dump = getKeySetting(VLKC_PRINT_DEBUG);
 }
 
 bool GUIKeyChangeMenu::resetMenu()

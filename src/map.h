@@ -625,6 +625,10 @@ private:
 	v3s16 m_camera_offset;
 	JMutex m_camera_mutex;
 
+	bool m_render_trilinear;
+	bool m_render_bilinear;
+	bool m_render_anisotropic;
+
 	core::map<v2s16, bool> m_last_drawn_sectors;
 };
 
