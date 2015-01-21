@@ -1,22 +1,24 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Lisa 'darkrose' Milne
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Robert Wolniak <robert.wolniak@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-14 01:45+1000\n"
+"POT-Creation-Date: 2015-01-22 03:53+1000\n"
 "PO-Revision-Date: 2014-12-13 15:47+0000\n"
 "Last-Translator: Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
-"Language-Team: Polish (http://www.transifex.com/projects/p/voxelands/language/pl/)\n"
+"Language-Team: Polish (http://www.transifex.com/projects/p/voxelands/"
+"language/pl/)\n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pl\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
 
 #: src/character_creator.cpp:58
 msgid "White Skin"
@@ -228,7 +230,10 @@ msgstr ""
 
 #: src/character_creator.cpp:205
 msgid ""
-"Here you can create your default character, this is how other players will see you in-game. When you join a new server you will start with the clothing you select here. Additional clothing, both protective and decorative, can be crafted in-game.\n"
+"Here you can create your default character, this is how other players will "
+"see you in-game. When you join a new server you will start with the clothing "
+"you select here. Additional clothing, both protective and decorative, can be "
+"crafted in-game.\n"
 "You can return here from the main menu anytime to change your character."
 msgstr ""
 
@@ -1133,7 +1138,7 @@ msgstr "Pieczony Szczur"
 msgid "Firefly"
 msgstr "Świetlik"
 
-#: src/content_craftitem.cpp:240 src/content_mapnode_plants.cpp:754
+#: src/content_craftitem.cpp:240 src/content_mapnode_plants.cpp:782
 msgid "Apple"
 msgstr "Jabłko"
 
@@ -1217,7 +1222,7 @@ msgstr "Pył"
 msgid "Apple Blossoms"
 msgstr "Kwitnące Jabłka"
 
-#: src/content_craftitem.cpp:474 src/content_mapnode_plants.cpp:566
+#: src/content_craftitem.cpp:474 src/content_mapnode_plants.cpp:594
 msgid "Cactus Berry"
 msgstr "Owoc Kaktusa"
 
@@ -1241,9 +1246,9 @@ msgstr "Kawałek Jabłecznika"
 msgid "Sliced Melon"
 msgstr "Krojony Melon"
 
-#: src/content_craftitem.cpp:533 src/content_mapnode_farm.cpp:248
-#: src/content_mapnode_farm.cpp:267 src/content_mapnode_farm.cpp:286
-#: src/content_mapnode_farm.cpp:307
+#: src/content_craftitem.cpp:533 src/content_mapnode_farm.cpp:249
+#: src/content_mapnode_farm.cpp:268 src/content_mapnode_farm.cpp:287
+#: src/content_mapnode_farm.cpp:308
 msgid "Wheat"
 msgstr "Pszenica"
 
@@ -1259,9 +1264,9 @@ msgstr "Ciasto"
 msgid "Bread"
 msgstr "Chleb"
 
-#: src/content_craftitem.cpp:575 src/content_mapnode_farm.cpp:501
-#: src/content_mapnode_farm.cpp:522 src/content_mapnode_farm.cpp:543
-#: src/content_mapnode_farm.cpp:564
+#: src/content_craftitem.cpp:575 src/content_mapnode_farm.cpp:519
+#: src/content_mapnode_farm.cpp:540 src/content_mapnode_farm.cpp:561
+#: src/content_mapnode_farm.cpp:582
 msgid "Potato"
 msgstr "Ziemniak"
 
@@ -1273,9 +1278,9 @@ msgstr "Skrobia Ziemniaczana"
 msgid "Roast Potato"
 msgstr "Pieczony Ziemniak"
 
-#: src/content_craftitem.cpp:605 src/content_mapnode_farm.cpp:585
-#: src/content_mapnode_farm.cpp:606 src/content_mapnode_farm.cpp:627
-#: src/content_mapnode_farm.cpp:648
+#: src/content_craftitem.cpp:605 src/content_mapnode_farm.cpp:603
+#: src/content_mapnode_farm.cpp:624 src/content_mapnode_farm.cpp:645
+#: src/content_mapnode_farm.cpp:666
 msgid "Carrot"
 msgstr "Marchewka"
 
@@ -1287,9 +1292,9 @@ msgstr "Surowe Ciasto Marchewkowe"
 msgid "Carrot Cake"
 msgstr "Ciasto Marchewkowe"
 
-#: src/content_craftitem.cpp:635 src/content_mapnode_farm.cpp:669
-#: src/content_mapnode_farm.cpp:690 src/content_mapnode_farm.cpp:711
-#: src/content_mapnode_farm.cpp:732
+#: src/content_craftitem.cpp:635 src/content_mapnode_farm.cpp:687
+#: src/content_mapnode_farm.cpp:708 src/content_mapnode_farm.cpp:729
+#: src/content_mapnode_farm.cpp:750
 msgid "Beetroot"
 msgstr "Burak"
 
@@ -1649,7 +1654,7 @@ msgstr "Żółta Szyba"
 msgid "Black Glass Pane"
 msgstr "Czarna Szyba"
 
-#: src/content_mapnode.cpp:1138
+#: src/content_mapnode.cpp:1138 src/content_mapnode_farm.cpp:492
 msgid "Glass Light"
 msgstr "Szklany Klosz"
 
@@ -1697,7 +1702,7 @@ msgstr "Surowe Ciasto Dyniowe"
 msgid "Pumpkin Pie"
 msgstr "Ciasto Dyniowe"
 
-#: src/content_mapnode.cpp:1557 src/content_mapnode_farm.cpp:1004
+#: src/content_mapnode.cpp:1557 src/content_mapnode_farm.cpp:1022
 msgid "Dead Vine"
 msgstr "Obumarła Winorośl"
 
@@ -1709,9 +1714,9 @@ msgstr "Śnieg"
 msgid "Snowman"
 msgstr "Bałwan"
 
-#: src/content_mapnode.cpp:1678 src/content_mapnode_farm.cpp:835
-#: src/content_mapnode_farm.cpp:854 src/content_mapnode_farm.cpp:874
-#: src/content_mapnode_farm.cpp:895
+#: src/content_mapnode.cpp:1678 src/content_mapnode_farm.cpp:853
+#: src/content_mapnode_farm.cpp:872 src/content_mapnode_farm.cpp:892
+#: src/content_mapnode_farm.cpp:913
 msgid "Cotton"
 msgstr "Bawełna"
 
@@ -1997,68 +2002,68 @@ msgstr "Drewniana Furtka"
 msgid "Steel Gate"
 msgstr "Stalowa Furtka"
 
-#: src/content_mapnode_farm.cpp:36
+#: src/content_mapnode_farm.cpp:37
 msgid "Farm Dirt"
 msgstr "Zaorana Ziemia"
 
-#: src/content_mapnode_farm.cpp:48
+#: src/content_mapnode_farm.cpp:49
 msgid "Fertilizer"
 msgstr "Nawóz"
 
-#: src/content_mapnode_farm.cpp:69 src/content_mapnode_farm.cpp:916
-#: src/content_mapnode_farm.cpp:937 src/content_mapnode_farm.cpp:958
-#: src/content_mapnode_farm.cpp:981
+#: src/content_mapnode_farm.cpp:70 src/content_mapnode_farm.cpp:934
+#: src/content_mapnode_farm.cpp:955 src/content_mapnode_farm.cpp:976
+#: src/content_mapnode_farm.cpp:999
 msgid "Trellis"
 msgstr "Krata"
 
-#: src/content_mapnode_farm.cpp:93
+#: src/content_mapnode_farm.cpp:94
 msgid "Wheat Seeds"
 msgstr "Nasiona Pszenicy"
 
-#: src/content_mapnode_farm.cpp:112
+#: src/content_mapnode_farm.cpp:113
 msgid "Melon Seeds"
 msgstr "Nasiona Melona"
 
-#: src/content_mapnode_farm.cpp:132
+#: src/content_mapnode_farm.cpp:133
 msgid "Pumpkin Seeds"
 msgstr "Nasiona Dyni"
 
-#: src/content_mapnode_farm.cpp:152
+#: src/content_mapnode_farm.cpp:153
 msgid "Potato Seeds"
 msgstr "Nasiona Ziemniaków"
 
-#: src/content_mapnode_farm.cpp:171
+#: src/content_mapnode_farm.cpp:172
 msgid "Carrot Seeds"
 msgstr "Nasiona Marchewek"
 
-#: src/content_mapnode_farm.cpp:190
+#: src/content_mapnode_farm.cpp:191
 msgid "Beetroot Seeds"
 msgstr "Nasiona Buraka"
 
-#: src/content_mapnode_farm.cpp:209
+#: src/content_mapnode_farm.cpp:210
 msgid "Grape Seeds"
 msgstr "Nasiona Winogrona"
 
-#: src/content_mapnode_farm.cpp:229
+#: src/content_mapnode_farm.cpp:230
 msgid "Cotton Seeds"
 msgstr "Nasiona Bawełny"
 
-#: src/content_mapnode_farm.cpp:328 src/content_mapnode_farm.cpp:349
-#: src/content_mapnode_farm.cpp:370 src/content_mapnode_farm.cpp:390
+#: src/content_mapnode_farm.cpp:329 src/content_mapnode_farm.cpp:350
+#: src/content_mapnode_farm.cpp:371 src/content_mapnode_farm.cpp:391
 msgid "Melon"
 msgstr "Melon"
 
-#: src/content_mapnode_farm.cpp:404 src/content_mapnode_farm.cpp:424
-#: src/content_mapnode_farm.cpp:444 src/content_mapnode_farm.cpp:464
+#: src/content_mapnode_farm.cpp:405 src/content_mapnode_farm.cpp:425
+#: src/content_mapnode_farm.cpp:445 src/content_mapnode_farm.cpp:465
 msgid "Pumpkin"
 msgstr "Dynia"
 
-#: src/content_mapnode_farm.cpp:479
+#: src/content_mapnode_farm.cpp:481
 msgid "Jack' O Lantern"
 msgstr "Halloweenowa Latarenka"
 
-#: src/content_mapnode_farm.cpp:753 src/content_mapnode_farm.cpp:774
-#: src/content_mapnode_farm.cpp:795 src/content_mapnode_farm.cpp:816
+#: src/content_mapnode_farm.cpp:771 src/content_mapnode_farm.cpp:792
+#: src/content_mapnode_farm.cpp:813 src/content_mapnode_farm.cpp:834
 msgid "Grape"
 msgstr "Winogrona"
 
@@ -2207,115 +2212,115 @@ msgstr "Iglak"
 msgid "Young Tree"
 msgstr "Młode Drzewo"
 
-#: src/content_mapnode_plants.cpp:132
+#: src/content_mapnode_plants.cpp:134
 msgid "Young Jungle Tree"
 msgstr "Młode Drzewo Dżunglowe"
 
-#: src/content_mapnode_plants.cpp:152
+#: src/content_mapnode_plants.cpp:156
 msgid "Young Apple Tree"
 msgstr "Młoda Jabłoń"
 
-#: src/content_mapnode_plants.cpp:172
+#: src/content_mapnode_plants.cpp:178
 msgid "Young Conifer Tree"
 msgstr "Młody Iglak"
 
-#: src/content_mapnode_plants.cpp:192
+#: src/content_mapnode_plants.cpp:200
 msgid "Jungle Grass"
 msgstr "Dżunglowa Trawa"
 
-#: src/content_mapnode_plants.cpp:214
+#: src/content_mapnode_plants.cpp:222
 msgid "Leaves"
 msgstr "Liście"
 
-#: src/content_mapnode_plants.cpp:247
+#: src/content_mapnode_plants.cpp:257
 msgid "Apple Tree Leaves"
 msgstr "Liście Jabłoni"
 
-#: src/content_mapnode_plants.cpp:280
+#: src/content_mapnode_plants.cpp:292
 msgid "Jungle Leaves"
 msgstr "Liście Dżunglowe"
 
-#: src/content_mapnode_plants.cpp:313
+#: src/content_mapnode_plants.cpp:327
 msgid "Conifer Leaves"
 msgstr "Igły Z Iglaka"
 
-#: src/content_mapnode_plants.cpp:346
+#: src/content_mapnode_plants.cpp:362
 msgid "Trimmed Leaves"
 msgstr "Przystrzyżone Liście"
 
-#: src/content_mapnode_plants.cpp:376
+#: src/content_mapnode_plants.cpp:394
 msgid "Trimmed Apple Tree Leaves"
 msgstr "Przystrzyżone Liście Jabłoni"
 
-#: src/content_mapnode_plants.cpp:406
+#: src/content_mapnode_plants.cpp:426
 msgid "Trimmed Jungle Leaves"
 msgstr "Przystrzyżone Liście Dżunglowe"
 
-#: src/content_mapnode_plants.cpp:436
+#: src/content_mapnode_plants.cpp:458
 msgid "Trimmed Conifer Leaves"
 msgstr "Przystrzyżone Igły Z Iglaka"
 
-#: src/content_mapnode_plants.cpp:466
+#: src/content_mapnode_plants.cpp:490
 msgid "Apple Tree Blossom"
 msgstr "Kwiat Jabłoni"
 
-#: src/content_mapnode_plants.cpp:496
+#: src/content_mapnode_plants.cpp:522
 msgid "Trimmed Apple Tree Blossom"
 msgstr "Przystrzyżony Kwiat Jabłoni"
 
-#: src/content_mapnode_plants.cpp:523
+#: src/content_mapnode_plants.cpp:551
 msgid "Cactus Blossom"
 msgstr "Kwitnący Kwiat Kaktusa"
 
-#: src/content_mapnode_plants.cpp:544
+#: src/content_mapnode_plants.cpp:572
 msgid "Cactus Flower"
 msgstr "Kwiat Kaktusa"
 
-#: src/content_mapnode_plants.cpp:587
+#: src/content_mapnode_plants.cpp:615
 msgid "Cactus"
 msgstr "Kaktus"
 
-#: src/content_mapnode_plants.cpp:649
+#: src/content_mapnode_plants.cpp:677
 msgid "Papyrus"
 msgstr "Papirus"
 
-#: src/content_mapnode_plants.cpp:670
+#: src/content_mapnode_plants.cpp:698
 msgid "Sapling"
 msgstr "Sadzonka"
 
-#: src/content_mapnode_plants.cpp:691
+#: src/content_mapnode_plants.cpp:719
 msgid "Apple Tree Sapling"
 msgstr "Sadzonka Jabłoni"
 
-#: src/content_mapnode_plants.cpp:712
+#: src/content_mapnode_plants.cpp:740
 msgid "Jungle Sapling"
 msgstr "Sadzonka Drzewa Dżunglowego"
 
-#: src/content_mapnode_plants.cpp:733
+#: src/content_mapnode_plants.cpp:761
 msgid "Conifer Sapling"
 msgstr "Sadzonka Iglaka"
 
-#: src/content_mapnode_plants.cpp:777 src/content_mapnode_plants.cpp:801
+#: src/content_mapnode_plants.cpp:805 src/content_mapnode_plants.cpp:829
 msgid "Wild Grass"
 msgstr "Dzika Trawa"
 
-#: src/content_mapnode_plants.cpp:824
+#: src/content_mapnode_plants.cpp:852
 msgid "Dead Grass"
 msgstr "Sucha Trawa"
 
-#: src/content_mapnode_plants.cpp:847
+#: src/content_mapnode_plants.cpp:875
 msgid "Flower Stem"
 msgstr "Szypułka Kwiatowa"
 
-#: src/content_mapnode_plants.cpp:870
+#: src/content_mapnode_plants.cpp:898
 msgid "Rose"
 msgstr "Róża"
 
-#: src/content_mapnode_plants.cpp:894
+#: src/content_mapnode_plants.cpp:922
 msgid "Daffodil"
 msgstr "Żonkil"
 
-#: src/content_mapnode_plants.cpp:918
+#: src/content_mapnode_plants.cpp:946
 msgid "Tulip"
 msgstr "Tulipan"
 
@@ -2395,235 +2400,235 @@ msgstr ""
 msgid "Steel Bars"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:117
+#: src/content_mapnode_special.cpp:125
 msgid "Rail"
 msgstr "Tory"
 
-#: src/content_mapnode_special.cpp:150
+#: src/content_mapnode_special.cpp:158
 msgid "Terracotta Roof Tile"
 msgstr "Dachówka Z Terakoty"
 
-#: src/content_mapnode_special.cpp:167
+#: src/content_mapnode_special.cpp:175
 msgid "Wood Roof Tile"
 msgstr "Drewniana Dachówka"
 
-#: src/content_mapnode_special.cpp:185
+#: src/content_mapnode_special.cpp:193
 msgid "Asphalt Roof Tile"
 msgstr "Asfaltowa Dachówka"
 
-#: src/content_mapnode_special.cpp:209
+#: src/content_mapnode_special.cpp:217
 msgid "Stone Roof Tile"
 msgstr "Kamienna Dachówka"
 
-#: src/content_mapnode_special.cpp:226
+#: src/content_mapnode_special.cpp:234
 msgid "Glass Roof Tile"
 msgstr "Dachówka Ze Szkła"
 
-#: src/content_mapnode_special.cpp:249
+#: src/content_mapnode_special.cpp:257
 msgid "Blue Glass Roof Tile"
 msgstr "Dachówka Z Niebieskiego Szkła"
 
-#: src/content_mapnode_special.cpp:273
+#: src/content_mapnode_special.cpp:281
 msgid "Green Glass Roof Tile"
 msgstr "Dachówka Z Zielonego Szkła"
 
-#: src/content_mapnode_special.cpp:297
+#: src/content_mapnode_special.cpp:305
 msgid "Orange Glass Roof Tile"
 msgstr "Dachówka Z Pomarańczowego Szkła"
 
-#: src/content_mapnode_special.cpp:321
+#: src/content_mapnode_special.cpp:329
 msgid "Purple Glass Roof Tile"
 msgstr "Dachówka Z Fioletowego Szkła"
 
-#: src/content_mapnode_special.cpp:345
+#: src/content_mapnode_special.cpp:353
 msgid "Red Glass Roof Tile"
 msgstr "Dachówka Z Czerwonego Szkła"
 
-#: src/content_mapnode_special.cpp:369
+#: src/content_mapnode_special.cpp:377
 msgid "Yellow Glass Roof Tile"
 msgstr "Dachówka Z Żółtego Szkła"
 
-#: src/content_mapnode_special.cpp:393
+#: src/content_mapnode_special.cpp:401
 msgid "Black Glass Roof Tile"
 msgstr "Dachówka Z Czarnego Szkła"
 
-#: src/content_mapnode_special.cpp:417
+#: src/content_mapnode_special.cpp:425
 msgid "Thatch Roof Tile"
 msgstr "Strzecha"
 
-#: src/content_mapnode_special.cpp:436 src/content_mapnode_special.cpp:473
-#: src/content_mapnode_special.cpp:533 src/content_mapnode_special.cpp:568
+#: src/content_mapnode_special.cpp:444 src/content_mapnode_special.cpp:481
+#: src/content_mapnode_special.cpp:541 src/content_mapnode_special.cpp:576
 msgid "Ladder"
 msgstr "Drabinka"
 
-#: src/content_mapnode_special.cpp:603
+#: src/content_mapnode_special.cpp:611
 msgid "Border Stone"
 msgstr "Kamień Graniczny"
 
-#: src/content_mapnode_special.cpp:629
+#: src/content_mapnode_special.cpp:637
 msgid "Book"
 msgstr "Książka"
 
-#: src/content_mapnode_special.cpp:660
+#: src/content_mapnode_special.cpp:668
 msgid "Cook Book"
 msgstr "Książka Kucharska"
 
-#: src/content_mapnode_special.cpp:692
+#: src/content_mapnode_special.cpp:700
 msgid "Decraft Book"
 msgstr "Książka Odzysku"
 
-#: src/content_mapnode_special.cpp:723 src/content_mapnode_special.cpp:874
-#: src/content_nodemeta.cpp:1959
+#: src/content_mapnode_special.cpp:731 src/content_mapnode_special.cpp:882
+#: src/content_nodemeta.cpp:1970
 msgid "Diary"
 msgstr "Dziennik"
 
-#: src/content_mapnode_special.cpp:754
+#: src/content_mapnode_special.cpp:762
 msgid "Craft Book"
 msgstr "Książka O Wytwarzaniu"
 
-#: src/content_mapnode_special.cpp:793
+#: src/content_mapnode_special.cpp:801
 msgid "Guide"
 msgstr "Poradnik"
 
-#: src/content_mapnode_special.cpp:820 src/content_nodemeta.h:369
+#: src/content_mapnode_special.cpp:828 src/content_nodemeta.h:369
 msgid "Cooking Guide"
 msgstr "Poradnik Gotowania"
 
-#: src/content_mapnode_special.cpp:847 src/content_nodemeta.h:395
+#: src/content_mapnode_special.cpp:855 src/content_nodemeta.h:395
 msgid "Decrafting Guide"
 msgstr "Poradnik O Odzysku"
 
-#: src/content_mapnode_special.cpp:901 src/content_nodemeta.h:342
+#: src/content_mapnode_special.cpp:909 src/content_nodemeta.h:342
 msgid "Craft Guide"
 msgstr "Poradnik Wytwarzania"
 
-#: src/content_mapnode_special.cpp:928 src/content_mapnode_special.cpp:948
+#: src/content_mapnode_special.cpp:936 src/content_mapnode_special.cpp:956
 msgid "Fire"
 msgstr "Ogień"
 
-#: src/content_mapnode_special.cpp:968 src/content_mapnode_special.cpp:991
+#: src/content_mapnode_special.cpp:976 src/content_mapnode_special.cpp:999
 msgid "Torch"
 msgstr "Pochodnia"
 
-#: src/content_mapnode_special.cpp:1019 src/content_mapnode_special.cpp:1044
-#: src/content_mapnode_special.cpp:1076
+#: src/content_mapnode_special.cpp:1027 src/content_mapnode_special.cpp:1052
+#: src/content_mapnode_special.cpp:1084
 msgid "Sign"
 msgstr "Znak"
 
-#: src/content_mapnode_special.cpp:1103 src/content_mapnode_special.cpp:1131
-#: src/content_mapnode_special.cpp:1161
+#: src/content_mapnode_special.cpp:1111 src/content_mapnode_special.cpp:1139
+#: src/content_mapnode_special.cpp:1169
 msgid "Locking Sign"
 msgstr "Znak Blokady"
 
-#: src/content_mapnode_special.cpp:1188 src/content_nodemeta.cpp:218
+#: src/content_mapnode_special.cpp:1196 src/content_nodemeta.cpp:218
 msgid "Chest"
 msgstr "Kufer"
 
-#: src/content_mapnode_special.cpp:1210 src/content_nodemeta.cpp:448
+#: src/content_mapnode_special.cpp:1218 src/content_nodemeta.cpp:448
 msgid "Creative Chest"
 msgstr "Kufer Kreatywny"
 
-#: src/content_mapnode_special.cpp:1230
+#: src/content_mapnode_special.cpp:1238
 msgid "Locking Chest"
 msgstr "Blokujący Kufer"
 
-#: src/content_mapnode_special.cpp:1259
+#: src/content_mapnode_special.cpp:1267
 msgid "Safe"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1281 src/content_mapnode_special.cpp:1301
+#: src/content_mapnode_special.cpp:1289 src/content_mapnode_special.cpp:1309
 msgid "Furnace"
 msgstr "Piec"
 
-#: src/content_mapnode_special.cpp:1319 src/content_mapnode_special.cpp:1340
+#: src/content_mapnode_special.cpp:1328 src/content_mapnode_special.cpp:1349
 msgid "Locking Furnace"
 msgstr "Blokujący Piec"
 
-#: src/content_mapnode_special.cpp:1357 src/content_mapnode_special.cpp:1377
+#: src/content_mapnode_special.cpp:1367 src/content_mapnode_special.cpp:1387
 msgid "Incinerator"
 msgstr "Spalarka"
 
-#: src/content_mapnode_special.cpp:1393
+#: src/content_mapnode_special.cpp:1405
 msgid "Nyan Cat"
 msgstr "Nyan Cat"
 
-#: src/content_mapnode_special.cpp:1407
+#: src/content_mapnode_special.cpp:1419
 msgid "Rainbow"
 msgstr "Tęcza"
 
-#: src/content_mapnode_special.cpp:1419
+#: src/content_mapnode_special.cpp:1431
 msgid "Unbaked Flower Pot"
 msgstr "Niewypalona Doniczka"
 
-#: src/content_mapnode_special.cpp:1480
+#: src/content_mapnode_special.cpp:1492
 msgid "Flower Pot"
 msgstr "Doniczka"
 
-#: src/content_mapnode_special.cpp:1537
+#: src/content_mapnode_special.cpp:1549
 msgid "Cobblestone Wall"
 msgstr "Brukowy Mur"
 
-#: src/content_mapnode_special.cpp:1561
+#: src/content_mapnode_special.cpp:1573
 msgid "Rough Stone Wall"
 msgstr "Mur Z Nieobrobionego Kamienia"
 
-#: src/content_mapnode_special.cpp:1585
+#: src/content_mapnode_special.cpp:1597
 msgid "Mossy Cobblestone Wall"
 msgstr "Mur Z Omszałego Bruku"
 
-#: src/content_mapnode_special.cpp:1609
+#: src/content_mapnode_special.cpp:1621
 msgid "Stone Wall"
 msgstr "Kamienny Mur"
 
-#: src/content_mapnode_special.cpp:1633
+#: src/content_mapnode_special.cpp:1645
 msgid "Sand Stone Wall"
 msgstr "Mur Z Piaskowca"
 
-#: src/content_mapnode_special.cpp:1657
+#: src/content_mapnode_special.cpp:1669
 msgid "TNT"
 msgstr "Trotyl"
 
-#: src/content_mapnode_special.cpp:1677
+#: src/content_mapnode_special.cpp:1689
 msgid "In-Progress explosion - how did you get this???"
 msgstr "Trwająca eksplozja - jak się tutaj dostałeś???"
 
-#: src/content_mapnode_special.cpp:1697
+#: src/content_mapnode_special.cpp:1709
 msgid "Steam"
 msgstr "Para"
 
-#: src/content_mapnode_special.cpp:1718
+#: src/content_mapnode_special.cpp:1730
 msgid "Home Flag"
 msgstr "Flaga Domu"
 
-#: src/content_mapnode_special.cpp:1768
+#: src/content_mapnode_special.cpp:1780
 msgid "Blue Home Flag"
 msgstr "Niebieska Flaga Domu"
 
-#: src/content_mapnode_special.cpp:1797
+#: src/content_mapnode_special.cpp:1809
 msgid "Green Home Flag"
 msgstr "Zielona Flaga Domu"
 
-#: src/content_mapnode_special.cpp:1826
+#: src/content_mapnode_special.cpp:1838
 msgid "Orange Home Flag"
 msgstr "Pomarańczowa Flaga Domu"
 
-#: src/content_mapnode_special.cpp:1855
+#: src/content_mapnode_special.cpp:1867
 msgid "Purple Home Flag"
 msgstr "Fioletowa Flaga Domu"
 
-#: src/content_mapnode_special.cpp:1884
+#: src/content_mapnode_special.cpp:1896
 msgid "Red Home Flag"
 msgstr "Czerwona Flaga Domu"
 
-#: src/content_mapnode_special.cpp:1913
+#: src/content_mapnode_special.cpp:1925
 msgid "Yellow Home Flag"
 msgstr "Żółta Flaga Domu"
 
-#: src/content_mapnode_special.cpp:1942
+#: src/content_mapnode_special.cpp:1954
 msgid "Black Home Flag"
 msgstr "Czarna Flaga Domu"
 
-#: src/content_mapnode_special.cpp:1971
+#: src/content_mapnode_special.cpp:1983
 msgid "Life Support System"
 msgstr ""
 
@@ -2674,19 +2679,19 @@ msgstr ""
 msgid "Safe owned by '%s'"
 msgstr ""
 
-#: src/content_nodemeta.cpp:484 src/content_nodemeta.cpp:1416
-#: src/content_nodemeta.cpp:1618 src/content_nodemeta.cpp:1829
+#: src/content_nodemeta.cpp:484 src/content_nodemeta.cpp:1427
+#: src/content_nodemeta.cpp:1629 src/content_nodemeta.cpp:1840
 #, c-format
 msgid "Page %d of %d"
 msgstr ""
 
-#: src/content_nodemeta.cpp:488 src/content_nodemeta.cpp:1444
-#: src/content_nodemeta.cpp:1627 src/content_nodemeta.cpp:1845
+#: src/content_nodemeta.cpp:488 src/content_nodemeta.cpp:1455
+#: src/content_nodemeta.cpp:1638 src/content_nodemeta.cpp:1856
 msgid "<< Previous Page"
 msgstr ""
 
-#: src/content_nodemeta.cpp:494 src/content_nodemeta.cpp:1450
-#: src/content_nodemeta.cpp:1633 src/content_nodemeta.cpp:1851
+#: src/content_nodemeta.cpp:494 src/content_nodemeta.cpp:1461
+#: src/content_nodemeta.cpp:1644 src/content_nodemeta.cpp:1862
 msgid "Next Page >>"
 msgstr ""
 
@@ -2711,27 +2716,27 @@ msgstr ""
 msgid "Furnace is active"
 msgstr ""
 
-#: src/content_nodemeta.cpp:869
+#: src/content_nodemeta.cpp:874
 msgid "Locking Furnace is overloaded"
 msgstr ""
 
-#: src/content_nodemeta.cpp:870
+#: src/content_nodemeta.cpp:875
 msgid "Locking Furnace is out of fuel"
 msgstr ""
 
-#: src/content_nodemeta.cpp:872
+#: src/content_nodemeta.cpp:877
 msgid "Locking Furnace is inactive"
 msgstr ""
 
-#: src/content_nodemeta.cpp:875
+#: src/content_nodemeta.cpp:880
 msgid "Locking Furnace is active"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1121
+#: src/content_nodemeta.cpp:1130
 msgid "Armed Explosive: about to detonate"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1124
+#: src/content_nodemeta.cpp:1133
 #, c-format
 msgid "Armed Explosive: %d second till detonation"
 msgid_plural "Armed Explosive: %d seconds till detonation"
@@ -2739,56 +2744,56 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/content_nodemeta.cpp:1174
+#: src/content_nodemeta.cpp:1183
 msgid "Incinerator is active"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1175
+#: src/content_nodemeta.cpp:1184
 msgid "Incinerator is inactive"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1216
+#: src/content_nodemeta.cpp:1227
 msgid "Add fuel, then punch to incinerate wielded item"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1420
+#: src/content_nodemeta.cpp:1431
 msgid "Add item here to see recipe"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1425
+#: src/content_nodemeta.cpp:1436
 #, c-format
 msgid "Recipe %d of %d"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1434
+#: src/content_nodemeta.cpp:1445
 msgid "Gives"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1622
+#: src/content_nodemeta.cpp:1633
 msgid "Add item here to see cook result"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1833
+#: src/content_nodemeta.cpp:1844
 msgid "Add item here to see dig result"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1837
+#: src/content_nodemeta.cpp:1848
 msgid "Dig Result"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1841
+#: src/content_nodemeta.cpp:1852
 msgid "Random Drop"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1933 src/content_nodemeta.cpp:2032
+#: src/content_nodemeta.cpp:1944 src/content_nodemeta.cpp:2043
 msgid "Title"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1938 src/content_nodemeta.cpp:2037
+#: src/content_nodemeta.cpp:1949 src/content_nodemeta.cpp:2048
 msgid "Content"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1943 src/content_nodemeta.cpp:2042
+#: src/content_nodemeta.cpp:1954 src/content_nodemeta.cpp:2053
 #: src/guiKeyChangeMenu.cpp:307
 msgid "Save"
 msgstr "Zapis"
@@ -3115,7 +3120,9 @@ msgstr "Odradzanie się"
 
 #: src/guiFormSpecMenu.cpp:470
 msgid "Left click: Move all items, Right click: Move single item"
-msgstr "Kliknięcie lewym przyciskiem myszy: Przenieś wszystkie przedmioty, Kliknięcie prawym przyciskiem myszy: Przenieś pojedynczy przedmiot"
+msgstr ""
+"Kliknięcie lewym przyciskiem myszy: Przenieś wszystkie przedmioty, "
+"Kliknięcie prawym przyciskiem myszy: Przenieś pojedynczy przedmiot"
 
 #: src/guiFormSpecMenu.cpp:493
 msgid "Write It"
@@ -3414,11 +3421,15 @@ msgid ""
 "http://www.voxelands.com/\n"
 "\n"
 "By Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
-"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, tiemay, Szkodnix, soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound\n"
+"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, "
+"tiemay, Szkodnix, soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound, Rui, "
+"Wayward_One\n"
 "\n"
 "Based on Minetest-C55\n"
 "by Perttu Ahola <celeron55@gmail.com>\n"
-"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
+"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
+"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
+"Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
 msgstr ""
 
 #: src/guiMessageMenu.cpp:112 src/guiPauseMenu.cpp:138
@@ -3761,42 +3772,42 @@ msgstr "Graj"
 msgid "Zoom"
 msgstr "Przybliżenie"
 
-#: src/main.cpp:1133
+#: src/main.cpp:1137
 msgid "Setting Up UI"
 msgstr "Ustawianie Interfejsu"
 
-#: src/main.cpp:1156
+#: src/main.cpp:1160
 msgid "Loading MapNodes"
 msgstr "Wczytywanie Węzłów"
 
-#: src/main.cpp:1158
+#: src/main.cpp:1162
 msgid "Loading Creatures"
 msgstr ""
 
-#: src/mapnode.cpp:277
+#: src/mapnode.cpp:279
 msgid "Loading Base MapNodes"
 msgstr "Wczytywanie Podstawowych Węzłów"
 
-#: src/mapnode.cpp:281
+#: src/mapnode.cpp:283
 msgid "Loading Circuit MapNodes"
 msgstr "Wczytywanie Węzłów Obwodów"
 
-#: src/mapnode.cpp:285
+#: src/mapnode.cpp:287
 msgid "Loading Plant MapNodes"
 msgstr "Wczytywanie Węzłów Roślinności"
 
-#: src/mapnode.cpp:289
+#: src/mapnode.cpp:291
 msgid "Loading Farming MapNodes"
 msgstr "Wczytywanie Węzłów Rolnictwa"
 
-#: src/mapnode.cpp:293
+#: src/mapnode.cpp:295
 msgid "Loading Decorative MapNodes"
 msgstr "Wczytywanie Węzłów Dekoracji"
 
-#: src/mapnode.cpp:297
+#: src/mapnode.cpp:299
 msgid "Loading Interactive MapNodes"
 msgstr "Wczytywanie Węzłów Interakcji"
 
-#: src/mapnode.cpp:301
+#: src/mapnode.cpp:303
 msgid "Loading Special MapNodes"
 msgstr "Wczytywanie Węzłów Specjalnych"
