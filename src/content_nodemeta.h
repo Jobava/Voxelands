@@ -42,9 +42,8 @@ public:
 	static NodeMetadata* create(std::istream &is);
 	virtual NodeMetadata* clone();
 	virtual void serializeBody(std::ostream &os);
-	virtual std::wstring infoText();
 
-	std::string getText(){ return m_text; }
+	virtual std::string getText(){ return m_text; }
 	void setText(std::string t){ m_text = t; }
 	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player)
 	{
@@ -76,7 +75,7 @@ public:
 	virtual std::string getInventoryOwner(){ return m_owner; }
 	virtual void setInventoryOwner(std::string t){ m_owner = t; }
 
-	std::string getText(){ return m_text; }
+	virtual std::string getText(){ return m_text; }
 	void setText(std::string t){ m_text = t; }
 	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
 	virtual std::string getDrawSpecString();

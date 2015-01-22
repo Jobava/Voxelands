@@ -224,6 +224,44 @@ public:
 	aabb3f m_box;
 };
 
+enum FaceTextType {
+	FTT_INFO,
+	FTT_BOOKCONTENT,
+	FTT_OWNER,
+	FTT_INVOWNER
+};
+
+class FaceText
+{
+public:
+	FaceText():
+		m_hastext(false)
+	{
+	}
+	FaceText(f32 tlx, f32 tly, f32 brx, f32 bry):
+		m_type(FTT_INFO),
+		m_hastext(true)
+	{
+#ifndef SERVER
+		m_pos = core::rect<f32>(tlx,tly,brx,bry);
+#endif
+	}
+	FaceText(f32 tlx, f32 tly, f32 brx, f32 bry, FaceTextType type):
+		m_type(type),
+		m_hastext(true)
+	{
+#ifndef SERVER
+		m_pos = core::rect<f32>(tlx,tly,brx,bry);
+#endif
+	}
+
+#ifndef SERVER
+	core::rect<f32> m_pos;
+#endif
+	FaceTextType m_type;
+	bool m_hastext;
+};
+
 std::vector<NodeBox> transformNodeBox(MapNode &n,
 		const std::vector<NodeBox> &nodebox);
 
@@ -254,6 +292,9 @@ struct ContentFeatures
 	std::wstring description;
 	std::vector<NodeBox> nodeboxes;
 	std::vector<NodeBox> wield_nodeboxes;
+
+	// positions for text on faces
+	FaceText facetexts[6];
 
 	// List of all block textures that have been used (value is dummy)
 	// Exists on server too for cleaner code in content_mapnode.cpp
@@ -393,6 +434,7 @@ struct ContentFeatures
 			0.5*BS
 		));
 		wield_nodeboxes.clear();
+		setAllFaceTexts(FaceText());
 		param_type = CPT_NONE;
 		param2_type = CPT_NONE;
 		draw_type = CDT_AIRLIKE;
@@ -481,6 +523,18 @@ struct ContentFeatures
 	void addWieldNodeBox(NodeBox nb)
 	{
 		wield_nodeboxes.push_back(nb);
+	}
+
+	void setFaceText(u16 i, FaceText ft)
+	{
+		facetexts[i] = ft;
+	}
+
+	void setAllFaceTexts(FaceText ft)
+	{
+		for (u16 i=0; i<6; i++) {
+			setFaceText(i,ft);
+		}
 	}
 
 	/*
@@ -906,6 +960,8 @@ struct MapNode
 	TileSpec getMetaTile(v3s16 dir) {return getTileFrom(dir,content_features(*this).meta_tiles); }
 	TileSpec getTileFrom(v3s16 dir, TileSpec raw_spec[6]);
 #endif
+
+	FaceText getFaceText(v3s16 dir);
 
 	/*
 		Gets mineral content of node, if there is any.

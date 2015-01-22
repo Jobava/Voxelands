@@ -69,6 +69,7 @@ public:
 	virtual NodeMetadata* clone() = 0;
 	virtual void serializeBody(std::ostream &os) = 0;
 	virtual std::wstring infoText() {return L"";}
+	virtual std::string getText() {return "";}
 	virtual Inventory* getInventory() {return NULL;}
 	// This is called always after the inventory is modified, before
 	// the changes are copied elsewhere

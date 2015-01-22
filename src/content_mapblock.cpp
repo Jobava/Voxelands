@@ -3624,9 +3624,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			};
 
 			TileSpec tiles[6];
+			NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+blockpos_nodes);
 			for (int i = 0; i < 6; i++) {
 				// Handles facedir rotation for textures
-				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
+				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods,meta);
 			}
 			video::SColor c[8];
 			getLights(blockpos_nodes+p,c,data,smooth_lighting);
@@ -3660,7 +3661,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				makeRotatedCuboid(&collector, pos, box.m_box, tiles, 6, c, txc, box.m_angle);
 			}
 			if (content_features(n).draw_type == CDT_NODEBOX_META) {
-				NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+blockpos_nodes);
 				if (meta == NULL)
 					break;
 				boxes = meta->getNodeBoxes(n);

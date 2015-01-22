@@ -404,36 +404,37 @@ TileSpec MapNode::getTileFrom(v3s16 dir, TileSpec raw_spec[6])
 {
 	TileSpec spec;
 	s32 dir_i = 0;
+	ContentFeatures &f = content_features(*this);
 
 	if (
-		content_features(*this).param2_type == CPT_FACEDIR_SIMPLE
-		|| content_features(*this).param2_type == CPT_FACEDIR_WALLMOUNT
+		f.param2_type == CPT_FACEDIR_SIMPLE
+		|| f.param2_type == CPT_FACEDIR_WALLMOUNT
 	) {
 		dir = facedir_rotate(param2&0x0F, dir);
 	}else if (
-		content_features(*this).param_type == CPT_FACEDIR_SIMPLE
-		|| content_features(*this).param_type == CPT_FACEDIR_WALLMOUNT
+		f.param_type == CPT_FACEDIR_SIMPLE
+		|| f.param_type == CPT_FACEDIR_WALLMOUNT
 	) {
 		dir = facedir_rotate(param1, dir);
 	}
-
-	if(dir == v3s16(0,-1,0))
+	if (dir == v3s16(0,-1,0)) {
 		dir_i = 1;
-	else if(dir == v3s16(1,0,0))
+	}else if(dir == v3s16(1,0,0)) {
 		dir_i = 2;
-	else if(dir == v3s16(-1,0,0))
+	}else if(dir == v3s16(-1,0,0)) {
 		dir_i = 3;
-	else if(dir == v3s16(0,0,1))
+	}else if(dir == v3s16(0,0,1)) {
 		dir_i = 4;
-	else if(dir == v3s16(0,0,-1))
+	}else if(dir == v3s16(0,0,-1)) {
 		dir_i = 5;
+	}
 
 	spec = raw_spec[dir_i];
 
 	/*
 		If it contains some mineral, change texture id
 	*/
-	if(content_features(*this).param_type == CPT_MINERAL && g_texturesource)
+	if(f.param_type == CPT_MINERAL && g_texturesource)
 	{
 		u8 mineral = getMineral();
 		std::string mineral_texture_name = mineral_features(mineral).texture;
@@ -448,11 +449,11 @@ TileSpec MapNode::getTileFrom(v3s16 dir, TileSpec raw_spec[6])
 			spec.texture = g_texturesource->getTexture(new_id);
 		}
 	}
-	if (content_features(*this).rotate_tile_with_nodebox) {
+	if (f.rotate_tile_with_nodebox) {
 		u8 facedir = 0;
-		if (content_features(*this).param_type == CPT_FACEDIR_SIMPLE) {
+		if (f.param_type == CPT_FACEDIR_SIMPLE) {
 			facedir = param1;
-		}else if (content_features(*this).param2_type == CPT_FACEDIR_SIMPLE) {
+		}else if (f.param2_type == CPT_FACEDIR_SIMPLE) {
 			facedir = (param2&0x0F);
 		}
 		if (dir_i == 0) {
@@ -489,6 +490,35 @@ TileSpec MapNode::getTileFrom(v3s16 dir, TileSpec raw_spec[6])
 	return spec;
 }
 #endif
+FaceText MapNode::getFaceText(v3s16 dir)
+{
+	s32 dir_i = 0;
+	ContentFeatures &f = content_features(*this);
+	if (
+		f.param2_type == CPT_FACEDIR_SIMPLE
+		|| f.param2_type == CPT_FACEDIR_WALLMOUNT
+	) {
+		dir = facedir_rotate(param2&0x0F, dir);
+	}else if (
+		f.param_type == CPT_FACEDIR_SIMPLE
+		|| f.param_type == CPT_FACEDIR_WALLMOUNT
+	) {
+		dir = facedir_rotate(param1, dir);
+	}
+	if (dir == v3s16(0,-1,0)) {
+		dir_i = 1;
+	}else if(dir == v3s16(1,0,0)) {
+		dir_i = 2;
+	}else if(dir == v3s16(-1,0,0)) {
+		dir_i = 3;
+	}else if(dir == v3s16(0,0,1)) {
+		dir_i = 4;
+	}else if(dir == v3s16(0,0,-1)) {
+		dir_i = 5;
+	}
+
+	return f.facetexts[dir_i];
+}
 
 u8 MapNode::getMineral()
 {

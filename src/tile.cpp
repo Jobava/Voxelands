@@ -26,12 +26,14 @@
 #include "tile.h"
 #include "debug.h"
 #include "main.h" // for g_settings
+#include "game.h"
 #include "filesys.h"
 #include "utility.h"
 #include "settings.h"
 #include "mesh.h"
 #include "hex.h"
 #include <ICameraSceneNode.h>
+#include <IGUIStaticText.h>
 #include "log.h"
 #include "mapnode.h" // For texture atlas making
 #include "mineral.h" // For texture atlas making
@@ -218,11 +220,16 @@ u32 TextureSource::getTextureIdDirect(const std::string &name)
 
 	// Find last meta separator in name
 	s32 last_separator_position = -1;
-	for (s32 i=name.size()-1; i>=0; i--) {
-		if (name[i] == separator) {
-			last_separator_position = i;
-			break;
+	size_t text_separator_position = name.find("^[text:");
+	if (text_separator_position == std::string::npos) {
+		for (s32 i=name.size()-1; i>=0; i--) {
+			if (name[i] == separator) {
+				last_separator_position = i;
+				break;
+			}
 		}
+	}else{
+		last_separator_position = text_separator_position;
 	}
 	/*
 		If separator was found, construct the base name and make the
@@ -1669,6 +1676,127 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 			// Overlay the colored image
 			blit_with_alpha_overlay(img, baseimg, v2s32(0,0), v2s32(0,0), dim);
 			img->drop();
+		}
+		/*
+			[text:x,y,X,Y,string
+			writes string to texture
+		*/
+		else if (part_of_name.substr(0,6) == "[text:") {
+			Strfnd sf(part_of_name);
+			sf.next(":");
+			std::string x = sf.next(",");
+			std::string y = sf.next(",");
+			std::string X = sf.next(",");
+			std::string Y = sf.next(",");
+			std::wstring text = narrow_to_wide(sf.end());
+
+			if (baseimg == NULL) {
+				errorstream << "generateImagePart(): baseimg != NULL "
+						<< "for part_of_name=\"" << part_of_name
+						<< "\", cancelling." << std::endl;
+				return false;
+			}
+
+			core::rect<f32> pos(
+				mystof(x.c_str()),
+				mystof(y.c_str()),
+				mystof(X.c_str()),
+				mystof(Y.c_str())
+			);
+
+			video::IVideoDriver *driver = device->getVideoDriver();
+			if (driver->queryFeature(video::EVDF_RENDER_TO_TARGET) == false) {
+				static bool warned = false;
+				if (!warned) {
+					errorstream<<"generateImagePart(): EVDF_RENDER_TO_TARGET not supported."<<std::endl;
+					warned = true;
+				}
+				return NULL;
+			}
+
+			core::dimension2d<u32> dim = baseimg->getDimension();
+			core::dimension2d<u32> rtt_dim(dim.Width*10,dim.Height*10);
+			std::string rtt_texture_name = part_of_name + "_RTT";
+
+			// Create render target texture
+			video::ITexture *rtt = driver->addRenderTargetTexture(rtt_dim, rtt_texture_name.c_str(), video::ECF_A8R8G8B8);
+			if (rtt == NULL) {
+				errorstream<<"generateImagePart(): addRenderTargetTexture"
+						" returned NULL."<<std::endl;
+				return NULL;
+			}
+
+			// Get the gui
+			gui::IGUIEnvironment *guienv = device->getGUIEnvironment();
+			assert(guienv);
+
+			gui::IGUISkin* skin = guienv->getSkin();
+			gui::IGUIFont *std_font = skin->getFont();
+			static gui::IGUIFont *tex_font = NULL;
+#if USE_FREETYPE
+			tex_font = gui::CGUITTFont::createTTFont(guienv, getPath("font","liberationsans.ttf",false).c_str(),10);
+#else
+			tex_font = guienv->getFont(getTexturePath("fontlucida.png").c_str());
+#endif
+			if (tex_font)
+				skin->setFont(tex_font);
+
+			// Set render target
+			driver->setRenderTarget(rtt, false, true, video::SColor(0,0,0,0));
+
+			const video::SColor color(255,255,255,255);
+			const video::SColor colors[] = {color,color,color,color};
+			const core::rect<s32> rect(core::position2d<s32>(0,0),rtt_dim);
+			const core::rect<s32> srect(core::position2d<s32>(0,0),dim);
+			driver->beginScene(true, true, video::SColor(255,0,0,0));
+			video::ITexture *t = driver->addTexture(std::string(rtt_texture_name+"_BASE").c_str(), baseimg);
+			driver->draw2DImage(
+				t,
+				rect,
+				srect,
+				&rect,
+				colors,
+				true
+			);
+
+			const core::rect<s32> trect(
+				(f32)rtt_dim.Width*pos.UpperLeftCorner.X,
+				(f32)rtt_dim.Height*pos.UpperLeftCorner.Y,
+				(f32)rtt_dim.Width*pos.LowerRightCorner.X,
+				(f32)rtt_dim.Height*pos.LowerRightCorner.Y
+			);
+			gui::IGUIStaticText *e = guienv->addStaticText(text.c_str(), trect);
+			e->setTextAlignment(gui::EGUIA_CENTER,gui::EGUIA_CENTER);
+
+			// Render scene
+			e->draw();
+			//guienv->drawAll();
+			driver->endScene();
+
+			// remove that text so it doesn't appear in the game window for
+			// some insane irrlicht too many classes reason
+			e->remove();
+
+			// Unset render target
+			driver->setRenderTarget(0, false, true, 0);
+
+			skin->setFont(std_font);
+
+			// Create image of render target
+			video::IImage *image = driver->createImage(rtt, v2s32(0,0), rtt_dim);
+			assert(image);
+
+			video::IImage *new_baseimg = driver->createImage(video::ECF_A8R8G8B8, rtt_dim);
+			if (new_baseimg) {
+				baseimg->copyToScaling(new_baseimg);
+				baseimg->drop();
+				baseimg = new_baseimg;
+			}
+
+			if (image) {
+				image->copyTo(baseimg);
+				image->drop();
+			}
 		}
 		else
 		{

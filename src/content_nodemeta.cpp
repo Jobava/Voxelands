@@ -64,13 +64,16 @@ void SignNodeMetadata::serializeBody(std::ostream &os)
 {
 	os<<serializeString(m_text);
 }
-std::wstring SignNodeMetadata::infoText()
-{
-	return narrow_to_wide(std::string("\"")+m_text+"\"");
-}
 std::string SignNodeMetadata::getDrawSpecString()
 {
-	return std::string("field[text;;") + m_text + "]";
+	std::string spec("size[5,2.5]");
+	spec += "field[0.75,0;4,1.5;text;;";
+	spec += m_text;
+	spec += "]";
+	spec += "button_exit[1.25,2;3,1;save;";
+	spec += gettext("Save");
+	spec += "]";
+	return spec;
 }
 bool SignNodeMetadata::import(NodeMetadata *meta)
 {
@@ -115,7 +118,7 @@ void LockingSignNodeMetadata::serializeBody(std::ostream &os)
 }
 std::wstring LockingSignNodeMetadata::infoText()
 {
-	return narrow_to_wide(std::string("(")+m_owner+") \""+m_text+"\"");
+	return narrow_to_wide(std::string("(")+m_owner+")");
 }
 bool LockingSignNodeMetadata::receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player)
 {
@@ -126,7 +129,14 @@ bool LockingSignNodeMetadata::receiveFields(std::string formname, std::map<std::
 }
 std::string LockingSignNodeMetadata::getDrawSpecString()
 {
-	return std::string("field[text;;") + m_text + "]";
+	std::string spec("size[5,2.5]");
+	spec += "field[0.75,0;4,1.5;text;;";
+	spec += m_text;
+	spec += "]";
+	spec += "button_exit[1.25,2;3,1;save;";
+	spec += gettext("Save");
+	spec += "]";
+	return spec;
 }
 bool LockingSignNodeMetadata::import(NodeMetadata *meta)
 {

@@ -31,53 +31,52 @@
 std::string trim(const std::string &str);
 
 class Strfnd{
-    std::string tek;
-    unsigned int p;
+	std::string tek;
+	unsigned int p;
 public:
-    void start(std::string niinq){
-        tek = niinq;
-        p=0;
-    }
-    unsigned int where(){
-        return p;
-    }
-    void to(unsigned int i){
-        p = i;
-    }
-    std::string what(){
-        return tek;
-    }
-    std::string next(std::string plop){
-        //std::cout<<"tek=\""<<tek<<"\" plop=\""<<plop<<"\""<<std::endl;
-        size_t n;
-        std::string palautus;
-        if (p < tek.size())
-        {
-            //std::cout<<"\tp<tek.size()"<<std::endl;
-            if ((n = tek.find(plop, p)) == std::string::npos || plop == "")
-            {
-                //std::cout<<"\t\tn == string::npos || plop == \"\""<<std::endl;
-                n = tek.size();
-            }
-            else
-            {
-                //std::cout<<"\t\tn != string::npos"<<std::endl;
-            }
-            palautus = tek.substr(p, n-p);
-            p = n + plop.length();
-        }
-        //else
-            //std::cout<<"\tp>=tek.size()"<<std::endl;
-		//std::cout<<"palautus=\""<<palautus<<"\""<<std::endl;
-        return palautus;
-    }
-    bool atend(){
-        if(p>=tek.size()) return true;
-        return false;
-    }
-    Strfnd(std::string s){
-        start(s);
-    }
+	void start(std::string niinq)
+	{
+		tek = niinq;
+		p=0;
+	}
+	unsigned int where()
+	{
+		return p;
+	}
+	void to(unsigned int i)
+	{
+		p = i;
+	}
+	std::string what()
+	{
+		return tek;
+	}
+	std::string next(std::string plop)
+	{
+		size_t n;
+		std::string palautus;
+		if (p < tek.size()) {
+			if ((n = tek.find(plop, p)) == std::string::npos || plop == "")
+				n = tek.size();
+			palautus = tek.substr(p, n-p);
+			p = n + plop.length();
+		}
+		return palautus;
+	}
+	std::string end()
+	{
+		return tek.substr(p,tek.size()-p);
+	}
+	bool atend()
+	{
+		if (p>=tek.size())
+			return true;
+		return false;
+	}
+	Strfnd(std::string s)
+	{
+		start(s);
+	}
 };
 
 class WStrfnd{

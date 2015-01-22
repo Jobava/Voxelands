@@ -29,6 +29,7 @@
 #include "map.h"
 #include "main.h" // For g_settings and g_texturesource
 #include "content_mapblock.h"
+#include "content_nodemeta.h"
 #include "settings.h"
 #include "profiler.h"
 #include "mesh.h"
@@ -244,8 +245,7 @@ void makeFastFace(TileSpec tile, u8 li0, u8 li1, u8 li2, u8 li3, v3f p,
 	Gets node tile from any place relative to block.
 	Returns TILE_NODE if doesn't exist or should not be drawn.
 */
-TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir,
-		NodeModMap &temp_mods)
+TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods, NodeMetadata *meta)
 {
 	TileSpec spec;
 	spec = mn.getTile(face_dir);
@@ -282,6 +282,47 @@ TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir,
 			// Create new texture name
 			std::ostringstream os;
 			os<<orig_name<<"^[forcesingle";
+
+			// Get new texture
+			u32 new_id = g_texturesource->getTextureId(os.str());
+
+			spec.texture = g_texturesource->getTexture(new_id);
+		}
+	}
+
+	if (meta) {
+		printf("meta!\n");
+		FaceText ft = mn.getFaceText(face_dir);
+		if (ft.m_hastext) {
+			printf("facetext!\n");
+			// Get original texture name
+			u32 orig_id = spec.texture.id;
+			std::string orig_name = g_texturesource->getTextureName(orig_id);
+			// Create new texture name
+			std::ostringstream os;
+			os<<orig_name<<"^[text:";
+			os<<ft.m_pos.UpperLeftCorner.X;
+			os<<",";
+			os<<ft.m_pos.UpperLeftCorner.Y;
+			os<<",";
+			os<<ft.m_pos.LowerRightCorner.X;
+			os<<",";
+			os<<ft.m_pos.LowerRightCorner.Y;
+			os<<",";
+			switch (ft.m_type) {
+			case FTT_BOOKCONTENT:
+				os<<((BookNodeMetadata*)meta)->getContent();
+				break;
+			case FTT_OWNER:
+				os<<meta->getOwner();
+				break;
+			case FTT_INVOWNER:
+				os<<meta->getInventoryOwner();
+				break;
+			default:
+				os<<meta->getText();
+				break;
+			}
 
 			// Get new texture
 			u32 new_id = g_texturesource->getTextureId(os.str());

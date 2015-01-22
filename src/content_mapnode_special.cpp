@@ -1046,6 +1046,7 @@ void content_mapnode_special(bool repeat)
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
 	content_nodebox_sign_wall(f);
+	f->setFaceText(5,FaceText(0.05,0.3,0.95,0.7));
 
 	i = CONTENT_SIGN;
 	f = &content_features(i);
@@ -1072,6 +1073,7 @@ void content_mapnode_special(bool repeat)
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
 	content_nodebox_sign(f);
+	f->setFaceText(5,FaceText(0.05,0.0675,0.95,0.55));
 	f->setInventoryTextureNodeBox(i,"sign.png", "sign_front.png", "sign.png");
 	crafting::setSignRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_SIGN);
 	crafting::setSignRecipe(CONTENT_CRAFTITEM_PINE_PLANK,CONTENT_SIGN);
@@ -1104,6 +1106,7 @@ void content_mapnode_special(bool repeat)
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
 	content_nodebox_sign_ud(f);
+	f->setFaceText(5,FaceText(0.05,0.45,0.95,0.8875));
 	f->setInventoryTextureNodeBox(i,"sign.png", "sign_front.png", "sign.png");
 
 	i = CONTENT_LOCKABLE_SIGN_WALL;
@@ -1133,6 +1136,8 @@ void content_mapnode_special(bool repeat)
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
 	content_nodebox_sign_wall(f);
+	f->setFaceText(4,FaceText(0.05,0.3,0.95,0.7,FTT_OWNER));
+	f->setFaceText(5,FaceText(0.05,0.3,0.95,0.7));
 
 	i = CONTENT_LOCKABLE_SIGN;
 	f = &content_features(i);
@@ -1159,6 +1164,8 @@ void content_mapnode_special(bool repeat)
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
 	content_nodebox_sign(f);
+	f->setFaceText(4,FaceText(0.05,0.0675,0.95,0.55,FTT_OWNER));
+	f->setFaceText(5,FaceText(0.05,0.0675,0.95,0.55));
 	f->setInventoryTextureNodeBox(i,"sign.png", "sign_lock.png", "sign.png");
 	crafting::set1Any2Recipe(CONTENT_SIGN,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_LOCKABLE_SIGN);
 	lists::add("craftguide",i);
@@ -1189,6 +1196,8 @@ void content_mapnode_special(bool repeat)
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
 	content_nodebox_sign_ud(f);
+	f->setFaceText(4,FaceText(0.05,0.45,0.95,0.8875,FTT_OWNER));
+	f->setFaceText(5,FaceText(0.05,0.45,0.95,0.8875));
 	f->setInventoryTextureNodeBox(i,"sign.png", "sign_lock.png", "sign.png");
 
 	i = CONTENT_CHEST;

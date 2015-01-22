@@ -40,6 +40,7 @@ using namespace jthread;
 u32 parseImageTransform(const std::string& s);
 core::dimension2d<u32> imageTransformDimension(u32 transform, core::dimension2d<u32> dim);
 void imageTransform(u32 transform, video::IImage *src, video::IImage *dst);
+video::ITexture *addText(IrrlichtDevice *device, video::ITexture *tex, core::rect<f32> pos, std::wstring &s);
 
 /*
 	Specifies a texture in an atlas.
