@@ -652,6 +652,7 @@ void content_mapnode_special(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0;
 	content_nodebox_book(f);
+	//f->setFaceText(0,FaceText(0.05,0.175,0.9875,0.7375));
 	f->setInventoryTextureNodeBox(i, "book_cover.png", "book_end.png^[transformFX", "book_side.png^[transformFY");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;

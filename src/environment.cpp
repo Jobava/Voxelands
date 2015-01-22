@@ -1820,7 +1820,7 @@ void ServerEnvironment::step(float dtime)
 				// fire that goes out
 				case CONTENT_FIRE_SHORTTERM:
 				{
-					if (n.envticks > 10) {
+					if (n.envticks > 2) {
 						m_map->removeNodeWithEvent(p);
 						v3f ash_pos = intToFloat(p, BS);
 						ash_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
@@ -1836,7 +1836,7 @@ void ServerEnvironment::step(float dtime)
 					MapNode n_below = m_map->getNodeNoEx(p+v3s16(0,-1,0));
 					if (!content_features(n_below).flammable) {
 						m_map->removeNodeWithEvent(p);
-					}else if (n.envticks > 10) {
+					}else{
 						s16 bs_rad = g_settings->getS16("borderstone_radius");
 						bs_rad += 2;
 						// if any node is border stone protected, don't spread
