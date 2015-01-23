@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-22 06:22+1000\n"
+"POT-Creation-Date: 2015-01-23 18:51+1000\n"
 "PO-Revision-Date: 2014-12-31 11:54+0000\n"
 "Last-Translator: Pablo Roberto Francisco Lezaeta Reyes <prflr88@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/voxelands/"
@@ -2475,166 +2475,166 @@ msgstr "Frontera de piedra"
 msgid "Book"
 msgstr "Libro"
 
-#: src/content_mapnode_special.cpp:668
+#: src/content_mapnode_special.cpp:669
 msgid "Cook Book"
 msgstr "Recetario"
 
-#: src/content_mapnode_special.cpp:700
+#: src/content_mapnode_special.cpp:701
 msgid "Decraft Book"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:731 src/content_mapnode_special.cpp:882
-#: src/content_nodemeta.cpp:1970
+#: src/content_mapnode_special.cpp:732 src/content_mapnode_special.cpp:883
+#: src/content_nodemeta.cpp:1980
 msgid "Diary"
 msgstr "Diario"
 
-#: src/content_mapnode_special.cpp:762
+#: src/content_mapnode_special.cpp:763
 msgid "Craft Book"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:801
+#: src/content_mapnode_special.cpp:802
 msgid "Guide"
 msgstr "Guía"
 
-#: src/content_mapnode_special.cpp:828 src/content_nodemeta.h:369
+#: src/content_mapnode_special.cpp:829 src/content_nodemeta.h:368
 msgid "Cooking Guide"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:855 src/content_nodemeta.h:395
+#: src/content_mapnode_special.cpp:856 src/content_nodemeta.h:394
 msgid "Decrafting Guide"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:909 src/content_nodemeta.h:342
+#: src/content_mapnode_special.cpp:910 src/content_nodemeta.h:341
 msgid "Craft Guide"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:936 src/content_mapnode_special.cpp:956
+#: src/content_mapnode_special.cpp:937 src/content_mapnode_special.cpp:957
 msgid "Fire"
 msgstr "Fuego"
 
-#: src/content_mapnode_special.cpp:976 src/content_mapnode_special.cpp:999
+#: src/content_mapnode_special.cpp:977 src/content_mapnode_special.cpp:1000
 msgid "Torch"
 msgstr "Antorcha"
 
-#: src/content_mapnode_special.cpp:1027 src/content_mapnode_special.cpp:1052
-#: src/content_mapnode_special.cpp:1084
+#: src/content_mapnode_special.cpp:1028 src/content_mapnode_special.cpp:1054
+#: src/content_mapnode_special.cpp:1087
 msgid "Sign"
 msgstr "Signo"
 
-#: src/content_mapnode_special.cpp:1111 src/content_mapnode_special.cpp:1139
-#: src/content_mapnode_special.cpp:1169
+#: src/content_mapnode_special.cpp:1115 src/content_mapnode_special.cpp:1145
+#: src/content_mapnode_special.cpp:1177
 msgid "Locking Sign"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1196 src/content_nodemeta.cpp:218
+#: src/content_mapnode_special.cpp:1206 src/content_nodemeta.cpp:228
 msgid "Chest"
 msgstr "Cofre"
 
-#: src/content_mapnode_special.cpp:1218 src/content_nodemeta.cpp:448
+#: src/content_mapnode_special.cpp:1228 src/content_nodemeta.cpp:458
 msgid "Creative Chest"
 msgstr "Cofre creativo"
 
-#: src/content_mapnode_special.cpp:1238
+#: src/content_mapnode_special.cpp:1248
 msgid "Locking Chest"
 msgstr "Cofre cerrado"
 
-#: src/content_mapnode_special.cpp:1267
+#: src/content_mapnode_special.cpp:1277
 msgid "Safe"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1289 src/content_mapnode_special.cpp:1309
+#: src/content_mapnode_special.cpp:1299 src/content_mapnode_special.cpp:1319
 msgid "Furnace"
 msgstr "Horno"
 
-#: src/content_mapnode_special.cpp:1328 src/content_mapnode_special.cpp:1349
+#: src/content_mapnode_special.cpp:1338 src/content_mapnode_special.cpp:1359
 msgid "Locking Furnace"
 msgstr "Horno de bloqueo"
 
-#: src/content_mapnode_special.cpp:1367 src/content_mapnode_special.cpp:1387
+#: src/content_mapnode_special.cpp:1377 src/content_mapnode_special.cpp:1397
 msgid "Incinerator"
 msgstr "Incinerador"
 
-#: src/content_mapnode_special.cpp:1405
+#: src/content_mapnode_special.cpp:1415
 msgid "Nyan Cat"
 msgstr "Nyan Cat"
 
-#: src/content_mapnode_special.cpp:1419
+#: src/content_mapnode_special.cpp:1429
 msgid "Rainbow"
 msgstr "Arcoiris"
 
-#: src/content_mapnode_special.cpp:1431
+#: src/content_mapnode_special.cpp:1441
 msgid "Unbaked Flower Pot"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1492
+#: src/content_mapnode_special.cpp:1502
 msgid "Flower Pot"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1549
+#: src/content_mapnode_special.cpp:1559
 msgid "Cobblestone Wall"
 msgstr "Muro de adoquín"
 
-#: src/content_mapnode_special.cpp:1573
+#: src/content_mapnode_special.cpp:1583
 msgid "Rough Stone Wall"
 msgstr "Muro de piedra en bruto"
 
-#: src/content_mapnode_special.cpp:1597
+#: src/content_mapnode_special.cpp:1607
 msgid "Mossy Cobblestone Wall"
 msgstr "Muro de adoquín musgoso"
 
-#: src/content_mapnode_special.cpp:1621
+#: src/content_mapnode_special.cpp:1631
 msgid "Stone Wall"
 msgstr "Muro de piedra"
 
-#: src/content_mapnode_special.cpp:1645
+#: src/content_mapnode_special.cpp:1655
 msgid "Sand Stone Wall"
 msgstr "Muro de arcenica"
 
-#: src/content_mapnode_special.cpp:1669
+#: src/content_mapnode_special.cpp:1679
 msgid "TNT"
 msgstr "Dinamita"
 
-#: src/content_mapnode_special.cpp:1689
+#: src/content_mapnode_special.cpp:1699
 msgid "In-Progress explosion - how did you get this???"
 msgstr "Explosión en progreso ¿Cómo demonios posees ESTO?"
 
-#: src/content_mapnode_special.cpp:1709
+#: src/content_mapnode_special.cpp:1719
 msgid "Steam"
 msgstr "Humo"
 
-#: src/content_mapnode_special.cpp:1730
+#: src/content_mapnode_special.cpp:1740
 msgid "Home Flag"
 msgstr "Bandera de casa"
 
-#: src/content_mapnode_special.cpp:1780
+#: src/content_mapnode_special.cpp:1790
 msgid "Blue Home Flag"
 msgstr "Bandera de casa azul"
 
-#: src/content_mapnode_special.cpp:1809
+#: src/content_mapnode_special.cpp:1819
 msgid "Green Home Flag"
 msgstr "Bandera de casa verde"
 
-#: src/content_mapnode_special.cpp:1838
+#: src/content_mapnode_special.cpp:1848
 msgid "Orange Home Flag"
 msgstr "Bandera de casa naranja"
 
-#: src/content_mapnode_special.cpp:1867
+#: src/content_mapnode_special.cpp:1877
 msgid "Purple Home Flag"
 msgstr "Bandera de casa púrpura"
 
-#: src/content_mapnode_special.cpp:1896
+#: src/content_mapnode_special.cpp:1906
 msgid "Red Home Flag"
 msgstr "Bandera de casa roja"
 
-#: src/content_mapnode_special.cpp:1925
+#: src/content_mapnode_special.cpp:1935
 msgid "Yellow Home Flag"
 msgstr "Bandera de casa amarilla"
 
-#: src/content_mapnode_special.cpp:1954
+#: src/content_mapnode_special.cpp:1964
 msgid "Black Home Flag"
 msgstr "Bandera de casa negra"
 
-#: src/content_mapnode_special.cpp:1983
+#: src/content_mapnode_special.cpp:1993
 msgid "Life Support System"
 msgstr "Sistema de soporte vital"
 
@@ -2670,138 +2670,139 @@ msgstr ""
 msgid "Sand Stone Stair"
 msgstr "Escalera de arcénica"
 
-#: src/content_nodemeta.cpp:174
+#: src/content_nodemeta.cpp:74 src/content_nodemeta.cpp:137
+#: src/content_nodemeta.cpp:1964 src/content_nodemeta.cpp:2063
+#: src/guiKeyChangeMenu.cpp:307
+msgid "Save"
+msgstr "Guardar"
+
+#: src/content_nodemeta.cpp:184
 #, c-format
 msgid "%s's Home Flag"
 msgstr "Bandera de la casa de %s"
 
-#: src/content_nodemeta.cpp:291
+#: src/content_nodemeta.cpp:301
 #, c-format
 msgid "Locking Chest owned by '%s'"
 msgstr "Cofre propiedad de «%s»"
 
-#: src/content_nodemeta.cpp:365
+#: src/content_nodemeta.cpp:375
 #, c-format
 msgid "Safe owned by '%s'"
 msgstr ""
 
-#: src/content_nodemeta.cpp:484 src/content_nodemeta.cpp:1427
-#: src/content_nodemeta.cpp:1629 src/content_nodemeta.cpp:1840
+#: src/content_nodemeta.cpp:494 src/content_nodemeta.cpp:1437
+#: src/content_nodemeta.cpp:1639 src/content_nodemeta.cpp:1850
 #, c-format
 msgid "Page %d of %d"
 msgstr "Página %d de %d"
 
-#: src/content_nodemeta.cpp:488 src/content_nodemeta.cpp:1455
-#: src/content_nodemeta.cpp:1638 src/content_nodemeta.cpp:1856
+#: src/content_nodemeta.cpp:498 src/content_nodemeta.cpp:1465
+#: src/content_nodemeta.cpp:1648 src/content_nodemeta.cpp:1866
 msgid "<< Previous Page"
 msgstr "<< Página anterior"
 
-#: src/content_nodemeta.cpp:494 src/content_nodemeta.cpp:1461
-#: src/content_nodemeta.cpp:1644 src/content_nodemeta.cpp:1862
+#: src/content_nodemeta.cpp:504 src/content_nodemeta.cpp:1471
+#: src/content_nodemeta.cpp:1654 src/content_nodemeta.cpp:1872
 msgid "Next Page >>"
 msgstr "Página siguiente >>"
 
-#: src/content_nodemeta.cpp:537
+#: src/content_nodemeta.cpp:547
 #, c-format
 msgid "Border Stone owned by '%s'"
 msgstr "Frontera de piedra propiedad de «%s»"
 
-#: src/content_nodemeta.cpp:612
+#: src/content_nodemeta.cpp:622
 msgid "Furnace is overloaded"
 msgstr "Horno sobrecargado"
 
-#: src/content_nodemeta.cpp:613
+#: src/content_nodemeta.cpp:623
 msgid "Furnace is out of fuel"
 msgstr "Horno sin combustible"
 
-#: src/content_nodemeta.cpp:615
+#: src/content_nodemeta.cpp:625
 msgid "Furnace is inactive"
 msgstr "Horno inactivo"
 
-#: src/content_nodemeta.cpp:618
+#: src/content_nodemeta.cpp:628
 msgid "Furnace is active"
 msgstr "Horno activo"
 
-#: src/content_nodemeta.cpp:874
+#: src/content_nodemeta.cpp:884
 msgid "Locking Furnace is overloaded"
 msgstr "Horno de bloqueo sobrecargado"
 
-#: src/content_nodemeta.cpp:875
+#: src/content_nodemeta.cpp:885
 msgid "Locking Furnace is out of fuel"
 msgstr "Horno de bloqueo sin combustilble"
 
-#: src/content_nodemeta.cpp:877
+#: src/content_nodemeta.cpp:887
 msgid "Locking Furnace is inactive"
 msgstr "Horno de bloqueo inactivo"
 
-#: src/content_nodemeta.cpp:880
+#: src/content_nodemeta.cpp:890
 msgid "Locking Furnace is active"
 msgstr "Horno de bloqueo activo"
 
-#: src/content_nodemeta.cpp:1130
+#: src/content_nodemeta.cpp:1140
 msgid "Armed Explosive: about to detonate"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1133
+#: src/content_nodemeta.cpp:1143
 #, c-format
 msgid "Armed Explosive: %d second till detonation"
 msgid_plural "Armed Explosive: %d seconds till detonation"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/content_nodemeta.cpp:1183
+#: src/content_nodemeta.cpp:1193
 msgid "Incinerator is active"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1184
+#: src/content_nodemeta.cpp:1194
 msgid "Incinerator is inactive"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1227
+#: src/content_nodemeta.cpp:1237
 msgid "Add fuel, then punch to incinerate wielded item"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1431
+#: src/content_nodemeta.cpp:1441
 msgid "Add item here to see recipe"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1436
+#: src/content_nodemeta.cpp:1446
 #, c-format
 msgid "Recipe %d of %d"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1445
+#: src/content_nodemeta.cpp:1455
 msgid "Gives"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1633
+#: src/content_nodemeta.cpp:1643
 msgid "Add item here to see cook result"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1844
+#: src/content_nodemeta.cpp:1854
 msgid "Add item here to see dig result"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1848
+#: src/content_nodemeta.cpp:1858
 msgid "Dig Result"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1852
+#: src/content_nodemeta.cpp:1862
 msgid "Random Drop"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1944 src/content_nodemeta.cpp:2043
+#: src/content_nodemeta.cpp:1954 src/content_nodemeta.cpp:2053
 msgid "Title"
 msgstr "Título"
 
-#: src/content_nodemeta.cpp:1949 src/content_nodemeta.cpp:2048
+#: src/content_nodemeta.cpp:1959 src/content_nodemeta.cpp:2058
 msgid "Content"
 msgstr "Contenido"
-
-#: src/content_nodemeta.cpp:1954 src/content_nodemeta.cpp:2053
-#: src/guiKeyChangeMenu.cpp:307
-msgid "Save"
-msgstr "Guardar"
 
 #: src/content_toolitem.cpp:123
 msgid "Wooden Pick"
