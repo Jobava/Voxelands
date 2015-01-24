@@ -291,10 +291,8 @@ TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods,
 	}
 
 	if (meta) {
-		printf("meta!\n");
 		FaceText ft = mn.getFaceText(face_dir);
 		if (ft.m_hastext) {
-			printf("facetext!\n");
 			// Get original texture name
 			u32 orig_id = spec.texture.id;
 			std::string orig_name = g_texturesource->getTextureName(orig_id);
