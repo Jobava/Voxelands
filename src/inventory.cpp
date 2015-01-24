@@ -605,6 +605,8 @@ InventoryItem * InventoryList::addItem(u32 i, InventoryItem *newitem)
 	// the rest.
 	else{
 		u16 freespace = to_item->freeSpace();
+		if (!freespace)
+			return newitem;
 		to_item->add(freespace);
 		newitem->remove(freespace);
 		return newitem;

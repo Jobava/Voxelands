@@ -107,7 +107,8 @@ public:
 	}
 	void add(u16 count)
 	{
-		assert(m_count + count <= QUANTITY_ITEM_MAX_COUNT);
+		if (m_count + count > QUANTITY_ITEM_MAX_COUNT)
+			return;
 		m_count += count;
 	}
 	void remove(u16 count)
@@ -192,16 +193,14 @@ public:
 
 	virtual bool addableTo(const InventoryItem *other) const
 	{
-		if(std::string(other->getName()) != "MaterialItem")
-			return false;
-		MaterialItem *m = (MaterialItem*)other;
-		if(m->getMaterial() != m_content)
+		content_t c = ((InventoryItem*)other)->getContent();
+		if (c != m_content)
 			return false;
 		return true;
 	}
 	u16 freeSpace() const
 	{
-		if(m_count > QUANTITY_ITEM_MAX_COUNT)
+		if (m_count > QUANTITY_ITEM_MAX_COUNT)
 			return 0;
 		return QUANTITY_ITEM_MAX_COUNT - m_count;
 	}
@@ -279,16 +278,14 @@ public:
 
 	virtual bool addableTo(const InventoryItem *other) const
 	{
-		if(std::string(other->getName()) != "CraftItem")
-			return false;
-		CraftItem *m = (CraftItem*)other;
-		if(m->m_subname != m_subname)
+		content_t c = ((InventoryItem*)other)->getContent();
+		if (c != m_content)
 			return false;
 		return true;
 	}
 	u16 freeSpace() const
 	{
-		if(m_count > QUANTITY_ITEM_MAX_COUNT)
+		if (m_count > QUANTITY_ITEM_MAX_COUNT)
 			return 0;
 		return QUANTITY_ITEM_MAX_COUNT - m_count;
 	}
