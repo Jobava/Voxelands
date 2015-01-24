@@ -2513,7 +2513,7 @@ void ServerMap::verifyDatabase() {
 		d = sqlite3_open_v2(dbp.c_str(), &m_database, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL);
 		if(d != SQLITE_OK) {
 			infostream<<"WARNING: Database failed to open: "<<sqlite3_errmsg(m_database)<<std::endl;
-			throw FileNotGoodException("Cannot open database file");
+			throw FileNotGoodException("map.sqlite: Cannot open database file");
 		}
 
 		if(needs_create)
@@ -2522,19 +2522,19 @@ void ServerMap::verifyDatabase() {
 		d = sqlite3_prepare(m_database, "SELECT `data` FROM `blocks` WHERE `pos`=? LIMIT 1", -1, &m_database_read, NULL);
 		if(d != SQLITE_OK) {
 			infostream<<"WARNING: Database read statment failed to prepare: "<<sqlite3_errmsg(m_database)<<std::endl;
-			throw FileNotGoodException("Cannot prepare read statement");
+			throw FileNotGoodException("map.sqlite: Cannot prepare read statement");
 		}
 
 		d = sqlite3_prepare(m_database, "REPLACE INTO `blocks` VALUES(?, ?)", -1, &m_database_write, NULL);
 		if(d != SQLITE_OK) {
 			infostream<<"WARNING: Database write statment failed to prepare: "<<sqlite3_errmsg(m_database)<<std::endl;
-			throw FileNotGoodException("Cannot prepare write statement");
+			throw FileNotGoodException("map.sqlite: Cannot prepare write statement");
 		}
 
 		d = sqlite3_prepare(m_database, "SELECT `pos` FROM `blocks`", -1, &m_database_list, NULL);
 		if(d != SQLITE_OK) {
 			infostream<<"WARNING: Database list statment failed to prepare: "<<sqlite3_errmsg(m_database)<<std::endl;
-			throw FileNotGoodException("Cannot prepare read statement");
+			throw FileNotGoodException("map.sqlite: Cannot prepare read statement");
 		}
 
 		infostream<<"Server: Database opened"<<std::endl;

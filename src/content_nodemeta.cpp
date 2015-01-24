@@ -465,15 +465,20 @@ bool CreativeChestNodeMetadata::receiveFields(std::string formname, std::map<std
 {
 	if (fields["prev"] == "" && fields["next"] == "")
 		return false;
-	if (fields["prev"] != "")
-		m_page--;
+	std::vector<content_t> &list = lists::get("creative");
+	if (fields["prev"] != "") {
+		if (m_page > 0) {
+			m_page--;
+		}else{
+			m_page = list.size()/32;
+		}
+	}
 	if (fields["next"] != "")
 		m_page++;
 	if (m_page < 0)
 		m_page = 0;
-	std::vector<content_t> &list = lists::get("creative");
 	if (m_page > (list.size()/32))
-		m_page = list.size()/32;
+		m_page = 0;
 	InventoryList *l = m_inventory->getList("0");
 	InventoryItem *t;
 	l->clearItems();
@@ -1397,13 +1402,18 @@ bool CraftGuideNodeMetadata::receiveFields(std::string formname, std::map<std::s
 	}
 	if (fields["prev"] == "" && fields["next"] == "")
 		return false;
-	if (fields["prev"] != "" && m_page > 0)
-		m_page--;
+	std::vector<content_t> &list = lists::get("craftguide");
+	if (fields["prev"] != "") {
+		if (m_page > 0) {
+			m_page--;
+		}else{
+			m_page = list.size()/40;
+		}
+	}
 	if (fields["next"] != "")
 		m_page++;
-	std::vector<content_t> &list = lists::get("craftguide");
 	if (m_page > (list.size()/40))
-		m_page = list.size()/40;
+		m_page = 0;
 	content_t *r;
 	l->clearItems();
 	u16 start = m_page*40;
@@ -1597,15 +1607,18 @@ bool CookBookNodeMetadata::receiveFields(std::string formname, std::map<std::str
 {
 	if (fields["prev"] == "" && fields["next"] == "")
 		return false;
-	if (fields["prev"] != "")
-		m_page--;
+	std::vector<content_t> &list = lists::get("cooking");
+	if (fields["prev"] != "") {
+		if (m_page > 0) {
+			m_page--;
+		}else{
+			m_page = list.size()/40;
+		}
+	}
 	if (fields["next"] != "")
 		m_page++;
-	if (m_page < 0)
-		m_page = 0;
-	std::vector<content_t> &list = lists::get("cooking");
 	if (m_page > (list.size()/40))
-		m_page = list.size()/40;
+		m_page = 0;
 	InventoryList *l = m_inventory->getList("list");
 	InventoryItem *t;
 	l->clearItems();
@@ -1812,15 +1825,18 @@ bool DeCraftNodeMetadata::receiveFields(std::string formname, std::map<std::stri
 {
 	if (fields["prev"] == "" && fields["next"] == "")
 		return false;
-	if (fields["prev"] != "")
-		m_page--;
+	std::vector<content_t> &list = lists::get("decrafting");
+	if (fields["prev"] != "") {
+		if (m_page > 0) {
+			m_page--;
+		}else{
+			m_page = list.size()/40;
+		}
+	}
 	if (fields["next"] != "")
 		m_page++;
-	if (m_page < 0)
-		m_page = 0;
-	std::vector<content_t> &list = lists::get("decrafting");
 	if (m_page > (list.size()/40))
-		m_page = list.size()/40;
+		m_page = 0;
 	InventoryList *l = m_inventory->getList("list");
 	InventoryItem *t;
 	l->clearItems();
