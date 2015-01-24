@@ -293,39 +293,43 @@ TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods,
 	if (meta) {
 		FaceText ft = mn.getFaceText(face_dir);
 		if (ft.m_hastext) {
-			// Get original texture name
-			u32 orig_id = spec.texture.id;
-			std::string orig_name = g_texturesource->getTextureName(orig_id);
-			// Create new texture name
-			std::ostringstream os;
-			os<<orig_name<<"^[text:";
-			os<<ft.m_pos.UpperLeftCorner.X;
-			os<<",";
-			os<<ft.m_pos.UpperLeftCorner.Y;
-			os<<",";
-			os<<ft.m_pos.LowerRightCorner.X;
-			os<<",";
-			os<<ft.m_pos.LowerRightCorner.Y;
-			os<<",";
+			std::string txt("");
 			switch (ft.m_type) {
 			case FTT_BOOKCONTENT:
-				os<<((BookNodeMetadata*)meta)->getContent();
+				txt = ((BookNodeMetadata*)meta)->getContent();
 				break;
 			case FTT_OWNER:
-				os<<meta->getOwner();
+				txt = meta->getOwner();
 				break;
 			case FTT_INVOWNER:
-				os<<meta->getInventoryOwner();
+				txt = meta->getInventoryOwner();
 				break;
 			default:
-				os<<meta->getText();
+				txt = meta->getText();
 				break;
 			}
+			if (txt != "") {
+				// Get original texture name
+				u32 orig_id = spec.texture.id;
+				std::string orig_name = g_texturesource->getTextureName(orig_id);
+				// Create new texture name
+				std::ostringstream os;
+				os<<orig_name<<"^[text:";
+				os<<ft.m_pos.UpperLeftCorner.X;
+				os<<",";
+				os<<ft.m_pos.UpperLeftCorner.Y;
+				os<<",";
+				os<<ft.m_pos.LowerRightCorner.X;
+				os<<",";
+				os<<ft.m_pos.LowerRightCorner.Y;
+				os<<",";
+				os<<txt;
 
-			// Get new texture
-			u32 new_id = g_texturesource->getTextureId(os.str());
+				// Get new texture
+				u32 new_id = g_texturesource->getTextureId(os.str());
 
-			spec.texture = g_texturesource->getTexture(new_id);
+				spec.texture = g_texturesource->getTexture(new_id);
+			}
 		}
 	}
 
