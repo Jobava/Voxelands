@@ -29,17 +29,23 @@
 #include "map.h"
 #include "profiler.h"
 
-std::map<content_t,struct MobFeatures> g_content_mob_features;
+MobFeatures g_content_mob_features[CONTENT_MOB_COUNT];
 
-MobFeatures & content_mob_features(content_t i)
+MobFeatures & content_mob_features(content_t c)
 {
-	if ((i&CONTENT_MOB_MASK) != CONTENT_MOB_MASK)
-		return g_content_mob_features[CONTENT_IGNORE];
+	static MobFeatures ignore = MobFeatures();
+	if ((c&CONTENT_MOB_MASK) != CONTENT_MOB_MASK)
+		return ignore;
 
-	std::map<content_t,struct MobFeatures>::iterator it = g_content_mob_features.find(i);
-	if (it == g_content_mob_features.end())
-		return g_content_mob_features[CONTENT_IGNORE];
-	return it->second;
+	u16 i = (c&~CONTENT_MOB_MASK);
+
+	if (i >= CONTENT_MOB_COUNT)
+		return ignore;
+
+	if (g_content_mob_features[i].content != c)
+		return ignore;
+
+	return g_content_mob_features[i];
 }
 
 #ifndef SERVER
@@ -132,9 +138,8 @@ bool content_mob_spawn(ServerEnvironment *env, v3s16 pos, u32 active_object_coun
 	if (nearest)
 		distance = pf.getDistanceFrom(nearest->getPosition());
 
-	/* TODO: this loop is what's causing lag */
-	for (std::map<content_t,struct MobFeatures>::iterator i = g_content_mob_features.begin(); i != g_content_mob_features.end(); i++) {
-		MobFeatures m = i->second;
+	for (u16 i=0; i<CONTENT_MOB_COUNT; i++) {
+		MobFeatures m = g_content_mob_features[i];
 		if (m.spawn_in == CONTENT_IGNORE && m.spawn_on == CONTENT_IGNORE)
 			continue;
 		if (m.spawn_max_nearby_mobs < active_object_count)
@@ -167,7 +172,7 @@ bool content_mob_spawn(ServerEnvironment *env, v3s16 pos, u32 active_object_coun
 		}
 		if (m.spawn_chance > 1 && rand%m.spawn_chance != 0)
 			continue;
-		can.push_back(i->first);
+		can.push_back(i);
 	}
 
 	if (can.size() == 0)
@@ -197,13 +202,11 @@ bool content_mob_spawn(ServerEnvironment *env, v3s16 pos, u32 active_object_coun
 
 void content_mob_init()
 {
-	g_content_mob_features.clear();
-
 	content_t i;
 	MobFeatures *f = NULL;
 
 	i = CONTENT_MOB_RAT;
-	f = &g_content_mob_features[i];
+	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
 	f->level = MOB_PASSIVE;
 	f->model = "rat.x";
@@ -216,11 +219,11 @@ void content_mob_init()
 	f->spawn_in = CONTENT_AIR;
 	f->spawn_max_height = -10;
 	f->spawn_max_nearby_mobs = 4;
-	f->lifetime = 1200.0;
+	f->lifetime = 900.0;
 	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.));
 
 	i = CONTENT_MOB_FIREFLY;
-	f = &g_content_mob_features[i];
+	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
 	f->level = MOB_PASSIVE;
 	f->model_scale = v3f(0.5,0.5,0.5);
@@ -240,7 +243,7 @@ void content_mob_init()
 	f->setCollisionBox(aabb3f(-BS/4.,-BS/6.,-BS/4., BS/4.,BS/6.,BS/4.));
 
 	i = CONTENT_MOB_OERKKI;
-	f = &g_content_mob_features[i];
+	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
 	f->level = MOB_AGGRESSIVE;
 	if (g_settings->getBool("enable_supernatural")) {
@@ -291,7 +294,7 @@ void content_mob_init()
 	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS*2.,BS/3.));
 
 	i = CONTENT_MOB_DUNGEON_MASTER;
-	f = &g_content_mob_features[i];
+	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
 	f->level = MOB_DESTRUCTIVE;
 	if (g_settings->getBool("enable_supernatural")) {
@@ -345,7 +348,7 @@ void content_mob_init()
 	f->setCollisionBox(aabb3f(-0.75*BS, 0.*BS, -0.75*BS, 0.75*BS, 2.0*BS, 0.75*BS));
 
 	i = CONTENT_MOB_FIREBALL;
-	f = &g_content_mob_features[i];
+	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
 	f->level = MOB_DESTRUCTIVE;
 	f->setTexture("mob_fireball.png");
@@ -360,7 +363,7 @@ void content_mob_init()
 	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.));
 
 	i = CONTENT_MOB_DOE;
-	f = &g_content_mob_features[i];
+	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
 	f->level = MOB_PASSIVE;
 	f->hp = 30;
@@ -382,11 +385,11 @@ void content_mob_init()
 	f->spawn_max_height = 40;
 	f->spawn_min_light = LIGHT_MAX/2;
 	f->spawn_max_nearby_mobs = 3;
-	f->lifetime = 900.0;
+	f->lifetime = 1200.0;
 	f->setCollisionBox(aabb3f(-0.6*BS, 0., -0.6*BS, 0.6*BS, 1.25*BS, 0.6*BS));
 
 	i = CONTENT_MOB_STAG;
-	f = &g_content_mob_features[i];
+	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
 	f->level = MOB_AGGRESSIVE;
 	f->hp = 40;
@@ -418,7 +421,7 @@ void content_mob_init()
 	f->setCollisionBox(aabb3f(-0.7*BS, 0., -0.7*BS, 0.7*BS, 1.5*BS, 0.7*BS));
 
 	i = CONTENT_MOB_TAMESTAG;
-	f = &g_content_mob_features[i];
+	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
 	f->level = MOB_PASSIVE;
 	f->hp = 40;
@@ -435,11 +438,11 @@ void content_mob_init()
 	f->motion = MM_SEEKER;
 	f->motion_type = MMT_WALK;
 	f->notices_player = true;
-	f->lifetime = 900.0;
+	f->lifetime = 1800.0;
 	f->setCollisionBox(aabb3f(-0.7*BS, 0., -0.7*BS, 0.7*BS, 1.5*BS, 0.7*BS));
 
 	i = CONTENT_MOB_FISH;
-	f = &g_content_mob_features[i];
+	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
 	f->level = MOB_PASSIVE;
 	f->model = "fish.b3d";
@@ -465,7 +468,7 @@ void content_mob_init()
 	f->setCollisionBox(aabb3f(-0.25*BS, 0.25*BS, -0.25*BS, 0.25*BS, 0.75*BS, 0.25*BS));
 
 	i = CONTENT_MOB_SHARK;
-	f = &g_content_mob_features[i];
+	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
 	f->level = MOB_AGGRESSIVE;
 	f->hp = 40;
@@ -493,7 +496,7 @@ void content_mob_init()
 	f->setCollisionBox(aabb3f(-0.75*BS, 0., -0.75*BS, 0.75*BS, 1.*BS, 0.75*BS));
 
 	i = CONTENT_MOB_WOLF;
-	f = &g_content_mob_features[i];
+	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
 	f->level = MOB_AGGRESSIVE;
 	f->hp = 40;
@@ -522,7 +525,7 @@ void content_mob_init()
 	f->setCollisionBox(aabb3f(-0.5*BS, 0., -0.5*BS, 0.5*BS, 1.*BS, 0.5*BS));
 
 	i = CONTENT_MOB_TAMEWOLF;
-	f = &g_content_mob_features[i];
+	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
 	f->level = MOB_PASSIVE;
 	f->hp = 40;
@@ -541,11 +544,11 @@ void content_mob_init()
 	f->notices_player = true;
 	f->attack_mob_damage = 5;
 	f->attack_mob_range = v3f(1,1,1);
-	f->lifetime = 900.0;
+	f->lifetime = 1800.0;
 	f->setCollisionBox(aabb3f(-0.5*BS, 0., -0.5*BS, 0.5*BS, 1.*BS, 0.5*BS));
 
 	i = CONTENT_MOB_SHEEP;
-	f = &g_content_mob_features[i];
+	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
 	f->level = MOB_PASSIVE;
 	f->hp = 30;
@@ -571,11 +574,11 @@ void content_mob_init()
 	f->spawn_max_height = 50;
 	f->spawn_min_light = LIGHT_MAX/2;
 	f->spawn_max_nearby_mobs = 3;
-	f->lifetime = 900.0;
+	f->lifetime = 1800.0;
 	f->setCollisionBox(aabb3f(-0.4*BS, 0., -0.4*BS, 0.4*BS, 1.*BS, 0.4*BS));
 
 	i = CONTENT_MOB_SNOWBALL;
-	f = &g_content_mob_features[i];
+	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
 	f->level = MOB_AGGRESSIVE;
 	f->setTexture("snow_ball.png");
@@ -592,7 +595,7 @@ void content_mob_init()
 	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.));
 
 	i = CONTENT_MOB_ARROW;
-	f = &g_content_mob_features[i];
+	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
 	f->level = MOB_AGGRESSIVE;
 	f->setTexture("mob_arrow.png");

@@ -959,35 +959,48 @@ void ServerEnvironment::step(float dtime)
 				if (wblock == NULL)
 					continue;
 				active_object_count_wider += wblock->m_static_objects.m_stored.size();
-			}
-			for (std::map<u16, ServerActiveObject*>::iterator i = m_active_objects.begin(); i != m_active_objects.end(); i++) {
-				ServerActiveObject* obj = i->second;
-				if (obj->m_removed)
-					continue;
-				v3s16 obp = getNodeBlockPos(floatToInt(obj->getBasePosition(), BS));
-				if (obp.X > bp.X+1 || obp.X < bp.X-1)
-					continue;
-				if (obp.Y > bp.Y+1 || obp.Y < bp.Y-1)
-					continue;
-				if (obp.Z > bp.Z+1 || obp.Z < bp.Z-1)
-					continue;
-				active_object_count_wider++;
+				active_object_count_wider += wblock->m_static_objects.m_active.size();
 			}
 
-			if (active_object_count_wider < 10) {
-				v3s16 p = v3s16(myrand_range(0,MAP_BLOCKSIZE),myrand_range(0,MAP_BLOCKSIZE),myrand_range(0,MAP_BLOCKSIZE));
-				p += block->getPosRelative();
-				if (content_mob_spawn(this,p,active_object_count_wider))
-					active_object_count_wider++;
-			}
+			//if (active_object_count_wider < 10) {
+				//v3s16 p = v3s16(myrand_range(0,MAP_BLOCKSIZE),myrand_range(0,MAP_BLOCKSIZE),myrand_range(0,MAP_BLOCKSIZE));
+				//p += block->getPosRelative();
+				//printf("spawn at: %d %d %d\n",p.X,p.Y,p.Z);
+				//if (content_mob_spawn(this,p,active_object_count_wider))
+					//active_object_count_wider++;
+			//}
 
 			v3s16 p0;
+			bool spawned = false;
 			for (p0.X=0; p0.X<MAP_BLOCKSIZE; p0.X++)
 			for (p0.Y=0; p0.Y<MAP_BLOCKSIZE; p0.Y++)
 			for (p0.Z=0; p0.Z<MAP_BLOCKSIZE; p0.Z++) {
 				v3s16 p = p0 + block->getPosRelative();
 				block->incNodeTicks(p0);
 				MapNode n = block->getNodeNoEx(p0);
+				if (!spawned && active_object_count_wider < 10) {
+					MapNode n1 = block->getNodeNoEx(p0+v3s16(0,1,0));
+					bool spawnable = false;
+					switch (n.getContent()) {
+					case CONTENT_SAND:
+						if (n1.getContent() == CONTENT_WATERSOURCE)
+							spawnable = true;
+						break;
+					case CONTENT_STONE:
+					case CONTENT_MOSSYCOBBLE:
+					case CONTENT_WILDGRASS_SHORT:
+					case CONTENT_WILDGRASS_LONG:
+					case CONTENT_JUNGLETREE:
+						if (n1.getContent() == CONTENT_AIR)
+							spawnable = true;
+						break;
+					default:;
+					}
+					if (spawnable && content_mob_spawn(this,p,active_object_count_wider)) {
+						spawned = true;
+						active_object_count_wider++;
+					}
+				}
 
 				switch(n.getContent()) {
 				case CONTENT_GRASS_FOOTSTEPS:
@@ -3523,7 +3536,7 @@ void ServerEnvironment::deactivateFarObjects(bool force_delete)
 				core::map<u16, StaticObject>::Node *n = block->m_static_objects.m_active.find(id);
 				if (n != NULL) {
 					StaticObject static_old = n->getValue();
-					if (static_old.data == staticdata_new)
+					if (static_old.data == staticdata_new && obj->m_static_block == blockpos)
 						will_write = false;
 				}
 				block->m_static_objects.remove(id);
@@ -3545,6 +3558,8 @@ void ServerEnvironment::deactivateFarObjects(bool force_delete)
 
 		if (block) {
 			if (block->m_static_objects.m_stored.size() < 50) {
+				if (id && block->m_static_objects.m_active.find(id) != NULL)
+					block->m_static_objects.remove(id);
 				// Store static data
 				block->m_static_objects.insert(0, s_obj);
 
