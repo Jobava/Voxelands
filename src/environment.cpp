@@ -978,7 +978,7 @@ void ServerEnvironment::step(float dtime)
 				v3s16 p = p0 + block->getPosRelative();
 				block->incNodeTicks(p0);
 				MapNode n = block->getNodeNoEx(p0);
-				if (!spawned && active_object_count_wider < 10) {
+				if (!spawned && active_object_count_wider < 5) {
 					MapNode n1 = block->getNodeNoEx(p0+v3s16(0,1,0));
 					bool spawnable = false;
 					switch (n.getContent()) {
