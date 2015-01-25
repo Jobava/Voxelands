@@ -2125,6 +2125,9 @@ void ServerEnvironment::step(float dtime)
 										event.modified_blocks.insert(p, true);
 									}
 									m_map->dispatchEvent(&event);
+									// work-around for lighting bug
+									MapNode nn = m_map->getNodeNoEx(p);
+									m_map->addNodeWithEvent(p,nn);
 								}
 							}
 						}
@@ -2247,6 +2250,9 @@ void ServerEnvironment::step(float dtime)
 										event.modified_blocks.insert(p, true);
 									}
 									m_map->dispatchEvent(&event);
+									// work-around for lighting bug
+									MapNode nn = m_map->getNodeNoEx(p);
+									m_map->addNodeWithEvent(p,nn);
 								}
 							}
 						}
@@ -2371,6 +2377,9 @@ void ServerEnvironment::step(float dtime)
 										event.modified_blocks.insert(p, true);
 									}
 									m_map->dispatchEvent(&event);
+									// work-around for lighting bug
+									MapNode nn = m_map->getNodeNoEx(p);
+									m_map->addNodeWithEvent(p,nn);
 								}
 							}
 						}
@@ -2494,6 +2503,9 @@ void ServerEnvironment::step(float dtime)
 										event.modified_blocks.insert(p, true);
 									}
 									m_map->dispatchEvent(&event);
+									// work-around for lighting bug
+									MapNode nn = m_map->getNodeNoEx(p);
+									m_map->addNodeWithEvent(p,nn);
 								}
 							}
 						}

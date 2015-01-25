@@ -812,32 +812,6 @@ void Map::addNodeAndUpdate(v3s16 p, MapNode n,
 			node_under_sunlight = false;
 	}
 
-#if 0
-	/*
-		If the new node is solid and there is grass below, change it to mud
-	*/
-	if (content_features(n).walkable == true) {
-		bool pos_ok;
-		MapNode bottomnode = getNodeNoEx(bottompos,&pos_ok);
-
-		if (pos_ok && (bottomnode.getContent() == CONTENT_GRASS || bottomnode.getContent() == CONTENT_GRASS_FOOTSTEPS)) {
-			bottomnode.setContent(CONTENT_MUD);
-			setNode(bottompos, bottomnode);
-		}
-	}
-#endif
-
-#if 0
-	/*
-		If the new node is mud and it is under sunlight, change it
-		to grass
-	*/
-	if(n.getContent() == CONTENT_MUD && node_under_sunlight)
-	{
-		n.setContent(CONTENT_GRASS);
-	}
-#endif
-
 	/*
 		Remove all light that has come out of this node
 	*/
