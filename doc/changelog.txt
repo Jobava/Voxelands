@@ -3,6 +3,26 @@ Voxelands changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1501.00: (release 2015-01-26)
+ - fix trees growing at night breaking lighting
+ - make paged things flip to first page when pressing next on the last page
+ - some mob spawner optimisations
+ - optimise inventory a little bit, remove an assert
+ - tweak fire timing a bit
+ - add support for writting text on nodes
+ - add text to signs
+ - Make leaves climbable (Wayward_One)
+ - update translations, add japanese
+ - fix mesh index overflows
+ - make this build on FreeBSD (Menche)
+ - actually disable audio when audio is disabled (Menche)
+ - make leaves and apple blossoms use CDT_ROOFLIKE
+ - lighting tweaks
+ - add stormchaser safe mode
+ - adjust active furnace glow a bit
+ - give steel bars a working recipe
+ - make safes safe
+
 1412.01: (release 2014-12-22)
  - fix array index overflow in content_features()
 

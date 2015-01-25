@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-23 18:51+1000\n"
+"POT-Creation-Date: 2015-01-26 01:31+1000\n"
 "PO-Revision-Date: 2011-08-02 00:31+0100\n"
 "Last-Translator: Frederik Helth <Guides@live.dk>\n"
 "Language-Team: \n"
@@ -2478,7 +2478,7 @@ msgid "Decraft Book"
 msgstr ""
 
 #: src/content_mapnode_special.cpp:732 src/content_mapnode_special.cpp:883
-#: src/content_nodemeta.cpp:1980
+#: src/content_nodemeta.cpp:1996
 msgid "Diary"
 msgstr ""
 
@@ -2667,7 +2667,7 @@ msgid "Sand Stone Stair"
 msgstr ""
 
 #: src/content_nodemeta.cpp:74 src/content_nodemeta.cpp:137
-#: src/content_nodemeta.cpp:1964 src/content_nodemeta.cpp:2063
+#: src/content_nodemeta.cpp:1980 src/content_nodemeta.cpp:2079
 #: src/guiKeyChangeMenu.cpp:307
 msgid "Save"
 msgstr "Gem"
@@ -2687,116 +2687,116 @@ msgstr ""
 msgid "Safe owned by '%s'"
 msgstr ""
 
-#: src/content_nodemeta.cpp:494 src/content_nodemeta.cpp:1437
-#: src/content_nodemeta.cpp:1639 src/content_nodemeta.cpp:1850
+#: src/content_nodemeta.cpp:499 src/content_nodemeta.cpp:1447
+#: src/content_nodemeta.cpp:1652 src/content_nodemeta.cpp:1866
 #, c-format
 msgid "Page %d of %d"
 msgstr ""
 
-#: src/content_nodemeta.cpp:498 src/content_nodemeta.cpp:1465
-#: src/content_nodemeta.cpp:1648 src/content_nodemeta.cpp:1866
+#: src/content_nodemeta.cpp:503 src/content_nodemeta.cpp:1475
+#: src/content_nodemeta.cpp:1661 src/content_nodemeta.cpp:1882
 msgid "<< Previous Page"
 msgstr ""
 
-#: src/content_nodemeta.cpp:504 src/content_nodemeta.cpp:1471
-#: src/content_nodemeta.cpp:1654 src/content_nodemeta.cpp:1872
+#: src/content_nodemeta.cpp:509 src/content_nodemeta.cpp:1481
+#: src/content_nodemeta.cpp:1667 src/content_nodemeta.cpp:1888
 msgid "Next Page >>"
 msgstr ""
 
-#: src/content_nodemeta.cpp:547
+#: src/content_nodemeta.cpp:552
 #, c-format
 msgid "Border Stone owned by '%s'"
 msgstr ""
 
-#: src/content_nodemeta.cpp:622
+#: src/content_nodemeta.cpp:627
 msgid "Furnace is overloaded"
 msgstr ""
 
-#: src/content_nodemeta.cpp:623
+#: src/content_nodemeta.cpp:628
 msgid "Furnace is out of fuel"
 msgstr ""
 
-#: src/content_nodemeta.cpp:625
+#: src/content_nodemeta.cpp:630
 msgid "Furnace is inactive"
 msgstr ""
 
-#: src/content_nodemeta.cpp:628
+#: src/content_nodemeta.cpp:633
 msgid "Furnace is active"
 msgstr ""
 
-#: src/content_nodemeta.cpp:884
+#: src/content_nodemeta.cpp:889
 msgid "Locking Furnace is overloaded"
 msgstr ""
 
-#: src/content_nodemeta.cpp:885
+#: src/content_nodemeta.cpp:890
 msgid "Locking Furnace is out of fuel"
 msgstr ""
 
-#: src/content_nodemeta.cpp:887
+#: src/content_nodemeta.cpp:892
 msgid "Locking Furnace is inactive"
 msgstr ""
 
-#: src/content_nodemeta.cpp:890
+#: src/content_nodemeta.cpp:895
 msgid "Locking Furnace is active"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1140
+#: src/content_nodemeta.cpp:1145
 msgid "Armed Explosive: about to detonate"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1143
+#: src/content_nodemeta.cpp:1148
 #, c-format
 msgid "Armed Explosive: %d second till detonation"
 msgid_plural "Armed Explosive: %d seconds till detonation"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/content_nodemeta.cpp:1193
+#: src/content_nodemeta.cpp:1198
 msgid "Incinerator is active"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1194
+#: src/content_nodemeta.cpp:1199
 msgid "Incinerator is inactive"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1237
+#: src/content_nodemeta.cpp:1242
 msgid "Add fuel, then punch to incinerate wielded item"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1441
+#: src/content_nodemeta.cpp:1451
 msgid "Add item here to see recipe"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1446
+#: src/content_nodemeta.cpp:1456
 #, c-format
 msgid "Recipe %d of %d"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1455
+#: src/content_nodemeta.cpp:1465
 msgid "Gives"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1643
+#: src/content_nodemeta.cpp:1656
 msgid "Add item here to see cook result"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1854
+#: src/content_nodemeta.cpp:1870
 msgid "Add item here to see dig result"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1858
+#: src/content_nodemeta.cpp:1874
 msgid "Dig Result"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1862
+#: src/content_nodemeta.cpp:1878
 msgid "Random Drop"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1954 src/content_nodemeta.cpp:2053
+#: src/content_nodemeta.cpp:1970 src/content_nodemeta.cpp:2069
 msgid "Title"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1959 src/content_nodemeta.cpp:2058
+#: src/content_nodemeta.cpp:1975 src/content_nodemeta.cpp:2074
 #, fuzzy
 msgid "Content"
 msgstr "Fortsæt"
@@ -3823,11 +3823,11 @@ msgstr ""
 msgid "Loading Special MapNodes"
 msgstr ""
 
-#~ msgid "Proceed"
-#~ msgstr "Fortsæt"
+#~ msgid "Leave address blank to start a local server."
+#~ msgstr "Lad black for at spille localt"
 
 #~ msgid "Delete map"
 #~ msgstr "Slet mappen"
 
-#~ msgid "Leave address blank to start a local server."
-#~ msgstr "Lad black for at spille localt"
+#~ msgid "Proceed"
+#~ msgstr "Fortsæt"
