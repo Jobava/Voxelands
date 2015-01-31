@@ -197,30 +197,42 @@ class NodeBox
 public:
 	NodeBox():
 		m_angle(0,0,0),
+		m_centre(0,0,0),
 		m_box(0.0,0.0,0.0,0.0,0.0,0.0)
 	{
 	}
 	NodeBox(v3s16 angle, aabb3f box):
 		m_angle(angle),
+		m_centre(0,0,0),
 		m_box(box)
 	{
 	}
-	NodeBox(v3s16 angle, f32 tlx, f32 tly, f32 tlz, f32 brx, f32 bry, f32 brz):
+	NodeBox(v3s16 angle, v3f centre, aabb3f box):
 		m_angle(angle),
+		m_centre(centre),
+		m_box(box)
+	{
+	}
+	NodeBox(v3s16 angle, v3f centre, f32 tlx, f32 tly, f32 tlz, f32 brx, f32 bry, f32 brz):
+		m_angle(angle),
+		m_centre(centre),
 		m_box(tlx,tly,tlz,brx,bry,brz)
 	{
 	}
 	NodeBox(aabb3f box):
 		m_angle(0,0,0),
+		m_centre(0,0,0),
 		m_box(box)
 	{
 	}
 	NodeBox(f32 tlx, f32 tly, f32 tlz, f32 brx, f32 bry, f32 brz):
 		m_angle(0,0,0),
+		m_centre(0,0,0),
 		m_box(tlx,tly,tlz,brx,bry,brz)
 	{
 	}
 	v3s16 m_angle;
+	v3f m_centre;
 	aabb3f m_box;
 };
 
