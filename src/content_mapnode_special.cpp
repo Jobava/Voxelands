@@ -1451,46 +1451,7 @@ void content_mapnode_special(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 0.75;
 	f->pressure_type = CST_CRUSHABLE;
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.2*BS,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		-0.3*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.2*BS,
-		0.3*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.3*BS,
-		0.2*BS,
-		-0.3*BS,
-		0.5*BS,
-		0.5*BS,
-		0.3*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.2*BS,
-		-0.3*BS,
-		-0.3*BS,
-		0.5*BS,
-		0.3*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.3*BS,
-		-0.5*BS,
-		-0.3*BS,
-		0.3*BS,
-		0.35*BS,
-		0.3*BS
-	));
+	content_nodebox_flower_pot(f);
 	f->setInventoryTextureNodeBox(i,"flower_pot_raw_top.png","flower_pot_raw.png","flower_pot_raw.png");
 	crafting::setVRecipe(CONTENT_CRAFTITEM_CLAY,CONTENT_FLOWER_POT_RAW);
 	lists::add("craftguide",i);
@@ -1510,46 +1471,7 @@ void content_mapnode_special(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_STONE;
 	f->hardness = 0.75;
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.2*BS,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		-0.3*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.2*BS,
-		0.3*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.3*BS,
-		0.2*BS,
-		-0.3*BS,
-		0.5*BS,
-		0.5*BS,
-		0.3*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.5*BS,
-		0.2*BS,
-		-0.3*BS,
-		-0.3*BS,
-		0.5*BS,
-		0.3*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.3*BS,
-		-0.5*BS,
-		-0.3*BS,
-		0.3*BS,
-		0.35*BS,
-		0.3*BS
-	));
+	content_nodebox_flower_pot(f);
 	f->setInventoryTextureNodeBox(i,"flower_pot_top.png","flower_pot.png","flower_pot.png");
 	lists::add("creative",i);
 
