@@ -64,5 +64,6 @@ void content_nodebox_wall(ContentFeatures *f);
 void content_nodebox_bars(ContentFeatures *f);
 void content_nodebox_youngtree(ContentFeatures *f);
 void content_nodebox_flag(ContentFeatures *f);
+void content_nodebox_flower_pot(ContentFeatures *f);
 
 #endif

@@ -3143,8 +3143,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				content_features(n).tiles[0].texture.y0(),
 				content_features(n).tiles[0].texture.y1()
 			};
-			s32 h = 1;
-			f32 s = 1.3;
+			f32 h = 1;
 			if (
 				content_features(n2).draw_type == CDT_PLANTLIKE_LGE
 				|| content_features(n2).draw_type == CDT_PLANTLIKE
@@ -3152,7 +3151,15 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			) {
 				tuv[2] = (0.333*content_features(n).tiles[0].texture.size.Y)+content_features(n).tiles[0].texture.y0();
 				h = 2;
-				s = 1.0;
+			}
+			v3f offset(0,0,0);
+			n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p + v3s16(0,-1,0));
+			if (n2.getContent() == CONTENT_FLOWER_POT) {
+				offset = v3f(0,-0.25*BS,0);
+				if (h == 2) {
+					tuv[2] = (0.16*content_features(n).tiles[0].texture.size.Y)+content_features(n).tiles[0].texture.y0();
+					h = 1.333;
+				}
 			}
 			video::S3DVertex base_vertices[4] = {
 				base_vertices[0] = video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,tuv[0], tuv[3]),
@@ -3168,33 +3175,14 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					base_vertices[3]
 				};
 
-				switch (j) {
-				case 0:
-					for (u16 i=0; i<4; i++) {
-						vertices[i].Pos.rotateXZBy(45);
-					}
-					break;
-				case 1:
-					for (u16 i=0; i<4; i++) {
-						vertices[i].Pos.rotateXZBy(-45);
-					}
-					break;
-				case 2:
-					for (u16 i=0; i<4; i++) {
-						vertices[i].Pos.rotateXZBy(135);
-					}
-					break;
-				case 3:
-					for (u16 i=0; i<4; i++) {
-						vertices[i].Pos.rotateXZBy(-135);
-					}
-					break;
-				default:;
-				}
+				s16 angle = 45;
+				if (j == 1)
+					angle = -45;
 
 				for (u16 i=0; i<4; i++) {
+					vertices[i].Pos.rotateXZBy(angle);
 					vertices[i].Pos.X *= 1.3;
-					vertices[i].Pos += intToFloat(p, BS);
+					vertices[i].Pos += offset+intToFloat(p, BS);
 				}
 
 				u16 indices[] = {0,1,2,2,3,0};
@@ -3207,11 +3195,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		{
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l, selected);
+			MapNode n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p + v3s16(0,-1,0));
+			v3f offset(0,0,0);
+			if (n2.getContent() == CONTENT_FLOWER_POT)
+				offset = v3f(0,-0.25*BS,0);
 
-			for(u32 j=0; j<2; j++)
-			{
-				video::S3DVertex vertices[4] =
-				{
+			for (u32 j=0; j<2; j++) {
+				video::S3DVertex vertices[4] = {
 					video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
 					video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
@@ -3222,30 +3212,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
 				};
 
-				if(j == 0)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(45);
-				}
-				else if(j == 1)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(-45);
-				}
-				else if(j == 2)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(135);
-				}
-				else if(j == 3)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(-135);
-				}
+				s16 angle = 45;
+				if (j == 1)
+					angle = -45;
 
-				for(u16 i=0; i<4; i++)
-				{
-					vertices[i].Pos += intToFloat(p, BS);
+				for (u16 i=0; i<4; i++) {
+					vertices[i].Pos.rotateXZBy(angle);
+					vertices[i].Pos += offset+intToFloat(p, BS);
 				}
 
 				u16 indices[] = {0,1,2,2,3,0};
@@ -3258,11 +3231,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		{
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l, selected);
+			MapNode n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p + v3s16(0,-1,0));
+			v3f offset(0,0,0);
+			if (n2.getContent() == CONTENT_FLOWER_POT)
+				offset = v3f(0,-0.25*BS,0);
 
-			for(u32 j=0; j<2; j++)
-			{
-				video::S3DVertex vertices[4] =
-				{
+			for (u32 j=0; j<2; j++) {
+				video::S3DVertex vertices[4] = {
 					video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
 					video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
@@ -3273,31 +3248,14 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
 				};
 
-				if(j == 0)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(45);
-				}
-				else if(j == 1)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(-45);
-				}
-				else if(j == 2)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(135);
-				}
-				else if(j == 3)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(-135);
-				}
+				s16 angle = 45;
+				if (j == 1)
+					angle = -45;
 
-				for(u16 i=0; i<4; i++)
-				{
+				for (u16 i=0; i<4; i++) {
+					vertices[i].Pos.rotateXZBy(angle);
 					vertices[i].Pos *= 0.8;
-					vertices[i].Pos += intToFloat(p, BS);
+					vertices[i].Pos += offset+intToFloat(p, BS);
 				}
 
 				u16 indices[] = {0,1,2,2,3,0};
@@ -3311,11 +3269,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l, selected);
 			f32 h = (0.75*content_features(n).tiles[0].texture.size.Y)+content_features(n).tiles[0].texture.y0();
+			MapNode n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p + v3s16(0,-1,0));
+			v3f offset(0,0,0);
+			if (n2.getContent() == CONTENT_FLOWER_POT)
+				offset = v3f(0,-0.25*BS,0);
 
-			for(u32 j=0; j<2; j++)
-			{
-				video::S3DVertex vertices[4] =
-				{
+			for (u32 j=0; j<2; j++) {
+				video::S3DVertex vertices[4] = {
 					video::S3DVertex(-BS/2,-0.5*BS,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
 					video::S3DVertex(BS/2,-0.5*BS,0, 0,0,0, c,
@@ -3326,30 +3286,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						content_features(n).tiles[0].texture.x0(), h),
 				};
 
-				if(j == 0)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(45);
-				}
-				else if(j == 1)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(-45);
-				}
-				else if(j == 2)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(135);
-				}
-				else if(j == 3)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(-135);
-				}
+				s16 angle = 45;
+				if (j == 1)
+					angle = -45;
 
-				for(u16 i=0; i<4; i++)
-				{
-					vertices[i].Pos += intToFloat(p, BS);
+				for (u16 i=0; i<4; i++) {
+					vertices[i].Pos.rotateXZBy(angle);
+					vertices[i].Pos += offset+intToFloat(p, BS);
 				}
 
 				u16 indices[] = {0,1,2,2,3,0};
@@ -3363,11 +3306,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l, selected);
 			f32 h = (0.5*content_features(n).tiles[0].texture.size.Y)+content_features(n).tiles[0].texture.y0();
+			MapNode n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p + v3s16(0,-1,0));
+			v3f offset(0,0,0);
+			if (n2.getContent() == CONTENT_FLOWER_POT)
+				offset = v3f(0,-0.25*BS,0);
 
-			for(u32 j=0; j<2; j++)
-			{
-				video::S3DVertex vertices[4] =
-				{
+			for (u32 j=0; j<2; j++) {
+				video::S3DVertex vertices[4] = {
 					video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
 					video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
@@ -3378,30 +3323,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						content_features(n).tiles[0].texture.x0(), h),
 				};
 
-				if(j == 0)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(45);
-				}
-				else if(j == 1)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(-45);
-				}
-				else if(j == 2)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(135);
-				}
-				else if(j == 3)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(-135);
-				}
+				s16 angle = 45;
+				if (j == 1)
+					angle = -45;
 
-				for(u16 i=0; i<4; i++)
-				{
-					vertices[i].Pos += intToFloat(p, BS);
+				for (u16 i=0; i<4; i++) {
+					vertices[i].Pos.rotateXZBy(angle);
+					vertices[i].Pos += offset+intToFloat(p, BS);
 				}
 
 				u16 indices[] = {0,1,2,2,3,0};
@@ -3415,11 +3343,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
 			video::SColor c = MapBlock_LightColor(255, l, selected);
 			f32 h = (0.25*content_features(n).tiles[0].texture.size.Y)+content_features(n).tiles[0].texture.y0();
+			MapNode n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p + v3s16(0,-1,0));
+			v3f offset(0,0,0);
+			if (n2.getContent() == CONTENT_FLOWER_POT)
+				offset = v3f(0,-0.25*BS,0);
 
-			for(u32 j=0; j<2; j++)
-			{
-				video::S3DVertex vertices[4] =
-				{
+			for (u32 j=0; j<2; j++) {
+				video::S3DVertex vertices[4] = {
 					video::S3DVertex(-BS/2,-0.5*BS,0, 0,0,0, c,
 						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
 					video::S3DVertex(BS/2,-0.5*BS,0, 0,0,0, c,
@@ -3430,30 +3360,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						content_features(n).tiles[0].texture.x0(), h),
 				};
 
-				if(j == 0)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(45);
-				}
-				else if(j == 1)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(-45);
-				}
-				else if(j == 2)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(135);
-				}
-				else if(j == 3)
-				{
-					for(u16 i=0; i<4; i++)
-						vertices[i].Pos.rotateXZBy(-135);
-				}
+				s16 angle = 45;
+				if (j == 1)
+					angle = -45;
 
-				for(u16 i=0; i<4; i++)
-				{
-					vertices[i].Pos += intToFloat(p, BS);
+				for (u16 i=0; i<4; i++) {
+					vertices[i].Pos.rotateXZBy(angle);
+					vertices[i].Pos += offset+intToFloat(p, BS);
 				}
 
 				u16 indices[] = {0,1,2,2,3,0};
