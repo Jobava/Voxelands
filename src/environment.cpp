@@ -1506,35 +1506,39 @@ void ServerEnvironment::step(float dtime)
 				}
 				case CONTENT_GRASS:
 				{
-					if (n.envticks > 2) {
-						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
-						if (content_features(n_top).air_equivalent) {
-							if (p.Y > 50 && p.Y < 1024) {
-								n.setContent(CONTENT_MUDSNOW);
-								m_map->addNodeWithEvent(p, n);
-							}
-						}
-					}
-					int f = (700-(p.Y*2))+10;
-					if (p.Y > 1 && myrand()%f == 0) {
-						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
-						if (n_top.getContent() == CONTENT_AIR && n_top.getLightBlend(getDayNightRatio()) >= 13) {
-							v3f pp = intToFloat(p,BS);
-							Player *nearest = getNearestConnectedPlayer(pp);
-							if (nearest == NULL || nearest->getPosition().getDistanceFrom(pp)/BS > 20.0) {
-								std::vector<content_t> search;
-								search.push_back(CONTENT_WILDGRASS_SHORT);
-								search.push_back(CONTENT_WILDGRASS_LONG);
-								search.push_back(CONTENT_FLOWER_STEM);
-								search.push_back(CONTENT_FLOWER_ROSE);
-								search.push_back(CONTENT_FLOWER_TULIP);
-								search.push_back(CONTENT_FLOWER_DAFFODIL);
-								if (!searchNear(p,v3s16(1,1,1),search,NULL)) {
-									n_top.setContent(CONTENT_WILDGRASS_SHORT);
-									m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top);
+					MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
+					if (content_features(n_top).air_equivalent) {
+						if (n.envticks > 2) {
+							if (content_features(n_top).air_equivalent) {
+								if (p.Y > 50 && p.Y < 1024) {
+									n.setContent(CONTENT_MUDSNOW);
+									m_map->addNodeWithEvent(p, n);
 								}
 							}
 						}
+						int f = (700-(p.Y*2))+10;
+						if (p.Y > 1 && myrand()%f == 0) {
+							if (n_top.getContent() == CONTENT_AIR && n_top.getLightBlend(getDayNightRatio()) >= 13) {
+								v3f pp = intToFloat(p,BS);
+								Player *nearest = getNearestConnectedPlayer(pp);
+								if (nearest == NULL || nearest->getPosition().getDistanceFrom(pp)/BS > 20.0) {
+									std::vector<content_t> search;
+									search.push_back(CONTENT_WILDGRASS_SHORT);
+									search.push_back(CONTENT_WILDGRASS_LONG);
+									search.push_back(CONTENT_FLOWER_STEM);
+									search.push_back(CONTENT_FLOWER_ROSE);
+									search.push_back(CONTENT_FLOWER_TULIP);
+									search.push_back(CONTENT_FLOWER_DAFFODIL);
+									if (!searchNear(p,v3s16(1,1,1),search,NULL)) {
+										n_top.setContent(CONTENT_WILDGRASS_SHORT);
+										m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top);
+									}
+								}
+							}
+						}
+					}else if (n_top.getContent() != CONTENT_IGNORE) {
+						n.setContent(CONTENT_MUD);
+						m_map->addNodeWithEvent(p,n);
 					}
 					break;
 				}
