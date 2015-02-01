@@ -638,8 +638,8 @@ public:
 	virtual bool stepCircuit(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos);
 private:
-	bool extend(v3s16 pos, v3s16 dir, content_t arm, ServerEnvironment *env);
-	bool contract(v3s16 pos, v3s16 dir, bool sticky, ServerEnvironment *env);
+	bool extend(v3s16 pos, v3s16 dir, content_t arm, MapNode piston, ServerEnvironment *env);
+	bool contract(v3s16 pos, v3s16 dir, bool sticky, MapNode piston, ServerEnvironment *env);
 	f32 m_otime;
 };
 

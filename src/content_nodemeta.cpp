@@ -2493,7 +2493,16 @@ bool SwitchNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *
 	if (!m_energy)
 		return false;
 
-	env->propogateEnergy(ENERGY_MAX,pos,pos,pos);
+	core::map<v3s16,MapBlock*> modified_blocks;
+	env->propogateEnergy(ENERGY_MAX,pos,pos,pos,modified_blocks);
+	MapEditEvent event;
+	event.type = MEET_OTHER;
+	for (core::map<v3s16, MapBlock*>::Iterator i = modified_blocks.getIterator(); i.atEnd() == false; i++) {
+		v3s16 p = i->getKey();
+		event.modified_blocks.insert(p, true);
+	}
+	env->getMap().dispatchEvent(&event);
+
 	return true;
 }
 bool SwitchNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
@@ -2576,7 +2585,16 @@ bool ButtonNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *
 	if (!m_energy)
 		return false;
 
-	env->propogateEnergy(ENERGY_MAX,pos,pos,pos);
+	core::map<v3s16,MapBlock*> modified_blocks;
+	env->propogateEnergy(ENERGY_MAX,pos,pos,pos,modified_blocks);
+	MapEditEvent event;
+	event.type = MEET_OTHER;
+	for (core::map<v3s16, MapBlock*>::Iterator i = modified_blocks.getIterator(); i.atEnd() == false; i++) {
+		v3s16 p = i->getKey();
+		event.modified_blocks.insert(p, true);
+	}
+	env->getMap().dispatchEvent(&event);
+
 	m_energy = 0;
 	return true;
 }
@@ -2646,7 +2664,16 @@ bool SolarPanelNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironme
 	}
 
 	m_energy = ENERGY_MAX;
-	env->propogateEnergy(ENERGY_MAX,pos,pos,pos);
+	core::map<v3s16,MapBlock*> modified_blocks;
+	env->propogateEnergy(ENERGY_MAX,pos,pos,pos,modified_blocks);
+	MapEditEvent event;
+	event.type = MEET_OTHER;
+	for (core::map<v3s16, MapBlock*>::Iterator i = modified_blocks.getIterator(); i.atEnd() == false; i++) {
+		v3s16 p = i->getKey();
+		event.modified_blocks.insert(p, true);
+	}
+	env->getMap().dispatchEvent(&event);
+
 	return true;
 }
 bool SolarPanelNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
@@ -2739,7 +2766,16 @@ bool WaterWheelNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironme
 	}
 
 	m_energy = ENERGY_MAX;
-	env->propogateEnergy(ENERGY_MAX,pos,pos,pos);
+	core::map<v3s16,MapBlock*> modified_blocks;
+	env->propogateEnergy(ENERGY_MAX,pos,pos,pos,modified_blocks);
+	MapEditEvent event;
+	event.type = MEET_OTHER;
+	for (core::map<v3s16, MapBlock*>::Iterator i = modified_blocks.getIterator(); i.atEnd() == false; i++) {
+		v3s16 p = i->getKey();
+		event.modified_blocks.insert(p, true);
+	}
+	env->getMap().dispatchEvent(&event);
+
 	return true;
 }
 bool WaterWheelNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
@@ -2850,7 +2886,16 @@ bool NotGateNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment 
 
 	m_energy = 0;
 
-	env->propogateEnergy(ENERGY_MAX,pos,pos,pos);
+	core::map<v3s16,MapBlock*> modified_blocks;
+	env->propogateEnergy(ENERGY_MAX,pos,pos,pos,modified_blocks);
+	MapEditEvent event;
+	event.type = MEET_OTHER;
+	for (core::map<v3s16, MapBlock*>::Iterator i = modified_blocks.getIterator(); i.atEnd() == false; i++) {
+		v3s16 p = i->getKey();
+		event.modified_blocks.insert(p, true);
+	}
+	env->getMap().dispatchEvent(&event);
+
 	return true;
 }
 bool NotGateNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
@@ -2950,7 +2995,16 @@ bool RepeaterNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment
 		return true;
 	}
 
-	env->propogateEnergy(ENERGY_MAX,pos,pos,pos);
+	core::map<v3s16,MapBlock*> modified_blocks;
+	env->propogateEnergy(ENERGY_MAX,pos,pos,pos,modified_blocks);
+	MapEditEvent event;
+	event.type = MEET_OTHER;
+	for (core::map<v3s16, MapBlock*>::Iterator i = modified_blocks.getIterator(); i.atEnd() == false; i++) {
+		v3s16 p = i->getKey();
+		event.modified_blocks.insert(p, true);
+	}
+	env->getMap().dispatchEvent(&event);
+
 	return true;
 }
 bool RepeaterNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos)
@@ -3181,28 +3235,22 @@ bool PistonNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *
 			}else if (dir == v3s16(1,1,-1)) {
 				dir = v3s16(1,0,0);
 			}
-			if (contract(pos,dir,false,env)) {
-				n.setContent(CONTENT_CIRCUIT_PISTON_OFF);
-				env->setPostStepNodeSwap(pos,n);
-			}
+			n.setContent(CONTENT_CIRCUIT_PISTON_OFF);
+			contract(pos,dir,false,n,env);
 			return true;
 		}
 		case CONTENT_CIRCUIT_PISTON_UP:
 		{
 			dir = v3s16(0,1,0);
-			if (contract(pos,dir,false,env)) {
-				n.setContent(CONTENT_CIRCUIT_PISTON_UP_OFF);
-				env->setPostStepNodeSwap(pos,n);
-			}
+			n.setContent(CONTENT_CIRCUIT_PISTON_UP_OFF);
+			contract(pos,dir,false,n,env);
 			return true;
 		}
 		case CONTENT_CIRCUIT_PISTON_DOWN:
 		{
 			dir = v3s16(0,-1,0);
-			if (contract(pos,dir,false,env)) {
-				n.setContent(CONTENT_CIRCUIT_PISTON_DOWN_OFF);
-				env->setPostStepNodeSwap(pos,n);
-			}
+			n.setContent(CONTENT_CIRCUIT_PISTON_DOWN_OFF);
+			contract(pos,dir,false,n,env);
 			return true;
 		}
 		case CONTENT_CIRCUIT_STICKYPISTON:
@@ -3216,28 +3264,22 @@ bool PistonNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *
 			}else if (dir == v3s16(1,1,-1)) {
 				dir = v3s16(1,0,0);
 			}
-			if (contract(pos,dir,true,env)) {
-				n.setContent(CONTENT_CIRCUIT_STICKYPISTON_OFF);
-				env->setPostStepNodeSwap(pos,n);
-			}
+			n.setContent(CONTENT_CIRCUIT_STICKYPISTON_OFF);
+			contract(pos,dir,true,n,env);
 			return true;
 		}
 		case CONTENT_CIRCUIT_STICKYPISTON_UP:
 		{
 			dir = v3s16(0,1,0);
-			if (contract(pos,dir,true,env)) {
-				n.setContent(CONTENT_CIRCUIT_STICKYPISTON_UP_OFF);
-				env->setPostStepNodeSwap(pos,n);
-			}
+			n.setContent(CONTENT_CIRCUIT_STICKYPISTON_UP_OFF);
+			contract(pos,dir,true,n,env);
 			return true;
 		}
 		case CONTENT_CIRCUIT_STICKYPISTON_DOWN:
 		{
 			dir = v3s16(0,-1,0);
-			if (contract(pos,dir,true,env)) {
-				n.setContent(CONTENT_CIRCUIT_STICKYPISTON_DOWN_OFF);
-				env->setPostStepNodeSwap(pos,n);
-			}
+			n.setContent(CONTENT_CIRCUIT_STICKYPISTON_DOWN_OFF);
+			contract(pos,dir,true,n,env);
 			return true;
 		}
 		case CONTENT_CIRCUIT_PISTON_OFF:
@@ -3251,27 +3293,22 @@ bool PistonNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *
 			}else if (dir == v3s16(1,1,-1)) {
 				dir = v3s16(1,0,0);
 			}
-			if (env->getMap().getNodeNoEx(pos+dir).getContent() == CONTENT_CIRCUIT_PISTON_ARM && contract(pos,dir,false,env)) {
-				n.setContent(CONTENT_CIRCUIT_PISTON_OFF);
-				env->setPostStepNodeSwap(pos,n);
-			}
+			if (env->getMap().getNodeNoEx(pos+dir).getContent() == CONTENT_CIRCUIT_PISTON_ARM)
+				contract(pos,dir,false,n,env);
 			return true;
 		}
 		case CONTENT_CIRCUIT_PISTON_UP_OFF:
 		{
 			dir = v3s16(0,1,0);
-			if (env->getMap().getNodeNoEx(pos+dir).getContent() == CONTENT_CIRCUIT_PISTON_UP_ARM && contract(pos,dir,false,env)) {
-				n.setContent(CONTENT_CIRCUIT_PISTON_UP_OFF);
-				env->setPostStepNodeSwap(pos,n);
-			}
+			if (env->getMap().getNodeNoEx(pos+dir).getContent() == CONTENT_CIRCUIT_PISTON_UP_ARM)
+				contract(pos,dir,false,n,env);
 			return true;
 		}
 		case CONTENT_CIRCUIT_PISTON_DOWN_OFF:
 		{
 			dir = v3s16(0,-1,0);
-			if (env->getMap().getNodeNoEx(pos+dir).getContent() == CONTENT_CIRCUIT_PISTON_DOWN_ARM) {
-				contract(pos,dir,false,env);
-			}
+			if (env->getMap().getNodeNoEx(pos+dir).getContent() == CONTENT_CIRCUIT_PISTON_DOWN_ARM)
+				contract(pos,dir,false,n,env);
 			return true;
 		}
 		case CONTENT_CIRCUIT_STICKYPISTON_OFF:
@@ -3285,25 +3322,22 @@ bool PistonNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *
 			}else if (dir == v3s16(1,1,-1)) {
 				dir = v3s16(1,0,0);
 			}
-			if (env->getMap().getNodeNoEx(pos+dir).getContent() == CONTENT_CIRCUIT_STICKYPISTON_ARM) {
-				contract(pos,dir,true,env);
-			}
+			if (env->getMap().getNodeNoEx(pos+dir).getContent() == CONTENT_CIRCUIT_STICKYPISTON_ARM)
+				contract(pos,dir,true,n,env);
 			return true;
 		}
 		case CONTENT_CIRCUIT_STICKYPISTON_UP_OFF:
 		{
 			dir = v3s16(0,1,0);
-			if (env->getMap().getNodeNoEx(pos+dir).getContent() == CONTENT_CIRCUIT_STICKYPISTON_UP_ARM) {
-				contract(pos,dir,true,env);
-			}
+			if (env->getMap().getNodeNoEx(pos+dir).getContent() == CONTENT_CIRCUIT_STICKYPISTON_UP_ARM)
+				contract(pos,dir,true,n,env);
 			return true;
 		}
 		case CONTENT_CIRCUIT_STICKYPISTON_DOWN_OFF:
 		{
 			dir = v3s16(0,-1,0);
-			if (env->getMap().getNodeNoEx(pos+dir).getContent() == CONTENT_CIRCUIT_STICKYPISTON_DOWN_ARM) {
-				contract(pos,dir,true,env);
-			}
+			if (env->getMap().getNodeNoEx(pos+dir).getContent() == CONTENT_CIRCUIT_STICKYPISTON_DOWN_ARM)
+				contract(pos,dir,true,n,env);
 			return true;
 		}
 		default:;
@@ -3311,7 +3345,7 @@ bool PistonNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *
 		return false;
 	}else{
 		m_otime += dtime;
-		if (m_otime < 1.5)
+		if (m_otime < 3)
 			return false;
 		MapNode n = env->getMap().getNodeNoEx(pos);
 		v3s16 dir = n.getRotation();
@@ -3327,28 +3361,22 @@ bool PistonNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *
 			}else if (dir == v3s16(1,1,-1)) {
 				dir = v3s16(1,0,0);
 			}
-			if (extend(pos,dir,CONTENT_CIRCUIT_PISTON_ARM,env)) {
-				n.setContent(CONTENT_CIRCUIT_PISTON);
-				env->setPostStepNodeSwap(pos,n);
-			}
+			n.setContent(CONTENT_CIRCUIT_PISTON);
+			extend(pos,dir,CONTENT_CIRCUIT_PISTON_ARM,n,env);
 			break;
 		}
 		case CONTENT_CIRCUIT_PISTON_UP_OFF:
 		{
 			dir = v3s16(0,1,0);
-			if (extend(pos,dir,CONTENT_CIRCUIT_PISTON_UP_ARM,env)) {
-				n.setContent(CONTENT_CIRCUIT_PISTON_UP);
-				env->setPostStepNodeSwap(pos,n);
-			}
+			n.setContent(CONTENT_CIRCUIT_PISTON_UP);
+			extend(pos,dir,CONTENT_CIRCUIT_PISTON_UP_ARM,n,env);
 			break;
 		}
 		case CONTENT_CIRCUIT_PISTON_DOWN_OFF:
 		{
 			dir = v3s16(0,-1,0);
-			if (extend(pos,dir,CONTENT_CIRCUIT_PISTON_DOWN_ARM,env)) {
-				n.setContent(CONTENT_CIRCUIT_PISTON_DOWN);
-				env->setPostStepNodeSwap(pos,n);
-			}
+			n.setContent(CONTENT_CIRCUIT_PISTON_DOWN);
+			extend(pos,dir,CONTENT_CIRCUIT_PISTON_DOWN_ARM,n,env);
 			break;
 		}
 		case CONTENT_CIRCUIT_STICKYPISTON_OFF:
@@ -3362,34 +3390,28 @@ bool PistonNodeMetadata::stepCircuit(float dtime, v3s16 pos, ServerEnvironment *
 			}else if (dir == v3s16(1,1,-1)) {
 				dir = v3s16(1,0,0);
 			}
-			if (extend(pos,dir,CONTENT_CIRCUIT_STICKYPISTON_ARM,env)) {
-				n.setContent(CONTENT_CIRCUIT_STICKYPISTON);
-				env->setPostStepNodeSwap(pos,n);
-			}
+			n.setContent(CONTENT_CIRCUIT_STICKYPISTON);
+			extend(pos,dir,CONTENT_CIRCUIT_STICKYPISTON_ARM,n,env);
 			break;
 		}
 		case CONTENT_CIRCUIT_STICKYPISTON_UP_OFF:
 		{
 			dir = v3s16(0,1,0);
-			if (extend(pos,dir,CONTENT_CIRCUIT_STICKYPISTON_UP_ARM,env)) {
-				n.setContent(CONTENT_CIRCUIT_STICKYPISTON_UP);
-				env->setPostStepNodeSwap(pos,n);
-			}
+			n.setContent(CONTENT_CIRCUIT_STICKYPISTON_UP);
+			extend(pos,dir,CONTENT_CIRCUIT_STICKYPISTON_UP_ARM,n,env);
 			break;
 		}
 		case CONTENT_CIRCUIT_STICKYPISTON_DOWN_OFF:
 		{
 			dir = v3s16(0,-1,0);
-			if (extend(pos,dir,CONTENT_CIRCUIT_STICKYPISTON_DOWN_ARM,env)) {
-				n.setContent(CONTENT_CIRCUIT_STICKYPISTON_DOWN);
-				env->setPostStepNodeSwap(pos,n);
-			}
+			n.setContent(CONTENT_CIRCUIT_STICKYPISTON_DOWN);
+			extend(pos,dir,CONTENT_CIRCUIT_STICKYPISTON_DOWN_ARM,n,env);
 			break;
 		}
 		default:;
 		}
 	}
-	if (m_ptime < 1.5)
+	if (m_ptime < 3)
 		return false;
 	//m_otime += dtime;
 	//if (m_otime < 1.0)
@@ -3422,7 +3444,7 @@ bool PistonNodeMetadata::energise(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s
 		m_otime = 0;
 	return true;
 }
-bool PistonNodeMetadata::extend(v3s16 pos, v3s16 dir, content_t arm, ServerEnvironment *env)
+bool PistonNodeMetadata::extend(v3s16 pos, v3s16 dir, content_t arm, MapNode piston, ServerEnvironment *env)
 {
 	bool can_extend = false;
 	v3s16 epos = pos;
@@ -3460,20 +3482,18 @@ bool PistonNodeMetadata::extend(v3s16 pos, v3s16 dir, content_t arm, ServerEnvir
 	v3s16 p_prev = pos;
 	v3s16 p_cur = p_prev+dir;
 	v3s16 p_next = p_cur+dir;
-
-	core::map<v3s16, MapBlock*> modified_blocks;
-	ManualMapVoxelManipulator vmanip(&env->getMap());
-	v3s16 piston_blockp = getNodeBlockPos(pos);
-	vmanip.initialEmerge(piston_blockp - v3s16(1,1,1), piston_blockp + v3s16(1,1,1));
+	core::map<v3s16,MapBlock*> modified_blocks;
+	std::string st("");
+	env->getMap().addNodeAndUpdate(pos,piston,modified_blocks,st);
 
 	if (arm == CONTENT_CIRCUIT_PISTON_ARM || arm == CONTENT_CIRCUIT_STICKYPISTON_ARM)
-		n_prev = vmanip.m_data[vmanip.m_area.index(p_prev)];
+		n_prev = env->getMap().getNodeNoEx(p_prev);
 	n_prev.setContent(arm);
-	n_cur = vmanip.m_data[vmanip.m_area.index(p_cur)];
+	n_cur = env->getMap().getNodeNoEx(p_cur);
 	for (int i=0; i<17; i++) {
 		ContentFeatures &f = content_features(n_cur);
-		n_next = vmanip.m_data[vmanip.m_area.index(p_next)];
-		vmanip.m_data[vmanip.m_area.index(p_cur)] = n_prev;
+		n_next = env->getMap().getNodeNoEx(p_next);
+		env->getMap().addNodeAndUpdate(p_cur,n_prev,modified_blocks,st);
 		if (f.pressure_type == CST_CRUSHED)
 			break;
 		if (f.pressure_type == CST_CRUSHABLE && n_next.getContent() != CONTENT_AIR)
@@ -3485,106 +3505,95 @@ bool PistonNodeMetadata::extend(v3s16 pos, v3s16 dir, content_t arm, ServerEnvir
 		p_next += dir;
 	}
 
-	vmanip.blitBackAllWithMeta(&modified_blocks);
-
-	// update lighting
-	core::map<v3s16, MapBlock*> lighting_modified_blocks;
-	for (core::map<v3s16, MapBlock*>::Iterator i = modified_blocks.getIterator(); i.atEnd() == false; i++) {
-		lighting_modified_blocks.insert(i.getNode()->getKey(), i.getNode()->getValue());
-	}
-	env->getMap().updateLighting(lighting_modified_blocks, modified_blocks);
-	// Send a MEET_OTHER event
 	MapEditEvent event;
 	event.type = MEET_OTHER;
 	for (core::map<v3s16, MapBlock*>::Iterator i = modified_blocks.getIterator(); i.atEnd() == false; i++) {
-		v3s16 p = i.getNode()->getKey();
+		v3s16 p = i->getKey();
 		event.modified_blocks.insert(p, true);
 	}
 	env->getMap().dispatchEvent(&event);
+
 	return true;
 }
-bool PistonNodeMetadata::contract(v3s16 pos, v3s16 dir, bool sticky, ServerEnvironment *env)
+bool PistonNodeMetadata::contract(v3s16 pos, v3s16 dir, bool sticky, MapNode piston, ServerEnvironment *env)
 {
 	bool dropping = false;
-	env->getMap().removeNodeWithEvent(pos+dir);
+	core::map<v3s16,MapBlock*> modified_blocks;
+	std::string st("");
+	env->getMap().addNodeAndUpdate(pos,piston,modified_blocks,st);
+	env->getMap().removeNodeAndUpdate(pos+dir,modified_blocks);
 	if (dir.Y == 1)
 		dropping = true;
-	if (!sticky && !dropping)
-		return true;
+	if (sticky || dropping) {
+		s16 max_d = g_settings->getS16("borderstone_radius");
+		v3s16 p_cur = pos+dir;
+		v3s16 p_next = p_cur+dir;
+		bool walk = true;
+		for (int i=0; walk && i<16; i++) {
+			MapNode n = env->getMap().getNodeNoEx(p_next);
+			if (n.getContent() == CONTENT_IGNORE) {
+				walk = false;
+				break;
+			}
+			ContentFeatures &f = content_features(n);
+			if (f.pressure_type == CST_SOLID)
+				break;
+			if (f.liquid_type != LIQUID_NONE)
+				break;
+			if ((!sticky || i) && f.pressure_type != CST_DROPABLE)
+				break;
+			v3s16 test_p;
+			MapNode testnode;
+			for(s16 z=-max_d; walk && z<=max_d; z++) {
+			for(s16 y=-max_d; walk && y<=max_d; y++) {
+			for(s16 x=-max_d; walk && x<=max_d; x++) {
+				test_p = p_cur + v3s16(x,y,z);
+				testnode = env->getMap().getNodeNoEx(test_p);
+				if (testnode.getContent() == CONTENT_IGNORE || testnode.getContent() == CONTENT_BORDERSTONE) {
+					walk = false;
+					break;
+				}
+			}
+			}
+			}
+			if (!dropping)
+				break;
+			p_cur = p_next;
+			p_next += dir;
+		}
 
-	s16 max_d = g_settings->getS16("borderstone_radius");
-	v3s16 p_cur = pos+dir;
-	v3s16 p_next = p_cur+dir;
-	for (int i=0; i<16; i++) {
-		MapNode n = env->getMap().getNodeNoEx(p_next);
-		if (n.getContent() == CONTENT_IGNORE)
-			return false;
-		ContentFeatures &f = content_features(n);
-		if (f.pressure_type == CST_SOLID)
-			break;
-		if (f.liquid_type != LIQUID_NONE)
-			break;
-		if ((!sticky || i) && f.pressure_type != CST_DROPABLE)
-			break;
-		v3s16 test_p;
-		MapNode testnode;
-		for(s16 z=-max_d; z<=max_d; z++) {
-		for(s16 y=-max_d; y<=max_d; y++) {
-		for(s16 x=-max_d; x<=max_d; x++) {
-			test_p = p_cur + v3s16(x,y,z);
-			testnode = env->getMap().getNodeNoEx(test_p);
-			if (testnode.getContent() == CONTENT_IGNORE || testnode.getContent() == CONTENT_BORDERSTONE)
-				return false;
+		if (walk) {
+			p_cur = pos+dir;
+			p_next = p_cur+dir;
+
+			for (int i=0; i<16; i++) {
+				MapNode n = env->getMap().getNodeNoEx(p_next);
+				if (n.getContent() == CONTENT_IGNORE)
+					break;
+				ContentFeatures &f = content_features(n);
+				if (f.pressure_type == CST_SOLID)
+					break;
+				if (f.liquid_type != LIQUID_NONE)
+					break;
+				if ((!sticky || i) && f.pressure_type != CST_DROPABLE)
+					break;
+				env->getMap().removeNodeAndUpdate(p_next,modified_blocks);
+				env->getMap().addNodeAndUpdate(p_cur,n,modified_blocks,st);
+				if (!dropping)
+					break;
+				p_cur = p_next;
+				p_next += dir;
+			}
 		}
-		}
-		}
-		if (!dropping)
-			break;
-		p_cur = p_next;
-		p_next += dir;
 	}
 
-	p_cur = pos+dir;
-	p_next = p_cur+dir;
-
-	core::map<v3s16, MapBlock*> modified_blocks;
-	ManualMapVoxelManipulator vmanip(&env->getMap());
-	v3s16 piston_blockp = getNodeBlockPos(pos);
-	vmanip.initialEmerge(piston_blockp - v3s16(1,1,1), piston_blockp + v3s16(1,1,1));
-	for (int i=0; i<16; i++) {
-		MapNode n = vmanip.m_data[vmanip.m_area.index(p_next)];
-		if (n.getContent() == CONTENT_IGNORE)
-			break;
-		ContentFeatures &f = content_features(n);
-		if (f.pressure_type == CST_SOLID)
-			break;
-		if (f.liquid_type != LIQUID_NONE)
-			break;
-		if ((!sticky || i) && f.pressure_type != CST_DROPABLE)
-			break;
-		vmanip.m_data[vmanip.m_area.index(p_next)] = CONTENT_AIR;
-		vmanip.m_data[vmanip.m_area.index(p_cur)] = n;
-		if (!dropping)
-			break;
-		p_cur = p_next;
-		p_next += dir;
-	}
-
-	vmanip.blitBackAllWithMeta(&modified_blocks);
-
-	// update lighting
-	core::map<v3s16, MapBlock*> lighting_modified_blocks;
-	for (core::map<v3s16, MapBlock*>::Iterator i = modified_blocks.getIterator(); i.atEnd() == false; i++) {
-		lighting_modified_blocks.insert(i.getNode()->getKey(), i.getNode()->getValue());
-	}
-	env->getMap().updateLighting(lighting_modified_blocks, modified_blocks);
-	// Send a MEET_OTHER event
 	MapEditEvent event;
 	event.type = MEET_OTHER;
 	for (core::map<v3s16, MapBlock*>::Iterator i = modified_blocks.getIterator(); i.atEnd() == false; i++) {
-		v3s16 p = i.getNode()->getKey();
+		v3s16 p = i->getKey();
 		event.modified_blocks.insert(p, true);
 	}
 	env->getMap().dispatchEvent(&event);
+
 	return true;
 }

@@ -576,7 +576,7 @@ void content_mapnode_plants(bool repeat)
 	f->light_propagates = true;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_PLANTLIKE;
-	f->air_equivalent = false; // grass grows underneath
+	f->air_equivalent = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CACTUS_BLOSSOM)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
@@ -598,7 +598,7 @@ void content_mapnode_plants(bool repeat)
 	f->light_propagates = true;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_PLANTLIKE;
-	f->air_equivalent = false; // grass grows underneath
+	f->air_equivalent = true;
 	f->dug_item = std::string("CraftItem cactus_fruit 1");
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
@@ -810,7 +810,7 @@ void content_mapnode_plants(bool repeat)
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_PLANTLIKE;
-	f->air_equivalent = false; // grass grows underneath
+	f->air_equivalent = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
