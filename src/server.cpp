@@ -2959,6 +2959,49 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						client->SetBlockNotSent(blockpos);
 					}
 				}
+			}else if (wield && wield->getContent() == CONTENT_CRAFTITEM_FERTILIZER) {
+				if (content_features(n).fertilizer_affects) {
+					n.envticks = 1024;
+					// send the node
+					core::list<u16> far_players;
+					core::map<v3s16, MapBlock*> modified_blocks;
+					sendAddNode(p_under, n, 0, &far_players, 30);
+					/*
+						Handle inventory
+					*/
+					InventoryList *ilist = player->inventory.getList("main");
+					if(g_settings->getBool("infinite_inventory") == false && ilist) {
+						// Remove from inventory and send inventory
+						if (wield->getCount() == 1) {
+							ilist->deleteItem(item_i);
+						}else{
+							wield->remove(1);
+						}
+						// Send inventory
+						UpdateCrafting(peer_id);
+						SendInventory(peer_id);
+					}
+					// the slow add to map
+					{
+						MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+
+						std::string p_name = std::string(player->getName());
+						m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
+					}
+					v3s16 blockpos = getNodeBlockPos(p_under);
+					MapBlock *block = m_env.getMap().getBlockNoCreateNoEx(blockpos);
+					if (block)
+						block->setChangedFlag();
+
+					for(core::map<u16, RemoteClient*>::Iterator
+						i = m_clients.getIterator();
+						i.atEnd()==false; i++)
+					{
+						RemoteClient *client = i.getNode()->getValue();
+						client->SetBlocksNotSent(modified_blocks);
+						client->SetBlockNotSent(blockpos);
+					}
+				}
 			}
 			/*
 				NOTE: This can be used in the future to check if
@@ -4135,7 +4178,11 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						}
 					}
 				}
-			}else if (item->getContent() == CONTENT_CRAFTITEM_MESEDUST) {
+			}else if (
+				(item->getContent()&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK
+				&& content_craftitem_features(item->getContent()).drop_item != CONTENT_IGNORE
+				&& (content_craftitem_features(item->getContent()).drop_item&CONTENT_MOB_MASK) != CONTENT_MOB_MASK
+			) {
 				if ((getPlayerPrivs(player) & PRIV_BUILD) == 0) {
 					infostream<<"Not allowing player to drop item: "
 							"no build privs"<<std::endl;
@@ -4144,7 +4191,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				MapNode n = m_env.getMap().getNodeNoEx(p_over);
 				if (n.getContent() != CONTENT_AIR)
 					return;
-				n.setContent(CONTENT_CIRCUIT_MESEWIRE);
+				n.setContent(content_craftitem_features(item->getContent()).drop_item);
 				core::list<u16> far_players;
 				sendAddNode(p_over, n, 0, &far_players, 30);
 				if (g_settings->getBool("infinite_inventory") == false) {

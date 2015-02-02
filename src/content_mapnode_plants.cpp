@@ -626,6 +626,8 @@ void content_mapnode_plants(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/4;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->extra_dug_item = std::string("CraftItem2 ") + itos (CONTENT_CRAFTITEM_MUSH) + " 1";
+	f->extra_dug_item_rarity = 10;
 	f->setNodeBox(core::aabbox3d<f32>(
 		-0.4375*BS,
 		-0.5*BS,
@@ -709,9 +711,10 @@ void content_mapnode_plants(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 1;
 	f->type = CMT_WOOD;
-	f->hardness = 0.0;
+	f->hardness = 0.1;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
+	f->fertilizer_affects = true;
 	lists::add("creative",i);
 
 	i = CONTENT_APPLE_SAPLING;
@@ -730,9 +733,10 @@ void content_mapnode_plants(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 1;
 	f->type = CMT_WOOD;
-	f->hardness = 0.0;
+	f->hardness = 0.1;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
+	f->fertilizer_affects = true;
 	lists::add("creative",i);
 
 	i = CONTENT_JUNGLESAPLING;
@@ -751,9 +755,10 @@ void content_mapnode_plants(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 1;
 	f->type = CMT_WOOD;
-	f->hardness = 0.0;
+	f->hardness = 0.1;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
+	f->fertilizer_affects = true;
 	lists::add("creative",i);
 
 	i = CONTENT_CONIFER_SAPLING;
@@ -772,9 +777,10 @@ void content_mapnode_plants(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 1;
 	f->type = CMT_WOOD;
-	f->hardness = 0.0;
+	f->hardness = 0.1;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
+	f->fertilizer_affects = true;
 	lists::add("creative",i);
 
 	i = CONTENT_APPLE;

@@ -662,6 +662,7 @@ void content_craftitem_init()
 	f->name = "mese_dust";
 	f->description = wgettext("Mese Dust");
 	f->drop_count = 1;
+	f->drop_item = CONTENT_CIRCUIT_MESEWIRE;
 	crafting::set1To2Recipe(CONTENT_MESE,CONTENT_CRAFTITEM_MESEDUST);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -1107,4 +1108,17 @@ void content_craftitem_init()
 	crafting::set1over4Recipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_CRAFTITEM_STICK,CONTENT_CRAFTITEM_ARROW);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_FERTILIZER;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_FERTILIZER;
+	f->texture = "fertilizer_item.png";
+	f->name = "fertilizer";
+	f->description = wgettext("Fertilizer");
+	f->drop_count = 1;
+	f->drop_item = CONTENT_FERTILIZER;
+	crafting::set2Any2Recipe(CONTENT_CRAFTITEM_MUSH,CONTENT_CRAFTITEM_ASH,CONTENT_CRAFTITEM_FERTILIZER);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
 }

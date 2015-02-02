@@ -2012,7 +2012,64 @@ void ServerEnvironment::step(float dtime)
 				// Make trees from saplings!
 				case CONTENT_SAPLING:
 				{
-					if (n.envticks > 15) {
+					if (n.envticks > 1000) {
+						// full grown tree
+						actionstream<<"A sapling grows into a tree at "<<PP(p)<<std::endl;
+						std::vector<content_t> search;
+						search.push_back(CONTENT_AIR);
+						search.push_back(CONTENT_TREE);
+						search.push_back(CONTENT_YOUNG_TREE);
+						search.push_back(CONTENT_APPLE_TREE);
+						search.push_back(CONTENT_YOUNG_APPLE_TREE);
+						search.push_back(CONTENT_JUNGLETREE);
+						search.push_back(CONTENT_YOUNG_JUNGLETREE);
+						search.push_back(CONTENT_CONIFER_TREE);
+						search.push_back(CONTENT_YOUNG_CONIFER_TREE);
+						search.push_back(CONTENT_LEAVES);
+						search.push_back(CONTENT_JUNGLELEAVES);
+						search.push_back(CONTENT_CONIFER_LEAVES);
+						search.push_back(CONTENT_APPLE_LEAVES);
+						search.push_back(CONTENT_APPLE_BLOSSOM);
+						search.push_back(CONTENT_APPLE);
+						search.push_back(CONTENT_IGNORE);
+
+						core::map<v3s16, MapBlock*> modified_blocks;
+						v3s16 tree_p = p;
+						ManualMapVoxelManipulator vmanip(m_map);
+						v3s16 tree_blockp = getNodeBlockPos(tree_p);
+						vmanip.initialEmerge(tree_blockp - v3s16(1,1,1), tree_blockp + v3s16(1,1,1));
+						if (!searchNearInv(p,v3s16(-10,2,-10),v3s16(10,12,10),search,NULL)) {
+							mapgen::make_largetree(vmanip, tree_p);
+						}else{
+							mapgen::make_tree(vmanip, tree_p);
+						}
+						vmanip.blitBackAll(&modified_blocks);
+
+						// update lighting
+						core::map<v3s16, MapBlock*> lighting_modified_blocks;
+						for(core::map<v3s16, MapBlock*>::Iterator
+							i = modified_blocks.getIterator();
+							i.atEnd() == false; i++)
+						{
+							lighting_modified_blocks.insert(i.getNode()->getKey(), i.getNode()->getValue());
+						}
+						m_map->updateLighting(lighting_modified_blocks, modified_blocks);
+
+						// Send a MEET_OTHER event
+						MapEditEvent event;
+						event.type = MEET_OTHER;
+						for(core::map<v3s16, MapBlock*>::Iterator
+							i = modified_blocks.getIterator();
+							i.atEnd() == false; i++)
+						{
+							v3s16 p = i.getNode()->getKey();
+							event.modified_blocks.insert(p, true);
+						}
+						m_map->dispatchEvent(&event);
+						// work-around for lighting bug
+						MapNode nn = m_map->getNodeNoEx(p);
+						m_map->addNodeWithEvent(p,nn);
+					}else if (n.envticks > 15) {
 						std::vector<content_t> search;
 						search.push_back(CONTENT_AIR);
 						search.push_back(CONTENT_TREE);
@@ -2142,7 +2199,42 @@ void ServerEnvironment::step(float dtime)
 
 				case CONTENT_APPLE_SAPLING:
 				{
-					if (n.envticks > 15) {
+					if (n.envticks > 1000) {
+						actionstream<<"A sapling grows into a tree at "<<PP(p)<<std::endl;
+
+						core::map<v3s16, MapBlock*> modified_blocks;
+						v3s16 tree_p = p;
+						ManualMapVoxelManipulator vmanip(m_map);
+						v3s16 tree_blockp = getNodeBlockPos(tree_p);
+						vmanip.initialEmerge(tree_blockp - v3s16(1,1,1), tree_blockp + v3s16(1,1,1));
+						mapgen::make_appletree(vmanip, tree_p);
+						vmanip.blitBackAll(&modified_blocks);
+
+						// update lighting
+						core::map<v3s16, MapBlock*> lighting_modified_blocks;
+						for(core::map<v3s16, MapBlock*>::Iterator
+							i = modified_blocks.getIterator();
+							i.atEnd() == false; i++)
+						{
+							lighting_modified_blocks.insert(i.getNode()->getKey(), i.getNode()->getValue());
+						}
+						m_map->updateLighting(lighting_modified_blocks, modified_blocks);
+
+						// Send a MEET_OTHER event
+						MapEditEvent event;
+						event.type = MEET_OTHER;
+						for(core::map<v3s16, MapBlock*>::Iterator
+							i = modified_blocks.getIterator();
+							i.atEnd() == false; i++)
+						{
+							v3s16 p = i.getNode()->getKey();
+							event.modified_blocks.insert(p, true);
+						}
+						m_map->dispatchEvent(&event);
+						// work-around for lighting bug
+						MapNode nn = m_map->getNodeNoEx(p);
+						m_map->addNodeWithEvent(p,nn);
+					}else if (n.envticks > 15) {
 						std::vector<content_t> search;
 						search.push_back(CONTENT_AIR);
 						search.push_back(CONTENT_TREE);
@@ -2267,7 +2359,42 @@ void ServerEnvironment::step(float dtime)
 
 				case CONTENT_JUNGLESAPLING:
 				{
-					if (n.envticks > 15) {
+					if (n.envticks > 1000) {
+						actionstream<<"A sapling grows into a jungle tree at "<<PP(p)<<std::endl;
+
+						core::map<v3s16, MapBlock*> modified_blocks;
+						v3s16 tree_p = p;
+						ManualMapVoxelManipulator vmanip(m_map);
+						v3s16 tree_blockp = getNodeBlockPos(tree_p);
+						vmanip.initialEmerge(tree_blockp - v3s16(1,1,1), tree_blockp + v3s16(1,1,1));
+						mapgen::make_jungletree(vmanip, tree_p);
+						vmanip.blitBackAll(&modified_blocks);
+
+						// update lighting
+						core::map<v3s16, MapBlock*> lighting_modified_blocks;
+						for(core::map<v3s16, MapBlock*>::Iterator
+							i = modified_blocks.getIterator();
+							i.atEnd() == false; i++)
+						{
+							lighting_modified_blocks.insert(i.getNode()->getKey(), i.getNode()->getValue());
+						}
+						m_map->updateLighting(lighting_modified_blocks, modified_blocks);
+
+						// Send a MEET_OTHER event
+						MapEditEvent event;
+						event.type = MEET_OTHER;
+						for(core::map<v3s16, MapBlock*>::Iterator
+							i = modified_blocks.getIterator();
+							i.atEnd() == false; i++)
+						{
+							v3s16 p = i.getNode()->getKey();
+							event.modified_blocks.insert(p, true);
+						}
+						m_map->dispatchEvent(&event);
+						// work-around for lighting bug
+						MapNode nn = m_map->getNodeNoEx(p);
+						m_map->addNodeWithEvent(p,nn);
+					}else if (n.envticks > 15) {
 						std::vector<content_t> search;
 						search.push_back(CONTENT_AIR);
 						search.push_back(CONTENT_TREE);
@@ -2394,7 +2521,42 @@ void ServerEnvironment::step(float dtime)
 
 				case CONTENT_CONIFER_SAPLING:
 				{
-					if (n.envticks > 15) {
+					if (n.envticks > 1000) {
+						actionstream<<"A sapling grows into a conifer tree at "<<PP(p)<<std::endl;
+
+						core::map<v3s16, MapBlock*> modified_blocks;
+						v3s16 tree_p = p;
+						ManualMapVoxelManipulator vmanip(m_map);
+						v3s16 tree_blockp = getNodeBlockPos(tree_p);
+						vmanip.initialEmerge(tree_blockp - v3s16(1,1,1), tree_blockp + v3s16(1,1,1));
+						mapgen::make_conifertree(vmanip, tree_p);
+						vmanip.blitBackAll(&modified_blocks);
+
+						// update lighting
+						core::map<v3s16, MapBlock*> lighting_modified_blocks;
+						for(core::map<v3s16, MapBlock*>::Iterator
+							i = modified_blocks.getIterator();
+							i.atEnd() == false; i++)
+						{
+							lighting_modified_blocks.insert(i.getNode()->getKey(), i.getNode()->getValue());
+						}
+						m_map->updateLighting(lighting_modified_blocks, modified_blocks);
+
+						// Send a MEET_OTHER event
+						MapEditEvent event;
+						event.type = MEET_OTHER;
+						for(core::map<v3s16, MapBlock*>::Iterator
+							i = modified_blocks.getIterator();
+							i.atEnd() == false; i++)
+						{
+							v3s16 p = i.getNode()->getKey();
+							event.modified_blocks.insert(p, true);
+						}
+						m_map->dispatchEvent(&event);
+						// work-around for lighting bug
+						MapNode nn = m_map->getNodeNoEx(p);
+						m_map->addNodeWithEvent(p,nn);
+					}else if (n.envticks > 15) {
 						std::vector<content_t> search;
 						search.push_back(CONTENT_AIR);
 						search.push_back(CONTENT_TREE);

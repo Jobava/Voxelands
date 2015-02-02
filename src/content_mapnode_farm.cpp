@@ -23,6 +23,7 @@
 #include "content_nodebox.h"
 #include "content_list.h"
 #include "content_craft.h"
+#include "content_craftitem.h"
 #include "content_nodemeta.h"
 #include "settings.h"
 #include "gettext.h"
@@ -54,16 +55,13 @@ void content_mapnode_farm(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->dug_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_FERTILIZER)+" 1";
 	content_nodebox_carpet(f);
 	f->setInventoryTextureNodeBox(i,"fertilizer.png", "fertilizer.png", "fertilizer.png");
 	f->type = CMT_DIRT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
-	crafting::set2Any2Recipe(CONTENT_CRAFTITEM_MUSH,CONTENT_CRAFTITEM_ASH,CONTENT_FERTILIZER);
-	lists::add("craftguide",i);
-	lists::add("creative",i);
 
 	i = CONTENT_TRELLIS;
 	f = &content_features(i);

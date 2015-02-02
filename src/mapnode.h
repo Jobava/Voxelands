@@ -355,6 +355,8 @@ struct ContentFeatures
 	bool often_contains_mineral;
 	// Whether destructive mobs can destroy this node
 	bool destructive_mob_safe;
+	// Whether punching with fertilizer advances the growth rate of the noe
+	bool fertilizer_affects;
 
 	// Inventory item string as which the node appears in inventory when dug.
 	// Mineral overrides this.
@@ -469,6 +471,7 @@ struct ContentFeatures
 		air_equivalent = false;
 		often_contains_mineral = false;
 		destructive_mob_safe = false;
+		fertilizer_affects = false;
 		dug_item = "";
 		extra_dug_item = "";
 		extra_dug_item_rarity = 2;
