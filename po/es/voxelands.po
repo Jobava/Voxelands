@@ -4,14 +4,14 @@
 # 
 # Translators:
 # Adolfo Jayme Barrientos, 2014
-# Pablo Roberto Francisco Lezaeta Reyes <prflr88@gmail.com>, 2014
+# Pablo Roberto Francisco Lezaeta Reyes <prflr88@gmail.com>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-01-23 18:51+1000\n"
-"PO-Revision-Date: 2015-01-21 17:53+0000\n"
-"Last-Translator: Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
+"PO-Revision-Date: 2015-02-02 05:57+0000\n"
+"Last-Translator: Pablo Roberto Francisco Lezaeta Reyes <prflr88@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/voxelands/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -384,15 +384,15 @@ msgstr "Pantalón corto de algodón negro"
 
 #: src/content_clothesitem.cpp:477
 msgid "Cotton Hat"
-msgstr ""
+msgstr "Sombrero de algodón"
 
 #: src/content_clothesitem.cpp:491
 msgid "Blue Cotton Hat"
-msgstr ""
+msgstr "Sombrero de algodón azul"
 
 #: src/content_clothesitem.cpp:505
 msgid "Green Cotton Hat"
-msgstr ""
+msgstr "Sombrero de algodón verde"
 
 #: src/content_clothesitem.cpp:519
 msgid "Orange Cotton Hat"
@@ -404,15 +404,15 @@ msgstr "Sombrero de algodón púrpura"
 
 #: src/content_clothesitem.cpp:547
 msgid "Red Cotton Hat"
-msgstr ""
+msgstr "Sombrero de algodón rojo"
 
 #: src/content_clothesitem.cpp:561
 msgid "Yellow Cotton Hat"
-msgstr ""
+msgstr "Sombrero de algodón amarillo"
 
 #: src/content_clothesitem.cpp:575
 msgid "Black Cotton Hat"
-msgstr ""
+msgstr "Sombrero de algodón negro"
 
 #: src/content_clothesitem.cpp:590
 msgid "Cotton Tie"
@@ -1504,7 +1504,7 @@ msgstr "Bloque de piedra en bruto"
 
 #: src/content_mapnode.cpp:328 src/content_mapnode.cpp:344
 msgid "Grass"
-msgstr ""
+msgstr "Pasto"
 
 #: src/content_mapnode.cpp:356
 msgid "Muddy Snow"
@@ -1975,20 +1975,20 @@ msgstr ""
 #: src/content_mapnode_door.cpp:1087 src/content_mapnode_door.cpp:1254
 #: src/content_mapnode_door.cpp:1307
 msgid "Wood Hatch"
-msgstr ""
+msgstr "Escotilla de madera"
 
 #: src/content_mapnode_door.cpp:1112 src/content_mapnode_door.cpp:1280
 #: src/content_mapnode_door.cpp:1333
 msgid "Steel Hatch"
-msgstr ""
+msgstr "Escotilla de acero"
 
 #: src/content_mapnode_door.cpp:1137
 msgid "Wood Windowed Hatch"
-msgstr ""
+msgstr "Escotilla de madera con ventanal"
 
 #: src/content_mapnode_door.cpp:1164
 msgid "Steel Windowed Hatch"
-msgstr ""
+msgstr "Escotilla de madera con ventanal"
 
 #: src/content_mapnode_door.cpp:1193 src/content_mapnode_door.cpp:1361
 msgid "Wood Gate"
@@ -2222,7 +2222,7 @@ msgstr "Árbol conífero joven"
 
 #: src/content_mapnode_plants.cpp:200
 msgid "Jungle Grass"
-msgstr ""
+msgstr "Pasto selvático"
 
 #: src/content_mapnode_plants.cpp:222
 msgid "Leaves"
@@ -2298,11 +2298,11 @@ msgstr ""
 
 #: src/content_mapnode_plants.cpp:805 src/content_mapnode_plants.cpp:829
 msgid "Wild Grass"
-msgstr ""
+msgstr "Pasto salvaje"
 
 #: src/content_mapnode_plants.cpp:852
 msgid "Dead Grass"
-msgstr ""
+msgstr "Pasto muerto"
 
 #: src/content_mapnode_plants.cpp:875
 msgid "Flower Stem"
@@ -2932,7 +2932,7 @@ msgstr "Ropa"
 
 #: src/game.cpp:208
 msgid "Hat/Helmet"
-msgstr ""
+msgstr "Sombrero/Casco"
 
 #: src/game.cpp:210
 msgid "Jacket"
@@ -3000,11 +3000,11 @@ msgstr[1] ""
 #: src/game.cpp:914
 #, c-format
 msgid "Access denied. Reason: %ls"
-msgstr ""
+msgstr "Acceso denegado. Razón: %ls"
 
 #: src/game.cpp:918
 msgid "Unable to Connect (port already in use?)."
-msgstr ""
+msgstr "No se pudo conectar (¿puerto en uso?)"
 
 #: src/game.cpp:921
 msgid "Connection timed out."
@@ -3012,7 +3012,7 @@ msgstr ""
 
 #: src/game.cpp:1081
 msgid "Access denied. Reason: "
-msgstr ""
+msgstr "Acceso denegado. Razón:"
 
 #: src/game.cpp:1316
 msgid "free_move disabled"
@@ -3045,19 +3045,19 @@ msgstr ""
 
 #: src/game.cpp:1362
 msgid "Chat shown"
-msgstr ""
+msgstr "Mostrar chat"
 
 #: src/game.cpp:1364
 msgid "Chat hidden"
-msgstr ""
+msgstr "Ocultar chat"
 
 #: src/game.cpp:1370
 msgid "Fog disabled"
-msgstr ""
+msgstr "Niebla deshabilitada"
 
 #: src/game.cpp:1372
 msgid "Fog enabled"
-msgstr ""
+msgstr "Niebla habilitada"
 
 #: src/game.cpp:1378
 msgid "Camera update disabled"
@@ -3159,7 +3159,7 @@ msgstr ""
 
 #: src/guiKeyChangeMenu.cpp:218
 msgid "Chat"
-msgstr ""
+msgstr "Chat"
 
 #: src/guiKeyChangeMenu.cpp:232
 msgid "Command"
@@ -3507,15 +3507,15 @@ msgstr ""
 
 #: src/keycode.cpp:231
 msgid "Kana"
-msgstr ""
+msgstr "Kana"
 
 #: src/keycode.cpp:231
 msgid "Menu"
-msgstr ""
+msgstr "Menú"
 
 #: src/keycode.cpp:231
 msgid "Pause"
-msgstr ""
+msgstr "Pausa"
 
 #: src/keycode.cpp:231
 msgid "Shift"
@@ -3523,35 +3523,35 @@ msgstr ""
 
 #: src/keycode.cpp:232
 msgid "Convert"
-msgstr ""
+msgstr "Convertir"
 
 #: src/keycode.cpp:232
 msgid "Escape"
-msgstr ""
+msgstr "Escape"
 
 #: src/keycode.cpp:232
 msgid "Final"
-msgstr ""
+msgstr "Final"
 
 #: src/keycode.cpp:232
 msgid "Junja"
-msgstr ""
+msgstr "Junja"
 
 #: src/keycode.cpp:232
 msgid "Kanji"
-msgstr ""
+msgstr "Kanji"
 
 #: src/keycode.cpp:232
 msgid "Nonconvert"
-msgstr ""
+msgstr "No convertir"
 
 #: src/keycode.cpp:233
 msgid "Accept"
-msgstr ""
+msgstr "Aceptar"
 
 #: src/keycode.cpp:233
 msgid "End"
-msgstr ""
+msgstr "Fin"
 
 #: src/keycode.cpp:233
 msgid "Home"
@@ -3563,11 +3563,11 @@ msgstr "Cambiar modo"
 
 #: src/keycode.cpp:233
 msgid "Next"
-msgstr ""
+msgstr "Siguiente"
 
 #: src/keycode.cpp:233
 msgid "Prior"
-msgstr ""
+msgstr "Previo"
 
 #: src/keycode.cpp:233
 msgid "Space"
@@ -3575,11 +3575,11 @@ msgstr "Espacio"
 
 #: src/keycode.cpp:234
 msgid "Down"
-msgstr ""
+msgstr "Abajo"
 
 #: src/keycode.cpp:234
 msgid "Execute"
-msgstr ""
+msgstr "Ejecutar"
 
 #: src/keycode.cpp:234
 msgid "Print"
@@ -3587,27 +3587,27 @@ msgstr ""
 
 #: src/keycode.cpp:234
 msgid "Select"
-msgstr ""
+msgstr "Seleccionar"
 
 #: src/keycode.cpp:234
 msgid "Up"
-msgstr ""
+msgstr "Arriba"
 
 #: src/keycode.cpp:235
 msgid "Delete"
-msgstr ""
+msgstr "Borrar"
 
 #: src/keycode.cpp:235
 msgid "Help"
-msgstr ""
+msgstr "Ayuda"
 
 #: src/keycode.cpp:235
 msgid "Insert"
-msgstr ""
+msgstr "Insertar"
 
 #: src/keycode.cpp:235
 msgid "Snapshot"
-msgstr ""
+msgstr "Captura de pantalla"
 
 #: src/keycode.cpp:238
 msgid "Left Windows"
@@ -3615,7 +3615,7 @@ msgstr ""
 
 #: src/keycode.cpp:239
 msgid "Apps"
-msgstr ""
+msgstr "Aplicaciones"
 
 #: src/keycode.cpp:239
 msgid "Numpad 0"
@@ -3759,7 +3759,7 @@ msgstr ""
 
 #: src/keycode.cpp:254
 msgid "Zoom"
-msgstr ""
+msgstr "Zum"
 
 #: src/main.cpp:1137
 msgid "Setting Up UI"
