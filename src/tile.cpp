@@ -241,7 +241,7 @@ u32 TextureSource::getTextureIdDirect(const std::string &name)
 		base_image_name = name.substr(0, last_separator_position);
 		/*infostream<<"getTextureIdDirect(): Calling itself recursively"
 				" to get base image of \""<<name<<"\" = \""
-                <<base_image_name<<"\""<<std::endl;*/
+				<<base_image_name<<"\""<<std::endl;*/
 		base_image_id = getTextureIdDirect(base_image_name);
 	}
 
@@ -498,8 +498,8 @@ void TextureSource::buildMainAtlas()
 			pos_in_atlas.X += column_width + column_padding*2;
 		}
 
-        infostream<<"TextureSource::buildMainAtlas(): Adding \""<<name
-                <<"\" to texture atlas"<<std::endl;
+		infostream<<"TextureSource::buildMainAtlas(): Adding \""<<name
+				<<"\" to texture atlas"<<std::endl;
 
 		// Tile it a few times in the X direction
 		u16 xwise_tiling = column_width / dim.Width;
@@ -688,7 +688,7 @@ ColorContainer::ColorContainer()
 	colors["azure"]                  = 0xf0ffff;
 	colors["beige"]                  = 0xf5f5dc;
 	colors["bisque"]                 = 0xffe4c4;
-	colors["black"]                  = 00000000;
+	colors["black"]                  = 0x000000;
 	colors["blanchedalmond"]         = 0xffebcd;
 	colors["blue"]                   = 0x0000ff;
 	colors["blueviolet"]             = 0x8a2be2;
@@ -936,7 +936,7 @@ video::IImage* generate_image_from_scratch(std::string name,
 		base_image_name = name.substr(0, last_separator_position);
 		/*infostream<<"generate_image_from_scratch(): Calling itself recursively"
 				" to get base image of \""<<name<<"\" = \""
-                <<base_image_name<<"\""<<std::endl;*/
+				<<base_image_name<<"\""<<std::endl;*/
 		baseimg = generate_image_from_scratch(base_image_name, device);
 	}
 
@@ -980,11 +980,11 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 		{
 			if (part_of_name != "") {
 				infostream<<"generate_image(): Could not load image \""
-			    <<part_of_name<<"\" from path \""<<path<<"\""
+				<<part_of_name<<"\" from path \""<<path<<"\""
 						<<" while building texture"<<std::endl;
 
 				infostream<<"generate_image(): Creating a dummy"
-			    <<" image for \""<<part_of_name<<"\""<<std::endl;
+				<<" image for \""<<part_of_name<<"\""<<std::endl;
 			}
 
 			// Just create a dummy image

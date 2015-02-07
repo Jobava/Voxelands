@@ -31,15 +31,13 @@
 #include "mapnode.h"
 
 /*
-
-Some planning
--------------
-
+* Some planning
+*
 * Client receives a network packet with information of added objects
-  in it
+* in it
+*
 * Client supplies the information to its ClientEnvironment
 * The environment adds the specified objects to itself
-
 */
 
 class ClientEnvironment;

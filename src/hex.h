@@ -49,7 +49,7 @@ static inline std::string hex_encode(const char *data, unsigned int data_size)
 
 static inline std::string hex_encode(const std::string &data)
 {
-    return hex_encode(data.c_str(), data.size());
+	return hex_encode(data.c_str(), data.size());
 }
 
 static inline bool hex_digit_decode(char hexdigit, unsigned char &value)

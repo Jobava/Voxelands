@@ -38,8 +38,7 @@
 
 #define PROTOCOL_ID 0x4f457403
 
-#define PASSWORD_SIZE 28       // Maximum password length. Allows for
-                               // base64-encoded SHA-1 (27+\0).
+#define PASSWORD_SIZE 28       // Maximum password length. Allows for base64-encoded SHA-1 (27+\0).
 
 enum ToClientCommand
 {

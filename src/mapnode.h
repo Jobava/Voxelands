@@ -514,7 +514,7 @@ struct ContentFeatures
 	/*
 		Gets list of node boxes (used for collision)
 	*/
-        std::vector<NodeBox> getNodeBoxes(MapNode &n) const;
+	std::vector<NodeBox> getNodeBoxes(MapNode &n) const;
 
 	void setNodeBox(NodeBox nb)
 	{
@@ -527,7 +527,7 @@ struct ContentFeatures
 		nodeboxes.push_back(nb);
 	}
 
-        std::vector<NodeBox> getWieldNodeBoxes() const;
+	std::vector<NodeBox> getWieldNodeBoxes() const;
 
 	void setWieldNodeBox(NodeBox nb)
 	{
@@ -761,7 +761,7 @@ enum LightBank
 
 /*
 	Masks for MapNode.param2 of flowing liquids
- */
+*/
 #define LIQUID_LEVEL_MASK 0x07
 #define LIQUID_FLOW_DOWN_MASK 0x08
 

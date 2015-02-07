@@ -30,7 +30,7 @@
 #include <string>
 
 /* A key press, consisting of either an Irrlicht keycode
-   or an actual char */
+or an actual char */
 
 class KeyPress
 {

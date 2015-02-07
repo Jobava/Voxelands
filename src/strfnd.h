@@ -80,91 +80,91 @@ public:
 };
 
 class WStrfnd{
-    std::wstring tek;
-    unsigned int p;
+	std::wstring tek;
+	unsigned int p;
 public:
-    void start(std::wstring niinq){
-        tek = niinq;
-        p=0;
-    }
-    unsigned int where(){
-        return p;
-    }
-    void to(unsigned int i){
-        p = i;
-    }
-    std::wstring what(){
-        return tek;
-    }
-    std::wstring next(std::wstring plop){
-        //std::cout<<"tek=\""<<tek<<"\" plop=\""<<plop<<"\""<<std::endl;
-        size_t n;
-        std::wstring palautus;
-        if (p < tek.size())
-        {
-            //std::cout<<"\tp<tek.size()"<<std::endl;
-            if ((n = tek.find(plop, p)) == std::wstring::npos || plop == L"")
-            {
-                //std::cout<<"\t\tn == string::npos || plop == \"\""<<std::endl;
-                n = tek.size();
-            }
-            else
-            {
-                //std::cout<<"\t\tn != string::npos"<<std::endl;
-            }
-            palautus = tek.substr(p, n-p);
-            p = n + plop.length();
-        }
-        //else
-            //std::cout<<"\tp>=tek.size()"<<std::endl;
+	void start(std::wstring niinq){
+		tek = niinq;
+		p=0;
+	}
+	unsigned int where(){
+		return p;
+	}
+	void to(unsigned int i){
+		p = i;
+	}
+	std::wstring what(){
+		return tek;
+	}
+	std::wstring next(std::wstring plop){
+		//std::cout<<"tek=\""<<tek<<"\" plop=\""<<plop<<"\""<<std::endl;
+		size_t n;
+		std::wstring palautus;
+		if (p < tek.size())
+		{
+			//std::cout<<"\tp<tek.size()"<<std::endl;
+			if ((n = tek.find(plop, p)) == std::wstring::npos || plop == L"")
+			{
+				//std::cout<<"\t\tn == string::npos || plop == \"\""<<std::endl;
+				n = tek.size();
+			}
+			else
+			{
+				//std::cout<<"\t\tn != string::npos"<<std::endl;
+			}
+			palautus = tek.substr(p, n-p);
+			p = n + plop.length();
+		}
+		//else
+			//std::cout<<"\tp>=tek.size()"<<std::endl;
 		//std::cout<<"palautus=\""<<palautus<<"\""<<std::endl;
-        return palautus;
-    }
-    bool atend(){
-        if(p>=tek.size()) return true;
-        return false;
-    }
-    WStrfnd(std::wstring s){
-        start(s);
-    }
+		return palautus;
+	}
+	bool atend(){
+		if(p>=tek.size()) return true;
+		return false;
+	}
+	WStrfnd(std::wstring s){
+		start(s);
+	}
 };
 
 inline std::string trim(const std::string &s)
 {
 	std::string str = s;
-    while(
-            str.length()>0
-            &&
-            (
-             str.substr(0,               1)==" "     ||
-             str.substr(0,               1)=="\t"    ||
-             str.substr(0,               1)=="\r"    ||
-             str.substr(0,               1)=="\n"    ||
-             str.substr(str.length()-1,  1)==" "     ||
-             str.substr(str.length()-1,  1)=="\t"    ||
-             str.substr(str.length()-1,  1)=="\r"    ||
-             str.substr(str.length()-1,  1)=="\n"
-            )
-         )
-    {
-        if      (str.substr(0,              1)==" ")
+	while(
+			str.length()>0
+			&&
+			(
+			str.substr(0,               1)==" "     ||
+			str.substr(0,               1)=="\t"    ||
+			str.substr(0,               1)=="\r"    ||
+			str.substr(0,               1)=="\n"    ||
+			str.substr(str.length()-1,  1)==" "     ||
+			str.substr(str.length()-1,  1)=="\t"    ||
+			str.substr(str.length()-1,  1)=="\r"    ||
+			str.substr(str.length()-1,  1)=="\n"
+			)
+		)
+	{
+		if      (str.substr(0,              1)==" ")
 			str = str.substr(1,str.length()-1);
-        else if (str.substr(0,              1)=="\t")
+		else if (str.substr(0,              1)=="\t")
 			str = str.substr(1,str.length()-1);
-        else if (str.substr(0,              1)=="\r")
+		else if (str.substr(0,              1)=="\r")
 			str = str.substr(1,str.length()-1);
-        else if (str.substr(0,              1)=="\n")
+		else if (str.substr(0,              1)=="\n")
 			str = str.substr(1,str.length()-1);
-        else if (str.substr(str.length()-1, 1)==" ")
+		else if (str.substr(str.length()-1, 1)==" ")
 			str = str.substr(0,str.length()-1);
-        else if (str.substr(str.length()-1, 1)=="\t")
+		else if (str.substr(str.length()-1, 1)=="\t")
 			str = str.substr(0,str.length()-1);
-        else if (str.substr(str.length()-1, 1)=="\r")
+		else if (str.substr(str.length()-1, 1)=="\r")
 			str = str.substr(0,str.length()-1);
-        else if (str.substr(str.length()-1, 1)=="\n")
+		else if (str.substr(str.length()-1, 1)=="\n")
 			str = str.substr(0,str.length()-1);
-    }
-    return str;
+	}
+	return str;
 }
 
 #endif

@@ -191,11 +191,11 @@ void intlGUIEditBox::setWordWrap(bool enable)
 
 void intlGUIEditBox::updateAbsolutePosition()
 {
-    core::rect<s32> oldAbsoluteRect(AbsoluteRect);
+	core::rect<s32> oldAbsoluteRect(AbsoluteRect);
 	IGUIElement::updateAbsolutePosition();
 	if ( oldAbsoluteRect != AbsoluteRect )
 	{
-        breakText();
+		breakText();
 	}
 }
 
@@ -270,20 +270,20 @@ bool intlGUIEditBox::OnEvent(const SEvent& event)
 			}
 			break;
 		case EET_KEY_INPUT_EVENT:
-        {
+		{
 #if (defined(linux) || defined(__linux) || defined(__FreeBSD__))
-            // ################################################################
+			// ################################################################
 			// ValkaTR:
-            // This part is the difference from the original intlGUIEditBox
-            // It converts UTF-8 character into a UCS-2 (wchar_t)
-            wchar_t wc = L'_';
-            mbtowc( &wc, (char *) &event.KeyInput.Char, sizeof(event.KeyInput.Char) );
+			// This part is the difference from the original intlGUIEditBox
+			// It converts UTF-8 character into a UCS-2 (wchar_t)
+			wchar_t wc = L'_';
+			mbtowc( &wc, (char *) &event.KeyInput.Char, sizeof(event.KeyInput.Char) );
 
-            //printf( "char: %lc (%u)  \r\n", wc, wc );
+			//printf( "char: %lc (%u)  \r\n", wc, wc );
 
-            SEvent irrevent(event);
-            irrevent.KeyInput.Char = wc;
-            // ################################################################
+			SEvent irrevent(event);
+			irrevent.KeyInput.Char = wc;
+			// ################################################################
 
 			if (processKey(irrevent))
 				return true;
@@ -293,7 +293,7 @@ bool intlGUIEditBox::OnEvent(const SEvent& event)
 #endif // defined(linux)
 
 			break;
-        }
+		}
 		case EET_MOUSE_INPUT_EVENT:
 			if (processMouse(event))
 				return true;
@@ -531,7 +531,7 @@ bool intlGUIEditBox::processKey(const SEvent& event)
 		}
 		else
 		{
-		    sendGuiEvent( EGET_EDITBOX_ENTER );
+			sendGuiEvent( EGET_EDITBOX_ENTER );
 		}
 		break;
 	case KEY_LEFT:
@@ -779,8 +779,8 @@ bool intlGUIEditBox::processKey(const SEvent& event)
 		return true;
 	}
 
-    // Set new text markers
-    setTextMarkers( newMarkBegin, newMarkEnd );
+	// Set new text markers
+	setTextMarkers( newMarkBegin, newMarkEnd );
 
 	// break the text if it has changed
 	if (textChanged)
@@ -1062,7 +1062,7 @@ bool intlGUIEditBox::processMouse(const SEvent& event)
 			CursorPos = getCursorPos(event.MouseInput.X, event.MouseInput.Y);
 			if (MouseMarking)
 			{
-			    setTextMarkers( MarkBegin, CursorPos );
+				setTextMarkers( MarkBegin, CursorPos );
 			}
 			MouseMarking = false;
 			calculateScrollPos();
@@ -1102,7 +1102,7 @@ bool intlGUIEditBox::processMouse(const SEvent& event)
 				// move cursor
 				CursorPos = getCursorPos(event.MouseInput.X, event.MouseInput.Y);
 
-                s32 newMarkBegin = MarkBegin;
+				s32 newMarkBegin = MarkBegin;
 				if (!MouseMarking)
 					newMarkBegin = CursorPos;
 
@@ -1465,12 +1465,12 @@ void intlGUIEditBox::calculateScrollPos()
 //! set text markers
 void intlGUIEditBox::setTextMarkers(s32 begin, s32 end)
 {
-    if ( begin != MarkBegin || end != MarkEnd )
-    {
-        MarkBegin = begin;
-        MarkEnd = end;
-        sendGuiEvent(EGET_EDITBOX_MARKING_CHANGED);
-    }
+	if ( begin != MarkBegin || end != MarkEnd )
+	{
+		MarkBegin = begin;
+		MarkEnd = end;
+		sendGuiEvent(EGET_EDITBOX_MARKING_CHANGED);
+	}
 }
 
 //! send some gui event to parent
@@ -1478,13 +1478,13 @@ void intlGUIEditBox::sendGuiEvent(EGUI_EVENT_TYPE type)
 {
 	if ( Parent )
 	{
-        SEvent e;
-        e.EventType = EET_GUI_EVENT;
-        e.GUIEvent.Caller = this;
-        e.GUIEvent.Element = 0;
-        e.GUIEvent.EventType = type;
+		SEvent e;
+		e.EventType = EET_GUI_EVENT;
+		e.GUIEvent.Caller = this;
+		e.GUIEvent.Element = 0;
+		e.GUIEvent.EventType = type;
 
-        Parent->OnEvent(e);
+		Parent->OnEvent(e);
 	}
 }
 
