@@ -42,10 +42,8 @@ const uint64_t PRIV_BUILD = 1;            // Can build - i.e. modify the world
 const uint64_t PRIV_TELEPORT = 2;         // Can teleport
 const uint64_t PRIV_SETTIME = 4;          // Can set the time
 const uint64_t PRIV_PRIVS = 8;            // Can grant and revoke privileges
-const uint64_t PRIV_SERVER = 16;          // Can manage the server (e.g. shutodwn
-                                     // ,settings)
-const uint64_t PRIV_SHOUT = 32;           // Can broadcast chat messages to all
-                                     // players
+const uint64_t PRIV_SERVER = 16;          // Can manage the server (e.g. shutodwn, settings)
+const uint64_t PRIV_SHOUT = 32;           // Can broadcast chat messages to all players
 const uint64_t PRIV_BAN = 64;             // Can ban players
 
 // Default privileges - these can be overriden for new players using the

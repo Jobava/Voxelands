@@ -238,31 +238,35 @@ checking at all.
 #define TYPE_ORIGINAL 1
 #define ORIGINAL_HEADER_SIZE 1
 /*
-SPLIT: These are sequences of packets forming one bigger piece of
-data.
-- When processed and all the packet_nums 0...packet_count-1 are
-  present (this should be buffered), the resulting data shall be
-  directly handed to the user.
-- If the data fails to come up in a reasonable time, the buffer shall
-  be silently discarded.
-- These can be sent as-is or atop of a RELIABLE packet stream.
-	Header (7 bytes):
-	[0] u8 type
-	[1] u16 seqnum
-	[3] u16 chunk_count
-	[5] u16 chunk_num
+* SPLIT: These are sequences of packets forming one bigger piece of
+* data.
+*
+* When processed and all the packet_nums 0...packet_count-1 are
+* present (this should be buffered), the resulting data shall be
+* directly handed to the user.
+*
+* If the data fails to come up in a reasonable time, the buffer shall
+* be silently discarded.
+*
+* These can be sent as-is or atop of a RELIABLE packet stream.
+* Header (7 bytes):
+* [0] u8 type
+* [1] u16 seqnum
+* [3] u16 chunk_count
+* [5] u16 chunk_num
 */
 #define TYPE_SPLIT 2
 /*
-RELIABLE: Delivery of all RELIABLE packets shall be forced by ACKs,
-and they shall be delivered in the same order as sent. This is done
-with a buffer in the receiving and transmitting end.
-- When this is processed, the contents of each packet is recursively
-  processed as packets.
-	Header (3 bytes):
-	[0] u8 type
-	[1] u16 seqnum
-
+* RELIABLE: Delivery of all RELIABLE packets shall be forced by ACKs,
+* and they shall be delivered in the same order as sent. This is done
+* with a buffer in the receiving and transmitting end.
+*
+* When this is processed, the contents of each packet is recursively
+* processed as packets.
+*
+* Header (3 bytes):
+* [0] u8 type
+* [1] u16 seqnum
 */
 #define TYPE_RELIABLE 3
 #define RELIABLE_HEADER_SIZE 3

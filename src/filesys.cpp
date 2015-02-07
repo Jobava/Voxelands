@@ -184,14 +184,14 @@ std::vector<DirListNode> GetDirListing(std::string pathstring)
 {
 	std::vector<DirListNode> listing;
 
-    DIR *dp;
-    struct dirent *dirp;
-    if((dp  = opendir(pathstring.c_str())) == NULL) {
+	DIR *dp;
+	struct dirent *dirp;
+	if((dp  = opendir(pathstring.c_str())) == NULL) {
 		//std::cout<<"Error("<<errno<<") opening "<<pathstring<<std::endl;
-        return listing;
-    }
+		return listing;
+	}
 
-    while ((dirp = readdir(dp)) != NULL) {
+	while ((dirp = readdir(dp)) != NULL) {
 		// NOTE:
 		// Be very sure to not include '..' in the results, it will
 		// result in an epic failure when deleting stuff.
@@ -203,8 +203,8 @@ std::vector<DirListNode> GetDirListing(std::string pathstring)
 			if(node.name != "." && node.name != "..")
 				listing.push_back(node);
 		}
-    }
-    closedir(dp);
+	}
+	closedir(dp);
 
 	return listing;
 }

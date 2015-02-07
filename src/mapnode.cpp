@@ -87,7 +87,7 @@ std::vector<NodeBox> transformNodeBox(MapNode &n,
 
 std::vector<NodeBox> ContentFeatures::getNodeBoxes(MapNode &n) const
 {
-        return transformNodeBox(n, nodeboxes);
+	return transformNodeBox(n, nodeboxes);
 }
 
 std::vector<NodeBox> ContentFeatures::getWieldNodeBoxes() const

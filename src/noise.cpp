@@ -39,21 +39,21 @@ double cos_lookup[16] = {
 };
 
 inline double dotProduct(double vx, double vy, double wx, double wy){
-    return vx*wx+vy*wy;
+	return vx*wx+vy*wy;
 }
 
 inline double linearInterpolation(double x0, double x1, double t){
-    return x0+(x1-x0)*t;
+	return x0+(x1-x0)*t;
 }
 
 double biLinearInterpolation(double x0y0, double x1y0, double x0y1, double x1y1, double x, double y){
-    double tx = easeCurve(x);
-    double ty = easeCurve(y);
+	double tx = easeCurve(x);
+	double ty = easeCurve(y);
 	/*double tx = x;
 	double ty = y;*/
-    double u = linearInterpolation(x0y0,x1y0,tx);
-    double v = linearInterpolation(x0y1,x1y1,tx);
-    return linearInterpolation(u,v,ty);
+	double u = linearInterpolation(x0y0,x1y0,tx);
+	double v = linearInterpolation(x0y1,x1y1,tx);
+	return linearInterpolation(u,v,ty);
 }
 
 double triLinearInterpolation(
@@ -61,12 +61,12 @@ double triLinearInterpolation(
 		double v001, double v101, double v011, double v111,
 		double x, double y, double z)
 {
-    /*double tx = easeCurve(x);
-    double ty = easeCurve(y);
-    double tz = easeCurve(z);*/
-    double tx = x;
-    double ty = y;
-    double tz = z;
+	/*double tx = easeCurve(x);
+	double ty = easeCurve(y);
+	double tz = easeCurve(z);*/
+	double tx = x;
+	double ty = y;
+	double tz = z;
 	return(
 		v000*(1-tx)*(1-ty)*(1-tz) +
 		v100*tx*(1-ty)*(1-tz) +

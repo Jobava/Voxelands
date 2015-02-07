@@ -156,8 +156,8 @@ struct MobFeatures {
 	/*
 		Gets list of node boxes
 	*/
-        std::vector<NodeBox> getNodeBoxes()
-        {
+	std::vector<NodeBox> getNodeBoxes()
+	{
 		return nodeboxes;
 	}
 
