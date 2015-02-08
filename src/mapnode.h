@@ -117,7 +117,9 @@ enum ContentDrawType
 	CDT_ROOFLIKE,
 	CDT_NODEBOX_META,
 	CDT_WIRELIKE,
-	CDT_3DWIRELIKE
+	CDT_3DWIRELIKE,
+	CDT_STAIRLIKE,
+	CDT_SLABLIKE
 };
 
 /*
@@ -962,6 +964,7 @@ struct MapNode
 			assert(0);
 	}
 	v3s16 getRotation(v3s16 dir = v3s16(1,1,1));
+	s16 getRotationAngle();
 
 	// In mapnode.cpp
 #ifndef SERVER

@@ -399,6 +399,36 @@ v3s16 MapNode::getRotation(v3s16 dir)
 	return dir;
 }
 
+s16 MapNode::getRotationAngle()
+{
+	int facedir = 0;
+	ContentFeatures &f = content_features(*this);
+	if (
+		f.param2_type == CPT_FACEDIR_SIMPLE
+		|| f.param2_type == CPT_FACEDIR_WALLMOUNT
+	) {
+		facedir = param2&0x0F;
+	}else if (
+		f.param_type == CPT_FACEDIR_SIMPLE
+		|| f.param_type == CPT_FACEDIR_WALLMOUNT
+	) {
+		facedir = param1;
+	}
+	switch (facedir) {
+	case 1:
+		return -90;
+		break;
+	case 2:
+		return 180;
+		break;
+	case 3:
+		return 90;
+		break;
+	default:;
+	}
+	return 0;
+}
+
 #ifndef SERVER
 TileSpec MapNode::getTileFrom(v3s16 dir, TileSpec raw_spec[6])
 {

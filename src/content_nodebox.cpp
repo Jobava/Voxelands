@@ -27,9 +27,9 @@ void content_nodebox_stair(ContentFeatures *f)
 	f->setNodeBox(NodeBox(
 		-0.5*BS,
 		-0.5*BS,
-		-0.5*BS,
+		-0.25*BS,
 		0.5*BS,
-		0,
+		0.,
 		0.5*BS
 	));
 	f->addNodeBox(NodeBox(
@@ -37,8 +37,24 @@ void content_nodebox_stair(ContentFeatures *f)
 		0.,
 		0.,
 		0.5*BS,
+		0.25*BS,
+		0.5*BS
+	));
+	f->addNodeBox(NodeBox(
+		-0.5*BS,
+		0.25*BS,
+		0.25*BS,
+		0.5*BS,
 		0.5*BS,
 		0.5*BS
+	));
+	f->addNodeBox(NodeBox(
+		-0.5*BS,
+		-0.5*BS,
+		-0.5*BS,
+		0.5*BS,
+		-0.25*BS,
+		-0.25*BS
 	));
 }
 
