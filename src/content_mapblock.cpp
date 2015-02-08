@@ -3456,6 +3456,179 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			}
 		}
 		break;
+		case CDT_STAIRLIKE:
+		{
+			static const v3s16 tile_dirs[6] = {
+				v3s16(0, 1, 0),
+				v3s16(0, -1, 0),
+				v3s16(1, 0, 0),
+				v3s16(-1, 0, 0),
+				v3s16(0, 0, 1),
+				v3s16(0, 0, -1)
+			};
+
+			TileSpec tiles[6];
+			NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+blockpos_nodes);
+			for (int i=0; i<6; i++) {
+				// Handles facedir rotation for textures
+				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods,meta);
+			}
+			video::SColor c[8];
+			getLights(blockpos_nodes+p,c,data,smooth_lighting);
+
+			std::vector<NodeBox> boxes;
+			boxes.push_back(NodeBox(
+				-0.5*BS,
+				-0.5*BS,
+				-0.25*BS,
+				0.5*BS,
+				0.,
+				0.5*BS
+			));
+			boxes.push_back(NodeBox(
+				-0.5*BS,
+				0.,
+				0.,
+				0.5*BS,
+				0.25*BS,
+				0.5*BS
+			));
+			boxes.push_back(NodeBox(
+				-0.5*BS,
+				0.25*BS,
+				0.25*BS,
+				0.5*BS,
+				0.5*BS,
+				0.5*BS
+			));
+			v3f pos = intToFloat(p, BS);
+			s16 rot = n.getRotationAngle();
+			v3s16 front(0,0,-1);
+			v3s16 left(-1,0,0);
+			v3s16 right(1,0,0);
+			front.rotateXZBy(rot);
+			left.rotateXZBy(rot);
+			right.rotateXZBy(rot);
+			MapNode nf = data->m_vmanip.getNodeRO(blockpos_nodes + p + front);
+			MapNode nl = data->m_vmanip.getNodeRO(blockpos_nodes + p + left);
+			MapNode nr = data->m_vmanip.getNodeRO(blockpos_nodes + p + right);
+			if (
+				content_features(nf).draw_type == CDT_SLABLIKE
+				|| (
+					content_features(nf).draw_type == CDT_STAIRLIKE
+					&& (
+						content_features(nl).draw_type == CDT_SLABLIKE
+						|| content_features(nl).draw_type == CDT_STAIRLIKE
+					) && (
+						content_features(nr).draw_type == CDT_SLABLIKE
+						|| content_features(nr).draw_type == CDT_STAIRLIKE
+					)
+				)
+			) {
+				boxes.push_back(NodeBox(
+					-0.5*BS,
+					-0.5*BS,
+					-0.5*BS,
+					0.5*BS,
+					0.,
+					-0.25*BS
+				));
+			}else{
+				boxes.push_back(NodeBox(
+					-0.5*BS,
+					-0.5*BS,
+					-0.5*BS,
+					0.5*BS,
+					-0.25*BS,
+					-0.25*BS
+				));
+			}
+
+			for (std::vector<NodeBox>::iterator i = boxes.begin(); i != boxes.end(); i++) {
+				NodeBox box = *i;
+				if (rot) {
+					box.m_box.MinEdge.rotateXZBy(rot);
+					box.m_box.MaxEdge.rotateXZBy(rot);
+					box.m_box.repair();
+				}
+				// Compute texture coords
+				f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
+				f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
+				f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
+				f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
+				f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
+				f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
+				f32 txc[24] = {
+					// up
+					tx1, 1-tz2, tx2, 1-tz1,
+					// down
+					tx1, tz1, tx2, tz2,
+					// right
+					tz1, 1-ty2, tz2, 1-ty1,
+					// left
+					1-tz2, 1-ty2, 1-tz1, 1-ty1,
+					// back
+					1-tx2, 1-ty2, 1-tx1, 1-ty1,
+					// front
+					tx1, 1-ty2, tx2, 1-ty1,
+				};
+				makeRotatedCuboid(&collector, pos, box.m_box, tiles, 6, c, txc, box.m_angle, box.m_centre);
+			}
+		}
+		break;
+		case CDT_SLABLIKE:
+		{
+			static const v3s16 tile_dirs[6] = {
+				v3s16(0, 1, 0),
+				v3s16(0, -1, 0),
+				v3s16(1, 0, 0),
+				v3s16(-1, 0, 0),
+				v3s16(0, 0, 1),
+				v3s16(0, 0, -1)
+			};
+
+			TileSpec tiles[6];
+			NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+blockpos_nodes);
+			for (int i = 0; i < 6; i++) {
+				// Handles facedir rotation for textures
+				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods,meta);
+			}
+			video::SColor c[8];
+			getLights(blockpos_nodes+p,c,data,smooth_lighting);
+
+			NodeBox boxes[2] = {
+				NodeBox(-0.5*BS,-0.5*BS,-0.5*BS,0.5*BS,-0.0625*BS,0.5*BS),
+				NodeBox(-0.375*BS,-0.0625*BS,-0.375*BS,0.375*BS,0,0.375*BS)
+			};
+			v3f pos = intToFloat(p, BS);
+
+			for (u16 i=0; i<2; i++) {
+				NodeBox box = boxes[i];
+				// Compute texture coords
+				f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
+				f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
+				f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
+				f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
+				f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
+				f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
+				f32 txc[24] = {
+					// up
+					tx1, 1-tz2, tx2, 1-tz1,
+					// down
+					tx1, tz1, tx2, tz2,
+					// right
+					tz1, 1-ty2, tz2, 1-ty1,
+					// left
+					1-tz2, 1-ty2, 1-tz1, 1-ty1,
+					// back
+					1-tx2, 1-ty2, 1-tx1, 1-ty1,
+					// front
+					tx1, 1-ty2, tx2, 1-ty1,
+				};
+				makeRotatedCuboid(&collector, pos, box.m_box, tiles, 6, c, txc, box.m_angle, box.m_centre);
+			}
+		}
+		break;
 		case CDT_NODEBOX:
 		case CDT_NODEBOX_META:
 		{
