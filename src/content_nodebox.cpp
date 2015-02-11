@@ -61,20 +61,16 @@ void content_nodebox_stair(ContentFeatures *f)
 void content_nodebox_stairud(ContentFeatures *f)
 {
 	f->setNodeBox(NodeBox(
-		-0.5*BS,
-		0.,
-		-0.5*BS,
-		0.5*BS,
-		0.5*BS,
-		0.5*BS
+		-0.5*BS,0.,-0.25*BS,0.5*BS,0.5*BS,0.5*BS
 	));
 	f->addNodeBox(NodeBox(
-		-0.5*BS,
-		-0.5*BS,
-		0.,
-		0.5*BS,
-		0.,
-		0.5*BS
+		-0.5*BS,0.25*BS,-0.5*BS,0.5*BS,0.5*BS,-0.25*BS
+	));
+	f->addNodeBox(NodeBox(
+		-0.5*BS,-0.25*BS,0.000000,0.5*BS,0.000000,0.5*BS
+	));
+	f->addNodeBox(NodeBox(
+		-0.5*BS,-0.5*BS,0.25*BS,0.5*BS,-0.25*BS,0.5*BS
 	));
 }
 

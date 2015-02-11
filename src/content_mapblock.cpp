@@ -3544,8 +3544,17 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				));
 			}
 
+			s16 urot = 0;
+			if (n.getContent() >= CONTENT_SLAB_STAIR_UD_MIN && n.getContent() <= CONTENT_SLAB_STAIR_UD_MAX)
+				urot = 180;
+
 			for (std::vector<NodeBox>::iterator i = boxes.begin(); i != boxes.end(); i++) {
 				NodeBox box = *i;
+				if (urot) {
+					box.m_box.MinEdge.rotateXYBy(180);
+					box.m_box.MaxEdge.rotateXYBy(180);
+					box.m_box.repair();
+				}
 				if (rot) {
 					box.m_box.MinEdge.rotateXZBy(rot);
 					box.m_box.MaxEdge.rotateXZBy(rot);
@@ -3602,8 +3611,17 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			};
 			v3f pos = intToFloat(p, BS);
 
+			s16 urot = 0;
+			if (n.getContent() >= CONTENT_SLAB_STAIR_UD_MIN && n.getContent() <= CONTENT_SLAB_STAIR_UD_MAX)
+				urot = 180;
+
 			for (u16 i=0; i<2; i++) {
 				NodeBox box = boxes[i];
+				if (urot) {
+					box.m_box.MinEdge.rotateXYBy(180);
+					box.m_box.MaxEdge.rotateXYBy(180);
+					box.m_box.repair();
+				}
 				// Compute texture coords
 				f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
 				f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
