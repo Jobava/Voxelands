@@ -403,7 +403,7 @@ void content_mapnode_slab(bool repeat)
 	f = &content_features(i);
 	f->setAllTextures("roughstone.png");
 	f->param_type = CPT_NONE;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_SLABLIKE;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_ROUGHSTONE_SLAB)+" 1";
@@ -419,7 +419,7 @@ void content_mapnode_slab(bool repeat)
 	f->description = wgettext("Cobble Stone Slab");
 	f->setAllTextures("cobble.png");
 	f->param_type = CPT_NONE;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_SLABLIKE;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
@@ -434,7 +434,7 @@ void content_mapnode_slab(bool repeat)
 	f = &content_features(i);
 	f->setAllTextures("mossycobble.png");
 	f->param_type = CPT_NONE;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_SLABLIKE;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MOSSYCOBBLE_SLAB)+" 1";
@@ -448,7 +448,7 @@ void content_mapnode_slab(bool repeat)
 	i = CONTENT_STONE_SLAB_UD;
 	f = &content_features(i);
 	f->setAllTextures("stone.png");
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_SLABLIKE;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STONE_SLAB)+" 1";
@@ -508,7 +508,7 @@ void content_mapnode_slab(bool repeat)
 	i = CONTENT_SANDSTONE_SLAB_UD;
 	f = &content_features(i);
 	f->setAllTextures("sandstone.png");
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_SLABLIKE;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAND)+" 4";

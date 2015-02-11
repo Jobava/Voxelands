@@ -525,6 +525,8 @@ void getPointedNode(Client *client, v3f player_position,
 			|| content_features(n).draw_type == CDT_3DWIRELIKE
 			|| content_features(n).draw_type == CDT_FENCELIKE
 			|| content_features(n).draw_type == CDT_WALLLIKE
+			|| content_features(n).draw_type == CDT_STAIRLIKE
+			|| content_features(n).draw_type == CDT_SLABLIKE
 		) {
 			f32 distance = (npf - camera_position).getLength();
 
