@@ -2355,4 +2355,49 @@ void content_mapnode_init(bool repeat)
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
+	i = CONTENT_STONE_TILE;
+	f = &content_features(i);
+	f->description = wgettext("Stone Tiles");
+	f->setAllTextures("stone_tile.png");
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_nodebox_carpet(f);
+	f->setInventoryTextureNodeBox(i,"stone_tile.png", "stone_tile.png", "stone_tile.png");
+	f->fuel_time = 5;
+	f->type = CMT_STONE;
+	f->hardness = 0.5;
+	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
+	crafting::setTileRecipe(CONTENT_STONE,CONTENT_STONE_TILE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_WOOD_TILE;
+	f = &content_features(i);
+	f->description = wgettext("Wood Tiles");
+	f->setAllTextures("wood_tile.png");
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_nodebox_carpet(f);
+	f->setInventoryTextureNodeBox(i,"wood_tile.png", "wood_tile.png", "wood_tile.png");
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 5;
+	f->type = CMT_WOOD;
+	f->hardness = 0.5;
+	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
+	crafting::setTileRecipe(CONTENT_WOOD,CONTENT_WOOD_TILE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
 }
