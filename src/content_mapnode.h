@@ -540,7 +540,9 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_CONIFER_TREE 0xC09
 #define CONTENT_LIFE_SUPPORT 0xC0A
 #define CONTENT_INCINERATOR_ACTIVE 0xC0B
-// FREE C0B-C0F
+#define CONTENT_STONE_TILE 0xC0C
+#define CONTENT_WOOD_TILE 0xC0D
+// FREE C0E-C0F
 // beds
 #define CONTENT_BED_HEAD 0xC10
 #define CONTENT_BED_FOOT 0xC11
