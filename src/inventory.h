@@ -124,13 +124,13 @@ public:
 	// Whether it can be cooked
 	virtual bool isCookable() const {return false;}
 	// Time of cooking
-	virtual float getCookTime(){return 3.0;}
+	virtual float getCookTime() const {return 3.0;}
 	// Result of cooking (can randomize)
 	virtual InventoryItem *createCookResult() const {return NULL;}
 	// Whether it can be used as fuel
 	virtual bool isFuel() const {return false;}
 	// the fuel time value
-	virtual float getFuelTime() {return 0.0;}
+	virtual float getFuelTime() const {return 0.0;}
 
 	// Eat, press, activate, whatever.
 	// Called when item is right-clicked when lying on ground.
