@@ -984,7 +984,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		}
 		break;
 		/*
-			Add leaves if using new style
 			Add glass
 		*/
 		break;
@@ -1015,61 +1014,51 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
 			}
 
-			for(u32 j=0; j<6; j++)
-			{
+			for (u32 j=0; j<6; j++) {
 				// Check this neighbor
 				v3s16 n2p = blockpos_nodes + p + g_6dirs[j];
 				MapNode n2 = data->m_vmanip.getNodeRO(n2p);
+				// Don't make face if neighbor is of same type
+				if (n2.getContent() == n.getContent())
+					continue;
 
 				// The face at Z+
-				video::S3DVertex vertices[4] =
-				{
-					video::S3DVertex(-BS/2,-BS/2,BS/2, 0,0,0, c[l[j][0]],
-						tiles[j].texture.x0(), tiles[j].texture.y1()),
-					video::S3DVertex(BS/2,-BS/2,BS/2, 0,0,0, c[l[j][1]],
-						tiles[j].texture.x1(), tiles[j].texture.y1()),
-					video::S3DVertex(BS/2,BS/2,BS/2, 0,0,0, c[l[j][2]],
-						tiles[j].texture.x1(), tiles[j].texture.y0()),
-					video::S3DVertex(-BS/2,BS/2,BS/2, 0,0,0, c[l[j][3]],
-						tiles[j].texture.x0(), tiles[j].texture.y0()),
+				video::S3DVertex vertices[4] = {
+					video::S3DVertex(-BS/2,-BS/2,BS/2, 0,0,0, c[l[j][0]], tiles[j].texture.x0(), tiles[j].texture.y1()),
+					video::S3DVertex(BS/2,-BS/2,BS/2, 0,0,0, c[l[j][1]], tiles[j].texture.x1(), tiles[j].texture.y1()),
+					video::S3DVertex(BS/2,BS/2,BS/2, 0,0,0, c[l[j][2]], tiles[j].texture.x1(), tiles[j].texture.y0()),
+					video::S3DVertex(-BS/2,BS/2,BS/2, 0,0,0, c[l[j][3]], tiles[j].texture.x0(), tiles[j].texture.y0()),
 				};
+
+				s16 yrot = 0;
+				s16 xrot = 0;
 
 				// Rotations in the g_6dirs format
 				switch (j) {
-				case 0: // Z+
-					for(u16 i=0; i<4; i++) {
-						vertices[i].Pos.rotateXZBy(0);
-					}
-					break;
 				case 1: // Y+
-					for(u16 i=0; i<4; i++) {
-						vertices[i].Pos.rotateYZBy(-90);
-					}
+					xrot = -90;
 					break;
 				case 2: // X+
-					for(u16 i=0; i<4; i++) {
-						vertices[i].Pos.rotateXZBy(-90);
-					}
+					yrot = -90;
 					break;
 				case 3: // Z-
-					for(u16 i=0; i<4; i++) {
-						vertices[i].Pos.rotateXZBy(180);
-					}
+					yrot = 180;
 					break;
 				case 4: // Y-
-					for(u16 i=0; i<4; i++) {
-						vertices[i].Pos.rotateYZBy(90);
-					}
+					xrot = 90;
 					break;
 				case 5: // X-
-					for(u16 i=0; i<4; i++) {
-						vertices[i].Pos.rotateXZBy(90);
-					}
+					yrot = 90;
 					break;
 				default:;
 				}
 
 				for (u16 i=0; i<4; i++) {
+					if (yrot) {
+						vertices[i].Pos.rotateXZBy(yrot);
+					}else if (xrot) {
+						vertices[i].Pos.rotateYZBy(xrot);
+					}
 					vertices[i].Pos += intToFloat(p, BS);
 				}
 
