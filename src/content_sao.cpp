@@ -29,6 +29,8 @@
 #include "environment.h"
 #include "settings.h"
 #include "profiler.h"
+#include "nodemetadata.h"
+#include "mapblock.h"
 
 core::map<u16, ServerActiveObject::Factory> ServerActiveObject::m_types;
 
@@ -155,6 +157,51 @@ void ItemSAO::step(float dtime, bool send_recommended)
 	v3f accel_f = v3f(0,0,0);
 	moveresult = collisionMoveSimple(&m_env->getMap(), pos_max_d,
 			box, 0.0, dtime, pos_f, m_speed_f, accel_f);
+
+	if (moveresult.touching_ground) {
+		v3s16 pos_i = floatToInt(pos_f,BS);
+		MapNode n = m_env->getMap().getNodeNoEx(pos_i);
+		MapNode un = m_env->getMap().getNodeNoEx(pos_i+v3s16(0,-1,0));
+		bool have = false;
+		if (un.getContent() == CONTENT_AIR) {
+			// item is stuck on the edge of something
+			setBasePosition(intToFloat(pos_i,BS));
+			return;
+		}else if (m_env->searchNear(pos_i,v3s16(3,3,3),CONTENT_PARCEL,&pos_i)) {
+			have = true;
+		}else if (content_features(n).buildable_to) {
+			n.setContent(CONTENT_PARCEL);
+			m_env->getMap().addNodeWithEvent(pos_i,n);
+			have = true;
+		}
+
+		if (have) {
+			NodeMetadata *meta = m_env->getMap().getNodeMetadata(pos_i);
+			if (!meta)
+				return;
+			Inventory *inv = meta->getInventory();
+			if (!inv)
+				return;
+			InventoryList *l = inv->getList("0");
+			if (!l)
+				return;
+			l->addItem(createInventoryItem());
+			m_removed = true;
+
+			{
+				v3s16 bp = getNodeBlockPos(pos_i);
+				MapBlock *block = m_env->getMap().getBlockNoCreateNoEx(bp);
+				if (block) {
+					MapEditEvent event;
+					event.type = MEET_BLOCK_NODE_METADATA_CHANGED;
+					event.p = bp;
+					m_env->getMap().dispatchEvent(&event);
+
+					block->setChangedFlag();
+				}
+			}
+		}
+	}
 
 	if (send_recommended == false)
 		return;

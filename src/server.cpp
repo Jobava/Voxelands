@@ -3491,6 +3491,25 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							UpdateCrafting(player->peer_id);
 							SendInventory(player->peer_id);
 							return;
+						}else if (material == CONTENT_PARCEL) {
+							NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
+							if (meta) {
+								Inventory *inv = meta->getInventory();
+								if (inv) {
+									InventoryList *l = inv->getList("0");
+									if (l) {
+										for (u32 i=0; i<32; i++) {
+											InventoryItem *itm = l->changeItem(i,NULL);
+											if (!itm)
+												continue;
+											player->inventory.addItem("main", itm);
+										}
+										// Send inventory
+										UpdateCrafting(player->peer_id);
+										SendInventory(player->peer_id);
+									}
+								}
+							}
 						}else if (wield && (wield->getContent()&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
 							ToolItem *tool = (ToolItem*)wield;
 							ToolItemFeatures tool_features = content_toolitem_features(tool->getContent());

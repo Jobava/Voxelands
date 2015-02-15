@@ -1457,19 +1457,29 @@ void content_nodebox_flag(ContentFeatures *f)
 
 void content_nodebox_flower_pot(ContentFeatures *f)
 {
-	f->setNodeBox(core::aabbox3d<f32>(
+	f->setNodeBox(NodeBox(
 		-0.3125*BS,-0.5*BS,-0.3125*BS,0.3125*BS,0.25*BS,0.3125*BS
 	));
-	f->addNodeBox(core::aabbox3d<f32>(
+	f->addNodeBox(NodeBox(
 		-0.375*BS,0.125*BS,-0.375*BS,-0.3125*BS,0.375*BS,0.375*BS
 	));
-	f->addNodeBox(core::aabbox3d<f32>(
+	f->addNodeBox(NodeBox(
 		0.3125*BS,0.125*BS,-0.375*BS,0.375*BS,0.375*BS,0.375*BS
 	));
-	f->addNodeBox(core::aabbox3d<f32>(
+	f->addNodeBox(NodeBox(
 		-0.3125*BS,0.125*BS,-0.375*BS,0.3125*BS,0.375*BS,-0.3125*BS
 	));
-	f->addNodeBox(core::aabbox3d<f32>(
+	f->addNodeBox(NodeBox(
 		-0.3125*BS,0.125*BS,0.3125*BS,0.3125*BS,0.375*BS,0.375*BS
+	));
+}
+
+void content_nodebox_parcel(ContentFeatures *f)
+{
+	f->setNodeBox(NodeBox(
+		v3s16(0,40,0),v3f(0,0,0),-0.375*BS,-0.5*BS,-0.3125*BS,0.375*BS,-0.1875*BS,0.3125*BS
+	));
+	f->addNodeBox(NodeBox(
+		v3s16(0,-10,0),v3f(0,0,0),-0.0625*BS,-0.1875*BS,-0.0625*BS,0.,-0.125*BS,0.125*BS
 	));
 }
