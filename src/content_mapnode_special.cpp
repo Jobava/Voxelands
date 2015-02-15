@@ -1926,4 +1926,29 @@ void content_mapnode_special(bool repeat)
 	crafting::set1over1Recipe(CONTENT_SPONGE,CONTENT_MESE,CONTENT_LIFE_SUPPORT);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+
+	i = CONTENT_PARCEL;
+	f = &content_features(i);
+	f->description = wgettext("Parcel");
+	f->setAllTextures("parcel.png");
+	f->setTexture(0, "parcel_top.png");
+	f->setTexture(1, "parcel_bottom.png");
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->walkable = false;
+	f->param_type = CPT_LIGHT;
+	f->rotate_tile_with_nodebox = true;
+	f->draw_type = CDT_NODEBOX;
+	f->is_ground_content = true;
+	f->buildable_to = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->air_equivalent = true; // grass grows underneath
+	content_nodebox_parcel(f);
+	f->setInventoryTextureNodeBox(i,"parcel_top.png", "parcel.png", "parcel.png");
+	f->type = CMT_DIRT;
+	f->hardness = 0.2;
+	f->suffocation_per_second = 0;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new ParcelNodeMetadata();
 }

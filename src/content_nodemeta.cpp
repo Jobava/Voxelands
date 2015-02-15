@@ -404,6 +404,51 @@ bool SafeNodeMetadata::import(NodeMetadata *meta)
 }
 
 /*
+	ParcelNodeMetadata
+*/
+
+// Prototype
+ParcelNodeMetadata proto_ParcelNodeMetadata;
+
+ParcelNodeMetadata::ParcelNodeMetadata()
+{
+	NodeMetadata::registerType(typeId(), create);
+
+	m_inventory = new Inventory();
+	m_inventory->addList("0", 8*4);
+}
+ParcelNodeMetadata::~ParcelNodeMetadata()
+{
+	delete m_inventory;
+}
+u16 ParcelNodeMetadata::typeId() const
+{
+	return CONTENT_PARCEL;
+}
+NodeMetadata* ParcelNodeMetadata::create(std::istream &is)
+{
+	ParcelNodeMetadata *d = new ParcelNodeMetadata();
+	d->m_inventory->deSerialize(is);
+	return d;
+}
+NodeMetadata* ParcelNodeMetadata::clone()
+{
+	ParcelNodeMetadata *d = new ParcelNodeMetadata();
+	*d->m_inventory = *m_inventory;
+	return d;
+}
+void ParcelNodeMetadata::serializeBody(std::ostream &os)
+{
+	m_inventory->serialize(os);
+}
+std::string ParcelNodeMetadata::getDrawSpecString()
+{
+	return
+		"size[8,4]"
+		"list[current_name;0;0,0;8,4;]";
+}
+
+/*
 	CreativeChestNodeMetadata
 */
 

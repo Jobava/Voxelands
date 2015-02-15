@@ -202,6 +202,23 @@ private:
 	Inventory *m_inventory;
 };
 
+class ParcelNodeMetadata : public NodeMetadata
+{
+public:
+	ParcelNodeMetadata();
+	~ParcelNodeMetadata();
+
+	virtual u16 typeId() const;
+	static NodeMetadata* create(std::istream &is);
+	virtual NodeMetadata* clone();
+	virtual void serializeBody(std::ostream &os);
+	virtual Inventory* getInventory() {return m_inventory;}
+	virtual std::string getDrawSpecString();
+
+private:
+	Inventory *m_inventory;
+};
+
 class BorderStoneNodeMetadata : public NodeMetadata
 {
 public:
