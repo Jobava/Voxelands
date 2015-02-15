@@ -162,20 +162,40 @@ void ItemSAO::step(float dtime, bool send_recommended)
 		v3s16 pos_i = floatToInt(pos_f,BS);
 		MapNode n = m_env->getMap().getNodeNoEx(pos_i);
 		MapNode un = m_env->getMap().getNodeNoEx(pos_i+v3s16(0,-1,0));
-		bool have = false;
+		bool parcel = false;
+		InventoryItem *item = createInventoryItem();
 		if (un.getContent() == CONTENT_AIR) {
 			// item is stuck on the edge of something
 			setBasePosition(intToFloat(pos_i,BS));
 			return;
+		}else if (
+			item
+			&& item->getCount() == 1
+			&& (
+				un.getContent() == CONTENT_MUD
+				|| un.getContent() == CONTENT_GRASS
+				|| un.getContent() == CONTENT_GRASS_FOOTSTEPS
+			) && (
+				m_content == CONTENT_SAPLING
+				|| m_content == CONTENT_JUNGLESAPLING
+				|| m_content == CONTENT_APPLE_SAPLING
+				|| m_content == CONTENT_CONIFER_SAPLING
+			)
+		) {
+			delete item;
+			n.setContent(m_content);
+			m_env->getMap().addNodeWithEvent(pos_i,n);
+			m_removed = true;
+			return;
 		}else if (m_env->searchNear(pos_i,v3s16(3,3,3),CONTENT_PARCEL,&pos_i)) {
-			have = true;
+			parcel = true;
 		}else if (content_features(n).buildable_to) {
 			n.setContent(CONTENT_PARCEL);
 			m_env->getMap().addNodeWithEvent(pos_i,n);
-			have = true;
+			parcel = true;
 		}
 
-		if (have) {
+		if (item && parcel) {
 			NodeMetadata *meta = m_env->getMap().getNodeMetadata(pos_i);
 			if (!meta)
 				return;
@@ -185,7 +205,7 @@ void ItemSAO::step(float dtime, bool send_recommended)
 			InventoryList *l = inv->getList("0");
 			if (!l)
 				return;
-			l->addItem(createInventoryItem());
+			l->addItem(item);
 			m_removed = true;
 
 			{
@@ -200,6 +220,8 @@ void ItemSAO::step(float dtime, bool send_recommended)
 					block->setChangedFlag();
 				}
 			}
+		}else if (item) {
+			delete item;
 		}
 	}
 
