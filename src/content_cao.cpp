@@ -101,7 +101,7 @@ void ItemCAO::updateNodePos()
 	if (m_node == NULL)
 		return;
 
-	m_node->setPosition(m_position-intToFloat(m_camera_offset, BS)+v3f(0,3,0));
+	m_node->setPosition(pos_translator.vect_show-intToFloat(m_camera_offset, BS));
 }
 
 void ItemCAO::step(float dtime, ClientEnvironment *env)
@@ -109,8 +109,9 @@ void ItemCAO::step(float dtime, ClientEnvironment *env)
 	if (m_node == NULL)
 		return;
 
-	LocalPlayer *player = env->getLocalPlayer();
-	assert(player);
+	pos_translator.translate(dtime);
+	updateNodePos();
+
 	v3f rot = m_node->getRotation();
 	rot.Y = m_rot++;
 	if (m_rot > 360)
@@ -127,6 +128,7 @@ void ItemCAO::processMessage(const std::string &data)
 	if (cmd == 0) {
 		// pos
 		m_position = readV3F1000(is);
+		pos_translator.update(m_position,m_rot);
 		updateNodePos();
 	}
 }
@@ -149,6 +151,8 @@ void ItemCAO::initialize(const std::string &data)
 		m_position = readV3F1000(is);
 		// inventorystring
 		m_inventorystring = deSerializeString(is);
+
+		pos_translator.init(m_position,m_rot);
 	}
 
 

@@ -173,6 +173,7 @@ private:
 	std::string m_inventorystring;
 	content_t m_content;
 	f32 m_rot;
+	SmoothTranslator pos_translator;
 };
 
 /*

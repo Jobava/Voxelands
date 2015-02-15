@@ -148,7 +148,7 @@ void ItemSAO::step(float dtime, bool send_recommended)
 	// Maximum movement without glitches
 	f32 pos_max_d = BS*0.25;
 	// Limit speed
-	if(m_speed_f.getLength()*dtime > pos_max_d)
+	if (m_speed_f.getLength()*dtime > pos_max_d)
 		m_speed_f *= pos_max_d / (m_speed_f.getLength()*dtime);
 	v3f pos_f = getBasePosition();
 	v3f pos_f_old = pos_f;
