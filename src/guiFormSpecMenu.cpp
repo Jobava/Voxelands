@@ -542,7 +542,8 @@ void GUIFormSpecMenu::drawList(const ListDrawSpec &s, int phase)
 		font = skin->getFont();
 
 	Inventory *inv = m_invmgr->getInventory(&s.inventoryloc);
-	assert(inv);
+	if (!inv)
+		return;
 	InventoryList *ilist = inv->getList(s.listname);
 
 	core::rect<s32> imgrect(0,0,imgsize.X,imgsize.Y);
