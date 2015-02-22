@@ -307,8 +307,6 @@ public:
 	s32 mouse_wheel;
 
 private:
-	IrrlichtDevice *m_device;
-
 	// The current state of keys
 	KeyList keyIsDown;
 	// Whether a key has been pressed or not

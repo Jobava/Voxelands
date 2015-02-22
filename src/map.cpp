@@ -297,9 +297,6 @@ void Map::unspreadLight(enum LightBank bank,
 		if (block->isDummy())
 			continue;
 
-		// Calculate relative position in block
-		v3s16 relpos = pos - blockpos_last * MAP_BLOCKSIZE;
-
 		u8 oldlight = j.getNode()->getValue();
 
 		// Loop through 6 neighbors
@@ -793,7 +790,6 @@ void Map::addNodeAndUpdate(v3s16 p, MapNode n,
 	*/
 
 	v3s16 toppos = p + v3s16(0,1,0);
-	v3s16 bottompos = p + v3s16(0,-1,0);
 
 	bool node_under_sunlight = true;
 	core::map<v3s16, bool> light_sources;
@@ -1050,8 +1046,7 @@ void Map::removeNodeAndUpdate(v3s16 p,
 
 		// Get the brightest neighbour node and propagate light from it
 		v3s16 n2p = getBrightestNeighbour(bank, p);
-		bool pos_ok;
-		MapNode n2 = getNodeNoEx(n2p,&pos_ok);
+		bool pos_ok = isValidPosition(n2p);
 		if (pos_ok)
 			lightNeighbors(bank, n2p, modified_blocks);
 	}
@@ -2168,9 +2163,6 @@ ServerMapSector * ServerMap::createSector(v2s16 p2d)
 
 	sector = new ServerMapSector(this, p2d);
 
-	// Sector position on map in nodes
-	v2s16 nodepos2d = p2d * MAP_BLOCKSIZE;
-
 	/*
 		Insert to container
 	*/
@@ -2200,7 +2192,6 @@ MapBlock * ServerMap::generateBlock(
 	//MapBlock *block = original_dummy;
 
 	v2s16 p2d(p.X, p.Z);
-	v2s16 p2d_nodes = p2d * MAP_BLOCKSIZE;
 
 	/*
 		Do not generate over-limit

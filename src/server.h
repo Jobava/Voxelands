@@ -716,14 +716,6 @@ private:
 		This is behind m_env_mutex
 	*/
 	bool m_ignore_map_edit_events;
-	/*
-		If set to !=0, the incoming MapEditEvents are modified to have
-		this peed id as the disabled recipient
-		This is behind m_env_mutex
-	*/
-	u16 m_ignore_map_edit_events_peer_id;
-
-	Profiler *m_profiler;
 
 	friend class EmergeThread;
 	friend class RemoteClient;
