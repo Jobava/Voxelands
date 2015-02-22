@@ -41,7 +41,6 @@
 
 Camera::Camera(scene::ISceneManager* smgr, MapDrawControl& draw_control, Client *client):
 	m_client(client),
-	m_smgr(smgr),
 	m_playernode(NULL),
 	m_headnode(NULL),
 	m_cameranode(NULL),

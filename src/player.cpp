@@ -682,13 +682,8 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 		core::list<CollisionInfo> *collision_info)
 {
 	v3f position = getPosition();
-	v3f oldpos = position;
-	v3s16 oldpos_i = floatToInt(oldpos, BS);
 
 	v3f old_speed = m_speed;
-
-	/*std::cout<<"oldpos_i=("<<oldpos_i.X<<","<<oldpos_i.Y<<","
-			<<oldpos_i.Z<<")"<<std::endl;*/
 
 	/*
 		Calculate new position
@@ -700,13 +695,6 @@ void LocalPlayer::move(f32 dtime, Map &map, f32 pos_max_d,
 		setPosition(position);
 		return;
 	}
-
-	/*
-		Collision detection
-	*/
-
-	// Player position in nodes
-	v3s16 pos_i = floatToInt(position, BS);
 
 	/*
 		Check if player is in water (the oscillating value)

@@ -1366,7 +1366,7 @@ int main(int argc, char *argv[])
 				character_creator = false;
 				video::IVideoDriver* driver = device->getVideoDriver();
 
-				GUICharDefMenu *menu = new GUICharDefMenu(device, guienv, guiroot, -1, &g_menumgr, g_gamecallback);
+				GUICharDefMenu *menu = new GUICharDefMenu(device, guienv, guiroot, -1, &g_menumgr);
 				menu->allowFocusRemoval(true);
 
 				while (device->run() && kill == false) {

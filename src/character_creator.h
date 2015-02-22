@@ -67,8 +67,7 @@ public:
 		IrrlichtDevice* device,
 		gui::IGUIEnvironment* env,
 		gui::IGUIElement* parent, s32 id,
-		IMenuManager *menumgr,
-		IGameCallback *gamecallback
+		IMenuManager *menumgr
 	);
 	~GUICharDefMenu();
 
@@ -114,7 +113,6 @@ public:
 
 private:
 	bool m_accepted;
-	IGameCallback *m_gamecallback;
 
 	gui::IGUIEnvironment* env;
 	gui::IGUIElement* parent;

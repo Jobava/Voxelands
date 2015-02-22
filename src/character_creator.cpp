@@ -40,12 +40,10 @@ GUICharDefMenu::GUICharDefMenu(
 	IrrlichtDevice* device,
 	gui::IGUIEnvironment* env,
 	gui::IGUIElement* parent, s32 id,
-	IMenuManager *menumgr,
-	IGameCallback *gamecallback
+	IMenuManager *menumgr
 ):
 	GUIModalMenu(env, parent, id, menumgr),
-	m_accepted(false),
-	m_gamecallback(gamecallback)
+	m_accepted(false)
 {
 	this->env = env;
 	this->parent = parent;

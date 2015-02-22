@@ -90,10 +90,6 @@ private:
 	v3s16 m_camera_offset;
 	v3f m_velocity;
 	v3f m_acceleration;
-	float tex_x0;
-	float tex_x1;
-	float tex_y0;
-	float tex_y1;
 	LocalPlayer *m_player;
 	float m_size;
 	AtlasPointer *m_ap;

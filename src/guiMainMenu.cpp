@@ -440,7 +440,6 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	}
 
 	v2s32 topleft_content(250, 0);
-	v2s32 size_content = size - v2s32(300, 0);
 
 	//v2s32 size = rect.getSize();
 
