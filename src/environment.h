@@ -372,7 +372,6 @@ private:
 	// the env events for sending to clients
 	Queue<EnvEvent> m_env_events;
 	// Some timers
-	float m_random_spawn_timer; // used for experimental code
 	float m_send_recommended_timer;
 	IntervalLimiter m_object_management_interval;
 	// List of active blocks

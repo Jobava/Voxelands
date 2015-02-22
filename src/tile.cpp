@@ -44,9 +44,7 @@
 */
 
 TextureSource::TextureSource(IrrlichtDevice *device):
-		m_device(device),
-		m_main_atlas_image(NULL),
-		m_main_atlas_texture(NULL)
+		m_device(device)
 {
 	assert(m_device);
 
@@ -1711,7 +1709,7 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 					errorstream<<"generateImagePart(): EVDF_RENDER_TO_TARGET not supported."<<std::endl;
 					warned = true;
 				}
-				return NULL;
+				return false;
 			}
 
 			core::dimension2d<u32> dim = baseimg->getDimension();
@@ -1723,7 +1721,7 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 			if (rtt == NULL) {
 				errorstream<<"generateImagePart(): addRenderTargetTexture"
 						" returned NULL."<<std::endl;
-				return NULL;
+				return false;
 			}
 
 			// Get the gui

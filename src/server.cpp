@@ -971,8 +971,7 @@ Server::Server(
 	m_mapsavedir(mapsavedir),
 	m_configpath(configpath),
 	m_shutdown_requested(false),
-	m_ignore_map_edit_events(false),
-	m_ignore_map_edit_events_peer_id(0)
+	m_ignore_map_edit_events(false)
 {
 	m_liquid_transform_timer = 0.0;
 	m_print_info_timer = 0.0;
@@ -6000,9 +5999,6 @@ v3f findSpawnPos(ServerMap &map)
 		// We're going to try to throw the player to this position
 		nodepos = v2s16(-range + (myrand()%(range*2)),
 				-range + (myrand()%(range*2)));
-		v2s16 sectorpos = getNodeSectorPos(nodepos);
-		// Get sector (NOTE: Don't get because it's slow)
-		//m_env.getMap().emergeSector(sectorpos);
 		// Get ground height at point (fallbacks to heightmap function)
 		groundheight = map.findGroundLevel(nodepos);
 		// Don't go underwater

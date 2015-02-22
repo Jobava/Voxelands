@@ -101,7 +101,6 @@ private:
 	v3f m_oldpos;
 	v3f m_initial_pos;
 	float m_yaw;
-	bool m_touching_ground;
 	bool m_falling;
 	bool m_next_pos_exists;
 	v3s16 m_next_pos_i;

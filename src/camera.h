@@ -35,7 +35,7 @@
 #include <IAnimatedMesh.h>
 
 class LocalPlayer;
-class MapDrawControl;
+struct MapDrawControl;
 class ExtrudedSpriteSceneNode;
 class Client;
 

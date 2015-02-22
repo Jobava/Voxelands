@@ -1333,8 +1333,6 @@ void make_block(BlockMakeData *data)
 	v3s16 blockpos = data->blockpos;
 
 	ManualMapVoxelManipulator &vmanip = *(data->vmanip);
-	v3s16 blockpos_min = blockpos - v3s16(1,1,1);
-	v3s16 blockpos_max = blockpos + v3s16(1,1,1);
 	// Area of center block
 	v3s16 node_min = blockpos*MAP_BLOCKSIZE;
 	v3s16 node_max = (blockpos+v3s16(1,1,1))*MAP_BLOCKSIZE-v3s16(1,1,1);

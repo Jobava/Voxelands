@@ -273,7 +273,6 @@ void ActiveBlockList::update(std::list<v3s16> &active_positions,
 ServerEnvironment::ServerEnvironment(ServerMap *map, Server *server):
 	m_map(map),
 	m_server(server),
-	m_random_spawn_timer(3),
 	m_send_recommended_timer(0),
 	m_game_time(0),
 	m_game_time_fraction_counter(0)
@@ -575,7 +574,6 @@ void ServerEnvironment::clearAllObjects()
 	for (std::map<u16, ServerActiveObject*>::iterator i = m_active_objects.begin(); i != m_active_objects.end(); i++) {
 		ServerActiveObject* obj = i->second;
 		u16 id = i->first;
-		v3f objectpos = obj->getBasePosition();
 		// Delete static object if block is loaded
 		if (obj->m_static_exists) {
 			MapBlock *block = m_map->getBlockNoCreateNoEx(obj->m_static_block);
@@ -3966,8 +3964,6 @@ void ClientEnvironment::step(float dtime)
 		*/
 
 		{
-			v3f lplayerpos = lplayer->getPosition();
-
 			// Apply physics
 			if (lplayer->control.free == false && is_climbing == false) {
 				// Gravity

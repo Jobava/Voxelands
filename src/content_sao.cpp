@@ -357,7 +357,6 @@ MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, content_t type):
 	m_oldpos(0,0,0),
 	m_initial_pos(pos),
 	m_yaw(0),
-	m_touching_ground(false),
 	m_falling(false),
 	m_next_pos_exists(false),
 	m_age(0),
@@ -387,7 +386,6 @@ MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, v3f speed, content_t typ
 	m_oldpos(0,0,0),
 	m_initial_pos(pos),
 	m_yaw(0),
-	m_touching_ground(false),
 	m_falling(false),
 	m_next_pos_exists(false),
 	m_age(0),
@@ -662,7 +660,6 @@ void MobSAO::step(float dtime, bool send_recommended)
 		if (m_next_pos_exists) {
 			v3f pos_f = m_base_position;
 			v3f next_pos_f = intToFloat(m_next_pos_i, BS);
-			v3f v = next_pos_f - pos_f;
 			v3f diff = next_pos_f - pos_f;
 			v3f dir = diff;
 			dir.normalize();
@@ -1203,7 +1200,6 @@ void MobSAO::stepMotionThrown(float dtime)
 			v3s16 pos = pos_i+v3s16(0,1,0);
 			m_env->getMap().addNodeWithEvent(pos,MapNode(m.contact_place_node));
 		}else if (m.contact_drop_item != CONTENT_IGNORE) {
-			v3f pos = intToFloat(pos_i+v3s16(0,1,0),BS);
 			InventoryItem *i = InventoryItem::create(m.contact_drop_item,1);
 			if (i) {
 				ServerActiveObject *obj = i->createSAO(m_env,0,m_base_position);

@@ -257,10 +257,6 @@ private:
 	// The two former containers are behind this mutex
 	JMutex m_atlaspointer_cache_mutex;
 
-	// Main texture atlas. This is filled at startup and is then not touched.
-	video::IImage *m_main_atlas_image;
-	video::ITexture *m_main_atlas_texture;
-
 	// Queued texture fetches (to be processed by the main thread)
 	RequestQueue<std::string, u32, u8, u8> m_get_texture_queue;
 };
