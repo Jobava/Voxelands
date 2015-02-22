@@ -214,8 +214,6 @@ void makeFastFace(TileSpec tile, u8 li0, u8 li1, u8 li2, u8 li3, v3f p,
 		abs_scale = scale.Z;
 	}
 
-	v3f zerovector = v3f(0,0,0);
-
 	u8 alpha = tile.alpha;
 
 	float x0 = tile.texture.pos.X;

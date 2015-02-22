@@ -139,7 +139,6 @@ public:
 private:
 	Client *m_client;
 	// Scene manager and nodes
-	scene::ISceneManager* m_smgr;
 	scene::ISceneNode* m_playernode;
 	scene::ISceneNode* m_headnode;
 	scene::ICameraSceneNode* m_cameranode;

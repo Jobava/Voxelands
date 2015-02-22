@@ -537,15 +537,15 @@ void MobCAO::initialize(const std::string &data)
 		// yaw
 		m_yaw = readF1000(is);
 		pos_translator.init(m_position,m_yaw);
+		// client doesn't use these, but has to read past them
 		// speed
-		v3f speed = readV3F1000(is);
+		readV3F1000(is);
 		// age
-		float age = readF1000(is);
+		readF1000(is);
 		// hp
-		age = readU8(is);
+		readU8(is);
 		// shooting
-		version = readU8(is);
-		m_shooting = !!version;
+		m_shooting = !!readU8(is);
 	}
 
 	updateNodePos();

@@ -872,7 +872,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				0,0,0.125,1
 			};
 			video::SColor c = MapBlock_LightColor(255,255,selected);//(255,255,255,255);
-			v3f pos = intToFloat(p+blockpos_nodes, BS);
 			v3s16 dir = unpackDir(n.param2);
 			video::S3DVertex *v;
 			video::S3DVertex vertices[3][24] = {
@@ -1131,7 +1130,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			std::vector<NodeBox> boxes = content_features(n).getNodeBoxes(n);
 			v3s16 p2 = p;
 			p2.Y++;
-			MapNode n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
 			NodeBox box;
 			u8 d[8];
 			int bi = mapblock_mesh_check_walllike(data,n,p+blockpos_nodes,d);
@@ -1831,7 +1829,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			}
 
 			v3f pos = intToFloat(p, BS);
-			TileSpec tile = getNodeTile(n,p,v3s16(0,0,0),data->m_temp_mods);
 			video::SColor c;
 			video::SColor c8[8];
 			if (selected) {

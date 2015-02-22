@@ -79,7 +79,6 @@ void GUITextInputMenu::regenerateGui(v2u32 screensize)
 			text = e->getText();
 		}else{
 			text = m_initial_text;
-			m_initial_text = L"";
 		}
 	}
 
@@ -91,12 +90,6 @@ void GUITextInputMenu::regenerateGui(v2u32 screensize)
 	/*
 		Calculate new sizes and positions
 	*/
-	//core::rect<s32> rect(
-			//screensize.X/2 - 160,
-			//screensize.Y/2 - 60,
-			//screensize.X/2 + 160,
-			//screensize.Y/2 + 60
-	//);
 	core::rect<s32> rect(
 			100,
 			screensize.Y - 100,
@@ -106,8 +99,6 @@ void GUITextInputMenu::regenerateGui(v2u32 screensize)
 
 	DesiredRect = rect;
 	recalculateAbsolutePosition(false);
-
-	v2s32 size = rect.getSize();
 
 	/*
 		Add stuff

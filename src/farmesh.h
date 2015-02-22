@@ -80,7 +80,6 @@ public:
 private:
 	video::SMaterial m_materials[FARMESH_MATERIAL_COUNT];
 	core::aabbox3d<f32> m_box;
-	float m_cloud_y;
 	float m_brightness;
 	uint64_t m_seed;
 	MapGenType m_type;
