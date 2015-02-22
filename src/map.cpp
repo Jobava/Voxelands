@@ -3718,7 +3718,7 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 
 				MapBlockMesh *mesh = block->mesh;
 
-				if(mesh == NULL){
+				if (mesh == NULL) {
 					blocks_in_range_without_mesh++;
 					continue;
 				}
@@ -3726,9 +3726,11 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 
 			// Limit block count in case of a sudden increase
 			blocks_would_have_drawn++;
-			if(blocks_drawn >= m_control.wanted_max_blocks
-					&& m_control.range_all == false
-					&& d > m_control.wanted_min_range * BS)
+			if (
+				blocks_drawn >= m_control.wanted_max_blocks
+				&& m_control.range_all == false
+				&& d > m_control.wanted_min_range * BS
+			)
 				continue;
 
 			// Add to set
@@ -3739,7 +3741,7 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 
 		} // foreach sectorblocks
 
-		if(sector_blocks_drawn != 0)
+		if (sector_blocks_drawn != 0)
 			m_last_drawn_sectors[sp] = true;
 	}
 	} // ScopeProfiler
@@ -3752,18 +3754,13 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 	ScopeProfiler sp(g_profiler, prefix+"drawing blocks", SPT_AVG);
 
 	int timecheck_counter = 0;
-	for(core::map<v3s16, MapBlock*>::Iterator
-			i = drawset.getIterator();
-			i.atEnd() == false; i++)
-	{
+	for (core::map<v3s16, MapBlock*>::Iterator i = drawset.getIterator(); i.atEnd() == false; i++) {
 		{
 			timecheck_counter++;
-			if(timecheck_counter > 50)
-			{
+			if (timecheck_counter > 50) {
 				timecheck_counter = 0;
 				int time2 = time(0);
-				if(time2 > time1 + 4)
-				{
+				if (time2 > time1 + 4) {
 					infostream<<"ClientMap::renderMap(): "
 						"Rendering takes ages, returning."
 						<<std::endl;
@@ -3781,13 +3778,12 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 			JMutexAutoLock lock(block->mesh_mutex);
 
 			MapBlockMesh *mesh = block->mesh;
-			assert(mesh);
-			assert(mesh->getMesh());
+			if (!mesh || !mesh->getMesh())
+				continue;
 
 			u32 c = mesh->getMesh()->getMeshBufferCount();
 			bool stuff_actually_drawn = false;
-			for(u32 i=0; i<c; i++)
-			{
+			for (u32 i=0; i<c; i++) {
 				scene::IMeshBuffer *buf = mesh->getMesh()->getMeshBuffer(i);
 				if (buf == NULL)
 					continue;
@@ -3801,9 +3797,8 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 						driver->getMaterialRenderer(material.MaterialType);
 				bool transparent = (rnd && rnd->isTransparent());
 				// Render transparent on transparent pass and likewise.
-				if(transparent == is_transparent_pass)
-				{
-					if(buf->getVertexCount() == 0)
+				if (transparent == is_transparent_pass) {
+					if (buf->getVertexCount() == 0)
 						errorstream<<"Block ["<<analyze_block(block)
 								<<"] contains an empty meshbuf"<<std::endl;
 					/*
@@ -3818,10 +3813,11 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 					stuff_actually_drawn = true;
 				}
 			}
-			if(stuff_actually_drawn)
+			if (stuff_actually_drawn) {
 				blocks_had_pass_meshbuf++;
-			else
+			}else{
 				blocks_without_stuff++;
+			}
 		}
 	}
 	} // ScopeProfiler
