@@ -63,9 +63,13 @@ content_t content_translate_from_19_to_internal(content_t c_from)
 	return c_from;
 }
 
-InventoryItem* InventoryItem::deSerialize(std::istream &is)
+content_t InventoryItem::info(std::istream &is, u16 *count, u16 *wear)
 {
 	DSTACK(__FUNCTION_NAME);
+
+	content_t c = CONTENT_IGNORE;
+	*count = 0;
+	*wear = 0;
 
 	//is.imbue(std::locale("C"));
 	// Read name
@@ -76,62 +80,62 @@ InventoryItem* InventoryItem::deSerialize(std::istream &is)
 		// u16 reads directly as a number (u8 doesn't)
 		u16 material;
 		is>>material;
-		u16 count;
-		is>>count;
-		// Convert old materials
-		if (material <= 0xff)
-			material = content_translate_from_19_to_internal(material);
+		is>>(*count);
 		if (material > MAX_CONTENT)
 			throw SerializationError("Too large material number");
-		return new MaterialItem(material, count);
+		c = material;
 	}else if(name == "MaterialItem2") {
 		u16 material;
 		is>>material;
-		u16 count;
-		is>>count;
-		if(material > MAX_CONTENT)
+		is>>(*count);
+		if (material > MAX_CONTENT)
 			throw SerializationError("Too large material number");
-		return new MaterialItem(material, count);
-	}else if(name == "MBOItem") {
-		std::string inventorystring;
-		std::getline(is, inventorystring, '|');
-		throw SerializationError("MBOItem not supported anymore");
+		c = material;
 	}else if(name == "CraftItem") {
 		std::string subname;
 		std::getline(is, subname, ' ');
-		u16 count;
-		is>>count;
-		return new CraftItem(subname, count);
+		is>>(*count);
+		CraftItem itm(subname, *count);
+		c = itm.getContent();
 	}else if(name == "CraftItem2") {
 		u16 material;
 		is>>material;
-		u16 count;
-		is>>count;
-		return new CraftItem(material, count);
+		is>>(*count);
+		c = material;
 	}else if(name == "ToolItem") {
 		std::string toolname;
 		std::getline(is, toolname, ' ');
-		u16 wear;
-		is>>wear;
-		return new ToolItem(toolname, wear);
+		is>>(*wear);
+		ToolItem itm(toolname, *wear);
+		c = itm.getContent();
 	}else if(name == "ToolItem2") {
 		u16 material;
 		is>>material;
-		u16 wear;
-		is>>wear;
-		return new ToolItem(material, wear);
+		is>>(*wear);
+		c = material;
 	}else if(name == "ClothesItem") {
 		u16 material;
 		is>>material;
-		u16 wear;
-		is>>wear;
-		return new ClothesItem(material, wear);
-	}else if (name == "") {
-		return NULL;
-	}else{
+		is>>(*wear);
+		c = material;
+	}else if (name != "") {
 		infostream<<"Unknown InventoryItem name=\""<<name<<"\""<<std::endl;
 		throw SerializationError("Unknown InventoryItem name");
 	}
+
+	return c;
+}
+
+InventoryItem* InventoryItem::deSerialize(std::istream &is)
+{
+	content_t c;
+	u16 count;
+	u16 wear;
+
+	c = InventoryItem::info(is,&count,&wear);
+	if (c == CONTENT_IGNORE)
+		return NULL;
+	return InventoryItem::create(c,count,wear);
 }
 
 InventoryItem* InventoryItem::create(content_t c, u16 count, u16 wear)
@@ -333,16 +337,14 @@ InventoryList::~InventoryList()
 
 void InventoryList::clearItems()
 {
-	for(u32 i=0; i<m_items.size(); i++)
-	{
-		if(m_items[i])
+	for (u32 i=0; i<m_items.size(); i++) {
+		if (m_items[i])
 			delete m_items[i];
 	}
 
 	m_items.clear();
 
-	for(u32 i=0; i<m_size; i++)
-	{
+	for (u32 i=0; i<m_size; i++) {
 		m_items.push_back(NULL);
 	}
 
@@ -394,7 +396,7 @@ void InventoryList::serialize(std::ostream &os) const
 
 void InventoryList::deSerialize(std::istream &is)
 {
-	clearItems();
+	//clearItems();
 	clearAllowed();
 	clearDenied();
 	m_stackable = true;
@@ -425,11 +427,23 @@ void InventoryList::deSerialize(std::istream &is)
 		}else if (name == "Item") {
 			if(item_i > getSize() - 1)
 				throw SerializationError("too many items");
-			InventoryItem *item = InventoryItem::deSerialize(iss);
-			m_items[item_i++] = item;
+			content_t c;
+			u16 count;
+			u16 wear;
+
+			c = InventoryItem::info(iss,&count,&wear);
+			if (c == CONTENT_IGNORE) {
+				if (m_items[item_i] != NULL)
+					delete m_items[item_i];
+				m_items[item_i++] = NULL;
+				continue;
+			}
+			m_items[item_i++] = InventoryItem::create(c,count,wear);
 		}else if (name == "Empty") {
-			if(item_i > getSize() - 1)
+			if (item_i > getSize() - 1)
 				throw SerializationError("too many items");
+			if (m_items[item_i] != NULL)
+				delete m_items[item_i];
 			m_items[item_i++] = NULL;
 		}else{
 			throw SerializationError("Unknown inventory identifier");
@@ -757,7 +771,7 @@ void Inventory::serialize(std::ostream &os) const
 
 void Inventory::deSerialize(std::istream &is)
 {
-	clear();
+	//clear();
 
 	for (;;) {
 		std::string line;
@@ -770,10 +784,6 @@ void Inventory::deSerialize(std::istream &is)
 
 		if (name == "EndInventory") {
 			break;
-		}
-		// This is a temporary backwards compatibility fix
-		else if (name == "end") {
-			break;
 		}else if(name == "List") {
 			std::string listname;
 			u32 listsize;
@@ -781,10 +791,9 @@ void Inventory::deSerialize(std::istream &is)
 			std::getline(iss, listname, ' ');
 			iss>>listsize;
 
-			InventoryList *list = new InventoryList(listname, listsize);
-			list->deSerialize(is);
+			InventoryList *list = addList(listname,listsize);
 
-			m_lists.push_back(list);
+			list->deSerialize(is);
 		}else{
 			throw SerializationError("Unknown inventory identifier");
 		}

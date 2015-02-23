@@ -53,6 +53,7 @@ public:
 	InventoryItem(u16 count);
 	virtual ~InventoryItem();
 
+	static content_t info(std::istream &is, u16 *count, u16 *wear);
 	static InventoryItem* deSerialize(std::istream &is);
 	static InventoryItem* create(content_t c, u16 count, u16 wear=0);
 
