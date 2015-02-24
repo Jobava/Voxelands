@@ -117,6 +117,7 @@ public:
 		assert(m_count >= count);
 		m_count -= count;
 	}
+	virtual void setWear(u16 wear) {}
 
 	/*
 		Other properties
@@ -419,6 +420,7 @@ public:
 			return false;
 		}
 	}
+	virtual void setWear(u16 wear) {m_wear = wear;}
 private:
 	std::string m_toolname;
 	u16 m_wear;
@@ -511,6 +513,7 @@ public:
 			return false;
 		}
 	}
+	virtual void setWear(u16 wear) {m_wear = wear;}
 private:
 	u16 m_wear;
 };

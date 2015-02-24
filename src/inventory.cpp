@@ -438,6 +438,19 @@ void InventoryList::deSerialize(std::istream &is)
 				m_items[item_i++] = NULL;
 				continue;
 			}
+			if (m_items[item_i] != NULL) {
+				if (m_items[item_i]->getContent() == c) {
+					if ((c&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+						((ToolItem*)m_items[item_i++])->setWear(wear);
+					}else if ((c&CONTENT_CLOTHESITEM_MASK) == CONTENT_CLOTHESITEM_MASK) {
+						((ClothesItem*)m_items[item_i++])->setWear(wear);
+					}else{
+						m_items[item_i++]->setCount(count);
+					}
+					continue;
+				}
+				delete m_items[item_i];
+			}
 			m_items[item_i++] = InventoryItem::create(c,count,wear);
 		}else if (name == "Empty") {
 			if (item_i > getSize() - 1)
