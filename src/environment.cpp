@@ -415,9 +415,8 @@ void ServerEnvironment::deSerializePlayers(const std::string &savedir)
 	core::map<Player*, bool> saved_players;
 
 	std::vector<fs::DirListNode> player_files = fs::GetDirListing(players_path);
-	for(u32 i=0; i<player_files.size(); i++)
-	{
-		if(player_files[i].dir)
+	for (u32 i=0; i<player_files.size(); i++) {
+		if (player_files[i].dir)
 			continue;
 
 		// Full path to this file
@@ -430,18 +429,16 @@ void ServerEnvironment::deSerializePlayers(const std::string &savedir)
 		{
 			// Open file and deserialize
 			std::ifstream is(path.c_str(), std::ios_base::binary);
-			if(is.good() == false)
-			{
+			if (is.good() == false) {
 				infostream<<"Failed to read "<<path<<std::endl;
 				continue;
 			}
 			testplayer.deSerialize(is);
 		}
 
-		if(!string_allowed(testplayer.getName(), PLAYERNAME_ALLOWED_CHARS))
-		{
-			infostream<<"Not loading player with invalid name: "
-					<<testplayer.getName()<<std::endl;
+		if (!string_allowed(testplayer.getName(), PLAYERNAME_ALLOWED_CHARS)) {
+			infostream<<"Not loading player with invalid name: "<<testplayer.getName()<<std::endl;
+			continue;
 		}
 
 		infostream<<"Loaded test player with name "<<testplayer.getName()
@@ -451,8 +448,7 @@ void ServerEnvironment::deSerializePlayers(const std::string &savedir)
 		std::string playername = testplayer.getName();
 		Player *player = getPlayer(playername.c_str());
 		bool newplayer = false;
-		if(player == NULL)
-		{
+		if (player == NULL) {
 			infostream<<"Is a new player"<<std::endl;
 			player = new ServerRemotePlayer();
 			newplayer = true;
@@ -464,15 +460,14 @@ void ServerEnvironment::deSerializePlayers(const std::string &savedir)
 					<<path<<std::endl;
 			// Open file and deserialize
 			std::ifstream is(path.c_str(), std::ios_base::binary);
-			if(is.good() == false)
-			{
+			if (is.good() == false) {
 				infostream<<"Failed to read "<<path<<std::endl;
 				continue;
 			}
 			player->deSerialize(is);
 		}
 
-		if(newplayer)
+		if (newplayer)
 			addPlayer(player);
 	}
 }
