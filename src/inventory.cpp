@@ -425,7 +425,7 @@ void InventoryList::deSerialize(std::istream &is)
 			iss >> c;
 			m_denied[c] = true;
 		}else if (name == "Item") {
-			if(item_i > getSize() - 1)
+			if(item_i >= getSize())
 				throw SerializationError("too many items");
 			content_t c;
 			u16 count;
@@ -448,7 +448,7 @@ void InventoryList::deSerialize(std::istream &is)
 			}
 			m_items[item_i++] = InventoryItem::create(c,count,wear);
 		}else if (name == "Empty") {
-			if (item_i > getSize() - 1)
+			if (item_i >= getSize())
 				throw SerializationError("too many items");
 			if (m_items[item_i] != NULL)
 				delete m_items[item_i];
@@ -513,14 +513,14 @@ u32 InventoryList::getFreeSlots()
 
 const InventoryItem * InventoryList::getItem(u32 i) const
 {
-	if (i > m_items.size() - 1)
+	if (i >= m_items.size())
 		return NULL;
 	return m_items[i];
 }
 
 InventoryItem * InventoryList::getItem(u32 i)
 {
-	if (i > m_items.size() - 1)
+	if (i >= m_items.size())
 		return NULL;
 	return m_items[i];
 }
