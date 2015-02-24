@@ -440,13 +440,8 @@ void InventoryList::deSerialize(std::istream &is)
 			}
 			if (m_items[item_i] != NULL) {
 				if (m_items[item_i]->getContent() == c) {
-					if ((c&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
-						((ToolItem*)m_items[item_i++])->setWear(wear);
-					}else if ((c&CONTENT_CLOTHESITEM_MASK) == CONTENT_CLOTHESITEM_MASK) {
-						((ClothesItem*)m_items[item_i++])->setWear(wear);
-					}else{
-						m_items[item_i++]->setCount(count);
-					}
+					m_items[item_i]->setWear(wear);
+					m_items[item_i++]->setCount(count);
 					continue;
 				}
 				delete m_items[item_i];
