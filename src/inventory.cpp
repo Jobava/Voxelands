@@ -991,30 +991,22 @@ std::string InventoryLocation::dump() const
 
 void InventoryLocation::serialize(std::ostream &os) const
 {
-		switch (type) {
-		case InventoryLocation::UNDEFINED:
-		{
+	switch (type) {
+	case InventoryLocation::UNDEFINED:
+		os<<"undefined";
+		break;
+	case InventoryLocation::CURRENT_PLAYER:
+		os<<"current_player";
+		break;
+	case InventoryLocation::PLAYER:
+		os<<"player:"<<name;
+		break;
+	case InventoryLocation::NODEMETA:
+		os<<"nodemeta:"<<p.X<<","<<p.Y<<","<<p.Z;
+		break;
+	default:
 		os<<"undefined";
 	}
-		break;
-		case InventoryLocation::CURRENT_PLAYER:
-		{
-		os<<"current_player";
-	}
-		break;
-		case InventoryLocation::PLAYER:
-		{
-		os<<"player:"<<name;
-		}
-		break;
-		case InventoryLocation::NODEMETA:
-		{
-		os<<"nodemeta:"<<p.X<<","<<p.Y<<","<<p.Z;
-		}
-		break;
-		default:
-				assert(0);
-		}
 }
 
 void InventoryLocation::deSerialize(std::istream &is)
