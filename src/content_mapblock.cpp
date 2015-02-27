@@ -3595,8 +3595,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			getLights(blockpos_nodes+p,c,data,smooth_lighting);
 
 			NodeBox boxes[2] = {
-				NodeBox(-0.5*BS,-0.5*BS,-0.5*BS,0.5*BS,-0.0625*BS,0.5*BS),
-				NodeBox(-0.375*BS,-0.0625*BS,-0.375*BS,0.375*BS,0,0.375*BS)
+				NodeBox(-0.5*BS,-0.5*BS,-0.5*BS,0.5*BS,0.,0.5*BS),
 			};
 			v3f pos = intToFloat(p, BS);
 
