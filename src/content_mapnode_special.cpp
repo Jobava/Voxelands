@@ -178,7 +178,7 @@ void content_mapnode_special(bool repeat)
 	f->draw_type = CDT_ROOFLIKE;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
-	f->type = CMT_DIRT;
+	f->type = CMT_WOOD;
 	f->hardness = 0.75;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
