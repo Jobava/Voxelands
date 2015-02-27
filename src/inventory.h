@@ -118,6 +118,7 @@ public:
 		m_count -= count;
 	}
 	virtual void setWear(u16 wear) {}
+	virtual u16 getWear() {return 0;}
 
 	/*
 		Other properties
@@ -402,7 +403,7 @@ public:
 	{
 		return m_toolname;
 	}
-	u16 getWear()
+	virtual u16 getWear()
 	{
 		return m_wear;
 	}
@@ -498,7 +499,7 @@ public:
 	/*
 		Special methods
 	*/
-	u16 getWear()
+	virtual u16 getWear()
 	{
 		return m_wear;
 	}
