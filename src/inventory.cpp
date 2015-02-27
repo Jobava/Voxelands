@@ -355,55 +355,59 @@ void InventoryList::serialize(std::ostream &os) const
 {
 	//os.imbue(std::locale("C"));
 
-	for(u32 i=0; i<m_items.size(); i++)
-	{
+	for (u32 i=0; i<m_items.size(); i++) {
 		InventoryItem *item = m_items[i];
-		if(item != NULL)
-		{
-			os<<"Item ";
-			item->serialize(os);
+		if (item != NULL) {
+			content_t c = item->getContent();
+			writeU16(os,c);
+			if ((c&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK || (c&CONTENT_CLOTHESITEM_MASK) == CONTENT_CLOTHESITEM_MASK) {
+				writeU16(os,item->getWear());
+			}else{
+				writeU16(os,item->getCount());
+			}
+		}else{
+			writeU16(os,CONTENT_IGNORE);
 		}
-		else
-		{
-			os<<"Empty";
-		}
-		os<<"\n";
 	}
-
-	if (!m_stackable)
-		os<<"Unstackable\n";
-	for (std::map<content_t, bool>::const_iterator i = m_allowed.begin(); i != m_allowed.end(); ++i) {
-		content_t c = i->first;
-		bool s = i->second;
-		if (!s)
-			continue;
-		os<<"Allowed ";
-		os<<itos(c);
-		os<<"\n";
-	}
-	for (std::map<content_t, bool>::const_iterator i = m_denied.begin(); i != m_denied.end(); ++i) {
-		content_t c = i->first;
-		bool s = i->second;
-		if (!s)
-			continue;
-		os<<"Denied ";
-		os<<itos(c);
-		os<<"\n";
-	}
-
-	os<<"EndInventoryList\n";
 }
 
 void InventoryList::deSerialize(std::istream &is)
 {
-	//clearItems();
+	u32 item_i = 0;
+	char f;
+	is.get(f);
+	if (f == '\2') {
+		for (item_i=0; item_i<getSize(); item_i++) {
+			content_t c = readU16(is);
+			if (c == CONTENT_IGNORE) {
+				if (m_items[item_i] != NULL)
+					delete m_items[item_i];
+				m_items[item_i] = NULL;
+				continue;
+			}
+			u16 wc = readU16(is);
+			if (m_items[item_i] != NULL) {
+				if (m_items[item_i]->getContent() == c) {
+					m_items[item_i]->setWear(wc);
+					m_items[item_i]->setCount(wc);
+					continue;
+				}
+				delete m_items[item_i];
+			}
+			m_items[item_i] = InventoryItem::create(c,wc,wc);
+		}
+		if (readU8(is) != 3)
+			throw SerializationError("Unknown inventory identifier");
+		return;
+	}
+
+	is.unget();
+
 	clearAllowed();
 	clearDenied();
 	m_stackable = true;
-	u32 item_i = 0;
 
-	for(;;)
-	{
+	for (;;) {
 		std::string line;
 		std::getline(is, line, '\n');
 
@@ -768,18 +772,42 @@ Inventory & Inventory::operator = (const Inventory &other)
 
 void Inventory::serialize(std::ostream &os) const
 {
+	// start of header
+	writeU8(os,1);
 	for (u32 i=0; i<m_lists.size(); i++) {
 		InventoryList *list = m_lists[i];
-		os<<"List "<<list->getName()<<" "<<list->getSize()<<"\n";
+		os<<list->getName()<<" ";
+		writeU16(os,list->getSize());
+		// start text
+		writeU8(os,2);
 		list->serialize(os);
+		// end text
+		writeU8(os,3);
 	}
 
-	os<<"EndInventory\n";
+	// end transmission
+	writeU8(os,4);
 }
 
 void Inventory::deSerialize(std::istream &is)
 {
 	//clear();
+	char c;
+	is.get(c);
+	if (c == '\1') {
+		while (readU8(is) != 4) {
+			is.unget();
+			std::string name;
+			u16 size;
+			std::getline(is,name,' ');
+			size = readU16(is);
+			InventoryList *list = addList(name,size);
+			list->deSerialize(is);
+		}
+		return;
+	}
+
+	is.unget();
 
 	for (;;) {
 		std::string line;
