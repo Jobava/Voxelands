@@ -253,6 +253,15 @@ enum ToClientCommand
 			}
 		}
 	*/
+
+	TOCLIENT_ENV_EVENT = 0x41,
+	/*
+		u16 command
+		u8 event type (sound,nodemod,particles,etc)
+		v3f1000 event position
+		u16 length of serialised event data
+		string serialised event data
+	*/
 };
 
 enum ToServerCommand
