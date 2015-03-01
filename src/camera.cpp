@@ -309,7 +309,7 @@ void Camera::update(LocalPlayer* player, f32 frametime, v2u32 screensize)
 	) {
 		// Start animation
 		m_view_bobbing_state = 1;
-		m_view_bobbing_speed = MYMIN(speed.getLength(), 40);
+		m_view_bobbing_speed = MYMIN(speed.getLength(), 60);
 	}else if (m_view_bobbing_state == 1) {
 		// Stop animation
 		m_view_bobbing_state = 2;
