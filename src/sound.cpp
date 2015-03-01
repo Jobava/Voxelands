@@ -32,32 +32,26 @@ void init_sounds(ISoundManager *sound)
 {
 	// walking
 	// CMT_DIRT
-	sound->loadSound("dirt-walk","dirt_footstep.1.ogg");
-	sound->loadSound("dirt-walk","dirt_footstep.2.ogg");
-	sound->loadSound("dirt-walk","dirt_footstep.3.ogg");
-	sound->loadSound("dirt-walk","dirt_footstep.4.ogg");
+	sound->loadSound("dirt-walk","step_dirt.1.ogg");
+	sound->loadSound("dirt-walk","step_dirt.2.ogg");
 	// CMT_STONE
-	sound->loadSound("stone-walk","stone_footstep.1.ogg");
-	sound->loadSound("stone-walk","stone_footstep.2.ogg");
-	sound->loadSound("stone-walk","stone_footstep.3.ogg");
-	sound->loadSound("stone-walk","stone_footstep.4.ogg");
+	sound->loadSound("stone-walk","step_stone.1.ogg");
+	sound->loadSound("stone-walk","step_stone.2.ogg");
+	sound->loadSound("stone-walk","step_stone.3.ogg");
+	sound->loadSound("stone-walk","step_stone.4.ogg");
 	// CMT_PLANT
-	sound->loadSound("plant-walk","plant_footstep.1.ogg");
-	sound->loadSound("plant-walk","plant_footstep.2.ogg");
-	sound->loadSound("plant-walk","plant_footstep.3.ogg");
-	sound->loadSound("plant-walk","plant_footstep.4.ogg");
+	sound->loadSound("plant-walk","step_plant.1.ogg");
+	sound->loadSound("plant-walk","step_plant.2.ogg");
 	// CMT_LIQUID
-	sound->loadSound("liquid-walk","liquid_footstep.1.ogg");
-	sound->loadSound("liquid-walk","liquid_footstep.2.ogg");
-	sound->loadSound("liquid-walk","liquid_footstep.3.ogg");
-	sound->loadSound("liquid-walk","liquid_footstep.4.ogg");
+	sound->loadSound("liquid-walk","step_liquid.1.ogg");
+	sound->loadSound("liquid-walk","step_liquid.2.ogg");
 	// CMT_WOOD
-	sound->loadSound("wood-walk","wood_footstep.1.ogg");
-	sound->loadSound("wood-walk","wood_footstep.2.ogg");
-	sound->loadSound("wood-walk","wood_footstep.3.ogg");
-	sound->loadSound("wood-walk","wood_footstep.4.ogg");
+	sound->loadSound("wood-walk","step_wood.1.ogg");
+	sound->loadSound("wood-walk","step_wood.2.ogg");
+	sound->loadSound("wood-walk","step_wood.3.ogg");
+	sound->loadSound("wood-walk","step_wood.4.ogg");
 	// CMT_GLASS
-	sound->loadSound("glass-walk","glass_footstep.1.ogg");
+	sound->loadSound("glass-walk","step_glass.1.ogg");
 
 	// digging
 	// CMT_DIRT
@@ -85,6 +79,7 @@ void init_sounds(ISoundManager *sound)
 	// CMT_STONE
 	// CMT_PLANT
 	// CMT_LIQUID
+	sound->loadSound("liquid-place","place_liquid.1.ogg");
 	// CMT_WOOD
 	// CMT_GLASS
 }

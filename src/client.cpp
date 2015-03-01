@@ -2412,5 +2412,14 @@ void Client::playPlaceSound(content_t c)
 	if (volume > 100.0)
 		volume = 100.0;
 	volume /= 100.0;
-	m_sound->playSound("place",false,volume);
+	if (c == CONTENT_IGNORE) {
+		c = getPointedContent();
+	}
+	switch (content_features(c).type) {
+	case CMT_LIQUID:
+		m_sound->playSound("liquid-place",false,volume);
+		break;
+	default:
+		m_sound->playSound("place",false,volume);
+	}
 }
