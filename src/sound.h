@@ -31,13 +31,6 @@
 #include <vector>
 #include <set>
 
-class OnDemandSoundFetcher
-{
-public:
-	virtual void getSoundFilenames(const std::string &name,
-			std::set<std::string> &dst);
-};
-
 struct SimpleSoundSpec
 {
 	std::string name;
