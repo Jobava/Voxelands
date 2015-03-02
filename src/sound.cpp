@@ -83,9 +83,12 @@ void init_sounds(ISoundManager *sound)
 	// CMT_WOOD
 	// CMT_GLASS
 
-	// special
+	// open formspec
 	sound->loadSound("open-menu","open_menu.ogg");
+	sound->loadSound("open-book","open_book.ogg");
 	sound->loadSound("open-chest","open_chest.ogg");
+
+	// special
 	sound->loadSound("wield","wield_item.ogg");
 }
 

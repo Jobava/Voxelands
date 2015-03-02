@@ -823,6 +823,7 @@ void content_mapnode_special(bool repeat)
 	f->suffocation_per_second = 0;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new BookNodeMetadata();
+	f->sound_access = "open-book";
 
 	i = CONTENT_COOK_BOOK_OPEN;
 	f = &content_features(i);
@@ -850,6 +851,7 @@ void content_mapnode_special(bool repeat)
 	f->suffocation_per_second = 0;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new CookBookNodeMetadata();
+	f->sound_access = "open-book";
 
 	i = CONTENT_DECRAFT_BOOK_OPEN;
 	f = &content_features(i);
@@ -877,6 +879,7 @@ void content_mapnode_special(bool repeat)
 	f->suffocation_per_second = 0;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DeCraftNodeMetadata();
+	f->sound_access = "open-book";
 
 	i = CONTENT_DIARY_BOOK_OPEN;
 	f = &content_features(i);
@@ -904,6 +907,7 @@ void content_mapnode_special(bool repeat)
 	f->suffocation_per_second = 0;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DiaryNodeMetadata();
+	f->sound_access = "open-book";
 
 	i = CONTENT_CRAFT_BOOK_OPEN;
 	f = &content_features(i);
@@ -931,6 +935,7 @@ void content_mapnode_special(bool repeat)
 	f->suffocation_per_second = 0;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new CraftGuideNodeMetadata();
+	f->sound_access = "open-book";
 
 	i = CONTENT_FIRE;
 	f = &content_features(i);
