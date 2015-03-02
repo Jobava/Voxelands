@@ -82,6 +82,11 @@ void init_sounds(ISoundManager *sound)
 	sound->loadSound("liquid-place","place_liquid.1.ogg");
 	// CMT_WOOD
 	// CMT_GLASS
+
+	// special
+	sound->loadSound("open-menu","open_menu.ogg");
+	sound->loadSound("open-chest","open_chest.ogg");
+	sound->loadSound("wield","wield_item.ogg");
 }
 
 

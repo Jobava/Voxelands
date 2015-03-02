@@ -1444,18 +1444,22 @@ void the_game(
 			u16 max_item = MYMIN(PLAYER_INVENTORY_SIZE-1,
 					hotbar_itemcount-1);
 
+			std::string wield_sound = "wield";
+
 			if (wheel < 0) {
 				if (g_selected_item < max_item) {
 					g_selected_item++;
 				}else{
 					g_selected_item = 0;
 				}
+				client.playSound(wield_sound,false);
 			}else if (wheel > 0) {
 				if (g_selected_item > 0) {
 					g_selected_item--;
 				}else{
 					g_selected_item = max_item;
 				}
+				client.playSound(wield_sound,false);
 			}
 		}
 
@@ -1467,6 +1471,8 @@ void the_game(
 					g_selected_item = i;
 
 					infostream<<"Selected item: "<<g_selected_item<<std::endl;
+					std::string wield_sound = "wield";
+					client.playSound(wield_sound,false);
 				}
 			}
 		}
@@ -1883,7 +1889,12 @@ void the_game(
 							menu->setFormSpec(meta->getDrawSpecString(), inventoryloc);
 							menu->setFormIO(new NodeMetadataFormIO(nodepos, &client));
 							menu->drop();
-
+							{
+								std::string sound = content_features(client.getEnv().getMap().getNodeNoEx(nodepos).getContent()).sound_access;
+								if (sound == "")
+									sound = "open-menu";
+								client.playSound(sound,0);
+							}
 						}else{
 							client.groundAction(1, nodepos, neighbourpos, g_selected_item);
 							camera.setDigging(1);  // right click animation

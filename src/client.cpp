@@ -2423,3 +2423,29 @@ void Client::playPlaceSound(content_t c)
 		m_sound->playSound("place",false,volume);
 	}
 }
+
+void Client::playSound(std::string &name, bool loop)
+{
+	if (!m_sound)
+		return;
+	f32 volume = g_settings->getFloat("sound_volume");
+	if (volume < 1.0)
+		return;
+	if (volume > 100.0)
+		volume = 100.0;
+	volume /= 100.0;
+	m_sound->playSound(name,loop,volume);
+}
+
+void Client::playSoundAt(std::string &name, v3f pos, bool loop)
+{
+	if (!m_sound)
+		return;
+	f32 volume = g_settings->getFloat("sound_volume");
+	if (volume < 1.0)
+		return;
+	if (volume > 100.0)
+		volume = 100.0;
+	volume /= 100.0;
+	m_sound->playSoundAt(name,loop,volume,pos);
+}
