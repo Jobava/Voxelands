@@ -1215,6 +1215,7 @@ void content_mapnode_special(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new ChestNodeMetadata();
+	f->sound_access = "open-chest";
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
 	f->pressure_type = CST_SOLID;
@@ -1237,6 +1238,7 @@ void content_mapnode_special(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new CreativeChestNodeMetadata();
+	f->sound_access = "open-chest";
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
 	f->pressure_type = CST_SOLID;
@@ -1257,6 +1259,7 @@ void content_mapnode_special(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	if(f->initial_metadata == NULL)
 		f->initial_metadata = new LockingChestNodeMetadata();
+	f->sound_access = "open-chest";
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
 	f->pressure_type = CST_SOLID;

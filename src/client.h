@@ -337,6 +337,8 @@ public:
 	void playStepSound();
 	void playDigSound(content_t c);
 	void playPlaceSound(content_t c);
+	void playSound(std::string &name, bool loop);
+	void playSoundAt(std::string &name, v3f pos, bool loop);
 
 	void setPointedNode(v3s16 p) {m_pointed_node = p;}
 	v3s16 getPointedNode() {return m_pointed_node;}
