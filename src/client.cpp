@@ -1540,6 +1540,38 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		m_httpclient->pushRequest(HTTPREQUEST_SKIN_HASH,p);
 	}
 	break;
+	case TOCLIENT_ENV_EVENT:
+	{
+		/*
+			u16 command
+			u8 event type (sound,nodemod,particles,etc)
+			v3f1000 event position
+			u16 length of serialised event data
+			string serialised event data
+		*/
+		std::string datastring((char*)&data[2], datasize-2);
+		std::istringstream is(datastring, std::ios_base::binary);
+
+		u8 type = readU8(is);
+		v3f pos = readV3F1000(is);
+		std::string ev = deSerializeString(is);
+		switch (type) {
+		case ENV_EVENT_SOUND: // sound
+			playSoundAt(ev,pos,false);
+			break;
+		case ENV_EVENT_DIG_PARTICLES: // dig particles
+			break;
+		case ENV_EVENT_PUNCH_PARTICLES: // punch particles
+			break;
+		case ENV_EVENT_NODE_PARTICLES: // node particles
+			break;
+		case ENV_EVENT_NODEMOD: // nodemod
+			break;
+		default:
+			infostream<<"Client: unknown env_event: "<<type<<": "<<ev<<std::endl;
+		}
+	}
+	break;
 	default:
 	{
 		infostream<<"Client: Ignoring unknown command "

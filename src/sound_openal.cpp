@@ -188,6 +188,7 @@ private:
 	std::map<std::string, std::vector<SoundBuffer*> > m_buffers;
 	std::map<int, PlayingSound*> m_sounds_playing;
 	std::map<std::string, int> m_indexes;
+	v3f m_listener_pos;
 public:
 	OpenALSoundManager():
 		m_device(NULL),
@@ -255,6 +256,16 @@ public:
 		m_context = NULL;
 		alcCloseDevice(m_device);
 		m_device = NULL;
+
+		for (std::map<std::string, std::vector<SoundBuffer*> >::iterator i = m_buffers.begin();
+				i != m_buffers.end(); i++) {
+			for (std::vector<SoundBuffer*>::iterator iter = (*i).second.begin();
+					iter != (*i).second.end(); iter++) {
+				delete *iter;
+			}
+			(*i).second.clear();
+		}
+		m_buffers.clear();
 		infostream<<"Audio: Deinitialized."<<std::endl;
 	}
 
@@ -407,13 +418,12 @@ public:
 
 	void updateListener(v3f pos, v3f vel, v3f at, v3f up)
 	{
+		m_listener_pos = pos;
+		alListener3f(AL_POSITION, pos.X, pos.Y, pos.Z);
+		alListener3f(AL_VELOCITY, vel.X, vel.Y, vel.Z);
 		ALfloat f[6];
-		f3_set(f, pos);
-		alListenerfv(AL_POSITION, f);
-		f3_set(f, vel);
-		alListenerfv(AL_VELOCITY, f);
 		f3_set(f, at);
-		f3_set(f+3, up);
+		f3_set(f+3, -up);
 		alListenerfv(AL_ORIENTATION, f);
 	}
 
@@ -469,7 +479,7 @@ public:
 		alSourcei(sound->source_id, AL_SOURCE_RELATIVE, false);
 		alSource3f(sound->source_id, AL_POSITION, pos.X, pos.Y, pos.Z);
 		alSource3f(sound->source_id, AL_VELOCITY, 0, 0, 0);
-		alSourcef(sound->source_id, AL_REFERENCE_DISTANCE, 30.0);
+		//alSourcef(sound->source_id, AL_REFERENCE_DISTANCE, 30.0);
 	}
 };
 

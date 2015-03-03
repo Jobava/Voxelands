@@ -88,6 +88,16 @@ void init_sounds(ISoundManager *sound)
 	sound->loadSound("open-book","open_book.ogg");
 	sound->loadSound("open-chest","open_chest.ogg");
 
+	// environment and node sounds
+	// these must be mono sounds, stereo will not work right!
+	sound->loadSound("env-piston","env_piston.ogg");
+	sound->loadSound("env-dooropen","env_dooropen.ogg");
+	sound->loadSound("env-doorclose","env_doorclose.ogg");
+	sound->loadSound("env-fire","env_fire.ogg");
+	sound->loadSound("env-lava","env_lava.ogg");
+	sound->loadSound("env-steam","env_steam.ogg");
+	sound->loadSound("env-tnt","env_tnt.ogg");
+
 	// special
 	sound->loadSound("wield","wield_item.ogg");
 }

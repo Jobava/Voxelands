@@ -564,6 +564,10 @@ private:
 	// Sends blocks to clients (locks env and con on its own)
 	void SendBlocks(float dtime);
 
+	// sends env events (sound, particles, etc) to clients
+	// will not send to except_player if not NULL
+	void SendEnvEvent(u8 type, v3f pos, std::string &data, Player *except_player);
+
 	/*
 		Something random
 	*/
