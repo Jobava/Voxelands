@@ -51,6 +51,59 @@
 class Server;
 class ServerActiveObject;
 
+#define ENV_EVENT_NONE			0
+#define ENV_EVENT_SOUND			1
+#define ENV_EVENT_DIG_PARTICLES		2
+#define ENV_EVENT_PUNCH_PARTICLES	3
+#define ENV_EVENT_NODE_PARTICLES	4
+#define ENV_EVENT_NODEMOD		5
+
+struct EnvEvent {
+	u8 type;
+	v3f pos;
+	std::string data;
+	Player *except_player;
+
+	EnvEvent():
+		type(ENV_EVENT_NONE),
+		data(""),
+		except_player(NULL)
+	{
+	}
+
+	EnvEvent(u8 ctype, v3f cpos, std::string cdata):
+		type(ctype),
+		pos(cpos),
+		data(cdata),
+		except_player(NULL)
+	{
+	}
+
+	EnvEvent(u8 ctype, v3s16 cpos, std::string cdata):
+		type(ctype),
+		data(cdata),
+		except_player(NULL)
+	{
+		pos = intToFloat(cpos,BS);
+	}
+
+	EnvEvent(u8 ctype, v3f cpos, std::string cdata, Player *except):
+		type(ctype),
+		pos(cpos),
+		data(cdata),
+		except_player(except)
+	{
+	}
+
+	EnvEvent(u8 ctype, v3s16 cpos, std::string cdata, Player *except):
+		type(ctype),
+		data(cdata),
+		except_player(except)
+	{
+		pos = intToFloat(cpos,BS);
+	}
+};
+
 class Environment
 {
 public:
@@ -213,6 +266,17 @@ public:
 	ActiveObjectMessage getActiveObjectMessage();
 
 	/*
+		trigger an env event that clients should know about
+		sounds, particles, etc
+	*/
+	void addEnvEvent(u8 type, v3f pos, std::string data);
+	/*
+		something for the server to get the events with
+		in order to send them
+	*/
+	EnvEvent getEnvEvent();
+
+	/*
 		Activate objects and dynamically modify for the dtime determined
 		from timestamp and additional_dtime
 	*/
@@ -305,6 +369,8 @@ private:
 	std::map<u16, ServerActiveObject*> m_active_objects;
 	// Outgoing network message buffer for active objects
 	Queue<ActiveObjectMessage> m_active_object_messages;
+	// the env events for sending to clients
+	Queue<EnvEvent> m_env_events;
 	// Some timers
 	float m_random_spawn_timer; // used for experimental code
 	float m_send_recommended_timer;

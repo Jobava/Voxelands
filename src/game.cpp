@@ -1643,6 +1643,12 @@ void the_game(
 		f32 camera_fov = camera.getFovMax();
 		v3s16 camera_offset = camera.getOffset();
 
+		{
+			ISoundManager *snd = client.getSoundManager();
+			if (snd)
+				snd->updateListener(camera_position,v3f(0,0,0),camera_direction,camera.getCameraNode()->getUpVector());
+		}
+
 		//bool camera_offset_changed = (camera_offset != old_camera_offset);
 
 		if (!disable_camera_update) {

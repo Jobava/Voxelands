@@ -3521,6 +3521,7 @@ bool PistonNodeMetadata::extend(v3s16 pos, v3s16 dir, content_t arm, MapNode pis
 	}
 	if (!can_extend)
 		return false;
+	env->addEnvEvent(ENV_EVENT_SOUND,intToFloat(pos,BS),"env-piston");
 	MapNode n_prev;
 	MapNode n_cur;
 	MapNode n_next;
@@ -3563,6 +3564,7 @@ bool PistonNodeMetadata::extend(v3s16 pos, v3s16 dir, content_t arm, MapNode pis
 bool PistonNodeMetadata::contract(v3s16 pos, v3s16 dir, bool sticky, MapNode piston, ServerEnvironment *env)
 {
 	bool dropping = false;
+	env->addEnvEvent(ENV_EVENT_SOUND,intToFloat(pos,BS),"env-piston");
 	core::map<v3s16,MapBlock*> modified_blocks;
 	std::string st("");
 	env->getMap().addNodeAndUpdate(pos,piston,modified_blocks,st);

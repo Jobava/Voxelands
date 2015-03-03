@@ -1525,6 +1525,14 @@ void Server::AsyncRunStep()
 		{
 			delete i.getNode()->getValue();
 		}
+
+		// Get env_events from environment and send
+		for (;;) {
+			EnvEvent ev = m_env.getEnvEvent();
+			if (ev.type == ENV_EVENT_NONE)
+				break;
+			SendEnvEvent(ev.type,ev.pos,ev.data,ev.except_player);
+		}
 	}
 
 	/*
@@ -2581,6 +2589,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				MapNode m = m_env.getMap().getNodeNoEx(p_under+mp);
 				core::list<u16> far_players;
 				core::map<v3s16, MapBlock*> modified_blocks;
+				std::string env_sound = "env-doorclose";
 				if ((n.getContent()&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK) {
 					if (m.getContent() < CONTENT_DOOR_MIN || m.getContent() > CONTENT_DOOR_MAX) {
 						sendRemoveNode(p_under, 0, &far_players, 30);
@@ -2601,6 +2610,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						return;
 					}else{
 						if ((n.getContent()&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
+							env_sound = "env-doorclose";
 							n.setContent(n.getContent()&~CONTENT_DOOR_OPEN_MASK);
 							m.setContent(m.getContent()&~CONTENT_DOOR_OPEN_MASK);
 						}else{
@@ -2624,6 +2634,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					}
 				}else{
 					if ((n.getContent()&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
+						env_sound = "env-doorclose";
 						n.setContent(n.getContent()&~CONTENT_DOOR_OPEN_MASK);
 					}else{
 						n.setContent(n.getContent()|CONTENT_DOOR_OPEN_MASK);
@@ -2635,6 +2646,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							meta->energise(ENERGY_MAX,p_under,p_under,p_under);
 					}
 				}
+				// so the player hears the door open/close
+				SendEnvEvent(ENV_EVENT_SOUND,intToFloat(p_under,BS),env_sound,NULL);
 
 				/*
 					Add node.
@@ -5686,6 +5699,52 @@ void Server::SendBlocks(float dtime)
 		client->SentBlock(q.pos);
 
 		total_sending++;
+	}
+}
+
+void Server::SendEnvEvent(u8 type, v3f pos, std::string &data, Player *except_player)
+{
+	// Create packet
+	std::ostringstream os(std::ios_base::binary);
+
+	/*
+		u16 command
+		u8 event type (sound,nodemod,particles,etc)
+		v3f1000 event position
+		u16 length of serialised event data
+		string serialised event data
+	*/
+
+	writeU16(os, TOCLIENT_ENV_EVENT);
+	writeU8(os,type);
+	writeV3F1000(os, pos);
+	os<<serializeString(data);
+
+	// Make data buffer
+	std::string s = os.str();
+	SharedBuffer<u8> reply((u8*)s.c_str(), s.size());
+
+	for (core::map<u16, RemoteClient*>::Iterator i = m_clients.getIterator(); i.atEnd() == false; i++) {
+		// Get client and check that it is valid
+		RemoteClient *client = i.getNode()->getValue();
+		assert(client->peer_id == i.getNode()->getKey());
+		if (client->serialization_version == SER_FMT_VER_INVALID)
+			continue;
+
+		// Don't send if it's except_player
+		if (except_player != NULL && except_player->peer_id == client->peer_id)
+			continue;
+
+		Player *player = m_env.getPlayer(client->peer_id);
+		if (player) {
+			// don't send to far off players (2 mapblocks)
+			v3f player_pos = player->getPosition();
+			if (player_pos.getDistanceFrom(pos) > 320.0)
+				continue;
+		}
+
+		// Send as reliable
+		m_con.Send(client->peer_id, 0, reply, true);
 	}
 }
 
