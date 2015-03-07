@@ -479,7 +479,7 @@ public:
 		alSourcei(sound->source_id, AL_SOURCE_RELATIVE, false);
 		alSource3f(sound->source_id, AL_POSITION, pos.X, pos.Y, pos.Z);
 		alSource3f(sound->source_id, AL_VELOCITY, 0, 0, 0);
-		//alSourcef(sound->source_id, AL_REFERENCE_DISTANCE, 30.0);
+		alSourcef(sound->source_id, AL_REFERENCE_DISTANCE, 30.0);
 	}
 };
 
