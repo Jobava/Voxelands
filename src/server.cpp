@@ -5471,6 +5471,11 @@ void Server::SendMovePlayer(Player *player)
 	SharedBuffer<u8> data((u8*)s.c_str(), s.size());
 	// Send as reliable
 	m_con.Send(player->peer_id, 0, data, true);
+
+	{
+		std::string snd = "env-teleport";
+		SendEnvEvent(ENV_EVENT_SOUND,player->getPosition(),snd,NULL);
+	}
 }
 
 void Server::sendRemoveNode(v3s16 p, u16 ignore_id,

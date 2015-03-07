@@ -97,6 +97,7 @@ void init_sounds(ISoundManager *sound)
 	sound->loadSound("env-lava","env_lava.ogg");
 	sound->loadSound("env-steam","env_steam.ogg");
 	sound->loadSound("env-tnt","env_tnt.ogg");
+	sound->loadSound("env-teleport","env_teleport.ogg");
 
 	// special
 	sound->loadSound("wield","wield_item.ogg");
