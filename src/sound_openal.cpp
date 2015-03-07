@@ -324,6 +324,8 @@ public:
 		infostream<<"OpenALSoundManager: Creating positional playing sound"
 				<<std::endl;
 		assert(buf);
+		if (buf->format != AL_FORMAT_MONO16)
+			errorstream<<"Attempting to play non-mono sound as positional sound"<<std::endl;
 		PlayingSound *sound = new PlayingSound;
 		assert(sound);
 		alGenSources(1, &sound->source_id);
