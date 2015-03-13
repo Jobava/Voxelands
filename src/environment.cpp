@@ -2701,15 +2701,6 @@ void ServerEnvironment::step(float dtime)
 						MapNode n_top1 = m_map->getNodeNoEx(p+v3s16(0,1,0));
 						MapNode n_top2 = m_map->getNodeNoEx(p+v3s16(0,2,0));
 						if (
-							myrand()%100 == 0
-							&& content_features(n_top1).air_equivalent == true
-							&& content_features(n_top2).air_equivalent == true
-						) {
-							if (searchNear(p,v3s16(1,1,1),CONTENT_WATERSOURCE,NULL)) {
-								n_top1.setContent(CONTENT_JUNGLEGRASS);
-								m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top1);
-							}
-						}else if (
 							p.Y < -30
 							&& n_top1.getContent() == CONTENT_WATERSOURCE
 							&& n_top2.getContent() == CONTENT_WATERSOURCE
