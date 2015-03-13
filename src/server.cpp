@@ -2469,6 +2469,10 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			SendPlayerAnim(player,PLAYERANIM_DIG);
 			MapNode n = m_env.getMap().getNodeNoEx(p_under);
 			InventoryItem *wield = (InventoryItem*)player->getWieldItem();
+			// no on-punch events with a mese pick, it will have dug the item
+			// on the first hit anyway
+			if (wield && wield->getContent() == CONTENT_TOOLITEM_MESEPICK)
+				return;
 			// KEY
 			if (wield && wield->getContent() == CONTENT_TOOLITEM_KEY) {
 				NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
