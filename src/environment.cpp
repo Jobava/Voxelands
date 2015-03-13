@@ -934,7 +934,6 @@ void ServerEnvironment::step(float dtime)
 			if (!nodestep)
 				continue;
 
-			bool has_lava_sound = false;
 			bool has_steam_sound = false;
 
 			/*
@@ -1842,8 +1841,6 @@ void ServerEnvironment::step(float dtime)
 						ash_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
 						ServerActiveObject *obj = new ItemSAO(this, 0, ash_pos, "CraftItem lump_of_ash 1");
 						addActiveObject(obj);
-					}else{
-						addEnvEvent(ENV_EVENT_SOUND,intToFloat(p,BS),"env-fire");
 					}
 					break;
 				}
@@ -1855,7 +1852,6 @@ void ServerEnvironment::step(float dtime)
 					if (!content_features(n_below).flammable) {
 						m_map->removeNodeWithEvent(p);
 					}else{
-						addEnvEvent(ENV_EVENT_SOUND,intToFloat(p,BS),"env-fire");
 						s16 bs_rad = g_settings->getS16("borderstone_radius");
 						bs_rad += 2;
 						// if any node is border stone protected, don't spread
@@ -2818,10 +2814,6 @@ void ServerEnvironment::step(float dtime)
 				// make lava cool near water
 				case CONTENT_LAVASOURCE:
 				case CONTENT_LAVA:
-					if (!has_lava_sound) {
-						addEnvEvent(ENV_EVENT_SOUND,intToFloat(p,BS),"env-lava");
-						has_lava_sound = true;
-					}
 				{
 					MapNode testnode;
 					v3s16 test_p;
@@ -2836,6 +2828,10 @@ void ServerEnvironment::step(float dtime)
 						found = true;
 						testnode.setContent(CONTENT_STEAM);
 						m_delayed_node_changes[test_p] = testnode;
+						if (!has_steam_sound) {
+							addEnvEvent(ENV_EVENT_SOUND,intToFloat(p,BS),"env-steam");
+							has_steam_sound = true;
+						}
 					}
 
 					if (found == true && n.getContent() == CONTENT_LAVASOURCE) {
@@ -2889,10 +2885,6 @@ void ServerEnvironment::step(float dtime)
 					}else if (found == true) {
 						n.setContent(CONTENT_ROUGHSTONE);
 						m_map->addNodeWithEvent(p, n);
-					}
-					if (!has_steam_sound) {
-						addEnvEvent(ENV_EVENT_SOUND,intToFloat(p,BS),"env-steam");
-						has_steam_sound = true;
 					}
 
 					break;
