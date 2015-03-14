@@ -148,7 +148,7 @@ void ItemSAO::step(float dtime, bool send_recommended)
 	// Apply gravity
 	m_speed_f += v3f(0, -dtime*9.81*BS, 0);
 	// Maximum movement without glitches
-	f32 pos_max_d = BS*0.25;
+	f32 pos_max_d = BS*0.3;
 	// Limit speed
 	if (m_speed_f.getLength()*dtime > pos_max_d)
 		m_speed_f *= pos_max_d / (m_speed_f.getLength()*dtime);

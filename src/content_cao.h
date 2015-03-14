@@ -154,7 +154,7 @@ public:
 	void initialize(const std::string &data);
 
 	core::aabbox3d<f32>* getSelectionBox() {return &m_selection_box;}
-	v3f getPosition() {return m_position;}
+	v3f getPosition() {return pos_translator.vect_show;}
 
 	void updateCameraOffset(v3s16 camera_offset)
 	{
