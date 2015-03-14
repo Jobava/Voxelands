@@ -1955,7 +1955,7 @@ void content_mapnode_special(bool repeat)
 	content_nodebox_parcel(f);
 	f->setInventoryTextureNodeBox(i,"parcel_top.png", "parcel.png", "parcel.png");
 	f->type = CMT_DIRT;
-	f->hardness = 0.2;
+	f->hardness = 0.01;
 	f->suffocation_per_second = 0;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new ParcelNodeMetadata();

@@ -44,7 +44,7 @@ ItemCAO proto_ItemCAO;
 
 ItemCAO::ItemCAO():
 	ClientActiveObject(0),
-	m_selection_box(-BS/3.,0.0,-BS/3., BS/3.,BS*2./3.,BS/3.),
+	m_selection_box(-0.25*BS,-0.26*BS,-0.26*BS,0.26*BS,0.26*BS,0.26*BS),
 	m_node(NULL),
 	m_position(v3f(0,10*BS,0)),
 	m_camera_offset(v3s16(0,0,0)),
@@ -128,6 +128,7 @@ void ItemCAO::processMessage(const std::string &data)
 	if (cmd == 0) {
 		// pos
 		m_position = readV3F1000(is);
+		m_position += v3f(0,BS*0.4,0);
 		pos_translator.update(m_position,m_rot);
 		updateNodePos();
 	}
@@ -149,6 +150,7 @@ void ItemCAO::initialize(const std::string &data)
 		}
 		// pos
 		m_position = readV3F1000(is);
+		m_position += v3f(0,BS*0.4,0);
 		// inventorystring
 		m_inventorystring = deSerializeString(is);
 
