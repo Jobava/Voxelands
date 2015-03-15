@@ -29,7 +29,7 @@
 
 #include "utility.h"
 
-#define PROTOCOL_VERSION 8
+#define PROTOCOL_VERSION 9
 /* the last protocol version used by 0.3.x minetest-c55 clients */
 #define PROTOCOL_DOTTHREE 3
 /* this is the oldest protocol that we will allow to connect
@@ -221,11 +221,12 @@ enum ToClientCommand
 		[0] u16 command
 		[2] u16 player count
 		[4] u16 field count
-		for each player:
+		for each player {
 			u16 peer_id
 			char[20] name
 			u16 length of serialized chardef
 			string serialized character definition
+		}
 	*/
 
 	TOCLIENT_ENV_EVENT = 0x41,
@@ -235,6 +236,22 @@ enum ToClientCommand
 		v3f1000 event position
 		u16 length of serialised event data
 		string serialised event data
+	*/
+
+	TOCLIENT_INVENTORY_UPDATE = 0x42,
+	/*
+		u16 command
+		u16 list count
+		for each list {
+			u16 length of serialised list name
+			string serialised list name
+			u16 slot count
+			for each slot {
+				u16 slot index
+				u16 content type
+				u16 count/wear
+			}
+		}
 	*/
 };
 

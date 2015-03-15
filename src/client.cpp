@@ -1102,6 +1102,36 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 			m_inventory_updated = true;
 		}
 	}
+	break;
+	case TOCLIENT_INVENTORY_UPDATE:
+	{
+		if (datasize < 3)
+			return;
+		{
+			std::string datastring((char*)&data[2], datasize-2);
+			std::istringstream is(datastring, std::ios_base::binary);
+
+			Player *player = m_env.getLocalPlayer();
+			assert(player != NULL);
+
+			u16 list_count = readU16(is);
+			for (int i=0; i<list_count; i++) {
+				std::string name = deSerializeString(is);
+				u16 slots = readU16(is);
+				InventoryList *l = player->inventory.getList(name);
+				if (!l)
+					return;
+				for (int k=0; k<slots; k++) {
+					u16 index = readU16(is);
+					u16 type = readU16(is);
+					u16 count = readU16(is);
+					l->updateItem(index,type,count);
+				}
+			}
+
+			m_inventory_updated = true;
+		}
+	}
 	//DEBUG
 	break;
 	case TOCLIENT_OBJECTDATA:
