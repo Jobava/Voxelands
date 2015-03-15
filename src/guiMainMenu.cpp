@@ -504,6 +504,8 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			Environment->addStaticText(wgettext("Address/Port"), rect, false, true, this, -1);
 		}
 		{
+			if (text_address == L"")
+				text_address = L"servers.voxelands.com";
 			core::rect<s32> rect(0, 0, 230, 30);
 			rect += topleft_content + v2s32(135, 200);
 			gui::IGUIEditBox *e;
