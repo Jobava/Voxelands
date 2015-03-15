@@ -2024,7 +2024,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 		// Send inventory to player
 		UpdateCrafting(peer_id);
-		SendInventory(peer_id);
+		SendInventory(peer_id,true);
 
 		// Send player items to all players
 		SendPlayerItems();
@@ -2151,15 +2151,17 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			thrown = content_craftitem_features(item->getContent()).shot_item;
 			if (thrown == CONTENT_IGNORE)
 				return;
-			item_i = i;
 			if (g_settings->getBool("tool_wear")) {
 				bool weared_out = titem->addWear(1000);
 				if (weared_out) {
 					InventoryList *mlist = player->inventory.getList("main");
 					mlist->deleteItem(item_i);
+				}else{
+					ilist->addDiff(item_i,titem);
 				}
 				SendInventory(player->peer_id);
 			}
+			item_i = i;
 		}
 
 		if (g_settings->getBool("droppable_inventory") == false || (getPlayerPrivs(player) & PRIV_BUILD) == 0) {
@@ -2403,8 +2405,11 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				}
 
 				if (titem && g_settings->getBool("tool_wear")) {
-					if (titem->addWear(wear))
+					if (titem->addWear(wear)) {
 						mlist->deleteItem(item_i);
+					}else{
+						mlist->addDiff(item_i,titem);
+					}
 					SendInventory(player->peer_id);
 				}
 			}
@@ -2550,9 +2555,11 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				ToolItem *titem = (ToolItem*)wield;
 				if ((getPlayerPrivs(player) & PRIV_SERVER) == 0 && g_settings->getBool("tool_wear")) {
 					bool weared_out = titem->addWear(10000);
+					InventoryList *mlist = player->inventory.getList("main");
 					if (weared_out) {
-						InventoryList *mlist = player->inventory.getList("main");
 						mlist->deleteItem(item_i);
+					}else{
+						mlist->addDiff(item_i,titem);
 					}
 					SendInventory(player->peer_id);
 				}
@@ -2792,9 +2799,11 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				ToolItem *titem = (ToolItem*)wield;
 				if (g_settings->getBool("tool_wear")) {
 					bool weared_out = titem->addWear(1000);
+					InventoryList *mlist = player->inventory.getList("main");
 					if (weared_out) {
-						InventoryList *mlist = player->inventory.getList("main");
 						mlist->deleteItem(item_i);
+					}else{
+						mlist->addDiff(item_i,titem);
 					}
 					SendInventory(player->peer_id);
 				}
@@ -2826,9 +2835,11 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					ToolItem *titem = (ToolItem*)wield;
 					if (g_settings->getBool("tool_wear")) {
 						bool weared_out = titem->addWear(1000);
+						InventoryList *mlist = player->inventory.getList("main");
 						if (weared_out) {
-							InventoryList *mlist = player->inventory.getList("main");
 							mlist->deleteItem(item_i);
+						}else{
+							mlist->addDiff(item_i,titem);
 						}
 						SendInventory(player->peer_id);
 					}
@@ -2943,9 +2954,11 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					ToolItem *titem = (ToolItem*)wield;
 					if (g_settings->getBool("tool_wear")) {
 						bool weared_out = titem->addWear(200);
+						InventoryList *mlist = player->inventory.getList("main");
 						if (weared_out) {
-							InventoryList *mlist = player->inventory.getList("main");
 							mlist->deleteItem(item_i);
+						}else{
+							mlist->addDiff(item_i,titem);
 						}
 						SendInventory(player->peer_id);
 					}
@@ -2993,6 +3006,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							ilist->deleteItem(item_i);
 						}else{
 							wield->remove(1);
+							ilist->addDiff(item_i,wield);
 						}
 						// Send inventory
 						UpdateCrafting(peer_id);
@@ -3557,7 +3571,9 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 								std::string dug_s = std::string("ToolItem ") + tool->getToolName() + "_water 1";
 								std::istringstream is(dug_s, std::ios::binary);
 								item = InventoryItem::deSerialize(is);
-								mlist->changeItem(item_i,item);
+								InventoryItem *ritem = mlist->changeItem(item_i,item);
+								if (ritem)
+									delete ritem;
 								item = NULL;
 								UpdateCrafting(player->peer_id);
 								SendInventory(player->peer_id);
@@ -3592,14 +3608,16 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 								{
 									u16 peer_id = *i;
 									RemoteClient *client = getClient(peer_id);
-									if(client==NULL)
+									if (client==NULL)
 										continue;
 									client->SetBlocksNotSent(modified_blocks);
 								}
 								std::string dug_s = std::string("ToolItem ") + tool->getToolName() + "_water 1";
 								std::istringstream is(dug_s, std::ios::binary);
 								item = InventoryItem::deSerialize(is);
-								mlist->changeItem(item_i,item);
+								InventoryItem *ritem = mlist->changeItem(item_i,item);
+								if (ritem)
+									delete ritem;
 								item = NULL;
 								UpdateCrafting(player->peer_id);
 								SendInventory(player->peer_id);
@@ -3618,7 +3636,9 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 									std::string dug_s = std::string("ToolItem ") + tool->getToolName() + "_lava 1";
 									std::istringstream is(dug_s, std::ios::binary);
 									item = InventoryItem::deSerialize(is);
-									mlist->changeItem(item_i,item);
+									InventoryItem *ritem = mlist->changeItem(item_i,item);
+									if (ritem)
+										delete ritem;
 									item = NULL;
 								}
 								UpdateCrafting(player->peer_id);
@@ -3675,13 +3695,13 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						&& material != CONTENT_WATER
 						&& material != CONTENT_LAVA
 					) {
+						bool dosend = false;
 						if (item != NULL) {
 							// Add a item to inventory
 							player->inventory.addItem("main", item);
 
 							// Send inventory
-							UpdateCrafting(player->peer_id);
-							SendInventory(player->peer_id);
+							dosend = true;
 						}
 
 						item = NULL;
@@ -3704,6 +3724,9 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							player->inventory.addItem("main", item);
 
 							// Send inventory
+							dosend = true;
+						}
+						if (dosend) {
 							UpdateCrafting(player->peer_id);
 							SendInventory(player->peer_id);
 						}
@@ -4028,10 +4051,12 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				InventoryList *ilist = player->inventory.getList("main");
 				if(g_settings->getBool("infinite_inventory") == false && ilist) {
 					// Remove from inventory and send inventory
-					if (mitem->getCount() == 1)
+					if (mitem->getCount() == 1) {
 						ilist->deleteItem(item_i);
-					else
+					}else{
 						mitem->remove(1);
+						ilist->addDiff(item_i,mitem);
+					}
 					// Send inventory
 					UpdateCrafting(peer_id);
 					SendInventory(peer_id);
@@ -4233,12 +4258,12 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				if (g_settings->getBool("infinite_inventory") == false) {
 					// Delete the right amount of items from the slot
 					u16 dropcount = item->getDropCount();
+					InventoryList *ilist = player->inventory.getList("main");
 					// Delete item if all gone
 					if (item->getCount() <= dropcount) {
 						if (item->getCount() < dropcount)
 							infostream<<"WARNING: Server: dropped more items"
 								<<" than the slot contains"<<std::endl;
-						InventoryList *ilist = player->inventory.getList("main");
 						// Remove from inventory and send inventory
 						if (ilist)
 							ilist->deleteItem(item_i);
@@ -4246,6 +4271,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					// Else decrement it
 					else{
 						item->remove(dropcount);
+						ilist->addDiff(item_i,item);
 					}
 					// Send inventory
 					UpdateCrafting(peer_id);
@@ -4287,6 +4313,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				if (g_settings->getBool("infinite_inventory") == false) {
 					// Delete the right amount of items from the slot
 					u16 dropcount = item->getDropCount();
+					InventoryList *ilist = player->inventory.getList("main");
 
 					// Delete item if all gone
 					if (item->getCount() <= dropcount) {
@@ -4294,12 +4321,12 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							infostream<<"WARNING: Server: dropped more items"
 									<<" than the slot contains"<<std::endl;
 
-						InventoryList *ilist = player->inventory.getList("main");
 						if (ilist)
 							// Remove from inventory and send inventory
 							ilist->deleteItem(item_i);
 					}else{
 						item->remove(dropcount);
+						ilist->addDiff(item_i,item);
 					}
 
 					// Send inventory
@@ -4368,6 +4395,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					if (g_settings->getBool("infinite_inventory") == false) {
 						// Delete the right amount of items from the slot
 						u16 dropcount = item->getDropCount();
+						InventoryList *ilist = player->inventory.getList("main");
 
 						// Delete item if all gone
 						if (item->getCount() <= dropcount) {
@@ -4375,7 +4403,6 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 								infostream<<"WARNING: Server: dropped more items"
 										<<" than the slot contains"<<std::endl;
 
-							InventoryList *ilist = player->inventory.getList("main");
 							if(ilist)
 								// Remove from inventory and send inventory
 								ilist->deleteItem(item_i);
@@ -4383,6 +4410,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						// Else decrement it
 						else{
 							item->remove(dropcount);
+							ilist->addDiff(item_i,item);
 						}
 
 						// Send inventory
@@ -4482,8 +4510,11 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				fw /= bonus;
 				w = fw;
 			}
-			if (i->addWear(w))
+			if (i->addWear(w)) {
 				l->deleteItem(0);
+			}else{
+				l->addDiff(0,i);
+			}
 		}
 		SendInventory(player->peer_id);
 		return;
@@ -4652,7 +4683,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							dir.rotateXZBy(player->getYaw());
 							pos += dir;
 							ServerActiveObject *obj = item->createSAO(&m_env,0,pos);
-							m_env.addActiveObject(obj);
+							if (obj)
+								m_env.addActiveObject(obj);
 						}
 						if (g_settings->getBool("infinite_inventory") == false) {
 							list->deleteItem(0);
@@ -4662,9 +4694,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				}
 				// Eat the action
 				delete a;
-			}
-			else
-			{
+			}else{
 				// Send inventory
 				UpdateCrafting(player->peer_id);
 				SendInventory(player->peer_id);
@@ -5017,8 +5047,7 @@ void Server::inventoryModified(InventoryContext *c, std::string id)
 	Strfnd fn(id);
 	std::string id0 = fn.next(":");
 
-	if(id0 == "nodemeta")
-	{
+	if (id0 == "nodemeta") {
 		v3s16 p;
 		p.X = mystoi(fn.next(","));
 		p.Y = mystoi(fn.next(","));
@@ -5026,15 +5055,14 @@ void Server::inventoryModified(InventoryContext *c, std::string id)
 		v3s16 blockpos = getNodeBlockPos(p);
 
 		NodeMetadata *meta = m_env.getMap().getNodeMetadata(p);
-		if(meta)
+		if (meta)
 			meta->inventoryModified();
 
 		MapBlock *block = m_env.getMap().getBlockNoCreateNoEx(blockpos);
-		if(block)
+		if (block)
 			block->raiseModified(MOD_STATE_WRITE_NEEDED);
 
 		setBlockNotSent(blockpos);
-
 		return;
 	}
 
@@ -5222,29 +5250,59 @@ void Server::SendPlayerInfos()
 	m_con.SendToAll(0, data, true);
 }
 
-void Server::SendInventory(u16 peer_id)
+void Server::SendInventory(u16 peer_id, bool full)
 {
 	DSTACK(__FUNCTION_NAME);
 
 	Player* player = m_env.getPlayer(peer_id);
 	assert(player);
 
-	/*
-		Serialize it
-	*/
+	// get also clears, so get diff for full and partial sends
+	InventoryDiff idiff = player->inventory.getDiff();
 
-	std::ostringstream os;
+	if (full) {
+		/*
+			Serialize it
+		*/
 
-	player->inventory.serialize(os);
+		std::ostringstream os(std::ios_base::binary);
 
-	std::string s = os.str();
+		writeU16(os,TOCLIENT_INVENTORY);
+		player->inventory.serialize(os);
 
-	SharedBuffer<u8> data(s.size()+2);
-	writeU16(&data[0], TOCLIENT_INVENTORY);
-	memcpy(&data[2], s.c_str(), s.size());
+		// Make data buffer
+		std::string s = os.str();
+		SharedBuffer<u8> data((u8*)s.c_str(), s.size());
 
-	// Send as reliable
-	m_con.Send(peer_id, 0, data, true);
+		// Send as reliable
+		m_con.Send(peer_id, 0, data, true);
+		return;
+	}
+	{
+		if (idiff.m_data.size() == 0)
+			return;
+
+		std::ostringstream os(std::ios_base::binary);
+
+		writeU16(os, TOCLIENT_INVENTORY_UPDATE);
+		writeU16(os, idiff.m_data.size());
+		for (std::map<std::string,std::map<u32,InventoryDiffData> >::iterator l = idiff.m_data.begin(); l != idiff.m_data.end(); l++) {
+			os<<serializeString(l->first);
+			writeU16(os,l->second.size());
+			for (std::map<u32,InventoryDiffData>::iterator i = l->second.begin(); i != l->second.end(); i++) {
+				writeU16(os,i->second.index);
+				writeU16(os,i->second.type);
+				writeU16(os,i->second.wear_count);
+			}
+		}
+
+		// Make data buffer
+		std::string s = os.str();
+		SharedBuffer<u8> data((u8*)s.c_str(), s.size());
+
+		// Send as reliable
+		m_con.Send(peer_id, 0, data, true);
+	}
 }
 
 std::string getWieldedItemString(const Player *player)
@@ -5842,15 +5900,12 @@ void Server::UpdateCrafting(u16 peer_id)
 		if(rlist && rlist->getUsedSlots() == 0)
 			player->craftresult_is_preview = true;
 
-		if(rlist && player->craftresult_is_preview)
-		{
+		if (rlist && player->craftresult_is_preview) {
 			rlist->clearItems();
 		}
-		if(clist && rlist && player->craftresult_is_preview)
-		{
+		if (clist && rlist && player->craftresult_is_preview) {
 			InventoryItem *items[9];
-			for(u16 i=0; i<9; i++)
-			{
+			for (u16 i=0; i<9; i++) {
 				items[i] = clist->getItem(i);
 			}
 

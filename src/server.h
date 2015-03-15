@@ -533,7 +533,7 @@ private:
 	// Envlock and conlock should be locked when calling these
 	void SendObjectData(float dtime);
 	void SendPlayerInfos();
-	void SendInventory(u16 peer_id);
+	void SendInventory(u16 peer_id, bool full=false);
 	// send animation info about player to all
 	void SendPlayerAnim(const Player *player, u8 animation_id);
 	// send wielded item info about all players to all players

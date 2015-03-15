@@ -338,8 +338,10 @@ InventoryList::~InventoryList()
 void InventoryList::clearItems()
 {
 	for (u32 i=0; i<m_items.size(); i++) {
-		if (m_items[i])
+		if (m_items[i]) {
 			delete m_items[i];
+			m_diff.add(m_name,i,NULL);
+		}
 	}
 
 	m_items.clear();
@@ -537,6 +539,7 @@ InventoryItem * InventoryList::changeItem(u32 i, InventoryItem *newitem)
 
 	InventoryItem *olditem = m_items[i];
 	m_items[i] = newitem;
+	m_diff.add(m_name,i,m_items[i]);
 	return olditem;
 }
 
@@ -546,6 +549,7 @@ void InventoryList::deleteItem(u32 i)
 	InventoryItem *item = changeItem(i, NULL);
 	if (item)
 		delete item;
+	m_diff.add(m_name,i,m_items[i]);
 }
 
 InventoryItem * InventoryList::addItem(InventoryItem *newitem)
@@ -605,15 +609,18 @@ InventoryItem * InventoryList::addItem(u32 i, InventoryItem *newitem)
 			newitem->remove(1);
 			m_items[i] = newitem->clone();
 			m_items[i]->setCount(1);
+			m_diff.add(m_name,i,m_items[i]);
 			return newitem;
 		}
 		m_items[i] = newitem;
+		m_diff.add(m_name,i,m_items[i]);
 		return to_item;
 	}
 
 	// If it is an empty position, it's an easy job.
 	if (to_item == NULL) {
 		m_items[i] = newitem;
+		m_diff.add(m_name,i,m_items[i]);
 		return NULL;
 	}
 
@@ -624,6 +631,7 @@ InventoryItem * InventoryList::addItem(u32 i, InventoryItem *newitem)
 	// If the item fits fully in the slot, add counter and delete it
 	if (newitem->getCount() <= to_item->freeSpace()) {
 		to_item->add(newitem->getCount());
+		m_diff.add(m_name,i,m_items[i]);
 		delete newitem;
 		return NULL;
 	}
@@ -634,9 +642,35 @@ InventoryItem * InventoryList::addItem(u32 i, InventoryItem *newitem)
 		if (!freespace)
 			return newitem;
 		to_item->add(freespace);
+		m_diff.add(m_name,i,m_items[i]);
 		newitem->remove(freespace);
 		return newitem;
 	}
+}
+
+void InventoryList::updateItem(u32 i, content_t type, u16 wear_count)
+{
+	if (type == CONTENT_IGNORE) {
+		if (m_items[i] != NULL)
+			delete m_items[i];
+		m_items[i] = NULL;
+		return;
+	}
+	if (m_items[i] != NULL) {
+		if (m_items[i]->getContent() == type) {
+			if (
+				(type&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK
+				|| (type&CONTENT_CLOTHESITEM_MASK) == CONTENT_CLOTHESITEM_MASK
+			) {
+				m_items[i]->setWear(wear_count);
+			}else{
+				m_items[i]->setCount(wear_count);
+			}
+			return;
+		}
+		delete m_items[i];
+	}
+	m_items[i] = InventoryItem::create(type,wear_count,wear_count);
 }
 
 bool InventoryList::itemFits(const u32 i, const InventoryItem *newitem)
@@ -659,18 +693,19 @@ bool InventoryList::itemFits(const u32 i, const InventoryItem *newitem)
 
 bool InventoryList::roomForItem(const InventoryItem *item)
 {
-	for(u32 i=0; i<m_items.size(); i++)
-		if(itemFits(i, item))
+	for (u32 i=0; i<m_items.size(); i++) {
+		if (itemFits(i, item))
 			return true;
+	}
 	return false;
 }
 
 bool InventoryList::roomForCookedItem(const InventoryItem *item)
 {
-	if(!item)
+	if (!item)
 		return false;
 	const InventoryItem *cook = item->createCookResult();
-	if(!cook)
+	if (!cook)
 		return false;
 	bool room = roomForItem(cook);
 	delete cook;
@@ -689,11 +724,14 @@ InventoryItem * InventoryList::takeItem(u32 i, u32 count)
 
 	if (count >= item->getCount()) {
 		// Get the item by swapping NULL to its place
-		return changeItem(i, NULL);
+		InventoryItem *item = changeItem(i, NULL);
+		m_diff.add(m_name,i,m_items[i]);
+		return item;
 	}else{
 		InventoryItem *item2 = item->clone();
 		item->remove(count);
 		item2->setCount(count);
+		m_diff.add(m_name,i,m_items[i]);
 		return item2;
 	}
 
@@ -719,6 +757,7 @@ void InventoryList::decrementMaterials(u16 count)
 		InventoryItem *item = takeItem(i, count);
 		if (item)
 			delete item;
+		m_diff.add(m_name,i,m_items[i]);
 	}
 }
 

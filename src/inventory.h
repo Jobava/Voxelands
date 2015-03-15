@@ -519,6 +519,74 @@ private:
 	u16 m_wear;
 };
 
+class InventoryDiffData
+{
+public:
+	InventoryDiffData(u32 i, content_t t, u16 c):
+		index(i),
+		type(t),
+		wear_count(c)
+	{
+	}
+	InventoryDiffData():
+		index(0),
+		type(CONTENT_IGNORE),
+		wear_count(0)
+	{
+	}
+
+	u32 index;
+	content_t type;
+	u16 wear_count;
+};
+
+class InventoryDiff
+{
+public:
+	InventoryDiff()
+	{
+		clear();
+	}
+	~InventoryDiff()
+	{
+		clear();
+	}
+
+	void clear()
+	{
+		m_data.clear();
+	}
+
+	void add(std::string list, u32 index, content_t type, u16 count_wear)
+	{
+		m_data[list][index] = InventoryDiffData(index,type,count_wear);
+	}
+
+	void add(std::string list, u32 index, InventoryItem *item)
+	{
+		if (item == NULL) {
+			add(list,index,CONTENT_IGNORE,0);
+		}else if (
+			(item->getContent()&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK
+			|| (item->getContent()&CONTENT_CLOTHESITEM_MASK) == CONTENT_CLOTHESITEM_MASK
+		) {
+			add(list,index,item->getContent(),item->getWear());
+		}else{
+			add(list,index,item->getContent(),item->getCount());
+		}
+	}
+
+	void merge(InventoryDiff &other)
+	{
+		for (std::map<std::string,std::map<u32,InventoryDiffData> >::iterator i = other.m_data.begin(); i != other.m_data.end(); i++) {
+			m_data[i->first].swap(i->second);
+			i->second.clear();
+		}
+	}
+
+	std::map<std::string,std::map<u32,InventoryDiffData> > m_data;
+};
+
 class InventoryList
 {
 public:
@@ -579,6 +647,9 @@ public:
 	// If can be added fully, NULL is returned.
 	InventoryItem * addItem(u32 i, InventoryItem *newitem);
 
+	// Updates item type/count/wear
+	void updateItem(u32 i, content_t type, u16 wear_count);
+
 	// Checks whether the item could be added to the given slot
 	bool itemFits(const u32 i, const InventoryItem *newitem);
 
@@ -601,6 +672,9 @@ public:
 
 	void print(std::ostream &o);
 
+	void addDiff(u32 index, InventoryItem *item) {m_diff.add(m_name,index,item);}
+	InventoryDiff &getDiff() {return m_diff;}
+
 private:
 	core::array<InventoryItem*> m_items;
 	u32 m_size;
@@ -608,7 +682,7 @@ private:
 	std::map<content_t,bool> m_allowed;
 	std::map<content_t,bool> m_denied;
 	bool m_stackable;
-	//bool m_dirty;
+	InventoryDiff m_diff;
 };
 
 class Inventory
@@ -634,9 +708,18 @@ public:
 	InventoryItem * addItem(const std::string &listname, InventoryItem *newitem)
 	{
 		InventoryList *list = getList(listname);
-		if(list == NULL)
+		if (list == NULL)
 			return newitem;
 		return list->addItem(newitem);
+	}
+	InventoryDiff &getDiff()
+	{
+		m_diff.clear();
+		for (u32 i=0; i<m_lists.size(); i++) {
+			InventoryDiff &diff = m_lists[i]->getDiff();
+			m_diff.merge(diff);
+		}
+		return m_diff;
 	}
 
 private:
@@ -644,6 +727,7 @@ private:
 	const s32 getListIndex(const std::string &name) const;
 
 	core::array<InventoryList*> m_lists;
+	InventoryDiff m_diff;
 };
 
 class Player;
