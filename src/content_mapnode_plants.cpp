@@ -116,6 +116,7 @@ void content_mapnode_plants(bool repeat)
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
 	content_nodebox_youngtree(f);
 	f->setInventoryTextureNodeBox(i,"tree_top.png", "tree.png", "tree.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
@@ -124,8 +125,6 @@ void content_mapnode_plants(bool repeat)
 	f->fuel_time = 20;
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
-	f->walkable = false;
-	f->climbable = true;
 	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
@@ -138,6 +137,7 @@ void content_mapnode_plants(bool repeat)
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
 	content_nodebox_youngtree(f);
 	f->setInventoryTextureNodeBox(i,"jungletree_top.png", "jungletree.png", "jungletree.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
@@ -146,8 +146,6 @@ void content_mapnode_plants(bool repeat)
 	f->fuel_time = 20;
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
-	f->walkable = false;
-	f->climbable = true;
 	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
@@ -160,6 +158,7 @@ void content_mapnode_plants(bool repeat)
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
 	content_nodebox_youngtree(f);
 	f->setInventoryTextureNodeBox(i,"apple_tree_top.png", "apple_tree.png", "apple_tree.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
@@ -168,8 +167,6 @@ void content_mapnode_plants(bool repeat)
 	f->fuel_time = 20;
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
-	f->walkable = false;
-	f->climbable = true;
 	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
@@ -182,6 +179,7 @@ void content_mapnode_plants(bool repeat)
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
+	f->light_propagates = true;
 	content_nodebox_youngtree(f);
 	f->setInventoryTextureNodeBox(i,"conifer_tree_top.png", "conifer_tree.png", "conifer_tree.png");
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
@@ -190,8 +188,6 @@ void content_mapnode_plants(bool repeat)
 	f->fuel_time = 20;
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
-	f->walkable = false;
-	f->climbable = true;
 	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
