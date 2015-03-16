@@ -3,8 +3,8 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Adolfo Jayme Barrientos, 2014
-# Pablo Roberto Francisco Lezaeta Reyes <prflr88@gmail.com>, 2014-2015
+# Wuzzy <almikes@aol.com>, 2015
+# Wuzzy <almikes@aol.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Voxelands\n"
@@ -12,1849 +12,1849 @@ msgstr ""
 "POT-Creation-Date: 2015-03-16 15:32+1000\n"
 "PO-Revision-Date: 2015-03-16 05:34+0000\n"
 "Last-Translator: Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
-"Language-Team: Spanish (http://www.transifex.com/projects/p/voxelands/language/es/)\n"
+"Language-Team: Lojban (http://www.transifex.com/projects/p/voxelands/language/jbo/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: jbo\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: src/character_creator.cpp:58
 msgid "White Skin"
-msgstr "Tez blanca"
+msgstr "lo blabi pilka"
 
 #: src/character_creator.cpp:59
 msgid "Red Skin"
-msgstr "Tez roja"
+msgstr "lo xunre pilka"
 
 #: src/character_creator.cpp:60
 msgid "Green Skin"
-msgstr "Tez verde"
+msgstr "lo crino pilka"
 
 #: src/character_creator.cpp:61
 msgid "Fair Skin"
-msgstr "Tez clara"
+msgstr "lo kandi pilka"
 
 #: src/character_creator.cpp:62
 msgid "Tanned Skin"
-msgstr "Tez morena"
+msgstr "lo bunre pilka"
 
 #: src/character_creator.cpp:63
 msgid "Dark Skin"
-msgstr "Tez oscura"
+msgstr "lo xekri bunre pilka"
 
 #: src/character_creator.cpp:64
 msgid "Black Skin"
-msgstr "Tez negra"
+msgstr "lo xekri pilka"
 
 #: src/character_creator.cpp:66
 msgid "Human Face"
-msgstr "Cara de humano"
+msgstr "lo remna flira"
 
 #: src/character_creator.cpp:67
 msgid "Elven Face"
-msgstr "Cara de elfo"
+msgstr "lo clakercrida filra"
 
 #: src/character_creator.cpp:68
 msgid "Dwarven Face"
-msgstr "Cara de gnomo"
+msgstr "lo torcrida flira"
 
 #: src/character_creator.cpp:69
 msgid "Alien Face"
-msgstr "Cara de extraterrestre"
+msgstr "lo fange flira"
 
 #: src/character_creator.cpp:71
 msgid "White Hair"
-msgstr "Cabello blanco"
+msgstr "lo blabi kerfa"
 
 #: src/character_creator.cpp:72
 msgid "Blue Hair"
-msgstr "Cabello negro"
+msgstr "lo blanu kerfa"
 
 #: src/character_creator.cpp:73
 msgid "Green Hair"
-msgstr "Cabello verde"
+msgstr "lo crino kerfa"
 
 #: src/character_creator.cpp:74
 msgid "Orange Hair"
-msgstr "Cabello naranja"
+msgstr "lo narju kerfa"
 
 #: src/character_creator.cpp:75
 msgid "Brown Hair"
-msgstr "Cabello marrón"
+msgstr "lo bunre kerfa"
 
 #: src/character_creator.cpp:76
 msgid "Purple Hair"
-msgstr "Cabello púrpura"
+msgstr "lo zirpu kerfa"
 
 #: src/character_creator.cpp:77
 msgid "Red Hair"
-msgstr "Cabello rojo"
+msgstr "lo xunre kerfa"
 
 #: src/character_creator.cpp:78
 msgid "Blonde Hair"
-msgstr "Cabello rubio"
+msgstr "lo pelxu bunre kerfa"
 
 #: src/character_creator.cpp:79
 msgid "Black Hair"
-msgstr "Cabello negro"
+msgstr "lo xekri kerfa"
 
 #: src/character_creator.cpp:81
 msgid "Short Hair"
-msgstr "Cabello corto"
+msgstr "lo tordu kerfa"
 
 #: src/character_creator.cpp:82
 msgid "Medium Hair"
-msgstr "Cabello medio"
+msgstr "lo no'e clani kerfa"
 
 #: src/character_creator.cpp:83
 msgid "Long Hair"
-msgstr "Cabello largo"
+msgstr "lo clani kerfa"
 
 #: src/character_creator.cpp:84
 msgid "Styled Hair"
-msgstr "Cabello estilizado"
+msgstr ""
 
 #: src/character_creator.cpp:86
 msgid "White Eyes"
-msgstr "Ojos de color blanco"
+msgstr "lo blabi kanla"
 
 #: src/character_creator.cpp:87
 msgid "Blue Eyes"
-msgstr "Ojos de color azul"
+msgstr "lo blanu kanla"
 
 #: src/character_creator.cpp:88
 msgid "Green Eyes"
-msgstr "Ojos de color verde"
+msgstr "lo crino kanla"
 
 #: src/character_creator.cpp:89
 msgid "Orange Eyes"
-msgstr "Ojos de color naranja"
+msgstr "lo narju kanla"
 
 #: src/character_creator.cpp:90
 msgid "Brown Eyes"
-msgstr "Ojos de color marrón"
+msgstr "lo bunre kanla"
 
 #: src/character_creator.cpp:91
 msgid "Purple Eyes"
-msgstr "Ojos de color púrpura"
+msgstr "lo zirpu kanla"
 
 #: src/character_creator.cpp:92
 msgid "Red Eyes"
-msgstr "Ojos de color rojo"
+msgstr "lo xunre kanla"
 
 #: src/character_creator.cpp:93
 msgid "Yellow Eyes"
-msgstr "Ojos de color amarillo"
+msgstr "lo pelxu kanla"
 
 #: src/character_creator.cpp:94
 msgid "Black Eyes"
-msgstr "Ojos de color negro"
+msgstr "lo xekri kanla"
 
 #: src/character_creator.cpp:96
 msgid "White T-Shirt"
-msgstr "Camiseta blanca"
+msgstr "lo blabi cekrti"
 
 #: src/character_creator.cpp:97
 msgid "Blue T-Shirt"
-msgstr "Camiseta azul"
+msgstr "lo blanu cekrti"
 
 #: src/character_creator.cpp:98
 msgid "Green T-Shirt"
-msgstr "Camiseta verde"
+msgstr "lo crino cekrti"
 
 #: src/character_creator.cpp:99
 msgid "Orange T-Shirt"
-msgstr "Camiseta naranja"
+msgstr "lo narju cekrti"
 
 #: src/character_creator.cpp:100
 msgid "Purple T-Shirt"
-msgstr "Camiseta púrpura"
+msgstr "lo zirpu cekrti"
 
 #: src/character_creator.cpp:101
 msgid "Red T-Shirt"
-msgstr "Camiseta roja"
+msgstr "lo xunre cekrti"
 
 #: src/character_creator.cpp:102
 msgid "Yellow T-Shirt"
-msgstr "Camiseta amarilla"
+msgstr "lo pelxu cekrti"
 
 #: src/character_creator.cpp:103
 msgid "Black T-Shirt"
-msgstr "Camiseta negra"
+msgstr "lo xekri cekrti"
 
 #: src/character_creator.cpp:105
 msgid "White Pants"
-msgstr "Pantalones blancos"
+msgstr "lo blabi palku"
 
 #: src/character_creator.cpp:106
 msgid "Blue Pants"
-msgstr "Pantalones azules"
+msgstr "lo blanu palku"
 
 #: src/character_creator.cpp:107
 msgid "Green Pants"
-msgstr "Pantalones verdes"
+msgstr "lo crino palku"
 
 #: src/character_creator.cpp:108
 msgid "Orange Pants"
-msgstr "Pantalones naranja"
+msgstr "lo narju palku"
 
 #: src/character_creator.cpp:109
 msgid "Purple Pants"
-msgstr "Pantalones púrpura"
+msgstr "lo zirpu palku"
 
 #: src/character_creator.cpp:110
 msgid "Red Pants"
-msgstr "Pantalones verdes"
+msgstr "lo xunre palku"
 
 #: src/character_creator.cpp:111
 msgid "Yellow Pants"
-msgstr "Pantalones amarillos"
+msgstr "lo pelxu palku"
 
 #: src/character_creator.cpp:112
 msgid "Black Pants"
-msgstr "Pantalones negros"
+msgstr "lo xekri palku"
 
 #: src/character_creator.cpp:114 src/content_clothesitem.cpp:1706
 msgid "Leather Shoes"
-msgstr "Zapatos de cuero"
+msgstr "lo revyskapi cutci"
 
 #: src/character_creator.cpp:115 src/content_clothesitem.cpp:2522
 msgid "Fur Shoes"
-msgstr "Zapatos de piel"
+msgstr "lo sirsunla cutci"
 
 #: src/character_creator.cpp:116 src/content_clothesitem.cpp:945
 msgid "Canvas Shoes"
-msgstr "Zapatos de lona"
+msgstr "lo fanbu'u cutci"
 
 #: src/character_creator.cpp:205
 msgid ""
 "Here you can create your default character, this is how other players will see you in-game. When you join a new server you will start with the clothing you select here. Additional clothing, both protective and decorative, can be crafted in-game.\n"
 "You can return here from the main menu anytime to change your character."
-msgstr "Aquí puede crear su personaje predeterminado, que le representará ante otros jugadores durante las partidas. Cuando se una a un servidor nuevo comenzará con las ropas que elija aquí. Se pueden elaborar prendas adicionales, de protección y decorativas, durante el juego.\nPodrá volver aquí en cualquier momento, mediante el menú principal, para cambiar su personaje."
+msgstr ""
 
 #: src/character_creator.cpp:226
 msgid "Create Your Character"
-msgstr "Crea tu personaje"
+msgstr ""
 
 #: src/character_creator.cpp:233
 msgid "Male"
-msgstr "Masculino"
+msgstr "nakni"
 
 #: src/character_creator.cpp:238
 msgid "Female"
-msgstr "Femenino"
+msgstr "fetsi"
 
 #: src/character_creator.cpp:245
 msgid "Taller"
-msgstr "Alto"
+msgstr "clamau"
 
 #: src/character_creator.cpp:250
 msgid "Shorter"
-msgstr "Bajo"
+msgstr "tormau"
 
 #: src/character_creator.cpp:257
 msgid "Wider"
-msgstr "Ancho"
+msgstr "ganmau"
 
 #: src/character_creator.cpp:262
 msgid "Thinner"
-msgstr "Delgado"
+msgstr "jakmau"
 
 #: src/character_creator.cpp:421
 msgid "Done"
-msgstr "Listo"
+msgstr ""
 
 #: src/character_creator.cpp:426 src/guiKeyChangeMenu.cpp:313
 #: src/keycode.cpp:229
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr ""
 
 #: src/content_clothesitem.cpp:53
 msgid "Space Suit Pants"
-msgstr "Pantalón de traje espacial"
+msgstr "lo kesypastu palku"
 
 #: src/content_clothesitem.cpp:75
 msgid "Space Suit Shirt"
-msgstr "Camisa de traje espacial"
+msgstr "lo kesypastu creka"
 
 #: src/content_clothesitem.cpp:97
 msgid "Space Suit Helmet"
-msgstr "Casco de traje espacial"
+msgstr "lo kesypastu badmapku"
 
 #: src/content_clothesitem.cpp:113
 msgid "Space Suit Boots"
-msgstr "Botas de traje espacial"
+msgstr "lo kesypastu tupcutci"
 
 #: src/content_clothesitem.cpp:130
 msgid "Cotton T-Shirt"
-msgstr "Camiseta de algodón"
+msgstr "lo mapni cekrti"
 
 #: src/content_clothesitem.cpp:144
 msgid "Blue Cotton T-Shirt"
-msgstr "Camiseta de algodón azul"
+msgstr "lo blanu ke mapni cekrti"
 
 #: src/content_clothesitem.cpp:158
 msgid "Green Cotton T-Shirt"
-msgstr "Camiseta de algodón verde"
+msgstr "lo crino ke mapni cekrti"
 
 #: src/content_clothesitem.cpp:172
 msgid "Orange Cotton Tshirt"
-msgstr "Camiseta de algodón naranja"
+msgstr "lo narju ke mapni cekrti"
 
 #: src/content_clothesitem.cpp:186
 msgid "Purple Cotton T-Shirt"
-msgstr "Camiseta de algodón púrpura"
+msgstr "lo zirpu ke mapni cekrti"
 
 #: src/content_clothesitem.cpp:200
 msgid "Red Cotton T-Shirt"
-msgstr "Camiseta de algodón roja"
+msgstr "lo xunre ke mapni cekrti"
 
 #: src/content_clothesitem.cpp:214
 msgid "Yellow Cotton T-Shirt"
-msgstr "Camiseta de algodón amarilla"
+msgstr "lo pelxu ke mapni cekrti"
 
 #: src/content_clothesitem.cpp:228
 msgid "Black Cotton T-Shirt"
-msgstr "Camiseta de algodón negra"
+msgstr "lo xekri ke mapni cekrti"
 
 #: src/content_clothesitem.cpp:243
 msgid "Cotton Shirt"
-msgstr "Camisa de algodón"
+msgstr "lo mapni creka"
 
 #: src/content_clothesitem.cpp:257
 msgid "Blue Cotton Shirt"
-msgstr "Camisa de algodón azul"
+msgstr "lo blanu ke mapni creka"
 
 #: src/content_clothesitem.cpp:271
 msgid "Green Cotton Shirt"
-msgstr "Camisa de algodón verde"
+msgstr "lo crino ke mapni creka"
 
 #: src/content_clothesitem.cpp:285
 msgid "Orange Cotton Shirt"
-msgstr "Camisa de algodón naranja"
+msgstr "lo narju ke mapni creka"
 
 #: src/content_clothesitem.cpp:299
 msgid "Purple Cotton Shirt"
-msgstr "Camisa de algodón púrpura"
+msgstr "lo zirpu ke mapni creka"
 
 #: src/content_clothesitem.cpp:313
 msgid "Red Cotton Shirt"
-msgstr "Camisa de algodón roja"
+msgstr "lo xunre ke mapni creka"
 
 #: src/content_clothesitem.cpp:327
 msgid "Yellow Cotton Shirt"
-msgstr "Camisa de algodón amarilla"
+msgstr "lo pelxu ke mapni creka"
 
 #: src/content_clothesitem.cpp:341
 msgid "Black Cotton Shirt"
-msgstr "Camisa de algodón negra"
+msgstr "lo xekri ke mapni creka"
 
 #: src/content_clothesitem.cpp:356
 msgid "Cotton Shorts"
-msgstr "Pantalón corto de algodón"
+msgstr "lo mapni torpalku"
 
 #: src/content_clothesitem.cpp:371
 msgid "Blue Cotton Shorts"
-msgstr "Pantalón corto de algodón azul"
+msgstr "lo blanu ke mapni torpalku"
 
 #: src/content_clothesitem.cpp:386
 msgid "Green Cotton Shorts"
-msgstr "Pantalón corto de algodón verde"
+msgstr "lo crino ke mapni torpalku"
 
 #: src/content_clothesitem.cpp:401
 msgid "Orange Cotton Shorts"
-msgstr "Pantalón corto de algodón naranja"
+msgstr "lo narju ke mapni torpalku"
 
 #: src/content_clothesitem.cpp:416
 msgid "Purple Cotton Shorts"
-msgstr "Pantalón corto de algodón púrpura"
+msgstr "lo zirpu ke mapni torpalku"
 
 #: src/content_clothesitem.cpp:431
 msgid "Red Cotton Shorts"
-msgstr "Pantalón corto de algodón rojo"
+msgstr "lo xunre ke mapni torpalku"
 
 #: src/content_clothesitem.cpp:446
 msgid "Yellow Cotton Shorts"
-msgstr "Pantalón corto de algodón amarillo"
+msgstr "lo pelxu ke mapni torpalku"
 
 #: src/content_clothesitem.cpp:461
 msgid "Black Cotton Shorts"
-msgstr "Pantalón corto de algodón negro"
+msgstr "lo xekri ke mapni torpalku"
 
 #: src/content_clothesitem.cpp:477
 msgid "Cotton Hat"
-msgstr "Sombrero de algodón"
+msgstr "lo mapni mapku"
 
 #: src/content_clothesitem.cpp:491
 msgid "Blue Cotton Hat"
-msgstr "Sombrero de algodón azul"
+msgstr "lo blanu ke mapni mapku"
 
 #: src/content_clothesitem.cpp:505
 msgid "Green Cotton Hat"
-msgstr "Sombrero de algodón verde"
+msgstr "lo crino ke mapni mapku"
 
 #: src/content_clothesitem.cpp:519
 msgid "Orange Cotton Hat"
-msgstr "Sombrero de algodón naranja"
+msgstr "lo narju ke mapni mapku"
 
 #: src/content_clothesitem.cpp:533
 msgid "Purple Cotton Hat"
-msgstr "Sombrero de algodón púrpura"
+msgstr "lo zirpu ke mapni mapku"
 
 #: src/content_clothesitem.cpp:547
 msgid "Red Cotton Hat"
-msgstr "Sombrero de algodón rojo"
+msgstr "lo xunre ke mapni mapku"
 
 #: src/content_clothesitem.cpp:561
 msgid "Yellow Cotton Hat"
-msgstr "Sombrero de algodón amarillo"
+msgstr "lo pelxu ke mapni mapku"
 
 #: src/content_clothesitem.cpp:575
 msgid "Black Cotton Hat"
-msgstr "Sombrero de algodón negro"
+msgstr "lo xekri ke mapni mapku"
 
 #: src/content_clothesitem.cpp:590
 msgid "Cotton Tie"
-msgstr "Corbata de algodón"
+msgstr "lo mapni dadne'ota'u"
 
 #: src/content_clothesitem.cpp:604
 msgid "Blue Cotton Tie"
-msgstr "Corbata de algodón azul"
+msgstr "lo blanu ke mapni dadne'ota'u"
 
 #: src/content_clothesitem.cpp:618
 msgid "Green Cotton Tie"
-msgstr "Corbata de algodón verde"
+msgstr "lo crino ke mapni dadne'ota'u"
 
 #: src/content_clothesitem.cpp:632
 msgid "Orange Cotton Tie"
-msgstr "Corbata de algodón naranja"
+msgstr "lo narju ke mapni dadne'ota'u"
 
 #: src/content_clothesitem.cpp:646
 msgid "Purple Cotton Tie"
-msgstr "Corbata de algodón púrpura"
+msgstr "lo zirpu ke mapni dadne'ota'u"
 
 #: src/content_clothesitem.cpp:660
 msgid "Red Cotton Tie"
-msgstr "Corbata de algodón roja"
+msgstr "lo xunre ke mapni dadne'ota'u"
 
 #: src/content_clothesitem.cpp:674
 msgid "Yellow Cotton Tie"
-msgstr "Corbata de algodón amarilla"
+msgstr "lo pelxu ke mapni dadne'ota'u"
 
 #: src/content_clothesitem.cpp:688
 msgid "Black Cotton Tie"
-msgstr "Corbata de algodón negra"
+msgstr "lo xekri ke mapni dadne'ota'u"
 
 #: src/content_clothesitem.cpp:703
 msgid "Canvas Shirt"
-msgstr "Camisa de lona"
+msgstr "lo fanbu'u creka"
 
 #: src/content_clothesitem.cpp:718
 msgid "Blue Canvas Shirt"
-msgstr "Camisa de lona azul"
+msgstr "lo blanu ke fanbu'u creka"
 
 #: src/content_clothesitem.cpp:733
 msgid "Green Canvas Shirt"
-msgstr "Camisa de lona verde"
+msgstr "lo crino ke fanbu'u creka"
 
 #: src/content_clothesitem.cpp:748
 msgid "Orange Canvas Shirt"
-msgstr "Camisa de lona naranja"
+msgstr "lo narju ke fanbu'u creka"
 
 #: src/content_clothesitem.cpp:763
 msgid "Purple Canvas Shirt"
-msgstr "Camisa de lona púrpura"
+msgstr "lo zirpu ke fanbu'u creka"
 
 #: src/content_clothesitem.cpp:778
 msgid "Red Canvas Shirt"
-msgstr "Camisa de lona roja"
+msgstr "lo xunre ke fanbu'u creka"
 
 #: src/content_clothesitem.cpp:793
 msgid "Yellow Canvas Shirt"
-msgstr "Camisa de lona amarilla"
+msgstr "lo pelxu ke fanbu'u creka"
 
 #: src/content_clothesitem.cpp:808
 msgid "Black Canvas Shirt"
-msgstr "Camisa de lona negra"
+msgstr "lo xekri ke fanbu'u creka"
 
 #: src/content_clothesitem.cpp:824
 msgid "Canvas Pants"
-msgstr "Pantalón de lona"
+msgstr "lo fanbu'u palku"
 
 #: src/content_clothesitem.cpp:839
 msgid "Blue Canvas Pants"
-msgstr "Pantalón de lona azul"
+msgstr "lo blanu ke fanbu'u palku"
 
 #: src/content_clothesitem.cpp:854
 msgid "Green Canvas Pants"
-msgstr "Pantalón de lona verde"
+msgstr "lo crino ke fanbu'u palku"
 
 #: src/content_clothesitem.cpp:869
 msgid "Orange Canvas Pants"
-msgstr "Pantalón de lona naranja"
+msgstr "lo narju ke fanbu'u palku"
 
 #: src/content_clothesitem.cpp:884
 msgid "Purple Canvas Pants"
-msgstr "Pantalón de lona púrpura"
+msgstr "lo zirpu ke fanbu'u palku"
 
 #: src/content_clothesitem.cpp:899
 msgid "Red Canvas Pants"
-msgstr "Pantalón de lona roja"
+msgstr "lo xunre ke fanbu'u palku"
 
 #: src/content_clothesitem.cpp:914
 msgid "Yellow Canvas Pants"
-msgstr "Pantalón de lona amarillo"
+msgstr "lo pelxu ke fanbu'u palku"
 
 #: src/content_clothesitem.cpp:929
 msgid "Black Canvas Pants"
-msgstr "Pantalón de lona negro"
+msgstr "lo xekri ke fanbu'u palku"
 
 #: src/content_clothesitem.cpp:959
 msgid "Blue Canvas Shoes"
-msgstr "Zapatos de lona azules"
+msgstr "lo blanu ke fanbu'u cutci"
 
 #: src/content_clothesitem.cpp:973
 msgid "Green Canvas Shoes"
-msgstr "Zapatos de lona verdes"
+msgstr "lo crino ke fanbu'u cutci"
 
 #: src/content_clothesitem.cpp:987
 msgid "Orange Canvas Shoes"
-msgstr "Zapatos de lona naranjas"
+msgstr "lo narju ke fanbu'u cutci"
 
 #: src/content_clothesitem.cpp:1001
 msgid "Purple Canvas Shoes"
-msgstr "Zapatos de lona púrpuras"
+msgstr "lo zirpu ke fanbu'u cutci"
 
 #: src/content_clothesitem.cpp:1015
 msgid "Red Canvas Shoes"
-msgstr "Zapatos de lona rojos"
+msgstr "lo xunre ke fanbu'u cutci"
 
 #: src/content_clothesitem.cpp:1029
 msgid "Yellow Canvas Shoes"
-msgstr "Zapatos de lona amarillos"
+msgstr "lo pelxu ke fanbu'u cutci"
 
 #: src/content_clothesitem.cpp:1043
 msgid "Black Canvas Shoes"
-msgstr "Zapatos de lona negros"
+msgstr "lo xekri ke fanbu'u cutci"
 
 #: src/content_clothesitem.cpp:1058
 msgid "Canvas Belt"
-msgstr "Cinturón de lona"
+msgstr "lo fanbu'u karli"
 
 #: src/content_clothesitem.cpp:1072
 msgid "Blue Canvas Belt"
-msgstr "Cinturón de lona azul"
+msgstr "lo blanu ke fanbu'u karli"
 
 #: src/content_clothesitem.cpp:1086
 msgid "Green Canvas Belt"
-msgstr "Cinturón de lona verde"
+msgstr "lo crino ke fanbu'u karli"
 
 #: src/content_clothesitem.cpp:1100
 msgid "Orange Canvas Belt"
-msgstr "Cinturón de lona naranja"
+msgstr "lo narju ke fanbu'u karli"
 
 #: src/content_clothesitem.cpp:1114
 msgid "Purple Canvas Belt"
-msgstr "Cinturón de lona púrpura"
+msgstr "lo zirpu ke fanbu'u karli"
 
 #: src/content_clothesitem.cpp:1128
 msgid "Red Canvas Belt"
-msgstr "Cinturón de lona rojo"
+msgstr "lo xunre ke fanbu'u karli"
 
 #: src/content_clothesitem.cpp:1142
 msgid "Yellow Canvas Belt"
-msgstr "Cinturón de lona amarillo"
+msgstr "lo pelxu ke fanbu'u karli"
 
 #: src/content_clothesitem.cpp:1156
 msgid "Black Canvas Belt"
-msgstr "Cinturón de lona negro"
+msgstr "lo xekri ke fanbu'u karli"
 
 #: src/content_clothesitem.cpp:1171
 msgid "Leather Jacket"
-msgstr "Chaqueta de cuero"
+msgstr "lo revyskapi kosta"
 
 #: src/content_clothesitem.cpp:1186
 msgid "White Leather Jacket"
-msgstr "Chaqueta de cuero blanca"
+msgstr "lo blabi ke revyskapi kosta"
 
 #: src/content_clothesitem.cpp:1201
 msgid "Blue Leather Jacket"
-msgstr "Chaqueta de cuero azul"
+msgstr "lo blanu ke revyskapi kosta"
 
 #: src/content_clothesitem.cpp:1216
 msgid "Green Leather Jacket"
-msgstr "Chaqueta de cuero verde"
+msgstr "lo crino ke revyskapi kosta"
 
 #: src/content_clothesitem.cpp:1231
 msgid "Orange Leather Jacket"
-msgstr "Chaqueta de cuero naranja"
+msgstr "lo narju ke revyskapi kosta"
 
 #: src/content_clothesitem.cpp:1246
 msgid "Purple Leather Jacket"
-msgstr "Chaqueta de cuero púrpura"
+msgstr "lo zirpu ke revyskapi kosta"
 
 #: src/content_clothesitem.cpp:1261
 msgid "Red Leather Jacket"
-msgstr "Chaqueta de cuero roja"
+msgstr "lo xunre ke revyskapi kosta"
 
 #: src/content_clothesitem.cpp:1276
 msgid "Yellow Leather Jacket"
-msgstr "Chaqueta de cuero amarilla"
+msgstr "lo pelxu ke revyskapi kosta"
 
 #: src/content_clothesitem.cpp:1291
 msgid "Black Leather Jacket"
-msgstr "Chaqueta de cuero negra"
+msgstr "lo xekri ke revyskapi kosta"
 
 #: src/content_clothesitem.cpp:1307
 msgid "Leather Pants"
-msgstr "Pantalón de cuero"
+msgstr "lo revyskapi palku"
 
 #: src/content_clothesitem.cpp:1322
 msgid "White Leather Pants"
-msgstr "Pantalón de cuero blanco"
+msgstr "lo blabi ke revyskapi palku"
 
 #: src/content_clothesitem.cpp:1337
 msgid "Blue Leather Pants"
-msgstr "Pantalón de cuero azul"
+msgstr "lo blanu ke revyskapi palku"
 
 #: src/content_clothesitem.cpp:1352
 msgid "Green Leather Pants"
-msgstr "Pantalón de cuero verde"
+msgstr "lo crino ke revyskapi palku"
 
 #: src/content_clothesitem.cpp:1367
 msgid "Orange Leather Pants"
-msgstr "Pantalón de cuero naranja"
+msgstr "lo narju ke revyskapi palku"
 
 #: src/content_clothesitem.cpp:1382
 msgid "Purple Leather Pants"
-msgstr "Pantalón de cuero púrpura"
+msgstr "lo zirpu ke revyskapi palku"
 
 #: src/content_clothesitem.cpp:1397
 msgid "Red Leather Pants"
-msgstr "Pantalón de cuero rojo"
+msgstr "lo xunre ke revyskapi palku"
 
 #: src/content_clothesitem.cpp:1412
 msgid "Yellow Leather Pants"
-msgstr "Pantalón de cuero amarillo"
+msgstr "lo pelxu ke revyskapi palku"
 
 #: src/content_clothesitem.cpp:1427
 msgid "Black Leather Pants"
-msgstr "Pantalón de cuero negro"
+msgstr "lo xekri ke revyskapi palku"
 
 #: src/content_clothesitem.cpp:1443
 msgid "Leather Hat"
-msgstr "Sombrero de cuero"
+msgstr "lo revyskapi mapku"
 
 #: src/content_clothesitem.cpp:1457
 msgid "White Leather Hat"
-msgstr "Sombrero de cuero blanco"
+msgstr "lo blabi ke revyskapi mapku"
 
 #: src/content_clothesitem.cpp:1471
 msgid "Blue Leather Hat"
-msgstr "Sombrero de cuero azul"
+msgstr "lo blanu ke revyskapi mapku"
 
 #: src/content_clothesitem.cpp:1485
 msgid "Green Leather Hat"
-msgstr "Sombrero de cuero verde"
+msgstr "lo crino ke revyskapi mapku"
 
 #: src/content_clothesitem.cpp:1499
 msgid "Orange Leather Hat"
-msgstr "Sombrero de cuero naranja"
+msgstr "lo narju ke revyskapi mapku"
 
 #: src/content_clothesitem.cpp:1513
 msgid "Purple Leather Hat"
-msgstr "Sombrero de cuero púrpura"
+msgstr "lo zirpu ke revyskapi mapku"
 
 #: src/content_clothesitem.cpp:1527
 msgid "Red Leather Hat"
-msgstr "Sombrero de cuero rojo"
+msgstr "lo xunre ke revyskapi mapku"
 
 #: src/content_clothesitem.cpp:1541
 msgid "Yellow Leather Hat"
-msgstr "Sombrero de cuero amarillo"
+msgstr "lo pelxu ke revyskapi mapku"
 
 #: src/content_clothesitem.cpp:1555
 msgid "Black Leather Hat"
-msgstr "Sombrero de cuero negro"
+msgstr "lo xekri ke revyskapi mapku"
 
 #: src/content_clothesitem.cpp:1570
 msgid "Leather Helmet"
-msgstr "Casco de cuero"
+msgstr "lo revyskapi badmapku"
 
 #: src/content_clothesitem.cpp:1585
 msgid "White Leather Helmet"
-msgstr "Casco de cuero blanco"
+msgstr "lo blabi ke revyskapi badmapku"
 
 #: src/content_clothesitem.cpp:1600
 msgid "Blue Leather Helmet"
-msgstr "Casco de cuero azul"
+msgstr "lo blanu ke revyskapi badmapku"
 
 #: src/content_clothesitem.cpp:1615
 msgid "Green Leather Helmet"
-msgstr "Casco de cuero verde"
+msgstr "lo crino ke revyskapi badmapku"
 
 #: src/content_clothesitem.cpp:1630
 msgid "Orange Leather Helmet"
-msgstr "Casco de cuero naranja"
+msgstr "lo narju ke revyskapi badmapku"
 
 #: src/content_clothesitem.cpp:1645
 msgid "Purple Leather Helmet"
-msgstr "Casco de cuero púrpura"
+msgstr "lo zirpu ke revyskapi badmapku"
 
 #: src/content_clothesitem.cpp:1660
 msgid "Red Leather Helmet"
-msgstr "Casco de cuero rojo"
+msgstr "lo xunre ke revyskapi badmapku"
 
 #: src/content_clothesitem.cpp:1675
 msgid "Yellow Leather Helmet"
-msgstr "Casco de cuero amarillo"
+msgstr "lo pelxu ke revyskapi badmapku"
 
 #: src/content_clothesitem.cpp:1690
 msgid "Black Leather Helmet"
-msgstr "Casco de cuero negro"
+msgstr "lo xekri ke revyskapi badmapku"
 
 #: src/content_clothesitem.cpp:1721
 msgid "White Leather Shoes"
-msgstr "Zapatos de cuero blancos"
+msgstr "lo blabi ke revyskapi cutci"
 
 #: src/content_clothesitem.cpp:1736
 msgid "Blue Leather Shoes"
-msgstr "Zapatos de cuero azules"
+msgstr "lo blanu ke revyskapi cutci"
 
 #: src/content_clothesitem.cpp:1751
 msgid "Green Leather Shoes"
-msgstr "Zapatos de cuero verdes"
+msgstr "lo crino ke revyskapi cutci"
 
 #: src/content_clothesitem.cpp:1766
 msgid "Orange Leather Shoes"
-msgstr "Zapatos de cuero naranjas"
+msgstr "lo narju ke revyskapi cutci"
 
 #: src/content_clothesitem.cpp:1781
 msgid "Purple Leather Shoes"
-msgstr "Zapatos de cuero púrpuras"
+msgstr "lo zirpu ke revyskapi cutci"
 
 #: src/content_clothesitem.cpp:1796
 msgid "Red Leather Shoes"
-msgstr "Zapatos de cuero rojos"
+msgstr "lo xunre ke revyskapi cutci"
 
 #: src/content_clothesitem.cpp:1811
 msgid "Yellow Leather Shoes"
-msgstr "Zapatos de cuero amarillos"
+msgstr "lo pelxu ke revyskapi cutci"
 
 #: src/content_clothesitem.cpp:1826
 msgid "Black Leather Shoes"
-msgstr "Zapatos de cuero negros"
+msgstr "lo xekri ke revyskapi cutci"
 
 #: src/content_clothesitem.cpp:1842
 msgid "Leather Boots"
-msgstr "Botas de cuero"
+msgstr "lo revyskapi tupcutci"
 
 #: src/content_clothesitem.cpp:1857
 msgid "White Leather Boots"
-msgstr "Botas de cuero blancas"
+msgstr "lo blabi ke revyskapi tupcutci"
 
 #: src/content_clothesitem.cpp:1872
 msgid "Blue Leather Boots"
-msgstr "Botas de cuero azules"
+msgstr "lo blanu ke revyskapi tupcutci"
 
 #: src/content_clothesitem.cpp:1887
 msgid "Green Leather Boots"
-msgstr "Botas de cuero verdes"
+msgstr "lo crino ke revyskapi tupcutci"
 
 #: src/content_clothesitem.cpp:1902
 msgid "Orange Leather Boots"
-msgstr "Botas de cuero naranjas"
+msgstr "lo narju ke revyskapi tupcutci"
 
 #: src/content_clothesitem.cpp:1917
 msgid "Purple Leather Boots"
-msgstr "Botas de cuero púrpuras"
+msgstr "lo zirpu ke revyskapi tupcutci"
 
 #: src/content_clothesitem.cpp:1932
 msgid "Red Leather Boots"
-msgstr "Botas de cuero rojas"
+msgstr "lo xunre ke revyskapi tupcutci"
 
 #: src/content_clothesitem.cpp:1947
 msgid "Yellow Leather Boots"
-msgstr "Botas de cuero amarillas"
+msgstr "lo pelxu ke revyskapi tupcutci"
 
 #: src/content_clothesitem.cpp:1962
 msgid "Black Leather Boots"
-msgstr "Botas de cuero negras"
+msgstr "lo xekri ke revyskapi tupcutci"
 
 #: src/content_clothesitem.cpp:1978
 msgid "Leather Belt"
-msgstr "Cinturón de cuero"
+msgstr "lo revyskapi karli"
 
 #: src/content_clothesitem.cpp:1993
 msgid "White Leather Belt"
-msgstr "Cinturón de cuero blanco"
+msgstr "lo blabi ke revyskapi karli"
 
 #: src/content_clothesitem.cpp:2008
 msgid "Blue Leather Belt"
-msgstr "Cinturón de cuero azul"
+msgstr "lo blanu ke revyskapi karli"
 
 #: src/content_clothesitem.cpp:2023
 msgid "Green Leather Belt"
-msgstr "Cinturón de cuero verde"
+msgstr "lo crino ke revyskapi karli"
 
 #: src/content_clothesitem.cpp:2038
 msgid "Orange Leather Belt"
-msgstr "Cinturón de cuero naranja"
+msgstr "lo narju ke revyskapi karli"
 
 #: src/content_clothesitem.cpp:2053
 msgid "Purple Leather Belt"
-msgstr "Cinturón de cuero púrpura"
+msgstr "lo zirpu ke revyskapi karli"
 
 #: src/content_clothesitem.cpp:2068
 msgid "Red Leather Belt"
-msgstr "Cinturón de cuero rojo"
+msgstr "lo xunre ke revyskapi karli"
 
 #: src/content_clothesitem.cpp:2083
 msgid "Yellow Leather Belt"
-msgstr "Cinturón de cuero amarillo"
+msgstr "lo pelxu ke revyskapi karli"
 
 #: src/content_clothesitem.cpp:2098
 msgid "Black Leather Belt"
-msgstr "Cinturón de cuero negro"
+msgstr "lo xekri ke revyskapi karli"
 
 #: src/content_clothesitem.cpp:2114
 msgid "Fur Coat"
-msgstr "Abrigo de piel"
+msgstr "lo sirsunla kosta"
 
 #: src/content_clothesitem.cpp:2129
 msgid "White Fur Coat"
-msgstr "Abrigo de piel blanco"
+msgstr "lo blabi ke sirsunla kosta"
 
 #: src/content_clothesitem.cpp:2144
 msgid "Blue Fur Coat"
-msgstr "Abrigo de piel azul"
+msgstr "lo blanu ke sirsunla kosta"
 
 #: src/content_clothesitem.cpp:2159
 msgid "Green Fur Coat"
-msgstr "Abrigo de piel verde"
+msgstr "lo crino ke sirsunla kosta"
 
 #: src/content_clothesitem.cpp:2174
 msgid "Orange Fur Coat"
-msgstr "Abrigo de piel naranja"
+msgstr "lo narju ke sirsunla kosta"
 
 #: src/content_clothesitem.cpp:2189
 msgid "Purple Fur Coat"
-msgstr "Abrigo de piel púrpura"
+msgstr "lo zirpu ke sirsunla kosta"
 
 #: src/content_clothesitem.cpp:2204
 msgid "Red Fur Coat"
-msgstr "Abrigo de piel rojo"
+msgstr "lo xunre ke sirsunla kosta"
 
 #: src/content_clothesitem.cpp:2219
 msgid "Yellow Fur Coat"
-msgstr "Abrigo de piel amarillo"
+msgstr "lo pelxu ke sirsunla kosta"
 
 #: src/content_clothesitem.cpp:2234
 msgid "Black Fur Coat"
-msgstr "Abrigo de piel negro"
+msgstr "lo xekri ke sirsunla kosta"
 
 #: src/content_clothesitem.cpp:2250
 msgid "Fur Pants"
-msgstr "Pantalón de piel"
+msgstr "lo sirsunla palku"
 
 #: src/content_clothesitem.cpp:2265
 msgid "White Fur Pants"
-msgstr "Pantalón de piel blanco"
+msgstr "lo blabi ke sirsunla palku"
 
 #: src/content_clothesitem.cpp:2280
 msgid "Blue Fur Pants"
-msgstr "Pantalón de piel azul"
+msgstr "lo blanu ke sirsunla palku"
 
 #: src/content_clothesitem.cpp:2295
 msgid "Green Fur Pants"
-msgstr "Pantalón de piel verde"
+msgstr "lo crino ke sirsunla palku"
 
 #: src/content_clothesitem.cpp:2310
 msgid "Orange Fur Pants"
-msgstr "Pantalón de piel naranja"
+msgstr "lo narju ke sirsunla creka"
 
 #: src/content_clothesitem.cpp:2325
 msgid "Purple Fur Pants"
-msgstr "Pantalón de piel púrpura"
+msgstr "lo zirpu ke sirsunla creka"
 
 #: src/content_clothesitem.cpp:2340
 msgid "Red Fur Pants"
-msgstr "Pantalón de piel rojo"
+msgstr "lo xunre ke sirsunla creka"
 
 #: src/content_clothesitem.cpp:2355
 msgid "Yellow Fur Pants"
-msgstr "Pantalón de piel amarillo"
+msgstr "lo pelxu ke sirsunla creka"
 
 #: src/content_clothesitem.cpp:2370
 msgid "Black Fur Pants"
-msgstr "Pantalón de piel negro"
+msgstr "lo xekri ke sirsunla palku"
 
 #: src/content_clothesitem.cpp:2386
 msgid "Fur Hat"
-msgstr "Sombrero de piel"
+msgstr "lo sirsunla mapku"
 
 #: src/content_clothesitem.cpp:2401
 msgid "White Fur Hat"
-msgstr "Sombrero de piel blanca"
+msgstr "lo blabi ke sirsunla mapku"
 
 #: src/content_clothesitem.cpp:2416
 msgid "Blue Fur Hat"
-msgstr "Sombrero de piel azul"
+msgstr "lo blanu ke sirsunla mapku"
 
 #: src/content_clothesitem.cpp:2431
 msgid "Green Fur Hat"
-msgstr "Sombrero de piel verde"
+msgstr "lo crino ke sirsunla mapku"
 
 #: src/content_clothesitem.cpp:2446
 msgid "Orange Fur Hat"
-msgstr "Sombrero de piel naranja"
+msgstr "lo narju ke sirsunla mapku"
 
 #: src/content_clothesitem.cpp:2461
 msgid "Purple Fur Hat"
-msgstr "Sombrero de piel púrpura"
+msgstr "lo zirpu ke sirsunla mapku"
 
 #: src/content_clothesitem.cpp:2476
 msgid "Red Fur Hat"
-msgstr "Sombrero de piel roja"
+msgstr "lo xunre ke sirsunla mapku"
 
 #: src/content_clothesitem.cpp:2491
 msgid "Yellow Fur Hat"
-msgstr "Sombrero de piel amarilla"
+msgstr "lo pelxu ke sirsunla mapku"
 
 #: src/content_clothesitem.cpp:2506
 msgid "Black Fur Hat"
-msgstr "Sombrero de piel negra"
+msgstr "lo xekri ke sirsunla mapku"
 
 #: src/content_clothesitem.cpp:2536
 msgid "White Fur Shoes"
-msgstr "Zapatos de piel blanca"
+msgstr "lo blabi ke sirsunla cutci"
 
 #: src/content_clothesitem.cpp:2550
 msgid "Blue Fur Shoes"
-msgstr "Zapatos de piel azul"
+msgstr "lo blanu ke sirsunla cutci"
 
 #: src/content_clothesitem.cpp:2564
 msgid "Green Fur Shoes"
-msgstr "Zapatos de piel verde"
+msgstr "lo crino ke sirsunla cutci"
 
 #: src/content_clothesitem.cpp:2578
 msgid "Orange Fur Shoes"
-msgstr "Zapatos de piel naranja"
+msgstr "lo narju ke sirsunla cutci"
 
 #: src/content_clothesitem.cpp:2592
 msgid "Purple Fur Shoes"
-msgstr "Zapatos de piel púrpura"
+msgstr "lo zirpu ke sirsunla cutci"
 
 #: src/content_clothesitem.cpp:2606
 msgid "Red Fur Shoes"
-msgstr "Zapatos de piel roja"
+msgstr "lo xunre ke sirsunla cutci"
 
 #: src/content_clothesitem.cpp:2620
 msgid "Yellow Fur Shoes"
-msgstr "Zapatos de piel amarilla"
+msgstr "lo pelxu ke sirsunla cutci"
 
 #: src/content_clothesitem.cpp:2634
 msgid "Black Fur Shoes"
-msgstr "Zapatos de piel negra"
+msgstr "lo xekri ke sirsunla cutci"
 
 #: src/content_clothesitem.cpp:2649
 msgid "Fur Boots"
-msgstr "Botas de piel"
+msgstr "lo sirsunla tupcutci"
 
 #: src/content_clothesitem.cpp:2664
 msgid "White Fur Boots"
-msgstr "Botas de piel blanca"
+msgstr "lo blabi ke sirsunla tupcutci"
 
 #: src/content_clothesitem.cpp:2679
 msgid "Blue Fur Boots"
-msgstr "Botas de piel azul"
+msgstr "lo blane ke sirsunla tupcutci"
 
 #: src/content_clothesitem.cpp:2694
 msgid "Green Fur Boots"
-msgstr "Botas de piel verde"
+msgstr "lo crino ke sirsunla tupcutci"
 
 #: src/content_clothesitem.cpp:2709
 msgid "Orange Fur Boots"
-msgstr "Botas de piel naranja"
+msgstr "lo narju ke sirsunla tupcutci"
 
 #: src/content_clothesitem.cpp:2724
 msgid "Purple Fur Boots"
-msgstr "Botas de piel púrpura"
+msgstr "lo zirpu ke sirsunla tupcutci"
 
 #: src/content_clothesitem.cpp:2739
 msgid "Red Fur Boots"
-msgstr "Botas de piel roja"
+msgstr "lo xunre ke sirsunla tupcutci"
 
 #: src/content_clothesitem.cpp:2754
 msgid "Yellow Fur Boots"
-msgstr "Botas de piel amarilla"
+msgstr "lo pelxu ke sirsunla tupcutci"
 
 #: src/content_clothesitem.cpp:2769
 msgid "Black Fur Boots"
-msgstr "Botas de piel negra"
+msgstr "lo xekri ke sirsunla tupcutci"
 
 #: src/content_clothesitem.cpp:2785
 msgid "Leather Necklace"
-msgstr "Collar de cuero"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2808
 msgid "Gold Medallion"
-msgstr "Medallón de oro"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2824
 msgid "Copper Medallion"
-msgstr "Medallón de cobre"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2840
 msgid "Silver Medallion"
-msgstr "Medallón de plata"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2856
 msgid "Tin Medallion"
-msgstr "Medallón de estaño"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2872
 msgid "Iron Medallion"
-msgstr "Medallón de hierro"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2888
 msgid "Quartz Medallion"
-msgstr "Medallón de cuarzo"
+msgstr ""
 
 #: src/content_clothesitem.cpp:2905
 msgid "Steel Helmet"
-msgstr "Casco de acero"
+msgstr "lo gasta badmapku"
 
 #: src/content_clothesitem.cpp:2920
 msgid "Steel Chest Armour"
-msgstr "Peto de acero"
+msgstr "lo gasta ke cutne dabycalku"
 
 #: src/content_clothesitem.cpp:2935
 msgid "Steel Pants"
-msgstr "Pantalón de acero"
+msgstr "lo gasta palku"
 
 #: src/content_clothesitem.cpp:2950
 msgid "Steel Boots"
-msgstr "Botas de acero"
+msgstr "lo gasta tupcutci"
 
 #: src/content_clothesitem.cpp:2965
 msgid "Copper Helmet"
-msgstr "Casco de cobre"
+msgstr "lo tunka badmapku"
 
 #: src/content_clothesitem.cpp:2979
 msgid "Copper Chest Armour"
-msgstr "Peto de cobre"
+msgstr "lo tunka ke cutne dabycalku"
 
 #: src/content_clothesitem.cpp:2993
 msgid "Copper Pants"
-msgstr "Pantalón de cobre"
+msgstr "lo tunka palku"
 
 #: src/content_clothesitem.cpp:3007
 msgid "Copper Boots"
-msgstr "Botas de cobre"
+msgstr "lo tunka tupcutci"
 
 #: src/content_craftitem.cpp:55
 msgid "Paper"
-msgstr "Papel"
+msgstr "lo pelji"
 
 #: src/content_craftitem.cpp:65
 msgid "Charcoal Lump"
-msgstr "Cúmulo de carbón vegetal"
+msgstr "lo fagytabno bakfu"
 
 #: src/content_craftitem.cpp:74
 msgid "Coal Lump"
-msgstr "Cúmulo de carbón mineral"
+msgstr "lo kolme bakfu"
 
 #: src/content_craftitem.cpp:83
 msgid "Iron Lump"
-msgstr "Cúmulo de hierro"
+msgstr "lo tirse bakfu"
 
 #: src/content_craftitem.cpp:93
 msgid "Clay Lump"
-msgstr "Cúmulo de arcilla"
+msgstr "lo kliti bakfu"
 
 #: src/content_craftitem.cpp:103
 msgid "Tin Lump"
-msgstr "Cúmulo de estaño"
+msgstr "lo tinci bakfu"
 
 #: src/content_craftitem.cpp:113
 msgid "Copper Lump"
-msgstr "Cúmulo de cobre"
+msgstr "lo tunka bakfu"
 
 #: src/content_craftitem.cpp:123
 msgid "Silver Lump"
-msgstr "Cúmulo de plata"
+msgstr "lo rijno bakfu"
 
 #: src/content_craftitem.cpp:133
 msgid "Gold Lump"
-msgstr "Cúmulo de oro"
+msgstr "lo solji bakfu"
 
 #: src/content_craftitem.cpp:143
 msgid "Quartz Crystal"
-msgstr "Cristal de cuarzo"
+msgstr "lo krilrkuartse"
 
 #: src/content_craftitem.cpp:151
 msgid "Tin Ingot"
-msgstr "Lingote de estaño"
+msgstr "lo tinci bliku"
 
 #: src/content_craftitem.cpp:159
 msgid "Copper Ingot"
-msgstr "Lingote de cobre"
+msgstr "lo tunka bliku"
 
 #: src/content_craftitem.cpp:167
 msgid "Silver Ingot"
-msgstr "Lingote de plata"
+msgstr "lo rijno bliku"
 
 #: src/content_craftitem.cpp:175
 msgid "Gold Ingot"
-msgstr "Lingote de oro"
+msgstr "lo rijno bliku"
 
 #: src/content_craftitem.cpp:183
 msgid "Flint"
-msgstr "Sílex"
+msgstr "lo fagri rokci"
 
 #: src/content_craftitem.cpp:191
 msgid "Steel Ingot"
-msgstr "Lingote de acero"
+msgstr "lo gasta bliku"
 
 #: src/content_craftitem.cpp:199 src/content_mapnode.cpp:610
 msgid "Brick"
-msgstr "Ladrillo"
+msgstr "lo kitybli"
 
 #: src/content_craftitem.cpp:207
 msgid "Rat"
-msgstr "Rata"
+msgstr "lo ratcu"
 
 #: src/content_craftitem.cpp:219
 msgid "Cooked Rat"
-msgstr "Rata cocinada"
+msgstr "le seljukpa ratcu"
 
 #: src/content_craftitem.cpp:230
 msgid "Firefly"
-msgstr "Luciérnaga"
+msgstr "lo gusycinki"
 
 #: src/content_craftitem.cpp:240 src/content_mapnode_plants.cpp:788
 msgid "Apple"
-msgstr "Manzana"
+msgstr "lo plise"
 
 #: src/content_craftitem.cpp:249
 msgid "Iron Apple"
-msgstr "Manzana de hierro"
+msgstr "lo tirse plise"
 
 #: src/content_craftitem.cpp:267
 msgid "Blue Dye"
-msgstr "Colorante azul"
+msgstr "lo blanu xinmo"
 
 #: src/content_craftitem.cpp:277
 msgid "Green Dye"
-msgstr "Colorante verde"
+msgstr "lo crino xinmo"
 
 #: src/content_craftitem.cpp:287
 msgid "Orange Dye"
-msgstr "Colorante naranja"
+msgstr "lo narju xinmo"
 
 #: src/content_craftitem.cpp:297
 msgid "Purple Dye"
-msgstr "Colorante púrpura"
+msgstr "lo zirpu xinmo"
 
 #: src/content_craftitem.cpp:307
 msgid "Red Dye"
-msgstr "Colorante rojo"
+msgstr "lo xunre xinmo"
 
 #: src/content_craftitem.cpp:317
 msgid "Yellow Dye"
-msgstr "Colorante amarillo"
+msgstr "lo pelxu xinmo"
 
 #: src/content_craftitem.cpp:328
 msgid "White Dye"
-msgstr "Colorante blanco"
+msgstr "lo blabi xinmo"
 
 #: src/content_craftitem.cpp:339
 msgid "Black Dye"
-msgstr "Colorante negro"
+msgstr "lo xekri xinmo"
 
 #: src/content_craftitem.cpp:349
 msgid "Quartz Dust"
-msgstr "Polvo de cuarzo"
+msgstr "lo kunrkuartse purmo"
 
 #: src/content_craftitem.cpp:359
 msgid "Saltpeter"
-msgstr "Salitre"
+msgstr ""
 
 #: src/content_craftitem.cpp:367
 msgid "Gun Powder"
-msgstr "Pólvora"
+msgstr "lo tercelpu'o"
 
 #: src/content_craftitem.cpp:377
 msgid "Snow Ball"
-msgstr "Bola de nieve"
+msgstr "lo si'erboi"
 
 #: src/content_craftitem.cpp:385
 msgid "Stick"
-msgstr "Palo"
+msgstr "lo grana"
 
 #: src/content_craftitem.cpp:402
 msgid "Pine Plank"
-msgstr "Tablón de pino"
+msgstr "lo ckunu tanbo"
 
 #: src/content_craftitem.cpp:414
 msgid "Wood Plank"
-msgstr "Tablón de madera"
+msgstr "lo mudri tanbo"
 
 #: src/content_craftitem.cpp:427
 msgid "Jungle Wood Plank"
-msgstr "Tablón de madera selvática"
+msgstr "lo glatimdemricfoi mudri tanbo"
 
 #: src/content_craftitem.cpp:439
 msgid "TNT Stick"
-msgstr "Dinamita"
+msgstr ""
 
 #: src/content_craftitem.cpp:456
 msgid "Ash"
-msgstr "Ceniza"
+msgstr "lo fagyfesti"
 
 #: src/content_craftitem.cpp:464
 msgid "Apple Blossoms"
-msgstr "Flores de manzano"
+msgstr "lo plise xrula"
 
 #: src/content_craftitem.cpp:474 src/content_mapnode_plants.cpp:594
 msgid "Cactus Berry"
-msgstr "Tuna"
+msgstr "lo jesyspa jbari"
 
 #: src/content_craftitem.cpp:484
 msgid "Mush"
-msgstr "Puré"
+msgstr "lo pesxu"
 
 #: src/content_craftitem.cpp:493
 msgid "Sliced Pumpkin"
-msgstr "Calabaza en rebanadas"
+msgstr "lo guzmrkukurbita spisa"
 
 #: src/content_craftitem.cpp:504
 msgid "Pumpkin Pie Slice"
-msgstr "Rebanada de tarta de calabaza"
+msgstr "lo guzmrkukurbita titnanba spisa"
 
 #: src/content_craftitem.cpp:513
 msgid "Apple Pie Slice"
-msgstr "Rebanada de tarta de manzana"
+msgstr "lo plise titnanba spisa"
 
 #: src/content_craftitem.cpp:522
 msgid "Sliced Melon"
-msgstr "Melón en rebanadas"
+msgstr "lo guzme spisa"
 
 #: src/content_craftitem.cpp:533 src/content_mapnode_farm.cpp:247
 #: src/content_mapnode_farm.cpp:266 src/content_mapnode_farm.cpp:285
 #: src/content_mapnode_farm.cpp:306
 msgid "Wheat"
-msgstr "Trigo"
+msgstr "lo maxri"
 
 #: src/content_craftitem.cpp:542
 msgid "Flour"
-msgstr "Harina"
+msgstr "lo grupu'o"
 
 #: src/content_craftitem.cpp:553
 msgid "Dough"
-msgstr "Masa"
+msgstr "lo grupesxu"
 
 #: src/content_craftitem.cpp:566
 msgid "Bread"
-msgstr "Pan"
+msgstr "lo nanba"
 
 #: src/content_craftitem.cpp:575 src/content_mapnode_farm.cpp:517
 #: src/content_mapnode_farm.cpp:538 src/content_mapnode_farm.cpp:559
 #: src/content_mapnode_farm.cpp:580
 msgid "Potato"
-msgstr "Patata"
+msgstr "lo patlu"
 
 #: src/content_craftitem.cpp:586
 msgid "Potato Starch"
-msgstr "Almidón de patata"
+msgstr "lo patlyjalna"
 
 #: src/content_craftitem.cpp:596
 msgid "Roast Potato"
-msgstr "Patata asada"
+msgstr "lo seljukpa patlu"
 
 #: src/content_craftitem.cpp:605 src/content_mapnode_farm.cpp:601
 #: src/content_mapnode_farm.cpp:622 src/content_mapnode_farm.cpp:643
 #: src/content_mapnode_farm.cpp:664
 msgid "Carrot"
-msgstr "Zanahoria"
+msgstr "lo genjrdauko"
 
 #: src/content_craftitem.cpp:614
 msgid "Raw Carrot Cake"
-msgstr "Pastel de zanahoria cruda"
+msgstr "lo na'e seljukpa ke genjrdauko titnanba"
 
 #: src/content_craftitem.cpp:626
 msgid "Carrot Cake"
-msgstr "Pastel de zanahoria"
+msgstr "lo genjrdauko titnanba"
 
 #: src/content_craftitem.cpp:635 src/content_mapnode_farm.cpp:685
 #: src/content_mapnode_farm.cpp:706 src/content_mapnode_farm.cpp:727
 #: src/content_mapnode_farm.cpp:748
 msgid "Beetroot"
-msgstr "Remolacha"
+msgstr "lo genjrtensai"
 
 #: src/content_craftitem.cpp:644
 msgid "Bunch of Grapes"
-msgstr "Racimo de uvas"
+msgstr "lo bakfu be lo vanjba"
 
 #: src/content_craftitem.cpp:653
 msgid "String"
-msgstr "Cadena"
+msgstr "lo cilta"
 
 #: src/content_craftitem.cpp:663
 msgid "Mese Dust"
-msgstr "Polvo de mez"
+msgstr "lo za'e pumrmese"
 
 #: src/content_craftitem.cpp:675
 msgid "Resin"
-msgstr "Resina"
+msgstr "lo ricyblu"
 
 #: src/content_craftitem.cpp:685
 msgid "Oerkki Dust"
-msgstr "Polvo de oerqui"
+msgstr "lo za'e pumrxo'erki"
 
 #: src/content_craftitem.cpp:694
 msgid "Fish"
-msgstr "Pez"
+msgstr "lo finpe"
 
 #: src/content_craftitem.cpp:706
 msgid "Cooked Fish"
-msgstr "Pescado"
+msgstr "le seljukpa finpe"
 
 #: src/content_craftitem.cpp:717
 msgid "Meat"
-msgstr "Carne"
+msgstr "lo rectu"
 
 #: src/content_craftitem.cpp:727
 msgid "Cooked Meat"
-msgstr "Carne cocinada"
+msgstr "le seljukpa rectu"
 
 #: src/content_craftitem.cpp:738
 msgid "Cotton Sheet"
-msgstr "Sábana de algodón"
+msgstr "lo mapni boxfo"
 
 #: src/content_craftitem.cpp:755
 msgid "Blue Cotton Sheet"
-msgstr "Sábana de algodón azul"
+msgstr "lo blanu ke mapni boxfo"
 
 #: src/content_craftitem.cpp:765
 msgid "Green Cotton Sheet"
-msgstr "Sábana de algodón verde"
+msgstr "lo crino ke mapni boxfo"
 
 #: src/content_craftitem.cpp:775
 msgid "Orange Cotton Sheet"
-msgstr "Sábana de algodón naranja"
+msgstr "lo narju ke mapni boxfo"
 
 #: src/content_craftitem.cpp:785
 msgid "Purple Cotton Sheet"
-msgstr "Sábana de algodón púrpura"
+msgstr "lo zirpu ke mapni boxfo"
 
 #: src/content_craftitem.cpp:795
 msgid "Red Cotton Sheet"
-msgstr "Sábana de algodón roja"
+msgstr "lo xunre ke mapni boxfo"
 
 #: src/content_craftitem.cpp:805
 msgid "Yellow Cotton Sheet"
-msgstr "Sábana de algodón amarilla"
+msgstr "lo pelxu ke mapni boxfo"
 
 #: src/content_craftitem.cpp:815
 msgid "Black Cotton Sheet"
-msgstr "Sábana de algodón negra"
+msgstr "lo xekri ke mapni boxfo"
 
 #: src/content_craftitem.cpp:825
 msgid "Canvas Sheet"
-msgstr "Lona"
+msgstr "lo fanbu'u boxfo"
 
 #: src/content_craftitem.cpp:842
 msgid "Blue Canvas Sheet"
-msgstr "Lona azul"
+msgstr "lo blanu ke fanbu'u boxfo"
 
 #: src/content_craftitem.cpp:852
 msgid "Green Canvas Sheet"
-msgstr "Lona verde"
+msgstr "lo crino ke fanbu'u boxfo"
 
 #: src/content_craftitem.cpp:862
 msgid "Orange Canvas Sheet"
-msgstr "Lona naranja"
+msgstr "lo narju ke fanbu'u boxfo"
 
 #: src/content_craftitem.cpp:872
 msgid "Purple Canvas Sheet"
-msgstr "Lona púrpura"
+msgstr "lo zirpu ke fanbu'u boxfo"
 
 #: src/content_craftitem.cpp:882
 msgid "Red Canvas Sheet"
-msgstr "Lona roja"
+msgstr "lo xunre ke fanbu'u boxfo"
 
 #: src/content_craftitem.cpp:892
 msgid "Yellow Canvas Sheet"
-msgstr "Lona amarilla"
+msgstr "lo pelxu ke fanbu'u boxfo"
 
 #: src/content_craftitem.cpp:902
 msgid "Black Canvas Sheet"
-msgstr "Lona negra"
+msgstr "lo xekri ke fanbu'u boxfo"
 
 #: src/content_craftitem.cpp:912
 msgid "Fur"
-msgstr "Piel"
+msgstr "lo sirsunla"
 
 #: src/content_craftitem.cpp:920
 msgid "White Fur"
-msgstr "Piel blanca"
+msgstr "lo blabi sirsunla"
 
 #: src/content_craftitem.cpp:931
 msgid "Blue Fur"
-msgstr "Piel azul"
+msgstr "lo blanu sirsunla"
 
 #: src/content_craftitem.cpp:942
 msgid "Green Fur"
-msgstr "Piel verde"
+msgstr "lo crino sirsunla"
 
 #: src/content_craftitem.cpp:953
 msgid "Orange Fur"
-msgstr "Piel naranja"
+msgstr "lo narju sirsunla"
 
 #: src/content_craftitem.cpp:964
 msgid "Purple Fur"
-msgstr "Cuero púrpura"
+msgstr "lo zirpu sirsunla"
 
 #: src/content_craftitem.cpp:975
 msgid "Red Fur"
-msgstr "Piel roja"
+msgstr "lo xunre sirsunla"
 
 #: src/content_craftitem.cpp:986
 msgid "Yellow Fur"
-msgstr "Piel amarilla"
+msgstr "lo pelxu sirsunla"
 
 #: src/content_craftitem.cpp:997
 msgid "Black Fur"
-msgstr "Piel negra"
+msgstr "lo xekri sirsunla"
 
 #: src/content_craftitem.cpp:1008
 msgid "Leather"
-msgstr "Cuero"
+msgstr "lo revyskapi"
 
 #: src/content_craftitem.cpp:1018
 msgid "White Leather"
-msgstr "Cuero blanco"
+msgstr "lo blabi revyskapi"
 
 #: src/content_craftitem.cpp:1029
 msgid "Blue Leather"
-msgstr "Cuero azul"
+msgstr "lo blanu revyskapi"
 
 #: src/content_craftitem.cpp:1040
 msgid "Green Leather"
-msgstr "Cuero verde"
+msgstr "lo crino revyskapi"
 
 #: src/content_craftitem.cpp:1051
 msgid "Orange Leather"
-msgstr "Cuero naranja"
+msgstr "lo narju revyskapi"
 
 #: src/content_craftitem.cpp:1062
 msgid "Purple Leather"
-msgstr "Cuero púrpura"
+msgstr "lo zirpu revyskapi"
 
 #: src/content_craftitem.cpp:1073
 msgid "Red Leather"
-msgstr "Cuero rojo"
+msgstr "lo xunre revyskapi"
 
 #: src/content_craftitem.cpp:1084
 msgid "Yellow Leather"
-msgstr "Cuero amarillo"
+msgstr "lo pelxu revyskapi"
 
 #: src/content_craftitem.cpp:1095
 msgid "Black Leather"
-msgstr "Cuero negro"
+msgstr "lo xekri revyskapi"
 
 #: src/content_craftitem.cpp:1106
 msgid "Arrow"
-msgstr "Flecha"
+msgstr "lo celga'a"
 
 #: src/content_craftitem.cpp:1117 src/content_mapnode_farm.cpp:50
 msgid "Fertilizer"
-msgstr "Fertilizante"
+msgstr "lo ferti"
 
 #: src/content_mapnode.cpp:200
 msgid "Stone"
-msgstr "Piedra"
+msgstr "lo rokci"
 
 #: src/content_mapnode.cpp:217
 msgid "Ice"
-msgstr "Hielo"
+msgstr "lo bisli"
 
 #: src/content_mapnode.cpp:233
 msgid "Coal Block"
-msgstr "Bloque de carbón mineral"
+msgstr "lo kolme bliku"
 
 #: src/content_mapnode.cpp:250
 msgid "Charcoal Block"
-msgstr "Bloque de carbón vegetal"
+msgstr "lo fagytabno bliku"
 
 #: src/content_mapnode.cpp:267
 msgid "Stone Brick"
-msgstr "Ladrillo de piedra"
+msgstr "lo morna rokci"
 
 #: src/content_mapnode.cpp:281
 msgid "Stone Block"
-msgstr "Bloque de piedra"
+msgstr "lo rokci bliku"
 
 #: src/content_mapnode.cpp:295
 msgid "Rough Stone Brick"
-msgstr "Ladrillo de piedra en bruto"
+msgstr "lo rufsu ke morna rokci"
 
 #: src/content_mapnode.cpp:312
 msgid "Rough Stone Block"
-msgstr "Bloque de piedra en bruto"
+msgstr "lo rufsu ke rokci bliku"
 
 #: src/content_mapnode.cpp:328 src/content_mapnode.cpp:344
 msgid "Grass"
-msgstr "Pasto"
+msgstr "lo srasu"
 
 #: src/content_mapnode.cpp:356
 msgid "Muddy Snow"
-msgstr "Nieve lodosa"
+msgstr "lo derpesxu snime"
 
 #: src/content_mapnode.cpp:372
 msgid "Mud"
-msgstr "Lodo"
+msgstr "lo derpesxu"
 
 #: src/content_mapnode.cpp:384
 msgid "Ash Block"
-msgstr "Bloque de ceniza"
+msgstr "lo fagyfesti bliku"
 
 #: src/content_mapnode.cpp:399
 msgid "Sand"
-msgstr "Arena"
+msgstr "lo canre"
 
 #: src/content_mapnode.cpp:414
 msgid "Gravel"
-msgstr "Grava"
+msgstr "lo cmaro'i"
 
 #: src/content_mapnode.cpp:429
 msgid "Sand Stone"
-msgstr "Arenisca"
+msgstr "lo canro'i"
 
 #: src/content_mapnode.cpp:444
 msgid "Sand Stone Bricks"
-msgstr "Ladrillo de arenisca"
+msgstr "lo morna canro'i"
 
 #: src/content_mapnode.cpp:459
 msgid "Sand Stone Blocks"
-msgstr "Bloque de arenisca"
+msgstr "lo canro'i bliku"
 
 #: src/content_mapnode.cpp:474
 msgid "Clay"
-msgstr "Arcilla"
+msgstr "lo kliti"
 
 #: src/content_mapnode.cpp:491
 msgid "Blue Clay"
-msgstr "Arcilla azul"
+msgstr "lo blanu kliti"
 
 #: src/content_mapnode.cpp:508
 msgid "Green Clay"
-msgstr "Arcilla verde"
+msgstr "lo crino kliti"
 
 #: src/content_mapnode.cpp:525
 msgid "Orange Clay"
-msgstr "Arcilla naranja"
+msgstr "lo narju kliti"
 
 #: src/content_mapnode.cpp:542
 msgid "Purple Clay"
-msgstr "Arcilla púrpura"
+msgstr "lo zirpu kliti"
 
 #: src/content_mapnode.cpp:559
 msgid "Red Clay"
-msgstr "Arcilla roja"
+msgstr "lo xunre kliti"
 
 #: src/content_mapnode.cpp:576
 msgid "Yellow Clay"
-msgstr "Arcilla amarilla"
+msgstr "lo pelxu kliti"
 
 #: src/content_mapnode.cpp:593
 msgid "Black Clay"
-msgstr "Arcilla negra"
+msgstr "lo xekri kliti"
 
 #: src/content_mapnode.cpp:625
 msgid "Terracotta"
-msgstr "Terracota"
+msgstr "lo stakrterakota"
 
 #: src/content_mapnode.cpp:637
 msgid "Terracotta Brick"
-msgstr "LAdrillo de terracota"
+msgstr "lo morna stakrterakota"
 
 #: src/content_mapnode.cpp:651
 msgid "Terracotta Block"
-msgstr "Bloque de terracota"
+msgstr "lo stakrterakota bliku"
 
 #: src/content_mapnode.cpp:665
 msgid "Terracotta Tile"
-msgstr "Teja de terracota"
+msgstr "lo stakrterakota tapla"
 
 #: src/content_mapnode.cpp:685
 msgid "Glass"
-msgstr "Cristal"
+msgstr "lo blaci"
 
 #: src/content_mapnode.cpp:705
 msgid "Blue Glass"
-msgstr "Cristal azul"
+msgstr "lo blanu blaci"
 
 #: src/content_mapnode.cpp:727
 msgid "Green Glass"
-msgstr "Cristal verde"
+msgstr "lo crino blaci"
 
 #: src/content_mapnode.cpp:749
 msgid "Orange Glass"
-msgstr "Cristal naranja"
+msgstr "lo narju blaci"
 
 #: src/content_mapnode.cpp:771
 msgid "Purple Glass"
-msgstr "Cristal púrpura"
+msgstr "lo zirpu blaci"
 
 #: src/content_mapnode.cpp:793
 msgid "Red Glass"
-msgstr "Cristal rojo"
+msgstr "lo xunre blaci"
 
 #: src/content_mapnode.cpp:815
 msgid "Yellow Glass"
-msgstr "Cristal amarillo"
+msgstr "lo pelxu blaci"
 
 #: src/content_mapnode.cpp:837
 msgid "Black Glass"
-msgstr "Cristal negro"
+msgstr "lo xekri blaci"
 
 #: src/content_mapnode.cpp:859
 msgid "Glass Pane"
-msgstr "Panel de cristal"
+msgstr "lo blaci plita"
 
 #: src/content_mapnode.cpp:893
 msgid "Blue Glass Pane"
-msgstr "Panel de cristal azul"
+msgstr "lo blanu ke blaci plita"
 
 #: src/content_mapnode.cpp:928
 msgid "Green Glass Pane"
-msgstr "Panel de cristal verde"
+msgstr "lo crino ke blaci plita"
 
 #: src/content_mapnode.cpp:963
 msgid "Orange Glass Pane"
-msgstr "Panel de cristal naranja"
+msgstr "lo narju ke blaci plita"
 
 #: src/content_mapnode.cpp:998
 msgid "Purple Glass Pane"
-msgstr "Panel de cristal púrpura"
+msgstr "lo zirpu ke blaci plita"
 
 #: src/content_mapnode.cpp:1033
 msgid "Red Glass Pane"
-msgstr "Panel de cristal rojo"
+msgstr "lo xunre ke blaci plita"
 
 #: src/content_mapnode.cpp:1068
 msgid "Yellow Glass Pane"
-msgstr "Panel de cristal amarillo"
+msgstr "lo pelxu ke blaci plita"
 
 #: src/content_mapnode.cpp:1103
 msgid "Black Glass Pane"
-msgstr "Panel de cristal azul"
+msgstr "lo xekri ke blaci plita"
 
 #: src/content_mapnode.cpp:1138 src/content_mapnode_farm.cpp:490
 msgid "Glass Light"
-msgstr "Luz de cristal"
+msgstr "lo blaci tergu'i"
 
 #: src/content_mapnode.cpp:1161
 msgid "Wood"
-msgstr "Madera"
+msgstr "lo mudri"
 
 #: src/content_mapnode.cpp:1187
 msgid "Jungle Wood"
-msgstr "Madera selvática"
+msgstr "lo glatimdemricfoi mudri"
 
 #: src/content_mapnode.cpp:1212
 msgid "Pine"
-msgstr "Pino"
+msgstr "lo ckunu mudri"
 
 #: src/content_mapnode.cpp:1237 src/content_mapnode.cpp:1252
 msgid "Mese"
-msgstr "Mez"
+msgstr "lo za'e kunrmese"
 
 #: src/content_mapnode.cpp:1265
 msgid "Sponge"
-msgstr "Esponja"
+msgstr "lo panje"
 
 #: src/content_mapnode.cpp:1280
 msgid "Waterlogged Sponge"
-msgstr "Esponja anegada"
+msgstr "lo cilmo panje"
 
 #: src/content_mapnode.cpp:1292
 msgid "Hay Bale"
-msgstr "Fardo de heno"
+msgstr "lo sudysrasu bliku"
 
 #: src/content_mapnode.cpp:1309
 msgid "Raw Apple Pie"
-msgstr "Tarta de manzana cruda"
+msgstr "lo na'e seljukpa ke plise titnanba"
 
 #: src/content_mapnode.cpp:1338
 msgid "Apple Pie"
-msgstr "Tarta de manzana"
+msgstr "lo plise titnanba"
 
 #: src/content_mapnode.cpp:1433
 msgid "Raw Pumpkin Pie"
-msgstr "Tarta de calabaza cruda"
+msgstr "lo na'e seljukpa ke guzmrkukurbita titnanba"
 
 #: src/content_mapnode.cpp:1462
 msgid "Pumpkin Pie"
-msgstr "Tarta de calabaza"
+msgstr "lo guzmrkukurbita titnanba"
 
 #: src/content_mapnode.cpp:1557 src/content_mapnode_farm.cpp:1020
 msgid "Dead Vine"
-msgstr "Ramas de vid secas"
+msgstr "lo morsi skospa"
 
 #: src/content_mapnode.cpp:1576 src/content_mapnode.cpp:1655
 msgid "Snow"
-msgstr "Nieve"
+msgstr "lo snime"
 
 #: src/content_mapnode.cpp:1592
 msgid "Snowman"
-msgstr "Muñeco de nieve"
+msgstr "lo remkemsi'exra"
 
 #: src/content_mapnode.cpp:1678 src/content_mapnode_farm.cpp:851
 #: src/content_mapnode_farm.cpp:870 src/content_mapnode_farm.cpp:890
 #: src/content_mapnode_farm.cpp:911
 msgid "Cotton"
-msgstr "Algodón"
+msgstr "lo mapni"
 
 #: src/content_mapnode.cpp:1709
 msgid "Blue Cotton"
-msgstr "Algodón azul"
+msgstr "lo blanu mapni"
 
 #: src/content_mapnode.cpp:1726
 msgid "Green Cotton"
-msgstr "Algodón verde"
+msgstr "lo crino mapni"
 
 #: src/content_mapnode.cpp:1743
 msgid "Orange Cotton"
-msgstr "Algodón naranja"
+msgstr "lo narju mapni"
 
 #: src/content_mapnode.cpp:1760
 msgid "Purple Cotton"
-msgstr "Algodón púrpura"
+msgstr "lo zirpu mapni"
 
 #: src/content_mapnode.cpp:1777
 msgid "Red Cotton"
-msgstr "Algodón rojo"
+msgstr "lo xunre mapni"
 
 #: src/content_mapnode.cpp:1794
 msgid "Yellow Cotton"
-msgstr "Algodón amarillo"
+msgstr "lo pelxu mapni"
 
 #: src/content_mapnode.cpp:1811
 msgid "Black Cotton"
-msgstr "Algodón negro"
+msgstr "lo xekri mapni"
 
 #: src/content_mapnode.cpp:1828
 msgid "Carpet"
-msgstr "Alfombra"
+msgstr "lo buklolgai"
 
 #: src/content_mapnode.cpp:1851
 msgid "Blue Carpet"
-msgstr "Alfombra azul"
+msgstr "lo blanu buklolgai"
 
 #: src/content_mapnode.cpp:1875
 msgid "Green Carpet"
-msgstr "Alfombra verde"
+msgstr "lo crino buklolgai"
 
 #: src/content_mapnode.cpp:1899
 msgid "Orange Carpet"
-msgstr "Alfombra naranja"
+msgstr "lo narju buklolgai"
 
 #: src/content_mapnode.cpp:1923
 msgid "Purple Carpet"
-msgstr "Alfombra púrpura"
+msgstr "lo zirpu buklolgai"
 
 #: src/content_mapnode.cpp:1947
 msgid "Red Carpet"
-msgstr "Alfombra roja"
+msgstr "lo xunre buklolgai"
 
 #: src/content_mapnode.cpp:1971
 msgid "Yellow Carpet"
-msgstr "Alfombra amarilla"
+msgstr "lo pelxu buklolgai"
 
 #: src/content_mapnode.cpp:1995
 msgid "Black Carpet"
-msgstr "Alfombra negra"
+msgstr "lo xekri buklolgai"
 
 #: src/content_mapnode.cpp:2019
 msgid "Air"
-msgstr "Aire"
+msgstr "lo vacri"
 
 #: src/content_mapnode.cpp:2035
 msgid "Vacuum"
-msgstr "Aspiradora"
+msgstr "lo maisru"
 
 #: src/content_mapnode.cpp:2052 src/content_mapnode.cpp:2081
 msgid "Water"
-msgstr "Agua"
+msgstr "lo djacu"
 
 #: src/content_mapnode.cpp:2130 src/content_mapnode.cpp:2158
 msgid "Lava"
-msgstr "Lava"
+msgstr "lo likro'i"
 
 #: src/content_mapnode.cpp:2205
 msgid "Rough Stone"
-msgstr "Piedra en bruto"
+msgstr "lo rufsu rokci"
 
 #: src/content_mapnode.cpp:2222
 msgid "Cobble Stone"
-msgstr "Adoquín"
+msgstr "lo lolro'iboi"
 
 #: src/content_mapnode.cpp:2237
 msgid "Mossy Cobble Stone"
-msgstr "Adoquín musgoso"
+msgstr "lo clika lolro'iboi"
 
 #: src/content_mapnode.cpp:2250
 msgid "Steel Block"
-msgstr "Bloque de acero"
+msgstr "lo gasta bliku"
 
 #: src/content_mapnode.cpp:2265
 msgid "Stone Knob"
-msgstr "Perilla de piedra"
+msgstr ""
 
 #: src/content_mapnode.cpp:2266
 msgid "Rough Stone Knob"
-msgstr "Perilla de piedra en bruto"
+msgstr ""
 
 #: src/content_mapnode.cpp:2267
 msgid "Sandstone Knob"
-msgstr "Perilla de arenisca"
+msgstr ""
 
 #: src/content_mapnode.cpp:2268
 msgid "Wooden Knob"
-msgstr "Perilla de madera"
+msgstr ""
 
 #: src/content_mapnode.cpp:2269
 msgid "Junglewood Knob"
-msgstr "Perilla de madera selvática"
+msgstr ""
 
 #: src/content_mapnode.cpp:2270
 msgid "Pine Knob"
-msgstr "Perilla de pino"
+msgstr ""
 
 #: src/content_mapnode.cpp:2274
 msgid "Copper Block"
-msgstr "Bloque de cobre"
+msgstr "lo tunka bliku"
 
 #: src/content_mapnode.cpp:2291
 msgid "Gold Block"
-msgstr "Bloque de oro"
+msgstr "lo solji bliku"
 
 #: src/content_mapnode.cpp:2308
 msgid "Silver Block"
-msgstr "Bloque de plata"
+msgstr "lo rijno bliku"
 
 #: src/content_mapnode.cpp:2325
 msgid "Tin Block"
-msgstr "Bloque de estaño"
+msgstr "lo tinci bliku"
 
 #: src/content_mapnode.cpp:2342
 msgid "Quartz Block"
-msgstr "Bloque de cuarzo"
+msgstr "lo kunrkuartse bliku"
 
 #: src/content_mapnode.cpp:2359
 msgid "Stone Tiles"
@@ -1866,775 +1866,775 @@ msgstr ""
 
 #: src/content_mapnode_circuit.cpp:36
 msgid "Mese Wire"
-msgstr "Alambre de mez"
+msgstr "lo za'e skornmese"
 
 #: src/content_mapnode_circuit.cpp:60
 msgid "Copper Wire"
-msgstr "Alambre de cobre"
+msgstr "lo tunka skori"
 
 #: src/content_mapnode_circuit.cpp:92
 msgid "Reactor"
-msgstr "Reactor"
+msgstr ""
 
 #: src/content_mapnode_circuit.cpp:115
 msgid "Solar Panel"
-msgstr "Panel solar"
+msgstr "lo solgu'idicyborprami'i"
 
 #: src/content_mapnode_circuit.cpp:146
 msgid "Water Wheel"
-msgstr "Rueda hidráulica"
+msgstr ""
 
 #: src/content_mapnode_circuit.cpp:179
 msgid "Switch"
-msgstr "Interruptor"
+msgstr "lo vraga"
 
 #: src/content_mapnode_circuit.cpp:214
 msgid "Button"
-msgstr "Botón"
+msgstr "lo batke"
 
 #: src/content_mapnode_circuit.cpp:245
 msgid "Stone Pressure Plate"
-msgstr "Placa de presión de piedra"
+msgstr "lo rokci nu danre kei tapla"
 
 #: src/content_mapnode_circuit.cpp:274
 msgid "Wood Pressure Plate"
-msgstr "Placa de presión de madera"
+msgstr "lo murid nu danre kei tapla"
 
 #: src/content_mapnode_circuit.cpp:303
 msgid "Not Gate"
-msgstr "Sin portón"
+msgstr ""
 
 #: src/content_mapnode_circuit.cpp:334
 msgid "Repeater"
-msgstr "Repetidor"
+msgstr ""
 
 #: src/content_mapnode_circuit.cpp:365 src/content_mapnode_circuit.cpp:389
 msgid "Electric Lamp"
-msgstr "Lámpara eléctrica"
+msgstr "lo dictergu'i"
 
 #: src/content_mapnode_circuit.cpp:423 src/content_mapnode_circuit.cpp:458
 #: src/content_mapnode_circuit.cpp:510 src/content_mapnode_circuit.cpp:531
 #: src/content_mapnode_circuit.cpp:574 src/content_mapnode_circuit.cpp:595
 msgid "Piston"
-msgstr "Pistón"
+msgstr "lo catke bliku"
 
 #: src/content_mapnode_circuit.cpp:484 src/content_mapnode_circuit.cpp:553
 #: src/content_mapnode_circuit.cpp:617
 msgid "Piston Arm"
-msgstr "Brazo de pistón"
+msgstr ""
 
 #: src/content_mapnode_circuit.cpp:638 src/content_mapnode_circuit.cpp:666
 #: src/content_mapnode_circuit.cpp:718 src/content_mapnode_circuit.cpp:739
 #: src/content_mapnode_circuit.cpp:782 src/content_mapnode_circuit.cpp:803
 msgid "Sticky Piston"
-msgstr "Pistón pegajoso"
+msgstr "lo snipa ke catke bliku"
 
 #: src/content_mapnode_circuit.cpp:692 src/content_mapnode_circuit.cpp:761
 #: src/content_mapnode_circuit.cpp:825
 msgid "Sticky Piston Arm"
-msgstr "Brazo de pistón pegajoso"
+msgstr ""
 
 #: src/content_mapnode_door.cpp:38 src/content_mapnode_door.cpp:62
 #: src/content_mapnode_door.cpp:587 src/content_mapnode_door.cpp:610
 msgid "Wood Door"
-msgstr "Puerta de madera"
+msgstr "lo mudri vrogai"
 
 #: src/content_mapnode_door.cpp:91 src/content_mapnode_door.cpp:116
 #: src/content_mapnode_door.cpp:681 src/content_mapnode_door.cpp:705
 msgid "Steel Door"
-msgstr "Puerta de acero"
+msgstr "lo gasta vrogai"
 
 #: src/content_mapnode_door.cpp:146 src/content_mapnode_door.cpp:170
 #: src/content_mapnode_door.cpp:634 src/content_mapnode_door.cpp:657
 msgid "Glass Door"
-msgstr "Puerta de cristal"
+msgstr "lo blaci vrogai"
 
 #: src/content_mapnode_door.cpp:199 src/content_mapnode_door.cpp:224
 #: src/content_mapnode_door.cpp:730 src/content_mapnode_door.cpp:753
 msgid "Wood Windowed Door"
-msgstr "Puerta de madera con ventanal"
+msgstr "lo mudri ke selca'o vrogai"
 
 #: src/content_mapnode_door.cpp:255 src/content_mapnode_door.cpp:281
 #: src/content_mapnode_door.cpp:777 src/content_mapnode_door.cpp:801
 msgid "Steel Windowed Door"
-msgstr "Puerta de acero con ventanal"
+msgstr "lo gasta ke selca'o vrogai"
 
 #: src/content_mapnode_door.cpp:314 src/content_mapnode_door.cpp:338
 #: src/content_mapnode_door.cpp:827 src/content_mapnode_door.cpp:852
 msgid "Right Hanging Wood Door"
-msgstr "Puerta de madera con adorno derecho"
+msgstr "lo pritu dandu mudri vrogai"
 
 #: src/content_mapnode_door.cpp:366 src/content_mapnode_door.cpp:391
 #: src/content_mapnode_door.cpp:878 src/content_mapnode_door.cpp:903
 msgid "Right Hanging Glass Door"
-msgstr "Puerta de cristal con adorno derecho"
+msgstr "lo pritu dandu blaci vrogai"
 
 #: src/content_mapnode_door.cpp:420 src/content_mapnode_door.cpp:445
 #: src/content_mapnode_door.cpp:929 src/content_mapnode_door.cpp:955
 msgid "Right Hanging Steel Door"
-msgstr "Puerta de acero con adorno derecho"
+msgstr "lo pritu dandu gasta vrogai"
 
 #: src/content_mapnode_door.cpp:474 src/content_mapnode_door.cpp:499
 #: src/content_mapnode_door.cpp:982 src/content_mapnode_door.cpp:1007
 msgid "Right Hanging Wood Windowed Door"
-msgstr "Puerta de madera con ventanal y adorno derecho"
+msgstr "lo pritu dandu ke mudri ke selca'o vrogai"
 
 #: src/content_mapnode_door.cpp:529 src/content_mapnode_door.cpp:555
 #: src/content_mapnode_door.cpp:1033 src/content_mapnode_door.cpp:1059
 msgid "Right Hanging Steel Windowed Door"
-msgstr "Puerta de acero con ventanal y adorno derecho"
+msgstr "lo pritu dandu ke gasta ke selca'o vrogai"
 
 #: src/content_mapnode_door.cpp:1087 src/content_mapnode_door.cpp:1254
 #: src/content_mapnode_door.cpp:1307
 msgid "Wood Hatch"
-msgstr "Escotilla de madera"
+msgstr ""
 
 #: src/content_mapnode_door.cpp:1112 src/content_mapnode_door.cpp:1280
 #: src/content_mapnode_door.cpp:1333
 msgid "Steel Hatch"
-msgstr "Escotilla de acero"
+msgstr ""
 
 #: src/content_mapnode_door.cpp:1137
 msgid "Wood Windowed Hatch"
-msgstr "Escotilla de madera con ventanal"
+msgstr ""
 
 #: src/content_mapnode_door.cpp:1164
 msgid "Steel Windowed Hatch"
-msgstr "Escotilla de acero con ventanal"
+msgstr ""
 
 #: src/content_mapnode_door.cpp:1193 src/content_mapnode_door.cpp:1361
 msgid "Wood Gate"
-msgstr "Portón de madera"
+msgstr ""
 
 #: src/content_mapnode_door.cpp:1224 src/content_mapnode_door.cpp:1385
 msgid "Steel Gate"
-msgstr "Portón de acero"
+msgstr ""
 
 #: src/content_mapnode_farm.cpp:38
 msgid "Farm Dirt"
-msgstr "Suciedad de granja"
+msgstr "lo cange dertu"
 
 #: src/content_mapnode_farm.cpp:68 src/content_mapnode_farm.cpp:932
 #: src/content_mapnode_farm.cpp:953 src/content_mapnode_farm.cpp:974
 #: src/content_mapnode_farm.cpp:997
 msgid "Trellis"
-msgstr "Enrejado"
+msgstr ""
 
 #: src/content_mapnode_farm.cpp:92
 msgid "Wheat Seeds"
-msgstr "Semillad de trigo"
+msgstr "lo maxri tsiju"
 
 #: src/content_mapnode_farm.cpp:111
 msgid "Melon Seeds"
-msgstr "Semillad de melón"
+msgstr "lo guzme tsiju"
 
 #: src/content_mapnode_farm.cpp:131
 msgid "Pumpkin Seeds"
-msgstr "Semillas de calabaza"
+msgstr "lo guzmrkukurbita tsiju"
 
 #: src/content_mapnode_farm.cpp:151
 msgid "Potato Seeds"
-msgstr "Semillas de papa"
+msgstr "lo patlu tsiju"
 
 #: src/content_mapnode_farm.cpp:170
 msgid "Carrot Seeds"
-msgstr "Semillas de zanahoria"
+msgstr "lo genjrdauko tsiju"
 
 #: src/content_mapnode_farm.cpp:189
 msgid "Beetroot Seeds"
-msgstr "Semillas de remolacha"
+msgstr "lo spatrtensai tsiju"
 
 #: src/content_mapnode_farm.cpp:208
 msgid "Grape Seeds"
-msgstr "Semillas de uva"
+msgstr "lo vanjba tsiju"
 
 #: src/content_mapnode_farm.cpp:228
 msgid "Cotton Seeds"
-msgstr "Semillas de algodón"
+msgstr "lo mapni tsiju"
 
 #: src/content_mapnode_farm.cpp:327 src/content_mapnode_farm.cpp:348
 #: src/content_mapnode_farm.cpp:369 src/content_mapnode_farm.cpp:389
 msgid "Melon"
-msgstr "Melón"
+msgstr "lo guzme"
 
 #: src/content_mapnode_farm.cpp:403 src/content_mapnode_farm.cpp:423
 #: src/content_mapnode_farm.cpp:443 src/content_mapnode_farm.cpp:463
 msgid "Pumpkin"
-msgstr "Calabaza"
+msgstr "lo guzmrkukurbita"
 
 #: src/content_mapnode_farm.cpp:479
 msgid "Jack' O Lantern"
-msgstr "Linterna de Noche de brujas"
+msgstr "lo jadrdjekolenterne"
 
 #: src/content_mapnode_farm.cpp:769 src/content_mapnode_farm.cpp:790
 #: src/content_mapnode_farm.cpp:811 src/content_mapnode_farm.cpp:832
 msgid "Grape"
-msgstr "Uva"
+msgstr "lo vanjba"
 
 #: src/content_mapnode_furniture.cpp:36
 msgid "Book Shelf"
-msgstr "Librero"
+msgstr "lo ckukajna"
 
 #: src/content_mapnode_furniture.cpp:81 src/content_mapnode_furniture.cpp:100
 #: src/content_mapnode_furniture.cpp:119 src/content_mapnode_furniture.cpp:138
 #: src/content_mapnode_furniture.cpp:157 src/content_mapnode_furniture.cpp:176
 msgid "Couch"
-msgstr "Sofá"
+msgstr "lo sfofa"
 
 #: src/content_mapnode_furniture.cpp:205 src/content_mapnode_furniture.cpp:224
 #: src/content_mapnode_furniture.cpp:243 src/content_mapnode_furniture.cpp:262
 #: src/content_mapnode_furniture.cpp:281 src/content_mapnode_furniture.cpp:300
 msgid "Blue Couch"
-msgstr "Sofá azul"
+msgstr "lo blanu sfofa"
 
 #: src/content_mapnode_furniture.cpp:323 src/content_mapnode_furniture.cpp:342
 #: src/content_mapnode_furniture.cpp:361 src/content_mapnode_furniture.cpp:380
 #: src/content_mapnode_furniture.cpp:399 src/content_mapnode_furniture.cpp:418
 msgid "Green Couch"
-msgstr "Sofá verde"
+msgstr "lo crino sfofa"
 
 #: src/content_mapnode_furniture.cpp:441 src/content_mapnode_furniture.cpp:460
 #: src/content_mapnode_furniture.cpp:479 src/content_mapnode_furniture.cpp:498
 #: src/content_mapnode_furniture.cpp:517 src/content_mapnode_furniture.cpp:536
 msgid "Orange Couch"
-msgstr "Sofá naranja"
+msgstr "lo narju sfofa"
 
 #: src/content_mapnode_furniture.cpp:559 src/content_mapnode_furniture.cpp:578
 #: src/content_mapnode_furniture.cpp:597 src/content_mapnode_furniture.cpp:616
 #: src/content_mapnode_furniture.cpp:635 src/content_mapnode_furniture.cpp:654
 msgid "Purple Couch"
-msgstr "Sofá púrpura"
+msgstr "lo zirpu sfofa"
 
 #: src/content_mapnode_furniture.cpp:677 src/content_mapnode_furniture.cpp:696
 #: src/content_mapnode_furniture.cpp:715 src/content_mapnode_furniture.cpp:734
 #: src/content_mapnode_furniture.cpp:753 src/content_mapnode_furniture.cpp:772
 msgid "Red Couch"
-msgstr "Sofá rojo"
+msgstr "lo xunre sfofa"
 
 #: src/content_mapnode_furniture.cpp:795 src/content_mapnode_furniture.cpp:814
 #: src/content_mapnode_furniture.cpp:833 src/content_mapnode_furniture.cpp:852
 #: src/content_mapnode_furniture.cpp:871 src/content_mapnode_furniture.cpp:890
 msgid "Yellow Couch"
-msgstr "Sofá amarillo"
+msgstr "lo pelxu sfofa"
 
 #: src/content_mapnode_furniture.cpp:913 src/content_mapnode_furniture.cpp:932
 #: src/content_mapnode_furniture.cpp:951 src/content_mapnode_furniture.cpp:970
 #: src/content_mapnode_furniture.cpp:989
 #: src/content_mapnode_furniture.cpp:1008
 msgid "Black Couch"
-msgstr "Sofá negro"
+msgstr "lo xekri sfofa"
 
 #: src/content_mapnode_furniture.cpp:1031
 msgid "Chair"
-msgstr "Silla"
+msgstr "lo stizu"
 
 #: src/content_mapnode_furniture.cpp:1080
 msgid "Table"
-msgstr "Mesa"
+msgstr "lo jubme"
 
 #: src/content_mapnode_furniture.cpp:1137
 #: src/content_mapnode_furniture.cpp:1167
 msgid "Bed"
-msgstr "Cama"
+msgstr "lo ckana"
 
 #: src/content_mapnode_furniture.cpp:1194
 #: src/content_mapnode_furniture.cpp:1224
 msgid "Blue Bed"
-msgstr "Cama azul"
+msgstr "lo blanu ckana"
 
 #: src/content_mapnode_furniture.cpp:1251
 #: src/content_mapnode_furniture.cpp:1281
 msgid "Green Bed"
-msgstr "Cama verde"
+msgstr "lo crino ckana"
 
 #: src/content_mapnode_furniture.cpp:1308
 #: src/content_mapnode_furniture.cpp:1338
 msgid "Orange Bed"
-msgstr "Cama naranja"
+msgstr "lo narju ckana"
 
 #: src/content_mapnode_furniture.cpp:1365
 #: src/content_mapnode_furniture.cpp:1395
 msgid "Purple Bed"
-msgstr "Cama púrpura"
+msgstr "lo zirpu ckana"
 
 #: src/content_mapnode_furniture.cpp:1422
 #: src/content_mapnode_furniture.cpp:1452
 msgid "Red Bed"
-msgstr "Cama roja"
+msgstr "lo xunre ckana"
 
 #: src/content_mapnode_furniture.cpp:1479
 #: src/content_mapnode_furniture.cpp:1509
 msgid "Yellow Bed"
-msgstr "Cama amarilla"
+msgstr "lo pelxu ckana"
 
 #: src/content_mapnode_furniture.cpp:1536
 #: src/content_mapnode_furniture.cpp:1566
 msgid "Black Bed"
-msgstr "Cama negra"
+msgstr "lo xekri ckana"
 
 #: src/content_mapnode_furniture.cpp:1594
 msgid "Colorful Painting"
-msgstr "Pintura de colores"
+msgstr "lo sorska pixra"
 
 #: src/content_mapnode_furniture.cpp:1629
 msgid "Red Rose Painting"
-msgstr "Pintura de rosa roja"
+msgstr "lo pixra be lo xunre rozgu"
 
 #: src/content_mapnode_furniture.cpp:1664
 msgid "Field Painting"
-msgstr "Pintura de campo"
+msgstr "lo pixra be lo foldi"
 
 #: src/content_mapnode_furniture.cpp:1699
 msgid "Blue Flower Painting"
-msgstr "Pintura de flor azul"
+msgstr "lo pixra be lo blanu xrula"
 
 #: src/content_mapnode_furniture.cpp:1734
 msgid "Painting Canvas"
-msgstr "Lona de pintura"
+msgstr "lo pixra fanbu'u"
 
 #: src/content_mapnode_furniture.cpp:1772
 msgid "Clock"
-msgstr "Reloj"
+msgstr "lo junla"
 
 #: src/content_mapnode_plants.cpp:42
 msgid "Tree"
-msgstr "Árbol"
+msgstr "lo tricu"
 
 #: src/content_mapnode_plants.cpp:60
 msgid "Apple Tree"
-msgstr "Manzano"
+msgstr "lo plisytricu"
 
 #: src/content_mapnode_plants.cpp:78
 msgid "Jungle Tree"
-msgstr "Árbol selvático"
+msgstr "lo glatimdemricfoi tricu"
 
 #: src/content_mapnode_plants.cpp:94
 msgid "Conifer Tree"
-msgstr "Árbol conífero"
+msgstr "lo ckunu"
 
 #: src/content_mapnode_plants.cpp:112
 msgid "Young Tree"
-msgstr "Árbol joven"
+msgstr "lo citno tricu"
 
 #: src/content_mapnode_plants.cpp:134
 msgid "Young Jungle Tree"
-msgstr "Árbol selvático joven"
+msgstr "lo citno ke glatimdemricfoi tricu"
 
 #: src/content_mapnode_plants.cpp:156
 msgid "Young Apple Tree"
-msgstr "Manzano joven"
+msgstr "lo citno plisytricu"
 
 #: src/content_mapnode_plants.cpp:178
 msgid "Young Conifer Tree"
-msgstr "Árbol conífero joven"
+msgstr "lo citno ckunu"
 
 #: src/content_mapnode_plants.cpp:200
 msgid "Jungle Grass"
-msgstr "Pasto selvático"
+msgstr "lo glatimdemricfoi srasu"
 
 #: src/content_mapnode_plants.cpp:222
 msgid "Leaves"
-msgstr "Hojas"
+msgstr "lo pezli"
 
 #: src/content_mapnode_plants.cpp:257
 msgid "Apple Tree Leaves"
-msgstr "Hojas de manzano"
+msgstr "lo plisytricu pezli"
 
 #: src/content_mapnode_plants.cpp:292
 msgid "Jungle Leaves"
-msgstr "Hojas selváticas"
+msgstr "lo glatimdemricfoi pezli"
 
 #: src/content_mapnode_plants.cpp:327
 msgid "Conifer Leaves"
-msgstr "Hojas de conífera"
+msgstr "lo ckunu pezli"
 
 #: src/content_mapnode_plants.cpp:362
 msgid "Trimmed Leaves"
-msgstr "Hojas recortadas"
+msgstr "lo terka'a pezli"
 
 #: src/content_mapnode_plants.cpp:394
 msgid "Trimmed Apple Tree Leaves"
-msgstr "Hojas recortadas de manzano"
+msgstr "lo terka'a ke plisytricu pezli"
 
 #: src/content_mapnode_plants.cpp:426
 msgid "Trimmed Jungle Leaves"
-msgstr "Hojas recortadas selváticas"
+msgstr "lo terka'a ke glatimdemricfoi pezli"
 
 #: src/content_mapnode_plants.cpp:458
 msgid "Trimmed Conifer Leaves"
-msgstr "Hojas recortadas de conífera"
+msgstr "lo terka'a ke ckunu pezli"
 
 #: src/content_mapnode_plants.cpp:490
 msgid "Apple Tree Blossom"
-msgstr "Florecimiento de manzano"
+msgstr "le plisytricu xrula"
 
 #: src/content_mapnode_plants.cpp:522
 msgid "Trimmed Apple Tree Blossom"
-msgstr "Florecimiento recortado de manzano"
+msgstr "le terka'a ke plisytricu xrula"
 
 #: src/content_mapnode_plants.cpp:551
 msgid "Cactus Blossom"
-msgstr "Flor de cactácea"
+msgstr ""
 
 #: src/content_mapnode_plants.cpp:572
 msgid "Cactus Flower"
-msgstr "Flor de cactácea"
+msgstr ""
 
 #: src/content_mapnode_plants.cpp:615
 msgid "Cactus"
-msgstr "Cactácea"
+msgstr "lo jesyspa"
 
 #: src/content_mapnode_plants.cpp:679
 msgid "Papyrus"
-msgstr "Papiro"
+msgstr "lo misryplespa"
 
 #: src/content_mapnode_plants.cpp:700
 msgid "Sapling"
-msgstr "Retoño"
+msgstr "lo ciftricu"
 
 #: src/content_mapnode_plants.cpp:722
 msgid "Apple Tree Sapling"
-msgstr "Retoño de manzano"
+msgstr "lo plise ciftricu"
 
 #: src/content_mapnode_plants.cpp:744
 msgid "Jungle Sapling"
-msgstr "Retoño selvático"
+msgstr "lo glatimdemricfoi ciftricu"
 
 #: src/content_mapnode_plants.cpp:766
 msgid "Conifer Sapling"
-msgstr "Retoño conífero"
+msgstr "lo ckunu ciftricu"
 
 #: src/content_mapnode_plants.cpp:811 src/content_mapnode_plants.cpp:835
 msgid "Wild Grass"
-msgstr "Pasto salvaje"
+msgstr "lo cilce srasu"
 
 #: src/content_mapnode_plants.cpp:858
 msgid "Dead Grass"
-msgstr "Pasto muerto"
+msgstr "lo morsi srasu"
 
 #: src/content_mapnode_plants.cpp:881
 msgid "Flower Stem"
-msgstr "Tallo de flor"
+msgstr "lo xrula stani"
 
 #: src/content_mapnode_plants.cpp:904
 msgid "Rose"
-msgstr "Rosa"
+msgstr "lo rozgu"
 
 #: src/content_mapnode_plants.cpp:928
 msgid "Daffodil"
-msgstr "Narciso"
+msgstr "lo sparnarcisu"
 
 #: src/content_mapnode_plants.cpp:952
 msgid "Tulip"
-msgstr "Tulipán"
+msgstr "lo tujli"
 
 #: src/content_mapnode_slab.cpp:37
 msgid "Rough Stone Slab"
-msgstr "Losa de piedra en bruto"
+msgstr "lo rufsu rokci ke xadba bliku"
 
 #: src/content_mapnode_slab.cpp:56 src/content_mapnode_slab.cpp:419
 msgid "Cobble Stone Slab"
-msgstr "Losa de adoquín"
+msgstr "lo lolro'iboi ke xadba bliku"
 
 #: src/content_mapnode_slab.cpp:75
 msgid "Mossy Cobble Stone Slab"
-msgstr "Losa de adoquín musgoso"
+msgstr "lo clika lolro'iboi ke xadba bliku"
 
 #: src/content_mapnode_slab.cpp:94
 msgid "Stone Slab"
-msgstr "Losa de piedra"
+msgstr "lo rokci ke xadba bliku"
 
 #: src/content_mapnode_slab.cpp:112
 msgid "Wood Slab"
-msgstr "Losa de madera"
+msgstr "lo mudri ke xadba bliku"
 
 #: src/content_mapnode_slab.cpp:132
 msgid "Jungle Wood Slab"
-msgstr "Losa de madera selvática"
+msgstr "lo glatimdemricfoi mudri ke xadba bliku"
 
 #: src/content_mapnode_slab.cpp:152
 msgid "Brick Slab"
-msgstr "Losa de ladrillo"
+msgstr "lo kitybli ke xadba bliku"
 
 #: src/content_mapnode_slab.cpp:170
 msgid "Sand Stone Slab"
-msgstr "Losa de arenisca"
+msgstr "lo canro'i ke xadba bliku"
 
 #: src/content_mapnode_slab.cpp:188 src/content_mapnode_slab.cpp:524
 msgid "Glass Slab"
-msgstr "Losa de cristal"
+msgstr "lo blaci ke xadba bliku"
 
 #: src/content_mapnode_slab.cpp:214 src/content_mapnode_slab.cpp:547
 msgid "Blue Glass Slab"
-msgstr "Losa de pasto azul"
+msgstr "lo blanu blaci ke xadba bliku"
 
 #: src/content_mapnode_slab.cpp:241 src/content_mapnode_slab.cpp:570
 msgid "Green Glass Slab"
-msgstr "Losa de pasto verde"
+msgstr "lo crino blaci ke xadba bliku"
 
 #: src/content_mapnode_slab.cpp:268 src/content_mapnode_slab.cpp:593
 msgid "Orange Glass Slab"
-msgstr "Losa de pasto naranja"
+msgstr "lo narju blaci ke xadba bliku"
 
 #: src/content_mapnode_slab.cpp:295 src/content_mapnode_slab.cpp:616
 msgid "Purple Glass Slab"
-msgstr "Losa de pasto púrpura"
+msgstr "lo zirpu blaci ke xadba bliku"
 
 #: src/content_mapnode_slab.cpp:322 src/content_mapnode_slab.cpp:639
 msgid "Red Glass Slab"
-msgstr "Losa de pasto rojo"
+msgstr "lo xunre blaci ke xadba bliku"
 
 #: src/content_mapnode_slab.cpp:349 src/content_mapnode_slab.cpp:662
 msgid "Yellow Glass Slab"
-msgstr "Losa de pasto amarillo"
+msgstr "lo pelxu blaci ke xadba bliku"
 
 #: src/content_mapnode_slab.cpp:376 src/content_mapnode_slab.cpp:685
 msgid "Black Glass Slab"
-msgstr "Losa de pasto negro"
+msgstr "lo xekri blaci ke xadba bliku"
 
 #: src/content_mapnode_special.cpp:37
 msgid "Fence"
-msgstr "Valla"
+msgstr ""
 
 #: src/content_mapnode_special.cpp:67
 msgid "Steel Fence"
-msgstr "Valla de acero"
+msgstr ""
 
 #: src/content_mapnode_special.cpp:95
 msgid "Steel Bars"
-msgstr "Barra de acero"
+msgstr ""
 
 #: src/content_mapnode_special.cpp:125
 msgid "Rail"
-msgstr "Riel"
+msgstr "lo teryre'e"
 
 #: src/content_mapnode_special.cpp:158
 msgid "Terracotta Roof Tile"
-msgstr "Teja de terracota"
+msgstr "lo stakrterakota drutapla"
 
 #: src/content_mapnode_special.cpp:175
 msgid "Wood Roof Tile"
-msgstr "Teja de madera"
+msgstr "lo mudri drutapla"
 
 #: src/content_mapnode_special.cpp:193
 msgid "Asphalt Roof Tile"
-msgstr "Teja de asfalto"
+msgstr "lo tarla drutapla"
 
 #: src/content_mapnode_special.cpp:217
 msgid "Stone Roof Tile"
-msgstr "Teja de piedra"
+msgstr "lo rokci drutapla"
 
 #: src/content_mapnode_special.cpp:234
 msgid "Glass Roof Tile"
-msgstr "Teja de cristal"
+msgstr "lo blaci drutapla"
 
 #: src/content_mapnode_special.cpp:257
 msgid "Blue Glass Roof Tile"
-msgstr "Teja de cristal azul"
+msgstr "lo blanu blaci drutapla"
 
 #: src/content_mapnode_special.cpp:281
 msgid "Green Glass Roof Tile"
-msgstr "Teja de cristal verde"
+msgstr "lo crino blaci drutapla"
 
 #: src/content_mapnode_special.cpp:305
 msgid "Orange Glass Roof Tile"
-msgstr "Teja de cristal naranja"
+msgstr "lo narju blaci drutapla"
 
 #: src/content_mapnode_special.cpp:329
 msgid "Purple Glass Roof Tile"
-msgstr "Teja de cristal púrpura"
+msgstr "lo zirpu blaci drutapla"
 
 #: src/content_mapnode_special.cpp:353
 msgid "Red Glass Roof Tile"
-msgstr "Teja de cristal rojo"
+msgstr "lo xunre blaci drutapla"
 
 #: src/content_mapnode_special.cpp:377
 msgid "Yellow Glass Roof Tile"
-msgstr "Teja de cristal amarillo"
+msgstr "lo pelxu blaci drutapla"
 
 #: src/content_mapnode_special.cpp:401
 msgid "Black Glass Roof Tile"
-msgstr "Teja de vidrio negro "
+msgstr "lo xekri blaci drutapla"
 
 #: src/content_mapnode_special.cpp:425
 msgid "Thatch Roof Tile"
-msgstr "Teja de azulejo"
+msgstr "lo sudysrasu drutapla"
 
 #: src/content_mapnode_special.cpp:444 src/content_mapnode_special.cpp:481
 #: src/content_mapnode_special.cpp:541 src/content_mapnode_special.cpp:576
 msgid "Ladder"
-msgstr "Escalera"
+msgstr "lo rajyserti"
 
 #: src/content_mapnode_special.cpp:611
 msgid "Border Stone"
-msgstr "Frontera de piedra"
+msgstr "le jimte rokci"
 
 #: src/content_mapnode_special.cpp:637
 msgid "Book"
-msgstr "Libro"
+msgstr "lo cukta"
 
 #: src/content_mapnode_special.cpp:669
 msgid "Cook Book"
-msgstr "Recetario"
+msgstr "lo nu jukpa kei cukta"
 
 #: src/content_mapnode_special.cpp:701
 msgid "Decraft Book"
-msgstr "Libro de contrartesanías"
+msgstr "lo to'e selzba cukta"
 
 #: src/content_mapnode_special.cpp:732 src/content_mapnode_special.cpp:886
 #: src/content_nodemeta.cpp:2041
 msgid "Diary"
-msgstr "Diario"
+msgstr "lo sivykarni"
 
 #: src/content_mapnode_special.cpp:763
 msgid "Craft Book"
-msgstr "Libro de artesanías"
+msgstr "lo selzba cukta"
 
 #: src/content_mapnode_special.cpp:802
 msgid "Guide"
-msgstr "Guía"
+msgstr "lo gidva cukta"
 
 #: src/content_mapnode_special.cpp:830 src/content_nodemeta.h:385
 msgid "Cooking Guide"
-msgstr "Guía de cocina"
+msgstr "lo nu jukpa kei gidva cukta"
 
 #: src/content_mapnode_special.cpp:858 src/content_nodemeta.h:411
 msgid "Decrafting Guide"
-msgstr "Guía de contrartesanías"
+msgstr "lo to'e selzba ke gidva cukta"
 
 #: src/content_mapnode_special.cpp:914 src/content_nodemeta.h:358
 msgid "Craft Guide"
-msgstr "Guía de artesanías"
+msgstr "lo selzba ke selzba cukta"
 
 #: src/content_mapnode_special.cpp:942 src/content_mapnode_special.cpp:962
 msgid "Fire"
-msgstr "Fuego"
+msgstr "lo fagri"
 
 #: src/content_mapnode_special.cpp:982 src/content_mapnode_special.cpp:1005
 msgid "Torch"
-msgstr "Antorcha"
+msgstr "lo fagytergu'i"
 
 #: src/content_mapnode_special.cpp:1033 src/content_mapnode_special.cpp:1059
 #: src/content_mapnode_special.cpp:1092
 msgid "Sign"
-msgstr "Signo"
+msgstr "lo sinxa"
 
 #: src/content_mapnode_special.cpp:1120 src/content_mapnode_special.cpp:1150
 #: src/content_mapnode_special.cpp:1182
 msgid "Locking Sign"
-msgstr "Signo de bloqueo"
+msgstr "lo selstela sinxa"
 
 #: src/content_mapnode_special.cpp:1211 src/content_nodemeta.cpp:228
 msgid "Chest"
-msgstr "Cofre"
+msgstr "lo gacri vasru"
 
 #: src/content_mapnode_special.cpp:1234 src/content_nodemeta.cpp:503
 msgid "Creative Chest"
-msgstr "Cofre creativo"
+msgstr ""
 
 #: src/content_mapnode_special.cpp:1255
 msgid "Locking Chest"
-msgstr "Cofre cerrado"
+msgstr "lo selstela ke gacri vasru"
 
 #: src/content_mapnode_special.cpp:1285
 msgid "Safe"
-msgstr "Seguro"
+msgstr ""
 
 #: src/content_mapnode_special.cpp:1307 src/content_mapnode_special.cpp:1327
 msgid "Furnace"
-msgstr "Horno"
+msgstr "lo toknu"
 
 #: src/content_mapnode_special.cpp:1346 src/content_mapnode_special.cpp:1367
 msgid "Locking Furnace"
-msgstr "Horno de bloqueo"
+msgstr "lo selstela toknu"
 
 #: src/content_mapnode_special.cpp:1385 src/content_mapnode_special.cpp:1405
 msgid "Incinerator"
-msgstr "Incinerador"
+msgstr "lo festoknu"
 
 #: src/content_mapnode_special.cpp:1423
 msgid "Nyan Cat"
-msgstr "Nyan Cat"
+msgstr "lo me la'o gy.Nyan Cat.gy."
 
 #: src/content_mapnode_special.cpp:1437
 msgid "Rainbow"
-msgstr "Arcoiris"
+msgstr "lo tanbargu"
 
 #: src/content_mapnode_special.cpp:1449
 msgid "Unbaked Flower Pot"
-msgstr "Maceta sin hornear"
+msgstr ""
 
 #: src/content_mapnode_special.cpp:1471
 msgid "Flower Pot"
-msgstr "Maceta"
+msgstr "lo spapatxu"
 
 #: src/content_mapnode_special.cpp:1489
 msgid "Cobblestone Wall"
-msgstr "Muro de adoquín"
+msgstr "lo lolro'iboi bitmu"
 
 #: src/content_mapnode_special.cpp:1513
 msgid "Rough Stone Wall"
-msgstr "Muro de piedra en bruto"
+msgstr "lo rufsu rokci bitmu"
 
 #: src/content_mapnode_special.cpp:1537
 msgid "Mossy Cobblestone Wall"
-msgstr "Muro de adoquín musgoso"
+msgstr "lo clika lolro'iboi bitmu"
 
 #: src/content_mapnode_special.cpp:1561
 msgid "Stone Wall"
-msgstr "Muro de piedra"
+msgstr "lo rokci bitmu"
 
 #: src/content_mapnode_special.cpp:1585
 msgid "Sand Stone Wall"
-msgstr "Muro de arenisca"
+msgstr "lo canro'i bitmu"
 
 #: src/content_mapnode_special.cpp:1609
 msgid "TNT"
-msgstr "Dinamita"
+msgstr ""
 
 #: src/content_mapnode_special.cpp:1629
 msgid "In-Progress explosion - how did you get this???"
-msgstr "Explosión en progreso ¿Cómo demonios posees ESTO?"
+msgstr "lo spoja to .uecai paunai ta'ima do cpacu ri toi"
 
 #: src/content_mapnode_special.cpp:1649
 msgid "Steam"
-msgstr "Humo"
+msgstr "lo jaurgapci"
 
 #: src/content_mapnode_special.cpp:1670
 msgid "Home Flag"
-msgstr "Bandera de casa"
+msgstr "lo zdani lanci"
 
 #: src/content_mapnode_special.cpp:1720
 msgid "Blue Home Flag"
-msgstr "Bandera de casa azul"
+msgstr "lo blanu ke zdani lanci"
 
 #: src/content_mapnode_special.cpp:1749
 msgid "Green Home Flag"
-msgstr "Bandera de casa verde"
+msgstr "lo crino ke zdani lanci"
 
 #: src/content_mapnode_special.cpp:1778
 msgid "Orange Home Flag"
-msgstr "Bandera de casa naranja"
+msgstr "lo narju ke zdani lanci"
 
 #: src/content_mapnode_special.cpp:1807
 msgid "Purple Home Flag"
-msgstr "Bandera de casa púrpura"
+msgstr "lo zirpu ke zdani lanci"
 
 #: src/content_mapnode_special.cpp:1836
 msgid "Red Home Flag"
-msgstr "Bandera de casa roja"
+msgstr "lo xunre ke zdani lanci"
 
 #: src/content_mapnode_special.cpp:1865
 msgid "Yellow Home Flag"
-msgstr "Bandera de casa amarilla"
+msgstr "lo pelxu ke zdani lanci"
 
 #: src/content_mapnode_special.cpp:1894
 msgid "Black Home Flag"
-msgstr "Bandera de casa negra"
+msgstr "lo xekri ke zdani lanci"
 
 #: src/content_mapnode_special.cpp:1923
 msgid "Life Support System"
-msgstr "Sistema de soporte vital"
+msgstr "lo renvi sidju minji"
 
 #: src/content_mapnode_special.cpp:1940
 msgid "Parcel"
@@ -2642,463 +2642,463 @@ msgstr ""
 
 #: src/content_mapnode_stair.cpp:38
 msgid "Rough Stone Stair"
-msgstr "Escalera de piedra en bruto"
+msgstr "lo rufsu rokci serti"
 
 #: src/content_mapnode_stair.cpp:55
 msgid "Cobble Stone Stair"
-msgstr "Escalera de adoquín"
+msgstr "lo lolro'iboi serti"
 
 #: src/content_mapnode_stair.cpp:72
 msgid "Mossy Cobble Stone Stair"
-msgstr "Escalera de adoquín musgoso"
+msgstr "lo clika lolro'iboi serti"
 
 #: src/content_mapnode_stair.cpp:89
 msgid "Stone Stair"
-msgstr "Escalera de piedra"
+msgstr "lo rokci serti"
 
 #: src/content_mapnode_stair.cpp:107
 msgid "Wood Stair"
-msgstr "Escalera de madera"
+msgstr "lo mudri serti"
 
 #: src/content_mapnode_stair.cpp:126
 msgid "Jungle Wood Stair"
-msgstr "Escalera de madera selvática"
+msgstr "lo glatimdemricfoi mudri serti"
 
 #: src/content_mapnode_stair.cpp:145
 msgid "Brick Stair"
-msgstr "Escalera de ladrillo"
+msgstr "lo kitybli serti"
 
 #: src/content_mapnode_stair.cpp:162
 msgid "Sand Stone Stair"
-msgstr "Escalera de arenisca"
+msgstr "lo canro'i serti"
 
 #: src/content_nodemeta.cpp:74 src/content_nodemeta.cpp:137
 #: src/content_nodemeta.cpp:2025 src/content_nodemeta.cpp:2124
 #: src/guiKeyChangeMenu.cpp:307
 msgid "Save"
-msgstr "Guardar"
+msgstr ""
 
 #: src/content_nodemeta.cpp:184
 #, c-format
 msgid "%s's Home Flag"
-msgstr "Bandera de la casa de %s"
+msgstr "lo zdani lanci be la'o gy.%s.gy."
 
 #: src/content_nodemeta.cpp:301
 #, c-format
 msgid "Locking Chest owned by '%s'"
-msgstr "Cofre propiedad de «%s»"
+msgstr "lo selstela ke gacri vasru poi ponse la'o gy.%s.gy."
 
 #: src/content_nodemeta.cpp:375
 #, c-format
 msgid "Safe owned by '%s'"
-msgstr "Seguro propiedad de «%s»"
+msgstr ""
 
 #: src/content_nodemeta.cpp:544 src/content_nodemeta.cpp:1492
 #: src/content_nodemeta.cpp:1697 src/content_nodemeta.cpp:1911
 #, c-format
 msgid "Page %d of %d"
-msgstr "Página %d de %d"
+msgstr ""
 
 #: src/content_nodemeta.cpp:548 src/content_nodemeta.cpp:1520
 #: src/content_nodemeta.cpp:1706 src/content_nodemeta.cpp:1927
 msgid "<< Previous Page"
-msgstr "<< Página anterior"
+msgstr "lidne"
 
 #: src/content_nodemeta.cpp:554 src/content_nodemeta.cpp:1526
 #: src/content_nodemeta.cpp:1712 src/content_nodemeta.cpp:1933
 msgid "Next Page >>"
-msgstr "Página siguiente >>"
+msgstr "selyli'e"
 
 #: src/content_nodemeta.cpp:597
 #, c-format
 msgid "Border Stone owned by '%s'"
-msgstr "Frontera de piedra propiedad de «%s»"
+msgstr ""
 
 #: src/content_nodemeta.cpp:672
 msgid "Furnace is overloaded"
-msgstr "Horno sobrecargado"
+msgstr ".i lo ti toknu cu dukse lo ka mulno"
 
 #: src/content_nodemeta.cpp:673
 msgid "Furnace is out of fuel"
-msgstr "Horno sin combustible"
+msgstr ".i lo ti toknu cu kunti lo livla"
 
 #: src/content_nodemeta.cpp:675
 msgid "Furnace is inactive"
-msgstr "Horno inactivo"
+msgstr ".i lo toknu cu cando"
 
 #: src/content_nodemeta.cpp:678
 msgid "Furnace is active"
-msgstr "Horno activo"
+msgstr ".i lo toknu cu tolcando"
 
 #: src/content_nodemeta.cpp:934
 msgid "Locking Furnace is overloaded"
-msgstr "Horno de bloqueo sobrecargado"
+msgstr ".i lo ti toknu cu dukse lo ka mulno"
 
 #: src/content_nodemeta.cpp:935
 msgid "Locking Furnace is out of fuel"
-msgstr "Horno de bloqueo sin combustilble"
+msgstr ".i lo ti toknu cu kunti lo livla"
 
 #: src/content_nodemeta.cpp:937
 msgid "Locking Furnace is inactive"
-msgstr "Horno de bloqueo inactivo"
+msgstr "lo selstela toknu cu cando"
 
 #: src/content_nodemeta.cpp:940
 msgid "Locking Furnace is active"
-msgstr "Horno de bloqueo activo"
+msgstr "lo selstela toknu cu tolcando"
 
 #: src/content_nodemeta.cpp:1190
 msgid "Armed Explosive: about to detonate"
-msgstr "Eplosivo armado: apunto de detonar"
+msgstr ".i lo ti jbama cu bazi spoja"
 
 #: src/content_nodemeta.cpp:1193
 #, c-format
 msgid "Armed Explosive: %d second till detonation"
 msgid_plural "Armed Explosive: %d seconds till detonation"
-msgstr[0] "Explosivo armado: %d segundo para la detonación"
-msgstr[1] "Explosivo armado: %d segundos para la detonación"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/content_nodemeta.cpp:1243
 msgid "Incinerator is active"
-msgstr "Incinerador activado"
+msgstr ".i lo festoknu cu tolcando"
 
 #: src/content_nodemeta.cpp:1244
 msgid "Incinerator is inactive"
-msgstr "Incinerador desactivado"
+msgstr ".i lo festoknu cu cando"
 
 #: src/content_nodemeta.cpp:1287
 msgid "Add fuel, then punch to incinerate wielded item"
-msgstr "Añadir combustible, luego golpear para incinerar el objeto esgrimido"
+msgstr ""
 
 #: src/content_nodemeta.cpp:1496
 msgid "Add item here to see recipe"
-msgstr "Agregar un objeto aquí para ver la receta"
+msgstr ""
 
 #: src/content_nodemeta.cpp:1501
 #, c-format
 msgid "Recipe %d of %d"
-msgstr "Receta %d de %d"
+msgstr ""
 
 #: src/content_nodemeta.cpp:1510
 msgid "Gives"
-msgstr "Da"
+msgstr "lo selzba"
 
 #: src/content_nodemeta.cpp:1701
 msgid "Add item here to see cook result"
-msgstr "Agregar un objeto aquí para ver el platillo resultante"
+msgstr ""
 
 #: src/content_nodemeta.cpp:1915
 msgid "Add item here to see dig result"
-msgstr "Agregar objeto aquí para ver el excavado resultante"
+msgstr ""
 
 #: src/content_nodemeta.cpp:1919
 msgid "Dig Result"
-msgstr "Resultado de excavación"
+msgstr "lo selkakpa"
 
 #: src/content_nodemeta.cpp:1923
 msgid "Random Drop"
-msgstr "Soltar al azar"
+msgstr "lo cunso selkakpa"
 
 #: src/content_nodemeta.cpp:2015 src/content_nodemeta.cpp:2114
 msgid "Title"
-msgstr "Título"
+msgstr "lo cmene"
 
 #: src/content_nodemeta.cpp:2020 src/content_nodemeta.cpp:2119
 msgid "Content"
-msgstr "Contenido"
+msgstr ""
 
 #: src/content_toolitem.cpp:123
 msgid "Wooden Pick"
-msgstr "Pica de madera"
+msgstr "lo mudri velkakpymru"
 
 #: src/content_toolitem.cpp:137
 msgid "Stone Pick"
-msgstr "Pica de piedra"
+msgstr "lo rokci velkakpymru"
 
 #: src/content_toolitem.cpp:150
 msgid "Flint Pick"
-msgstr "Pica de sílex"
+msgstr "lo fagri rokci velkakpymru"
 
 #: src/content_toolitem.cpp:163
 msgid "Steel Pick"
-msgstr "Pica de acero"
+msgstr "lo gasta velkakpymru"
 
 #: src/content_toolitem.cpp:176
 msgid "Mese Pick"
-msgstr "Pica de mez"
+msgstr "lo za'e kunrmese velkakpymru"
 
 #: src/content_toolitem.cpp:190
 msgid "Wooden Shovel"
-msgstr "Pala de madera"
+msgstr "lo mudri canpa"
 
 #: src/content_toolitem.cpp:204
 msgid "Stone Shovel"
-msgstr "Pala de piedra"
+msgstr "lo rokci canpa"
 
 #: src/content_toolitem.cpp:217
 msgid "Flint Shovel"
-msgstr "Pala de sílex"
+msgstr "lo fagri rokci canpa"
 
 #: src/content_toolitem.cpp:230
 msgid "Steel Shovel"
-msgstr "Pala de acero"
+msgstr "lo gasta canpa"
 
 #: src/content_toolitem.cpp:243
 msgid "Wooden Axe"
-msgstr "Hacha de madera"
+msgstr "lo mudri ka'amru"
 
 #: src/content_toolitem.cpp:257
 msgid "Stone Axe"
-msgstr "Hacha de piedra"
+msgstr "lo rokci ka'amru"
 
 #: src/content_toolitem.cpp:270
 msgid "Flint Axe"
-msgstr "Hacha de pedernal"
+msgstr "lo fagri rokci ka'amru"
 
 #: src/content_toolitem.cpp:283
 msgid "Steel Axe"
-msgstr "Hacha de acero"
+msgstr "lo gasta ka'amru"
 
 #: src/content_toolitem.cpp:296
 msgid "Wooden Sword"
-msgstr "Espada de madera"
+msgstr "lo mudri cladakyxa'i"
 
 #: src/content_toolitem.cpp:310
 msgid "Stone Sword"
-msgstr "Espada de piedra"
+msgstr "lo rokci cladakyxa'i"
 
 #: src/content_toolitem.cpp:323
 msgid "Steel Sword"
-msgstr "Espada de acero"
+msgstr "lo gasta cladakyxa'i"
 
 #: src/content_toolitem.cpp:336
 msgid "Flint Shears"
-msgstr "Cizalla de sílex"
+msgstr "lo fagri rokci jinci"
 
 #: src/content_toolitem.cpp:349
 msgid "Steel Shears"
-msgstr "Cizalla de acero"
+msgstr "lo gasta jinci"
 
 #: src/content_toolitem.cpp:362
 msgid "Wooden Bucket"
-msgstr "Balde de madera"
+msgstr "lo mudri baktu"
 
 #: src/content_toolitem.cpp:377
 msgid "Tin Bucket"
-msgstr "Cubeta de estaño"
+msgstr "lo tinci baktu"
 
 #: src/content_toolitem.cpp:391
 msgid "Wooden Bucket of Water"
-msgstr "Balde de madera con agua"
+msgstr "lo mudri baktu be loi djacu"
 
 #: src/content_toolitem.cpp:400
 msgid "Tin Bucket of Water"
-msgstr "Balde de lata con agua"
+msgstr "lo tinci baktu be loi djacu"
 
 #: src/content_toolitem.cpp:409
 msgid "Steel Bucket"
-msgstr "Balde de acero"
+msgstr "lo gasta baktu"
 
 #: src/content_toolitem.cpp:423
 msgid "Steel Bucket of Water"
-msgstr "Balde de acero con agua"
+msgstr "lo gasta baktu be loi djacu"
 
 #: src/content_toolitem.cpp:432
 msgid "Steel Bucket of Lava"
-msgstr "Balde de acero con lava"
+msgstr "lo gasta baktu be loi likro'i"
 
 #: src/content_toolitem.cpp:442
 msgid "Fire Starter"
-msgstr "Iniciador de fuego"
+msgstr "lo jelca tutci"
 
 #: src/content_toolitem.cpp:454
 msgid "Crowbar"
-msgstr "Palanca"
+msgstr "lo cfinyvra"
 
 #: src/content_toolitem.cpp:465
 msgid "Key"
-msgstr "Llave"
+msgstr "lo ckiku"
 
 #: src/content_toolitem.cpp:475
 msgid "Stone Spear"
-msgstr "Lanza de piedra"
+msgstr "lo rokci kilga'axa'i"
 
 #: src/content_toolitem.cpp:488
 msgid "Flint Spear"
-msgstr "Lanza de sílex"
+msgstr "lo fagri rokci kilga'axa'i"
 
 #: src/content_toolitem.cpp:501
 msgid "Steel Spear"
-msgstr "Lanza de acero"
+msgstr "lo gasta kilga'axa'i"
 
 #: src/content_toolitem.cpp:514
 msgid "Bow"
-msgstr "Arco"
+msgstr "lo skogarce'a"
 
 #: src/game.cpp:206
 msgid "Show Crafting"
-msgstr "Mostrar artesanías"
+msgstr ""
 
 #: src/game.cpp:207
 msgid "Clothes"
-msgstr "Ropa"
+msgstr "lo bukpu"
 
 #: src/game.cpp:208
 msgid "Hat/Helmet"
-msgstr "Sombrero/Casco"
+msgstr "lo mapku"
 
 #: src/game.cpp:210
 msgid "Jacket"
-msgstr "Chaqueta"
+msgstr "lo kosta"
 
 #: src/game.cpp:212
 msgid "Decorative"
-msgstr "Decorativo"
+msgstr "lo jadni"
 
 #: src/game.cpp:214
 msgid "Shirt"
-msgstr "Camisa"
+msgstr "lo creka"
 
 #: src/game.cpp:216
 msgid "Belt"
-msgstr "Cinturón"
+msgstr "lo karli"
 
 #: src/game.cpp:218
 msgid "Pants"
-msgstr "Pantalón"
+msgstr "lo palku"
 
 #: src/game.cpp:220
 msgid "Boots"
-msgstr "Botas"
+msgstr "lo cutci"
 
 #: src/game.cpp:226
 msgid "Drop to Ground"
-msgstr "Soltar al suelo"
+msgstr "lo nu falcru lo loldi"
 
 #: src/game.cpp:228
 msgid "Change Clothing"
-msgstr "Cambiar de ropa"
+msgstr ""
 
 #: src/game.cpp:737
 msgid "Loading"
-msgstr "Cargando"
+msgstr ""
 
 #: src/game.cpp:811
 msgid "Loading..."
-msgstr "Cargando..."
+msgstr ""
 
 #: src/game.cpp:820
 msgid "Creating server..."
-msgstr "Creando servidor..."
+msgstr ""
 
 #: src/game.cpp:831
 msgid "Creating client..."
-msgstr "Creando cliente..."
+msgstr ""
 
 #: src/game.cpp:836
 msgid "Resolving address..."
-msgstr "Resolviendo dirección..."
+msgstr ""
 
 #: src/game.cpp:847
 msgid "Couldn't resolve address"
-msgstr "No se pudo resolver la dirección"
+msgstr ""
 
 #: src/game.cpp:887
 #, c-format
 msgid "Connecting to server... (timeout in %d second)"
 msgid_plural "Connecting to server... (timeout in %d seconds)"
-msgstr[0] "Conectando al servidor... (Tiempo de espera de %d segundo)"
-msgstr[1] "Conectando al servidor... (Tiempo de espera de %d segundos)"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/game.cpp:916
 #, c-format
 msgid "Access denied. Reason: %ls"
-msgstr "Acceso denegado. Razón: %ls"
+msgstr ""
 
 #: src/game.cpp:920
 msgid "Unable to Connect (port already in use?)."
-msgstr "No se pudo conectar (¿puerto en uso?)"
+msgstr ""
 
 #: src/game.cpp:923
 msgid "Connection timed out."
-msgstr "Tiempo de espera de la conexión agotado."
+msgstr ""
 
 #: src/game.cpp:1083
 msgid "Access denied. Reason: "
-msgstr "Acceso denegado. Razón:"
+msgstr ""
 
 #: src/game.cpp:1318
 msgid "free_move disabled"
-msgstr "Movimiento_libre desactivado"
+msgstr "lo me la'o gy.free_move.gy. selpli"
 
 #: src/game.cpp:1322
 msgid "free_move enabled"
-msgstr "Movimiento_libre activado"
+msgstr "lo me la'o gy.free_move.gy. na selpli"
 
 #: src/game.cpp:1328
 msgid "fast_move disabled"
-msgstr "Movimiento_acelerado desactivado"
+msgstr "lo me la'o gy.fast_move.gy. na selpli"
 
 #: src/game.cpp:1332
 msgid "fast_move enabled"
-msgstr "Movimiento_acelerado activado"
+msgstr "lo me la'o gy.fast_move.gy. selpli"
 
 #: src/game.cpp:1344
 #, c-format
 msgid "Saved screenshot to '%s'"
-msgstr "Se guardó la captura de pantalla en «%s»"
+msgstr ".i lo vidnyxra cu pu se rejgau fi'o samjudri fe'u zoi gy.%s.gy."
 
 #: src/game.cpp:1356
 msgid "HUD shown"
-msgstr "Mostrar HUD"
+msgstr ""
 
 #: src/game.cpp:1358
 msgid "HUD hidden"
-msgstr "Ocultar HUD"
+msgstr ""
 
 #: src/game.cpp:1364
 msgid "Chat shown"
-msgstr "Mostrar chat"
+msgstr ""
 
 #: src/game.cpp:1366
 msgid "Chat hidden"
-msgstr "Ocultar chat"
+msgstr ""
 
 #: src/game.cpp:1372
 msgid "Fog disabled"
-msgstr "Niebla desactivada"
+msgstr ".i lo bumru cu na selpli"
 
 #: src/game.cpp:1374
 msgid "Fog enabled"
-msgstr "Niebla activada"
+msgstr ".i lo bumru cu selpli"
 
 #: src/game.cpp:1380
 msgid "Camera update disabled"
-msgstr "Actialización de la cámara desactivada"
+msgstr ""
 
 #: src/game.cpp:1382
 msgid "Camera update enabled"
-msgstr "Actualización de cámara activada"
+msgstr ""
 
 #: src/game.cpp:1392
 msgid "Debug info shown"
-msgstr "Mostrar información de depuración"
+msgstr ""
 
 #: src/game.cpp:1397
 msgid "Debug info and frametime graph hidden"
-msgstr "Ocultar información de depuración y gráfico de tiempo de trama"
+msgstr ""
 
 #: src/game.cpp:1401
 msgid "Frametime graph shown"
-msgstr "Mostrar gráfico de tiempo de trama"
+msgstr ""
 
 #: src/game.cpp:1413
 #, c-format
 msgid "Profiler shown (page %d of %d)"
-msgstr "Mostrar perfilador (página %d de %d)"
+msgstr ""
 
 #: src/game.cpp:1417
 msgid "Profiler hidden"
-msgstr "Ocultar perfilador"
+msgstr ""
 
 #: src/game.cpp:1425 src/game.cpp:1436
 #, c-format
@@ -3107,31 +3107,31 @@ msgstr ""
 
 #: src/game.cpp:1485
 msgid "Enabled full viewing range"
-msgstr "Activar rango completo de visión"
+msgstr ""
 
 #: src/game.cpp:1489
 msgid "Disabled full viewing range"
-msgstr "Desactivar rango completo de visión"
+msgstr ""
 
 #: src/game.cpp:2375
 msgid "Shutting down..."
-msgstr "Apagando..."
+msgstr ".i ca ca'a tolcfagau"
 
 #: src/guiDeathScreen.cpp:97
 msgid "You died."
-msgstr "Muerto."
+msgstr ".i do pu morsi"
 
 #: src/guiDeathScreen.cpp:102
 msgid "Respawn"
-msgstr "Reapareciendo"
+msgstr ".i ko gasnu lo nu mi tolcanci"
 
 #: src/guiFormSpecMenu.cpp:470
 msgid "Left click: Move all items, Right click: Move single item"
-msgstr "Clic izquierdo: Mueve todos los objetos, Clic derecho: Mueve un solo objeto"
+msgstr ""
 
 #: src/guiFormSpecMenu.cpp:493
 msgid "Write It"
-msgstr ""
+msgstr "ko ciska"
 
 #: src/guiKeyChangeMenu.cpp:90
 msgid "Controls"
@@ -3139,31 +3139,31 @@ msgstr ""
 
 #: src/guiKeyChangeMenu.cpp:99
 msgid "Forward"
-msgstr ""
+msgstr "lo za'i ca'u muvdu"
 
 #: src/guiKeyChangeMenu.cpp:115
 msgid "Backward"
-msgstr ""
+msgstr "lo za'i ti'a muvdu"
 
 #: src/guiKeyChangeMenu.cpp:130 src/keycode.cpp:234
 msgid "Left"
-msgstr "Izquierda"
+msgstr "lo za'i zu'e muvdu"
 
 #: src/guiKeyChangeMenu.cpp:144 src/keycode.cpp:234
 msgid "Right"
-msgstr "Derecha"
+msgstr "lo za'i ri'u muvdu"
 
 #: src/guiKeyChangeMenu.cpp:159
 msgid "Use"
-msgstr ""
+msgstr "lo za'i pilno"
 
 #: src/guiKeyChangeMenu.cpp:173
 msgid "Sneak"
-msgstr ""
+msgstr "lo za'i masno cadzu"
 
 #: src/guiKeyChangeMenu.cpp:188
 msgid "Jump"
-msgstr ""
+msgstr "lo mu'e plipe"
 
 #: src/guiKeyChangeMenu.cpp:203
 msgid "Inventory"
@@ -3171,11 +3171,11 @@ msgstr ""
 
 #: src/guiKeyChangeMenu.cpp:218
 msgid "Chat"
-msgstr "Chat"
+msgstr ""
 
 #: src/guiKeyChangeMenu.cpp:232
 msgid "Command"
-msgstr "Orden"
+msgstr ""
 
 #: src/guiKeyChangeMenu.cpp:249
 msgid "Toggle fly"
@@ -3201,7 +3201,7 @@ msgstr ""
 #: src/guiKeyChangeMenu.cpp:590 src/guiKeyChangeMenu.cpp:595
 #: src/guiKeyChangeMenu.cpp:600 src/guiKeyChangeMenu.cpp:605
 msgid "press Key"
-msgstr ""
+msgstr "ko da'ergau le batke"
 
 #: src/guiMainMenu.cpp:400
 msgid "Character Creator"
@@ -3218,31 +3218,31 @@ msgstr ""
 
 #: src/guiMainMenu.cpp:418 src/guiMainMenu.cpp:540
 msgid "Settings"
-msgstr "Configuraciones"
+msgstr ""
 
 #: src/guiMainMenu.cpp:424 src/guiMainMenu.cpp:871
 msgid "Credits"
-msgstr "Créditos"
+msgstr "lo finti liste"
 
 #: src/guiMainMenu.cpp:430
 msgid "Quit"
-msgstr "Salir"
+msgstr "cliva"
 
 #: src/guiMainMenu.cpp:472
 msgid "Name/Password"
-msgstr "Nombre/Contraseña"
+msgstr ""
 
 #: src/guiMainMenu.cpp:504
 msgid "Address/Port"
-msgstr "Dirección/Puerto"
+msgstr ""
 
 #: src/guiMainMenu.cpp:534
 msgid "Connect"
-msgstr "Conectar"
+msgstr ""
 
 #: src/guiMainMenu.cpp:546
 msgid "Fancy trees"
-msgstr ""
+msgstr "lo melbi tricu"
 
 #: src/guiMainMenu.cpp:551
 msgid "Smooth Lighting"
@@ -3254,15 +3254,15 @@ msgstr ""
 
 #: src/guiMainMenu.cpp:561
 msgid "Opaque water"
-msgstr ""
+msgstr "lo tolki djacu"
 
 #: src/guiMainMenu.cpp:566
 msgid "Fullscreen"
-msgstr "Pantalla completa"
+msgstr ""
 
 #: src/guiMainMenu.cpp:571
 msgid "Particles"
-msgstr ""
+msgstr "lo kantu"
 
 #: src/guiMainMenu.cpp:576
 msgid "Mip-Mapping"
@@ -3270,15 +3270,15 @@ msgstr ""
 
 #: src/guiMainMenu.cpp:581
 msgid "Bi-Linear Filtering"
-msgstr ""
+msgstr "lo me la'o gy.Bi-Linear Filtering.gy."
 
 #: src/guiMainMenu.cpp:586
 msgid "Tri-Linear Filtering"
-msgstr ""
+msgstr "lo me la'o gy.Tri-Linear Filtering.gy."
 
 #: src/guiMainMenu.cpp:591
 msgid "Anisotropic Filtering"
-msgstr ""
+msgstr "lo me la'o gy.Anisotropic Filtering.gy."
 
 #: src/guiMainMenu.cpp:598
 msgid "Change keys"
@@ -3286,15 +3286,15 @@ msgstr ""
 
 #: src/guiMainMenu.cpp:613 src/guiMainMenu.cpp:655 src/guiMainMenu.cpp:753
 msgid "Creative Mode"
-msgstr "Modo creativo"
+msgstr ""
 
 #: src/guiMainMenu.cpp:614 src/guiMainMenu.cpp:656 src/guiMainMenu.cpp:754
 msgid "Adventure Mode"
-msgstr "Modo aventura"
+msgstr ""
 
 #: src/guiMainMenu.cpp:615 src/guiMainMenu.cpp:657 src/guiMainMenu.cpp:755
 msgid "Survival Mode"
-msgstr "Modo supervivencia"
+msgstr ""
 
 #: src/guiMainMenu.cpp:628 src/guiMainMenu.cpp:768
 msgid "Advanced Settings"
@@ -3306,7 +3306,7 @@ msgstr ""
 
 #: src/guiMainMenu.cpp:640 src/guiMainMenu.cpp:738 src/guiMainMenu.cpp:864
 msgid "Start Game"
-msgstr "Iniciar juego"
+msgstr ""
 
 #: src/guiMainMenu.cpp:670
 msgid "Hide Advanced Settings"
@@ -3314,23 +3314,23 @@ msgstr ""
 
 #: src/guiMainMenu.cpp:681
 msgid "Creatures"
-msgstr "Monstruos"
+msgstr "lo danlu"
 
 #: src/guiMainMenu.cpp:688
 msgid "Passive"
-msgstr "Pasivo"
+msgstr "lo cando"
 
 #: src/guiMainMenu.cpp:689
 msgid "Passive & Aggressive"
-msgstr "Pasivo y agresivo"
+msgstr ""
 
 #: src/guiMainMenu.cpp:690
 msgid "Passive, Aggressive, & Destructive"
-msgstr "Pasivo, agresivo y destructivo"
+msgstr ""
 
 #: src/guiMainMenu.cpp:702
 msgid "Player Damage"
-msgstr ""
+msgstr "lo kelci selxai"
 
 #: src/guiMainMenu.cpp:707
 msgid "Suffocation/Drowning"
@@ -3338,7 +3338,7 @@ msgstr ""
 
 #: src/guiMainMenu.cpp:712
 msgid "Hunger"
-msgstr "Hambre"
+msgstr "lo si'o xagji"
 
 #: src/guiMainMenu.cpp:717
 msgid "Tool Wear"
@@ -3346,11 +3346,11 @@ msgstr ""
 
 #: src/guiMainMenu.cpp:722
 msgid "Infinite Inventory"
-msgstr "Inventario infinito"
+msgstr ""
 
 #: src/guiMainMenu.cpp:727
 msgid "Initial Inventory"
-msgstr "Inventario inicial"
+msgstr ""
 
 #: src/guiMainMenu.cpp:732
 msgid "Droppable Inventory"
@@ -3362,47 +3362,47 @@ msgstr ""
 
 #: src/guiMainMenu.cpp:779
 msgid "Create New Map"
-msgstr ""
+msgstr "zbasu lo cnino munje"
 
 #: src/guiMainMenu.cpp:785
 msgid "Warning! Your old map will be deleted!"
-msgstr "¡Advertencia, Su antiguo mapa será borrado!"
+msgstr ""
 
 #: src/guiMainMenu.cpp:791
 msgid "Map Type"
-msgstr "Tipo de mapa"
+msgstr "ma munje klesi"
 
 #: src/guiMainMenu.cpp:798
 msgid "Flat"
-msgstr ""
+msgstr "lo pinta"
 
 #: src/guiMainMenu.cpp:799
 msgid "Flatter"
-msgstr ""
+msgstr "lo zmadu be lo ka pinta"
 
 #: src/guiMainMenu.cpp:800
 msgid "Smoother"
-msgstr ""
+msgstr "lo zmadu be lo ka xutla"
 
 #: src/guiMainMenu.cpp:801
 msgid "Default"
-msgstr "Predeterminado"
+msgstr "lo fadni"
 
 #: src/guiMainMenu.cpp:802
 msgid "Hilly"
-msgstr ""
+msgstr "lo cmama'a"
 
 #: src/guiMainMenu.cpp:803
 msgid "Mountains"
-msgstr ""
+msgstr "lo cmana"
 
 #: src/guiMainMenu.cpp:804
 msgid "Crazy"
-msgstr ""
+msgstr "lo fenki"
 
 #: src/guiMainMenu.cpp:805
 msgid "Crazy Hills"
-msgstr ""
+msgstr "lo fenki cmama'a"
 
 #: src/guiMainMenu.cpp:827
 msgid "Use Fixed Seed"
@@ -3410,7 +3410,7 @@ msgstr ""
 
 #: src/guiMainMenu.cpp:833
 msgid "Map Seed"
-msgstr ""
+msgstr "le munje ke cunso namcu"
 
 #: src/guiMainMenu.cpp:851
 msgid "Clear Map"
@@ -3431,7 +3431,7 @@ msgid ""
 "Based on Minetest-C55\n"
 "by Perttu Ahola <celeron55@gmail.com>\n"
 "and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
-msgstr ""
+msgstr ".i la'o gy.Voxelands.gy. goi vy.\nse urli zoi gy.http://www.voxelands.com/.gy.\n\n.i vy. selfi'i la'o gy.Lisa Milne.gy. no'u la'o gy.darkrose.gy. .e lo sidju po'u la'o gy.sdzen.gy. .e la'o gy.MichaelEh?.gy. .e la'o gy.Pentium44.gy. .e la'o gy.Jordach.gy. .e la'o gy.Menche.gy. .e la'o gy.MavJS.gy. .e la'o gy.tiemay.gy. .e la'o gy.Szkodnix.gy. .e la'o gy.soognarf.gy. .e la'o gy.Tapoky.gy. .e la'o gy.Wuzzy.gy. .e la'o gy.JHeaton.gy. .e la'o gy.Akien.gy. .e la'o gy.redhound.gy. .e la'o gy.Rui.gy. .e la'o gy.Wayward_One.gy.\n\nfu la'o gy.Minetest-C55.gy.\npoi ke'a selfi'i la'o gy.Perttu Ahola.gy.\n.e lo sidju po'u la'o gy.PilzAdam.gy. .e la'o gy.Taoki.gy. .e la'o gy.tango_.gy. .e la'o gy.kahrl.gy. .e la'o gy.darkrose.gy. .e la'o gy.matttpt.gy. .e la'o gy.erlehmann.gy. .e la'o gy.SpeedProg.gy. .e la'o gy. JacobF.gy. .e la'o dy.teddydestodes.dy. .e la'o gy.marktraceur.gy. .e la'o dy.Jonathan Neuschafer.dy. .e la'o gy.thexyz.gy. .e la'o gy.VanessaE.gy. .e la'o gy.sfan5.gy. .e lo mutce cunso drata prenu"
 
 #: src/guiMessageMenu.cpp:112 src/guiPauseMenu.cpp:138
 msgid "Continue"
@@ -3439,15 +3439,15 @@ msgstr ""
 
 #: src/guiPasswordChange.cpp:106
 msgid "Old Password"
-msgstr "Antigua contraseña"
+msgstr ""
 
 #: src/guiPasswordChange.cpp:124
 msgid "New Password"
-msgstr "Nueva contraseña"
+msgstr ""
 
 #: src/guiPasswordChange.cpp:141
 msgid "Confirm Password"
-msgstr "Confirmar contraseña"
+msgstr ""
 
 #: src/guiPasswordChange.cpp:159
 msgid "Change"
@@ -3455,15 +3455,15 @@ msgstr ""
 
 #: src/guiPasswordChange.cpp:167
 msgid "Passwords do not match!"
-msgstr "¡Las contraseñas no coinciden!"
+msgstr ""
 
 #: src/guiPauseMenu.cpp:98
 msgid "Voxelands by darkrose and contributors"
-msgstr "Voxelands por «darkrose» y otros contribuidores."
+msgstr ".i la'o gy.Voxelands.gy. selfi'i la'o gy.darkrose.gy. .e lo sidju"
 
 #: src/guiPauseMenu.cpp:144
 msgid "Change Password"
-msgstr "Cambiar contraseña"
+msgstr ""
 
 #: src/guiPauseMenu.cpp:150
 msgid "Disconnect"
@@ -3475,15 +3475,15 @@ msgstr ""
 
 #: src/keycode.cpp:229
 msgid "Left Button"
-msgstr "Botón izquierdo"
+msgstr "lo zulselpevysmacu"
 
 #: src/keycode.cpp:229
 msgid "Middle Button"
-msgstr ""
+msgstr "lo mijyselpevysmacu"
 
 #: src/keycode.cpp:229
 msgid "Right Button"
-msgstr "Botón derecho"
+msgstr "lo prityselpevysmacu"
 
 #: src/keycode.cpp:229
 msgid "X Button 1"
@@ -3519,15 +3519,15 @@ msgstr ""
 
 #: src/keycode.cpp:231
 msgid "Kana"
-msgstr "Kana"
+msgstr ""
 
 #: src/keycode.cpp:231
 msgid "Menu"
-msgstr "Menú"
+msgstr ""
 
 #: src/keycode.cpp:231
 msgid "Pause"
-msgstr "Pausa"
+msgstr ""
 
 #: src/keycode.cpp:231
 msgid "Shift"
@@ -3535,63 +3535,63 @@ msgstr ""
 
 #: src/keycode.cpp:232
 msgid "Convert"
-msgstr "Convertir"
+msgstr ""
 
 #: src/keycode.cpp:232
 msgid "Escape"
-msgstr "Escape"
+msgstr ""
 
 #: src/keycode.cpp:232
 msgid "Final"
-msgstr "Final"
+msgstr ""
 
 #: src/keycode.cpp:232
 msgid "Junja"
-msgstr "Junja"
+msgstr ""
 
 #: src/keycode.cpp:232
 msgid "Kanji"
-msgstr "Kanji"
+msgstr ""
 
 #: src/keycode.cpp:232
 msgid "Nonconvert"
-msgstr "No convertir"
+msgstr ""
 
 #: src/keycode.cpp:233
 msgid "Accept"
-msgstr "Aceptar"
+msgstr ""
 
 #: src/keycode.cpp:233
 msgid "End"
-msgstr "Fin"
+msgstr ""
 
 #: src/keycode.cpp:233
 msgid "Home"
-msgstr "Casa"
+msgstr ""
 
 #: src/keycode.cpp:233
 msgid "Mode Change"
-msgstr "Cambiar modo"
+msgstr ""
 
 #: src/keycode.cpp:233
 msgid "Next"
-msgstr "Siguiente"
+msgstr ""
 
 #: src/keycode.cpp:233
 msgid "Prior"
-msgstr "Previo"
+msgstr ""
 
 #: src/keycode.cpp:233
 msgid "Space"
-msgstr "Espacio"
+msgstr ""
 
 #: src/keycode.cpp:234
 msgid "Down"
-msgstr "Abajo"
+msgstr ""
 
 #: src/keycode.cpp:234
 msgid "Execute"
-msgstr "Ejecutar"
+msgstr ""
 
 #: src/keycode.cpp:234
 msgid "Print"
@@ -3599,35 +3599,35 @@ msgstr ""
 
 #: src/keycode.cpp:234
 msgid "Select"
-msgstr "Seleccionar"
+msgstr ""
 
 #: src/keycode.cpp:234
 msgid "Up"
-msgstr "Arriba"
+msgstr ""
 
 #: src/keycode.cpp:235
 msgid "Delete"
-msgstr "Borrar"
+msgstr ""
 
 #: src/keycode.cpp:235
 msgid "Help"
-msgstr "Ayuda"
+msgstr ""
 
 #: src/keycode.cpp:235
 msgid "Insert"
-msgstr "Insertar"
+msgstr ""
 
 #: src/keycode.cpp:235
 msgid "Snapshot"
-msgstr "Captura de pantalla"
+msgstr ""
 
 #: src/keycode.cpp:238
 msgid "Left Windows"
-msgstr "Ventanas izquierdas"
+msgstr ""
 
 #: src/keycode.cpp:239
 msgid "Apps"
-msgstr "Aplicaciones"
+msgstr ""
 
 #: src/keycode.cpp:239
 msgid "Numpad 0"
@@ -3639,7 +3639,7 @@ msgstr ""
 
 #: src/keycode.cpp:239
 msgid "Right Windows"
-msgstr "Ventanas derecha"
+msgstr ""
 
 #: src/keycode.cpp:239
 msgid "Sleep"
@@ -3703,43 +3703,43 @@ msgstr ""
 
 #: src/keycode.cpp:246
 msgid "Left Shift"
-msgstr "Mayús izquierdo"
+msgstr ""
 
 #: src/keycode.cpp:246
 msgid "Right Shift"
-msgstr "Mayús derecho"
+msgstr ""
 
 #: src/keycode.cpp:247
 msgid "Left Control"
-msgstr "Control izquierdo"
+msgstr ""
 
 #: src/keycode.cpp:247
 msgid "Left Menu"
-msgstr "Menú izquierdo"
+msgstr ""
 
 #: src/keycode.cpp:247
 msgid "Right Control"
-msgstr "Control Derecho"
+msgstr ""
 
 #: src/keycode.cpp:247
 msgid "Right Menu"
-msgstr "Menú derecho"
+msgstr ""
 
 #: src/keycode.cpp:249
 msgid "Comma"
-msgstr ""
+msgstr "slaka bu"
 
 #: src/keycode.cpp:249
 msgid "Minus"
-msgstr ""
+msgstr "vu'u bu"
 
 #: src/keycode.cpp:249
 msgid "Period"
-msgstr ""
+msgstr "denpa bu"
 
 #: src/keycode.cpp:249
 msgid "Plus"
-msgstr ""
+msgstr "su'i bu"
 
 #: src/keycode.cpp:253
 msgid "Attn"
@@ -3771,7 +3771,7 @@ msgstr ""
 
 #: src/keycode.cpp:254
 msgid "Zoom"
-msgstr "Zum"
+msgstr ""
 
 #: src/main.cpp:1137
 msgid "Setting Up UI"
