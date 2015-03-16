@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voxelands\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-16 15:32+1000\n"
+"POT-Creation-Date: 2015-03-16 18:32+1000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1136,7 +1136,7 @@ msgstr ""
 msgid "Firefly"
 msgstr ""
 
-#: src/content_craftitem.cpp:240 src/content_mapnode_plants.cpp:788
+#: src/content_craftitem.cpp:240 src/content_mapnode_plants.cpp:784
 msgid "Apple"
 msgstr ""
 
@@ -1220,7 +1220,7 @@ msgstr ""
 msgid "Apple Blossoms"
 msgstr ""
 
-#: src/content_craftitem.cpp:474 src/content_mapnode_plants.cpp:594
+#: src/content_craftitem.cpp:474 src/content_mapnode_plants.cpp:590
 msgid "Cactus Berry"
 msgstr ""
 
@@ -2218,115 +2218,115 @@ msgstr ""
 msgid "Young Tree"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:134
+#: src/content_mapnode_plants.cpp:133
 msgid "Young Jungle Tree"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:156
+#: src/content_mapnode_plants.cpp:154
 msgid "Young Apple Tree"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:178
+#: src/content_mapnode_plants.cpp:175
 msgid "Young Conifer Tree"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:200
+#: src/content_mapnode_plants.cpp:196
 msgid "Jungle Grass"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:222
+#: src/content_mapnode_plants.cpp:218
 msgid "Leaves"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:257
+#: src/content_mapnode_plants.cpp:253
 msgid "Apple Tree Leaves"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:292
+#: src/content_mapnode_plants.cpp:288
 msgid "Jungle Leaves"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:327
+#: src/content_mapnode_plants.cpp:323
 msgid "Conifer Leaves"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:362
+#: src/content_mapnode_plants.cpp:358
 msgid "Trimmed Leaves"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:394
+#: src/content_mapnode_plants.cpp:390
 msgid "Trimmed Apple Tree Leaves"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:426
+#: src/content_mapnode_plants.cpp:422
 msgid "Trimmed Jungle Leaves"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:458
+#: src/content_mapnode_plants.cpp:454
 msgid "Trimmed Conifer Leaves"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:490
+#: src/content_mapnode_plants.cpp:486
 msgid "Apple Tree Blossom"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:522
+#: src/content_mapnode_plants.cpp:518
 msgid "Trimmed Apple Tree Blossom"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:551
+#: src/content_mapnode_plants.cpp:547
 msgid "Cactus Blossom"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:572
+#: src/content_mapnode_plants.cpp:568
 msgid "Cactus Flower"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:615
+#: src/content_mapnode_plants.cpp:611
 msgid "Cactus"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:679
+#: src/content_mapnode_plants.cpp:675
 msgid "Papyrus"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:700
+#: src/content_mapnode_plants.cpp:696
 msgid "Sapling"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:722
+#: src/content_mapnode_plants.cpp:718
 msgid "Apple Tree Sapling"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:744
+#: src/content_mapnode_plants.cpp:740
 msgid "Jungle Sapling"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:766
+#: src/content_mapnode_plants.cpp:762
 msgid "Conifer Sapling"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:811 src/content_mapnode_plants.cpp:835
+#: src/content_mapnode_plants.cpp:807 src/content_mapnode_plants.cpp:831
 msgid "Wild Grass"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:858
+#: src/content_mapnode_plants.cpp:854
 msgid "Dead Grass"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:881
+#: src/content_mapnode_plants.cpp:877
 msgid "Flower Stem"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:904
+#: src/content_mapnode_plants.cpp:900
 msgid "Rose"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:928
+#: src/content_mapnode_plants.cpp:924
 msgid "Daffodil"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:952
+#: src/content_mapnode_plants.cpp:948
 msgid "Tulip"
 msgstr ""
 
@@ -3430,7 +3430,7 @@ msgid ""
 "By Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
 "and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, "
 "tiemay, Szkodnix, soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound, Rui, "
-"Wayward_One\n"
+"Wayward_One, loh\n"
 "\n"
 "Based on Minetest-C55\n"
 "by Perttu Ahola <celeron55@gmail.com>\n"
