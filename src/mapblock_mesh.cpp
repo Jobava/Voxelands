@@ -426,7 +426,7 @@ u8 getSmoothLight(v3s16 p, VoxelManipulator &vmanip, u32 daynight_ratio)
 	}
 
 	if (light_count == 0)
-		return 255;
+		return 0;
 
 	light /= light_count;
 
