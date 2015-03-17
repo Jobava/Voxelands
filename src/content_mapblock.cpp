@@ -3539,6 +3539,29 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				c[7] = col;
 			}
 
+			bool urot = (n.getContent() >= CONTENT_SLAB_STAIR_UD_MIN && n.getContent() <= CONTENT_SLAB_STAIR_UD_MAX);
+			// flip lighting
+			if (urot) {
+				video::SColor col = c[0];
+				c[0] = c[6];
+				c[6] = col;
+				col = c[1];
+				c[1] = c[7];
+				c[7] = col;
+				col = c[2];
+				c[2] = c[4];
+				c[4] = col;
+				col = c[3];
+				c[3] = c[5];
+				c[5] = col;
+				col = c[8];
+				c[8] = c[9];
+				c[9] = col;
+				col = c[10];
+				c[10] = c[11];
+				c[11] = col;
+			}
+
 			video::S3DVertex vertices[6][16] = {
 				{ // up
 					video::S3DVertex(-0.5*BS,0.5*BS,0.5*BS, 0,1,0, c[0], 0.,0.),
@@ -3707,7 +3730,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				vertices[5][9] = video::S3DVertex(0.5*BS,0.,-0.5*BS, 0,0,-1, c[13], 1.,0.5);
 				vertices[5][10] = video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 0,0,-1, c[13], 1.,1.);
 				vertices[5][11] = video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,-1, c[13], 0.,1.);
-			}else{
 			}
 			// don't draw unseen faces
 			bool skips[6] = {false,false,false,false,false,false};
@@ -3727,7 +3749,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			if (content_features(nr).draw_type == CDT_STAIRLIKE && nr.getRotationAngle() == rot)
 				skips[2] = true;
 
-			if (n.getContent() >= CONTENT_SLAB_STAIR_UD_MIN && n.getContent() <= CONTENT_SLAB_STAIR_UD_MAX) {
+			if (urot) {
 				if (rot) {
 					for (int i=0; i<6; i++) {
 						if (skips[i])
@@ -3799,45 +3821,126 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			}
 			video::SColor c[14];
 			getLights(blockpos_nodes+p,c,data,smooth_lighting);
-
-			NodeBox boxes[2] = {
-				NodeBox(-0.5*BS,-0.5*BS,-0.5*BS,0.5*BS,0.,0.5*BS),
-			};
 			v3f pos = intToFloat(p, BS);
 
-			s16 urot = 0;
-			if (n.getContent() >= CONTENT_SLAB_STAIR_UD_MIN && n.getContent() <= CONTENT_SLAB_STAIR_UD_MAX)
-				urot = 180;
-
-			for (u16 i=0; i<1; i++) {
-				NodeBox box = boxes[i];
-				if (urot) {
-					box.m_box.MinEdge.rotateXYBy(180);
-					box.m_box.MaxEdge.rotateXYBy(180);
-					box.m_box.repair();
+			bool urot = (n.getContent() >= CONTENT_SLAB_STAIR_UD_MIN && n.getContent() <= CONTENT_SLAB_STAIR_UD_MAX);
+			// flip lighting
+			if (urot) {
+				video::SColor col = c[0];
+				c[0] = c[6];
+				c[6] = col;
+				col = c[1];
+				c[1] = c[7];
+				c[7] = col;
+				col = c[2];
+				c[2] = c[4];
+				c[4] = col;
+				col = c[3];
+				c[3] = c[5];
+				c[5] = col;
+				col = c[8];
+				c[8] = c[9];
+				c[9] = col;
+				col = c[10];
+				c[10] = c[11];
+				c[11] = col;
+			}
+			video::S3DVertex vertices[6][4] = {
+				{ // up
+					video::S3DVertex(-0.5*BS,0.,0.5*BS, 0,1,0, c[0], 0.,0.),
+					video::S3DVertex(0.5*BS,0.,0.5*BS, 0,1,0, c[1], 1.,0.),
+					video::S3DVertex(0.5*BS,0.,-0.5*BS, 0,1,0, c[2], 1.,1.),
+					video::S3DVertex(-0.5*BS,0.,-0.5*BS, 0,1,0, c[3], 0.,1.)
+				},{ // down
+					video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,-1,0, c[4], 0.,0.),
+					video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 0,-1,0, c[5], 1.,0.),
+					video::S3DVertex(0.5*BS,-0.5*BS,0.5*BS, 0,-1,0, c[6], 1.,1.),
+					video::S3DVertex(-0.5*BS,-0.5*BS,0.5*BS, 0,-1,0, c[7], 0.,1.)
+				},{ // right
+					video::S3DVertex(0.5*BS,0.,-0.5*BS, 1,0,0, c[2], 0.,0.),
+					video::S3DVertex(0.5*BS,0.,0.5*BS, 1,0,0, c[1], 1.,0.),
+					video::S3DVertex(0.5*BS,-0.5*BS,0.5*BS, 1,0,0, c[6], 1.,.5),
+					video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 1,0,0, c[5], 0.,.5)
+				},{ // left
+					video::S3DVertex(-0.5*BS,0.,0.5*BS, -1,0,0, c[0], 0.,0.),
+					video::S3DVertex(-0.5*BS,0.,-0.5*BS, -1,0,0, c[3], 1.,0.),
+					video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, -1,0,0, c[4], 1.,.5),
+					video::S3DVertex(-0.5*BS,-0.5*BS,0.5*BS, -1,0,0, c[7], 0.,.5)
+				},{ // back
+					video::S3DVertex(0.5*BS,0.,0.5*BS, 0,0,1, c[1], 0.,0.),
+					video::S3DVertex(-0.5*BS,0.,0.5*BS, 0,0,1, c[0], 1.,0.),
+					video::S3DVertex(-0.5*BS,-0.5*BS,0.5*BS, 0,0,1, c[7], 1.,.5),
+					video::S3DVertex(0.5*BS,-0.5*BS,0.5*BS, 0,0,1, c[6], 0.,.5)
+				},{ // front
+					video::S3DVertex(-0.5*BS,0.,-0.5*BS, 0,0,-1, c[3], 0.,0.),
+					video::S3DVertex(0.5*BS,0.,-0.5*BS, 0,0,-1, c[2], 1.,0.),
+					video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 0,0,-1, c[5], 1.,.5),
+					video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,-1, c[4], 0.,.5)
 				}
-				// Compute texture coords
-				f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
-				f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
-				f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
-				f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
-				f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
-				f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
-				f32 txc[24] = {
-					// up
-					tx1, 1-tz2, tx2, 1-tz1,
-					// down
-					tx1, tz1, tx2, tz2,
-					// right
-					tz1, 1-ty2, tz2, 1-ty1,
-					// left
-					1-tz2, 1-ty2, 1-tz1, 1-ty1,
-					// back
-					1-tx2, 1-ty2, 1-tx1, 1-ty1,
-					// front
-					tx1, 1-ty2, tx2, 1-ty1,
-				};
-				makeRotatedCuboid(&collector, pos, box.m_box, tiles, 6, c, txc, box.m_angle, box.m_centre);
+			};
+			u16 indices[6] = {0,1,2,2,3,0};
+			v3s16 back(0,0,1);
+			v3s16 front(0,0,-1);
+			v3s16 left(-1,0,0);
+			v3s16 right(1,0,0);
+			v3s16 under(0,-1,0);
+			if (urot) {
+				left = v3s16(1,0,0);
+				right = v3s16(-1,0,0);
+				under = v3s16(0,1,0);
+			}
+			MapNode nb = data->m_vmanip.getNodeRO(blockpos_nodes + p + back);
+			MapNode nf = data->m_vmanip.getNodeRO(blockpos_nodes + p + front);
+			MapNode nl = data->m_vmanip.getNodeRO(blockpos_nodes + p + left);
+			MapNode nr = data->m_vmanip.getNodeRO(blockpos_nodes + p + right);
+			MapNode nu = data->m_vmanip.getNodeRO(blockpos_nodes + p + under);
+			// don't draw unseen faces
+			bool skips[6] = {false,false,false,false,false,false};
+			if (
+				content_features(nu).draw_type == CDT_CUBELIKE
+				|| (
+					content_features(nu).draw_type == CDT_SLABLIKE
+					&& (
+						(
+							urot && nu.getContent() == (n.getContent()|CONTENT_SLAB_STAIR_UD_MAX)
+						) || (
+							!urot && (nu.getContent()|CONTENT_SLAB_STAIR_UD_MAX) == n.getContent()
+						)
+					)
+				)
+			)
+				skips[1] = true;
+			if (nr.getContent() == n.getContent() || content_features(nr).draw_type == CDT_CUBELIKE)
+				skips[2] = true;
+			if (nl.getContent() == n.getContent() || content_features(nl).draw_type == CDT_CUBELIKE)
+				skips[3] = true;
+			if (nb.getContent() == n.getContent() || content_features(nb).draw_type == CDT_CUBELIKE)
+				skips[4] = true;
+			if (nf.getContent() == n.getContent() || content_features(nf).draw_type == CDT_CUBELIKE)
+				skips[5] = true;
+			if (urot) {
+				for (int i=0; i<6; i++) {
+					if (skips[i])
+						continue;
+					for (int j=0; j<4; j++) {
+						vertices[i][j].Pos.rotateXYBy(180);
+						vertices[i][j].Pos += pos;
+						vertices[i][j].TCoords *= tiles[i].texture.size;
+						vertices[i][j].TCoords += tiles[i].texture.pos;
+					}
+					collector.append(tiles[i].getMaterial(), vertices[i], 4, indices, 6);
+				}
+			}else{
+				for (int i=0; i<6; i++) {
+					if (skips[i])
+						continue;
+					for (int j=0; j<4; j++) {
+						vertices[i][j].Pos += pos;
+						vertices[i][j].TCoords *= tiles[i].texture.size;
+						vertices[i][j].TCoords += tiles[i].texture.pos;
+					}
+					collector.append(tiles[i].getMaterial(), vertices[i], 4, indices, 6);
+				}
 			}
 		}
 		break;
