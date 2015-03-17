@@ -189,7 +189,7 @@ void content_mapnode_slab(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_SLABLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS;
@@ -215,7 +215,7 @@ void content_mapnode_slab(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_SLABLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_BLUE;
@@ -242,7 +242,7 @@ void content_mapnode_slab(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_SLABLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_GREEN;
@@ -269,7 +269,7 @@ void content_mapnode_slab(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_SLABLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_ORANGE;
@@ -296,7 +296,7 @@ void content_mapnode_slab(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_SLABLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_PURPLE;
@@ -323,7 +323,7 @@ void content_mapnode_slab(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_SLABLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_RED;
@@ -350,7 +350,7 @@ void content_mapnode_slab(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_SLABLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_YELLOW;
@@ -377,7 +377,7 @@ void content_mapnode_slab(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_SLABLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_BLACK;
@@ -462,7 +462,7 @@ void content_mapnode_slab(bool repeat)
 	i = CONTENT_WOOD_SLAB_UD;
 	f = &content_features(i);
 	f->setAllTextures("wood.png");
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_SLABLIKE;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_SLAB)+" 1";
@@ -478,7 +478,7 @@ void content_mapnode_slab(bool repeat)
 	i = CONTENT_JUNGLE_SLAB_UD;
 	f = &content_features(i);
 	f->setAllTextures("junglewood.png");
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_SLABLIKE;
 	f->solidness = 0; // drawn separately, makes no faces
 	//f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_JUNGLE_SLAB)+" 1";
@@ -494,7 +494,7 @@ void content_mapnode_slab(bool repeat)
 	i = CONTENT_BRICK_SLAB_UD;
 	f = &content_features(i);
 	f->setAllTextures("brick.png");
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_SLABLIKE;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem clay_brick 4");
@@ -525,7 +525,7 @@ void content_mapnode_slab(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_SLABLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS;
@@ -548,7 +548,7 @@ void content_mapnode_slab(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_SLABLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_BLUE;
@@ -571,7 +571,7 @@ void content_mapnode_slab(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_SLABLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_GREEN;
@@ -594,7 +594,7 @@ void content_mapnode_slab(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_SLABLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_ORANGE;
@@ -617,7 +617,7 @@ void content_mapnode_slab(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_SLABLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_PURPLE;
@@ -640,7 +640,7 @@ void content_mapnode_slab(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_SLABLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_RED;
@@ -663,7 +663,7 @@ void content_mapnode_slab(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_SLABLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_YELLOW;
@@ -686,7 +686,7 @@ void content_mapnode_slab(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->param_type = CPT_LIGHT;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_SLABLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_GLASS_BLACK;
