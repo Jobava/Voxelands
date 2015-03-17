@@ -52,7 +52,7 @@ void makeRotatedCuboid(
 	const aabb3f &box,
 	TileSpec *tiles,
 	int tilecount,
-	video::SColor c[8],
+	video::SColor c[14],
 	const f32* txc,
 	v3s16 angle,
 	v3f centre
@@ -191,11 +191,15 @@ void makeRoofTri(MeshCollector *collector, v3f corners[3], v3f pos, TileSpec *ti
  */
 static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool smooth_lighting, u8 vertex_alpha)
 {
-	bool selected = false;
 	NodeMod mod;
 	data->m_temp_mods.get(pos-(data->m_blockpos*MAP_BLOCKSIZE),&mod);
-	if (mod == NODEMOD_SELECTION)
-		selected = true;
+	if (mod == NODEMOD_SELECTION) {
+		video::SColor c = MapBlock_LightColor(vertex_alpha, 255, true);
+		for (int i=0; i<14; i++) {
+			lights[i] = c;
+		}
+		return;
+	}
 	if (!smooth_lighting) {
 		u8 l = 0;
 		u32 lt = 0;
@@ -224,8 +228,8 @@ static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool
 		}
 		if (ld)
 			l = lt/ld;
-		video::SColor c = MapBlock_LightColor(vertex_alpha, l, selected);
-		for (int i=0; i<8; i++) {
+		video::SColor c = MapBlock_LightColor(vertex_alpha, l);
+		for (int i=0; i<14; i++) {
 			lights[i] = c;
 		}
 		return;
@@ -240,10 +244,41 @@ static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool
 		v3s16(1,-1,1),
 		v3s16(-1,-1,1)
 	};
+	u8 o[8];
+	u8 inner;
 	u8 l;
 	for (int i=0; i<8; i++) {
 		l = getSmoothLight(pos,corners[i],data->m_vmanip,data->m_daynight_ratio);
-		lights[i] = MapBlock_LightColor(vertex_alpha, l, selected);
+		o[i] = l;
+		lights[i] = MapBlock_LightColor(vertex_alpha, l);
+	}
+	{
+		MapNode tn = data->m_vmanip.getNodeRO(pos);
+		inner = decode_light(tn.getLightBlend(data->m_daynight_ratio));
+	}
+	int faces[6][4] = {
+		{0,1,2,3},
+		{4,5,6,7},
+		{0,3,4,7},
+		{1,2,5,6},
+		{0,1,6,7},
+		{2,3,4,5}
+	};
+	/*
+		0: up
+		1: down
+		2: right
+		3: left
+		4: back
+		5: front
+	*/
+	for (int f=0; f<6; f++) {
+		l = inner;
+		for (int i=0; i<4; i++) {
+			if (o[faces[f][i]] > l)
+				l = o[faces[f][i]];
+		}
+		lights[f+8] = MapBlock_LightColor(vertex_alpha, l);
 	}
 }
 static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool smooth_lighting)
@@ -746,7 +781,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				{4,5,6,7},
 				{0,3,4,7}
 			};
-			video::SColor c[8];
+			video::SColor c[14];
 			getLights(blockpos_nodes+p,c,data,smooth_lighting,content_features(n).vertex_alpha);
 
 			for(u32 j=0; j<6; j++)
@@ -997,7 +1032,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				{4,5,6,7},
 				{0,3,4,7}
 			};
-			video::SColor c[8];
+			video::SColor c[14];
 			getLights(blockpos_nodes+p,c,data,smooth_lighting);
 			static const v3s16 tile_dirs[6] = {
 				v3s16(0, 1, 0),
@@ -1089,7 +1124,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				// Handles facedir rotation for textures
 				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
 			}
-			video::SColor c[8];
+			video::SColor c[14];
 			getLights(blockpos_nodes+p,c,data,smooth_lighting);
 
 			v3f pos = intToFloat(p, BS);
@@ -1219,7 +1254,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				// Handles facedir rotation for textures
 				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
 			}
-			video::SColor c[8];
+			video::SColor c[14];
 			getLights(blockpos_nodes+p,c,data,smooth_lighting);
 
 			v3f pos = intToFloat(p, BS);
@@ -2021,7 +2056,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				// Handles facedir rotation for textures
 				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
 			}
-			video::SColor c[8];
+			video::SColor c[14];
 			getLights(blockpos_nodes+p,c,data,smooth_lighting);
 			v3f pos = intToFloat(p,BS);
 
@@ -3455,6 +3490,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				v3s16(0, 0, 1),
 				v3s16(0, 0, -1)
 			};
+			v3f pos = intToFloat(p, BS);
+			s16 rot = n.getRotationAngle();
 
 			TileSpec tiles[6];
 			NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+blockpos_nodes);
@@ -3462,45 +3499,175 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				// Handles facedir rotation for textures
 				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods,meta);
 			}
-			video::SColor c[8];
+			video::SColor c[14];
 			getLights(blockpos_nodes+p,c,data,smooth_lighting);
+			// need to unrotate the lights, as we apply them before rotation
+			if (rot == -90) {
+				video::SColor col = c[0];
+				c[0] = c[1];
+				c[1] = c[2];
+				c[2] = c[3];
+				c[3] = col;
+				col = c[4];
+				c[4] = c[7];
+				c[7] = c[6];
+				c[6] = c[5];
+				c[5] = col;
+			}else if (rot == 90) {
+				video::SColor col = c[0];
+				c[0] = c[3];
+				c[3] = c[2];
+				c[2] = c[1];
+				c[1] = col;
+				col = c[4];
+				c[4] = c[5];
+				c[5] = c[6];
+				c[6] = c[7];
+				c[7] = col;
+			}else if (rot == 180) {
+				video::SColor col = c[0];
+				c[0] = c[2];
+				c[2] = col;
+				col = c[3];
+				c[3] = c[1];
+				c[1] = col;
+				col = c[4];
+				c[4] = c[6];
+				c[6] = col;
+				col = c[5];
+				c[5] = c[7];
+				c[7] = col;
+			}
 
-			std::vector<NodeBox> boxes;
-			boxes.push_back(NodeBox(
-				-0.5*BS,
-				-0.5*BS,
-				-0.25*BS,
-				0.5*BS,
-				0.,
-				0.5*BS
-			));
-			boxes.push_back(NodeBox(
-				-0.5*BS,
-				0.,
-				0.,
-				0.5*BS,
-				0.25*BS,
-				0.5*BS
-			));
-			boxes.push_back(NodeBox(
-				-0.5*BS,
-				0.25*BS,
-				0.25*BS,
-				0.5*BS,
-				0.5*BS,
-				0.5*BS
-			));
-			v3f pos = intToFloat(p, BS);
-			s16 rot = n.getRotationAngle();
+			video::S3DVertex vertices[6][16] = {
+				{ // up
+					video::S3DVertex(-0.5*BS,0.5*BS,0.5*BS, 0,1,0, c[0], 0.,0.),
+					video::S3DVertex(0.5*BS,0.5*BS,0.5*BS, 0,1,0, c[1], 1.,0.),
+					video::S3DVertex(0.5*BS,0.5*BS,0.25*BS, 0,1,0, c[2], 1.,0.25),
+					video::S3DVertex(-0.5*BS,0.5*BS,0.25*BS, 0,1,0, c[3], 0.,0.25),
+
+					video::S3DVertex(-0.5*BS,0.25*BS,0.25*BS, 0,1,0, c[8], 0.,0.25),
+					video::S3DVertex(0.5*BS,0.25*BS,0.25*BS, 0,1,0, c[8], 1.,0.25),
+					video::S3DVertex(0.5*BS,0.25*BS,0., 0,1,0, c[8], 1.,0.5),
+					video::S3DVertex(-0.5*BS,0.25*BS,0., 0,1,0, c[8], 0.,0.5),
+
+					video::S3DVertex(-0.5*BS,0.,0., 0,1,0, c[8], 0.,0.5),
+					video::S3DVertex(0.5*BS,0.,0., 0,1,0, c[8], 1.,0.5),
+					video::S3DVertex(0.5*BS,0.,-0.25*BS, 0,1,0, c[8], 1.,0.75),
+					video::S3DVertex(-0.5*BS,0.,-0.25*BS, 0,1,0, c[8], 0.,0.75),
+
+					video::S3DVertex(-0.5*BS,-0.25*BS,-0.25*BS, 0,1,0, c[8], 0.,0.75),
+					video::S3DVertex(0.5*BS,-0.25*BS,-0.25*BS, 0,1,0, c[8], 1.,0.75),
+					video::S3DVertex(0.5*BS,-0.25*BS,-0.5*BS, 0,1,0, c[8], 1.,1.),
+					video::S3DVertex(-0.5*BS,-0.25*BS,-0.5*BS, 0,1,0, c[8], 0.,1.)
+				},{ // down
+					video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,-1,0, c[4], 0.,0.),
+					video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 0,-1,0, c[5], 1.,0.),
+					video::S3DVertex(0.5*BS,-0.5*BS,0.5*BS, 0,-1,0, c[6], 1.,1.),
+					video::S3DVertex(-0.5*BS,-0.5*BS,0.5*BS, 0,-1,0, c[7], 0.,1.)
+				},{ // right
+					video::S3DVertex(0.5*BS,0.5*BS,0.5*BS, 1,0,0, c[1], 1.,0.),
+					video::S3DVertex(0.5*BS,-0.5*BS,0.5*BS, 1,0,0, c[6], 1.,1.),
+					video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 1,0,0, c[5], 0.,1.),
+
+					video::S3DVertex(0.5*BS,0.5*BS,0.5*BS, 1,0,0, c[1], 1.,0.),
+					video::S3DVertex(0.5*BS,0.25*BS,0.25*BS, 1,0,0, c[1], 0.75,0.25),
+					video::S3DVertex(0.5*BS,0.5*BS,0.25*BS, 1,0,0, c[2], 0.75,0.),
+
+					video::S3DVertex(0.5*BS,0.25*BS,0.25*BS, 1,0,0, c[1], 0.75,0.25),
+					video::S3DVertex(0.5*BS,0.,0., 1,0,0, c[1], 0.5,0.5),
+					video::S3DVertex(0.5*BS,0.25*BS,0., 1,0,0, c[2], 0.5,0.25),
+
+					video::S3DVertex(0.5*BS,0.,0., 1,0,0, c[1], 0.5,0.5),
+					video::S3DVertex(0.5*BS,-0.25*BS,-0.25*BS, 1,0,0, c[1], 0.25,0.75),
+					video::S3DVertex(0.5*BS,0.,-0.25*BS, 1,0,0, c[2], 0.5,0.75),
+
+					video::S3DVertex(0.5*BS,-0.25*BS,-0.25*BS, 1,0,0, c[1], 0.25,0.75),
+					video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 1,0,0, c[1], 0.,1.),
+					video::S3DVertex(0.5*BS,-0.25*BS,-0.5*BS, 1,0,0, c[2], 0.,0.75)
+				},{ // left
+					video::S3DVertex(-0.5*BS,0.5*BS,0.5*BS, -1,0,0, c[0], 0.,0.),
+					video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, -1,0,0, c[4], 1.,1.),
+					video::S3DVertex(-0.5*BS,-0.5*BS,0.5*BS, -1,0,0, c[7], 0.,1.),
+
+					video::S3DVertex(-0.5*BS,0.5*BS,0.5*BS, -1,0,0, c[0], 0.,0.),
+					video::S3DVertex(-0.5*BS,0.5*BS,0.25*BS, -1,0,0, c[3], 0.25,0.),
+					video::S3DVertex(-0.5*BS,0.25*BS,0.25*BS, -1,0,0, c[3], 0.25,0.25),
+
+					video::S3DVertex(-0.5*BS,0.25*BS,0.25*BS, -1,0,0, c[0], 0.25,0.25),
+					video::S3DVertex(-0.5*BS,0.25*BS,0., -1,0,0, c[3], 0.5,0.25),
+					video::S3DVertex(-0.5*BS,0.,0., -1,0,0, c[3], 0.5,0.5),
+
+					video::S3DVertex(-0.5*BS,0.,0., -1,0,0, c[0], 0.5,0.5),
+					video::S3DVertex(-0.5*BS,0.,-0.25*BS, -1,0,0, c[3], 0.75,0.5),
+					video::S3DVertex(-0.5*BS,-0.25*BS,-0.25*BS, -1,0,0, c[3], 0.75,0.75),
+
+					video::S3DVertex(-0.5*BS,-0.25*BS,-0.25*BS, -1,0,0, c[0], 0.75,0.75),
+					video::S3DVertex(-0.5*BS,-0.25*BS,-0.5*BS, -1,0,0, c[3], 1.,0.75),
+					video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, -1,0,0, c[3], 1.,1.)
+				},{ // back
+					video::S3DVertex(0.5*BS,0.5*BS,0.5*BS, 0,0,1, c[1], 0.,0.),
+					video::S3DVertex(-0.5*BS,0.5*BS,0.5*BS, 0,0,1, c[0], 1.,0.),
+					video::S3DVertex(-0.5*BS,-0.5*BS,0.5*BS, 0,0,1, c[7], 1.,1.),
+					video::S3DVertex(0.5*BS,-0.5*BS,0.5*BS, 0,0,1, c[6], 0.,1.)
+				},{ // front
+					video::S3DVertex(-0.5*BS,0.5*BS,0.25*BS, 0,0,-1, c[13], 0.,0.),
+					video::S3DVertex(0.5*BS,0.5*BS,0.25*BS, 0,0,-1, c[13], 1.,0.),
+					video::S3DVertex(0.5*BS,0.25*BS,0.25*BS, 0,0,-1, c[13], 1.,0.25),
+					video::S3DVertex(-0.5*BS,0.25*BS,0.25*BS, 0,0,-1, c[13], 0.,0.25),
+
+					video::S3DVertex(-0.5*BS,0.25*BS,0., 0,0,-1, c[13], 0.,0.25),
+					video::S3DVertex(0.5*BS,0.25*BS,0., 0,0,-1, c[13], 1.,0.25),
+					video::S3DVertex(0.5*BS,0.,0., 0,0,-1, c[13], 1.,0.5),
+					video::S3DVertex(-0.5*BS,0.,0., 0,0,-1, c[13], 0.,0.5),
+
+					video::S3DVertex(-0.5*BS,0.,-0.25*BS, 0,0,-1, c[13], 0.,0.5),
+					video::S3DVertex(0.5*BS,0.,-0.25*BS, 0,0,-1, c[13], 1.,0.5),
+					video::S3DVertex(0.5*BS,-0.25*BS,-0.25*BS, 0,0,-1, c[13], 1.,0.75),
+					video::S3DVertex(-0.5*BS,-0.25*BS,-0.25*BS, 0,0,-1, c[13], 0.,0.75),
+
+					video::S3DVertex(-0.5*BS,-0.25*BS,-0.5*BS, 0,0,-1, c[13], 0.,0.75),
+					video::S3DVertex(0.5*BS,-0.25*BS,-0.5*BS, 0,0,-1, c[13], 1.,0.75),
+					video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 0,0,-1, c[13], 1.,1.),
+					video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,-1, c[13], 0.,1.)
+				}
+			};
+
+			u16 indices[6][24] = {
+				{ // up
+					0,1,2,2,3,0,
+					4,5,6,6,7,4,
+					8,9,10,10,11,8,
+					12,13,14,14,15,12
+				},{ // down
+					0,1,2,2,3,0
+				},{ // right
+					0,1,2,3,4,5,6,7,8,9,10,11,12,13,14
+				},{ // left
+					0,1,2,3,4,5,6,7,8,9,10,11,12,13,14
+				},{ // back
+					0,1,2,2,3,0
+				},{ // front
+					0,1,2,2,3,0,
+					4,5,6,6,7,4,
+					8,9,10,10,11,8,
+					12,13,14,14,15,12
+				}
+			};
+			v3s16 back(0,0,1);
 			v3s16 front(0,0,-1);
 			v3s16 left(-1,0,0);
 			v3s16 right(1,0,0);
+			back.rotateXZBy(rot);
 			front.rotateXZBy(rot);
 			left.rotateXZBy(rot);
 			right.rotateXZBy(rot);
+			MapNode nb = data->m_vmanip.getNodeRO(blockpos_nodes + p + back);
 			MapNode nf = data->m_vmanip.getNodeRO(blockpos_nodes + p + front);
 			MapNode nl = data->m_vmanip.getNodeRO(blockpos_nodes + p + left);
 			MapNode nr = data->m_vmanip.getNodeRO(blockpos_nodes + p + right);
+			s16 vcounts[6] = {16,4,15,15,4,16};
+			s16 icounts[6] = {24,6,15,15,6,24};
 			if (
 				content_features(nf).draw_type == CDT_SLABLIKE
 				|| (
@@ -3514,63 +3681,102 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					)
 				)
 			) {
-				boxes.push_back(NodeBox(
-					-0.5*BS,
-					-0.5*BS,
-					-0.5*BS,
-					0.5*BS,
-					0.,
-					-0.25*BS
-				));
+				// slab connection
+				vcounts[0] = 12;
+				icounts[0] = 18;
+				vertices[0][8] = video::S3DVertex(-0.5*BS,0.,0., 0,1,0, c[8], 0.,0.5);
+				vertices[0][9] = video::S3DVertex(0.5*BS,0.,0., 0,1,0, c[8], 1.,0.5),
+				vertices[0][10] = video::S3DVertex(0.5*BS,0.,-0.5*BS, 0,1,0, c[8], 1.,1.0),
+				vertices[0][11] = video::S3DVertex(-0.5*BS,0.,-0.5*BS, 0,1,0, c[8], 0.,1.0),
+
+				vcounts[2] = 12;
+				icounts[2] = 12;
+				vertices[2][9] = video::S3DVertex(0.5*BS,0.,0., 1,0,0, c[1], 0.5,0.5);
+				vertices[2][10] = video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 1,0,0, c[1], 0.,1.);
+				vertices[2][11] = video::S3DVertex(0.5*BS,0.,-0.5*BS, 1,0,0, c[2], 0.,0.5);
+
+				vcounts[3] = 12;
+				icounts[3] = 12;
+				vertices[3][9] = video::S3DVertex(-0.5*BS,0.,0., -1,0,0, c[0], 0.5,0.5);
+				vertices[3][10] = video::S3DVertex(-0.5*BS,0.,-0.5*BS, -1,0,0, c[3], 1.0,0.5);
+				vertices[3][11] = video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, -1,0,0, c[3], 1.0,1.0);
+
+				vcounts[5] = 12;
+				icounts[5] = 18;
+				vertices[5][8] = video::S3DVertex(-0.5*BS,0.,-0.5*BS, 0,0,-1, c[13], 0.,0.5);
+				vertices[5][9] = video::S3DVertex(0.5*BS,0.,-0.5*BS, 0,0,-1, c[13], 1.,0.5);
+				vertices[5][10] = video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 0,0,-1, c[13], 1.,1.);
+				vertices[5][11] = video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,-1, c[13], 0.,1.);
 			}else{
-				boxes.push_back(NodeBox(
-					-0.5*BS,
-					-0.5*BS,
-					-0.5*BS,
-					0.5*BS,
-					-0.25*BS,
-					-0.25*BS
-				));
 			}
+			// don't draw unseen faces
+			bool skips[6] = {false,false,false,false,false,false};
+			if (
+				content_features(nb).draw_type == CDT_CUBELIKE
+				|| (
+					content_features(nb).draw_type == CDT_STAIRLIKE
+					&& (
+						nb.getRotationAngle() == rot+180
+						|| nb.getRotationAngle() == rot-180
+					)
+				)
+			)
+				skips[4] = true;
+			if (content_features(nl).draw_type == CDT_STAIRLIKE && nl.getRotationAngle() == rot)
+				skips[3] = true;
+			if (content_features(nr).draw_type == CDT_STAIRLIKE && nr.getRotationAngle() == rot)
+				skips[2] = true;
 
-			s16 urot = 0;
-			if (n.getContent() >= CONTENT_SLAB_STAIR_UD_MIN && n.getContent() <= CONTENT_SLAB_STAIR_UD_MAX)
-				urot = 180;
-
-			for (std::vector<NodeBox>::iterator i = boxes.begin(); i != boxes.end(); i++) {
-				NodeBox box = *i;
-				if (urot) {
-					box.m_box.MinEdge.rotateXYBy(180);
-					box.m_box.MaxEdge.rotateXYBy(180);
-					box.m_box.repair();
-				}
+			if (n.getContent() >= CONTENT_SLAB_STAIR_UD_MIN && n.getContent() <= CONTENT_SLAB_STAIR_UD_MAX) {
 				if (rot) {
-					box.m_box.MinEdge.rotateXZBy(rot);
-					box.m_box.MaxEdge.rotateXZBy(rot);
-					box.m_box.repair();
+					for (int i=0; i<6; i++) {
+						if (skips[i])
+							continue;
+						for (int j=0; j<vcounts[i]; j++) {
+							vertices[i][j].Pos.rotateXYBy(180);
+							vertices[i][j].Pos.rotateXZBy(rot);
+							vertices[i][j].Pos += pos;
+							vertices[i][j].TCoords *= tiles[i].texture.size;
+							vertices[i][j].TCoords += tiles[i].texture.pos;
+						}
+						collector.append(tiles[i].getMaterial(), vertices[i], vcounts[i], indices[i], icounts[i]);
+					}
+				}else{
+					for (int i=0; i<6; i++) {
+						if (skips[i])
+							continue;
+						for (int j=0; j<vcounts[i]; j++) {
+							vertices[i][j].Pos.rotateXYBy(180);
+							vertices[i][j].Pos += pos;
+							vertices[i][j].TCoords *= tiles[i].texture.size;
+							vertices[i][j].TCoords += tiles[i].texture.pos;
+						}
+						collector.append(tiles[i].getMaterial(), vertices[i], vcounts[i], indices[i], icounts[i]);
+					}
 				}
-				// Compute texture coords
-				f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
-				f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
-				f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
-				f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
-				f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
-				f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
-				f32 txc[24] = {
-					// up
-					tx1, 1-tz2, tx2, 1-tz1,
-					// down
-					tx1, tz1, tx2, tz2,
-					// right
-					tz1, 1-ty2, tz2, 1-ty1,
-					// left
-					1-tz2, 1-ty2, 1-tz1, 1-ty1,
-					// back
-					1-tx2, 1-ty2, 1-tx1, 1-ty1,
-					// front
-					tx1, 1-ty2, tx2, 1-ty1,
-				};
-				makeRotatedCuboid(&collector, pos, box.m_box, tiles, 6, c, txc, box.m_angle, box.m_centre);
+			}else if (rot) {
+				for (int i=0; i<6; i++) {
+					if (skips[i])
+						continue;
+					for (int j=0; j<vcounts[i]; j++) {
+						vertices[i][j].Pos.rotateXZBy(rot);
+						vertices[i][j].Pos += pos;
+						vertices[i][j].TCoords *= tiles[i].texture.size;
+						vertices[i][j].TCoords += tiles[i].texture.pos;
+					}
+					collector.append(tiles[i].getMaterial(), vertices[i], vcounts[i], indices[i], icounts[i]);
+				}
+			}else{
+				for (int i=0; i<6; i++) {
+					if (skips[i])
+						continue;
+					for (int j=0; j<vcounts[i]; j++) {
+						vertices[i][j].Pos += pos;
+						vertices[i][j].TCoords *= tiles[i].texture.size;
+						vertices[i][j].TCoords += tiles[i].texture.pos;
+					}
+					collector.append(tiles[i].getMaterial(), vertices[i], vcounts[i], indices[i], icounts[i]);
+				}
 			}
 		}
 		break;
@@ -3591,7 +3797,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				// Handles facedir rotation for textures
 				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods,meta);
 			}
-			video::SColor c[8];
+			video::SColor c[14];
 			getLights(blockpos_nodes+p,c,data,smooth_lighting);
 
 			NodeBox boxes[2] = {
@@ -3603,7 +3809,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			if (n.getContent() >= CONTENT_SLAB_STAIR_UD_MIN && n.getContent() <= CONTENT_SLAB_STAIR_UD_MAX)
 				urot = 180;
 
-			for (u16 i=0; i<2; i++) {
+			for (u16 i=0; i<1; i++) {
 				NodeBox box = boxes[i];
 				if (urot) {
 					box.m_box.MinEdge.rotateXYBy(180);
@@ -3653,7 +3859,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				// Handles facedir rotation for textures
 				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods,meta);
 			}
-			video::SColor c[8];
+			video::SColor c[14];
 			getLights(blockpos_nodes+p,c,data,smooth_lighting);
 
 			v3f pos = intToFloat(p, BS);
