@@ -36,6 +36,7 @@
 #include <IGUIButton.h>
 #include <IGUIStaticText.h>
 #include <IGUIFont.h>
+#include <IGUIScrollBar.h>
 #include "path.h"
 #include "gui_colours.h"
 #if USE_FREETYPE
@@ -95,6 +96,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	bool bilinear;
 	bool trilinear;
 	bool anisotropic;
+	f32 volume;
 
 	std::wstring max_mob_level;
 	bool initial_inventory;
@@ -204,6 +206,13 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			anisotropic = ((gui::IGUICheckBox*)e)->isChecked();
 		else
 			anisotropic = m_data->anisotropic_filter;
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_VOLUME_SB);
+		if(e != NULL && e->getType() == gui::EGUIET_SCROLL_BAR)
+			volume = (float)((gui::IGUIScrollBar*)e)->getPos();
+		else
+			volume = m_data->volume;
 	}
 
 	// Server options
@@ -561,6 +570,11 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			Environment->addCheckBox(opaque_water, rect, this, GUI_ID_OPAQUE_WATER_CB, wgettext("Opaque water"));
 		}
 		{
+			core::rect<s32> rect(0, 0, 200, 15);
+			rect += topleft_content + v2s32(80, 250);
+			Environment->addStaticText(wgettext("Volume:"), rect, false, false, this, -1);
+		}
+		{
 			core::rect<s32> rect(0, 0, 200, 30);
 			rect += topleft_content + v2s32(290, 60);
 			Environment->addCheckBox(fullscreen, rect, this, GUI_ID_FULLSCREEN_CB, wgettext("Fullscreen"));
@@ -590,11 +604,19 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			rect += topleft_content + v2s32(290, 210);
 			Environment->addCheckBox(anisotropic, rect, this, GUI_ID_ANISOTROPIC_CB, wgettext("Anisotropic Filtering"));
 		}
+		{
+			core::rect<s32> rect(0, 0, 200, 15);
+			rect += topleft_content + v2s32(290, 250);
+			gui::IGUIScrollBar *sb = Environment->addScrollBar(true, rect, this, GUI_ID_VOLUME_SB);
+			sb->setMin(0);
+			sb->setMax(100);
+			sb->setPos(m_data->volume);
+		}
 
 		// Key change button
 		{
 			core::rect<s32> rect(0, 0, 130, 30);
-			rect += topleft_content + v2s32(210, 280);
+			rect += topleft_content + v2s32(210, 310);
 			Environment->addButton(rect, this, GUI_ID_CHANGE_KEYS_BUTTON, wgettext("Change keys"));
 		}
 	}else if (m_data->selected_tab == TAB_SINGLEPLAYER) {
@@ -1177,6 +1199,11 @@ void GUIMainMenu::acceptInput()
 			m_data->anisotropic_filter = ((gui::IGUICheckBox*)e)->isChecked();
 	}
 	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_VOLUME_SB);
+		if(e != NULL && e->getType() == gui::EGUIET_SCROLL_BAR)
+			m_data->volume = (float)((gui::IGUIScrollBar*)e)->getPos();
+	}
+	{
 		gui::IGUIElement *e = getElementFromId(GUI_ID_MAP_DELETE_CB);
 		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
 			m_data->delete_map = ((gui::IGUICheckBox*)e)->isChecked();
@@ -1379,6 +1406,17 @@ bool GUIMainMenu::OnEvent(const SEvent& event)
 			case GUI_ID_PW_INPUT:
 				acceptInput();
 				quitMenu();
+				return true;
+			}
+		}
+		if (event.GUIEvent.EventType == gui::EGET_SCROLL_BAR_CHANGED) {
+			switch (event.GUIEvent.Caller->getID()) {
+			case GUI_ID_VOLUME_SB:
+				gui::IGUIElement *vsb = getElementFromId(GUI_ID_VOLUME_SB);
+				if(vsb != NULL && vsb->getType() == gui::EGUIET_SCROLL_BAR) {
+					m_data->volume = (float)((gui::IGUIScrollBar*)vsb)->getPos();
+					g_settings->setFloat("sound_volume", m_data->volume);
+				}
 				return true;
 			}
 		}

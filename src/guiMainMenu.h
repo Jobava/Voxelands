@@ -49,6 +49,7 @@ enum {
 	GUI_ID_ANISOTROPIC_CB,
 	GUI_ID_PARTICLES_CB,
 	GUI_ID_FULLSCREEN_CB,
+	GUI_ID_VOLUME_SB,
 	GUI_ID_GAME_MODE_COMBO,
 	GUI_ID_GAME_MODE_CREATIVE,
 	GUI_ID_GAME_MODE_ADVENTURE,
@@ -109,6 +110,7 @@ struct MainMenuData
 		smooth_lighting(false),
 		particles(true),
 		fullscreen(false),
+		volume(0.0f),
 		// Server opts
 		game_mode(L"adventure"),
 		max_mob_level(L"aggressive"),
@@ -145,6 +147,7 @@ struct MainMenuData
 	bool anisotropic_filter;
 	bool bilinear_filter;
 	bool trilinear_filter;
+	f32 volume;
 	//int enable_shaders;
 	bool particles;
 	bool fullscreen;
