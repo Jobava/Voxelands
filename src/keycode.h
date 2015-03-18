@@ -89,6 +89,8 @@ enum KeyCode {
 	VLKC_RANGE_PLUS,
 	VLKC_RANGE_MINUS,
 	VLKC_PRINT_DEBUG,
+	VLKC_SELECT_PREV,
+	VLKC_SELECT_NEXT,
 	// put new codes above this
 	VLKC_MAX
 };

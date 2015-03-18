@@ -1594,6 +1594,26 @@ void the_game(
 				}
 			}
 		}
+		if (input->wasKeyDown(getKeySetting(VLKC_SELECT_PREV))) {
+			u16 max_item = MYMIN(PLAYER_INVENTORY_SIZE-1, hotbar_itemcount-1);
+			if (g_selected_item > 0) {
+				g_selected_item--;
+			}else{
+				g_selected_item = max_item;
+			}
+			std::string wield_sound = "wield";
+			client.playSound(wield_sound,false);
+		}
+		if (input->wasKeyDown(getKeySetting(VLKC_SELECT_NEXT))) {
+			u16 max_item = MYMIN(PLAYER_INVENTORY_SIZE-1, hotbar_itemcount-1);
+			if (g_selected_item < max_item) {
+				g_selected_item++;
+			}else{
+				g_selected_item = 0;
+			}
+			std::string wield_sound = "wield";
+			client.playSound(wield_sound,false);
+		}
 
 		// Viewing range selection
 		if (input->wasKeyDown(getKeySetting(VLKC_RANGE))) {

@@ -375,6 +375,8 @@ static const char* keymap_strings[] = {
 	"keymap_increase_viewing_range_min",
 	"keymap_decrease_viewing_range_min",
 	"keymap_print_debug_stacks",
+	"keymap_select_prev",
+	"keymap_select_next",
 	NULL
 };
 
