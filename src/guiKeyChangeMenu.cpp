@@ -323,14 +323,8 @@ void GUIKeyChangeMenu::drawMenu()
 
 	video::SColor bgcolor(140, 0, 0, 0);
 
-	{
-		core::rect < s32 > rect(0, 0, 620, 620);
-		rect += AbsoluteRect.UpperLeftCorner;
-		//driver->draw2DRectangle(bgcolor, rect, &AbsoluteClippingRect);
-
-		driver->draw2DRectangle(rect, GUI_BG_TOP, GUI_BG_TOP, GUI_BG_BTM, GUI_BG_BTM, &AbsoluteClippingRect);
-		driver->draw2DRectangleOutline(rect, GUI_BORDER);
-	}
+	driver->draw2DRectangle(AbsoluteRect, GUI_BG_TOP, GUI_BG_TOP, GUI_BG_BTM, GUI_BG_BTM, &AbsoluteClippingRect);
+	driver->draw2DRectangleOutline(AbsoluteRect, GUI_BORDER);
 
 	gui::IGUIElement::draw();
 }
