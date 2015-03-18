@@ -247,112 +247,230 @@ public:
 	Hotbar draw routine
 */
 void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
-		v2s32 centerlowerpos, s32 imgsize, s32 itemcount,
+		v2s32 screensize, s32 imgsize, s32 itemcount,
 		Inventory *inventory, s32 halfheartcount, s32 halfbubblecount, s32 halfhungercount)
 {
 	InventoryList *mainlist = inventory->getList("main");
-	if(mainlist == NULL)
-	{
+	if (mainlist == NULL) {
 		errorstream<<"draw_hotbar(): mainlist == NULL"<<std::endl;
 		return;
 	}
 
-	s32 padding = imgsize/12;
-	s32 width = itemcount*(imgsize+padding*2);
-
-	// Position of upper left corner of bar
-	v2s32 pos = centerlowerpos - v2s32(width/2, imgsize+padding*2);
-
-	core::rect<s32> imgrect(0,0,imgsize,imgsize);
-
-	std::wstring selected = L"";
-
-	for(s32 i=0; i<itemcount; i++)
+	// wielded item
 	{
-		InventoryItem *item = mainlist->getItem(i);
+		InventoryItem *item = mainlist->getItem(g_selected_item);
+		const video::SColor color(255,255,255,255);
+		const video::SColor colors[] = {color,color,color,color};
+		core::rect<s32> rect(screensize.X-124,screensize.Y-124,screensize.X-60,screensize.Y-60);
+		video::ITexture *texture = NULL;
 
-		core::rect<s32> rect = imgrect + pos + v2s32(padding+i*(imgsize+padding*2), padding);
+		std::wstring selected = L"";
+		std::wstring txt = L"";
 
-		if (g_selected_item == i) {
-			video::SColor c_outside(255,255,0,0);
-			s32 xo = (rect.LowerRightCorner.X-rect.UpperLeftCorner.X) / 4;
-			s32 yo = (rect.LowerRightCorner.Y-rect.UpperLeftCorner.Y) / 4;
-			rect.LowerRightCorner.X += xo;
-			rect.UpperLeftCorner.Y -= yo;
-			pos.X += xo;
-			video::SColor bgcolor2(128,0,0,0);
-			driver->draw2DRectangle(bgcolor2, rect, NULL);
-			driver->draw2DRectangleOutline(rect, c_outside);
-
-			if (item != NULL) {
-				drawInventoryItem(driver, font, item, rect, NULL);
-				std::wstring name = item->getGuiName();
-				if (name != L"")
-					selected = name;
+		if (item != NULL) {
+			texture = item->getImageRaw();
+			if (texture == NULL)
+				texture = item->getImage();
+			std::wstring name = item->getGuiName();
+			if (name != L"")
+				selected = name;
+			content_t type = item->getContent();
+			if ((type&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK || (type&CONTENT_CLOTHESITEM_MASK) == CONTENT_CLOTHESITEM_MASK) {
+				float w = item->getWear();
+				w = (100.0/65535.0)*w;
+				txt = itows(100-w);
+				txt += L"%";
+			}else{
+				txt = itows(item->getCount());
 			}
 		}else{
-			video::SColor bgcolor2(128,0,0,0);
-			driver->draw2DRectangle(bgcolor2, rect, NULL);
+			texture = driver->getTexture(getTexturePath("wieldhand.png").c_str());
+		}
 
-			if (item != NULL)
-				drawInventoryItem(driver, font, item, rect, NULL);
+		driver->draw2DImage(
+			texture,
+			rect,
+			core::rect<s32>(
+				core::position2d<s32>(0,0),
+				core::dimension2di(texture->getOriginalSize())
+			),
+			NULL,
+			colors,
+			true
+		);
+
+		// item count/wear
+		if (txt != L"") {
+			v2u32 dim = font->getDimension(txt.c_str());
+			v2s32 sdim(dim.X,dim.Y);
+			v2s32 p(screensize.X-92,screensize.Y-44);
+			p -= v2s32(sdim.X/2, sdim.Y/2);
+			core::rect<s32> rect2(
+				p,
+				sdim
+			);
+			font->draw(txt.c_str(), rect2, video::SColor(255,255,255,255), false, false, NULL);
+		}
+		// tool name
+		if (selected != L"") {
+			v2u32 dim = font->getDimension(selected.c_str());
+			v2s32 sdim(dim.X,dim.Y);
+			v2s32 p = v2s32(screensize.X-92,screensize.Y-30);
+			p -= v2s32(sdim.X/2, sdim.Y/2);
+
+			core::rect<s32> rect2(
+				p,
+				sdim
+			);
+			font->draw(selected.c_str(), rect2, video::SColor(255,255,255,255), false, false, NULL);
 		}
 	}
 
-	/*
-		Draw hearts
-	*/
-	struct {
-		s32 count;
-		s32 halfcount;
-		const char* texture;
-		bool show_full;
-	} barData[3] = {
-		{halfheartcount/2,halfheartcount,"heart.png",true},
-		{halfbubblecount/2,halfbubblecount,"bubble.png",false},
-		{halfhungercount/2,halfhungercount,"harvested_carrot.png",true},
-	};
-	v2s32 bar_base(0,-25);
-	for (s32 k=0; k<3; k++) {
-		if (barData[k].count == 10 && !barData[k].show_full)
-			continue;
-		video::ITexture *texture = driver->getTexture(getTexturePath(barData[k].texture).c_str());
-		v2s32 p = pos + bar_base;
-		for (s32 i=0; i<barData[k].count; i++) {
-			const video::SColor color(255,255,255,255);
-			const video::SColor colors[] = {color,color,color,color};
-			core::rect<s32> rect(0,0,16,16);
-			rect += p;
-			driver->draw2DImage(texture, rect,
-				core::rect<s32>(core::position2d<s32>(0,0),
-				core::dimension2di(texture->getOriginalSize())),
-				NULL, colors, true);
-			p += v2s32(16,0);
+	// rest of the hotbar
+	{
+		const video::SColor color(255,255,255,255);
+		const video::SColor colors[] = {color,color,color,color};
+
+		v2s32 pos[8] = {
+			v2s32(0,-56),
+			v2s32(39,-39),
+			v2s32(56,0),
+			v2s32(39,39),
+			v2s32(0,56),
+			v2s32(-39,39),
+			v2s32(-56,0),
+			v2s32(-39,-39)
+		};
+
+		core::rect<s32> base_rect(screensize.X-104,screensize.Y-104,screensize.X-80,screensize.Y-80);
+		for (s32 i=g_selected_item+1, p=3; ; i++,p--) {
+			if (i >= itemcount)
+				i = 0;
+			if (i == g_selected_item)
+				break;
+			if (p < 0)
+				p = 7;
+			InventoryItem *item = mainlist->getItem(i);
+
+			core::rect<s32> rect = base_rect + pos[p];
+			video::ITexture *texture = NULL;
+
+			if (item == NULL)
+				continue;
+
+			texture = item->getImageRaw();
+			if (texture == NULL)
+				texture = item->getImage();
+
+			driver->draw2DImage(
+				texture,
+				rect,
+				core::rect<s32>(
+					core::position2d<s32>(0,0),
+					core::dimension2di(texture->getOriginalSize())
+				),
+				NULL,
+				colors,
+				true
+			);
 		}
-		if (barData[k].halfcount % 2 == 1) {
-			const video::SColor color(255,255,255,255);
-			const video::SColor colors[] = {color,color,color,color};
-			core::rect<s32> rect(0,0,16/2,16);
-			rect += p;
-			core::dimension2di srcd(texture->getOriginalSize());
-			srcd.Width /= 2;
-			driver->draw2DImage(texture, rect,
-				core::rect<s32>(core::position2d<s32>(0,0), srcd),
-				NULL, colors, true);
-			p += v2s32(16,0);
-		}
-		bar_base.Y -= 20;
 	}
-	if (selected != L"") {
-		v2u32 dim = font->getDimension(selected.c_str());
+
+	// health
+	if (halfheartcount) {
+		int c = 55+(halfheartcount*10);
+		const video::SColor color(220,c,c,c);
+		const video::SColor colors[] = {color,color,color,color};
+		video::ITexture *texture = driver->getTexture(getTexturePath("heart.png").c_str());
+		core::rect<s32> rect(60,screensize.Y-108,108,screensize.Y-60);
+		driver->draw2DImage(
+			texture,
+			rect,
+			core::rect<s32>(
+				core::position2d<s32>(0,0),
+				core::dimension2di(texture->getOriginalSize())
+			),
+			NULL,
+			colors,
+			true
+		);
+
+		std::wstring txt = itows(halfheartcount*5);
+		txt += L"%";
+
+		v2u32 dim = font->getDimension(txt.c_str());
 		v2s32 sdim(dim.X,dim.Y);
-		v2s32 p = pos + v2s32(170, -(24+(sdim.Y-16)));
-
+		v2s32 p(84,screensize.Y-84);
+		p -= v2s32(sdim.X/2, sdim.Y/2);
 		core::rect<s32> rect2(
 			p,
 			sdim
 		);
-		font->draw(selected.c_str(), rect2, video::SColor(255,255,255,255), false, false, NULL);
+		font->draw(txt.c_str(), rect2, video::SColor(255,255,255,255), false, false, NULL);
+	}
+	// air
+	if (halfbubblecount<20) {
+		int c = 55+(halfbubblecount*10);
+		const video::SColor color(255,255,c,c);
+		const video::SColor colors[] = {color,color,color,color};
+		video::ITexture *texture = driver->getTexture(getTexturePath("bubble.png").c_str());
+		core::rect<s32> rect(100,screensize.Y-68,132,screensize.Y-36);
+		driver->draw2DImage(
+			texture,
+			rect,
+			core::rect<s32>(
+				core::position2d<s32>(0,0),
+				core::dimension2di(texture->getOriginalSize())
+			),
+			NULL,
+			colors,
+			true
+		);
+
+		std::wstring txt = itows(halfbubblecount*5);
+		txt += L"%";
+
+		v2u32 dim = font->getDimension(txt.c_str());
+		v2s32 sdim(dim.X,dim.Y);
+		v2s32 p(116,screensize.Y-52);
+		p -= v2s32(sdim.X/2, sdim.Y/2);
+		core::rect<s32> rect2(
+			p,
+			sdim
+		);
+		font->draw(txt.c_str(), rect2, video::SColor(255,255,255,255), false, false, NULL);
+	}
+	// hunger
+	if (halfhungercount) {
+		int c = 55+(halfhungercount*10);
+		const video::SColor color(255,255,c,c);
+		const video::SColor colors[] = {color,color,color,color};
+		video::ITexture *texture = driver->getTexture(getTexturePath("harvested_carrot.png").c_str());
+		core::rect<s32> rect(36,screensize.Y-68,68,screensize.Y-36);
+		driver->draw2DImage(
+			texture,
+			rect,
+			core::rect<s32>(
+				core::position2d<s32>(0,0),
+				core::dimension2di(texture->getOriginalSize())
+			),
+			NULL,
+			colors,
+			true
+		);
+
+		std::wstring txt = itows(halfhungercount*5);
+		txt += L"%";
+
+		v2u32 dim = font->getDimension(txt.c_str());
+		v2s32 sdim(dim.X,dim.Y);
+		v2s32 p(52,screensize.Y-52);
+		p -= v2s32(sdim.X/2, sdim.Y/2);
+		core::rect<s32> rect2(
+			p,
+			sdim
+		);
+		font->draw(txt.c_str(), rect2, video::SColor(255,255,255,255), false, false, NULL);
 	}
 }
 
@@ -2301,7 +2419,7 @@ void the_game(
 			s32 hunger = 0;
 			if (client.getServerHunger())
 				hunger = client.getHunger();
-			draw_hotbar(driver, font, v2s32(displaycenter.X, screensize.Y),
+			draw_hotbar(driver, font, v2s32(screensize.X,screensize.Y),
 					hotbar_imagesize, hotbar_itemcount, &local_inventory,
 					client.getHP(), client.getAir(), hunger);
 		}

@@ -91,9 +91,9 @@ void GUITextInputMenu::regenerateGui(v2u32 screensize)
 		Calculate new sizes and positions
 	*/
 	core::rect<s32> rect(
-			100,
+			150,
 			screensize.Y - 100,
-			400,
+			450,
 			screensize.Y - 70
 	);
 
