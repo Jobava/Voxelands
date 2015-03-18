@@ -113,6 +113,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("trilinear_filter", "false");
 	settings->setDefault("sound_volume", "50");
 	settings->setDefault("font_size","12");
+	settings->setDefault("old_hotbar","false");
 
 	// Server stuff
 	// "map-dir" doesn't exist by default.

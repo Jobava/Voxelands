@@ -246,6 +246,114 @@ public:
 /*
 	Hotbar draw routine
 */
+void draw_old_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
+		v2s32 centrelowerpos, s32 imgsize, s32 itemcount,
+		Inventory *inventory, s32 halfheartcount, s32 halfbubblecount, s32 halfhungercount)
+{
+	InventoryList *mainlist = inventory->getList("main");
+	if (mainlist == NULL) {
+		errorstream<<"draw_hotbar(): mainlist == NULL"<<std::endl;
+		return;
+	}
+
+	s32 padding = imgsize/12;
+	s32 width = itemcount*(imgsize+padding*2);
+
+	// Position of upper left corner of bar
+	v2s32 pos = centrelowerpos - v2s32(width/2, imgsize+padding*2);
+
+	core::rect<s32> imgrect(0,0,imgsize,imgsize);
+
+	std::wstring selected = L"";
+
+	for(s32 i=0; i<itemcount; i++)
+	{
+		InventoryItem *item = mainlist->getItem(i);
+
+		core::rect<s32> rect = imgrect + pos + v2s32(padding+i*(imgsize+padding*2), padding);
+
+		if (g_selected_item == i) {
+			video::SColor c_outside(255,255,0,0);
+			s32 xo = (rect.LowerRightCorner.X-rect.UpperLeftCorner.X) / 4;
+			s32 yo = (rect.LowerRightCorner.Y-rect.UpperLeftCorner.Y) / 4;
+			rect.LowerRightCorner.X += xo;
+			rect.UpperLeftCorner.Y -= yo;
+			pos.X += xo;
+			video::SColor bgcolor2(128,0,0,0);
+			driver->draw2DRectangle(bgcolor2, rect, NULL);
+			driver->draw2DRectangleOutline(rect, c_outside);
+
+			if (item != NULL) {
+				drawInventoryItem(driver, font, item, rect, NULL);
+				std::wstring name = item->getGuiName();
+				if (name != L"")
+					selected = name;
+			}
+		}else{
+			video::SColor bgcolor2(128,0,0,0);
+			driver->draw2DRectangle(bgcolor2, rect, NULL);
+
+			if (item != NULL)
+				drawInventoryItem(driver, font, item, rect, NULL);
+		}
+	}
+
+	/*
+		Draw hearts
+	*/
+	struct {
+		s32 count;
+		s32 halfcount;
+		const char* texture;
+		bool show_full;
+	} barData[3] = {
+		{halfheartcount/2,halfheartcount,"heart.png",true},
+		{halfbubblecount/2,halfbubblecount,"bubble.png",false},
+		{halfhungercount/2,halfhungercount,"harvested_carrot.png",true},
+	};
+	v2s32 bar_base(0,-25);
+	for (s32 k=0; k<3; k++) {
+		if (barData[k].count == 10 && !barData[k].show_full)
+			continue;
+		video::ITexture *texture = driver->getTexture(getTexturePath(barData[k].texture).c_str());
+		v2s32 p = pos + bar_base;
+		for (s32 i=0; i<barData[k].count; i++) {
+			const video::SColor color(255,255,255,255);
+			const video::SColor colors[] = {color,color,color,color};
+			core::rect<s32> rect(0,0,16,16);
+			rect += p;
+			driver->draw2DImage(texture, rect,
+				core::rect<s32>(core::position2d<s32>(0,0),
+				core::dimension2di(texture->getOriginalSize())),
+				NULL, colors, true);
+			p += v2s32(16,0);
+		}
+		if (barData[k].halfcount % 2 == 1) {
+			const video::SColor color(255,255,255,255);
+			const video::SColor colors[] = {color,color,color,color};
+			core::rect<s32> rect(0,0,16/2,16);
+			rect += p;
+			core::dimension2di srcd(texture->getOriginalSize());
+			srcd.Width /= 2;
+			driver->draw2DImage(texture, rect,
+				core::rect<s32>(core::position2d<s32>(0,0), srcd),
+				NULL, colors, true);
+			p += v2s32(16,0);
+		}
+		bar_base.Y -= 20;
+	}
+	if (selected != L"") {
+		v2u32 dim = font->getDimension(selected.c_str());
+		v2s32 sdim(dim.X,dim.Y);
+		v2s32 p = pos + v2s32(170, -(24+(sdim.Y-16)));
+
+		core::rect<s32> rect2(
+			p,
+			sdim
+		);
+		font->draw(selected.c_str(), rect2, video::SColor(255,255,255,255), false, false, NULL);
+	}
+}
 void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 		v2s32 screensize, s32 imgsize, s32 itemcount,
 		Inventory *inventory, s32 halfheartcount, s32 halfbubblecount, s32 halfhungercount)
@@ -1177,6 +1285,7 @@ void the_game(
 		highlight_selected_node = false;
 	bool enable_particles = g_settings->getBool("enable_particles");
 	bool enable_fog = g_settings->getBool("enable_fog");
+	bool old_hotbar = g_settings->getBool("old_hotbar");
 
 	/*
 		Main loop
@@ -2439,9 +2548,31 @@ void the_game(
 			s32 hunger = 0;
 			if (client.getServerHunger())
 				hunger = client.getHunger();
-			draw_hotbar(driver, font, v2s32(screensize.X,screensize.Y),
-					hotbar_imagesize, hotbar_itemcount, &local_inventory,
-					client.getHP(), client.getAir(), hunger);
+			if (old_hotbar) {
+				draw_old_hotbar(
+					driver,
+					font,
+					v2s32(screensize.X/2,screensize.Y),
+					hotbar_imagesize,
+					hotbar_itemcount,
+					&local_inventory,
+					client.getHP(),
+					client.getAir(),
+					hunger
+				);
+			}else{
+				draw_hotbar(
+					driver,
+					font,
+					v2s32(screensize.X,screensize.Y),
+					hotbar_imagesize,
+					hotbar_itemcount,
+					&local_inventory,
+					client.getHP(),
+					client.getAir(),
+					hunger
+				);
+			}
 		}
 
 		/*
