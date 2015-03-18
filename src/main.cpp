@@ -1226,6 +1226,7 @@ int main(int argc, char *argv[])
 				menudata.anisotropic_filter = g_settings->getBool("anisotropic_filter");
 				menudata.bilinear_filter = g_settings->getBool("bilinear_filter");
 				menudata.trilinear_filter = g_settings->getBool("trilinear_filter");
+				menudata.volume = g_settings->getFloat("sound_volume");
 				driver->setTextureCreationFlag(video::ETCF_CREATE_MIP_MAPS, menudata.mip_map);
 				menudata.game_mode = narrow_to_wide(g_settings->get("game_mode"));
 				menudata.max_mob_level = narrow_to_wide(g_settings->get("max_mob_level"));
