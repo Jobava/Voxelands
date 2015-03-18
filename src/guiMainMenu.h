@@ -108,9 +108,9 @@ struct MainMenuData
 		// Client opts
 		fancy_trees(false),
 		smooth_lighting(false),
+		volume(0.0f),
 		particles(true),
 		fullscreen(false),
-		volume(0.0f),
 		// Server opts
 		game_mode(L"adventure"),
 		max_mob_level(L"aggressive"),
