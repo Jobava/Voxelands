@@ -53,7 +53,9 @@ enum
 	GUI_ID_KEY_SNEAK_BUTTON,
 	GUI_ID_KEY_INVENTORY_BUTTON,
 	GUI_ID_KEY_DUMP_BUTTON,
-	GUI_ID_KEY_RANGE_BUTTON
+	GUI_ID_KEY_RANGE_BUTTON,
+	GUI_ID_KEY_NEXT_ITEM_BUTTON,
+	GUI_ID_KEY_PREV_ITEM_BUTTON
 };
 
 class GUIKeyChangeMenu: public GUIModalMenu
@@ -95,6 +97,8 @@ private:
 	gui::IGUIButton *dump;
 	gui::IGUIButton *chat;
 	gui::IGUIButton *cmd;
+	gui::IGUIButton *next_item;
+	gui::IGUIButton *prev_item;
 
 	s32 activeKey;
 	KeyPress key_forward;
@@ -111,6 +115,8 @@ private:
 	KeyPress key_chat;
 	KeyPress key_cmd;
 	KeyPress key_dump;
+	KeyPress key_next_item;
+	KeyPress key_prev_item;
 };
 
 #endif

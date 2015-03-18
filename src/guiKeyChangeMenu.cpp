@@ -300,6 +300,35 @@ void GUIKeyChangeMenu::regenerateGui(v2u32 screensize)
 		this->dump = Environment->addButton(rect, this, GUI_ID_KEY_DUMP_BUTTON,
 				wgettext(key_dump.name()));
 	}
+
+	offset += v2s32(0, 33);
+	{
+		core::rect < s32 > rect(0, 0, 130, 20);
+		rect += topleft + v2s32(offset.X, offset.Y);
+		gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Next item"), rect, false, true, this, -1);
+		t->setTextAlignment(gui::EGUIA_LOWERRIGHT, gui::EGUIA_UPPERLEFT);
+	}
+	{
+		core::rect < s32 > rect(0, 0, 120, 30);
+		rect += topleft	+ v2s32(offset.X + 135, offset.Y - 5);
+		this->next_item = Environment->addButton(rect, this, GUI_ID_KEY_NEXT_ITEM_BUTTON,
+				wgettext(key_next_item.name()));
+	}
+
+	offset += v2s32(0, 33);
+	{
+		core::rect < s32 > rect(0, 0, 130, 20);
+		rect += topleft + v2s32(offset.X, offset.Y);
+		gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Previous item"), rect, false, true, this, -1);
+		t->setTextAlignment(gui::EGUIA_LOWERRIGHT, gui::EGUIA_UPPERLEFT);
+	}
+	{
+		core::rect < s32 > rect(0, 0, 120, 30);
+		rect += topleft + v2s32(offset.X + 135, offset.Y - 5);
+		this->prev_item = Environment->addButton(rect, this, GUI_ID_KEY_PREV_ITEM_BUTTON,
+				wgettext(key_prev_item.name()));
+	}
+
 	{
 		core::rect < s32 > rect(0, 0, 120, 30);
 		rect += topleft + v2s32(size.X - 120 - 20, size.Y - 40);
@@ -345,6 +374,8 @@ bool GUIKeyChangeMenu::acceptInput()
 	g_settings->set("keymap_fastmove", key_fast.sym());
 	g_settings->set("keymap_special1", key_use.sym());
 	g_settings->set("keymap_print_debug_stacks", key_dump.sym());
+	g_settings->set("keymap_select_next", key_next_item.sym());
+	g_settings->set("keymap_select_prev", key_prev_item.sym());
 	clearKeyCache();
 	return true;
 }
@@ -364,6 +395,8 @@ void GUIKeyChangeMenu::init_keys()
 	key_fast = getKeySetting(VLKC_FASTMOVE);
 	key_use = getKeySetting(VLKC_USE);
 	key_dump = getKeySetting(VLKC_PRINT_DEBUG);
+	key_next_item = getKeySetting(VLKC_SELECT_NEXT);
+	key_prev_item = getKeySetting(VLKC_SELECT_PREV);
 }
 
 bool GUIKeyChangeMenu::resetMenu()
@@ -416,6 +449,12 @@ bool GUIKeyChangeMenu::resetMenu()
 			break;
 		case GUI_ID_KEY_DUMP_BUTTON:
 			this->dump->setText(wgettext(key_dump.name()));
+			break;
+		case GUI_ID_KEY_NEXT_ITEM_BUTTON:
+			this->next_item->setText(wgettext(key_next_item.name()));
+			break;
+		case GUI_ID_KEY_PREV_ITEM_BUTTON:
+			this->prev_item->setText(wgettext(key_prev_item.name()));
 			break;
 		}
 		activeKey = -1;
@@ -499,6 +538,16 @@ bool GUIKeyChangeMenu::OnEvent(const SEvent& event)
 		{
 			this->dump->setText(wgettext(kp.name()));
 			this->key_dump = kp;
+		}
+		else if (activeKey == GUI_ID_KEY_NEXT_ITEM_BUTTON)
+		{
+			this->next_item->setText(wgettext(kp.name()));
+			this->key_next_item = kp;
+		}
+		else if (activeKey == GUI_ID_KEY_PREV_ITEM_BUTTON)
+		{
+			this->prev_item->setText(wgettext(kp.name()));
+			this->key_prev_item = kp;
 		}
 		activeKey = -1;
 		return true;
@@ -597,6 +646,16 @@ bool GUIKeyChangeMenu::OnEvent(const SEvent& event)
 				resetMenu();
 				activeKey = event.GUIEvent.Caller->getID();
 				this->range->setText(wgettext("press Key"));
+				break;
+			case GUI_ID_KEY_NEXT_ITEM_BUTTON:
+				resetMenu();
+				activeKey = event.GUIEvent.Caller->getID();
+				this->next_item->setText(wgettext("press Key"));
+				break;
+			case GUI_ID_KEY_PREV_ITEM_BUTTON:
+				resetMenu();
+				activeKey = event.GUIEvent.Caller->getID();
+				this->prev_item->setText(wgettext("press Key"));
 				break;
 			}
 
