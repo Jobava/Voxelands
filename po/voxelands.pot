@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voxelands\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-16 18:32+1000\n"
+"POT-Creation-Date: 2015-03-18 15:32+1000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,215 +18,215 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: src/character_creator.cpp:58
+#: src/character_creator.cpp:56
 msgid "White Skin"
 msgstr ""
 
-#: src/character_creator.cpp:59
+#: src/character_creator.cpp:57
 msgid "Red Skin"
 msgstr ""
 
-#: src/character_creator.cpp:60
+#: src/character_creator.cpp:58
 msgid "Green Skin"
 msgstr ""
 
-#: src/character_creator.cpp:61
+#: src/character_creator.cpp:59
 msgid "Fair Skin"
 msgstr ""
 
-#: src/character_creator.cpp:62
+#: src/character_creator.cpp:60
 msgid "Tanned Skin"
 msgstr ""
 
-#: src/character_creator.cpp:63
+#: src/character_creator.cpp:61
 msgid "Dark Skin"
 msgstr ""
 
-#: src/character_creator.cpp:64
+#: src/character_creator.cpp:62
 msgid "Black Skin"
 msgstr ""
 
-#: src/character_creator.cpp:66
+#: src/character_creator.cpp:64
 msgid "Human Face"
 msgstr ""
 
-#: src/character_creator.cpp:67
+#: src/character_creator.cpp:65
 msgid "Elven Face"
 msgstr ""
 
-#: src/character_creator.cpp:68
+#: src/character_creator.cpp:66
 msgid "Dwarven Face"
 msgstr ""
 
-#: src/character_creator.cpp:69
+#: src/character_creator.cpp:67
 msgid "Alien Face"
 msgstr ""
 
-#: src/character_creator.cpp:71
+#: src/character_creator.cpp:69
 msgid "White Hair"
 msgstr ""
 
-#: src/character_creator.cpp:72
+#: src/character_creator.cpp:70
 msgid "Blue Hair"
 msgstr ""
 
-#: src/character_creator.cpp:73
+#: src/character_creator.cpp:71
 msgid "Green Hair"
 msgstr ""
 
-#: src/character_creator.cpp:74
+#: src/character_creator.cpp:72
 msgid "Orange Hair"
 msgstr ""
 
-#: src/character_creator.cpp:75
+#: src/character_creator.cpp:73
 msgid "Brown Hair"
 msgstr ""
 
-#: src/character_creator.cpp:76
+#: src/character_creator.cpp:74
 msgid "Purple Hair"
 msgstr ""
 
-#: src/character_creator.cpp:77
+#: src/character_creator.cpp:75
 msgid "Red Hair"
 msgstr ""
 
-#: src/character_creator.cpp:78
+#: src/character_creator.cpp:76
 msgid "Blonde Hair"
 msgstr ""
 
-#: src/character_creator.cpp:79
+#: src/character_creator.cpp:77
 msgid "Black Hair"
 msgstr ""
 
-#: src/character_creator.cpp:81
+#: src/character_creator.cpp:79
 msgid "Short Hair"
 msgstr ""
 
-#: src/character_creator.cpp:82
+#: src/character_creator.cpp:80
 msgid "Medium Hair"
 msgstr ""
 
-#: src/character_creator.cpp:83
+#: src/character_creator.cpp:81
 msgid "Long Hair"
 msgstr ""
 
-#: src/character_creator.cpp:84
+#: src/character_creator.cpp:82
 msgid "Styled Hair"
 msgstr ""
 
-#: src/character_creator.cpp:86
+#: src/character_creator.cpp:84
 msgid "White Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:87
+#: src/character_creator.cpp:85
 msgid "Blue Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:88
+#: src/character_creator.cpp:86
 msgid "Green Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:89
+#: src/character_creator.cpp:87
 msgid "Orange Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:90
+#: src/character_creator.cpp:88
 msgid "Brown Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:91
+#: src/character_creator.cpp:89
 msgid "Purple Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:92
+#: src/character_creator.cpp:90
 msgid "Red Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:93
+#: src/character_creator.cpp:91
 msgid "Yellow Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:94
+#: src/character_creator.cpp:92
 msgid "Black Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:96
+#: src/character_creator.cpp:94
 msgid "White T-Shirt"
 msgstr ""
 
-#: src/character_creator.cpp:97
+#: src/character_creator.cpp:95
 msgid "Blue T-Shirt"
 msgstr ""
 
-#: src/character_creator.cpp:98
+#: src/character_creator.cpp:96
 msgid "Green T-Shirt"
 msgstr ""
 
-#: src/character_creator.cpp:99
+#: src/character_creator.cpp:97
 msgid "Orange T-Shirt"
 msgstr ""
 
-#: src/character_creator.cpp:100
+#: src/character_creator.cpp:98
 msgid "Purple T-Shirt"
 msgstr ""
 
-#: src/character_creator.cpp:101
+#: src/character_creator.cpp:99
 msgid "Red T-Shirt"
 msgstr ""
 
-#: src/character_creator.cpp:102
+#: src/character_creator.cpp:100
 msgid "Yellow T-Shirt"
 msgstr ""
 
-#: src/character_creator.cpp:103
+#: src/character_creator.cpp:101
 msgid "Black T-Shirt"
 msgstr ""
 
-#: src/character_creator.cpp:105
+#: src/character_creator.cpp:103
 msgid "White Pants"
 msgstr ""
 
-#: src/character_creator.cpp:106
+#: src/character_creator.cpp:104
 msgid "Blue Pants"
 msgstr ""
 
-#: src/character_creator.cpp:107
+#: src/character_creator.cpp:105
 msgid "Green Pants"
 msgstr ""
 
-#: src/character_creator.cpp:108
+#: src/character_creator.cpp:106
 msgid "Orange Pants"
 msgstr ""
 
-#: src/character_creator.cpp:109
+#: src/character_creator.cpp:107
 msgid "Purple Pants"
 msgstr ""
 
-#: src/character_creator.cpp:110
+#: src/character_creator.cpp:108
 msgid "Red Pants"
 msgstr ""
 
-#: src/character_creator.cpp:111
+#: src/character_creator.cpp:109
 msgid "Yellow Pants"
 msgstr ""
 
-#: src/character_creator.cpp:112
+#: src/character_creator.cpp:110
 msgid "Black Pants"
 msgstr ""
 
-#: src/character_creator.cpp:114 src/content_clothesitem.cpp:1706
+#: src/character_creator.cpp:112 src/content_clothesitem.cpp:1706
 msgid "Leather Shoes"
 msgstr ""
 
-#: src/character_creator.cpp:115 src/content_clothesitem.cpp:2522
+#: src/character_creator.cpp:113 src/content_clothesitem.cpp:2522
 msgid "Fur Shoes"
 msgstr ""
 
-#: src/character_creator.cpp:116 src/content_clothesitem.cpp:945
+#: src/character_creator.cpp:114 src/content_clothesitem.cpp:945
 msgid "Canvas Shoes"
 msgstr ""
 
-#: src/character_creator.cpp:205
+#: src/character_creator.cpp:203
 msgid ""
 "Here you can create your default character, this is how other players will "
 "see you in-game. When you join a new server you will start with the clothing "
@@ -235,39 +235,39 @@ msgid ""
 "You can return here from the main menu anytime to change your character."
 msgstr ""
 
-#: src/character_creator.cpp:226
+#: src/character_creator.cpp:224
 msgid "Create Your Character"
 msgstr ""
 
-#: src/character_creator.cpp:233
+#: src/character_creator.cpp:231
 msgid "Male"
 msgstr ""
 
-#: src/character_creator.cpp:238
+#: src/character_creator.cpp:236
 msgid "Female"
 msgstr ""
 
-#: src/character_creator.cpp:245
+#: src/character_creator.cpp:243
 msgid "Taller"
 msgstr ""
 
-#: src/character_creator.cpp:250
+#: src/character_creator.cpp:248
 msgid "Shorter"
 msgstr ""
 
-#: src/character_creator.cpp:257
+#: src/character_creator.cpp:255
 msgid "Wider"
 msgstr ""
 
-#: src/character_creator.cpp:262
+#: src/character_creator.cpp:260
 msgid "Thinner"
 msgstr ""
 
-#: src/character_creator.cpp:421
+#: src/character_creator.cpp:419
 msgid "Done"
 msgstr ""
 
-#: src/character_creator.cpp:426 src/guiKeyChangeMenu.cpp:313
+#: src/character_creator.cpp:424 src/guiKeyChangeMenu.cpp:313
 #: src/keycode.cpp:229
 msgid "Cancel"
 msgstr ""
@@ -3205,224 +3205,228 @@ msgstr ""
 msgid "press Key"
 msgstr ""
 
-#: src/guiMainMenu.cpp:400
+#: src/guiMainMenu.cpp:409
 msgid "Character Creator"
 msgstr ""
 
-#: src/guiMainMenu.cpp:406 src/guiMainMenu.cpp:604 src/guiMainMenu.cpp:646
-#: src/guiMainMenu.cpp:744
+#: src/guiMainMenu.cpp:415 src/guiMainMenu.cpp:625 src/guiMainMenu.cpp:667
+#: src/guiMainMenu.cpp:765
 msgid "Single Player"
 msgstr ""
 
-#: src/guiMainMenu.cpp:412 src/guiMainMenu.cpp:464
+#: src/guiMainMenu.cpp:421 src/guiMainMenu.cpp:472
 msgid "Multi Player"
 msgstr ""
 
-#: src/guiMainMenu.cpp:418 src/guiMainMenu.cpp:540
+#: src/guiMainMenu.cpp:427 src/guiMainMenu.cpp:548
 msgid "Settings"
 msgstr ""
 
-#: src/guiMainMenu.cpp:424 src/guiMainMenu.cpp:871
+#: src/guiMainMenu.cpp:433 src/guiMainMenu.cpp:892
 msgid "Credits"
 msgstr ""
 
-#: src/guiMainMenu.cpp:430
+#: src/guiMainMenu.cpp:439
 msgid "Quit"
 msgstr ""
 
-#: src/guiMainMenu.cpp:472
+#: src/guiMainMenu.cpp:480
 msgid "Name/Password"
 msgstr ""
 
-#: src/guiMainMenu.cpp:504
+#: src/guiMainMenu.cpp:512
 msgid "Address/Port"
 msgstr ""
 
-#: src/guiMainMenu.cpp:534
+#: src/guiMainMenu.cpp:542
 msgid "Connect"
 msgstr ""
 
-#: src/guiMainMenu.cpp:546
+#: src/guiMainMenu.cpp:554
 msgid "Fancy trees"
 msgstr ""
 
-#: src/guiMainMenu.cpp:551
+#: src/guiMainMenu.cpp:559
 msgid "Smooth Lighting"
 msgstr ""
 
-#: src/guiMainMenu.cpp:556
+#: src/guiMainMenu.cpp:564
 msgid "3D Clouds"
 msgstr ""
 
-#: src/guiMainMenu.cpp:561
+#: src/guiMainMenu.cpp:569
 msgid "Opaque water"
 msgstr ""
 
-#: src/guiMainMenu.cpp:566
+#: src/guiMainMenu.cpp:574
+msgid "Volume:"
+msgstr ""
+
+#: src/guiMainMenu.cpp:579
 msgid "Fullscreen"
 msgstr ""
 
-#: src/guiMainMenu.cpp:571
+#: src/guiMainMenu.cpp:584
 msgid "Particles"
 msgstr ""
 
-#: src/guiMainMenu.cpp:576
+#: src/guiMainMenu.cpp:589
 msgid "Mip-Mapping"
 msgstr ""
 
-#: src/guiMainMenu.cpp:581
+#: src/guiMainMenu.cpp:594
 msgid "Bi-Linear Filtering"
 msgstr ""
 
-#: src/guiMainMenu.cpp:586
+#: src/guiMainMenu.cpp:599
 msgid "Tri-Linear Filtering"
 msgstr ""
 
-#: src/guiMainMenu.cpp:591
+#: src/guiMainMenu.cpp:604
 msgid "Anisotropic Filtering"
 msgstr ""
 
-#: src/guiMainMenu.cpp:598
+#: src/guiMainMenu.cpp:619
 msgid "Change keys"
 msgstr ""
 
-#: src/guiMainMenu.cpp:613 src/guiMainMenu.cpp:655 src/guiMainMenu.cpp:753
+#: src/guiMainMenu.cpp:634 src/guiMainMenu.cpp:676 src/guiMainMenu.cpp:774
 msgid "Creative Mode"
 msgstr ""
 
-#: src/guiMainMenu.cpp:614 src/guiMainMenu.cpp:656 src/guiMainMenu.cpp:754
+#: src/guiMainMenu.cpp:635 src/guiMainMenu.cpp:677 src/guiMainMenu.cpp:775
 msgid "Adventure Mode"
 msgstr ""
 
-#: src/guiMainMenu.cpp:615 src/guiMainMenu.cpp:657 src/guiMainMenu.cpp:755
+#: src/guiMainMenu.cpp:636 src/guiMainMenu.cpp:678 src/guiMainMenu.cpp:776
 msgid "Survival Mode"
 msgstr ""
 
-#: src/guiMainMenu.cpp:628 src/guiMainMenu.cpp:768
+#: src/guiMainMenu.cpp:649 src/guiMainMenu.cpp:789
 msgid "Advanced Settings"
 msgstr ""
 
-#: src/guiMainMenu.cpp:634 src/guiMainMenu.cpp:676
+#: src/guiMainMenu.cpp:655 src/guiMainMenu.cpp:697
 msgid "Map Options"
 msgstr ""
 
-#: src/guiMainMenu.cpp:640 src/guiMainMenu.cpp:738 src/guiMainMenu.cpp:864
+#: src/guiMainMenu.cpp:661 src/guiMainMenu.cpp:759 src/guiMainMenu.cpp:885
 msgid "Start Game"
 msgstr ""
 
-#: src/guiMainMenu.cpp:670
+#: src/guiMainMenu.cpp:691
 msgid "Hide Advanced Settings"
 msgstr ""
 
-#: src/guiMainMenu.cpp:681
+#: src/guiMainMenu.cpp:702
 msgid "Creatures"
 msgstr ""
 
-#: src/guiMainMenu.cpp:688
+#: src/guiMainMenu.cpp:709
 msgid "Passive"
 msgstr ""
 
-#: src/guiMainMenu.cpp:689
+#: src/guiMainMenu.cpp:710
 msgid "Passive & Aggressive"
 msgstr ""
 
-#: src/guiMainMenu.cpp:690
+#: src/guiMainMenu.cpp:711
 msgid "Passive, Aggressive, & Destructive"
 msgstr ""
 
-#: src/guiMainMenu.cpp:702
+#: src/guiMainMenu.cpp:723
 msgid "Player Damage"
 msgstr ""
 
-#: src/guiMainMenu.cpp:707
+#: src/guiMainMenu.cpp:728
 msgid "Suffocation/Drowning"
 msgstr ""
 
-#: src/guiMainMenu.cpp:712
+#: src/guiMainMenu.cpp:733
 msgid "Hunger"
 msgstr ""
 
-#: src/guiMainMenu.cpp:717
+#: src/guiMainMenu.cpp:738
 msgid "Tool Wear"
 msgstr ""
 
-#: src/guiMainMenu.cpp:722
+#: src/guiMainMenu.cpp:743
 msgid "Infinite Inventory"
 msgstr ""
 
-#: src/guiMainMenu.cpp:727
+#: src/guiMainMenu.cpp:748
 msgid "Initial Inventory"
 msgstr ""
 
-#: src/guiMainMenu.cpp:732
+#: src/guiMainMenu.cpp:753
 msgid "Droppable Inventory"
 msgstr ""
 
-#: src/guiMainMenu.cpp:774
+#: src/guiMainMenu.cpp:795
 msgid "Hide Map Options"
 msgstr ""
 
-#: src/guiMainMenu.cpp:779
+#: src/guiMainMenu.cpp:800
 msgid "Create New Map"
 msgstr ""
 
-#: src/guiMainMenu.cpp:785
+#: src/guiMainMenu.cpp:806
 msgid "Warning! Your old map will be deleted!"
 msgstr ""
 
-#: src/guiMainMenu.cpp:791
+#: src/guiMainMenu.cpp:812
 msgid "Map Type"
 msgstr ""
 
-#: src/guiMainMenu.cpp:798
+#: src/guiMainMenu.cpp:819
 msgid "Flat"
 msgstr ""
 
-#: src/guiMainMenu.cpp:799
+#: src/guiMainMenu.cpp:820
 msgid "Flatter"
 msgstr ""
 
-#: src/guiMainMenu.cpp:800
+#: src/guiMainMenu.cpp:821
 msgid "Smoother"
 msgstr ""
 
-#: src/guiMainMenu.cpp:801
+#: src/guiMainMenu.cpp:822
 msgid "Default"
 msgstr ""
 
-#: src/guiMainMenu.cpp:802
+#: src/guiMainMenu.cpp:823
 msgid "Hilly"
 msgstr ""
 
-#: src/guiMainMenu.cpp:803
+#: src/guiMainMenu.cpp:824
 msgid "Mountains"
 msgstr ""
 
-#: src/guiMainMenu.cpp:804
+#: src/guiMainMenu.cpp:825
 msgid "Crazy"
 msgstr ""
 
-#: src/guiMainMenu.cpp:805
+#: src/guiMainMenu.cpp:826
 msgid "Crazy Hills"
 msgstr ""
 
-#: src/guiMainMenu.cpp:827
+#: src/guiMainMenu.cpp:848
 msgid "Use Fixed Seed"
 msgstr ""
 
-#: src/guiMainMenu.cpp:833
+#: src/guiMainMenu.cpp:854
 msgid "Map Seed"
 msgstr ""
 
-#: src/guiMainMenu.cpp:851
+#: src/guiMainMenu.cpp:872
 msgid "Clear Map"
 msgstr ""
 
-#: src/guiMainMenu.cpp:856
+#: src/guiMainMenu.cpp:877
 msgid "Warning! This will delete all construction from your map!"
 msgstr ""
 
-#: src/guiMainMenu.cpp:879
+#: src/guiMainMenu.cpp:900
 msgid ""
 "Voxelands\n"
 "http://www.voxelands.com/\n"
@@ -3443,23 +3447,23 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-#: src/guiPasswordChange.cpp:106
+#: src/guiPasswordChange.cpp:105
 msgid "Old Password"
 msgstr ""
 
-#: src/guiPasswordChange.cpp:124
+#: src/guiPasswordChange.cpp:123
 msgid "New Password"
 msgstr ""
 
-#: src/guiPasswordChange.cpp:141
+#: src/guiPasswordChange.cpp:140
 msgid "Confirm Password"
 msgstr ""
 
-#: src/guiPasswordChange.cpp:159
+#: src/guiPasswordChange.cpp:158
 msgid "Change"
 msgstr ""
 
-#: src/guiPasswordChange.cpp:167
+#: src/guiPasswordChange.cpp:166
 msgid "Passwords do not match!"
 msgstr ""
 
@@ -3779,15 +3783,15 @@ msgstr ""
 msgid "Zoom"
 msgstr ""
 
-#: src/main.cpp:1137
+#: src/main.cpp:1135
 msgid "Setting Up UI"
 msgstr ""
 
-#: src/main.cpp:1160
+#: src/main.cpp:1158
 msgid "Loading MapNodes"
 msgstr ""
 
-#: src/main.cpp:1162
+#: src/main.cpp:1160
 msgid "Loading Creatures"
 msgstr ""
 
