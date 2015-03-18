@@ -557,8 +557,8 @@ void content_mapnode_plants(bool repeat)
 	f->walkable = false;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
-	f->type = CMT_WOOD;
-	f->hardness = 0.10;
+	f->type = CMT_PLANT;
+	f->hardness = 0.20;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
 	lists::add("creative",i);
