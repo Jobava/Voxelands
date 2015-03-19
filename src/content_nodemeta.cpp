@@ -3528,9 +3528,7 @@ bool PistonNodeMetadata::extend(v3s16 pos, v3s16 dir, content_t arm, MapNode pis
 	v3s16 p_prev = pos;
 	v3s16 p_cur = p_prev+dir;
 	v3s16 p_next = p_cur+dir;
-	core::map<v3s16,MapBlock*> modified_blocks;
-	std::string st("");
-	env->getMap().addNodeAndUpdate(pos,piston,modified_blocks,st);
+	env->getMap().addNodeWithEvent(pos,piston);
 
 	if (arm == CONTENT_CIRCUIT_PISTON_ARM || arm == CONTENT_CIRCUIT_STICKYPISTON_ARM)
 		n_prev = env->getMap().getNodeNoEx(p_prev);
@@ -3539,7 +3537,7 @@ bool PistonNodeMetadata::extend(v3s16 pos, v3s16 dir, content_t arm, MapNode pis
 	for (int i=0; i<17; i++) {
 		ContentFeatures &f = content_features(n_cur);
 		n_next = env->getMap().getNodeNoEx(p_next);
-		env->getMap().addNodeAndUpdate(p_cur,n_prev,modified_blocks,st);
+		env->getMap().addNodeWithEvent(p_cur,n_prev);
 		if (f.pressure_type == CST_CRUSHED)
 			break;
 		if (f.pressure_type == CST_CRUSHABLE && n_next.getContent() != CONTENT_AIR)
@@ -3551,24 +3549,14 @@ bool PistonNodeMetadata::extend(v3s16 pos, v3s16 dir, content_t arm, MapNode pis
 		p_next += dir;
 	}
 
-	MapEditEvent event;
-	event.type = MEET_OTHER;
-	for (core::map<v3s16, MapBlock*>::Iterator i = modified_blocks.getIterator(); i.atEnd() == false; i++) {
-		v3s16 p = i->getKey();
-		event.modified_blocks.insert(p, true);
-	}
-	env->getMap().dispatchEvent(&event);
-
 	return true;
 }
 bool PistonNodeMetadata::contract(v3s16 pos, v3s16 dir, bool sticky, MapNode piston, ServerEnvironment *env)
 {
 	bool dropping = false;
 	env->addEnvEvent(ENV_EVENT_SOUND,intToFloat(pos,BS),"env-piston");
-	core::map<v3s16,MapBlock*> modified_blocks;
-	std::string st("");
-	env->getMap().addNodeAndUpdate(pos,piston,modified_blocks,st);
-	env->getMap().removeNodeAndUpdate(pos+dir,modified_blocks);
+	env->getMap().addNodeWithEvent(pos,piston);
+	env->getMap().removeNodeWithEvent(pos+dir);
 	if (dir.Y == 1)
 		dropping = true;
 	if (sticky || dropping) {
@@ -3624,8 +3612,8 @@ bool PistonNodeMetadata::contract(v3s16 pos, v3s16 dir, bool sticky, MapNode pis
 					break;
 				if ((!sticky || i) && f.pressure_type != CST_DROPABLE)
 					break;
-				env->getMap().removeNodeAndUpdate(p_next,modified_blocks);
-				env->getMap().addNodeAndUpdate(p_cur,n,modified_blocks,st);
+				env->getMap().removeNodeWithEvent(p_next);
+				env->getMap().addNodeWithEvent(p_cur,n);
 				if (!dropping)
 					break;
 				p_cur = p_next;
@@ -3633,14 +3621,6 @@ bool PistonNodeMetadata::contract(v3s16 pos, v3s16 dir, bool sticky, MapNode pis
 			}
 		}
 	}
-
-	MapEditEvent event;
-	event.type = MEET_OTHER;
-	for (core::map<v3s16, MapBlock*>::Iterator i = modified_blocks.getIterator(); i.atEnd() == false; i++) {
-		v3s16 p = i->getKey();
-		event.modified_blocks.insert(p, true);
-	}
-	env->getMap().dispatchEvent(&event);
 
 	return true;
 }

@@ -58,7 +58,6 @@ GUIPasswordChange::GUIPasswordChange(gui::IGUIEnvironment* env,
 GUIPasswordChange::~GUIPasswordChange()
 {
 	removeChildren();
-	m_menumgr->deletingMenu(this);
 }
 
 void GUIPasswordChange::removeChildren()

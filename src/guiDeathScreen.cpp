@@ -49,7 +49,6 @@ GUIDeathScreen::GUIDeathScreen(gui::IGUIEnvironment* env,
 GUIDeathScreen::~GUIDeathScreen()
 {
 	removeChildren();
-	m_menumgr->deletingMenu(this);
 	delete m_respawner;
 }
 

@@ -50,7 +50,6 @@ GUIPauseMenu::GUIPauseMenu(gui::IGUIEnvironment* env,
 GUIPauseMenu::~GUIPauseMenu()
 {
 	removeChildren();
-	m_menumgr->deletingMenu(this);
 }
 
 void GUIPauseMenu::removeChildren()

@@ -49,7 +49,6 @@ GUIKeyChangeMenu::GUIKeyChangeMenu(gui::IGUIEnvironment* env,
 GUIKeyChangeMenu::~GUIKeyChangeMenu()
 {
 	removeChildren();
-	m_menumgr->deletingMenu(this);
 }
 
 void GUIKeyChangeMenu::removeChildren()
