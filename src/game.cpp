@@ -364,6 +364,26 @@ void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 		return;
 	}
 
+	// background
+	{
+		const video::SColor color(255,255,255,255);
+		const video::SColor colors[] = {color,color,color,color};
+		video::ITexture *texture = driver->getTexture(getTexturePath("ringbg.png").c_str());
+		core::rect<s32> rect(screensize.X-165,screensize.Y-165,screensize.X-19,screensize.Y-19);
+
+		driver->draw2DImage(
+			texture,
+			rect,
+			core::rect<s32>(
+				core::position2d<s32>(0,0),
+				core::dimension2di(texture->getOriginalSize())
+			),
+			NULL,
+			colors,
+			true
+		);
+	}
+
 	// wielded item
 	{
 		InventoryItem *item = mainlist->getItem(g_selected_item);
@@ -425,6 +445,8 @@ void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 			v2s32 sdim(dim.X,dim.Y);
 			v2s32 p = v2s32(screensize.X-92,screensize.Y-30);
 			p -= v2s32(sdim.X/2, sdim.Y/2);
+			if (sdim.X > 175)
+				p.X -= (sdim.X-175)/2;
 
 			core::rect<s32> rect2(
 				p,
@@ -434,7 +456,7 @@ void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 		}
 	}
 
-	// rest of the hotbar
+	// rest of the wieldring
 	{
 		const video::SColor color(255,255,255,255);
 		const video::SColor colors[] = {color,color,color,color};

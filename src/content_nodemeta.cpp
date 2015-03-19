@@ -750,7 +750,6 @@ bool FurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 		if (m_fuel_time < m_fuel_totaltime) {
 			if (n.getContent() == CONTENT_FURNACE) {
 				n.param2 = n.param1;
-				n.param1 = 0;
 				n.setContent(CONTENT_FURNACE_ACTIVE);
 				env->setPostStepNodeSwap(pos,n);
 			}
