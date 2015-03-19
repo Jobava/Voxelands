@@ -55,6 +55,7 @@ GUITextInputMenu::~GUITextInputMenu()
 	if (m_io)
 		delete m_io;
 	removeChildren();
+	m_menumgr->deletingMenu(this);
 }
 
 void GUITextInputMenu::removeChildren()
