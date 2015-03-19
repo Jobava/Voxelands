@@ -3502,8 +3502,45 @@ void ServerEnvironment::removeRemovedObjects()
 			We will delete objects that are marked as removed
 			and are not known by clients
 		*/
-		if (obj->m_removed == false || obj->m_known_by_count > 0)
+		if (obj->m_known_by_count > 0)
 			continue;
+		if (obj->m_removed == false) {
+			// enforce static data
+			bool write_block = true;
+			bool same_block = false;
+			v3f objectpos = obj->getBasePosition();
+			std::string staticdata_new = obj->getStaticData();
+			StaticObject s_obj(obj->getType(), objectpos, staticdata_new);
+
+			if (obj->m_static_exists) {
+				MapBlock *block = m_map->emergeBlock(obj->m_static_block, false);
+				if (block) {
+					core::map<u16, StaticObject>::Node *n = block->m_static_objects.m_active.find(id);
+					if (n != NULL) {
+						StaticObject static_old = n->getValue();
+
+						if (static_old.data == staticdata_new && (static_old.pos - objectpos).getLength() < 10.0) {
+							block->m_static_objects.remove(id);
+							block->raiseModified(MOD_STATE_WRITE_NEEDED);
+							obj->m_static_exists = false;
+							write_block = false;
+						}else{
+							same_block = true;
+						}
+					}
+				}
+			}
+			if (!same_block)
+				obj->m_static_block = getNodeBlockPos(floatToInt(objectpos, BS));
+			MapBlock *block = m_map->emergeBlock(obj->m_static_block, false);
+			if (block) {
+				block->m_static_objects.m_active.insert(obj->getId(), s_obj);
+				obj->m_static_exists = true;
+				if (write_block)
+					block->raiseModified(MOD_STATE_WRITE_NEEDED);
+			}
+			continue;
+		}
 
 		/*
 			Delete static data from block if is marked as removed
