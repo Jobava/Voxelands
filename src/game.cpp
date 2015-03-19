@@ -506,6 +506,44 @@ void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 		}
 	}
 
+	// inventory status
+	{
+		const char* states[3] = {
+			"inventory.png",
+			"inventory_full.png",
+			"inventory_max.png"
+		};
+		int state = 2;
+		{
+			u32 count = mainlist->getSize();
+			for (u32 i=0; i<count; i++) {
+				InventoryItem *item = mainlist->getItem(i);
+				if (!item) {
+					state = 0;
+					break;
+				}
+				if (state == 2 && item->freeSpace())
+					state = 1;
+			}
+		}
+		const video::SColor color(255,255,255,255);
+		const video::SColor colors[] = {color,color,color,color};
+		video::ITexture *texture = driver->getTexture(getTexturePath(states[state]).c_str());
+		core::rect<s32> rect(screensize.X-51,screensize.Y-186,screensize.X-19,screensize.Y-154);
+
+		driver->draw2DImage(
+			texture,
+			rect,
+			core::rect<s32>(
+				core::position2d<s32>(0,0),
+				core::dimension2di(texture->getOriginalSize())
+			),
+			NULL,
+			colors,
+			true
+		);
+	}
+
 	// health
 	if (halfheartcount) {
 		int c = 55+(halfheartcount*10);
