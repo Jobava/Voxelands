@@ -115,6 +115,7 @@ GUIFormSpecMenu::GUIFormSpecMenu(gui::IGUIEnvironment* env,
 GUIFormSpecMenu::~GUIFormSpecMenu()
 {
 	removeChildren();
+	m_menumgr->deletingMenu(this);
 
 	delete m_selected_item;
 	delete m_form_io;

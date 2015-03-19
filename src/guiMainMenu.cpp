@@ -66,6 +66,7 @@ GUIMainMenu::GUIMainMenu(gui::IGUIEnvironment* env,
 GUIMainMenu::~GUIMainMenu()
 {
 	removeChildren();
+	m_menumgr->deletingMenu(this);
 }
 
 void GUIMainMenu::removeChildren()

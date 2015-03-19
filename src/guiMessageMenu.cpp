@@ -50,6 +50,7 @@ GUIMessageMenu::GUIMessageMenu(gui::IGUIEnvironment* env,
 GUIMessageMenu::~GUIMessageMenu()
 {
 	removeChildren();
+	m_menumgr->deletingMenu(this);
 }
 
 void GUIMessageMenu::removeChildren()
