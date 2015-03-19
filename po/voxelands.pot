@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voxelands\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-18 15:32+1000\n"
+"POT-Creation-Date: 2015-03-19 22:19+1000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -267,7 +267,7 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
-#: src/character_creator.cpp:424 src/guiKeyChangeMenu.cpp:313
+#: src/character_creator.cpp:424 src/guiKeyChangeMenu.cpp:342
 #: src/keycode.cpp:229
 msgid "Cancel"
 msgstr ""
@@ -2484,7 +2484,7 @@ msgid "Decraft Book"
 msgstr ""
 
 #: src/content_mapnode_special.cpp:732 src/content_mapnode_special.cpp:886
-#: src/content_nodemeta.cpp:2041
+#: src/content_nodemeta.cpp:2040
 msgid "Diary"
 msgstr ""
 
@@ -2675,8 +2675,8 @@ msgid "Sand Stone Stair"
 msgstr ""
 
 #: src/content_nodemeta.cpp:74 src/content_nodemeta.cpp:137
-#: src/content_nodemeta.cpp:2025 src/content_nodemeta.cpp:2124
-#: src/guiKeyChangeMenu.cpp:307
+#: src/content_nodemeta.cpp:2024 src/content_nodemeta.cpp:2123
+#: src/guiKeyChangeMenu.cpp:336
 msgid "Save"
 msgstr ""
 
@@ -2695,19 +2695,19 @@ msgstr ""
 msgid "Safe owned by '%s'"
 msgstr ""
 
-#: src/content_nodemeta.cpp:544 src/content_nodemeta.cpp:1492
-#: src/content_nodemeta.cpp:1697 src/content_nodemeta.cpp:1911
+#: src/content_nodemeta.cpp:544 src/content_nodemeta.cpp:1491
+#: src/content_nodemeta.cpp:1696 src/content_nodemeta.cpp:1910
 #, c-format
 msgid "Page %d of %d"
 msgstr ""
 
-#: src/content_nodemeta.cpp:548 src/content_nodemeta.cpp:1520
-#: src/content_nodemeta.cpp:1706 src/content_nodemeta.cpp:1927
+#: src/content_nodemeta.cpp:548 src/content_nodemeta.cpp:1519
+#: src/content_nodemeta.cpp:1705 src/content_nodemeta.cpp:1926
 msgid "<< Previous Page"
 msgstr ""
 
-#: src/content_nodemeta.cpp:554 src/content_nodemeta.cpp:1526
-#: src/content_nodemeta.cpp:1712 src/content_nodemeta.cpp:1933
+#: src/content_nodemeta.cpp:554 src/content_nodemeta.cpp:1525
+#: src/content_nodemeta.cpp:1711 src/content_nodemeta.cpp:1932
 msgid "Next Page >>"
 msgstr ""
 
@@ -2732,79 +2732,79 @@ msgstr ""
 msgid "Furnace is active"
 msgstr ""
 
-#: src/content_nodemeta.cpp:934
+#: src/content_nodemeta.cpp:933
 msgid "Locking Furnace is overloaded"
 msgstr ""
 
-#: src/content_nodemeta.cpp:935
+#: src/content_nodemeta.cpp:934
 msgid "Locking Furnace is out of fuel"
 msgstr ""
 
-#: src/content_nodemeta.cpp:937
+#: src/content_nodemeta.cpp:936
 msgid "Locking Furnace is inactive"
 msgstr ""
 
-#: src/content_nodemeta.cpp:940
+#: src/content_nodemeta.cpp:939
 msgid "Locking Furnace is active"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1190
+#: src/content_nodemeta.cpp:1189
 msgid "Armed Explosive: about to detonate"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1193
+#: src/content_nodemeta.cpp:1192
 #, c-format
 msgid "Armed Explosive: %d second till detonation"
 msgid_plural "Armed Explosive: %d seconds till detonation"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/content_nodemeta.cpp:1243
+#: src/content_nodemeta.cpp:1242
 msgid "Incinerator is active"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1244
+#: src/content_nodemeta.cpp:1243
 msgid "Incinerator is inactive"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1287
+#: src/content_nodemeta.cpp:1286
 msgid "Add fuel, then punch to incinerate wielded item"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1496
+#: src/content_nodemeta.cpp:1495
 msgid "Add item here to see recipe"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1501
+#: src/content_nodemeta.cpp:1500
 #, c-format
 msgid "Recipe %d of %d"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1510
+#: src/content_nodemeta.cpp:1509
 msgid "Gives"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1701
+#: src/content_nodemeta.cpp:1700
 msgid "Add item here to see cook result"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1915
+#: src/content_nodemeta.cpp:1914
 msgid "Add item here to see dig result"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1919
+#: src/content_nodemeta.cpp:1918
 msgid "Dig Result"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1923
+#: src/content_nodemeta.cpp:1922
 msgid "Random Drop"
 msgstr ""
 
-#: src/content_nodemeta.cpp:2015 src/content_nodemeta.cpp:2114
+#: src/content_nodemeta.cpp:2014 src/content_nodemeta.cpp:2113
 msgid "Title"
 msgstr ""
 
-#: src/content_nodemeta.cpp:2020 src/content_nodemeta.cpp:2119
+#: src/content_nodemeta.cpp:2019 src/content_nodemeta.cpp:2118
 msgid "Content"
 msgstr ""
 
@@ -2980,142 +2980,142 @@ msgstr ""
 msgid "Change Clothing"
 msgstr ""
 
-#: src/game.cpp:737
+#: src/game.cpp:1023
 msgid "Loading"
 msgstr ""
 
-#: src/game.cpp:811
+#: src/game.cpp:1097
 msgid "Loading..."
 msgstr ""
 
-#: src/game.cpp:820
+#: src/game.cpp:1106
 msgid "Creating server..."
 msgstr ""
 
-#: src/game.cpp:831
+#: src/game.cpp:1117
 msgid "Creating client..."
 msgstr ""
 
-#: src/game.cpp:836
+#: src/game.cpp:1122
 msgid "Resolving address..."
 msgstr ""
 
-#: src/game.cpp:847
+#: src/game.cpp:1133
 msgid "Couldn't resolve address"
 msgstr ""
 
-#: src/game.cpp:887
+#: src/game.cpp:1173
 #, c-format
 msgid "Connecting to server... (timeout in %d second)"
 msgid_plural "Connecting to server... (timeout in %d seconds)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/game.cpp:916
+#: src/game.cpp:1202
 #, c-format
 msgid "Access denied. Reason: %ls"
 msgstr ""
 
-#: src/game.cpp:920
+#: src/game.cpp:1206
 msgid "Unable to Connect (port already in use?)."
 msgstr ""
 
-#: src/game.cpp:923
+#: src/game.cpp:1209
 msgid "Connection timed out."
 msgstr ""
 
-#: src/game.cpp:1083
+#: src/game.cpp:1370
 msgid "Access denied. Reason: "
 msgstr ""
 
-#: src/game.cpp:1318
+#: src/game.cpp:1605
 msgid "free_move disabled"
 msgstr ""
 
-#: src/game.cpp:1322
+#: src/game.cpp:1609
 msgid "free_move enabled"
 msgstr ""
 
-#: src/game.cpp:1328
+#: src/game.cpp:1615
 msgid "fast_move disabled"
 msgstr ""
 
-#: src/game.cpp:1332
+#: src/game.cpp:1619
 msgid "fast_move enabled"
 msgstr ""
 
-#: src/game.cpp:1344
+#: src/game.cpp:1631
 #, c-format
 msgid "Saved screenshot to '%s'"
 msgstr ""
 
-#: src/game.cpp:1356
+#: src/game.cpp:1643
 msgid "HUD shown"
 msgstr ""
 
-#: src/game.cpp:1358
+#: src/game.cpp:1645
 msgid "HUD hidden"
 msgstr ""
 
-#: src/game.cpp:1364
+#: src/game.cpp:1651
 msgid "Chat shown"
 msgstr ""
 
-#: src/game.cpp:1366
+#: src/game.cpp:1653
 msgid "Chat hidden"
 msgstr ""
 
-#: src/game.cpp:1372
+#: src/game.cpp:1659
 msgid "Fog disabled"
 msgstr ""
 
-#: src/game.cpp:1374
+#: src/game.cpp:1661
 msgid "Fog enabled"
 msgstr ""
 
-#: src/game.cpp:1380
+#: src/game.cpp:1667
 msgid "Camera update disabled"
 msgstr ""
 
-#: src/game.cpp:1382
+#: src/game.cpp:1669
 msgid "Camera update enabled"
 msgstr ""
 
-#: src/game.cpp:1392
+#: src/game.cpp:1679
 msgid "Debug info shown"
 msgstr ""
 
-#: src/game.cpp:1397
+#: src/game.cpp:1684
 msgid "Debug info and frametime graph hidden"
 msgstr ""
 
-#: src/game.cpp:1401
+#: src/game.cpp:1688
 msgid "Frametime graph shown"
 msgstr ""
 
-#: src/game.cpp:1413
+#: src/game.cpp:1700
 #, c-format
 msgid "Profiler shown (page %d of %d)"
 msgstr ""
 
-#: src/game.cpp:1417
+#: src/game.cpp:1704
 msgid "Profiler hidden"
 msgstr ""
 
-#: src/game.cpp:1425 src/game.cpp:1436
+#: src/game.cpp:1712 src/game.cpp:1723
 #, c-format
 msgid "Minimum viewing range changed to %d"
 msgstr ""
 
-#: src/game.cpp:1485
+#: src/game.cpp:1792
 msgid "Enabled full viewing range"
 msgstr ""
 
-#: src/game.cpp:1489
+#: src/game.cpp:1796
 msgid "Disabled full viewing range"
 msgstr ""
 
-#: src/game.cpp:2375
+#: src/game.cpp:2704
 msgid "Shutting down..."
 msgstr ""
 
@@ -3195,13 +3195,22 @@ msgstr ""
 msgid "Print stacks"
 msgstr ""
 
-#: src/guiKeyChangeMenu.cpp:540 src/guiKeyChangeMenu.cpp:545
-#: src/guiKeyChangeMenu.cpp:550 src/guiKeyChangeMenu.cpp:555
-#: src/guiKeyChangeMenu.cpp:560 src/guiKeyChangeMenu.cpp:565
-#: src/guiKeyChangeMenu.cpp:570 src/guiKeyChangeMenu.cpp:575
-#: src/guiKeyChangeMenu.cpp:580 src/guiKeyChangeMenu.cpp:585
-#: src/guiKeyChangeMenu.cpp:590 src/guiKeyChangeMenu.cpp:595
-#: src/guiKeyChangeMenu.cpp:600 src/guiKeyChangeMenu.cpp:605
+#: src/guiKeyChangeMenu.cpp:308
+msgid "Next item"
+msgstr ""
+
+#: src/guiKeyChangeMenu.cpp:322
+msgid "Previous item"
+msgstr ""
+
+#: src/guiKeyChangeMenu.cpp:583 src/guiKeyChangeMenu.cpp:588
+#: src/guiKeyChangeMenu.cpp:593 src/guiKeyChangeMenu.cpp:598
+#: src/guiKeyChangeMenu.cpp:603 src/guiKeyChangeMenu.cpp:608
+#: src/guiKeyChangeMenu.cpp:613 src/guiKeyChangeMenu.cpp:618
+#: src/guiKeyChangeMenu.cpp:623 src/guiKeyChangeMenu.cpp:628
+#: src/guiKeyChangeMenu.cpp:633 src/guiKeyChangeMenu.cpp:638
+#: src/guiKeyChangeMenu.cpp:643 src/guiKeyChangeMenu.cpp:648
+#: src/guiKeyChangeMenu.cpp:653 src/guiKeyChangeMenu.cpp:658
 msgid "press Key"
 msgstr ""
 
