@@ -1041,23 +1041,23 @@ void content_mapnode_furniture(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.3*BS, -0.5*BS, 0.20*BS, -0.2*BS, 0.5*BS, 0.30*BS
+	f->setNodeBox(NodeBox(
+		v3s16(0,1,0),v3f(0,0,0),-0.3*BS, -0.5*BS, 0.20*BS, -0.2*BS, 0.5*BS, 0.30*BS
 	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.2*BS, -0.5*BS, 0.20*BS, 0.3*BS, 0.5*BS, 0.30*BS
+	f->addNodeBox(NodeBox(
+		v3s16(0,1,0),v3f(0,0,0),0.2*BS, -0.5*BS, 0.20*BS, 0.3*BS, 0.5*BS, 0.30*BS
 	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.3*BS, -0.5*BS, -0.30*BS, -0.2*BS, -0.1*BS, -0.20*BS
+	f->addNodeBox(NodeBox(
+		v3s16(0,1,0),v3f(0,0,0),-0.3*BS, -0.5*BS, -0.30*BS, -0.2*BS, -0.1*BS, -0.20*BS
 	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.2*BS, -0.5*BS, -0.30*BS, 0.3*BS, -0.1*BS, -0.20*BS
+	f->addNodeBox(NodeBox(
+		v3s16(0,1,0),v3f(0,0,0),0.2*BS, -0.5*BS, -0.30*BS, 0.3*BS, -0.1*BS, -0.20*BS
 	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.3*BS, -0.1*BS, -0.30*BS, 0.3*BS, 0.0*BS, 0.20*BS
+	f->addNodeBox(NodeBox(
+		v3s16(0,1,0),v3f(0,0,0),-0.3*BS, -0.1*BS, -0.30*BS, 0.3*BS, 0.0*BS, 0.20*BS
 	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.2*BS, 0.1*BS, 0.25*BS, 0.2*BS, 0.4*BS, 0.26*BS
+	f->addNodeBox(NodeBox(
+		v3s16(0,1,0),v3f(0,0,0),-0.2*BS, 0.1*BS, 0.25*BS, 0.2*BS, 0.4*BS, 0.26*BS
 	));
 	f->setInventoryTextureNodeBox(i,"pine.png", "pine.png", "pine.png");
 	f->type = CMT_WOOD;

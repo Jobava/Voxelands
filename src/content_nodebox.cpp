@@ -714,6 +714,7 @@ void content_nodebox_guide(ContentFeatures *f)
 void content_nodebox_painting(ContentFeatures *f)
 {
 	f->setNodeBox(NodeBox(
+		v3s16(0,0,1),v3f(0,0,0),
 		-0.4375*BS,
 		-0.375*BS,
 		0.4375*BS,
@@ -1458,19 +1459,19 @@ void content_nodebox_flag(ContentFeatures *f)
 void content_nodebox_flower_pot(ContentFeatures *f)
 {
 	f->setNodeBox(NodeBox(
-		-0.3125*BS,-0.5*BS,-0.3125*BS,0.3125*BS,0.25*BS,0.3125*BS
+		v3s16(0,-1,0),v3f(0,0,0),-0.3125*BS,-0.5*BS,-0.3125*BS,0.3125*BS,0.25*BS,0.3125*BS
 	));
 	f->addNodeBox(NodeBox(
-		-0.375*BS,0.125*BS,-0.375*BS,-0.3125*BS,0.375*BS,0.375*BS
+		v3s16(0,-1,0),v3f(0,0,0),-0.375*BS,0.125*BS,-0.375*BS,-0.3125*BS,0.375*BS,0.375*BS
 	));
 	f->addNodeBox(NodeBox(
-		0.3125*BS,0.125*BS,-0.375*BS,0.375*BS,0.375*BS,0.375*BS
+		v3s16(0,-1,0),v3f(0,0,0),0.3125*BS,0.125*BS,-0.375*BS,0.375*BS,0.375*BS,0.375*BS
 	));
 	f->addNodeBox(NodeBox(
-		-0.3125*BS,0.125*BS,-0.375*BS,0.3125*BS,0.375*BS,-0.3125*BS
+		v3s16(0,-1,0),v3f(0,0,0),-0.3125*BS,0.125*BS,-0.375*BS,0.3125*BS,0.375*BS,-0.3125*BS
 	));
 	f->addNodeBox(NodeBox(
-		-0.3125*BS,0.125*BS,0.3125*BS,0.3125*BS,0.375*BS,0.375*BS
+		v3s16(0,-1,0),v3f(0,0,0),-0.3125*BS,0.125*BS,0.3125*BS,0.3125*BS,0.375*BS,0.375*BS
 	));
 }
 
