@@ -276,15 +276,6 @@ public:
 	void setTempMod(v3s16 p, NodeMod mod);
 	void clearTempMod(v3s16 p);
 
-	float getAvgRtt()
-	{
-		try{
-			return m_con.GetPeerAvgRTT(PEER_ID_SERVER);
-		} catch(con::PeerNotFoundException){
-			return 1337;
-		}
-	}
-
 	bool getChatMessage(std::wstring &message)
 	{
 		if(m_chat_queue.size() == 0)

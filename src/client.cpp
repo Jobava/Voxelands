@@ -2367,7 +2367,7 @@ float Client::getRTT(void)
 	try{
 		return m_con.GetPeerAvgRTT(PEER_ID_SERVER);
 	} catch(con::PeerNotFoundException &e){
-		return 1337;
+		return -1337;
 	}
 }
 

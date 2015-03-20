@@ -2326,6 +2326,12 @@ void the_game(
 			);
 		}
 
+		float client_rtt = client.getRTT();
+		if (client_rtt < -1000) {
+			error_message = wgettext("Disconnected (Network Timeout)");
+			break;
+		}
+
 		/*
 			Update gui stuff (0ms)
 		*/
@@ -2346,7 +2352,7 @@ void the_game(
 						drawtime_avg,
 						dtime_jitter1_max_fraction * 100.0,
 						draw_control.wanted_range,
-						client.getRTT()
+						client_rtt
 						);
 
 				guitext->setText(narrow_to_wide(temptext).c_str());
