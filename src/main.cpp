@@ -1224,6 +1224,7 @@ int main(int argc, char *argv[])
 				menudata.anisotropic_filter = g_settings->getBool("anisotropic_filter");
 				menudata.bilinear_filter = g_settings->getBool("bilinear_filter");
 				menudata.trilinear_filter = g_settings->getBool("trilinear_filter");
+				menudata.hotbar = g_settings->getBool("old_hotbar");
 				menudata.volume = g_settings->getFloat("sound_volume");
 				driver->setTextureCreationFlag(video::ETCF_CREATE_MIP_MAPS, menudata.mip_map);
 				menudata.game_mode = narrow_to_wide(g_settings->get("game_mode"));
@@ -1336,6 +1337,7 @@ int main(int argc, char *argv[])
 				g_settings->set("trilinear_filter", itos(menudata.trilinear_filter));
 				g_settings->set("fullscreen", itos(menudata.fullscreen));
 				g_settings->set("enable_particles", itos(menudata.particles));
+				g_settings->set("old_hotbar", itos(menudata.hotbar));
 				g_settings->set("game_mode", wide_to_narrow(menudata.game_mode));
 				g_settings->set("max_mob_level", wide_to_narrow(menudata.max_mob_level));
 				g_settings->set("initial_inventory", itos(menudata.initial_inventory));
@@ -1450,4 +1452,3 @@ int main(int argc, char *argv[])
 }
 
 //END
-

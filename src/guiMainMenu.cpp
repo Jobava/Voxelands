@@ -96,6 +96,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	bool bilinear;
 	bool trilinear;
 	bool anisotropic;
+	bool hotbar;
 	f32 volume;
 
 	std::wstring max_mob_level;
@@ -206,6 +207,13 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			anisotropic = ((gui::IGUICheckBox*)e)->isChecked();
 		else
 			anisotropic = m_data->anisotropic_filter;
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_HOTBAR_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			hotbar = ((gui::IGUICheckBox*)e)->isChecked();
+		else
+			hotbar = m_data->hotbar;
 	}
 	{
 		gui::IGUIElement *e = getElementFromId(GUI_ID_VOLUME_SB);
@@ -567,6 +575,11 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			core::rect<s32> rect(0, 0, 200, 30);
 			rect += topleft_content + v2s32(80, 150);
 			Environment->addCheckBox(opaque_water, rect, this, GUI_ID_OPAQUE_WATER_CB, wgettext("Opaque water"));
+		}
+		{
+			core::rect<s32> rect(0, 0, 200, 30);
+			rect += topleft_content + v2s32(80, 180);
+			Environment->addCheckBox(hotbar, rect, this, GUI_ID_HOTBAR_CB, wgettext("Classic hotbar"));
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 15);
@@ -1198,6 +1211,11 @@ void GUIMainMenu::acceptInput()
 			m_data->anisotropic_filter = ((gui::IGUICheckBox*)e)->isChecked();
 	}
 	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_HOTBAR_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			m_data->hotbar = ((gui::IGUICheckBox*)e)->isChecked();
+	}
+	{
 		gui::IGUIElement *e = getElementFromId(GUI_ID_VOLUME_SB);
 		if(e != NULL && e->getType() == gui::EGUIET_SCROLL_BAR)
 			m_data->volume = (float)((gui::IGUIScrollBar*)e)->getPos();
@@ -1301,6 +1319,9 @@ bool GUIMainMenu::OnEvent(const SEvent& event)
 				acceptInput();
 				m_accepted = false;
 				regenerateGui(m_screensize);
+				break;
+			case GUI_ID_HOTBAR_CB:
+				g_settings->setBool("old_hotbar", m_data->hotbar);
 				break;
 			}
 		}

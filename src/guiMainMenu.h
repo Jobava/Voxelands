@@ -49,6 +49,7 @@ enum {
 	GUI_ID_ANISOTROPIC_CB,
 	GUI_ID_PARTICLES_CB,
 	GUI_ID_FULLSCREEN_CB,
+	GUI_ID_HOTBAR_CB,
 	GUI_ID_VOLUME_SB,
 	GUI_ID_GAME_MODE_COMBO,
 	GUI_ID_GAME_MODE_CREATIVE,
@@ -108,6 +109,7 @@ struct MainMenuData
 		// Client opts
 		fancy_trees(false),
 		smooth_lighting(false),
+		hotbar(false),
 		volume(0.0f),
 		particles(true),
 		fullscreen(false),
@@ -147,6 +149,7 @@ struct MainMenuData
 	bool anisotropic_filter;
 	bool bilinear_filter;
 	bool trilinear_filter;
+	bool hotbar;
 	f32 volume;
 	//int enable_shaders;
 	bool particles;
@@ -216,4 +219,3 @@ private:
 };
 
 #endif
-
