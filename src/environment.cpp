@@ -3699,6 +3699,7 @@ void ServerEnvironment::deactivateFarObjects(bool force_delete)
 					std::string staticdata_new = obj->getStaticData();
 					StaticObject s_obj(obj->getType(), objectpos, staticdata_new);
 					block->m_static_objects.m_objects.push_back(s_obj);
+					block->raiseModified(MOD_STATE_WRITE_NEEDED);
 				}
 			}
 			// delete active object
