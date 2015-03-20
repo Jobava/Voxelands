@@ -3647,6 +3647,14 @@ void ServerEnvironment::activateObjects(MapBlock *block)
 			object->m_pending_deactivation = false;
 	}
 
+	// objects that were pending deactivation, shouldn't be anymore
+	for (core::map<u16,StaticObject>::Iterator i = block->m_static_objects.m_active.getIterator(); i.atEnd() == false; i++) {
+		u16 id = i.getNode()->getKey();
+		ServerActiveObject *object = getActiveObject(id);
+		if (object)
+			object->m_pending_deactivation = false;
+	}
+
 	/*
 		Note: Block hasn't really been modified here.
 		The objects have just been activated and moved from the stored
@@ -3656,6 +3664,7 @@ void ServerEnvironment::activateObjects(MapBlock *block)
 		Otherwise there would be a huge amount of unnecessary I/O.
 		P.S. it's been tried, it doesn't fix anything
 	*/
+	block->raiseModified(MOD_STATE_WRITE_NEEDED);
 }
 
 /*
