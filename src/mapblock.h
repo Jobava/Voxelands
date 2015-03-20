@@ -588,6 +588,7 @@ public:
 
 	NodeMetadataList m_node_metadata;
 	StaticObjectList m_static_objects;
+	std::list<u16> m_active_objects;
 
 private:
 	/*

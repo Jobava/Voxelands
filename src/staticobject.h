@@ -32,6 +32,7 @@
 #include "utility.h"
 #include "settings.h"
 #include "main.h"
+#include <list>
 
 struct StaticObject
 {
@@ -83,36 +84,6 @@ struct StaticObject
 class StaticObjectList
 {
 public:
-	/*
-		Inserts an object to the container.
-		Id must be unique or 0.
-	*/
-	void insert(u16 id, StaticObject obj)
-	{
-		if (id == 0) {
-			m_stored.push_back(obj);
-		}else{
-			if (m_active.find(id) != NULL) {
-				dstream<<"ERROR: StaticObjectList::insert(): "
-						<<"id already exists"<<std::endl;
-				assert(0);
-				return;
-			}
-			m_active.insert(id, obj);
-		}
-	}
-
-	void remove(u16 id)
-	{
-		assert(id != 0);
-		if (m_active.find(id) == NULL) {
-			dstream<<"WARNING: StaticObjectList::remove(): id="<<id
-					<<" not found"<<std::endl;
-			return;
-		}
-		m_active.remove(id);
-	}
-
 	void serialize(std::ostream &os)
 	{
 		char buf[12];
@@ -120,15 +91,11 @@ public:
 		buf[0] = 0;
 		os.write(buf, 1);
 		// count
-		u16 count = m_stored.size() + m_active.size();
+		u16 count = m_objects.size();
 		writeU16((u8*)buf, count);
 		os.write(buf, 2);
-		for (core::list<StaticObject>::Iterator i = m_stored.begin(); i != m_stored.end(); i++) {
+		for (std::list<StaticObject>::iterator i = m_objects.begin(); i != m_objects.end(); i++) {
 			StaticObject &s_obj = *i;
-			s_obj.serialize(os);
-		}
-		for (core::map<u16, StaticObject>::Iterator i = m_active.getIterator(); i.atEnd()==false; i++) {
-			StaticObject s_obj = i.getNode()->getValue();
 			s_obj.serialize(os);
 		}
 	}
@@ -146,17 +113,11 @@ public:
 			StaticObject s_obj;
 			s_obj.deSerialize(is, version);
 			if (!drop)
-				m_stored.push_back(s_obj);
+				m_objects.push_back(s_obj);
 		}
 	}
 
-	/*
-		NOTE: When an object is transformed to active, it is removed
-		from m_stored and inserted to m_active.
-		The caller directly manipulates these containers.
-	*/
-	core::list<StaticObject> m_stored;
-	core::map<u16, StaticObject> m_active;
+	std::list<StaticObject> m_objects;
 
 private:
 };
