@@ -188,7 +188,11 @@ void ItemSAO::step(float dtime, bool send_recommended)
 			m_removed = true;
 			return;
 		}else if (content_craftitem_features(m_content).edible == 0) {
-			if (m_env->searchNear(pos_i,v3s16(3,3,3),CONTENT_PARCEL,&pos_i)) {
+			v3s16 pp;
+			if (n.getContent() == CONTENT_PARCEL) {
+				parcel = true;
+			}else if (m_env->searchNear(pos_i,v3s16(3,3,3),CONTENT_PARCEL,&pp)) {
+				pos_i = pp;
 				parcel = true;
 			}else if (content_features(n).buildable_to) {
 				n.setContent(CONTENT_PARCEL);
