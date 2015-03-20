@@ -3610,14 +3610,6 @@ void ServerEnvironment::activateObjects(MapBlock *block)
 	if(block->m_static_objects.m_stored.size() == 0)
 		return;
 
-	// objects that were pending deactivation, shouldn't be anymore
-	for (core::map<u16,StaticObject>::Iterator i = block->m_static_objects.m_active.getIterator(); i.atEnd() == false; i++) {
-		u16 id = i.getNode()->getKey();
-		ServerActiveObject *object = getActiveObject(id);
-		if (object)
-			object->m_pending_deactivation = false;
-	}
-
 	verbosestream<<"ServerEnvironment::activateObjects(): "
 			<<"activating objects of block "<<PP(block->getPos())
 			<<" ("<<block->m_static_objects.m_stored.size()
@@ -3667,6 +3659,14 @@ void ServerEnvironment::activateObjects(MapBlock *block)
 		block->m_static_objects.m_stored.push_back(s_obj);
 	}
 
+	// objects that were pending deactivation, shouldn't be anymore
+	for (core::map<u16,StaticObject>::Iterator i = block->m_static_objects.m_active.getIterator(); i.atEnd() == false; i++) {
+		u16 id = i.getNode()->getKey();
+		ServerActiveObject *object = getActiveObject(id);
+		if (object)
+			object->m_pending_deactivation = false;
+	}
+
 	/*
 		Note: Block hasn't really been modified here.
 		The objects have just been activated and moved from the stored
@@ -3675,6 +3675,7 @@ void ServerEnvironment::activateObjects(MapBlock *block)
 		Thus, do not call block->raiseModified(MOD_STATE_WRITE_NEEDED).
 		Otherwise there would be a huge amount of unnecessary I/O.
 	*/
+	block->raiseModified(MOD_STATE_WRITE_NEEDED);
 }
 
 /*
