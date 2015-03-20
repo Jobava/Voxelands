@@ -652,7 +652,7 @@ void content_mapnode_special(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0;
 	content_nodebox_book(f);
-	//f->setFaceText(0,FaceText(0.05,0.175,0.9875,0.7375));
+	f->setFaceText(0,FaceText(0.45,0.3,0.9875,0.7375));
 	f->setInventoryTextureNodeBox(i, "book_cover.png", "book_end.png^[transformFX", "book_side.png^[transformFY");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
@@ -747,6 +747,7 @@ void content_mapnode_special(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0;
 	content_nodebox_book(f);
+	f->setFaceText(0,FaceText(0.45,0.3,0.9875,0.7375));
 	f->setInventoryTextureNodeBox(i, "book_diary_cover.png", "book_diary_end.png^[transformFX", "book_diary_side.png^[transformFY");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
@@ -816,6 +817,7 @@ void content_mapnode_special(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BOOK)+" 1";
 	f->solidness = 0;
 	content_nodebox_guide(f);
+	f->setFaceText(0,FaceText(0.15,0.35,0.85,0.85,FTT_BOOKCONTENT));
 	f->setInventoryTextureNodeBox(i, "guide_top.png", "guide_end.png", "guide_side.png");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
@@ -900,6 +902,7 @@ void content_mapnode_special(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_DIARY_BOOK)+" 1";
 	f->solidness = 0;
 	content_nodebox_guide(f);
+	f->setFaceText(0,FaceText(0.15,0.35,0.85,0.85,FTT_BOOKCONTENT));
 	f->setInventoryTextureNodeBox(i, "guide_diary_top.png", "guide_diary_end.png", "guide_diary_side.png");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;

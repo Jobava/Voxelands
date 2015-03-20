@@ -430,7 +430,7 @@ s16 MapNode::getRotationAngle()
 }
 
 #ifndef SERVER
-TileSpec MapNode::getTileFrom(v3s16 dir, TileSpec raw_spec[6])
+TileSpec MapNode::getTileFrom(v3s16 dir, TileSpec raw_spec[6], bool rotate)
 {
 	TileSpec spec;
 	s32 dir_i = 0;
@@ -464,12 +464,10 @@ TileSpec MapNode::getTileFrom(v3s16 dir, TileSpec raw_spec[6])
 	/*
 		If it contains some mineral, change texture id
 	*/
-	if(f.param_type == CPT_MINERAL && g_texturesource)
-	{
+	if (f.param_type == CPT_MINERAL && g_texturesource) {
 		u8 mineral = getMineral();
 		std::string mineral_texture_name = mineral_features(mineral).texture;
-		if(mineral_texture_name != "")
-		{
+		if (mineral_texture_name != "") {
 			u32 orig_id = spec.texture.id;
 			std::string texture_name = g_texturesource->getTextureName(orig_id);
 			//texture_name += "^blit:";
@@ -479,45 +477,70 @@ TileSpec MapNode::getTileFrom(v3s16 dir, TileSpec raw_spec[6])
 			spec.texture = g_texturesource->getTexture(new_id);
 		}
 	}
-	if (f.rotate_tile_with_nodebox) {
-		u8 facedir = 0;
-		if (f.param_type == CPT_FACEDIR_SIMPLE) {
-			facedir = param1;
-		}else if (f.param2_type == CPT_FACEDIR_SIMPLE) {
-			facedir = (param2&0x0F);
-		}
-		if (dir_i == 0) {
-			if (facedir == 1) { // -90
-				std::string name = g_texturesource->getTextureName(spec.texture.id);
-				name += "^[transformR270";
-				spec.texture = g_texturesource->getTexture(name);
-			}else if (facedir == 2) { // 180
-				std::string name = g_texturesource->getTextureName(spec.texture.id);
-				name += "^[transformR180";
-				spec.texture = g_texturesource->getTexture(name);
-			}else if (facedir == 3) { // 90
-				std::string name = g_texturesource->getTextureName(spec.texture.id);
-				name += "^[transformR90";
-				spec.texture = g_texturesource->getTexture(name);
-			}
-		}else if (dir_i == 1) {
-			if (facedir == 1) { // -90
-				std::string name = g_texturesource->getTextureName(spec.texture.id);
-				name += "^[transformR90";
-				spec.texture = g_texturesource->getTexture(name);
-			}else if (facedir == 2) { // 180
-				std::string name = g_texturesource->getTextureName(spec.texture.id);
-				name += "^[transformR180";
-				spec.texture = g_texturesource->getTexture(name);
-			}else if (facedir == 3) { // 90
-				std::string name = g_texturesource->getTextureName(spec.texture.id);
-				name += "^[transformR270";
-				spec.texture = g_texturesource->getTexture(name);
-			}
-		}
+	if (rotate && f.rotate_tile_with_nodebox) {
+		u32 orig_id = spec.texture.id;
+		std::string texture_name = g_texturesource->getTextureName(orig_id);
+		texture_name += getTileRotationString(dir);
+		u32 new_id = g_texturesource->getTextureId(texture_name);
+		spec.texture = g_texturesource->getTexture(new_id);
 	}
 
 	return spec;
+}
+std::string MapNode::getTileRotationString(v3s16 dir)
+{
+	s32 dir_i = 0;
+	ContentFeatures &f = content_features(*this);
+	if (!f.rotate_tile_with_nodebox)
+		return "";
+
+	if (
+		f.param2_type == CPT_FACEDIR_SIMPLE
+		|| f.param2_type == CPT_FACEDIR_WALLMOUNT
+	) {
+		dir = facedir_rotate(param2&0x0F, dir);
+	}else if (
+		f.param_type == CPT_FACEDIR_SIMPLE
+		|| f.param_type == CPT_FACEDIR_WALLMOUNT
+	) {
+		dir = facedir_rotate(param1, dir);
+	}
+	if (dir == v3s16(0,-1,0)) {
+		dir_i = 1;
+	}else if(dir == v3s16(1,0,0)) {
+		dir_i = 2;
+	}else if(dir == v3s16(-1,0,0)) {
+		dir_i = 3;
+	}else if(dir == v3s16(0,0,1)) {
+		dir_i = 4;
+	}else if(dir == v3s16(0,0,-1)) {
+		dir_i = 5;
+	}
+	u8 facedir = 0;
+	if (f.param_type == CPT_FACEDIR_SIMPLE) {
+		facedir = param1;
+	}else if (f.param2_type == CPT_FACEDIR_SIMPLE) {
+		facedir = (param2&0x0F);
+	}
+	if (dir_i == 0) {
+		if (facedir == 1) { // -90
+			return "^[transformR270";
+		}else if (facedir == 2) { // 180
+			return "^[transformR180";
+		}else if (facedir == 3) { // 90
+			return "^[transformR90";
+		}
+	}else if (dir_i == 1) {
+		if (facedir == 1) { // -90
+			return "^[transformR90";
+		}else if (facedir == 2) { // 180
+			return "^[transformR180";
+		}else if (facedir == 3) { // 90
+			return "^[transformR270";
+		}
+	}
+
+	return "";
 }
 #endif
 FaceText MapNode::getFaceText(v3s16 dir)

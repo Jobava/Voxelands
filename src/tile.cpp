@@ -38,6 +38,7 @@
 #include "mapnode.h" // For texture atlas making
 #include "mineral.h" // For texture atlas making
 #include "path.h"
+#include "base64.h"
 
 /*
 	TextureSource
@@ -218,16 +219,11 @@ u32 TextureSource::getTextureIdDirect(const std::string &name)
 
 	// Find last meta separator in name
 	s32 last_separator_position = -1;
-	size_t text_separator_position = name.find("^[text:");
-	if (text_separator_position == std::string::npos) {
-		for (s32 i=name.size()-1; i>=0; i--) {
-			if (name[i] == separator) {
-				last_separator_position = i;
-				break;
-			}
+	for (s32 i=name.size()-1; i>=0; i--) {
+		if (name[i] == separator) {
+			last_separator_position = i;
+			break;
 		}
-	}else{
-		last_separator_position = text_separator_position;
 	}
 	/*
 		If separator was found, construct the base name and make the
@@ -1686,7 +1682,7 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 			std::string y = sf.next(",");
 			std::string X = sf.next(",");
 			std::string Y = sf.next(",");
-			std::wstring text = narrow_to_wide(sf.end());
+			std::wstring text = narrow_to_wide(base64_decode(sf.end()));
 
 			if (baseimg == NULL) {
 				errorstream << "generateImagePart(): baseimg != NULL "

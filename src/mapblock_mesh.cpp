@@ -33,6 +33,7 @@
 #include "settings.h"
 #include "profiler.h"
 #include "mesh.h"
+#include "base64.h"
 
 void MeshMakeData::fill(u32 daynight_ratio, MapBlock *block)
 {
@@ -246,7 +247,62 @@ void makeFastFace(TileSpec tile, u8 li0, u8 li1, u8 li2, u8 li3, v3f p,
 TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods, NodeMetadata *meta)
 {
 	TileSpec spec;
-	spec = mn.getTile(face_dir);
+	spec = mn.getTile(face_dir,false);
+
+	if (meta) {
+		FaceText ft = mn.getFaceText(face_dir);
+		if (ft.m_hastext) {
+			std::string txt("");
+			switch (ft.m_type) {
+			case FTT_BOOKCONTENT:
+				txt = ((BookNodeMetadata*)meta)->getContent();
+				break;
+			case FTT_OWNER:
+				txt = meta->getOwner();
+				break;
+			case FTT_INVOWNER:
+				txt = meta->getInventoryOwner();
+				break;
+			default:
+				txt = meta->getText();
+				break;
+			}
+			if (txt != "") {
+				// Get original texture name
+				u32 orig_id = spec.texture.id;
+				std::string orig_name = g_texturesource->getTextureName(orig_id);
+				// Create new texture name
+				std::ostringstream os;
+				os<<orig_name<<"^[text:";
+				os<<ft.m_pos.UpperLeftCorner.X;
+				os<<",";
+				os<<ft.m_pos.UpperLeftCorner.Y;
+				os<<",";
+				os<<ft.m_pos.LowerRightCorner.X;
+				os<<",";
+				os<<ft.m_pos.LowerRightCorner.Y;
+				os<<",";
+				os<<base64_encode((const unsigned char*)txt.c_str(),txt.size());
+
+				// Get new texture
+				u32 new_id = g_texturesource->getTextureId(os.str());
+
+				spec.texture = g_texturesource->getTexture(new_id);
+			}
+		}
+	}
+
+	std::string rot = mn.getTileRotationString(face_dir);
+	if (rot != "") {
+		// Get original texture name
+		u32 orig_id = spec.texture.id;
+		std::string orig_name = g_texturesource->getTextureName(orig_id);
+		// new name
+		std::string texture_name = orig_name + rot;
+		// Get new texture
+		u32 new_id = g_texturesource->getTextureId(texture_name);
+		spec.texture = g_texturesource->getTexture(new_id);
+	}
 
 	/*
 		Check temporary modifications on this node
@@ -285,49 +341,6 @@ TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods,
 			u32 new_id = g_texturesource->getTextureId(os.str());
 
 			spec.texture = g_texturesource->getTexture(new_id);
-		}
-	}
-
-	if (meta) {
-		FaceText ft = mn.getFaceText(face_dir);
-		if (ft.m_hastext) {
-			std::string txt("");
-			switch (ft.m_type) {
-			case FTT_BOOKCONTENT:
-				txt = ((BookNodeMetadata*)meta)->getContent();
-				break;
-			case FTT_OWNER:
-				txt = meta->getOwner();
-				break;
-			case FTT_INVOWNER:
-				txt = meta->getInventoryOwner();
-				break;
-			default:
-				txt = meta->getText();
-				break;
-			}
-			if (txt != "") {
-				// Get original texture name
-				u32 orig_id = spec.texture.id;
-				std::string orig_name = g_texturesource->getTextureName(orig_id);
-				// Create new texture name
-				std::ostringstream os;
-				os<<orig_name<<"^[text:";
-				os<<ft.m_pos.UpperLeftCorner.X;
-				os<<",";
-				os<<ft.m_pos.UpperLeftCorner.Y;
-				os<<",";
-				os<<ft.m_pos.LowerRightCorner.X;
-				os<<",";
-				os<<ft.m_pos.LowerRightCorner.Y;
-				os<<",";
-				os<<txt;
-
-				// Get new texture
-				u32 new_id = g_texturesource->getTextureId(os.str());
-
-				spec.texture = g_texturesource->getTexture(new_id);
-			}
 		}
 	}
 

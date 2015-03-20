@@ -977,9 +977,10 @@ struct MapNode
 		Returns: TileSpec. Can contain miscellaneous texture coordinates,
 		         which must be obeyed so that the texture atlas can be used.
 	*/
-	TileSpec getTile(v3s16 dir) {return getTileFrom(dir,content_features(*this).tiles); }
-	TileSpec getMetaTile(v3s16 dir) {return getTileFrom(dir,content_features(*this).meta_tiles); }
-	TileSpec getTileFrom(v3s16 dir, TileSpec raw_spec[6]);
+	TileSpec getTile(v3s16 dir, bool rotate = true) {return getTileFrom(dir,content_features(*this).tiles,rotate); }
+	TileSpec getMetaTile(v3s16 dir, bool rotate = true) {return getTileFrom(dir,content_features(*this).meta_tiles,rotate); }
+	TileSpec getTileFrom(v3s16 dir, TileSpec raw_spec[6], bool rotate = true);
+	std::string getTileRotationString(v3s16 dir);
 #endif
 
 	FaceText getFaceText(v3s16 dir);
