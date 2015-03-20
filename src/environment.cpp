@@ -3606,6 +3606,9 @@ void ServerEnvironment::activateObjects(MapBlock *block)
 {
 	if (block==NULL)
 		return;
+	// Ignore if no stored objects (to not set changed flag)
+	if(block->m_static_objects.m_stored.size() == 0)
+		return;
 
 	// objects that were pending deactivation, shouldn't be anymore
 	for (core::map<u16,StaticObject>::Iterator i = block->m_static_objects.m_active.getIterator(); i.atEnd() == false; i++) {
@@ -3615,9 +3618,6 @@ void ServerEnvironment::activateObjects(MapBlock *block)
 			object->m_pending_deactivation = false;
 	}
 
-	// Ignore if no stored objects (to not set changed flag)
-	if (block->m_static_objects.m_stored.size() == 0)
-		return;
 	verbosestream<<"ServerEnvironment::activateObjects(): "
 			<<"activating objects of block "<<PP(block->getPos())
 			<<" ("<<block->m_static_objects.m_stored.size()
