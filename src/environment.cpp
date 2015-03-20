@@ -861,6 +861,14 @@ void ServerEnvironment::step(float dtime)
 			if (block == NULL)
 				continue;
 
+			std::list<u16> new_list;
+			for (std::list<u16>::iterator oi = block->m_active_objects.begin(); oi != block->m_active_objects.end(); oi++) {
+				ServerActiveObject *obj = getActiveObject(*oi);
+				if (obj && obj->m_static_exists && obj->m_static_block == block->getPos())
+					new_list.push_back(*oi);
+			}
+			block->m_active_objects.swap(new_list);
+
 			// Reset block usage timer
 			if (circuitstep || metastep)
 				block->resetUsageTimer();
@@ -3479,11 +3487,11 @@ void ServerEnvironment::removeRemovedObjects()
 	for (std::map<u16, ServerActiveObject*>::iterator i = m_active_objects.begin(); i != m_active_objects.end(); ++i) {
 		u16 id = i->first;
 		ServerActiveObject* obj = i->second;
-		// This shouldn't happen but check it
+		// this shouldn't happen but check it
 		if (obj == NULL) {
 			infostream<<"NULL object found in ServerEnvironment"
 					<<" while finding removed objects. id="<<id<<std::endl;
-			// Id to be removed from m_active_objects
+			// id to be removed from m_active_objects
 			objects_to_remove.push_back(id);
 			continue;
 		}
@@ -3497,13 +3505,14 @@ void ServerEnvironment::removeRemovedObjects()
 			if (obj->m_static_exists) {
 				MapBlock *block = m_map->emergeBlock(obj->m_static_block, false);
 				if (block) {
-					obj->m_static_exists = false;
+					bool keep = false;
 					for (std::list<u16>::iterator oi = block->m_active_objects.begin(); oi != block->m_active_objects.end(); oi++) {
 						if (*oi == id) {
-							obj->m_static_exists = true;
+							keep = true;
 							break;
 						}
 					}
+					obj->m_static_exists = keep;
 				}
 			}
 			if (!obj->m_static_exists) {
@@ -3516,8 +3525,10 @@ void ServerEnvironment::removeRemovedObjects()
 			}
 			continue;
 		}
-		if (obj->m_known_by_count > 0)
+		if (obj->m_known_by_count > 0) {
+			obj->m_pending_deactivation = true;
 			continue;
+		}
 
 		/*
 			Delete static data from block if is marked as removed
@@ -3590,8 +3601,7 @@ void ServerEnvironment::activateObjects(MapBlock *block)
 			<<"activating objects of block "<<PP(block->getPos())
 			<<" ("<<block->m_static_objects.m_objects.size()
 			<<" objects)"<<std::endl;
-	bool large_amount = (block->m_static_objects.m_objects.size() > 49);
-	if (large_amount) {
+	if (block->m_static_objects.m_objects.size() > 49) {
 		errorstream<<"suspiciously large amount of objects detected: "
 				<<block->m_static_objects.m_objects.size()<<" in "
 				<<PP(block->getPos())
@@ -3605,8 +3615,6 @@ void ServerEnvironment::activateObjects(MapBlock *block)
 	// Activate stored objects
 	std::list<StaticObject> new_stored;
 	for (std::list<StaticObject>::iterator i = block->m_static_objects.m_objects.begin(); i != block->m_static_objects.m_objects.end(); i++) {
-		/*infostream<<"Server: Creating an active object from "
-				<<"static data"<<std::endl;*/
 		StaticObject &s_obj = *i;
 		// Create an active object from the data
 		ServerActiveObject *obj = ServerActiveObject::create(s_obj.type, this, 0, s_obj.pos, s_obj.data);
