@@ -99,6 +99,10 @@ void init_sounds(ISoundManager *sound)
 	sound->loadSound("env-tnt","env_tnt.ogg");
 	sound->loadSound("env-teleport","env_teleport.ogg");
 
+	// mobs
+	sound->loadSound("mob-oerkki-spawn","mob_oerkki_spawn.ogg");
+	sound->loadSound("mob-wolf-hit","mob_wolf_hit.ogg");
+
 	// special
 	sound->loadSound("wield","wield_item.ogg");
 }

@@ -133,6 +133,7 @@ struct MobFeatures {
 	content_t contact_place_node;
 	content_t contact_drop_item;
 
+	std::string sound_spawn;
 	std::string sound_death;
 	std::string sound_attack;
 	std::string sound_punch;
@@ -259,6 +260,7 @@ struct MobFeatures {
 		contact_explosion_diameter = 0;
 		contact_place_node = CONTENT_IGNORE;
 		contact_drop_item = CONTENT_IGNORE;
+		sound_spawn = "";
 		sound_death = "";
 		sound_attack = "";
 		sound_punch = "mob-dig";

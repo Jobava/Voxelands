@@ -193,11 +193,15 @@ bool content_mob_spawn(ServerEnvironment *env, v3s16 pos, u32 active_object_coun
 	actionstream<<"A mob of type "<<m.content<<" spawns at "<<PP(floatToInt(p,BS))<<std::endl;
 	ServerActiveObject *obj = new MobSAO(env, 0, p, m.content);
 	u16 id = env->addActiveObject(obj);
-	if (id)
-		return true;
-	actionstream<<"A mob of type "<<m.content<<" didn't spawn at "<<PP(floatToInt(p,BS))<<std::endl;
+	if (!id) {
+		actionstream<<"A mob of type "<<m.content<<" didn't spawn at "<<PP(floatToInt(p,BS))<<std::endl;
+		return false;
+	}
 
-	return false;
+	if (m.sound_spawn != "")
+		env->addEnvEvent(ENV_EVENT_SOUND,p,m.sound_spawn);
+
+	return true;
 }
 
 void content_mob_init()
@@ -287,6 +291,7 @@ void content_mob_init()
 	f->spawn_max_height = 2;
 	f->spawn_max_light = LIGHT_MAX/4;
 	f->spawn_max_nearby_mobs = 2;
+	f->sound_spawn = "mob-oerkki-spawn";
 	f->notices_player = true;
 	f->attack_player_damage = 3;
 	f->attack_player_range = v3f(1,1,1);
@@ -518,6 +523,7 @@ void content_mob_init()
 	f->spawn_max_height = 40;
 	f->spawn_max_light = LIGHT_MAX/2;
 	f->spawn_max_nearby_mobs = 3;
+	f->sound_punch = "mob-wolf-hit";
 	f->notices_player = true;
 	f->attack_player_damage = 3;
 	f->attack_player_range = v3f(1,1,1);
@@ -541,6 +547,7 @@ void content_mob_init()
 	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_FUR)+" 2";
 	f->motion = MM_SEEKER;
 	f->motion_type = MMT_WALK;
+	f->sound_punch = "mob-wolf-hit";
 	f->notices_player = true;
 	f->attack_mob_damage = 5;
 	f->attack_mob_range = v3f(1,1,1);

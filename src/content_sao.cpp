@@ -1351,6 +1351,8 @@ InventoryItem* MobSAO::createPickedUpItem(content_t punch_item)
 u16 MobSAO::punch(content_t punch_item, v3f dir, const std::string &playername)
 {
 	MobFeatures m = content_mob_features(m_content);
+	if (m.sound_punch != "")
+		m_env->addEnvEvent(ENV_EVENT_SOUND,m_base_position,m.sound_punch);
 	if (m.punch_action == MPA_IGNORE)
 		return 0;
 	ToolItemFeatures f = content_toolitem_features(punch_item);
