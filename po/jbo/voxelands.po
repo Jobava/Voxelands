@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Lisa 'darkrose' Milne
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Wuzzy <almikes@aol.com>, 2015
 # Wuzzy <almikes@aol.com>, 2014
@@ -9,14 +9,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-21 16:29+1000\n"
+"POT-Creation-Date: 2015-03-22 00:10+1000\n"
 "PO-Revision-Date: 2015-03-21 06:30+0000\n"
 "Last-Translator: Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
-"Language-Team: Lojban (http://www.transifex.com/projects/p/voxelands/language/jbo/)\n"
+"Language-Team: Lojban (http://www.transifex.com/projects/p/voxelands/"
+"language/jbo/)\n"
+"Language: jbo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: jbo\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: src/character_creator.cpp:56
@@ -229,7 +230,10 @@ msgstr "lo fanbu'u cutci"
 
 #: src/character_creator.cpp:203
 msgid ""
-"Here you can create your default character, this is how other players will see you in-game. When you join a new server you will start with the clothing you select here. Additional clothing, both protective and decorative, can be crafted in-game.\n"
+"Here you can create your default character, this is how other players will "
+"see you in-game. When you join a new server you will start with the clothing "
+"you select here. Additional clothing, both protective and decorative, can be "
+"crafted in-game.\n"
 "You can return here from the main menu anytime to change your character."
 msgstr ""
 
@@ -3447,12 +3451,35 @@ msgid ""
 "http://www.voxelands.com/\n"
 "\n"
 "By Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
-"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, tiemay, Szkodnix, soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound, Rui, Wayward_One, loh\n"
+"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, "
+"tiemay, Szkodnix, soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound, Rui, "
+"Wayward_One, loh\n"
 "\n"
 "Based on Minetest-C55\n"
 "by Perttu Ahola <celeron55@gmail.com>\n"
-"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
-msgstr ".i la'o gy.Voxelands.gy. goi vy.\nse urli zoi gy.http://www.voxelands.com/.gy.\n\n.i vy. selfi'i la'o gy.Lisa Milne.gy. no'u la'o gy.darkrose.gy. .e lo sidju po'u la'o gy.sdzen.gy. .e la'o gy.MichaelEh?.gy. .e la'o gy.Pentium44.gy. .e la'o gy.Jordach.gy. .e la'o gy.Menche.gy. .e la'o gy.MavJS.gy. .e la'o gy.tiemay.gy. .e la'o gy.Szkodnix.gy. .e la'o gy.soognarf.gy. .e la'o gy.Tapoky.gy. .e la'o gy.Wuzzy.gy. .e la'o gy.JHeaton.gy. .e la'o gy.Akien.gy. .e la'o gy.redhound.gy. .e la'o gy.Rui.gy. .e la'o gy.Wayward_One.gy. .e la'o gy.Ioh.gy.\n\nfu la'o gy.Minetest-C55.gy.\npoi ke'a selfi'i la'o gy.Perttu Ahola.gy.\n.e lo sidju po'u la'o gy.PilzAdam.gy. .e la'o gy.Taoki.gy. .e la'o gy.tango_.gy. .e la'o gy.kahrl.gy. .e la'o gy.darkrose.gy. .e la'o gy.matttpt.gy. .e la'o gy.erlehmann.gy. .e la'o gy.SpeedProg.gy. .e la'o gy. JacobF.gy. .e la'o dy.teddydestodes.dy. .e la'o gy.marktraceur.gy. .e la'o dy.Jonathan Neuschafer.dy. .e la'o gy.thexyz.gy. .e la'o gy.VanessaE.gy. .e la'o gy.sfan5.gy. .e lo so'i cunso ke drata prenu"
+"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
+"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
+"Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
+msgstr ""
+".i la'o gy.Voxelands.gy. goi vy.\n"
+"se urli zoi gy.http://www.voxelands.com/.gy.\n"
+"\n"
+".i vy. selfi'i la'o gy.Lisa Milne.gy. no'u la'o gy.darkrose.gy. .e lo sidju "
+"po'u la'o gy.sdzen.gy. .e la'o gy.MichaelEh?.gy. .e la'o gy.Pentium44.gy. .e "
+"la'o gy.Jordach.gy. .e la'o gy.Menche.gy. .e la'o gy.MavJS.gy. .e la'o gy."
+"tiemay.gy. .e la'o gy.Szkodnix.gy. .e la'o gy.soognarf.gy. .e la'o gy.Tapoky."
+"gy. .e la'o gy.Wuzzy.gy. .e la'o gy.JHeaton.gy. .e la'o gy.Akien.gy. .e la'o "
+"gy.redhound.gy. .e la'o gy.Rui.gy. .e la'o gy.Wayward_One.gy. .e la'o gy.Ioh."
+"gy.\n"
+"\n"
+"fu la'o gy.Minetest-C55.gy.\n"
+"poi ke'a selfi'i la'o gy.Perttu Ahola.gy.\n"
+".e lo sidju po'u la'o gy.PilzAdam.gy. .e la'o gy.Taoki.gy. .e la'o gy.tango_."
+"gy. .e la'o gy.kahrl.gy. .e la'o gy.darkrose.gy. .e la'o gy.matttpt.gy. .e "
+"la'o gy.erlehmann.gy. .e la'o gy.SpeedProg.gy. .e la'o gy. JacobF.gy. .e "
+"la'o dy.teddydestodes.dy. .e la'o gy.marktraceur.gy. .e la'o dy.Jonathan "
+"Neuschafer.dy. .e la'o gy.thexyz.gy. .e la'o gy.VanessaE.gy. .e la'o gy."
+"sfan5.gy. .e lo so'i cunso ke drata prenu"
 
 #: src/guiMessageMenu.cpp:112 src/guiPauseMenu.cpp:138
 msgid "Continue"

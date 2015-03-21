@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Lisa 'darkrose' Milne
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Adolfo Jayme Barrientos, 2014
 # Pablo Roberto Francisco Lezaeta Reyes <prflr88@gmail.com>, 2014-2015
@@ -9,14 +9,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-21 16:29+1000\n"
+"POT-Creation-Date: 2015-03-22 00:10+1000\n"
 "PO-Revision-Date: 2015-03-21 06:30+0000\n"
 "Last-Translator: Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
-"Language-Team: Spanish (http://www.transifex.com/projects/p/voxelands/language/es/)\n"
+"Language-Team: Spanish (http://www.transifex.com/projects/p/voxelands/"
+"language/es/)\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/character_creator.cpp:56
@@ -229,9 +230,18 @@ msgstr "Zapatos de lona"
 
 #: src/character_creator.cpp:203
 msgid ""
-"Here you can create your default character, this is how other players will see you in-game. When you join a new server you will start with the clothing you select here. Additional clothing, both protective and decorative, can be crafted in-game.\n"
+"Here you can create your default character, this is how other players will "
+"see you in-game. When you join a new server you will start with the clothing "
+"you select here. Additional clothing, both protective and decorative, can be "
+"crafted in-game.\n"
 "You can return here from the main menu anytime to change your character."
-msgstr "Aquí puede crear su personaje predeterminado, que le representará ante otros jugadores durante las partidas. Cuando se una a un servidor nuevo comenzará con las ropas que elija aquí. Se pueden elaborar prendas adicionales, de protección y decorativas, durante el juego.\nPodrá volver aquí en cualquier momento, mediante el menú principal, para cambiar su personaje."
+msgstr ""
+"Aquí puede crear su personaje predeterminado, que le representará ante otros "
+"jugadores durante las partidas. Cuando se una a un servidor nuevo comenzará "
+"con las ropas que elija aquí. Se pueden elaborar prendas adicionales, de "
+"protección y decorativas, durante el juego.\n"
+"Podrá volver aquí en cualquier momento, mediante el menú principal, para "
+"cambiar su personaje."
 
 #: src/character_creator.cpp:224
 msgid "Create Your Character"
@@ -3131,7 +3141,8 @@ msgstr "Reapareciendo"
 
 #: src/guiFormSpecMenu.cpp:470
 msgid "Left click: Move all items, Right click: Move single item"
-msgstr "Clic izquierdo: Mueve todos los objetos, Clic derecho: Mueve un solo objeto"
+msgstr ""
+"Clic izquierdo: Mueve todos los objetos, Clic derecho: Mueve un solo objeto"
 
 #: src/guiFormSpecMenu.cpp:493
 msgid "Write It"
@@ -3447,12 +3458,29 @@ msgid ""
 "http://www.voxelands.com/\n"
 "\n"
 "By Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
-"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, tiemay, Szkodnix, soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound, Rui, Wayward_One, loh\n"
+"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, "
+"tiemay, Szkodnix, soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound, Rui, "
+"Wayward_One, loh\n"
 "\n"
 "Based on Minetest-C55\n"
 "by Perttu Ahola <celeron55@gmail.com>\n"
-"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
-msgstr "Voxelands\nhttp://www.voxelands.com/\n\nPor Lisa «darkrose» Milne <lisa@ltmnet.com>\nY contribuidores como: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, tiemay, Szkodnix, soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound, Rui, Wayward_One, loh\n\nBasado en Minetest-C55\nPor Perttu Ahola <celeron55@gmail.com>\nY contribuidores como: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... y una decena más de personas."
+"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
+"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
+"Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
+msgstr ""
+"Voxelands\n"
+"http://www.voxelands.com/\n"
+"\n"
+"Por Lisa «darkrose» Milne <lisa@ltmnet.com>\n"
+"Y contribuidores como: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, "
+"tiemay, Szkodnix, soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound, Rui, "
+"Wayward_One, loh\n"
+"\n"
+"Basado en Minetest-C55\n"
+"Por Perttu Ahola <celeron55@gmail.com>\n"
+"Y contribuidores como: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), "
+"darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, "
+"Jonathan Neuschafer, thexyz, VanessaE, sfan5... y una decena más de personas."
 
 #: src/guiMessageMenu.cpp:112 src/guiPauseMenu.cpp:138
 msgid "Continue"
