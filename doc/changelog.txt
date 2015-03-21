@@ -3,6 +3,66 @@ Voxelands changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1503.00: (release 2015-03-22)
+ - add some mob sounds
+ - add classic hotbar option to settings menu
+ - get text rotating correctly, and add text to books
+ - detect network timeouts, show error message, autoquit
+ - add an inventory status indicator
+ - add background to wieldring
+ - add buttons to rebind next/previous item in change keys menu
+ - fix junglegrass having wrong material
+ - fix border in key change menu
+ - add old_hotbar setting
+ - add prev/next wield item keys
+ - new HUD with wieldring instead of hotbar
+ - fix the rest of clang's default warnings
+ - fix more warnings, mostly unused variables
+ - stop MainMenuData throwing a compiler warning
+ - add volume control to settings menu
+ - all slabs can now use CDT_SLABLIKE to include face culling
+ - get new stairs lighting right, add face culling
+ - players shouldn't be able to walk through tree trunks
+ - have the address field default to servers.voxelands.com in the multiplayer menu
+ - inventory should only be updated when digging/placing, don't send the whole thing
+ - adjust item fall speed, parcel dig speed, and ensure items don't fall through the ground
+ - no on-punch events with a mese pick, it just digs
+ - remove junglegrass to cotton recipe
+ - remove junglegrass growing on sand
+ - fix object duplication and mob over-spawning
+ - remove ambient sounds from the network, these can be done in the client, later
+ - add a teleport sound when a player is force moved
+ - log an error when trying to play stereo sounds as positional, as that won't work
+ - ensure reference distance is set on positional sounds
+ - add a bunch of environmental sounds
+ - add open book sound file
+ - add book sound when right clicking an open book
+ - add sound when formspec is shown, and when item is wielded
+ - replace some sound files, add water dig/place sounds, and  make footsteps faster when running
+ - some setup for sound additions
+ - reduce serialization size of inventory
+ - don't free and reallocate inventory items for no reason
+ - make wood roof tiles, actually wood material
+ - small change to grass side
+ - have saplings auto-plant when dropped on mud or grass
+ - have dropped items become parcels when they touch ground, or add themselves to a nearby parcel
+ - make ItemCAO use SmoothTranslator for less jumpy movement
+ - reduce vertices on glasslike drawtype
+ - stone tiles and parquetry
+ - upside down stair updates
+ - new look stairs and slabs
+ - add .gitignore
+ - fix some compiler warnings
+ - update project sqlite, untrack files that don't need tracking
+ - use hard tabs
+ - remove some commented out code
+ - update brick texture
+ - some fertilizer changes
+ - some (more) piston tweaks
+ - turn grass into mud if there's some non-airlike above it
+ - improve flower pot, and make plants sit in it, not on it
+ - allow rotated nodeboxes to centre rotation anywhere in the node
+
 1501.00: (release 2015-01-26)
  - fix trees growing at night breaking lighting
  - make paged things flip to first page when pressing next on the last page
