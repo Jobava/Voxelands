@@ -194,6 +194,8 @@ void ItemSAO::step(float dtime, bool send_recommended)
 			}else if (m_env->searchNear(pos_i,v3s16(3,3,3),CONTENT_PARCEL,&pp)) {
 				pos_i = pp;
 				parcel = true;
+			}else if (n.getContent() == CONTENT_LAVASOURCE) {
+				m_removed = true;
 			}else if (content_features(n).buildable_to) {
 				n.setContent(CONTENT_PARCEL);
 				m_env->getMap().addNodeWithEvent(pos_i,n);
