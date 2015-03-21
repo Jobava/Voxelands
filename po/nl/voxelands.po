@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-16 15:32+1000\n"
-"PO-Revision-Date: 2015-03-16 05:34+0000\n"
+"POT-Creation-Date: 2015-03-21 16:29+1000\n"
+"PO-Revision-Date: 2015-03-21 06:30+0000\n"
 "Last-Translator: Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/voxelands/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -18,253 +18,253 @@ msgstr ""
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/character_creator.cpp:58
+#: src/character_creator.cpp:56
 msgid "White Skin"
 msgstr ""
 
-#: src/character_creator.cpp:59
+#: src/character_creator.cpp:57
 msgid "Red Skin"
 msgstr ""
 
-#: src/character_creator.cpp:60
+#: src/character_creator.cpp:58
 msgid "Green Skin"
 msgstr ""
 
-#: src/character_creator.cpp:61
+#: src/character_creator.cpp:59
 msgid "Fair Skin"
 msgstr ""
 
-#: src/character_creator.cpp:62
+#: src/character_creator.cpp:60
 msgid "Tanned Skin"
 msgstr ""
 
-#: src/character_creator.cpp:63
+#: src/character_creator.cpp:61
 msgid "Dark Skin"
 msgstr ""
 
-#: src/character_creator.cpp:64
+#: src/character_creator.cpp:62
 msgid "Black Skin"
 msgstr ""
 
-#: src/character_creator.cpp:66
+#: src/character_creator.cpp:64
 msgid "Human Face"
 msgstr ""
 
-#: src/character_creator.cpp:67
+#: src/character_creator.cpp:65
 msgid "Elven Face"
 msgstr ""
 
-#: src/character_creator.cpp:68
+#: src/character_creator.cpp:66
 msgid "Dwarven Face"
 msgstr ""
 
-#: src/character_creator.cpp:69
+#: src/character_creator.cpp:67
 msgid "Alien Face"
 msgstr ""
 
-#: src/character_creator.cpp:71
+#: src/character_creator.cpp:69
 msgid "White Hair"
 msgstr ""
 
-#: src/character_creator.cpp:72
+#: src/character_creator.cpp:70
 msgid "Blue Hair"
 msgstr ""
 
-#: src/character_creator.cpp:73
+#: src/character_creator.cpp:71
 msgid "Green Hair"
 msgstr ""
 
-#: src/character_creator.cpp:74
+#: src/character_creator.cpp:72
 msgid "Orange Hair"
 msgstr ""
 
-#: src/character_creator.cpp:75
+#: src/character_creator.cpp:73
 msgid "Brown Hair"
 msgstr ""
 
-#: src/character_creator.cpp:76
+#: src/character_creator.cpp:74
 msgid "Purple Hair"
 msgstr ""
 
-#: src/character_creator.cpp:77
+#: src/character_creator.cpp:75
 msgid "Red Hair"
 msgstr ""
 
-#: src/character_creator.cpp:78
+#: src/character_creator.cpp:76
 msgid "Blonde Hair"
 msgstr ""
 
-#: src/character_creator.cpp:79
+#: src/character_creator.cpp:77
 msgid "Black Hair"
 msgstr ""
 
-#: src/character_creator.cpp:81
+#: src/character_creator.cpp:79
 msgid "Short Hair"
 msgstr ""
 
-#: src/character_creator.cpp:82
+#: src/character_creator.cpp:80
 msgid "Medium Hair"
 msgstr ""
 
-#: src/character_creator.cpp:83
+#: src/character_creator.cpp:81
 msgid "Long Hair"
 msgstr ""
 
-#: src/character_creator.cpp:84
+#: src/character_creator.cpp:82
 msgid "Styled Hair"
 msgstr ""
 
-#: src/character_creator.cpp:86
+#: src/character_creator.cpp:84
 msgid "White Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:87
+#: src/character_creator.cpp:85
 msgid "Blue Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:88
+#: src/character_creator.cpp:86
 msgid "Green Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:89
+#: src/character_creator.cpp:87
 msgid "Orange Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:90
+#: src/character_creator.cpp:88
 msgid "Brown Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:91
+#: src/character_creator.cpp:89
 msgid "Purple Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:92
+#: src/character_creator.cpp:90
 msgid "Red Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:93
+#: src/character_creator.cpp:91
 msgid "Yellow Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:94
+#: src/character_creator.cpp:92
 msgid "Black Eyes"
 msgstr ""
 
-#: src/character_creator.cpp:96
+#: src/character_creator.cpp:94
 msgid "White T-Shirt"
 msgstr ""
 
-#: src/character_creator.cpp:97
+#: src/character_creator.cpp:95
 msgid "Blue T-Shirt"
 msgstr ""
 
-#: src/character_creator.cpp:98
+#: src/character_creator.cpp:96
 msgid "Green T-Shirt"
 msgstr ""
 
-#: src/character_creator.cpp:99
+#: src/character_creator.cpp:97
 msgid "Orange T-Shirt"
 msgstr ""
 
-#: src/character_creator.cpp:100
+#: src/character_creator.cpp:98
 msgid "Purple T-Shirt"
 msgstr ""
 
-#: src/character_creator.cpp:101
+#: src/character_creator.cpp:99
 msgid "Red T-Shirt"
 msgstr ""
 
-#: src/character_creator.cpp:102
+#: src/character_creator.cpp:100
 msgid "Yellow T-Shirt"
 msgstr ""
 
-#: src/character_creator.cpp:103
+#: src/character_creator.cpp:101
 msgid "Black T-Shirt"
 msgstr ""
 
-#: src/character_creator.cpp:105
+#: src/character_creator.cpp:103
 msgid "White Pants"
 msgstr ""
 
-#: src/character_creator.cpp:106
+#: src/character_creator.cpp:104
 msgid "Blue Pants"
 msgstr ""
 
-#: src/character_creator.cpp:107
+#: src/character_creator.cpp:105
 msgid "Green Pants"
 msgstr ""
 
-#: src/character_creator.cpp:108
+#: src/character_creator.cpp:106
 msgid "Orange Pants"
 msgstr ""
 
-#: src/character_creator.cpp:109
+#: src/character_creator.cpp:107
 msgid "Purple Pants"
 msgstr ""
 
-#: src/character_creator.cpp:110
+#: src/character_creator.cpp:108
 msgid "Red Pants"
 msgstr ""
 
-#: src/character_creator.cpp:111
+#: src/character_creator.cpp:109
 msgid "Yellow Pants"
 msgstr ""
 
-#: src/character_creator.cpp:112
+#: src/character_creator.cpp:110
 msgid "Black Pants"
 msgstr ""
 
-#: src/character_creator.cpp:114 src/content_clothesitem.cpp:1706
+#: src/character_creator.cpp:112 src/content_clothesitem.cpp:1706
 msgid "Leather Shoes"
 msgstr ""
 
-#: src/character_creator.cpp:115 src/content_clothesitem.cpp:2522
+#: src/character_creator.cpp:113 src/content_clothesitem.cpp:2522
 msgid "Fur Shoes"
 msgstr ""
 
-#: src/character_creator.cpp:116 src/content_clothesitem.cpp:945
+#: src/character_creator.cpp:114 src/content_clothesitem.cpp:945
 msgid "Canvas Shoes"
 msgstr ""
 
-#: src/character_creator.cpp:205
+#: src/character_creator.cpp:203
 msgid ""
 "Here you can create your default character, this is how other players will see you in-game. When you join a new server you will start with the clothing you select here. Additional clothing, both protective and decorative, can be crafted in-game.\n"
 "You can return here from the main menu anytime to change your character."
 msgstr ""
 
-#: src/character_creator.cpp:226
+#: src/character_creator.cpp:224
 msgid "Create Your Character"
 msgstr ""
 
-#: src/character_creator.cpp:233
+#: src/character_creator.cpp:231
 msgid "Male"
 msgstr ""
 
-#: src/character_creator.cpp:238
+#: src/character_creator.cpp:236
 msgid "Female"
 msgstr ""
 
-#: src/character_creator.cpp:245
+#: src/character_creator.cpp:243
 msgid "Taller"
 msgstr ""
 
-#: src/character_creator.cpp:250
+#: src/character_creator.cpp:248
 msgid "Shorter"
 msgstr ""
 
-#: src/character_creator.cpp:257
+#: src/character_creator.cpp:255
 msgid "Wider"
 msgstr ""
 
-#: src/character_creator.cpp:262
+#: src/character_creator.cpp:260
 msgid "Thinner"
 msgstr ""
 
-#: src/character_creator.cpp:421
+#: src/character_creator.cpp:419
 msgid "Done"
 msgstr ""
 
-#: src/character_creator.cpp:426 src/guiKeyChangeMenu.cpp:313
+#: src/character_creator.cpp:424 src/guiKeyChangeMenu.cpp:342
 #: src/keycode.cpp:229
 msgid "Cancel"
 msgstr "Annuleren"
@@ -1133,7 +1133,7 @@ msgstr "Gebakken Rat"
 msgid "Firefly"
 msgstr "Vuurvliegje"
 
-#: src/content_craftitem.cpp:240 src/content_mapnode_plants.cpp:788
+#: src/content_craftitem.cpp:240 src/content_mapnode_plants.cpp:784
 msgid "Apple"
 msgstr "Appel"
 
@@ -1217,7 +1217,7 @@ msgstr "As"
 msgid "Apple Blossoms"
 msgstr "Appelbloesem"
 
-#: src/content_craftitem.cpp:474 src/content_mapnode_plants.cpp:594
+#: src/content_craftitem.cpp:474 src/content_mapnode_plants.cpp:590
 msgid "Cactus Berry"
 msgstr "Cactusbes"
 
@@ -2215,115 +2215,115 @@ msgstr ""
 msgid "Young Tree"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:134
+#: src/content_mapnode_plants.cpp:133
 msgid "Young Jungle Tree"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:156
+#: src/content_mapnode_plants.cpp:154
 msgid "Young Apple Tree"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:178
+#: src/content_mapnode_plants.cpp:175
 msgid "Young Conifer Tree"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:200
+#: src/content_mapnode_plants.cpp:196
 msgid "Jungle Grass"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:222
+#: src/content_mapnode_plants.cpp:218
 msgid "Leaves"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:257
+#: src/content_mapnode_plants.cpp:253
 msgid "Apple Tree Leaves"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:292
+#: src/content_mapnode_plants.cpp:288
 msgid "Jungle Leaves"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:327
+#: src/content_mapnode_plants.cpp:323
 msgid "Conifer Leaves"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:362
+#: src/content_mapnode_plants.cpp:358
 msgid "Trimmed Leaves"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:394
+#: src/content_mapnode_plants.cpp:390
 msgid "Trimmed Apple Tree Leaves"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:426
+#: src/content_mapnode_plants.cpp:422
 msgid "Trimmed Jungle Leaves"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:458
+#: src/content_mapnode_plants.cpp:454
 msgid "Trimmed Conifer Leaves"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:490
+#: src/content_mapnode_plants.cpp:486
 msgid "Apple Tree Blossom"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:522
+#: src/content_mapnode_plants.cpp:518
 msgid "Trimmed Apple Tree Blossom"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:551
+#: src/content_mapnode_plants.cpp:547
 msgid "Cactus Blossom"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:572
+#: src/content_mapnode_plants.cpp:568
 msgid "Cactus Flower"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:615
+#: src/content_mapnode_plants.cpp:611
 msgid "Cactus"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:679
+#: src/content_mapnode_plants.cpp:675
 msgid "Papyrus"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:700
+#: src/content_mapnode_plants.cpp:696
 msgid "Sapling"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:722
+#: src/content_mapnode_plants.cpp:718
 msgid "Apple Tree Sapling"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:744
+#: src/content_mapnode_plants.cpp:740
 msgid "Jungle Sapling"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:766
+#: src/content_mapnode_plants.cpp:762
 msgid "Conifer Sapling"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:811 src/content_mapnode_plants.cpp:835
+#: src/content_mapnode_plants.cpp:807 src/content_mapnode_plants.cpp:831
 msgid "Wild Grass"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:858
+#: src/content_mapnode_plants.cpp:854
 msgid "Dead Grass"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:881
+#: src/content_mapnode_plants.cpp:877
 msgid "Flower Stem"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:904
+#: src/content_mapnode_plants.cpp:900
 msgid "Rose"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:928
+#: src/content_mapnode_plants.cpp:924
 msgid "Daffodil"
 msgstr ""
 
-#: src/content_mapnode_plants.cpp:952
+#: src/content_mapnode_plants.cpp:948
 msgid "Tulip"
 msgstr ""
 
@@ -2480,162 +2480,162 @@ msgstr ""
 msgid "Decraft Book"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:732 src/content_mapnode_special.cpp:886
-#: src/content_nodemeta.cpp:2041
+#: src/content_mapnode_special.cpp:732 src/content_mapnode_special.cpp:888
+#: src/content_nodemeta.cpp:2040
 msgid "Diary"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:763
+#: src/content_mapnode_special.cpp:764
 msgid "Craft Book"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:802
+#: src/content_mapnode_special.cpp:803
 msgid "Guide"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:830 src/content_nodemeta.h:385
+#: src/content_mapnode_special.cpp:832 src/content_nodemeta.h:385
 msgid "Cooking Guide"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:858 src/content_nodemeta.h:411
+#: src/content_mapnode_special.cpp:860 src/content_nodemeta.h:411
 msgid "Decrafting Guide"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:914 src/content_nodemeta.h:358
+#: src/content_mapnode_special.cpp:917 src/content_nodemeta.h:358
 msgid "Craft Guide"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:942 src/content_mapnode_special.cpp:962
+#: src/content_mapnode_special.cpp:945 src/content_mapnode_special.cpp:965
 msgid "Fire"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:982 src/content_mapnode_special.cpp:1005
+#: src/content_mapnode_special.cpp:985 src/content_mapnode_special.cpp:1008
 msgid "Torch"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1033 src/content_mapnode_special.cpp:1059
-#: src/content_mapnode_special.cpp:1092
+#: src/content_mapnode_special.cpp:1036 src/content_mapnode_special.cpp:1062
+#: src/content_mapnode_special.cpp:1095
 msgid "Sign"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1120 src/content_mapnode_special.cpp:1150
-#: src/content_mapnode_special.cpp:1182
+#: src/content_mapnode_special.cpp:1123 src/content_mapnode_special.cpp:1153
+#: src/content_mapnode_special.cpp:1185
 msgid "Locking Sign"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1211 src/content_nodemeta.cpp:228
+#: src/content_mapnode_special.cpp:1214 src/content_nodemeta.cpp:228
 msgid "Chest"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1234 src/content_nodemeta.cpp:503
+#: src/content_mapnode_special.cpp:1237 src/content_nodemeta.cpp:503
 msgid "Creative Chest"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1255
+#: src/content_mapnode_special.cpp:1258
 msgid "Locking Chest"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1285
+#: src/content_mapnode_special.cpp:1288
 msgid "Safe"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1307 src/content_mapnode_special.cpp:1327
+#: src/content_mapnode_special.cpp:1310 src/content_mapnode_special.cpp:1330
 msgid "Furnace"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1346 src/content_mapnode_special.cpp:1367
+#: src/content_mapnode_special.cpp:1349 src/content_mapnode_special.cpp:1370
 msgid "Locking Furnace"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1385 src/content_mapnode_special.cpp:1405
+#: src/content_mapnode_special.cpp:1388 src/content_mapnode_special.cpp:1408
 msgid "Incinerator"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1423
+#: src/content_mapnode_special.cpp:1426
 msgid "Nyan Cat"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1437
+#: src/content_mapnode_special.cpp:1440
 msgid "Rainbow"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1449
+#: src/content_mapnode_special.cpp:1452
 msgid "Unbaked Flower Pot"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1471
+#: src/content_mapnode_special.cpp:1474
 msgid "Flower Pot"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1489
+#: src/content_mapnode_special.cpp:1492
 msgid "Cobblestone Wall"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1513
+#: src/content_mapnode_special.cpp:1516
 msgid "Rough Stone Wall"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1537
+#: src/content_mapnode_special.cpp:1540
 msgid "Mossy Cobblestone Wall"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1561
+#: src/content_mapnode_special.cpp:1564
 msgid "Stone Wall"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1585
+#: src/content_mapnode_special.cpp:1588
 msgid "Sand Stone Wall"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1609
+#: src/content_mapnode_special.cpp:1612
 msgid "TNT"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1629
+#: src/content_mapnode_special.cpp:1632
 msgid "In-Progress explosion - how did you get this???"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1649
+#: src/content_mapnode_special.cpp:1652
 msgid "Steam"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1670
+#: src/content_mapnode_special.cpp:1673
 msgid "Home Flag"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1720
+#: src/content_mapnode_special.cpp:1723
 msgid "Blue Home Flag"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1749
+#: src/content_mapnode_special.cpp:1752
 msgid "Green Home Flag"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1778
+#: src/content_mapnode_special.cpp:1781
 msgid "Orange Home Flag"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1807
+#: src/content_mapnode_special.cpp:1810
 msgid "Purple Home Flag"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1836
+#: src/content_mapnode_special.cpp:1839
 msgid "Red Home Flag"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1865
+#: src/content_mapnode_special.cpp:1868
 msgid "Yellow Home Flag"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1894
+#: src/content_mapnode_special.cpp:1897
 msgid "Black Home Flag"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1923
+#: src/content_mapnode_special.cpp:1926
 msgid "Life Support System"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1940
+#: src/content_mapnode_special.cpp:1943
 msgid "Parcel"
 msgstr ""
 
@@ -2672,8 +2672,8 @@ msgid "Sand Stone Stair"
 msgstr ""
 
 #: src/content_nodemeta.cpp:74 src/content_nodemeta.cpp:137
-#: src/content_nodemeta.cpp:2025 src/content_nodemeta.cpp:2124
-#: src/guiKeyChangeMenu.cpp:307
+#: src/content_nodemeta.cpp:2024 src/content_nodemeta.cpp:2123
+#: src/guiKeyChangeMenu.cpp:336
 msgid "Save"
 msgstr ""
 
@@ -2692,19 +2692,19 @@ msgstr ""
 msgid "Safe owned by '%s'"
 msgstr ""
 
-#: src/content_nodemeta.cpp:544 src/content_nodemeta.cpp:1492
-#: src/content_nodemeta.cpp:1697 src/content_nodemeta.cpp:1911
+#: src/content_nodemeta.cpp:544 src/content_nodemeta.cpp:1491
+#: src/content_nodemeta.cpp:1696 src/content_nodemeta.cpp:1910
 #, c-format
 msgid "Page %d of %d"
 msgstr ""
 
-#: src/content_nodemeta.cpp:548 src/content_nodemeta.cpp:1520
-#: src/content_nodemeta.cpp:1706 src/content_nodemeta.cpp:1927
+#: src/content_nodemeta.cpp:548 src/content_nodemeta.cpp:1519
+#: src/content_nodemeta.cpp:1705 src/content_nodemeta.cpp:1926
 msgid "<< Previous Page"
 msgstr ""
 
-#: src/content_nodemeta.cpp:554 src/content_nodemeta.cpp:1526
-#: src/content_nodemeta.cpp:1712 src/content_nodemeta.cpp:1933
+#: src/content_nodemeta.cpp:554 src/content_nodemeta.cpp:1525
+#: src/content_nodemeta.cpp:1711 src/content_nodemeta.cpp:1932
 msgid "Next Page >>"
 msgstr ""
 
@@ -2729,79 +2729,79 @@ msgstr ""
 msgid "Furnace is active"
 msgstr ""
 
-#: src/content_nodemeta.cpp:934
+#: src/content_nodemeta.cpp:933
 msgid "Locking Furnace is overloaded"
 msgstr ""
 
-#: src/content_nodemeta.cpp:935
+#: src/content_nodemeta.cpp:934
 msgid "Locking Furnace is out of fuel"
 msgstr ""
 
-#: src/content_nodemeta.cpp:937
+#: src/content_nodemeta.cpp:936
 msgid "Locking Furnace is inactive"
 msgstr ""
 
-#: src/content_nodemeta.cpp:940
+#: src/content_nodemeta.cpp:939
 msgid "Locking Furnace is active"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1190
+#: src/content_nodemeta.cpp:1189
 msgid "Armed Explosive: about to detonate"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1193
+#: src/content_nodemeta.cpp:1192
 #, c-format
 msgid "Armed Explosive: %d second till detonation"
 msgid_plural "Armed Explosive: %d seconds till detonation"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/content_nodemeta.cpp:1243
+#: src/content_nodemeta.cpp:1242
 msgid "Incinerator is active"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1244
+#: src/content_nodemeta.cpp:1243
 msgid "Incinerator is inactive"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1287
+#: src/content_nodemeta.cpp:1286
 msgid "Add fuel, then punch to incinerate wielded item"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1496
+#: src/content_nodemeta.cpp:1495
 msgid "Add item here to see recipe"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1501
+#: src/content_nodemeta.cpp:1500
 #, c-format
 msgid "Recipe %d of %d"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1510
+#: src/content_nodemeta.cpp:1509
 msgid "Gives"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1701
+#: src/content_nodemeta.cpp:1700
 msgid "Add item here to see cook result"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1915
+#: src/content_nodemeta.cpp:1914
 msgid "Add item here to see dig result"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1919
+#: src/content_nodemeta.cpp:1918
 msgid "Dig Result"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1923
+#: src/content_nodemeta.cpp:1922
 msgid "Random Drop"
 msgstr ""
 
-#: src/content_nodemeta.cpp:2015 src/content_nodemeta.cpp:2114
+#: src/content_nodemeta.cpp:2014 src/content_nodemeta.cpp:2113
 msgid "Title"
 msgstr ""
 
-#: src/content_nodemeta.cpp:2020 src/content_nodemeta.cpp:2119
+#: src/content_nodemeta.cpp:2019 src/content_nodemeta.cpp:2118
 msgid "Content"
 msgstr ""
 
@@ -2977,142 +2977,146 @@ msgstr "Laten Vallen"
 msgid "Change Clothing"
 msgstr ""
 
-#: src/game.cpp:737
+#: src/game.cpp:1023
 msgid "Loading"
 msgstr "Laden"
 
-#: src/game.cpp:811
+#: src/game.cpp:1097
 msgid "Loading..."
 msgstr "Laden..."
 
-#: src/game.cpp:820
+#: src/game.cpp:1106
 msgid "Creating server..."
 msgstr "Server Creeëren"
 
-#: src/game.cpp:831
+#: src/game.cpp:1117
 msgid "Creating client..."
 msgstr "Client Creeëren"
 
-#: src/game.cpp:836
+#: src/game.cpp:1122
 msgid "Resolving address..."
 msgstr ""
 
-#: src/game.cpp:847
+#: src/game.cpp:1133
 msgid "Couldn't resolve address"
 msgstr ""
 
-#: src/game.cpp:887
+#: src/game.cpp:1173
 #, c-format
 msgid "Connecting to server... (timeout in %d second)"
 msgid_plural "Connecting to server... (timeout in %d seconds)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/game.cpp:916
+#: src/game.cpp:1202
 #, c-format
 msgid "Access denied. Reason: %ls"
 msgstr ""
 
-#: src/game.cpp:920
+#: src/game.cpp:1206
 msgid "Unable to Connect (port already in use?)."
 msgstr ""
 
-#: src/game.cpp:923
+#: src/game.cpp:1209
 msgid "Connection timed out."
 msgstr ""
 
-#: src/game.cpp:1083
+#: src/game.cpp:1370
 msgid "Access denied. Reason: "
 msgstr "Toegang geweigerd. Reden:"
 
-#: src/game.cpp:1318
+#: src/game.cpp:1605
 msgid "free_move disabled"
 msgstr "vrij_bewegen uit"
 
-#: src/game.cpp:1322
+#: src/game.cpp:1609
 msgid "free_move enabled"
 msgstr "vrij_bewegen aan"
 
-#: src/game.cpp:1328
+#: src/game.cpp:1615
 msgid "fast_move disabled"
 msgstr "snel_bewegen uit"
 
-#: src/game.cpp:1332
+#: src/game.cpp:1619
 msgid "fast_move enabled"
 msgstr "snel_bewegen aan"
 
-#: src/game.cpp:1344
+#: src/game.cpp:1631
 #, c-format
 msgid "Saved screenshot to '%s'"
 msgstr ""
 
-#: src/game.cpp:1356
+#: src/game.cpp:1643
 msgid "HUD shown"
 msgstr ""
 
-#: src/game.cpp:1358
+#: src/game.cpp:1645
 msgid "HUD hidden"
 msgstr ""
 
-#: src/game.cpp:1364
+#: src/game.cpp:1651
 msgid "Chat shown"
 msgstr "Chat zichtbaar"
 
-#: src/game.cpp:1366
+#: src/game.cpp:1653
 msgid "Chat hidden"
 msgstr "Chat onzichtbaar"
 
-#: src/game.cpp:1372
+#: src/game.cpp:1659
 msgid "Fog disabled"
 msgstr "Mist uit"
 
-#: src/game.cpp:1374
+#: src/game.cpp:1661
 msgid "Fog enabled"
 msgstr "Mist aan"
 
-#: src/game.cpp:1380
+#: src/game.cpp:1667
 msgid "Camera update disabled"
 msgstr "Camera update uit"
 
-#: src/game.cpp:1382
+#: src/game.cpp:1669
 msgid "Camera update enabled"
 msgstr "Camera update aan"
 
-#: src/game.cpp:1392
+#: src/game.cpp:1679
 msgid "Debug info shown"
 msgstr "Debug info zichtbaar"
 
-#: src/game.cpp:1397
+#: src/game.cpp:1684
 msgid "Debug info and frametime graph hidden"
 msgstr ""
 
-#: src/game.cpp:1401
+#: src/game.cpp:1688
 msgid "Frametime graph shown"
 msgstr ""
 
-#: src/game.cpp:1413
+#: src/game.cpp:1700
 #, c-format
 msgid "Profiler shown (page %d of %d)"
 msgstr ""
 
-#: src/game.cpp:1417
+#: src/game.cpp:1704
 msgid "Profiler hidden"
 msgstr ""
 
-#: src/game.cpp:1425 src/game.cpp:1436
+#: src/game.cpp:1712 src/game.cpp:1723
 #, c-format
 msgid "Minimum viewing range changed to %d"
 msgstr ""
 
-#: src/game.cpp:1485
+#: src/game.cpp:1792
 msgid "Enabled full viewing range"
 msgstr ""
 
-#: src/game.cpp:1489
+#: src/game.cpp:1796
 msgid "Disabled full viewing range"
 msgstr ""
 
-#: src/game.cpp:2375
+#: src/game.cpp:2331
+msgid "Disconnected (Network Timeout)"
+msgstr ""
+
+#: src/game.cpp:2710
 msgid "Shutting down..."
 msgstr ""
 
@@ -3192,240 +3196,257 @@ msgstr ""
 msgid "Print stacks"
 msgstr ""
 
-#: src/guiKeyChangeMenu.cpp:540 src/guiKeyChangeMenu.cpp:545
-#: src/guiKeyChangeMenu.cpp:550 src/guiKeyChangeMenu.cpp:555
-#: src/guiKeyChangeMenu.cpp:560 src/guiKeyChangeMenu.cpp:565
-#: src/guiKeyChangeMenu.cpp:570 src/guiKeyChangeMenu.cpp:575
-#: src/guiKeyChangeMenu.cpp:580 src/guiKeyChangeMenu.cpp:585
-#: src/guiKeyChangeMenu.cpp:590 src/guiKeyChangeMenu.cpp:595
-#: src/guiKeyChangeMenu.cpp:600 src/guiKeyChangeMenu.cpp:605
+#: src/guiKeyChangeMenu.cpp:308
+msgid "Next item"
+msgstr ""
+
+#: src/guiKeyChangeMenu.cpp:322
+msgid "Previous item"
+msgstr ""
+
+#: src/guiKeyChangeMenu.cpp:583 src/guiKeyChangeMenu.cpp:588
+#: src/guiKeyChangeMenu.cpp:593 src/guiKeyChangeMenu.cpp:598
+#: src/guiKeyChangeMenu.cpp:603 src/guiKeyChangeMenu.cpp:608
+#: src/guiKeyChangeMenu.cpp:613 src/guiKeyChangeMenu.cpp:618
+#: src/guiKeyChangeMenu.cpp:623 src/guiKeyChangeMenu.cpp:628
+#: src/guiKeyChangeMenu.cpp:633 src/guiKeyChangeMenu.cpp:638
+#: src/guiKeyChangeMenu.cpp:643 src/guiKeyChangeMenu.cpp:648
+#: src/guiKeyChangeMenu.cpp:653 src/guiKeyChangeMenu.cpp:658
 msgid "press Key"
 msgstr ""
 
-#: src/guiMainMenu.cpp:400
+#: src/guiMainMenu.cpp:417
 msgid "Character Creator"
 msgstr ""
 
-#: src/guiMainMenu.cpp:406 src/guiMainMenu.cpp:604 src/guiMainMenu.cpp:646
-#: src/guiMainMenu.cpp:744
+#: src/guiMainMenu.cpp:423 src/guiMainMenu.cpp:638 src/guiMainMenu.cpp:680
+#: src/guiMainMenu.cpp:778
 msgid "Single Player"
 msgstr "Single Player"
 
-#: src/guiMainMenu.cpp:412 src/guiMainMenu.cpp:464
+#: src/guiMainMenu.cpp:429 src/guiMainMenu.cpp:480
 msgid "Multi Player"
 msgstr "Multi PLayer"
 
-#: src/guiMainMenu.cpp:418 src/guiMainMenu.cpp:540
+#: src/guiMainMenu.cpp:435 src/guiMainMenu.cpp:556
 msgid "Settings"
 msgstr "Opties"
 
-#: src/guiMainMenu.cpp:424 src/guiMainMenu.cpp:871
+#: src/guiMainMenu.cpp:441 src/guiMainMenu.cpp:905
 msgid "Credits"
 msgstr "Credits"
 
-#: src/guiMainMenu.cpp:430
+#: src/guiMainMenu.cpp:447
 msgid "Quit"
 msgstr "Verlaten"
 
-#: src/guiMainMenu.cpp:472
+#: src/guiMainMenu.cpp:488
 msgid "Name/Password"
 msgstr "Naam/Wachtwoord"
 
-#: src/guiMainMenu.cpp:504
+#: src/guiMainMenu.cpp:520
 msgid "Address/Port"
 msgstr "Adres?Port"
 
-#: src/guiMainMenu.cpp:534
+#: src/guiMainMenu.cpp:550
 msgid "Connect"
 msgstr "Verbinden"
 
-#: src/guiMainMenu.cpp:546
+#: src/guiMainMenu.cpp:562
 msgid "Fancy trees"
 msgstr "Mooie bomen"
 
-#: src/guiMainMenu.cpp:551
+#: src/guiMainMenu.cpp:567
 msgid "Smooth Lighting"
 msgstr "Soepele Belichting"
 
-#: src/guiMainMenu.cpp:556
+#: src/guiMainMenu.cpp:572
 msgid "3D Clouds"
 msgstr "3D Wolken"
 
-#: src/guiMainMenu.cpp:561
+#: src/guiMainMenu.cpp:577
 msgid "Opaque water"
 msgstr "Doorzichtig water"
 
-#: src/guiMainMenu.cpp:566
+#: src/guiMainMenu.cpp:582
+msgid "Classic hotbar"
+msgstr ""
+
+#: src/guiMainMenu.cpp:587
+msgid "Volume:"
+msgstr ""
+
+#: src/guiMainMenu.cpp:592
 msgid "Fullscreen"
 msgstr "Volledig Scherm"
 
-#: src/guiMainMenu.cpp:571
+#: src/guiMainMenu.cpp:597
 msgid "Particles"
 msgstr ""
 
-#: src/guiMainMenu.cpp:576
+#: src/guiMainMenu.cpp:602
 msgid "Mip-Mapping"
 msgstr ""
 
-#: src/guiMainMenu.cpp:581
+#: src/guiMainMenu.cpp:607
 msgid "Bi-Linear Filtering"
 msgstr ""
 
-#: src/guiMainMenu.cpp:586
+#: src/guiMainMenu.cpp:612
 msgid "Tri-Linear Filtering"
 msgstr ""
 
-#: src/guiMainMenu.cpp:591
+#: src/guiMainMenu.cpp:617
 msgid "Anisotropic Filtering"
 msgstr ""
 
-#: src/guiMainMenu.cpp:598
+#: src/guiMainMenu.cpp:632
 msgid "Change keys"
 msgstr ""
 
-#: src/guiMainMenu.cpp:613 src/guiMainMenu.cpp:655 src/guiMainMenu.cpp:753
+#: src/guiMainMenu.cpp:647 src/guiMainMenu.cpp:689 src/guiMainMenu.cpp:787
 msgid "Creative Mode"
 msgstr "Creatieve Modus"
 
-#: src/guiMainMenu.cpp:614 src/guiMainMenu.cpp:656 src/guiMainMenu.cpp:754
+#: src/guiMainMenu.cpp:648 src/guiMainMenu.cpp:690 src/guiMainMenu.cpp:788
 msgid "Adventure Mode"
 msgstr "Avontuur Modus"
 
-#: src/guiMainMenu.cpp:615 src/guiMainMenu.cpp:657 src/guiMainMenu.cpp:755
+#: src/guiMainMenu.cpp:649 src/guiMainMenu.cpp:691 src/guiMainMenu.cpp:789
 msgid "Survival Mode"
 msgstr "Survival Modus"
 
-#: src/guiMainMenu.cpp:628 src/guiMainMenu.cpp:768
+#: src/guiMainMenu.cpp:662 src/guiMainMenu.cpp:802
 msgid "Advanced Settings"
 msgstr "Geavanceerde Opties"
 
-#: src/guiMainMenu.cpp:634 src/guiMainMenu.cpp:676
+#: src/guiMainMenu.cpp:668 src/guiMainMenu.cpp:710
 msgid "Map Options"
 msgstr ""
 
-#: src/guiMainMenu.cpp:640 src/guiMainMenu.cpp:738 src/guiMainMenu.cpp:864
+#: src/guiMainMenu.cpp:674 src/guiMainMenu.cpp:772 src/guiMainMenu.cpp:898
 msgid "Start Game"
 msgstr ""
 
-#: src/guiMainMenu.cpp:670
+#: src/guiMainMenu.cpp:704
 msgid "Hide Advanced Settings"
 msgstr ""
 
-#: src/guiMainMenu.cpp:681
+#: src/guiMainMenu.cpp:715
 msgid "Creatures"
 msgstr "Wezens"
 
-#: src/guiMainMenu.cpp:688
+#: src/guiMainMenu.cpp:722
 msgid "Passive"
 msgstr "Passief"
 
-#: src/guiMainMenu.cpp:689
+#: src/guiMainMenu.cpp:723
 msgid "Passive & Aggressive"
 msgstr "Passief & Aggressief"
 
-#: src/guiMainMenu.cpp:690
+#: src/guiMainMenu.cpp:724
 msgid "Passive, Aggressive, & Destructive"
 msgstr "Passied, Aggressief, & Destructief"
 
-#: src/guiMainMenu.cpp:702
+#: src/guiMainMenu.cpp:736
 msgid "Player Damage"
 msgstr ""
 
-#: src/guiMainMenu.cpp:707
+#: src/guiMainMenu.cpp:741
 msgid "Suffocation/Drowning"
 msgstr "Verstikking/Verdrinking"
 
-#: src/guiMainMenu.cpp:712
+#: src/guiMainMenu.cpp:746
 msgid "Hunger"
 msgstr "Honger"
 
-#: src/guiMainMenu.cpp:717
+#: src/guiMainMenu.cpp:751
 msgid "Tool Wear"
 msgstr ""
 
-#: src/guiMainMenu.cpp:722
+#: src/guiMainMenu.cpp:756
 msgid "Infinite Inventory"
 msgstr ""
 
-#: src/guiMainMenu.cpp:727
+#: src/guiMainMenu.cpp:761
 msgid "Initial Inventory"
 msgstr ""
 
-#: src/guiMainMenu.cpp:732
+#: src/guiMainMenu.cpp:766
 msgid "Droppable Inventory"
 msgstr ""
 
-#: src/guiMainMenu.cpp:774
+#: src/guiMainMenu.cpp:808
 msgid "Hide Map Options"
 msgstr ""
 
-#: src/guiMainMenu.cpp:779
+#: src/guiMainMenu.cpp:813
 msgid "Create New Map"
 msgstr "Nieuwe Wereld Creeëren"
 
-#: src/guiMainMenu.cpp:785
+#: src/guiMainMenu.cpp:819
 msgid "Warning! Your old map will be deleted!"
 msgstr "Waarschuwing! Je oude wereld wordt verwijderd!"
 
-#: src/guiMainMenu.cpp:791
+#: src/guiMainMenu.cpp:825
 msgid "Map Type"
 msgstr ""
 
-#: src/guiMainMenu.cpp:798
+#: src/guiMainMenu.cpp:832
 msgid "Flat"
 msgstr ""
 
-#: src/guiMainMenu.cpp:799
+#: src/guiMainMenu.cpp:833
 msgid "Flatter"
 msgstr ""
 
-#: src/guiMainMenu.cpp:800
+#: src/guiMainMenu.cpp:834
 msgid "Smoother"
 msgstr ""
 
-#: src/guiMainMenu.cpp:801
+#: src/guiMainMenu.cpp:835
 msgid "Default"
 msgstr ""
 
-#: src/guiMainMenu.cpp:802
+#: src/guiMainMenu.cpp:836
 msgid "Hilly"
 msgstr ""
 
-#: src/guiMainMenu.cpp:803
+#: src/guiMainMenu.cpp:837
 msgid "Mountains"
 msgstr ""
 
-#: src/guiMainMenu.cpp:804
+#: src/guiMainMenu.cpp:838
 msgid "Crazy"
 msgstr ""
 
-#: src/guiMainMenu.cpp:805
+#: src/guiMainMenu.cpp:839
 msgid "Crazy Hills"
 msgstr ""
 
-#: src/guiMainMenu.cpp:827
+#: src/guiMainMenu.cpp:861
 msgid "Use Fixed Seed"
 msgstr ""
 
-#: src/guiMainMenu.cpp:833
+#: src/guiMainMenu.cpp:867
 msgid "Map Seed"
 msgstr ""
 
-#: src/guiMainMenu.cpp:851
+#: src/guiMainMenu.cpp:885
 msgid "Clear Map"
 msgstr ""
 
-#: src/guiMainMenu.cpp:856
+#: src/guiMainMenu.cpp:890
 msgid "Warning! This will delete all construction from your map!"
 msgstr ""
 
-#: src/guiMainMenu.cpp:879
+#: src/guiMainMenu.cpp:913
 msgid ""
 "Voxelands\n"
 "http://www.voxelands.com/\n"
 "\n"
 "By Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
-"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, tiemay, Szkodnix, soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound, Rui, Wayward_One\n"
+"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, tiemay, Szkodnix, soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound, Rui, Wayward_One, loh\n"
 "\n"
 "Based on Minetest-C55\n"
 "by Perttu Ahola <celeron55@gmail.com>\n"
@@ -3436,23 +3457,23 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-#: src/guiPasswordChange.cpp:106
+#: src/guiPasswordChange.cpp:105
 msgid "Old Password"
 msgstr ""
 
-#: src/guiPasswordChange.cpp:124
+#: src/guiPasswordChange.cpp:123
 msgid "New Password"
 msgstr ""
 
-#: src/guiPasswordChange.cpp:141
+#: src/guiPasswordChange.cpp:140
 msgid "Confirm Password"
 msgstr ""
 
-#: src/guiPasswordChange.cpp:159
+#: src/guiPasswordChange.cpp:158
 msgid "Change"
 msgstr ""
 
-#: src/guiPasswordChange.cpp:167
+#: src/guiPasswordChange.cpp:166
 msgid "Passwords do not match!"
 msgstr ""
 
@@ -3772,15 +3793,15 @@ msgstr ""
 msgid "Zoom"
 msgstr ""
 
-#: src/main.cpp:1137
+#: src/main.cpp:1135
 msgid "Setting Up UI"
 msgstr ""
 
-#: src/main.cpp:1160
+#: src/main.cpp:1158
 msgid "Loading MapNodes"
 msgstr ""
 
-#: src/main.cpp:1162
+#: src/main.cpp:1160
 msgid "Loading Creatures"
 msgstr ""
 
