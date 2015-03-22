@@ -3553,9 +3553,7 @@ bool PistonNodeMetadata::extend(v3s16 pos, v3s16 dir, content_t arm, MapNode pis
 bool PistonNodeMetadata::contract(v3s16 pos, v3s16 dir, bool sticky, MapNode piston, ServerEnvironment *env)
 {
 	bool dropping = false;
-	env->addEnvEvent(ENV_EVENT_SOUND,intToFloat(pos,BS),"env-piston");
-	env->getMap().addNodeWithEvent(pos,piston);
-	env->getMap().removeNodeWithEvent(pos+dir);
+	bool contract = true;
 	if (dir.Y == 1)
 		dropping = true;
 	if (sticky || dropping) {
@@ -3566,6 +3564,7 @@ bool PistonNodeMetadata::contract(v3s16 pos, v3s16 dir, bool sticky, MapNode pis
 		for (int i=0; walk && i<16; i++) {
 			MapNode n = env->getMap().getNodeNoEx(p_next);
 			if (n.getContent() == CONTENT_IGNORE) {
+				contract = false;
 				walk = false;
 				break;
 			}
@@ -3585,6 +3584,7 @@ bool PistonNodeMetadata::contract(v3s16 pos, v3s16 dir, bool sticky, MapNode pis
 				testnode = env->getMap().getNodeNoEx(test_p);
 				if (testnode.getContent() == CONTENT_IGNORE || testnode.getContent() == CONTENT_BORDERSTONE) {
 					walk = false;
+					contract = false;
 					break;
 				}
 			}
@@ -3619,6 +3619,11 @@ bool PistonNodeMetadata::contract(v3s16 pos, v3s16 dir, bool sticky, MapNode pis
 				p_next += dir;
 			}
 		}
+	}
+	if (contract) {
+		env->addEnvEvent(ENV_EVENT_SOUND,intToFloat(pos,BS),"env-piston");
+		env->getMap().addNodeWithEvent(pos,piston);
+		env->getMap().removeNodeWithEvent(pos+dir);
 	}
 
 	return true;
