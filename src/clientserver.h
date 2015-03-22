@@ -194,13 +194,6 @@ enum ToClientCommand
 		v3f1000 camera point target (to point the death cause or whatever)
 	*/
 
-	TOCLIENT_HAVECOOKIE = 0x38,
-	/*
-		u16 command
-		u16 textlen
-		textdata
-	*/
-
 	TOCLIENT_PLAYERITEMS = 0x39,
 	/*
 		u16 command
@@ -425,11 +418,6 @@ enum ToServerCommand
 	TOSERVER_RESPAWN=0x38,
 	/*
 		u16 TOSERVER_RESPAWN
-	*/
-
-	TOSERVER_WANTCOOKIE=0x39,
-	/*
-		u16 TOSERVER_WANTCOOKIE
 	*/
 
 	TOSERVER_NODEMETA_FIELDS = 0x3b,

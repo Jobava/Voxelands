@@ -727,8 +727,6 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 			// Send as reliable
 			m_con.Send(PEER_ID_SERVER, 1, data, true);
 		}
-		sendWantCookie();
-
 		return;
 	}
 
@@ -927,8 +925,6 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 					infostream<<"Client: Adding new player "<<peer_id<<std::endl;
 				}
 				player->updateName((char*)&data[start+2]);
-				std::string p_name((char*)&data[start+2]);
-				m_httpclient->pushRequest(HTTPREQUEST_SKIN_HASH,p_name);
 				start += item_size;
 			}
 			/*
@@ -1012,8 +1008,6 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 
 				player->setCharDef(chardef);
 				player->updateName(pname);
-				std::string p_name(pname);
-				m_httpclient->pushRequest(HTTPREQUEST_SKIN_HASH,p_name);
 			}
 
 			/*
@@ -1550,26 +1544,6 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		m_client_event_queue.push_back(event);
 	}
 	break;
-	case TOCLIENT_HAVECOOKIE:
-	{
-		/*
-			u16 command
-			u16 textlen
-			textdata
-		*/
-		std::string datastring((char*)&data[2], datasize-2);
-		std::istringstream is(datastring, std::ios_base::binary);
-
-		u16 len = readU16(is);
-		char buff[len+1];
-		is.read(buff,len);
-		buff[len] = 0;
-		std::string c(buff);
-		std::string p(getLocalPlayer()->getName());
-		m_httpclient->setCookie(c);
-		m_httpclient->pushRequest(HTTPREQUEST_SKIN_HASH,p);
-	}
-	break;
 	case TOCLIENT_ENV_EVENT:
 	{
 		/*
@@ -1890,19 +1864,6 @@ void Client::sendRespawn()
 	std::ostringstream os(std::ios_base::binary);
 
 	writeU16(os, TOSERVER_RESPAWN);
-
-	// Make data buffer
-	std::string s = os.str();
-	SharedBuffer<u8> data((u8*)s.c_str(), s.size());
-	// Send as reliable
-	Send(0, data, true);
-}
-
-void Client::sendWantCookie()
-{
-	DSTACK(__FUNCTION_NAME);
-	std::ostringstream os(std::ios_base::binary);
-	writeU16(os, TOSERVER_WANTCOOKIE);
 
 	// Make data buffer
 	std::string s = os.str();

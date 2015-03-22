@@ -4930,11 +4930,6 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				<<PP(player->getPosition()/BS)<<std::endl;
 	}
 	break;
-	case TOSERVER_WANTCOOKIE:
-	{
-		SendPlayerCookie(player);
-	}
-	break;
 	case TOSERVER_NODEMETA_FIELDS:
 	{
 		std::string datastring((char*)&data[2], datasize-2);
@@ -5467,22 +5462,6 @@ void Server::SendPlayerHP(Player *player)
 	if (!g_settings->getBool("enable_hunger"))
 		hunger = 0;
 	SendHP(m_con, player->peer_id, hp,air,hunger);
-}
-
-void Server::SendPlayerCookie(Player *player)
-{
-	std::ostringstream os(std::ios_base::binary);
-	std::string c = player->getCookie();
-
-	writeU16(os, TOCLIENT_HAVECOOKIE);
-	writeU16(os, c.size());
-	os.write(c.c_str(),c.size());
-
-	// Make data buffer
-	std::string s = os.str();
-	SharedBuffer<u8> data((u8*)s.c_str(), s.size());
-	// Send as reliable
-	m_con.Send(player->peer_id, 0, data, true);
 }
 
 void Server::SendSettings(Player *player)

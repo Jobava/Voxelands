@@ -46,9 +46,9 @@ static std::string http_player_interface(Player *player, HTTPServer *server, boo
 	html += player->getName();
 	html += "</a></h2>";
 	if (full) {
-		html += "<p class=\"right\"><img src=\"/player/";
-		html += player->getName();
-		html += "/skin\" /></p>";
+		//html += "<p class=\"right\"><img src=\"/player/";
+		//html += player->getName();
+		//html += "/skin\" /></p>";
 	}
 	snprintf(buff, 2048,"% .1f, % .1f, % .1f",player->getPosition().X/BS,player->getPosition().Y/BS,player->getPosition().Z/BS);
 	if (player->peer_id == 0) {
@@ -188,13 +188,6 @@ int HTTPRemoteClient::receive()
 	if (h == -1)
 		return 1;
 
-	if (m_recv_headers.getCookie() != "" && m_recv_headers.getHeader("User") != "") {
-		if (m_recv_headers.getCookie() == m_server->getPlayerCookie(m_recv_headers.getHeader("User"))) {
-			m_send_headers.setCookie(m_recv_headers.getCookie());
-			m_auth = true;
-		}
-	}
-
 	if (m_recv_headers.getUrl(0) == "texture") {
 		return handleTexture();
 	}else if (m_recv_headers.getUrl(0) == "player") {
@@ -209,101 +202,50 @@ int HTTPRemoteClient::receive()
 /* handle /player/<name> url's */
 int HTTPRemoteClient::handlePlayer()
 {
-	char buff[2048];
 	/* player list */
-	if (m_recv_headers.getUrl(1) == "") {
+	std::string u1 = m_recv_headers.getUrl(1);
+	if (u1 == "" || u1.substr(0,5) == "page-") {
 		core::list<Player*> players = m_server->getGameServer()->getPlayers();
 		std::string html("<h1>Players</h1>\n");
-		for (core::list<Player*>::Iterator i = players.begin(); i != players.end(); i++) {
+		std::string pagination("");
+		int player_skip = 0;
+		if (players.size() > 50) {
+			int current_page = 1;
+			if (u1.substr(0,5) == "page-") {
+				current_page = mystoi(u1.substr(5));
+				if (current_page < 1)
+					current_page = 1;
+			}
+			int total_pages = (players.size()/50)+1;
+			if (total_pages < 1)
+				total_pages = 1;
+			if (current_page > total_pages)
+				current_page = total_pages;
+			int prev_page = current_page-1;
+			int next_page = current_page+1;
+			if (prev_page < 1)
+				prev_page = 1;
+			if (next_page > total_pages)
+				next_page = total_pages;
+			pagination = std::string("<div class=\"pagination\"><a href=\"/player/page-")+itos(prev_page)+"\">&lt;&lt; prev</a> ";
+			pagination += std::string("Page ")+itos(current_page)+" of "+itos(total_pages)+" ";
+			pagination += std::string("<a class=\"pagination\" href=\"/player/page-")+itos(next_page)+"\">next &gt;&gt;</a></div>";
+			player_skip = (current_page-1)*50;
+		}
+		html += pagination;
+		int p = 0;
+		for (core::list<Player*>::Iterator i = players.begin(); i != players.end(); i++,p++) {
+			if (p < player_skip)
+				continue;
+			if (p > player_skip+50)
+				break;
 			Player *player = *i;
 			html += http_player_interface(player,m_server,false);
 		}
+		html += pagination;
 		sendHTML((char*)html.c_str());
 		return 1;
-	/* player skin */
-	}else if (m_recv_headers.getUrl(2) == "skin") {
-		std::string file = getPath("player","player_" + m_recv_headers.getUrl(1) + ".png",true);
-		if (m_recv_headers.getMethod() != "PUT") {
-			if (file == "") {
-				if (m_auth && m_recv_headers.getHeader("User") == m_recv_headers.getUrl(1))
-					return handleSpecial("304 Not Modified");
-				if (m_recv_headers.getUrl(3) == "hash")
-					return handleSpecial("204 No Content");
-				m_send_headers.setHeader("Location","/texture/character.png");
-				return handleSpecial("303 See Other","<p><a href=\"/texture/character.png\">/texture/character.png</a></p>");
-			}
-			/* compare hash */
-			if (m_recv_headers.getUrl(3) == "hash") {
-				FILE *f;
-				f = fopen(file.c_str(),"rb");
-				if (!f) {
-					if (m_auth && m_recv_headers.getHeader("User") == m_recv_headers.getUrl(1))
-						return handleSpecial("304 Not Modified");
-					return handleSpecial("204 No Content");
-				}
-				fseek(f,0,SEEK_END);
-				size_t l = ftell(f);
-				fclose(f);
-				if (!l) {
-					if (m_auth && m_recv_headers.getHeader("User") == m_recv_headers.getUrl(1))
-						return handleSpecial("304 Not Modified");
-					return handleSpecial("204 No Content");
-				}
-				SHA1 s;
-				s.addFile(file.c_str());
-				s.getDigest(buff);
-				if (std::string(buff) == m_recv_headers.getUrl(4)) {
-					return handleSpecial("204 No Content");
-				}else if (m_auth && m_recv_headers.getHeader("User") == m_recv_headers.getUrl(1)) {
-					return handleSpecial("304 Not Modified");
-				}
-			}
-			/* get file */
-			m_send_headers.setHeader("Content-Type","image/png");
-			sendFile(file);
-			return 1;
-		}
-		if (file == "")
-			file = getPath("player","player_" + m_recv_headers.getUrl(1) + ".png",false);
-		fs::CreateAllDirs(getPath("dir",std::string("textures")+DIR_DELIM+"players",false));
-		/* put only works for the owner */
-		if (!m_auth || m_recv_headers.getHeader("User") != m_server->getPlayerFromCookie(m_recv_headers.getCookie()))
-			return handleSpecial("405 Method Not Allowed");
-		size_t s = m_recv_headers.getLength();
-		if (!s)
-			return handleSpecial("411 Length Required");
-		FILE *f;
-		f = fopen(file.c_str(),"wb");
-		if (!f)
-			return handleSpecial("500 Internal Server Error");
-		size_t l;
-		size_t c = 2048;
-		size_t t = 0;
-		if (c > s)
-			c = s;
-		if (c) {
-			while ((l = read(buff,c)) > 0) {
-				s -= l;
-				t += l;
-				c = fwrite(buff,1,l,f);
-				if (c != l) {
-					fclose(f);
-					return handleSpecial("500 Internal Server Error");
-				}
-				c = 2048;
-				if (c > s)
-					c = s;
-				if (!c)
-					break;
-			}
-		}
-		l = ftell(f);
-		fclose(f);
-		if (l == t && l == m_recv_headers.getLength())
-			return handleSpecial("201 Created");
-		fs::RecursiveDelete(file.c_str());
-		return handleSpecial("500 Internal Server Error");
-	}else if (m_server->getGameServer()->getPlayer(m_recv_headers.getUrl(1))) {
+	}else if (m_server->getGameServer()->getPlayer(u1)) {
 		std::string html("<h1>Players</h1>\n");
 		Player *player = m_server->getGameServer()->getPlayer(m_recv_headers.getUrl(1));
 		html += http_player_interface(player,m_server,true);
@@ -320,17 +262,6 @@ int HTTPRemoteClient::handleTexture()
 	if (file == "")
 		return handleSpecial("404 Not Found");
 	m_send_headers.setHeader("Content-Type","image/png");
-	sendFile(file);
-	return 1;
-}
-
-/* handle /model/<file> url's */
-int HTTPRemoteClient::handleModel()
-{
-	std::string file = getPath("model",m_recv_headers.getUrl(1),true);
-	if (file == "")
-		return handleSpecial("404 Not Found");
-	m_send_headers.setHeader("Content-Type","application/octet-stream");
 	sendFile(file);
 	return 1;
 }
@@ -464,7 +395,6 @@ void HTTPRemoteClient::sendFile(std::string &file)
 		t += l;
 		m_socket->Send(buff,l);
 	}
-//printf("sent: %lu %lu\n",s,t);
 
 	fclose(f);
 }
@@ -495,12 +425,6 @@ void HTTPRemoteClient::sendHeaders()
 	s = m_send_headers.length();
 	s = snprintf(buff,1024,"Content-Length: %d\r\n",s);
 	m_socket->Send(buff,s);
-
-	v = m_send_headers.getCookie();
-	if (v != "") {
-		s = snprintf(buff,1024,"Set-Cookie: MTID=%s\r\n",v.c_str());
-		m_socket->Send(buff,s);
-	}
 
 	v = m_send_headers.getHeader("Location");
 	if (v != "") {
@@ -550,7 +474,6 @@ void * HTTPClientThread::Thread()
 
 /* constructor */
 HTTPClient::HTTPClient(Client *client):
-	m_cookie(""),
 	m_thread(this)
 {
 	m_client = client;
@@ -592,11 +515,7 @@ void HTTPClient::stop()
 /* the main function for the client loop */
 void HTTPClient::step()
 {
-	if (m_requests.size() == 0 || m_cookie == "") {
-		/* this should only happen if a packet was lost
-		 * or the server has enable_http = false */
-		//if (m_requests.size() > 0 || m_cookie == "")
-			//m_client->sendWantCookie();
+	if (m_requests.size() == 0) {
 #ifdef _WIN32
 		Sleep(1000);
 #else
@@ -639,11 +558,7 @@ void HTTPClient::step()
 		m_recv_headers.clear();
 		m_send_headers.clear();
 
-		if (q.post == "") {
-			get(q.url);
-		}else{
-			put(q.url,q.post);
-		}
+		get(q.url);
 
 		int r = 0;
 		int h = -1;
@@ -658,70 +573,6 @@ void HTTPClient::step()
 		}
 
 		r = m_recv_headers.getResponse();
-
-		if (q.post == "") {
-			if (r == 204 || r == 303) {
-				delete m_socket;
-				continue;
-			}else if (r == 304) {
-				std::string d(m_client->getLocalPlayer()->getName());
-				pushRequest(HTTPREQUEST_SKIN_SEND,d);
-				delete m_socket;
-				continue;
-			}
-			if (r != 200) {
-				errorstream << "receive skin returned " << r << std::endl;
-				delete m_socket;
-				continue;
-			}
-			if (q.data == "") {
-				errorstream << "receive skin returned successful for no player?" << std::endl;
-				delete m_socket;
-				continue;
-			}
-			if (q.data == m_client->getLocalPlayer()->getName()) {
-				delete m_socket;
-				continue;
-			}
-			char buff[2048];
-			fs::CreateAllDirs(getPath("dir",std::string("textures")+DIR_DELIM+"players",false));
-			std::string file = getPath("player",std::string("player_")+q.data+".png",false);
-			size_t s = m_recv_headers.getLength();
-			if (!s) {
-				delete m_socket;
-				continue;
-			}
-			FILE *f;
-			f = fopen(file.c_str(),"wb");
-			if (!f) {
-				delete m_socket;
-				continue;
-			}
-			size_t l;
-			size_t c = 2048;
-			if (c > s)
-				c = s;
-			if (c) {
-				m_socket->WaitData(60000);
-				while ((l = read(buff,c)) > 0) {
-					s -= l;
-					c = fwrite(buff,1,l,f);
-					if (c != l)
-						break;
-					c = 2048;
-					if (c > s)
-						c = s;
-					if (!c)
-						break;
-				}
-			}
-			l = ftell(f);
-			fclose(f);
-			if (l != m_recv_headers.getLength())
-				fs::RecursiveDelete(file.c_str());
-		}else if (r == 405) {
-			errorstream << "send skin returned 405 Method Not Allowed" << std::endl;
-		}
 		delete m_socket;
 	}
 	p.clear();
@@ -735,89 +586,6 @@ void HTTPClient::pushRequest(HTTPRequestType type, std::string &data)
 	switch (type) {
 	case HTTPREQUEST_NULL:
 		break;
-	/*
-	 * /player/<name>/skin
-	 * request the skin texture for <name>
-	 * response:
-	 * 	if skin exists:
-	 *		200 OK + texture data
-	 *	else:
-	 *		303 See Other + Location header to /texture/character.png
-	 * this client will ignore the redirect, while browsers will see the default skin
-	 */
-	case HTTPREQUEST_SKIN:
-	{
-		std::string url("/player/");
-		url += data + "/skin";
-		HTTPRequest r(url);
-		r.data = data;
-		m_req_mutex.Lock();
-		m_requests.push_back(r);
-		m_req_mutex.Unlock();
-		break;
-	}
-	/*
-	 * /player/<name>/skin/hash/<sha1>
-	 * sends the sha1 hash of the skin texture for <name>
-	 * response:
-	 * 	if hash is the same on client and server:
-	 *		204 No Content
-	 *	if client is authenticated as <name>:
-	 *		304 Not Modified
-	 *	else:
-	 *		200 OK + texture data
-	 */
-	case HTTPREQUEST_SKIN_HASH:
-	{
-		std::string tex = std::string("player_") + data + ".png";
-		std::string ptex = getPath("player",tex,true);
-		if (ptex == "") {
-			if (data == m_client->getLocalPlayer()->getName()) {
-				ptex = getPath("texture","player.png",true);
-				if (ptex == "")
-					return;
-			}else{
-				pushRequest(HTTPREQUEST_SKIN,data);
-				return;
-			}
-		}
-		char buff[100];
-		SHA1 s;
-		s.addFile(ptex.c_str());
-		s.getDigest(buff);
-		std::string url("/player/");
-		url += data + "/skin/hash/" + buff;
-		HTTPRequest r(url);
-		r.data = data;
-		m_req_mutex.Lock();
-		m_requests.push_back(r);
-		m_req_mutex.Unlock();
-		break;
-	}
-	/*
-	 * /player/<name>/skin
-	 * PUT request type, sends the skin to the server
-	 * response:
-	 *	if client is authenticated as <name>:
-	 *		201 Created
-	 *	else:
-	 *		405 Method Not Allowed
-	 */
-	case HTTPREQUEST_SKIN_SEND:
-	{
-		std::string tex = std::string("player.png");
-		std::string ptex = getPath("texture",tex,true);
-		if (ptex == "")
-			return;
-
-		std::string url("/player/");
-		url += data + "/skin";
-		HTTPRequest r(url,ptex,data);
-		m_req_mutex.Lock();
-		m_requests.push_back(r);
-		m_req_mutex.Unlock();
-		break;
-	}
 	default:;
 	}
 }
@@ -844,42 +612,6 @@ bool HTTPClient::get(std::string &url)
 	return true;
 }
 
-/* send a http POST request to the server */
-bool HTTPClient::post(std::string &url, char* data)
-{
-	return false;
-}
-
-/* send a file to the server with a http PUT request */
-bool HTTPClient::put(std::string &url, std::string &file)
-{
-	FILE *f;
-	u32 s;
-	f = fopen(file.c_str(),"r");
-	if (!f)
-		return false;
-	fseek(f,0,SEEK_END);
-	s = ftell(f);
-	fseek(f,0,SEEK_SET);
-	m_send_headers.setLength(s);
-	m_send_headers.setHeader("Content-Type","image/png");
-	m_send_headers.setMethod("PUT");
-	m_send_headers.setUrl(url);
-
-	sendHeaders();
-
-	u32 t = 0;
-	u32 l;
-
-	char buff[1024];
-	while ((l = fread(buff,1,1024,f)) > 0) {
-		t += l;
-		m_socket->Send(buff,l);
-	}
-	fclose(f);
-	return true;
-}
-
 /* send http headers to the server */
 void HTTPClient::sendHeaders()
 {
@@ -898,9 +630,6 @@ void HTTPClient::sendHeaders()
 
 	s = m_send_headers.length();
 	s = snprintf(buff,1024,"Content-Length: %d\r\n",s);
-	m_socket->Send(buff,s);
-
-	s = snprintf(buff,1024,"Cookie: MTID=%s\r\n",m_cookie.c_str());
 	m_socket->Send(buff,s);
 
 	s = snprintf(buff,1024,"User: %s\r\n",m_client->getLocalPlayer()->getName());
@@ -927,7 +656,6 @@ int HTTPRequestHeaders::read(TCPSocket *sock)
 		return -1;
 	n = lbuff;
 	lbuff[i] = 0;
-printf("%s\n",n);
 	{
 		v = strchr(n,' ');
 		if (!v)
@@ -969,8 +697,6 @@ printf("%s\n",n);
 		}
 		if (!strcmp(n,"Content-Length")) {
 			setLength(strtoul(v,NULL,10));
-		}else if (!strcmp(n,"Cookie") && !strncmp(v,"MTID=",5)) {
-			setCookie(v+5);
 		}else{
 			setHeader(n,v);
 		}
@@ -992,7 +718,6 @@ int HTTPResponseHeaders::read(TCPSocket *sock)
 		return -1;
 	n = lbuff;
 	lbuff[i] = 0;
-printf("%s\n",n);
 	{
 		v = strchr(n,' ');
 		if (!v)
@@ -1022,8 +747,6 @@ printf("%s\n",n);
 		}
 		if (!strcmp(n,"Content-Length")) {
 			setLength(strtoul(v,NULL,10));
-		}else if (!strcmp(n,"SetCookie") && !strncmp(v,"MTID=",5)) {
-			setCookie(v+5);
 		}else{
 			setHeader(n,v);
 		}

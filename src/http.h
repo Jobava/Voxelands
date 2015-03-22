@@ -58,20 +58,17 @@ public:
 	void clear()
 	{
 		m_contentLength = 0;
-		m_cookie = std::string("");
 		m_url = std::string("");
 		m_url_split.clear();
 	}
 	virtual int read(TCPSocket *sock) = 0;
 	u32 length() {return m_contentLength;}
-	std::string getCookie() {return m_cookie;}
 	std::string getUrl() {return m_url;}
 	std::string getUrl(unsigned int index) { if (m_url_split.size() > index) return m_url_split[index]; return std::string("");}
 	std::string getHeader(std::string name) {return m_headers[name];}
 	std::string getMethod() {return m_method;}
 	u32 getLength() {return m_contentLength;}
 
-	void setCookie(std::string cookie) {std::string c(cookie.c_str()); m_cookie = c;}
 	void setUrl(std::string url) {std::string u(url); m_url = u;}
 	void addUrl(std::string url) {m_url_split.push_back(url);}
 	void setHeader(std::string name, std::string value) {m_headers[name] = value;}
@@ -80,7 +77,6 @@ public:
 private:
 	std::map<std::string,std::string> m_headers;
 	u32 m_contentLength;
-	std::string m_cookie;
 	std::string m_url;
 	std::vector<std::string> m_url_split;
 	std::string m_method;
@@ -120,9 +116,8 @@ private:
 	int readline(char* buff, int size) {return m_socket->ReceiveLine(buff,size);}
 	void sendHeaders();
 
-	int handlePlayer();
 	int handleTexture();
-	int handleModel();
+	int handlePlayer();
 	int handleMap();
 	int handleIndex();
 	int handleSpecial(const char* response, std::string content);
@@ -151,8 +146,6 @@ public:
 	void start(u16 port);
 	void stop();
 	void step();
-	std::string getPlayerCookie(std::string name) {return m_server->getPlayerCookie(name);}
-	std::string getPlayerFromCookie(std::string cookie) {return m_server->getPlayerFromCookie(cookie);}
 	std::string getPlayerPrivs(std::string name) {return privsToString(m_server->getPlayerAuthPrivs(name));}
 	Server *getGameServer() {return m_server;}
 private:
@@ -163,10 +156,7 @@ private:
 };
 
 enum HTTPRequestType {
-	HTTPREQUEST_NULL,
-	HTTPREQUEST_SKIN,
-	HTTPREQUEST_SKIN_HASH,
-	HTTPREQUEST_SKIN_SEND
+	HTTPREQUEST_NULL
 };
 
 struct HTTPRequest
@@ -227,13 +217,10 @@ public:
 	void start(const Address &address);
 	void stop();
 	void step();
-	void setCookie(std::string &cookie) {std::string c(cookie.c_str()); m_cookie = c;}
 	void pushRequest(HTTPRequestType type, std::string &data);
 	void pushRequest(std::string &url, std::string &data);
 private:
 	bool get(std::string &url);
-	bool post(std::string &url, char* data);
-	bool put(std::string &url, std::string &file);
 	int read(char* buff, int size) {return m_socket->Receive(buff,size);}
 	int readline(char* buff, int size) {return m_socket->ReceiveLine(buff,size);}
 	void sendHeaders();
@@ -242,7 +229,6 @@ private:
 	TCPSocket *m_socket;
 	HTTPResponseHeaders m_recv_headers;
 	HTTPRequestHeaders m_send_headers;
-	std::string m_cookie;
 	std::vector<HTTPRequest> m_requests;
 	JMutex m_req_mutex;
 	HTTPClientThread m_thread;

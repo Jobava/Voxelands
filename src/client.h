@@ -219,7 +219,6 @@ public:
 	void sendDamage(s8 damage, s8 suffocate, s8 hunger);
 	void sendClothesWear(u16 wear);
 	void sendRespawn();
-	void sendWantCookie();
 
 	ClientEnvironment& getEnv() { return m_env; }
 

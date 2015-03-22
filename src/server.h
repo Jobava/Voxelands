@@ -457,23 +457,6 @@ public:
 	}
 	void setPlayerPassword(const char *name, const char *password) {m_authmanager.setPassword(name,password);}
 
-	std::string getPlayerCookie(std::string &name)
-	{
-		Player *p = m_env.getPlayer(name.c_str());
-		if (p == NULL)
-			return "";
-		return p->getCookie();
-	}
-	std::string getPlayerFromCookie(std::string &cookie)
-	{
-		core::list<Player*> players = m_env.getPlayers();
-		for (core::list<Player*>::Iterator i = players.begin(); i != players.end(); i++) {
-			Player *player = *i;
-			if (player->getCookie() == cookie)
-				return player->getName();
-		}
-		return std::string("");
-	}
 	Player *getPlayer(std::string name) {return m_env.getPlayer(name.c_str());}
 	core::list<Player*> getPlayers() {return m_env.getPlayers();}
 	core::list<Player*> getPlayers(bool ign_disconnected) {return m_env.getPlayers(ign_disconnected);}
@@ -543,7 +526,6 @@ private:
 	void SendChatMessage(u16 peer_id, const std::wstring &message);
 	void BroadcastChatMessage(const std::wstring &message);
 	void SendPlayerHP(Player *player);
-	void SendPlayerCookie(Player *player);
 	// tell the client what kind of game is being played
 	void SendSettings(Player *player);
 	/*

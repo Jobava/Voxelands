@@ -146,7 +146,6 @@ public:
 	{
 		light = light_at_pos;
 	}
-	virtual std::string getCookie() {return "";}
 
 	virtual void updateAnim(u8 anim_id)
 	{}
@@ -284,8 +283,7 @@ class ServerRemotePlayer : public Player
 {
 public:
 	ServerRemotePlayer():
-		m_addr(""),
-		m_cookie("")
+		m_addr("")
 	{
 	}
 	virtual ~ServerRemotePlayer()
@@ -307,18 +305,7 @@ public:
 	virtual void setCharDef(std::string d);
 
 private:
-	virtual std::string getCookie()
-	{
-		if (m_cookie == "") {
-			char buff[256];
-			snprintf(buff,256,"%s%.4X",getName(),peer_id);
-			m_cookie = std::string(buff);
-		}
-		return m_cookie;
-	}
-
 	std::string m_addr;
-	std::string m_cookie;
 };
 
 #ifndef SERVER
