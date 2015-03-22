@@ -372,10 +372,20 @@ else()
 		set(SAFETY_FLAGS "-fno-strict-aliasing -fwrapv -fvisibility=hidden -fstack-protector --param=ssp-buffer-size=4 -D_FORTIFY_SOURCE=2")
 	endif()
 
-	set(CMAKE_CXX_FLAGS_RELEASE "-DNDEBUG ${SAFETY_FLAGS} -O2 -Wall -fomit-frame-pointer -pipe")
-	set(CMAKE_CXX_FLAGS_DEBUG "${SAFETY_FLAGS} -O0 -g2 -ggdb")
-	set(CMAKE_C_FLAGS_RELEASE "-DNDEBUG ${SAFETY_FLAGS} -O2 -Wall -fomit-frame-pointer -pipe")
-	set(CMAKE_C_FLAGS_DEBUG "${SAFETY_FLAGS} -O0 -g2 -ggdb")
+	if(CPU_OPTS)
+		set(OPT_FLAGS "-march=native -mtune=native -O2 -fomit-frame-pointer")
+	else()
+		set(OPT_FLAGS "-O2 -fomit-frame-pointer")
+	endif()
+
+	set(CMAKE_CXX_FLAGS_RELEASE "-DNDEBUG ${SAFETY_FLAGS} ${OPT_FLAGS} -pipe")
+	set(CMAKE_CXX_FLAGS_DEBUG "${SAFETY_FLAGS} -Wall -O0 -g2 -ggdb")
+	set(CMAKE_C_FLAGS_RELEASE "-DNDEBUG ${SAFETY_FLAGS} ${OPT_FLAGS} -pipe")
+	set(CMAKE_C_FLAGS_DEBUG "${SAFETY_FLAGS} -Wall -O0 -g2 -ggdb")
+
+	set(CMAKE_EXE_LINKER_FLAGS_RELEASE "-Wl,-O1,--as-needed,--discard-all,--no-undefined,--sort-common,-z,relro,-z,now")
+	set(CMAKE_MODULE_LINKER_FLAGS_RELEASE "-Wl,-O1,--as-needed,--discard-all,--no-undefined,--sort-common,-z,relro,-z,now")
+	set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "-Wl,-O1,--as-needed,--discard-all,--no-undefined,--sort-common,-z,relro,-z,now")
 
 	if(USE_GPROF)
 		set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -pg")
@@ -388,8 +398,9 @@ else()
 
 endif()
 
-MESSAGE(STATUS "CMAKE_CXX_FLAGS_RELEASE=${CMAKE_CXX_FLAGS_RELEASE}")
-MESSAGE(STATUS "CMAKE_CXX_FLAGS_DEBUG=${CMAKE_CXX_FLAGS_DEBUG}")
+MESSAGE(STATUS "Release Flags: ${CMAKE_CXX_FLAGS_RELEASE}")
+MESSAGE(STATUS "Debug Flags: ${CMAKE_CXX_FLAGS_DEBUG}")
+MESSAGE(STATUS "Linker Flags: ${CMAKE_EXE_LINKER_FLAGS_RELEASE}")
 
 #
 # Installation
