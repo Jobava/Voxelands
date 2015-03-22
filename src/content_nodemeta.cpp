@@ -3554,6 +3554,7 @@ bool PistonNodeMetadata::contract(v3s16 pos, v3s16 dir, bool sticky, MapNode pis
 {
 	bool dropping = false;
 	bool contract = true;
+	bool remove_arm = true;
 	if (dir.Y == 1)
 		dropping = true;
 	if (sticky || dropping) {
@@ -3613,6 +3614,7 @@ bool PistonNodeMetadata::contract(v3s16 pos, v3s16 dir, bool sticky, MapNode pis
 					break;
 				env->getMap().removeNodeWithEvent(p_next);
 				env->getMap().addNodeWithEvent(p_cur,n);
+				remove_arm = false;
 				if (!dropping)
 					break;
 				p_cur = p_next;
@@ -3623,7 +3625,8 @@ bool PistonNodeMetadata::contract(v3s16 pos, v3s16 dir, bool sticky, MapNode pis
 	if (contract) {
 		env->addEnvEvent(ENV_EVENT_SOUND,intToFloat(pos,BS),"env-piston");
 		env->getMap().addNodeWithEvent(pos,piston);
-		env->getMap().removeNodeWithEvent(pos+dir);
+		if (remove_arm)
+			env->getMap().removeNodeWithEvent(pos+dir);
 	}
 
 	return true;
