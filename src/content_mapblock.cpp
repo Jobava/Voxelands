@@ -3682,12 +3682,18 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			front.rotateXZBy(rot);
 			left.rotateXZBy(rot);
 			right.rotateXZBy(rot);
+			if (urot) {
+				v3s16 r = left;
+				left = right;
+				right = r;
+			}
 			MapNode nb = data->m_vmanip.getNodeRO(blockpos_nodes + p + back);
 			MapNode nf = data->m_vmanip.getNodeRO(blockpos_nodes + p + front);
 			MapNode nl = data->m_vmanip.getNodeRO(blockpos_nodes + p + left);
 			MapNode nr = data->m_vmanip.getNodeRO(blockpos_nodes + p + right);
 			s16 vcounts[6] = {16,4,15,15,4,16};
 			s16 icounts[6] = {24,6,15,15,6,24};
+			bool force_sides = false;
 			if (
 				content_features(nf).draw_type == CDT_SLABLIKE
 				|| (
@@ -3727,6 +3733,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				vertices[5][9] = video::S3DVertex(0.5*BS,0.,-0.5*BS, 0,0,-1, c[13], 1.,0.5);
 				vertices[5][10] = video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 0,0,-1, c[13], 1.,1.);
 				vertices[5][11] = video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,-1, c[13], 0.,1.);
+				force_sides = true;
 			}
 			// don't draw unseen faces
 			bool skips[6] = {false,false,false,false,false,false};
@@ -3741,9 +3748,9 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				)
 			)
 				skips[4] = true;
-			if (content_features(nl).draw_type == CDT_STAIRLIKE && nl.getRotationAngle() == rot)
+			if (!force_sides && content_features(nl).draw_type == CDT_STAIRLIKE && nl.getRotationAngle() == rot)
 				skips[3] = true;
-			if (content_features(nr).draw_type == CDT_STAIRLIKE && nr.getRotationAngle() == rot)
+			if (!force_sides &&content_features(nr).draw_type == CDT_STAIRLIKE && nr.getRotationAngle() == rot)
 				skips[2] = true;
 
 			if (urot) {
