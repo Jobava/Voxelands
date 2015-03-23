@@ -188,11 +188,17 @@ int HTTPRemoteClient::receive()
 	if (h == -1)
 		return 1;
 
-	if (m_recv_headers.getUrl(0) == "texture") {
+	std::string u0 = m_recv_headers.getUrl(0);
+
+	if (u0 == "texture") {
 		return handleTexture();
-	}else if (m_recv_headers.getUrl(0) == "player") {
+	}else if (u0 == "player") {
 		return handlePlayer();
-	}else if (m_recv_headers.getUrl(0) == "") {
+	}else if (u0 == "map") {
+		return handleMap();
+	}else if (u0 == "api") {
+		return handleAPI();
+	}else if (u0 == "") {
 		return handleIndex();
 	}
 
@@ -272,6 +278,73 @@ int HTTPRemoteClient::handleMap()
 	return handleSpecial("404 Not Found");
 }
 
+/* handle /api/xxx url's */
+int HTTPRemoteClient::handleAPI()
+{
+
+	std::string u1 = m_recv_headers.getUrl(1);
+
+	if (u1 == "summary" || u1 == "") {
+		std::string txt = g_settings->get("server_name");
+		if (txt == "")
+			txt = g_settings->get("server_address");
+		txt += "\n";
+		txt += g_settings->get("motd")+"\n";
+		txt += g_settings->get("server_address")+"\n";
+		txt += g_settings->get("port")+"\n";
+		txt += g_settings->get("game_mode")+"\n";
+		if (g_settings->get("default_password") == "") {
+			txt += "public\n";
+		}else{
+			txt += "private\n";
+		}
+		txt += "summary,motd,mode,name,players,public,version";
+		send((char*)txt.c_str());
+		return 1;
+	}else if (u1 == "motd") {
+		std::string txt = g_settings->get("motd");
+		send((char*)txt.c_str());
+		return 1;
+	}else if (u1 == "mode") {
+		std::string txt = g_settings->get("game_mode");
+		send((char*)txt.c_str());
+		return 1;
+	}else if (u1 == "name") {
+		std::string txt = g_settings->get("server_name");
+		if (txt == "")
+			txt = g_settings->get("server_address");
+		send((char*)txt.c_str());
+		return 1;
+	}else if (u1 == "version") {
+		std::string txt = VERSION_STRING;
+		send((char*)txt.c_str());
+		return 1;
+	}else if (u1 == "players") {
+		core::list<Player*> players = m_server->getGameServer()->getPlayers(true);
+		std::string txt = itos(players.size())+"\n";
+		int c = 0;
+		for (core::list<Player*>::Iterator i = players.begin(); i != players.end(); i++) {
+			Player *player = *i;
+			if (c++)
+				txt += ", ";
+			txt += player->getName();
+		}
+		send((char*)txt.c_str());
+		return 1;
+	}else if (u1 == "public") {
+		if (g_settings->get("default_password") == "") {
+			send((char*)"public");
+		}else{
+			send((char*)"private");
+		}
+		return 1;
+	}
+
+	setResponse("404 Not Found");
+	send((char*)"404 Not Found");
+	return 1;
+}
+
 /* handle / url's */
 int HTTPRemoteClient::handleIndex()
 {
@@ -281,18 +354,16 @@ int HTTPRemoteClient::handleIndex()
 	html += "</h2><p><strong>Version: </strong>";
 	html += VERSION_STRING;
 	html += "<br /><strong><a href=\"/player\" class=\"secret\">Players</a>: </strong>";
-	core::list<Player*> players = m_server->getGameServer()->getPlayers();
+	core::list<Player*> players = m_server->getGameServer()->getPlayers(true);
 	for (core::list<Player*>::Iterator i = players.begin(); i != players.end(); i++) {
 		Player *player = *i;
-		if (player->peer_id != 0) {
-			if (c++)
-				html += ", ";
-			html += "<a href=\"/player/";
-			html += player->getName();
-			html += "\" class=\"secret\">";
-			html += player->getName();
-			html += "</a>";
-		}
+		if (c++)
+			html += ", ";
+		html += "<a href=\"/player/";
+		html += player->getName();
+		html += "\" class=\"secret\">";
+		html += player->getName();
+		html += "</a>";
 	}
 	html += "</div>";
 	sendHTML((char*)html.c_str());

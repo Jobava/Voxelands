@@ -367,9 +367,7 @@ static void getRoofLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, 
 	}
 	lights[1] = MapBlock_LightColor(255, l, selected);
 }
-#endif
 
-#ifndef SERVER
 static int mapblock_mesh_check_walllike(MeshMakeData *data, MapNode n, v3s16 p, u8 d[8])
 {
 	static const v3s16 fence_dirs[8] = {

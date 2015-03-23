@@ -118,6 +118,8 @@ void set_default_settings(Settings *settings)
 	// Server stuff
 	// "map-dir" doesn't exist by default.
 	settings->setDefault("motd", "");
+	settings->setDefault("server_name", "");
+	settings->setDefault("server_address", "");
 	settings->setDefault("max_users", "20");
 	settings->setDefault("strict_protocol_version_checking", "false");
 	settings->setDefault("disallow_empty_passwords","false");

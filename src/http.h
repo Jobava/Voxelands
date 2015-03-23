@@ -120,6 +120,7 @@ private:
 	int handlePlayer();
 	int handleMap();
 	int handleIndex();
+	int handleAPI();
 	int handleSpecial(const char* response, std::string content);
 	int handleSpecial(const char* response) {return handleSpecial(response,"");}
 
