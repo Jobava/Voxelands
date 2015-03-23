@@ -3437,8 +3437,11 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 							bool weared_out = titem->addWear(prop.wear);
 
-							if(weared_out)
+							if (weared_out) {
 								mlist->deleteItem(item_i);
+							}else{
+								mlist->addDiff(item_i,titem);
+							}
 						}
 					}
 
