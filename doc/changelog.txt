@@ -3,6 +3,11 @@ Voxelands changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1503.01: (release 2015-03-23)
+ - some improvements to http server
+ - fix tool wear not being sent to client
+ - fix pistons leaving nodes behind when contracting
+
 1503.00: (release 2015-03-22)
  - add some mob sounds
  - add classic hotbar option to settings menu
