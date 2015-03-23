@@ -32,44 +32,55 @@ endif(GETTEXT_FOUND AND ENABLE_GETTEXT)
 # user visible option to enable/disable audio
 OPTION(ENABLE_AUDIO "Enable audio" ON)
 
-# this is only set to 1 if audio is enabled _and_ available
+## this is only set to 1 if audio is enabled _and_ available
 set(USE_AUDIO 0)
+set(SOUND_PROBLEM 0)
 
-if(BUILD_CLIENT)
-if(ENABLE_AUDIO)
+if(ENABLE_AUDIO AND BUILD_CLIENT)
 	# Sound libraries
 	find_package(OpenAL)
-	if (OPENAL_FOUND)
-		find_package(Vorbis)
-		if (VORBIS_FOUND)
-			set(USE_AUDIO 1)
-			set(audio_SRCS sound.cpp sound_openal.cpp)
-			set(AUDIO_INCLUDE_DIRS
-				${OPENAL_INCLUDE_DIR}
-				${VORBIS_INCLUDE_DIR}
-				)
-			set(AUDIO_LIBRARIES
-				${OPENAL_LIBRARY}
-				${VORBIS_LIBRARIES}
-				)
-			message(STATUS "Sound enabled")
-		else(VORBIS_FOUND)
-			message(FATAL_ERROR "Sound enabled, but Vorbis libraries not found!")
-		endif(VORBIS_FOUND)
-	else(OPENAL_FOUND)
-		message(FATAL_ERROR "Sound enabled, but OpenAL not found!")
-	endif(OPENAL_FOUND)
-endif(ENABLE_AUDIO)
-endif(BUILD_CLIENT)
+	find_package(Vorbis)
+	if(NOT OPENAL_FOUND)
+		message(STATUS "Sound enabled, but OpenAL not found!")
+		set(SOUND_PROBLEM 1)
+		MARK_AS_ADVANCED(CLEAR OPENAL_LIBRARY OPENAL_INCLUDE_DIR)
+	endif()
+	if(NOT VORBIS_FOUND)
+		message(STATUS "Sound enabled, but Vorbis libraries not found!")
+		set(SOUND_PROBLEM 1)
+		MARK_AS_ADVANCED(CLEAR OGG_INCLUDE_DIR VORBIS_INCLUDE_DIR OGG_LIBRARY VORBIS_LIBRARY VORBISFILE_LIBRARY)
+	endif()
+	if(OPENAL_FOUND AND VORBIS_FOUND)
+		set(USE_AUDIO 1)
+		message(STATUS "Sound enabled")
+	endif()
+endif(ENABLE_AUDIO AND BUILD_CLIENT)
 
+if(SOUND_PROBLEM)
+	message(FATAL_ERROR "Sound enabled, but cannot be used.\n"
+		"To continue, either fill in the required paths or disable sound. (-DENABLE_AUDIO=0)")
+endif()
 if(USE_AUDIO)
-else()
-	set(audio_SRCS sound.cpp)
-endif(USE_AUDIO)
+	set(audio_SRCS sound.cpp sound_openal.cpp)
+	set(AUDIO_INCLUDE_DIRS
+		${OPENAL_INCLUDE_DIR}
+		${VORBIS_INCLUDE_DIR}
+		${OGG_INCLUDE_DIR}
+		)
+	set(AUDIO_LIBRARIES
+		${OPENAL_LIBRARY}
+		${VORBIS_LIBRARIES}
+		)
+endif()
 
 option(ENABLE_FREETYPE "Enable freetype2 (truetype fonts and basic unicode support)" ON)
 set(USE_FREETYPE 0)
+
 if(ENABLE_FREETYPE)
+	find_package(Freetype REQUIRED)
+	if (NOT FREETYPE_FOUND)
+		MARK_AS_ADVANCED(CLEAR FREETYPE_INCLUDE_DIR_ft2build FREETYPE_INCLUDE_DIR_freetype2 FREETYPE_LIBRARY)
+	endif()
 	set(USE_FREETYPE 1)
 endif(ENABLE_FREETYPE)
 
@@ -349,7 +360,7 @@ if(MSVC)
 	# EHa enables SEH exceptions (used for catching segfaults)
 	set(CMAKE_CXX_FLAGS_RELEASE "/EHa /O2 /Ob2 /Oi /Ot /Oy /GL /FD /MT /GS- /arch:SSE /fp:fast /D NDEBUG /D _HAS_ITERATOR_DEBUGGING=0 /TP")
 	#set(CMAKE_EXE_LINKER_FLAGS_RELEASE "/LTCG /NODEFAULTLIB:\"libcmtd.lib\" /NODEFAULTLIB:\"libcmt.lib\"")
-	set(CMAKE_EXE_LINKER_FLAGS_RELEASE "/LTCG")
+	set(CMAKE_EXE_LINKER_FLAGS_RELEASE "/LTCG /SAFESEH:NO")
 
 	# Debug build doesn't catch exceptions by itself
 	# Add some optimizations because otherwise it's VERY slow
