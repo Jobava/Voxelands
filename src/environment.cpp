@@ -1499,11 +1499,9 @@ void ServerEnvironment::step(float dtime)
 					ContentFeatures &f = content_features(n_top);
 					if (f.air_equivalent) {
 						if (n.envticks > 2) {
-							if (f.air_equivalent) {
-								if (p.Y > 50 && p.Y < 1024) {
-									n.setContent(CONTENT_MUDSNOW);
-									m_map->addNodeWithEvent(p, n);
-								}
+							if (p.Y > 50 && p.Y < 1024) {
+								n.setContent(CONTENT_MUDSNOW);
+								m_map->addNodeWithEvent(p, n);
 							}
 						}
 						int f = (700-(p.Y*2))+10;
