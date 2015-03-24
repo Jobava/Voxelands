@@ -307,13 +307,18 @@ void initializePaths()
 std::string getUser()
 {
 #ifdef _WIN32
-	return std::string("someloser");
+
+	char buff[1024];
+	int size = 1024;
+
+	if (GetUserName(buff,&size))
+		return std::string(buff);
 #else
 	char* u = getenv("USER");
-	if (!u)
-		u = (char*)"someone";
-	return std::string(u);
+	if (u)
+		return std::string(u);
 #endif
+	return std::string("someone");
 }
 
 } //namespace porting
