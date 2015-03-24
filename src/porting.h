@@ -114,6 +114,8 @@ void initializePaths();
 	}*/
 #endif
 
+std::string getUser();
+
 } // namespace porting
 
 #endif // PORTING_HEADER

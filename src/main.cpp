@@ -1210,6 +1210,8 @@ int main(int argc, char *argv[])
 				smgr->clear();
 
 				// Initialize menu data
+				if (playername == "")
+					playername = porting::getUser();
 				MainMenuData menudata;
 				menudata.address = narrow_to_wide(address);
 				menudata.name = narrow_to_wide(playername);

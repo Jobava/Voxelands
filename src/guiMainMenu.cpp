@@ -38,6 +38,7 @@
 #include <IGUIFont.h>
 #include <IGUIScrollBar.h>
 #include "path.h"
+#include "porting.h"
 #include "gui_colours.h"
 #if USE_FREETYPE
 #include "intlGUIEditBox.h"
@@ -119,10 +120,13 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	// Client options
 	{
 		gui::IGUIElement *e = getElementFromId(GUI_ID_NAME_INPUT);
-		if(e != NULL)
+		if (e != NULL) {
 			text_name = e->getText();
-		else
+		}else{
 			text_name = m_data->name;
+		}
+		if (text_name == L"")
+			text_name = narrow_to_wide(porting::getUser());
 	}
 	{
 		gui::IGUIElement *e = getElementFromId(GUI_ID_ADDRESS_INPUT);
@@ -496,8 +500,6 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 #else
 			e = Environment->addEditBox(text_name.c_str(), rect, false, this, GUI_ID_NAME_INPUT);
 #endif
-			if (text_name == L"")
-				Environment->setFocus(e);
 		}
 		{
 			core::rect<s32> rect(0, 0, 230, 30);
@@ -509,8 +511,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			e = Environment->addEditBox(L"", rect, false, this, GUI_ID_PW_INPUT);
 #endif
 			e->setPasswordBox(true);
-			if (text_name != L"" && text_address != L"")
-				Environment->setFocus(e);
+			Environment->setFocus(e);
 
 		}
 		// Address + port
@@ -530,8 +531,6 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 #else
 			e = Environment->addEditBox(text_address.c_str(), rect, false, this, GUI_ID_ADDRESS_INPUT);
 #endif
-			if (text_name != L"" && text_address == L"")
-				Environment->setFocus(e);
 		}
 		{
 			core::rect<s32> rect(0, 0, 120, 30);

@@ -304,5 +304,17 @@ void initializePaths()
 	dstream<<"path_userdata = "<<path_userdata<<std::endl;
 }
 
+std::string getUser()
+{
+#ifdef _WIN32
+	return std::string("someloser");
+#else
+	char* u = getenv("USER");
+	if (!u)
+		u = (char*)"someone";
+	return std::string(u);
+#endif
+}
+
 } //namespace porting
 
