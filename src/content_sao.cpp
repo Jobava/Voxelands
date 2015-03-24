@@ -148,7 +148,7 @@ void ItemSAO::step(float dtime, bool send_recommended)
 	// Apply gravity
 	m_speed_f += v3f(0, -dtime*9.81*BS, 0);
 	// Maximum movement without glitches
-	f32 pos_max_d = BS*0.3;
+	f32 pos_max_d = BS*0.5;
 	// Limit speed
 	if (m_speed_f.getLength()*dtime > pos_max_d)
 		m_speed_f *= pos_max_d / (m_speed_f.getLength()*dtime);
@@ -172,19 +172,43 @@ void ItemSAO::step(float dtime, bool send_recommended)
 			item
 			&& item->getCount() == 1
 			&& (
+				m_content == CONTENT_LEAVES
+				|| m_content == CONTENT_JUNGLELEAVES
+				|| m_content == CONTENT_APPLE_LEAVES
+				|| m_content == CONTENT_CONIFER_LEAVES
+			)
+		) { 	// leaves falling on grass become either saplings or wild grass
+			if (
 				un.getContent() == CONTENT_MUD
 				|| un.getContent() == CONTENT_GRASS
 				|| un.getContent() == CONTENT_GRASS_FOOTSTEPS
-			) && (
-				m_content == CONTENT_SAPLING
-				|| m_content == CONTENT_JUNGLESAPLING
-				|| m_content == CONTENT_APPLE_SAPLING
-				|| m_content == CONTENT_CONIFER_SAPLING
-			)
-		) {
+			) {
+				content_t c = CONTENT_SAPLING;
+				std::vector<content_t> search;
+				search.push_back(CONTENT_SAPLING);
+				search.push_back(CONTENT_JUNGLESAPLING);
+				search.push_back(CONTENT_APPLE_SAPLING);
+				search.push_back(CONTENT_CONIFER_SAPLING);
+				if (m_env->searchNear(pos_i,v3s16(3,3,3),search,NULL)) {
+					c = CONTENT_WILDGRASS_SHORT;
+				}else{
+					switch (m_content) {
+					case CONTENT_JUNGLELEAVES:
+						c = CONTENT_JUNGLESAPLING;
+						break;
+					case CONTENT_APPLE_LEAVES:
+						c = CONTENT_APPLE_SAPLING;
+						break;
+					case CONTENT_CONIFER_LEAVES:
+						c = CONTENT_CONIFER_SAPLING;
+						break;
+					default:;
+					}
+				}
+				n.setContent(c);
+				m_env->getMap().addNodeWithEvent(pos_i,n);
+			}
 			delete item;
-			n.setContent(m_content);
-			m_env->getMap().addNodeWithEvent(pos_i,n);
 			m_removed = true;
 			return;
 		}else if (content_craftitem_features(m_content).edible == 0) {

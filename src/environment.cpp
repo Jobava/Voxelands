@@ -1749,7 +1749,7 @@ void ServerEnvironment::step(float dtime)
 				case CONTENT_JUNGLELEAVES:
 				case CONTENT_CONIFER_LEAVES:
 				{
-					if (myrand()%8 == 0) {
+					if (myrand()%4 == 0) {
 						v3s16 leaf_p = p;
 						std::vector<content_t> search;
 						search.push_back(CONTENT_TREE);
@@ -1763,22 +1763,10 @@ void ServerEnvironment::step(float dtime)
 						search.push_back(CONTENT_IGNORE);
 						if (!searchNear(p,v3s16(3,3,3),search,NULL)) {
 							m_map->removeNodeWithEvent(leaf_p);
-							if (myrand()%20 == 0) {
+							if (myrand()%10 == 0) {
 								v3f sapling_pos = intToFloat(leaf_p, BS);
 								sapling_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
-								content_t c = CONTENT_SAPLING;
-								switch(n.getContent()) {
-								case CONTENT_JUNGLELEAVES:
-									c = CONTENT_JUNGLESAPLING;
-									break;
-								case CONTENT_CONIFER_LEAVES:
-									c = CONTENT_CONIFER_SAPLING;
-									break;
-								case CONTENT_APPLE_LEAVES:
-									c = CONTENT_APPLE_SAPLING;
-									break;
-								}
-								ServerActiveObject *obj = new ItemSAO(this, 0, sapling_pos, "MaterialItem2 " + itos(c) + " 1");
+								ServerActiveObject *obj = new ItemSAO(this, 0, sapling_pos, "MaterialItem2 " + itos(n.getContent()) + " 1");
 								addActiveObject(obj);
 							}
 						}
