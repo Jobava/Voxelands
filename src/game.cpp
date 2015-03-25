@@ -354,9 +354,20 @@ void draw_old_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 		font->draw(selected.c_str(), rect2, video::SColor(255,255,255,255), false, false, NULL);
 	}
 }
-void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
-		v2s32 screensize, s32 imgsize, s32 itemcount,
-		Inventory *inventory, s32 halfheartcount, s32 halfbubblecount, s32 halfhungercount)
+void draw_hud(
+	video::IVideoDriver *driver,
+	gui::IGUIFont *font,
+	v2s32 screensize,
+	s32 imgsize,
+	s32 itemcount,
+	Inventory *inventory,
+	bool have_health,
+	s32 halfheartcount,
+	bool have_suffocation,
+	s32 halfbubblecount,
+	bool have_hunger,
+	s32 halfhungercount
+)
 {
 	InventoryList *mainlist = inventory->getList("main");
 	if (mainlist == NULL) {
@@ -545,7 +556,7 @@ void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 	}
 
 	// health
-	if (halfheartcount) {
+	if (have_health) {
 		int c = 55+(halfheartcount*10);
 		const video::SColor color(220,c,c,c);
 		const video::SColor colors[] = {color,color,color,color};
@@ -577,7 +588,7 @@ void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 		font->draw(txt.c_str(), rect2, video::SColor(255,255,255,255), false, false, NULL);
 	}
 	// air
-	if (halfbubblecount<20) {
+	if (have_suffocation && halfbubblecount<20) {
 		int c = 55+(halfbubblecount*10);
 		const video::SColor color(255,255,c,c);
 		const video::SColor colors[] = {color,color,color,color};
@@ -609,7 +620,7 @@ void draw_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 		font->draw(txt.c_str(), rect2, video::SColor(255,255,255,255), false, false, NULL);
 	}
 	// hunger
-	if (halfhungercount) {
+	if (have_hunger) {
 		int c = 55+(halfhungercount*10);
 		const video::SColor color(255,255,c,c);
 		const video::SColor colors[] = {color,color,color,color};
@@ -2627,15 +2638,18 @@ void the_game(
 					hunger
 				);
 			}else{
-				draw_hotbar(
+				draw_hud(
 					driver,
 					font,
 					v2s32(screensize.X,screensize.Y),
 					hotbar_imagesize,
 					hotbar_itemcount,
 					&local_inventory,
+					client.getServerDamage(),
 					client.getHP(),
+					client.getServerSuffocation(),
 					client.getAir(),
+					client.getServerHunger(),
 					hunger
 				);
 			}
