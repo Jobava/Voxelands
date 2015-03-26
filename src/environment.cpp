@@ -67,10 +67,11 @@ void Environment::addPlayer(Player *player)
 		Exception: there can be multiple players with peer_id=0
 	*/
 	// If peer id is non-zero, it has to be unique.
-	if(player->peer_id != 0)
-		assert(getPlayer(player->peer_id) == NULL);
+	if (player->peer_id != 0 && getPlayer(player->peer_id) != NULL)
+		return;
 	// Name has to be unique.
-	assert(getPlayer(player->getName()) == NULL);
+	if (getPlayer(player->getName()) != NULL)
+		return;
 	// Add.
 	m_players.push_back(player);
 }
