@@ -145,12 +145,17 @@ void content_mapnode_stair(bool repeat)
 	f->description = wgettext("Brick Stair");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("brick.png");
+	f->setTexture(0,"brick_stair_top.png");
+	f->setTexture(1,"brick_top.png^[transformR90");
+	f->setTexture(2,"brick_side.png");
+	f->setTexture(3,"brick_side.png");
+	f->setTexture(5,"brick_stair_front.png");
 	f->draw_type = CDT_STAIRLIKE;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem clay_brick 4");
 	content_nodebox_stair(f);
-	f->setInventoryTextureNodeBox(i,"brick.png", "brick.png", "brick.png");
+	f->setInventoryTextureNodeBox(i,"brick_stair_top.png", "brick_stair_front.png", "brick_side.png");
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	crafting::setStairRecipe(CONTENT_BRICK,CONTENT_BRICK_STAIR);
@@ -266,13 +271,18 @@ void content_mapnode_stair(bool repeat)
 	i = CONTENT_BRICK_STAIR_UD;
 	f = &content_features(i);
 	f->param_type = CPT_FACEDIR_SIMPLE;
-	f->setAllTextures("brick.png");
+	f->setAllTextures("brick.png^[transformfy");
+	f->setTexture(0,"brick_stair_top.png");
+	f->setTexture(1,"brick_top.png");
+	f->setTexture(2,"brick_side.png^[transformfy");
+	f->setTexture(3,"brick_side.png^[transformfy");
+	f->setTexture(5,"brick_stair_front.png^[transformfy");
 	f->draw_type = CDT_STAIRLIKE;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem clay_brick 4");
 	content_nodebox_stairud(f);
-	f->setInventoryTextureNodeBox(i,"brick.png", "brick.png", "brick.png");
+	f->setInventoryTextureNodeBox(i,"brick.png", "brick_front.png", "brick.png");
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	f->suffocation_per_second = 0;

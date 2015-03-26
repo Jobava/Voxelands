@@ -3488,6 +3488,13 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			v3f pos = intToFloat(p, BS);
 			s16 rot = n.getRotationAngle();
 
+			// remove rotation from the node, we'll do it ourselves
+			{
+				content_t c = n.getContent();
+				n.param1 = 0;
+				n.setContent(c);
+			}
+
 			TileSpec tiles[6];
 			NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+blockpos_nodes);
 			for (int i=0; i<6; i++) {

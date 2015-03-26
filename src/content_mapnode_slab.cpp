@@ -151,13 +151,17 @@ void content_mapnode_slab(bool repeat)
 	f = &content_features(i);
 	f->description = wgettext("Brick Slab");
 	f->setAllTextures("brick.png");
+	f->setTexture(0,"brick_top.png");
+	f->setTexture(1,"brick_top.png^[transformR90");
+	f->setTexture(2,"brick_side.png");
+	f->setTexture(3,"brick_side.png");
 	f->draw_type = CDT_NODEBOX;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem clay_brick 4");
 	f->special_alternate_node = CONTENT_BRICK;
 	content_nodebox_slab(f);
-	f->setInventoryTextureNodeBox(i,"brick.png", "brick.png", "brick.png");
+	f->setInventoryTextureNodeBox(i,"brick_top.png", "brick.png", "brick_side.png");
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	f->suffocation_per_second = 0;
@@ -493,14 +497,18 @@ void content_mapnode_slab(bool repeat)
 
 	i = CONTENT_BRICK_SLAB_UD;
 	f = &content_features(i);
-	f->setAllTextures("brick.png");
+	f->setAllTextures("brick.png^[transformfy");
+	f->setTexture(0,"brick_top.png^[transformR90");
+	f->setTexture(1,"brick_top.png");
+	f->setTexture(2,"brick_side.png^[transformfy");
+	f->setTexture(3,"brick_side.png^[transformfy");
 	f->draw_type = CDT_SLABLIKE;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem clay_brick 4");
 	f->special_alternate_node = CONTENT_BRICK;
 	content_nodebox_slabud(f);
-	f->setInventoryTextureNodeBox(i,"brick.png", "brick.png", "brick.png");
+	f->setInventoryTextureNodeBox(i,"brick_top.png", "brick.png^[transformfy", "brick_side.png^[transformfy");
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
 	f->suffocation_per_second = 0;

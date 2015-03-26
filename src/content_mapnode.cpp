@@ -609,7 +609,11 @@ void content_mapnode_init(bool repeat)
 	f = &content_features(i);
 	f->description = wgettext("Brick");
 	f->setAllTextures("brick.png");
-	f->setInventoryTextureCube("brick.png", "brick.png", "brick.png");
+	f->setTexture(0,"brick_top.png");
+	f->setTexture(1,"brick_top.png^[transformR90");
+	f->setTexture(2,"brick_side.png");
+	f->setTexture(3,"brick_side.png");
+	f->setInventoryTextureCube("brick_top.png", "brick.png", "brick_side.png");
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("CraftItem clay_brick 4");
