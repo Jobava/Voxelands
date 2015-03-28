@@ -610,7 +610,7 @@ void content_mapnode_init(bool repeat)
 	f->description = wgettext("Brick");
 	f->setAllTextures("brick.png");
 	f->setTexture(0,"brick_top.png");
-	f->setTexture(1,"brick_top.png^[transformR90");
+	f->setTexture(1,"brick_bottom.png");
 	f->setTexture(2,"brick_side.png");
 	f->setTexture(3,"brick_side.png");
 	f->setInventoryTextureCube("brick_top.png", "brick.png", "brick_side.png");
