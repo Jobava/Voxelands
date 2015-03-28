@@ -151,8 +151,8 @@ void content_mapnode_slab(bool repeat)
 	f = &content_features(i);
 	f->description = wgettext("Brick Slab");
 	f->setAllTextures("brick.png");
-	f->setTexture(0,"brick_top.png");
-	f->setTexture(1,"brick_top.png^[transformR90");
+	f->setTexture(0,"brick_slab_top.png");
+	f->setTexture(1,"brick_bottom.png");
 	f->setTexture(2,"brick_side.png");
 	f->setTexture(3,"brick_side.png");
 	f->draw_type = CDT_NODEBOX;
@@ -498,7 +498,7 @@ void content_mapnode_slab(bool repeat)
 	i = CONTENT_BRICK_SLAB_UD;
 	f = &content_features(i);
 	f->setAllTextures("brick.png^[transformfy");
-	f->setTexture(0,"brick_top.png^[transformR90");
+	f->setTexture(0,"brick_slab_bottom.png");
 	f->setTexture(1,"brick_top.png");
 	f->setTexture(2,"brick_side.png^[transformfy");
 	f->setTexture(3,"brick_side.png^[transformfy");

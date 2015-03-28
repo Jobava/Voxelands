@@ -3833,6 +3833,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			v3f pos = intToFloat(p, BS);
 
 			bool urot = (n.getContent() >= CONTENT_SLAB_STAIR_UD_MIN && n.getContent() <= CONTENT_SLAB_STAIR_UD_MAX);
+			float tex_v = 0.;
 			// flip lighting
 			if (urot) {
 				video::SColor col = c[0];
@@ -3853,6 +3854,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				col = c[10];
 				c[10] = c[11];
 				c[11] = col;
+				tex_v = 0.5;
 			}
 			video::S3DVertex vertices[6][4] = {
 				{ // up
@@ -3866,25 +3868,25 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					video::S3DVertex(0.5*BS,-0.5*BS,0.5*BS, 0,-1,0, c[6], 1.,1.),
 					video::S3DVertex(-0.5*BS,-0.5*BS,0.5*BS, 0,-1,0, c[7], 0.,1.)
 				},{ // right
-					video::S3DVertex(0.5*BS,0.,-0.5*BS, 1,0,0, c[2], 0.,0.),
-					video::S3DVertex(0.5*BS,0.,0.5*BS, 1,0,0, c[1], 1.,0.),
-					video::S3DVertex(0.5*BS,-0.5*BS,0.5*BS, 1,0,0, c[6], 1.,.5),
-					video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 1,0,0, c[5], 0.,.5)
+					video::S3DVertex(0.5*BS,0.,-0.5*BS, 1,0,0, c[2], 0.,0.+tex_v),
+					video::S3DVertex(0.5*BS,0.,0.5*BS, 1,0,0, c[1], 1.,0.+tex_v),
+					video::S3DVertex(0.5*BS,-0.5*BS,0.5*BS, 1,0,0, c[6], 1.,.5+tex_v),
+					video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 1,0,0, c[5], 0.,.5+tex_v)
 				},{ // left
-					video::S3DVertex(-0.5*BS,0.,0.5*BS, -1,0,0, c[0], 0.,0.),
-					video::S3DVertex(-0.5*BS,0.,-0.5*BS, -1,0,0, c[3], 1.,0.),
-					video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, -1,0,0, c[4], 1.,.5),
-					video::S3DVertex(-0.5*BS,-0.5*BS,0.5*BS, -1,0,0, c[7], 0.,.5)
+					video::S3DVertex(-0.5*BS,0.,0.5*BS, -1,0,0, c[0], 0.,0.+tex_v),
+					video::S3DVertex(-0.5*BS,0.,-0.5*BS, -1,0,0, c[3], 1.,0.+tex_v),
+					video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, -1,0,0, c[4], 1.,.5+tex_v),
+					video::S3DVertex(-0.5*BS,-0.5*BS,0.5*BS, -1,0,0, c[7], 0.,.5+tex_v)
 				},{ // back
-					video::S3DVertex(0.5*BS,0.,0.5*BS, 0,0,1, c[1], 0.,0.),
-					video::S3DVertex(-0.5*BS,0.,0.5*BS, 0,0,1, c[0], 1.,0.),
-					video::S3DVertex(-0.5*BS,-0.5*BS,0.5*BS, 0,0,1, c[7], 1.,.5),
-					video::S3DVertex(0.5*BS,-0.5*BS,0.5*BS, 0,0,1, c[6], 0.,.5)
+					video::S3DVertex(0.5*BS,0.,0.5*BS, 0,0,1, c[1], 0.,0.+tex_v),
+					video::S3DVertex(-0.5*BS,0.,0.5*BS, 0,0,1, c[0], 1.,0.+tex_v),
+					video::S3DVertex(-0.5*BS,-0.5*BS,0.5*BS, 0,0,1, c[7], 1.,.5+tex_v),
+					video::S3DVertex(0.5*BS,-0.5*BS,0.5*BS, 0,0,1, c[6], 0.,.5+tex_v)
 				},{ // front
-					video::S3DVertex(-0.5*BS,0.,-0.5*BS, 0,0,-1, c[3], 0.,0.),
-					video::S3DVertex(0.5*BS,0.,-0.5*BS, 0,0,-1, c[2], 1.,0.),
-					video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 0,0,-1, c[5], 1.,.5),
-					video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,-1, c[4], 0.,.5)
+					video::S3DVertex(-0.5*BS,0.,-0.5*BS, 0,0,-1, c[3], 0.,0.+tex_v),
+					video::S3DVertex(0.5*BS,0.,-0.5*BS, 0,0,-1, c[2], 1.,0.+tex_v),
+					video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 0,0,-1, c[5], 1.,.5+tex_v),
+					video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,-1, c[4], 0.,.5+tex_v)
 				}
 			};
 			u16 indices[6] = {0,1,2,2,3,0};

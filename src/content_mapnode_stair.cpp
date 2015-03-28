@@ -146,7 +146,7 @@ void content_mapnode_stair(bool repeat)
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("brick.png");
 	f->setTexture(0,"brick_stair_top.png");
-	f->setTexture(1,"brick_top.png^[transformR90");
+	f->setTexture(1,"brick_bottom.png");
 	f->setTexture(2,"brick_side.png");
 	f->setTexture(3,"brick_side.png");
 	f->setTexture(5,"brick_stair_front.png");
