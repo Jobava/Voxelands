@@ -19,3 +19,4 @@ CPackSourceConfig.cmake
 src/jthread/jthreadconfig.h
 cmake_config.h
 
+data/textureshd
