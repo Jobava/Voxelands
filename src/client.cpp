@@ -1231,14 +1231,13 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		u16 len = readU16(buf);
 
 		std::wstring message;
-		for(u16 i=0; i<len; i++)
-		{
+		for (u16 i=0; i<len; i++) {
 			is.read((char*)buf, 2);
 			message += (wchar_t)readU16(buf);
 		}
 
-		/*infostream<<"Client received chat message: "
-				<<wide_to_narrow(message)<<std::endl;*/
+		/* because I can't remember which random stream prints to stdout */
+		printf("CHAT: %s\n",wide_to_narrow(message).c_str());
 
 		m_chat_queue.push_back(message);
 	}
