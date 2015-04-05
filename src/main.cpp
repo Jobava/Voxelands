@@ -1441,6 +1441,9 @@ int main(int argc, char *argv[])
 
 	delete input;
 
+	if (sound != NULL)
+		delete sound;
+
 	/*
 		In the end, delete the Irrlicht device.
 	*/
