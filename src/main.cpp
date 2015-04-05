@@ -1269,6 +1269,8 @@ int main(int argc, char *argv[])
 
 				infostream<<"Created main menu"<<std::endl;
 
+				int bgm = sound->playSound("bg-mainmenu",true,g_settings->getFloat("sound_volume"));
+
 				while (device->run() && kill == false) {
 					if (menu->getStatus() == true)
 						break;
@@ -1286,6 +1288,8 @@ int main(int argc, char *argv[])
 					// automatically limited
 					sleep_ms(25);
 				}
+
+				sound->stopSound(bgm);
 
 				// Break out of menu-game loop to shut down cleanly
 				if (device->run() == false || kill == true)
@@ -1373,6 +1377,8 @@ int main(int argc, char *argv[])
 				GUICharDefMenu *menu = new GUICharDefMenu(device, guienv, guiroot, -1, &g_menumgr);
 				menu->allowFocusRemoval(true);
 
+				int bgm = sound->playSound("bg-charcreator",true,g_settings->getFloat("sound_volume"));
+
 				while (device->run() && kill == false) {
 					if (menu->getStatus() == true)
 						break;
@@ -1388,6 +1394,8 @@ int main(int argc, char *argv[])
 					// automatically limited
 					sleep_ms(25);
 				}
+
+				sound->stopSound(bgm);
 
 				menu->drop();
 

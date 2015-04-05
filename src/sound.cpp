@@ -105,6 +105,10 @@ void init_sounds(ISoundManager *sound)
 
 	// special
 	sound->loadSound("wield","wield_item.ogg");
+
+	// menu backgrounds
+	sound->loadSound("bg-mainmenu","bg_mainmenu.ogg");
+	sound->loadSound("bg-charcreator","bg_charcreator.ogg");
 }
 
 
