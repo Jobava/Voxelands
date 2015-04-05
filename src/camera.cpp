@@ -144,24 +144,28 @@ void Camera::step(f32 dtime)
 		f32 offset = dtime * m_view_bobbing_speed * 0.030;
 		if (m_view_bobbing_state == 2) {
 			// Animation is getting turned off
-			if(m_view_bobbing_anim < 0.25){
+			if (m_view_bobbing_anim < 0.25) {
 				m_view_bobbing_anim -= offset;
-			} else if(m_view_bobbing_anim > 0.75){
+			}else if (m_view_bobbing_anim > 0.75) {
 				m_view_bobbing_anim += offset;
-			} if(m_view_bobbing_anim < 0.5){
+			}
+			if (m_view_bobbing_anim < 0.5) {
 				m_view_bobbing_anim += offset;
-				if(m_view_bobbing_anim > 0.5)
+				if (m_view_bobbing_anim > 0.5)
 					m_view_bobbing_anim = 0.5;
-			} else {
+			}else{
 				m_view_bobbing_anim -= offset;
-				if(m_view_bobbing_anim < 0.5)
+				if (m_view_bobbing_anim < 0.5)
 					m_view_bobbing_anim = 0.5;
 			}
-			if(m_view_bobbing_anim <= 0 || m_view_bobbing_anim >= 1 ||
-					fabs(m_view_bobbing_anim - 0.5) < 0.01)
-			{
+			if (
+				m_view_bobbing_anim <= 0
+				|| m_view_bobbing_anim >= 1
+				|| fabs(m_view_bobbing_anim - 0.5) < 0.01
+			) {
 				m_view_bobbing_anim = 0;
 				m_view_bobbing_state = 0;
+				m_view_bobbing_speed = 20;
 			}
 		}else{
 			float was = m_view_bobbing_anim;
@@ -212,8 +216,7 @@ void Camera::update(LocalPlayer* player, f32 frametime, v2u32 screensize)
 	v3f rel_cam_target = v3f(0,0,1);
 	v3f rel_cam_up = v3f(0,1,0);
 
-	if (m_view_bobbing_anim != 0)
-	{
+	if (m_view_bobbing_state != 0 && m_view_bobbing_anim != 0) {
 		f32 bobfrac = my_modf(m_view_bobbing_anim * 2);
 		f32 bobdir = (m_view_bobbing_anim < 0.5) ? 1.0 : -1.0;
 		f32 bobknob = 1.2;
@@ -265,8 +268,7 @@ void Camera::update(LocalPlayer* player, f32 frametime, v2u32 screensize)
 	// Position the wielded item
 	v3f wield_position = m_wieldnode_baseposition;
 	v3f wield_rotation = m_wieldnode_baserotation;
-	if (m_digging_button != -1)
-	{
+	if (m_digging_button != -1) {
 		f32 digfrac = m_digging_anim;
 		wield_position.X -= 30 * sin(pow(digfrac, 0.8f) * PI);
 		wield_position.Y += 15 * sin(digfrac * 2 * PI);
@@ -279,8 +281,7 @@ void Camera::update(LocalPlayer* player, f32 frametime, v2u32 screensize)
 		quat_slerp.slerp(quat_begin, quat_end, sin(digfrac * PI));
 		quat_slerp.toEuler(wield_rotation);
 		wield_rotation *= core::RADTODEG;
-	}
-	else {
+	}else{
 		f32 bobfrac = my_modf(m_view_bobbing_anim);
 		wield_position.X -= sin(bobfrac*PI*2.0) * 3.0;
 		wield_position.Y += sin(my_modf(bobfrac*2.0)*PI) * 3.0;
