@@ -176,6 +176,7 @@ struct PlayingSound
 {
 	ALuint source_id;
 	bool loop;
+	bool should_delete;
 };
 
 class OpenALSoundManager: public ISoundManager
@@ -185,6 +186,8 @@ private:
 	ALCcontext *m_context;
 	bool m_can_vorbis;
 	int m_next_id;
+	int m_music_id;
+	int m_music_last_id;
 	std::map<std::string, std::vector<SoundBuffer*> > m_buffers;
 	std::map<int, PlayingSound*> m_sounds_playing;
 	std::map<std::string, int> m_indexes;
@@ -194,7 +197,9 @@ public:
 		m_device(NULL),
 		m_context(NULL),
 		m_can_vorbis(false),
-		m_next_id(1)
+		m_next_id(1),
+		m_music_id(0),
+		m_music_last_id(0)
 	{
 		ALCenum error = ALC_NO_ERROR;
 
@@ -315,6 +320,7 @@ public:
 		volume = MYMAX(0.0, volume);
 		alSourcef(sound->source_id, AL_GAIN, volume);
 		alSourcePlay(sound->source_id);
+		sound->should_delete = false;
 		return sound;
 	}
 
@@ -339,6 +345,7 @@ public:
 		volume = MYMAX(0.0, volume);
 		alSourcef(sound->source_id, AL_GAIN, volume);
 		alSourcePlay(sound->source_id);
+		sound->should_delete = false;
 		return sound;
 	}
 
@@ -367,6 +374,10 @@ public:
 	void deleteSound(int id)
 	{
 		std::map<int, PlayingSound*>::iterator i = m_sounds_playing.find(id);
+		if (id == m_music_id)
+			m_music_id = 0;
+		if (id == m_music_last_id)
+			m_music_last_id = 0;
 		if (i == m_sounds_playing.end())
 			return;
 		PlayingSound *sound = i->second;
@@ -378,7 +389,7 @@ public:
 	}
 
 	// Remove stopped sounds
-	void maintain()
+	void maintain(float dtime)
 	{
 		verbosestream<<"OpenALSoundManager::maintain(): "
 				<<m_sounds_playing.size()<<" playing sounds, "
@@ -387,12 +398,30 @@ public:
 		for (std::map<int, PlayingSound*>::iterator i = m_sounds_playing.begin(); i != m_sounds_playing.end(); i++) {
 			int id = i->first;
 			PlayingSound *sound = i->second;
-			// If not playing, remove it
-			{
+			if (sound->should_delete) {
+				del_list.insert(id);
+			}else{ // If not playing, remove it
 				ALint state;
 				alGetSourcei(sound->source_id, AL_SOURCE_STATE, &state);
-				if (state != AL_PLAYING)
+				if (state != AL_PLAYING) {
 					del_list.insert(id);
+					if (id == m_music_last_id)
+						m_music_last_id = 0;
+				}
+			}
+			if (id == m_music_last_id) {
+				ALfloat volume;
+				alSourcei(sound->source_id, AL_LOOPING, AL_FALSE);
+				alGetSourcef(sound->source_id, AL_GAIN, &volume);
+				if (dtime > 0.1)
+					dtime = 0.1;
+				volume -= 100.0*dtime;
+				if (volume < 0.01) {
+					volume = 0.0;
+					m_music_last_id = 0;
+					sound->should_delete = true;
+				}
+				alSourcef(sound->source_id, AL_GAIN, volume);
 			}
 		}
 		if (del_list.size() == 0)
@@ -401,7 +430,8 @@ public:
 		verbosestream<<"OpenALSoundManager::maintain(): deleting "
 					<<del_list.size()<<" playing sounds"<<std::endl;
 		for (std::set<int>::iterator i = del_list.begin(); i != del_list.end(); i++) {
-			deleteSound(*i);
+			int id = *i;
+			deleteSound(id);
 		}
 	}
 
@@ -436,7 +466,6 @@ public:
 
 	int playSound(const std::string &name, bool loop, float volume)
 	{
-		maintain();
 		if (name == "")
 			return 0;
 		SoundBuffer *buf = getBuffer(name);
@@ -449,7 +478,6 @@ public:
 	}
 	int playSoundAt(const std::string &name, bool loop, float volume, v3f pos)
 	{
-		maintain();
 		if (name == "")
 			return 0;
 		SoundBuffer *buf = getBuffer(name);
@@ -460,16 +488,43 @@ public:
 		}
 		return playSoundRawAt(buf, loop, volume, pos);
 	}
-	void stopSound(int sound)
+	void stopSound(int id)
 	{
-		maintain();
-		deleteSound(sound);
+		std::map<int, PlayingSound*>::iterator i = m_sounds_playing.find(id);
+		if (id == m_music_id)
+			m_music_id = 0;
+		if (id == m_music_last_id)
+			m_music_last_id = 0;
+		if (i == m_sounds_playing.end())
+			return;
+		PlayingSound *sound = i->second;
+		sound->should_delete = true;
 	}
 	bool soundExists(int sound)
 	{
-		maintain();
 		return (m_sounds_playing.count(sound) != 0);
 	}
+
+	bool playMusic(const std::string &name, bool loop, float volume)
+	{
+		stopMusic();
+
+		m_music_id = playSound(name,loop,volume);
+		if (m_music_id > 0)
+			return true;
+		m_music_id = 0;
+		return false;
+	}
+	void stopMusic()
+	{
+		if (m_music_id != 0) {
+			if (m_music_last_id != 0)
+				stopSound(m_music_last_id);
+			m_music_last_id = m_music_id;
+		}
+		m_music_id = 0;
+	}
+
 	void updateSoundPosition(int id, v3f pos)
 	{
 		std::map<int, PlayingSound*>::iterator i =

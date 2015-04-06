@@ -1917,6 +1917,12 @@ void the_game(
 			client.step(dtime);
 		}
 
+#if USE_AUDIO == 1
+		{
+			sound->maintain(dtime);
+		}
+#endif
+
 		{
 			// Read client events
 			while (1) {

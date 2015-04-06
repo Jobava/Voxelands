@@ -1269,7 +1269,9 @@ int main(int argc, char *argv[])
 
 				infostream<<"Created main menu"<<std::endl;
 
-				int bgm = sound->playSound("bg-mainmenu",true,g_settings->getFloat("sound_volume"));
+#if USE_AUDIO == 1
+				sound->playMusic("bg-mainmenu",true,g_settings->getFloat("sound_volume"));
+#endif
 
 				while (device->run() && kill == false) {
 					if (menu->getStatus() == true)
@@ -1284,12 +1286,18 @@ int main(int argc, char *argv[])
 
 					driver->endScene();
 
+#if USE_AUDIO == 1
+					sound->maintain(0.02);
+#endif
+
 					// On some computers framerate doesn't seem to be
 					// automatically limited
 					sleep_ms(25);
 				}
 
-				sound->stopSound(bgm);
+#if USE_AUDIO == 1
+				sound->stopMusic();
+#endif
 
 				// Break out of menu-game loop to shut down cleanly
 				if (device->run() == false || kill == true)
@@ -1377,7 +1385,9 @@ int main(int argc, char *argv[])
 				GUICharDefMenu *menu = new GUICharDefMenu(device, guienv, guiroot, -1, &g_menumgr);
 				menu->allowFocusRemoval(true);
 
-				int bgm = sound->playSound("bg-charcreator",true,g_settings->getFloat("sound_volume"));
+#if USE_AUDIO == 1
+				sound->playMusic("bg-charcreator",true,g_settings->getFloat("sound_volume"));
+#endif
 
 				while (device->run() && kill == false) {
 					if (menu->getStatus() == true)
@@ -1390,12 +1400,18 @@ int main(int argc, char *argv[])
 
 					driver->endScene();
 
+#if USE_AUDIO == 1
+					sound->maintain(0.02);
+#endif
+
 					// On some computers framerate doesn't seem to be
 					// automatically limited
 					sleep_ms(25);
 				}
 
-				sound->stopSound(bgm);
+#if USE_AUDIO == 1
+				sound->stopMusic();
+#endif
 
 				menu->drop();
 
