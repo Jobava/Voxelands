@@ -301,23 +301,19 @@ void ServerEnvironment::serializePlayers(const std::string &savedir)
 	core::map<Player*, bool> saved_players;
 
 	std::vector<fs::DirListNode> player_files = fs::GetDirListing(players_path);
-	for(u32 i=0; i<player_files.size(); i++)
-	{
-		if(player_files[i].dir)
+	for (u32 i=0; i<player_files.size(); i++) {
+		if (player_files[i].dir)
 			continue;
 
 		// Full path to this file
 		std::string path = players_path + "/" + player_files[i].name;
-
-		//infostream<<"Checking player file "<<path<<std::endl;
 
 		// Load player to see what is its name
 		ServerRemotePlayer testplayer;
 		{
 			// Open file and deserialize
 			std::ifstream is(path.c_str(), std::ios_base::binary);
-			if(is.good() == false)
-			{
+			if (is.good() == false) {
 				infostream<<"Failed to read "<<path<<std::endl;
 				continue;
 			}
@@ -329,9 +325,8 @@ void ServerEnvironment::serializePlayers(const std::string &savedir)
 		// Search for the player
 		std::string playername = testplayer.getName();
 		Player *player = getPlayer(playername.c_str());
-		if(player == NULL)
-		{
-			infostream<<"Didn't find matching player, ignoring file "<<path<<std::endl;
+		if (player == NULL) {
+			fs::RecursiveDelete(path);
 			continue;
 		}
 
@@ -341,8 +336,7 @@ void ServerEnvironment::serializePlayers(const std::string &savedir)
 		{
 			// Open file and serialize
 			std::ofstream os(path.c_str(), std::ios_base::binary);
-			if(os.good() == false)
-			{
+			if (os.good() == false) {
 				infostream<<"Failed to overwrite "<<path<<std::endl;
 				continue;
 			}
@@ -351,41 +345,29 @@ void ServerEnvironment::serializePlayers(const std::string &savedir)
 		}
 	}
 
-	for(core::list<Player*>::Iterator i = m_players.begin();
-			i != m_players.end(); i++)
-	{
+	for (core::list<Player*>::Iterator i = m_players.begin(); i != m_players.end(); i++) {
 		Player *player = *i;
-		if(saved_players.find(player) != NULL)
-		{
-			/*infostream<<"Player "<<player->getName()
-					<<" was already saved."<<std::endl;*/
+		if (saved_players.find(player) != NULL)
 			continue;
-		}
 		std::string playername = player->getName();
 		// Don't save unnamed player
-		if(playername == "")
-		{
-			//infostream<<"Not saving unnamed player."<<std::endl;
+		if (playername == "")
 			continue;
-		}
 		/*
 			Find a sane filename
 		*/
-		if(string_allowed(playername, PLAYERNAME_ALLOWED_CHARS) == false)
+		if (string_allowed(playername, PLAYERNAME_ALLOWED_CHARS) == false)
 			playername = "player";
 		std::string path = players_path + "/" + playername;
 		bool found = false;
-		for(u32 i=0; i<1000; i++)
-		{
-			if(fs::PathExists(path) == false)
-			{
+		for (u32 i=0; i<1000; i++) {
+			if (fs::PathExists(path) == false) {
 				found = true;
 				break;
 			}
 			path = players_path + "/" + playername + itos(i);
 		}
-		if(found == false)
-		{
+		if (found == false) {
 			infostream<<"Didn't find free file for player"<<std::endl;
 			continue;
 		}
@@ -395,8 +377,7 @@ void ServerEnvironment::serializePlayers(const std::string &savedir)
 					<<path<<std::endl;*/
 			// Open file and serialize
 			std::ofstream os(path.c_str(), std::ios_base::binary);
-			if(os.good() == false)
-			{
+			if (os.good() == false) {
 				infostream<<"Failed to overwrite "<<path<<std::endl;
 				continue;
 			}
@@ -437,7 +418,7 @@ void ServerEnvironment::deSerializePlayers(const std::string &savedir)
 		}
 
 		if (!string_allowed(testplayer.getName(), PLAYERNAME_ALLOWED_CHARS)) {
-			infostream<<"Not loading player with invalid name: "<<testplayer.getName()<<std::endl;
+			fs::RecursiveDelete(path);
 			continue;
 		}
 
