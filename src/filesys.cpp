@@ -23,6 +23,7 @@
 * for Voxelands.
 ************************************************************************/
 
+#include <stdio.h>
 #include "filesys.h"
 #include "strfnd.h"
 #include <iostream>
@@ -39,7 +40,6 @@ namespace fs
 #include <malloc.h>
 #include <tchar.h>
 #include <wchar.h>
-#include <stdio.h>
 
 #define BUFSIZE MAX_PATH
 
@@ -172,13 +172,12 @@ bool RecursiveDelete(std::string path)
 
 #else // POSIX
 
-#include <sys/time.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <dirent.h>
 #include <errno.h>
 #include <sys/stat.h>
-#include <sys/wait.h>
+#include <ftw.h>
 
 std::vector<DirListNode> GetDirListing(std::string pathstring)
 {
@@ -186,7 +185,7 @@ std::vector<DirListNode> GetDirListing(std::string pathstring)
 
 	DIR *dp;
 	struct dirent *dirp;
-	if((dp  = opendir(pathstring.c_str())) == NULL) {
+	if ((dp  = opendir(pathstring.c_str())) == NULL) {
 		//std::cout<<"Error("<<errno<<") opening "<<pathstring<<std::endl;
 		return listing;
 	}
@@ -195,12 +194,15 @@ std::vector<DirListNode> GetDirListing(std::string pathstring)
 		// NOTE:
 		// Be very sure to not include '..' in the results, it will
 		// result in an epic failure when deleting stuff.
-		if(dirp->d_name[0]!='.'){
+		if (dirp->d_name[0]!='.') {
 			DirListNode node;
 			node.name = dirp->d_name;
-			if(dirp->d_type == DT_DIR) node.dir = true;
-			else node.dir = false;
-			if(node.name != "." && node.name != "..")
+			if (dirp->d_type == DT_DIR) {
+				node.dir = true;
+			}else{
+				node.dir = false;
+			}
+			if (node.name != "." && node.name != "..")
 				listing.push_back(node);
 		}
 	}
@@ -212,17 +214,13 @@ std::vector<DirListNode> GetDirListing(std::string pathstring)
 bool CreateDir(std::string path)
 {
 	int r = mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-	if(r == 0)
-	{
+	if (r == 0)
 		return true;
-	}
-	else
-	{
-		// If already exists, return true
-		if(errno == EEXIST)
-			return true;
-		return false;
-	}
+
+	// If already exists, return true
+	if (errno == EEXIST)
+		return true;
+	return false;
 }
 
 bool PathExists(std::string path)
@@ -231,50 +229,19 @@ bool PathExists(std::string path)
 	return (stat(path.c_str(),&st) == 0);
 }
 
+int unlink_cb(const char* fpath, const struct stat *sb, int typeflag, struct FTW *ftwbuf)
+{
+	return remove(fpath);
+}
+
 bool RecursiveDelete(std::string path)
 {
-	/*
-		Execute the 'rm' command directly, by fork() and execve()
-	*/
-
-	std::cerr<<"Removing \""<<path<<"\""<<std::endl;
-
-	//return false;
-
-	pid_t child_pid = fork();
-
-	if(child_pid == 0)
-	{
-		// Child
-		char argv_data[3][10000];
-		strcpy(argv_data[0], "/bin/rm");
-		strcpy(argv_data[1], "-rf");
-		strncpy(argv_data[2], path.c_str(), 10000);
-		char *argv[4];
-		argv[0] = argv_data[0];
-		argv[1] = argv_data[1];
-		argv[2] = argv_data[2];
-		argv[3] = NULL;
-
-		std::cerr<<"Executing '"<<argv[0]<<"' '"<<argv[1]<<"' '"
-				<<argv[2]<<"'"<<std::endl;
-
-		execv(argv[0], argv);
-
-		// Execv shouldn't return. Failed.
-		_exit(1);
-	}
-	else
-	{
-		// Parent
-		int child_status;
-		pid_t tpid;
-		do{
-			tpid = wait(&child_status);
-			//if(tpid != child_pid) process_terminated(tpid);
-		}while(tpid != child_pid);
-		return (child_status == 0);
-	}
+	// because fuck that
+	if (path.substr(0,1) != "/" || path == "/")
+		return false;
+	// file tree walk, calls the unlink_cb function on every file/directory
+	int ret = nftw(path.c_str(), unlink_cb, 64, FTW_DEPTH | FTW_PHYS);
+	return (ret == 0);
 }
 
 #endif
