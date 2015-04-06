@@ -413,9 +413,12 @@ public:
 				ALfloat volume;
 				alSourcei(sound->source_id, AL_LOOPING, AL_FALSE);
 				alGetSourcef(sound->source_id, AL_GAIN, &volume);
-				if (dtime > 0.1)
-					dtime = 0.1;
-				volume -= 100.0*dtime;
+				if (dtime > 0.05)
+					dtime = 0.05;
+				while (volume > 1.) {
+					volume /= 10.;
+				}
+				volume -= dtime;
 				if (volume < 0.01) {
 					volume = 0.0;
 					m_music_last_id = 0;
