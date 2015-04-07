@@ -39,20 +39,19 @@ public:
 	// Multiple sounds can be loaded per name; when played, the sound
 	// should be chosen randomly from alternatives
 	// Return value determines success/failure
-	virtual bool loadSound(const std::string &name,
-			const std::string &filepath) = 0;
+	virtual bool loadSound(const std::string &name, const std::string &filepath, float gain=1.0) = 0;
 
 	virtual void updateListener(v3f pos, v3f vel, v3f at, v3f up) = 0;
 	virtual void setListenerGain(float gain) = 0;
 
 	// playSound functions return -1 on failure, otherwise a handle to the
 	// sound. If name=="", call should be ignored without error.
-	virtual int playSound(const std::string &name, bool loop, float volume) = 0;
-	virtual int playSoundAt(const std::string &name, bool loop, float volume, v3f pos) = 0;
+	virtual int playSound(const std::string &name, bool loop) = 0;
+	virtual int playSoundAt(const std::string &name, bool loop, v3f pos) = 0;
 	virtual void stopSound(int sound) = 0;
 	virtual bool soundExists(int sound) = 0;
 
-	virtual bool playMusic(const std::string &name, bool loop, float volume) = 0;
+	virtual bool playMusic(const std::string &name, bool loop) = 0;
 	virtual void stopMusic() = 0;
 
 	virtual void updateSoundPosition(int sound, v3f pos) = 0;
@@ -63,17 +62,17 @@ public:
 class DummySoundManager: public ISoundManager
 {
 public:
-	virtual bool loadSound(const std::string &name, const std::string &filepath) {return true;}
+	virtual bool loadSound(const std::string &name, const std::string &filepath, float gain) {return true;}
 
 	void updateListener(v3f pos, v3f vel, v3f at, v3f up) {}
 	void setListenerGain(float gain) {}
 
-	int playSound(const std::string &name, bool loop, float volume) {return 0;}
-	int playSoundAt(const std::string &name, bool loop, float volume, v3f pos) {return 0;}
+	int playSound(const std::string &name, bool loop) {return 0;}
+	int playSoundAt(const std::string &name, bool loop, v3f pos) {return 0;}
 	void stopSound(int sound) {}
 	bool soundExists(int sound) {return false;}
 
-	bool playMusic(const std::string &name, bool loop, float volume) {return false;}
+	bool playMusic(const std::string &name, bool loop) {return false;}
 	void stopMusic() {}
 
 	void updateSoundPosition(int sound, v3f pos) {}

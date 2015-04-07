@@ -2344,13 +2344,6 @@ void Client::playStepSound(int foot)
 	if (!m_sound)
 		return;
 
-	f32 volume = g_settings->getFloat("sound_volume");
-	if (volume < 1.0)
-		return;
-	if (volume > 100.0)
-		volume = 100.0;
-	volume /= 100.0;
-
 	v3f pf = m_env.getLocalPlayer()->getPosition();
 	v3s16 pp = floatToInt(pf + v3f(0, BS*0.1, 0), BS);
 	MapNode n = m_env.getMap().getNodeNoEx(pp);
@@ -2397,7 +2390,7 @@ void Client::playStepSound(int foot)
 	}else{
 		snd += "-right";
 	}
-	m_sound->playSound(snd,false,volume);
+	m_sound->playSound(snd,false);
 }
 
 void Client::playDigSound(content_t c)
@@ -2405,12 +2398,6 @@ void Client::playDigSound(content_t c)
 	if (!m_sound)
 		return;
 
-	f32 volume = g_settings->getFloat("sound_volume");
-	if (volume < 1.0)
-		return;
-	if (volume > 100.0)
-		volume = 100.0;
-	volume /= 100.0;
 	if (c == CONTENT_IGNORE) {
 		c = getPointedContent();
 		if ((c&CONTENT_MOB_MASK) != 0)
@@ -2418,30 +2405,30 @@ void Client::playDigSound(content_t c)
 	}
 	ContentFeatures *f = &content_features(c);
 	if (f->sound_dig != "") {
-		m_sound->playSound(f->sound_dig,false,volume);
+		m_sound->playSound(f->sound_dig,false);
 		return;
 	}
 	switch (f->type) {
 	case CMT_PLANT:
-		m_sound->playSound("plant-dig",false,volume);
+		m_sound->playSound("plant-dig",false);
 		break;
 	case CMT_DIRT:
-		m_sound->playSound("dirt-dig",false,volume);
+		m_sound->playSound("dirt-dig",false);
 		break;
 	case CMT_STONE:
-		m_sound->playSound("stone-dig",false,volume);
+		m_sound->playSound("stone-dig",false);
 		break;
 	case CMT_LIQUID:
-		m_sound->playSound("liquid-dig",false,volume);
+		m_sound->playSound("liquid-dig",false);
 		break;
 	case CMT_WOOD:
-		m_sound->playSound("wood-dig",false,volume);
+		m_sound->playSound("wood-dig",false);
 		break;
 	case CMT_GLASS:
-		m_sound->playSound("glass-dig",false,volume);
+		m_sound->playSound("glass-dig",false);
 		break;
 	default:
-		m_sound->playSound("miss-dig",false,volume);
+		m_sound->playSound("miss-dig",false);
 	}
 }
 
@@ -2450,26 +2437,20 @@ void Client::playPlaceSound(content_t c)
 	if (!m_sound)
 		return;
 
-	f32 volume = g_settings->getFloat("sound_volume");
-	if (volume < 1.0)
-		return;
-	if (volume > 100.0)
-		volume = 100.0;
-	volume /= 100.0;
 	if (c == CONTENT_IGNORE)
 		c = getPointedContent();
 
 	ContentFeatures *f = &content_features(c);
 	if (f->sound_place != "") {
-		m_sound->playSound(f->sound_place,false,volume);
+		m_sound->playSound(f->sound_place,false);
 		return;
 	}
 	switch (f->type) {
 	case CMT_LIQUID:
-		m_sound->playSound("liquid-place",false,volume);
+		m_sound->playSound("liquid-place",false);
 		break;
 	default:
-		m_sound->playSound("place",false,volume);
+		m_sound->playSound("place",false);
 	}
 }
 
@@ -2477,24 +2458,12 @@ void Client::playSound(std::string &name, bool loop)
 {
 	if (!m_sound)
 		return;
-	f32 volume = g_settings->getFloat("sound_volume");
-	if (volume < 1.0)
-		return;
-	if (volume > 100.0)
-		volume = 100.0;
-	volume /= 100.0;
-	m_sound->playSound(name,loop,volume);
+	m_sound->playSound(name,loop);
 }
 
 void Client::playSoundAt(std::string &name, v3f pos, bool loop)
 {
 	if (!m_sound)
 		return;
-	f32 volume = g_settings->getFloat("sound_volume");
-	if (volume < 1.0)
-		return;
-	if (volume > 100.0)
-		volume = 100.0;
-	volume /= 100.0;
-	m_sound->playSoundAt(name,loop,volume,pos);
+	m_sound->playSoundAt(name,loop,pos);
 }

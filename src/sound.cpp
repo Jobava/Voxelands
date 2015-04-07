@@ -53,8 +53,8 @@ void init_sounds(ISoundManager *sound)
 	sound->loadSound("wood-step-left","step_wood.3.ogg");
 	sound->loadSound("wood-step-right","step_wood.4.ogg");
 	// CMT_GLASS
-	sound->loadSound("glass-step-left","step_glass.1.ogg");
-	sound->loadSound("glass-step-right","step_glass.1.ogg");
+	sound->loadSound("glass-step-left","step_glass.1.ogg",0.3);
+	sound->loadSound("glass-step-right","step_glass.1.ogg",0.3);
 
 	// digging
 	// CMT_DIRT

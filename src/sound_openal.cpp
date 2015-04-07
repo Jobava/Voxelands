@@ -49,6 +49,8 @@
 #include <vector>
 #include "utility.h" // myrand()
 #include "path.h"
+#include "settings.h"
+#include "main.h"
 
 #define BUFFER_SIZE 30000
 
@@ -105,6 +107,7 @@ struct SoundBuffer
 	ALsizei freq;
 	ALuint buffer_id;
 	std::vector<char> buffer;
+	float gain;
 };
 
 SoundBuffer* loadOggFile(const std::string &filepath)
@@ -246,6 +249,16 @@ public:
 
 		alDistanceModel(AL_EXPONENT_DISTANCE);
 
+		{
+			f32 volume = g_settings->getFloat("sound_volume");
+			if (volume < 1.0)
+				return;
+			if (volume > 100.0)
+				volume = 100.0;
+			volume /= 100.0;
+			alListenerf(AL_GAIN, volume);
+		}
+
 		infostream<<"Audio: Initialized: OpenAL "<<alGetString(AL_VERSION)
 				<<", using "<<alcGetString(m_device, ALC_DEVICE_SPECIFIER)
 				<<std::endl;
@@ -304,8 +317,7 @@ public:
 		return bufs[j];
 	}
 
-	PlayingSound* createPlayingSound(SoundBuffer *buf, bool loop,
-			float volume)
+	PlayingSound* createPlayingSound(SoundBuffer *buf, bool loop)
 	{
 		infostream<<"OpenALSoundManager: Creating playing sound"<<std::endl;
 		assert(buf);
@@ -317,15 +329,14 @@ public:
 		alSource3f(sound->source_id, AL_POSITION, 0, 0, 0);
 		alSource3f(sound->source_id, AL_VELOCITY, 0, 0, 0);
 		alSourcei(sound->source_id, AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
-		volume = MYMAX(0.0, volume);
+		float volume = MYMAX(0.0, buf->gain);
 		alSourcef(sound->source_id, AL_GAIN, volume);
 		alSourcePlay(sound->source_id);
 		sound->should_delete = false;
 		return sound;
 	}
 
-	PlayingSound* createPlayingSoundAt(SoundBuffer *buf, bool loop,
-			float volume, v3f pos)
+	PlayingSound* createPlayingSoundAt(SoundBuffer *buf, bool loop, v3f pos)
 	{
 		infostream<<"OpenALSoundManager: Creating positional playing sound"
 				<<std::endl;
@@ -342,17 +353,17 @@ public:
 		//alSourcef(sound->source_id, AL_ROLLOFF_FACTOR, 0.7);
 		alSourcef(sound->source_id, AL_REFERENCE_DISTANCE, 30.0);
 		alSourcei(sound->source_id, AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
-		volume = MYMAX(0.0, volume);
+		float volume = MYMAX(0.0, buf->gain);
 		alSourcef(sound->source_id, AL_GAIN, volume);
 		alSourcePlay(sound->source_id);
 		sound->should_delete = false;
 		return sound;
 	}
 
-	int playSoundRaw(SoundBuffer *buf, bool loop, float volume)
+	int playSoundRaw(SoundBuffer *buf, bool loop)
 	{
 		assert(buf);
-		PlayingSound *sound = createPlayingSound(buf, loop, volume);
+		PlayingSound *sound = createPlayingSound(buf, loop);
 		if (!sound)
 			return -1;
 		int id = m_next_id++;
@@ -360,10 +371,10 @@ public:
 		return id;
 	}
 
-	int playSoundRawAt(SoundBuffer *buf, bool loop, float volume, v3f pos)
+	int playSoundRawAt(SoundBuffer *buf, bool loop, v3f pos)
 	{
 		assert(buf);
-		PlayingSound *sound = createPlayingSoundAt(buf, loop, volume, pos);
+		PlayingSound *sound = createPlayingSoundAt(buf, loop, pos);
 		if (!sound)
 			return -1;
 		int id = m_next_id++;
@@ -438,8 +449,7 @@ public:
 		}
 	}
 
-	bool loadSound(const std::string &name,
-			const std::string &filepath)
+	bool loadSound(const std::string &name, const std::string &filepath, float gain)
 	{
 		std::string path = getPath("sound",filepath,true);
 		if (path == "")
@@ -447,6 +457,7 @@ public:
 		SoundBuffer *buf = loadOggFile(path);
 		if (buf == NULL)
 			return false;
+		buf->gain = gain;
 		addBuffer(name, buf);
 		return true;
 	}
@@ -467,7 +478,7 @@ public:
 		alListenerf(AL_GAIN, gain);
 	}
 
-	int playSound(const std::string &name, bool loop, float volume)
+	int playSound(const std::string &name, bool loop)
 	{
 		if (name == "")
 			return 0;
@@ -477,9 +488,9 @@ public:
 					<<std::endl;
 			return -1;
 		}
-		return playSoundRaw(buf, loop, volume);
+		return playSoundRaw(buf, loop);
 	}
-	int playSoundAt(const std::string &name, bool loop, float volume, v3f pos)
+	int playSoundAt(const std::string &name, bool loop, v3f pos)
 	{
 		if (name == "")
 			return 0;
@@ -489,7 +500,7 @@ public:
 					<<std::endl;
 			return -1;
 		}
-		return playSoundRawAt(buf, loop, volume, pos);
+		return playSoundRawAt(buf, loop, pos);
 	}
 	void stopSound(int id)
 	{
@@ -508,11 +519,11 @@ public:
 		return (m_sounds_playing.count(sound) != 0);
 	}
 
-	bool playMusic(const std::string &name, bool loop, float volume)
+	bool playMusic(const std::string &name, bool loop)
 	{
 		stopMusic();
 
-		m_music_id = playSound(name,loop,volume);
+		m_music_id = playSound(name,loop);
 		if (m_music_id > 0)
 			return true;
 		m_music_id = 0;

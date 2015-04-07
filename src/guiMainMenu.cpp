@@ -43,6 +43,7 @@
 #if USE_FREETYPE
 #include "intlGUIEditBox.h"
 #endif
+#include "sound.h"
 
 #include "gettext.h"
 
@@ -50,12 +51,14 @@ GUIMainMenu::GUIMainMenu(gui::IGUIEnvironment* env,
 		gui::IGUIElement* parent, s32 id,
 		IMenuManager *menumgr,
 		MainMenuData *data,
-		IGameCallback *gamecallback
+		IGameCallback *gamecallback,
+		ISoundManager *sound
 ):
 	GUIModalMenu(env, parent, id, menumgr),
 	m_data(data),
 	m_accepted(false),
-	m_gamecallback(gamecallback)
+	m_gamecallback(gamecallback),
+	m_sound(sound)
 {
 	assert(m_data);
 	this->env = env;
@@ -1434,7 +1437,8 @@ bool GUIMainMenu::OnEvent(const SEvent& event)
 				gui::IGUIElement *vsb = getElementFromId(GUI_ID_VOLUME_SB);
 				if(vsb != NULL && vsb->getType() == gui::EGUIET_SCROLL_BAR) {
 					m_data->volume = (float)((gui::IGUIScrollBar*)vsb)->getPos();
-					g_settings->setFloat("sound_volume", m_data->volume);
+					if (m_sound)
+						m_sound->setListenerGain(m_data->volume/100.0);
 				}
 				return true;
 			}

@@ -1251,7 +1251,7 @@ int main(int argc, char *argv[])
 
 				GUIMainMenu *menu =
 						new GUIMainMenu(guienv, guiroot, -1,
-							&g_menumgr, &menudata, g_gamecallback);
+							&g_menumgr, &menudata, g_gamecallback, sound);
 				menu->allowFocusRemoval(true);
 
 				if (error_message != L"") {
@@ -1270,7 +1270,7 @@ int main(int argc, char *argv[])
 				infostream<<"Created main menu"<<std::endl;
 
 #if USE_AUDIO == 1
-				sound->playMusic("bg-mainmenu",true,g_settings->getFloat("sound_volume"));
+				sound->playMusic("bg-mainmenu",true);
 #endif
 
 				while (device->run() && kill == false) {
@@ -1352,6 +1352,7 @@ int main(int argc, char *argv[])
 				g_settings->set("fullscreen", itos(menudata.fullscreen));
 				g_settings->set("enable_particles", itos(menudata.particles));
 				g_settings->set("old_hotbar", itos(menudata.hotbar));
+				g_settings->set("sound_volume",ftos(menudata.volume));
 				g_settings->set("game_mode", wide_to_narrow(menudata.game_mode));
 				g_settings->set("max_mob_level", wide_to_narrow(menudata.max_mob_level));
 				g_settings->set("initial_inventory", itos(menudata.initial_inventory));
@@ -1386,7 +1387,7 @@ int main(int argc, char *argv[])
 				menu->allowFocusRemoval(true);
 
 #if USE_AUDIO == 1
-				sound->playMusic("bg-charcreator",true,g_settings->getFloat("sound_volume"));
+				sound->playMusic("bg-charcreator",true);
 #endif
 
 				while (device->run() && kill == false) {

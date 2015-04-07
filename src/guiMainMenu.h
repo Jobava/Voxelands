@@ -174,6 +174,8 @@ struct MainMenuData
 	bool character_creator;
 };
 
+class ISoundManager;
+
 class GUIMainMenu : public GUIModalMenu
 {
 public:
@@ -181,7 +183,8 @@ public:
 			gui::IGUIElement* parent, s32 id,
 			IMenuManager *menumgr,
 			MainMenuData *data,
-			IGameCallback *gamecallback);
+			IGameCallback *gamecallback,
+			ISoundManager *sound);
 	~GUIMainMenu();
 
 	void removeChildren();
@@ -210,6 +213,7 @@ private:
 	MainMenuData *m_data;
 	bool m_accepted;
 	IGameCallback *m_gamecallback;
+	ISoundManager *m_sound;
 
 	gui::IGUIEnvironment* env;
 	gui::IGUIElement* parent;
