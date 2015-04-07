@@ -2338,7 +2338,8 @@ ISoundManager* Client::getSoundManager()
 	return m_sound;
 }
 
-void Client::playStepSound()
+// foot: 0 = left, 1 = right
+void Client::playStepSound(int foot)
 {
 	if (!m_sound)
 		return;
@@ -2353,31 +2354,50 @@ void Client::playStepSound()
 	v3f pf = m_env.getLocalPlayer()->getPosition();
 	v3s16 pp = floatToInt(pf + v3f(0, BS*0.1, 0), BS);
 	MapNode n = m_env.getMap().getNodeNoEx(pp);
-	if (content_features(n).type == CMT_AIR) {
+	ContentFeatures *f = &content_features(n);
+	if (f->type == CMT_AIR) {
 		pp.Y--;
 		n = m_env.getMap().getNodeNoEx(pp);
+		f = &content_features(n);
 	}
-	switch (content_features(n).type) {
-	case CMT_PLANT:
-		m_sound->playSound("plant-walk",false,volume);
-		break;
-	case CMT_DIRT:
-		m_sound->playSound("dirt-walk",false,volume);
-		break;
-	case CMT_STONE:
-		m_sound->playSound("stone-walk",false,volume);
-		break;
-	case CMT_LIQUID:
-		m_sound->playSound("liquid-walk",false,volume);
-		break;
-	case CMT_WOOD:
-		m_sound->playSound("wood-walk",false,volume);
-		break;
-	case CMT_GLASS:
-		m_sound->playSound("glass-walk",false,volume);
-		break;
-	default:;
+
+	std::string snd("");
+
+	if (f->sound_step != "") {
+		snd = f->sound_step;
+	}else{
+		switch (f->type) {
+		case CMT_PLANT:
+			snd = "plant-step";
+			break;
+		case CMT_DIRT:
+			snd = "dirt-step";
+			break;
+		case CMT_STONE:
+			snd = "stone-step";
+			break;
+		case CMT_LIQUID:
+			snd = "liquid-step";
+			break;
+		case CMT_WOOD:
+			snd = "wood-step";
+			break;
+		case CMT_GLASS:
+			snd = "glass-step";
+			break;
+		default:;
+		}
 	}
+
+	if (snd == "")
+		return;
+
+	if (foot == 0) {
+		snd += "-left";
+	}else{
+		snd += "-right";
+	}
+	m_sound->playSound(snd,false,volume);
 }
 
 void Client::playDigSound(content_t c)
@@ -2396,7 +2416,12 @@ void Client::playDigSound(content_t c)
 		if ((c&CONTENT_MOB_MASK) != 0)
 			return;
 	}
-	switch (content_features(c).type) {
+	ContentFeatures *f = &content_features(c);
+	if (f->sound_dig != "") {
+		m_sound->playSound(f->sound_dig,false,volume);
+		return;
+	}
+	switch (f->type) {
 	case CMT_PLANT:
 		m_sound->playSound("plant-dig",false,volume);
 		break;
@@ -2431,10 +2456,15 @@ void Client::playPlaceSound(content_t c)
 	if (volume > 100.0)
 		volume = 100.0;
 	volume /= 100.0;
-	if (c == CONTENT_IGNORE) {
+	if (c == CONTENT_IGNORE)
 		c = getPointedContent();
+
+	ContentFeatures *f = &content_features(c);
+	if (f->sound_place != "") {
+		m_sound->playSound(f->sound_place,false,volume);
+		return;
 	}
-	switch (content_features(c).type) {
+	switch (f->type) {
 	case CMT_LIQUID:
 		m_sound->playSound("liquid-place",false,volume);
 		break;

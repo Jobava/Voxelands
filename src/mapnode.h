@@ -396,6 +396,12 @@ struct ContentFeatures
 	NodeMetadata *initial_metadata;
 	// Sound played when the node's formspec is accessed
 	std::string sound_access;
+	// Sound played when the node is stepped on or in
+	std::string sound_step;
+	// Sound played when the node is dug
+	std::string sound_dig;
+	// Sound played when the node is placed
+	std::string sound_place;
 
 	// If the content is liquid, this is the flowing version of the liquid.
 	// If content is liquid, this is the same content.
@@ -491,6 +497,9 @@ struct ContentFeatures
 		fuel_time = 0.0;
 		initial_metadata = NULL;
 		sound_access = "";
+		sound_step = "";
+		sound_dig = "";
+		sound_place = "";
 		liquid_alternative_flowing = CONTENT_IGNORE;
 		liquid_alternative_source = CONTENT_IGNORE;
 		liquid_viscosity = 0;

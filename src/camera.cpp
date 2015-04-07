@@ -170,12 +170,10 @@ void Camera::step(f32 dtime)
 		}else{
 			float was = m_view_bobbing_anim;
 			m_view_bobbing_anim = my_modf(m_view_bobbing_anim + offset);
-			if (
-				was == 0
-				|| (was < 0.5f && m_view_bobbing_anim >= 0.5f)
-				|| (was > 0.5f && m_view_bobbing_anim <= 0.5f)
-			) {
-				m_client->playStepSound();
+			if (was == 0 || (was < 0.5f && m_view_bobbing_anim >= 0.5f)) {
+				m_client->playStepSound(0);
+			}else if ((was > 0.5f && m_view_bobbing_anim <= 0.5f)) {
+				m_client->playStepSound(1);
 			}
 		}
 	}

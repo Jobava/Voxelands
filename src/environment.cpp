@@ -3924,7 +3924,7 @@ void ClientEnvironment::step(float dtime)
 			f32 tolerance = BS*12; // 3 without damage
 			f32 factor = 1;
 			if (info.speed > tolerance/2.0)
-				m_client->playStepSound();
+				m_client->playStepSound(0);
 			if (info.speed > tolerance) {
 				f32 damage_f = (info.speed - tolerance)/BS*factor;
 				u16 damage = (u16)(damage_f+0.5);

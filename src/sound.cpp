@@ -24,6 +24,8 @@
 ************************************************************************/
 
 #include "sound.h"
+#include "mapnode.h"
+#include "content_mapnode.h"
 
 // Global DummySoundManager singleton
 DummySoundManager dummySoundManager;
@@ -32,26 +34,27 @@ void init_sounds(ISoundManager *sound)
 {
 	// walking
 	// CMT_DIRT
-	sound->loadSound("dirt-walk","step_dirt.1.ogg");
-	sound->loadSound("dirt-walk","step_dirt.2.ogg");
+	sound->loadSound("dirt-step-left","step_dirt.1.ogg");
+	sound->loadSound("dirt-step-right","step_dirt.2.ogg");
 	// CMT_STONE
-	sound->loadSound("stone-walk","step_stone.1.ogg");
-	sound->loadSound("stone-walk","step_stone.2.ogg");
-	sound->loadSound("stone-walk","step_stone.3.ogg");
-	sound->loadSound("stone-walk","step_stone.4.ogg");
+	sound->loadSound("stone-step-left","step_stone.1.ogg");
+	sound->loadSound("stone-step-right","step_stone.2.ogg");
+	sound->loadSound("stone-step-left","step_stone.3.ogg");
+	sound->loadSound("stone-step-right","step_stone.4.ogg");
 	// CMT_PLANT
-	sound->loadSound("plant-walk","step_plant.1.ogg");
-	sound->loadSound("plant-walk","step_plant.2.ogg");
+	sound->loadSound("plant-step-left","step_plant.1.ogg");
+	sound->loadSound("plant-step-right","step_plant.2.ogg");
 	// CMT_LIQUID
-	sound->loadSound("liquid-walk","step_liquid.1.ogg");
-	sound->loadSound("liquid-walk","step_liquid.2.ogg");
+	sound->loadSound("liquid-step-left","step_liquid.1.ogg");
+	sound->loadSound("liquid-step-right","step_liquid.2.ogg");
 	// CMT_WOOD
-	sound->loadSound("wood-walk","step_wood.1.ogg");
-	sound->loadSound("wood-walk","step_wood.2.ogg");
-	sound->loadSound("wood-walk","step_wood.3.ogg");
-	sound->loadSound("wood-walk","step_wood.4.ogg");
+	sound->loadSound("wood-step-left","step_wood.1.ogg");
+	sound->loadSound("wood-step-right","step_wood.2.ogg");
+	sound->loadSound("wood-step-left","step_wood.3.ogg");
+	sound->loadSound("wood-step-right","step_wood.4.ogg");
 	// CMT_GLASS
-	sound->loadSound("glass-walk","step_glass.1.ogg");
+	sound->loadSound("glass-step-left","step_glass.1.ogg");
+	sound->loadSound("glass-step-right","step_glass.1.ogg");
 
 	// digging
 	// CMT_DIRT

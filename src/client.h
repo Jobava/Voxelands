@@ -324,7 +324,7 @@ public:
 	float getRTT(void);
 	virtual ISoundManager* getSoundManager();
 
-	void playStepSound();
+	void playStepSound(int foot);
 	void playDigSound(content_t c);
 	void playPlaceSound(content_t c);
 	void playSound(std::string &name, bool loop);
