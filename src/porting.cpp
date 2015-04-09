@@ -311,7 +311,7 @@ std::string getUser()
 	char buff[1024];
 	int size = 1024;
 
-	if (GetUserName(buff,&size))
+	if (GetUserName(buff,LPDWORD(&size)))
 		return std::string(buff);
 #else
 	char* u = getenv("USER");
