@@ -39,7 +39,7 @@
 #include "tile.h" // ITextureSource
 #include "path.h"
 #include "gui_colours.h"
-#include "gettext.h"
+#include "intl.h"
 #if USE_FREETYPE
 #include "intlGUIEditBox.h"
 #endif

@@ -33,7 +33,7 @@
 #include <IGUIButton.h>
 #include <IGUIStaticText.h>
 #include <IGUIFont.h>
-#include "gettext.h"
+#include "intl.h"
 #include "gui_colours.h"
 #if USE_FREETYPE
 #include "intlGUIEditBox.h"

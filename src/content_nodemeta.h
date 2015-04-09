@@ -27,7 +27,7 @@
 #define CONTENT_NODEMETA_HEADER
 
 #include "nodemetadata.h"
-#include "gettext.h"
+#include "intl.h"
 
 class ServerEnvironment;
 class Inventory;

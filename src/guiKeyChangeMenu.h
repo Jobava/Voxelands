@@ -32,7 +32,7 @@
 #include "utility.h"
 #include "modalMenu.h"
 #include "client.h"
-#include "gettext.h"
+#include "intl.h"
 #include "keycode.h"
 #include <string>
 

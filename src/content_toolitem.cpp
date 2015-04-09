@@ -24,7 +24,7 @@
 #include "content_list.h"
 #include "content_mapnode.h"
 #include <map>
-#include "gettext.h"
+#include "intl.h"
 
 std::map<content_t,struct ToolItemFeatures> g_content_toolitem_features;
 

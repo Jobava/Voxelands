@@ -4,7 +4,7 @@
 #include "content_mob.h"
 #include "content_list.h"
 #include <map>
-#include "gettext.h"
+#include "intl.h"
 
 std::map<content_t,struct CraftItemFeatures> g_content_craftitem_features;
 

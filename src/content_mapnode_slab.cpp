@@ -24,7 +24,7 @@
 #include "content_list.h"
 #include "content_craft.h"
 #include "content_nodemeta.h"
-#include "gettext.h"
+#include "intl.h"
 
 void content_mapnode_slab(bool repeat)
 {

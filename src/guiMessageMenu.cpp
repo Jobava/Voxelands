@@ -33,7 +33,7 @@
 #include <IGUIStaticText.h>
 #include <IGUIFont.h>
 
-#include "gettext.h"
+#include "intl.h"
 #include "gui_colours.h"
 
 GUIMessageMenu::GUIMessageMenu(gui::IGUIEnvironment* env,

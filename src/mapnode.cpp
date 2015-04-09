@@ -206,7 +206,7 @@ ContentFeatures & content_features(MapNode &n)
 #ifndef SERVER
 #include "common_irrlicht.h"
 #include "game.h"
-#include "gettext.h"
+#include "intl.h"
 void init_mapnode(video::IVideoDriver* driver)
 #else
 void init_mapnode()

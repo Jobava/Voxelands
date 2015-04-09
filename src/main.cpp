@@ -63,7 +63,7 @@
 #include "keycode.h"
 #include "tile.h"
 #include "defaultsettings.h"
-#include "gettext.h"
+#include "intl.h"
 #include "settings.h"
 #include "profiler.h"
 #include "log.h"
@@ -825,7 +825,7 @@ int main(int argc, char *argv[])
 	// Create user data directory
 	fs::CreateDir(porting::path_userdata);
 
-	init_gettext((porting::path_data+DIR_DELIM+".."+DIR_DELIM+"locale").c_str());
+	init_gettext();
 
 	// Initialize debug streams
 #ifdef RUN_IN_PLACE

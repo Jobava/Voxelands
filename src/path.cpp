@@ -141,26 +141,32 @@ std::string getPath(const char* tp, const std::string &filename, bool must_exist
 		rel_path += std::string("sounds")+DIR_DELIM+filename;
 	}else if (type == "font") {
 		rel_path += std::string("fonts")+DIR_DELIM+filename;
+	}else if (type.substr(0,11) == "translation") {
+		std::string lang = type.substr(12);
+		type = "translation";
+		rel_path += std::string("locale")+DIR_DELIM+lang+DIR_DELIM+filename;
 	}else{
 		rel_path += filename;
 	}
 
 	/* check from data_path */
-	std::string data_path = g_settings->get("data_path");
-	if (data_path != "") {
-		std::string testpath = data_path + DIR_DELIM + rel_path;
-		if (type == "model" || type == "html" || type == "sound" || type == "skin" || type == "font") {
-			if (fs::PathExists(testpath))
-				fullpath = std::string(testpath);
-		}else{
-			fullpath = getImagePath(testpath);
+	if (g_settings->exists("data_path")) {
+		std::string data_path = g_settings->get("data_path");
+		if (data_path != "") {
+			std::string testpath = data_path + DIR_DELIM + rel_path;
+			if (type == "model" || type == "html" || type == "sound" || type == "skin" || type == "font" || type == "translation") {
+				if (fs::PathExists(testpath))
+					fullpath = std::string(testpath);
+			}else{
+				fullpath = getImagePath(testpath);
+			}
 		}
 	}
 
 	/* check from user data directory */
 	if (fullpath == "") {
 		std::string testpath = porting::path_userdata + DIR_DELIM + rel_path;
-		if (type == "model" || type == "html" || type == "sound" || type == "skin" || type == "font") {
+		if (type == "model" || type == "html" || type == "sound" || type == "skin" || type == "font" || type == "translation") {
 			if (fs::PathExists(testpath))
 				fullpath = std::string(testpath);
 		}else{
@@ -171,7 +177,7 @@ std::string getPath(const char* tp, const std::string &filename, bool must_exist
 	/* check from default data directory */
 	if (fullpath == "") {
 		std::string testpath = porting::path_data + DIR_DELIM + rel_path;
-		if (type == "model" || type == "html" || type == "sound" || type == "skin" || type == "font") {
+		if (type == "model" || type == "html" || type == "sound" || type == "skin" || type == "font" || type == "translation") {
 			if (fs::PathExists(testpath))
 				fullpath = std::string(testpath);
 		}else{

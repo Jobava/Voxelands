@@ -32,7 +32,7 @@
 #include <IGUIButton.h>
 #include <IGUIStaticText.h>
 #include <IGUIFont.h>
-#include "gettext.h"
+#include "intl.h"
 #include "client.h"
 #include "gui_colours.h"
 

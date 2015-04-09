@@ -45,7 +45,7 @@
 #include "settings.h"
 #include "profiler.h"
 #include "mainmenumanager.h"
-#include "gettext.h"
+#include "intl.h"
 #include "log.h"
 #include "filesys.h"
 #include "path.h"

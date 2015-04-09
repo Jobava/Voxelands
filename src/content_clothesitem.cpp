@@ -23,7 +23,7 @@
 #include "content_list.h"
 #include "content_mapnode.h"
 #include <map>
-#include "gettext.h"
+#include "intl.h"
 
 std::map<content_t,struct ClothesItemFeatures> g_content_clothesitem_features;
 

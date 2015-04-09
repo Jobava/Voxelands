@@ -34,7 +34,7 @@
 #include "utility.h"
 #include "gui_colours.h"
 
-#include "gettext.h"
+#include "intl.h"
 
 GUICharDefMenu::GUICharDefMenu(
 	IrrlichtDevice* device,

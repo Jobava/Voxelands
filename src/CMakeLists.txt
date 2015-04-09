@@ -14,13 +14,7 @@ set(USE_GETTEXT 0)
 find_package(GettextLib)
 
 if(GETTEXT_FOUND AND ENABLE_GETTEXT)
-	message(STATUS "gettext include path: ${GETTEXT_INCLUDE_DIR}")
 	message(STATUS "gettext msgfmt path: ${GETTEXT_MSGFMT}")
-	if(WIN32)
-		message(STATUS "gettext library: ${GETTEXT_LIBRARY}")
-		message(STATUS "gettext dll: ${GETTEXT_DLL}")
-		message(STATUS "gettext iconv dll: ${GETTEXT_ICONV_DLL}")
-	endif()
 	set(USE_GETTEXT 1)
 	message(STATUS "GetText enabled; locales found: ${GETTEXT_AVAILABLE_LOCALES}")
 elseif(GETTEXT_FOUND AND NOT ENABLE_GETTEXT)
@@ -198,6 +192,7 @@ set(common_SRCS
 	content_mapnode_util.cpp
 	content_list.cpp
 	content_nodebox.cpp
+	intl.cpp
 	auth.cpp
 	collision.cpp
 	nodemetadata.cpp
@@ -286,7 +281,6 @@ include_directories(
 	${CMAKE_BUILD_TYPE}
 	${PNG_INCLUDE_DIR}
 	${AUDIO_INCLUDE_DIRS}
-	${GETTEXT_INCLUDE_DIR}
 	${JTHREAD_INCLUDE_DIR}
 	${SQLITE3_INCLUDE_DIR}
 )
@@ -316,7 +310,6 @@ if(BUILD_CLIENT)
 		${PNG_LIBRARIES}
 		${X11_LIBRARIES}
 		${AUDIO_LIBRARIES}
-		${GETTEXT_LIBRARY}
 		${JTHREAD_LIBRARY}
 		${SQLITE3_LIBRARY}
 		${PLATFORM_LIBS}
@@ -427,11 +420,9 @@ if(BUILD_CLIENT)
 	install(FILES ${images} DESTINATION ${SHAREDIR}/textures)
 	file(GLOB skins "${CMAKE_CURRENT_SOURCE_DIR}/../data/textures/skins/*.png")
 	install(FILES ${skins} DESTINATION ${SHAREDIR}/textures/skins)
-	file(GLOB models
-"${CMAKE_CURRENT_SOURCE_DIR}/../data/models/*.b3d")
+	file(GLOB models "${CMAKE_CURRENT_SOURCE_DIR}/../data/models/*.b3d")
 	install(FILES ${models} DESTINATION ${SHAREDIR}/models)
-	file(GLOB modelsx
-"${CMAKE_CURRENT_SOURCE_DIR}/../data/models/*.x")
+	file(GLOB modelsx "${CMAKE_CURRENT_SOURCE_DIR}/../data/models/*.x")
 	install(FILES ${modelsx} DESTINATION ${SHAREDIR}/models)
 	file(GLOB sounds "${CMAKE_CURRENT_SOURCE_DIR}/../data/sounds/*.ogg")
 	install(FILES ${sounds} DESTINATION ${SHAREDIR}/sounds)
@@ -470,14 +461,6 @@ if(BUILD_CLIENT)
 				install(FILES ${OPENAL_DLL} DESTINATION ${BINDIR})
 			endif()
 		endif(USE_AUDIO)
-		if(USE_GETTEXT)
-			if(DEFINED GETTEXT_DLL)
-				install(FILES ${GETTEXT_DLL} DESTINATION ${BINDIR})
-			endif()
-			if(DEFINED GETTEXT_ICONV_DLL)
-				install(FILES ${GETTEXT_ICONV_DLL} DESTINATION ${BINDIR})
-			endif()
-		endif(USE_GETTEXT)
 	endif()
 	if(APPLE)
 		# TODO: install Irrlicht.framework into app bundle!

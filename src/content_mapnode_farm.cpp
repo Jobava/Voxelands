@@ -26,7 +26,7 @@
 #include "content_craftitem.h"
 #include "content_nodemeta.h"
 #include "settings.h"
-#include "gettext.h"
+#include "intl.h"
 
 void content_mapnode_farm(bool repeat)
 {

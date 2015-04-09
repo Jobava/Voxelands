@@ -45,7 +45,7 @@
 #endif
 #include "sound.h"
 
-#include "gettext.h"
+#include "intl.h"
 
 GUIMainMenu::GUIMainMenu(gui::IGUIEnvironment* env,
 		gui::IGUIElement* parent, s32 id,

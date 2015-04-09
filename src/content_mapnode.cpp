@@ -39,7 +39,7 @@
 #ifndef SERVER
 #include "tile.h"
 #endif
-#include "gettext.h"
+#include "intl.h"
 
 #define WATER_ALPHA 160
 
