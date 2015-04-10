@@ -744,14 +744,6 @@ inline s16 getContainerPos(s16 p, s16 d)
 	return (p>=0 ? p : p-d+1) / d;
 }
 
-inline v2s16 getContainerPos(v2s16 p, s16 d)
-{
-	return v2s16(
-		getContainerPos(p.X, d),
-		getContainerPos(p.Y, d)
-	);
-}
-
 inline v3s16 getContainerPos(v3s16 p, s16 d)
 {
 	return v3s16(
@@ -761,46 +753,11 @@ inline v3s16 getContainerPos(v3s16 p, s16 d)
 	);
 }
 
-inline v2s16 getContainerPos(v2s16 p, v2s16 d)
+inline v2s16 getContainerPos(v2s16 p, s16 d)
 {
 	return v2s16(
-		getContainerPos(p.X, d.X),
-		getContainerPos(p.Y, d.Y)
-	);
-}
-
-inline v3s16 getContainerPos(v3s16 p, v3s16 d)
-{
-	return v3s16(
-		getContainerPos(p.X, d.X),
-		getContainerPos(p.Y, d.Y),
-		getContainerPos(p.Z, d.Z)
-	);
-}
-
-inline bool isInArea(v3s16 p, s16 d)
-{
-	return (
-		p.X >= 0 && p.X < d &&
-		p.Y >= 0 && p.Y < d &&
-		p.Z >= 0 && p.Z < d
-	);
-}
-
-inline bool isInArea(v2s16 p, s16 d)
-{
-	return (
-		p.X >= 0 && p.X < d &&
-		p.Y >= 0 && p.Y < d
-	);
-}
-
-inline bool isInArea(v3s16 p, v3s16 d)
-{
-	return (
-		p.X >= 0 && p.X < d.X &&
-		p.Y >= 0 && p.Y < d.Y &&
-		p.Z >= 0 && p.Z < d.Z
+		getContainerPos(p.X, d),
+		getContainerPos(p.Y, d)
 	);
 }
 
@@ -814,23 +771,6 @@ inline s16 rangelim(s16 i, s16 max)
 }
 
 #define rangelim(d, min, max) ((d) < (min) ? (min) : ((d)>(max)?(max):(d)))
-
-inline v3s16 arealim(v3s16 p, s16 d)
-{
-	if(p.X < 0)
-		p.X = 0;
-	if(p.Y < 0)
-		p.Y = 0;
-	if(p.Z < 0)
-		p.Z = 0;
-	if(p.X > d-1)
-		p.X = d-1;
-	if(p.Y > d-1)
-		p.Y = d-1;
-	if(p.Z > d-1)
-		p.Z = d-1;
-	return p;
-}
 
 inline std::wstring narrow_to_wide(const std::string& mbs)
 {
@@ -1490,22 +1430,6 @@ inline bool string_allowed(const std::string &s, const std::string &allowed_char
 			return false;
 	}
 	return true;
-}
-
-/*
-	Forcefully wraps string into rows using \n
-	(no word wrap, used for showing paths in gui)
-*/
-inline std::string wrap_rows(const std::string &from, u32 rowlen)
-{
-	std::string to;
-	for(u32 i=0; i<from.size(); i++)
-	{
-		if(i != 0 && i%rowlen == 0)
-			to += '\n';
-		to += from[i];
-	}
-	return to;
 }
 
 /*
