@@ -45,8 +45,8 @@ void init_sounds(ISoundManager *sound)
 	sound->loadSound("plant-step-left","step_plant.1.ogg");
 	sound->loadSound("plant-step-right","step_plant.2.ogg");
 	// CMT_LIQUID
-	sound->loadSound("liquid-step-left","step_liquid.1.ogg");
-	sound->loadSound("liquid-step-right","step_liquid.2.ogg");
+	sound->loadSound("liquid-step-left","step_liquid.1.ogg",0.5);
+	sound->loadSound("liquid-step-right","step_liquid.2.ogg",0.5);
 	// CMT_WOOD
 	sound->loadSound("wood-step-left","step_wood.1.ogg");
 	sound->loadSound("wood-step-right","step_wood.2.ogg");
