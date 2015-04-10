@@ -57,7 +57,6 @@ public:
 	void resetInventory();
 	void checkInventory();
 
-	//void move(f32 dtime, Map &map);
 	virtual void move(f32 dtime, Map &map, f32 pos_max_d) = 0;
 
 	v3f getSpeed()
@@ -415,11 +414,9 @@ private:
 	v3f m_showpos;
 	v3f m_camera_offset;
 	u8 m_anim_id;
+	int m_next_foot;
 };
 
-#endif // !SERVER
-
-#ifndef SERVER
 struct PlayerControl
 {
 	PlayerControl()

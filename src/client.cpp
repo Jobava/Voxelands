@@ -2341,61 +2341,15 @@ ISoundManager* Client::getSoundManager()
 // foot: 0 = left, 1 = right
 void Client::playStepSound(int foot)
 {
-	if (!m_sound)
+	if (!g_sound)
 		return;
 
-	v3f pf = m_env.getLocalPlayer()->getPosition();
-	v3s16 pp = floatToInt(pf + v3f(0, BS*0.1, 0), BS);
-	MapNode n = m_env.getMap().getNodeNoEx(pp);
-	ContentFeatures *f = &content_features(n);
-	if (f->type == CMT_AIR) {
-		pp.Y--;
-		n = m_env.getMap().getNodeNoEx(pp);
-		f = &content_features(n);
-	}
-
-	std::string snd("");
-
-	if (f->sound_step != "") {
-		snd = f->sound_step;
-	}else{
-		switch (f->type) {
-		case CMT_PLANT:
-			snd = "plant-step";
-			break;
-		case CMT_DIRT:
-			snd = "dirt-step";
-			break;
-		case CMT_STONE:
-			snd = "stone-step";
-			break;
-		case CMT_LIQUID:
-			snd = "liquid-step";
-			break;
-		case CMT_WOOD:
-			snd = "wood-step";
-			break;
-		case CMT_GLASS:
-			snd = "glass-step";
-			break;
-		default:;
-		}
-	}
-
-	if (snd == "")
-		return;
-
-	if (foot == 0) {
-		snd += "-left";
-	}else{
-		snd += "-right";
-	}
-	m_sound->playSound(snd,false);
+	sound_playStep(&m_env.getMap(),m_env.getLocalPlayer()->getPosition(),foot);
 }
 
 void Client::playDigSound(content_t c)
 {
-	if (!m_sound)
+	if (!g_sound)
 		return;
 
 	if (c == CONTENT_IGNORE) {
@@ -2403,33 +2357,7 @@ void Client::playDigSound(content_t c)
 		if ((c&CONTENT_MOB_MASK) != 0)
 			return;
 	}
-	ContentFeatures *f = &content_features(c);
-	if (f->sound_dig != "") {
-		m_sound->playSound(f->sound_dig,false);
-		return;
-	}
-	switch (f->type) {
-	case CMT_PLANT:
-		m_sound->playSound("plant-dig",false);
-		break;
-	case CMT_DIRT:
-		m_sound->playSound("dirt-dig",false);
-		break;
-	case CMT_STONE:
-		m_sound->playSound("stone-dig",false);
-		break;
-	case CMT_LIQUID:
-		m_sound->playSound("liquid-dig",false);
-		break;
-	case CMT_WOOD:
-		m_sound->playSound("wood-dig",false);
-		break;
-	case CMT_GLASS:
-		m_sound->playSound("glass-dig",false);
-		break;
-	default:
-		m_sound->playSound("miss-dig",false);
-	}
+	sound_playDig(c,m_env.getLocalPlayer()->getPosition());
 }
 
 void Client::playPlaceSound(content_t c)

@@ -30,6 +30,7 @@
 #include "settings.h"
 #include "mesh.h"
 #include <ICameraSceneNode.h>
+#include "sound.h"
 
 core::map<u16, ClientActiveObject::Factory> ClientActiveObject::m_types;
 
@@ -241,6 +242,8 @@ MobCAO::MobCAO():
 	m_shooting_unset_timer(0),
 	m_walking(false),
 	m_walking_unset_timer(0),
+	m_last_step(0),
+	m_next_foot(0),
 	m_draw_type(MDT_AUTO)
 {
 	ClientActiveObject::registerType(getType(), create);
@@ -469,6 +472,16 @@ void MobCAO::step(float dtime, ClientEnvironment *env)
 			setAnimation(MA_MOVE);
 		}else{
 			setAnimation(MA_STAND);
+		}
+	}
+
+	if (!m.moves_silently && m_walking && m_draw_type == MDT_MODEL) {
+		m_last_step += dtime;
+		/* roughly sort of when a step sound should probably be heard, maybe */
+		if (m_last_step > 0.5) {
+			m_last_step -= 0.5;
+			sound_playStep(&env->getMap(),m_position,m_next_foot, 0.3);
+			m_next_foot = !m_next_foot;
 		}
 	}
 }

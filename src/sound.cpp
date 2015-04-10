@@ -24,11 +24,14 @@
 ************************************************************************/
 
 #include "sound.h"
+#include "map.h"
 #include "mapnode.h"
 #include "content_mapnode.h"
+#include "content_mob.h"
 
 // Global DummySoundManager singleton
 DummySoundManager dummySoundManager;
+ISoundManager *g_sound = NULL;
 
 void init_sounds(ISoundManager *sound)
 {
@@ -112,6 +115,97 @@ void init_sounds(ISoundManager *sound)
 	// menu backgrounds
 	sound->loadSound("bg-mainmenu","bg_mainmenu.ogg");
 	sound->loadSound("bg-charcreator","bg_charcreator.ogg");
+}
+
+void sound_playStep(Map *map, v3f pos, int foot, float gain)
+{
+	if (!g_sound)
+		return;
+
+	v3s16 p = floatToInt(pos,BS);
+	MapNode n = map->getNodeNoEx(p);
+	ContentFeatures *f = &content_features(n);
+	if (f->type == CMT_AIR) {
+		p.Y--;
+		n = map->getNodeNoEx(p);
+		f = &content_features(n);
+	}
+
+	std::string snd("");
+
+	if (f->sound_step != "") {
+		snd = f->sound_step;
+	}else{
+		switch (f->type) {
+		case CMT_PLANT:
+			snd = "plant-step";
+			break;
+		case CMT_DIRT:
+			snd = "dirt-step";
+			break;
+		case CMT_STONE:
+			snd = "stone-step";
+			break;
+		case CMT_LIQUID:
+			snd = "liquid-step";
+			break;
+		case CMT_WOOD:
+			snd = "wood-step";
+			break;
+		case CMT_GLASS:
+			snd = "glass-step";
+			break;
+		default:;
+		}
+	}
+
+	if (snd == "")
+		return;
+
+	if (foot == 0) {
+		snd += "-left";
+	}else{
+		snd += "-right";
+	}
+
+	g_sound->playSoundAt(snd,false,pos,gain);
+}
+
+void sound_playDig(content_t c, v3f pos)
+{
+	if (!g_sound)
+		return;
+
+	if (c == CONTENT_IGNORE)
+		return;
+
+	ContentFeatures *f = &content_features(c);
+	if (f->sound_dig != "") {
+		g_sound->playSoundAt(f->sound_dig,false,pos);
+		return;
+	}
+	switch (f->type) {
+	case CMT_PLANT:
+		g_sound->playSoundAt("plant-dig",false,pos);
+		break;
+	case CMT_DIRT:
+		g_sound->playSoundAt("dirt-dig",false,pos);
+		break;
+	case CMT_STONE:
+		g_sound->playSoundAt("stone-dig",false,pos);
+		break;
+	case CMT_LIQUID:
+		g_sound->playSoundAt("liquid-dig",false,pos);
+		break;
+	case CMT_WOOD:
+		g_sound->playSoundAt("wood-dig",false,pos);
+		break;
+	case CMT_GLASS:
+		g_sound->playSoundAt("glass-dig",false,pos);
+		break;
+	default:
+		g_sound->playSoundAt("miss-dig",false,pos);
+	}
 }
 
 

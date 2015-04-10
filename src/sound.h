@@ -30,6 +30,7 @@
 #include <string>
 #include <vector>
 #include <set>
+#include "mapnode.h"
 
 class ISoundManager
 {
@@ -47,7 +48,7 @@ public:
 	// playSound functions return -1 on failure, otherwise a handle to the
 	// sound. If name=="", call should be ignored without error.
 	virtual int playSound(const std::string &name, bool loop) = 0;
-	virtual int playSoundAt(const std::string &name, bool loop, v3f pos) = 0;
+	virtual int playSoundAt(const std::string &name, bool loop, v3f pos, float gain=1.0) = 0;
 	virtual void stopSound(int sound) = 0;
 	virtual bool soundExists(int sound) = 0;
 
@@ -68,7 +69,7 @@ public:
 	void setListenerGain(float gain) {}
 
 	int playSound(const std::string &name, bool loop) {return 0;}
-	int playSoundAt(const std::string &name, bool loop, v3f pos) {return 0;}
+	int playSoundAt(const std::string &name, bool loop, v3f pos, float gain) {return 0;}
 	void stopSound(int sound) {}
 	bool soundExists(int sound) {return false;}
 
@@ -83,7 +84,13 @@ public:
 ISoundManager *createSoundManager();
 void init_sounds(ISoundManager *sound);
 
+class Map;
+
 // Global DummySoundManager singleton
 extern DummySoundManager dummySoundManager;
+extern ISoundManager *g_sound;
+
+void sound_playStep(Map *map, v3f pos, int foot, float gain=1.0);
+void sound_playDig(content_t c, v3f pos);
 
 #endif

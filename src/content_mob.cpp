@@ -237,6 +237,7 @@ void content_mob_init()
 	f->motion = MM_WANDER;
 	f->motion_type = MMT_FLYLOW;
 	f->glow_light = LIGHT_MAX-1;
+	f->moves_silently = true;
 	f->spawn_on = CONTENT_JUNGLETREE;
 	f->spawn_in = CONTENT_AIR;
 	f->spawn_min_height = -5;
@@ -286,6 +287,7 @@ void content_mob_init()
 	f->punch_action = MPA_HARM;
 	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_OERKKI_DUST)+" 2";
 	f->motion = MM_SEEKER;
+	f->moves_silently = true;
 	f->spawn_on = CONTENT_STONE;
 	f->spawn_in = CONTENT_AIR;
 	f->spawn_max_height = 2;
@@ -362,6 +364,7 @@ void content_mob_init()
 	f->motion_type = MMT_FLY;
 	f->glow_light = LIGHT_MAX-1;
 	f->notices_player = true;
+	f->moves_silently = true;
 	f->attack_player_damage = 3;
 	f->attack_player_range = v3f(2,2,2);
 	f->contact_explosion_diameter = 3;
@@ -463,6 +466,7 @@ void content_mob_init()
 	f->special_dropped_max = 0;
 	f->motion = MM_WANDER;
 	f->motion_type = MMT_SWIM;
+	f->moves_silently = true;
 	f->spawn_on = CONTENT_SAND;
 	f->spawn_in = CONTENT_WATERSOURCE;
 	f->spawn_min_height = -30;
@@ -489,6 +493,7 @@ void content_mob_init()
 	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_MEAT)+" 2";
 	f->motion = MM_SEEKER;
 	f->motion_type = MMT_SWIM;
+	f->moves_silently = true;
 	f->spawn_on = CONTENT_SAND;
 	f->spawn_in = CONTENT_WATERSOURCE;
 	f->spawn_min_height = -30;
@@ -593,6 +598,7 @@ void content_mob_init()
 	f->punch_action = MPA_IGNORE;
 	f->motion = MM_THROWN;
 	f->motion_type = MMT_FLY;
+	f->moves_silently = true;
 	f->notices_player = true;
 	f->attack_mob_damage = 5;
 	f->attack_mob_range = v3f(1,1,1);
@@ -611,6 +617,7 @@ void content_mob_init()
 	f->punch_action = MPA_IGNORE;
 	f->motion = MM_THROWN;
 	f->motion_type = MMT_FLY;
+	f->moves_silently = true;
 	f->notices_player = true;
 	f->attack_mob_damage = 20;
 	f->attack_mob_range = v3f(1,1,1);

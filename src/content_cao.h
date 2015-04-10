@@ -234,6 +234,8 @@ private:
 	float m_shooting_unset_timer;
 	bool m_walking;
 	float m_walking_unset_timer;
+	float m_last_step;
+	int m_next_foot;
 
 	MobDrawType m_draw_type;
 };

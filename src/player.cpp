@@ -453,6 +453,8 @@ void ServerRemotePlayer::setCharDef(std::string d)
 
 #ifndef SERVER
 
+#include "sound.h"
+
 RemotePlayer::RemotePlayer(
 		scene::ISceneNode* parent,
 		IrrlichtDevice *device,
@@ -461,7 +463,8 @@ RemotePlayer::RemotePlayer(
 	m_node(NULL),
 	m_text(NULL),
 	m_wield(NULL),
-	m_anim_id(PLAYERANIM_STAND)
+	m_anim_id(PLAYERANIM_STAND),
+	m_next_foot(0)
 {
 	m_box = core::aabbox3d<f32>(-BS/2,0,-BS/2,BS/2,BS*2,BS/2);
 
@@ -595,6 +598,17 @@ void RemotePlayer::move(f32 dtime, Map &map, f32 pos_max_d)
 		moveratio = 1.5;
 	m_showpos = m_oldpos + movevector * moveratio;
 
+	int frame = m_node->getFrameNr();
+	/* roughly sort of when a step sound should probably be heard, maybe */
+	if (frame == 218 || frame == 186 || frame == 209 || frame == 177) {
+		sound_playStep(&map,m_showpos,m_next_foot);
+		m_next_foot = !m_next_foot;
+	}
+	/* roughly sort of when a dig sound should probably be heard, maybe */
+	if (frame == 214 || frame == 205 || frame == 193) {
+		sound_playDig(CMT_STONE,m_showpos);
+	}
+
 	if (
 		(
 			movevector.X < 0.001
@@ -611,10 +625,10 @@ void RemotePlayer::move(f32 dtime, Map &map, f32 pos_max_d)
 			m_node->setFrameLoop(0,79);
 		}
 	}else{
-		if (m_anim_id == PLAYERANIM_DIG) {
+		if (m_anim_id == PLAYERANIM_DIG) { // walk/dig
 			if (m_node->getEndFrame() != 219)
 				m_node->setFrameLoop(200,219);
-		}else if (m_node->getEndFrame() != 187) {
+		}else if (m_node->getEndFrame() != 187) { // walk
 			m_node->setFrameLoop(168,187);
 		}
 	}

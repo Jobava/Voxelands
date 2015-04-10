@@ -132,6 +132,7 @@ struct MobFeatures {
 	u16 contact_explosion_diameter;
 	content_t contact_place_node;
 	content_t contact_drop_item;
+	bool moves_silently;
 
 	std::string sound_spawn;
 	std::string sound_death;
@@ -260,6 +261,7 @@ struct MobFeatures {
 		contact_explosion_diameter = 0;
 		contact_place_node = CONTENT_IGNORE;
 		contact_drop_item = CONTENT_IGNORE;
+		moves_silently = false;
 		sound_spawn = "";
 		sound_death = "";
 		sound_attack = "";

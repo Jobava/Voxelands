@@ -336,7 +336,7 @@ public:
 		return sound;
 	}
 
-	PlayingSound* createPlayingSoundAt(SoundBuffer *buf, bool loop, v3f pos)
+	PlayingSound* createPlayingSoundAt(SoundBuffer *buf, bool loop, v3f pos, float gain)
 	{
 		infostream<<"OpenALSoundManager: Creating positional playing sound"
 				<<std::endl;
@@ -353,7 +353,7 @@ public:
 		//alSourcef(sound->source_id, AL_ROLLOFF_FACTOR, 0.7);
 		alSourcef(sound->source_id, AL_REFERENCE_DISTANCE, 30.0);
 		alSourcei(sound->source_id, AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
-		float volume = MYMAX(0.0, buf->gain);
+		float volume = MYMAX(0.0, buf->gain*gain);
 		alSourcef(sound->source_id, AL_GAIN, volume);
 		alSourcePlay(sound->source_id);
 		sound->should_delete = false;
@@ -371,10 +371,10 @@ public:
 		return id;
 	}
 
-	int playSoundRawAt(SoundBuffer *buf, bool loop, v3f pos)
+	int playSoundRawAt(SoundBuffer *buf, bool loop, v3f pos, float gain)
 	{
 		assert(buf);
-		PlayingSound *sound = createPlayingSoundAt(buf, loop, pos);
+		PlayingSound *sound = createPlayingSoundAt(buf, loop, pos, gain);
 		if (!sound)
 			return -1;
 		int id = m_next_id++;
@@ -449,7 +449,7 @@ public:
 		}
 	}
 
-	bool loadSound(const std::string &name, const std::string &filepath, float gain)
+	bool loadSound(const std::string &name, const std::string &filepath, float gain=1.0)
 	{
 		std::string path = getPath("sound",filepath,true);
 		if (path == "")
@@ -490,7 +490,7 @@ public:
 		}
 		return playSoundRaw(buf, loop);
 	}
-	int playSoundAt(const std::string &name, bool loop, v3f pos)
+	int playSoundAt(const std::string &name, bool loop, v3f pos, float gain)
 	{
 		if (name == "")
 			return 0;
@@ -500,7 +500,7 @@ public:
 					<<std::endl;
 			return -1;
 		}
-		return playSoundRawAt(buf, loop, pos);
+		return playSoundRawAt(buf, loop, pos, gain);
 	}
 	void stopSound(int id)
 	{
@@ -557,6 +557,7 @@ public:
 ISoundManager *createSoundManager()
 {
 	ISoundManager *sound = new OpenALSoundManager();
+	g_sound = sound;
 	init_sounds(sound);
 	return sound;
 };
