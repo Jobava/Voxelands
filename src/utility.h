@@ -761,15 +761,6 @@ inline v2s16 getContainerPos(v2s16 p, s16 d)
 	);
 }
 
-inline s16 rangelim(s16 i, s16 max)
-{
-	if(i < 0)
-		return 0;
-	if(i > max)
-		return max;
-	return i;
-}
-
 #define rangelim(d, min, max) ((d) < (min) ? (min) : ((d)>(max)?(max):(d)))
 
 inline std::wstring narrow_to_wide(const std::string& mbs)
