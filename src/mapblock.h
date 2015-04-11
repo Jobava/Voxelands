@@ -584,6 +584,8 @@ public:
 #ifndef SERVER // Only on client
 	MapBlockMesh *mesh;
 	JMutex mesh_mutex;
+
+	std::map<v3s16,MapBlockSound> m_sounds;
 #endif
 
 	NodeMetadataList m_node_metadata;

@@ -31,6 +31,7 @@
 #include "settings.h"
 #include "environment.h"
 #include "nodemetadata.h"
+#include "sound.h"
 
 #ifndef SERVER
 // Create a cuboid.
@@ -483,6 +484,32 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		NodeMod mod;
 		data->m_temp_mods.get(p,&mod);
 		selected = (mod == NODEMOD_SELECTION);
+
+		if (g_sound) {
+			std::string snd = content_features(n).sound_ambient;
+			std::map<v3s16,MapBlockSound>::iterator i = data->m_sounds->find(p);
+			if (snd != "") {
+				bool add_sound = true;
+				if (i != data->m_sounds->end()) {
+					if (i->second.name == snd && g_sound->soundExists(i->second.id)) {
+						add_sound = false;
+					}else{
+						g_sound->stopSound(i->second.id);
+					}
+				}
+				if (add_sound) {
+					v3f pf = intToFloat(p+blockpos_nodes,BS);
+					MapBlockSound bsnd;
+					bsnd.id = g_sound->playSoundAt(snd,true,pf, true);
+					bsnd.name = snd;
+					if (bsnd.id > 0)
+						(*data->m_sounds)[p] = bsnd;
+				}
+			}else if (i != data->m_sounds->end()) {
+				g_sound->stopSound(i->second.id);
+				data->m_sounds->erase(i);
+			}
+		}
 
 		/*
 			Add torches to mesh

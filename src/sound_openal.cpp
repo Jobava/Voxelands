@@ -177,9 +177,14 @@ SoundBuffer* loadOggFile(const std::string &filepath)
 
 struct PlayingSound
 {
+	SoundBuffer *buf;
 	ALuint source_id;
 	bool loop;
 	bool should_delete;
+	bool has_position;
+	v3f pos;
+	bool disabled;
+	float gain;
 };
 
 class OpenALSoundManager: public ISoundManager
@@ -195,6 +200,7 @@ private:
 	std::map<int, PlayingSound*> m_sounds_playing;
 	std::map<std::string, int> m_indexes;
 	v3f m_listener_pos;
+	JMutex m_mutex;
 public:
 	OpenALSoundManager():
 		m_device(NULL),
@@ -207,6 +213,8 @@ public:
 		ALCenum error = ALC_NO_ERROR;
 
 		infostream<<"Audio: Initializing..."<<std::endl;
+
+		m_mutex.Init();
 
 		m_device = alcOpenDevice(NULL);
 		if (!m_device) {
@@ -267,6 +275,7 @@ public:
 	~OpenALSoundManager()
 	{
 		infostream<<"Audio: Deinitializing..."<<std::endl;
+		g_sound = NULL;
 		// KABOOM!
 		// TODO: Clear SoundBuffers
 		alcMakeContextCurrent(NULL);
@@ -329,14 +338,18 @@ public:
 		alSource3f(sound->source_id, AL_POSITION, 0, 0, 0);
 		alSource3f(sound->source_id, AL_VELOCITY, 0, 0, 0);
 		alSourcei(sound->source_id, AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
-		float volume = MYMAX(0.0, buf->gain);
-		alSourcef(sound->source_id, AL_GAIN, volume);
+		sound->gain = 1.0;
+		alSourcef(sound->source_id, AL_GAIN, buf->gain);
 		alSourcePlay(sound->source_id);
 		sound->should_delete = false;
+		sound->loop = loop;
+		sound->has_position = false;
+		sound->disabled = false;
+		sound->buf = buf;
 		return sound;
 	}
 
-	PlayingSound* createPlayingSoundAt(SoundBuffer *buf, bool loop, v3f pos, float gain)
+	PlayingSound* createPlayingSoundAt(SoundBuffer *buf, bool loop, v3f pos, float gain, bool queue)
 	{
 		infostream<<"OpenALSoundManager: Creating positional playing sound"
 				<<std::endl;
@@ -345,18 +358,29 @@ public:
 			errorstream<<"Attempting to play non-mono sound as positional sound"<<std::endl;
 		PlayingSound *sound = new PlayingSound;
 		assert(sound);
-		alGenSources(1, &sound->source_id);
-		alSourcei(sound->source_id, AL_BUFFER, buf->buffer_id);
-		alSourcei(sound->source_id, AL_SOURCE_RELATIVE, false);
-		alSource3f(sound->source_id, AL_POSITION, pos.X, pos.Y, pos.Z);
-		alSource3f(sound->source_id, AL_VELOCITY, 0, 0, 0);
-		//alSourcef(sound->source_id, AL_ROLLOFF_FACTOR, 0.7);
-		alSourcef(sound->source_id, AL_REFERENCE_DISTANCE, 30.0);
-		alSourcei(sound->source_id, AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
-		float volume = MYMAX(0.0, buf->gain*gain);
-		alSourcef(sound->source_id, AL_GAIN, volume);
-		alSourcePlay(sound->source_id);
+		float distance = m_listener_pos.getDistanceFrom(pos);
+		if (!queue && (!loop || distance < 240.0)) {
+			alGenSources(1, &sound->source_id);
+			alSourcei(sound->source_id, AL_BUFFER, buf->buffer_id);
+			alSourcei(sound->source_id, AL_SOURCE_RELATIVE, false);
+			alSource3f(sound->source_id, AL_POSITION, pos.X, pos.Y, pos.Z);
+			alSource3f(sound->source_id, AL_VELOCITY, 0, 0, 0);
+			alSourcef(sound->source_id, AL_REFERENCE_DISTANCE, 30.0);
+			alSourcei(sound->source_id, AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
+			float t_gain = MYMAX(0.0, buf->gain*gain);
+			alSourcef(sound->source_id, AL_GAIN, t_gain);
+			alSourcePlay(sound->source_id);
+			sound->disabled = false;
+		}else{
+			sound->source_id = 0;
+			sound->disabled = true;
+		}
+		sound->gain = gain;
 		sound->should_delete = false;
+		sound->loop = loop;
+		sound->has_position = true;
+		sound->pos = pos;
+		sound->buf = buf;
 		return sound;
 	}
 
@@ -366,19 +390,27 @@ public:
 		PlayingSound *sound = createPlayingSound(buf, loop);
 		if (!sound)
 			return -1;
-		int id = m_next_id++;
-		m_sounds_playing[id] = sound;
+		int id = -1;
+		{
+			JMutexAutoLock lock(m_mutex);
+			id = m_next_id++;
+			m_sounds_playing[id] = sound;
+		}
 		return id;
 	}
 
-	int playSoundRawAt(SoundBuffer *buf, bool loop, v3f pos, float gain)
+	int playSoundRawAt(SoundBuffer *buf, bool loop, v3f pos, float gain, bool queue)
 	{
 		assert(buf);
-		PlayingSound *sound = createPlayingSoundAt(buf, loop, pos, gain);
+		PlayingSound *sound = createPlayingSoundAt(buf, loop, pos, gain, queue);
 		if (!sound)
 			return -1;
-		int id = m_next_id++;
-		m_sounds_playing[id] = sound;
+		int id = -1;
+		{
+			JMutexAutoLock lock(m_mutex);
+			id = m_next_id++;
+			m_sounds_playing[id] = sound;
+		}
 		return id;
 	}
 
@@ -391,24 +423,53 @@ public:
 			m_music_last_id = 0;
 		if (i == m_sounds_playing.end())
 			return;
+
 		PlayingSound *sound = i->second;
 
+		alSourceStop(sound->source_id);
 		alDeleteSources(1, &sound->source_id);
 
 		delete sound;
+
 		m_sounds_playing.erase(id);
+
 	}
 
 	// Remove stopped sounds
 	void maintain(float dtime)
 	{
+		JMutexAutoLock lock(m_mutex);
 		verbosestream<<"OpenALSoundManager::maintain(): "
 				<<m_sounds_playing.size()<<" playing sounds, "
 				<<m_buffers.size()<<" sound names loaded"<<std::endl;
 		std::set<int> del_list;
+		bool did_start = false;
 		for (std::map<int, PlayingSound*>::iterator i = m_sounds_playing.begin(); i != m_sounds_playing.end(); i++) {
 			int id = i->first;
 			PlayingSound *sound = i->second;
+			if (sound->has_position && sound->loop && !sound->should_delete) {
+				float distance = m_listener_pos.getDistanceFrom(sound->pos);
+				if (distance > 320.0 && !sound->disabled && !did_start) {
+					alSourceStop(sound->source_id);
+					alDeleteSources(1, &sound->source_id);
+					sound->disabled = true;
+					sound->source_id = 0;
+				}else if (distance < 240.0 && sound->disabled) {
+					did_start = true;
+					alGenSources(1, &sound->source_id);
+					alSourcei(sound->source_id, AL_BUFFER, sound->buf->buffer_id);
+					alSourcei(sound->source_id, AL_SOURCE_RELATIVE, false);
+					alSource3f(sound->source_id, AL_POSITION, sound->pos.X, sound->pos.Y, sound->pos.Z);
+					alSource3f(sound->source_id, AL_VELOCITY, 0, 0, 0);
+					alSourcef(sound->source_id, AL_REFERENCE_DISTANCE, 30.0);
+					alSourcei(sound->source_id, AL_LOOPING, AL_TRUE);
+					float t_gain = MYMAX(0.0, sound->buf->gain*sound->gain);
+					alSourcef(sound->source_id, AL_GAIN, t_gain);
+					alSourcePlay(sound->source_id);
+					sound->disabled = false;
+				}
+				continue;
+			}
 			if (sound->should_delete) {
 				del_list.insert(id);
 			}else{ // If not playing, remove it
@@ -490,7 +551,7 @@ public:
 		}
 		return playSoundRaw(buf, loop);
 	}
-	int playSoundAt(const std::string &name, bool loop, v3f pos, float gain)
+	int playSoundAt(const std::string &name, bool loop, v3f pos, float gain, bool queue=false)
 	{
 		if (name == "")
 			return 0;
@@ -500,10 +561,11 @@ public:
 					<<std::endl;
 			return -1;
 		}
-		return playSoundRawAt(buf, loop, pos, gain);
+		return playSoundRawAt(buf, loop, pos, gain, queue);
 	}
 	void stopSound(int id)
 	{
+		JMutexAutoLock lock(m_mutex);
 		std::map<int, PlayingSound*>::iterator i = m_sounds_playing.find(id);
 		if (id == m_music_id)
 			m_music_id = 0;
@@ -516,6 +578,7 @@ public:
 	}
 	bool soundExists(int sound)
 	{
+		JMutexAutoLock lock(m_mutex);
 		return (m_sounds_playing.count(sound) != 0);
 	}
 

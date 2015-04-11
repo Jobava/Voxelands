@@ -2078,6 +2078,7 @@ void content_mapnode_init(bool repeat)
 	f->setAllTextureTypes(MATERIAL_ALPHA_VERTEX);
 	f->post_effect_color = video::SColor(64, 100, 100, 200);
 #endif
+	f->sound_ambient = "env-water";
 	f->suffocation_per_second = 2;
 
 	i = CONTENT_WATERSOURCE;
@@ -2197,6 +2198,7 @@ void content_mapnode_init(bool repeat)
 	f->liquid_alternative_source = CONTENT_LAVASOURCE;
 	f->liquid_viscosity = LAVA_VISC;
 	f->damage_per_second = 4*2;
+	f->sound_ambient = "env-lava";
 #ifndef SERVER
 	f->post_effect_color = video::SColor(192, 255, 64, 0);
 #endif

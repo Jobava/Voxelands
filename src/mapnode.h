@@ -402,6 +402,8 @@ struct ContentFeatures
 	std::string sound_dig;
 	// Sound played when the node is placed
 	std::string sound_place;
+	// Sound played by the node always
+	std::string sound_ambient;
 
 	// If the content is liquid, this is the flowing version of the liquid.
 	// If content is liquid, this is the same content.
@@ -500,6 +502,7 @@ struct ContentFeatures
 		sound_step = "";
 		sound_dig = "";
 		sound_place = "";
+		sound_ambient = "";
 		liquid_alternative_flowing = CONTENT_IGNORE;
 		liquid_alternative_source = CONTENT_IGNORE;
 		liquid_viscosity = 0;

@@ -120,6 +120,12 @@ u8 getSmoothLight(v3s16 p, v3s16 corner, VoxelManipulator &vmanip, u32 daynight_
 class MapBlock;
 class Environment;
 
+struct MapBlockSound
+{
+	int id;
+	std::string name;
+};
+
 struct MeshMakeData
 {
 	u32 m_daynight_ratio;
@@ -127,6 +133,8 @@ struct MeshMakeData
 	VoxelManipulator m_vmanip;
 	v3s16 m_blockpos;
 	Environment *m_env;
+
+	std::map<v3s16,MapBlockSound> *m_sounds;
 
 	/*
 		Copy central data directly from block, and other data from

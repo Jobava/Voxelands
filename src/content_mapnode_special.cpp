@@ -955,6 +955,7 @@ void content_mapnode_special(bool repeat)
 	f->diggable = false;
 	f->buildable_to = true;
 	f->damage_per_second = 8;
+	f->sound_ambient = "env-fire";
 #ifndef SERVER
 	f->post_effect_color = video::SColor(192, 255, 64, 0);
 #endif

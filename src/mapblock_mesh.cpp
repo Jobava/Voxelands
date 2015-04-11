@@ -34,6 +34,7 @@
 #include "profiler.h"
 #include "mesh.h"
 #include "base64.h"
+#include "sound.h"
 
 void MeshMakeData::fill(u32 daynight_ratio, MapBlock *block)
 {

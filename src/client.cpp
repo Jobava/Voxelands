@@ -151,20 +151,9 @@ void * MeshUpdateThread::Thread()
 
 	BEGIN_DEBUG_EXCEPTION_HANDLER
 
-	while(getRun())
-	{
-		/*// Wait for output queue to flush.
-		// Allow 2 in queue, this makes less frametime jitter.
-		// Umm actually, there is no much difference
-		if(m_queue_out.size() >= 2)
-		{
-			sleep_ms(3);
-			continue;
-		}*/
-
+	while (getRun()) {
 		QueuedMeshUpdate *q = m_queue_in.pop();
-		if(q == NULL)
-		{
+		if (q == NULL) {
 			sleep_ms(3);
 			continue;
 		}
@@ -177,10 +166,6 @@ void * MeshUpdateThread::Thread()
 		r.p = q->p;
 		r.mesh = mesh_new;
 		r.ack_block_to_server = q->ack_block_to_server;
-
-		/*infostream<<"MeshUpdateThread: Processed "
-				<<"("<<q->p.X<<","<<q->p.Y<<","<<q->p.Z<<")"
-				<<std::endl;*/
 
 		m_queue_out.push_back(r);
 
@@ -2260,6 +2245,8 @@ void Client::addUpdateMeshTask(v3s16 p, bool ack_to_server)
 		// Debug: 1-6ms, avg=2ms
 		data->fill(getDayNightRatio(), b);
 	}
+
+	data->m_sounds = &b->m_sounds;
 
 	// Debug wait
 	//while(m_mesh_update_thread.m_queue_in.size() > 0) sleep_ms(10);

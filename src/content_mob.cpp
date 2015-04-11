@@ -219,6 +219,7 @@ void content_mob_init()
 	f->punch_action = MPA_PICKUP;
 	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_RAT)+" 1";
 	f->motion = MM_WANDER;
+	f->moves_silently = true;
 	f->spawn_on = CONTENT_STONE;
 	f->spawn_in = CONTENT_AIR;
 	f->spawn_max_height = -10;

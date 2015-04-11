@@ -29,6 +29,9 @@
 #include "main.h"
 #include "light.h"
 #include <sstream>
+#ifndef SERVER
+#include "sound.h"
+#endif
 
 /*
 	MapBlock
@@ -65,15 +68,19 @@ MapBlock::~MapBlock()
 	{
 		JMutexAutoLock lock(mesh_mutex);
 
-		if(mesh)
-		{
+		if (mesh) {
 			delete mesh;
 			mesh = NULL;
+		}
+		if (g_sound) {
+			for (std::map<v3s16,MapBlockSound>::iterator i = m_sounds.begin(); i != m_sounds.end(); i++) {
+				g_sound->stopSound(i->second.id);
+			}
 		}
 	}
 #endif
 
-	if(data)
+	if (data)
 		delete[] data;
 }
 
@@ -126,6 +133,7 @@ void MapBlock::updateMesh(u32 daynight_ratio, Environment *env, v3s16 camera_off
 	MeshMakeData data;
 	data.m_env = env;
 	data.fill(daynight_ratio, this);
+	data.m_sounds = &m_sounds;
 
 	MapBlockMesh *mesh_new = new MapBlockMesh(&data, camera_offset);
 
