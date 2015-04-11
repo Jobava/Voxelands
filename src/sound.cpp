@@ -101,8 +101,8 @@ void init_sounds(ISoundManager *sound)
 	sound->loadSound("env-dooropen","env_dooropen.ogg");
 	sound->loadSound("env-doorclose","env_doorclose.ogg");
 	sound->loadSound("env-fire","env_fire.ogg");
-	sound->loadSound("env-lava","env_lava.ogg",0.2);
-	sound->loadSound("env-water","env_water.ogg",0.2);
+	sound->loadSound("env-lava","env_lava.ogg",0.5);
+	sound->loadSound("env-water","env_water.ogg",0.5);
 	sound->loadSound("env-steam","env_steam.ogg");
 	sound->loadSound("env-tnt","env_tnt.ogg");
 	sound->loadSound("env-teleport","env_teleport.ogg");

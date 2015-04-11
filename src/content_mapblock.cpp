@@ -497,6 +497,29 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 						g_sound->stopSound(i->second.id);
 					}
 				}
+				if (add_sound && content_features(n).liquid_type != LIQUID_NONE) {
+					if (data->m_vmanip.getNodeRO(blockpos_nodes+p+v3s16(0,1,0)).getContent() != CONTENT_AIR) {
+						add_sound = false;
+					}else if (content_features(n).param2_type != CPT_LIQUID || n.param2 < 4 || n.param2 > 7) {
+						add_sound = false;
+					}else{
+						int adj = 0;
+						for (s16 x=-1; x<2; x++) {
+							for (s16 z=-1; z<2; z++) {
+								if (!x && !z)
+									continue;
+								content_t ac = data->m_vmanip.getNodeRO(blockpos_nodes+p+v3s16(x,0,z)).getContent();
+								if (
+									ac == content_features(n).liquid_alternative_flowing
+									|| ac == content_features(n).liquid_alternative_source
+								)
+									adj++;
+							}
+						}
+						if (adj > 3)
+							add_sound = false;
+					}
+				}
 				if (add_sound) {
 					v3f pf = intToFloat(p+blockpos_nodes,BS);
 					MapBlockSound bsnd;
