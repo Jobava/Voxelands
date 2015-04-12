@@ -1,5 +1,5 @@
 /************************************************************************
-* gettext.cpp
+* intl.cpp
 * voxelands - 3d voxel world sandbox game
 * Copyright (C) Lisa 'darkrose' Milne 2013-2015 <lisa@ltmnet.com>
 *
