@@ -691,12 +691,17 @@ char* ngettext(const char* s1, const char* s2, int n)
 
 wchar_t *mb2wc(const char *src)
 {
-	mbstate_t state;
 	int l = strlen(src)+1;
-	memset(&state, '\0', sizeof (state));
 	wchar_t *buff = new wchar_t[l];
+#ifdef _WIN32
+	size_t n = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, src, l, buff, l);
+#else
+	mbstate_t state;
+	memset(&state, '\0', sizeof (state));
 	size_t n = mbsrtowcs(buff, &src, l, &state);
+#endif
 	buff[n] = L'\0';
+
 	return buff;
 }
 
