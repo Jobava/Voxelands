@@ -5,23 +5,14 @@ if(RUN_IN_PLACE)
 	add_definitions ( -DRUN_IN_PLACE )
 endif(RUN_IN_PLACE)
 
-# user-visible option to enable/disable gettext usage
-OPTION(ENABLE_GETTEXT "Use GetText for internationalization" ON)
-
-# this is only set to 1 if gettext is enabled _and_ available
-set(USE_GETTEXT 0)
+set(USE_GETTEXT 1)
 
 find_package(GettextLib)
 
-if(GETTEXT_FOUND AND ENABLE_GETTEXT)
+if(GETTEXT_FOUND)
 	message(STATUS "gettext msgfmt path: ${GETTEXT_MSGFMT}")
-	set(USE_GETTEXT 1)
 	message(STATUS "GetText enabled; locales found: ${GETTEXT_AVAILABLE_LOCALES}")
-elseif(GETTEXT_FOUND AND NOT ENABLE_GETTEXT)
-	MESSAGE(STATUS "GetText found but disabled;")
-else(GETTEXT_FOUND AND ENABLE_GETTEXT)
-	message(STATUS "GetText disabled")
-endif(GETTEXT_FOUND AND ENABLE_GETTEXT)
+endif(GETTEXT_FOUND)
 
 # user visible option to enable/disable audio
 OPTION(ENABLE_AUDIO "Enable audio" ON)
