@@ -30,6 +30,10 @@
 #include "intl.h"
 #include "path.h"
 
+#ifdef _MSC_VER
+#define snprintf _snprintf
+#endif
+
 typedef struct intl_s {
 	void *mo_data;
 	int inv_endian;
