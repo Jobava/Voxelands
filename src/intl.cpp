@@ -692,22 +692,18 @@ wchar_t *mb2wc(const char *src)
 	memset(&state, '\0', sizeof (state));
 	wchar_t *buff = new wchar_t[l];
 	size_t n = mbsrtowcs(buff, &src, l, &state);
-	printf("%ld\n",(int64_t)n);
 	buff[n] = L'\0';
 	return buff;
 }
 
 wchar_t* wgettext(const char *str)
 {
-	char* s = intl_lookup(&intl,(char*)str,NULL);
-	printf("%s\n",s);
-	return mb2wc(s);
+	return mb2wc(intl_lookup(&intl,(char*)str,NULL));
 }
 
 wchar_t* wngettext(const char *str1, const char *str2, int n)
 {
-	char* s = intl_nlookup(&intl,(char*)str1,(char*)str2,n);
-	return mb2wc(s);
+	return mb2wc(intl_nlookup(&intl,(char*)str1,(char*)str2,n));
 }
 
 void init_gettext()
