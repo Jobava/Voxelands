@@ -507,7 +507,7 @@ public:
 		}
 	}
 
-	bool loadSound(const std::string &name, const std::string &filepath, float gain=1.0)
+	bool loadSound(const std::string &name, const std::string &filepath, float gain)
 	{
 		std::string path = getPath("sound",filepath,true);
 		if (path == "")

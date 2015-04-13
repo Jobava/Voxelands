@@ -1414,8 +1414,11 @@ u16 MobSAO::punch(content_t punch_item, v3f dir, const std::string &playername)
 
 
 		u16 amount = 2;
-		if (f.type == TT_SWORD || f.type == TT_SPEAR) {
+		if (f.type == TT_SWORD) {
 			amount = 4*((f.hardness/100)+1);
+			wear = 65535/f.hardness;
+		}else if (f.type == TT_SPEAR) {
+			amount = 2*((f.hardness/100)+1);
 			wear = 65535/f.hardness;
 		}else if (f.type == TT_AXE || f.type == TT_PICK) {
 			amount = ((f.hardness/200)+1);
