@@ -39,16 +39,16 @@ void init_sounds(ISoundManager *sound)
 	// exceptions: background music
 	// walking
 	// CMT_DIRT
-	sound->loadSound("dirt-step-left","step_dirt.1.ogg");
-	sound->loadSound("dirt-step-right","step_dirt.2.ogg");
+	sound->loadSound("dirt-step-left","step_dirt.1.ogg",0.3);
+	sound->loadSound("dirt-step-right","step_dirt.2.ogg",0.3);
 	// CMT_STONE
 	sound->loadSound("stone-step-left","step_stone.1.ogg");
 	sound->loadSound("stone-step-right","step_stone.2.ogg");
 	sound->loadSound("stone-step-left","step_stone.3.ogg");
 	sound->loadSound("stone-step-right","step_stone.4.ogg");
 	// CMT_PLANT
-	sound->loadSound("plant-step-left","step_plant.1.ogg");
-	sound->loadSound("plant-step-right","step_plant.2.ogg");
+	sound->loadSound("plant-step-left","step_plant.1.ogg",0.3);
+	sound->loadSound("plant-step-right","step_plant.2.ogg",0.3);
 	// CMT_LIQUID
 	sound->loadSound("liquid-step-left","step_liquid.1.ogg",0.5);
 	sound->loadSound("liquid-step-right","step_liquid.2.ogg",0.5);
@@ -60,6 +60,9 @@ void init_sounds(ISoundManager *sound)
 	// CMT_GLASS
 	sound->loadSound("glass-step-left","step_glass.1.ogg",0.3);
 	sound->loadSound("glass-step-right","step_glass.1.ogg",0.3);
+	// special for grass
+	sound->loadSound("grass-step-left","step_grass.1.ogg");
+	sound->loadSound("grass-step-right","step_grass.2.ogg");
 
 	// digging
 	// CMT_DIRT

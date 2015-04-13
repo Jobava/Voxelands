@@ -335,6 +335,7 @@ void content_mapnode_init(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MUD)+" 1";
 	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WILDGRASS_SHORT)+" 1";
 	f->extra_dug_item_rarity = 10;
+	f->sound_step = "grass-step";
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	lists::add("decrafting",i);
@@ -348,6 +349,7 @@ void content_mapnode_init(bool repeat)
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MUD)+" 1";
+	f->sound_step = "grass-step";
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 
