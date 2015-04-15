@@ -317,12 +317,9 @@ public:
 		if (i == m_buffers.end())
 			return NULL;
 		std::vector<SoundBuffer*> &bufs = i->second;
-		u32 j = m_indexes[name];
-		if (j+1 >= bufs.size()) {
-			m_indexes[name] = 0;
-		}else{
-			m_indexes[name] = j+1;
-		}
+		if (bufs.size() == 1)
+			return bufs[0];
+		int j = myrand_range(0,bufs.size()-1);
 		return bufs[j];
 	}
 
