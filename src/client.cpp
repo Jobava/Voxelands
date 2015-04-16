@@ -217,8 +217,6 @@ Client::Client(
 	//m_env_mutex.Init();
 	//m_con_mutex.Init();
 
-	m_httpclient = new HTTPClient(this);
-
 	m_mesh_update_thread.Start();
 
 	/*
@@ -244,8 +242,6 @@ Client::~Client()
 		//JMutexAutoLock conlock(m_con_mutex); //bulk comment-out
 		m_con.Disconnect();
 	}
-	if (g_settings->getBool("enable_http"))
-		m_httpclient->stop();
 
 	m_mesh_update_thread.setRun(false);
 	while(m_mesh_update_thread.IsRunning())
@@ -258,8 +254,6 @@ void Client::connect(Address address)
 	//JMutexAutoLock lock(m_con_mutex); //bulk comment-out
 	m_con.SetTimeoutMs(0);
 	m_con.Connect(address);
-	if (g_settings->getBool("enable_http"))
-		m_httpclient->start(address);
 }
 
 bool Client::connectedAndInitialized()

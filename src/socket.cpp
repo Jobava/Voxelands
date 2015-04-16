@@ -500,8 +500,11 @@ int TCPSocket::Receive(void *data, int size)
 		return r;
 	}
 
-	if (FillBuffer() < size)
+	int s = FillBuffer();
+	if (s < 1)
 		return 0;
+	if (s < size)
+		size = s;
 
 	memcpy(data,m_buff+m_bstart,size);
 	m_bstart+=size;

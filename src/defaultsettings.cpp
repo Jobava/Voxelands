@@ -118,8 +118,6 @@ void set_default_settings(Settings *settings)
 	// Server stuff
 	// "map-dir" doesn't exist by default.
 	settings->setDefault("motd", "");
-	settings->setDefault("server_name", "");
-	settings->setDefault("server_address", "");
 	settings->setDefault("max_users", "20");
 	settings->setDefault("strict_protocol_version_checking", "false");
 	settings->setDefault("disallow_empty_passwords","false");
@@ -131,8 +129,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("game_mode","adventure");
 	set_adventure_defaults(settings);
 
-	// only enable http on the server for now
-	// adventurous players can enable it on the client
+	// only enable http on the server, singleplayer doesn't need it
 #ifndef SERVER
 	settings->setDefault("enable_http","false");
 #else
@@ -158,6 +155,17 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("enable_experimental", "false");
 	settings->setDefault("enable_lavabuckets", "true");
 	settings->setDefault("enable_tnt", "true");
+
+	settings->setDefault("api_server", "api.voxelands.com");
+#ifdef SERVER
+	settings->setDefault("api_announce","true");
+#else
+	settings->setDefault("api_announce","false");
+#endif
+	settings->setDefault("api_auth","true");
+	settings->setDefault("server_name", "");
+	settings->setDefault("server_address", "");
+
 }
 
 void set_creative_defaults(Settings *settings)
@@ -191,7 +199,7 @@ void set_survival_defaults(Settings *settings)
 	settings->setDefault("enable_damage", "true");
 	settings->setDefault("enable_suffocation", "true");
 	settings->setDefault("enable_hunger", "true");
-	settings->setDefault("max_mob_level", "aggressive");
+	settings->setDefault("max_mob_level", "destructive");
 	settings->setDefault("initial_inventory", "false");
 	settings->setDefault("tool_wear","true");
 }

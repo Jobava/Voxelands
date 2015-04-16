@@ -153,8 +153,6 @@ struct ClientEvent
 	};
 };
 
-class HTTPClient;
-
 class Client : public con::PeerHandler, public InventoryManager
 {
 public:
@@ -374,7 +372,6 @@ private:
 	bool m_server_hunger;
 
 	con::Connection m_con;
-	HTTPClient *m_httpclient;
 	ISoundManager *m_sound;
 
 	IrrlichtDevice *m_device;

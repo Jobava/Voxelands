@@ -298,7 +298,7 @@ int HTTPRemoteClient::handleAPI()
 		}else{
 			txt += "private\n";
 		}
-		txt += "summary,motd,mode,name,players,public,version";
+		txt += "summary,motd,mode,name,players,public,version,features";
 		send((char*)txt.c_str());
 		return 1;
 	}else if (u1 == "motd") {
@@ -313,6 +313,10 @@ int HTTPRemoteClient::handleAPI()
 		std::string txt = g_settings->get("server_name");
 		if (txt == "")
 			txt = g_settings->get("server_address");
+		send((char*)txt.c_str());
+		return 1;
+	}else if (u1 == "features") {
+		std::string txt = "summary,motd,mode,name,players,public,version,features";
 		send((char*)txt.c_str());
 		return 1;
 	}else if (u1 == "version") {
@@ -512,203 +516,102 @@ void HTTPRemoteClient::sendHeaders()
 	m_socket->Send("\r\n",2);
 }
 
-#ifndef SERVER
-#include "client.h"
-
-/* main loop for the client http fetcher */
-void * HTTPClientThread::Thread()
-{
-	ThreadStarted();
-
-	log_register_thread("HTTPClientThread");
-
-	DSTACK(__FUNCTION_NAME);
-
-	BEGIN_DEBUG_EXCEPTION_HANDLER
-
-	while (getRun()) {
-		try{
-			m_client->step();
-		}catch (con::NoIncomingDataException &e) {
-		}catch(con::PeerNotFoundException &e) {
-		}
-	}
-
-	END_DEBUG_EXCEPTION_HANDLER(errorstream)
-
-	return NULL;
-}
-
 /*
- * HTTPClient
+ * HTTP request
  */
 
-/* constructor */
-HTTPClient::HTTPClient(Client *client):
-	m_thread(this)
+std::string http_request(char* host, char* url, char* post, int port)
 {
-	m_client = client;
-	m_req_mutex.Init();
-}
-
-/* destructor */
-HTTPClient::~HTTPClient()
-{
-}
-
-/* start the client http fetcher thread */
-void HTTPClient::start(const Address &address)
-{
-	DSTACK(__FUNCTION_NAME);
-	// Stop thread if already running
-	m_thread.stop();
-
-	m_address = address;
-	m_connection_failures = 0;
-
-	// Start thread
-	m_thread.setRun(true);
-	m_thread.Start();
-
-	infostream<<"HTTPClient: Started"<<std::endl;
-}
-
-/* stop the client http fetcher thread */
-void HTTPClient::stop()
-{
-	DSTACK(__FUNCTION_NAME);
-
-	m_thread.stop();
-
-	infostream<<"HTTPClient: Threads stopped"<<std::endl;
-}
-
-/* the main function for the client loop */
-void HTTPClient::step()
-{
-	if (m_requests.size() == 0) {
-#ifdef _WIN32
-		Sleep(1000);
-#else
-		sleep(1);
-#endif
-		return;
-	}
-
-	std::vector<HTTPRequest> p;
-
-	m_req_mutex.Lock();
-	p.swap(m_requests);
-	m_req_mutex.Unlock();
-
-	for (std::vector<HTTPRequest>::iterator i = p.begin(); i != p.end(); ++i) {
-		HTTPRequest q = *i;
-		m_socket = new TCPSocket();
-		if (m_socket == NULL) {
-			m_req_mutex.Lock();
-			m_requests.push_back(q);
-			m_req_mutex.Unlock();
-			continue;
-		}
-		if (m_socket->Connect(m_address) == false) {
-			delete m_socket;
-			m_req_mutex.Lock();
-			m_requests.push_back(q);
-			m_req_mutex.Unlock();
-			m_connection_failures++;
-			/* assume the server has no http */
-			if (m_connection_failures > 4) {
-				stop();
-				p.clear();
-				return;
-			}
-			continue;
-		}
-		m_connection_failures = 0;
-
-		m_recv_headers.clear();
-		m_send_headers.clear();
-
-		get(q.url);
-
-		int r = 0;
-		int h = -1;
-		m_recv_headers.setResponse(0);
-		h = m_recv_headers.read(m_socket);
-		if (h == -1 || m_recv_headers.getResponse() == 500) {
-			delete m_socket;
-			m_req_mutex.Lock();
-			m_requests.push_back(q);
-			m_req_mutex.Unlock();
-			continue;
-		}
-
-		r = m_recv_headers.getResponse();
-		delete m_socket;
-	}
-	p.clear();
-}
-
-/* add a request to the http client queue */
-void HTTPClient::pushRequest(HTTPRequestType type, std::string &data)
-{
-	if (m_thread.getRun() == false)
-		return;
-	switch (type) {
-	case HTTPREQUEST_NULL:
-		break;
-	default:;
-	}
-}
-
-/* add a request to the http client queue */
-void HTTPClient::pushRequest(std::string &url, std::string &data)
-{
-	if (m_thread.getRun() == false)
-		return;
-	HTTPRequest r(url,data);
-	m_req_mutex.Lock();
-	m_requests.push_back(r);
-	m_req_mutex.Unlock();
-}
-
-/* send a http GET request to the server */
-bool HTTPClient::get(std::string &url)
-{
-	m_send_headers.setLength(0);
-	m_send_headers.setMethod("GET");
-	m_send_headers.setUrl(url);
-
-	sendHeaders();
-	return true;
-}
-
-/* send http headers to the server */
-void HTTPClient::sendHeaders()
-{
-	std::string v;
+	Address addr;
+	TCPSocket *sock;
+	HTTPResponseHeaders headers;
 	int s;
-	char buff[1024];
+	char buff[2048];
 
-	s = snprintf(buff,1024,"%s %s HTTP/1.0\r\n",m_send_headers.getMethod().c_str(),m_send_headers.getUrl().c_str());
-	m_socket->Send(buff,s);
-
-	v = m_send_headers.getHeader("Content-Type");
-	if (v != "") {
-		s = snprintf(buff,1024,"Content-Type: %s\r\n",v.c_str());
-		m_socket->Send(buff,s);
+	addr.setPort(port);
+	if (!host || !host[0]) {
+		std::string h = g_settings->get("api_server");
+		if (h == "")
+			return "";
+		host = (char*)h.c_str();
 	}
 
-	s = m_send_headers.length();
-	s = snprintf(buff,1024,"Content-Length: %d\r\n",s);
-	m_socket->Send(buff,s);
+	addr.Resolve(host);
 
-	s = snprintf(buff,1024,"User: %s\r\n",m_client->getLocalPlayer()->getName());
-	m_socket->Send(buff,s);
+	sock = new TCPSocket();
+	if (!sock)
+		return "";
 
-	m_socket->Send("\r\n",2);
+	if (!sock->Connect(addr)) {
+		delete sock;
+		return "";
+	}
+
+	if (post) {
+		int l = strlen(post);
+		s = snprintf(buff,2048,
+			"POST %s HTTP/1.1\r\n"
+			"Host: %s\r\n"
+			"From: Voxelands HTTP Fetcher\r\n"
+			"User-Agent: Voxelands/%s (Irrlicht; Voxelands) Voxelands/%s\r\n"
+			"Accept: text/html,application/xhtml+xml,text/plain\r\n"
+			"Accept-Language: en-us,en\r\n"
+			"Accept-Charset: ISO-8859-1,utf-8\r\n"
+			"Content-Type: application/x-www-form-urlencoded\r\n"
+			"Content-Length: %d\r\n"
+			"Connection: close\r\n\r\n",
+			url,
+			host,
+			VERSION_STRING,
+			VERSION_STRING,
+			l
+		);
+		sock->Send(buff,s);
+		sock->Send(post,l);
+	}else{
+		s = snprintf(buff,2048,
+			"GET %s HTTP/1.1\r\n"
+			"Host: %s\r\n"
+			"From: Voxelands HTTP Fetcher\r\n"
+			"User-Agent: Voxelands/%s (Irrlicht; Voxelands) Voxelands/%s\r\n"
+			"Accept: text/html,application/xhtml+xml,text/plain\r\n"
+			"Accept-Language: en-us,en\r\n"
+			"Accept-Charset: ISO-8859-1,utf-8\r\n"
+			"Connection: close\r\n\r\n",
+			url,
+			host,
+			VERSION_STRING,
+			VERSION_STRING
+		);
+		sock->Send(buff,s);
+	}
+
+	if (!sock->WaitData(5000)) {
+		delete sock;
+		return "";
+	}
+
+	if (headers.read(sock) < 0) {
+		delete sock;
+		return "";
+	}
+
+	if (headers.getResponse() != 200) {
+		delete sock;
+		return "";
+	}
+
+	std::string response("");
+
+	while (response.size() < headers.getLength() && (s = sock->Receive(buff,2047)) > 0) {
+		buff[s] = 0;
+		response += buff;
+	}
+
+	delete sock;
+
+	return response;
 }
-#endif
 
 /*
  * HTTPHeaders
@@ -824,4 +727,101 @@ int HTTPResponseHeaders::read(TCPSocket *sock)
 	}
 
 	return 0;
+}
+
+static char url_reserved[33] = {
+	'!',
+ 	'*',
+ 	'\'',
+ 	'(',
+ 	')',
+ 	';',
+ 	':',
+ 	'@',
+ 	'&',
+ 	'=',
+ 	'+',
+ 	'$',
+ 	',',
+ 	'/',
+ 	'?',
+ 	'#',
+ 	'[',
+ 	']',
+	'"',
+ 	'%',
+ 	'-',
+ 	'.',
+ 	'<',
+ 	'>',
+ 	'\\',
+ 	'^',
+ 	'_',
+ 	'`',
+ 	'{',
+ 	'|',
+ 	'}',
+ 	'~',
+	0
+};
+
+static int32_t is_reserved(char c)
+{
+	int32_t i;
+	if (c < 33)
+		return 1;
+	for (i=0; url_reserved[i]; i++) {
+		if (c == url_reserved[i])
+			return 1;
+	}
+	return 0;
+}
+
+/* % encodes a string for http urls */
+std::string http_url_encode(std::string &str)
+{
+	int32_t i;
+	char buff[10];
+	char* in = (char*)str.c_str();
+	std::string out("");
+	for (i=0; in[i] != 0; i++) {
+		if (is_reserved(in[i])) {
+			sprintf(buff,"%.2X",in[i]);
+			out += "%";
+			out += buff;
+			continue;
+		}
+		out += in[i];
+	}
+	return out;
+}
+
+/* decodes a % encoded string from http urls */
+std::string http_url_decode(std::string &str)
+{
+	int32_t i;
+	int32_t o;
+	int32_t k;
+	char buff[10];
+	char* in = (char*)str.c_str();
+	std::string out("");
+	for (i=0,o=0; in[i] != 0; i++) {
+		if (in[i] == '%') {
+			i++;
+			if (in[i] == 0 || in[i+1] == 0)
+				return 0;
+			buff[0] = in[i++];
+			buff[1] = in[i];
+			buff[2] = 0;
+			k = strtol(buff,NULL,16);
+			if (!k)
+				break;
+			buff[0] = k;
+			buff[1] = 0;
+			out += buff;
+			continue;
+		}
+		out += in[i];
+	}
+	return out;
 }

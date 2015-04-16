@@ -50,6 +50,7 @@
 #include "log.h"
 #include "base64.h"
 #include "sound.h"
+#include "http.h"
 
 #define PP(x) "("<<(x).X<<","<<(x).Y<<","<<(x).Z<<")"
 
@@ -988,8 +989,7 @@ Server::Server(
 	m_env.getMap().addEventReceiver(this);
 
 	// If file exists, load environment metadata
-	if(fs::PathExists(m_mapsavedir+DIR_DELIM+"env_meta.txt"))
-	{
+	if (fs::PathExists(m_mapsavedir+DIR_DELIM+"env_meta.txt")) {
 		infostream<<"Server: Loading environment metadata"<<std::endl;
 		m_env.loadMeta(m_mapsavedir);
 	}
@@ -1092,6 +1092,45 @@ void Server::start(unsigned short port)
 	// Start thread
 	m_thread.setRun(true);
 	m_thread.Start();
+
+	// Announce game server to api server
+	if (g_settings->getBool("api_announce")) {
+		std::string url("/announce");
+		std::string post("");
+		std::string pre("");
+		std::string sn = g_settings->get("server_name");
+		if (sn != "") {
+			post += pre+"server_name="+http_url_encode(sn);
+			pre = "&";
+		}
+		std::string sa = g_settings->get("server_address");
+		if (sa != "") {
+			post += pre+"server_address="+http_url_encode(sa);
+			pre = "&";
+		}
+		std::string sp = g_settings->get("port");
+		if (sp != "") {
+			post += pre+"server_port="+http_url_encode(sp);
+			pre = "&";
+		}
+
+		std::string response("");
+		if (post == "") {
+			response = http_request(NULL,(char*)url.c_str());
+		}else{
+			response = http_request(NULL,(char*)url.c_str(),(char*)post.c_str());
+		}
+
+		if (response == "" || response == "Server Not Found") {
+			errorstream<<"Server: Failed to announce to api server"<<std::endl;
+		}else{
+			if (sn == "")
+				g_settings->set("server_name",response);
+			if (sa == "")
+				g_settings->set("server_address",response);
+			infostream<<"Server: Announced to api server"<<std::endl;
+		}
+	}
 
 	infostream<<"Server: Started on port "<<port<<std::endl;
 }
