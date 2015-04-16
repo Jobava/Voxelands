@@ -219,18 +219,117 @@ function server_announce()
 function server_list()
 {
 	$a = db_query_server();
-	$txt = "servers: ".count($a)."\n\n";
-	foreach ($a as $server) {
-		if ($server['mode'] == '')
-			$server['mode'] = 'adventure';
-		$txt .= <<<EOT
+	$count = count($a);
+	$format = 'txt';
+	if (isset($_GET['format'])) {
+		$format = $_GET['format'];
+	}else if (isset($_POST['format'])) {
+		$format = $_POST['format'];
+	}
+	if ($format == 'html') {
+		$out = '';
+		foreach ($a as $server) {
+			if ($server['mode'] == '')
+				$server['mode'] = 'adventure';
+			$out .= <<<EOT
+
+	<div class="panel">
+		<h2 class="centre">$server[name]</h2>
+		<p class="centre">$server[motd]</p>
+		<p><a href="http://$server[addr]:$server[port]/">Web Interface</a></p>
+		<p>Mode: $server[mode]</p>
+		<p>Address: $server[addr]:$server[port]</p>
+	</div>
+
+EOT;
+		}
+		html_send($out);
+	}elseif ($format == 'htmltable') {
+		$out = <<<EOT
+
+	<table>
+EOT;
+		foreach ($a as $server) {
+			if ($server['mode'] == '')
+				$server['mode'] = 'adventure';
+			$out .= <<<EOT
+
+		<tr>
+			<td>$server[name]</td>
+			<td>$server[motd]</td>
+			<td><a href="http://$server[addr]:$server[port]/">Web Interface</a></td>
+			<td>Mode: $server[mode]</td>
+			<td>Address: $server[addr]:$server[port]</td>
+		</tr>
+
+EOT;
+		}
+		$out .= <<<EOT
+
+	</table>
+
+EOT;
+		txt_send($out);
+	}elseif ($format == 'xml') {
+		$out = <<<EOT
+<?xml version="1.0" encoding="UTF-8" ?>
+<serverlist count="$count">
+
+EOT;
+		foreach ($a as $server) {
+			if ($server['mode'] == '')
+				$server['mode'] = 'adventure';
+			$out .= <<<EOT
+	<server>
+		<name>$server[name]</name>
+		<mode>$server[mode]</mode>
+		<address>$server[addr]</address>
+		<port>$server[port]</port>
+	</server>
+
+EOT;
+		}
+		$out .= "\n</serverlist>\n";
+		txt_send($out);
+	}elseif ($format == 'json') {
+		$out = "{\n";
+		$i = 0;
+		foreach ($a as $server) {
+			if ($server['mode'] == '')
+				$server['mode'] = 'adventure';
+			$name = addslashes($server['name']);
+			$mode = addslashes($server['mode']);
+			$addr = addslashes($server['addr']);
+			$port = addslashes($server['port']);
+			$out .= <<<EOT
+
+	$i : {
+		name : '$name',
+		mode : '$mode',
+		address : '$addr',
+		port : '$port'
+	},
+
+EOT;
+			$i++;
+		}
+		$out .= "}\n";
+		txt_send($out);
+	}else{
+		$out = "servers: $count\n\n";
+		foreach ($a as $server) {
+			if ($server['mode'] == '')
+				$server['mode'] = 'adventure';
+			$out .= <<<EOT
 $server[name]
 $server[mode]
 $server[addr]:$server[port]
 
+
 EOT;
+		}
+		txt_send($out);
 	}
-	txt_send($txt);
 }
 
 function player_find()
