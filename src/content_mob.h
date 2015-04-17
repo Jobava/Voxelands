@@ -326,8 +326,9 @@ void content_mob_init();
 #define CONTENT_MOB_SHEEP (CONTENT_MOB_MASK | 0x0D)
 #define CONTENT_MOB_SNOWBALL (CONTENT_MOB_MASK | 0x0E)
 #define CONTENT_MOB_ARROW (CONTENT_MOB_MASK | 0x0F)
+#define CONTENT_MOB_CART (CONTENT_MOB_MASK | 0x10)
 
 // increment me if you add a mob!
-#define CONTENT_MOB_COUNT 16
+#define CONTENT_MOB_COUNT 17
 
 #endif

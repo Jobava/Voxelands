@@ -1243,4 +1243,15 @@ void content_craftitem_init()
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_OERKKI_DUST,CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_CRAFTITEM_OERKKI_DUST_BLACK);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_CART;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_CART;
+	f->texture = "cart.png";
+	f->name = "cart";
+	f->description = wgettext("Cart");
+	f->drop_count = 1;
+	f->drop_item = CONTENT_MOB_CART;
+	lists::add("creative",i);
+
 }

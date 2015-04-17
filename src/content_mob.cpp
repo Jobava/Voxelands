@@ -631,4 +631,50 @@ void content_mob_init()
 	f->lifetime = 20.0;
 	f->contact_drop_item = CONTENT_CRAFTITEM_ARROW;
 	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.));
+
+	i = CONTENT_MOB_CART;
+	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
+	f->content = i;
+	f->level = MOB_PASSIVE;
+	f->setNodeBox(NodeBox(
+		-0.3125*BS,-0.375*BS,-0.5*BS,0.3125*BS,-0.125*BS,0.5*BS
+	));
+	f->addNodeBox(NodeBox(
+		-0.375*BS,-0.4375*BS,-0.375*BS,-0.3125*BS,-0.1875*BS,-0.125*BS
+	));
+	f->addNodeBox(NodeBox(
+		-0.375*BS,-0.4375*BS,0.125*BS,-0.3125*BS,-0.1875*BS,0.375*BS
+	));
+	f->addNodeBox(NodeBox(
+		0.3125*BS,-0.4375*BS,-0.375*BS,0.375*BS,-0.1875*BS,-0.125*BS
+	));
+	f->addNodeBox(NodeBox(
+		0.3125*BS,-0.4375*BS,0.125*BS,0.375*BS,-0.1875*BS,0.375*BS
+	));
+	f->addNodeBox(NodeBox(
+		-0.375*BS,-0.125*BS,-0.4375*BS,0.375*BS,-0.0625*BS,0.4375*BS
+	));
+	f->addNodeBox(NodeBox(
+		-0.375*BS,-0.125*BS,0.4375*BS,0.375*BS,0.5*BS,0.5*BS
+	));
+	f->addNodeBox(NodeBox(
+		-0.375*BS,-0.125*BS,-0.5*BS,0.375*BS,0.5*BS,-0.4375*BS
+	));
+	f->addNodeBox(NodeBox(
+		-0.4375*BS,-0.125*BS,-0.5*BS,-0.375*BS,0.5*BS,0.5*BS
+	));
+	f->addNodeBox(NodeBox(
+		0.375*BS,-0.125*BS,-0.5*BS,0.4375*BS,0.5*BS,0.5*BS
+	));
+	f->setAllBoxTextures("mob_cart.png");
+	f->setBoxTexture(0,"mob_cart_top.png");
+	f->setBoxTexture(4,"mob_cart_end.png");
+	f->setBoxTexture(5,"mob_cart_end.png");
+	f->model_offset = v3f(0,0.3125,0);
+	f->punch_action = MPA_PICKUP;
+	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_CART)+" 1";
+	f->motion = MM_FOLLOW;
+	f->motion_type = MMT_WALK;
+	f->lifetime = 0.0;
+	f->setCollisionBox(aabb3f(-BS*0.5,0.0,-BS*0.5, BS*0.5,BS*0.75,BS*0.5));
 }
