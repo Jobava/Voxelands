@@ -285,10 +285,12 @@ int HTTPRemoteClient::handleAPI()
 	std::string u1 = m_recv_headers.getUrl(1);
 
 	if (u1 == "summary" || u1 == "") {
-		std::string txt = g_settings->get("server_name");
-		if (txt == "")
-			txt = g_settings->get("server_address");
+		std::string txt(VERSION_STRING);
 		txt += "\n";
+		std::string n = g_settings->get("server_name");
+		if (n == "")
+			n = g_settings->get("server_address");
+		txt += n+"\n";
 		txt += g_settings->get("motd")+"\n";
 		txt += g_settings->get("server_address")+"\n";
 		txt += g_settings->get("port")+"\n";
