@@ -300,7 +300,8 @@ int HTTPRemoteClient::handleAPI()
 		}else{
 			txt += "private\n";
 		}
-		txt += "summary,motd,mode,name,players,public,version,features";
+		txt += g_settings->get("default_privs")+"\n";
+		txt += "summary,motd,mode,name,players,public,version,privs,features";
 		send((char*)txt.c_str());
 		return 1;
 	}else if (u1 == "motd") {
@@ -318,11 +319,15 @@ int HTTPRemoteClient::handleAPI()
 		send((char*)txt.c_str());
 		return 1;
 	}else if (u1 == "features") {
-		std::string txt = "summary,motd,mode,name,players,public,version,features";
+		std::string txt = "summary,motd,mode,name,players,public,version,privs,features";
 		send((char*)txt.c_str());
 		return 1;
 	}else if (u1 == "version") {
 		std::string txt = VERSION_STRING;
+		send((char*)txt.c_str());
+		return 1;
+	}else if (u1 == "privs") {
+		std::string txt = g_settings->get("default_privs");
 		send((char*)txt.c_str());
 		return 1;
 	}else if (u1 == "players") {
