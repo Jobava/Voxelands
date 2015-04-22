@@ -1151,7 +1151,7 @@ int main(int argc, char *argv[])
 		Preload some textures and stuff
 	*/
 
-	//drawLoadingScreen(device,wgettext("Loading MapNodes"));
+	drawLoadingScreen(device,wgettext("Loading MapNodes"));
 	init_mapnode(device); // Second call with g_texturesource set
 	drawLoadingScreen(device,wgettext("Loading Creatures"));
 	content_mob_init();
