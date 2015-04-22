@@ -2301,13 +2301,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			if (content_features(n_plus_z_plus_y).draw_type == CDT_ROOFLIKE)
 				is_roof_z_plus_y[1] = true;
 
-			bool is_roof_x_all[] = {false, false};
-			bool is_roof_z_all[] = {false, false};
-			is_roof_x_all[0] = is_roof_x[0] || is_roof_x_minus_y[0] || is_roof_x_plus_y[0];
-			is_roof_x_all[1] = is_roof_x[1] || is_roof_x_minus_y[1] || is_roof_x_plus_y[1];
-			is_roof_z_all[0] = is_roof_z[0] || is_roof_z_minus_y[0] || is_roof_z_plus_y[0];
-			is_roof_z_all[1] = is_roof_z[1] || is_roof_z_minus_y[1] || is_roof_z_plus_y[1];
-
 			u8 adjacencies = is_roof_x[0] + is_roof_x[1] + is_roof_z[0] + is_roof_z[1];
 
 			// get the tile, with crack if being dug

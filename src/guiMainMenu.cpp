@@ -497,11 +497,10 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		{
 			core::rect<s32> rect(0, 0, 230, 30);
 			rect += topleft_content + v2s32(135, 90);
-			gui::IGUIEditBox *e;
 #if USE_FREETYPE
-			e = (gui::IGUIEditBox *) new gui::intlGUIEditBox(text_name.c_str(), true, Environment, this, GUI_ID_NAME_INPUT, rect);
+			new gui::intlGUIEditBox(text_name.c_str(), true, Environment, this, GUI_ID_NAME_INPUT, rect);
 #else
-			e = Environment->addEditBox(text_name.c_str(), rect, false, this, GUI_ID_NAME_INPUT);
+			Environment->addEditBox(text_name.c_str(), rect, false, this, GUI_ID_NAME_INPUT);
 #endif
 		}
 		{
@@ -528,21 +527,19 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 				text_address = L"servers.voxelands.com";
 			core::rect<s32> rect(0, 0, 230, 30);
 			rect += topleft_content + v2s32(135, 200);
-			gui::IGUIEditBox *e;
 #if USE_FREETYPE
-			e = (gui::IGUIEditBox *) new gui::intlGUIEditBox(text_address.c_str(), true, Environment, this, GUI_ID_ADDRESS_INPUT, rect);
+			new gui::intlGUIEditBox(text_address.c_str(), true, Environment, this, GUI_ID_ADDRESS_INPUT, rect);
 #else
-			e = Environment->addEditBox(text_address.c_str(), rect, false, this, GUI_ID_ADDRESS_INPUT);
+			Environment->addEditBox(text_address.c_str(), rect, false, this, GUI_ID_ADDRESS_INPUT);
 #endif
 		}
 		{
 			core::rect<s32> rect(0, 0, 120, 30);
 			rect += topleft_content + v2s32(245, 240);
-			gui::IGUIEditBox *e;
 #if USE_FREETYPE
-			e = (gui::IGUIEditBox *) new gui::intlGUIEditBox(text_port.c_str(), true, Environment, this, GUI_ID_PORT_INPUT, rect);
+			new gui::intlGUIEditBox(text_port.c_str(), true, Environment, this, GUI_ID_PORT_INPUT, rect);
 #else
-			e = Environment->addEditBox(text_port.c_str(), rect, false, this, GUI_ID_PORT_INPUT);
+			Environment->addEditBox(text_port.c_str(), rect, false, this, GUI_ID_PORT_INPUT);
 #endif
 		}
 		// Start game button
@@ -624,7 +621,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			gui::IGUIScrollBar *sb = Environment->addScrollBar(true, rect, this, GUI_ID_VOLUME_SB);
 			sb->setMin(0);
 			sb->setMax(100);
-			sb->setPos(m_data->volume);
+			sb->setPos(volume);
 		}
 
 		// Key change button
@@ -872,11 +869,10 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 				{
 					core::rect<s32> rect(0, 0, 190, 30);
 					rect += topleft_content + v2s32(190, 260);
-					gui::IGUIEditBox *e;
 #if USE_FREETYPE
-					e = (gui::IGUIEditBox *) new gui::intlGUIEditBox(fixed_seed.c_str(), true, Environment, this, GUI_ID_MAP_SEED_INPUT, rect);
+					new gui::intlGUIEditBox(fixed_seed.c_str(), true, Environment, this, GUI_ID_MAP_SEED_INPUT, rect);
 #else
-					e = Environment->addEditBox(fixed_seed.c_str(), rect, false, this, GUI_ID_MAP_SEED_INPUT);
+					Environment->addEditBox(fixed_seed.c_str(), rect, false, this, GUI_ID_MAP_SEED_INPUT);
 #endif
 				}
 			}

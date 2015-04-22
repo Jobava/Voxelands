@@ -246,8 +246,6 @@ void FarMesh::render()
 
 		v2f p1 = p0 + v2f(1,1)*grid_size;
 
-		bool ground_is_sand = false;
-		bool ground_is_rock = false;
 		bool ground_is_mud = false;
 		video::SColor c;
 		// Detect water
@@ -261,7 +259,6 @@ void FarMesh::render()
 		else if(steepness > 2.0)
 		{
 			c = video::SColor(255,128,128,128);
-			ground_is_rock = true;
 		}
 		// Basic ground
 		else
@@ -269,14 +266,12 @@ void FarMesh::render()
 			if(ma_avg < 2.0*BS)
 			{
 				c = video::SColor(255,128,128,128);
-				ground_is_rock = true;
 			}
 			else
 			{
 				if(h_avg <= 2.5*BS && have_sand_count >= 2)
 				{
 					c = video::SColor(255,210,194,156);
-					ground_is_sand = true;
 				}
 				else
 				{

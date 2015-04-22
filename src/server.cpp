@@ -481,7 +481,7 @@ void RemoteClient::GetNextBlocks(Server *server, float dtime,
 	s32 nearest_emerged_d = -1;
 	s32 nearest_emergefull_d = -1;
 	s32 nearest_sent_d = -1;
-	bool queue_is_full = false;
+	//bool queue_is_full = false;
 
 	s16 d;
 	for(d = d_start; d <= d_max; d++)
@@ -532,7 +532,7 @@ void RemoteClient::GetNextBlocks(Server *server, float dtime,
 			// Don't select too many blocks for sending
 			if(num_blocks_selected >= max_simul_dynamic)
 			{
-				queue_is_full = true;
+				//queue_is_full = true;
 				goto queue_full_break;
 			}
 

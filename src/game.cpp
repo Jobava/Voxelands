@@ -1316,9 +1316,6 @@ void the_game(
 		Some statistics are collected in these
 	*/
 	u32 drawtime = 0;
-	u32 beginscenetime = 0;
-	u32 scenetime = 0;
-	u32 endscenetime = 0;
 
 	core::list<float> frametime_log;
 
@@ -1516,8 +1513,6 @@ void the_game(
 		busytime_avg1 = busytime_avg1 * 0.98 + busytime * 0.02;
 		f32 busytime_jitter1 = busytime - busytime_avg1;
 
-		static f32 busytime_jitter1_max_sample = 0.0;
-		static f32 busytime_jitter1_min_sample = 0.0;
 		{
 			static f32 jitter1_max = 0.0;
 			static f32 jitter1_min = 0.0;
@@ -1529,8 +1524,6 @@ void the_game(
 			counter += dtime;
 			if (counter > 0.0) {
 				counter -= 3.0;
-				busytime_jitter1_max_sample = jitter1_max;
-				busytime_jitter1_min_sample = jitter1_min;
 				jitter1_max = 0.0;
 				jitter1_min = 0.0;
 			}
@@ -2548,13 +2541,13 @@ void the_game(
 		{
 			TimeTaker timer("beginScene");
 			driver->beginScene(false, true, bgcolor);
-			beginscenetime = timer.stop(true);
+			timer.stop(true);
 		}
 
 		{
 			TimeTaker timer("smgr");
 			smgr->drawAll();
-			scenetime = timer.stop(true);
+			timer.stop(true);
 		}
 
 		{
@@ -2679,7 +2672,7 @@ void the_game(
 		{
 			TimeTaker timer("endScene");
 			endSceneX(driver);
-			endscenetime = timer.stop(true);
+			timer.stop(true);
 		}
 
 		drawtime = drawtimer.stop(true);

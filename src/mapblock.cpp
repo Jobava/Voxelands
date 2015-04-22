@@ -223,7 +223,7 @@ bool MapBlock::propagateSunlight(core::map<v3s16, bool> & light_sources,
 		{
 #if 1
 			bool no_sunlight = false;
-			bool no_top_block = false;
+			//bool no_top_block = false;
 			// Check if node above block has sunlight
 			bool is_valid_position;
 			MapNode n = getNodeParent(v3s16(x, MAP_BLOCKSIZE, z), &is_valid_position);
@@ -235,7 +235,7 @@ bool MapBlock::propagateSunlight(core::map<v3s16, bool> & light_sources,
 					no_sunlight = true;
 				}
 			}else{
-				no_top_block = true;
+				//no_top_block = true;
 
 				// NOTE: This makes over-ground roofed places sunlighted
 				// Assume sunlight, unless is_underground==true

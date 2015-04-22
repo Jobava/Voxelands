@@ -1958,7 +1958,7 @@ void ServerMap::initBlockMake(mapgen::BlockMakeData *data, v3s16 blockpos)
 MapBlock* ServerMap::finishBlockMake(mapgen::BlockMakeData *data,
 		core::map<v3s16, MapBlock*> &changed_blocks)
 {
-	v3s16 blockpos = data->blockpos;
+	//v3s16 blockpos = data->blockpos;
 	/*infostream<<"finishBlockMake(): ("<<blockpos.X<<","<<blockpos.Y<<","
 			<<blockpos.Z<<")"<<std::endl;*/
 
@@ -3496,7 +3496,6 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 	v3f camera_position = m_camera_position;
 	v3f camera_direction = m_camera_direction;
 	f32 camera_fov = m_camera_fov;
-	v3s16 camera_offset = m_camera_offset;
 	m_camera_mutex.Unlock();
 
 	/*

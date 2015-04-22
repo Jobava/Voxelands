@@ -807,12 +807,11 @@ std::string http_url_encode(std::string &str)
 std::string http_url_decode(std::string &str)
 {
 	int32_t i;
-	int32_t o;
 	int32_t k;
 	char buff[10];
 	char* in = (char*)str.c_str();
 	std::string out("");
-	for (i=0,o=0; in[i] != 0; i++) {
+	for (i=0; in[i] != 0; i++) {
 		if (in[i] == '%') {
 			i++;
 			if (in[i] == 0 || in[i+1] == 0)

@@ -153,7 +153,6 @@ void ItemSAO::step(float dtime, bool send_recommended)
 	if (m_speed_f.getLength()*dtime > pos_max_d)
 		m_speed_f *= pos_max_d / (m_speed_f.getLength()*dtime);
 	v3f pos_f = getBasePosition();
-	v3f pos_f_old = pos_f;
 	v3f accel_f = v3f(0,0,0);
 	moveresult = collisionMoveSimple(&m_env->getMap(), pos_max_d,
 			box, 0.0, dtime, pos_f, m_speed_f, accel_f);

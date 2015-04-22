@@ -1685,12 +1685,7 @@ bool CookBookNodeMetadata::receiveFields(std::string formname, std::map<std::str
 }
 std::string CookBookNodeMetadata::getDrawSpecString()
 {
-	InventoryList *l = m_inventory->getList("result");
-	InventoryItem *q = l->getItem(0);
-	int tr = 0;
 	std::vector<content_t> &list = lists::get("cooking");
-	if (q && q->getContent() != CONTENT_IGNORE)
-		tr = crafting::getResultCount(q);
 
 	char buff[256];
 	snprintf(buff,256,gettext("Page %d of %d"),(int)(m_page+1),(int)((list.size()/40)+1));

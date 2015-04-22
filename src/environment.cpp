@@ -1954,7 +1954,7 @@ void ServerEnvironment::step(float dtime)
 						}else{
 							bool found = false;
 							/* moss also grows */
-							for (s16 i=0;!false && i<6; i++) {
+							for (s16 i=0; !found && i<6; i++) {
 								a = m_map->getNodeNoEx(p+g_6dirs[i]);
 								if (a.getContent() == CONTENT_MOSSYCOBBLE) {
 									n.setContent(CONTENT_MOSSYCOBBLE);
