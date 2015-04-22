@@ -367,9 +367,9 @@ else()
 
 	CHECK_CXX_COMPILER_FLAG("-fstack-protector-strong" HAS_FSTACK_STRONG)
 	if(HAS_FSTACK_STRONG)
-		set(SAFETY_FLAGS "-fno-strict-aliasing -fwrapv -fvisibility=hidden -fstack-protector-strong --param=ssp-buffer-size=4 -D_FORTIFY_SOURCE=2")
+		set(SAFETY_FLAGS "-fno-strict-aliasing -fwrapv -fvisibility=hidden -fstack-protector-strong --param=ssp-buffer-size=4")
 	else()
-		set(SAFETY_FLAGS "-fno-strict-aliasing -fwrapv -fvisibility=hidden -fstack-protector --param=ssp-buffer-size=4 -D_FORTIFY_SOURCE=2")
+		set(SAFETY_FLAGS "-fno-strict-aliasing -fwrapv -fvisibility=hidden -fstack-protector --param=ssp-buffer-size=4")
 	endif()
 
 	if(CPU_OPTS)
