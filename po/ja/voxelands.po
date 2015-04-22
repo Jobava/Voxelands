@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Lisa 'darkrose' Milne
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Rui Takeda, 2015
 # Rui Takeda, 2015
@@ -9,15 +9,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-22 00:10+1000\n"
-"PO-Revision-Date: 2015-03-21 12:31+0000\n"
+"POT-Creation-Date: 2015-04-23 00:11+1000\n"
+"PO-Revision-Date: 2015-04-10 09:04+0000\n"
 "Last-Translator: Rui Takeda\n"
-"Language-Team: Japanese (http://www.transifex.com/projects/p/voxelands/"
-"language/ja/)\n"
-"Language: ja\n"
+"Language-Team: Japanese (http://www.transifex.com/projects/p/voxelands/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: src/character_creator.cpp:56
@@ -26,7 +25,7 @@ msgstr "白い肌"
 
 #: src/character_creator.cpp:57
 msgid "Red Skin"
-msgstr "赤色の肌"
+msgstr "赤い肌"
 
 #: src/character_creator.cpp:58
 msgid "Green Skin"
@@ -50,7 +49,7 @@ msgstr "黒い肌"
 
 #: src/character_creator.cpp:64
 msgid "Human Face"
-msgstr "人の顔"
+msgstr "普通の顔"
 
 #: src/character_creator.cpp:65
 msgid "Elven Face"
@@ -58,7 +57,7 @@ msgstr "エルフの顔"
 
 #: src/character_creator.cpp:66
 msgid "Dwarven Face"
-msgstr "ドワーフの肌"
+msgstr "ドワーフの顔"
 
 #: src/character_creator.cpp:67
 msgid "Alien Face"
@@ -70,7 +69,7 @@ msgstr "白い髪"
 
 #: src/character_creator.cpp:70
 msgid "Blue Hair"
-msgstr "青色の髪"
+msgstr "青い髪"
 
 #: src/character_creator.cpp:71
 msgid "Green Hair"
@@ -90,7 +89,7 @@ msgstr "紫色の髪"
 
 #: src/character_creator.cpp:75
 msgid "Red Hair"
-msgstr "赤色の髪"
+msgstr "赤い髪"
 
 #: src/character_creator.cpp:76
 msgid "Blonde Hair"
@@ -98,23 +97,23 @@ msgstr "灰色の髪"
 
 #: src/character_creator.cpp:77
 msgid "Black Hair"
-msgstr "黒髪"
+msgstr "黒い髪"
 
 #: src/character_creator.cpp:79
 msgid "Short Hair"
-msgstr "短髪"
+msgstr "短い髪"
 
 #: src/character_creator.cpp:80
 msgid "Medium Hair"
-msgstr "並の髪"
+msgstr "普通の髪"
 
 #: src/character_creator.cpp:81
 msgid "Long Hair"
-msgstr "長髪"
+msgstr "長い髪"
 
 #: src/character_creator.cpp:82
 msgid "Styled Hair"
-msgstr "変な髪型"
+msgstr "変な髪"
 
 #: src/character_creator.cpp:84
 msgid "White Eyes"
@@ -122,7 +121,7 @@ msgstr "白い目"
 
 #: src/character_creator.cpp:85
 msgid "Blue Eyes"
-msgstr "青色の目"
+msgstr "青い目"
 
 #: src/character_creator.cpp:86
 msgid "Green Eyes"
@@ -134,7 +133,7 @@ msgstr "オレンジ色の目"
 
 #: src/character_creator.cpp:88
 msgid "Brown Eyes"
-msgstr "茶色の目"
+msgstr "茶色い目"
 
 #: src/character_creator.cpp:89
 msgid "Purple Eyes"
@@ -142,11 +141,11 @@ msgstr "紫色の目"
 
 #: src/character_creator.cpp:90
 msgid "Red Eyes"
-msgstr "赤色の目"
+msgstr "赤い目"
 
 #: src/character_creator.cpp:91
 msgid "Yellow Eyes"
-msgstr "黄色の目"
+msgstr "黄色い目"
 
 #: src/character_creator.cpp:92
 msgid "Black Eyes"
@@ -154,11 +153,11 @@ msgstr "黒い目"
 
 #: src/character_creator.cpp:94
 msgid "White T-Shirt"
-msgstr "白のTシャツ"
+msgstr "白いTシャツ"
 
 #: src/character_creator.cpp:95
 msgid "Blue T-Shirt"
-msgstr "青色のTシャツ"
+msgstr "青いTシャツ"
 
 #: src/character_creator.cpp:96
 msgid "Green T-Shirt"
@@ -174,23 +173,23 @@ msgstr "紫色のTシャツ"
 
 #: src/character_creator.cpp:99
 msgid "Red T-Shirt"
-msgstr "赤色のTシャツ"
+msgstr "赤いTシャツ"
 
 #: src/character_creator.cpp:100
 msgid "Yellow T-Shirt"
-msgstr "黄色のTシャツ"
+msgstr "黄色いTシャツ"
 
 #: src/character_creator.cpp:101
 msgid "Black T-Shirt"
-msgstr "黒のTシャツ"
+msgstr "黒いTシャツ"
 
 #: src/character_creator.cpp:103
 msgid "White Pants"
-msgstr "白のズボン"
+msgstr "白いズボン"
 
 #: src/character_creator.cpp:104
 msgid "Blue Pants"
-msgstr "青色のズボン"
+msgstr "青いズボン"
 
 #: src/character_creator.cpp:105
 msgid "Green Pants"
@@ -206,15 +205,15 @@ msgstr "紫色のズボン"
 
 #: src/character_creator.cpp:108
 msgid "Red Pants"
-msgstr "赤色のズボン"
+msgstr "赤いズボン"
 
 #: src/character_creator.cpp:109
 msgid "Yellow Pants"
-msgstr "黄色のズボン"
+msgstr "黄色いズボン"
 
 #: src/character_creator.cpp:110
 msgid "Black Pants"
-msgstr "黒のズボン"
+msgstr "黒いズボン"
 
 #: src/character_creator.cpp:112 src/content_clothesitem.cpp:1706
 msgid "Leather Shoes"
@@ -230,17 +229,9 @@ msgstr "ズック靴"
 
 #: src/character_creator.cpp:203
 msgid ""
-"Here you can create your default character, this is how other players will "
-"see you in-game. When you join a new server you will start with the clothing "
-"you select here. Additional clothing, both protective and decorative, can be "
-"crafted in-game.\n"
+"Here you can create your default character, this is how other players will see you in-game. When you join a new server you will start with the clothing you select here. Additional clothing, both protective and decorative, can be crafted in-game.\n"
 "You can return here from the main menu anytime to change your character."
-msgstr ""
-"ここでは、あなたのキャラクターのスキンを作成することができ、作成したスキンは"
-"マルチプレイで他のプレイヤーに表示されます。その他の衣類や装備はゲーム中にク"
-"ラフトすることができます。\n"
-"あなたがスキンを変更したいときは、メインメニューからこの設定へ戻ることができ"
-"ます。"
+msgstr "ここではスキンを作成できます。\nスキンは他のプレイヤーに表示されます。\nタイトルからもこの設定に戻れます。"
 
 #: src/character_creator.cpp:224
 msgid "Create Your Character"
@@ -256,11 +247,11 @@ msgstr "女性"
 
 #: src/character_creator.cpp:243
 msgid "Taller"
-msgstr "高身長"
+msgstr "高くする"
 
 #: src/character_creator.cpp:248
 msgid "Shorter"
-msgstr "低身長"
+msgstr "低くする"
 
 #: src/character_creator.cpp:255
 msgid "Wider"
@@ -297,11 +288,11 @@ msgstr "宇宙服の靴"
 
 #: src/content_clothesitem.cpp:130
 msgid "Cotton T-Shirt"
-msgstr "コットンTシャツ"
+msgstr "コットンのTシャツ"
 
 #: src/content_clothesitem.cpp:144
 msgid "Blue Cotton T-Shirt"
-msgstr "青色のコットンのTシャツ"
+msgstr "青いコットンのTシャツ"
 
 #: src/content_clothesitem.cpp:158
 msgid "Green Cotton T-Shirt"
@@ -317,15 +308,15 @@ msgstr "紫色のコットンのTシャツ"
 
 #: src/content_clothesitem.cpp:200
 msgid "Red Cotton T-Shirt"
-msgstr "赤色のコットンのTシャツ"
+msgstr "赤いコットンのTシャツ"
 
 #: src/content_clothesitem.cpp:214
 msgid "Yellow Cotton T-Shirt"
-msgstr "黄色のコットンのTシャツ"
+msgstr "黄色いコットンのTシャツ"
 
 #: src/content_clothesitem.cpp:228
 msgid "Black Cotton T-Shirt"
-msgstr "黒のコットンのTシャツ"
+msgstr "黒いコットンのTシャツ"
 
 #: src/content_clothesitem.cpp:243
 msgid "Cotton Shirt"
@@ -333,7 +324,7 @@ msgstr "コットンのシャツ"
 
 #: src/content_clothesitem.cpp:257
 msgid "Blue Cotton Shirt"
-msgstr "青色のコットンのシャツ"
+msgstr "青いコットンのシャツ"
 
 #: src/content_clothesitem.cpp:271
 msgid "Green Cotton Shirt"
@@ -349,15 +340,15 @@ msgstr "紫色のコットンのシャツ"
 
 #: src/content_clothesitem.cpp:313
 msgid "Red Cotton Shirt"
-msgstr "赤色のコットンのシャツ"
+msgstr "赤いコットンのシャツ"
 
 #: src/content_clothesitem.cpp:327
 msgid "Yellow Cotton Shirt"
-msgstr "黄色のコットンのシャツ"
+msgstr "黄色いコットンのシャツ"
 
 #: src/content_clothesitem.cpp:341
 msgid "Black Cotton Shirt"
-msgstr "黒のコットンのシャツ"
+msgstr "黒いコットンのシャツ"
 
 #: src/content_clothesitem.cpp:356
 msgid "Cotton Shorts"
@@ -365,7 +356,7 @@ msgstr "コットンの半ズボン"
 
 #: src/content_clothesitem.cpp:371
 msgid "Blue Cotton Shorts"
-msgstr "青色のコットンの半ズボン"
+msgstr "青いコットンの半ズボン"
 
 #: src/content_clothesitem.cpp:386
 msgid "Green Cotton Shorts"
@@ -381,15 +372,15 @@ msgstr "紫色のコットンの半ズボン"
 
 #: src/content_clothesitem.cpp:431
 msgid "Red Cotton Shorts"
-msgstr "赤色のコットンの半ズボン"
+msgstr "赤いコットンの半ズボン"
 
 #: src/content_clothesitem.cpp:446
 msgid "Yellow Cotton Shorts"
-msgstr "黄色のコットンの半ズボン"
+msgstr "黄色いコットンの半ズボン"
 
 #: src/content_clothesitem.cpp:461
 msgid "Black Cotton Shorts"
-msgstr "黒のコットンの半ズボン"
+msgstr "黒いコットンの半ズボン"
 
 #: src/content_clothesitem.cpp:477
 msgid "Cotton Hat"
@@ -397,7 +388,7 @@ msgstr "コットンの帽子"
 
 #: src/content_clothesitem.cpp:491
 msgid "Blue Cotton Hat"
-msgstr "青色のコットンの帽子"
+msgstr "青いコットンの帽子"
 
 #: src/content_clothesitem.cpp:505
 msgid "Green Cotton Hat"
@@ -413,15 +404,15 @@ msgstr "紫色のコットンの帽子"
 
 #: src/content_clothesitem.cpp:547
 msgid "Red Cotton Hat"
-msgstr "赤色のコットンの帽子"
+msgstr "赤いコットンの帽子"
 
 #: src/content_clothesitem.cpp:561
 msgid "Yellow Cotton Hat"
-msgstr "黄色のコットンの帽子"
+msgstr "黄色いコットンの帽子"
 
 #: src/content_clothesitem.cpp:575
 msgid "Black Cotton Hat"
-msgstr "黒のコットンの帽子"
+msgstr "黒いコットンの帽子"
 
 #: src/content_clothesitem.cpp:590
 msgid "Cotton Tie"
@@ -429,7 +420,7 @@ msgstr "コットンのネクタイ"
 
 #: src/content_clothesitem.cpp:604
 msgid "Blue Cotton Tie"
-msgstr "青色のコットンのネクタイ"
+msgstr "青いコットンのネクタイ"
 
 #: src/content_clothesitem.cpp:618
 msgid "Green Cotton Tie"
@@ -445,15 +436,15 @@ msgstr "紫色のコットンのネクタイ"
 
 #: src/content_clothesitem.cpp:660
 msgid "Red Cotton Tie"
-msgstr "赤色のコットンのネクタイ"
+msgstr "赤いコットンのネクタイ"
 
 #: src/content_clothesitem.cpp:674
 msgid "Yellow Cotton Tie"
-msgstr "黄色のコットンのネクタイ"
+msgstr "黄色いコットンのネクタイ"
 
 #: src/content_clothesitem.cpp:688
 msgid "Black Cotton Tie"
-msgstr "黒のコットンのネクタイ"
+msgstr "黒いコットンのネクタイ"
 
 #: src/content_clothesitem.cpp:703
 msgid "Canvas Shirt"
@@ -461,7 +452,7 @@ msgstr "麻の服"
 
 #: src/content_clothesitem.cpp:718
 msgid "Blue Canvas Shirt"
-msgstr "青色の麻の服"
+msgstr "青い麻の服"
 
 #: src/content_clothesitem.cpp:733
 msgid "Green Canvas Shirt"
@@ -477,15 +468,15 @@ msgstr "紫色の麻の服"
 
 #: src/content_clothesitem.cpp:778
 msgid "Red Canvas Shirt"
-msgstr "赤色の麻の服"
+msgstr "赤い麻の服"
 
 #: src/content_clothesitem.cpp:793
 msgid "Yellow Canvas Shirt"
-msgstr "黄色の麻の服"
+msgstr "黄色い麻の服"
 
 #: src/content_clothesitem.cpp:808
 msgid "Black Canvas Shirt"
-msgstr "黒の麻の服"
+msgstr "黒い麻の服"
 
 #: src/content_clothesitem.cpp:824
 msgid "Canvas Pants"
@@ -493,7 +484,7 @@ msgstr "麻のズボン"
 
 #: src/content_clothesitem.cpp:839
 msgid "Blue Canvas Pants"
-msgstr "青色の麻のズボン"
+msgstr "青い麻のズボン"
 
 #: src/content_clothesitem.cpp:854
 msgid "Green Canvas Pants"
@@ -509,19 +500,19 @@ msgstr "紫色の麻のズボン"
 
 #: src/content_clothesitem.cpp:899
 msgid "Red Canvas Pants"
-msgstr "赤色の麻のズボン"
+msgstr "赤い麻のズボン"
 
 #: src/content_clothesitem.cpp:914
 msgid "Yellow Canvas Pants"
-msgstr "黄色の麻のズボン"
+msgstr "黄色い麻のズボン"
 
 #: src/content_clothesitem.cpp:929
 msgid "Black Canvas Pants"
-msgstr "黒の麻のズボン"
+msgstr "黒い麻のズボン"
 
 #: src/content_clothesitem.cpp:959
 msgid "Blue Canvas Shoes"
-msgstr "青色の麻の靴"
+msgstr "青い麻の靴"
 
 #: src/content_clothesitem.cpp:973
 msgid "Green Canvas Shoes"
@@ -537,15 +528,15 @@ msgstr "紫色の麻の靴"
 
 #: src/content_clothesitem.cpp:1015
 msgid "Red Canvas Shoes"
-msgstr "赤色の麻の靴"
+msgstr "赤い麻の靴"
 
 #: src/content_clothesitem.cpp:1029
 msgid "Yellow Canvas Shoes"
-msgstr "黄色の麻の靴"
+msgstr "黄色い麻の靴"
 
 #: src/content_clothesitem.cpp:1043
 msgid "Black Canvas Shoes"
-msgstr "黒の麻の靴"
+msgstr "黒い麻の靴"
 
 #: src/content_clothesitem.cpp:1058
 msgid "Canvas Belt"
@@ -553,7 +544,7 @@ msgstr "麻のベルト"
 
 #: src/content_clothesitem.cpp:1072
 msgid "Blue Canvas Belt"
-msgstr "青色の麻のベルト"
+msgstr "青い麻のベルト"
 
 #: src/content_clothesitem.cpp:1086
 msgid "Green Canvas Belt"
@@ -569,15 +560,15 @@ msgstr "紫色の麻のベルト"
 
 #: src/content_clothesitem.cpp:1128
 msgid "Red Canvas Belt"
-msgstr "赤色の麻のベルト"
+msgstr "赤い麻のベルト"
 
 #: src/content_clothesitem.cpp:1142
 msgid "Yellow Canvas Belt"
-msgstr "黄色の麻のベルト"
+msgstr "黄色い麻のベルト"
 
 #: src/content_clothesitem.cpp:1156
 msgid "Black Canvas Belt"
-msgstr "黒の麻のベルト"
+msgstr "黒い麻のベルト"
 
 #: src/content_clothesitem.cpp:1171
 msgid "Leather Jacket"
@@ -585,11 +576,11 @@ msgstr "レザージャケット"
 
 #: src/content_clothesitem.cpp:1186
 msgid "White Leather Jacket"
-msgstr "白のレザージャケット"
+msgstr "白いレザージャケット"
 
 #: src/content_clothesitem.cpp:1201
 msgid "Blue Leather Jacket"
-msgstr "青色のレザージャケット"
+msgstr "青いレザージャケット"
 
 #: src/content_clothesitem.cpp:1216
 msgid "Green Leather Jacket"
@@ -605,15 +596,15 @@ msgstr "紫色のレザージャケット"
 
 #: src/content_clothesitem.cpp:1261
 msgid "Red Leather Jacket"
-msgstr "赤色のレザージャケット"
+msgstr "赤いレザージャケット"
 
 #: src/content_clothesitem.cpp:1276
 msgid "Yellow Leather Jacket"
-msgstr "黄色のレザージャケット"
+msgstr "黄色いレザージャケット"
 
 #: src/content_clothesitem.cpp:1291
 msgid "Black Leather Jacket"
-msgstr "黒のレザージャケット"
+msgstr "黒いレザージャケット"
 
 #: src/content_clothesitem.cpp:1307
 msgid "Leather Pants"
@@ -621,11 +612,11 @@ msgstr "レザーパンツ"
 
 #: src/content_clothesitem.cpp:1322
 msgid "White Leather Pants"
-msgstr "白のレザーパンツ"
+msgstr "白いレザーパンツ"
 
 #: src/content_clothesitem.cpp:1337
 msgid "Blue Leather Pants"
-msgstr "青色のレザーパンツ"
+msgstr "青いレザーパンツ"
 
 #: src/content_clothesitem.cpp:1352
 msgid "Green Leather Pants"
@@ -641,15 +632,15 @@ msgstr "紫色のレザーパンツ"
 
 #: src/content_clothesitem.cpp:1397
 msgid "Red Leather Pants"
-msgstr "赤色のレザーパンツ"
+msgstr "赤いレザーパンツ"
 
 #: src/content_clothesitem.cpp:1412
 msgid "Yellow Leather Pants"
-msgstr "黄色のレザーパンツ"
+msgstr "黄色いレザーパンツ"
 
 #: src/content_clothesitem.cpp:1427
 msgid "Black Leather Pants"
-msgstr "黒のレザーパンツ"
+msgstr "黒いレザーパンツ"
 
 #: src/content_clothesitem.cpp:1443
 msgid "Leather Hat"
@@ -657,11 +648,11 @@ msgstr "レザーハット"
 
 #: src/content_clothesitem.cpp:1457
 msgid "White Leather Hat"
-msgstr "白のレザーハット"
+msgstr "白いレザーハット"
 
 #: src/content_clothesitem.cpp:1471
 msgid "Blue Leather Hat"
-msgstr "青色のレザーハット"
+msgstr "青いレザーハット"
 
 #: src/content_clothesitem.cpp:1485
 msgid "Green Leather Hat"
@@ -677,15 +668,15 @@ msgstr "紫色のレザーハット"
 
 #: src/content_clothesitem.cpp:1527
 msgid "Red Leather Hat"
-msgstr "赤色のレザーハット"
+msgstr "赤いレザーハット"
 
 #: src/content_clothesitem.cpp:1541
 msgid "Yellow Leather Hat"
-msgstr "黄色のレザーハット"
+msgstr "黄色いレザーハット"
 
 #: src/content_clothesitem.cpp:1555
 msgid "Black Leather Hat"
-msgstr "黒のレザーハット"
+msgstr "黒いレザーハット"
 
 #: src/content_clothesitem.cpp:1570
 msgid "Leather Helmet"
@@ -693,11 +684,11 @@ msgstr "レザーヘルメット"
 
 #: src/content_clothesitem.cpp:1585
 msgid "White Leather Helmet"
-msgstr "白のレザーヘルメット"
+msgstr "白いレザーヘルメット"
 
 #: src/content_clothesitem.cpp:1600
 msgid "Blue Leather Helmet"
-msgstr "青色のレザーヘルメット"
+msgstr "青いレザーヘルメット"
 
 #: src/content_clothesitem.cpp:1615
 msgid "Green Leather Helmet"
@@ -713,23 +704,23 @@ msgstr "紫色のレザーヘルメット"
 
 #: src/content_clothesitem.cpp:1660
 msgid "Red Leather Helmet"
-msgstr "赤色のレザーヘルメット"
+msgstr "赤いレザーヘルメット"
 
 #: src/content_clothesitem.cpp:1675
 msgid "Yellow Leather Helmet"
-msgstr "黄色のレザーヘルメット"
+msgstr "黄色いレザーヘルメット"
 
 #: src/content_clothesitem.cpp:1690
 msgid "Black Leather Helmet"
-msgstr "黒のレザーヘルメット"
+msgstr "黒いレザーヘルメット"
 
 #: src/content_clothesitem.cpp:1721
 msgid "White Leather Shoes"
-msgstr "白のレザースニーカー"
+msgstr "白いレザースニーカー"
 
 #: src/content_clothesitem.cpp:1736
 msgid "Blue Leather Shoes"
-msgstr "青色のレザースニーカー"
+msgstr "青いレザースニーカー"
 
 #: src/content_clothesitem.cpp:1751
 msgid "Green Leather Shoes"
@@ -745,15 +736,15 @@ msgstr "紫色のレザースニーカー"
 
 #: src/content_clothesitem.cpp:1796
 msgid "Red Leather Shoes"
-msgstr "赤色のレザースニーカー"
+msgstr "赤いレザースニーカー"
 
 #: src/content_clothesitem.cpp:1811
 msgid "Yellow Leather Shoes"
-msgstr "黄色のレザースニーカー"
+msgstr "黄色いレザースニーカー"
 
 #: src/content_clothesitem.cpp:1826
 msgid "Black Leather Shoes"
-msgstr "黒のレザースニーカー"
+msgstr "黒いレザースニーカー"
 
 #: src/content_clothesitem.cpp:1842
 msgid "Leather Boots"
@@ -761,11 +752,11 @@ msgstr "レザーブーツ"
 
 #: src/content_clothesitem.cpp:1857
 msgid "White Leather Boots"
-msgstr "白のレザーブーツ"
+msgstr "白いレザーブーツ"
 
 #: src/content_clothesitem.cpp:1872
 msgid "Blue Leather Boots"
-msgstr "青色のレザーブーツ"
+msgstr "青いレザーブーツ"
 
 #: src/content_clothesitem.cpp:1887
 msgid "Green Leather Boots"
@@ -781,15 +772,15 @@ msgstr "紫色のレザーブーツ"
 
 #: src/content_clothesitem.cpp:1932
 msgid "Red Leather Boots"
-msgstr "赤色のレザーブーツ"
+msgstr "赤いレザーブーツ"
 
 #: src/content_clothesitem.cpp:1947
 msgid "Yellow Leather Boots"
-msgstr "黄色のレザーブーツ"
+msgstr "黄色いレザーブーツ"
 
 #: src/content_clothesitem.cpp:1962
 msgid "Black Leather Boots"
-msgstr "黒のレザーブーツ"
+msgstr "黒いレザーブーツ"
 
 #: src/content_clothesitem.cpp:1978
 msgid "Leather Belt"
@@ -797,11 +788,11 @@ msgstr "レザーベルト"
 
 #: src/content_clothesitem.cpp:1993
 msgid "White Leather Belt"
-msgstr "白のレザーベルト"
+msgstr "白いレザーベルト"
 
 #: src/content_clothesitem.cpp:2008
 msgid "Blue Leather Belt"
-msgstr "青色のレザーベルト"
+msgstr "青いレザーベルト"
 
 #: src/content_clothesitem.cpp:2023
 msgid "Green Leather Belt"
@@ -817,15 +808,15 @@ msgstr "紫色のレザーベルト"
 
 #: src/content_clothesitem.cpp:2068
 msgid "Red Leather Belt"
-msgstr "赤色のレザーベルト"
+msgstr "赤いレザーベルト"
 
 #: src/content_clothesitem.cpp:2083
 msgid "Yellow Leather Belt"
-msgstr "黄色のレザーベルト"
+msgstr "黄色いレザーベルト"
 
 #: src/content_clothesitem.cpp:2098
 msgid "Black Leather Belt"
-msgstr "黒のレザーベルト"
+msgstr "黒いレザーベルト"
 
 #: src/content_clothesitem.cpp:2114
 msgid "Fur Coat"
@@ -833,11 +824,11 @@ msgstr "毛皮のコート"
 
 #: src/content_clothesitem.cpp:2129
 msgid "White Fur Coat"
-msgstr "白の毛皮のコート"
+msgstr "白い毛皮のコート"
 
 #: src/content_clothesitem.cpp:2144
 msgid "Blue Fur Coat"
-msgstr "青色の毛皮のコート"
+msgstr "青い毛皮のコート"
 
 #: src/content_clothesitem.cpp:2159
 msgid "Green Fur Coat"
@@ -853,15 +844,15 @@ msgstr "紫色の毛皮のコート"
 
 #: src/content_clothesitem.cpp:2204
 msgid "Red Fur Coat"
-msgstr "赤色の毛皮のコート"
+msgstr "赤い毛皮のコート"
 
 #: src/content_clothesitem.cpp:2219
 msgid "Yellow Fur Coat"
-msgstr "黄色の毛皮のコート"
+msgstr "黄色い毛皮のコート"
 
 #: src/content_clothesitem.cpp:2234
 msgid "Black Fur Coat"
-msgstr "黒の毛皮のコート"
+msgstr "黒い毛皮のコート"
 
 #: src/content_clothesitem.cpp:2250
 msgid "Fur Pants"
@@ -869,11 +860,11 @@ msgstr "毛皮のズボン"
 
 #: src/content_clothesitem.cpp:2265
 msgid "White Fur Pants"
-msgstr "白の毛皮のズボン"
+msgstr "白い毛皮のズボン"
 
 #: src/content_clothesitem.cpp:2280
 msgid "Blue Fur Pants"
-msgstr "青色の毛皮のズボン"
+msgstr "青い毛皮のズボン"
 
 #: src/content_clothesitem.cpp:2295
 msgid "Green Fur Pants"
@@ -889,15 +880,15 @@ msgstr "紫色の毛皮のズボン"
 
 #: src/content_clothesitem.cpp:2340
 msgid "Red Fur Pants"
-msgstr "赤色の毛皮のズボン"
+msgstr "赤い毛皮のズボン"
 
 #: src/content_clothesitem.cpp:2355
 msgid "Yellow Fur Pants"
-msgstr "黄色の毛皮のズボン"
+msgstr "黄色い毛皮のズボン"
 
 #: src/content_clothesitem.cpp:2370
 msgid "Black Fur Pants"
-msgstr "黒の毛皮のズボン"
+msgstr "黒い毛皮のズボン"
 
 #: src/content_clothesitem.cpp:2386
 msgid "Fur Hat"
@@ -905,11 +896,11 @@ msgstr "毛皮の帽子"
 
 #: src/content_clothesitem.cpp:2401
 msgid "White Fur Hat"
-msgstr "白の毛皮の帽子"
+msgstr "白い毛皮の帽子"
 
 #: src/content_clothesitem.cpp:2416
 msgid "Blue Fur Hat"
-msgstr "青色の毛皮の帽子"
+msgstr "青い毛皮の帽子"
 
 #: src/content_clothesitem.cpp:2431
 msgid "Green Fur Hat"
@@ -925,23 +916,23 @@ msgstr "紫色の毛皮の帽子"
 
 #: src/content_clothesitem.cpp:2476
 msgid "Red Fur Hat"
-msgstr "赤色の毛皮の帽子"
+msgstr "赤い毛皮の帽子"
 
 #: src/content_clothesitem.cpp:2491
 msgid "Yellow Fur Hat"
-msgstr "黄色の毛皮の帽子"
+msgstr "黄色い毛皮の帽子"
 
 #: src/content_clothesitem.cpp:2506
 msgid "Black Fur Hat"
-msgstr "黒の毛皮の帽子"
+msgstr "黒い毛皮の帽子"
 
 #: src/content_clothesitem.cpp:2536
 msgid "White Fur Shoes"
-msgstr "白の毛皮の靴"
+msgstr "白い毛皮の靴"
 
 #: src/content_clothesitem.cpp:2550
 msgid "Blue Fur Shoes"
-msgstr "青色の毛皮の靴"
+msgstr "青い毛皮の靴"
 
 #: src/content_clothesitem.cpp:2564
 msgid "Green Fur Shoes"
@@ -957,15 +948,15 @@ msgstr "紫色の毛皮の靴"
 
 #: src/content_clothesitem.cpp:2606
 msgid "Red Fur Shoes"
-msgstr "赤色の毛皮の靴"
+msgstr "赤い毛皮の靴"
 
 #: src/content_clothesitem.cpp:2620
 msgid "Yellow Fur Shoes"
-msgstr "黄色の毛皮の靴"
+msgstr "黄色い毛皮の靴"
 
 #: src/content_clothesitem.cpp:2634
 msgid "Black Fur Shoes"
-msgstr "黒色の毛皮の靴"
+msgstr "黒い毛皮の靴"
 
 #: src/content_clothesitem.cpp:2649
 msgid "Fur Boots"
@@ -973,11 +964,11 @@ msgstr "毛皮のブーツ"
 
 #: src/content_clothesitem.cpp:2664
 msgid "White Fur Boots"
-msgstr "白の毛皮のブーツ"
+msgstr "白い毛皮のブーツ"
 
 #: src/content_clothesitem.cpp:2679
 msgid "Blue Fur Boots"
-msgstr "青色の毛皮のブーツ"
+msgstr "青い毛皮のブーツ"
 
 #: src/content_clothesitem.cpp:2694
 msgid "Green Fur Boots"
@@ -993,15 +984,15 @@ msgstr "紫色の毛皮のブーツ"
 
 #: src/content_clothesitem.cpp:2739
 msgid "Red Fur Boots"
-msgstr "赤色の毛皮のブーツ"
+msgstr "赤い毛皮のブーツ"
 
 #: src/content_clothesitem.cpp:2754
 msgid "Yellow Fur Boots"
-msgstr "黄色の毛皮のブーツ"
+msgstr "黄い毛皮のブーツ"
 
 #: src/content_clothesitem.cpp:2769
 msgid "Black Fur Boots"
-msgstr "黒の毛皮のブーツ"
+msgstr "黒い毛皮のブーツ"
 
 #: src/content_clothesitem.cpp:2785
 msgid "Leather Necklace"
@@ -1021,7 +1012,7 @@ msgstr "銀のメダル"
 
 #: src/content_clothesitem.cpp:2856
 msgid "Tin Medallion"
-msgstr "スズのメダル"
+msgstr "錫のメダル"
 
 #: src/content_clothesitem.cpp:2872
 msgid "Iron Medallion"
@@ -1127,17 +1118,17 @@ msgstr "火打石"
 msgid "Steel Ingot"
 msgstr "鉄インゴット"
 
-#: src/content_craftitem.cpp:199 src/content_mapnode.cpp:610
+#: src/content_craftitem.cpp:199 src/content_mapnode.cpp:612
 msgid "Brick"
 msgstr "レンガ"
 
 #: src/content_craftitem.cpp:207
 msgid "Rat"
-msgstr "ラット"
+msgstr "ネズミ"
 
 #: src/content_craftitem.cpp:219
 msgid "Cooked Rat"
-msgstr "調理されたラット"
+msgstr "調理されたネズミ"
 
 #: src/content_craftitem.cpp:230
 msgid "Firefly"
@@ -1149,7 +1140,7 @@ msgstr "リンゴ"
 
 #: src/content_craftitem.cpp:249
 msgid "Iron Apple"
-msgstr "鉄リンゴ"
+msgstr "鉄のリンゴ"
 
 #: src/content_craftitem.cpp:267
 msgid "Blue Dye"
@@ -1205,7 +1196,7 @@ msgstr "棒"
 
 #: src/content_craftitem.cpp:402
 msgid "Pine Plank"
-msgstr "パインの木材"
+msgstr "松の木材"
 
 #: src/content_craftitem.cpp:414
 msgid "Wood Plank"
@@ -1345,7 +1336,7 @@ msgstr "コットンのシート"
 
 #: src/content_craftitem.cpp:755
 msgid "Blue Cotton Sheet"
-msgstr "青色のコットンのシート"
+msgstr "青いコットンのシート"
 
 #: src/content_craftitem.cpp:765
 msgid "Green Cotton Sheet"
@@ -1353,7 +1344,7 @@ msgstr "緑色のコットンのシート"
 
 #: src/content_craftitem.cpp:775
 msgid "Orange Cotton Sheet"
-msgstr "橙色のコットンのシート"
+msgstr "オレンジ色のコットンのシート"
 
 #: src/content_craftitem.cpp:785
 msgid "Purple Cotton Sheet"
@@ -1361,15 +1352,15 @@ msgstr "紫色のコットンのシート"
 
 #: src/content_craftitem.cpp:795
 msgid "Red Cotton Sheet"
-msgstr "赤色のコットンのシート"
+msgstr "赤いコットンのシート"
 
 #: src/content_craftitem.cpp:805
 msgid "Yellow Cotton Sheet"
-msgstr "黄色のコットンのシート"
+msgstr "黄色いコットンのシート"
 
 #: src/content_craftitem.cpp:815
 msgid "Black Cotton Sheet"
-msgstr "黒のコットンのシート"
+msgstr "黒いコットンのシート"
 
 #: src/content_craftitem.cpp:825
 msgid "Canvas Sheet"
@@ -1377,7 +1368,7 @@ msgstr "麻のシート"
 
 #: src/content_craftitem.cpp:842
 msgid "Blue Canvas Sheet"
-msgstr "青色の麻のシート"
+msgstr "青い麻のシート"
 
 #: src/content_craftitem.cpp:852
 msgid "Green Canvas Sheet"
@@ -1385,7 +1376,7 @@ msgstr "緑色の麻のシート"
 
 #: src/content_craftitem.cpp:862
 msgid "Orange Canvas Sheet"
-msgstr "橙色の麻のシート"
+msgstr "オレンジ色の麻のシート"
 
 #: src/content_craftitem.cpp:872
 msgid "Purple Canvas Sheet"
@@ -1393,15 +1384,15 @@ msgstr "紫色の麻のシート"
 
 #: src/content_craftitem.cpp:882
 msgid "Red Canvas Sheet"
-msgstr "赤色の麻のシート"
+msgstr "赤い麻のシート"
 
 #: src/content_craftitem.cpp:892
 msgid "Yellow Canvas Sheet"
-msgstr "黄色の麻のシート"
+msgstr "黄色い麻のシート"
 
 #: src/content_craftitem.cpp:902
 msgid "Black Canvas Sheet"
-msgstr "黒の麻のシート"
+msgstr "黒い麻のシート"
 
 #: src/content_craftitem.cpp:912
 msgid "Fur"
@@ -1409,11 +1400,11 @@ msgstr "毛皮"
 
 #: src/content_craftitem.cpp:920
 msgid "White Fur"
-msgstr "白の毛皮"
+msgstr "白い毛皮"
 
 #: src/content_craftitem.cpp:931
 msgid "Blue Fur"
-msgstr "青色の毛皮"
+msgstr "青い毛皮"
 
 #: src/content_craftitem.cpp:942
 msgid "Green Fur"
@@ -1421,7 +1412,7 @@ msgstr "緑色の毛皮"
 
 #: src/content_craftitem.cpp:953
 msgid "Orange Fur"
-msgstr "橙色の毛皮"
+msgstr "オレンジ色の毛皮"
 
 #: src/content_craftitem.cpp:964
 msgid "Purple Fur"
@@ -1429,15 +1420,15 @@ msgstr "紫色の毛皮"
 
 #: src/content_craftitem.cpp:975
 msgid "Red Fur"
-msgstr "赤色の毛皮"
+msgstr "赤い毛皮"
 
 #: src/content_craftitem.cpp:986
 msgid "Yellow Fur"
-msgstr "黄色の毛皮"
+msgstr "黄色い毛皮"
 
 #: src/content_craftitem.cpp:997
 msgid "Black Fur"
-msgstr "黒の毛皮"
+msgstr "黒い毛皮"
 
 #: src/content_craftitem.cpp:1008
 msgid "Leather"
@@ -1445,11 +1436,11 @@ msgstr "革"
 
 #: src/content_craftitem.cpp:1018
 msgid "White Leather"
-msgstr "白の革"
+msgstr "白い革"
 
 #: src/content_craftitem.cpp:1029
 msgid "Blue Leather"
-msgstr "青色の革"
+msgstr "青い革"
 
 #: src/content_craftitem.cpp:1040
 msgid "Green Leather"
@@ -1457,7 +1448,7 @@ msgstr "緑色の革"
 
 #: src/content_craftitem.cpp:1051
 msgid "Orange Leather"
-msgstr "橙色の革"
+msgstr "オレンジ色の革"
 
 #: src/content_craftitem.cpp:1062
 msgid "Purple Leather"
@@ -1465,19 +1456,19 @@ msgstr "紫色の革"
 
 #: src/content_craftitem.cpp:1073
 msgid "Red Leather"
-msgstr "赤色の革"
+msgstr "赤い革"
 
 #: src/content_craftitem.cpp:1084
 msgid "Yellow Leather"
-msgstr "黄色の革"
+msgstr "黄色い革"
 
 #: src/content_craftitem.cpp:1095
 msgid "Black Leather"
-msgstr "黒の革"
+msgstr "黒い革"
 
 #: src/content_craftitem.cpp:1106
 msgid "Arrow"
-msgstr "矢印"
+msgstr "矢"
 
 #: src/content_craftitem.cpp:1117 src/content_mapnode_farm.cpp:50
 msgid "Fertilizer"
@@ -1515,361 +1506,361 @@ msgstr "ラフストーンレンガ"
 msgid "Rough Stone Block"
 msgstr "ラフストーンブロック"
 
-#: src/content_mapnode.cpp:328 src/content_mapnode.cpp:344
+#: src/content_mapnode.cpp:328 src/content_mapnode.cpp:345
 msgid "Grass"
 msgstr "草"
 
-#: src/content_mapnode.cpp:356
+#: src/content_mapnode.cpp:358
 msgid "Muddy Snow"
 msgstr "汚い雪"
 
-#: src/content_mapnode.cpp:372
+#: src/content_mapnode.cpp:374
 msgid "Mud"
 msgstr "泥"
 
-#: src/content_mapnode.cpp:384
+#: src/content_mapnode.cpp:386
 msgid "Ash Block"
 msgstr "灰ブロック"
 
-#: src/content_mapnode.cpp:399
+#: src/content_mapnode.cpp:401
 msgid "Sand"
 msgstr "砂"
 
-#: src/content_mapnode.cpp:414
+#: src/content_mapnode.cpp:416
 msgid "Gravel"
 msgstr "砂利"
 
-#: src/content_mapnode.cpp:429
+#: src/content_mapnode.cpp:431
 msgid "Sand Stone"
 msgstr "砂岩"
 
-#: src/content_mapnode.cpp:444
+#: src/content_mapnode.cpp:446
 msgid "Sand Stone Bricks"
-msgstr "砂石のレンガ"
+msgstr "砂岩のレンガ"
 
-#: src/content_mapnode.cpp:459
+#: src/content_mapnode.cpp:461
 msgid "Sand Stone Blocks"
-msgstr "砂石のブロック"
+msgstr "砂岩のブロック"
 
-#: src/content_mapnode.cpp:474
+#: src/content_mapnode.cpp:476
 msgid "Clay"
 msgstr "粘土"
 
-#: src/content_mapnode.cpp:491
+#: src/content_mapnode.cpp:493
 msgid "Blue Clay"
-msgstr "青色の粘土"
+msgstr "青い粘土"
 
-#: src/content_mapnode.cpp:508
+#: src/content_mapnode.cpp:510
 msgid "Green Clay"
 msgstr "緑色の粘土"
 
-#: src/content_mapnode.cpp:525
+#: src/content_mapnode.cpp:527
 msgid "Orange Clay"
-msgstr "橙色の粘土"
+msgstr "オレンジ色の粘土"
 
-#: src/content_mapnode.cpp:542
+#: src/content_mapnode.cpp:544
 msgid "Purple Clay"
 msgstr "紫色の粘土"
 
-#: src/content_mapnode.cpp:559
+#: src/content_mapnode.cpp:561
 msgid "Red Clay"
-msgstr "赤色の粘土"
+msgstr "赤い粘土"
 
-#: src/content_mapnode.cpp:576
+#: src/content_mapnode.cpp:578
 msgid "Yellow Clay"
-msgstr "黄色の粘土"
+msgstr "黄色い粘土"
 
-#: src/content_mapnode.cpp:593
+#: src/content_mapnode.cpp:595
 msgid "Black Clay"
-msgstr "黒の粘土"
+msgstr "黒い粘土"
 
-#: src/content_mapnode.cpp:625
+#: src/content_mapnode.cpp:631
 msgid "Terracotta"
 msgstr "テラコッタ"
 
-#: src/content_mapnode.cpp:637
+#: src/content_mapnode.cpp:643
 msgid "Terracotta Brick"
 msgstr "テラコッタレンガ"
 
-#: src/content_mapnode.cpp:651
+#: src/content_mapnode.cpp:657
 msgid "Terracotta Block"
 msgstr "テラコッタブロック"
 
-#: src/content_mapnode.cpp:665
+#: src/content_mapnode.cpp:671
 msgid "Terracotta Tile"
 msgstr "テラコッタタイル"
 
-#: src/content_mapnode.cpp:685
+#: src/content_mapnode.cpp:691
 msgid "Glass"
 msgstr "ガラス"
 
-#: src/content_mapnode.cpp:705
+#: src/content_mapnode.cpp:711
 msgid "Blue Glass"
-msgstr "青色のガラス"
+msgstr "青いガラス"
 
-#: src/content_mapnode.cpp:727
+#: src/content_mapnode.cpp:733
 msgid "Green Glass"
 msgstr "緑色のガラス"
 
-#: src/content_mapnode.cpp:749
+#: src/content_mapnode.cpp:755
 msgid "Orange Glass"
-msgstr "橙色のガラス"
+msgstr "オレンジ色のガラス"
 
-#: src/content_mapnode.cpp:771
+#: src/content_mapnode.cpp:777
 msgid "Purple Glass"
 msgstr "紫色のガラス"
 
-#: src/content_mapnode.cpp:793
+#: src/content_mapnode.cpp:799
 msgid "Red Glass"
-msgstr "赤色のガラス"
+msgstr "赤いガラス"
 
-#: src/content_mapnode.cpp:815
+#: src/content_mapnode.cpp:821
 msgid "Yellow Glass"
-msgstr "黄色のガラス"
+msgstr "黄色いガラス"
 
-#: src/content_mapnode.cpp:837
+#: src/content_mapnode.cpp:843
 msgid "Black Glass"
-msgstr "黒のガラス"
+msgstr "黒いガラス"
 
-#: src/content_mapnode.cpp:859
+#: src/content_mapnode.cpp:865
 msgid "Glass Pane"
 msgstr "板ガラス"
 
-#: src/content_mapnode.cpp:893
+#: src/content_mapnode.cpp:899
 msgid "Blue Glass Pane"
-msgstr "青色の板ガラス"
+msgstr "青い板ガラス"
 
-#: src/content_mapnode.cpp:928
+#: src/content_mapnode.cpp:934
 msgid "Green Glass Pane"
 msgstr "緑色の板ガラス"
 
-#: src/content_mapnode.cpp:963
+#: src/content_mapnode.cpp:969
 msgid "Orange Glass Pane"
-msgstr "橙色の板ガラス"
+msgstr "オレンジ色の板ガラス"
 
-#: src/content_mapnode.cpp:998
+#: src/content_mapnode.cpp:1004
 msgid "Purple Glass Pane"
 msgstr "紫色の板ガラス"
 
-#: src/content_mapnode.cpp:1033
+#: src/content_mapnode.cpp:1039
 msgid "Red Glass Pane"
-msgstr "赤色の板ガラス"
+msgstr "赤い板ガラス"
 
-#: src/content_mapnode.cpp:1068
+#: src/content_mapnode.cpp:1074
 msgid "Yellow Glass Pane"
-msgstr "黄色の板ガラス"
+msgstr "黄色い板ガラス"
 
-#: src/content_mapnode.cpp:1103
+#: src/content_mapnode.cpp:1109
 msgid "Black Glass Pane"
-msgstr "黒の板ガラス"
+msgstr "黒い板ガラス"
 
-#: src/content_mapnode.cpp:1138 src/content_mapnode_farm.cpp:490
+#: src/content_mapnode.cpp:1144 src/content_mapnode_farm.cpp:490
 msgid "Glass Light"
 msgstr "光るガラス"
 
-#: src/content_mapnode.cpp:1161
+#: src/content_mapnode.cpp:1167
 msgid "Wood"
 msgstr "木"
 
-#: src/content_mapnode.cpp:1187
+#: src/content_mapnode.cpp:1193
 msgid "Jungle Wood"
 msgstr "ジャングルの木"
 
-#: src/content_mapnode.cpp:1212
+#: src/content_mapnode.cpp:1218
 msgid "Pine"
-msgstr "マツ"
+msgstr "松"
 
-#: src/content_mapnode.cpp:1237 src/content_mapnode.cpp:1252
+#: src/content_mapnode.cpp:1243 src/content_mapnode.cpp:1258
 msgid "Mese"
 msgstr "Mese"
 
-#: src/content_mapnode.cpp:1265
+#: src/content_mapnode.cpp:1271
 msgid "Sponge"
 msgstr "スポンジ"
 
-#: src/content_mapnode.cpp:1280
+#: src/content_mapnode.cpp:1286
 msgid "Waterlogged Sponge"
-msgstr "水浸しのスポンジ"
+msgstr "水を吸ったスポンジ"
 
-#: src/content_mapnode.cpp:1292
+#: src/content_mapnode.cpp:1298
 msgid "Hay Bale"
 msgstr "干草の俵"
 
-#: src/content_mapnode.cpp:1309
+#: src/content_mapnode.cpp:1315
 msgid "Raw Apple Pie"
 msgstr "生のアップルパイ"
 
-#: src/content_mapnode.cpp:1338
+#: src/content_mapnode.cpp:1344
 msgid "Apple Pie"
 msgstr "アップルパイ"
 
-#: src/content_mapnode.cpp:1433
+#: src/content_mapnode.cpp:1439
 msgid "Raw Pumpkin Pie"
 msgstr "生のパンプキンパイ"
 
-#: src/content_mapnode.cpp:1462
+#: src/content_mapnode.cpp:1468
 msgid "Pumpkin Pie"
 msgstr "パンプキンパイ"
 
-#: src/content_mapnode.cpp:1557 src/content_mapnode_farm.cpp:1020
+#: src/content_mapnode.cpp:1563 src/content_mapnode_farm.cpp:1020
 msgid "Dead Vine"
 msgstr "枯れ木"
 
-#: src/content_mapnode.cpp:1576 src/content_mapnode.cpp:1655
+#: src/content_mapnode.cpp:1582 src/content_mapnode.cpp:1661
 msgid "Snow"
 msgstr "雪"
 
-#: src/content_mapnode.cpp:1592
+#: src/content_mapnode.cpp:1598
 msgid "Snowman"
 msgstr "雪だるま"
 
-#: src/content_mapnode.cpp:1678 src/content_mapnode_farm.cpp:851
+#: src/content_mapnode.cpp:1684 src/content_mapnode_farm.cpp:851
 #: src/content_mapnode_farm.cpp:870 src/content_mapnode_farm.cpp:890
 #: src/content_mapnode_farm.cpp:911
 msgid "Cotton"
 msgstr "コットン"
 
-#: src/content_mapnode.cpp:1709
+#: src/content_mapnode.cpp:1715
 msgid "Blue Cotton"
-msgstr "青色のコットン"
+msgstr "青いコットン"
 
-#: src/content_mapnode.cpp:1726
+#: src/content_mapnode.cpp:1732
 msgid "Green Cotton"
 msgstr "緑色のコットン"
 
-#: src/content_mapnode.cpp:1743
+#: src/content_mapnode.cpp:1749
 msgid "Orange Cotton"
-msgstr "橙色のコットン"
+msgstr "オレンジ色のコットン"
 
-#: src/content_mapnode.cpp:1760
+#: src/content_mapnode.cpp:1766
 msgid "Purple Cotton"
 msgstr "紫色のコットン"
 
-#: src/content_mapnode.cpp:1777
+#: src/content_mapnode.cpp:1783
 msgid "Red Cotton"
-msgstr "赤色のコットン"
+msgstr "赤いコットン"
 
-#: src/content_mapnode.cpp:1794
+#: src/content_mapnode.cpp:1800
 msgid "Yellow Cotton"
-msgstr "黄色のコットン"
+msgstr "黄色いコットン"
 
-#: src/content_mapnode.cpp:1811
+#: src/content_mapnode.cpp:1817
 msgid "Black Cotton"
-msgstr "黒のコットン"
+msgstr "黒いコットン"
 
-#: src/content_mapnode.cpp:1828
+#: src/content_mapnode.cpp:1834
 msgid "Carpet"
 msgstr "カーペット"
 
-#: src/content_mapnode.cpp:1851
+#: src/content_mapnode.cpp:1857
 msgid "Blue Carpet"
-msgstr "青色のカーペット"
+msgstr "青いカーペット"
 
-#: src/content_mapnode.cpp:1875
+#: src/content_mapnode.cpp:1881
 msgid "Green Carpet"
 msgstr "緑色のカーペット"
 
-#: src/content_mapnode.cpp:1899
+#: src/content_mapnode.cpp:1905
 msgid "Orange Carpet"
-msgstr "橙色のカーペット"
+msgstr "オレンジ色のカーペット"
 
-#: src/content_mapnode.cpp:1923
+#: src/content_mapnode.cpp:1929
 msgid "Purple Carpet"
 msgstr "紫色のカーペット"
 
-#: src/content_mapnode.cpp:1947
+#: src/content_mapnode.cpp:1953
 msgid "Red Carpet"
-msgstr "赤色のカーペット"
+msgstr "赤いカーペット"
 
-#: src/content_mapnode.cpp:1971
+#: src/content_mapnode.cpp:1977
 msgid "Yellow Carpet"
-msgstr "黄色のカーペット"
+msgstr "黄色いカーペット"
 
-#: src/content_mapnode.cpp:1995
+#: src/content_mapnode.cpp:2001
 msgid "Black Carpet"
-msgstr "黒色のカーペット"
+msgstr "黒いカーペット"
 
-#: src/content_mapnode.cpp:2019
+#: src/content_mapnode.cpp:2025
 msgid "Air"
 msgstr "空気"
 
-#: src/content_mapnode.cpp:2035
+#: src/content_mapnode.cpp:2041
 msgid "Vacuum"
 msgstr "真空"
 
-#: src/content_mapnode.cpp:2052 src/content_mapnode.cpp:2081
+#: src/content_mapnode.cpp:2058 src/content_mapnode.cpp:2088
 msgid "Water"
 msgstr "水"
 
-#: src/content_mapnode.cpp:2130 src/content_mapnode.cpp:2158
+#: src/content_mapnode.cpp:2137 src/content_mapnode.cpp:2165
 msgid "Lava"
 msgstr "溶岩"
 
-#: src/content_mapnode.cpp:2205
+#: src/content_mapnode.cpp:2213
 msgid "Rough Stone"
 msgstr "ラフストーン"
 
-#: src/content_mapnode.cpp:2222
+#: src/content_mapnode.cpp:2230
 msgid "Cobble Stone"
 msgstr "丸石"
 
-#: src/content_mapnode.cpp:2237
+#: src/content_mapnode.cpp:2245
 msgid "Mossy Cobble Stone"
 msgstr "苔石"
 
-#: src/content_mapnode.cpp:2250
+#: src/content_mapnode.cpp:2258
 msgid "Steel Block"
 msgstr "鉄ブロック"
 
-#: src/content_mapnode.cpp:2265
+#: src/content_mapnode.cpp:2273
 msgid "Stone Knob"
 msgstr "小石"
 
-#: src/content_mapnode.cpp:2266
+#: src/content_mapnode.cpp:2274
 msgid "Rough Stone Knob"
 msgstr "ラフストーンの欠片"
 
-#: src/content_mapnode.cpp:2267
+#: src/content_mapnode.cpp:2275
 msgid "Sandstone Knob"
 msgstr "砂岩の欠片"
 
-#: src/content_mapnode.cpp:2268
+#: src/content_mapnode.cpp:2276
 msgid "Wooden Knob"
 msgstr "木の欠片"
 
-#: src/content_mapnode.cpp:2269
+#: src/content_mapnode.cpp:2277
 msgid "Junglewood Knob"
 msgstr "ジャングルの木の欠片"
 
-#: src/content_mapnode.cpp:2270
+#: src/content_mapnode.cpp:2278
 msgid "Pine Knob"
 msgstr "松の木の欠片"
 
-#: src/content_mapnode.cpp:2274
+#: src/content_mapnode.cpp:2282
 msgid "Copper Block"
 msgstr "銅ブロック"
 
-#: src/content_mapnode.cpp:2291
+#: src/content_mapnode.cpp:2299
 msgid "Gold Block"
 msgstr "金ブロック"
 
-#: src/content_mapnode.cpp:2308
+#: src/content_mapnode.cpp:2316
 msgid "Silver Block"
 msgstr "銀ブロック"
 
-#: src/content_mapnode.cpp:2325
+#: src/content_mapnode.cpp:2333
 msgid "Tin Block"
 msgstr "錫ブロック"
 
-#: src/content_mapnode.cpp:2342
+#: src/content_mapnode.cpp:2350
 msgid "Quartz Block"
 msgstr "水晶ブロック"
 
-#: src/content_mapnode.cpp:2359
+#: src/content_mapnode.cpp:2367
 msgid "Stone Tiles"
 msgstr "石のタイル"
 
-#: src/content_mapnode.cpp:2381
+#: src/content_mapnode.cpp:2389
 msgid "Wood Tiles"
 msgstr "木のタイル"
 
@@ -1971,27 +1962,27 @@ msgstr "窓付きの鉄のドア"
 #: src/content_mapnode_door.cpp:314 src/content_mapnode_door.cpp:338
 #: src/content_mapnode_door.cpp:827 src/content_mapnode_door.cpp:852
 msgid "Right Hanging Wood Door"
-msgstr "スライド式の木のドア"
+msgstr "木のスライド式ドア"
 
 #: src/content_mapnode_door.cpp:366 src/content_mapnode_door.cpp:391
 #: src/content_mapnode_door.cpp:878 src/content_mapnode_door.cpp:903
 msgid "Right Hanging Glass Door"
-msgstr "スライド式のガラスのドア"
+msgstr "ガラスのスライド式ドア"
 
 #: src/content_mapnode_door.cpp:420 src/content_mapnode_door.cpp:445
 #: src/content_mapnode_door.cpp:929 src/content_mapnode_door.cpp:955
 msgid "Right Hanging Steel Door"
-msgstr "スライド式の鉄のドア"
+msgstr "鉄のスライド式ドア"
 
 #: src/content_mapnode_door.cpp:474 src/content_mapnode_door.cpp:499
 #: src/content_mapnode_door.cpp:982 src/content_mapnode_door.cpp:1007
 msgid "Right Hanging Wood Windowed Door"
-msgstr "スライド式で窓付きの木のドア"
+msgstr "窓付きの木のスライド式ドア"
 
 #: src/content_mapnode_door.cpp:529 src/content_mapnode_door.cpp:555
 #: src/content_mapnode_door.cpp:1033 src/content_mapnode_door.cpp:1059
 msgid "Right Hanging Steel Windowed Door"
-msgstr "スライド式で窓付きの鉄のドア"
+msgstr "窓付きの鉄のスライド式ドア"
 
 #: src/content_mapnode_door.cpp:1087 src/content_mapnode_door.cpp:1254
 #: src/content_mapnode_door.cpp:1307
@@ -2094,7 +2085,7 @@ msgstr "ソファ"
 #: src/content_mapnode_furniture.cpp:243 src/content_mapnode_furniture.cpp:262
 #: src/content_mapnode_furniture.cpp:281 src/content_mapnode_furniture.cpp:300
 msgid "Blue Couch"
-msgstr "青色のソファ"
+msgstr "青いソファ"
 
 #: src/content_mapnode_furniture.cpp:323 src/content_mapnode_furniture.cpp:342
 #: src/content_mapnode_furniture.cpp:361 src/content_mapnode_furniture.cpp:380
@@ -2106,7 +2097,7 @@ msgstr "緑色のソファ"
 #: src/content_mapnode_furniture.cpp:479 src/content_mapnode_furniture.cpp:498
 #: src/content_mapnode_furniture.cpp:517 src/content_mapnode_furniture.cpp:536
 msgid "Orange Couch"
-msgstr "橙色のソファ"
+msgstr "オレンジ色のソファ"
 
 #: src/content_mapnode_furniture.cpp:559 src/content_mapnode_furniture.cpp:578
 #: src/content_mapnode_furniture.cpp:597 src/content_mapnode_furniture.cpp:616
@@ -2118,20 +2109,20 @@ msgstr "紫色のソファ"
 #: src/content_mapnode_furniture.cpp:715 src/content_mapnode_furniture.cpp:734
 #: src/content_mapnode_furniture.cpp:753 src/content_mapnode_furniture.cpp:772
 msgid "Red Couch"
-msgstr "赤色のソファ"
+msgstr "赤いソファ"
 
 #: src/content_mapnode_furniture.cpp:795 src/content_mapnode_furniture.cpp:814
 #: src/content_mapnode_furniture.cpp:833 src/content_mapnode_furniture.cpp:852
 #: src/content_mapnode_furniture.cpp:871 src/content_mapnode_furniture.cpp:890
 msgid "Yellow Couch"
-msgstr "黄色のソファ"
+msgstr "黄色いソファ"
 
 #: src/content_mapnode_furniture.cpp:913 src/content_mapnode_furniture.cpp:932
 #: src/content_mapnode_furniture.cpp:951 src/content_mapnode_furniture.cpp:970
 #: src/content_mapnode_furniture.cpp:989
 #: src/content_mapnode_furniture.cpp:1008
 msgid "Black Couch"
-msgstr "黒のソファ"
+msgstr "黒いソファ"
 
 #: src/content_mapnode_furniture.cpp:1031
 msgid "Chair"
@@ -2149,7 +2140,7 @@ msgstr "ベッド"
 #: src/content_mapnode_furniture.cpp:1194
 #: src/content_mapnode_furniture.cpp:1224
 msgid "Blue Bed"
-msgstr "青色のベッド"
+msgstr "青いベッド"
 
 #: src/content_mapnode_furniture.cpp:1251
 #: src/content_mapnode_furniture.cpp:1281
@@ -2159,7 +2150,7 @@ msgstr "緑色のベッド"
 #: src/content_mapnode_furniture.cpp:1308
 #: src/content_mapnode_furniture.cpp:1338
 msgid "Orange Bed"
-msgstr "橙色のベッド"
+msgstr "オレンジ色のベッド"
 
 #: src/content_mapnode_furniture.cpp:1365
 #: src/content_mapnode_furniture.cpp:1395
@@ -2169,17 +2160,17 @@ msgstr "紫色のベッド"
 #: src/content_mapnode_furniture.cpp:1422
 #: src/content_mapnode_furniture.cpp:1452
 msgid "Red Bed"
-msgstr "赤色のベッド"
+msgstr "赤いベッド"
 
 #: src/content_mapnode_furniture.cpp:1479
 #: src/content_mapnode_furniture.cpp:1509
 msgid "Yellow Bed"
-msgstr "黄色のベッド"
+msgstr "黄色いベッド"
 
 #: src/content_mapnode_furniture.cpp:1536
 #: src/content_mapnode_furniture.cpp:1566
 msgid "Black Bed"
-msgstr "黒のベッド"
+msgstr "黒いベッド"
 
 #: src/content_mapnode_furniture.cpp:1594
 msgid "Colorful Painting"
@@ -2259,19 +2250,19 @@ msgstr "松の木の葉"
 
 #: src/content_mapnode_plants.cpp:358
 msgid "Trimmed Leaves"
-msgstr "トリミングされた葉"
+msgstr "手入れされた葉"
 
 #: src/content_mapnode_plants.cpp:390
 msgid "Trimmed Apple Tree Leaves"
-msgstr "トリミングされたりんごの木の葉"
+msgstr "手入れされたりんごの木の葉"
 
 #: src/content_mapnode_plants.cpp:422
 msgid "Trimmed Jungle Leaves"
-msgstr "トリミングされたジャングル木の葉"
+msgstr "手入れされたジャングル木の葉"
 
 #: src/content_mapnode_plants.cpp:454
 msgid "Trimmed Conifer Leaves"
-msgstr "トリミングされた松の木の葉"
+msgstr "手入れされた松の木の葉"
 
 #: src/content_mapnode_plants.cpp:486
 msgid "Apple Tree Blossom"
@@ -2341,7 +2332,7 @@ msgstr "チューリップ"
 msgid "Rough Stone Slab"
 msgstr "ラフストーンのハーフブロック"
 
-#: src/content_mapnode_slab.cpp:56 src/content_mapnode_slab.cpp:419
+#: src/content_mapnode_slab.cpp:56 src/content_mapnode_slab.cpp:423
 msgid "Cobble Stone Slab"
 msgstr "丸石のハーフブロック"
 
@@ -2365,41 +2356,41 @@ msgstr "ジャングルの木のハーフブロック"
 msgid "Brick Slab"
 msgstr "レンガのハーフブロック"
 
-#: src/content_mapnode_slab.cpp:170
+#: src/content_mapnode_slab.cpp:174
 msgid "Sand Stone Slab"
 msgstr "砂岩のハーフブロック"
 
-#: src/content_mapnode_slab.cpp:188 src/content_mapnode_slab.cpp:524
+#: src/content_mapnode_slab.cpp:192 src/content_mapnode_slab.cpp:532
 msgid "Glass Slab"
 msgstr "ガラスのハーフブロック"
 
-#: src/content_mapnode_slab.cpp:214 src/content_mapnode_slab.cpp:547
+#: src/content_mapnode_slab.cpp:218 src/content_mapnode_slab.cpp:555
 msgid "Blue Glass Slab"
-msgstr "青色のガラスのハーフブロック"
+msgstr "青いガラスのハーフブロック"
 
-#: src/content_mapnode_slab.cpp:241 src/content_mapnode_slab.cpp:570
+#: src/content_mapnode_slab.cpp:245 src/content_mapnode_slab.cpp:578
 msgid "Green Glass Slab"
 msgstr "緑色のガラスのハーフブロック"
 
-#: src/content_mapnode_slab.cpp:268 src/content_mapnode_slab.cpp:593
+#: src/content_mapnode_slab.cpp:272 src/content_mapnode_slab.cpp:601
 msgid "Orange Glass Slab"
-msgstr "橙色のガラスのハーフブロック"
+msgstr "オレンジ色のガラスのハーフブロック"
 
-#: src/content_mapnode_slab.cpp:295 src/content_mapnode_slab.cpp:616
+#: src/content_mapnode_slab.cpp:299 src/content_mapnode_slab.cpp:624
 msgid "Purple Glass Slab"
 msgstr "紫色のガラスのハーフブロック"
 
-#: src/content_mapnode_slab.cpp:322 src/content_mapnode_slab.cpp:639
+#: src/content_mapnode_slab.cpp:326 src/content_mapnode_slab.cpp:647
 msgid "Red Glass Slab"
-msgstr "赤色のガラスのハーフブロック"
+msgstr "赤いガラスのハーフブロック"
 
-#: src/content_mapnode_slab.cpp:349 src/content_mapnode_slab.cpp:662
+#: src/content_mapnode_slab.cpp:353 src/content_mapnode_slab.cpp:670
 msgid "Yellow Glass Slab"
-msgstr "黄色のガラスのハーフブロック"
+msgstr "黄色いガラスのハーフブロック"
 
-#: src/content_mapnode_slab.cpp:376 src/content_mapnode_slab.cpp:685
+#: src/content_mapnode_slab.cpp:380 src/content_mapnode_slab.cpp:693
 msgid "Black Glass Slab"
-msgstr "黒のガラスのハーフブロック"
+msgstr "黒いガラスのハーフブロック"
 
 #: src/content_mapnode_special.cpp:37
 msgid "Fence"
@@ -2439,7 +2430,7 @@ msgstr "ガラスの瓦"
 
 #: src/content_mapnode_special.cpp:257
 msgid "Blue Glass Roof Tile"
-msgstr "青色のガラスの瓦"
+msgstr "青いガラスの瓦"
 
 #: src/content_mapnode_special.cpp:281
 msgid "Green Glass Roof Tile"
@@ -2447,7 +2438,7 @@ msgstr "緑色のガラスの瓦"
 
 #: src/content_mapnode_special.cpp:305
 msgid "Orange Glass Roof Tile"
-msgstr "橙色のガラスの瓦"
+msgstr "オレンジ色のガラスの瓦"
 
 #: src/content_mapnode_special.cpp:329
 msgid "Purple Glass Roof Tile"
@@ -2455,19 +2446,19 @@ msgstr "紫色のガラスの瓦"
 
 #: src/content_mapnode_special.cpp:353
 msgid "Red Glass Roof Tile"
-msgstr "赤色のガラスの瓦"
+msgstr "赤いガラスの瓦"
 
 #: src/content_mapnode_special.cpp:377
 msgid "Yellow Glass Roof Tile"
-msgstr "黄色のガラスの瓦"
+msgstr "黄色いガラスの瓦"
 
 #: src/content_mapnode_special.cpp:401
 msgid "Black Glass Roof Tile"
-msgstr "黒のガラスの瓦"
+msgstr "黒いガラスの瓦"
 
 #: src/content_mapnode_special.cpp:425
 msgid "Thatch Roof Tile"
-msgstr "サッチの瓦"
+msgstr "茅の瓦"
 
 #: src/content_mapnode_special.cpp:444 src/content_mapnode_special.cpp:481
 #: src/content_mapnode_special.cpp:541 src/content_mapnode_special.cpp:576
@@ -2515,171 +2506,171 @@ msgstr "デクラフトガイド"
 msgid "Craft Guide"
 msgstr "クラフトガイド"
 
-#: src/content_mapnode_special.cpp:945 src/content_mapnode_special.cpp:965
+#: src/content_mapnode_special.cpp:945 src/content_mapnode_special.cpp:966
 msgid "Fire"
 msgstr "炎"
 
-#: src/content_mapnode_special.cpp:985 src/content_mapnode_special.cpp:1008
+#: src/content_mapnode_special.cpp:986 src/content_mapnode_special.cpp:1009
 msgid "Torch"
 msgstr "松明"
 
-#: src/content_mapnode_special.cpp:1036 src/content_mapnode_special.cpp:1062
-#: src/content_mapnode_special.cpp:1095
+#: src/content_mapnode_special.cpp:1037 src/content_mapnode_special.cpp:1063
+#: src/content_mapnode_special.cpp:1096
 msgid "Sign"
 msgstr "看板"
 
-#: src/content_mapnode_special.cpp:1123 src/content_mapnode_special.cpp:1153
-#: src/content_mapnode_special.cpp:1185
+#: src/content_mapnode_special.cpp:1124 src/content_mapnode_special.cpp:1154
+#: src/content_mapnode_special.cpp:1186
 msgid "Locking Sign"
-msgstr "鍵付き看板"
+msgstr "鍵付きの看板"
 
-#: src/content_mapnode_special.cpp:1214 src/content_nodemeta.cpp:228
+#: src/content_mapnode_special.cpp:1215 src/content_nodemeta.cpp:228
 msgid "Chest"
 msgstr "チェスト"
 
-#: src/content_mapnode_special.cpp:1237 src/content_nodemeta.cpp:503
+#: src/content_mapnode_special.cpp:1238 src/content_nodemeta.cpp:503
 msgid "Creative Chest"
 msgstr "クリエイティブチェスト"
 
-#: src/content_mapnode_special.cpp:1258
+#: src/content_mapnode_special.cpp:1259
 msgid "Locking Chest"
 msgstr "鍵付きチェスト"
 
-#: src/content_mapnode_special.cpp:1288
+#: src/content_mapnode_special.cpp:1289
 msgid "Safe"
-msgstr "安全"
+msgstr "金庫"
 
-#: src/content_mapnode_special.cpp:1310 src/content_mapnode_special.cpp:1330
+#: src/content_mapnode_special.cpp:1311 src/content_mapnode_special.cpp:1331
 msgid "Furnace"
 msgstr "かまど"
 
-#: src/content_mapnode_special.cpp:1349 src/content_mapnode_special.cpp:1370
+#: src/content_mapnode_special.cpp:1350 src/content_mapnode_special.cpp:1371
 msgid "Locking Furnace"
 msgstr "鍵付きかまど"
 
-#: src/content_mapnode_special.cpp:1388 src/content_mapnode_special.cpp:1408
+#: src/content_mapnode_special.cpp:1389 src/content_mapnode_special.cpp:1409
 msgid "Incinerator"
 msgstr "焼却炉"
 
-#: src/content_mapnode_special.cpp:1426
+#: src/content_mapnode_special.cpp:1427
 msgid "Nyan Cat"
 msgstr "Nyan Cat"
 
-#: src/content_mapnode_special.cpp:1440
+#: src/content_mapnode_special.cpp:1441
 msgid "Rainbow"
 msgstr "虹"
 
-#: src/content_mapnode_special.cpp:1452
+#: src/content_mapnode_special.cpp:1453
 msgid "Unbaked Flower Pot"
 msgstr "未焼成の植木鉢"
 
-#: src/content_mapnode_special.cpp:1474
+#: src/content_mapnode_special.cpp:1475
 msgid "Flower Pot"
 msgstr "植木鉢"
 
-#: src/content_mapnode_special.cpp:1492
+#: src/content_mapnode_special.cpp:1493
 msgid "Cobblestone Wall"
-msgstr "玉石ウォール"
+msgstr "丸石の壁"
 
-#: src/content_mapnode_special.cpp:1516
+#: src/content_mapnode_special.cpp:1517
 msgid "Rough Stone Wall"
-msgstr "ラフストーンウォール"
+msgstr "ラフストーンの壁"
 
-#: src/content_mapnode_special.cpp:1540
+#: src/content_mapnode_special.cpp:1541
 msgid "Mossy Cobblestone Wall"
-msgstr "苔玉石ウォール"
+msgstr "苔石の壁"
 
-#: src/content_mapnode_special.cpp:1564
+#: src/content_mapnode_special.cpp:1565
 msgid "Stone Wall"
-msgstr "ストーンウォール"
+msgstr "石の壁"
 
-#: src/content_mapnode_special.cpp:1588
+#: src/content_mapnode_special.cpp:1589
 msgid "Sand Stone Wall"
-msgstr "サンドストーンウォール"
+msgstr "砂岩の壁"
 
-#: src/content_mapnode_special.cpp:1612
+#: src/content_mapnode_special.cpp:1613
 msgid "TNT"
 msgstr "TNT"
 
-#: src/content_mapnode_special.cpp:1632
+#: src/content_mapnode_special.cpp:1633
 msgid "In-Progress explosion - how did you get this???"
 msgstr "爆発途中のTNT - どうやって手に入れたの？"
 
-#: src/content_mapnode_special.cpp:1652
+#: src/content_mapnode_special.cpp:1653
 msgid "Steam"
 msgstr "煙"
 
-#: src/content_mapnode_special.cpp:1673
+#: src/content_mapnode_special.cpp:1674
 msgid "Home Flag"
-msgstr "ホーム旗"
+msgstr "白い旗"
 
-#: src/content_mapnode_special.cpp:1723
+#: src/content_mapnode_special.cpp:1724
 msgid "Blue Home Flag"
-msgstr "ブルーホームフラッグ"
+msgstr "青い旗"
 
-#: src/content_mapnode_special.cpp:1752
+#: src/content_mapnode_special.cpp:1753
 msgid "Green Home Flag"
-msgstr "グリーンホームフラッグ"
+msgstr "緑色の旗"
 
-#: src/content_mapnode_special.cpp:1781
+#: src/content_mapnode_special.cpp:1782
 msgid "Orange Home Flag"
-msgstr "オレンジホーム旗"
+msgstr "オレンジ色の旗"
 
-#: src/content_mapnode_special.cpp:1810
+#: src/content_mapnode_special.cpp:1811
 msgid "Purple Home Flag"
-msgstr "パープルホーム旗"
+msgstr "紫色の旗"
 
-#: src/content_mapnode_special.cpp:1839
+#: src/content_mapnode_special.cpp:1840
 msgid "Red Home Flag"
-msgstr "レッドホーム旗"
+msgstr "赤い旗"
 
-#: src/content_mapnode_special.cpp:1868
+#: src/content_mapnode_special.cpp:1869
 msgid "Yellow Home Flag"
-msgstr "イエローホーム旗"
+msgstr "黄色い旗"
 
-#: src/content_mapnode_special.cpp:1897
+#: src/content_mapnode_special.cpp:1898
 msgid "Black Home Flag"
-msgstr "ブラックホーム旗"
+msgstr "黒い旗"
 
-#: src/content_mapnode_special.cpp:1926
+#: src/content_mapnode_special.cpp:1927
 msgid "Life Support System"
 msgstr "生活支援システム"
 
-#: src/content_mapnode_special.cpp:1943
+#: src/content_mapnode_special.cpp:1944
 msgid "Parcel"
 msgstr "小包"
 
 #: src/content_mapnode_stair.cpp:38
 msgid "Rough Stone Stair"
-msgstr "ラフストーン階段"
+msgstr "ラフストーンの階段"
 
 #: src/content_mapnode_stair.cpp:55
 msgid "Cobble Stone Stair"
-msgstr "コブルストーン階段"
+msgstr "丸石の階段"
 
 #: src/content_mapnode_stair.cpp:72
 msgid "Mossy Cobble Stone Stair"
-msgstr "苔状コブルストーン階段"
+msgstr "苔石の階段"
 
 #: src/content_mapnode_stair.cpp:89
 msgid "Stone Stair"
-msgstr "ストーン階段"
+msgstr "石の階段"
 
 #: src/content_mapnode_stair.cpp:107
 msgid "Wood Stair"
-msgstr "ウッド階段"
+msgstr "木の階段"
 
 #: src/content_mapnode_stair.cpp:126
 msgid "Jungle Wood Stair"
-msgstr "ジャングルウッド階段"
+msgstr "ジャングルの木の階段"
 
 #: src/content_mapnode_stair.cpp:145
 msgid "Brick Stair"
-msgstr "レンガ階段"
+msgstr "レンガの階段"
 
-#: src/content_mapnode_stair.cpp:162
+#: src/content_mapnode_stair.cpp:167
 msgid "Sand Stone Stair"
-msgstr "サンドストーン階段"
+msgstr "砂岩の階段"
 
 #: src/content_nodemeta.cpp:74 src/content_nodemeta.cpp:137
 #: src/content_nodemeta.cpp:2024 src/content_nodemeta.cpp:2123
@@ -2690,229 +2681,229 @@ msgstr "保存"
 #: src/content_nodemeta.cpp:184
 #, c-format
 msgid "%s's Home Flag"
-msgstr "%sのホーム旗"
+msgstr "%sの旗"
 
 #: src/content_nodemeta.cpp:301
 #, c-format
 msgid "Locking Chest owned by '%s'"
-msgstr "「が所有する胸をロック%s 」"
+msgstr "このチェストの所有者は%sです"
 
 #: src/content_nodemeta.cpp:375
 #, c-format
 msgid "Safe owned by '%s'"
-msgstr "セーフ」が所有して%s 」"
+msgstr "この金庫の所有者は%sです"
 
 #: src/content_nodemeta.cpp:544 src/content_nodemeta.cpp:1491
 #: src/content_nodemeta.cpp:1696 src/content_nodemeta.cpp:1910
 #, c-format
 msgid "Page %d of %d"
-msgstr "ページ%dの%d"
+msgstr "ページ %d/%d"
 
 #: src/content_nodemeta.cpp:548 src/content_nodemeta.cpp:1519
 #: src/content_nodemeta.cpp:1705 src/content_nodemeta.cpp:1926
 msgid "<< Previous Page"
-msgstr "<<前のページへ"
+msgstr "＜＜ 前のページへ"
 
 #: src/content_nodemeta.cpp:554 src/content_nodemeta.cpp:1525
 #: src/content_nodemeta.cpp:1711 src/content_nodemeta.cpp:1932
 msgid "Next Page >>"
-msgstr "次のページへ>>"
+msgstr "次のページへ ＞＞"
 
 #: src/content_nodemeta.cpp:597
 #, c-format
 msgid "Border Stone owned by '%s'"
-msgstr "「が所有ボーダーストーン%s 」"
+msgstr "このボーダーストーンの所有者は%sです"
 
 #: src/content_nodemeta.cpp:672
 msgid "Furnace is overloaded"
-msgstr "炉は過負荷になっている"
+msgstr "かまどが過負荷になっています"
 
 #: src/content_nodemeta.cpp:673
 msgid "Furnace is out of fuel"
-msgstr "炉は、燃料切れである"
+msgstr "かまどの燃料が切れています"
 
 #: src/content_nodemeta.cpp:675
 msgid "Furnace is inactive"
-msgstr "炉は非アクティブです"
+msgstr "かまどは使用されていません"
 
 #: src/content_nodemeta.cpp:678
 msgid "Furnace is active"
-msgstr "炉はアクティブです"
+msgstr "かまどは使用中です"
 
 #: src/content_nodemeta.cpp:933
 msgid "Locking Furnace is overloaded"
-msgstr "ロック炉が過負荷になっている"
+msgstr "鍵付きかまどが過負荷になっています"
 
 #: src/content_nodemeta.cpp:934
 msgid "Locking Furnace is out of fuel"
-msgstr "炉をロックすると、燃料切れである"
+msgstr "鍵付きかまどの燃料が切れています"
 
 #: src/content_nodemeta.cpp:936
 msgid "Locking Furnace is inactive"
-msgstr "炉をロックすると、アクティブでない"
+msgstr "鍵付きかまどは使用されていません"
 
 #: src/content_nodemeta.cpp:939
 msgid "Locking Furnace is active"
-msgstr "炉をロックすると、アクティブである"
+msgstr "鍵付きかまどは使用中です"
 
 #: src/content_nodemeta.cpp:1189
 msgid "Armed Explosive: about to detonate"
-msgstr "爆発武装：約爆発させる"
+msgstr "警告：爆発します"
 
 #: src/content_nodemeta.cpp:1192
 #, c-format
 msgid "Armed Explosive: %d second till detonation"
 msgid_plural "Armed Explosive: %d seconds till detonation"
-msgstr[0] "武装爆発： %d爆発までの第二"
+msgstr[0] "警告：爆発まで%d秒です"
 
 #: src/content_nodemeta.cpp:1242
 msgid "Incinerator is active"
-msgstr "焼却炉はアクティブです"
+msgstr "焼却炉は使用中です"
 
 #: src/content_nodemeta.cpp:1243
 msgid "Incinerator is inactive"
-msgstr "焼却炉は非アクティブです"
+msgstr "焼却炉は使用されていません"
 
 #: src/content_nodemeta.cpp:1286
 msgid "Add fuel, then punch to incinerate wielded item"
-msgstr "燃料の追加、その後振るったアイテムを焼却するためにパンチ"
+msgstr "燃料を入れて、焼却したいアイテムを手に持ってパンチしてください"
 
 #: src/content_nodemeta.cpp:1495
 msgid "Add item here to see recipe"
-msgstr "レシピを見るためにここにアイテムを追加します。"
+msgstr "レシピを見たいアイテム"
 
 #: src/content_nodemeta.cpp:1500
 #, c-format
 msgid "Recipe %d of %d"
-msgstr "レシピ%dの%d"
+msgstr "レシピ %d/%d"
 
 #: src/content_nodemeta.cpp:1509
 msgid "Gives"
-msgstr "与え"
+msgstr "個数"
 
 #: src/content_nodemeta.cpp:1700
 msgid "Add item here to see cook result"
-msgstr "結果を調理見るためにここにアイテムを追加します。"
+msgstr "精錬レシピを見たいアイテムを選択してください"
 
 #: src/content_nodemeta.cpp:1914
 msgid "Add item here to see dig result"
-msgstr "DIG結果を見るためにここにアイテムを追加します。"
+msgstr "破壊した際に入手できるアイテム"
 
 #: src/content_nodemeta.cpp:1918
 msgid "Dig Result"
-msgstr "DIG結果"
+msgstr "入手"
 
 #: src/content_nodemeta.cpp:1922
 msgid "Random Drop"
-msgstr "ランダムドロップ"
+msgstr "ランダム入手"
 
 #: src/content_nodemeta.cpp:2014 src/content_nodemeta.cpp:2113
 msgid "Title"
-msgstr "タイトル"
+msgstr "題名"
 
 #: src/content_nodemeta.cpp:2019 src/content_nodemeta.cpp:2118
 msgid "Content"
-msgstr "コンテンツ"
+msgstr "本文"
 
 #: src/content_toolitem.cpp:123
 msgid "Wooden Pick"
-msgstr "木製ピック"
+msgstr "木のピッケル"
 
 #: src/content_toolitem.cpp:137
 msgid "Stone Pick"
-msgstr "ストーンピック"
+msgstr "石のピッケル"
 
 #: src/content_toolitem.cpp:150
 msgid "Flint Pick"
-msgstr "フリントは、ピック"
+msgstr "燧石のピッケル"
 
 #: src/content_toolitem.cpp:163
 msgid "Steel Pick"
-msgstr "スチールピック"
+msgstr "鉄のピッケル"
 
 #: src/content_toolitem.cpp:176
 msgid "Mese Pick"
-msgstr "MESEピック"
+msgstr "Meseのピッケル"
 
 #: src/content_toolitem.cpp:190
 msgid "Wooden Shovel"
-msgstr "木製シャベル"
+msgstr "木のシャベル"
 
 #: src/content_toolitem.cpp:204
 msgid "Stone Shovel"
-msgstr "ストーンシャベル"
+msgstr "石のシャベル"
 
 #: src/content_toolitem.cpp:217
 msgid "Flint Shovel"
-msgstr "フリントシャベル"
+msgstr "燧石のシャベル"
 
 #: src/content_toolitem.cpp:230
 msgid "Steel Shovel"
-msgstr "スチールシャベル"
+msgstr "鉄のシャベル"
 
 #: src/content_toolitem.cpp:243
 msgid "Wooden Axe"
-msgstr "木製アックス"
+msgstr "木の斧"
 
 #: src/content_toolitem.cpp:257
 msgid "Stone Axe"
-msgstr "ストーンアックス"
+msgstr "石の斧"
 
 #: src/content_toolitem.cpp:270
 msgid "Flint Axe"
-msgstr "フリントアックス"
+msgstr "燧石の斧"
 
 #: src/content_toolitem.cpp:283
 msgid "Steel Axe"
-msgstr "スチールアックス"
+msgstr "鉄の斧"
 
 #: src/content_toolitem.cpp:296
 msgid "Wooden Sword"
-msgstr "木刀"
+msgstr "木の剣"
 
 #: src/content_toolitem.cpp:310
 msgid "Stone Sword"
-msgstr "ストーン剣"
+msgstr "石の剣"
 
 #: src/content_toolitem.cpp:323
 msgid "Steel Sword"
-msgstr "スチール剣"
+msgstr "鉄の剣"
 
 #: src/content_toolitem.cpp:336
 msgid "Flint Shears"
-msgstr "フリントシアーズ"
+msgstr "燧石のハサミ"
 
 #: src/content_toolitem.cpp:349
 msgid "Steel Shears"
-msgstr "スチールばさみ"
+msgstr "鉄のハサミ"
 
 #: src/content_toolitem.cpp:362
 msgid "Wooden Bucket"
-msgstr "木製のバケツ"
+msgstr "木のバケツ"
 
 #: src/content_toolitem.cpp:377
 msgid "Tin Bucket"
-msgstr "錫バケツ"
+msgstr "錫のバケツ"
 
 #: src/content_toolitem.cpp:391
 msgid "Wooden Bucket of Water"
-msgstr "水の木製バケツ"
+msgstr "水が入った木のバケツ"
 
 #: src/content_toolitem.cpp:400
 msgid "Tin Bucket of Water"
-msgstr "水の錫バケツ"
+msgstr "水が入った錫のバケツ"
 
 #: src/content_toolitem.cpp:409
 msgid "Steel Bucket"
-msgstr "スチールバケツ"
+msgstr "鉄のバケツ"
 
 #: src/content_toolitem.cpp:423
 msgid "Steel Bucket of Water"
-msgstr "水のスチールバケツ"
+msgstr "水が入った鉄のバケツ"
 
 #: src/content_toolitem.cpp:432
 msgid "Steel Bucket of Lava"
-msgstr "溶岩のスチールバケツ"
+msgstr "溶岩が入った鉄のバケツ"
 
 #: src/content_toolitem.cpp:442
 msgid "Fire Starter"
@@ -2928,19 +2919,19 @@ msgstr "鍵"
 
 #: src/content_toolitem.cpp:475
 msgid "Stone Spear"
-msgstr "ストーンスピア"
+msgstr "石の槍"
 
 #: src/content_toolitem.cpp:488
 msgid "Flint Spear"
-msgstr "フリントスピア"
+msgstr "燧石の槍"
 
 #: src/content_toolitem.cpp:501
 msgid "Steel Spear"
-msgstr "スチールスピア"
+msgstr "鉄の槍"
 
 #: src/content_toolitem.cpp:514
 msgid "Bow"
-msgstr "矢"
+msgstr "弓"
 
 #: src/game.cpp:206
 msgid "Show Crafting"
@@ -2980,151 +2971,151 @@ msgstr "ブーツ"
 
 #: src/game.cpp:226
 msgid "Drop to Ground"
-msgstr "落とす"
+msgstr "アイテムをドロップ"
 
 #: src/game.cpp:228
 msgid "Change Clothing"
 msgstr "服を変更"
 
-#: src/game.cpp:1023
+#: src/game.cpp:1034
 msgid "Loading"
 msgstr "読み込み中"
 
-#: src/game.cpp:1097
+#: src/game.cpp:1108
 msgid "Loading..."
 msgstr "読み込んでいます..."
 
-#: src/game.cpp:1106
+#: src/game.cpp:1117
 msgid "Creating server..."
 msgstr "サーバーを作成しています..."
 
-#: src/game.cpp:1117
+#: src/game.cpp:1128
 msgid "Creating client..."
 msgstr "クライアントを作成しています..."
 
-#: src/game.cpp:1122
+#: src/game.cpp:1133
 msgid "Resolving address..."
 msgstr "アドレスを解決しています..."
 
-#: src/game.cpp:1133
+#: src/game.cpp:1144
 msgid "Couldn't resolve address"
 msgstr "アドレスを解決できませんでした"
 
-#: src/game.cpp:1173
+#: src/game.cpp:1184
 #, c-format
 msgid "Connecting to server... (timeout in %d second)"
 msgid_plural "Connecting to server... (timeout in %d seconds)"
 msgstr[0] "サーバーに接続しています..(タイムアウト%d秒)"
 
-#: src/game.cpp:1202
+#: src/game.cpp:1213
 #, c-format
 msgid "Access denied. Reason: %ls"
 msgstr "アクセスできません。原因:%ls"
 
-#: src/game.cpp:1206
+#: src/game.cpp:1217
 msgid "Unable to Connect (port already in use?)."
 msgstr "接続できません(ポートが既に使用されている可能性があります)。"
 
-#: src/game.cpp:1209
+#: src/game.cpp:1220
 msgid "Connection timed out."
 msgstr "接続がタイムアウトしました。"
 
-#: src/game.cpp:1370
+#: src/game.cpp:1381
 msgid "Access denied. Reason: "
 msgstr "アクセスできません。原因:"
 
-#: src/game.cpp:1605
+#: src/game.cpp:1616
 msgid "free_move disabled"
-msgstr "飛行モードが無効"
+msgstr "飛行モードを無効にしました"
 
-#: src/game.cpp:1609
+#: src/game.cpp:1620
 msgid "free_move enabled"
-msgstr "飛行モードが有効"
+msgstr "飛行モードを有効にしました"
 
-#: src/game.cpp:1615
+#: src/game.cpp:1626
 msgid "fast_move disabled"
-msgstr "高速移動が無効"
+msgstr "高速移動を無効にしました"
 
-#: src/game.cpp:1619
+#: src/game.cpp:1630
 msgid "fast_move enabled"
-msgstr "高速移動が有効"
+msgstr "高速移動を有効にしました"
 
-#: src/game.cpp:1631
+#: src/game.cpp:1642
 #, c-format
 msgid "Saved screenshot to '%s'"
 msgstr "\"%s\"にスクリーンショットを保存しました"
 
-#: src/game.cpp:1643
+#: src/game.cpp:1654
 msgid "HUD shown"
-msgstr "HUDを表示"
+msgstr "HUDを表示しました"
 
-#: src/game.cpp:1645
+#: src/game.cpp:1656
 msgid "HUD hidden"
-msgstr "HUDを非表示"
+msgstr "HUDを非表示にしました"
 
-#: src/game.cpp:1651
+#: src/game.cpp:1662
 msgid "Chat shown"
-msgstr "チャットを表示"
+msgstr "チャットを表示しました"
 
-#: src/game.cpp:1653
+#: src/game.cpp:1664
 msgid "Chat hidden"
-msgstr "チャットを非表示"
+msgstr "チャットを非表示にしました"
 
-#: src/game.cpp:1659
+#: src/game.cpp:1670
 msgid "Fog disabled"
-msgstr "霧を非表示"
+msgstr "霧を非表示にしました"
 
-#: src/game.cpp:1661
+#: src/game.cpp:1672
 msgid "Fog enabled"
-msgstr "霧を表示"
+msgstr "霧を表示しました"
 
-#: src/game.cpp:1667
+#: src/game.cpp:1678
 msgid "Camera update disabled"
-msgstr "マップの更新を無効"
+msgstr "マップの更新を無効にしました"
 
-#: src/game.cpp:1669
+#: src/game.cpp:1680
 msgid "Camera update enabled"
-msgstr "マップの更新を有効"
+msgstr "マップの更新を有効にしました"
 
-#: src/game.cpp:1679
+#: src/game.cpp:1690
 msgid "Debug info shown"
-msgstr "デバッグ情報が表示"
+msgstr "デバッグ情報を表示しました"
 
-#: src/game.cpp:1684
+#: src/game.cpp:1695
 msgid "Debug info and frametime graph hidden"
-msgstr "デバッグ情報とフレーム数を非表示"
+msgstr "デバッグ情報とフレーム数を非表示にしました"
 
-#: src/game.cpp:1688
+#: src/game.cpp:1699
 msgid "Frametime graph shown"
-msgstr "フレーム数表示"
+msgstr "フレーム数を表示しました"
 
-#: src/game.cpp:1700
+#: src/game.cpp:1711
 #, c-format
 msgid "Profiler shown (page %d of %d)"
-msgstr "プロファイラ表示(%d/%d)"
+msgstr "プロファイラを表示しています(ページ %d/%d)"
 
-#: src/game.cpp:1704
+#: src/game.cpp:1715
 msgid "Profiler hidden"
-msgstr "プロファイラーを非表示"
+msgstr "プロファイラーが非表示になりました"
 
-#: src/game.cpp:1712 src/game.cpp:1723
+#: src/game.cpp:1723 src/game.cpp:1734
 #, c-format
 msgid "Minimum viewing range changed to %d"
 msgstr "視野の範囲を%dに変更しました"
 
-#: src/game.cpp:1792
+#: src/game.cpp:1803
 msgid "Enabled full viewing range"
-msgstr "マップをすべて表示"
+msgstr "マップをすべて表示しています"
 
-#: src/game.cpp:1796
+#: src/game.cpp:1807
 msgid "Disabled full viewing range"
-msgstr "マップを一部表示"
+msgstr "マップを一部表示しています"
 
-#: src/game.cpp:2331
+#: src/game.cpp:2348
 msgid "Disconnected (Network Timeout)"
 msgstr "切断されました(タイムアウト)"
 
-#: src/game.cpp:2710
+#: src/game.cpp:2730
 msgid "Shutting down..."
 msgstr "終了中..."
 
@@ -3138,11 +3129,11 @@ msgstr "リスポーン"
 
 #: src/guiFormSpecMenu.cpp:470
 msgid "Left click: Move all items, Right click: Move single item"
-msgstr "左クリック:すべてのアイテムを移動、右クリック:一つのアイテムを移動"
+msgstr "左クリック:まとめて移動、右クリック:一つずつ移動"
 
 #: src/guiFormSpecMenu.cpp:493
 msgid "Write It"
-msgstr "それを書く"
+msgstr "記入する"
 
 #: src/guiKeyChangeMenu.cpp:90
 msgid "Controls"
@@ -3223,260 +3214,243 @@ msgstr "前のアイテム"
 msgid "press Key"
 msgstr "キーを押してください"
 
-#: src/guiMainMenu.cpp:417
+#: src/guiMainMenu.cpp:424
 msgid "Character Creator"
-msgstr "文字作成"
+msgstr "スキン作成"
 
-#: src/guiMainMenu.cpp:423 src/guiMainMenu.cpp:638 src/guiMainMenu.cpp:680
-#: src/guiMainMenu.cpp:778
+#: src/guiMainMenu.cpp:430 src/guiMainMenu.cpp:640 src/guiMainMenu.cpp:682
+#: src/guiMainMenu.cpp:780
 msgid "Single Player"
 msgstr "シングルプレイヤー"
 
-#: src/guiMainMenu.cpp:429 src/guiMainMenu.cpp:480
+#: src/guiMainMenu.cpp:436 src/guiMainMenu.cpp:487
 msgid "Multi Player"
 msgstr "マルチプレイヤー"
 
-#: src/guiMainMenu.cpp:435 src/guiMainMenu.cpp:556
+#: src/guiMainMenu.cpp:442 src/guiMainMenu.cpp:558
 msgid "Settings"
 msgstr "設定"
 
-#: src/guiMainMenu.cpp:441 src/guiMainMenu.cpp:905
+#: src/guiMainMenu.cpp:448 src/guiMainMenu.cpp:907
 msgid "Credits"
 msgstr "クレジット"
 
-#: src/guiMainMenu.cpp:447
+#: src/guiMainMenu.cpp:454
 msgid "Quit"
 msgstr "終了"
 
-#: src/guiMainMenu.cpp:488
+#: src/guiMainMenu.cpp:495
 msgid "Name/Password"
 msgstr "名前とパスワード"
 
-#: src/guiMainMenu.cpp:520
+#: src/guiMainMenu.cpp:524
 msgid "Address/Port"
 msgstr "アドレスとポート"
 
-#: src/guiMainMenu.cpp:550
+#: src/guiMainMenu.cpp:552
 msgid "Connect"
 msgstr "接続"
 
-#: src/guiMainMenu.cpp:562
+#: src/guiMainMenu.cpp:564
 msgid "Fancy trees"
 msgstr "綺麗な木"
 
-#: src/guiMainMenu.cpp:567
+#: src/guiMainMenu.cpp:569
 msgid "Smooth Lighting"
 msgstr "滑らかな光"
 
-#: src/guiMainMenu.cpp:572
+#: src/guiMainMenu.cpp:574
 msgid "3D Clouds"
 msgstr "3Dの雲"
 
-#: src/guiMainMenu.cpp:577
+#: src/guiMainMenu.cpp:579
 msgid "Opaque water"
 msgstr "不透明な水"
 
-#: src/guiMainMenu.cpp:582
+#: src/guiMainMenu.cpp:584
 msgid "Classic hotbar"
 msgstr "クラシックホットバー"
 
-#: src/guiMainMenu.cpp:587
+#: src/guiMainMenu.cpp:589
 msgid "Volume:"
 msgstr "音量:"
 
-#: src/guiMainMenu.cpp:592
+#: src/guiMainMenu.cpp:594
 msgid "Fullscreen"
 msgstr "全画面表示"
 
-#: src/guiMainMenu.cpp:597
+#: src/guiMainMenu.cpp:599
 msgid "Particles"
 msgstr "パーティクルの表示"
 
-#: src/guiMainMenu.cpp:602
+#: src/guiMainMenu.cpp:604
 msgid "Mip-Mapping"
 msgstr "ミップマップ"
 
-#: src/guiMainMenu.cpp:607
+#: src/guiMainMenu.cpp:609
 msgid "Bi-Linear Filtering"
 msgstr "バイリニアフィルタリング"
 
-#: src/guiMainMenu.cpp:612
+#: src/guiMainMenu.cpp:614
 msgid "Tri-Linear Filtering"
 msgstr "トライリニアフィルタリング"
 
-#: src/guiMainMenu.cpp:617
+#: src/guiMainMenu.cpp:619
 msgid "Anisotropic Filtering"
 msgstr "異方性フィルタリング"
 
-#: src/guiMainMenu.cpp:632
+#: src/guiMainMenu.cpp:634
 msgid "Change keys"
 msgstr "操作変更"
 
-#: src/guiMainMenu.cpp:647 src/guiMainMenu.cpp:689 src/guiMainMenu.cpp:787
+#: src/guiMainMenu.cpp:649 src/guiMainMenu.cpp:691 src/guiMainMenu.cpp:789
 msgid "Creative Mode"
 msgstr "クリエイティブモード"
 
-#: src/guiMainMenu.cpp:648 src/guiMainMenu.cpp:690 src/guiMainMenu.cpp:788
+#: src/guiMainMenu.cpp:650 src/guiMainMenu.cpp:692 src/guiMainMenu.cpp:790
 msgid "Adventure Mode"
 msgstr "アドベンチャーモード"
 
-#: src/guiMainMenu.cpp:649 src/guiMainMenu.cpp:691 src/guiMainMenu.cpp:789
+#: src/guiMainMenu.cpp:651 src/guiMainMenu.cpp:693 src/guiMainMenu.cpp:791
 msgid "Survival Mode"
 msgstr "サバイバルモード"
 
-#: src/guiMainMenu.cpp:662 src/guiMainMenu.cpp:802
+#: src/guiMainMenu.cpp:664 src/guiMainMenu.cpp:804
 msgid "Advanced Settings"
 msgstr "詳細設定"
 
-#: src/guiMainMenu.cpp:668 src/guiMainMenu.cpp:710
+#: src/guiMainMenu.cpp:670 src/guiMainMenu.cpp:712
 msgid "Map Options"
 msgstr "マップオプション"
 
-#: src/guiMainMenu.cpp:674 src/guiMainMenu.cpp:772 src/guiMainMenu.cpp:898
+#: src/guiMainMenu.cpp:676 src/guiMainMenu.cpp:774 src/guiMainMenu.cpp:900
 msgid "Start Game"
 msgstr "ゲーム開始"
 
-#: src/guiMainMenu.cpp:704
+#: src/guiMainMenu.cpp:706
 msgid "Hide Advanced Settings"
 msgstr "詳細設定を非表示にする"
 
-#: src/guiMainMenu.cpp:715
+#: src/guiMainMenu.cpp:717
 msgid "Creatures"
 msgstr "生物"
 
-#: src/guiMainMenu.cpp:722
-msgid "Passive"
-msgstr "大人しいもの"
-
-#: src/guiMainMenu.cpp:723
-msgid "Passive & Aggressive"
-msgstr "大人しいものと攻撃的なもの"
-
 #: src/guiMainMenu.cpp:724
-msgid "Passive, Aggressive, & Destructive"
-msgstr "大人しいものと攻撃的なものと破壊的なもの"
+msgid "Passive"
+msgstr "安全な生物のみ"
 
-#: src/guiMainMenu.cpp:736
+#: src/guiMainMenu.cpp:725
+msgid "Passive & Aggressive"
+msgstr "安全な生物・攻撃的な生物"
+
+#: src/guiMainMenu.cpp:726
+msgid "Passive, Aggressive, & Destructive"
+msgstr "安全な生物・危険な生物・破壊的な生物"
+
+#: src/guiMainMenu.cpp:738
 msgid "Player Damage"
 msgstr "プレイヤーのダメージ"
 
-#: src/guiMainMenu.cpp:741
+#: src/guiMainMenu.cpp:743
 msgid "Suffocation/Drowning"
 msgstr "窒息や溺死"
 
-#: src/guiMainMenu.cpp:746
+#: src/guiMainMenu.cpp:748
 msgid "Hunger"
 msgstr "餓死"
 
-#: src/guiMainMenu.cpp:751
+#: src/guiMainMenu.cpp:753
 msgid "Tool Wear"
 msgstr "道具の消耗"
 
-#: src/guiMainMenu.cpp:756
+#: src/guiMainMenu.cpp:758
 msgid "Infinite Inventory"
 msgstr "無限なインベントリ"
 
-#: src/guiMainMenu.cpp:761
+#: src/guiMainMenu.cpp:763
 msgid "Initial Inventory"
 msgstr "通常のインベントリ"
 
-#: src/guiMainMenu.cpp:766
+#: src/guiMainMenu.cpp:768
 msgid "Droppable Inventory"
 msgstr "ドロップ可能なインベントリ"
 
-#: src/guiMainMenu.cpp:808
+#: src/guiMainMenu.cpp:810
 msgid "Hide Map Options"
 msgstr "マップオプションを隠す"
 
-#: src/guiMainMenu.cpp:813
+#: src/guiMainMenu.cpp:815
 msgid "Create New Map"
 msgstr "新しいマップを作成"
 
-#: src/guiMainMenu.cpp:819
+#: src/guiMainMenu.cpp:821
 msgid "Warning! Your old map will be deleted!"
 msgstr "警告:古いマップは削除されます！"
 
-#: src/guiMainMenu.cpp:825
+#: src/guiMainMenu.cpp:827
 msgid "Map Type"
 msgstr "マップの種類"
 
-#: src/guiMainMenu.cpp:832
+#: src/guiMainMenu.cpp:834
 msgid "Flat"
 msgstr "フラットマップ"
 
-#: src/guiMainMenu.cpp:833
+#: src/guiMainMenu.cpp:835
 msgid "Flatter"
 msgstr "フラットマップ（バイオームあり）"
 
-#: src/guiMainMenu.cpp:834
+#: src/guiMainMenu.cpp:836
 msgid "Smoother"
 msgstr "スムーサー"
 
-#: src/guiMainMenu.cpp:835
+#: src/guiMainMenu.cpp:837
 msgid "Default"
 msgstr "標準のマップ"
 
-#: src/guiMainMenu.cpp:836
+#: src/guiMainMenu.cpp:838
 msgid "Hilly"
 msgstr "起伏の多いマップ"
 
-#: src/guiMainMenu.cpp:837
+#: src/guiMainMenu.cpp:839
 msgid "Mountains"
 msgstr "山地のマップ"
 
-#: src/guiMainMenu.cpp:838
+#: src/guiMainMenu.cpp:840
 msgid "Crazy"
 msgstr "狂ったマップ"
 
-#: src/guiMainMenu.cpp:839
+#: src/guiMainMenu.cpp:841
 msgid "Crazy Hills"
 msgstr "狂った丘のマップ"
 
-#: src/guiMainMenu.cpp:861
+#: src/guiMainMenu.cpp:863
 msgid "Use Fixed Seed"
-msgstr "固定シードを使用"
+msgstr "シード値を使用"
 
-#: src/guiMainMenu.cpp:867
+#: src/guiMainMenu.cpp:869
 msgid "Map Seed"
 msgstr "Seed値"
 
-#: src/guiMainMenu.cpp:885
+#: src/guiMainMenu.cpp:887
 msgid "Clear Map"
 msgstr "地図を初期化"
 
-#: src/guiMainMenu.cpp:890
+#: src/guiMainMenu.cpp:892
 msgid "Warning! This will delete all construction from your map!"
 msgstr "警告:マップの中身が全て消去されます！"
 
-#: src/guiMainMenu.cpp:913
+#: src/guiMainMenu.cpp:915
 msgid ""
 "Voxelands\n"
 "http://www.voxelands.com/\n"
 "\n"
 "By Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
-"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, "
-"tiemay, Szkodnix, soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound, Rui, "
-"Wayward_One, loh\n"
+"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, tiemay, Szkodnix, soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound, Rui, Wayward_One, loh\n"
 "\n"
 "Based on Minetest-C55\n"
 "by Perttu Ahola <celeron55@gmail.com>\n"
-"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
-"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
-"Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
-msgstr ""
-"Voxelands\n"
-"http://www.voxelands.com/\n"
-"\n"
-"提供:Lisa Milne 'darkrose' <lisa@ltmnet.com>\n"
-"開発協力:sdzen、MichaelEh?、Pentium44、Jordach、Menche、MavJS、tiemay、"
-"Szkodnix、soognarf, Tapoky、Wuzzy、JHeaton、Akien、redhound、Rui、"
-"Wayward_One、loh\n"
-"\n"
-"VoxelandsはMinetest-C55ベースです\n"
-"提供:Perttu Ahola <celeron55@gmail.com>\n"
-"開発協力:PilzAdam、Taoki, tango_、kahrl (kaaaaaahrl?)、darkrose、matttpt、"
-"erlehmann、SpeedProg、JacobF、teddydestodes、marktraceur、Jonathan "
-"Neuschafer、thexyz、VanessaE, sfan5など"
+"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
+msgstr "Voxelands\nhttp://www.voxelands.com/\n\n提供:Lisa Milne 'darkrose' <lisa@ltmnet.com>\n開発協力:sdzen、MichaelEh?、Pentium44、Jordach、Menche、MavJS、tiemay、Szkodnix、soognarf, Tapoky、Wuzzy、JHeaton、Akien、redhound、Rui、Wayward_One、loh\n\n以下は、VoxelandsのベースになったMinetest-C55のクレジットです。\n提供:Perttu Ahola <celeron55@gmail.com>\n開発協力:PilzAdam、Taoki、tango_、kahrl(kaaaaaahrl?)、\ndarkrose、matttpt、erlehmann、SpeedProg、JacobF、teddydestodes、marktraceur、Jonathan Neuschafer、thexyz、VanessaE, sfan5など"
 
 #: src/guiMessageMenu.cpp:112 src/guiPauseMenu.cpp:138
 msgid "Continue"
