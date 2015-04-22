@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-22 00:10+1000\n"
+"POT-Creation-Date: 2015-04-23 04:25+1000\n"
 "PO-Revision-Date: 2011-08-02 00:31+0100\n"
 "Last-Translator: Frederik Helth <Guides@live.dk>\n"
 "Language-Team: \n"
@@ -1121,7 +1121,7 @@ msgstr ""
 msgid "Steel Ingot"
 msgstr ""
 
-#: src/content_craftitem.cpp:199 src/content_mapnode.cpp:610
+#: src/content_craftitem.cpp:199 src/content_mapnode.cpp:562
 msgid "Brick"
 msgstr ""
 
@@ -1477,393 +1477,393 @@ msgstr ""
 msgid "Fertilizer"
 msgstr ""
 
-#: src/content_mapnode.cpp:200
+#: src/content_mapnode.cpp:150
 msgid "Stone"
 msgstr ""
 
-#: src/content_mapnode.cpp:217
+#: src/content_mapnode.cpp:167
 msgid "Ice"
 msgstr ""
 
-#: src/content_mapnode.cpp:233
+#: src/content_mapnode.cpp:183
 msgid "Coal Block"
 msgstr ""
 
-#: src/content_mapnode.cpp:250
+#: src/content_mapnode.cpp:200
 msgid "Charcoal Block"
 msgstr ""
 
-#: src/content_mapnode.cpp:267
+#: src/content_mapnode.cpp:217
 msgid "Stone Brick"
 msgstr ""
 
-#: src/content_mapnode.cpp:281
+#: src/content_mapnode.cpp:231
 msgid "Stone Block"
 msgstr ""
 
-#: src/content_mapnode.cpp:295
+#: src/content_mapnode.cpp:245
 msgid "Rough Stone Brick"
 msgstr ""
 
-#: src/content_mapnode.cpp:312
+#: src/content_mapnode.cpp:262
 msgid "Rough Stone Block"
 msgstr ""
 
-#: src/content_mapnode.cpp:328 src/content_mapnode.cpp:344
+#: src/content_mapnode.cpp:278 src/content_mapnode.cpp:295
 msgid "Grass"
 msgstr ""
 
-#: src/content_mapnode.cpp:356
+#: src/content_mapnode.cpp:308
 msgid "Muddy Snow"
 msgstr ""
 
-#: src/content_mapnode.cpp:372
+#: src/content_mapnode.cpp:324
 msgid "Mud"
 msgstr ""
 
-#: src/content_mapnode.cpp:384
+#: src/content_mapnode.cpp:336
 msgid "Ash Block"
 msgstr ""
 
-#: src/content_mapnode.cpp:399
+#: src/content_mapnode.cpp:351
 msgid "Sand"
 msgstr ""
 
-#: src/content_mapnode.cpp:414
+#: src/content_mapnode.cpp:366
 msgid "Gravel"
 msgstr ""
 
-#: src/content_mapnode.cpp:429
+#: src/content_mapnode.cpp:381
 msgid "Sand Stone"
 msgstr ""
 
-#: src/content_mapnode.cpp:444
+#: src/content_mapnode.cpp:396
 msgid "Sand Stone Bricks"
 msgstr ""
 
-#: src/content_mapnode.cpp:459
+#: src/content_mapnode.cpp:411
 msgid "Sand Stone Blocks"
 msgstr ""
 
-#: src/content_mapnode.cpp:474
+#: src/content_mapnode.cpp:426
 msgid "Clay"
 msgstr ""
 
-#: src/content_mapnode.cpp:491
+#: src/content_mapnode.cpp:443
 msgid "Blue Clay"
 msgstr ""
 
-#: src/content_mapnode.cpp:508
+#: src/content_mapnode.cpp:460
 msgid "Green Clay"
 msgstr ""
 
-#: src/content_mapnode.cpp:525
+#: src/content_mapnode.cpp:477
 msgid "Orange Clay"
 msgstr ""
 
-#: src/content_mapnode.cpp:542
+#: src/content_mapnode.cpp:494
 msgid "Purple Clay"
 msgstr ""
 
-#: src/content_mapnode.cpp:559
+#: src/content_mapnode.cpp:511
 msgid "Red Clay"
 msgstr ""
 
-#: src/content_mapnode.cpp:576
+#: src/content_mapnode.cpp:528
 msgid "Yellow Clay"
 msgstr ""
 
-#: src/content_mapnode.cpp:593
+#: src/content_mapnode.cpp:545
 msgid "Black Clay"
 msgstr ""
 
-#: src/content_mapnode.cpp:625
+#: src/content_mapnode.cpp:581
 msgid "Terracotta"
 msgstr ""
 
-#: src/content_mapnode.cpp:637
+#: src/content_mapnode.cpp:593
 msgid "Terracotta Brick"
 msgstr ""
 
-#: src/content_mapnode.cpp:651
+#: src/content_mapnode.cpp:607
 msgid "Terracotta Block"
 msgstr ""
 
-#: src/content_mapnode.cpp:665
+#: src/content_mapnode.cpp:621
 msgid "Terracotta Tile"
 msgstr ""
 
-#: src/content_mapnode.cpp:685
+#: src/content_mapnode.cpp:641
 msgid "Glass"
 msgstr ""
 
-#: src/content_mapnode.cpp:705
+#: src/content_mapnode.cpp:661
 msgid "Blue Glass"
 msgstr ""
 
-#: src/content_mapnode.cpp:727
+#: src/content_mapnode.cpp:683
 msgid "Green Glass"
 msgstr ""
 
-#: src/content_mapnode.cpp:749
+#: src/content_mapnode.cpp:705
 msgid "Orange Glass"
 msgstr ""
 
-#: src/content_mapnode.cpp:771
+#: src/content_mapnode.cpp:727
 msgid "Purple Glass"
 msgstr ""
 
-#: src/content_mapnode.cpp:793
+#: src/content_mapnode.cpp:749
 msgid "Red Glass"
 msgstr ""
 
-#: src/content_mapnode.cpp:815
+#: src/content_mapnode.cpp:771
 msgid "Yellow Glass"
 msgstr ""
 
-#: src/content_mapnode.cpp:837
+#: src/content_mapnode.cpp:793
 msgid "Black Glass"
 msgstr ""
 
-#: src/content_mapnode.cpp:859
+#: src/content_mapnode.cpp:815
 msgid "Glass Pane"
 msgstr ""
 
-#: src/content_mapnode.cpp:893
+#: src/content_mapnode.cpp:849
 msgid "Blue Glass Pane"
 msgstr ""
 
-#: src/content_mapnode.cpp:928
+#: src/content_mapnode.cpp:884
 msgid "Green Glass Pane"
 msgstr ""
 
-#: src/content_mapnode.cpp:963
+#: src/content_mapnode.cpp:919
 msgid "Orange Glass Pane"
 msgstr ""
 
-#: src/content_mapnode.cpp:998
+#: src/content_mapnode.cpp:954
 msgid "Purple Glass Pane"
 msgstr ""
 
-#: src/content_mapnode.cpp:1033
+#: src/content_mapnode.cpp:989
 msgid "Red Glass Pane"
 msgstr ""
 
-#: src/content_mapnode.cpp:1068
+#: src/content_mapnode.cpp:1024
 msgid "Yellow Glass Pane"
 msgstr ""
 
-#: src/content_mapnode.cpp:1103
+#: src/content_mapnode.cpp:1059
 msgid "Black Glass Pane"
 msgstr ""
 
-#: src/content_mapnode.cpp:1138 src/content_mapnode_farm.cpp:490
+#: src/content_mapnode.cpp:1094 src/content_mapnode_farm.cpp:490
 msgid "Glass Light"
 msgstr ""
 
-#: src/content_mapnode.cpp:1161
+#: src/content_mapnode.cpp:1117
 msgid "Wood"
 msgstr ""
 
-#: src/content_mapnode.cpp:1187
+#: src/content_mapnode.cpp:1143
 msgid "Jungle Wood"
 msgstr ""
 
-#: src/content_mapnode.cpp:1212
+#: src/content_mapnode.cpp:1168
 msgid "Pine"
 msgstr ""
 
-#: src/content_mapnode.cpp:1237 src/content_mapnode.cpp:1252
+#: src/content_mapnode.cpp:1193 src/content_mapnode.cpp:1208
 msgid "Mese"
 msgstr ""
 
-#: src/content_mapnode.cpp:1265
+#: src/content_mapnode.cpp:1221
 msgid "Sponge"
 msgstr ""
 
-#: src/content_mapnode.cpp:1280
+#: src/content_mapnode.cpp:1236
 msgid "Waterlogged Sponge"
 msgstr ""
 
-#: src/content_mapnode.cpp:1292
+#: src/content_mapnode.cpp:1248
 msgid "Hay Bale"
 msgstr ""
 
-#: src/content_mapnode.cpp:1309
+#: src/content_mapnode.cpp:1265
 msgid "Raw Apple Pie"
 msgstr ""
 
-#: src/content_mapnode.cpp:1338
+#: src/content_mapnode.cpp:1294
 msgid "Apple Pie"
 msgstr ""
 
-#: src/content_mapnode.cpp:1433
+#: src/content_mapnode.cpp:1389
 msgid "Raw Pumpkin Pie"
 msgstr ""
 
-#: src/content_mapnode.cpp:1462
+#: src/content_mapnode.cpp:1418
 msgid "Pumpkin Pie"
 msgstr ""
 
-#: src/content_mapnode.cpp:1557 src/content_mapnode_farm.cpp:1020
+#: src/content_mapnode.cpp:1513 src/content_mapnode_farm.cpp:1020
 msgid "Dead Vine"
 msgstr ""
 
-#: src/content_mapnode.cpp:1576 src/content_mapnode.cpp:1655
+#: src/content_mapnode.cpp:1532 src/content_mapnode.cpp:1611
 msgid "Snow"
 msgstr ""
 
-#: src/content_mapnode.cpp:1592
+#: src/content_mapnode.cpp:1548
 msgid "Snowman"
 msgstr ""
 
-#: src/content_mapnode.cpp:1678 src/content_mapnode_farm.cpp:851
+#: src/content_mapnode.cpp:1634 src/content_mapnode_farm.cpp:851
 #: src/content_mapnode_farm.cpp:870 src/content_mapnode_farm.cpp:890
 #: src/content_mapnode_farm.cpp:911
 msgid "Cotton"
 msgstr ""
 
-#: src/content_mapnode.cpp:1709
+#: src/content_mapnode.cpp:1665
 msgid "Blue Cotton"
 msgstr ""
 
-#: src/content_mapnode.cpp:1726
+#: src/content_mapnode.cpp:1682
 msgid "Green Cotton"
 msgstr ""
 
-#: src/content_mapnode.cpp:1743
+#: src/content_mapnode.cpp:1699
 msgid "Orange Cotton"
 msgstr ""
 
-#: src/content_mapnode.cpp:1760
+#: src/content_mapnode.cpp:1716
 msgid "Purple Cotton"
 msgstr ""
 
-#: src/content_mapnode.cpp:1777
+#: src/content_mapnode.cpp:1733
 msgid "Red Cotton"
 msgstr ""
 
-#: src/content_mapnode.cpp:1794
+#: src/content_mapnode.cpp:1750
 msgid "Yellow Cotton"
 msgstr ""
 
-#: src/content_mapnode.cpp:1811
+#: src/content_mapnode.cpp:1767
 msgid "Black Cotton"
 msgstr ""
 
-#: src/content_mapnode.cpp:1828
+#: src/content_mapnode.cpp:1784
 msgid "Carpet"
 msgstr ""
 
-#: src/content_mapnode.cpp:1851
+#: src/content_mapnode.cpp:1807
 msgid "Blue Carpet"
 msgstr ""
 
-#: src/content_mapnode.cpp:1875
+#: src/content_mapnode.cpp:1831
 msgid "Green Carpet"
 msgstr ""
 
-#: src/content_mapnode.cpp:1899
+#: src/content_mapnode.cpp:1855
 msgid "Orange Carpet"
 msgstr ""
 
-#: src/content_mapnode.cpp:1923
+#: src/content_mapnode.cpp:1879
 msgid "Purple Carpet"
 msgstr ""
 
-#: src/content_mapnode.cpp:1947
+#: src/content_mapnode.cpp:1903
 msgid "Red Carpet"
 msgstr ""
 
-#: src/content_mapnode.cpp:1971
+#: src/content_mapnode.cpp:1927
 msgid "Yellow Carpet"
 msgstr ""
 
-#: src/content_mapnode.cpp:1995
+#: src/content_mapnode.cpp:1951
 msgid "Black Carpet"
 msgstr ""
 
-#: src/content_mapnode.cpp:2019
+#: src/content_mapnode.cpp:1975
 msgid "Air"
 msgstr ""
 
-#: src/content_mapnode.cpp:2035
+#: src/content_mapnode.cpp:1991
 msgid "Vacuum"
 msgstr ""
 
-#: src/content_mapnode.cpp:2052 src/content_mapnode.cpp:2081
+#: src/content_mapnode.cpp:2008 src/content_mapnode.cpp:2038
 msgid "Water"
 msgstr ""
 
-#: src/content_mapnode.cpp:2130 src/content_mapnode.cpp:2158
+#: src/content_mapnode.cpp:2087 src/content_mapnode.cpp:2115
 msgid "Lava"
 msgstr ""
 
-#: src/content_mapnode.cpp:2205
+#: src/content_mapnode.cpp:2163
 msgid "Rough Stone"
 msgstr ""
 
-#: src/content_mapnode.cpp:2222
+#: src/content_mapnode.cpp:2180
 msgid "Cobble Stone"
 msgstr ""
 
-#: src/content_mapnode.cpp:2237
+#: src/content_mapnode.cpp:2195
 msgid "Mossy Cobble Stone"
 msgstr ""
 
-#: src/content_mapnode.cpp:2250
+#: src/content_mapnode.cpp:2208
 msgid "Steel Block"
 msgstr ""
 
-#: src/content_mapnode.cpp:2265
+#: src/content_mapnode.cpp:2223
 msgid "Stone Knob"
 msgstr ""
 
-#: src/content_mapnode.cpp:2266
+#: src/content_mapnode.cpp:2224
 msgid "Rough Stone Knob"
 msgstr ""
 
-#: src/content_mapnode.cpp:2267
+#: src/content_mapnode.cpp:2225
 msgid "Sandstone Knob"
 msgstr ""
 
-#: src/content_mapnode.cpp:2268
+#: src/content_mapnode.cpp:2226
 msgid "Wooden Knob"
 msgstr ""
 
-#: src/content_mapnode.cpp:2269
+#: src/content_mapnode.cpp:2227
 msgid "Junglewood Knob"
 msgstr ""
 
-#: src/content_mapnode.cpp:2270
+#: src/content_mapnode.cpp:2228
 msgid "Pine Knob"
 msgstr ""
 
-#: src/content_mapnode.cpp:2274
+#: src/content_mapnode.cpp:2232
 msgid "Copper Block"
 msgstr ""
 
-#: src/content_mapnode.cpp:2291
+#: src/content_mapnode.cpp:2249
 msgid "Gold Block"
 msgstr ""
 
-#: src/content_mapnode.cpp:2308
+#: src/content_mapnode.cpp:2266
 msgid "Silver Block"
 msgstr ""
 
-#: src/content_mapnode.cpp:2325
+#: src/content_mapnode.cpp:2283
 msgid "Tin Block"
 msgstr ""
 
-#: src/content_mapnode.cpp:2342
+#: src/content_mapnode.cpp:2300
 msgid "Quartz Block"
 msgstr ""
 
-#: src/content_mapnode.cpp:2359
+#: src/content_mapnode.cpp:2317
 msgid "Stone Tiles"
 msgstr ""
 
-#: src/content_mapnode.cpp:2381
+#: src/content_mapnode.cpp:2339
 msgid "Wood Tiles"
 msgstr ""
 
@@ -2336,7 +2336,7 @@ msgstr ""
 msgid "Rough Stone Slab"
 msgstr ""
 
-#: src/content_mapnode_slab.cpp:56 src/content_mapnode_slab.cpp:419
+#: src/content_mapnode_slab.cpp:56 src/content_mapnode_slab.cpp:423
 msgid "Cobble Stone Slab"
 msgstr ""
 
@@ -2360,39 +2360,39 @@ msgstr ""
 msgid "Brick Slab"
 msgstr ""
 
-#: src/content_mapnode_slab.cpp:170
+#: src/content_mapnode_slab.cpp:174
 msgid "Sand Stone Slab"
 msgstr ""
 
-#: src/content_mapnode_slab.cpp:188 src/content_mapnode_slab.cpp:524
+#: src/content_mapnode_slab.cpp:192 src/content_mapnode_slab.cpp:532
 msgid "Glass Slab"
 msgstr ""
 
-#: src/content_mapnode_slab.cpp:214 src/content_mapnode_slab.cpp:547
+#: src/content_mapnode_slab.cpp:218 src/content_mapnode_slab.cpp:555
 msgid "Blue Glass Slab"
 msgstr ""
 
-#: src/content_mapnode_slab.cpp:241 src/content_mapnode_slab.cpp:570
+#: src/content_mapnode_slab.cpp:245 src/content_mapnode_slab.cpp:578
 msgid "Green Glass Slab"
 msgstr ""
 
-#: src/content_mapnode_slab.cpp:268 src/content_mapnode_slab.cpp:593
+#: src/content_mapnode_slab.cpp:272 src/content_mapnode_slab.cpp:601
 msgid "Orange Glass Slab"
 msgstr ""
 
-#: src/content_mapnode_slab.cpp:295 src/content_mapnode_slab.cpp:616
+#: src/content_mapnode_slab.cpp:299 src/content_mapnode_slab.cpp:624
 msgid "Purple Glass Slab"
 msgstr ""
 
-#: src/content_mapnode_slab.cpp:322 src/content_mapnode_slab.cpp:639
+#: src/content_mapnode_slab.cpp:326 src/content_mapnode_slab.cpp:647
 msgid "Red Glass Slab"
 msgstr ""
 
-#: src/content_mapnode_slab.cpp:349 src/content_mapnode_slab.cpp:662
+#: src/content_mapnode_slab.cpp:353 src/content_mapnode_slab.cpp:670
 msgid "Yellow Glass Slab"
 msgstr ""
 
-#: src/content_mapnode_slab.cpp:376 src/content_mapnode_slab.cpp:685
+#: src/content_mapnode_slab.cpp:380 src/content_mapnode_slab.cpp:693
 msgid "Black Glass Slab"
 msgstr ""
 
@@ -2486,7 +2486,7 @@ msgid "Decraft Book"
 msgstr ""
 
 #: src/content_mapnode_special.cpp:732 src/content_mapnode_special.cpp:888
-#: src/content_nodemeta.cpp:2040
+#: src/content_nodemeta.cpp:2035
 msgid "Diary"
 msgstr ""
 
@@ -2510,139 +2510,139 @@ msgstr ""
 msgid "Craft Guide"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:945 src/content_mapnode_special.cpp:965
+#: src/content_mapnode_special.cpp:945 src/content_mapnode_special.cpp:966
 msgid "Fire"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:985 src/content_mapnode_special.cpp:1008
+#: src/content_mapnode_special.cpp:986 src/content_mapnode_special.cpp:1009
 msgid "Torch"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1036 src/content_mapnode_special.cpp:1062
-#: src/content_mapnode_special.cpp:1095
+#: src/content_mapnode_special.cpp:1037 src/content_mapnode_special.cpp:1063
+#: src/content_mapnode_special.cpp:1096
 msgid "Sign"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1123 src/content_mapnode_special.cpp:1153
-#: src/content_mapnode_special.cpp:1185
+#: src/content_mapnode_special.cpp:1124 src/content_mapnode_special.cpp:1154
+#: src/content_mapnode_special.cpp:1186
 msgid "Locking Sign"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1214 src/content_nodemeta.cpp:228
+#: src/content_mapnode_special.cpp:1215 src/content_nodemeta.cpp:228
 msgid "Chest"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1237 src/content_nodemeta.cpp:503
+#: src/content_mapnode_special.cpp:1238 src/content_nodemeta.cpp:503
 #, fuzzy
 msgid "Creative Chest"
 msgstr "Kreativ mode"
 
-#: src/content_mapnode_special.cpp:1258
+#: src/content_mapnode_special.cpp:1259
 msgid "Locking Chest"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1288
+#: src/content_mapnode_special.cpp:1289
 msgid "Safe"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1310 src/content_mapnode_special.cpp:1330
+#: src/content_mapnode_special.cpp:1311 src/content_mapnode_special.cpp:1331
 msgid "Furnace"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1349 src/content_mapnode_special.cpp:1370
+#: src/content_mapnode_special.cpp:1350 src/content_mapnode_special.cpp:1371
 msgid "Locking Furnace"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1388 src/content_mapnode_special.cpp:1408
+#: src/content_mapnode_special.cpp:1389 src/content_mapnode_special.cpp:1409
 msgid "Incinerator"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1426
+#: src/content_mapnode_special.cpp:1427
 msgid "Nyan Cat"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1440
+#: src/content_mapnode_special.cpp:1441
 msgid "Rainbow"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1452
+#: src/content_mapnode_special.cpp:1453
 msgid "Unbaked Flower Pot"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1474
+#: src/content_mapnode_special.cpp:1475
 msgid "Flower Pot"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1492
+#: src/content_mapnode_special.cpp:1493
 msgid "Cobblestone Wall"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1516
+#: src/content_mapnode_special.cpp:1517
 msgid "Rough Stone Wall"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1540
+#: src/content_mapnode_special.cpp:1541
 msgid "Mossy Cobblestone Wall"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1564
+#: src/content_mapnode_special.cpp:1565
 msgid "Stone Wall"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1588
+#: src/content_mapnode_special.cpp:1589
 msgid "Sand Stone Wall"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1612
+#: src/content_mapnode_special.cpp:1613
 msgid "TNT"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1632
+#: src/content_mapnode_special.cpp:1633
 msgid "In-Progress explosion - how did you get this???"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1652
+#: src/content_mapnode_special.cpp:1653
 msgid "Steam"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1673
+#: src/content_mapnode_special.cpp:1674
 #, fuzzy
 msgid "Home Flag"
 msgstr "Hjem"
 
-#: src/content_mapnode_special.cpp:1723
+#: src/content_mapnode_special.cpp:1724
 msgid "Blue Home Flag"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1752
+#: src/content_mapnode_special.cpp:1753
 msgid "Green Home Flag"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1781
+#: src/content_mapnode_special.cpp:1782
 msgid "Orange Home Flag"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1810
+#: src/content_mapnode_special.cpp:1811
 msgid "Purple Home Flag"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1839
+#: src/content_mapnode_special.cpp:1840
 msgid "Red Home Flag"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1868
+#: src/content_mapnode_special.cpp:1869
 msgid "Yellow Home Flag"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1897
+#: src/content_mapnode_special.cpp:1898
 msgid "Black Home Flag"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1926
+#: src/content_mapnode_special.cpp:1927
 msgid "Life Support System"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1943
+#: src/content_mapnode_special.cpp:1944
 msgid "Parcel"
 msgstr ""
 
@@ -2674,12 +2674,12 @@ msgstr ""
 msgid "Brick Stair"
 msgstr ""
 
-#: src/content_mapnode_stair.cpp:162
+#: src/content_mapnode_stair.cpp:167
 msgid "Sand Stone Stair"
 msgstr ""
 
 #: src/content_nodemeta.cpp:74 src/content_nodemeta.cpp:137
-#: src/content_nodemeta.cpp:2024 src/content_nodemeta.cpp:2123
+#: src/content_nodemeta.cpp:2019 src/content_nodemeta.cpp:2118
 #: src/guiKeyChangeMenu.cpp:336
 msgid "Save"
 msgstr "Gem"
@@ -2700,18 +2700,18 @@ msgid "Safe owned by '%s'"
 msgstr ""
 
 #: src/content_nodemeta.cpp:544 src/content_nodemeta.cpp:1491
-#: src/content_nodemeta.cpp:1696 src/content_nodemeta.cpp:1910
+#: src/content_nodemeta.cpp:1691 src/content_nodemeta.cpp:1905
 #, c-format
 msgid "Page %d of %d"
 msgstr ""
 
 #: src/content_nodemeta.cpp:548 src/content_nodemeta.cpp:1519
-#: src/content_nodemeta.cpp:1705 src/content_nodemeta.cpp:1926
+#: src/content_nodemeta.cpp:1700 src/content_nodemeta.cpp:1921
 msgid "<< Previous Page"
 msgstr ""
 
 #: src/content_nodemeta.cpp:554 src/content_nodemeta.cpp:1525
-#: src/content_nodemeta.cpp:1711 src/content_nodemeta.cpp:1932
+#: src/content_nodemeta.cpp:1706 src/content_nodemeta.cpp:1927
 msgid "Next Page >>"
 msgstr ""
 
@@ -2788,27 +2788,27 @@ msgstr ""
 msgid "Gives"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1700
+#: src/content_nodemeta.cpp:1695
 msgid "Add item here to see cook result"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1914
+#: src/content_nodemeta.cpp:1909
 msgid "Add item here to see dig result"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1918
+#: src/content_nodemeta.cpp:1913
 msgid "Dig Result"
 msgstr ""
 
-#: src/content_nodemeta.cpp:1922
+#: src/content_nodemeta.cpp:1917
 msgid "Random Drop"
 msgstr ""
 
-#: src/content_nodemeta.cpp:2014 src/content_nodemeta.cpp:2113
+#: src/content_nodemeta.cpp:2009 src/content_nodemeta.cpp:2108
 msgid "Title"
 msgstr ""
 
-#: src/content_nodemeta.cpp:2019 src/content_nodemeta.cpp:2118
+#: src/content_nodemeta.cpp:2014 src/content_nodemeta.cpp:2113
 #, fuzzy
 msgid "Content"
 msgstr "Fortsæt"
@@ -2985,146 +2985,146 @@ msgstr ""
 msgid "Change Clothing"
 msgstr ""
 
-#: src/game.cpp:1023
+#: src/game.cpp:1038
 msgid "Loading"
 msgstr ""
 
-#: src/game.cpp:1097
+#: src/game.cpp:1112
 msgid "Loading..."
 msgstr ""
 
-#: src/game.cpp:1106
+#: src/game.cpp:1121
 msgid "Creating server..."
 msgstr ""
 
-#: src/game.cpp:1117
+#: src/game.cpp:1132
 msgid "Creating client..."
 msgstr ""
 
-#: src/game.cpp:1122
+#: src/game.cpp:1137
 msgid "Resolving address..."
 msgstr ""
 
-#: src/game.cpp:1133
+#: src/game.cpp:1148
 msgid "Couldn't resolve address"
 msgstr ""
 
-#: src/game.cpp:1173
+#: src/game.cpp:1188
 #, c-format
 msgid "Connecting to server... (timeout in %d second)"
 msgid_plural "Connecting to server... (timeout in %d seconds)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/game.cpp:1202
+#: src/game.cpp:1217
 #, c-format
 msgid "Access denied. Reason: %ls"
 msgstr ""
 
-#: src/game.cpp:1206
+#: src/game.cpp:1221
 msgid "Unable to Connect (port already in use?)."
 msgstr ""
 
-#: src/game.cpp:1209
+#: src/game.cpp:1224
 msgid "Connection timed out."
 msgstr ""
 
-#: src/game.cpp:1370
+#: src/game.cpp:1382
 msgid "Access denied. Reason: "
 msgstr ""
 
-#: src/game.cpp:1605
+#: src/game.cpp:1613
 msgid "free_move disabled"
 msgstr ""
 
-#: src/game.cpp:1609
+#: src/game.cpp:1617
 msgid "free_move enabled"
 msgstr ""
 
-#: src/game.cpp:1615
+#: src/game.cpp:1623
 msgid "fast_move disabled"
 msgstr ""
 
-#: src/game.cpp:1619
+#: src/game.cpp:1627
 msgid "fast_move enabled"
 msgstr ""
 
-#: src/game.cpp:1631
+#: src/game.cpp:1639
 #, c-format
 msgid "Saved screenshot to '%s'"
 msgstr ""
 
-#: src/game.cpp:1643
+#: src/game.cpp:1651
 msgid "HUD shown"
 msgstr ""
 
-#: src/game.cpp:1645
+#: src/game.cpp:1653
 msgid "HUD hidden"
 msgstr ""
 
-#: src/game.cpp:1651
+#: src/game.cpp:1659
 msgid "Chat shown"
 msgstr ""
 
-#: src/game.cpp:1653
+#: src/game.cpp:1661
 msgid "Chat hidden"
 msgstr ""
 
-#: src/game.cpp:1659
+#: src/game.cpp:1667
 msgid "Fog disabled"
 msgstr ""
 
-#: src/game.cpp:1661
+#: src/game.cpp:1669
 msgid "Fog enabled"
 msgstr ""
 
-#: src/game.cpp:1667
+#: src/game.cpp:1675
 msgid "Camera update disabled"
 msgstr ""
 
-#: src/game.cpp:1669
+#: src/game.cpp:1677
 msgid "Camera update enabled"
 msgstr ""
 
-#: src/game.cpp:1679
+#: src/game.cpp:1687
 msgid "Debug info shown"
 msgstr ""
 
-#: src/game.cpp:1684
+#: src/game.cpp:1692
 msgid "Debug info and frametime graph hidden"
 msgstr ""
 
-#: src/game.cpp:1688
+#: src/game.cpp:1696
 msgid "Frametime graph shown"
 msgstr ""
 
-#: src/game.cpp:1700
+#: src/game.cpp:1708
 #, c-format
 msgid "Profiler shown (page %d of %d)"
 msgstr ""
 
-#: src/game.cpp:1704
+#: src/game.cpp:1712
 msgid "Profiler hidden"
 msgstr ""
 
-#: src/game.cpp:1712 src/game.cpp:1723
+#: src/game.cpp:1720 src/game.cpp:1731
 #, c-format
 msgid "Minimum viewing range changed to %d"
 msgstr ""
 
-#: src/game.cpp:1792
+#: src/game.cpp:1800
 msgid "Enabled full viewing range"
 msgstr ""
 
-#: src/game.cpp:1796
+#: src/game.cpp:1804
 msgid "Disabled full viewing range"
 msgstr ""
 
-#: src/game.cpp:2331
+#: src/game.cpp:2345
 msgid "Disconnected (Network Timeout)"
 msgstr ""
 
-#: src/game.cpp:2710
+#: src/game.cpp:2727
 msgid "Shutting down..."
 msgstr ""
 
@@ -3225,241 +3225,241 @@ msgstr ""
 msgid "press Key"
 msgstr "Tryk knap"
 
-#: src/guiMainMenu.cpp:417
+#: src/guiMainMenu.cpp:424
 msgid "Character Creator"
 msgstr ""
 
-#: src/guiMainMenu.cpp:423 src/guiMainMenu.cpp:638 src/guiMainMenu.cpp:680
-#: src/guiMainMenu.cpp:778
+#: src/guiMainMenu.cpp:430 src/guiMainMenu.cpp:637 src/guiMainMenu.cpp:679
+#: src/guiMainMenu.cpp:777
 msgid "Single Player"
 msgstr ""
 
-#: src/guiMainMenu.cpp:429 src/guiMainMenu.cpp:480
+#: src/guiMainMenu.cpp:436 src/guiMainMenu.cpp:487
 msgid "Multi Player"
 msgstr ""
 
-#: src/guiMainMenu.cpp:435 src/guiMainMenu.cpp:556
+#: src/guiMainMenu.cpp:442 src/guiMainMenu.cpp:555
 msgid "Settings"
 msgstr ""
 
-#: src/guiMainMenu.cpp:441 src/guiMainMenu.cpp:905
+#: src/guiMainMenu.cpp:448 src/guiMainMenu.cpp:903
 msgid "Credits"
 msgstr ""
 
-#: src/guiMainMenu.cpp:447
+#: src/guiMainMenu.cpp:454
 msgid "Quit"
 msgstr ""
 
-#: src/guiMainMenu.cpp:488
+#: src/guiMainMenu.cpp:495
 msgid "Name/Password"
 msgstr "Navn/kodeord"
 
-#: src/guiMainMenu.cpp:520
+#: src/guiMainMenu.cpp:523
 msgid "Address/Port"
 msgstr "Adresse/port"
 
-#: src/guiMainMenu.cpp:550
+#: src/guiMainMenu.cpp:549
 #, fuzzy
 msgid "Connect"
 msgstr "Logud"
 
-#: src/guiMainMenu.cpp:562
+#: src/guiMainMenu.cpp:561
 msgid "Fancy trees"
 msgstr "Fancy trær"
 
-#: src/guiMainMenu.cpp:567
+#: src/guiMainMenu.cpp:566
 msgid "Smooth Lighting"
 msgstr ""
 
-#: src/guiMainMenu.cpp:572
+#: src/guiMainMenu.cpp:571
 msgid "3D Clouds"
 msgstr ""
 
-#: src/guiMainMenu.cpp:577
+#: src/guiMainMenu.cpp:576
 msgid "Opaque water"
 msgstr ""
 
-#: src/guiMainMenu.cpp:582
+#: src/guiMainMenu.cpp:581
 msgid "Classic hotbar"
 msgstr ""
 
-#: src/guiMainMenu.cpp:587
+#: src/guiMainMenu.cpp:586
 msgid "Volume:"
 msgstr ""
 
-#: src/guiMainMenu.cpp:592
+#: src/guiMainMenu.cpp:591
 msgid "Fullscreen"
 msgstr ""
 
-#: src/guiMainMenu.cpp:597
+#: src/guiMainMenu.cpp:596
 msgid "Particles"
 msgstr ""
 
-#: src/guiMainMenu.cpp:602
+#: src/guiMainMenu.cpp:601
 msgid "Mip-Mapping"
 msgstr ""
 
-#: src/guiMainMenu.cpp:607
+#: src/guiMainMenu.cpp:606
 msgid "Bi-Linear Filtering"
 msgstr ""
 
-#: src/guiMainMenu.cpp:612
+#: src/guiMainMenu.cpp:611
 msgid "Tri-Linear Filtering"
 msgstr ""
 
-#: src/guiMainMenu.cpp:617
+#: src/guiMainMenu.cpp:616
 msgid "Anisotropic Filtering"
 msgstr ""
 
-#: src/guiMainMenu.cpp:632
+#: src/guiMainMenu.cpp:631
 msgid "Change keys"
 msgstr "Indstillinger"
 
-#: src/guiMainMenu.cpp:647 src/guiMainMenu.cpp:689 src/guiMainMenu.cpp:787
+#: src/guiMainMenu.cpp:646 src/guiMainMenu.cpp:688 src/guiMainMenu.cpp:786
 msgid "Creative Mode"
 msgstr "Kreativ mode"
 
-#: src/guiMainMenu.cpp:648 src/guiMainMenu.cpp:690 src/guiMainMenu.cpp:788
+#: src/guiMainMenu.cpp:647 src/guiMainMenu.cpp:689 src/guiMainMenu.cpp:787
 msgid "Adventure Mode"
 msgstr ""
 
-#: src/guiMainMenu.cpp:649 src/guiMainMenu.cpp:691 src/guiMainMenu.cpp:789
+#: src/guiMainMenu.cpp:648 src/guiMainMenu.cpp:690 src/guiMainMenu.cpp:788
 #, fuzzy
 msgid "Survival Mode"
 msgstr "Kreativ mode"
 
-#: src/guiMainMenu.cpp:662 src/guiMainMenu.cpp:802
+#: src/guiMainMenu.cpp:661 src/guiMainMenu.cpp:801
 msgid "Advanced Settings"
 msgstr ""
 
-#: src/guiMainMenu.cpp:668 src/guiMainMenu.cpp:710
+#: src/guiMainMenu.cpp:667 src/guiMainMenu.cpp:709
 msgid "Map Options"
 msgstr ""
 
-#: src/guiMainMenu.cpp:674 src/guiMainMenu.cpp:772 src/guiMainMenu.cpp:898
+#: src/guiMainMenu.cpp:673 src/guiMainMenu.cpp:771 src/guiMainMenu.cpp:896
 #, fuzzy
 msgid "Start Game"
 msgstr "Start spil"
 
-#: src/guiMainMenu.cpp:704
+#: src/guiMainMenu.cpp:703
 msgid "Hide Advanced Settings"
 msgstr ""
 
-#: src/guiMainMenu.cpp:715
+#: src/guiMainMenu.cpp:714
 #, fuzzy
 msgid "Creatures"
 msgstr "Kreativ mode"
 
-#: src/guiMainMenu.cpp:722
+#: src/guiMainMenu.cpp:721
 msgid "Passive"
 msgstr ""
 
-#: src/guiMainMenu.cpp:723
+#: src/guiMainMenu.cpp:722
 msgid "Passive & Aggressive"
 msgstr ""
 
-#: src/guiMainMenu.cpp:724
+#: src/guiMainMenu.cpp:723
 msgid "Passive, Aggressive, & Destructive"
 msgstr ""
 
-#: src/guiMainMenu.cpp:736
+#: src/guiMainMenu.cpp:735
 #, fuzzy
 msgid "Player Damage"
 msgstr "Tag imod skade"
 
-#: src/guiMainMenu.cpp:741
+#: src/guiMainMenu.cpp:740
 msgid "Suffocation/Drowning"
 msgstr ""
 
-#: src/guiMainMenu.cpp:746
+#: src/guiMainMenu.cpp:745
 msgid "Hunger"
 msgstr ""
 
-#: src/guiMainMenu.cpp:751
+#: src/guiMainMenu.cpp:750
 msgid "Tool Wear"
 msgstr ""
 
-#: src/guiMainMenu.cpp:756
+#: src/guiMainMenu.cpp:755
 #, fuzzy
 msgid "Infinite Inventory"
 msgstr "Ting"
 
-#: src/guiMainMenu.cpp:761
+#: src/guiMainMenu.cpp:760
 #, fuzzy
 msgid "Initial Inventory"
 msgstr "Ting"
 
-#: src/guiMainMenu.cpp:766
+#: src/guiMainMenu.cpp:765
 #, fuzzy
 msgid "Droppable Inventory"
 msgstr "Ting"
 
-#: src/guiMainMenu.cpp:808
+#: src/guiMainMenu.cpp:807
 msgid "Hide Map Options"
 msgstr ""
 
-#: src/guiMainMenu.cpp:813
+#: src/guiMainMenu.cpp:812
 msgid "Create New Map"
 msgstr ""
 
-#: src/guiMainMenu.cpp:819
+#: src/guiMainMenu.cpp:818
 msgid "Warning! Your old map will be deleted!"
 msgstr ""
 
-#: src/guiMainMenu.cpp:825
+#: src/guiMainMenu.cpp:824
 msgid "Map Type"
 msgstr ""
 
-#: src/guiMainMenu.cpp:832
+#: src/guiMainMenu.cpp:831
 msgid "Flat"
 msgstr ""
 
-#: src/guiMainMenu.cpp:833
+#: src/guiMainMenu.cpp:832
 msgid "Flatter"
 msgstr ""
 
-#: src/guiMainMenu.cpp:834
+#: src/guiMainMenu.cpp:833
 msgid "Smoother"
 msgstr ""
 
-#: src/guiMainMenu.cpp:835
+#: src/guiMainMenu.cpp:834
 msgid "Default"
 msgstr ""
 
-#: src/guiMainMenu.cpp:836
+#: src/guiMainMenu.cpp:835
 msgid "Hilly"
 msgstr ""
 
-#: src/guiMainMenu.cpp:837
+#: src/guiMainMenu.cpp:836
 msgid "Mountains"
 msgstr ""
 
-#: src/guiMainMenu.cpp:838
+#: src/guiMainMenu.cpp:837
 msgid "Crazy"
 msgstr ""
 
-#: src/guiMainMenu.cpp:839
+#: src/guiMainMenu.cpp:838
 msgid "Crazy Hills"
 msgstr ""
 
-#: src/guiMainMenu.cpp:861
+#: src/guiMainMenu.cpp:860
 msgid "Use Fixed Seed"
 msgstr ""
 
-#: src/guiMainMenu.cpp:867
+#: src/guiMainMenu.cpp:866
 msgid "Map Seed"
 msgstr ""
 
-#: src/guiMainMenu.cpp:885
+#: src/guiMainMenu.cpp:883
 #, fuzzy
 msgid "Clear Map"
 msgstr "Rens"
 
-#: src/guiMainMenu.cpp:890
+#: src/guiMainMenu.cpp:888
 msgid "Warning! This will delete all construction from your map!"
 msgstr ""
 
-#: src/guiMainMenu.cpp:913
+#: src/guiMainMenu.cpp:911
 msgid ""
 "Voxelands\n"
 "http://www.voxelands.com/\n"
@@ -3817,16 +3817,16 @@ msgstr "Spil"
 msgid "Zoom"
 msgstr ""
 
-#: src/main.cpp:1135
+#: src/main.cpp:1131
 msgid "Setting Up UI"
 msgstr ""
 
-#: src/main.cpp:1158
-msgid "Loading MapNodes"
+#: src/main.cpp:1156
+msgid "Loading Creatures"
 msgstr ""
 
-#: src/main.cpp:1160
-msgid "Loading Creatures"
+#: src/main.cpp:1159
+msgid "Setting Up Sound"
 msgstr ""
 
 #: src/mapnode.cpp:279
@@ -3857,11 +3857,11 @@ msgstr ""
 msgid "Loading Special MapNodes"
 msgstr ""
 
-#~ msgid "Proceed"
-#~ msgstr "Fortsæt"
+#~ msgid "Leave address blank to start a local server."
+#~ msgstr "Lad black for at spille localt"
 
 #~ msgid "Delete map"
 #~ msgstr "Slet mappen"
 
-#~ msgid "Leave address blank to start a local server."
-#~ msgstr "Lad black for at spille localt"
+#~ msgid "Proceed"
+#~ msgstr "Fortsæt"
