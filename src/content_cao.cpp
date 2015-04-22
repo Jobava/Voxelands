@@ -540,7 +540,7 @@ void MobCAO::initialize(const std::string &data)
 		// version
 		u8 version = readU8(is);
 		// check version
-		if (version != 0)
+		if (version < 0 || version > 1)
 			return;
 		// pos
 		m_position = readV3F1000(is);
@@ -550,13 +550,15 @@ void MobCAO::initialize(const std::string &data)
 		// yaw
 		m_yaw = readF1000(is);
 		pos_translator.init(m_position,m_yaw);
-		// client doesn't use these, but has to read past them
-		// speed
-		readV3F1000(is);
-		// age
-		readF1000(is);
-		// hp
-		readU8(is);
+		if (version == 0) {
+			// client doesn't use these, but has to read past them
+			// speed
+			readV3F1000(is);
+			// age
+			readF1000(is);
+			// hp
+			readU8(is);
+		}
 		// shooting
 		m_shooting = !!readU8(is);
 	}

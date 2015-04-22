@@ -490,7 +490,18 @@ std::string MobSAO::getStaticData()
 }
 std::string MobSAO::getClientInitializationData()
 {
-	return getStaticData();
+	std::ostringstream os(std::ios::binary);
+	// version
+	writeU8(os, 1);
+	// pos
+	writeV3F1000(os, m_base_position);
+	// content
+	writeU16(os,m_content);
+	// yaw
+	writeF1000(os,m_yaw);
+	// shooting
+	writeU8(os,(u8)m_shooting);
+	return os.str();
 }
 void MobSAO::step(float dtime, bool send_recommended)
 {
