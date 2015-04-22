@@ -138,6 +138,7 @@ struct MobFeatures {
 	std::string sound_death;
 	std::string sound_attack;
 	std::string sound_punch;
+	std::string sound_random;
 
 	content_t spawn_on;
 	content_t spawn_in;
@@ -266,6 +267,7 @@ struct MobFeatures {
 		sound_death = "";
 		sound_attack = "";
 		sound_punch = "mob-dig";
+		sound_punch = "";
 		spawn_on = CONTENT_IGNORE;
 		spawn_in = CONTENT_IGNORE;
 		spawn_min_light = 0;

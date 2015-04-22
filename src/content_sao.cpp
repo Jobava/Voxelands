@@ -402,7 +402,8 @@ MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, content_t type):
 	m_shoot_reload_timer(0),
 	m_shooting(false),
 	m_shooting_timer(0),
-	m_shoot_y(0)
+	m_shoot_y(0),
+	m_last_sound(0)
 {
 	ServerActiveObject::registerType(getType(), create);
 	if ((type&CONTENT_MOB_MASK) == CONTENT_MOB_MASK) {
@@ -431,7 +432,8 @@ MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, v3f speed, content_t typ
 	m_shoot_reload_timer(0),
 	m_shooting(false),
 	m_shooting_timer(0),
-	m_shoot_y(0)
+	m_shoot_y(0),
+	m_last_sound(0)
 {
 	ServerActiveObject::registerType(getType(), create);
 	if ((type&CONTENT_MOB_MASK) == CONTENT_MOB_MASK) {
@@ -500,6 +502,7 @@ void MobSAO::step(float dtime, bool send_recommended)
 	float disturbing_player_dir = 0;
 
 	m_age += dtime;
+	m_last_sound += dtime;
 
 	/* die, but not in the middle of attacking someone */
 	if (m.lifetime > 0.0 && m_age >= m.lifetime && (!m.notices_player || m_disturbing_player == "")) {
@@ -527,6 +530,14 @@ void MobSAO::step(float dtime, bool send_recommended)
 				m_removed = true;
 				return;
 			}
+		}
+	}
+
+	if (m_last_sound > 30.0) {
+		m_last_sound -= 5.0;
+		if (m.sound_random != "" && myrand_range(0,10) == 0) {
+			m_env->addEnvEvent(ENV_EVENT_SOUND,m_base_position,m.sound_random);
+			m_last_sound -= 30.0;
 		}
 	}
 

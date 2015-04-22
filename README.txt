@@ -55,7 +55,7 @@ Copyright (c) 2013-2015 Lisa 'darkrose' Milne <lisa@ltmnet.com>
 Forked from Minetest 0.3.x
 Copyright (c) 2010-2011 Perttu Ahola <celeron55@gmail.com>
 
-Textures and Models:
+Textures, Sounds, and Models:
 
 This does not apply to texture packs made by others.
 
@@ -68,6 +68,7 @@ darkrose
 sapier
 Tom Peter
 Telaron
+juskiddink
 With special thanks to http://www.opengameart.org/
 
 DEVELOPMENT:

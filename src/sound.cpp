@@ -113,6 +113,9 @@ void init_sounds(ISoundManager *sound)
 	// mobs
 	sound->loadSound("mob-oerkki-spawn","mob_oerkki_spawn.ogg");
 	sound->loadSound("mob-wolf-hit","mob_wolf_hit.ogg");
+	sound->loadSound("mob-wolf-spawn","mob_wolf_spawn.ogg");
+	sound->loadSound("mob-sheep-env","mob_sheep_env.ogg");
+	sound->loadSound("mob-deer-env","mob_deer_env.ogg");
 
 	// special
 	sound->loadSound("wield","wield_item.ogg");

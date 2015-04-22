@@ -120,6 +120,7 @@ private:
 	bool m_shooting;
 	float m_shooting_timer;
 	float m_shoot_y;
+	float m_last_sound;
 };
 
 #endif

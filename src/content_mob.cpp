@@ -388,6 +388,7 @@ void content_mob_init()
 	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_FUR)+" 2";
 	f->motion = MM_SEEKER;
 	f->motion_type = MMT_WALK;
+	f->sound_random = "mob-deer-env";
 	f->spawn_on = CONTENT_WILDGRASS_SHORT;
 	f->spawn_in = CONTENT_AIR;
 	f->spawn_min_height = -5;
@@ -416,6 +417,7 @@ void content_mob_init()
 	f->motion = MM_WANDER;
 	f->motion_type = MMT_WALK;
 	f->angry_motion = MM_SEEKER;
+	f->sound_random = "mob-deer-env";
 	f->spawn_on = CONTENT_WILDGRASS_SHORT;
 	f->spawn_in = CONTENT_AIR;
 	f->spawn_min_height = -5;
@@ -446,6 +448,7 @@ void content_mob_init()
 	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_FUR)+" 2";
 	f->motion = MM_SEEKER;
 	f->motion_type = MMT_WALK;
+	f->sound_random = "mob-deer-env";
 	f->notices_player = true;
 	f->lifetime = 1800.0;
 	f->setCollisionBox(aabb3f(-0.7*BS, 0., -0.7*BS, 0.7*BS, 1.5*BS, 0.7*BS));
@@ -530,6 +533,7 @@ void content_mob_init()
 	f->spawn_max_light = LIGHT_MAX/2;
 	f->spawn_max_nearby_mobs = 3;
 	f->sound_punch = "mob-wolf-hit";
+	f->sound_spawn = "mob-wolf-spawn";
 	f->notices_player = true;
 	f->attack_player_damage = 3;
 	f->attack_player_range = v3f(1,1,1);
@@ -581,6 +585,7 @@ void content_mob_init()
 	f->special_dropped_max = 8;
 	f->motion = MM_SEEKER;
 	f->motion_type = MMT_WALK;
+	f->sound_random = "mob-sheep-env";
 	f->spawn_on = CONTENT_WILDGRASS_SHORT;
 	f->spawn_in = CONTENT_AIR;
 	f->spawn_min_height = 2;
