@@ -30,7 +30,7 @@ else()
 	set(BUILD_SERVER 1 CACHE BOOL "Build server")
 endif()
 
-set(WARN_ALL 1 CACHE BOOL "Enable -Wall for Release build")
+set(CPU_OPTS 0 CACHE BOOL "Enable CPU optimizations")
 
 if(NOT CMAKE_BUILD_TYPE)
 	# Default to release

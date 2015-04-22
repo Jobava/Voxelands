@@ -360,28 +360,32 @@ if(MSVC)
 	endif(BUILD_SERVER)
 
 else()
-	# Probably GCC
-
-	if(WARN_ALL)
-		set(RELEASE_WARNING_FLAGS "-Wall")
-	else()
-		set(RELEASE_WARNING_FLAGS "")
-	endif()
-
-	if(NOT APPLE AND NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-		CHECK_CXX_COMPILER_FLAG("-Wno-unused-but-set-variable" HAS_UNUSED_BUT_SET_VARIABLE_WARNING)
-		if(HAS_UNUSED_BUT_SET_VARIABLE_WARNING)
-			set(WARNING_FLAGS "${WARNING_FLAGS} -Wno-unused-but-set-variable")
-		endif(HAS_UNUSED_BUT_SET_VARIABLE_WARNING)
-	endif()
-
 	if(APPLE)
 		set(CMAKE_OSX_ARCHITECTURES x86_64 FORCE)
 		set(ARCH x86_64)
 	endif()
 
-	set(CMAKE_CXX_FLAGS_RELEASE "-DNDEBUG ${RELEASE_WARNING_FLAGS} ${WARNING_FLAGS} -O3 -ffast-math -Wall -fomit-frame-pointer -pipe -funroll-loops")
-	set(CMAKE_CXX_FLAGS_DEBUG "-g -O1 -Wall ${WARNING_FLAGS}")
+	CHECK_CXX_COMPILER_FLAG("-fstack-protector-strong" HAS_FSTACK_STRONG)
+	if(HAS_FSTACK_STRONG)
+		set(SAFETY_FLAGS "-fno-strict-aliasing -fwrapv -fvisibility=hidden -fstack-protector-strong --param=ssp-buffer-size=4 -D_FORTIFY_SOURCE=2")
+	else()
+		set(SAFETY_FLAGS "-fno-strict-aliasing -fwrapv -fvisibility=hidden -fstack-protector --param=ssp-buffer-size=4 -D_FORTIFY_SOURCE=2")
+	endif()
+
+	if(CPU_OPTS)
+		set(OPT_FLAGS "-march=native -mtune=native -O2 -fomit-frame-pointer")
+	else()
+		set(OPT_FLAGS "-O2 -fomit-frame-pointer")
+	endif()
+
+	set(CMAKE_CXX_FLAGS_RELEASE "${OPT_FLAGS} ${SAFETY_FLAGS} -Wall -DNDEBUG -pipe")
+	set(CMAKE_CXX_FLAGS_DEBUG "${SAFETY_FLAGS} -Wall -O0 -g2 -ggdb")
+	set(CMAKE_C_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELEASE})
+	set(CMAKE_C_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_DEBUG})
+
+	set(CMAKE_EXE_LINKER_FLAGS_RELEASE "-Wl,-O1,--as-needed,--discard-all,--no-undefined,-s,--sort-common,--hash-style=gnu,-z,relro,-z,now")
+	set(CMAKE_MODULE_LINKER_FLAGS_RELEASE ${CMAKE_EXE_LINKER_FLAGS_RELEASE})
+	set(CMAKE_SHARED_LINKER_FLAGS_RELEASE ${CMAKE_EXE_LINKER_FLAGS_RELEASE})
 
 	if(USE_GPROF)
 		set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -pg")
@@ -392,11 +396,15 @@ else()
 				COMPILE_DEFINITIONS "SERVER")
 	endif(BUILD_SERVER)
 
+	if(CMAKE_BUILD_TYPE STREQUAL Release)
+		MESSAGE(STATUS "C/CXX Flags: ${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_RELEASE}")
+		MESSAGE(STATUS "Linker Flags: ${CMAKE_EXE_LINKER_FLAGS} ${CMAKE_EXE_LINKER_FLAGS_RELEASE}")
+	endif()
+   	if(CMAKE_BUILD_TYPE STREQUAL Debug)
+		MESSAGE(STATUS "C/CXX Flags: ${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_DEBUG}")
+		MESSAGE(STATUS "Linker Flags: ${CMAKE_EXE_LINKER_FLAGS} ${CMAKE_EXE_LINKER_FLAGS_DEBUG}")
+	endif()
 endif()
-
-#MESSAGE(STATUS "CMAKE_CXX_FLAGS_RELEASE=${CMAKE_CXX_FLAGS_RELEASE}")
-#MESSAGE(STATUS "CMAKE_CXX_FLAGS_DEBUG=${CMAKE_CXX_FLAGS_DEBUG}")
-
 #
 # Installation
 #
