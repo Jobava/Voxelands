@@ -92,8 +92,7 @@ Particle::~Particle()
 
 void Particle::OnRegisterSceneNode()
 {
-	if (IsVisible)
-	{
+	if (IsVisible) {
 		SceneManager->registerNodeForRendering(this, scene::ESNRP_TRANSPARENT);
 		SceneManager->registerNodeForRendering(this, scene::ESNRP_SOLID);
 	}
@@ -110,8 +109,7 @@ void Particle::render()
 	driver->setTransform(video::ETS_WORLD, AbsoluteTransformation);
 
 	u16 indices[] = {0,1,2, 2,3,0};
-	driver->drawVertexPrimitiveList(m_vertices, 4, indices, 2,
-			video::EVT_STANDARD, scene::EPT_TRIANGLES, video::EIT_16BIT);
+	driver->drawVertexPrimitiveList(m_vertices, 4, indices, 2, video::EVT_STANDARD, scene::EPT_TRIANGLES, video::EIT_16BIT);
 }
 
 void Particle::step(float dtime, ClientEnvironment &env)
@@ -120,10 +118,16 @@ void Particle::step(float dtime, ClientEnvironment &env)
 	v3f p_pos = m_pos*BS;
 	v3f p_velocity = m_velocity*BS;
 	v3f p_acceleration = m_acceleration*BS;
-	collisionMoveSimple(&env.getMap(),
-		BS*0.5, box,
-		0, dtime,
-		p_pos, p_velocity, p_acceleration);
+	collisionMoveSimple(
+		&env.getMap(),
+		BS*0.5,
+		box,
+		0,
+		dtime,
+		p_pos,
+		p_velocity,
+		p_acceleration
+	);
 	m_pos = p_pos/BS;
 	m_velocity = p_velocity/BS;
 	m_acceleration = p_acceleration/BS;
@@ -170,16 +174,12 @@ u32 particle_spawner_ids = 1;
 
 void allparticles_step (float dtime, ClientEnvironment &env)
 {
-	for(std::vector<Particle*>::iterator i = all_particles.begin(); i != all_particles.end();)
-	{
-		if ((*i)->get_expired())
-		{
+	for (std::vector<Particle*>::iterator i = all_particles.begin(); i != all_particles.end();) {
+		if ((*i)->get_expired()) {
 			(*i)->remove();
 			delete *i;
 			all_particles.erase(i);
-		}
-		else
-		{
+		}else{
 			(*i)->step(dtime, env);
 			i++;
 		}
@@ -245,11 +245,25 @@ void addNodeParticle(scene::ISceneManager* smgr, LocalPlayer *player, v3s16 pos,
 	ParticleSpawner
 */
 
-ParticleSpawner::ParticleSpawner(scene::ISceneManager *smgr, LocalPlayer *player,
-	u16 amount, float time,
-	v3f minpos, v3f maxpos, v3f minvel, v3f maxvel, v3f minacc, v3f maxacc,
-	float minexptime, float maxexptime, float minsize, float maxsize,
-	bool collisiondetection, AtlasPointer *ap, u32 id)
+ParticleSpawner::ParticleSpawner(
+	scene::ISceneManager *smgr,
+	LocalPlayer *player,
+	u16 amount,
+	float time,
+	v3f minpos,
+	v3f maxpos,
+	v3f minvel,
+	v3f maxvel,
+	v3f minacc,
+	v3f maxacc,
+	float minexptime,
+	float maxexptime,
+	float minsize,
+	float maxsize,
+	bool collisiondetection,
+	AtlasPointer *ap,
+	u32 id
+)
 {
 	m_smgr = smgr;
 	m_player = player;
@@ -269,8 +283,7 @@ ParticleSpawner::ParticleSpawner(scene::ISceneManager *smgr, LocalPlayer *player
 	m_ap = ap;
 	m_time = 0;
 
-	for (u16 i = 0; i<=m_amount; i++)
-	{
+	for (u16 i = 0; i<=m_amount; i++) {
 		float spawntime = (float)rand()/(float)RAND_MAX*m_spawntime;
 		m_spawntimes.push_back(spawntime);
 	}
@@ -284,13 +297,9 @@ void ParticleSpawner::step(float dtime, ClientEnvironment &env)
 {
 	m_time += dtime;
 
-	if (m_spawntime != 0) // Spawner exists for a predefined timespan
-	{
-		for(std::vector<float>::iterator i = m_spawntimes.begin();
-				i != m_spawntimes.end();)
-		{
-			if ((*i) <= m_time && m_amount > 0)
-			{
+	if (m_spawntime != 0) { // Spawner exists for a predefined timespan
+		for (std::vector<float>::iterator i = m_spawntimes.begin(); i != m_spawntimes.end();) {
+			if ((*i) <= m_time && m_amount > 0) {
 				m_amount--;
 
 				v3f pos = random_v3f(m_minpos, m_maxpos);
@@ -312,21 +321,16 @@ void ParticleSpawner::step(float dtime, ClientEnvironment &env)
 					acc,
 					exptime,
 					size,
-					m_ap);
+					m_ap
+				);
 				m_spawntimes.erase(i);
-			}
-			else
-			{
+			}else{
 				i++;
 			}
 		}
-	}
-	else // Spawner exists for an infinity timespan, spawn on a per-second base
-	{
-		for (int i = 0; i <= m_amount; i++)
-		{
-			if (rand()/(float)RAND_MAX < dtime)
-			{
+	}else{ // Spawner exists for an infinity timespan, spawn on a per-second base
+		for (int i = 0; i <= m_amount; i++) {
+			if (rand()/(float)RAND_MAX < dtime) {
 				v3f pos = random_v3f(m_minpos, m_maxpos);
 				v3f vel = random_v3f(m_minvel, m_maxvel);
 				v3f acc = random_v3f(m_minacc, m_maxacc);
@@ -346,7 +350,8 @@ void ParticleSpawner::step(float dtime, ClientEnvironment &env)
 					acc,
 					exptime,
 					size,
-					m_ap);
+					m_ap
+				);
 			}
 		}
 	}
@@ -354,17 +359,11 @@ void ParticleSpawner::step(float dtime, ClientEnvironment &env)
 
 void allparticlespawners_step (float dtime, ClientEnvironment &env)
 {
-	for(std::map<u32, ParticleSpawner*>::iterator i =
-			all_particlespawners.begin();
-			i != all_particlespawners.end();)
-	{
-		if (i->second->get_expired())
-		{
+	for (std::map<u32, ParticleSpawner*>::iterator i = all_particlespawners.begin(); i != all_particlespawners.end();) {
+		if (i->second->get_expired()) {
 			delete i->second;
 			all_particlespawners.erase(i++);
-		}
-		else
-		{
+		}else{
 			i->second->step(dtime, env);
 			i++;
 		}
@@ -373,23 +372,52 @@ void allparticlespawners_step (float dtime, ClientEnvironment &env)
 
 void delete_particlespawner (u32 id)
 {
-	if (all_particlespawners.find(id) != all_particlespawners.end())
-	{
-		delete all_particlespawners.find(id)->second;
-		all_particlespawners.erase(id);
-	}
+	std::map<u32, ParticleSpawner*>::iterator i = all_particlespawners.find(id);
+	if (i == all_particlespawners.end())
+		return;
+
+	delete i->second;
+	all_particlespawners.erase(id);
 }
 
-u32 add_particlespawner(scene::ISceneManager *smgr, LocalPlayer *player,
-	u16 amount, float time,
-	v3f minpos, v3f maxpos, v3f minvel, v3f maxvel, v3f minacc, v3f maxacc,
-	float minexptime, float maxexptime, float minsize, float maxsize,
-	AtlasPointer *ap)
+u32 add_particlespawner(
+	scene::ISceneManager *smgr,
+	LocalPlayer *player,
+	u16 amount,
+	float time,
+	v3f minpos,
+	v3f maxpos,
+	v3f minvel,
+	v3f maxvel,
+	v3f minacc,
+	v3f maxacc,
+	float minexptime,
+	float maxexptime,
+	float minsize,
+	float maxsize,
+	AtlasPointer *ap
+)
 {
 	u32 id = particle_spawner_ids++;
-	ParticleSpawner *p = new ParticleSpawner(smgr, player, amount,
-	time, minpos, maxpos, minvel, maxvel, minacc, maxacc,
-	minexptime, maxexptime, minsize, maxsize, false, ap, id);
+	ParticleSpawner *p = new ParticleSpawner(
+		smgr,
+		player,
+		amount,
+		time,
+		minpos,
+		maxpos,
+		minvel,
+		maxvel,
+		minacc,
+		maxacc,
+		minexptime,
+		maxexptime,
+		minsize,
+		maxsize,
+		false,
+		ap,
+		id
+	);
 
 	if (p == NULL)
 		return 0;
@@ -399,17 +427,13 @@ u32 add_particlespawner(scene::ISceneManager *smgr, LocalPlayer *player,
 
 void clear_particles ()
 {
-	for(std::map<u32, ParticleSpawner*>::iterator i =
-			all_particlespawners.begin();
-			i != all_particlespawners.end();)
+	for (std::map<u32, ParticleSpawner*>::iterator i = all_particlespawners.begin(); i != all_particlespawners.end();)
 	{
 		delete i->second;
 		all_particlespawners.erase(i++);
 	}
 
-	for(std::vector<Particle*>::iterator i =
-			all_particles.begin();
-			i != all_particles.end();)
+	for (std::vector<Particle*>::iterator i = all_particles.begin(); i != all_particles.end();)
 	{
 		(*i)->remove();
 		delete *i;
@@ -419,10 +443,7 @@ void clear_particles ()
 
 void update_particles_camera_offset(v3s16 camera_offset)
 {
-	for(std::vector<Particle*>::iterator i =
-			all_particles.begin();
-			i != all_particles.end(); i++)
-	{
+	for (std::vector<Particle*>::iterator i = all_particles.begin(); i != all_particles.end(); i++) {
 		(*i)->updateCameraOffset(camera_offset);
 	}
 }
