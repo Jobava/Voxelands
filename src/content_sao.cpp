@@ -547,7 +547,11 @@ void MobSAO::step(float dtime, bool send_recommended)
 	if (m_last_sound > 30.0) {
 		m_last_sound -= 5.0;
 		if (m.sound_random != "" && myrand_range(0,10) == 0) {
-			m_env->addEnvEvent(ENV_EVENT_SOUND,m_base_position,m.sound_random);
+			if (m.sound_random_extra != "" && myrand_range(0,100) == 0) {
+				m_env->addEnvEvent(ENV_EVENT_SOUND,m_base_position,m.sound_random_extra);
+			}else{
+				m_env->addEnvEvent(ENV_EVENT_SOUND,m_base_position,m.sound_random);
+			}
 			m_last_sound -= 30.0;
 		}
 	}

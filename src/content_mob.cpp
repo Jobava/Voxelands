@@ -586,6 +586,7 @@ void content_mob_init()
 	f->motion = MM_SEEKER;
 	f->motion_type = MMT_WALK;
 	f->sound_random = "mob-sheep-env";
+	f->sound_random_extra = "mob-ducksheep-env";
 	f->spawn_on = CONTENT_WILDGRASS_SHORT;
 	f->spawn_in = CONTENT_AIR;
 	f->spawn_min_height = 2;
