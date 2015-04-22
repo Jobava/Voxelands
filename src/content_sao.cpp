@@ -748,7 +748,7 @@ void MobSAO::step(float dtime, bool send_recommended)
 	if (send_recommended == false)
 		return;
 
-	if (m_base_position.getDistanceFrom(m_last_sent_position) > 0.05*BS)
+	if (m_base_position.getDistanceFrom(m_last_sent_position) > 0.1*BS)
 		sendPosition();
 }
 void MobSAO::stepMotionWander(float dtime)
