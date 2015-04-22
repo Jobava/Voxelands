@@ -213,9 +213,7 @@ void * EmergeThread::Thread()
 			JMutexAutoLock envlock(m_server->m_env_mutex);
 
 			// Load sector if it isn't loaded
-			if(map.getSectorNoGenerateNoEx(p2d) == NULL)
-				//map.loadSectorFull(p2d);
-				map.loadSectorMeta(p2d);
+			map.getSectorNoGenerateNoEx(p2d);
 
 			block = map.getBlockNoCreateNoEx(p);
 			if(!block || block->isDummy() || !block->isGenerated())

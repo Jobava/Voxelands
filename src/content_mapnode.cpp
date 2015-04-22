@@ -46,64 +46,14 @@
 #define WATER_VISC 1
 #define LAVA_VISC 7
 
-/*
-	A conversion table for backwards compatibility.
-	Maps <=v19 content types to current ones.
-	Should never be touched.
-*/
-content_t trans_table_19[21][2] = {
-	{CONTENT_GRASS, 1},
-	{CONTENT_TREE, 4},
-	{CONTENT_LEAVES, 5},
-	{CONTENT_FARM_DIRT, 6},
-	{CONTENT_MESE, 7},
-	{CONTENT_MUD, 8},
-	{CONTENT_COTTON, 10},
-	{CONTENT_BORDERSTONE, 11},
-	{CONTENT_WOOD, 12},
-	{CONTENT_SAND, 13},
-	{CONTENT_COBBLE, 18},
-	{CONTENT_STEEL, 19},
-	{CONTENT_GLASS, 20},
-	{CONTENT_MOSSYCOBBLE, 22},
-	{CONTENT_GRAVEL, 23},
-	{CONTENT_SANDSTONE, 24},
-	{CONTENT_CACTUS, 25},
-	{CONTENT_BRICK, 26},
-	{CONTENT_CLAY, 27},
-	{CONTENT_PAPYRUS, 28},
-	{CONTENT_BOOKSHELF, 29},
-};
 
 MapNode mapnode_translate_from_internal(MapNode n_from, u8 version)
 {
-	MapNode result = n_from;
-	if(version <= 19)
-	{
-		content_t c_from = n_from.getContent();
-		for(u32 i=0; i<sizeof(trans_table_19)/sizeof(trans_table_19[0]); i++)
-		{
-			if(trans_table_19[i][0] == c_from)
-			{
-				result.setContent(trans_table_19[i][1]);
-				break;
-			}
-		}
-	}
-	return result;
+	return n_from;
 }
 MapNode mapnode_translate_to_internal(MapNode n_from, u8 version)
 {
 	MapNode result = n_from;
-	if (version <= 19) {
-		content_t c_from = n_from.getContent();
-		for (u32 i=0; i<sizeof(trans_table_19)/sizeof(trans_table_19[0]); i++) {
-			if (trans_table_19[i][1] == c_from) {
-				result.setContent(trans_table_19[i][0]);
-				break;
-			}
-		}
-	}
 	if (n_from.getContent() == CONTENT_LADDER_LEGACY) {
 		switch (n_from.param2) {
 		case 1:

@@ -391,9 +391,6 @@ public:
 	static sqlite3_int64 getBlockAsInteger(const v3s16 pos);
 	static v3s16 getIntegerAsBlock(sqlite3_int64 i);
 
-	// Returns true if the database file does not exist
-	bool loadFromFolders();
-
 	// Call these before and after saving of blocks
 	void beginSave();
 	void endSave();
@@ -406,25 +403,6 @@ public:
 	// Saves map seed and possibly other stuff
 	void saveMapMeta();
 	void loadMapMeta();
-
-	/*void saveChunkMeta();
-	void loadChunkMeta();*/
-
-	// The sector mutex should be locked when calling most of these
-
-	// This only saves sector-specific data such as the heightmap
-	// (no MapBlocks)
-	// DEPRECATED? Sectors have no metadata anymore.
-	void saveSectorMeta(ServerMapSector *sector);
-	MapSector* loadSectorMeta(std::string dirname, bool save_after_load);
-	bool loadSectorMeta(v2s16 p2d);
-
-	// Full load of a sector including all blocks.
-	// returns true on success, false on failure.
-	bool loadSectorFull(v2s16 p2d);
-	// If sector is not found in memory, try to load it from disk.
-	// Returns true if sector now resides in memory
-	//bool deFlushSector(v2s16 p2d);
 
 	void saveBlock(MapBlock *block);
 	// This will generate a sector with getSector if not found.

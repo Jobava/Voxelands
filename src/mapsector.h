@@ -67,9 +67,6 @@ public:
 
 	void getBlocks(core::list<MapBlock*> &dest);
 
-	// Always false at the moment, because sector contains no metadata.
-	bool differs_from_disk;
-
 protected:
 
 	// The pile of MapBlocks

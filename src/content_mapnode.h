@@ -38,8 +38,6 @@ void content_mapnode_slab(bool repeat);
 void content_mapnode_special(bool repeat);
 void content_mapnode_plants(bool repeat);
 
-extern content_t trans_table_19[21][2];
-
 MapNode mapnode_translate_from_internal(MapNode n_from, u8 version);
 MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 

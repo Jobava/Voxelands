@@ -51,18 +51,6 @@ InventoryItem::~InventoryItem()
 {
 }
 
-content_t content_translate_from_19_to_internal(content_t c_from)
-{
-	for(u32 i=0; i<sizeof(trans_table_19)/sizeof(trans_table_19[0]); i++)
-	{
-		if(trans_table_19[i][1] == c_from)
-		{
-			return trans_table_19[i][0];
-		}
-	}
-	return c_from;
-}
-
 content_t InventoryItem::info(std::istream &is, u16 *count, u16 *wear)
 {
 	DSTACK(__FUNCTION_NAME);

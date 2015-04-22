@@ -920,11 +920,7 @@ int main(int argc, char *argv[])
 	// (for texture atlas making)
 	init_mineral();
 
-#if USE_AUDIO == 1
-	ISoundManager *sound = createSoundManager();
-#else
 	ISoundManager *sound = NULL;
-#endif
 
 	/*
 		Run unit tests
@@ -1159,6 +1155,12 @@ int main(int argc, char *argv[])
 	init_mapnode(driver); // Second call with g_texturesource set
 	drawLoadingScreen(driver,wgettext("Loading Creatures"));
 	content_mob_init();
+
+	drawLoadingScreen(driver,wgettext("Setting Up Sound"));
+
+#if USE_AUDIO == 1
+	sound = createSoundManager();
+#endif
 
 	/*
 		GUI stuff

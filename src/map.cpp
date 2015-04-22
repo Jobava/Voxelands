@@ -2506,12 +2506,6 @@ void ServerMap::verifyDatabase() {
 	}
 }
 
-bool ServerMap::loadFromFolders() {
-	if(!m_database && !fs::PathExists(m_savedir + DIR_DELIM + "map.sqlite"))
-		return true;
-	return false;
-}
-
 sqlite3_int64 ServerMap::getBlockAsInteger(const v3s16 pos) {
 	return (sqlite3_int64)pos.Z*16777216 +
 		(sqlite3_int64)pos.Y*4096 + (sqlite3_int64)pos.X;
@@ -2601,54 +2595,42 @@ std::string ServerMap::getBlockFilename(v3s16 p)
 void ServerMap::save(bool only_changed)
 {
 	DSTACK(__FUNCTION_NAME);
-	if(m_map_saving_enabled == false)
-	{
+	if (m_map_saving_enabled == false) {
 		infostream<<"WARNING: Not saving map, saving disabled."<<std::endl;
 		return;
 	}
 
-	if(only_changed == false)
+	if (only_changed == false)
 		infostream<<"ServerMap: Saving whole map, this can take time."
 				<<std::endl;
 
-	if(only_changed == false || m_map_metadata_changed)
-	{
+	if (only_changed == false || m_map_metadata_changed)
 		saveMapMeta();
-	}
 
-	u32 sector_meta_count = 0;
 	u32 block_count = 0;
 	u32 block_count_all = 0; // Number of blocks in memory
 
 	// Don't do anything with sqlite unless something is really saved
 	bool save_started = false;
 
-	core::map<v2s16, MapSector*>::Iterator i = m_sectors.getIterator();
-	for(; i.atEnd() == false; i++)
-	{
+	for (core::map<v2s16, MapSector*>::Iterator i = m_sectors.getIterator(); i.atEnd() == false; i++) {
 		ServerMapSector *sector = (ServerMapSector*)i.getNode()->getValue();
 		assert(sector->getId() == MAPSECTOR_SERVER);
-
-		if(sector->differs_from_disk || only_changed == false)
-		{
-			saveSectorMeta(sector);
-			sector_meta_count++;
-		}
 		core::list<MapBlock*> blocks;
 		sector->getBlocks(blocks);
 		core::list<MapBlock*>::Iterator j;
 
-		for(j=blocks.begin(); j!=blocks.end(); j++)
-		{
+		for (j=blocks.begin(); j!=blocks.end(); j++) {
 			MapBlock *block = *j;
 
 			block_count_all++;
 
-			if(block->getModified() >= MOD_STATE_WRITE_NEEDED
-					|| only_changed == false)
-			{
+			if (
+				block->getModified() >= MOD_STATE_WRITE_NEEDED
+				|| only_changed == false
+			) {
 				// Lazy beginSave()
-				if(!save_started){
+				if (!save_started) {
 					beginSave();
 					save_started = true;
 				}
@@ -2664,11 +2646,8 @@ void ServerMap::save(bool only_changed)
 	/*
 		Only print if something happened or saved whole map
 	*/
-	if(only_changed == false || sector_meta_count != 0
-			|| block_count != 0)
-	{
+	if (only_changed == false || block_count != 0) {
 		infostream<<"ServerMap: Written: "
-				<<sector_meta_count<<" sector metadata files, "
 				<<block_count<<" block files"
 				<<", "<<block_count_all<<" blocks in memory."
 				<<std::endl;
@@ -2677,16 +2656,15 @@ void ServerMap::save(bool only_changed)
 
 static s32 unsignedToSigned(s32 i, s32 max_positive)
 {
-	if(i < max_positive)
+	if (i < max_positive)
 		return i;
-	else
-		return i - 2*max_positive;
+	return i - 2*max_positive;
 }
 
 // modulo of a negative number does not work consistently in C
 static sqlite3_int64 pythonmodulo(sqlite3_int64 i, sqlite3_int64 mod)
 {
-	if(i >= 0)
+	if (i >= 0)
 		return i % mod;
 	return mod - ((-i) % mod);
 }
@@ -2703,21 +2681,12 @@ v3s16 ServerMap::getIntegerAsBlock(sqlite3_int64 i)
 
 void ServerMap::listAllLoadableBlocks(core::list<v3s16> &dst)
 {
-	if(loadFromFolders()){
-		errorstream<<"Map::listAllLoadableBlocks(): Result will be missing "
-				<<"all blocks that are stored in flat files"<<std::endl;
-	}
+	verifyDatabase();
 
-	{
-		verifyDatabase();
-
-		while(sqlite3_step(m_database_list) == SQLITE_ROW)
-		{
-			sqlite3_int64 block_i = sqlite3_column_int64(m_database_list, 0);
-			v3s16 p = getIntegerAsBlock(block_i);
-			//dstream<<"block_i="<<block_i<<" p="<<PP(p)<<std::endl;
-			dst.push_back(p);
-		}
+	while (sqlite3_step(m_database_list) == SQLITE_ROW) {
+		sqlite3_int64 block_i = sqlite3_column_int64(m_database_list, 0);
+		v3s16 p = getIntegerAsBlock(block_i);
+		dst.push_back(p);
 	}
 }
 
@@ -2827,182 +2796,6 @@ void ServerMap::loadMapMeta()
 
 	infostream<<"ServerMap::loadMapMeta(): "<<"seed="<<m_seed<<std::endl;
 }
-
-void ServerMap::saveSectorMeta(ServerMapSector *sector)
-{
-	DSTACK(__FUNCTION_NAME);
-	// Format used for writing
-	u8 version = SER_FMT_VER_HIGHEST;
-	// Get destination
-	v2s16 pos = sector->getPos();
-	std::string dir = getSectorDir(pos);
-	createDirs(dir);
-
-	std::string fullpath = dir + DIR_DELIM + "meta";
-	std::ofstream o(fullpath.c_str(), std::ios_base::binary);
-	if(o.good() == false)
-		throw FileNotGoodException("Cannot open sector metafile");
-
-	sector->serialize(o, version);
-
-	sector->differs_from_disk = false;
-}
-
-MapSector* ServerMap::loadSectorMeta(std::string sectordir, bool save_after_load)
-{
-	DSTACK(__FUNCTION_NAME);
-	// Get destination
-	v2s16 p2d = getSectorPos(sectordir);
-
-	ServerMapSector *sector = NULL;
-
-	std::string fullpath = sectordir + DIR_DELIM + "meta";
-	std::ifstream is(fullpath.c_str(), std::ios_base::binary);
-	if(is.good() == false)
-	{
-		// If the directory exists anyway, it probably is in some old
-		// format. Just go ahead and create the sector.
-		if(fs::PathExists(sectordir))
-		{
-			/*infostream<<"ServerMap::loadSectorMeta(): Sector metafile "
-					<<fullpath<<" doesn't exist but directory does."
-					<<" Continuing with a sector with no metadata."
-					<<std::endl;*/
-			sector = new ServerMapSector(this, p2d);
-			m_sectors.insert(p2d, sector);
-		}
-		else
-		{
-			throw FileNotGoodException("Cannot open sector metafile");
-		}
-	}
-	else
-	{
-		sector = ServerMapSector::deSerialize
-				(is, this, p2d, m_sectors);
-		if(save_after_load)
-			saveSectorMeta(sector);
-	}
-
-	sector->differs_from_disk = false;
-
-	return sector;
-}
-
-bool ServerMap::loadSectorMeta(v2s16 p2d)
-{
-	DSTACK(__FUNCTION_NAME);
-
-	MapSector *sector = NULL;
-
-	// The directory layout we're going to load from.
-	//  1 - original sectors/xxxxzzzz/
-	//  2 - new sectors2/xxx/zzz/
-	//  If we load from anything but the latest structure, we will
-	//  immediately save to the new one, and remove the old.
-	int loadlayout = 1;
-	std::string sectordir1 = getSectorDir(p2d, 1);
-	std::string sectordir;
-	if(fs::PathExists(sectordir1))
-	{
-		sectordir = sectordir1;
-	}
-	else
-	{
-		loadlayout = 2;
-		sectordir = getSectorDir(p2d, 2);
-	}
-
-	try{
-		sector = loadSectorMeta(sectordir, loadlayout != 2);
-	}
-	catch(InvalidFilenameException &e)
-	{
-		return false;
-	}
-	catch(FileNotGoodException &e)
-	{
-		return false;
-	}
-	catch(std::exception &e)
-	{
-		return false;
-	}
-
-	return true;
-}
-
-#if 0
-bool ServerMap::loadSectorFull(v2s16 p2d)
-{
-	DSTACK(__FUNCTION_NAME);
-
-	MapSector *sector = NULL;
-
-	// The directory layout we're going to load from.
-	//  1 - original sectors/xxxxzzzz/
-	//  2 - new sectors2/xxx/zzz/
-	//  If we load from anything but the latest structure, we will
-	//  immediately save to the new one, and remove the old.
-	int loadlayout = 1;
-	std::string sectordir1 = getSectorDir(p2d, 1);
-	std::string sectordir;
-	if(fs::PathExists(sectordir1))
-	{
-		sectordir = sectordir1;
-	}
-	else
-	{
-		loadlayout = 2;
-		sectordir = getSectorDir(p2d, 2);
-	}
-
-	try{
-		sector = loadSectorMeta(sectordir, loadlayout != 2);
-	}
-	catch(InvalidFilenameException &e)
-	{
-		return false;
-	}
-	catch(FileNotGoodException &e)
-	{
-		return false;
-	}
-	catch(std::exception &e)
-	{
-		return false;
-	}
-
-	/*
-		Load blocks
-	*/
-	std::vector<fs::DirListNode> list2 = fs::GetDirListing
-			(sectordir);
-	std::vector<fs::DirListNode>::iterator i2;
-	for(i2=list2.begin(); i2!=list2.end(); i2++)
-	{
-		// We want files
-		if(i2->dir)
-			continue;
-		try{
-			loadBlock(sectordir, i2->name, sector, loadlayout != 2);
-		}
-		catch(InvalidFilenameException &e)
-		{
-			// This catches unknown crap in directory
-		}
-	}
-
-	if(loadlayout != 2)
-	{
-		infostream<<"Sector converted to new layout - deleting "<<
-			sectordir1<<std::endl;
-		fs::RecursiveDelete(sectordir1);
-	}
-
-	return true;
-}
-#endif
 
 void ServerMap::beginSave() {
 	verifyDatabase();
@@ -3235,92 +3028,35 @@ MapBlock* ServerMap::loadBlock(v3s16 blockpos)
 
 	v2s16 p2d(blockpos.X, blockpos.Z);
 
-	if(!loadFromFolders()) {
-		verifyDatabase();
+	verifyDatabase();
 
-		if(sqlite3_bind_int64(m_database_read, 1, getBlockAsInteger(blockpos)) != SQLITE_OK)
-			infostream<<"WARNING: Could not bind block position for load: "
-				<<sqlite3_errmsg(m_database)<<std::endl;
-		if(sqlite3_step(m_database_read) == SQLITE_ROW) {
-			/*
-				Make sure sector is loaded
-			*/
-			MapSector *sector = createSector(p2d);
+	if (sqlite3_bind_int64(m_database_read, 1, getBlockAsInteger(blockpos)) != SQLITE_OK)
+		infostream<<"WARNING: Could not bind block position for load: "
+			<<sqlite3_errmsg(m_database)<<std::endl;
+	if (sqlite3_step(m_database_read) == SQLITE_ROW) {
+		/*
+			Make sure sector is loaded
+		*/
+		MapSector *sector = createSector(p2d);
 
-			/*
-				Load block
-			*/
-			const char * data = (const char *)sqlite3_column_blob(m_database_read, 0);
-			size_t len = sqlite3_column_bytes(m_database_read, 0);
+		/*
+			Load block
+		*/
+		const char * data = (const char *)sqlite3_column_blob(m_database_read, 0);
+		size_t len = sqlite3_column_bytes(m_database_read, 0);
 
-			std::string datastr(data, len);
+		std::string datastr(data, len);
 
-			loadBlock(&datastr, blockpos, sector, false);
+		loadBlock(&datastr, blockpos, sector, false);
 
-			sqlite3_step(m_database_read);
-			// We should never get more than 1 row, so ok to reset
-			sqlite3_reset(m_database_read);
-
-			return getBlockNoCreateNoEx(blockpos);
-		}
+		sqlite3_step(m_database_read);
+		// We should never get more than 1 row, so ok to reset
 		sqlite3_reset(m_database_read);
 
-		// Not found in database, try the files
+		return getBlockNoCreateNoEx(blockpos);
 	}
+	sqlite3_reset(m_database_read);
 
-	// The directory layout we're going to load from.
-	//  1 - original sectors/xxxxzzzz/
-	//  2 - new sectors2/xxx/zzz/
-	//  If we load from anything but the latest structure, we will
-	//  immediately save to the new one, and remove the old.
-	int loadlayout = 1;
-	std::string sectordir1 = getSectorDir(p2d, 1);
-	std::string sectordir;
-	if(fs::PathExists(sectordir1))
-	{
-		sectordir = sectordir1;
-	}
-	else
-	{
-		loadlayout = 2;
-		sectordir = getSectorDir(p2d, 2);
-	}
-
-	/*
-		Make sure sector is loaded
-	*/
-	MapSector *sector = getSectorNoGenerateNoEx(p2d);
-	if(sector == NULL)
-	{
-		try{
-			sector = loadSectorMeta(sectordir, loadlayout != 2);
-		}
-		catch(InvalidFilenameException &e)
-		{
-			return NULL;
-		}
-		catch(FileNotGoodException &e)
-		{
-			return NULL;
-		}
-		catch(std::exception &e)
-		{
-			return NULL;
-		}
-	}
-
-	/*
-		Make sure file exists
-	*/
-
-	std::string blockfilename = getBlockFilename(blockpos);
-	if(fs::PathExists(sectordir+DIR_DELIM+blockfilename) == false)
-		return NULL;
-
-	/*
-		Load block and save it to the database
-	*/
-	loadBlock(sectordir, blockfilename, sector, true);
 	return getBlockNoCreateNoEx(blockpos);
 }
 

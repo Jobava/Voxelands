@@ -30,7 +30,6 @@
 #include "mapblock.h"
 
 MapSector::MapSector(Map *parent, v2s16 pos):
-		differs_from_disk(false),
 		m_parent(parent),
 		m_pos(pos),
 		m_block_cache(NULL)
@@ -49,8 +48,7 @@ void MapSector::deleteBlocks()
 
 	// Delete all
 	core::map<s16, MapBlock*>::Iterator i = m_blocks.getIterator();
-	for(; i.atEnd() == false; i++)
-	{
+	for (; i.atEnd() == false; i++) {
 		delete i.getNode()->getValue();
 	}
 
@@ -60,22 +58,16 @@ void MapSector::deleteBlocks()
 
 MapBlock * MapSector::getBlockBuffered(s16 y)
 {
-	MapBlock *block;
+	MapBlock *block = NULL;
 
-	if(m_block_cache != NULL && y == m_block_cache_y){
+	if (m_block_cache != NULL && y == m_block_cache_y)
 		return m_block_cache;
-	}
 
 	// If block doesn't exist, return NULL
 	core::map<s16, MapBlock*>::Node *n = m_blocks.find(y);
-	if(n == NULL)
-	{
-		block = NULL;
-	}
 	// If block exists, return it
-	else{
+	if (n != NULL)
 		block = n->getValue();
-	}
 
 	// Cache the last result
 	m_block_cache_y = y;
@@ -114,9 +106,8 @@ void MapSector::insertBlock(MapBlock *block)
 	s16 block_y = block->getPos().Y;
 
 	MapBlock *block2 = getBlockBuffered(block_y);
-	if(block2 != NULL){
+	if (block2 != NULL)
 		throw AlreadyExistsException("Block already exists");
-	}
 
 	v2s16 p2d(block->getPos().X, block->getPos().Z);
 	assert(p2d == m_pos);
@@ -146,8 +137,7 @@ void MapSector::getBlocks(core::list<MapBlock*> &dest)
 	core::map<s16, MapBlock*>::Iterator bi;
 
 	bi = m_blocks.getIterator();
-	for(; bi.atEnd() == false; bi++)
-	{
+	for (; bi.atEnd() == false; bi++) {
 		MapBlock *b = bi.getNode()->getValue();
 		dest.push_back(b);
 	}
@@ -168,7 +158,7 @@ ServerMapSector::~ServerMapSector()
 
 void ServerMapSector::serialize(std::ostream &os, u8 version)
 {
-	if(!ser_ver_supported(version))
+	if (!ser_ver_supported(version))
 		throw VersionMismatchException("ERROR: MapSector format not supported");
 
 	/*
@@ -208,7 +198,7 @@ ServerMapSector* ServerMapSector::deSerialize(
 	u8 version = SER_FMT_VER_INVALID;
 	is.read((char*)&version, 1);
 
-	if(!ser_ver_supported(version))
+	if (!ser_ver_supported(version))
 		throw VersionMismatchException("ERROR: MapSector format not supported");
 
 	/*
@@ -223,8 +213,7 @@ ServerMapSector* ServerMapSector::deSerialize(
 
 	core::map<v2s16, MapSector*>::Node *n = sectors.find(p2d);
 
-	if(n != NULL)
-	{
+	if (n != NULL) {
 		dstream<<"WARNING: deSerializing existent sectors not supported "
 				"at the moment, because code hasn't been tested."
 				<<std::endl;
@@ -232,9 +221,7 @@ ServerMapSector* ServerMapSector::deSerialize(
 		MapSector *sector = n->getValue();
 		assert(sector->getId() == MAPSECTOR_SERVER);
 		return (ServerMapSector*)sector;
-	}
-	else
-	{
+	}else{
 		sector = new ServerMapSector(parent, p2d);
 		sectors.insert(p2d, sector);
 	}
