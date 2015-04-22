@@ -1088,7 +1088,7 @@ int main(int argc, char *argv[])
 	// Create texture source
 	g_texturesource = new TextureSource(device);
 
-	drawLoadingScreen(driver,L"");
+	drawLoadingScreen(device,L"");
 
 	/*
 		Speed tests (done after irrlicht is loaded to get timer)
@@ -1128,7 +1128,7 @@ int main(int argc, char *argv[])
 	// If font was not found, this will get us one
 	font = skin->getFont();
 	assert(font);
-	drawLoadingScreen(driver,wgettext("Setting Up UI"));
+	drawLoadingScreen(device,wgettext("Setting Up UI"));
 
 	u32 text_height = font->getDimension(L"Hello, world!").Height;
 	infostream<<"text_height="<<text_height<<std::endl;
@@ -1151,12 +1151,12 @@ int main(int argc, char *argv[])
 		Preload some textures and stuff
 	*/
 
-	drawLoadingScreen(driver,wgettext("Loading MapNodes"));
-	init_mapnode(driver); // Second call with g_texturesource set
-	drawLoadingScreen(driver,wgettext("Loading Creatures"));
+	//drawLoadingScreen(device,wgettext("Loading MapNodes"));
+	init_mapnode(device); // Second call with g_texturesource set
+	drawLoadingScreen(device,wgettext("Loading Creatures"));
 	content_mob_init();
 
-	drawLoadingScreen(driver,wgettext("Setting Up Sound"));
+	drawLoadingScreen(device,wgettext("Setting Up Sound"));
 
 #if USE_AUDIO == 1
 	sound = createSoundManager();
@@ -1421,7 +1421,7 @@ int main(int argc, char *argv[])
 				continue;
 			}
 			// Initialize mapnode again to enable changed graphics settings
-			init_mapnode(driver);
+			init_mapnode(device);
 
 			/*
 				Run game

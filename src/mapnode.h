@@ -62,7 +62,7 @@ typedef u16 content_t;
 */
 #ifndef SERVER
 #include "common_irrlicht.h"
-void init_mapnode(video::IVideoDriver* driver);
+void init_mapnode(irr::IrrlichtDevice* device);
 #else
 void init_mapnode();
 #endif

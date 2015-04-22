@@ -207,7 +207,7 @@ ContentFeatures & content_features(MapNode &n)
 #include "common_irrlicht.h"
 #include "game.h"
 #include "intl.h"
-void init_mapnode(video::IVideoDriver* driver)
+void init_mapnode(irr::IrrlichtDevice* device)
 #else
 void init_mapnode()
 #endif
@@ -276,31 +276,31 @@ void init_mapnode()
 		Initialize mapnode content
 	*/
 #ifndef SERVER
-	drawLoadingScreen(driver,wgettext("Loading Base MapNodes"));
+	drawLoadingScreen(device,wgettext("Loading Base MapNodes"));
 #endif
 	content_mapnode_init(repeat);
 #ifndef SERVER
-	drawLoadingScreen(driver,wgettext("Loading Circuit MapNodes"));
+	drawLoadingScreen(device,wgettext("Loading Circuit MapNodes"));
 #endif
 	content_mapnode_circuit(repeat);
 #ifndef SERVER
-	drawLoadingScreen(driver,wgettext("Loading Plant MapNodes"));
+	drawLoadingScreen(device,wgettext("Loading Plant MapNodes"));
 #endif
 	content_mapnode_plants(repeat);
 #ifndef SERVER
-	drawLoadingScreen(driver,wgettext("Loading Farming MapNodes"));
+	drawLoadingScreen(device,wgettext("Loading Farming MapNodes"));
 #endif
 	content_mapnode_farm(repeat);
 #ifndef SERVER
-	drawLoadingScreen(driver,wgettext("Loading Decorative MapNodes"));
+	drawLoadingScreen(device,wgettext("Loading Decorative MapNodes"));
 #endif
 	content_mapnode_furniture(repeat);
 #ifndef SERVER
-	drawLoadingScreen(driver,wgettext("Loading Interactive MapNodes"));
+	drawLoadingScreen(device,wgettext("Loading Interactive MapNodes"));
 #endif
 	content_mapnode_door(repeat);
 #ifndef SERVER
-	drawLoadingScreen(driver,wgettext("Loading Special MapNodes"));
+	drawLoadingScreen(device,wgettext("Loading Special MapNodes"));
 #endif
 	content_mapnode_stair(repeat);
 	content_mapnode_slab(repeat);

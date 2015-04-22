@@ -1008,8 +1008,12 @@ void update_skybox(video::IVideoDriver* driver,
 	Draws a screen with logo and text on it.
 	Text will be removed when the screen is drawn the next time.
 */
-void drawLoadingScreen(video::IVideoDriver* driver, const std::wstring msg)
+void drawLoadingScreen(irr::IrrlichtDevice* device, const std::wstring msg)
 {
+	if (device == NULL)
+		return;
+	device->run();
+	video::IVideoDriver* driver = device->getVideoDriver();
 	if (driver == NULL)
 		return;
 	core::dimension2d<u32> screensize = driver->getScreenSize();
@@ -1105,7 +1109,7 @@ void the_game(
 		Draw "Loading" screen
 	*/
 	//draw_load_screen(L"Loading...", driver, font);
-	drawLoadingScreen(driver,wgettext("Loading..."));
+	drawLoadingScreen(device,wgettext("Loading..."));
 
 	/*
 		Create server.
@@ -1114,7 +1118,7 @@ void the_game(
 	SharedPtr<Server> server;
 	if(address == ""){
 		//draw_load_screen(L"Creating server...", driver, font);
-		drawLoadingScreen(driver,wgettext("Creating server..."));
+		drawLoadingScreen(device,wgettext("Creating server..."));
 		infostream<<"Creating server"<<std::endl;
 		server = new Server(map_dir, configpath);
 		server->start(port);
@@ -1125,12 +1129,12 @@ void the_game(
 	*/
 
 	//draw_load_screen(L"Creating client...", driver, font);
-	drawLoadingScreen(driver,wgettext("Creating client..."));
+	drawLoadingScreen(device,wgettext("Creating client..."));
 	infostream<<"Creating client"<<std::endl;
 	MapDrawControl draw_control;
 	Client client(device, playername.c_str(), password, draw_control, sound);
 
-	drawLoadingScreen(driver,wgettext("Resolving address..."));
+	drawLoadingScreen(device,wgettext("Resolving address..."));
 	Address connect_address(0,0,0,0, port);
 	try{
 		if(address == "")
@@ -1188,7 +1192,7 @@ void the_game(
 				tot
 			);
 			//draw_load_screen(ss.str(), driver, font);
-			drawLoadingScreen(driver,narrow_to_wide(buff));
+			drawLoadingScreen(device,narrow_to_wide(buff));
 			// Update client and server
 			client.step(0.1);
 
@@ -2720,7 +2724,7 @@ void the_game(
 		generator and other stuff quits
 	*/
 	{
-		drawLoadingScreen(driver,wgettext("Shutting down..."));
+		drawLoadingScreen(device,wgettext("Shutting down..."));
 	}
 }
 

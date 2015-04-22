@@ -31,7 +31,7 @@
 
 #include "keycode.h"
 
-void drawLoadingScreen(video::IVideoDriver* driver, const std::wstring);
+void drawLoadingScreen(irr::IrrlichtDevice* device, const std::wstring);
 
 class KeyList : protected core::list<KeyPress>
 {
