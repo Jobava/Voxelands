@@ -2507,8 +2507,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		*/
 		if(action == 0)
 		{
-			SendPlayerAnim(player,PLAYERANIM_DIG);
 			MapNode n = m_env.getMap().getNodeNoEx(p_under);
+			SendPlayerAnim(player,PLAYERANIM_DIG,n.getContent());
 			InventoryItem *wield = (InventoryItem*)player->getWieldItem();
 			// no on-punch events with a mese pick, it will have dug the item
 			// on the first hit anyway
@@ -5349,7 +5349,7 @@ std::string getWieldedItemString(const Player *player)
 	return os.str();
 }
 
-void Server::SendPlayerAnim(const Player* player, u8 animation_id)
+void Server::SendPlayerAnim(const Player* player, u8 animation_id, content_t pointed)
 {
 	DSTACK(__FUNCTION_NAME);
 
@@ -5360,6 +5360,7 @@ void Server::SendPlayerAnim(const Player* player, u8 animation_id)
 	writeU16(os, TOCLIENT_PLAYER_ANIMATION);
 	writeU16(os, player->peer_id);
 	writeU8(os, animation_id);
+	writeU16(os, pointed);
 
 	// Make data buffer
 	std::string s = os.str();

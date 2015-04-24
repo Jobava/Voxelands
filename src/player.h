@@ -146,7 +146,7 @@ public:
 		light = light_at_pos;
 	}
 
-	virtual void updateAnim(u8 anim_id)
+	virtual void updateAnim(u8 anim_id, content_t pointed)
 	{}
 
 	// NOTE: Use peer_id == 0 for disconnected
@@ -377,7 +377,12 @@ public:
 
 	virtual void wieldItem(u16 item);
 
-	virtual void updateAnim(u8 anim_id) {m_anim_id = anim_id;}
+	virtual void updateAnim(u8 anim_id, content_t pointed)
+	{
+		m_anim_id = anim_id;
+		if (pointed != CONTENT_IGNORE)
+			m_pointed = pointed;
+	}
 
 	virtual void updateLight(u8 light_at_pos)
 	{
@@ -414,6 +419,7 @@ private:
 	v3f m_showpos;
 	v3f m_camera_offset;
 	u8 m_anim_id;
+	content_t m_pointed;
 	int m_next_foot;
 };
 

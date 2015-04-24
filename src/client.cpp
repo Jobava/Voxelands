@@ -1023,8 +1023,11 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 	break;
 	case TOCLIENT_PLAYER_ANIMATION:
 	{
-		u16 peer_id = readU16(&data[2]);
-		u8 anim_id = readU8(&data[4]);
+		std::string datastring((char*)&data[2], datasize-2);
+		std::istringstream is(datastring, std::ios_base::binary);
+		u16 peer_id = readU16(is);
+		u8 anim_id = readU8(is);
+		content_t pointed = readU16(is);
 
 		Player *player = m_env.getPlayer(peer_id);
 
@@ -1039,7 +1042,7 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 			infostream<<"Client: Adding new player " <<peer_id<<std::endl;
 		}
 
-		player->updateAnim(anim_id);
+		player->updateAnim(anim_id,pointed);
 	}
 	break;
 	case TOCLIENT_PLAYERHP:

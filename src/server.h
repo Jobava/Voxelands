@@ -518,7 +518,7 @@ private:
 	void SendPlayerInfos();
 	void SendInventory(u16 peer_id, bool full=false);
 	// send animation info about player to all
-	void SendPlayerAnim(const Player *player, u8 animation_id);
+	void SendPlayerAnim(const Player *player, u8 animation_id, content_t pointed=CONTENT_IGNORE);
 	// send wielded item info about all players to all players
 	void SendPlayerItems();
 	// send wielded item info about a player to all players

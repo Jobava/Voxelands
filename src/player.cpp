@@ -464,6 +464,7 @@ RemotePlayer::RemotePlayer(
 	m_text(NULL),
 	m_wield(NULL),
 	m_anim_id(PLAYERANIM_STAND),
+	m_pointed(CONTENT_IGNORE),
 	m_next_foot(0)
 {
 	m_box = core::aabbox3d<f32>(-BS/2,0,-BS/2,BS/2,BS*2,BS/2);
@@ -606,7 +607,7 @@ void RemotePlayer::move(f32 dtime, Map &map, f32 pos_max_d)
 	}
 	/* roughly sort of when a dig sound should probably be heard, maybe */
 	if (frame == 214 || frame == 205 || frame == 193) {
-		sound_playDig(CMT_STONE,m_showpos);
+		sound_playDig(m_pointed,m_showpos);
 	}
 
 	if (
