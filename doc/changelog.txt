@@ -3,6 +3,42 @@ Voxelands changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1504.00: (release 2015-04-25)
+ - new crosshair
+ - send node type with animation updates, so remote player dig sound is correct
+ - fix loading not centring when resized
+ - remove some old sectors junk
+ - remove some warnings
+ - reduce mob client initialisation data
+ - reduce mob send data slightly
+ - some mob sounds
+ - little bit of cleanup to particles
+ - remove dangerous optimizations, add some checks
+ - swords should kill mobs faster than spears
+ - give grass its own walk sound, add new dirt walk sound
+ - new readme file
+ - better utf-8 support for windows
+ - gettext without gettext
+ - add ambient sounds
+ - add sounds for other players walking and digging, and mobs walking
+ - make volume control actually control the volume
+ - allow per-sound gain settings
+ - split walk sounds into left and right steps
+ - replace rm -rf fork/exec with nftw callbacks
+ - keep the players directory clean
+ - new character creator background music
+ - new main menu music
+ - give sound a step, make music fade out
+ - actually delete the soundManager
+ - print chat to stdout on client, cheap copy/paste
+ - fix shovel not being craftable from jungle wood
+ - flip key texture
+ - updated brick textures
+ - always show health/hunger icons when enabled
+ - leaves falling on grass become either saplings or wild grass
+ - prefill username in main menu with system user name
+ - add some query api urls to http server
+
 1503.01: (release 2015-03-23)
  - some improvements to http server
  - fix tool wear not being sent to client
