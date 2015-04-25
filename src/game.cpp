@@ -366,7 +366,8 @@ void draw_hud(
 	bool have_suffocation,
 	s32 halfbubblecount,
 	bool have_hunger,
-	s32 halfhungercount
+	s32 halfhungercount,
+	int crosshair
 )
 {
 	InventoryList *mainlist = inventory->getList("main");
@@ -650,6 +651,31 @@ void draw_hud(
 			sdim
 		);
 		font->draw(txt.c_str(), rect2, video::SColor(255,255,255,255), false, false, NULL);
+	}
+
+	// crosshair
+	if (crosshair) {
+		const video::SColor color(220,255,255,255);
+		const video::SColor colors[] = {color,color,color,color};
+		std::string tex("");
+		if (crosshair == 1) {
+			tex = getTexturePath("crosshair_unfocused.png");
+		}else{
+			tex = getTexturePath("crosshair_focused.png");
+		}
+		video::ITexture *texture = driver->getTexture(tex.c_str());
+		core::rect<s32> rect((screensize.X/2)-16,(screensize.Y/2)-16,(screensize.X/2)+16,(screensize.Y/2)+16);
+		driver->draw2DImage(
+			texture,
+			rect,
+			core::rect<s32>(
+				core::position2d<s32>(0,0),
+				core::dimension2di(texture->getOriginalSize())
+			),
+			NULL,
+			colors,
+			true
+		);
 	}
 }
 
@@ -2601,18 +2627,6 @@ void the_game(
 			}
 		}
 
-		/*
-			Draw crosshair
-		*/
-		if (show_hud) {
-			driver->draw2DLine(displaycenter - core::vector2d<s32>(10,0),
-					displaycenter + core::vector2d<s32>(10,0),
-					video::SColor(255,255,255,255));
-			driver->draw2DLine(displaycenter - core::vector2d<s32>(0,10),
-					displaycenter + core::vector2d<s32>(0,10),
-					video::SColor(255,255,255,255));
-		}
-
 		} // timer
 
 		/*
@@ -2629,6 +2643,16 @@ void the_game(
 			if (client.getServerHunger())
 				hunger = client.getHunger();
 			if (old_hotbar) {
+
+				/*
+					Draw crosshair
+				*/
+				driver->draw2DLine(displaycenter - core::vector2d<s32>(10,0),
+							displaycenter + core::vector2d<s32>(10,0),
+							video::SColor(255,255,255,255));
+				driver->draw2DLine(displaycenter - core::vector2d<s32>(0,10),
+							displaycenter + core::vector2d<s32>(0,10),
+							video::SColor(255,255,255,255));
 				draw_old_hotbar(
 					driver,
 					font,
@@ -2641,6 +2665,12 @@ void the_game(
 					hunger
 				);
 			}else{
+				int crosshair = 1;
+				if (g_menumgr.menuCount() > 0) {
+					crosshair = 0;
+				}else if (client.getPointedContent() != CONTENT_IGNORE) {
+					crosshair = 2;
+				}
 				draw_hud(
 					driver,
 					font,
@@ -2653,7 +2683,8 @@ void the_game(
 					client.getServerSuffocation(),
 					client.getAir(),
 					client.getServerHunger(),
-					hunger
+					hunger,
+					crosshair
 				);
 			}
 		}
