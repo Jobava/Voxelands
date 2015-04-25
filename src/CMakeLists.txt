@@ -56,6 +56,8 @@ if(USE_AUDIO)
 		${OPENAL_LIBRARY}
 		${VORBIS_LIBRARIES}
 		)
+else()
+	set(audio_SRCS sound.cpp)
 endif()
 
 option(ENABLE_FREETYPE "Enable freetype2 (truetype fonts and basic unicode support)" ON)
