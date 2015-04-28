@@ -149,7 +149,7 @@ else()
 	set(CPACK_SOURCE_GENERATOR TGZ)
 	SET ( CPACK_DEBIAN_PACKAGE_SECTION		"other" )
 	SET ( CPACK_DEBIAN_PACKAGE_PRIORITY		"optional" )
-	SET ( CPACK_DEBIAN_PACKAGE_MAINTAINER	"Stéphane Charette <stephanecharette@gmail.com>" )
+	SET ( CPACK_DEBIAN_PACKAGE_MAINTAINER	"Lisa Milne <lisa@ltmnet.com>" )
 	SET ( CPACK_GENERATOR					"DEB;RPM" )
 
 endif()
