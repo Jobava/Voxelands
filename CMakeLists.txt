@@ -147,6 +147,11 @@ else()
 	set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-${VERSION_STRING}-linux")
 	set(CPACK_GENERATOR TGZ)
 	set(CPACK_SOURCE_GENERATOR TGZ)
+	SET ( CPACK_DEBIAN_PACKAGE_SECTION		"other" )
+	SET ( CPACK_DEBIAN_PACKAGE_PRIORITY		"optional" )
+	SET ( CPACK_DEBIAN_PACKAGE_MAINTAINER	"Stéphane Charette <stephanecharette@gmail.com>" )
+	SET ( CPACK_GENERATOR					"DEB;RPM" )
+
 endif()
 
 include(CPack)
