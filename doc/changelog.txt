@@ -3,6 +3,12 @@ Voxelands changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1504.01: (release 2015-05-01)
+ - fix standalone server not compiling
+ - fix windows utf8-multibyte conversion crashing the client
+ - support out-of-tree builds
+ - add deb and rpm package building support
+
 1504.00: (release 2015-04-25)
  - new crosshair
  - send node type with animation updates, so remote player dig sound is correct
