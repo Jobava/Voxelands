@@ -691,18 +691,24 @@ char* ngettext(const char* s1, const char* s2, int n)
 
 wchar_t *mb2wc(const char *src)
 {
+#ifdef _WIN32
+	static wchar_t *w = (wchar_t*)L"";
+	int ol = MultiByteToWideChar(CP_UTF8, 0, src, -1, NULL, 0);
+	if (!ol)
+		return w;
+	wchar_t *buff = new wchar_t[ol];
+	if (!MultiByteToWideChar(CP_UTF8, 0, src, -1, buff, ol))
+		return w;
+	return buff;
+#else
 	int l = strlen(src)+1;
 	wchar_t *buff = new wchar_t[l];
-#ifdef _WIN32
-	size_t n = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, src, l, buff, l);
-#else
 	mbstate_t state;
 	memset(&state, '\0', sizeof (state));
 	size_t n = mbsrtowcs(buff, &src, l, &state);
-#endif
 	buff[n] = L'\0';
-
 	return buff;
+#endif
 }
 
 wchar_t* wgettext(const char *str)
