@@ -585,100 +585,59 @@ u8 MapNode::getMineral()
 
 u32 MapNode::serializedLength(u8 version)
 {
-	if(!ser_ver_supported(version))
+	if (!ser_ver_supported(version))
 		throw VersionMismatchException("ERROR: MapNode format not supported");
 
-	if(version == 0)
-		return 1;
-	else if(version <= 9)
-		return 2;
-	else
+	if (version <= 20)
 		return 3;
+
+	return 4;
 }
 void MapNode::serialize(u8 *dest, u8 version)
 {
-	if(!ser_ver_supported(version))
+	if (!ser_ver_supported(version))
 		throw VersionMismatchException("ERROR: MapNode format not supported");
 
 	// Translate to wanted version
 	MapNode n_foreign = mapnode_translate_from_internal(*this, version);
 
-	u8 actual_param0 = n_foreign.param0;
-
-	// Convert special values from new version to old
-	if(version <= 18)
-	{
-		// In these versions, CONTENT_IGNORE and CONTENT_AIR
-		// are 255 and 254
-		if(actual_param0 == CONTENT_IGNORE)
-			actual_param0 = 255;
-		else if(actual_param0 == CONTENT_AIR)
-			actual_param0 = 254;
-	}
-
-	if(version == 0)
-	{
-		dest[0] = actual_param0;
-	}
-	else if(version <= 9)
-	{
-		dest[0] = actual_param0;
-		dest[1] = n_foreign.param1;
-	}
-	else
-	{
-		dest[0] = actual_param0;
+	if (version <= 20) {
+		u8 p0 = 0;
 		dest[1] = n_foreign.param1;
 		dest[2] = n_foreign.param2;
+		if (content < 0x80) {
+			p0 = content;
+		}else{
+			p0 = content>>4;
+			dest[2] &= ~(0xF0);
+			dest[2] |= (content&0x0F)<<4;
+		}
+		dest[0] = p0;
+	}else{
+		dest[0] = (n_foreign.content&0xFF00)>>8;
+		dest[1] = (n_foreign.content&0xFF);
+		dest[2] = n_foreign.param1;
+		dest[3] = n_foreign.param2;
 	}
 }
 void MapNode::deSerialize(u8 *source, u8 version)
 {
-	if(!ser_ver_supported(version))
+	if (!ser_ver_supported(version))
 		throw VersionMismatchException("ERROR: MapNode format not supported");
 
-	if(version == 0)
-	{
-		param0 = source[0];
-	}
-	else if(version == 1)
-	{
-		param0 = source[0];
-		// This version doesn't support saved lighting
-		if(light_propagates() || light_source() > 0)
-			param1 = 0;
-		else
-			param1 = source[1];
-	}
-	else if(version <= 9)
-	{
-		param0 = source[0];
+	if (version <= 20) {
+		if (source[0] < 0x80) {
+			content = source[0];
+			param2 = source[2];
+		}else{
+			content = (source[0]<<4) + (source[2]>>4);
+			param2 = (source[2]&0x0F);
+		}
 		param1 = source[1];
-	}
-	else
-	{
-		param0 = source[0];
-		param1 = source[1];
-		param2 = source[2];
-	}
-
-	// Convert special values from old version to new
-	if(version <= 18)
-	{
-		// In these versions, CONTENT_IGNORE and CONTENT_AIR
-		// are 255 and 254
-		if(param0 == 255)
-			param0 = CONTENT_IGNORE;
-		else if(param0 == 254)
-			param0 = CONTENT_AIR;
-	}
-	// version 19 is fucked up with sometimes the old values and sometimes not
-	if(version == 19)
-	{
-		if(param0 == 255)
-			param0 = CONTENT_IGNORE;
-		else if(param0 == 254)
-			param0 = CONTENT_AIR;
+	}else{
+		content = (source[0]<<8) | source[1];
+		param1 = source[2];
+		param2 = source[3];
 	}
 
 	// Translate to our known version

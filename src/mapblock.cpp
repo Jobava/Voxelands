@@ -489,108 +489,44 @@ s16 MapBlock::getGroundLevel(v2s16 p2d)
 
 void MapBlock::serialize(std::ostream &os, u8 version)
 {
-	if(!ser_ver_supported(version))
+	if (!ser_ver_supported(version))
 		throw VersionMismatchException("ERROR: MapBlock format not supported");
 
-	if(data == NULL)
-	{
+	if (data == NULL)
 		throw SerializationError("ERROR: Not writing dummy block.");
-	}
 
-	// These have no compression
-	if(version <= 3 || version == 5 || version == 6)
-	{
-		u32 nodecount = MAP_BLOCKSIZE*MAP_BLOCKSIZE*MAP_BLOCKSIZE;
-
-		u32 buflen = 1 + nodecount * MapNode::serializedLength(version);
-		SharedBuffer<u8> dest(buflen);
-
-		dest[0] = is_underground;
-		for(u32 i=0; i<nodecount; i++)
-		{
-			u32 s = 1 + i * MapNode::serializedLength(version);
-			data[i].serialize(&dest[s], version);
-		}
-
-		os.write((char*)*dest, dest.getSize());
-	}
-	else if(version <= 10)
-	{
-		/*
-			With compression.
-			Compress the materials and the params separately.
-		*/
-
-		// First byte
-		os.write((char*)&is_underground, 1);
-
-		u32 nodecount = MAP_BLOCKSIZE*MAP_BLOCKSIZE*MAP_BLOCKSIZE;
-
-		// Get and compress materials
-		SharedBuffer<u8> materialdata(nodecount);
-		for(u32 i=0; i<nodecount; i++)
-		{
-			materialdata[i] = data[i].param0;
-		}
-		compress(materialdata, os, version);
-
-		// Get and compress lights
-		SharedBuffer<u8> lightdata(nodecount);
-		for(u32 i=0; i<nodecount; i++)
-		{
-			lightdata[i] = data[i].param1;
-		}
-		compress(lightdata, os, version);
-
-		if(version >= 10)
-		{
-			// Get and compress param2
-			SharedBuffer<u8> param2data(nodecount);
-			for(u32 i=0; i<nodecount; i++)
-			{
-				param2data[i] = data[i].param2;
-			}
-			compress(param2data, os, version);
-		}
-	}
-	// All other versions (newest)
-	else
 	{
 		// First byte
 		u8 flags = 0;
-		if(is_underground)
+		if (is_underground)
 			flags |= 0x01;
-		if(m_day_night_differs)
+		if (m_day_night_differs)
 			flags |= 0x02;
-		if(m_lighting_expired)
+		if (m_lighting_expired)
 			flags |= 0x04;
-		if(version >= 18)
-		{
-			if(m_generated == false)
-				flags |= 0x08;
-		}
+		if (m_generated == false)
+			flags |= 0x08;
 		os.write((char*)&flags, 1);
 
 		u32 nodecount = MAP_BLOCKSIZE*MAP_BLOCKSIZE*MAP_BLOCKSIZE;
 
+		u32 sl = MapNode::serializedLength(version);
+
 		/*
 			Get data
 		*/
-
 		// Serialize nodes
-		SharedBuffer<u8> databuf_nodelist(nodecount*3);
-		for(u32 i=0; i<nodecount; i++)
-		{
-			data[i].serialize(&databuf_nodelist[i*3], version);
+		SharedBuffer<u8> databuf_nodelist(nodecount*sl);
+		for (u32 i=0; i<nodecount; i++) {
+			data[i].serialize(&databuf_nodelist[i*sl], version);
 		}
 
 		// Create buffer with different parameters sorted
-		SharedBuffer<u8> databuf(nodecount*3);
-		for(u32 i=0; i<nodecount; i++)
-		{
-			databuf[i] = databuf_nodelist[i*3];
-			databuf[i+nodecount] = databuf_nodelist[i*3+1];
-			databuf[i+nodecount*2] = databuf_nodelist[i*3+2];
+		SharedBuffer<u8> databuf(nodecount*sl);
+		for (u32 i=0; i<nodecount; i++) {
+			for (u32 k=0; k<sl; k++) {
+				databuf[i+(nodecount*k)] = databuf_nodelist[(i*sl)+k];
+			}
 		}
 
 		/*
@@ -602,123 +538,19 @@ void MapBlock::serialize(std::ostream &os, u8 version)
 		/*
 			NodeMetadata
 		*/
-		if(version >= 14)
 		{
-			if(version <= 15)
-			{
-				try{
-					std::ostringstream oss(std::ios_base::binary);
-					m_node_metadata.serialize(oss);
-					os<<serializeString(oss.str());
-				}
-				// This will happen if the string is longer than 65535
-				catch(SerializationError &e)
-				{
-					// Use an empty string
-					os<<serializeString("");
-				}
-			}
-			else
-			{
-				std::ostringstream oss(std::ios_base::binary);
-				m_node_metadata.serialize(oss);
-				compressZlib(oss.str(), os);
-				//os<<serializeLongString(oss.str());
-			}
+			std::ostringstream oss(std::ios_base::binary);
+			m_node_metadata.serialize(oss);
+			compressZlib(oss.str(), os);
 		}
 	}
 }
 
 void MapBlock::deSerialize(std::istream &is, u8 version)
 {
-	if(!ser_ver_supported(version))
+	if (!ser_ver_supported(version))
 		throw VersionMismatchException("ERROR: MapBlock format not supported");
 
-	// These have no lighting info
-	if(version <= 1)
-	{
-		setLightingExpired(true);
-	}
-
-	// These have no "generated" field
-	if(version < 18)
-	{
-		m_generated = true;
-	}
-
-	// These have no compression
-	if(version <= 3 || version == 5 || version == 6)
-	{
-		u32 nodecount = MAP_BLOCKSIZE*MAP_BLOCKSIZE*MAP_BLOCKSIZE;
-		char tmp;
-		is.read(&tmp, 1);
-		if(is.gcount() != 1)
-			throw SerializationError
-					("MapBlock::deSerialize: no enough input data");
-		is_underground = tmp;
-		for(u32 i=0; i<nodecount; i++)
-		{
-			s32 len = MapNode::serializedLength(version);
-			SharedBuffer<u8> d(len);
-			is.read((char*)*d, len);
-			if(is.gcount() != len)
-				throw SerializationError
-						("MapBlock::deSerialize: no enough input data");
-			data[i].deSerialize(*d, version);
-		}
-	}
-	else if(version <= 10)
-	{
-		u32 nodecount = MAP_BLOCKSIZE*MAP_BLOCKSIZE*MAP_BLOCKSIZE;
-
-		u8 t8;
-		is.read((char*)&t8, 1);
-		is_underground = t8;
-
-		{
-			// Uncompress and set material data
-			std::ostringstream os(std::ios_base::binary);
-			decompress(is, os, version);
-			std::string s = os.str();
-			if(s.size() != nodecount)
-				throw SerializationError
-						("MapBlock::deSerialize: invalid format");
-			for(u32 i=0; i<s.size(); i++)
-			{
-				data[i].param0 = s[i];
-			}
-		}
-		{
-			// Uncompress and set param data
-			std::ostringstream os(std::ios_base::binary);
-			decompress(is, os, version);
-			std::string s = os.str();
-			if(s.size() != nodecount)
-				throw SerializationError
-						("MapBlock::deSerialize: invalid format");
-			for(u32 i=0; i<s.size(); i++)
-			{
-				data[i].param1 = s[i];
-			}
-		}
-
-		if(version >= 10)
-		{
-			// Uncompress and set param2 data
-			std::ostringstream os(std::ios_base::binary);
-			decompress(is, os, version);
-			std::string s = os.str();
-			if(s.size() != nodecount)
-				throw SerializationError
-						("MapBlock::deSerialize: invalid format");
-			for(u32 i=0; i<s.size(); i++)
-			{
-				data[i].param2 = s[i];
-			}
-		}
-	}
-	// All other versions (newest)
-	else
 	{
 		u32 nodecount = MAP_BLOCKSIZE*MAP_BLOCKSIZE*MAP_BLOCKSIZE;
 
@@ -727,55 +559,38 @@ void MapBlock::deSerialize(std::istream &is, u8 version)
 		is_underground = (flags & 0x01) ? true : false;
 		m_day_night_differs = (flags & 0x02) ? true : false;
 		m_lighting_expired = (flags & 0x04) ? true : false;
-		if(version >= 18)
-			m_generated = (flags & 0x08) ? false : true;
+		m_generated = (flags & 0x08) ? false : true;
+		u32 sl = MapNode::serializedLength(version);
 
 		// Uncompress data
 		std::ostringstream os(std::ios_base::binary);
 		decompress(is, os, version);
 		std::string s = os.str();
-		if(s.size() != nodecount*3)
-			throw SerializationError
-					("MapBlock::deSerialize: decompress resulted in size"
-					" other than nodecount*3");
+		if (s.size() != nodecount*sl)
+			throw SerializationError("MapBlock::deSerialize: decompress resulted in size"
+						" other than nodecount*nodelength");
 
 		// deserialize nodes from buffer
-		for(u32 i=0; i<nodecount; i++)
-		{
-			u8 buf[3];
-			buf[0] = s[i];
-			buf[1] = s[i+nodecount];
-			buf[2] = s[i+nodecount*2];
+		for (u32 i=0; i<nodecount; i++) {
+			u8 buf[sl];
+			for (u32 k=0; k<sl; k++) {
+				buf[k] = s[i+(nodecount*k)];
+			}
 			data[i].deSerialize(buf, version);
 		}
 
 		/*
 			NodeMetadata
 		*/
-		if(version >= 14)
-		{
-			// Ignore errors
-			try{
-				if(version <= 15)
-				{
-					std::string data = deSerializeString(is);
-					std::istringstream iss(data, std::ios_base::binary);
-					m_node_metadata.deSerialize(iss);
-				}
-				else
-				{
-					//std::string data = deSerializeLongString(is);
-					std::ostringstream oss(std::ios_base::binary);
-					decompressZlib(is, oss);
-					std::istringstream iss(oss.str(), std::ios_base::binary);
-					m_node_metadata.deSerialize(iss);
-				}
-			}
-			catch(SerializationError &e)
-			{
-				dstream<<"WARNING: MapBlock::deSerialize(): Ignoring an error"
-						<<" while deserializing node metadata"<<std::endl;
-			}
+		// Ignore errors
+		try{
+			std::ostringstream oss(std::ios_base::binary);
+			decompressZlib(is, oss);
+			std::istringstream iss(oss.str(), std::ios_base::binary);
+			m_node_metadata.deSerialize(iss);
+		}catch(SerializationError &e) {
+			dstream<<"WARNING: MapBlock::deSerialize(): Ignoring an error"
+					<<" while deserializing node metadata"<<std::endl;
 		}
 	}
 }
