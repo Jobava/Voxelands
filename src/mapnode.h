@@ -848,40 +848,20 @@ struct MapNode
 		envticks = 0;
 	}
 
-	/*
-		These four are DEPRECATED I guess. -c55
-	*/
-	bool light_propagates()
-	{
-		return content_features(*this).light_propagates;
-	}
-	bool sunlight_propagates()
-	{
-		return content_features(*this).sunlight_propagates;
-	}
-	u8 solidness()
-	{
-		return content_features(*this).solidness;
-	}
-	u8 light_source()
-	{
-		return content_features(*this).light_source;
-	}
-
 	u8 getLightBanksWithSource()
 	{
 		// Select the brightest of [light source, propagated light]
 		u8 lightday = 0;
 		u8 lightnight = 0;
-		if(content_features(*this).param_type == CPT_LIGHT)
-		{
+		ContentFeatures &f = content_features(content);
+		if (f.param_type == CPT_LIGHT) {
 			lightday = param1 & 0x0f;
 			lightnight = (param1>>4)&0x0f;
 		}
-		if(light_source() > lightday)
-			lightday = light_source();
-		if(light_source() > lightnight)
-			lightnight = light_source();
+		if (f.light_source > lightday)
+			lightday = f.light_source;
+		if (f.light_source > lightnight)
+			lightnight = f.light_source;
 		return (lightday&0x0f) | ((lightnight<<4)&0xf0);
 	}
 
@@ -889,17 +869,16 @@ struct MapNode
 	{
 		// Select the brightest of [light source, propagated light]
 		u8 light = 0;
-		if(content_features(*this).param_type == CPT_LIGHT)
-		{
-			if(bank == LIGHTBANK_DAY)
+		ContentFeatures &f = content_features(content);
+		if (f.param_type == CPT_LIGHT) {
+			if (bank == LIGHTBANK_DAY) {
 				light = param1 & 0x0f;
-			else if(bank == LIGHTBANK_NIGHT)
+			}else if (bank == LIGHTBANK_NIGHT) {
 				light = (param1>>4)&0x0f;
-			else
-				assert(0);
+			}
 		}
-		if(light_source() > light)
-			light = light_source();
+		if (f.light_source > light)
+			light = f.light_source;
 		return light;
 	}
 
@@ -917,35 +896,19 @@ struct MapNode
 			l = max;
 		return l;
 	}
-	/*// 0 <= daylight_factor <= 1000
-	// 0 <= return value <= 255
-	u8 getLightBlend(u32 daylight_factor)
-	{
-		u8 daylight = decode_light(getLight(LIGHTBANK_DAY));
-		u8 nightlight = decode_light(getLight(LIGHTBANK_NIGHT));
-		u8 mix = ((daylight_factor * daylight
-			+ (1000-daylight_factor) * nightlight)
-			)/1000;
-		return mix;
-	}*/
 
 	void setLight(enum LightBank bank, u8 a_light)
 	{
 		// If node doesn't contain light data, ignore this
-		if(content_features(*this).param_type != CPT_LIGHT)
+		if (content_features(content).param_type != CPT_LIGHT)
 			return;
-		if(bank == LIGHTBANK_DAY)
-		{
+		if (bank == LIGHTBANK_DAY) {
 			param1 &= 0xf0;
 			param1 |= a_light & 0x0f;
-		}
-		else if(bank == LIGHTBANK_NIGHT)
-		{
+		}else if(bank == LIGHTBANK_NIGHT) {
 			param1 &= 0x0f;
 			param1 |= (a_light & 0x0f)<<4;
 		}
-		else
-			assert(0);
 	}
 	v3s16 getRotation(v3s16 dir = v3s16(1,1,1));
 	s16 getRotationAngle();

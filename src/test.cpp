@@ -233,9 +233,9 @@ struct TestMapNode
 
 		// Transparency
 		n.setContent(CONTENT_AIR);
-		assert(n.light_propagates() == true);
+		assert(content_features(n).light_propagates == true);
 		n.setContent(CONTENT_STONE);
-		assert(n.light_propagates() == false);
+		assert(content_features(n).light_propagates == false);
 	}
 };
 

@@ -217,21 +217,18 @@ bool MapBlock::propagateSunlight(core::map<v3s16, bool> & light_sources,
 
 	v3s16 pos_relative = getPosRelative();
 
-	for(s16 x=0; x<MAP_BLOCKSIZE; x++)
-	{
-		for(s16 z=0; z<MAP_BLOCKSIZE; z++)
-		{
-#if 1
+	for (s16 x=0; x<MAP_BLOCKSIZE; x++) {
+		for (s16 z=0; z<MAP_BLOCKSIZE; z++) {
 			bool no_sunlight = false;
 			//bool no_top_block = false;
 			// Check if node above block has sunlight
 			bool is_valid_position;
-			MapNode n = getNodeParent(v3s16(x, MAP_BLOCKSIZE, z), &is_valid_position);
+			MapNode np = getNodeParent(v3s16(x, MAP_BLOCKSIZE, z), &is_valid_position);
 			if (is_valid_position) {
-				if (n.getContent() == CONTENT_IGNORE) {
+				if (np.getContent() == CONTENT_IGNORE) {
 					// Trust heuristics
 					no_sunlight = is_underground;
-				}else if (n.getLight(LIGHTBANK_DAY) != LIGHT_SUN) {
+				}else if (np.getLight(LIGHTBANK_DAY) != LIGHT_SUN) {
 					no_sunlight = true;
 				}
 			}else{
@@ -251,29 +248,6 @@ bool MapBlock::propagateSunlight(core::map<v3s16, bool> & light_sources,
 				// No sunlight here
 				//no_sunlight = true;
 			}
-#endif
-#if 0 // Doesn't work; nothing gets light.
-			bool no_sunlight = true;
-			bool no_top_block = false;
-			// Check if node above block has sunlight
-			try{
-				MapNode n = getNodeParent(v3s16(x, MAP_BLOCKSIZE, z));
-				if(n.getLight(LIGHTBANK_DAY) == LIGHT_SUN)
-				{
-					no_sunlight = false;
-				}
-			}
-			catch(InvalidPositionException &e)
-			{
-				no_top_block = true;
-			}
-#endif
-
-			/*std::cout<<"("<<x<<","<<z<<"): "
-					<<"no_top_block="<<no_top_block
-					<<", is_underground="<<is_underground
-					<<", no_sunlight="<<no_sunlight
-					<<std::endl;*/
 
 			s16 y = MAP_BLOCKSIZE-1;
 
@@ -282,72 +256,34 @@ bool MapBlock::propagateSunlight(core::map<v3s16, bool> & light_sources,
 
 			u8 current_light = no_sunlight ? 0 : LIGHT_SUN;
 
-			for(; y >= 0; y--)
-			{
+			for (; y >= 0; y--) {
 				v3s16 pos(x, y, z);
 				MapNode &n = getNodeRef(pos);
+				ContentFeatures &f = content_features(n);
 
-				if(current_light == 0)
-				{
-					// Do nothing
-				}
-				else if(current_light == LIGHT_SUN && n.sunlight_propagates())
-				{
-					// Do nothing: Sunlight is continued
-				}
-				else if(n.light_propagates() == false)
-				{
-					/*// DEPRECATED TODO: REMOVE
-					if(grow_grass)
-					{
-						bool upper_is_air = false;
-						try
-						{
-							if(getNodeParent(pos+v3s16(0,1,0)).getContent() == CONTENT_AIR)
-								upper_is_air = true;
-						}
-						catch(InvalidPositionException &e)
-						{
-						}
-						// Turn mud into grass
-						if(upper_is_air && n.getContent() == CONTENT_MUD
-								&& current_light == LIGHT_SUN)
-						{
-							n.d = CONTENT_GRASS;
-						}
-					}*/
+				if (current_light != 0) {
+					if ((current_light != LIGHT_SUN || !f.sunlight_propagates) && !f.light_propagates) {
+						// A solid object is on the way.
+						stopped_to_solid_object = true;
 
-					// A solid object is on the way.
-					stopped_to_solid_object = true;
-
-					// Light stops.
-					current_light = 0;
-				}
-				else
-				{
-					// Diminish light
-					current_light = diminish_light(current_light);
+						// Light stops.
+						current_light = 0;
+					}else{
+						// Diminish light
+						current_light = diminish_light(current_light);
+					}
 				}
 
 				u8 old_light = n.getLight(LIGHTBANK_DAY);
 
-				if(current_light > old_light || remove_light)
-				{
+				if (current_light > old_light || remove_light)
 					n.setLight(LIGHTBANK_DAY, current_light);
-				}
 
-				if(diminish_light(current_light) != 0)
-				{
+				if (diminish_light(current_light) != 0)
 					light_sources.insert(pos_relative + pos, true);
-				}
 
-				if(current_light == 0 && stopped_to_solid_object)
-				{
-					if(black_air_left)
-					{
-						*black_air_left = true;
-					}
-				}
+				if (current_light == 0 && stopped_to_solid_object && black_air_left)
+					*black_air_left = true;
 			}
 
 			// Whether or not the block below should see LIGHT_SUN
@@ -361,26 +297,24 @@ bool MapBlock::propagateSunlight(core::map<v3s16, bool> & light_sources,
 
 				Ignore non-transparent nodes as they always have no light
 			*/
-			try
-			{
-			if(block_below_is_valid)
-			{
-				MapNode n = getNodeParent(v3s16(x, -1, z));
-				if(n.light_propagates())
-				{
-					if(n.getLight(LIGHTBANK_DAY) == LIGHT_SUN
-							&& sunlight_should_go_down == false)
-						block_below_is_valid = false;
-					else if(n.getLight(LIGHTBANK_DAY) != LIGHT_SUN
-							&& sunlight_should_go_down == true)
-						block_below_is_valid = false;
+			try {
+				if (block_below_is_valid) {
+					MapNode n = getNodeParent(v3s16(x, -1, z));
+					if (content_features(n).light_propagates) {
+						if (
+							n.getLight(LIGHTBANK_DAY) == LIGHT_SUN
+							&& sunlight_should_go_down == false
+						) {
+							block_below_is_valid = false;
+						}else if (
+							n.getLight(LIGHTBANK_DAY) != LIGHT_SUN
+							&& sunlight_should_go_down == true
+						) {
+							block_below_is_valid = false;
+						}
+					}
 				}
-			}//if
-			}//try
-			catch(InvalidPositionException &e)
-			{
-				/*std::cout<<"InvalidBlockException for bottom block node"
-						<<std::endl;*/
+			}catch(InvalidPositionException &e) {
 				// Just no block below, no need to panic.
 			}
 		}
