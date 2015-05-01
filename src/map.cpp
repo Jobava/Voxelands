@@ -340,7 +340,7 @@ void Map::unspreadLight(enum LightBank bank,
 				/*
 					And the neighbor is transparent and it has some light
 				*/
-				if (n2.light_propagates() && n2.getLight(bank) != 0) {
+				if (content_features(n2).light_propagates && n2.getLight(bank) != 0) {
 					/*
 						Set light to 0 and add to queue
 					*/
@@ -516,7 +516,7 @@ void Map::spreadLight(enum LightBank bank,
 				would spread on it, add to list
 			*/
 			if (n2.getLight(bank) < newlight) {
-				if (n2.light_propagates()) {
+				if (content_features(n2).light_propagates) {
 					n2.setLight(bank, newlight);
 					block->setNode(relpos, n2);
 					lighted_nodes.insert(n2pos, true);
@@ -621,15 +621,14 @@ s16 Map::propagateSunlight(v3s16 start,
 		if (!is_valid_position)
 			continue;
 
-		if (n.sunlight_propagates()) {
-			n.setLight(LIGHTBANK_DAY, LIGHT_SUN);
-			block->setNode(relpos, n);
-
-			modified_blocks.insert(blockpos, block);
-		}else{
-			// Sunlight goes no further
+		// Sunlight goes no further
+		if (!content_features(n).sunlight_propagates)
 			break;
-		}
+
+		n.setLight(LIGHTBANK_DAY, LIGHT_SUN);
+		block->setNode(relpos, n);
+
+		modified_blocks.insert(blockpos, block);
 	}
 	return y + 1;
 }

@@ -318,14 +318,13 @@ void VoxelManipulator::unspreadLight(enum LightBank bank, v3s16 p, u8 oldlight,
 	emerge(VoxelArea(p - v3s16(1,1,1), p + v3s16(1,1,1)));
 
 	// Loop through 6 neighbors
-	for(u16 i=0; i<6; i++)
-	{
+	for (u16 i=0; i<6; i++) {
 		// Get the position of the neighbor node
 		v3s16 n2pos = p + dirs[i];
 
 		u32 n2i = m_area.index(n2pos);
 
-		if(m_flags[n2i] & VOXELFLAG_INEXISTENT)
+		if (m_flags[n2i] & VOXELFLAG_INEXISTENT)
 			continue;
 
 		MapNode &n2 = m_data[n2i];
@@ -335,13 +334,11 @@ void VoxelManipulator::unspreadLight(enum LightBank bank, v3s16 p, u8 oldlight,
 			as oldlight (the light of the previous node)
 		*/
 		u8 light2 = n2.getLight(bank);
-		if(light2 < oldlight)
-		{
+		if (light2 < oldlight) {
 			/*
 				And the neighbor is transparent and it has some light
 			*/
-			if(n2.light_propagates() && light2 != 0)
-			{
+			if (content_features(n2).light_propagates && light2 != 0) {
 				/*
 					Set light to 0 and add to queue
 				*/
@@ -360,8 +357,7 @@ void VoxelManipulator::unspreadLight(enum LightBank bank, v3s16 p, u8 oldlight,
 					light_sources.remove(n2pos);
 				}*/
 			}
-		}
-		else{
+		}else{
 			light_sources.insert(n2pos, true);
 		}
 	}
@@ -531,7 +527,7 @@ void VoxelManipulator::spreadLight(enum LightBank bank, v3s16 p)
 
 	u32 i = m_area.index(p);
 
-	if(m_flags[i] & VOXELFLAG_INEXISTENT)
+	if (m_flags[i] & VOXELFLAG_INEXISTENT)
 		return;
 
 	MapNode &n = m_data[i];
@@ -540,14 +536,13 @@ void VoxelManipulator::spreadLight(enum LightBank bank, v3s16 p)
 	u8 newlight = diminish_light(oldlight);
 
 	// Loop through 6 neighbors
-	for(u16 i=0; i<6; i++)
-	{
+	for (u16 i=0; i<6; i++) {
 		// Get the position of the neighbor node
 		v3s16 n2pos = p + dirs[i];
 
 		u32 n2i = m_area.index(n2pos);
 
-		if(m_flags[n2i] & VOXELFLAG_INEXISTENT)
+		if (m_flags[n2i] & VOXELFLAG_INEXISTENT)
 			continue;
 
 		MapNode &n2 = m_data[n2i];
@@ -557,21 +552,15 @@ void VoxelManipulator::spreadLight(enum LightBank bank, v3s16 p)
 			If the neighbor is brighter than the current node,
 			add to list (it will light up this node on its turn)
 		*/
-		if(light2 > undiminish_light(oldlight))
-		{
+		if (light2 > undiminish_light(oldlight))
 			spreadLight(bank, n2pos);
-		}
 		/*
 			If the neighbor is dimmer than how much light this node
 			would spread on it, add to list
 		*/
-		if(light2 < newlight)
-		{
-			if(n2.light_propagates())
-			{
-				n2.setLight(bank, newlight);
-				spreadLight(bank, n2pos);
-			}
+		if (light2 < newlight && content_features(n2).light_propagates) {
+			n2.setLight(bank, newlight);
+			spreadLight(bank, n2pos);
 		}
 	}
 }
@@ -587,17 +576,15 @@ void VoxelManipulator::spreadLight(enum LightBank bank, v3s16 p)
 void VoxelManipulator::spreadLight(enum LightBank bank,
 		core::map<v3s16, bool> & from_nodes)
 {
-	if(from_nodes.size() == 0)
+	if (from_nodes.size() == 0)
 		return;
 
 	core::map<v3s16, bool> lighted_nodes;
 	core::map<v3s16, bool>::Iterator j;
 	j = from_nodes.getIterator();
 
-	for(; j.atEnd() == false; j++)
-	{
+	for (; j.atEnd() == false; j++) {
 		v3s16 pos = j.getNode()->getKey();
-
 		spreadLight(bank, pos);
 	}
 }
@@ -620,22 +607,21 @@ void VoxelManipulator::spreadLight(enum LightBank bank,
 		v3s16(-1,0,0), // left
 	};
 
-	if(from_nodes.size() == 0)
+	if (from_nodes.size() == 0)
 		return;
 
 	core::map<v3s16, bool> lighted_nodes;
 	core::map<v3s16, bool>::Iterator j;
 	j = from_nodes.getIterator();
 
-	for(; j.atEnd() == false; j++)
-	{
+	for (; j.atEnd() == false; j++) {
 		v3s16 pos = j.getNode()->getKey();
 
 		emerge(VoxelArea(pos - v3s16(1,1,1), pos + v3s16(1,1,1)));
 
 		u32 i = m_area.index(pos);
 
-		if(m_flags[i] & VOXELFLAG_INEXISTENT)
+		if (m_flags[i] & VOXELFLAG_INEXISTENT)
 			continue;
 
 		MapNode &n = m_data[i];
@@ -644,16 +630,14 @@ void VoxelManipulator::spreadLight(enum LightBank bank,
 		u8 newlight = diminish_light(oldlight);
 
 		// Loop through 6 neighbors
-		for(u16 i=0; i<6; i++)
-		{
+		for (u16 i=0; i<6; i++) {
 			// Get the position of the neighbor node
 			v3s16 n2pos = pos + dirs[i];
 
-			try
-			{
+			try{
 				u32 n2i = m_area.index(n2pos);
 
-				if(m_flags[n2i] & VOXELFLAG_INEXISTENT)
+				if (m_flags[n2i] & VOXELFLAG_INEXISTENT)
 					continue;
 
 				MapNode &n2 = m_data[n2i];
@@ -663,25 +647,17 @@ void VoxelManipulator::spreadLight(enum LightBank bank,
 					If the neighbor is brighter than the current node,
 					add to list (it will light up this node on its turn)
 				*/
-				if(light2 > undiminish_light(oldlight))
-				{
+				if (light2 > undiminish_light(oldlight))
 					lighted_nodes.insert(n2pos, true);
-				}
 				/*
 					If the neighbor is dimmer than how much light this node
 					would spread on it, add to list
 				*/
-				if(light2 < newlight)
-				{
-					if(n2.light_propagates())
-					{
-						n2.setLight(bank, newlight);
-						lighted_nodes.insert(n2pos, true);
-					}
+				if (light2 < newlight && content_features(n2).light_propagates) {
+					n2.setLight(bank, newlight);
+					lighted_nodes.insert(n2pos, true);
 				}
-			}
-			catch(InvalidPositionException &e)
-			{
+			}catch(InvalidPositionException &e) {
 				continue;
 			}
 		}
@@ -692,7 +668,7 @@ void VoxelManipulator::spreadLight(enum LightBank bank,
 			<<" for "<<from_nodes.size()<<" nodes"
 			<<std::endl;*/
 
-	if(lighted_nodes.size() > 0)
+	if (lighted_nodes.size() > 0)
 		spreadLight(bank, lighted_nodes);
 }
 #endif
