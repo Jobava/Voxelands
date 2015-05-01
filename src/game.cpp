@@ -801,11 +801,7 @@ void getPointedNode(Client *client, v3f player_position,
 				}
 			}
 		}else if(n.getContent() == CONTENT_RAIL) {
-			v3s16 dir = unpackDir(n.param0);
-			v3f dir_f = v3f(dir.X, dir.Y, dir.Z);
-			dir_f *= BS/2 - BS/6 - BS/20;
-			v3f cpf = npf + dir_f;
-			f32 distance = (cpf - camera_position).getLength();
+			f32 distance = (npf - camera_position).getLength();
 
 			float d = (float)BS/8;
 			v3f vertices[4] =

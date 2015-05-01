@@ -795,14 +795,8 @@ struct MapNode
 {
 	/*
 		Main content
-		0x00-0x7f: Short content type
-		0x80-0xff: Long content type (param2>>4 makes up low bytes)
 	*/
-	union
-	{
-		u8 param0;
-		//u8 d;
-	};
+	content_t content;
 
 	/*
 		Misc parameter. Initialized to 0.
@@ -813,22 +807,13 @@ struct MapNode
 		- Mineral content (should be removed from here)
 		- Uhh... well, most blocks have light or nothing in here.
 	*/
-	union
-	{
-		u8 param1;
-		//s8 param;
-	};
+	u8 param1;
 
 	/*
 		The second parameter. Initialized to 0.
 		E.g. direction for torches and flowing water.
-		If param0 >= 0x80, bits 0xf0 of this is extended content type data
 	*/
-	union
-	{
-		u8 param2;
-		//u8 dir;
-	};
+	u8 param2;
 
 	u32 envticks;
 
@@ -837,19 +822,17 @@ struct MapNode
 		*this = n;
 	}
 
-	MapNode(content_t content=CONTENT_AIR, u8 a_param1=0, u8 a_param2=0)
+	MapNode(content_t a_content=CONTENT_AIR, u8 a_param1=0, u8 a_param2=0)
 	{
-		//param0 = a_param0;
+		content = a_content;
 		param1 = a_param1;
 		param2 = a_param2;
 		envticks = 0;
-		// Set after other params because this needs to override part of param2
-		setContent(content);
 	}
 
 	bool operator==(const MapNode &other)
 	{
-		return (param0 == other.param0
+		return (content == other.content
 				&& param1 == other.param1
 				&& param2 == other.param2);
 	}
@@ -857,25 +840,11 @@ struct MapNode
 	// To be used everywhere
 	content_t getContent()
 	{
-		if(param0 < 0x80)
-			return param0;
-		else
-			return (param0<<4) + (param2>>4);
+		return content;
 	}
 	void setContent(content_t c)
 	{
-		if(c < 0x80)
-		{
-			if(param0 >= 0x80)
-				param2 &= ~(0xf0);
-			param0 = c;
-		}
-		else
-		{
-			param0 = c>>4;
-			param2 &= ~(0xf0);
-			param2 |= (c&0x0f)<<4;
-		}
+		content = c;
 		envticks = 0;
 	}
 
