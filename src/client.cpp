@@ -99,15 +99,18 @@ void MeshUpdateQueue::addBlock(v3s16 p, MeshMakeData *data, bool ack_block_to_se
 		If it is, update the data and quit.
 	*/
 	core::list<QueuedMeshUpdate*>::Iterator i;
-	for(i=m_queue.begin(); i!=m_queue.end(); i++)
-	{
+	for (i=m_queue.begin(); i!=m_queue.end(); i++) {
 		QueuedMeshUpdate *q = *i;
-		if(q->p == p)
-		{
-			if(q->data)
-				delete q->data;
-			q->data = data;
-			if(ack_block_to_server)
+		if (q->p == p) {
+			if (q->data && !q->data->m_refresh_only && data->m_refresh_only) {
+				q->data->m_daynight_ratio = data->m_daynight_ratio;
+				delete data;
+			}else{
+				if (q->data)
+					delete q->data;
+				q->data = data;
+			}
+			if (ack_block_to_server)
 				q->ack_block_to_server = true;
 			return;
 		}
@@ -160,14 +163,20 @@ void * MeshUpdateThread::Thread()
 
 		ScopeProfiler sp(g_profiler, "Client: Mesh making");
 
-		MapBlockMesh *mesh_new = new MapBlockMesh(q->data, m_camera_offset);
+		if (q->data && q->data->m_refresh_only) {
+			MapBlock *block = m_env->getMap().getBlockNoCreateNoEx(q->p);
+			if (block && block->mesh)
+				block->mesh->refresh(q->data->m_daynight_ratio);
+		}else{
+			MapBlockMesh *mesh_new = new MapBlockMesh(q->data, m_camera_offset);
 
-		MeshUpdateResult r;
-		r.p = q->p;
-		r.mesh = mesh_new;
-		r.ack_block_to_server = q->ack_block_to_server;
+			MeshUpdateResult r;
+			r.p = q->p;
+			r.mesh = mesh_new;
+			r.ack_block_to_server = q->ack_block_to_server;
 
-		m_queue_out.push_back(r);
+			m_queue_out.push_back(r);
+		}
 
 		delete q;
 	}
@@ -207,6 +216,7 @@ Client::Client(
 	m_password(password),
 	m_access_denied(false)
 {
+	m_mesh_update_thread.m_env = &m_env;
 	m_packetcounter_timer = 0.0;
 	//m_delete_unused_sectors_timer = 0.0;
 	m_connection_reinit_timer = 0.0;
@@ -2243,31 +2253,36 @@ void Client::clearTempMod(v3s16 p)
 	}
 }
 
-void Client::addUpdateMeshTask(v3s16 p, bool ack_to_server)
+void Client::addUpdateMeshTask(v3s16 p, bool ack_to_server, bool refresh_only)
 {
 	/*infostream<<"Client::addUpdateMeshTask(): "
 			<<"("<<p.X<<","<<p.Y<<","<<p.Z<<")"
 			<<std::endl;*/
 
 	MapBlock *b = m_env.getMap().getBlockNoCreateNoEx(p);
-	if(b == NULL)
+	if (b == NULL)
 		return;
 
 	/*
 		Create a task to update the mesh of the block
 	*/
 
-	MeshMakeData *data = new MeshMakeData;
+	MeshMakeData *data = new MeshMakeData();
 	data->m_env = &m_env;
 
-	{
-		//TimeTaker timer("data fill");
-		// Release: ~0ms
-		// Debug: 1-6ms, avg=2ms
-		data->fill(getDayNightRatio(), b);
-	}
+	if (refresh_only) {
+		data->m_daynight_ratio = getDayNightRatio();
+		data->m_refresh_only = true;
+	}else{
+		{
+			//TimeTaker timer("data fill");
+			// Release: ~0ms
+			// Debug: 1-6ms, avg=2ms
+			data->fill(getDayNightRatio(), b);
+		}
 
-	data->m_sounds = &b->m_sounds;
+		data->m_sounds = &b->m_sounds;
+	}
 
 	// Debug wait
 	//while(m_mesh_update_thread.m_queue_in.size() > 0) sleep_ms(10);

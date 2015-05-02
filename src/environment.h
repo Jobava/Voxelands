@@ -455,8 +455,7 @@ public:
 
 		Environment::setTimeOfDay(time);
 
-		if(getDayNightRatio() != old_dr)
-		{
+		if (getDayNightRatio() != old_dr) {
 			dout_client<<DTIME<<"ClientEnvironment: DayNightRatio changed"
 					<<" -> expiring meshes"<<std::endl;
 			expireMeshes(true);

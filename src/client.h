@@ -119,6 +119,7 @@ public:
 	MutexedQueue<MeshUpdateResult> m_queue_out;
 
 	v3s16 m_camera_offset;
+	ClientEnvironment *m_env;
 };
 
 enum ClientEventType
@@ -302,7 +303,7 @@ public:
 	uint64_t getMapSeed() {return m_map_seed;}
 	MapGenType getMapType() {return m_map_type;}
 
-	void addUpdateMeshTask(v3s16 blockpos, bool ack_to_server=false);
+	void addUpdateMeshTask(v3s16 blockpos, bool ack_to_server=false, bool refresh_only=false);
 	// Including blocks at appropriate edges
 	void addUpdateMeshTaskWithEdge(v3s16 blockpos, bool ack_to_server=false);
 

@@ -142,6 +142,7 @@ struct MapBlockSound
 struct MeshMakeData
 {
 	u32 m_daynight_ratio;
+	bool m_refresh_only;
 	NodeModMap m_temp_mods;
 	VoxelManipulator m_vmanip;
 	v3s16 m_blockpos;
@@ -154,6 +155,7 @@ struct MeshMakeData
 	std::map<v3s16,MapBlockSound> *m_sounds;
 
 	MeshMakeData():
+		m_refresh_only(false),
 		m_single(NULL),
 		m_sounds(NULL)
 	{}

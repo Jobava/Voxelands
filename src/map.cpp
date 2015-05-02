@@ -3358,7 +3358,7 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 
 				// Mesh has been expired: generate new mesh
 				//block->updateMesh(daynight_ratio);
-				m_client->addUpdateMeshTask(block->getPos());
+				m_client->addUpdateMeshTask(block->getPos(),false,true);
 
 				mesh_expired = false;
 			}
@@ -3666,31 +3666,23 @@ void ClientMap::expireMeshes(bool only_daynight_diffed)
 
 	core::map<v2s16, MapSector*>::Iterator si;
 	si = m_sectors.getIterator();
-	for(; si.atEnd() == false; si++)
-	{
+	for (; si.atEnd() == false; si++) {
 		MapSector *sector = si.getNode()->getValue();
 
 		core::list< MapBlock * > sectorblocks;
 		sector->getBlocks(sectorblocks);
 
 		core::list< MapBlock * >::Iterator i;
-		for(i=sectorblocks.begin(); i!=sectorblocks.end(); i++)
-		{
+		for (i=sectorblocks.begin(); i!=sectorblocks.end(); i++) {
 			MapBlock *block = *i;
 
-			if(only_daynight_diffed && dayNightDiffed(block->getPos()) == false)
-			{
+			if (only_daynight_diffed && block->dayNightDiffed() == false)
 				continue;
-			}
 
 			{
 				JMutexAutoLock lock(block->mesh_mutex);
-				if(block->mesh != NULL)
-				{
-					/*block->mesh->drop();
-					block->mesh = NULL;*/
+				if (block->mesh != NULL)
 					block->setMeshExpired(true);
-				}
 			}
 		}
 	}
