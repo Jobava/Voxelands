@@ -34,104 +34,7 @@
 #include "sound.h"
 
 #ifndef SERVER
-// Create a cuboid.
-// collector - the MeshCollector for the resulting polygons
-// box - the position and size of the box
-// tiles - the tiles (materials) to use (for all 6 faces)
-// tilecount - number of entries in tiles, 1<=tilecount<=6
-// c - vertex colour - used for all
-// txc - texture coordinates - this is a list of texture coordinates
-// for the opposite corners of each face - therefore, there
-// should be (2+2)*6=24 values in the list. Alternatively, pass
-// NULL to use the entire texture for each face. The order of
-// the faces in the list is up-down-right-left-back-front
-// (compatible with ContentFeatures). If you specified 0,0,1,1
-// for each face, that would be the same as passing NULL.
-void makeRotatedCuboid(
-	MeshCollector *collector,
-	v3f pos,
-	const aabb3f &box,
-	TileSpec *tiles,
-	int tilecount,
-	video::SColor c[14],
-	const f32* txc,
-	v3s16 angle,
-	v3f centre
-)
-{
-	assert(tilecount >= 1 && tilecount <= 6);
-
-	v3f min = box.MinEdge;
-	v3f max = box.MaxEdge;
-
-	if (txc == NULL) {
-		static const f32 txc_default[24] = {
-			0,0,1,1,
-			0,0,1,1,
-			0,0,1,1,
-			0,0,1,1,
-			0,0,1,1,
-			0,0,1,1
-		};
-		txc = txc_default;
-	}
-
-	video::S3DVertex vertices[24] = {
-		// up
-		video::S3DVertex(min.X,max.Y,max.Z, 0,1,0, c[0], txc[0],txc[1]),
-		video::S3DVertex(max.X,max.Y,max.Z, 0,1,0, c[1], txc[2],txc[1]),
-		video::S3DVertex(max.X,max.Y,min.Z, 0,1,0, c[2], txc[2],txc[3]),
-		video::S3DVertex(min.X,max.Y,min.Z, 0,1,0, c[3], txc[0],txc[3]),
-		// down
-		video::S3DVertex(min.X,min.Y,min.Z, 0,-1,0, c[4], txc[4],txc[5]),
-		video::S3DVertex(max.X,min.Y,min.Z, 0,-1,0, c[5], txc[6],txc[5]),
-		video::S3DVertex(max.X,min.Y,max.Z, 0,-1,0, c[6], txc[6],txc[7]),
-		video::S3DVertex(min.X,min.Y,max.Z, 0,-1,0, c[7], txc[4],txc[7]),
-		// right
-		video::S3DVertex(max.X,max.Y,min.Z, 1,0,0, c[2], txc[ 8],txc[9]),
-		video::S3DVertex(max.X,max.Y,max.Z, 1,0,0, c[1], txc[10],txc[9]),
-		video::S3DVertex(max.X,min.Y,max.Z, 1,0,0, c[6], txc[10],txc[11]),
-		video::S3DVertex(max.X,min.Y,min.Z, 1,0,0, c[5], txc[ 8],txc[11]),
-		// left
-		video::S3DVertex(min.X,max.Y,max.Z, -1,0,0, c[0], txc[12],txc[13]),
-		video::S3DVertex(min.X,max.Y,min.Z, -1,0,0, c[3], txc[14],txc[13]),
-		video::S3DVertex(min.X,min.Y,min.Z, -1,0,0, c[4], txc[14],txc[15]),
-		video::S3DVertex(min.X,min.Y,max.Z, -1,0,0, c[7], txc[12],txc[15]),
-		// back
-		video::S3DVertex(max.X,max.Y,max.Z, 0,0,1, c[1], txc[16],txc[17]),
-		video::S3DVertex(min.X,max.Y,max.Z, 0,0,1, c[0], txc[18],txc[17]),
-		video::S3DVertex(min.X,min.Y,max.Z, 0,0,1, c[7], txc[18],txc[19]),
-		video::S3DVertex(max.X,min.Y,max.Z, 0,0,1, c[6], txc[16],txc[19]),
-		// front
-		video::S3DVertex(min.X,max.Y,min.Z, 0,0,-1, c[3], txc[20],txc[21]),
-		video::S3DVertex(max.X,max.Y,min.Z, 0,0,-1, c[2], txc[22],txc[21]),
-		video::S3DVertex(max.X,min.Y,min.Z, 0,0,-1, c[5], txc[22],txc[23]),
-		video::S3DVertex(min.X,min.Y,min.Z, 0,0,-1, c[4], txc[20],txc[23]),
-	};
-
-
-	for (s32 j=0; j<24; j++) {
-		int tileindex = MYMIN(j/4, tilecount-1);
-		vertices[j].Pos -= centre;
-		if (angle.Y)
-			vertices[j].Pos.rotateXZBy(angle.Y);
-		if (angle.X)
-			vertices[j].Pos.rotateYZBy(angle.X);
-		if (angle.Z)
-			vertices[j].Pos.rotateXYBy(angle.Z);
-		vertices[j].Pos += centre;
-		vertices[j].Pos += pos;
-		vertices[j].TCoords *= tiles[tileindex].texture.size;
-		vertices[j].TCoords += tiles[tileindex].texture.pos;
-	}
-	u16 indices[] = {0,1,2,2,3,0};
-	// Add to mesh collector
-	for (s32 j=0; j<24; j+=4) {
-		int tileindex = MYMIN(j/4, tilecount-1);
-		collector->append(tiles[tileindex].getMaterial(), vertices+j, 4, indices, 6);
-	}
-}
-
+#if 0
 /*
  * makes one tri/poly for a roof section
  */
@@ -4087,5 +3990,1285 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		}
 	}
 }
+#endif
+
+static void meshgen_fullbright_lights(std::vector<video::SColor> *colours, u8 alpha, u16 count)
+{
+	video::SColor c(alpha,255,255,255);
+	for (u16 i=0; i<count; i++) {
+		for (u16 k=0; k<18; k++) {
+			colours[k].push_back(c);
+		}
+	}
+}
+
+static void meshgen_selected_lights(std::vector<video::SColor> *colours, u8 alpha, u16 count)
+{
+	video::SColor c(alpha,128,128,255);
+	for (u16 i=0; i<count; i++) {
+		for (u16 k=0; k<18; k++) {
+			colours[k].push_back(c);
+		}
+	}
+}
+
+static void meshgen_lights(std::vector<video::SColor> *colours, u8 alpha, u16 count)
+{
+	//video::SColor c(alpha,128,128,255);
+	//for (u16 i=0; i<count; i++) {
+		//for (u16 k=0; k<18; k++) {
+			//colours[k].push_back(c);
+		//}
+	//}
+	meshgen_fullbright_lights(colours,alpha,count);
+}
+
+/* TODO: there are other cases that should return false */
+static bool meshgen_hardface(MeshMakeData *data, v3s16 p, MapNode &n, v3s16 pos)
+{
+	MapNode nn = data->m_vmanip.getNodeRO(data->m_blockpos_nodes+p+pos);
+	if (content_features(nn).draw_type == CDT_CUBELIKE)
+		return false;
+	return true;
+}
+
+/* TODO: optimise the fuck out of this, make less faces where possible */
+static void meshgen_cuboid(
+	MeshMakeData *data,
+	v3f pos,
+	const aabb3f &box,
+	TileSpec *tiles,
+	int tilecount,
+	bool selected,
+	const f32* txc,
+	v3s16 angle,
+	v3f centre
+)
+{
+	assert(tilecount >= 1 && tilecount <= 6);
+
+	v3f min = box.MinEdge;
+	v3f max = box.MaxEdge;
+
+	if (txc == NULL) {
+		static const f32 txc_default[24] = {
+			0,0,1,1,
+			0,0,1,1,
+			0,0,1,1,
+			0,0,1,1,
+			0,0,1,1,
+			0,0,1,1
+		};
+		txc = txc_default;
+	}
+
+	video::S3DVertex vertices[24] = {
+		// up
+		video::S3DVertex(min.X,max.Y,max.Z, 0,1,0, video::SColor(255,255,255,255), txc[0],txc[1]),
+		video::S3DVertex(max.X,max.Y,max.Z, 0,1,0, video::SColor(255,255,255,255), txc[2],txc[1]),
+		video::S3DVertex(max.X,max.Y,min.Z, 0,1,0, video::SColor(255,255,255,255), txc[2],txc[3]),
+		video::S3DVertex(min.X,max.Y,min.Z, 0,1,0, video::SColor(255,255,255,255), txc[0],txc[3]),
+		// down
+		video::S3DVertex(min.X,min.Y,min.Z, 0,-1,0, video::SColor(255,255,255,255), txc[4],txc[5]),
+		video::S3DVertex(max.X,min.Y,min.Z, 0,-1,0, video::SColor(255,255,255,255), txc[6],txc[5]),
+		video::S3DVertex(max.X,min.Y,max.Z, 0,-1,0, video::SColor(255,255,255,255), txc[6],txc[7]),
+		video::S3DVertex(min.X,min.Y,max.Z, 0,-1,0, video::SColor(255,255,255,255), txc[4],txc[7]),
+		// right
+		video::S3DVertex(max.X,max.Y,min.Z, 1,0,0, video::SColor(255,255,255,255), txc[ 8],txc[9]),
+		video::S3DVertex(max.X,max.Y,max.Z, 1,0,0, video::SColor(255,255,255,255), txc[10],txc[9]),
+		video::S3DVertex(max.X,min.Y,max.Z, 1,0,0, video::SColor(255,255,255,255), txc[10],txc[11]),
+		video::S3DVertex(max.X,min.Y,min.Z, 1,0,0, video::SColor(255,255,255,255), txc[ 8],txc[11]),
+		// left
+		video::S3DVertex(min.X,max.Y,max.Z, -1,0,0, video::SColor(255,255,255,255), txc[12],txc[13]),
+		video::S3DVertex(min.X,max.Y,min.Z, -1,0,0, video::SColor(255,255,255,255), txc[14],txc[13]),
+		video::S3DVertex(min.X,min.Y,min.Z, -1,0,0, video::SColor(255,255,255,255), txc[14],txc[15]),
+		video::S3DVertex(min.X,min.Y,max.Z, -1,0,0, video::SColor(255,255,255,255), txc[12],txc[15]),
+		// back
+		video::S3DVertex(max.X,max.Y,max.Z, 0,0,1, video::SColor(255,255,255,255), txc[16],txc[17]),
+		video::S3DVertex(min.X,max.Y,max.Z, 0,0,1, video::SColor(255,255,255,255), txc[18],txc[17]),
+		video::S3DVertex(min.X,min.Y,max.Z, 0,0,1, video::SColor(255,255,255,255), txc[18],txc[19]),
+		video::S3DVertex(max.X,min.Y,max.Z, 0,0,1, video::SColor(255,255,255,255), txc[16],txc[19]),
+		// front
+		video::S3DVertex(min.X,max.Y,min.Z, 0,0,-1, video::SColor(255,255,255,255), txc[20],txc[21]),
+		video::S3DVertex(max.X,max.Y,min.Z, 0,0,-1, video::SColor(255,255,255,255), txc[22],txc[21]),
+		video::S3DVertex(max.X,min.Y,min.Z, 0,0,-1, video::SColor(255,255,255,255), txc[22],txc[23]),
+		video::S3DVertex(min.X,min.Y,min.Z, 0,0,-1, video::SColor(255,255,255,255), txc[20],txc[23]),
+	};
+
+
+	for (s32 j=0; j<24; j++) {
+		int tileindex = MYMIN(j/4, tilecount-1);
+		vertices[j].Pos -= centre;
+		if (angle.Y)
+			vertices[j].Pos.rotateXZBy(angle.Y);
+		if (angle.X)
+			vertices[j].Pos.rotateYZBy(angle.X);
+		if (angle.Z)
+			vertices[j].Pos.rotateXYBy(angle.Z);
+		vertices[j].Pos += centre;
+		vertices[j].Pos += pos;
+		vertices[j].TCoords *= tiles[tileindex].texture.size;
+		vertices[j].TCoords += tiles[tileindex].texture.pos;
+	}
+	u16 indices[] = {0,1,2,2,3,0};
+	// Add to mesh collector
+	for (s32 j=0; j<24; j+=4) {
+		int tileindex = MYMIN(j/4, tilecount-1);
+		std::vector<video::SColor> colours[18];
+		if (selected) {
+			meshgen_selected_lights(colours,255,4);
+		}else{
+			meshgen_lights(colours,255,4);
+		}
+		data->append(tiles[tileindex].getMaterial(), vertices+j, 4, indices, 6, colours);
+	}
+}
+
+/* TODO: this can also have the fuck optimised out of it, make less faces where possible */
+static void meshgen_build_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, std::vector<NodeBox> &boxes, TileSpec *tiles)
+{
+	v3f pos = intToFloat(p,BS);
+	for (std::vector<NodeBox>::iterator i = boxes.begin(); i != boxes.end(); i++) {
+		NodeBox box = *i;
+
+		// Compute texture coords
+		f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
+		f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
+		f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
+		f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
+		f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
+		f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
+		f32 txc[24] = {
+			// up
+			tx1, 1-tz2, tx2, 1-tz1,
+			// down
+			tx1, tz1, tx2, tz2,
+			// right
+			tz1, 1-ty2, tz2, 1-ty1,
+			// left
+			1-tz2, 1-ty2, 1-tz1, 1-ty1,
+			// back
+			1-tx2, 1-ty2, 1-tx1, 1-ty1,
+			// front
+			tx1, 1-ty2, tx2, 1-ty1,
+		};
+		meshgen_cuboid(data, pos, box.m_box, tiles, 6, selected, txc, box.m_angle, box.m_centre);
+	}
+}
+
+void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+{
+	v3f pos = intToFloat(p, BS);
+	if (meshgen_hardface(data,p,n,v3s16(-1,0,0))) {
+		TileSpec tile = getNodeTile(n,p,v3s16(-1,0,0),data->m_temp_mods,NULL);
+		video::S3DVertex vertices[4] = {
+			video::S3DVertex(-0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
+			video::S3DVertex(-0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
+			video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex(-0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
+		};
+
+		for (u16 i=0; i<4; i++) {
+			vertices[i].Pos += pos;
+		}
+
+		u16 indices[6] = {0,1,2,2,3,0};
+		std::vector<video::SColor> colours[18];
+		if (selected) {
+			meshgen_selected_lights(colours,255,4);
+		}else{
+			meshgen_lights(colours,255,4);
+		}
+		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
+	}
+	if (meshgen_hardface(data,p,n,v3s16(1,0,0))) {
+		TileSpec tile = getNodeTile(n,p,v3s16(1,0,0),data->m_temp_mods,NULL);
+		video::S3DVertex vertices[4] = {
+			video::S3DVertex(0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1()),
+			video::S3DVertex(0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
+			video::S3DVertex(0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0())
+		};
+
+		for (u16 i=0; i<4; i++) {
+			vertices[i].Pos += pos;
+		}
+
+		u16 indices[6] = {0,1,2,2,3,0};
+		std::vector<video::SColor> colours[18];
+		if (selected) {
+			meshgen_selected_lights(colours,255,4);
+		}else{
+			meshgen_lights(colours,255,4);
+		}
+		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
+	}
+	if (meshgen_hardface(data,p,n,v3s16(0,-1,0))) {
+		TileSpec tile = getNodeTile(n,p,v3s16(0,-1,0),data->m_temp_mods,NULL);
+		video::S3DVertex vertices[4] = {
+			video::S3DVertex( 0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
+			video::S3DVertex(-0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
+			video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex( 0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
+		};
+
+		for (u16 i=0; i<4; i++) {
+			vertices[i].Pos += pos;
+		}
+
+		u16 indices[6] = {0,1,2,2,3,0};
+		std::vector<video::SColor> colours[18];
+		if (selected) {
+			meshgen_selected_lights(colours,255,4);
+		}else{
+			meshgen_lights(colours,255,4);
+		}
+		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
+	}
+	if (meshgen_hardface(data,p,n,v3s16(0,1,0))) {
+		TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),data->m_temp_mods,NULL);
+		video::S3DVertex vertices[4] = {
+			video::S3DVertex( 0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex(-0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1()),
+			video::S3DVertex(-0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
+			video::S3DVertex( 0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0())
+		};
+
+		for (u16 i=0; i<4; i++) {
+			vertices[i].Pos += pos;
+		}
+
+		u16 indices[6] = {0,1,2,2,3,0};
+		std::vector<video::SColor> colours[18];
+		if (selected) {
+			meshgen_selected_lights(colours,255,4);
+		}else{
+			meshgen_lights(colours,255,4);
+		}
+		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
+	}
+	if (meshgen_hardface(data,p,n,v3s16(0,0,-1))) {
+		TileSpec tile = getNodeTile(n,p,v3s16(0,0,-1),data->m_temp_mods,NULL);
+		video::S3DVertex vertices[4] = {
+			video::S3DVertex(-0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
+			video::S3DVertex( 0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
+			video::S3DVertex( 0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
+		};
+
+		for (u16 i=0; i<4; i++) {
+			vertices[i].Pos += pos;
+		}
+
+		u16 indices[6] = {0,1,2,2,3,0};
+		std::vector<video::SColor> colours[18];
+		if (selected) {
+			meshgen_selected_lights(colours,255,4);
+		}else{
+			meshgen_lights(colours,255,4);
+		}
+		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
+	}
+	if (meshgen_hardface(data,p,n,v3s16(0,0,1))) {
+		TileSpec tile = getNodeTile(n,p,v3s16(0,0,1),data->m_temp_mods,NULL);
+		video::S3DVertex vertices[4] = {
+			video::S3DVertex( 0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
+			video::S3DVertex(-0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
+			video::S3DVertex(-0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex( 0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
+		};
+
+		for (u16 i=0; i<4; i++) {
+			vertices[i].Pos += pos;
+		}
+
+		u16 indices[6] = {0,1,2,2,3,0};
+		std::vector<video::SColor> colours[18];
+		if (selected) {
+			meshgen_selected_lights(colours,255,4);
+		}else{
+			meshgen_lights(colours,255,4);
+		}
+		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
+	}
+}
+
+void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+{
+}
+
+void meshgen_plantlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+{
+	ContentFeatures *f = &content_features(n);
+	TileSpec tile = f->tiles[0];
+	v3f offset(0,0,0);
+	if (data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0,-1,0)).getContent() == CONTENT_FLOWER_POT)
+		offset = v3f(0,-0.25*BS,0);
+
+	f32 v = tile.texture.y0();
+	f32 h = 0.5;
+	bool is_scaled = false;
+	v3f scale(1.0,1.0,1.0);
+	switch (f->draw_type) {
+	case CDT_PLANTLIKE_SML:
+		is_scaled = true;
+		scale = v3f(0.8,0.8,0.8);
+		break;
+	case CDT_PLANTLIKE_LGE:
+	{
+		is_scaled = true;
+		scale = v3f(1.3,1.0,1.0);
+		MapNode n2 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0,1,0));
+		h = 1.0;
+		if (
+			content_features(n2).draw_type == CDT_PLANTLIKE_LGE
+			|| content_features(n2).draw_type == CDT_PLANTLIKE
+			|| content_features(n2).draw_type == CDT_PLANTLIKE_SML
+		) {
+			v = (0.333*tile.texture.size.Y)+tile.texture.y0();
+			h = 0.5;
+		}
+		n2 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0,-1,0));
+		if (n2.getContent() == CONTENT_FLOWER_POT) {
+			offset = v3f(0,-0.25*BS,0);
+			if (h == 0.5) {
+				v = (0.25*tile.texture.size.Y)+tile.texture.y0();
+				h = 0.75;
+			}
+		}
+	}
+		break;
+	case CDT_PLANTGROWTH_1:
+		v = (0.75*tile.texture.size.Y)+tile.texture.y0();
+		h = -0.25;
+		break;
+	case CDT_PLANTGROWTH_2:
+		v = (0.5*tile.texture.size.Y)+tile.texture.y0();
+		h = 0.0;
+		break;
+	case CDT_PLANTGROWTH_3:
+		v = (0.25*tile.texture.size.Y)+tile.texture.y0();
+		h = 0.25;
+		break;
+	default:;
+	}
+
+	for (u32 j=0; j<2; j++) {
+		video::S3DVertex vertices[4] = {
+			video::S3DVertex(-0.5*BS,-0.5*BS,0., 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1()),
+			video::S3DVertex( 0.5*BS,-0.5*BS,0., 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex( 0.5*BS,   h*BS,0., 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), v),
+			video::S3DVertex(-0.5*BS,   h*BS,0., 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), v)
+		};
+
+		s16 angle = 45;
+		if (j == 1)
+			angle = -45;
+
+		for (u16 i=0; i<4; i++) {
+			vertices[i].Pos.rotateXZBy(angle);
+			if (is_scaled)
+				vertices[i].Pos *= scale;
+			vertices[i].Pos += offset+intToFloat(p, BS);
+		}
+
+		u16 indices[] = {0,1,2,2,3,0};
+		std::vector<video::SColor> colours[18];
+		if (selected) {
+			meshgen_selected_lights(colours,255,4);
+		}else{
+			meshgen_lights(colours,255,4);
+		}
+		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
+	}
+}
+
+void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+{
+	ContentFeatures *f = &content_features(n);
+	TileSpec *tiles = f->tiles;
+	bool top_is_same_liquid = false;
+	MapNode ntop = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0,1,0));
+	if (ntop.getContent() == f->liquid_alternative_flowing || ntop.getContent() == f->liquid_alternative_source)
+		top_is_same_liquid = true;
+
+	float node_liquid_level = 0.875;
+
+	// Neighbor liquid levels (key = relative position)
+	// Includes current node
+	core::map<v3s16, f32> neighbor_levels;
+	core::map<v3s16, content_t> neighbor_contents;
+	core::map<v3s16, u8> neighbor_flags;
+	const u8 neighborflag_top_is_same_liquid = 0x01;
+	v3s16 neighbor_dirs[9] = {
+		v3s16(0,0,0),
+		v3s16(0,0,1),
+		v3s16(0,0,-1),
+		v3s16(1,0,0),
+		v3s16(-1,0,0),
+		v3s16(1,0,1),
+		v3s16(-1,0,-1),
+		v3s16(1,0,-1),
+		v3s16(-1,0,1),
+	};
+	for (u32 i=0; i<9; i++) {
+		content_t content = CONTENT_AIR;
+		float level = -0.5 * BS;
+		u8 flags = 0;
+		// Check neighbor
+		v3s16 p2 = p + neighbor_dirs[i];
+		MapNode n2 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p2);
+		if (n2.getContent() != CONTENT_IGNORE) {
+			content = n2.getContent();
+
+			if (n2.getContent() == f->liquid_alternative_source) {
+				p2.Y += 1;
+				n2 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p2);
+				if (content_features(n2).liquid_type == LIQUID_NONE) {
+					level = 0.5*BS;
+				}else{
+					level = (-0.5+node_liquid_level) * BS;
+				}
+				p2.Y -= 1;
+			}else if (n2.getContent() == f->liquid_alternative_flowing) {
+				level = (-0.5 + ((float)(n2.param2&LIQUID_LEVEL_MASK)
+						+ 0.5) / 8.0 * node_liquid_level) * BS;
+			}
+
+			// Check node above neighbor.
+			// NOTE: This doesn't get executed if neighbor
+			//       doesn't exist
+			p2.Y += 1;
+			n2 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p2);
+			if (
+				n2.getContent() == f->liquid_alternative_source
+				|| n2.getContent() == f->liquid_alternative_flowing
+			)
+				flags |= neighborflag_top_is_same_liquid;
+		}
+
+		neighbor_levels.insert(neighbor_dirs[i], level);
+		neighbor_contents.insert(neighbor_dirs[i], content);
+		neighbor_flags.insert(neighbor_dirs[i], flags);
+	}
+
+	// Corner heights (average between four liquids)
+	f32 corner_levels[4];
+
+	v3s16 halfdirs[4] = {
+		v3s16(0,0,0),
+		v3s16(1,0,0),
+		v3s16(1,0,1),
+		v3s16(0,0,1),
+	};
+	for (u32 i=0; i<4; i++) {
+		v3s16 cornerdir = halfdirs[i];
+		float cornerlevel = 0;
+		u32 valid_count = 0;
+		u32 air_count = 0;
+		for (u32 j=0; j<4; j++) {
+			v3s16 neighbordir = cornerdir - halfdirs[j];
+			content_t content = neighbor_contents[neighbordir];
+			// If top is liquid, draw starting from top of node
+			if ((neighbor_flags[neighbordir]&neighborflag_top_is_same_liquid) != 0) {
+				cornerlevel = 0.5*BS;
+				valid_count = 1;
+				break;
+			// Source is always the same height
+			}else if (content == f->liquid_alternative_source) {
+				cornerlevel = (-0.5+node_liquid_level)*BS;
+				valid_count = 1;
+				break;
+			// Flowing liquid has level information
+			}else if (content == f->liquid_alternative_flowing) {
+				cornerlevel += neighbor_levels[neighbordir];
+				valid_count++;
+			}else if (content == CONTENT_AIR) {
+				air_count++;
+			}
+		}
+		if (air_count >= 2) {
+			cornerlevel = -0.5*BS;
+		}else if (valid_count > 0) {
+			cornerlevel /= valid_count;
+		}
+		corner_levels[i] = cornerlevel;
+	}
+
+	/*
+		Generate sides
+	*/
+
+	v3s16 side_dirs[4] = {
+		v3s16(1,0,0),
+		v3s16(-1,0,0),
+		v3s16(0,0,1),
+		v3s16(0,0,-1),
+	};
+	s16 side_corners[4][2] = {
+		{1, 2},
+		{3, 0},
+		{2, 3},
+		{0, 1},
+	};
+	for (u32 i=0; i<4; i++) {
+		v3s16 dir = side_dirs[i];
+
+		/*
+			If our topside is liquid and neighbor's topside
+			is liquid, don't draw side face
+		*/
+		if (top_is_same_liquid && (neighbor_flags[dir]&neighborflag_top_is_same_liquid) != 0)
+			continue;
+
+		content_t neighbor_content = neighbor_contents[dir];
+		ContentFeatures &n_feat = content_features(neighbor_content);
+
+		// Don't draw face if neighbor is blocking the view
+		if (n_feat.solidness == 2)
+			continue;
+
+		bool neighbor_is_same_liquid = false;
+		if (
+			neighbor_content == f->liquid_alternative_source
+			|| neighbor_content == f->liquid_alternative_flowing
+		)
+			neighbor_is_same_liquid = true;
+
+		// Don't draw any faces if neighbor same is liquid and top is
+		// same liquid
+		if (neighbor_is_same_liquid == true && top_is_same_liquid == false)
+			continue;
+
+		video::S3DVertex vertices[4] = {
+			video::S3DVertex(-0.5*BS,0,0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[i].texture.x0(), tiles[i].texture.y1()),
+			video::S3DVertex( 0.5*BS,0,0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[i].texture.x1(), tiles[i].texture.y1()),
+			video::S3DVertex( 0.5*BS,0,0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[i].texture.x1(), tiles[i].texture.y0()),
+			video::S3DVertex(-0.5*BS,0,0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[i].texture.x0(), tiles[i].texture.y0()),
+		};
+
+		// If our topside is liquid, set upper border of face at upper border of node
+		if (top_is_same_liquid) {
+			vertices[2].Pos.Y = 0.5*BS;
+			vertices[3].Pos.Y = 0.5*BS;
+		// Otherwise upper position of face is corner levels
+		}else{
+			vertices[2].Pos.Y = corner_levels[side_corners[i][0]];
+			vertices[3].Pos.Y = corner_levels[side_corners[i][1]];
+		}
+
+		// If neighbor is liquid, lower border of face is corner liquid levels
+		if (neighbor_is_same_liquid) {
+			vertices[0].Pos.Y = corner_levels[side_corners[i][1]];
+			vertices[1].Pos.Y = corner_levels[side_corners[i][0]];
+		// If neighbor is not liquid, lower border of face is lower border of node
+		}else{
+			vertices[0].Pos.Y = -0.5*BS;
+			vertices[1].Pos.Y = -0.5*BS;
+		}
+
+		s16 angle = 0;
+		switch (i) {
+		case 0:
+			angle = -90;
+			break;
+		case 1:
+			angle = 90;
+			break;
+		case 3:
+			angle = 180;
+			break;
+		default:;
+		}
+
+		for (s32 j=0; j<4; j++) {
+			if (angle)
+				vertices[j].Pos.rotateXZBy(angle);
+			vertices[j].Pos += intToFloat(p, BS);
+		}
+
+		u16 indices[] = {0,1,2,2,3,0};
+		std::vector<video::SColor> colours[18];
+		if (selected) {
+			meshgen_selected_lights(colours,f->vertex_alpha,4);
+		}else{
+			meshgen_lights(colours,f->vertex_alpha,4);
+		}
+		data->append(tiles[i].getMaterial(), vertices, 4, indices, 6, colours);
+	}
+
+	/*
+		Generate top side, if appropriate
+	*/
+
+	if (top_is_same_liquid == false) {
+		video::S3DVertex vertices[4] = {
+			video::S3DVertex(-0.5*BS,0, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
+			video::S3DVertex( 0.5*BS,0, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
+			video::S3DVertex( 0.5*BS,0,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
+			video::S3DVertex(-0.5*BS,0,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0())
+		};
+
+		// This fixes a strange bug
+		s32 corner_resolve[4] = {3,2,1,0};
+
+		for (s32 i=0; i<4; i++) {
+			s32 j = corner_resolve[i];
+			vertices[i].Pos.Y += corner_levels[j];
+			vertices[i].Pos += intToFloat(p, BS);
+		}
+
+		u16 indices[] = {0,1,2,2,3,0};
+		std::vector<video::SColor> colours[18];
+		if (selected) {
+			meshgen_selected_lights(colours,f->vertex_alpha,4);
+		}else{
+			meshgen_lights(colours,f->vertex_alpha,4);
+		}
+		data->append(tiles[0].getMaterial(), vertices, 4, indices, 6, colours);
+	}
+}
+
+void meshgen_liquid_source(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+{
+	ContentFeatures *f = &content_features(n);
+	TileSpec *tiles = f->tiles;
+	//    x,y       -,-  +,-  +,+  -,+
+	bool drop[4] = {true,true,true,true};
+	v3s16 n2p = data->m_blockpos_nodes + p + v3s16(0,1,0);
+	MapNode n2 = data->m_vmanip.getNodeRO(n2p);
+	ContentFeatures *f2 = &content_features(n2);
+	if (f2->liquid_type != LIQUID_NONE) {
+		drop[0] = false;
+		drop[1] = false;
+		drop[2] = false;
+		drop[3] = false;
+	}else{
+		v3s16 dirs[8] = {
+			v3s16(-1,1,-1),
+			v3s16(0,1,-1),
+			v3s16(1,1,-1),
+			v3s16(1,1,0),
+			v3s16(1,1,1),
+			v3s16(0,1,1),
+			v3s16(-1,1,1),
+			v3s16(-1,1,0),
+		};
+		for (u32 i=0; i<8; i++) {
+			n2p = data->m_blockpos_nodes + p + dirs[i];
+			n2 = data->m_vmanip.getNodeRO(n2p);
+			f2 = &content_features(n2);
+			if (f2->liquid_type == LIQUID_NONE)
+				continue;
+			switch (i) {
+			case 0:
+				drop[0] = false;
+				break;
+			case 1:
+				drop[0] = false;
+				drop[1] = false;
+				break;
+			case 2:
+				drop[1] = false;
+				break;
+			case 3:
+				drop[1] = false;
+				drop[2] = false;
+				break;
+			case 4:
+				drop[2] = false;
+				break;
+			case 5:
+				drop[2] = false;
+				drop[3] = false;
+				break;
+			case 6:
+				drop[3] = false;
+				break;
+			case 7:
+				drop[3] = false;
+				drop[0] = false;
+				break;
+			default:;
+			}
+		}
+	}
+
+	for (u32 j=0; j<6; j++) {
+		// Check this neighbor
+		n2p = data->m_blockpos_nodes + p + g_6dirs[j];
+		n2 = data->m_vmanip.getNodeRO(n2p);
+		f2 = &content_features(n2);
+		if (f2->liquid_type != LIQUID_NONE) {
+			if (n2.getContent() == f->liquid_alternative_flowing)
+				continue;
+			if (n2.getContent() == f->liquid_alternative_source)
+				continue;
+		}else if (f2->draw_type == CDT_CUBELIKE) {
+			if (g_6dirs[j].Y != 1)
+				continue;
+			if (!drop[0] && !drop[1] && !drop[2] && !drop[3])
+				continue;
+		}else if (n2.getContent() == CONTENT_IGNORE) {
+			continue;
+		}
+
+		// The face at Z+
+		video::S3DVertex vertices[4] = {
+			video::S3DVertex(-0.5*BS,-0.5*BS,0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[j].texture.x0(), tiles[j].texture.y1()),
+			video::S3DVertex( 0.5*BS,-0.5*BS,0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[j].texture.x1(), tiles[j].texture.y1()),
+			video::S3DVertex( 0.5*BS, 0.5*BS,0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[j].texture.x1(), tiles[j].texture.y0()),
+			video::S3DVertex(-0.5*BS, 0.5*BS,0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[j].texture.x0(), tiles[j].texture.y0()),
+		};
+		switch (j) {
+		case 0: // Z+
+			if (drop[0])
+				vertices[2].Pos.Y = 0.375*BS;
+			if (drop[1])
+				vertices[3].Pos.Y = 0.375*BS;
+			for(u16 i=0; i<4; i++) {
+				vertices[i].Pos += intToFloat(p, BS);
+			}
+			break;
+		case 1: // Y+
+			if (!drop[1] && !drop[2] && !drop[3] && drop[0]) {
+				for(u16 i=0; i<4; i++) {
+					vertices[i].Pos.rotateXYBy(90);
+				}
+				vertices[2].Pos.Z = 0.375*BS;
+			}else if (!drop[0] && !drop[1] && !drop[3] && drop[2]) {
+				for(u16 i=0; i<4; i++) {
+					vertices[i].Pos.rotateXYBy(90);
+				}
+				vertices[0].Pos.Z = 0.375*BS;
+			}else{
+				if (drop[0])
+					vertices[3].Pos.Z = 0.375*BS;
+				if (drop[1])
+					vertices[2].Pos.Z = 0.375*BS;
+				if (drop[2])
+					vertices[1].Pos.Z = 0.375*BS;
+				if (drop[3])
+					vertices[0].Pos.Z = 0.375*BS;
+			}
+			for(u16 i=0; i<4; i++) {
+				vertices[i].Pos.rotateYZBy(-90);
+				vertices[i].Pos += intToFloat(p, BS);
+			}
+			break;
+		case 2: // X+
+			if (drop[1])
+				vertices[2].Pos.Y = 0.375*BS;
+			if (drop[2])
+				vertices[3].Pos.Y = 0.375*BS;
+			for(u16 i=0; i<4; i++) {
+				vertices[i].Pos.rotateXZBy(-90);
+				vertices[i].Pos += intToFloat(p, BS);
+			}
+			break;
+		case 3: // Z-
+			if (drop[2])
+				vertices[2].Pos.Y = 0.375*BS;
+			if (drop[3])
+				vertices[3].Pos.Y = 0.375*BS;
+			for(u16 i=0; i<4; i++) {
+				vertices[i].Pos.rotateXZBy(180);
+				vertices[i].Pos += intToFloat(p, BS);
+			}
+			break;
+		case 4: // Y-
+			for(u16 i=0; i<4; i++) {
+				vertices[i].Pos.rotateYZBy(90);
+				vertices[i].Pos += intToFloat(p, BS);
+			}
+			break;
+		case 5: // X-
+			if (drop[3])
+				vertices[2].Pos.Y = 0.375*BS;
+			if (drop[0])
+				vertices[3].Pos.Y = 0.375*BS;
+			for(u16 i=0; i<4; i++) {
+				vertices[i].Pos.rotateXZBy(90);
+				vertices[i].Pos += intToFloat(p, BS);
+			}
+			break;
+		default:;
+		}
+
+		u16 indices[] = {0,1,2,2,3,0};
+		std::vector<video::SColor> colours[18];
+		if (selected) {
+			meshgen_selected_lights(colours,f->vertex_alpha,4);
+		}else{
+			meshgen_lights(colours,f->vertex_alpha,4);
+		}
+		data->append(tiles[j].getMaterial(), vertices, 4, indices, 6, colours);
+	}
+}
+
+void meshgen_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, bool has_meta)
+{
+	static const v3s16 tile_dirs[6] = {
+		v3s16(0, 1, 0),
+		v3s16(0, -1, 0),
+		v3s16(1, 0, 0),
+		v3s16(-1, 0, 0),
+		v3s16(0, 0, 1),
+		v3s16(0, 0, -1)
+	};
+
+	TileSpec tiles[6];
+	NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+data->m_blockpos_nodes);
+	for (int i = 0; i < 6; i++) {
+		// Handles facedir rotation for textures
+		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods,meta);
+	}
+
+	std::vector<NodeBox> boxes = content_features(n).getNodeBoxes(n);
+	meshgen_build_nodebox(data,p,n,selected,boxes,tiles);
+	if (!meta || !has_meta)
+		return;
+
+	boxes = meta->getNodeBoxes(n);
+	if (boxes.size() > 0) {
+		for (int i = 0; i < 6; i++) {
+			// Handles facedir rotation for textures
+			tiles[i] = getMetaTile(n,p,tile_dirs[i],data->m_temp_mods);
+		}
+		meshgen_build_nodebox(data,p,n,selected,boxes,tiles);
+	}
+}
+
+void meshgen_glasslike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+{
+	static const v3s16 tile_dirs[6] = {
+		v3s16(0, 1, 0),
+		v3s16(0, -1, 0),
+		v3s16(1, 0, 0),
+		v3s16(-1, 0, 0),
+		v3s16(0, 0, 1),
+		v3s16(0, 0, -1)
+	};
+
+	TileSpec tiles[6];
+	for (int i = 0; i < 6; i++) {
+		// Handles facedir rotation for textures
+		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
+	}
+
+	for (u32 j=0; j<6; j++) {
+		// Check this neighbor
+		v3s16 n2p = data->m_blockpos_nodes + p + g_6dirs[j];
+		MapNode n2 = data->m_vmanip.getNodeRO(n2p);
+		// Don't make face if neighbor is of same type
+		if (n2.getContent() == n.getContent())
+			continue;
+
+		// The face at Z+
+		video::S3DVertex vertices[4] = {
+			video::S3DVertex(-0.5*BS,-0.5*BS,0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[j].texture.x0(), tiles[j].texture.y1()),
+			video::S3DVertex( 0.5*BS,-0.5*BS,0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[j].texture.x1(), tiles[j].texture.y1()),
+			video::S3DVertex( 0.5*BS, 0.5*BS,0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[j].texture.x1(), tiles[j].texture.y0()),
+			video::S3DVertex(-0.5*BS, 0.5*BS,0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[j].texture.x0(), tiles[j].texture.y0()),
+		};
+
+		s16 yrot = 0;
+		s16 xrot = 0;
+
+		// Rotations in the g_6dirs format
+		switch (j) {
+		case 1: // Y+
+			xrot = -90;
+			break;
+		case 2: // X+
+			yrot = -90;
+			break;
+		case 3: // Z-
+			yrot = 180;
+			break;
+		case 4: // Y-
+			xrot = 90;
+			break;
+		case 5: // X-
+			yrot = 90;
+			break;
+		default:;
+		}
+
+		for (u16 i=0; i<4; i++) {
+			if (yrot) {
+				vertices[i].Pos.rotateXZBy(yrot);
+			}else if (xrot) {
+				vertices[i].Pos.rotateYZBy(xrot);
+			}
+			vertices[i].Pos += intToFloat(p, BS);
+		}
+
+		u16 indices[] = {0,1,2,2,3,0};
+		std::vector<video::SColor> colours[18];
+		if (selected) {
+			meshgen_selected_lights(colours,255,4);
+		}else{
+			meshgen_lights(colours,255,4);
+		}
+		data->append(tiles[j].getMaterial(), vertices, 4, indices, 6, colours);
+	}
+}
+
+void meshgen_torchlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+{
+	static const f32 txc[24] = {
+		0.625,0.125,0.75,0.25,
+		0.625,0.625,0.625,0.75,
+		0,0,0.125,1,
+		0,0,0.125,1,
+		0,0,0.125,1,
+		0,0,0.125,1
+	};
+	v3s16 dir = unpackDir(n.param2);
+	video::S3DVertex vertices[24] = {
+		// up
+		video::S3DVertex(-0.0625*BS,0.125*BS,0.0625*BS, 0,1,0, video::SColor(255,255,255,255), txc[0],txc[1]),
+		video::S3DVertex(0.0625*BS,0.125*BS,0.0625*BS, 0,1,0, video::SColor(255,255,255,255), txc[2],txc[1]),
+		video::S3DVertex(0.0625*BS,0.125*BS,-0.0625*BS, 0,1,0, video::SColor(255,255,255,255), txc[2],txc[3]),
+		video::S3DVertex(-0.0625*BS,0.125*BS,-0.0625*BS, 0,1,0, video::SColor(255,255,255,255), txc[0],txc[3]),
+		// down
+		video::S3DVertex(-0.0625*BS,-0.5*BS,-0.0625*BS, 0,-1,0, video::SColor(255,255,255,255), txc[4],txc[5]),
+		video::S3DVertex(0.0625*BS,-0.5*BS,-0.0625*BS, 0,-1,0, video::SColor(255,255,255,255), txc[6],txc[5]),
+		video::S3DVertex(0.0625*BS,-0.5*BS,0.0625*BS, 0,-1,0, video::SColor(255,255,255,255), txc[6],txc[7]),
+		video::S3DVertex(-0.0625*BS,-0.5*BS,0.0625*BS, 0,-1,0, video::SColor(255,255,255,255), txc[4],txc[7]),
+		// right
+		video::S3DVertex(0.0625*BS,0.125*BS,-0.0625*BS, 1,0,0, video::SColor(255,255,255,255), txc[ 8],txc[9]),
+		video::S3DVertex(0.0625*BS,0.125*BS,0.0625*BS, 1,0,0, video::SColor(255,255,255,255), txc[10],txc[9]),
+		video::S3DVertex(0.0625*BS,-0.5*BS,0.0625*BS, 1,0,0, video::SColor(255,255,255,255), txc[10],txc[11]),
+		video::S3DVertex(0.0625*BS,-0.5*BS,-0.0625*BS, 1,0,0, video::SColor(255,255,255,255), txc[ 8],txc[11]),
+		// left
+		video::S3DVertex(-0.0625*BS,0.125*BS,0.0625*BS, -1,0,0, video::SColor(255,255,255,255), txc[12],txc[13]),
+		video::S3DVertex(-0.0625*BS,0.125*BS,-0.0625*BS, -1,0,0, video::SColor(255,255,255,255), txc[14],txc[13]),
+		video::S3DVertex(-0.0625*BS,-0.5*BS,-0.0625*BS, -1,0,0, video::SColor(255,255,255,255), txc[14],txc[15]),
+		video::S3DVertex(-0.0625*BS,-0.5*BS,0.0625*BS, -1,0,0, video::SColor(255,255,255,255), txc[12],txc[15]),
+		// back
+		video::S3DVertex(0.0625*BS,0.125*BS,0.0625*BS, 0,0,1, video::SColor(255,255,255,255), txc[16],txc[17]),
+		video::S3DVertex(-0.0625*BS,0.125*BS,0.0625*BS, 0,0,1, video::SColor(255,255,255,255), txc[18],txc[17]),
+		video::S3DVertex(-0.0625*BS,-0.5*BS,0.0625*BS, 0,0,1, video::SColor(255,255,255,255), txc[18],txc[19]),
+		video::S3DVertex(0.0625*BS,-0.5*BS,0.0625*BS, 0,0,1, video::SColor(255,255,255,255), txc[16],txc[19]),
+		// front
+		video::S3DVertex(-0.0625*BS,0.125*BS,-0.0625*BS, 0,0,-1, video::SColor(255,255,255,255), txc[20],txc[21]),
+		video::S3DVertex(0.0625*BS,0.125*BS,-0.0625*BS, 0,0,-1, video::SColor(255,255,255,255), txc[22],txc[21]),
+		video::S3DVertex(0.0625*BS,-0.5*BS,-0.0625*BS, 0,0,-1, video::SColor(255,255,255,255), txc[22],txc[23]),
+		video::S3DVertex(-0.0625*BS,-0.5*BS,-0.0625*BS, 0,0,-1, video::SColor(255,255,255,255), txc[20],txc[23])
+	};
+
+	TileSpec tile = content_features(n).tiles[0];
+	f32 sx = tile.texture.x1()-tile.texture.x0();
+	f32 sy = tile.texture.y1()-tile.texture.y0();
+
+	if (dir.Y == 1) { // roof
+		for (s32 i=0; i<24; i++) {
+			vertices[i].Pos.rotateXYBy(175);
+			vertices[i].Pos.rotateYZBy(5);
+			vertices[i].Pos += intToFloat(p, BS);
+			vertices[i].TCoords *= v2f(sx,sy);
+			vertices[i].TCoords += v2f(
+				tile.texture.x0(),
+				tile.texture.y0()
+			);
+		}
+	}else if (dir.Y == -1) { // floor
+		for (s32 i=0; i<24; i++) {
+			vertices[i].Pos += intToFloat(p, BS);
+			vertices[i].TCoords *= v2f(sx,sy);
+			vertices[i].TCoords += v2f(
+				tile.texture.x0(),
+				tile.texture.y0()
+			);
+		}
+	}else{ // wall
+		for (s32 i=0; i<24; i++) {
+			vertices[i].Pos.Y += 0.25*BS;
+			vertices[i].Pos.rotateYZBy(-5);
+			vertices[i].Pos += v3f(0.,0.,0.4*BS);
+			if (dir.X == 1) {
+				vertices[i].Pos.rotateXZBy(-90);
+			}else if (dir.X == -1) {
+				vertices[i].Pos.rotateXZBy(90);
+			}else if (dir.Z == 1) {
+				vertices[i].Pos.rotateXZBy(0);
+			}else if (dir.Z == -1) {
+				vertices[i].Pos.rotateXZBy(180);
+			}
+
+			vertices[i].Pos += intToFloat(p, BS);
+			vertices[i].TCoords *= v2f(sx,sy);
+			vertices[i].TCoords += v2f(
+				tile.texture.x0(),
+				tile.texture.y0()
+			);
+		}
+	}
+
+	u16 indices[] = {0,1,2,2,3,0};
+
+	// Add to mesh collector
+	for (s32 j=0; j<24; j+=4) {
+		std::vector<video::SColor> colours[18];
+		if (selected) {
+			meshgen_selected_lights(colours,255,4);
+		}else{
+			meshgen_lights(colours,255,4);
+		}
+		data->append(tile.getMaterial(), &vertices[j], 4, indices, 6, colours);
+	}
+}
+
+void meshgen_fencelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+{
+	static const v3s16 tile_dirs[6] = {
+		v3s16(0, 1, 0),
+		v3s16(0, -1, 0),
+		v3s16(1, 0, 0),
+		v3s16(-1, 0, 0),
+		v3s16(0, 0, 1),
+		v3s16(0, 0, -1)
+	};
+	static const v3s16 fence_dirs[8] = {
+		v3s16(1,0,0),
+		v3s16(-1,0,0),
+		v3s16(0,0,1),
+		v3s16(0,0,-1),
+		v3s16(1,0,1),
+		v3s16(1,0,-1),
+		v3s16(-1,0,1),
+		v3s16(-1,0,-1)
+	};
+	static const int showcheck[4][2] = {
+		{0,2},
+		{0,3},
+		{1,2},
+		{1,3}
+	};
+	static const int shown_angles[8] = {0,0,0,0,45,135,45,315};
+	bool shown_dirs[8] = {false,false,false,false,false,false,false,false};
+	n.param2 = 0;
+
+	TileSpec tiles[6];
+	for (int i = 0; i < 6; i++) {
+		// Handles facedir rotation for textures
+		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
+	}
+
+	v3f pos = intToFloat(p, BS);
+	std::vector<NodeBox> boxes = content_features(n).getNodeBoxes(n);
+	int bi = 1;
+	v3s16 p2 = p;
+	p2.Y++;
+	MapNode n2 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p2);
+	const ContentFeatures *f2 = &content_features(n2);
+	aabb3f box;
+	if (f2->draw_type == CDT_AIRLIKE || f2->draw_type == CDT_TORCHLIKE)
+		bi = 0;
+	{
+		NodeBox box = boxes[bi];
+
+		// Compute texture coords
+		f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
+		f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
+		f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
+		f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
+		f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
+		f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
+		f32 txc[24] = {
+			// up
+			tx1, 1-tz2, tx2, 1-tz1,
+			// down
+			tx1, tz1, tx2, tz2,
+			// right
+			tz1, 1-ty2, tz2, 1-ty1,
+			// left
+			1-tz2, 1-ty2, 1-tz1, 1-ty1,
+			// back
+			1-tx2, 1-ty2, 1-tx1, 1-ty1,
+			// front
+			tx1, 1-ty2, tx2, 1-ty1,
+		};
+		meshgen_cuboid(data, pos, box.m_box, tiles, 6,  selected, txc, v3s16(0,0,0),v3f(0,0,0));
+	}
+
+	int bps = ((boxes.size()-2)/4); // boxes per section
+	u8 np = 1;
+
+	for (int k=0; k<8; k++) {
+		if (k > 3 && (shown_dirs[showcheck[k-4][0]] || shown_dirs[showcheck[k-4][1]]))
+					continue;
+		p2 = data->m_blockpos_nodes+p+fence_dirs[k];
+		n2 = data->m_vmanip.getNodeRO(p2);
+		f2 = &content_features(n2);
+		if (
+			f2->draw_type == CDT_FENCELIKE
+			|| f2->draw_type == CDT_WALLLIKE
+			|| n2.getContent() == CONTENT_WOOD_GATE
+			|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
+			|| n2.getContent() == CONTENT_STEEL_GATE
+			|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
+			|| (
+				n2.getContent() != CONTENT_IGNORE
+				&& n2.getContent() == content_features(n).special_alternate_node
+			)
+		) {
+			shown_dirs[k] = true;
+			n.param2 |= (np<<k);
+			for (int i=0; i<bps; i++) {
+				NodeBox box = boxes[i+2+(bps*(k%4))];
+
+				// Compute texture coords
+				f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
+				f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
+				f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
+				f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
+				f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
+				f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
+				f32 txc[24] = {
+					// up
+					tx1, 1-tz2, tx2, 1-tz1,
+					// down
+					tx1, tz1, tx2, tz2,
+					// right
+					tz1, 1-ty2, tz2, 1-ty1,
+					// left
+					1-tz2, 1-ty2, 1-tz1, 1-ty1,
+					// back
+					1-tx2, 1-ty2, 1-tx1, 1-ty1,
+					// front
+					tx1, 1-ty2, tx2, 1-ty1,
+				};
+				if (k > 3) {
+					switch (k) {
+					case 4:
+						box.m_box.MaxEdge.X *= 1.414;
+						break;
+					case 5:
+						box.m_box.MinEdge.X *= 1.414;
+						break;
+					case 6:
+						box.m_box.MaxEdge.Z *= 1.414;
+						break;
+					case 7:
+						box.m_box.MinEdge.Z *= 1.414;
+						break;
+					default:;
+					}
+				}
+				meshgen_cuboid(data, pos, box.m_box, tiles, 6,  selected, txc, v3s16(0,shown_angles[k],0),v3f(0,0,0));
+			}
+		}
+	}
+}
+
+void meshgen_firelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+{
+	TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),data->m_temp_mods);
+	content_t current = n.getContent();
+	content_t n2c;
+	MapNode n2;
+	v3s16 n2p;
+	static const v3s16 dirs[6] = {
+		v3s16( 0, 1, 0),
+		v3s16( 0,-1, 0),
+		v3s16( 1, 0, 0),
+		v3s16(-1, 0, 0),
+		v3s16( 0, 0, 1),
+		v3s16( 0, 0,-1)
+	};
+	int doDraw[6] = {0,0,0,0,0,0};
+	int i;
+	// Draw the full flame even if there are no surrounding nodes
+	bool drawAllFaces = true;
+	// Check for adjacent nodes
+	for (i = 0; i < 6; i++) {
+		n2p = data->m_blockpos_nodes + p + dirs[i];
+		n2 = data->m_vmanip.getNodeRO(n2p);
+		n2c = n2.getContent();
+		if (n2c != CONTENT_IGNORE && n2c != CONTENT_AIR && n2c != current) {
+			doDraw[i] = 1;
+			drawAllFaces = false;
+		}
+	}
+	for (u32 j=0; j<4; j++) {
+		video::S3DVertex vertices[4] = {
+			video::S3DVertex(-0.5*BS,-0.5*BS,0.369*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1()),
+			video::S3DVertex( 0.5*BS,-0.5*BS,0.369*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex( 0.5*BS, 0.5*BS,0.369*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
+			video::S3DVertex(-0.5*BS, 0.5*BS,0.369*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0())
+		};
+		int vOffset = 1; // Vertical offset of faces after rotation
+		// Calculate which faces should be drawn
+		if(j == 0 && (drawAllFaces || (doDraw[3] == 1 || doDraw[1] == 1))) {
+			for(u16 i=0; i<4; i++) {
+				vertices[i].Pos.rotateXZBy(90);
+				vertices[i].Pos.rotateXYBy(-15);
+				vertices[i].Pos.Y -= vOffset;
+				vertices[i].Pos += intToFloat(p, BS);
+			}
+		}else if(j == 1 && (drawAllFaces || (doDraw[5] == 1 || doDraw[1] == 1))) {
+			for(u16 i=0; i<4; i++) {
+				vertices[i].Pos.rotateXZBy(180);
+				vertices[i].Pos.rotateYZBy(15);
+				vertices[i].Pos.Y -= vOffset;
+				vertices[i].Pos += intToFloat(p, BS);
+			}
+		}else if(j == 2 && (drawAllFaces || (doDraw[2] == 1 || doDraw[1] == 1))) {
+			for(u16 i=0; i<4; i++) {
+				vertices[i].Pos.rotateXZBy(270);
+				vertices[i].Pos.rotateXYBy(15);
+				vertices[i].Pos.Y -= vOffset;
+				vertices[i].Pos += intToFloat(p, BS);
+			}
+		}else if(j == 3 && (drawAllFaces || (doDraw[4] == 1 || doDraw[1] == 1))) {
+			for(u16 i=0; i<4; i++) {
+				vertices[i].Pos.rotateYZBy(-15);
+				vertices[i].Pos.Y -= vOffset;
+				vertices[i].Pos += intToFloat(p, BS);
+			}
+		}else if(j == 3 && (drawAllFaces || (doDraw[0] == 1 && doDraw[1] == 0))) {
+			for(u16 i=0; i<4; i++) {
+				vertices[i].Pos.rotateYZBy(-90);
+				vertices[i].Pos.Y += vOffset;
+				vertices[i].Pos += intToFloat(p, BS);
+			}
+		}else{
+			// Skip faces that aren't adjacent to a node
+			continue;
+		}
+		u16 indices[] = {0,1,2,2,3,0};
+		std::vector<video::SColor> colours[18];
+		if (selected) {
+			meshgen_selected_lights(colours,255,4);
+		}else{
+			meshgen_lights(colours,255,4);
+		}
+		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
+	}
+}
+
+void meshgen_walllike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+{
+}
+
+void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+{
+}
+
+void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, bool is3d)
+{
+}
+
+void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+{
+}
+
+void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+{
+}
+
 #endif
 

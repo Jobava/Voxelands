@@ -31,6 +31,23 @@
 	#include "utility.h"
 void mapblock_mesh_generate_special(MeshMakeData *data,
 		MeshCollector &collector);
+
+void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);
+void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);
+void meshgen_plantlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);
+void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);
+void meshgen_liquid_source(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);
+void meshgen_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, bool meta);
+void meshgen_glasslike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);
+void meshgen_torchlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);
+void meshgen_fencelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);
+void meshgen_firelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);
+void meshgen_walllike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);
+void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);
+void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, bool is3d);
+void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);
+void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);
+
 #endif
 
 #endif

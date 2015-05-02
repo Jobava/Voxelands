@@ -127,7 +127,7 @@ struct MeshData
 	v3s16 pos;
 	video::SMaterial material;
 	std::vector<u16> indices;
-	std::vector<core::vector3df> vertices;
+	std::vector<video::S3DVertex> vertices;
 	std::vector<video::SColor> colours[18];
 	std::vector<MeshData*> siblings;
 	MeshData* parent;
@@ -145,6 +145,8 @@ struct MeshMakeData
 	NodeModMap m_temp_mods;
 	VoxelManipulator m_vmanip;
 	v3s16 m_blockpos;
+	v3s16 m_blockpos_nodes;
+	bool m_smooth_lighting;
 	Environment *m_env;
 	std::vector<MeshData> m_meshdata;
 	MeshData *m_single;
@@ -178,10 +180,11 @@ struct MeshMakeData
 	}
 	void append(
 		video::SMaterial material,
-		const core::vector3df* const vertices,
+		const video::S3DVertex* const vertices,
 		u32 v_count,
 		const u16* const indices,
-		u32 i_count
+		u32 i_count,
+		std::vector<video::SColor> colours[18]
 	)
 	{
 		MeshData *d = NULL;
@@ -226,6 +229,12 @@ struct MeshMakeData
 				dd.material = material;
 				m_meshdata.push_back(dd);
 				d = &m_meshdata[m_meshdata.size()-1];
+			}
+		}
+
+		for (u32 i=0; i<18; i++) {
+			for (u32 k=0; k<colours[i].size(); k++) {
+				d->colours[i].push_back(colours[i][k]);
 			}
 		}
 

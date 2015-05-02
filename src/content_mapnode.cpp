@@ -136,7 +136,6 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version)
 void content_mapnode_init(bool repeat)
 {
 	// Read some settings
-	bool new_style_water = g_settings->getBool("new_style_water");
 	bool invisible_stone = g_settings->getBool("invisible_stone");
 #ifndef SERVER
 	bool opaque_water = g_settings->getBool("opaque_water");
@@ -2038,26 +2037,7 @@ void content_mapnode_init(bool repeat)
 	f->description = wgettext("Water");
 	f->setAllTextures("water.png");
 	f->setInventoryTextureCube("water.png", "water.png", "water.png");
-	if(new_style_water)
-	{
-		f->solidness = 0; // drawn separately, makes no faces
-	}
-	else // old style
-	{
-		f->solidness = 1;
-#ifndef SERVER
-		TileSpec t;
-		if(g_texturesource)
-			t.texture = g_texturesource->getTexture("water.png");
-
-		if(!opaque_water){
-			t.alpha = WATER_ALPHA;
-			t.material_type = MATERIAL_ALPHA_VERTEX;
-		}
-		t.material_flags &= ~MATERIAL_FLAG_BACKFACE_CULLING;
-		f->setAllTiles(t);
-#endif
-	}
+	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
 	f->param2_type = CPT_LIQUID;
 	f->draw_type = CDT_LIQUID_SOURCE;
@@ -2115,24 +2095,7 @@ void content_mapnode_init(bool repeat)
 	f->description = wgettext("Lava");
 	f->setAllTextures("lava.png");
 	f->setInventoryTextureCube("lava.png", "lava.png", "lava.png");
-	if(new_style_water)
-	{
-		f->solidness = 0; // drawn separately, makes no faces
-	}
-	else // old style
-	{
-		f->solidness = 2;
-#ifndef SERVER
-		TileSpec t;
-		if(g_texturesource)
-			t.texture = g_texturesource->getTexture("lava.png");
-
-		//t.alpha = 255;
-		//t.material_type = MATERIAL_ALPHA_VERTEX;
-		//t.material_flags &= ~MATERIAL_FLAG_BACKFACE_CULLING;
-		f->setAllTiles(t);
-#endif
-	}
+	f->solidness = 0; // drawn separately, makes no faces
 	f->param_type = CPT_LIGHT;
 	f->param2_type = CPT_LIQUID;
 	f->draw_type = CDT_LIQUID_SOURCE;

@@ -91,69 +91,6 @@ void MeshMakeData::fill(u32 daynight_ratio, MapBlock *block)
 	}
 }
 
-/*
-	vertex_dirs: v3s16[4]
-*/
-void getNodeVertexDirs(v3s16 dir, v3s16 *vertex_dirs)
-{
-	/*
-		If looked from outside the node towards the face, the corners are:
-		0: bottom-right
-		1: bottom-left
-		2: top-left
-		3: top-right
-	*/
-	if(dir == v3s16(0,0,1))
-	{
-		// If looking towards z+, this is the face that is behind
-		// the center point, facing towards z+.
-		vertex_dirs[0] = v3s16(-1,-1, 1);
-		vertex_dirs[1] = v3s16( 1,-1, 1);
-		vertex_dirs[2] = v3s16( 1, 1, 1);
-		vertex_dirs[3] = v3s16(-1, 1, 1);
-	}
-	else if(dir == v3s16(0,0,-1))
-	{
-		// faces towards Z-
-		vertex_dirs[0] = v3s16( 1,-1,-1);
-		vertex_dirs[1] = v3s16(-1,-1,-1);
-		vertex_dirs[2] = v3s16(-1, 1,-1);
-		vertex_dirs[3] = v3s16( 1, 1,-1);
-	}
-	else if(dir == v3s16(1,0,0))
-	{
-		// faces towards X+
-		vertex_dirs[0] = v3s16( 1,-1, 1);
-		vertex_dirs[1] = v3s16( 1,-1,-1);
-		vertex_dirs[2] = v3s16( 1, 1,-1);
-		vertex_dirs[3] = v3s16( 1, 1, 1);
-	}
-	else if(dir == v3s16(-1,0,0))
-	{
-		// faces towards X-
-		vertex_dirs[0] = v3s16(-1,-1,-1);
-		vertex_dirs[1] = v3s16(-1,-1, 1);
-		vertex_dirs[2] = v3s16(-1, 1, 1);
-		vertex_dirs[3] = v3s16(-1, 1,-1);
-	}
-	else if(dir == v3s16(0,1,0))
-	{
-		// faces towards Y+ (assume Z- as "down" in texture)
-		vertex_dirs[0] = v3s16( 1, 1,-1);
-		vertex_dirs[1] = v3s16(-1, 1,-1);
-		vertex_dirs[2] = v3s16(-1, 1, 1);
-		vertex_dirs[3] = v3s16( 1, 1, 1);
-	}
-	else if(dir == v3s16(0,-1,0))
-	{
-		// faces towards Y- (assume Z+ as "down" in texture)
-		vertex_dirs[0] = v3s16( 1,-1, 1);
-		vertex_dirs[1] = v3s16(-1,-1, 1);
-		vertex_dirs[2] = v3s16(-1,-1,-1);
-		vertex_dirs[3] = v3s16( 1,-1,-1);
-	}
-}
-
 video::SColor MapBlock_LightColor(u8 alpha, u8 light, bool selected)
 {
 	float lim = 80;
@@ -173,72 +110,6 @@ video::SColor MapBlock_LightColor(u8 alpha, u8 light, bool selected)
 	}
 
 	return video::SColor(alpha,r,g,b);
-}
-
-struct FastFace
-{
-	TileSpec tile;
-	video::S3DVertex vertices[4]; // Precalculated vertices
-};
-
-void makeFastFace(TileSpec tile, u8 li0, u8 li1, u8 li2, u8 li3, v3f p,
-		v3s16 dir, v3f scale, core::array<FastFace> &dest, bool selected)
-{
-	FastFace face;
-
-	// Position is at the center of the cube.
-	v3f pos = p * BS;
-
-	v3f vertex_pos[4];
-	v3s16 vertex_dirs[4];
-	getNodeVertexDirs(dir, vertex_dirs);
-	for (u16 i=0; i<4; i++) {
-		vertex_pos[i] = v3f(
-				BS/2*vertex_dirs[i].X,
-				BS/2*vertex_dirs[i].Y,
-				BS/2*vertex_dirs[i].Z
-		);
-	}
-
-	for (u16 i=0; i<4; i++) {
-		vertex_pos[i].X *= scale.X;
-		vertex_pos[i].Y *= scale.Y;
-		vertex_pos[i].Z *= scale.Z;
-		vertex_pos[i] += pos;
-	}
-
-	f32 abs_scale = 1.;
-	if (scale.X < 0.999 || scale.X > 1.001) {
-		abs_scale = scale.X;
-	}else if(scale.Y < 0.999 || scale.Y > 1.001) {
-		abs_scale = scale.Y;
-	}else if(scale.Z < 0.999 || scale.Z > 1.001) {
-		abs_scale = scale.Z;
-	}
-
-	u8 alpha = tile.alpha;
-
-	float x0 = tile.texture.pos.X;
-	float y0 = tile.texture.pos.Y;
-	float w = tile.texture.size.X;
-	float h = tile.texture.size.Y;
-
-	face.vertices[0] = video::S3DVertex(vertex_pos[0], v3f(0,1,0),
-			MapBlock_LightColor(alpha, li0, selected),
-			core::vector2d<f32>(x0+w*abs_scale, y0+h));
-	face.vertices[1] = video::S3DVertex(vertex_pos[1], v3f(0,1,0),
-			MapBlock_LightColor(alpha, li1, selected),
-			core::vector2d<f32>(x0, y0+h));
-	face.vertices[2] = video::S3DVertex(vertex_pos[2], v3f(0,1,0),
-			MapBlock_LightColor(alpha, li2, selected),
-			core::vector2d<f32>(x0, y0));
-	face.vertices[3] = video::S3DVertex(vertex_pos[3], v3f(0,1,0),
-			MapBlock_LightColor(alpha, li3, selected),
-			core::vector2d<f32>(x0+w*abs_scale, y0));
-
-	face.tile = tile;
-
-	dest.push_back(face);
 }
 
 /*
@@ -473,190 +344,6 @@ u8 getSmoothLight(v3s16 p, v3s16 corner,
 	return getSmoothLight(p, vmanip, daynight_ratio);
 }
 
-void getTileInfo(
-		// Input:
-		v3s16 blockpos_nodes,
-		v3s16 p,
-		v3s16 face_dir,
-		u32 daynight_ratio,
-		VoxelManipulator &vmanip,
-		NodeModMap &temp_mods,
-		bool smooth_lighting,
-		// Output:
-		bool &makes_face,
-		v3s16 &p_corrected,
-		v3s16 &face_dir_corrected,
-		u8 *lights,
-		TileSpec &tile
-	)
-{
-	MapNode n0 = vmanip.getNodeNoEx(blockpos_nodes + p);
-	MapNode n1 = vmanip.getNodeNoEx(blockpos_nodes + p + face_dir);
-
-	bool equivalent = false;
-	u8 mf = face_contents(n0.getContent(), n1.getContent(), &equivalent);
-
-	if (mf == 0) {
-		makes_face = false;
-		return;
-	}
-
-	makes_face = true;
-
-	if (mf == 1) {
-		tile = getNodeTile(n0, p, face_dir, temp_mods);
-		p_corrected = p;
-		face_dir_corrected = face_dir;
-	}else{
-		tile = getNodeTile(n1, p + face_dir, -face_dir, temp_mods);
-		p_corrected = p + face_dir;
-		face_dir_corrected = -face_dir;
-	}
-
-	// eg. water and glass
-	if (equivalent)
-		tile.material_flags |= MATERIAL_FLAG_BACKFACE_CULLING;
-
-	if (smooth_lighting == false) {
-		lights[0] = lights[1] = lights[2] = lights[3] =
-				decode_light(getFaceLight(daynight_ratio, n0, n1, face_dir));
-	}else{
-		v3s16 vertex_dirs[4];
-		getNodeVertexDirs(face_dir_corrected, vertex_dirs);
-		for (u16 i=0; i<4; i++) {
-			lights[i] = getSmoothLight(blockpos_nodes + p_corrected, vertex_dirs[i], vmanip, daynight_ratio);
-		}
-	}
-
-	return;
-}
-
-/*
-	startpos:
-	translate_dir: unit vector with only one of x, y or z
-	face_dir: unit vector with only one of x, y or z
-*/
-void updateFastFaceRow(
-		u32 daynight_ratio,
-		v3s16 startpos,
-		u16 length,
-		v3s16 translate_dir,
-		v3f translate_dir_f,
-		v3s16 face_dir,
-		v3f face_dir_f,
-		core::array<FastFace> &dest,
-		NodeModMap &temp_mods,
-		VoxelManipulator &vmanip,
-		v3s16 blockpos_nodes,
-		bool smooth_lighting)
-{
-	v3s16 p = startpos;
-
-	u16 continuous_tiles_count = 0;
-
-	bool makes_face = false;
-	v3s16 p_corrected;
-	v3s16 face_dir_corrected;
-	u8 lights[4] = {0,0,0,0};
-	TileSpec tile;
-	getTileInfo(blockpos_nodes, p, face_dir, daynight_ratio,
-			vmanip, temp_mods, smooth_lighting,
-			makes_face, p_corrected, face_dir_corrected, lights, tile);
-
-	for (u16 j=0; j<length; j++) {
-		// If tiling can be done, this is set to false in the next step
-		bool next_is_different = true;
-
-		v3s16 p_next;
-
-		bool next_makes_face = false;
-		v3s16 next_p_corrected;
-		v3s16 next_face_dir_corrected;
-		u8 next_lights[4] = {0,0,0,0};
-		TileSpec next_tile;
-
-		// If at last position, there is nothing to compare to and
-		// the face must be drawn anyway
-		if (j != length - 1) {
-			p_next = p + translate_dir;
-
-			getTileInfo(blockpos_nodes, p_next, face_dir, daynight_ratio,
-					vmanip, temp_mods, smooth_lighting,
-					next_makes_face, next_p_corrected,
-					next_face_dir_corrected, next_lights,
-					next_tile);
-
-			if (
-				next_makes_face == makes_face
-				&& next_p_corrected == p_corrected + translate_dir
-				&& next_face_dir_corrected == face_dir_corrected
-				&& next_lights[0] == lights[0]
-				&& next_lights[1] == lights[1]
-				&& next_lights[2] == lights[2]
-				&& next_lights[3] == lights[3]
-				&& next_tile == tile
-			) {
-				next_is_different = false;
-			}
-		}
-
-		continuous_tiles_count++;
-
-		// This is set to true if the texture doesn't allow more tiling
-		bool end_of_texture = false;
-		/*
-			If there is no texture, it can be tiled infinitely.
-			If tiled==0, it means the texture can be tiled infinitely.
-			Otherwise check tiled agains continuous_tiles_count.
-		*/
-		if (tile.texture.atlas != NULL && tile.texture.tiled != 0) {
-			if (tile.texture.tiled <= continuous_tiles_count)
-				end_of_texture = true;
-		}
-
-		if (next_is_different || end_of_texture) {
-			/*
-				Create a face if there should be one
-			*/
-			if (makes_face) {
-				// Floating point conversion of the position vector
-				v3f pf(p_corrected.X, p_corrected.Y, p_corrected.Z);
-				// Center point of face (kind of)
-				v3f sp = pf - ((f32)continuous_tiles_count / 2. - 0.5) * translate_dir_f;
-				if (continuous_tiles_count != 1)
-					sp += translate_dir_f;
-				v3f scale(1,1,1);
-
-				if(translate_dir.X != 0)
-					scale.X = continuous_tiles_count;
-				if(translate_dir.Y != 0)
-					scale.Y = continuous_tiles_count;
-				if(translate_dir.Z != 0)
-					scale.Z = continuous_tiles_count;
-
-				NodeMod mod;
-				temp_mods.get(p_corrected,&mod);
-				bool selected = (mod == NODEMOD_SELECTION);
-				makeFastFace(tile, lights[0], lights[1], lights[2], lights[3],
-						sp, face_dir_corrected, scale, dest, selected);
-			}
-
-			continuous_tiles_count = 0;
-
-			makes_face = next_makes_face;
-			p_corrected = next_p_corrected;
-			face_dir_corrected = next_face_dir_corrected;
-			lights[0] = next_lights[0];
-			lights[1] = next_lights[1];
-			lights[2] = next_lights[2];
-			lights[3] = next_lights[3];
-			tile = next_tile;
-		}
-
-		p = p_next;
-	}
-}
-
 MapBlockMesh::MapBlockMesh(MeshMakeData *data, v3s16 camera_offset):
 	m_mesh(NULL),
 	m_camera_offset(camera_offset)
@@ -672,8 +359,8 @@ MapBlockMesh::~MapBlockMesh()
 
 void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset)
 {
-	v3s16 blockpos_nodes = data->m_blockpos*MAP_BLOCKSIZE;
-	bool smooth_lighting = g_settings->getBool("smooth_lighting");
+	data->m_blockpos_nodes = data->m_blockpos*MAP_BLOCKSIZE;
+	data->m_smooth_lighting = g_settings->getBool("smooth_lighting");
 	bool selected = false;
 
 	for(s16 z=0; z<MAP_BLOCKSIZE; z++)
@@ -682,7 +369,7 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset)
 	{
 		v3s16 p(x,y,z);
 
-		MapNode n = data->m_vmanip.getNodeNoEx(blockpos_nodes+p);
+		MapNode n = data->m_vmanip.getNodeNoEx(data->m_blockpos_nodes+p);
 		NodeMod mod;
 		data->m_temp_mods.get(p,&mod);
 		selected = (mod == NODEMOD_SELECTION);
@@ -700,7 +387,7 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset)
 					}
 				}
 				if (add_sound && content_features(n).liquid_type != LIQUID_NONE) {
-					if (data->m_vmanip.getNodeRO(blockpos_nodes+p+v3s16(0,1,0)).getContent() != CONTENT_AIR) {
+					if (data->m_vmanip.getNodeRO(data->m_blockpos_nodes+p+v3s16(0,1,0)).getContent() != CONTENT_AIR) {
 						add_sound = false;
 					}else if (content_features(n).param2_type != CPT_LIQUID || n.param2 < 4 || n.param2 > 7) {
 						add_sound = false;
@@ -710,7 +397,7 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset)
 							for (s16 z=-1; z<2; z++) {
 								if (!x && !z)
 									continue;
-								content_t ac = data->m_vmanip.getNodeRO(blockpos_nodes+p+v3s16(x,0,z)).getContent();
+								content_t ac = data->m_vmanip.getNodeRO(data->m_blockpos_nodes+p+v3s16(x,0,z)).getContent();
 								if (
 									ac == content_features(n).liquid_alternative_flowing
 									|| ac == content_features(n).liquid_alternative_source
@@ -723,7 +410,7 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset)
 					}
 				}
 				if (add_sound) {
-					v3f pf = intToFloat(p+blockpos_nodes,BS);
+					v3f pf = intToFloat(p+data->m_blockpos_nodes,BS);
 					MapBlockSound bsnd;
 					bsnd.id = g_sound->playSoundAt(snd,true,pf, true);
 					bsnd.name = snd;
@@ -734,6 +421,66 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset)
 				g_sound->stopSound(i->second.id);
 				data->m_sounds->erase(i);
 			}
+		}
+		switch (content_features(n).draw_type) {
+		case CDT_AIRLIKE:
+			break;
+		case CDT_CUBELIKE:
+			meshgen_cubelike(data,p,n,selected);
+			break;
+		case CDT_RAILLIKE:
+			meshgen_raillike(data,p,n,selected);
+			break;
+		case CDT_PLANTLIKE:
+		case CDT_PLANTLIKE_SML:
+		case CDT_PLANTLIKE_LGE:
+		case CDT_PLANTGROWTH_1:
+		case CDT_PLANTGROWTH_2:
+		case CDT_PLANTGROWTH_3:
+			meshgen_plantlike(data,p,n,selected);
+			break;
+		case CDT_LIQUID:
+			meshgen_liquid(data,p,n,selected);
+			break;
+		case CDT_LIQUID_SOURCE:
+			meshgen_liquid_source(data,p,n,selected);
+			break;
+		case CDT_NODEBOX:
+			meshgen_nodebox(data,p,n,selected,false);
+			break;
+		case CDT_GLASSLIKE:
+			meshgen_glasslike(data,p,n,selected);
+			break;
+		case CDT_TORCHLIKE:
+			meshgen_torchlike(data,p,n,selected);
+			break;
+		case CDT_FENCELIKE:
+			meshgen_fencelike(data,p,n,selected);
+			break;
+		case CDT_FIRELIKE:
+			meshgen_firelike(data,p,n,selected);
+			break;
+		case CDT_WALLLIKE:
+			meshgen_walllike(data,p,n,selected);
+			break;
+		case CDT_ROOFLIKE:
+			meshgen_rooflike(data,p,n,selected);
+			break;
+		case CDT_NODEBOX_META:
+			meshgen_nodebox(data,p,n,selected,true);
+			break;
+		case CDT_WIRELIKE:
+			meshgen_wirelike(data,p,n,selected,false);
+			break;
+		case CDT_3DWIRELIKE:
+			meshgen_wirelike(data,p,n,selected,true);
+			break;
+		case CDT_STAIRLIKE:
+			meshgen_stairlike(data,p,n,selected);
+			break;
+		case CDT_SLABLIKE:
+			meshgen_slablike(data,p,n,selected);
+			break;
 		}
 	}
 
