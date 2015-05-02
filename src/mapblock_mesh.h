@@ -29,6 +29,7 @@
 #include "common_irrlicht.h"
 #include "mapblock_nodemod.h"
 #include "voxel.h"
+#include <vector>
 
 /*
 	Mesh making stuff
@@ -120,6 +121,18 @@ u8 getSmoothLight(v3s16 p, v3s16 corner, VoxelManipulator &vmanip, u32 daynight_
 class MapBlock;
 class Environment;
 
+struct MeshData
+{
+	bool single;
+	v3s16 pos;
+	video::SMaterial material;
+	std::vector<u16> indices;
+	std::vector<core::vector3df> vertices;
+	std::vector<video::SColor> colours[18];
+	std::vector<MeshData*> siblings;
+	MeshData* parent;
+};
+
 struct MapBlockSound
 {
 	int id;
@@ -133,18 +146,99 @@ struct MeshMakeData
 	VoxelManipulator m_vmanip;
 	v3s16 m_blockpos;
 	Environment *m_env;
+	std::vector<MeshData> m_meshdata;
+	MeshData *m_single;
 
 	std::map<v3s16,MapBlockSound> *m_sounds;
+
+	MeshMakeData():
+		m_single(NULL),
+		m_sounds(NULL)
+	{}
 
 	/*
 		Copy central data directly from block, and other data from
 		parent of block.
 	*/
 	void fill(u32 daynight_ratio, MapBlock *block);
-};
 
-// This is the highest-level function in here
-scene::SMesh* makeMapBlockMesh(MeshMakeData *data);
+	void startSingle(v3s16 pos, video::SMaterial material)
+	{
+		MeshData dd;
+		dd.single = true;
+		dd.pos = pos;
+		dd.material = material;
+		dd.parent = NULL;
+		m_meshdata.push_back(dd);
+		m_single = &m_meshdata[m_meshdata.size()-1];
+	}
+	void endSingle()
+	{
+		m_single = NULL;
+	}
+	void append(
+		video::SMaterial material,
+		const core::vector3df* const vertices,
+		u32 v_count,
+		const u16* const indices,
+		u32 i_count
+	)
+	{
+		MeshData *d = NULL;
+		if (m_single) {
+			if (m_single->parent)
+				m_single = m_single->parent;
+			if (m_single->material != material) {
+				for (u16 i=0; i<m_single->siblings.size(); i++) {
+					if (m_single->siblings[i]->material == material) {
+						d = m_single->siblings[i];
+						break;
+					}
+				}
+				if (d == NULL) {
+					MeshData dd;
+					dd.single = true;
+					dd.pos = m_single->pos;
+					dd.material = material;
+					dd.parent = m_single;
+					m_meshdata.push_back(dd);
+					d = &m_meshdata[m_meshdata.size()-1];
+					m_single->siblings.push_back(d);
+				}
+			}else{
+				d = m_single;
+			}
+		}else{
+			for (u32 i=0; i<m_meshdata.size(); i++) {
+				MeshData &dd = m_meshdata[i];
+				if (dd.material != material)
+					continue;
+				if (dd.vertices.size() + v_count > 65535)
+					continue;
+
+				d = &dd;
+				break;
+			}
+
+			if (d == NULL) {
+				MeshData dd;
+				dd.single = false;
+				dd.material = material;
+				m_meshdata.push_back(dd);
+				d = &m_meshdata[m_meshdata.size()-1];
+			}
+		}
+
+		u32 vertex_count = d->vertices.size();
+		for(u32 i=0; i<i_count; i++) {
+			u32 j = indices[i] + vertex_count;
+			d->indices.push_back(j);
+		}
+		for(u32 i=0; i<v_count; i++) {
+			d->vertices.push_back(vertices[i]);
+		}
+	}
+};
 
 class MapBlockMesh
 {
@@ -157,11 +251,15 @@ public:
 		return m_mesh;
 	}
 
+	void generate(MeshMakeData *data, v3s16 camera_offset);
+	void refresh(u32 daynight_ratio);
+
 	void updateCameraOffset(v3s16 camera_offset);
 
 private:
 	scene::SMesh *m_mesh;
 	v3s16 m_camera_offset;
+	std::vector<MeshData> m_meshdata;
 };
 
 #endif

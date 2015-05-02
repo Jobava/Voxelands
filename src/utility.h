@@ -1634,13 +1634,23 @@ inline u32 time_to_daynight_ratio(u32 time_of_day)
 	for (u32 i=0; i<18; i++) {
 		if (values[i][0] <= t)
 			continue;
-		if (i == 0)
+		//if (i == 0)
 			return values[i][1];
-		float td0 = values[i][0] - values[i-1][0];
-		float f = (t - values[i-1][0]) / td0;
-		return f * values[i][1] + (1.0 - f) * values[i-1][1];
+		//float td0 = values[i][0] - values[i-1][0];
+		//float f = (t - values[i-1][0]) / td0;
+		//return f * values[i][1] + (1.0 - f) * values[i-1][1];
 	}
 	return 1000;
+}
+
+inline u16 daynight_ratio_index(u32 daynight_ratio)
+{
+	u32 values[18] = {150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000};
+	for (u16 i=0; i<18; i++) {
+		if (values[i] == daynight_ratio)
+			return i;
+	}
+	return 17;
 }
 
 // Random helper. Usually d=BS

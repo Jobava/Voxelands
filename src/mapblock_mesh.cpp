@@ -658,186 +658,130 @@ void updateFastFaceRow(
 }
 
 MapBlockMesh::MapBlockMesh(MeshMakeData *data, v3s16 camera_offset):
+	m_mesh(NULL),
 	m_camera_offset(camera_offset)
 {
-	// 2-12ms for MAP_BLOCKSIZE=16
-	//TimeTaker timer1("makeMapBlockMesh()");
-
-	core::array<FastFace> fastfaces_new;
-
-	v3s16 blockpos_nodes = data->m_blockpos*MAP_BLOCKSIZE;
-
-	/*
-		Some settings
-	*/
-	bool smooth_lighting = g_settings->getBool("smooth_lighting");
-
-	/*
-		We are including the faces of the trailing edges of the block.
-		This means that when something changes, the caller must
-		also update the meshes of the blocks at the leading edges.
-
-		NOTE: This is the slowest part of this method.
-	*/
-
-	{
-		// 2-12ms for MAP_BLOCKSIZE=16
-		//TimeTaker timer2("updateMesh() collect");
-		for (s16 y=0; y<MAP_BLOCKSIZE; y++) {
-			for (s16 z=0; z<MAP_BLOCKSIZE; z++) {
-		/*
-			Go through every y,z and get top(y+) faces in rows of x+
-		*/
-				updateFastFaceRow(data->m_daynight_ratio,
-						v3s16(0,y,z), MAP_BLOCKSIZE,
-						v3s16(1,0,0), //dir
-						v3f  (1,0,0),
-						v3s16(0,1,0), //face dir
-						v3f  (0,1,0),
-						fastfaces_new,
-						data->m_temp_mods,
-						data->m_vmanip,
-						blockpos_nodes,
-						smooth_lighting);
-		/*
-			Go through every y,z and get back(z+) faces in rows of x+
-		*/
-				updateFastFaceRow(data->m_daynight_ratio,
-						v3s16(0,y,z), MAP_BLOCKSIZE,
-						v3s16(1,0,0),
-						v3f  (1,0,0),
-						v3s16(0,0,1),
-						v3f  (0,0,1),
-						fastfaces_new,
-						data->m_temp_mods,
-						data->m_vmanip,
-						blockpos_nodes,
-						smooth_lighting);
-			}
-			for (s16 x=0; x<MAP_BLOCKSIZE; x++) {
-		/*
-			Go through every x,y and get right(x+) faces in rows of z+
-		*/
-				updateFastFaceRow(data->m_daynight_ratio,
-						v3s16(x,y,0), MAP_BLOCKSIZE,
-						v3s16(0,0,1),
-						v3f  (0,0,1),
-						v3s16(1,0,0),
-						v3f  (1,0,0),
-						fastfaces_new,
-						data->m_temp_mods,
-						data->m_vmanip,
-						blockpos_nodes,
-						smooth_lighting);
-			}
-		}
-	}
-
-	// End of slow part
-
-	/*
-		Convert FastFaces to SMesh
-	*/
-
-	MeshCollector collector;
-
-	if(fastfaces_new.size() > 0)
-	{
-		// avg 0ms (100ms spikes when loading textures the first time)
-		//TimeTaker timer2("updateMesh() mesh building");
-
-		video::SMaterial material;
-		material.setFlag(video::EMF_LIGHTING, false);
-		material.setFlag(video::EMF_BACK_FACE_CULLING, true);
-		material.setFlag(video::EMF_BILINEAR_FILTER, false);
-		material.setFlag(video::EMF_FOG_ENABLE, true);
-		//material.setFlag(video::EMF_ANTI_ALIASING, video::EAAM_OFF);
-		//material.setFlag(video::EMF_ANTI_ALIASING, video::EAAM_SIMPLE);
-		material.MaterialType
-				= video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
-
-		for(u32 i=0; i<fastfaces_new.size(); i++)
-		{
-			FastFace &f = fastfaces_new[i];
-
-			const u16 indices[] = {0,1,2,2,3,0};
-			const u16 indices_alternate[] = {0,1,3,2,3,1};
-
-			video::ITexture *texture = f.tile.texture.atlas;
-			if(texture == NULL)
-				continue;
-
-			material.setTexture(0, texture);
-
-			f.tile.applyMaterialOptions(material);
-
-			const u16 *indices_p = indices;
-
-			/*
-				Revert triangles for nicer looking gradient if vertices
-				1 and 3 have same color or 0 and 2 have different color.
-			*/
-			if(f.vertices[0].Color != f.vertices[2].Color
-					|| f.vertices[1].Color == f.vertices[3].Color)
-				indices_p = indices_alternate;
-
-			collector.append(material, f.vertices, 4, indices_p, 6);
-		}
-	}
-
-	/*
-		Add special graphics:
-		- torches
-		- flowing water
-		- fences
-		- whatever
-	*/
-
-	mapblock_mesh_generate_special(data, collector);
-
-	/*
-		Add stuff from collector to mesh
-	*/
-
-	m_mesh = new scene::SMesh();
-
-	collector.fillMesh(m_mesh);
-
-	/*
-		Do some stuff to the mesh
-	*/
-
-	m_mesh->recalculateBoundingBox();
-
-	translateMesh(m_mesh, intToFloat(data->m_blockpos * MAP_BLOCKSIZE - camera_offset, BS));
-
-	if(m_mesh)
-	{
-#if 0
-		// Usually 1-700 faces and 1-7 materials
-		std::cout<<"Updated MapBlock has "<<fastfaces_new.size()<<" faces "
-				<<"and uses "<<m_mesh->getMeshBufferCount()
-				<<" materials (meshbuffers)"<<std::endl;
-#endif
-
-		// Use VBO for mesh (this just would set this for ever buffer)
-		// This will lead to infinite memory usage because or irrlicht.
-		//m_mesh->setHardwareMappingHint(scene::EHM_STATIC);
-
-		/*
-			NOTE: If that is enabled, some kind of a queue to the main
-			thread should be made which would call irrlicht to delete
-			the hardware buffer and then delete the mesh
-		*/
-	}
-
-	//std::cout<<"added "<<fastfaces.getSize()<<" faces."<<std::endl;
+	generate(data,camera_offset);
 }
 
 MapBlockMesh::~MapBlockMesh()
 {
 	m_mesh->drop();
 	m_mesh = NULL;
+}
+
+void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset)
+{
+	v3s16 blockpos_nodes = data->m_blockpos*MAP_BLOCKSIZE;
+	bool smooth_lighting = g_settings->getBool("smooth_lighting");
+	bool selected = false;
+
+	for(s16 z=0; z<MAP_BLOCKSIZE; z++)
+	for(s16 y=0; y<MAP_BLOCKSIZE; y++)
+	for(s16 x=0; x<MAP_BLOCKSIZE; x++)
+	{
+		v3s16 p(x,y,z);
+
+		MapNode n = data->m_vmanip.getNodeNoEx(blockpos_nodes+p);
+		NodeMod mod;
+		data->m_temp_mods.get(p,&mod);
+		selected = (mod == NODEMOD_SELECTION);
+
+		if (g_sound) {
+			std::string snd = content_features(n).sound_ambient;
+			std::map<v3s16,MapBlockSound>::iterator i = data->m_sounds->find(p);
+			if (snd != "") {
+				bool add_sound = true;
+				if (i != data->m_sounds->end()) {
+					if (i->second.name == snd && g_sound->soundExists(i->second.id)) {
+						add_sound = false;
+					}else{
+						g_sound->stopSound(i->second.id);
+					}
+				}
+				if (add_sound && content_features(n).liquid_type != LIQUID_NONE) {
+					if (data->m_vmanip.getNodeRO(blockpos_nodes+p+v3s16(0,1,0)).getContent() != CONTENT_AIR) {
+						add_sound = false;
+					}else if (content_features(n).param2_type != CPT_LIQUID || n.param2 < 4 || n.param2 > 7) {
+						add_sound = false;
+					}else{
+						int adj = 0;
+						for (s16 x=-1; x<2; x++) {
+							for (s16 z=-1; z<2; z++) {
+								if (!x && !z)
+									continue;
+								content_t ac = data->m_vmanip.getNodeRO(blockpos_nodes+p+v3s16(x,0,z)).getContent();
+								if (
+									ac == content_features(n).liquid_alternative_flowing
+									|| ac == content_features(n).liquid_alternative_source
+								)
+									adj++;
+							}
+						}
+						if (adj > 3)
+							add_sound = false;
+					}
+				}
+				if (add_sound) {
+					v3f pf = intToFloat(p+blockpos_nodes,BS);
+					MapBlockSound bsnd;
+					bsnd.id = g_sound->playSoundAt(snd,true,pf, true);
+					bsnd.name = snd;
+					if (bsnd.id > 0)
+						(*data->m_sounds)[p] = bsnd;
+				}
+			}else if (i != data->m_sounds->end()) {
+				g_sound->stopSound(i->second.id);
+				data->m_sounds->erase(i);
+			}
+		}
+	}
+
+	if (m_mesh) {
+		scene::SMesh *m = m_mesh;
+		m_mesh = NULL;
+		m->drop();
+	}
+	m_meshdata.swap(data->m_meshdata);
+	refresh(data->m_daynight_ratio);
+	m_mesh->recalculateBoundingBox();
+
+	translateMesh(m_mesh, intToFloat(data->m_blockpos * MAP_BLOCKSIZE - camera_offset, BS));
+}
+
+void MapBlockMesh::refresh(u32 daynight_ratio)
+{
+	if (m_mesh == NULL) {
+		m_mesh = new scene::SMesh();
+		for (u32 i=0; i<m_meshdata.size(); i++) {
+			MeshData &d = m_meshdata[i];
+			// Create meshbuffer
+			// This is a "Standard MeshBuffer",
+			// it's a typedeffed CMeshBuffer<video::S3DVertex>
+			scene::SMeshBuffer *buf = new scene::SMeshBuffer();
+			// Set material
+			buf->Material = d.material;
+			// Add to mesh
+			m_mesh->addMeshBuffer(buf);
+			// Mesh grabbed it
+			buf->drop();
+
+			buf->append(d.vertices.data(), d.vertices.size(), d.indices.data(), d.indices.size());
+		}
+	}
+
+	u16 ci = daynight_ratio_index(daynight_ratio);
+
+	u16 mc = m_mesh->getMeshBufferCount();
+	for (u16 j=0; j<mc; j++) {
+		scene::IMeshBuffer *buf = m_mesh->getMeshBuffer(j);
+		video::S3DVertex *vertices = (video::S3DVertex*)buf->getVertices();
+		u16 vc = buf->getVertexCount();
+		video::SColor *c = m_meshdata[j].colours[ci].data();
+		for (u16 i=0; i<vc; i++) {
+			vertices[i].Color = c[i];
+		}
+	}
 }
 
 void MapBlockMesh::updateCameraOffset(v3s16 camera_offset)
