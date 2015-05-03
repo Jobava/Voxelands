@@ -484,6 +484,9 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset)
 		case CDT_SLABLIKE:
 			meshgen_slablike(data,p,n,selected);
 			break;
+		case CDT_TRUNKLIKE:
+			meshgen_trunklike(data,p,n,selected);
+			break;
 		}
 	}
 

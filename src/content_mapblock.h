@@ -48,6 +48,7 @@ void meshgen_leaflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);
 void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, bool is3d);
 void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);
 void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);
+void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);
 
 #endif
 
