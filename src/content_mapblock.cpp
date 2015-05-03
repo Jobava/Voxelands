@@ -220,977 +220,6 @@ static void getRoofLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, 
 	}
 	lights[1] = MapBlock_LightColor(255, l, selected);
 }
-
-void mapblock_mesh_generate_special(MeshMakeData *data,
-		MeshCollector &collector)
-{
-	/*
-		Some settings
-	*/
-	bool smooth_lighting = g_settings->getBool("smooth_lighting");
-
-	v3s16 blockpos_nodes = data->m_blockpos*MAP_BLOCKSIZE;
-	bool selected = false;
-
-	for(s16 z=0; z<MAP_BLOCKSIZE; z++)
-	for(s16 y=0; y<MAP_BLOCKSIZE; y++)
-	for(s16 x=0; x<MAP_BLOCKSIZE; x++)
-	{
-		v3s16 p(x,y,z);
-
-		MapNode n = data->m_vmanip.getNodeNoEx(blockpos_nodes+p);
-		NodeMod mod;
-		data->m_temp_mods.get(p,&mod);
-		selected = (mod == NODEMOD_SELECTION);
-
-		/*
-			Add torches to mesh
-		*/
-		switch (content_features(n).draw_type) {
-		case CDT_ROOFLIKE:
-		{
-			bool is_roof_x [] = { false, false };  /* x-1, x+1 */
-			bool is_roof_z [] = { false, false };  /* z-1, z+1 */
-
-			bool is_roof_z_minus_y [] = { false, false };  /* z-1, z+1; y-1 */
-			bool is_roof_x_minus_y [] = { false, false };  /* x-1, z+1; y-1 */
-			bool is_roof_z_plus_y [] = { false, false };  /* z-1, z+1; y+1 */
-			bool is_roof_x_plus_y [] = { false, false };  /* x-1, x+1; y+1 */
-
-			MapNode n_minus_x = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x-1,y,z));
-			MapNode n_plus_x = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x+1,y,z));
-			MapNode n_minus_z = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x,y,z-1));
-			MapNode n_plus_z = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x,y,z+1));
-			MapNode n_plus_x_plus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x+1, y+1, z));
-			MapNode n_plus_x_minus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x+1, y-1, z));
-			MapNode n_minus_x_plus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x-1, y+1, z));
-			MapNode n_minus_x_minus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x-1, y-1, z));
-			MapNode n_plus_z_plus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x, y+1, z+1));
-			MapNode n_minus_z_plus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x, y+1, z-1));
-			MapNode n_plus_z_minus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x, y-1, z+1));
-			MapNode n_minus_z_minus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x, y-1, z-1));
-
-			if (content_features(n_minus_x).draw_type == CDT_ROOFLIKE)
-				is_roof_x[0] = true;
-			if (content_features(n_minus_x_minus_y).draw_type == CDT_ROOFLIKE)
-				is_roof_x_minus_y[0] = true;
-			if (content_features(n_minus_x_plus_y).draw_type == CDT_ROOFLIKE)
-				is_roof_x_plus_y[0] = true;
-			if (content_features(n_plus_x).draw_type == CDT_ROOFLIKE)
-				is_roof_x[1] = true;
-			if (content_features(n_plus_x_minus_y).draw_type == CDT_ROOFLIKE)
-				is_roof_x_minus_y[1] = true;
-			if (content_features(n_plus_x_plus_y).draw_type == CDT_ROOFLIKE)
-				is_roof_x_plus_y[1] = true;
-			if (content_features(n_minus_z).draw_type == CDT_ROOFLIKE)
-				is_roof_z[0] = true;
-			if (content_features(n_minus_z_minus_y).draw_type == CDT_ROOFLIKE)
-				is_roof_z_minus_y[0] = true;
-			if (content_features(n_minus_z_plus_y).draw_type == CDT_ROOFLIKE)
-				is_roof_z_plus_y[0] = true;
-			if (content_features(n_plus_z).draw_type == CDT_ROOFLIKE)
-				is_roof_z[1] = true;
-			if (content_features(n_plus_z_minus_y).draw_type == CDT_ROOFLIKE)
-				is_roof_z_minus_y[1] = true;
-			if (content_features(n_plus_z_plus_y).draw_type == CDT_ROOFLIKE)
-				is_roof_z_plus_y[1] = true;
-
-			u8 adjacencies = is_roof_x[0] + is_roof_x[1] + is_roof_z[0] + is_roof_z[1];
-
-			// get the tile, with crack if being dug
-			TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),data->m_temp_mods);
-			video::SColor c[2];
-			getRoofLights(blockpos_nodes+p,c,data,v3s16(0,0,0));
-			TileSpec toptile = getNodeTile(n,p,v3s16(0,-1,0),data->m_temp_mods);
-
-			u8 type = 0;
-			s16 angle = 0;
-
-			MapNode abv;
-
-			v3f pos = intToFloat(p, BS);
-
-			if (adjacencies == 1) {
-				// cross X
-				if (is_roof_x[0] || is_roof_x[1]) {
-					if (is_roof_z_plus_y[0]) {
-						type = 0;
-						angle = 180;
-					}else if (is_roof_z_plus_y[1]) {
-						type = 0;
-						angle = 0;
-					}else if (is_roof_x[0] && is_roof_x_minus_y[1]) {
-						type = 9;
-						angle = 0;
-					}else if (is_roof_x[1] && is_roof_x_minus_y[0]) {
-						type = 9;
-						angle = 180;
-					}else{
-						type = 1;
-						angle = 0;
-					}
-				}
-				// cross Z
-				else if (is_roof_z[0] || is_roof_z[1]) {
-					if (is_roof_x_plus_y[1]) {
-						type = 0;
-						angle = 270;
-					}else if (is_roof_x_plus_y[0]) {
-						type = 0;
-						angle = 90;
-					}else if (is_roof_z[0] && is_roof_z_minus_y[1]) {
-						type = 9;
-						angle = 90;
-					}else if (is_roof_z[1] && is_roof_z_minus_y[0]) {
-						type = 9;
-						angle = 270;
-					}else{
-						type = 1;
-						angle = 90;
-					}
-				}
-			}else if (adjacencies == 2) {
-				// cross X
-				if (is_roof_x[0] && is_roof_x[1]) {
-					if (is_roof_z_plus_y[0]) {
-						type = 0;
-						angle = 180;
-					}else if (is_roof_z_plus_y[1]) {
-						type = 0;
-						angle = 0;
-					}else{
-						type = 1;
-						angle = 0;
-					}
-				}
-				// cross Z
-				else if (is_roof_z[0] && is_roof_z[1]) {
-					if (is_roof_x_plus_y[1]) {
-						type = 0;
-						angle = 270;
-					}else if (is_roof_x_plus_y[0]) {
-						type = 0;
-						angle = 90;
-					}else{
-						type = 1;
-						angle = 90;
-					}
-				}else if (is_roof_x[0] && is_roof_z[0]) {
-					if (is_roof_x_plus_y[1] && is_roof_z_plus_y[1]) {
-						type = 7;
-						angle = 90;
-					}else if (is_roof_x_plus_y[1]) {
-						type = 2;
-						angle = 0;
-					}else if (is_roof_z_plus_y[1]) {
-						type = 2;
-						angle = 90;
-					}else{
-						abv = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x-1, y+1, z-1));
-						if (content_features(abv).draw_type == CDT_ROOFLIKE) {
-							type = 4;
-							angle = 90;
-						}else{
-							type = 3;
-							angle = 0;
-						}
-					}
-				}else if (is_roof_x[0] && is_roof_z[1]) {
-					if (is_roof_x_plus_y[1] && is_roof_z_plus_y[0]) {
-						type = 7;
-						angle = 0;
-					}else if (is_roof_x_plus_y[1]) {
-						type = 2;
-						angle = 0;
-					}else if (is_roof_z_plus_y[0]) {
-						type = 2;
-						angle = 270;
-					}else{
-						abv = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x-1, y+1, z+1));
-						if (content_features(abv).draw_type == CDT_ROOFLIKE) {
-							type = 4;
-							angle = 0;
-						}else{
-							type = 3;
-							angle = 270;
-						}
-					}
-				}else if (is_roof_x[1] && is_roof_z[0]) {
-					if (is_roof_x_plus_y[0] && is_roof_z_plus_y[1]) {
-						type = 7;
-						angle = 180;
-					}else if (is_roof_x_plus_y[0]) {
-						type = 2;
-						angle = 180;
-					}else if (is_roof_z_plus_y[1]) {
-						type = 2;
-						angle = 90;
-					}else{
-						abv = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x+1, y+1, z-1));
-						if (content_features(abv).draw_type == CDT_ROOFLIKE) {
-							type = 4;
-							angle = 180;
-						}else{
-							type = 3;
-							angle = 90;
-						}
-					}
-				}else if (is_roof_x[1] && is_roof_z[1]) {
-					if (is_roof_x_plus_y[0] && is_roof_z_plus_y[0]) {
-						type = 7;
-						angle = 270;
-					}else if (is_roof_x_plus_y[0]) {
-						type = 2;
-						angle = 180;
-					}else if (is_roof_z_plus_y[0]) {
-						type = 2;
-						angle = 270;
-					}else{
-						abv = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x+1, y+1, z+1));
-						if (content_features(abv).draw_type == CDT_ROOFLIKE) {
-							type = 4;
-							angle = 270;
-						}else{
-							type = 3;
-							angle = 180;
-						}
-					}
-				}
-			}else if (adjacencies == 3) {
-				if (is_roof_x[0] && is_roof_x[1] && is_roof_z[0]) {
-					if (is_roof_z_plus_y[1]) {
-						type = 2;
-						angle = 90;
-					}else{
-						type = 6;
-						angle = 0;
-					}
-				}else if (is_roof_x[0] && is_roof_x[1] && is_roof_z[1]) {
-					if (is_roof_z_plus_y[0]) {
-						type = 2;
-						angle = 270;
-					}else{
-						type = 6;
-						angle = 180;
-					}
-				}else if (is_roof_x[0] && is_roof_z[0] && is_roof_z[1]) {
-					if (is_roof_x_plus_y[1]) {
-						type = 2;
-						angle = 0;
-					}else{
-						type = 6;
-						angle = 270;
-					}
-				}else if (is_roof_x[1] && is_roof_z[0] && is_roof_z[1]) {
-					if (is_roof_x_plus_y[0]) {
-						type = 2;
-						angle = 180;
-					}else{
-						type = 6;
-						angle = 90;
-					}
-				}
-			}else if (adjacencies == 4) {
-				type = 5;
-				angle = 0;
-			}else{
-				if (is_roof_z_plus_y[0]) {
-					type = 0;
-					angle = 180;
-				}else if (is_roof_z_plus_y[1]) {
-					type = 0;
-				}else if (is_roof_x_plus_y[1]) {
-					type = 0;
-					angle = 270;
-				}else if (is_roof_x_plus_y[0]) {
-					type = 0;
-					angle = 90;
-				}else{
-					type = 8;
-					angle = 0;
-				}
-			}
-			/*
-				0: slope
-				1: top
-				2: top butting to slope
-				3: top corner
-				4: outer corner
-				5: top X
-				6: top T
-				7: inner corner
-				8: top cap
-				9: top end cap
-			*/
-			switch (type) {
-			case 0:
-			{
-				v3f cnr[2][3];
-				if (angle == 0) {
-					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
-					cnr[0][1] = v3f(0.5,-0.5,-0.5);
-					cnr[0][2] = v3f(0.5,0.5,0.5);
-					cnr[1][0] = v3f(0.5,0.5,0.5);
-					cnr[1][1] = v3f(-0.5,0.5,0.5);
-					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
-					getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,-1));
-				}else if (angle == 90) {
-					cnr[0][0] = v3f(-0.5,0.5,-0.5);
-					cnr[0][1] = v3f(0.5,-0.5,-0.5);
-					cnr[0][2] = v3f(0.5,-0.5,0.5);
-					cnr[1][0] = v3f(0.5,-0.5,0.5);
-					cnr[1][1] = v3f(-0.5,0.5,0.5);
-					cnr[1][2] = v3f(-0.5,0.5,-0.5);
-					getRoofLights(blockpos_nodes+p,c,data,v3s16(1,1,0));
-				}else if (angle == 180) {
-					cnr[0][0] = v3f(-0.5,0.5,-0.5);
-					cnr[0][1] = v3f(0.5,0.5,-0.5);
-					cnr[0][2] = v3f(0.5,-0.5,0.5);
-					cnr[1][0] = v3f(0.5,-0.5,0.5);
-					cnr[1][1] = v3f(-0.5,-0.5,0.5);
-					cnr[1][2] = v3f(-0.5,0.5,-0.5);
-					getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,1));
-				}else if (angle == 270) {
-					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
-					cnr[0][1] = v3f(0.5,0.5,-0.5);
-					cnr[0][2] = v3f(0.5,0.5,0.5);
-					cnr[1][0] = v3f(0.5,0.5,0.5);
-					cnr[1][1] = v3f(-0.5,-0.5,0.5);
-					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
-					getRoofLights(blockpos_nodes+p,c,data,v3s16(-1,1,0));
-				}
-				s16 a = 180-angle;
-				if (a < 0)
-					a += 360;
-				for (int s=0; s<2; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&tile,1,c,a);
-				}
-			}
-			break;
-			case 1:
-			{
-				v3f cnr[4][3];
-				getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,0));
-				if (angle == 0 || angle == 180) {
-					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
-					cnr[0][1] = v3f(0.5,-0.5,-0.5);
-					cnr[0][2] = v3f(0.5,0.,0.);
-					cnr[1][0] = v3f(0.5,0.,0.);
-					cnr[1][1] = v3f(-0.5,0.,0.);
-					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
-					cnr[2][0] = v3f(-0.5,0.,0.);
-					cnr[2][1] = v3f(0.5,0.,0.);
-					cnr[2][2] = v3f(0.5,-0.5,0.5);
-					cnr[3][0] = v3f(0.5,-0.5,0.5);
-					cnr[3][1] = v3f(-0.5,-0.5,0.5);
-					cnr[3][2] = v3f(-0.5,0.,0.);
-				}else if (angle == 90 || angle == 270) {
-					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
-					cnr[0][1] = v3f(-0.5,-0.5,0.5);
-					cnr[0][2] = v3f(0.,0.,0.5);
-					cnr[1][0] = v3f(0.,0.,0.5);
-					cnr[1][1] = v3f(0.,0.,-0.5);
-					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
-					cnr[2][0] = v3f(0.,0.,-0.5);
-					cnr[2][1] = v3f(0.,0.,0.5);
-					cnr[2][2] = v3f(0.5,-0.5,0.5);
-					cnr[3][0] = v3f(0.5,-0.5,0.5);
-					cnr[3][1] = v3f(0.5,-0.5,-0.5);
-					cnr[3][2] = v3f(0.,0.,-0.5);
-				}
-				s16 a = angle;
-				if (a < 180)
-					a += 180;
-				for (int s=0; s<4; s++) {
-					if (s == 2)
-						a -= 180;
-					makeRoofTri(&collector,cnr[s],pos,&toptile,1,c,a);
-				}
-			}
-			break;
-			case 2:
-			{
-				v3f cnr[2][3];
-				if (angle == 90) {
-					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
-					cnr[0][1] = v3f(0.5,-0.5,-0.5);
-					cnr[0][2] = v3f(0.5,0.5,0.5);
-					cnr[1][0] = v3f(0.5,0.5,0.5);
-					cnr[1][1] = v3f(-0.5,0.5,0.5);
-					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
-					getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,-1));
-				}else if (angle == 180) {
-					cnr[0][0] = v3f(-0.5,0.5,-0.5);
-					cnr[0][1] = v3f(0.5,-0.5,-0.5);
-					cnr[0][2] = v3f(0.5,-0.5,0.5);
-					cnr[1][0] = v3f(0.5,-0.5,0.5);
-					cnr[1][1] = v3f(-0.5,0.5,0.5);
-					cnr[1][2] = v3f(-0.5,0.5,-0.5);
-					getRoofLights(blockpos_nodes+p,c,data,v3s16(1,1,0));
-				}else if (angle == 270) {
-					cnr[0][0] = v3f(-0.5,0.5,-0.5);
-					cnr[0][1] = v3f(0.5,0.5,-0.5);
-					cnr[0][2] = v3f(0.5,-0.5,0.5);
-					cnr[1][0] = v3f(0.5,-0.5,0.5);
-					cnr[1][1] = v3f(-0.5,-0.5,0.5);
-					cnr[1][2] = v3f(-0.5,0.5,-0.5);
-					getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,1));
-				}else if (angle == 0) {
-					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
-					cnr[0][1] = v3f(0.5,0.5,-0.5);
-					cnr[0][2] = v3f(0.5,0.5,0.5);
-					cnr[1][0] = v3f(0.5,0.5,0.5);
-					cnr[1][1] = v3f(-0.5,-0.5,0.5);
-					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
-					getRoofLights(blockpos_nodes+p,c,data,v3s16(-1,1,0));
-				}
-				s16 a = 270-angle;
-				if (a < 0)
-					a += 360;
-				for (int s=0; s<2; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&tile,1,c,a);
-				}
-			}
-			{
-				v3f cnr[2][3];
-				if (angle == 0) {
-					cnr[0][0] = v3f(0.,0.,0.);
-					cnr[0][1] = v3f(-0.5,0.,0.);
-					cnr[0][2] = v3f(-0.5,-0.5,-0.5);
-					cnr[1][0] = v3f(0.,0.,0.);
-					cnr[1][1] = v3f(-0.5,-0.5,0.5);
-					cnr[1][2] = v3f(-0.5,0.,0.);
-					getRoofLights(blockpos_nodes+p,c,data,v3s16(-1,1,0));
-				}else if (angle == 90) {
-					cnr[0][0] = v3f(0.,0.,0.);
-					cnr[0][1] = v3f(0.,0.,-0.5);
-					cnr[0][2] = v3f(-0.5,-0.5,-0.5);
-					cnr[1][0] = v3f(0.,0.,0.);
-					cnr[1][1] = v3f(0.5,-0.5,-0.5);
-					cnr[1][2] = v3f(0.,0.,-0.5);
-					getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,-1));
-				}else if (angle == 180) {
-					cnr[0][0] = v3f(0.,0.,0.);
-					cnr[0][1] = v3f(0.5,0.,0.);
-					cnr[0][2] = v3f(0.5,-0.5,-0.5);
-					cnr[1][0] = v3f(0.,0.,0.);
-					cnr[1][1] = v3f(0.5,-0.5,0.5);
-					cnr[1][2] = v3f(0.5,0.,0.);
-					getRoofLights(blockpos_nodes+p,c,data,v3s16(1,1,0));
-				}else if (angle == 270) {
-					cnr[0][0] = v3f(0.,0.,0.);
-					cnr[0][1] = v3f(0.,0.,0.5);
-					cnr[0][2] = v3f(-0.5,-0.5,0.5);
-					cnr[1][0] = v3f(0.,0.,0.);
-					cnr[1][1] = v3f(0.5,-0.5,0.5);
-					cnr[1][2] = v3f(0.,0.,0.5);
-					getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,1));
-				}
-				s16 a = angle;
-				if (a < 180)
-					a += 180;
-				for (int s=0; s<2; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&toptile,1,c,a);
-					a -= 180;
-				}
-			}
-			break;
-			case 3:
-			{
-				v3f cnr[2][3];
-				getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,0));
-				s16 a1 = angle;
-				s16 a2 = angle + 90;
-				if (angle == 0) {
-					cnr[0][0] = v3f(0.,0.,0.);
-					cnr[0][1] = v3f(-0.5,0.,0.);
-					cnr[0][2] = v3f(-0.5,-0.5,-0.5);
-					cnr[1][0] = v3f(0.,0.,0.);
-					cnr[1][1] = v3f(0.,0.,-0.5);
-					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
-					a1 = 180;
-					a2 = 270;
-				}else if (angle == 90) {
-					cnr[0][0] = v3f(0.,0.,0.);
-					cnr[0][1] = v3f(0.,0.,-0.5);
-					cnr[0][2] = v3f(0.5,-0.5,-0.5);
-					cnr[1][0] = v3f(0.,0.,0.);
-					cnr[1][1] = v3f(0.5,0.,0.);
-					cnr[1][2] = v3f(0.5,-0.5,-0.5);
-				}else if (angle == 180) {
-					cnr[0][0] = v3f(0.,0.,0.);
-					cnr[0][1] = v3f(0.,0.,0.5);
-					cnr[0][2] = v3f(0.5,-0.5,0.5);
-					cnr[1][0] = v3f(0.,0.,0.);
-					cnr[1][1] = v3f(0.5,0.,0.);
-					cnr[1][2] = v3f(0.5,-0.5,0.5);
-					a1 = 90;
-					a2 = 0;
-				}else if (angle == 270) {
-					cnr[0][0] = v3f(0.,0.,0.);
-					cnr[0][1] = v3f(0.,0.,0.5);
-					cnr[0][2] = v3f(-0.5,-0.5,0.5);
-					cnr[1][0] = v3f(0.,0.,0.);
-					cnr[1][1] = v3f(-0.5,0.,0.);
-					cnr[1][2] = v3f(-0.5,-0.5,0.5);
-				}
-				s16 a = a1;
-				for (int s=0; s<2; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&toptile,1,c,a);
-					a = a2;
-				}
-			}
-			{
-				v3f cnr[4][3];
-				s16 a1 = angle;
-				s16 a2 = angle + 90;
-				if (angle == 0) {
-					cnr[0][0] = v3f(0.,0.,0.);
-					cnr[0][1] = v3f(-0.5,-0.5,0.5);
-					cnr[0][2] = v3f(-0.5,0.,0.);
-					cnr[1][0] = v3f(0.,0.,0.);
-					cnr[1][1] = v3f(0.5,-0.5,0.5);
-					cnr[1][2] = v3f(-0.5,-0.5,0.5);
-					cnr[2][0] = v3f(0.,0.,0.);
-					cnr[2][1] = v3f(0.,0.,-0.5);
-					cnr[2][2] = v3f(0.5,-0.5,-0.5);
-					cnr[3][0] = v3f(0.,0.,0.);
-					cnr[3][1] = v3f(0.5,-0.5,-0.5);
-					cnr[3][2] = v3f(0.5,-0.5,0.5);
-				}else if (angle == 90) {
-					cnr[0][0] = v3f(0.,0.,0.);
-					cnr[0][1] = v3f(-0.5,-0.5,-0.5);
-					cnr[0][2] = v3f(0.,0.,-0.5);
-					cnr[1][0] = v3f(0.,0.,0.);
-					cnr[1][1] = v3f(-0.5,-0.5,0.5);
-					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
-					cnr[2][0] = v3f(0.,0.,0.);
-					cnr[2][1] = v3f(0.5,0.,0.);
-					cnr[2][2] = v3f(0.5,-0.5,0.5);
-					cnr[3][0] = v3f(0.,0.,0.);
-					cnr[3][1] = v3f(0.5,-0.5,0.5);
-					cnr[3][2] = v3f(-0.5,-0.5,0.5);
-					a1 = 270;
-					a2 = 0;
-				}else if (angle == 180) {
-					cnr[0][0] = v3f(0.,0.,0.);
-					cnr[0][1] = v3f(0.5,-0.5,-0.5);
-					cnr[0][2] = v3f(0.5,0.,0.);
-					cnr[1][0] = v3f(0.,0.,0.);
-					cnr[1][1] = v3f(-0.5,-0.5,-0.5);
-					cnr[1][2] = v3f(0.5,-0.5,-0.5);
-					cnr[2][0] = v3f(0.,0.,0.);
-					cnr[2][1] = v3f(0.,0.,0.5);
-					cnr[2][2] = v3f(-0.5,-0.5,0.5);
-					cnr[3][0] = v3f(0.,0.,0.);
-					cnr[3][1] = v3f(-0.5,-0.5,0.5);
-					cnr[3][2] = v3f(-0.5,-0.5,-0.5);
-				}else if (angle == 270) {
-					cnr[0][0] = v3f(0.,0.,0.);
-					cnr[0][1] = v3f(0.5,-0.5,0.5);
-					cnr[0][2] = v3f(0.,0.,0.5);
-					cnr[1][0] = v3f(0.,0.,0.);
-					cnr[1][1] = v3f(0.5,-0.5,-0.5);
-					cnr[1][2] = v3f(0.5,-0.5,0.5);
-					cnr[2][0] = v3f(0.,0.,0.);
-					cnr[2][1] = v3f(-0.5,0.,0.);
-					cnr[2][2] = v3f(-0.5,-0.5,-0.5);
-					cnr[3][0] = v3f(0.,0.,0.);
-					cnr[3][1] = v3f(-0.5,-0.5,-0.5);
-					cnr[3][2] = v3f(0.5,-0.5,-0.5);
-					a1 = 90;
-					a2 = 180;
-				}
-				s16 a = a1;
-				for (int s=0; s<4; s++) {
-					if (s == 2)
-						a = a2;
-					makeRoofTri(&collector,cnr[s],pos,&toptile,1,c,a);
-				}
-			}
-			break;
-			case 4:
-			{
-				v3f cnr[2][3];
-				s16 a1 = angle;
-				s16 a2 = angle - 90;
-				if (angle == 0) {
-					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
-					cnr[0][1] = v3f(0.5,-0.5,-0.5);
-					cnr[0][2] = v3f(-0.5,0.5,0.5);
-					cnr[1][0] = v3f(-0.5,0.5,0.5);
-					cnr[1][1] = v3f(0.5,-0.5,-0.5);
-					cnr[1][2] = v3f(0.5,-0.5,0.5);
-					getRoofLights(blockpos_nodes+p,c,data,v3s16(1,1,-1));
-					a1 = 180;
-					a2 = 90;
-				}else if (angle == 90) {
-					cnr[0][0] = v3f(-0.5,-0.5,0.5);
-					cnr[0][1] = v3f(0.5,-0.5,0.5);
-					cnr[0][2] = v3f(-0.5,0.5,-0.5);
-					cnr[1][0] = v3f(-0.5,0.5,-0.5);
-					cnr[1][1] = v3f(0.5,-0.5,0.5);
-					cnr[1][2] = v3f(0.5,-0.5,-0.5);
-					getRoofLights(blockpos_nodes+p,c,data,v3s16(1,1,1));
-					a1 = 0;
-					a2 = 90;
-				}else if (angle == 180) {
-					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
-					cnr[0][1] = v3f(0.5,0.5,-0.5);
-					cnr[0][2] = v3f(-0.5,-0.5,0.5);
-					cnr[1][0] = v3f(-0.5,-0.5,0.5);
-					cnr[1][1] = v3f(0.5,0.5,-0.5);
-					cnr[1][2] = v3f(0.5,-0.5,0.5);
-					getRoofLights(blockpos_nodes+p,c,data,v3s16(-1,1,1));
-					a1 = 270;
-					a2 = 0;
-				}else if (angle == 270) {
-					cnr[0][0] = v3f(-0.5,-0.5,0.5);
-					cnr[0][1] = v3f(0.5,0.5,0.5);
-					cnr[0][2] = v3f(-0.5,-0.5,-0.5);
-					cnr[1][0] = v3f(-0.5,-0.5,-0.5);
-					cnr[1][1] = v3f(0.5,0.5,0.5);
-					cnr[1][2] = v3f(0.5,-0.5,-0.5);
-					getRoofLights(blockpos_nodes+p,c,data,v3s16(-1,1,-1));
-				}
-				s16 a = a1;
-				for (int s=0; s<2; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&tile,1,c,a);
-					a = a2;
-				}
-			}
-			break;
-			case 5:
-			{
-				v3f cnr[8][3] = {
-					{
-						v3f(0.,0.,0.),
-						v3f(-0.5,0.,0.),
-						v3f(-0.5,-0.5,-0.5)
-					},{
-						v3f(-0.5,0.,0.),
-						v3f(-0.5,-0.5,0.5),
-						v3f(0.,0.,0.)
-					},{
-						v3f(0.,0.,0.),
-						v3f(0.5,0.,0.),
-						v3f(0.5,-0.5,-0.5)
-					},{
-						v3f(0.5,0.,0.),
-						v3f(0.5,-0.5,0.5),
-						v3f(0.,0.,0.)
-					},{
-						v3f(0.,0.,0.),
-						v3f(0.,0.,-0.5),
-						v3f(-0.5,-0.5,-0.5)
-					},{
-						v3f(0.,0.,-0.5),
-						v3f(0.5,-0.5,-0.5),
-						v3f(0.,0.,0.)
-					},{
-						v3f(0.,0.,0.),
-						v3f(0.,0.,0.5),
-						v3f(-0.5,-0.5,0.5)
-					},{
-						v3f(0.,0.,0.5),
-						v3f(0.5,-0.5,0.5),
-						v3f(0.,0.,0.)
-					}
-				};
-				s16 a[8] = {
-					180,
-					0,
-					180,
-					0,
-					270,
-					90,
-					270,
-					90,
-				};
-				getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,0));
-				for (int s=0; s<8; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&toptile,1,c,a[s]);
-				}
-			}
-			break;
-			case 6:
-			{
-				v3f cnr[6][3];
-				getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,0));
-				s16 a[6] = {0,0,0,0,0,0};
-				if (angle == 0) {
-					cnr[0][0] = v3f(-0.5,-0.5,0.5);
-					cnr[0][1] = v3f(0.5,-0.5,0.5);
-					cnr[0][2] = v3f(0.5,0.,0.);
-					cnr[1][0] = v3f(0.5,0.,0.);
-					cnr[1][1] = v3f(-0.5,0.,0.);
-					cnr[1][2] = v3f(-0.5,-0.5,0.5);
-					cnr[2][0] = v3f(-0.5,-0.5,-0.5);
-					cnr[2][1] = v3f(0.5,-0.5,-0.5);
-					cnr[2][2] = v3f(0.5,0.,0.);
-					cnr[3][0] = v3f(0.5,0.,0.);
-					cnr[3][1] = v3f(-0.5,0.,0.);
-					cnr[3][2] = v3f(-0.5,-0.5,-0.5);
-					cnr[4][0] = v3f(0.,0.,-0.5);
-					cnr[4][1] = v3f(-0.5,-0.5,-0.5);
-					cnr[4][2] = v3f(0.,0.,0.);
-					cnr[5][0] = v3f(0.,0.,0.);
-					cnr[5][1] = v3f(0.5,-0.5,-0.5);
-					cnr[5][2] = v3f(0.,0.,-0.5);
-					a[2] = 180;
-					a[3] = 180;
-					a[4] = 270;
-					a[5] = 90;
-				}else if (angle == 90) {
-					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
-					cnr[0][1] = v3f(-0.5,-0.5,0.5);
-					cnr[0][2] = v3f(0.,0.,0.5);
-					cnr[1][0] = v3f(0.,0.,0.5);
-					cnr[1][1] = v3f(0.,0.,-0.5);
-					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
-					cnr[2][0] = v3f(0.5,-0.5,-0.5);
-					cnr[2][1] = v3f(0.5,-0.5,0.5);
-					cnr[2][2] = v3f(0.,0.,0.5);
-					cnr[3][0] = v3f(0.,0.,0.5);
-					cnr[3][1] = v3f(0.,0.,-0.5);
-					cnr[3][2] = v3f(0.5,-0.5,-0.5);
-					cnr[4][0] = v3f(0.5,0.,0.);
-					cnr[4][1] = v3f(0.5,-0.5,-0.5);
-					cnr[4][2] = v3f(0.,0.,0.);
-					cnr[5][0] = v3f(0.,0.,0.);
-					cnr[5][1] = v3f(0.5,-0.5,0.5);
-					cnr[5][2] = v3f(0.5,0.,0.);
-					a[0] = 270;
-					a[1] = 270;
-					a[2] = 90;
-					a[3] = 90;
-					a[4] = 180;
-				}else if (angle == 180) {
-					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
-					cnr[0][1] = v3f(0.5,-0.5,-0.5);
-					cnr[0][2] = v3f(0.5,0.,0.);
-					cnr[1][0] = v3f(0.5,0.,0.);
-					cnr[1][1] = v3f(-0.5,0.,0.);
-					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
-					cnr[2][0] = v3f(-0.5,-0.5,0.5);
-					cnr[2][1] = v3f(0.5,-0.5,0.5);
-					cnr[2][2] = v3f(0.5,0.,0.);
-					cnr[3][0] = v3f(0.5,0.,0.);
-					cnr[3][1] = v3f(-0.5,0.,0.);
-					cnr[3][2] = v3f(-0.5,-0.5,0.5);
-					cnr[4][0] = v3f(0.,0.,0.5);
-					cnr[4][1] = v3f(-0.5,-0.5,0.5);
-					cnr[4][2] = v3f(0.,0.,0.);
-					cnr[5][0] = v3f(0.,0.,0.);
-					cnr[5][1] = v3f(0.5,-0.5,0.5);
-					cnr[5][2] = v3f(0.,0.,0.5);
-					a[0] = 180;
-					a[1] = 180;
-					a[4] = 270;
-					a[5] = 90;
-				}else if (angle == 270) {
-					cnr[0][0] = v3f(0.5,-0.5,-0.5);
-					cnr[0][1] = v3f(0.5,-0.5,0.5);
-					cnr[0][2] = v3f(0.,0.,0.5);
-					cnr[1][0] = v3f(0.,0.,0.5);
-					cnr[1][1] = v3f(0.,0.,-0.5);
-					cnr[1][2] = v3f(0.5,-0.5,-0.5);
-					cnr[2][0] = v3f(-0.5,-0.5,-0.5);
-					cnr[2][1] = v3f(-0.5,-0.5,0.5);
-					cnr[2][2] = v3f(0.,0.,0.5);
-					cnr[3][0] = v3f(0.,0.,0.5);
-					cnr[3][1] = v3f(0.,0.,-0.5);
-					cnr[3][2] = v3f(-0.5,-0.5,-0.5);
-					cnr[4][0] = v3f(-0.5,0.,0.);
-					cnr[4][1] = v3f(-0.5,-0.5,-0.5);
-					cnr[4][2] = v3f(0.,0.,0.);
-					cnr[5][0] = v3f(0.,0.,0.);
-					cnr[5][1] = v3f(-0.5,-0.5,0.5);
-					cnr[5][2] = v3f(-0.5,0.,0.);
-					a[0] = 90;
-					a[1] = 90;
-					a[2] = 270;
-					a[3] = 270;
-					a[4] = 180;
-				}
-				for (int s=0; s<6; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&toptile,1,c,a[s]);
-				}
-			}
-			break;
-			case 7:
-			{
-				v3f cnr[2][3];
-				s16 a1 = angle;
-				s16 a2 = angle - 90;
-				if (angle == 0) {
-					cnr[0][0] = v3f(0.5,0.5,-0.5);
-					cnr[0][1] = v3f(-0.5,0.5,-0.5);
-					cnr[0][2] = v3f(-0.5,-0.5,0.5);
-					cnr[1][0] = v3f(0.5,0.5,-0.5);
-					cnr[1][1] = v3f(0.5,0.5,0.5);
-					cnr[1][2] = v3f(-0.5,-0.5,0.5);
-					getRoofLights(blockpos_nodes+p,c,data,v3s16(-1,1,1));
-				}else if (angle == 90) {
-					cnr[0][0] = v3f(0.5,0.5,0.5);
-					cnr[0][1] = v3f(-0.5,0.5,0.5);
-					cnr[0][2] = v3f(-0.5,-0.5,-0.5);
-					cnr[1][0] = v3f(0.5,0.5,0.5);
-					cnr[1][1] = v3f(0.5,0.5,-0.5);
-					cnr[1][2] = v3f(-0.5,-0.5,-0.5);
-					getRoofLights(blockpos_nodes+p,c,data,v3s16(-1,1,-1));
-					a1 = 180;
-					a2 = 270;
-				}else if (angle == 180) {
-					cnr[0][0] = v3f(0.5,-0.5,-0.5);
-					cnr[0][1] = v3f(-0.5,0.5,-0.5);
-					cnr[0][2] = v3f(-0.5,0.5,0.5);
-					cnr[1][0] = v3f(0.5,-0.5,-0.5);
-					cnr[1][1] = v3f(0.5,0.5,0.5);
-					cnr[1][2] = v3f(-0.5,0.5,0.5);
-					getRoofLights(blockpos_nodes+p,c,data,v3s16(1,1,-1));
-					a1 = 90;
-					a2 = 180;
-				}else if (angle == 270) {
-					cnr[0][0] = v3f(0.5,-0.5,0.5);
-					cnr[0][1] = v3f(-0.5,0.5,0.5);
-					cnr[0][2] = v3f(-0.5,0.5,-0.5);
-					cnr[1][0] = v3f(0.5,-0.5,0.5);
-					cnr[1][1] = v3f(0.5,0.5,-0.5);
-					cnr[1][2] = v3f(-0.5,0.5,-0.5);
-					getRoofLights(blockpos_nodes+p,c,data,v3s16(1,1,1));
-					a1 = 90;
-					a2 = 0;
-				}
-				s16 a = a1;
-				for (int s=0; s<2; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&tile,1,c,a);
-					a = a2;
-				}
-			}
-			break;
-			case 8:
-			{
-				v3f cnr[4][3];
-				cnr[0][0] = v3f(0.,0.,0.);
-				cnr[0][1] = v3f(-0.5,-0.5,-0.5);
-				cnr[0][2] = v3f(-0.5,-0.5,0.5);
-				cnr[1][0] = v3f(0.,0.,0.);
-				cnr[1][1] = v3f(-0.5,-0.5,-0.5);
-				cnr[1][2] = v3f(0.5,-0.5,-0.5);
-				cnr[2][0] = v3f(0.,0.,0.);
-				cnr[2][1] = v3f(0.5,-0.5,-0.5);
-				cnr[2][2] = v3f(0.5,-0.5,0.5);
-				cnr[3][0] = v3f(0.,0.,0.);
-				cnr[3][1] = v3f(-0.5,-0.5,0.5);
-				cnr[3][2] = v3f(0.5,-0.5,0.5);
-				getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,0));
-				for (int s=0; s<4; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&toptile,1,c,(90*s)+90+(180*(!(s%2))));
-				}
-			}
-			break;
-			case 9:
-			{
-				v3f cnr[5][3];
-				s16 a[5] = {0,0,0,0,0};
-				if (angle == 0) {
-					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
-					cnr[0][1] = v3f(0.5,-0.5,-0.5);
-					cnr[0][2] = v3f(0.,0.,0.);
-					cnr[1][0] = v3f(-0.5,-0.5,-0.5);
-					cnr[1][1] = v3f(0.,0.,0.);
-					cnr[1][2] = v3f(-0.5,0.,0.);
-					cnr[2][0] = v3f(0.5,-0.5,0.5);
-					cnr[2][1] = v3f(-0.5,-0.5,0.5);
-					cnr[2][2] = v3f(0.,0.,0.);
-					cnr[3][0] = v3f(0.,0.,0.);
-					cnr[3][1] = v3f(-0.5,-0.5,0.5);
-					cnr[3][2] = v3f(-0.5,0.,0.);
-					cnr[4][0] = v3f(0.5,-0.5,-0.5);
-					cnr[4][1] = v3f(0.5,-0.5,0.5);
-					cnr[4][2] = v3f(0.,0.,0.);
-					getRoofLights(blockpos_nodes+p,c,data,v3s16(1,1,0));
-					a[0] = 180;
-					a[1] = 180;
-					a[4] = 90;
-				}else if (angle == 90) {
-					cnr[0][0] = v3f(-0.5,-0.5,0.5);
-					cnr[0][1] = v3f(-0.5,-0.5,-0.5);
-					cnr[0][2] = v3f(0.,0.,0.);
-					cnr[1][0] = v3f(0.,0.,0.);
-					cnr[1][1] = v3f(-0.5,-0.5,-0.5);
-					cnr[1][2] = v3f(0.,0.,-0.5);
-					cnr[2][0] = v3f(0.5,-0.5,-0.5);
-					cnr[2][1] = v3f(0.5,-0.5,0.5);
-					cnr[2][2] = v3f(0.,0.,0.);
-					cnr[3][0] = v3f(0.5,-0.5,-0.5);
-					cnr[3][1] = v3f(0.,0.,0.);
-					cnr[3][2] = v3f(0.,0.,-0.5);
-					cnr[4][0] = v3f(-0.5,-0.5,0.5);
-					cnr[4][1] = v3f(0.5,-0.5,0.5);
-					cnr[4][2] = v3f(0.,0.,0.);
-					getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,1));
-					a[0] = 270;
-					a[1] = 270;
-					a[2] = 90;
-					a[3] = 90;
-				}else if (angle == 180) {
-					cnr[0][0] = v3f(-0.5,-0.5,-0.5);
-					cnr[0][1] = v3f(0.5,-0.5,-0.5);
-					cnr[0][2] = v3f(0.,0.,0.);
-					cnr[1][0] = v3f(0.5,-0.5,-0.5);
-					cnr[1][1] = v3f(0.,0.,0.);
-					cnr[1][2] = v3f(0.5,0.,0.);
-					cnr[2][0] = v3f(0.5,-0.5,0.5);
-					cnr[2][1] = v3f(-0.5,-0.5,0.5);
-					cnr[2][2] = v3f(0.,0.,0.);
-					cnr[3][0] = v3f(0.,0.,0.);
-					cnr[3][1] = v3f(0.5,-0.5,0.5);
-					cnr[3][2] = v3f(0.5,0.,0.);
-					cnr[4][0] = v3f(-0.5,-0.5,0.5);
-					cnr[4][1] = v3f(-0.5,-0.5,-0.5);
-					cnr[4][2] = v3f(0.,0.,0.);
-					getRoofLights(blockpos_nodes+p,c,data,v3s16(-1,1,0));
-					a[0] = 180;
-					a[1] = 180;
-					a[4] = 270;
-				}else if (angle == 270) {
-					cnr[0][0] = v3f(-0.5,-0.5,0.5);
-					cnr[0][1] = v3f(-0.5,-0.5,-0.5);
-					cnr[0][2] = v3f(0.,0.,0.);
-					cnr[1][0] = v3f(0.,0.,0.);
-					cnr[1][1] = v3f(0.,0.,0.5);
-					cnr[1][2] = v3f(-0.5,-0.5,0.5);
-					cnr[2][0] = v3f(0.5,-0.5,-0.5);
-					cnr[2][1] = v3f(0.5,-0.5,0.5);
-					cnr[2][2] = v3f(0.,0.,0.);
-					cnr[3][0] = v3f(0.,0.,0.);
-					cnr[3][1] = v3f(0.,0.,0.5);
-					cnr[3][2] = v3f(0.5,-0.5,0.5);
-					cnr[4][0] = v3f(0.5,-0.5,-0.5);
-					cnr[4][1] = v3f(-0.5,-0.5,-0.5);
-					cnr[4][2] = v3f(0.,0.,0.);
-					getRoofLights(blockpos_nodes+p,c,data,v3s16(0,1,-1));
-					a[0] = 270;
-					a[1] = 270;
-					a[2] = 90;
-					a[3] = 90;
-					a[4] = 180;
-				}
-				for (int s=0; s<5; s++) {
-					makeRoofTri(&collector,cnr[s],pos,&toptile,1,c,a[s]);
-				}
-			}
-			break;
-			default:
-				break;
-			}
-		}
-		break;
-		}
-	}
-}
 #endif
 
 static void meshgen_fullbright_lights(std::vector<video::SColor> *colours, u8 alpha, u16 count)
@@ -1223,7 +252,19 @@ static void meshgen_selected_lights(std::vector<video::SColor> *colours, u8 alph
 	}
 }
 
-static void meshgen_lights(std::vector<video::SColor> *colours, u8 alpha, u16 count)
+/*
+ * what this should do:
+ * should be passed the node, the face, the position, the vertex(es), and MeshMakeData
+ * MeshMakeData has a m_smooth_lighting value in it, don't check config for every vertex!
+ * for each vertex:
+ *	for each daynight_ratio value (18 of them):
+ *		non-smooth lighting:
+ *			return face lighting (see also old roof lighting)
+ *		smooth lighting:
+ *			get all 4 corner vertex light values for the face
+ *			interpolate to the requested vertex position
+ */
+static void meshgen_lights(MeshMakeData *data, MapNode &n, v3s16 p, std::vector<video::SColor> *colours, u8 alpha, u16 count, ...)
 {
 	//video::SColor c(alpha,128,128,255);
 	//for (u16 i=0; i<count; i++) {
@@ -1339,6 +380,8 @@ static int mapblock_mesh_check_walllike(MeshMakeData *data, MapNode n, v3s16 p, 
 /* TODO: optimise the fuck out of this, make less faces where possible */
 static void meshgen_cuboid(
 	MeshMakeData *data,
+	MapNode &n,
+	v3s16 p,
 	v3f pos,
 	const aabb3f &box,
 	TileSpec *tiles,
@@ -1425,7 +468,7 @@ static void meshgen_cuboid(
 		}else if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
-			meshgen_lights(colours,255,4);
+			meshgen_lights(data,n,p,colours,255,4);
 		}
 		data->append(tiles[tileindex].getMaterial(), vertices+j, 4, indices, 6, colours);
 	}
@@ -1459,11 +502,11 @@ static void meshgen_build_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, bool 
 			// front
 			tx1, 1-ty2, tx2, 1-ty1,
 		};
-		meshgen_cuboid(data, pos, box.m_box, tiles, 6, selected, txc, box.m_angle, box.m_centre);
+		meshgen_cuboid(data,n,p, pos, box.m_box, tiles, 6, selected, txc, box.m_angle, box.m_centre);
 	}
 }
 
-void meshgen_rooftri(MeshMakeData *data, v3f corners[3], v3f pos, TileSpec &tile, bool selected, s16 rot)
+void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3f pos, TileSpec &tile, bool selected, s16 rot)
 {
 	// vertices for top and bottom tri
 	v3f top_v[3];
@@ -1501,7 +544,7 @@ void meshgen_rooftri(MeshMakeData *data, v3f corners[3], v3f pos, TileSpec &tile
 		if (selected) {
 			meshgen_selected_lights(colours,255,3);
 		}else{
-			meshgen_lights(colours,255,3);
+			meshgen_lights(data,n,p,colours,255,3);
 		}
 		data->append(tile.getMaterial(),tri_v, 3, indices, 3, colours);
 	}
@@ -1516,13 +559,13 @@ void meshgen_rooftri(MeshMakeData *data, v3f corners[3], v3f pos, TileSpec &tile
 		if (selected) {
 			meshgen_selected_lights(colours,255,3);
 		}else{
-			meshgen_lights(colours,255,3);
+			meshgen_lights(data,n,p,colours,255,3);
 		}
 		data->append(tile.getMaterial(),tri_v, 3, indices, 3, colours);
 	}
 }
 
-void meshgen_leaftri(MeshMakeData *data, v3f corners[3], v3f pos, TileSpec &tile, bool selected, s16 rot)
+void meshgen_leaftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3f pos, TileSpec &tile, bool selected, s16 rot)
 {
 	// vertices
 	v3f v[3];
@@ -1551,7 +594,7 @@ void meshgen_leaftri(MeshMakeData *data, v3f corners[3], v3f pos, TileSpec &tile
 		if (selected) {
 			meshgen_selected_lights(colours,255,3);
 		}else{
-			meshgen_lights(colours,255,3);
+			meshgen_lights(data,n,p,colours,255,3);
 		}
 		data->append(tile.getMaterial(),tri_v, 3, indices, 3, colours);
 	}
@@ -1578,7 +621,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
-			meshgen_lights(colours,255,4);
+			meshgen_lights(data,n,p,colours,255,4);
 		}
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
@@ -1600,7 +643,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
-			meshgen_lights(colours,255,4);
+			meshgen_lights(data,n,p,colours,255,4);
 		}
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
@@ -1622,7 +665,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
-			meshgen_lights(colours,255,4);
+			meshgen_lights(data,n,p,colours,255,4);
 		}
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
@@ -1644,7 +687,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
-			meshgen_lights(colours,255,4);
+			meshgen_lights(data,n,p,colours,255,4);
 		}
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
@@ -1666,7 +709,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
-			meshgen_lights(colours,255,4);
+			meshgen_lights(data,n,p,colours,255,4);
 		}
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
@@ -1688,7 +731,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
-			meshgen_lights(colours,255,4);
+			meshgen_lights(data,n,p,colours,255,4);
 		}
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
@@ -1879,7 +922,7 @@ void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					// front
 					tx1, 1-ty2, tx2, 1-ty1,
 				};
-				meshgen_cuboid(data,pos,track[bi],tile,1, selected,txc,an, v3f(0,0,0));
+				meshgen_cuboid(data,n,p,pos,track[bi],tile,1, selected,txc,an, v3f(0,0,0));
 			}
 		}else{
 			aabb3f track[4] = {
@@ -1912,7 +955,7 @@ void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					// front
 					tx1, 1-ty2, tx2, 1-ty1,
 				};
-				meshgen_cuboid(data,pos,track[bi],tile,1, selected,txc,v3s16(0,angle,0), v3f(0,0,0));
+				meshgen_cuboid(data,n,p,pos,track[bi],tile,1, selected,txc,v3s16(0,angle,0), v3f(0,0,0));
 			}
 		}
 		break;
@@ -1958,7 +1001,7 @@ void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				// front
 				tx1, 1-ty2, tx2, 1-ty1,
 			};
-			meshgen_cuboid(data,pos,track[bi],tile,1, selected,txc,v3s16(0,angle+a[bi],0),v3f(0,0,0));
+			meshgen_cuboid(data,n,p,pos,track[bi],tile,1, selected,txc,v3s16(0,angle+a[bi],0),v3f(0,0,0));
 		}
 		break;
 	}
@@ -2008,7 +1051,7 @@ void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				// front
 				tx1, 1-ty2, tx2, 1-ty1,
 			};
-			meshgen_cuboid(data,pos,track[bi],tile,1, selected,txc,v3s16(0,angle+a[bi],0),v3f(0,0,0));
+			meshgen_cuboid(data,n,p,pos,track[bi],tile,1, selected,txc,v3s16(0,angle+a[bi],0),v3f(0,0,0));
 		}
 		break;
 	}
@@ -2062,7 +1105,7 @@ void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				// front
 				tx1, 1-ty2, tx2, 1-ty1,
 			};
-			meshgen_cuboid(data,pos,track[bi],tile,1, selected,txc,v3s16(0,angle,0),v3f(0,0,0));
+			meshgen_cuboid(data,n,p,pos,track[bi],tile,1, selected,txc,v3s16(0,angle,0),v3f(0,0,0));
 		}
 		break;
 	}
@@ -2150,7 +1193,7 @@ void meshgen_plantlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
-			meshgen_lights(colours,255,4);
+			meshgen_lights(data,n,p,colours,255,4);
 		}
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
@@ -2365,7 +1408,7 @@ void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		if (selected) {
 			meshgen_selected_lights(colours,f->vertex_alpha,4);
 		}else{
-			meshgen_lights(colours,f->vertex_alpha,4);
+			meshgen_lights(data,n,p,colours,f->vertex_alpha,4);
 		}
 		data->append(tiles[i].getMaterial(), vertices, 4, indices, 6, colours);
 	}
@@ -2396,7 +1439,7 @@ void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		if (selected) {
 			meshgen_selected_lights(colours,f->vertex_alpha,4);
 		}else{
-			meshgen_lights(colours,f->vertex_alpha,4);
+			meshgen_lights(data,n,p,colours,f->vertex_alpha,4);
 		}
 		data->append(tiles[0].getMaterial(), vertices, 4, indices, 6, colours);
 	}
@@ -2573,7 +1616,7 @@ void meshgen_liquid_source(MeshMakeData *data, v3s16 p, MapNode &n, bool selecte
 		if (selected) {
 			meshgen_selected_lights(colours,f->vertex_alpha,4);
 		}else{
-			meshgen_lights(colours,f->vertex_alpha,4);
+			meshgen_lights(data,n,p,colours,f->vertex_alpha,4);
 		}
 		data->append(tiles[j].getMaterial(), vertices, 4, indices, 6, colours);
 	}
@@ -2682,7 +1725,7 @@ void meshgen_glasslike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
-			meshgen_lights(colours,255,4);
+			meshgen_lights(data,n,p,colours,255,4);
 		}
 		data->append(tiles[j].getMaterial(), vertices, 4, indices, 6, colours);
 	}
@@ -2788,7 +1831,7 @@ void meshgen_torchlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
-			meshgen_lights(colours,255,4);
+			meshgen_lights(data,n,p,colours,255,4);
 		}
 		data->append(tile.getMaterial(), &vertices[j], 4, indices, 6, colours);
 	}
@@ -2864,7 +1907,7 @@ void meshgen_fencelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			// front
 			tx1, 1-ty2, tx2, 1-ty1,
 		};
-		meshgen_cuboid(data, pos, box.m_box, tiles, 6,  selected, txc, v3s16(0,0,0),v3f(0,0,0));
+		meshgen_cuboid(data,n,p, pos, box.m_box, tiles, 6,  selected, txc, v3s16(0,0,0),v3f(0,0,0));
 	}
 
 	int bps = ((boxes.size()-2)/4); // boxes per section
@@ -2931,7 +1974,7 @@ void meshgen_fencelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					default:;
 					}
 				}
-				meshgen_cuboid(data, pos, box.m_box, tiles, 6,  selected, txc, v3s16(0,shown_angles[k],0),v3f(0,0,0));
+				meshgen_cuboid(data,n,p, pos, box.m_box, tiles, 6,  selected, txc, v3s16(0,shown_angles[k],0),v3f(0,0,0));
 			}
 		}
 	}
@@ -3017,7 +2060,7 @@ void meshgen_firelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
-			meshgen_lights(colours,255,4);
+			meshgen_lights(data,n,p,colours,255,4);
 		}
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
@@ -3073,7 +2116,7 @@ void meshgen_walllike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			// front
 			tx1, 1-ty2, tx2, 1-ty1,
 		};
-		meshgen_cuboid(data,pos,box.m_box,tiles,6,selected,txc,v3s16(0,0,0),v3f(0,0,0));
+		meshgen_cuboid(data,n,p,pos,box.m_box,tiles,6,selected,txc,v3s16(0,0,0),v3f(0,0,0));
 	}
 
 	int bps = ((boxes.size()-3)/4); // boxes per section
@@ -3123,7 +2166,7 @@ void meshgen_walllike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					default:;
 					}
 				}
-				meshgen_cuboid(data, pos, box.m_box, tiles, 6,  selected, txc, v3s16(0,shown_angles[k],0),v3f(0,0,0));
+				meshgen_cuboid(data,n,p, pos, box.m_box, tiles, 6,  selected, txc, v3s16(0,shown_angles[k],0),v3f(0,0,0));
 			}
 		}
 	}
@@ -3439,7 +2482,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		if (a < 0)
 			a += 360;
 		for (int s=0; s<2; s++) {
-			meshgen_rooftri(data,cnr[s],pos,tile,selected,a);
+			meshgen_rooftri(data,n,p,cnr[s],pos,tile,selected,a);
 		}
 	}
 	break;
@@ -3479,7 +2522,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		for (int s=0; s<4; s++) {
 			if (s == 2)
 				a -= 180;
-			meshgen_rooftri(data,cnr[s],pos,toptile,selected,a);
+			meshgen_rooftri(data,n,p,cnr[s],pos,toptile,selected,a);
 		}
 	}
 	break;
@@ -3519,7 +2562,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		if (a < 0)
 			a += 360;
 		for (int s=0; s<2; s++) {
-			meshgen_rooftri(data,cnr[s],pos,tile,selected,a);
+			meshgen_rooftri(data,n,p,cnr[s],pos,tile,selected,a);
 		}
 	}
 	{
@@ -3557,7 +2600,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		if (a < 180)
 			a += 180;
 		for (int s=0; s<2; s++) {
-			meshgen_rooftri(data,cnr[s],pos,toptile,selected,a);
+			meshgen_rooftri(data,n,p,cnr[s],pos,toptile,selected,a);
 			a -= 180;
 		}
 	}
@@ -3602,7 +2645,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		}
 		s16 a = a1;
 		for (int s=0; s<2; s++) {
-			meshgen_rooftri(data,cnr[s],pos,toptile,selected,a);
+			meshgen_rooftri(data,n,p,cnr[s],pos,toptile,selected,a);
 			a = a2;
 		}
 	}
@@ -3671,7 +2714,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		for (int s=0; s<4; s++) {
 			if (s == 2)
 				a = a2;
-			meshgen_rooftri(data,cnr[s],pos,toptile,selected,a);
+			meshgen_rooftri(data,n,p,cnr[s],pos,toptile,selected,a);
 		}
 	}
 	break;
@@ -3717,7 +2760,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		}
 		s16 a = a1;
 		for (int s=0; s<2; s++) {
-			meshgen_rooftri(data,cnr[s],pos,tile,selected,a);
+			meshgen_rooftri(data,n,p,cnr[s],pos,tile,selected,a);
 			a = a2;
 		}
 	}
@@ -3770,7 +2813,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			90,
 		};
 		for (int s=0; s<8; s++) {
-			meshgen_rooftri(data,cnr[s],pos,toptile,selected,a[s]);
+			meshgen_rooftri(data,n,p,cnr[s],pos,toptile,selected,a[s]);
 		}
 	}
 	break;
@@ -3874,7 +2917,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			a[4] = 180;
 		}
 		for (int s=0; s<6; s++) {
-			meshgen_rooftri(data,cnr[s],pos,toptile,selected,a[s]);
+			meshgen_rooftri(data,n,p,cnr[s],pos,toptile,selected,a[s]);
 		}
 	}
 	break;
@@ -3920,7 +2963,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		}
 		s16 a = a1;
 		for (int s=0; s<2; s++) {
-			meshgen_rooftri(data,cnr[s],pos,tile,selected,a);
+			meshgen_rooftri(data,n,p,cnr[s],pos,tile,selected,a);
 			a = a2;
 		}
 	}
@@ -3941,7 +2984,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		cnr[3][1] = v3f(-0.5,-0.5,0.5);
 		cnr[3][2] = v3f(0.5,-0.5,0.5);
 		for (int s=0; s<4; s++) {
-			meshgen_rooftri(data,cnr[s],pos,toptile,selected,(90*s)+90+(180*(!(s%2))));
+			meshgen_rooftri(data,n,p,cnr[s],pos,toptile,selected,(90*s)+90+(180*(!(s%2))));
 		}
 	}
 	break;
@@ -4030,7 +3073,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			a[4] = 180;
 		}
 		for (int s=0; s<5; s++) {
-			meshgen_rooftri(data,cnr[s],pos,toptile,selected,a[s]);
+			meshgen_rooftri(data,n,p,cnr[s],pos,toptile,selected,a[s]);
 		}
 	}
 	break;
@@ -4159,7 +3202,7 @@ void meshgen_leaflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		if (a < 0)
 			a += 360;
 		for (int s=0; s<2; s++) {
-			meshgen_leaftri(data,cnr[s],pos,tile,selected,a);
+			meshgen_leaftri(data,n,p,cnr[s],pos,tile,selected,a);
 		}
 	}
 	break;
@@ -4187,7 +3230,7 @@ void meshgen_leaflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			cnr[1] = v3f(0.5,0.5,0.5);
 			cnr[2] = v3f(0.5,-0.5,-0.5);
 		}
-		meshgen_leaftri(data,cnr,pos,tile,selected,a);
+		meshgen_leaftri(data,n,p,cnr,pos,tile,selected,a);
 	}
 	break;
 	case 2:
@@ -4206,7 +3249,7 @@ void meshgen_leaflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		cnr[3][1] = v3f(-0.5,-0.5,0.5);
 		cnr[3][2] = v3f(0.5,-0.5,0.5);
 		for (int s=0; s<4; s++) {
-			meshgen_leaftri(data,cnr[s],pos,toptile,selected,(90*s)+90+(180*(!(s%2))));
+			meshgen_leaftri(data,n,p,cnr[s],pos,toptile,selected,(90*s)+90+(180*(!(s%2))));
 		}
 	}
 	break;
@@ -4601,7 +3644,7 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, bo
 			// front
 			tx1, 1-ty2, tx2, 1-ty1,
 		};
-		meshgen_cuboid(data, pos, box, tiles, 6, selected, txc,v3s16(0,0,0),v3f(0,0,0), cols);
+		meshgen_cuboid(data,n,p, pos, box, tiles, 6, selected, txc,v3s16(0,0,0),v3f(0,0,0), cols);
 	}
 }
 
@@ -4848,7 +3891,7 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				if (selected) {
 					meshgen_selected_lights(colours,255,vcounts[i]);
 				}else{
-					meshgen_lights(colours,255,vcounts[i]);
+					meshgen_lights(data,n,p,colours,255,vcounts[i]);
 				}
 				data->append(tiles[i].getMaterial(), vertices[i], vcounts[i], indices[i], icounts[i], colours);
 			}
@@ -4866,7 +3909,7 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				if (selected) {
 					meshgen_selected_lights(colours,255,vcounts[i]);
 				}else{
-					meshgen_lights(colours,255,vcounts[i]);
+					meshgen_lights(data,n,p,colours,255,vcounts[i]);
 				}
 				data->append(tiles[i].getMaterial(), vertices[i], vcounts[i], indices[i], icounts[i], colours);
 			}
@@ -4885,7 +3928,7 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			if (selected) {
 				meshgen_selected_lights(colours,255,vcounts[i]);
 			}else{
-				meshgen_lights(colours,255,vcounts[i]);
+				meshgen_lights(data,n,p,colours,255,vcounts[i]);
 			}
 			data->append(tiles[i].getMaterial(), vertices[i], vcounts[i], indices[i], icounts[i], colours);
 		}
@@ -4902,7 +3945,7 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			if (selected) {
 				meshgen_selected_lights(colours,255,vcounts[i]);
 			}else{
-				meshgen_lights(colours,255,vcounts[i]);
+				meshgen_lights(data,n,p,colours,255,vcounts[i]);
 			}
 			data->append(tiles[i].getMaterial(), vertices[i], vcounts[i], indices[i], icounts[i], colours);
 		}
@@ -5020,7 +4063,7 @@ void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			if (selected) {
 				meshgen_selected_lights(colours,255,4);
 			}else{
-				meshgen_lights(colours,255,4);
+				meshgen_lights(data,n,p,colours,255,4);
 			}
 			data->append(tiles[i].getMaterial(), vertices[i], 4, indices, 6, colours);
 		}
@@ -5037,7 +4080,7 @@ void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			if (selected) {
 				meshgen_selected_lights(colours,255,4);
 			}else{
-				meshgen_lights(colours,255,4);
+				meshgen_lights(data,n,p,colours,255,4);
 			}
 			data->append(tiles[i].getMaterial(), vertices[i], 4, indices, 6, colours);
 		}
@@ -5178,7 +4221,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			if (selected) {
 				meshgen_selected_lights(colours,255,10);
 			}else{
-				meshgen_lights(colours,255,10);
+				meshgen_lights(data,n,p,colours,255,10);
 			}
 			data->append(tile.getMaterial(), v, 10, indices, 24, colours);
 		}
@@ -5197,7 +4240,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				if (selected) {
 					meshgen_selected_lights(colours,255,6);
 				}else{
-					meshgen_lights(colours,255,6);
+					meshgen_lights(data,n,p,colours,255,6);
 				}
 				data->append(endtile.getMaterial(), v, 6, end_indices, 12, colours);
 			}
@@ -5219,7 +4262,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				if (selected) {
 					meshgen_selected_lights(colours,255,6);
 				}else{
-					meshgen_lights(colours,255,6);
+					meshgen_lights(data,n,p,colours,255,6);
 				}
 				data->append(endtile.getMaterial(), v, 6, end_indices, 12, colours);
 			}
@@ -5242,7 +4285,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				if (selected) {
 					meshgen_selected_lights(colours,255,10);
 				}else{
-					meshgen_lights(colours,255,10);
+					meshgen_lights(data,n,p,colours,255,10);
 				}
 				data->append(tile.getMaterial(), v, 10, indices, 24, colours);
 			}
@@ -5264,7 +4307,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				if (selected) {
 					meshgen_selected_lights(colours,255,10);
 				}else{
-					meshgen_lights(colours,255,10);
+					meshgen_lights(data,n,p,colours,255,10);
 				}
 				data->append(tile.getMaterial(), v, 10, indices, 24, colours);
 			}
@@ -5286,7 +4329,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				if (selected) {
 					meshgen_selected_lights(colours,255,10);
 				}else{
-					meshgen_lights(colours,255,10);
+					meshgen_lights(data,n,p,colours,255,10);
 				}
 				data->append(tile.getMaterial(), v, 10, indices, 24, colours);
 			}
@@ -5309,7 +4352,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				if (selected) {
 					meshgen_selected_lights(colours,255,10);
 				}else{
-					meshgen_lights(colours,255,10);
+					meshgen_lights(data,n,p,colours,255,10);
 				}
 				data->append(tile.getMaterial(), v, 10, indices, 24, colours);
 			}
@@ -5332,7 +4375,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				if (selected) {
 					meshgen_selected_lights(colours,255,10);
 				}else{
-					meshgen_lights(colours,255,10);
+					meshgen_lights(data,n,p,colours,255,10);
 				}
 				data->append(tile.getMaterial(), v, 10, indices, 24, colours);
 			}
@@ -5353,7 +4396,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					if (selected) {
 						meshgen_selected_lights(colours,255,6);
 					}else{
-						meshgen_lights(colours,255,6);
+						meshgen_lights(data,n,p,colours,255,6);
 					}
 					data->append(endtile.getMaterial(), v, 6, end_indices, 12, colours);
 				}
@@ -5375,7 +4418,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					if (selected) {
 						meshgen_selected_lights(colours,255,6);
 					}else{
-						meshgen_lights(colours,255,6);
+						meshgen_lights(data,n,p,colours,255,6);
 					}
 					data->append(endtile.getMaterial(), v, 6, end_indices, 12, colours);
 				}
@@ -5397,7 +4440,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					if (selected) {
 						meshgen_selected_lights(colours,255,10);
 					}else{
-						meshgen_lights(colours,255,10);
+						meshgen_lights(data,n,p,colours,255,10);
 					}
 					data->append(tile.getMaterial(), v, 10, indices, 24, colours);
 				}
@@ -5420,7 +4463,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					if (selected) {
 						meshgen_selected_lights(colours,255,10);
 					}else{
-						meshgen_lights(colours,255,10);
+						meshgen_lights(data,n,p,colours,255,10);
 					}
 					data->append(tile.getMaterial(), v, 10, indices, 24, colours);
 				}
@@ -5442,7 +4485,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				if (selected) {
 					meshgen_selected_lights(colours,255,10);
 				}else{
-					meshgen_lights(colours,255,10);
+					meshgen_lights(data,n,p,colours,255,10);
 				}
 				data->append(tile.getMaterial(), v, 10, indices, 24, colours);
 			}
@@ -5463,7 +4506,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					if (selected) {
 						meshgen_selected_lights(colours,255,6);
 					}else{
-						meshgen_lights(colours,255,6);
+						meshgen_lights(data,n,p,colours,255,6);
 					}
 					data->append(endtile.getMaterial(), v, 6, end_indices, 12, colours);
 				}
@@ -5485,7 +4528,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					if (selected) {
 						meshgen_selected_lights(colours,255,6);
 					}else{
-						meshgen_lights(colours,255,6);
+						meshgen_lights(data,n,p,colours,255,6);
 					}
 					data->append(endtile.getMaterial(), v, 6, end_indices, 12, colours);
 				}
@@ -5508,7 +4551,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					if (selected) {
 						meshgen_selected_lights(colours,255,10);
 					}else{
-						meshgen_lights(colours,255,10);
+						meshgen_lights(data,n,p,colours,255,10);
 					}
 					data->append(tile.getMaterial(), v, 10, indices, 24, colours);
 				}
@@ -5530,7 +4573,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					if (selected) {
 						meshgen_selected_lights(colours,255,10);
 					}else{
-						meshgen_lights(colours,255,10);
+						meshgen_lights(data,n,p,colours,255,10);
 					}
 					data->append(tile.getMaterial(), v, 10, indices, 24, colours);
 				}
