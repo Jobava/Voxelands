@@ -367,12 +367,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 	/*
 		Some settings
 	*/
-	bool new_style_water = g_settings->getBool("new_style_water");
 	bool smooth_lighting = g_settings->getBool("smooth_lighting");
-
-	float node_liquid_level = 1.0;
-	if(new_style_water)
-		node_liquid_level = 0.85;
 
 	v3s16 blockpos_nodes = data->m_blockpos*MAP_BLOCKSIZE;
 	bool selected = false;
@@ -388,1256 +383,10 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		data->m_temp_mods.get(p,&mod);
 		selected = (mod == NODEMOD_SELECTION);
 
-		if (g_sound) {
-			std::string snd = content_features(n).sound_ambient;
-			std::map<v3s16,MapBlockSound>::iterator i = data->m_sounds->find(p);
-			if (snd != "") {
-				bool add_sound = true;
-				if (i != data->m_sounds->end()) {
-					if (i->second.name == snd && g_sound->soundExists(i->second.id)) {
-						add_sound = false;
-					}else{
-						g_sound->stopSound(i->second.id);
-					}
-				}
-				if (add_sound && content_features(n).liquid_type != LIQUID_NONE) {
-					if (data->m_vmanip.getNodeRO(blockpos_nodes+p+v3s16(0,1,0)).getContent() != CONTENT_AIR) {
-						add_sound = false;
-					}else if (content_features(n).param2_type != CPT_LIQUID || n.param2 < 4 || n.param2 > 7) {
-						add_sound = false;
-					}else{
-						int adj = 0;
-						for (s16 x=-1; x<2; x++) {
-							for (s16 z=-1; z<2; z++) {
-								if (!x && !z)
-									continue;
-								content_t ac = data->m_vmanip.getNodeRO(blockpos_nodes+p+v3s16(x,0,z)).getContent();
-								if (
-									ac == content_features(n).liquid_alternative_flowing
-									|| ac == content_features(n).liquid_alternative_source
-								)
-									adj++;
-							}
-						}
-						if (adj > 3)
-							add_sound = false;
-					}
-				}
-				if (add_sound) {
-					v3f pf = intToFloat(p+blockpos_nodes,BS);
-					MapBlockSound bsnd;
-					bsnd.id = g_sound->playSoundAt(snd,true,pf, true);
-					bsnd.name = snd;
-					if (bsnd.id > 0)
-						(*data->m_sounds)[p] = bsnd;
-				}
-			}else if (i != data->m_sounds->end()) {
-				g_sound->stopSound(i->second.id);
-				data->m_sounds->erase(i);
-			}
-		}
-
 		/*
 			Add torches to mesh
 		*/
 		switch (content_features(n).draw_type) {
-		case CDT_CUBELIKE:
-		case CDT_AIRLIKE:
-			break;
-		case CDT_LIQUID:
-		{
-			bool top_is_same_liquid = false;
-			MapNode ntop = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x,y+1,z));
-			content_t c_flowing = content_features(n).liquid_alternative_flowing;
-			content_t c_source = content_features(n).liquid_alternative_source;
-			if(ntop.getContent() == c_flowing || ntop.getContent() == c_source)
-				top_is_same_liquid = true;
-
-			u8 l = 0;
-			// Use the light of the node on top if possible
-			if (content_features(ntop).param_type == CPT_LIGHT){
-				l = decode_light(ntop.getLightBlend(data->m_daynight_ratio));
-			// Otherwise use the light of this node (the liquid)
-			}else{
-				l = decode_light(n.getLightBlend(data->m_daynight_ratio));
-			}
-			video::SColor c = MapBlock_LightColor(content_features(n).vertex_alpha, l, selected);
-
-			// Neighbor liquid levels (key = relative position)
-			// Includes current node
-			core::map<v3s16, f32> neighbor_levels;
-			core::map<v3s16, content_t> neighbor_contents;
-			core::map<v3s16, u8> neighbor_flags;
-			const u8 neighborflag_top_is_same_liquid = 0x01;
-			v3s16 neighbor_dirs[9] = {
-				v3s16(0,0,0),
-				v3s16(0,0,1),
-				v3s16(0,0,-1),
-				v3s16(1,0,0),
-				v3s16(-1,0,0),
-				v3s16(1,0,1),
-				v3s16(-1,0,-1),
-				v3s16(1,0,-1),
-				v3s16(-1,0,1),
-			};
-			for(u32 i=0; i<9; i++)
-			{
-				content_t content = CONTENT_AIR;
-				float level = -0.5 * BS;
-				u8 flags = 0;
-				// Check neighbor
-				v3s16 p2 = p + neighbor_dirs[i];
-				MapNode n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
-				if(n2.getContent() != CONTENT_IGNORE) {
-					content = n2.getContent();
-
-					if (n2.getContent() == c_source) {
-						p2.Y += 1;
-						n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
-						if (content_features(n2).liquid_type == LIQUID_NONE) {
-							level = 0.5*BS;
-						}else{
-							level = (-0.5+node_liquid_level) * BS;
-						}
-						p2.Y -= 1;
-					}else if(n2.getContent() == c_flowing) {
-						level = (-0.5 + ((float)(n2.param2&LIQUID_LEVEL_MASK)
-								+ 0.5) / 8.0 * node_liquid_level) * BS;
-					}
-
-					// Check node above neighbor.
-					// NOTE: This doesn't get executed if neighbor
-					//       doesn't exist
-					p2.Y += 1;
-					n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
-					if(n2.getContent() == c_source ||
-							n2.getContent() == c_flowing)
-						flags |= neighborflag_top_is_same_liquid;
-				}
-
-				neighbor_levels.insert(neighbor_dirs[i], level);
-				neighbor_contents.insert(neighbor_dirs[i], content);
-				neighbor_flags.insert(neighbor_dirs[i], flags);
-			}
-
-			// Corner heights (average between four liquids)
-			f32 corner_levels[4];
-
-			v3s16 halfdirs[4] = {
-				v3s16(0,0,0),
-				v3s16(1,0,0),
-				v3s16(1,0,1),
-				v3s16(0,0,1),
-			};
-			for(u32 i=0; i<4; i++)
-			{
-				v3s16 cornerdir = halfdirs[i];
-				float cornerlevel = 0;
-				u32 valid_count = 0;
-				u32 air_count = 0;
-				for(u32 j=0; j<4; j++)
-				{
-					v3s16 neighbordir = cornerdir - halfdirs[j];
-					content_t content = neighbor_contents[neighbordir];
-					// If top is liquid, draw starting from top of node
-					if(neighbor_flags[neighbordir] &
-							neighborflag_top_is_same_liquid)
-					{
-						cornerlevel = 0.5*BS;
-						valid_count = 1;
-						break;
-					}
-					// Source is always the same height
-					else if(content == c_source)
-					{
-						cornerlevel = (-0.5+node_liquid_level)*BS;
-						valid_count = 1;
-						break;
-					}
-					// Flowing liquid has level information
-					else if(content == c_flowing)
-					{
-						cornerlevel += neighbor_levels[neighbordir];
-						valid_count++;
-					}
-					else if(content == CONTENT_AIR)
-					{
-						air_count++;
-					}
-				}
-				if(air_count >= 2)
-					cornerlevel = -0.5*BS;
-				else if(valid_count > 0)
-					cornerlevel /= valid_count;
-				corner_levels[i] = cornerlevel;
-			}
-
-			/*
-				Generate sides
-			*/
-
-			v3s16 side_dirs[4] = {
-				v3s16(1,0,0),
-				v3s16(-1,0,0),
-				v3s16(0,0,1),
-				v3s16(0,0,-1),
-			};
-			s16 side_corners[4][2] = {
-				{1, 2},
-				{3, 0},
-				{2, 3},
-				{0, 1},
-			};
-			for(u32 i=0; i<4; i++)
-			{
-				v3s16 dir = side_dirs[i];
-
-				/*
-					If our topside is liquid and neighbor's topside
-					is liquid, don't draw side face
-				*/
-				if(top_is_same_liquid &&
-						neighbor_flags[dir] & neighborflag_top_is_same_liquid)
-					continue;
-
-				content_t neighbor_content = neighbor_contents[dir];
-				ContentFeatures &n_feat = content_features(neighbor_content);
-
-				// Don't draw face if neighbor is blocking the view
-				if(n_feat.solidness == 2)
-					continue;
-
-				bool neighbor_is_same_liquid = (neighbor_content == c_source
-						|| neighbor_content == c_flowing);
-
-				// Don't draw any faces if neighbor same is liquid and top is
-				// same liquid
-				if(neighbor_is_same_liquid == true
-						&& top_is_same_liquid == false)
-					continue;
-
-				video::S3DVertex vertices[4] =
-				{
-					video::S3DVertex(-BS/2,0,BS/2, 0,0,0, c,
-							content_features(n).tiles[i].texture.x0(), content_features(n).tiles[i].texture.y1()),
-					video::S3DVertex(BS/2,0,BS/2, 0,0,0, c,
-							content_features(n).tiles[i].texture.x1(), content_features(n).tiles[i].texture.y1()),
-					video::S3DVertex(BS/2,0,BS/2, 0,0,0, c,
-							content_features(n).tiles[i].texture.x1(), content_features(n).tiles[i].texture.y0()),
-					video::S3DVertex(-BS/2,0,BS/2, 0,0,0, c,
-							content_features(n).tiles[i].texture.x0(), content_features(n).tiles[i].texture.y0()),
-				};
-
-				/*
-					If our topside is liquid, set upper border of face
-					at upper border of node
-				*/
-				if(top_is_same_liquid)
-				{
-					vertices[2].Pos.Y = 0.5*BS;
-					vertices[3].Pos.Y = 0.5*BS;
-				}
-				/*
-					Otherwise upper position of face is corner levels
-				*/
-				else
-				{
-					vertices[2].Pos.Y = corner_levels[side_corners[i][0]];
-					vertices[3].Pos.Y = corner_levels[side_corners[i][1]];
-				}
-
-				/*
-					If neighbor is liquid, lower border of face is corner
-					liquid levels
-				*/
-				if(neighbor_is_same_liquid)
-				{
-					vertices[0].Pos.Y = corner_levels[side_corners[i][1]];
-					vertices[1].Pos.Y = corner_levels[side_corners[i][0]];
-				}
-				/*
-					If neighbor is not liquid, lower border of face is
-					lower border of node
-				*/
-				else
-				{
-					vertices[0].Pos.Y = -0.5*BS;
-					vertices[1].Pos.Y = -0.5*BS;
-				}
-
-				for(s32 j=0; j<4; j++)
-				{
-					if(dir == v3s16(0,0,1))
-						vertices[j].Pos.rotateXZBy(0);
-					if(dir == v3s16(0,0,-1))
-						vertices[j].Pos.rotateXZBy(180);
-					if(dir == v3s16(-1,0,0))
-						vertices[j].Pos.rotateXZBy(90);
-					if(dir == v3s16(1,0,-0))
-						vertices[j].Pos.rotateXZBy(-90);
-
-					vertices[j].Pos += intToFloat(p, BS);
-				}
-
-				u16 indices[] = {0,1,2,2,3,0};
-				// Add to mesh collector
-				collector.append(content_features(n).tiles[i].getMaterial(), vertices, 4, indices, 6);
-			}
-
-			/*
-				Generate top side, if appropriate
-			*/
-
-			if(top_is_same_liquid == false)
-			{
-				video::S3DVertex vertices[4] =
-				{
-					video::S3DVertex(-BS/2,0,BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,0,BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,0,-BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
-					video::S3DVertex(-BS/2,0,-BS/2, 0,0,0, c,
-							content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
-				};
-
-				// This fixes a strange bug
-				s32 corner_resolve[4] = {3,2,1,0};
-
-				for(s32 i=0; i<4; i++)
-				{
-					s32 j = corner_resolve[i];
-					vertices[i].Pos.Y += corner_levels[j];
-					vertices[i].Pos += intToFloat(p, BS);
-				}
-
-				u16 indices[] = {0,1,2,2,3,0};
-				// Add to mesh collector
-				collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
-			}
-		}
-		/*
-			Add water sources to mesh if using new style
-		*/
-		break;
-		case CDT_LIQUID_SOURCE:
-		if (new_style_water)
-		{
-			static const u8 l[6][4] = {
-				{0,1,6,7},
-				{0,1,2,3},
-				{1,2,5,6},
-				{2,3,4,5},
-				{4,5,6,7},
-				{0,3,4,7}
-			};
-			video::SColor c[14];
-			getLights(blockpos_nodes+p,c,data,smooth_lighting,content_features(n).vertex_alpha);
-
-			for(u32 j=0; j<6; j++)
-			{
-				// Check this neighbor
-				v3s16 n2p = blockpos_nodes + p + g_6dirs[j];
-				MapNode n2 = data->m_vmanip.getNodeRO(n2p);
-				if (content_features(n2).liquid_type != LIQUID_NONE) {
-					if (n2.getContent() == content_features(n).liquid_alternative_flowing)
-						continue;
-					if (n2.getContent() == content_features(n).liquid_alternative_source)
-						continue;
-				}else if (g_6dirs[j].Y != 1 && n2.getContent() != CONTENT_AIR && content_features(n2).draw_type == CDT_CUBELIKE) {
-					continue;
-				}else if (n2.getContent() == CONTENT_IGNORE) {
-					continue;
-				}
-
-				// The face at Z+
-				video::S3DVertex vertices[4] =
-				{
-					video::S3DVertex(-BS/2,-BS/2,BS/2, 0,0,0, c[l[j][0]],
-						content_features(n).tiles[j].texture.x0(), content_features(n).tiles[j].texture.y1()),
-					video::S3DVertex(BS/2,-BS/2,BS/2, 0,0,0, c[l[j][1]],
-						content_features(n).tiles[j].texture.x1(), content_features(n).tiles[j].texture.y1()),
-					video::S3DVertex(BS/2,BS/2,BS/2, 0,0,0, c[l[j][2]],
-						content_features(n).tiles[j].texture.x1(), content_features(n).tiles[j].texture.y0()),
-					video::S3DVertex(-BS/2,BS/2,BS/2, 0,0,0, c[l[j][3]],
-						content_features(n).tiles[j].texture.x0(), content_features(n).tiles[j].texture.y0()),
-				};
-
-				// Rotations in the g_6dirs format
-				switch (j) {
-				case 0: // Z+
-					for(u16 i=0; i<4; i++) {
-						vertices[i].Pos.rotateXZBy(0);
-					}
-					break;
-				case 1: // Y+
-					for(u16 i=0; i<4; i++) {
-						vertices[i].Pos.rotateYZBy(-90);
-					}
-					break;
-				case 2: // X+
-					for(u16 i=0; i<4; i++) {
-						vertices[i].Pos.rotateXZBy(-90);
-					}
-					break;
-				case 3: // Z-
-					for(u16 i=0; i<4; i++) {
-						vertices[i].Pos.rotateXZBy(180);
-					}
-					break;
-				case 4: // Y-
-					for(u16 i=0; i<4; i++) {
-						vertices[i].Pos.rotateYZBy(90);
-					}
-					break;
-				case 5: // X-
-					for(u16 i=0; i<4; i++) {
-						vertices[i].Pos.rotateXZBy(90);
-					}
-					break;
-				default:;
-				}
-
-				for (u16 i=0; i<4; i++) {
-					vertices[i].Pos += intToFloat(p, BS);
-					if (j == 1 || (j != 4 && i<2)) {
-						vertices[i].Pos.Y -=0.15*BS;
-					}
-				}
-
-				u16 indices[] = {0,1,2,2,3,0};
-				// Add to mesh collector
-				collector.append(content_features(n).tiles[j].getMaterial(), vertices, 4, indices, 6);
-			}
-		}
-		break;
-		case CDT_TORCHLIKE:
-		{
-			static const f32 txc[24] = {
-				0.625,0.125,0.75,0.25,
-				0.625,0.625,0.625,0.75,
-				0,0,0.125,1,
-				0,0,0.125,1,
-				0,0,0.125,1,
-				0,0,0.125,1
-			};
-			video::SColor c = MapBlock_LightColor(255,255,selected);//(255,255,255,255);
-			v3s16 dir = unpackDir(n.param2);
-			video::S3DVertex *v;
-			video::S3DVertex vertices[3][24] = {
-				{ // roof
-					// up
-					video::S3DVertex(-0.1*BS, 0.5*BS,0., 0,1,0, c, txc[4],txc[5]),
-					video::S3DVertex(0.,0.5*BS,0., 0,1,0, c, txc[6],txc[5]),
-					video::S3DVertex(0.,0.5*BS,-0.1*BS, 0,1,0, c, txc[6],txc[7]),
-					video::S3DVertex(-0.1*BS, 0.5*BS,-0.1*BS, 0,1,0, c, txc[4],txc[7]),
-					// down
-					video::S3DVertex(0.,-0.1*BS,0., 0,-1,0, c, txc[0],txc[1]),
-					video::S3DVertex(0.1*BS,-0.1*BS,0., 0,-1,0, c, txc[2],txc[1]),
-					video::S3DVertex(0.1*BS,-0.1*BS,0.1*BS, 0,-1,0, c, txc[2],txc[3]),
-					video::S3DVertex(0.,-0.1*BS,0.1*BS, 0,-1,0, c, txc[0],txc[3]),
-					// right
-					video::S3DVertex(0.,0.5*BS,-0.1*BS, 1,0,0, c, txc[ 8],txc[11]),
-					video::S3DVertex(0.,0.5*BS,0., 1,0,0, c, txc[10],txc[11]),
-					video::S3DVertex(0.1*BS,-0.1*BS,0.1*BS, 1,0,0, c, txc[10],txc[9]),
-					video::S3DVertex(0.1*BS,-0.1*BS,0., 1,0,0, c, txc[ 8],txc[9]),
-					// left
-					video::S3DVertex(-0.1*BS,0.5*BS,0., -1,0,0, c, txc[12],txc[15]),
-					video::S3DVertex(-0.1*BS,0.5*BS,-0.1*BS, -1,0,0, c, txc[14],txc[15]),
-					video::S3DVertex(0.,-0.1*BS,0., -1,0,0, c, txc[14],txc[13]),
-					video::S3DVertex(0.,-0.1*BS,0.1*BS, -1,0,0, c, txc[12],txc[13]),
-					// back
-					video::S3DVertex(0.,0.5*BS,0., 0,0,1, c, txc[16],txc[19]),
-					video::S3DVertex(-0.1*BS,0.5*BS,0., 0,0,1, c, txc[18],txc[19]),
-					video::S3DVertex(0.,-0.1*BS,0.1*BS, 0,0,1, c, txc[18],txc[17]),
-					video::S3DVertex(0.1*BS,-0.1*BS,0.1*BS, 0,0,1, c, txc[16],txc[17]),
-					// front
-					video::S3DVertex(-0.1*BS,0.5*BS,-0.1*BS, 0,0,-1, c, txc[20],txc[23]),
-					video::S3DVertex(0.,0.5*BS,-0.1*BS, 0,0,-1, c, txc[22],txc[23]),
-					video::S3DVertex(0.1*BS,-0.1*BS,0., 0,0,-1, c, txc[22],txc[21]),
-					video::S3DVertex(0.,-0.1*BS,0., 0,0,-1, c, txc[20],txc[21]),
-				},{ // floor
-					// up
-					//video::S3DVertex(min.X,max.Y,max.Z, 0,1,0, c, txc[0],txc[1]),
-					video::S3DVertex(-0.05*BS,0.1*BS,0.05*BS, 0,1,0, c, txc[0],txc[1]),
-					video::S3DVertex(0.05*BS,0.1*BS,0.05*BS, 0,1,0, c, txc[2],txc[1]),
-					video::S3DVertex(0.05*BS,0.1*BS,-0.05*BS, 0,1,0, c, txc[2],txc[3]),
-					video::S3DVertex(-0.05*BS,0.1*BS,-0.05*BS, 0,1,0, c, txc[0],txc[3]),
-					// down
-					video::S3DVertex(-0.05*BS,-0.5*BS,-0.05*BS, 0,-1,0, c, txc[4],txc[5]),
-					video::S3DVertex(0.05*BS,-0.5*BS,-0.05*BS, 0,-1,0, c, txc[6],txc[5]),
-					video::S3DVertex(0.05*BS,-0.5*BS,0.05*BS, 0,-1,0, c, txc[6],txc[7]),
-					video::S3DVertex(-0.05*BS,-0.5*BS,0.05*BS, 0,-1,0, c, txc[4],txc[7]),
-					// right
-					video::S3DVertex(0.05*BS,0.1*BS,-0.05*BS, 1,0,0, c, txc[ 8],txc[9]),
-					video::S3DVertex(0.05*BS,0.1*BS,0.05*BS, 1,0,0, c, txc[10],txc[9]),
-					video::S3DVertex(0.05*BS,-0.5*BS,0.05*BS, 1,0,0, c, txc[10],txc[11]),
-					video::S3DVertex(0.05*BS,-0.5*BS,-0.05*BS, 1,0,0, c, txc[ 8],txc[11]),
-					// left
-					video::S3DVertex(-0.05*BS,0.1*BS,0.05*BS, -1,0,0, c, txc[12],txc[13]),
-					video::S3DVertex(-0.05*BS,0.1*BS,-0.05*BS, -1,0,0, c, txc[14],txc[13]),
-					video::S3DVertex(-0.05*BS,-0.5*BS,-0.05*BS, -1,0,0, c, txc[14],txc[15]),
-					video::S3DVertex(-0.05*BS,-0.5*BS,0.05*BS, -1,0,0, c, txc[12],txc[15]),
-					// back
-					video::S3DVertex(0.05*BS,0.1*BS,0.05*BS, 0,0,1, c, txc[16],txc[17]),
-					video::S3DVertex(-0.05*BS,0.1*BS,0.05*BS, 0,0,1, c, txc[18],txc[17]),
-					video::S3DVertex(-0.05*BS,-0.5*BS,0.05*BS, 0,0,1, c, txc[18],txc[19]),
-					video::S3DVertex(0.05*BS,-0.5*BS,0.05*BS, 0,0,1, c, txc[16],txc[19]),
-					// front
-					video::S3DVertex(-0.05*BS,0.1*BS,-0.05*BS, 0,0,-1, c, txc[20],txc[21]),
-					video::S3DVertex(0.05*BS,0.1*BS,-0.05*BS, 0,0,-1, c, txc[22],txc[21]),
-					video::S3DVertex(0.05*BS,-0.5*BS,-0.05*BS, 0,0,-1, c, txc[22],txc[23]),
-					video::S3DVertex(-0.05*BS,-0.5*BS,-0.05*BS, 0,0,-1, c, txc[20],txc[23]),
-				},{ // wall
-					// up
-					//video::S3DVertex(min.X,max.Y,max.Z, 0,1,0, c, txc[0],txc[1]),
-					video::S3DVertex(-0.05*BS,0.3*BS,0.4*BS, 0,1,0, c, txc[0],txc[1]),
-					video::S3DVertex(0.05*BS,0.3*BS,0.4*BS, 0,1,0, c, txc[2],txc[1]),
-					video::S3DVertex(0.05*BS,0.3*BS,0.3*BS, 0,1,0, c, txc[2],txc[3]),
-					video::S3DVertex(-0.05*BS,0.3*BS,0.3*BS, 0,1,0, c, txc[0],txc[3]),
-					// down
-					video::S3DVertex(-0.05*BS,-0.3*BS,0.4*BS, 0,-1,0, c, txc[4],txc[5]),
-					video::S3DVertex(0.05*BS,-0.3*BS,0.4*BS, 0,-1,0, c, txc[6],txc[5]),
-					video::S3DVertex(0.05*BS,-0.3*BS,0.5*BS, 0,-1,0, c, txc[6],txc[7]),
-					video::S3DVertex(-0.05*BS,-0.3*BS,0.5*BS, 0,-1,0, c, txc[4],txc[7]),
-					// right
-					video::S3DVertex(0.05*BS,0.3*BS,0.3*BS, 1,0,0, c, txc[ 8],txc[9]),
-					video::S3DVertex(0.05*BS,0.3*BS,0.4*BS, 1,0,0, c, txc[10],txc[9]),
-					video::S3DVertex(0.05*BS,-0.3*BS,0.5*BS, 1,0,0, c, txc[10],txc[11]),
-					video::S3DVertex(0.05*BS,-0.3*BS,0.4*BS, 1,0,0, c, txc[ 8],txc[11]),
-					// left
-					video::S3DVertex(-0.05*BS,0.3*BS,0.4*BS, -1,0,0, c, txc[12],txc[13]),
-					video::S3DVertex(-0.05*BS,0.3*BS,0.3*BS, -1,0,0, c, txc[14],txc[13]),
-					video::S3DVertex(-0.05*BS,-0.3*BS,0.4*BS, -1,0,0, c, txc[14],txc[15]),
-					video::S3DVertex(-0.05*BS,-0.3*BS,0.5*BS, -1,0,0, c, txc[12],txc[15]),
-					// back
-					video::S3DVertex(0.05*BS,0.3*BS,0.4*BS, 0,0,1, c, txc[16],txc[17]),
-					video::S3DVertex(-0.05*BS,0.3*BS,0.4*BS, 0,0,1, c, txc[18],txc[17]),
-					video::S3DVertex(-0.05*BS,-0.3*BS,0.5*BS, 0,0,1, c, txc[18],txc[19]),
-					video::S3DVertex(0.05*BS,-0.3*BS,0.5*BS, 0,0,1, c, txc[16],txc[19]),
-					// front
-					video::S3DVertex(-0.05*BS,0.3*BS,0.3*BS, 0,0,-1, c, txc[20],txc[21]),
-					video::S3DVertex(0.05*BS,0.3*BS,0.3*BS, 0,0,-1, c, txc[22],txc[21]),
-					video::S3DVertex(0.05*BS,-0.3*BS,0.4*BS, 0,0,-1, c, txc[22],txc[23]),
-					video::S3DVertex(-0.05*BS,-0.3*BS,0.4*BS, 0,0,-1, c, txc[20],txc[23]),
-				}
-			};
-
-			if (dir.Y == 1) { // roof
-				for (s32 i=0; i<24; i++) {
-					vertices[0][i].Pos += intToFloat(p, BS);
-				}
-				v = vertices[0];
-			}else if (dir.Y == -1) { // floor
-				for (s32 i=0; i<24; i++) {
-					vertices[1][i].Pos += intToFloat(p, BS);
-				}
-				v = vertices[1];
-			}else{ // wall
-				for (s32 i=0; i<24; i++) {
-					if(dir == v3s16(1,0,0))
-						vertices[2][i].Pos.rotateXZBy(-90);
-					if(dir == v3s16(-1,0,0))
-						vertices[2][i].Pos.rotateXZBy(90);
-					if(dir == v3s16(0,0,1))
-						vertices[2][i].Pos.rotateXZBy(0);
-					if(dir == v3s16(0,0,-1))
-						vertices[2][i].Pos.rotateXZBy(180);
-
-					vertices[2][i].Pos += intToFloat(p, BS);
-				}
-				v = vertices[2];
-			}
-
-			f32 sx = content_features(n.getContent()).tiles[0].texture.x1()-content_features(n.getContent()).tiles[0].texture.x0();
-			f32 sy = content_features(n.getContent()).tiles[0].texture.y1()-content_features(n.getContent()).tiles[0].texture.y0();
-			for (s32 j=0; j<24; j++) {
-				v[j].TCoords *= v2f(sx,sy);
-				v[j].TCoords += v2f(
-					content_features(n.getContent()).tiles[0].texture.x0(),
-					content_features(n.getContent()).tiles[0].texture.y0()
-				);
-			}
-
-			u16 indices[] = {0,1,2,2,3,0};
-
-			// Add to mesh collector
-			for (s32 j=0; j<24; j+=4) {
-				collector.append(content_features(n.getContent()).tiles[0].getMaterial(), &v[j], 4, indices, 6);
-			}
-		}
-		break;
-		/*
-			Add glass
-		*/
-		break;
-		case CDT_GLASSLIKE:
-		{
-			static const u8 l[6][4] = {
-				{0,1,6,7},
-				{0,1,2,3},
-				{1,2,5,6},
-				{2,3,4,5},
-				{4,5,6,7},
-				{0,3,4,7}
-			};
-			video::SColor c[14];
-			getLights(blockpos_nodes+p,c,data,smooth_lighting);
-			static const v3s16 tile_dirs[6] = {
-				v3s16(0, 1, 0),
-				v3s16(0, -1, 0),
-				v3s16(1, 0, 0),
-				v3s16(-1, 0, 0),
-				v3s16(0, 0, 1),
-				v3s16(0, 0, -1)
-			};
-
-			TileSpec tiles[6];
-			for (int i = 0; i < 6; i++) {
-				// Handles facedir rotation for textures
-				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
-			}
-
-			for (u32 j=0; j<6; j++) {
-				// Check this neighbor
-				v3s16 n2p = blockpos_nodes + p + g_6dirs[j];
-				MapNode n2 = data->m_vmanip.getNodeRO(n2p);
-				// Don't make face if neighbor is of same type
-				if (n2.getContent() == n.getContent())
-					continue;
-
-				// The face at Z+
-				video::S3DVertex vertices[4] = {
-					video::S3DVertex(-BS/2,-BS/2,BS/2, 0,0,0, c[l[j][0]], tiles[j].texture.x0(), tiles[j].texture.y1()),
-					video::S3DVertex(BS/2,-BS/2,BS/2, 0,0,0, c[l[j][1]], tiles[j].texture.x1(), tiles[j].texture.y1()),
-					video::S3DVertex(BS/2,BS/2,BS/2, 0,0,0, c[l[j][2]], tiles[j].texture.x1(), tiles[j].texture.y0()),
-					video::S3DVertex(-BS/2,BS/2,BS/2, 0,0,0, c[l[j][3]], tiles[j].texture.x0(), tiles[j].texture.y0()),
-				};
-
-				s16 yrot = 0;
-				s16 xrot = 0;
-
-				// Rotations in the g_6dirs format
-				switch (j) {
-				case 1: // Y+
-					xrot = -90;
-					break;
-				case 2: // X+
-					yrot = -90;
-					break;
-				case 3: // Z-
-					yrot = 180;
-					break;
-				case 4: // Y-
-					xrot = 90;
-					break;
-				case 5: // X-
-					yrot = 90;
-					break;
-				default:;
-				}
-
-				for (u16 i=0; i<4; i++) {
-					if (yrot) {
-						vertices[i].Pos.rotateXZBy(yrot);
-					}else if (xrot) {
-						vertices[i].Pos.rotateYZBy(xrot);
-					}
-					vertices[i].Pos += intToFloat(p, BS);
-				}
-
-				u16 indices[] = {0,1,2,2,3,0};
-				// Add to mesh collector
-				collector.append(tiles[j].getMaterial(), vertices, 4, indices, 6);
-			}
-		}
-		/*
-			Add wall
-		*/
-		break;
-		case CDT_WALLLIKE:
-		{
-			static const v3s16 tile_dirs[6] = {
-				v3s16(0, 1, 0),
-				v3s16(0, -1, 0),
-				v3s16(1, 0, 0),
-				v3s16(-1, 0, 0),
-				v3s16(0, 0, 1),
-				v3s16(0, 0, -1)
-			};
-			static const int shown_angles[8] = {0,0,0,0,45,135,45,315};
-			n.param2 = 0;
-
-			TileSpec tiles[6];
-			for (int i = 0; i < 6; i++) {
-				// Handles facedir rotation for textures
-				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
-			}
-			video::SColor c[14];
-			getLights(blockpos_nodes+p,c,data,smooth_lighting);
-
-			v3f pos = intToFloat(p, BS);
-			std::vector<NodeBox> boxes = content_features(n).getNodeBoxes(n);
-			v3s16 p2 = p;
-			p2.Y++;
-			NodeBox box;
-			u8 d[8];
-			int bi = mapblock_mesh_check_walllike(data,n,p+blockpos_nodes,d);
-			{
-				box = boxes[bi];
-
-				// Compute texture coords
-				f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
-				f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
-				f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
-				f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
-				f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
-				f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
-				f32 txc[24] = {
-					// up
-					tx1, 1-tz2, tx2, 1-tz1,
-					// down
-					tx1, tz1, tx2, tz2,
-					// right
-					tz1, 1-ty2, tz2, 1-ty1,
-					// left
-					1-tz2, 1-ty2, 1-tz1, 1-ty1,
-					// back
-					1-tx2, 1-ty2, 1-tx1, 1-ty1,
-					// front
-					tx1, 1-ty2, tx2, 1-ty1,
-				};
-				makeRotatedCuboid(&collector,pos,box.m_box,tiles,6,c,txc,v3s16(0,0,0),v3f(0,0,0));
-			}
-
-			int bps = ((boxes.size()-3)/4); // boxes per section
-			u8 np = 1;
-
-			for (int k=0; k<8; k++) {
-				if (d[k]) {
-					n.param2 |= (np<<k);
-					for (int i=0; i<bps; i++) {
-						box = boxes[i+3+(bps*(k%4))];
-
-						// Compute texture coords
-						f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
-						f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
-						f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
-						f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
-						f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
-						f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
-						f32 txc[24] = {
-							// up
-							tx1, 1-tz2, tx2, 1-tz1,
-							// down
-							tx1, tz1, tx2, tz2,
-							// right
-							tz1, 1-ty2, tz2, 1-ty1,
-							// left
-							1-tz2, 1-ty2, 1-tz1, 1-ty1,
-							// back
-							1-tx2, 1-ty2, 1-tx1, 1-ty1,
-							// front
-							tx1, 1-ty2, tx2, 1-ty1,
-						};
-						if (k > 3) {
-							switch (k) {
-							case 4:
-								box.m_box.MaxEdge.X *= 1.414;
-								break;
-							case 5:
-								box.m_box.MinEdge.X *= 1.414;
-								break;
-							case 6:
-								box.m_box.MaxEdge.Z *= 1.414;
-								break;
-							case 7:
-								box.m_box.MinEdge.Z *= 1.414;
-								break;
-							default:;
-							}
-						}
-						makeRotatedCuboid(&collector, pos, box.m_box, tiles, 6,  c, txc, v3s16(0,shown_angles[k],0),v3f(0,0,0));
-					}
-				}
-			}
-		}
-		break;
-		/*
-			Add fence
-		*/
-		case CDT_FENCELIKE:
-		{
-			static const v3s16 tile_dirs[6] = {
-				v3s16(0, 1, 0),
-				v3s16(0, -1, 0),
-				v3s16(1, 0, 0),
-				v3s16(-1, 0, 0),
-				v3s16(0, 0, 1),
-				v3s16(0, 0, -1)
-			};
-			static const v3s16 fence_dirs[8] = {
-				v3s16(1,0,0),
-				v3s16(-1,0,0),
-				v3s16(0,0,1),
-				v3s16(0,0,-1),
-				v3s16(1,0,1),
-				v3s16(1,0,-1),
-				v3s16(-1,0,1),
-				v3s16(-1,0,-1)
-			};
-			static const int showcheck[4][2] = {
-				{0,2},
-				{0,3},
-				{1,2},
-				{1,3}
-			};
-			static const int shown_angles[8] = {0,0,0,0,45,135,45,315};
-			bool shown_dirs[8] = {false,false,false,false,false,false,false,false};
-			n.param2 = 0;
-
-			TileSpec tiles[6];
-			for (int i = 0; i < 6; i++) {
-				// Handles facedir rotation for textures
-				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
-			}
-			video::SColor c[14];
-			getLights(blockpos_nodes+p,c,data,smooth_lighting);
-
-			v3f pos = intToFloat(p, BS);
-			std::vector<NodeBox> boxes = content_features(n).getNodeBoxes(n);
-			int bi = 1;
-			v3s16 p2 = p;
-			p2.Y++;
-			MapNode n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p2);
-			const ContentFeatures *f2 = &content_features(n2);
-			aabb3f box;
-			if (f2->draw_type == CDT_AIRLIKE || f2->draw_type == CDT_TORCHLIKE)
-				bi = 0;
-			{
-				NodeBox box = boxes[bi];
-
-				// Compute texture coords
-				f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
-				f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
-				f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
-				f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
-				f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
-				f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
-				f32 txc[24] = {
-					// up
-					tx1, 1-tz2, tx2, 1-tz1,
-					// down
-					tx1, tz1, tx2, tz2,
-					// right
-					tz1, 1-ty2, tz2, 1-ty1,
-					// left
-					1-tz2, 1-ty2, 1-tz1, 1-ty1,
-					// back
-					1-tx2, 1-ty2, 1-tx1, 1-ty1,
-					// front
-					tx1, 1-ty2, tx2, 1-ty1,
-				};
-				makeRotatedCuboid(&collector, pos, box.m_box, tiles, 6,  c, txc, v3s16(0,0,0),v3f(0,0,0));
-			}
-
-			int bps = ((boxes.size()-2)/4); // boxes per section
-			u8 np = 1;
-
-			for (int k=0; k<8; k++) {
-				if (k > 3 && (shown_dirs[showcheck[k-4][0]] || shown_dirs[showcheck[k-4][1]]))
-							continue;
-				p2 = blockpos_nodes+p+fence_dirs[k];
-				n2 = data->m_vmanip.getNodeRO(p2);
-				f2 = &content_features(n2);
-				if (
-					f2->draw_type == CDT_FENCELIKE
-					|| f2->draw_type == CDT_WALLLIKE
-					|| n2.getContent() == CONTENT_WOOD_GATE
-					|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
-					|| n2.getContent() == CONTENT_STEEL_GATE
-					|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
-					|| (
-						n2.getContent() != CONTENT_IGNORE
-						&& n2.getContent() == content_features(n).special_alternate_node
-					)
-				) {
-					shown_dirs[k] = true;
-					n.param2 |= (np<<k);
-					for (int i=0; i<bps; i++) {
-						NodeBox box = boxes[i+2+(bps*(k%4))];
-
-						// Compute texture coords
-						f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
-						f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
-						f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
-						f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
-						f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
-						f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
-						f32 txc[24] = {
-							// up
-							tx1, 1-tz2, tx2, 1-tz1,
-							// down
-							tx1, tz1, tx2, tz2,
-							// right
-							tz1, 1-ty2, tz2, 1-ty1,
-							// left
-							1-tz2, 1-ty2, 1-tz1, 1-ty1,
-							// back
-							1-tx2, 1-ty2, 1-tx1, 1-ty1,
-							// front
-							tx1, 1-ty2, tx2, 1-ty1,
-						};
-						if (k > 3) {
-							switch (k) {
-							case 4:
-								box.m_box.MaxEdge.X *= 1.414;
-								break;
-							case 5:
-								box.m_box.MinEdge.X *= 1.414;
-								break;
-							case 6:
-								box.m_box.MaxEdge.Z *= 1.414;
-								break;
-							case 7:
-								box.m_box.MinEdge.Z *= 1.414;
-								break;
-							default:;
-							}
-						}
-						makeRotatedCuboid(&collector, pos, box.m_box, tiles, 6,  c, txc, v3s16(0,shown_angles[k],0),v3f(0,0,0));
-					}
-				}
-			}
-		}
-		break;
-		case CDT_WIRELIKE:
-		{
-			MapNode n_plus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y+1,z));
-			MapNode n_minus_x = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1,y,z));
-			MapNode n_plus_x = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1,y,z));
-			MapNode n_minus_z = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y,z-1));
-			MapNode n_plus_z = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y,z+1));
-			MapNode n_minus_xy = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1,y+1,z));
-			MapNode n_plus_xy = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1,y+1,z));
-			MapNode n_minus_zy = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y+1,z-1));
-			MapNode n_plus_zy = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y+1,z+1));
-			MapNode n_minus_x_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1,y-1,z));
-			MapNode n_plus_x_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1,y-1,z));
-			MapNode n_minus_z_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y-1,z-1));
-			MapNode n_plus_z_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y-1,z+1));
-			bool x_plus = false;
-			bool x_plus_y = false;
-			bool x_minus = false;
-			bool x_minus_y = false;
-			bool z_plus = false;
-			bool z_plus_y = false;
-			bool z_minus = false;
-			bool z_minus_y = false;
-			bool y_plus = false;
-			// +Y
-			if (n_plus_y.getContent() == CONTENT_AIR || content_features(n_plus_y).energy_type != CET_NONE)
-				y_plus = true;
-			// +X
-			if (
-				content_features(n_plus_x).energy_type == CET_NONE
-				&& content_features(n_plus_x).flammable != 2
-			) {
-				if (
-					y_plus
-					&& (
-						content_features(n_plus_x).draw_type == CDT_CUBELIKE
-						|| content_features(n_plus_x).draw_type == CDT_GLASSLIKE
-					)
-				) {
-					if (content_features(n_plus_xy).energy_type != CET_NONE) {
-						x_plus_y = true;
-						x_plus = true;
-					}
-				}else if (
-					n_plus_x.getContent() == CONTENT_AIR
-					&& content_features(n_plus_x_y).energy_type != CET_NONE
-				) {
-					x_plus = true;
-				}
-			}else{
-				x_plus = true;
-			}
-			// -X
-			if (content_features(n_minus_x).energy_type == CET_NONE && content_features(n_minus_x).flammable != 2) {
-				if (
-					y_plus
-					&& (
-						content_features(n_minus_x).draw_type == CDT_CUBELIKE
-						|| content_features(n_minus_x).draw_type == CDT_GLASSLIKE
-					)
-				) {
-					if (content_features(n_minus_xy).energy_type != CET_NONE) {
-						x_minus_y = true;
-						x_minus = true;
-					}
-				}else if (
-					n_minus_x.getContent() == CONTENT_AIR
-					&& content_features(n_minus_x_y).energy_type != CET_NONE
-				) {
-					x_minus = true;
-				}
-			}else{
-				x_minus = true;
-			}
-			// +Z
-			if (
-				content_features(n_plus_z).energy_type == CET_NONE
-				&& content_features(n_plus_z).flammable != 2
-			) {
-				if (
-					y_plus
-					&& (
-						content_features(n_plus_z).draw_type == CDT_CUBELIKE
-						|| content_features(n_plus_z).draw_type == CDT_GLASSLIKE
-					)
-				) {
-					if (content_features(n_plus_zy).energy_type != CET_NONE) {
-						z_plus_y = true;
-						z_plus = true;
-					}
-				}else if (
-					n_plus_z.getContent() == CONTENT_AIR
-					&& content_features(n_plus_z_y).energy_type != CET_NONE
-				) {
-					z_plus = true;
-				}
-			}else{
-				z_plus = true;
-			}
-			// -Z
-			if (
-				content_features(n_minus_z).energy_type == CET_NONE
-				&& content_features(n_minus_z).flammable != 2
-			) {
-				if (
-					y_plus
-					&& (
-						content_features(n_minus_z).draw_type == CDT_CUBELIKE
-						|| content_features(n_minus_z).draw_type == CDT_GLASSLIKE
-					)
-				) {
-					if (content_features(n_minus_zy).energy_type != CET_NONE) {
-						z_minus_y = true;
-						z_minus = true;
-					}
-				}else if (
-					n_minus_z.getContent() == CONTENT_AIR
-					&& content_features(n_minus_z_y).energy_type != CET_NONE
-				) {
-					z_minus = true;
-				}
-			}else{
-				z_minus = true;
-			}
-			TileSpec tile = getNodeTile(n,p,v3s16(0,0,0),data->m_temp_mods);
-			video::SColor c;
-			if (selected) {
-				c = video::SColor(255,64,64,255);
-			}else{
-				NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+blockpos_nodes);
-				if (meta && meta->getEnergy()) {
-					u8 e = meta->getEnergy();
-					e = (e*16)-1;
-					if (e < 80)
-						e = 80;
-					c = video::SColor(255,e,e,e);
-				}else{
-					c = video::SColor(250,64,64,64);
-				}
-			}
-			f32 sy = tile.texture.y1()-tile.texture.y0();
-			if (!x_plus && !x_minus && !z_plus && !z_minus) {
-				{
-					video::S3DVertex vertices[4] = {
-						video::S3DVertex(-BS/2,-0.49*BS,BS/2, 0,0,0, c,
-							tile.texture.x0(), tile.texture.y0()),
-						video::S3DVertex(BS/2,-0.49*BS,BS/2, 0,0,0, c,
-							tile.texture.x0(), tile.texture.y1()),
-						video::S3DVertex(BS/2,-0.49*BS,-BS/2, 0,0,0, c,
-							tile.texture.x1(), tile.texture.y1()),
-						video::S3DVertex(-BS/2,-0.49*BS,-BS/2, 0,0,0, c,
-							tile.texture.x1(), tile.texture.y0()),
-					};
-					for (u16 i=0; i<4; i++) {
-						vertices[i].Pos += intToFloat(p, BS);
-					}
-					u16 indices[] = {0,1,2,2,3,0};
-					// Add to mesh collector
-					collector.append(tile.getMaterial(), vertices, 4, indices, 6);
-				}
-				{
-					video::S3DVertex vertices[4] = {
-						video::S3DVertex(-BS/2,-0.49*BS,BS/2, 0,0,0, c,
-							tile.texture.x0(), tile.texture.y1()),
-						video::S3DVertex(BS/2,-0.49*BS,BS/2, 0,0,0, c,
-							tile.texture.x1(), tile.texture.y1()),
-						video::S3DVertex(BS/2,-0.49*BS,-BS/2, 0,0,0, c,
-							tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(-BS/2,-0.49*BS,-BS/2, 0,0,0, c,
-							tile.texture.x0(), tile.texture.y0()),
-					};
-					for (u16 i=0; i<4; i++) {
-						vertices[i].Pos += intToFloat(p, BS);
-					}
-					u16 indices[] = {0,1,2,2,3,0};
-					// Add to mesh collector
-					collector.append(tile.getMaterial(), vertices, 4, indices, 6);
-				}
-			}else{
-				if (x_plus) {
-					video::S3DVertex vertices[4] = {
-						video::S3DVertex(0,-0.49*BS,BS/2, 0,0,0, c,
-							tile.texture.x0(), tile.texture.y0()+(sy/2)),
-						video::S3DVertex(BS/2,-0.49*BS,BS/2, 0,0,0, c,
-							tile.texture.x0(), tile.texture.y1()),
-						video::S3DVertex(BS/2,-0.49*BS,-BS/2, 0,0,0, c,
-							tile.texture.x1(), tile.texture.y1()),
-						video::S3DVertex(0,-0.49*BS,-BS/2, 0,0,0, c,
-							tile.texture.x1(), tile.texture.y0()+(sy/2)),
-					};
-					for (u16 i=0; i<4; i++) {
-						vertices[i].Pos += intToFloat(p, BS);
-					}
-					u16 indices[] = {0,1,2,2,3,0};
-					// Add to mesh collector
-					collector.append(tile.getMaterial(), vertices, 4, indices, 6);
-				}
-				if (x_minus) {
-					video::S3DVertex vertices[4] = {
-						video::S3DVertex(-BS/2,-0.49*BS,BS/2, 0,0,0, c,
-							tile.texture.x0(), tile.texture.y0()),
-						video::S3DVertex(0,-0.49*BS,BS/2, 0,0,0, c,
-							tile.texture.x0(), tile.texture.y1()-(sy/2)),
-						video::S3DVertex(0,-0.49*BS,-BS/2, 0,0,0, c,
-							tile.texture.x1(), tile.texture.y1()-(sy/2)),
-						video::S3DVertex(-BS/2,-0.49*BS,-BS/2, 0,0,0, c,
-							tile.texture.x1(), tile.texture.y0()),
-					};
-					for (u16 i=0; i<4; i++) {
-						vertices[i].Pos += intToFloat(p, BS);
-					}
-					u16 indices[] = {0,1,2,2,3,0};
-					// Add to mesh collector
-					collector.append(tile.getMaterial(), vertices, 4, indices, 6);
-				}
-				if (z_plus) {
-					video::S3DVertex vertices[4] = {
-						video::S3DVertex(-BS/2,-0.49*BS,BS/2, 0,0,0, c,
-							tile.texture.x0(), tile.texture.y1()),
-						video::S3DVertex(BS/2,-0.49*BS,BS/2, 0,0,0, c,
-							tile.texture.x1(), tile.texture.y1()),
-						video::S3DVertex(BS/2,-0.49*BS,0, 0,0,0, c,
-							tile.texture.x1(), tile.texture.y0()+(sy/2)),
-						video::S3DVertex(-BS/2,-0.49*BS,0, 0,0,0, c,
-							tile.texture.x0(), tile.texture.y0()+(sy/2)),
-					};
-					for (u16 i=0; i<4; i++) {
-						vertices[i].Pos += intToFloat(p, BS);
-					}
-					u16 indices[] = {0,1,2,2,3,0};
-					// Add to mesh collector
-					collector.append(tile.getMaterial(), vertices, 4, indices, 6);
-				}
-				if (z_minus) {
-					video::S3DVertex vertices[4] = {
-						video::S3DVertex(-BS/2,-0.49*BS,0, 0,0,0, c,
-							tile.texture.x0(), tile.texture.y1()-(sy/2)),
-						video::S3DVertex(BS/2,-0.49*BS,0, 0,0,0, c,
-							tile.texture.x1(), tile.texture.y1()-(sy/2)),
-						video::S3DVertex(BS/2,-0.49*BS,-BS/2, 0,0,0, c,
-							tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(-BS/2,-0.49*BS,-BS/2, 0,0,0, c,
-							tile.texture.x0(), tile.texture.y0()),
-					};
-					for (u16 i=0; i<4; i++) {
-						vertices[i].Pos += intToFloat(p, BS);
-					}
-					u16 indices[] = {0,1,2,2,3,0};
-					// Add to mesh collector
-					collector.append(tile.getMaterial(), vertices, 4, indices, 6);
-				}
-				if (x_plus_y) {
-					video::S3DVertex vertices[4] = {
-						video::S3DVertex(0.49*BS,-BS/2,-BS/2, 0,0,0, c,
-							tile.texture.x0(), tile.texture.y1()),
-						video::S3DVertex(0.49*BS,-BS/2,BS/2, 0,0,0, c,
-							tile.texture.x1(), tile.texture.y1()),
-						video::S3DVertex(0.49*BS,BS/2,BS/2, 0,0,0, c,
-							tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(0.49*BS,BS/2,-BS/2, 0,0,0, c,
-							tile.texture.x0(), tile.texture.y0()),
-					};
-					for (u16 i=0; i<4; i++) {
-						vertices[i].Pos += intToFloat(p, BS);
-					}
-					u16 indices[] = {0,1,2,2,3,0};
-					// Add to mesh collector
-					collector.append(tile.getMaterial(), vertices, 4, indices, 6);
-				}
-				if (x_minus_y) {
-					video::S3DVertex vertices[4] = {
-						video::S3DVertex(-0.49*BS,-BS/2,BS/2, 0,0,0, c,
-							tile.texture.x0(), tile.texture.y1()),
-						video::S3DVertex(-0.49*BS,-BS/2,-BS/2, 0,0,0, c,
-							tile.texture.x1(), tile.texture.y1()),
-						video::S3DVertex(-0.49*BS,BS/2,-BS/2, 0,0,0, c,
-							tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(-0.49*BS,BS/2,BS/2, 0,0,0, c,
-							tile.texture.x0(), tile.texture.y0()),
-					};
-					for (u16 i=0; i<4; i++) {
-						vertices[i].Pos += intToFloat(p, BS);
-					}
-					u16 indices[] = {0,1,2,2,3,0};
-					// Add to mesh collector
-					collector.append(tile.getMaterial(), vertices, 4, indices, 6);
-				}
-				if (z_plus_y) {
-					video::S3DVertex vertices[4] = {
-						video::S3DVertex(BS/2,-BS/2,0.49*BS, 0,0,0, c,
-							tile.texture.x0(), tile.texture.y1()),
-						video::S3DVertex(-BS/2,-BS/2,0.49*BS, 0,0,0, c,
-							tile.texture.x1(), tile.texture.y1()),
-						video::S3DVertex(-BS/2,BS/2,0.49*BS, 0,0,0, c,
-							tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(BS/2,BS/2,0.49*BS, 0,0,0, c,
-							tile.texture.x0(), tile.texture.y0()),
-					};
-					for (u16 i=0; i<4; i++) {
-						vertices[i].Pos += intToFloat(p, BS);
-					}
-					u16 indices[] = {0,1,2,2,3,0};
-					// Add to mesh collector
-					collector.append(tile.getMaterial(), vertices, 4, indices, 6);
-				}
-				if (z_minus_y) {
-					video::S3DVertex vertices[4] = {
-						video::S3DVertex(-BS/2,-BS/2,-0.49*BS, 0,0,0, c,
-							tile.texture.x0(), tile.texture.y1()),
-						video::S3DVertex(BS/2,-BS/2,-0.49*BS, 0,0,0, c,
-							tile.texture.x1(), tile.texture.y1()),
-						video::S3DVertex(BS/2,BS/2,-0.49*BS, 0,0,0, c,
-							tile.texture.x1(), tile.texture.y0()),
-						video::S3DVertex(-BS/2,BS/2,-0.49*BS, 0,0,0, c,
-							tile.texture.x0(), tile.texture.y0()),
-					};
-					for (u16 i=0; i<4; i++) {
-						vertices[i].Pos += intToFloat(p, BS);
-					}
-					u16 indices[] = {0,1,2,2,3,0};
-					// Add to mesh collector
-					collector.append(tile.getMaterial(), vertices, 4, indices, 6);
-				}
-			}
-		}
-		break;
 		case CDT_3DWIRELIKE:
 		{
 			MapNode n_plus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y+1,z));
@@ -3095,898 +1844,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			}
 		}
 		break;
-		case CDT_PLANTLIKE_LGE:
-		{
-			MapNode n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p + v3s16(0,1,0));
-			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
-			video::SColor c = MapBlock_LightColor(255, l, selected);
-			f32 tuv[4] = {
-				content_features(n).tiles[0].texture.x0(),
-				content_features(n).tiles[0].texture.x1(),
-				content_features(n).tiles[0].texture.y0(),
-				content_features(n).tiles[0].texture.y1()
-			};
-			f32 h = 1;
-			if (
-				content_features(n2).draw_type == CDT_PLANTLIKE_LGE
-				|| content_features(n2).draw_type == CDT_PLANTLIKE
-				|| content_features(n2).draw_type == CDT_PLANTLIKE_SML
-			) {
-				tuv[2] = (0.333*content_features(n).tiles[0].texture.size.Y)+content_features(n).tiles[0].texture.y0();
-				h = 2;
-			}
-			v3f offset(0,0,0);
-			n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p + v3s16(0,-1,0));
-			if (n2.getContent() == CONTENT_FLOWER_POT) {
-				offset = v3f(0,-0.25*BS,0);
-				if (h == 2) {
-					tuv[2] = (0.16*content_features(n).tiles[0].texture.size.Y)+content_features(n).tiles[0].texture.y0();
-					h = 1.333;
-				}
-			}
-			video::S3DVertex base_vertices[4] = {
-				base_vertices[0] = video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,tuv[0], tuv[3]),
-				base_vertices[1] = video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,tuv[1], tuv[3]),
-				base_vertices[2] = video::S3DVertex(BS/2,BS/h,0, 0,0,0, c,tuv[1], tuv[2]),
-				base_vertices[3] = video::S3DVertex(-BS/2,BS/h,0, 0,0,0, c,tuv[0], tuv[2])
-			};
-			for (u32 j=0; j<2; j++) {
-				video::S3DVertex vertices[4] = {
-					base_vertices[0],
-					base_vertices[1],
-					base_vertices[2],
-					base_vertices[3]
-				};
-
-				s16 angle = 45;
-				if (j == 1)
-					angle = -45;
-
-				for (u16 i=0; i<4; i++) {
-					vertices[i].Pos.rotateXZBy(angle);
-					vertices[i].Pos.X *= 1.3;
-					vertices[i].Pos += offset+intToFloat(p, BS);
-				}
-
-				u16 indices[] = {0,1,2,2,3,0};
-				// Add to mesh collector
-				collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
-			}
-		}
-		break;
-		case CDT_PLANTLIKE:
-		{
-			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
-			video::SColor c = MapBlock_LightColor(255, l, selected);
-			MapNode n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p + v3s16(0,-1,0));
-			v3f offset(0,0,0);
-			if (n2.getContent() == CONTENT_FLOWER_POT)
-				offset = v3f(0,-0.25*BS,0);
-
-			for (u32 j=0; j<2; j++) {
-				video::S3DVertex vertices[4] = {
-					video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,BS/2,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
-					video::S3DVertex(-BS/2,BS/2,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
-				};
-
-				s16 angle = 45;
-				if (j == 1)
-					angle = -45;
-
-				for (u16 i=0; i<4; i++) {
-					vertices[i].Pos.rotateXZBy(angle);
-					vertices[i].Pos += offset+intToFloat(p, BS);
-				}
-
-				u16 indices[] = {0,1,2,2,3,0};
-				// Add to mesh collector
-				collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
-			}
-		}
-		break;
-		case CDT_PLANTLIKE_SML:
-		{
-			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
-			video::SColor c = MapBlock_LightColor(255, l, selected);
-			MapNode n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p + v3s16(0,-1,0));
-			v3f offset(0,0,0);
-			if (n2.getContent() == CONTENT_FLOWER_POT)
-				offset = v3f(0,-0.25*BS,0);
-
-			for (u32 j=0; j<2; j++) {
-				video::S3DVertex vertices[4] = {
-					video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,BS/2,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y0()),
-					video::S3DVertex(-BS/2,BS/2,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y0()),
-				};
-
-				s16 angle = 45;
-				if (j == 1)
-					angle = -45;
-
-				for (u16 i=0; i<4; i++) {
-					vertices[i].Pos.rotateXZBy(angle);
-					vertices[i].Pos *= 0.8;
-					vertices[i].Pos += offset+intToFloat(p, BS);
-				}
-
-				u16 indices[] = {0,1,2,2,3,0};
-				// Add to mesh collector
-				collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
-			}
-		}
-		break;
-		case CDT_PLANTGROWTH_1:
-		{
-			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
-			video::SColor c = MapBlock_LightColor(255, l, selected);
-			f32 h = (0.75*content_features(n).tiles[0].texture.size.Y)+content_features(n).tiles[0].texture.y0();
-			MapNode n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p + v3s16(0,-1,0));
-			v3f offset(0,0,0);
-			if (n2.getContent() == CONTENT_FLOWER_POT)
-				offset = v3f(0,-0.25*BS,0);
-
-			for (u32 j=0; j<2; j++) {
-				video::S3DVertex vertices[4] = {
-					video::S3DVertex(-BS/2,-0.5*BS,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,-0.5*BS,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,-0.25*BS,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x1(), h),
-					video::S3DVertex(-BS/2,-0.25*BS,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x0(), h),
-				};
-
-				s16 angle = 45;
-				if (j == 1)
-					angle = -45;
-
-				for (u16 i=0; i<4; i++) {
-					vertices[i].Pos.rotateXZBy(angle);
-					vertices[i].Pos += offset+intToFloat(p, BS);
-				}
-
-				u16 indices[] = {0,1,2,2,3,0};
-				// Add to mesh collector
-				collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
-			}
-		}
-		break;
-		case CDT_PLANTGROWTH_2:
-		{
-			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
-			video::SColor c = MapBlock_LightColor(255, l, selected);
-			f32 h = (0.5*content_features(n).tiles[0].texture.size.Y)+content_features(n).tiles[0].texture.y0();
-			MapNode n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p + v3s16(0,-1,0));
-			v3f offset(0,0,0);
-			if (n2.getContent() == CONTENT_FLOWER_POT)
-				offset = v3f(0,-0.25*BS,0);
-
-			for (u32 j=0; j<2; j++) {
-				video::S3DVertex vertices[4] = {
-					video::S3DVertex(-BS/2,-BS/2,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,-BS/2,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,0,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x1(), h),
-					video::S3DVertex(-BS/2,0,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x0(), h),
-				};
-
-				s16 angle = 45;
-				if (j == 1)
-					angle = -45;
-
-				for (u16 i=0; i<4; i++) {
-					vertices[i].Pos.rotateXZBy(angle);
-					vertices[i].Pos += offset+intToFloat(p, BS);
-				}
-
-				u16 indices[] = {0,1,2,2,3,0};
-				// Add to mesh collector
-				collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
-			}
-		}
-		break;
-		case CDT_PLANTGROWTH_3:
-		{
-			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
-			video::SColor c = MapBlock_LightColor(255, l, selected);
-			f32 h = (0.25*content_features(n).tiles[0].texture.size.Y)+content_features(n).tiles[0].texture.y0();
-			MapNode n2 = data->m_vmanip.getNodeRO(blockpos_nodes + p + v3s16(0,-1,0));
-			v3f offset(0,0,0);
-			if (n2.getContent() == CONTENT_FLOWER_POT)
-				offset = v3f(0,-0.25*BS,0);
-
-			for (u32 j=0; j<2; j++) {
-				video::S3DVertex vertices[4] = {
-					video::S3DVertex(-BS/2,-0.5*BS,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x0(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,-0.5*BS,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x1(), content_features(n).tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,0.25*BS,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x1(), h),
-					video::S3DVertex(-BS/2,0.25*BS,0, 0,0,0, c,
-						content_features(n).tiles[0].texture.x0(), h),
-				};
-
-				s16 angle = 45;
-				if (j == 1)
-					angle = -45;
-
-				for (u16 i=0; i<4; i++) {
-					vertices[i].Pos.rotateXZBy(angle);
-					vertices[i].Pos += offset+intToFloat(p, BS);
-				}
-
-				u16 indices[] = {0,1,2,2,3,0};
-				// Add to mesh collector
-				collector.append(content_features(n).tiles[0].getMaterial(), vertices, 4, indices, 6);
-			}
-		}
-		break;
-		case CDT_FIRELIKE:
-		{
-			TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),data->m_temp_mods);
-			u8 l = decode_light(undiminish_light(n.getLightBlend(data->m_daynight_ratio)));
-			video::SColor c = MapBlock_LightColor(255, l, selected);
-			content_t current = n.getContent();
-			content_t n2c;
-			MapNode n2;
-			v3s16 n2p;
-			static const v3s16 dirs[6] = {
-				v3s16( 0, 1, 0),
-				v3s16( 0,-1, 0),
-				v3s16( 1, 0, 0),
-				v3s16(-1, 0, 0),
-				v3s16( 0, 0, 1),
-				v3s16( 0, 0,-1)
-			};
-			int doDraw[6] = {0,0,0,0,0,0};
-			int i;
-			// Draw the full flame even if there are no surrounding nodes
-			bool drawAllFaces = true;
-			// Check for adjacent nodes
-			for (i = 0; i < 6; i++) {
-				n2p = blockpos_nodes + p + dirs[i];
-				n2 = data->m_vmanip.getNodeRO(n2p);
-				n2c = n2.getContent();
-				if (n2c != CONTENT_IGNORE && n2c != CONTENT_AIR && n2c != current) {
-					doDraw[i] = 1;
-					drawAllFaces = false;
-				}
-			}
-			for (u32 j=0; j<4; j++) {
-				video::S3DVertex vertices[4] = {
-					video::S3DVertex(-0.5*BS,-0.5*BS,0.369*BS, 0,0,0, c, tile.texture.x0(), tile.texture.y1()),
-					video::S3DVertex(0.5*BS,-0.5*BS,0.369*BS, 0,0,0, c, tile.texture.x1(), tile.texture.y1()),
-					video::S3DVertex(0.5*BS,0.5*BS,0.369*BS, 0,0,0, c, tile.texture.x1(), tile.texture.y0()),
-					video::S3DVertex(-0.5*BS,0.5*BS,0.369*BS, 0,0,0, c, tile.texture.x0(), tile.texture.y0())
-				};
-				int vOffset = 1; // Vertical offset of faces after rotation
-				// Calculate which faces should be drawn
-				if(j == 0 && (drawAllFaces || (doDraw[3] == 1 || doDraw[1] == 1))) {
-					for(u16 i=0; i<4; i++) {
-						vertices[i].Pos.rotateXZBy(90);
-						vertices[i].Pos.rotateXYBy(-15);
-						vertices[i].Pos.Y -= vOffset;
-					}
-				}else if(j == 1 && (drawAllFaces || (doDraw[5] == 1 || doDraw[1] == 1))) {
-					for(u16 i=0; i<4; i++) {
-						vertices[i].Pos.rotateXZBy(180);
-						vertices[i].Pos.rotateYZBy(15);
-						vertices[i].Pos.Y -= vOffset;
-					}
-				}else if(j == 2 && (drawAllFaces || (doDraw[2] == 1 || doDraw[1] == 1))) {
-					for(u16 i=0; i<4; i++) {
-						vertices[i].Pos.rotateXZBy(270);
-						vertices[i].Pos.rotateXYBy(15);
-						vertices[i].Pos.Y -= vOffset;
-					}
-				}else if(j == 3 && (drawAllFaces || (doDraw[4] == 1 || doDraw[1] == 1))) {
-					for(u16 i=0; i<4; i++) {
-						vertices[i].Pos.rotateYZBy(-15);
-						vertices[i].Pos.Y -= vOffset;
-					}
-				}else if(j == 3 && (drawAllFaces || (doDraw[0] == 1 && doDraw[1] == 0))) {
-					for(u16 i=0; i<4; i++) {
-						vertices[i].Pos.rotateYZBy(-90);
-						vertices[i].Pos.Y += vOffset;
-					}
-				}else{
-					// Skip faces that aren't adjacent to a node
-					continue;
-				}
-				for (u16 i=0; i<4; i++) {
-					vertices[i].Pos += intToFloat(p, BS);
-				}
-				u16 indices[] = {0,1,2,2,3,0};
-				// Add to mesh collector
-				collector.append(tile.getMaterial(), vertices, 4, indices, 6);
-			}
-		}
-		break;
-		case CDT_STAIRLIKE:
-		{
-			static const v3s16 tile_dirs[6] = {
-				v3s16(0, 1, 0),
-				v3s16(0, -1, 0),
-				v3s16(1, 0, 0),
-				v3s16(-1, 0, 0),
-				v3s16(0, 0, 1),
-				v3s16(0, 0, -1)
-			};
-			v3f pos = intToFloat(p, BS);
-			s16 rot = n.getRotationAngle();
-
-			// remove rotation from the node, we'll do it ourselves
-			{
-				content_t c = n.getContent();
-				n.param1 = 0;
-				n.setContent(c);
-			}
-
-			TileSpec tiles[6];
-			NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+blockpos_nodes);
-			for (int i=0; i<6; i++) {
-				// Handles facedir rotation for textures
-				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods,meta);
-			}
-			video::SColor c[14];
-			getLights(blockpos_nodes+p,c,data,smooth_lighting);
-			// need to unrotate the lights, as we apply them before rotation
-			if (rot == -90) {
-				video::SColor col = c[0];
-				c[0] = c[1];
-				c[1] = c[2];
-				c[2] = c[3];
-				c[3] = col;
-				col = c[4];
-				c[4] = c[7];
-				c[7] = c[6];
-				c[6] = c[5];
-				c[5] = col;
-			}else if (rot == 90) {
-				video::SColor col = c[0];
-				c[0] = c[3];
-				c[3] = c[2];
-				c[2] = c[1];
-				c[1] = col;
-				col = c[4];
-				c[4] = c[5];
-				c[5] = c[6];
-				c[6] = c[7];
-				c[7] = col;
-			}else if (rot == 180) {
-				video::SColor col = c[0];
-				c[0] = c[2];
-				c[2] = col;
-				col = c[3];
-				c[3] = c[1];
-				c[1] = col;
-				col = c[4];
-				c[4] = c[6];
-				c[6] = col;
-				col = c[5];
-				c[5] = c[7];
-				c[7] = col;
-			}
-
-			bool urot = (n.getContent() >= CONTENT_SLAB_STAIR_UD_MIN && n.getContent() <= CONTENT_SLAB_STAIR_UD_MAX);
-			// flip lighting
-			if (urot) {
-				video::SColor col = c[0];
-				c[0] = c[6];
-				c[6] = col;
-				col = c[1];
-				c[1] = c[7];
-				c[7] = col;
-				col = c[2];
-				c[2] = c[4];
-				c[4] = col;
-				col = c[3];
-				c[3] = c[5];
-				c[5] = col;
-				col = c[8];
-				c[8] = c[9];
-				c[9] = col;
-				col = c[10];
-				c[10] = c[11];
-				c[11] = col;
-			}
-
-			video::S3DVertex vertices[6][16] = {
-				{ // up
-					video::S3DVertex(-0.5*BS,0.5*BS,0.5*BS, 0,1,0, c[0], 0.,0.),
-					video::S3DVertex(0.5*BS,0.5*BS,0.5*BS, 0,1,0, c[1], 1.,0.),
-					video::S3DVertex(0.5*BS,0.5*BS,0.25*BS, 0,1,0, c[2], 1.,0.25),
-					video::S3DVertex(-0.5*BS,0.5*BS,0.25*BS, 0,1,0, c[3], 0.,0.25),
-
-					video::S3DVertex(-0.5*BS,0.25*BS,0.25*BS, 0,1,0, c[8], 0.,0.25),
-					video::S3DVertex(0.5*BS,0.25*BS,0.25*BS, 0,1,0, c[8], 1.,0.25),
-					video::S3DVertex(0.5*BS,0.25*BS,0., 0,1,0, c[8], 1.,0.5),
-					video::S3DVertex(-0.5*BS,0.25*BS,0., 0,1,0, c[8], 0.,0.5),
-
-					video::S3DVertex(-0.5*BS,0.,0., 0,1,0, c[8], 0.,0.5),
-					video::S3DVertex(0.5*BS,0.,0., 0,1,0, c[8], 1.,0.5),
-					video::S3DVertex(0.5*BS,0.,-0.25*BS, 0,1,0, c[8], 1.,0.75),
-					video::S3DVertex(-0.5*BS,0.,-0.25*BS, 0,1,0, c[8], 0.,0.75),
-
-					video::S3DVertex(-0.5*BS,-0.25*BS,-0.25*BS, 0,1,0, c[8], 0.,0.75),
-					video::S3DVertex(0.5*BS,-0.25*BS,-0.25*BS, 0,1,0, c[8], 1.,0.75),
-					video::S3DVertex(0.5*BS,-0.25*BS,-0.5*BS, 0,1,0, c[8], 1.,1.),
-					video::S3DVertex(-0.5*BS,-0.25*BS,-0.5*BS, 0,1,0, c[8], 0.,1.)
-				},{ // down
-					video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,-1,0, c[4], 0.,0.),
-					video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 0,-1,0, c[5], 1.,0.),
-					video::S3DVertex(0.5*BS,-0.5*BS,0.5*BS, 0,-1,0, c[6], 1.,1.),
-					video::S3DVertex(-0.5*BS,-0.5*BS,0.5*BS, 0,-1,0, c[7], 0.,1.)
-				},{ // right
-					video::S3DVertex(0.5*BS,0.5*BS,0.5*BS, 1,0,0, c[1], 1.,0.),
-					video::S3DVertex(0.5*BS,-0.5*BS,0.5*BS, 1,0,0, c[6], 1.,1.),
-					video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 1,0,0, c[5], 0.,1.),
-
-					video::S3DVertex(0.5*BS,0.5*BS,0.5*BS, 1,0,0, c[1], 1.,0.),
-					video::S3DVertex(0.5*BS,0.25*BS,0.25*BS, 1,0,0, c[1], 0.75,0.25),
-					video::S3DVertex(0.5*BS,0.5*BS,0.25*BS, 1,0,0, c[2], 0.75,0.),
-
-					video::S3DVertex(0.5*BS,0.25*BS,0.25*BS, 1,0,0, c[1], 0.75,0.25),
-					video::S3DVertex(0.5*BS,0.,0., 1,0,0, c[1], 0.5,0.5),
-					video::S3DVertex(0.5*BS,0.25*BS,0., 1,0,0, c[2], 0.5,0.25),
-
-					video::S3DVertex(0.5*BS,0.,0., 1,0,0, c[1], 0.5,0.5),
-					video::S3DVertex(0.5*BS,-0.25*BS,-0.25*BS, 1,0,0, c[1], 0.25,0.75),
-					video::S3DVertex(0.5*BS,0.,-0.25*BS, 1,0,0, c[2], 0.5,0.75),
-
-					video::S3DVertex(0.5*BS,-0.25*BS,-0.25*BS, 1,0,0, c[1], 0.25,0.75),
-					video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 1,0,0, c[1], 0.,1.),
-					video::S3DVertex(0.5*BS,-0.25*BS,-0.5*BS, 1,0,0, c[2], 0.,0.75)
-				},{ // left
-					video::S3DVertex(-0.5*BS,0.5*BS,0.5*BS, -1,0,0, c[0], 0.,0.),
-					video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, -1,0,0, c[4], 1.,1.),
-					video::S3DVertex(-0.5*BS,-0.5*BS,0.5*BS, -1,0,0, c[7], 0.,1.),
-
-					video::S3DVertex(-0.5*BS,0.5*BS,0.5*BS, -1,0,0, c[0], 0.,0.),
-					video::S3DVertex(-0.5*BS,0.5*BS,0.25*BS, -1,0,0, c[3], 0.25,0.),
-					video::S3DVertex(-0.5*BS,0.25*BS,0.25*BS, -1,0,0, c[3], 0.25,0.25),
-
-					video::S3DVertex(-0.5*BS,0.25*BS,0.25*BS, -1,0,0, c[0], 0.25,0.25),
-					video::S3DVertex(-0.5*BS,0.25*BS,0., -1,0,0, c[3], 0.5,0.25),
-					video::S3DVertex(-0.5*BS,0.,0., -1,0,0, c[3], 0.5,0.5),
-
-					video::S3DVertex(-0.5*BS,0.,0., -1,0,0, c[0], 0.5,0.5),
-					video::S3DVertex(-0.5*BS,0.,-0.25*BS, -1,0,0, c[3], 0.75,0.5),
-					video::S3DVertex(-0.5*BS,-0.25*BS,-0.25*BS, -1,0,0, c[3], 0.75,0.75),
-
-					video::S3DVertex(-0.5*BS,-0.25*BS,-0.25*BS, -1,0,0, c[0], 0.75,0.75),
-					video::S3DVertex(-0.5*BS,-0.25*BS,-0.5*BS, -1,0,0, c[3], 1.,0.75),
-					video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, -1,0,0, c[3], 1.,1.)
-				},{ // back
-					video::S3DVertex(0.5*BS,0.5*BS,0.5*BS, 0,0,1, c[1], 0.,0.),
-					video::S3DVertex(-0.5*BS,0.5*BS,0.5*BS, 0,0,1, c[0], 1.,0.),
-					video::S3DVertex(-0.5*BS,-0.5*BS,0.5*BS, 0,0,1, c[7], 1.,1.),
-					video::S3DVertex(0.5*BS,-0.5*BS,0.5*BS, 0,0,1, c[6], 0.,1.)
-				},{ // front
-					video::S3DVertex(-0.5*BS,0.5*BS,0.25*BS, 0,0,-1, c[13], 0.,0.),
-					video::S3DVertex(0.5*BS,0.5*BS,0.25*BS, 0,0,-1, c[13], 1.,0.),
-					video::S3DVertex(0.5*BS,0.25*BS,0.25*BS, 0,0,-1, c[13], 1.,0.25),
-					video::S3DVertex(-0.5*BS,0.25*BS,0.25*BS, 0,0,-1, c[13], 0.,0.25),
-
-					video::S3DVertex(-0.5*BS,0.25*BS,0., 0,0,-1, c[13], 0.,0.25),
-					video::S3DVertex(0.5*BS,0.25*BS,0., 0,0,-1, c[13], 1.,0.25),
-					video::S3DVertex(0.5*BS,0.,0., 0,0,-1, c[13], 1.,0.5),
-					video::S3DVertex(-0.5*BS,0.,0., 0,0,-1, c[13], 0.,0.5),
-
-					video::S3DVertex(-0.5*BS,0.,-0.25*BS, 0,0,-1, c[13], 0.,0.5),
-					video::S3DVertex(0.5*BS,0.,-0.25*BS, 0,0,-1, c[13], 1.,0.5),
-					video::S3DVertex(0.5*BS,-0.25*BS,-0.25*BS, 0,0,-1, c[13], 1.,0.75),
-					video::S3DVertex(-0.5*BS,-0.25*BS,-0.25*BS, 0,0,-1, c[13], 0.,0.75),
-
-					video::S3DVertex(-0.5*BS,-0.25*BS,-0.5*BS, 0,0,-1, c[13], 0.,0.75),
-					video::S3DVertex(0.5*BS,-0.25*BS,-0.5*BS, 0,0,-1, c[13], 1.,0.75),
-					video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 0,0,-1, c[13], 1.,1.),
-					video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,-1, c[13], 0.,1.)
-				}
-			};
-
-			u16 indices[6][24] = {
-				{ // up
-					0,1,2,2,3,0,
-					4,5,6,6,7,4,
-					8,9,10,10,11,8,
-					12,13,14,14,15,12
-				},{ // down
-					0,1,2,2,3,0
-				},{ // right
-					0,1,2,3,4,5,6,7,8,9,10,11,12,13,14
-				},{ // left
-					0,1,2,3,4,5,6,7,8,9,10,11,12,13,14
-				},{ // back
-					0,1,2,2,3,0
-				},{ // front
-					0,1,2,2,3,0,
-					4,5,6,6,7,4,
-					8,9,10,10,11,8,
-					12,13,14,14,15,12
-				}
-			};
-			v3s16 back(0,0,1);
-			v3s16 front(0,0,-1);
-			v3s16 left(-1,0,0);
-			v3s16 right(1,0,0);
-			back.rotateXZBy(rot);
-			front.rotateXZBy(rot);
-			left.rotateXZBy(rot);
-			right.rotateXZBy(rot);
-			if (urot) {
-				v3s16 r = left;
-				left = right;
-				right = r;
-			}
-			MapNode nb = data->m_vmanip.getNodeRO(blockpos_nodes + p + back);
-			MapNode nf = data->m_vmanip.getNodeRO(blockpos_nodes + p + front);
-			MapNode nl = data->m_vmanip.getNodeRO(blockpos_nodes + p + left);
-			MapNode nr = data->m_vmanip.getNodeRO(blockpos_nodes + p + right);
-			s16 vcounts[6] = {16,4,15,15,4,16};
-			s16 icounts[6] = {24,6,15,15,6,24};
-			bool force_sides = false;
-			if (
-				content_features(nf).draw_type == CDT_SLABLIKE
-				|| (
-					content_features(nf).draw_type == CDT_STAIRLIKE
-					&& (
-						content_features(nl).draw_type == CDT_SLABLIKE
-						|| content_features(nl).draw_type == CDT_STAIRLIKE
-					) && (
-						content_features(nr).draw_type == CDT_SLABLIKE
-						|| content_features(nr).draw_type == CDT_STAIRLIKE
-					)
-				)
-			) {
-				// slab connection
-				vcounts[0] = 12;
-				icounts[0] = 18;
-				vertices[0][8] = video::S3DVertex(-0.5*BS,0.,0., 0,1,0, c[8], 0.,0.5);
-				vertices[0][9] = video::S3DVertex(0.5*BS,0.,0., 0,1,0, c[8], 1.,0.5),
-				vertices[0][10] = video::S3DVertex(0.5*BS,0.,-0.5*BS, 0,1,0, c[8], 1.,1.0),
-				vertices[0][11] = video::S3DVertex(-0.5*BS,0.,-0.5*BS, 0,1,0, c[8], 0.,1.0),
-
-				vcounts[2] = 12;
-				icounts[2] = 12;
-				vertices[2][9] = video::S3DVertex(0.5*BS,0.,0., 1,0,0, c[1], 0.5,0.5);
-				vertices[2][10] = video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 1,0,0, c[1], 0.,1.);
-				vertices[2][11] = video::S3DVertex(0.5*BS,0.,-0.5*BS, 1,0,0, c[2], 0.,0.5);
-
-				vcounts[3] = 12;
-				icounts[3] = 12;
-				vertices[3][9] = video::S3DVertex(-0.5*BS,0.,0., -1,0,0, c[0], 0.5,0.5);
-				vertices[3][10] = video::S3DVertex(-0.5*BS,0.,-0.5*BS, -1,0,0, c[3], 1.0,0.5);
-				vertices[3][11] = video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, -1,0,0, c[3], 1.0,1.0);
-
-				vcounts[5] = 12;
-				icounts[5] = 18;
-				vertices[5][8] = video::S3DVertex(-0.5*BS,0.,-0.5*BS, 0,0,-1, c[13], 0.,0.5);
-				vertices[5][9] = video::S3DVertex(0.5*BS,0.,-0.5*BS, 0,0,-1, c[13], 1.,0.5);
-				vertices[5][10] = video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 0,0,-1, c[13], 1.,1.);
-				vertices[5][11] = video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,-1, c[13], 0.,1.);
-				force_sides = true;
-			}
-			// don't draw unseen faces
-			bool skips[6] = {false,false,false,false,false,false};
-			if (
-				content_features(nb).draw_type == CDT_CUBELIKE
-				|| (
-					content_features(nb).draw_type == CDT_STAIRLIKE
-					&& (
-						nb.getRotationAngle() == rot+180
-						|| nb.getRotationAngle() == rot-180
-					)
-				)
-			)
-				skips[4] = true;
-			if (!force_sides && content_features(nl).draw_type == CDT_STAIRLIKE && nl.getRotationAngle() == rot)
-				skips[3] = true;
-			if (!force_sides &&content_features(nr).draw_type == CDT_STAIRLIKE && nr.getRotationAngle() == rot)
-				skips[2] = true;
-
-			if (urot) {
-				if (rot) {
-					for (int i=0; i<6; i++) {
-						if (skips[i])
-							continue;
-						for (int j=0; j<vcounts[i]; j++) {
-							vertices[i][j].Pos.rotateXYBy(180);
-							vertices[i][j].Pos.rotateXZBy(rot);
-							vertices[i][j].Pos += pos;
-							vertices[i][j].TCoords *= tiles[i].texture.size;
-							vertices[i][j].TCoords += tiles[i].texture.pos;
-						}
-						collector.append(tiles[i].getMaterial(), vertices[i], vcounts[i], indices[i], icounts[i]);
-					}
-				}else{
-					for (int i=0; i<6; i++) {
-						if (skips[i])
-							continue;
-						for (int j=0; j<vcounts[i]; j++) {
-							vertices[i][j].Pos.rotateXYBy(180);
-							vertices[i][j].Pos += pos;
-							vertices[i][j].TCoords *= tiles[i].texture.size;
-							vertices[i][j].TCoords += tiles[i].texture.pos;
-						}
-						collector.append(tiles[i].getMaterial(), vertices[i], vcounts[i], indices[i], icounts[i]);
-					}
-				}
-			}else if (rot) {
-				for (int i=0; i<6; i++) {
-					if (skips[i])
-						continue;
-					for (int j=0; j<vcounts[i]; j++) {
-						vertices[i][j].Pos.rotateXZBy(rot);
-						vertices[i][j].Pos += pos;
-						vertices[i][j].TCoords *= tiles[i].texture.size;
-						vertices[i][j].TCoords += tiles[i].texture.pos;
-					}
-					collector.append(tiles[i].getMaterial(), vertices[i], vcounts[i], indices[i], icounts[i]);
-				}
-			}else{
-				for (int i=0; i<6; i++) {
-					if (skips[i])
-						continue;
-					for (int j=0; j<vcounts[i]; j++) {
-						vertices[i][j].Pos += pos;
-						vertices[i][j].TCoords *= tiles[i].texture.size;
-						vertices[i][j].TCoords += tiles[i].texture.pos;
-					}
-					collector.append(tiles[i].getMaterial(), vertices[i], vcounts[i], indices[i], icounts[i]);
-				}
-			}
-		}
-		break;
-		case CDT_SLABLIKE:
-		{
-			static const v3s16 tile_dirs[6] = {
-				v3s16(0, 1, 0),
-				v3s16(0, -1, 0),
-				v3s16(1, 0, 0),
-				v3s16(-1, 0, 0),
-				v3s16(0, 0, 1),
-				v3s16(0, 0, -1)
-			};
-
-			TileSpec tiles[6];
-			NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+blockpos_nodes);
-			for (int i = 0; i < 6; i++) {
-				// Handles facedir rotation for textures
-				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods,meta);
-			}
-			video::SColor c[14];
-			getLights(blockpos_nodes+p,c,data,smooth_lighting);
-			v3f pos = intToFloat(p, BS);
-
-			bool urot = (n.getContent() >= CONTENT_SLAB_STAIR_UD_MIN && n.getContent() <= CONTENT_SLAB_STAIR_UD_MAX);
-			float tex_v = 0.;
-			// flip lighting
-			if (urot) {
-				video::SColor col = c[0];
-				c[0] = c[6];
-				c[6] = col;
-				col = c[1];
-				c[1] = c[7];
-				c[7] = col;
-				col = c[2];
-				c[2] = c[4];
-				c[4] = col;
-				col = c[3];
-				c[3] = c[5];
-				c[5] = col;
-				col = c[8];
-				c[8] = c[9];
-				c[9] = col;
-				col = c[10];
-				c[10] = c[11];
-				c[11] = col;
-				tex_v = 0.5;
-			}
-			video::S3DVertex vertices[6][4] = {
-				{ // up
-					video::S3DVertex(-0.5*BS,0.,0.5*BS, 0,1,0, c[0], 0.,0.),
-					video::S3DVertex(0.5*BS,0.,0.5*BS, 0,1,0, c[1], 1.,0.),
-					video::S3DVertex(0.5*BS,0.,-0.5*BS, 0,1,0, c[2], 1.,1.),
-					video::S3DVertex(-0.5*BS,0.,-0.5*BS, 0,1,0, c[3], 0.,1.)
-				},{ // down
-					video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,-1,0, c[4], 0.,0.),
-					video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 0,-1,0, c[5], 1.,0.),
-					video::S3DVertex(0.5*BS,-0.5*BS,0.5*BS, 0,-1,0, c[6], 1.,1.),
-					video::S3DVertex(-0.5*BS,-0.5*BS,0.5*BS, 0,-1,0, c[7], 0.,1.)
-				},{ // right
-					video::S3DVertex(0.5*BS,0.,-0.5*BS, 1,0,0, c[2], 0.,0.+tex_v),
-					video::S3DVertex(0.5*BS,0.,0.5*BS, 1,0,0, c[1], 1.,0.+tex_v),
-					video::S3DVertex(0.5*BS,-0.5*BS,0.5*BS, 1,0,0, c[6], 1.,.5+tex_v),
-					video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 1,0,0, c[5], 0.,.5+tex_v)
-				},{ // left
-					video::S3DVertex(-0.5*BS,0.,0.5*BS, -1,0,0, c[0], 0.,0.+tex_v),
-					video::S3DVertex(-0.5*BS,0.,-0.5*BS, -1,0,0, c[3], 1.,0.+tex_v),
-					video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, -1,0,0, c[4], 1.,.5+tex_v),
-					video::S3DVertex(-0.5*BS,-0.5*BS,0.5*BS, -1,0,0, c[7], 0.,.5+tex_v)
-				},{ // back
-					video::S3DVertex(0.5*BS,0.,0.5*BS, 0,0,1, c[1], 0.,0.+tex_v),
-					video::S3DVertex(-0.5*BS,0.,0.5*BS, 0,0,1, c[0], 1.,0.+tex_v),
-					video::S3DVertex(-0.5*BS,-0.5*BS,0.5*BS, 0,0,1, c[7], 1.,.5+tex_v),
-					video::S3DVertex(0.5*BS,-0.5*BS,0.5*BS, 0,0,1, c[6], 0.,.5+tex_v)
-				},{ // front
-					video::S3DVertex(-0.5*BS,0.,-0.5*BS, 0,0,-1, c[3], 0.,0.+tex_v),
-					video::S3DVertex(0.5*BS,0.,-0.5*BS, 0,0,-1, c[2], 1.,0.+tex_v),
-					video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 0,0,-1, c[5], 1.,.5+tex_v),
-					video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,-1, c[4], 0.,.5+tex_v)
-				}
-			};
-			u16 indices[6] = {0,1,2,2,3,0};
-			v3s16 back(0,0,1);
-			v3s16 front(0,0,-1);
-			v3s16 left(-1,0,0);
-			v3s16 right(1,0,0);
-			v3s16 under(0,-1,0);
-			if (urot) {
-				left = v3s16(1,0,0);
-				right = v3s16(-1,0,0);
-				under = v3s16(0,1,0);
-			}
-			MapNode nb = data->m_vmanip.getNodeRO(blockpos_nodes + p + back);
-			MapNode nf = data->m_vmanip.getNodeRO(blockpos_nodes + p + front);
-			MapNode nl = data->m_vmanip.getNodeRO(blockpos_nodes + p + left);
-			MapNode nr = data->m_vmanip.getNodeRO(blockpos_nodes + p + right);
-			MapNode nu = data->m_vmanip.getNodeRO(blockpos_nodes + p + under);
-			// don't draw unseen faces
-			bool skips[6] = {false,false,false,false,false,false};
-			if (
-				content_features(nu).draw_type == CDT_CUBELIKE
-				|| (
-					content_features(nu).draw_type == CDT_SLABLIKE
-					&& (
-						(
-							urot && nu.getContent() == (n.getContent()|CONTENT_SLAB_STAIR_UD_MAX)
-						) || (
-							!urot && (nu.getContent()|CONTENT_SLAB_STAIR_UD_MAX) == n.getContent()
-						)
-					)
-				)
-			)
-				skips[1] = true;
-			if (nr.getContent() == n.getContent() || content_features(nr).draw_type == CDT_CUBELIKE)
-				skips[2] = true;
-			if (nl.getContent() == n.getContent() || content_features(nl).draw_type == CDT_CUBELIKE)
-				skips[3] = true;
-			if (nb.getContent() == n.getContent() || content_features(nb).draw_type == CDT_CUBELIKE)
-				skips[4] = true;
-			if (nf.getContent() == n.getContent() || content_features(nf).draw_type == CDT_CUBELIKE)
-				skips[5] = true;
-			if (urot) {
-				for (int i=0; i<6; i++) {
-					if (skips[i])
-						continue;
-					for (int j=0; j<4; j++) {
-						vertices[i][j].Pos.rotateXYBy(180);
-						vertices[i][j].Pos += pos;
-						vertices[i][j].TCoords *= tiles[i].texture.size;
-						vertices[i][j].TCoords += tiles[i].texture.pos;
-					}
-					collector.append(tiles[i].getMaterial(), vertices[i], 4, indices, 6);
-				}
-			}else{
-				for (int i=0; i<6; i++) {
-					if (skips[i])
-						continue;
-					for (int j=0; j<4; j++) {
-						vertices[i][j].Pos += pos;
-						vertices[i][j].TCoords *= tiles[i].texture.size;
-						vertices[i][j].TCoords += tiles[i].texture.pos;
-					}
-					collector.append(tiles[i].getMaterial(), vertices[i], 4, indices, 6);
-				}
-			}
-		}
-		break;
-		case CDT_NODEBOX:
-		case CDT_NODEBOX_META:
-		{
-			static const v3s16 tile_dirs[6] = {
-				v3s16(0, 1, 0),
-				v3s16(0, -1, 0),
-				v3s16(1, 0, 0),
-				v3s16(-1, 0, 0),
-				v3s16(0, 0, 1),
-				v3s16(0, 0, -1)
-			};
-
-			TileSpec tiles[6];
-			NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+blockpos_nodes);
-			for (int i = 0; i < 6; i++) {
-				// Handles facedir rotation for textures
-				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods,meta);
-			}
-			video::SColor c[14];
-			getLights(blockpos_nodes+p,c,data,smooth_lighting);
-
-			v3f pos = intToFloat(p, BS);
-			std::vector<NodeBox> boxes = content_features(n).getNodeBoxes(n);
-			for (std::vector<NodeBox>::iterator i = boxes.begin(); i != boxes.end(); i++) {
-				NodeBox box = *i;
-
-				// Compute texture coords
-				f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
-				f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
-				f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
-				f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
-				f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
-				f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
-				f32 txc[24] = {
-					// up
-					tx1, 1-tz2, tx2, 1-tz1,
-					// down
-					tx1, tz1, tx2, tz2,
-					// right
-					tz1, 1-ty2, tz2, 1-ty1,
-					// left
-					1-tz2, 1-ty2, 1-tz1, 1-ty1,
-					// back
-					1-tx2, 1-ty2, 1-tx1, 1-ty1,
-					// front
-					tx1, 1-ty2, tx2, 1-ty1,
-				};
-				makeRotatedCuboid(&collector, pos, box.m_box, tiles, 6, c, txc, box.m_angle, box.m_centre);
-			}
-			if (content_features(n).draw_type == CDT_NODEBOX_META) {
-				if (meta == NULL)
-					break;
-				boxes = meta->getNodeBoxes(n);
-				if (boxes.size() > 0) {
-					for (int i = 0; i < 6; i++) {
-						// Handles facedir rotation for textures
-						tiles[i] = getMetaTile(n,p,tile_dirs[i],data->m_temp_mods);
-					}
-					for (std::vector<NodeBox>::iterator i = boxes.begin(); i != boxes.end(); i++) {
-						NodeBox box = *i;
-
-						// Compute texture coords
-						f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
-						f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
-						f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
-						f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
-						f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
-						f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
-						f32 txc[24] = {
-							// up
-							tx1, 1-tz2, tx2, 1-tz1,
-							// down
-							tx1, tz1, tx2, tz2,
-							// right
-							tz1, 1-ty2, tz2, 1-ty1,
-							// left
-							1-tz2, 1-ty2, 1-tz1, 1-ty1,
-							// back
-							1-tx2, 1-ty2, 1-tx1, 1-ty1,
-							// front
-							tx1, 1-ty2, tx2, 1-ty1,
-						};
-						makeRotatedCuboid(&collector, pos, box.m_box, tiles, 6, c, txc, box.m_angle, box.m_centre);
-					}
-				}
-			}
-		}
-		break;
 		}
 	}
 }
@@ -3995,6 +1852,16 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 static void meshgen_fullbright_lights(std::vector<video::SColor> *colours, u8 alpha, u16 count)
 {
 	video::SColor c(alpha,255,255,255);
+	for (u16 i=0; i<count; i++) {
+		for (u16 k=0; k<18; k++) {
+			colours[k].push_back(c);
+		}
+	}
+}
+
+static void meshgen_custom_lights(std::vector<video::SColor> *colours, u8 alpha, u8 red, u8 green, u8 blue, u16 count)
+{
+	video::SColor c(alpha,red,green,blue);
 	for (u16 i=0; i<count; i++) {
 		for (u16 k=0; k<18; k++) {
 			colours[k].push_back(c);
@@ -4032,6 +1899,99 @@ static bool meshgen_hardface(MeshMakeData *data, v3s16 p, MapNode &n, v3s16 pos)
 	return true;
 }
 
+static int mapblock_mesh_check_walllike(MeshMakeData *data, MapNode n, v3s16 p, u8 d[8])
+{
+	static const v3s16 fence_dirs[8] = {
+		v3s16(1,0,0),
+		v3s16(-1,0,0),
+		v3s16(0,0,1),
+		v3s16(0,0,-1),
+		v3s16(1,0,1),
+		v3s16(1,0,-1),
+		v3s16(-1,0,1),
+		v3s16(-1,0,-1)
+	};
+	static const int showcheck[4][2] = {
+		{0,2},
+		{0,3},
+		{1,2},
+		{1,3}
+	};
+	v3s16 p2;
+	MapNode n2;
+	content_t c2;
+	const ContentFeatures *f2;
+	for (s16 i=0; i<8; i++) {
+		d[i] = 0;
+	}
+	for (int k=0; k<8; k++) {
+		if (k > 3 && (d[showcheck[k-4][0]] || d[showcheck[k-4][1]]))
+					continue;
+		p2 = p+fence_dirs[k];
+		n2 = data->m_vmanip.getNodeRO(p2);
+		c2 = n2.getContent();
+		f2 = &content_features(c2);
+		if (
+			f2->draw_type == CDT_FENCELIKE
+			|| f2->draw_type == CDT_WALLLIKE
+			|| c2 == CONTENT_WOOD_GATE
+			|| c2 == CONTENT_WOOD_GATE_OPEN
+			|| c2 == CONTENT_STEEL_GATE
+			|| c2 == CONTENT_STEEL_GATE_OPEN
+			|| (
+				c2 != CONTENT_IGNORE
+				&& c2 == content_features(n).special_alternate_node
+			)
+		) {
+			d[k] = 1;
+		}
+	}
+	u8 ps = d[0]+d[1]+d[2]+d[3]+d[4]+d[5]+d[6]+d[7];
+	p2 = p;
+	p2.Y++;
+	n2 = data->m_vmanip.getNodeRO(p2);
+	c2 = n2.getContent();
+	f2 = &content_features(c2);
+	if (
+		f2->draw_type != CDT_WALLLIKE
+		&& f2->draw_type != CDT_AIRLIKE
+	) {
+		if (
+			f2->draw_type == CDT_TORCHLIKE
+			|| f2->draw_type == CDT_FENCELIKE
+		)
+			return 0;
+		return 1;
+	}
+	if (f2->draw_type == CDT_WALLLIKE) {
+		u8 ad[8];
+		int ap = mapblock_mesh_check_walllike(data,n2,p2,ad);
+		if ((ad[0]+ad[1]+ad[2]+ad[3]+ad[4]+ad[5]+ad[6]+ad[7]) == 2) {
+			if (ap != 2)
+				return 1;
+		}else{
+			return 1;
+		}
+	}
+	if (ps == 2) {
+		if (
+			d[4]
+			|| d[5]
+			|| d[6]
+			|| d[7]
+			|| (d[0] && d[2])
+			|| (d[1] && d[3])
+			|| (d[0] && d[3])
+			|| (d[1] && d[2])
+		) {
+			return 0;
+		}
+	}else{
+		return 0;
+	}
+	return 2;
+}
+
 /* TODO: optimise the fuck out of this, make less faces where possible */
 static void meshgen_cuboid(
 	MeshMakeData *data,
@@ -4042,7 +2002,8 @@ static void meshgen_cuboid(
 	bool selected,
 	const f32* txc,
 	v3s16 angle,
-	v3f centre
+	v3f centre,
+	u8 *cols=NULL
 )
 {
 	assert(tilecount >= 1 && tilecount <= 6);
@@ -4115,7 +2076,9 @@ static void meshgen_cuboid(
 	for (s32 j=0; j<24; j+=4) {
 		int tileindex = MYMIN(j/4, tilecount-1);
 		std::vector<video::SColor> colours[18];
-		if (selected) {
+		if (cols) {
+			meshgen_custom_lights(colours,cols[0],cols[1],cols[2],cols[3],4);
+		}else if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
 			meshgen_lights(colours,255,4);
@@ -5252,6 +3215,108 @@ void meshgen_firelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 
 void meshgen_walllike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 {
+	static const v3s16 tile_dirs[6] = {
+		v3s16(0, 1, 0),
+		v3s16(0, -1, 0),
+		v3s16(1, 0, 0),
+		v3s16(-1, 0, 0),
+		v3s16(0, 0, 1),
+		v3s16(0, 0, -1)
+	};
+	static const int shown_angles[8] = {0,0,0,0,45,135,45,315};
+	n.param2 = 0;
+
+	TileSpec tiles[6];
+	for (int i = 0; i < 6; i++) {
+		// Handles facedir rotation for textures
+		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
+	}
+
+	v3f pos = intToFloat(p, BS);
+	std::vector<NodeBox> boxes = content_features(n).getNodeBoxes(n);
+	v3s16 p2 = p;
+	p2.Y++;
+	NodeBox box;
+	u8 d[8];
+	int bi = mapblock_mesh_check_walllike(data,n,p+data->m_blockpos_nodes,d);
+	{
+		box = boxes[bi];
+
+		// Compute texture coords
+		f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
+		f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
+		f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
+		f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
+		f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
+		f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
+		f32 txc[24] = {
+			// up
+			tx1, 1-tz2, tx2, 1-tz1,
+			// down
+			tx1, tz1, tx2, tz2,
+			// right
+			tz1, 1-ty2, tz2, 1-ty1,
+			// left
+			1-tz2, 1-ty2, 1-tz1, 1-ty1,
+			// back
+			1-tx2, 1-ty2, 1-tx1, 1-ty1,
+			// front
+			tx1, 1-ty2, tx2, 1-ty1,
+		};
+		meshgen_cuboid(data,pos,box.m_box,tiles,6,selected,txc,v3s16(0,0,0),v3f(0,0,0));
+	}
+
+	int bps = ((boxes.size()-3)/4); // boxes per section
+	u8 np = 1;
+
+	for (int k=0; k<8; k++) {
+		if (d[k]) {
+			n.param2 |= (np<<k);
+			for (int i=0; i<bps; i++) {
+				box = boxes[i+3+(bps*(k%4))];
+
+				// Compute texture coords
+				f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
+				f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
+				f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
+				f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
+				f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
+				f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
+				f32 txc[24] = {
+					// up
+					tx1, 1-tz2, tx2, 1-tz1,
+					// down
+					tx1, tz1, tx2, tz2,
+					// right
+					tz1, 1-ty2, tz2, 1-ty1,
+					// left
+					1-tz2, 1-ty2, 1-tz1, 1-ty1,
+					// back
+					1-tx2, 1-ty2, 1-tx1, 1-ty1,
+					// front
+					tx1, 1-ty2, tx2, 1-ty1,
+				};
+				if (k > 3) {
+					switch (k) {
+					case 4:
+						box.m_box.MaxEdge.X *= 1.414;
+						break;
+					case 5:
+						box.m_box.MinEdge.X *= 1.414;
+						break;
+					case 6:
+						box.m_box.MaxEdge.Z *= 1.414;
+						break;
+					case 7:
+						box.m_box.MinEdge.Z *= 1.414;
+						break;
+					default:;
+					}
+				}
+				meshgen_cuboid(data, pos, box.m_box, tiles, 6,  selected, txc, v3s16(0,shown_angles[k],0),v3f(0,0,0));
+			}
+		}
+	}
 }
 
 void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
@@ -5260,6 +3325,393 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 
 void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, bool is3d)
 {
+	MapNode n_plus_y = data->m_vmanip.getNodeNoEx(data->m_blockpos_nodes + p + v3s16(0,1,0));
+	MapNode n_minus_x = data->m_vmanip.getNodeNoEx(data->m_blockpos_nodes + p + v3s16(-1,0,0));
+	MapNode n_plus_x = data->m_vmanip.getNodeNoEx(data->m_blockpos_nodes + p + v3s16(1,0,0));
+	MapNode n_minus_z = data->m_vmanip.getNodeNoEx(data->m_blockpos_nodes + p + v3s16(0,0,-1));
+	MapNode n_plus_z = data->m_vmanip.getNodeNoEx(data->m_blockpos_nodes + p + v3s16(0,0,1));
+	MapNode n_minus_xy = data->m_vmanip.getNodeNoEx(data->m_blockpos_nodes + p + v3s16(-1,1,0));
+	MapNode n_plus_xy = data->m_vmanip.getNodeNoEx(data->m_blockpos_nodes + p + v3s16(1,1,0));
+	MapNode n_minus_zy = data->m_vmanip.getNodeNoEx(data->m_blockpos_nodes + p + v3s16(0,1,-1));
+	MapNode n_plus_zy = data->m_vmanip.getNodeNoEx(data->m_blockpos_nodes + p + v3s16(0,1,1));
+	MapNode n_minus_x_y = data->m_vmanip.getNodeNoEx(data->m_blockpos_nodes + p + v3s16(-1,-1,0));
+	MapNode n_plus_x_y = data->m_vmanip.getNodeNoEx(data->m_blockpos_nodes + p + v3s16(1,-1,0));
+	MapNode n_minus_z_y = data->m_vmanip.getNodeNoEx(data->m_blockpos_nodes + p + v3s16(0,-1,-1));
+	MapNode n_plus_z_y = data->m_vmanip.getNodeNoEx(data->m_blockpos_nodes + p + v3s16(0,-1,1));
+	bool x_plus = false;
+	bool x_plus_y = false;
+	bool x_minus = false;
+	bool x_minus_y = false;
+	bool z_plus = false;
+	bool z_plus_y = false;
+	bool z_minus = false;
+	bool z_minus_y = false;
+	bool y_plus = false;
+	// +Y
+	if (n_plus_y.getContent() == CONTENT_AIR || content_features(n_plus_y).energy_type != CET_NONE)
+		y_plus = true;
+	// +X
+	if (
+		content_features(n_plus_x).energy_type == CET_NONE
+		&& content_features(n_plus_x).flammable != 2
+	) {
+		if (
+			y_plus
+			&& (
+				content_features(n_plus_x).draw_type == CDT_CUBELIKE
+				|| content_features(n_plus_x).draw_type == CDT_GLASSLIKE
+			)
+		) {
+			if (content_features(n_plus_xy).energy_type != CET_NONE) {
+				x_plus_y = true;
+				x_plus = true;
+			}
+		}else if (
+			n_plus_x.getContent() == CONTENT_AIR
+			&& content_features(n_plus_x_y).energy_type != CET_NONE
+		) {
+			x_plus = true;
+		}
+	}else{
+		x_plus = true;
+	}
+	// -X
+	if (content_features(n_minus_x).energy_type == CET_NONE && content_features(n_minus_x).flammable != 2) {
+		if (
+			y_plus
+			&& (
+				content_features(n_minus_x).draw_type == CDT_CUBELIKE
+				|| content_features(n_minus_x).draw_type == CDT_GLASSLIKE
+			)
+		) {
+			if (content_features(n_minus_xy).energy_type != CET_NONE) {
+				x_minus_y = true;
+				x_minus = true;
+			}
+		}else if (
+			n_minus_x.getContent() == CONTENT_AIR
+			&& content_features(n_minus_x_y).energy_type != CET_NONE
+		) {
+			x_minus = true;
+		}
+	}else{
+		x_minus = true;
+	}
+	// +Z
+	if (
+		content_features(n_plus_z).energy_type == CET_NONE
+		&& content_features(n_plus_z).flammable != 2
+	) {
+		if (
+			y_plus
+			&& (
+				content_features(n_plus_z).draw_type == CDT_CUBELIKE
+				|| content_features(n_plus_z).draw_type == CDT_GLASSLIKE
+			)
+		) {
+			if (content_features(n_plus_zy).energy_type != CET_NONE) {
+				z_plus_y = true;
+				z_plus = true;
+			}
+		}else if (
+			n_plus_z.getContent() == CONTENT_AIR
+			&& content_features(n_plus_z_y).energy_type != CET_NONE
+		) {
+			z_plus = true;
+		}
+	}else{
+		z_plus = true;
+	}
+	// -Z
+	if (
+		content_features(n_minus_z).energy_type == CET_NONE
+		&& content_features(n_minus_z).flammable != 2
+	) {
+		if (
+			y_plus
+			&& (
+				content_features(n_minus_z).draw_type == CDT_CUBELIKE
+				|| content_features(n_minus_z).draw_type == CDT_GLASSLIKE
+			)
+		) {
+			if (content_features(n_minus_zy).energy_type != CET_NONE) {
+				z_minus_y = true;
+				z_minus = true;
+			}
+		}else if (
+			n_minus_z.getContent() == CONTENT_AIR
+			&& content_features(n_minus_z_y).energy_type != CET_NONE
+		) {
+			z_minus = true;
+		}
+	}else{
+		z_minus = true;
+	}
+
+	static const v3s16 tile_dirs[6] = {
+		v3s16(0, 1, 0),
+		v3s16(0, -1, 0),
+		v3s16(1, 0, 0),
+		v3s16(-1, 0, 0),
+		v3s16(0, 0, 1),
+		v3s16(0, 0, -1)
+	};
+
+	TileSpec tiles[6];
+	for (int i = 0; i < 6; i++) {
+		// Handles facedir rotation for textures
+		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
+	}
+
+	v3f pos = intToFloat(p, BS);
+	u8 cols[4] = {250,64,64,64};
+	if (selected) {
+		cols[0] = 255;
+		cols[1] = 64;
+		cols[2] = 64;
+		cols[3] = 255;
+	}else{
+		NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+data->m_blockpos_nodes);
+		if (meta && meta->getEnergy()) {
+			u8 e = meta->getEnergy();
+			e = (e*16)-1;
+			if (e < 80)
+				e = 80;
+			cols[0] = 255;
+			cols[1] = e;
+			cols[2] = e;
+			cols[3] = e;
+		}
+	}
+
+	if (is3d == false) {
+		f32 sy = tiles[0].texture.y1()-tiles[0].texture.y0();
+		if (!x_plus && !x_minus && !z_plus && !z_minus) {
+			{
+				video::S3DVertex vertices[4] = {
+					video::S3DVertex(-BS/2,-0.49*BS,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()),
+					video::S3DVertex(BS/2,-0.49*BS,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
+					video::S3DVertex(BS/2,-0.49*BS,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
+					video::S3DVertex(-BS/2,-0.49*BS,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
+				};
+				for (u16 i=0; i<4; i++) {
+					vertices[i].Pos += intToFloat(p, BS);
+				}
+				u16 indices[] = {0,1,2,2,3,0};
+				std::vector<video::SColor> colours[18];
+				meshgen_custom_lights(colours,cols[0],cols[1],cols[2],cols[3],4);
+				data->append(tiles[0].getMaterial(), vertices, 4, indices, 6, colours);
+			}
+			{
+				video::S3DVertex vertices[4] = {
+					video::S3DVertex(-BS/2,-0.49*BS,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
+					video::S3DVertex(BS/2,-0.49*BS,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
+					video::S3DVertex(BS/2,-0.49*BS,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
+					video::S3DVertex(-BS/2,-0.49*BS,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()),
+				};
+				for (u16 i=0; i<4; i++) {
+					vertices[i].Pos += intToFloat(p, BS);
+				}
+				u16 indices[] = {0,1,2,2,3,0};
+				std::vector<video::SColor> colours[18];
+				meshgen_custom_lights(colours,cols[0],cols[1],cols[2],cols[3],4);
+				data->append(tiles[0].getMaterial(), vertices, 4, indices, 6, colours);
+			}
+		}else{
+			if (x_plus) {
+				video::S3DVertex vertices[4] = {
+					video::S3DVertex(0,-0.49*BS,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()+(sy/2)),
+					video::S3DVertex(BS/2,-0.49*BS,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
+					video::S3DVertex(BS/2,-0.49*BS,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
+					video::S3DVertex(0,-0.49*BS,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()+(sy/2)),
+				};
+				for (u16 i=0; i<4; i++) {
+					vertices[i].Pos += intToFloat(p, BS);
+				}
+				u16 indices[] = {0,1,2,2,3,0};
+				std::vector<video::SColor> colours[18];
+				meshgen_custom_lights(colours,cols[0],cols[1],cols[2],cols[3],4);
+				data->append(tiles[0].getMaterial(), vertices, 4, indices, 6, colours);
+			}
+			if (x_minus) {
+				video::S3DVertex vertices[4] = {
+					video::S3DVertex(-BS/2,-0.49*BS,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()),
+					video::S3DVertex(0,-0.49*BS,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()-(sy/2)),
+					video::S3DVertex(0,-0.49*BS,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()-(sy/2)),
+					video::S3DVertex(-BS/2,-0.49*BS,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
+				};
+				for (u16 i=0; i<4; i++) {
+					vertices[i].Pos += intToFloat(p, BS);
+				}
+				u16 indices[] = {0,1,2,2,3,0};
+				std::vector<video::SColor> colours[18];
+				meshgen_custom_lights(colours,cols[0],cols[1],cols[2],cols[3],4);
+				data->append(tiles[0].getMaterial(), vertices, 4, indices, 6, colours);
+			}
+			if (z_plus) {
+				video::S3DVertex vertices[4] = {
+					video::S3DVertex(-BS/2,-0.49*BS,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
+					video::S3DVertex(BS/2,-0.49*BS,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
+					video::S3DVertex(BS/2,-0.49*BS,0, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()+(sy/2)),
+					video::S3DVertex(-BS/2,-0.49*BS,0, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()+(sy/2)),
+				};
+				for (u16 i=0; i<4; i++) {
+					vertices[i].Pos += intToFloat(p, BS);
+				}
+				u16 indices[] = {0,1,2,2,3,0};
+				std::vector<video::SColor> colours[18];
+				meshgen_custom_lights(colours,cols[0],cols[1],cols[2],cols[3],4);
+				data->append(tiles[0].getMaterial(), vertices, 4, indices, 6, colours);
+			}
+			if (z_minus) {
+				video::S3DVertex vertices[4] = {
+					video::S3DVertex(-BS/2,-0.49*BS,0, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()-(sy/2)),
+					video::S3DVertex(BS/2,-0.49*BS,0, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()-(sy/2)),
+					video::S3DVertex(BS/2,-0.49*BS,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
+					video::S3DVertex(-BS/2,-0.49*BS,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()),
+				};
+				for (u16 i=0; i<4; i++) {
+					vertices[i].Pos += intToFloat(p, BS);
+				}
+				u16 indices[] = {0,1,2,2,3,0};
+				std::vector<video::SColor> colours[18];
+				meshgen_custom_lights(colours,cols[0],cols[1],cols[2],cols[3],4);
+				data->append(tiles[0].getMaterial(), vertices, 4, indices, 6, colours);
+			}
+			if (x_plus_y) {
+				video::S3DVertex vertices[4] = {
+					video::S3DVertex(0.49*BS,-BS/2,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
+					video::S3DVertex(0.49*BS,-BS/2,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
+					video::S3DVertex(0.49*BS,BS/2,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
+					video::S3DVertex(0.49*BS,BS/2,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()),
+				};
+				for (u16 i=0; i<4; i++) {
+					vertices[i].Pos += intToFloat(p, BS);
+				}
+				u16 indices[] = {0,1,2,2,3,0};
+				std::vector<video::SColor> colours[18];
+				meshgen_custom_lights(colours,cols[0],cols[1],cols[2],cols[3],4);
+				data->append(tiles[0].getMaterial(), vertices, 4, indices, 6, colours);
+			}
+			if (x_minus_y) {
+				video::S3DVertex vertices[4] = {
+					video::S3DVertex(-0.49*BS,-BS/2,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
+					video::S3DVertex(-0.49*BS,-BS/2,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
+					video::S3DVertex(-0.49*BS,BS/2,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
+					video::S3DVertex(-0.49*BS,BS/2,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()),
+				};
+				for (u16 i=0; i<4; i++) {
+					vertices[i].Pos += intToFloat(p, BS);
+				}
+				u16 indices[] = {0,1,2,2,3,0};
+				std::vector<video::SColor> colours[18];
+				meshgen_custom_lights(colours,cols[0],cols[1],cols[2],cols[3],4);
+				data->append(tiles[0].getMaterial(), vertices, 4, indices, 6, colours);
+			}
+			if (z_plus_y) {
+				video::S3DVertex vertices[4] = {
+					video::S3DVertex(BS/2,-BS/2,0.49*BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
+					video::S3DVertex(-BS/2,-BS/2,0.49*BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
+					video::S3DVertex(-BS/2,BS/2,0.49*BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
+					video::S3DVertex(BS/2,BS/2,0.49*BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()),
+				};
+				for (u16 i=0; i<4; i++) {
+					vertices[i].Pos += intToFloat(p, BS);
+				}
+				u16 indices[] = {0,1,2,2,3,0};
+				std::vector<video::SColor> colours[18];
+				meshgen_custom_lights(colours,cols[0],cols[1],cols[2],cols[3],4);
+				data->append(tiles[0].getMaterial(), vertices, 4, indices, 6, colours);
+			}
+			if (z_minus_y) {
+				video::S3DVertex vertices[4] = {
+					video::S3DVertex(-BS/2,-BS/2,-0.49*BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
+					video::S3DVertex(BS/2,-BS/2,-0.49*BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
+					video::S3DVertex(BS/2,BS/2,-0.49*BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
+					video::S3DVertex(-BS/2,BS/2,-0.49*BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()),
+				};
+				for (u16 i=0; i<4; i++) {
+					vertices[i].Pos += intToFloat(p, BS);
+				}
+				u16 indices[] = {0,1,2,2,3,0};
+				std::vector<video::SColor> colours[18];
+				meshgen_custom_lights(colours,cols[0],cols[1],cols[2],cols[3],4);
+				data->append(tiles[0].getMaterial(), vertices, 4, indices, 6, colours);
+			}
+		}
+		return;
+	}
+
+	std::vector<aabb3f> boxes;
+	if (!x_plus && !x_minus && !z_plus && !z_minus) {
+		boxes.push_back(aabb3f(-0.125*BS,-0.5*BS,-0.125*BS,0.125*BS,-0.4375*BS,0.125*BS));
+	}else{
+		if (x_plus) {
+			boxes.push_back(aabb3f(0.,-0.5*BS,-0.0625*BS,0.5*BS,-0.4375*BS,0.0625*BS));
+		}
+		if (x_minus) {
+			boxes.push_back(aabb3f(-0.5*BS,-0.5*BS,-0.0625*BS,0.,-0.4375*BS,0.0625*BS));
+		}
+		if (z_plus) {
+			boxes.push_back(aabb3f(-0.0625*BS,-0.5*BS,0.,0.0625*BS,-0.4375*BS,0.5*BS));
+		}
+		if (z_minus) {
+			boxes.push_back(aabb3f(-0.0625*BS,-0.5*BS,-0.5*BS,0.0625*BS,-0.4375*BS,0.));
+		}
+		if (x_plus_y) {
+			boxes.push_back(aabb3f(0.4375*BS,-0.4375*BS,-0.0625*BS,0.5*BS,0.5625*BS,0.0625*BS));
+		}
+		if (x_minus_y) {
+			boxes.push_back(aabb3f(-0.5*BS,-0.4375*BS,-0.0625*BS,-0.4375*BS,0.5625*BS,0.0625*BS));
+		}
+		if (z_plus_y) {
+			boxes.push_back(aabb3f(-0.0625*BS,-0.4375*BS,0.4375*BS,0.0625*BS,0.5625*BS,0.5*BS));
+		}
+		if (z_minus_y) {
+			boxes.push_back(aabb3f(-0.0625*BS,-0.4375*BS,-0.5*BS,0.0625*BS,0.5625*BS,-0.4375*BS));
+		}
+		u8 cnt = x_plus+x_minus+z_plus+z_minus;
+		if (
+			cnt > 2
+			|| (
+				cnt == 2
+				&& (
+					(x_plus && z_plus)
+					|| (x_minus && z_plus)
+					|| (x_plus && z_minus)
+					|| (x_minus && z_minus)
+				)
+			)
+		) {
+			boxes.push_back(aabb3f(-0.125*BS,-0.5*BS,-0.125*BS,0.125*BS,-0.375*BS,0.125*BS));
+		}
+	}
+	for (std::vector<aabb3f>::iterator i = boxes.begin(); i != boxes.end(); i++) {
+		aabb3f box = *i;
+
+		// Compute texture coords
+		f32 tx1 = (i->MinEdge.X/BS)+0.5;
+		f32 ty1 = (i->MinEdge.Y/BS)+0.5;
+		f32 tz1 = (i->MinEdge.Z/BS)+0.5;
+		f32 tx2 = (i->MaxEdge.X/BS)+0.5;
+		f32 ty2 = (i->MaxEdge.Y/BS)+0.5;
+		f32 tz2 = (i->MaxEdge.Z/BS)+0.5;
+		f32 txc[24] = {
+			// up
+			tx1, 1-tz2, tx2, 1-tz1,
+			// down
+			tx1, tz1, tx2, tz2,
+			// right
+			tz1, 1-ty2, tz2, 1-ty1,
+			// left
+			1-tz2, 1-ty2, 1-tz1, 1-ty1,
+			// back
+			1-tx2, 1-ty2, 1-tx1, 1-ty1,
+			// front
+			tx1, 1-ty2, tx2, 1-ty1,
+		};
+		meshgen_cuboid(data, pos, box, tiles, 6, selected, txc,v3s16(0,0,0),v3f(0,0,0), cols);
+	}
 }
 
 void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
