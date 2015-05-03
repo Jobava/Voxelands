@@ -272,95 +272,6 @@ static void getRoofLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, 
 	lights[1] = MapBlock_LightColor(255, l, selected);
 }
 
-static int mapblock_mesh_check_walllike(MeshMakeData *data, MapNode n, v3s16 p, u8 d[8])
-{
-	static const v3s16 fence_dirs[8] = {
-		v3s16(1,0,0),
-		v3s16(-1,0,0),
-		v3s16(0,0,1),
-		v3s16(0,0,-1),
-		v3s16(1,0,1),
-		v3s16(1,0,-1),
-		v3s16(-1,0,1),
-		v3s16(-1,0,-1)
-	};
-	static const int showcheck[4][2] = {
-		{0,2},
-		{0,3},
-		{1,2},
-		{1,3}
-	};
-	v3s16 p2;
-	MapNode n2;
-	const ContentFeatures *f2;
-	for (s16 i=0; i<8; i++) {
-		d[i] = 0;
-	}
-	for (int k=0; k<8; k++) {
-		if (k > 3 && (d[showcheck[k-4][0]] || d[showcheck[k-4][1]]))
-					continue;
-		p2 = p+fence_dirs[k];
-		n2 = data->m_vmanip.getNodeRO(p2);
-		f2 = &content_features(n2);
-		if (
-			f2->draw_type == CDT_FENCELIKE
-			|| f2->draw_type == CDT_WALLLIKE
-			|| n2.getContent() == CONTENT_WOOD_GATE
-			|| n2.getContent() == CONTENT_WOOD_GATE_OPEN
-			|| n2.getContent() == CONTENT_STEEL_GATE
-			|| n2.getContent() == CONTENT_STEEL_GATE_OPEN
-			|| (
-				n2.getContent() != CONTENT_IGNORE
-				&& n2.getContent() == content_features(n).special_alternate_node
-			)
-		) {
-			d[k] = 1;
-		}
-	}
-	u8 ps = d[0]+d[1]+d[2]+d[3]+d[4]+d[5]+d[6]+d[7];
-	p2 = p;
-	p2.Y++;
-	n2 = data->m_vmanip.getNodeRO(p2);
-	if (
-		content_features(n2).draw_type != CDT_WALLLIKE
-		&& content_features(n2).draw_type != CDT_AIRLIKE
-	) {
-		if (
-			content_features(n2).draw_type == CDT_TORCHLIKE
-			|| content_features(n2).draw_type == CDT_FENCELIKE
-		)
-			return 0;
-		return 1;
-	}
-	if (content_features(n2).draw_type == CDT_WALLLIKE) {
-		u8 ad[8];
-		int ap = mapblock_mesh_check_walllike(data,n2,p2,ad);
-		if ((ad[0]+ad[1]+ad[2]+ad[3]+ad[4]+ad[5]+ad[6]+ad[7]) == 2) {
-			if (ap != 2)
-				return 1;
-		}else{
-			return 1;
-		}
-	}
-	if (ps == 2) {
-		if (
-			d[4]
-			|| d[5]
-			|| d[6]
-			|| d[7]
-			|| (d[0] && d[2])
-			|| (d[1] && d[3])
-			|| (d[0] && d[3])
-			|| (d[1] && d[2])
-		) {
-			return 0;
-		}
-	}else{
-		return 0;
-	}
-	return 2;
-}
-
 void mapblock_mesh_generate_special(MeshMakeData *data,
 		MeshCollector &collector)
 {
@@ -387,522 +298,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			Add torches to mesh
 		*/
 		switch (content_features(n).draw_type) {
-		case CDT_3DWIRELIKE:
-		{
-			MapNode n_plus_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y+1,z));
-			MapNode n_minus_x = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1,y,z));
-			MapNode n_plus_x = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1,y,z));
-			MapNode n_minus_z = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y,z-1));
-			MapNode n_plus_z = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y,z+1));
-			MapNode n_minus_xy = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1,y+1,z));
-			MapNode n_plus_xy = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1,y+1,z));
-			MapNode n_minus_zy = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y+1,z-1));
-			MapNode n_plus_zy = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y+1,z+1));
-			MapNode n_minus_x_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x-1,y-1,z));
-			MapNode n_plus_x_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x+1,y-1,z));
-			MapNode n_minus_z_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y-1,z-1));
-			MapNode n_plus_z_y = data->m_vmanip.getNodeNoEx(blockpos_nodes + v3s16(x,y-1,z+1));
-			bool x_plus = false;
-			bool x_plus_y = false;
-			bool x_minus = false;
-			bool x_minus_y = false;
-			bool z_plus = false;
-			bool z_plus_y = false;
-			bool z_minus = false;
-			bool z_minus_y = false;
-			bool y_plus = false;
-			// +Y
-			if (n_plus_y.getContent() == CONTENT_AIR || content_features(n_plus_y).energy_type != CET_NONE)
-				y_plus = true;
-			// +X
-			if (
-				content_features(n_plus_x).energy_type == CET_NONE
-				&& content_features(n_plus_x).flammable != 2
-			) {
-				if (
-					y_plus
-					&& (
-						content_features(n_plus_x).draw_type == CDT_CUBELIKE
-						|| content_features(n_plus_x).draw_type == CDT_GLASSLIKE
-					)
-				) {
-					if (content_features(n_plus_xy).energy_type != CET_NONE) {
-						x_plus_y = true;
-						x_plus = true;
-					}
-				}else if (
-					n_plus_x.getContent() == CONTENT_AIR
-					&& content_features(n_plus_x_y).energy_type != CET_NONE
-				) {
-					x_plus = true;
-				}
-			}else{
-				x_plus = true;
-			}
-			// -X
-			if (content_features(n_minus_x).energy_type == CET_NONE && content_features(n_minus_x).flammable != 2) {
-				if (
-					y_plus
-					&& (
-						content_features(n_minus_x).draw_type == CDT_CUBELIKE
-						|| content_features(n_minus_x).draw_type == CDT_GLASSLIKE
-					)
-				) {
-					if (content_features(n_minus_xy).energy_type != CET_NONE) {
-						x_minus_y = true;
-						x_minus = true;
-					}
-				}else if (
-					n_minus_x.getContent() == CONTENT_AIR
-					&& content_features(n_minus_x_y).energy_type != CET_NONE
-				) {
-					x_minus = true;
-				}
-			}else{
-				x_minus = true;
-			}
-			// +Z
-			if (
-				content_features(n_plus_z).energy_type == CET_NONE
-				&& content_features(n_plus_z).flammable != 2
-			) {
-				if (
-					y_plus
-					&& (
-						content_features(n_plus_z).draw_type == CDT_CUBELIKE
-						|| content_features(n_plus_z).draw_type == CDT_GLASSLIKE
-					)
-				) {
-					if (content_features(n_plus_zy).energy_type != CET_NONE) {
-						z_plus_y = true;
-						z_plus = true;
-					}
-				}else if (
-					n_plus_z.getContent() == CONTENT_AIR
-					&& content_features(n_plus_z_y).energy_type != CET_NONE
-				) {
-					z_plus = true;
-				}
-			}else{
-				z_plus = true;
-			}
-			// -Z
-			if (
-				content_features(n_minus_z).energy_type == CET_NONE
-				&& content_features(n_minus_z).flammable != 2
-			) {
-				if (
-					y_plus
-					&& (
-						content_features(n_minus_z).draw_type == CDT_CUBELIKE
-						|| content_features(n_minus_z).draw_type == CDT_GLASSLIKE
-					)
-				) {
-					if (content_features(n_minus_zy).energy_type != CET_NONE) {
-						z_minus_y = true;
-						z_minus = true;
-					}
-				}else if (
-					n_minus_z.getContent() == CONTENT_AIR
-					&& content_features(n_minus_z_y).energy_type != CET_NONE
-				) {
-					z_minus = true;
-				}
-			}else{
-				z_minus = true;
-			}
-			static const v3s16 tile_dirs[6] = {
-				v3s16(0, 1, 0),
-				v3s16(0, -1, 0),
-				v3s16(1, 0, 0),
-				v3s16(-1, 0, 0),
-				v3s16(0, 0, 1),
-				v3s16(0, 0, -1)
-			};
-
-			TileSpec tiles[6];
-			for (int i = 0; i < 6; i++) {
-				// Handles facedir rotation for textures
-				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
-			}
-
-			v3f pos = intToFloat(p, BS);
-			video::SColor c;
-			video::SColor c8[8];
-			if (selected) {
-				c = video::SColor(255,64,64,255);
-			}else{
-				NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+blockpos_nodes);
-				if (meta && meta->getEnergy()) {
-					u8 e = meta->getEnergy();
-					e = (e*16)-1;
-					if (e < 80)
-						e = 80;
-					c = video::SColor(255,e,e,e);
-				}else{
-					c = video::SColor(250,64,64,64);
-				}
-			}
-			for (int k=0; k<8; k++) {
-				c8[k] = c;
-			}
-			std::vector<aabb3f> boxes;
-			if (!x_plus && !x_minus && !z_plus && !z_minus) {
-				boxes.push_back(aabb3f(-0.125*BS,-0.5*BS,-0.125*BS,0.125*BS,-0.4375*BS,0.125*BS));
-			}else{
-				if (x_plus) {
-					boxes.push_back(aabb3f(0.,-0.5*BS,-0.0625*BS,0.5*BS,-0.4375*BS,0.0625*BS));
-				}
-				if (x_minus) {
-					boxes.push_back(aabb3f(-0.5*BS,-0.5*BS,-0.0625*BS,0.,-0.4375*BS,0.0625*BS));
-				}
-				if (z_plus) {
-					boxes.push_back(aabb3f(-0.0625*BS,-0.5*BS,0.,0.0625*BS,-0.4375*BS,0.5*BS));
-				}
-				if (z_minus) {
-					boxes.push_back(aabb3f(-0.0625*BS,-0.5*BS,-0.5*BS,0.0625*BS,-0.4375*BS,0.));
-				}
-				if (x_plus_y) {
-					boxes.push_back(aabb3f(0.4375*BS,-0.4375*BS,-0.0625*BS,0.5*BS,0.5625*BS,0.0625*BS));
-				}
-				if (x_minus_y) {
-					boxes.push_back(aabb3f(-0.5*BS,-0.4375*BS,-0.0625*BS,-0.4375*BS,0.5625*BS,0.0625*BS));
-				}
-				if (z_plus_y) {
-					boxes.push_back(aabb3f(-0.0625*BS,-0.4375*BS,0.4375*BS,0.0625*BS,0.5625*BS,0.5*BS));
-				}
-				if (z_minus_y) {
-					boxes.push_back(aabb3f(-0.0625*BS,-0.4375*BS,-0.5*BS,0.0625*BS,0.5625*BS,-0.4375*BS));
-				}
-				u8 cnt = x_plus+x_minus+z_plus+z_minus;
-				if (
-					cnt > 2
-					|| (
-						cnt == 2
-						&& (
-							(x_plus && z_plus)
-							|| (x_minus && z_plus)
-							|| (x_plus && z_minus)
-							|| (x_minus && z_minus)
-						)
-					)
-				) {
-					boxes.push_back(aabb3f(-0.125*BS,-0.5*BS,-0.125*BS,0.125*BS,-0.375*BS,0.125*BS));
-				}
-			}
-			for (std::vector<aabb3f>::iterator i = boxes.begin(); i != boxes.end(); i++) {
-				aabb3f box = *i;
-
-				// Compute texture coords
-				f32 tx1 = (i->MinEdge.X/BS)+0.5;
-				f32 ty1 = (i->MinEdge.Y/BS)+0.5;
-				f32 tz1 = (i->MinEdge.Z/BS)+0.5;
-				f32 tx2 = (i->MaxEdge.X/BS)+0.5;
-				f32 ty2 = (i->MaxEdge.Y/BS)+0.5;
-				f32 tz2 = (i->MaxEdge.Z/BS)+0.5;
-				f32 txc[24] = {
-					// up
-					tx1, 1-tz2, tx2, 1-tz1,
-					// down
-					tx1, tz1, tx2, tz2,
-					// right
-					tz1, 1-ty2, tz2, 1-ty1,
-					// left
-					1-tz2, 1-ty2, 1-tz1, 1-ty1,
-					// back
-					1-tx2, 1-ty2, 1-tx1, 1-ty1,
-					// front
-					tx1, 1-ty2, tx2, 1-ty1,
-				};
-				makeRotatedCuboid(&collector, pos, box, tiles, 6,  c8, txc,v3s16(0,0,0),v3f(0,0,0));
-			}
-		}
-		break;
-		case CDT_RAILLIKE:
-		{
-			bool is_rail_x [] = { false, false };  /* x-1, x+1 */
-			bool is_rail_z [] = { false, false };  /* z-1, z+1 */
-
-			bool is_rail_z_minus_y [] = { false, false };  /* z-1, z+1; y-1 */
-			bool is_rail_x_minus_y [] = { false, false };  /* x-1, z+1; y-1 */
-			bool is_rail_z_plus_y [] = { false, false };  /* z-1, z+1; y+1 */
-			bool is_rail_x_plus_y [] = { false, false };  /* x-1, x+1; y+1 */
-
-			MapNode n_minus_x = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x-1,y,z));
-			MapNode n_plus_x = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x+1,y,z));
-			MapNode n_minus_z = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x,y,z-1));
-			MapNode n_plus_z = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x,y,z+1));
-			MapNode n_plus_x_plus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x+1, y+1, z));
-			MapNode n_plus_x_minus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x+1, y-1, z));
-			MapNode n_minus_x_plus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x-1, y+1, z));
-			MapNode n_minus_x_minus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x-1, y-1, z));
-			MapNode n_plus_z_plus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x, y+1, z+1));
-			MapNode n_minus_z_plus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x, y+1, z-1));
-			MapNode n_plus_z_minus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x, y-1, z+1));
-			MapNode n_minus_z_minus_y = data->m_vmanip.getNodeRO(blockpos_nodes + v3s16(x, y-1, z-1));
-
-			content_t thiscontent = n.getContent();
-
-			if (n_minus_x.getContent() == thiscontent)
-				is_rail_x[0] = true;
-			if (n_minus_x_minus_y.getContent() == thiscontent)
-				is_rail_x_minus_y[0] = true;
-			if (n_minus_x_plus_y.getContent() == thiscontent)
-				is_rail_x_plus_y[0] = true;
-			if (n_plus_x.getContent() == thiscontent)
-				is_rail_x[1] = true;
-			if (n_plus_x_minus_y.getContent() == thiscontent)
-				is_rail_x_minus_y[1] = true;
-			if (n_plus_x_plus_y.getContent() == thiscontent)
-				is_rail_x_plus_y[1] = true;
-			if (n_minus_z.getContent() == thiscontent)
-				is_rail_z[0] = true;
-			if (n_minus_z_minus_y.getContent() == thiscontent)
-				is_rail_z_minus_y[0] = true;
-			if (n_minus_z_plus_y.getContent() == thiscontent)
-				is_rail_z_plus_y[0] = true;
-			if (n_plus_z.getContent() == thiscontent)
-				is_rail_z[1] = true;
-			if (n_plus_z_minus_y.getContent() == thiscontent)
-				is_rail_z_minus_y[1] = true;
-			if (n_plus_z_plus_y.getContent() == thiscontent)
-				is_rail_z_plus_y[1] = true;
-
-			bool is_rail_x_all[] = {false, false};
-			bool is_rail_z_all[] = {false, false};
-			is_rail_x_all[0] = is_rail_x[0] || is_rail_x_minus_y[0] || is_rail_x_plus_y[0];
-			is_rail_x_all[1] = is_rail_x[1] || is_rail_x_minus_y[1] || is_rail_x_plus_y[1];
-			is_rail_z_all[0] = is_rail_z[0] || is_rail_z_minus_y[0] || is_rail_z_plus_y[0];
-			is_rail_z_all[1] = is_rail_z[1] || is_rail_z_minus_y[1] || is_rail_z_plus_y[1];
-
-			// reasonable default, flat straight unrotated rail
-			bool is_straight = true;
-			int adjacencies = 0;
-			int angle = 0;
-			u8 tileindex = 0;
-
-			// check for sloped rail
-			if (is_rail_x_plus_y[0] || is_rail_x_plus_y[1] || is_rail_z_plus_y[0] || is_rail_z_plus_y[1]) {
-				adjacencies = 5; //5 means sloped
-				is_straight = true; // sloped is always straight
-			}else{
-				// is really straight, rails on both sides
-				is_straight = (is_rail_x_all[0] && is_rail_x_all[1]) || (is_rail_z_all[0] && is_rail_z_all[1]);
-				adjacencies = is_rail_x_all[0] + is_rail_x_all[1] + is_rail_z_all[0] + is_rail_z_all[1];
-			}
-
-			switch (adjacencies) {
-			case 1:
-				if(is_rail_x_all[0] || is_rail_x_all[1])
-					angle = 90;
-				break;
-			case 2:
-				if(!is_straight)
-					tileindex = 1; // curved
-				if(is_rail_x_all[0] && is_rail_x_all[1])
-					angle = 90;
-				if(is_rail_z_all[0] && is_rail_z_all[1]){
-					if (is_rail_z_plus_y[0])
-						angle = 180;
-				}
-				else if(is_rail_x_all[0] && is_rail_z_all[0])
-					angle = 270;
-				else if(is_rail_x_all[0] && is_rail_z_all[1])
-					angle = 180;
-				else if(is_rail_x_all[1] && is_rail_z_all[1])
-					angle = 90;
-				break;
-			case 3:
-				// here is where the potential to 'switch' a junction is, but not implemented at present
-				tileindex = 2; // t-junction
-				if(!is_rail_x_all[1])
-					angle=180;
-				if(!is_rail_z_all[0])
-					angle=90;
-				if(!is_rail_z_all[1])
-					angle=270;
-				break;
-			case 4:
-				tileindex = 3; // crossing
-				break;
-			case 5: //sloped
-				if(is_rail_z_plus_y[0])
-					angle = 180;
-				if(is_rail_x_plus_y[0])
-					angle = 90;
-				if(is_rail_x_plus_y[1])
-					angle = 270;
-				break;
-			default:
-				break;
-			}
-
-			static const v3s16 tile_dirs[6] = {
-				v3s16(0, 1, 0),
-				v3s16(0, -1, 0),
-				v3s16(1, 0, 0),
-				v3s16(-1, 0, 0),
-				v3s16(0, 0, 1),
-				v3s16(0, 0, -1)
-			};
-			TileSpec tiles[6];
-			TileSpec *tile;
-			for (int i = 0; i < 6; i++) {
-				// Handles facedir rotation for textures
-				tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
-			}
-			video::SColor c[14];
-			getLights(blockpos_nodes+p,c,data,smooth_lighting);
-			v3f pos = intToFloat(p,BS);
-
-			switch (tileindex) {
-			case 0:
-			{
-				if (is_rail_x_plus_y[0] || is_rail_x_plus_y[1] || is_rail_z_plus_y[0] || is_rail_z_plus_y[1]) {
-					aabb3f track[7] = {
-						aabb3f(-0.4375*BS,-0.03125*BS,-0.5625*BS,0.4375*BS,0.03125*BS,-0.4375*BS),
-						aabb3f(-0.4375*BS,-0.03125*BS,-0.3125*BS,0.4375*BS,0.03125*BS,-0.1875*BS),
-						aabb3f(-0.4375*BS,-0.03125*BS,-0.0625*BS,0.4375*BS,0.03125*BS,0.0625*BS),
-						aabb3f(-0.4375*BS,-0.03125*BS,0.1875*BS,0.4375*BS,0.03125*BS,0.3125*BS),
-						aabb3f(-0.4375*BS,-0.03125*BS,0.4375*BS,0.4375*BS,0.03125*BS,0.5625*BS),
-						aabb3f(0.25*BS,0.03125*BS,-0.64*BS,0.3125*BS,0.09375*BS,0.77*BS),
-						aabb3f(-0.3125*BS,0.03125*BS,-0.64*BS,-0.25*BS,0.09375*BS,0.77*BS)
-					};
-					tile = &tiles[0];
-					v3s16 an(0,angle,0);
-					switch (angle) {
-					case 90:
-						an.Z = -45;
-						break;
-					case 180:
-						an.X = 45;
-						break;
-					case 270:
-						an.Z = 45;
-						break;
-					default:
-						an.X = -45;
-					}
-					for (int bi=0; bi<7; bi++) {
-						if (bi == 5)
-							tile = &tiles[1];
-						makeRotatedCuboid(&collector,pos,track[bi],tile,1,c,NULL,an, v3f(0,0,0));
-					}
-				}else{
-					aabb3f track[6] = {
-						aabb3f(-0.4375*BS,-0.5*BS,-0.4375*BS,0.4375*BS,-0.4375*BS,-0.3125*BS),
-						aabb3f(-0.4375*BS,-0.5*BS,-0.1875*BS,0.4375*BS,-0.4375*BS,-0.0625*BS),
-						aabb3f(-0.4375*BS,-0.5*BS,0.0625*BS,0.4375*BS,-0.4375*BS,0.1875*BS),
-						aabb3f(-0.4375*BS,-0.5*BS,0.3125*BS,0.4375*BS,-0.4375*BS,0.4375*BS),
-						aabb3f(-0.3125*BS,-0.4375*BS,-0.5*BS,-0.25*BS,-0.375*BS,0.5*BS),
-						aabb3f(0.25*BS,-0.4375*BS,-0.5*BS,0.3125*BS,-0.375*BS,0.5*BS)
-					};
-					tile = &tiles[0];
-					for (int bi=0; bi<6; bi++) {
-						if (bi == 4)
-							tile = &tiles[1];
-						makeRotatedCuboid(&collector,pos,track[bi],tile,1,c,NULL,v3s16(0,angle,0), v3f(0,0,0));
-					}
-				}
-				break;
-			}
-			case 1:
-			{
-				aabb3f track[20] = {
-					aabb3f(-0.4375*BS,-0.5*BS,-0.4375*BS,0.4375*BS,-0.4375*BS,-0.3125*BS),
-					aabb3f(-0.4375*BS,-0.5*BS,-0.3125*BS,-0.3125*BS,-0.4375*BS,0.4375*BS),
-					aabb3f(-0.3125*BS,-0.5*BS,-0.3125*BS,-0.25*BS,-0.4375*BS,-0.1875*BS),
-					aabb3f(-0.25*BS,-0.5*BS,-0.3125*BS,-0.1875*BS,-0.4375*BS,-0.125*BS),
-					aabb3f(-0.1875*BS,-0.5*BS,-0.25*BS,-0.125*BS,-0.4375*BS,-0.0625*BS),
-					aabb3f(-0.125*BS,-0.5*BS,-0.1875*BS,-0.0625*BS,-0.4375*BS,0.*BS),
-					aabb3f(-0.0625*BS,-0.5*BS,-0.125*BS,0.*BS,-0.4375*BS,0.0625*BS),
-					aabb3f(0.*BS,-0.5*BS,-0.0625*BS,0.0625*BS,-0.4375*BS,0.125*BS),
-					aabb3f(0.0625*BS,-0.5*BS,0.*BS,0.125*BS,-0.4375*BS,0.1875*BS),
-					aabb3f(0.125*BS,-0.5*BS,0.0625*BS,0.1875*BS,-0.4375*BS,0.25*BS),
-					aabb3f(0.1875*BS,-0.5*BS,0.125*BS,0.25*BS,-0.4375*BS,0.3125*BS),
-					aabb3f(0.25*BS,-0.5*BS,0.1875*BS,0.3125*BS,-0.4375*BS,0.25*BS),
-					aabb3f(0.25*BS,-0.4375*BS,-0.5*BS,0.3125*BS,-0.375*BS,-0.0625*BS),
-					aabb3f(-0.3125*BS,-0.4375*BS,-0.5*BS,-0.25*BS,-0.375*BS,-0.3125*BS),
-					aabb3f(-0.5*BS,-0.4375*BS,-0.3125*BS,-0.3125*BS,-0.375*BS,-0.25*BS),
-					aabb3f(-0.5*BS,-0.4375*BS,0.25*BS,-0.0625*BS,-0.375*BS,0.3125*BS),
-					aabb3f(0.0625*BS,-0.4375*BS,0.125*BS,0.125*BS,-0.375*BS,0.1875*BS),
-					aabb3f(0.1875*BS,-0.4375*BS,-0.0625*BS,0.25*BS,-0.375*BS,0.0625*BS),
-					aabb3f(-0.0625*BS,-0.4375*BS,0.1875*BS,0.0625*BS,-0.375*BS,0.25*BS),
-					aabb3f(0.125*BS,-0.4375*BS,0.0625*BS,0.1875*BS,-0.375*BS,0.125*BS)
-				};
-				tile = &tiles[0];
-				for (int bi=0; bi<20; bi++) {
-					if (bi == 12)
-						tile = &tiles[1];
-					makeRotatedCuboid(&collector,pos,track[bi],tile,1,c,NULL,v3s16(0,angle+90,0),v3f(0,0,0));
-				}
-				break;
-			}
-			case 2:
-			{
-				aabb3f track[17] = {
-					aabb3f(-0.3125*BS,-0.5*BS,-0.4375*BS,0.4375*BS,-0.4375*BS,-0.3125*BS),
-					aabb3f(-0.3125*BS,-0.5*BS,-0.1875*BS,0.4375*BS,-0.4375*BS,-0.0625*BS),
-					aabb3f(-0.3125*BS,-0.5*BS,0.0625*BS,0.4375*BS,-0.4375*BS,0.1875*BS),
-					aabb3f(-0.3125*BS,-0.5*BS,0.3125*BS,0.4375*BS,-0.4375*BS,0.4375*BS),
-					aabb3f(-0.4375*BS,-0.5*BS,-0.4375*BS,-0.3125*BS,-0.4375*BS,0.4375*BS),
-					aabb3f(0.25*BS,-0.4375*BS,-0.5*BS,0.3125*BS,-0.375*BS,0.5*BS),
-					aabb3f(-0.3125*BS,-0.4375*BS,-0.5*BS,-0.25*BS,-0.375*BS,0.1875*BS),
-					aabb3f(-0.3125*BS,-0.4375*BS,0.3125*BS,-0.25*BS,-0.375*BS,0.5*BS),
-					aabb3f(-0.5*BS,-0.4375*BS,-0.3125*BS,-0.3125*BS,-0.375*BS,-0.25*BS),
-					aabb3f(-0.5*BS,-0.4375*BS,0.25*BS,-0.25*BS,-0.375*BS,0.3125*BS),
-					aabb3f(0.125*BS,-0.4375*BS,0.0625*BS,0.1875*BS,-0.375*BS,0.125*BS),
-					aabb3f(0.0625*BS,-0.4375*BS,0.125*BS,0.125*BS,-0.375*BS,0.1875*BS),
-					aabb3f(-0.0625*BS,-0.4375*BS,0.1875*BS,0.0625*BS,-0.375*BS,0.25*BS),
-					aabb3f(0.1875*BS,-0.4375*BS,-0.0625*BS,0.25*BS,-0.375*BS,0.0625*BS),
-					aabb3f(-0.1875*BS,-0.4375*BS,0.25*BS,-0.0625*BS,-0.375*BS,0.3125*BS),
-					aabb3f(-0.1875*BS,-0.4375*BS,0.3125*BS,-0.125*BS,-0.375*BS,0.4375*BS),
-					aabb3f(-0.4375*BS,-0.4375*BS,0.125*BS,-0.3125*BS,-0.375*BS,0.1875*BS)
-				};
-				tile = &tiles[0];
-				for (int bi=0; bi<17; bi++) {
-					if (bi == 5)
-						tile = &tiles[1];
-					makeRotatedCuboid(&collector,pos,track[bi],tile,1,c,NULL,v3s16(0,angle+180,0),v3f(0,0,0));
-				}
-				break;
-			}
-			case 3:
-			{
-				aabb3f track[20] = {
-					aabb3f(-0.4375*BS,-0.5*BS,-0.4375*BS,0.4375*BS,-0.4375*BS,-0.3125*BS),
-					aabb3f(-0.4375*BS,-0.5*BS,0.3125*BS,0.4375*BS,-0.4375*BS,0.4375*BS),
-					aabb3f(-0.4375*BS,-0.5*BS,-0.3125*BS,-0.3125*BS,-0.4375*BS,0.3125*BS),
-					aabb3f(0.3125*BS,-0.5*BS,-0.3125*BS,0.4375*BS,-0.4375*BS,0.3125*BS),
-					aabb3f(-0.0625*BS,-0.5*BS,-0.3125*BS,0.0625*BS,-0.4375*BS,0.3125*BS),
-					aabb3f(0.0625*BS,-0.5*BS,-0.0625*BS,0.3125*BS,-0.4375*BS,0.0625*BS),
-					aabb3f(-0.3125*BS,-0.5*BS,-0.0625*BS,-0.0625*BS,-0.4375*BS,0.0625*BS),
-					aabb3f(-0.3125*BS,-0.4375*BS,-0.5*BS,-0.25*BS,-0.375*BS,-0.25*BS),
-					aabb3f(0.25*BS,-0.4375*BS,-0.5*BS,0.3125*BS,-0.375*BS,-0.25*BS),
-					aabb3f(-0.5*BS,-0.4375*BS,0.25*BS,-0.3125*BS,-0.375*BS,0.3125*BS),
-					aabb3f(-0.5*BS,-0.4375*BS,-0.3125*BS,-0.3125*BS,-0.375*BS,-0.25*BS),
-					aabb3f(0.3125*BS,-0.4375*BS,-0.3125*BS,0.5*BS,-0.375*BS,-0.25*BS),
-					aabb3f(0.3125*BS,-0.4375*BS,0.25*BS,0.5*BS,-0.375*BS,0.3125*BS),
-					aabb3f(-0.1875*BS,-0.4375*BS,0.25*BS,0.1875*BS,-0.375*BS,0.3125*BS),
-					aabb3f(-0.1875*BS,-0.4375*BS,-0.3125*BS,0.1875*BS,-0.375*BS,-0.25*BS),
-					aabb3f(0.25*BS,-0.4375*BS,0.25*BS,0.3125*BS,-0.375*BS,0.5*BS),
-					aabb3f(0.25*BS,-0.4375*BS,-0.1875*BS,0.3125*BS,-0.375*BS,0.1875*BS),
-					aabb3f(-0.3125*BS,-0.4375*BS,0.25*BS,-0.25*BS,-0.375*BS,0.5*BS),
-					aabb3f(-0.3125*BS,-0.4375*BS,-0.1875*BS,-0.25*BS,-0.375*BS,0.1875*BS),
-					aabb3f(-0.1875*BS,-0.4375*BS,-0.1875*BS,0.1875*BS,-0.375*BS,0.1875*BS)
-				};
-				tile = &tiles[0];
-				for (int bi=0; bi<20; bi++) {
-					if (bi == 7)
-						tile = &tiles[1];
-					makeRotatedCuboid(&collector,pos,track[bi],tile,1,c,NULL,v3s16(0,angle,0),v3f(0,0,0));
-				}
-				break;
-			}
-			default:;
-			}
-		}
-		break;
 		case CDT_ROOFLIKE:
 		{
 			bool is_roof_x [] = { false, false };  /* x-1, x+1 */
@@ -2119,6 +1514,41 @@ static void meshgen_build_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, bool 
 	}
 }
 
+void meshgen_leaftri(MeshMakeData *data, v3f corners[3], v3f pos, TileSpec &tile, bool selected, s16 rot)
+{
+	// vertices
+	v3f v[3];
+	// tex coords
+	v2f t[3];
+	for (int i=0; i<3; i++) {
+		v[i].X = (corners[i].X*BS)+pos.X;
+		v[i].Y = (corners[i].Y*BS)+pos.Y;
+		v[i].Z = (corners[i].Z*BS)+pos.Z;
+		t[i].X = (corners[i].X+0.5);
+		t[i].Y = (corners[i].Z+0.5);
+		if (rot)
+			t[i] = t[i].rotateBy(rot,v2f(0.5,0.5));
+		t[i].X = (t[i].X*tile.texture.size.X)+tile.texture.pos.X;
+		t[i].Y = (t[i].Y*tile.texture.size.Y)+tile.texture.pos.Y;
+	}
+
+	{
+		video::S3DVertex tri_v[3] = {
+			video::S3DVertex(v[0].X, v[0].Y, v[0].Z, 0,0,0, video::SColor(255,255,255,255),  t[0].X, t[0].Y),
+			video::S3DVertex(v[1].X, v[1].Y, v[1].Z, 0,0,0, video::SColor(255,255,255,255),  t[1].X, t[1].Y),
+			video::S3DVertex(v[2].X, v[2].Y, v[2].Z, 0,0,0, video::SColor(255,255,255,255),  t[2].X, t[2].Y),
+		};
+		u16 indices[] = {0,1,2};
+		std::vector<video::SColor> colours[18];
+		if (selected) {
+			meshgen_selected_lights(colours,255,3);
+		}else{
+			meshgen_lights(colours,255,3);
+		}
+		data->append(tile.getMaterial(),tri_v, 3, indices, 3, colours);
+	}
+}
+
 void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 {
 	v3f pos = intToFloat(p, BS);
@@ -2258,6 +1688,285 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 
 void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 {
+	bool is_rail_x [] = { false, false };  /* x-1, x+1 */
+	bool is_rail_z [] = { false, false };  /* z-1, z+1 */
+
+	bool is_rail_z_minus_y [] = { false, false };  /* z-1, z+1; y-1 */
+	bool is_rail_x_minus_y [] = { false, false };  /* x-1, z+1; y-1 */
+	bool is_rail_z_plus_y [] = { false, false };  /* z-1, z+1; y+1 */
+	bool is_rail_x_plus_y [] = { false, false };  /* x-1, x+1; y+1 */
+
+	MapNode n_minus_x = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(-1,0,0));
+	MapNode n_plus_x = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(1,0,0));
+	MapNode n_minus_z = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0,0,-1));
+	MapNode n_plus_z = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0,0,1));
+	MapNode n_plus_x_plus_y = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(1, 1, 0));
+	MapNode n_plus_x_minus_y = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(1, -1, 0));
+	MapNode n_minus_x_plus_y = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(-1, 1, 0));
+	MapNode n_minus_x_minus_y = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(-1, -1, 0));
+	MapNode n_plus_z_plus_y = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0, 1, 1));
+	MapNode n_minus_z_plus_y = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0, 1, -1));
+	MapNode n_plus_z_minus_y = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0, -1, 1));
+	MapNode n_minus_z_minus_y = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0, -1, -1));
+
+	content_t thiscontent = n.getContent();
+
+	if (n_minus_x.getContent() == thiscontent)
+		is_rail_x[0] = true;
+	if (n_minus_x_minus_y.getContent() == thiscontent)
+		is_rail_x_minus_y[0] = true;
+	if (n_minus_x_plus_y.getContent() == thiscontent)
+		is_rail_x_plus_y[0] = true;
+	if (n_plus_x.getContent() == thiscontent)
+		is_rail_x[1] = true;
+	if (n_plus_x_minus_y.getContent() == thiscontent)
+		is_rail_x_minus_y[1] = true;
+	if (n_plus_x_plus_y.getContent() == thiscontent)
+		is_rail_x_plus_y[1] = true;
+	if (n_minus_z.getContent() == thiscontent)
+		is_rail_z[0] = true;
+	if (n_minus_z_minus_y.getContent() == thiscontent)
+		is_rail_z_minus_y[0] = true;
+	if (n_minus_z_plus_y.getContent() == thiscontent)
+		is_rail_z_plus_y[0] = true;
+	if (n_plus_z.getContent() == thiscontent)
+		is_rail_z[1] = true;
+	if (n_plus_z_minus_y.getContent() == thiscontent)
+		is_rail_z_minus_y[1] = true;
+	if (n_plus_z_plus_y.getContent() == thiscontent)
+		is_rail_z_plus_y[1] = true;
+
+	bool is_rail_x_all[] = {false, false};
+	bool is_rail_z_all[] = {false, false};
+	is_rail_x_all[0] = is_rail_x[0] || is_rail_x_minus_y[0] || is_rail_x_plus_y[0];
+	is_rail_x_all[1] = is_rail_x[1] || is_rail_x_minus_y[1] || is_rail_x_plus_y[1];
+	is_rail_z_all[0] = is_rail_z[0] || is_rail_z_minus_y[0] || is_rail_z_plus_y[0];
+	is_rail_z_all[1] = is_rail_z[1] || is_rail_z_minus_y[1] || is_rail_z_plus_y[1];
+
+	// reasonable default, flat straight unrotated rail
+	bool is_straight = true;
+	int adjacencies = 0;
+	int angle = 0;
+	u8 type = 0;
+
+	// check for sloped rail
+	if (is_rail_x_plus_y[0] || is_rail_x_plus_y[1] || is_rail_z_plus_y[0] || is_rail_z_plus_y[1]) {
+		adjacencies = 5; //5 means sloped
+		is_straight = true; // sloped is always straight
+	}else{
+		// is really straight, rails on both sides
+		is_straight = (is_rail_x_all[0] && is_rail_x_all[1]) || (is_rail_z_all[0] && is_rail_z_all[1]);
+		adjacencies = is_rail_x_all[0] + is_rail_x_all[1] + is_rail_z_all[0] + is_rail_z_all[1];
+	}
+
+	switch (adjacencies) {
+	case 1:
+		if(is_rail_x_all[0] || is_rail_x_all[1])
+			angle = 90;
+		break;
+	case 2:
+		if(!is_straight)
+			type = 1; // curved
+		if(is_rail_x_all[0] && is_rail_x_all[1])
+			angle = 90;
+		if(is_rail_z_all[0] && is_rail_z_all[1]){
+			if (is_rail_z_plus_y[0])
+				angle = 180;
+		}
+		else if(is_rail_x_all[0] && is_rail_z_all[0])
+			angle = 270;
+		else if(is_rail_x_all[0] && is_rail_z_all[1])
+			angle = 180;
+		else if(is_rail_x_all[1] && is_rail_z_all[1])
+			angle = 90;
+		break;
+	case 3:
+		// here is where the potential to 'switch' a junction is, but not implemented at present
+		type = 2; // t-junction
+		if(!is_rail_x_all[1])
+			angle=180;
+		if(!is_rail_z_all[0])
+			angle=90;
+		if(!is_rail_z_all[1])
+			angle=270;
+		break;
+	case 4:
+		type = 3; // crossing
+		break;
+	case 5: //sloped
+		if(is_rail_z_plus_y[0])
+			angle = 180;
+		if(is_rail_x_plus_y[0])
+			angle = 90;
+		if(is_rail_x_plus_y[1])
+			angle = 270;
+		break;
+	default:
+		break;
+	}
+
+	static const v3s16 tile_dirs[6] = {
+		v3s16(0, 1, 0),
+		v3s16(0, -1, 0),
+		v3s16(1, 0, 0),
+		v3s16(-1, 0, 0),
+		v3s16(0, 0, 1),
+		v3s16(0, 0, -1)
+	};
+	TileSpec tiles[6];
+	TileSpec *tile;
+	for (int i = 0; i < 6; i++) {
+		// Handles facedir rotation for textures
+		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
+	}
+	v3f pos = intToFloat(p,BS);
+
+	switch (type) {
+	case 0: // straight
+	{
+		if (is_rail_x_plus_y[0] || is_rail_x_plus_y[1] || is_rail_z_plus_y[0] || is_rail_z_plus_y[1]) {
+			aabb3f track[7] = {
+				aabb3f(-0.4375*BS,-0.03125*BS,-0.5625*BS,0.4375*BS,0.03125*BS,-0.4375*BS),
+				aabb3f(-0.4375*BS,-0.03125*BS,-0.3125*BS,0.4375*BS,0.03125*BS,-0.1875*BS),
+				aabb3f(-0.4375*BS,-0.03125*BS,-0.0625*BS,0.4375*BS,0.03125*BS,0.0625*BS),
+				aabb3f(-0.4375*BS,-0.03125*BS,0.1875*BS,0.4375*BS,0.03125*BS,0.3125*BS),
+				aabb3f(-0.4375*BS,-0.03125*BS,0.4375*BS,0.4375*BS,0.03125*BS,0.5625*BS),
+				aabb3f(0.25*BS,0.03125*BS,-0.64*BS,0.3125*BS,0.09375*BS,0.77*BS),
+				aabb3f(-0.3125*BS,0.03125*BS,-0.64*BS,-0.25*BS,0.09375*BS,0.77*BS)
+			};
+			tile = &tiles[0];
+			v3s16 an(0,angle,0);
+			switch (angle) {
+			case 90:
+				an.Z = -45;
+				break;
+			case 180:
+				an.X = 45;
+				break;
+			case 270:
+				an.Z = 45;
+				break;
+			default:
+				an.X = -45;
+			}
+			for (int bi=0; bi<7; bi++) {
+				if (bi == 5)
+					tile = &tiles[1];
+				meshgen_cuboid(data,pos,track[bi],tile,1, selected,NULL,an, v3f(0,0,0));
+			}
+		}else{
+			aabb3f track[6] = {
+				aabb3f(-0.4375*BS,-0.5*BS,-0.4375*BS,0.4375*BS,-0.4375*BS,-0.3125*BS),
+				aabb3f(-0.4375*BS,-0.5*BS,-0.1875*BS,0.4375*BS,-0.4375*BS,-0.0625*BS),
+				aabb3f(-0.4375*BS,-0.5*BS,0.0625*BS,0.4375*BS,-0.4375*BS,0.1875*BS),
+				aabb3f(-0.4375*BS,-0.5*BS,0.3125*BS,0.4375*BS,-0.4375*BS,0.4375*BS),
+				aabb3f(-0.3125*BS,-0.4375*BS,-0.5*BS,-0.25*BS,-0.375*BS,0.5*BS),
+				aabb3f(0.25*BS,-0.4375*BS,-0.5*BS,0.3125*BS,-0.375*BS,0.5*BS)
+			};
+			tile = &tiles[0];
+			for (int bi=0; bi<6; bi++) {
+				if (bi == 4)
+					tile = &tiles[1];
+				meshgen_cuboid(data,pos,track[bi],tile,1, selected,NULL,v3s16(0,angle,0), v3f(0,0,0));
+			}
+		}
+		break;
+	}
+	case 1: // curved
+	{
+		aabb3f track[20] = {
+			aabb3f(-0.4375*BS,-0.5*BS,-0.4375*BS,0.4375*BS,-0.4375*BS,-0.3125*BS),
+			aabb3f(-0.4375*BS,-0.5*BS,-0.3125*BS,-0.3125*BS,-0.4375*BS,0.4375*BS),
+			aabb3f(-0.3125*BS,-0.5*BS,-0.3125*BS,-0.25*BS,-0.4375*BS,-0.1875*BS),
+			aabb3f(-0.25*BS,-0.5*BS,-0.3125*BS,-0.1875*BS,-0.4375*BS,-0.125*BS),
+			aabb3f(-0.1875*BS,-0.5*BS,-0.25*BS,-0.125*BS,-0.4375*BS,-0.0625*BS),
+			aabb3f(-0.125*BS,-0.5*BS,-0.1875*BS,-0.0625*BS,-0.4375*BS,0.*BS),
+			aabb3f(-0.0625*BS,-0.5*BS,-0.125*BS,0.*BS,-0.4375*BS,0.0625*BS),
+			aabb3f(0.*BS,-0.5*BS,-0.0625*BS,0.0625*BS,-0.4375*BS,0.125*BS),
+			aabb3f(0.0625*BS,-0.5*BS,0.*BS,0.125*BS,-0.4375*BS,0.1875*BS),
+			aabb3f(0.125*BS,-0.5*BS,0.0625*BS,0.1875*BS,-0.4375*BS,0.25*BS),
+			aabb3f(0.1875*BS,-0.5*BS,0.125*BS,0.25*BS,-0.4375*BS,0.3125*BS),
+			aabb3f(0.25*BS,-0.5*BS,0.1875*BS,0.3125*BS,-0.4375*BS,0.25*BS),
+			aabb3f(0.25*BS,-0.4375*BS,-0.5*BS,0.3125*BS,-0.375*BS,-0.0625*BS),
+			aabb3f(-0.3125*BS,-0.4375*BS,-0.5*BS,-0.25*BS,-0.375*BS,-0.3125*BS),
+			aabb3f(-0.5*BS,-0.4375*BS,-0.3125*BS,-0.3125*BS,-0.375*BS,-0.25*BS),
+			aabb3f(-0.5*BS,-0.4375*BS,0.25*BS,-0.0625*BS,-0.375*BS,0.3125*BS),
+			aabb3f(0.0625*BS,-0.4375*BS,0.125*BS,0.125*BS,-0.375*BS,0.1875*BS),
+			aabb3f(0.1875*BS,-0.4375*BS,-0.0625*BS,0.25*BS,-0.375*BS,0.0625*BS),
+			aabb3f(-0.0625*BS,-0.4375*BS,0.1875*BS,0.0625*BS,-0.375*BS,0.25*BS),
+			aabb3f(0.125*BS,-0.4375*BS,0.0625*BS,0.1875*BS,-0.375*BS,0.125*BS)
+		};
+		tile = &tiles[0];
+		for (int bi=0; bi<20; bi++) {
+			if (bi == 12)
+				tile = &tiles[1];
+			meshgen_cuboid(data,pos,track[bi],tile,1, selected,NULL,v3s16(0,angle+90,0),v3f(0,0,0));
+		}
+		break;
+	}
+	case 2: // t-junction
+	{
+		aabb3f track[17] = {
+			aabb3f(-0.3125*BS,-0.5*BS,-0.4375*BS,0.4375*BS,-0.4375*BS,-0.3125*BS),
+			aabb3f(-0.3125*BS,-0.5*BS,-0.1875*BS,0.4375*BS,-0.4375*BS,-0.0625*BS),
+			aabb3f(-0.3125*BS,-0.5*BS,0.0625*BS,0.4375*BS,-0.4375*BS,0.1875*BS),
+			aabb3f(-0.3125*BS,-0.5*BS,0.3125*BS,0.4375*BS,-0.4375*BS,0.4375*BS),
+			aabb3f(-0.4375*BS,-0.5*BS,-0.4375*BS,-0.3125*BS,-0.4375*BS,0.4375*BS),
+			aabb3f(0.25*BS,-0.4375*BS,-0.5*BS,0.3125*BS,-0.375*BS,0.5*BS),
+			aabb3f(-0.3125*BS,-0.4375*BS,-0.5*BS,-0.25*BS,-0.375*BS,0.1875*BS),
+			aabb3f(-0.3125*BS,-0.4375*BS,0.3125*BS,-0.25*BS,-0.375*BS,0.5*BS),
+			aabb3f(-0.5*BS,-0.4375*BS,-0.3125*BS,-0.3125*BS,-0.375*BS,-0.25*BS),
+			aabb3f(-0.5*BS,-0.4375*BS,0.25*BS,-0.25*BS,-0.375*BS,0.3125*BS),
+			aabb3f(0.125*BS,-0.4375*BS,0.0625*BS,0.1875*BS,-0.375*BS,0.125*BS),
+			aabb3f(0.0625*BS,-0.4375*BS,0.125*BS,0.125*BS,-0.375*BS,0.1875*BS),
+			aabb3f(-0.0625*BS,-0.4375*BS,0.1875*BS,0.0625*BS,-0.375*BS,0.25*BS),
+			aabb3f(0.1875*BS,-0.4375*BS,-0.0625*BS,0.25*BS,-0.375*BS,0.0625*BS),
+			aabb3f(-0.1875*BS,-0.4375*BS,0.25*BS,-0.0625*BS,-0.375*BS,0.3125*BS),
+			aabb3f(-0.1875*BS,-0.4375*BS,0.3125*BS,-0.125*BS,-0.375*BS,0.4375*BS),
+			aabb3f(-0.4375*BS,-0.4375*BS,0.125*BS,-0.3125*BS,-0.375*BS,0.1875*BS)
+		};
+		tile = &tiles[0];
+		for (int bi=0; bi<17; bi++) {
+			if (bi == 5)
+				tile = &tiles[1];
+			meshgen_cuboid(data,pos,track[bi],tile,1, selected,NULL,v3s16(0,angle+180,0),v3f(0,0,0));
+		}
+		break;
+	}
+	case 3: // crossing
+	{
+		aabb3f track[20] = {
+			aabb3f(-0.4375*BS,-0.5*BS,-0.4375*BS,0.4375*BS,-0.4375*BS,-0.3125*BS),
+			aabb3f(-0.4375*BS,-0.5*BS,0.3125*BS,0.4375*BS,-0.4375*BS,0.4375*BS),
+			aabb3f(-0.4375*BS,-0.5*BS,-0.3125*BS,-0.3125*BS,-0.4375*BS,0.3125*BS),
+			aabb3f(0.3125*BS,-0.5*BS,-0.3125*BS,0.4375*BS,-0.4375*BS,0.3125*BS),
+			aabb3f(-0.0625*BS,-0.5*BS,-0.3125*BS,0.0625*BS,-0.4375*BS,0.3125*BS),
+			aabb3f(0.0625*BS,-0.5*BS,-0.0625*BS,0.3125*BS,-0.4375*BS,0.0625*BS),
+			aabb3f(-0.3125*BS,-0.5*BS,-0.0625*BS,-0.0625*BS,-0.4375*BS,0.0625*BS),
+			aabb3f(-0.3125*BS,-0.4375*BS,-0.5*BS,-0.25*BS,-0.375*BS,-0.25*BS),
+			aabb3f(0.25*BS,-0.4375*BS,-0.5*BS,0.3125*BS,-0.375*BS,-0.25*BS),
+			aabb3f(-0.5*BS,-0.4375*BS,0.25*BS,-0.3125*BS,-0.375*BS,0.3125*BS),
+			aabb3f(-0.5*BS,-0.4375*BS,-0.3125*BS,-0.3125*BS,-0.375*BS,-0.25*BS),
+			aabb3f(0.3125*BS,-0.4375*BS,-0.3125*BS,0.5*BS,-0.375*BS,-0.25*BS),
+			aabb3f(0.3125*BS,-0.4375*BS,0.25*BS,0.5*BS,-0.375*BS,0.3125*BS),
+			aabb3f(-0.1875*BS,-0.4375*BS,0.25*BS,0.1875*BS,-0.375*BS,0.3125*BS),
+			aabb3f(-0.1875*BS,-0.4375*BS,-0.3125*BS,0.1875*BS,-0.375*BS,-0.25*BS),
+			aabb3f(0.25*BS,-0.4375*BS,0.25*BS,0.3125*BS,-0.375*BS,0.5*BS),
+			aabb3f(0.25*BS,-0.4375*BS,-0.1875*BS,0.3125*BS,-0.375*BS,0.1875*BS),
+			aabb3f(-0.3125*BS,-0.4375*BS,0.25*BS,-0.25*BS,-0.375*BS,0.5*BS),
+			aabb3f(-0.3125*BS,-0.4375*BS,-0.1875*BS,-0.25*BS,-0.375*BS,0.1875*BS),
+			aabb3f(-0.1875*BS,-0.4375*BS,-0.1875*BS,0.1875*BS,-0.375*BS,0.1875*BS)
+		};
+		tile = &tiles[0];
+		for (int bi=0; bi<20; bi++) {
+			if (bi == 7)
+				tile = &tiles[1];
+			meshgen_cuboid(data,pos,track[bi],tile,1, selected,NULL,v3s16(0,angle,0),v3f(0,0,0));
+		}
+		break;
+	}
+	default:;
+	}
 }
 
 void meshgen_plantlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
@@ -3321,6 +3030,201 @@ void meshgen_walllike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 
 void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 {
+}
+
+void meshgen_leaflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+{
+	bool is_xp = false;
+	bool is_xm = false;
+	bool is_zp = false;
+	bool is_zm = false;
+	bool is_xpzm = false;
+	bool is_xmzp = false;
+	bool is_xmzm = false;
+
+	content_t thiscontent = n.getContent();
+
+	content_t n_xp = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16( 1,0, 0)).getContent();
+	content_t n_xm = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(-1,0, 0)).getContent();
+	content_t n_zp = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16( 0,0, 1)).getContent();
+	content_t n_zm = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16( 0,0,-1)).getContent();
+	content_t n_xpzm = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16( 1,0,-1)).getContent();
+	content_t n_xmzp = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(-1,0, 1)).getContent();
+	content_t n_xmzm = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(-1,0,-1)).getContent();
+
+	if (n_xp == thiscontent || content_features(n_xp).special_alternate_node == thiscontent)
+		is_xp = true;
+	if (n_xm == thiscontent || content_features(n_xm).special_alternate_node == thiscontent)
+		is_xm = true;
+	if (n_zp == thiscontent || content_features(n_zp).special_alternate_node == thiscontent)
+		is_zp = true;
+	if (n_zm == thiscontent || content_features(n_zm).special_alternate_node == thiscontent)
+		is_zm = true;
+	if (n_xpzm == thiscontent || content_features(n_xpzm).special_alternate_node == thiscontent)
+		is_xpzm = true;
+	if (n_xmzp == thiscontent || content_features(n_xmzp).special_alternate_node == thiscontent)
+		is_xmzp = true;
+	if (n_xmzm == thiscontent || content_features(n_xmzm).special_alternate_node == thiscontent)
+		is_xmzm = true;
+
+	// get the tile, with crack if being dug
+	TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),data->m_temp_mods);
+	TileSpec toptile = getNodeTile(n,p,v3s16(0,-1,0),data->m_temp_mods);
+
+	u8 type = 0;
+	s16 angle = 0;
+
+	MapNode abv;
+
+	v3f pos = intToFloat(p, BS);
+
+	if (is_xp && is_xm) {
+		if (is_zm || (is_xpzm && is_xmzm) || content_features(n_zm).walkable)
+			angle = 180;
+	}else if (is_zp && is_zm) {
+		if (is_xm || (is_xmzp && is_xmzm) || content_features(n_xm).walkable) {
+			angle = 90;
+		}else{
+			angle = 270;
+		}
+	}else if (is_xp && is_zp) {
+		type = 1;
+		angle = 270;
+	}else if (is_xp && is_zm) {
+		type = 1;
+		angle = 180;
+	}else if (is_xm && is_zp) {
+		type = 1;
+	}else if (is_xm && is_zm) {
+		type = 1;
+		angle = 90;
+	}else if (is_xp || is_xm) {
+		if (is_zm || (is_xp && is_xpzm) || (is_xm && is_xmzm) || content_features(n_zm).walkable)
+			angle = 180;
+	}else if (is_zp || is_zm) {
+		if (is_xm || (is_zp && is_xmzp) || (is_zm && is_xmzm) || content_features(n_xm).walkable) {
+			angle = 90;
+		}else{
+			angle = 270;
+		}
+	}else{
+		type = 2;
+	}
+	/*
+		0: slope
+		1: corner
+		2: top cap
+	*/
+	switch (type) {
+	case 0:
+	{
+		v3f cnr[2][3];
+		if (angle == 0) {
+			cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+			cnr[0][1] = v3f(0.5,-0.5,-0.5);
+			cnr[0][2] = v3f(0.5,0.5,0.5);
+			cnr[1][0] = v3f(0.5,0.5,0.5);
+			cnr[1][1] = v3f(-0.5,0.5,0.5);
+			cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+		}else if (angle == 90) {
+			cnr[0][0] = v3f(-0.5,0.5,-0.5);
+			cnr[0][1] = v3f(0.5,-0.5,-0.5);
+			cnr[0][2] = v3f(0.5,-0.5,0.5);
+			cnr[1][0] = v3f(0.5,-0.5,0.5);
+			cnr[1][1] = v3f(-0.5,0.5,0.5);
+			cnr[1][2] = v3f(-0.5,0.5,-0.5);
+		}else if (angle == 180) {
+			cnr[0][0] = v3f(-0.5,0.5,-0.5);
+			cnr[0][1] = v3f(0.5,0.5,-0.5);
+			cnr[0][2] = v3f(0.5,-0.5,0.5);
+			cnr[1][0] = v3f(0.5,-0.5,0.5);
+			cnr[1][1] = v3f(-0.5,-0.5,0.5);
+			cnr[1][2] = v3f(-0.5,0.5,-0.5);
+		}else if (angle == 270) {
+			cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+			cnr[0][1] = v3f(0.5,0.5,-0.5);
+			cnr[0][2] = v3f(0.5,0.5,0.5);
+			cnr[1][0] = v3f(0.5,0.5,0.5);
+			cnr[1][1] = v3f(-0.5,-0.5,0.5);
+			cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+		}
+		s16 a = 180-angle;
+		if (a < 0)
+			a += 360;
+		for (int s=0; s<2; s++) {
+			meshgen_leaftri(data,cnr[s],pos,tile,selected,a);
+		}
+	}
+	break;
+	case 1:
+	{
+		v3f cnr[2][3];
+		s16 a1 = angle;
+		s16 a2 = angle - 90;
+		if (angle == 0) {
+			cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+			cnr[0][1] = v3f(0.5,-0.5,-0.5);
+			cnr[0][2] = v3f(-0.5,0.5,0.5);
+			cnr[1][0] = v3f(-0.5,0.5,0.5);
+			cnr[1][1] = v3f(0.5,-0.5,-0.5);
+			cnr[1][2] = v3f(0.5,-0.5,0.5);
+			a1 = 180;
+			a2 = 90;
+		}else if (angle == 90) {
+			cnr[0][0] = v3f(-0.5,-0.5,0.5);
+			cnr[0][1] = v3f(0.5,-0.5,0.5);
+			cnr[0][2] = v3f(-0.5,0.5,-0.5);
+			cnr[1][0] = v3f(-0.5,0.5,-0.5);
+			cnr[1][1] = v3f(0.5,-0.5,0.5);
+			cnr[1][2] = v3f(0.5,-0.5,-0.5);
+			a1 = 0;
+			a2 = 90;
+		}else if (angle == 180) {
+			cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+			cnr[0][1] = v3f(0.5,0.5,-0.5);
+			cnr[0][2] = v3f(-0.5,-0.5,0.5);
+			cnr[1][0] = v3f(-0.5,-0.5,0.5);
+			cnr[1][1] = v3f(0.5,0.5,-0.5);
+			cnr[1][2] = v3f(0.5,-0.5,0.5);
+			a1 = 270;
+			a2 = 0;
+		}else if (angle == 270) {
+			cnr[0][0] = v3f(-0.5,-0.5,0.5);
+			cnr[0][1] = v3f(0.5,0.5,0.5);
+			cnr[0][2] = v3f(-0.5,-0.5,-0.5);
+			cnr[1][0] = v3f(-0.5,-0.5,-0.5);
+			cnr[1][1] = v3f(0.5,0.5,0.5);
+			cnr[1][2] = v3f(0.5,-0.5,-0.5);
+		}
+		s16 a = a1;
+		for (int s=0; s<2; s++) {
+			meshgen_leaftri(data,cnr[s],pos,tile,selected,a);
+			a = a2;
+		}
+	}
+	break;
+	case 2:
+	{
+		v3f cnr[4][3];
+		cnr[0][0] = v3f(0.,0.,0.);
+		cnr[0][1] = v3f(-0.5,-0.5,-0.5);
+		cnr[0][2] = v3f(-0.5,-0.5,0.5);
+		cnr[1][0] = v3f(0.,0.,0.);
+		cnr[1][1] = v3f(-0.5,-0.5,-0.5);
+		cnr[1][2] = v3f(0.5,-0.5,-0.5);
+		cnr[2][0] = v3f(0.,0.,0.);
+		cnr[2][1] = v3f(0.5,-0.5,-0.5);
+		cnr[2][2] = v3f(0.5,-0.5,0.5);
+		cnr[3][0] = v3f(0.,0.,0.);
+		cnr[3][1] = v3f(-0.5,-0.5,0.5);
+		cnr[3][2] = v3f(0.5,-0.5,0.5);
+		for (int s=0; s<4; s++) {
+			meshgen_leaftri(data,cnr[s],pos,toptile,selected,(90*s)+90+(180*(!(s%2))));
+		}
+	}
+	break;
+	default:;
+	}
 }
 
 void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, bool is3d)

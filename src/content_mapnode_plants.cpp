@@ -223,12 +223,13 @@ void content_mapnode_plants(bool repeat)
 	f->param_type = CPT_LIGHT;
 	//f->is_ground_content = true;
 	if (new_style_leaves) {
-		f->draw_type = CDT_ROOFLIKE;
+		f->draw_type = CDT_LEAFLIKE;
 		f->solidness = 0; // drawn separately, makes no faces
 		f->visual_solidness = 1;
 		f->setAllTextures("leaves.png");
 #ifndef SERVER
 		f->setAllTextureTypes(MATERIAL_ALPHA_SIMPLE);
+		f->setAllTextureFlags(0);
 #endif
 		f->setInventoryTextureCube("leaves.png", "leaves.png", "leaves.png");
 	}else{
@@ -256,14 +257,15 @@ void content_mapnode_plants(bool repeat)
 	f->walkable = false;
 	f->climbable = true;
 	f->param_type = CPT_LIGHT;
-	//f->is_ground_content = true;
+	f->special_alternate_node = CONTENT_APPLE_BLOSSOM;
 	if (new_style_leaves) {
-		f->draw_type = CDT_ROOFLIKE;
+		f->draw_type = CDT_LEAFLIKE;
 		f->solidness = 0; // drawn separately, makes no faces
 		f->visual_solidness = 1;
 		f->setAllTextures("apple_leaves.png");
 #ifndef SERVER
 		f->setAllTextureTypes(MATERIAL_ALPHA_SIMPLE);
+		f->setAllTextureFlags(0);
 #endif
 		f->setInventoryTextureCube("apple_leaves.png", "apple_leaves.png", "apple_leaves.png");
 	}else{
@@ -293,12 +295,13 @@ void content_mapnode_plants(bool repeat)
 	f->param_type = CPT_LIGHT;
 	//f->is_ground_content = true;
 	if (new_style_leaves) {
-		f->draw_type = CDT_ROOFLIKE;
+		f->draw_type = CDT_LEAFLIKE;
 		f->solidness = 0; // drawn separately, makes no faces
 		f->visual_solidness = 1;
 		f->setAllTextures("jungleleaves.png");
 #ifndef SERVER
 		f->setAllTextureTypes(MATERIAL_ALPHA_SIMPLE);
+		f->setAllTextureFlags(0);
 #endif
 		f->setInventoryTextureCube("jungleleaves.png", "jungleleaves.png", "jungleleaves.png");
 	}else{
@@ -328,12 +331,13 @@ void content_mapnode_plants(bool repeat)
 	f->param_type = CPT_LIGHT;
 	//f->is_ground_content = true;
 	if (new_style_leaves) {
-		f->draw_type = CDT_ROOFLIKE;
+		f->draw_type = CDT_LEAFLIKE;
 		f->solidness = 0; // drawn separately, makes no faces
 		f->visual_solidness = 1;
 		f->setAllTextures("conifer_leaves.png");
 #ifndef SERVER
 		f->setAllTextureTypes(MATERIAL_ALPHA_SIMPLE);
+		f->setAllTextureFlags(0);
 #endif
 		f->setInventoryTextureCube("conifer_leaves.png", "conifer_leaves.png", "conifer_leaves.png");
 	}else{
@@ -489,14 +493,15 @@ void content_mapnode_plants(bool repeat)
 	f->walkable = false;
 	f->climbable = true;
 	f->param_type = CPT_LIGHT;
-	//f->is_ground_content = true;
+	f->special_alternate_node = CONTENT_APPLE_LEAVES;
 	if (new_style_leaves) {
-		f->draw_type = CDT_ROOFLIKE;
+		f->draw_type = CDT_LEAFLIKE;
 		f->solidness = 0; // drawn separately, makes no faces
 		f->visual_solidness = 1;
 		f->setAllTextures("apple_leaves.png^apple_blossom.png");
 #ifndef SERVER
 		f->setAllTextureTypes(MATERIAL_ALPHA_SIMPLE);
+		f->setAllTextureFlags(0);
 #endif
 		f->setInventoryTextureCube("apple_leaves.png^apple_blossom.png", "apple_leaves.png^apple_blossom.png", "apple_leaves.png^apple_blossom.png");
 	}else{

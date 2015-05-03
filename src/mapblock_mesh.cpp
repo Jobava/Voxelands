@@ -466,6 +466,9 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset)
 		case CDT_ROOFLIKE:
 			meshgen_rooflike(data,p,n,selected);
 			break;
+		case CDT_LEAFLIKE:
+			meshgen_leaflike(data,p,n,selected);
+			break;
 		case CDT_NODEBOX_META:
 			meshgen_nodebox(data,p,n,selected,true);
 			break;
