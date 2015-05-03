@@ -36,57 +36,6 @@
 #ifndef SERVER
 #if 0
 /*
- * makes one tri/poly for a roof section
- */
-void makeRoofTri(MeshCollector *collector, v3f corners[3], v3f pos, TileSpec *tiles, int tilecount, video::SColor c[2], s16 rot)
-{
-	assert(tilecount >= 1 && tilecount <= 6);
-	// vertices for top and bottom tri
-	v3f top_v[3];
-	v3f btm_v[3];
-	// tex coords for top and bottom tri
-	v2f top_t[3];
-	v2f btm_t[3];
-	for (int i=0; i<3; i++) {
-		top_v[i].X = (corners[i].X*BS)+pos.X;
-		top_v[i].Y = ((corners[i].Y+0.01)*BS)+pos.Y;
-		top_v[i].Z = (corners[i].Z*BS)+pos.Z;
-		top_t[i].X = (corners[i].X+0.5);
-		top_t[i].Y = (corners[i].Z+0.5);
-		if (rot)
-			top_t[i] = top_t[i].rotateBy(rot,v2f(0.5,0.5));
-		top_t[i].X = (top_t[i].X*tiles[0].texture.size.X)+tiles[0].texture.pos.X;
-		top_t[i].Y = (top_t[i].Y*tiles[0].texture.size.Y)+tiles[0].texture.pos.Y;
-
-		// reverse winding for bottom
-		btm_v[2-i].X = (corners[i].X*BS)+pos.X;
-		btm_v[2-i].Y = ((corners[i].Y-0.01)*BS)+pos.Y;
-		btm_v[2-i].Z = (corners[i].Z*BS)+pos.Z;
-		btm_t[2-i].X = top_t[i].X;
-		btm_t[2-i].Y = top_t[i].Y;
-	}
-
-	{
-		video::S3DVertex tri_v[3] = {
-			video::S3DVertex(btm_v[0].X, btm_v[0].Y, btm_v[0].Z, 0,0,0, c[1], btm_t[0].X, btm_t[0].Y),
-			video::S3DVertex(btm_v[1].X, btm_v[1].Y, btm_v[1].Z, 0,0,0, c[1], btm_t[1].X, btm_t[1].Y),
-			video::S3DVertex(btm_v[2].X, btm_v[2].Y, btm_v[2].Z, 0,0,0, c[1], btm_t[2].X, btm_t[2].Y),
-		};
-		u16 indices[] = {0,1,2};
-		collector->append(tiles[0].getMaterial(),tri_v, 3, indices, 3);
-	}
-	{
-		video::S3DVertex tri_v[3] = {
-			video::S3DVertex(top_v[0].X, top_v[0].Y, top_v[0].Z, 0,0,0, c[0], top_t[0].X, top_t[0].Y),
-			video::S3DVertex(top_v[1].X, top_v[1].Y, top_v[1].Z, 0,0,0, c[0], top_t[1].X, top_t[1].Y),
-			video::S3DVertex(top_v[2].X, top_v[2].Y, top_v[2].Z, 0,0,0, c[0], top_t[2].X, top_t[2].Y),
-		};
-		u16 indices[] = {0,1,2};
-		collector->append(tiles[0].getMaterial(),tri_v, 3, indices, 3);
-	}
-}
-
-/*
  * get the light values for a node
  * smooth lighting gets per-vertex
  * standard lighting gets per-face
@@ -1514,6 +1463,65 @@ static void meshgen_build_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, bool 
 	}
 }
 
+void meshgen_rooftri(MeshMakeData *data, v3f corners[3], v3f pos, TileSpec &tile, bool selected, s16 rot)
+{
+	// vertices for top and bottom tri
+	v3f top_v[3];
+	v3f btm_v[3];
+	// tex coords for top and bottom tri
+	v2f top_t[3];
+	v2f btm_t[3];
+	for (int i=0; i<3; i++) {
+		top_v[i].X = (corners[i].X*BS)+pos.X;
+		top_v[i].Y = ((corners[i].Y+0.01)*BS)+pos.Y;
+		top_v[i].Z = (corners[i].Z*BS)+pos.Z;
+		top_t[i].X = (corners[i].X+0.5);
+		top_t[i].Y = (corners[i].Z+0.5);
+		if (rot)
+			top_t[i] = top_t[i].rotateBy(rot,v2f(0.5,0.5));
+		top_t[i].X = (top_t[i].X*tile.texture.size.X)+tile.texture.pos.X;
+		top_t[i].Y = (top_t[i].Y*tile.texture.size.Y)+tile.texture.pos.Y;
+
+		// reverse winding for bottom
+		btm_v[2-i].X = (corners[i].X*BS)+pos.X;
+		btm_v[2-i].Y = ((corners[i].Y-0.01)*BS)+pos.Y;
+		btm_v[2-i].Z = (corners[i].Z*BS)+pos.Z;
+		btm_t[2-i].X = top_t[i].X;
+		btm_t[2-i].Y = top_t[i].Y;
+	}
+
+	{
+		video::S3DVertex tri_v[3] = {
+			video::S3DVertex(btm_v[0].X, btm_v[0].Y, btm_v[0].Z, 0,0,0, video::SColor(255,255,255,255), btm_t[0].X, btm_t[0].Y),
+			video::S3DVertex(btm_v[1].X, btm_v[1].Y, btm_v[1].Z, 0,0,0, video::SColor(255,255,255,255), btm_t[1].X, btm_t[1].Y),
+			video::S3DVertex(btm_v[2].X, btm_v[2].Y, btm_v[2].Z, 0,0,0, video::SColor(255,255,255,255), btm_t[2].X, btm_t[2].Y),
+		};
+		u16 indices[] = {0,1,2};
+		std::vector<video::SColor> colours[18];
+		if (selected) {
+			meshgen_selected_lights(colours,255,3);
+		}else{
+			meshgen_lights(colours,255,3);
+		}
+		data->append(tile.getMaterial(),tri_v, 3, indices, 3, colours);
+	}
+	{
+		video::S3DVertex tri_v[3] = {
+			video::S3DVertex(top_v[0].X, top_v[0].Y, top_v[0].Z, 0,0,0, video::SColor(255,255,255,255), top_t[0].X, top_t[0].Y),
+			video::S3DVertex(top_v[1].X, top_v[1].Y, top_v[1].Z, 0,0,0, video::SColor(255,255,255,255), top_t[1].X, top_t[1].Y),
+			video::S3DVertex(top_v[2].X, top_v[2].Y, top_v[2].Z, 0,0,0, video::SColor(255,255,255,255), top_t[2].X, top_t[2].Y),
+		};
+		u16 indices[] = {0,1,2};
+		std::vector<video::SColor> colours[18];
+		if (selected) {
+			meshgen_selected_lights(colours,255,3);
+		}else{
+			meshgen_lights(colours,255,3);
+		}
+		data->append(tile.getMaterial(),tri_v, 3, indices, 3, colours);
+	}
+}
+
 void meshgen_leaftri(MeshMakeData *data, v3f corners[3], v3f pos, TileSpec &tile, bool selected, s16 rot)
 {
 	// vertices
@@ -1686,6 +1694,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	}
 }
 
+/* TODO: rails need updating, use rotations and better tex coords */
 void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 {
 	bool is_rail_x [] = { false, false };  /* x-1, x+1 */
@@ -3030,6 +3039,912 @@ void meshgen_walllike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 
 void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 {
+	bool is_roof_x [] = { false, false };  /* x-1, x+1 */
+	bool is_roof_z [] = { false, false };  /* z-1, z+1 */
+
+	bool is_roof_z_minus_y [] = { false, false };  /* z-1, z+1; y-1 */
+	bool is_roof_x_minus_y [] = { false, false };  /* x-1, z+1; y-1 */
+	bool is_roof_z_plus_y [] = { false, false };  /* z-1, z+1; y+1 */
+	bool is_roof_x_plus_y [] = { false, false };  /* x-1, x+1; y+1 */
+
+	MapNode n_minus_x = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(-1,0,0));
+	MapNode n_plus_x = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(1,0,0));
+	MapNode n_minus_z = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0,0,-1));
+	MapNode n_plus_z = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0,0,1));
+	MapNode n_plus_x_plus_y = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(1, 1, 0));
+	MapNode n_plus_x_minus_y = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(1, -1, 0));
+	MapNode n_minus_x_plus_y = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(-1, 1, 0));
+	MapNode n_minus_x_minus_y = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(-1, -1, 0));
+	MapNode n_plus_z_plus_y = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0, 1, 1));
+	MapNode n_minus_z_plus_y = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0, 1, -1));
+	MapNode n_plus_z_minus_y = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0, -1, 1));
+	MapNode n_minus_z_minus_y = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0, -1, -1));
+
+	if (content_features(n_minus_x).draw_type == CDT_ROOFLIKE)
+		is_roof_x[0] = true;
+	if (content_features(n_minus_x_minus_y).draw_type == CDT_ROOFLIKE)
+		is_roof_x_minus_y[0] = true;
+	if (content_features(n_minus_x_plus_y).draw_type == CDT_ROOFLIKE)
+		is_roof_x_plus_y[0] = true;
+	if (content_features(n_plus_x).draw_type == CDT_ROOFLIKE)
+		is_roof_x[1] = true;
+	if (content_features(n_plus_x_minus_y).draw_type == CDT_ROOFLIKE)
+		is_roof_x_minus_y[1] = true;
+	if (content_features(n_plus_x_plus_y).draw_type == CDT_ROOFLIKE)
+		is_roof_x_plus_y[1] = true;
+	if (content_features(n_minus_z).draw_type == CDT_ROOFLIKE)
+		is_roof_z[0] = true;
+	if (content_features(n_minus_z_minus_y).draw_type == CDT_ROOFLIKE)
+		is_roof_z_minus_y[0] = true;
+	if (content_features(n_minus_z_plus_y).draw_type == CDT_ROOFLIKE)
+		is_roof_z_plus_y[0] = true;
+	if (content_features(n_plus_z).draw_type == CDT_ROOFLIKE)
+		is_roof_z[1] = true;
+	if (content_features(n_plus_z_minus_y).draw_type == CDT_ROOFLIKE)
+		is_roof_z_minus_y[1] = true;
+	if (content_features(n_plus_z_plus_y).draw_type == CDT_ROOFLIKE)
+		is_roof_z_plus_y[1] = true;
+
+	u8 adjacencies = is_roof_x[0] + is_roof_x[1] + is_roof_z[0] + is_roof_z[1];
+
+	// get the tile, with crack if being dug
+	TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),data->m_temp_mods);
+	TileSpec toptile = getNodeTile(n,p,v3s16(0,-1,0),data->m_temp_mods);
+
+	u8 type = 0;
+	s16 angle = 0;
+
+	MapNode abv;
+
+	v3f pos = intToFloat(p, BS);
+
+	if (adjacencies == 1) {
+		// cross X
+		if (is_roof_x[0] || is_roof_x[1]) {
+			if (is_roof_z_plus_y[0]) {
+				type = 0;
+				angle = 180;
+			}else if (is_roof_z_plus_y[1]) {
+				type = 0;
+				angle = 0;
+			}else if (is_roof_x[0] && is_roof_x_minus_y[1]) {
+				type = 9;
+				angle = 0;
+			}else if (is_roof_x[1] && is_roof_x_minus_y[0]) {
+				type = 9;
+				angle = 180;
+			}else{
+				type = 1;
+				angle = 0;
+			}
+		}
+		// cross Z
+		else if (is_roof_z[0] || is_roof_z[1]) {
+			if (is_roof_x_plus_y[1]) {
+				type = 0;
+				angle = 270;
+			}else if (is_roof_x_plus_y[0]) {
+				type = 0;
+				angle = 90;
+			}else if (is_roof_z[0] && is_roof_z_minus_y[1]) {
+				type = 9;
+				angle = 90;
+			}else if (is_roof_z[1] && is_roof_z_minus_y[0]) {
+				type = 9;
+				angle = 270;
+			}else{
+				type = 1;
+				angle = 90;
+			}
+		}
+	}else if (adjacencies == 2) {
+		// cross X
+		if (is_roof_x[0] && is_roof_x[1]) {
+			if (is_roof_z_plus_y[0]) {
+				type = 0;
+				angle = 180;
+			}else if (is_roof_z_plus_y[1]) {
+				type = 0;
+				angle = 0;
+			}else{
+				type = 1;
+				angle = 0;
+			}
+		}
+		// cross Z
+		else if (is_roof_z[0] && is_roof_z[1]) {
+			if (is_roof_x_plus_y[1]) {
+				type = 0;
+				angle = 270;
+			}else if (is_roof_x_plus_y[0]) {
+				type = 0;
+				angle = 90;
+			}else{
+				type = 1;
+				angle = 90;
+			}
+		}else if (is_roof_x[0] && is_roof_z[0]) {
+			if (is_roof_x_plus_y[1] && is_roof_z_plus_y[1]) {
+				type = 7;
+				angle = 90;
+			}else if (is_roof_x_plus_y[1]) {
+				type = 2;
+				angle = 0;
+			}else if (is_roof_z_plus_y[1]) {
+				type = 2;
+				angle = 90;
+			}else{
+				abv = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(-1, 1,-1));
+				if (content_features(abv).draw_type == CDT_ROOFLIKE) {
+					type = 4;
+					angle = 90;
+				}else{
+					type = 3;
+					angle = 0;
+				}
+			}
+		}else if (is_roof_x[0] && is_roof_z[1]) {
+			if (is_roof_x_plus_y[1] && is_roof_z_plus_y[0]) {
+				type = 7;
+				angle = 0;
+			}else if (is_roof_x_plus_y[1]) {
+				type = 2;
+				angle = 0;
+			}else if (is_roof_z_plus_y[0]) {
+				type = 2;
+				angle = 270;
+			}else{
+				abv = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(-1, 1, 1));
+				if (content_features(abv).draw_type == CDT_ROOFLIKE) {
+					type = 4;
+					angle = 0;
+				}else{
+					type = 3;
+					angle = 270;
+				}
+			}
+		}else if (is_roof_x[1] && is_roof_z[0]) {
+			if (is_roof_x_plus_y[0] && is_roof_z_plus_y[1]) {
+				type = 7;
+				angle = 180;
+			}else if (is_roof_x_plus_y[0]) {
+				type = 2;
+				angle = 180;
+			}else if (is_roof_z_plus_y[1]) {
+				type = 2;
+				angle = 90;
+			}else{
+				abv = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16( 1, 1,-1));
+				if (content_features(abv).draw_type == CDT_ROOFLIKE) {
+					type = 4;
+					angle = 180;
+				}else{
+					type = 3;
+					angle = 90;
+				}
+			}
+		}else if (is_roof_x[1] && is_roof_z[1]) {
+			if (is_roof_x_plus_y[0] && is_roof_z_plus_y[0]) {
+				type = 7;
+				angle = 270;
+			}else if (is_roof_x_plus_y[0]) {
+				type = 2;
+				angle = 180;
+			}else if (is_roof_z_plus_y[0]) {
+				type = 2;
+				angle = 270;
+			}else{
+				abv = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16( 1, 1, 1));
+				if (content_features(abv).draw_type == CDT_ROOFLIKE) {
+					type = 4;
+					angle = 270;
+				}else{
+					type = 3;
+					angle = 180;
+				}
+			}
+		}
+	}else if (adjacencies == 3) {
+		if (is_roof_x[0] && is_roof_x[1] && is_roof_z[0]) {
+			if (is_roof_z_plus_y[1]) {
+				type = 2;
+				angle = 90;
+			}else{
+				type = 6;
+				angle = 0;
+			}
+		}else if (is_roof_x[0] && is_roof_x[1] && is_roof_z[1]) {
+			if (is_roof_z_plus_y[0]) {
+				type = 2;
+				angle = 270;
+			}else{
+				type = 6;
+				angle = 180;
+			}
+		}else if (is_roof_x[0] && is_roof_z[0] && is_roof_z[1]) {
+			if (is_roof_x_plus_y[1]) {
+				type = 2;
+				angle = 0;
+			}else{
+				type = 6;
+				angle = 270;
+			}
+		}else if (is_roof_x[1] && is_roof_z[0] && is_roof_z[1]) {
+			if (is_roof_x_plus_y[0]) {
+				type = 2;
+				angle = 180;
+			}else{
+				type = 6;
+				angle = 90;
+			}
+		}
+	}else if (adjacencies == 4) {
+		type = 5;
+		angle = 0;
+	}else{
+		if (is_roof_z_plus_y[0]) {
+			type = 0;
+			angle = 180;
+		}else if (is_roof_z_plus_y[1]) {
+			type = 0;
+		}else if (is_roof_x_plus_y[1]) {
+			type = 0;
+			angle = 270;
+		}else if (is_roof_x_plus_y[0]) {
+			type = 0;
+			angle = 90;
+		}else{
+			type = 8;
+			angle = 0;
+		}
+	}
+	/*
+		0: slope
+		1: top
+		2: top butting to slope
+		3: top corner
+		4: outer corner
+		5: top X
+		6: top T
+		7: inner corner
+		8: top cap
+		9: top end cap
+	*/
+	switch (type) {
+	case 0:
+	{
+		v3f cnr[2][3];
+		if (angle == 0) {
+			cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+			cnr[0][1] = v3f(0.5,-0.5,-0.5);
+			cnr[0][2] = v3f(0.5,0.5,0.5);
+			cnr[1][0] = v3f(0.5,0.5,0.5);
+			cnr[1][1] = v3f(-0.5,0.5,0.5);
+			cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+		}else if (angle == 90) {
+			cnr[0][0] = v3f(-0.5,0.5,-0.5);
+			cnr[0][1] = v3f(0.5,-0.5,-0.5);
+			cnr[0][2] = v3f(0.5,-0.5,0.5);
+			cnr[1][0] = v3f(0.5,-0.5,0.5);
+			cnr[1][1] = v3f(-0.5,0.5,0.5);
+			cnr[1][2] = v3f(-0.5,0.5,-0.5);
+		}else if (angle == 180) {
+			cnr[0][0] = v3f(-0.5,0.5,-0.5);
+			cnr[0][1] = v3f(0.5,0.5,-0.5);
+			cnr[0][2] = v3f(0.5,-0.5,0.5);
+			cnr[1][0] = v3f(0.5,-0.5,0.5);
+			cnr[1][1] = v3f(-0.5,-0.5,0.5);
+			cnr[1][2] = v3f(-0.5,0.5,-0.5);
+		}else if (angle == 270) {
+			cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+			cnr[0][1] = v3f(0.5,0.5,-0.5);
+			cnr[0][2] = v3f(0.5,0.5,0.5);
+			cnr[1][0] = v3f(0.5,0.5,0.5);
+			cnr[1][1] = v3f(-0.5,-0.5,0.5);
+			cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+		}
+		s16 a = 180-angle;
+		if (a < 0)
+			a += 360;
+		for (int s=0; s<2; s++) {
+			meshgen_rooftri(data,cnr[s],pos,tile,selected,a);
+		}
+	}
+	break;
+	case 1:
+	{
+		v3f cnr[4][3];
+		if (angle == 0 || angle == 180) {
+			cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+			cnr[0][1] = v3f(0.5,-0.5,-0.5);
+			cnr[0][2] = v3f(0.5,0.,0.);
+			cnr[1][0] = v3f(0.5,0.,0.);
+			cnr[1][1] = v3f(-0.5,0.,0.);
+			cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+			cnr[2][0] = v3f(-0.5,0.,0.);
+			cnr[2][1] = v3f(0.5,0.,0.);
+			cnr[2][2] = v3f(0.5,-0.5,0.5);
+			cnr[3][0] = v3f(0.5,-0.5,0.5);
+			cnr[3][1] = v3f(-0.5,-0.5,0.5);
+			cnr[3][2] = v3f(-0.5,0.,0.);
+		}else if (angle == 90 || angle == 270) {
+			cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+			cnr[0][1] = v3f(-0.5,-0.5,0.5);
+			cnr[0][2] = v3f(0.,0.,0.5);
+			cnr[1][0] = v3f(0.,0.,0.5);
+			cnr[1][1] = v3f(0.,0.,-0.5);
+			cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+			cnr[2][0] = v3f(0.,0.,-0.5);
+			cnr[2][1] = v3f(0.,0.,0.5);
+			cnr[2][2] = v3f(0.5,-0.5,0.5);
+			cnr[3][0] = v3f(0.5,-0.5,0.5);
+			cnr[3][1] = v3f(0.5,-0.5,-0.5);
+			cnr[3][2] = v3f(0.,0.,-0.5);
+		}
+		s16 a = angle;
+		if (a < 180)
+			a += 180;
+		for (int s=0; s<4; s++) {
+			if (s == 2)
+				a -= 180;
+			meshgen_rooftri(data,cnr[s],pos,toptile,selected,a);
+		}
+	}
+	break;
+	case 2:
+	{
+		v3f cnr[2][3];
+		if (angle == 90) {
+			cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+			cnr[0][1] = v3f(0.5,-0.5,-0.5);
+			cnr[0][2] = v3f(0.5,0.5,0.5);
+			cnr[1][0] = v3f(0.5,0.5,0.5);
+			cnr[1][1] = v3f(-0.5,0.5,0.5);
+			cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+		}else if (angle == 180) {
+			cnr[0][0] = v3f(-0.5,0.5,-0.5);
+			cnr[0][1] = v3f(0.5,-0.5,-0.5);
+			cnr[0][2] = v3f(0.5,-0.5,0.5);
+			cnr[1][0] = v3f(0.5,-0.5,0.5);
+			cnr[1][1] = v3f(-0.5,0.5,0.5);
+			cnr[1][2] = v3f(-0.5,0.5,-0.5);
+		}else if (angle == 270) {
+			cnr[0][0] = v3f(-0.5,0.5,-0.5);
+			cnr[0][1] = v3f(0.5,0.5,-0.5);
+			cnr[0][2] = v3f(0.5,-0.5,0.5);
+			cnr[1][0] = v3f(0.5,-0.5,0.5);
+			cnr[1][1] = v3f(-0.5,-0.5,0.5);
+			cnr[1][2] = v3f(-0.5,0.5,-0.5);
+		}else if (angle == 0) {
+			cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+			cnr[0][1] = v3f(0.5,0.5,-0.5);
+			cnr[0][2] = v3f(0.5,0.5,0.5);
+			cnr[1][0] = v3f(0.5,0.5,0.5);
+			cnr[1][1] = v3f(-0.5,-0.5,0.5);
+			cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+		}
+		s16 a = 270-angle;
+		if (a < 0)
+			a += 360;
+		for (int s=0; s<2; s++) {
+			meshgen_rooftri(data,cnr[s],pos,tile,selected,a);
+		}
+	}
+	{
+		v3f cnr[2][3];
+		if (angle == 0) {
+			cnr[0][0] = v3f(0.,0.,0.);
+			cnr[0][1] = v3f(-0.5,0.,0.);
+			cnr[0][2] = v3f(-0.5,-0.5,-0.5);
+			cnr[1][0] = v3f(0.,0.,0.);
+			cnr[1][1] = v3f(-0.5,-0.5,0.5);
+			cnr[1][2] = v3f(-0.5,0.,0.);
+		}else if (angle == 90) {
+			cnr[0][0] = v3f(0.,0.,0.);
+			cnr[0][1] = v3f(0.,0.,-0.5);
+			cnr[0][2] = v3f(-0.5,-0.5,-0.5);
+			cnr[1][0] = v3f(0.,0.,0.);
+			cnr[1][1] = v3f(0.5,-0.5,-0.5);
+			cnr[1][2] = v3f(0.,0.,-0.5);
+		}else if (angle == 180) {
+			cnr[0][0] = v3f(0.,0.,0.);
+			cnr[0][1] = v3f(0.5,0.,0.);
+			cnr[0][2] = v3f(0.5,-0.5,-0.5);
+			cnr[1][0] = v3f(0.,0.,0.);
+			cnr[1][1] = v3f(0.5,-0.5,0.5);
+			cnr[1][2] = v3f(0.5,0.,0.);
+		}else if (angle == 270) {
+			cnr[0][0] = v3f(0.,0.,0.);
+			cnr[0][1] = v3f(0.,0.,0.5);
+			cnr[0][2] = v3f(-0.5,-0.5,0.5);
+			cnr[1][0] = v3f(0.,0.,0.);
+			cnr[1][1] = v3f(0.5,-0.5,0.5);
+			cnr[1][2] = v3f(0.,0.,0.5);
+		}
+		s16 a = angle;
+		if (a < 180)
+			a += 180;
+		for (int s=0; s<2; s++) {
+			meshgen_rooftri(data,cnr[s],pos,toptile,selected,a);
+			a -= 180;
+		}
+	}
+	break;
+	case 3:
+	{
+		v3f cnr[2][3];
+		s16 a1 = angle;
+		s16 a2 = angle + 90;
+		if (angle == 0) {
+			cnr[0][0] = v3f(0.,0.,0.);
+			cnr[0][1] = v3f(-0.5,0.,0.);
+			cnr[0][2] = v3f(-0.5,-0.5,-0.5);
+			cnr[1][0] = v3f(0.,0.,0.);
+			cnr[1][1] = v3f(0.,0.,-0.5);
+			cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+			a1 = 180;
+			a2 = 270;
+		}else if (angle == 90) {
+			cnr[0][0] = v3f(0.,0.,0.);
+			cnr[0][1] = v3f(0.,0.,-0.5);
+			cnr[0][2] = v3f(0.5,-0.5,-0.5);
+			cnr[1][0] = v3f(0.,0.,0.);
+			cnr[1][1] = v3f(0.5,0.,0.);
+			cnr[1][2] = v3f(0.5,-0.5,-0.5);
+		}else if (angle == 180) {
+			cnr[0][0] = v3f(0.,0.,0.);
+			cnr[0][1] = v3f(0.,0.,0.5);
+			cnr[0][2] = v3f(0.5,-0.5,0.5);
+			cnr[1][0] = v3f(0.,0.,0.);
+			cnr[1][1] = v3f(0.5,0.,0.);
+			cnr[1][2] = v3f(0.5,-0.5,0.5);
+			a1 = 90;
+			a2 = 0;
+		}else if (angle == 270) {
+			cnr[0][0] = v3f(0.,0.,0.);
+			cnr[0][1] = v3f(0.,0.,0.5);
+			cnr[0][2] = v3f(-0.5,-0.5,0.5);
+			cnr[1][0] = v3f(0.,0.,0.);
+			cnr[1][1] = v3f(-0.5,0.,0.);
+			cnr[1][2] = v3f(-0.5,-0.5,0.5);
+		}
+		s16 a = a1;
+		for (int s=0; s<2; s++) {
+			meshgen_rooftri(data,cnr[s],pos,toptile,selected,a);
+			a = a2;
+		}
+	}
+	{
+		v3f cnr[4][3];
+		s16 a1 = angle;
+		s16 a2 = angle + 90;
+		if (angle == 0) {
+			cnr[0][0] = v3f(0.,0.,0.);
+			cnr[0][1] = v3f(-0.5,-0.5,0.5);
+			cnr[0][2] = v3f(-0.5,0.,0.);
+			cnr[1][0] = v3f(0.,0.,0.);
+			cnr[1][1] = v3f(0.5,-0.5,0.5);
+			cnr[1][2] = v3f(-0.5,-0.5,0.5);
+			cnr[2][0] = v3f(0.,0.,0.);
+			cnr[2][1] = v3f(0.,0.,-0.5);
+			cnr[2][2] = v3f(0.5,-0.5,-0.5);
+			cnr[3][0] = v3f(0.,0.,0.);
+			cnr[3][1] = v3f(0.5,-0.5,-0.5);
+			cnr[3][2] = v3f(0.5,-0.5,0.5);
+		}else if (angle == 90) {
+			cnr[0][0] = v3f(0.,0.,0.);
+			cnr[0][1] = v3f(-0.5,-0.5,-0.5);
+			cnr[0][2] = v3f(0.,0.,-0.5);
+			cnr[1][0] = v3f(0.,0.,0.);
+			cnr[1][1] = v3f(-0.5,-0.5,0.5);
+			cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+			cnr[2][0] = v3f(0.,0.,0.);
+			cnr[2][1] = v3f(0.5,0.,0.);
+			cnr[2][2] = v3f(0.5,-0.5,0.5);
+			cnr[3][0] = v3f(0.,0.,0.);
+			cnr[3][1] = v3f(0.5,-0.5,0.5);
+			cnr[3][2] = v3f(-0.5,-0.5,0.5);
+			a1 = 270;
+			a2 = 0;
+		}else if (angle == 180) {
+			cnr[0][0] = v3f(0.,0.,0.);
+			cnr[0][1] = v3f(0.5,-0.5,-0.5);
+			cnr[0][2] = v3f(0.5,0.,0.);
+			cnr[1][0] = v3f(0.,0.,0.);
+			cnr[1][1] = v3f(-0.5,-0.5,-0.5);
+			cnr[1][2] = v3f(0.5,-0.5,-0.5);
+			cnr[2][0] = v3f(0.,0.,0.);
+			cnr[2][1] = v3f(0.,0.,0.5);
+			cnr[2][2] = v3f(-0.5,-0.5,0.5);
+			cnr[3][0] = v3f(0.,0.,0.);
+			cnr[3][1] = v3f(-0.5,-0.5,0.5);
+			cnr[3][2] = v3f(-0.5,-0.5,-0.5);
+		}else if (angle == 270) {
+			cnr[0][0] = v3f(0.,0.,0.);
+			cnr[0][1] = v3f(0.5,-0.5,0.5);
+			cnr[0][2] = v3f(0.,0.,0.5);
+			cnr[1][0] = v3f(0.,0.,0.);
+			cnr[1][1] = v3f(0.5,-0.5,-0.5);
+			cnr[1][2] = v3f(0.5,-0.5,0.5);
+			cnr[2][0] = v3f(0.,0.,0.);
+			cnr[2][1] = v3f(-0.5,0.,0.);
+			cnr[2][2] = v3f(-0.5,-0.5,-0.5);
+			cnr[3][0] = v3f(0.,0.,0.);
+			cnr[3][1] = v3f(-0.5,-0.5,-0.5);
+			cnr[3][2] = v3f(0.5,-0.5,-0.5);
+			a1 = 90;
+			a2 = 180;
+		}
+		s16 a = a1;
+		for (int s=0; s<4; s++) {
+			if (s == 2)
+				a = a2;
+			meshgen_rooftri(data,cnr[s],pos,toptile,selected,a);
+		}
+	}
+	break;
+	case 4:
+	{
+		v3f cnr[2][3];
+		s16 a1 = angle;
+		s16 a2 = angle - 90;
+		if (angle == 0) {
+			cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+			cnr[0][1] = v3f(0.5,-0.5,-0.5);
+			cnr[0][2] = v3f(-0.5,0.5,0.5);
+			cnr[1][0] = v3f(-0.5,0.5,0.5);
+			cnr[1][1] = v3f(0.5,-0.5,-0.5);
+			cnr[1][2] = v3f(0.5,-0.5,0.5);
+			a1 = 180;
+			a2 = 90;
+		}else if (angle == 90) {
+			cnr[0][0] = v3f(-0.5,-0.5,0.5);
+			cnr[0][1] = v3f(0.5,-0.5,0.5);
+			cnr[0][2] = v3f(-0.5,0.5,-0.5);
+			cnr[1][0] = v3f(-0.5,0.5,-0.5);
+			cnr[1][1] = v3f(0.5,-0.5,0.5);
+			cnr[1][2] = v3f(0.5,-0.5,-0.5);
+			a1 = 0;
+			a2 = 90;
+		}else if (angle == 180) {
+			cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+			cnr[0][1] = v3f(0.5,0.5,-0.5);
+			cnr[0][2] = v3f(-0.5,-0.5,0.5);
+			cnr[1][0] = v3f(-0.5,-0.5,0.5);
+			cnr[1][1] = v3f(0.5,0.5,-0.5);
+			cnr[1][2] = v3f(0.5,-0.5,0.5);
+			a1 = 270;
+			a2 = 0;
+		}else if (angle == 270) {
+			cnr[0][0] = v3f(-0.5,-0.5,0.5);
+			cnr[0][1] = v3f(0.5,0.5,0.5);
+			cnr[0][2] = v3f(-0.5,-0.5,-0.5);
+			cnr[1][0] = v3f(-0.5,-0.5,-0.5);
+			cnr[1][1] = v3f(0.5,0.5,0.5);
+			cnr[1][2] = v3f(0.5,-0.5,-0.5);
+		}
+		s16 a = a1;
+		for (int s=0; s<2; s++) {
+			meshgen_rooftri(data,cnr[s],pos,tile,selected,a);
+			a = a2;
+		}
+	}
+	break;
+	case 5:
+	{
+		v3f cnr[8][3] = {
+			{
+				v3f(0.,0.,0.),
+				v3f(-0.5,0.,0.),
+				v3f(-0.5,-0.5,-0.5)
+			},{
+				v3f(-0.5,0.,0.),
+				v3f(-0.5,-0.5,0.5),
+				v3f(0.,0.,0.)
+			},{
+				v3f(0.,0.,0.),
+				v3f(0.5,0.,0.),
+				v3f(0.5,-0.5,-0.5)
+			},{
+				v3f(0.5,0.,0.),
+				v3f(0.5,-0.5,0.5),
+				v3f(0.,0.,0.)
+			},{
+				v3f(0.,0.,0.),
+				v3f(0.,0.,-0.5),
+				v3f(-0.5,-0.5,-0.5)
+			},{
+				v3f(0.,0.,-0.5),
+				v3f(0.5,-0.5,-0.5),
+				v3f(0.,0.,0.)
+			},{
+				v3f(0.,0.,0.),
+				v3f(0.,0.,0.5),
+				v3f(-0.5,-0.5,0.5)
+			},{
+				v3f(0.,0.,0.5),
+				v3f(0.5,-0.5,0.5),
+				v3f(0.,0.,0.)
+			}
+		};
+		s16 a[8] = {
+			180,
+			0,
+			180,
+			0,
+			270,
+			90,
+			270,
+			90,
+		};
+		for (int s=0; s<8; s++) {
+			meshgen_rooftri(data,cnr[s],pos,toptile,selected,a[s]);
+		}
+	}
+	break;
+	case 6:
+	{
+		v3f cnr[6][3];
+		s16 a[6] = {0,0,0,0,0,0};
+		if (angle == 0) {
+			cnr[0][0] = v3f(-0.5,-0.5,0.5);
+			cnr[0][1] = v3f(0.5,-0.5,0.5);
+			cnr[0][2] = v3f(0.5,0.,0.);
+			cnr[1][0] = v3f(0.5,0.,0.);
+			cnr[1][1] = v3f(-0.5,0.,0.);
+			cnr[1][2] = v3f(-0.5,-0.5,0.5);
+			cnr[2][0] = v3f(-0.5,-0.5,-0.5);
+			cnr[2][1] = v3f(0.5,-0.5,-0.5);
+			cnr[2][2] = v3f(0.5,0.,0.);
+			cnr[3][0] = v3f(0.5,0.,0.);
+			cnr[3][1] = v3f(-0.5,0.,0.);
+			cnr[3][2] = v3f(-0.5,-0.5,-0.5);
+			cnr[4][0] = v3f(0.,0.,-0.5);
+			cnr[4][1] = v3f(-0.5,-0.5,-0.5);
+			cnr[4][2] = v3f(0.,0.,0.);
+			cnr[5][0] = v3f(0.,0.,0.);
+			cnr[5][1] = v3f(0.5,-0.5,-0.5);
+			cnr[5][2] = v3f(0.,0.,-0.5);
+			a[2] = 180;
+			a[3] = 180;
+			a[4] = 270;
+			a[5] = 90;
+		}else if (angle == 90) {
+			cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+			cnr[0][1] = v3f(-0.5,-0.5,0.5);
+			cnr[0][2] = v3f(0.,0.,0.5);
+			cnr[1][0] = v3f(0.,0.,0.5);
+			cnr[1][1] = v3f(0.,0.,-0.5);
+			cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+			cnr[2][0] = v3f(0.5,-0.5,-0.5);
+			cnr[2][1] = v3f(0.5,-0.5,0.5);
+			cnr[2][2] = v3f(0.,0.,0.5);
+			cnr[3][0] = v3f(0.,0.,0.5);
+			cnr[3][1] = v3f(0.,0.,-0.5);
+			cnr[3][2] = v3f(0.5,-0.5,-0.5);
+			cnr[4][0] = v3f(0.5,0.,0.);
+			cnr[4][1] = v3f(0.5,-0.5,-0.5);
+			cnr[4][2] = v3f(0.,0.,0.);
+			cnr[5][0] = v3f(0.,0.,0.);
+			cnr[5][1] = v3f(0.5,-0.5,0.5);
+			cnr[5][2] = v3f(0.5,0.,0.);
+			a[0] = 270;
+			a[1] = 270;
+			a[2] = 90;
+			a[3] = 90;
+			a[4] = 180;
+		}else if (angle == 180) {
+			cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+			cnr[0][1] = v3f(0.5,-0.5,-0.5);
+			cnr[0][2] = v3f(0.5,0.,0.);
+			cnr[1][0] = v3f(0.5,0.,0.);
+			cnr[1][1] = v3f(-0.5,0.,0.);
+			cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+			cnr[2][0] = v3f(-0.5,-0.5,0.5);
+			cnr[2][1] = v3f(0.5,-0.5,0.5);
+			cnr[2][2] = v3f(0.5,0.,0.);
+			cnr[3][0] = v3f(0.5,0.,0.);
+			cnr[3][1] = v3f(-0.5,0.,0.);
+			cnr[3][2] = v3f(-0.5,-0.5,0.5);
+			cnr[4][0] = v3f(0.,0.,0.5);
+			cnr[4][1] = v3f(-0.5,-0.5,0.5);
+			cnr[4][2] = v3f(0.,0.,0.);
+			cnr[5][0] = v3f(0.,0.,0.);
+			cnr[5][1] = v3f(0.5,-0.5,0.5);
+			cnr[5][2] = v3f(0.,0.,0.5);
+			a[0] = 180;
+			a[1] = 180;
+			a[4] = 270;
+			a[5] = 90;
+		}else if (angle == 270) {
+			cnr[0][0] = v3f(0.5,-0.5,-0.5);
+			cnr[0][1] = v3f(0.5,-0.5,0.5);
+			cnr[0][2] = v3f(0.,0.,0.5);
+			cnr[1][0] = v3f(0.,0.,0.5);
+			cnr[1][1] = v3f(0.,0.,-0.5);
+			cnr[1][2] = v3f(0.5,-0.5,-0.5);
+			cnr[2][0] = v3f(-0.5,-0.5,-0.5);
+			cnr[2][1] = v3f(-0.5,-0.5,0.5);
+			cnr[2][2] = v3f(0.,0.,0.5);
+			cnr[3][0] = v3f(0.,0.,0.5);
+			cnr[3][1] = v3f(0.,0.,-0.5);
+			cnr[3][2] = v3f(-0.5,-0.5,-0.5);
+			cnr[4][0] = v3f(-0.5,0.,0.);
+			cnr[4][1] = v3f(-0.5,-0.5,-0.5);
+			cnr[4][2] = v3f(0.,0.,0.);
+			cnr[5][0] = v3f(0.,0.,0.);
+			cnr[5][1] = v3f(-0.5,-0.5,0.5);
+			cnr[5][2] = v3f(-0.5,0.,0.);
+			a[0] = 90;
+			a[1] = 90;
+			a[2] = 270;
+			a[3] = 270;
+			a[4] = 180;
+		}
+		for (int s=0; s<6; s++) {
+			meshgen_rooftri(data,cnr[s],pos,toptile,selected,a[s]);
+		}
+	}
+	break;
+	case 7:
+	{
+		v3f cnr[2][3];
+		s16 a1 = angle;
+		s16 a2 = angle - 90;
+		if (angle == 0) {
+			cnr[0][0] = v3f(0.5,0.5,-0.5);
+			cnr[0][1] = v3f(-0.5,0.5,-0.5);
+			cnr[0][2] = v3f(-0.5,-0.5,0.5);
+			cnr[1][0] = v3f(0.5,0.5,-0.5);
+			cnr[1][1] = v3f(0.5,0.5,0.5);
+			cnr[1][2] = v3f(-0.5,-0.5,0.5);
+		}else if (angle == 90) {
+			cnr[0][0] = v3f(0.5,0.5,0.5);
+			cnr[0][1] = v3f(-0.5,0.5,0.5);
+			cnr[0][2] = v3f(-0.5,-0.5,-0.5);
+			cnr[1][0] = v3f(0.5,0.5,0.5);
+			cnr[1][1] = v3f(0.5,0.5,-0.5);
+			cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+			a1 = 180;
+			a2 = 270;
+		}else if (angle == 180) {
+			cnr[0][0] = v3f(0.5,-0.5,-0.5);
+			cnr[0][1] = v3f(-0.5,0.5,-0.5);
+			cnr[0][2] = v3f(-0.5,0.5,0.5);
+			cnr[1][0] = v3f(0.5,-0.5,-0.5);
+			cnr[1][1] = v3f(0.5,0.5,0.5);
+			cnr[1][2] = v3f(-0.5,0.5,0.5);
+			a1 = 90;
+			a2 = 180;
+		}else if (angle == 270) {
+			cnr[0][0] = v3f(0.5,-0.5,0.5);
+			cnr[0][1] = v3f(-0.5,0.5,0.5);
+			cnr[0][2] = v3f(-0.5,0.5,-0.5);
+			cnr[1][0] = v3f(0.5,-0.5,0.5);
+			cnr[1][1] = v3f(0.5,0.5,-0.5);
+			cnr[1][2] = v3f(-0.5,0.5,-0.5);
+			a1 = 90;
+			a2 = 0;
+		}
+		s16 a = a1;
+		for (int s=0; s<2; s++) {
+			meshgen_rooftri(data,cnr[s],pos,tile,selected,a);
+			a = a2;
+		}
+	}
+	break;
+	case 8:
+	{
+		v3f cnr[4][3];
+		cnr[0][0] = v3f(0.,0.,0.);
+		cnr[0][1] = v3f(-0.5,-0.5,-0.5);
+		cnr[0][2] = v3f(-0.5,-0.5,0.5);
+		cnr[1][0] = v3f(0.,0.,0.);
+		cnr[1][1] = v3f(-0.5,-0.5,-0.5);
+		cnr[1][2] = v3f(0.5,-0.5,-0.5);
+		cnr[2][0] = v3f(0.,0.,0.);
+		cnr[2][1] = v3f(0.5,-0.5,-0.5);
+		cnr[2][2] = v3f(0.5,-0.5,0.5);
+		cnr[3][0] = v3f(0.,0.,0.);
+		cnr[3][1] = v3f(-0.5,-0.5,0.5);
+		cnr[3][2] = v3f(0.5,-0.5,0.5);
+		for (int s=0; s<4; s++) {
+			meshgen_rooftri(data,cnr[s],pos,toptile,selected,(90*s)+90+(180*(!(s%2))));
+		}
+	}
+	break;
+	case 9:
+	{
+		v3f cnr[5][3];
+		s16 a[5] = {0,0,0,0,0};
+		if (angle == 0) {
+			cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+			cnr[0][1] = v3f(0.5,-0.5,-0.5);
+			cnr[0][2] = v3f(0.,0.,0.);
+			cnr[1][0] = v3f(-0.5,-0.5,-0.5);
+			cnr[1][1] = v3f(0.,0.,0.);
+			cnr[1][2] = v3f(-0.5,0.,0.);
+			cnr[2][0] = v3f(0.5,-0.5,0.5);
+			cnr[2][1] = v3f(-0.5,-0.5,0.5);
+			cnr[2][2] = v3f(0.,0.,0.);
+			cnr[3][0] = v3f(0.,0.,0.);
+			cnr[3][1] = v3f(-0.5,-0.5,0.5);
+			cnr[3][2] = v3f(-0.5,0.,0.);
+			cnr[4][0] = v3f(0.5,-0.5,-0.5);
+			cnr[4][1] = v3f(0.5,-0.5,0.5);
+			cnr[4][2] = v3f(0.,0.,0.);
+			a[0] = 180;
+			a[1] = 180;
+			a[4] = 90;
+		}else if (angle == 90) {
+			cnr[0][0] = v3f(-0.5,-0.5,0.5);
+			cnr[0][1] = v3f(-0.5,-0.5,-0.5);
+			cnr[0][2] = v3f(0.,0.,0.);
+			cnr[1][0] = v3f(0.,0.,0.);
+			cnr[1][1] = v3f(-0.5,-0.5,-0.5);
+			cnr[1][2] = v3f(0.,0.,-0.5);
+			cnr[2][0] = v3f(0.5,-0.5,-0.5);
+			cnr[2][1] = v3f(0.5,-0.5,0.5);
+			cnr[2][2] = v3f(0.,0.,0.);
+			cnr[3][0] = v3f(0.5,-0.5,-0.5);
+			cnr[3][1] = v3f(0.,0.,0.);
+			cnr[3][2] = v3f(0.,0.,-0.5);
+			cnr[4][0] = v3f(-0.5,-0.5,0.5);
+			cnr[4][1] = v3f(0.5,-0.5,0.5);
+			cnr[4][2] = v3f(0.,0.,0.);
+			a[0] = 270;
+			a[1] = 270;
+			a[2] = 90;
+			a[3] = 90;
+		}else if (angle == 180) {
+			cnr[0][0] = v3f(-0.5,-0.5,-0.5);
+			cnr[0][1] = v3f(0.5,-0.5,-0.5);
+			cnr[0][2] = v3f(0.,0.,0.);
+			cnr[1][0] = v3f(0.5,-0.5,-0.5);
+			cnr[1][1] = v3f(0.,0.,0.);
+			cnr[1][2] = v3f(0.5,0.,0.);
+			cnr[2][0] = v3f(0.5,-0.5,0.5);
+			cnr[2][1] = v3f(-0.5,-0.5,0.5);
+			cnr[2][2] = v3f(0.,0.,0.);
+			cnr[3][0] = v3f(0.,0.,0.);
+			cnr[3][1] = v3f(0.5,-0.5,0.5);
+			cnr[3][2] = v3f(0.5,0.,0.);
+			cnr[4][0] = v3f(-0.5,-0.5,0.5);
+			cnr[4][1] = v3f(-0.5,-0.5,-0.5);
+			cnr[4][2] = v3f(0.,0.,0.);
+			a[0] = 180;
+			a[1] = 180;
+			a[4] = 270;
+		}else if (angle == 270) {
+			cnr[0][0] = v3f(-0.5,-0.5,0.5);
+			cnr[0][1] = v3f(-0.5,-0.5,-0.5);
+			cnr[0][2] = v3f(0.,0.,0.);
+			cnr[1][0] = v3f(0.,0.,0.);
+			cnr[1][1] = v3f(0.,0.,0.5);
+			cnr[1][2] = v3f(-0.5,-0.5,0.5);
+			cnr[2][0] = v3f(0.5,-0.5,-0.5);
+			cnr[2][1] = v3f(0.5,-0.5,0.5);
+			cnr[2][2] = v3f(0.,0.,0.);
+			cnr[3][0] = v3f(0.,0.,0.);
+			cnr[3][1] = v3f(0.,0.,0.5);
+			cnr[3][2] = v3f(0.5,-0.5,0.5);
+			cnr[4][0] = v3f(0.5,-0.5,-0.5);
+			cnr[4][1] = v3f(-0.5,-0.5,-0.5);
+			cnr[4][2] = v3f(0.,0.,0.);
+			a[0] = 270;
+			a[1] = 270;
+			a[2] = 90;
+			a[3] = 90;
+			a[4] = 180;
+		}
+		for (int s=0; s<5; s++) {
+			meshgen_rooftri(data,cnr[s],pos,toptile,selected,a[s]);
+		}
+	}
+	break;
+	default:
+		break;
+	}
 }
 
 void meshgen_leaflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
@@ -3158,49 +4073,29 @@ void meshgen_leaflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	break;
 	case 1:
 	{
-		v3f cnr[2][3];
-		s16 a1 = angle;
-		s16 a2 = angle - 90;
+		v3f cnr[3];
+		s16 a = angle;
 		if (angle == 0) {
-			cnr[0][0] = v3f(-0.5,-0.5,-0.5);
-			cnr[0][1] = v3f(0.5,-0.5,-0.5);
-			cnr[0][2] = v3f(-0.5,0.5,0.5);
-			cnr[1][0] = v3f(-0.5,0.5,0.5);
-			cnr[1][1] = v3f(0.5,-0.5,-0.5);
-			cnr[1][2] = v3f(0.5,-0.5,0.5);
-			a1 = 180;
-			a2 = 90;
+			cnr[0] = v3f(-0.5,-0.5,-0.5);
+			cnr[1] = v3f(0.5,-0.5,0.5);
+			cnr[2] = v3f(-0.5,0.5,0.5);
+			a = 180;
 		}else if (angle == 90) {
-			cnr[0][0] = v3f(-0.5,-0.5,0.5);
-			cnr[0][1] = v3f(0.5,-0.5,0.5);
-			cnr[0][2] = v3f(-0.5,0.5,-0.5);
-			cnr[1][0] = v3f(-0.5,0.5,-0.5);
-			cnr[1][1] = v3f(0.5,-0.5,0.5);
-			cnr[1][2] = v3f(0.5,-0.5,-0.5);
-			a1 = 0;
-			a2 = 90;
+			cnr[0] = v3f(-0.5,-0.5,0.5);
+			cnr[1] = v3f(0.5,-0.5,-0.5);
+			cnr[2] = v3f(-0.5,0.5,-0.5);
+			a = 0;
 		}else if (angle == 180) {
-			cnr[0][0] = v3f(-0.5,-0.5,-0.5);
-			cnr[0][1] = v3f(0.5,0.5,-0.5);
-			cnr[0][2] = v3f(-0.5,-0.5,0.5);
-			cnr[1][0] = v3f(-0.5,-0.5,0.5);
-			cnr[1][1] = v3f(0.5,0.5,-0.5);
-			cnr[1][2] = v3f(0.5,-0.5,0.5);
-			a1 = 270;
-			a2 = 0;
+			cnr[0] = v3f(-0.5,-0.5,-0.5);
+			cnr[1] = v3f(0.5,0.5,-0.5);
+			cnr[2] = v3f(0.5,-0.5,0.5);
+			a = 270;
 		}else if (angle == 270) {
-			cnr[0][0] = v3f(-0.5,-0.5,0.5);
-			cnr[0][1] = v3f(0.5,0.5,0.5);
-			cnr[0][2] = v3f(-0.5,-0.5,-0.5);
-			cnr[1][0] = v3f(-0.5,-0.5,-0.5);
-			cnr[1][1] = v3f(0.5,0.5,0.5);
-			cnr[1][2] = v3f(0.5,-0.5,-0.5);
+			cnr[0] = v3f(-0.5,-0.5,0.5);
+			cnr[1] = v3f(0.5,0.5,0.5);
+			cnr[2] = v3f(0.5,-0.5,-0.5);
 		}
-		s16 a = a1;
-		for (int s=0; s<2; s++) {
-			meshgen_leaftri(data,cnr[s],pos,tile,selected,a);
-			a = a2;
-		}
+		meshgen_leaftri(data,cnr,pos,tile,selected,a);
 	}
 	break;
 	case 2:
