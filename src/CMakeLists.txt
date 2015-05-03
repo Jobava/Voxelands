@@ -386,7 +386,7 @@ else()
 	set(CMAKE_C_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELEASE})
 	set(CMAKE_C_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_DEBUG})
 
-	set(CMAKE_EXE_LINKER_FLAGS_RELEASE "-Wl,-O1,--as-needed,--discard-all,--no-undefined,-s,--sort-common,--hash-style=gnu,-z,relro,-z,now")
+	set(CMAKE_EXE_LINKER_FLAGS_RELEASE "-Wl,-O1,--as-needed,--discard-all,--no-undefined,-s,--sort-common,-z,relro,-z,now")
 	set(CMAKE_MODULE_LINKER_FLAGS_RELEASE ${CMAKE_EXE_LINKER_FLAGS_RELEASE})
 	set(CMAKE_SHARED_LINKER_FLAGS_RELEASE ${CMAKE_EXE_LINKER_FLAGS_RELEASE})
 
