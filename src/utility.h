@@ -1653,6 +1653,14 @@ inline u16 daynight_ratio_index(u32 daynight_ratio)
 	return 17;
 }
 
+inline u32 daynight_ratio_from_index(u16 i)
+{
+	u32 values[18] = {150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000};
+	if (i > 17)
+		return values[17];
+	return values[i];
+}
+
 // Random helper. Usually d=BS
 inline core::aabbox3d<f32> getNodeBox(v3s16 p, float d)
 {

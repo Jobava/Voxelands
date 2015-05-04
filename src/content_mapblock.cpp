@@ -254,25 +254,84 @@ static void meshgen_selected_lights(std::vector<video::SColor> *colours, u8 alph
 
 /*
  * what this should do:
- * should be passed the node, the face, the position, the vertex(es), and MeshMakeData
+ * get daynight_ratio from index
+ * get all 4 corner vertex light values for the face
+ * interpolate to the requested vertex position
+ */
+static void meshgen_lights_vertex(
+	MeshMakeData *data,
+	MapNode &n,
+	v3s16 p,
+	std::vector<video::SColor> *colours,
+	u8 alpha,
+	v3s16 face,
+	u16 daynight_ratio_index,
+	video::S3DVertex &vertex
+)
+{
+	meshgen_fullbright_lights(colours,alpha,1);
+}
+
+/*
+ * what this should do:
+ * get daynight_ratio from index
+ * return face lighting (see also old roof lighting)
+ */
+static void meshgen_lights_face(
+	MeshMakeData *data,
+	MapNode &n,
+	v3s16 p,
+	std::vector<video::SColor> *colours,
+	u8 alpha,
+	v3s16 face,
+	u16 daynight_ratio_index,
+	u16 count,
+	video::S3DVertex *vertexes
+)
+{
+	u16 daynight_ratio = daynight_ratio_from_index(daynight_ratio_index);
+	MapNode n1 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes+p+face);
+	u8 light = decode_light(getFaceLight(daynight_ratio, n, n1, face));
+	video::SColor c = MapBlock_LightColor(alpha,light);
+	for (u16 i=0; i<count; i++) {
+		colours[daynight_ratio_index].push_back(c);
+	}
+}
+
+/*
+ * what this should do:
  * MeshMakeData has a m_smooth_lighting value in it, don't check config for every vertex!
  * for each vertex:
  *	for each daynight_ratio value (18 of them):
- *		non-smooth lighting:
- *			return face lighting (see also old roof lighting)
- *		smooth lighting:
- *			get all 4 corner vertex light values for the face
- *			interpolate to the requested vertex position
+ *		call meshgen_lights_vertex
  */
-static void meshgen_lights(MeshMakeData *data, MapNode &n, v3s16 p, std::vector<video::SColor> *colours, u8 alpha, u16 count, ...)
+static void meshgen_lights(
+	MeshMakeData *data,
+	MapNode &n,
+	v3s16 p,
+	std::vector<video::SColor> *colours,
+	u8 alpha,
+	v3s16 face,
+	u16 count,
+	video::S3DVertex *vertexes
+)
 {
-	//video::SColor c(alpha,128,128,255);
-	//for (u16 i=0; i<count; i++) {
-		//for (u16 k=0; k<18; k++) {
-			//colours[k].push_back(c);
+	if (data->m_smooth_lighting) {
+		//v3s16 vertex_dirs[4];
+		//getNodeVertexDirs(face_dir_corrected, vertex_dirs);
+		//for (u16 i=0; i<4; i++) {
+			//lights[i] = getSmoothLight(blockpos_nodes + p_corrected, vertex_dirs[i], vmanip, daynight_ratio);
 		//}
-	//}
-	meshgen_fullbright_lights(colours,alpha,count);
+		for (u16 i=0; i<count; i++) {
+			for (u16 k=0; k<18; k++) {
+				meshgen_lights_vertex(data,n,p,colours,alpha,face,k,vertexes[i]);
+			}
+		}
+	}else{
+		for (u16 k=0; k<18; k++) {
+			meshgen_lights_face(data,n,p,colours,alpha,face,k,count,vertexes);
+		}
+	}
 }
 
 /* TODO: there are other cases that should return false */
@@ -410,67 +469,76 @@ static void meshgen_cuboid(
 		txc = txc_default;
 	}
 
-	video::S3DVertex vertices[24] = {
-		// up
-		video::S3DVertex(min.X,max.Y,max.Z, 0,0,0, video::SColor(255,255,255,255), txc[0],txc[1]),
-		video::S3DVertex(max.X,max.Y,max.Z, 0,0,0, video::SColor(255,255,255,255), txc[2],txc[1]),
-		video::S3DVertex(max.X,max.Y,min.Z, 0,0,0, video::SColor(255,255,255,255), txc[2],txc[3]),
-		video::S3DVertex(min.X,max.Y,min.Z, 0,0,0, video::SColor(255,255,255,255), txc[0],txc[3]),
-		// down
-		video::S3DVertex(min.X,min.Y,min.Z, 0,0,0, video::SColor(255,255,255,255), txc[4],txc[5]),
-		video::S3DVertex(max.X,min.Y,min.Z, 0,0,0, video::SColor(255,255,255,255), txc[6],txc[5]),
-		video::S3DVertex(max.X,min.Y,max.Z, 0,0,0, video::SColor(255,255,255,255), txc[6],txc[7]),
-		video::S3DVertex(min.X,min.Y,max.Z, 0,0,0, video::SColor(255,255,255,255), txc[4],txc[7]),
-		// right
-		video::S3DVertex(max.X,max.Y,min.Z, 0,0,0, video::SColor(255,255,255,255), txc[ 8],txc[9]),
-		video::S3DVertex(max.X,max.Y,max.Z, 0,0,0, video::SColor(255,255,255,255), txc[10],txc[9]),
-		video::S3DVertex(max.X,min.Y,max.Z, 0,0,0, video::SColor(255,255,255,255), txc[10],txc[11]),
-		video::S3DVertex(max.X,min.Y,min.Z, 0,0,0, video::SColor(255,255,255,255), txc[ 8],txc[11]),
-		// left
-		video::S3DVertex(min.X,max.Y,max.Z, 0,0,0, video::SColor(255,255,255,255), txc[12],txc[13]),
-		video::S3DVertex(min.X,max.Y,min.Z, 0,0,0, video::SColor(255,255,255,255), txc[14],txc[13]),
-		video::S3DVertex(min.X,min.Y,min.Z, 0,0,0, video::SColor(255,255,255,255), txc[14],txc[15]),
-		video::S3DVertex(min.X,min.Y,max.Z, 0,0,0, video::SColor(255,255,255,255), txc[12],txc[15]),
-		// back
-		video::S3DVertex(max.X,max.Y,max.Z, 0,0,0, video::SColor(255,255,255,255), txc[16],txc[17]),
-		video::S3DVertex(min.X,max.Y,max.Z, 0,0,0, video::SColor(255,255,255,255), txc[18],txc[17]),
-		video::S3DVertex(min.X,min.Y,max.Z, 0,0,0, video::SColor(255,255,255,255), txc[18],txc[19]),
-		video::S3DVertex(max.X,min.Y,max.Z, 0,0,0, video::SColor(255,255,255,255), txc[16],txc[19]),
-		// front
-		video::S3DVertex(min.X,max.Y,min.Z, 0,0,0, video::SColor(255,255,255,255), txc[20],txc[21]),
-		video::S3DVertex(max.X,max.Y,min.Z, 0,0,0, video::SColor(255,255,255,255), txc[22],txc[21]),
-		video::S3DVertex(max.X,min.Y,min.Z, 0,0,0, video::SColor(255,255,255,255), txc[22],txc[23]),
-		video::S3DVertex(min.X,min.Y,min.Z, 0,0,0, video::SColor(255,255,255,255), txc[20],txc[23]),
+	static v3s16 faces[6] = {
+		v3s16( 0, 1, 0),
+		v3s16( 0,-1, 0),
+		v3s16( 1, 0, 0),
+		v3s16(-1, 0, 0),
+		v3s16( 0, 0, 1),
+		v3s16( 0, 0,-1)
 	};
 
+	video::S3DVertex vertices[6][4] = {
+		{	// up
+			video::S3DVertex(min.X,max.Y,max.Z, 0,0,0, video::SColor(255,255,255,255), txc[0],txc[1]),
+			video::S3DVertex(max.X,max.Y,max.Z, 0,0,0, video::SColor(255,255,255,255), txc[2],txc[1]),
+			video::S3DVertex(max.X,max.Y,min.Z, 0,0,0, video::SColor(255,255,255,255), txc[2],txc[3]),
+			video::S3DVertex(min.X,max.Y,min.Z, 0,0,0, video::SColor(255,255,255,255), txc[0],txc[3])
+		},{	// down
+			video::S3DVertex(min.X,min.Y,min.Z, 0,0,0, video::SColor(255,255,255,255), txc[4],txc[5]),
+			video::S3DVertex(max.X,min.Y,min.Z, 0,0,0, video::SColor(255,255,255,255), txc[6],txc[5]),
+			video::S3DVertex(max.X,min.Y,max.Z, 0,0,0, video::SColor(255,255,255,255), txc[6],txc[7]),
+			video::S3DVertex(min.X,min.Y,max.Z, 0,0,0, video::SColor(255,255,255,255), txc[4],txc[7])
+		},{	// right
+			video::S3DVertex(max.X,max.Y,min.Z, 0,0,0, video::SColor(255,255,255,255), txc[ 8],txc[9]),
+			video::S3DVertex(max.X,max.Y,max.Z, 0,0,0, video::SColor(255,255,255,255), txc[10],txc[9]),
+			video::S3DVertex(max.X,min.Y,max.Z, 0,0,0, video::SColor(255,255,255,255), txc[10],txc[11]),
+			video::S3DVertex(max.X,min.Y,min.Z, 0,0,0, video::SColor(255,255,255,255), txc[ 8],txc[11])
+		},{	// left
+			video::S3DVertex(min.X,max.Y,max.Z, 0,0,0, video::SColor(255,255,255,255), txc[12],txc[13]),
+			video::S3DVertex(min.X,max.Y,min.Z, 0,0,0, video::SColor(255,255,255,255), txc[14],txc[13]),
+			video::S3DVertex(min.X,min.Y,min.Z, 0,0,0, video::SColor(255,255,255,255), txc[14],txc[15]),
+			video::S3DVertex(min.X,min.Y,max.Z, 0,0,0, video::SColor(255,255,255,255), txc[12],txc[15])
+		},{	// back
+			video::S3DVertex(max.X,max.Y,max.Z, 0,0,0, video::SColor(255,255,255,255), txc[16],txc[17]),
+			video::S3DVertex(min.X,max.Y,max.Z, 0,0,0, video::SColor(255,255,255,255), txc[18],txc[17]),
+			video::S3DVertex(min.X,min.Y,max.Z, 0,0,0, video::SColor(255,255,255,255), txc[18],txc[19]),
+			video::S3DVertex(max.X,min.Y,max.Z, 0,0,0, video::SColor(255,255,255,255), txc[16],txc[19])
+		},{	// front
+			video::S3DVertex(min.X,max.Y,min.Z, 0,0,0, video::SColor(255,255,255,255), txc[20],txc[21]),
+			video::S3DVertex(max.X,max.Y,min.Z, 0,0,0, video::SColor(255,255,255,255), txc[22],txc[21]),
+			video::S3DVertex(max.X,min.Y,min.Z, 0,0,0, video::SColor(255,255,255,255), txc[22],txc[23]),
+			video::S3DVertex(min.X,min.Y,min.Z, 0,0,0, video::SColor(255,255,255,255), txc[20],txc[23])
+		}
+	};
 
-	for (s32 j=0; j<24; j++) {
-		int tileindex = MYMIN(j/4, tilecount-1);
-		vertices[j].Pos -= centre;
-		if (angle.Y)
-			vertices[j].Pos.rotateXZBy(angle.Y);
-		if (angle.X)
-			vertices[j].Pos.rotateYZBy(angle.X);
-		if (angle.Z)
-			vertices[j].Pos.rotateXYBy(angle.Z);
-		vertices[j].Pos += centre;
-		vertices[j].Pos += pos;
-		vertices[j].TCoords *= tiles[tileindex].texture.size;
-		vertices[j].TCoords += tiles[tileindex].texture.pos;
-	}
 	u16 indices[] = {0,1,2,2,3,0};
-	// Add to mesh collector
-	for (s32 j=0; j<24; j+=4) {
-		int tileindex = MYMIN(j/4, tilecount-1);
+	for (u16 i=0; i<6; i++) {
+		int tileindex = MYMIN(i, tilecount-1);
+		for (s32 j=0; j<4; j++) {
+			vertices[i][j].Pos -= centre;
+			if (angle.Y)
+				vertices[i][j].Pos.rotateXZBy(angle.Y);
+			if (angle.X)
+				vertices[i][j].Pos.rotateYZBy(angle.X);
+			if (angle.Z)
+				vertices[i][j].Pos.rotateXYBy(angle.Z);
+			vertices[i][j].Pos += centre;
+			vertices[i][j].TCoords *= tiles[tileindex].texture.size;
+			vertices[i][j].TCoords += tiles[tileindex].texture.pos;
+		}
 		std::vector<video::SColor> colours[18];
 		if (cols) {
 			meshgen_custom_lights(colours,cols[0],cols[1],cols[2],cols[3],4);
 		}else if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
-			meshgen_lights(data,n,p,colours,255,4);
+			meshgen_lights(data,n,p,colours,255,faces[i],4,vertices[i]);
 		}
-		data->append(tiles[tileindex].getMaterial(), vertices+j, 4, indices, 6, colours);
+		for (s32 j=0; j<4; j++) {
+			vertices[i][j].Pos += pos;
+		}
+		data->append(tiles[tileindex].getMaterial(), vertices[i], 4, indices, 6, colours);
 	}
 }
 
@@ -506,6 +574,7 @@ static void meshgen_build_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, bool 
 	}
 }
 
+/* TODO: calculate faces better, or pass faces as argument */
 void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3f pos, TileSpec &tile, bool selected, s16 rot)
 {
 	// vertices for top and bottom tri
@@ -514,10 +583,13 @@ void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3
 	// tex coords for top and bottom tri
 	v2f top_t[3];
 	v2f btm_t[3];
+	// faces for top and bottom tri
+	v3s16 upface(0,1,0);
+	v3s16 downface(0,-1,0);
 	for (int i=0; i<3; i++) {
-		top_v[i].X = (corners[i].X*BS)+pos.X;
-		top_v[i].Y = ((corners[i].Y+0.01)*BS)+pos.Y;
-		top_v[i].Z = (corners[i].Z*BS)+pos.Z;
+		top_v[i].X = (corners[i].X*BS);
+		top_v[i].Y = ((corners[i].Y+0.01)*BS);
+		top_v[i].Z = (corners[i].Z*BS);
 		top_t[i].X = (corners[i].X+0.5);
 		top_t[i].Y = (corners[i].Z+0.5);
 		if (rot)
@@ -526,9 +598,9 @@ void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3
 		top_t[i].Y = (top_t[i].Y*tile.texture.size.Y)+tile.texture.pos.Y;
 
 		// reverse winding for bottom
-		btm_v[2-i].X = (corners[i].X*BS)+pos.X;
-		btm_v[2-i].Y = ((corners[i].Y-0.01)*BS)+pos.Y;
-		btm_v[2-i].Z = (corners[i].Z*BS)+pos.Z;
+		btm_v[2-i].X = (corners[i].X*BS);
+		btm_v[2-i].Y = ((corners[i].Y-0.01)*BS);
+		btm_v[2-i].Z = (corners[i].Z*BS);
 		btm_t[2-i].X = top_t[i].X;
 		btm_t[2-i].Y = top_t[i].Y;
 	}
@@ -544,8 +616,11 @@ void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3
 		if (selected) {
 			meshgen_selected_lights(colours,255,3);
 		}else{
-			meshgen_lights(data,n,p,colours,255,3);
+			meshgen_lights(data,n,p,colours,255,downface,3,tri_v);
 		}
+		tri_v[0].Pos += pos;
+		tri_v[1].Pos += pos;
+		tri_v[2].Pos += pos;
 		data->append(tile.getMaterial(),tri_v, 3, indices, 3, colours);
 	}
 	{
@@ -559,12 +634,16 @@ void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3
 		if (selected) {
 			meshgen_selected_lights(colours,255,3);
 		}else{
-			meshgen_lights(data,n,p,colours,255,3);
+			meshgen_lights(data,n,p,colours,255,upface,3,tri_v);
 		}
+		tri_v[0].Pos += pos;
+		tri_v[1].Pos += pos;
+		tri_v[2].Pos += pos;
 		data->append(tile.getMaterial(),tri_v, 3, indices, 3, colours);
 	}
 }
 
+/* TODO: calculate faces better, or pass faces as argument */
 void meshgen_leaftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3f pos, TileSpec &tile, bool selected, s16 rot)
 {
 	// vertices
@@ -572,9 +651,9 @@ void meshgen_leaftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3
 	// tex coords
 	v2f t[3];
 	for (int i=0; i<3; i++) {
-		v[i].X = (corners[i].X*BS)+pos.X;
-		v[i].Y = (corners[i].Y*BS)+pos.Y;
-		v[i].Z = (corners[i].Z*BS)+pos.Z;
+		v[i].X = (corners[i].X*BS);
+		v[i].Y = (corners[i].Y*BS);
+		v[i].Z = (corners[i].Z*BS);
 		t[i].X = (corners[i].X+0.5);
 		t[i].Y = (corners[i].Z+0.5);
 		if (rot)
@@ -594,8 +673,11 @@ void meshgen_leaftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3
 		if (selected) {
 			meshgen_selected_lights(colours,255,3);
 		}else{
-			meshgen_lights(data,n,p,colours,255,3);
+			meshgen_lights(data,n,p,colours,255,v3s16(0,0,0),3,tri_v);
 		}
+		tri_v[0].Pos += pos;
+		tri_v[1].Pos += pos;
+		tri_v[2].Pos += pos;
 		data->append(tile.getMaterial(),tri_v, 3, indices, 3, colours);
 	}
 }
@@ -612,17 +694,18 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			video::S3DVertex(-0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
 		};
 
-		for (u16 i=0; i<4; i++) {
-			vertices[i].Pos += pos;
-		}
-
 		u16 indices[6] = {0,1,2,2,3,0};
 		std::vector<video::SColor> colours[18];
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
-			meshgen_lights(data,n,p,colours,255,4);
+			meshgen_lights(data,n,p,colours,255,v3s16(-1,0,0),4,vertices);
 		}
+
+		for (u16 i=0; i<4; i++) {
+			vertices[i].Pos += pos;
+		}
+
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
 	if (meshgen_hardface(data,p,n,v3s16(1,0,0))) {
@@ -634,17 +717,18 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			video::S3DVertex(0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0())
 		};
 
-		for (u16 i=0; i<4; i++) {
-			vertices[i].Pos += pos;
-		}
-
 		u16 indices[6] = {0,1,2,2,3,0};
 		std::vector<video::SColor> colours[18];
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
-			meshgen_lights(data,n,p,colours,255,4);
+			meshgen_lights(data,n,p,colours,255,v3s16(1,0,0),4,vertices);
 		}
+
+		for (u16 i=0; i<4; i++) {
+			vertices[i].Pos += pos;
+		}
+
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
 	if (meshgen_hardface(data,p,n,v3s16(0,-1,0))) {
@@ -656,17 +740,18 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			video::S3DVertex( 0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
 		};
 
-		for (u16 i=0; i<4; i++) {
-			vertices[i].Pos += pos;
-		}
-
 		u16 indices[6] = {0,1,2,2,3,0};
 		std::vector<video::SColor> colours[18];
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
-			meshgen_lights(data,n,p,colours,255,4);
+			meshgen_lights(data,n,p,colours,255,v3s16(0,-1,0),4,vertices);
 		}
+
+		for (u16 i=0; i<4; i++) {
+			vertices[i].Pos += pos;
+		}
+
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
 	if (meshgen_hardface(data,p,n,v3s16(0,1,0))) {
@@ -678,17 +763,18 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			video::S3DVertex( 0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0())
 		};
 
-		for (u16 i=0; i<4; i++) {
-			vertices[i].Pos += pos;
-		}
-
 		u16 indices[6] = {0,1,2,2,3,0};
 		std::vector<video::SColor> colours[18];
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
-			meshgen_lights(data,n,p,colours,255,4);
+			meshgen_lights(data,n,p,colours,255,v3s16(0,1,0),4,vertices);
 		}
+
+		for (u16 i=0; i<4; i++) {
+			vertices[i].Pos += pos;
+		}
+
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
 	if (meshgen_hardface(data,p,n,v3s16(0,0,-1))) {
@@ -700,17 +786,18 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
 		};
 
-		for (u16 i=0; i<4; i++) {
-			vertices[i].Pos += pos;
-		}
-
 		u16 indices[6] = {0,1,2,2,3,0};
 		std::vector<video::SColor> colours[18];
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
-			meshgen_lights(data,n,p,colours,255,4);
+			meshgen_lights(data,n,p,colours,255,v3s16(0,0,-1),4,vertices);
 		}
+
+		for (u16 i=0; i<4; i++) {
+			vertices[i].Pos += pos;
+		}
+
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
 	if (meshgen_hardface(data,p,n,v3s16(0,0,1))) {
@@ -722,17 +809,18 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			video::S3DVertex( 0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
 		};
 
-		for (u16 i=0; i<4; i++) {
-			vertices[i].Pos += pos;
-		}
-
 		u16 indices[6] = {0,1,2,2,3,0};
 		std::vector<video::SColor> colours[18];
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
-			meshgen_lights(data,n,p,colours,255,4);
+			meshgen_lights(data,n,p,colours,255,v3s16(0,0,1),4,vertices);
 		}
+
+		for (u16 i=0; i<4; i++) {
+			vertices[i].Pos += pos;
+		}
+
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
 }
@@ -974,7 +1062,7 @@ void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 
 			aabb3f(-0.25*BS,-0.4375*BS,-0.5*BS,-0.1875*BS,-0.375*BS,-0.3125*BS),
 			aabb3f(0.3425*BS,-0.4385*BS,-0.0625*BS,0.415*BS,-0.374*BS,0.0625*BS),
-			aabb3f(-0.5*BS,-0.4375*BS,-0.25*BS,-0.3125*BS,-0.375*BS,-0.1875*BS),
+			aabb3f(-0.5*BS,-0.4375*BS,-0.25*BS,-0.3125*BS,-0.375*BS,-0.1875*BS)
 		};
 		tile = &tiles[0];
 		s16 a[10] = {110,70, 90,110,135,70,90, 90,-45,90};
@@ -1077,9 +1165,7 @@ void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 
 			aabb3f(-0.5*BS,-0.4375*BS,-0.25*BS,-0.25*BS,-0.375*BS,-0.1875*BS),
 			aabb3f(0.25*BS,-0.4375*BS,-0.25*BS,0.5*BS,-0.375*BS,-0.1875*BS),
-			aabb3f(-0.125*BS,-0.4375*BS,-0.25*BS,0.125*BS,-0.375*BS,-0.1875*BS),
-				//aabb3f(-0.25*BS,-0.4375*BS,-0.5*BS,-0.1875*BS,-0.375*BS,0.5*BS),
-				//aabb3f(0.1875*BS,-0.4375*BS,-0.5*BS,0.25*BS,-0.375*BS,0.5*BS)
+			aabb3f(-0.125*BS,-0.4375*BS,-0.25*BS,0.125*BS,-0.375*BS,-0.1875*BS)
 		};
 		tile = &tiles[0];
 		for (int bi=0; bi<16; bi++) {
@@ -1169,6 +1255,8 @@ void meshgen_plantlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	default:;
 	}
 
+	v3f pos = offset+intToFloat(p,BS);
+
 	for (u32 j=0; j<2; j++) {
 		video::S3DVertex vertices[4] = {
 			video::S3DVertex(-0.5*BS,-0.5*BS,0., 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1()),
@@ -1185,7 +1273,6 @@ void meshgen_plantlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			vertices[i].Pos.rotateXZBy(angle);
 			if (is_scaled)
 				vertices[i].Pos *= scale;
-			vertices[i].Pos += offset+intToFloat(p, BS);
 		}
 
 		u16 indices[] = {0,1,2,2,3,0};
@@ -1193,8 +1280,13 @@ void meshgen_plantlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
-			meshgen_lights(data,n,p,colours,255,4);
+			meshgen_lights(data,n,p,colours,255,v3s16(0,0,0),4,vertices);
 		}
+
+		for (u16 i=0; i<4; i++) {
+			vertices[i].Pos += pos;
+		}
+
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
 }
@@ -1327,6 +1419,7 @@ void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		{2, 3},
 		{0, 1},
 	};
+	v3f pos = intToFloat(p,BS);
 	for (u32 i=0; i<4; i++) {
 		v3s16 dir = side_dirs[i];
 
@@ -1400,7 +1493,6 @@ void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		for (s32 j=0; j<4; j++) {
 			if (angle)
 				vertices[j].Pos.rotateXZBy(angle);
-			vertices[j].Pos += intToFloat(p, BS);
 		}
 
 		u16 indices[] = {0,1,2,2,3,0};
@@ -1408,8 +1500,13 @@ void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		if (selected) {
 			meshgen_selected_lights(colours,f->vertex_alpha,4);
 		}else{
-			meshgen_lights(data,n,p,colours,f->vertex_alpha,4);
+			meshgen_lights(data,n,p,colours,f->vertex_alpha,dir,4,vertices);
 		}
+
+		for (s32 j=0; j<4; j++) {
+			vertices[j].Pos += pos;
+		}
+
 		data->append(tiles[i].getMaterial(), vertices, 4, indices, 6, colours);
 	}
 
@@ -1431,7 +1528,6 @@ void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		for (s32 i=0; i<4; i++) {
 			s32 j = corner_resolve[i];
 			vertices[i].Pos.Y += corner_levels[j];
-			vertices[i].Pos += intToFloat(p, BS);
 		}
 
 		u16 indices[] = {0,1,2,2,3,0};
@@ -1439,8 +1535,13 @@ void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		if (selected) {
 			meshgen_selected_lights(colours,f->vertex_alpha,4);
 		}else{
-			meshgen_lights(data,n,p,colours,f->vertex_alpha,4);
+			meshgen_lights(data,n,p,colours,f->vertex_alpha,v3s16(0,1,0),4,vertices);
 		}
+
+		for (s32 j=0; j<4; j++) {
+			vertices[j].Pos += pos;
+		}
+
 		data->append(tiles[0].getMaterial(), vertices, 4, indices, 6, colours);
 	}
 }
@@ -1510,6 +1611,8 @@ void meshgen_liquid_source(MeshMakeData *data, v3s16 p, MapNode &n, bool selecte
 		}
 	}
 
+	v3f pos = intToFloat(p,BS);
+
 	for (u32 j=0; j<6; j++) {
 		// Check this neighbor
 		n2p = data->m_blockpos_nodes + p + g_6dirs[j];
@@ -1542,9 +1645,6 @@ void meshgen_liquid_source(MeshMakeData *data, v3s16 p, MapNode &n, bool selecte
 				vertices[2].Pos.Y = 0.375*BS;
 			if (drop[1])
 				vertices[3].Pos.Y = 0.375*BS;
-			for(u16 i=0; i<4; i++) {
-				vertices[i].Pos += intToFloat(p, BS);
-			}
 			break;
 		case 1: // Y+
 			if (!drop[1] && !drop[2] && !drop[3] && drop[0]) {
@@ -1569,7 +1669,6 @@ void meshgen_liquid_source(MeshMakeData *data, v3s16 p, MapNode &n, bool selecte
 			}
 			for(u16 i=0; i<4; i++) {
 				vertices[i].Pos.rotateYZBy(-90);
-				vertices[i].Pos += intToFloat(p, BS);
 			}
 			break;
 		case 2: // X+
@@ -1579,7 +1678,6 @@ void meshgen_liquid_source(MeshMakeData *data, v3s16 p, MapNode &n, bool selecte
 				vertices[3].Pos.Y = 0.375*BS;
 			for(u16 i=0; i<4; i++) {
 				vertices[i].Pos.rotateXZBy(-90);
-				vertices[i].Pos += intToFloat(p, BS);
 			}
 			break;
 		case 3: // Z-
@@ -1589,13 +1687,11 @@ void meshgen_liquid_source(MeshMakeData *data, v3s16 p, MapNode &n, bool selecte
 				vertices[3].Pos.Y = 0.375*BS;
 			for(u16 i=0; i<4; i++) {
 				vertices[i].Pos.rotateXZBy(180);
-				vertices[i].Pos += intToFloat(p, BS);
 			}
 			break;
 		case 4: // Y-
 			for(u16 i=0; i<4; i++) {
 				vertices[i].Pos.rotateYZBy(90);
-				vertices[i].Pos += intToFloat(p, BS);
 			}
 			break;
 		case 5: // X-
@@ -1605,7 +1701,6 @@ void meshgen_liquid_source(MeshMakeData *data, v3s16 p, MapNode &n, bool selecte
 				vertices[3].Pos.Y = 0.375*BS;
 			for(u16 i=0; i<4; i++) {
 				vertices[i].Pos.rotateXZBy(90);
-				vertices[i].Pos += intToFloat(p, BS);
 			}
 			break;
 		default:;
@@ -1616,7 +1711,11 @@ void meshgen_liquid_source(MeshMakeData *data, v3s16 p, MapNode &n, bool selecte
 		if (selected) {
 			meshgen_selected_lights(colours,f->vertex_alpha,4);
 		}else{
-			meshgen_lights(data,n,p,colours,f->vertex_alpha,4);
+			meshgen_lights(data,n,p,colours,f->vertex_alpha,g_6dirs[j],4,vertices);
+		}
+
+		for(u16 i=0; i<4; i++) {
+			vertices[i].Pos += pos;
 		}
 		data->append(tiles[j].getMaterial(), vertices, 4, indices, 6, colours);
 	}
@@ -1672,6 +1771,8 @@ void meshgen_glasslike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
 	}
 
+	v3f pos = intToFloat(p,BS);
+
 	for (u32 j=0; j<6; j++) {
 		// Check this neighbor
 		v3s16 n2p = data->m_blockpos_nodes + p + g_6dirs[j];
@@ -1711,13 +1812,14 @@ void meshgen_glasslike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		default:;
 		}
 
-		for (u16 i=0; i<4; i++) {
-			if (yrot) {
+		if (yrot){
+			for (u16 i=0; i<4; i++) {
 				vertices[i].Pos.rotateXZBy(yrot);
-			}else if (xrot) {
+			}
+		}else if (xrot) {
+			for (u16 i=0; i<4; i++) {
 				vertices[i].Pos.rotateYZBy(xrot);
 			}
-			vertices[i].Pos += intToFloat(p, BS);
 		}
 
 		u16 indices[] = {0,1,2,2,3,0};
@@ -1725,8 +1827,13 @@ void meshgen_glasslike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
-			meshgen_lights(data,n,p,colours,255,4);
+			meshgen_lights(data,n,p,colours,255,g_6dirs[j],4,vertices);
 		}
+
+		for (u16 i=0; i<4; i++) {
+			vertices[i].Pos += pos;
+		}
+
 		data->append(tiles[j].getMaterial(), vertices, 4, indices, 6, colours);
 	}
 }
@@ -1741,38 +1848,47 @@ void meshgen_torchlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		0,0,0.125,1,
 		0,0,0.125,1
 	};
+	static v3s16 faces[6] = {
+		v3s16( 0, 1, 0),
+		v3s16( 0,-1, 0),
+		v3s16( 1, 0, 0),
+		v3s16(-1, 0, 0),
+		v3s16( 0, 0, 1),
+		v3s16( 0, 0,-1),
+	};
 	v3s16 dir = unpackDir(n.param2);
-	video::S3DVertex vertices[24] = {
-		// up
-		video::S3DVertex(-0.0625*BS,0.125*BS,0.0625*BS, 0,1,0, video::SColor(255,255,255,255), txc[0],txc[1]),
-		video::S3DVertex(0.0625*BS,0.125*BS,0.0625*BS, 0,1,0, video::SColor(255,255,255,255), txc[2],txc[1]),
-		video::S3DVertex(0.0625*BS,0.125*BS,-0.0625*BS, 0,1,0, video::SColor(255,255,255,255), txc[2],txc[3]),
-		video::S3DVertex(-0.0625*BS,0.125*BS,-0.0625*BS, 0,1,0, video::SColor(255,255,255,255), txc[0],txc[3]),
-		// down
-		video::S3DVertex(-0.0625*BS,-0.5*BS,-0.0625*BS, 0,-1,0, video::SColor(255,255,255,255), txc[4],txc[5]),
-		video::S3DVertex(0.0625*BS,-0.5*BS,-0.0625*BS, 0,-1,0, video::SColor(255,255,255,255), txc[6],txc[5]),
-		video::S3DVertex(0.0625*BS,-0.5*BS,0.0625*BS, 0,-1,0, video::SColor(255,255,255,255), txc[6],txc[7]),
-		video::S3DVertex(-0.0625*BS,-0.5*BS,0.0625*BS, 0,-1,0, video::SColor(255,255,255,255), txc[4],txc[7]),
-		// right
-		video::S3DVertex(0.0625*BS,0.125*BS,-0.0625*BS, 1,0,0, video::SColor(255,255,255,255), txc[ 8],txc[9]),
-		video::S3DVertex(0.0625*BS,0.125*BS,0.0625*BS, 1,0,0, video::SColor(255,255,255,255), txc[10],txc[9]),
-		video::S3DVertex(0.0625*BS,-0.5*BS,0.0625*BS, 1,0,0, video::SColor(255,255,255,255), txc[10],txc[11]),
-		video::S3DVertex(0.0625*BS,-0.5*BS,-0.0625*BS, 1,0,0, video::SColor(255,255,255,255), txc[ 8],txc[11]),
-		// left
-		video::S3DVertex(-0.0625*BS,0.125*BS,0.0625*BS, -1,0,0, video::SColor(255,255,255,255), txc[12],txc[13]),
-		video::S3DVertex(-0.0625*BS,0.125*BS,-0.0625*BS, -1,0,0, video::SColor(255,255,255,255), txc[14],txc[13]),
-		video::S3DVertex(-0.0625*BS,-0.5*BS,-0.0625*BS, -1,0,0, video::SColor(255,255,255,255), txc[14],txc[15]),
-		video::S3DVertex(-0.0625*BS,-0.5*BS,0.0625*BS, -1,0,0, video::SColor(255,255,255,255), txc[12],txc[15]),
-		// back
-		video::S3DVertex(0.0625*BS,0.125*BS,0.0625*BS, 0,0,1, video::SColor(255,255,255,255), txc[16],txc[17]),
-		video::S3DVertex(-0.0625*BS,0.125*BS,0.0625*BS, 0,0,1, video::SColor(255,255,255,255), txc[18],txc[17]),
-		video::S3DVertex(-0.0625*BS,-0.5*BS,0.0625*BS, 0,0,1, video::SColor(255,255,255,255), txc[18],txc[19]),
-		video::S3DVertex(0.0625*BS,-0.5*BS,0.0625*BS, 0,0,1, video::SColor(255,255,255,255), txc[16],txc[19]),
-		// front
-		video::S3DVertex(-0.0625*BS,0.125*BS,-0.0625*BS, 0,0,-1, video::SColor(255,255,255,255), txc[20],txc[21]),
-		video::S3DVertex(0.0625*BS,0.125*BS,-0.0625*BS, 0,0,-1, video::SColor(255,255,255,255), txc[22],txc[21]),
-		video::S3DVertex(0.0625*BS,-0.5*BS,-0.0625*BS, 0,0,-1, video::SColor(255,255,255,255), txc[22],txc[23]),
-		video::S3DVertex(-0.0625*BS,-0.5*BS,-0.0625*BS, 0,0,-1, video::SColor(255,255,255,255), txc[20],txc[23])
+	video::S3DVertex vertices[6][4] = {
+		{	// up
+			video::S3DVertex(-0.0625*BS,0.125*BS,0.0625*BS, 0,1,0, video::SColor(255,255,255,255), txc[0],txc[1]),
+			video::S3DVertex(0.0625*BS,0.125*BS,0.0625*BS, 0,1,0, video::SColor(255,255,255,255), txc[2],txc[1]),
+			video::S3DVertex(0.0625*BS,0.125*BS,-0.0625*BS, 0,1,0, video::SColor(255,255,255,255), txc[2],txc[3]),
+			video::S3DVertex(-0.0625*BS,0.125*BS,-0.0625*BS, 0,1,0, video::SColor(255,255,255,255), txc[0],txc[3])
+		},{	// down
+			video::S3DVertex(-0.0625*BS,-0.5*BS,-0.0625*BS, 0,-1,0, video::SColor(255,255,255,255), txc[4],txc[5]),
+			video::S3DVertex(0.0625*BS,-0.5*BS,-0.0625*BS, 0,-1,0, video::SColor(255,255,255,255), txc[6],txc[5]),
+			video::S3DVertex(0.0625*BS,-0.5*BS,0.0625*BS, 0,-1,0, video::SColor(255,255,255,255), txc[6],txc[7]),
+			video::S3DVertex(-0.0625*BS,-0.5*BS,0.0625*BS, 0,-1,0, video::SColor(255,255,255,255), txc[4],txc[7])
+		},{	// right
+			video::S3DVertex(0.0625*BS,0.125*BS,-0.0625*BS, 1,0,0, video::SColor(255,255,255,255), txc[ 8],txc[9]),
+			video::S3DVertex(0.0625*BS,0.125*BS,0.0625*BS, 1,0,0, video::SColor(255,255,255,255), txc[10],txc[9]),
+			video::S3DVertex(0.0625*BS,-0.5*BS,0.0625*BS, 1,0,0, video::SColor(255,255,255,255), txc[10],txc[11]),
+			video::S3DVertex(0.0625*BS,-0.5*BS,-0.0625*BS, 1,0,0, video::SColor(255,255,255,255), txc[ 8],txc[11])
+		},{	// left
+			video::S3DVertex(-0.0625*BS,0.125*BS,0.0625*BS, -1,0,0, video::SColor(255,255,255,255), txc[12],txc[13]),
+			video::S3DVertex(-0.0625*BS,0.125*BS,-0.0625*BS, -1,0,0, video::SColor(255,255,255,255), txc[14],txc[13]),
+			video::S3DVertex(-0.0625*BS,-0.5*BS,-0.0625*BS, -1,0,0, video::SColor(255,255,255,255), txc[14],txc[15]),
+			video::S3DVertex(-0.0625*BS,-0.5*BS,0.0625*BS, -1,0,0, video::SColor(255,255,255,255), txc[12],txc[15])
+		},{	// back
+			video::S3DVertex(0.0625*BS,0.125*BS,0.0625*BS, 0,0,1, video::SColor(255,255,255,255), txc[16],txc[17]),
+			video::S3DVertex(-0.0625*BS,0.125*BS,0.0625*BS, 0,0,1, video::SColor(255,255,255,255), txc[18],txc[17]),
+			video::S3DVertex(-0.0625*BS,-0.5*BS,0.0625*BS, 0,0,1, video::SColor(255,255,255,255), txc[18],txc[19]),
+			video::S3DVertex(0.0625*BS,-0.5*BS,0.0625*BS, 0,0,1, video::SColor(255,255,255,255), txc[16],txc[19])
+		},{	// front
+			video::S3DVertex(-0.0625*BS,0.125*BS,-0.0625*BS, 0,0,-1, video::SColor(255,255,255,255), txc[20],txc[21]),
+			video::S3DVertex(0.0625*BS,0.125*BS,-0.0625*BS, 0,0,-1, video::SColor(255,255,255,255), txc[22],txc[21]),
+			video::S3DVertex(0.0625*BS,-0.5*BS,-0.0625*BS, 0,0,-1, video::SColor(255,255,255,255), txc[22],txc[23]),
+			video::S3DVertex(-0.0625*BS,-0.5*BS,-0.0625*BS, 0,0,-1, video::SColor(255,255,255,255), txc[20],txc[23])
+		}
 	};
 
 	TileSpec tile = content_features(n).tiles[0];
@@ -1780,72 +1896,82 @@ void meshgen_torchlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	f32 sy = tile.texture.y1()-tile.texture.y0();
 
 	if (dir.Y == 1) { // roof
-		for (s32 i=0; i<24; i++) {
-			vertices[i].Pos.rotateXYBy(175);
-			vertices[i].Pos.rotateYZBy(5);
-			vertices[i].Pos += intToFloat(p, BS);
-			vertices[i].TCoords *= v2f(sx,sy);
-			vertices[i].TCoords += v2f(
-				tile.texture.x0(),
-				tile.texture.y0()
-			);
+		for (s32 i=0; i<6; i++) {
+			for (int j=0; j<4; j++) {
+				vertices[i][j].Pos.rotateXYBy(175);
+				vertices[i][j].Pos.rotateYZBy(5);
+				vertices[i][j].TCoords *= v2f(sx,sy);
+				vertices[i][j].TCoords += v2f(
+					tile.texture.x0(),
+					tile.texture.y0()
+				);
+			}
 		}
 	}else if (dir.Y == -1) { // floor
-		for (s32 i=0; i<24; i++) {
-			vertices[i].Pos += intToFloat(p, BS);
-			vertices[i].TCoords *= v2f(sx,sy);
-			vertices[i].TCoords += v2f(
-				tile.texture.x0(),
-				tile.texture.y0()
-			);
+		for (s32 i=0; i<6; i++) {
+			for (int j=0; j<4; j++) {
+				vertices[i][j].TCoords *= v2f(sx,sy);
+				vertices[i][j].TCoords += v2f(
+					tile.texture.x0(),
+					tile.texture.y0()
+				);
+			}
 		}
 	}else{ // wall
-		for (s32 i=0; i<24; i++) {
-			vertices[i].Pos.Y += 0.25*BS;
-			vertices[i].Pos.rotateYZBy(-5);
-			vertices[i].Pos += v3f(0.,0.,0.4*BS);
-			if (dir.X == 1) {
-				vertices[i].Pos.rotateXZBy(-90);
-			}else if (dir.X == -1) {
-				vertices[i].Pos.rotateXZBy(90);
-			}else if (dir.Z == 1) {
-				vertices[i].Pos.rotateXZBy(0);
-			}else if (dir.Z == -1) {
-				vertices[i].Pos.rotateXZBy(180);
-			}
+		for (s32 i=0; i<6; i++) {
+			for (int j=0; j<4; j++) {
+				vertices[i][j].Pos.Y += 0.25*BS;
+				vertices[i][j].Pos.rotateYZBy(-5);
+				vertices[i][j].Pos += v3f(0.,0.,0.4*BS);
+				if (dir.X == 1) {
+					vertices[i][j].Pos.rotateXZBy(-90);
+				}else if (dir.X == -1) {
+					vertices[i][j].Pos.rotateXZBy(90);
+				}else if (dir.Z == 1) {
+					vertices[i][j].Pos.rotateXZBy(0);
+				}else if (dir.Z == -1) {
+					vertices[i][j].Pos.rotateXZBy(180);
+				}
 
-			vertices[i].Pos += intToFloat(p, BS);
-			vertices[i].TCoords *= v2f(sx,sy);
-			vertices[i].TCoords += v2f(
-				tile.texture.x0(),
-				tile.texture.y0()
-			);
+				vertices[i][j].TCoords *= v2f(sx,sy);
+				vertices[i][j].TCoords += v2f(
+					tile.texture.x0(),
+					tile.texture.y0()
+				);
+			}
 		}
 	}
 
 	u16 indices[] = {0,1,2,2,3,0};
 
+
+	v3f pos = intToFloat(p,BS);
 	// Add to mesh collector
-	for (s32 j=0; j<24; j+=4) {
+	for (s32 j=0; j<6; j++) {
 		std::vector<video::SColor> colours[18];
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
-			meshgen_lights(data,n,p,colours,255,4);
+			meshgen_lights(data,n,p,colours,255,faces[j],4,vertices[j]);
 		}
-		data->append(tile.getMaterial(), &vertices[j], 4, indices, 6, colours);
+
+		for (u16 i=0; i<4; i++) {
+			vertices[j][i].Pos += pos;
+		}
+
+		data->append(tile.getMaterial(), vertices[j], 4, indices, 6, colours);
 	}
 }
 
 void meshgen_fencelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 {
 	static const v3s16 tile_dirs[6] = {
-		v3s16(0, 1, 0),
-		v3s16(0, -1, 0),
-		v3s16(1, 0, 0),
+		v3s16( 0, 1, 0),
+		v3s16( 0,-1, 0),
+		v3s16( 1, 0, 0),
 		v3s16(-1, 0, 0),
-		v3s16(0, 0, 1),
-		v3s16(0, 0, -1)
+		v3s16( 0, 0, 1),
+		v3s16( 0, 0,-1)
 	};
 	static const v3s16 fence_dirs[8] = {
 		v3s16(1,0,0),
@@ -2009,6 +2135,7 @@ void meshgen_firelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			drawAllFaces = false;
 		}
 	}
+	v3f pos = intToFloat(p,BS);
 	for (u32 j=0; j<4; j++) {
 		video::S3DVertex vertices[4] = {
 			video::S3DVertex(-0.5*BS,-0.5*BS,0.369*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1()),
@@ -2023,33 +2150,28 @@ void meshgen_firelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				vertices[i].Pos.rotateXZBy(90);
 				vertices[i].Pos.rotateXYBy(-15);
 				vertices[i].Pos.Y -= vOffset;
-				vertices[i].Pos += intToFloat(p, BS);
 			}
 		}else if(j == 1 && (drawAllFaces || (doDraw[5] == 1 || doDraw[1] == 1))) {
 			for(u16 i=0; i<4; i++) {
 				vertices[i].Pos.rotateXZBy(180);
 				vertices[i].Pos.rotateYZBy(15);
 				vertices[i].Pos.Y -= vOffset;
-				vertices[i].Pos += intToFloat(p, BS);
 			}
 		}else if(j == 2 && (drawAllFaces || (doDraw[2] == 1 || doDraw[1] == 1))) {
 			for(u16 i=0; i<4; i++) {
 				vertices[i].Pos.rotateXZBy(270);
 				vertices[i].Pos.rotateXYBy(15);
 				vertices[i].Pos.Y -= vOffset;
-				vertices[i].Pos += intToFloat(p, BS);
 			}
 		}else if(j == 3 && (drawAllFaces || (doDraw[4] == 1 || doDraw[1] == 1))) {
 			for(u16 i=0; i<4; i++) {
 				vertices[i].Pos.rotateYZBy(-15);
 				vertices[i].Pos.Y -= vOffset;
-				vertices[i].Pos += intToFloat(p, BS);
 			}
 		}else if(j == 3 && (drawAllFaces || (doDraw[0] == 1 && doDraw[1] == 0))) {
 			for(u16 i=0; i<4; i++) {
 				vertices[i].Pos.rotateYZBy(-90);
 				vertices[i].Pos.Y += vOffset;
-				vertices[i].Pos += intToFloat(p, BS);
 			}
 		}else{
 			// Skip faces that aren't adjacent to a node
@@ -2060,8 +2182,13 @@ void meshgen_firelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
-			meshgen_lights(data,n,p,colours,255,4);
+			meshgen_lights(data,n,p,colours,255,v3s16(0,0,0),4,vertices);
 		}
+
+		for (u16 i=0; i<4; i++) {
+			vertices[i].Pos += pos;
+		}
+
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
 }
@@ -3650,13 +3777,13 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, bo
 
 void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 {
-	static const v3s16 tile_dirs[6] = {
-		v3s16(0, 1, 0),
-		v3s16(0, -1, 0),
-		v3s16(1, 0, 0),
+	static v3s16 faces[6] = {
+		v3s16( 0, 1, 0),
+		v3s16( 0,-1, 0),
+		v3s16( 1, 0, 0),
 		v3s16(-1, 0, 0),
-		v3s16(0, 0, 1),
-		v3s16(0, 0, -1)
+		v3s16( 0, 0, 1),
+		v3s16( 0, 0,-1),
 	};
 	v3f pos = intToFloat(p, BS);
 	s16 rot = n.getRotationAngle();
@@ -3672,7 +3799,7 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+data->m_blockpos_nodes);
 	for (int i=0; i<6; i++) {
 		// Handles facedir rotation for textures
-		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods,meta);
+		tiles[i] = getNodeTile(n,p,faces[i],data->m_temp_mods,meta);
 	}
 
 	bool urot = (n.getContent() >= CONTENT_SLAB_STAIR_UD_MIN && n.getContent() <= CONTENT_SLAB_STAIR_UD_MAX);
@@ -3880,10 +4007,12 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			for (int i=0; i<6; i++) {
 				if (skips[i])
 					continue;
+				v3s16 f = faces[i];
+				f.rotateXYBy(180);
+				f.rotateXZBy(rot);
 				for (int j=0; j<vcounts[i]; j++) {
 					vertices[i][j].Pos.rotateXYBy(180);
 					vertices[i][j].Pos.rotateXZBy(rot);
-					vertices[i][j].Pos += pos;
 					vertices[i][j].TCoords *= tiles[i].texture.size;
 					vertices[i][j].TCoords += tiles[i].texture.pos;
 				}
@@ -3891,17 +4020,23 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				if (selected) {
 					meshgen_selected_lights(colours,255,vcounts[i]);
 				}else{
-					meshgen_lights(data,n,p,colours,255,vcounts[i]);
+					meshgen_lights(data,n,p,colours,255,f,vcounts[i],vertices[i]);
 				}
+
+				for (int j=0; j<vcounts[i]; j++) {
+					vertices[i][j].Pos += pos;
+				}
+
 				data->append(tiles[i].getMaterial(), vertices[i], vcounts[i], indices[i], icounts[i], colours);
 			}
 		}else{
 			for (int i=0; i<6; i++) {
 				if (skips[i])
 					continue;
+				v3s16 f = faces[i];
+				f.rotateXYBy(180);
 				for (int j=0; j<vcounts[i]; j++) {
 					vertices[i][j].Pos.rotateXYBy(180);
-					vertices[i][j].Pos += pos;
 					vertices[i][j].TCoords *= tiles[i].texture.size;
 					vertices[i][j].TCoords += tiles[i].texture.pos;
 				}
@@ -3909,8 +4044,13 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				if (selected) {
 					meshgen_selected_lights(colours,255,vcounts[i]);
 				}else{
-					meshgen_lights(data,n,p,colours,255,vcounts[i]);
+					meshgen_lights(data,n,p,colours,255,f,vcounts[i],vertices[i]);
 				}
+
+				for (int j=0; j<vcounts[i]; j++) {
+					vertices[i][j].Pos += pos;
+				}
+
 				data->append(tiles[i].getMaterial(), vertices[i], vcounts[i], indices[i], icounts[i], colours);
 			}
 		}
@@ -3918,9 +4058,10 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		for (int i=0; i<6; i++) {
 			if (skips[i])
 				continue;
+			v3s16 f = faces[i];
+			f.rotateXZBy(rot);
 			for (int j=0; j<vcounts[i]; j++) {
 				vertices[i][j].Pos.rotateXZBy(rot);
-				vertices[i][j].Pos += pos;
 				vertices[i][j].TCoords *= tiles[i].texture.size;
 				vertices[i][j].TCoords += tiles[i].texture.pos;
 			}
@@ -3928,8 +4069,13 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			if (selected) {
 				meshgen_selected_lights(colours,255,vcounts[i]);
 			}else{
-				meshgen_lights(data,n,p,colours,255,vcounts[i]);
+				meshgen_lights(data,n,p,colours,255,f,vcounts[i],vertices[i]);
 			}
+
+			for (int j=0; j<vcounts[i]; j++) {
+				vertices[i][j].Pos += pos;
+			}
+
 			data->append(tiles[i].getMaterial(), vertices[i], vcounts[i], indices[i], icounts[i], colours);
 		}
 	}else{
@@ -3937,7 +4083,6 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			if (skips[i])
 				continue;
 			for (int j=0; j<vcounts[i]; j++) {
-				vertices[i][j].Pos += pos;
 				vertices[i][j].TCoords *= tiles[i].texture.size;
 				vertices[i][j].TCoords += tiles[i].texture.pos;
 			}
@@ -3945,8 +4090,13 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			if (selected) {
 				meshgen_selected_lights(colours,255,vcounts[i]);
 			}else{
-				meshgen_lights(data,n,p,colours,255,vcounts[i]);
+				meshgen_lights(data,n,p,colours,255,faces[i],vcounts[i],vertices[i]);
 			}
+
+			for (int j=0; j<vcounts[i]; j++) {
+				vertices[i][j].Pos += pos;
+			}
+
 			data->append(tiles[i].getMaterial(), vertices[i], vcounts[i], indices[i], icounts[i], colours);
 		}
 	}
@@ -3954,20 +4104,20 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 
 void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 {
-	static const v3s16 tile_dirs[6] = {
-		v3s16(0, 1, 0),
-		v3s16(0, -1, 0),
-		v3s16(1, 0, 0),
+	static v3s16 faces[6] = {
+		v3s16( 0, 1, 0),
+		v3s16( 0,-1, 0),
+		v3s16( 1, 0, 0),
 		v3s16(-1, 0, 0),
-		v3s16(0, 0, 1),
-		v3s16(0, 0, -1)
+		v3s16( 0, 0, 1),
+		v3s16( 0, 0,-1),
 	};
 
 	TileSpec tiles[6];
 	NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+data->m_blockpos_nodes);
 	for (int i = 0; i < 6; i++) {
 		// Handles facedir rotation for textures
-		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods,meta);
+		tiles[i] = getNodeTile(n,p,faces[i],data->m_temp_mods,meta);
 	}
 	v3f pos = intToFloat(p, BS);
 
@@ -4055,7 +4205,6 @@ void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				continue;
 			for (int j=0; j<4; j++) {
 				vertices[i][j].Pos.rotateXYBy(180);
-				vertices[i][j].Pos += pos;
 				vertices[i][j].TCoords *= tiles[i].texture.size;
 				vertices[i][j].TCoords += tiles[i].texture.pos;
 			}
@@ -4063,8 +4212,13 @@ void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			if (selected) {
 				meshgen_selected_lights(colours,255,4);
 			}else{
-				meshgen_lights(data,n,p,colours,255,4);
+				meshgen_lights(data,n,p,colours,255,faces[5-i],4,vertices[i]);
 			}
+
+			for (int j=0; j<4; j++) {
+				vertices[i][j].Pos += pos;
+			}
+
 			data->append(tiles[i].getMaterial(), vertices[i], 4, indices, 6, colours);
 		}
 	}else{
@@ -4072,7 +4226,6 @@ void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			if (skips[i])
 				continue;
 			for (int j=0; j<4; j++) {
-				vertices[i][j].Pos += pos;
 				vertices[i][j].TCoords *= tiles[i].texture.size;
 				vertices[i][j].TCoords += tiles[i].texture.pos;
 			}
@@ -4080,8 +4233,13 @@ void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			if (selected) {
 				meshgen_selected_lights(colours,255,4);
 			}else{
-				meshgen_lights(data,n,p,colours,255,4);
+				meshgen_lights(data,n,p,colours,255,faces[i],4,vertices[i]);
 			}
+
+			for (int j=0; j<4; j++) {
+				vertices[i][j].Pos += pos;
+			}
+
 			data->append(tiles[i].getMaterial(), vertices[i], 4, indices, 6, colours);
 		}
 	}
@@ -4205,6 +4363,13 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	};
 	u16 end_indices[12] = {5,1,0,5,2,1,5,3,2,5,4,3};
 	u16 rots[4] = {0,90,180,270};
+	v3s16 faces[3] = {
+		v3s16( 0, 0,-1),
+		v3s16(-1, 0,-1),
+		v3s16(-1, 0, 0)
+	};
+
+	v3f pos = intToFloat(p,BS);
 
 	if (y_plus || y_minus) { /* vertical trunk */
 		for (u16 j=0; j<4; j++) {
@@ -4212,8 +4377,6 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			for (u16 i=0; i<10; i++) {
 				v[i] = vertices[i];
 				v[i].Pos.rotateXZBy(rots[j]);
-				v[i].Normal.rotateXZBy(rots[j]);
-				v[i].Pos += intToFloat(p, BS);
 				v[i].TCoords *= tile.texture.size;
 				v[i].TCoords += tile.texture.pos;
 			}
@@ -4221,8 +4384,23 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			if (selected) {
 				meshgen_selected_lights(colours,255,10);
 			}else{
-				meshgen_lights(data,n,p,colours,255,10);
+				v3s16 f[3];
+				for (u16 i=0; i<3; i++) {
+					f[i] = faces[i];
+					f[i].rotateXZBy(rots[j]);
+				}
+				meshgen_lights(data,n,p,colours,255,f[0],2,v);
+				meshgen_lights(data,n,p,colours,255,f[1],1,&v[2]);
+				meshgen_lights(data,n,p,colours,255,f[2],2,&v[3]);
+				meshgen_lights(data,n,p,colours,255,f[0],2,&v[5]);
+				meshgen_lights(data,n,p,colours,255,f[1],1,&v[7]);
+				meshgen_lights(data,n,p,colours,255,f[2],2,&v[8]);
 			}
+
+			for (int k=0; k<10; k++) {
+				v[k].Pos += pos;
+			}
+
 			data->append(tile.getMaterial(), v, 10, indices, 24, colours);
 		}
 		if (!y_plus_any) {
@@ -4231,8 +4409,6 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				for (u16 i=0; i<6; i++) {
 					v[i] = end_vertices[i];
 					v[i].Pos.rotateXZBy(rots[j]);
-					v[i].Normal.rotateXZBy(rots[j]);
-					v[i].Pos += intToFloat(p, BS);
 					v[i].TCoords *= endtile.texture.size;
 					v[i].TCoords += endtile.texture.pos;
 				}
@@ -4240,8 +4416,13 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				if (selected) {
 					meshgen_selected_lights(colours,255,6);
 				}else{
-					meshgen_lights(data,n,p,colours,255,6);
+					meshgen_lights(data,n,p,colours,255,v3s16(0,1,0),6,v);
 				}
+
+				for (int k=0; k<6; k++) {
+					v[k].Pos += pos;
+				}
+
 				data->append(endtile.getMaterial(), v, 6, end_indices, 12, colours);
 			}
 		}
@@ -4252,9 +4433,6 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					v[i] = end_vertices[i];
 					v[i].Pos.rotateXYBy(180);
 					v[i].Pos.rotateXZBy(rots[j]);
-					v[i].Normal.rotateXYBy(180);
-					v[i].Normal.rotateXZBy(rots[j]);
-					v[i].Pos += intToFloat(p, BS);
 					v[i].TCoords *= endtile.texture.size;
 					v[i].TCoords += endtile.texture.pos;
 				}
@@ -4262,8 +4440,13 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				if (selected) {
 					meshgen_selected_lights(colours,255,6);
 				}else{
-					meshgen_lights(data,n,p,colours,255,6);
+					meshgen_lights(data,n,p,colours,255,v3s16(0,-1,0),6,v);
 				}
+
+				for (int k=0; k<6; k++) {
+					v[k].Pos += pos;
+				}
+
 				data->append(endtile.getMaterial(), v, 6, end_indices, 12, colours);
 			}
 		}
@@ -4275,9 +4458,6 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					v[i].Pos += v3f(0,-BS*0.625,0);
 					v[i].Pos.rotateXYBy(90);
 					v[i].Pos.rotateYZBy(rots[j]);
-					v[i].Normal.rotateXYBy(90);
-					v[i].Normal.rotateYZBy(rots[j]);
-					v[i].Pos += intToFloat(p, BS);
 					v[i].TCoords *= tile.texture.size;
 					v[i].TCoords += tile.texture.pos;
 				}
@@ -4285,8 +4465,24 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				if (selected) {
 					meshgen_selected_lights(colours,255,10);
 				}else{
-					meshgen_lights(data,n,p,colours,255,10);
+					v3s16 f[3];
+					for (u16 i=0; i<3; i++) {
+						f[i] = faces[i];
+						f[i].rotateXYBy(90);
+						f[i].rotateYZBy(rots[j]);
+					}
+					meshgen_lights(data,n,p,colours,255,f[0],2,v);
+					meshgen_lights(data,n,p,colours,255,f[1],1,&v[2]);
+					meshgen_lights(data,n,p,colours,255,f[2],2,&v[3]);
+					meshgen_lights(data,n,p,colours,255,f[0],2,&v[5]);
+					meshgen_lights(data,n,p,colours,255,f[1],1,&v[7]);
+					meshgen_lights(data,n,p,colours,255,f[2],2,&v[8]);
 				}
+
+				for (int k=0; k<10; k++) {
+					v[k].Pos += pos;
+				}
+
 				data->append(tile.getMaterial(), v, 10, indices, 24, colours);
 			}
 		}
@@ -4297,9 +4493,6 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					v[i] = branch_vertices[i];
 					v[i].Pos.rotateXYBy(90);
 					v[i].Pos.rotateYZBy(rots[j]);
-					v[i].Normal.rotateXYBy(90);
-					v[i].Normal.rotateYZBy(rots[j]);
-					v[i].Pos += intToFloat(p, BS);
 					v[i].TCoords *= tile.texture.size;
 					v[i].TCoords += tile.texture.pos;
 				}
@@ -4307,8 +4500,24 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				if (selected) {
 					meshgen_selected_lights(colours,255,10);
 				}else{
-					meshgen_lights(data,n,p,colours,255,10);
+					v3s16 f[3];
+					for (u16 i=0; i<3; i++) {
+						f[i] = faces[i];
+						f[i].rotateXYBy(90);
+						f[i].rotateYZBy(rots[j]);
+					}
+					meshgen_lights(data,n,p,colours,255,f[0],2,v);
+					meshgen_lights(data,n,p,colours,255,f[1],1,&v[2]);
+					meshgen_lights(data,n,p,colours,255,f[2],2,&v[3]);
+					meshgen_lights(data,n,p,colours,255,f[0],2,&v[5]);
+					meshgen_lights(data,n,p,colours,255,f[1],1,&v[7]);
+					meshgen_lights(data,n,p,colours,255,f[2],2,&v[8]);
 				}
+
+				for (int k=0; k<10; k++) {
+					v[k].Pos += pos;
+				}
+
 				data->append(tile.getMaterial(), v, 10, indices, 24, colours);
 			}
 		}
@@ -4319,9 +4528,6 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					v[i] = branch_vertices[i];
 					v[i].Pos.rotateYZBy(90);
 					v[i].Pos.rotateXYBy(rots[j]);
-					v[i].Normal.rotateYZBy(90);
-					v[i].Normal.rotateXYBy(rots[j]);
-					v[i].Pos += intToFloat(p, BS);
 					v[i].TCoords *= tile.texture.size;
 					v[i].TCoords += tile.texture.pos;
 				}
@@ -4329,8 +4535,24 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				if (selected) {
 					meshgen_selected_lights(colours,255,10);
 				}else{
-					meshgen_lights(data,n,p,colours,255,10);
+					v3s16 f[3];
+					for (u16 i=0; i<3; i++) {
+						f[i] = faces[i];
+						f[i].rotateYZBy(90);
+						f[i].rotateXYBy(rots[j]);
+					}
+					meshgen_lights(data,n,p,colours,255,f[0],2,v);
+					meshgen_lights(data,n,p,colours,255,f[1],1,&v[2]);
+					meshgen_lights(data,n,p,colours,255,f[2],2,&v[3]);
+					meshgen_lights(data,n,p,colours,255,f[0],2,&v[5]);
+					meshgen_lights(data,n,p,colours,255,f[1],1,&v[7]);
+					meshgen_lights(data,n,p,colours,255,f[2],2,&v[8]);
 				}
+
+				for (int k=0; k<10; k++) {
+					v[k].Pos += pos;
+				}
+
 				data->append(tile.getMaterial(), v, 10, indices, 24, colours);
 			}
 		}
@@ -4342,9 +4564,6 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					v[i].Pos += v3f(0,-BS*0.625,0);
 					v[i].Pos.rotateYZBy(90);
 					v[i].Pos.rotateXYBy(rots[j]);
-					v[i].Normal.rotateYZBy(90);
-					v[i].Normal.rotateXYBy(rots[j]);
-					v[i].Pos += intToFloat(p, BS);
 					v[i].TCoords *= tile.texture.size;
 					v[i].TCoords += tile.texture.pos;
 				}
@@ -4352,8 +4571,24 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				if (selected) {
 					meshgen_selected_lights(colours,255,10);
 				}else{
-					meshgen_lights(data,n,p,colours,255,10);
+					v3s16 f[3];
+					for (u16 i=0; i<3; i++) {
+						f[i] = faces[i];
+						f[i].rotateYZBy(90);
+						f[i].rotateXYBy(rots[j]);
+					}
+					meshgen_lights(data,n,p,colours,255,f[0],2,v);
+					meshgen_lights(data,n,p,colours,255,f[1],1,&v[2]);
+					meshgen_lights(data,n,p,colours,255,f[2],2,&v[3]);
+					meshgen_lights(data,n,p,colours,255,f[0],2,&v[5]);
+					meshgen_lights(data,n,p,colours,255,f[1],1,&v[7]);
+					meshgen_lights(data,n,p,colours,255,f[2],2,&v[8]);
 				}
+
+				for (int k=0; k<10; k++) {
+					v[k].Pos += pos;
+				}
+
 				data->append(tile.getMaterial(), v, 10, indices, 24, colours);
 			}
 		}
@@ -4365,9 +4600,6 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					v[i] = vertices[i];
 					v[i].Pos.rotateXYBy(90);
 					v[i].Pos.rotateYZBy(rots[j]);
-					v[i].Normal.rotateXYBy(90);
-					v[i].Normal.rotateYZBy(rots[j]);
-					v[i].Pos += intToFloat(p, BS);
 					v[i].TCoords *= tile.texture.size;
 					v[i].TCoords += tile.texture.pos;
 				}
@@ -4375,8 +4607,24 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				if (selected) {
 					meshgen_selected_lights(colours,255,10);
 				}else{
-					meshgen_lights(data,n,p,colours,255,10);
+					v3s16 f[3];
+					for (u16 i=0; i<3; i++) {
+						f[i] = faces[i];
+						f[i].rotateXYBy(90);
+						f[i].rotateYZBy(rots[j]);
+					}
+					meshgen_lights(data,n,p,colours,255,f[0],2,v);
+					meshgen_lights(data,n,p,colours,255,f[1],1,&v[2]);
+					meshgen_lights(data,n,p,colours,255,f[2],2,&v[3]);
+					meshgen_lights(data,n,p,colours,255,f[0],2,&v[5]);
+					meshgen_lights(data,n,p,colours,255,f[1],1,&v[7]);
+					meshgen_lights(data,n,p,colours,255,f[2],2,&v[8]);
 				}
+
+				for (int k=0; k<10; k++) {
+					v[k].Pos += pos;
+				}
+
 				data->append(tile.getMaterial(), v, 10, indices, 24, colours);
 			}
 			if (!x_plus_any) {
@@ -4386,9 +4634,6 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						v[i] = end_vertices[i];
 						v[i].Pos.rotateXYBy(-90);
 						v[i].Pos.rotateYZBy(rots[j]);
-						v[i].Normal.rotateXYBy(-90);
-						v[i].Normal.rotateYZBy(rots[j]);
-						v[i].Pos += intToFloat(p, BS);
 						v[i].TCoords *= endtile.texture.size;
 						v[i].TCoords += endtile.texture.pos;
 					}
@@ -4396,8 +4641,13 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					if (selected) {
 						meshgen_selected_lights(colours,255,6);
 					}else{
-						meshgen_lights(data,n,p,colours,255,6);
+						meshgen_lights(data,n,p,colours,255,v3s16(1,0,0),6,v);
 					}
+
+					for (int k=0; k<6; k++) {
+						v[k].Pos += pos;
+					}
+
 					data->append(endtile.getMaterial(), v, 6, end_indices, 12, colours);
 				}
 			}
@@ -4408,9 +4658,6 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						v[i] = end_vertices[i];
 						v[i].Pos.rotateXYBy(90);
 						v[i].Pos.rotateYZBy(rots[j]);
-						v[i].Normal.rotateXYBy(90);
-						v[i].Normal.rotateYZBy(rots[j]);
-						v[i].Pos += intToFloat(p, BS);
 						v[i].TCoords *= endtile.texture.size;
 						v[i].TCoords += endtile.texture.pos;
 					}
@@ -4418,8 +4665,13 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					if (selected) {
 						meshgen_selected_lights(colours,255,6);
 					}else{
-						meshgen_lights(data,n,p,colours,255,6);
+						meshgen_lights(data,n,p,colours,255,v3s16(-1,0,0),6,v);
 					}
+
+					for (int k=0; k<6; k++) {
+						v[k].Pos += pos;
+					}
+
 					data->append(endtile.getMaterial(), v, 6, end_indices, 12, colours);
 				}
 			}
@@ -4430,9 +4682,6 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						v[i] = branch_vertices[i];
 						v[i].Pos.rotateYZBy(90);
 						v[i].Pos.rotateXYBy(rots[j]);
-						v[i].Normal.rotateYZBy(90);
-						v[i].Normal.rotateXYBy(rots[j]);
-						v[i].Pos += intToFloat(p, BS);
 						v[i].TCoords *= tile.texture.size;
 						v[i].TCoords += tile.texture.pos;
 					}
@@ -4440,8 +4689,24 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					if (selected) {
 						meshgen_selected_lights(colours,255,10);
 					}else{
-						meshgen_lights(data,n,p,colours,255,10);
+						v3s16 f[3];
+						for (u16 i=0; i<3; i++) {
+							f[i] = faces[i];
+							f[i].rotateYZBy(90);
+							f[i].rotateXYBy(rots[j]);
+						}
+						meshgen_lights(data,n,p,colours,255,f[0],2,v);
+						meshgen_lights(data,n,p,colours,255,f[1],1,&v[2]);
+						meshgen_lights(data,n,p,colours,255,f[2],2,&v[3]);
+						meshgen_lights(data,n,p,colours,255,f[0],2,&v[5]);
+						meshgen_lights(data,n,p,colours,255,f[1],1,&v[7]);
+						meshgen_lights(data,n,p,colours,255,f[2],2,&v[8]);
 					}
+
+					for (int k=0; k<10; k++) {
+						v[k].Pos += pos;
+					}
+
 					data->append(tile.getMaterial(), v, 10, indices, 24, colours);
 				}
 			}
@@ -4453,9 +4718,6 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						v[i].Pos += v3f(0,-BS*0.625,0);
 						v[i].Pos.rotateYZBy(90);
 						v[i].Pos.rotateXYBy(rots[j]);
-						v[i].Normal.rotateYZBy(90);
-						v[i].Normal.rotateXYBy(rots[j]);
-						v[i].Pos += intToFloat(p, BS);
 						v[i].TCoords *= tile.texture.size;
 						v[i].TCoords += tile.texture.pos;
 					}
@@ -4463,8 +4725,24 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					if (selected) {
 						meshgen_selected_lights(colours,255,10);
 					}else{
-						meshgen_lights(data,n,p,colours,255,10);
+						v3s16 f[3];
+						for (u16 i=0; i<3; i++) {
+							f[i] = faces[i];
+							f[i].rotateYZBy(90);
+							f[i].rotateXYBy(rots[j]);
+						}
+						meshgen_lights(data,n,p,colours,255,f[0],2,v);
+						meshgen_lights(data,n,p,colours,255,f[1],1,&v[2]);
+						meshgen_lights(data,n,p,colours,255,f[2],2,&v[3]);
+						meshgen_lights(data,n,p,colours,255,f[0],2,&v[5]);
+						meshgen_lights(data,n,p,colours,255,f[1],1,&v[7]);
+						meshgen_lights(data,n,p,colours,255,f[2],2,&v[8]);
 					}
+
+					for (int k=0; k<10; k++) {
+						v[k].Pos += pos;
+					}
+
 					data->append(tile.getMaterial(), v, 10, indices, 24, colours);
 				}
 			}
@@ -4475,9 +4753,6 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					v[i] = vertices[i];
 					v[i].Pos.rotateYZBy(90);
 					v[i].Pos.rotateXYBy(rots[j]);
-					v[i].Normal.rotateYZBy(90);
-					v[i].Normal.rotateXYBy(rots[j]);
-					v[i].Pos += intToFloat(p, BS);
 					v[i].TCoords *= tile.texture.size;
 					v[i].TCoords += tile.texture.pos;
 				}
@@ -4485,8 +4760,24 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				if (selected) {
 					meshgen_selected_lights(colours,255,10);
 				}else{
-					meshgen_lights(data,n,p,colours,255,10);
+					v3s16 f[3];
+					for (u16 i=0; i<3; i++) {
+						f[i] = faces[i];
+						f[i].rotateYZBy(90);
+						f[i].rotateXYBy(rots[j]);
+					}
+					meshgen_lights(data,n,p,colours,255,f[0],2,v);
+					meshgen_lights(data,n,p,colours,255,f[1],1,&v[2]);
+					meshgen_lights(data,n,p,colours,255,f[2],2,&v[3]);
+					meshgen_lights(data,n,p,colours,255,f[0],2,&v[5]);
+					meshgen_lights(data,n,p,colours,255,f[1],1,&v[7]);
+					meshgen_lights(data,n,p,colours,255,f[2],2,&v[8]);
 				}
+
+				for (int k=0; k<10; k++) {
+					v[k].Pos += pos;
+				}
+
 				data->append(tile.getMaterial(), v, 10, indices, 24, colours);
 			}
 			if (!z_plus_any) {
@@ -4496,9 +4787,6 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						v[i] = end_vertices[i];
 						v[i].Pos.rotateYZBy(90);
 						v[i].Pos.rotateXYBy(rots[j]);
-						v[i].Normal.rotateYZBy(90);
-						v[i].Normal.rotateXYBy(rots[j]);
-						v[i].Pos += intToFloat(p, BS);
 						v[i].TCoords *= endtile.texture.size;
 						v[i].TCoords += endtile.texture.pos;
 					}
@@ -4506,8 +4794,13 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					if (selected) {
 						meshgen_selected_lights(colours,255,6);
 					}else{
-						meshgen_lights(data,n,p,colours,255,6);
+						meshgen_lights(data,n,p,colours,255,v3s16(0,0,1),6,v);
 					}
+
+					for (int k=0; k<6; k++) {
+						v[k].Pos += pos;
+					}
+
 					data->append(endtile.getMaterial(), v, 6, end_indices, 12, colours);
 				}
 			}
@@ -4518,9 +4811,6 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						v[i] = end_vertices[i];
 						v[i].Pos.rotateYZBy(-90);
 						v[i].Pos.rotateXYBy(rots[j]);
-						v[i].Normal.rotateYZBy(-90);
-						v[i].Normal.rotateXYBy(rots[j]);
-						v[i].Pos += intToFloat(p, BS);
 						v[i].TCoords *= endtile.texture.size;
 						v[i].TCoords += endtile.texture.pos;
 					}
@@ -4528,8 +4818,13 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					if (selected) {
 						meshgen_selected_lights(colours,255,6);
 					}else{
-						meshgen_lights(data,n,p,colours,255,6);
+						meshgen_lights(data,n,p,colours,255,v3s16(0,0,-1),6,v);
 					}
+
+					for (int k=0; k<6; k++) {
+						v[k].Pos += pos;
+					}
+
 					data->append(endtile.getMaterial(), v, 6, end_indices, 12, colours);
 				}
 			}
@@ -4541,9 +4836,6 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						v[i].Pos += v3f(0,-BS*0.625,0);
 						v[i].Pos.rotateXYBy(90);
 						v[i].Pos.rotateYZBy(rots[j]);
-						v[i].Normal.rotateXYBy(90);
-						v[i].Normal.rotateYZBy(rots[j]);
-						v[i].Pos += intToFloat(p, BS);
 						v[i].TCoords *= tile.texture.size;
 						v[i].TCoords += tile.texture.pos;
 					}
@@ -4551,8 +4843,24 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					if (selected) {
 						meshgen_selected_lights(colours,255,10);
 					}else{
-						meshgen_lights(data,n,p,colours,255,10);
+						v3s16 f[3];
+						for (u16 i=0; i<3; i++) {
+							f[i] = faces[i];
+							f[i].rotateXYBy(90);
+							f[i].rotateYZBy(rots[j]);
+						}
+						meshgen_lights(data,n,p,colours,255,f[0],2,v);
+						meshgen_lights(data,n,p,colours,255,f[1],1,&v[2]);
+						meshgen_lights(data,n,p,colours,255,f[2],2,&v[3]);
+						meshgen_lights(data,n,p,colours,255,f[0],2,&v[5]);
+						meshgen_lights(data,n,p,colours,255,f[1],1,&v[7]);
+						meshgen_lights(data,n,p,colours,255,f[2],2,&v[8]);
 					}
+
+					for (int k=0; k<10; k++) {
+						v[k].Pos += pos;
+					}
+
 					data->append(tile.getMaterial(), v, 10, indices, 24, colours);
 				}
 			}
@@ -4563,9 +4871,6 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						v[i] = branch_vertices[i];
 						v[i].Pos.rotateXYBy(90);
 						v[i].Pos.rotateYZBy(rots[j]);
-						v[i].Normal.rotateXYBy(90);
-						v[i].Normal.rotateYZBy(rots[j]);
-						v[i].Pos += intToFloat(p, BS);
 						v[i].TCoords *= tile.texture.size;
 						v[i].TCoords += tile.texture.pos;
 					}
@@ -4573,8 +4878,24 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					if (selected) {
 						meshgen_selected_lights(colours,255,10);
 					}else{
-						meshgen_lights(data,n,p,colours,255,10);
+						v3s16 f[3];
+						for (u16 i=0; i<3; i++) {
+							f[i] = faces[i];
+							f[i].rotateXYBy(90);
+							f[i].rotateYZBy(rots[j]);
+						}
+						meshgen_lights(data,n,p,colours,255,f[0],2,v);
+						meshgen_lights(data,n,p,colours,255,f[1],1,&v[2]);
+						meshgen_lights(data,n,p,colours,255,f[2],2,&v[3]);
+						meshgen_lights(data,n,p,colours,255,f[0],2,&v[5]);
+						meshgen_lights(data,n,p,colours,255,f[1],1,&v[7]);
+						meshgen_lights(data,n,p,colours,255,f[2],2,&v[8]);
 					}
+
+					for (int k=0; k<10; k++) {
+						v[k].Pos += pos;
+					}
+
 					data->append(tile.getMaterial(), v, 10, indices, 24, colours);
 				}
 			}

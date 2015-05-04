@@ -91,23 +91,16 @@ void MeshMakeData::fill(u32 daynight_ratio, MapBlock *block)
 	}
 }
 
-video::SColor MapBlock_LightColor(u8 alpha, u8 light, bool selected)
+video::SColor MapBlock_LightColor(u8 alpha, u8 light)
 {
 	float lim = 80;
 	float power = 0.8;
 	u8 r = light;
 	u8 g = light;
 	u8 b = light;
-	// selected nodes glow a bit
-	if (selected) {
-		// TODO: make this colour a setting
-		r = 128;
-		g = 128;
-		b = 255;
-	}else if (light <= lim) {
-		// Emphase blue a bit in darker places
+	// Emphase blue a bit in darker places
+	if (light <= lim)
 		b = MYMAX(0, pow((float)light/lim, power)*lim);
-	}
 
 	return video::SColor(alpha,r,g,b);
 }
