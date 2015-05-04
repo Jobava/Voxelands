@@ -4112,6 +4112,14 @@ void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		v3s16( 0, 0, 1),
 		v3s16( 0, 0,-1),
 	};
+	static v3s16 ufaces[6] = {
+		v3s16( 0,-1, 0),
+		v3s16( 0, 1, 0),
+		v3s16(-1, 0, 0),
+		v3s16( 1, 0, 0),
+		v3s16( 0, 0, 1),
+		v3s16( 0, 0,-1),
+	};
 
 	TileSpec tiles[6];
 	NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+data->m_blockpos_nodes);
@@ -4212,7 +4220,7 @@ void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			if (selected) {
 				meshgen_selected_lights(colours,255,4);
 			}else{
-				meshgen_lights(data,n,p,colours,255,faces[5-i],4,vertices[i]);
+				meshgen_lights(data,n,p,colours,255,ufaces[i],4,vertices[i]);
 			}
 
 			for (int j=0; j<4; j++) {
@@ -4611,7 +4619,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					for (u16 i=0; i<3; i++) {
 						f[i] = faces[i];
 						f[i].rotateXYBy(90);
-						f[i].rotateYZBy(rots[j]);
+						f[i].rotateYZBy(180+rots[j]);
 					}
 					meshgen_lights(data,n,p,colours,255,f[0],2,v);
 					meshgen_lights(data,n,p,colours,255,f[1],1,&v[2]);
@@ -4693,7 +4701,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						for (u16 i=0; i<3; i++) {
 							f[i] = faces[i];
 							f[i].rotateYZBy(90);
-							f[i].rotateXYBy(rots[j]);
+							f[i].rotateXYBy(180+rots[j]);
 						}
 						meshgen_lights(data,n,p,colours,255,f[0],2,v);
 						meshgen_lights(data,n,p,colours,255,f[1],1,&v[2]);
@@ -4729,7 +4737,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						for (u16 i=0; i<3; i++) {
 							f[i] = faces[i];
 							f[i].rotateYZBy(90);
-							f[i].rotateXYBy(rots[j]);
+							f[i].rotateXYBy(180+rots[j]);
 						}
 						meshgen_lights(data,n,p,colours,255,f[0],2,v);
 						meshgen_lights(data,n,p,colours,255,f[1],1,&v[2]);
@@ -4764,7 +4772,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					for (u16 i=0; i<3; i++) {
 						f[i] = faces[i];
 						f[i].rotateYZBy(90);
-						f[i].rotateXYBy(rots[j]);
+						f[i].rotateXYBy(180+rots[j]);
 					}
 					meshgen_lights(data,n,p,colours,255,f[0],2,v);
 					meshgen_lights(data,n,p,colours,255,f[1],1,&v[2]);
@@ -4847,7 +4855,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						for (u16 i=0; i<3; i++) {
 							f[i] = faces[i];
 							f[i].rotateXYBy(90);
-							f[i].rotateYZBy(rots[j]);
+							f[i].rotateYZBy(180+rots[j]);
 						}
 						meshgen_lights(data,n,p,colours,255,f[0],2,v);
 						meshgen_lights(data,n,p,colours,255,f[1],1,&v[2]);
@@ -4882,7 +4890,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						for (u16 i=0; i<3; i++) {
 							f[i] = faces[i];
 							f[i].rotateXYBy(90);
-							f[i].rotateYZBy(rots[j]);
+							f[i].rotateYZBy(180+rots[j]);
 						}
 						meshgen_lights(data,n,p,colours,255,f[0],2,v);
 						meshgen_lights(data,n,p,colours,255,f[1],1,&v[2]);
