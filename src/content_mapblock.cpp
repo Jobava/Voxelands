@@ -284,7 +284,7 @@ static bool meshgen_hardface(MeshMakeData *data, v3s16 p, MapNode &n, v3s16 pos)
 	return true;
 }
 
-static int mapblock_mesh_check_walllike(MeshMakeData *data, MapNode n, v3s16 p, u8 d[8])
+static int meshgen_check_walllike(MeshMakeData *data, MapNode n, v3s16 p, u8 d[8])
 {
 	static const v3s16 fence_dirs[8] = {
 		v3s16(1,0,0),
@@ -350,7 +350,7 @@ static int mapblock_mesh_check_walllike(MeshMakeData *data, MapNode n, v3s16 p, 
 	}
 	if (f2->draw_type == CDT_WALLLIKE) {
 		u8 ad[8];
-		int ap = mapblock_mesh_check_walllike(data,n2,p2,ad);
+		int ap = meshgen_check_walllike(data,n2,p2,ad);
 		if ((ad[0]+ad[1]+ad[2]+ad[3]+ad[4]+ad[5]+ad[6]+ad[7]) == 2) {
 			if (ap != 2)
 				return 1;
@@ -2091,7 +2091,7 @@ void meshgen_walllike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	p2.Y++;
 	NodeBox box;
 	u8 d[8];
-	int bi = mapblock_mesh_check_walllike(data,n,p+data->m_blockpos_nodes,d);
+	int bi = meshgen_check_walllike(data,n,p+data->m_blockpos_nodes,d);
 	{
 		box = boxes[bi];
 
@@ -4113,7 +4113,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	if (n2 == thiscontent) {
 		x_plus = true;
 		x_plus_any = true;
-	}else if (f2->draw_type == CDT_CUBELIKE || f2->draw_type == CDT_TRUNKLIKE) {
+	}else if (f2->draw_type == CDT_CUBELIKE) {
 		x_plus_any = true;
 	}
 
@@ -4123,7 +4123,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	if (n2 == thiscontent) {
 		y_plus = true;
 		y_plus_any = true;
-	}else if (f2->draw_type == CDT_CUBELIKE || f2->draw_type == CDT_TRUNKLIKE) {
+	}else if (f2->draw_type == CDT_CUBELIKE) {
 		y_plus_any = true;
 	}
 
@@ -4133,7 +4133,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	if (n2 == thiscontent) {
 		z_plus = true;
 		z_plus_any = true;
-	}else if (f2->draw_type == CDT_CUBELIKE || f2->draw_type == CDT_TRUNKLIKE) {
+	}else if (f2->draw_type == CDT_CUBELIKE) {
 		z_plus_any = true;
 	}
 
@@ -4143,7 +4143,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	if (n2 == thiscontent) {
 		x_minus = true;
 		x_minus_any = true;
-	}else if (f2->draw_type == CDT_CUBELIKE || f2->draw_type == CDT_TRUNKLIKE) {
+	}else if (f2->draw_type == CDT_CUBELIKE) {
 		x_minus_any = true;
 	}
 
@@ -4153,7 +4153,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	if (n2 == thiscontent) {
 		y_minus = true;
 		y_minus_any = true;
-	}else if (f2->draw_type == CDT_CUBELIKE || f2->draw_type == CDT_TRUNKLIKE) {
+	}else if (f2->draw_type == CDT_CUBELIKE) {
 		y_minus_any = true;
 	}
 
@@ -4163,7 +4163,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	if (n2 == thiscontent) {
 		z_minus = true;
 		z_minus_any = true;
-	}else if (f2->draw_type == CDT_CUBELIKE || f2->draw_type == CDT_TRUNKLIKE) {
+	}else if (f2->draw_type == CDT_CUBELIKE) {
 		z_minus_any = true;
 	}
 	TileSpec tile = getNodeTile(n,p,v3s16(1,0,0),data->m_temp_mods);
