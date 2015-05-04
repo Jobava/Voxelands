@@ -292,6 +292,28 @@ static void meshgen_lights_face(
 	u16 daynight_ratio = daynight_ratio_from_index(daynight_ratio_index);
 	MapNode n1 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes+p+face);
 	u8 light = decode_light(getFaceLight(daynight_ratio, n, n1, face));
+	if ((face.X && face.Y) || (face.X && face.Z) || (face.Y && face.Z)) {
+		u32 l = light;
+		u16 nc = 1;
+		if (face.X) {
+			n1 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes+p+v3s16(face.X,0,0));
+			l += decode_light(getFaceLight(daynight_ratio, n, n1, face));
+			nc++;
+		}
+		if (face.Y) {
+			n1 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes+p+v3s16(0,face.Y,0));
+			l += decode_light(getFaceLight(daynight_ratio, n, n1, face));
+			nc++;
+		}
+		if (face.Z) {
+			n1 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes+p+v3s16(0,0,face.Z));
+			l += decode_light(getFaceLight(daynight_ratio, n, n1, face));
+			nc++;
+		}
+		if (nc > 1)
+			l /= nc;
+		light = l;
+	}
 	video::SColor c = MapBlock_LightColor(alpha,light);
 	for (u16 i=0; i<count; i++) {
 		colours[daynight_ratio_index].push_back(c);
@@ -575,7 +597,7 @@ static void meshgen_build_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, bool 
 }
 
 /* TODO: calculate faces better, or pass faces as argument */
-void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3f pos, TileSpec &tile, bool selected, s16 rot)
+void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3f pos, TileSpec &tile, bool selected, s16 rot, v3s16 face)
 {
 	// vertices for top and bottom tri
 	v3f top_v[3];
@@ -584,8 +606,14 @@ void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3
 	v2f top_t[3];
 	v2f btm_t[3];
 	// faces for top and bottom tri
-	v3s16 upface(0,1,0);
-	v3s16 downface(0,-1,0);
+	v3s16 upface = face;
+	v3s16 downface = face;
+	if (downface.X)
+		downface.X *= -1;
+	if (downface.Y)
+		downface.Y *= -1;
+	if (downface.Z)
+		downface.Z *= -1;
 	for (int i=0; i<3; i++) {
 		top_v[i].X = (corners[i].X*BS);
 		top_v[i].Y = ((corners[i].Y+0.01)*BS);
@@ -2560,6 +2588,8 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			angle = 0;
 		}
 	}
+
+	v3s16 face(0,1,0);
 	/*
 		0: slope
 		1: top
@@ -2583,6 +2613,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			cnr[1][0] = v3f(0.5,0.5,0.5);
 			cnr[1][1] = v3f(-0.5,0.5,0.5);
 			cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+			face = v3s16(0,1,-1);
 		}else if (angle == 90) {
 			cnr[0][0] = v3f(-0.5,0.5,-0.5);
 			cnr[0][1] = v3f(0.5,-0.5,-0.5);
@@ -2590,6 +2621,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			cnr[1][0] = v3f(0.5,-0.5,0.5);
 			cnr[1][1] = v3f(-0.5,0.5,0.5);
 			cnr[1][2] = v3f(-0.5,0.5,-0.5);
+			face = v3s16(1,1,0);
 		}else if (angle == 180) {
 			cnr[0][0] = v3f(-0.5,0.5,-0.5);
 			cnr[0][1] = v3f(0.5,0.5,-0.5);
@@ -2597,6 +2629,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			cnr[1][0] = v3f(0.5,-0.5,0.5);
 			cnr[1][1] = v3f(-0.5,-0.5,0.5);
 			cnr[1][2] = v3f(-0.5,0.5,-0.5);
+			face = v3s16(0,1,1);
 		}else if (angle == 270) {
 			cnr[0][0] = v3f(-0.5,-0.5,-0.5);
 			cnr[0][1] = v3f(0.5,0.5,-0.5);
@@ -2604,12 +2637,13 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			cnr[1][0] = v3f(0.5,0.5,0.5);
 			cnr[1][1] = v3f(-0.5,-0.5,0.5);
 			cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+			face = v3s16(-1,1,0);
 		}
 		s16 a = 180-angle;
 		if (a < 0)
 			a += 360;
 		for (int s=0; s<2; s++) {
-			meshgen_rooftri(data,n,p,cnr[s],pos,tile,selected,a);
+			meshgen_rooftri(data,n,p,cnr[s],pos,tile,selected,a,face);
 		}
 	}
 	break;
@@ -2649,7 +2683,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		for (int s=0; s<4; s++) {
 			if (s == 2)
 				a -= 180;
-			meshgen_rooftri(data,n,p,cnr[s],pos,toptile,selected,a);
+			meshgen_rooftri(data,n,p,cnr[s],pos,toptile,selected,a,face);
 		}
 	}
 	break;
@@ -2663,6 +2697,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			cnr[1][0] = v3f(0.5,0.5,0.5);
 			cnr[1][1] = v3f(-0.5,0.5,0.5);
 			cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+			face = v3s16(0,1,-1);
 		}else if (angle == 180) {
 			cnr[0][0] = v3f(-0.5,0.5,-0.5);
 			cnr[0][1] = v3f(0.5,-0.5,-0.5);
@@ -2670,6 +2705,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			cnr[1][0] = v3f(0.5,-0.5,0.5);
 			cnr[1][1] = v3f(-0.5,0.5,0.5);
 			cnr[1][2] = v3f(-0.5,0.5,-0.5);
+			face = v3s16(1,1,0);
 		}else if (angle == 270) {
 			cnr[0][0] = v3f(-0.5,0.5,-0.5);
 			cnr[0][1] = v3f(0.5,0.5,-0.5);
@@ -2677,6 +2713,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			cnr[1][0] = v3f(0.5,-0.5,0.5);
 			cnr[1][1] = v3f(-0.5,-0.5,0.5);
 			cnr[1][2] = v3f(-0.5,0.5,-0.5);
+			face = v3s16(0,1,1);
 		}else if (angle == 0) {
 			cnr[0][0] = v3f(-0.5,-0.5,-0.5);
 			cnr[0][1] = v3f(0.5,0.5,-0.5);
@@ -2684,12 +2721,13 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			cnr[1][0] = v3f(0.5,0.5,0.5);
 			cnr[1][1] = v3f(-0.5,-0.5,0.5);
 			cnr[1][2] = v3f(-0.5,-0.5,-0.5);
+			face = v3s16(-1,1,0);
 		}
 		s16 a = 270-angle;
 		if (a < 0)
 			a += 360;
 		for (int s=0; s<2; s++) {
-			meshgen_rooftri(data,n,p,cnr[s],pos,tile,selected,a);
+			meshgen_rooftri(data,n,p,cnr[s],pos,tile,selected,a,face);
 		}
 	}
 	{
@@ -2701,6 +2739,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			cnr[1][0] = v3f(0.,0.,0.);
 			cnr[1][1] = v3f(-0.5,-0.5,0.5);
 			cnr[1][2] = v3f(-0.5,0.,0.);
+			face = v3s16(-1,1,0);
 		}else if (angle == 90) {
 			cnr[0][0] = v3f(0.,0.,0.);
 			cnr[0][1] = v3f(0.,0.,-0.5);
@@ -2708,6 +2747,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			cnr[1][0] = v3f(0.,0.,0.);
 			cnr[1][1] = v3f(0.5,-0.5,-0.5);
 			cnr[1][2] = v3f(0.,0.,-0.5);
+			face = v3s16(0,1,-1);
 		}else if (angle == 180) {
 			cnr[0][0] = v3f(0.,0.,0.);
 			cnr[0][1] = v3f(0.5,0.,0.);
@@ -2715,6 +2755,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			cnr[1][0] = v3f(0.,0.,0.);
 			cnr[1][1] = v3f(0.5,-0.5,0.5);
 			cnr[1][2] = v3f(0.5,0.,0.);
+			face = v3s16(1,1,0);
 		}else if (angle == 270) {
 			cnr[0][0] = v3f(0.,0.,0.);
 			cnr[0][1] = v3f(0.,0.,0.5);
@@ -2722,12 +2763,13 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			cnr[1][0] = v3f(0.,0.,0.);
 			cnr[1][1] = v3f(0.5,-0.5,0.5);
 			cnr[1][2] = v3f(0.,0.,0.5);
+			face = v3s16(0,1,1);
 		}
 		s16 a = angle;
 		if (a < 180)
 			a += 180;
 		for (int s=0; s<2; s++) {
-			meshgen_rooftri(data,n,p,cnr[s],pos,toptile,selected,a);
+			meshgen_rooftri(data,n,p,cnr[s],pos,toptile,selected,a,face);
 			a -= 180;
 		}
 	}
@@ -2772,7 +2814,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		}
 		s16 a = a1;
 		for (int s=0; s<2; s++) {
-			meshgen_rooftri(data,n,p,cnr[s],pos,toptile,selected,a);
+			meshgen_rooftri(data,n,p,cnr[s],pos,toptile,selected,a,face);
 			a = a2;
 		}
 	}
@@ -2841,7 +2883,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		for (int s=0; s<4; s++) {
 			if (s == 2)
 				a = a2;
-			meshgen_rooftri(data,n,p,cnr[s],pos,toptile,selected,a);
+			meshgen_rooftri(data,n,p,cnr[s],pos,toptile,selected,a,face);
 		}
 	}
 	break;
@@ -2859,6 +2901,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			cnr[1][2] = v3f(0.5,-0.5,0.5);
 			a1 = 180;
 			a2 = 90;
+			face = v3s16(1,1,-1);
 		}else if (angle == 90) {
 			cnr[0][0] = v3f(-0.5,-0.5,0.5);
 			cnr[0][1] = v3f(0.5,-0.5,0.5);
@@ -2868,6 +2911,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			cnr[1][2] = v3f(0.5,-0.5,-0.5);
 			a1 = 0;
 			a2 = 90;
+			face = v3s16(1,1,1);
 		}else if (angle == 180) {
 			cnr[0][0] = v3f(-0.5,-0.5,-0.5);
 			cnr[0][1] = v3f(0.5,0.5,-0.5);
@@ -2877,6 +2921,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			cnr[1][2] = v3f(0.5,-0.5,0.5);
 			a1 = 270;
 			a2 = 0;
+			face = v3s16(-1,1,1);
 		}else if (angle == 270) {
 			cnr[0][0] = v3f(-0.5,-0.5,0.5);
 			cnr[0][1] = v3f(0.5,0.5,0.5);
@@ -2884,10 +2929,11 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			cnr[1][0] = v3f(-0.5,-0.5,-0.5);
 			cnr[1][1] = v3f(0.5,0.5,0.5);
 			cnr[1][2] = v3f(0.5,-0.5,-0.5);
+			face = v3s16(-1,1,-1);
 		}
 		s16 a = a1;
 		for (int s=0; s<2; s++) {
-			meshgen_rooftri(data,n,p,cnr[s],pos,tile,selected,a);
+			meshgen_rooftri(data,n,p,cnr[s],pos,tile,selected,a,face);
 			a = a2;
 		}
 	}
@@ -2940,7 +2986,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			90,
 		};
 		for (int s=0; s<8; s++) {
-			meshgen_rooftri(data,n,p,cnr[s],pos,toptile,selected,a[s]);
+			meshgen_rooftri(data,n,p,cnr[s],pos,toptile,selected,a[s],face);
 		}
 	}
 	break;
@@ -3044,7 +3090,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			a[4] = 180;
 		}
 		for (int s=0; s<6; s++) {
-			meshgen_rooftri(data,n,p,cnr[s],pos,toptile,selected,a[s]);
+			meshgen_rooftri(data,n,p,cnr[s],pos,toptile,selected,a[s],face);
 		}
 	}
 	break;
@@ -3060,6 +3106,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			cnr[1][0] = v3f(0.5,0.5,-0.5);
 			cnr[1][1] = v3f(0.5,0.5,0.5);
 			cnr[1][2] = v3f(-0.5,-0.5,0.5);
+			face = v3s16(-1,1,1);
 		}else if (angle == 90) {
 			cnr[0][0] = v3f(0.5,0.5,0.5);
 			cnr[0][1] = v3f(-0.5,0.5,0.5);
@@ -3069,6 +3116,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			cnr[1][2] = v3f(-0.5,-0.5,-0.5);
 			a1 = 180;
 			a2 = 270;
+			face = v3s16(-1,1,-1);
 		}else if (angle == 180) {
 			cnr[0][0] = v3f(0.5,-0.5,-0.5);
 			cnr[0][1] = v3f(-0.5,0.5,-0.5);
@@ -3078,6 +3126,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			cnr[1][2] = v3f(-0.5,0.5,0.5);
 			a1 = 90;
 			a2 = 180;
+			face = v3s16(1,1,-1);
 		}else if (angle == 270) {
 			cnr[0][0] = v3f(0.5,-0.5,0.5);
 			cnr[0][1] = v3f(-0.5,0.5,0.5);
@@ -3087,10 +3136,11 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			cnr[1][2] = v3f(-0.5,0.5,-0.5);
 			a1 = 90;
 			a2 = 0;
+			face = v3s16(1,1,1);
 		}
 		s16 a = a1;
 		for (int s=0; s<2; s++) {
-			meshgen_rooftri(data,n,p,cnr[s],pos,tile,selected,a);
+			meshgen_rooftri(data,n,p,cnr[s],pos,tile,selected,a,face);
 			a = a2;
 		}
 	}
@@ -3111,7 +3161,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		cnr[3][1] = v3f(-0.5,-0.5,0.5);
 		cnr[3][2] = v3f(0.5,-0.5,0.5);
 		for (int s=0; s<4; s++) {
-			meshgen_rooftri(data,n,p,cnr[s],pos,toptile,selected,(90*s)+90+(180*(!(s%2))));
+			meshgen_rooftri(data,n,p,cnr[s],pos,toptile,selected,(90*s)+90+(180*(!(s%2))),face);
 		}
 	}
 	break;
@@ -3138,6 +3188,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			a[0] = 180;
 			a[1] = 180;
 			a[4] = 90;
+			face = v3s16(1,1,0);
 		}else if (angle == 90) {
 			cnr[0][0] = v3f(-0.5,-0.5,0.5);
 			cnr[0][1] = v3f(-0.5,-0.5,-0.5);
@@ -3158,6 +3209,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			a[1] = 270;
 			a[2] = 90;
 			a[3] = 90;
+			face = v3s16(0,1,1);
 		}else if (angle == 180) {
 			cnr[0][0] = v3f(-0.5,-0.5,-0.5);
 			cnr[0][1] = v3f(0.5,-0.5,-0.5);
@@ -3177,6 +3229,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			a[0] = 180;
 			a[1] = 180;
 			a[4] = 270;
+			face = v3s16(-1,1,0);
 		}else if (angle == 270) {
 			cnr[0][0] = v3f(-0.5,-0.5,0.5);
 			cnr[0][1] = v3f(-0.5,-0.5,-0.5);
@@ -3198,9 +3251,10 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			a[2] = 90;
 			a[3] = 90;
 			a[4] = 180;
+			face = v3s16(0,1,-1);
 		}
 		for (int s=0; s<5; s++) {
-			meshgen_rooftri(data,n,p,cnr[s],pos,toptile,selected,a[s]);
+			meshgen_rooftri(data,n,p,cnr[s],pos,toptile,selected,a[s],face);
 		}
 	}
 	break;
