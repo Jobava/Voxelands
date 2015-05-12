@@ -266,7 +266,8 @@ static void meshgen_lights_vertex(
 	u8 alpha,
 	v3s16 face,
 	u16 daynight_ratio_index,
-	video::S3DVertex &vertex
+	video::S3DVertex &vertex,
+	u8 *lights
 )
 {
 	meshgen_fullbright_lights(colours,alpha,1);
@@ -339,14 +340,51 @@ static void meshgen_lights(
 )
 {
 	if (data->m_smooth_lighting) {
-		//v3s16 vertex_dirs[4];
-		//getNodeVertexDirs(face_dir_corrected, vertex_dirs);
-		//for (u16 i=0; i<4; i++) {
-			//lights[i] = getSmoothLight(blockpos_nodes + p_corrected, vertex_dirs[i], vmanip, daynight_ratio);
-		//}
-		for (u16 i=0; i<count; i++) {
-			for (u16 k=0; k<18; k++) {
-				meshgen_lights_vertex(data,n,p,colours,alpha,face,k,vertexes[i]);
+		u8 lights[4];
+		for (u16 k=0; k<18; k++) {
+			//u32 l[4] = {0,0,0,0};
+			//u8 nc = 0;
+			//u16 daynight_ratio = daynight_ratio_from_index(k);
+			//if (face.X) {
+				//v3s16 f(face.X,0,0);
+				//v3s16 vertex_dirs[4];
+				//getNodeVertexDirs(f, vertex_dirs);
+				//for (u16 i=0; i<4; i++) {
+					//l[i] += getSmoothLight(data->m_blockpos_nodes + p, vertex_dirs[i], data->m_vmanip, daynight_ratio);
+				//}
+				//nc++;
+			//}
+			//if (face.Y) {
+				//v3s16 f(0,face.Y,0);
+				//v3s16 vertex_dirs[4];
+				//getNodeVertexDirs(f, vertex_dirs);
+				//for (u16 i=0; i<4; i++) {
+					//l[i] += getSmoothLight(data->m_blockpos_nodes + p, vertex_dirs[i], data->m_vmanip, daynight_ratio);
+				//}
+				//nc++;
+			//}
+			//if (face.Z) {
+				//v3s16 f(0,0,face.Z);
+				//v3s16 vertex_dirs[4];
+				//getNodeVertexDirs(f, vertex_dirs);
+				//for (u16 i=0; i<4; i++) {
+					//l[i] += getSmoothLight(data->m_blockpos_nodes + p, vertex_dirs[i], data->m_vmanip, daynight_ratio);
+				//}
+				//nc++;
+			//}
+			//if (nc > 1) {
+				//lights[0] = l[0]/nc;
+				//lights[1] = l[1]/nc;
+				//lights[2] = l[2]/nc;
+				//lights[3] = l[3]/nc;
+			//}else {
+				//lights[0] = l[0];
+				//lights[1] = l[1];
+				//lights[2] = l[2];
+				//lights[3] = l[3];
+			//}
+			for (u16 i=0; i<count; i++) {
+				meshgen_lights_vertex(data,n,p,colours,alpha,face,k,vertexes[i],lights);
 			}
 		}
 	}else{

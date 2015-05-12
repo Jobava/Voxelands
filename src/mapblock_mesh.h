@@ -35,83 +35,8 @@
 	Mesh making stuff
 */
 
-/*
-	This is used because CMeshBuffer::append() is very slow
-*/
-struct PreMeshBuffer
-{
-	video::SMaterial material;
-	core::array<u16> indices;
-	core::array<video::S3DVertex> vertices;
-};
-
-class MeshCollector
-{
-public:
-	void append(
-		video::SMaterial material,
-		const video::S3DVertex* const vertices,
-		u32 numVertices,
-		const u16* const indices,
-		u32 numIndices
-	)
-	{
-		PreMeshBuffer *p = NULL;
-		for (u32 i=0; i<m_prebuffers.size(); i++) {
-			PreMeshBuffer &pp = m_prebuffers[i];
-			if (pp.material != material)
-				continue;
-			if (pp.vertices.size() + numVertices > 65535)
-				continue;
-
-			p = &pp;
-			break;
-		}
-
-		if (p == NULL) {
-			PreMeshBuffer pp;
-			pp.material = material;
-			m_prebuffers.push_back(pp);
-			p = &m_prebuffers[m_prebuffers.size()-1];
-		}
-
-		u32 vertex_count = p->vertices.size();
-		for(u32 i=0; i<numIndices; i++) {
-			u32 j = indices[i] + vertex_count;
-			p->indices.push_back(j);
-		}
-		for(u32 i=0; i<numVertices; i++) {
-			p->vertices.push_back(vertices[i]);
-		}
-	}
-
-	void fillMesh(scene::SMesh *mesh)
-	{
-		/*dstream<<"Filling mesh with "<<m_prebuffers.size()
-				<<" meshbuffers"<<std::endl;*/
-		for(u32 i=0; i<m_prebuffers.size(); i++)
-		{
-			PreMeshBuffer &p = m_prebuffers[i];
-			// Create meshbuffer
-			// This is a "Standard MeshBuffer",
-			// it's a typedeffed CMeshBuffer<video::S3DVertex>
-			scene::SMeshBuffer *buf = new scene::SMeshBuffer();
-			// Set material
-			buf->Material = p.material;
-			// Add to mesh
-			mesh->addMeshBuffer(buf);
-			// Mesh grabbed it
-			buf->drop();
-
-			buf->append(p.vertices.pointer(), p.vertices.size(), p.indices.pointer(), p.indices.size());
-		}
-	}
-
-private:
-	core::array<PreMeshBuffer> m_prebuffers;
-};
-
 // Helper functions
+void getNodeVertexDirs(v3s16 dir, v3s16 *vertex_dirs);
 video::SColor MapBlock_LightColor(u8 alpha, u8 light);
 TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods, NodeMetadata *meta = NULL);
 TileSpec getMetaTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods);

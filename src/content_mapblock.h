@@ -27,10 +27,9 @@
 #define CONTENT_MAPBLOCK_HEADER
 
 #ifndef SERVER
-	#include "mapblock_mesh.h"
-	#include "utility.h"
-void mapblock_mesh_generate_special(MeshMakeData *data,
-		MeshCollector &collector);
+
+#include "mapblock_mesh.h"
+#include "utility.h"
 
 void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);
 void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);

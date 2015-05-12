@@ -91,6 +91,66 @@ void MeshMakeData::fill(u32 daynight_ratio, MapBlock *block)
 	}
 }
 
+void getNodeVertexDirs(v3s16 dir, v3s16 *vertex_dirs)
+{
+	/*
+		If looked from outside the node towards the face, the corners are:
+		0: bottom-right
+		1: bottom-left
+		2: top-left
+		3: top-right
+	*/
+	if(dir == v3s16(0,0,1))
+	{
+		// If looking towards z+, this is the face that is behind
+		// the center point, facing towards z+.
+		vertex_dirs[0] = v3s16(-1,-1, 1);
+		vertex_dirs[1] = v3s16( 1,-1, 1);
+		vertex_dirs[2] = v3s16( 1, 1, 1);
+		vertex_dirs[3] = v3s16(-1, 1, 1);
+	}
+	else if(dir == v3s16(0,0,-1))
+	{
+		// faces towards Z-
+		vertex_dirs[0] = v3s16( 1,-1,-1);
+		vertex_dirs[1] = v3s16(-1,-1,-1);
+		vertex_dirs[2] = v3s16(-1, 1,-1);
+		vertex_dirs[3] = v3s16( 1, 1,-1);
+	}
+	else if(dir == v3s16(1,0,0))
+	{
+		// faces towards X+
+		vertex_dirs[0] = v3s16( 1,-1, 1);
+		vertex_dirs[1] = v3s16( 1,-1,-1);
+		vertex_dirs[2] = v3s16( 1, 1,-1);
+		vertex_dirs[3] = v3s16( 1, 1, 1);
+	}
+	else if(dir == v3s16(-1,0,0))
+	{
+		// faces towards X-
+		vertex_dirs[0] = v3s16(-1,-1,-1);
+		vertex_dirs[1] = v3s16(-1,-1, 1);
+		vertex_dirs[2] = v3s16(-1, 1, 1);
+		vertex_dirs[3] = v3s16(-1, 1,-1);
+	}
+	else if(dir == v3s16(0,1,0))
+	{
+		// faces towards Y+ (assume Z- as "down" in texture)
+		vertex_dirs[0] = v3s16( 1, 1,-1);
+		vertex_dirs[1] = v3s16(-1, 1,-1);
+		vertex_dirs[2] = v3s16(-1, 1, 1);
+		vertex_dirs[3] = v3s16( 1, 1, 1);
+	}
+	else if(dir == v3s16(0,-1,0))
+	{
+		// faces towards Y- (assume Z+ as "down" in texture)
+		vertex_dirs[0] = v3s16( 1,-1, 1);
+		vertex_dirs[1] = v3s16(-1,-1, 1);
+		vertex_dirs[2] = v3s16(-1,-1,-1);
+		vertex_dirs[3] = v3s16( 1,-1,-1);
+	}
+}
+
 video::SColor MapBlock_LightColor(u8 alpha, u8 light)
 {
 	float lim = 80;
