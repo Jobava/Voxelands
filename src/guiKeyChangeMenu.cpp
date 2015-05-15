@@ -392,7 +392,7 @@ void GUIKeyChangeMenu::init_keys()
 	key_cmd = getKeySetting(VLKC_COMMAND);
 	key_range = getKeySetting(VLKC_RANGE);
 	key_fly = getKeySetting(VLKC_FREEMOVE);
-	key_fast = getKeySetting(VLKC_FASTMOVE);
+	key_fast = getKeySetting(VLKC_RUN);
 	key_use = getKeySetting(VLKC_USE);
 	key_dump = getKeySetting(VLKC_PRINT_DEBUG);
 	key_next_item = getKeySetting(VLKC_SELECT_NEXT);
