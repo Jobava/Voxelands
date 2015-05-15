@@ -682,9 +682,7 @@ LocalPlayer::LocalPlayer():
 	m_sneak_node(32767,32767,32767),
 	m_sneak_node_exists(false)
 {
-	hp = 0;
-	m_energy = 0.0;
-	hunger = 0;
+	m_energy = 10.0;
 	m_character = g_settings->get("character_definition");
 }
 
@@ -946,6 +944,7 @@ void LocalPlayer::applyControl(float dtime)
 			*/
 			speed.Y = 6.5*BS;
 			setSpeed(speed);
+			m_energy -= 0.75;
 		}else if (in_water) {
 			// Use the oscillating value for getting out of water
 			// (so that the player doesn't fly on the surface)
@@ -1007,7 +1006,11 @@ void LocalPlayer::applyControl(float dtime)
 		if (control.digging) {
 			m_energy -= dtime*0.2;
 		}else if (m_energy < hp) {
-			m_energy += dtime*1.5;
+			if (speed.X || speed.Y || speed.Z) {
+				m_energy += dtime*((float)hunger/30.0);
+			}else{
+				m_energy += dtime*((float)hunger/15.0);
+			}
 		}
 		if (control.sneak) {
 			speed = speed.normalize() * walkspeed_max / 3.0;
@@ -1017,6 +1020,8 @@ void LocalPlayer::applyControl(float dtime)
 	}
 	if (m_energy > hp)
 		m_energy = hp;
+	if (m_energy < -0.1)
+		m_energy = -0.1;
 
 	f32 inc = walk_acceleration * BS * dtime;
 
