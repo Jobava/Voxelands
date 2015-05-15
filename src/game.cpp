@@ -2110,6 +2110,7 @@ void the_game(
 				false,
 				false,
 				free_move,
+				false,
 				camera_pitch,
 				camera_yaw
 			);
@@ -2140,6 +2141,7 @@ void the_game(
 				input->isKeyDown(getKeySetting(VLKC_DOWN)),
 				input->isKeyDown(getKeySetting(VLKC_RUN)),
 				free_move,
+				input->getLeftState(),
 				camera_pitch,
 				camera_yaw
 			);
@@ -2384,7 +2386,7 @@ void the_game(
 							InventoryList *mlist = local_inventory.getList("main");
 							if (mlist != NULL) {
 								InventoryItem *item = mlist->getItem(g_selected_item);
-								if (item && (std::string)item->getName() == "ToolItem") {
+								if (item && (item->getContent()&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
 									ToolItem *titem = (ToolItem*)item;
 									toolid = titem->getContent();
 								}

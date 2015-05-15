@@ -1000,19 +1000,23 @@ void LocalPlayer::applyControl(float dtime)
 
 	// The speed of the player (Y is ignored)
 	if (control.fast) {
-		m_energy -= dtime;
+		if (speed.X || speed.Y || speed.Z)
+			m_energy -= dtime;
 		speed = speed.normalize() * walkspeed_max * 5.0;
 	}else{
-		if (m_energy < hp)
-			m_energy += dtime*2;
-		if (m_energy > hp)
-			m_energy = hp;
+		if (control.digging) {
+			m_energy -= dtime*0.2;
+		}else if (m_energy < hp) {
+			m_energy += dtime*1.5;
+		}
 		if (control.sneak) {
 			speed = speed.normalize() * walkspeed_max / 3.0;
 		}else{
 			speed = speed.normalize() * walkspeed_max;
 		}
 	}
+	if (m_energy > hp)
+		m_energy = hp;
 
 	f32 inc = walk_acceleration * BS * dtime;
 

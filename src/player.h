@@ -437,6 +437,7 @@ struct PlayerControl
 		down = false;
 		fast = false;
 		free = false;
+		digging = false;
 		pitch = 0;
 		yaw = 0;
 	}
@@ -451,6 +452,7 @@ struct PlayerControl
 		bool a_down,
 		bool a_fast,
 		bool a_free,
+		bool a_digging,
 		float a_pitch,
 		float a_yaw
 	)
@@ -467,6 +469,7 @@ struct PlayerControl
 		free = a_free;
 		pitch = a_pitch;
 		yaw = a_yaw;
+		digging = a_digging;
 	}
 	bool forward;
 	bool backward;
@@ -478,6 +481,7 @@ struct PlayerControl
 	bool down;
 	bool fast;
 	bool free;
+	bool digging;
 	float pitch;
 	float yaw;
 };
