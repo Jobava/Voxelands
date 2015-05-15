@@ -1601,8 +1601,7 @@ void the_game(
 	float fps_max = g_settings->getFloat("fps_max");
 	float profiler_print_interval = g_settings->getFloat("profiler_print_interval");
 
-	bool free_move = g_settings->getBool("free_move");
-	bool fast_move = g_settings->getBool("fast_move");
+	bool free_move = false;
 	f32 mouse_sensitivity = g_settings->getFloat("mouse_sensitivity");
 	bool highlight_selected_node = true;
 	if (g_settings->exists("selected_node") && g_settings->get("selected_node") == "outline")
@@ -2964,18 +2963,6 @@ void the_game(
 			device->setWindowCaption(str.c_str());
 			lastFPS = fps;
 		}
-	}
-
-	// save some settings
-	if (free_move) {
-		g_settings->set("free_move","true");
-	}else{
-		g_settings->set("free_move","false");
-	}
-	if (fast_move) {
-		g_settings->set("fast_move","true");
-	}else{
-		g_settings->set("fast_move","false");
 	}
 
 	/*
