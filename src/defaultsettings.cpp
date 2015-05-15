@@ -98,9 +98,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("enable_texture_atlas", "false");
 	settings->setDefault("data_path", "");
 	settings->setDefault("video_driver", "opengl");
-	settings->setDefault("free_move", "false");
 	settings->setDefault("continuous_forward", "false");
-	settings->setDefault("fast_move", "false");
 	settings->setDefault("invert_mouse", "false");
 	settings->setDefault("enable_farmesh", "false");
 	settings->setDefault("enable_clouds", "true");
