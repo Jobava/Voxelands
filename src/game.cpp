@@ -1578,6 +1578,8 @@ void the_game(
 	u16 dig_index = 0;
 	v3s16 nodepos_old(-32768,-32768,-32768);
 
+	float use_delay_counter = 0.5;
+
 	float damage_flash_timer = 0;
 	s16 farmesh_range = 20*MAP_BLOCKSIZE;
 
@@ -2480,6 +2482,17 @@ void the_game(
 				}
 
 			} // selected_object == NULL
+		}
+
+		// this lets us hold down use to eat, and limits to 2 items per second
+		if (input->wasKeyDown(getKeySetting(VLKC_USE))) {
+			use_delay_counter += dtime;
+			if (use_delay_counter > 0.5) {
+				client.useItem();
+				use_delay_counter -= 0.5;
+			}
+		}else{
+			use_delay_counter = 0.5;
 		}
 
 		if (left_punch || (input->getLeftClicked() && !left_punch_muted))

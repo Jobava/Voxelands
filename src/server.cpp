@@ -2243,6 +2243,39 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		}
 	}
 	break;
+	case TOSERVER_USEITEM:
+	{
+		InventoryList *ilist = player->inventory.getList("main");
+		if (ilist == NULL)
+			return;
+
+		u16 item_i = player->getSelectedItem();
+
+		// Get item
+		InventoryItem *item = ilist->getItem(item_i);
+		if (item == NULL)
+			return;
+
+		// Track changes super-crappily
+		u16 oldhp = player->hp;
+		u16 oldair = player->air;
+		u16 oldhunger = player->hunger;
+
+		if (item->use(&m_env,player)) {
+			ilist->deleteItem(item_i);
+		}else{
+			ilist->addDiff(item_i,item);
+		}
+
+		// Send inventory
+		UpdateCrafting(peer_id);
+		SendInventory(peer_id);
+
+		// Send back stuff
+		if (player->hp != oldhp || player->air != oldair || player->hunger != oldhunger)
+			SendPlayerHP(player);
+	}
+	break;
 	case TOSERVER_PLAYERPOS:
 	{
 		if (datasize < 2+12+12+4+4)

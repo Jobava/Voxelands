@@ -277,6 +277,11 @@ enum ToServerCommand
 		[26] u16 item
 	*/
 
+	TOSERVER_USEITEM = 0x13,
+	/*
+		[0] u16 command
+	*/
+
 	TOSERVER_GETBLOCK=0x20, // Obsolete
 	TOSERVER_ADDNODE = 0x21, // Obsolete
 	TOSERVER_REMOVENODE = 0x22, // Obsolete
@@ -366,7 +371,7 @@ enum ToServerCommand
 		wstring message
 	*/
 
-	TOSERVER_SIGNNODETEXT = 0x33,
+	TOSERVER_SIGNNODETEXT = 0x33, // obsolete
 	/*
 		u16 command
 		v3s16 p

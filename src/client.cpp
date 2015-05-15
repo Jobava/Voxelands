@@ -1645,6 +1645,16 @@ void Client::throwItem(v3f dir, u16 item)
 	Send(0, data, true);
 }
 
+void Client::useItem()
+{
+	u8 buf[2];
+	// Write command
+	writeU16(buf, TOSERVER_USEITEM);
+	SharedBuffer<u8> data(buf, 2);
+	// Send as reliable
+	Send(0, data, true);
+}
+
 void Client::clickActiveObject(u8 button, u16 id, u16 item_i)
 {
 	if (connectedAndInitialized() == false) {

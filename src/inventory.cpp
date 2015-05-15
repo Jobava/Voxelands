@@ -271,10 +271,9 @@ bool CraftItem::use(ServerEnvironment *env, Player *player)
 			}
 		}
 
-		if(result_count < 1)
+		if (result_count < 1)
 			return true;
-		else
-			setCount(result_count);
+		setCount(result_count);
 	}
 	return false;
 }
