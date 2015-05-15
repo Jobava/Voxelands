@@ -1049,13 +1049,16 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 	{
 		std::string datastring((char*)&data[2], datasize-2);
 		std::istringstream is(datastring, std::ios_base::binary);
-		Player *player = m_env.getLocalPlayer();
+		LocalPlayer *player = m_env.getLocalPlayer();
 		assert(player != NULL);
 		u8 hp = readU8(is);
 		u8 air = readU8(is);
 		u8 hunger = readU8(is);
-		if (m_server_damage)
+		if (m_server_damage) {
+			if (!player->hp)
+				player->setEnergy(hp);
 			player->hp = hp;
+		}
 		if (m_server_suffocation)
 			player->air = air;
 		if (m_server_hunger)
@@ -2167,22 +2170,33 @@ u32 Client::getDayNightRatio()
 u16 Client::getHP()
 {
 	Player *player = m_env.getLocalPlayer();
-	assert(player != NULL);
+	if (!player)
+		return 0;
 	return player->hp;
 }
 
 u16 Client::getAir()
 {
 	Player *player = m_env.getLocalPlayer();
-	assert(player != NULL);
+	if (!player)
+		return 0;
 	return player->air;
 }
 
 u16 Client::getHunger()
 {
 	Player *player = m_env.getLocalPlayer();
-	assert(player != NULL);
+	if (!player)
+		return 0;
 	return player->hunger;
+}
+
+float Client::getEnergy()
+{
+	LocalPlayer *player = m_env.getLocalPlayer();
+	if (!player)
+		return 0.0;
+	return player->getEnergy();
 }
 
 void Client::setTempMod(v3s16 p, NodeMod mod)

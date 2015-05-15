@@ -3974,6 +3974,9 @@ void ClientEnvironment::step(float dtime)
 		pressure_per_second = MYMAX(pressure_per_second, content_features(legs).pressure_per_second);
 		pressure_per_second = MYMAX(pressure_per_second, content_features(torso).pressure_per_second);
 		pressure_per_second = MYMAX(pressure_per_second, content_features(head).pressure_per_second);
+		// energy
+		if (lplayer->getEnergy() < 0.0)
+			damage_per_second = MYMAX(damage_per_second, 1);
 		// cold zone
 		if (warmth_per_second == 0 && pp.Y > 60 && myrand()%10 == 0) {
 			if (pp.Y < 1024) {

@@ -926,6 +926,13 @@ inline std::string ftos(float f)
 	return o.str();
 }
 
+inline std::wstring ftows(float f)
+{
+	std::wstringstream o;
+	o<<f;
+	return o.str();
+}
+
 inline void str_replace(std::string & str, std::string const & pattern,
 		std::string const & replacement)
 {

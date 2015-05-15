@@ -427,51 +427,55 @@ struct PlayerControl
 {
 	PlayerControl()
 	{
-		up = false;
-		down = false;
+		forward = false;
+		backward = false;
 		left = false;
 		right = false;
 		jump = false;
-		aux1 = false;
 		sneak = false;
+		up = false;
+		down = false;
 		fast = false;
 		free = false;
 		pitch = 0;
 		yaw = 0;
 	}
 	PlayerControl(
-		bool a_up,
-		bool a_down,
+		bool a_fwd,
+		bool a_back,
 		bool a_left,
 		bool a_right,
 		bool a_jump,
-		bool a_aux1,
 		bool a_sneak,
+		bool a_up,
+		bool a_down,
 		bool a_fast,
 		bool a_free,
 		float a_pitch,
 		float a_yaw
 	)
 	{
-		up = a_up;
-		down = a_down;
+		forward = a_fwd;
+		backward = a_back;
 		left = a_left;
 		right = a_right;
 		jump = a_jump;
-		aux1 = a_aux1;
 		sneak = a_sneak;
+		up = a_up;
+		down = a_down;
 		fast = a_fast;
 		free = a_free;
 		pitch = a_pitch;
 		yaw = a_yaw;
 	}
-	bool up;
-	bool down;
+	bool forward;
+	bool backward;
 	bool left;
 	bool right;
 	bool jump;
-	bool aux1;
 	bool sneak;
+	bool up;
+	bool down;
 	bool fast;
 	bool free;
 	float pitch;
@@ -495,6 +499,9 @@ public:
 
 	void applyControl(float dtime);
 
+	void setEnergy(float e) {m_energy = e;}
+	float getEnergy() {return m_energy;}
+
 	video::ITexture* getTexture();
 
 	PlayerControl control;
@@ -507,6 +514,7 @@ private:
 	bool m_sneak_node_exists;
 	v3s16 m_old_node_below;
 	content_t m_old_node_below_type;
+	float m_energy;
 
 };
 #endif // !SERVER

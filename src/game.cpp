@@ -354,6 +354,201 @@ void draw_old_hotbar(video::IVideoDriver *driver, gui::IGUIFont *font,
 		font->draw(selected.c_str(), rect2, video::SColor(255,255,255,255), false, false, NULL);
 	}
 }
+void draw_progress_ring(
+	video::IVideoDriver *driver,
+	v2s32 screensize,
+	core::position2d<s32> pos,
+	s32 radius,
+	s16 value,
+	video::SColor color
+)
+{
+	if (!value)
+		return;
+	const video::SColor colors[] = {color,color,color,color};
+	video::ITexture *texture = driver->getTexture(getTexturePath("progress_ring.png").c_str());
+	core::rect<s32> rect(pos.X-radius,pos.Y-radius,pos.X+radius,pos.Y+radius);
+	if (value >= 25) {
+		if (value >= 50) {
+			{
+				core::rect<s32> drect(rect);
+				drect.LowerRightCorner.X -= radius;
+				core::rect<s32> srect(
+					core::position2d<s32>(0,0),
+					core::dimension2di(texture->getOriginalSize())
+				);
+				srect.LowerRightCorner.X /= 2;
+				driver->draw2DImage(
+					texture,
+					drect,
+					srect,
+					NULL,
+					colors,
+					true
+				);
+			}
+			if (value >= 75) {
+				if (value > 99) {
+					{
+						core::rect<s32> drect(rect);
+						drect.UpperLeftCorner.X += radius;
+						core::rect<s32> srect(
+							core::position2d<s32>(0,0),
+							core::dimension2di(texture->getOriginalSize())
+						);
+						srect.UpperLeftCorner.X += srect.LowerRightCorner.X/2;
+						driver->draw2DImage(
+							texture,
+							drect,
+							srect,
+							NULL,
+							colors,
+							true
+						);
+					}
+				}else{ // top right corner
+					{
+						core::rect<s32> drect(rect);
+						drect.UpperLeftCorner.X += radius;
+						drect.UpperLeftCorner.Y += radius;
+						core::rect<s32> srect(
+							core::position2d<s32>(0,0),
+							core::dimension2di(texture->getOriginalSize())
+						);
+						srect.UpperLeftCorner.X += srect.LowerRightCorner.X/2;
+						srect.UpperLeftCorner.Y += srect.LowerRightCorner.Y/2;
+						driver->draw2DImage(
+							texture,
+							drect,
+							srect,
+							NULL,
+							colors,
+							true
+						);
+					}
+					{
+						float os = (float)((value%25)*4)/100.0;
+						core::rect<s32> drect(rect);;
+						drect.UpperLeftCorner.X += radius+(radius-((float)radius*os));
+						drect.UpperLeftCorner.Y += (radius-((float)radius*os));
+						drect.LowerRightCorner.Y -= radius;
+						core::rect<s32> srect(
+							core::position2d<s32>(0,0),
+							core::dimension2di(texture->getOriginalSize())
+						);
+						float v = srect.LowerRightCorner.X/2;
+						srect.UpperLeftCorner.X += v+(v-((float)v*os));
+						v = srect.LowerRightCorner.Y/2;
+						srect.UpperLeftCorner.Y += (v-((float)v*os));
+						srect.LowerRightCorner.Y -= v;
+						driver->draw2DImage(
+							texture,
+							drect,
+							srect,
+							NULL,
+							colors,
+							true
+						);
+					}
+				}
+			}else{ // bottom right corner
+				{
+					float os = (float)((value%25)*4)/100.0;
+					core::rect<s32> drect(rect);
+					drect.UpperLeftCorner.Y += radius+(radius-((float)radius*os));
+					drect.UpperLeftCorner.X += radius;
+					drect.LowerRightCorner.X -= (radius-((float)radius*os));
+					core::rect<s32> srect(
+						core::position2d<s32>(0,0),
+						core::dimension2di(texture->getOriginalSize())
+					);
+					float v = srect.LowerRightCorner.X/2;
+					srect.UpperLeftCorner.X += v;
+					srect.LowerRightCorner.X -= (v-((float)v*os));
+					v = srect.LowerRightCorner.Y/2;
+					srect.UpperLeftCorner.Y += v+(v-((float)v*os));
+					driver->draw2DImage(
+						texture,
+						drect,
+						srect,
+						NULL,
+						colors,
+						true
+					);
+				}
+			}
+		}else{ // bottom left corner
+			{
+				core::rect<s32> drect(rect);
+				drect.LowerRightCorner.X -= radius;
+				drect.LowerRightCorner.Y -= radius;
+				core::rect<s32> srect(
+					core::position2d<s32>(0,0),
+					core::dimension2di(texture->getOriginalSize())
+				);
+				srect.LowerRightCorner.X /= 2;
+				srect.LowerRightCorner.Y /= 2;
+				driver->draw2DImage(
+					texture,
+					drect,
+					srect,
+					NULL,
+					colors,
+					true
+				);
+			}
+			{
+				float os = (float)((value%25)*4)/100.0;
+				core::rect<s32> drect(rect);
+				drect.UpperLeftCorner.Y += radius;
+				drect.LowerRightCorner.X -= radius+((radius-(float)radius*os));
+				drect.LowerRightCorner.Y -= (radius-((float)radius*os));
+				core::rect<s32> srect(
+					core::position2d<s32>(0,0),
+					core::dimension2di(texture->getOriginalSize())
+				);
+				float v = srect.LowerRightCorner.X/2;
+				srect.LowerRightCorner.X -= v+(v-((float)v*os));
+				v = srect.LowerRightCorner.Y/2;
+				srect.UpperLeftCorner.Y += v;
+				srect.LowerRightCorner.Y -= (v-((float)v*os));
+				driver->draw2DImage(
+					texture,
+					drect,
+					srect,
+					NULL,
+					colors,
+					true
+				);
+			}
+		}
+	}else{ // top left corner
+		{
+			float os = (float)((value%25)*4)/100.0;
+			core::rect<s32> drect(rect);
+			drect.UpperLeftCorner.X += radius-((float)radius*os);
+			drect.LowerRightCorner.X -= radius;
+			drect.LowerRightCorner.Y -= radius+(radius-((float)radius*os));
+			core::rect<s32> srect(
+				core::position2d<s32>(0,0),
+				core::dimension2di(texture->getOriginalSize())
+			);
+			float v = srect.LowerRightCorner.X/2;
+			srect.UpperLeftCorner.X += v-((float)v*os);
+			srect.LowerRightCorner.X /= 2;
+			v = srect.LowerRightCorner.Y/2;
+			srect.LowerRightCorner.Y -= v+(v-((float)v*os));
+			driver->draw2DImage(
+				texture,
+				drect,
+				srect,
+				NULL,
+				colors,
+				true
+			);
+		}
+	}
+}
 void draw_hud(
 	video::IVideoDriver *driver,
 	gui::IGUIFont *font,
@@ -367,6 +562,7 @@ void draw_hud(
 	s32 halfbubblecount,
 	bool have_hunger,
 	s32 halfhungercount,
+	float energy,
 	int crosshair
 )
 {
@@ -417,9 +613,30 @@ void draw_hud(
 			content_t type = item->getContent();
 			if ((type&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK || (type&CONTENT_CLOTHESITEM_MASK) == CONTENT_CLOTHESITEM_MASK) {
 				float w = item->getWear();
-				w = (100.0/65535.0)*w;
-				txt = itows(100-w);
+				w = 100.0-((100.0/65535.0)*w);
+				txt = itows(w);
 				txt += L"%";
+				{
+
+					video::SColor bcolor[10] = {
+						video::SColor(255,255,0,0),
+						video::SColor(255,255,40,0),
+						video::SColor(255,255,80,0),
+						video::SColor(255,255,110,0),
+						video::SColor(255,255,120,0),
+						video::SColor(255,255,140,0),
+						video::SColor(255,255,160,0),
+						video::SColor(255,170,180,0),
+						video::SColor(255,50,200,0),
+						video::SColor(255,0,255,0)
+					};
+					int i = ((int)w)/10;
+					if (i < 0)
+						i = 0;
+					if (i > 9)
+						i = 9;
+					draw_progress_ring(driver,screensize,core::position2d<s32>(screensize.X-92,screensize.Y-92),40,w,bcolor[i]);
+				}
 			}else{
 				txt = itows(item->getCount());
 			}
@@ -559,21 +776,32 @@ void draw_hud(
 	// health
 	if (have_health) {
 		int c = 55+(halfheartcount*10);
-		const video::SColor color(220,c,c,c);
-		const video::SColor colors[] = {color,color,color,color};
-		video::ITexture *texture = driver->getTexture(getTexturePath("heart.png").c_str());
-		core::rect<s32> rect(60,screensize.Y-108,108,screensize.Y-60);
-		driver->draw2DImage(
-			texture,
-			rect,
-			core::rect<s32>(
-				core::position2d<s32>(0,0),
-				core::dimension2di(texture->getOriginalSize())
-			),
-			NULL,
-			colors,
-			true
-		);
+		float e = energy/((float)halfheartcount/100.0);
+		if (e > 100.0)
+			e = 100.0;
+		if (e < 0.0)
+			e = 0.0;
+		{
+			const video::SColor color(255,c,0,0);
+			draw_progress_ring(driver,screensize,core::position2d<s32>(84,screensize.Y-84),30,e,color);
+		}
+		{
+			const video::SColor color(220,c,c,c);
+			const video::SColor colors[] = {color,color,color,color};
+			video::ITexture *texture = driver->getTexture(getTexturePath("heart.png").c_str());
+			core::rect<s32> rect(60,screensize.Y-108,108,screensize.Y-60);
+			driver->draw2DImage(
+				texture,
+				rect,
+				core::rect<s32>(
+					core::position2d<s32>(0,0),
+					core::dimension2di(texture->getOriginalSize())
+				),
+				NULL,
+				colors,
+				true
+			);
+		}
 
 		std::wstring txt = itows(halfheartcount*5);
 		txt += L"%";
@@ -1639,16 +1867,6 @@ void the_game(
 				statustext = wgettext("free_move enabled");
 				statustext_time = 0;
 			}
-		}else if(input->wasKeyDown(getKeySetting(VLKC_FASTMOVE))) {
-			if (fast_move) {
-				fast_move = false;
-				statustext = wgettext("fast_move disabled");
-				statustext_time = 0;
-			}else{
-				fast_move = true;
-				statustext = wgettext("fast_move enabled");
-				statustext_time = 0;
-			}
 		}else if(input->wasKeyDown(getKeySetting(VLKC_SCREENSHOT))) {
 			irr::video::IImage* const image = driver->createScreenShot();
 			if (image) {
@@ -1889,31 +2107,38 @@ void the_game(
 				false,
 				false,
 				false,
-				fast_move,
+				false,
+				false,
 				free_move,
 				camera_pitch,
 				camera_yaw
 			);
 			client.setPlayerControl(control);
 		}else{
-			/*bool a_up,
-			bool a_down,
+			/*
+			bool a_fwd,
+			bool a_back,
 			bool a_left,
 			bool a_right,
 			bool a_jump,
-			bool a_superspeed,
 			bool a_sneak,
+			bool a_up,
+			bool a_down,
+			bool a_fast,
+			bool a_free,
 			float a_pitch,
-			float a_yaw*/
+			float a_yaw
+			*/
 			PlayerControl control(
 				input->isKeyDown(getKeySetting(VLKC_FORWARD)),
 				input->isKeyDown(getKeySetting(VLKC_BACKWARD)),
 				input->isKeyDown(getKeySetting(VLKC_LEFT)),
 				input->isKeyDown(getKeySetting(VLKC_RIGHT)),
 				input->isKeyDown(getKeySetting(VLKC_JUMP)),
-				input->isKeyDown(getKeySetting(VLKC_USE)),
 				input->isKeyDown(getKeySetting(VLKC_SNEAK)),
-				fast_move,
+				input->isKeyDown(getKeySetting(VLKC_UP)),
+				input->isKeyDown(getKeySetting(VLKC_DOWN)),
+				input->isKeyDown(getKeySetting(VLKC_RUN)),
 				free_move,
 				camera_pitch,
 				camera_yaw
@@ -2222,11 +2447,9 @@ void the_game(
 					}
 
 
-					if (input->getRightClicked()) {
-						infostream<<"Ground right-clicked"<<std::endl;
-
+					if (input->wasKeyDown(getKeySetting(VLKC_EXAMINE)) && !random_input) {
 						// If metadata provides an inventory view, activate it
-						if (meta && meta->getDrawSpecString() != "" && !random_input) {
+						if (meta && meta->getDrawSpecString() != "") {
 							infostream<<"Launching custom inventory view"<<std::endl;
 
 							InventoryLocation inventoryloc;
@@ -2244,10 +2467,11 @@ void the_game(
 									sound = "open-menu";
 								client.playSound(sound,0);
 							}
-						}else{
-							client.groundAction(1, nodepos, neighbourpos, g_selected_item);
-							camera.setDigging(1);  // right click animation
 						}
+					}
+					if (input->getRightClicked()) {
+						client.groundAction(1, nodepos, neighbourpos, g_selected_item);
+						camera.setDigging(1);  // right click animation
 					}
 
 					nodepos_old = nodepos;
@@ -2680,6 +2904,7 @@ void the_game(
 					client.getAir(),
 					client.getServerHunger(),
 					hunger,
+					client.getEnergy(),
 					crosshair
 				);
 			}

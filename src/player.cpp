@@ -682,9 +682,8 @@ LocalPlayer::LocalPlayer():
 	m_sneak_node(32767,32767,32767),
 	m_sneak_node_exists(false)
 {
-	// Initialize hp to 0, so that no hearts will be shown if server
-	// doesn't support health points
 	hp = 0;
+	m_energy = 0.0;
 	hunger = 0;
 	m_character = g_settings->get("character_definition");
 }
@@ -929,54 +928,16 @@ void LocalPlayer::applyControl(float dtime)
 		setSpeed(speed);
 	}
 
-	// Whether superspeed mode is used or not
-	bool superspeed = false;
-
-	// If free movement and fast movement, always move fast
-	if (control.free && control.fast)
-		superspeed = true;
-
-	// Auxiliary button 1 (E)
-	if (control.aux1) {
-		if (control.free) {
-			// In free movement mode, aux1 descends
-			v3f speed = getSpeed();
-			if (control.fast) {
-				speed.Y = -20*BS;
-			}else{
-				speed.Y = -walkspeed_max;
-			}
-			setSpeed(speed);
-		}else if (is_climbing) {
-		        v3f speed = getSpeed();
-			speed.Y = -3*BS;
-			setSpeed(speed);
-		}else{
-			// If not free movement but fast is allowed, aux1 is
-			// "Turbo button"
-			if (control.fast)
-				superspeed = true;
-		}
-	}
-
-	if (control.up)
+	if (control.forward)
 		speed += move_direction;
-	if (control.down)
+	if (control.backward)
 		speed -= move_direction;
 	if (control.left)
 		speed += move_direction.crossProduct(v3f(0,1,0));
 	if (control.right)
 		speed += move_direction.crossProduct(v3f(0,-1,0));
 	if (control.jump) {
-		if (control.free) {
-			v3f speed = getSpeed();
-			if (control.fast) {
-				speed.Y = 20*BS;
-			}else{
-				speed.Y = walkspeed_max;
-			}
-			setSpeed(speed);
-		}else if (touching_ground) {
+		if (touching_ground) {
 			v3f speed = getSpeed();
 			/*
 				NOTE: The d value in move() affects jump height by
@@ -992,20 +953,65 @@ void LocalPlayer::applyControl(float dtime)
 			speed.Y = 1.5*BS;
 			setSpeed(speed);
 			swimming_up = true;
-		} else if (is_climbing) {
+		}
+	}
+	if (control.up) {
+		if (control.free) {
+			v3f speed = getSpeed();
+			if (control.fast) {
+				speed.Y = 20*BS;
+			}else{
+				speed.Y = walkspeed_max;
+			}
+			setSpeed(speed);
+		}else if (in_water) {
+			// Use the oscillating value for getting out of water
+			// (so that the player doesn't fly on the surface)
+			v3f speed = getSpeed();
+			speed.Y = 1.5*BS;
+			setSpeed(speed);
+			swimming_up = true;
+		}else if (is_climbing) {
 	                v3f speed = getSpeed();
 			speed.Y = 3*BS;
 			setSpeed(speed);
 		}
 	}
+	if (control.down) {
+		if (control.free) {
+			// In free movement mode, aux1 descends
+			v3f speed = getSpeed();
+			if (control.fast) {
+				speed.Y = -20*BS;
+			}else{
+				speed.Y = -walkspeed_max;
+			}
+			setSpeed(speed);
+		}else if (is_climbing) {
+		        v3f speed = getSpeed();
+			speed.Y = -3*BS;
+			setSpeed(speed);
+		}else if (in_water) {
+		        v3f speed = getSpeed();
+			speed.Y = -5*BS;
+			setSpeed(speed);
+		}
+	}
 
 	// The speed of the player (Y is ignored)
-	if (superspeed) {
+	if (control.fast) {
+		m_energy -= dtime;
 		speed = speed.normalize() * walkspeed_max * 5.0;
-	}else if (control.sneak) {
-		speed = speed.normalize() * walkspeed_max / 3.0;
 	}else{
-		speed = speed.normalize() * walkspeed_max;
+		if (m_energy < hp)
+			m_energy += dtime*2;
+		if (m_energy > hp)
+			m_energy = hp;
+		if (control.sneak) {
+			speed = speed.normalize() * walkspeed_max / 3.0;
+		}else{
+			speed = speed.normalize() * walkspeed_max;
+		}
 	}
 
 	f32 inc = walk_acceleration * BS * dtime;

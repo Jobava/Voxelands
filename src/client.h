@@ -269,6 +269,7 @@ public:
 	u16 getHP();
 	u16 getAir();
 	u16 getHunger();
+	float getEnergy();
 
 	void setTempMod(v3s16 p, NodeMod mod);
 	void clearTempMod(v3s16 p);
