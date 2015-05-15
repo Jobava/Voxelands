@@ -1491,6 +1491,7 @@ bool MobSAO::rightClick(Player *player)
 			ilist->deleteItem(item_i);
 		}else{
 			item->remove(1);
+			ilist->addDiff(item_i,item);
 		}
 	}
 	// tame it maybe
