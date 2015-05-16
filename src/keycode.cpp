@@ -323,20 +323,26 @@ KeyPress::KeyPress(const irr::SEvent::SKeyInput &in, bool prefer_character)
 
 const char *KeyPress::sym() const
 {
-	if (Key && Key < irr::KEY_KEY_CODES_COUNT)
+	if (Key && Key < irr::KEY_KEY_CODES_COUNT) {
 		return KeyNames[Key];
-	else {
+	}else{
 		return m_name.c_str();
 	}
 }
 
 const char *KeyPress::name() const
 {
-	if (Key && Key < irr::KEY_KEY_CODES_COUNT)
+	if (Key && Key < irr::KEY_KEY_CODES_COUNT) {
 		return KeyNamesLang[Key];
-	else {
+	}else{
 		return m_name.c_str();
 	}
+}
+
+const wchar_t *KeyPress::guiName() const
+{
+	const char* n = name();
+	return narrow_to_wide(n).c_str();
 }
 
 const KeyPress EscapeKey("KEY_ESCAPE");
@@ -396,6 +402,15 @@ KeyPress getKeySetting(KeyCode code)
 	g_key_setting_cache[code] = new KeyPress(g_settings->get(keymap_strings[code]).c_str());
 
 	return *g_key_setting_cache[code];
+}
+
+void saveKeySetting(KeyPress &key, KeyCode code)
+{
+	if (!key_setting_cache_init)
+		clearKeyCache();
+
+	*g_key_setting_cache[code] = key;
+	g_settings->set(keymap_strings[code],key.sym());
 }
 
 void clearKeyCache()

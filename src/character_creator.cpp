@@ -23,7 +23,6 @@
 #include "character_creator.h"
 #include "settings.h"
 #include "defaultsettings.h"
-#include "guiKeyChangeMenu.h"
 #include "debug.h"
 #include "serialization.h"
 #include <string>

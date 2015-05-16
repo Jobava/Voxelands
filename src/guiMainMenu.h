@@ -39,18 +39,6 @@ enum {
 	GUI_ID_PW_INPUT,
 	GUI_ID_ADDRESS_INPUT,
 	GUI_ID_PORT_INPUT,
-	GUI_ID_FANCYTREE_CB,
-	GUI_ID_SMOOTH_LIGHTING_CB,
-	GUI_ID_3D_CLOUDS_CB,
-	GUI_ID_OPAQUE_WATER_CB,
-	GUI_ID_MIPMAP_CB,
-	GUI_ID_BILINEAR_CB,
-	GUI_ID_TRILINEAR_CB,
-	GUI_ID_ANISOTROPIC_CB,
-	GUI_ID_PARTICLES_CB,
-	GUI_ID_FULLSCREEN_CB,
-	GUI_ID_HOTBAR_CB,
-	GUI_ID_VOLUME_SB,
 	GUI_ID_GAME_MODE_COMBO,
 	GUI_ID_GAME_MODE_CREATIVE,
 	GUI_ID_GAME_MODE_ADVENTURE,
@@ -106,13 +94,6 @@ struct MainMenuData
 	MainMenuData():
 		// Generic
 		selected_tab(0),
-		// Client opts
-		fancy_trees(false),
-		smooth_lighting(false),
-		hotbar(false),
-		volume(0.0f),
-		particles(true),
-		fullscreen(false),
 		// Server opts
 		game_mode(L"adventure"),
 		max_mob_level(L"aggressive"),
@@ -141,19 +122,6 @@ struct MainMenuData
 	std::wstring port;
 	std::wstring name;
 	std::wstring password;
-	bool fancy_trees;
-	bool smooth_lighting;
-	bool clouds_3d;
-	bool opaque_water;
-	bool mip_map;
-	bool anisotropic_filter;
-	bool bilinear_filter;
-	bool trilinear_filter;
-	bool hotbar;
-	f32 volume;
-	//int enable_shaders;
-	bool particles;
-	bool fullscreen;
 	// Server options
 	std::wstring game_mode;
 	std::wstring max_mob_level;

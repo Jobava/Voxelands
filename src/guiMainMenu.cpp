@@ -25,8 +25,9 @@
 
 #include "guiMainMenu.h"
 #include "settings.h"
+#include "main.h"
 #include "defaultsettings.h"
-#include "guiKeyChangeMenu.h"
+#include "guiSettingsMenu.h"
 #include "debug.h"
 #include "serialization.h"
 #include <string>
@@ -36,7 +37,6 @@
 #include <IGUIButton.h>
 #include <IGUIStaticText.h>
 #include <IGUIFont.h>
-#include <IGUIScrollBar.h>
 #include "path.h"
 #include "porting.h"
 #include "gui_colours.h"
@@ -90,18 +90,6 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	std::wstring text_address;
 	std::wstring text_port;
 	std::wstring game_mode;
-	bool fancy_trees;
-	bool smooth_lighting;
-	bool clouds_3d;
-	bool opaque_water;
-	bool fullscreen;
-	bool particles;
-	bool mipmap;
-	bool bilinear;
-	bool trilinear;
-	bool anisotropic;
-	bool hotbar;
-	f32 volume;
 
 	std::wstring max_mob_level;
 	bool initial_inventory;
@@ -144,90 +132,6 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			text_port = e->getText();
 		else
 			text_port = m_data->port;
-	}
-	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_FANCYTREE_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			fancy_trees = ((gui::IGUICheckBox*)e)->isChecked();
-		else
-			fancy_trees = m_data->fancy_trees;
-	}
-	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_SMOOTH_LIGHTING_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			smooth_lighting = ((gui::IGUICheckBox*)e)->isChecked();
-		else
-			smooth_lighting = m_data->smooth_lighting;
-	}
-	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_3D_CLOUDS_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			clouds_3d = ((gui::IGUICheckBox*)e)->isChecked();
-		else
-			clouds_3d = m_data->clouds_3d;
-	}
-	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_OPAQUE_WATER_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			opaque_water = ((gui::IGUICheckBox*)e)->isChecked();
-		else
-			opaque_water = m_data->opaque_water;
-	}
-	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_FULLSCREEN_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			fullscreen = ((gui::IGUICheckBox*)e)->isChecked();
-		else
-			fullscreen = m_data->fullscreen;
-	}
-	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_PARTICLES_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			particles = ((gui::IGUICheckBox*)e)->isChecked();
-		else
-			particles = m_data->particles;
-	}
-	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_MIPMAP_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			mipmap = ((gui::IGUICheckBox*)e)->isChecked();
-		else
-			mipmap = m_data->mip_map;
-	}
-	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_BILINEAR_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			bilinear = ((gui::IGUICheckBox*)e)->isChecked();
-		else
-			bilinear = m_data->bilinear_filter;
-	}
-	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_TRILINEAR_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			trilinear = ((gui::IGUICheckBox*)e)->isChecked();
-		else
-			trilinear = m_data->trilinear_filter;
-	}
-	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_ANISOTROPIC_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			anisotropic = ((gui::IGUICheckBox*)e)->isChecked();
-		else
-			anisotropic = m_data->anisotropic_filter;
-	}
-	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_HOTBAR_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			hotbar = ((gui::IGUICheckBox*)e)->isChecked();
-		else
-			hotbar = m_data->hotbar;
-	}
-	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_VOLUME_SB);
-		if(e != NULL && e->getType() == gui::EGUIET_SCROLL_BAR)
-			volume = (float)((gui::IGUIScrollBar*)e)->getPos();
-		else
-			volume = m_data->volume;
 	}
 
 	// Server options
@@ -547,88 +451,6 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			core::rect<s32> rect(0, 0, 180, 30);
 			rect += topleft_content + v2s32(160, 290);
 			Environment->addButton(rect, this, GUI_ID_JOIN_GAME_BUTTON, wgettext("Connect"));
-		}
-	}else if (m_data->selected_tab == TAB_SETTINGS) {
-		{
-			core::rect<s32> rect(0, 0, 550, 20);
-			rect += topleft_content + v2s32(0, 20);
-			gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Settings"), rect, false, true, this, -1);
-			t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
-		}
-		{
-			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(80, 60);
-			Environment->addCheckBox(fancy_trees, rect, this, GUI_ID_FANCYTREE_CB, wgettext("Fancy trees"));
-		}
-		{
-			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(80, 90);
-			Environment->addCheckBox(smooth_lighting, rect, this, GUI_ID_SMOOTH_LIGHTING_CB, wgettext("Smooth Lighting"));
-		}
-		{
-			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(80, 120);
-			Environment->addCheckBox(clouds_3d, rect, this, GUI_ID_3D_CLOUDS_CB, wgettext("3D Clouds"));
-		}
-		{
-			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(80, 150);
-			Environment->addCheckBox(opaque_water, rect, this, GUI_ID_OPAQUE_WATER_CB, wgettext("Opaque water"));
-		}
-		{
-			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(80, 180);
-			Environment->addCheckBox(hotbar, rect, this, GUI_ID_HOTBAR_CB, wgettext("Classic hotbar"));
-		}
-		{
-			core::rect<s32> rect(0, 0, 200, 15);
-			rect += topleft_content + v2s32(80, 250);
-			Environment->addStaticText(wgettext("Volume:"), rect, false, false, this, -1);
-		}
-		{
-			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(290, 60);
-			Environment->addCheckBox(fullscreen, rect, this, GUI_ID_FULLSCREEN_CB, wgettext("Fullscreen"));
-		}
-		{
-			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(290, 90);
-			Environment->addCheckBox(particles, rect, this, GUI_ID_PARTICLES_CB, wgettext("Particles"));
-		}
-		{
-			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(290, 120);
-			Environment->addCheckBox(mipmap, rect, this, GUI_ID_MIPMAP_CB, wgettext("Mip-Mapping"));
-		}
-		{
-			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(290, 150);
-			Environment->addCheckBox(bilinear, rect, this, GUI_ID_BILINEAR_CB, wgettext("Bi-Linear Filtering"));
-		}
-		{
-			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(290, 180);
-			Environment->addCheckBox(trilinear, rect, this, GUI_ID_TRILINEAR_CB, wgettext("Tri-Linear Filtering"));
-		}
-		{
-			core::rect<s32> rect(0, 0, 200, 30);
-			rect += topleft_content + v2s32(290, 210);
-			Environment->addCheckBox(anisotropic, rect, this, GUI_ID_ANISOTROPIC_CB, wgettext("Anisotropic Filtering"));
-		}
-		{
-			core::rect<s32> rect(0, 0, 200, 15);
-			rect += topleft_content + v2s32(290, 250);
-			gui::IGUIScrollBar *sb = Environment->addScrollBar(true, rect, this, GUI_ID_VOLUME_SB);
-			sb->setMin(0);
-			sb->setMax(100);
-			sb->setPos(volume);
-		}
-
-		// Key change button
-		{
-			core::rect<s32> rect(0, 0, 130, 30);
-			rect += topleft_content + v2s32(210, 310);
-			Environment->addButton(rect, this, GUI_ID_CHANGE_KEYS_BUTTON, wgettext("Change keys"));
 		}
 	}else if (m_data->selected_tab == TAB_SINGLEPLAYER) {
 		{
@@ -1159,66 +981,6 @@ void GUIMainMenu::acceptInput()
 		}
 	}
 	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_FANCYTREE_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			m_data->fancy_trees = ((gui::IGUICheckBox*)e)->isChecked();
-	}
-	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_SMOOTH_LIGHTING_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			m_data->smooth_lighting = ((gui::IGUICheckBox*)e)->isChecked();
-	}
-	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_3D_CLOUDS_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			m_data->clouds_3d = ((gui::IGUICheckBox*)e)->isChecked();
-	}
-	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_OPAQUE_WATER_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			m_data->opaque_water = ((gui::IGUICheckBox*)e)->isChecked();
-	}
-	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_FULLSCREEN_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			m_data->fullscreen = ((gui::IGUICheckBox*)e)->isChecked();
-	}
-	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_PARTICLES_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			m_data->particles = ((gui::IGUICheckBox*)e)->isChecked();
-	}
-	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_MIPMAP_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			m_data->mip_map = ((gui::IGUICheckBox*)e)->isChecked();
-	}
-	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_BILINEAR_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			m_data->bilinear_filter = ((gui::IGUICheckBox*)e)->isChecked();
-	}
-	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_TRILINEAR_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			m_data->trilinear_filter = ((gui::IGUICheckBox*)e)->isChecked();
-	}
-	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_ANISOTROPIC_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			m_data->anisotropic_filter = ((gui::IGUICheckBox*)e)->isChecked();
-	}
-	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_HOTBAR_CB);
-		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-			m_data->hotbar = ((gui::IGUICheckBox*)e)->isChecked();
-	}
-	{
-		gui::IGUIElement *e = getElementFromId(GUI_ID_VOLUME_SB);
-		if(e != NULL && e->getType() == gui::EGUIET_SCROLL_BAR)
-			m_data->volume = (float)((gui::IGUIScrollBar*)e)->getPos();
-	}
-	{
 		gui::IGUIElement *e = getElementFromId(GUI_ID_MAP_DELETE_CB);
 		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
 			m_data->delete_map = ((gui::IGUICheckBox*)e)->isChecked();
@@ -1318,9 +1080,6 @@ bool GUIMainMenu::OnEvent(const SEvent& event)
 				m_accepted = false;
 				regenerateGui(m_screensize);
 				break;
-			case GUI_ID_HOTBAR_CB:
-				g_settings->setBool("old_hotbar", m_data->hotbar);
-				break;
 			}
 		}
 		if (event.GUIEvent.EventType==gui::EGET_BUTTON_CLICKED) {
@@ -1340,12 +1099,6 @@ bool GUIMainMenu::OnEvent(const SEvent& event)
 				acceptInput();
 				m_data->character_creator = true;
 				quitMenu();
-				return true;
-			}
-			case GUI_ID_CHANGE_KEYS_BUTTON:
-			{
-				GUIKeyChangeMenu *kmenu = new GUIKeyChangeMenu(env, parent, -1,menumgr);
-				kmenu->drop();
 				return true;
 			}
 			case GUI_ID_GAME_SETTINGS_BASIC:
@@ -1382,13 +1135,11 @@ bool GUIMainMenu::OnEvent(const SEvent& event)
 				regenerateGui(m_screensize);
 				return true;
 			case GUI_ID_TAB_SETTINGS:
-				if (m_data->selected_tab == TAB_SETTINGS)
-					acceptInput();
-				m_accepted = false;
-				m_data->selected_tab = TAB_SETTINGS;
-				g_settings->set("mainmenu_tab","settings");
-				regenerateGui(m_screensize);
+			{
+				GUISettingsMenu *smenu = new GUISettingsMenu(env, parent, -1,menumgr);
+				smenu->drop();
 				return true;
+			}
 			case GUI_ID_TAB_CREDITS:
 				if (m_data->selected_tab == TAB_SETTINGS)
 					acceptInput();
@@ -1424,18 +1175,6 @@ bool GUIMainMenu::OnEvent(const SEvent& event)
 			case GUI_ID_PW_INPUT:
 				acceptInput();
 				quitMenu();
-				return true;
-			}
-		}
-		if (event.GUIEvent.EventType == gui::EGET_SCROLL_BAR_CHANGED) {
-			switch (event.GUIEvent.Caller->getID()) {
-			case GUI_ID_VOLUME_SB:
-				gui::IGUIElement *vsb = getElementFromId(GUI_ID_VOLUME_SB);
-				if(vsb != NULL && vsb->getType() == gui::EGUIET_SCROLL_BAR) {
-					m_data->volume = (float)((gui::IGUIScrollBar*)vsb)->getPos();
-					if (m_sound)
-						m_sound->setListenerGain(m_data->volume/100.0);
-				}
 				return true;
 			}
 		}

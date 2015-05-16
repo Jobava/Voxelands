@@ -245,7 +245,7 @@ set(voxelands_SRCS
 	particles.cpp
 	clientobject.cpp
 	guiMainMenu.cpp
-	guiKeyChangeMenu.cpp
+	guiSettingsMenu.cpp
 	guiMessageMenu.cpp
 	guiTextInputMenu.cpp
 	guiFormSpecMenu.cpp

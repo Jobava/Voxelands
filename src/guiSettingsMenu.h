@@ -4,7 +4,7 @@
 * Copyright (C) 2011 Ciaran Gultnieks <ciaran@ciarang.com>
 * Copyright (C) 2011 teddydestodes <derkomtur@schattengang.net>
 *
-* guiKeyChangeMenu.h
+* guiSettingsMenu.h
 * voxelands - 3d voxel world sandbox game
 * Copyright (C) Lisa 'darkrose' Milne 2014 <lisa@ltmnet.com>
 *
@@ -25,8 +25,8 @@
 * for Voxelands.
 ************************************************************************/
 
-#ifndef GUIKEYCHANGEMENU_HEADER
-#define GUIKEYCHANGEMENU_HEADER
+#ifndef GUISETTINGSMENU_HEADER
+#define GUISETTINGSMENU_HEADER
 
 #include "common_irrlicht.h"
 #include "utility.h"
@@ -40,30 +40,74 @@ enum
 {
 	GUI_ID_BACK_BUTTON = 101, GUI_ID_ABORT_BUTTON, GUI_ID_SCROLL_BAR,
 	//buttons
-	GUI_ID_KEY_FORWARD_BUTTON,
-	GUI_ID_KEY_BACKWARD_BUTTON,
-	GUI_ID_KEY_LEFT_BUTTON,
-	GUI_ID_KEY_RIGHT_BUTTON,
-	GUI_ID_KEY_USE_BUTTON,
-	GUI_ID_KEY_FLY_BUTTON,
-	GUI_ID_KEY_FAST_BUTTON,
-	GUI_ID_KEY_JUMP_BUTTON,
-	GUI_ID_KEY_CHAT_BUTTON,
-	GUI_ID_KEY_CMD_BUTTON,
-	GUI_ID_KEY_SNEAK_BUTTON,
-	GUI_ID_KEY_INVENTORY_BUTTON,
-	GUI_ID_KEY_DUMP_BUTTON,
-	GUI_ID_KEY_RANGE_BUTTON,
-	GUI_ID_KEY_NEXT_ITEM_BUTTON,
-	GUI_ID_KEY_PREV_ITEM_BUTTON
+	GUI_ID_FANCYTREE_CB,
+	GUI_ID_SMOOTH_LIGHTING_CB,
+	GUI_ID_3D_CLOUDS_CB,
+	GUI_ID_OPAQUE_WATER_CB,
+	GUI_ID_MIPMAP_CB,
+	GUI_ID_BILINEAR_CB,
+	GUI_ID_TRILINEAR_CB,
+	GUI_ID_ANISOTROPIC_CB,
+	GUI_ID_PARTICLES_CB,
+	GUI_ID_FULLSCREEN_CB,
+	GUI_ID_HOTBAR_CB,
+	GUI_ID_VOLUME_SB,
+	GUI_ID_TAB_MAINMENU,
+	GUI_ID_TAB_SETTINGS_CONTROLS,
+	GUI_ID_TAB_SETTINGS_GRAPHICS,
+	GUI_ID_TAB_SETTINGS_VIDEO,
+	GUI_ID_TAB_SETTINGS_SOUND,
+	// put new elements above this
+	GUI_ID_KEYSETTINGS_BASE = 200
 };
 
-class GUIKeyChangeMenu: public GUIModalMenu
+enum {
+	TAB_SETTINGS_CONTROLS=0,
+	TAB_SETTINGS_GRAPHICS,
+	TAB_SETTINGS_VIDEO,
+	TAB_SETTINGS_SOUND
+};
+
+struct SettingsMenuData
+{
+	SettingsMenuData():
+		// Generic
+		selected_tab(TAB_SETTINGS_CONTROLS),
+		// Client opts
+		fancy_trees(false),
+		smooth_lighting(false),
+		hotbar(false),
+		volume(0.0f),
+		particles(true),
+		fullscreen(false)
+	{}
+
+	// These are in the native format of the gui elements
+
+	// Generic
+	int selected_tab;
+	// Client options
+	bool fancy_trees;
+	bool smooth_lighting;
+	bool clouds_3d;
+	bool opaque_water;
+	bool mip_map;
+	bool anisotropic_filter;
+	bool bilinear_filter;
+	bool trilinear_filter;
+	bool hotbar;
+	f32 volume;
+	//int enable_shaders;
+	bool particles;
+	bool fullscreen;
+};
+
+class GUISettingsMenu: public GUIModalMenu
 {
 public:
-	GUIKeyChangeMenu(gui::IGUIEnvironment* env, gui::IGUIElement* parent,
+	GUISettingsMenu(gui::IGUIEnvironment* env, gui::IGUIElement* parent,
 			s32 id, IMenuManager *menumgr);
-	~GUIKeyChangeMenu();
+	~GUISettingsMenu();
 
 	void removeChildren();
 	/*
@@ -78,45 +122,17 @@ public:
 	bool OnEvent(const SEvent& event);
 
 private:
+	SettingsMenuData m_data;
+	bool m_accepted;
+	v2u32 m_screensize;
 
 	void init_keys();
-
+	void save();
 	bool resetMenu();
 
-	gui::IGUIButton *forward;
-	gui::IGUIButton *backward;
-	gui::IGUIButton *left;
-	gui::IGUIButton *right;
-	gui::IGUIButton *use;
-	gui::IGUIButton *sneak;
-	gui::IGUIButton *jump;
-	gui::IGUIButton *inventory;
-	gui::IGUIButton *fly;
-	gui::IGUIButton *fast;
-	gui::IGUIButton *range;
-	gui::IGUIButton *dump;
-	gui::IGUIButton *chat;
-	gui::IGUIButton *cmd;
-	gui::IGUIButton *next_item;
-	gui::IGUIButton *prev_item;
-
+	wchar_t* keynames[VLKC_MAX];
 	s32 activeKey;
-	KeyPress key_forward;
-	KeyPress key_backward;
-	KeyPress key_left;
-	KeyPress key_right;
-	KeyPress key_use;
-	KeyPress key_sneak;
-	KeyPress key_jump;
-	KeyPress key_inventory;
-	KeyPress key_fly;
-	KeyPress key_fast;
-	KeyPress key_range;
-	KeyPress key_chat;
-	KeyPress key_cmd;
-	KeyPress key_dump;
-	KeyPress key_next_item;
-	KeyPress key_prev_item;
+	KeyPress keys[VLKC_MAX];
 };
 
 #endif

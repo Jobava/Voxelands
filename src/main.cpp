@@ -1218,19 +1218,6 @@ int main(int argc, char *argv[])
 				menudata.address = narrow_to_wide(address);
 				menudata.name = narrow_to_wide(playername);
 				menudata.port = narrow_to_wide(itos(port));
-				menudata.fancy_trees = g_settings->getBool("new_style_leaves");
-				menudata.smooth_lighting = g_settings->getBool("smooth_lighting");
-				menudata.clouds_3d = g_settings->getBool("enable_3d_clouds");
-				menudata.opaque_water = g_settings->getBool("opaque_water");
-				menudata.fullscreen = g_settings->getBool("fullscreen");
-				menudata.particles = g_settings->getBool("enable_particles");
-				menudata.mip_map = g_settings->getBool("mip_map");
-				menudata.anisotropic_filter = g_settings->getBool("anisotropic_filter");
-				menudata.bilinear_filter = g_settings->getBool("bilinear_filter");
-				menudata.trilinear_filter = g_settings->getBool("trilinear_filter");
-				menudata.hotbar = g_settings->getBool("old_hotbar");
-				menudata.volume = g_settings->getFloat("sound_volume");
-				driver->setTextureCreationFlag(video::ETCF_CREATE_MIP_MAPS, menudata.mip_map);
 				menudata.game_mode = narrow_to_wide(g_settings->get("game_mode"));
 				menudata.max_mob_level = narrow_to_wide(g_settings->get("max_mob_level"));
 				menudata.initial_inventory = g_settings->getBool("initial_inventory");
@@ -1343,18 +1330,6 @@ int main(int argc, char *argv[])
 				int newport = mywstoi(menudata.port);
 				if (newport != 0)
 					port = newport;
-				g_settings->set("new_style_leaves", itos(menudata.fancy_trees));
-				g_settings->set("smooth_lighting", itos(menudata.smooth_lighting));
-				g_settings->set("enable_3d_clouds", itos(menudata.clouds_3d));
-				g_settings->set("opaque_water", itos(menudata.opaque_water));
-				g_settings->set("mip_map", itos(menudata.mip_map));
-				g_settings->set("anisotropic_filter", itos(menudata.anisotropic_filter));
-				g_settings->set("bilinear_filter", itos(menudata.bilinear_filter));
-				g_settings->set("trilinear_filter", itos(menudata.trilinear_filter));
-				g_settings->set("fullscreen", itos(menudata.fullscreen));
-				g_settings->set("enable_particles", itos(menudata.particles));
-				g_settings->set("old_hotbar", itos(menudata.hotbar));
-				g_settings->set("sound_volume",ftos(menudata.volume));
 				g_settings->set("game_mode", wide_to_narrow(menudata.game_mode));
 				g_settings->set("max_mob_level", wide_to_narrow(menudata.max_mob_level));
 				g_settings->set("initial_inventory", itos(menudata.initial_inventory));
