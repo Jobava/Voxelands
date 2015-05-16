@@ -37,7 +37,6 @@ class KeyPress
 public:
 	KeyPress();
 	KeyPress(const char *name);
-
 	KeyPress(const irr::SEvent::SKeyInput &in, bool prefer_character=false);
 
 	bool operator==(const KeyPress &o) const
@@ -46,8 +45,16 @@ public:
 			(valid_kcode(Key) && Key == o.Key);
 	}
 
+	void operator=(const KeyPress &o)
+	{
+		Key = o.Key;
+		Char = o.Char;
+		m_name = o.m_name;
+	}
+
 	const char *sym() const;
 	const char *name() const;
+	const wchar_t *guiName() const;
 
 	std::string debug() const;
 protected:
@@ -100,6 +107,7 @@ enum KeyCode {
 
 // Key configuration getter
 KeyPress getKeySetting(KeyCode code);
+void saveKeySetting(KeyPress &key, KeyCode code);
 
 // Clear fast lookup cache
 void clearKeyCache();
