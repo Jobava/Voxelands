@@ -722,7 +722,7 @@ void MobSAO::step(float dtime, bool send_recommended)
 			dir.normalize();
 			float speed = BS;
 			if (mot == MM_SEEKER && m.level == MOB_AGGRESSIVE && disturbing_player)
-				speed = BS * 2.0;
+				speed = BS * 3.0;
 			if (m_falling)
 				speed = BS * 3.0;
 
