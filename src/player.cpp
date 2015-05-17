@@ -1007,7 +1007,11 @@ void LocalPlayer::applyControl(float dtime)
 	if (control.fast) {
 		if (speed.X || speed.Y || speed.Z)
 			m_energy -= dtime;
-		speed = speed.normalize() * walkspeed_max * 3.0;
+		if (control.free) {
+			speed = speed.normalize() * walkspeed_max * 6.0;
+		}else{
+			speed = speed.normalize() * walkspeed_max * 3.0;
+		}
 	}else{
 		if (control.digging) {
 			m_energy -= dtime*0.2;
