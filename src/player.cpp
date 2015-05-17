@@ -949,9 +949,12 @@ void LocalPlayer::applyControl(float dtime)
 			// Use the oscillating value for getting out of water
 			// (so that the player doesn't fly on the surface)
 			v3f speed = getSpeed();
-			speed.Y = 1.5*BS;
+			speed.Y = 1.2*BS;
 			setSpeed(speed);
 			swimming_up = true;
+			m_energy -= dtime;
+		}else if (in_water_stable) {
+			m_energy -= dtime;
 		}
 	}
 	if (control.up) {
@@ -970,10 +973,13 @@ void LocalPlayer::applyControl(float dtime)
 			speed.Y = 1.5*BS;
 			setSpeed(speed);
 			swimming_up = true;
+			m_energy -= dtime;
 		}else if (is_climbing) {
 	                v3f speed = getSpeed();
 			speed.Y = 3*BS;
 			setSpeed(speed);
+		}else if (in_water_stable) {
+			m_energy -= dtime;
 		}
 	}
 	if (control.down) {
@@ -1001,7 +1007,7 @@ void LocalPlayer::applyControl(float dtime)
 	if (control.fast) {
 		if (speed.X || speed.Y || speed.Z)
 			m_energy -= dtime;
-		speed = speed.normalize() * walkspeed_max * 5.0;
+		speed = speed.normalize() * walkspeed_max * 3.0;
 	}else{
 		if (control.digging) {
 			m_energy -= dtime*0.2;
