@@ -1259,7 +1259,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					}
 				}
 			}
-			data->m_env->getMap().addNodeWithEvent(p+blockpos_nodes,n);
 		}
 		break;
 		/*
@@ -1408,7 +1407,6 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					}
 				}
 			}
-			data->m_env->getMap().addNodeWithEvent(p+blockpos_nodes,n);
 		}
 		break;
 		case CDT_WIRELIKE:
