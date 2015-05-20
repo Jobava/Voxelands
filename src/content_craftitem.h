@@ -42,6 +42,9 @@ struct CraftItemFeatures {
 	s16 edible;
 	// the number dropped on right click, -1 for all
 	s16 drop_count;
+	// if this teleports the player home, -2 = no, -1 = default home
+	// 0-7 for specific flag colours
+	s8 teleports;
 	// used by mobs that are picked up
 	content_t drop_item;
 	// used by snowballs and such... things that are thrown
@@ -58,6 +61,7 @@ struct CraftItemFeatures {
 		fuel_time(0.0),
 		edible(0),
 		drop_count(-1),
+		teleports(-2),
 		drop_item(CONTENT_IGNORE),
 		thrown_item(CONTENT_IGNORE),
 		shot_item(CONTENT_IGNORE)
@@ -171,5 +175,13 @@ CraftItemFeatures & content_craftitem_features(std::string subname);
 #define CONTENT_CRAFTITEM_LEATHER_BLACK (CONTENT_CRAFTITEM_MASK | 0x6A)
 #define CONTENT_CRAFTITEM_ARROW (CONTENT_CRAFTITEM_MASK | 0x6B)
 #define CONTENT_CRAFTITEM_FERTILIZER (CONTENT_CRAFTITEM_MASK | 0x6C)
+#define CONTENT_CRAFTITEM_OERKKI_DUST_WHITE (CONTENT_CRAFTITEM_MASK | 0x6D)
+#define CONTENT_CRAFTITEM_OERKKI_DUST_BLUE (CONTENT_CRAFTITEM_MASK | 0x6E)
+#define CONTENT_CRAFTITEM_OERKKI_DUST_GREEN (CONTENT_CRAFTITEM_MASK | 0x6F)
+#define CONTENT_CRAFTITEM_OERKKI_DUST_ORANGE (CONTENT_CRAFTITEM_MASK | 0x70)
+#define CONTENT_CRAFTITEM_OERKKI_DUST_PURPLE (CONTENT_CRAFTITEM_MASK | 0x71)
+#define CONTENT_CRAFTITEM_OERKKI_DUST_RED (CONTENT_CRAFTITEM_MASK | 0x72)
+#define CONTENT_CRAFTITEM_OERKKI_DUST_YELLOW (CONTENT_CRAFTITEM_MASK | 0x73)
+#define CONTENT_CRAFTITEM_OERKKI_DUST_BLACK (CONTENT_CRAFTITEM_MASK | 0x74)
 
 #endif

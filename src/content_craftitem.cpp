@@ -1,3 +1,28 @@
+/************************************************************************
+* Minetest-c55
+* Copyright (C) 2010-2011 celeron55, Perttu Ahola <celeron55@gmail.com>
+*
+* content_craftitem.cpp
+* voxelands - 3d voxel world sandbox game
+* Copyright (C) Lisa 'darkrose' Milne 2013-2015 <lisa@ltmnet.com>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but
+* WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+* See the GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>
+*
+* License updated from GPLv2 or later to GPLv3 or later by Lisa Milne
+* for Voxelands.
+************************************************************************/
+
 #include "content_craftitem.h"
 #include "content_mapnode.h"
 #include "content_craft.h"
@@ -5,6 +30,7 @@
 #include "content_list.h"
 #include <map>
 #include "intl.h"
+#include "player.h"
 
 std::map<content_t,struct CraftItemFeatures> g_content_craftitem_features;
 
@@ -684,6 +710,7 @@ void content_craftitem_init()
 	f->name = "oerkki_dust";
 	f->description = wgettext("Oerkki Dust");
 	f->drop_count = 1;
+	f->teleports = PLAYERFLAG_HOME; // teleports player to default home location
 	lists::add("creative",i);
 
 	i = CONTENT_CRAFTITEM_FISH;
@@ -1121,4 +1148,99 @@ void content_craftitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
+	i = CONTENT_CRAFTITEM_OERKKI_DUST_WHITE;
+	f = &g_content_craftitem_features[i];
+	f->content = i;
+	f->texture = "oerkki_dust_white.png";
+	f->name = "oerkki_dust_white";
+	f->description = wgettext("White Oerkki Dust");
+	f->drop_count = 1;
+	f->teleports = PLAYERFLAG_WHITE;
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_OERKKI_DUST,CONTENT_CRAFTITEM_DYE_WHITE,CONTENT_CRAFTITEM_OERKKI_DUST_WHITE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_OERKKI_DUST_BLUE;
+	f = &g_content_craftitem_features[i];
+	f->content = i;
+	f->texture = "oerkki_dust_blue.png";
+	f->name = "oerkki_dust_blue";
+	f->description = wgettext("Blue Oerkki Dust");
+	f->drop_count = 1;
+	f->teleports = PLAYERFLAG_BLUE;
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_OERKKI_DUST,CONTENT_CRAFTITEM_DYE_BLUE,CONTENT_CRAFTITEM_OERKKI_DUST_BLUE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_OERKKI_DUST_GREEN;
+	f = &g_content_craftitem_features[i];
+	f->content = i;
+	f->texture = "oerkki_dust_green.png";
+	f->name = "oerkki_dust_green";
+	f->description = wgettext("Green Oerkki Dust");
+	f->drop_count = 1;
+	f->teleports = PLAYERFLAG_GREEN;
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_OERKKI_DUST,CONTENT_CRAFTITEM_DYE_GREEN,CONTENT_CRAFTITEM_OERKKI_DUST_GREEN);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_OERKKI_DUST_ORANGE;
+	f = &g_content_craftitem_features[i];
+	f->content = i;
+	f->texture = "oerkki_dust_orange.png";
+	f->name = "oerkki_dust_orange";
+	f->description = wgettext("Orange Oerkki Dust");
+	f->drop_count = 1;
+	f->teleports = PLAYERFLAG_ORANGE;
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_OERKKI_DUST,CONTENT_CRAFTITEM_DYE_ORANGE,CONTENT_CRAFTITEM_OERKKI_DUST_ORANGE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_OERKKI_DUST_PURPLE;
+	f = &g_content_craftitem_features[i];
+	f->content = i;
+	f->texture = "oerkki_dust_purple.png";
+	f->name = "oerkki_dust_purple";
+	f->description = wgettext("Purple Oerkki Dust");
+	f->drop_count = 1;
+	f->teleports = PLAYERFLAG_PURPLE;
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_OERKKI_DUST,CONTENT_CRAFTITEM_DYE_PURPLE,CONTENT_CRAFTITEM_OERKKI_DUST_PURPLE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_OERKKI_DUST_RED;
+	f = &g_content_craftitem_features[i];
+	f->content = i;
+	f->texture = "oerkki_dust_red.png";
+	f->name = "oerkki_dust_red";
+	f->description = wgettext("Red Oerkki Dust");
+	f->drop_count = 1;
+	f->teleports = PLAYERFLAG_RED;
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_OERKKI_DUST,CONTENT_CRAFTITEM_DYE_RED,CONTENT_CRAFTITEM_OERKKI_DUST_RED);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_OERKKI_DUST_YELLOW;
+	f = &g_content_craftitem_features[i];
+	f->content = i;
+	f->texture = "oerkki_dust_yellow.png";
+	f->name = "oerkki_dust_yellow";
+	f->description = wgettext("Yellow Oerkki Dust");
+	f->drop_count = 1;
+	f->teleports = PLAYERFLAG_YELLOW;
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_OERKKI_DUST,CONTENT_CRAFTITEM_DYE_YELLOW,CONTENT_CRAFTITEM_OERKKI_DUST_YELLOW);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_OERKKI_DUST_BLACK;
+	f = &g_content_craftitem_features[i];
+	f->content = i;
+	f->texture = "oerkki_dust_black.png";
+	f->name = "oerkki_dust_black";
+	f->description = wgettext("Black Oerkki Dust");
+	f->drop_count = 1;
+	f->teleports = PLAYERFLAG_BLACK;
+	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_OERKKI_DUST,CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_CRAFTITEM_OERKKI_DUST_BLACK);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
 }

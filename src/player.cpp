@@ -64,6 +64,9 @@ Player::Player():
 	m_given_clothes(false)
 {
 	updateName("<not set>");
+	for (u8 i=0; i<PLAYERFLAG_COUNT; i++) {
+		m_hasflag[i] = false;
+	}
 	resetInventory();
 }
 
@@ -196,6 +199,14 @@ void Player::serialize(std::ostream &os)
 	args.setS32("hunger", hunger);
 	if (m_hashome)
 		args.setV3F("home",m_home);
+	const char* flags[8] = {"white","blue","green","orange","purple","red","yellow","black"};
+	for (u16 i=0; i<8; i++) {
+		std::string n("flag_");
+		n += flags[i];
+		if (!m_hasflag[i])
+			continue;
+		args.setV3F(n,m_flag[i]);
+	}
 	if (m_given_clothes)
 		args.set("clothes_given","true");
 
@@ -253,6 +264,19 @@ void Player::deSerialize(std::istream &is)
 	}else{
 		m_hashome = false;
 	}
+	const char* flags[8] = {"white","blue","green","orange","purple","red","yellow","black"};
+	for (u16 i=0; i<8; i++) {
+		std::string n("flag_");
+		n += flags[i];
+		m_hasflag[i] = args.exists(n);
+		if (!m_hasflag[i])
+			continue;
+		m_flag[i] = args.getV3F(n);
+		if (!m_hashome) {
+			m_home = m_flag[i];
+			m_hashome = true;
+		}
+	}
 	if (args.exists("clothes_given")) {
 		m_given_clothes = args.getBool("clothes_given");
 	}else{
@@ -263,18 +287,51 @@ void Player::deSerialize(std::istream &is)
 	checkInventory();
 }
 
-bool Player::getHome(v3f &h)
+bool Player::getHome(s8 i, v3f &h)
 {
-	if (!m_hashome)
-		return false;
-	h = m_home;
+	if (i == PLAYERFLAG_HOME) {
+		if (!m_hashome)
+			return false;
+		h = m_home;
+	}else if (i > PLAYERFLAG_HOME && i < PLAYERFLAG_COUNT) {
+		if (!m_hasflag[i])
+			return false;
+		h = m_flag[i];
+	}
 	return true;
 }
 
-void Player::setHome(v3f h)
+void Player::setHome(s8 i, v3f h)
 {
+	if (i > PLAYERFLAG_HOME && i < PLAYERFLAG_COUNT) {
+		m_flag[i] = h;
+		m_hasflag[i] = true;
+	}
 	m_home = h;
 	m_hashome = true;
+}
+
+void Player::unsetHome(s8 i)
+{
+	bool reset = false;
+	if (i == PLAYERFLAG_HOME) {
+		reset = true;
+	}else if (i > PLAYERFLAG_HOME && i < PLAYERFLAG_COUNT) {
+		if (m_hashome && m_hasflag[i] && m_home == m_flag[i])
+			reset = true;
+		m_hasflag[i] = false;
+	}
+	if (!reset)
+		return;
+
+	m_hashome = false;
+
+	for (u8 i=0; i<PLAYERFLAG_COUNT; i++) {
+		if (!m_hasflag[i])
+			continue;
+		m_hashome = true;
+		m_home = m_flag[i];
+	}
 }
 
 v3f Player::getScale()

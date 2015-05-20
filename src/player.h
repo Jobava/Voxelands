@@ -44,6 +44,17 @@
 #define PLAYERANIM_WALKDIG 3
 #define PLAYERANIM_DIE 4
 
+#define PLAYERFLAG_HOME -1
+#define PLAYERFLAG_WHITE 0
+#define PLAYERFLAG_BLUE 1
+#define PLAYERFLAG_GREEN 2
+#define PLAYERFLAG_ORANGE 3
+#define PLAYERFLAG_PURPLE 4
+#define PLAYERFLAG_RED 5
+#define PLAYERFLAG_YELLOW 6
+#define PLAYERFLAG_BLACK 7
+#define PLAYERFLAG_COUNT 8
+
 class Map;
 
 class Player
@@ -181,9 +192,9 @@ public:
 
 	u16 peer_id;
 
-	bool getHome(v3f &h);
-	void setHome(v3f h);
-	void unsetHome() {m_hashome = false;}
+	bool getHome(s8 i, v3f &h);
+	void setHome(s8 i, v3f h);
+	void unsetHome(s8 i);
 
 	f32 getArmourProtection()
 	{
@@ -267,6 +278,8 @@ protected:
 	v3f m_position;
 	v3f m_home;
 	bool m_hashome;
+	v3f m_flag[PLAYERFLAG_COUNT];
+	bool m_hasflag[PLAYERFLAG_COUNT];
 	std::string m_character;
 	bool m_given_clothes;
 
