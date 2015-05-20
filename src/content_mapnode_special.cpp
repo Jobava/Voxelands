@@ -24,6 +24,7 @@
 #include "content_list.h"
 #include "content_craft.h"
 #include "content_nodemeta.h"
+#include "player.h"
 #include "intl.h"
 
 void content_mapnode_special(bool repeat)
@@ -1688,7 +1689,7 @@ void content_mapnode_special(bool repeat)
 	f->air_equivalent = true; // grass grows underneath
 	content_nodebox_flag(f);
 	f->setInventoryTextureNodeBox(i,"flag.png","flag.png","flag_end.png");
-	f->home_node = true;
+	f->home_node = PLAYERFLAG_WHITE;
 	f->type = CMT_WOOD;
 	f->hardness = 0.4;
 	f->suffocation_per_second = 0;
@@ -1738,7 +1739,7 @@ void content_mapnode_special(bool repeat)
 	f->air_equivalent = true; // grass grows underneath
 	content_nodebox_flag(f);
 	f->setInventoryTextureNodeBox(i,"flag_blue.png","flag_blue.png","flag_blue_end.png");
-	f->home_node = true;
+	f->home_node = PLAYERFLAG_BLUE;
 	f->type = CMT_WOOD;
 	f->hardness = 0.4;
 	f->suffocation_per_second = 0;
@@ -1767,7 +1768,7 @@ void content_mapnode_special(bool repeat)
 	f->air_equivalent = true; // grass grows underneath
 	content_nodebox_flag(f);
 	f->setInventoryTextureNodeBox(i,"flag_green.png","flag_green.png","flag_green_end.png");
-	f->home_node = true;
+	f->home_node = PLAYERFLAG_GREEN;
 	f->type = CMT_WOOD;
 	f->hardness = 0.4;
 	f->suffocation_per_second = 0;
@@ -1796,7 +1797,7 @@ void content_mapnode_special(bool repeat)
 	f->air_equivalent = true; // grass grows underneath
 	content_nodebox_flag(f);
 	f->setInventoryTextureNodeBox(i,"flag_orange.png","flag_orange.png","flag_orange_end.png");
-	f->home_node = true;
+	f->home_node = PLAYERFLAG_ORANGE;
 	f->type = CMT_WOOD;
 	f->hardness = 0.4;
 	f->suffocation_per_second = 0;
@@ -1825,7 +1826,7 @@ void content_mapnode_special(bool repeat)
 	f->air_equivalent = true; // grass grows underneath
 	content_nodebox_flag(f);
 	f->setInventoryTextureNodeBox(i,"flag_purple.png","flag_purple.png","flag_purple_end.png");
-	f->home_node = true;
+	f->home_node = PLAYERFLAG_PURPLE;
 	f->type = CMT_WOOD;
 	f->hardness = 0.4;
 	f->suffocation_per_second = 0;
@@ -1854,7 +1855,7 @@ void content_mapnode_special(bool repeat)
 	f->air_equivalent = true; // grass grows underneath
 	content_nodebox_flag(f);
 	f->setInventoryTextureNodeBox(i,"flag_red.png","flag_red.png","flag_red_end.png");
-	f->home_node = true;
+	f->home_node = PLAYERFLAG_RED;
 	f->type = CMT_WOOD;
 	f->hardness = 0.4;
 	f->suffocation_per_second = 0;
@@ -1883,7 +1884,7 @@ void content_mapnode_special(bool repeat)
 	f->air_equivalent = true; // grass grows underneath
 	content_nodebox_flag(f);
 	f->setInventoryTextureNodeBox(i,"flag_yellow.png","flag_yellow.png","flag_yellow_end.png");
-	f->home_node = true;
+	f->home_node = PLAYERFLAG_YELLOW;
 	f->type = CMT_WOOD;
 	f->hardness = 0.4;
 	f->suffocation_per_second = 0;
@@ -1912,7 +1913,7 @@ void content_mapnode_special(bool repeat)
 	f->air_equivalent = true; // grass grows underneath
 	content_nodebox_flag(f);
 	f->setInventoryTextureNodeBox(i,"flag_black.png","flag_black.png","flag_black_end.png");
-	f->home_node = true;
+	f->home_node = PLAYERFLAG_BLACK;
 	f->type = CMT_WOOD;
 	f->hardness = 0.4;
 	f->suffocation_per_second = 0;

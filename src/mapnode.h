@@ -435,7 +435,7 @@ struct ContentFeatures
 	u32 pressure_per_second;
 
 	// can be used to set the users respawn position
-	bool home_node;
+	s8 home_node;
 
 	// NOTE: Move relevant properties to here from elsewhere
 
@@ -514,7 +514,7 @@ struct ContentFeatures
 		suffocation_per_second = 4;
 		warmth_per_second = 0;
 		pressure_per_second = 0;
-		home_node = false;
+		home_node = -1;
 	}
 
 	ContentFeatures()

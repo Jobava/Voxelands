@@ -3347,8 +3347,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					}
 					sendRemoveNode(p_under, 0, &far_players, 30);
 				}else{
-					if (content_features(n).home_node)
-						player->unsetHome();
+					if (content_features(n).home_node > -1)
+						player->unsetHome(content_features(n).home_node);
 					if (n.getContent() == CONTENT_FLOWER_POT) {
 						MapNode a = m_env.getMap().getNodeNoEx(p_under+v3s16(0,1,0));
 						if (
@@ -4104,10 +4104,10 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					}
 				}
 
-				if (content_features(n).home_node) {
+				if (content_features(n).home_node > -1) {
 					v3f player_home = intToFloat(p_under,BS);
 					player_home.Y += 0.6*BS;
-					player->setHome(player_home);
+					player->setHome(content_features(n).home_node,player_home);
 					std::string msg = std::string("Server: -!- Your home is now set to ")+itos(p_under.X)+","+itos(p_under.Y+1)+","+itos(p_under.Z);
 					SendChatMessage(player->peer_id,narrow_to_wide(msg).c_str());
 				}
@@ -4372,7 +4372,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						continue;
 					client->SetBlocksNotSent(modified_blocks);
 				}
-			}else if (item->getContent() == CONTENT_CRAFTITEM_OERKKI_DUST) {
+			}else if (content_craftitem_features(item->getContent()).teleports > -2) {
 				/*
 					If in creative mode, item dropping is disabled unless
 					player has build privileges
@@ -4406,7 +4406,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					SendInventory(peer_id);
 				}
 				v3f pos;
-				if (!player->getHome(pos))
+				if (!player->getHome(content_craftitem_features(item->getContent()).teleports,pos) && !player->getHome(PLAYERFLAG_HOME,pos))
 					pos = findSpawnPos(m_env.getServerMap());
 				player->setPosition(pos);
 				SendMovePlayer(player);
@@ -5925,7 +5925,7 @@ void Server::HandlePlayerHP(Player *player, s16 damage, s16 suffocate, s16 hunge
 void Server::RespawnPlayer(Player *player)
 {
 	v3f pos;
-	if (!player->getHome(pos))
+	if (!player->getHome(PLAYERFLAG_HOME,pos))
 		pos = findSpawnPos(m_env.getServerMap());
 	player->setPosition(pos);
 	player->hp = 20;
