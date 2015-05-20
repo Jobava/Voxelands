@@ -1500,7 +1500,7 @@ std::string CraftGuideNodeMetadata::getDrawSpecString()
 		snprintf(rbuff,256,gettext("Recipe %d of %d"),(int)(m_recipe+1),rc);
 		spec += "button[2.5,3.5;1,0.75;rprev;<<]";
 		spec += "label[3.5,3.5;";
-		spec += buff;
+		spec += rbuff;
 		spec += "]";
 		spec += "button[5.5,3.5;1,0.75;rnext;>>]";
 	}
