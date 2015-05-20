@@ -1511,7 +1511,7 @@ std::string CraftGuideNodeMetadata::getDrawSpecString()
 		spec += itos(tr);
 		// this overflows into the craft grid... but could be cool
 		//spec += " ";
-		//spec += q->getGuiName();
+		//spec += wide_to_narrow(q->getGuiName());
 		spec += "]";
 	}
 	spec +=	"list[current_name;recipe;4,0;3,3;]";
