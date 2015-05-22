@@ -48,7 +48,7 @@ enum MobMotion
 	MM_SENTRY,
 	MM_THROWN,
 	MM_CONSTANT,
-	MM_FOLLOW
+	MM_RAILED
 };
 
 enum MobMotionType
@@ -84,6 +84,13 @@ enum MobDrawType
 	MDT_BLOCK,
 	MDT_SPRITE,
 	MDT_EXTRUDED
+};
+
+enum MobType
+{
+	MT_CREATURE = 0,
+	MT_NPC,
+	MT_OTHER
 };
 
 
@@ -151,6 +158,8 @@ struct MobFeatures {
 	s16 spawn_chance;
 	s16 spawn_nearest_player;
 	s16 spawn_farthest_player;
+
+	MobType type;
 
 	MobFeatures()
 	{
@@ -280,6 +289,7 @@ struct MobFeatures {
 		spawn_chance = 1;
 		spawn_nearest_player = 0;
 		spawn_farthest_player = 0;
+		type = MT_CREATURE;
 	}
 };
 

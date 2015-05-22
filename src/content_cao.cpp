@@ -227,7 +227,6 @@ void ItemCAO::updateVisual()
 // Prototype
 MobCAO proto_MobCAO;
 
-
 MobCAO::MobCAO():
 	ClientActiveObject(0),
 	m_selection_box(-0.4*BS,-0.4*BS,-0.4*BS, 0.4*BS,0.8*BS,0.4*BS),
@@ -246,7 +245,9 @@ MobCAO::MobCAO():
 	m_next_foot(0),
 	m_draw_type(MDT_AUTO)
 {
-	ClientActiveObject::registerType(getType(), create);
+	ClientActiveObject::registerType(ACTIVEOBJECT_TYPE_CREATURE, create);
+	ClientActiveObject::registerType(ACTIVEOBJECT_TYPE_NPC, create);
+	ClientActiveObject::registerType(ACTIVEOBJECT_TYPE_MOB, create);
 }
 MobCAO::~MobCAO()
 {
@@ -396,12 +397,15 @@ void MobCAO::updateNodePos()
 	m_node->setPosition(offset-intToFloat(m_camera_offset, BS));
 
 	v3f rot = m_node->getRotation();
+	float yaw = pos_translator.yaw_show;
+	if (content_mob_features(m_content).type == MT_OTHER)
+		yaw = m_yaw;
 	if (m_draw_type == MDT_MODEL || m_draw_type == MDT_BLOCK) {
-		rot.Y = (90-pos_translator.yaw_show)+content_mob_features(m_content).model_rotation.Y;
+		rot.Y = (90-yaw)+content_mob_features(m_content).model_rotation.Y;
 	}else if (m_draw_type == MDT_SPRITE) {
-		rot.Y = pos_translator.yaw_show+content_mob_features(m_content).model_rotation.Y;
+		rot.Y = yaw+content_mob_features(m_content).model_rotation.Y;
 	}else if (m_draw_type == MDT_EXTRUDED) {
-		rot.Y = (180-pos_translator.yaw_show)+content_mob_features(m_content).model_rotation.Y;
+		rot.Y = (180-yaw)+content_mob_features(m_content).model_rotation.Y;
 	}
 	m_node->setRotation(rot);
 }
@@ -589,10 +593,12 @@ bool MobCAO::directReportPunch(content_t punch_item, v3f dir)
 
 	m_damage_visual_timer = 0.05;
 
-	m_position += dir * BS;
-	pos_translator.sharpen();
-	pos_translator.update(m_position,m_yaw);
-	updateNodePos();
+	if (m.type == MT_CREATURE) {
+		m_position += dir * BS;
+		pos_translator.sharpen();
+		pos_translator.update(m_position,m_yaw);
+		updateNodePos();
+	}
 
 	return false;
 }

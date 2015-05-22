@@ -140,6 +140,8 @@ bool content_mob_spawn(ServerEnvironment *env, v3s16 pos, u32 active_object_coun
 
 	for (u16 i=0; i<CONTENT_MOB_COUNT; i++) {
 		MobFeatures m = g_content_mob_features[i];
+		if (m.type != MT_CREATURE)
+			continue;
 		if (m.spawn_in == CONTENT_IGNORE && m.spawn_on == CONTENT_IGNORE)
 			continue;
 		if (m.spawn_max_nearby_mobs < active_object_count)
@@ -191,7 +193,7 @@ bool content_mob_spawn(ServerEnvironment *env, v3s16 pos, u32 active_object_coun
 
 	v3f p = intToFloat(pos+v3s16(0,1,0), BS);
 	actionstream<<"A mob of type "<<m.content<<" spawns at "<<PP(floatToInt(p,BS))<<std::endl;
-	ServerActiveObject *obj = new MobSAO(env, 0, p, m.content);
+	ServerActiveObject *obj = new CreatureSAO(env, 0, p, m.content);
 	u16 id = env->addActiveObject(obj);
 	if (!id) {
 		actionstream<<"A mob of type "<<m.content<<" didn't spawn at "<<PP(floatToInt(p,BS))<<std::endl;
@@ -354,22 +356,6 @@ void content_mob_init()
 	f->attack_throw_offset = v3f(0,1.4,-1.0);
 	f->lifetime = 600.0;
 	f->setCollisionBox(aabb3f(-0.75*BS, 0.*BS, -0.75*BS, 0.75*BS, 2.0*BS, 0.75*BS));
-
-	i = CONTENT_MOB_FIREBALL;
-	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
-	f->content = i;
-	f->level = MOB_DESTRUCTIVE;
-	f->setTexture("mob_fireball.png");
-	f->punch_action = MPA_IGNORE;
-	f->motion = MM_CONSTANT;
-	f->motion_type = MMT_FLY;
-	f->glow_light = LIGHT_MAX-1;
-	f->notices_player = true;
-	f->moves_silently = true;
-	f->attack_player_damage = 3;
-	f->attack_player_range = v3f(2,2,2);
-	f->contact_explosion_diameter = 3;
-	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.));
 
 	i = CONTENT_MOB_DOE;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
@@ -596,9 +582,27 @@ void content_mob_init()
 	f->lifetime = 1800.0;
 	f->setCollisionBox(aabb3f(-0.4*BS, 0., -0.4*BS, 0.4*BS, 1.*BS, 0.4*BS));
 
+	i = CONTENT_MOB_FIREBALL;
+	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
+	f->content = i;
+	f->type = MT_OTHER;
+	f->level = MOB_DESTRUCTIVE;
+	f->setTexture("mob_fireball.png");
+	f->punch_action = MPA_IGNORE;
+	f->motion = MM_CONSTANT;
+	f->motion_type = MMT_FLY;
+	f->glow_light = LIGHT_MAX-1;
+	f->notices_player = true;
+	f->moves_silently = true;
+	f->attack_player_damage = 3;
+	f->attack_player_range = v3f(2,2,2);
+	f->contact_explosion_diameter = 3;
+	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.));
+
 	i = CONTENT_MOB_SNOWBALL;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
+	f->type = MT_OTHER;
 	f->level = MOB_AGGRESSIVE;
 	f->setTexture("snow_ball.png");
 	f->model_offset = v3f(0,0.2,0);
@@ -617,6 +621,7 @@ void content_mob_init()
 	i = CONTENT_MOB_ARROW;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
+	f->type = MT_OTHER;
 	f->level = MOB_AGGRESSIVE;
 	f->setTexture("mob_arrow.png");
 	f->texture_display = MDT_EXTRUDED;
@@ -635,6 +640,7 @@ void content_mob_init()
 	i = CONTENT_MOB_CART;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
+	f->type = MT_OTHER;
 	f->level = MOB_PASSIVE;
 	f->setNodeBox(NodeBox(
 		-0.3125*BS,-0.375*BS,-0.5*BS,0.3125*BS,-0.125*BS,0.5*BS
@@ -671,9 +677,9 @@ void content_mob_init()
 	f->setBoxTexture(4,"mob_cart_end.png");
 	f->setBoxTexture(5,"mob_cart_end.png");
 	f->model_offset = v3f(0,0.3125,0);
-	f->punch_action = MPA_PICKUP;
+	f->punch_action = MPA_MOVE;
 	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_CART)+" 1";
-	f->motion = MM_FOLLOW;
+	f->motion = MM_RAILED;
 	f->motion_type = MMT_WALK;
 	f->lifetime = 0.0;
 	f->setCollisionBox(aabb3f(-BS*0.5,0.0,-BS*0.5, BS*0.5,BS*0.75,BS*0.5));

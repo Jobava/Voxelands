@@ -100,6 +100,7 @@ enum ContentDrawType
 	CDT_AIRLIKE,
 	CDT_CUBELIKE,
 	CDT_RAILLIKE,
+	CDT_RAILLIKE_STRAIGHT, // this cannot be a curve, turnout, or crossing
 	CDT_PLANTLIKE,
 	CDT_PLANTLIKE_SML,
 	CDT_PLANTLIKE_LGE,
@@ -327,6 +328,8 @@ struct ContentFeatures
 	u8 visual_solidness; // When solidness=0, this tells how it looks like
 	// This is used for collision detection.
 	// Also for general solidness queries.
+	// true if you can walk on it
+	// false if you can walk through it
 	bool walkable;
 	// Player can point to these
 	bool pointable;

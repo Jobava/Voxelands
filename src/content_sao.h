@@ -55,14 +55,14 @@ private:
 	content_t m_content;
 };
 
-class MobSAO : public ServerActiveObject
+class CreatureSAO : public ServerActiveObject
 {
 public:
-	MobSAO(ServerEnvironment *env, u16 id, v3f pos, content_t type);
-	MobSAO(ServerEnvironment *env, u16 id, v3f pos, v3f speed, content_t type);
-	virtual ~MobSAO();
+	CreatureSAO(ServerEnvironment *env, u16 id, v3f pos, content_t type);
+	CreatureSAO(ServerEnvironment *env, u16 id, v3f pos, v3f speed, content_t type);
+	virtual ~CreatureSAO();
 	u8 getType() const
-		{return ACTIVEOBJECT_TYPE_MOB;}
+		{return ACTIVEOBJECT_TYPE_CREATURE;}
 	static ServerActiveObject* create(ServerEnvironment *env, u16 id, v3f pos,
 			const std::string &data);
 	std::string getStaticData();
@@ -87,8 +87,6 @@ private:
 	void stepMotionWander(float dtime);
 	void stepMotionSeeker(float dtime);
 	void stepMotionSentry(float dtime);
-	void stepMotionThrown(float dtime);
-	void stepMotionConstant(float dtime);
 
 	bool checkFreePosition(v3s16 p0);
 	bool checkWalkablePosition(v3s16 p0);
@@ -120,6 +118,53 @@ private:
 	bool m_shooting;
 	float m_shooting_timer;
 	float m_shoot_y;
+	float m_last_sound;
+};
+
+class MobSAO : public ServerActiveObject
+{
+public:
+	MobSAO(ServerEnvironment *env, u16 id, v3f pos, content_t type);
+	MobSAO(ServerEnvironment *env, u16 id, v3f pos, v3f speed, content_t type);
+	virtual ~MobSAO();
+	u8 getType() const
+		{return ACTIVEOBJECT_TYPE_MOB;}
+	static ServerActiveObject* create(ServerEnvironment *env, u16 id, v3f pos,
+			const std::string &data);
+	std::string getStaticData();
+	std::string getClientInitializationData();
+	void step(float dtime, bool send_recommended);
+	InventoryItem* createPickedUpItem(content_t punch_item);
+	u16 punch(content_t punch_item, v3f dir, const std::string &playername);
+	bool rightClick(Player *player);
+	u8 level();
+	content_t getContent() {return m_content;}
+private:
+	void sendPosition();
+
+	void stepMotionThrown(float dtime);
+	void stepMotionConstant(float dtime);
+	void stepMotionRailed(float dtime);
+
+	bool checkFreePosition(v3s16 p0);
+	bool checkWalkablePosition(v3s16 p0);
+	bool checkFreeAndWalkablePosition(v3s16 p0);
+	void explodeSquare(v3s16 p0, v3s16 size);
+
+	content_t m_content;
+	v3f m_speed;
+	v3f m_dir;
+	v3f m_last_sent_position;
+	float m_last_sent_yaw;
+	v3f m_oldpos;
+	v3f m_initial_pos;
+	float m_yaw;
+	bool m_falling;
+	bool m_next_pos_exists;
+	v3s16 m_next_pos_i;
+
+	std::string m_attached_player;
+
 	float m_last_sound;
 };
 

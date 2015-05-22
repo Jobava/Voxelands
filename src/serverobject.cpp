@@ -53,21 +53,6 @@ ServerActiveObject* ServerActiveObject::create(u8 type,
 	core::map<u16, Factory>::Node *n;
 	n = m_types.find(type);
 	if (n == NULL) {
-		// convert old creatures to new
-		switch (type) {
-		case ACTIVEOBJECT_TYPE_RAT:
-			return new MobSAO(env,id,pos,CONTENT_MOB_RAT);
-			break;
-		case ACTIVEOBJECT_TYPE_OERKKI1:
-			return new MobSAO(env,id,pos,CONTENT_MOB_OERKKI);
-			break;
-		case ACTIVEOBJECT_TYPE_FIREFLY:
-			return new MobSAO(env,id,pos,CONTENT_MOB_FIREFLY);
-			break;
-		case ACTIVEOBJECT_TYPE_MOBV2:
-			return new MobSAO(env,id,pos,CONTENT_MOB_DUNGEON_MASTER);
-			break;
-		}
 		// If factory is not found, just return.
 		dstream<<"WARNING: ServerActiveObject: No factory for type="
 				<<type<<std::endl;

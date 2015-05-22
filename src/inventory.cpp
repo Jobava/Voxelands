@@ -208,7 +208,13 @@ ServerActiveObject* CraftItem::createSAO(ServerEnvironment *env, u16 id, v3f pos
 	if ((content_craftitem_features(m_content).drop_item&CONTENT_MOB_MASK) == CONTENT_MOB_MASK) {
 		v3f p = pos;
 		p.Y += 0.5*BS;
-		ServerActiveObject *obj = new MobSAO(env,id,p,content_craftitem_features(m_content).drop_item);
+		ServerActiveObject *obj = NULL;
+		content_t c = content_craftitem_features(m_content).drop_item;
+		if (content_mob_features(c).type == MT_CREATURE) {
+			obj = new CreatureSAO(env,id,p,c);
+		}else{
+			obj = new MobSAO(env,id,p,c);
+		}
 		if (obj)
 			return obj;
 	}

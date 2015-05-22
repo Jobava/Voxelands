@@ -1967,6 +1967,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 		}
 		break;
 		case CDT_RAILLIKE:
+		case CDT_RAILLIKE_STRAIGHT:
 		{
 			bool is_rail_x [] = { false, false };  /* x-1, x+1 */
 			bool is_rail_z [] = { false, false };  /* z-1, z+1 */
@@ -2026,8 +2027,12 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 			// reasonable default, flat straight unrotated rail
 			bool is_straight = true;
 			int adjacencies = 0;
+			bool force_straight = false;
 			int angle = 0;
 			u8 tileindex = 0;
+
+			if (content_features(n).draw_type == CDT_RAILLIKE_STRAIGHT)
+				force_straight = true;
 
 			// check for sloped rail
 			if (is_rail_x_plus_y[0] || is_rail_x_plus_y[1] || is_rail_z_plus_y[0] || is_rail_z_plus_y[1]) {
@@ -2035,7 +2040,7 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				is_straight = true; // sloped is always straight
 			}else{
 				// is really straight, rails on both sides
-				is_straight = (is_rail_x_all[0] && is_rail_x_all[1]) || (is_rail_z_all[0] && is_rail_z_all[1]);
+				is_straight = force_straight || (is_rail_x_all[0] && is_rail_x_all[1]) || (is_rail_z_all[0] && is_rail_z_all[1]);
 				adjacencies = is_rail_x_all[0] + is_rail_x_all[1] + is_rail_z_all[0] + is_rail_z_all[1];
 			}
 
@@ -2062,7 +2067,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 				break;
 			case 3:
 				// here is where the potential to 'switch' a junction is, but not implemented at present
-				tileindex = 2; // t-junction
+				if (!force_straight)
+					tileindex = 2; // t-junction
 				if(!is_rail_x_all[1])
 					angle=180;
 				if(!is_rail_z_all[0])
@@ -2071,7 +2077,8 @@ void mapblock_mesh_generate_special(MeshMakeData *data,
 					angle=270;
 				break;
 			case 4:
-				tileindex = 3; // crossing
+				if (!force_straight)
+					tileindex = 3; // crossing
 				break;
 			case 5: //sloped
 				if(is_rail_z_plus_y[0])

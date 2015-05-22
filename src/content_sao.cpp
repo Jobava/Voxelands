@@ -374,13 +374,13 @@ static void get_random_u32_array(u32 a[], u32 len)
 
 
 /*
-	MobSAO
+	CreatureSAO
 */
 
 // Prototype
-MobSAO proto_MobSAO(NULL, 0, v3f(0,0,0), CONTENT_IGNORE);
+CreatureSAO proto_CreatureSAO(NULL, 0, v3f(0,0,0), CONTENT_IGNORE);
 
-MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, content_t type):
+CreatureSAO::CreatureSAO(ServerEnvironment *env, u16 id, v3f pos, content_t type):
 	ServerActiveObject(env, id, pos),
 	m_content(type),
 	m_speed(0,0,0),
@@ -410,7 +410,7 @@ MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, content_t type):
 		m_special_count = content_mob_features(type).special_dropped_max;
 	}
 }
-MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, v3f speed, content_t type):
+CreatureSAO::CreatureSAO(ServerEnvironment *env, u16 id, v3f pos, v3f speed, content_t type):
 	ServerActiveObject(env, id, pos),
 	m_content(type),
 	m_speed(speed),
@@ -440,10 +440,10 @@ MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, v3f speed, content_t typ
 		m_special_count = content_mob_features(type).special_dropped_max;
 	}
 }
-MobSAO::~MobSAO()
+CreatureSAO::~CreatureSAO()
 {
 }
-ServerActiveObject* MobSAO::create(ServerEnvironment *env, u16 id, v3f pos, const std::string &data)
+ServerActiveObject* CreatureSAO::create(ServerEnvironment *env, u16 id, v3f pos, const std::string &data)
 {
 	std::istringstream is(data, std::ios::binary);
 	char buf[1];
@@ -458,7 +458,7 @@ ServerActiveObject* MobSAO::create(ServerEnvironment *env, u16 id, v3f pos, cons
 	c = content_mob_features(c).content;
 	if (c == CONTENT_IGNORE)
 		return NULL;
-	MobSAO *o = new MobSAO(env,id,pos,c);
+	CreatureSAO *o = new CreatureSAO(env,id,pos,c);
 	o->m_base_position = p;
 	o->m_yaw = readF1000(is);
 	o->m_speed = readV3F1000(is);
@@ -466,7 +466,7 @@ ServerActiveObject* MobSAO::create(ServerEnvironment *env, u16 id, v3f pos, cons
 	o->m_hp = readU8(is);
 	return o;
 }
-std::string MobSAO::getStaticData()
+std::string CreatureSAO::getStaticData()
 {
 	std::ostringstream os(std::ios::binary);
 	// version
@@ -487,7 +487,7 @@ std::string MobSAO::getStaticData()
 	writeU8(os,(u8)m_shooting);
 	return os.str();
 }
-std::string MobSAO::getClientInitializationData()
+std::string CreatureSAO::getClientInitializationData()
 {
 	std::ostringstream os(std::ios::binary);
 	// version
@@ -502,7 +502,7 @@ std::string MobSAO::getClientInitializationData()
 	writeU8(os,(u8)m_shooting);
 	return os.str();
 }
-void MobSAO::step(float dtime, bool send_recommended)
+void CreatureSAO::step(float dtime, bool send_recommended)
 {
 	MobFeatures m = content_mob_features(m_content);
 	Player *disturbing_player = NULL;
@@ -614,7 +614,7 @@ void MobSAO::step(float dtime, bool send_recommended)
 				infostream<<__FUNCTION_NAME<<": Mob id="<<m_id
 						<<" shooting from "<<PP(pos)
 						<<" at speed "<<PP(speed)<<std::endl;
-				ServerActiveObject *obj = new MobSAO(m_env, 0, pos, speed, m.attack_throw_object);
+				ServerActiveObject *obj = new CreatureSAO(m_env, 0, pos, speed, m.attack_throw_object);
 				m_env->addActiveObject(obj);
 			}
 
@@ -679,12 +679,20 @@ void MobSAO::step(float dtime, bool send_recommended)
 			ServerActiveObject *obj = (ServerActiveObject*)objects[i].obj;
 			if (obj->getId() == m_id)
 				continue;
-			if (obj->getType() == ACTIVEOBJECT_TYPE_MOB) {
-				((MobSAO*)obj)->doDamage(m.attack_mob_damage);
+			switch (obj->getType()) {
+			case ACTIVEOBJECT_TYPE_CREATURE:
+				((CreatureSAO*)obj)->doDamage(m.attack_mob_damage);
 				hit = true;
-			}else if (obj->getType() == ACTIVEOBJECT_TYPE_ITEM) {
+				break;
+			case ACTIVEOBJECT_TYPE_MOB:
+				((MobSAO*)obj)->m_removed = true;
+				hit = true;
+				break;
+			case ACTIVEOBJECT_TYPE_ITEM:
 				((ItemSAO*)obj)->m_removed = true;
 				hit = true;
+				break;
+			default:;
 			}
 		}
 		if (hit)
@@ -753,10 +761,6 @@ void MobSAO::step(float dtime, bool send_recommended)
 		}
 	}else if (mot == MM_SENTRY) {
 		stepMotionSentry(dtime);
-	}else if (mot == MM_THROWN) {
-		stepMotionThrown(dtime);
-	}else if (mot == MM_CONSTANT) {
-		stepMotionConstant(dtime);
 	}
 
 	if (send_recommended == false)
@@ -765,7 +769,7 @@ void MobSAO::step(float dtime, bool send_recommended)
 	if (m_base_position.getDistanceFrom(m_last_sent_position) > 0.1*BS)
 		sendPosition();
 }
-void MobSAO::stepMotionWander(float dtime)
+void CreatureSAO::stepMotionWander(float dtime)
 {
 	MobFeatures m = content_mob_features(m_content);
 	v3s16 pos_i = floatToInt(m_base_position, BS);
@@ -929,7 +933,7 @@ void MobSAO::stepMotionWander(float dtime)
 		}
 	}
 }
-void MobSAO::stepMotionSeeker(float dtime)
+void CreatureSAO::stepMotionSeeker(float dtime)
 {
 	MobFeatures m = content_mob_features(m_content);
 	v3s16 pos_i = floatToInt(m_base_position, BS);
@@ -1102,7 +1106,7 @@ void MobSAO::stepMotionSeeker(float dtime)
 		}
 	}
 }
-void MobSAO::stepMotionSentry(float dtime)
+void CreatureSAO::stepMotionSentry(float dtime)
 {
 	MobFeatures m = content_mob_features(m_content);
 	v3s16 pos_i = floatToInt(m_base_position, BS);
@@ -1241,8 +1245,470 @@ void MobSAO::stepMotionSentry(float dtime)
 		}
 	}
 }
+bool CreatureSAO::checkFreePosition(v3s16 p0)
+{
+	assert(m_env);
+	Map *map = &m_env->getMap();
+	v3s16 size = content_mob_features(m_content).getSizeBlocks();
+	if (content_mob_features(m_content).motion_type == MMT_SWIM) {
+		for (int dx=0; dx<size.X; dx++)
+		for (int dy=0; dy<size.Y; dy++)
+		for (int dz=0; dz<size.Z; dz++) {
+			v3s16 dp(dx, dy, dz);
+			v3s16 p = p0 + dp;
+			MapNode n = map->getNodeNoEx(p);
+			if (n.getContent() != CONTENT_WATERSOURCE)
+				return false;
+		}
+	}else{
+		for (int dx=0; dx<size.X; dx++)
+		for (int dy=0; dy<size.Y; dy++)
+		for (int dz=0; dz<size.Z; dz++) {
+			v3s16 dp(dx, dy, dz);
+			v3s16 p = p0 + dp;
+			MapNode n = map->getNodeNoEx(p);
+			if (n.getContent() != CONTENT_AIR && content_features(n).walkable)
+				return false;
+			if (content_features(n).liquid_type == LIQUID_SOURCE)
+				return false;
+		}
+	}
+	MapNode n = map->getNodeNoEx(p0+v3s16(0,-1,0));
+	if (!content_features(n).jumpable)
+		return false;
+	return true;
+}
+bool CreatureSAO::checkWalkablePosition(v3s16 p0)
+{
+	assert(m_env);
+	v3s16 p = p0 + v3s16(0,-1,0);
+	MapNode n = m_env->getMap().getNodeNoEx(p);
+	if (n.getContent() != CONTENT_AIR) {
+		if (content_features(n).liquid_type == LIQUID_NONE && content_features(n).walkable)
+			return true;
+	}
+	return false;
+}
+bool CreatureSAO::checkFreeAndWalkablePosition(v3s16 p0)
+{
+	if (!checkFreePosition(p0))
+		return false;
+	if (!checkWalkablePosition(p0))
+		return false;
+	return true;
+}
+void CreatureSAO::explodeSquare(v3s16 p0, v3s16 size)
+{
+	assert(m_env);
+	Map *map = &m_env->getMap();
+	core::map<v3s16, MapBlock*> modified_blocks;
+
+	if (content_mob_features(m_content).level != MOB_DESTRUCTIVE) {
+		if (m_env->searchNear(p0,size+v3s16(5,5,5),CONTENT_BORDERSTONE,NULL))
+			return;
+	}
+
+	for (int dx=0; dx<size.X; dx++)
+	for (int dy=0; dy<size.Y; dy++)
+	for (int dz=0; dz<size.Z; dz++) {
+		v3s16 dp(dx - size.X/2, dy - size.Y/2, dz - size.Z/2);
+		v3s16 p = p0 + dp;
+		MapNode n = map->getNodeNoEx(p);
+		if (n.getContent() == CONTENT_IGNORE)
+			continue;
+		if (content_features(n).destructive_mob_safe)
+			continue;
+		map->removeNodeAndUpdate(p, modified_blocks);
+	}
+
+	// Send a MEET_OTHER event
+	MapEditEvent event;
+	event.type = MEET_OTHER;
+	for (core::map<v3s16, MapBlock*>::Iterator i = modified_blocks.getIterator(); i.atEnd() == false; i++) {
+		v3s16 p = i.getNode()->getKey();
+		event.modified_blocks.insert(p, true);
+	}
+	map->dispatchEvent(&event);
+}
+InventoryItem* CreatureSAO::createPickedUpItem(content_t punch_item)
+{
+	MobFeatures m = content_mob_features(m_content);
+	ToolItemFeatures f = content_toolitem_features(punch_item);
+	if (m.punch_action != MPA_PICKUP) {
+		if (!m_removed) {
+			if (m.special_dropped_item != CONTENT_IGNORE && (m.special_punch_item == TT_NONE || f.type == m.special_punch_item)) {
+				if (m.special_dropped_max > 0) {
+					if (m_special_count < m.special_dropped_count)
+						return NULL;
+					m_special_count -= m.special_dropped_count;
+					if (m_special_count < 0) {
+						m_special_count = 0;
+						return NULL;
+					}
+				}else{
+					m_removed = true;
+				}
+				return InventoryItem::create(m.special_dropped_item,m.special_dropped_count);
+			}
+			return NULL;
+		}
+	}
+	if (m.dropped_item == "")
+		return NULL;
+	std::istringstream is(m.dropped_item, std::ios_base::binary);
+	InventoryItem *item = InventoryItem::deSerialize(is);
+	if (!m_removed)
+		m_removed = true;
+	return item;
+}
+u16 CreatureSAO::punch(content_t punch_item, v3f dir, const std::string &playername)
+{
+	MobFeatures m = content_mob_features(m_content);
+	if (m.sound_punch != "")
+		m_env->addEnvEvent(ENV_EVENT_SOUND,m_base_position,m.sound_punch);
+	if (m.punch_action == MPA_IGNORE)
+		return 0;
+	ToolItemFeatures f = content_toolitem_features(punch_item);
+	u16 wear = 655;
+
+	actionstream<<playername<<" punches mob id="<<m_id
+			<<" with a \""<<wide_to_narrow(f.description)<<"\" at "
+			<<PP(m_base_position/BS)<<std::endl;
+
+	if (m.special_dropped_item != CONTENT_IGNORE && (m.special_punch_item == TT_NONE || f.type == m.special_punch_item))
+		return 0;
+
+	if (m.punch_action == MPA_HARM) {
+		m_disturb_timer = 0;
+		m_disturbing_player = playername;
+		m_next_pos_exists = false; // Cancel moving immediately
+		m_angry = true;
+
+		m_yaw = wrapDegrees_180(180./PI*atan2(dir.Z, dir.X) + 180.);
+		v3f new_base_position = m_base_position + dir * BS;
+		{
+			v3s16 pos_i = floatToInt(new_base_position, BS);
+			v3s16 pos_size_off(0,0,0);
+			if (m.getSize().X >= 2.5) {
+				pos_size_off.X = -1;
+				pos_size_off.Y = -1;
+			}
+			bool free = checkFreePosition(pos_i + pos_size_off);
+			if (free)
+				m_base_position = new_base_position;
+		}
+		sendPosition();
+
+
+		u16 amount = 2;
+		if (f.type == TT_SWORD) {
+			amount = 4*((f.hardness/100)+1);
+			wear = 65535/f.hardness;
+		}else if (f.type == TT_SPEAR) {
+			amount = 2*((f.hardness/100)+1);
+			wear = 65535/f.hardness;
+		}else if (f.type == TT_AXE || f.type == TT_PICK) {
+			amount = ((f.hardness/200)+1);
+		}
+		doDamage(amount);
+	}else if (m.punch_action == MPA_DIE) {
+		m_hp = 0;
+		m_removed = true;
+	}
+
+	return wear;
+}
+bool CreatureSAO::rightClick(Player *player)
+{
+	// so get the player
+	if (!player)
+		return false;
+	// see if mob is tamable
+	MobFeatures m = content_mob_features(m_content);
+	if (m.tamed_mob == CONTENT_IGNORE)
+		return false;
+	// get the wielded item
+	u16 item_i = player->getSelectedItem();
+	InventoryList *ilist = player->inventory.getList("main");
+	if (ilist == NULL)
+		return false;
+	InventoryItem *item = ilist->getItem(item_i);
+	if (!item)
+		return false;
+	// check if it's a craft item
+	content_t c = item->getContent();
+	if ((c&CONTENT_CRAFTITEM_MASK) != CONTENT_CRAFTITEM_MASK)
+		return false;
+	CraftItemFeatures f = content_craftitem_features(c);
+	if (f.content != c)
+		return false;
+	// and edible
+	if (!f.edible)
+		return false;
+	// feed the mob
+	// after this always return true as inventory has been modified
+	if (g_settings->getBool("infinite_inventory") == false && ilist) {
+		// Remove from inventory
+		if (item->getCount() == 1) {
+			ilist->deleteItem(item_i);
+		}else{
+			item->remove(1);
+			ilist->addDiff(item_i,item);
+		}
+	}
+	// tame it maybe
+	if (m.level > MOB_PASSIVE && myrand_range(0,m.level*5) != 0)
+		return true;
+
+	// add new tamed mob
+	ServerActiveObject *obj = new CreatureSAO(m_env, 0, m_base_position, m.tamed_mob);
+	if (obj)
+		m_env->addActiveObject(obj);
+	// delete this one
+	m_removed = true;
+
+	return true;
+}
+u8 CreatureSAO::level()
+{
+	return content_mob_features(m_content).level;
+}
+void CreatureSAO::sendPosition()
+{
+	m_last_sent_position = m_base_position;
+
+	std::ostringstream os(std::ios::binary);
+	// command (0 = update position)
+	writeU8(os, 0);
+	// pos
+	writeV3F1000(os, m_base_position);
+	// yaw
+	writeF1000(os, m_yaw);
+	// create message and add to list
+	ActiveObjectMessage aom(getId(), false, os.str());
+	m_messages_out.push_back(aom);
+}
+void CreatureSAO::doDamage(u16 d)
+{
+	infostream<<"Mob hp="<<((int)m_hp)<<" damage="<<((int)d)<<" age="<<((int)m_age)<<std::endl;
+
+	if (d < m_hp) {
+		m_hp -= d;
+	}else{
+		actionstream<<"A "<<mobLevelS(content_mob_features(m_content).level)
+				<<" mob id="<<m_id<<" dies at "<<PP(m_base_position)<<std::endl;
+		// Die
+		m_hp = 0;
+		m_removed = true;
+	}
+	{
+		std::ostringstream os(std::ios::binary);
+		// command (1 = damage)
+		writeU8(os, 1);
+		// amount
+		writeU16(os, d);
+		// create message and add to list
+		ActiveObjectMessage aom(getId(), false, os.str());
+		m_messages_out.push_back(aom);
+	}
+}
+
+
+
+/*
+	MobSAO
+*/
+
+// Prototype
+MobSAO proto_MobSAO(NULL, 0, v3f(0,0,0), CONTENT_IGNORE);
+
+MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, content_t type):
+	ServerActiveObject(env, id, pos),
+	m_content(type),
+	m_speed(0,0,0),
+	m_dir(0,0,0),
+	m_last_sent_position(0,0,0),
+	m_last_sent_yaw(0),
+	m_oldpos(0,0,0),
+	m_initial_pos(pos),
+	m_yaw(0),
+	m_falling(false),
+	m_next_pos_exists(false),
+	m_last_sound(0)
+{
+	ServerActiveObject::registerType(getType(), create);
+}
+MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, v3f speed, content_t type):
+	ServerActiveObject(env, id, pos),
+	m_content(type),
+	m_speed(speed),
+	m_dir(0,0,0),
+	m_last_sent_position(0,0,0),
+	m_last_sent_yaw(0),
+	m_oldpos(0,0,0),
+	m_initial_pos(pos),
+	m_yaw(0),
+	m_falling(false),
+	m_next_pos_exists(false),
+	m_last_sound(0)
+{
+	ServerActiveObject::registerType(getType(), create);
+}
+MobSAO::~MobSAO()
+{
+}
+ServerActiveObject* MobSAO::create(ServerEnvironment *env, u16 id, v3f pos, const std::string &data)
+{
+	std::istringstream is(data, std::ios::binary);
+	char buf[1];
+	// read version
+	is.read(buf, 1);
+	u8 version = buf[0];
+	// check if version is supported
+	if (version != 0)
+		return NULL;
+	v3f p = readV3F1000(is);
+	content_t c = readU16(is);
+	c = content_mob_features(c).content;
+	if (c == CONTENT_IGNORE)
+		return NULL;
+	MobSAO *o = new MobSAO(env,id,pos,c);
+	o->m_base_position = p;
+	o->m_yaw = readF1000(is);
+	o->m_speed = readV3F1000(is);
+	return o;
+}
+std::string MobSAO::getStaticData()
+{
+	std::ostringstream os(std::ios::binary);
+	// version
+	writeU8(os, 0);
+	// pos
+	writeV3F1000(os, m_base_position);
+	// content
+	writeU16(os,m_content);
+	// yaw
+	writeF1000(os,m_yaw);
+	// speed
+	writeV3F1000(os, m_speed);
+	return os.str();
+}
+std::string MobSAO::getClientInitializationData()
+{
+	std::ostringstream os(std::ios::binary);
+	// version
+	writeU8(os, 1);
+	// pos
+	writeV3F1000(os, m_base_position);
+	// content
+	writeU16(os,m_content);
+	// yaw
+	writeF1000(os,m_yaw);
+	return os.str();
+}
+void MobSAO::step(float dtime, bool send_recommended)
+{
+	MobFeatures m = content_mob_features(m_content);
+
+	m_last_sound += dtime;
+
+	if (m_last_sound > 30.0) {
+		m_last_sound -= 5.0;
+		if (m.sound_random != "" && myrand_range(0,10) == 0) {
+			if (m.sound_random_extra != "" && myrand_range(0,100) == 0) {
+				m_env->addEnvEvent(ENV_EVENT_SOUND,m_base_position,m.sound_random_extra);
+			}else{
+				m_env->addEnvEvent(ENV_EVENT_SOUND,m_base_position,m.sound_random);
+			}
+			m_last_sound -= 30.0;
+		}
+	}
+
+	if (m.attack_mob_damage > 0) {
+		core::array<DistanceSortedActiveObject> objects;
+		f32 range = m.attack_mob_range.X;
+		if (m.attack_mob_range.Y > range)
+			range = m.attack_mob_range.Y;
+		if (m.attack_mob_range.Z > range)
+			range = m.attack_mob_range.Z;
+
+		m_env->getActiveObjects(m_base_position, range*BS, objects);
+
+		// Sort them.
+		// After this, the closest object is the first in the array.
+		objects.sort();
+		bool hit = false;
+
+		for (u32 i=0; i<objects.size() && !hit; i++) {
+			ServerActiveObject *obj = (ServerActiveObject*)objects[i].obj;
+			if (obj->getId() == m_id)
+				continue;
+			switch (obj->getType()) {
+			case ACTIVEOBJECT_TYPE_CREATURE:
+				((CreatureSAO*)obj)->doDamage(m.attack_mob_damage);
+				hit = true;
+				break;
+			case ACTIVEOBJECT_TYPE_MOB:
+				((MobSAO*)obj)->m_removed = true;
+				hit = true;
+				break;
+			case ACTIVEOBJECT_TYPE_ITEM:
+				((ItemSAO*)obj)->m_removed = true;
+				hit = true;
+				break;
+			default:;
+			}
+		}
+		if (hit)
+			m_removed = true;
+	}
+
+	MobMotion mot = m.motion;
+
+	if (mot == MM_THROWN) {
+		stepMotionThrown(dtime);
+	}else if (mot == MM_CONSTANT) {
+		stepMotionConstant(dtime);
+	}else if (mot == MM_RAILED) {
+		stepMotionRailed(dtime);
+	}
+
+	if (send_recommended == false)
+		return;
+
+	if (
+		m_base_position.getDistanceFrom(m_last_sent_position) > 0.1*BS
+		|| fabs(m_last_sent_yaw) > fabs(m_last_sent_yaw)+10
+		|| fabs(m_last_sent_yaw) < fabs(m_last_sent_yaw)-10
+	)
+		sendPosition();
+}
 void MobSAO::stepMotionThrown(float dtime)
 {
+	if (m_next_pos_exists) {
+		v3f pos_f = m_base_position;
+		v3f next_pos_f = intToFloat(m_next_pos_i, BS);
+		v3f diff = next_pos_f - pos_f;
+		v3f dir = diff;
+		dir.normalize();
+		float speed = BS;
+		if (m_falling)
+			speed = BS * 3.0;
+
+		dir *= dtime * speed;
+		bool arrived = false;
+		if (dir.getLength() > diff.getLength()) {
+			dir = diff;
+			arrived = true;
+		}
+		pos_f += dir;
+		m_yaw = wrapDegrees_180(180./PI*atan2(dir.Z, dir.X));
+		m_base_position = pos_f;
+
+		if ((pos_f - next_pos_f).getLength() < 0.1 || arrived)
+			m_next_pos_exists = false;
+	}
+
 	MobFeatures m = content_mob_features(m_content);
 	m_base_position += m_speed * dtime;
 	m_speed.Y -= 10.0*BS*dtime;
@@ -1281,6 +1747,461 @@ void MobSAO::stepMotionConstant(float dtime)
 			explodeSquare(pos_i, v3s16(m.contact_explosion_diameter,m.contact_explosion_diameter,m.contact_explosion_diameter));
 		m_removed = true;
 		return;
+	}
+}
+void MobSAO::stepMotionRailed(float dtime)
+{
+	bool on_rail = false;
+	bool force_straight = false;
+	v3s16 pos_i = floatToInt(m_base_position, BS);
+	m_next_pos_i = floatToInt(m_base_position+v3f(-0.5,0,-0.5), BS);
+	MapNode n = m_env->getMap().getNodeNoEx(pos_i);
+	s8 x_plus = 0;
+	s8 x_minus = 0;
+	s8 z_plus = 0;
+	s8 z_minus = 0;
+	// is it on a raillike node
+	if (content_features(n).draw_type == CDT_RAILLIKE) {
+		on_rail = true;
+	}else if (content_features(n).draw_type == CDT_RAILLIKE_STRAIGHT) {
+		on_rail = true;
+		force_straight = true;
+	}
+	if (!on_rail) {
+		MapNode nu = m_env->getMap().getNodeNoEx(pos_i+v3s16(0,-1,0));
+		if (content_features(nu).draw_type == CDT_RAILLIKE) {
+			on_rail = true;
+			m_next_pos_i.Y -= 1;
+			n = nu;
+		}else if (content_features(nu).draw_type == CDT_RAILLIKE_STRAIGHT) {
+			on_rail = true;
+			force_straight = true;
+			m_next_pos_i.Y -= 1;
+			n = nu;
+		}
+	}
+	bool x_can[2] = {true,true};
+	bool z_can[2] = {true,true};
+	if (!on_rail && content_features(n).walkable) {
+		x_can[0] = false;
+		x_can[1] = false;
+		z_can[0] = false;
+		z_can[1] = false;
+	}
+	// is it actually on the rail, or just placed there
+	// if the latter, put it on the rail
+	if (on_rail) {
+		{
+			bool is_rail_x [] = { false, false };  /* x-1, x+1 */
+			bool is_rail_z [] = { false, false };  /* z-1, z+1 */
+
+			bool is_rail_z_minus_y [] = { false, false };  /* z-1, z+1; y-1 */
+			bool is_rail_x_minus_y [] = { false, false };  /* x-1, z+1; y-1 */
+			bool is_rail_z_plus_y [] = { false, false };  /* z-1, z+1; y+1 */
+			bool is_rail_x_plus_y [] = { false, false };  /* x-1, x+1; y+1 */
+
+			MapNode n_minus_x = m_env->getMap().getNodeNoEx(m_next_pos_i + v3s16(-1,0,0));
+			MapNode n_plus_x = m_env->getMap().getNodeNoEx(m_next_pos_i + v3s16( 1,0,0));
+			MapNode n_minus_z = m_env->getMap().getNodeNoEx(m_next_pos_i + v3s16(0,0,-1));
+			MapNode n_plus_z = m_env->getMap().getNodeNoEx(m_next_pos_i + v3s16(0,0, 1));
+			MapNode n_plus_x_plus_y = m_env->getMap().getNodeNoEx(m_next_pos_i + v3s16( 1,  1, 0));
+			MapNode n_plus_x_minus_y = m_env->getMap().getNodeNoEx(m_next_pos_i + v3s16( 1, -1, 0));
+			MapNode n_minus_x_plus_y = m_env->getMap().getNodeNoEx(m_next_pos_i + v3s16(-1,  1, 0));
+			MapNode n_minus_x_minus_y = m_env->getMap().getNodeNoEx(m_next_pos_i + v3s16(-1, -1, 0));
+			MapNode n_plus_z_plus_y = m_env->getMap().getNodeNoEx(m_next_pos_i + v3s16(0,  1,  1));
+			MapNode n_minus_z_plus_y = m_env->getMap().getNodeNoEx(m_next_pos_i + v3s16(0,  1, -1));
+			MapNode n_plus_z_minus_y = m_env->getMap().getNodeNoEx(m_next_pos_i + v3s16(0, -1,  1));
+			MapNode n_minus_z_minus_y = m_env->getMap().getNodeNoEx(m_next_pos_i + v3s16(0, -1, -1));
+
+			content_t thiscontent = n.getContent();
+
+			if (n_minus_x.getContent() == thiscontent)
+				is_rail_x[0] = true;
+			if (n_minus_x_minus_y.getContent() == thiscontent)
+				is_rail_x_minus_y[0] = true;
+			if (n_minus_x_plus_y.getContent() == thiscontent)
+				is_rail_x_plus_y[0] = true;
+			if (n_plus_x.getContent() == thiscontent)
+				is_rail_x[1] = true;
+			if (n_plus_x_minus_y.getContent() == thiscontent)
+				is_rail_x_minus_y[1] = true;
+			if (n_plus_x_plus_y.getContent() == thiscontent)
+				is_rail_x_plus_y[1] = true;
+			if (n_minus_z.getContent() == thiscontent)
+				is_rail_z[0] = true;
+			if (n_minus_z_minus_y.getContent() == thiscontent)
+				is_rail_z_minus_y[0] = true;
+			if (n_minus_z_plus_y.getContent() == thiscontent)
+				is_rail_z_plus_y[0] = true;
+			if (n_plus_z.getContent() == thiscontent)
+				is_rail_z[1] = true;
+			if (n_plus_z_minus_y.getContent() == thiscontent)
+				is_rail_z_minus_y[1] = true;
+			if (n_plus_z_plus_y.getContent() == thiscontent)
+				is_rail_z_plus_y[1] = true;
+
+			bool is_rail_x_all[] = {false, false};
+			bool is_rail_z_all[] = {false, false};
+			is_rail_x_all[0] = is_rail_x[0] || is_rail_x_minus_y[0] || is_rail_x_plus_y[0];
+			is_rail_x_all[1] = is_rail_x[1] || is_rail_x_minus_y[1] || is_rail_x_plus_y[1];
+			is_rail_z_all[0] = is_rail_z[0] || is_rail_z_minus_y[0] || is_rail_z_plus_y[0];
+			is_rail_z_all[1] = is_rail_z[1] || is_rail_z_minus_y[1] || is_rail_z_plus_y[1];
+
+			// reasonable default, flat straight unrotated rail
+			bool is_straight = true;
+			int adjacencies = 0;
+
+			// check for sloped rail
+			if (is_rail_x_plus_y[0] || is_rail_x_plus_y[1] || is_rail_z_plus_y[0] || is_rail_z_plus_y[1]) {
+				adjacencies = 5; //5 means sloped
+				is_straight = true; // sloped is always straight
+			}else{
+				// is really straight, rails on both sides
+				is_straight = force_straight || (is_rail_x_all[0] && is_rail_x_all[1]) || (is_rail_z_all[0] && is_rail_z_all[1]);
+				adjacencies = is_rail_x_all[0] + is_rail_x_all[1] + is_rail_z_all[0] + is_rail_z_all[1];
+			}
+
+			switch (adjacencies) {
+			case 1:
+				is_straight = true;
+				if (is_rail_x_all[0] || is_rail_x_all[1]) {
+					x_plus = 1;
+					x_minus = 1;
+				}else{
+					z_plus = 1;
+					z_minus = 1;
+				}
+				break;
+			case 2:
+				if (is_rail_x_all[0] && is_rail_x_all[1]) {
+					is_straight = true;
+					x_plus = 1;
+					x_minus = 1;
+				}else if (is_rail_z_all[0] && is_rail_z_all[1]) {
+					is_straight = true;
+					z_plus = 1;
+					z_minus = 1;
+				}else if (!is_straight) {
+					if(is_rail_x_all[0] && is_rail_z_all[0]) {
+						x_minus = 1;
+						z_minus = 1;
+					}else if(is_rail_x_all[0] && is_rail_z_all[1]) {
+						x_minus = 1;
+						z_plus = 1;
+					}else if(is_rail_x_all[1] && is_rail_z_all[1]) {
+						x_plus = 1;
+						z_plus = 1;
+					}else{
+						x_plus = 1;
+						z_minus = 1;
+					}
+				}else{
+					if (is_rail_x_all[0] && is_rail_z_all[0]) {
+						z_plus = 1;
+						z_minus = 1;
+					}else if(is_rail_x_all[0] && is_rail_z_all[1]) {
+						x_plus = 1;
+						x_minus = 1;
+					}else if(is_rail_x_all[1] && is_rail_z_all[1]) {
+						x_plus = 1;
+						x_minus = 1;
+					}else{
+						z_plus = 1;
+						z_minus = 1;
+					}
+				}
+				break;
+			case 3:
+				// here is where the potential to 'switch' a junction is, but not implemented at present
+				if (!force_straight) {
+					is_straight = false;
+					if (!is_rail_x_all[1]) {
+						x_minus = 1;
+						z_plus = 1;
+						z_minus = 1;
+					}else if (!is_rail_z_all[0]) {
+						x_plus = 1;
+						x_minus = 1;
+						z_plus = 1;
+					}else if (!is_rail_z_all[1]) {
+						x_plus = 1;
+						x_minus = 1;
+						z_minus = 1;
+					}else{
+						x_plus = 1;
+						z_plus = 1;
+						z_minus = 1;
+					}
+				}else{
+					if (!is_rail_x_all[1]) {
+						z_plus = 1;
+						z_minus = 1;
+					}else if (!is_rail_z_all[0]) {
+						x_plus = 1;
+						x_minus = 1;
+					}else if (!is_rail_z_all[1]) {
+						x_plus = 1;
+						x_minus = 1;
+					}else{
+						z_plus = 1;
+						z_minus = 1;
+					}
+				}
+				break;
+			case 4:
+				if (!force_straight) { // crossing
+					is_straight = false;
+					x_plus = 1;
+					x_minus = 1;
+					z_plus = 1;
+					z_minus = 1;
+				}else{
+					z_plus = 1;
+					z_minus = 1;
+				}
+				break;
+			case 5: //sloped
+				is_straight = true;
+				if (is_rail_z_plus_y[0]) {
+					z_plus = 1;
+					z_minus = 2;
+				}else if (is_rail_x_plus_y[0]) {
+					x_plus = 1;
+					x_minus = 2;
+				}else if (is_rail_x_plus_y[1]) {
+					x_plus = 2;
+					x_minus = 1;
+				}else{
+					z_plus = 2;
+					z_minus = 1;
+				}
+				break;
+			default:
+				break;
+			}
+			v3f centre = intToFloat(m_next_pos_i,BS)+v3f(0,0.25*BS,0);
+			if (is_straight) { // straight
+				if (x_plus) {
+					z_can[0] = false;
+					z_can[1] = false;
+					m_base_position.Z = centre.Z;
+					m_yaw = 0.0;
+					if (adjacencies == 5) {
+						bool up = true;
+						if (x_plus == 2) {
+							if (m_speed.X > 0.0) {
+								if (m_speed.Y == 0.0)
+									m_speed.Y = m_speed.X;
+							}else{
+								up = false;
+								if (m_speed.Y == 0.0)
+									m_speed.Y = m_speed.X;
+							}
+						}else{
+							if (m_speed.X < 0.0) {
+								if (m_speed.Y == 0.0)
+									m_speed.Y = -m_speed.X;
+							}else{
+								up = false;
+								if (m_speed.Y == 0.0)
+									m_speed.Y = -m_speed.X;
+							}
+						}
+						if (m_base_position.Y > centre.Y) {
+							if (up) {
+								m_speed -= m_speed*dtime;
+							}else{
+								m_speed += m_speed*dtime;
+							}
+						}else{
+							m_base_position.Y = centre.Y;
+						}
+					}else{
+						m_speed.Y = 0.0;
+						m_base_position.Y = centre.Y;
+					}
+				}else{
+					x_can[0] = false;
+					x_can[1] = false;
+					m_base_position.X = centre.X;
+					m_yaw = 90.0;
+					if (adjacencies == 5) {
+						bool up = true;
+						if (z_plus == 2) {
+							if (m_speed.Z > 0.0) {
+								if (m_speed.Y == 0.0)
+									m_speed.Y = m_speed.Z;
+							}else{
+								up = false;
+								if (m_speed.Y == 0.0)
+									m_speed.Y = m_speed.Z;
+							}
+						}else{
+							if (m_speed.Z < 0.0) {
+								if (m_speed.Y == 0.0)
+									m_speed.Y = -m_speed.Z;
+							}else{
+								up = false;
+								if (m_speed.Y == 0.0)
+									m_speed.Y = -m_speed.Z;
+							}
+						}
+						if (m_base_position.Y > centre.Y) {
+							if (up) {
+								m_speed -= m_speed*dtime;
+							}else{
+								m_speed += m_speed*dtime;
+							}
+						}else{
+							m_base_position.Y = centre.Y;
+						}
+					}else{
+						m_speed.Y = 0.0;
+						m_base_position.Y = centre.Y;
+					}
+				}
+			}else if (adjacencies == 3) { // turnout
+				m_base_position.Y = centre.Y;
+				if (m_base_position.Z == centre.Z && !m_speed.Z) {
+				}else if (m_base_position.X == centre.X && !m_speed.X) {
+				}else{
+					m_yaw = 0.0;
+					m_base_position = centre;
+				}
+			}else if (adjacencies == 4) { // crossing
+				m_base_position.Y = centre.Y;
+				if (m_base_position.Z == centre.Z && !m_speed.Z) {
+					z_can[0] = false;
+					z_can[1] = false;
+				}else if (m_base_position.X == centre.X && !m_speed.X) {
+					x_can[0] = false;
+					x_can[1] = false;
+				}else{
+					m_yaw = 0.0;
+					m_base_position = centre;
+				}
+			}else{ // curve
+				m_base_position.Y = centre.Y;
+			}
+		}
+	}
+
+	if ((m_speed.X > -0.1 && m_speed.X < 0.1) || (m_speed.X < 0.0 && !x_can[0]) || (m_speed.X > 0.0 && !x_can[1]))
+		m_speed.X = 0.0;
+	if (m_speed.Y > -0.1 && m_speed.Y < 0.1)
+		m_speed.Y = 0.0;
+	if ((m_speed.Z > -0.1 && m_speed.Z < 0.1) || (m_speed.Z < 0.0 && !z_can[0]) || (m_speed.Z > 0.0 && !z_can[1]))
+		m_speed.Z = 0.0;
+
+	if (m_speed.X == 0.0 && m_speed.Z == 0.0) {
+		if (on_rail) {
+			m_speed.Y = 0.0;
+		}else{
+			MapNode un = m_env->getMap().getNodeNoEx(pos_i+v3s16(0,-1,0));
+			if (content_features(un).walkable == false)
+				m_speed.Y = -3.0*BS;
+		}
+	}else{
+		if ((!x_can[0] && m_speed.X < 0) || (!x_can[1] && m_speed.X > 0))
+			m_speed.X = 0.0;
+		if ((!z_can[0] && m_speed.Z < 0) || (!z_can[1] && m_speed.Z > 0))
+			m_speed.Z = 0.0;
+	}
+	if (m_dir != v3f(0,0,0)) {
+		m_dir *= BS*3;
+		if (m_speed.X == 0.0 && m_speed.Z == 0.0) {
+			if ((x_can[0] && m_dir.X < 0) || (x_can[1] && m_dir.X > 0))
+				m_speed.X = m_dir.X;
+			if ((z_can[0] && m_dir.Z < 0) || (z_can[1] && m_dir.Z > 0))
+				m_speed.Z = m_dir.Z;
+		}else{
+			if (m_speed.X && fabs(m_dir.X) > fabs(m_speed.X))
+				m_speed.X = m_dir.X;
+			if (m_speed.Z && fabs(m_dir.Z) > fabs(m_speed.Z))
+				m_speed.Z = m_dir.Z;
+		}
+	}
+
+	printf("+X:%d -X:%d +Z:%d -Z:%d\n",x_plus,x_minus,z_plus,z_minus);
+	printf("dir:%f,%f,%f speed:%f,%f,%f\n",m_dir.X,m_dir.Y,m_dir.Z,m_speed.X,m_speed.Y,m_speed.Z);
+	m_dir = v3f(0,0,0);
+	{
+		v3s16 np = pos_i;
+		if (m_speed.X > 0.0) {
+			np.X += 1;
+			if (x_plus == 2)
+				np.Y += 1;
+		}else if (m_speed.X < 0.0) {
+			np.X -= 1;
+			if (x_minus == 2)
+				np.Y += 1;
+		}
+		if (m_speed.Z > 0.0) {
+			np.Z += 1;
+			if (z_plus == 2)
+				np.Y += 1;
+		}else if (m_speed.Z < 0.0) {
+			np.Z -= 1;
+			if (z_minus == 2)
+				np.Y += 1;
+		}
+		if (m_speed.X > 5*BS) {
+			m_speed.X = 5*BS;
+		}else if (m_speed.X < -5*BS) {
+			m_speed.X = -5*BS;
+		}
+		if (m_speed.Y > 5*BS) {
+			m_speed.Y = 5*BS;
+		}else if (m_speed.Y < -5*BS) {
+			m_speed.Y = -5*BS;
+		}
+		if (m_speed.Z > 5*BS) {
+			m_speed.Z = 5*BS;
+		}else if (m_speed.Z < -5*BS) {
+			m_speed.Z = -5*BS;
+		}
+		MapNode nn = m_env->getMap().getNodeNoEx(np);
+		ContentFeatures *f = &content_features(nn);
+		if (f->walkable && f->draw_type != CDT_RAILLIKE && f->draw_type != CDT_RAILLIKE_STRAIGHT)
+			m_speed = v3f(0,0,0);
+
+		if (m_speed.X != 0.0 || m_speed.Z != 0.0) {
+			core::array<DistanceSortedActiveObject> objects;
+			m_env->getActiveObjects(m_base_position, BS, objects);
+
+			// Sort them.
+			// After this, the closest object is the first in the array.
+			objects.sort();
+
+			for (u32 i=0; i<objects.size(); i++) {
+				ServerActiveObject *obj = (ServerActiveObject*)objects[i].obj;
+				if (obj->getId() == m_id)
+					continue;
+				if (obj->getType() != ACTIVEOBJECT_TYPE_MOB)
+					continue;
+				MobSAO *s = (MobSAO*)obj;
+				if (content_mob_features(s->getContent()).motion != MM_RAILED)
+					continue;
+				s->m_dir = m_speed/(3*BS);
+			}
+		}
+	}
+
+	if (m_speed.X == 0.0 && m_speed.Z == 0.0) {
+		if (m_speed.Y) {
+			m_base_position += m_speed * dtime;
+			m_speed -= m_speed*(dtime*0.125);
+		}
+	}else{
+		if (on_rail) {
+			m_base_position += m_speed * dtime;
+			m_yaw = wrapDegrees_180(180./PI*atan2(m_speed.Z, m_speed.X));
+			m_speed -= m_speed*(dtime*0.125);
+		}else{
+			m_speed -= m_speed*(dtime*0.25);
+			m_base_position += m_speed * dtime;
+			m_yaw = wrapDegrees_180(180./PI*atan2(m_speed.Z, m_speed.X));
+		}
 	}
 }
 bool MobSAO::checkFreePosition(v3s16 p0)
@@ -1372,31 +2293,18 @@ InventoryItem* MobSAO::createPickedUpItem(content_t punch_item)
 {
 	MobFeatures m = content_mob_features(m_content);
 	ToolItemFeatures f = content_toolitem_features(punch_item);
-	if (m.punch_action != MPA_PICKUP) {
-		if (!m_removed) {
-			if (m.special_dropped_item != CONTENT_IGNORE && (m.special_punch_item == TT_NONE || f.type == m.special_punch_item)) {
-				if (m.special_dropped_max > 0) {
-					if (m_special_count < m.special_dropped_count)
-						return NULL;
-					m_special_count -= m.special_dropped_count;
-					if (m_special_count < 0) {
-						m_special_count = 0;
-						return NULL;
-					}
-				}else{
-					m_removed = true;
-				}
-				return InventoryItem::create(m.special_dropped_item,m.special_dropped_count);
-			}
-			return NULL;
-		}
-	}
-	if (m.dropped_item == "")
+
+	if ((m.punch_action != MPA_PICKUP && m.punch_action != MPA_MOVE) || m.dropped_item == "")
 		return NULL;
+
+	if (m.punch_action == MPA_MOVE && (punch_item&CONTENT_TOOLITEM_MASK) != CONTENT_TOOLITEM_MASK)
+		return NULL;
+
 	std::istringstream is(m.dropped_item, std::ios_base::binary);
 	InventoryItem *item = InventoryItem::deSerialize(is);
 	if (!m_removed)
 		m_removed = true;
+
 	return item;
 }
 u16 MobSAO::punch(content_t punch_item, v3f dir, const std::string &playername)
@@ -1416,42 +2324,21 @@ u16 MobSAO::punch(content_t punch_item, v3f dir, const std::string &playername)
 	if (m.special_dropped_item != CONTENT_IGNORE && (m.special_punch_item == TT_NONE || f.type == m.special_punch_item))
 		return 0;
 
-	if (m.punch_action == MPA_HARM) {
-		m_disturb_timer = 0;
-		m_disturbing_player = playername;
-		m_next_pos_exists = false; // Cancel moving immediately
-		m_angry = true;
-
-		m_yaw = wrapDegrees_180(180./PI*atan2(dir.Z, dir.X) + 180.);
-		v3f new_base_position = m_base_position + dir * BS;
-		{
-			v3s16 pos_i = floatToInt(new_base_position, BS);
-			v3s16 pos_size_off(0,0,0);
-			if (m.getSize().X >= 2.5) {
-				pos_size_off.X = -1;
-				pos_size_off.Y = -1;
-			}
-			bool free = checkFreePosition(pos_i + pos_size_off);
-			if (free)
-				m_base_position = new_base_position;
-		}
-		sendPosition();
-
-
-		u16 amount = 2;
-		if (f.type == TT_SWORD) {
-			amount = 4*((f.hardness/100)+1);
-			wear = 65535/f.hardness;
-		}else if (f.type == TT_SPEAR) {
-			amount = 2*((f.hardness/100)+1);
-			wear = 65535/f.hardness;
-		}else if (f.type == TT_AXE || f.type == TT_PICK) {
-			amount = ((f.hardness/200)+1);
-		}
-		doDamage(amount);
-	}else if (m.punch_action == MPA_DIE) {
-		m_hp = 0;
+	if (m.punch_action == MPA_DIE)
 		m_removed = true;
+
+	if (m.punch_action == MPA_MOVE) {
+		if ((punch_item&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+			m_removed = true;
+		}else{
+			Player *player = m_env->getPlayer(playername.c_str());
+			if (player) {
+				v3f player_off = player->getPosition() - m_base_position;
+				v3f player_norm = player_off;
+				player_norm.normalize();
+				m_dir = v3f(player_norm.X*-1,0,player_norm.Z*-1.0);
+			}
+		}
 	}
 
 	return wear;
@@ -1461,51 +2348,10 @@ bool MobSAO::rightClick(Player *player)
 	// so get the player
 	if (!player)
 		return false;
-	// see if mob is tamable
+
 	MobFeatures m = content_mob_features(m_content);
-	if (m.tamed_mob == CONTENT_IGNORE)
-		return false;
-	// get the wielded item
-	u16 item_i = player->getSelectedItem();
-	InventoryList *ilist = player->inventory.getList("main");
-	if (ilist == NULL)
-		return false;
-	InventoryItem *item = ilist->getItem(item_i);
-	if (!item)
-		return false;
-	// check if it's a craft item
-	content_t c = item->getContent();
-	if ((c&CONTENT_CRAFTITEM_MASK) != CONTENT_CRAFTITEM_MASK)
-		return false;
-	CraftItemFeatures f = content_craftitem_features(c);
-	if (f.content != c)
-		return false;
-	// and edible
-	if (!f.edible)
-		return false;
-	// feed the mob
-	// after this always return true as inventory has been modified
-	if (g_settings->getBool("infinite_inventory") == false && ilist) {
-		// Remove from inventory
-		if (item->getCount() == 1) {
-			ilist->deleteItem(item_i);
-		}else{
-			item->remove(1);
-			ilist->addDiff(item_i,item);
-		}
-	}
-	// tame it maybe
-	if (m.level > MOB_PASSIVE && myrand_range(0,m.level*5) != 0)
-		return true;
 
-	// add new tamed mob
-	ServerActiveObject *obj = new MobSAO(m_env, 0, m_base_position, m.tamed_mob);
-	if (obj)
-		m_env->addActiveObject(obj);
-	// delete this one
-	m_removed = true;
-
-	return true;
+	return false;
 }
 u8 MobSAO::level()
 {
@@ -1514,6 +2360,7 @@ u8 MobSAO::level()
 void MobSAO::sendPosition()
 {
 	m_last_sent_position = m_base_position;
+	m_last_sent_yaw = m_yaw;
 
 	std::ostringstream os(std::ios::binary);
 	// command (0 = update position)
@@ -1525,28 +2372,4 @@ void MobSAO::sendPosition()
 	// create message and add to list
 	ActiveObjectMessage aom(getId(), false, os.str());
 	m_messages_out.push_back(aom);
-}
-void MobSAO::doDamage(u16 d)
-{
-	infostream<<"Mob hp="<<((int)m_hp)<<" damage="<<((int)d)<<" age="<<((int)m_age)<<std::endl;
-
-	if (d < m_hp) {
-		m_hp -= d;
-	}else{
-		actionstream<<"A "<<mobLevelS(content_mob_features(m_content).level)
-				<<" mob id="<<m_id<<" dies at "<<PP(m_base_position)<<std::endl;
-		// Die
-		m_hp = 0;
-		m_removed = true;
-	}
-	{
-		std::ostringstream os(std::ios::binary);
-		// command (1 = damage)
-		writeU8(os, 1);
-		// amount
-		writeU16(os, d);
-		// create message and add to list
-		ActiveObjectMessage aom(getId(), false, os.str());
-		m_messages_out.push_back(aom);
-	}
 }
