@@ -991,7 +991,7 @@ void LocalPlayer::applyControl(float dtime)
 		speed += move_direction.crossProduct(v3f(0,1,0));
 	if (control.right)
 		speed += move_direction.crossProduct(v3f(0,-1,0));
-	if (control.jump) {
+	if (control.jump && !control.free) {
 		if (touching_ground) {
 			v3f speed = getSpeed();
 			/*
@@ -999,9 +999,10 @@ void LocalPlayer::applyControl(float dtime)
 				raising the height at which the jump speed is kept
 				at its starting value
 			*/
+			if (speed.Y < 6*BS)
+				m_energy -= 0.6;
 			speed.Y = 6.5*BS;
 			setSpeed(speed);
-			m_energy -= 0.75;
 		}else if (in_water) {
 			// Use the oscillating value for getting out of water
 			// (so that the player doesn't fly on the surface)
