@@ -2661,7 +2661,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					client->SetBlocksNotSent(modified_blocks);
 					client->SetBlockNotSent(blockpos);
 				}
-			}else if (n.getContent() >= CONTENT_DOOR_MIN && n.getContent() <= CONTENT_DOOR_MAX) {
+			}else if (n.getContent() >= CONTENT_DOOR_MIN && n.getContent() <= CONTENT_DOOR_MAX && (!wield || wield->getContent() != CONTENT_TOOLITEM_CROWBAR)) {
 				v3s16 mp(0,1,0);
 				if ((n.getContent()&CONTENT_DOOR_SECT_MASK) == CONTENT_DOOR_SECT_MASK)
 					mp.Y = -1;
@@ -2951,10 +2951,13 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					block->raiseModified(MOD_STATE_WRITE_NEEDED);
 				setBlockNotSent(blockpos);
 			}else if (
-				content_features(n).param_type == CPT_FACEDIR_SIMPLE
-				|| content_features(n).param2_type == CPT_FACEDIR_SIMPLE
-				|| content_features(n).param_type == CPT_FACEDIR_WALLMOUNT
-				|| content_features(n).param2_type == CPT_FACEDIR_WALLMOUNT
+				content_features(n).draw_type != CDT_TORCHLIKE
+				&& (
+					content_features(n).param_type == CPT_FACEDIR_SIMPLE
+					|| content_features(n).param2_type == CPT_FACEDIR_SIMPLE
+					|| content_features(n).param_type == CPT_FACEDIR_WALLMOUNT
+					|| content_features(n).param2_type == CPT_FACEDIR_WALLMOUNT
+				)
 			) {
 				if (
 					(
