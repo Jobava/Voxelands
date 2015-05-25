@@ -4026,11 +4026,17 @@ void ClientEnvironment::step(float dtime)
 		{
 			bool safe = false;
 			InventoryList *sl = lplayer->inventory.getList("shirt");
+			InventoryList *jl = lplayer->inventory.getList("jacket");
 			InventoryList *pl = lplayer->inventory.getList("pants");
-			if (sl && pl) {
-				InventoryItem *si = sl->getItem(0);
+			if ((sl || jl) && pl) {
+				InventoryItem *si = NULL;
+				if (sl)
+					si = sl->getItem(0);
+				InventoryItem *ji = NULL;
+				if (jl)
+					ji = jl->getItem(0);
 				InventoryItem *pi = pl->getItem(0);
-				if (si && pi)
+				if ((si || ji) && pi)
 					safe = true;
 			}
 			if (!safe)
