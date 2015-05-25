@@ -3,6 +3,20 @@ Voxelands changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1505.00: (release 2015-05-25)
+ - make wearing a jacket without a shirt also safe from exposure damage
+ - change some crowbar behaviour
+ - fix random fence/wall posts appearing in client
+ - add support for multiple teleport points with coloured oerkki dust
+ - fix multi-recipe support in the craft guide
+ - adjust run speed, slower on the ground, faster in the air
+ - settings menu rewrite
+ - remove fast_move, and make free_move no longer a setting
+ - add use key to eat without dropping food on the ground
+ - new controls
+ - add energy and tool wear progress rings to HUD
+ - 16 bit node id's
+
 1504.01: (release 2015-05-01)
  - fix standalone server not compiling
  - fix windows utf8-multibyte conversion crashing the client
