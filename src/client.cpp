@@ -2365,6 +2365,9 @@ void Client::playDigSound(content_t c)
 		if ((c&CONTENT_MOB_MASK) != 0)
 			return;
 	}
+	if (c == CONTENT_IGNORE)
+		c = CONTENT_AIR;
+
 	sound_playDig(c,m_env.getLocalPlayer()->getPosition());
 }
 
