@@ -836,12 +836,16 @@ void ServerEnvironment::step(float dtime)
 	if (circuitstep || metastep || nodestep) {
 		float circuit_dtime = 0.5;
 		float meta_dtime = 1.0;
+		bool can_daylight = false;
+		if (getTimeOfDay() >= 10000 && getTimeOfDay() < 14000)
+			can_daylight = true;
 		for (std::set<v3s16>::iterator i = m_active_blocks.m_list.begin(); i != m_active_blocks.m_list.end(); i++) {
 			v3s16 bp = *i;
 
 			MapBlock *block = m_map->getBlockNoCreateNoEx(bp);
 			if (block == NULL)
 				continue;
+			bool daylight = can_daylight && !block->getIsUnderground();
 
 			std::list<u16> new_list;
 			for (std::list<u16>::iterator oi = block->m_active_objects.begin(); oi != block->m_active_objects.end(); oi++) {
@@ -2598,6 +2602,27 @@ void ServerEnvironment::step(float dtime)
 					if (p.Y >= 1024 && n.envticks > 1 && !searchNear(p,v3s16(5,5,5),CONTENT_LIFE_SUPPORT,NULL)) {
 						n.setContent(CONTENT_VACUUM);
 						m_map->addNodeWithEvent(p,n);
+					}else if (
+						daylight
+						&& p0.Y > 8
+						&& g_settings->exists("fix_light_bug")
+						&& g_settings->getBool("fix_light_bug") == true
+						&& n.getLightBlend(getDayNightRatio()) < 10
+					) {
+						// CHECK AND FIX!
+						core::map<v3s16, MapBlock*> modified_blocks;
+						m_map->propagateSunlight(p,modified_blocks);
+						// Send a MEET_OTHER event
+						MapEditEvent event;
+						event.type = MEET_OTHER;
+						for(core::map<v3s16, MapBlock*>::Iterator
+							i = modified_blocks.getIterator();
+							i.atEnd() == false; i++)
+						{
+							v3s16 p = i.getNode()->getKey();
+							event.modified_blocks.insert(p, true);
+						}
+						m_map->dispatchEvent(&event);
 					}
 					break;
 				}

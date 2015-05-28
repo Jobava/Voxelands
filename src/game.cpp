@@ -563,7 +563,11 @@ void draw_hud(
 	bool have_hunger,
 	s32 halfhungercount,
 	float energy,
-	int crosshair
+	int crosshair,
+	bool nodeinfo,
+	bool selected,
+	v3s16 pos,
+	MapNode node
 )
 {
 	InventoryList *mainlist = inventory->getList("main");
@@ -904,6 +908,99 @@ void draw_hud(
 			colors,
 			true
 		);
+	}
+
+	if (nodeinfo) {
+		ContentFeatures *f = &content_features(node);
+		std::wstring txt(L"Node: (");
+		txt += itows(pos.X);
+		txt += L",";
+		txt += itows(pos.Y);
+		txt += L",";
+		txt += itows(pos.Z);
+		txt += L") '";
+		txt += f->description;
+		txt += L"' light=";
+		if (f->light_propagates || f->sunlight_propagates) {
+			txt += L"true ";
+		}else{
+			txt += L"false ";
+		}
+		txt += L"param1=";
+		switch (f->param_type) {
+		case CPT_NONE:
+			txt += L"(CPT_NONE)";
+			break;
+		case CPT_LIGHT:
+			txt += L"(CPT_LIGHT)";
+			break;
+		case CPT_MINERAL:
+			txt += L"(CPT_MINERAL)";
+			break;
+		case CPT_FACEDIR_SIMPLE:
+			txt += L"(CPT_FACEDIR_SIMPLE)";
+			break;
+		case CPT_FACEDIR_WALLMOUNT:
+			txt += L"(CPT_FACEDIR_WALLMOUNT)";
+			break;
+		case CPT_LIQUID:
+			txt += L"(CPT_LIQUID)";
+			break;
+		case CPT_SPECIAL:
+			txt += L"(CPT_SPECIAL)";
+			break;
+		default:
+			txt += L"(UNKNOWN)";
+			break;
+		}
+		{
+			char buff[100];
+			sprintf(buff,"(%u)(0x%.2X)",node.param1,node.param1);
+			txt += narrow_to_wide(buff);
+		}
+		txt += L" param2=";
+		switch (f->param2_type) {
+		case CPT_NONE:
+			txt += L"(CPT_NONE)";
+			break;
+		case CPT_LIGHT:
+			txt += L"(CPT_LIGHT)";
+			break;
+		case CPT_MINERAL:
+			txt += L"(CPT_MINERAL)";
+			break;
+		case CPT_FACEDIR_SIMPLE:
+			txt += L"(CPT_FACEDIR_SIMPLE)";
+			break;
+		case CPT_FACEDIR_WALLMOUNT:
+			txt += L"(CPT_FACEDIR_WALLMOUNT)";
+			break;
+		case CPT_LIQUID:
+			txt += L"(CPT_LIQUID)";
+			break;
+		case CPT_SPECIAL:
+			txt += L"(CPT_SPECIAL)";
+			break;
+		default:
+			txt += L"(UNKNOWN)";
+			break;
+		}
+		{
+			char buff[100];
+			sprintf(buff,"(%u)(0x%.2X)",node.param2,node.param2);
+			txt += narrow_to_wide(buff);
+		}
+		if (selected)
+			txt += L" (selected)";
+
+		v2u32 dim = font->getDimension(txt.c_str());
+		v2s32 sdim(dim.X,dim.Y);
+		v2s32 p(100,screensize.Y-200);
+		core::rect<s32> rect2(
+			p,
+			sdim
+		);
+		font->draw(txt.c_str(), rect2, video::SColor(255,255,255,255), false, false, NULL);
 	}
 }
 
@@ -1610,6 +1707,9 @@ void the_game(
 	bool enable_fog = g_settings->getBool("enable_fog");
 	bool old_hotbar = g_settings->getBool("old_hotbar");
 
+	bool has_selected_node = false;
+	v3s16 selected_node_pos = v3s16(0,0,0);
+
 	/*
 		Main loop
 	*/
@@ -2259,6 +2359,7 @@ void the_game(
 			ClientActiveObject *selected_active_object = client.getSelectedActiveObject(d*BS, camera_position, shootline);
 
 			if (selected_active_object != NULL) {
+				has_selected_node = false;
 				client.setPointedContent(selected_active_object->getContent());
 				/* Clear possible cracking animation */
 				if (nodepos_old != v3s16(-32768,-32768,-32768)) {
@@ -2329,7 +2430,10 @@ void the_game(
 						dig_time = 0.0;
 						nodepos_old = v3s16(-32768,-32768,-32768);
 					}
+					has_selected_node = false;
 				}else{
+					has_selected_node = true;
+					selected_node_pos = nodepos;
 
 					/*
 						Check information text of node
@@ -2905,6 +3009,18 @@ void the_game(
 				}else if (client.getPointedContent() != CONTENT_IGNORE) {
 					crosshair = 2;
 				}
+				MapNode snode;
+				v3s16 spos = v3s16(0,0,0);
+				if (show_debug) {
+					if (has_selected_node) {
+						spos = selected_node_pos;
+					}else{
+						v3f pp = client.getLocalPlayer()->getPosition();
+						spos = floatToInt(pp,BS);
+					}
+					snode = client.getEnv().getMap().getNodeNoEx(spos,NULL);
+				}
+
 				draw_hud(
 					driver,
 					font,
@@ -2919,7 +3035,11 @@ void the_game(
 					client.getServerHunger(),
 					hunger,
 					client.getEnergy(),
-					crosshair
+					crosshair,
+					show_debug,
+					has_selected_node,
+					spos,
+					snode
 				);
 			}
 		}
