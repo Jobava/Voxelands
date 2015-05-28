@@ -67,17 +67,6 @@ namespace mapgen
 	// Main map generation routine
 	void make_block(BlockMakeData *data);
 
-	// Add a tree
-	void make_tree(ManualMapVoxelManipulator &vmanip, v3s16 p0);
-	// Add an apple tree
-	void make_appletree(ManualMapVoxelManipulator &vmanip, v3s16 p0);
-	// Add a large tree
-	void make_largetree(ManualMapVoxelManipulator &vmanip, v3s16 p0);
-	// Add a jungle tree
-	void make_jungletree(ManualMapVoxelManipulator &vmanip, v3s16 p0);
-	// Add a conifer tree
-	void make_conifertree(ManualMapVoxelManipulator &vmanip, v3s16 p0);
-
 	/*
 		These are used by FarMesh
 	*/
@@ -87,4 +76,3 @@ namespace mapgen
 }; // namespace mapgen
 
 #endif
-

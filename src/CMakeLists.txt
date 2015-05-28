@@ -203,6 +203,7 @@ set(common_SRCS
 	filesys.cpp
 	connection.cpp
 	environment.cpp
+	plantgrowth.cpp
 	server.cpp
 	servercommand.cpp
 	socket.cpp

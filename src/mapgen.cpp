@@ -39,7 +39,7 @@ namespace mapgen
 	Some helper functions for the map generator
 */
 
-void make_tree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
+static void make_tree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
 {
 	MapNode treenode(CONTENT_TREE);
 	MapNode leavesnode(CONTENT_LEAVES);
@@ -110,7 +110,7 @@ void make_tree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
 	}
 }
 
-void make_appletree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
+static void make_appletree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
 {
 	MapNode treenode(CONTENT_APPLE_TREE);
 	MapNode leavesnode(CONTENT_APPLE_LEAVES);
@@ -190,7 +190,7 @@ void make_appletree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
 	}
 }
 
-void make_conifertree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
+static void make_conifertree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
 {
 	MapNode treenode(CONTENT_CONIFER_TREE);
 	MapNode leavesnode(CONTENT_CONIFER_LEAVES);
@@ -227,7 +227,7 @@ void make_conifertree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
 
 }
 
-void make_largetree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
+static void make_largetree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
 {
 	MapNode treenode(CONTENT_TREE);
 	MapNode leavesnode(CONTENT_LEAVES);
@@ -332,7 +332,7 @@ void make_largetree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
 	}
 }
 
-void make_jungletree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
+static void make_jungletree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
 {
 	MapNode treenode(CONTENT_JUNGLETREE);
 	MapNode leavesnode(CONTENT_JUNGLELEAVES);
@@ -418,7 +418,7 @@ void make_jungletree(ManualMapVoxelManipulator &vmanip, v3s16 p0)
 	}
 }
 
-void make_papyrus(VoxelManipulator &vmanip, v3s16 p0)
+static void make_papyrus(VoxelManipulator &vmanip, v3s16 p0)
 {
 	MapNode papyrusnode(CONTENT_PAPYRUS);
 
@@ -431,7 +431,7 @@ void make_papyrus(VoxelManipulator &vmanip, v3s16 p0)
 	}
 }
 
-void make_cactus(VoxelManipulator &vmanip, v3s16 p0)
+static void make_cactus(VoxelManipulator &vmanip, v3s16 p0)
 {
 	MapNode cactusnode(CONTENT_CACTUS);
 
