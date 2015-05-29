@@ -261,8 +261,8 @@ bool MapBlock::propagateSunlight(core::map<v3s16, bool> & light_sources,
 				MapNode &n = getNodeRef(pos);
 				ContentFeatures &f = content_features(n);
 
-				if (current_light != 0) {
-					if ((current_light != LIGHT_SUN || !f.sunlight_propagates) && !f.light_propagates) {
+				if (current_light != 0 && (current_light != LIGHT_SUN || !f.sunlight_propagates)) {
+					if (!f.light_propagates) {
 						// A solid object is on the way.
 						stopped_to_solid_object = true;
 

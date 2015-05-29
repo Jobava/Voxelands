@@ -2037,10 +2037,8 @@ MapBlock* ServerMap::finishBlockMake(mapgen::BlockMakeData *data,
 		TimeTaker t("finishBlockMake lighting update");
 
 		core::map<v3s16, MapBlock*> lighting_update_blocks;
-#if 1
 		// Center block
 		lighting_update_blocks.insert(block->getPos(), block);
-#endif
 		updateLighting(lighting_update_blocks, changed_blocks);
 
 		/*
@@ -2082,34 +2080,6 @@ MapBlock* ServerMap::finishBlockMake(mapgen::BlockMakeData *data,
 		Set central block as generated
 	*/
 	block->setGenerated(true);
-
-	/*
-		Save changed parts of map
-		NOTE: Will be saved later.
-	*/
-	//save(true);
-
-	/*infostream<<"finishBlockMake() done for ("<<blockpos.X<<","<<blockpos.Y<<","
-			<<blockpos.Z<<")"<<std::endl;*/
-#if 0
-	if(enable_mapgen_debug_info)
-	{
-		/*
-			Analyze resulting blocks
-		*/
-		for(s16 x=-1; x<=1; x++)
-		for(s16 y=-1; y<=1; y++)
-		for(s16 z=-1; z<=1; z++)
-		{
-			v3s16 p = block->getPos()+v3s16(x,y,z);
-			MapBlock *block = getBlockNoCreateNoEx(p);
-			char spos[20];
-			snprintf(spos, 20, "(%2d,%2d,%2d)", x, y, z);
-			infostream<<"Generated "<<spos<<": "
-					<<analyze_block(block)<<std::endl;
-		}
-	}
-#endif
 
 	return block;
 }
