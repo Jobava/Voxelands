@@ -3,6 +3,13 @@ Voxelands changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1505.01: (release 2015-05-30)
+ - fix dig miss sound not working
+ - fix sunlight propogation
+ - fix tree growth breaking lighting
+ - add hack to unbreak already broken lighting
+ - fix compiling problem with dynamic array
+
 1505.00: (release 2015-05-25)
  - make wearing a jacket without a shirt also safe from exposure damage
  - change some crowbar behaviour

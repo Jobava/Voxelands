@@ -506,11 +506,11 @@ void MapBlock::deSerialize(std::istream &is, u8 version)
 
 		// deserialize nodes from buffer
 		for (u32 i=0; i<nodecount; i++) {
-			u8 buf[sl];
+			SharedBuffer<u8> buf(sl);
 			for (u32 k=0; k<sl; k++) {
 				buf[k] = s[i+(nodecount*k)];
 			}
-			data[i].deSerialize(buf, version);
+			data[i].deSerialize(*buf, version);
 		}
 
 		/*
