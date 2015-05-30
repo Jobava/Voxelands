@@ -260,11 +260,11 @@ void init_mapnode()
 		Initially set every block to be shown as an unknown block.
 		Don't touch CONTENT_IGNORE or CONTENT_AIR.
 	*/
-	for(u16 i=0; i<MAX_CONTENT+1; i++)
-	{
-		if(i == CONTENT_IGNORE || i == CONTENT_AIR)
+	for (u16 i=0; i <= MAX_CONTENT; i++) {
+		if (i == CONTENT_IGNORE || i == CONTENT_AIR)
 			continue;
 		ContentFeatures *f = &g_content_features[i];
+		f->draw_type = CDT_CUBELIKE;
 		f->setAllTextures("unknown_block.png");
 		f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	}
