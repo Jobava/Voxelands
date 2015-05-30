@@ -307,59 +307,6 @@ void init_mapnode()
 	content_mapnode_special(repeat);
 }
 
-/*
-	Nodes make a face if contents differ and solidness differs.
-	Return value:
-		0: No face
-		1: Face uses m1's content
-		2: Face uses m2's content
-	equivalent: Whether the blocks share the same face (eg. water and glass)
-*/
-u8 face_contents(content_t m1, content_t m2, bool *equivalent)
-{
-	*equivalent = false;
-
-	if (m1 == CONTENT_IGNORE || m2 == CONTENT_IGNORE)
-		return 0;
-
-	ContentFeatures *f1 = &content_features(m1);
-	ContentFeatures *f2 = &content_features(m2);
-
-	bool contents_differ = (m1 != m2);
-
-	// Contents don't differ for different forms of same liquid
-	if (f1->liquid_type != LIQUID_NONE && f2->liquid_type != LIQUID_NONE && f1->liquid_alternative_flowing == f2->liquid_alternative_flowing)
-		contents_differ = false;
-
-	u8 c1 = f1->solidness;
-	u8 c2 = f2->solidness;
-
-	bool solidness_differs = (c1 != c2);
-	bool makes_face = contents_differ && solidness_differs;
-
-	if (makes_face == false)
-		return 0;
-
-	if (c1 == 0)
-		c1 = f1->visual_solidness;
-	if (c2 == 0)
-		c2 = f2->visual_solidness;
-
-	if (c1 == c2) {
-		*equivalent = true;
-		// If same solidness, liquid takes precense
-		if (f1->liquid_type != LIQUID_NONE)
-			return 1;
-		if (f2->liquid_type != LIQUID_NONE)
-			return 2;
-	}
-
-	if (c1 > c2)
-		return 1;
-
-	return 2;
-}
-
 v3s16 facedir_rotate(u8 facedir, v3s16 dir)
 {
 	/*

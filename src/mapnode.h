@@ -703,16 +703,6 @@ ContentFeatures & content_features(content_t i);
 ContentFeatures & content_features(MapNode &n);
 
 /*
-	Nodes make a face if contents differ and solidness differs.
-	Return value:
-		0: No face
-		1: Face uses m1's content
-		2: Face uses m2's content
-	equivalent: Whether the blocks share the same face (eg. water and glass)
-*/
-u8 face_contents(content_t m1, content_t m2, bool *equivalent);
-
-/*
 	Packs directions like (1,0,0), (1,-1,0)
 */
 inline u8 packDir(v3s16 dir)

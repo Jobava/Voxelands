@@ -186,6 +186,7 @@ void content_mapnode_circuit(bool repeat)
 	f->draw_type = CDT_NODEBOX_META;
 	f->rotate_tile_with_nodebox = true;
 	f->air_equivalent = true;
+	f->light_propagates = true;
 	f->is_ground_content = true;
 	f->energy_type = CET_SWITCH;
 	f->energy_drop = 0;
@@ -218,6 +219,7 @@ void content_mapnode_circuit(bool repeat)
 	f->draw_type = CDT_NODEBOX;
 	f->is_ground_content = true;
 	f->air_equivalent = true;
+	f->light_propagates = true;
 	f->energy_type = CET_SWITCH;
 	f->energy_drop = 0;
 	f->solidness = 0; // drawn separately, makes no faces
@@ -309,6 +311,7 @@ void content_mapnode_circuit(bool repeat)
 	f->draw_type = CDT_NODEBOX;
 	f->energy_type = CET_GATE;
 	f->energy_drop = 0;
+	f->light_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_STONE;
@@ -340,6 +343,7 @@ void content_mapnode_circuit(bool repeat)
 	f->draw_type = CDT_NODEBOX;
 	f->energy_type = CET_GATE;
 	f->energy_drop = 0;
+	f->light_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_STONE;
