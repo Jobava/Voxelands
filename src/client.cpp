@@ -102,7 +102,7 @@ void MeshUpdateQueue::addBlock(v3s16 p, MeshMakeData *data, bool ack_block_to_se
 	for (i=m_queue.begin(); i!=m_queue.end(); i++) {
 		QueuedMeshUpdate *q = *i;
 		if (q->p == p) {
-			if (q->data && !q->data->m_refresh_only && data->m_refresh_only) {
+			if (q->data && data->m_refresh_only) {
 				q->data->m_daynight_ratio = data->m_daynight_ratio;
 				delete data;
 			}else{
@@ -165,17 +165,32 @@ void * MeshUpdateThread::Thread()
 
 		if (q->data && q->data->m_refresh_only) {
 			MapBlock *block = m_env->getMap().getBlockNoCreateNoEx(q->p);
-			if (block && block->mesh)
-				block->mesh->refresh(q->data->m_daynight_ratio);
+			if (block && block->mesh) {
+				{
+					JMutexAutoLock lock(block->mesh_mutex);
+					block->mesh->refresh(q->data->m_daynight_ratio);
+				}
+			}
 		}else{
-			MapBlockMesh *mesh_new = new MapBlockMesh(q->data, m_camera_offset);
+			MapBlock *block = m_env->getMap().getBlockNoCreateNoEx(q->p);
+			if (block && block->mesh) {
+				block->mesh->generate(q->data, m_camera_offset, &block->mesh_mutex);
+				if (q->ack_block_to_server) {
+					MeshUpdateResult r;
+					r.p = q->p;
+					r.mesh = NULL;
+					r.ack_block_to_server = q->ack_block_to_server;
+					m_queue_out.push_back(r);
+				}
+			}else if (block) {
+				MapBlockMesh *mesh_new = new MapBlockMesh(q->data, m_camera_offset);
+				MeshUpdateResult r;
+				r.p = q->p;
+				r.mesh = mesh_new;
+				r.ack_block_to_server = q->ack_block_to_server;
 
-			MeshUpdateResult r;
-			r.p = q->p;
-			r.mesh = mesh_new;
-			r.ack_block_to_server = q->ack_block_to_server;
-
-			m_queue_out.push_back(r);
+				m_queue_out.push_back(r);
+			}
 		}
 
 		delete q;
@@ -538,8 +553,16 @@ void Client::step(float dtime)
 		while (m_mesh_update_thread.m_queue_out.size() > 0) {
 			MeshUpdateResult r = m_mesh_update_thread.m_queue_out.pop_front();
 			MapBlock *block = m_env.getMap().getBlockNoCreateNoEx(r.p);
-			if (block)
-				block->replaceMesh(r.mesh);
+			if (block && r.mesh != NULL) {
+				JMutexAutoLock lock(block->mesh_mutex);
+
+				MapBlockMesh *mesh_old = block->mesh;
+				block->mesh = r.mesh;
+				block->setMeshExpired(false);
+
+				if (mesh_old != NULL)
+					delete mesh_old;
+			}
 			if (r.ack_block_to_server) {
 				/*infostream<<"Client: ACK block ("<<r.p.X<<","<<r.p.Y
 						<<","<<r.p.Z<<")"<<std::endl;*/
@@ -811,16 +834,13 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		// 0ms
 
 		block = sector->getBlockNoCreateNoEx(p.Y);
-		if(block)
-		{
+		if (block) {
 			/*
 				Update an existing block
 			*/
 			//infostream<<"Updating"<<std::endl;
 			block->deSerialize(istr, ser_version);
-		}
-		else
-		{
+		}else{
 			/*
 				Create a new block
 			*/
@@ -831,37 +851,15 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 
 		}
 
-#if 0
-		/*
-			Acknowledge block
-		*/
-		/*
-			[0] u16 command
-			[2] u8 count
-			[3] v3s16 pos_0
-			[3+6] v3s16 pos_1
-			...
-		*/
-		u32 replysize = 2+1+6;
-		SharedBuffer<u8> reply(replysize);
-		writeU16(&reply[0], TOSERVER_GOTBLOCKS);
-		reply[2] = 1;
-		writeV3S16(&reply[3], p);
-		// Send as reliable
-		m_con.Send(PEER_ID_SERVER, 1, reply, true);
-#endif
-
 		/*
 			Update Mesh of this block and blocks at x-, y- and z-.
 			Environment should not be locked as it interlocks with the
 			main thread, from which is will want to retrieve textures.
 		*/
 
-		//m_env.getClientMap().updateMeshes(block->getPos(), getDayNightRatio());
 		/*
 			Add it to mesh update queue and set it to be acknowledged after update.
 		*/
-		//infostream<<"Adding mesh update task for received block"<<std::endl;
 		addUpdateMeshTaskWithEdge(p, true);
 	}
 	break;
@@ -1972,7 +1970,6 @@ void Client::removeNode(v3s16 p)
 			i.atEnd() == false; i++)
 	{
 		v3s16 p = i.getNode()->getKey();
-		//m_env.getClientMap().updateMeshes(p, m_env.getDayNightRatio());
 		addUpdateMeshTaskWithEdge(p);
 	}
 }
@@ -2001,7 +1998,6 @@ void Client::addNode(v3s16 p, MapNode n)
 			i.atEnd() == false; i++)
 	{
 		v3s16 p = i.getNode()->getKey();
-		//m_env.getClientMap().updateMeshes(p, m_env.getDayNightRatio());
 		addUpdateMeshTaskWithEdge(p);
 	}
 }
@@ -2225,14 +2221,11 @@ void Client::setTempMod(v3s16 p, NodeMod mod)
 	assert(m_env.getMap().mapType() == MAPTYPE_CLIENT);
 
 	core::map<v3s16, MapBlock*> affected_blocks;
-	((ClientMap&)m_env.getMap()).setTempMod(p, mod,
-			&affected_blocks);
+	((ClientMap&)m_env.getMap()).setTempMod(p, mod, &affected_blocks);
 
-	for(core::map<v3s16, MapBlock*>::Iterator
-			i = affected_blocks.getIterator();
-			i.atEnd() == false; i++)
-	{
-		i.getNode()->getValue()->updateMesh(m_env.getDayNightRatio(), &m_env, m_mesh_update_thread.m_camera_offset);
+	for(core::map<v3s16, MapBlock*>::Iterator i = affected_blocks.getIterator(); i.atEnd() == false; i++) {
+		MapBlock *block = i.getNode()->getValue();
+		addUpdateMeshTask(block->getPos());
 	}
 }
 
@@ -2242,23 +2235,16 @@ void Client::clearTempMod(v3s16 p)
 	assert(m_env.getMap().mapType() == MAPTYPE_CLIENT);
 
 	core::map<v3s16, MapBlock*> affected_blocks;
-	((ClientMap&)m_env.getMap()).clearTempMod(p,
-			&affected_blocks);
+	((ClientMap&)m_env.getMap()).clearTempMod(p, &affected_blocks);
 
-	for(core::map<v3s16, MapBlock*>::Iterator
-			i = affected_blocks.getIterator();
-			i.atEnd() == false; i++)
-	{
-		i.getNode()->getValue()->updateMesh(m_env.getDayNightRatio(), &m_env, m_mesh_update_thread.m_camera_offset);
+	for(core::map<v3s16, MapBlock*>::Iterator i = affected_blocks.getIterator(); i.atEnd() == false; i++) {
+		MapBlock *block = i.getNode()->getValue();
+		addUpdateMeshTask(block->getPos());
 	}
 }
 
 void Client::addUpdateMeshTask(v3s16 p, bool ack_to_server, bool refresh_only)
 {
-	/*infostream<<"Client::addUpdateMeshTask(): "
-			<<"("<<p.X<<","<<p.Y<<","<<p.Z<<")"
-			<<std::endl;*/
-
 	MapBlock *b = m_env.getMap().getBlockNoCreateNoEx(p);
 	if (b == NULL)
 		return;
@@ -2275,27 +2261,17 @@ void Client::addUpdateMeshTask(v3s16 p, bool ack_to_server, bool refresh_only)
 		data->m_refresh_only = true;
 	}else{
 		{
-			//TimeTaker timer("data fill");
-			// Release: ~0ms
-			// Debug: 1-6ms, avg=2ms
 			data->fill(getDayNightRatio(), b);
 		}
 
 		data->m_sounds = &b->m_sounds;
 	}
 
-	// Debug wait
-	//while(m_mesh_update_thread.m_queue_in.size() > 0) sleep_ms(10);
-
 	// Add task to queue
 	m_mesh_update_thread.m_queue_in.addBlock(p, data, ack_to_server);
 
-	/*infostream<<"Mesh update input queue size is "
-			<<m_mesh_update_thread.m_queue_in.size()
-			<<std::endl;*/
-
 	/*
-		Mark mesh as non-expired at this point so that it can already
+		Mark mesh as non-expired at this point so that it can
 		be marked as expired again if the data changes
 	*/
 	b->setMeshExpired(false);
@@ -2303,16 +2279,8 @@ void Client::addUpdateMeshTask(v3s16 p, bool ack_to_server, bool refresh_only)
 
 void Client::addUpdateMeshTaskWithEdge(v3s16 blockpos, bool ack_to_server)
 {
-	/*{
-		v3s16 p = blockpos;
-		infostream<<"Client::addUpdateMeshTaskWithEdge(): "
-				<<"("<<p.X<<","<<p.Y<<","<<p.Z<<")"
-				<<std::endl;
-	}*/
-
 	try{
-		v3s16 p = blockpos + v3s16(0,0,0);
-		//MapBlock *b = m_env.getMap().getBlockNoCreate(p);
+		v3s16 p = blockpos;
 		addUpdateMeshTask(p, ack_to_server);
 	}
 	catch(InvalidPositionException &e){}
@@ -2323,12 +2291,27 @@ void Client::addUpdateMeshTaskWithEdge(v3s16 blockpos, bool ack_to_server)
 	}
 	catch(InvalidPositionException &e){}
 	try{
+		v3s16 p = blockpos + v3s16(1,0,0);
+		addUpdateMeshTask(p);
+	}
+	catch(InvalidPositionException &e){}
+	try{
 		v3s16 p = blockpos + v3s16(0,-1,0);
 		addUpdateMeshTask(p);
 	}
 	catch(InvalidPositionException &e){}
 	try{
+		v3s16 p = blockpos + v3s16(0,1,0);
+		addUpdateMeshTask(p);
+	}
+	catch(InvalidPositionException &e){}
+	try{
 		v3s16 p = blockpos + v3s16(0,0,-1);
+		addUpdateMeshTask(p);
+	}
+	catch(InvalidPositionException &e){}
+	try{
+		v3s16 p = blockpos + v3s16(0,0,1);
 		addUpdateMeshTask(p);
 	}
 	catch(InvalidPositionException &e){}

@@ -31,6 +31,7 @@
 #include "mapblock_mesh.h"
 #include "utility.h"
 
+void meshgen_preset_smooth_lights(MeshMakeData *data, v3s16 p);
 void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);
 void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);
 void meshgen_plantlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);

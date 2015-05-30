@@ -53,7 +53,7 @@ struct MeshData
 	video::SMaterial material;
 	std::vector<u16> indices;
 	std::vector<video::S3DVertex> vertices;
-	std::vector<video::SColor> colours[18];
+	std::vector<u32> colours;
 	std::vector<MeshData*> siblings;
 	MeshData* parent;
 };
@@ -111,7 +111,7 @@ struct MeshMakeData
 		u32 v_count,
 		const u16* const indices,
 		u32 i_count,
-		std::vector<video::SColor> colours[18]
+		std::vector<u32> colours
 	)
 	{
 		MeshData *d = NULL;
@@ -159,10 +159,8 @@ struct MeshMakeData
 			}
 		}
 
-		for (u32 i=0; i<18; i++) {
-			for (u32 k=0; k<colours[i].size(); k++) {
-				d->colours[i].push_back(colours[i][k]);
-			}
+		for (u32 k=0; k<colours.size(); k++) {
+			d->colours.push_back(colours[k]);
 		}
 
 		u32 vertex_count = d->vertices.size();
@@ -187,12 +185,13 @@ public:
 		return m_mesh;
 	}
 
-	void generate(MeshMakeData *data, v3s16 camera_offset);
+	void generate(MeshMakeData *data, v3s16 camera_offset, JMutex *mutex);
 	void refresh(u32 daynight_ratio);
 
 	void updateCameraOffset(v3s16 camera_offset);
 
 private:
+	v3s16 m_pos;
 	scene::SMesh *m_mesh;
 	v3s16 m_camera_offset;
 	std::vector<MeshData> m_meshdata;

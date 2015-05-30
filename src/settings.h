@@ -412,7 +412,6 @@ public:
 			n = m_defaults.find(name);
 			if(n == NULL)
 			{
-				printf("Not Found: %s\n",name.c_str());
 				infostream<<"Settings: Setting not found: \""
 						<<name<<"\""<<std::endl;
 				throw SettingNotFoundException("Setting not found");

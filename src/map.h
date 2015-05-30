@@ -568,15 +568,6 @@ public:
 
 	void expireMeshes(bool only_daynight_diffed);
 
-	/*
-		Update the faces of the given block and blocks on the
-		leading edge.
-	*/
-	void updateMeshes(v3s16 blockpos, u32 daynight_ratio, v3s16 camera_offset);
-
-	// Update meshes that touch the node
-	//void updateNodeMeshes(v3s16 nodepos, u32 daynight_ratio);
-
 	// For debug printing
 	virtual void PrintInfo(std::ostream &out);
 

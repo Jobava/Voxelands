@@ -963,8 +963,8 @@ struct MapNode
 
 	returns encoded light value.
 */
-u8 getFaceLight(u32 daynight_ratio, MapNode n, MapNode n2,
-		v3s16 face_dir);
+u8 getFaceLight(u32 daynight_ratio, MapNode n, MapNode n2, v3s16 face_dir);
+u8 face_light(MapNode n, MapNode n2, v3s16 face_dir);
 
 #endif
 

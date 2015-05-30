@@ -3068,13 +3068,6 @@ ClientMap::ClientMap(
 
 ClientMap::~ClientMap()
 {
-	/*JMutexAutoLock lock(mesh_mutex);
-
-	if(mesh != NULL)
-	{
-		mesh->drop();
-		mesh = NULL;
-	}*/
 }
 
 MapSector * ClientMap::emergeSector(v2s16 p2d)
@@ -3336,29 +3329,31 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 				}
 			}
 
-			f32 faraway = BS*50;
+			f32 faraway = BS*100;
 			//f32 faraway = m_control.wanted_range * BS;
 
 			/*
 				This has to be done with the mesh_mutex unlocked
 			*/
 			// Pretty random but this should work somewhat nicely
-			if(mesh_expired && (
-					(mesh_update_count < 3
-						&& (d < faraway || mesh_update_count < 2)
-					)
-					||
-					(m_control.range_all && mesh_update_count < 20)
+			if (
+				mesh_expired
+				&& (
+					d < faraway
+					|| mesh_update_count < 20
+					|| (m_control.range_all && mesh_update_count < 100)
 				)
-			)
-			/*if(mesh_expired && mesh_update_count < 6
-					&& (d < faraway || mesh_update_count < 3))*/
-			{
+			) {
 				mesh_update_count++;
 
 				// Mesh has been expired: generate new mesh
-				//block->updateMesh(daynight_ratio);
-				m_client->addUpdateMeshTask(block->getPos(),false,true);
+				if (block->mesh) {
+					JMutexAutoLock lock(block->mesh_mutex);
+					block->mesh->refresh(m_client->getDayNightRatio());
+					block->setMeshExpired(false);
+				}else{
+					m_client->addUpdateMeshTask(block->getPos(),false,true);
+				}
 
 				mesh_expired = false;
 			}
@@ -3687,78 +3682,6 @@ void ClientMap::expireMeshes(bool only_daynight_diffed)
 		}
 	}
 }
-
-void ClientMap::updateMeshes(v3s16 blockpos, u32 daynight_ratio, v3s16 camera_offset)
-{
-	assert(mapType() == MAPTYPE_CLIENT);
-
-	try{
-		v3s16 p = blockpos + v3s16(0,0,0);
-		MapBlock *b = getBlockNoCreate(p);
-		b->updateMesh(daynight_ratio, &m_client->getEnv(), camera_offset);
-		//b->setMeshExpired(true);
-	}
-	catch(InvalidPositionException &e){}
-	// Leading edge
-	try{
-		v3s16 p = blockpos + v3s16(-1,0,0);
-		MapBlock *b = getBlockNoCreate(p);
-		b->updateMesh(daynight_ratio, &m_client->getEnv(), camera_offset);
-		//b->setMeshExpired(true);
-	}
-	catch(InvalidPositionException &e){}
-	try{
-		v3s16 p = blockpos + v3s16(0,-1,0);
-		MapBlock *b = getBlockNoCreate(p);
-		b->updateMesh(daynight_ratio, &m_client->getEnv(), camera_offset);
-		//b->setMeshExpired(true);
-	}
-	catch(InvalidPositionException &e){}
-	try{
-		v3s16 p = blockpos + v3s16(0,0,-1);
-		MapBlock *b = getBlockNoCreate(p);
-		b->updateMesh(daynight_ratio, &m_client->getEnv(), camera_offset);
-		//b->setMeshExpired(true);
-	}
-	catch(InvalidPositionException &e){}
-}
-
-#if 0
-/*
-	Update mesh of block in which the node is, and if the node is at the
-	leading edge, update the appropriate leading blocks too.
-*/
-void ClientMap::updateNodeMeshes(v3s16 nodepos, u32 daynight_ratio)
-{
-	v3s16 dirs[4] = {
-		v3s16(0,0,0),
-		v3s16(-1,0,0),
-		v3s16(0,-1,0),
-		v3s16(0,0,-1),
-	};
-	v3s16 blockposes[4];
-	for(u32 i=0; i<4; i++)
-	{
-		v3s16 np = nodepos + dirs[i];
-		blockposes[i] = getNodeBlockPos(np);
-		// Don't update mesh of block if it has been done already
-		bool already_updated = false;
-		for(u32 j=0; j<i; j++)
-		{
-			if(blockposes[j] == blockposes[i])
-			{
-				already_updated = true;
-				break;
-			}
-		}
-		if(already_updated)
-			continue;
-		// Update mesh
-		MapBlock *b = getBlockNoCreate(blockposes[i]);
-		b->updateMesh(daynight_ratio);
-	}
-}
-#endif
 
 void ClientMap::PrintInfo(std::ostream &out)
 {

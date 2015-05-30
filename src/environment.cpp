@@ -3891,11 +3891,6 @@ void ClientEnvironment::step(float dtime)
 	}
 }
 
-void ClientEnvironment::updateMeshes(v3s16 blockpos, v3s16 camera_offset)
-{
-	m_map->updateMeshes(blockpos, getDayNightRatio(), camera_offset);
-}
-
 void ClientEnvironment::expireMeshes(bool only_daynight_diffed)
 {
 	m_map->expireMeshes(only_daynight_diffed);

@@ -222,50 +222,51 @@ static void getRoofLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, 
 }
 #endif
 
-static void meshgen_fullbright_lights(std::vector<video::SColor> *colours, u8 alpha, u16 count)
+static u8 smooth_lights[8];
+
+static void meshgen_fullbright_lights(std::vector<u32> &colours, u8 alpha, u16 count)
 {
-	video::SColor c(alpha,255,255,255);
+	u32 c = 0x0000000F;
+	if (alpha != 255) {
+		c |= 0x01<<24;
+		c |= alpha<<8;
+	}
 	for (u16 i=0; i<count; i++) {
-		for (u16 k=0; k<18; k++) {
-			colours[k].push_back(c);
-		}
+		colours.push_back(c);
 	}
 }
 
-static void meshgen_custom_lights(std::vector<video::SColor> *colours, u8 alpha, u8 red, u8 green, u8 blue, u16 count)
+static void meshgen_custom_lights(std::vector<u32> &colours, u8 alpha, u8 red, u8 green, u8 blue, u16 count)
 {
-	video::SColor c(alpha,red,green,blue);
+	if (alpha < 2)
+		alpha = 3;
+	u32 c = (alpha<<24)|(red<<16)|(green<<8)|blue;
 	for (u16 i=0; i<count; i++) {
-		for (u16 k=0; k<18; k++) {
-			colours[k].push_back(c);
-		}
+		colours.push_back(c);
 	}
 }
 
-static void meshgen_selected_lights(std::vector<video::SColor> *colours, u8 alpha, u16 count)
+static void meshgen_selected_lights(std::vector<u32> &colours, u8 alpha, u16 count)
 {
-	video::SColor c(alpha,128,128,255);
+	if (alpha < 2)
+		alpha = 3;
+	u32 c = (alpha<<24)|(128<<16)|(128<<8)|255;
 	for (u16 i=0; i<count; i++) {
-		for (u16 k=0; k<18; k++) {
-			colours[k].push_back(c);
-		}
+		colours.push_back(c);
 	}
 }
 
 /*
  * what this should do:
- * get daynight_ratio from index
- * get all 4 corner vertex light values for the face
  * interpolate to the requested vertex position
  */
 static void meshgen_lights_vertex(
 	MeshMakeData *data,
 	MapNode &n,
 	v3s16 p,
-	std::vector<video::SColor> *colours,
+	std::vector<u32> &colours,
 	u8 alpha,
 	v3s16 face,
-	u16 daynight_ratio_index,
 	video::S3DVertex &vertex,
 	u8 *lights
 )
@@ -275,64 +276,75 @@ static void meshgen_lights_vertex(
 
 /*
  * what this should do:
- * get daynight_ratio from index
  * return face lighting (see also old roof lighting)
  */
 static void meshgen_lights_face(
 	MeshMakeData *data,
 	MapNode &n,
 	v3s16 p,
-	std::vector<video::SColor> *colours,
+	std::vector<u32> &colours,
 	u8 alpha,
 	v3s16 face,
-	u16 daynight_ratio_index,
 	u16 count,
 	video::S3DVertex *vertexes
 )
 {
-	u16 daynight_ratio = daynight_ratio_from_index(daynight_ratio_index);
 	MapNode n1 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes+p+face);
-	u8 light = decode_light(getFaceLight(daynight_ratio, n, n1, face));
+	u8 light = face_light(n, n1, face);
 	if ((face.X && face.Y) || (face.X && face.Z) || (face.Y && face.Z)) {
-		u32 l = light;
+		u8 l;
+		u32 dl = light&0x0F;
+		u32 nl = (light&0xF0)>>4;
 		u16 nc = 1;
 		if (face.X) {
 			n1 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes+p+v3s16(face.X,0,0));
-			l += decode_light(getFaceLight(daynight_ratio, n, n1, face));
+			l = face_light(n, n1, face);
+			dl += (l&0x0F);
+			nl += (l>>4)&0x0F;
 			nc++;
 		}
 		if (face.Y) {
 			n1 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes+p+v3s16(0,face.Y,0));
-			l += decode_light(getFaceLight(daynight_ratio, n, n1, face));
+			l = face_light(n, n1, face);
+			dl += (l&0x0F);
+			nl += (l>>4)&0x0F;
 			nc++;
 		}
 		if (face.Z) {
 			n1 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes+p+v3s16(0,0,face.Z));
-			l += decode_light(getFaceLight(daynight_ratio, n, n1, face));
+			l = face_light(n, n1, face);
+			dl += (l&0x0F);
+			nl += (l>>4)&0x0F;
 			nc++;
 		}
-		if (nc > 1)
-			l /= nc;
-		light = l;
+		if (nc > 1) {
+			dl /= nc;
+			nl /= nc;
+		}
+		light = (nl<<4)|dl;
 	}
-	video::SColor c = MapBlock_LightColor(alpha,light);
+	u32 c = light;
+	if (alpha != 255) {
+		c |= 0x01<<24;
+		c |= alpha<<8;
+	}
 	for (u16 i=0; i<count; i++) {
-		colours[daynight_ratio_index].push_back(c);
+		colours.push_back(c);
 	}
 }
 
 /*
  * what this should do:
  * MeshMakeData has a m_smooth_lighting value in it, don't check config for every vertex!
+ * get all 4 corner vertex light values for the face
  * for each vertex:
- *	for each daynight_ratio value (18 of them):
- *		call meshgen_lights_vertex
+ *	call meshgen_lights_vertex
  */
 static void meshgen_lights(
 	MeshMakeData *data,
 	MapNode &n,
 	v3s16 p,
-	std::vector<video::SColor> *colours,
+	std::vector<u32> &colours,
 	u8 alpha,
 	v3s16 face,
 	u16 count,
@@ -340,57 +352,53 @@ static void meshgen_lights(
 )
 {
 	if (data->m_smooth_lighting) {
-		u8 lights[4];
-		for (u16 k=0; k<18; k++) {
-			//u32 l[4] = {0,0,0,0};
-			//u8 nc = 0;
-			//u16 daynight_ratio = daynight_ratio_from_index(k);
-			//if (face.X) {
-				//v3s16 f(face.X,0,0);
-				//v3s16 vertex_dirs[4];
-				//getNodeVertexDirs(f, vertex_dirs);
-				//for (u16 i=0; i<4; i++) {
-					//l[i] += getSmoothLight(data->m_blockpos_nodes + p, vertex_dirs[i], data->m_vmanip, daynight_ratio);
-				//}
-				//nc++;
+		u8 lights[4] = {0,0,0,0};
+		//u32 l[4] = {0,0,0,0};
+		//u8 nc = 0;
+		//u16 daynight_ratio = daynight_ratio_from_index(k);
+		//if (face.X) {
+			//v3s16 f(face.X,0,0);
+			//v3s16 vertex_dirs[4];
+			//getNodeVertexDirs(f, vertex_dirs);
+			//for (u16 i=0; i<4; i++) {
+				//l[i] += getSmoothLight(data->m_blockpos_nodes + p, vertex_dirs[i], data->m_vmanip, daynight_ratio);
 			//}
-			//if (face.Y) {
-				//v3s16 f(0,face.Y,0);
-				//v3s16 vertex_dirs[4];
-				//getNodeVertexDirs(f, vertex_dirs);
-				//for (u16 i=0; i<4; i++) {
-					//l[i] += getSmoothLight(data->m_blockpos_nodes + p, vertex_dirs[i], data->m_vmanip, daynight_ratio);
-				//}
-				//nc++;
+			//nc++;
+		//}
+		//if (face.Y) {
+			//v3s16 f(0,face.Y,0);
+			//v3s16 vertex_dirs[4];
+			//getNodeVertexDirs(f, vertex_dirs);
+			//for (u16 i=0; i<4; i++) {
+				//l[i] += getSmoothLight(data->m_blockpos_nodes + p, vertex_dirs[i], data->m_vmanip, daynight_ratio);
 			//}
-			//if (face.Z) {
-				//v3s16 f(0,0,face.Z);
-				//v3s16 vertex_dirs[4];
-				//getNodeVertexDirs(f, vertex_dirs);
-				//for (u16 i=0; i<4; i++) {
-					//l[i] += getSmoothLight(data->m_blockpos_nodes + p, vertex_dirs[i], data->m_vmanip, daynight_ratio);
-				//}
-				//nc++;
+			//nc++;
+		//}
+		//if (face.Z) {
+			//v3s16 f(0,0,face.Z);
+			//v3s16 vertex_dirs[4];
+			//getNodeVertexDirs(f, vertex_dirs);
+			//for (u16 i=0; i<4; i++) {
+				//l[i] += getSmoothLight(data->m_blockpos_nodes + p, vertex_dirs[i], data->m_vmanip, daynight_ratio);
 			//}
-			//if (nc > 1) {
-				//lights[0] = l[0]/nc;
-				//lights[1] = l[1]/nc;
-				//lights[2] = l[2]/nc;
-				//lights[3] = l[3]/nc;
-			//}else {
-				//lights[0] = l[0];
-				//lights[1] = l[1];
-				//lights[2] = l[2];
-				//lights[3] = l[3];
-			//}
-			for (u16 i=0; i<count; i++) {
-				meshgen_lights_vertex(data,n,p,colours,alpha,face,k,vertexes[i],lights);
-			}
+			//nc++;
+		//}
+		//if (nc > 1) {
+			//lights[0] = l[0]/nc;
+			//lights[1] = l[1]/nc;
+			//lights[2] = l[2]/nc;
+			//lights[3] = l[3]/nc;
+		//}else {
+			//lights[0] = l[0];
+			//lights[1] = l[1];
+			//lights[2] = l[2];
+			//lights[3] = l[3];
+		//}
+		for (u16 i=0; i<count; i++) {
+			meshgen_lights_vertex(data,n,p,colours,alpha,face,vertexes[i],lights);
 		}
 	}else{
-		for (u16 k=0; k<18; k++) {
-			meshgen_lights_face(data,n,p,colours,alpha,face,k,count,vertexes);
-		}
+		meshgen_lights_face(data,n,p,colours,alpha,face,count,vertexes);
 	}
 }
 
@@ -587,7 +595,7 @@ static void meshgen_cuboid(
 			vertices[i][j].TCoords *= tiles[tileindex].texture.size;
 			vertices[i][j].TCoords += tiles[tileindex].texture.pos;
 		}
-		std::vector<video::SColor> colours[18];
+		std::vector<u32> colours;
 		if (cols) {
 			meshgen_custom_lights(colours,cols[0],cols[1],cols[2],cols[3],4);
 		}else if (selected) {
@@ -635,7 +643,7 @@ static void meshgen_build_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, bool 
 }
 
 /* TODO: calculate faces better, or pass faces as argument */
-void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3f pos, TileSpec &tile, bool selected, s16 rot, v3s16 face)
+static void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3f pos, TileSpec &tile, bool selected, s16 rot, v3s16 face)
 {
 	// vertices for top and bottom tri
 	v3f top_v[3];
@@ -678,7 +686,7 @@ void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3
 			video::S3DVertex(btm_v[2].X, btm_v[2].Y, btm_v[2].Z, 0,0,0, video::SColor(255,255,255,255), btm_t[2].X, btm_t[2].Y),
 		};
 		u16 indices[] = {0,1,2};
-		std::vector<video::SColor> colours[18];
+		std::vector<u32> colours;
 		if (selected) {
 			meshgen_selected_lights(colours,255,3);
 		}else{
@@ -696,7 +704,7 @@ void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3
 			video::S3DVertex(top_v[2].X, top_v[2].Y, top_v[2].Z, 0,0,0, video::SColor(255,255,255,255), top_t[2].X, top_t[2].Y),
 		};
 		u16 indices[] = {0,1,2};
-		std::vector<video::SColor> colours[18];
+		std::vector<u32> colours;
 		if (selected) {
 			meshgen_selected_lights(colours,255,3);
 		}else{
@@ -710,7 +718,7 @@ void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3
 }
 
 /* TODO: calculate faces better, or pass faces as argument */
-void meshgen_leaftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3f pos, TileSpec &tile, bool selected, s16 rot)
+static void meshgen_leaftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3f pos, TileSpec &tile, bool selected, s16 rot)
 {
 	// vertices
 	v3f v[3];
@@ -735,7 +743,7 @@ void meshgen_leaftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3
 			video::S3DVertex(v[2].X, v[2].Y, v[2].Z, 0,0,0, video::SColor(255,255,255,255),  t[2].X, t[2].Y),
 		};
 		u16 indices[] = {0,1,2};
-		std::vector<video::SColor> colours[18];
+		std::vector<u32> colours;
 		if (selected) {
 			meshgen_selected_lights(colours,255,3);
 		}else{
@@ -745,6 +753,13 @@ void meshgen_leaftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3
 		tri_v[1].Pos += pos;
 		tri_v[2].Pos += pos;
 		data->append(tile.getMaterial(),tri_v, 3, indices, 3, colours);
+	}
+}
+
+void meshgen_preset_smooth_lights(MeshMakeData *data, v3s16 p)
+{
+	for (u16 i=0; i<8; i++) {
+		smooth_lights[i] = 0x0F;
 	}
 }
 
@@ -761,7 +776,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		};
 
 		u16 indices[6] = {0,1,2,2,3,0};
-		std::vector<video::SColor> colours[18];
+		std::vector<u32> colours;
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
@@ -784,7 +799,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		};
 
 		u16 indices[6] = {0,1,2,2,3,0};
-		std::vector<video::SColor> colours[18];
+		std::vector<u32> colours;
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
@@ -807,7 +822,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		};
 
 		u16 indices[6] = {0,1,2,2,3,0};
-		std::vector<video::SColor> colours[18];
+		std::vector<u32> colours;
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
@@ -830,7 +845,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		};
 
 		u16 indices[6] = {0,1,2,2,3,0};
-		std::vector<video::SColor> colours[18];
+		std::vector<u32> colours;
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
@@ -853,7 +868,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		};
 
 		u16 indices[6] = {0,1,2,2,3,0};
-		std::vector<video::SColor> colours[18];
+		std::vector<u32> colours;
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
@@ -876,7 +891,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		};
 
 		u16 indices[6] = {0,1,2,2,3,0};
-		std::vector<video::SColor> colours[18];
+		std::vector<u32> colours;
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
@@ -1342,7 +1357,7 @@ void meshgen_plantlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		}
 
 		u16 indices[] = {0,1,2,2,3,0};
-		std::vector<video::SColor> colours[18];
+		std::vector<u32> colours;
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
@@ -1562,7 +1577,7 @@ void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		}
 
 		u16 indices[] = {0,1,2,2,3,0};
-		std::vector<video::SColor> colours[18];
+		std::vector<u32> colours;
 		if (selected) {
 			meshgen_selected_lights(colours,f->vertex_alpha,4);
 		}else{
@@ -1597,7 +1612,7 @@ void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		}
 
 		u16 indices[] = {0,1,2,2,3,0};
-		std::vector<video::SColor> colours[18];
+		std::vector<u32> colours;
 		if (selected) {
 			meshgen_selected_lights(colours,f->vertex_alpha,4);
 		}else{
@@ -1773,7 +1788,7 @@ void meshgen_liquid_source(MeshMakeData *data, v3s16 p, MapNode &n, bool selecte
 		}
 
 		u16 indices[] = {0,1,2,2,3,0};
-		std::vector<video::SColor> colours[18];
+		std::vector<u32> colours;
 		if (selected) {
 			meshgen_selected_lights(colours,f->vertex_alpha,4);
 		}else{
@@ -1889,7 +1904,7 @@ void meshgen_glasslike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		}
 
 		u16 indices[] = {0,1,2,2,3,0};
-		std::vector<video::SColor> colours[18];
+		std::vector<u32> colours;
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
@@ -2014,7 +2029,7 @@ void meshgen_torchlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	v3f pos = intToFloat(p,BS);
 	// Add to mesh collector
 	for (s32 j=0; j<6; j++) {
-		std::vector<video::SColor> colours[18];
+		std::vector<u32> colours;
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
@@ -2244,7 +2259,7 @@ void meshgen_firelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			continue;
 		}
 		u16 indices[] = {0,1,2,2,3,0};
-		std::vector<video::SColor> colours[18];
+		std::vector<u32> colours;
 		if (selected) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
@@ -3651,7 +3666,7 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, bo
 					vertices[i].Pos += intToFloat(p, BS);
 				}
 				u16 indices[] = {0,1,2,2,3,0};
-				std::vector<video::SColor> colours[18];
+				std::vector<u32> colours;
 				meshgen_custom_lights(colours,cols[0],cols[1],cols[2],cols[3],4);
 				data->append(tiles[0].getMaterial(), vertices, 4, indices, 6, colours);
 			}
@@ -3666,7 +3681,7 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, bo
 					vertices[i].Pos += intToFloat(p, BS);
 				}
 				u16 indices[] = {0,1,2,2,3,0};
-				std::vector<video::SColor> colours[18];
+				std::vector<u32> colours;
 				meshgen_custom_lights(colours,cols[0],cols[1],cols[2],cols[3],4);
 				data->append(tiles[0].getMaterial(), vertices, 4, indices, 6, colours);
 			}
@@ -3682,7 +3697,7 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, bo
 					vertices[i].Pos += intToFloat(p, BS);
 				}
 				u16 indices[] = {0,1,2,2,3,0};
-				std::vector<video::SColor> colours[18];
+				std::vector<u32> colours;
 				meshgen_custom_lights(colours,cols[0],cols[1],cols[2],cols[3],4);
 				data->append(tiles[0].getMaterial(), vertices, 4, indices, 6, colours);
 			}
@@ -3697,7 +3712,7 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, bo
 					vertices[i].Pos += intToFloat(p, BS);
 				}
 				u16 indices[] = {0,1,2,2,3,0};
-				std::vector<video::SColor> colours[18];
+				std::vector<u32> colours;
 				meshgen_custom_lights(colours,cols[0],cols[1],cols[2],cols[3],4);
 				data->append(tiles[0].getMaterial(), vertices, 4, indices, 6, colours);
 			}
@@ -3712,7 +3727,7 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, bo
 					vertices[i].Pos += intToFloat(p, BS);
 				}
 				u16 indices[] = {0,1,2,2,3,0};
-				std::vector<video::SColor> colours[18];
+				std::vector<u32> colours;
 				meshgen_custom_lights(colours,cols[0],cols[1],cols[2],cols[3],4);
 				data->append(tiles[0].getMaterial(), vertices, 4, indices, 6, colours);
 			}
@@ -3727,7 +3742,7 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, bo
 					vertices[i].Pos += intToFloat(p, BS);
 				}
 				u16 indices[] = {0,1,2,2,3,0};
-				std::vector<video::SColor> colours[18];
+				std::vector<u32> colours;
 				meshgen_custom_lights(colours,cols[0],cols[1],cols[2],cols[3],4);
 				data->append(tiles[0].getMaterial(), vertices, 4, indices, 6, colours);
 			}
@@ -3742,7 +3757,7 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, bo
 					vertices[i].Pos += intToFloat(p, BS);
 				}
 				u16 indices[] = {0,1,2,2,3,0};
-				std::vector<video::SColor> colours[18];
+				std::vector<u32> colours;
 				meshgen_custom_lights(colours,cols[0],cols[1],cols[2],cols[3],4);
 				data->append(tiles[0].getMaterial(), vertices, 4, indices, 6, colours);
 			}
@@ -3757,7 +3772,7 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, bo
 					vertices[i].Pos += intToFloat(p, BS);
 				}
 				u16 indices[] = {0,1,2,2,3,0};
-				std::vector<video::SColor> colours[18];
+				std::vector<u32> colours;
 				meshgen_custom_lights(colours,cols[0],cols[1],cols[2],cols[3],4);
 				data->append(tiles[0].getMaterial(), vertices, 4, indices, 6, colours);
 			}
@@ -3772,7 +3787,7 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, bo
 					vertices[i].Pos += intToFloat(p, BS);
 				}
 				u16 indices[] = {0,1,2,2,3,0};
-				std::vector<video::SColor> colours[18];
+				std::vector<u32> colours;
 				meshgen_custom_lights(colours,cols[0],cols[1],cols[2],cols[3],4);
 				data->append(tiles[0].getMaterial(), vertices, 4, indices, 6, colours);
 			}
@@ -3787,7 +3802,7 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, bo
 					vertices[i].Pos += intToFloat(p, BS);
 				}
 				u16 indices[] = {0,1,2,2,3,0};
-				std::vector<video::SColor> colours[18];
+				std::vector<u32> colours;
 				meshgen_custom_lights(colours,cols[0],cols[1],cols[2],cols[3],4);
 				data->append(tiles[0].getMaterial(), vertices, 4, indices, 6, colours);
 			}
@@ -4108,7 +4123,7 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					vertices[i][j].TCoords *= tiles[i].texture.size;
 					vertices[i][j].TCoords += tiles[i].texture.pos;
 				}
-				std::vector<video::SColor> colours[18];
+				std::vector<u32> colours;
 				if (selected) {
 					meshgen_selected_lights(colours,255,vcounts[i]);
 				}else{
@@ -4132,7 +4147,7 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					vertices[i][j].TCoords *= tiles[i].texture.size;
 					vertices[i][j].TCoords += tiles[i].texture.pos;
 				}
-				std::vector<video::SColor> colours[18];
+				std::vector<u32> colours;
 				if (selected) {
 					meshgen_selected_lights(colours,255,vcounts[i]);
 				}else{
@@ -4157,7 +4172,7 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				vertices[i][j].TCoords *= tiles[i].texture.size;
 				vertices[i][j].TCoords += tiles[i].texture.pos;
 			}
-			std::vector<video::SColor> colours[18];
+			std::vector<u32> colours;
 			if (selected) {
 				meshgen_selected_lights(colours,255,vcounts[i]);
 			}else{
@@ -4178,7 +4193,7 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				vertices[i][j].TCoords *= tiles[i].texture.size;
 				vertices[i][j].TCoords += tiles[i].texture.pos;
 			}
-			std::vector<video::SColor> colours[18];
+			std::vector<u32> colours;
 			if (selected) {
 				meshgen_selected_lights(colours,255,vcounts[i]);
 			}else{
@@ -4308,7 +4323,7 @@ void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				vertices[i][j].TCoords *= tiles[i].texture.size;
 				vertices[i][j].TCoords += tiles[i].texture.pos;
 			}
-			std::vector<video::SColor> colours[18];
+			std::vector<u32> colours;
 			if (selected) {
 				meshgen_selected_lights(colours,255,4);
 			}else{
@@ -4329,7 +4344,7 @@ void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				vertices[i][j].TCoords *= tiles[i].texture.size;
 				vertices[i][j].TCoords += tiles[i].texture.pos;
 			}
-			std::vector<video::SColor> colours[18];
+			std::vector<u32> colours;
 			if (selected) {
 				meshgen_selected_lights(colours,255,4);
 			}else{
@@ -4464,9 +4479,9 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	u16 end_indices[12] = {5,1,0,5,2,1,5,3,2,5,4,3};
 	u16 rots[4] = {0,90,180,270};
 	v3s16 faces[3] = {
-		v3s16( 0, 0,-1),
-		v3s16(-1, 0,-1),
-		v3s16(-1, 0, 0)
+		v3s16(0,0,1),
+		v3s16(1,0,1),
+		v3s16(1,0,0)
 	};
 
 	v3f pos = intToFloat(p,BS);
@@ -4480,7 +4495,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				v[i].TCoords *= tile.texture.size;
 				v[i].TCoords += tile.texture.pos;
 			}
-			std::vector<video::SColor> colours[18];
+			std::vector<u32> colours;
 			if (selected) {
 				meshgen_selected_lights(colours,255,10);
 			}else{
@@ -4512,7 +4527,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					v[i].TCoords *= endtile.texture.size;
 					v[i].TCoords += endtile.texture.pos;
 				}
-				std::vector<video::SColor> colours[18];
+				std::vector<u32> colours;
 				if (selected) {
 					meshgen_selected_lights(colours,255,6);
 				}else{
@@ -4536,7 +4551,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					v[i].TCoords *= endtile.texture.size;
 					v[i].TCoords += endtile.texture.pos;
 				}
-				std::vector<video::SColor> colours[18];
+				std::vector<u32> colours;
 				if (selected) {
 					meshgen_selected_lights(colours,255,6);
 				}else{
@@ -4561,7 +4576,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					v[i].TCoords *= tile.texture.size;
 					v[i].TCoords += tile.texture.pos;
 				}
-				std::vector<video::SColor> colours[18];
+				std::vector<u32> colours;
 				if (selected) {
 					meshgen_selected_lights(colours,255,10);
 				}else{
@@ -4596,7 +4611,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					v[i].TCoords *= tile.texture.size;
 					v[i].TCoords += tile.texture.pos;
 				}
-				std::vector<video::SColor> colours[18];
+				std::vector<u32> colours;
 				if (selected) {
 					meshgen_selected_lights(colours,255,10);
 				}else{
@@ -4631,7 +4646,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					v[i].TCoords *= tile.texture.size;
 					v[i].TCoords += tile.texture.pos;
 				}
-				std::vector<video::SColor> colours[18];
+				std::vector<u32> colours;
 				if (selected) {
 					meshgen_selected_lights(colours,255,10);
 				}else{
@@ -4667,7 +4682,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					v[i].TCoords *= tile.texture.size;
 					v[i].TCoords += tile.texture.pos;
 				}
-				std::vector<video::SColor> colours[18];
+				std::vector<u32> colours;
 				if (selected) {
 					meshgen_selected_lights(colours,255,10);
 				}else{
@@ -4703,7 +4718,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					v[i].TCoords *= tile.texture.size;
 					v[i].TCoords += tile.texture.pos;
 				}
-				std::vector<video::SColor> colours[18];
+				std::vector<u32> colours;
 				if (selected) {
 					meshgen_selected_lights(colours,255,10);
 				}else{
@@ -4711,7 +4726,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					for (u16 i=0; i<3; i++) {
 						f[i] = faces[i];
 						f[i].rotateXYBy(90);
-						f[i].rotateYZBy(180+rots[j]);
+						f[i].rotateYZBy(rots[j]);
 					}
 					meshgen_lights(data,n,p,colours,255,f[0],2,v);
 					meshgen_lights(data,n,p,colours,255,f[1],1,&v[2]);
@@ -4737,7 +4752,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						v[i].TCoords *= endtile.texture.size;
 						v[i].TCoords += endtile.texture.pos;
 					}
-					std::vector<video::SColor> colours[18];
+					std::vector<u32> colours;
 					if (selected) {
 						meshgen_selected_lights(colours,255,6);
 					}else{
@@ -4761,7 +4776,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						v[i].TCoords *= endtile.texture.size;
 						v[i].TCoords += endtile.texture.pos;
 					}
-					std::vector<video::SColor> colours[18];
+					std::vector<u32> colours;
 					if (selected) {
 						meshgen_selected_lights(colours,255,6);
 					}else{
@@ -4785,7 +4800,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						v[i].TCoords *= tile.texture.size;
 						v[i].TCoords += tile.texture.pos;
 					}
-					std::vector<video::SColor> colours[18];
+					std::vector<u32> colours;
 					if (selected) {
 						meshgen_selected_lights(colours,255,10);
 					}else{
@@ -4793,7 +4808,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						for (u16 i=0; i<3; i++) {
 							f[i] = faces[i];
 							f[i].rotateYZBy(90);
-							f[i].rotateXYBy(180+rots[j]);
+							f[i].rotateXYBy(rots[j]);
 						}
 						meshgen_lights(data,n,p,colours,255,f[0],2,v);
 						meshgen_lights(data,n,p,colours,255,f[1],1,&v[2]);
@@ -4821,7 +4836,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						v[i].TCoords *= tile.texture.size;
 						v[i].TCoords += tile.texture.pos;
 					}
-					std::vector<video::SColor> colours[18];
+					std::vector<u32> colours;
 					if (selected) {
 						meshgen_selected_lights(colours,255,10);
 					}else{
@@ -4829,7 +4844,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						for (u16 i=0; i<3; i++) {
 							f[i] = faces[i];
 							f[i].rotateYZBy(90);
-							f[i].rotateXYBy(180+rots[j]);
+							f[i].rotateXYBy(rots[j]);
 						}
 						meshgen_lights(data,n,p,colours,255,f[0],2,v);
 						meshgen_lights(data,n,p,colours,255,f[1],1,&v[2]);
@@ -4856,7 +4871,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					v[i].TCoords *= tile.texture.size;
 					v[i].TCoords += tile.texture.pos;
 				}
-				std::vector<video::SColor> colours[18];
+				std::vector<u32> colours;
 				if (selected) {
 					meshgen_selected_lights(colours,255,10);
 				}else{
@@ -4864,7 +4879,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					for (u16 i=0; i<3; i++) {
 						f[i] = faces[i];
 						f[i].rotateYZBy(90);
-						f[i].rotateXYBy(180+rots[j]);
+						f[i].rotateXYBy(rots[j]);
 					}
 					meshgen_lights(data,n,p,colours,255,f[0],2,v);
 					meshgen_lights(data,n,p,colours,255,f[1],1,&v[2]);
@@ -4890,7 +4905,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						v[i].TCoords *= endtile.texture.size;
 						v[i].TCoords += endtile.texture.pos;
 					}
-					std::vector<video::SColor> colours[18];
+					std::vector<u32> colours;
 					if (selected) {
 						meshgen_selected_lights(colours,255,6);
 					}else{
@@ -4914,7 +4929,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						v[i].TCoords *= endtile.texture.size;
 						v[i].TCoords += endtile.texture.pos;
 					}
-					std::vector<video::SColor> colours[18];
+					std::vector<u32> colours;
 					if (selected) {
 						meshgen_selected_lights(colours,255,6);
 					}else{
@@ -4939,7 +4954,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						v[i].TCoords *= tile.texture.size;
 						v[i].TCoords += tile.texture.pos;
 					}
-					std::vector<video::SColor> colours[18];
+					std::vector<u32> colours;
 					if (selected) {
 						meshgen_selected_lights(colours,255,10);
 					}else{
@@ -4947,7 +4962,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						for (u16 i=0; i<3; i++) {
 							f[i] = faces[i];
 							f[i].rotateXYBy(90);
-							f[i].rotateYZBy(180+rots[j]);
+							f[i].rotateYZBy(rots[j]);
 						}
 						meshgen_lights(data,n,p,colours,255,f[0],2,v);
 						meshgen_lights(data,n,p,colours,255,f[1],1,&v[2]);
@@ -4974,7 +4989,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						v[i].TCoords *= tile.texture.size;
 						v[i].TCoords += tile.texture.pos;
 					}
-					std::vector<video::SColor> colours[18];
+					std::vector<u32> colours;
 					if (selected) {
 						meshgen_selected_lights(colours,255,10);
 					}else{
@@ -4982,7 +4997,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						for (u16 i=0; i<3; i++) {
 							f[i] = faces[i];
 							f[i].rotateXYBy(90);
-							f[i].rotateYZBy(180+rots[j]);
+							f[i].rotateYZBy(rots[j]);
 						}
 						meshgen_lights(data,n,p,colours,255,f[0],2,v);
 						meshgen_lights(data,n,p,colours,255,f[1],1,&v[2]);

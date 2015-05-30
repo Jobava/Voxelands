@@ -410,20 +410,6 @@ public:
 				face_dir);
 	}
 
-#ifndef SERVER // Only on client
-
-#if 1
-	/*
-		Thread-safely updates the whole mesh of the mapblock.
-		NOTE: Prefer generating the mesh separately and then using
-		replaceMesh().
-	*/
-	void updateMesh(u32 daynight_ratio, Environment *env, v3s16 camera_offset);
-#endif
-	// Replace the mesh with a new one
-	void replaceMesh(MapBlockMesh *mesh_new);
-#endif
-
 	// See comments in mapblock.cpp
 	bool propagateSunlight(core::map<v3s16, bool> & light_sources,
 			bool remove_light=false, bool *black_air_left=NULL);

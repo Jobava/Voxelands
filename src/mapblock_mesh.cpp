@@ -165,6 +165,42 @@ video::SColor MapBlock_LightColor(u8 alpha, u8 light)
 	return video::SColor(alpha,r,g,b);
 }
 
+video::SColor blend_light(u32 data, u32 daylight_factor)
+{
+	u8 type = (data>>24)&0xFF;
+	u8 a = 255;
+	u8 r = 0;
+	u8 g = 0;
+	u8 b = 0;
+
+	if (type < 2) {
+		u8 light = data&0xFF;
+		if (type == 1)
+			a = (data>>8)&0xFF;
+		u8 d = light&0x0F;
+		u8 n = (light>>4)&0x0F;
+		u8 l = ((daylight_factor * d + (1000-daylight_factor) * n) )/1000;
+		u8 max = LIGHT_MAX;
+		if (d == LIGHT_SUN)
+			max = LIGHT_SUN;
+		if (l > max)
+			l = max;
+		l = decode_light(l);
+		r = l;
+		g = l;
+		b = l;
+		if (l <= 80)
+			b = MYMAX(0, pow((float)l/80.0, 0.8)*80.0);
+	}else{
+		a = type;
+		r = (data>>16)&0xFF;
+		g = (data>>8)&0xFF;
+		b = data&0xFF;
+	}
+
+	return video::SColor(a,r,g,b);
+}
+
 /*
 	Gets node tile from any place relative to block.
 	Returns TILE_NODE if doesn't exist or should not be drawn.
@@ -401,7 +437,7 @@ MapBlockMesh::MapBlockMesh(MeshMakeData *data, v3s16 camera_offset):
 	m_mesh(NULL),
 	m_camera_offset(camera_offset)
 {
-	generate(data,camera_offset);
+	generate(data,camera_offset,NULL);
 }
 
 MapBlockMesh::~MapBlockMesh()
@@ -410,11 +446,12 @@ MapBlockMesh::~MapBlockMesh()
 	m_mesh = NULL;
 }
 
-void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset)
+void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset, JMutex *mutex)
 {
 	data->m_blockpos_nodes = data->m_blockpos*MAP_BLOCKSIZE;
 	data->m_smooth_lighting = g_settings->getBool("smooth_lighting");
 	bool selected = false;
+	m_pos = data->m_blockpos;
 
 	for(s16 z=0; z<MAP_BLOCKSIZE; z++)
 	for(s16 y=0; y<MAP_BLOCKSIZE; y++)
@@ -475,6 +512,8 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset)
 				data->m_sounds->erase(i);
 			}
 		}
+		if (data->m_smooth_lighting && !selected)
+			meshgen_preset_smooth_lights(data,p);
 		switch (content_features(n).draw_type) {
 		case CDT_AIRLIKE:
 			break;
@@ -540,52 +579,56 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset)
 		case CDT_TRUNKLIKE:
 			meshgen_trunklike(data,p,n,selected);
 			break;
+		default:;
 		}
 	}
 
-	if (m_mesh) {
-		scene::SMesh *m = m_mesh;
-		m_mesh = NULL;
-		m->drop();
+	scene::SMesh *mesh = new scene::SMesh();
+	for (u32 i=0; i<data->m_meshdata.size(); i++) {
+		MeshData &d = data->m_meshdata[i];
+		// Create meshbuffer
+		// This is a "Standard MeshBuffer",
+		// it's a typedeffed CMeshBuffer<video::S3DVertex>
+		scene::SMeshBuffer *buf = new scene::SMeshBuffer();
+		// Set material
+		buf->Material = d.material;
+		// Add to mesh
+		mesh->addMeshBuffer(buf);
+		// Mesh grabbed it
+		buf->drop();
+
+		buf->append(d.vertices.data(), d.vertices.size(), d.indices.data(), d.indices.size());
 	}
+
+	translateMesh(mesh, intToFloat(data->m_blockpos * MAP_BLOCKSIZE - camera_offset, BS));
+
+	if (mutex != NULL)
+		mutex->Lock();
+
+	if (m_mesh)
+		m_mesh->drop();
+	m_mesh = mesh;
 	m_meshdata.swap(data->m_meshdata);
 	refresh(data->m_daynight_ratio);
 	m_mesh->recalculateBoundingBox();
 
-	translateMesh(m_mesh, intToFloat(data->m_blockpos * MAP_BLOCKSIZE - camera_offset, BS));
+	if (mutex != NULL)
+		mutex->Unlock();
 }
 
 void MapBlockMesh::refresh(u32 daynight_ratio)
 {
-	if (m_mesh == NULL) {
-		m_mesh = new scene::SMesh();
-		for (u32 i=0; i<m_meshdata.size(); i++) {
-			MeshData &d = m_meshdata[i];
-			// Create meshbuffer
-			// This is a "Standard MeshBuffer",
-			// it's a typedeffed CMeshBuffer<video::S3DVertex>
-			scene::SMeshBuffer *buf = new scene::SMeshBuffer();
-			// Set material
-			buf->Material = d.material;
-			// Add to mesh
-			m_mesh->addMeshBuffer(buf);
-			// Mesh grabbed it
-			buf->drop();
-
-			buf->append(d.vertices.data(), d.vertices.size(), d.indices.data(), d.indices.size());
-		}
-	}
-
-	u16 ci = daynight_ratio_index(daynight_ratio);
+	if (m_mesh == NULL)
+		return;
 
 	u16 mc = m_mesh->getMeshBufferCount();
 	for (u16 j=0; j<mc; j++) {
 		scene::IMeshBuffer *buf = m_mesh->getMeshBuffer(j);
 		video::S3DVertex *vertices = (video::S3DVertex*)buf->getVertices();
 		u16 vc = buf->getVertexCount();
-		video::SColor *c = m_meshdata[j].colours[ci].data();
+		u32 *c = m_meshdata[j].colours.data();
 		for (u16 i=0; i<vc; i++) {
-			vertices[i].Color = c[i];
+			vertices[i].Color = blend_light(c[i],daynight_ratio);
 		}
 	}
 }

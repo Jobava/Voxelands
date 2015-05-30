@@ -446,7 +446,6 @@ public:
 	virtual void addPlayer(Player *player);
 	LocalPlayer * getLocalPlayer();
 
-	void updateMeshes(v3s16 blockpos, v3s16 camera_offset);
 	void expireMeshes(bool only_daynight_diffed);
 
 	void setTimeOfDay(u32 time)

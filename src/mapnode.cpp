@@ -694,4 +694,36 @@ u8 getFaceLight(u32 daynight_ratio, MapNode n, MapNode n2,
 	}
 }
 
+u8 face_light(MapNode n, MapNode n2, v3s16 face_dir)
+{
+	u8 ld = n.getLight(LIGHTBANK_DAY);
+	u8 ld2 = n2.getLight(LIGHTBANK_DAY);
+	u8 ln = n.getLight(LIGHTBANK_NIGHT);
+	u8 ln2 = n2.getLight(LIGHTBANK_NIGHT);
+
+	if (n2.getContent() == CONTENT_IGNORE) {
+		if (ld > 0) {
+			ld2 = ld;
+		}else{
+			ld2 = LIGHT_MAX;
+		}
+		ln2 = ln;
+	}
+
+	if (ld2 > ld)
+		ld = ld2;
+	if (ln2 > ln)
+		ln = ln2;
+
+	if (face_dir.X == 1 || face_dir.X == -1 || face_dir.Y == -1) {
+		ld = MYMAX(0,ld-2);
+		ln = MYMAX(0,ln-2);
+	}else if(face_dir.Z == 1 || face_dir.Z == -1) {
+		ld = MYMAX(0,ld-1);
+		ln = MYMAX(0,ln-1);
+	}
+
+	return (ln<<4)|ld;
+}
+
 
