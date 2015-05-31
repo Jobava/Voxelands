@@ -429,6 +429,27 @@ static bool meshgen_hardface(MeshMakeData *data, v3s16 p, MapNode &n, v3s16 pos)
 	return true;
 }
 
+static bool meshgen_farface(MeshMakeData *data, v3s16 p, MapNode &n, v3s16 pos)
+{
+	MapNode nn = data->m_vmanip.getNodeRO(data->m_blockpos_nodes+p+pos);
+	ContentFeatures *ff = &content_features(nn.getContent());
+	if (content_features(n).draw_type != CDT_LIQUID_SOURCE && ff->draw_type == CDT_LIQUID_SOURCE)
+		return true;
+	if (ff->draw_type == CDT_CUBELIKE)
+		return false;
+	if (ff->draw_type == CDT_TRUNKLIKE)
+		return false;
+	if (ff->draw_type == CDT_LEAFLIKE)
+		return false;
+	if (ff->draw_type == CDT_ROOFLIKE)
+		return false;
+	if (ff->draw_type == CDT_WALLLIKE)
+		return false;
+	if (ff->draw_type == CDT_LIQUID_SOURCE)
+		return false;
+	return true;
+}
+
 static int meshgen_check_walllike(MeshMakeData *data, MapNode n, v3s16 p, u8 d[8])
 {
 	static const v3s16 fence_dirs[8] = {
@@ -5059,6 +5080,114 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				}
 			}
 		}
+	}
+}
+
+void meshgen_farnode(MeshMakeData *data, v3s16 p, MapNode &n)
+{
+	v3f pos = intToFloat(p, BS);
+	if (meshgen_farface(data,p,n,v3s16(-1,0,0))) {
+		TileSpec tile = getNodeTile(n,p,v3s16(-1,0,0),data->m_temp_mods,NULL);
+		video::S3DVertex vertices[4] = {
+			video::S3DVertex(-0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
+			video::S3DVertex(-0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
+			video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex(-0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
+		};
+
+		u16 indices[6] = {0,1,2,2,3,0};
+
+		for (u16 i=0; i<4; i++) {
+			vertices[i].Pos += pos;
+		}
+
+		data->appendFar(tile.getMaterial(), vertices, 4, indices, 6);
+	}
+	if (meshgen_farface(data,p,n,v3s16(1,0,0))) {
+		TileSpec tile = getNodeTile(n,p,v3s16(1,0,0),data->m_temp_mods,NULL);
+		video::S3DVertex vertices[4] = {
+			video::S3DVertex(0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1()),
+			video::S3DVertex(0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
+			video::S3DVertex(0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0())
+		};
+
+		u16 indices[6] = {0,1,2,2,3,0};
+
+		for (u16 i=0; i<4; i++) {
+			vertices[i].Pos += pos;
+		}
+
+		data->appendFar(tile.getMaterial(), vertices, 4, indices, 6);
+	}
+	if (meshgen_farface(data,p,n,v3s16(0,-1,0))) {
+		TileSpec tile = getNodeTile(n,p,v3s16(0,-1,0),data->m_temp_mods,NULL);
+		video::S3DVertex vertices[4] = {
+			video::S3DVertex( 0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
+			video::S3DVertex(-0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
+			video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex( 0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
+		};
+
+		u16 indices[6] = {0,1,2,2,3,0};
+		std::vector<u32> colours;
+
+		for (u16 i=0; i<4; i++) {
+			vertices[i].Pos += pos;
+		}
+
+		data->appendFar(tile.getMaterial(), vertices, 4, indices, 6);
+	}
+	if (meshgen_farface(data,p,n,v3s16(0,1,0))) {
+		TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),data->m_temp_mods,NULL);
+		video::S3DVertex vertices[4] = {
+			video::S3DVertex( 0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex(-0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1()),
+			video::S3DVertex(-0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
+			video::S3DVertex( 0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0())
+		};
+
+		u16 indices[6] = {0,1,2,2,3,0};
+
+		for (u16 i=0; i<4; i++) {
+			vertices[i].Pos += pos;
+		}
+
+		data->appendFar(tile.getMaterial(), vertices, 4, indices, 6);
+	}
+	if (meshgen_farface(data,p,n,v3s16(0,0,-1))) {
+		TileSpec tile = getNodeTile(n,p,v3s16(0,0,-1),data->m_temp_mods,NULL);
+		video::S3DVertex vertices[4] = {
+			video::S3DVertex(-0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
+			video::S3DVertex( 0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
+			video::S3DVertex( 0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
+		};
+
+		u16 indices[6] = {0,1,2,2,3,0};
+
+		for (u16 i=0; i<4; i++) {
+			vertices[i].Pos += pos;
+		}
+
+		data->appendFar(tile.getMaterial(), vertices, 4, indices, 6);
+	}
+	if (meshgen_farface(data,p,n,v3s16(0,0,1))) {
+		TileSpec tile = getNodeTile(n,p,v3s16(0,0,1),data->m_temp_mods,NULL);
+		video::S3DVertex vertices[4] = {
+			video::S3DVertex( 0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
+			video::S3DVertex(-0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
+			video::S3DVertex(-0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex( 0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
+		};
+
+		u16 indices[6] = {0,1,2,2,3,0};
+
+		for (u16 i=0; i<4; i++) {
+			vertices[i].Pos += pos;
+		}
+
+		data->appendFar(tile.getMaterial(), vertices, 4, indices, 6);
 	}
 }
 

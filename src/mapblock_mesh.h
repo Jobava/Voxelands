@@ -72,6 +72,7 @@ struct MeshMakeData
 	bool m_smooth_lighting;
 	Environment *m_env;
 	std::vector<MeshData> m_meshdata;
+	std::vector<MeshData> m_fardata;
 	MeshData *m_single;
 
 	std::map<v3s16,MapBlockSound> *m_sounds;
@@ -169,6 +170,43 @@ struct MeshMakeData
 			d->vertices.push_back(vertices[i]);
 		}
 	}
+	void appendFar(
+		video::SMaterial material,
+		const video::S3DVertex* const vertices,
+		u32 v_count,
+		const u16* const indices,
+		u32 i_count
+	)
+	{
+		MeshData *d = NULL;
+		for (u32 i=0; i<m_fardata.size(); i++) {
+			MeshData &dd = m_fardata[i];
+			if (dd.material != material)
+				continue;
+			if (dd.vertices.size() + v_count > 65535)
+				continue;
+
+			d = &dd;
+			break;
+		}
+
+		if (d == NULL) {
+			MeshData dd;
+			dd.single = false;
+			dd.material = material;
+			m_fardata.push_back(dd);
+			d = &m_fardata[m_fardata.size()-1];
+		}
+
+		u32 vertex_count = d->vertices.size();
+		for(u32 i=0; i<i_count; i++) {
+			u32 j = indices[i] + vertex_count;
+			d->indices.push_back(j);
+		}
+		for(u32 i=0; i<v_count; i++) {
+			d->vertices.push_back(vertices[i]);
+		}
+	}
 };
 
 class MapBlockMesh
@@ -182,16 +220,24 @@ public:
 		return m_mesh;
 	}
 
+	scene::SMesh* getFarMesh()
+	{
+		return m_farmesh;
+	}
+
 	void generate(MeshMakeData *data, v3s16 camera_offset, JMutex *mutex);
 	void refresh(u32 daynight_ratio);
 
 	void updateCameraOffset(v3s16 camera_offset);
 
+	bool far;
 private:
 	v3s16 m_pos;
 	scene::SMesh *m_mesh;
+	scene::SMesh *m_farmesh;
 	v3s16 m_camera_offset;
 	std::vector<MeshData> m_meshdata;
+	std::vector<MeshData> m_fardata;
 };
 
 #endif

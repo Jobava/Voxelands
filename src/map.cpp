@@ -3412,6 +3412,8 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 					blocks_in_range_without_mesh++;
 					continue;
 				}
+
+				block->mesh->far = (d > faraway);
 			}
 
 			// Limit block count in case of a sudden increase
@@ -3470,11 +3472,19 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 			MapBlockMesh *mesh = block->mesh;
 			if (!mesh || !mesh->getMesh())
 				continue;
+			scene::SMesh *m = NULL;
+			if (mesh->far) {
+				m = mesh->getFarMesh();
+			}else{
+				m = mesh->getMesh();
+			}
+			if (!m)
+				continue;
 
-			u32 c = mesh->getMesh()->getMeshBufferCount();
+			u32 c = m->getMeshBufferCount();
 			bool stuff_actually_drawn = false;
 			for (u32 i=0; i<c; i++) {
-				scene::IMeshBuffer *buf = mesh->getMesh()->getMeshBuffer(i);
+				scene::IMeshBuffer *buf = m->getMeshBuffer(i);
 				if (buf == NULL)
 					continue;
 

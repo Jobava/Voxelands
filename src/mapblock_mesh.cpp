@@ -355,6 +355,7 @@ u8 getSmoothLight(v3s16 p, v3s16 corner, VoxelManipulator &vmanip)
 
 MapBlockMesh::MapBlockMesh(MeshMakeData *data, v3s16 camera_offset):
 	m_mesh(NULL),
+	m_farmesh(NULL),
 	m_camera_offset(camera_offset)
 {
 	generate(data,camera_offset,NULL);
@@ -364,6 +365,8 @@ MapBlockMesh::~MapBlockMesh()
 {
 	m_mesh->drop();
 	m_mesh = NULL;
+	m_farmesh->drop();
+	m_farmesh = NULL;
 }
 
 void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset, JMutex *mutex)
@@ -439,6 +442,7 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset, JMutex *mut
 			break;
 		case CDT_CUBELIKE:
 			meshgen_cubelike(data,p,n,selected);
+			meshgen_farnode(data,p,n);
 			break;
 		case CDT_RAILLIKE:
 			meshgen_raillike(data,p,n,selected);
@@ -456,6 +460,7 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset, JMutex *mut
 			break;
 		case CDT_LIQUID_SOURCE:
 			meshgen_liquid_source(data,p,n,selected);
+			meshgen_farnode(data,p,n);
 			break;
 		case CDT_NODEBOX:
 			meshgen_nodebox(data,p,n,selected,false);
@@ -474,12 +479,15 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset, JMutex *mut
 			break;
 		case CDT_WALLLIKE:
 			meshgen_walllike(data,p,n,selected);
+			meshgen_farnode(data,p,n);
 			break;
 		case CDT_ROOFLIKE:
 			meshgen_rooflike(data,p,n,selected);
+			meshgen_farnode(data,p,n);
 			break;
 		case CDT_LEAFLIKE:
 			meshgen_leaflike(data,p,n,selected);
+			meshgen_farnode(data,p,n);
 			break;
 		case CDT_NODEBOX_META:
 			meshgen_nodebox(data,p,n,selected,true);
@@ -498,12 +506,14 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset, JMutex *mut
 			break;
 		case CDT_TRUNKLIKE:
 			meshgen_trunklike(data,p,n,selected);
+			meshgen_farnode(data,p,n);
 			break;
 		default:;
 		}
 	}
 
 	scene::SMesh *mesh = new scene::SMesh();
+	scene::SMesh *fmesh = new scene::SMesh();
 	for (u32 i=0; i<data->m_meshdata.size(); i++) {
 		MeshData &d = data->m_meshdata[i];
 		// Create meshbuffer
@@ -519,16 +529,36 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset, JMutex *mut
 
 		buf->append(d.vertices.data(), d.vertices.size(), d.indices.data(), d.indices.size());
 	}
+	for (u32 i=0; i<data->m_fardata.size(); i++) {
+		MeshData &d = data->m_fardata[i];
+		// Create meshbuffer
+		// This is a "Standard MeshBuffer",
+		// it's a typedeffed CMeshBuffer<video::S3DVertex>
+		scene::SMeshBuffer *buf = new scene::SMeshBuffer();
+		// Set material
+		buf->Material = d.material;
+		// Add to mesh
+		fmesh->addMeshBuffer(buf);
+		// Mesh grabbed it
+		buf->drop();
+
+		buf->append(d.vertices.data(), d.vertices.size(), d.indices.data(), d.indices.size());
+	}
 
 	translateMesh(mesh, intToFloat(data->m_blockpos * MAP_BLOCKSIZE - camera_offset, BS));
+	translateMesh(fmesh, intToFloat(data->m_blockpos * MAP_BLOCKSIZE - camera_offset, BS));
 
 	if (mutex != NULL)
 		mutex->Lock();
 
 	if (m_mesh)
 		m_mesh->drop();
+	if (m_farmesh)
+		m_farmesh->drop();
 	m_mesh = mesh;
+	m_farmesh = fmesh;
 	m_meshdata.swap(data->m_meshdata);
+	m_fardata.swap(data->m_fardata);
 	refresh(data->m_daynight_ratio);
 	m_mesh->recalculateBoundingBox();
 
@@ -551,12 +581,22 @@ void MapBlockMesh::refresh(u32 daynight_ratio)
 			vertices[i].Color = blend_light(c[i],daynight_ratio);
 		}
 	}
+	mc = m_farmesh->getMeshBufferCount();
+	for (u16 j=0; j<mc; j++) {
+		scene::IMeshBuffer *buf = m_farmesh->getMeshBuffer(j);
+		video::S3DVertex *vertices = (video::S3DVertex*)buf->getVertices();
+		u16 vc = buf->getVertexCount();
+		for (u16 i=0; i<vc; i++) {
+			vertices[i].Color = blend_light(0x0F,daynight_ratio);
+		}
+	}
 }
 
 void MapBlockMesh::updateCameraOffset(v3s16 camera_offset)
 {
 	if (camera_offset != m_camera_offset) {
 		translateMesh(m_mesh, intToFloat(m_camera_offset-camera_offset, BS));
+		translateMesh(m_farmesh, intToFloat(m_camera_offset-camera_offset, BS));
 		m_camera_offset = camera_offset;
 	}
 }
