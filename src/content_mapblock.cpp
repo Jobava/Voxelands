@@ -392,12 +392,40 @@ static void meshgen_lights(
 	}
 }
 
-/* TODO: there are other cases that should return false */
+/* TODO: there may be other cases that should return false */
 static bool meshgen_hardface(MeshMakeData *data, v3s16 p, MapNode &n, v3s16 pos)
 {
 	MapNode nn = data->m_vmanip.getNodeRO(data->m_blockpos_nodes+p+pos);
-	if (content_features(nn).draw_type == CDT_CUBELIKE)
+	ContentFeatures *ff = &content_features(nn.getContent());
+	if (ff->draw_type == CDT_CUBELIKE)
 		return false;
+	v3s16 ipos(0,0,0);
+	if (pos.X)
+		ipos.X = -pos.X;
+	if (pos.Y)
+		ipos.Y = -pos.Y;
+	if (pos.Z)
+		ipos.Z = -pos.Z;
+	ContentFeatures *f = &content_features(n.getContent());
+	if (ff->draw_type == CDT_STAIRLIKE) {
+		bool urot = (nn.getContent() >= CONTENT_SLAB_STAIR_UD_MIN && nn.getContent() <= CONTENT_SLAB_STAIR_UD_MAX);
+		if ((urot && pos.Y == -1) || (!urot && pos.Y == 1))
+			return false;
+		if (unpackDir(nn.param1) == ipos)
+			return false;
+		bool furot = (n.getContent() >= CONTENT_SLAB_STAIR_UD_MIN && n.getContent() <= CONTENT_SLAB_STAIR_UD_MAX);
+		if (f->draw_type == CDT_STAIRLIKE && furot == urot && nn.param1 == n.param1)
+			return false;
+		if (f->draw_type == CDT_SLABLIKE && furot == urot && unpackDir(nn.param1) == pos)
+			return false;
+	}
+	if (ff->draw_type == CDT_SLABLIKE && f->draw_type == CDT_SLABLIKE) {
+		bool urot = (nn.getContent() >= CONTENT_SLAB_STAIR_UD_MIN && nn.getContent() <= CONTENT_SLAB_STAIR_UD_MAX);
+		if ((urot && pos.Y == -1) || (!urot && pos.Y == 1))
+			return false;
+		if (!pos.Y && n.getContent() == nn.getContent())
+			return false;
+	}
 	return true;
 }
 
@@ -494,7 +522,6 @@ static int meshgen_check_walllike(MeshMakeData *data, MapNode n, v3s16 p, u8 d[8
 	return 2;
 }
 
-/* TODO: optimise the fuck out of this, make less faces where possible */
 static void meshgen_cuboid(
 	MeshMakeData *data,
 	MapNode &n,
@@ -586,6 +613,78 @@ static void meshgen_cuboid(
 			vertices[i][j].TCoords *= tiles[tileindex].texture.size;
 			vertices[i][j].TCoords += tiles[tileindex].texture.pos;
 		}
+		// don't draw unseen faces
+		bool skip = false;
+		switch (i) {
+		case 0:
+		{
+			bool edge = true;
+			for (s32 j=0; edge && j<4; j++) {
+				if (vertices[i][j].Pos.Y < 0.49*BS)
+					edge = false;
+			}
+			if (edge && !meshgen_hardface(data,p,n,v3s16(0,1,0)))
+				skip = true;
+		}
+			break;
+		case 1:
+		{
+			bool edge = true;
+			for (s32 j=0; edge && j<4; j++) {
+				if (vertices[i][j].Pos.Y > -0.49*BS)
+					edge = false;
+			}
+			if (edge && !meshgen_hardface(data,p,n,v3s16(0,-1,0)))
+				skip = true;
+		}
+			break;
+		case 2:
+		{
+			bool edge = true;
+			for (s32 j=0; edge && j<4; j++) {
+				if (vertices[i][j].Pos.X < 0.49*BS)
+					edge = false;
+			}
+			if (edge && !meshgen_hardface(data,p,n,v3s16(1,0,0)))
+				skip = true;
+		}
+			break;
+		case 3:
+		{
+			bool edge = true;
+			for (s32 j=0; edge && j<4; j++) {
+				if (vertices[i][j].Pos.X > -0.49*BS)
+					edge = false;
+			}
+			if (edge && !meshgen_hardface(data,p,n,v3s16(-1,0,0)))
+				skip = true;
+		}
+			break;
+		case 4:
+		{
+			bool edge = true;
+			for (s32 j=0; edge && j<4; j++) {
+				if (vertices[i][j].Pos.Z < 0.49*BS)
+					edge = false;
+			}
+			if (edge && !meshgen_hardface(data,p,n,v3s16(0,0,1)))
+				skip = true;
+		}
+			break;
+		case 5:
+		{
+			bool edge = true;
+			for (s32 j=0; edge && j<4; j++) {
+				if (vertices[i][j].Pos.Z > -0.49*BS)
+					edge = false;
+			}
+			if (edge && !meshgen_hardface(data,p,n,v3s16(0,0,-1)))
+				skip = true;
+		}
+			break;
+		}
+		if (skip)
+			continue;
 		std::vector<u32> colours;
 		if (cols) {
 			meshgen_custom_lights(colours,cols[0],cols[1],cols[2],cols[3],4);
@@ -3894,7 +3993,6 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	// remove rotation from the node, we'll do it ourselves
 	{
 		content_t c = n.getContent();
-		n.param1 = 0;
 		n.setContent(c);
 	}
 
@@ -4035,17 +4133,16 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		left = right;
 		right = r;
 	}
-	MapNode nb = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + back);
 	MapNode nf = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + front);
 	MapNode nl = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + left);
 	MapNode nr = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + right);
-	ContentFeatures *fb = &content_features(nb);
 	ContentFeatures *ff = &content_features(nf);
 	ContentFeatures *fl = &content_features(nl);
 	ContentFeatures *fr = &content_features(nr);
 	s16 vcounts[6] = {16,4,15,15,4,16};
 	s16 icounts[6] = {24,6,15,15,6,24};
-	bool force_sides = false;
+	// don't draw unseen faces
+	bool skips[6] = {false,false,false,false,false,false};
 	if (
 		ff->draw_type == CDT_SLABLIKE
 		|| (
@@ -4085,25 +4182,12 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		vertices[5][9] =  video::S3DVertex( 0.5*BS, 0.    ,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.5);
 		vertices[5][10] = video::S3DVertex( 0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), 1.,1.);
 		vertices[5][11] = video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), 0.,1.);
-		force_sides = true;
+	}else{
+		skips[2] = !meshgen_hardface(data,p,n,right);
+		skips[3] = !meshgen_hardface(data,p,n,left);
 	}
-	// don't draw unseen faces
-	bool skips[6] = {false,false,false,false,false,false};
-	if (
-		fb->draw_type == CDT_CUBELIKE
-		|| (
-			fb->draw_type == CDT_STAIRLIKE
-			&& (
-				nb.getRotationAngle() == rot+180
-				|| nb.getRotationAngle() == rot-180
-			)
-		)
-	)
-		skips[4] = true;
-	if (!force_sides && fl->draw_type == CDT_STAIRLIKE && nl.getRotationAngle() == rot)
-		skips[3] = true;
-	if (!force_sides && fr->draw_type == CDT_STAIRLIKE && nr.getRotationAngle() == rot)
-		skips[2] = true;
+
+	skips[4] = !meshgen_hardface(data,p,n,back);
 
 	if (urot) {
 		if (rot) {
@@ -4271,46 +4355,13 @@ void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		}
 	};
 	u16 indices[6] = {0,1,2,2,3,0};
-	v3s16 back(0,0,1);
-	v3s16 front(0,0,-1);
-	v3s16 left(-1,0,0);
-	v3s16 right(1,0,0);
-	v3s16 under(0,-1,0);
-	if (urot) {
-		left = v3s16(1,0,0);
-		right = v3s16(-1,0,0);
-		under = v3s16(0,1,0);
-	}
-	MapNode nb = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + back);
-	MapNode nf = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + front);
-	MapNode nl = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + left);
-	MapNode nr = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + right);
-	MapNode nu = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + under);
 	// don't draw unseen faces
 	bool skips[6] = {false,false,false,false,false,false};
-	if (
-		content_features(nu).draw_type == CDT_CUBELIKE
-		|| (
-			content_features(nu).draw_type == CDT_SLABLIKE
-			&& (
-				(
-					urot && nu.getContent() == (n.getContent()|CONTENT_SLAB_STAIR_UD_MAX)
-				) || (
-					!urot && (nu.getContent()|CONTENT_SLAB_STAIR_UD_MAX) == n.getContent()
-				)
-			)
-		)
-	)
-		skips[1] = true;
-	if (nr.getContent() == n.getContent() || content_features(nr).draw_type == CDT_CUBELIKE)
-		skips[2] = true;
-	if (nl.getContent() == n.getContent() || content_features(nl).draw_type == CDT_CUBELIKE)
-		skips[3] = true;
-	if (nb.getContent() == n.getContent() || content_features(nb).draw_type == CDT_CUBELIKE)
-		skips[4] = true;
-	if (nf.getContent() == n.getContent() || content_features(nf).draw_type == CDT_CUBELIKE)
-		skips[5] = true;
+
 	if (urot) {
+		for (u16 i=0; i<6; i++) {
+			skips[i] = !meshgen_hardface(data,p,n,ufaces[i]);
+		}
 		for (int i=0; i<6; i++) {
 			if (skips[i])
 				continue;
@@ -4333,6 +4384,9 @@ void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 			data->append(tiles[i].getMaterial(), vertices[i], 4, indices, 6, colours);
 		}
 	}else{
+		for (u16 i=0; i<6; i++) {
+			skips[i] = !meshgen_hardface(data,p,n,faces[i]);
+		}
 		for (int i=0; i<6; i++) {
 			if (skips[i])
 				continue;
