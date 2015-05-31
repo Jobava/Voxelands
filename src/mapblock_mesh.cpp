@@ -301,7 +301,7 @@ v3s16 dirs8[8] = {
 // Calculate lighting at the XYZ- corner of p
 u8 getSmoothLight(v3s16 p, VoxelManipulator &vmanip, LightBank bank)
 {
-	u16 ambient_occlusion = 0;
+	float ambient_occlusion = 0;
 	u16 light = 0;
 	u16 light_count = 0;
 	for(u32 i=0; i<8; i++) {
@@ -311,8 +311,10 @@ u8 getSmoothLight(v3s16 p, VoxelManipulator &vmanip, LightBank bank)
 		) {
 			light += n.getLight(bank);
 			light_count++;
+		}else if (content_features(n).draw_type == CDT_CUBELIKE) {
+			ambient_occlusion += 1.0;
 		}else if (n.getContent() != CONTENT_IGNORE) {
-			ambient_occlusion++;
+			ambient_occlusion += 0.5;
 		}
 	}
 
@@ -323,7 +325,7 @@ u8 getSmoothLight(v3s16 p, VoxelManipulator &vmanip, LightBank bank)
 
 	if (ambient_occlusion > 4) {
 		ambient_occlusion -= 4;
-		light = (float)light / ((float)ambient_occlusion * 0.5 + 1.0);
+		light = (float)light / (ambient_occlusion * 0.4 + 1.0);
 	}
 
 	return light;
