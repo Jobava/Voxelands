@@ -299,10 +299,11 @@ v3s16 dirs8[8] = {
 };
 
 // Calculate lighting at the given corner of p
-u8 getSmoothLight(v3s16 p, v3s16 corner, VoxelManipulator &vmanip, LightBank bank)
+u8 getSmoothLight(v3s16 p, v3s16 corner, VoxelManipulator &vmanip)
 {
 	float ambient_occlusion = 0;
-	float light = 0;
+	float dl = 0;
+	float nl = 0;
 	u16 light_count = 0;
 
 	if (corner.X == 1)
@@ -317,7 +318,8 @@ u8 getSmoothLight(v3s16 p, v3s16 corner, VoxelManipulator &vmanip, LightBank ban
 		if (
 			content_features(n).param_type == CPT_LIGHT
 		) {
-			light += n.getLight(bank);
+			dl += n.getLight(LIGHTBANK_DAY);
+			nl += n.getLight(LIGHTBANK_NIGHT);
 			light_count++;
 		}else if (content_features(n).draw_type == CDT_CUBELIKE) {
 			ambient_occlusion += 1.0;
@@ -329,17 +331,26 @@ u8 getSmoothLight(v3s16 p, v3s16 corner, VoxelManipulator &vmanip, LightBank ban
 	if (light_count == 0)
 		return 0;
 
-	light /= light_count;
+	dl /= light_count;
+	nl /= light_count;
 
 	if (ambient_occlusion > 4) {
-		ambient_occlusion -= 4;
-		light = light / (ambient_occlusion * 0.4 + 1.0);
+		ambient_occlusion = (ambient_occlusion-4) * 0.4 + 1.0;
+		dl /= ambient_occlusion;
+		nl /= ambient_occlusion;
 	}
 
-	if (light >= LIGHT_SUN)
-		return LIGHT_SUN;
+	u8 idl;
+	u8 inl;
 
-	return ceilf(light);
+	if (dl >= LIGHT_SUN) {
+		idl = LIGHT_SUN;
+	}else{
+		idl = ceilf(dl);
+	}
+	inl = ceilf(nl);
+
+	return ((inl<<4)&0xF0)|(idl&0x0F);;
 }
 
 MapBlockMesh::MapBlockMesh(MeshMakeData *data, v3s16 camera_offset):

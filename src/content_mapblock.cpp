@@ -732,7 +732,6 @@ static void meshgen_build_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, bool 
 	}
 }
 
-/* TODO: calculate faces better, or pass faces as argument */
 static void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3f pos, TileSpec &tile, bool selected, s16 rot, v3s16 face)
 {
 	// vertices for top and bottom tri
@@ -807,7 +806,6 @@ static void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners
 	}
 }
 
-/* TODO: calculate faces better, or pass faces as argument */
 static void meshgen_leaftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3f pos, TileSpec &tile, bool selected, s16 rot)
 {
 	// vertices
@@ -848,13 +846,9 @@ static void meshgen_leaftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners
 
 void meshgen_preset_smooth_lights(MeshMakeData *data, v3s16 p)
 {
-	u8 dl;
-	u8 nl;
 	v3s16 pos = data->m_blockpos_nodes+p;
 	for (u16 i=0; i<8; i++) {
-		dl = getSmoothLight(pos,corners[i],data->m_vmanip,LIGHTBANK_DAY);
-		nl = getSmoothLight(pos,corners[i],data->m_vmanip,LIGHTBANK_NIGHT);
-		smooth_lights[i] = ((nl<<4)&0xF0)|(dl&0x0F);
+		smooth_lights[i] = getSmoothLight(pos,corners[i],data->m_vmanip);
 	}
 }
 

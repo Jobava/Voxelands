@@ -38,7 +38,7 @@
 // Helper functions
 TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods, NodeMetadata *meta = NULL);
 TileSpec getMetaTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods);
-u8 getSmoothLight(v3s16 p, v3s16 corner, VoxelManipulator &vmanip, LightBank bank);
+u8 getSmoothLight(v3s16 p, v3s16 corner, VoxelManipulator &vmanip);
 
 class MapBlock;
 class Environment;
