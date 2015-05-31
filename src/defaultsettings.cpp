@@ -100,7 +100,6 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("video_driver", "opengl");
 	settings->setDefault("continuous_forward", "false");
 	settings->setDefault("invert_mouse", "false");
-	settings->setDefault("enable_farmesh", "false");
 	settings->setDefault("enable_clouds", "true");
 	settings->setDefault("invisible_stone", "false");
 	settings->setDefault("screenshot_path", ".");

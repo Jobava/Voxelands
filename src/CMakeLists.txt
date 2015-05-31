@@ -239,7 +239,6 @@ set(voxelands_SRCS
 	content_mapblock.cpp
 	content_cao.cpp
 	mapblock_mesh.cpp
-	farmesh.cpp
 	keycode.cpp
 	camera.cpp
 	clouds.cpp

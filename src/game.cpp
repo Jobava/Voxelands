@@ -40,7 +40,6 @@
 #include "config.h"
 #include "clouds.h"
 #include "camera.h"
-#include "farmesh.h"
 #include "mapblock.h"
 #include "settings.h"
 #include "profiler.h"
@@ -1320,10 +1319,6 @@ void update_skybox(video::IVideoDriver* driver,
 	if (skybox)
 		skybox->remove();
 
-	/*// Disable skybox if FarMesh is enabled
-	if(g_settings->getBool("enable_farmesh"))
-		return;*/
-
 	if (brightness >= 0.5) {
 		skybox = smgr->addSkyBoxSceneNode(
 			driver->getTexture(getTexturePath("skybox2.png").c_str()),
@@ -1601,14 +1596,6 @@ void the_game(
 		clouds = new Clouds(smgr->getRootSceneNode(), smgr, -1, cloud_height, time(0));
 
 	/*
-		FarMesh
-	*/
-
-	FarMesh *farmesh = NULL;
-	if (g_settings->getBool("enable_farmesh"))
-		farmesh = new FarMesh(smgr->getRootSceneNode(), smgr, -1, client.getMapSeed(), client.getMapType(), &client);
-
-	/*
 		Move into game
 	*/
 
@@ -1678,7 +1665,6 @@ void the_game(
 	float use_delay_counter = 0.5;
 
 	float damage_flash_timer = 0;
-	s16 farmesh_range = 20*MAP_BLOCKSIZE;
 
 	const float object_hit_delay = 0.5;
 	float object_hit_delay_timer = 0.0;
@@ -2646,20 +2632,6 @@ void the_game(
 		}
 
 		/*
-			Update farmesh
-		*/
-		if (farmesh) {
-			farmesh_range = draw_control.wanted_range * 10;
-			if (draw_control.range_all && farmesh_range < 500)
-				farmesh_range = 500;
-			if (farmesh_range > 1000)
-				farmesh_range = 1000;
-
-			farmesh->step(dtime);
-			farmesh->update(v2f(player_position.X, player_position.Z), 0.05+brightness*0.95, farmesh_range);
-		}
-
-		/*
 			Update particles
 		*/
 		allparticles_step(dtime, client.getEnv());
@@ -2673,15 +2645,10 @@ void the_game(
 		*/
 
 		if (enable_fog && !force_fog_off) {
-			f32 range;
-			if (farmesh) {
-				range = BS*farmesh_range;
-			}else{
-				range = draw_control.wanted_range*BS + MAP_BLOCKSIZE*BS*1.5;
-				range *= 0.9;
-				if (draw_control.range_all)
-					range = 100000*BS;
-			}
+			f32 range = draw_control.wanted_range*BS + MAP_BLOCKSIZE*BS*1.5;
+			range *= 0.9;
+			if (draw_control.range_all)
+				range = 100000*BS;
 
 			driver->setFog(
 				bgcolor,
