@@ -222,8 +222,19 @@ static void getRoofLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, 
 }
 #endif
 
+static const v3s16 corners[8] = {
+	v3s16(-1, 1, 1),
+	v3s16( 1, 1, 1),
+	v3s16( 1, 1,-1),
+	v3s16(-1, 1,-1),
+	v3s16(-1,-1,-1),
+	v3s16( 1,-1,-1),
+	v3s16( 1,-1, 1),
+	v3s16(-1,-1, 1)
+};
 static u8 smooth_lights[8];
 
+#if 0
 static void meshgen_fullbright_lights(std::vector<u32> &colours, u8 alpha, u16 count)
 {
 	u32 c = 0x0000000F;
@@ -235,6 +246,7 @@ static void meshgen_fullbright_lights(std::vector<u32> &colours, u8 alpha, u16 c
 		colours.push_back(c);
 	}
 }
+#endif
 
 static void meshgen_custom_lights(std::vector<u32> &colours, u8 alpha, u8 red, u8 green, u8 blue, u16 count)
 {
@@ -256,6 +268,38 @@ static void meshgen_selected_lights(std::vector<u32> &colours, u8 alpha, u16 cou
 	}
 }
 
+static u8 meshgen_interpolate_lights(u8 l1, u8 l2, float v)
+{
+	if (l1 == l2)
+		return l1;
+	v /= (float)BS;
+	if (v > -0.4 && v < 0.4) {
+		if (l1 > l2) {
+			v -= 0.1;
+		}else if (l2 > l1) {
+			v += 0.1;
+		}
+	}
+	if (v < -0.49)
+		return l1;
+	if (v > 0.49)
+		return l2;
+	float f1 = l1;
+	float f2 = l2;
+
+	float f = 0.0-(v-0.5);
+	f1 *= f;
+	f = v+0.5;
+	f2 *= f;
+
+	float l = f1+f2;
+	if (l > LIGHT_SUN)
+		return LIGHT_SUN;
+	if (l > 0.0 && l < 1.0)
+		return 1;
+	return ceilf(l);
+}
+
 /*
  * what this should do:
  * interpolate to the requested vertex position
@@ -267,11 +311,189 @@ static void meshgen_lights_vertex(
 	std::vector<u32> &colours,
 	u8 alpha,
 	v3s16 face,
-	video::S3DVertex &vertex,
-	u8 *lights
+	video::S3DVertex &vertex
 )
 {
-	meshgen_fullbright_lights(colours,alpha,1);
+	u32 dl = 0;
+	u32 nl = 0;
+	if (face.X > 0) {
+		if (face.Y > 0) {
+			if (face.Z > 0) {
+				// x+ y+ z+ light
+				dl = smooth_lights[1]&0x0F;
+				nl = (smooth_lights[1]>>4)&0x0F;
+			}else if (face.Z < 0) {
+				// x+ y+ z- light
+				dl = smooth_lights[2]&0x0F;
+				nl = (smooth_lights[2]>>4)&0x0F;
+			}else{
+				// x+ y+ interpolate z light
+				dl = meshgen_interpolate_lights(smooth_lights[2]&0x0F,smooth_lights[1]&0x0F,vertex.Pos.Z);
+				nl = meshgen_interpolate_lights(smooth_lights[2]>>4,smooth_lights[1]>>4,vertex.Pos.Z);
+			}
+		}else if (face.Y < 0) {
+			if (face.Z > 0) {
+				// x+ y- z+ light
+				dl = smooth_lights[6]&0x0F;
+				nl = (smooth_lights[6]>>4)&0x0F;
+			}else if (face.Z < 0) {
+				// x+ y- z- light
+				dl = smooth_lights[5]&0x0F;
+				nl = (smooth_lights[5]>>4)&0x0F;
+			}else{
+				// x+ y- interpolate z light
+				dl = meshgen_interpolate_lights(smooth_lights[5]&0x0F,smooth_lights[6]&0x0F,vertex.Pos.Z);
+				nl = meshgen_interpolate_lights(smooth_lights[5]>>4,smooth_lights[6]>>4,vertex.Pos.Z);
+			}
+		}else{
+			if (face.Z > 0) {
+				// x+ z+ interpolate y light
+				dl = meshgen_interpolate_lights(smooth_lights[6]&0x0F,smooth_lights[1]&0x0F,vertex.Pos.Y);
+				nl = meshgen_interpolate_lights(smooth_lights[6]>>4,smooth_lights[1]>>4,vertex.Pos.Y);
+			}else if (face.Z < 0) {
+				// x+ z- interpolate y light
+				dl = meshgen_interpolate_lights(smooth_lights[5]&0x0F,smooth_lights[2]&0x0F,vertex.Pos.Y);
+				nl = meshgen_interpolate_lights(smooth_lights[5]>>4,smooth_lights[2]>>4,vertex.Pos.Y);
+			}else{
+				// x+ interpolate y z light
+				u8 dl1 = meshgen_interpolate_lights(smooth_lights[6]&0x0F,smooth_lights[1]&0x0F,vertex.Pos.Y);
+				u8 dl2 = meshgen_interpolate_lights(smooth_lights[5]&0x0F,smooth_lights[2]&0x0F,vertex.Pos.Y);
+				u8 nl1 = meshgen_interpolate_lights(smooth_lights[6]>>4,smooth_lights[1]>>4,vertex.Pos.Y);
+				u8 nl2 = meshgen_interpolate_lights(smooth_lights[5]>>4,smooth_lights[2]>>4,vertex.Pos.Y);
+				dl = meshgen_interpolate_lights(dl2,dl1,vertex.Pos.Z);
+				nl = meshgen_interpolate_lights(nl2,nl1,vertex.Pos.Z);
+			}
+		}
+	}else if (face.X < 0) {
+		if (face.Y > 0) {
+			if (face.Z > 0) {
+				// x- y+ z+ light
+				dl = smooth_lights[0]&0x0F;
+				nl = (smooth_lights[0]>>4)&0x0F;
+			}else if (face.Z < 0) {
+				// x- y+ z- light
+				dl = smooth_lights[3]&0x0F;
+				nl = (smooth_lights[3]>>4)&0x0F;
+			}else{
+				// x- y+ interpolate z light
+				dl = meshgen_interpolate_lights(smooth_lights[3]&0x0F,smooth_lights[0]&0x0F,vertex.Pos.Z);
+				nl = meshgen_interpolate_lights(smooth_lights[3]>>4,smooth_lights[0]>>4,vertex.Pos.Z);
+			}
+		}else if (face.Y < 0) {
+			if (face.Z > 0) {
+				// x- y- z+ light
+				dl = smooth_lights[7]&0x0F;
+				nl = (smooth_lights[7]>>4)&0x0F;
+			}else if (face.Z < 0) {
+				// x- y- z- light
+				dl = smooth_lights[4]&0x0F;
+				nl = (smooth_lights[4]>>4)&0x0F;
+			}else{
+				// x- y- interpolate z light
+				dl = meshgen_interpolate_lights(smooth_lights[4]&0x0F,smooth_lights[7]&0x0F,vertex.Pos.Z);
+				nl = meshgen_interpolate_lights(smooth_lights[4]>>4,smooth_lights[7]>>4,vertex.Pos.Z);
+			}
+		}else{
+			if (face.Z > 0) {
+				// x- z+ interpolate y light
+				dl = meshgen_interpolate_lights(smooth_lights[7]&0x0F,smooth_lights[0]&0x0F,vertex.Pos.Y);
+				nl = meshgen_interpolate_lights(smooth_lights[7]>>4,smooth_lights[0]>>4,vertex.Pos.Y);
+			}else if (face.Z < 0) {
+				// x- z- interpolate y light
+				dl = meshgen_interpolate_lights(smooth_lights[4]&0x0F,smooth_lights[3]&0x0F,vertex.Pos.Y);
+				nl = meshgen_interpolate_lights(smooth_lights[4]>>4,smooth_lights[3]>>4,vertex.Pos.Y);
+			}else{
+				// x- interpolate y z light
+				u8 dl1 = meshgen_interpolate_lights(smooth_lights[7]&0x0F,smooth_lights[0]&0x0F,vertex.Pos.Y);
+				u8 dl2 = meshgen_interpolate_lights(smooth_lights[4]&0x0F,smooth_lights[3]&0x0F,vertex.Pos.Y);
+				u8 nl1 = meshgen_interpolate_lights(smooth_lights[7]>>4,smooth_lights[0]>>4,vertex.Pos.Y);
+				u8 nl2 = meshgen_interpolate_lights(smooth_lights[4]>>4,smooth_lights[3]>>4,vertex.Pos.Y);
+				dl = meshgen_interpolate_lights(dl2,dl1,vertex.Pos.Z);
+				nl = meshgen_interpolate_lights(nl2,nl1,vertex.Pos.Z);
+			}
+		}
+	}else{
+		if (face.Y > 0) {
+			if (face.Z > 0) {
+				// y+ z+ interpolate x light
+				dl = meshgen_interpolate_lights(smooth_lights[0]&0x0F,smooth_lights[1]&0x0F,vertex.Pos.X);
+				nl = meshgen_interpolate_lights(smooth_lights[0]>>4,smooth_lights[1]>>4,vertex.Pos.X);
+			}else if (face.Z < 0) {
+				// y+ z- interpolate x light
+				dl = meshgen_interpolate_lights(smooth_lights[3]&0x0F,smooth_lights[2]&0x0F,vertex.Pos.X);
+				nl = meshgen_interpolate_lights(smooth_lights[3]>>4,smooth_lights[2]>>4,vertex.Pos.X);
+			}else{
+				// y+ interpolate x z light
+				u8 dl1 = meshgen_interpolate_lights(smooth_lights[0]&0x0F,smooth_lights[1]&0x0F,vertex.Pos.X);
+				u8 dl2 = meshgen_interpolate_lights(smooth_lights[3]&0x0F,smooth_lights[2]&0x0F,vertex.Pos.X);
+				u8 nl1 = meshgen_interpolate_lights(smooth_lights[0]>>4,smooth_lights[1]>>4,vertex.Pos.X);
+				u8 nl2 = meshgen_interpolate_lights(smooth_lights[3]>>4,smooth_lights[2]>>4,vertex.Pos.X);
+				dl = meshgen_interpolate_lights(dl2,dl1,vertex.Pos.Z);
+				nl = meshgen_interpolate_lights(nl2,nl1,vertex.Pos.Z);
+			}
+		}else if (face.Y < 0) {
+			if (face.Z > 0) {
+				// y- z+ interpolate x light
+				dl = meshgen_interpolate_lights(smooth_lights[7]&0x0F,smooth_lights[6]&0x0F,vertex.Pos.X);
+				nl = meshgen_interpolate_lights(smooth_lights[7]>>4,smooth_lights[6]>>4,vertex.Pos.X);
+			}else if (face.Z < 0) {
+				// y- z- interpolate x light
+				dl = meshgen_interpolate_lights(smooth_lights[4]&0x0F,smooth_lights[5]&0x0F,vertex.Pos.X);
+				nl = meshgen_interpolate_lights(smooth_lights[4]>>4,smooth_lights[5]>>4,vertex.Pos.X);
+			}else{
+				// y- interpolate x z light
+				u8 dl1 = meshgen_interpolate_lights(smooth_lights[7]&0x0F,smooth_lights[6]&0x0F,vertex.Pos.X);
+				u8 dl2 = meshgen_interpolate_lights(smooth_lights[4]&0x0F,smooth_lights[5]&0x0F,vertex.Pos.X);
+				u8 nl1 = meshgen_interpolate_lights(smooth_lights[7]>>4,smooth_lights[6]>>4,vertex.Pos.X);
+				u8 nl2 = meshgen_interpolate_lights(smooth_lights[4]>>4,smooth_lights[5]>>4,vertex.Pos.X);
+				dl = meshgen_interpolate_lights(dl2,dl1,vertex.Pos.Z);
+				nl = meshgen_interpolate_lights(nl2,nl1,vertex.Pos.Z);
+			}
+		}else{
+			if (face.Z > 0) {
+				// z+ interpolate x y light
+				u8 dl1 = meshgen_interpolate_lights(smooth_lights[7]&0x0F,smooth_lights[6]&0x0F,vertex.Pos.X);
+				u8 dl2 = meshgen_interpolate_lights(smooth_lights[0]&0x0F,smooth_lights[1]&0x0F,vertex.Pos.X);
+				u8 nl1 = meshgen_interpolate_lights(smooth_lights[7]>>4,smooth_lights[6]>>4,vertex.Pos.X);
+				u8 nl2 = meshgen_interpolate_lights(smooth_lights[0]>>4,smooth_lights[1]>>4,vertex.Pos.X);
+				dl = meshgen_interpolate_lights(dl1,dl2,vertex.Pos.Y);
+				nl = meshgen_interpolate_lights(nl1,nl2,vertex.Pos.Y);
+			}else if (face.Z < 0) {
+				// z- interpolate x y light
+				u8 dl1 = meshgen_interpolate_lights(smooth_lights[4]&0x0F,smooth_lights[5]&0x0F,vertex.Pos.X);
+				u8 dl2 = meshgen_interpolate_lights(smooth_lights[3]&0x0F,smooth_lights[2]&0x0F,vertex.Pos.X);
+				u8 nl1 = meshgen_interpolate_lights(smooth_lights[4]>>4,smooth_lights[5]>>4,vertex.Pos.X);
+				u8 nl2 = meshgen_interpolate_lights(smooth_lights[3]>>4,smooth_lights[2]>>4,vertex.Pos.X);
+				dl = meshgen_interpolate_lights(dl1,dl2,vertex.Pos.Y);
+				nl = meshgen_interpolate_lights(nl1,nl2,vertex.Pos.Y);
+			}else{
+				// interpolate x y z light
+				// z+ interpolate x y
+				u8 dl1 = meshgen_interpolate_lights(smooth_lights[7]&0x0F,smooth_lights[6]&0x0F,vertex.Pos.X);
+				u8 dl2 = meshgen_interpolate_lights(smooth_lights[0]&0x0F,smooth_lights[1]&0x0F,vertex.Pos.X);
+				u8 nl1 = meshgen_interpolate_lights(smooth_lights[7]>>4,smooth_lights[6]>>4,vertex.Pos.X);
+				u8 nl2 = meshgen_interpolate_lights(smooth_lights[0]>>4,smooth_lights[1]>>4,vertex.Pos.X);
+				dl1 = meshgen_interpolate_lights(dl1,dl2,vertex.Pos.Y);
+				nl2 = meshgen_interpolate_lights(nl1,nl2,vertex.Pos.Y);
+				// z- interpolate x y
+				u8 dl3 = meshgen_interpolate_lights(smooth_lights[4]&0x0F,smooth_lights[5]&0x0F,vertex.Pos.X);
+				u8 dl4 = meshgen_interpolate_lights(smooth_lights[3]&0x0F,smooth_lights[2]&0x0F,vertex.Pos.X);
+				u8 nl3 = meshgen_interpolate_lights(smooth_lights[4]>>4,smooth_lights[5]>>4,vertex.Pos.X);
+				u8 nl4 = meshgen_interpolate_lights(smooth_lights[3]>>4,smooth_lights[2]>>4,vertex.Pos.X);
+				dl2 = meshgen_interpolate_lights(dl3,dl4,vertex.Pos.Y);
+				nl2 = meshgen_interpolate_lights(nl3,nl4,vertex.Pos.Y);
+				// x y interpolate z
+				dl = meshgen_interpolate_lights(dl2,dl1,vertex.Pos.Z);
+				nl = meshgen_interpolate_lights(nl2,nl1,vertex.Pos.Z);
+			}
+		}
+	}
+	u32 c = ((nl&0x0F)<<4)|(dl&0x0F);
+	if (alpha != 255) {
+		c |= 0x01<<24;
+		c |= alpha<<8;
+	}
+	colours.push_back(c);
 }
 
 /*
@@ -336,7 +558,6 @@ static void meshgen_lights_face(
 /*
  * what this should do:
  * MeshMakeData has a m_smooth_lighting value in it, don't check config for every vertex!
- * get all 4 corner vertex light values for the face
  * for each vertex:
  *	call meshgen_lights_vertex
  */
@@ -352,50 +573,8 @@ static void meshgen_lights(
 )
 {
 	if (data->m_smooth_lighting) {
-		u8 lights[4] = {0,0,0,0};
-		//u32 l[4] = {0,0,0,0};
-		//u8 nc = 0;
-		//u16 daynight_ratio = daynight_ratio_from_index(k);
-		//if (face.X) {
-			//v3s16 f(face.X,0,0);
-			//v3s16 vertex_dirs[4];
-			//getNodeVertexDirs(f, vertex_dirs);
-			//for (u16 i=0; i<4; i++) {
-				//l[i] += getSmoothLight(data->m_blockpos_nodes + p, vertex_dirs[i], data->m_vmanip, daynight_ratio);
-			//}
-			//nc++;
-		//}
-		//if (face.Y) {
-			//v3s16 f(0,face.Y,0);
-			//v3s16 vertex_dirs[4];
-			//getNodeVertexDirs(f, vertex_dirs);
-			//for (u16 i=0; i<4; i++) {
-				//l[i] += getSmoothLight(data->m_blockpos_nodes + p, vertex_dirs[i], data->m_vmanip, daynight_ratio);
-			//}
-			//nc++;
-		//}
-		//if (face.Z) {
-			//v3s16 f(0,0,face.Z);
-			//v3s16 vertex_dirs[4];
-			//getNodeVertexDirs(f, vertex_dirs);
-			//for (u16 i=0; i<4; i++) {
-				//l[i] += getSmoothLight(data->m_blockpos_nodes + p, vertex_dirs[i], data->m_vmanip, daynight_ratio);
-			//}
-			//nc++;
-		//}
-		//if (nc > 1) {
-			//lights[0] = l[0]/nc;
-			//lights[1] = l[1]/nc;
-			//lights[2] = l[2]/nc;
-			//lights[3] = l[3]/nc;
-		//}else {
-			//lights[0] = l[0];
-			//lights[1] = l[1];
-			//lights[2] = l[2];
-			//lights[3] = l[3];
-		//}
 		for (u16 i=0; i<count; i++) {
-			meshgen_lights_vertex(data,n,p,colours,alpha,face,vertexes[i],lights);
+			meshgen_lights_vertex(data,n,p,colours,alpha,face,vertexes[i]);
 		}
 	}else{
 		meshgen_lights_face(data,n,p,colours,alpha,face,count,vertexes);
@@ -758,8 +937,13 @@ static void meshgen_leaftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners
 
 void meshgen_preset_smooth_lights(MeshMakeData *data, v3s16 p)
 {
+	u8 dl;
+	u8 nl;
+	v3s16 pos = data->m_blockpos_nodes+p;
 	for (u16 i=0; i<8; i++) {
-		smooth_lights[i] = 0x0F;
+		dl = getSmoothLight(pos,corners[i],data->m_vmanip,LIGHTBANK_DAY);
+		nl = getSmoothLight(pos,corners[i],data->m_vmanip,LIGHTBANK_NIGHT);
+		smooth_lights[i] = ((nl<<4)&0xF0)|(dl&0x0F);
 	}
 }
 

@@ -91,81 +91,7 @@ void MeshMakeData::fill(u32 daynight_ratio, MapBlock *block)
 	}
 }
 
-void getNodeVertexDirs(v3s16 dir, v3s16 *vertex_dirs)
-{
-	/*
-		If looked from outside the node towards the face, the corners are:
-		0: bottom-right
-		1: bottom-left
-		2: top-left
-		3: top-right
-	*/
-	if(dir == v3s16(0,0,1))
-	{
-		// If looking towards z+, this is the face that is behind
-		// the center point, facing towards z+.
-		vertex_dirs[0] = v3s16(-1,-1, 1);
-		vertex_dirs[1] = v3s16( 1,-1, 1);
-		vertex_dirs[2] = v3s16( 1, 1, 1);
-		vertex_dirs[3] = v3s16(-1, 1, 1);
-	}
-	else if(dir == v3s16(0,0,-1))
-	{
-		// faces towards Z-
-		vertex_dirs[0] = v3s16( 1,-1,-1);
-		vertex_dirs[1] = v3s16(-1,-1,-1);
-		vertex_dirs[2] = v3s16(-1, 1,-1);
-		vertex_dirs[3] = v3s16( 1, 1,-1);
-	}
-	else if(dir == v3s16(1,0,0))
-	{
-		// faces towards X+
-		vertex_dirs[0] = v3s16( 1,-1, 1);
-		vertex_dirs[1] = v3s16( 1,-1,-1);
-		vertex_dirs[2] = v3s16( 1, 1,-1);
-		vertex_dirs[3] = v3s16( 1, 1, 1);
-	}
-	else if(dir == v3s16(-1,0,0))
-	{
-		// faces towards X-
-		vertex_dirs[0] = v3s16(-1,-1,-1);
-		vertex_dirs[1] = v3s16(-1,-1, 1);
-		vertex_dirs[2] = v3s16(-1, 1, 1);
-		vertex_dirs[3] = v3s16(-1, 1,-1);
-	}
-	else if(dir == v3s16(0,1,0))
-	{
-		// faces towards Y+ (assume Z- as "down" in texture)
-		vertex_dirs[0] = v3s16( 1, 1,-1);
-		vertex_dirs[1] = v3s16(-1, 1,-1);
-		vertex_dirs[2] = v3s16(-1, 1, 1);
-		vertex_dirs[3] = v3s16( 1, 1, 1);
-	}
-	else if(dir == v3s16(0,-1,0))
-	{
-		// faces towards Y- (assume Z+ as "down" in texture)
-		vertex_dirs[0] = v3s16( 1,-1, 1);
-		vertex_dirs[1] = v3s16(-1,-1, 1);
-		vertex_dirs[2] = v3s16(-1,-1,-1);
-		vertex_dirs[3] = v3s16( 1,-1,-1);
-	}
-}
-
-video::SColor MapBlock_LightColor(u8 alpha, u8 light)
-{
-	float lim = 80;
-	float power = 0.8;
-	u8 r = light;
-	u8 g = light;
-	u8 b = light;
-	// Emphase blue a bit in darker places
-	if (light <= lim)
-		b = MYMAX(0, pow((float)light/lim, power)*lim);
-
-	return video::SColor(alpha,r,g,b);
-}
-
-video::SColor blend_light(u32 data, u32 daylight_factor)
+static video::SColor blend_light(u32 data, u32 daylight_factor)
 {
 	u8 type = (data>>24)&0xFF;
 	u8 a = 255;
@@ -373,7 +299,7 @@ v3s16 dirs8[8] = {
 };
 
 // Calculate lighting at the XYZ- corner of p
-u8 getSmoothLight(v3s16 p, VoxelManipulator &vmanip, u32 daynight_ratio)
+u8 getSmoothLight(v3s16 p, VoxelManipulator &vmanip, LightBank bank)
 {
 	u16 ambient_occlusion = 0;
 	u16 light = 0;
@@ -383,14 +309,7 @@ u8 getSmoothLight(v3s16 p, VoxelManipulator &vmanip, u32 daynight_ratio)
 		if (
 			content_features(n).param_type == CPT_LIGHT
 		) {
-			light += decode_light(n.getLightBlend(daynight_ratio));
-			light_count++;
-		}else if (
-			content_features(n).draw_type == CDT_NODEBOX
-			|| content_features(n).draw_type == CDT_NODEBOX_META
-		) {
-			// not quite right, but it gets rid of glowing nodes
-			light += decode_light(n.getLightBlend(daynight_ratio));
+			light += n.getLight(bank);
 			light_count++;
 		}else if (n.getContent() != CONTENT_IGNORE) {
 			ambient_occlusion++;
@@ -411,8 +330,7 @@ u8 getSmoothLight(v3s16 p, VoxelManipulator &vmanip, u32 daynight_ratio)
 }
 
 // Calculate lighting at the given corner of p
-u8 getSmoothLight(v3s16 p, v3s16 corner,
-		VoxelManipulator &vmanip, u32 daynight_ratio)
+u8 getSmoothLight(v3s16 p, v3s16 corner, VoxelManipulator &vmanip, LightBank bank)
 {
 	if (corner.X == 1) {
 		p.X += 1;
@@ -430,7 +348,7 @@ u8 getSmoothLight(v3s16 p, v3s16 corner,
 		assert(corner.Z == -1);
 	}
 
-	return getSmoothLight(p, vmanip, daynight_ratio);
+	return getSmoothLight(p, vmanip, bank);
 }
 
 MapBlockMesh::MapBlockMesh(MeshMakeData *data, v3s16 camera_offset):

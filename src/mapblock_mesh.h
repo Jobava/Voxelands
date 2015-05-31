@@ -36,12 +36,10 @@
 */
 
 // Helper functions
-void getNodeVertexDirs(v3s16 dir, v3s16 *vertex_dirs);
-video::SColor MapBlock_LightColor(u8 alpha, u8 light);
 TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods, NodeMetadata *meta = NULL);
 TileSpec getMetaTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods);
-u8 getSmoothLight(v3s16 p, VoxelManipulator &vmanip, u32 daynight_ratio);
-u8 getSmoothLight(v3s16 p, v3s16 corner, VoxelManipulator &vmanip, u32 daynight_ratio);
+u8 getSmoothLight(v3s16 p, VoxelManipulator &vmanip, LightBank bank);
+u8 getSmoothLight(v3s16 p, v3s16 corner, VoxelManipulator &vmanip, LightBank bank);
 
 class MapBlock;
 class Environment;
