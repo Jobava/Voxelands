@@ -298,13 +298,21 @@ v3s16 dirs8[8] = {
 	v3s16(1,1,1),
 };
 
-// Calculate lighting at the XYZ- corner of p
-u8 getSmoothLight(v3s16 p, VoxelManipulator &vmanip, LightBank bank)
+// Calculate lighting at the given corner of p
+u8 getSmoothLight(v3s16 p, v3s16 corner, VoxelManipulator &vmanip, LightBank bank)
 {
 	float ambient_occlusion = 0;
-	u16 light = 0;
+	float light = 0;
 	u16 light_count = 0;
-	for(u32 i=0; i<8; i++) {
+
+	if (corner.X == 1)
+		p.X += 1;
+	if (corner.Y == 1)
+		p.Y += 1;
+	if (corner.Z == 1)
+		p.Z += 1;
+
+	for (u32 i=0; i<8; i++) {
 		MapNode n = vmanip.getNodeNoEx(p - dirs8[i]);
 		if (
 			content_features(n).param_type == CPT_LIGHT
@@ -325,32 +333,13 @@ u8 getSmoothLight(v3s16 p, VoxelManipulator &vmanip, LightBank bank)
 
 	if (ambient_occlusion > 4) {
 		ambient_occlusion -= 4;
-		light = (float)light / (ambient_occlusion * 0.4 + 1.0);
+		light = light / (ambient_occlusion * 0.4 + 1.0);
 	}
 
-	return light;
-}
+	if (light >= LIGHT_SUN)
+		return LIGHT_SUN;
 
-// Calculate lighting at the given corner of p
-u8 getSmoothLight(v3s16 p, v3s16 corner, VoxelManipulator &vmanip, LightBank bank)
-{
-	if (corner.X == 1) {
-		p.X += 1;
-	}else{
-		assert(corner.X == -1);
-	}
-	if (corner.Y == 1) {
-		p.Y += 1;
-	}else{
-		assert(corner.Y == -1);
-	}
-	if (corner.Z == 1) {
-		p.Z += 1;
-	}else{
-		assert(corner.Z == -1);
-	}
-
-	return getSmoothLight(p, vmanip, bank);
+	return ceilf(light);
 }
 
 MapBlockMesh::MapBlockMesh(MeshMakeData *data, v3s16 camera_offset):

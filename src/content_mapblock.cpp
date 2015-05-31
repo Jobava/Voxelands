@@ -34,193 +34,6 @@
 #include "sound.h"
 
 #ifndef SERVER
-#if 0
-/*
- * get the light values for a node
- * smooth lighting gets per-vertex
- * standard lighting gets per-face
- * TODO: smooth lighting currently gets the light for each surrounding node up
- * to eight times, probably a better way to do this
- */
-static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool smooth_lighting, u8 vertex_alpha)
-{
-	NodeMod mod;
-	data->m_temp_mods.get(pos-(data->m_blockpos*MAP_BLOCKSIZE),&mod);
-	if (mod == NODEMOD_SELECTION) {
-		video::SColor c = MapBlock_LightColor(vertex_alpha, 255, true);
-		for (int i=0; i<14; i++) {
-			lights[i] = c;
-		}
-		return;
-	}
-	if (!smooth_lighting) {
-		u8 l = 0;
-		u32 lt = 0;
-		u32 ltp;
-		u8 ld = 1;
-		for (s16 tx=-1; tx<2; tx++) {
-		for (s16 ty=-1; ty<2; ty++) {
-		for (s16 tz=-1; tz<2; tz++) {
-			MapNode tn = data->m_vmanip.getNodeRO(pos + v3s16(tx,ty,tz));
-			if (
-				ty<1
-				&& (
-					tn.getContent() != CONTENT_AIR
-					&& content_features(tn).light_source == 0
-					&& content_features(tn).param_type != CPT_LIGHT
-				)
-			)
-				continue;
-			ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
-			if (!ltp)
-				continue;
-			lt += ltp;
-			ld++;
-		}
-		}
-		}
-		if (ld)
-			l = lt/ld;
-		video::SColor c = MapBlock_LightColor(vertex_alpha, l);
-		for (int i=0; i<14; i++) {
-			lights[i] = c;
-		}
-		return;
-	}
-	static const v3s16 corners[8] = {
-		v3s16(-1,1,1),
-		v3s16(1,1,1),
-		v3s16(1,1,-1),
-		v3s16(-1,1,-1),
-		v3s16(-1,-1,-1),
-		v3s16(1,-1,-1),
-		v3s16(1,-1,1),
-		v3s16(-1,-1,1)
-	};
-	u8 o[8];
-	u8 inner;
-	u8 l;
-	for (int i=0; i<8; i++) {
-		l = getSmoothLight(pos,corners[i],data->m_vmanip,data->m_daynight_ratio);
-		o[i] = l;
-		lights[i] = MapBlock_LightColor(vertex_alpha, l);
-	}
-	{
-		MapNode tn = data->m_vmanip.getNodeRO(pos);
-		inner = decode_light(tn.getLightBlend(data->m_daynight_ratio));
-	}
-	int faces[6][4] = {
-		{0,1,2,3},
-		{4,5,6,7},
-		{0,3,4,7},
-		{1,2,5,6},
-		{0,1,6,7},
-		{2,3,4,5}
-	};
-	/*
-		0: up
-		1: down
-		2: right
-		3: left
-		4: back
-		5: front
-	*/
-	for (int f=0; f<6; f++) {
-		l = inner;
-		for (int i=0; i<4; i++) {
-			if (o[faces[f][i]] > l)
-				l = o[faces[f][i]];
-		}
-		lights[f+8] = MapBlock_LightColor(vertex_alpha, l);
-	}
-}
-static void getLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, bool smooth_lighting)
-{
-	getLights(pos,lights,data,smooth_lighting,255);
-}
-static void getRoofLights(v3s16 pos, video::SColor *lights, MeshMakeData *data, v3s16 dir)
-{
-	bool selected = false;
-	NodeMod mod;
-	data->m_temp_mods.get(pos-(data->m_blockpos*MAP_BLOCKSIZE),&mod);
-	if (mod == NODEMOD_SELECTION)
-		selected = true;
-	u8 l = 0;
-	u32 lt = 0;
-	u32 ltp;
-	u8 ld = 0;
-	MapNode tn = data->m_vmanip.getNodeRO(pos + v3s16(0,1,0));
-	ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
-	if (ltp < 20 || ltp > 200) {
-		for (s16 tx=-1; tx<2; tx++) {
-		for (s16 ty=0; ty<2; ty++) {
-		for (s16 tz=-1; tz<2; tz++) {
-			if ((dir.X && tx != dir.X) || (dir.Z && tz != dir.Z))
-				continue;
-			tn = data->m_vmanip.getNodeRO(pos + v3s16(tx,ty,tz));
-			if (
-				ty<1
-				&& (
-					tn.getContent() != CONTENT_AIR
-					&& content_features(tn).light_source == 0
-					&& content_features(tn).param_type != CPT_LIGHT
-				)
-			)
-				continue;
-			ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
-			if (!ltp)
-				continue;
-			lt += ltp;
-			ld++;
-		}
-		}
-		}
-		l = lt;
-		if (ld > 1)
-			l = lt/ld;
-	}else{
-		l = ltp;
-	}
-	lights[0] = MapBlock_LightColor(255, l, selected);
-
-	tn = data->m_vmanip.getNodeRO(pos + v3s16(0,-1,0));
-	ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
-	l = 0;
-	ld = 0;
-	lt = 0;
-	if (ltp < 20) {
-		for (s16 tx=-1; tx<2; tx++) {
-		for (s16 ty=-1; ty<1; ty++) {
-		for (s16 tz=-1; tz<2; tz++) {
-			if ((dir.X && tx == dir.X) || (dir.Z && tz == dir.Z))
-				continue;
-			tn = data->m_vmanip.getNodeRO(pos + v3s16(tx,ty,tz));
-			if (
-				ty<1
-				&& (
-					tn.getContent() != CONTENT_AIR
-					&& content_features(tn).light_source == 0
-					&& content_features(tn).param_type != CPT_LIGHT
-				)
-			)
-				continue;
-			ltp = decode_light(tn.getLightBlend(data->m_daynight_ratio));
-			if (!ltp)
-				continue;
-			lt += ltp;
-			ld++;
-		}
-		}
-		}
-		l = lt;
-		if (ld > 1)
-			l = lt/ld;
-	}else{
-		l = ltp;
-	}
-	lights[1] = MapBlock_LightColor(255, l, selected);
-}
-#endif
 
 static const v3s16 corners[8] = {
 	v3s16(-1, 1, 1),
@@ -293,10 +106,8 @@ static u8 meshgen_interpolate_lights(u8 l1, u8 l2, float v)
 	f2 *= f;
 
 	float l = f1+f2;
-	if (l > LIGHT_SUN)
+	if (l >= LIGHT_SUN)
 		return LIGHT_SUN;
-	if (l > 0.0 && l < 1.0)
-		return 1;
 	return ceilf(l);
 }
 
@@ -699,7 +510,8 @@ static void meshgen_cuboid(
 	u8 *cols=NULL
 )
 {
-	assert(tilecount >= 1 && tilecount <= 6);
+	if (tilecount < 1 || tilecount > 6)
+		return;
 
 	v3f min = box.MinEdge;
 	v3f max = box.MaxEdge;
