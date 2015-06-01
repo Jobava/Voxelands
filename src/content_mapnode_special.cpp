@@ -1674,15 +1674,12 @@ void content_mapnode_special(bool repeat)
 	f = &content_features(i);
 	f->description = wgettext("Home Flag");
 	f->setAllTextures("flag.png");
-	f->setTexture(4,"flag.png^[transformFX");
-	f->setTexture(2,"flag_end.png");
-	f->setTexture(3,"flag_post.png");
+	f->setAllTextureFlags(0);
 	f->light_propagates = true;
 	f->walkable = false;
 	f->param_type = CPT_LIGHT;
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->rotate_tile_with_nodebox = true;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_FLAGLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
@@ -1724,15 +1721,12 @@ void content_mapnode_special(bool repeat)
 	f = &content_features(i);
 	f->description = wgettext("Blue Home Flag");
 	f->setAllTextures("flag_blue.png");
-	f->setTexture(4,"flag_blue.png^[transformFX");
-	f->setTexture(2,"flag_blue_end.png");
-	f->setTexture(3,"flag_post.png");
+	f->setAllTextureFlags(0);
 	f->light_propagates = true;
 	f->walkable = false;
 	f->param_type = CPT_LIGHT;
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->rotate_tile_with_nodebox = true;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_FLAGLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
@@ -1753,15 +1747,12 @@ void content_mapnode_special(bool repeat)
 	f = &content_features(i);
 	f->description = wgettext("Green Home Flag");
 	f->setAllTextures("flag_green.png");
-	f->setTexture(4,"flag_green.png^[transformFX");
-	f->setTexture(2,"flag_green_end.png");
-	f->setTexture(3,"flag_post.png");
+	f->setAllTextureFlags(0);
 	f->light_propagates = true;
 	f->walkable = false;
 	f->param_type = CPT_LIGHT;
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->rotate_tile_with_nodebox = true;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_FLAGLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
@@ -1782,15 +1773,12 @@ void content_mapnode_special(bool repeat)
 	f = &content_features(i);
 	f->description = wgettext("Orange Home Flag");
 	f->setAllTextures("flag_orange.png");
-	f->setTexture(4,"flag_orange.png^[transformFX");
-	f->setTexture(2,"flag_orange_end.png");
-	f->setTexture(3,"flag_post.png");
+	f->setAllTextureFlags(0);
 	f->light_propagates = true;
 	f->walkable = false;
 	f->param_type = CPT_LIGHT;
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->rotate_tile_with_nodebox = true;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_FLAGLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
@@ -1811,15 +1799,12 @@ void content_mapnode_special(bool repeat)
 	f = &content_features(i);
 	f->description = wgettext("Purple Home Flag");
 	f->setAllTextures("flag_purple.png");
-	f->setTexture(4,"flag_purple.png^[transformFX");
-	f->setTexture(2,"flag_purple_end.png");
-	f->setTexture(3,"flag_post.png");
+	f->setAllTextureFlags(0);
 	f->light_propagates = true;
 	f->walkable = false;
 	f->param_type = CPT_LIGHT;
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->rotate_tile_with_nodebox = true;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_FLAGLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
@@ -1840,15 +1825,12 @@ void content_mapnode_special(bool repeat)
 	f = &content_features(i);
 	f->description = wgettext("Red Home Flag");
 	f->setAllTextures("flag_red.png");
-	f->setTexture(4,"flag_red.png^[transformFX");
-	f->setTexture(2,"flag_red_end.png");
-	f->setTexture(3,"flag_post.png");
+	f->setAllTextureFlags(0);
 	f->light_propagates = true;
 	f->walkable = false;
 	f->param_type = CPT_LIGHT;
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->rotate_tile_with_nodebox = true;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_FLAGLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
@@ -1869,15 +1851,12 @@ void content_mapnode_special(bool repeat)
 	f = &content_features(i);
 	f->description = wgettext("Yellow Home Flag");
 	f->setAllTextures("flag_yellow.png");
-	f->setTexture(4,"flag_yellow.png^[transformFX");
-	f->setTexture(2,"flag_yellow_end.png");
-	f->setTexture(3,"flag_post.png");
+	f->setAllTextureFlags(0);
 	f->light_propagates = true;
 	f->walkable = false;
 	f->param_type = CPT_LIGHT;
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->rotate_tile_with_nodebox = true;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_FLAGLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
@@ -1898,15 +1877,12 @@ void content_mapnode_special(bool repeat)
 	f = &content_features(i);
 	f->description = wgettext("Black Home Flag");
 	f->setAllTextures("flag_black.png");
-	f->setTexture(4,"flag_black.png^[transformFX");
-	f->setTexture(2,"flag_black_end.png");
-	f->setTexture(3,"flag_post.png");
+	f->setAllTextureFlags(0);
 	f->light_propagates = true;
 	f->walkable = false;
 	f->param_type = CPT_LIGHT;
 	f->param2_type = CPT_FACEDIR_SIMPLE;
-	f->rotate_tile_with_nodebox = true;
-	f->draw_type = CDT_NODEBOX;
+	f->draw_type = CDT_FLAGLIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces

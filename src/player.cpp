@@ -293,12 +293,14 @@ bool Player::getHome(s8 i, v3f &h)
 		if (!m_hashome)
 			return false;
 		h = m_home;
+		return true;
 	}else if (i > PLAYERFLAG_HOME && i < PLAYERFLAG_COUNT) {
 		if (!m_hasflag[i])
 			return false;
 		h = m_flag[i];
+		return true;
 	}
-	return true;
+	return false;
 }
 
 void Player::setHome(s8 i, v3f h)

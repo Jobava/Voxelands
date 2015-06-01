@@ -4376,6 +4376,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					client->SetBlocksNotSent(modified_blocks);
 				}
 			}else if (content_craftitem_features(item->getContent()).teleports > -2) {
+				s8 dest = content_craftitem_features(item->getContent()).teleports;
 				/*
 					If in creative mode, item dropping is disabled unless
 					player has build privileges
@@ -4409,7 +4410,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					SendInventory(peer_id);
 				}
 				v3f pos;
-				if (!player->getHome(content_craftitem_features(item->getContent()).teleports,pos) && !player->getHome(PLAYERFLAG_HOME,pos))
+				if (!player->getHome(dest,pos) && !player->getHome(PLAYERFLAG_HOME,pos))
 					pos = findSpawnPos(m_env.getServerMap());
 				player->setPosition(pos);
 				SendMovePlayer(player);

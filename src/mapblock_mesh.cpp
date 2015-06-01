@@ -508,6 +508,9 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset, JMutex *mut
 			meshgen_trunklike(data,p,n,selected);
 			meshgen_farnode(data,p,n);
 			break;
+		case CDT_FLAGLIKE:
+			meshgen_flaglike(data,p,n,selected);
+			break;
 		default:;
 		}
 	}

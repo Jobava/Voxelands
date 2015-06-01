@@ -5095,6 +5095,74 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	}
 }
 
+void meshgen_flaglike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+{
+	static const v3s16 tile_dirs[6] = {
+		v3s16(0, 1, 0),
+		v3s16(0, -1, 0),
+		v3s16(1, 0, 0),
+		v3s16(-1, 0, 0),
+		v3s16(0, 0, 1),
+		v3s16(0, 0, -1)
+	};
+
+	TileSpec tiles[6];
+	TileSpec flag;
+	MapNode pn(CONTENT_FENCE);
+	NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+data->m_blockpos_nodes);
+	for (u16 i=0; i<6; i++) {
+		// Handles facedir rotation for textures
+		tiles[i] = getNodeTile(pn,p,tile_dirs[i],data->m_temp_mods);
+	}
+
+	flag = getNodeTile(n,p,v3s16(0,0,0),data->m_temp_mods,meta);
+
+	std::vector<NodeBox> boxes = content_features(n).getNodeBoxes(n);
+	meshgen_build_nodebox(data,p,n,selected,boxes,tiles);
+
+	float tuv[8] = {
+		0.25, 0.5,
+		1.0 , 0.5,
+		1.0 , 0.0625,
+		0.25, 0.0625
+	};
+
+	for (u16 i=0; i<8; i++) {
+		tuv[i] *= flag.texture.size.X;
+		tuv[i] += flag.texture.pos.X;
+		i++;
+		tuv[i] *= flag.texture.size.Y;
+		tuv[i] += flag.texture.pos.Y;
+	}
+
+	video::S3DVertex vertices[4] = {
+		video::S3DVertex( 0.125*BS,       0.,0. , 0,0,0, video::SColor(255,255,255,255), tuv[0], tuv[1]),
+		video::S3DVertex( 0.875*BS,       0.,0. , 0,0,0, video::SColor(255,255,255,255), tuv[2], tuv[3]),
+		video::S3DVertex( 0.875*BS,0.4375*BS,0.5, 0,0,0, video::SColor(255,255,255,255), tuv[4], tuv[5]),
+		video::S3DVertex( 0.125*BS,0.4375*BS,0.2, 0,0,0, video::SColor(255,255,255,255), tuv[6], tuv[7])
+	};
+
+	s16 angle = 5+n.getRotationAngle();
+	for (u16 i=0; i<4; i++) {
+		vertices[i].Pos.rotateXZBy(angle);
+	}
+
+	u16 indices[] = {0,1,2,2,3,0};
+	std::vector<u32> colours;
+	if (selected) {
+		meshgen_selected_lights(colours,255,4);
+	}else{
+		meshgen_lights(data,n,p,colours,255,v3s16(0,0,0),4,vertices);
+	}
+
+	v3f pos = intToFloat(p,BS);
+	for (u16 i=0; i<4; i++) {
+		vertices[i].Pos += pos;
+	}
+
+	data->append(flag.getMaterial(), vertices, 4, indices, 6, colours);
+}
+
 void meshgen_farnode(MeshMakeData *data, v3s16 p, MapNode &n)
 {
 	v3f pos = intToFloat(p, BS);
