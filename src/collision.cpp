@@ -269,6 +269,7 @@ collisionMoveResult collisionMoveSimple(Map *map,
 					{1,2},
 					{1,3}
 				};
+				nodeboxes = content_features(CONTENT_STONE_WALL).getNodeBoxes(n);
 				int bps = ((nodeboxes.size()-2)/4); // boxes per section
 				u8 np = 1;
 				{
