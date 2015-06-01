@@ -98,6 +98,7 @@ void content_mapnode_farm(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->air_equivalent = true;
+	f->special_alternate_node = CONTENT_FARM_WHEAT;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
@@ -117,6 +118,7 @@ void content_mapnode_farm(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->air_equivalent = true;
+	f->special_alternate_node = CONTENT_FARM_MELON;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
@@ -124,6 +126,7 @@ void content_mapnode_farm(bool repeat)
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
 	crafting::set1To1Recipe(CONTENT_CRAFTITEM_MELONSLICE,CONTENT_SEEDS_MELON);
+	lists::add("craftguide",i);
 	lists::add("creative",i);
 
 	i = CONTENT_SEEDS_PUMPKIN;
@@ -137,6 +140,7 @@ void content_mapnode_farm(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->air_equivalent = true;
+	f->special_alternate_node = CONTENT_FARM_PUMPKIN;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
@@ -144,6 +148,7 @@ void content_mapnode_farm(bool repeat)
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
 	crafting::set1To1Recipe(CONTENT_CRAFTITEM_PUMPKINSLICE,CONTENT_SEEDS_PUMPKIN);
+	lists::add("craftguide",i);
 	lists::add("creative",i);
 
 	i = CONTENT_SEEDS_POTATO;
@@ -157,12 +162,15 @@ void content_mapnode_farm(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->air_equivalent = true;
+	f->special_alternate_node = CONTENT_FARM_POTATO;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
+	crafting::set1To2Recipe(CONTENT_CRAFTITEM_POTATO,CONTENT_SEEDS_POTATO);
+	lists::add("craftguide",i);
 	lists::add("creative",i);
 
 	i = CONTENT_SEEDS_CARROT;
@@ -176,12 +184,15 @@ void content_mapnode_farm(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->air_equivalent = true;
+	f->special_alternate_node = CONTENT_FARM_CARROT;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
+	crafting::set1To2Recipe(CONTENT_CRAFTITEM_CARROT,CONTENT_SEEDS_CARROT);
+	lists::add("craftguide",i);
 	lists::add("creative",i);
 
 	i = CONTENT_SEEDS_BEETROOT;
@@ -195,12 +206,15 @@ void content_mapnode_farm(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->air_equivalent = true;
+	f->special_alternate_node = CONTENT_FARM_BEETROOT;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
+	crafting::set1To2Recipe(CONTENT_CRAFTITEM_BEETROOT,CONTENT_SEEDS_BEETROOT);
+	lists::add("craftguide",i);
 	lists::add("creative",i);
 
 	i = CONTENT_SEEDS_GRAPE;
@@ -214,6 +228,7 @@ void content_mapnode_farm(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->air_equivalent = true;
+	f->special_alternate_node = CONTENT_FARM_GRAPEVINE;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
@@ -221,6 +236,7 @@ void content_mapnode_farm(bool repeat)
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
 	crafting::set1To2Recipe(CONTENT_CRAFTITEM_GRAPE,CONTENT_SEEDS_GRAPE);
+	lists::add("craftguide",i);
 	lists::add("creative",i);
 
 	i = CONTENT_SEEDS_COTTON;
@@ -234,6 +250,7 @@ void content_mapnode_farm(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->air_equivalent = true;
+	f->special_alternate_node = CONTENT_FARM_COTTON;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
@@ -242,147 +259,28 @@ void content_mapnode_farm(bool repeat)
 	f->suffocation_per_second = 0;
 	lists::add("creative",i);
 
-	i = CONTENT_FARM_WHEAT_1;
-	f = &content_features(i);
-	f->description = wgettext("Wheat");
-	f->setAllTextures("farm_wheat.png");
-	f->draw_type = CDT_PLANTGROWTH_1;
-	f->param_type = CPT_LIGHT;
-	f->setAllTextureFlags(0);
-	f->walkable = false;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->air_equivalent = true;
-	f->flammable = 1;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_WHEAT)+" 1";
-	f->type = CMT_PLANT;
-	f->hardness = 0.4;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
-	i = CONTENT_FARM_WHEAT_2;
-	f = &content_features(i);
-	f->description = wgettext("Wheat");
-	f->setAllTextures("farm_wheat.png");
-	f->draw_type = CDT_PLANTGROWTH_2;
-	f->param_type = CPT_LIGHT;
-	f->setAllTextureFlags(0);
-	f->walkable = false;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->air_equivalent = true;
-	f->flammable = 1;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_WHEAT)+" 1";
-	f->type = CMT_PLANT;
-	f->hardness = 0.4;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
-	i = CONTENT_FARM_WHEAT_3;
-	f = &content_features(i);
-	f->description = wgettext("Wheat");
-	f->setAllTextures("farm_wheat.png");
-	f->draw_type = CDT_PLANTGROWTH_3;
-	f->param_type = CPT_LIGHT;
-	f->setAllTextureFlags(0);
-	f->walkable = false;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->air_equivalent = true;
-	f->flammable = 1;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_WHEAT)+" 1";
-	f->extra_dug_item = std::string("CraftItem harvested_wheat 1");
-	f->extra_dug_item_rarity = 1;
-	f->type = CMT_PLANT;
-	f->hardness = 0.4;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
 	i = CONTENT_FARM_WHEAT;
 	f = &content_features(i);
 	f->description = wgettext("Wheat");
 	f->setAllTextures("farm_wheat.png");
 	f->draw_type = CDT_PLANTLIKE;
 	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_PLANTGROWTH;
 	f->setAllTextureFlags(0);
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->air_equivalent = true;
 	f->flammable = 1;
+	f->plantgrowth_max_height = 2; // maximum growth height;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_WHEAT)+" 2";
-	f->extra_dug_item = std::string("CraftItem harvested_wheat 2");
-	f->extra_dug_item_rarity = 1;
+	f->plantgrowth_small_dug_node = CONTENT_SEEDS_WHEAT;
+	f->plantgrowth_large_dug_node = CONTENT_CRAFTITEM_WHEAT;
+	f->plantgrowth_large_gives_small = true;
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
-
-	i = CONTENT_FARM_MELON_1;
-	f = &content_features(i);
-	f->description = wgettext("Melon");
-	f->setAllTextures("farm_melon.png");
-	f->setTexture(0,"farm_melon_top.png");
-	f->setTexture(1,"farm_melon_top.png");
-	f->draw_type = CDT_NODEBOX;
-	f->param_type = CPT_LIGHT;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->flammable = 1;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_MELON)+" 1";
-	f->extra_dug_item = std::string("CraftItem mush 1");
-	f->extra_dug_item_rarity = 3;
-	content_nodebox_plant_1(f);
-	f->type = CMT_PLANT;
-	f->hardness = 0.4;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
-	i = CONTENT_FARM_MELON_2;
-	f = &content_features(i);
-	f->description = wgettext("Melon");
-	f->setAllTextures("farm_melon.png");
-	f->setTexture(0,"farm_melon_top.png");
-	f->setTexture(1,"farm_melon_top.png");
-	f->draw_type = CDT_NODEBOX;
-	f->param_type = CPT_LIGHT;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->flammable = 1;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_MELON)+" 1";
-	f->extra_dug_item = std::string("CraftItem mush 1");
-	f->extra_dug_item_rarity = 2;
-	content_nodebox_plant_2(f);
-	f->type = CMT_PLANT;
-	f->hardness = 0.4;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
-	i = CONTENT_FARM_MELON_3;
-	f = &content_features(i);
-	f->description = wgettext("Melon");
-	f->setAllTextures("farm_melon.png");
-	f->setTexture(0,"farm_melon_top.png");
-	f->setTexture(1,"farm_melon_top.png");
-	f->draw_type = CDT_NODEBOX;
-	f->param_type = CPT_LIGHT;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->flammable = 1;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_MELON)+" 1";
-	f->extra_dug_item = std::string("CraftItem mush 1");
-	f->extra_dug_item_rarity = 1;
-	content_nodebox_plant_3(f);
-	f->type = CMT_PLANT;
-	f->hardness = 0.4;
-	f->pressure_type = CST_CRUSHABLE;
 
 	i = CONTENT_FARM_MELON;
 	f = &content_features(i);
@@ -391,69 +289,12 @@ void content_mapnode_farm(bool repeat)
 	f->setTexture(0,"farm_melon_top.png");
 	f->setTexture(1,"farm_melon_top.png");
 	f->setInventoryTextureCube("farm_melon.png","farm_melon.png","farm_melon.png");
-	f->draw_type = CDT_CUBELIKE;
+	f->draw_type = CDT_MELONLIKE;
+	f->param2_type = CPT_PLANTGROWTH;
 	f->flammable = 1;
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FARM_MELON)+" 1";
-	f->type = CMT_PLANT;
-	f->hardness = 0.4;
-	f->pressure_type = CST_CRUSHABLE;
-
-	i = CONTENT_FARM_PUMPKIN_1;
-	f = &content_features(i);
-	f->description = wgettext("Pumpkin");
-	f->setAllTextures("farm_pumpkin.png");
-	f->setTexture(0,"farm_pumpkin_top.png");
-	f->setTexture(1,"farm_pumpkin_top.png");
-	f->draw_type = CDT_NODEBOX;
-	f->param_type = CPT_LIGHT;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->flammable = 1;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_PUMPKIN)+" 1";
-	f->extra_dug_item = std::string("CraftItem mush 1");
-	f->extra_dug_item_rarity = 3;
-	content_nodebox_plant_1(f);
-	f->type = CMT_PLANT;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
-	i = CONTENT_FARM_PUMPKIN_2;
-	f = &content_features(i);
-	f->description = wgettext("Pumpkin");
-	f->setAllTextures("farm_pumpkin.png");
-	f->setTexture(0,"farm_pumpkin_top.png");
-	f->setTexture(1,"farm_pumpkin_top.png");
-	f->draw_type = CDT_NODEBOX;
-	f->param_type = CPT_LIGHT;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->flammable = 1;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_PUMPKIN)+" 1";
-	f->extra_dug_item = std::string("CraftItem mush 1");
-	f->extra_dug_item_rarity = 2;
-	content_nodebox_plant_2(f);
-	f->type = CMT_PLANT;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
-	i = CONTENT_FARM_PUMPKIN_3;
-	f = &content_features(i);
-	f->description = wgettext("Pumpkin");
-	f->setAllTextures("farm_pumpkin.png");
-	f->setTexture(0,"farm_pumpkin_top.png");
-	f->setTexture(1,"farm_pumpkin_top.png");
-	f->draw_type = CDT_NODEBOX;
-	f->param_type = CPT_LIGHT;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->flammable = 1;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_PUMPKIN)+" 1";
-	f->extra_dug_item = std::string("CraftItem mush 1");
-	f->extra_dug_item_rarity = 1;
-	content_nodebox_plant_3(f);
+	f->plantgrowth_small_dug_node = CONTENT_SEEDS_MELON;
+	f->plantgrowth_large_dug_node = CONTENT_FARM_MELON;
+	f->plantgrowth_large_count = 1;
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
@@ -465,9 +306,12 @@ void content_mapnode_farm(bool repeat)
 	f->setTexture(0,"farm_pumpkin_top.png");
 	f->setTexture(1,"farm_pumpkin_top.png");
 	f->setInventoryTextureCube("farm_pumpkin_top.png","farm_pumpkin.png","farm_pumpkin.png");
-	f->draw_type = CDT_CUBELIKE;
+	f->draw_type = CDT_MELONLIKE;
+	f->param2_type = CPT_PLANTGROWTH;
 	f->flammable = 1;
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_FARM_PUMPKIN)+" 1";
+	f->plantgrowth_small_dug_node = CONTENT_SEEDS_PUMPKIN;
+	f->plantgrowth_large_dug_node = CONTENT_FARM_PUMPKIN;
+	f->plantgrowth_large_count = 1;
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	lists::add("creative", i);
@@ -512,75 +356,13 @@ void content_mapnode_farm(bool repeat)
 	lists::add("creative", i);
 	f->pressure_type = CST_CRUSHABLE;
 
-	i = CONTENT_FARM_POTATO_1;
-	f = &content_features(i);
-	f->description = wgettext("Potato");
-	f->setAllTextures("farm_potato.png");
-	f->draw_type = CDT_PLANTGROWTH_1;
-	f->param_type = CPT_LIGHT;
-	f->setAllTextureFlags(0);
-	f->walkable = false;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->air_equivalent = true;
-	f->flammable = 1;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_POTATO)+" 1";
-	f->extra_dug_item = std::string("CraftItem mush 1");
-	f->extra_dug_item_rarity = 3;
-	f->type = CMT_PLANT;
-	f->hardness = 0.4;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
-	i = CONTENT_FARM_POTATO_2;
-	f = &content_features(i);
-	f->description = wgettext("Potato");
-	f->setAllTextures("farm_potato.png");
-	f->draw_type = CDT_PLANTGROWTH_2;
-	f->param_type = CPT_LIGHT;
-	f->setAllTextureFlags(0);
-	f->walkable = false;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->air_equivalent = true;
-	f->flammable = 1;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_POTATO)+" 1";
-	f->extra_dug_item = std::string("CraftItem mush 1");
-	f->extra_dug_item_rarity = 2;
-	f->type = CMT_PLANT;
-	f->hardness = 0.4;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
-	i = CONTENT_FARM_POTATO_3;
-	f = &content_features(i);
-	f->description = wgettext("Potato");
-	f->setAllTextures("farm_potato.png");
-	f->draw_type = CDT_PLANTGROWTH_3;
-	f->param_type = CPT_LIGHT;
-	f->setAllTextureFlags(0);
-	f->walkable = false;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->air_equivalent = true;
-	f->flammable = 1;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_POTATO)+" 1";
-	f->extra_dug_item = std::string("CraftItem harvested_potato 1");
-	f->extra_dug_item_rarity = 2;
-	f->type = CMT_PLANT;
-	f->hardness = 0.4;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
 	i = CONTENT_FARM_POTATO;
 	f = &content_features(i);
 	f->description = wgettext("Potato");
 	f->setAllTextures("farm_potato.png");
 	f->draw_type = CDT_PLANTLIKE;
 	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_PLANTGROWTH;
 	f->setAllTextureFlags(0);
 	f->walkable = false;
 	f->light_propagates = true;
@@ -588,72 +370,8 @@ void content_mapnode_farm(bool repeat)
 	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_POTATO)+" 2";
-	f->extra_dug_item = std::string("CraftItem harvested_potato 3");
-	f->extra_dug_item_rarity = 1;
-	f->type = CMT_PLANT;
-	f->hardness = 0.4;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
-	i = CONTENT_FARM_CARROT_1;
-	f = &content_features(i);
-	f->description = wgettext("Carrot");
-	f->setAllTextures("farm_carrot.png");
-	f->draw_type = CDT_PLANTGROWTH_1;
-	f->param_type = CPT_LIGHT;
-	f->setAllTextureFlags(0);
-	f->walkable = false;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->air_equivalent = true;
-	f->flammable = 1;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_CARROT)+" 1";
-	f->extra_dug_item = std::string("CraftItem mush 1");
-	f->extra_dug_item_rarity = 3;
-	f->type = CMT_PLANT;
-	f->hardness = 0.4;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
-	i = CONTENT_FARM_CARROT_2;
-	f = &content_features(i);
-	f->description = wgettext("Carrot");
-	f->setAllTextures("farm_carrot.png");
-	f->draw_type = CDT_PLANTGROWTH_2;
-	f->param_type = CPT_LIGHT;
-	f->setAllTextureFlags(0);
-	f->walkable = false;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->air_equivalent = true;
-	f->flammable = 1;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_CARROT)+" 1";
-	f->extra_dug_item = std::string("CraftItem mush 1");
-	f->extra_dug_item_rarity = 2;
-	f->type = CMT_PLANT;
-	f->hardness = 0.4;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
-	i = CONTENT_FARM_CARROT_3;
-	f = &content_features(i);
-	f->description = wgettext("Carrot");
-	f->setAllTextures("farm_carrot.png");
-	f->draw_type = CDT_PLANTGROWTH_3;
-	f->param_type = CPT_LIGHT;
-	f->setAllTextureFlags(0);
-	f->walkable = false;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->air_equivalent = true;
-	f->flammable = 1;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_CARROT)+" 1";
-	f->extra_dug_item = std::string("CraftItem harvested_carrot 1");
-	f->extra_dug_item_rarity = 2;
+	f->plantgrowth_small_dug_node = CONTENT_SEEDS_POTATO;
+	f->plantgrowth_large_dug_node = CONTENT_CRAFTITEM_POTATO;
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
@@ -665,6 +383,7 @@ void content_mapnode_farm(bool repeat)
 	f->setAllTextures("farm_carrot.png");
 	f->draw_type = CDT_PLANTLIKE;
 	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_PLANTGROWTH;
 	f->setAllTextureFlags(0);
 	f->walkable = false;
 	f->light_propagates = true;
@@ -672,72 +391,8 @@ void content_mapnode_farm(bool repeat)
 	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_CARROT)+" 2";
-	f->extra_dug_item = std::string("CraftItem harvested_carrot 3");
-	f->extra_dug_item_rarity = 1;
-	f->type = CMT_PLANT;
-	f->hardness = 0.4;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
-	i = CONTENT_FARM_BEETROOT_1;
-	f = &content_features(i);
-	f->description = wgettext("Beetroot");
-	f->setAllTextures("farm_beetroot.png");
-	f->draw_type = CDT_PLANTGROWTH_1;
-	f->param_type = CPT_LIGHT;
-	f->setAllTextureFlags(0);
-	f->walkable = false;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->air_equivalent = true;
-	f->flammable = 1;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_BEETROOT)+" 1";
-	f->extra_dug_item = std::string("CraftItem mush 1");
-	f->extra_dug_item_rarity = 3;
-	f->type = CMT_PLANT;
-	f->hardness = 0.4;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
-	i = CONTENT_FARM_BEETROOT_2;
-	f = &content_features(i);
-	f->description = wgettext("Beetroot");
-	f->setAllTextures("farm_beetroot.png");
-	f->draw_type = CDT_PLANTGROWTH_2;
-	f->param_type = CPT_LIGHT;
-	f->setAllTextureFlags(0);
-	f->walkable = false;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->air_equivalent = true;
-	f->flammable = 1;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_BEETROOT)+" 1";
-	f->extra_dug_item = std::string("CraftItem mush 1");
-	f->extra_dug_item_rarity = 2;
-	f->type = CMT_PLANT;
-	f->hardness = 0.4;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
-	i = CONTENT_FARM_BEETROOT_3;
-	f = &content_features(i);
-	f->description = wgettext("Beetroot");
-	f->setAllTextures("farm_beetroot.png");
-	f->draw_type = CDT_PLANTGROWTH_3;
-	f->param_type = CPT_LIGHT;
-	f->setAllTextureFlags(0);
-	f->walkable = false;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->air_equivalent = true;
-	f->flammable = 1;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_BEETROOT)+" 1";
-	f->extra_dug_item = std::string("CraftItem harvested_beetroot 1");
-	f->extra_dug_item_rarity = 2;
+	f->plantgrowth_small_dug_node = CONTENT_SEEDS_CARROT;
+	f->plantgrowth_large_dug_node = CONTENT_CRAFTITEM_CARROT;
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
@@ -749,6 +404,7 @@ void content_mapnode_farm(bool repeat)
 	f->setAllTextures("farm_beetroot.png");
 	f->draw_type = CDT_PLANTLIKE;
 	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_PLANTGROWTH;
 	f->setAllTextureFlags(0);
 	f->walkable = false;
 	f->light_propagates = true;
@@ -756,72 +412,8 @@ void content_mapnode_farm(bool repeat)
 	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_BEETROOT)+" 2";
-	f->extra_dug_item = std::string("CraftItem harvested_beetroot 3");
-	f->extra_dug_item_rarity = 1;
-	f->type = CMT_PLANT;
-	f->hardness = 0.4;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
-	i = CONTENT_FARM_GRAPEVINE_1;
-	f = &content_features(i);
-	f->description = wgettext("Grape");
-	f->setAllTextures("farm_grapevine.png");
-	f->draw_type = CDT_PLANTGROWTH_1;
-	f->param_type = CPT_LIGHT;
-	f->setAllTextureFlags(0);
-	f->walkable = false;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->air_equivalent = true;
-	f->flammable = 1;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_GRAPE)+" 1";
-	f->extra_dug_item = std::string("CraftItem mush 1");
-	f->extra_dug_item_rarity = 3;
-	f->type = CMT_PLANT;
-	f->hardness = 0.4;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
-	i = CONTENT_FARM_GRAPEVINE_2;
-	f = &content_features(i);
-	f->description = wgettext("Grape");
-	f->setAllTextures("farm_grapevine.png");
-	f->draw_type = CDT_PLANTGROWTH_2;
-	f->param_type = CPT_LIGHT;
-	f->setAllTextureFlags(0);
-	f->walkable = false;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->air_equivalent = true;
-	f->flammable = 1;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_GRAPE)+" 1";
-	f->extra_dug_item = std::string("CraftItem mush 1");
-	f->extra_dug_item_rarity = 2;
-	f->type = CMT_PLANT;
-	f->hardness = 0.4;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
-	i = CONTENT_FARM_GRAPEVINE_3;
-	f = &content_features(i);
-	f->description = wgettext("Grape");
-	f->setAllTextures("farm_grapevine.png");
-	f->draw_type = CDT_PLANTGROWTH_3;
-	f->param_type = CPT_LIGHT;
-	f->setAllTextureFlags(0);
-	f->walkable = false;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->air_equivalent = true;
-	f->flammable = 1;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_GRAPE)+" 1";
-	f->extra_dug_item = std::string("CraftItem harvested_grape 1");
-	f->extra_dug_item_rarity = 2;
+	f->plantgrowth_small_dug_node = CONTENT_SEEDS_BEETROOT;
+	f->plantgrowth_large_dug_node = CONTENT_CRAFTITEM_BEETROOT;
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
@@ -833,6 +425,7 @@ void content_mapnode_farm(bool repeat)
 	f->setAllTextures("farm_grapevine.png");
 	f->draw_type = CDT_PLANTLIKE;
 	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_PLANTGROWTH;
 	f->setAllTextureFlags(0);
 	f->walkable = false;
 	f->light_propagates = true;
@@ -840,67 +433,8 @@ void content_mapnode_farm(bool repeat)
 	f->air_equivalent = true;
 	f->flammable = 1;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("CraftItem harvested_grape 3");
-	f->type = CMT_PLANT;
-	f->hardness = 0.4;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
-	i = CONTENT_FARM_COTTON_1;
-	f = &content_features(i);
-	f->description = wgettext("Cotton");
-	f->setAllTextures("farm_cotton.png");
-	f->draw_type = CDT_PLANTGROWTH_1;
-	f->param_type = CPT_LIGHT;
-	f->setAllTextureFlags(0);
-	f->walkable = false;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->air_equivalent = true;
-	f->flammable = 1;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_COTTON)+" 1";
-	f->type = CMT_PLANT;
-	f->hardness = 0.4;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
-	i = CONTENT_FARM_COTTON_2;
-	f = &content_features(i);
-	f->description = wgettext("Cotton");
-	f->setAllTextures("farm_cotton.png");
-	f->draw_type = CDT_PLANTGROWTH_2;
-	f->param_type = CPT_LIGHT;
-	f->setAllTextureFlags(0);
-	f->walkable = false;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->air_equivalent = true;
-	f->flammable = 1;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_COTTON)+" 1";
-	f->extra_dug_item = std::string("CraftItem string 1");
-	f->type = CMT_PLANT;
-	f->hardness = 0.4;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
-	i = CONTENT_FARM_COTTON_3;
-	f = &content_features(i);
-	f->description = wgettext("Cotton");
-	f->setAllTextures("farm_cotton.png");
-	f->draw_type = CDT_PLANTGROWTH_3;
-	f->param_type = CPT_LIGHT;
-	f->setAllTextureFlags(0);
-	f->walkable = false;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->air_equivalent = true;
-	f->flammable = 1;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_COTTON)+" 1";
-	f->extra_dug_item = std::string("CraftItem string 2");
-	f->extra_dug_item_rarity = 2;
+	f->plantgrowth_small_dug_node = CONTENT_SEEDS_GRAPE;
+	f->plantgrowth_large_dug_node = CONTENT_CRAFTITEM_GRAPE;
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
@@ -912,16 +446,19 @@ void content_mapnode_farm(bool repeat)
 	f->setAllTextures("farm_cotton.png");
 	f->draw_type = CDT_PLANTLIKE;
 	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_PLANTGROWTH;
 	f->setAllTextureFlags(0);
 	f->walkable = false;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->air_equivalent = true;
 	f->flammable = 1;
+	f->plantgrowth_max_height = 2; // maximum growth height;
 	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_COTTON)+" 2";
-	f->extra_dug_item = std::string("CraftItem string 6");
-	f->extra_dug_item_rarity = 1;
+	f->plantgrowth_small_dug_node = CONTENT_SEEDS_COTTON;
+	f->plantgrowth_large_dug_node = CONTENT_CRAFTITEM_STRING;
+	f->plantgrowth_large_count = 6;
+	f->plantgrowth_large_gives_small = true;
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;

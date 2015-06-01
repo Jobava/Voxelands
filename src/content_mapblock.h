@@ -50,6 +50,7 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);
 void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);
 void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);
 void meshgen_flaglike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);
+void meshgen_melonlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected);
 void meshgen_farnode(MeshMakeData *data, v3s16 p, MapNode &n);
 
 #endif

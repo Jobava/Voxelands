@@ -683,9 +683,12 @@ void content_mapnode_plants(bool repeat)
 	f->setAllTextureFlags(0);
 	f->light_propagates = true;
 	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_PLANTGROWTH;
 	f->draw_type = CDT_PLANTLIKE;
 	f->is_ground_content = true;
-	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->plantgrowth_large_dug_node = CONTENT_PAPYRUS;
+	f->plantgrowth_large_count = 1;
+	f->plantgrowth_max_height = 5;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->walkable = false;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire

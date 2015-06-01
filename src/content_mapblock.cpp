@@ -438,6 +438,10 @@ static bool meshgen_hardface(MeshMakeData *data, v3s16 p, MapNode &n, v3s16 pos)
 		if (!pos.Y && n.getContent() == nn.getContent())
 			return false;
 	}
+	if (ff->draw_type == CDT_MELONLIKE) {
+		if (ff->param2_type != CPT_PLANTGROWTH || nn.param2 == 0)
+			return false;
+	}
 	return true;
 }
 
@@ -1414,48 +1418,44 @@ void meshgen_plantlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	f32 h = 0.5;
 	bool is_scaled = false;
 	v3f scale(1.0,1.0,1.0);
-	switch (f->draw_type) {
-	case CDT_PLANTLIKE_SML:
-		is_scaled = true;
-		scale = v3f(0.8,0.8,0.8);
-		break;
-	case CDT_PLANTLIKE_LGE:
-	{
-		is_scaled = true;
-		scale = v3f(1.3,1.0,1.0);
-		MapNode n2 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0,1,0));
-		h = 1.0;
-		if (
-			content_features(n2).draw_type == CDT_PLANTLIKE_LGE
-			|| content_features(n2).draw_type == CDT_PLANTLIKE
-			|| content_features(n2).draw_type == CDT_PLANTLIKE_SML
-		) {
-			v = (0.333*tile.texture.size.Y)+tile.texture.y0();
-			h = 0.5;
+	if (f->param2_type == CPT_PLANTGROWTH) {
+		if (n.param2 != 0) {
+			h = (0.0625*(float)n.param2);
+			v = ((1.0-h)*tile.texture.size.Y)+tile.texture.y0();
+			h -= 0.5;
 		}
-		n2 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0,-1,0));
-		if (n2.getContent() == CONTENT_FLOWER_POT) {
-			offset = v3f(0,-0.25*BS,0);
-			if (h == 0.5) {
-				v = (0.25*tile.texture.size.Y)+tile.texture.y0();
-				h = 0.75;
+	}else{
+		switch (f->draw_type) {
+		case CDT_PLANTLIKE_SML:
+			is_scaled = true;
+			scale = v3f(0.8,0.8,0.8);
+			break;
+		case CDT_PLANTLIKE_LGE:
+		{
+			is_scaled = true;
+			scale = v3f(1.3,1.0,1.0);
+			MapNode n2 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0,1,0));
+			h = 1.0;
+			if (
+				content_features(n2).draw_type == CDT_PLANTLIKE_LGE
+				|| content_features(n2).draw_type == CDT_PLANTLIKE
+				|| content_features(n2).draw_type == CDT_PLANTLIKE_SML
+			) {
+				v = (0.333*tile.texture.size.Y)+tile.texture.y0();
+				h = 0.5;
+			}
+			n2 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0,-1,0));
+			if (n2.getContent() == CONTENT_FLOWER_POT) {
+				offset = v3f(0,-0.25*BS,0);
+				if (h == 0.5) {
+					v = (0.25*tile.texture.size.Y)+tile.texture.y0();
+					h = 0.75;
+				}
 			}
 		}
-	}
-		break;
-	case CDT_PLANTGROWTH_1:
-		v = (0.75*tile.texture.size.Y)+tile.texture.y0();
-		h = -0.25;
-		break;
-	case CDT_PLANTGROWTH_2:
-		v = (0.5*tile.texture.size.Y)+tile.texture.y0();
-		h = 0.0;
-		break;
-	case CDT_PLANTGROWTH_3:
-		v = (0.25*tile.texture.size.Y)+tile.texture.y0();
-		h = 0.25;
-		break;
-	default:;
+			break;
+		default:;
+		}
 	}
 
 	v3f pos = offset+intToFloat(p,BS);
@@ -5161,6 +5161,36 @@ void meshgen_flaglike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	}
 
 	data->append(flag.getMaterial(), vertices, 4, indices, 6, colours);
+}
+
+void meshgen_melonlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+{
+	ContentFeatures *f = &content_features(n.getContent());
+	if (f->param2_type != CPT_PLANTGROWTH || n.param2 == 0) {
+		meshgen_cubelike(data,p,n,selected);
+		return;
+	}
+
+	static const v3s16 tile_dirs[6] = {
+		v3s16(0, 1, 0),
+		v3s16(0, -1, 0),
+		v3s16(1, 0, 0),
+		v3s16(-1, 0, 0),
+		v3s16(0, 0, 1),
+		v3s16(0, 0, -1)
+	};
+
+	TileSpec tiles[6];
+	for (u16 i=0; i<6; i++) {
+		// Handles facedir rotation for textures
+		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
+	}
+
+	float v = (float)n.param2*0.0625;
+	float hv = v/2;
+	std::vector<NodeBox> boxes;
+	boxes.push_back(NodeBox(-hv*BS,-0.5*BS,-hv*BS,hv*BS,(v-0.5)*BS,hv*BS));
+	meshgen_build_nodebox(data,p,n,selected,boxes,tiles);
 }
 
 void meshgen_farnode(MeshMakeData *data, v3s16 p, MapNode &n)

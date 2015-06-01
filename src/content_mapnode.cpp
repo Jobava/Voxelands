@@ -54,7 +54,9 @@ MapNode mapnode_translate_from_internal(MapNode n_from, u8 version)
 MapNode mapnode_translate_to_internal(MapNode n_from, u8 version)
 {
 	MapNode result = n_from;
-	if (n_from.getContent() == CONTENT_LADDER_LEGACY) {
+	switch (n_from.getContent()) {
+	case CONTENT_LADDER_LEGACY:
+	{
 		switch (n_from.param2) {
 		case 1:
 			result.setContent(CONTENT_LADDER_WALL);
@@ -82,7 +84,10 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version)
 			break;
 		default:;
 		}
-	}else if (n_from.getContent() == CONTENT_TORCH_LEGACY) {
+	}
+		break;
+	case CONTENT_TORCH_LEGACY:
+	{
 		switch (n_from.param2) {
 		case 1:
 			result.setContent(CONTENT_TORCH);
@@ -110,25 +115,120 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version)
 			break;
 		default:;
 		}
-	}else{
-		switch (n_from.getContent()) {
-		case CONTENT_ROUGHSTONE_WALL_LEGACY:
-			result.setContent(CONTENT_ROUGHSTONE_WALL);
-			break;
-		case CONTENT_MOSSYCOBBLE_WALL_LEGACY:
-			result.setContent(CONTENT_MOSSYCOBBLE_WALL);
-			break;
-		case CONTENT_SANDSTONE_WALL_LEGACY:
-			result.setContent(CONTENT_SANDSTONE_WALL);
-			break;
-		case CONTENT_STONE_WALL_LEGACY:
-			result.setContent(CONTENT_STONE_WALL);
-			break;
-		case CONTENT_COBBLE_WALL_LEGACY:
-			result.setContent(CONTENT_COBBLE_WALL);
-			break;
-		default:;
-		}
+	}
+		break;
+	case CONTENT_ROUGHSTONE_WALL_LEGACY:
+		result.setContent(CONTENT_ROUGHSTONE_WALL);
+		break;
+	case CONTENT_MOSSYCOBBLE_WALL_LEGACY:
+		result.setContent(CONTENT_MOSSYCOBBLE_WALL);
+		break;
+	case CONTENT_SANDSTONE_WALL_LEGACY:
+		result.setContent(CONTENT_SANDSTONE_WALL);
+		break;
+	case CONTENT_STONE_WALL_LEGACY:
+		result.setContent(CONTENT_STONE_WALL);
+		break;
+	case CONTENT_COBBLE_WALL_LEGACY:
+		result.setContent(CONTENT_COBBLE_WALL);
+		break;
+	case CONTENT_FARM_WHEAT_1:
+		result.setContent(CONTENT_FARM_WHEAT);
+		result.param2 = 4;
+		break;
+	case CONTENT_FARM_WHEAT_2:
+		result.setContent(CONTENT_FARM_WHEAT);
+		result.param2 = 8;
+		break;
+	case CONTENT_FARM_WHEAT_3:
+		result.setContent(CONTENT_FARM_WHEAT);
+		result.param2 = 12;
+		break;
+	case CONTENT_FARM_POTATO_1:
+		result.setContent(CONTENT_FARM_POTATO);
+		result.param2 = 4;
+		break;
+	case CONTENT_FARM_POTATO_2:
+		result.setContent(CONTENT_FARM_POTATO);
+		result.param2 = 8;
+		break;
+	case CONTENT_FARM_POTATO_3:
+		result.setContent(CONTENT_FARM_POTATO);
+		result.param2 = 12;
+		break;
+	case CONTENT_FARM_CARROT_1:
+		result.setContent(CONTENT_FARM_CARROT);
+		result.param2 = 4;
+		break;
+	case CONTENT_FARM_CARROT_2:
+		result.setContent(CONTENT_FARM_CARROT);
+		result.param2 = 8;
+		break;
+	case CONTENT_FARM_CARROT_3:
+		result.setContent(CONTENT_FARM_CARROT);
+		result.param2 = 12;
+		break;
+	case CONTENT_FARM_BEETROOT_1:
+		result.setContent(CONTENT_FARM_BEETROOT);
+		result.param2 = 4;
+		break;
+	case CONTENT_FARM_BEETROOT_2:
+		result.setContent(CONTENT_FARM_BEETROOT);
+		result.param2 = 8;
+		break;
+	case CONTENT_FARM_BEETROOT_3:
+		result.setContent(CONTENT_FARM_BEETROOT);
+		result.param2 = 12;
+		break;
+	case CONTENT_FARM_GRAPEVINE_1:
+		result.setContent(CONTENT_FARM_GRAPEVINE);
+		result.param2 = 4;
+		break;
+	case CONTENT_FARM_GRAPEVINE_2:
+		result.setContent(CONTENT_FARM_GRAPEVINE);
+		result.param2 = 8;
+		break;
+	case CONTENT_FARM_GRAPEVINE_3:
+		result.setContent(CONTENT_FARM_GRAPEVINE);
+		result.param2 = 12;
+		break;
+	case CONTENT_FARM_COTTON_1:
+		result.setContent(CONTENT_FARM_COTTON);
+		result.param2 = 4;
+		break;
+	case CONTENT_FARM_COTTON_2:
+		result.setContent(CONTENT_FARM_COTTON);
+		result.param2 = 8;
+		break;
+	case CONTENT_FARM_COTTON_3:
+		result.setContent(CONTENT_FARM_COTTON);
+		result.param2 = 12;
+		break;
+	case CONTENT_FARM_PUMPKIN_1:
+		result.setContent(CONTENT_FARM_PUMPKIN);
+		result.param2 = 4;
+		break;
+	case CONTENT_FARM_PUMPKIN_2:
+		result.setContent(CONTENT_FARM_PUMPKIN);
+		result.param2 = 8;
+		break;
+	case CONTENT_FARM_PUMPKIN_3:
+		result.setContent(CONTENT_FARM_PUMPKIN);
+		result.param2 = 12;
+		break;
+	case CONTENT_FARM_MELON_1:
+		result.setContent(CONTENT_FARM_MELON);
+		result.param2 = 4;
+		break;
+	case CONTENT_FARM_MELON_2:
+		result.setContent(CONTENT_FARM_MELON);
+		result.param2 = 8;
+		break;
+	case CONTENT_FARM_MELON_3:
+		result.setContent(CONTENT_FARM_MELON);
+		result.param2 = 12;
+		break;
+	default:;
 	}
 	return result;
 }

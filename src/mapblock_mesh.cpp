@@ -450,9 +450,6 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset, JMutex *mut
 		case CDT_PLANTLIKE:
 		case CDT_PLANTLIKE_SML:
 		case CDT_PLANTLIKE_LGE:
-		case CDT_PLANTGROWTH_1:
-		case CDT_PLANTGROWTH_2:
-		case CDT_PLANTGROWTH_3:
 			meshgen_plantlike(data,p,n,selected);
 			break;
 		case CDT_LIQUID:
@@ -510,6 +507,10 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset, JMutex *mut
 			break;
 		case CDT_FLAGLIKE:
 			meshgen_flaglike(data,p,n,selected);
+			break;
+		case CDT_MELONLIKE:
+			meshgen_melonlike(data,p,n,selected);
+			meshgen_farnode(data,p,n);
 			break;
 		default:;
 		}

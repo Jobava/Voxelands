@@ -103,9 +103,7 @@ enum ContentDrawType
 	CDT_PLANTLIKE,
 	CDT_PLANTLIKE_SML,
 	CDT_PLANTLIKE_LGE,
-	CDT_PLANTGROWTH_1,
-	CDT_PLANTGROWTH_2,
-	CDT_PLANTGROWTH_3,
+	CDT_MELONLIKE,
 	CDT_LIQUID,
 	CDT_LIQUID_SOURCE,
 	CDT_NODEBOX,
@@ -138,6 +136,7 @@ enum ContentParamType
 	CPT_FACEDIR_SIMPLE,
 	CPT_FACEDIR_WALLMOUNT,
 	CPT_LIQUID,
+	CPT_PLANTGROWTH,
 	CPT_SPECIAL
 };
 
@@ -360,7 +359,7 @@ struct ContentFeatures
 	bool often_contains_mineral;
 	// Whether destructive mobs can destroy this node
 	bool destructive_mob_safe;
-	// Whether punching with fertilizer advances the growth rate of the noe
+	// Whether punching with fertilizer advances the growth rate of the node
 	bool fertilizer_affects;
 
 	// Inventory item string as which the node appears in inventory when dug.
@@ -382,7 +381,8 @@ struct ContentFeatures
 	content_t floormount_alternate_node;
 	// when placed on the roof, this node should be placed instead
 	content_t roofmount_alternate_node;
-	// special node for things like slabs combining into cubes, or walls connecting to blocks
+	// special node for things like slabs combining into cubes,
+	// walls connecting to blocks, or seeds growing to plants
 	content_t special_alternate_node;
 
 	// when energised, replace with this node
@@ -394,6 +394,19 @@ struct ContentFeatures
 	std::string cook_result;
 	// the fuel value of this node
 	float fuel_time;
+
+	// maximum height a plant can grow to
+	s16 plantgrowth_max_height;
+	// when CPT_PLANTGROWTH < 8 digging gives this
+	content_t plantgrowth_small_dug_node;
+	// when CPT_PLANTGROWTH > 7 digging gives this
+	content_t plantgrowth_large_dug_node;
+	// the maximum number of large items given
+	u16 plantgrowth_large_count;
+	// whether to also give small when large is given
+	bool plantgrowth_large_gives_small;
+	// whether this node grows on trellis
+	bool plantgrow_on_trellis;
 
 	// Initial metadata is cloned from this
 	NodeMetadata *initial_metadata;
@@ -437,7 +450,7 @@ struct ContentFeatures
 	// damage player with pressure (vacuum)
 	u32 pressure_per_second;
 
-	// can be used to set the users respawn position
+	// can be used to set the player's respawn position
 	s8 home_node;
 
 	// NOTE: Move relevant properties to here from elsewhere
@@ -500,6 +513,12 @@ struct ContentFeatures
 		unpowered_node = CONTENT_IGNORE;
 		cook_result = "";
 		fuel_time = 0.0;
+		plantgrowth_max_height = 1;
+		plantgrowth_small_dug_node = CONTENT_IGNORE;
+		plantgrowth_large_dug_node = CONTENT_IGNORE;
+		plantgrowth_large_count = 3;
+		plantgrowth_large_gives_small = false;
+		plantgrow_on_trellis = false;
 		initial_metadata = NULL;
 		sound_access = "";
 		sound_step = "";

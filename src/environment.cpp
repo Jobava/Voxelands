@@ -1082,18 +1082,14 @@ void ServerEnvironment::step(float dtime)
 				// Grow stuff on farm dirt
 				case CONTENT_FARM_DIRT:
 				{
-					if (n.envticks%10 == 0) {
+					if (n.envticks%4 == 0) { // with this plants take around 10 minutes to grow
 						s16 max_d = 1;
-						s16 max_growth = 2;
 						v3s16 temp_p = p;
 						v3s16 test_p;
-						content_t type = CONTENT_JUNGLEGRASS;
-						bool long_wait = myrand()%2;
 						MapNode testnode;
 						u8 water_found = 0; // 1 = flowing, 2 = source
-						u8 plant_found = 0; // 1 = found not growing, 2 = found and growing
-						for(s16 z=-max_d; !water_found && z<=max_d; z++) {
-						for(s16 x=-max_d; !water_found && x<=max_d; x++) {
+						for(s16 z=-max_d; water_found < 2 && z<=max_d; z++) {
+						for(s16 x=-max_d; water_found < 2 && x<=max_d; x++) {
 							test_p = temp_p + v3s16(x,0,z);
 							testnode = m_map->getNodeNoEx(test_p);
 							if (testnode.getContent() == CONTENT_WATERSOURCE) {
@@ -1107,276 +1103,16 @@ void ServerEnvironment::step(float dtime)
 						if (water_found) {
 							test_p = temp_p + v3s16(0,1,0);
 							testnode = m_map->getNodeNoEx(test_p);
-							switch (testnode.getContent()) {
-							case CONTENT_AIR:
-								for(s16 z=-max_d; !plant_found && z<=max_d; z++) {
-								for(s16 x=-max_d; !plant_found && x<=max_d; x++) {
-									test_p = temp_p + v3s16(x,1,z);
-									testnode = m_map->getNodeNoEx(test_p);
-									if (
-										testnode.getContent() == CONTENT_JUNGLEGRASS
-										|| testnode.getContent() == CONTENT_PAPYRUS
-										|| testnode.getContent() == CONTENT_CACTUS
-									) {
-										plant_found = 2;
-										type = testnode.getContent();
-										test_p = temp_p + v3s16(0,1,0);
-										break;
-									}
+							if (content_features(testnode).draw_type == CDT_PLANTLIKE) {
+								if (content_features(testnode).param2_type == CPT_PLANTGROWTH) {
+									plantgrowth_plant(this,test_p);
+								}else if (content_features(testnode).special_alternate_node != CONTENT_IGNORE) {
+									plantgrowth_seed(this,test_p);
 								}
-								}
-								break;
-							case CONTENT_PAPYRUS:
-								max_growth = 5;
-								type = CONTENT_PAPYRUS;
-								plant_found = 1;
-								for(s16 y=2; plant_found == 1 && y<=max_growth; y++) {
-									test_p = temp_p + v3s16(0,y,0);
-									testnode = m_map->getNodeNoEx(test_p);
-									if (testnode.getContent() != type) {
-										if (testnode.getContent() == CONTENT_AIR)
-											plant_found = 2;
-										break;
-									}
-								}
-								break;
-							case CONTENT_CACTUS:
-								max_growth = 4;
-								type = CONTENT_CACTUS;
-								plant_found = 1;
-								for(s16 y=2; plant_found == 1 && y<=max_growth; y++) {
-									test_p = temp_p + v3s16(0,y,0);
-									testnode = m_map->getNodeNoEx(test_p);
-									if (testnode.getContent() != type) {
-										if (testnode.getContent() == CONTENT_AIR)
-											plant_found = 2;
-										break;
-									}
-								}
-								break;
-							case CONTENT_JUNGLEGRASS:
-								max_growth = 2;
-								type = CONTENT_JUNGLEGRASS;
-								plant_found = 1;
-								for(s16 y=2; plant_found == 1 && y<=max_growth; y++) {
-									test_p = temp_p + v3s16(0,y,0);
-									testnode = m_map->getNodeNoEx(test_p);
-									if (testnode.getContent() != type) {
-										if (testnode.getContent() == CONTENT_AIR)
-											plant_found = 2;
-										break;
-									}
-								}
-								break;
-							case CONTENT_SEEDS_WHEAT:
-								test_p = temp_p + v3s16(0,1,0);
-								type = CONTENT_FARM_WHEAT_1;
-								plant_found = 2;
-								break;
-							case CONTENT_SEEDS_MELON:
-								test_p = temp_p + v3s16(0,1,0);
-								type = CONTENT_FARM_MELON_1;
-								plant_found = 2;
-								break;
-							case CONTENT_SEEDS_PUMPKIN:
-								test_p = temp_p + v3s16(0,1,0);
-								type = CONTENT_FARM_PUMPKIN_1;
-								plant_found = 2;
-								break;
-							case CONTENT_SEEDS_POTATO:
-								test_p = temp_p + v3s16(0,1,0);
-								type = CONTENT_FARM_POTATO_1;
-								plant_found = 2;
-								break;
-							case CONTENT_SEEDS_CARROT:
-								test_p = temp_p + v3s16(0,1,0);
-								type = CONTENT_FARM_CARROT_1;
-								plant_found = 2;
-								break;
-							case CONTENT_SEEDS_BEETROOT:
-								test_p = temp_p + v3s16(0,1,0);
-								type = CONTENT_FARM_BEETROOT_1;
-								plant_found = 2;
-								break;
-							case CONTENT_SEEDS_GRAPE:
-								test_p = temp_p + v3s16(0,1,0);
-								type = CONTENT_FARM_GRAPEVINE_1;
-								plant_found = 2;
-								break;
-							case CONTENT_SEEDS_COTTON:
-								test_p = temp_p + v3s16(0,1,0);
-								type = CONTENT_FARM_COTTON_1;
-								plant_found = 2;
-								break;
-							case CONTENT_FARM_WHEAT_1:
-							case CONTENT_FARM_MELON_1:
-							case CONTENT_FARM_PUMPKIN_1:
-							case CONTENT_FARM_POTATO_1:
-							case CONTENT_FARM_CARROT_1:
-							case CONTENT_FARM_BEETROOT_1:
-							case CONTENT_FARM_GRAPEVINE_1:
-							case CONTENT_FARM_COTTON_1:
-							case CONTENT_FARM_TRELLIS_GRAPE_1:
-							case CONTENT_FARM_WHEAT_2:
-							case CONTENT_FARM_MELON_2:
-							case CONTENT_FARM_PUMPKIN_2:
-							case CONTENT_FARM_POTATO_2:
-							case CONTENT_FARM_CARROT_2:
-							case CONTENT_FARM_BEETROOT_2:
-							case CONTENT_FARM_GRAPEVINE_2:
-							case CONTENT_FARM_COTTON_2:
-							case CONTENT_FARM_TRELLIS_GRAPE_2:
-							case CONTENT_FARM_WHEAT_3:
-							case CONTENT_FARM_MELON_3:
-							case CONTENT_FARM_PUMPKIN_3:
-							case CONTENT_FARM_POTATO_3:
-							case CONTENT_FARM_CARROT_3:
-							case CONTENT_FARM_BEETROOT_3:
-							case CONTENT_FARM_GRAPEVINE_3:
-							case CONTENT_FARM_COTTON_3:
-							case CONTENT_FARM_TRELLIS_GRAPE_3:
-								test_p = temp_p + v3s16(0,1,0);
-								type = testnode.getContent()+1;
-								plant_found = 2;
-								break;
-							case CONTENT_FARM_WHEAT:
-								max_growth = 2;
-								plant_found = 1;
-								for (s16 y=2; plant_found == 1 && y<=max_growth; y++) {
-									test_p = temp_p + v3s16(0,y,0);
-									testnode = m_map->getNodeNoEx(test_p);
-									if (testnode.getContent() == CONTENT_AIR) {
-										plant_found = 2;
-										type = CONTENT_FARM_WHEAT_1;
-									}else if (testnode.getContent() == CONTENT_FARM_WHEAT_1) {
-										plant_found = 2;
-										type = CONTENT_FARM_WHEAT_2;
-									}else if (testnode.getContent() == CONTENT_FARM_WHEAT_2) {
-										plant_found = 2;
-										type = CONTENT_FARM_WHEAT_3;
-									}else if (testnode.getContent() == CONTENT_FARM_WHEAT_3) {
-										plant_found = 2;
-										type = CONTENT_FARM_WHEAT;
-									}
-								}
-								break;
-							case CONTENT_FARM_COTTON:
-								max_growth = 2;
-								plant_found = 1;
-								for (s16 y=2; plant_found == 1 && y<=max_growth; y++) {
-									test_p = temp_p + v3s16(0,y,0);
-									testnode = m_map->getNodeNoEx(test_p);
-									if (testnode.getContent() == CONTENT_AIR) {
-										plant_found = 2;
-										type = CONTENT_FARM_COTTON_1;
-									}else if (testnode.getContent() == CONTENT_FARM_COTTON_1) {
-										plant_found = 2;
-										type = CONTENT_FARM_COTTON_2;
-									}else if (testnode.getContent() == CONTENT_FARM_COTTON_2) {
-										plant_found = 2;
-										type = CONTENT_FARM_COTTON_3;
-									}else if (testnode.getContent() == CONTENT_FARM_COTTON_3) {
-										plant_found = 2;
-										type = CONTENT_FARM_COTTON;
-									}
-								}
-								break;
-							case CONTENT_FARM_GRAPEVINE:
-							{
-								plant_found = 1;
-								v3s16 tdirs[4] = {v3s16(-1,1,0),v3s16(0,1,-1),v3s16(1,1,0),v3s16(0,1,1)};
-								for (s16 k=0; plant_found == 1 && k<4; k++) {
-									test_p = temp_p + tdirs[k];
-									testnode = m_map->getNodeNoEx(test_p);
-									if (testnode.getContent() == CONTENT_TRELLIS) {
-										plant_found = 2;
-										type = CONTENT_FARM_TRELLIS_GRAPE_1;
-									}
-								}
-							}
-								break;
-							case CONTENT_FARM_TRELLIS_GRAPE:
-								plant_found = 1;
-								max_growth = 5;
-								for (s16 y=2; plant_found == 1 && y<=max_growth; y++) {
-									test_p = temp_p + v3s16(0,y,0);
-									testnode = m_map->getNodeNoEx(test_p);
-									if (
-										testnode.getContent() == CONTENT_TRELLIS
-										|| testnode.getContent() == CONTENT_TRELLIS_DEAD_VINE
-									) {
-										plant_found = 2;
-										type = CONTENT_FARM_TRELLIS_GRAPE_1;
-									}else if (testnode.getContent() == CONTENT_FARM_TRELLIS_GRAPE_1) {
-										plant_found = 2;
-										type = CONTENT_FARM_TRELLIS_GRAPE_2;
-									}else if (testnode.getContent() == CONTENT_FARM_TRELLIS_GRAPE_2) {
-										plant_found = 2;
-										type = CONTENT_FARM_TRELLIS_GRAPE_3;
-									}else if (testnode.getContent() == CONTENT_FARM_TRELLIS_GRAPE_3) {
-										plant_found = 2;
-										type = CONTENT_FARM_TRELLIS_GRAPE;
-									}
-								}
-								break;
-							case CONTENT_FARM_POTATO:
-							case CONTENT_FARM_CARROT:
-							case CONTENT_FARM_BEETROOT:
-							case CONTENT_FARM_MELON:
-							case CONTENT_FARM_PUMPKIN:
-							case CONTENT_FLOWER_STEM:
-							case CONTENT_FLOWER_ROSE:
-							case CONTENT_FLOWER_DAFFODIL:
-							case CONTENT_FLOWER_TULIP:
-							case CONTENT_TRELLIS:
-								plant_found = 1;
-								break;
-							case CONTENT_FERTILIZER:
-							{
-								test_p = temp_p + v3s16(0,1,0);
-								plant_found = 1;
-								u8 seed = myrand()%10;
-								switch (seed) {
-								case 0:
-									type = CONTENT_SEEDS_WHEAT;
-									plant_found = 2;
-									break;
-								case 1:
-									type = CONTENT_SEEDS_MELON;
-									plant_found = 2;
-									break;
-								case 2:
-									type = CONTENT_SEEDS_PUMPKIN;
-									plant_found = 2;
-									break;
-								case 3:
-									type = CONTENT_SEEDS_POTATO;
-									plant_found = 2;
-									break;
-								case 4:
-									type = CONTENT_SEEDS_CARROT;
-									plant_found = 2;
-									break;
-								case 5:
-									type = CONTENT_SEEDS_BEETROOT;
-									plant_found = 2;
-									break;
-								case 6:
-									type = CONTENT_SEEDS_GRAPE;
-									plant_found = 2;
-									break;
-								case 7:
-									type = CONTENT_SEEDS_COTTON;
-									plant_found = 2;
-									break;
-								default:;
-								}
-								break;
-							}
-							default:;
-							}
-
-							if (plant_found == 0) {
+							}else if (content_features(testnode).draw_type == CDT_MELONLIKE) {
+								if (content_features(testnode).param2_type == CPT_PLANTGROWTH)
+									plantgrowth_plant(this,test_p);
+							}else if (testnode.getContent() == CONTENT_AIR) {
 								int chance = 5;
 								if (water_found == 1)
 									chance = 2;
@@ -1386,27 +1122,8 @@ void ServerEnvironment::step(float dtime)
 									m_map->addNodeWithEvent(p,n);
 								}else{
 									// grow flower
-									plant_found = 2;
-									type = CONTENT_FLOWER_STEM;
-									test_p = temp_p + v3s16(0,1,0);
-								}
-							}
-							if (plant_found == 2) {
-								if (
-									!long_wait
-									|| type == CONTENT_FARM_PUMPKIN_2
-									|| type == CONTENT_FARM_PUMPKIN_3
-									|| type == CONTENT_FARM_PUMPKIN
-									|| type == CONTENT_FARM_MELON_2
-									|| type == CONTENT_FARM_MELON_3
-									|| type == CONTENT_FARM_MELON
-									|| type == CONTENT_CACTUS
-									|| type == CONTENT_PAPYRUS
-									|| type == CONTENT_JUNGLEGRASS
-								) {
-									MapNode n_top = m_map->getNodeNoEx(test_p);
-									n_top.setContent(type);
-									m_map->addNodeWithEvent(test_p, n_top);
+									n.setContent(CONTENT_FLOWER_STEM);
+									m_map->addNodeWithEvent(test_p,n);
 								}
 							}
 						}else{
@@ -2484,31 +2201,11 @@ void ServerEnvironment::step(float dtime)
 				// make papyrus grow near water
 				case CONTENT_PAPYRUS:
 				{
-					if (n.envticks%30 == 0) {
-						MapNode n_top1 = m_map->getNodeNoEx(p+v3s16(0,1,0));
-						MapNode n_top2 = m_map->getNodeNoEx(p+v3s16(0,2,0));
-						if (
-							content_features(n_top1).air_equivalent == true
-							&& content_features(n_top2).air_equivalent == true
-						) {
-							s16 max_d = 2;
-							v3s16 test_p;
-							MapNode testnode;
-							bool found = false;
-							for(s16 y=1; y<=max_d; y++) {
-								test_p = p - v3s16(0,y,0);
-								testnode = m_map->getNodeNoEx(test_p);
-								if (testnode.getContent() == CONTENT_MUD) {
-									found = true;
-									break;
-								}else if (testnode.getContent() != CONTENT_PAPYRUS) {
-									break;
-								}
-							}
-							if (found &&searchNear(p,v3s16(2,2,2),CONTENT_WATERSOURCE,NULL)) {
-								n_top1.setContent(CONTENT_PAPYRUS);
-								m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top1);
-							}
+					if (n.envticks%10 == 0) {
+						MapNode n_btm = m_map->getNodeNoEx(p+v3s16(0,-1,0));
+						if (n_btm.getContent() == CONTENT_MUD) {
+							if (searchNear(p,v3s16(2,2,2),CONTENT_WATERSOURCE,NULL))
+								plantgrowth_plant(this,p,3);
 						}
 					}
 					break;

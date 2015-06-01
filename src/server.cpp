@@ -3134,6 +3134,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			core::map<v3s16, MapBlock*> modified_blocks;
 
 			content_t material = CONTENT_IGNORE;
+			u8 p2 = 0;
 			u8 mineral = MINERAL_NONE;
 			InventoryItem *wield;
 
@@ -3142,6 +3143,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			try
 			{
 				MapNode n = m_env.getMap().getNode(p_under);
+				// get param2 used for special plantgrowth drops
+				p2 = n.param2;
 				// Get mineral
 				mineral = n.getMineral();
 				// Get material at position
@@ -3746,6 +3749,53 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 								if (dug_s != "") {
 									std::istringstream is(dug_s, std::ios::binary);
 									item = InventoryItem::deSerialize(is);
+								}else if (content_features(material).param2_type == CPT_PLANTGROWTH) {
+									ContentFeatures *f = &content_features(material);
+									if (f->draw_type == CDT_PLANTLIKE) {
+										if (p2 && p2 < 8) {
+											if (f->plantgrowth_small_dug_node != CONTENT_IGNORE) {
+												u16 count = 1;
+												if (p2 > 3)
+													count = 2;
+												item = InventoryItem::create(f->plantgrowth_small_dug_node,count,0);
+											}
+										}else{
+											if (f->plantgrowth_large_gives_small) {
+												item = InventoryItem::create(f->plantgrowth_small_dug_node,2,0);
+												player->inventory.addItem("main", item);
+											}
+											u16 count = f->plantgrowth_large_count;
+											if (p2 < 8) {
+												count /= 2;
+											}else if (p2 < 12) {
+												count /= 3;
+											}
+											if (!count)
+												count = 1;
+											item = InventoryItem::create(f->plantgrowth_large_dug_node,count,0);
+										}
+									}else if (f->draw_type == CDT_MELONLIKE) {
+										if (p2) {
+											if (p2 > 4) {
+												u16 count = 1;
+												if (p2 > 11) {
+													count = 3;
+												}else if (p2 > 7) {
+													count = 2;
+												}
+												item = InventoryItem::create(CONTENT_CRAFTITEM_MUSH,count,0);
+												player->inventory.addItem("main", item);
+											}
+											if (f->plantgrowth_small_dug_node != CONTENT_IGNORE)
+												item = InventoryItem::create(f->plantgrowth_small_dug_node,1,0);
+										}else{
+											if (f->plantgrowth_large_gives_small) {
+												item = InventoryItem::create(f->plantgrowth_small_dug_node,1,0);
+												player->inventory.addItem("main", item);
+											}
+											item = InventoryItem::create(f->plantgrowth_large_dug_node,f->plantgrowth_large_count,0);
+										}
+									}
 								}
 							}
 						}else if (material != CONTENT_WATERSOURCE && material != CONTENT_LAVASOURCE) {
@@ -3753,6 +3803,53 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							if (dug_s != "") {
 								std::istringstream is(dug_s, std::ios::binary);
 								item = InventoryItem::deSerialize(is);
+							}else if (content_features(material).param2_type == CPT_PLANTGROWTH) {
+								ContentFeatures *f = &content_features(material);
+								if (f->draw_type == CDT_PLANTLIKE) {
+									if (p2 && p2 < 8) {
+										if (f->plantgrowth_small_dug_node != CONTENT_IGNORE) {
+											u16 count = 1;
+											if (p2 > 3)
+												count = 2;
+											item = InventoryItem::create(f->plantgrowth_small_dug_node,count,0);
+										}
+									}else{
+										if (f->plantgrowth_large_gives_small) {
+											item = InventoryItem::create(f->plantgrowth_small_dug_node,2,0);
+											player->inventory.addItem("main", item);
+										}
+										u16 count = f->plantgrowth_large_count;
+										if (p2 < 8) {
+											count /= 2;
+										}else if (p2 < 12) {
+											count /= 3;
+										}
+										if (!count)
+											count = 1;
+										item = InventoryItem::create(f->plantgrowth_large_dug_node,count,0);
+									}
+								}else if (f->draw_type == CDT_MELONLIKE) {
+									if (p2) {
+										if (p2 > 4) {
+											u16 count = 1;
+											if (p2 > 11) {
+												count = 3;
+											}else if (p2 > 7) {
+												count = 2;
+											}
+											item = InventoryItem::create(CONTENT_CRAFTITEM_MUSH,count,0);
+											player->inventory.addItem("main", item);
+										}
+										if (f->plantgrowth_small_dug_node != CONTENT_IGNORE)
+											item = InventoryItem::create(f->plantgrowth_small_dug_node,1,0);
+									}else{
+										if (f->plantgrowth_large_gives_small) {
+											item = InventoryItem::create(f->plantgrowth_small_dug_node,1,0);
+											player->inventory.addItem("main", item);
+										}
+										item = InventoryItem::create(f->plantgrowth_large_dug_node,f->plantgrowth_large_count,0);
+									}
+								}
 							}
 						}
 					}else if (material != CONTENT_WATERSOURCE && material != CONTENT_LAVASOURCE) {

@@ -393,3 +393,54 @@ void plantgrowth_jungletree(ServerEnvironment *env, v3s16 p0)
 	}
 	}
 }
+
+void plantgrowth_seed(ServerEnvironment *env, v3s16 p0)
+{
+	MapNode n = env->getMap().getNodeNoEx(p0);
+	content_t c = content_features(n).special_alternate_node;
+	if (c == CONTENT_IGNORE)
+		return;
+	n.setContent(c);
+	n.param2 = 1;
+	env->getMap().addNodeWithEvent(p0,n);
+}
+
+void plantgrowth_plant(ServerEnvironment *env, v3s16 p0, s16 height)
+{
+	u32 tod = env->getTimeOfDay();
+	MapNode n = env->getMap().getNodeNoEx(p0);
+	u8 light = n.getLightBlend(env->getDayNightRatio());
+	// only grow during the day or with good light
+	if (light < LIGHT_MAX-3 && (tod < 6000 || tod > 18000))
+		return;
+	if (n.param2 == 0) {
+		content_t c = n.getContent();
+		bool grow = false;
+		if (!height)
+			height = content_features(c).plantgrowth_max_height;
+		for (s16 h=1; !grow && h<height; h++) {
+			p0.Y++;
+			n = env->getMap().getNodeNoEx(p0);
+			if (n.getContent() == CONTENT_AIR) {
+				n.setContent(c);
+				n.param2 = 0;
+				grow = true;
+				break;
+			}else if (n.getContent() == c) {
+				if (n.param2 == 0)
+					continue;
+				grow = true;
+				break;
+			}
+		}
+		if (!grow)
+			return;
+	}
+
+	if (n.param2 == 15) {
+		n.param2 = 0;
+	}else{
+		n.param2++;
+	}
+	env->getMap().addNodeWithEvent(p0,n);
+}

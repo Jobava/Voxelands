@@ -266,7 +266,6 @@ void init_mapnode()
 		ContentFeatures *f = &g_content_features[i];
 		f->draw_type = CDT_CUBELIKE;
 		f->setAllTextures("unknown_block.png");
-		f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	}
 
 	// Make CONTENT_IGNORE to not block the view when occlusion culling

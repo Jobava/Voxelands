@@ -945,6 +945,9 @@ void draw_hud(
 		case CPT_LIQUID:
 			txt += L"(CPT_LIQUID)";
 			break;
+		case CPT_PLANTGROWTH:
+			txt += L"(CPT_PLANTGROWTH)";
+			break;
 		case CPT_SPECIAL:
 			txt += L"(CPT_SPECIAL)";
 			break;
@@ -976,6 +979,9 @@ void draw_hud(
 			break;
 		case CPT_LIQUID:
 			txt += L"(CPT_LIQUID)";
+			break;
+		case CPT_PLANTGROWTH:
+			txt += L"(CPT_PLANTGROWTH)";
 			break;
 		case CPT_SPECIAL:
 			txt += L"(CPT_SPECIAL)";
