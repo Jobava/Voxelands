@@ -180,13 +180,13 @@ TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods,
 		}
 	}
 
-	if (f->draw_type == CDT_PLANTLIKE && f->param2_type == CPT_PLANTGROWTH && f->plantgrowth_on_trellis) {
+	if (f->draw_type == CDT_PLANTLIKE && f->plantgrowth_on_trellis) {
 		// Get original texture name
 		u32 orig_id = spec.texture.id;
 		std::string orig_name = g_texturesource->getTextureName(orig_id);
 		std::string texture_name("trellis.png");
 
-		if (!mn.param2) {
+		if (f->param2_type != CPT_PLANTGROWTH || !mn.param2) {
 			texture_name += "^"+orig_name;
 		}else{
 			// TODO: this is assuming 16x16 textures

@@ -1619,25 +1619,6 @@ void content_mapnode_init(bool repeat)
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
 
-	i = CONTENT_DEAD_VINE;
-	f = &content_features(i);
-	f->description = wgettext("Dead Vine");
-	f->setAllTextures("dead_vine.png");
-	f->setAllTextureFlags(0);
-	f->draw_type = CDT_PLANTLIKE;
-	f->param_type = CPT_LIGHT;
-	f->solidness = 0;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->is_ground_content = true;
-	f->dug_item = std::string("MaterialItem2 ") + itos(i)+" 1";
-	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
-	f->fuel_time = 30/4;
-	f->type = CMT_WOOD;
-	f->hardness = 0.3;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
 	i = CONTENT_SNOW_BLOCK;
 	f = &content_features(i);
 	f->description = wgettext("Snow");

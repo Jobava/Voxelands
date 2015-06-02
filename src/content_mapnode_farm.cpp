@@ -488,10 +488,10 @@ void content_mapnode_farm(bool repeat)
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
 
-	i = CONTENT_TRELLIS_DEAD_VINE;
+	i = CONTENT_DEAD_VINE;
 	f = &content_features(i);
 	f->description = wgettext("Dead Vine");
-	f->setAllTextures("trellis_dead_vine.png");
+	f->setAllTextures("dead_vine.png");
 	f->setAllTextureFlags(0);
 	f->draw_type = CDT_PLANTLIKE;
 	f->param_type = CPT_LIGHT;
@@ -499,6 +499,26 @@ void content_mapnode_farm(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ") + itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/4;
+	f->type = CMT_WOOD;
+	f->hardness = 0.3;
+	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
+
+	i = CONTENT_TRELLIS_DEAD_VINE;
+	f = &content_features(i);
+	f->description = wgettext("Dead Vine");
+	f->setAllTextures("dead_vine.png");
+	f->setAllTextureFlags(0);
+	f->draw_type = CDT_PLANTLIKE;
+	f->param_type = CPT_LIGHT;
+	f->solidness = 0;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->is_ground_content = true;
+	f->plantgrowth_on_trellis = true;
 	f->dug_item = std::string("MaterialItem2 ") + itos(CONTENT_DEAD_VINE)+" 1";
 	f->ondig_replace_node = CONTENT_TRELLIS;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire

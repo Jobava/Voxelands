@@ -422,11 +422,12 @@ void plantgrowth_plant(ServerEnvironment *env, v3s16 p0, s16 height)
 		std::vector<content_t> search;
 		search.push_back(c);
 		search.push_back(CONTENT_TRELLIS);
+		search.push_back(CONTENT_TRELLIS_DEAD_VINE);
 		if (!env->searchNear(p0,v3s16(-1,0,-1),v3s16(1,0,1),search,&p))
 			return;
 		p0 = p;
 		n = env->getMap().getNodeNoEx(p0);
-		if (n.getContent() == CONTENT_TRELLIS) {
+		if (n.getContent() != c) {
 			n.setContent(c);
 			n.param2 = 1;
 			env->getMap().addNodeWithEvent(p0,n);
