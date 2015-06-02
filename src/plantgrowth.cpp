@@ -410,18 +410,39 @@ void plantgrowth_plant(ServerEnvironment *env, v3s16 p0, s16 height)
 	u32 tod = env->getTimeOfDay();
 	MapNode n = env->getMap().getNodeNoEx(p0);
 	u8 light = n.getLightBlend(env->getDayNightRatio());
+	content_t abv = CONTENT_AIR;
+	content_t c = n.getContent();
 	// only grow during the day or with good light
 	if (light < LIGHT_MAX-3 && (tod < 6000 || tod > 18000))
 		return;
+	if (n.param2 == 0 && content_features(n).plantgrowth_trellis_node != CONTENT_IGNORE) {
+		c = content_features(n).plantgrowth_trellis_node;
+		v3s16 p;
+		abv = CONTENT_TRELLIS;
+		std::vector<content_t> search;
+		search.push_back(c);
+		search.push_back(CONTENT_TRELLIS);
+		if (!env->searchNear(p0,v3s16(-1,0,-1),v3s16(1,0,1),search,&p))
+			return;
+		p0 = p;
+		n = env->getMap().getNodeNoEx(p0);
+		if (n.getContent() == CONTENT_TRELLIS) {
+			n.setContent(c);
+			n.param2 = 1;
+			env->getMap().addNodeWithEvent(p0,n);
+			return;
+		}
+	}
 	if (n.param2 == 0) {
-		content_t c = n.getContent();
 		bool grow = false;
 		if (!height)
 			height = content_features(c).plantgrowth_max_height;
+		if (content_features(n).plantgrowth_on_trellis)
+			abv = CONTENT_TRELLIS;
 		for (s16 h=1; !grow && h<height; h++) {
 			p0.Y++;
 			n = env->getMap().getNodeNoEx(p0);
-			if (n.getContent() == CONTENT_AIR) {
+			if (n.getContent() == abv) {
 				n.setContent(c);
 				n.param2 = 0;
 				grow = true;

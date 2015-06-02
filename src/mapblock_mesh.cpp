@@ -135,6 +135,7 @@ TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods,
 {
 	TileSpec spec;
 	spec = mn.getTile(face_dir,false);
+	ContentFeatures *f = &content_features(mn);
 
 	if (meta) {
 		FaceText ft = mn.getFaceText(face_dir);
@@ -177,6 +178,28 @@ TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods,
 				spec.texture = g_texturesource->getTexture(new_id);
 			}
 		}
+	}
+
+	if (f->draw_type == CDT_PLANTLIKE && f->param2_type == CPT_PLANTGROWTH && f->plantgrowth_on_trellis) {
+		// Get original texture name
+		u32 orig_id = spec.texture.id;
+		std::string orig_name = g_texturesource->getTextureName(orig_id);
+		std::string texture_name("trellis.png");
+
+		if (!mn.param2) {
+			texture_name += "^"+orig_name;
+		}else{
+			// TODO: this is assuming 16x16 textures
+			std::string bs("^[blit:0,");
+			bs += itos(16-mn.param2);
+			bs += ",16,16,";
+			// new name
+			texture_name += bs+orig_name;
+		}
+
+		// Get new texture
+		u32 new_id = g_texturesource->getTextureId(texture_name);
+		spec.texture = g_texturesource->getTexture(new_id);
 	}
 
 	std::string rot = mn.getTileRotationString(face_dir);

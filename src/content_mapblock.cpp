@@ -1409,7 +1409,7 @@ void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 void meshgen_plantlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 {
 	ContentFeatures *f = &content_features(n);
-	TileSpec tile = f->tiles[0];
+	TileSpec tile = getNodeTile(n,p,v3s16(0,0,0),data->m_temp_mods);
 	v3f offset(0,0,0);
 	if (data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0,-1,0)).getContent() == CONTENT_FLOWER_POT)
 		offset = v3f(0,-0.25*BS,0);
@@ -1419,7 +1419,7 @@ void meshgen_plantlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	bool is_scaled = false;
 	v3f scale(1.0,1.0,1.0);
 	if (f->param2_type == CPT_PLANTGROWTH) {
-		if (n.param2 != 0) {
+		if (n.param2 != 0 && !f->plantgrowth_on_trellis) {
 			h = (0.0625*(float)n.param2);
 			v = ((1.0-h)*tile.texture.size.Y)+tile.texture.y0();
 			h -= 0.5;

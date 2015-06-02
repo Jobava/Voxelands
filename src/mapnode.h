@@ -406,7 +406,10 @@ struct ContentFeatures
 	// whether to also give small when large is given
 	bool plantgrowth_large_gives_small;
 	// whether this node grows on trellis
-	bool plantgrow_on_trellis;
+	bool plantgrowth_on_trellis;
+	// if this node spreads to trellis to continue growing
+	// then this is the node that grows on the trellis
+	content_t plantgrowth_trellis_node;
 
 	// Initial metadata is cloned from this
 	NodeMetadata *initial_metadata;
@@ -518,7 +521,8 @@ struct ContentFeatures
 		plantgrowth_large_dug_node = CONTENT_IGNORE;
 		plantgrowth_large_count = 3;
 		plantgrowth_large_gives_small = false;
-		plantgrow_on_trellis = false;
+		plantgrowth_on_trellis = false;
+		plantgrowth_trellis_node = CONTENT_IGNORE;
 		initial_metadata = NULL;
 		sound_access = "";
 		sound_step = "";

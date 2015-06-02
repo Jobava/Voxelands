@@ -74,7 +74,6 @@ void content_mapnode_farm(bool repeat)
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->is_ground_content = true;
-	f->air_equivalent = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/4;
@@ -435,6 +434,7 @@ void content_mapnode_farm(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->plantgrowth_small_dug_node = CONTENT_SEEDS_GRAPE;
 	f->plantgrowth_large_dug_node = CONTENT_CRAFTITEM_GRAPE;
+	f->plantgrowth_trellis_node = CONTENT_FARM_TRELLIS_GRAPE;
 	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
@@ -464,87 +464,23 @@ void content_mapnode_farm(bool repeat)
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
 
-	i = CONTENT_FARM_TRELLIS_GRAPE_1;
-	f = &content_features(i);
-	f->description = wgettext("Trellis");
-	f->setAllTextures("trellis_grape_1.png");
-	f->setAllTextureFlags(0);
-	f->draw_type = CDT_PLANTLIKE;
-	f->param_type = CPT_LIGHT;
-	f->solidness = 0;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->air_equivalent = true;
-	f->is_ground_content = true;
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_GRAPE)+" 1";
-	f->ondig_replace_node = CONTENT_TRELLIS;
-	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
-	f->fuel_time = 30/4;
-	f->type = CMT_WOOD;
-	f->hardness = 0.4;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
-	i = CONTENT_FARM_TRELLIS_GRAPE_2;
-	f = &content_features(i);
-	f->description = wgettext("Trellis");
-	f->setAllTextures("trellis_grape_2.png");
-	f->setAllTextureFlags(0);
-	f->draw_type = CDT_PLANTLIKE;
-	f->param_type = CPT_LIGHT;
-	f->solidness = 0;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->air_equivalent = true;
-	f->is_ground_content = true;
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_GRAPE)+" 1";
-	f->ondig_replace_node = CONTENT_TRELLIS;
-	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
-	f->fuel_time = 30/4;
-	f->type = CMT_WOOD;
-	f->hardness = 0.4;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
-	i = CONTENT_FARM_TRELLIS_GRAPE_3;
-	f = &content_features(i);
-	f->description = wgettext("Trellis");
-	f->setAllTextures("trellis_grape_3.png");
-	f->setAllTextureFlags(0);
-	f->draw_type = CDT_PLANTLIKE;
-	f->param_type = CPT_LIGHT;
-	f->solidness = 0;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->air_equivalent = true;
-	f->is_ground_content = true;
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_GRAPE)+" 1";
-	f->extra_dug_item = std::string("CraftItem harvested_grape 1");
-	f->extra_dug_item_rarity = 1;
-	f->ondig_replace_node = CONTENT_TRELLIS;
-	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
-	f->fuel_time = 30/4;
-	f->type = CMT_WOOD;
-	f->hardness = 0.4;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-
 	i = CONTENT_FARM_TRELLIS_GRAPE;
 	f = &content_features(i);
-	f->description = wgettext("Trellis");
-	f->setAllTextures("trellis_grape.png");
+	f->description = wgettext("Trellis Grape");
+	f->setAllTextures("farm_grapevine.png");
 	f->setAllTextureFlags(0);
 	f->draw_type = CDT_PLANTLIKE;
 	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_PLANTGROWTH;
 	f->solidness = 0;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
-	f->air_equivalent = true;
 	f->is_ground_content = true;
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SEEDS_GRAPE)+" 2";
-	f->extra_dug_item = std::string("CraftItem harvested_grape 3");
-	f->extra_dug_item_rarity = 1;
+	f->plantgrowth_small_dug_node = CONTENT_SEEDS_GRAPE;
+	f->plantgrowth_large_dug_node = CONTENT_CRAFTITEM_GRAPE;
+	f->plantgrowth_on_trellis = true;
 	f->ondig_replace_node = CONTENT_TRELLIS;
+	f->plantgrowth_max_height = 5;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/4;
 	f->type = CMT_WOOD;
@@ -562,7 +498,6 @@ void content_mapnode_farm(bool repeat)
 	f->solidness = 0;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
-	f->air_equivalent = true;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ") + itos(CONTENT_DEAD_VINE)+" 1";
 	f->ondig_replace_node = CONTENT_TRELLIS;

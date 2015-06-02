@@ -1685,7 +1685,7 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 			std::wstring text = narrow_to_wide(base64_decode(sf.end()));
 
 			if (baseimg == NULL) {
-				errorstream << "generateImagePart(): baseimg != NULL "
+				errorstream << "generateImagePart(): baseimg == NULL "
 						<< "for part_of_name=\"" << part_of_name
 						<< "\", cancelling." << std::endl;
 				return false;
@@ -1791,6 +1791,49 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 				image->copyTo(baseimg);
 				image->drop();
 			}
+		}
+		/*
+			[blit:x,y,X,Y,string
+			blits (part of) an image over the current image
+		*/
+		else if (part_of_name.substr(0,6) == "[blit:") {
+			//infostream<<"Blitting "<<part_of_name<<" on base"<<std::endl;
+			// Size of the copied area
+			Strfnd sf(part_of_name);
+			sf.next(":");
+			int x = mystoi(sf.next(","));
+			int y = mystoi(sf.next(","));
+			int X = mystoi(sf.next(","));
+			int Y = mystoi(sf.next(","));
+			std::string path = sf.end();
+			path = getTexturePath(path.c_str());
+			video::IImage *image = driver->createImageFromFile(path.c_str());
+
+			if (baseimg == NULL) {
+				errorstream << "generateImagePart(): baseimg == NULL "
+						<< "for part_of_name=\"" << part_of_name
+						<< "\", cancelling." << std::endl;
+				return false;
+			}
+			if (image == NULL) {
+				errorstream << "generateImagePart(): image == NULL "
+						<< "for part_of_name=\"" << part_of_name
+						<< "\", cancelling." << std::endl;
+				return false;
+			}
+			//core::dimension2d<u32> dim = image->getDimension();
+			core::dimension2d<u32> dim(X-x,Y-y);
+			// Position to copy the blitted to in the base image
+			core::position2d<s32> pos_to(x,y);
+			// Position to copy the blitted from in the blitted image
+			core::position2d<s32> pos_from(x,y);
+			// Blit
+			image->copyToWithAlpha(baseimg, pos_to,
+					core::rect<s32>(pos_from, dim),
+					video::SColor(255,255,255,255),
+					NULL);
+			// Drop image
+			image->drop();
 		}
 		else
 		{

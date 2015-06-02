@@ -1137,9 +1137,6 @@ void ServerEnvironment::step(float dtime)
 				/*
 					make vines die
 				 */
-				case CONTENT_FARM_GRAPEVINE_1:
-				case CONTENT_FARM_GRAPEVINE_2:
-				case CONTENT_FARM_GRAPEVINE_3:
 				case CONTENT_FARM_GRAPEVINE:
 				{
 					if (n.envticks%3 == 0) {
@@ -1155,9 +1152,6 @@ void ServerEnvironment::step(float dtime)
 					}
 					break;
 				}
-				case CONTENT_FARM_TRELLIS_GRAPE_1:
-				case CONTENT_FARM_TRELLIS_GRAPE_2:
-				case CONTENT_FARM_TRELLIS_GRAPE_3:
 				case CONTENT_FARM_TRELLIS_GRAPE:
 				{
 					if (n.envticks%3 == 0) {

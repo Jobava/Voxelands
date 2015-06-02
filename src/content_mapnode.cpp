@@ -228,6 +228,18 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version)
 		result.setContent(CONTENT_FARM_MELON);
 		result.param2 = 12;
 		break;
+	case CONTENT_FARM_TRELLIS_GRAPE_1:
+		result.setContent(CONTENT_FARM_TRELLIS_GRAPE);
+		result.param2 = 4;
+		break;
+	case CONTENT_FARM_TRELLIS_GRAPE_2:
+		result.setContent(CONTENT_FARM_TRELLIS_GRAPE);
+		result.param2 = 8;
+		break;
+	case CONTENT_FARM_TRELLIS_GRAPE_3:
+		result.setContent(CONTENT_FARM_TRELLIS_GRAPE);
+		result.param2 = 12;
+		break;
 	default:;
 	}
 	return result;

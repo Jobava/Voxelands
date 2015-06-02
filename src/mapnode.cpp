@@ -261,9 +261,12 @@ void init_mapnode()
 		Don't touch CONTENT_IGNORE or CONTENT_AIR.
 	*/
 	for (u16 i=0; i <= MAX_CONTENT; i++) {
+		char buf[10];
+		sprintf(buf,"0x%.4X",i);
+		ContentFeatures *f = &g_content_features[i];
+		f->description = narrow_to_wide(std::string(buf));
 		if (i == CONTENT_IGNORE || i == CONTENT_AIR)
 			continue;
-		ContentFeatures *f = &g_content_features[i];
 		f->draw_type = CDT_CUBELIKE;
 		f->setAllTextures("unknown_block.png");
 	}
