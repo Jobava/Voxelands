@@ -49,6 +49,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
+	f->ondig_also_removes = v3s16(0,1,0);
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_nodebox_door(f);
@@ -73,6 +74,8 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->onuse_replace_node = CONTENT_WOOD_DOOR_RT;
+	f->ondig_also_removes = v3s16(0,-1,0);
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_nodebox_door(f);
@@ -81,7 +84,6 @@ void content_mapnode_door(bool repeat)
 	f->pressure_type = CST_SOLID;
 	f->suffocation_per_second = 0;
 	crafting::set1over1Recipe(CONTENT_WOOD_HATCH,CONTENT_WOOD_HATCH,CONTENT_WOOD_DOOR_LT);
-	crafting::set1To1Recipe(CONTENT_WOOD_DOOR_RT,CONTENT_WOOD_DOOR_LT);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -102,6 +104,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
+	f->ondig_also_removes = v3s16(0,1,0);
 	content_nodebox_door(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
@@ -127,6 +130,8 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->onuse_replace_node = CONTENT_STEEL_DOOR_RT;
+	f->ondig_also_removes = v3s16(0,-1,0);
 	content_nodebox_door(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
@@ -136,7 +141,6 @@ void content_mapnode_door(bool repeat)
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DoorNodeMetadata();
 	crafting::set1over1Recipe(CONTENT_STEEL_HATCH,CONTENT_STEEL_HATCH,CONTENT_STEEL_DOOR_LT);
-	crafting::set1To1Recipe(CONTENT_STEEL_DOOR_RT,CONTENT_STEEL_DOOR_LT);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -158,7 +162,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
-	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->ondig_also_removes = v3s16(0,1,0);
 	content_nodebox_door(f);
 	f->type = CMT_GLASS;
 	f->hardness = 0.15;
@@ -182,14 +186,14 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->onuse_replace_node = CONTENT_GLASS_DOOR_RT;
+	f->ondig_also_removes = v3s16(0,-1,0);
 	content_nodebox_door(f);
 	f->type = CMT_GLASS;
 	f->hardness = 0.15;
 	f->pressure_type = CST_SOLID;
 	f->suffocation_per_second = 0;
 	crafting::set1over1Recipe(CONTENT_GLASS_PANE,CONTENT_GLASS_PANE,CONTENT_GLASS_DOOR_LT);
-	crafting::set1To1Recipe(CONTENT_GLASS_DOOR_RT,CONTENT_GLASS_DOOR_LT);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -211,6 +215,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
+	f->ondig_also_removes = v3s16(0,1,0);
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_nodebox_door(f);
@@ -236,6 +241,8 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->onuse_replace_node = CONTENT_WOOD_W_DOOR_RT;
+	f->ondig_also_removes = v3s16(0,-1,0);
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_nodebox_doorw(f);
@@ -245,7 +252,6 @@ void content_mapnode_door(bool repeat)
 	f->suffocation_per_second = 0;
 	crafting::set1over1Recipe(CONTENT_WOOD_W_HATCH,CONTENT_WOOD_HATCH,CONTENT_WOOD_W_DOOR_LT);
 	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_WOOD_DOOR_LT,CONTENT_WOOD_W_DOOR_LT);
-	crafting::set1To1Recipe(CONTENT_WOOD_W_DOOR_RT,CONTENT_WOOD_W_DOOR_LT);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -267,6 +273,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
+	f->ondig_also_removes = v3s16(0,1,0);
 	content_nodebox_door(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
@@ -293,6 +300,8 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->onuse_replace_node = CONTENT_STEEL_W_DOOR_RT;
+	f->ondig_also_removes = v3s16(0,-1,0);
 	content_nodebox_doorw(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
@@ -303,7 +312,6 @@ void content_mapnode_door(bool repeat)
 		f->initial_metadata = new DoorNodeMetadata();
 	crafting::set1over1Recipe(CONTENT_STEEL_W_HATCH,CONTENT_STEEL_HATCH,CONTENT_STEEL_W_DOOR_LT);
 	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_STEEL_DOOR_LT,CONTENT_STEEL_W_DOOR_LT);
-	crafting::set1To1Recipe(CONTENT_STEEL_W_DOOR_RT,CONTENT_STEEL_W_DOOR_LT);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -325,6 +333,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
+	f->ondig_also_removes = v3s16(0,1,0);
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_nodebox_door(f);
@@ -349,6 +358,8 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->onuse_replace_node = CONTENT_WOOD_DOOR_LT;
+	f->ondig_also_removes = v3s16(0,-1,0);
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_nodebox_door(f);
@@ -356,8 +367,6 @@ void content_mapnode_door(bool repeat)
 	f->hardness = 0.75;
 	f->pressure_type = CST_SOLID;
 	f->suffocation_per_second = 0;
-	crafting::set1To1Recipe(CONTENT_WOOD_DOOR_LT,CONTENT_WOOD_DOOR_RT);
-	lists::add("craftguide",i);
 	lists::add("creative",i);
 
 	i = CONTENT_GLASS_DOOR_RB;
@@ -378,7 +387,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
-	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->ondig_also_removes = v3s16(0,1,0);
 	f->fuel_time = 30;
 	content_nodebox_door(f);
 	f->type = CMT_GLASS;
@@ -403,15 +412,14 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->onuse_replace_node = CONTENT_GLASS_DOOR_LT;
+	f->ondig_also_removes = v3s16(0,-1,0);
 	f->fuel_time = 30;
 	content_nodebox_door(f);
 	f->type = CMT_GLASS;
 	f->hardness = 0.15;
 	f->pressure_type = CST_SOLID;
 	f->suffocation_per_second = 0;
-	crafting::set1To1Recipe(CONTENT_GLASS_DOOR_LT,CONTENT_GLASS_DOOR_RT);
-	lists::add("craftguide",i);
 	lists::add("creative",i);
 
 	i = CONTENT_STEEL_DOOR_RB;
@@ -431,6 +439,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
+	f->ondig_also_removes = v3s16(0,1,0);
 	content_nodebox_door(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
@@ -456,6 +465,8 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->onuse_replace_node = CONTENT_STEEL_DOOR_LT;
+	f->ondig_also_removes = v3s16(0,-1,0);
 	content_nodebox_door(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
@@ -464,8 +475,6 @@ void content_mapnode_door(bool repeat)
 	f->energy_type = CET_CONDUCTIVE;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new DoorNodeMetadata();
-	crafting::set1To1Recipe(CONTENT_GLASS_DOOR_LT,CONTENT_GLASS_DOOR_RT);
-	lists::add("craftguide",i);
 	lists::add("creative",i);
 
 	i = CONTENT_WOOD_W_DOOR_RB;
@@ -486,6 +495,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
+	f->ondig_also_removes = v3s16(0,1,0);
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_nodebox_door(f);
@@ -511,6 +521,8 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->onuse_replace_node = CONTENT_WOOD_W_DOOR_LT;
+	f->ondig_also_removes = v3s16(0,-1,0);
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_nodebox_doorw(f);
@@ -518,9 +530,6 @@ void content_mapnode_door(bool repeat)
 	f->hardness = 0.75;
 	f->pressure_type = CST_SOLID;
 	f->suffocation_per_second = 0;
-	crafting::set1To1Recipe(CONTENT_WOOD_W_DOOR_LT,CONTENT_WOOD_W_DOOR_RT);
-	crafting::set1over1Recipe(CONTENT_GLASS,CONTENT_WOOD_DOOR_RT,CONTENT_WOOD_W_DOOR_RT);
-	lists::add("craftguide",i);
 	lists::add("creative",i);
 
 	i = CONTENT_STEEL_W_DOOR_RB;
@@ -541,6 +550,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
+	f->ondig_also_removes = v3s16(0,1,0);
 	content_nodebox_door(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
@@ -567,6 +577,8 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->onuse_replace_node = CONTENT_STEEL_W_DOOR_LT;
+	f->ondig_also_removes = v3s16(0,-1,0);
 	content_nodebox_doorw(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
@@ -597,6 +609,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_DOOR_LT)+" 1";
+	f->ondig_also_removes = v3s16(0,1,0);
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_nodebox_doorol(f);
@@ -620,6 +633,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_DOOR_LT)+" 1";
+	f->ondig_also_removes = v3s16(0,-1,0);
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_nodebox_doorol(f);
@@ -644,7 +658,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
-	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->ondig_also_removes = v3s16(0,1,0);
 	f->fuel_time = 30;
 	content_nodebox_doorol(f);
 	f->type = CMT_WOOD;
@@ -667,7 +681,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->ondig_also_removes = v3s16(0,-1,0);
 	f->fuel_time = 30;
 	content_nodebox_doorol(f);
 	f->type = CMT_WOOD;
@@ -691,6 +705,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_DOOR_LT)+" 1";
+	f->ondig_also_removes = v3s16(0,1,0);
 	content_nodebox_doorol(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
@@ -715,6 +730,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_DOOR_LT)+" 1";
+	f->ondig_also_removes = v3s16(0,-1,0);
 	content_nodebox_doorol(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
@@ -740,6 +756,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_W_DOOR_LT)+" 1";
+	f->ondig_also_removes = v3s16(0,1,0);
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_nodebox_doorol(f);
@@ -763,6 +780,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_W_DOOR_LT)+" 1";
+	f->ondig_also_removes = v3s16(0,-1,0);
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_nodebox_doorwol(f);
@@ -787,6 +805,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_W_DOOR_LT)+" 1";
+	f->ondig_also_removes = v3s16(0,1,0);
 	content_nodebox_doorol(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
@@ -811,6 +830,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_W_DOOR_LT)+" 1";
+	f->ondig_also_removes = v3s16(0,-1,0);
 	content_nodebox_doorwol(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
@@ -839,6 +859,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_DOOR_RT)+" 1";
+	f->ondig_also_removes = v3s16(0,1,0);
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_nodebox_dooror(f);
@@ -864,6 +885,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_DOOR_RT)+" 1";
+	f->ondig_also_removes = v3s16(0,-1,0);
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_nodebox_dooror(f);
@@ -890,7 +912,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i+1)+" 1";
-	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->ondig_also_removes = v3s16(0,1,0);
 	f->fuel_time = 30;
 	content_nodebox_dooror(f);
 	f->type = CMT_GLASS;
@@ -915,7 +937,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->ondig_also_removes = v3s16(0,-1,0);
 	f->fuel_time = 30;
 	content_nodebox_dooror(f);
 	f->type = CMT_GLASS;
@@ -941,6 +963,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_DOOR_RT)+" 1";
+	f->ondig_also_removes = v3s16(0,1,0);
 	content_nodebox_dooror(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
@@ -967,6 +990,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_DOOR_RT)+" 1";
+	f->ondig_also_removes = v3s16(0,-1,0);
 	content_nodebox_dooror(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
@@ -994,6 +1018,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_W_DOOR_RT)+" 1";
+	f->ondig_also_removes = v3s16(0,1,0);
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_nodebox_dooror(f);
@@ -1019,6 +1044,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_WOOD_W_DOOR_RT)+" 1";
+	f->ondig_also_removes = v3s16(0,-1,0);
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30;
 	content_nodebox_doorwor(f);
@@ -1045,6 +1071,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_W_DOOR_RT)+" 1";
+	f->ondig_also_removes = v3s16(0,1,0);
 	content_nodebox_dooror(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;
@@ -1071,6 +1098,7 @@ void content_mapnode_door(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_STEEL_W_DOOR_RT)+" 1";
+	f->ondig_also_removes = v3s16(0,-1,0);
 	content_nodebox_doorwor(f);
 	f->type = CMT_STONE;
 	f->hardness = 5.0;

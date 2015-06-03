@@ -361,17 +361,24 @@ struct ContentFeatures
 	bool destructive_mob_safe;
 	// Whether punching with fertilizer advances the growth rate of the node
 	bool fertilizer_affects;
+	// when dug with a shovel near water, turns to farm dirt
+	bool farm_ploughable;
 
 	// Inventory item string as which the node appears in inventory when dug.
 	// Mineral overrides this.
 	std::string dug_item;
-
 	// Extra dug item and its rarity
 	std::string extra_dug_item;
 	s32 extra_dug_item_rarity;
 
 	// when dug, this node will replace the dug node
 	content_t ondig_replace_node;
+	// the above replacement will only occur if this node is nearby (3 node radius)
+	content_t ondig_replace_node_requires;
+	// drop this instead of dug_item when the special tooltype is used
+	content_t ondig_special_drop;
+	u16 ondig_special_drop_count;
+	u16 ondig_special_tool;
 	// when punched, this node will replace the punched node
 	content_t onpunch_replace_node;
 
@@ -384,6 +391,15 @@ struct ContentFeatures
 	// special node for things like slabs combining into cubes,
 	// walls connecting to blocks, or seeds growing to plants
 	content_t special_alternate_node;
+
+	// if this node is locked/unlocked, replace with this
+	content_t alternate_lockstate_node;
+
+	// if the item is wielded and Use is pressed, the node is swapped with this
+	content_t onuse_replace_node;
+
+	// when dug, also remove this
+	v3s16 ondig_also_removes;
 
 	// when energised, replace with this node
 	content_t powered_node;
@@ -503,15 +519,23 @@ struct ContentFeatures
 		often_contains_mineral = false;
 		destructive_mob_safe = false;
 		fertilizer_affects = false;
+		farm_ploughable = false;
 		dug_item = "";
 		extra_dug_item = "";
 		extra_dug_item_rarity = 2;
 		ondig_replace_node = CONTENT_IGNORE;
+		ondig_replace_node_requires = CONTENT_IGNORE;
+		ondig_special_drop = CONTENT_IGNORE;
+		ondig_special_drop_count = 1;
+		ondig_special_tool = 0;
 		onpunch_replace_node = CONTENT_IGNORE;
 		wallmount_alternate_node = CONTENT_IGNORE;
 		floormount_alternate_node = CONTENT_IGNORE;
 		roofmount_alternate_node = CONTENT_IGNORE;
 		special_alternate_node = CONTENT_IGNORE;
+		alternate_lockstate_node = CONTENT_IGNORE;
+		onuse_replace_node = CONTENT_IGNORE;
+		ondig_also_removes = v3s16(0,0,0);
 		powered_node = CONTENT_IGNORE;
 		unpowered_node = CONTENT_IGNORE;
 		cook_result = "";

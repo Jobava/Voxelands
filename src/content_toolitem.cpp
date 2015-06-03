@@ -177,6 +177,7 @@ void content_toolitem_init()
 	f->type = TT_PICK;
 	f->hardness = 1337.;
 	f->dig_time = 0.;
+	f->has_punch_effect = false;
 	crafting::setPickRecipe(CONTENT_MESE,CONTENT_TOOLITEM_MESEPICK);
 	lists::add("craftguide",i);
 	lists::add("player-creative",i);
@@ -364,6 +365,7 @@ void content_toolitem_init()
 	f->type = TT_BUCKET;
 	f->hardness = 30.;
 	f->dig_time = 0.0;
+	f->damaging_nodes_diggable = false;
 	crafting::setURecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_TOOLITEM_WBUCKET);
 	crafting::setURecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_TOOLITEM_WBUCKET);
 	lists::add("craftguide",i);
@@ -379,6 +381,7 @@ void content_toolitem_init()
 	f->type = TT_BUCKET;
 	f->hardness = 50.;
 	f->dig_time = 0.0;
+	f->damaging_nodes_diggable = false;
 	crafting::setURecipe(CONTENT_CRAFTITEM_TIN_INGOT,CONTENT_TOOLITEM_TINBUCKET);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -390,6 +393,8 @@ void content_toolitem_init()
 	f->name = "WBucket_water";
 	f->description = wgettext("Wooden Bucket of Water");
 	f->type = TT_SPECIAL;
+	f->onplace_node = CONTENT_WATERSOURCE;
+	f->onplace_replace_item = CONTENT_TOOLITEM_WBUCKET;
 	lists::add("creative",i);
 
 	i = CONTENT_TOOLITEM_TINBUCKET_WATER;
@@ -399,6 +404,8 @@ void content_toolitem_init()
 	f->name = "TinBucket_water";
 	f->description = wgettext("Tin Bucket of Water");
 	f->type = TT_SPECIAL;
+	f->onplace_node = CONTENT_WATERSOURCE;
+	f->onplace_replace_item = CONTENT_TOOLITEM_TINBUCKET;
 	lists::add("creative",i);
 
 	i = CONTENT_TOOLITEM_STEELBUCKET;
@@ -422,6 +429,8 @@ void content_toolitem_init()
 	f->name = "SteelBucket_water";
 	f->description = wgettext("Steel Bucket of Water");
 	f->type = TT_SPECIAL;
+	f->onplace_node = CONTENT_WATERSOURCE;
+	f->onplace_replace_item = CONTENT_TOOLITEM_STEELBUCKET;
 	lists::add("creative",i);
 
 	i = CONTENT_TOOLITEM_STEELBUCKET_LAVA;
@@ -430,6 +439,8 @@ void content_toolitem_init()
 	f->texture = "tool_steelbucket_lava.png";
 	f->name = "SteelBucket_lava";
 	f->description = wgettext("Steel Bucket of Lava");
+	f->onplace_node = CONTENT_LAVASOURCE;
+	f->onplace_replace_item = CONTENT_TOOLITEM_STEELBUCKET;
 	f->fuel_time = 80;
 	f->type = TT_SPECIAL;
 	lists::add("creative",i);
@@ -442,6 +453,7 @@ void content_toolitem_init()
 	f->description = wgettext("Fire Starter");
 	f->liquids_pointable = true;
 	f->type = TT_SPECIAL;
+	f->has_fire_effect = true;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_FLINT,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_FIRESTARTER);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -453,6 +465,7 @@ void content_toolitem_init()
 	f->name = "crowbar";
 	f->description = wgettext("Crowbar");
 	f->type = TT_SPECIAL;
+	f->has_rotate_effect = true;
 	crafting::set1over1Recipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_CROWBAR);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -464,6 +477,7 @@ void content_toolitem_init()
 	f->name = "key";
 	f->description = wgettext("Key");
 	f->type = TT_SPECIAL;
+	f->has_unlock_effect = true;
 	crafting::set1To1Recipe(CONTENT_CRAFTITEM_GOLD_INGOT,CONTENT_TOOLITEM_KEY);
 	lists::add("craftguide",i);
 

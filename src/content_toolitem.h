@@ -6,7 +6,7 @@
 #define CONTENT_TOOLITEM_MASK 0x4000
 
 enum ToolType {
-	TT_NONE, // used only when checking against an item that isn't a tool
+	TT_NONE = 0, // used only when checking against an item that isn't a tool
 	TT_SPECIAL, // special toolitems cannot dig
 	TT_AXE,
 	TT_PICK,
@@ -34,6 +34,16 @@ struct ToolItemFeatures {
 	s16 drop_count;
 	// whether this tool can point at liquid nodes
 	bool liquids_pointable;
+	// whether this tool should die when trying to pick up damaging nodes
+	bool damaging_nodes_diggable;
+	// whether this tool has a punch effect, such as open doors
+	bool has_punch_effect;
+	// whether this tool can lock/unlock nodes
+	bool has_unlock_effect;
+	// whether this tool can rotate nodes
+	bool has_rotate_effect;
+	// whether this tool can start fires
+	bool has_fire_effect;
 	// the type of this tool
 	ToolType type;
 	// the hardness of this tool
@@ -42,6 +52,10 @@ struct ToolItemFeatures {
 	f32 dig_time;
 	// used for eg. bows throwing an arrow
 	content_t thrown_item;
+	// when this item is placed, it should be replaced by this in inventory
+	content_t onplace_replace_item;
+	// when this item is placed, it should place this node instead
+	content_t onplace_node;
 
 	ToolItemFeatures():
 		content(CONTENT_IGNORE),
@@ -53,10 +67,17 @@ struct ToolItemFeatures {
 		edible(0),
 		drop_count(-1),
 		liquids_pointable(false),
+		damaging_nodes_diggable(true),
+		has_punch_effect(true),
+		has_unlock_effect(false),
+		has_rotate_effect(false),
+		has_fire_effect(false),
 		type(TT_NONE),
 		hardness(0.),
 		dig_time(3.),
-		thrown_item(CONTENT_IGNORE)
+		thrown_item(CONTENT_IGNORE),
+		onplace_replace_item(CONTENT_IGNORE),
+		onplace_node(CONTENT_IGNORE)
 	{}
 };
 struct DiggingProperties

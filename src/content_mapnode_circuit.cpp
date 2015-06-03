@@ -469,6 +469,7 @@ void content_mapnode_circuit(bool repeat)
 	f->special_alternate_node = CONTENT_CIRCUIT_PISTON_ARM;
 	f->rotate_tile_with_nodebox = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_PISTON_OFF)+" 1";
+	f->ondig_also_removes = v3s16(0,0,1);
 	f->setAllTextures("circuit_piston_active.png");
 	f->setTexture(0,"circuit_piston_active.png^[transformR90");
 	f->setTexture(1,"circuit_piston_active.png^[transformR270");
@@ -495,6 +496,7 @@ void content_mapnode_circuit(bool repeat)
 	f->air_equivalent = true;
 	f->special_alternate_node = CONTENT_CIRCUIT_PISTON;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_PISTON_OFF)+" 1";
+	f->ondig_also_removes = v3s16(0,0,-1);
 	f->setAllTextures("circuit_piston_arm.png");
 	f->setTexture(0,"circuit_piston_arm.png^[transformR90");
 	f->setTexture(1,"circuit_piston_arm.png^[transformR270");
@@ -544,6 +546,7 @@ void content_mapnode_circuit(bool repeat)
 	f->setAllTextures("circuit_piston_active.png^[transformR270");
 	f->setTexture(0,"circuit_piston_top.png");
 	f->setTexture(1,"circuit_piston_bottom.png");
+	f->ondig_also_removes = v3s16(0,1,0);
 	content_nodebox_piston_up(f);
 	f->setInventoryTextureCube("circuit_piston_top.png", "circuit_piston.png^[transformR90", "circuit_piston.png");
 	f->type = CMT_STONE;
@@ -565,6 +568,7 @@ void content_mapnode_circuit(bool repeat)
 	f->setAllTextures("circuit_piston_arm.png^[transformR270");
 	f->setTexture(0,"circuit_piston_arm_top.png");
 	f->setTexture(1,"circuit_piston_arm_bottom.png");
+	f->ondig_also_removes = v3s16(0,-1,0);
 	content_nodebox_pistonarm_up(f);
 	f->setInventoryTextureCube("circuit_piston_arm_top.png", "circuit_piston_arm.png", "circuit_piston_arm.png");
 	f->type = CMT_STONE;
@@ -608,6 +612,7 @@ void content_mapnode_circuit(bool repeat)
 	f->setAllTextures("circuit_piston_active.png^[transformR90");
 	f->setTexture(0,"circuit_piston_bottom.png");
 	f->setTexture(1,"circuit_piston_top.png");
+	f->ondig_also_removes = v3s16(0,-1,0);
 	content_nodebox_piston_down(f);
 	f->setInventoryTextureCube("circuit_piston_top.png", "circuit_piston.png^[transformR90", "circuit_piston.png");
 	f->type = CMT_STONE;
@@ -629,6 +634,7 @@ void content_mapnode_circuit(bool repeat)
 	f->setAllTextures("circuit_piston_arm.png^[transformR90");
 	f->setTexture(0,"circuit_piston_arm_bottom.png");
 	f->setTexture(1,"circuit_piston_arm_top.png");
+	f->ondig_also_removes = v3s16(0,1,0);
 	content_nodebox_pistonarm_down(f);
 	f->setInventoryTextureCube("circuit_piston_arm.png", "circuit_piston_arm_top.png", "circuit_piston_arm.png");
 	f->type = CMT_STONE;
@@ -677,6 +683,7 @@ void content_mapnode_circuit(bool repeat)
 	f->special_alternate_node = CONTENT_CIRCUIT_STICKYPISTON_ARM;
 	f->rotate_tile_with_nodebox = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_STICKYPISTON_OFF)+" 1";
+	f->ondig_also_removes = v3s16(0,0,1);
 	f->setAllTextures("circuit_piston_active.png");
 	f->setTexture(0,"circuit_piston_active.png^[transformR90");
 	f->setTexture(1,"circuit_piston_active.png^[transformR270");
@@ -703,6 +710,7 @@ void content_mapnode_circuit(bool repeat)
 	f->rotate_tile_with_nodebox = true;
 	f->special_alternate_node = CONTENT_CIRCUIT_STICKYPISTON;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_STICKYPISTON_OFF)+" 1";
+	f->ondig_also_removes = v3s16(0,0,-1);
 	f->setAllTextures("circuit_piston_arm.png");
 	f->setTexture(0,"circuit_piston_arm.png^[transformR90");
 	f->setTexture(1,"circuit_piston_arm.png^[transformR270");
@@ -752,6 +760,7 @@ void content_mapnode_circuit(bool repeat)
 	f->setAllTextures("circuit_piston_active.png^[transformR270");
 	f->setTexture(0,"circuit_piston_top.png");
 	f->setTexture(1,"circuit_piston_bottom.png");
+	f->ondig_also_removes = v3s16(0,1,0);
 	content_nodebox_piston_up(f);
 	f->setInventoryTextureCube("circuit_piston_top.png", "circuit_piston.png^[transformR90", "circuit_piston.png");
 	f->type = CMT_STONE;
@@ -773,6 +782,7 @@ void content_mapnode_circuit(bool repeat)
 	f->setAllTextures("circuit_piston_arm.png^[transformR270");
 	f->setTexture(0,"circuit_stickypiston_arm_top.png");
 	f->setTexture(1,"circuit_piston_arm_bottom.png");
+	f->ondig_also_removes = v3s16(0,-1,0);
 	content_nodebox_pistonarm_up(f);
 	f->setInventoryTextureCube("circuit_stickypiston_arm_top.png", "circuit_piston_arm.png", "circuit_piston_arm.png");
 	f->type = CMT_STONE;
@@ -816,6 +826,7 @@ void content_mapnode_circuit(bool repeat)
 	f->setAllTextures("circuit_piston_active.png^[transformR90");
 	f->setTexture(0,"circuit_piston_bottom.png");
 	f->setTexture(1,"circuit_piston_top.png");
+	f->ondig_also_removes = v3s16(0,-1,0);
 	content_nodebox_piston_down(f);
 	f->setInventoryTextureCube("circuit_piston_top.png", "circuit_piston.png^[transformR90", "circuit_piston.png");
 	f->type = CMT_STONE;
@@ -837,6 +848,7 @@ void content_mapnode_circuit(bool repeat)
 	f->setAllTextures("circuit_piston_arm.png^[transformR90");
 	f->setTexture(0,"circuit_piston_arm_bottom.png");
 	f->setTexture(1,"circuit_stickypiston_arm_top.png");
+	f->ondig_also_removes = v3s16(0,1,0);
 	content_nodebox_pistonarm_down(f);
 	f->setInventoryTextureCube("circuit_piston_arm.png", "circuit_stickypiston_arm_top.png", "circuit_piston_arm.png");
 	f->type = CMT_STONE;

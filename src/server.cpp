@@ -2533,22 +2533,64 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		p_over.Z = readS16(&data[13]);
 		u16 item_i = readU16(&data[15]);
 
-		//TODO: Check that target is reasonably close
+		// distance between p_under and p_over must be 1 or 0
+		{
+			v3s16 p_check = p_over-p_under;
+			s16 check = p_check.X+p_check.Y+p_check.Z;
+			if (check < -1 || check > 1)
+				return;
+		}
 
+		// selection distance is 5, give a little leaway and check
+		// the player is within 8 nodes of the target
+		{
+			v3f p_underf = intToFloat(p_under,BS);
+			v3f pp = player->getPosition();
+			if (pp.getDistanceFrom(p_underf) > 8.0*BS)
+				return;
+		}
+
+		InventoryItem *wielditem = (InventoryItem*)player->getWieldItem();
+		content_t wieldcontent = CONTENT_IGNORE;
+		if (wielditem)
+			wieldcontent = wielditem->getContent();
+		ToolItemFeatures wielded_tool_features = content_toolitem_features(wieldcontent);
+		CraftItemFeatures wielded_craft_features = content_craftitem_features(wieldcontent);
+		ContentFeatures &wielded_material_features = content_features(wieldcontent);
+
+		bool selected_node_exists = false;
+		MapNode selected_node = m_env.getMap().getNodeNoEx(p_under,&selected_node_exists);
+		content_t selected_content = selected_node.getContent();
+		ContentFeatures &selected_node_features = content_features(selected_node.getContent());
+
+		bool borderstone_locked = false;
+		if ((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
+			s16 max_d = g_settings->getS16("borderstone_radius");
+			v3s16 test_p;
+			MapNode testnode;
+			// non-admins can't lock thing in another player's area
+			for(s16 z=-max_d; !borderstone_locked && z<=max_d; z++) {
+			for(s16 y=-max_d; !borderstone_locked && y<=max_d; y++) {
+			for(s16 x=-max_d; !borderstone_locked && x<=max_d; x++) {
+				test_p = p_under + v3s16(x,y,z);
+				NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
+				if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
+					BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
+					if (bsm->getOwner() != player->getName())
+						borderstone_locked = true;
+				}
+			}
+			}
+			}
+		}
 		/*
 			0: start digging
 		*/
-		if(action == 0)
-		{
-			MapNode n = m_env.getMap().getNodeNoEx(p_under);
-			SendPlayerAnim(player,PLAYERANIM_DIG,n.getContent());
-			InventoryItem *wield = (InventoryItem*)player->getWieldItem();
-			// no on-punch events with a mese pick, it will have dug the item
-			// on the first hit anyway
-			if (wield && wield->getContent() == CONTENT_TOOLITEM_MESEPICK)
+		if (action == 0) {
+			if (!wielded_tool_features.has_punch_effect)
 				return;
 			// KEY
-			if (wield && wield->getContent() == CONTENT_TOOLITEM_KEY) {
+			if (wielded_tool_features.has_unlock_effect && selected_node_features.alternate_lockstate_node != CONTENT_IGNORE) {
 				NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
 				if ((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
 					// non-admins can't unlock other players things
@@ -2556,72 +2598,23 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						if (meta->getOwner() != "")
 							return;
 					}
-					s16 max_d = g_settings->getS16("borderstone_radius");
-					v3s16 test_p;
-					MapNode testnode;
-					// non-admins can't lock thing in another player's area
-					for(s16 z=-max_d; z<=max_d; z++) {
-					for(s16 y=-max_d; y<=max_d; y++) {
-					for(s16 x=-max_d; x<=max_d; x++) {
-						test_p = p_under + v3s16(x,y,z);
-						NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
-						if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
-							BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
-							if (bsm->getOwner() != player->getName())
-								return;
-						}
-					}
-					}
-					}
+					if (borderstone_locked)
+						return;
 				}
-				content_t c = CONTENT_IGNORE;
-				switch (n.getContent()) {
-				case CONTENT_LOCKABLE_CHEST:
-					c = CONTENT_CHEST;
-					break;
-				case CONTENT_LOCKABLE_FURNACE:
-					c = CONTENT_FURNACE;
-					break;
-				case CONTENT_LOCKABLE_SIGN:
-					c = CONTENT_SIGN;
-					break;
-				case CONTENT_LOCKABLE_SIGN_WALL:
-					c = CONTENT_SIGN_WALL;
-					break;
-				case CONTENT_LOCKABLE_SIGN_UD:
-					c = CONTENT_SIGN_UD;
-					break;
-				case CONTENT_CHEST:
-					c = CONTENT_LOCKABLE_CHEST;
-					break;
-				case CONTENT_FURNACE:
-					c = CONTENT_LOCKABLE_FURNACE;
-					break;
-				case CONTENT_SIGN:
-					c = CONTENT_LOCKABLE_SIGN;
-					break;
-				case CONTENT_SIGN_WALL:
-					c = CONTENT_LOCKABLE_SIGN_WALL;
-					break;
-				case CONTENT_SIGN_UD:
-					c = CONTENT_LOCKABLE_SIGN_UD;
-					break;
-				}
-				if (c == CONTENT_IGNORE)
-					return;
+				content_t c = selected_node_features.alternate_lockstate_node;
 				NodeMetadata *ometa = NULL;
 				if (meta) {
 					if (meta->getEnergy())
 						return;
 					ometa = meta->clone();
 				}
-				n.setContent(c);
+				selected_node.setContent(c);
 				// send the node
 				core::list<u16> far_players;
 				core::map<v3s16, MapBlock*> modified_blocks;
-				sendAddNode(p_under, n, 0, &far_players, 30);
+				sendAddNode(p_under, selected_node, 0, &far_players, 30);
 				// wear out the key - admin's key doesn't wear
-				ToolItem *titem = (ToolItem*)wield;
+				ToolItem *titem = (ToolItem*)wielditem;
 				if ((getPlayerPrivs(player) & PRIV_SERVER) == 0 && g_settings->getBool("tool_wear")) {
 					bool weared_out = titem->addWear(10000);
 					InventoryList *mlist = player->inventory.getList("main");
@@ -2637,7 +2630,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 
 					std::string p_name = std::string(player->getName());
-					m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
+					m_env.getMap().addNodeAndUpdate(p_under, selected_node, modified_blocks, p_name);
 				}
 				if (ometa) {
 					//m_env.getMap().setNodeMetadata(p_under,ometa);
@@ -2661,16 +2654,16 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					client->SetBlocksNotSent(modified_blocks);
 					client->SetBlockNotSent(blockpos);
 				}
-			}else if (n.getContent() >= CONTENT_DOOR_MIN && n.getContent() <= CONTENT_DOOR_MAX && (!wield || wield->getContent() != CONTENT_TOOLITEM_CROWBAR)) {
+			}else if (selected_content >= CONTENT_DOOR_MIN && selected_content <= CONTENT_DOOR_MAX && !wielded_tool_features.has_rotate_effect) {
 				v3s16 mp(0,1,0);
-				if ((n.getContent()&CONTENT_DOOR_SECT_MASK) == CONTENT_DOOR_SECT_MASK)
+				if ((selected_content&CONTENT_DOOR_SECT_MASK) == CONTENT_DOOR_SECT_MASK)
 					mp.Y = -1;
 
 				MapNode m = m_env.getMap().getNodeNoEx(p_under+mp);
 				core::list<u16> far_players;
 				core::map<v3s16, MapBlock*> modified_blocks;
 				std::string env_sound = "env-doorclose";
-				if ((n.getContent()&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK) {
+				if ((selected_content&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK) {
 					if (m.getContent() < CONTENT_DOOR_MIN || m.getContent() > CONTENT_DOOR_MAX) {
 						sendRemoveNode(p_under, 0, &far_players, 30);
 						{
@@ -2689,17 +2682,17 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						}
 						return;
 					}else{
-						if ((n.getContent()&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
+						if ((selected_content&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
 							env_sound = "env-doorclose";
-							n.setContent(n.getContent()&~CONTENT_DOOR_OPEN_MASK);
+							selected_node.setContent(selected_content&~CONTENT_DOOR_OPEN_MASK);
 							m.setContent(m.getContent()&~CONTENT_DOOR_OPEN_MASK);
 						}else{
-							n.setContent(n.getContent()|CONTENT_DOOR_OPEN_MASK);
+							selected_node.setContent(selected_content|CONTENT_DOOR_OPEN_MASK);
 							m.setContent(m.getContent()|CONTENT_DOOR_OPEN_MASK);
 						}
 						sendAddNode(p_under+mp, m, 0, &far_players, 30);
-						sendAddNode(p_under, n, 0, &far_players, 30);
-						if ((n.getContent()&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
+						sendAddNode(p_under, selected_node, 0, &far_players, 30);
+						if ((selected_content&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
 							{
 								NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
 								if (meta && !meta->getEnergy())
@@ -2713,14 +2706,14 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						}
 					}
 				}else{
-					if ((n.getContent()&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
+					if ((selected_content&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
 						env_sound = "env-doorclose";
-						n.setContent(n.getContent()&~CONTENT_DOOR_OPEN_MASK);
+						selected_node.setContent(selected_content&~CONTENT_DOOR_OPEN_MASK);
 					}else{
-						n.setContent(n.getContent()|CONTENT_DOOR_OPEN_MASK);
+						selected_node.setContent(selected_content|CONTENT_DOOR_OPEN_MASK);
 					}
-					sendAddNode(p_under, n, 0, &far_players, 30);
-					if ((n.getContent()&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
+					sendAddNode(p_under, selected_node, 0, &far_players, 30);
+					if ((selected_content&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
 						NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
 						if (meta && !meta->getEnergy())
 							meta->energise(ENERGY_MAX,p_under,p_under,p_under);
@@ -2738,8 +2731,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 
 					std::string p_name = std::string(player->getName());
-					m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
-					if ((n.getContent()&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK)
+					m_env.getMap().addNodeAndUpdate(p_under, selected_node, modified_blocks, p_name);
+					if ((selected_content&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK)
 						m_env.getMap().addNodeAndUpdate(p_under+mp, m, modified_blocks, p_name);
 				}
 				/*
@@ -2756,11 +2749,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					client->SetBlocksNotSent(modified_blocks);
 				}
 			}else if (
-				content_features(n).onpunch_replace_node != CONTENT_IGNORE
-				&& (
-					wield == NULL
-					|| wield->getContent() != CONTENT_TOOLITEM_CROWBAR
-				)
+				selected_node_features.onpunch_replace_node != CONTENT_IGNORE
+				&& !wielded_tool_features.has_rotate_effect
 			) {
 				core::list<u16> far_players;
 				core::map<v3s16, MapBlock*> modified_blocks;
@@ -2774,13 +2764,13 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				}
 				m_env.getMap().removeNodeMetadata(p_under);
 
-				n.setContent(content_features(n).onpunch_replace_node);
-				sendAddNode(p_under, n, 0, &far_players, 30);
+				selected_node.setContent(selected_node_features.onpunch_replace_node);
+				sendAddNode(p_under, selected_node, 0, &far_players, 30);
 				{
 					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 
 					std::string p_name = std::string(player->getName());
-					m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
+					m_env.getMap().addNodeAndUpdate(p_under, selected_node, modified_blocks, p_name);
 				}
 
 				if (ometa) {
@@ -2806,26 +2796,10 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					client->SetBlocksNotSent(modified_blocks);
 					client->SetBlockNotSent(blockpos);
 				}
-			}else if (content_features(n).flammable > 1 && wield && wield->getContent() == CONTENT_TOOLITEM_FIRESTARTER) {
-				if((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
-					s16 max_d = g_settings->getS16("borderstone_radius");
-					v3s16 test_p;
-					MapNode testnode;
-					for(s16 z=-max_d; z<=max_d; z++) {
-					for(s16 y=-max_d; y<=max_d; y++) {
-					for(s16 x=-max_d; x<=max_d; x++) {
-						test_p = p_under + v3s16(x,y,z);
-						NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
-						if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
-							BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
-							if (bsm->getOwner() != player->getName())
-								return;
-						}
-					}
-					}
-					}
-				}
-				if (content_features(n).flammable == 2) {
+			}else if (selected_node_features.flammable > 1 && wielded_tool_features.has_fire_effect) {
+				if (borderstone_locked)
+					return;
+				if (selected_node_features.flammable == 2) {
 					MapNode a = m_env.getMap().getNodeNoEx(p_under+v3s16(0,1,0));
 					if (a.getContent() == CONTENT_AIR || content_features(a).flammable > 0) {
 						a.setContent(CONTENT_FIRE);
@@ -2847,15 +2821,15 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						}
 					}
 				}else{
-					n.setContent(CONTENT_FIRE_SHORTTERM);
+					selected_node.setContent(CONTENT_FIRE_SHORTTERM);
 					core::list<u16> far_players;
-					sendAddNode(p_under, n, 0, &far_players, 30);
+					sendAddNode(p_under, selected_node, 0, &far_players, 30);
 					core::map<v3s16, MapBlock*> modified_blocks;
 					{
 						MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 
 						std::string p_name = std::string(player->getName());
-						m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
+						m_env.getMap().addNodeAndUpdate(p_under, selected_node, modified_blocks, p_name);
 					}
 					for(core::list<u16>::Iterator i = far_players.begin(); i != far_players.end(); i++) {
 						u16 peer_id = *i;
@@ -2865,7 +2839,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						client->SetBlocksNotSent(modified_blocks);
 					}
 				}
-				ToolItem *titem = (ToolItem*)wield;
+				ToolItem *titem = (ToolItem*)wielditem;
 				if (g_settings->getBool("tool_wear")) {
 					bool weared_out = titem->addWear(1000);
 					InventoryList *mlist = player->inventory.getList("main");
@@ -2876,32 +2850,16 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					}
 					SendInventory(player->peer_id);
 				}
-			}else if (content_features(n).energy_type != CET_NONE && (!wield || wield->getContent() != CONTENT_TOOLITEM_CROWBAR)) {
-				if (wield && wield->getContent() == CONTENT_TOOLITEM_FIRESTARTER) {
-					if((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
-						s16 max_d = g_settings->getS16("borderstone_radius");
-						v3s16 test_p;
-						MapNode testnode;
-						for(s16 z=-max_d; z<=max_d; z++) {
-						for(s16 y=-max_d; y<=max_d; y++) {
-						for(s16 x=-max_d; x<=max_d; x++) {
-							test_p = p_under + v3s16(x,y,z);
-							NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
-							if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
-								BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
-								if (bsm->getOwner() != player->getName())
-									return;
-							}
-						}
-						}
-						}
-					}
+			}else if (selected_node_features.energy_type != CET_NONE && !wielded_tool_features.has_rotate_effect) {
+				if (wielded_tool_features.has_fire_effect) {
+					if (borderstone_locked)
+						return;
 					NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
 					if (meta && !meta->getEnergy()) {
 						v3s16 pp = floatToInt(player->getPosition(),BS);
 						meta->energise(ENERGY_MAX,pp,pp,p_under);
 					}
-					ToolItem *titem = (ToolItem*)wield;
+					ToolItem *titem = (ToolItem*)wielditem;
 					if (g_settings->getBool("tool_wear")) {
 						bool weared_out = titem->addWear(1000);
 						InventoryList *mlist = player->inventory.getList("main");
@@ -2912,7 +2870,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						}
 						SendInventory(player->peer_id);
 					}
-				}else if (content_features(n).energy_type == CET_SWITCH) {
+				}else if (selected_node_features.energy_type == CET_SWITCH) {
 					NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
 					if (meta) {
 						u8 energy = ENERGY_MAX;
@@ -2921,7 +2879,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						meta->energise(energy,p_under,p_under,p_under);
 					}
 				}
-			}else if (n.getContent() == CONTENT_INCINERATOR_ACTIVE) {
+			}else if (selected_content == CONTENT_INCINERATOR_ACTIVE) {
 				NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
 				if (!meta)
 					return;
@@ -2951,40 +2909,23 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					block->raiseModified(MOD_STATE_WRITE_NEEDED);
 				setBlockNotSent(blockpos);
 			}else if (
-				content_features(n).draw_type != CDT_TORCHLIKE
+				selected_node_features.draw_type != CDT_TORCHLIKE
+				&& wielded_tool_features.has_rotate_effect
 				&& (
-					content_features(n).param_type == CPT_FACEDIR_SIMPLE
-					|| content_features(n).param2_type == CPT_FACEDIR_SIMPLE
-					|| content_features(n).param_type == CPT_FACEDIR_WALLMOUNT
-					|| content_features(n).param2_type == CPT_FACEDIR_WALLMOUNT
+					selected_node_features.param_type == CPT_FACEDIR_SIMPLE
+					|| selected_node_features.param2_type == CPT_FACEDIR_SIMPLE
+					|| selected_node_features.param_type == CPT_FACEDIR_WALLMOUNT
+					|| selected_node_features.param2_type == CPT_FACEDIR_WALLMOUNT
 				)
 			) {
+				if (borderstone_locked)
+					return;
 				if (
 					(
-						n.getContent() < CONTENT_BED_MIN
-						|| n.getContent() > CONTENT_BED_MAX
+						selected_content < CONTENT_BED_MIN
+						|| selected_content > CONTENT_BED_MAX
 					)
-					&& wield
-					&& wield->getContent() == CONTENT_TOOLITEM_CROWBAR
 				) {
-					if((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
-						s16 max_d = g_settings->getS16("borderstone_radius");
-						v3s16 test_p;
-						MapNode testnode;
-						for(s16 z=-max_d; z<=max_d; z++) {
-						for(s16 y=-max_d; y<=max_d; y++) {
-						for(s16 x=-max_d; x<=max_d; x++) {
-							test_p = p_under + v3s16(x,y,z);
-							NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
-							if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
-								BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
-								if (bsm->getOwner() != player->getName())
-									return;
-							}
-						}
-						}
-						}
-					}
 					u8 rot = 0;
 					NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
 					NodeMetadata *ometa = NULL;
@@ -2997,12 +2938,12 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					}
 					// get the rotation
 					if (
-						content_features(n).param_type == CPT_FACEDIR_SIMPLE
-						|| content_features(n).param_type == CPT_FACEDIR_WALLMOUNT
+						selected_node_features.param_type == CPT_FACEDIR_SIMPLE
+						|| selected_node_features.param_type == CPT_FACEDIR_WALLMOUNT
 					) {
-						rot = n.param1;
+						rot = selected_node.param1;
 					}else{
-						rot = n.param2&0x0F;
+						rot = selected_node.param2&0x0F;
 					}
 					// rotate it
 					rot++;
@@ -3010,20 +2951,20 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						rot = 0;
 					// set the rotation
 					if (
-						content_features(n).param_type == CPT_FACEDIR_SIMPLE
-						|| content_features(n).param_type == CPT_FACEDIR_WALLMOUNT
+						selected_node_features.param_type == CPT_FACEDIR_SIMPLE
+						|| selected_node_features.param_type == CPT_FACEDIR_WALLMOUNT
 					) {
-						n.param1 = rot;
+						selected_node.param1 = rot;
 					}else{
-						n.param2 &= 0xF0;
-						n.param2 |= rot;
+						selected_node.param2 &= 0xF0;
+						selected_node.param2 |= rot;
 					}
 					// send the node
 					core::list<u16> far_players;
 					core::map<v3s16, MapBlock*> modified_blocks;
-					sendAddNode(p_under, n, 0, &far_players, 30);
+					sendAddNode(p_under, selected_node, 0, &far_players, 30);
 					// wear out the crowbar
-					ToolItem *titem = (ToolItem*)wield;
+					ToolItem *titem = (ToolItem*)wielditem;
 					if (g_settings->getBool("tool_wear")) {
 						bool weared_out = titem->addWear(200);
 						InventoryList *mlist = player->inventory.getList("main");
@@ -3039,7 +2980,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 
 						std::string p_name = std::string(player->getName());
-						m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
+						m_env.getMap().addNodeAndUpdate(p_under, selected_node, modified_blocks, p_name);
 					}
 					if (ometa) {
 						m_env.getMap().setNodeMetadata(p_under,ometa);
@@ -3061,49 +3002,47 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						client->SetBlockNotSent(blockpos);
 					}
 				}
-			}else if (wield && wield->getContent() == CONTENT_CRAFTITEM_FERTILIZER) {
-				if (content_features(n).fertilizer_affects) {
-					n.envticks = 1024;
-					// send the node
-					core::list<u16> far_players;
-					core::map<v3s16, MapBlock*> modified_blocks;
-					sendAddNode(p_under, n, 0, &far_players, 30);
-					/*
-						Handle inventory
-					*/
-					InventoryList *ilist = player->inventory.getList("main");
-					if(g_settings->getBool("infinite_inventory") == false && ilist) {
-						// Remove from inventory and send inventory
-						if (wield->getCount() == 1) {
-							ilist->deleteItem(item_i);
-						}else{
-							wield->remove(1);
-							ilist->addDiff(item_i,wield);
-						}
-						// Send inventory
-						UpdateCrafting(peer_id);
-						SendInventory(peer_id);
+			}else if (wieldcontent == CONTENT_CRAFTITEM_FERTILIZER && selected_node_features.fertilizer_affects) {
+				selected_node.envticks = 1024;
+				// send the node
+				core::list<u16> far_players;
+				core::map<v3s16, MapBlock*> modified_blocks;
+				sendAddNode(p_under, selected_node, 0, &far_players, 30);
+				/*
+					Handle inventory
+				*/
+				InventoryList *ilist = player->inventory.getList("main");
+				if(g_settings->getBool("infinite_inventory") == false && ilist) {
+					// Remove from inventory and send inventory
+					if (wielditem->getCount() == 1) {
+						ilist->deleteItem(item_i);
+					}else{
+						wielditem->remove(1);
+						ilist->addDiff(item_i,wielditem);
 					}
-					// the slow add to map
-					{
-						MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+					// Send inventory
+					UpdateCrafting(peer_id);
+					SendInventory(peer_id);
+				}
+				// the slow add to map
+				{
+					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 
-						std::string p_name = std::string(player->getName());
-						m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
-					}
-					v3s16 blockpos = getNodeBlockPos(p_under);
-					MapBlock *block = m_env.getMap().getBlockNoCreateNoEx(blockpos);
-					if (block)
-						block->setChangedFlag();
+					std::string p_name = std::string(player->getName());
+					m_env.getMap().addNodeAndUpdate(p_under, selected_node, modified_blocks, p_name);
+				}
+				v3s16 blockpos = getNodeBlockPos(p_under);
+				MapBlock *block = m_env.getMap().getBlockNoCreateNoEx(blockpos);
+				if (block)
+					block->setChangedFlag();
 
-					for(core::map<u16, RemoteClient*>::Iterator
-						i = m_clients.getIterator();
-						i.atEnd()==false; i++)
-					{
-						RemoteClient *client = i.getNode()->getValue();
-						client->SetBlocksNotSent(modified_blocks);
-						client->SetBlockNotSent(blockpos);
-					}
+				for(core::map<u16, RemoteClient*>::Iterator
+					i = m_clients.getIterator();
+					i.atEnd()==false; i++)
+				{
+					RemoteClient *client = i.getNode()->getValue();
+					client->SetBlocksNotSent(modified_blocks);
+					client->SetBlockNotSent(blockpos);
 				}
 			}
 			/*
@@ -3115,8 +3054,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		/*
 			2: stop digging
 		*/
-		else if(action == 2)
-		{
+		else if (action == 2) {
 			SendPlayerAnim(player,PLAYERANIM_STAND);
 #if 0
 			RemoteClient *client = getClient(peer_id);
@@ -3128,41 +3066,28 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		/*
 			3: Digging completed
 		*/
-		else if(action == 3)
-		{
+		else if (action == 3) {
 			// Mandatory parameter; actually used for nothing
 			core::map<v3s16, MapBlock*> modified_blocks;
 
-			content_t material = CONTENT_IGNORE;
-			u8 p2 = 0;
-			u8 mineral = MINERAL_NONE;
-			InventoryItem *wield;
+			u8 p2 = selected_node.param2;
+			u8 mineral = selected_node.getMineral();
+			NodeMetadata *meta = NULL;
+			bool cannot_remove_node = !selected_node_exists;
 
-			bool cannot_remove_node = false;
-
-			try
-			{
-				MapNode n = m_env.getMap().getNode(p_under);
-				// get param2 used for special plantgrowth drops
-				p2 = n.param2;
-				// Get mineral
-				mineral = n.getMineral();
-				// Get material at position
-				material = n.getContent();
-				// If not yet cancelled
-				if (cannot_remove_node == false) {
-					// If it's not diggable, do nothing
-					if (content_features(material).diggable == false) {
-						infostream<<"Server: Not finishing digging: "
-								<<"Node not diggable"
-								<<std::endl;
-						cannot_remove_node = true;
-					}
-				}
-				// If not yet cancelled
-				if (cannot_remove_node == false) {
-					// Get node metadata
-					NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
+			if (cannot_remove_node) {
+				infostream<<"Server: Not finishing digging: Node not found."
+						<<" Adding block to emerge queue."
+						<<std::endl;
+				m_emerge_queue.addBlock(peer_id, getNodeBlockPos(p_over), BLOCK_EMERGE_FLAG_FROMDISK);
+			}else{
+				if (!selected_node_features.diggable) {
+					infostream<<"Server: Not finishing digging: "
+							<<"Node not diggable"
+							<<std::endl;
+					cannot_remove_node = true;
+				}else{
+					meta = m_env.getMap().getNodeMetadata(p_under);
 					if (meta && meta->nodeRemovalDisabled() == true) {
 						infostream<<"Server: Not finishing digging: "
 								<<"Node metadata disables removal"
@@ -3171,21 +3096,9 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					}
 				}
 			}
-			catch(InvalidPositionException &e)
-			{
-				infostream<<"Server: Not finishing digging: Node not found."
-						<<" Adding block to emerge queue."
-						<<std::endl;
-				m_emerge_queue.addBlock(peer_id,
-						getNodeBlockPos(p_over), BLOCK_EMERGE_FLAG_FROMDISK);
-				cannot_remove_node = true;
-			}
-			wield = (InventoryItem*)player->getWieldItem();
+
 			// check for a diggable tool
-			if (
-				wield
-				&& content_toolitem_features(wield->getContent()).type == TT_SPECIAL
-			) {
+			if (wielded_tool_features.type == TT_SPECIAL) {
 				infostream<<"Server: Not finished digging: impossible tool"<<std::endl;
 				cannot_remove_node = true;
 			// Make sure the player is allowed to do it
@@ -3194,10 +3107,14 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						<<" because privileges are "<<getPlayerPrivs(player)
 						<<std::endl;
 				cannot_remove_node = true;
+			// check for borderstone
+			}else if (borderstone_locked) {
+				infostream<<"Player "<<player->getName()<<" cannot remove node: borderstone protected"<<std::endl;
+				cannot_remove_node = true;
 			// check for locked items and borderstone
 			}else if((getPlayerPrivs(player) & PRIV_SERVER) == 0) {
-				NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
-				if (meta
+				if (
+					meta
 					&& (
 						meta->typeId() == CONTENT_LOCKABLE_CHEST
 						|| meta->typeId() == CONTENT_LOCKABLE_SIGN
@@ -3216,26 +3133,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					)
 					&& meta->getOwner() != player->getName()
 				) {
+					infostream<<"Player "<<player->getName()<<" cannot remove node: not node owner"<<std::endl;
 					cannot_remove_node = true;
-				}else{
-					s16 max_d = g_settings->getS16("borderstone_radius");
-					v3s16 test_p;
-					MapNode testnode;
-					for(s16 z=-max_d; !cannot_remove_node && z<=max_d; z++) {
-					for(s16 y=-max_d; !cannot_remove_node && y<=max_d; y++) {
-					for(s16 x=-max_d; !cannot_remove_node && x<=max_d; x++) {
-						test_p = p_under + v3s16(x,y,z);
-						NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
-						if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
-							BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
-							if (bsm->getOwner() != player->getName()) {
-								cannot_remove_node = true;
-								break;
-							}
-						}
-					}
-					}
-					}
 				}
 			}
 
@@ -3259,21 +3158,14 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				return;
 			}
 
-			bool is_farm_swap = false;
 			// This was pretty much the entirety of farming
-			if (
-				(
-					material == CONTENT_MUD
-					|| material == CONTENT_GRASS
-					|| material == CONTENT_GRASS_FOOTSTEPS
-				) && wield
-				&& content_toolitem_features(wield->getContent()).type == TT_SHOVEL
-			) {
+			if (selected_node_features.farm_ploughable && wielded_tool_features.type == TT_SHOVEL) {
 				v3s16 temp_p = p_under;
 				v3s16 test_p;
 				MapNode testnode;
 				test_p = temp_p + v3s16(0,1,0);
 				testnode = m_env.getMap().getNodeNoEx(test_p);
+				bool is_farm_swap = false;
 				if (testnode.getContent() == CONTENT_AIR) {
 					for(s16 z=-1; !is_farm_swap && z<=1; z++) {
 					for(s16 x=-1; !is_farm_swap && x<=1; x++)
@@ -3289,191 +3181,67 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					}
 					}
 				}
+				if (is_farm_swap) {
+					selected_node.setContent(CONTENT_FARM_DIRT);
+
+					actionstream<<player->getName()<<" ploughs "<<PP(p_under)
+							<<" into farm dirt"<<std::endl;
+
+					core::list<u16> far_players;
+					sendAddNode(p_under, selected_node, 0, &far_players, 30);
+
+					/*
+						Add node.
+
+						This takes some time so it is done after the quick stuff
+					*/
+					core::map<v3s16, MapBlock*> modified_blocks;
+					{
+						MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+
+						std::string p_name = std::string(player->getName());
+						m_env.getMap().addNodeAndUpdate(p_under, selected_node, modified_blocks, p_name);
+					}
+					/*
+						Set blocks not sent to far players
+					*/
+					for (core::list<u16>::Iterator i = far_players.begin(); i != far_players.end(); i++) {
+						u16 peer_id = *i;
+						RemoteClient *client = getClient(peer_id);
+						if (client==NULL)
+							continue;
+						client->SetBlocksNotSent(modified_blocks);
+					}
+					return;
+				}
 			}
-			if (is_farm_swap) {
-				MapNode n = m_env.getMap().getNodeNoEx(p_under);
-				n.setContent(CONTENT_FARM_DIRT);
 
-				actionstream<<player->getName()<<" ploughs "<<PP(p_under)
-						<<" into farm dirt"<<std::endl;
+			actionstream<<player->getName()<<" digs "<<PP(p_under)
+					<<", gets material "<<(int)selected_content<<", mineral "
+					<<(int)mineral<<std::endl;
 
-				core::list<u16> far_players;
-				sendAddNode(p_under, n, 0, &far_players, 30);
-
-				/*
-					Add node.
-
-					This takes some time so it is done after the quick stuff
-				*/
-				core::map<v3s16, MapBlock*> modified_blocks;
+			core::list<u16> far_players;
+			if (selected_node_features.ondig_also_removes != v3s16(0,0,0)) {
+				v3s16 p_other = selected_node.getRotation(selected_node_features.ondig_also_removes);
+				v3s16 p_also = p_under + p_other;
+				sendRemoveNode(p_also, 0, &far_players, 30);
 				{
 					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-
-					std::string p_name = std::string(player->getName());
-					m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
+					m_env.getMap().removeNodeAndUpdate(p_also, modified_blocks);
 				}
-				/*
-					Set blocks not sent to far players
-				*/
-				for(core::list<u16>::Iterator
-						i = far_players.begin();
-						i != far_players.end(); i++)
-				{
-					u16 peer_id = *i;
-					RemoteClient *client = getClient(peer_id);
-					if(client==NULL)
-						continue;
-					client->SetBlocksNotSent(modified_blocks);
-				}
+				sendRemoveNode(p_under, 0, &far_players, 30);
 			}else{
-
-				actionstream<<player->getName()<<" digs "<<PP(p_under)
-						<<", gets material "<<(int)material<<", mineral "
-						<<(int)mineral<<std::endl;
-
-				core::list<u16> far_players;
-				MapNode n = m_env.getMap().getNodeNoEx(p_under);
-				if (
-					n.getContent() >= CONTENT_DOOR_MIN
-					&& n.getContent() <= CONTENT_DOOR_MAX
-					&& (n.getContent()&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK
-				) {
-					if ((n.getContent()&CONTENT_DOOR_SECT_MASK) == CONTENT_DOOR_SECT_MASK) {
-						sendRemoveNode(p_under+v3s16(0,-1,0), 0, &far_players, 30);
-						{
-							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-							m_env.getMap().removeNodeAndUpdate(p_under+v3s16(0,-1,0), modified_blocks);
-						}
-					}else{
-						sendRemoveNode(p_under+v3s16(0,1,0), 0, &far_players, 30);
-						{
-							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-							m_env.getMap().removeNodeAndUpdate(p_under+v3s16(0,1,0), modified_blocks);
-						}
-					}
-					sendRemoveNode(p_under, 0, &far_players, 30);
-				}else{
-					if (content_features(n).home_node > -1)
-						player->unsetHome(content_features(n).home_node);
-					if (n.getContent() == CONTENT_FLOWER_POT) {
-						MapNode a = m_env.getMap().getNodeNoEx(p_under+v3s16(0,1,0));
-						if (
-							a.getContent() == CONTENT_FLOWER_ROSE
-							|| a.getContent() == CONTENT_FLOWER_DAFFODIL
-							|| a.getContent() == CONTENT_FLOWER_TULIP
-							|| a.getContent() == CONTENT_FLOWER_STEM
-							|| a.getContent() == CONTENT_WILDGRASS_SHORT
-							|| a.getContent() == CONTENT_WILDGRASS_LONG
-						) {
-							sendRemoveNode(p_under+v3s16(0,1,0), 0, &far_players, 30);
-							{
-								MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-								m_env.getMap().removeNodeAndUpdate(p_under+v3s16(0,1,0), modified_blocks);
-							}
-						}
-					}
+				if (selected_node_features.home_node > -1)
+					player->unsetHome(selected_node_features.home_node);
+				if (selected_content == CONTENT_FLOWER_POT) {
 					MapNode a = m_env.getMap().getNodeNoEx(p_under+v3s16(0,1,0));
-					if (a.getContent() == CONTENT_FIRE) {
-						sendRemoveNode(p_under+v3s16(0,1,0), 0, &far_players, 30);
-						{
-							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-							m_env.getMap().removeNodeAndUpdate(p_under+v3s16(0,1,0), modified_blocks);
-						}
-					}
-					if (n.getContent() >= CONTENT_BED_MIN && n.getContent() <= CONTENT_BED_MAX) {
-						v3s16 p_foot = v3s16(0,0,0);
-						u8 d = n.param2&0x0F;
-						switch (d) {
-						case 1:
-							p_foot.X = 1;
-							break;
-						case 2:
-							p_foot.Z = -1;
-							break;
-						case 3:
-							p_foot.X = -1;
-							break;
-						default:
-							p_foot.Z = 1;
-							break;
-						}
-						if ((n.getContent()&CONTENT_BED_FOOT_MASK) == 0)
-							p_foot *= -1;
-
-						sendRemoveNode(p_under+p_foot, 0, &far_players, 30);
-						{
-							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-							m_env.getMap().removeNodeAndUpdate(p_under+p_foot, modified_blocks);
-						}
-					}
 					if (
-						n.getContent() == CONTENT_CIRCUIT_PISTON
-						|| n.getContent() == CONTENT_CIRCUIT_STICKYPISTON
-					) {
-						v3s16 a_dir = n.getRotation();
-						if (a_dir == v3s16(1,1,1)) {
-							a_dir = v3s16(0,0,-1);
-						}else if (a_dir == v3s16(-1,1,1)) {
-							a_dir = v3s16(-1,0,0);
-						}else if (a_dir == v3s16(-1,1,-1)) {
-							a_dir = v3s16(0,0,1);
-						}else if (a_dir == v3s16(1,1,-1)) {
-							a_dir = v3s16(1,0,0);
-						}
-						sendRemoveNode(p_under+a_dir, 0, &far_players, 30);
-						{
-							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-							m_env.getMap().removeNodeAndUpdate(p_under+a_dir, modified_blocks);
-						}
-					}else if (
-						n.getContent() == CONTENT_CIRCUIT_PISTON_UP
-						|| n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_UP
-					) {
-						sendRemoveNode(p_under+v3s16(0,1,0), 0, &far_players, 30);
-						{
-							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-							m_env.getMap().removeNodeAndUpdate(p_under+v3s16(0,1,0), modified_blocks);
-						}
-					}else if (
-						n.getContent() == CONTENT_CIRCUIT_PISTON_DOWN
-						|| n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_DOWN
-					) {
-						sendRemoveNode(p_under+v3s16(0,-1,0), 0, &far_players, 30);
-						{
-							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-							m_env.getMap().removeNodeAndUpdate(p_under+v3s16(0,-1,0), modified_blocks);
-						}
-					}else if (
-						n.getContent() == CONTENT_CIRCUIT_PISTON_ARM
-						|| n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_ARM
-					) {
-						v3s16 a_dir = n.getRotation();
-						if (a_dir == v3s16(1,1,1)) {
-							a_dir = v3s16(0,0,1);
-						}else if (a_dir == v3s16(-1,1,1)) {
-							a_dir = v3s16(1,0,0);
-						}else if (a_dir == v3s16(-1,1,-1)) {
-							a_dir = v3s16(0,0,-1);
-						}else if (a_dir == v3s16(1,1,-1)) {
-							a_dir = v3s16(-1,0,0);
-						}
-						sendRemoveNode(p_under+a_dir, 0, &far_players, 30);
-						{
-							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-							m_env.getMap().removeNodeAndUpdate(p_under+a_dir, modified_blocks);
-						}
-					}else if (
-						n.getContent() == CONTENT_CIRCUIT_PISTON_UP_ARM
-						|| n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_UP_ARM
-					) {
-						sendRemoveNode(p_under+v3s16(0,-1,0), 0, &far_players, 30);
-						{
-							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-							m_env.getMap().removeNodeAndUpdate(p_under+v3s16(0,-1,0), modified_blocks);
-						}
-					}else if (
-						n.getContent() == CONTENT_CIRCUIT_PISTON_DOWN_ARM
-						|| n.getContent() == CONTENT_CIRCUIT_STICKYPISTON_DOWN_ARM
+						a.getContent() == CONTENT_FLOWER_ROSE
+						|| a.getContent() == CONTENT_FLOWER_DAFFODIL
+						|| a.getContent() == CONTENT_FLOWER_TULIP
+						|| a.getContent() == CONTENT_FLOWER_STEM
+						|| a.getContent() == CONTENT_WILDGRASS_SHORT
+						|| a.getContent() == CONTENT_WILDGRASS_LONG
 					) {
 						sendRemoveNode(p_under+v3s16(0,1,0), 0, &far_players, 30);
 						{
@@ -3481,458 +3249,47 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							m_env.getMap().removeNodeAndUpdate(p_under+v3s16(0,1,0), modified_blocks);
 						}
 					}
-				/*
-					Send the removal to all close-by players.
-					- If other player is close, send REMOVENODE
-					- Otherwise set blocks not sent
-				*/
-					sendRemoveNode(p_under, peer_id, &far_players, 30);
 				}
-
-				/*
-					Update and send inventory
-				*/
-
-				if (g_settings->getBool("infinite_inventory") == false) {
-					/*
-						Wear out tool
-					*/
-					InventoryList *mlist = player->inventory.getList("main");
-					if (mlist != NULL && g_settings->getBool("tool_wear")) {
-						InventoryItem *item = mlist->getItem(item_i);
-						if (item && (std::string)item->getName() == "ToolItem") {
-							ToolItem *titem = (ToolItem*)item;
-							// Get digging properties for material and tool
-							DiggingProperties prop = getDiggingProperties(material, titem->getContent());
-
-							if (prop.diggable == false) {
-								infostream<<"Server: WARNING: Player digged"
-										<<" with impossible material + tool"
-										<<" combination"<<std::endl;
-							}
-
-							bool weared_out = titem->addWear(prop.wear);
-
-							if (weared_out) {
-								mlist->deleteItem(item_i);
-							}else{
-								mlist->addDiff(item_i,titem);
-							}
-						}
-					}
-
-					/*
-						Add dug item to inventory
-					*/
-
-					InventoryItem *item = NULL;
-
-					if (mineral != MINERAL_NONE)
-						item = getDiggedMineralItem(mineral);
-
-					// If not mineral
-					if (item == NULL) {
-						if (material == CONTENT_APPLE) {
-							s16 max_d = 3;
-							v3s16 leaf_p = p_under;
-							v3s16 test_p;
-							MapNode testnode;
-							bool found = false;
-							for(s16 z=-max_d; !found && z<=max_d; z++) {
-							for(s16 y=-max_d; !found && y<=max_d; y++) {
-							for(s16 x=-max_d; !found && x<=max_d; x++)
-							{
-								test_p = leaf_p + v3s16(x,y,z);
-								testnode = m_env.getMap().getNodeNoEx(test_p);
-								if (testnode.getContent() == CONTENT_TREE
-									|| testnode.getContent() == CONTENT_APPLE_TREE
-									|| testnode.getContent() == CONTENT_JUNGLETREE
-									|| testnode.getContent() == CONTENT_CONIFER_TREE
-									|| testnode.getContent() == CONTENT_IGNORE)
-								{
-									found = true;
-									break;
-								}
-							}
-							}
-							}
-
-							if (found) {
-								MapNode n = m_env.getMap().getNodeNoEx(p_under);
-								n.setContent(CONTENT_APPLE_LEAVES);
-
-								core::list<u16> far_players;
-								sendAddNode(p_under, n, 0, &far_players, 30);
-
-								/*
-									Add node.
-
-									This takes some time so it is done after the quick stuff
-								*/
-								core::map<v3s16, MapBlock*> modified_blocks;
-								{
-									MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-
-									std::string p_name = std::string(player->getName());
-									m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
-								}
-								/*
-									Set blocks not sent to far players
-								*/
-								for(core::list<u16>::Iterator
-										i = far_players.begin();
-										i != far_players.end(); i++)
-								{
-									u16 peer_id = *i;
-									RemoteClient *client = getClient(peer_id);
-									if(client==NULL)
-										continue;
-									client->SetBlocksNotSent(modified_blocks);
-								}
-							}
-
-							std::string &dug_s = content_features(material).dug_item;
-							std::istringstream is(dug_s, std::ios::binary);
-							item = InventoryItem::deSerialize(is);
-							// Add a item to inventory
-							player->inventory.addItem("main", item);
-							// Send inventory
-							UpdateCrafting(player->peer_id);
-							SendInventory(player->peer_id);
-							return;
-						}else if (material == CONTENT_PARCEL) {
-							NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
-							if (meta) {
-								Inventory *inv = meta->getInventory();
-								if (inv) {
-									InventoryList *l = inv->getList("0");
-									if (l) {
-										for (u32 i=0; i<32; i++) {
-											InventoryItem *itm = l->changeItem(i,NULL);
-											if (!itm)
-												continue;
-											player->inventory.addItem("main", itm);
-										}
-										// Send inventory
-										UpdateCrafting(player->peer_id);
-										SendInventory(player->peer_id);
-									}
-								}
-							}
-						}else if (wield && (wield->getContent()&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
-							ToolItem *tool = (ToolItem*)wield;
-							ToolItemFeatures tool_features = content_toolitem_features(tool->getContent());
-							if (material == CONTENT_LEAVES && tool_features.type == TT_SHEAR) {
-								std::string dug_s = std::string("MaterialItem2 ")+itos(CONTENT_TRIMMED_LEAVES)+" 1";;
-								std::istringstream is(dug_s, std::ios::binary);
-								item = InventoryItem::deSerialize(is);
-							}else if (material == CONTENT_JUNGLELEAVES && tool_features.type == TT_SHEAR) {
-								std::string dug_s = std::string("MaterialItem2 ")+itos(CONTENT_TRIMMED_JUNGLE_LEAVES)+" 1";;
-								std::istringstream is(dug_s, std::ios::binary);
-								item = InventoryItem::deSerialize(is);
-							}else if (material == CONTENT_APPLE_LEAVES && tool_features.type == TT_SHEAR) {
-								std::string dug_s = std::string("MaterialItem2 ")+itos(CONTENT_TRIMMED_APPLE_LEAVES)+" 1";;
-								std::istringstream is(dug_s, std::ios::binary);
-								item = InventoryItem::deSerialize(is);
-							}else if (material == CONTENT_APPLE_BLOSSOM && tool_features.type == TT_SHEAR) {
-								std::string dug_s = std::string("MaterialItem2 ")+itos(CONTENT_TRIMMED_APPLE_BLOSSOM)+" 1";;
-								std::istringstream is(dug_s, std::ios::binary);
-								item = InventoryItem::deSerialize(is);
-							}else if (material == CONTENT_CONIFER_LEAVES && tool_features.type == TT_SHEAR) {
-								std::string dug_s = std::string("MaterialItem2 ")+itos(CONTENT_TRIMMED_CONIFER_LEAVES)+" 1";;
-								std::istringstream is(dug_s, std::ios::binary);
-								item = InventoryItem::deSerialize(is);
-							}else if (
-								material == CONTENT_WATERSOURCE
-								&& tool_features.type == TT_BUCKET
-							) {
-								std::string dug_s = std::string("ToolItem ") + tool->getToolName() + "_water 1";
-								std::istringstream is(dug_s, std::ios::binary);
-								item = InventoryItem::deSerialize(is);
-								InventoryItem *ritem = mlist->changeItem(item_i,item);
-								if (ritem)
-									delete ritem;
-								item = NULL;
-								UpdateCrafting(player->peer_id);
-								SendInventory(player->peer_id);
-							}else if (
-								material == CONTENT_SPONGE_FULL
-								&& tool_features.type == TT_BUCKET
-							) {
-								MapNode n = m_env.getMap().getNodeNoEx(p_under);
-								n.setContent(CONTENT_SPONGE);
-
-								core::list<u16> far_players;
-								sendAddNode(p_under, n, 0, &far_players, 30);
-
-								/*
-									Add node.
-
-									This takes some time so it is done after the quick stuff
-								*/
-								core::map<v3s16, MapBlock*> modified_blocks;
-								{
-									MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-
-									std::string p_name = std::string(player->getName());
-									m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
-								}
-								/*
-									Set blocks not sent to far players
-								*/
-								for(core::list<u16>::Iterator
-										i = far_players.begin();
-										i != far_players.end(); i++)
-								{
-									u16 peer_id = *i;
-									RemoteClient *client = getClient(peer_id);
-									if (client==NULL)
-										continue;
-									client->SetBlocksNotSent(modified_blocks);
-								}
-								std::string dug_s = std::string("ToolItem ") + tool->getToolName() + "_water 1";
-								std::istringstream is(dug_s, std::ios::binary);
-								item = InventoryItem::deSerialize(is);
-								InventoryItem *ritem = mlist->changeItem(item_i,item);
-								if (ritem)
-									delete ritem;
-								item = NULL;
-								UpdateCrafting(player->peer_id);
-								SendInventory(player->peer_id);
-								return;
-							}else if (
-								material == CONTENT_LAVASOURCE
-								&& tool_features.type == TT_BUCKET
-							) {
-								if (
-									g_settings->getBool("enable_lavabuckets") == false
-									|| tool->getContent() != CONTENT_TOOLITEM_STEELBUCKET
-								) {
-									mlist->deleteItem(item_i);
-									HandlePlayerHP(player,4,0,0);
-								}else{
-									std::string dug_s = std::string("ToolItem ") + tool->getToolName() + "_lava 1";
-									std::istringstream is(dug_s, std::ios::binary);
-									item = InventoryItem::deSerialize(is);
-									InventoryItem *ritem = mlist->changeItem(item_i,item);
-									if (ritem)
-										delete ritem;
-									item = NULL;
-								}
-								UpdateCrafting(player->peer_id);
-								SendInventory(player->peer_id);
-							}else if (
-								(
-									material == CONTENT_TREE
-									|| material == CONTENT_JUNGLETREE
-									|| material == CONTENT_APPLE_TREE
-									|| material == CONTENT_CONIFER_TREE
-								) && (
-									tool_features.type == TT_AXE
-								)
-							) {
-								content_t c = CONTENT_WOOD;
-								switch (material) {
-								case CONTENT_JUNGLETREE:
-									c = CONTENT_JUNGLEWOOD;
-									break;
-								case CONTENT_CONIFER_TREE:
-									c = CONTENT_WOOD_PINE;
-									break;
-								default:;
-								}
-								std::string dug_s = std::string("MaterialItem2 ")+itos(c)+" 6";;
-								std::istringstream is(dug_s, std::ios::binary);
-								item = InventoryItem::deSerialize(is);
-							}else if (material != CONTENT_WATERSOURCE && material != CONTENT_LAVASOURCE) {
-								std::string &dug_s = content_features(material).dug_item;
-								if (dug_s != "") {
-									std::istringstream is(dug_s, std::ios::binary);
-									item = InventoryItem::deSerialize(is);
-								}else if (content_features(material).param2_type == CPT_PLANTGROWTH) {
-									ContentFeatures *f = &content_features(material);
-									if (f->draw_type == CDT_PLANTLIKE) {
-										if (p2 && p2 < 8) {
-											if (f->plantgrowth_small_dug_node != CONTENT_IGNORE) {
-												u16 count = 1;
-												if (p2 > 3)
-													count = 2;
-												item = InventoryItem::create(f->plantgrowth_small_dug_node,count,0);
-											}
-										}else{
-											if (f->plantgrowth_large_gives_small) {
-												item = InventoryItem::create(f->plantgrowth_small_dug_node,2,0);
-												player->inventory.addItem("main", item);
-											}
-											u16 count = f->plantgrowth_large_count;
-											if (p2 < 8) {
-												count /= 2;
-											}else if (p2 < 12) {
-												count /= 3;
-											}
-											if (!count)
-												count = 1;
-											item = InventoryItem::create(f->plantgrowth_large_dug_node,count,0);
-										}
-									}else if (f->draw_type == CDT_MELONLIKE) {
-										if (p2) {
-											if (p2 > 4) {
-												u16 count = 1;
-												if (p2 > 11) {
-													count = 3;
-												}else if (p2 > 7) {
-													count = 2;
-												}
-												item = InventoryItem::create(CONTENT_CRAFTITEM_MUSH,count,0);
-												player->inventory.addItem("main", item);
-											}
-											if (f->plantgrowth_small_dug_node != CONTENT_IGNORE)
-												item = InventoryItem::create(f->plantgrowth_small_dug_node,1,0);
-										}else{
-											if (f->plantgrowth_large_gives_small) {
-												item = InventoryItem::create(f->plantgrowth_small_dug_node,1,0);
-												player->inventory.addItem("main", item);
-											}
-											item = InventoryItem::create(f->plantgrowth_large_dug_node,f->plantgrowth_large_count,0);
-										}
-									}
-								}
-							}
-						}else if (material != CONTENT_WATERSOURCE && material != CONTENT_LAVASOURCE) {
-							std::string &dug_s = content_features(material).dug_item;
-							if (dug_s != "") {
-								std::istringstream is(dug_s, std::ios::binary);
-								item = InventoryItem::deSerialize(is);
-							}else if (content_features(material).param2_type == CPT_PLANTGROWTH) {
-								ContentFeatures *f = &content_features(material);
-								if (f->draw_type == CDT_PLANTLIKE) {
-									if (p2 && p2 < 8) {
-										if (f->plantgrowth_small_dug_node != CONTENT_IGNORE) {
-											u16 count = 1;
-											if (p2 > 3)
-												count = 2;
-											item = InventoryItem::create(f->plantgrowth_small_dug_node,count,0);
-										}
-									}else{
-										if (f->plantgrowth_large_gives_small) {
-											item = InventoryItem::create(f->plantgrowth_small_dug_node,2,0);
-											player->inventory.addItem("main", item);
-										}
-										u16 count = f->plantgrowth_large_count;
-										if (p2 < 8) {
-											count /= 2;
-										}else if (p2 < 12) {
-											count /= 3;
-										}
-										if (!count)
-											count = 1;
-										item = InventoryItem::create(f->plantgrowth_large_dug_node,count,0);
-									}
-								}else if (f->draw_type == CDT_MELONLIKE) {
-									if (p2) {
-										if (p2 > 4) {
-											u16 count = 1;
-											if (p2 > 11) {
-												count = 3;
-											}else if (p2 > 7) {
-												count = 2;
-											}
-											item = InventoryItem::create(CONTENT_CRAFTITEM_MUSH,count,0);
-											player->inventory.addItem("main", item);
-										}
-										if (f->plantgrowth_small_dug_node != CONTENT_IGNORE)
-											item = InventoryItem::create(f->plantgrowth_small_dug_node,1,0);
-									}else{
-										if (f->plantgrowth_large_gives_small) {
-											item = InventoryItem::create(f->plantgrowth_small_dug_node,1,0);
-											player->inventory.addItem("main", item);
-										}
-										item = InventoryItem::create(f->plantgrowth_large_dug_node,f->plantgrowth_large_count,0);
-									}
-								}
-							}
-						}
-					}else if (material != CONTENT_WATERSOURCE && material != CONTENT_LAVASOURCE) {
-						std::string &dug_s = content_features(material).dug_item;
-						if (dug_s != "") {
-							std::istringstream is(dug_s, std::ios::binary);
-							item = InventoryItem::deSerialize(is);
-						}
-					}
-
-					/* more attempts to stop water/lava being dug */
-					if (
-						material != CONTENT_WATERSOURCE
-						&& material != CONTENT_LAVASOURCE
-						&& material != CONTENT_WATER
-						&& material != CONTENT_LAVA
-					) {
-						bool dosend = false;
-						if (item != NULL) {
-							// Add a item to inventory
-							player->inventory.addItem("main", item);
-
-							// Send inventory
-							dosend = true;
-						}
-
-						item = NULL;
-
-						if (mineral != MINERAL_NONE)
-							item = getDiggedMineralItem(mineral);
-
-						// If not mineral
-						if (item == NULL) {
-							std::string &extra_dug_s = content_features(material).extra_dug_item;
-							s32 extra_rarity = content_features(material).extra_dug_item_rarity;
-							if (extra_dug_s != "" && extra_rarity != 0 && myrand() % extra_rarity == 0) {
-								std::istringstream is(extra_dug_s, std::ios::binary);
-								item = InventoryItem::deSerialize(is);
-							}
-						}
-
-						if (item != NULL) {
-							// Add a item to inventory
-							player->inventory.addItem("main", item);
-
-							// Send inventory
-							dosend = true;
-						}
-						if (dosend) {
-							UpdateCrafting(player->peer_id);
-							SendInventory(player->peer_id);
-						}
+				MapNode a = m_env.getMap().getNodeNoEx(p_under+v3s16(0,1,0));
+				if (a.getContent() == CONTENT_FIRE) {
+					sendRemoveNode(p_under+v3s16(0,1,0), 0, &far_players, 30);
+					{
+						MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+						m_env.getMap().removeNodeAndUpdate(p_under+v3s16(0,1,0), modified_blocks);
 					}
 				}
+			/*
+				Send the removal to all close-by players.
+				- If other player is close, send REMOVENODE
+				- Otherwise set blocks not sent
+			*/
+				sendRemoveNode(p_under, peer_id, &far_players, 30);
+			}
 
-				/*
-					Remove the node
-					(this takes some time so it is done after the quick stuff)
-				*/
-				{
-					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-
-					m_env.getMap().removeNodeAndUpdate(p_under, modified_blocks);
+			if (selected_node_features.ondig_replace_node != CONTENT_IGNORE) {
+				bool will_replace = true;
+				if (selected_node_features.ondig_replace_node_requires != CONTENT_IGNORE) {
+					will_replace = false;
+					v3s16 test_p;
+					MapNode testnode;
+					for(s16 z=-3; !will_replace && z<=3; z++) {
+					for(s16 y=-3; !will_replace && y<=3; y++) {
+					for(s16 x=-3; !will_replace && x<=3; x++) {
+						test_p = p_under + v3s16(x,y,z);
+						testnode = m_env.getMap().getNodeNoEx(test_p);
+						if (testnode.getContent() == selected_node_features.ondig_replace_node_requires) {
+							will_replace = true;
+							break;
+						}
+					}
+					}
+					}
 				}
-				/*
-					Set blocks not sent to far players
-				*/
-				for(core::list<u16>::Iterator
-						i = far_players.begin();
-						i != far_players.end(); i++)
-				{
-					u16 peer_id = *i;
-					RemoteClient *client = getClient(peer_id);
-					if(client==NULL)
-						continue;
-					client->SetBlocksNotSent(modified_blocks);
-				}
-
-				if (content_features(material).ondig_replace_node != CONTENT_IGNORE) {
-					n.setContent(content_features(material).ondig_replace_node);
+				if (will_replace) {
+					MapNode n = selected_node;
+					n.setContent(selected_node_features.ondig_replace_node);
 					core::list<u16> far_players;
 					sendAddNode(p_under, n, 0, &far_players, 30);
-					core::map<v3s16, MapBlock*> modified_blocks;
 					{
 						MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 
@@ -3940,6 +3297,270 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
 					}
 				}
+			}
+
+			/*
+				Update and send inventory
+			*/
+
+			if (g_settings->getBool("infinite_inventory") == false) {
+				/*
+					Wear out tool
+				*/
+				InventoryList *mlist = player->inventory.getList("main");
+				if (mlist != NULL && g_settings->getBool("tool_wear")) {
+					InventoryItem *item = mlist->getItem(item_i);
+					if (item && (std::string)item->getName() == "ToolItem") {
+						ToolItem *titem = (ToolItem*)item;
+						// Get digging properties for material and tool
+						DiggingProperties prop = getDiggingProperties(selected_content, titem->getContent());
+
+						if (prop.diggable == false) {
+							infostream<<"Server: WARNING: Player digged"
+									<<" with impossible material + tool"
+									<<" combination"<<std::endl;
+						}
+
+						if (titem->addWear(prop.wear)) {
+							mlist->deleteItem(item_i);
+						}else{
+							mlist->addDiff(item_i,titem);
+						}
+					}
+				}
+
+				/*
+					Add dug item to inventory
+				*/
+
+				InventoryItem *item = NULL;
+
+				if (selected_content == CONTENT_PARCEL) {
+					NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
+					if (meta) {
+						Inventory *inv = meta->getInventory();
+						if (inv) {
+							InventoryList *l = inv->getList("0");
+							if (l) {
+								for (u32 i=0; i<32; i++) {
+									InventoryItem *itm = l->changeItem(i,NULL);
+									if (!itm)
+										continue;
+									player->inventory.addItem("main", itm);
+								}
+								// Send inventory
+								UpdateCrafting(player->peer_id);
+								SendInventory(player->peer_id);
+							}
+						}
+					}
+				}else if (
+					selected_node_features.ondig_special_drop != CONTENT_IGNORE
+					&& selected_node_features.ondig_special_tool == wielded_tool_features.type
+				) {
+					item = InventoryItem::create(
+						selected_node_features.ondig_special_drop,
+						selected_node_features.ondig_special_drop_count
+					);
+				}else if (selected_node_features.liquid_type != LIQUID_NONE) {
+					if (selected_content == CONTENT_WATERSOURCE && wielded_tool_features.type == TT_BUCKET) {
+						std::string dug_s = std::string("ToolItem ") + ((ToolItem*)wielditem)->getToolName() + "_water 1";
+						std::istringstream is(dug_s, std::ios::binary);
+						item = InventoryItem::deSerialize(is);
+						InventoryItem *ritem = mlist->changeItem(item_i,item);
+						if (ritem)
+							delete ritem;
+						item = NULL;
+						UpdateCrafting(player->peer_id);
+						SendInventory(player->peer_id);
+					}else if (selected_content == CONTENT_LAVASOURCE && wielded_tool_features.type == TT_BUCKET) {
+						if (
+							g_settings->getBool("enable_lavabuckets") == false
+							|| wieldcontent != CONTENT_TOOLITEM_STEELBUCKET
+						) {
+							mlist->deleteItem(item_i);
+							HandlePlayerHP(player,4,0,0);
+						}else{
+							std::string dug_s = std::string("ToolItem ") + ((ToolItem*)wielditem)->getToolName() + "_lava 1";
+							std::istringstream is(dug_s, std::ios::binary);
+							item = InventoryItem::deSerialize(is);
+							InventoryItem *ritem = mlist->changeItem(item_i,item);
+							if (ritem)
+								delete ritem;
+							item = NULL;
+						}
+						UpdateCrafting(player->peer_id);
+						SendInventory(player->peer_id);
+					}
+				}else if (selected_content == CONTENT_SPONGE_FULL && wielded_tool_features.type == TT_BUCKET) {
+					MapNode n = m_env.getMap().getNodeNoEx(p_under);
+					n.setContent(CONTENT_SPONGE);
+
+					core::list<u16> far_players;
+					sendAddNode(p_under, n, 0, &far_players, 30);
+
+					/*
+						Add node.
+
+						This takes some time so it is done after the quick stuff
+					*/
+					core::map<v3s16, MapBlock*> modified_blocks;
+					{
+						MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+
+						std::string p_name = std::string(player->getName());
+						m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
+					}
+					/*
+						Set blocks not sent to far players
+					*/
+					for(core::list<u16>::Iterator
+							i = far_players.begin();
+							i != far_players.end(); i++)
+					{
+						u16 peer_id = *i;
+						RemoteClient *client = getClient(peer_id);
+						if (client==NULL)
+							continue;
+						client->SetBlocksNotSent(modified_blocks);
+					}
+					std::string dug_s = std::string("ToolItem ") + ((ToolItem*)wielditem)->getToolName() + "_water 1";
+					std::istringstream is(dug_s, std::ios::binary);
+					item = InventoryItem::deSerialize(is);
+					InventoryItem *ritem = mlist->changeItem(item_i,item);
+					if (ritem)
+						delete ritem;
+					item = NULL;
+					UpdateCrafting(player->peer_id);
+					SendInventory(player->peer_id);
+					return;
+				}else if (selected_node_features.liquid_type == LIQUID_NONE) {
+					std::string &dug_s = selected_node_features.dug_item;
+					if (dug_s != "") {
+						std::istringstream is(dug_s, std::ios::binary);
+						item = InventoryItem::deSerialize(is);
+					}else if (selected_node_features.param2_type == CPT_PLANTGROWTH) {
+						if (selected_node_features.draw_type == CDT_PLANTLIKE) {
+							if (p2 && p2 < 8) {
+								if (selected_node_features.plantgrowth_small_dug_node != CONTENT_IGNORE) {
+									u16 count = 1;
+									if (p2 > 3)
+										count = 2;
+									item = InventoryItem::create(
+										selected_node_features.plantgrowth_small_dug_node,
+										count
+									);
+								}
+							}else{
+								if (selected_node_features.plantgrowth_large_gives_small) {
+									item = InventoryItem::create(
+										selected_node_features.plantgrowth_small_dug_node,
+										2
+									);
+									player->inventory.addItem("main", item);
+								}
+								u16 count = selected_node_features.plantgrowth_large_count;
+								if (p2 < 8) {
+									count /= 2;
+								}else if (p2 < 12) {
+									count /= 3;
+								}
+								if (!count)
+									count = 1;
+								item = InventoryItem::create(
+									selected_node_features.plantgrowth_large_dug_node,
+									count
+								);
+							}
+						}else if (selected_node_features.draw_type == CDT_MELONLIKE) {
+							if (p2) {
+								if (p2 > 4) {
+									u16 count = 1;
+									if (p2 > 11) {
+										count = 3;
+									}else if (p2 > 7) {
+										count = 2;
+									}
+									item = InventoryItem::create(CONTENT_CRAFTITEM_MUSH,count,0);
+									player->inventory.addItem("main", item);
+								}
+								if (selected_node_features.plantgrowth_small_dug_node != CONTENT_IGNORE)
+									item = InventoryItem::create(
+										selected_node_features.plantgrowth_small_dug_node,
+										1
+									);
+							}else{
+								if (selected_node_features.plantgrowth_large_gives_small) {
+									item = InventoryItem::create(
+										selected_node_features.plantgrowth_small_dug_node,
+										1
+									);
+									player->inventory.addItem("main", item);
+								}
+								item = InventoryItem::create(
+									selected_node_features.plantgrowth_large_dug_node,
+									selected_node_features.plantgrowth_large_count
+								);
+							}
+						}
+					}
+				}
+
+				bool dosend = false;
+				if (item != NULL) {
+					// Add a item to inventory
+					player->inventory.addItem("main", item);
+
+					// Send inventory
+					dosend = true;
+				}
+
+				item = NULL;
+
+				if (mineral != MINERAL_NONE)
+					item = getDiggedMineralItem(mineral);
+
+				// If not mineral
+				if (item == NULL) {
+					std::string &extra_dug_s = selected_node_features.extra_dug_item;
+					s32 extra_rarity = selected_node_features.extra_dug_item_rarity;
+					if (extra_dug_s != "" && extra_rarity != 0 && myrand() % extra_rarity == 0) {
+						std::istringstream is(extra_dug_s, std::ios::binary);
+						item = InventoryItem::deSerialize(is);
+					}
+				}
+
+				if (item != NULL) {
+					// Add a item to inventory
+					player->inventory.addItem("main", item);
+
+					// Send inventory
+					dosend = true;
+				}
+				if (dosend) {
+					UpdateCrafting(player->peer_id);
+					SendInventory(player->peer_id);
+				}
+			}
+
+			/*
+				Remove the node
+				(this takes some time so it is done after the quick stuff)
+			*/
+			{
+				MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+
+				m_env.getMap().removeNodeAndUpdate(p_under, modified_blocks);
+			}
+			/*
+				Set blocks not sent to far players
+			*/
+			for (core::list<u16>::Iterator i = far_players.begin(); i != far_players.end(); i++) {
+				u16 peer_id = *i;
+				RemoteClient *client = getClient(peer_id);
+				if(client==NULL)
+					continue;
+				client->SetBlocksNotSent(modified_blocks);
 			}
 		}
 
@@ -3950,65 +3571,26 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		{
 			v3s16 p_dir = p_under - p_over;
 			InventoryList *ilist = player->inventory.getList("main");
-			if(ilist == NULL)
+			if (ilist == NULL)
 				return;
 
 			// Get item
 			InventoryItem *item = ilist->getItem(item_i);
 
 			// If there is no item, it is not possible to add it anywhere
-			if(item == NULL)
+			if (item == NULL)
 				return;
 
-			s16 max_d = g_settings->getS16("borderstone_radius");
-			v3s16 test_p;
-			MapNode testnode;
-			for(s16 z=-max_d; z<=max_d; z++) {
-			for(s16 y=-max_d; y<=max_d; y++) {
-			for(s16 x=-max_d; x<=max_d; x++) {
-				test_p = p_over + v3s16(x,y,z);
-				NodeMetadata *meta = m_env.getMap().getNodeMetadata(test_p);
-				if (meta && meta->typeId() == CONTENT_BORDERSTONE) {
-					BorderStoneNodeMetadata *bsm = (BorderStoneNodeMetadata*)meta;
-					if (bsm->getOwner() != player->getName())
-						return;
-				}
-			}
-			}
-			}
+			if (borderstone_locked)
+				return;
 
 			/*
 				Handle material items
 			*/
-			if(std::string("MaterialItem") == item->getName())
-			{
-				try{
-					// Don't add a node if this is not a free space
-					MapNode n2 = m_env.getMap().getNode(p_over);
-					bool no_enough_privs =
-							((getPlayerPrivs(player) & PRIV_BUILD)==0);
-					if(no_enough_privs)
-						infostream<<"Player "<<player->getName()<<" cannot add node"
-							<<" because privileges are "<<getPlayerPrivs(player)
-							<<std::endl;
-
-					if(content_features(n2).buildable_to == false
-						|| no_enough_privs)
-					{
-						// Client probably has wrong data.
-						// Set block not sent, so that client will get
-						// a valid one.
-						infostream<<"Client "<<peer_id<<" tried to place"
-								<<" node in invalid position; setting"
-								<<" MapBlock not sent."<<std::endl;
-						RemoteClient *client = getClient(peer_id);
-						v3s16 blockpos = getNodeBlockPos(p_over);
-						client->SetBlockNotSent(blockpos);
-						return;
-					}
-				}
-				catch(InvalidPositionException &e)
-				{
+			if (std::string("MaterialItem") == item->getName()) {
+				bool replaced_node_exists = false;
+				MapNode replaced_node = m_env.getMap().getNodeNoEx(p_over,&replaced_node_exists);
+				if (!replaced_node_exists) {
 					infostream<<"Server: Ignoring ADDNODE: Node not found"
 							<<" Adding block to emerge queue."
 							<<std::endl;
@@ -4017,16 +3599,37 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					return;
 				}
 
+				content_t replaced_content = replaced_node.getContent();
+				ContentFeatures &replaced_node_features = content_features(replaced_content);
+
+				if ((getPlayerPrivs(player)&PRIV_BUILD) == 0) {
+					infostream<<"Player "<<player->getName()<<" cannot add node"
+						<<" because privileges are "<<getPlayerPrivs(player)
+						<<std::endl;
+					return;
+				}
+
+				if (!replaced_node_features.buildable_to) {
+					// Client probably has wrong data.
+					// Set block not sent, so that client will get
+					// a valid one.
+					infostream<<"Client "<<peer_id<<" tried to place"
+							<<" node in invalid position; setting"
+							<<" MapBlock not sent."<<std::endl;
+					RemoteClient *client = getClient(peer_id);
+					v3s16 blockpos = getNodeBlockPos(p_over);
+					client->SetBlockNotSent(blockpos);
+					return;
+				}
+
 				// Reset build time counter
 				getClient(peer_id)->m_time_from_building = 0.0;
 
-				// Create node data
-				MaterialItem *mitem = (MaterialItem*)item;
-				MapNode n;
-				n.setContent(mitem->getMaterial());
+				// the node type
+				content_t addedcontent = wieldcontent;
 
 				// don't allow borderstone to be place near another player's borderstone
-				if (n.getContent() == CONTENT_BORDERSTONE) {
+				if (wieldcontent == CONTENT_BORDERSTONE) {
 					s16 max_d = g_settings->getS16("borderstone_radius")*2;
 					v3s16 test_p;
 					MapNode testnode;
@@ -4043,55 +3646,55 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					}
 					}
 					}
-				}
-
-				actionstream<<player->getName()<<" places material "
-						<<(int)mitem->getMaterial()
-						<<" at "<<PP(p_under)<<std::endl;
-
 				// Stairs and Slabs special functions
-				if (n.getContent() >= CONTENT_SLAB_STAIR_MIN && n.getContent() <= CONTENT_SLAB_STAIR_UD_MAX) {
+				}else if (addedcontent >= CONTENT_SLAB_STAIR_MIN && addedcontent <= CONTENT_SLAB_STAIR_UD_MAX) {
 					MapNode abv = m_env.getMap().getNodeNoEx(p_over+p_dir);
+					// Make a cube if two slabs of the same type are stacked on each other
+					if (
+						p_dir.X == 0
+						&& p_dir.Z == 0
+						&& wielded_material_features.special_alternate_node != CONTENT_IGNORE
+						&& abv.getContent() >= CONTENT_SLAB_STAIR_MIN
+						&& abv.getContent() <= CONTENT_SLAB_STAIR_UD_MAX
+						&& wielded_material_features.special_alternate_node == content_features(abv).special_alternate_node
+					) {
+						addedcontent = wielded_material_features.special_alternate_node;
+						p_over += p_dir;
 					// Flip it upside down if it's being placed on the roof
 					// or if placing against an upside down node
-					if (
+					}else if (
 						p_dir.Y == 1
 						|| (
 							abv.getContent() >= CONTENT_SLAB_STAIR_UD_MIN
 							&& abv.getContent() <= CONTENT_SLAB_STAIR_UD_MAX
 						)
 					) {
-						n.setContent(n.getContent()|CONTENT_SLAB_STAIR_FLIP);
-					}
-					// Make a cube if two slabs of the same type are stacked on each other
-					if (
-						p_dir.X == 0
-						&& p_dir.Z == 0
-						&& content_features(n).special_alternate_node != CONTENT_IGNORE
-						&& abv.getContent() >= CONTENT_SLAB_STAIR_MIN
-						&& abv.getContent() <= CONTENT_SLAB_STAIR_UD_MAX
-						&& content_features(n).special_alternate_node == content_features(abv).special_alternate_node
-					) {
-						n.setContent(content_features(n).special_alternate_node);
-						p_over += p_dir;
+						addedcontent |= CONTENT_SLAB_STAIR_FLIP;
 					}
 				// roof mount
 				}else if (p_dir.Y == 1) {
-					if (content_features(n).roofmount_alternate_node != CONTENT_IGNORE)
-						n.setContent(content_features(n).roofmount_alternate_node);
+					if (wielded_material_features.roofmount_alternate_node != CONTENT_IGNORE)
+						addedcontent = wielded_material_features.roofmount_alternate_node;
 				// floor mount
 				}else if (p_dir.Y == -1){
-					if (content_features(n).floormount_alternate_node != CONTENT_IGNORE)
-						n.setContent(content_features(n).floormount_alternate_node);
+					if (wielded_material_features.floormount_alternate_node != CONTENT_IGNORE)
+						addedcontent = wielded_material_features.floormount_alternate_node;
 				// wall mount
 				}else{
-					if (content_features(n).wallmount_alternate_node != CONTENT_IGNORE)
-						n.setContent(content_features(n).wallmount_alternate_node);
+					if (wielded_material_features.wallmount_alternate_node != CONTENT_IGNORE)
+						addedcontent = wielded_material_features.wallmount_alternate_node;
 				}
 
+				actionstream<<player->getName()<<" places material "
+						<<(int)addedcontent
+						<<" at "<<PP(p_under)<<std::endl;
+
+				// Create node data
+				MapNode n(addedcontent);
+				ContentFeatures &added_content_features = content_features(addedcontent);
 
 				// Calculate the direction for directional and wall mounted nodes
-				if (content_features(n).param2_type == CPT_FACEDIR_SIMPLE) {
+				if (added_content_features.param2_type == CPT_FACEDIR_SIMPLE) {
 					v3f playerpos = player->getPosition();
 					v3f blockpos = intToFloat(p_over, BS) - playerpos;
 					blockpos = blockpos.normalize();
@@ -4107,7 +3710,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						else
 							n.param2 |= 0x00;
 					}
-				}else if (content_features(n).param_type == CPT_FACEDIR_SIMPLE) {
+				}else if (added_content_features.param_type == CPT_FACEDIR_SIMPLE) {
 					v3f playerpos = player->getPosition();
 					v3f blockpos = intToFloat(p_over, BS) - playerpos;
 					blockpos = blockpos.normalize();
@@ -4123,17 +3726,17 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						else
 							n.param1 = 0;
 					}
-				}else if (content_features(n).param2_type == CPT_FACEDIR_WALLMOUNT) {
+				}else if (added_content_features.param2_type == CPT_FACEDIR_WALLMOUNT) {
 					n.param2 &= 0xF0;
 					u8 pd = packDir(p_under - p_over);
 					n.param2 |= (pd&0x0F);
-				}else if (content_features(n).param_type == CPT_FACEDIR_WALLMOUNT) {
+				}else if (added_content_features.param_type == CPT_FACEDIR_WALLMOUNT) {
 					n.param1 = packDir(p_under - p_over);
 				}
 
 				core::list<u16> far_players;
 				core::map<v3s16, MapBlock*> modified_blocks;
-				if (n.getContent() >= CONTENT_BED_MIN && n.getContent() <= CONTENT_BED_MAX) {
+				if (addedcontent >= CONTENT_BED_MIN && addedcontent <= CONTENT_BED_MAX) {
 					v3s16 p_foot = v3s16(0,0,0);
 					u8 d = n.param2&0x0F;
 					switch (d) {
@@ -4153,10 +3756,10 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					MapNode foot = m_env.getMap().getNodeNoEx(p_over+p_foot);
 					if (!content_features(foot).buildable_to)
 						return;
-					foot.setContent(n.getContent());
+					foot.setContent(addedcontent);
 					foot.param2 &= 0xF0;
 					foot.param2 |= d;
-					n.setContent(n.getContent()|CONTENT_BED_FOOT_MASK);
+					n.setContent(addedcontent|CONTENT_BED_FOOT_MASK);
 					sendAddNode(p_over+p_foot, foot, 0, &far_players, 30);
 					{
 						MapEditEventIgnorer ign(&m_ignore_map_edit_events);
@@ -4164,19 +3767,17 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						std::string p_name = std::string(player->getName());
 						m_env.getMap().addNodeAndUpdate(p_over+p_foot, foot, modified_blocks, p_name);
 					}
-				}
-
-				if (
-					n.getContent() >= CONTENT_DOOR_MIN
-					&& n.getContent() <= CONTENT_DOOR_MAX
-					&& (n.getContent()&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK
+				}else if (
+					addedcontent >= CONTENT_DOOR_MIN
+					&& addedcontent <= CONTENT_DOOR_MAX
+					&& (addedcontent&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK
 				) {
 					MapNode abv = m_env.getMap().getNodeNoEx(p_over+v3s16(0,1,0));
 					MapNode und = m_env.getMap().getNodeNoEx(p_over+v3s16(0,-1,0));
 					if (abv.getContent() == CONTENT_AIR) {
-						n.setContent(n.getContent()&~CONTENT_DOOR_SECT_MASK);
+						n.setContent(addedcontent&~CONTENT_DOOR_SECT_MASK);
 						MapNode m;
-						m.setContent(n.getContent()|CONTENT_DOOR_SECT_MASK);
+						m.setContent(addedcontent|CONTENT_DOOR_SECT_MASK);
 						m.param1 = n.param1;
 						m.param2 |= n.param2&0x0F;
 						sendAddNode(p_over+v3s16(0,1,0), m, 0, &far_players, 30);
@@ -4187,9 +3788,9 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							m_env.getMap().addNodeAndUpdate(p_over+v3s16(0,1,0), m, modified_blocks, p_name);
 						}
 					}else if (und.getContent() == CONTENT_AIR) {
-						n.setContent(n.getContent()|CONTENT_DOOR_SECT_MASK);
+						n.setContent(addedcontent|CONTENT_DOOR_SECT_MASK);
 						MapNode m;
-						m.setContent(n.getContent()&~CONTENT_DOOR_SECT_MASK);
+						m.setContent(addedcontent&~CONTENT_DOOR_SECT_MASK);
 						m.param1 = n.param1;
 						m.param2 |= n.param2&0x0F;
 						sendAddNode(p_over+v3s16(0,-1,0), m, 0, &far_players, 30);
@@ -4223,11 +3824,11 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				InventoryList *ilist = player->inventory.getList("main");
 				if(g_settings->getBool("infinite_inventory") == false && ilist) {
 					// Remove from inventory and send inventory
-					if (mitem->getCount() == 1) {
+					if (wielditem->getCount() == 1) {
 						ilist->deleteItem(item_i);
 					}else{
-						mitem->remove(1);
-						ilist->addDiff(item_i,mitem);
+						wielditem->remove(1);
+						ilist->addDiff(item_i,wielditem);
 					}
 					// Send inventory
 					UpdateCrafting(peer_id);
@@ -4273,38 +3874,10 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 					}
 				}*/
-			}else if (
-				item->getContent() == CONTENT_TOOLITEM_WBUCKET_WATER
-				|| item->getContent() == CONTENT_TOOLITEM_STEELBUCKET_WATER
-				|| item->getContent() == CONTENT_TOOLITEM_STEELBUCKET_LAVA
-				|| item->getContent() == CONTENT_TOOLITEM_TINBUCKET_WATER
-			) {
-				MapNode n;
-				try{
-					// Don't add a node if this is not a free space
-					n = m_env.getMap().getNode(p_over);
-					bool no_enough_privs =
-							((getPlayerPrivs(player) & PRIV_BUILD)==0);
-					if(no_enough_privs)
-						infostream<<"Player "<<player->getName()<<" cannot add node"
-							<<" because privileges are "<<getPlayerPrivs(player)
-							<<std::endl;
-
-					if (content_features(n).buildable_to == false || no_enough_privs) {
-						// Client probably has wrong data.
-						// Set block not sent, so that client will get
-						// a valid one.
-						infostream<<"Client "<<peer_id<<" tried to place"
-								<<" node in invalid position; setting"
-								<<" MapBlock not sent."<<std::endl;
-						RemoteClient *client = getClient(peer_id);
-						v3s16 blockpos = getNodeBlockPos(p_over);
-						client->SetBlockNotSent(blockpos);
-						return;
-					}
-				}
-				catch(InvalidPositionException &e)
-				{
+			}else if (wielded_tool_features.onplace_node != CONTENT_IGNORE) {
+				bool replaced_node_exists = false;
+				MapNode replaced_node = m_env.getMap().getNodeNoEx(p_over,&replaced_node_exists);
+				if (!replaced_node_exists) {
 					infostream<<"Server: Ignoring ADDNODE: Node not found"
 							<<" Adding block to emerge queue."
 							<<std::endl;
@@ -4312,109 +3885,80 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							getNodeBlockPos(p_over), BLOCK_EMERGE_FLAG_FROMDISK);
 					return;
 				}
-				if (
-					item->getContent() == CONTENT_TOOLITEM_WBUCKET_WATER
-					|| item->getContent() == CONTENT_TOOLITEM_STEELBUCKET_WATER
-					|| item->getContent() == CONTENT_TOOLITEM_TINBUCKET_WATER
-				) {
-					if (ilist != NULL) {
-						if (g_settings->getBool("infinite_inventory") == false) {
-							std::string dug_s = std::string("ToolItem ");
-							if (item->getContent() == CONTENT_TOOLITEM_WBUCKET_WATER) {
-								dug_s += "WBucket 1";
-							}else if (item->getContent() == CONTENT_TOOLITEM_TINBUCKET_WATER) {
-								dug_s += "TinBucket 1";
-							}else{
-								dug_s += "SteelBucket 1";
-							}
-							std::istringstream is(dug_s, std::ios::binary);
-							InventoryItem *item = InventoryItem::deSerialize(is);
-							ilist->changeItem(item_i,item);
-							UpdateCrafting(player->peer_id);
-							SendInventory(player->peer_id);
-						}
-						n.setContent(CONTENT_WATERSOURCE);
-						core::list<u16> far_players;
-						sendAddNode(p_over, n, 0, &far_players, 30);
 
-						/*
-							Add node.
+				content_t replaced_content = replaced_node.getContent();
+				ContentFeatures &replaced_node_features = content_features(replaced_content);
 
-							This takes some time so it is done after the quick stuff
-						*/
-						core::map<v3s16, MapBlock*> modified_blocks;
-						{
-							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+				if ((getPlayerPrivs(player)&PRIV_BUILD) == 0) {
+					infostream<<"Player "<<player->getName()<<" cannot add node"
+						<<" because privileges are "<<getPlayerPrivs(player)
+						<<std::endl;
+					return;
+				}
 
-							std::string p_name = std::string(player->getName());
-							m_env.getMap().addNodeAndUpdate(p_over, n, modified_blocks, p_name);
-						}
-						/*
-							Set blocks not sent to far players
-						*/
-						for(core::list<u16>::Iterator
-								i = far_players.begin();
-								i != far_players.end(); i++)
-						{
-							u16 peer_id = *i;
-							RemoteClient *client = getClient(peer_id);
-							if(client==NULL)
-								continue;
-							client->SetBlocksNotSent(modified_blocks);
-						}
+				if (!replaced_node_features.buildable_to) {
+					// Client probably has wrong data.
+					// Set block not sent, so that client will get
+					// a valid one.
+					infostream<<"Client "<<peer_id<<" tried to place"
+							<<" node in invalid position; setting"
+							<<" MapBlock not sent."<<std::endl;
+					RemoteClient *client = getClient(peer_id);
+					v3s16 blockpos = getNodeBlockPos(p_over);
+					client->SetBlockNotSent(blockpos);
+					return;
+				}
+
+				if (g_settings->getBool("infinite_inventory") == false) {
+					if (wielded_tool_features.onplace_replace_item != CONTENT_IGNORE) {
+						u16 wear = ((ToolItem*)wielditem)->getWear();
+						InventoryItem *item = InventoryItem::create(
+							wielded_tool_features.onplace_replace_item,
+							1,
+							wear
+						);
+						InventoryItem *citem = ilist->changeItem(item_i,item);
+						if (citem)
+							delete citem;
+					}else{
+						ilist->deleteItem(item_i);
 					}
-				}else if (item->getContent() == CONTENT_TOOLITEM_STEELBUCKET_LAVA) {
-					if (ilist != NULL) {
-						if (g_settings->getBool("enable_lavabuckets")) {
-							if (g_settings->getBool("infinite_inventory") == false) {
-								std::string dug_s = std::string("ToolItem SteelBucket 1");
-								std::istringstream is(dug_s, std::ios::binary);
-								InventoryItem *item = InventoryItem::deSerialize(is);
-								ilist->changeItem(item_i,item);
-								UpdateCrafting(player->peer_id);
-								SendInventory(player->peer_id);
-							}
-							n.setContent(CONTENT_LAVASOURCE);
-							core::list<u16> far_players;
-							sendAddNode(p_over, n, 0, &far_players, 30);
+					UpdateCrafting(player->peer_id);
+					SendInventory(player->peer_id);
+				}
 
-							/*
-								Add node.
+				MapNode n(wielded_tool_features.onplace_node);
+				core::list<u16> far_players;
+				sendAddNode(p_over, n, 0, &far_players, 30);
 
-								This takes some time so it is done after the quick stuff
-							*/
-							core::map<v3s16, MapBlock*> modified_blocks;
-							{
-								MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+				/*
+					Add node.
 
-								std::string p_name = std::string(player->getName());
-								m_env.getMap().addNodeAndUpdate(p_over, n, modified_blocks, p_name);
-							}
-							/*
-								Set blocks not sent to far players
-							*/
-							for(core::list<u16>::Iterator
-									i = far_players.begin();
-									i != far_players.end(); i++)
-							{
-								u16 peer_id = *i;
-								RemoteClient *client = getClient(peer_id);
-								if(client==NULL)
-									continue;
-								client->SetBlocksNotSent(modified_blocks);
-							}
-						}else{
-							ilist->deleteItem(item_i);
-							HandlePlayerHP(player,4,0,0);
-							UpdateCrafting(player->peer_id);
-							SendInventory(player->peer_id);
-						}
-					}
+					This takes some time so it is done after the quick stuff
+				*/
+				core::map<v3s16, MapBlock*> modified_blocks;
+				{
+					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+
+					std::string p_name = std::string(player->getName());
+					m_env.getMap().addNodeAndUpdate(p_over, n, modified_blocks, p_name);
+				}
+				/*
+					Set blocks not sent to far players
+				*/
+				for(core::list<u16>::Iterator
+						i = far_players.begin();
+						i != far_players.end(); i++)
+				{
+					u16 peer_id = *i;
+					RemoteClient *client = getClient(peer_id);
+					if(client==NULL)
+						continue;
+					client->SetBlocksNotSent(modified_blocks);
 				}
 			}else if (
-				(item->getContent()&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK
-				&& content_craftitem_features(item->getContent()).drop_item != CONTENT_IGNORE
-				&& (content_craftitem_features(item->getContent()).drop_item&CONTENT_MOB_MASK) != CONTENT_MOB_MASK
+				wielded_craft_features.drop_item != CONTENT_IGNORE
+				&& (wielded_craft_features.drop_item&CONTENT_MOB_MASK) != CONTENT_MOB_MASK
 			) {
 				if ((getPlayerPrivs(player) & PRIV_BUILD) == 0) {
 					infostream<<"Not allowing player to drop item: "
@@ -4472,8 +4016,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						continue;
 					client->SetBlocksNotSent(modified_blocks);
 				}
-			}else if (content_craftitem_features(item->getContent()).teleports > -2) {
-				s8 dest = content_craftitem_features(item->getContent()).teleports;
+			}else if (wielded_craft_features.teleports > -2) {
+				s8 dest = wielded_craft_features.teleports;
 				/*
 					If in creative mode, item dropping is disabled unless
 					player has build privileges
@@ -4598,8 +4142,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		/*
 			Catch invalid actions
 		*/
-		else
-		{
+		else{
 			infostream<<"WARNING: Server: Invalid action "
 					<<action<<std::endl;
 		}

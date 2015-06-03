@@ -181,6 +181,15 @@ float MaterialItem::getFuelTime() const
 	return content_features(m_content).fuel_time;
 }
 
+bool MaterialItem::use(ServerEnvironment *env, Player *player)
+{
+	content_t n = content_features(m_content).onuse_replace_node;
+	if (n != CONTENT_IGNORE) {
+		m_content = n;
+	}
+	return false;
+}
+
 /*
 	CraftItem
 */
@@ -247,10 +256,11 @@ float CraftItem::getFuelTime() const
 	return content_craftitem_features(m_content).fuel_time;
 }
 
+/* TODO: rewrite, completely, pretty much */
 bool CraftItem::use(ServerEnvironment *env, Player *player)
 {
+	u16 count = getCount();
 	if (content_craftitem_features(m_content).edible) {
-		u16 result_count = getCount() - 1; // Eat one at a time
 		s16 hp_change = content_craftitem_features(m_content).edible;
 		if (hp_change) {
 			if (player->hunger < 20) {
@@ -271,9 +281,15 @@ bool CraftItem::use(ServerEnvironment *env, Player *player)
 			}
 		}
 
-		if (result_count < 1)
-			return true;
-		setCount(result_count);
+		if (content_craftitem_features(m_content).onuse_replace_item == CONTENT_IGNORE) {
+			count --;
+			if (count < 1)
+				return true;
+			setCount(count);
+		}
+	}
+	if (content_craftitem_features(m_content).onuse_replace_item != CONTENT_IGNORE) {
+		m_content = content_craftitem_features(m_content).onuse_replace_item;
 	}
 	return false;
 }

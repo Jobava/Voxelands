@@ -38,6 +38,8 @@ struct CraftItemFeatures {
 	std::string cook_result;
 	// the fuel value of this item
 	float fuel_time;
+	// whether the item can be stacked in inventory
+	bool stackable;
 	// 0 if inedible, otherwise the value it improves hp by
 	s16 edible;
 	// the number dropped on right click, -1 for all
@@ -51,6 +53,8 @@ struct CraftItemFeatures {
 	content_t thrown_item;
 	// used by arrows and such... things that are shot by a tool
 	content_t shot_item;
+	// when the item is Used, it should be replaced with this
+	content_t onuse_replace_item;
 
 	CraftItemFeatures():
 		content(CONTENT_IGNORE),
@@ -59,12 +63,14 @@ struct CraftItemFeatures {
 		description(L""),
 		cook_result(""),
 		fuel_time(0.0),
+		stackable(false),
 		edible(0),
 		drop_count(-1),
 		teleports(-2),
 		drop_item(CONTENT_IGNORE),
 		thrown_item(CONTENT_IGNORE),
-		shot_item(CONTENT_IGNORE)
+		shot_item(CONTENT_IGNORE),
+		onuse_replace_item(CONTENT_IGNORE)
 	{}
 };
 

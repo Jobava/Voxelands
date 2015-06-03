@@ -214,6 +214,9 @@ public:
 	InventoryItem *createCookResult() const;
 	virtual bool isFuel() const;
 	virtual float getFuelTime() const;
+
+	bool use(ServerEnvironment *env, Player *player);
+
 	/*
 		Special methods
 	*/

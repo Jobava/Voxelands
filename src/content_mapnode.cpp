@@ -399,6 +399,7 @@ void content_mapnode_init(bool repeat)
 	f->sound_step = "grass-step";
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
+	f->farm_ploughable = true;
 	lists::add("decrafting",i);
 
 	i = CONTENT_GRASS_FOOTSTEPS;
@@ -413,6 +414,7 @@ void content_mapnode_init(bool repeat)
 	f->sound_step = "grass-step";
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
+	f->farm_ploughable = true;
 
 	i = CONTENT_MUDSNOW;
 	f = &content_features(i);
@@ -440,6 +442,7 @@ void content_mapnode_init(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
+	f->farm_ploughable = true;
 	lists::add("creative",i);
 
 	i = CONTENT_ASH;

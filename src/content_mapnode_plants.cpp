@@ -52,6 +52,9 @@ void content_mapnode_plants(bool repeat)
 	f->fuel_time = 30;
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
+	f->ondig_special_drop = CONTENT_WOOD;
+	f->ondig_special_drop_count = 6;
+	f->ondig_special_tool = TT_AXE;
 	lists::add("creative",i);
 	lists::add("cooking",i);
 
@@ -70,6 +73,9 @@ void content_mapnode_plants(bool repeat)
 	f->fuel_time = 30;
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
+	f->ondig_special_drop = CONTENT_WOOD;
+	f->ondig_special_drop_count = 6;
+	f->ondig_special_tool = TT_AXE;
 	lists::add("creative",i);
 	lists::add("cooking",i);
 
@@ -87,6 +93,9 @@ void content_mapnode_plants(bool repeat)
 	f->fuel_time = 30;
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
+	f->ondig_special_drop = CONTENT_JUNGLEWOOD;
+	f->ondig_special_drop_count = 6;
+	f->ondig_special_tool = TT_AXE;
 	lists::add("creative",i);
 
 	i = CONTENT_CONIFER_TREE;
@@ -104,6 +113,9 @@ void content_mapnode_plants(bool repeat)
 	f->fuel_time = 25;
 	f->type = CMT_WOOD;
 	f->hardness = 0.8;
+	f->ondig_special_drop = CONTENT_WOOD_PINE;
+	f->ondig_special_drop_count = 6;
+	f->ondig_special_tool = TT_AXE;
 	lists::add("creative",i);
 	lists::add("cooking",i);
 

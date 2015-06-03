@@ -1056,6 +1056,7 @@ void content_mapnode_special(bool repeat)
 	f->hardness = 0.1;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
+	f->alternate_lockstate_node = CONTENT_LOCKABLE_SIGN_WALL;
 	content_nodebox_sign_wall(f);
 	f->setFaceText(5,FaceText(0.05,0.3,0.95,0.7));
 
@@ -1083,6 +1084,7 @@ void content_mapnode_special(bool repeat)
 	f->hardness = 0.1;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
+	f->alternate_lockstate_node = CONTENT_LOCKABLE_SIGN;
 	content_nodebox_sign(f);
 	f->setFaceText(5,FaceText(0.05,0.0675,0.95,0.55));
 	f->setInventoryTextureNodeBox(i,"sign.png", "sign_front.png", "sign.png");
@@ -1116,6 +1118,7 @@ void content_mapnode_special(bool repeat)
 	f->hardness = 0.1;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
+	f->alternate_lockstate_node = CONTENT_LOCKABLE_SIGN_UD;
 	content_nodebox_sign_ud(f);
 	f->setFaceText(5,FaceText(0.05,0.45,0.95,0.8875));
 	f->setInventoryTextureNodeBox(i,"sign.png", "sign_front.png", "sign.png");
@@ -1146,6 +1149,7 @@ void content_mapnode_special(bool repeat)
 	f->hardness = 0.1;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
+	f->alternate_lockstate_node = CONTENT_SIGN_WALL;
 	content_nodebox_sign_wall(f);
 	f->setFaceText(4,FaceText(0.05,0.3,0.95,0.7,FTT_OWNER));
 	f->setFaceText(5,FaceText(0.05,0.3,0.95,0.7));
@@ -1174,6 +1178,7 @@ void content_mapnode_special(bool repeat)
 	f->hardness = 0.1;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
+	f->alternate_lockstate_node = CONTENT_SIGN;
 	content_nodebox_sign(f);
 	f->setFaceText(4,FaceText(0.05,0.0675,0.95,0.55,FTT_OWNER));
 	f->setFaceText(5,FaceText(0.05,0.0675,0.95,0.55));
@@ -1206,6 +1211,7 @@ void content_mapnode_special(bool repeat)
 	f->hardness = 0.1;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
+	f->alternate_lockstate_node = CONTENT_SIGN_UD;
 	content_nodebox_sign_ud(f);
 	f->setFaceText(4,FaceText(0.05,0.45,0.95,0.8875,FTT_OWNER));
 	f->setFaceText(5,FaceText(0.05,0.45,0.95,0.8875));
@@ -1229,6 +1235,7 @@ void content_mapnode_special(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
 	f->pressure_type = CST_SOLID;
+	f->alternate_lockstate_node = CONTENT_LOCKABLE_CHEST;
 	crafting::setRoundRecipe(CONTENT_WOOD,CONTENT_CHEST);
 	crafting::setRoundRecipe(CONTENT_JUNGLEWOOD,CONTENT_CHEST);
 	lists::add("craftguide",i);
@@ -1273,6 +1280,7 @@ void content_mapnode_special(bool repeat)
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;
 	f->pressure_type = CST_SOLID;
+	f->alternate_lockstate_node = CONTENT_CHEST;
 	crafting::setFilledRoundRecipe(CONTENT_WOOD,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_LOCKABLE_CHEST);
 	crafting::setFilledRoundRecipe(CONTENT_JUNGLEWOOD,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_LOCKABLE_CHEST);
 	crafting::set1Any2Recipe(CONTENT_CHEST,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_LOCKABLE_CHEST);
@@ -1323,6 +1331,7 @@ void content_mapnode_special(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 3.0;
 	f->pressure_type = CST_SOLID;
+	f->alternate_lockstate_node = CONTENT_LOCKABLE_FURNACE;
 	crafting::setRoundRecipe(CONTENT_ROUGHSTONE,CONTENT_FURNACE);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -1362,6 +1371,7 @@ void content_mapnode_special(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 3.0;
 	f->pressure_type = CST_SOLID;
+	f->alternate_lockstate_node = CONTENT_FURNACE;
 	crafting::setFilledRoundRecipe(CONTENT_ROUGHSTONE,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_LOCKABLE_FURNACE);
 	crafting::set1Any2Recipe(CONTENT_FURNACE,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_LOCKABLE_FURNACE);
 	lists::add("craftguide",i);
