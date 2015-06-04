@@ -3365,34 +3365,27 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						selected_node_features.ondig_special_drop_count
 					);
 				}else if (selected_node_features.liquid_type != LIQUID_NONE) {
-					if (selected_content == CONTENT_WATERSOURCE && wielded_tool_features.type == TT_BUCKET) {
-						std::string dug_s = std::string("ToolItem ") + ((ToolItem*)wielditem)->getToolName() + "_water 1";
-						std::istringstream is(dug_s, std::ios::binary);
-						item = InventoryItem::deSerialize(is);
-						InventoryItem *ritem = mlist->changeItem(item_i,item);
-						if (ritem)
-							delete ritem;
-						item = NULL;
-						UpdateCrafting(player->peer_id);
-						SendInventory(player->peer_id);
-					}else if (selected_content == CONTENT_LAVASOURCE && wielded_tool_features.type == TT_BUCKET) {
-						if (
-							g_settings->getBool("enable_lavabuckets") == false
-							|| wieldcontent != CONTENT_TOOLITEM_STEELBUCKET
-						) {
+					if (selected_node_features.liquid_type == LIQUID_SOURCE && wielded_tool_features.type == TT_BUCKET) {
+						if (selected_node_features.damage_per_second > 0 && !wielded_tool_features.damaging_nodes_diggable) {
 							mlist->deleteItem(item_i);
+							UpdateCrafting(player->peer_id);
+							SendInventory(player->peer_id);
 							HandlePlayerHP(player,4,0,0);
+							return;
 						}else{
-							std::string dug_s = std::string("ToolItem ") + ((ToolItem*)wielditem)->getToolName() + "_lava 1";
+							std::string dug_s = std::string("ToolItem ");
+							dug_s += ((ToolItem*)wielditem)->getToolName();
+							dug_s += selected_node_features.dug_item;
+							dug_s += " 1";
 							std::istringstream is(dug_s, std::ios::binary);
 							item = InventoryItem::deSerialize(is);
 							InventoryItem *ritem = mlist->changeItem(item_i,item);
 							if (ritem)
 								delete ritem;
 							item = NULL;
+							UpdateCrafting(player->peer_id);
+							SendInventory(player->peer_id);
 						}
-						UpdateCrafting(player->peer_id);
-						SendInventory(player->peer_id);
 					}
 				}else if (selected_content == CONTENT_SPONGE_FULL && wielded_tool_features.type == TT_BUCKET) {
 					MapNode n = m_env.getMap().getNodeNoEx(p_under);

@@ -2142,7 +2142,7 @@ void content_mapnode_init(bool repeat)
 	f->pointable = false;
 	f->buildable_to = true;
 	f->liquid_type = LIQUID_SOURCE;
-	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->dug_item = std::string("_water"); // won't resolve to an item, but will work when added to a bucket tool name
 	f->liquid_alternative_flowing = CONTENT_WATER;
 	f->liquid_alternative_source = CONTENT_WATERSOURCE;
 	f->liquid_viscosity = WATER_VISC;
@@ -2204,7 +2204,7 @@ void content_mapnode_init(bool repeat)
 	f->flammable = 2; // can be set on fire
 	f->fuel_time = 100;
 	f->liquid_type = LIQUID_SOURCE;
-	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->dug_item = std::string("_lava"); // won't resolve to an item, but will work when added to a bucket tool name
 	f->liquid_alternative_flowing = CONTENT_LAVA;
 	f->liquid_alternative_source = CONTENT_LAVASOURCE;
 	f->liquid_viscosity = LAVA_VISC;
