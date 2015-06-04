@@ -3772,7 +3772,7 @@ void ClientEnvironment::damageLocalPlayerWithWarmth(u8 damage)
 	assert(lplayer);
 	f32 effect = lplayer->getWarmthProtection();
 	f32 f_damage = damage;
-	if (lplayer->cold_effect)
+	if (lplayer->cold_effectf > 0.0)
 		return;
 
 	if (damage > 0 && effect > 0.0) {
