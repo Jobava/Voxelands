@@ -2133,16 +2133,16 @@ void ServerEnvironment::step(float dtime)
 				// grow junglegrass on sand near water
 				case CONTENT_SAND:
 				{
-					if (n.envticks%30 == 0 && myrand()%200 == 0) {
+					if (n.envticks%30 == 0) {
 						MapNode n_top1 = m_map->getNodeNoEx(p+v3s16(0,1,0));
 						MapNode n_top2 = m_map->getNodeNoEx(p+v3s16(0,2,0));
 						if (
 							p.Y < -30
 							&& n_top1.getContent() == CONTENT_WATERSOURCE
 							&& n_top2.getContent() == CONTENT_WATERSOURCE
-							&& myrand()%50 == 0
+							&& myrand()%200 == 0
 						) {
-							s16 max_d = 5;
+							s16 max_d = 8;
 							v3s16 test_p;
 							MapNode testnode;
 							int found = 0;
