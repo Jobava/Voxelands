@@ -189,10 +189,9 @@ TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods,
 		if (f->param2_type != CPT_PLANTGROWTH || !mn.param2) {
 			texture_name += "^"+orig_name;
 		}else{
-			// TODO: this is assuming 16x16 textures
 			std::string bs("^[blit:0,");
-			bs += itos(16-mn.param2);
-			bs += ",16,16,";
+			bs += ftos(1.0-(0.0625*(float)mn.param2));
+			bs += ",1,1,";
 			// new name
 			texture_name += bs+orig_name;
 		}

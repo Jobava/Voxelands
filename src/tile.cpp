@@ -1801,10 +1801,10 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 			// Size of the copied area
 			Strfnd sf(part_of_name);
 			sf.next(":");
-			int x = mystoi(sf.next(","));
-			int y = mystoi(sf.next(","));
-			int X = mystoi(sf.next(","));
-			int Y = mystoi(sf.next(","));
+			float x = mystof(sf.next(","));
+			float y = mystof(sf.next(","));
+			float X = mystof(sf.next(","));
+			float Y = mystof(sf.next(","));
 			std::string path = sf.end();
 			path = getTexturePath(path.c_str());
 			video::IImage *image = driver->createImageFromFile(path.c_str());
@@ -1821,12 +1821,13 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 						<< "\", cancelling." << std::endl;
 				return false;
 			}
-			//core::dimension2d<u32> dim = image->getDimension();
-			core::dimension2d<u32> dim(X-x,Y-y);
+			core::dimension2d<u32> bdim = baseimg->getDimension();
+			core::dimension2d<u32> idim = image->getDimension();
+			core::dimension2d<u32> dim((X-x)*(float)bdim.Width,(Y-y)*(float)bdim.Height);
 			// Position to copy the blitted to in the base image
-			core::position2d<s32> pos_to(x,y);
+			core::position2d<s32> pos_to((float)bdim.Width*x,(float)bdim.Height*y);
 			// Position to copy the blitted from in the blitted image
-			core::position2d<s32> pos_from(x,y);
+			core::position2d<s32> pos_from((float)idim.Width*x,(float)idim.Height*y);
 			// Blit
 			image->copyToWithAlpha(baseimg, pos_to,
 					core::rect<s32>(pos_from, dim),
