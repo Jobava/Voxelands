@@ -256,7 +256,6 @@ float CraftItem::getFuelTime() const
 	return content_craftitem_features(m_content).fuel_time;
 }
 
-/* TODO: rewrite, completely, pretty much */
 bool CraftItem::use(ServerEnvironment *env, Player *player)
 {
 	u16 count = getCount();
@@ -279,10 +278,14 @@ bool CraftItem::use(ServerEnvironment *env, Player *player)
 			}
 			used = true;
 		}
-		if (f.cold_effect)
+		if (f.cold_effect) {
 			player->cold_effect = f.cold_effect;
-		if (f.energy_effect)
+			used = true;
+		}
+		if (f.energy_effect) {
 			player->energy_effect = f.energy_effect;
+			used = true;
+		}
 	}
 	if (f.onuse_replace_item != CONTENT_IGNORE) {
 		m_content = f.onuse_replace_item;
