@@ -3438,10 +3438,12 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 									player->inventory.addItem("main", item);
 								}
 								u16 count = selected_node_features.plantgrowth_large_count;
-								if (p2 < 8) {
-									count /= 2;
-								}else if (p2 < 12) {
-									count /= 3;
+								if (p2) {
+									if (p2 < 12) {
+										count -= count/3;
+									}else{
+										count /= 2;
+									}
 								}
 								if (!count)
 									count = 1;
@@ -4841,7 +4843,7 @@ void Server::deletingPeer(con::Peer *peer, bool timeout)
 	Static send methods
 */
 
-void Server::SendHP(con::Connection &con, u16 peer_id, u8 hp, u8 air, u8 hunger)
+void Server::SendHP(con::Connection &con, u16 peer_id, u8 hp, u8 air, u8 hunger, u8 energy_effect, u8 cold_effect)
 {
 	DSTACK(__FUNCTION_NAME);
 	std::ostringstream os(std::ios_base::binary);
@@ -4850,6 +4852,8 @@ void Server::SendHP(con::Connection &con, u16 peer_id, u8 hp, u8 air, u8 hunger)
 	writeU8(os, hp);
 	writeU8(os, air);
 	writeU8(os, hunger);
+	writeU8(os, energy_effect);
+	writeU8(os, cold_effect);
 
 	// Make data buffer
 	std::string s = os.str();
@@ -5127,8 +5131,7 @@ void Server::SendChatMessage(u16 peer_id, const std::wstring &message)
 	os.write((char*)buf, 2);
 
 	// Write string
-	for(u32 i=0; i<message.size(); i++)
-	{
+	for (u32 i=0; i<message.size(); i++) {
 		u16 w = message[i];
 		writeU16(buf, w);
 		os.write((char*)buf, 2);
@@ -5143,10 +5146,7 @@ void Server::SendChatMessage(u16 peer_id, const std::wstring &message)
 
 void Server::BroadcastChatMessage(const std::wstring &message)
 {
-	for(core::map<u16, RemoteClient*>::Iterator
-		i = m_clients.getIterator();
-		i.atEnd() == false; i++)
-	{
+	for (core::map<u16, RemoteClient*>::Iterator i = m_clients.getIterator(); i.atEnd() == false; i++) {
 		// Get client and check that it is valid
 		RemoteClient *client = i.getNode()->getValue();
 		assert(client->peer_id == i.getNode()->getKey());
@@ -5162,13 +5162,15 @@ void Server::SendPlayerHP(Player *player)
 	u8 hp = player->hp;
 	u8 air = player->air;
 	u8 hunger = player->hunger;
-	if (!g_settings->getBool("enable_damage"))
-		hp = 0;
-	if (!g_settings->getBool("enable_suffocation"))
+	if (hp < 20 && !g_settings->getBool("enable_damage"))
+		hp = 20;
+	if (air < 20 && !g_settings->getBool("enable_suffocation"))
 		air = 20;
-	if (!g_settings->getBool("enable_hunger"))
-		hunger = 0;
-	SendHP(m_con, player->peer_id, hp,air,hunger);
+	if (hunger < 20 && !g_settings->getBool("enable_hunger"))
+		hunger = 20;
+	SendHP(m_con, player->peer_id, hp,air,hunger,player->energy_effect,player->cold_effect);
+	player->energy_effect = 0;
+	player->cold_effect = 0;
 }
 
 void Server::SendSettings(Player *player)
@@ -5511,16 +5513,16 @@ void Server::HandlePlayerHP(Player *player, s16 damage, s16 suffocate, s16 hunge
 		if (player->air > 20)
 			player->air = 20;
 	}else{
-		player->air = 0;
 		damage += suffocate-player->air;
+		player->air = 0;
 	}
 	if (player->hunger > hunger) {
 		player->hunger -= hunger;
 		if (player->hunger > 20)
 			player->hunger = 20;
 	}else{
-		player->hunger = 0;
 		damage += hunger-player->hunger;
+		player->hunger = 0;
 	}
 	if (player->hp > damage) {
 		player->hp -= damage;
@@ -5536,7 +5538,7 @@ void Server::HandlePlayerHP(Player *player, s16 damage, s16 suffocate, s16 hunge
 		//TODO: Throw items around
 
 		// Handle players that are not connected
-		if(player->peer_id == PEER_ID_INEXISTENT){
+		if (player->peer_id == PEER_ID_INEXISTENT) {
 			RespawnPlayer(player);
 			return;
 		}
@@ -5544,12 +5546,9 @@ void Server::HandlePlayerHP(Player *player, s16 damage, s16 suffocate, s16 hunge
 		SendPlayerHP(player);
 
 		RemoteClient *client = getClient(player->peer_id);
-		if(client->net_proto_version >= 3)
-		{
+		if (client->net_proto_version >= 3) {
 			SendDeathscreen(m_con, player->peer_id, false, v3f(0,0,0));
-		}
-		else
-		{
+		}else{
 			RespawnPlayer(player);
 		}
 	}

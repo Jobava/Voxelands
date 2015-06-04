@@ -210,7 +210,7 @@ void ItemSAO::step(float dtime, bool send_recommended)
 			delete item;
 			m_removed = true;
 			return;
-		}else if (content_craftitem_features(m_content).edible == 0) {
+		}else if (!content_craftitem_features(m_content).consumable) {
 			v3s16 pp;
 			if (n.getContent() == CONTENT_PARCEL) {
 				parcel = true;
@@ -1481,7 +1481,7 @@ bool MobSAO::rightClick(Player *player)
 	if (f.content != c)
 		return false;
 	// and edible
-	if (!f.edible)
+	if (!f.consumable || !f.hunger_effect)
 		return false;
 	// feed the mob
 	// after this always return true as inventory has been modified

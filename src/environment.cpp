@@ -3443,9 +3443,6 @@ void ClientEnvironment::step(float dtime)
 		pressure_per_second = MYMAX(pressure_per_second, content_features(legs).pressure_per_second);
 		pressure_per_second = MYMAX(pressure_per_second, content_features(torso).pressure_per_second);
 		pressure_per_second = MYMAX(pressure_per_second, content_features(head).pressure_per_second);
-		// energy
-		if (lplayer->getEnergy() < 0.0)
-			damage_per_second = MYMAX(damage_per_second, 1);
 		// cold zone
 		if (warmth_per_second == 0 && pp.Y > 60 && myrand()%10 == 0) {
 			if (pp.Y < 1024) {
@@ -3470,6 +3467,11 @@ void ClientEnvironment::step(float dtime)
 			damageLocalPlayerWithVacuum(pressure_per_second);
 		if (warmth_per_second != 0)
 			damageLocalPlayerWithWarmth(warmth_per_second);
+
+		if (lplayer->cold_effect)
+			lplayer->cold_effect--;
+		if (lplayer->energy_effect)
+			lplayer->energy_effect--;
 	}
 
 	if (m_hunger_interval.step(dtime,5.0)) {
@@ -3775,6 +3777,8 @@ void ClientEnvironment::damageLocalPlayerWithWarmth(u8 damage)
 	assert(lplayer);
 	f32 effect = lplayer->getWarmthProtection();
 	f32 f_damage = damage;
+	if (lplayer->cold_effect)
+		return;
 
 	if (damage > 0 && effect > 0.0) {
 		f_damage -= f_damage*effect;

@@ -40,8 +40,18 @@ struct CraftItemFeatures {
 	float fuel_time;
 	// whether the item can be stacked in inventory
 	bool stackable;
-	// 0 if inedible, otherwise the value it improves hp by
-	s16 edible;
+	// whether the item can be eaten/drank, must be true for *_effect to work
+	bool consumable;
+		// if an item has both hunger and health effects, it will
+		// not affect health unless hunger is full
+		// number of hunger points this will refill
+		s16 hunger_effect;
+		// number of health points this will refill
+		s16 health_effect;
+		// number of seconds will protect player against cold damage
+		s16 cold_effect;
+		// will refill energy at double full speed for this many seconds
+		s16 energy_effect;
 	// the number dropped on right click, -1 for all
 	s16 drop_count;
 	// if this teleports the player home, -2 = no, -1 = default home
@@ -64,7 +74,11 @@ struct CraftItemFeatures {
 		cook_result(""),
 		fuel_time(0.0),
 		stackable(true),
-		edible(0),
+		consumable(false),
+		hunger_effect(0),
+		health_effect(0),
+		cold_effect(0),
+		energy_effect(0),
 		drop_count(-1),
 		teleports(-2),
 		drop_item(CONTENT_IGNORE),

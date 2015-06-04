@@ -189,6 +189,8 @@ public:
 	u16 hp;
 	u16 air;
 	u16 hunger;
+	u16 energy_effect;
+	u16 cold_effect;
 
 	u16 peer_id;
 
@@ -217,6 +219,8 @@ public:
 	{
 		f32 v = 0;
 		const char* list[7] = {"hat","shirt","jacket","decorative","belt","pants","boots"};
+		if (cold_effect)
+			return 1.0;
 		for (int j=0; j<7; j++) {
 			InventoryList *l = inventory.getList(list[j]);
 			if (l == NULL)
@@ -532,6 +536,7 @@ private:
 	v3s16 m_old_node_below;
 	content_t m_old_node_below_type;
 	float m_energy;
+	bool m_can_use_energy;
 
 };
 #endif // !SERVER

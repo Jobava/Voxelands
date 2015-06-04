@@ -260,36 +260,37 @@ float CraftItem::getFuelTime() const
 bool CraftItem::use(ServerEnvironment *env, Player *player)
 {
 	u16 count = getCount();
-	if (content_craftitem_features(m_content).edible) {
-		s16 hp_change = content_craftitem_features(m_content).edible;
-		if (hp_change) {
-			if (player->hunger < 20) {
-				if (player->hunger + (hp_change*2) > 20) {
-					hp_change -= 20-player->hunger;
-					player->hunger = 20;
-					if (hp_change < 0)
-						hp_change = 0;
-				}else{
-					player->hunger += (hp_change*2);
-					hp_change = 0;
-				}
+	bool used = false;
+	CraftItemFeatures f = content_craftitem_features(m_content);
+	if (f.consumable) {
+		if (f.hunger_effect && (f.health_effect < 1 || player->hunger < 20)) {
+			if (player->hunger + f.hunger_effect > 20) {
+				player->hunger = 20;
+			}else{
+				player->hunger += f.hunger_effect;
 			}
-			if (player->hp + hp_change > 20) {
+			used = true;
+		}
+		if (f.health_effect < 0 || (!used && f.health_effect > 0)) {
+			if (player->hp + f.health_effect > 20) {
 				player->hp = 20;
 			}else{
-				player->hp += hp_change;
+				player->hp += f.health_effect;
 			}
+			used = true;
 		}
-
-		if (content_craftitem_features(m_content).onuse_replace_item == CONTENT_IGNORE) {
-			count --;
-			if (count < 1)
-				return true;
-			setCount(count);
-		}
+		if (f.cold_effect)
+			player->cold_effect = f.cold_effect;
+		if (f.energy_effect)
+			player->energy_effect = f.energy_effect;
 	}
-	if (content_craftitem_features(m_content).onuse_replace_item != CONTENT_IGNORE) {
-		m_content = content_craftitem_features(m_content).onuse_replace_item;
+	if (f.onuse_replace_item != CONTENT_IGNORE) {
+		m_content = f.onuse_replace_item;
+	}else if (used) {
+		count--;
+		if (count < 1)
+			return true;
+		setCount(count);
 	}
 	return false;
 }

@@ -503,7 +503,7 @@ private:
 		Static send methods
 	*/
 
-	static void SendHP(con::Connection &con, u16 peer_id, u8 hp, u8 air, u8 hunger);
+	static void SendHP(con::Connection &con, u16 peer_id, u8 hp, u8 air, u8 hunger, u8 energy_effect, u8 cold_effect);
 	static void SendAccessDenied(con::Connection &con, u16 peer_id,
 			const std::wstring &reason);
 	static void SendDeathscreen(con::Connection &con, u16 peer_id,

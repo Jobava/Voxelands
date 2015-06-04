@@ -52,6 +52,8 @@ Player::Player():
 	hp(20),
 	air(20),
 	hunger(20),
+	energy_effect(0),
+	cold_effect(0),
 	peer_id(PEER_ID_INEXISTENT),
 	m_selected_item(0),
 	m_pitch(0),
@@ -739,7 +741,8 @@ video::ITexture* RemotePlayer::getTexture()
 
 LocalPlayer::LocalPlayer():
 	m_sneak_node(32767,32767,32767),
-	m_sneak_node_exists(false)
+	m_sneak_node_exists(false),
+	m_can_use_energy(true)
 {
 	m_energy = 10.0;
 	m_character = g_settings->get("character_definition");
@@ -978,6 +981,8 @@ void LocalPlayer::applyControl(float dtime)
 	move_direction.rotateXZBy(getYaw());
 
 	v3f speed = v3f(0,0,0);
+	if (control.fast && !m_can_use_energy)
+		control.fast = false;
 
 	if (control.free || is_climbing) {
 		v3f speed = getSpeed();
@@ -993,7 +998,7 @@ void LocalPlayer::applyControl(float dtime)
 		speed += move_direction.crossProduct(v3f(0,1,0));
 	if (control.right)
 		speed += move_direction.crossProduct(v3f(0,-1,0));
-	if (control.jump && !control.free) {
+	if (control.jump && !control.free && m_can_use_energy) {
 		if (touching_ground) {
 			v3f speed = getSpeed();
 			/*
@@ -1001,7 +1006,7 @@ void LocalPlayer::applyControl(float dtime)
 				raising the height at which the jump speed is kept
 				at its starting value
 			*/
-			if (speed.Y < 6*BS)
+			if (speed.Y < 6*BS && !energy_effect)
 				m_energy -= 0.6;
 			speed.Y = 6.5*BS;
 			setSpeed(speed);
@@ -1012,8 +1017,9 @@ void LocalPlayer::applyControl(float dtime)
 			speed.Y = 1.2*BS;
 			setSpeed(speed);
 			swimming_up = true;
-			m_energy -= dtime;
-		}else if (in_water_stable) {
+			if (!energy_effect)
+				m_energy -= dtime;
+		}else if (in_water_stable && !energy_effect) {
 			m_energy -= dtime;
 		}
 	}
@@ -1029,16 +1035,19 @@ void LocalPlayer::applyControl(float dtime)
 		}else if (in_water) {
 			// Use the oscillating value for getting out of water
 			// (so that the player doesn't fly on the surface)
-			v3f speed = getSpeed();
-			speed.Y = 1.5*BS;
-			setSpeed(speed);
-			swimming_up = true;
-			m_energy -= dtime;
+			if (m_can_use_energy) {
+				v3f speed = getSpeed();
+				speed.Y = 1.5*BS;
+				setSpeed(speed);
+				swimming_up = true;
+				if (!energy_effect)
+					m_energy -= dtime;
+			}
 		}else if (is_climbing) {
 	                v3f speed = getSpeed();
 			speed.Y = 3*BS;
 			setSpeed(speed);
-		}else if (in_water_stable) {
+		}else if (in_water_stable && m_can_use_energy && !energy_effect) {
 			m_energy -= dtime;
 		}
 	}
@@ -1064,8 +1073,8 @@ void LocalPlayer::applyControl(float dtime)
 	}
 
 	// The speed of the player (Y is ignored)
-	if (control.fast) {
-		if (speed.X || speed.Y || speed.Z)
+	if (control.fast && m_can_use_energy) {
+		if (!energy_effect && (speed.X || speed.Y || speed.Z))
 			m_energy -= dtime;
 		if (control.free) {
 			speed = speed.normalize() * walkspeed_max * 6.0;
@@ -1073,7 +1082,10 @@ void LocalPlayer::applyControl(float dtime)
 			speed = speed.normalize() * walkspeed_max * 3.0;
 		}
 	}else{
-		if (control.digging) {
+		if (energy_effect) {
+			if (m_energy < hp)
+				m_energy += dtime*5.0;
+		}else if (control.digging) {
 			m_energy -= dtime*0.2;
 		}else if (m_energy < hp) {
 			if (speed.X || speed.Y || speed.Z) {
@@ -1088,10 +1100,14 @@ void LocalPlayer::applyControl(float dtime)
 			speed = speed.normalize() * walkspeed_max;
 		}
 	}
-	if (m_energy > hp)
+	if (m_energy > hp) {
 		m_energy = hp;
-	if (m_energy < -0.1)
+	}else if (m_energy < -0.1) {
+		m_can_use_energy = false;
 		m_energy = -0.1;
+	}else if (m_energy > 1.8) {
+		m_can_use_energy = true;
+	}
 
 	f32 inc = walk_acceleration * BS * dtime;
 
