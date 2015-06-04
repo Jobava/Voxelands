@@ -610,7 +610,7 @@ void content_craftitem_init()
 	f->texture = "potato_starch.png";
 	f->name = "potato_starch";
 	f->description = wgettext("Potato Starch");
-	crafting::set1To2Recipe(CONTENT_CRAFTITEM_POTATO,CONTENT_CRAFTITEM_STARCH);
+	crafting::set2Any2Recipe(CONTENT_CRAFTITEM_POTATO,CONTENT_CRAFTITEM_POTATO,CONTENT_CRAFTITEM_STARCH);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -1241,6 +1241,38 @@ void content_craftitem_init()
 	f->drop_count = 1;
 	f->teleports = PLAYERFLAG_BLACK;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_OERKKI_DUST,CONTENT_CRAFTITEM_DYE_BLACK,CONTENT_CRAFTITEM_OERKKI_DUST_BLACK);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_GLASS_BOTTLE;
+	f = &g_content_craftitem_features[i];
+	f->content = i;
+	f->texture = "glass_bottle.png";
+	f->name = "glass_bottle";
+	f->description = wgettext("Glass Bottle");
+	f->drop_count = 1;
+	{
+		u16 r[9] = {
+			CONTENT_GLASS,	CONTENT_IGNORE,	CONTENT_GLASS,
+			CONTENT_GLASS,	CONTENT_IGNORE,	CONTENT_GLASS,
+			CONTENT_IGNORE,	CONTENT_GLASS,	CONTENT_IGNORE
+		};
+		crafting::setRecipe(r,CONTENT_CRAFTITEM_GLASS_BOTTLE,5);
+	}
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_GRAPE_JUICE;
+	f = &g_content_craftitem_features[i];
+	f->content = i;
+	f->texture = "drink_grape.png^glass_bottle.png";
+	f->name = "glass_bottle";
+	f->description = wgettext("Grape Juice");
+	f->stackable = false;
+	f->drop_count = 1;
+	f->edible = 2;
+	f->onuse_replace_item = CONTENT_CRAFTITEM_GLASS_BOTTLE;
+	crafting::set1over1Recipe(CONTENT_CRAFTITEM_GRAPE,CONTENT_CRAFTITEM_GLASS_BOTTLE,CONTENT_CRAFTITEM_GRAPE_JUICE);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 }

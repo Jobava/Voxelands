@@ -4094,7 +4094,18 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				/*
 					Create the object
 				*/
-				ServerActiveObject *obj = item->createSAO(&m_env, 0, pos);
+				ServerActiveObject *obj = NULL;
+				/* createSAO will drop all craft items, we may not want that */
+				if (
+					wielded_craft_features.content == wieldcontent
+					&& wielded_craft_features.drop_item == CONTENT_IGNORE
+				) {
+					InventoryItem *ditem = InventoryItem::create(wieldcontent,item->getDropCount());
+					obj = ditem->createSAO(&m_env, 0, pos);
+					delete ditem;
+				}else{
+					obj = item->createSAO(&m_env, 0, pos);
+				}
 
 				if (obj == NULL) {
 					infostream<<"WARNING: item resulted in NULL object, "

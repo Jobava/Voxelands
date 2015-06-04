@@ -291,6 +291,8 @@ public:
 	}
 	u16 freeSpace() const
 	{
+		if (!content_craftitem_features(m_content).stackable)
+			return 0;
 		if (m_count > QUANTITY_ITEM_MAX_COUNT)
 			return 0;
 		return QUANTITY_ITEM_MAX_COUNT - m_count;

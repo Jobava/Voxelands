@@ -63,7 +63,7 @@ struct CraftItemFeatures {
 		description(L""),
 		cook_result(""),
 		fuel_time(0.0),
-		stackable(false),
+		stackable(true),
 		edible(0),
 		drop_count(-1),
 		teleports(-2),
@@ -189,5 +189,7 @@ CraftItemFeatures & content_craftitem_features(std::string subname);
 #define CONTENT_CRAFTITEM_OERKKI_DUST_RED (CONTENT_CRAFTITEM_MASK | 0x72)
 #define CONTENT_CRAFTITEM_OERKKI_DUST_YELLOW (CONTENT_CRAFTITEM_MASK | 0x73)
 #define CONTENT_CRAFTITEM_OERKKI_DUST_BLACK (CONTENT_CRAFTITEM_MASK | 0x74)
+#define CONTENT_CRAFTITEM_GLASS_BOTTLE (CONTENT_CRAFTITEM_MASK | 0x75)
+#define CONTENT_CRAFTITEM_GRAPE_JUICE (CONTENT_CRAFTITEM_MASK | 0x76)
 
 #endif
