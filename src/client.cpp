@@ -1062,8 +1062,8 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		u8 hp = readU8(is);
 		u8 air = readU8(is);
 		u8 hunger = readU8(is);
-		player->energy_effect = readU8(is);
-		player->cold_effect = readU8(is);
+		player->energy_effectf += readU8(is);
+		player->cold_effectf += readU8(is);
 		if (m_server_damage) {
 			if (!player->hp)
 				player->setEnergy(hp);

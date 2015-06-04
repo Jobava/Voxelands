@@ -3467,11 +3467,6 @@ void ClientEnvironment::step(float dtime)
 			damageLocalPlayerWithVacuum(pressure_per_second);
 		if (warmth_per_second != 0)
 			damageLocalPlayerWithWarmth(warmth_per_second);
-
-		if (lplayer->cold_effect)
-			lplayer->cold_effect--;
-		if (lplayer->energy_effect)
-			lplayer->energy_effect--;
 	}
 
 	if (m_hunger_interval.step(dtime,5.0)) {

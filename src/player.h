@@ -527,6 +527,9 @@ public:
 
 	PlayerControl control;
 
+	float energy_effectf;
+	float cold_effectf;
+
 private:
 	// This is used for determining the sneaking range
 	v3s16 m_sneak_node;

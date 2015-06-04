@@ -557,11 +557,13 @@ void draw_hud(
 	Inventory *inventory,
 	bool have_health,
 	s32 halfheartcount,
+	bool have_cold_boost,
 	bool have_suffocation,
 	s32 halfbubblecount,
 	bool have_hunger,
 	s32 halfhungercount,
 	float energy,
+	bool have_energy_boost,
 	int crosshair,
 	bool nodeinfo,
 	bool selected,
@@ -785,11 +787,23 @@ void draw_hud(
 		if (e < 0.0)
 			e = 0.0;
 		{
-			const video::SColor color(255,c,0,0);
+			u8 r = c;
+			u8 b = 0;
+			if (have_energy_boost) {
+				r = 0;
+				b = c;
+			}
+			const video::SColor color(255,r,0,b);
 			draw_progress_ring(driver,screensize,core::position2d<s32>(84,screensize.Y-84),30,e,color);
 		}
 		{
-			const video::SColor color(220,c,c,c);
+			u8 r = c;
+			u8 b = 0;
+			if (have_cold_boost) {
+				r = 0;
+				b = c;
+			}
+			const video::SColor color(220,r,0,b);
 			const video::SColor colors[] = {color,color,color,color};
 			video::ITexture *texture = driver->getTexture(getTexturePath("heart.png").c_str());
 			core::rect<s32> rect(60,screensize.Y-108,108,screensize.Y-60);
@@ -2995,6 +3009,11 @@ void the_game(
 					snode = client.getEnv().getMap().getNodeNoEx(spos,NULL);
 				}
 
+				LocalPlayer *p = client.getLocalPlayer();
+
+				bool energy_boost = (p->energy_effectf > 0.0);
+				bool cold_boost = (p->cold_effectf > 0.0);
+
 				draw_hud(
 					driver,
 					font,
@@ -3004,11 +3023,13 @@ void the_game(
 					&local_inventory,
 					client.getServerDamage(),
 					client.getHP(),
+					cold_boost,
 					client.getServerSuffocation(),
 					client.getAir(),
 					client.getServerHunger(),
 					hunger,
 					client.getEnergy(),
+					energy_boost,
 					crosshair,
 					show_debug,
 					has_selected_node,

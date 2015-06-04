@@ -740,6 +740,8 @@ video::ITexture* RemotePlayer::getTexture()
 */
 
 LocalPlayer::LocalPlayer():
+	energy_effectf(0.0),
+	cold_effectf(0.0),
 	m_sneak_node(32767,32767,32767),
 	m_sneak_node_exists(false),
 	m_can_use_energy(true)
@@ -1006,7 +1008,7 @@ void LocalPlayer::applyControl(float dtime)
 				raising the height at which the jump speed is kept
 				at its starting value
 			*/
-			if (speed.Y < 6*BS && !energy_effect)
+			if (speed.Y < 6*BS && !energy_effectf)
 				m_energy -= 0.6;
 			speed.Y = 6.5*BS;
 			setSpeed(speed);
@@ -1017,9 +1019,9 @@ void LocalPlayer::applyControl(float dtime)
 			speed.Y = 1.2*BS;
 			setSpeed(speed);
 			swimming_up = true;
-			if (!energy_effect)
+			if (!energy_effectf)
 				m_energy -= dtime;
-		}else if (in_water_stable && !energy_effect) {
+		}else if (in_water_stable && !energy_effectf) {
 			m_energy -= dtime;
 		}
 	}
@@ -1040,14 +1042,14 @@ void LocalPlayer::applyControl(float dtime)
 				speed.Y = 1.5*BS;
 				setSpeed(speed);
 				swimming_up = true;
-				if (!energy_effect)
+				if (!energy_effectf)
 					m_energy -= dtime;
 			}
 		}else if (is_climbing) {
 	                v3f speed = getSpeed();
 			speed.Y = 3*BS;
 			setSpeed(speed);
-		}else if (in_water_stable && m_can_use_energy && !energy_effect) {
+		}else if (in_water_stable && m_can_use_energy && !energy_effectf) {
 			m_energy -= dtime;
 		}
 	}
@@ -1074,7 +1076,7 @@ void LocalPlayer::applyControl(float dtime)
 
 	// The speed of the player (Y is ignored)
 	if (control.fast && m_can_use_energy) {
-		if (!energy_effect && (speed.X || speed.Y || speed.Z))
+		if (!energy_effectf && (speed.X || speed.Y || speed.Z))
 			m_energy -= dtime;
 		if (control.free) {
 			speed = speed.normalize() * walkspeed_max * 6.0;
@@ -1082,7 +1084,7 @@ void LocalPlayer::applyControl(float dtime)
 			speed = speed.normalize() * walkspeed_max * 3.0;
 		}
 	}else{
-		if (energy_effect) {
+		if (energy_effectf) {
 			if (m_energy < hp)
 				m_energy += dtime*5.0;
 		}else if (control.digging) {
@@ -1108,6 +1110,11 @@ void LocalPlayer::applyControl(float dtime)
 	}else if (m_energy > 1.8) {
 		m_can_use_energy = true;
 	}
+
+	if (energy_effectf > 0.0)
+		energy_effectf -= dtime;
+	if (energy_effectf < 0.0)
+		energy_effectf = 0.0;
 
 	f32 inc = walk_acceleration * BS * dtime;
 
