@@ -3067,8 +3067,9 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			3: Digging completed
 		*/
 		else if (action == 3) {
-			// Mandatory parameter; actually used for nothing
+			// used by map manipulation functions
 			core::map<v3s16, MapBlock*> modified_blocks;
+			core::list<u16> far_players;
 
 			u8 p2 = selected_node.param2;
 			u8 mineral = selected_node.getMineral();
@@ -3188,7 +3189,6 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					actionstream<<player->getName()<<" ploughs "<<PP(p_under)
 							<<" into farm dirt"<<std::endl;
 
-					core::list<u16> far_players;
 					sendAddNode(p_under, selected_node, 0, &far_players, 30);
 
 					/*
@@ -3221,7 +3221,6 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					<<", gets material "<<(int)selected_content<<", mineral "
 					<<(int)mineral<<std::endl;
 
-			core::list<u16> far_players;
 			if (selected_node_features.ondig_also_removes != v3s16(0,0,0)) {
 				v3s16 p_other = selected_node.getRotation(selected_node_features.ondig_also_removes);
 				v3s16 p_also = p_under + p_other;
@@ -3289,7 +3288,6 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				if (will_replace) {
 					MapNode n = selected_node;
 					n.setContent(selected_node_features.ondig_replace_node);
-					core::list<u16> far_players;
 					sendAddNode(p_under, n, 0, &far_players, 30);
 					{
 						MapEditEventIgnorer ign(&m_ignore_map_edit_events);
@@ -3360,10 +3358,37 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					selected_node_features.ondig_special_drop != CONTENT_IGNORE
 					&& selected_node_features.ondig_special_tool == wielded_tool_features.type
 				) {
-					item = InventoryItem::create(
-						selected_node_features.ondig_special_drop,
-						selected_node_features.ondig_special_drop_count
-					);
+					if (selected_node_features.ondig_special_tool_append != "") {
+						std::string dug_s = std::string("ToolItem ");
+						dug_s += ((ToolItem*)wielditem)->getToolName();
+						dug_s += selected_node_features.ondig_special_tool_append;
+						dug_s += " 1";
+						std::istringstream is(dug_s, std::ios::binary);
+						item = InventoryItem::deSerialize(is);
+						InventoryItem *ritem = mlist->changeItem(item_i,item);
+						if (ritem)
+							delete ritem;
+						item = NULL;
+						{
+							MapNode n = selected_node;
+							n.setContent(selected_node_features.ondig_special_drop);
+							sendAddNode(p_under, n, 0, &far_players, 30);
+							{
+								MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+
+								std::string p_name = std::string(player->getName());
+								m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
+							}
+							node_replaced = true;
+						}
+						UpdateCrafting(player->peer_id);
+						SendInventory(player->peer_id);
+					}else{
+						item = InventoryItem::create(
+							selected_node_features.ondig_special_drop,
+							selected_node_features.ondig_special_drop_count
+						);
+					}
 				}else if (selected_node_features.liquid_type != LIQUID_NONE) {
 					if (selected_node_features.liquid_type == LIQUID_SOURCE && wielded_tool_features.type == TT_BUCKET) {
 						if (selected_node_features.damage_per_second > 0 && !wielded_tool_features.damaging_nodes_diggable) {
@@ -3387,48 +3412,6 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 							SendInventory(player->peer_id);
 						}
 					}
-				}else if (selected_content == CONTENT_SPONGE_FULL && wielded_tool_features.type == TT_BUCKET) {
-					MapNode n = m_env.getMap().getNodeNoEx(p_under);
-					n.setContent(CONTENT_SPONGE);
-
-					core::list<u16> far_players;
-					sendAddNode(p_under, n, 0, &far_players, 30);
-
-					/*
-						Add node.
-
-						This takes some time so it is done after the quick stuff
-					*/
-					core::map<v3s16, MapBlock*> modified_blocks;
-					{
-						MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-
-						std::string p_name = std::string(player->getName());
-						m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
-					}
-					/*
-						Set blocks not sent to far players
-					*/
-					for(core::list<u16>::Iterator
-							i = far_players.begin();
-							i != far_players.end(); i++)
-					{
-						u16 peer_id = *i;
-						RemoteClient *client = getClient(peer_id);
-						if (client==NULL)
-							continue;
-						client->SetBlocksNotSent(modified_blocks);
-					}
-					std::string dug_s = std::string("ToolItem ") + ((ToolItem*)wielditem)->getToolName() + "_water 1";
-					std::istringstream is(dug_s, std::ios::binary);
-					item = InventoryItem::deSerialize(is);
-					InventoryItem *ritem = mlist->changeItem(item_i,item);
-					if (ritem)
-						delete ritem;
-					item = NULL;
-					UpdateCrafting(player->peer_id);
-					SendInventory(player->peer_id);
-					return;
 				}else if (selected_node_features.liquid_type == LIQUID_NONE) {
 					std::string &dug_s = selected_node_features.dug_item;
 					if (dug_s != "") {

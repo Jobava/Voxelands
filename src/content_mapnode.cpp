@@ -1353,6 +1353,9 @@ void content_mapnode_init(bool repeat)
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->ondig_special_drop = CONTENT_SPONGE;
+	f->ondig_special_tool = TT_BUCKET;
+	f->ondig_special_tool_append = std::string("_water");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	f->pressure_type = CST_CRUSHABLE;
