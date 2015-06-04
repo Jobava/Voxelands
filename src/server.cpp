@@ -3074,6 +3074,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 			u8 mineral = selected_node.getMineral();
 			NodeMetadata *meta = NULL;
 			bool cannot_remove_node = !selected_node_exists;
+			bool node_replaced = false;
 
 			if (cannot_remove_node) {
 				infostream<<"Server: Not finishing digging: Node not found."
@@ -3296,6 +3297,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						std::string p_name = std::string(player->getName());
 						m_env.getMap().addNodeAndUpdate(p_under, n, modified_blocks, p_name);
 					}
+					node_replaced = true;
 				}
 			}
 
@@ -3547,7 +3549,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				Remove the node
 				(this takes some time so it is done after the quick stuff)
 			*/
-			{
+			if (!node_replaced) {
 				MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 
 				m_env.getMap().removeNodeAndUpdate(p_under, modified_blocks);
