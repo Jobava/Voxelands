@@ -2879,6 +2879,48 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						meta->energise(energy,p_under,p_under,p_under);
 					}
 				}
+			}else if (selected_content == CONTENT_CAULDRON) {
+				CauldronNodeMetadata *cmeta = (CauldronNodeMetadata*)m_env.getMap().getNodeMetadata(p_under);
+				if (!cmeta)
+					return;
+				if (wielded_tool_features.type == TT_BUCKET) {
+					if (cmeta->m_water_level) {
+					}
+				}else if (wielded_tool_features.type == TT_SPECIAL) {
+					if (
+						!cmeta->m_water_level
+						&& wielded_tool_features.onplace_node == CONTENT_WATERSOURCE
+						&& wielded_tool_features.onplace_replace_item != CONTENT_IGNORE
+					) {
+						InventoryItem *itm = InventoryItem::create(wielded_tool_features.onplace_replace_item,1,0);
+						InventoryList *mlist = player->inventory.getList("main");
+						InventoryItem *old = mlist->changeItem(item_i,itm);
+						if (old)
+							delete old;
+						cmeta->m_water_level = 4;
+						SendInventory(player->peer_id);
+					}
+				}else if (wieldcontent == CONTENT_CRAFTITEM_STEEL_BOTTLE) {
+					if (cmeta->m_water_level && cmeta->m_water_hot && wielditem->getCount() == 1) {
+						InventoryItem *itm = InventoryItem::create(CONTENT_CRAFTITEM_STEEL_BOTTLE_WATER,1,0);
+						InventoryList *mlist = player->inventory.getList("main");
+						InventoryItem *old = mlist->changeItem(item_i,itm);
+						if (old)
+							delete old;
+						cmeta->m_water_level--;
+						SendInventory(player->peer_id);
+					}
+				}else if (wieldcontent == CONTENT_CRAFTITEM_GLASS_BOTTLE) {
+					if (cmeta->m_water_level && cmeta->m_water_heated && !cmeta->m_water_hot && wielditem->getCount() == 1) {
+						InventoryItem *itm = InventoryItem::create(CONTENT_CRAFTITEM_GLASS_BOTTLE_WATER,1,0);
+						InventoryList *mlist = player->inventory.getList("main");
+						InventoryItem *old = mlist->changeItem(item_i,itm);
+						if (old)
+							delete old;
+						cmeta->m_water_level--;
+						SendInventory(player->peer_id);
+					}
+				}
 			}else if (selected_content == CONTENT_INCINERATOR_ACTIVE) {
 				NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
 				if (!meta)

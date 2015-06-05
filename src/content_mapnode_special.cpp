@@ -1950,4 +1950,25 @@ void content_mapnode_special(bool repeat)
 	f->suffocation_per_second = 0;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new ParcelNodeMetadata();
+
+	i = CONTENT_CAULDRON;
+	f = &content_features(i);
+	f->description = wgettext("Cauldron");
+	f->setAllTextures("cauldron_outer.png");
+	f->setAllMetaTextures("cauldron_inner.png");
+	f->setMetaTexture(0,"water.png");
+	f->draw_type = CDT_NODEBOX_META;
+	f->type = CMT_STONE;
+	f->hardness = 3.0;
+	f->solidness = 0;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_nodebox_cauldron(f);
+	f->setInventoryTextureNodeBox(i,"cauldron_outer.png", "cauldron_outer.png", "cauldron_outer.png");
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new CauldronNodeMetadata();
+	crafting::setDeepURecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_CAULDRON);
+	f->pressure_type = CST_SOLID;
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+	f->suffocation_per_second = 0;
 }

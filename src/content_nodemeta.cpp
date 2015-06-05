@@ -2384,6 +2384,191 @@ bool ClockNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 }
 
 /*
+	CauldronNodeMetadata
+*/
+
+// Prototype
+CauldronNodeMetadata proto_CauldronNodeMetadata;
+
+CauldronNodeMetadata::CauldronNodeMetadata():
+	m_water_level(0),
+	m_water_heated(false),
+	m_water_hot(false),
+	m_fuel_time(0.0),
+	m_src_time(0.0),
+	m_cool_time(0.0)
+{
+	NodeMetadata::registerType(typeId(), create);
+
+	m_inventory = new Inventory();
+	m_inventory->addList("fuel", 1);
+}
+CauldronNodeMetadata::~CauldronNodeMetadata()
+{
+	delete m_inventory;
+}
+u16 CauldronNodeMetadata::typeId() const
+{
+	return CONTENT_CAULDRON;
+}
+NodeMetadata* CauldronNodeMetadata::clone()
+{
+	CauldronNodeMetadata *d = new CauldronNodeMetadata();
+	d->m_fuel_time = m_fuel_time;
+	d->m_src_time = m_src_time;
+	d->m_water_level = m_water_level;
+	d->m_water_heated = m_water_heated;
+	d->m_water_hot = m_water_hot;
+	*d->m_inventory = *m_inventory;
+	return d;
+}
+NodeMetadata* CauldronNodeMetadata::create(std::istream &is)
+{
+	CauldronNodeMetadata *d = new CauldronNodeMetadata();
+
+	d->m_inventory->deSerialize(is);
+	int temp;
+	is>>temp;
+	d->m_fuel_time = (float)temp/10;
+	is>>temp;
+	d->m_src_time = (float)temp/10;
+	is>>temp;
+	d->m_water_level = temp;
+	is>>temp;
+	d->m_water_heated = !!temp;
+	is>>temp;
+	d->m_water_hot = !!temp;
+
+	return d;
+}
+void CauldronNodeMetadata::serializeBody(std::ostream &os)
+{
+	m_inventory->serialize(os);
+	os<<itos(m_fuel_time*10)<<" ";
+	os<<itos(m_src_time*10)<<" ";
+	os<<itos(m_water_level)<<" ";
+	os<<itos(m_water_heated ? 1 : 0)<<" ";
+	os<<itos(m_water_hot ? 1 : 0)<<" ";
+}
+std::wstring CauldronNodeMetadata::infoText()
+{
+	if (m_fuel_time)
+		return wgettext("Cauldron is active");
+	if (m_water_level) {
+		if (m_water_hot)
+			return wgettext("Cauldron is boiling");
+		if (m_water_heated)
+			return wgettext("Cauldron is cool");
+	}else{
+		return wgettext("Cauldron is empty");
+	}
+	return wgettext("Cauldron is out of fuel");
+}
+bool CauldronNodeMetadata::nodeRemovalDisabled()
+{
+	/*
+		Disable removal if not empty
+	*/
+	InventoryList *list = m_inventory->getList("fuel");
+
+	if (list && list->getUsedSlots() > 0)
+		return true;
+	if (m_water_level)
+		return true;
+	return false;
+
+}
+void CauldronNodeMetadata::inventoryModified()
+{
+	infostream<<"Cauldron inventory modification callback"<<std::endl;
+}
+bool CauldronNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
+{
+	if (m_fuel_time > 0.0) {
+		if (!m_water_heated)
+			m_src_time += dtime;
+		m_fuel_time -= dtime;
+	}
+
+	bool should_heat = false;
+
+	if (m_water_level) {
+		if (m_water_hot) {
+			m_cool_time -= dtime;
+			if (m_cool_time <= 0.0)
+				m_water_hot = false;
+		}else if (!m_water_heated) {
+			m_cool_time = 120.0;
+			if (m_src_time < 2.0) {
+				should_heat = true;
+			}else{
+				m_water_hot = true;
+				m_water_heated = true;
+				m_src_time = 0.0;
+			}
+		}
+	}else{
+		m_water_hot = false;
+		m_water_heated = false;
+	}
+
+	if (should_heat && m_fuel_time <= 0.0) {
+		InventoryList *list = m_inventory->getList("fuel");
+		InventoryItem *fitem;
+		if (list && list->getUsedSlots() > 0 && (fitem = list->getItem(0)) != NULL && fitem->isFuel()) {
+			if ((fitem->getContent()&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
+				m_fuel_time = ((CraftItem*)fitem)->getFuelTime();
+			}else if ((fitem->getContent()&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+				m_fuel_time = ((ToolItem*)fitem)->getFuelTime();
+			}else{
+				m_fuel_time = ((MaterialItem*)fitem)->getFuelTime();
+			}
+			content_t c = fitem->getContent();
+			list->decrementMaterials(1);
+			if (c == CONTENT_TOOLITEM_STEELBUCKET_LAVA)
+				list->addItem(0,new ToolItem(CONTENT_TOOLITEM_STEELBUCKET,0));
+			return true;
+		}
+	}
+	return false;
+}
+std::string CauldronNodeMetadata::getDrawSpecString()
+{
+	return
+		std::string("size[8,7]"
+		"label[1,0.5;")+gettext("Add fuel, then punch to incinerate wielded item")+"]"
+		"label[3.5,1.5;Fuel]"
+		"list[current_name;fuel;4,1;1,1;]"
+		"list[current_player;main;0,3;8,4;]";
+}
+std::vector<NodeBox> CauldronNodeMetadata::getNodeBoxes(MapNode &n) {
+	std::vector<NodeBox> boxes;
+	boxes.clear();
+
+	if (m_fuel_time)
+		boxes.push_back(NodeBox(-0.125*BS,-0.5*BS,-0.125*BS,0.125*BS,-0.25*BS,0.125*BS));
+
+	if (m_water_level) {
+		switch (m_water_level) {
+		case 1:
+			boxes.push_back(NodeBox(-0.375*BS,-0.0625*BS,-0.375*BS,0.375*BS,0.0625*BS,0.375*BS));
+			break;
+		case 2:
+			boxes.push_back(NodeBox(-0.375*BS,-0.0625*BS,-0.375*BS,0.375*BS,0.1875*BS,0.375*BS));
+			break;
+		case 3:
+			boxes.push_back(NodeBox(-0.375*BS,-0.0625*BS,-0.375*BS,0.375*BS,0.3125*BS,0.375*BS));
+			break;
+		default:
+			boxes.push_back(NodeBox(-0.375*BS,-0.0625*BS,-0.375*BS,0.375*BS,0.4375*BS,0.375*BS));
+			break;
+		}
+	}
+
+	return transformNodeBox(n,boxes);
+}
+
+/*
 	CircuitNodeMetadata
 */
 

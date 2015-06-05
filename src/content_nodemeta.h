@@ -529,6 +529,35 @@ private:
 	u16 m_time;
 };
 
+class CauldronNodeMetadata : public NodeMetadata
+{
+public:
+	CauldronNodeMetadata();
+	~CauldronNodeMetadata();
+
+	virtual u16 typeId() const;
+	virtual NodeMetadata* clone();
+	static NodeMetadata* create(std::istream &is);
+	virtual void serializeBody(std::ostream &os);
+	virtual std::wstring infoText();
+	virtual Inventory* getInventory() {return m_inventory;}
+	virtual void inventoryModified();
+	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
+	virtual bool nodeRemovalDisabled();
+	virtual std::string getDrawSpecString();
+	virtual std::vector<NodeBox> getNodeBoxes(MapNode &n);
+
+	u8 m_water_level;
+	bool m_water_heated;
+	bool m_water_hot;
+
+private:
+	Inventory *m_inventory;
+	float m_fuel_time;
+	float m_src_time;
+	float m_cool_time;
+};
+
 class CircuitNodeMetadata : public NodeMetadata
 {
 public:

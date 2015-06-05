@@ -181,8 +181,8 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_COUCH_INNER_BLACK 0x863
 #define CONTENT_COUCH_OUTER_BLACK 0x864
 #define CONTENT_COUCH_CHAIR_BLACK 0x865
-
-// FREE 866-87F
+#define CONTENT_CAULDRON 0x866
+// FREE 867-87F
 #define CONTENT_FLAG 0x870
 #define CONTENT_FLAG_BLUE 0x871
 #define CONTENT_FLAG_GREEN 0x872

@@ -1365,6 +1365,7 @@ void content_craftitem_init()
 	f->texture = "steel_bottle.png";
 	f->name = "tea_drink";
 	f->description = wgettext("Tea");
+	f->stackable = false;
 	f->drop_count = 1;
 	f->consumable = true;
 	f->hunger_effect = 3;
@@ -1372,6 +1373,7 @@ void content_craftitem_init()
 	f->cold_effect = 300;
 	f->energy_effect = 10;
 	f->onuse_replace_item = CONTENT_CRAFTITEM_STEEL_BOTTLE;
+	crafting::set1over1Recipe(CONTENT_CRAFTITEM_TEA_LEAVES,CONTENT_CRAFTITEM_STEEL_BOTTLE_WATER,CONTENT_CRAFTITEM_TEA);
 	lists::add("creative",i);
 
 	i = CONTENT_CRAFTITEM_COFFEE_BEANS;
@@ -1393,6 +1395,7 @@ void content_craftitem_init()
 	f->texture = "steel_bottle.png";
 	f->name = "coffee_drink";
 	f->description = wgettext("Coffee");
+	f->stackable = false;
 	f->drop_count = 1;
 	f->consumable = true;
 	f->hunger_effect = 2;
@@ -1400,6 +1403,7 @@ void content_craftitem_init()
 	f->cold_effect = 10;
 	f->energy_effect = 300;
 	f->onuse_replace_item = CONTENT_CRAFTITEM_STEEL_BOTTLE;
+	crafting::set1over1Recipe(CONTENT_CRAFTITEM_COFFEE_BEANS,CONTENT_CRAFTITEM_STEEL_BOTTLE_WATER,CONTENT_CRAFTITEM_COFFEE);
 	lists::add("creative",i);
 
 	i = CONTENT_CRAFTITEM_STEEL_BOTTLE;
@@ -1418,5 +1422,34 @@ void content_craftitem_init()
 		crafting::setRecipe(r,CONTENT_CRAFTITEM_STEEL_BOTTLE,5);
 	}
 	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_GLASS_BOTTLE_WATER;
+	f = &g_content_craftitem_features[i];
+	f->content = i;
+	f->texture = "drink_water.png^glass_bottle.png";
+	f->name = "water_drink";
+	f->description = wgettext("Bottle of Water");
+	f->stackable = false;
+	f->drop_count = 1;
+	f->consumable = true;
+	f->hunger_effect = 1;
+	f->health_effect = 1;
+	f->onuse_replace_item = CONTENT_CRAFTITEM_GLASS_BOTTLE;
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_STEEL_BOTTLE_WATER;
+	f = &g_content_craftitem_features[i];
+	f->content = i;
+	f->texture = "steel_bottle.png";
+	f->name = "hotwater_drink";
+	f->description = wgettext("Bottle of Hot Water");
+	f->stackable = false;
+	f->drop_count = 1;
+	f->consumable = true;
+	f->hunger_effect = 1;
+	f->health_effect = 1;
+	f->cold_effect = 5;
+	f->onuse_replace_item = CONTENT_CRAFTITEM_STEEL_BOTTLE;
 	lists::add("creative",i);
 }

@@ -206,6 +206,8 @@ namespace crafting {
 	void setVRecipe(u16 input, u16 result, u16 count=1);
 	// five input in a u yields one result
 	void setURecipe(u16 input, u16 result);
+	// seven input in a U yields one result
+	void setDeepURecipe(u16 input, u16 result);
 	// three input in a horizontal row yields one result
 	void setRow1Recipe(u16 input, u16 result);
 	// three input in a horizontal row yields two result

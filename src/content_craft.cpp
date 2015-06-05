@@ -256,6 +256,16 @@ void setURecipe(u16 input, u16 result)
 	};
 	setRecipe(r,result,1);
 }
+// seven input in a U yields one result
+void setDeepURecipe(u16 input, u16 result)
+{
+	u16 r[9] = {
+		input,		CONTENT_IGNORE,	input,
+		input,		CONTENT_IGNORE,	input,
+		input,		input,		input
+	};
+	setRecipe(r,result,1);
+}
 // three input in a horizontal row yields one result
 void setRow1Recipe(u16 input, u16 result)
 {
