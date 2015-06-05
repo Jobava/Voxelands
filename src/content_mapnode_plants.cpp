@@ -633,7 +633,6 @@ void content_mapnode_plants(bool repeat)
 	f->param_type = CPT_LIGHT;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
-	f->is_ground_content = true;
 	f->damage_per_second = 2;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
@@ -697,7 +696,6 @@ void content_mapnode_plants(bool repeat)
 	f->param_type = CPT_LIGHT;
 	f->param2_type = CPT_PLANTGROWTH;
 	f->draw_type = CDT_PLANTLIKE;
-	f->is_ground_content = true;
 	f->plantgrowth_large_dug_node = CONTENT_PAPYRUS;
 	f->plantgrowth_large_count = 1;
 	f->plantgrowth_max_height = 5;
@@ -983,6 +981,94 @@ void content_mapnode_plants(bool repeat)
 	f->buildable_to = true;
 	f->type = CMT_PLANT;
 	f->hardness = 0.10;
+	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
+	lists::add("creative",i);
+
+	i = CONTENT_SEEDS_TEA;
+	f = &content_features(i);
+	f->description = wgettext("Tea Seeds");
+	f->setAllTextures("farm_seeds_tea.png");
+	f->draw_type = CDT_PLANTLIKE;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->air_equivalent = true;
+	f->special_alternate_node = CONTENT_TEA;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
+	lists::add("creative",i);
+
+	i = CONTENT_TEA;
+	f = &content_features(i);
+	f->description = wgettext("Tea Plant");
+	f->setInventoryTexture("plant_tea.png");
+	f->setAllTextures("plant_tea.png");
+	f->setAllTextureFlags(0);
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_PLANTGROWTH;
+	f->draw_type = CDT_PLANTLIKE;
+	f->plantgrowth_small_dug_node = CONTENT_SEEDS_TEA;
+	f->plantgrowth_large_dug_node = CONTENT_CRAFTITEM_TEA_LEAVES;
+	f->plantgrowth_large_gives_small = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->walkable = false;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/32;
+	f->buildable_to = true;
+	f->type = CMT_PLANT;
+	f->hardness = 0.15;
+	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
+	lists::add("creative",i);
+
+	i = CONTENT_BEANS_COFFEE;
+	f = &content_features(i);
+	f->description = wgettext("Coffee Beans");
+	f->setAllTextures("farm_seeds_coffee.png");
+	f->draw_type = CDT_PLANTLIKE;
+	f->param_type = CPT_LIGHT;
+	f->setAllTextureFlags(0);
+	f->walkable = false;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->air_equivalent = true;
+	f->special_alternate_node = CONTENT_COFFEE;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->cook_result = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_COFFEE_BEANS)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
+	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
+	lists::add("creative",i);
+
+	i = CONTENT_COFFEE;
+	f = &content_features(i);
+	f->description = wgettext("Coffee Plant");
+	f->setInventoryTexture("plant_coffe.png");
+	f->setAllTextures("plant_coffee.png");
+	f->setAllTextureFlags(0);
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_PLANTGROWTH;
+	f->draw_type = CDT_PLANTLIKE;
+	f->plantgrowth_small_dug_node = CONTENT_BEANS_COFFEE;
+	f->plantgrowth_large_dug_node = CONTENT_BEANS_COFFEE;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->walkable = false;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/32;
+	f->buildable_to = true;
+	f->type = CMT_PLANT;
+	f->hardness = 0.15;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
 	lists::add("creative",i);

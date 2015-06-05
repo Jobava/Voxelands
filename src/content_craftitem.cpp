@@ -1324,7 +1324,7 @@ void content_craftitem_init()
 	f->consumable = true;
 	f->hunger_effect = 3;
 	f->health_effect = 3;
-	f->energy_effect = 3;
+	f->energy_effect = 30;
 	f->onuse_replace_item = CONTENT_CRAFTITEM_GLASS_BOTTLE;
 	crafting::set1over1Recipe(CONTENT_CRAFTITEM_GRAPE,CONTENT_CRAFTITEM_GLASS_BOTTLE,CONTENT_CRAFTITEM_GRAPE_JUICE);
 	lists::add("craftguide",i);
@@ -1341,9 +1341,82 @@ void content_craftitem_init()
 	f->consumable = true;
 	f->hunger_effect = 2;
 	f->health_effect = 3;
-	f->energy_effect = 2;
+	f->energy_effect = 10;
 	f->onuse_replace_item = CONTENT_CRAFTITEM_GLASS_BOTTLE;
 	crafting::set1over1Recipe(CONTENT_CRAFTITEM_APPLE,CONTENT_CRAFTITEM_GLASS_BOTTLE,CONTENT_CRAFTITEM_APPLE_JUICE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_TEA_LEAVES;
+	f = &g_content_craftitem_features[i];
+	f->content = i;
+	f->texture = "tea_leaves.png";
+	f->name = "tea_leaves";
+	f->description = wgettext("Tea Leaves");
+	f->drop_count = 1;
+	f->consumable = true;
+	f->hunger_effect = 1;
+	f->health_effect = 2;
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_TEA;
+	f = &g_content_craftitem_features[i];
+	f->content = i;
+	f->texture = "steel_bottle.png";
+	f->name = "tea_drink";
+	f->description = wgettext("Tea");
+	f->drop_count = 1;
+	f->consumable = true;
+	f->hunger_effect = 3;
+	f->health_effect = 4;
+	f->cold_effect = 300;
+	f->energy_effect = 10;
+	f->onuse_replace_item = CONTENT_CRAFTITEM_STEEL_BOTTLE;
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_COFFEE_BEANS;
+	f = &g_content_craftitem_features[i];
+	f->content = i;
+	f->texture = "coffee_beans.png";
+	f->name = "coffee_beans";
+	f->description = wgettext("Roasted Coffee Beans");
+	f->drop_count = 1;
+	f->consumable = true;
+	f->hunger_effect = 2;
+	f->health_effect = 3;
+	f->energy_effect = 30;
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_COFFEE;
+	f = &g_content_craftitem_features[i];
+	f->content = i;
+	f->texture = "steel_bottle.png";
+	f->name = "coffee_drink";
+	f->description = wgettext("Coffee");
+	f->drop_count = 1;
+	f->consumable = true;
+	f->hunger_effect = 2;
+	f->health_effect = 3;
+	f->cold_effect = 10;
+	f->energy_effect = 300;
+	f->onuse_replace_item = CONTENT_CRAFTITEM_STEEL_BOTTLE;
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_STEEL_BOTTLE;
+	f = &g_content_craftitem_features[i];
+	f->content = i;
+	f->texture = "steel_bottle.png";
+	f->name = "steel_bottle";
+	f->description = wgettext("Steel Bottle");
+	f->drop_count = 1;
+	{
+		u16 r[9] = {
+			CONTENT_CRAFTITEM_STEEL_INGOT,	CONTENT_IGNORE,			CONTENT_CRAFTITEM_STEEL_INGOT,
+			CONTENT_CRAFTITEM_STEEL_INGOT,	CONTENT_IGNORE,			CONTENT_CRAFTITEM_STEEL_INGOT,
+			CONTENT_IGNORE,			CONTENT_CRAFTITEM_STEEL_INGOT,	CONTENT_IGNORE
+		};
+		crafting::setRecipe(r,CONTENT_CRAFTITEM_STEEL_BOTTLE,5);
+	}
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 }

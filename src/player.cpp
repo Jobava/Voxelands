@@ -1115,6 +1115,10 @@ void LocalPlayer::applyControl(float dtime)
 		energy_effectf -= dtime;
 	if (energy_effectf < 0.0)
 		energy_effectf = 0.0;
+	if (cold_effectf > 0.0)
+		cold_effectf -= dtime;
+	if (cold_effectf < 0.0)
+		cold_effectf = 0.0;
 
 	f32 inc = walk_acceleration * BS * dtime;
 

@@ -2272,7 +2272,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 		SendInventory(peer_id);
 
 		// Send back stuff
-		if (player->hp != oldhp || player->air != oldair || player->hunger != oldhunger)
+		if (player->hp != oldhp || player->air != oldair || player->hunger != oldhunger || player->energy_effect || player->cold_effect)
 			SendPlayerHP(player);
 	}
 	break;
@@ -4843,7 +4843,7 @@ void Server::deletingPeer(con::Peer *peer, bool timeout)
 	Static send methods
 */
 
-void Server::SendHP(con::Connection &con, u16 peer_id, u8 hp, u8 air, u8 hunger, u8 energy_effect, u8 cold_effect)
+void Server::SendHP(con::Connection &con, u16 peer_id, u8 hp, u8 air, u8 hunger, u16 energy_effect, u16 cold_effect)
 {
 	DSTACK(__FUNCTION_NAME);
 	std::ostringstream os(std::ios_base::binary);
@@ -4852,8 +4852,8 @@ void Server::SendHP(con::Connection &con, u16 peer_id, u8 hp, u8 air, u8 hunger,
 	writeU8(os, hp);
 	writeU8(os, air);
 	writeU8(os, hunger);
-	writeU8(os, energy_effect);
-	writeU8(os, cold_effect);
+	writeU16(os, energy_effect);
+	writeU16(os, cold_effect);
 
 	// Make data buffer
 	std::string s = os.str();
