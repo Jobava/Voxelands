@@ -540,6 +540,7 @@ private:
 	content_t m_old_node_below_type;
 	float m_energy;
 	bool m_can_use_energy;
+	int m_low_energy_effect;
 
 };
 #endif // !SERVER

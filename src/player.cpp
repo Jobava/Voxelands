@@ -744,7 +744,8 @@ LocalPlayer::LocalPlayer():
 	cold_effectf(0.0),
 	m_sneak_node(32767,32767,32767),
 	m_sneak_node_exists(false),
-	m_can_use_energy(true)
+	m_can_use_energy(true),
+	m_low_energy_effect(0)
 {
 	m_energy = 10.0;
 	m_character = g_settings->get("character_definition");
@@ -1107,8 +1108,22 @@ void LocalPlayer::applyControl(float dtime)
 	}else if (m_energy < -0.1) {
 		m_can_use_energy = false;
 		m_energy = -0.1;
+		if (g_sound) {
+			if (m_character == "")
+				m_character = std::string(PLAYER_DEFAULT_CHARDEF);
+			Strfnd f(m_character);
+			std::string gender = f.next(":");
+			std::string snd("low-energy-");
+			snd += gender;
+
+			m_low_energy_effect = g_sound->playSound(snd,true);
+		}
 	}else if (m_energy > 1.8) {
 		m_can_use_energy = true;
+		if (g_sound && m_low_energy_effect) {
+			g_sound->stopSound(m_low_energy_effect);
+			m_low_energy_effect = 0;
+		}
 	}
 
 	if (energy_effectf > 0.0)

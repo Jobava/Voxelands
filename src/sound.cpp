@@ -120,6 +120,8 @@ void init_sounds(ISoundManager *sound)
 
 	// special
 	sound->loadSound("wield","wield_item.ogg");
+	sound->loadSound("low-energy-F","low_energy_F.ogg");
+	sound->loadSound("low-energy-M","low_energy_M.ogg");
 
 	// menu backgrounds
 	sound->loadSound("bg-mainmenu","bg_mainmenu.ogg");
