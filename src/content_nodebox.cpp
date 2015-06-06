@@ -1451,12 +1451,6 @@ void content_nodebox_flag(ContentFeatures *f)
 	f->setNodeBox(NodeBox(
 		-0.125*BS,-0.5*BS,-0.125*BS,0.125*BS,0.5*BS,0.125*BS
 	));
-	//f->setNodeBox(NodeBox(
-		//-0.4375*BS,-0.5*BS,-0.1875*BS,-0.25*BS,0.5*BS,0.*BS
-	//));
-	//f->addNodeBox(NodeBox(
-		//-0.25*BS,0.*BS,-0.125*BS,0.4375*BS,0.4375*BS,-0.0625*BS
-	//));
 }
 
 void content_nodebox_flower_pot(ContentFeatures *f)
