@@ -2285,8 +2285,18 @@ void the_game(
 					break;
 				}else if (event.type == CE_PLAYER_DAMAGE) {
 					damage_flash_timer = 0.05;
-					if(event.player_damage.amount >= 2){
+					if (event.player_damage.amount >= 2) {
 						damage_flash_timer += 0.05 * event.player_damage.amount;
+					}
+					if (g_sound) {
+						std::string ch = g_settings->get("character_definition");
+						if (ch == "")
+							ch = std::string(PLAYER_DEFAULT_CHARDEF);
+						Strfnd f(ch);
+						std::string gender = f.next(":");
+						std::string snd("player-hurt-");
+						snd += gender;
+						g_sound->playSound(snd,false);
 					}
 				}else if (event.type == CE_PLAYER_FORCE_MOVE) {
 					camera_yaw = event.player_force_move.yaw;

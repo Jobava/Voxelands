@@ -122,6 +122,8 @@ void init_sounds(ISoundManager *sound)
 	sound->loadSound("wield","wield_item.ogg");
 	sound->loadSound("low-energy-F","low_energy_F.ogg");
 	sound->loadSound("low-energy-M","low_energy_M.ogg");
+	sound->loadSound("player-hurt-F","player_hurt_F.ogg");
+	sound->loadSound("player-hurt-M","player_hurt_M.ogg");
 
 	// menu backgrounds
 	sound->loadSound("bg-mainmenu","bg_mainmenu.ogg");
