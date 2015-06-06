@@ -2433,6 +2433,8 @@ NodeMetadata* CauldronNodeMetadata::create(std::istream &is)
 	is>>temp;
 	d->m_src_time = (float)temp/10;
 	is>>temp;
+	d->m_cool_time = (float)temp/10;
+	is>>temp;
 	d->m_water_level = temp;
 	is>>temp;
 	d->m_water_heated = !!temp;
@@ -2446,6 +2448,7 @@ void CauldronNodeMetadata::serializeBody(std::ostream &os)
 	m_inventory->serialize(os);
 	os<<itos(m_fuel_time*10)<<" ";
 	os<<itos(m_src_time*10)<<" ";
+	os<<itos(m_cool_time*10)<<" ";
 	os<<itos(m_water_level)<<" ";
 	os<<itos(m_water_heated ? 1 : 0)<<" ";
 	os<<itos(m_water_hot ? 1 : 0)<<" ";
@@ -2456,12 +2459,15 @@ std::wstring CauldronNodeMetadata::infoText()
 		return wgettext("Cauldron is active");
 	if (m_water_level) {
 		if (m_water_hot)
-			return wgettext("Cauldron is boiling");
+			return wgettext("Cauldron is hot");
 		if (m_water_heated)
 			return wgettext("Cauldron is cool");
 	}else{
 		return wgettext("Cauldron is empty");
 	}
+	InventoryList *list = m_inventory->getList("fuel");
+	if (list && list->getUsedSlots() > 0)
+		return wgettext("Cauldron is inactive");
 	return wgettext("Cauldron is out of fuel");
 }
 bool CauldronNodeMetadata::nodeRemovalDisabled()
@@ -2490,12 +2496,13 @@ bool CauldronNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 		m_fuel_time -= dtime;
 	}
 
+	InventoryList *list = m_inventory->getList("fuel");
 	bool should_heat = false;
 
 	if (m_water_level) {
 		if (m_water_hot) {
 			m_cool_time -= dtime;
-			if (m_cool_time <= 0.0)
+			if (m_cool_time < 20.0)
 				m_water_hot = false;
 		}else if (!m_water_heated) {
 			m_cool_time = 120.0;
@@ -2506,6 +2513,10 @@ bool CauldronNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 				m_water_heated = true;
 				m_src_time = 0.0;
 			}
+		}else if (list && list->getUsedSlots() > 0) {
+			m_cool_time -= dtime;
+			if (m_cool_time < 0.0)
+				m_water_heated = false;
 		}
 	}else{
 		m_water_hot = false;

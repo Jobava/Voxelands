@@ -813,6 +813,8 @@ void content_mapnode_plants(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 1;
 	f->dug_item = std::string("CraftItem apple 1");
+	f->ondig_replace_node = CONTENT_APPLE_LEAVES;
+	f->ondig_replace_node_requires = CONTENT_APPLE_TREE;
 	f->type = CMT_WOOD;
 	f->hardness = 0.0;
 	f->pressure_type = CST_CRUSHABLE;
