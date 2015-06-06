@@ -125,6 +125,10 @@ void init_sounds(ISoundManager *sound)
 	sound->loadSound("player-hurt-F","player_hurt_F.ogg");
 	sound->loadSound("player-hurt-M","player_hurt_M.ogg");
 
+	// use
+	sound->loadSound("use-eat","use_eat.ogg");
+	sound->loadSound("use-drink","use_drink.ogg");
+
 	// menu backgrounds
 	sound->loadSound("bg-mainmenu","bg_mainmenu.ogg");
 	sound->loadSound("bg-charcreator","bg_charcreator.ogg");

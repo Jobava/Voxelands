@@ -65,6 +65,8 @@ struct CraftItemFeatures {
 	content_t shot_item;
 	// when the item is Used, it should be replaced with this
 	content_t onuse_replace_item;
+	// sound played when item is used
+	std::string sound_use;
 
 	CraftItemFeatures():
 		content(CONTENT_IGNORE),
@@ -84,7 +86,8 @@ struct CraftItemFeatures {
 		drop_item(CONTENT_IGNORE),
 		thrown_item(CONTENT_IGNORE),
 		shot_item(CONTENT_IGNORE),
-		onuse_replace_item(CONTENT_IGNORE)
+		onuse_replace_item(CONTENT_IGNORE),
+		sound_use("")
 	{}
 };
 

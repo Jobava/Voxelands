@@ -1672,6 +1672,18 @@ void Client::useItem()
 	SharedBuffer<u8> data(buf, 2);
 	// Send as reliable
 	Send(0, data, true);
+
+	if (g_sound) {
+		InventoryItem *item = (InventoryItem*)m_env.getLocalPlayer()->getWieldItem();
+		if (!item)
+			return;
+		std::string snd("");
+		content_t w = item->getContent();
+		if ((w&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK)
+			snd = content_craftitem_features(w).sound_use;
+		if (snd != "")
+			g_sound->playSound(snd,false);
+	}
 }
 
 void Client::clickActiveObject(u8 button, u16 id, u16 item_i)
