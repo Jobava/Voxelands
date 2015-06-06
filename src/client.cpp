@@ -174,20 +174,27 @@ void * MeshUpdateThread::Thread()
 		}else{
 			MapBlock *block = m_env->getMap().getBlockNoCreateNoEx(q->p);
 			if (block && block->mesh) {
-				block->mesh->generate(q->data, m_camera_offset, &block->mesh_mutex);
 				if (q->ack_block_to_server) {
 					MeshUpdateResult r;
 					r.p = q->p;
 					r.mesh = NULL;
-					r.ack_block_to_server = q->ack_block_to_server;
+					r.ack_block_to_server = true;
 					m_queue_out.push_back(r);
 				}
+				block->mesh->generate(q->data, m_camera_offset, &block->mesh_mutex);
 			}else if (block) {
+				if (q->ack_block_to_server) {
+					MeshUpdateResult r;
+					r.p = q->p;
+					r.mesh = NULL;
+					r.ack_block_to_server = true;
+					m_queue_out.push_back(r);
+				}
 				MapBlockMesh *mesh_new = new MapBlockMesh(q->data, m_camera_offset);
 				MeshUpdateResult r;
 				r.p = q->p;
 				r.mesh = mesh_new;
-				r.ack_block_to_server = q->ack_block_to_server;
+				r.ack_block_to_server = false;
 
 				m_queue_out.push_back(r);
 			}
