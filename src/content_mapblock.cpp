@@ -321,7 +321,7 @@ static void meshgen_lights_vertex(
 
 /*
  * what this should do:
- * return face lighting (see also old roof lighting)
+ * return face lighting
  */
 static void meshgen_lights_face(
 	MeshMakeData *data,
