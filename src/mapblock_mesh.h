@@ -230,7 +230,7 @@ public:
 
 	void updateCameraOffset(v3s16 camera_offset);
 
-	bool far;
+	bool isfar;
 private:
 	v3s16 m_pos;
 	scene::SMesh *m_mesh;

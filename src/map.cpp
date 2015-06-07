@@ -3413,7 +3413,7 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 					continue;
 				}
 
-				block->mesh->far = (d > faraway);
+				block->mesh->isfar = (d > faraway);
 			}
 
 			// Limit block count in case of a sudden increase
@@ -3473,7 +3473,7 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 			if (!mesh || !mesh->getMesh())
 				continue;
 			scene::SMesh *m = NULL;
-			if (mesh->far) {
+			if (mesh->isfar) {
 				m = mesh->getFarMesh();
 			}else{
 				m = mesh->getMesh();
