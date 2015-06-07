@@ -148,7 +148,9 @@ bool RecursiveDelete(std::string path)
 {
 	std::cerr<<"Removing \""<<path<<"\""<<std::endl;
 
-	//return false;
+	// experiments
+	if (DeleteFile(path.c_str()))
+		return true;
 
 	// This silly function needs a double-null terminated string...
 	// Well, we'll just make sure it has at least two, then.
