@@ -526,8 +526,10 @@ bool GUISettingsMenu::resetMenu()
 {
 	if (activeKey >= 0) {
 		gui::IGUIElement *e = getElementFromId(activeKey);
-		if (e != NULL && e->getType() == gui::EGUIET_BUTTON)
+		if (e != NULL && e->getType() == gui::EGUIET_BUTTON) {
+			e->setEnabled(true);
 			e->setText(keynames[activeKey-GUI_ID_KEYSETTINGS_BASE]);
+		}
 		activeKey = -1;
 		return false;
 	}
@@ -539,6 +541,7 @@ bool GUISettingsMenu::OnEvent(const SEvent& event)
 		KeyPress kp(event.KeyInput);
 		gui::IGUIElement *e = getElementFromId(activeKey);
 		if (e != NULL && e->getType() == gui::EGUIET_BUTTON) {
+			e->setEnabled(true);
 			e->setText(kp.guiName());
 			keys[activeKey-GUI_ID_KEYSETTINGS_BASE] = kp;
 		}
@@ -560,8 +563,11 @@ bool GUISettingsMenu::OnEvent(const SEvent& event)
 				resetMenu();
 				activeKey = id;
 				gui::IGUIElement *e = getElementFromId(id);
-				if (e != NULL && e->getType() == gui::EGUIET_BUTTON)
+				if (e != NULL && e->getType() == gui::EGUIET_BUTTON) {
 					e->setText(wgettext("press Key"));
+					e->setEnabled(false);
+					return true;
+				}
 			}else{
 				switch (event.GUIEvent.Caller->getID()) {
 				case GUI_ID_TAB_SETTINGS_CONTROLS:
