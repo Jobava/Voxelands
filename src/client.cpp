@@ -880,6 +880,9 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		u8 hunger = readU8(is);
 
 		setServerSettings(damage,suffocation,hunger);
+
+		if (!damage)
+			m_env.getLocalPlayer()->setIgnoreEnergy(true);
 	}
 	break;
 	case TOCLIENT_PLAYERINFO:

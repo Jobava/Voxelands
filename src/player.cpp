@@ -745,6 +745,7 @@ LocalPlayer::LocalPlayer():
 	m_sneak_node(32767,32767,32767),
 	m_sneak_node_exists(false),
 	m_can_use_energy(true),
+	m_ignore_energy(false),
 	m_low_energy_effect(0)
 {
 	m_energy = 10.0;
@@ -972,6 +973,11 @@ void LocalPlayer::applyControl(float dtime)
 {
 	// Clear stuff
 	swimming_up = false;
+
+	if (m_ignore_energy) {
+		m_can_use_energy = true;
+		m_energy = 20.0;
+	}
 
 	// Random constants
 	f32 walk_acceleration = 4.0 * BS;

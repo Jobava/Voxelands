@@ -523,6 +523,8 @@ public:
 	void setEnergy(float e) {m_energy = e;}
 	float getEnergy() {return m_energy;}
 
+	void setIgnoreEnergy(bool v) {m_ignore_energy = v;}
+
 	video::ITexture* getTexture();
 
 	PlayerControl control;
@@ -540,6 +542,7 @@ private:
 	content_t m_old_node_below_type;
 	float m_energy;
 	bool m_can_use_energy;
+	bool m_ignore_energy;
 	int m_low_energy_effect;
 
 };
