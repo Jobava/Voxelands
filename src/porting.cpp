@@ -160,6 +160,24 @@ char* posix_guess_path(char* argv0)
 	pathRemoveFile(buf, '/');
 	pathRemoveFile(buf, '/');
 
+	/* get rid of any path trickery */
+	if (strstr(buf,"..")) {
+		char buff[BUFSIZ];
+		char* t;
+		strcpy(buff,buf);
+		buf[0] = 0;
+		t = strtok(buff,"/");
+		while (t) {
+			if (!strcmp(t,"..")) {
+				pathRemoveFile(buf,'/');
+			}else{
+				strcat(buf,"/");
+				strcat(buf,t);
+			}
+			t = strtok(NULL,"/");
+		}
+	}
+
 	return strdup(buf);
 }
 #endif
