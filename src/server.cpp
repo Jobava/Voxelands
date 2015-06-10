@@ -977,6 +977,7 @@ Server::Server(
 	m_objectdata_timer = 0.0;
 	m_emergethread_trigger_timer = 0.0;
 	m_savemap_timer = 0.0;
+	m_send_object_info_timer = 0.0;
 
 	m_env_mutex.Init();
 	m_con_mutex.Init();
@@ -1448,10 +1449,12 @@ void Server::AsyncRunStep()
 		}
 	}
 
-	/*
-		Send object messages
-	*/
-	{
+	m_send_object_info_timer += dtime;
+	if (m_send_object_info_timer > 0.2) {
+		m_send_object_info_timer -= 0.2;
+
+		// Send object messages
+
 		JMutexAutoLock envlock(m_env_mutex);
 		JMutexAutoLock conlock(m_con_mutex);
 
@@ -1462,23 +1465,36 @@ void Server::AsyncRunStep()
 		core::map<u16, core::list<ActiveObjectMessage>* > buffered_messages;
 
 		// Get active object messages from environment
-		for(;;)
-		{
+		for (;;) {
 			ActiveObjectMessage aom = m_env.getActiveObjectMessage();
-			if(aom.id == 0)
+			if (aom.id == 0)
 				break;
 
 			core::list<ActiveObjectMessage>* message_list = NULL;
 			core::map<u16, core::list<ActiveObjectMessage>* >::Node *n;
 			n = buffered_messages.find(aom.id);
-			if(n == NULL)
-			{
+			if (n == NULL) {
 				message_list = new core::list<ActiveObjectMessage>;
 				buffered_messages.insert(aom.id, message_list);
-			}
-			else
-			{
+			}else{
 				message_list = n->getValue();
+			}
+			/* if this is a position send, replace any previous position data,
+			 * sending multiple position data messages in one packet is silly
+			 */
+			if (aom.datastring[0] == 0) {
+				bool was_replaced = false;
+				for (core::list<ActiveObjectMessage>::Iterator k = message_list->begin(); k != message_list->end(); k++) {
+					// Compose the full new data with header
+					ActiveObjectMessage &oaom = *k;
+					if (oaom.datastring[0] == 0) {
+						oaom.datastring = aom.datastring;
+						was_replaced = true;
+						break;
+					}
+				}
+				if (was_replaced)
+					continue;
 			}
 			message_list->push_back(aom);
 		}
