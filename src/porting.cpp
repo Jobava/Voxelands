@@ -182,7 +182,7 @@ void initializePaths()
 		Linux
 	*/
 	#elif defined(linux)
-		#include <unistd.h>
+	#include <unistd.h>
 
 	char buf[BUFSIZ];
 	memset(buf, 0, BUFSIZ);
@@ -190,23 +190,35 @@ void initializePaths()
 	assert(readlink("/proc/self/exe", buf, BUFSIZ-1) != -1);
 
 	pathRemoveFile(buf, '/');
+	pathRemoveFile(buf, '/');
 
 	// Use "./bin/../data"
-	path_data = std::string(buf) + "/../data";
+	path_data = std::string(buf) + "/data";
 
 	// Use "./bin/../"
-	path_userdata = std::string(buf) + "/..";
+	path_userdata = std::string(buf);
 
 	/*
 		OS X
 	*/
 	#elif defined(__APPLE__) || defined(__FreeBSD__)
 
-	//TODO: Get path of executable. This assumes working directory is bin/
-	dstream<<"WARNING: Relative path not properly supported on OS X and FreeBSD"
-			<<std::endl;
-	path_data = std::string("../data");
-	path_userdata = std::string("..");
+	const int info[4] = {CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1};
+	char* path = NULL;
+	size_t size = 0;
+
+	sysctl(info, 4, NULL, &size, NULL, 0);
+	path = (char*) malloc(size);
+
+	sysctl(info, 4, path, &size, NULL, 0);
+
+	pathRemoveFile(path, '/');
+	pathRemoveFile(path, '/');
+
+	path_userdata = std::string(path);
+	path_data = std::string(path) + "/data";
+
+	delete path ;
 
 	#endif
 
