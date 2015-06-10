@@ -205,12 +205,13 @@ void initializePaths(char* argv0)
 	len = GetModuleFileName(GetModuleHandle(NULL), buf, buflen);
 	assert(len < buflen);
 	pathRemoveFile(buf, '\\');
+	pathRemoveFile(buf, '\\');
 
 	// Use "./bin/../data"
-	path_data = std::string(buf) + DIR_DELIM ".." DIR_DELIM "data";
+	path_data = std::string(buf) + DIR_DELIM + "data";
 
 	// Use "./bin/.."
-	path_userdata = std::string(buf) + DIR_DELIM "..";
+	path_userdata = std::string(buf);
 
 	/*
 		Linux
