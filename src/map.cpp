@@ -1858,6 +1858,8 @@ ServerMap::~ServerMap()
 		sqlite3_finalize(m_database_read);
 	if(m_database_write)
 		sqlite3_finalize(m_database_write);
+	if(m_database_list)
+		sqlite3_finalize(m_database_list);
 	if(m_database)
 		sqlite3_close(m_database);
 

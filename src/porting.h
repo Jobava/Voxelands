@@ -89,7 +89,7 @@ std::string getDataPath(const char *subpath);
 /*
 	Initialize path_data and path_userdata.
 */
-void initializePaths();
+void initializePaths(char* argv0);
 
 /*
 	Resolution is 10-20ms.

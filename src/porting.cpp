@@ -84,37 +84,31 @@ void signal_handler_init(void)
 	#include <signal.h>
 	#include <windows.h>
 
-	BOOL WINAPI event_handler(DWORD sig)
-	{
-		switch(sig)
-		{
-		case CTRL_C_EVENT:
-		case CTRL_CLOSE_EVENT:
-		case CTRL_LOGOFF_EVENT:
-		case CTRL_SHUTDOWN_EVENT:
+BOOL WINAPI event_handler(DWORD sig)
+{
+	switch (sig) {
+	case CTRL_C_EVENT:
+	case CTRL_CLOSE_EVENT:
+	case CTRL_LOGOFF_EVENT:
+	case CTRL_SHUTDOWN_EVENT:
+		if (g_killed == false) {
+			dstream<<DTIME<<"INFO: event_handler(): "
+					<<"Ctrl+C, Close Event, Logoff Event or Shutdown Event, shutting down."<<std::endl;
+			dstream<<DTIME<<"INFO: event_handler(): "
+					<<"Printing debug stacks"<<std::endl;
+			debug_stacks_print();
 
-			if(g_killed == false)
-			{
-				dstream<<DTIME<<"INFO: event_handler(): "
-						<<"Ctrl+C, Close Event, Logoff Event or Shutdown Event, shutting down."<<std::endl;
-				dstream<<DTIME<<"INFO: event_handler(): "
-						<<"Printing debug stacks"<<std::endl;
-				debug_stacks_print();
-
-				g_killed = true;
-			}
-			else
-			{
-				(void)signal(SIGINT, SIG_DFL);
-			}
-
-			break;
-		case CTRL_BREAK_EVENT:
-			break;
+			g_killed = true;
+		}else{
+			(void)signal(SIGINT, SIG_DFL);
 		}
-
-		return TRUE;
+		break;
+	case CTRL_BREAK_EVENT:
+		break;
 	}
+
+	return TRUE;
+}
 
 void signal_handler_init(void)
 {
@@ -139,16 +133,38 @@ std::string getDataPath(const char *subpath)
 void pathRemoveFile(char *path, char delim)
 {
 	// Remove filename and path delimiter
-	int i;
-	for(i = strlen(path)-1; i>=0; i--)
-	{
-		if(path[i] == delim)
+	int i = strlen(path)-1;
+	for (; i>=0; i--) {
+		if (path[i] == delim)
 			break;
 	}
 	path[i] = 0;
 }
 
-void initializePaths()
+#ifndef _WIN32
+char* posix_guess_path(char* argv0)
+{
+	char buf[BUFSIZ];
+	size_t l = BUFSIZ;
+	buf[0] = 0;
+
+	if (argv0[0] != '/') {
+		if (!getcwd(buf,BUFSIZ))
+			return strdup("..");
+		l -= (strlen(buf)+1);
+		strncat(buf,"/",l);
+		l--;
+	}
+
+	strncat(buf,argv0,l);
+	pathRemoveFile(buf, '/');
+	pathRemoveFile(buf, '/');
+
+	return strdup(buf);
+}
+#endif
+
+void initializePaths(char* argv0)
 {
 #ifdef RUN_IN_PLACE
 	/*
@@ -187,10 +203,18 @@ void initializePaths()
 	char buf[BUFSIZ];
 	memset(buf, 0, BUFSIZ);
 	// Get path to executable
-	assert(readlink("/proc/self/exe", buf, BUFSIZ-1) != -1);
-
-	pathRemoveFile(buf, '/');
-	pathRemoveFile(buf, '/');
+	if (readlink("/proc/self/exe", buf, BUFSIZ-1) < 0) {
+		char* b = posix_guess_path(argv0);
+		if (!b) {
+			strcpy(buf,"..");
+		}else{
+			strcpy(buf,b);
+			free(b);
+		}
+	}else{
+		pathRemoveFile(buf, '/');
+		pathRemoveFile(buf, '/');
+	}
 
 	// Use "./bin/../data"
 	path_data = std::string(buf) + "/data";
@@ -207,18 +231,30 @@ void initializePaths()
 	char* path = NULL;
 	size_t size = 0;
 
-	sysctl(info, 4, NULL, &size, NULL, 0);
-	path = (char*) malloc(size);
+	if (!sysctl(info, 4, NULL, &size, NULL, 0)) {
+		path = (char*)malloc(size);
+		if (path) {
+			if (!sysctl(info, 4, path, &size, NULL, 0)) {
+				pathRemoveFile(path, '/');
+				pathRemoveFile(path, '/');
+			}else{
+				free(path);
+				path = NULL;
+			}
+		}
+	}
+	if (!path)
+		path = posix_guess_path(argv0);
 
-	sysctl(info, 4, path, &size, NULL, 0);
+	if (path) {
+		path_userdata = std::string(path);
+		path_data = std::string(path) + "/data";
 
-	pathRemoveFile(path, '/');
-	pathRemoveFile(path, '/');
-
-	path_userdata = std::string(path);
-	path_data = std::string(path) + "/data";
-
-	delete path ;
+		free(path);
+	}else{
+		path_userdata = std::string("..");
+		path_data = std::string("../data");
+	}
 
 	#endif
 
@@ -266,12 +302,13 @@ void initializePaths()
 	assert(readlink("/proc/self/exe", buf, BUFSIZ-1) != -1);
 
 	pathRemoveFile(buf, '/');
+	pathRemoveFile(buf, '/');
 
-	path_data = std::string(buf) + "/../share/" + PROJECT_NAME;
+	path_data = std::string(buf) + "/share/" + PROJECT_NAME;
 	//path_data = std::string(INSTALL_PREFIX) + "/share/" + PROJECT_NAME;
 	if (!fs::PathExists(path_data)) {
 		dstream<<"WARNING: data path " << path_data << " not found!";
-		path_data = std::string(buf) + "/../data";
+		path_data = std::string(buf) + "/data";
 		dstream<<" Trying " << path_data << std::endl;
 	}
 

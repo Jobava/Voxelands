@@ -173,7 +173,7 @@ int main(int argc, char *argv[])
 	bool &kill = *porting::signal_handler_killstatus();
 
 	// Initialize porting::path_data and porting::path_userdata
-	porting::initializePaths();
+	porting::initializePaths(argv[0]);
 
 	// Create user data directory
 	fs::CreateDir(porting::path_userdata);
