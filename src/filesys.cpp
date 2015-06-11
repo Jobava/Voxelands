@@ -148,27 +148,34 @@ bool RecursiveDelete(std::string path)
 {
 	std::cerr<<"Removing \""<<path<<"\""<<std::endl;
 
-	// experiments
-	if (DeleteFile(path.c_str()))
-		return true;
+	DWORD attributes = GetFileAttributes(path.c_str());
 
-	// This silly function needs a double-null terminated string...
-	// Well, we'll just make sure it has at least two, then.
-	path += "\0\0";
-
-	SHFILEOPSTRUCT sfo;
-	sfo.hwnd = NULL;
-	sfo.wFunc = FO_DELETE;
-	sfo.pFrom = path.c_str();
-	sfo.pTo = NULL;
-	sfo.fFlags = FOF_SILENT | FOF_NOCONFIRMATION | FOF_NOCONFIRMMKDIR;
-
-	int r = SHFileOperation(&sfo);
-
-	if(r != 0)
-		std::cerr<<"SHFileOperation returned "<<r<<std::endl;
-
-	//return (r == 0);
+	// Delete if it's a file, or call recursive delete if a directory
+	if(attributes == INVALID_FILE_ATTRIBUTES) {
+		std::cerr<<"Could not remove \""<<path<<"\""<<std::endl;
+		return false;
+	} else {
+		if(attributes == FILE_ATTRIBUTE_DIRECTORY) {
+			std::vector<DirListNode> dir_list = GetDirListing(path);
+			for(int i = 0; i < dir_list.size(); i++) {
+				DirListNode &node = dir_list[i];
+				std::string fpath = path + DIR_DELIM + node.name;
+				if(!RecursiveDelete(fpath)) {
+					std::cerr<<"Could not remove contents of \""<<fpath<<"\""<<std::endl;
+					return false;
+				}
+			}
+			if(!RemoveDirectory(path.c_str())) {
+				std::cerr<<"Could not remove \""<<path<<"\""<<std::endl;
+				return false;
+			}
+		} else {
+			if(!DeleteFile(path.c_str())) {
+				std::cerr<<"Could not remove \""<<path<<"\""<<std::endl;
+				return false;
+			}
+		}
+	}
 	return true;
 }
 
