@@ -341,6 +341,9 @@ public:
 	bool getServerSuffocation() {return m_server_suffocation;}
 	bool getServerHunger() {return m_server_hunger;}
 
+	bool getFormState() {return m_form_open;}
+	void setFormState(bool state) {m_form_open = state;}
+
 private:
 
 	// Virtual methods from con::PeerHandler
@@ -394,9 +397,7 @@ private:
 	// Received from the server. 0-23999
 	u32 m_time_of_day;
 
-	// 0 <= m_daynight_i < DAYNIGHT_CACHE_COUNT
-	//s32 m_daynight_i;
-	//u32 m_daynight_ratio;
+	bool m_form_open;
 
 	Queue<std::wstring> m_chat_queue;
 

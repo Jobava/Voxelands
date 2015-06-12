@@ -1672,6 +1672,7 @@ void the_game(
 	// Launch pause menu
 	(new GUIPauseMenu(guienv, guiroot, -1, g_gamecallback,
 			&g_menumgr))->drop();
+	client.setFormState(true);
 
 	/*
 		Some statistics are collected in these
@@ -1754,6 +1755,7 @@ void the_game(
 			(new GUIPasswordChange(guienv, guiroot, -1,
 				&g_menumgr, &client))->drop();
 			g_gamecallback->changepassword_requested = false;
+			client.setFormState(true);
 		}
 
 		/*
@@ -1952,6 +1954,7 @@ void the_game(
 			menu->setFormSpec(fio->getForm(), inventoryloc);
 			menu->setFormIO(fio);
 			menu->drop();
+			client.setFormState(true);
 		}else if (input->wasKeyDown(EscapeKey)) {
 			infostream<<"the_game: Launching pause menu"<<std::endl;
 			// It will delete itself by itself
@@ -1959,6 +1962,7 @@ void the_game(
 
 			// Move mouse cursor on top of the disconnect button
 			input->setMousePos(displaycenter.X, displaycenter.Y+25);
+			client.setFormState(true);
 		}else if (input->wasKeyDown(getKeySetting(VLKC_CHAT))) {
 			FormIO *fio = new ChatFormIO(&client);
 
@@ -2593,6 +2597,7 @@ void the_game(
 									sound = "open-menu";
 								client.playSound(sound,0);
 							}
+							client.setFormState(true);
 						}
 					}
 					if (input->getRightClicked()) {
@@ -3006,8 +3011,10 @@ void the_game(
 				int crosshair = 1;
 				if (g_menumgr.menuCount() > 0) {
 					crosshair = 0;
-				}else if (client.getPointedContent() != CONTENT_IGNORE) {
-					crosshair = 2;
+				}else{
+					client.setFormState(false);
+					if (client.getPointedContent() != CONTENT_IGNORE)
+						crosshair = 2;
 				}
 				MapNode snode;
 				v3s16 spos = v3s16(0,0,0);

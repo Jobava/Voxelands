@@ -3557,15 +3557,20 @@ void ClientMap::renderPostFx()
 	m_camera_mutex.Lock();
 	v3f camera_position = m_camera_position;
 	m_camera_mutex.Unlock();
+	video::SColor post_effect_color(0,0,0,0);
 
-	MapNode n = getNodeNoEx(floatToInt(camera_position, BS));
+	if (m_client->getFormState()) {
+		post_effect_color = video::SColor(128,0,0,0);
+	}else{
+		MapNode n = getNodeNoEx(floatToInt(camera_position, BS));
 
-	// - If the player is in a solid node, make everything black.
-	// - If the player is in liquid, draw a semi-transparent overlay.
-	ContentFeatures& features = content_features(n);
-	video::SColor post_effect_color = features.post_effect_color;
-	if (features.solidness == 2 && m_client->getLocalPlayer()->control.free == false) {
-		post_effect_color = video::SColor(255, 0, 0, 0);
+		// - If the player is in a solid node, make everything black.
+		// - If the player is in liquid, draw a semi-transparent overlay.
+		ContentFeatures& features = content_features(n);
+		post_effect_color = features.post_effect_color;
+		if (features.solidness == 2 && m_client->getLocalPlayer()->control.free == false) {
+			post_effect_color = video::SColor(255, 0, 0, 0);
+		}
 	}
 	if (post_effect_color.getAlpha() != 0) {
 		// Draw a full-screen rectangle

@@ -233,6 +233,7 @@ Client::Client(
 	m_pointed_node(-32768,-32768,-32768),
 	m_pointed_content(CONTENT_IGNORE),
 	m_time_of_day(0),
+	m_form_open(false),
 	m_map_seed(0),
 	m_map_type(MGT_DEFAULT),
 	m_password(password),

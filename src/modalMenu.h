@@ -105,6 +105,7 @@ public:
 		allowFocusRemoval(true);
 		// This removes Environment's grab on us
 		Environment->removeFocus(this);
+		m_menumgr->deletingMenu(this);
 		this->remove();
 	}
 

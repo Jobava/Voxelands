@@ -681,6 +681,7 @@ bool GUIFormSpecMenu::OnEvent(const SEvent& event)
 		KeyPress kp(event.KeyInput);
 		if (event.KeyInput.PressedDown && (kp == EscapeKey || kp == getKeySetting(VLKC_INVENTORY))) {
 			m_tooltip_element->setVisible(false);
+			acceptInput();
 			quitMenu();
 			return true;
 		}
