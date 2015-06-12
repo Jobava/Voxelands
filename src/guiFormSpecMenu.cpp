@@ -221,14 +221,21 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 			v2s32 geom;
 			geom.X = mystoi(f.next(","));
 			geom.Y = mystoi(f.next(";"));
+			int i_start = 0;
+			int i_end = -1;
+			std::string end = f.next("]");
+			if (end != "") {
+				Strfnd fend(end);
+				i_start = mystoi(fend.next(","));
+				i_end = mystoi(fend.next(";"));
+			}
 			infostream<<"list inv="<<name<<", listname="<<listname
 					<<", pos=("<<pos.X<<","<<pos.Y<<")"
 					<<", geom=("<<geom.X<<","<<geom.Y<<")"
 					<<std::endl;
-			f.next("]");
 			if(bp_set != 2)
 				errorstream<<"WARNING: invalid use of list without a size[] element"<<std::endl;
-			m_inventorylists.push_back(ListDrawSpec(loc, listname, pos, geom));
+			m_inventorylists.push_back(ListDrawSpec(loc, listname, pos, geom, i_start, i_end));
 		}
 		else if(type == "image")
 		{
@@ -548,9 +555,13 @@ void GUIFormSpecMenu::drawList(const ListDrawSpec &s, int phase)
 
 	core::rect<s32> imgrect(0,0,imgsize.X,imgsize.Y);
 
-	for (s32 i=0; i<s.geom.X*s.geom.Y; i++) {
-		s32 x = (i%s.geom.X) * spacing.X;
-		s32 y = (i/s.geom.X) * spacing.Y;
+	int end = s.i_end;
+	if (end < 0)
+		end = s.i_start+(s.geom.X*s.geom.Y);
+
+	for (s32 i=s.i_start; i<end; i++) {
+		s32 x = ((i-s.i_start)%s.geom.X) * spacing.X;
+		s32 y = ((i-s.i_start)/s.geom.X) * spacing.Y;
 		v2s32 p(x,y);
 		core::rect<s32> rect = imgrect + s.pos + p;
 		InventoryItem *item = NULL;

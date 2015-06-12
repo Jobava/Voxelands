@@ -201,7 +201,8 @@ public:
 		if (m_show_appearance) {
 			return
 				std::string("size[8,9]"
-				"list[current_player;main;0,5;8,4;]"
+				"list[current_player;main;0,4.9;8,1;0,8;]"
+				"list[current_player;main;0,6;8,3;8,-1;]"
 				"button[0.5,3;3,1;show_craft;")+gettext("Show Crafting")+"]"
 				"label[1,2;"+gettext("Clothes")+"]"
 				"label[4.9,-0.1;"+gettext("Hat/Helmet")+"]"
@@ -221,7 +222,8 @@ public:
 		}
 		return
 			std::string("size[8,9]"
-			"list[current_player;main;0,5;8,4;]"
+			"list[current_player;main;0,4.8;8,1;0,8;]"
+			"list[current_player;main;0,6;8,3;8,-1;]"
 			"label[1,1.7;")+gettext("Drop to Ground")+"]"
 			"list[current_player;discard;1.2,2;1,1;]"
 			"button[0.5,3.5;3,1;show_appearance;"+gettext("Change Clothing")+"]"
