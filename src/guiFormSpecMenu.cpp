@@ -518,18 +518,18 @@ GUIFormSpecMenu::ItemSpec GUIFormSpecMenu::getItemAtPos(v2s32 p) const
 {
 	core::rect<s32> imgrect(0,0,imgsize.X,imgsize.Y);
 
-	for(u32 i=0; i<m_inventorylists.size(); i++)
-	{
+	for (u32 i=0; i<m_inventorylists.size(); i++) {
 		const ListDrawSpec &s = m_inventorylists[i];
+		int end = s.i_end;
+		if (end < 0)
+			end = s.i_start+(s.geom.X*s.geom.Y);
 
-		for(s32 i=0; i<s.geom.X*s.geom.Y; i++)
-		{
-			s32 x = (i%s.geom.X) * spacing.X;
-			s32 y = (i/s.geom.X) * spacing.Y;
+		for (s32 i=s.i_start; i<end; i++) {
+			s32 x = ((i-s.i_start)%s.geom.X) * spacing.X;
+			s32 y = ((i-s.i_start)/s.geom.X) * spacing.Y;
 			v2s32 p0(x,y);
 			core::rect<s32> rect = imgrect + s.pos + p0;
-			if(rect.isPointInside(p))
-			{
+			if (rect.isPointInside(p)) {
 				return ItemSpec(s.inventoryloc, s.listname, i);
 			}
 		}
