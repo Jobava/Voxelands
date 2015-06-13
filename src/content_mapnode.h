@@ -90,7 +90,8 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_COBBLE_WALL 0x029
 // FREE 2A-0x7C
 // 0x7D-0x7F reserved values, air, ignore, etc
-// FREE 0x80-0x7FF
+// FREE 0x80-0x7FE
+#define CONTENT_GROWING_GRASS 0x7FF
 #define CONTENT_GRASS 0x800
 #define CONTENT_TREE 0x801
 #define CONTENT_LEAVES 0x802

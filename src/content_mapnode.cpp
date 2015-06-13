@@ -402,6 +402,21 @@ void content_mapnode_init(bool repeat)
 	f->farm_ploughable = true;
 	lists::add("decrafting",i);
 
+	i = CONTENT_GROWING_GRASS;
+	f = &content_features(i);
+	f->description = wgettext("Growing Grass");
+	f->setAllTextures("mud.png");
+	f->setTexture(0, "grass_growing.png");
+	f->setInventoryTextureCube("grass.png","mud.png","mud.png");
+	f->draw_type = CDT_CUBELIKE;
+	f->param2_type = CPT_PLANTGROWTH;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MUD)+" 1";
+	f->special_alternate_node = CONTENT_GRASS;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->farm_ploughable = true;
+
 	i = CONTENT_GRASS_FOOTSTEPS;
 	f = &content_features(i);
 	f->description = wgettext("Grass");

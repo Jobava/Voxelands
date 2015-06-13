@@ -1829,10 +1829,22 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 			// Position to copy the blitted from in the blitted image
 			core::position2d<s32> pos_from((float)idim.Width*x,(float)idim.Height*y);
 			// Blit
-			image->copyToWithAlpha(baseimg, pos_to,
+			if (image->getBitsPerPixel() == 32) {
+				image->copyToWithAlpha(
+					baseimg,
+					pos_to,
 					core::rect<s32>(pos_from, dim),
 					video::SColor(255,255,255,255),
-					NULL);
+					NULL
+				);
+			}else{
+				image->copyTo(
+					baseimg,
+					pos_to,
+					core::rect<s32>(pos_from, dim),
+					NULL
+				);
+			}
 			// Drop image
 			image->drop();
 		}

@@ -30,5 +30,6 @@ void plantgrowth_largetree(ServerEnvironment *env, v3s16 p0);
 void plantgrowth_jungletree(ServerEnvironment *env, v3s16 p0);
 void plantgrowth_seed(ServerEnvironment *env, v3s16 p0);
 void plantgrowth_plant(ServerEnvironment *env, v3s16 p0, s16 height=0);
+void plantgrowth_grass(ServerEnvironment *env, v3s16 p0);
 
 #endif

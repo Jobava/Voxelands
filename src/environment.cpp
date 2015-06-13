@@ -991,17 +991,28 @@ void ServerEnvironment::step(float dtime)
 				*/
 				case CONTENT_MUD:
 				{
-					if (n.envticks > 3) {
-						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
-						if (content_features(n_top).air_equivalent) {
-							if (p.Y > 50 && p.Y < 1024) {
-								n.setContent(CONTENT_MUDSNOW);
-								m_map->addNodeWithEvent(p, n);
-							}else if (n_top.getLightBlend(getDayNightRatio()) >= 13) {
-								n.setContent(CONTENT_GRASS);
-								m_map->addNodeWithEvent(p, n);
-							}
+					MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
+					if (content_features(n_top).air_equivalent) {
+						if (p.Y > 50 && p.Y < 1024) {
+							n.setContent(CONTENT_MUDSNOW);
+							m_map->addNodeWithEvent(p, n);
+						}else if (n_top.getLightBlend(getDayNightRatio()) >= 13) {
+							n.setContent(CONTENT_GROWING_GRASS);
+							n.param2 = 0;
+							m_map->addNodeWithEvent(p, n);
 						}
+					}
+					break;
+				}
+
+				case CONTENT_GROWING_GRASS:
+				{
+					MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
+					if (content_features(n_top).air_equivalent) {
+						plantgrowth_grass(this,p);
+					}else{
+						n.setContent(CONTENT_MUD);
+						m_map->addNodeWithEvent(p,n);
 					}
 					break;
 				}

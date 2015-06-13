@@ -199,6 +199,63 @@ TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods,
 		// Get new texture
 		u32 new_id = g_texturesource->getTextureId(texture_name);
 		spec.texture = g_texturesource->getTexture(new_id);
+	}else if (f->draw_type == CDT_CUBELIKE && f->param2_type == CPT_PLANTGROWTH && face_dir.Y == 1) {
+		TileSpec bspec = spec;
+		spec = mn.getTile(v3s16(0,-1,0),false);
+		if (mn.param2) {
+			u8 p = mn.param2&0xF0;
+			u8 g = mn.param2&0x0F;
+			if (g < 15) {
+				u32 orig_id = bspec.texture.id;
+				std::string blit_name = g_texturesource->getTextureName(orig_id);
+				std::string orig_name = g_texturesource->getTextureName(spec.texture.id);
+				std::string texture_name = orig_name;
+				if (p == 0) {
+					float v = (float)(g+1)*0.03125;
+					texture_name += "^[blit:";
+					texture_name += ftos(0.5-v);
+					texture_name += ",";
+					texture_name += ftos(0.5-v);
+					texture_name += ",";
+					texture_name += ftos(0.5+v);
+					texture_name += ",";
+					texture_name += ftos(0.5+v);
+					texture_name += ",";
+					texture_name += blit_name;
+				}else{
+					float v = (float)g*0.0625;
+					if ((p&(1<<7)) != 0) { // -Z
+						texture_name += "^[blit:0,";
+						texture_name += ftos(1.0-v);
+						texture_name += ",1,1,";
+						texture_name += blit_name;
+					}
+					if ((p&(1<<6)) != 0) { // +Z
+						texture_name += "^[blit:0,0,1,";
+						texture_name += ftos(v);
+						texture_name += ",";
+						texture_name += blit_name;
+					}
+					if ((p&(1<<5)) != 0) { // -X
+						texture_name += "^[blit:0,0,";
+						texture_name += ftos(v);
+						texture_name += ",1,";
+						texture_name += blit_name;
+					}
+					if ((p&(1<<4)) != 0) { // +X
+						texture_name += "^[blit:";
+						texture_name += ftos(1.0-v);
+						texture_name += ",0,1,1,";
+						texture_name += blit_name;
+					}
+				}
+				// Get new texture
+				u32 new_id = g_texturesource->getTextureId(texture_name);
+				spec.texture = g_texturesource->getTexture(new_id);
+			}else{
+				spec = bspec;
+			}
+		}
 	}
 
 	std::string rot = mn.getTileRotationString(face_dir);
@@ -231,20 +288,6 @@ TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods,
 			// Create new texture name
 			std::ostringstream os;
 			os<<orig_name<<"^[crack"<<mod.param;
-
-			// Get new texture
-			u32 new_id = g_texturesource->getTextureId(os.str());
-
-			spec.texture = g_texturesource->getTexture(new_id);
-		}
-		if (mod == NODEMOD_SELECTION) {
-			// Get original texture name
-			u32 orig_id = spec.texture.id;
-			std::string orig_name = g_texturesource->getTextureName(orig_id);
-
-			// Create new texture name
-			std::ostringstream os;
-			os<<orig_name<<"^[forcesingle";
 
 			// Get new texture
 			u32 new_id = g_texturesource->getTextureId(os.str());

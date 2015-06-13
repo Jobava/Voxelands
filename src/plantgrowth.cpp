@@ -480,3 +480,51 @@ void plantgrowth_plant(ServerEnvironment *env, v3s16 p0, s16 height)
 	}
 	env->getMap().addNodeWithEvent(p0,n);
 }
+
+void plantgrowth_grass(ServerEnvironment *env, v3s16 p0)
+{
+	u32 tod = env->getTimeOfDay();
+	MapNode n = env->getMap().getNodeNoEx(p0);
+	u8 light = n.getLightBlend(env->getDayNightRatio());
+	content_t c = content_features(n.getContent()).special_alternate_node;
+	if (c == CONTENT_IGNORE)
+		return;
+	bool add = false;
+	{
+		u8 p = 0;
+		MapNode nn = env->getMap().getNodeNoEx(p0+v3s16(0,0,-1));
+		if (nn.getContent() == c)
+			p |= 1<<7;
+		nn = env->getMap().getNodeNoEx(p0+v3s16(0,0,1));
+		if (nn.getContent() == c)
+			p |= 1<<6;
+		nn = env->getMap().getNodeNoEx(p0+v3s16(-1,0,0));
+		if (nn.getContent() == c)
+			p |= 1<<5;
+		nn = env->getMap().getNodeNoEx(p0+v3s16(1,0,0));
+		if (nn.getContent() == c)
+			p |= 1<<4;
+		if (!n.param2 && p == 0 && myrand_range(0,20) != 0)
+			return;
+		if (!n.param2 || p != (n.param2&0xF0)) {
+			n.param2 &= 0x0F;
+			n.param2 |= p;
+			add = true;
+		}
+	}
+	// only grow during the day or with good light
+	if (light > LIGHT_MAX-4 || (tod > 6000 && tod < 18000)) {
+		u8 p = n.param2&0xF0;
+		u8 g = n.param2&0x0F;
+		g++;
+		if (g > 15) {
+			n.setContent(c);
+		}else{
+			n.param2 = (p|g);
+		}
+		add = true;
+	}
+
+	if (add)
+		env->getMap().addNodeWithEvent(p0,n);
+}
