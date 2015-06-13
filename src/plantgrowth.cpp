@@ -42,19 +42,22 @@ void plantgrowth_tree(ServerEnvironment *env, v3s16 p0)
 	// p1 is now the last piece of the trunk
 	p1.Y -= 1;
 
-	VoxelArea leaves_a(v3s16(-2,-1,-2), v3s16(2,2,2));
+	VoxelArea leaves_a(v3s16(-3,-1,-3), v3s16(3,2,3));
 	Buffer<u8> leaves_d(leaves_a.getVolume());
 	for (s32 i=0; i<leaves_a.getVolume(); i++) {
 		leaves_d[i] = 0;
 	}
 
 	// Force leaves at near the end of the trunk
-	for (s16 z=-1; z<=1; z++) {
+	s16 rad = 3;
 	for (s16 y=-1; y<=1; y++) {
-	for (s16 x=-1; x<=1; x++) {
-		leaves_d[leaves_a.index(v3s16(x,y,z))] = 1;
+	for (s16 z=-rad; z<=rad; z++) {
+	for (s16 x=-rad; x<=rad; x++) {
+		if (rad < 3 || (z > -rad && z < rad) || (x > -rad && x < rad))
+			leaves_d[leaves_a.index(v3s16(x,y,z))] = 1;
 	}
 	}
+		rad--;
 	}
 
 	// Add leaves randomly

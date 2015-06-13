@@ -1718,11 +1718,11 @@ void ServerEnvironment::step(float dtime)
 						search.push_back(CONTENT_IGNORE);
 
 						core::map<v3s16, MapBlock*> modified_blocks;
-						if (!searchNearInv(p,v3s16(-10,2,-10),v3s16(10,12,10),search,NULL)) {
-							plantgrowth_largetree(this,p);
-						}else{
+						//if (!searchNearInv(p,v3s16(-10,2,-10),v3s16(10,12,10),search,NULL)) {
+							//plantgrowth_largetree(this,p);
+						//}else{
 							plantgrowth_tree(this,p);
-						}
+						//}
 					}else if (n.envticks > 15) {
 						std::vector<content_t> search;
 						search.push_back(CONTENT_AIR);
