@@ -425,46 +425,47 @@ void scaleMesh(scene::IMesh *mesh, v3f scale)
 
 void translateMesh(scene::IMesh *mesh, v3f vec)
 {
-	if(mesh == NULL)
+	if (mesh == NULL)
 		return;
 
 	core::aabbox3d<f32> bbox;
 	bbox.reset(0,0,0);
 
 	u16 mc = mesh->getMeshBufferCount();
-	for(u16 j=0; j<mc; j++)
-	{
+	for (u16 j=0; j<mc; j++) {
 		scene::IMeshBuffer *buf = mesh->getMeshBuffer(j);
-		video::S3DVertex *vertices = (video::S3DVertex*)buf->getVertices();
 		u16 vc = buf->getVertexCount();
-		for(u16 i=0; i<vc; i++)
-		{
+		if (!vc)
+			continue;
+		video::S3DVertex *vertices = (video::S3DVertex*)buf->getVertices();
+		for (u16 i=0; i<vc; i++) {
 			vertices[i].Pos += vec;
 		}
 		buf->recalculateBoundingBox();
 
 		// calculate total bounding box
-		if(j == 0)
+		if (j == 0) {
 			bbox = buf->getBoundingBox();
-		else
+		}else{
 			bbox.addInternalBox(buf->getBoundingBox());
+		}
 	}
 	mesh->setBoundingBox(bbox);
 }
 
 void setMeshColor(scene::IMesh *mesh, const video::SColor &color)
 {
-	if(mesh == NULL)
+	if (mesh == NULL)
 		return;
 
 	u16 mc = mesh->getMeshBufferCount();
-	for(u16 j=0; j<mc; j++)
-	{
+	for (u16 j=0; j<mc; j++) {
 		scene::IMeshBuffer *buf = mesh->getMeshBuffer(j);
-		video::S3DVertex *vertices = (video::S3DVertex*)buf->getVertices();
 		u16 vc = buf->getVertexCount();
-		for(u16 i=0; i<vc; i++)
-		{
+		if (!vc)
+			continue;
+		video::S3DVertex *vertices = (video::S3DVertex*)buf->getVertices();
+		for (u16 i=0; i<vc; i++) {
 			vertices[i].Color = color;
 		}
 	}
@@ -475,27 +476,27 @@ void setMeshColorByNormalXYZ(scene::IMesh *mesh,
 		const video::SColor &colorY,
 		const video::SColor &colorZ)
 {
-	if(mesh == NULL)
+	if (mesh == NULL)
 		return;
 
 	u16 mc = mesh->getMeshBufferCount();
-	for(u16 j=0; j<mc; j++)
-	{
+	for (u16 j=0; j<mc; j++) {
 		scene::IMeshBuffer *buf = mesh->getMeshBuffer(j);
-		video::S3DVertex *vertices = (video::S3DVertex*)buf->getVertices();
 		u16 vc = buf->getVertexCount();
-		for(u16 i=0; i<vc; i++)
-		{
+		if (!vc)
+			continue;
+		video::S3DVertex *vertices = (video::S3DVertex*)buf->getVertices();
+		for (u16 i=0; i<vc; i++) {
 			f32 x = fabs(vertices[i].Normal.X);
 			f32 y = fabs(vertices[i].Normal.Y);
 			f32 z = fabs(vertices[i].Normal.Z);
-			if(x >= y && x >= z)
+			if (x >= y && x >= z) {
 				vertices[i].Color = colorX;
-			else if(y >= z)
+			}else if (y >= z) {
 				vertices[i].Color = colorY;
-			else
+			}else{
 				vertices[i].Color = colorZ;
-
+			}
 		}
 	}
 }
