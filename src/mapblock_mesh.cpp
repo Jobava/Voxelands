@@ -643,7 +643,11 @@ void MapBlockMesh::refresh(u32 daynight_ratio)
 	u16 mc = m_mesh->getMeshBufferCount();
 	for (u16 j=0; j<mc; j++) {
 		scene::IMeshBuffer *buf = m_mesh->getMeshBuffer(j);
+		if (buf == 0)
+			continue;
 		video::S3DVertex *vertices = (video::S3DVertex*)buf->getVertices();
+		if (vertices == 0)
+			continue;
 		u16 vc = buf->getVertexCount();
 		u32 *c = m_meshdata[j].colours.data();
 		for (u16 i=0; i<vc; i++) {
@@ -653,7 +657,11 @@ void MapBlockMesh::refresh(u32 daynight_ratio)
 	mc = m_farmesh->getMeshBufferCount();
 	for (u16 j=0; j<mc; j++) {
 		scene::IMeshBuffer *buf = m_farmesh->getMeshBuffer(j);
+		if (buf == 0)
+			continue;
 		video::S3DVertex *vertices = (video::S3DVertex*)buf->getVertices();
+		if (vertices == 0)
+			continue;
 		u16 vc = buf->getVertexCount();
 		for (u16 i=0; i<vc; i++) {
 			vertices[i].Color = blend_light(0x0F,daynight_ratio);

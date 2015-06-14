@@ -1669,11 +1669,6 @@ void the_game(
 	guitext_profiler->setBackgroundColor(video::SColor(80,0,0,0));
 	guitext_profiler->setVisible(false);
 
-	// Launch pause menu
-	(new GUIPauseMenu(guienv, guiroot, -1, g_gamecallback,
-			&g_menumgr))->drop();
-	client.setFormState(true);
-
 	/*
 		Some statistics are collected in these
 	*/
