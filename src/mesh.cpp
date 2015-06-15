@@ -385,10 +385,15 @@ scene::IAnimatedMesh* createExtrudedMesh(video::ITexture *texture,
 	}
 
 	// Set default material
-	mesh->getMeshBuffer(0)->getMaterial().setTexture(0, texture);
-	mesh->getMeshBuffer(0)->getMaterial().setFlag(video::EMF_LIGHTING, false);
-	mesh->getMeshBuffer(0)->getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
-	mesh->getMeshBuffer(0)->getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
+	if (mesh && mesh->getMeshBufferCount() > 0) {
+		scene::IMeshBuffer *buf = mesh->getMeshBuffer(0);
+		if (buf) {
+			buf->getMaterial().setTexture(0, texture);
+			buf->getMaterial().setFlag(video::EMF_LIGHTING, false);
+			buf->getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
+			buf->getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
+		}
+	}
 
 	scaleMesh(mesh, scale);  // also recalculates bounding box
 	return mesh;
@@ -439,10 +444,14 @@ void translateMesh(scene::IMesh *mesh, v3f vec)
 	u16 mc = mesh->getMeshBufferCount();
 	for (u16 j=0; j<mc; j++) {
 		scene::IMeshBuffer *buf = mesh->getMeshBuffer(j);
+		if (!buf)
+			continue;
 		u16 vc = buf->getVertexCount();
 		if (!vc)
 			continue;
 		video::S3DVertex *vertices = (video::S3DVertex*)buf->getVertices();
+		if (!vertices)
+			continue;
 		for (u16 i=0; i<vc; i++) {
 			vertices[i].Pos += vec;
 		}
@@ -466,10 +475,14 @@ void setMeshColor(scene::IMesh *mesh, const video::SColor &color)
 	u16 mc = mesh->getMeshBufferCount();
 	for (u16 j=0; j<mc; j++) {
 		scene::IMeshBuffer *buf = mesh->getMeshBuffer(j);
+		if (!buf)
+			continue;
 		u16 vc = buf->getVertexCount();
 		if (!vc)
 			continue;
 		video::S3DVertex *vertices = (video::S3DVertex*)buf->getVertices();
+		if (!vertices)
+			continue;
 		for (u16 i=0; i<vc; i++) {
 			vertices[i].Color = color;
 		}
@@ -487,10 +500,14 @@ void setMeshColorByNormalXYZ(scene::IMesh *mesh,
 	u16 mc = mesh->getMeshBufferCount();
 	for (u16 j=0; j<mc; j++) {
 		scene::IMeshBuffer *buf = mesh->getMeshBuffer(j);
+		if (!buf)
+			continue;
 		u16 vc = buf->getVertexCount();
 		if (!vc)
 			continue;
 		video::S3DVertex *vertices = (video::S3DVertex*)buf->getVertices();
+		if (!vertices)
+			continue;
 		for (u16 i=0; i<vc; i++) {
 			f32 x = fabs(vertices[i].Normal.X);
 			f32 y = fabs(vertices[i].Normal.Y);
