@@ -161,13 +161,11 @@ void mysrand(unsigned seed)
 
 int myrand_range(int min, int max)
 {
-	if(max-min > MYRAND_MAX)
-	{
+	if (max-min > MYRAND_MAX) {
 		errorstream<<"WARNING: myrand_range: max-min > MYRAND_MAX"<<std::endl;
 		assert(0);
 	}
-	if(min > max)
-	{
+	if (min > max) {
 		assert(0);
 		return max;
 	}
@@ -178,17 +176,21 @@ int myrand_range(int min, int max)
 // Sets the color of all vertices in the mesh
 void setMeshVerticesColor(scene::IMesh* mesh, video::SColor& color)
 {
-	if(mesh == NULL)
+	if (mesh == NULL)
 		return;
 
 	u16 mc = mesh->getMeshBufferCount();
-	for(u16 j=0; j<mc; j++)
-	{
+	for (u16 j=0; j<mc; j++) {
 		scene::IMeshBuffer *buf = mesh->getMeshBuffer(j);
-		video::S3DVertex *vertices = (video::S3DVertex*)buf->getVertices();
+		if (!buf)
+			continue;
 		u16 vc = buf->getVertexCount();
-		for(u16 i=0; i<vc; i++)
-		{
+		if (!vc)
+			continue;
+		video::S3DVertex *vertices = (video::S3DVertex*)buf->getVertices();
+		if (!vertices)
+			continue;
+		for (u16 i=0; i<vc; i++) {
 			vertices[i].Color = color;
 		}
 	}

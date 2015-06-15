@@ -396,29 +396,34 @@ scene::IAnimatedMesh* createExtrudedMesh(video::ITexture *texture,
 
 void scaleMesh(scene::IMesh *mesh, v3f scale)
 {
-	if(mesh == NULL)
+	if (mesh == NULL)
 		return;
 
 	core::aabbox3d<f32> bbox;
 	bbox.reset(0,0,0);
 
 	u16 mc = mesh->getMeshBufferCount();
-	for(u16 j=0; j<mc; j++)
-	{
+	for (u16 j=0; j<mc; j++) {
 		scene::IMeshBuffer *buf = mesh->getMeshBuffer(j);
-		video::S3DVertex *vertices = (video::S3DVertex*)buf->getVertices();
+		if (!buf)
+			continue;
 		u16 vc = buf->getVertexCount();
-		for(u16 i=0; i<vc; i++)
-		{
+		if (!vc)
+			continue;
+		video::S3DVertex *vertices = (video::S3DVertex*)buf->getVertices();
+		if (!vertices)
+			continue;
+		for (u16 i=0; i<vc; i++) {
 			vertices[i].Pos *= scale;
 		}
 		buf->recalculateBoundingBox();
 
 		// calculate total bounding box
-		if(j == 0)
+		if (j == 0) {
 			bbox = buf->getBoundingBox();
-		else
+		}else{
 			bbox.addInternalBox(buf->getBoundingBox());
+		}
 	}
 	mesh->setBoundingBox(bbox);
 }
