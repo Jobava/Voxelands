@@ -495,18 +495,26 @@ void plantgrowth_grass(ServerEnvironment *env, v3s16 p0)
 	bool add = false;
 	{
 		u8 p = n.param2&0xF0;
-		MapNode nn = env->getMap().getNodeNoEx(p0+v3s16(0,0,-1));
-		if (nn.getContent() == c)
-			p |= 1<<7;
-		nn = env->getMap().getNodeNoEx(p0+v3s16(0,0,1));
-		if (nn.getContent() == c)
-			p |= 1<<6;
-		nn = env->getMap().getNodeNoEx(p0+v3s16(-1,0,0));
-		if (nn.getContent() == c)
-			p |= 1<<5;
-		nn = env->getMap().getNodeNoEx(p0+v3s16(1,0,0));
-		if (nn.getContent() == c)
-			p |= 1<<4;
+		if ((p&(1<<7)) == 0) {
+			MapNode nn = env->getMap().getNodeNoEx(p0+v3s16(0,0,-1));
+			if (nn.getContent() == c)
+				p |= 1<<7;
+		}
+		if ((p&(1<<6)) == 0) {
+			MapNode nn = env->getMap().getNodeNoEx(p0+v3s16(0,0,1));
+			if (nn.getContent() == c)
+				p |= 1<<6;
+		}
+		if ((p&(1<<5)) == 0) {
+			MapNode nn = env->getMap().getNodeNoEx(p0+v3s16(-1,0,0));
+			if (nn.getContent() == c)
+				p |= 1<<5;
+		}
+		if ((p&(1<<4)) == 0) {
+			MapNode nn = env->getMap().getNodeNoEx(p0+v3s16(1,0,0));
+			if (nn.getContent() == c)
+				p |= 1<<4;
+		}
 		if (!n.param2 && p == 0 && myrand_range(0,20) != 0)
 			return;
 		if (!n.param2 || p != (n.param2&0xF0)) {
