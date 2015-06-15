@@ -494,7 +494,7 @@ void plantgrowth_grass(ServerEnvironment *env, v3s16 p0)
 		return;
 	bool add = false;
 	{
-		u8 p = 0;
+		u8 p = n.param2&0xF0;
 		MapNode nn = env->getMap().getNodeNoEx(p0+v3s16(0,0,-1));
 		if (nn.getContent() == c)
 			p |= 1<<7;
