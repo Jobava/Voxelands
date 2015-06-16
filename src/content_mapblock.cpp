@@ -4454,6 +4454,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	content_t n2;
 	v3s16 n2p;
 	ContentFeatures *f2;
+	bool mud_under = false;
 
 	content_t thiscontent = n.getContent();
 
@@ -4505,6 +4506,8 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		y_minus_any = true;
 	}else if (f2->draw_type == CDT_CUBELIKE) {
 		y_minus_any = true;
+		if (n2 == CONTENT_MUD)
+			mud_under = true;
 	}
 
 	n2p = data->m_blockpos_nodes + p + v3s16(0,0,-1);
@@ -4554,6 +4557,15 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		video::S3DVertex(0       ,BS*0.5,0       , 0,0,0, video::SColor(255,255,255,255), 0.5, 0.5)
 	};
 	u16 end_indices[12] = {5,1,0,5,2,1,5,3,2,5,4,3};
+	video::S3DVertex base_vertices[6] = {
+		video::S3DVertex(BS*0.498,-BS*0.5 ,BS*0.498, 0,0,0, video::SColor(255,255,255,255), 0., 0.),
+		video::S3DVertex(BS*0.498,-BS*0.5 ,BS*0.125, 0,0,0, video::SColor(255,255,255,255), 0.375, 0.),
+		video::S3DVertex(BS*0.125,-BS*0.5 ,BS*0.498, 0,0,0, video::SColor(255,255,255,255), 0.375, 0.),
+		video::S3DVertex(BS*0.498, BS*0.25,BS*0.125, 0,0,0, video::SColor(255,255,255,255), 0.375, 0.75),
+		video::S3DVertex(BS*0.375, BS*0.25,BS*0.375, 0,0,0, video::SColor(255,255,255,255), 0.125, 0.75),
+		video::S3DVertex(BS*0.125, BS*0.25,BS*0.498, 0,0,0, video::SColor(255,255,255,255), 0.375, 0.75),
+	};
+	u16 base_indices[12] = {0,1,3,0,5,2,0,3,4,0,4,5};
 	u16 rots[4] = {0,90,180,270};
 	v3s16 faces[3] = {
 		v3s16(0,0,1),
@@ -4563,7 +4575,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 
 	v3f pos = intToFloat(p,BS);
 
-	if (y_plus || y_minus) { /* vertical trunk */
+	if (y_plus || y_minus || (!x_plus && !x_minus && !z_plus && !z_minus && mud_under)) { /* vertical trunk */
 		for (u16 j=0; j<4; j++) {
 			video::S3DVertex v[10];
 			for (u16 i=0; i<10; i++) {
@@ -4640,6 +4652,28 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				}
 
 				data->append(endtile.getMaterial(), v, 6, end_indices, 12, colours);
+			}
+		}else if (mud_under) {
+			for (u16 j=0; j<4; j++) {
+				video::S3DVertex v[6];
+				for (u16 i=0; i<6; i++) {
+					v[i] = base_vertices[i];
+					v[i].Pos.rotateXZBy(rots[j]);
+					v[i].TCoords *= tile.texture.size;
+					v[i].TCoords += tile.texture.pos;
+				}
+				std::vector<u32> colours;
+				if (selected) {
+					meshgen_selected_lights(colours,255,6);
+				}else{
+					meshgen_lights(data,n,p,colours,255,v3s16(0,1,0),6,v);
+				}
+
+				for (int k=0; k<6; k++) {
+					v[k].Pos += pos;
+				}
+
+				data->append(tile.getMaterial(), v, 6, base_indices, 12, colours);
 			}
 		}
 		if (x_plus) {
