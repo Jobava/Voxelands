@@ -902,7 +902,10 @@ void draw_hud(
 
 	// crosshair
 	if (crosshair) {
-		const video::SColor color(220,255,255,255);
+		u8 gb = 255;
+		if (crosshair > 2)
+			gb = 0;
+		const video::SColor color(220,255,gb,gb);
 		const video::SColor colors[] = {color,color,color,color};
 		std::string tex("");
 		if (crosshair == 1) {
@@ -3008,8 +3011,11 @@ void the_game(
 					crosshair = 0;
 				}else{
 					client.setFormState(false);
-					if (client.getPointedContent() != CONTENT_IGNORE)
+					if (client.getPointedContent() != CONTENT_IGNORE) {
 						crosshair = 2;
+						if (!has_selected_node)
+							crosshair = 3;
+					}
 				}
 				MapNode snode;
 				v3s16 spos = v3s16(0,0,0);
