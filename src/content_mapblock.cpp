@@ -4452,71 +4452,57 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	bool z_minus = false;
 	bool z_minus_any = false;
 	content_t n2;
-	v3s16 n2p;
-	ContentFeatures *f2;
 	bool mud_under = false;
 
 	content_t thiscontent = n.getContent();
 
-	n2p = data->m_blockpos_nodes + p + v3s16(1,0,0);
-	n2 = data->m_vmanip.getNodeRO(n2p).getContent();
-	f2 = &content_features(n2);
+	n2 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(1,0,0)).getContent();
 	if (n2 == thiscontent) {
 		x_plus = true;
 		x_plus_any = true;
-	}else if (f2->draw_type == CDT_CUBELIKE) {
+	}else if (!meshgen_hardface(data,p,n,v3s16(1,0,0))) {
 		x_plus_any = true;
 	}
 
-	n2p = data->m_blockpos_nodes + p + v3s16(0,1,0);
-	n2 = data->m_vmanip.getNodeRO(n2p).getContent();
-	f2 = &content_features(n2);
+	n2 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0,1,0)).getContent();
 	if (n2 == thiscontent) {
 		y_plus = true;
 		y_plus_any = true;
-	}else if (f2->draw_type == CDT_CUBELIKE) {
+	}else if (!meshgen_hardface(data,p,n,v3s16(0,1,0))) {
 		y_plus_any = true;
 	}
 
-	n2p = data->m_blockpos_nodes + p + v3s16(0,0,1);
-	n2 = data->m_vmanip.getNodeRO(n2p).getContent();
-	f2 = &content_features(n2);
+	n2 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0,0,1)).getContent();
 	if (n2 == thiscontent) {
 		z_plus = true;
 		z_plus_any = true;
-	}else if (f2->draw_type == CDT_CUBELIKE) {
+	}else if (!meshgen_hardface(data,p,n,v3s16(0,0,1))) {
 		z_plus_any = true;
 	}
 
-	n2p = data->m_blockpos_nodes + p + v3s16(-1,0,0);
-	n2 = data->m_vmanip.getNodeRO(n2p).getContent();
-	f2 = &content_features(n2);
+	n2 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(-1,0,0)).getContent();
 	if (n2 == thiscontent) {
 		x_minus = true;
 		x_minus_any = true;
-	}else if (f2->draw_type == CDT_CUBELIKE) {
+	}else if (!meshgen_hardface(data,p,n,v3s16(-1,0,0))) {
 		x_minus_any = true;
 	}
 
-	n2p = data->m_blockpos_nodes + p + v3s16(0,-1,0);
-	n2 = data->m_vmanip.getNodeRO(n2p).getContent();
-	f2 = &content_features(n2);
+	n2 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0,-1,0)).getContent();
 	if (n2 == thiscontent) {
 		y_minus = true;
 		y_minus_any = true;
-	}else if (f2->draw_type == CDT_CUBELIKE) {
+	}else if (!meshgen_hardface(data,p,n,v3s16(0,-1,0))) {
 		y_minus_any = true;
 		if (n2 == CONTENT_MUD)
 			mud_under = true;
 	}
 
-	n2p = data->m_blockpos_nodes + p + v3s16(0,0,-1);
-	n2 = data->m_vmanip.getNodeRO(n2p).getContent();
-	f2 = &content_features(n2);
+	n2 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0,0,-1)).getContent();
 	if (n2 == thiscontent) {
 		z_minus = true;
 		z_minus_any = true;
-	}else if (f2->draw_type == CDT_CUBELIKE) {
+	}else if (!meshgen_hardface(data,p,n,v3s16(0,0,-1))) {
 		z_minus_any = true;
 	}
 	TileSpec tile = getNodeTile(n,p,v3s16(1,0,0),data->m_temp_mods);
