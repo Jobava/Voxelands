@@ -451,6 +451,8 @@ static bool meshgen_farface(MeshMakeData *data, v3s16 p, MapNode &n, v3s16 pos)
 	ContentFeatures *ff = &content_features(nn.getContent());
 	if (content_features(n).draw_type != CDT_LIQUID_SOURCE && ff->draw_type == CDT_LIQUID_SOURCE)
 		return true;
+	if (content_features(n).draw_type == CDT_LIQUID_SOURCE && nn.getContent() == CONTENT_IGNORE)
+		return false;
 	if (ff->draw_type == CDT_CUBELIKE)
 		return false;
 	if (ff->draw_type == CDT_TRUNKLIKE)
