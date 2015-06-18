@@ -3579,6 +3579,31 @@ void ClientMap::renderPostFx()
 		core::rect<s32> rect(0,0, ss.X, ss.Y);
 		driver->draw2DRectangle(post_effect_color, rect);
 	}
+
+	if (m_client->getServerSuffocation()) {
+		u16 a = m_client->getAir();
+		if (a < 18) {
+			u8 c = 255-(a*14);
+			const video::SColor color(c,255,255,255);
+			const video::SColor colors[] = {color,color,color,color};
+			std::string tex = getTexturePath("low_air.png");
+			video::IVideoDriver* driver = SceneManager->getVideoDriver();
+			v2u32 ss = driver->getScreenSize();
+			video::ITexture *texture = driver->getTexture(tex.c_str());
+			core::rect<s32> rect(0,0,ss.X,ss.Y);
+			driver->draw2DImage(
+				texture,
+				rect,
+				core::rect<s32>(
+					core::position2d<s32>(0,0),
+					core::dimension2di(texture->getOriginalSize())
+				),
+				NULL,
+				colors,
+				true
+			);
+		}
+	}
 }
 
 bool ClientMap::setTempMod(v3s16 p, NodeMod mod,
