@@ -237,13 +237,11 @@ void content_mapnode_plants(bool repeat)
 	if (new_style_leaves) {
 		f->draw_type = CDT_LEAFLIKE;
 		f->solidness = 0; // drawn separately, makes no faces
-		f->visual_solidness = 1;
 		f->setAllTextures("leaves.png");
 #ifndef SERVER
 		f->setAllTextureTypes(MATERIAL_ALPHA_SIMPLE);
 		f->setAllTextureFlags(0);
 #endif
-		f->setInventoryTextureCube("leaves.png", "leaves.png", "leaves.png");
 	}else{
 		f->draw_type = CDT_CUBELIKE;
 		f->setAllTextures("[noalpha:leaves.png");
@@ -273,13 +271,11 @@ void content_mapnode_plants(bool repeat)
 	if (new_style_leaves) {
 		f->draw_type = CDT_LEAFLIKE;
 		f->solidness = 0; // drawn separately, makes no faces
-		f->visual_solidness = 1;
 		f->setAllTextures("apple_leaves.png");
 #ifndef SERVER
 		f->setAllTextureTypes(MATERIAL_ALPHA_SIMPLE);
 		f->setAllTextureFlags(0);
 #endif
-		f->setInventoryTextureCube("apple_leaves.png", "apple_leaves.png", "apple_leaves.png");
 	}else{
 		f->draw_type = CDT_CUBELIKE;
 		f->setAllTextures("[noalpha:apple_leaves.png");
@@ -309,13 +305,11 @@ void content_mapnode_plants(bool repeat)
 	if (new_style_leaves) {
 		f->draw_type = CDT_LEAFLIKE;
 		f->solidness = 0; // drawn separately, makes no faces
-		f->visual_solidness = 1;
 		f->setAllTextures("jungleleaves.png");
 #ifndef SERVER
 		f->setAllTextureTypes(MATERIAL_ALPHA_SIMPLE);
 		f->setAllTextureFlags(0);
 #endif
-		f->setInventoryTextureCube("jungleleaves.png", "jungleleaves.png", "jungleleaves.png");
 	}else{
 		f->draw_type = CDT_CUBELIKE;
 		f->setAllTextures("[noalpha:jungleleaves.png");
@@ -345,13 +339,11 @@ void content_mapnode_plants(bool repeat)
 	if (new_style_leaves) {
 		f->draw_type = CDT_LEAFLIKE;
 		f->solidness = 0; // drawn separately, makes no faces
-		f->visual_solidness = 1;
 		f->setAllTextures("conifer_leaves.png");
 #ifndef SERVER
 		f->setAllTextureTypes(MATERIAL_ALPHA_SIMPLE);
 		f->setAllTextureFlags(0);
 #endif
-		f->setInventoryTextureCube("conifer_leaves.png", "conifer_leaves.png", "conifer_leaves.png");
 	}else{
 		f->draw_type = CDT_CUBELIKE;
 		f->setAllTextures("[noalpha:conifer_leaves.png");
@@ -515,7 +507,6 @@ void content_mapnode_plants(bool repeat)
 		f->setAllTextureTypes(MATERIAL_ALPHA_SIMPLE);
 		f->setAllTextureFlags(0);
 #endif
-		f->setInventoryTextureCube("apple_leaves.png^apple_blossom.png", "apple_leaves.png^apple_blossom.png", "apple_leaves.png^apple_blossom.png");
 	}else{
 		f->draw_type = CDT_CUBELIKE;
 		f->setAllTextures("[noalpha:apple_leaves.png^apple_blossom.png");
