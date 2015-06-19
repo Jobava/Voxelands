@@ -45,12 +45,6 @@ public:
 	virtual void gotText(std::map<std::string, std::wstring> fields) = 0;
 };
 
-void drawInventoryItem(video::IVideoDriver *driver,
-		gui::IGUIFont *font,
-		InventoryItem *item,
-		core::rect<s32> rect,
-		const core::rect<s32> *clip);
-
 class GUIFormSpecMenu : public GUIModalMenu
 {
 	struct ItemSpec

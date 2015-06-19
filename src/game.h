@@ -31,6 +31,7 @@
 
 #include "keycode.h"
 
+extern u16 g_selected_item;
 void drawLoadingScreen(irr::IrrlichtDevice* device, const std::wstring);
 
 class KeyList : protected core::list<KeyPress>

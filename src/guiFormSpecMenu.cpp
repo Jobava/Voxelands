@@ -43,55 +43,7 @@
 #if USE_FREETYPE
 #include "intlGUIEditBox.h"
 #endif
-
-void drawInventoryItem(video::IVideoDriver *driver,
-		gui::IGUIFont *font,
-		InventoryItem *item,
-		core::rect<s32> rect,
-		const core::rect<s32> *clip)
-{
-	if(item == NULL)
-		return;
-
-	video::ITexture *texture = NULL;
-	texture = item->getImage();
-
-	if (texture != NULL) {
-		const video::SColor color(255,255,255,255);
-		const video::SColor colors[] = {color,color,color,color};
-		driver->draw2DImage(texture, rect,
-			core::rect<s32>(core::position2d<s32>(0,0),
-			core::dimension2di(texture->getOriginalSize())),
-			clip, colors, true);
-	}else{
-		video::SColor bgcolor(255,50,50,128);
-		driver->draw2DRectangle(bgcolor, rect, clip);
-	}
-
-	if(font != NULL)
-	{
-		std::string text = item->getText();
-		if(font && text != "")
-		{
-			v2u32 dim = font->getDimension(narrow_to_wide(text).c_str());
-			v2s32 sdim(dim.X,dim.Y);
-
-			core::rect<s32> rect2(
-				/*rect.UpperLeftCorner,
-				core::dimension2d<u32>(rect.getWidth(), 15)*/
-				rect.LowerRightCorner - sdim,
-				sdim
-			);
-
-			video::SColor bgcolor(128,0,0,0);
-			driver->draw2DRectangle(bgcolor, rect2, clip);
-
-			font->draw(text.c_str(), rect2,
-					video::SColor(255,255,255,255), false, false,
-					clip);
-		}
-	}
-}
+#include "hud.h"
 
 /*
 	GUIFormSpecMenu
@@ -578,7 +530,7 @@ void GUIFormSpecMenu::drawList(const ListDrawSpec &s, int phase)
 		}
 
 		if (item) {
-			drawInventoryItem(driver, font, item, rect, &AbsoluteClippingRect);
+			draw_inv_item(driver, font, item, rect, &AbsoluteClippingRect);
 			if (rect.isPointInside(m_pointer)) {
 				std::wstring name = item->getGuiName();
 				if (name != L"") {
