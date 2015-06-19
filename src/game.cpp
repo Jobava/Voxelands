@@ -931,6 +931,7 @@ void the_game(
 	bool enable_particles = g_settings->getBool("enable_particles");
 	bool enable_fog = g_settings->getBool("enable_fog");
 	bool old_hotbar = g_settings->getBool("old_hotbar");
+	bool show_index = g_settings->getBool("enable_wieldindex");
 
 	bool has_selected_node = false;
 	v3s16 selected_node_pos = v3s16(0,0,0);
@@ -2257,6 +2258,7 @@ void the_game(
 					v2s32(screensize.X,screensize.Y),
 					hotbar_imagesize,
 					hotbar_itemcount,
+					show_index,
 					&local_inventory,
 					client.getServerDamage(),
 					client.getHP(),

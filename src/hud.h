@@ -68,6 +68,7 @@ void hud_draw(
 	v2s32 screensize,
 	s32 imgsize,
 	s32 itemcount,
+	bool show_index,
 	Inventory *inventory,
 	bool have_health,
 	s32 halfheartcount,

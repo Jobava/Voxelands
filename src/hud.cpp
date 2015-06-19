@@ -364,6 +364,7 @@ void hud_draw(
 	v2s32 screensize,
 	s32 imgsize,
 	s32 itemcount,
+	bool show_index,
 	Inventory *inventory,
 	bool have_health,
 	s32 halfheartcount,
@@ -492,6 +493,17 @@ void hud_draw(
 			v2s32(-39,-39)
 		};
 
+		v2s32 ipos[8] = {
+			v2s32(10,-68),
+			v2s32(69,-44),
+			v2s32(90,12),
+			v2s32(69,68),
+			v2s32(0,56),
+			v2s32(-44,68),
+			v2s32(-66,12),
+			v2s32(-44,-44)
+		};
+
 		core::rect<s32> base_rect(screensize.X-104,screensize.Y-104,screensize.X-80,screensize.Y-80);
 		for (s32 i=g_selected_item+1, p=3; ; i++,p--) {
 			if (i >= itemcount)
@@ -513,6 +525,18 @@ void hud_draw(
 				texture = item->getImage();
 
 			draw_image(driver,texture,color,rect,NULL,NULL);
+			if (show_index) {
+				std::wstring txt = itows(i+1);
+				v2u32 dim = font->getDimension(txt.c_str());
+				v2s32 sdim(dim.X,dim.Y);
+				v2s32 pos = ipos[p] + base_rect.UpperLeftCorner;
+				pos -= v2s32(sdim.X/2, sdim.Y/2);
+				core::rect<s32> rect2(
+					pos,
+					sdim
+				);
+				font->draw(txt.c_str(), rect2, video::SColor(255,255,255,255), false, false, NULL);
+			}
 		}
 	}
 
