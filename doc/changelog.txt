@@ -3,6 +3,56 @@ Voxelands changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1506.00: (release 2015-06-20)
+ - add optional index/shortcuts to wieldring
+ - add low air post render effect
+ - leaves aren't cubelike, so shouldn't show a cube in inventory
+ - fancy tree trunk bases
+ - use red crosshair instead of selection box when pointing at mobs
+ - fix a couple of segfaults
+ - adjust some tree shapes
+ - new creeping grass growth
+ - darken world behind menus/forms
+ - fix that old ungrabbed mouse bug when inventory is closed
+ - add a slight gap in player inventory between the wield row and everything else
+ - fix deleting map/world data on Windows
+ - remove energy effect when damage is disabled
+ - remove some path trickery from posix_guess_path
+ - some path fixes to get map deletion working
+ - reduce active object network data
+ - update bundled sqlite
+ - add some things to .gitignore
+ - fix FreeBSD and (perhaps) MacOS relative paths
+ - make space assignable as a key
+ - eat and drink sounds for player
+ - new eyes, special hair, t-shirts, the start of a long days walk.
+ - player hurt sounds
+ - panting sound when player is low on energy
+ - fast block ack
+ - add cauldron, make tea and coffee craftable
+ - tea & coffee
+ - add apple juice, make hud colours change when a boost is in effect
+ - fix bug with some consumable items not being consumed
+ - energy hard limit
+ - food/drink can affect energy and cold protection
+ - sponges are a little too rare
+ - add bottles and drink support
+ - fix some craft item inventory bugs
+ - streamline dig/place code
+ - new grape plantgrowth
+ - new farming code and draw types
+ - fix players walking through fences
+ - new flag drawtype
+ - face interpolation biases in lighting
+ - new style farmesh
+ - optimise out unseen face, and optimise the code for removing them
+ - remove farmesh
+ - improved ambient occlusion shadows
+ - new smooth lighting
+ - fix some things that should propogate light
+ - don't regenerate a mesh just to update lighting
+ - new meshgen
+
 1505.01: (release 2015-05-30)
  - fix dig miss sound not working
  - fix sunlight propogation
