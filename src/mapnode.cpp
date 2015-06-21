@@ -318,18 +318,23 @@ v3s16 facedir_rotate(u8 facedir, v3s16 dir)
 		facedir=2: Z+
 		facedir=3: X+
 	*/
-	v3s16 newdir;
-	if(facedir==0) // Same
-		newdir = v3s16(dir.X, dir.Y, dir.Z);
-	else if(facedir == 1) // Face is taken from rotXZccv(-90)
-		newdir = v3s16(-dir.Z, dir.Y, dir.X);
-	else if(facedir == 2) // Face is taken from rotXZccv(180)
-		newdir = v3s16(-dir.X, dir.Y, -dir.Z);
-	else if(facedir == 3) // Face is taken from rotXZccv(90)
-		newdir = v3s16(dir.Z, dir.Y, -dir.X);
-	else
-		newdir = dir;
-	return newdir;
+	switch (facedir) {
+	case 0: // Same
+		return v3s16(dir.X, dir.Y, dir.Z);
+		break;
+	case 1: // Face is taken from rotXZccv(-90)
+		return v3s16(-dir.Z, dir.Y, dir.X);
+		break;
+	case 2: // Face is taken from rotXZccv(180)
+		return v3s16(-dir.X, dir.Y, -dir.Z);
+		break;
+	case 3: // Face is taken from rotXZccv(90)
+		return v3s16(dir.Z, dir.Y, -dir.X);
+		break;
+	default:;
+	}
+
+	return dir;
 }
 
 v3s16 MapNode::getRotation(v3s16 dir)
@@ -376,6 +381,44 @@ s16 MapNode::getRotationAngle()
 	default:;
 	}
 	return 0;
+}
+
+v3s16 MapNode::getEffectedRotation()
+{
+	u8 facedir = 0;
+	ContentFeatures *f = &content_features(getContent());
+	if (f->ondig_also_removes == v3s16(0,0,0))
+		return v3s16(0,0,0);
+
+	if (
+		f->param2_type == CPT_FACEDIR_SIMPLE
+		|| f->param2_type == CPT_FACEDIR_WALLMOUNT
+	) {
+		facedir = (param2&0x0F);
+	}else if (
+		f->param_type == CPT_FACEDIR_SIMPLE
+		|| f->param_type == CPT_FACEDIR_WALLMOUNT
+	) {
+		facedir = param1;
+	}
+
+	switch (facedir) {
+	case 0: // Same
+		return v3s16(-f->ondig_also_removes.X, f->ondig_also_removes.Y, -f->ondig_also_removes.Z);
+		break;
+	case 1: // Face is taken from rotXZccv(-90)
+		return v3s16(-f->ondig_also_removes.Z, f->ondig_also_removes.Y, f->ondig_also_removes.X);
+		break;
+	case 2: // Face is taken from rotXZccv(180)
+		return v3s16(f->ondig_also_removes.X, f->ondig_also_removes.Y, f->ondig_also_removes.Z);
+		break;
+	case 3: // Face is taken from rotXZccv(90)
+		return v3s16(f->ondig_also_removes.Z, f->ondig_also_removes.Y, -f->ondig_also_removes.X);
+		break;
+	default:;
+	}
+
+	return f->ondig_also_removes;
 }
 
 #ifndef SERVER

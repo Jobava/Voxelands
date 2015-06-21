@@ -252,6 +252,9 @@ void content_mapnode_plants(bool repeat)
 	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAPLING)+" 1";
 	f->extra_dug_item_rarity = 20;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->ondig_special_drop = CONTENT_TRIMMED_LEAVES;
+	f->ondig_special_drop_count = 1;
+	f->ondig_special_tool = TT_SHEAR;
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
 	f->pressure_type = CST_CRUSHABLE;
@@ -286,6 +289,9 @@ void content_mapnode_plants(bool repeat)
 	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_APPLE_SAPLING)+" 1";
 	f->extra_dug_item_rarity = 20;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->ondig_special_drop = CONTENT_TRIMMED_APPLE_LEAVES;
+	f->ondig_special_drop_count = 1;
+	f->ondig_special_tool = TT_SHEAR;
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
 	f->pressure_type = CST_CRUSHABLE;
@@ -320,6 +326,9 @@ void content_mapnode_plants(bool repeat)
 	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_JUNGLESAPLING)+" 1";
 	f->extra_dug_item_rarity = 20;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->ondig_special_drop = CONTENT_TRIMMED_JUNGLE_LEAVES;
+	f->ondig_special_drop_count = 1;
+	f->ondig_special_tool = TT_SHEAR;
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
 	f->pressure_type = CST_CRUSHABLE;
@@ -354,6 +363,9 @@ void content_mapnode_plants(bool repeat)
 	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CONIFER_SAPLING)+" 1";
 	f->extra_dug_item_rarity = 20;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->ondig_special_drop = CONTENT_TRIMMED_CONIFER_LEAVES;
+	f->ondig_special_drop_count = 1;
+	f->ondig_special_tool = TT_SHEAR;
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;
 	f->pressure_type = CST_CRUSHABLE;

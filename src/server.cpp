@@ -3280,9 +3280,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					<<(int)mineral<<std::endl;
 
 			if (selected_node_features.ondig_also_removes != v3s16(0,0,0)) {
-				v3s16 p_other = selected_node.getRotation(selected_node_features.ondig_also_removes);
-				if (selected_node.getRotationAngle() == 180 || selected_node.getRotationAngle() == 0)
-					p_other.Z = -p_other.Z;
+				v3s16 p_other = selected_node.getEffectedRotation();
 				v3s16 p_also = p_under + p_other;
 				sendRemoveNode(p_also, 0, &far_players, 30);
 				{
