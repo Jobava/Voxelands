@@ -147,8 +147,103 @@ u32 TextureSource::getTextureId(const std::string &name)
 
 // Draw a progress bar on the image
 void make_progressbar(float value, video::IImage *image);
+
+static void alpha_blit(IrrlichtDevice *device, video::IImage *dest, video::IImage *src, float x, float y, float X, float Y, std::string name)
+{
+	std::string rtt_texture_name = name + "_RTT";
+	video::ITexture *rtt = NULL;
+	core::dimension2d<u32> rtt_dim = dest->getDimension();
+	video::IVideoDriver *driver = device->getVideoDriver();
+	if (driver->queryFeature(video::EVDF_RENDER_TO_TARGET))
+		rtt = driver->addRenderTargetTexture(rtt_dim, rtt_texture_name.c_str(), video::ECF_A8R8G8B8);
+
+	core::dimension2d<u32> idim = src->getDimension();
+	core::dimension2d<u32> dim((X-x)*(float)rtt_dim.Width,(Y-y)*(float)rtt_dim.Height);
+	// Position to copy the blitted to in the base image
+	core::position2d<s32> pos_to((float)rtt_dim.Width*x,(float)rtt_dim.Height*y);
+	// Position to copy the blitted from in the blitted image
+	core::position2d<s32> pos_from((float)idim.Width*x,(float)idim.Height*y);
+
+	if (rtt == NULL) {
+		if (src->getBitsPerPixel() == 32) {
+			src->copyToWithAlpha(
+				dest,
+				pos_to,
+				core::rect<s32>(pos_from, dim),
+				video::SColor(255,255,255,255),
+				NULL
+			);
+		}else{
+			src->copyTo(
+				dest,
+				pos_to,
+				core::rect<s32>(pos_from, dim),
+				NULL
+			);
+		}
+		return;
+	}
+
+	// Set render target
+	driver->setRenderTarget(rtt, false, true, video::SColor(0,0,0,0));
+
+	const video::SColor color(255,255,255,255);
+	const video::SColor colors[] = {color,color,color,color};
+	const core::rect<s32> rect(core::position2d<s32>(0,0),rtt_dim);
+	const core::rect<s32> srect(core::position2d<s32>(0,0),rtt_dim);
+	driver->beginScene(true, true, video::SColor(0,0,0,0));
+	video::ITexture *t1 = driver->addTexture(std::string(rtt_texture_name+"_BASE").c_str(), dest);
+	video::ITexture *t2 = driver->addTexture(std::string(rtt_texture_name+"_OVER").c_str(), src);
+	driver->draw2DImage(
+		t1,
+		rect,
+		srect,
+		&rect,
+		colors,
+		true
+	);
+	driver->draw2DImage(
+		t2,
+		core::rect<s32>(pos_to,dim),
+		core::rect<s32>(pos_from,dim),
+		&rect,
+		colors,
+		true
+	);
+
+	driver->endScene();
+
+	// Unset render target
+	driver->setRenderTarget(0, false, true, 0);
+
+	// Create image of render target
+	video::IImage *image = driver->createImage(rtt, v2s32(0,0), rtt_dim);
+	if (image)
+		image->copyTo(dest);
+}
+
+/*
+	Draw an image on top of an another one, using the alpha channel of the
+	source image; only modify fully opaque pixels in destinaion
+*/
 static void blit_with_alpha_overlay(video::IImage *src, video::IImage *dst,
-		v2s32 src_pos, v2s32 dst_pos, v2u32 size);
+		v2s32 src_pos, v2s32 dst_pos, v2u32 size)
+{
+	for (u32 y0=0; y0<size.Y; y0++) {
+		for (u32 x0=0; x0<size.X; x0++) {
+			s32 src_x = src_pos.X + x0;
+			s32 src_y = src_pos.Y + y0;
+			s32 dst_x = dst_pos.X + x0;
+			s32 dst_y = dst_pos.Y + y0;
+			video::SColor src_c = src->getPixel(src_x, src_y);
+			video::SColor dst_c = dst->getPixel(dst_x, dst_y);
+			if (dst_c.getAlpha() == 255 && src_c.getAlpha() != 0) {
+				dst_c = src_c.getInterpolated(dst_c, (float)src_c.getAlpha()/255.0f);
+				dst->setPixel(dst_x, dst_y, dst_c);
+			}
+		}
+	}
+}
 
 /*
 	Generate image based on a string like "stone.png" or "[crack0".
@@ -990,8 +1085,7 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 		}
 
 		// If base image is NULL, load as base.
-		if(baseimg == NULL)
-		{
+		if (baseimg == NULL) {
 			//infostream<<"Setting "<<part_of_name<<" as base"<<std::endl;
 			/*
 				Copy it this way to get an alpha channel.
@@ -1002,23 +1096,8 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 			baseimg = driver->createImage(video::ECF_A8R8G8B8, dim);
 			image->copyTo(baseimg);
 			image->drop();
-		}
-		// Else blit on base.
-		else
-		{
-			//infostream<<"Blitting "<<part_of_name<<" on base"<<std::endl;
-			// Size of the copied area
-			core::dimension2d<u32> dim = image->getDimension();
-			//core::dimension2d<u32> dim(16,16);
-			// Position to copy the blitted to in the base image
-			core::position2d<s32> pos_to(0,0);
-			// Position to copy the blitted from in the blitted image
-			core::position2d<s32> pos_from(0,0);
-			// Blit
-			image->copyToWithAlpha(baseimg, pos_to,
-					core::rect<s32>(pos_from, dim),
-					video::SColor(255,255,255,255),
-					NULL);
+		}else{
+			alpha_blit(device,baseimg,image,0.,0.,1.,1.,part_of_name);
 			// Drop image
 			image->drop();
 		}
@@ -1821,30 +1900,7 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 						<< "\", cancelling." << std::endl;
 				return false;
 			}
-			core::dimension2d<u32> bdim = baseimg->getDimension();
-			core::dimension2d<u32> idim = image->getDimension();
-			core::dimension2d<u32> dim((X-x)*(float)bdim.Width,(Y-y)*(float)bdim.Height);
-			// Position to copy the blitted to in the base image
-			core::position2d<s32> pos_to((float)bdim.Width*x,(float)bdim.Height*y);
-			// Position to copy the blitted from in the blitted image
-			core::position2d<s32> pos_from((float)idim.Width*x,(float)idim.Height*y);
-			// Blit
-			if (image->getBitsPerPixel() == 32) {
-				image->copyToWithAlpha(
-					baseimg,
-					pos_to,
-					core::rect<s32>(pos_from, dim),
-					video::SColor(255,255,255,255),
-					NULL
-				);
-			}else{
-				image->copyTo(
-					baseimg,
-					pos_to,
-					core::rect<s32>(pos_from, dim),
-					NULL
-				);
-			}
+			alpha_blit(device,baseimg,image,x,y,X,Y,part_of_name);
 			// Drop image
 			image->drop();
 		}
@@ -2035,30 +2091,6 @@ void imageTransform(u32 transform, video::IImage *src, video::IImage *dst)
 		u32 sy = entries[syn];
 		video::SColor c = src->getPixel(sx,sy);
 		dst->setPixel(dx,dy,c);
-	}
-}
-
-/*
-	Draw an image on top of an another one, using the alpha channel of the
-	source image; only modify fully opaque pixels in destinaion
-*/
-static void blit_with_alpha_overlay(video::IImage *src, video::IImage *dst,
-		v2s32 src_pos, v2s32 dst_pos, v2u32 size)
-{
-	for(u32 y0=0; y0<size.Y; y0++)
-	for(u32 x0=0; x0<size.X; x0++)
-	{
-		s32 src_x = src_pos.X + x0;
-		s32 src_y = src_pos.Y + y0;
-		s32 dst_x = dst_pos.X + x0;
-		s32 dst_y = dst_pos.Y + y0;
-		video::SColor src_c = src->getPixel(src_x, src_y);
-		video::SColor dst_c = dst->getPixel(dst_x, dst_y);
-		if(dst_c.getAlpha() == 255 && src_c.getAlpha() != 0)
-		{
-			dst_c = src_c.getInterpolated(dst_c, (float)src_c.getAlpha()/255.0f);
-			dst->setPixel(dst_x, dst_y, dst_c);
-		}
 	}
 }
 
