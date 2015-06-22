@@ -23,7 +23,9 @@
 #include <stdint.h>
 #include <ctype.h>
 #ifdef _WIN32
+#ifdef _MSC_VER
 #include <Windows.h>
+#endif
 #include <windows.h>
 #endif
 
@@ -723,7 +725,7 @@ wchar_t* wngettext(const char *str1, const char *str2, int n)
 
 void init_gettext()
 {
-#ifndef _MSC_VER
+#ifndef _WIN32
 	setlocale(LC_MESSAGES, "");
 	setlocale(LC_CTYPE, "");
 #endif
