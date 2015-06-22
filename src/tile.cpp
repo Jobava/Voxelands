@@ -148,7 +148,7 @@ u32 TextureSource::getTextureId(const std::string &name)
 // Draw a progress bar on the image
 void make_progressbar(float value, video::IImage *image);
 
-static void alpha_blit(IrrlichtDevice *device, video::IImage *dest, video::IImage *src, float x, float y, float X, float Y, std::string name)
+static void alpha_blit(IrrlichtDevice *device, video::IImage *dest, video::IImage *src, float d[4], float s[4], std::string name)
 {
 	std::string rtt_texture_name = name + "_RTT";
 	video::ITexture *rtt = NULL;
@@ -157,27 +157,25 @@ static void alpha_blit(IrrlichtDevice *device, video::IImage *dest, video::IImag
 	if (driver->queryFeature(video::EVDF_RENDER_TO_TARGET))
 		rtt = driver->addRenderTargetTexture(rtt_dim, rtt_texture_name.c_str(), video::ECF_A8R8G8B8);
 
-	core::dimension2d<u32> idim = src->getDimension();
-	core::dimension2d<u32> dim((X-x)*(float)rtt_dim.Width,(Y-y)*(float)rtt_dim.Height);
-	// Position to copy the blitted to in the base image
-	core::position2d<s32> pos_to((float)rtt_dim.Width*x,(float)rtt_dim.Height*y);
-	// Position to copy the blitted from in the blitted image
-	core::position2d<s32> pos_from((float)idim.Width*x,(float)idim.Height*y);
+	core::dimension2d<u32> src_dim = src->getDimension();
+
+	core::rect<s32> dest_rect(d[0]*(float)rtt_dim.Width,d[1]*(float)rtt_dim.Height,d[2]*(float)rtt_dim.Width,d[3]*(float)rtt_dim.Height);
+	core::rect<s32> src_rect(s[0]*(float)src_dim.Width,s[1]*(float)src_dim.Height,s[2]*(float)src_dim.Width,s[3]*(float)src_dim.Height);
 
 	if (rtt == NULL) {
 		if (src->getBitsPerPixel() == 32) {
 			src->copyToWithAlpha(
 				dest,
-				pos_to,
-				core::rect<s32>(pos_from, dim),
+				dest_rect.UpperLeftCorner,
+				src_rect,
 				video::SColor(255,255,255,255),
 				NULL
 			);
 		}else{
 			src->copyTo(
 				dest,
-				pos_to,
-				core::rect<s32>(pos_from, dim),
+				dest_rect.UpperLeftCorner,
+				src_rect,
 				NULL
 			);
 		}
@@ -204,8 +202,8 @@ static void alpha_blit(IrrlichtDevice *device, video::IImage *dest, video::IImag
 	);
 	driver->draw2DImage(
 		t2,
-		core::rect<s32>(pos_to,dim),
-		core::rect<s32>(pos_from,dim),
+		dest_rect,
+		src_rect,
 		&rect,
 		colors,
 		true
@@ -1001,10 +999,8 @@ video::IImage* generate_image_from_scratch(std::string name,
 
 	// Find last meta separator in name
 	s32 last_separator_position = -1;
-	for(s32 i=name.size()-1; i>=0; i--)
-	{
-		if(name[i] == separator)
-		{
+	for (s32 i=name.size()-1; i>=0; i--) {
+		if (name[i] == separator) {
 			last_separator_position = i;
 			break;
 		}
@@ -1019,8 +1015,7 @@ video::IImage* generate_image_from_scratch(std::string name,
 		base image using a recursive call
 	*/
 	std::string base_image_name;
-	if(last_separator_position != -1)
-	{
+	if (last_separator_position != -1) {
 		// Construct base name
 		base_image_name = name.substr(0, last_separator_position);
 		/*infostream<<"generate_image_from_scratch(): Calling itself recursively"
@@ -1035,11 +1030,11 @@ video::IImage* generate_image_from_scratch(std::string name,
 	*/
 
 	std::string last_part_of_name = name.substr(last_separator_position+1);
+
 	//infostream<<"last_part_of_name=\""<<last_part_of_name<<"\""<<std::endl;
 
 	// Generate image according to part of name
-	if(generate_image(last_part_of_name, baseimg, device) == false)
-	{
+	if (generate_image(last_part_of_name, baseimg, device) == false) {
 		infostream<<"generate_image_from_scratch(): "
 				"failed to generate \""<<last_part_of_name<<"\""
 				<<std::endl;
@@ -1054,6 +1049,8 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 {
 	video::IVideoDriver* driver = device->getVideoDriver();
 	assert(driver);
+	if (part_of_name == "")
+		return baseimg;
 
 	// Stuff starting with [ are special commands
 	if(part_of_name[0] != '[')
@@ -1097,7 +1094,8 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 			image->copyTo(baseimg);
 			image->drop();
 		}else{
-			alpha_blit(device,baseimg,image,0.,0.,1.,1.,part_of_name);
+			float p[4] = {0.,0.,1.,1.};
+			alpha_blit(device,baseimg,image,p,p,part_of_name);
 			// Drop image
 			image->drop();
 		}
@@ -1125,10 +1123,8 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 			[crackN
 			Adds a cracking texture
 		*/
-		else if(part_of_name.substr(0,6) == "[crack")
-		{
-			if(baseimg == NULL)
-			{
+		else if (part_of_name.substr(0,6) == "[crack") {
+			if (baseimg == NULL) {
 				infostream<<"generate_image(): baseimg==NULL "
 						<<"for part_of_name=\""<<part_of_name
 						<<"\", cancelling."<<std::endl;
@@ -1138,77 +1134,31 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 			// Crack image number
 			u16 progression = mystoi(part_of_name.substr(6));
 
-			// Size of the base image
-			core::dimension2d<u32> dim_base = baseimg->getDimension();
-
 			/*
 				Load crack image.
 
 				It is an image with a number of cracking stages
 				horizontally tiled.
 			*/
-			video::IImage *img_crack = driver->createImageFromFile(
-					getTexturePath("crack.png").c_str());
+			video::IImage *img_crack = driver->createImageFromFile(getTexturePath("crack.png").c_str());
 
-			if(img_crack)
+			if (!img_crack)
+				return true;
 			{
 				// Dimension of original image
-				core::dimension2d<u32> dim_crack
-						= img_crack->getDimension();
+				core::dimension2d<u32> dim_crack = img_crack->getDimension();
 				// Count of crack stages
 				u32 crack_count = dim_crack.Height / dim_crack.Width;
 				// Limit progression
 				if(progression > crack_count-1)
 					progression = crack_count-1;
-				// Dimension of a single scaled crack stage
-				core::dimension2d<u32> dim_crack_scaled_single(
-					dim_base.Width,
-					dim_base.Height
-				);
-				// Dimension of scaled size
-				core::dimension2d<u32> dim_crack_scaled(
-					dim_crack_scaled_single.Width,
-					dim_crack_scaled_single.Height * crack_count
-				);
-				// Create scaled crack image
-				video::IImage *img_crack_scaled = driver->createImage(
-						video::ECF_A8R8G8B8, dim_crack_scaled);
-				if(img_crack_scaled)
-				{
-					// Scale crack image by copying
-					img_crack->copyToScaling(img_crack_scaled);
 
-					// Position to copy the crack from
-					core::position2d<s32> pos_crack_scaled(
-						0,
-						dim_crack_scaled_single.Height * progression
-					);
+				float s = 1.0/((float)crack_count);
 
-					// This tiling does nothing currently but is useful
-					for(u32 y0=0; y0<dim_base.Height
-							/ dim_crack_scaled_single.Height; y0++)
-					for(u32 x0=0; x0<dim_base.Width
-							/ dim_crack_scaled_single.Width; x0++)
-					{
-						// Position to copy the crack to in the base image
-						core::position2d<s32> pos_base(
-							x0*dim_crack_scaled_single.Width,
-							y0*dim_crack_scaled_single.Height
-						);
-						// Rectangle to copy the crack from on the scaled image
-						core::rect<s32> rect_crack_scaled(
-							pos_crack_scaled,
-							dim_crack_scaled_single
-						);
-						// Copy it
-						img_crack_scaled->copyToWithAlpha(baseimg, pos_base,
-								rect_crack_scaled,
-								video::SColor(255,255,255,255),
-								NULL);
-					}
+				float dst[4] = {0.,0.,1.,1.};
+				float src[4] = {0.,(s*progression),1.,(s*progression)+s};
 
-					img_crack_scaled->drop();
-				}
+				alpha_blit(device,baseimg,img_crack,dst,src,part_of_name);
 
 				img_crack->drop();
 			}
@@ -1900,7 +1850,8 @@ bool generate_image(std::string part_of_name, video::IImage *& baseimg,
 						<< "\", cancelling." << std::endl;
 				return false;
 			}
-			alpha_blit(device,baseimg,image,x,y,X,Y,part_of_name);
+			float p[4] = {x,y,X,Y};
+			alpha_blit(device,baseimg,image,p,p,part_of_name);
 			// Drop image
 			image->drop();
 		}
