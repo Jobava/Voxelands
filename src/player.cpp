@@ -400,20 +400,6 @@ void Player::getSkin(std::vector<std::string> &parts)
 	parts.push_back(std::string("skins")+DIR_DELIM+"eyes_"+eyes+".png");
 	parts.push_back(std::string("skins")+DIR_DELIM+"hair_"+hair+"_"+hairtone+"_"+gender+".png");
 }
-std::string Player::getSkin()
-{
-	std::vector<std::string> parts;
-	getSkin(parts);
-
-	std::string tex = "";
-
-	for (std::vector<std::string>::iterator i = parts.begin(); i != parts.end(); i++) {
-		tex += "^";
-		tex += *i;
-	}
-
-	return tex;
-}
 
 /*
 	ServerRemotePlayer

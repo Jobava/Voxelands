@@ -269,9 +269,8 @@ public:
 
 	v3f getScale();
 
-	// the unclothed player skin
+	// the unclothed player skin parts
 	void getSkin(std::vector<std::string> &parts);
-	std::string getSkin();
 
 protected:
 	char m_name[PLAYERNAME_SIZE];
