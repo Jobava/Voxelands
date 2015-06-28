@@ -268,7 +268,24 @@ void content_mapnode_init(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_ROUGHSTONE)+" 1";
 	f->type = CMT_STONE;
 	f->hardness = 1.0;
-	if(invisible_stone)
+	if (invisible_stone)
+		f->solidness = 0; // For debugging, hides regular stone
+	lists::add("creative",i);
+	lists::add("decrafting",i);
+
+	i = CONTENT_LIMESTONE;
+	f = &content_features(i);
+	f->description = wgettext("Limestone");
+	f->setAllTextures("limestone.png");
+	f->setInventoryTextureCube("limestone.png", "limestone.png", "limestone.png");
+	f->param_type = CPT_MINERAL;
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->often_contains_mineral = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_LIMESTONE)+" 1";
+	f->type = CMT_STONE;
+	f->hardness = 0.6;
+	if (invisible_stone)
 		f->solidness = 0; // For debugging, hides regular stone
 	lists::add("creative",i);
 	lists::add("decrafting",i);

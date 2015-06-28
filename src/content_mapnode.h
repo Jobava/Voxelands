@@ -47,7 +47,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 */
 
 #define CONTENT_STONE 0x000
-// FREE 0x001
+#define CONTENT_LIMESTONE 0x001
 #define CONTENT_WATER 0x002
 #define CONTENT_TORCH_LEGACY 0x003
 #define CONTENT_GLASSLIGHT 0x004
