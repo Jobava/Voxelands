@@ -397,6 +397,27 @@ void plantgrowth_jungletree(ServerEnvironment *env, v3s16 p0)
 	}
 }
 
+void plantgrowth_fertilizer(ServerEnvironment *env, v3s16 p0)
+{
+	content_t types[8] = {
+		CONTENT_SEEDS_WHEAT,
+		CONTENT_SEEDS_MELON,
+		CONTENT_SEEDS_PUMPKIN,
+		CONTENT_SEEDS_POTATO,
+		CONTENT_SEEDS_CARROT,
+		CONTENT_SEEDS_BEETROOT,
+		CONTENT_SEEDS_GRAPE,
+		CONTENT_SEEDS_COTTON
+	};
+	u8 seed = myrand()%10;
+	if (seed > 7)
+		return;
+	MapNode n = env->getMap().getNodeNoEx(p0);
+	n.setContent(types[seed]);
+	n.param2 = 1;
+	env->getMap().addNodeWithEvent(p0,n);
+}
+
 void plantgrowth_seed(ServerEnvironment *env, v3s16 p0)
 {
 	MapNode n = env->getMap().getNodeNoEx(p0);
