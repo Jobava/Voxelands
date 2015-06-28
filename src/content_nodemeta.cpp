@@ -1529,6 +1529,285 @@ std::string CraftGuideNodeMetadata::getDrawSpecString()
 }
 
 /*
+	ReverseCraftGuideNodeMetadata
+*/
+
+// Prototype
+ReverseCraftGuideNodeMetadata proto_ReverseCraftGuideNodeMetadata;
+
+ReverseCraftGuideNodeMetadata::ReverseCraftGuideNodeMetadata()
+{
+	//make sure that the type gets registered for this metadata
+	NodeMetadata::registerType(typeId(), create);
+
+	//start on the first page, with the first recipe
+	m_page = 0;
+	m_recipe = 0;
+
+	//build the inventory
+	m_inventory = new Inventory;
+	m_inventory->addList("list", 300);
+	m_inventory->addList("item", 1);
+	m_inventory->addList("recipe", 9);
+	m_inventory->addList("result", 1);
+}
+ReverseCraftGuideNodeMetadata::~ReverseCraftGuideNodeMetadata()
+{
+	delete m_inventory;
+}
+u16 ReverseCraftGuideNodeMetadata::typeId() const
+{
+	return CONTENT_RCRAFT_BOOK_OPEN;
+}
+void ReverseCraftGuideNodeMetadata::reloadPage()
+{
+	using namespace std;
+
+	//get the inventory list and clear it
+	InventoryList *inv_list = m_inventory->getList("list");
+	inv_list->clearItems();
+
+	//retrieve the list of things in the ingredient list
+	vector<content_t> &ingredient_list = crafting::getCraftGuideIngredientList();
+
+	//get the number of pages
+	if (ingredient_list.size() == 0) return;
+	u16 page_count = ingredient_list.size()/40;
+	if (ingredient_list.size()%40) ++page_count;
+
+	//make sure the page is actually in range (via modulus)
+	if (s16(m_page) >= page_count) m_page %= page_count;
+	else if (s16(m_page) < 0) m_page = s16(m_page)%page_count + page_count;
+
+	//go through each item on the current page
+	vector<content_t>::iterator page_begin = ingredient_list.begin() + m_page*40;
+	vector<content_t>::iterator page_end = ingredient_list.begin() + min((m_page+1)*40, signed(ingredient_list.size()));
+	for (vector<content_t>::iterator it = page_begin; it != page_end; ++it) {
+
+		//create an inventory item for it
+		InventoryItem *cur_item = InventoryItem::create(*it, 1);
+
+		//make extra sure that it actually has recipes in order to not look stupid
+		if (not crafting::getReverseRecipe(cur_item)) delete cur_item;
+
+		//if it does, add it
+		else inv_list->addItem(cur_item);
+	}
+}
+NodeMetadata* ReverseCraftGuideNodeMetadata::clone()
+{
+	//create a new metadata object
+	ReverseCraftGuideNodeMetadata *d = new ReverseCraftGuideNodeMetadata;
+
+	//copy over the inventory
+	*d->m_inventory = *m_inventory;
+
+	//keep the same page
+	d->m_page = m_page;
+
+	//rebuild the page on the copy
+	d->reloadPage();
+
+	//return the completed copy
+	return d;
+}
+NodeMetadata* ReverseCraftGuideNodeMetadata::create(std::istream &is)
+{
+	//create a new metadata object
+	ReverseCraftGuideNodeMetadata *d = new ReverseCraftGuideNodeMetadata;
+
+	//deserialize the inventory
+	d->m_inventory->deSerialize(is);
+
+	//read in the page and recipe
+	is>>d->m_page;
+	is>>d->m_recipe;
+
+	//return the completed object
+	return d;
+}
+void ReverseCraftGuideNodeMetadata::serializeBody(std::ostream &os)
+{
+	//serialize the inventory
+	m_inventory->serialize(os);
+
+	//also serialize the page and recipe numbers
+	os << itos(m_page) << " ";
+	os << itos(m_recipe) << " ";
+}
+bool ReverseCraftGuideNodeMetadata::nodeRemovalDisabled()
+{
+	//the player can always remove this node
+	return false;
+}
+void ReverseCraftGuideNodeMetadata::inventoryModified()
+{
+	infostream<<"ReverseCraftGuide inventory modification callback"<<std::endl;
+}
+bool ReverseCraftGuideNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
+{
+	//get the item in the item box
+	InventoryItem *item = m_inventory->getList("item")->getItem(0);
+
+	//if there's no item in the item box, do nothing
+	if (not item or item->getContent() == CONTENT_IGNORE)
+		return false;
+
+	//attempt to look up the recipe
+	crafting::FoundReverseRecipe recipe = crafting::getReverseRecipe(item, m_recipe);
+
+	//if it doesn't exist, attempt to start over on the first recipe
+	if (not recipe) {
+
+		//if it's already on the first recipe, give up
+		if (m_recipe == 0)
+			return false;
+
+		//otherwise, switch to the first recipe
+		m_recipe = 0;
+		recipe = crafting::getReverseRecipe(item, m_recipe);
+
+		//give up if that doesn't work
+		if (not recipe)
+			return false;
+	}
+
+	//clear the recipe box
+	InventoryList *rec_list = m_inventory->getList("recipe");
+	rec_list->clearItems();
+
+	//load the recipe into the recipe box
+	for (int i=0; i<9; i++) {
+		if (recipe.recipe[i] == CONTENT_IGNORE)
+			continue;
+		InventoryItem *item = InventoryItem::create(recipe.recipe[i], 1);
+		rec_list->addItem(i, item);
+	}
+
+	//load the result box too
+	{
+		InventoryList *res_list = m_inventory->getList("result");
+		res_list->clearItems();
+		InventoryItem *result = InventoryItem::create(recipe.result, recipe.result_count);
+		res_list->addItem(0, result);
+	}
+
+	//the node has now been updated
+	return true;
+}
+bool ReverseCraftGuideNodeMetadata::import(NodeMetadata *meta)
+{
+	using namespace std;
+
+	//if the metadata is from a book being opened, stay on the same page
+	if (ClosedBookNodeMetadata *book_meta = dynamic_cast<ClosedBookNodeMetadata*>(meta))
+		m_page = book_meta->getPage();
+
+	//reload the page
+	reloadPage();
+
+	//node updated
+	return true;
+}
+bool ReverseCraftGuideNodeMetadata::receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player)
+{
+	//if the player wants to change the recipe
+	if (fields["rprev"] != "" or fields["rnext"] != "") {
+
+		//find the ingredient item
+		InventoryItem *item = m_inventory->getList("item")->getItem(0);
+
+		//advance the recipe counter appropriately
+		if (fields["rprev"] != "") {
+			if (m_recipe > 0)
+				m_recipe--;
+		} else {
+			m_recipe++;
+		}
+
+		//get the recipe count
+		int rec_count = 1;
+		if (item && item->getContent() != CONTENT_IGNORE)
+			rec_count = crafting::getReverseRecipeCount(item);
+
+		//fix the counter if needed
+		if (m_recipe >= rec_count)
+			m_recipe = rec_count - 1;
+
+		//this node now needs updating
+		step(0, v3s16(0,0,0), NULL);
+		return true;
+	}
+
+	//if the player wants to change the list page
+	if (fields["prev"] != "" or fields["next"] != "") {
+
+		//advance m_page correctly
+		if (fields["prev"] != "") --m_page;
+		if (fields["next"] != "") ++m_page;
+
+		//reload the page (if the number is out of bounds it will fix it correctly automatically)
+		reloadPage();
+
+		//the node has been updated
+		return true;
+	}
+
+	//nothing happened
+	return false;
+}
+std::string ReverseCraftGuideNodeMetadata::getDrawSpecString()
+{
+	using namespace std;
+
+	//get the ingredient item
+	InventoryItem *item = m_inventory->getList("item")->getItem(0);
+	int recipe_count = 0;
+	if (item && item->getContent() != CONTENT_IGNORE) {
+		recipe_count = crafting::getReverseRecipeCount(item);
+	}
+
+	//get the number of pages
+	vector<content_t> &ingredient_list = crafting::getCraftGuideIngredientList();
+	if (ingredient_list.size() == 0) return "";
+	u16 page_count = ingredient_list.size()/40;
+	if (ingredient_list.size()%40) ++page_count;
+
+	//write the page count string
+	char buff[256];
+	snprintf(buff, 256, gettext("Page %d of %d"), (int)(m_page+1), page_count);
+
+	//build the formspec
+	string spec("size[8,10]");
+	spec +=	"label[0.5,0.75;";
+	spec += gettext("Add item here to see recipe");
+	spec += "]";
+	spec +=	"list[current_name;item;2,1;1,1;]";
+	if (recipe_count > 1) {
+		char rbuff[256];
+		snprintf(rbuff,256,gettext("Recipe %d of %d"), (int)(m_recipe+1), recipe_count);
+		spec += "button[2.5,3.5;1,0.75;rprev;<<]";
+		spec += "label[3.5,3.5;";
+		spec += rbuff;
+		spec += "]";
+		spec += "button[5.5,3.5;1,0.75;rnext;>>]";
+	}
+	spec +=	"list[current_name;recipe;4,0;3,3;]";
+	spec +=	"button[0.25,4.5;2.5,0.75;prev;";
+	spec += gettext("<< Previous Page");
+	spec += "]";
+	spec +=	"label[3.5,4.5;";
+	spec += buff;
+	spec += "]";
+	spec +=	"button[6,4.5;2.5,0.75;next;";
+	spec += gettext("Next Page >>");
+	spec += "]";
+	spec += "list[current_name;result;7,0;1,1;]";
+	spec +=	"list[current_name;list;0,5;8,5;]";
+	return spec;
+}
+
+/*
 	CookBookNodeMetadata
 */
 

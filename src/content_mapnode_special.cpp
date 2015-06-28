@@ -799,6 +799,44 @@ void content_mapnode_special(bool repeat)
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
+	i = CONTENT_RCRAFT_BOOK;
+	f = &content_features(i);
+	f->description = wgettext("Reverse Craft Book");
+	f->setTexture(0, "book_rcraft_cover.png");
+	f->setTexture(1, "book_rcraft_cover.png^[transformFX");
+	f->setTexture(2, "book_rcraft_side.png^[transformFY");
+	f->setTexture(3, "book_rcraft_side.png");
+	f->setTexture(4, "book_rcraft_end.png");
+	f->setTexture(5, "book_rcraft_end.png^[transformFX");
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->rotate_tile_with_nodebox = true;
+	f->light_propagates = true;
+	f->air_equivalent = true;
+	f->onpunch_replace_node = CONTENT_RCRAFT_BOOK_OPEN;
+	f->flammable = 1;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0;
+	content_nodebox_book(f);
+	f->setInventoryTextureNodeBox(i, "book_rcraft_cover.png", "book_rcraft_end.png^[transformFX", "book_rcraft_side.png^[transformFY");
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
+	{
+		content_t r[9] = {
+			CONTENT_CRAFTITEM_STICK, CONTENT_IGNORE,          CONTENT_IGNORE,
+			CONTENT_IGNORE,          CONTENT_CRAFTITEM_STICK, CONTENT_IGNORE,
+			CONTENT_CRAFTITEM_STICK, CONTENT_CRAFTITEM_STICK,	CONTENT_IGNORE
+		};
+		crafting::setRecipe(r,CONTENT_RCRAFT_BOOK,1);
+	}
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new ClosedBookNodeMetadata();
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
 	i = CONTENT_BOOK_OPEN;
 	f = &content_features(i);
 	f->description = wgettext("Guide");
@@ -939,6 +977,34 @@ void content_mapnode_special(bool repeat)
 	f->suffocation_per_second = 0;
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new CraftGuideNodeMetadata();
+	f->sound_access = "open-book";
+
+	i = CONTENT_RCRAFT_BOOK_OPEN;
+	f = &content_features(i);
+	f->description = wgettext("Reverse Craft Guide");
+	f->setAllTextures("guide_rcraft_side.png");
+	f->setTexture(0, "guide_rcraft_top.png");
+	f->setTexture(1, "guide_rcraft_bottom.png");
+	f->setTexture(4, "guide_rcraft_end.png");
+	f->setTexture(5, "guide_rcraft_end.png");
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->rotate_tile_with_nodebox = true;
+	f->light_propagates = true;
+	f->air_equivalent = true;
+	f->onpunch_replace_node = CONTENT_RCRAFT_BOOK;
+	f->flammable = 1;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_RCRAFT_BOOK)+" 1";
+	f->solidness = 0;
+	content_nodebox_guide(f);
+	f->setInventoryTextureNodeBox(i, "guide_rcraft_top.png", "guide_rcraft_end.png", "guide_rcraft_side.png");
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new ReverseCraftGuideNodeMetadata();
 	f->sound_access = "open-book";
 
 	i = CONTENT_FIRE;

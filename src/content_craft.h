@@ -283,6 +283,25 @@ namespace crafting {
 	int getResultCount(InventoryItem *item);
 	int getRecipeCount(InventoryItem *item);
 
+	//counts the number of recipes that use item
+	int getReverseRecipeCount(InventoryItem *item);
+
+	//a recipe type for use in showing reverse recipes
+	//invalid recipes have result == CONTENT_IGNORE
+	struct FoundReverseRecipe {
+		content_t recipe [9];
+		content_t result;
+		int result_count;
+		FoundReverseRecipe() : result(CONTENT_IGNORE) {}
+		operator bool() const {return result != CONTENT_IGNORE;}
+	};
+
+	//retrieves the ith recipe that uses item (the first by default)
+	FoundReverseRecipe getReverseRecipe(InventoryItem *item, int i = 0);
+
+	//retrieves a cached ingredient list that is automatically built from the craftguide list
+	std::vector<content_t>& getCraftGuideIngredientList();
+
 	void giveCreative(Player *player);
 	void giveInitial(Player *player);
 };

@@ -372,6 +372,37 @@ private:
 	u16 m_recipe;
 };
 
+class ReverseCraftGuideNodeMetadata : public NodeMetadata
+{
+public:
+	ReverseCraftGuideNodeMetadata();
+	~ReverseCraftGuideNodeMetadata();
+
+	virtual u16 typeId() const;
+	NodeMetadata* clone();
+	static NodeMetadata* create(std::istream &is);
+	virtual void serializeBody(std::ostream &os);
+	virtual std::wstring infoText() {return wgettext("Reverse Craft Guide");}
+	virtual Inventory* getInventory() {return m_inventory;}
+	virtual bool nodeRemovalDisabled();
+	virtual void inventoryModified();
+	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
+	virtual bool import(NodeMetadata *meta);
+	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
+	virtual std::string getDrawSpecString();
+
+	u16 getPage() {return m_page;}
+
+private:
+	Inventory *m_inventory;
+	u16 m_page;
+	u16 m_recipe;
+
+	//a helper function to reload the current page, to reduce repeated code
+	//this will also automatically wrap around the page number, casting it to a signed type and using modulus
+	void reloadPage();
+};
+
 class CookBookNodeMetadata : public NodeMetadata
 {
 public:

@@ -34,6 +34,9 @@
 #include "mapnode.h" // For content_t
 #include "settings.h" // for g_settings
 
+#include <algorithm>
+#include <set>
+
 namespace crafting {
 
 std::vector<CraftDef> shaped_recipes;
@@ -782,6 +785,161 @@ int getRecipeCount(InventoryItem *item)
 			count++;
 	}
 	return count;
+}
+
+//a little predicate type for determining whether a recipe contains a certain item
+struct CraftDefContains {
+	content_t item;
+	explicit CraftDefContains(content_t item_in) : item(item_in) {}
+	template <typename CD>
+	bool operator()(const CD& def) const
+	{
+		return std::find(def.recipe, def.recipe + 9, item) != def.recipe + 9;
+	}
+};
+
+int getReverseRecipeCount(InventoryItem *item)
+{
+	using namespace std;
+
+	//make a predicate object to look for recipes containing the right item
+	CraftDefContains contains_item (item->getContent());
+
+	//count up the matching recipes
+	return count_if(shaped_recipes.begin(), shaped_recipes.end(), contains_item)
+	     + count_if(shapeless_recipes.begin(), shapeless_recipes.end(), contains_item);
+}
+
+//how to create a FoundReverseRecipe from a CraftDef
+template <typename CD>
+FoundReverseRecipe FRRFromCD(const CD& def)
+{
+	using namespace std;
+	FoundReverseRecipe recipe;
+	recipe.result = def.result;
+	recipe.result_count = def.result_count;
+	copy(def.recipe, def.recipe + 9, recipe.recipe);
+	return recipe;
+}
+
+//a helper function for reverse recipe lookup
+//count is used to count down to the correct recipe:
+//it is decremented by the function each time that it finds a viable recipe
+//this makes it possible to use this function for searches through multiple ranges
+template <typename It>
+FoundReverseRecipe reverseRecipeHelper(It cd_begin, It cd_end, content_t item, int &count)
+{
+	using namespace std;
+
+	//make a predicate object to aid with the search for recipes containing the item
+	CraftDefContains contains_item (item);
+
+	//look through each of the recipes, finding the ones which contain item
+	for (It it = cd_begin; it != cd_end; ++it) if (contains_item(*it)) {
+
+		//continue on if the target recipe hasn't been reached yet
+		if (count--) continue;
+
+		//if it is the right recipe, make a copy and return it
+		return FRRFromCD(*it);
+	}
+
+	//if nothing was found yet, return a default FoundReverseRecipe
+	return FoundReverseRecipe();
+}
+
+FoundReverseRecipe getReverseRecipe(InventoryItem *iitem, int index)
+{
+	//ignore negative indeces
+	if (index < 0)
+		return FoundReverseRecipe();
+
+	//find the content id for the item
+	content_t item = iitem->getContent();
+
+	//where to store the recipe when found
+	FoundReverseRecipe recipe;
+
+	//the recipe counter (counting down)
+	int count = index;
+
+	//look in the shaped recipes
+	recipe = reverseRecipeHelper(shaped_recipes.begin(), shaped_recipes.end(), item, count);
+
+	//if that fails, look in the shapeless recipes
+	if (not recipe)
+		recipe = reverseRecipeHelper(shapeless_recipes.begin(), shapeless_recipes.end(), item, count);
+
+	//return the located recipe, if one was found
+	return recipe;
+}
+
+//how to update an ingredient list given a range of new craft items
+template <typename It>
+void addToIngredientList(It results_begin, It results_end, std::vector<content_t>& ingredient_list)
+{
+	using namespace std;
+
+	//make a set to hold the items as the list is compiled
+	set<content_t> ingredients (ingredient_list.begin(), ingredient_list.end());
+
+	//go through the result list
+	for (It it = results_begin; it != results_end; ++it) {
+
+		//make a temporary inventory item for the result
+		InventoryItem *result = InventoryItem::create(*it, 1);
+
+		//go through every recipe for this item
+		for (int rec_ind = getRecipeCount(result); rec_ind--;) {
+
+			//get the recipe
+			content_t *recipe = getRecipe(result, rec_ind);
+
+			//eliminate duplicates
+			sort(recipe, recipe + 9);
+			content_t *uniq_end = unique(recipe, recipe + 9);
+
+			//insert into the ingredients list
+			ingredients.insert(recipe, uniq_end);
+
+			//clean up
+			delete recipe;
+		}
+
+		//clean up
+		delete result;
+	}
+
+	//ignore CONTENT_IGNORE
+	ingredients.erase(CONTENT_IGNORE);
+
+	//dump the new ingredients into the ingredient list
+	ingredient_list.insert(ingredient_list.end(), ingredients.begin(), ingredients.end());
+}
+
+std::vector<content_t>& getCraftGuideIngredientList()
+{
+	using namespace std;
+
+	//the ingredient list, and the number of items that were in the craftguide list at the last check
+	static vector<content_t> ingredient_list;
+	static unsigned last_craftguide_count = 0;
+
+	//get the craftguide list
+	const vector<content_t>& craft_list = lists::get("craftguide");
+
+	//check if more items need to be added
+	if (craft_list.size() > last_craftguide_count) {
+
+		//if so, add the new stuff
+		addToIngredientList(craft_list.begin() + last_craftguide_count, craft_list.end(), ingredient_list);
+
+		//and update the craftguide count
+		last_craftguide_count = craft_list.size();
+	}
+
+	//return the list
+	return ingredient_list;
 }
 
 void giveCreative(Player *player)
