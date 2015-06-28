@@ -571,7 +571,7 @@ void content_clothesitem_init()
 	f->content = i;
 	f->type = CT_HAT;
 	f->texture = "clothes_hat_cotton_black.png";
-	f->overlay_texture = "clothes_player_hat_cotton_blacK.png";
+	f->overlay_texture = "clothes_player_hat_cotton_black.png";
 	f->description = wgettext("Black Cotton Hat");
 	f->armour = 0.0;
 	f->warmth = 0.05;
