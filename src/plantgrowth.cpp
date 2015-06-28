@@ -412,9 +412,7 @@ void plantgrowth_fertilizer(ServerEnvironment *env, v3s16 p0)
 	u8 seed = myrand()%10;
 	if (seed > 7)
 		return;
-	MapNode n = env->getMap().getNodeNoEx(p0);
-	n.setContent(types[seed]);
-	n.param2 = 1;
+	MapNode n(types[seed]);
 	env->getMap().addNodeWithEvent(p0,n);
 }
 
