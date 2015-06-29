@@ -1588,7 +1588,7 @@ void ReverseCraftGuideNodeMetadata::reloadPage()
 		InventoryItem *cur_item = InventoryItem::create(*it, 1);
 
 		//make extra sure that it actually has recipes in order to not look stupid
-		if (not crafting::getReverseRecipe(cur_item)) delete cur_item;
+		if (!crafting::getReverseRecipe(cur_item)) delete cur_item;
 
 		//if it does, add it
 		else inv_list->addItem(cur_item);
@@ -1650,14 +1650,14 @@ bool ReverseCraftGuideNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironme
 	InventoryItem *item = m_inventory->getList("item")->getItem(0);
 
 	//if there's no item in the item box, do nothing
-	if (not item or item->getContent() == CONTENT_IGNORE)
+	if (!item || item->getContent() == CONTENT_IGNORE)
 		return false;
 
 	//attempt to look up the recipe
 	crafting::FoundReverseRecipe recipe = crafting::getReverseRecipe(item, m_recipe);
 
 	//if it doesn't exist, attempt to start over on the first recipe
-	if (not recipe) {
+	if (!recipe) {
 
 		//if it's already on the first recipe, give up
 		if (m_recipe == 0)
@@ -1668,7 +1668,7 @@ bool ReverseCraftGuideNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironme
 		recipe = crafting::getReverseRecipe(item, m_recipe);
 
 		//give up if that doesn't work
-		if (not recipe)
+		if (!recipe)
 			return false;
 	}
 
@@ -1712,7 +1712,7 @@ bool ReverseCraftGuideNodeMetadata::import(NodeMetadata *meta)
 bool ReverseCraftGuideNodeMetadata::receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player)
 {
 	//if the player wants to change the recipe
-	if (fields["rprev"] != "" or fields["rnext"] != "") {
+	if (fields["rprev"] != "" || fields["rnext"] != "") {
 
 		//find the ingredient item
 		InventoryItem *item = m_inventory->getList("item")->getItem(0);
@@ -1740,7 +1740,7 @@ bool ReverseCraftGuideNodeMetadata::receiveFields(std::string formname, std::map
 	}
 
 	//if the player wants to change the list page
-	if (fields["prev"] != "" or fields["next"] != "") {
+	if (fields["prev"] != "" || fields["next"] != "") {
 
 		//advance m_page correctly
 		if (fields["prev"] != "") --m_page;

@@ -867,7 +867,7 @@ FoundReverseRecipe getReverseRecipe(InventoryItem *iitem, int index)
 	recipe = reverseRecipeHelper(shaped_recipes.begin(), shaped_recipes.end(), item, count);
 
 	//if that fails, look in the shapeless recipes
-	if (not recipe)
+	if (!recipe)
 		recipe = reverseRecipeHelper(shapeless_recipes.begin(), shapeless_recipes.end(), item, count);
 
 	//return the located recipe, if one was found
