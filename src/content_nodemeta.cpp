@@ -2460,6 +2460,13 @@ bool ClosedBookNodeMetadata::import(NodeMetadata *meta)
 		m_title = wide_to_narrow(cm->infoText());
 		break;
 	}
+	case CONTENT_RCRAFT_BOOK_OPEN:
+	{
+		ReverseCraftGuideNodeMetadata *cm = (ReverseCraftGuideNodeMetadata*)meta;
+		m_page = cm->getPage();
+		m_title = wide_to_narrow(cm->infoText());
+		break;
+	}
 	case CONTENT_DECRAFT_BOOK_OPEN:
 	{
 		DeCraftNodeMetadata *cm = (DeCraftNodeMetadata*)meta;
@@ -2507,6 +2514,7 @@ BookShelfNodeMetadata::BookShelfNodeMetadata()
 	l->addAllowed(CONTENT_DECRAFT_BOOK);
 	l->addAllowed(CONTENT_DIARY_BOOK);
 	l->addAllowed(CONTENT_CRAFT_BOOK);
+	l->addAllowed(CONTENT_RCRAFT_BOOK);
 }
 BookShelfNodeMetadata::~BookShelfNodeMetadata()
 {
