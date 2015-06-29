@@ -1390,7 +1390,7 @@ void content_craftitem_init()
 	i = CONTENT_CRAFTITEM_TEA;
 	f = &g_content_craftitem_features[i];
 	f->content = i;
-	f->texture = "steel_bottle.png";
+	f->texture = "steel_bottle.png^tea_bag.png";
 	f->name = "tea_drink";
 	f->description = wgettext("Tea");
 	f->stackable = false;
@@ -1422,7 +1422,7 @@ void content_craftitem_init()
 	i = CONTENT_CRAFTITEM_COFFEE;
 	f = &g_content_craftitem_features[i];
 	f->content = i;
-	f->texture = "steel_bottle.png";
+	f->texture = "steel_bottle.png^coffee_bean.png";
 	f->name = "coffee_drink";
 	f->description = wgettext("Coffee");
 	f->stackable = false;
@@ -1473,7 +1473,7 @@ void content_craftitem_init()
 	i = CONTENT_CRAFTITEM_STEEL_BOTTLE_WATER;
 	f = &g_content_craftitem_features[i];
 	f->content = i;
-	f->texture = "steel_bottle.png";
+	f->texture = "steel_bottle.png^water_droplet.png";
 	f->name = "hotwater_drink";
 	f->description = wgettext("Bottle of Hot Water");
 	f->stackable = false;
