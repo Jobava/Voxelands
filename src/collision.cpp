@@ -201,20 +201,20 @@ collisionMoveResult collisionMoveSimple(Map *map,
 	/*
 	Calculate new velocity
 	*/
-	if( dtime > 0.5 ) {
+	if (dtime > 0.5) {
 		infostream<<"collisionMoveSimple: WARNING: maximum step interval exceeded, lost movement details!"<<std::endl;
 		dtime = 0.5;
 	}
 	speed_f += accel_f * dtime;
 
 	// If there is no speed, there are no collisions
-	if(speed_f.getLength() == 0)
+	if (speed_f.getLength() == 0)
 		return result;
 
 	// Limit speed for avoiding hangs
-	speed_f.Y=rangelim(speed_f.Y,-5000,5000);
-	speed_f.X=rangelim(speed_f.X,-5000,5000);
-	speed_f.Z=rangelim(speed_f.Z,-5000,5000);
+	speed_f.Y = rangelim(speed_f.Y,-5000,5000);
+	speed_f.X = rangelim(speed_f.X,-5000,5000);
+	speed_f.Z = rangelim(speed_f.Z,-5000,5000);
 
 	/*
 	Collect node boxes in movement range
@@ -226,7 +226,7 @@ collisionMoveResult collisionMoveSimple(Map *map,
 	std::vector<v3s16> node_positions;
 	{
 		//TimeTaker tt2("collisionMoveSimple collect boxes");
-		    ScopeProfiler sp(g_profiler, "collisionMoveSimple collect boxes avg", SPT_AVG);
+		ScopeProfiler sp(g_profiler, "collisionMoveSimple collect boxes avg", SPT_AVG);
 
 		v3s16 oldpos_i = floatToInt(pos_f, BS);
 		v3s16 newpos_i = floatToInt(pos_f + speed_f * dtime, BS);
@@ -237,10 +237,9 @@ collisionMoveResult collisionMoveSimple(Map *map,
 		s16 max_y = MYMAX(oldpos_i.Y, newpos_i.Y) + (box_0.MaxEdge.Y / BS) + 1;
 		s16 max_z = MYMAX(oldpos_i.Z, newpos_i.Z) + (box_0.MaxEdge.Z / BS) + 1;
 
-		for(s16 x = min_x; x <= max_x; x++)
-		for(s16 y = min_y; y <= max_y; y++)
-		for(s16 z = min_z; z <= max_z; z++)
-		{
+		for (s16 x = min_x; x <= max_x; x++) {
+		for (s16 y = min_y; y <= max_y; y++) {
+		for (s16 z = min_z; z <= max_z; z++) {
 			v3s16 p(x,y,z);
 			bool pos_ok;
 			// Object collides into walkable nodes
@@ -337,6 +336,8 @@ collisionMoveResult collisionMoveSimple(Map *map,
 				nodeboxes.clear();
 			}
 		}
+		}
+		}
 	} // tt2
 
 	assert(cboxes.size() == is_unloaded.size());
@@ -345,31 +346,27 @@ collisionMoveResult collisionMoveSimple(Map *map,
 	assert(cboxes.size() == is_object.size());
 
 	/*
-	Collision detection
+		Collision detection
 	*/
 
 	/*
-	Collision uncertainty radius
-	Make it a bit larger than the maximum distance of movement
+		Collision uncertainty radius
+		Make it a bit larger than the maximum distance of movement
 	*/
 	f32 d = pos_max_d * 1.1;
-	// A fairly large value in here makes moving smoother
-	//f32 d = 0.15*BS;
 
 	// This should always apply, otherwise there are glitches
 	assert(d > pos_max_d);
 
 	int loopcount = 0;
 
-	while(dtime > BS*1e-10)
-	{
+	while (dtime > BS*1e-10) {
 		//TimeTaker tt3("collisionMoveSimple dtime loop");
 			ScopeProfiler sp(g_profiler, "collisionMoveSimple dtime loop avg", SPT_AVG);
 
 		// Avoid infinite loop
 		loopcount++;
-		if(loopcount >= 100)
-		{
+		if (loopcount >= 100) {
 			infostream<<"collisionMoveSimple: WARNING: Loop count exceeded, aborting to avoid infiniite loop"<<std::endl;
 			dtime = 0;
 			break;
@@ -386,18 +383,22 @@ collisionMoveResult collisionMoveSimple(Map *map,
 		/*
 		Go through every nodebox, find nearest collision
 		*/
-		for(u32 boxindex = 0; boxindex < cboxes.size(); boxindex++)
-		{
+		for (u32 boxindex = 0; boxindex < cboxes.size(); boxindex++) {
 			// Ignore if already stepped up this nodebox.
-			if(is_step_up[boxindex])
+			if (is_step_up[boxindex])
 				continue;
 
 			// Find nearest collision of the two boxes (raytracing-like)
 			f32 dtime_tmp;
 			int collided = axisAlignedCollision(
-			cboxes[boxindex], movingbox, speed_f, d, dtime_tmp);
+				cboxes[boxindex],
+				movingbox,
+				speed_f,
+				d,
+				dtime_tmp
+			);
 
-			if(collided == -1 || dtime_tmp >= nearest_dtime)
+			if (collided == -1 || dtime_tmp >= nearest_dtime)
 				continue;
 
 			nearest_dtime = dtime_tmp;
@@ -405,48 +406,41 @@ collisionMoveResult collisionMoveSimple(Map *map,
 			nearest_boxindex = boxindex;
 		}
 
-		if(nearest_collided == -1)
-		{
+		if (nearest_collided == -1) {
 			// No collision with any collision box.
 			pos_f += speed_f * dtime;
 			dtime = 0; // Set to 0 to avoid "infinite" loop due to small FP numbers
-		}
-		else
-		{
+		}else{
 			// Otherwise, a collision occurred.
 
 			const aabb3f& cbox = cboxes[nearest_boxindex];
 
 			// Check for stairs.
 			bool step_up = (nearest_collided != 1) && // must not be Y direction
-			(movingbox.MinEdge.Y < cbox.MaxEdge.Y) &&
-			(movingbox.MinEdge.Y + stepheight > cbox.MaxEdge.Y) &&
-			(!wouldCollideWithCeiling(cboxes, movingbox,
-			cbox.MaxEdge.Y - movingbox.MinEdge.Y,
-			d));
+					(movingbox.MinEdge.Y < cbox.MaxEdge.Y) &&
+					(movingbox.MinEdge.Y + stepheight > cbox.MaxEdge.Y) &&
+					(!wouldCollideWithCeiling(cboxes, movingbox,
+							cbox.MaxEdge.Y - movingbox.MinEdge.Y,
+							d));
 
 			// Move to the point of collision and reduce dtime by nearest_dtime
-			if(nearest_dtime < 0)
-			{
+			if (nearest_dtime < 0) {
 				// Handle negative nearest_dtime (can be caused by the d allowance)
-				if(!step_up)
-				{
-					if(nearest_collided == 0)
+				if (!step_up) {
+					if (nearest_collided == 0)
 						pos_f.X += speed_f.X * nearest_dtime;
-					if(nearest_collided == 1)
+					if (nearest_collided == 1)
 						pos_f.Y += speed_f.Y * nearest_dtime;
-					if(nearest_collided == 2)
+					if (nearest_collided == 2)
 						pos_f.Z += speed_f.Z * nearest_dtime;
 				}
-			}
-			else
-			{
+			}else{
 				pos_f += speed_f * nearest_dtime;
 				dtime -= nearest_dtime;
 			}
 
 			bool is_collision = true;
-			if(is_unloaded[nearest_boxindex])
+			if (is_unloaded[nearest_boxindex])
 				is_collision = false;
 
 			CollisionInfo info;
@@ -454,36 +448,32 @@ collisionMoveResult collisionMoveSimple(Map *map,
 			info.old_speed = speed_f;
 
 			// Set the speed component that caused the collision to zero
-			if(step_up)
-			{
+			if (step_up) {
 				// Special case: Handle stairs
 				is_step_up[nearest_boxindex] = true;
 				is_collision = false;
-			}
-			else if(nearest_collided == 0) // X
-			{
-				speed_f.X = 0;
-				result.collides = true;
-				result.collides_xz = true;
-			}
-			else if(nearest_collided == 1) // Y
-			{
-				speed_f.Y = 0;
-				result.collides = true;
-			}
-			else if(nearest_collided == 2) // Z
-			{
-				speed_f.Z = 0;
-				result.collides = true;
-				result.collides_xz = true;
-			}
+			}else{
+				switch (nearest_collided) {
+				case 0:
+					speed_f.X = 0;
+					result.collides = true;
+					result.collides_xz = true;
+					break;
+				case 1:
+					speed_f.Y = 0;
+					result.collides = true;
+					break;
+				case 2:
+					speed_f.Z = 0;
+					result.collides = true;
+					result.collides_xz = true;
+					break;
+				default:;
+				}
 
-			info.new_speed = speed_f;
-			if(info.new_speed.getDistanceFrom(info.old_speed) < 0.1*BS)
-				is_collision = false;
-
-			if(is_collision){
-				result.collisions.push_back(info);
+				info.new_speed = speed_f;
+				if (is_collision && info.new_speed.getDistanceFrom(info.old_speed) >= 0.1*BS)
+					result.collisions.push_back(info);
 			}
 		}
 	}
@@ -494,36 +484,33 @@ collisionMoveResult collisionMoveSimple(Map *map,
 	aabb3f box = box_0;
 	box.MinEdge += pos_f;
 	box.MaxEdge += pos_f;
-	for(u32 boxindex = 0; boxindex < cboxes.size(); boxindex++)
-	{
+	for (u32 boxindex = 0; boxindex < cboxes.size(); boxindex++) {
 		const aabb3f& cbox = cboxes[boxindex];
 
 		/*
-		See if the object is touching ground.
+			See if the object is touching ground.
 
-		Object touches ground if object's minimum Y is near node's
-		maximum Y and object's X-Z-area overlaps with the node's
-		X-Z-area.
+			Object touches ground if object's minimum Y is near node's
+			maximum Y and object's X-Z-area overlaps with the node's
+			X-Z-area.
 
-		Use 0.15*BS so that it is easier to get on a node.
+			Use 0.15*BS so that it is easier to get on a node.
 		*/
-		if(
-		cbox.MaxEdge.X-d > box.MinEdge.X &&
-		cbox.MinEdge.X+d < box.MaxEdge.X &&
-		cbox.MaxEdge.Z-d > box.MinEdge.Z &&
-		cbox.MinEdge.Z+d < box.MaxEdge.Z
-		){
-			if(is_step_up[boxindex])
-			{
+		if (
+			cbox.MaxEdge.X-d > box.MinEdge.X &&
+			cbox.MinEdge.X+d < box.MaxEdge.X &&
+			cbox.MaxEdge.Z-d > box.MinEdge.Z &&
+			cbox.MinEdge.Z+d < box.MaxEdge.Z
+		) {
+			if (is_step_up[boxindex]) {
 				pos_f.Y += (cbox.MaxEdge.Y - box.MinEdge.Y);
 				box = box_0;
 				box.MinEdge += pos_f;
 				box.MaxEdge += pos_f;
 			}
-			if(fabs(cbox.MaxEdge.Y-box.MinEdge.Y) < 0.15*BS)
-			{
+			if (fabs(cbox.MaxEdge.Y-box.MinEdge.Y) < 0.15*BS) {
 				result.touching_ground = true;
-				if(is_unloaded[boxindex])
+				if (is_unloaded[boxindex])
 					result.standing_on_unloaded = true;
 			}
 		}
