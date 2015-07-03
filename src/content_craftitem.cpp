@@ -1403,6 +1403,7 @@ void content_craftitem_init()
 	f->energy_effect = 10;
 	f->onuse_replace_item = CONTENT_CRAFTITEM_STEEL_BOTTLE;
 	crafting::set1over1Recipe(CONTENT_CRAFTITEM_TEA_LEAVES,CONTENT_CRAFTITEM_STEEL_BOTTLE_WATER,CONTENT_CRAFTITEM_TEA);
+	lists::add("craftguide",i);
 	lists::add("creative",i);
 
 	i = CONTENT_CRAFTITEM_COFFEE_BEANS;
@@ -1435,6 +1436,7 @@ void content_craftitem_init()
 	f->energy_effect = 300;
 	f->onuse_replace_item = CONTENT_CRAFTITEM_STEEL_BOTTLE;
 	crafting::set1over1Recipe(CONTENT_CRAFTITEM_COFFEE_BEANS,CONTENT_CRAFTITEM_STEEL_BOTTLE_WATER,CONTENT_CRAFTITEM_COFFEE);
+	lists::add("craftguide",i);
 	lists::add("creative",i);
 
 	i = CONTENT_CRAFTITEM_STEEL_BOTTLE;
