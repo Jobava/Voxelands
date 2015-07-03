@@ -333,20 +333,6 @@ TileSpec getMetaTile(MapNode mn, v3s16 p, v3s16 face_dir,
 
 			spec.texture = g_texturesource->getTexture(new_id);
 		}
-		if (mod == NODEMOD_SELECTION) {
-			// Get original texture name
-			u32 orig_id = spec.texture.id;
-			std::string orig_name = g_texturesource->getTextureName(orig_id);
-
-			// Create new texture name
-			std::ostringstream os;
-			os<<orig_name<<"^[forcesingle";
-
-			// Get new texture
-			u32 new_id = g_texturesource->getTextureId(os.str());
-
-			spec.texture = g_texturesource->getTexture(new_id);
-		}
 	}
 
 	return spec;
