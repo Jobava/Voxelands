@@ -736,7 +736,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 					"By Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
 					"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, tiemay, Szkodnix,"
 					" soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound, Rui, Wayward_One, loh, Stephane, wario,"
-					" AudioRichter, OwlStorm, DjDust, Taira Komori, hdastwb\n"
+					" AudioRichter, OwlStorm, DjDust, Taira Komori, hdastwb, puma_rc\n"
 					"\n"
 					"Based on Minetest-C55\n"
 					"by Perttu Ahola <celeron55@gmail.com>\n"
