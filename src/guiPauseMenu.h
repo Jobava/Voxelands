@@ -58,6 +58,11 @@ public:
 
 private:
 	IGameCallback *m_gamecallback;
+
+	gui::IGUIEnvironment* env;
+	gui::IGUIElement* parent;
+	s32 id;
+	IMenuManager *menumgr;
 };
 
 #endif

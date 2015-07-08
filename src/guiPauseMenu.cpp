@@ -24,6 +24,7 @@
 ************************************************************************/
 
 #include "guiPauseMenu.h"
+#include "guiSettingsMenu.h"
 #include "debug.h"
 #include "serialization.h"
 #include "porting.h"
@@ -45,6 +46,10 @@ GUIPauseMenu::GUIPauseMenu(gui::IGUIEnvironment* env,
 	GUIModalMenu(env, parent, id, menumgr)
 {
 	m_gamecallback = gamecallback;
+	this->env = env;
+	this->parent = parent;
+	this->id = id;
+	this->menumgr = menumgr;
 }
 
 GUIPauseMenu::~GUIPauseMenu()
@@ -147,13 +152,13 @@ void GUIPauseMenu::regenerateGui(v2u32 screensize)
 	{
 		core::rect<s32> rect(0, 0, 180, btn_height);
 		rect = rect + v2s32(size.X/2-180/2, btn_y);
-		Environment->addButton(rect, this, 260, wgettext("Disconnect"));
+		Environment->addButton(rect, this, 265, wgettext("Settings"));
 	}
 	btn_y += btn_height + btn_gap;
 	{
 		core::rect<s32> rect(0, 0, 180, btn_height);
 		rect = rect + v2s32(size.X/2-180/2, btn_y);
-		Environment->addButton(rect, this, 257, wgettext("Exit to OS"));
+		Environment->addButton(rect, this, 260, wgettext("Disconnect"));
 	}
 }
 
@@ -214,12 +219,14 @@ bool GUIPauseMenu::OnEvent(const SEvent& event)
 				quitMenu();
 				m_gamecallback->changePassword();
 				return true;
+			case 265: // settings
+			{
+				GUISettingsMenu *smenu = new GUISettingsMenu(env, parent, -1,menumgr);
+				smenu->drop();
+				return true;
+			}
 			case 260: // disconnect
 				m_gamecallback->disconnect();
-				quitMenu();
-				return true;
-			case 257: // exit
-				m_gamecallback->exitToOS();
 				quitMenu();
 				return true;
 			}
