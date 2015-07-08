@@ -38,20 +38,26 @@
 
 enum
 {
-	GUI_ID_BACK_BUTTON = 101, GUI_ID_ABORT_BUTTON, GUI_ID_SCROLL_BAR,
-	//buttons
+	GUI_ID_BACK_BUTTON = 101,
+	GUI_ID_ABORT_BUTTON,
+	GUI_ID_SCROLL_BAR, // wtf?
+	// graphics
 	GUI_ID_FANCYTREE_CB,
 	GUI_ID_SMOOTH_LIGHTING_CB,
 	GUI_ID_3D_CLOUDS_CB,
 	GUI_ID_OPAQUE_WATER_CB,
+	GUI_ID_HOTBAR_CB,
+	GUI_ID_WIELDINDEX_CB,
+	// video
 	GUI_ID_MIPMAP_CB,
 	GUI_ID_BILINEAR_CB,
 	GUI_ID_TRILINEAR_CB,
 	GUI_ID_ANISOTROPIC_CB,
 	GUI_ID_PARTICLES_CB,
 	GUI_ID_FULLSCREEN_CB,
-	GUI_ID_HOTBAR_CB,
+	// sound
 	GUI_ID_VOLUME_SB,
+	// tabs
 	GUI_ID_TAB_MAINMENU,
 	GUI_ID_TAB_SETTINGS_CONTROLS,
 	GUI_ID_TAB_SETTINGS_GRAPHICS,
@@ -77,6 +83,7 @@ struct SettingsMenuData
 		fancy_trees(false),
 		smooth_lighting(false),
 		hotbar(false),
+		wield_index(false),
 		volume(0.0f),
 		particles(true),
 		fullscreen(false)
@@ -96,6 +103,7 @@ struct SettingsMenuData
 	bool bilinear_filter;
 	bool trilinear_filter;
 	bool hotbar;
+	bool wield_index;
 	f32 volume;
 	//int enable_shaders;
 	bool particles;

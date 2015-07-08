@@ -62,6 +62,7 @@ GUISettingsMenu::GUISettingsMenu(
 	m_data.bilinear_filter = g_settings->getBool("bilinear_filter");
 	m_data.trilinear_filter = g_settings->getBool("trilinear_filter");
 	m_data.hotbar = g_settings->getBool("old_hotbar");
+	m_data.wield_index = g_settings->getBool("enable_wieldindex");
 	m_data.volume = g_settings->getFloat("sound_volume");
 
 	keynames[VLKC_FORWARD] = wgettext("Forward");
@@ -123,6 +124,7 @@ void GUISettingsMenu::save()
 	g_settings->set("enable_3d_clouds", itos(m_data.clouds_3d));
 	g_settings->set("opaque_water", itos(m_data.opaque_water));
 	g_settings->set("old_hotbar", itos(m_data.hotbar));
+	g_settings->set("enable_wieldindex", itos(m_data.wield_index));
 	// video
 	g_settings->set("mip_map", itos(m_data.mip_map));
 	g_settings->set("anisotropic_filter", itos(m_data.anisotropic_filter));
@@ -148,6 +150,7 @@ void GUISettingsMenu::regenerateGui(v2u32 screensize)
 	bool trilinear;
 	bool anisotropic;
 	bool hotbar;
+	bool wield_index;
 	f32 volume;
 
 	m_screensize = screensize;
@@ -228,6 +231,13 @@ void GUISettingsMenu::regenerateGui(v2u32 screensize)
 			hotbar = ((gui::IGUICheckBox*)e)->isChecked();
 		else
 			hotbar = m_data.hotbar;
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_WIELDINDEX_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			wield_index = ((gui::IGUICheckBox*)e)->isChecked();
+		else
+			wield_index = m_data.wield_index;
 	}
 	{
 		gui::IGUIElement *e = getElementFromId(GUI_ID_VOLUME_SB);
@@ -353,6 +363,12 @@ void GUISettingsMenu::regenerateGui(v2u32 screensize)
 			core::rect<s32> rect(0, 0, 200, 30);
 			rect += topleft_content + v2s32(290, 60);
 			Environment->addCheckBox(hotbar, rect, this, GUI_ID_HOTBAR_CB, wgettext("Classic HUD"));
+		}
+		{
+			core::rect<s32> rect(0, 0, 200, 30);
+			rect += topleft_content + v2s32(290, 90);
+			gui::IGUICheckBox *c = Environment->addCheckBox(wield_index, rect, this, GUI_ID_WIELDINDEX_CB, wgettext("Wieldring Index"));
+			c->setEnabled(!hotbar);
 		}
 	}else if (m_data.selected_tab == TAB_SETTINGS_VIDEO) {
 		{
@@ -509,6 +525,11 @@ bool GUISettingsMenu::acceptInput()
 			m_data.hotbar = ((gui::IGUICheckBox*)e)->isChecked();
 	}
 	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_WIELDINDEX_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			m_data.wield_index = ((gui::IGUICheckBox*)e)->isChecked();
+	}
+	{
 		gui::IGUIElement *e = getElementFromId(GUI_ID_VOLUME_SB);
 		if(e != NULL && e->getType() == gui::EGUIET_SCROLL_BAR)
 			m_data.volume = (float)((gui::IGUIScrollBar*)e)->getPos();
@@ -556,6 +577,11 @@ bool GUISettingsMenu::OnEvent(const SEvent& event)
 				// Returning true disables focus change
 				return true;
 			}
+		}
+		if (event.GUIEvent.EventType==gui::EGET_CHECKBOX_CHANGED) {
+			acceptInput();
+			m_accepted = false;
+			regenerateGui(m_screensize);
 		}
 		if (event.GUIEvent.EventType == gui::EGET_BUTTON_CLICKED) {
 			s32 id = event.GUIEvent.Caller->getID();
