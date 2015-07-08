@@ -515,16 +515,14 @@ void hud_draw(
 			InventoryItem *item = mainlist->getItem(i);
 
 			core::rect<s32> rect = base_rect + pos[p];
-			video::ITexture *texture = NULL;
 
-			if (item == NULL)
-				continue;
+			if (item != NULL) {
+				video::ITexture *texture = item->getImageRaw();
+				if (texture == NULL)
+					texture = item->getImage();
+				draw_image(driver,texture,color,rect,NULL,NULL);
+			}
 
-			texture = item->getImageRaw();
-			if (texture == NULL)
-				texture = item->getImage();
-
-			draw_image(driver,texture,color,rect,NULL,NULL);
 			if (show_index) {
 				std::wstring txt = itows(i+1);
 				v2u32 dim = font->getDimension(txt.c_str());
