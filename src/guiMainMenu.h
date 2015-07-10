@@ -54,6 +54,7 @@ enum {
 	GUI_ID_DROPPABLE_INV_CB,
 	GUI_ID_DAMAGE_CB,
 	GUI_ID_TOOL_WEAR_CB,
+	GUI_ID_FIRE_CB,
 	GUI_ID_SUFFOCATE_CB,
 	GUI_ID_HUNGER_CB,
 	GUI_ID_JOIN_GAME_BUTTON,
@@ -104,6 +105,7 @@ struct MainMenuData
 		suffocation(false),
 		hunger(false),
 		tool_wear(true),
+		unsafe_fire(false),
 		// Actions
 		delete_map(false),
 		clear_map(false),
@@ -132,6 +134,7 @@ struct MainMenuData
 	bool suffocation;
 	bool hunger;
 	bool tool_wear;
+	bool unsafe_fire;
 	// Map options
 	bool delete_map;
 	bool clear_map;

@@ -99,6 +99,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	bool suffocation;
 	bool hunger;
 	bool tool_wear;
+	bool unsafe_fire;
 
 	bool delete_map;
 	bool clear_map;
@@ -235,6 +236,13 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			tool_wear = ((gui::IGUICheckBox*)e)->isChecked();
 		else
 			tool_wear = m_data->tool_wear;
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_FIRE_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			unsafe_fire = ((gui::IGUICheckBox*)e)->isChecked();
+		else
+			unsafe_fire = m_data->unsafe_fire;
 	}
 
 	// Map options
@@ -585,6 +593,11 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			core::rect<s32> rect(0, 0, 200, 30);
 			rect += topleft_content + v2s32(300, 260);
 			Environment->addCheckBox(droppable_inventory, rect, this, GUI_ID_DROPPABLE_INV_CB, wgettext("Droppable Inventory"));
+		}
+		{
+			core::rect<s32> rect(0, 0, 200, 30);
+			rect += topleft_content + v2s32(300, 290);
+			Environment->addCheckBox(unsafe_fire, rect, this, GUI_ID_FIRE_CB, wgettext("Dangerous Fire"));
 		}
 		// Start game button
 		{
@@ -980,6 +993,11 @@ void GUIMainMenu::acceptInput()
 			if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
 				m_data->tool_wear = ((gui::IGUICheckBox*)e)->isChecked();
 		}
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_FIRE_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			m_data->unsafe_fire = ((gui::IGUICheckBox*)e)->isChecked();
 	}
 	{
 		gui::IGUIElement *e = getElementFromId(GUI_ID_MAP_DELETE_CB);

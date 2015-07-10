@@ -156,6 +156,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("enable_experimental", "false");
 	settings->setDefault("enable_lavabuckets", "true");
 	settings->setDefault("enable_tnt", "true");
+	settings->setDefault("unsafe_fire", "false");
 
 	settings->setDefault("api_server", "api.voxelands.com");
 #ifdef SERVER

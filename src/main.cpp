@@ -1227,6 +1227,7 @@ int main(int argc, char *argv[])
 				menudata.suffocation = g_settings->getBool("enable_suffocation");
 				menudata.hunger = g_settings->getBool("enable_hunger");
 				menudata.tool_wear = g_settings->getBool("tool_wear");
+				menudata.unsafe_fire = g_settings->getBool("unsafe_fire");
 				menudata.delete_map = false;
 				menudata.clear_map = false;
 				menudata.use_fixed_seed = false;
@@ -1339,6 +1340,7 @@ int main(int argc, char *argv[])
 				g_settings->set("enable_suffocation", itos(menudata.suffocation));
 				g_settings->set("enable_hunger", itos(menudata.hunger));
 				g_settings->set("tool_wear", itos(menudata.tool_wear));
+				g_settings->set("unsafe_fire", itos(menudata.unsafe_fire));
 
 				// Save settings
 				g_settings->set("name", playername);

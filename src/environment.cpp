@@ -839,6 +839,7 @@ void ServerEnvironment::step(float dtime)
 		bool can_daylight = false;
 		if (getTimeOfDay() >= 10000 && getTimeOfDay() < 14000)
 			can_daylight = true;
+		bool unsafe_fire = g_settings->getBool("unsafe_fire");
 		for (std::set<v3s16>::iterator i = m_active_blocks.m_list.begin(); i != m_active_blocks.m_list.end(); i++) {
 			v3s16 bp = *i;
 
@@ -1523,7 +1524,72 @@ void ServerEnvironment::step(float dtime)
 				// fire that goes out
 				case CONTENT_FIRE_SHORTTERM:
 				{
-					if (n.envticks > 2) {
+					if (unsafe_fire) {
+						if (n.envticks > 2) {
+							s16 bs_rad = g_settings->getS16("borderstone_radius");
+							bs_rad += 2;
+							// if any node is border stone protected, don't spread
+							if (!searchNear(p,v3s16(bs_rad,bs_rad,bs_rad),CONTENT_BORDERSTONE,NULL)) {
+								for(s16 x=-1; x<=1; x++)
+								for(s16 y=-1; y<=1; y++)
+								for(s16 z=-1; z<=1; z++)
+								{
+									MapNode n_test = m_map->getNodeNoEx(p+v3s16(x,y,z));
+									if (n_test.getContent() == CONTENT_FIRE || n_test.getContent() == CONTENT_FIRE_SHORTTERM)
+										continue;
+									if (content_features(n_test).flammable > 0) {
+										content_t c = n_test.getContent();
+										if (
+											c >= CONTENT_DOOR_MIN
+											&& c <= CONTENT_DOOR_MAX
+											&& (c&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK
+										) {
+											MapNode n_sect;
+											n_sect.setContent(CONTENT_FIRE_SHORTTERM);
+											if ((c&CONTENT_DOOR_SECT_MASK) == CONTENT_DOOR_SECT_MASK) {
+												m_map->addNodeWithEvent(p+v3s16(x,y-1,z), n_sect);
+											}else{
+												m_map->addNodeWithEvent(p+v3s16(x,y+1,z), n_sect);
+											}
+										}else if (
+											n_test.getContent() >= CONTENT_BED_MIN
+											&& n_test.getContent() <= CONTENT_BED_MAX
+										) {
+											v3s16 p_foot = v3s16(0,0,0);
+											u8 d = n_test.param2&0x0F;
+											switch (d) {
+											case 1:
+												p_foot.X = 1;
+												break;
+											case 2:
+												p_foot.Z = -1;
+												break;
+											case 3:
+												p_foot.X = -1;
+												break;
+											default:
+												p_foot.Z = 1;
+												break;
+											}
+											if ((n_test.getContent()&CONTENT_BED_FOOT_MASK) == 0)
+												p_foot *= -1;
+											n_test.setContent(CONTENT_FIRE_SHORTTERM);
+											m_map->addNodeWithEvent(p+v3s16(x,y,z)+p_foot, n_test);
+										}
+										n_test.setContent(CONTENT_FIRE_SHORTTERM);
+										m_map->addNodeWithEvent(p+v3s16(x,y,z), n_test);
+									}
+								}
+							}
+						}
+						if (n.envticks > 10) {
+							m_map->removeNodeWithEvent(p);
+							v3f ash_pos = intToFloat(p, BS);
+							ash_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
+							ServerActiveObject *obj = new ItemSAO(this, 0, ash_pos, "CraftItem lump_of_ash 1");
+							addActiveObject(obj);
+						}
+					}else if (n.envticks > 2) {
 						m_map->removeNodeWithEvent(p);
 						v3f ash_pos = intToFloat(p, BS);
 						ash_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
