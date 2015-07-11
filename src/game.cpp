@@ -1603,6 +1603,10 @@ void the_game(
 				/* Clear possible cracking animation */
 				if (nodepos_old != v3s16(-32768,-32768,-32768)) {
 					client.clearTempMod(nodepos_old);
+					MapNode nn = client.getNode(nodepos_old);
+					v3s16 aa = content_features(nn).onact_also_affects;
+					if (aa != v3s16(0,0,0))
+						client.clearTempMod(nodepos_old+nn.getEffectedRotation());
 					dig_time = 0.0;
 					nodepos_old = v3s16(-32768,-32768,-32768);
 				}
@@ -1666,6 +1670,10 @@ void the_game(
 				if (!nodefound) {
 					if (nodepos_old != v3s16(-32768,-32768,-32768)) {
 						client.clearTempMod(nodepos_old);
+						MapNode nn = client.getNode(nodepos_old);
+						v3s16 aa = content_features(nn).onact_also_affects;
+						if (aa != v3s16(0,0,0))
+							client.clearTempMod(nodepos_old+nn.getEffectedRotation());
 						dig_time = 0.0;
 						nodepos_old = v3s16(-32768,-32768,-32768);
 					}
@@ -1678,8 +1686,13 @@ void the_game(
 						Check information text of node
 					*/
 
-					if (nodepos != nodepos_old && nodepos_old != v3s16(-32768,-32768,-32768))
+					if (nodepos != nodepos_old && nodepos_old != v3s16(-32768,-32768,-32768)) {
 						client.clearTempMod(nodepos_old);
+						MapNode nn = client.getNode(nodepos_old);
+						v3s16 aa = content_features(nn).onact_also_affects;
+						if (aa != v3s16(0,0,0))
+							client.clearTempMod(nodepos_old+nn.getEffectedRotation());
+					}
 					NodeMetadata *meta = client.getNodeMetadata(nodepos);
 					if (meta)
 						infotext = meta->infoText();
@@ -1690,6 +1703,10 @@ void the_game(
 
 					if (input->getLeftReleased()) {
 						client.clearTempMod(nodepos);
+						MapNode nn = client.getNode(nodepos);
+						v3s16 aa = content_features(nn).onact_also_affects;
+						if (aa != v3s16(0,0,0))
+							client.clearTempMod(nodepos+nn.getEffectedRotation());
 						dig_time = 0.0;
 					}
 					/*
@@ -1698,6 +1715,10 @@ void the_game(
 
 					if (highlight_selected_node) {
 						client.setTempMod(nodepos, NodeMod(NODEMOD_SELECTION));
+						MapNode nn = client.getNode(nodepos);
+						v3s16 aa = content_features(nn).onact_also_affects;
+						if (aa != v3s16(0,0,0))
+							client.setTempMod(nodepos+nn.getEffectedRotation(),NodeMod(NODEMOD_SELECTION));
 					}else{
 						hilightboxes.push_back(nodehilightbox);
 					}
@@ -1711,6 +1732,10 @@ void the_game(
 
 							if (nodepos_old != v3s16(-32768,-32768,-32768)) {
 								client.clearTempMod(nodepos_old);
+								MapNode nn = client.getNode(nodepos_old);
+								v3s16 aa = content_features(nn).onact_also_affects;
+								if (aa != v3s16(0,0,0))
+									client.clearTempMod(nodepos_old+nn.getEffectedRotation());
 								dig_time = 0.0;
 								nodepos_old = v3s16(-32768,-32768,-32768);
 							}
@@ -1745,6 +1770,10 @@ void the_game(
 							if (prop.diggable == false) {
 								dig_time_complete = 10000000.0;
 								client.clearTempMod(nodepos);
+								MapNode nn = client.getNode(nodepos);
+								v3s16 aa = content_features(nn).onact_also_affects;
+								if (aa != v3s16(0,0,0))
+									client.clearTempMod(nodepos+nn.getEffectedRotation());
 							}else{
 								dig_time_complete = prop.time;
 								if (enable_particles)
@@ -1765,6 +1794,12 @@ void the_game(
 									client.groundAction(3, nodepos, neighbourpos, g_selected_item);
 									client.clearTempMod(nodepos);
 									client.removeNode(nodepos);
+									{
+										MapNode nn = client.getNode(nodepos);
+										v3s16 aa = content_features(nn).onact_also_affects;
+										if (aa != v3s16(0,0,0))
+											client.clearTempMod(nodepos+nn.getEffectedRotation());
+									}
 
 									if (enable_particles)
 										addDiggingParticles(smgr, player, nodepos, content_features(n).tiles);

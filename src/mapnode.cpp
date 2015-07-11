@@ -387,7 +387,7 @@ v3s16 MapNode::getEffectedRotation()
 {
 	u8 facedir = 0;
 	ContentFeatures *f = &content_features(getContent());
-	if (f->ondig_also_removes == v3s16(0,0,0))
+	if (f->onact_also_affects == v3s16(0,0,0))
 		return v3s16(0,0,0);
 
 	if (
@@ -404,21 +404,21 @@ v3s16 MapNode::getEffectedRotation()
 
 	switch (facedir) {
 	case 0: // Same
-		return v3s16(-f->ondig_also_removes.X, f->ondig_also_removes.Y, -f->ondig_also_removes.Z);
+		return v3s16(-f->onact_also_affects.X, f->onact_also_affects.Y, -f->onact_also_affects.Z);
 		break;
 	case 1: // Face is taken from rotXZccv(-90)
-		return v3s16(-f->ondig_also_removes.Z, f->ondig_also_removes.Y, f->ondig_also_removes.X);
+		return v3s16(-f->onact_also_affects.Z, f->onact_also_affects.Y, f->onact_also_affects.X);
 		break;
 	case 2: // Face is taken from rotXZccv(180)
-		return v3s16(f->ondig_also_removes.X, f->ondig_also_removes.Y, f->ondig_also_removes.Z);
+		return v3s16(f->onact_also_affects.X, f->onact_also_affects.Y, f->onact_also_affects.Z);
 		break;
 	case 3: // Face is taken from rotXZccv(90)
-		return v3s16(f->ondig_also_removes.Z, f->ondig_also_removes.Y, -f->ondig_also_removes.X);
+		return v3s16(f->onact_also_affects.Z, f->onact_also_affects.Y, -f->onact_also_affects.X);
 		break;
 	default:;
 	}
 
-	return f->ondig_also_removes;
+	return f->onact_also_affects;
 }
 
 #ifndef SERVER

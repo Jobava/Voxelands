@@ -401,9 +401,14 @@ struct ContentFeatures
 
 	// if the item is wielded and Use is pressed, the node is swapped with this
 	content_t onuse_replace_node;
-
-	// when dug, also remove this
-	v3s16 ondig_also_removes;
+	// when dug/punched also affects this
+	v3s16 onact_also_affects;
+	// when dug, the node's inventory is given to the player
+	bool ondig_gives_inventory;
+	// if the inventory contents won't all fit in the player's
+	// if true then node remains undug, player gets nothing
+	// if false then player gets as much as possible, rest stays in undug node
+	bool ondig_gives_inventory_all_or_none;
 
 	// when energised, replace with this node
 	content_t powered_node;
@@ -441,6 +446,8 @@ struct ContentFeatures
 	std::string sound_dig;
 	// Sound played when the node is placed
 	std::string sound_place;
+	// Sound played when the node is punched
+	std::string sound_punch;
 	// Sound played by the node always
 	std::string sound_ambient;
 
@@ -540,7 +547,9 @@ struct ContentFeatures
 		special_alternate_node = CONTENT_IGNORE;
 		alternate_lockstate_node = CONTENT_IGNORE;
 		onuse_replace_node = CONTENT_IGNORE;
-		ondig_also_removes = v3s16(0,0,0);
+		onact_also_affects = v3s16(0,0,0);
+		ondig_gives_inventory = false;
+		ondig_gives_inventory_all_or_none = false;
 		powered_node = CONTENT_IGNORE;
 		unpowered_node = CONTENT_IGNORE;
 		cook_result = "";
@@ -557,6 +566,7 @@ struct ContentFeatures
 		sound_step = "";
 		sound_dig = "";
 		sound_place = "";
+		sound_punch = "";
 		sound_ambient = "";
 		liquid_alternative_flowing = CONTENT_IGNORE;
 		liquid_alternative_source = CONTENT_IGNORE;

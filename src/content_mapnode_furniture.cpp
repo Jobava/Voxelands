@@ -1153,7 +1153,7 @@ void content_mapnode_furniture(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->ondig_also_removes = v3s16(0,0,1);
+	f->onact_also_affects = v3s16(0,0,1);
 	content_nodebox_bed_head(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
@@ -1184,7 +1184,7 @@ void content_mapnode_furniture(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_HEAD)+" 1";
-	f->ondig_also_removes = v3s16(0,0,-1);
+	f->onact_also_affects = v3s16(0,0,-1);
 	content_nodebox_bed_foot(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
@@ -1212,7 +1212,7 @@ void content_mapnode_furniture(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->ondig_also_removes = v3s16(0,0,1);
+	f->onact_also_affects = v3s16(0,0,1);
 	content_nodebox_bed_head(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
@@ -1243,7 +1243,7 @@ void content_mapnode_furniture(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_BLUE_HEAD)+" 1";
-	f->ondig_also_removes = v3s16(0,0,-1);
+	f->onact_also_affects = v3s16(0,0,-1);
 	content_nodebox_bed_foot(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
@@ -1271,7 +1271,7 @@ void content_mapnode_furniture(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->ondig_also_removes = v3s16(0,0,1);
+	f->onact_also_affects = v3s16(0,0,1);
 	content_nodebox_bed_head(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
@@ -1302,7 +1302,7 @@ void content_mapnode_furniture(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_GREEN_HEAD)+" 1";
-	f->ondig_also_removes = v3s16(0,0,-1);
+	f->onact_also_affects = v3s16(0,0,-1);
 	content_nodebox_bed_foot(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
@@ -1330,7 +1330,7 @@ void content_mapnode_furniture(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->ondig_also_removes = v3s16(0,0,1);
+	f->onact_also_affects = v3s16(0,0,1);
 	content_nodebox_bed_head(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
@@ -1361,7 +1361,7 @@ void content_mapnode_furniture(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_ORANGE_HEAD)+" 1";
-	f->ondig_also_removes = v3s16(0,0,-1);
+	f->onact_also_affects = v3s16(0,0,-1);
 	content_nodebox_bed_foot(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
@@ -1389,7 +1389,7 @@ void content_mapnode_furniture(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->ondig_also_removes = v3s16(0,0,1);
+	f->onact_also_affects = v3s16(0,0,1);
 	content_nodebox_bed_head(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
@@ -1420,7 +1420,7 @@ void content_mapnode_furniture(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_PURPLE_HEAD)+" 1";
-	f->ondig_also_removes = v3s16(0,0,-1);
+	f->onact_also_affects = v3s16(0,0,-1);
 	content_nodebox_bed_foot(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
@@ -1448,7 +1448,7 @@ void content_mapnode_furniture(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->ondig_also_removes = v3s16(0,0,1);
+	f->onact_also_affects = v3s16(0,0,1);
 	content_nodebox_bed_head(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
@@ -1479,7 +1479,7 @@ void content_mapnode_furniture(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_RED_HEAD)+" 1";
-	f->ondig_also_removes = v3s16(0,0,-1);
+	f->onact_also_affects = v3s16(0,0,-1);
 	content_nodebox_bed_foot(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
@@ -1507,7 +1507,7 @@ void content_mapnode_furniture(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->ondig_also_removes = v3s16(0,0,1);
+	f->onact_also_affects = v3s16(0,0,1);
 	content_nodebox_bed_head(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
@@ -1538,7 +1538,7 @@ void content_mapnode_furniture(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_YELLOW_HEAD)+" 1";
-	f->ondig_also_removes = v3s16(0,0,-1);
+	f->onact_also_affects = v3s16(0,0,-1);
 	content_nodebox_bed_foot(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
@@ -1566,7 +1566,7 @@ void content_mapnode_furniture(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->ondig_also_removes = v3s16(0,0,1);
+	f->onact_also_affects = v3s16(0,0,1);
 	content_nodebox_bed_head(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;
@@ -1597,7 +1597,7 @@ void content_mapnode_furniture(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/32;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_BLACK_HEAD)+" 1";
-	f->ondig_also_removes = v3s16(0,0,-1);
+	f->onact_also_affects = v3s16(0,0,-1);
 	content_nodebox_bed_foot(f);
 	f->type = CMT_WOOD;
 	f->hardness = 0.25;

@@ -2670,100 +2670,6 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					client->SetBlocksNotSent(modified_blocks);
 					client->SetBlockNotSent(blockpos);
 				}
-			}else if (selected_content >= CONTENT_DOOR_MIN && selected_content <= CONTENT_DOOR_MAX && !wielded_tool_features.has_rotate_effect) {
-				v3s16 mp(0,1,0);
-				if ((selected_content&CONTENT_DOOR_SECT_MASK) == CONTENT_DOOR_SECT_MASK)
-					mp.Y = -1;
-
-				MapNode m = m_env.getMap().getNodeNoEx(p_under+mp);
-				core::list<u16> far_players;
-				core::map<v3s16, MapBlock*> modified_blocks;
-				std::string env_sound = "env-doorclose";
-				if ((selected_content&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK) {
-					if (m.getContent() < CONTENT_DOOR_MIN || m.getContent() > CONTENT_DOOR_MAX) {
-						sendRemoveNode(p_under, 0, &far_players, 30);
-						{
-							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-							m_env.getMap().removeNodeAndUpdate(p_under, modified_blocks);
-						}
-						/*
-							Set blocks not sent to far players
-						*/
-						for(core::list<u16>::Iterator i = far_players.begin(); i != far_players.end(); i++) {
-							u16 peer_id = *i;
-							RemoteClient *client = getClient(peer_id);
-							if(client==NULL)
-								continue;
-							client->SetBlocksNotSent(modified_blocks);
-						}
-						return;
-					}else{
-						if ((selected_content&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
-							env_sound = "env-doorclose";
-							selected_node.setContent(selected_content&~CONTENT_DOOR_OPEN_MASK);
-							m.setContent(m.getContent()&~CONTENT_DOOR_OPEN_MASK);
-						}else{
-							selected_node.setContent(selected_content|CONTENT_DOOR_OPEN_MASK);
-							m.setContent(m.getContent()|CONTENT_DOOR_OPEN_MASK);
-						}
-						sendAddNode(p_under+mp, m, 0, &far_players, 30);
-						sendAddNode(p_under, selected_node, 0, &far_players, 30);
-						if ((selected_content&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
-							{
-								NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
-								if (meta && !meta->getEnergy())
-									meta->energise(ENERGY_MAX,p_under,p_under,p_under);
-							}
-							{
-								NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under+mp);
-								if (meta && !meta->getEnergy())
-									meta->energise(ENERGY_MAX,p_under+mp,p_under+mp,p_under+mp);
-							}
-						}
-					}
-				}else{
-					if ((selected_content&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
-						env_sound = "env-doorclose";
-						selected_node.setContent(selected_content&~CONTENT_DOOR_OPEN_MASK);
-					}else{
-						selected_node.setContent(selected_content|CONTENT_DOOR_OPEN_MASK);
-					}
-					sendAddNode(p_under, selected_node, 0, &far_players, 30);
-					if ((selected_content&CONTENT_DOOR_OPEN_MASK) == CONTENT_DOOR_OPEN_MASK) {
-						NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
-						if (meta && !meta->getEnergy())
-							meta->energise(ENERGY_MAX,p_under,p_under,p_under);
-					}
-				}
-				// so the player hears the door open/close
-				SendEnvEvent(ENV_EVENT_SOUND,intToFloat(p_under,BS),env_sound,NULL);
-
-				/*
-					Add node.
-
-					This takes some time so it is done after the quick stuff
-				*/
-				{
-					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
-
-					std::string p_name = std::string(player->getName());
-					m_env.getMap().addNodeAndUpdate(p_under, selected_node, modified_blocks, p_name);
-					if ((selected_content&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK)
-						m_env.getMap().addNodeAndUpdate(p_under+mp, m, modified_blocks, p_name);
-				}
-				/*
-					Set blocks not sent to far players
-				*/
-				for(core::list<u16>::Iterator
-						i = far_players.begin();
-						i != far_players.end(); i++)
-				{
-					u16 peer_id = *i;
-					RemoteClient *client = getClient(peer_id);
-					if(client==NULL)
-						continue;
-					client->SetBlocksNotSent(modified_blocks);
-				}
 			}else if (
 				selected_node_features.onpunch_replace_node != CONTENT_IGNORE
 				&& !wielded_tool_features.has_rotate_effect
@@ -2782,6 +2688,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 				selected_node.setContent(selected_node_features.onpunch_replace_node);
 				sendAddNode(p_under, selected_node, 0, &far_players, 30);
+				if (selected_node_features.sound_punch != "")
+					SendEnvEvent(ENV_EVENT_SOUND,intToFloat(p_under,BS),selected_node_features.sound_punch,NULL);
 				{
 					MapEditEventIgnorer ign(&m_ignore_map_edit_events);
 
@@ -2797,6 +2705,37 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					}
 
 					delete ometa;
+				}
+
+				if (selected_node_features.onact_also_affects != v3s16(0,0,0)) {
+					v3s16 pa = p_under+selected_node.getEffectedRotation();
+					MapNode a_node = m_env.getMap().getNodeNoEx(pa);
+					ometa = NULL;
+					meta = m_env.getMap().getNodeMetadata(pa);
+					if (meta) {
+						ometa = meta->clone();
+						owner = meta->getOwner();
+					}
+					m_env.getMap().removeNodeMetadata(pa);
+
+					a_node.setContent(content_features(a_node.getContent()).onpunch_replace_node);
+					sendAddNode(pa, a_node, 0, &far_players, 30);
+					{
+						MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+
+						std::string p_name = std::string(player->getName());
+						m_env.getMap().addNodeAndUpdate(pa, a_node, modified_blocks, p_name);
+					}
+
+					if (ometa) {
+						meta = m_env.getMap().getNodeMetadata(pa);
+						if (meta) {
+							meta->import(ometa);
+							meta->setOwner(owner);
+						}
+
+						delete ometa;
+					}
 				}
 
 				v3s16 blockpos = getNodeBlockPos(p_under);
@@ -3279,7 +3218,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					<<", gets material "<<(int)selected_content<<", mineral "
 					<<(int)mineral<<std::endl;
 
-			if (selected_node_features.ondig_also_removes != v3s16(0,0,0)) {
+			if (selected_node_features.onact_also_affects != v3s16(0,0,0)) {
 				v3s16 p_other = selected_node.getEffectedRotation();
 				v3s16 p_also = p_under + p_other;
 				sendRemoveNode(p_also, 0, &far_players, 30);
