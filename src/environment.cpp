@@ -2447,11 +2447,10 @@ void ServerEnvironment::step(float dtime)
 				}
 			}
 
-			for(std::map<v3s16,MapNode>::iterator i = m_delayed_node_changes.begin(); i != m_delayed_node_changes.end(); i++)
-			{
-				m_map->addNodeWithEvent(i->first, i->second);
-				m_delayed_node_changes.erase(i);
+			for (std::map<v3s16,MapNode>::iterator it = m_delayed_node_changes.begin(); it != m_delayed_node_changes.end(); it++) {
+				m_map->addNodeWithEvent(it->first, it->second);
 			}
+			m_delayed_node_changes.clear();
 		}
 	}
 
