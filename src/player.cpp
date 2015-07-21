@@ -1100,7 +1100,7 @@ void LocalPlayer::applyControl(float dtime)
 	}else if (m_energy < -0.1) {
 		m_can_use_energy = false;
 		m_energy = -0.1;
-		if (g_sound) {
+		if (g_sound && m_low_energy_effect == 0) {
 			if (m_character == "")
 				m_character = std::string(PLAYER_DEFAULT_CHARDEF);
 			Strfnd f(m_character);
