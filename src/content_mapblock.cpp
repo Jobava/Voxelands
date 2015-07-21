@@ -1416,6 +1416,38 @@ void meshgen_plantlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	if (data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0,-1,0)).getContent() == CONTENT_FLOWER_POT)
 		offset = v3f(0,-0.25*BS,0);
 
+	v3f pos_inner(0,0,0);
+	{
+		ContentFeatures *unf = f;
+		content_t unc = n.getContent();
+		v3s16 up = p;
+		while (unf->draw_type == f->draw_type) {
+			up.Y--;
+			unc = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + up).getContent();
+			unf = &content_features(unc);
+		}
+
+		if (unf->draw_type == CDT_CUBELIKE && unc != CONTENT_FARM_DIRT) {
+			if (up.X%2) {
+				pos_inner.Z = -0.1*BS;
+			}else{
+				pos_inner.Z = 0.1*BS;
+			}
+			if (up.Z%2) {
+				pos_inner.X = -0.1*BS;
+			}else{
+				pos_inner.X = 0.1*BS;
+			}
+			if (up.Y%2) {
+				pos_inner.X += 0.05*BS;
+				pos_inner.Z -= 0.05*BS;
+			}else{
+				pos_inner.X -= 0.05*BS;
+				pos_inner.Z += 0.05*BS;
+			}
+		}
+	}
+
 	f32 v = tile.texture.y0();
 	f32 h = 0.5;
 	bool is_scaled = false;
@@ -1460,7 +1492,7 @@ void meshgen_plantlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		}
 	}
 
-	v3f pos = offset+intToFloat(p,BS);
+	v3f pos = offset+intToFloat(p,BS)+pos_inner;
 
 	for (u32 j=0; j<2; j++) {
 		video::S3DVertex vertices[4] = {
