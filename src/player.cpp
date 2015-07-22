@@ -1074,7 +1074,7 @@ void LocalPlayer::applyControl(float dtime)
 		if (control.free) {
 			speed = speed.normalize() * walkspeed_max * 6.0;
 		}else{
-			speed = speed.normalize() * walkspeed_max * 3.0;
+			speed = speed.normalize() * walkspeed_max * 2.0;
 		}
 	}else{
 		if (energy_effectf) {
