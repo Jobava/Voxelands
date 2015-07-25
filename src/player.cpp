@@ -1009,13 +1009,13 @@ void LocalPlayer::applyControl(float dtime)
 			// Use the oscillating value for getting out of water
 			// (so that the player doesn't fly on the surface)
 			v3f speed = getSpeed();
-			speed.Y = 1.2*BS;
+			speed.Y = 0.8*BS;
 			setSpeed(speed);
 			swimming_up = true;
 			if (!energy_effectf)
-				m_energy -= dtime;
+				m_energy -= dtime*0.8;
 		}else if (in_water_stable && !energy_effectf) {
-			m_energy -= dtime;
+			m_energy -= dtime*0.8;
 		}
 	}
 	if (control.up) {

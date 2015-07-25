@@ -3550,9 +3550,9 @@ void ClientEnvironment::step(float dtime)
 	if (m_hunger_interval.step(dtime,5.0)) {
 		f32 speed = lplayer->getSpeed().getLength();
 		s8 hungry = 0;
-		s32 chance = 100;
+		s32 chance = 200;
 		if (speed > 1.0) {
-			chance = 20;
+			chance = 50;
 			if (speed > 50.0) {
 				chance = 0;
 				hungry = 1;
