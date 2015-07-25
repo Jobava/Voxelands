@@ -273,6 +273,7 @@ void init_mapnode()
 
 	// Make CONTENT_IGNORE to not block the view when occlusion culling
 	content_features(CONTENT_IGNORE).solidness = 0;
+	content_features(CONTENT_IGNORE).suffocation_per_second = 0;
 
 	/*
 		Initialize mapnode content
