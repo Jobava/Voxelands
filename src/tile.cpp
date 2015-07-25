@@ -131,7 +131,8 @@ u32 TextureSource::getTextureId(const std::string &name)
 					result = result_queue.pop_front(1000);
 
 			// Check that at least something worked OK
-			assert(result.key == name);
+			if (result.key != name)
+				return 0;
 
 			return result.item;
 		}catch(ItemNotFoundException &e) {
