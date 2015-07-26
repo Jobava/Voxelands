@@ -382,8 +382,8 @@ else()
 		set(OPT_FLAGS "-O2 -fomit-frame-pointer")
 	endif()
 
-	set(CMAKE_CXX_FLAGS_RELEASE "${OPT_FLAGS} ${SAFETY_FLAGS} -Wall -DNDEBUG -pipe")
-	set(CMAKE_CXX_FLAGS_DEBUG "${SAFETY_FLAGS} -Wall -O0 -g2 -ggdb")
+	set(CMAKE_CXX_FLAGS_RELEASE "${OPT_FLAGS} ${SAFETY_FLAGS} -Wall -std=c++11 -DNDEBUG -pipe")
+	set(CMAKE_CXX_FLAGS_DEBUG "${SAFETY_FLAGS} -Wall -std=c++11 -O0 -g2 -ggdb")
 	set(CMAKE_C_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELEASE})
 	set(CMAKE_C_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_DEBUG})
 
