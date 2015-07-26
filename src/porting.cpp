@@ -216,7 +216,7 @@ void initializePaths(char* argv0)
 	/*
 		Linux
 	*/
-	#elif defined(linux)
+	#elif defined(linux) || defined(__linux)
 	#include <unistd.h>
 
 	char buf[BUFSIZ];

@@ -437,7 +437,7 @@ bool TCPSocket::Connect(const Address &destination)
 void TCPSocket::Send(const void *data, int size)
 {
 	int flags = 0;
-#if defined(linux)
+#if defined(linux) || defined(__linux)
 	flags = MSG_NOSIGNAL;
 #endif
 	int sent = send(m_handle, (const char*)data, size, flags);
