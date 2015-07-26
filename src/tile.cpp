@@ -73,23 +73,17 @@ void TextureSource::processQueue()
 	/*
 		Fetch textures
 	*/
-	if(m_get_texture_queue.size() > 0)
+	std::lock_guard<std::mutex> guard(m_get_texture_queue_mutex);
+	while (!m_get_texture_queue.empty())
 	{
-		GetRequest<std::string, u32, u8, u8>
-				request = m_get_texture_queue.pop();
-
+		std::string name = m_get_texture_queue.front().first;
 		infostream<<"TextureSource::processQueue(): "
 				<<"got texture request with "
-				<<"name=\""<<request.key<<"\""
+				<<"name=\""<< name <<"\""
 				<<std::endl;
 
-		GetResult<std::string, u32, u8, u8>
-				result;
-		result.key = request.key;
-		result.callers = request.callers;
-		result.item = getTextureIdDirect(request.key);
-
-		request.dest->push_back(result);
+		m_get_texture_queue.front().second.set_value(getTextureIdDirect(name));
+		m_get_texture_queue.pop();
 	}
 }
 
@@ -116,29 +110,21 @@ u32 TextureSource::getTextureId(const std::string &name)
 	}else{
 		infostream<<"getTextureId(): Queued: name=\""<<name<<"\""<<std::endl;
 
-		// We're gonna ask the result to be put into here
-		ResultQueue<std::string, u32, u8, u8> result_queue;
+		std::future<u32> future;
+		{
+			std::lock_guard<std::mutex> guard(m_get_texture_queue_mutex);
+			// We're gonna ask the result to be put into here
+			std::promise<u32> promise;
+			future = promise.get_future();
 
-		// Throw a request in
-		m_get_texture_queue.add(name, 0, 0, &result_queue);
+			// Throw a request in
+			m_get_texture_queue.push(std::make_pair(name, std::move(promise)));
+		}
 
 		infostream<<"Waiting for texture from main thread, name=\""
 				<<name<<"\""<<std::endl;
 
-		try{
-			// Wait result for a second
-			GetResult<std::string, u32, u8, u8>
-					result = result_queue.pop_front(1000);
-
-			// Check that at least something worked OK
-			if (result.key != name)
-				return 0;
-
-			return result.item;
-		}catch(ItemNotFoundException &e) {
-			infostream<<"Waiting for texture timed out."<<std::endl;
-			return 0;
-		}
+		return future.get();
 	}
 
 	infostream<<"getTextureId(): Failed"<<std::endl;
