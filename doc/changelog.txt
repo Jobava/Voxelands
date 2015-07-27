@@ -3,6 +3,37 @@ Voxelands changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1507.00: (release 2015-07-27)
+ - Removed some depricated utility classes (VargaD)
+ - Added C++11 support
+ - fiddling with energy usage and hunger
+ - don't suffocate in CONTENT_IGNORE
+ - reduce run speed some more
+ - fix low energy sound being played multiple times
+ - pseudorandomise position of wild plantlike nodes
+ - new doe and stag models
+ - make door/hatch/gate open/close code more reusable, and have paired nodes also show as selected
+ - add dangerous fire option
+ - fix wieldring index not showing for empty slots
+ - add wieldindex to settings menu
+ - add settings menu button to pause menu
+ - add puma_rc to credits
+ - add tea/coffee to craft guide
+ - remove forcesingle from meta tiles of selected nodes
+ - fiddling with collision detection
+ - add overlays to hot drinks textures
+ - add a reverse crafting guide (hdastwb)
+ - fix typo in black cotton hat texture name
+ - add limestone
+ - simplify fertilizer code a bit
+ - get fertilizer working again
+ - remove an unused function
+ - improved semitrans blit, optimised crack
+ - enable partial alpha blits in texture creation
+ - make it compile with mingw
+ - add trimmed leaves back in
+ - fix ondig_also_removes having wierd rotations
+
 1506.00: (release 2015-06-20)
  - add optional index/shortcuts to wieldring
  - add low air post render effect
