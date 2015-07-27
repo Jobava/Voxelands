@@ -1128,6 +1128,127 @@ protected:
 };
 
 /*
+	A single worker thread - multiple client threads queue framework.
+*/
+
+template<typename Caller, typename Data>
+class CallerInfo
+{
+public:
+	Caller caller;
+	Data data;
+};
+
+template<typename Key, typename T, typename Caller, typename CallerData>
+class GetResult
+{
+public:
+	Key key;
+	T item;
+	core::list<CallerInfo<Caller, CallerData> > callers;
+};
+
+template<typename Key, typename T, typename Caller, typename CallerData>
+class ResultQueue: public MutexedQueue< GetResult<Key, T, Caller, CallerData> >
+{
+};
+
+template<typename Key, typename T, typename Caller, typename CallerData>
+class GetRequest
+{
+public:
+	GetRequest()
+	{
+		dest = NULL;
+	}
+	GetRequest(ResultQueue<Key,T, Caller, CallerData> *a_dest)
+	{
+		dest = a_dest;
+	}
+	GetRequest(ResultQueue<Key,T, Caller, CallerData> *a_dest,
+			Key a_key)
+	{
+		dest = a_dest;
+		key = a_key;
+	}
+	~GetRequest()
+	{
+	}
+
+	Key key;
+	ResultQueue<Key, T, Caller, CallerData> *dest;
+	core::list<CallerInfo<Caller, CallerData> > callers;
+};
+
+template<typename Key, typename T, typename Caller, typename CallerData>
+class RequestQueue
+{
+public:
+	u32 size()
+	{
+		return m_queue.size();
+	}
+
+	void add(Key key, Caller caller, CallerData callerdata,
+			ResultQueue<Key, T, Caller, CallerData> *dest)
+	{
+		JMutexAutoLock lock(m_queue.getMutex());
+
+		/*
+			If the caller is already on the list, only update CallerData
+		*/
+		for(typename core::list< GetRequest<Key, T, Caller, CallerData> >::Iterator
+				i = m_queue.getList().begin();
+				i != m_queue.getList().end(); i++)
+		{
+			GetRequest<Key, T, Caller, CallerData> &request = *i;
+
+			if(request.key == key)
+			{
+				for(typename core::list< CallerInfo<Caller, CallerData> >::Iterator
+						i = request.callers.begin();
+						i != request.callers.end(); i++)
+				{
+					CallerInfo<Caller, CallerData> &ca = *i;
+					if(ca.caller == caller)
+					{
+						ca.data = callerdata;
+						return;
+					}
+				}
+				CallerInfo<Caller, CallerData> ca;
+				ca.caller = caller;
+				ca.data = callerdata;
+				request.callers.push_back(ca);
+				return;
+			}
+		}
+
+		/*
+			Else add a new request to the queue
+		*/
+
+		GetRequest<Key, T, Caller, CallerData> request;
+		request.key = key;
+		CallerInfo<Caller, CallerData> ca;
+		ca.caller = caller;
+		ca.data = callerdata;
+		request.callers.push_back(ca);
+		request.dest = dest;
+
+		m_queue.getList().push_back(request);
+	}
+
+	GetRequest<Key, T, Caller, CallerData> pop(bool wait_if_empty=false)
+	{
+		return m_queue.pop_front(wait_if_empty);
+	}
+
+private:
+	MutexedQueue< GetRequest<Key, T, Caller, CallerData> > m_queue;
+};
+
+/*
 	Pseudo-random (VC++ rand() sucks)
 */
 int myrand(void);

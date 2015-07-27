@@ -30,9 +30,6 @@
 #include "threads.h"
 #include "utility.h"
 #include <string>
-#include <future>
-#include <mutex>
-#include <queue>
 
 using namespace jthread;
 
@@ -261,8 +258,7 @@ private:
 	JMutex m_atlaspointer_cache_mutex;
 
 	// Queued texture fetches (to be processed by the main thread)
-        std::queue<std::pair<std::string, std::promise<u32>>> m_get_texture_queue;
-        std::mutex m_get_texture_queue_mutex;
+	RequestQueue<std::string, u32, u8, u8> m_get_texture_queue;
 };
 
 enum MaterialType{
