@@ -32,6 +32,35 @@ MineralFeatures & mineral_features(u8 i)
 	return g_mineral_features[i];
 }
 
+CraftItem *getDiggedMineralItem(u8 mineral, Player *player, InventoryItem *tool)
+{
+	MineralFeatures m = mineral_features(mineral);
+	if (m.dug_item == CONTENT_IGNORE)
+		return NULL;
+
+	if (content_craftitem_features(m.dug_item).content == CONTENT_IGNORE)
+		return NULL;
+
+	if (!tool && m.min_level > 0)
+		return NULL;
+
+	ToolItemFeatures *t = &content_toolitem_features(tool->getContent());
+	if (t->content == CONTENT_IGNORE && m.min_level > 0)
+		return NULL;
+
+	if (t->level < m.min_level)
+		return NULL;
+
+	u16 count = m.dug_count_min;
+	if (m.dug_count_min != m.dug_count_max && t->level > count) {
+		count = myrand_range(m.dug_count_min,t->level);
+		if (count > m.dug_count_max)
+			count = m.dug_count_max;
+	}
+
+	return new CraftItem(m.dug_item, count, 0);
+}
+
 void init_mineral()
 {
 	u8 i;
@@ -41,38 +70,41 @@ void init_mineral()
 	f = &mineral_features(i);
 	f->texture = "mineral_coal.png";
 	f->dug_item = CONTENT_CRAFTITEM_COAL;
-	f->dug_count = 2;
 
 	i = MINERAL_IRON;
 	f = &mineral_features(i);
 	f->texture = "mineral_iron.png";
 	f->dug_item = CONTENT_CRAFTITEM_IRON;
-	f->dug_count = 2;
+	f->min_level = 2;
 
 	i = MINERAL_TIN;
 	f = &mineral_features(i);
 	f->texture = "mineral_tin.png";
 	f->dug_item = CONTENT_CRAFTITEM_TIN;
-	f->dug_count = 2;
+	f->min_level = 2;
 
 	i = MINERAL_COPPER;
 	f = &mineral_features(i);
 	f->texture = "mineral_copper.png";
 	f->dug_item = CONTENT_CRAFTITEM_COPPER;
-	f->dug_count = 2;
+	f->dug_count_max = 4;
+	f->min_level = 2;
 
 	i = MINERAL_SILVER;
 	f = &mineral_features(i);
 	f->texture = "mineral_silver.png";
 	f->dug_item = CONTENT_CRAFTITEM_SILVER;
+	f->min_level = 3;
 
 	i = MINERAL_GOLD;
 	f = &mineral_features(i);
 	f->texture = "mineral_gold.png";
 	f->dug_item = CONTENT_CRAFTITEM_GOLD;
+	f->min_level = 3;
 
 	i = MINERAL_QUARTZ;
 	f = &mineral_features(i);
 	f->texture = "mineral_quartz.png";
 	f->dug_item = CONTENT_CRAFTITEM_QUARTZ;
+	f->min_level = 3;
 }

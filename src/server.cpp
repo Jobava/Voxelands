@@ -3495,7 +3495,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				item = NULL;
 
 				if (mineral != MINERAL_NONE)
-					item = getDiggedMineralItem(mineral);
+					item = getDiggedMineralItem(mineral,player,wielditem);
 
 				// If not mineral
 				if (item == NULL) {

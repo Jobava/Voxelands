@@ -124,6 +124,7 @@ void content_toolitem_init()
 	f->type = TT_PICK;
 	f->hardness = 30.;
 	f->dig_time = 1.5;
+	f->level = 1;
 	crafting::setPickRecipe(CONTENT_WOOD,CONTENT_TOOLITEM_WPICK);
 	crafting::setPickRecipe(CONTENT_JUNGLEWOOD,CONTENT_TOOLITEM_WPICK);
 	lists::add("craftguide",i);
@@ -138,6 +139,7 @@ void content_toolitem_init()
 	f->type = TT_PICK;
 	f->hardness = 100.;
 	f->dig_time = 0.75;
+	f->level = 2;
 	crafting::setPickRecipe(CONTENT_ROUGHSTONE,CONTENT_TOOLITEM_STPICK);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -151,6 +153,7 @@ void content_toolitem_init()
 	f->type = TT_PICK;
 	f->hardness = 180.;
 	f->dig_time = 1.2;
+	f->level = 2;
 	crafting::setPickRecipe(CONTENT_CRAFTITEM_FLINT,CONTENT_TOOLITEM_FLINTPICK);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -164,6 +167,7 @@ void content_toolitem_init()
 	f->type = TT_PICK;
 	f->hardness = 333.;
 	f->dig_time = 0.5;
+	f->level = 3;
 	crafting::setPickRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_STEELPICK);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -177,6 +181,7 @@ void content_toolitem_init()
 	f->type = TT_PICK;
 	f->hardness = 1337.;
 	f->dig_time = 0.;
+	f->level = 4;
 	f->has_punch_effect = false;
 	crafting::setPickRecipe(CONTENT_MESE,CONTENT_TOOLITEM_MESEPICK);
 	lists::add("craftguide",i);
@@ -219,6 +224,7 @@ void content_toolitem_init()
 	f->type = TT_SHOVEL;
 	f->hardness = 250.;
 	f->dig_time = 0.17;
+	f->level = 2;
 	crafting::setShovelRecipe(CONTENT_CRAFTITEM_FLINT,CONTENT_TOOLITEM_FLINTSHOVEL);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -232,6 +238,7 @@ void content_toolitem_init()
 	f->type = TT_SHOVEL;
 	f->hardness = 400.;
 	f->dig_time = 0.15;
+	f->level = 3;
 	crafting::setShovelRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_STEELSHOVEL);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -272,6 +279,7 @@ void content_toolitem_init()
 	f->type = TT_AXE;
 	f->hardness = 180.;
 	f->dig_time = 0.65;
+	f->level = 2;
 	crafting::setAxeRecipe(CONTENT_CRAFTITEM_FLINT,CONTENT_TOOLITEM_FLINTAXE);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -285,6 +293,7 @@ void content_toolitem_init()
 	f->type = TT_AXE;
 	f->hardness = 333.;
 	f->dig_time = 0.5;
+	f->level = 3;
 	crafting::setAxeRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_STEELAXE);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -325,6 +334,7 @@ void content_toolitem_init()
 	f->type = TT_SWORD;
 	f->hardness = 380.;
 	f->dig_time = 0.5;
+	f->level = 3;
 	crafting::setSwordRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_STEELSWORD);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -351,6 +361,7 @@ void content_toolitem_init()
 	f->type = TT_SHEAR;
 	f->hardness = 333.;
 	f->dig_time = 0.5;
+	f->level = 2;
 	crafting::setShearsRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_STEELSHEARS);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -381,6 +392,7 @@ void content_toolitem_init()
 	f->type = TT_BUCKET;
 	f->hardness = 50.;
 	f->dig_time = 0.0;
+	f->level = 2;
 	f->damaging_nodes_diggable = false;
 	crafting::setURecipe(CONTENT_CRAFTITEM_TIN_INGOT,CONTENT_TOOLITEM_TINBUCKET);
 	lists::add("craftguide",i);
@@ -418,6 +430,7 @@ void content_toolitem_init()
 	f->type = TT_BUCKET;
 	f->hardness = 80.;
 	f->dig_time = 0.0;
+	f->level = 3;
 	crafting::setURecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_STEELBUCKET);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -503,6 +516,7 @@ void content_toolitem_init()
 	f->type = TT_SPEAR;
 	f->hardness = 200.;
 	f->dig_time = 1.0;
+	f->level = 2;
 	crafting::setSpearRecipe(CONTENT_CRAFTITEM_FLINT,CONTENT_TOOLITEM_FLINTSPEAR);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -516,6 +530,7 @@ void content_toolitem_init()
 	f->type = TT_SPEAR;
 	f->hardness = 300.;
 	f->dig_time = 0.5;
+	f->level = 3;
 	crafting::setSpearRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_STEELSPEAR);
 	lists::add("craftguide",i);
 	lists::add("creative",i);

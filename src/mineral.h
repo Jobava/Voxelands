@@ -27,6 +27,7 @@
 #define MINERAL_HEADER
 
 #include "inventory.h"
+#include "player.h"
 
 #define MINERAL_NONE 0
 #define MINERAL_COAL 1
@@ -42,12 +43,17 @@ struct MineralFeatures {
 	// the dug item
 	content_t dug_item;
 	// the number of dug_items received when dug
-	s16 dug_count;
+	s16 dug_count_min;
+	s16 dug_count_max;
+	// tools below this level give no mineral
+	u8 min_level;
 
 	MineralFeatures():
 		texture(""),
 		dug_item(CONTENT_IGNORE),
-		dug_count(1)
+		dug_count_min(1),
+		dug_count_max(5),
+		min_level(1)
 	{}
 };
 
@@ -64,14 +70,7 @@ MineralFeatures & mineral_features(u8 i);
 
 #define MINERAL_MAX 255
 
-inline CraftItem * getDiggedMineralItem(u8 mineral)
-{
-	MineralFeatures m = mineral_features(mineral);
-	if (m.dug_item == CONTENT_IGNORE)
-		return NULL;
-
-	return new CraftItem(content_craftitem_features(m.dug_item).name,m.dug_count, 0);
-}
+CraftItem *getDiggedMineralItem(u8 mineral, Player *player, InventoryItem *tool);
 
 #endif
 
