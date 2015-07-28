@@ -434,22 +434,22 @@ void ServerRemotePlayer::setCharDef(std::string d)
 			return;
 		InventoryItem *item = NULL;
 		if (shirt == "white") {
-			item = new ClothesItem(CONTENT_CLOTHESITEM_COTTON_TSHIRT,0);
+			item = new ClothesItem(CONTENT_CLOTHESITEM_COTTON_TSHIRT,0,0);
 		}else if (shirt == "blue") {
-			item = new ClothesItem(CONTENT_CLOTHESITEM_COTTON_TSHIRT_BLUE,0);
+			item = new ClothesItem(CONTENT_CLOTHESITEM_COTTON_TSHIRT_BLUE,0,0);
 		}else if (shirt == "orange") {
-			item = new ClothesItem(CONTENT_CLOTHESITEM_COTTON_TSHIRT_ORANGE,0);
+			item = new ClothesItem(CONTENT_CLOTHESITEM_COTTON_TSHIRT_ORANGE,0,0);
 		}else if (shirt == "purple") {
-			item = new ClothesItem(CONTENT_CLOTHESITEM_COTTON_TSHIRT_PURPLE,0);
+			item = new ClothesItem(CONTENT_CLOTHESITEM_COTTON_TSHIRT_PURPLE,0,0);
 		}else if (shirt == "red") {
-			item = new ClothesItem(CONTENT_CLOTHESITEM_COTTON_TSHIRT_RED,0);
+			item = new ClothesItem(CONTENT_CLOTHESITEM_COTTON_TSHIRT_RED,0,0);
 		}else if (shirt == "yellow") {
-			item = new ClothesItem(CONTENT_CLOTHESITEM_COTTON_TSHIRT_YELLOW,0);
+			item = new ClothesItem(CONTENT_CLOTHESITEM_COTTON_TSHIRT_YELLOW,0,0);
 		}else if (shirt == "black") {
-			item = new ClothesItem(CONTENT_CLOTHESITEM_COTTON_TSHIRT_BLACK,0);
+			item = new ClothesItem(CONTENT_CLOTHESITEM_COTTON_TSHIRT_BLACK,0,0);
 		}
 		if (item == NULL)
-			item = new ClothesItem(CONTENT_CLOTHESITEM_COTTON_TSHIRT_GREEN,0);
+			item = new ClothesItem(CONTENT_CLOTHESITEM_COTTON_TSHIRT_GREEN,0,0);
 		l->addItem(0,item);
 	}
 	{
@@ -458,22 +458,22 @@ void ServerRemotePlayer::setCharDef(std::string d)
 			return;
 		InventoryItem *item = NULL;
 		if (pants == "white") {
-			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS,0);
+			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS,0,0);
 		}else if (pants == "green") {
-			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_GREEN,0);
+			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_GREEN,0,0);
 		}else if (pants == "orange") {
-			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_ORANGE,0);
+			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_ORANGE,0,0);
 		}else if (pants == "purple") {
-			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_PURPLE,0);
+			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_PURPLE,0,0);
 		}else if (pants == "red") {
-			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_RED,0);
+			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_RED,0,0);
 		}else if (pants == "yellow") {
-			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_YELLOW,0);
+			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_YELLOW,0,0);
 		}else if (pants == "black") {
-			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_BLACK,0);
+			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_BLACK,0,0);
 		}
 		if (item == NULL)
-			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_BLUE,0);
+			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_PANTS_BLUE,0,0);
 		l->addItem(0,item);
 	}
 	{
@@ -482,12 +482,12 @@ void ServerRemotePlayer::setCharDef(std::string d)
 			return;
 		InventoryItem *item = NULL;
 		if (shirt == "fur") {
-			item = new ClothesItem(CONTENT_CLOTHESITEM_FUR_SHOES,0);
+			item = new ClothesItem(CONTENT_CLOTHESITEM_FUR_SHOES,0,0);
 		}else if (shirt == "canvas") {
-			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_SHOES,0);
+			item = new ClothesItem(CONTENT_CLOTHESITEM_CANVAS_SHOES,0,0);
 		}
 		if (item == NULL)
-			item = new ClothesItem(CONTENT_CLOTHESITEM_LEATHER_SHOES,0);
+			item = new ClothesItem(CONTENT_CLOTHESITEM_LEATHER_SHOES,0,0);
 		l->addItem(0,item);
 	}
 

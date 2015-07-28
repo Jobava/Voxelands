@@ -70,7 +70,7 @@ inline CraftItem * getDiggedMineralItem(u8 mineral)
 	if (m.dug_item == CONTENT_IGNORE)
 		return NULL;
 
-	return new CraftItem(content_craftitem_features(m.dug_item).name,m.dug_count);
+	return new CraftItem(content_craftitem_features(m.dug_item).name,m.dug_count, 0);
 }
 
 #endif

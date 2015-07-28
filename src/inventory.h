@@ -50,12 +50,12 @@ class Player;
 class InventoryItem
 {
 public:
-	InventoryItem(u16 count);
+	InventoryItem(u16 count, u16 data);
 	virtual ~InventoryItem();
 
-	static content_t info(std::istream &is, u16 *count, u16 *wear);
+	static content_t info(std::istream &is, u16 *count, u16 *wear, u16 *data);
 	static InventoryItem* deSerialize(std::istream &is);
-	static InventoryItem* create(content_t c, u16 count, u16 wear=0);
+	static InventoryItem* create(content_t c, u16 count, u16 wear=0, u16 data=0);
 
 	virtual const char* getName() const = 0;
 	// Shall write the name and the parameters
@@ -74,6 +74,8 @@ public:
 	content_t getContent() {return m_content;}
 	// this is used for tool tips
 	virtual std::wstring getGuiName() { return L""; }
+	// this is used for hover data / extended tool tips
+	virtual std::wstring getGuiText() { return L""; }
 	// Shall return a text to show in the GUI
 	virtual std::string getText() { return ""; }
 	// Returns the string used for inventory
@@ -114,11 +116,18 @@ public:
 	}
 	void remove(u16 count)
 	{
-		assert(m_count >= count);
-		m_count -= count;
+		if (m_count < count) {
+			m_count = 0;
+		}else{
+			m_count -= count;
+		}
 	}
 	virtual void setWear(u16 wear) {}
 	virtual u16 getWear() {return 0;}
+
+	void setData(u16 data) { m_data = data; }
+	void addData(u16 data) { m_data |= data; }
+	u16 getData() { return m_data; }
 
 	/*
 		Other properties
@@ -144,13 +153,14 @@ public:
 protected:
 	u16 m_count;
 	content_t m_content;
+	u16 m_data;
 };
 
 class MaterialItem : public InventoryItem
 {
 public:
-	MaterialItem(content_t content, u16 count):
-		InventoryItem(count)
+	MaterialItem(content_t content, u16 count, u16 data):
+		InventoryItem(count,data)
 	{
 		MapNode n(content);
 		n = mapnode_translate_to_internal(n,SER_FMT_VER_HIGHEST);
@@ -166,15 +176,17 @@ public:
 	virtual void serialize(std::ostream &os) const
 	{
 		//os.imbue(std::locale("C"));
-		os<<"MaterialItem2";
+		os<<"MaterialItem3";
 		os<<" ";
 		os<<(unsigned int)m_content;
 		os<<" ";
 		os<<m_count;
+		os<<" ";
+		os<<m_data;
 	}
 	virtual InventoryItem* clone()
 	{
-		return new MaterialItem(m_content, m_count);
+		return new MaterialItem(m_content, m_count, m_data);
 	}
 #ifndef SERVER
 	video::ITexture * getImage() const
@@ -187,6 +199,8 @@ public:
 		return content_features(m_content).description;
 	}
 
+	std::wstring getGuiText();
+
 	std::string getText()
 	{
 		std::ostringstream os;
@@ -197,7 +211,10 @@ public:
 	virtual bool addableTo(const InventoryItem *other) const
 	{
 		content_t c = ((InventoryItem*)other)->getContent();
+		u16 d = ((InventoryItem*)other)->getData();
 		if (c != m_content)
+			return false;
+		if (m_data != d)
 			return false;
 		return true;
 	}
@@ -235,14 +252,14 @@ private:
 class CraftItem : public InventoryItem
 {
 public:
-	CraftItem(std::string subname, u16 count):
-		InventoryItem(count)
+	CraftItem(std::string subname, u16 count, u16 data):
+		InventoryItem(count,data)
 	{
 		m_subname = content_craftitem_features(subname).name;
 		m_content = content_craftitem_features(subname).content;
 	}
-	CraftItem(content_t content, u16 count):
-		InventoryItem(count)
+	CraftItem(content_t content, u16 count, u16 data):
+		InventoryItem(count,data)
 	{
 		m_subname = content_craftitem_features(content).name;
 		m_content = content_craftitem_features(content).content;
@@ -256,21 +273,24 @@ public:
 	}
 	virtual void serialize(std::ostream &os) const
 	{
-		os<<"CraftItem2";
+		os<<"CraftItem3";
 		os<<" ";
 		os<<(unsigned int)m_content;
 		os<<" ";
 		os<<m_count;
+		os<<" ";
+		os<<m_data;
 	}
 	virtual InventoryItem* clone()
 	{
-		return new CraftItem(m_content, m_count);
+		return new CraftItem(m_content, m_count, m_data);
 	}
 #ifndef SERVER
 	video::ITexture * getImage() const;
 #endif
 
 	std::wstring getGuiName();
+	std::wstring getGuiText();
 
 	std::string getText()
 	{
@@ -285,7 +305,10 @@ public:
 	virtual bool addableTo(const InventoryItem *other) const
 	{
 		content_t c = ((InventoryItem*)other)->getContent();
+		u16 d = ((InventoryItem*)other)->getData();
 		if (c != m_content)
+			return false;
+		if (m_data != d)
 			return false;
 		return true;
 	}
@@ -323,15 +346,15 @@ private:
 class ToolItem : public InventoryItem
 {
 public:
-	ToolItem(std::string toolname, u16 wear):
-		InventoryItem(1)
+	ToolItem(std::string toolname, u16 wear, u16 data):
+		InventoryItem(1,data)
 	{
 		m_wear = wear;
 		m_toolname = content_toolitem_features(toolname).name;
 		m_content = content_toolitem_features(toolname).content;
 	}
-	ToolItem(content_t content, u16 wear):
-		InventoryItem(1)
+	ToolItem(content_t content, u16 wear, u16 data):
+		InventoryItem(1,data)
 	{
 		m_wear = wear;
 		m_toolname = content_toolitem_features(content).name;
@@ -346,41 +369,24 @@ public:
 	}
 	virtual void serialize(std::ostream &os) const
 	{
-		os<<"ToolItem2";
+		os<<"ToolItem3";
 		os<<" ";
 		os<<(unsigned int)m_content;
 		os<<" ";
 		os<<m_wear;
+		os<<" ";
+		os<<m_data;
 	}
 	virtual InventoryItem* clone()
 	{
-		return new ToolItem(m_content, m_wear);
+		return new ToolItem(m_content, m_wear, m_data);
 	}
 #ifndef SERVER
 	std::string getBasename() const {
 		return content_toolitem_features(m_content).texture;
 	}
 
-	video::ITexture * getImage() const
-	{
-		if(g_texturesource == NULL)
-			return NULL;
-
-		std::string basename = getBasename();
-
-		/*
-			Calculate a progress value with sane amount of
-			maximum states
-		*/
-		u32 maxprogress = 30;
-		u32 toolprogress = (65535-m_wear)/(65535/maxprogress);
-
-		float value_f = (float)toolprogress / (float)maxprogress;
-		std::ostringstream os;
-		os<<basename<<"^[progressbar"<<value_f;
-
-		return g_texturesource->getTextureRaw(os.str());
-	}
+	video::ITexture * getImage() const;
 
 	video::ITexture * getImageRaw() const
 	{
@@ -390,9 +396,11 @@ public:
 		return g_texturesource->getTextureRaw(getBasename());
 	}
 #endif
-	std::wstring getGuiName() {
+	std::wstring getGuiName()
+	{
 		return content_toolitem_features(m_content).description;
 	}
+	std::wstring getGuiText();
 	std::string getText()
 	{
 		return "";
@@ -435,8 +443,8 @@ private:
 class ClothesItem : public InventoryItem
 {
 public:
-	ClothesItem(content_t content, u16 wear):
-		InventoryItem(1)
+	ClothesItem(content_t content, u16 wear, u16 data):
+		InventoryItem(1,data)
 	{
 		m_wear = wear;
 		m_content = content_clothesitem_features(content).content;
@@ -450,41 +458,24 @@ public:
 	}
 	virtual void serialize(std::ostream &os) const
 	{
-		os<<"ClothesItem";
+		os<<"ClothesItem2";
 		os<<" ";
 		os<<(unsigned int)m_content;
 		os<<" ";
 		os<<m_wear;
+		os<<" ";
+		os<<m_data;
 	}
 	virtual InventoryItem* clone()
 	{
-		return new ClothesItem(m_content, m_wear);
+		return new ClothesItem(m_content, m_wear, m_data);
 	}
 #ifndef SERVER
 	std::string getBasename() const {
 		return content_clothesitem_features(m_content).texture;
 	}
 
-	video::ITexture * getImage() const
-	{
-		if (g_texturesource == NULL)
-			return NULL;
-
-		std::string basename = getBasename();
-
-		/*
-			Calculate a progress value with sane amount of
-			maximum states
-		*/
-		u32 maxprogress = 30;
-		u32 toolprogress = (65535-m_wear)/(65535/maxprogress);
-
-		float value_f = (float)toolprogress / (float)maxprogress;
-		std::ostringstream os;
-		os<<basename<<"^[progressbar"<<value_f;
-
-		return g_texturesource->getTextureRaw(os.str());
-	}
+	video::ITexture * getImage() const;
 
 	video::ITexture * getImageRaw() const
 	{
@@ -494,9 +485,11 @@ public:
 		return g_texturesource->getTextureRaw(getBasename());
 	}
 #endif
-	std::wstring getGuiName() {
+	std::wstring getGuiName()
+	{
 		return content_clothesitem_features(m_content).description;
 	}
+	std::wstring getGuiText();
 	std::string getText()
 	{
 		return "";

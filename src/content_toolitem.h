@@ -50,6 +50,8 @@ struct ToolItemFeatures {
 	f32 hardness;
 	// the dig time of this tool
 	f32 dig_time;
+	// the level of the tool, this affects the amount of minerals etc.
+	u8 level;
 	// used for eg. bows throwing an arrow
 	content_t thrown_item;
 	// when this item is placed, it should be replaced by this in inventory
@@ -75,6 +77,7 @@ struct ToolItemFeatures {
 		type(TT_NONE),
 		hardness(0.),
 		dig_time(3.),
+		level(1),
 		thrown_item(CONTENT_IGNORE),
 		onplace_replace_item(CONTENT_IGNORE),
 		onplace_node(CONTENT_IGNORE)

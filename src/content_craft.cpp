@@ -958,11 +958,11 @@ void giveCreative(Player *player)
 
 	for(u8 i=0; i<creativeinv.size(); i++) {
 		if ((creativeinv[(int)i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
-			assert(player->inventory.addItem("main", new CraftItem(creativeinv[i], 1)) == NULL) ;
+			assert(player->inventory.addItem("main", new CraftItem(creativeinv[i], 1,0)) == NULL) ;
 		}else if ((creativeinv.at(i)&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
-			assert(player->inventory.addItem("main", new ToolItem(creativeinv[i], 0)) == NULL) ;
+			assert(player->inventory.addItem("main", new ToolItem(creativeinv[i], 0,0)) == NULL) ;
 		}else{
-			assert(player->inventory.addItem("main", new MaterialItem(creativeinv[i], 1)) == NULL) ;
+			assert(player->inventory.addItem("main", new MaterialItem(creativeinv[i], 1,0)) == NULL) ;
 		}
 	}
 }
@@ -970,13 +970,13 @@ void giveCreative(Player *player)
 void giveInitial(Player *player)
 {
 	player->resetInventory();
-	assert(player->inventory.addItem("main", new ToolItem(CONTENT_TOOLITEM_STEELPICK, 0)) == NULL) ;
-	assert(player->inventory.addItem("main", new ToolItem(CONTENT_TOOLITEM_STEELAXE, 0)) == NULL) ;
-	assert(player->inventory.addItem("main", new ToolItem(CONTENT_TOOLITEM_STEELSHOVEL, 0)) == NULL) ;
-	assert(player->inventory.addItem("main", new ToolItem(CONTENT_TOOLITEM_STEELSHEARS, 0)) == NULL) ;
-	assert(player->inventory.addItem("main", new MaterialItem(CONTENT_TORCH, 99)) == NULL) ;
-	assert(player->inventory.addItem("main", new MaterialItem(CONTENT_ROUGHSTONEBRICK, 99)) == NULL) ;
-	assert(player->inventory.addItem("main", new MaterialItem(CONTENT_BORDERSTONE, 5)) == NULL) ;
+	assert(player->inventory.addItem("main", new ToolItem(CONTENT_TOOLITEM_STEELPICK, 0, 0)) == NULL) ;
+	assert(player->inventory.addItem("main", new ToolItem(CONTENT_TOOLITEM_STEELAXE, 0, 0)) == NULL) ;
+	assert(player->inventory.addItem("main", new ToolItem(CONTENT_TOOLITEM_STEELSHOVEL, 0, 0)) == NULL) ;
+	assert(player->inventory.addItem("main", new ToolItem(CONTENT_TOOLITEM_STEELSHEARS, 0, 0)) == NULL) ;
+	assert(player->inventory.addItem("main", new MaterialItem(CONTENT_TORCH, 99, 0)) == NULL) ;
+	assert(player->inventory.addItem("main", new MaterialItem(CONTENT_ROUGHSTONEBRICK, 99, 0)) == NULL) ;
+	assert(player->inventory.addItem("main", new MaterialItem(CONTENT_BORDERSTONE, 5, 0)) == NULL) ;
 }
 
 };

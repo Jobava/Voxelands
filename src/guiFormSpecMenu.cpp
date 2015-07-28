@@ -455,14 +455,14 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 	// Add tooltip
 	{
 		// Note: parent != this so that the tooltip isn't clipped by the menu rectangle
-		m_tooltip_element = Environment->addStaticText(L"",core::rect<s32>(0,0,110,18));
+		m_tooltip_element = Environment->addStaticText(L"",core::rect<s32>(0,0,1000,18));
 		m_tooltip_element->enableOverrideColor(true);
 		m_tooltip_element->setBackgroundColor(GUI_BG_TT);
 		m_tooltip_element->setDrawBackground(true);
 		m_tooltip_element->setDrawBorder(true);
 		m_tooltip_element->setOverrideColor(GUI_TT_TEXT);
-		m_tooltip_element->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_CENTER);
-		m_tooltip_element->setWordWrap(false);
+		m_tooltip_element->setTextAlignment(gui::EGUIA_UPPERLEFT, gui::EGUIA_CENTER);
+		m_tooltip_element->setWordWrap(true);
 	}
 }
 
@@ -532,13 +532,20 @@ void GUIFormSpecMenu::drawList(const ListDrawSpec &s, int phase)
 		if (item) {
 			draw_inv_item(driver, font, item, rect, &AbsoluteClippingRect);
 			if (rect.isPointInside(m_pointer)) {
-				std::wstring name = item->getGuiName();
+				std::wstring name = item->getGuiText();
 				if (name != L"") {
 					m_tooltip_element->setVisible(true);
 					this->bringToFront(m_tooltip_element);
 					m_tooltip_element->setText(name.c_str());
 					s32 tooltip_x = m_pointer.X + 15;
 					s32 tooltip_y = m_pointer.Y + 15;
+					// this prevents forced word-wrap when we don't want it
+					m_tooltip_element->setRelativePosition(
+						core::rect<s32>(
+							core::position2d<s32>(tooltip_x, tooltip_y),
+							core::dimension2d<s32>(1000,18)
+						)
+					);
 					s32 tooltip_width = m_tooltip_element->getTextWidth() + 14;
 					s32 tooltip_height = m_tooltip_element->getTextHeight() + 4;
 					m_tooltip_element->setRelativePosition(

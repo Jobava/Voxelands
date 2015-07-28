@@ -36,28 +36,31 @@
 #include "content_mob.h"
 #include "player.h"
 #include "log.h"
+#include "intl.h"
 
 /*
 	InventoryItem
 */
 
-InventoryItem::InventoryItem(u16 count)
+InventoryItem::InventoryItem(u16 count, u16 data)
 {
 	m_content = CONTENT_IGNORE;
 	m_count = count;
+	m_data = data;
 }
 
 InventoryItem::~InventoryItem()
 {
 }
 
-content_t InventoryItem::info(std::istream &is, u16 *count, u16 *wear)
+content_t InventoryItem::info(std::istream &is, u16 *count, u16 *wear, u16 *data)
 {
 	DSTACK(__FUNCTION_NAME);
 
 	content_t c = CONTENT_IGNORE;
 	*count = 0;
 	*wear = 0;
+	*data = 0;
 
 	//is.imbue(std::locale("C"));
 	// Read name
@@ -79,32 +82,58 @@ content_t InventoryItem::info(std::istream &is, u16 *count, u16 *wear)
 		if (material > MAX_CONTENT)
 			throw SerializationError("Too large material number");
 		c = material;
+	}else if(name == "MaterialItem3") {
+		u16 material;
+		is>>material;
+		is>>(*count);
+		is>>(*data);
+		if (material > MAX_CONTENT)
+			throw SerializationError("Too large material number");
+		c = material;
 	}else if(name == "CraftItem") {
 		std::string subname;
 		std::getline(is, subname, ' ');
 		is>>(*count);
-		CraftItem itm(subname, *count);
+		CraftItem itm(subname, *count, 0);
 		c = itm.getContent();
 	}else if(name == "CraftItem2") {
 		u16 material;
 		is>>material;
 		is>>(*count);
 		c = material;
+	}else if(name == "CraftItem3") {
+		u16 material;
+		is>>material;
+		is>>(*count);
+		is>>(*data);
+		c = material;
 	}else if(name == "ToolItem") {
 		std::string toolname;
 		std::getline(is, toolname, ' ');
 		is>>(*wear);
-		ToolItem itm(toolname, *wear);
+		ToolItem itm(toolname, *wear, 0);
 		c = itm.getContent();
 	}else if(name == "ToolItem2") {
 		u16 material;
 		is>>material;
 		is>>(*wear);
 		c = material;
+	}else if(name == "ToolItem3") {
+		u16 material;
+		is>>material;
+		is>>(*wear);
+		is>>(*data);
+		c = material;
 	}else if(name == "ClothesItem") {
 		u16 material;
 		is>>material;
 		is>>(*wear);
+		c = material;
+	}else if(name == "ClothesItem2") {
+		u16 material;
+		is>>material;
+		is>>(*wear);
+		is>>(*data);
 		c = material;
 	}else if (name != "") {
 		infostream<<"Unknown InventoryItem name=\""<<name<<"\""<<std::endl;
@@ -119,24 +148,25 @@ InventoryItem* InventoryItem::deSerialize(std::istream &is)
 	content_t c;
 	u16 count;
 	u16 wear;
+	u16 data;
 
-	c = InventoryItem::info(is,&count,&wear);
+	c = InventoryItem::info(is,&count,&wear,&data);
 	if (c == CONTENT_IGNORE)
 		return NULL;
-	return InventoryItem::create(c,count,wear);
+	return InventoryItem::create(c,count,wear,data);
 }
 
-InventoryItem* InventoryItem::create(content_t c, u16 count, u16 wear)
+InventoryItem* InventoryItem::create(content_t c, u16 count, u16 wear, u16 data)
 {
 	if ((c&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
-		return new CraftItem(c,count);
+		return new CraftItem(c,count,data);
 	}else if ((c&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
-		return new ToolItem(c,wear);
+		return new ToolItem(c,wear,data);
 	}else if ((c&CONTENT_CLOTHESITEM_MASK) == CONTENT_CLOTHESITEM_MASK) {
-		return new ClothesItem(c,wear);
+		return new ClothesItem(c,wear,data);
 	}
 
-	return new MaterialItem(c,count);
+	return new MaterialItem(c,count,data);
 }
 
 std::string InventoryItem::getItemString() {
@@ -159,6 +189,29 @@ ServerActiveObject* InventoryItem::createSAO(ServerEnvironment *env, u16 id, v3f
 /*
 	MaterialItem
 */
+std::wstring MaterialItem::getGuiText()
+{
+	std::wstring txt(L"  ");
+	ContentFeatures *f = &content_features(m_content);
+	txt += f->description;
+	if (f->cook_result != "" || f->fuel_time != 0.0)
+		txt += L"\n";
+	if (f->cook_result != "") {
+		txt += L"\n";
+		txt += wgettext("Cookable: Yes");
+	}
+	if (f->fuel_time != 0.0) {
+		char buff[20];
+		txt += L"\n";
+		txt += wgettext("Fuel Burn Time: ");
+		txt += itows((int)f->fuel_time/60);
+		txt += L":";
+		sprintf(buff,"%02d",(int)f->fuel_time%60);
+		txt += narrow_to_wide(buff);
+	}
+
+	return txt;
+}
 
 bool MaterialItem::isCookable() const
 {
@@ -209,6 +262,61 @@ video::ITexture * CraftItem::getImage() const
 std::wstring CraftItem::getGuiName()
 {
 	return content_craftitem_features(m_content).description;
+}
+std::wstring CraftItem::getGuiText()
+{
+	std::wstring txt(L"  ");
+	CraftItemFeatures *f = &content_craftitem_features(m_content);
+	txt += f->description;
+	if (f->consumable || f->cook_result != "" || f->fuel_time != 0.0)
+		txt += L"\n";
+	if (f->consumable) {
+		if (f->hunger_effect) {
+			txt += L"\n";
+			txt += wgettext("Hunger: ");
+			txt += itows(f->hunger_effect*5);
+			txt += L"%";
+		}
+		if (f->health_effect) {
+			txt += L"\n";
+			txt += wgettext("Health: ");
+			txt += itows(f->health_effect*5);
+			txt += L"%";
+		}
+		if (f->cold_effect) {
+			char buff[20];
+			txt += L"\n";
+			txt += wgettext("Cold Protection: ");
+			txt += itows(f->cold_effect/60);
+			txt += L":";
+			sprintf(buff,"%02d",f->cold_effect%60);
+			txt += narrow_to_wide(buff);
+		}
+		if (f->energy_effect) {
+			char buff[20];
+			txt += L"\n";
+			txt += wgettext("Energy Boost: ");
+			txt += itows(f->energy_effect/60);
+			txt += L":";
+			sprintf(buff,"%02d",f->energy_effect%60);
+			txt += narrow_to_wide(buff);
+		}
+	}
+	if (f->cook_result != "") {
+		txt += L"\n";
+		txt += wgettext("Cookable: Yes");
+	}
+	if (f->fuel_time != 0.0) {
+		char buff[20];
+		txt += L"\n";
+		txt += wgettext("Fuel Burn Time: ");
+		txt += itows((int)f->fuel_time/60);
+		txt += L":";
+		sprintf(buff,"%02d",(int)f->fuel_time%60);
+		txt += narrow_to_wide(buff);
+	}
+
+	return txt;
 }
 
 ServerActiveObject* CraftItem::createSAO(ServerEnvironment *env, u16 id, v3f pos)
@@ -298,6 +406,60 @@ bool CraftItem::use(ServerEnvironment *env, Player *player)
 	return false;
 }
 
+/*
+	ToolItem
+*/
+
+#ifndef SERVER
+video::ITexture *ToolItem::getImage() const
+{
+	if(g_texturesource == NULL)
+		return NULL;
+
+	std::string basename = getBasename();
+
+	/*
+		Calculate a progress value with sane amount of
+		maximum states
+	*/
+	u32 maxprogress = 30;
+	u32 toolprogress = (65535-m_wear)/(65535/maxprogress);
+
+	float value_f = (float)toolprogress / (float)maxprogress;
+	std::ostringstream os;
+	os<<basename<<"^[progressbar"<<value_f;
+
+	return g_texturesource->getTextureRaw(os.str());
+}
+#endif
+
+std::wstring ToolItem::getGuiText()
+{
+	std::wstring txt(L"  ");
+	ToolItemFeatures *f = &content_toolitem_features(m_content);
+	txt += f->description;
+	txt += L"\n\n";
+	txt += wgettext("Strength: ");
+	txt += ftows(f->hardness);
+	txt += L"\n";
+	txt += wgettext("Speed: ");
+	txt += ftows(f->dig_time);
+	txt += L"\n";
+	txt += wgettext("Level: ");
+	txt += itows(f->level);
+	if (f->fuel_time != 0.0) {
+		char buff[20];
+		txt += L"\n";
+		txt += wgettext("Fuel Burn Time: ");
+		txt += itows((int)f->fuel_time/60);
+		txt += L":";
+		sprintf(buff,"%02d",(int)f->fuel_time%60);
+		txt += narrow_to_wide(buff);
+	}
+
+	return txt;
+}
+
 bool ToolItem::isCookable() const
 {
 	return content_toolitem_features(m_content).cook_result != "";
@@ -317,6 +479,79 @@ bool ToolItem::isFuel() const
 float ToolItem::getFuelTime() const
 {
 	return content_toolitem_features(m_content).fuel_time;
+}
+
+/*
+	ClothesItem
+*/
+
+#ifndef SERVER
+video::ITexture *ClothesItem::getImage() const
+{
+	if (g_texturesource == NULL)
+		return NULL;
+
+	std::string basename = getBasename();
+
+	/*
+		Calculate a progress value with sane amount of
+		maximum states
+	*/
+	u32 maxprogress = 30;
+	u32 toolprogress = (65535-m_wear)/(65535/maxprogress);
+
+	float value_f = (float)toolprogress / (float)maxprogress;
+	std::ostringstream os;
+	os<<basename<<"^[progressbar"<<value_f;
+
+	return g_texturesource->getTextureRaw(os.str());
+}
+#endif
+
+std::wstring ClothesItem::getGuiText()
+{
+	std::wstring txt(L"  ");
+	ClothesItemFeatures *f = &content_clothesitem_features(m_content);
+	txt += f->description;
+	if (f->armour > 0.0 || f->warmth > 0.0 || f->vacuum > 0.0 || f->suffocate > 0.0 || f->durability > 0.0 || f->effect > 1.0)
+		txt += L"\n";
+	if (f->armour > 0.0) {
+		txt += L"\n";
+		txt += wgettext("Armour: ");
+		txt += itows(f->armour*100.0);
+		txt += L"%";
+	}
+	if (f->warmth > 0.0) {
+		txt += L"\n";
+		txt += wgettext("Warmth: ");
+		txt += itows(f->warmth*100.0);
+		txt += L"%";
+	}
+	if (f->vacuum > 0.0) {
+		txt += L"\n";
+		txt += wgettext("Pressure: ");
+		txt += itows(f->vacuum*100.0);
+		txt += L"%";
+	}
+	if (f->suffocate > 0.0) {
+		txt += L"\n";
+		txt += wgettext("Suffocation: ");
+		txt += itows(f->suffocate*100.0);
+		txt += L"%";
+	}
+	if (f->durability > 0.0) {
+		txt += L"\n";
+		txt += wgettext("Durability: ");
+		txt += itows(f->durability);
+	}
+	if (f->effect != 1.0) {
+		txt += L"\n";
+		txt += wgettext("Effect Boost: ");
+		txt += itows(f->effect*100.0);
+		txt += L"%";
+	}
+
+	return txt;
 }
 
 /*
@@ -356,13 +591,11 @@ void InventoryList::clearItems()
 	for (u32 i=0; i<m_size; i++) {
 		m_items.push_back(NULL);
 	}
-
-	//setDirty(true);
 }
 
 void InventoryList::serialize(std::ostream &os) const
 {
-	//os.imbue(std::locale("C"));
+	writeU8(os,1); // version
 
 	for (u32 i=0; i<m_items.size(); i++) {
 		InventoryItem *item = m_items[i];
@@ -374,6 +607,7 @@ void InventoryList::serialize(std::ostream &os) const
 			}else{
 				writeU16(os,item->getCount());
 			}
+			writeU16(os,item->getData());
 		}else{
 			writeU16(os,CONTENT_IGNORE);
 		}
@@ -385,6 +619,44 @@ void InventoryList::deSerialize(std::istream &is)
 	u32 item_i = 0;
 	char f;
 	is.get(f);
+	if (f == '\1') {
+		char v;
+		is.get(v);
+		switch (v) {
+		case 1:
+		{
+			for (item_i=0; item_i<getSize(); item_i++) {
+				content_t c = readU16(is);
+				if (c == CONTENT_IGNORE) {
+					if (m_items[item_i] != NULL)
+						delete m_items[item_i];
+					m_items[item_i] = NULL;
+					continue;
+				}
+				u16 wc = readU16(is);
+				u16 d = readU16(is);
+				if (m_items[item_i] != NULL) {
+					if (m_items[item_i]->getContent() == c) {
+						m_items[item_i]->setWear(wc);
+						m_items[item_i]->setCount(wc);
+						m_items[item_i]->setData(d);
+						continue;
+					}
+					delete m_items[item_i];
+				}
+				m_items[item_i] = InventoryItem::create(c,wc,wc,d);
+			}
+		}
+			break;
+		default:
+			throw SerializationError("Unknown inventory format");
+		}
+
+		if (readU8(is) != 3)
+			throw SerializationError("Unknown inventory identifier");
+
+		return;
+	}
 	if (f == '\2') {
 		for (item_i=0; item_i<getSize(); item_i++) {
 			content_t c = readU16(is);
@@ -443,8 +715,9 @@ void InventoryList::deSerialize(std::istream &is)
 			content_t c;
 			u16 count;
 			u16 wear;
+			u16 data;
 
-			c = InventoryItem::info(iss,&count,&wear);
+			c = InventoryItem::info(iss,&count,&wear,&data);
 			if (c == CONTENT_IGNORE) {
 				if (m_items[item_i] != NULL)
 					delete m_items[item_i];
@@ -455,6 +728,7 @@ void InventoryList::deSerialize(std::istream &is)
 				if (m_items[item_i]->getContent() == c) {
 					m_items[item_i]->setWear(wear);
 					m_items[item_i++]->setCount(count);
+					m_items[item_i++]->setData(data);
 					continue;
 				}
 				delete m_items[item_i];
@@ -824,8 +1098,8 @@ void Inventory::serialize(std::ostream &os) const
 		InventoryList *list = m_lists[i];
 		os<<list->getName()<<" ";
 		writeU16(os,list->getSize());
-		// start text
-		writeU8(os,2);
+		// start header
+		writeU8(os,1);
 		list->serialize(os);
 		// end text
 		writeU8(os,3);

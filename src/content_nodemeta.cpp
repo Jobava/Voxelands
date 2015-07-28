@@ -815,7 +815,7 @@ bool FurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 			content_t c = fuel_item->getContent();
 			fuel_list->decrementMaterials(1);
 			if (c == CONTENT_TOOLITEM_STEELBUCKET_LAVA) {
-				fuel_list->addItem(0,new ToolItem(CONTENT_TOOLITEM_STEELBUCKET,0));
+				fuel_list->addItem(0,new ToolItem(CONTENT_TOOLITEM_STEELBUCKET,0,0));
 			}
 			changed = true;
 		}else{
@@ -1085,7 +1085,7 @@ bool LockingFurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment 
 			content_t c = fuel_item->getContent();
 			fuel_list->decrementMaterials(1);
 			if (c == CONTENT_TOOLITEM_STEELBUCKET_LAVA) {
-				fuel_list->addItem(0,new ToolItem(CONTENT_TOOLITEM_STEELBUCKET,0));
+				fuel_list->addItem(0,new ToolItem(CONTENT_TOOLITEM_STEELBUCKET,0,0));
 			}
 			changed = true;
 		}else{
@@ -2038,7 +2038,7 @@ NodeMetadata* DeCraftNodeMetadata::clone()
 		if (content_features(list[i]).dug_item == "" && content_features(list[i]).extra_dug_item == "")
 			continue;
 
-		t = new MaterialItem(list[i],1);
+		t = new MaterialItem(list[i],1,0);
 		l->addItem(t);
 	}
 	return d;
@@ -2134,7 +2134,7 @@ bool DeCraftNodeMetadata::import(NodeMetadata *meta)
 		if (content_features(list[i]).dug_item == "" && content_features(list[i]).extra_dug_item == "")
 			continue;
 
-		t = new MaterialItem(list[i],1);
+		t = new MaterialItem(list[i],1,0);
 		l->addItem(t);
 	}
 	return true;
@@ -2172,7 +2172,7 @@ bool DeCraftNodeMetadata::receiveFields(std::string formname, std::map<std::stri
 		if (content_features(list[i]).dug_item == "" && content_features(list[i]).extra_dug_item == "")
 			continue;
 
-		t = new MaterialItem(list[i],1);
+		t = new MaterialItem(list[i],1,0);
 		l->addItem(t);
 	}
 	return true;
@@ -2824,7 +2824,7 @@ bool CauldronNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 			content_t c = fitem->getContent();
 			list->decrementMaterials(1);
 			if (c == CONTENT_TOOLITEM_STEELBUCKET_LAVA)
-				list->addItem(0,new ToolItem(CONTENT_TOOLITEM_STEELBUCKET,0));
+				list->addItem(0,new ToolItem(CONTENT_TOOLITEM_STEELBUCKET,0,0));
 			return true;
 		}
 	}

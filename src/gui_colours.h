@@ -9,7 +9,7 @@
 
 #define GUI_BG_DEATH		video::SColor(180,50,0,0)
 
-#define GUI_BG_TT		video::SColor(140,30,30,50)
+#define GUI_BG_TT		video::SColor(200,30,30,50)
 #define GUI_TT_TEXT		video::SColor(255,255,255,255)
 
 #define GUI_INV_BORDER		video::SColor(245,60,60,80)
