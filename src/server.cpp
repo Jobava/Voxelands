@@ -3840,17 +3840,6 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				/*
 					Calculate special events
 				*/
-
-				/*if(n.d == CONTENT_MESE)
-				{
-					u32 count = 0;
-					for(s16 z=-1; z<=1; z++)
-					for(s16 y=-1; y<=1; y++)
-					for(s16 x=-1; x<=1; x++)
-					{
-
-					}
-				}*/
 			}else if (wielded_tool_features.onplace_node != CONTENT_IGNORE) {
 				bool replaced_node_exists = false;
 				MapNode replaced_node = m_env.getMap().getNodeNoEx(p_over,&replaced_node_exists);

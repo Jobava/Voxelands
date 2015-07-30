@@ -35,7 +35,7 @@ struct CraftItemFeatures {
 	// tooltip used in inventory
 	std::wstring description;
 	// the result of cooking this item
-	std::string cook_result;
+	content_t cook_result;
 	// the fuel value of this item
 	float fuel_time;
 	// whether the item can be stacked in inventory
@@ -65,6 +65,8 @@ struct CraftItemFeatures {
 	content_t shot_item;
 	// when the item is Used, it should be replaced with this
 	content_t onuse_replace_item;
+	// if the item can be enchanted, it gives this
+	content_t enchanted_item;
 	// sound played when item is used
 	std::string sound_use;
 
@@ -73,7 +75,7 @@ struct CraftItemFeatures {
 		texture("unknown_item.png"),
 		name(""),
 		description(L""),
-		cook_result(""),
+		cook_result(CONTENT_IGNORE),
 		fuel_time(0.0),
 		stackable(true),
 		consumable(false),
@@ -87,6 +89,7 @@ struct CraftItemFeatures {
 		thrown_item(CONTENT_IGNORE),
 		shot_item(CONTENT_IGNORE),
 		onuse_replace_item(CONTENT_IGNORE),
+		enchanted_item(CONTENT_IGNORE),
 		sound_use("")
 	{}
 };
@@ -155,7 +158,7 @@ CraftItemFeatures & content_craftitem_features(std::string subname);
 #define CONTENT_CRAFTITEM_BEETROOT (CONTENT_CRAFTITEM_MASK | 0x3F)
 #define CONTENT_CRAFTITEM_GRAPE (CONTENT_CRAFTITEM_MASK | 0x40)
 #define CONTENT_CRAFTITEM_STRING (CONTENT_CRAFTITEM_MASK | 0x41)
-#define CONTENT_CRAFTITEM_MESEDUST (CONTENT_CRAFTITEM_MASK | 0x42)
+#define CONTENT_CRAFTITEM_MITHRILDUST (CONTENT_CRAFTITEM_MASK | 0x42)
 #define CONTENT_CRAFTITEM_RESIN (CONTENT_CRAFTITEM_MASK | 0x43)
 #define CONTENT_CRAFTITEM_OERKKI_DUST (CONTENT_CRAFTITEM_MASK | 0x44)
 #define CONTENT_CRAFTITEM_FISH (CONTENT_CRAFTITEM_MASK | 0x45)
@@ -216,5 +219,8 @@ CraftItemFeatures & content_craftitem_features(std::string subname);
 #define CONTENT_CRAFTITEM_STEEL_BOTTLE (CONTENT_CRAFTITEM_MASK | 0x7C)
 #define CONTENT_CRAFTITEM_STEEL_BOTTLE_WATER (CONTENT_CRAFTITEM_MASK | 0x7D)
 #define CONTENT_CRAFTITEM_GLASS_BOTTLE_WATER (CONTENT_CRAFTITEM_MASK | 0x7E)
+#define CONTENT_CRAFTITEM_MITHRIL_RAW (CONTENT_CRAFTITEM_MASK | 0x7F)
+#define CONTENT_CRAFTITEM_MITHRIL_UNBOUND (CONTENT_CRAFTITEM_MASK | 0x80)
+#define CONTENT_CRAFTITEM_MITHRIL (CONTENT_CRAFTITEM_MASK | 0x81)
 
 #endif

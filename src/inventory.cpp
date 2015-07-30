@@ -268,7 +268,7 @@ std::wstring CraftItem::getGuiText()
 	std::wstring txt(L"  ");
 	CraftItemFeatures *f = &content_craftitem_features(m_content);
 	txt += f->description;
-	if (f->consumable || f->cook_result != "" || f->fuel_time != 0.0)
+	if (f->consumable || f->cook_result != CONTENT_IGNORE || f->fuel_time != 0.0)
 		txt += L"\n";
 	if (f->consumable) {
 		if (f->hunger_effect) {
@@ -302,7 +302,7 @@ std::wstring CraftItem::getGuiText()
 			txt += narrow_to_wide(buff);
 		}
 	}
-	if (f->cook_result != "") {
+	if (f->cook_result != CONTENT_IGNORE) {
 		txt += L"\n";
 		txt += wgettext("Cookable: Yes");
 	}
@@ -345,13 +345,12 @@ u16 CraftItem::getDropCount() const
 
 bool CraftItem::isCookable() const
 {
-	return content_craftitem_features(m_content).cook_result != "";
+	return content_craftitem_features(m_content).cook_result != CONTENT_IGNORE;
 }
 
 InventoryItem *CraftItem::createCookResult() const
 {
-	std::istringstream is(content_craftitem_features(m_content).cook_result, std::ios::binary);
-	return InventoryItem::deSerialize(is);
+	return InventoryItem::create(content_craftitem_features(m_content).cook_result,1,1,0);
 }
 
 bool CraftItem::isFuel() const

@@ -172,19 +172,17 @@ void content_toolitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = CONTENT_TOOLITEM_MESEPICK;
+	i = CONTENT_TOOLITEM_CREATIVEPICK;
 	f = &g_content_toolitem_features[i];
 	f->content = i;
-	f->texture = "tool_mesepick.png";
+	f->texture = "tool_creativepick.png";
 	f->name = "MesePick";
-	f->description = wgettext("Mese Pick");
+	f->description = wgettext("Creative Pick");
 	f->type = TT_PICK;
-	f->hardness = 1337.;
+	f->hardness = 1000.;
 	f->dig_time = 0.;
 	f->level = 4;
 	f->has_punch_effect = false;
-	crafting::setPickRecipe(CONTENT_MESE,CONTENT_TOOLITEM_MESEPICK);
-	lists::add("craftguide",i);
 	lists::add("player-creative",i);
 	lists::add("creative",i);
 

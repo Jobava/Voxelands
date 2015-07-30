@@ -37,6 +37,7 @@
 #define MINERAL_SILVER 5
 #define MINERAL_GOLD 6
 #define MINERAL_QUARTZ 7
+#define MINERAL_MITHRIL 8
 
 struct MineralFeatures {
 	std::string texture;

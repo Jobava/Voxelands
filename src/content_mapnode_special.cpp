@@ -620,7 +620,8 @@ void content_mapnode_special(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 2.0;
 	f->pressure_type = CST_SOLID;
-	crafting::setFilledRoundRecipe(CONTENT_STONE,CONTENT_MESE,CONTENT_BORDERSTONE);
+	crafting::setFilledRoundRecipe(CONTENT_STONE,CONTENT_CRAFTITEM_MITHRIL_RAW,CONTENT_BORDERSTONE);
+	crafting::setFilledRoundRecipe(CONTENT_STONE,CONTENT_CRAFTITEM_MITHRIL_UNBOUND,CONTENT_BORDERSTONE);
 	{
 		u16 r[9] = {
 			CONTENT_CRAFTITEM_STEEL_INGOT,	CONTENT_STONE,			CONTENT_CRAFTITEM_STEEL_INGOT,
@@ -785,7 +786,8 @@ void content_mapnode_special(bool repeat)
 	f->hardness = 1.0;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
-	crafting::set1Any2Recipe(CONTENT_BOOK,CONTENT_MESE,i);
+	crafting::set1Any2Recipe(CONTENT_BOOK,CONTENT_CRAFTITEM_MITHRIL_RAW,i);
+	crafting::set1Any2Recipe(CONTENT_BOOK,CONTENT_CRAFTITEM_MITHRIL_UNBOUND,i);
 	{
 		content_t r[9] = {
 			CONTENT_CRAFTITEM_STICK, CONTENT_CRAFTITEM_STICK, CONTENT_IGNORE,
@@ -1477,7 +1479,7 @@ void content_mapnode_special(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 0.4;
 	f->pressure_type = CST_SOLID;
-	crafting::setFilledRoundRecipe(CONTENT_ROUGHSTONE,CONTENT_MESE,CONTENT_INCINERATOR);
+	crafting::setFilledRoundRecipe(CONTENT_ROUGHSTONE,CONTENT_CRAFTITEM_MITHRIL_UNBOUND,CONTENT_INCINERATOR);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -1980,7 +1982,14 @@ void content_mapnode_special(bool repeat)
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	f->suffocation_per_second = 0;
-	crafting::set1over1Recipe(CONTENT_SPONGE,CONTENT_MESE,CONTENT_LIFE_SUPPORT);
+	{
+		content_t r[9] = {
+			CONTENT_IGNORE,				CONTENT_SPONGE,				CONTENT_IGNORE,
+			CONTENT_CRAFTITEM_MITHRIL_UNBOUND,	CONTENT_IGNORE,				CONTENT_CRAFTITEM_MITHRIL_UNBOUND,
+			CONTENT_CRAFTITEM_MITHRIL_UNBOUND,	CONTENT_CRAFTITEM_MITHRIL_UNBOUND,	CONTENT_CRAFTITEM_MITHRIL_UNBOUND
+		};
+		crafting::setRecipe(r,CONTENT_LIFE_SUPPORT,1);
+	}
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 

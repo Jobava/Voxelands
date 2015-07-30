@@ -96,6 +96,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_TREE 0x801
 #define CONTENT_LEAVES 0x802
 #define CONTENT_FARM_DIRT 0x803
+// MESE is deprecated, but leave it here for the moment
 #define CONTENT_MESE 0x804
 #define CONTENT_MUD 0x805
 #define CONTENT_COTTON 0x806
@@ -267,6 +268,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_FIRE_SHORTTERM 0x8C7
 #define CONTENT_TNT 0x8C8
 #define CONTENT_FLASH 0x8C9
+// MESE is deprecated, but leave it here for the moment
 #define CONTENT_MESE_DIGGING 0x8CA
 #define CONTENT_COBBLE 0x8CB
 #define CONTENT_ROUGHSTONEBRICK 0x8CC
@@ -581,7 +583,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 
 // circuits
 // circuits - wire
-#define CONTENT_CIRCUIT_MESEWIRE 0xF00
+#define CONTENT_CIRCUIT_MITHRILWIRE 0xF00
 #define CONTENT_CIRCUIT_COPPERWIRE 0xF01
 // circuits - powersource
 #define CONTENT_CIRCUIT_REACTOR 0xF20

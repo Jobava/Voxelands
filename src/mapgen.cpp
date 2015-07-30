@@ -1497,8 +1497,9 @@ void make_block(BlockMakeData *data)
 				for (u16 i=0; i<27; i++) {
 					v3s16 p = v3s16(x,y,z) + g_27dirs[i];
 					u32 vi = vmanip.m_area.index(p);
+					// TODO: at random, some should be gems
 					if (vmanip.m_data[vi].getContent() == base_content && mineralrandom.next()%8 == 0)
-						vmanip.m_data[vi] = MapNode(CONTENT_MESE);
+						vmanip.m_data[vi] = MapNode(base_content,MINERAL_MITHRIL);
 				}
 
 			}

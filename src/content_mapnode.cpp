@@ -36,6 +36,7 @@
 #include "content_list.h"
 #include "content_nodebox.h"
 #include "content_mapnode_util.h"
+#include "mineral.h"
 #ifndef SERVER
 #include "tile.h"
 #endif
@@ -239,6 +240,10 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version)
 	case CONTENT_FARM_TRELLIS_GRAPE_3:
 		result.setContent(CONTENT_FARM_TRELLIS_GRAPE);
 		result.param2 = 12;
+		break;
+	case CONTENT_MESE:
+		result.setContent(CONTENT_STONE);
+		result.param1 = MINERAL_MITHRIL;
 		break;
 	default:;
 	}
@@ -1333,34 +1338,6 @@ void content_mapnode_init(bool repeat)
 	}
 	lists::add("craftguide",i);
 	lists::add("creative",i);
-
-	i = CONTENT_MESE;
-	f = &content_features(i);
-	f->description = wgettext("Mese");
-	f->setAllTextures("mese.png");
-	f->setInventoryTextureCube("mese.png", "mese.png", "mese.png");
-	f->draw_type = CDT_CUBELIKE;
-	f->is_ground_content = true;
-	f->onpunch_replace_node = CONTENT_MESE_DIGGING;
-	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
-	f->cook_result = std::string("CraftItem saltpeter 1");
-	f->type = CMT_STONE;
-	f->hardness = 0.5;
-	lists::add("creative",i);
-	lists::add("cooking",i);
-
-	i = CONTENT_MESE_DIGGING;
-	f = &content_features(i);
-	f->description = wgettext("Mese");
-	f->setAllTextures("mese.png");
-	f->setInventoryTextureCube("mese.png", "mese.png", "mese.png");
-	f->param_type = CPT_LIGHT;
-	f->draw_type = CDT_CUBELIKE;
-	f->is_ground_content = true;
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MESE)+" 1";
-	f->light_source = 10;
-	f->type = CMT_STONE;
-	f->hardness = 0.5;
 
 	i = CONTENT_SPONGE;
 	f = &content_features(i);

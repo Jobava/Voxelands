@@ -2885,7 +2885,7 @@ CircuitNodeMetadata::~CircuitNodeMetadata()
 }
 u16 CircuitNodeMetadata::typeId() const
 {
-	return CONTENT_CIRCUIT_MESEWIRE;
+	return CONTENT_CIRCUIT_MITHRILWIRE;
 }
 NodeMetadata* CircuitNodeMetadata::create(std::istream &is)
 {

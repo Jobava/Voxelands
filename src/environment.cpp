@@ -1722,7 +1722,8 @@ void ServerEnvironment::step(float dtime)
 					break;
 				}
 
-				// mese prettiness
+				// MESE is dead
+				case CONTENT_MESE:
 				case CONTENT_MESE_DIGGING:
 				{
 					v3f pp;
@@ -1731,7 +1732,8 @@ void ServerEnvironment::step(float dtime)
 					pp.Z = p.Z;
 					Player *nearest = getNearestConnectedPlayer(pp);
 					if (nearest == NULL || nearest->getPosition().getDistanceFrom(pp*BS) > 6.0*BS) {
-						n.setContent(CONTENT_MESE);
+						n.setContent(CONTENT_STONE);
+						n.param1 = MINERAL_MITHRIL;
 						m_map->addNodeWithEvent(p, n);
 					}
 					break;

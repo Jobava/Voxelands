@@ -31,10 +31,10 @@ void content_mapnode_circuit(bool repeat)
 	content_t i;
 	ContentFeatures *f = NULL;
 
-	i = CONTENT_CIRCUIT_MESEWIRE;
+	i = CONTENT_CIRCUIT_MITHRILWIRE;
 	f = &content_features(i);
-	f->description = wgettext("Mese Wire");
-	f->setAllTextures("mese_wire.png");
+	f->description = wgettext("Mithril Wire");
+	f->setAllTextures("mithril_wire.png");
 	f->setAllTextureFlags(0);
 	f->param_type = CPT_LIGHT;
 	f->draw_type = CDT_WIRELIKE;
@@ -44,7 +44,7 @@ void content_mapnode_circuit(bool repeat)
 	f->sunlight_propagates = true;
 	f->air_equivalent = true; // grass grows underneath
 	f->solidness = 0; // drawn separately, makes no faces
-	f->dug_item = std::string("CraftItem mese_dust 1");
+	f->dug_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_MITHRILDUST)+" 1";
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	f->pressure_type = CST_CRUSHABLE;
@@ -106,7 +106,7 @@ void content_mapnode_circuit(bool repeat)
 	f->setInventoryTextureNodeBox(i,"circuit_reactor_top.png","circuit_reactor.png","circuit_reactor.png");
 	if (f->initial_metadata == NULL)
 		f->initial_metadata = new SourceNodeMetadata();
-	crafting::set1over1Recipe(CONTENT_CRAFTITEM_QUARTZ,CONTENT_MESE,CONTENT_CIRCUIT_REACTOR);
+	crafting::setFilledRoundRecipe(CONTENT_CRAFTITEM_MITHRIL_UNBOUND,CONTENT_CRAFTITEM_QUARTZ,CONTENT_CIRCUIT_REACTOR);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -133,7 +133,7 @@ void content_mapnode_circuit(bool repeat)
 	{
 		u16 r[9] = {
 			CONTENT_GLASS,			CONTENT_GLASS,			CONTENT_GLASS,
-			CONTENT_CRAFTITEM_QUARTZ_DUST,	CONTENT_CRAFTITEM_MESEDUST,	CONTENT_CRAFTITEM_QUARTZ_DUST,
+			CONTENT_CRAFTITEM_QUARTZ_DUST,	CONTENT_CRAFTITEM_MITHRILDUST,	CONTENT_CRAFTITEM_QUARTZ_DUST,
 			CONTENT_WOOD_SLAB,		CONTENT_WOOD_SLAB,		CONTENT_WOOD_SLAB
 		};
 		crafting::setRecipe(r,CONTENT_CIRCUIT_SOLARPANEL,1);
@@ -166,7 +166,7 @@ void content_mapnode_circuit(bool repeat)
 	{
 		u16 r[9] = {
 			CONTENT_STONE,			CONTENT_WOOD_SLAB,		CONTENT_STONE,
-			CONTENT_CRAFTITEM_MESEDUST,	CONTENT_CRAFTITEM_STEEL_INGOT,	CONTENT_CRAFTITEM_QUARTZ_DUST,
+			CONTENT_CRAFTITEM_MITHRILDUST,	CONTENT_CRAFTITEM_STEEL_INGOT,	CONTENT_CRAFTITEM_QUARTZ_DUST,
 			CONTENT_STONE,			CONTENT_WOOD_SLAB,		CONTENT_STONE
 		};
 		crafting::setRecipe(r,CONTENT_CIRCUIT_WATERWHEEL,1);
@@ -201,7 +201,7 @@ void content_mapnode_circuit(bool repeat)
 		f->initial_metadata = new SwitchNodeMetadata();
 	{
 		u16 recipe[9] = {
-			CONTENT_IGNORE, CONTENT_CRAFTITEM_MESEDUST, CONTENT_IGNORE,
+			CONTENT_IGNORE, CONTENT_CRAFTITEM_MITHRILDUST, CONTENT_IGNORE,
 			CONTENT_IGNORE, CONTENT_STONE, CONTENT_IGNORE,
 			CONTENT_IGNORE, CONTENT_CRAFTITEM_QUARTZ_DUST, CONTENT_IGNORE
 		};
@@ -233,7 +233,7 @@ void content_mapnode_circuit(bool repeat)
 		f->initial_metadata = new ButtonNodeMetadata();
 	{
 		u16 recipe[9] = {
-			CONTENT_IGNORE, CONTENT_CRAFTITEM_MESEDUST, CONTENT_IGNORE,
+			CONTENT_IGNORE, CONTENT_CRAFTITEM_MITHRILDUST, CONTENT_IGNORE,
 			CONTENT_IGNORE, CONTENT_STONE_KNOB, CONTENT_IGNORE,
 			CONTENT_IGNORE, CONTENT_CRAFTITEM_QUARTZ_DUST, CONTENT_IGNORE
 		};
@@ -262,7 +262,7 @@ void content_mapnode_circuit(bool repeat)
 		f->initial_metadata = new ButtonNodeMetadata();
 	{
 		u16 recipe[9] = {
-			CONTENT_IGNORE, CONTENT_CRAFTITEM_MESEDUST, CONTENT_IGNORE,
+			CONTENT_IGNORE, CONTENT_CRAFTITEM_MITHRILDUST, CONTENT_IGNORE,
 			CONTENT_IGNORE, CONTENT_STONE_SLAB, CONTENT_IGNORE,
 			CONTENT_IGNORE, CONTENT_CRAFTITEM_QUARTZ_DUST, CONTENT_IGNORE
 		};
@@ -291,7 +291,7 @@ void content_mapnode_circuit(bool repeat)
 		f->initial_metadata = new ButtonNodeMetadata();
 	{
 		u16 recipe[9] = {
-			CONTENT_IGNORE, CONTENT_CRAFTITEM_MESEDUST, CONTENT_IGNORE,
+			CONTENT_IGNORE, CONTENT_CRAFTITEM_MITHRILDUST, CONTENT_IGNORE,
 			CONTENT_IGNORE, CONTENT_WOOD_SLAB, CONTENT_IGNORE,
 			CONTENT_IGNORE, CONTENT_CRAFTITEM_QUARTZ_DUST, CONTENT_IGNORE
 		};
@@ -323,7 +323,7 @@ void content_mapnode_circuit(bool repeat)
 		f->initial_metadata = new NotGateNodeMetadata();
 	{
 		u16 recipe[9] = {
-			CONTENT_IGNORE, CONTENT_CRAFTITEM_MESEDUST, CONTENT_IGNORE,
+			CONTENT_IGNORE, CONTENT_CRAFTITEM_MITHRILDUST, CONTENT_IGNORE,
 			CONTENT_IGNORE, CONTENT_STONE, CONTENT_IGNORE,
 			CONTENT_IGNORE, CONTENT_IGNORE, CONTENT_IGNORE
 		};
@@ -356,7 +356,7 @@ void content_mapnode_circuit(bool repeat)
 	{
 		u16 recipe[9] = {
 			CONTENT_IGNORE,			CONTENT_IGNORE,	CONTENT_IGNORE,
-			CONTENT_CRAFTITEM_MESEDUST,	CONTENT_STONE,	CONTENT_CRAFTITEM_MESEDUST,
+			CONTENT_CRAFTITEM_MITHRILDUST,	CONTENT_STONE,	CONTENT_CRAFTITEM_MITHRILDUST,
 			CONTENT_IGNORE,			CONTENT_IGNORE,	CONTENT_IGNORE
 		};
 		crafting::setRecipe(recipe,CONTENT_CIRCUIT_REPEATER,1);
@@ -449,7 +449,7 @@ void content_mapnode_circuit(bool repeat)
 	{
 		u16 recipe[9] = {
 			CONTENT_WOOD,	CONTENT_ROUGHSTONE,		CONTENT_ROUGHSTONE,
-			CONTENT_WOOD,	CONTENT_CRAFTITEM_STEEL_INGOT,	CONTENT_CRAFTITEM_MESEDUST,
+			CONTENT_WOOD,	CONTENT_CRAFTITEM_STEEL_INGOT,	CONTENT_CRAFTITEM_MITHRILDUST,
 			CONTENT_WOOD,	CONTENT_ROUGHSTONE,		CONTENT_ROUGHSTONE
 		};
 		crafting::setRecipe(recipe,CONTENT_CIRCUIT_PISTON_OFF,1);

@@ -107,7 +107,7 @@ void content_craftitem_init()
 	f->texture = "lump_of_iron.png";
 	f->name = "lump_of_iron";
 	f->description = wgettext("Iron Lump");
-	f->cook_result = "CraftItem steel_ingot 1";
+	f->cook_result = CONTENT_CRAFTITEM_STEEL_INGOT;
 	lists::add("creative",i);
 	lists::add("cooking",i);
 
@@ -117,7 +117,7 @@ void content_craftitem_init()
 	f->texture = "lump_of_clay.png";
 	f->name = "lump_of_clay";
 	f->description = wgettext("Clay Lump");
-	f->cook_result = "CraftItem clay_brick 1";
+	f->cook_result = CONTENT_CRAFTITEM_CLAY_BRICK;
 	lists::add("creative",i);
 	lists::add("cooking",i);
 
@@ -127,7 +127,7 @@ void content_craftitem_init()
 	f->texture = "lump_of_tin.png";
 	f->name = "lump_of_tin";
 	f->description = wgettext("Tin Lump");
-	f->cook_result = "CraftItem tin_ingot 1";
+	f->cook_result = CONTENT_CRAFTITEM_TIN_INGOT;
 	lists::add("creative",i);
 	lists::add("cooking",i);
 
@@ -137,7 +137,7 @@ void content_craftitem_init()
 	f->texture = "lump_of_copper.png";
 	f->name = "lump_of_copper";
 	f->description = wgettext("Copper Lump");
-	f->cook_result = "CraftItem copper_ingot 1";
+	f->cook_result = CONTENT_CRAFTITEM_COPPER_INGOT;
 	lists::add("creative",i);
 	lists::add("cooking",i);
 
@@ -147,7 +147,7 @@ void content_craftitem_init()
 	f->texture = "lump_of_silver.png";
 	f->name = "lump_of_silver";
 	f->description = wgettext("Silver Lump");
-	f->cook_result = "CraftItem silver_ingot 1";
+	f->cook_result = CONTENT_CRAFTITEM_SILVER_INGOT;
 	lists::add("creative",i);
 	lists::add("cooking",i);
 
@@ -157,7 +157,7 @@ void content_craftitem_init()
 	f->texture = "lump_of_gold.png";
 	f->name = "lump_of_gold";
 	f->description = wgettext("Gold Lump");
-	f->cook_result = "CraftItem gold_ingot 1";
+	f->cook_result = CONTENT_CRAFTITEM_GOLD_INGOT;
 	lists::add("creative",i);
 	lists::add("cooking",i);
 
@@ -231,7 +231,7 @@ void content_craftitem_init()
 	f->texture = "rat.png";
 	f->name = "rat";
 	f->description = wgettext("Rat");
-	f->cook_result = "CraftItem cooked_rat 1";
+	f->cook_result = CONTENT_CRAFTITEM_COOKED_RAT;
 	f->drop_count = 1;
 	f->drop_item = CONTENT_MOB_RAT;
 	lists::add("creative",i);
@@ -243,7 +243,7 @@ void content_craftitem_init()
 	f->texture = "cooked_rat.png";
 	f->name = "cooked_rat";
 	f->description = wgettext("Cooked Rat");
-	f->cook_result = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_ASH)+" 1";
+	f->cook_result = CONTENT_CRAFTITEM_ASH;
 	f->consumable = true;
 	f->sound_use = "use-eat";
 	f->hunger_effect = 8;
@@ -521,7 +521,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_MUSH;
 	f->texture = "mush.png";
 	f->name = "mush";
-	f->cook_result = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_ASH)+" 1";
+	f->cook_result = CONTENT_CRAFTITEM_ASH;
 	f->description = wgettext("Mush");
 	f->consumable = true;
 	f->sound_use = "use-eat";
@@ -612,7 +612,7 @@ void content_craftitem_init()
 	f->texture = "dough.png";
 	f->name = "dough";
 	f->description = wgettext("Dough");
-	f->cook_result = std::string("CraftItem bread 1");
+	f->cook_result = CONTENT_CRAFTITEM_BREAD;
 	f->consumable = true;
 	f->sound_use = "use-eat";
 	f->hunger_effect = 4;
@@ -640,7 +640,7 @@ void content_craftitem_init()
 	f->texture = "harvested_potato.png";
 	f->name = "harvested_potato";
 	f->description = wgettext("Potato");
-	f->cook_result = std::string("CraftItem roast_potato 1");
+	f->cook_result = CONTENT_CRAFTITEM_ROASTPOTATO;
 	f->consumable = true;
 	f->sound_use = "use-eat";
 	f->hunger_effect = 6;
@@ -688,7 +688,7 @@ void content_craftitem_init()
 	f->texture = "carrot_cake_raw.png";
 	f->name = "carrot_cake_raw";
 	f->description = wgettext("Raw Carrot Cake");
-	f->cook_result = std::string("CraftItem carrot_cake 1");
+	f->cook_result = CONTENT_CRAFTITEM_CARROT_CAKE;
 	f->consumable = true;
 	f->sound_use = "use-eat";
 	f->hunger_effect = 6;
@@ -743,15 +743,15 @@ void content_craftitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = CONTENT_CRAFTITEM_MESEDUST;
+	i = CONTENT_CRAFTITEM_MITHRILDUST;
 	f = &g_content_craftitem_features[i];
-	f->content = CONTENT_CRAFTITEM_MESEDUST;
+	f->content = CONTENT_CRAFTITEM_MITHRILDUST;
 	f->texture = "mese_dust.png";
 	f->name = "mese_dust";
-	f->description = wgettext("Mese Dust");
+	f->description = wgettext("Mithril Dust");
 	f->drop_count = 1;
-	f->drop_item = CONTENT_CIRCUIT_MESEWIRE;
-	crafting::set1To2Recipe(CONTENT_MESE,CONTENT_CRAFTITEM_MESEDUST);
+	f->drop_item = CONTENT_CIRCUIT_MITHRILWIRE;
+	crafting::set1To2Recipe(CONTENT_CRAFTITEM_MITHRIL_RAW,CONTENT_CRAFTITEM_MITHRILDUST);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -781,7 +781,7 @@ void content_craftitem_init()
 	f->texture = "fish.png";
 	f->name = "fish";
 	f->description = wgettext("Fish");
-	f->cook_result = "CraftItem cooked_fish 1";
+	f->cook_result = CONTENT_CRAFTITEM_COOKED_FISH;
 	f->drop_count = 1;
 	f->drop_item = CONTENT_MOB_FISH;
 	f->consumable = true;
@@ -797,7 +797,7 @@ void content_craftitem_init()
 	f->texture = "cooked_fish.png";
 	f->name = "cooked_fish";
 	f->description = wgettext("Cooked Fish");
-	f->cook_result = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_ASH)+" 1";
+	f->cook_result = CONTENT_CRAFTITEM_ASH;
 	f->consumable = true;
 	f->sound_use = "use-eat";
 	f->hunger_effect = 8;
@@ -811,7 +811,7 @@ void content_craftitem_init()
 	f->texture = "meat.png";
 	f->name = "meat";
 	f->description = wgettext("Meat");
-	f->cook_result = "CraftItem cooked_meat 1";
+	f->cook_result = CONTENT_CRAFTITEM_COOKED_MEAT;
 	f->consumable = true;
 	f->sound_use = "use-eat";
 	f->hunger_effect = 1;
@@ -825,7 +825,7 @@ void content_craftitem_init()
 	f->texture = "cooked_meat.png";
 	f->name = "cooked_meat";
 	f->description = wgettext("Cooked Meat");
-	f->cook_result = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_ASH)+" 1";
+	f->cook_result = CONTENT_CRAFTITEM_ASH;
 	f->consumable = true;
 	f->sound_use = "use-eat";
 	f->hunger_effect = 10;
@@ -1486,5 +1486,32 @@ void content_craftitem_init()
 	f->health_effect = 1;
 	f->cold_effect = 5;
 	f->onuse_replace_item = CONTENT_CRAFTITEM_STEEL_BOTTLE;
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_MITHRIL_RAW;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_MITHRIL_RAW;
+	f->texture = "mithril_raw.png";
+	f->name = "mithril_raw";
+	f->description = wgettext("Raw Mithril");
+	f->cook_result = CONTENT_CRAFTITEM_MITHRIL_UNBOUND;
+	lists::add("creative",i);
+	lists::add("cooking",i);
+
+	i = CONTENT_CRAFTITEM_MITHRIL_UNBOUND;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_MITHRIL_UNBOUND;
+	f->texture = "mithril_unbound.png";
+	f->name = "mithril_unbound";
+	f->enchanted_item = CONTENT_CRAFTITEM_MITHRIL;
+	f->description = wgettext("Unbound Mithril");
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_MITHRIL;
+	f = &g_content_craftitem_features[i];
+	f->content = CONTENT_CRAFTITEM_MITHRIL;
+	f->texture = "mithril_unbound.png";
+	f->name = "mithril_bound";
+	f->description = wgettext("Mithril");
 	lists::add("creative",i);
 }

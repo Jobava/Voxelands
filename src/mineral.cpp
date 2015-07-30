@@ -107,4 +107,10 @@ void init_mineral()
 	f->texture = "mineral_quartz.png";
 	f->dug_item = CONTENT_CRAFTITEM_QUARTZ;
 	f->min_level = 3;
+
+	i = MINERAL_MITHRIL;
+	f = &mineral_features(i);
+	f->texture = "mineral_mithril.png";
+	f->dug_item = CONTENT_CRAFTITEM_MITHRIL_RAW;
+	f->min_level = 3;
 }
