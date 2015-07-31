@@ -37,6 +37,7 @@
 #include "player.h"
 #include "log.h"
 #include "intl.h"
+#include "enchantment.h"
 
 /*
 	InventoryItem
@@ -237,9 +238,9 @@ float MaterialItem::getFuelTime() const
 bool MaterialItem::use(ServerEnvironment *env, Player *player)
 {
 	content_t n = content_features(m_content).onuse_replace_node;
-	if (n != CONTENT_IGNORE) {
+	if (n != CONTENT_IGNORE)
 		m_content = n;
-	}
+
 	return false;
 }
 
@@ -254,9 +255,22 @@ video::ITexture * CraftItem::getImage() const
 		return NULL;
 
 	std::string name = content_craftitem_features(m_content).texture;
+	std::string base = content_craftitem_features(m_content).overlay_base;
+
+	std::ostringstream os;
+	os<<name;
+
+	if (base != "") {
+		EnchantmentInfo info;
+		u16 data = m_data;
+		while (enchantment_get(&data,&info)) {
+			if (info.overlay != "")
+				os<<"^"<<base<<"_"<<info.overlay<<".png";
+		}
+	}
 
 	// Get such a texture
-	return g_texturesource->getTextureRaw(name);
+	return g_texturesource->getTextureRaw(os.str());
 }
 #endif
 std::wstring CraftItem::getGuiName()
@@ -410,6 +424,24 @@ bool CraftItem::use(ServerEnvironment *env, Player *player)
 */
 
 #ifndef SERVER
+std::string ToolItem::getBasename() const
+{
+	std::ostringstream os;
+	os<<content_toolitem_features(m_content).texture;
+
+	EnchantmentInfo info;
+	u16 data = m_data;
+	if (m_content == CONTENT_TOOLITEM_MITHRIL_PICK)
+		data = (1<<15)|(1<<3);
+	while (enchantment_get(&data,&info)) {
+		std::string ol = toolitem_overlay(m_content,info.overlay);
+		if (ol != "")
+			os<<"^"<<ol;
+	}
+
+	return os.str();
+}
+
 video::ITexture *ToolItem::getImage() const
 {
 	if(g_texturesource == NULL)
@@ -454,6 +486,20 @@ std::wstring ToolItem::getGuiText()
 		txt += L":";
 		sprintf(buff,"%02d",(int)f->fuel_time%60);
 		txt += narrow_to_wide(buff);
+	}
+	//if (m_data > 0) {
+	if (m_content == CONTENT_TOOLITEM_MITHRIL_PICK) {
+		EnchantmentInfo info;
+		u16 data = m_data;
+		txt += L"\n";
+		if (m_content == CONTENT_TOOLITEM_MITHRIL_PICK)
+			data = (1<<15)|(1<<3);
+		while (enchantment_get(&data,&info)) {
+			txt += L"\n";
+			txt += info.name;
+			txt += L" ";
+			txt += itows(info.level);
+		}
 	}
 
 	return txt;

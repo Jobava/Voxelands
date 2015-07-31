@@ -108,6 +108,46 @@ DiggingProperties getDiggingProperties(content_t content, content_t tool)
 	return DiggingProperties(diggable,time,wear);
 }
 
+std::string toolitem_overlay(content_t content, std::string ol)
+{
+	ToolItemFeatures t_features = content_toolitem_features(content);
+	if (ol == "")
+		return "";
+	std::string base = "tool_overlay_";
+	switch (t_features.type) {
+	case TT_AXE:
+		base += "axe_";
+		break;
+	case TT_PICK:
+		base += "pick_";
+		break;
+	case TT_SHOVEL:
+		base += "shovel_";
+		break;
+	case TT_SWORD:
+		base += "sword_";
+		break;
+	case TT_SHEAR:
+		base += "shear_";
+		break;
+	case TT_BUCKET:
+		base += "bucket_";
+		break;
+	case TT_SPEAR:
+		base += "spear_";
+		break;
+	case TT_SPECIAL:
+	case TT_NONE:
+	default:
+		return "";
+		break;
+	}
+
+	base += ol;
+	base += ".png";
+	return base;
+}
+
 void content_toolitem_init()
 {
 	g_content_toolitem_features.clear();
@@ -551,4 +591,209 @@ void content_toolitem_init()
 	}
 	lists::add("craftguide",i);
 	lists::add("creative",i);
+
+	i = CONTENT_TOOLITEM_MITHRIL_RAW_PICK;
+	f = &g_content_toolitem_features[i];
+	f->content = i;
+	f->texture = "tool_mithril_raw_pick.png";
+	f->name = "mithril_raw_pick";
+	f->description = wgettext("Raw Mithril Pick");
+	f->type = TT_PICK;
+	f->hardness = 500.;
+	f->dig_time = 0.3;
+	f->level = 4;
+	crafting::setPickRecipe(CONTENT_CRAFTITEM_MITHRIL_RAW,CONTENT_TOOLITEM_MITHRIL_RAW_PICK);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_TOOLITEM_MITHRIL_RAW_SHOVEL;
+	f = &g_content_toolitem_features[i];
+	f->content = i;
+	f->texture = "tool_mithril_raw_shovel.png";
+	f->name = "mithril_raw_shovel";
+	f->description = wgettext("Raw Mithril Shovel");
+	f->type = TT_SHOVEL;
+	f->hardness = 500.;
+	f->dig_time = 0.1;
+	f->level = 4;
+	crafting::setShovelRecipe(CONTENT_CRAFTITEM_MITHRIL_RAW,CONTENT_TOOLITEM_MITHRIL_RAW_SHOVEL);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_TOOLITEM_MITHRIL_RAW_AXE;
+	f = &g_content_toolitem_features[i];
+	f->content = i;
+	f->texture = "tool_mithril_raw_axe.png";
+	f->name = "mithril_raw_axe";
+	f->description = wgettext("Raw Mithril Axe");
+	f->type = TT_AXE;
+	f->hardness = 500.;
+	f->dig_time = 0.3;
+	f->level = 4;
+	crafting::setAxeRecipe(CONTENT_CRAFTITEM_MITHRIL_RAW,CONTENT_TOOLITEM_MITHRIL_RAW_AXE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_TOOLITEM_MITHRIL_RAW_SWORD;
+	f = &g_content_toolitem_features[i];
+	f->content = i;
+	f->texture = "tool_mithril_raw_sword.png";
+	f->name = "mithril_raw_sword";
+	f->description = wgettext("Raw Mithril Sword");
+	f->type = TT_SWORD;
+	f->hardness = 500.;
+	f->dig_time = 0.3;
+	f->level = 4;
+	crafting::setSwordRecipe(CONTENT_CRAFTITEM_MITHRIL_RAW,CONTENT_TOOLITEM_MITHRIL_RAW_SWORD);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_TOOLITEM_MITHRIL_RAW_SPEAR;
+	f = &g_content_toolitem_features[i];
+	f->content = i;
+	f->texture = "tool_mithril_raw_spear.png";
+	f->name = "mithril_raw_spear";
+	f->description = wgettext("Raw Mithril Spear");
+	f->type = TT_SPEAR;
+	f->hardness = 400.;
+	f->dig_time = 0.3;
+	f->level = 4;
+	crafting::setSpearRecipe(CONTENT_CRAFTITEM_MITHRIL_RAW,CONTENT_TOOLITEM_MITHRIL_RAW_SPEAR);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_TOOLITEM_MITHRIL_UNBOUND_PICK;
+	f = &g_content_toolitem_features[i];
+	f->content = i;
+	f->texture = "tool_mithril_pick.png";
+	f->name = "mithril_unbound_pick";
+	f->description = wgettext("Unbound Mithril Pick");
+	f->type = TT_PICK;
+	f->hardness = 700.;
+	f->dig_time = 0.2;
+	f->level = 5;
+	crafting::setPickRecipe(CONTENT_CRAFTITEM_MITHRIL_UNBOUND,CONTENT_TOOLITEM_MITHRIL_UNBOUND_PICK);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_TOOLITEM_MITHRIL_UNBOUND_SHOVEL;
+	f = &g_content_toolitem_features[i];
+	f->content = i;
+	f->texture = "tool_mithril_shovel.png";
+	f->name = "mithril_unbound_shovel";
+	f->description = wgettext("Unbound Mithril Shovel");
+	f->type = TT_SHOVEL;
+	f->hardness = 700.;
+	f->dig_time = 0.05;
+	f->level = 5;
+	crafting::setShovelRecipe(CONTENT_CRAFTITEM_MITHRIL_UNBOUND,CONTENT_TOOLITEM_MITHRIL_UNBOUND_SHOVEL);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_TOOLITEM_MITHRIL_UNBOUND_AXE;
+	f = &g_content_toolitem_features[i];
+	f->content = i;
+	f->texture = "tool_mithril_axe.png";
+	f->name = "mithril_unbound_axe";
+	f->description = wgettext("Unbound Mithril Axe");
+	f->type = TT_AXE;
+	f->hardness = 700.;
+	f->dig_time = 0.2;
+	f->level = 5;
+	crafting::setAxeRecipe(CONTENT_CRAFTITEM_MITHRIL_UNBOUND,CONTENT_TOOLITEM_MITHRIL_UNBOUND_AXE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_TOOLITEM_MITHRIL_UNBOUND_SWORD;
+	f = &g_content_toolitem_features[i];
+	f->content = i;
+	f->texture = "tool_mithril_sword.png";
+	f->name = "mithril_unbound_sword";
+	f->description = wgettext("Unbound Mithril Sword");
+	f->type = TT_SWORD;
+	f->hardness = 700.;
+	f->dig_time = 0.2;
+	f->level = 5;
+	crafting::setSwordRecipe(CONTENT_CRAFTITEM_MITHRIL_UNBOUND,CONTENT_TOOLITEM_MITHRIL_UNBOUND_SWORD);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_TOOLITEM_MITHRIL_UNBOUND_SPEAR;
+	f = &g_content_toolitem_features[i];
+	f->content = i;
+	f->texture = "tool_mithril_spear.png";
+	f->name = "mithril_unbound_spear";
+	f->description = wgettext("Unbound Mithril Spear");
+	f->type = TT_SPEAR;
+	f->hardness = 600.;
+	f->dig_time = 0.2;
+	f->level = 5;
+	crafting::setSpearRecipe(CONTENT_CRAFTITEM_MITHRIL_UNBOUND,CONTENT_TOOLITEM_MITHRIL_UNBOUND_SPEAR);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_TOOLITEM_MITHRIL_PICK;
+	f = &g_content_toolitem_features[i];
+	f->content = i;
+	f->texture = "tool_mithril_pick.png";
+	f->name = "mithril_pick";
+	f->description = wgettext("Mithril Pick");
+	f->type = TT_PICK;
+	f->hardness = 700.;
+	f->dig_time = 0.2;
+	f->level = 5;
+	crafting::setPickRecipe(CONTENT_CRAFTITEM_MITHRIL,CONTENT_TOOLITEM_MITHRIL_PICK);
+	lists::add("craftguide",i);
+
+	i = CONTENT_TOOLITEM_MITHRIL_SHOVEL;
+	f = &g_content_toolitem_features[i];
+	f->content = i;
+	f->texture = "tool_mithril_shovel.png";
+	f->name = "mithril_shovel";
+	f->description = wgettext("Mithril Shovel");
+	f->type = TT_SHOVEL;
+	f->hardness = 700.;
+	f->dig_time = 0.05;
+	f->level = 5;
+	crafting::setShovelRecipe(CONTENT_CRAFTITEM_MITHRIL,CONTENT_TOOLITEM_MITHRIL_SHOVEL);
+	lists::add("craftguide",i);
+
+	i = CONTENT_TOOLITEM_MITHRIL_AXE;
+	f = &g_content_toolitem_features[i];
+	f->content = i;
+	f->texture = "tool_mithril_axe.png";
+	f->name = "mithril_axe";
+	f->description = wgettext("Mithril Axe");
+	f->type = TT_AXE;
+	f->hardness = 700.;
+	f->dig_time = 0.2;
+	f->level = 5;
+	crafting::setAxeRecipe(CONTENT_CRAFTITEM_MITHRIL,CONTENT_TOOLITEM_MITHRIL_AXE);
+	lists::add("craftguide",i);
+
+	i = CONTENT_TOOLITEM_MITHRIL_SWORD;
+	f = &g_content_toolitem_features[i];
+	f->content = i;
+	f->texture = "tool_mithril_sword.png";
+	f->name = "mithril_sword";
+	f->description = wgettext("Mithril Sword");
+	f->type = TT_SWORD;
+	f->hardness = 700.;
+	f->dig_time = 0.2;
+	f->level = 5;
+	crafting::setSwordRecipe(CONTENT_CRAFTITEM_MITHRIL,CONTENT_TOOLITEM_MITHRIL_SWORD);
+	lists::add("craftguide",i);
+
+	i = CONTENT_TOOLITEM_MITHRIL_SPEAR;
+	f = &g_content_toolitem_features[i];
+	f->content = i;
+	f->texture = "tool_mithril_spear.png";
+	f->name = "mithril_spear";
+	f->description = wgettext("Mithril Spear");
+	f->type = TT_SPEAR;
+	f->hardness = 600.;
+	f->dig_time = 0.2;
+	f->level = 5;
+	crafting::setSpearRecipe(CONTENT_CRAFTITEM_MITHRIL,CONTENT_TOOLITEM_MITHRIL_SPEAR);
+	lists::add("craftguide",i);
 }

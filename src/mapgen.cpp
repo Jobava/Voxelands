@@ -1487,7 +1487,7 @@ void make_block(BlockMakeData *data)
 		PseudoRandom mineralrandom(blockseed);
 
 		/*
-			Add meseblocks
+			Add mithril blocks
 		*/
 		for (s16 i=0; i<approx_ground_depth/4; i++) {
 			if (mineralrandom.next()%50 == 0) {

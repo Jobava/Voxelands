@@ -4,7 +4,7 @@
 *
 * mineral.h
 * voxelands - 3d voxel world sandbox game
-* Copyright (C) Lisa 'darkrose' Milne 2014 <lisa@ltmnet.com>
+* Copyright (C) Lisa 'darkrose' Milne 2015 <lisa@ltmnet.com>
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by

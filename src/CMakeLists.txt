@@ -192,6 +192,7 @@ set(common_SRCS
 	serverobject.cpp
 	noise.cpp
 	mineral.cpp
+	enchantment.cpp
 	porting.cpp
 	defaultsettings.cpp
 	mapnode.cpp

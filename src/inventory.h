@@ -382,9 +382,7 @@ public:
 		return new ToolItem(m_content, m_wear, m_data);
 	}
 #ifndef SERVER
-	std::string getBasename() const {
-		return content_toolitem_features(m_content).texture;
-	}
+	std::string getBasename() const;
 
 	video::ITexture * getImage() const;
 

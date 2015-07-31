@@ -30,6 +30,9 @@
 struct CraftItemFeatures {
 	content_t content;
 	std::string texture;
+	// if additional overlays are used, the texture name is made from
+	// <overlay_base>_<overlay>.png
+	std::string overlay_base;
 	// the old 'subname'
 	std::string name;
 	// tooltip used in inventory
@@ -73,6 +76,7 @@ struct CraftItemFeatures {
 	CraftItemFeatures():
 		content(CONTENT_IGNORE),
 		texture("unknown_item.png"),
+		overlay_base(""),
 		name(""),
 		description(L""),
 		cook_result(CONTENT_IGNORE),
