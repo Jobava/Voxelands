@@ -24,6 +24,7 @@
 ************************************************************************/
 
 #include "mineral.h"
+#include "enchantment.h"
 
 struct MineralFeatures g_mineral_features[MINERAL_MAX+1];
 
@@ -52,11 +53,31 @@ CraftItem *getDiggedMineralItem(u8 mineral, Player *player, InventoryItem *tool)
 		return NULL;
 
 	u16 count = m.dug_count_min;
-	if (m.dug_count_min != m.dug_count_max && t->level > count) {
-		count = myrand_range(m.dug_count_min,t->level);
-		if (count > m.dug_count_max)
-			count = m.dug_count_max;
+	u16 count_max = t->level;
+	u16 data = tool->getData();
+
+	if (data != 0) {
+		EnchantmentInfo info;
+		while (enchantment_get(&data,&info)) {
+			switch (info.type) {
+			case ENCHANTMENT_MORE: // amplius increases the amount given
+				count += info.level;
+				count_max += info.level;
+				break;
+			case ENCHANTMENT_DONTBREAK: // gives no mineral
+				return NULL;
+				break;
+			default:;
+			}
+		}
 	}
+
+	if (count > count_max && count_max > count) {
+		count = myrand_range(m.dug_count_min,count_max);
+	}
+
+	if (count > m.dug_count_max)
+		count = m.dug_count_max;
 
 	return new CraftItem(m.dug_item, count, 0);
 }

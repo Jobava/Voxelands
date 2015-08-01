@@ -25,6 +25,7 @@
 #include "content_mapnode.h"
 #include <map>
 #include "intl.h"
+#include "enchantment.h"
 
 std::map<content_t,struct ToolItemFeatures> g_content_toolitem_features;
 
@@ -48,7 +49,7 @@ ToolItemFeatures & content_toolitem_features(std::string subname)
 	return g_content_toolitem_features[CONTENT_IGNORE];
 }
 
-DiggingProperties getDiggingProperties(content_t content, content_t tool)
+DiggingProperties getDiggingProperties(content_t content, content_t tool, u16 data)
 {
 	ToolItemFeatures t_features = content_toolitem_features(tool);
 	ContentFeatures &c_features = content_features(content);
@@ -104,6 +105,20 @@ DiggingProperties getDiggingProperties(content_t content, content_t tool)
 		}
 	}
 
+	if (data != 0 && diggable) {
+		EnchantmentInfo info;
+		while (enchantment_get(&data,&info)) {
+			switch (info.type) {
+			case ENCHANTMENT_FAST:
+				time /= (info.level+1);
+				break;
+			case ENCHANTMENT_LONGLASTING:
+				wear /= (info.level+1);
+				break;
+			default:;
+			}
+		}
+	}
 
 	return DiggingProperties(diggable,time,wear);
 }

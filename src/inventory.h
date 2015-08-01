@@ -189,10 +189,7 @@ public:
 		return new MaterialItem(m_content, m_count, m_data);
 	}
 #ifndef SERVER
-	video::ITexture * getImage() const
-	{
-		return content_features(m_content).inventory_texture;
-	}
+	video::ITexture * getImage() const;
 #endif
 	std::wstring getGuiName()
 	{

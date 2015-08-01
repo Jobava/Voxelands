@@ -51,6 +51,7 @@
 #include "base64.h"
 #include "sound.h"
 #include "http.h"
+#include "enchantment.h"
 
 #define PP(x) "("<<(x).X<<","<<(x).Y<<","<<(x).Z<<")"
 
@@ -3310,7 +3311,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					if (item && (std::string)item->getName() == "ToolItem") {
 						ToolItem *titem = (ToolItem*)item;
 						// Get digging properties for material and tool
-						DiggingProperties prop = getDiggingProperties(selected_content, titem->getContent());
+						DiggingProperties prop = getDiggingProperties(selected_content, titem->getContent(),titem->getData());
 
 						if (prop.diggable == false) {
 							infostream<<"Server: WARNING: Player digged"
@@ -3411,7 +3412,19 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					}
 				}else if (selected_node_features.liquid_type == LIQUID_NONE) {
 					std::string &dug_s = selected_node_features.dug_item;
-					if (dug_s != "") {
+					if (wielded_tool_features.type != TT_NONE && enchantment_have(wielditem->getData(),ENCHANTMENT_DONTBREAK)) {
+						u16 data = 0;
+						if (selected_node_features.param_type == CPT_MINERAL)
+							data = selected_node.param1;
+						item = InventoryItem::create(selected_content,1,data);
+					}else if (
+						wielded_tool_features.type != TT_NONE
+						&& enchantment_have(wielditem->getData(),ENCHANTMENT_FLAME)
+						&& selected_node_features.cook_result != ""
+					) {
+						std::istringstream is(selected_node_features.cook_result, std::ios::binary);
+						item = InventoryItem::deSerialize(is);
+					}else if (dug_s != "") {
 						std::istringstream is(dug_s, std::ios::binary);
 						item = InventoryItem::deSerialize(is);
 					}else if (selected_node_features.param2_type == CPT_PLANTGROWTH) {

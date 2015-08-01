@@ -105,7 +105,7 @@ struct DiggingProperties
 };
 
 // For getting the default properties, set toolid=CONTENT_IGNORE
-DiggingProperties getDiggingProperties(content_t material, content_t toolid);
+DiggingProperties getDiggingProperties(content_t material, content_t toolid, u16 data=0);
 std::string toolitem_overlay(content_t content, std::string ol);
 void content_toolitem_init();
 ToolItemFeatures & content_toolitem_features(content_t i);

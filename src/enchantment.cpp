@@ -145,3 +145,14 @@ bool enchantment_get(uint16_t *data, EnchantmentInfo *info)
 
 	return true;
 }
+
+/* check if data contains an enchantment */
+bool enchantment_have(uint16_t data, uint16_t enchantment)
+{
+	EnchantmentInfo info;
+	while (enchantment_get(&data,&info)) {
+		if (info.type == enchantment)
+			return true;
+	}
+	return false;
+}

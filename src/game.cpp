@@ -1752,18 +1752,20 @@ void the_game(
 
 							// Get tool name. Default is "" = bare hands
 							content_t toolid = CONTENT_IGNORE;
+							u16 tooldata = 0;
 							InventoryList *mlist = local_inventory.getList("main");
 							if (mlist != NULL) {
 								InventoryItem *item = mlist->getItem(g_selected_item);
 								if (item && (item->getContent()&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
 									ToolItem *titem = (ToolItem*)item;
 									toolid = titem->getContent();
+									tooldata = titem->getData();
 								}
 							}
 
 							// Get digging properties for material and tool
 							content_t material = n.getContent();
-							DiggingProperties prop = getDiggingProperties(material, toolid);
+							DiggingProperties prop = getDiggingProperties(material, toolid, tooldata);
 
 							float dig_time_complete = 0.0;
 

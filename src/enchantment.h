@@ -40,5 +40,6 @@ struct EnchantmentInfo {
 };
 
 bool enchantment_get(uint16_t *data, EnchantmentInfo *info);
+bool enchantment_have(uint16_t data, uint16_t enchantment);
 
 #endif

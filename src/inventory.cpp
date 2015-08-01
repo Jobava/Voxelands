@@ -190,6 +190,34 @@ ServerActiveObject* InventoryItem::createSAO(ServerEnvironment *env, u16 id, v3f
 /*
 	MaterialItem
 */
+#ifndef SERVER
+video::ITexture * MaterialItem::getImage() const
+{
+	//if (m_data == 0 || content_features(m_content).param_type != CPT_MINERAL)
+		return content_features(m_content).inventory_texture;
+
+
+	//std::string name = content_features(m_content).inventory_texture;
+
+	//std::ostringstream os;
+	//os<<name;
+
+	//u8 mineral = m_data;
+	//std::string mineral_texture_name = mineral_features(mineral).texture;
+	//if (mineral_texture_name != "") {
+		//u32 orig_id = spec.texture.id;
+		//std::string texture_name = g_texturesource->getTextureName(orig_id);
+		////texture_name += "^blit:";
+		//texture_name += "^";
+		//texture_name += mineral_texture_name;
+		//u32 new_id = g_texturesource->getTextureId(texture_name);
+		//spec.texture = g_texturesource->getTexture(new_id);
+	//}
+
+	//// Get such a texture
+	//return g_texturesource->getTextureRaw(os.str());
+}
+#endif
 std::wstring MaterialItem::getGuiText()
 {
 	std::wstring txt(L"  ");
@@ -328,6 +356,17 @@ std::wstring CraftItem::getGuiText()
 		txt += L":";
 		sprintf(buff,"%02d",(int)f->fuel_time%60);
 		txt += narrow_to_wide(buff);
+	}
+	if (m_data > 0) {
+		EnchantmentInfo info;
+		u16 data = m_data;
+		txt += L"\n";
+		while (enchantment_get(&data,&info)) {
+			txt += L"\n";
+			txt += info.name;
+			txt += L" ";
+			txt += itows(info.level);
+		}
 	}
 
 	return txt;
@@ -487,13 +526,10 @@ std::wstring ToolItem::getGuiText()
 		sprintf(buff,"%02d",(int)f->fuel_time%60);
 		txt += narrow_to_wide(buff);
 	}
-	//if (m_data > 0) {
-	if (m_content == CONTENT_TOOLITEM_MITHRIL_PICK) {
+	if (m_data > 0) {
 		EnchantmentInfo info;
 		u16 data = m_data;
 		txt += L"\n";
-		if (m_content == CONTENT_TOOLITEM_MITHRIL_PICK)
-			data = (1<<15)|(1<<3);
 		while (enchantment_get(&data,&info)) {
 			txt += L"\n";
 			txt += info.name;
