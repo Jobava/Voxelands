@@ -64,6 +64,7 @@ static void enchantment_init()
 	f->mask = (1<<(i-1));
 	f->overlay = "flame";
 	f->name = L"Ignis";
+	f->gem = CONTENT_CRAFTITEM_SUNSTONE;
 
 	i = ENCHANTMENT_DONTBREAK;
 	f = &enchantments[i];
@@ -71,6 +72,7 @@ static void enchantment_init()
 	f->mask = (1<<(i-1));
 	f->overlay = "dontbreak";
 	f->name = L"Indomitus";
+	f->gem = CONTENT_CRAFTITEM_SAPPHIRE;
 
 	i = ENCHANTMENT_MORE;
 	f = &enchantments[i];
@@ -78,6 +80,7 @@ static void enchantment_init()
 	f->mask = (1<<(i-1));
 	f->overlay = "more";
 	f->name = L"Amplius";
+	f->gem = CONTENT_CRAFTITEM_TURQUOISE;
 
 	i = ENCHANTMENT_FAST;
 	f = &enchantments[i];
@@ -85,6 +88,7 @@ static void enchantment_init()
 	f->mask = (1<<(i-1));
 	f->overlay = "fast";
 	f->name = L"Velox";
+	f->gem = CONTENT_CRAFTITEM_AMETHYST;
 
 	i = ENCHANTMENT_LONGLASTING;
 	f = &enchantments[i];
@@ -92,7 +96,7 @@ static void enchantment_init()
 	f->mask = (1<<(i-1));
 	f->overlay = "longlast";
 	f->name = L"Aeterna";
-	f->gem = CONTENT_CRAFTITEM_QUARTZ;
+	f->gem = CONTENT_CRAFTITEM_RUBY;
 
 	enchantment_isinit = 1;
 }
@@ -158,7 +162,34 @@ bool enchantment_have(uint16_t data, uint16_t enchantment)
 
 bool enchantment_set(uint16_t *data, uint16_t enchantment)
 {
-	return false;
+	uint16_t d;
+	EnchantmentInfo info;
+	if (!data)
+		return false;
+
+	if (!enchantment_get(&enchantment,&info))
+		return false;
+
+	d = *data;
+
+	if ((d&info.mask) == 0) {
+		*data |= info.mask;
+		return true;
+	}
+
+	if (info.type > 2) {
+		u8 l = 0;
+		d = (d>>(info.type-3));
+		d &= 0x0003;
+		l = d;
+		*data &= ~(3<<(info.type-3));
+		if (l < 3) {
+			l++;
+			*data |= (l<<(info.type-3));
+		}
+	}
+
+	return true;
 }
 
 bool enchantment_enchant(uint16_t *data, content_t item)

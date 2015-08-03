@@ -4996,6 +4996,7 @@ void Server::SendInventory(u16 peer_id, bool full)
 				writeU16(os,i->second.index);
 				writeU16(os,i->second.type);
 				writeU16(os,i->second.wear_count);
+				writeU16(os,i->second.data);
 			}
 		}
 

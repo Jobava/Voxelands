@@ -470,8 +470,6 @@ std::string ToolItem::getBasename() const
 
 	EnchantmentInfo info;
 	u16 data = m_data;
-	if (m_content == CONTENT_TOOLITEM_MITHRIL_PICK)
-		data = (1<<15)|(1<<3);
 	while (enchantment_get(&data,&info)) {
 		std::string ol = toolitem_overlay(m_content,info.overlay);
 		if (ol != "")
@@ -1010,7 +1008,7 @@ InventoryItem * InventoryList::addItem(u32 i, InventoryItem *newitem)
 	}
 }
 
-void InventoryList::updateItem(u32 i, content_t type, u16 wear_count)
+void InventoryList::updateItem(u32 i, content_t type, u16 wear_count, u16 data)
 {
 	if (type == CONTENT_IGNORE) {
 		if (m_items[i] != NULL)
@@ -1028,11 +1026,12 @@ void InventoryList::updateItem(u32 i, content_t type, u16 wear_count)
 			}else{
 				m_items[i]->setCount(wear_count);
 			}
+			m_items[i]->setData(data);
 			return;
 		}
 		delete m_items[i];
 	}
-	m_items[i] = InventoryItem::create(type,wear_count,wear_count);
+	m_items[i] = InventoryItem::create(type,wear_count,wear_count,data);
 }
 
 bool InventoryList::itemFits(const u32 i, const InventoryItem *newitem)

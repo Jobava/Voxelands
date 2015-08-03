@@ -2938,6 +2938,34 @@ bool ForgeNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 	if (n.getContent() == CONTENT_AIR) {
 		bool show_flame = false;
 		if (m_show_craft) {
+			InventoryItem *items[9];
+			bool has_enchanted = false;
+			InventoryList *clist = m_inventory->getList("craft");
+			InventoryList *rlist = m_inventory->getList("craftresult");
+			if (!clist || !rlist)
+				return false;
+
+			for (u16 i=0; i<9; i++) {
+				items[i] = clist->getItem(i);
+				if (
+					!has_enchanted
+					&& items[i]
+					&& (items[i]->getContent()&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK
+					&& items[i]->getData() > 0
+				)
+					has_enchanted = true;
+			}
+
+			if (!has_enchanted)
+				return false;
+
+			// Get result of crafting grid
+			InventoryItem *result = crafting::getResult(items);
+			if (!result)
+				return false;
+			if (rlist->itemFits(0,result))
+				show_flame = true;
+			delete result;
 		}else{
 			InventoryList *mlist = m_inventory->getList("mithril");
 			InventoryList *glist = m_inventory->getList("gem");
@@ -2955,6 +2983,56 @@ bool ForgeNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 	}else if (n.getContent() == CONTENT_FORGE_FIRE) {
 		env->getMap().removeNodeWithEvent(abv);
 		if (m_show_craft) {
+			InventoryItem *items[9];
+			bool has_enchanted = false;
+			InventoryList *clist = m_inventory->getList("craft");
+			InventoryList *rlist = m_inventory->getList("craftresult");
+			if (!clist || !rlist)
+				return false;
+
+			for (u16 i=0; i<9; i++) {
+				items[i] = clist->getItem(i);
+				if (
+					!has_enchanted
+					&& items[i]
+					&& (items[i]->getContent()&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK
+					&& items[i]->getData() > 0
+				)
+					has_enchanted = true;
+			}
+
+			if (!has_enchanted)
+				return false;
+
+			// Get result of crafting grid
+			InventoryItem *result = crafting::getResult(items);
+			if (!result)
+				return false;
+
+			{
+				u16 data = 0;
+				for (u16 i=0; i<9; i++) {
+					if (
+						items[i]
+						&& (items[i]->getContent()&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK
+						&& items[i]->getData() > 0
+					) {
+						printf("CRAFT: pre: %X %X\n",data,items[i]->getData());
+						enchantment_set(&data,items[i]->getData());
+						printf("CRAFT: post: %X %X\n",data,items[i]->getData());
+					}
+				}
+				result->setData(data);
+			}
+			if (!rlist->itemFits(0,result)) {
+				delete result;
+				return false;
+			}
+
+			rlist->addItem(result);
+			clist->decrementMaterials(1);
+
+			return true;
 		}else{
 			InventoryList *mlist = m_inventory->getList("mithril");
 			InventoryList *glist = m_inventory->getList("gem");
@@ -3006,18 +3084,29 @@ bool ForgeNodeMetadata::nodeRemovalDisabled()
 
 	return false;
 }
+bool ForgeNodeMetadata::receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player)
+{
+	if (fields["craft"] != "") {
+		m_show_craft = true;
+	}else if (fields["enchant"] != "") {
+		m_show_craft = false;
+	}
+	return true;
+}
 std::string ForgeNodeMetadata::getDrawSpecString()
 {
 	if (m_show_craft)
 		return	std::string("size[8,8]")+
 			"list[current_name;craft;2,0;3,3;]"
 			"list[current_name;craftresult;6,1;1,1;]"
+			"button[3,3.2;3,1;enchant;Show Enchanting]"
 			"list[current_player;main;0,3.8;8,1;0,8;]"
 			"list[current_player;main;0,5;8,3;8,-1;]";
 	return	std::string("size[8,8]")+
 		"list[current_name;mithril;1,1;1,1;]"
 		"list[current_name;gem;3,1;1,1;]"
 		"list[current_name;craftresult;6,1;1,1;]"
+		"button[3,3.2;3,1;craft;Show Crafting]"
 		"list[current_player;main;0,3.8;8,1;0,8;]"
 		"list[current_player;main;0,5;8,3;8,-1;]";
 }

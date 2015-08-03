@@ -1120,7 +1120,8 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 					u16 index = readU16(is);
 					u16 type = readU16(is);
 					u16 count = readU16(is);
-					l->updateItem(index,type,count);
+					u16 data = readU16(is);
+					l->updateItem(index,type,count,data);
 				}
 			}
 

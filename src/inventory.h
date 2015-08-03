@@ -515,22 +515,25 @@ private:
 class InventoryDiffData
 {
 public:
-	InventoryDiffData(u32 i, content_t t, u16 c):
+	InventoryDiffData(u32 i, content_t t, u16 c, u16 d):
 		index(i),
 		type(t),
-		wear_count(c)
+		wear_count(c),
+		data(d)
 	{
 	}
 	InventoryDiffData():
 		index(0),
 		type(CONTENT_IGNORE),
-		wear_count(0)
+		wear_count(0),
+		data(0)
 	{
 	}
 
 	u32 index;
 	content_t type;
 	u16 wear_count;
+	u16 data;
 };
 
 class InventoryDiff
@@ -550,22 +553,22 @@ public:
 		m_data.clear();
 	}
 
-	void add(std::string list, u32 index, content_t type, u16 count_wear)
+	void add(std::string list, u32 index, content_t type, u16 count_wear, u16 data)
 	{
-		m_data[list][index] = InventoryDiffData(index,type,count_wear);
+		m_data[list][index] = InventoryDiffData(index,type,count_wear,data);
 	}
 
 	void add(std::string list, u32 index, InventoryItem *item)
 	{
 		if (item == NULL) {
-			add(list,index,CONTENT_IGNORE,0);
+			add(list,index,CONTENT_IGNORE,0,0);
 		}else if (
 			(item->getContent()&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK
 			|| (item->getContent()&CONTENT_CLOTHESITEM_MASK) == CONTENT_CLOTHESITEM_MASK
 		) {
-			add(list,index,item->getContent(),item->getWear());
+			add(list,index,item->getContent(),item->getWear(),item->getData());
 		}else{
-			add(list,index,item->getContent(),item->getCount());
+			add(list,index,item->getContent(),item->getCount(),item->getData());
 		}
 	}
 
@@ -641,7 +644,7 @@ public:
 	InventoryItem * addItem(u32 i, InventoryItem *newitem);
 
 	// Updates item type/count/wear
-	void updateItem(u32 i, content_t type, u16 wear_count);
+	void updateItem(u32 i, content_t type, u16 wear_count, u16 data);
 
 	// Checks whether the item could be added to the given slot
 	bool itemFits(const u32 i, const InventoryItem *newitem);

@@ -1514,4 +1514,44 @@ void content_craftitem_init()
 	f->name = "mithril_bound";
 	f->description = wgettext("Mithril");
 	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_RUBY;
+	f = &g_content_craftitem_features[i];
+	f->content = i;
+	f->texture = "lump_of_ruby.png";
+	f->name = "lump_of_ruby";
+	f->description = wgettext("Ruby");
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_TURQUOISE;
+	f = &g_content_craftitem_features[i];
+	f->content = i;
+	f->texture = "lump_of_turquoise.png";
+	f->name = "lump_of_turquiose";
+	f->description = wgettext("Turquiose");
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_AMETHYST;
+	f = &g_content_craftitem_features[i];
+	f->content = i;
+	f->texture = "lump_of_amethyst.png";
+	f->name = "lump_of_amethyst";
+	f->description = wgettext("Amethyst");
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_SAPPHIRE;
+	f = &g_content_craftitem_features[i];
+	f->content = i;
+	f->texture = "lump_of_sapphire.png";
+	f->name = "lump_of_sapphire";
+	f->description = wgettext("Sapphire");
+	lists::add("creative",i);
+
+	i = CONTENT_CRAFTITEM_SUNSTONE;
+	f = &g_content_craftitem_features[i];
+	f->content = i;
+	f->texture = "lump_of_sunstone.png";
+	f->name = "lump_of_sunstone";
+	f->description = wgettext("Sunstone");
+	lists::add("creative",i);
 }

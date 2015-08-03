@@ -604,6 +604,7 @@ public:
 	virtual void inventoryModified();
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool nodeRemovalDisabled();
+	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
 	virtual std::string getDrawSpecString();
 
 private:
