@@ -291,7 +291,8 @@ video::ITexture * CraftItem::getImage() const
 	if (base != "") {
 		EnchantmentInfo info;
 		u16 data = m_data;
-		while (enchantment_get(&data,&info)) {
+		// TODO: adding more than 2 overlays messes up alpha
+		for (int i=0; i<2 && enchantment_get(&data,&info); i++) {
 			if (info.overlay != "")
 				os<<"^"<<base<<"_"<<info.overlay<<".png";
 		}
@@ -470,7 +471,8 @@ std::string ToolItem::getBasename() const
 
 	EnchantmentInfo info;
 	u16 data = m_data;
-	while (enchantment_get(&data,&info)) {
+	// TODO: adding more than 2 overlays messes up alpha
+	for (int i=0; i<2 && enchantment_get(&data,&info); i++) {
 		std::string ol = toolitem_overlay(m_content,info.overlay);
 		if (ol != "")
 			os<<"^"<<ol;

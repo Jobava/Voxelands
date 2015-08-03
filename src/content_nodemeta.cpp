@@ -2890,7 +2890,11 @@ ForgeNodeMetadata::ForgeNodeMetadata():
 	}
 	{
 		InventoryList *l = m_inventory->getList("gem");
-		l->addAllowed(CONTENT_CRAFTITEM_QUARTZ);
+		l->addAllowed(CONTENT_CRAFTITEM_RUBY);
+		l->addAllowed(CONTENT_CRAFTITEM_TURQUOISE);
+		l->addAllowed(CONTENT_CRAFTITEM_AMETHYST);
+		l->addAllowed(CONTENT_CRAFTITEM_SAPPHIRE);
+		l->addAllowed(CONTENT_CRAFTITEM_SUNSTONE);
 	}
 }
 ForgeNodeMetadata::~ForgeNodeMetadata()

@@ -3682,6 +3682,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				// Create node data
 				MapNode n(addedcontent);
 				ContentFeatures &added_content_features = content_features(addedcontent);
+				if (added_content_features.param_type == CPT_MINERAL)
+					n.param1 = item->getData();
 
 				// Calculate the direction for directional and wall mounted nodes
 				if (added_content_features.param2_type == CPT_FACEDIR_SIMPLE) {

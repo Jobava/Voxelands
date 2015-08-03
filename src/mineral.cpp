@@ -61,7 +61,7 @@ CraftItem *getDiggedMineralItem(u8 mineral, Player *player, InventoryItem *tool)
 		while (enchantment_get(&data,&info)) {
 			switch (info.type) {
 			case ENCHANTMENT_MORE: // amplius increases the amount given
-				count += info.level;
+				count += (info.level+1)/2;
 				count_max += info.level;
 				break;
 			case ENCHANTMENT_DONTBREAK: // gives no mineral
@@ -72,7 +72,7 @@ CraftItem *getDiggedMineralItem(u8 mineral, Player *player, InventoryItem *tool)
 		}
 	}
 
-	if (count > count_max && count_max > count) {
+	if (count_max > count) {
 		count = myrand_range(m.dug_count_min,count_max);
 	}
 
