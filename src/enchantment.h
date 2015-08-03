@@ -22,6 +22,7 @@
 
 #include <stdint.h>
 #include <string>
+#include "mapnode.h"
 
 #define ENCHANTMENT_NONE 0
 #define ENCHANTMENT_FLAME 2
@@ -37,9 +38,12 @@ struct EnchantmentInfo {
 	uint16_t mask;
 	std::string overlay;
 	std::wstring name;
+	content_t gem;
 };
 
 bool enchantment_get(uint16_t *data, EnchantmentInfo *info);
 bool enchantment_have(uint16_t data, uint16_t enchantment);
+bool enchantment_set(uint16_t *data, uint16_t enchantment);
+bool enchantment_enchant(uint16_t *data, content_t item);
 
 #endif

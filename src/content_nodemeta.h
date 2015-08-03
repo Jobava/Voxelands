@@ -589,6 +589,28 @@ private:
 	float m_cool_time;
 };
 
+class ForgeNodeMetadata : public NodeMetadata
+{
+public:
+	ForgeNodeMetadata();
+	~ForgeNodeMetadata();
+
+	virtual u16 typeId() const;
+	virtual NodeMetadata* clone();
+	static NodeMetadata* create(std::istream &is);
+	virtual void serializeBody(std::ostream &os);
+	virtual std::wstring infoText();
+	virtual Inventory* getInventory() {return m_inventory;}
+	virtual void inventoryModified();
+	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
+	virtual bool nodeRemovalDisabled();
+	virtual std::string getDrawSpecString();
+
+private:
+	bool m_show_craft;
+	Inventory *m_inventory;
+};
+
 class CircuitNodeMetadata : public NodeMetadata
 {
 public:

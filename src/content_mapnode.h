@@ -52,11 +52,12 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_TORCH_LEGACY 0x003
 #define CONTENT_GLASSLIGHT 0x004
 #define CONTENT_CHAIR 0x005
-// FREE 0x006
+#define CONTENT_FORGE 0x006
 #define CONTENT_TORCH 0x007
 #define CONTENT_TABLE 0x008
 #define CONTENT_WATERSOURCE 0x009
-// FREE 0x00A-0x00C
+#define CONTENT_FORGE_FIRE 0x00A
+// FREE 0x00B-0x00C
 #define CONTENT_SAFE 0x00D
 #define CONTENT_SIGN_WALL 0x00E
 #define CONTENT_CHEST 0x00F

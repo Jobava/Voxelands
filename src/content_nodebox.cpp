@@ -1512,3 +1512,22 @@ void content_nodebox_cauldron(ContentFeatures *f)
 		-0.375*BS,-0.125*BS,-0.4375*BS,0.375*BS,0.5*BS,-0.375*BS
 	));
 }
+
+void content_nodebox_forge(ContentFeatures *f)
+{
+	f->setNodeBox(NodeBox(
+		-0.375*BS,-0.5*BS,-0.375*BS,0.375*BS,0.375*BS,0.375*BS
+	));
+	f->addNodeBox(NodeBox(
+		-0.375*BS,0.375*BS,-0.375*BS,-0.1875*BS,0.4375*BS,-0.1875*BS
+	));
+	f->addNodeBox(NodeBox(
+		-0.375*BS,0.375*BS,0.1875*BS,-0.1875*BS,0.4375*BS,0.375*BS
+	));
+	f->addNodeBox(NodeBox(
+		0.1875*BS,0.375*BS,-0.375*BS,0.375*BS,0.4375*BS,-0.1875*BS
+	));
+	f->addNodeBox(NodeBox(
+		0.1875*BS,0.375*BS,0.1875*BS,0.375*BS,0.4375*BS,0.375*BS
+	));
+}

@@ -2038,4 +2038,52 @@ void content_mapnode_special(bool repeat)
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 	f->suffocation_per_second = 0;
+
+	i = CONTENT_FORGE;
+	f = &content_features(i);
+	f->description = wgettext("Forge");
+	f->setAllTextures("forge_side.png");
+	f->setTexture(0,"forge_top.png");
+	f->setTexture(1,"forge_bottom.png");
+	f->draw_type = CDT_NODEBOX;
+	f->type = CMT_STONE;
+	f->hardness = 3.0;
+	f->solidness = 0;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_nodebox_forge(f);
+	f->setInventoryTextureNodeBox(i,"forge_top.png", "forge_side.png", "forge_side.png");
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new ForgeNodeMetadata();
+	{
+		content_t r[9] = {
+			CONTENT_ROUGHSTONE,	CONTENT_CHARCOAL,	CONTENT_ROUGHSTONE,
+			CONTENT_ROUGHSTONE,	CONTENT_SAND,		CONTENT_ROUGHSTONE,
+			CONTENT_ROUGHSTONE,	CONTENT_STEEL,		CONTENT_ROUGHSTONE
+		};
+		crafting::setRecipe(r,CONTENT_FORGE,1);
+	}
+	f->pressure_type = CST_SOLID;
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+	f->suffocation_per_second = 0;
+
+	i = CONTENT_FORGE_FIRE;
+	f = &content_features(i);
+	f->description = wgettext("Forge Fire");
+	f->setAllTextures("forge_fire.png");
+	f->setAllTextureFlags(0);
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_PLANTLIKE;
+	f->light_propagates = true;
+	f->light_source = LIGHT_MAX-4;
+	f->solidness = 0; // Drawn separately, makes no faces
+	f->walkable = false;
+	f->pointable = false;
+	f->diggable = false;
+	f->buildable_to = true;
+	f->sound_ambient = "env-fire";
+#ifndef SERVER
+	f->post_effect_color = video::SColor(192, 255, 64, 0);
+#endif
+	f->pressure_type = CST_CRUSHED;
 }

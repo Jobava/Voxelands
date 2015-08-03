@@ -19,6 +19,7 @@
 
 #include "enchantment.h"
 #include <stdio.h>
+#include "content_craftitem.h"
 
 /*
 1 - Aeterna ---
@@ -54,6 +55,7 @@ static void enchantment_init()
 		f->mask = 0;
 		f->overlay = "";
 		f->name = L"";
+		f->gem = CONTENT_IGNORE;
 	}
 
 	i = ENCHANTMENT_FLAME;
@@ -90,6 +92,7 @@ static void enchantment_init()
 	f->mask = (1<<(i-1));
 	f->overlay = "longlast";
 	f->name = L"Aeterna";
+	f->gem = CONTENT_CRAFTITEM_QUARTZ;
 
 	enchantment_isinit = 1;
 }
@@ -103,8 +106,6 @@ bool enchantment_get(uint16_t *data, EnchantmentInfo *info)
 	uint8_t l = 0;
 	if (!data)
 		return false;
-
-	printf("enchantment_get( %u , X) - START\n",*data);
 
 	d = *data;
 	if (d == ENCHANTMENT_NONE)
@@ -139,9 +140,7 @@ bool enchantment_get(uint16_t *data, EnchantmentInfo *info)
 
 	for (d=0; d<3 && i>-1; d++,i--) {
 		(*data) &= ~(1<<i);
-		printf("enchantment_get( %u , X) - TICK %u\n",*data,i);
 	}
-	printf("enchantment_get( %u , X) - END\n",*data);
 
 	return true;
 }
@@ -153,6 +152,23 @@ bool enchantment_have(uint16_t data, uint16_t enchantment)
 	while (enchantment_get(&data,&info)) {
 		if (info.type == enchantment)
 			return true;
+	}
+	return false;
+}
+
+bool enchantment_set(uint16_t *data, uint16_t enchantment)
+{
+	return false;
+}
+
+bool enchantment_enchant(uint16_t *data, content_t item)
+{
+	int i;
+	for (i=0; i<=ENCHANTMENT_MAX; i++) {
+		if (enchantments[i].gem == item) {
+			*data = enchantments[i].mask;
+			return true;
+		}
 	}
 	return false;
 }

@@ -34,6 +34,7 @@
 #include "settings.h"
 #include "main.h"
 #include "mapblock.h"
+#include "enchantment.h"
 
 /*
 	SignNodeMetadata
@@ -2834,7 +2835,7 @@ std::string CauldronNodeMetadata::getDrawSpecString()
 {
 	return
 		std::string("size[8,7]"
-		"label[1,0.5;")+gettext("Add fuel, then punch to incinerate wielded item")+"]"
+		"label[1,0.5;")+gettext("Add fuel, then punch to add or remove water")+"]"
 		"label[3.5,1.5;Fuel]"
 		"list[current_name;fuel;4,1;1,1;]"
 		"list[current_player;main;0,3;8,4;]";
@@ -2864,6 +2865,161 @@ std::vector<NodeBox> CauldronNodeMetadata::getNodeBoxes(MapNode &n) {
 	}
 
 	return transformNodeBox(n,boxes);
+}
+
+/*
+	ForgeNodeMetadata
+*/
+
+// Prototype
+ForgeNodeMetadata proto_ForgeNodeMetadata;
+
+ForgeNodeMetadata::ForgeNodeMetadata():
+	m_show_craft(false)
+{
+	NodeMetadata::registerType(typeId(), create);
+
+	m_inventory = new Inventory();
+	m_inventory->addList("mithril", 9);
+	m_inventory->addList("gem", 9);
+	m_inventory->addList("craft", 9);
+	m_inventory->addList("craftresult", 1);
+	{
+		InventoryList *l = m_inventory->getList("mithril");
+		l->addAllowed(CONTENT_CRAFTITEM_MITHRIL_UNBOUND);
+	}
+	{
+		InventoryList *l = m_inventory->getList("gem");
+		l->addAllowed(CONTENT_CRAFTITEM_QUARTZ);
+	}
+}
+ForgeNodeMetadata::~ForgeNodeMetadata()
+{
+}
+u16 ForgeNodeMetadata::typeId() const
+{
+	return CONTENT_FORGE;
+}
+NodeMetadata* ForgeNodeMetadata::clone()
+{
+	ForgeNodeMetadata *d = new ForgeNodeMetadata();
+	d->m_show_craft = m_show_craft;
+	*d->m_inventory = *m_inventory;
+	return d;
+}
+NodeMetadata* ForgeNodeMetadata::create(std::istream &is)
+{
+	ForgeNodeMetadata *d = new ForgeNodeMetadata();
+
+	d->m_inventory->deSerialize(is);
+	int c;
+	is>>c;
+	d->m_show_craft = !!c;
+
+	return d;
+}
+void ForgeNodeMetadata::serializeBody(std::ostream &os)
+{
+	m_inventory->serialize(os);
+	os<<itos(m_show_craft ? 1 : 0)<<" ";
+}
+std::wstring ForgeNodeMetadata::infoText()
+{
+	return wgettext("Forge");
+}
+void ForgeNodeMetadata::inventoryModified()
+{
+	infostream<<"Forge inventory modification callback"<<std::endl;
+}
+bool ForgeNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
+{
+	v3s16 abv = pos+v3s16(0,1,0);
+	MapNode n = env->getMap().getNodeNoEx(abv);
+	if (n.getContent() == CONTENT_AIR) {
+		bool show_flame = false;
+		if (m_show_craft) {
+		}else{
+			InventoryList *mlist = m_inventory->getList("mithril");
+			InventoryList *glist = m_inventory->getList("gem");
+			if (!mlist || !glist)
+				return false;
+			InventoryItem *mithril = mlist->getItem(0);
+			InventoryItem *gem = glist->getItem(0);
+			if (mithril && gem)
+				show_flame = true;
+		}
+		if (show_flame) {
+			n.setContent(CONTENT_FORGE_FIRE);
+			env->getMap().addNodeWithEvent(abv,n);
+		}
+	}else if (n.getContent() == CONTENT_FORGE_FIRE) {
+		env->getMap().removeNodeWithEvent(abv);
+		if (m_show_craft) {
+		}else{
+			InventoryList *mlist = m_inventory->getList("mithril");
+			InventoryList *glist = m_inventory->getList("gem");
+			InventoryList *result = m_inventory->getList("craftresult");
+			if (!mlist || !glist || !result)
+				return false;
+			InventoryItem *mithril = mlist->getItem(0);
+			InventoryItem *gem = glist->getItem(0);
+			if (!mithril || !gem)
+				return false;
+			u16 data = 0;
+			if (!enchantment_enchant(&data,gem->getContent()))
+				return false;
+			InventoryItem *newitem = new CraftItem(CONTENT_CRAFTITEM_MITHRIL,1,data);
+			if (!newitem)
+				return false;
+			if (!result->itemFits(0,newitem)) {
+				delete newitem;
+				return false;
+			}
+			result->addItem(newitem);
+			mlist->decrementMaterials(1);
+			glist->decrementMaterials(1);
+			return true;
+		}
+	}
+	return false;
+}
+bool ForgeNodeMetadata::nodeRemovalDisabled()
+{
+	/*
+		Disable removal if not empty
+	*/
+	InventoryList *list = m_inventory->getList("craft");
+	if (list && list->getUsedSlots() > 0)
+		return true;
+
+	list = m_inventory->getList("mithril");
+	if (list && list->getUsedSlots() > 0)
+		return true;
+
+	list = m_inventory->getList("gem");
+	if (list && list->getUsedSlots() > 0)
+		return true;
+
+	list = m_inventory->getList("craftresult");
+	if (list && list->getUsedSlots() > 0)
+		return true;
+
+	return false;
+}
+std::string ForgeNodeMetadata::getDrawSpecString()
+{
+	if (m_show_craft)
+		return	std::string("size[8,8]")+
+			"list[current_name;craft;2,0;3,3;]"
+			"list[current_name;craftresult;6,1;1,1;]"
+			"list[current_player;main;0,3.8;8,1;0,8;]"
+			"list[current_player;main;0,5;8,3;8,-1;]";
+	return	std::string("size[8,8]")+
+		"list[current_name;mithril;1,1;1,1;]"
+		"list[current_name;gem;3,1;1,1;]"
+		"list[current_name;craftresult;6,1;1,1;]"
+		"list[current_player;main;0,3.8;8,1;0,8;]"
+		"list[current_player;main;0,5;8,3;8,-1;]";
 }
 
 /*
