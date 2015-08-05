@@ -746,7 +746,7 @@ void content_craftitem_init()
 	i = CONTENT_CRAFTITEM_MITHRILDUST;
 	f = &g_content_craftitem_features[i];
 	f->content = CONTENT_CRAFTITEM_MITHRILDUST;
-	f->texture = "mese_dust.png";
+	f->texture = "mithril_dust.png";
 	f->name = "mese_dust";
 	f->description = wgettext("Mithril Dust");
 	f->drop_count = 1;

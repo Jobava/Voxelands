@@ -480,6 +480,8 @@ GUIFormSpecMenu::ItemSpec GUIFormSpecMenu::getItemAtPos(v2s32 p) const
 			s32 y = ((i-s.i_start)/s.geom.X) * spacing.Y;
 			v2s32 p0(x,y);
 			core::rect<s32> rect = imgrect + s.pos + p0;
+			rect.UpperLeftCorner -= 2;
+			rect.LowerRightCorner += 2;
 			if (rect.isPointInside(p)) {
 				return ItemSpec(s.inventoryloc, s.listname, i);
 			}
@@ -515,17 +517,20 @@ void GUIFormSpecMenu::drawList(const ListDrawSpec &s, int phase)
 		s32 y = ((i-s.i_start)/s.geom.X) * spacing.Y;
 		v2s32 p(x,y);
 		core::rect<s32> rect = imgrect + s.pos + p;
+		core::rect<s32> brect = rect;
+		brect.UpperLeftCorner -= 2;
+		brect.LowerRightCorner += 2;
 		InventoryItem *item = NULL;
 		if (ilist)
 			item = ilist->getItem(i);
 
-		driver->draw2DRectangle(GUI_INV_BG, rect, &AbsoluteClippingRect);
+		driver->draw2DRectangle(GUI_INV_BG, brect, &AbsoluteClippingRect);
 
 		if (m_selected_item != NULL && m_selected_item->listname == s.listname && m_selected_item->i == i) {
-			driver->draw2DRectangleOutline(rect, GUI_INV_HIGHLIGHT);
+			driver->draw2DRectangleOutline(brect, GUI_INV_HIGHLIGHT);
 
 		}else{
-			driver->draw2DRectangleOutline(rect, GUI_INV_BORDER);
+			driver->draw2DRectangleOutline(brect, GUI_INV_BORDER);
 		}
 
 		if (item) {
