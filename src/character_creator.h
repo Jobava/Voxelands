@@ -107,8 +107,6 @@ public:
 		chardef += std::string(":")+m_parts["hairtone"];
 		chardef += std::string(":")+m_parts["hair"];
 		chardef += std::string(":")+m_parts["face"];
-
-		printf("chardef '%s'\n",chardef.c_str());
 	}
 
 private:

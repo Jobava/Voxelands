@@ -90,7 +90,7 @@ SHA1::~SHA1()
 void SHA1::process()
 {
 	assert( unprocessedBytes == 64 );
-	//printf( "process: " ); hexPrinter( bytes, 64 ); printf( "\n" );
+
 	int t;
 	Uint32 a, b, c, d, e, K, f, W[80];
 	// starting values
@@ -129,7 +129,6 @@ void SHA1::process()
 		c = lrot(b,30);
 		b = a;
 		a = temp;
-		//printf( "t=%d %08x %08x %08x %08x %08x\n",t,a,b,c,d,e );
 	}
 	/* add variables */
 	H0 += a;
@@ -137,7 +136,6 @@ void SHA1::process()
 	H2 += c;
 	H3 += d;
 	H4 += e;
-	//printf( "Current: %08x %08x %08x %08x %08x\n",H0,H1,H2,H3,H4 );
 	/* all bytes have been processed */
 	unprocessedBytes = 0;
 }

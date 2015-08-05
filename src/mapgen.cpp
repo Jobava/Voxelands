@@ -1494,12 +1494,32 @@ void make_block(BlockMakeData *data)
 				s16 x = mineralrandom.range(node_min.X+1, node_max.X-1);
 				s16 y = mineralrandom.range(node_min.Y+1, node_max.Y-1);
 				s16 z = mineralrandom.range(node_min.Z+1, node_max.Z-1);
+				// TODO: at random, some should be gems
+				u8 type = mineralrandom.next()%12;
+				switch (type) {
+				case 0:
+					type = MINERAL_RUBY;
+					break;
+				case 1:
+					type = MINERAL_TURQUOISE;
+					break;
+				case 2:
+					type = MINERAL_AMETHYST;
+					break;
+				case 3:
+					type = MINERAL_SAPPHIRE;
+					break;
+				case 4:
+					type = MINERAL_SUNSTONE;
+					break;
+				default:
+					type = MINERAL_MITHRIL;
+				}
 				for (u16 i=0; i<27; i++) {
 					v3s16 p = v3s16(x,y,z) + g_27dirs[i];
 					u32 vi = vmanip.m_area.index(p);
-					// TODO: at random, some should be gems
 					if (vmanip.m_data[vi].getContent() == base_content && mineralrandom.next()%8 == 0)
-						vmanip.m_data[vi] = MapNode(base_content,MINERAL_MITHRIL);
+						vmanip.m_data[vi] = MapNode(base_content,type);
 				}
 
 			}

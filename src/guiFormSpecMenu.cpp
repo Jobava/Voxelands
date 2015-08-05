@@ -230,7 +230,6 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 
 				v2s32 pos = basepos;
 				pos.Y = (m_fields.size()+1*50);
-				printf("%d\n",pos.Y);
 				v2s32 size = DesiredRect.getSize();
 				rect = core::rect<s32>(size.X/2-150, pos.Y, (size.X/2-150)+300, pos.Y+30);
 			}else{

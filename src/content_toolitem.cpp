@@ -115,6 +115,9 @@ DiggingProperties getDiggingProperties(content_t content, content_t tool, u16 da
 			case ENCHANTMENT_LONGLASTING:
 				wear /= (info.level+1);
 				break;
+			case ENCHANTMENT_FLAME:
+				wear *= 2.5;
+				break;
 			default:;
 			}
 		}

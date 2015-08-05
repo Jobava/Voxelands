@@ -134,4 +134,39 @@ void init_mineral()
 	f->texture = "mineral_mithril.png";
 	f->dug_item = CONTENT_CRAFTITEM_MITHRIL_RAW;
 	f->min_level = 3;
+
+	i = MINERAL_RUBY;
+	f = &mineral_features(i);
+	f->texture = "mineral_ruby.png";
+	f->dug_item = CONTENT_CRAFTITEM_RUBY;
+	f->min_level = 3;
+	f->dug_count_max = 2;
+
+	i = MINERAL_TURQUOISE;
+	f = &mineral_features(i);
+	f->texture = "mineral_turquoise.png";
+	f->dug_item = CONTENT_CRAFTITEM_TURQUOISE;
+	f->min_level = 3;
+	f->dug_count_max = 2;
+
+	i = MINERAL_AMETHYST;
+	f = &mineral_features(i);
+	f->texture = "mineral_amethyst.png";
+	f->dug_item = CONTENT_CRAFTITEM_AMETHYST;
+	f->min_level = 3;
+	f->dug_count_max = 2;
+
+	i = MINERAL_SAPPHIRE;
+	f = &mineral_features(i);
+	f->texture = "mineral_sapphire.png";
+	f->dug_item = CONTENT_CRAFTITEM_SAPPHIRE;
+	f->min_level = 3;
+	f->dug_count_max = 2;
+
+	i = MINERAL_SUNSTONE;
+	f = &mineral_features(i);
+	f->texture = "mineral_sunstone.png";
+	f->dug_item = CONTENT_CRAFTITEM_SUNSTONE;
+	f->min_level = 3;
+	f->dug_count_max = 2;
 }

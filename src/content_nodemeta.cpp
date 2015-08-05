@@ -3020,11 +3020,8 @@ bool ForgeNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 						items[i]
 						&& (items[i]->getContent()&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK
 						&& items[i]->getData() > 0
-					) {
-						printf("CRAFT: pre: %X %X\n",data,items[i]->getData());
+					)
 						enchantment_set(&data,items[i]->getData());
-						printf("CRAFT: post: %X %X\n",data,items[i]->getData());
-					}
 				}
 				result->setData(data);
 			}
