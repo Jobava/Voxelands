@@ -46,6 +46,7 @@ void content_mapnode_furniture(bool repeat)
 	f->draw_type = CDT_NODEBOX_META;
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BOOKSHELF)+" 1";
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/4;
 	f->type = CMT_WOOD;
