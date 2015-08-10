@@ -1100,6 +1100,7 @@ void ServerEnvironment::step(float dtime)
 						v3s16 test_p;
 						MapNode testnode;
 						u8 water_found = 0; // 1 = flowing, 2 = source
+						bool ignore_found = false;
 						for(s16 z=-max_d; water_found < 2 && z<=max_d; z++) {
 						for(s16 x=-max_d; water_found < 2 && x<=max_d; x++) {
 							test_p = temp_p + v3s16(x,0,z);
@@ -1108,6 +1109,8 @@ void ServerEnvironment::step(float dtime)
 								water_found = 2;
 							}else if (testnode.getContent() == CONTENT_WATER) {
 								water_found = 1;
+							}else if (testnode.getContent() == CONTENT_IGNORE) {
+								ignore_found = true;
 							}
 						}
 						}
@@ -1140,7 +1143,7 @@ void ServerEnvironment::step(float dtime)
 									m_map->addNodeWithEvent(test_p,n);
 								}
 							}
-						}else{
+						}else if (!ignore_found) {
 							// revert to mud
 							n.setContent(CONTENT_MUD);
 							m_map->addNodeWithEvent(p,n);
