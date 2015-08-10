@@ -57,7 +57,8 @@ DiggingProperties getDiggingProperties(content_t content, content_t tool, u16 da
 	f32 wear = 0;
 	if (t_features.hardness && c_features.hardness)
 		wear = 65535/t_features.hardness*c_features.hardness;
-	f32 diggable = true;
+	bool diggable = true;
+	bool type_match = false;
 	if ((tool&CONTENT_CLOTHESITEM_MASK) == CONTENT_CLOTHESITEM_MASK || (c_features.type == CMT_STONE && t_features.type != TT_PICK)) {
 		diggable = false;
 	}else{
@@ -68,29 +69,44 @@ DiggingProperties getDiggingProperties(content_t content, content_t tool, u16 da
 		case TT_AXE:
 			if (c_features.type == CMT_PLANT) {
 				time *= 2.;
+				type_match = true;
 			}else if (c_features.type != CMT_WOOD && c_features.type != CMT_GLASS) {
 				time *= 10.;
+			}else{
+				type_match = true;
 			}
 			break;
 		case TT_PICK:
-			if (c_features.type != CMT_STONE)
+			if (c_features.type != CMT_STONE) {
 				time *= 2.;
+			}else{
+				type_match = true;
+			}
 			break;
 		case TT_SHOVEL:
-			if (c_features.type != CMT_DIRT)
+			if (c_features.type != CMT_DIRT) {
 				time *= 10.;
+			}else{
+				type_match = true;
+			}
 			break;
 		case TT_SWORD:
 			if (c_features.type != CMT_PLANT)
 				time = 10.;
 			break;
 		case TT_SHEAR:
-			if (c_features.type != CMT_PLANT)
+			if (c_features.type != CMT_PLANT) {
 				time *= 10.;
+			}else{
+				type_match = true;
+			}
 			break;
 		case TT_BUCKET:
-			if (c_features.type != CMT_LIQUID)
+			if (c_features.type != CMT_LIQUID) {
 				time = 10.;
+			}else{
+				type_match = true;
+			}
 			break;
 		case TT_SPEAR:
 			if (c_features.type != CMT_DIRT)
@@ -106,14 +122,20 @@ DiggingProperties getDiggingProperties(content_t content, content_t tool, u16 da
 	}
 
 	if (data != 0 && diggable) {
+		f32 tp = time/4.0;
+		f32 wp = wear/4.0;
 		EnchantmentInfo info;
 		while (enchantment_get(&data,&info)) {
 			switch (info.type) {
 			case ENCHANTMENT_FAST:
-				time /= (info.level+1);
+				if (type_match) {
+					time -= tp*(info.level+1);
+				}else if (info.level > 1) {
+					time -= tp;
+				}
 				break;
 			case ENCHANTMENT_LONGLASTING:
-				wear /= (info.level+1);
+				wear -= wp*(info.level+1);
 				break;
 			case ENCHANTMENT_FLAME:
 				wear *= 2.5;
@@ -121,6 +143,10 @@ DiggingProperties getDiggingProperties(content_t content, content_t tool, u16 da
 			default:;
 			}
 		}
+		if (time < 0.0)
+			time = 0.01;
+		if (wear < 0.0)
+			wear = 0.01;
 	}
 
 	return DiggingProperties(diggable,time,wear);
