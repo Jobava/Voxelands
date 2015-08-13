@@ -3167,8 +3167,8 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				testnode = m_env.getMap().getNodeNoEx(test_p);
 				bool is_farm_swap = false;
 				if (testnode.getContent() == CONTENT_AIR) {
-					for(s16 z=-1; !is_farm_swap && z<=1; z++) {
-					for(s16 x=-1; !is_farm_swap && x<=1; x++)
+					for(s16 z=-3; !is_farm_swap && z<=3; z++) {
+					for(s16 x=-3; !is_farm_swap && x<=3; x++)
 					{
 						test_p = temp_p + v3s16(x,0,z);
 						testnode = m_env.getMap().getNodeNoEx(test_p);

@@ -1095,7 +1095,7 @@ void ServerEnvironment::step(float dtime)
 				case CONTENT_FARM_DIRT:
 				{
 					if (n.envticks%4 == 0) { // with this plants take around 10 minutes to grow
-						s16 max_d = 1;
+						s16 max_d = 3;
 						v3s16 temp_p = p;
 						v3s16 test_p;
 						MapNode testnode;
