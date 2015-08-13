@@ -3450,6 +3450,8 @@ void ClientEnvironment::step(float dtime)
 						speed.Y = -max_down;
 
 					f32 max = 2.5*BS;
+					if (lplayer->control.fast && lplayer->getEnergy() > 0.0)
+						max *= 1.5;
 					if (speed.getLength() > max)
 						speed = speed / speed.getLength() * max;
 				}
