@@ -34,7 +34,6 @@ void content_mapnode_stair(bool repeat)
 	// stairs
 	i = CONTENT_ROUGHSTONE_STAIR;
 	f = &content_features(i);
-
 	f->description = wgettext("Rough Stone Stair");
 	f->param_type = CPT_FACEDIR_SIMPLE;
 	f->setAllTextures("roughstone.png");
@@ -179,6 +178,23 @@ void content_mapnode_stair(bool repeat)
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
+	i = CONTENT_LIMESTONE_STAIR;
+	f = &content_features(i);
+	f->description = wgettext("Limestone Stair");
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->setAllTextures("limestone.png");
+	f->draw_type = CDT_STAIRLIKE;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	content_nodebox_stair(f);
+	f->setInventoryTextureNodeBox(i,"limestone.png", "limestone.png", "limestone.png");
+	f->type = CMT_STONE;
+	f->hardness = 0.9;
+	crafting::setStairRecipe(CONTENT_LIMESTONE,CONTENT_LIMESTONE_STAIR);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
 	// upside down stairs
 	i = CONTENT_ROUGHSTONE_STAIR_UD;
 	f = &content_features(i);
@@ -299,5 +315,19 @@ void content_mapnode_stair(bool repeat)
 	f->setInventoryTextureNodeBox(i,"sandstone.png", "sandstone.png", "sandstone.png");
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
+	f->suffocation_per_second = 0;
+
+	i = CONTENT_LIMESTONE_STAIR_UD;
+	f = &content_features(i);
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->setAllTextures("limestone.png");
+	f->draw_type = CDT_STAIRLIKE;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_LIMESTONE_STAIR)+" 1";
+	content_nodebox_stairud(f);
+	f->setInventoryTextureNodeBox(i,"limestone.png", "limestone.png", "limestone.png");
+	f->type = CMT_STONE;
+	f->hardness = 0.9;
 	f->suffocation_per_second = 0;
 }

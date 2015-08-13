@@ -92,7 +92,9 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 // fences
 #define CONTENT_JUNGLE_FENCE 0x02A
 #define CONTENT_PINE_FENCE 0x02B
-// FREE 2C-0x7C
+// more walls
+#define CONTENT_LIMESTONE_WALL 0x02C
+// FREE 0x02D-0x07C
 // 0x7D-0x7F reserved values, air, ignore, etc
 // FREE 0x80-0x7FE
 #define CONTENT_GROWING_GRASS 0x7FF
@@ -222,13 +224,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_COTTON_RED 0x894
 #define CONTENT_COTTON_YELLOW 0x895
 #define CONTENT_COTTON_BLACK 0x896
-// old walls
-// deprecated, just here for backwards compat
-#define CONTENT_ROUGHSTONE_WALL_LEGACY 0x89A
-#define CONTENT_MOSSYCOBBLE_WALL_LEGACY 0x89B
-#define CONTENT_SANDSTONE_WALL_LEGACY 0x89C
-#define CONTENT_STONE_WALL_LEGACY 0x89D
-#define CONTENT_COBBLE_WALL_LEGACY 0x89E
+// FREE 0x897-0x89F
 // sponge
 #define CONTENT_SPONGE 0x8A0
 #define CONTENT_SPONGE_FULL 0x8A1
@@ -410,6 +406,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_GLASS_RED_SLAB 0xA0D
 #define CONTENT_GLASS_YELLOW_SLAB 0xA0E
 #define CONTENT_GLASS_BLACK_SLAB 0xA0F
+#define CONTENT_LIMESTONE_SLAB 0xA10
 // stairs
 #define CONTENT_ROUGHSTONE_STAIR 0xA20
 #define CONTENT_MOSSYCOBBLE_STAIR 0xA21
@@ -419,6 +416,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_BRICK_STAIR 0xA25
 #define CONTENT_SANDSTONE_STAIR 0xA26
 #define CONTENT_COBBLE_STAIR 0xA27
+#define CONTENT_LIMESTONE_STAIR 0xA28
 // upside down slabs
 #define CONTENT_ROUGHSTONE_SLAB_UD 0xA40
 #define CONTENT_MOSSYCOBBLE_SLAB_UD 0xA41
@@ -436,6 +434,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_GLASS_RED_SLAB_UD 0xA4D
 #define CONTENT_GLASS_YELLOW_SLAB_UD 0xA4E
 #define CONTENT_GLASS_BLACK_SLAB_UD 0xA4F
+#define CONTENT_LIMESTONE_SLAB_UD 0xA50
 // upside down stairs
 #define CONTENT_ROUGHSTONE_STAIR_UD 0xA60
 #define CONTENT_MOSSYCOBBLE_STAIR_UD 0xA61
@@ -445,6 +444,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_BRICK_STAIR_UD 0xA65
 #define CONTENT_SANDSTONE_STAIR_UD 0xA66
 #define CONTENT_COBBLE_STAIR_UD 0xA67
+#define CONTENT_LIMESTONE_STAIR_UD 0xA68
 // slab/stair masks
 #define CONTENT_SLAB_STAIR_MIN 0xA00
 #define CONTENT_SLAB_STAIR_MAX 0xA6F

@@ -402,6 +402,25 @@ void content_mapnode_slab(bool repeat)
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
+	i = CONTENT_LIMESTONE_SLAB;
+	f = &content_features(i);
+	f->description = wgettext("Limestone Slab");
+	f->setAllTextures("limestone.png");
+	f->param_type = CPT_NONE;
+	f->draw_type = CDT_SLABLIKE;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->special_alternate_node = CONTENT_LIMESTONE;
+	content_nodebox_slab(f);
+	f->setInventoryTextureNodeBox(i,"limestone.png", "limestone.png", "limestone.png");
+	f->type = CMT_STONE;
+	f->hardness = 0.9;
+	f->suffocation_per_second = 0;
+	crafting::setRow3Recipe(CONTENT_LIMESTONE,CONTENT_LIMESTONE_SLAB);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
 	// upside down slabs
 	i = CONTENT_ROUGHSTONE_SLAB_UD;
 	f = &content_features(i);
@@ -709,5 +728,20 @@ void content_mapnode_slab(bool repeat)
 	f->setInventoryTextureNodeBox(i,"glass_black.png", "glass_slab_black.png", "glass_slab_black.png");
 	f->type = CMT_GLASS;
 	f->hardness = 0.15;
+	f->suffocation_per_second = 0;
+
+	i = CONTENT_LIMESTONE_SLAB_UD;
+	f = &content_features(i);
+	f->setAllTextures("limestone.png");
+	f->param_type = CPT_NONE;
+	f->draw_type = CDT_SLABLIKE;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_LIMESTONE_SLAB)+" 1";
+	f->special_alternate_node = CONTENT_LIMESTONE;
+	content_nodebox_slabud(f);
+	f->setInventoryTextureNodeBox(i,"limestone.png", "limestone.png", "limestone.png");
+	f->type = CMT_STONE;
+	f->hardness = 0.9;
 	f->suffocation_per_second = 0;
 }

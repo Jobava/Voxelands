@@ -1743,6 +1743,30 @@ void content_mapnode_special(bool repeat)
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
+	i = CONTENT_LIMESTONE_WALL;
+	f = &content_features(i);
+	f->description = wgettext("Limestone Wall");
+	f->setAllTextures("limestone.png");
+	f->light_propagates = true;
+	f->jumpable = false;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_SPECIAL;
+	f->draw_type = CDT_WALLLIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->air_equivalent = true; // grass grows underneath
+	content_nodebox_wall_inv(f);
+	content_nodebox_wall(f);
+	f->setInventoryTextureNodeBox(i,"limestone.png","limestone.png","limestone.png");
+	f->special_alternate_node = CONTENT_LIMESTONE;
+	f->type = CMT_STONE;
+	f->hardness = 0.9;
+	f->suffocation_per_second = 0;
+	crafting::setWallRecipe(CONTENT_LIMESTONE,CONTENT_LIMESTONE_WALL);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
 	i = CONTENT_TNT;
 	f = &content_features(i);
 	f->description = wgettext("TNT");

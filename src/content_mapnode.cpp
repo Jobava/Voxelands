@@ -118,21 +118,6 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version)
 		}
 	}
 		break;
-	case CONTENT_ROUGHSTONE_WALL_LEGACY:
-		result.setContent(CONTENT_ROUGHSTONE_WALL);
-		break;
-	case CONTENT_MOSSYCOBBLE_WALL_LEGACY:
-		result.setContent(CONTENT_MOSSYCOBBLE_WALL);
-		break;
-	case CONTENT_SANDSTONE_WALL_LEGACY:
-		result.setContent(CONTENT_SANDSTONE_WALL);
-		break;
-	case CONTENT_STONE_WALL_LEGACY:
-		result.setContent(CONTENT_STONE_WALL);
-		break;
-	case CONTENT_COBBLE_WALL_LEGACY:
-		result.setContent(CONTENT_COBBLE_WALL);
-		break;
 	case CONTENT_FARM_WHEAT_1:
 		result.setContent(CONTENT_FARM_WHEAT);
 		result.param2 = 4;
