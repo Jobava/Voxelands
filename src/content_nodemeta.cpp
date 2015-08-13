@@ -3096,20 +3096,26 @@ bool ForgeNodeMetadata::receiveFields(std::string formname, std::map<std::string
 }
 std::string ForgeNodeMetadata::getDrawSpecString()
 {
-	if (m_show_craft)
-		return	std::string("size[8,8]")+
-			"list[current_name;craft;2,0;3,3;]"
-			"list[current_name;craftresult;6,1;1,1;]"
-			"button[3,3.2;3,1;enchant;Show Enchanting]"
-			"list[current_player;main;0,3.8;8,1;0,8;]"
-			"list[current_player;main;0,5;8,3;8,-1;]";
-	return	std::string("size[8,8]")+
-		"list[current_name;mithril;1,1;1,1;]"
-		"list[current_name;gem;3,1;1,1;]"
-		"list[current_name;craftresult;6,1;1,1;]"
-		"button[3,3.2;3,1;craft;Show Crafting]"
-		"list[current_player;main;0,3.8;8,1;0,8;]"
-		"list[current_player;main;0,5;8,3;8,-1;]";
+	std::string spec("size[8,8]");
+	if (m_show_craft) {
+		spec += "list[current_name;craft;2,0;3,3;]";
+		spec += "list[current_name;craftresult;6,1;1,1;]";
+		spec += "button[3,3.2;3,1;enchant;";
+		spec += gettext("Show Enchanting");
+		spec += "]";
+	}else{
+		spec += "list[current_name;mithril;1,1;1,1;ingot_bg.png]";
+		spec += "list[current_name;gem;3,1;1,1;gem_bg.png]";
+		spec += "list[current_name;craftresult;6,1;1,1;]";
+		spec += "button[3,3.2;3,1;craft;";
+		spec += gettext("Show Crafting");
+		spec += "]";
+	}
+
+	spec += "list[current_player;main;0,3.8;8,1;0,8;]";
+	spec += "list[current_player;main;0,5;8,3;8,-1;]";
+
+	return spec;
 }
 
 /*

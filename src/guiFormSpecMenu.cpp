@@ -176,10 +176,22 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 			int i_start = 0;
 			int i_end = -1;
 			std::string end = f.next("]");
+			std::string bg = "";
 			if (end != "") {
 				Strfnd fend(end);
-				i_start = mystoi(fend.next(","));
-				i_end = mystoi(fend.next(";"));
+				std::string s_start = fend.next(",");
+				std::string s_end = fend.next(";");
+				if (s_start != "") {
+					if (s_end != "") {
+						i_start = mystoi(s_start);
+						i_end = mystoi(s_end);
+						end = fend.end();
+					}else{
+						end = s_start;
+					}
+				}
+				if (end != "")
+					bg = end;
 			}
 			infostream<<"list inv="<<name<<", listname="<<listname
 					<<", pos=("<<pos.X<<","<<pos.Y<<")"
@@ -187,7 +199,7 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 					<<std::endl;
 			if(bp_set != 2)
 				errorstream<<"WARNING: invalid use of list without a size[] element"<<std::endl;
-			m_inventorylists.push_back(ListDrawSpec(loc, listname, pos, geom, i_start, i_end));
+			m_inventorylists.push_back(ListDrawSpec(loc, listname, bg, pos, geom, i_start, i_end));
 		}
 		else if(type == "image")
 		{
@@ -506,6 +518,10 @@ void GUIFormSpecMenu::drawList(const ListDrawSpec &s, int phase)
 		return;
 	InventoryList *ilist = inv->getList(s.listname);
 
+	video::ITexture *bg_texture = NULL;
+	if (s.background != "")
+		bg_texture = driver->getTexture(getTexturePath(s.background).c_str());
+
 	core::rect<s32> imgrect(0,0,imgsize.X,imgsize.Y);
 
 	int end = s.i_end;
@@ -560,6 +576,9 @@ void GUIFormSpecMenu::drawList(const ListDrawSpec &s, int phase)
 					);
 				}
 			}
+		}else if (bg_texture != NULL) {
+			const video::SColor color(255,255,255,255);
+			draw_image(driver, bg_texture, color, rect,NULL,&AbsoluteClippingRect);
 		}
 	}
 }

@@ -79,6 +79,7 @@ class GUIFormSpecMenu : public GUIModalMenu
 		ListDrawSpec(
 			const InventoryLocation &a_inventoryloc,
 			const std::string &a_listname,
+			const std::string &a_background,
 			v2s32 a_pos,
 			v2s32 a_geom,
 			int i_s,
@@ -86,6 +87,7 @@ class GUIFormSpecMenu : public GUIModalMenu
 		):
 			inventoryloc(a_inventoryloc),
 			listname(a_listname),
+			background(a_background),
 			pos(a_pos),
 			geom(a_geom),
 			i_start(i_s),
@@ -95,6 +97,7 @@ class GUIFormSpecMenu : public GUIModalMenu
 
 		InventoryLocation inventoryloc;
 		std::string listname;
+		std::string background;
 		v2s32 pos;
 		v2s32 geom;
 		int i_start;
