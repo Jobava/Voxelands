@@ -89,7 +89,10 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_SANDSTONE_WALL 0x027
 #define CONTENT_STONE_WALL 0x028
 #define CONTENT_COBBLE_WALL 0x029
-// FREE 2A-0x7C
+// fences
+#define CONTENT_JUNGLE_FENCE 0x02A
+#define CONTENT_PINE_FENCE 0x02B
+// FREE 2C-0x7C
 // 0x7D-0x7F reserved values, air, ignore, etc
 // FREE 0x80-0x7FE
 #define CONTENT_GROWING_GRASS 0x7FF
@@ -134,6 +137,8 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 // FREE 826-82E
 #define CONTENT_PARCEL 0x82F
 #define CONTENT_CLOCK 0x830
+#define CONTENT_BOOKSHELF_PINE 0x831
+#define CONTENT_BOOKSHELF_JUNGLE 0x832
 // FREE 931-835
 
 #define CONTENT_COUCH_CENTRE 0x836

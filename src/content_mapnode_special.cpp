@@ -32,7 +32,6 @@ void content_mapnode_special(bool repeat)
 	content_t i;
 	ContentFeatures *f = NULL;
 
-
 	i = CONTENT_FENCE;
 	f = &content_features(i);
 	f->description = wgettext("Fence");
@@ -59,7 +58,6 @@ void content_mapnode_special(bool repeat)
 	content_nodebox_fence(f);
 	f->setInventoryTextureNodeBox(i,"fence.png","fence_top.png","fence.png");
 	crafting::setWallRecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_FENCE);
-	crafting::setWallRecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_FENCE);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -88,6 +86,64 @@ void content_mapnode_special(bool repeat)
 	content_nodebox_fence(f);
 	f->setInventoryTextureNodeBox(i,"fence_steel.png","fence_steel_top.png","fence_steel.png");
 	crafting::setWallRecipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_STEEL_FENCE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_JUNGLE_FENCE;
+	f = &content_features(i);
+	f->description = wgettext("Jungle Wood Fence");
+	f->setAllTextures("fence_jungle.png");
+	f->setTexture(0,"fence_jungle_top.png");
+	f->setTexture(1,"fence_jungle_top.png");
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_SPECIAL;
+	f->draw_type = CDT_FENCELIKE;
+	f->is_ground_content = true;
+	f->jumpable = false;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->air_equivalent = true; // grass grows underneath
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->special_alternate_node = CONTENT_JUNGLEWOOD;
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
+	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
+	content_nodebox_fence_inv(f);
+	content_nodebox_fence(f);
+	f->setInventoryTextureNodeBox(i,"fence_jungle.png","fence_jungle_top.png","fence_jungle.png");
+	crafting::setWallRecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_JUNGLE_FENCE);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
+	i = CONTENT_PINE_FENCE;
+	f = &content_features(i);
+	f->description = wgettext("Pine Fence");
+	f->setAllTextures("fence_pine.png");
+	f->setTexture(0,"fence_pine_top.png");
+	f->setTexture(1,"fence_pine_top.png");
+	f->light_propagates = true;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_SPECIAL;
+	f->draw_type = CDT_FENCELIKE;
+	f->is_ground_content = true;
+	f->jumpable = false;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->solidness = 0; // drawn separately, makes no faces
+	f->air_equivalent = true; // grass grows underneath
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 15;
+	f->special_alternate_node = CONTENT_WOOD_PINE;
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
+	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
+	content_nodebox_fence_inv(f);
+	content_nodebox_fence(f);
+	f->setInventoryTextureNodeBox(i,"fence_pine.png","fence_pine_top.png","fence_pine.png");
+	crafting::setWallRecipe(CONTENT_CRAFTITEM_PINE_PLANK,CONTENT_PINE_FENCE);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 

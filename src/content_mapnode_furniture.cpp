@@ -64,13 +64,81 @@ void content_mapnode_furniture(bool repeat)
 		};
 		crafting::setRecipe(r,CONTENT_BOOKSHELF,1);
 	}
+	f->pressure_type = CST_SOLID;
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+	f->suffocation_per_second = 0;
+
+	i = CONTENT_BOOKSHELF_JUNGLE;
+	f = &content_features(i);
+	f->description = wgettext("Junglewood Book Shelf");
+	f->setAllTextures("bookshelf_jungle_front.png");
+	f->setTexture(0, "bookshelf_jungle_top.png");
+	f->setTexture(1, "bookshelf_jungle_top.png");
+	f->setTexture(2, "bookshelf_jungle_side.png");
+	f->setTexture(3, "bookshelf_jungle_side.png");
+	f->setAllMetaTextures("bookshelf_book.png");
+	f->setMetaTexture(0, "bookshelf_book_top.png");
+	f->rotate_tile_with_nodebox = true;
+	//f->setInventoryTextureCube("wood.png", "bookshelf.png", "bookshelf.png");
+	f->draw_type = CDT_NODEBOX_META;
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/4;
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
+	f->solidness = 0;
+	content_nodebox_bookshelf(f);
+	f->setInventoryTextureNodeBox(i,"bookshelf_jungle_top.png", "bookshelf_jungle_front.png", "bookshelf_jungle_side.png");
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new BookShelfNodeMetadata();
 	{
 		u16 r[9] = {
 			CONTENT_JUNGLEWOOD,	CONTENT_JUNGLEWOOD,	CONTENT_JUNGLEWOOD,
 			CONTENT_IGNORE,		CONTENT_IGNORE,		CONTENT_IGNORE,
 			CONTENT_JUNGLEWOOD,	CONTENT_JUNGLEWOOD,	CONTENT_JUNGLEWOOD
 		};
-		crafting::setRecipe(r,CONTENT_BOOKSHELF,1);
+		crafting::setRecipe(r,CONTENT_BOOKSHELF_JUNGLE,1);
+	}
+	f->pressure_type = CST_SOLID;
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+	f->suffocation_per_second = 0;
+
+	i = CONTENT_BOOKSHELF_PINE;
+	f = &content_features(i);
+	f->description = wgettext("Pine Book Shelf");
+	f->setAllTextures("bookshelf_pine_front.png");
+	f->setTexture(0, "bookshelf_pine_top.png");
+	f->setTexture(1, "bookshelf_pine_top.png");
+	f->setTexture(2, "bookshelf_pine_side.png");
+	f->setTexture(3, "bookshelf_pine_side.png");
+	f->setAllMetaTextures("bookshelf_book.png");
+	f->setMetaTexture(0, "bookshelf_book_top.png");
+	f->rotate_tile_with_nodebox = true;
+	//f->setInventoryTextureCube("wood.png", "bookshelf.png", "bookshelf.png");
+	f->draw_type = CDT_NODEBOX_META;
+	f->param_type = CPT_FACEDIR_SIMPLE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/4;
+	f->type = CMT_WOOD;
+	f->hardness = 0.75;
+	f->solidness = 0;
+	content_nodebox_bookshelf(f);
+	f->setInventoryTextureNodeBox(i,"bookshelf_pine_top.png", "bookshelf_pine_front.png", "bookshelf_pine_side.png");
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new BookShelfNodeMetadata();
+	{
+		u16 r[9] = {
+			CONTENT_WOOD_PINE,	CONTENT_WOOD_PINE,	CONTENT_WOOD_PINE,
+			CONTENT_IGNORE,		CONTENT_IGNORE,		CONTENT_IGNORE,
+			CONTENT_WOOD_PINE,	CONTENT_WOOD_PINE,	CONTENT_WOOD_PINE
+		};
+		crafting::setRecipe(r,CONTENT_BOOKSHELF_PINE,1);
 	}
 	f->pressure_type = CST_SOLID;
 	lists::add("craftguide",i);
