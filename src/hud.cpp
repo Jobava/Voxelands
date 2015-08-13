@@ -27,6 +27,7 @@
 #include "main.h"
 #include "log.h"
 #include "game.h"
+#include "intl.h"
 
 void draw_image(
 	video::IVideoDriver *driver,
@@ -368,13 +369,13 @@ void hud_draw(
 	Inventory *inventory,
 	bool have_health,
 	s32 halfheartcount,
-	bool have_cold_boost,
+	float cold_boost,
 	bool have_suffocation,
 	s32 halfbubblecount,
 	bool have_hunger,
 	s32 halfhungercount,
 	float energy,
-	bool have_energy_boost,
+	float energy_boost,
 	int crosshair,
 	bool nodeinfo,
 	bool selected,
@@ -576,7 +577,7 @@ void hud_draw(
 		{
 			u8 r = c;
 			u8 b = 0;
-			if (have_energy_boost) {
+			if (energy_boost > 0.0) {
 				r = 0;
 				b = c;
 			}
@@ -586,7 +587,7 @@ void hud_draw(
 		{
 			u8 r = c;
 			u8 b = 0;
-			if (have_cold_boost) {
+			if (cold_boost > 0.0) {
 				r = 0;
 				b = c;
 			}
@@ -766,5 +767,60 @@ void hud_draw(
 			sdim
 		);
 		font->draw(txt.c_str(), rect2, video::SColor(255,255,255,255), false, false, NULL);
+	}
+
+	{
+		int x_off = 0;
+		char buff[512];
+		if (energy_boost > 0.0) {
+			int m = energy_boost;
+			int s = m%60;
+			m /= 60;
+			sprintf(buff,gettext("Energy Boost: %d:%02d"),m,s);
+
+			const video::SColor color(255,255,255,255);
+			video::ITexture *texture = driver->getTexture(getTexturePath("energy.png").c_str());
+
+			core::rect<s32> rect(x_off+132,screensize.Y-36,x_off+164,screensize.Y-4);
+			draw_image(driver,texture,color,rect,NULL,NULL);
+
+			std::wstring txt = itows(halfhungercount*5);
+			txt += L"%";
+
+			v2u32 dim = font->getDimension(txt.c_str());
+			v2s32 sdim(dim.X,dim.Y);
+			v2s32 p(x_off+164,screensize.Y-(20+(sdim.Y/2)));
+			core::rect<s32> rect2(
+				p,
+				sdim
+			);
+			font->draw(narrow_to_wide(buff).c_str(), rect2, video::SColor(255,255,255,255), false, false, NULL);
+			x_off += dim.X + 128;
+		}
+		if (cold_boost > 0.0) {
+			int m = cold_boost;
+			int s = m%60;
+			m /= 60;
+			sprintf(buff,gettext("Cold Protection: %d:%02d"),m,s);
+
+			const video::SColor color(255,255,255,255);
+			video::ITexture *texture = driver->getTexture(getTexturePath("flame.png").c_str());
+
+			core::rect<s32> rect(x_off+132,screensize.Y-36,x_off+164,screensize.Y-4);
+			draw_image(driver,texture,color,rect,NULL,NULL);
+
+			std::wstring txt = itows(halfhungercount*5);
+			txt += L"%";
+
+			v2u32 dim = font->getDimension(txt.c_str());
+			v2s32 sdim(dim.X,dim.Y);
+			v2s32 p(x_off+164,screensize.Y-(20+(sdim.Y/2)));
+			core::rect<s32> rect2(
+				p,
+				sdim
+			);
+			font->draw(narrow_to_wide(buff).c_str(), rect2, video::SColor(255,255,255,255), false, false, NULL);
+			x_off += dim.X + 128;
+		}
 	}
 }

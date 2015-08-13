@@ -90,6 +90,7 @@ void content_mapnode_plants(bool repeat)
 	//f->is_ground_content = true;
 	f->flammable = 2; // can be set on fire
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->cook_result = std::string("CraftItem lump_of_charcoal 1");
 	f->fuel_time = 30;
 	f->type = CMT_WOOD;
 	f->hardness = 1.0;

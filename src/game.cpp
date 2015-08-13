@@ -2286,9 +2286,6 @@ void the_game(
 
 				LocalPlayer *p = client.getLocalPlayer();
 
-				bool energy_boost = (p->energy_effectf > 0.0);
-				bool cold_boost = (p->cold_effectf > 0.0);
-
 				hud_draw(
 					driver,
 					font,
@@ -2299,13 +2296,13 @@ void the_game(
 					&local_inventory,
 					client.getServerDamage(),
 					client.getHP(),
-					cold_boost,
+					p->cold_effectf,
 					client.getServerSuffocation(),
 					client.getAir(),
 					client.getServerHunger(),
 					hunger,
 					client.getEnergy(),
-					energy_boost,
+					p->energy_effectf,
 					crosshair,
 					show_debug,
 					has_selected_node,
