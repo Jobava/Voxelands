@@ -171,6 +171,9 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			case GUI_ID_MOBS_DESTRUCTIVE:
 				max_mob_level = L"destructive";
 				break;
+			case GUI_ID_MOBS_NONE:
+				max_mob_level = L"none";
+				break;
 			default:
 				max_mob_level = L"aggressive";
 			}
@@ -548,6 +551,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			core::rect<s32> rect(0, 0, 240, 30);
 			rect += topleft_content + v2s32(170, 155);
 			gui::IGUIComboBox *c = Environment->addComboBox(rect, this, GUI_ID_MOBS_COMBO);
+			u32 nm = c->addItem(wgettext("None"),GUI_ID_MOBS_NONE);
 			u32 pm = c->addItem(wgettext("Passive"),GUI_ID_MOBS_PASSIVE);
 			u32 am = c->addItem(wgettext("Passive & Aggressive"),GUI_ID_MOBS_AGGRESSIVE);
 			u32 dm = c->addItem(wgettext("Passive, Aggressive, & Destructive"),GUI_ID_MOBS_DESTRUCTIVE);
@@ -555,6 +559,8 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 				c->setSelected(pm);
 			}else if (max_mob_level == L"destructive") {
 				c->setSelected(dm);
+			}else if (max_mob_level == L"none") {
+				c->setSelected(nm);
 			}else{
 				c->setSelected(am);
 			}
