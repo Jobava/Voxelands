@@ -491,11 +491,14 @@ void content_mapnode_init(bool repeat)
 	f->is_ground_content = true;
 	f->pressure_type = CST_DROPABLE;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->extra_dug_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_SALTPETER)+" 1";
+	f->extra_dug_item_rarity = 30;
 	f->cook_result = std::string("MaterialItem2 ")+itos(CONTENT_GLASS)+" 1";
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	lists::add("creative",i);
 	lists::add("cooking",i);
+	lists::add("decrafting",i);
 
 	i = CONTENT_GRAVEL;
 	f = &content_features(i);
@@ -511,6 +514,7 @@ void content_mapnode_init(bool repeat)
 	f->type = CMT_DIRT;
 	f->hardness = 1.75;
 	lists::add("creative",i);
+	lists::add("decrafting",i);
 
 	i = CONTENT_SANDSTONE;
 	f = &content_features(i);
