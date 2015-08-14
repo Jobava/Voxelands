@@ -739,34 +739,46 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	}else if(m_data->selected_tab == TAB_CREDITS) {
 		// CREDITS
 		{
-			core::rect<s32> rect(0, 0, 550, 20);
-			rect += topleft_content + v2s32(0, 20);
-			gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Credits"), rect, false, true, this, -1);
-			t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
-		}
-		{
-			core::rect<s32> rect(0, 0, 550, 350);
-			rect += topleft_content + v2s32(0, 50);
-			gui::IGUIStaticText *t = Environment->addStaticText(
-				wgettext(
-					"Voxelands\n"
-					"http://www.voxelands.com/\n"
-					"\n"
-					"By Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
-					"and contributers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, tiemay, Szkodnix,"
-					" soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound, Rui, Wayward_One, loh, Stephane, wario,"
-					" AudioRichter, OwlStorm, DjDust, Taira Komori, hdastwb, puma_rc, Carl 'melkior' Kidwell\n"
-					"\n"
-					"Based on Minetest-C55\n"
-					"by Perttu Ahola <celeron55@gmail.com>\n"
-					"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
-				),
-				rect,
-				false,
-				true,
-				this,
-				-1
+			core::rect<s32> rect(0, 0, 550, 480);
+			rect += topleft_content + v2s32(0, 10);
+			std::string txt("");
+
+			txt += gettext(
+				"Voxelands\n"
+				"http://www.voxelands.com/\n"
+				"By Lisa 'darkrose' Milne <lisa@ltmnet.com> and contributors."
 			);
+
+			txt += "\n\n";
+
+			txt += gettext("Programmers");
+			txt += "\ndarkrose, sdzen, Pentium44, Menche, MavJS, tiemay, Tapoky, JHeaton, Wayward_One, Stephane, hdastwb, VargaD.\n\n";
+
+			txt += gettext("Artists and Modellers");
+			txt += "\ndarkrose, sdzen, Menche, Pentium44, Wuzzy, Carl 'melkior' Kidwell, Jordach.\n\n";
+
+			txt += gettext("Translators");
+			txt += "\ndarkrose, Szkodnix, soognarf, Wuzzy, Akien, redhound, Rui, loh, wario, puma_rc, Uniaika.\n\n";
+
+			txt += gettext("Documentation Writters");
+			txt += "\ndarkrose, Menche, Pentium44, elky.\n\n";
+
+			txt += gettext("Testers, Packagers, and Builders");
+			txt += "\ndarkrose, sdzen, Menche, tiemay, JHeaton, MavJS, mcnalu.\n\n";
+
+			txt += gettext("Music and Sound Effects Composers");
+			txt += "\ndarkrose, Jordach, AudioRichter, OwlStorm, DjDust, Taira Komori.\n\n";
+
+			txt += gettext("Other Contributers, and Special Thanks");
+			txt += "\nnadnadnad, Honeypaw, tiemay, stormchaser3000, MichaelEh?, NCC74656.\n\n";
+
+			txt += gettext(
+				"Based on Minetest-C55 by Perttu Ahola <celeron55@gmail.com>\n"
+				"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann,"
+				" SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5..."
+				" and tens of more random people."
+			);
+			gui::IGUIStaticText *t = Environment->addStaticText(narrow_to_wide(txt).c_str(),rect,false,true,this,-1);
 			t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 		}
 	}
