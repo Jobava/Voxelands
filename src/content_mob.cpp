@@ -523,6 +523,7 @@ void content_mob_init()
 	f->setAnimationFrames(MA_MOVE,61,120);
 	f->setAnimationFrames(MA_ATTACK,61,120);
 	f->punch_action = MPA_HARM;
+	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_MEAT)+" 2";
 	f->tamed_mob = CONTENT_MOB_TAMEWOLF;
 	f->motion = MM_SEEKER;
 	f->motion_type = MMT_WALK;
