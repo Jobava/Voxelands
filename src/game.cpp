@@ -2239,18 +2239,22 @@ void the_game(
 			if (client.getServerHunger())
 				hunger = client.getHunger();
 			if (old_hotbar) {
-				if (g_menumgr.menuCount() < 1)
+				if (g_menumgr.menuCount() < 1) {
 					client.setFormState(false);
-
-				/*
-					Draw crosshair
-				*/
-				driver->draw2DLine(displaycenter - core::vector2d<s32>(10,0),
-							displaycenter + core::vector2d<s32>(10,0),
-							video::SColor(255,255,255,255));
-				driver->draw2DLine(displaycenter - core::vector2d<s32>(0,10),
-							displaycenter + core::vector2d<s32>(0,10),
-							video::SColor(255,255,255,255));
+					/*
+						Draw crosshair
+					*/
+					driver->draw2DLine(
+						displaycenter - core::vector2d<s32>(10,0),
+						displaycenter + core::vector2d<s32>(10,0),
+						video::SColor(255,255,255,255)
+					);
+					driver->draw2DLine(
+						displaycenter - core::vector2d<s32>(0,10),
+						displaycenter + core::vector2d<s32>(0,10),
+						video::SColor(255,255,255,255)
+					);
+				}
 				hud_draw_old(
 					driver,
 					font,
