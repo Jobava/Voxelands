@@ -510,6 +510,7 @@ void MobSAO::step(float dtime, bool send_recommended)
 	v3f disturbing_player_norm = v3f(0,1,0);
 	float disturbing_player_distance = 1000000;
 	float disturbing_player_dir = 0;
+	bool dont_move = false;
 
 	m_age += dtime;
 	m_last_sound += dtime;
@@ -518,6 +519,25 @@ void MobSAO::step(float dtime, bool send_recommended)
 	if (m.lifetime > 0.0 && m_age >= m.lifetime && (!m.notices_player || m_disturbing_player == "")) {
 		m_removed = true;
 		return;
+	}
+
+	/* don't do anything if there's no nearby player */
+	if (m_disturbing_player == "") {
+		float distance = 40*BS;
+		core::list<Player*> players = m_env->getPlayers(true);
+		for (core::list<Player*>::Iterator i = players.begin(); i != players.end(); i++) {
+			Player *player = *i;
+			v3f playerpos = player->getPosition();
+			f32 dist = m_base_position.getDistanceFrom(playerpos);
+			if (dist < distance)
+				distance = dist;
+			if (distance < 32*BS)
+				break;
+		}
+		if (distance > 32*BS)
+			return;
+		if (distance > 16*BS && myrand_range(0,4) != 0)
+			dont_move = true;
 	}
 
 	/* if it isn't a swimmer, kill it in liquid */
@@ -691,72 +711,74 @@ void MobSAO::step(float dtime, bool send_recommended)
 			m_removed = true;
 	}
 
-	MobMotion mot = getMotion();
+	if (!dont_move) {
+		MobMotion mot = getMotion();
 
-	if (mot != MM_CONSTANT && mot != MM_STATIC) {
-		m_walk_around_timer -= dtime;
-		if (m_walk_around_timer <= 0.0) {
-			if (m.motion_type == MMT_FLY || (disturbing_player && mot == MM_SEEKER)) {
-				if (!m_walk_around) {
-					m_walk_around_timer = 0.2;
-					m_walk_around = true;
-				}
-			}else{
-				m_walk_around = !m_walk_around;
-				if (m_walk_around) {
-					if (!disturbing_player || mot != MM_SEEKER)
-					m_walk_around_timer = 0.1*myrand_range(5,15);
+		if (mot != MM_CONSTANT && mot != MM_STATIC) {
+			m_walk_around_timer -= dtime;
+			if (m_walk_around_timer <= 0.0) {
+				if (m.motion_type == MMT_FLY || (disturbing_player && mot == MM_SEEKER)) {
+					if (!m_walk_around) {
+						m_walk_around_timer = 0.2;
+						m_walk_around = true;
+					}
 				}else{
-					m_walk_around_timer = 0.1*myrand_range(20,40);
+					m_walk_around = !m_walk_around;
+					if (m_walk_around) {
+						if (!disturbing_player || mot != MM_SEEKER)
+						m_walk_around_timer = 0.1*myrand_range(5,15);
+					}else{
+						m_walk_around_timer = 0.1*myrand_range(20,40);
+					}
 				}
+			}else if (m_walk_around_timer > 10.0) {
+				m_walk_around_timer = 0.2;
+				m_walk_around = true;
 			}
-		}else if (m_walk_around_timer > 10.0) {
-			m_walk_around_timer = 0.2;
-			m_walk_around = true;
-		}
-		if (m_next_pos_exists) {
-			v3f pos_f = m_base_position;
-			v3f next_pos_f = intToFloat(m_next_pos_i, BS);
-			v3f diff = next_pos_f - pos_f;
-			v3f dir = diff;
-			dir.normalize();
-			float speed = BS;
-			if (mot == MM_SEEKER && m.level == MOB_AGGRESSIVE && disturbing_player)
-				speed = BS * 3.0;
-			if (m_falling)
-				speed = BS * 3.0;
+			if (m_next_pos_exists) {
+				v3f pos_f = m_base_position;
+				v3f next_pos_f = intToFloat(m_next_pos_i, BS);
+				v3f diff = next_pos_f - pos_f;
+				v3f dir = diff;
+				dir.normalize();
+				float speed = BS;
+				if (mot == MM_SEEKER && m.level == MOB_AGGRESSIVE && disturbing_player)
+					speed = BS * 3.0;
+				if (m_falling)
+					speed = BS * 3.0;
 
-			dir *= dtime * speed;
-			bool arrived = false;
-			if (dir.getLength() > diff.getLength()) {
-				dir = diff;
-				arrived = true;
+				dir *= dtime * speed;
+				bool arrived = false;
+				if (dir.getLength() > diff.getLength()) {
+					dir = diff;
+					arrived = true;
+				}
+				pos_f += dir;
+				m_yaw = wrapDegrees_180(180./PI*atan2(dir.Z, dir.X));
+				m_base_position = pos_f;
+
+				if ((pos_f - next_pos_f).getLength() < 0.1 || arrived)
+					m_next_pos_exists = false;
 			}
-			pos_f += dir;
-			m_yaw = wrapDegrees_180(180./PI*atan2(dir.Z, dir.X));
-			m_base_position = pos_f;
-
-			if ((pos_f - next_pos_f).getLength() < 0.1 || arrived)
-				m_next_pos_exists = false;
 		}
-	}
 
-	mot = getMotion();
+		mot = getMotion();
 
-	if (mot == MM_WANDER) {
-		stepMotionWander(dtime);
-	}else if (mot == MM_SEEKER) {
-		if (!disturbing_player) {
+		if (mot == MM_WANDER) {
 			stepMotionWander(dtime);
-		}else{
-			stepMotionSeeker(dtime);
+		}else if (mot == MM_SEEKER) {
+			if (!disturbing_player) {
+				stepMotionWander(dtime);
+			}else{
+				stepMotionSeeker(dtime);
+			}
+		}else if (mot == MM_SENTRY) {
+			stepMotionSentry(dtime);
+		}else if (mot == MM_THROWN) {
+			stepMotionThrown(dtime);
+		}else if (mot == MM_CONSTANT) {
+			stepMotionConstant(dtime);
 		}
-	}else if (mot == MM_SENTRY) {
-		stepMotionSentry(dtime);
-	}else if (mot == MM_THROWN) {
-		stepMotionThrown(dtime);
-	}else if (mot == MM_CONSTANT) {
-		stepMotionConstant(dtime);
 	}
 
 	if (send_recommended == false)
