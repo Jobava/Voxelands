@@ -109,6 +109,7 @@ private:
 	u8 m_hp;
 	bool m_angry;
 	u16 m_special_count;
+	u16 m_tamed_chance;
 
 	float m_disturb_timer;
 	std::string m_disturbing_player;

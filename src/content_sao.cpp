@@ -394,6 +394,7 @@ MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, content_t type):
 	m_hp(10),
 	m_angry(false),
 	m_special_count(0),
+	m_tamed_chance(0),
 	m_disturb_timer(100000),
 	m_random_disturb_timer(0),
 	m_walk_around(false),
@@ -408,6 +409,7 @@ MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, content_t type):
 	if ((type&CONTENT_MOB_MASK) == CONTENT_MOB_MASK) {
 		m_hp = content_mob_features(type).hp;
 		m_special_count = content_mob_features(type).special_dropped_max;
+		m_tamed_chance = content_mob_features(type).level*5;
 	}
 }
 MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, v3f speed, content_t type):
@@ -424,6 +426,7 @@ MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, v3f speed, content_t typ
 	m_hp(10),
 	m_angry(false),
 	m_special_count(0),
+	m_tamed_chance(0),
 	m_disturb_timer(100000),
 	m_random_disturb_timer(0),
 	m_walk_around(false),
@@ -438,6 +441,7 @@ MobSAO::MobSAO(ServerEnvironment *env, u16 id, v3f pos, v3f speed, content_t typ
 	if ((type&CONTENT_MOB_MASK) == CONTENT_MOB_MASK) {
 		m_hp = content_mob_features(type).hp;
 		m_special_count = content_mob_features(type).special_dropped_max;
+		m_tamed_chance = content_mob_features(type).level*5;
 	}
 }
 MobSAO::~MobSAO()
@@ -1516,9 +1520,14 @@ bool MobSAO::rightClick(Player *player)
 			ilist->addDiff(item_i,item);
 		}
 	}
+	if (m_tamed_chance < 1)
+		m_tamed_chance = 1;
 	// tame it maybe
-	if (m.level > MOB_PASSIVE && myrand_range(0,m.level*5) != 0)
+	if (m.level > MOB_PASSIVE && myrand_range(0,m_tamed_chance) != 0) {
+		if (m_tamed_chance > 1)
+			m_tamed_chance--;
 		return true;
+	}
 
 	// add new tamed mob
 	ServerActiveObject *obj = new MobSAO(m_env, 0, m_base_position, m.tamed_mob);

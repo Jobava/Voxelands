@@ -2239,6 +2239,8 @@ void the_game(
 			if (client.getServerHunger())
 				hunger = client.getHunger();
 			if (old_hotbar) {
+				if (g_menumgr.menuCount() < 1)
+					client.setFormState(false);
 
 				/*
 					Draw crosshair
