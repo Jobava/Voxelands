@@ -114,7 +114,7 @@ class GUISettingsMenu: public GUIModalMenu
 {
 public:
 	GUISettingsMenu(gui::IGUIEnvironment* env, gui::IGUIElement* parent,
-			s32 id, IMenuManager *menumgr);
+			s32 id, IMenuManager *menumgr, bool is_ingame);
 	~GUISettingsMenu();
 
 	void removeChildren();
@@ -133,6 +133,7 @@ private:
 	SettingsMenuData m_data;
 	bool m_accepted;
 	v2u32 m_screensize;
+	bool m_is_ingame;
 
 	void init_keys();
 	void save();

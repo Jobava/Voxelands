@@ -44,10 +44,12 @@ GUISettingsMenu::GUISettingsMenu(
 	gui::IGUIElement*
 	parent,
 	s32 id,
-	IMenuManager *menumgr
+	IMenuManager *menumgr,
+	bool is_ingame
 ):
 	GUIModalMenu(env, parent, id, menumgr),
-	m_accepted(false)
+	m_accepted(false),
+	m_is_ingame(is_ingame)
 {
 	activeKey = -1;
 	init_keys();
@@ -370,6 +372,12 @@ void GUISettingsMenu::regenerateGui(v2u32 screensize)
 			gui::IGUICheckBox *c = Environment->addCheckBox(wield_index, rect, this, GUI_ID_WIELDINDEX_CB, wgettext("Wieldring Index"));
 			c->setEnabled(!hotbar);
 		}
+		if (m_is_ingame) {
+			core::rect<s32> rect(0, 0, 550, 20);
+			rect += topleft_content + v2s32(0, 200);
+			gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Some settings cannot be changed in-game."), rect, false, true, this, -1);
+			t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
+		}
 	}else if (m_data.selected_tab == TAB_SETTINGS_VIDEO) {
 		{
 			core::rect<s32> rect(0, 0, 550, 20);
@@ -406,6 +414,12 @@ void GUISettingsMenu::regenerateGui(v2u32 screensize)
 			core::rect<s32> rect(0, 0, 200, 30);
 			rect += topleft_content + v2s32(80, 210);
 			Environment->addCheckBox(anisotropic, rect, this, GUI_ID_ANISOTROPIC_CB, wgettext("Anisotropic Filtering"));
+		}
+		if (m_is_ingame) {
+			core::rect<s32> rect(0, 0, 550, 20);
+			rect += topleft_content + v2s32(0, 250);
+			gui::IGUIStaticText *t = Environment->addStaticText(wgettext("Some settings cannot be changed in-game."), rect, false, true, this, -1);
+			t->setTextAlignment(gui::EGUIA_CENTER, gui::EGUIA_UPPERLEFT);
 		}
 	}else if (m_data.selected_tab == TAB_SETTINGS_SOUND) {
 		{

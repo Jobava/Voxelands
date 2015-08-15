@@ -221,7 +221,7 @@ bool GUIPauseMenu::OnEvent(const SEvent& event)
 				return true;
 			case 265: // settings
 			{
-				GUISettingsMenu *smenu = new GUISettingsMenu(env, parent, -1,menumgr);
+				GUISettingsMenu *smenu = new GUISettingsMenu(env, parent, -1,menumgr, true);
 				smenu->drop();
 				return true;
 			}

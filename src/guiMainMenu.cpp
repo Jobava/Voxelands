@@ -1173,7 +1173,7 @@ bool GUIMainMenu::OnEvent(const SEvent& event)
 				return true;
 			case GUI_ID_TAB_SETTINGS:
 			{
-				GUISettingsMenu *smenu = new GUISettingsMenu(env, parent, -1,menumgr);
+				GUISettingsMenu *smenu = new GUISettingsMenu(env, parent, -1,menumgr, false);
 				smenu->drop();
 				return true;
 			}
