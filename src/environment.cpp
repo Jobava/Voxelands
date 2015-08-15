@@ -1727,14 +1727,11 @@ void ServerEnvironment::step(float dtime)
 
 				// MESE is dead
 				case CONTENT_MESE:
-				case CONTENT_MESE_DIGGING:
 				{
-					v3f pp;
-					pp.X = p.X;
-					pp.Y = p.Y;
-					pp.Z = p.Z;
-					Player *nearest = getNearestConnectedPlayer(pp);
-					if (nearest == NULL || nearest->getPosition().getDistanceFrom(pp*BS) > 6.0*BS) {
+					if (p.Y > 0) {
+						n.setContent(CONTENT_MITHRIL_BLOCK);
+						m_map->addNodeWithEvent(p, n);
+					}else{
 						n.setContent(CONTENT_STONE);
 						n.param1 = MINERAL_MITHRIL;
 						m_map->addNodeWithEvent(p, n);

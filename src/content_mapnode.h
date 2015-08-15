@@ -270,8 +270,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_FIRE_SHORTTERM 0x8C7
 #define CONTENT_TNT 0x8C8
 #define CONTENT_FLASH 0x8C9
-// MESE is deprecated, but leave it here for the moment
-#define CONTENT_MESE_DIGGING 0x8CA
+#define CONTENT_MITHRIL_BLOCK 0x8CA
 #define CONTENT_COBBLE 0x8CB
 #define CONTENT_ROUGHSTONEBRICK 0x8CC
 #define CONTENT_ROUGHSTONEBLOCK 0x8CD

@@ -2280,6 +2280,24 @@ void content_mapnode_init(bool repeat)
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
+	i = CONTENT_MITHRIL_BLOCK;
+	f = &content_features(i);
+	f->description = wgettext("Mithril Block");
+	f->setAllTextures("mithril_block.png");
+	f->setInventoryTextureCube("mithril_block.png", "mithril_block.png", "mithril_block.png");
+	f->param_type = CPT_NONE;
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->type = CMT_STONE;
+	f->hardness = 10.0;
+	f->destructive_mob_safe = true;
+	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_MITHRIL_UNBOUND,CONTENT_MITHRIL_BLOCK);
+	crafting::setHardBlockRecipe(CONTENT_CRAFTITEM_MITHRIL,CONTENT_MITHRIL_BLOCK);
+	crafting::setUncraftHardBlockRecipe(CONTENT_MITHRIL_BLOCK,CONTENT_CRAFTITEM_MITHRIL_UNBOUND);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
 	content_nodedef_knob(CONTENT_STONE_KNOB, CONTENT_STONE, CMT_STONE, "stone.png", wgettext("Stone Knob"));
 	content_nodedef_knob(CONTENT_ROUGHSTONE_KNOB, CONTENT_ROUGHSTONE, CMT_STONE, "roughstone.png", wgettext("Rough Stone Knob"));
 	content_nodedef_knob(CONTENT_SANDSTONE_KNOB, CONTENT_SANDSTONE, CMT_STONE, "sandstone.png", wgettext("Sandstone Knob"));
