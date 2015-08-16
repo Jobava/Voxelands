@@ -33,20 +33,36 @@ Simply run bin/voxelands from any console/terminal.
 
 CONTROLS:
 Controls can be set in the Settings tab of the main menu
- W: walk forward
- A: walk left
- S: walk backwards
- D: walk right
- Space: jump, move up
- E: run, move down
- Mouse left: dig/hit
- Mouse right: place/use
- Mouse wheel: select wielded item
- Shift: sneak
- R: Toggle viewing all loaded chunks
- I: Inventory menu
- ESC: Pause Menu / Exit game
- T: Chat
+
+Main controls:
+
+    W, S, A, D - Walk forward backward, left, and right.
+    Mouse - Look / Aim.
+    Mouse wheel - Change wielded item.
+    1 through 8 - Change wielded item.
+    Right Mouse Button - Place item.
+    Left Mouse Button - Dig / Punch / Attack.
+    Shift - Sneak.
+    Space - Jump.
+    R - Move Up (ladders, swimming, flying)
+    F - Move Down (ladders, swimming, flying)
+    E - Run.
+
+Action controls:
+
+    I - Enter inventory.
+    Q - Examine pointed block.
+    H - Use item in hand.
+    T - Talk / commands.
+    K - Toggle fly mode.
+    F1 - Hide / show hud.
+    F2 - Hide / show chat.
+    F3 - Disable / enable fog.
+    F4 - Disable / enable camera update.
+    F5 - Toggle through debug information.
+    F6 - Toggle through profiler (info on FPS, chunk updates, etc.)
+    F12 - Take a screenshot.
+
 
 LICENSE:
 Code:
