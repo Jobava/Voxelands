@@ -117,7 +117,8 @@ void GUISettingsMenu::removeChildren()
 void GUISettingsMenu::save()
 {
 	// controls
-	for (int i=0; i<VLKC_MAX; i++) {
+	int m = VLKC_MAX;
+	for (int i=0; i<m; i++) {
 		saveKeySetting(keys[i],(KeyCode)i);
 	}
 	// graphics
@@ -552,7 +553,8 @@ bool GUISettingsMenu::acceptInput()
 }
 void GUISettingsMenu::init_keys()
 {
-	for (int i=0; i<VLKC_MAX; i++) {
+	int m = VLKC_MAX;
+	for (int i=0; i<m; i++) {
 		keys[i] = getKeySetting((KeyCode)i);
 	}
 }
