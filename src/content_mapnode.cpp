@@ -226,10 +226,6 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version)
 		result.setContent(CONTENT_FARM_TRELLIS_GRAPE);
 		result.param2 = 12;
 		break;
-	case CONTENT_MESE:
-		result.setContent(CONTENT_STONE);
-		result.param1 = MINERAL_MITHRIL;
-		break;
 	default:;
 	}
 	return result;

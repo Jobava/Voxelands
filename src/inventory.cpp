@@ -714,6 +714,8 @@ void InventoryList::deSerialize(std::istream &is)
 					m_items[item_i] = NULL;
 					continue;
 				}
+				if (c == CONTENT_MESE)
+					c = CONTENT_CRAFTITEM_MITHRIL_UNBOUND;
 				u16 wc = readU16(is);
 				u16 d = readU16(is);
 				if (m_items[item_i] != NULL) {
