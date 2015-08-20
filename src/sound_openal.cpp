@@ -325,7 +325,6 @@ public:
 
 	PlayingSound* createPlayingSound(SoundBuffer *buf, bool loop)
 	{
-		infostream<<"OpenALSoundManager: Creating playing sound"<<std::endl;
 		assert(buf);
 		PlayingSound *sound = new PlayingSound;
 		assert(sound);
@@ -348,8 +347,6 @@ public:
 
 	PlayingSound* createPlayingSoundAt(SoundBuffer *buf, bool loop, v3f pos, float gain, bool queue)
 	{
-		infostream<<"OpenALSoundManager: Creating positional playing sound"
-				<<std::endl;
 		assert(buf);
 		if (buf->format != AL_FORMAT_MONO16)
 			errorstream<<"Attempting to play non-mono sound as positional sound"<<std::endl;
@@ -436,9 +433,6 @@ public:
 	void maintain(float dtime)
 	{
 		JMutexAutoLock lock(m_mutex);
-		verbosestream<<"OpenALSoundManager::maintain(): "
-				<<m_sounds_playing.size()<<" playing sounds, "
-				<<m_buffers.size()<<" sound names loaded"<<std::endl;
 		std::set<int> del_list;
 		for (std::map<int, PlayingSound*>::iterator i = m_sounds_playing.begin(); i != m_sounds_playing.end(); i++) {
 			int id = i->first;
@@ -496,8 +490,6 @@ public:
 		if (del_list.size() == 0)
 			return;
 
-		verbosestream<<"OpenALSoundManager::maintain(): deleting "
-					<<del_list.size()<<" playing sounds"<<std::endl;
 		for (std::set<int>::iterator i = del_list.begin(); i != del_list.end(); i++) {
 			int id = *i;
 			deleteSound(id);
