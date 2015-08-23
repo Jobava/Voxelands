@@ -3,6 +3,33 @@ Voxelands changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1508.00: (release 2015-08-24)
+ - some helpers for converting mese to mithril
+ - add new controls to readme file
+ - a possible improvement to the key settings menu
+ - fix darkened screen with old style HUD
+ - wolves drop meat
+ - make far mobs less likely to move, and thus send less data
+ - add warning about settings not working from the pause menu
+ - credits screen reorganising
+ - add ability to disable mobs from gui
+ - sand should randomly drop saltpeter, rarely
+ - add all background images in empty inventory slots
+ - add effects times to HUD
+ - limestone stairs, slabs, and walls
+ - allow fast swimming
+ - different fences and bookshelves for different wood types
+ - allow farm dirt further from water
+ - some lighting tweaks
+ - bookshelves should not disappear when dug
+ - make it work on bsd again
+ - make images fit in inventory grids better
+ - forge and enchantments
+ - remove MESE
+ - add levels to tools, randomise mineral drop quantity with max based on tool level
+ - add extended info to inventory tooltips
+ - revert C++11
+
 1507.00: (release 2015-07-27)
  - Removed some depricated utility classes (VargaD)
  - Added C++11 support
