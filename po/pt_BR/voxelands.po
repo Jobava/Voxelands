@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Lisa 'darkrose' Milne
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Juliana Alves de Sousa Rampi <juas2012@hotmail.com>, 2015
 # Lorram Lomeu de Souza Rampi <lorrampi@gmail.com>, 2015
@@ -10,14 +10,13 @@ msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-08-17 15:58+1000\n"
-"PO-Revision-Date: 2015-07-20 10:25+0000\n"
+"PO-Revision-Date: 2015-08-20 16:01+0000\n"
 "Last-Translator: Lorram Lomeu de Souza Rampi <lorrampi@gmail.com>\n"
-"Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/"
-"voxelands/language/pt_BR/)\n"
-"Language: pt_BR\n"
+"Language-Team: Portuguese (Brazil) (http://www.transifex.com/voxelands/voxelands/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: src/character_creator.cpp:55
@@ -230,18 +229,9 @@ msgstr "Sapatos de Lona"
 
 #: src/character_creator.cpp:202
 msgid ""
-"Here you can create your default character, this is how other players will "
-"see you in-game. When you join a new server you will start with the clothing "
-"you select here. Additional clothing, both protective and decorative, can be "
-"crafted in-game.\n"
+"Here you can create your default character, this is how other players will see you in-game. When you join a new server you will start with the clothing you select here. Additional clothing, both protective and decorative, can be crafted in-game.\n"
 "You can return here from the main menu anytime to change your character."
-msgstr ""
-"Aqui você pode criar seu personagem padrão, esta é a forma como os outros "
-"jogadores vão vê-lo no jogo. Quando você entra em um novo servidor você vai "
-"começar com a roupa que você selecionar aqui. Roupas adicionais, ambas de "
-"proteção e decorativas, podem ser trabalhadas no jogo.\n"
-"Você pode voltar aqui a qualquer hora através do menu principal para alterar "
-"o seu personagem."
+msgstr "Aqui você pode criar seu personagem padrão, esta é a forma como os outros jogadores vão vê-lo no jogo. Quando você entra em um novo servidor você vai começar com a roupa que você selecionar aqui. Roupas adicionais, ambas de proteção e decorativas, podem ser trabalhadas no jogo.\nVocê pode voltar aqui a qualquer hora através do menu principal para alterar o seu personagem."
 
 #: src/character_creator.cpp:223
 msgid "Create Your Character"
@@ -1304,9 +1294,8 @@ msgid "String"
 msgstr "Corda"
 
 #: src/content_craftitem.cpp:751
-#, fuzzy
 msgid "Mithril Dust"
-msgstr "Pó Branco de Oerkki"
+msgstr "Pó de Mithril"
 
 #: src/content_craftitem.cpp:763
 msgid "Resin"
@@ -1550,36 +1539,35 @@ msgstr "Garrafa de Água Quente"
 
 #: src/content_craftitem.cpp:1496
 msgid "Raw Mithril"
-msgstr ""
+msgstr "Mithril Bruto"
 
 #: src/content_craftitem.cpp:1507
 msgid "Unbound Mithril"
-msgstr ""
+msgstr "Mithril não ligada"
 
 #: src/content_craftitem.cpp:1515
 msgid "Mithril"
-msgstr ""
+msgstr "Mithril"
 
 #: src/content_craftitem.cpp:1524
 msgid "Ruby"
-msgstr ""
+msgstr "Rubi"
 
 #: src/content_craftitem.cpp:1532
 msgid "Turquiose"
-msgstr ""
+msgstr "Turqueza"
 
 #: src/content_craftitem.cpp:1540
 msgid "Amethyst"
-msgstr ""
+msgstr "Ametista"
 
 #: src/content_craftitem.cpp:1548
 msgid "Sapphire"
-msgstr ""
+msgstr "Safira"
 
 #: src/content_craftitem.cpp:1556
-#, fuzzy
 msgid "Sunstone"
-msgstr "Pedra"
+msgstr "Pedra do Sol"
 
 #: src/content_mapnode.cpp:251
 msgid "Stone"
@@ -1587,7 +1575,7 @@ msgstr "Pedra"
 
 #: src/content_mapnode.cpp:268
 msgid "Limestone"
-msgstr "Pedra Calcária"
+msgstr "Calcário"
 
 #: src/content_mapnode.cpp:285
 msgid "Ice"
@@ -1611,11 +1599,11 @@ msgstr "Bloco de Pedra"
 
 #: src/content_mapnode.cpp:363
 msgid "Rough Stone Brick"
-msgstr "Tijolo de Pedra Bruta"
+msgstr "Tijolo de Pedra Áspera"
 
 #: src/content_mapnode.cpp:380
 msgid "Rough Stone Block"
-msgstr "Bloco de Pedra Bruta"
+msgstr "Bloco de Pedra Áspera"
 
 #: src/content_mapnode.cpp:396 src/content_mapnode.cpp:429
 msgid "Grass"
@@ -1903,7 +1891,7 @@ msgstr "Lava"
 
 #: src/content_mapnode.cpp:2223
 msgid "Rough Stone"
-msgstr "Pedra Bruta"
+msgstr "Pedra Áspera"
 
 #: src/content_mapnode.cpp:2240
 msgid "Cobble Stone"
@@ -1918,9 +1906,8 @@ msgid "Steel Block"
 msgstr "Bloco de Aço"
 
 #: src/content_mapnode.cpp:2285
-#, fuzzy
 msgid "Mithril Block"
-msgstr "Bloco de Carvão Vegetal"
+msgstr "Bloco de Mithril"
 
 #: src/content_mapnode.cpp:2301
 msgid "Stone Knob"
@@ -1928,7 +1915,7 @@ msgstr "Botão de Pedra"
 
 #: src/content_mapnode.cpp:2302
 msgid "Rough Stone Knob"
-msgstr "Botão de Pedra Bruta"
+msgstr "Botão de Pedra Áspera"
 
 #: src/content_mapnode.cpp:2303
 msgid "Sandstone Knob"
@@ -1976,7 +1963,7 @@ msgstr "Azulejos de Madeira"
 
 #: src/content_mapnode_circuit.cpp:36
 msgid "Mithril Wire"
-msgstr ""
+msgstr "Fio de Mithril"
 
 #: src/content_mapnode_circuit.cpp:60
 msgid "Copper Wire"
@@ -2189,14 +2176,12 @@ msgid "Book Shelf"
 msgstr "Estante de Livros"
 
 #: src/content_mapnode_furniture.cpp:74
-#, fuzzy
 msgid "Junglewood Book Shelf"
-msgstr "Botão de Madeira da Selva"
+msgstr "Estante de Livros de Madeira da Selva"
 
 #: src/content_mapnode_furniture.cpp:112
-#, fuzzy
 msgid "Pine Book Shelf"
-msgstr "Estante de Livros"
+msgstr "Estante de Livros de Pinheiro"
 
 #: src/content_mapnode_furniture.cpp:150 src/content_mapnode_furniture.cpp:169
 #: src/content_mapnode_furniture.cpp:188 src/content_mapnode_furniture.cpp:207
@@ -2471,7 +2456,7 @@ msgstr "Planta de Café"
 
 #: src/content_mapnode_slab.cpp:37
 msgid "Rough Stone Slab"
-msgstr "Laje de Pedra Bruta"
+msgstr "Laje de Pedra Áspera"
 
 #: src/content_mapnode_slab.cpp:56 src/content_mapnode_slab.cpp:442
 msgid "Cobble Stone Slab"
@@ -2534,9 +2519,8 @@ msgid "Black Glass Slab"
 msgstr "Laje de Vidro Preto"
 
 #: src/content_mapnode_slab.cpp:407
-#, fuzzy
 msgid "Limestone Slab"
-msgstr "Pedra Calcária"
+msgstr "Laje de Calcário"
 
 #: src/content_mapnode_special.cpp:37
 msgid "Fence"
@@ -2547,14 +2531,12 @@ msgid "Steel Fence"
 msgstr "Cerca de Aço"
 
 #: src/content_mapnode_special.cpp:94
-#, fuzzy
 msgid "Jungle Wood Fence"
-msgstr "Madeira de Selva"
+msgstr "Cerca de Madeira da Selva"
 
 #: src/content_mapnode_special.cpp:123
-#, fuzzy
 msgid "Pine Fence"
-msgstr "Cerca de Aço"
+msgstr "Cerca de Pinheiro"
 
 #: src/content_mapnode_special.cpp:152
 msgid "Steel Bars"
@@ -2694,7 +2676,7 @@ msgstr "Baú"
 
 #: src/content_mapnode_special.cpp:1370 src/content_nodemeta.cpp:504
 msgid "Creative Chest"
-msgstr "Baú Creativo"
+msgstr "Baú do Creativo"
 
 #: src/content_mapnode_special.cpp:1391
 msgid "Locking Chest"
@@ -2738,7 +2720,7 @@ msgstr "Muro de Pedra de Calçada"
 
 #: src/content_mapnode_special.cpp:1652
 msgid "Rough Stone Wall"
-msgstr "Muro de Pedra Bruta"
+msgstr "Muro de Pedra Áspera"
 
 #: src/content_mapnode_special.cpp:1676
 msgid "Mossy Cobblestone Wall"
@@ -2753,9 +2735,8 @@ msgid "Sand Stone Wall"
 msgstr "Muro de Arenito"
 
 #: src/content_mapnode_special.cpp:1748
-#, fuzzy
 msgid "Limestone Wall"
-msgstr "Pedra Calcária"
+msgstr "Parede de Calcário"
 
 #: src/content_mapnode_special.cpp:1772
 msgid "TNT"
@@ -2815,24 +2796,23 @@ msgstr "Caldeirão"
 
 #: src/content_mapnode_special.cpp:2124 src/content_nodemeta.cpp:2932
 msgid "Forge"
-msgstr ""
+msgstr "Forja"
 
 #: src/content_mapnode_special.cpp:2152
-#, fuzzy
 msgid "Forge Fire"
-msgstr "Pele de Animal Laranja"
+msgstr "Fogo de Forja"
 
 #: src/content_mapnode_stair.cpp:37
 msgid "Rough Stone Stair"
-msgstr "Escada de Pedra Bruta"
+msgstr "Escadas de Pedra Áspera"
 
 #: src/content_mapnode_stair.cpp:54
 msgid "Cobble Stone Stair"
-msgstr "Escada de Pedra de Calçada"
+msgstr "Escadas de Pedra de Calçada"
 
 #: src/content_mapnode_stair.cpp:71
 msgid "Mossy Cobble Stone Stair"
-msgstr "Escada de Pedra de Calçada com Musgo"
+msgstr "Escadas de Pedra de Calçada com Musgo"
 
 #: src/content_mapnode_stair.cpp:88
 msgid "Stone Stair"
@@ -2855,9 +2835,8 @@ msgid "Sand Stone Stair"
 msgstr "Escadas de Arenito"
 
 #: src/content_mapnode_stair.cpp:183
-#, fuzzy
 msgid "Limestone Stair"
-msgstr "Escadas de Pedra"
+msgstr "Escadas de Calcário"
 
 #: src/content_nodemeta.cpp:75 src/content_nodemeta.cpp:138
 #: src/content_nodemeta.cpp:2299 src/content_nodemeta.cpp:2398
@@ -3020,14 +2999,12 @@ msgid "Cauldron is out of fuel"
 msgstr "Caldeirão está sem combustível"
 
 #: src/content_nodemeta.cpp:2838
-#, fuzzy
 msgid "Add fuel, then punch to add or remove water"
-msgstr "Ponha combustível, então, soque para incinerar o item empunhado"
+msgstr "Adicionar Combustível, depois, um soco para adicionar ou remover água"
 
 #: src/content_nodemeta.cpp:3104
-#, fuzzy
 msgid "Show Enchanting"
-msgstr "Mostrar Artesanato"
+msgstr "Mostrar Encantando"
 
 #: src/content_nodemeta.cpp:3111 src/game.cpp:207
 msgid "Show Crafting"
@@ -3050,9 +3027,8 @@ msgid "Steel Pick"
 msgstr "Picareta de Aço"
 
 #: src/content_toolitem.cpp:264
-#, fuzzy
 msgid "Creative Pick"
-msgstr "Modo Criativo"
+msgstr "Picareta do Criativo"
 
 #: src/content_toolitem.cpp:278
 msgid "Wooden Shovel"
@@ -3164,69 +3140,63 @@ msgstr "Arco"
 
 #: src/content_toolitem.cpp:644
 msgid "Raw Mithril Pick"
-msgstr ""
+msgstr "Picareta de Mithril Bruto"
 
 #: src/content_toolitem.cpp:658
-#, fuzzy
 msgid "Raw Mithril Shovel"
-msgstr "Pá de Aço"
+msgstr "Pá de Mithril Bruto"
 
 #: src/content_toolitem.cpp:672
 msgid "Raw Mithril Axe"
-msgstr ""
+msgstr "Machado de Mithril Bruto"
 
 #: src/content_toolitem.cpp:686
 msgid "Raw Mithril Sword"
-msgstr ""
+msgstr "Espada de Mithril Bruto"
 
 #: src/content_toolitem.cpp:700
 msgid "Raw Mithril Spear"
-msgstr ""
+msgstr "Lança de Mithril Bruto"
 
 #: src/content_toolitem.cpp:714
 msgid "Unbound Mithril Pick"
-msgstr ""
+msgstr "Picareta de Mithril não ligada"
 
 #: src/content_toolitem.cpp:728
 msgid "Unbound Mithril Shovel"
-msgstr ""
+msgstr "Pá de Mithril não ligada"
 
 #: src/content_toolitem.cpp:742
 msgid "Unbound Mithril Axe"
-msgstr ""
+msgstr "Machado de Mithril não ligada"
 
 #: src/content_toolitem.cpp:756
 msgid "Unbound Mithril Sword"
-msgstr ""
+msgstr "Espada de Mithril não ligada"
 
 #: src/content_toolitem.cpp:770
 msgid "Unbound Mithril Spear"
-msgstr ""
+msgstr "Lança de Mithril não ligada"
 
 #: src/content_toolitem.cpp:784
-#, fuzzy
 msgid "Mithril Pick"
-msgstr "Picareta de Aço"
+msgstr "Picareta de Mithril"
 
 #: src/content_toolitem.cpp:797
-#, fuzzy
 msgid "Mithril Shovel"
-msgstr "Pá de Aço"
+msgstr "Pá de Mithril"
 
 #: src/content_toolitem.cpp:810
-#, fuzzy
 msgid "Mithril Axe"
-msgstr "Machado de Aço"
+msgstr "Machado de Mithril"
 
 #: src/content_toolitem.cpp:823
-#, fuzzy
 msgid "Mithril Sword"
-msgstr "Espada de Aço"
+msgstr "Espada de Mithril"
 
 #: src/content_toolitem.cpp:836
-#, fuzzy
 msgid "Mithril Spear"
-msgstr "Lança de Aço"
+msgstr "Lança de Mithril"
 
 #: src/game.cpp:208
 msgid "Clothes"
@@ -3490,7 +3460,7 @@ msgstr "Criaturas"
 
 #: src/guiMainMenu.cpp:554
 msgid "None"
-msgstr ""
+msgstr "Nenhum"
 
 #: src/guiMainMenu.cpp:555
 msgid "Passive"
@@ -3605,58 +3575,41 @@ msgid ""
 "Voxelands\n"
 "http://www.voxelands.com/\n"
 "By Lisa 'darkrose' Milne <lisa@ltmnet.com> and contributors."
-msgstr ""
+msgstr "Voxelands\nhttp://www.voxelands.com/\nPor Lisa 'darkrose' Milne <lisa@ltmnet.com> e contribuidores."
 
 #: src/guiMainMenu.cpp:754
 msgid "Programmers"
-msgstr ""
+msgstr "Programadores"
 
 #: src/guiMainMenu.cpp:757
 msgid "Artists and Modellers"
-msgstr ""
+msgstr "Artistas e Modeladores"
 
 #: src/guiMainMenu.cpp:760
 msgid "Translators"
-msgstr ""
+msgstr "Tradutores"
 
 #: src/guiMainMenu.cpp:763
 msgid "Documentation Writters"
-msgstr ""
+msgstr "Escritores de Documentação"
 
 #: src/guiMainMenu.cpp:766
 msgid "Testers, Packagers, and Builders"
-msgstr ""
+msgstr "Testadores, Empacotadores, e Construtores"
 
 #: src/guiMainMenu.cpp:769
 msgid "Music and Sound Effects Composers"
-msgstr ""
+msgstr "Compositores de Músicas e Efeitos Sonoros"
 
 #: src/guiMainMenu.cpp:772
 msgid "Other Contributers, and Special Thanks"
-msgstr ""
+msgstr "Outros Contribuidores, e Agradecimentos Especiais"
 
 #: src/guiMainMenu.cpp:776
-#, fuzzy
 msgid ""
 "Based on Minetest-C55 by Perttu Ahola <celeron55@gmail.com>\n"
-"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
-"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
-"Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
-msgstr ""
-"Voxelands\n"
-"http://www.voxelands.com/\n"
-"\n"
-"PorLisa 'darkrose' Milne <lisa@ltmnet.com>\n"
-"e contribuidores: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, "
-"tiemay, Szkodnix, soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound, Rui, "
-"Wayward_One, loh, Stephane, wario, AudioRichter, OwlStorm, DjDust, Taira "
-"Komori, hdastwb, puma_rc, Carl 'melkior' Kidwell\n"
-"\n"
-"Baseado em Minetest-C55\n"
-"por Perttu Ahola <celeron55@gmail.com>\n"
-"e contribuidores: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
-"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
-"Neuschafer, thexyz, VanessaE, sfan5... e dezenas de mais pessoas aleatórias.."
+"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
+msgstr "Baseado em Minetest-C55 by Perttu Ahola <celeron55@gmail.com>\ne contribuidores: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... e dezenas de muitas pessoas aleatórias."
 
 #: src/guiMessageMenu.cpp:112 src/guiPauseMenu.cpp:143
 msgid "Continue"
@@ -3744,11 +3697,11 @@ msgstr "Alternar Vôo"
 
 #: src/guiSettingsMenu.cpp:82 src/keycode.cpp:234
 msgid "Up"
-msgstr "Cima"
+msgstr "Subir"
 
 #: src/guiSettingsMenu.cpp:83 src/keycode.cpp:234
 msgid "Down"
-msgstr "Baixo"
+msgstr "Descer"
 
 #: src/guiSettingsMenu.cpp:84
 msgid "Run"
@@ -3776,11 +3729,11 @@ msgstr "Alternar Nevoeiro"
 
 #: src/guiSettingsMenu.cpp:93
 msgid "Increase Viewing Range"
-msgstr "Aumentar Alcance de Visualização"
+msgstr "+ Alcance de Visualização"
 
 #: src/guiSettingsMenu.cpp:94
 msgid "Decrease Viewing Range"
-msgstr "Diminuir Alcance de Visualização"
+msgstr "- Alcance de Visualização"
 
 #: src/guiSettingsMenu.cpp:96
 msgid "Previous Item"
@@ -3836,7 +3789,7 @@ msgstr "Índice de Wieldring "
 
 #: src/guiSettingsMenu.cpp:379 src/guiSettingsMenu.cpp:422
 msgid "Some settings cannot be changed in-game."
-msgstr ""
+msgstr "Algumas definições não podem ser alteradas em jogo"
 
 #: src/guiSettingsMenu.cpp:392
 msgid "Fullscreen"
@@ -3873,75 +3826,72 @@ msgstr "pressione a Tecla"
 #: src/hud.cpp:779
 #, c-format
 msgid "Energy Boost: %d:%02d"
-msgstr ""
+msgstr "Impulso de Energia: %d:%02d"
 
 #: src/hud.cpp:804
 #, c-format
 msgid "Cold Protection: %d:%02d"
-msgstr ""
+msgstr "Proteção contra o Frio: %d:%02d"
 
 #: src/inventory.cpp:230 src/inventory.cpp:350
 msgid "Cookable: Yes"
-msgstr ""
+msgstr "Cozinhavel: Sim"
 
 #: src/inventory.cpp:235 src/inventory.cpp:355 src/inventory.cpp:523
 msgid "Fuel Burn Time: "
-msgstr ""
+msgstr "Tempo de Queima de Combustível:"
 
 #: src/inventory.cpp:319
-#, fuzzy
 msgid "Hunger: "
-msgstr "Fome"
+msgstr "Fome:"
 
 #: src/inventory.cpp:325
 msgid "Health: "
-msgstr ""
+msgstr "Saúde:"
 
 #: src/inventory.cpp:332
 msgid "Cold Protection: "
-msgstr ""
+msgstr "Proteção contra o Frio:"
 
 #: src/inventory.cpp:341
 msgid "Energy Boost: "
-msgstr ""
+msgstr "Impulso de Energia:"
 
 #: src/inventory.cpp:512
 msgid "Strength: "
-msgstr ""
+msgstr "Força:"
 
 #: src/inventory.cpp:515
 msgid "Speed: "
-msgstr ""
+msgstr "Velocidade:"
 
 #: src/inventory.cpp:518
 msgid "Level: "
-msgstr ""
+msgstr "Nível:"
 
 #: src/inventory.cpp:601
 msgid "Armour: "
-msgstr ""
+msgstr "Armadura:"
 
 #: src/inventory.cpp:607
 msgid "Warmth: "
-msgstr ""
+msgstr "Calor:"
 
 #: src/inventory.cpp:613
-#, fuzzy
 msgid "Pressure: "
-msgstr "Placa de Pressão de Madeira"
+msgstr "Pressão:"
 
 #: src/inventory.cpp:619
-#, fuzzy
 msgid "Suffocation: "
-msgstr "Asfixia/Afogamento"
+msgstr "Sufocação:"
 
 #: src/inventory.cpp:625
 msgid "Durability: "
-msgstr ""
+msgstr "Durabilidade:"
 
 #: src/inventory.cpp:630
 msgid "Effect Boost: "
-msgstr ""
+msgstr "Impulso de Efeito:"
 
 #: src/keycode.cpp:229
 msgid "Left Button"
@@ -4278,15 +4228,3 @@ msgstr "Carregando MapNodes Interativos"
 #: src/mapnode.cpp:306
 msgid "Loading Special MapNodes"
 msgstr "Carregando MapNodes Especiais"
-
-#~ msgid "Mese Pick"
-#~ msgstr "Picareta de Mese"
-
-#~ msgid "Mese Wire"
-#~ msgstr "Fio de Mese"
-
-#~ msgid "Mese"
-#~ msgstr "Mese"
-
-#~ msgid "Mese Dust"
-#~ msgstr "Pó de Mese"

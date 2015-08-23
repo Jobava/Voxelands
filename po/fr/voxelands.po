@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Lisa 'darkrose' Milne
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # David Salbei <david@chalvia.fr>, 2015
 # puma.rc <puma.rc@wanadoo.fr>, 2015
@@ -10,14 +10,13 @@ msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-08-17 15:58+1000\n"
-"PO-Revision-Date: 2015-07-25 11:10+0000\n"
-"Last-Translator: Anne-Gwenn Kettunen <anwen@asphodelium.eu>\n"
-"Language-Team: French (France) (http://www.transifex.com/projects/p/"
-"voxelands/language/fr_FR/)\n"
-"Language: fr_FR\n"
+"PO-Revision-Date: 2015-08-17 06:00+0000\n"
+"Last-Translator: Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
+"Language-Team: French (France) (http://www.transifex.com/voxelands/voxelands/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: src/character_creator.cpp:55
@@ -230,19 +229,9 @@ msgstr "Chaussures en toile"
 
 #: src/character_creator.cpp:202
 msgid ""
-"Here you can create your default character, this is how other players will "
-"see you in-game. When you join a new server you will start with the clothing "
-"you select here. Additional clothing, both protective and decorative, can be "
-"crafted in-game.\n"
+"Here you can create your default character, this is how other players will see you in-game. When you join a new server you will start with the clothing you select here. Additional clothing, both protective and decorative, can be crafted in-game.\n"
 "You can return here from the main menu anytime to change your character."
-msgstr ""
-"Ici, vous pouvez créer votre personnage par défaut, c'est la façon dont les "
-"autres joueurs vous verrons dans le jeu. Lorsque vous rejoignez un nouveau "
-"serveur, vous commencez avec les vêtements sélectionnés ici. Des vêtements "
-"supplémentaires, à la fois protecteurs et décoratifs, peuvent être conçu "
-"dans le jeu.\n"
-"Vous pouvez revenir ici dans le menu principal à tout moment pour changer "
-"votre personnage."
+msgstr "Ici, vous pouvez créer votre personnage par défaut, c'est la façon dont les autres joueurs vous verrons dans le jeu. Lorsque vous rejoignez un nouveau serveur, vous commencez avec les vêtements sélectionnés ici. Des vêtements supplémentaires, à la fois protecteurs et décoratifs, peuvent être conçu dans le jeu.\nVous pouvez revenir ici dans le menu principal à tout moment pour changer votre personnage."
 
 #: src/character_creator.cpp:223
 msgid "Create Your Character"
@@ -1577,9 +1566,8 @@ msgid "Sapphire"
 msgstr ""
 
 #: src/content_craftitem.cpp:1556
-#, fuzzy
 msgid "Sunstone"
-msgstr "Pierre"
+msgstr ""
 
 #: src/content_mapnode.cpp:251
 msgid "Stone"
@@ -1918,9 +1906,8 @@ msgid "Steel Block"
 msgstr ""
 
 #: src/content_mapnode.cpp:2285
-#, fuzzy
 msgid "Mithril Block"
-msgstr "Block de charbon"
+msgstr ""
 
 #: src/content_mapnode.cpp:2301
 msgid "Stone Knob"
@@ -2544,14 +2531,12 @@ msgid "Steel Fence"
 msgstr ""
 
 #: src/content_mapnode_special.cpp:94
-#, fuzzy
 msgid "Jungle Wood Fence"
-msgstr "Planche de bois de la jungle"
+msgstr ""
 
 #: src/content_mapnode_special.cpp:123
-#, fuzzy
 msgid "Pine Fence"
-msgstr "Planche de pin"
+msgstr ""
 
 #: src/content_mapnode_special.cpp:152
 msgid "Steel Bars"
@@ -2814,9 +2799,8 @@ msgid "Forge"
 msgstr ""
 
 #: src/content_mapnode_special.cpp:2152
-#, fuzzy
 msgid "Forge Fire"
-msgstr "Fourrure orange"
+msgstr ""
 
 #: src/content_mapnode_stair.cpp:37
 msgid "Rough Stone Stair"
@@ -3043,9 +3027,8 @@ msgid "Steel Pick"
 msgstr "Pioche en fer"
 
 #: src/content_toolitem.cpp:264
-#, fuzzy
 msgid "Creative Pick"
-msgstr "Mode créatif"
+msgstr ""
 
 #: src/content_toolitem.cpp:278
 msgid "Wooden Shovel"
@@ -3160,9 +3143,8 @@ msgid "Raw Mithril Pick"
 msgstr ""
 
 #: src/content_toolitem.cpp:658
-#, fuzzy
 msgid "Raw Mithril Shovel"
-msgstr "Pelle en fer"
+msgstr ""
 
 #: src/content_toolitem.cpp:672
 msgid "Raw Mithril Axe"
@@ -3197,24 +3179,20 @@ msgid "Unbound Mithril Spear"
 msgstr ""
 
 #: src/content_toolitem.cpp:784
-#, fuzzy
 msgid "Mithril Pick"
-msgstr "Pioche en fer"
+msgstr ""
 
 #: src/content_toolitem.cpp:797
-#, fuzzy
 msgid "Mithril Shovel"
-msgstr "Pelle en fer"
+msgstr ""
 
 #: src/content_toolitem.cpp:810
-#, fuzzy
 msgid "Mithril Axe"
-msgstr "Hache en fer"
+msgstr ""
 
 #: src/content_toolitem.cpp:823
-#, fuzzy
 msgid "Mithril Sword"
-msgstr "Epée en fer"
+msgstr ""
 
 #: src/content_toolitem.cpp:836
 msgid "Mithril Spear"
@@ -3405,8 +3383,7 @@ msgstr ""
 
 #: src/guiFormSpecMenu.cpp:440
 msgid "Left click: Move all items, Right click: Move single item"
-msgstr ""
-"Clic gauche: Déplace tout les objets, clic droit: Déplace un seul objet"
+msgstr "Clic gauche: Déplace tout les objets, clic droit: Déplace un seul objet"
 
 #: src/guiFormSpecMenu.cpp:463
 msgid "Write It"
@@ -3591,8 +3568,7 @@ msgstr "Effacer carte"
 
 #: src/guiMainMenu.cpp:729
 msgid "Warning! This will delete all construction from your map!"
-msgstr ""
-"Attention! Vous allez supprimer toutes les constructions de votre carte!"
+msgstr "Attention! Vous allez supprimer toutes les constructions de votre carte!"
 
 #: src/guiMainMenu.cpp:747
 msgid ""
@@ -3632,9 +3608,7 @@ msgstr ""
 #: src/guiMainMenu.cpp:776
 msgid ""
 "Based on Minetest-C55 by Perttu Ahola <celeron55@gmail.com>\n"
-"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
-"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
-"Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
+"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
 msgstr ""
 
 #: src/guiMessageMenu.cpp:112 src/guiPauseMenu.cpp:143

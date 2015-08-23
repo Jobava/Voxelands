@@ -1,23 +1,23 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Lisa 'darkrose' Milne
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
+# Rui, 2015
 # Rui Takeda, 2015
-# Rui Takeda, 2015
+# Rui, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-08-17 15:58+1000\n"
-"PO-Revision-Date: 2015-07-20 09:11+0000\n"
-"Last-Translator: Rui Takeda\n"
-"Language-Team: Japanese (http://www.transifex.com/projects/p/voxelands/"
-"language/ja/)\n"
-"Language: ja\n"
+"PO-Revision-Date: 2015-08-17 06:08+0000\n"
+"Last-Translator: Rui\n"
+"Language-Team: Japanese (http://www.transifex.com/voxelands/voxelands/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: src/character_creator.cpp:55
@@ -230,15 +230,9 @@ msgstr "ズック靴"
 
 #: src/character_creator.cpp:202
 msgid ""
-"Here you can create your default character, this is how other players will "
-"see you in-game. When you join a new server you will start with the clothing "
-"you select here. Additional clothing, both protective and decorative, can be "
-"crafted in-game.\n"
+"Here you can create your default character, this is how other players will see you in-game. When you join a new server you will start with the clothing you select here. Additional clothing, both protective and decorative, can be crafted in-game.\n"
 "You can return here from the main menu anytime to change your character."
-msgstr ""
-"ここではスキンを作成できます。\n"
-"スキンは他のプレイヤーに表示されます。\n"
-"タイトルからもこの設定に戻れます。"
+msgstr "ここではスキンを作成できます。\nスキンは他のプレイヤーに表示されます。\nタイトルからもこの設定に戻れます。"
 
 #: src/character_creator.cpp:223
 msgid "Create Your Character"
@@ -1301,9 +1295,8 @@ msgid "String"
 msgstr "糸"
 
 #: src/content_craftitem.cpp:751
-#, fuzzy
 msgid "Mithril Dust"
-msgstr "白いOerkkiの欠片"
+msgstr "ミスリルの塊"
 
 #: src/content_craftitem.cpp:763
 msgid "Resin"
@@ -1547,7 +1540,7 @@ msgstr "熱湯入りボトル"
 
 #: src/content_craftitem.cpp:1496
 msgid "Raw Mithril"
-msgstr ""
+msgstr "未加工のミスリル"
 
 #: src/content_craftitem.cpp:1507
 msgid "Unbound Mithril"
@@ -1555,28 +1548,27 @@ msgstr ""
 
 #: src/content_craftitem.cpp:1515
 msgid "Mithril"
-msgstr ""
+msgstr "ミスリル"
 
 #: src/content_craftitem.cpp:1524
 msgid "Ruby"
-msgstr ""
+msgstr "ルビー"
 
 #: src/content_craftitem.cpp:1532
 msgid "Turquiose"
-msgstr ""
+msgstr "ターコイズ"
 
 #: src/content_craftitem.cpp:1540
 msgid "Amethyst"
-msgstr ""
+msgstr "アメジスト"
 
 #: src/content_craftitem.cpp:1548
 msgid "Sapphire"
-msgstr ""
+msgstr "サファイア"
 
 #: src/content_craftitem.cpp:1556
-#, fuzzy
 msgid "Sunstone"
-msgstr "石"
+msgstr "サンストーン"
 
 #: src/content_mapnode.cpp:251
 msgid "Stone"
@@ -1915,9 +1907,8 @@ msgid "Steel Block"
 msgstr "鉄ブロック"
 
 #: src/content_mapnode.cpp:2285
-#, fuzzy
 msgid "Mithril Block"
-msgstr "木炭ブロック"
+msgstr "ミスリルブロック"
 
 #: src/content_mapnode.cpp:2301
 msgid "Stone Knob"
@@ -1973,7 +1964,7 @@ msgstr "木のタイル"
 
 #: src/content_mapnode_circuit.cpp:36
 msgid "Mithril Wire"
-msgstr ""
+msgstr "ミスリルのワイヤ"
 
 #: src/content_mapnode_circuit.cpp:60
 msgid "Copper Wire"
@@ -2186,14 +2177,12 @@ msgid "Book Shelf"
 msgstr "本棚"
 
 #: src/content_mapnode_furniture.cpp:74
-#, fuzzy
 msgid "Junglewood Book Shelf"
-msgstr "ジャングルの木の欠片"
+msgstr "ジャングルの木材の本棚"
 
 #: src/content_mapnode_furniture.cpp:112
-#, fuzzy
 msgid "Pine Book Shelf"
-msgstr "本棚"
+msgstr "松の本棚"
 
 #: src/content_mapnode_furniture.cpp:150 src/content_mapnode_furniture.cpp:169
 #: src/content_mapnode_furniture.cpp:188 src/content_mapnode_furniture.cpp:207
@@ -2531,9 +2520,8 @@ msgid "Black Glass Slab"
 msgstr "黒いガラスのハーフブロック"
 
 #: src/content_mapnode_slab.cpp:407
-#, fuzzy
 msgid "Limestone Slab"
-msgstr "石灰岩"
+msgstr "石灰岩のハーフブロック"
 
 #: src/content_mapnode_special.cpp:37
 msgid "Fence"
@@ -2544,14 +2532,12 @@ msgid "Steel Fence"
 msgstr "鉄のフェンス"
 
 #: src/content_mapnode_special.cpp:94
-#, fuzzy
 msgid "Jungle Wood Fence"
-msgstr "ジャングルの木"
+msgstr "ジャングルの木のフェンス"
 
 #: src/content_mapnode_special.cpp:123
-#, fuzzy
 msgid "Pine Fence"
-msgstr "鉄のフェンス"
+msgstr "マツのフェンス"
 
 #: src/content_mapnode_special.cpp:152
 msgid "Steel Bars"
@@ -2750,9 +2736,8 @@ msgid "Sand Stone Wall"
 msgstr "砂岩の壁"
 
 #: src/content_mapnode_special.cpp:1748
-#, fuzzy
 msgid "Limestone Wall"
-msgstr "石灰岩"
+msgstr ""
 
 #: src/content_mapnode_special.cpp:1772
 msgid "TNT"
@@ -2815,9 +2800,8 @@ msgid "Forge"
 msgstr ""
 
 #: src/content_mapnode_special.cpp:2152
-#, fuzzy
 msgid "Forge Fire"
-msgstr "オレンジ色の毛皮"
+msgstr ""
 
 #: src/content_mapnode_stair.cpp:37
 msgid "Rough Stone Stair"
@@ -2852,9 +2836,8 @@ msgid "Sand Stone Stair"
 msgstr "砂岩の階段"
 
 #: src/content_mapnode_stair.cpp:183
-#, fuzzy
 msgid "Limestone Stair"
-msgstr "石の階段"
+msgstr ""
 
 #: src/content_nodemeta.cpp:75 src/content_nodemeta.cpp:138
 #: src/content_nodemeta.cpp:2299 src/content_nodemeta.cpp:2398
@@ -3016,14 +2999,12 @@ msgid "Cauldron is out of fuel"
 msgstr "大釜は燃料切れです"
 
 #: src/content_nodemeta.cpp:2838
-#, fuzzy
 msgid "Add fuel, then punch to add or remove water"
-msgstr "燃料を入れて、焼却したいアイテムを手に持ってパンチしてください"
+msgstr ""
 
 #: src/content_nodemeta.cpp:3104
-#, fuzzy
 msgid "Show Enchanting"
-msgstr "クラフティング表示"
+msgstr ""
 
 #: src/content_nodemeta.cpp:3111 src/game.cpp:207
 msgid "Show Crafting"
@@ -3046,9 +3027,8 @@ msgid "Steel Pick"
 msgstr "鉄のピッケル"
 
 #: src/content_toolitem.cpp:264
-#, fuzzy
 msgid "Creative Pick"
-msgstr "クリエイティブモード"
+msgstr ""
 
 #: src/content_toolitem.cpp:278
 msgid "Wooden Shovel"
@@ -3163,9 +3143,8 @@ msgid "Raw Mithril Pick"
 msgstr ""
 
 #: src/content_toolitem.cpp:658
-#, fuzzy
 msgid "Raw Mithril Shovel"
-msgstr "鉄のシャベル"
+msgstr ""
 
 #: src/content_toolitem.cpp:672
 msgid "Raw Mithril Axe"
@@ -3200,29 +3179,24 @@ msgid "Unbound Mithril Spear"
 msgstr ""
 
 #: src/content_toolitem.cpp:784
-#, fuzzy
 msgid "Mithril Pick"
-msgstr "鉄のピッケル"
+msgstr ""
 
 #: src/content_toolitem.cpp:797
-#, fuzzy
 msgid "Mithril Shovel"
-msgstr "鉄のシャベル"
+msgstr ""
 
 #: src/content_toolitem.cpp:810
-#, fuzzy
 msgid "Mithril Axe"
-msgstr "鉄の斧"
+msgstr ""
 
 #: src/content_toolitem.cpp:823
-#, fuzzy
 msgid "Mithril Sword"
-msgstr "鉄の剣"
+msgstr ""
 
 #: src/content_toolitem.cpp:836
-#, fuzzy
 msgid "Mithril Spear"
-msgstr "鉄の槍"
+msgstr ""
 
 #: src/game.cpp:208
 msgid "Clothes"
@@ -3631,26 +3605,10 @@ msgid "Other Contributers, and Special Thanks"
 msgstr ""
 
 #: src/guiMainMenu.cpp:776
-#, fuzzy
 msgid ""
 "Based on Minetest-C55 by Perttu Ahola <celeron55@gmail.com>\n"
-"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
-"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
-"Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
+"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
 msgstr ""
-"Voxelands\n"
-"http://www.voxelands.com/\n"
-"\n"
-"開発者: Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
-"開発協力者: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, tiemay, "
-"Szkodnix, soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound, Rui, "
-"Wayward_One, loh, Stephane, wario, AudioRichter, OwlStorm, DjDust, Taira "
-"Komori, hdastwb, puma_rc, Carl 'melkior' Kidwell\n"
-"以下は、VoxelandsのベースになったMinetest-C55のクレジットです。 \n"
-"開発者:Perttu Ahola <celeron55@gmail.com> \n"
-"開発協力者: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, "
-"erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
-"Neuschafer, thexyz, VanessaE, sfan5など"
 
 #: src/guiMessageMenu.cpp:112 src/guiPauseMenu.cpp:143
 msgid "Continue"
@@ -3883,9 +3841,8 @@ msgid "Fuel Burn Time: "
 msgstr ""
 
 #: src/inventory.cpp:319
-#, fuzzy
 msgid "Hunger: "
-msgstr "餓死"
+msgstr ""
 
 #: src/inventory.cpp:325
 msgid "Health: "
@@ -3920,14 +3877,12 @@ msgid "Warmth: "
 msgstr ""
 
 #: src/inventory.cpp:613
-#, fuzzy
 msgid "Pressure: "
-msgstr "木の感圧板"
+msgstr ""
 
 #: src/inventory.cpp:619
-#, fuzzy
 msgid "Suffocation: "
-msgstr "窒息や溺死"
+msgstr ""
 
 #: src/inventory.cpp:625
 msgid "Durability: "
@@ -4272,15 +4227,3 @@ msgstr "相互作用するノードを読み込んでいます..."
 #: src/mapnode.cpp:306
 msgid "Loading Special MapNodes"
 msgstr "特別なノードを読み込んでいます..."
-
-#~ msgid "Mese Pick"
-#~ msgstr "Meseのピッケル"
-
-#~ msgid "Mese Wire"
-#~ msgstr "Meseのワイヤー"
-
-#~ msgid "Mese"
-#~ msgstr "Mese"
-
-#~ msgid "Mese Dust"
-#~ msgstr "Meseの欠片"

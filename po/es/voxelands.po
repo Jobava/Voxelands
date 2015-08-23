@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Lisa 'darkrose' Milne
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Adolfo Jayme Barrientos, 2014
 # Pablo Roberto Francisco Lezaeta Reyes <prflr88@gmail.com>, 2014-2015
@@ -10,14 +10,13 @@ msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-08-17 15:58+1000\n"
-"PO-Revision-Date: 2015-07-20 06:01+0000\n"
+"PO-Revision-Date: 2015-08-17 06:00+0000\n"
 "Last-Translator: Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
-"Language-Team: Spanish (http://www.transifex.com/projects/p/voxelands/"
-"language/es/)\n"
-"Language: es\n"
+"Language-Team: Spanish (http://www.transifex.com/voxelands/voxelands/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/character_creator.cpp:55
@@ -230,18 +229,9 @@ msgstr "Zapatos de lona"
 
 #: src/character_creator.cpp:202
 msgid ""
-"Here you can create your default character, this is how other players will "
-"see you in-game. When you join a new server you will start with the clothing "
-"you select here. Additional clothing, both protective and decorative, can be "
-"crafted in-game.\n"
+"Here you can create your default character, this is how other players will see you in-game. When you join a new server you will start with the clothing you select here. Additional clothing, both protective and decorative, can be crafted in-game.\n"
 "You can return here from the main menu anytime to change your character."
-msgstr ""
-"Aquí puede crear su personaje predeterminado, que le representará ante otros "
-"jugadores durante las partidas. Cuando se una a un servidor nuevo comenzará "
-"con las ropas que elija aquí. Se pueden elaborar prendas adicionales, de "
-"protección y decorativas, durante el juego.\n"
-"Podrá volver aquí en cualquier momento, mediante el menú principal, para "
-"cambiar su personaje."
+msgstr "Aquí puede crear su personaje predeterminado, que le representará ante otros jugadores durante las partidas. Cuando se una a un servidor nuevo comenzará con las ropas que elija aquí. Se pueden elaborar prendas adicionales, de protección y decorativas, durante el juego.\nPodrá volver aquí en cualquier momento, mediante el menú principal, para cambiar su personaje."
 
 #: src/character_creator.cpp:223
 msgid "Create Your Character"
@@ -1304,9 +1294,8 @@ msgid "String"
 msgstr "Cadena"
 
 #: src/content_craftitem.cpp:751
-#, fuzzy
 msgid "Mithril Dust"
-msgstr "Polvo blanco de oerki"
+msgstr ""
 
 #: src/content_craftitem.cpp:763
 msgid "Resin"
@@ -1577,9 +1566,8 @@ msgid "Sapphire"
 msgstr ""
 
 #: src/content_craftitem.cpp:1556
-#, fuzzy
 msgid "Sunstone"
-msgstr "Piedra"
+msgstr ""
 
 #: src/content_mapnode.cpp:251
 msgid "Stone"
@@ -1918,9 +1906,8 @@ msgid "Steel Block"
 msgstr "Bloque de acero"
 
 #: src/content_mapnode.cpp:2285
-#, fuzzy
 msgid "Mithril Block"
-msgstr "Bloque de carbón vegetal"
+msgstr ""
 
 #: src/content_mapnode.cpp:2301
 msgid "Stone Knob"
@@ -2189,14 +2176,12 @@ msgid "Book Shelf"
 msgstr "Librero"
 
 #: src/content_mapnode_furniture.cpp:74
-#, fuzzy
 msgid "Junglewood Book Shelf"
-msgstr "Perilla de madera selvática"
+msgstr ""
 
 #: src/content_mapnode_furniture.cpp:112
-#, fuzzy
 msgid "Pine Book Shelf"
-msgstr "Librero"
+msgstr ""
 
 #: src/content_mapnode_furniture.cpp:150 src/content_mapnode_furniture.cpp:169
 #: src/content_mapnode_furniture.cpp:188 src/content_mapnode_furniture.cpp:207
@@ -2534,9 +2519,8 @@ msgid "Black Glass Slab"
 msgstr "Losa de pasto negro"
 
 #: src/content_mapnode_slab.cpp:407
-#, fuzzy
 msgid "Limestone Slab"
-msgstr "Losa de piedra"
+msgstr ""
 
 #: src/content_mapnode_special.cpp:37
 msgid "Fence"
@@ -2547,14 +2531,12 @@ msgid "Steel Fence"
 msgstr "Valla de acero"
 
 #: src/content_mapnode_special.cpp:94
-#, fuzzy
 msgid "Jungle Wood Fence"
-msgstr "Madera selvática"
+msgstr ""
 
 #: src/content_mapnode_special.cpp:123
-#, fuzzy
 msgid "Pine Fence"
-msgstr "Valla de acero"
+msgstr ""
 
 #: src/content_mapnode_special.cpp:152
 msgid "Steel Bars"
@@ -2753,9 +2735,8 @@ msgid "Sand Stone Wall"
 msgstr "Muro de arenisca"
 
 #: src/content_mapnode_special.cpp:1748
-#, fuzzy
 msgid "Limestone Wall"
-msgstr "Muro de piedra"
+msgstr ""
 
 #: src/content_mapnode_special.cpp:1772
 msgid "TNT"
@@ -2818,9 +2799,8 @@ msgid "Forge"
 msgstr ""
 
 #: src/content_mapnode_special.cpp:2152
-#, fuzzy
 msgid "Forge Fire"
-msgstr "Piel naranja"
+msgstr ""
 
 #: src/content_mapnode_stair.cpp:37
 msgid "Rough Stone Stair"
@@ -2855,9 +2835,8 @@ msgid "Sand Stone Stair"
 msgstr "Escalera de arenisca"
 
 #: src/content_mapnode_stair.cpp:183
-#, fuzzy
 msgid "Limestone Stair"
-msgstr "Escalera de piedra"
+msgstr ""
 
 #: src/content_nodemeta.cpp:75 src/content_nodemeta.cpp:138
 #: src/content_nodemeta.cpp:2299 src/content_nodemeta.cpp:2398
@@ -3020,14 +2999,12 @@ msgid "Cauldron is out of fuel"
 msgstr "Caldera sin combustible"
 
 #: src/content_nodemeta.cpp:2838
-#, fuzzy
 msgid "Add fuel, then punch to add or remove water"
-msgstr "Añadir combustible, luego golpear para incinerar el objeto esgrimido"
+msgstr ""
 
 #: src/content_nodemeta.cpp:3104
-#, fuzzy
 msgid "Show Enchanting"
-msgstr "Mostrar artesanías"
+msgstr ""
 
 #: src/content_nodemeta.cpp:3111 src/game.cpp:207
 msgid "Show Crafting"
@@ -3050,9 +3027,8 @@ msgid "Steel Pick"
 msgstr "Pica de acero"
 
 #: src/content_toolitem.cpp:264
-#, fuzzy
 msgid "Creative Pick"
-msgstr "Modo creativo"
+msgstr ""
 
 #: src/content_toolitem.cpp:278
 msgid "Wooden Shovel"
@@ -3167,9 +3143,8 @@ msgid "Raw Mithril Pick"
 msgstr ""
 
 #: src/content_toolitem.cpp:658
-#, fuzzy
 msgid "Raw Mithril Shovel"
-msgstr "Pala de acero"
+msgstr ""
 
 #: src/content_toolitem.cpp:672
 msgid "Raw Mithril Axe"
@@ -3204,29 +3179,24 @@ msgid "Unbound Mithril Spear"
 msgstr ""
 
 #: src/content_toolitem.cpp:784
-#, fuzzy
 msgid "Mithril Pick"
-msgstr "Pica de acero"
+msgstr ""
 
 #: src/content_toolitem.cpp:797
-#, fuzzy
 msgid "Mithril Shovel"
-msgstr "Pala de acero"
+msgstr ""
 
 #: src/content_toolitem.cpp:810
-#, fuzzy
 msgid "Mithril Axe"
-msgstr "Hacha de acero"
+msgstr ""
 
 #: src/content_toolitem.cpp:823
-#, fuzzy
 msgid "Mithril Sword"
-msgstr "Espada de acero"
+msgstr ""
 
 #: src/content_toolitem.cpp:836
-#, fuzzy
 msgid "Mithril Spear"
-msgstr "Lanza de acero"
+msgstr ""
 
 #: src/game.cpp:208
 msgid "Clothes"
@@ -3413,8 +3383,7 @@ msgstr "Reapareciendo"
 
 #: src/guiFormSpecMenu.cpp:440
 msgid "Left click: Move all items, Right click: Move single item"
-msgstr ""
-"Clic izquierdo: Mueve todos los objetos, Clic derecho: Mueve un solo objeto"
+msgstr "Clic izquierdo: Mueve todos los objetos, Clic derecho: Mueve un solo objeto"
 
 #: src/guiFormSpecMenu.cpp:463
 msgid "Write It"
@@ -3639,9 +3608,7 @@ msgstr ""
 #: src/guiMainMenu.cpp:776
 msgid ""
 "Based on Minetest-C55 by Perttu Ahola <celeron55@gmail.com>\n"
-"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
-"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
-"Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
+"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
 msgstr ""
 
 #: src/guiMessageMenu.cpp:112 src/guiPauseMenu.cpp:143
@@ -3875,9 +3842,8 @@ msgid "Fuel Burn Time: "
 msgstr ""
 
 #: src/inventory.cpp:319
-#, fuzzy
 msgid "Hunger: "
-msgstr "Hambre"
+msgstr ""
 
 #: src/inventory.cpp:325
 msgid "Health: "
@@ -3912,14 +3878,12 @@ msgid "Warmth: "
 msgstr ""
 
 #: src/inventory.cpp:613
-#, fuzzy
 msgid "Pressure: "
-msgstr "Placa de presión de madera"
+msgstr ""
 
 #: src/inventory.cpp:619
-#, fuzzy
 msgid "Suffocation: "
-msgstr "Asfixia/ahogo"
+msgstr ""
 
 #: src/inventory.cpp:625
 msgid "Durability: "
@@ -4264,15 +4228,3 @@ msgstr "Cargando nodos de interacción del mapa"
 #: src/mapnode.cpp:306
 msgid "Loading Special MapNodes"
 msgstr "Cargando nodo especial del mapa"
-
-#~ msgid "Mese Pick"
-#~ msgstr "Pica de mez"
-
-#~ msgid "Mese Wire"
-#~ msgstr "Alambre de mez"
-
-#~ msgid "Mese"
-#~ msgstr "Mez"
-
-#~ msgid "Mese Dust"
-#~ msgstr "Polvo de mez"

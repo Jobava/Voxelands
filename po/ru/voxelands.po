@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Lisa 'darkrose' Milne
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Roman M. Yagodin <roman.yagodin@gmail.com>, 2014-2015
 msgid ""
@@ -9,17 +9,14 @@ msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-08-17 15:58+1000\n"
-"PO-Revision-Date: 2015-07-20 06:01+0000\n"
-"Last-Translator: Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
-"Language-Team: Russian (http://www.transifex.com/projects/p/voxelands/"
-"language/ru/)\n"
-"Language: ru\n"
+"PO-Revision-Date: 2015-08-19 09:11+0000\n"
+"Last-Translator: Roman M. Yagodin <roman.yagodin@gmail.com>\n"
+"Language-Team: Russian (http://www.transifex.com/voxelands/voxelands/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
-"%100>=11 && n%100<=14)? 2 : 3);\n"
+"Language: ru\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: src/character_creator.cpp:55
 msgid "White Skin"
@@ -231,18 +228,9 @@ msgstr "Холщовая обувь"
 
 #: src/character_creator.cpp:202
 msgid ""
-"Here you can create your default character, this is how other players will "
-"see you in-game. When you join a new server you will start with the clothing "
-"you select here. Additional clothing, both protective and decorative, can be "
-"crafted in-game.\n"
+"Here you can create your default character, this is how other players will see you in-game. When you join a new server you will start with the clothing you select here. Additional clothing, both protective and decorative, can be crafted in-game.\n"
 "You can return here from the main menu anytime to change your character."
-msgstr ""
-"Здесь можно задать исходный внешний вид своего персонажа. Так он будет "
-"выглядеть для других игроков в начале игры - например, при подключении к "
-"новому серверу. Другие предметы одежды, как защитные, так и декоративные, "
-"могут быть созданы в процессе игры.\n"
-"Вы можете вернуться сюда в любое время из главного меню, чтобы изменить "
-"внешний вид вашего персонажа."
+msgstr "Здесь можно задать исходный внешний вид своего персонажа. Так он будет выглядеть для других игроков в начале игры - например, при подключении к новому серверу. Другие предметы одежды, как защитные, так и декоративные, могут быть созданы в процессе игры.\nВы можете вернуться сюда в любое время из главного меню, чтобы изменить внешний вид вашего персонажа."
 
 #: src/character_creator.cpp:223
 msgid "Create Your Character"
@@ -1305,9 +1293,8 @@ msgid "String"
 msgstr "Веревка"
 
 #: src/content_craftitem.cpp:751
-#, fuzzy
 msgid "Mithril Dust"
-msgstr "Белая пыль Оэркки"
+msgstr "Мифриловая пыль"
 
 #: src/content_craftitem.cpp:763
 msgid "Resin"
@@ -1551,36 +1538,35 @@ msgstr "Бутылка с горячей водой"
 
 #: src/content_craftitem.cpp:1496
 msgid "Raw Mithril"
-msgstr ""
+msgstr "Сырой мифрил"
 
 #: src/content_craftitem.cpp:1507
 msgid "Unbound Mithril"
-msgstr ""
+msgstr "Свободный мифрил"
 
 #: src/content_craftitem.cpp:1515
 msgid "Mithril"
-msgstr ""
+msgstr "Мифрил"
 
 #: src/content_craftitem.cpp:1524
 msgid "Ruby"
-msgstr ""
+msgstr "Рубин"
 
 #: src/content_craftitem.cpp:1532
 msgid "Turquiose"
-msgstr ""
+msgstr "Бирюза"
 
 #: src/content_craftitem.cpp:1540
 msgid "Amethyst"
-msgstr ""
+msgstr "Аметист"
 
 #: src/content_craftitem.cpp:1548
 msgid "Sapphire"
-msgstr ""
+msgstr "Сапфир"
 
 #: src/content_craftitem.cpp:1556
-#, fuzzy
 msgid "Sunstone"
-msgstr "Камень"
+msgstr "Янтарь"
 
 #: src/content_mapnode.cpp:251
 msgid "Stone"
@@ -1588,7 +1574,7 @@ msgstr "Камень"
 
 #: src/content_mapnode.cpp:268
 msgid "Limestone"
-msgstr ""
+msgstr "Известняк"
 
 #: src/content_mapnode.cpp:285
 msgid "Ice"
@@ -1919,9 +1905,8 @@ msgid "Steel Block"
 msgstr "Стальной блок"
 
 #: src/content_mapnode.cpp:2285
-#, fuzzy
 msgid "Mithril Block"
-msgstr "Блок древесного угля"
+msgstr "Блок мифрила"
 
 #: src/content_mapnode.cpp:2301
 msgid "Stone Knob"
@@ -1977,7 +1962,7 @@ msgstr "Деревянные плитки"
 
 #: src/content_mapnode_circuit.cpp:36
 msgid "Mithril Wire"
-msgstr ""
+msgstr "Мифриловая проволока"
 
 #: src/content_mapnode_circuit.cpp:60
 msgid "Copper Wire"
@@ -2190,14 +2175,12 @@ msgid "Book Shelf"
 msgstr "Книжная полка"
 
 #: src/content_mapnode_furniture.cpp:74
-#, fuzzy
 msgid "Junglewood Book Shelf"
-msgstr "Пальмовая кнопка"
+msgstr "Пальмовая книжная полка"
 
 #: src/content_mapnode_furniture.cpp:112
-#, fuzzy
 msgid "Pine Book Shelf"
-msgstr "Книжная полка"
+msgstr "Сосновая книжная полка"
 
 #: src/content_mapnode_furniture.cpp:150 src/content_mapnode_furniture.cpp:169
 #: src/content_mapnode_furniture.cpp:188 src/content_mapnode_furniture.cpp:207
@@ -2535,9 +2518,8 @@ msgid "Black Glass Slab"
 msgstr "Плита черного стекла"
 
 #: src/content_mapnode_slab.cpp:407
-#, fuzzy
 msgid "Limestone Slab"
-msgstr "Каменная плита"
+msgstr "Известняковая плита"
 
 #: src/content_mapnode_special.cpp:37
 msgid "Fence"
@@ -2548,14 +2530,12 @@ msgid "Steel Fence"
 msgstr "Стальная ограда"
 
 #: src/content_mapnode_special.cpp:94
-#, fuzzy
 msgid "Jungle Wood Fence"
-msgstr "Пальмовое дерево"
+msgstr "Пальмовая ограда"
 
 #: src/content_mapnode_special.cpp:123
-#, fuzzy
 msgid "Pine Fence"
-msgstr "Стальная ограда"
+msgstr "Сосновая ограда"
 
 #: src/content_mapnode_special.cpp:152
 msgid "Steel Bars"
@@ -2649,7 +2629,7 @@ msgstr "Книга по сборке"
 
 #: src/content_mapnode_special.cpp:862
 msgid "Reverse Craft Book"
-msgstr ""
+msgstr "Книга по разборке"
 
 #: src/content_mapnode_special.cpp:900
 msgid "Guide"
@@ -2669,7 +2649,7 @@ msgstr "Руководство по сборке"
 
 #: src/content_mapnode_special.cpp:1042 src/content_nodemeta.h:385
 msgid "Reverse Craft Guide"
-msgstr ""
+msgstr "Руководство по разборке"
 
 #: src/content_mapnode_special.cpp:1070 src/content_mapnode_special.cpp:1091
 msgid "Fire"
@@ -2754,9 +2734,8 @@ msgid "Sand Stone Wall"
 msgstr "Стена песчаника"
 
 #: src/content_mapnode_special.cpp:1748
-#, fuzzy
 msgid "Limestone Wall"
-msgstr "Каменная стена"
+msgstr "Известняковая стена"
 
 #: src/content_mapnode_special.cpp:1772
 msgid "TNT"
@@ -2816,12 +2795,11 @@ msgstr "Котел"
 
 #: src/content_mapnode_special.cpp:2124 src/content_nodemeta.cpp:2932
 msgid "Forge"
-msgstr ""
+msgstr "Кузница"
 
 #: src/content_mapnode_special.cpp:2152
-#, fuzzy
 msgid "Forge Fire"
-msgstr "Оранжевый мех"
+msgstr "Кузнечный огонь"
 
 #: src/content_mapnode_stair.cpp:37
 msgid "Rough Stone Stair"
@@ -2856,9 +2834,8 @@ msgid "Sand Stone Stair"
 msgstr "Ступенька песчаника"
 
 #: src/content_mapnode_stair.cpp:183
-#, fuzzy
 msgid "Limestone Stair"
-msgstr "Каменная ступенька"
+msgstr "Известняковая ступенька"
 
 #: src/content_nodemeta.cpp:75 src/content_nodemeta.cpp:138
 #: src/content_nodemeta.cpp:2299 src/content_nodemeta.cpp:2398
@@ -3023,14 +3000,12 @@ msgid "Cauldron is out of fuel"
 msgstr "Котел без топлива"
 
 #: src/content_nodemeta.cpp:2838
-#, fuzzy
 msgid "Add fuel, then punch to add or remove water"
-msgstr "Добавьте топлива и затем ударьте предметом, который нужно сжечь"
+msgstr "Добавьте топлива и затем ударьте для того, чтобы добавить или убрать воду"
 
 #: src/content_nodemeta.cpp:3104
-#, fuzzy
 msgid "Show Enchanting"
-msgstr "Окно сборки"
+msgstr "Окно зачарования"
 
 #: src/content_nodemeta.cpp:3111 src/game.cpp:207
 msgid "Show Crafting"
@@ -3053,9 +3028,8 @@ msgid "Steel Pick"
 msgstr "Стальная кирка"
 
 #: src/content_toolitem.cpp:264
-#, fuzzy
 msgid "Creative Pick"
-msgstr "Режим создателя"
+msgstr "Кирка создателя"
 
 #: src/content_toolitem.cpp:278
 msgid "Wooden Shovel"
@@ -3167,69 +3141,63 @@ msgstr "Лук"
 
 #: src/content_toolitem.cpp:644
 msgid "Raw Mithril Pick"
-msgstr ""
+msgstr "Кирка из сырого мифрила"
 
 #: src/content_toolitem.cpp:658
-#, fuzzy
 msgid "Raw Mithril Shovel"
-msgstr "Стальная лопата"
+msgstr "Лопата из сырого мифрила"
 
 #: src/content_toolitem.cpp:672
 msgid "Raw Mithril Axe"
-msgstr ""
+msgstr "Топор из сырого мифрила"
 
 #: src/content_toolitem.cpp:686
 msgid "Raw Mithril Sword"
-msgstr ""
+msgstr "Меч из сырого мифрила"
 
 #: src/content_toolitem.cpp:700
 msgid "Raw Mithril Spear"
-msgstr ""
+msgstr "Копье из сырого мифрила"
 
 #: src/content_toolitem.cpp:714
 msgid "Unbound Mithril Pick"
-msgstr ""
+msgstr "Кирка из свободного мифрила"
 
 #: src/content_toolitem.cpp:728
 msgid "Unbound Mithril Shovel"
-msgstr ""
+msgstr "Лопата из свободного мифрила"
 
 #: src/content_toolitem.cpp:742
 msgid "Unbound Mithril Axe"
-msgstr ""
+msgstr "Топор из свободного мифрила"
 
 #: src/content_toolitem.cpp:756
 msgid "Unbound Mithril Sword"
-msgstr ""
+msgstr "Меч из свободного мифрила"
 
 #: src/content_toolitem.cpp:770
 msgid "Unbound Mithril Spear"
-msgstr ""
+msgstr "Копье из свободного мифрила"
 
 #: src/content_toolitem.cpp:784
-#, fuzzy
 msgid "Mithril Pick"
-msgstr "Стальная кирка"
+msgstr "Мифриловая кирка"
 
 #: src/content_toolitem.cpp:797
-#, fuzzy
 msgid "Mithril Shovel"
-msgstr "Стальная лопата"
+msgstr "Мифриловая лопата"
 
 #: src/content_toolitem.cpp:810
-#, fuzzy
 msgid "Mithril Axe"
-msgstr "Стальной топор"
+msgstr "Мифриловый топор"
 
 #: src/content_toolitem.cpp:823
-#, fuzzy
 msgid "Mithril Sword"
-msgstr "Стальной меч"
+msgstr "Мифриловый меч"
 
 #: src/content_toolitem.cpp:836
-#, fuzzy
 msgid "Mithril Spear"
-msgstr "Стальное копье"
+msgstr "Мифриловое копье"
 
 #: src/game.cpp:208
 msgid "Clothes"
@@ -3495,7 +3463,7 @@ msgstr "Существа"
 
 #: src/guiMainMenu.cpp:554
 msgid "None"
-msgstr ""
+msgstr "Нет"
 
 #: src/guiMainMenu.cpp:555
 msgid "Passive"
@@ -3539,7 +3507,7 @@ msgstr "Выбрасывать предметы"
 
 #: src/guiMainMenu.cpp:606
 msgid "Dangerous Fire"
-msgstr ""
+msgstr "Опасный огонь"
 
 #: src/guiMainMenu.cpp:648
 msgid "Hide Map Options"
@@ -3610,43 +3578,41 @@ msgid ""
 "Voxelands\n"
 "http://www.voxelands.com/\n"
 "By Lisa 'darkrose' Milne <lisa@ltmnet.com> and contributors."
-msgstr ""
+msgstr "Voxelands\nhttp://www.voxelands.com/\nLisa 'darkrose' Milne <lisa@ltmnet.com> и сотоварищи."
 
 #: src/guiMainMenu.cpp:754
 msgid "Programmers"
-msgstr ""
+msgstr "Программирование"
 
 #: src/guiMainMenu.cpp:757
 msgid "Artists and Modellers"
-msgstr ""
+msgstr "Графика"
 
 #: src/guiMainMenu.cpp:760
 msgid "Translators"
-msgstr ""
+msgstr "Локализация"
 
 #: src/guiMainMenu.cpp:763
 msgid "Documentation Writters"
-msgstr ""
+msgstr "Разработка документации"
 
 #: src/guiMainMenu.cpp:766
 msgid "Testers, Packagers, and Builders"
-msgstr ""
+msgstr "Тестирование, сборка и создание установочных пакетов"
 
 #: src/guiMainMenu.cpp:769
 msgid "Music and Sound Effects Composers"
-msgstr ""
+msgstr "Музыка и звуковые эффекты"
 
 #: src/guiMainMenu.cpp:772
 msgid "Other Contributers, and Special Thanks"
-msgstr ""
+msgstr "Другие участники, наши благодарности"
 
 #: src/guiMainMenu.cpp:776
 msgid ""
 "Based on Minetest-C55 by Perttu Ahola <celeron55@gmail.com>\n"
-"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
-"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
-"Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
-msgstr ""
+"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
+msgstr " Основано на Minetest-C55, созданном Perttu Ahola <celeron55@gmail.com> \nи сотоварищи: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... и еще десятком-другим случайных прохожих."
 
 #: src/guiMessageMenu.cpp:112 src/guiPauseMenu.cpp:143
 msgid "Continue"
@@ -3822,11 +3788,11 @@ msgstr "Классический интерфейс"
 
 #: src/guiSettingsMenu.cpp:373
 msgid "Wieldring Index"
-msgstr ""
+msgstr "Указатель кольца инструментов"
 
 #: src/guiSettingsMenu.cpp:379 src/guiSettingsMenu.cpp:422
 msgid "Some settings cannot be changed in-game."
-msgstr ""
+msgstr "Некоторые настройки нельзя изменить в процессе игры."
 
 #: src/guiSettingsMenu.cpp:392
 msgid "Fullscreen"
@@ -3863,75 +3829,72 @@ msgstr "нажмите клавишу"
 #: src/hud.cpp:779
 #, c-format
 msgid "Energy Boost: %d:%02d"
-msgstr ""
+msgstr "Энергия: %d:%02d"
 
 #: src/hud.cpp:804
 #, c-format
 msgid "Cold Protection: %d:%02d"
-msgstr ""
+msgstr "Защита от холода: %d:%02d"
 
 #: src/inventory.cpp:230 src/inventory.cpp:350
 msgid "Cookable: Yes"
-msgstr ""
+msgstr "Можно приготовить: Да"
 
 #: src/inventory.cpp:235 src/inventory.cpp:355 src/inventory.cpp:523
 msgid "Fuel Burn Time: "
-msgstr ""
+msgstr "Время горения топлива:"
 
 #: src/inventory.cpp:319
-#, fuzzy
 msgid "Hunger: "
-msgstr "Голод"
+msgstr "Голод:"
 
 #: src/inventory.cpp:325
 msgid "Health: "
-msgstr ""
+msgstr "Здоровье:"
 
 #: src/inventory.cpp:332
 msgid "Cold Protection: "
-msgstr ""
+msgstr "Защита от холода:"
 
 #: src/inventory.cpp:341
 msgid "Energy Boost: "
-msgstr ""
+msgstr "Энергия:"
 
 #: src/inventory.cpp:512
 msgid "Strength: "
-msgstr ""
+msgstr "Сила:"
 
 #: src/inventory.cpp:515
 msgid "Speed: "
-msgstr ""
+msgstr "Скорость:"
 
 #: src/inventory.cpp:518
 msgid "Level: "
-msgstr ""
+msgstr "Уровень:"
 
 #: src/inventory.cpp:601
 msgid "Armour: "
-msgstr ""
+msgstr "Броня:"
 
 #: src/inventory.cpp:607
 msgid "Warmth: "
-msgstr ""
+msgstr "Температура:"
 
 #: src/inventory.cpp:613
-#, fuzzy
 msgid "Pressure: "
-msgstr "Деревянная прижимная плита"
+msgstr "Давление:"
 
 #: src/inventory.cpp:619
-#, fuzzy
 msgid "Suffocation: "
-msgstr "Дыхание"
+msgstr "Дыхание:"
 
 #: src/inventory.cpp:625
 msgid "Durability: "
-msgstr ""
+msgstr "Износ:"
 
 #: src/inventory.cpp:630
 msgid "Effect Boost: "
-msgstr ""
+msgstr "Эффект:"
 
 #: src/keycode.cpp:229
 msgid "Left Button"
@@ -4268,15 +4231,3 @@ msgstr "Загружаем интерактивные элементы"
 #: src/mapnode.cpp:306
 msgid "Loading Special MapNodes"
 msgstr "Загружаем особые элементы"
-
-#~ msgid "Mese Pick"
-#~ msgstr "Кирка из Месы"
-
-#~ msgid "Mese Wire"
-#~ msgstr "Провод из Месы"
-
-#~ msgid "Mese"
-#~ msgstr "Меса"
-
-#~ msgid "Mese Dust"
-#~ msgstr "Пыль Месы"

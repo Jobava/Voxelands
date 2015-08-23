@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Lisa 'darkrose' Milne
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Jay <joeyxtreme@hotmail.nl>, 2014
 # NOH <neinmeinleben@outlook.com>, 2015
@@ -10,14 +10,13 @@ msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-08-17 15:58+1000\n"
-"PO-Revision-Date: 2015-07-25 10:11+0000\n"
+"PO-Revision-Date: 2015-08-23 11:20+0000\n"
 "Last-Translator: NOH <neinmeinleben@outlook.com>\n"
-"Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/"
-"voxelands/language/nl_NL/)\n"
-"Language: nl_NL\n"
+"Language-Team: Dutch (Netherlands) (http://www.transifex.com/voxelands/voxelands/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/character_creator.cpp:55
@@ -230,17 +229,9 @@ msgstr "Canvas Schoenen"
 
 #: src/character_creator.cpp:202
 msgid ""
-"Here you can create your default character, this is how other players will "
-"see you in-game. When you join a new server you will start with the clothing "
-"you select here. Additional clothing, both protective and decorative, can be "
-"crafted in-game.\n"
+"Here you can create your default character, this is how other players will see you in-game. When you join a new server you will start with the clothing you select here. Additional clothing, both protective and decorative, can be crafted in-game.\n"
 "You can return here from the main menu anytime to change your character."
-msgstr ""
-"Hier kun je jouw personage aanmaken, zo zien de andere spelers jouw "
-"personage in het spel. Als je naar een nieuwe server gaat dan start je met "
-"de kleding die je daar hebt selecteerd. Aanvullende kleding, zowel "
-"beschermend als decoratief, kun je in het spel maken. Je kunt hier altijd "
-"terugkeren via het hoofdmenu om jouw personage te veranderen."
+msgstr "Hier kun je jouw personage aanmaken, zo zien de andere spelers jouw personage in het spel. Als je naar een nieuwe server gaat dan start je met de kleding die je daar hebt selecteerd. Aanvullende kleding, zowel beschermend als decoratief, kun je in het spel maken. Je kunt hier altijd terugkeren via het hoofdmenu om jouw personage te veranderen."
 
 #: src/character_creator.cpp:223
 msgid "Create Your Character"
@@ -1303,9 +1294,8 @@ msgid "String"
 msgstr "Draad"
 
 #: src/content_craftitem.cpp:751
-#, fuzzy
 msgid "Mithril Dust"
-msgstr "Witte Oerkki Poeder"
+msgstr "Mithril Poeder"
 
 #: src/content_craftitem.cpp:763
 msgid "Resin"
@@ -1549,36 +1539,35 @@ msgstr "Fles met Warme Water"
 
 #: src/content_craftitem.cpp:1496
 msgid "Raw Mithril"
-msgstr ""
+msgstr "Ruwe Mithril"
 
 #: src/content_craftitem.cpp:1507
 msgid "Unbound Mithril"
-msgstr ""
+msgstr "Ongebonden Mithril"
 
 #: src/content_craftitem.cpp:1515
 msgid "Mithril"
-msgstr ""
+msgstr "Mithril"
 
 #: src/content_craftitem.cpp:1524
 msgid "Ruby"
-msgstr ""
+msgstr "Robijn"
 
 #: src/content_craftitem.cpp:1532
 msgid "Turquiose"
-msgstr ""
+msgstr "Turkoois"
 
 #: src/content_craftitem.cpp:1540
 msgid "Amethyst"
-msgstr ""
+msgstr "Amethist"
 
 #: src/content_craftitem.cpp:1548
 msgid "Sapphire"
-msgstr ""
+msgstr "Saffier"
 
 #: src/content_craftitem.cpp:1556
-#, fuzzy
 msgid "Sunstone"
-msgstr "Steen"
+msgstr "Zonnesteen"
 
 #: src/content_mapnode.cpp:251
 msgid "Stone"
@@ -1917,9 +1906,8 @@ msgid "Steel Block"
 msgstr "Staal Blok"
 
 #: src/content_mapnode.cpp:2285
-#, fuzzy
 msgid "Mithril Block"
-msgstr "Houtskool Blok"
+msgstr "Mithril Blok"
 
 #: src/content_mapnode.cpp:2301
 msgid "Stone Knob"
@@ -1975,7 +1963,7 @@ msgstr "Hout Tegel"
 
 #: src/content_mapnode_circuit.cpp:36
 msgid "Mithril Wire"
-msgstr ""
+msgstr "Mithril Draad"
 
 #: src/content_mapnode_circuit.cpp:60
 msgid "Copper Wire"
@@ -2188,14 +2176,12 @@ msgid "Book Shelf"
 msgstr "Boekenkast"
 
 #: src/content_mapnode_furniture.cpp:74
-#, fuzzy
 msgid "Junglewood Book Shelf"
-msgstr "Junglehouten Draaiknop"
+msgstr "Junglehouten Boekenkast"
 
 #: src/content_mapnode_furniture.cpp:112
-#, fuzzy
 msgid "Pine Book Shelf"
-msgstr "Boekenkast"
+msgstr "Grenen Boekenkast"
 
 #: src/content_mapnode_furniture.cpp:150 src/content_mapnode_furniture.cpp:169
 #: src/content_mapnode_furniture.cpp:188 src/content_mapnode_furniture.cpp:207
@@ -2533,9 +2519,8 @@ msgid "Black Glass Slab"
 msgstr "Zwarte Glasplaat"
 
 #: src/content_mapnode_slab.cpp:407
-#, fuzzy
 msgid "Limestone Slab"
-msgstr "Kalksteen"
+msgstr "Kalksteenplak"
 
 #: src/content_mapnode_special.cpp:37
 msgid "Fence"
@@ -2546,14 +2531,12 @@ msgid "Steel Fence"
 msgstr "Stalen Hek"
 
 #: src/content_mapnode_special.cpp:94
-#, fuzzy
 msgid "Jungle Wood Fence"
-msgstr "Junglehout"
+msgstr "Junglehouten Hek"
 
 #: src/content_mapnode_special.cpp:123
-#, fuzzy
 msgid "Pine Fence"
-msgstr "Stalen Hek"
+msgstr "Grenen Hek"
 
 #: src/content_mapnode_special.cpp:152
 msgid "Steel Bars"
@@ -2752,9 +2735,8 @@ msgid "Sand Stone Wall"
 msgstr "Zandstenen Muur"
 
 #: src/content_mapnode_special.cpp:1748
-#, fuzzy
 msgid "Limestone Wall"
-msgstr "Kalksteen"
+msgstr "Kalkstenen Muur"
 
 #: src/content_mapnode_special.cpp:1772
 msgid "TNT"
@@ -2814,12 +2796,11 @@ msgstr "Ketel"
 
 #: src/content_mapnode_special.cpp:2124 src/content_nodemeta.cpp:2932
 msgid "Forge"
-msgstr ""
+msgstr "Smeden"
 
 #: src/content_mapnode_special.cpp:2152
-#, fuzzy
 msgid "Forge Fire"
-msgstr "Oranje Vacht"
+msgstr "Smeedvuur"
 
 #: src/content_mapnode_stair.cpp:37
 msgid "Rough Stone Stair"
@@ -2854,9 +2835,8 @@ msgid "Sand Stone Stair"
 msgstr "Zandstenen Trap"
 
 #: src/content_mapnode_stair.cpp:183
-#, fuzzy
 msgid "Limestone Stair"
-msgstr "Stenen Trap"
+msgstr "Kalkstenen Trap"
 
 #: src/content_nodemeta.cpp:75 src/content_nodemeta.cpp:138
 #: src/content_nodemeta.cpp:2299 src/content_nodemeta.cpp:2398
@@ -2955,8 +2935,7 @@ msgstr "De verbrandingsoven is inactief"
 
 #: src/content_nodemeta.cpp:1287
 msgid "Add fuel, then punch to incinerate wielded item"
-msgstr ""
-"Brandstof toevoegen en dan het voorwerp stoten om het te laten verbranden"
+msgstr "Brandstof toevoegen en dan het voorwerp stoten om het te laten verbranden"
 
 #: src/content_nodemeta.cpp:1496 src/content_nodemeta.cpp:1784
 msgid "Add item here to see recipe"
@@ -3020,15 +2999,12 @@ msgid "Cauldron is out of fuel"
 msgstr "De Ketel heeft geen brondstof meer"
 
 #: src/content_nodemeta.cpp:2838
-#, fuzzy
 msgid "Add fuel, then punch to add or remove water"
-msgstr ""
-"Brandstof toevoegen en dan het voorwerp stoten om het te laten verbranden"
+msgstr "Brandstof toevoegen en dan het voorwerp stoten om water toe te voegen of te verwijderen"
 
 #: src/content_nodemeta.cpp:3104
-#, fuzzy
 msgid "Show Enchanting"
-msgstr "Laat Crafting zien"
+msgstr "Laat Enchanting zien"
 
 #: src/content_nodemeta.cpp:3111 src/game.cpp:207
 msgid "Show Crafting"
@@ -3051,9 +3027,8 @@ msgid "Steel Pick"
 msgstr "Stalen Houweel"
 
 #: src/content_toolitem.cpp:264
-#, fuzzy
 msgid "Creative Pick"
-msgstr "Creatieve Modus"
+msgstr "Creatieve Houweel"
 
 #: src/content_toolitem.cpp:278
 msgid "Wooden Shovel"
@@ -3165,69 +3140,63 @@ msgstr "Boog"
 
 #: src/content_toolitem.cpp:644
 msgid "Raw Mithril Pick"
-msgstr ""
+msgstr "Ruwe Mithril Houweel"
 
 #: src/content_toolitem.cpp:658
-#, fuzzy
 msgid "Raw Mithril Shovel"
-msgstr "Stalen Schep"
+msgstr "Ruwe Mithril Schep"
 
 #: src/content_toolitem.cpp:672
 msgid "Raw Mithril Axe"
-msgstr ""
+msgstr "Ruwe Mithril Bijl"
 
 #: src/content_toolitem.cpp:686
 msgid "Raw Mithril Sword"
-msgstr ""
+msgstr "Ruwe Mithril Zwaard"
 
 #: src/content_toolitem.cpp:700
 msgid "Raw Mithril Spear"
-msgstr ""
+msgstr "Ruwe Mithril Speer"
 
 #: src/content_toolitem.cpp:714
 msgid "Unbound Mithril Pick"
-msgstr ""
+msgstr "Ongebonden Mithril Houweel"
 
 #: src/content_toolitem.cpp:728
 msgid "Unbound Mithril Shovel"
-msgstr ""
+msgstr "Ongebonden Mithril Schep"
 
 #: src/content_toolitem.cpp:742
 msgid "Unbound Mithril Axe"
-msgstr ""
+msgstr "Ongebonden Mithril Bijl"
 
 #: src/content_toolitem.cpp:756
 msgid "Unbound Mithril Sword"
-msgstr ""
+msgstr "Ongebonden Mithril Zwaard"
 
 #: src/content_toolitem.cpp:770
 msgid "Unbound Mithril Spear"
-msgstr ""
+msgstr "Ongebonden Mithril Speer"
 
 #: src/content_toolitem.cpp:784
-#, fuzzy
 msgid "Mithril Pick"
-msgstr "Stalen Houweel"
+msgstr "Mithril Houweel"
 
 #: src/content_toolitem.cpp:797
-#, fuzzy
 msgid "Mithril Shovel"
-msgstr "Stalen Schep"
+msgstr "Mithril Schep"
 
 #: src/content_toolitem.cpp:810
-#, fuzzy
 msgid "Mithril Axe"
-msgstr "Stalen Bijl"
+msgstr "Mithril Bijl"
 
 #: src/content_toolitem.cpp:823
-#, fuzzy
 msgid "Mithril Sword"
-msgstr "Stalen Zwaard"
+msgstr "Mithril Zwaard"
 
 #: src/content_toolitem.cpp:836
-#, fuzzy
 msgid "Mithril Spear"
-msgstr "Stalen Speer"
+msgstr "Mithril Speer"
 
 #: src/game.cpp:208
 msgid "Clothes"
@@ -3414,8 +3383,7 @@ msgstr "Respawn"
 
 #: src/guiFormSpecMenu.cpp:440
 msgid "Left click: Move all items, Right click: Move single item"
-msgstr ""
-"Linker knop: Alle items verplaatsen, Rechter knop: Enkele item verplaatsen"
+msgstr "Linker knop: Alle items verplaatsen, Rechter knop: Enkele item verplaatsen"
 
 #: src/guiFormSpecMenu.cpp:463
 msgid "Write It"
@@ -3492,7 +3460,7 @@ msgstr "Wezens"
 
 #: src/guiMainMenu.cpp:554
 msgid "None"
-msgstr ""
+msgstr "Geen"
 
 #: src/guiMainMenu.cpp:555
 msgid "Passive"
@@ -3607,58 +3575,41 @@ msgid ""
 "Voxelands\n"
 "http://www.voxelands.com/\n"
 "By Lisa 'darkrose' Milne <lisa@ltmnet.com> and contributors."
-msgstr ""
+msgstr "Voxelands\nhttp://www.voxelands.com/\nGemaakt door Lisa 'darkrose' Milne <lisa@ltmnet.com> en door bijdragers."
 
 #: src/guiMainMenu.cpp:754
 msgid "Programmers"
-msgstr ""
+msgstr "Programmeurs"
 
 #: src/guiMainMenu.cpp:757
 msgid "Artists and Modellers"
-msgstr ""
+msgstr "Artiesten en Modellers"
 
 #: src/guiMainMenu.cpp:760
 msgid "Translators"
-msgstr ""
+msgstr "Vertalers"
 
 #: src/guiMainMenu.cpp:763
 msgid "Documentation Writters"
-msgstr ""
+msgstr "Documentatie Schrijvers"
 
 #: src/guiMainMenu.cpp:766
 msgid "Testers, Packagers, and Builders"
-msgstr ""
+msgstr "Testers, Packagers en Builders"
 
 #: src/guiMainMenu.cpp:769
 msgid "Music and Sound Effects Composers"
-msgstr ""
+msgstr "Muziek en Geluidseffecten Composers"
 
 #: src/guiMainMenu.cpp:772
 msgid "Other Contributers, and Special Thanks"
-msgstr ""
+msgstr "Andere Bijdragers en Speciale Dank aan"
 
 #: src/guiMainMenu.cpp:776
-#, fuzzy
 msgid ""
 "Based on Minetest-C55 by Perttu Ahola <celeron55@gmail.com>\n"
-"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
-"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
-"Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
-msgstr ""
-"Voxelands \n"
-"http://www.voxelands.com/ \n"
-"\n"
-"Gemaakt door Lisa 'darkrose' Milne <lisa@ltmnet.com> en de volgende "
-"bijdragers: sdzen, MichaelEh?, Pentium44, Jordach, Menche, MavJS, tiemay, "
-"Szkodnix, soognarf, Tapoky, Wuzzy, JHeaton, Akien, redhound, Rui, "
-"Wayward_One, loh, Stephane, wario, AudioRichter, OwlStorm, DjDust, Taira "
-"Komori, hdastwb, puma_rc, Carl 'melkior' Kidwell\n"
-"\n"
-"Gebaseerd op Minetest-C55 door Perttu Ahola <celeron55@gmail.com> en de "
-"volgende bijdragers: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
-"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
-"Neuschafer, thexyz, VanessaE, sfan5... en nog tientalle andere willekeurige "
-"personen."
+"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
+msgstr "Gebaseerd op Minetest-C55 door Perttu Ahola <celeron55@gmail.com>\n en de volgende bijdragers: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... en nog tientalle andere personen."
 
 #: src/guiMessageMenu.cpp:112 src/guiPauseMenu.cpp:143
 msgid "Continue"
@@ -3838,7 +3789,7 @@ msgstr "Draagring Index"
 
 #: src/guiSettingsMenu.cpp:379 src/guiSettingsMenu.cpp:422
 msgid "Some settings cannot be changed in-game."
-msgstr ""
+msgstr "Sommige Instellingen kunnen niet in-game veranderd worden."
 
 #: src/guiSettingsMenu.cpp:392
 msgid "Fullscreen"
@@ -3875,75 +3826,72 @@ msgstr "Druk op een knop"
 #: src/hud.cpp:779
 #, c-format
 msgid "Energy Boost: %d:%02d"
-msgstr ""
+msgstr "Energie Boost: %d:%02d"
 
 #: src/hud.cpp:804
 #, c-format
 msgid "Cold Protection: %d:%02d"
-msgstr ""
+msgstr "Vries Bescherming: %d:%02d"
 
 #: src/inventory.cpp:230 src/inventory.cpp:350
 msgid "Cookable: Yes"
-msgstr ""
+msgstr "Kun je koken: Ja"
 
 #: src/inventory.cpp:235 src/inventory.cpp:355 src/inventory.cpp:523
 msgid "Fuel Burn Time: "
-msgstr ""
+msgstr "Brandstofverbruik tijd:"
 
 #: src/inventory.cpp:319
-#, fuzzy
 msgid "Hunger: "
-msgstr "Honger"
+msgstr "Honger:"
 
 #: src/inventory.cpp:325
 msgid "Health: "
-msgstr ""
+msgstr "Gezondheid:"
 
 #: src/inventory.cpp:332
 msgid "Cold Protection: "
-msgstr ""
+msgstr "Vries Bescherming:"
 
 #: src/inventory.cpp:341
 msgid "Energy Boost: "
-msgstr ""
+msgstr "Energie Boost:"
 
 #: src/inventory.cpp:512
 msgid "Strength: "
-msgstr ""
+msgstr "Kracht:"
 
 #: src/inventory.cpp:515
 msgid "Speed: "
-msgstr ""
+msgstr "Snelheid:"
 
 #: src/inventory.cpp:518
 msgid "Level: "
-msgstr ""
+msgstr "Level:"
 
 #: src/inventory.cpp:601
 msgid "Armour: "
-msgstr ""
+msgstr "Harnas:"
 
 #: src/inventory.cpp:607
 msgid "Warmth: "
-msgstr ""
+msgstr "Warmte:"
 
 #: src/inventory.cpp:613
-#, fuzzy
 msgid "Pressure: "
-msgstr "Houten Drukplaat"
+msgstr "Druk:"
 
 #: src/inventory.cpp:619
-#, fuzzy
 msgid "Suffocation: "
-msgstr "Verstikking/Verdrinking"
+msgstr "Verstikking:"
 
 #: src/inventory.cpp:625
 msgid "Durability: "
-msgstr ""
+msgstr "Duurzaamheid:"
 
 #: src/inventory.cpp:630
 msgid "Effect Boost: "
-msgstr ""
+msgstr "Effect Boost:"
 
 #: src/keycode.cpp:229
 msgid "Left Button"
@@ -4280,15 +4228,3 @@ msgstr "Interactieve MapNodes Laden"
 #: src/mapnode.cpp:306
 msgid "Loading Special MapNodes"
 msgstr "Speciale MapNodes Laden"
-
-#~ msgid "Mese Pick"
-#~ msgstr "Mese Houweel"
-
-#~ msgid "Mese Wire"
-#~ msgstr "Mese Draad"
-
-#~ msgid "Mese"
-#~ msgstr "Mese"
-
-#~ msgid "Mese Dust"
-#~ msgstr "Mesepoeder"
