@@ -3,6 +3,9 @@ Voxelands changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1508.01: (release 2015-08-24)
+- fix enchantments not getting initialised in some cases
+
 1508.00: (release 2015-08-24)
  - some helpers for converting mese to mithril
  - add new controls to readme file
