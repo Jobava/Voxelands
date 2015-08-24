@@ -152,6 +152,9 @@ bool enchantment_get(uint16_t *data, EnchantmentInfo *info)
 /* check if data contains an enchantment */
 bool enchantment_have(uint16_t data, uint16_t enchantment)
 {
+	if (!enchantment_isinit)
+		enchantment_init();
+
 	EnchantmentInfo info;
 	while (enchantment_get(&data,&info)) {
 		if (info.type == enchantment)
@@ -166,6 +169,9 @@ bool enchantment_set(uint16_t *data, uint16_t enchantment)
 	EnchantmentInfo info;
 	if (!data)
 		return false;
+
+	if (!enchantment_isinit)
+		enchantment_init();
 
 	if (!enchantment_get(&enchantment,&info))
 		return false;
@@ -195,6 +201,9 @@ bool enchantment_set(uint16_t *data, uint16_t enchantment)
 bool enchantment_enchant(uint16_t *data, content_t item)
 {
 	int i;
+	if (!enchantment_isinit)
+		enchantment_init();
+
 	for (i=0; i<=ENCHANTMENT_MAX; i++) {
 		if (enchantments[i].gem == item) {
 			*data = enchantments[i].mask;
