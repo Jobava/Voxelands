@@ -965,7 +965,6 @@ Server::Server(
 	m_banmanager(mapsavedir+DIR_DELIM+"ipban.txt"),
 	m_thread(this),
 	m_emergethread(this),
-	m_time_counter(0),
 	m_time_of_day_send_timer(0),
 	m_uptime(0),
 	m_mapsavedir(mapsavedir),
@@ -1217,41 +1216,31 @@ void Server::AsyncRunStep()
 	}
 
 	/*
-		Update m_time_of_day and overall game time
+		Update time of day and overall game time
 	*/
 	{
 		JMutexAutoLock envlock(m_env_mutex);
 
-		m_time_counter += dtime;
-		f32 speed = g_settings->getFloat("time_speed") * 24000./(24.*3600);
-		u32 units = (u32)(m_time_counter*speed);
-		m_time_counter -= (f32)units / speed;
+		float time_speed = g_settings->getFloat("time_speed");
 
-		m_env.setTimeOfDay((m_env.getTimeOfDay() + units) % 24000);
-
-		//infostream<<"Server: m_time_of_day = "<<m_time_of_day.get()<<std::endl;
+		m_env.setTimeOfDaySpeed(time_speed);
 
 		/*
 			Send to clients at constant intervals
 		*/
 
 		m_time_of_day_send_timer -= dtime;
-		if(m_time_of_day_send_timer < 0.0)
-		{
+		if (m_time_of_day_send_timer < 0.0) {
 			m_time_of_day_send_timer = g_settings->getFloat("time_send_interval");
 
 			//JMutexAutoLock envlock(m_env_mutex);
 			JMutexAutoLock conlock(m_con_mutex);
 
-			for(core::map<u16, RemoteClient*>::Iterator
-				i = m_clients.getIterator();
-				i.atEnd() == false; i++)
-			{
+			for (core::map<u16, RemoteClient*>::Iterator i = m_clients.getIterator(); i.atEnd() == false; i++) {
 				RemoteClient *client = i.getNode()->getValue();
 				//Player *player = m_env.getPlayer(client->peer_id);
 
-				SharedBuffer<u8> data = makePacket_TOCLIENT_TIME_OF_DAY(
-						m_env.getTimeOfDay());
+				SharedBuffer<u8> data = makePacket_TOCLIENT_TIME_OF_DAY(m_env.getTimeOfDay(),time_speed, m_env.getTime());
 				// Send as reliable
 				m_con.Send(client->peer_id, 0, data, true);
 			}
@@ -2087,7 +2076,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 
 		// Send time of day
 		{
-			SharedBuffer<u8> data = makePacket_TOCLIENT_TIME_OF_DAY(m_env.getTimeOfDay());
+			SharedBuffer<u8> data = makePacket_TOCLIENT_TIME_OF_DAY(m_env.getTimeOfDay(),g_settings->getFloat("time_speed"),m_env.getTime());
 			m_con.Send(peer_id, 0, data, true);
 		}
 

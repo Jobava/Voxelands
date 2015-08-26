@@ -143,11 +143,11 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("active_block_range", "2");
 	//settings->setDefault("max_simultaneous_block_sends_per_client", "1");
 	// This causes frametime jitter on client side, or does it?
-	settings->setDefault("max_simultaneous_block_sends_per_client", "2");
-	settings->setDefault("max_simultaneous_block_sends_server_total", "8");
+	settings->setDefault("max_simultaneous_block_sends_per_client", "4");
+	settings->setDefault("max_simultaneous_block_sends_server_total", "20");
 	settings->setDefault("max_block_send_distance", "7");
 	settings->setDefault("max_block_generate_distance", "5");
-	settings->setDefault("time_send_interval", "20");
+	settings->setDefault("time_send_interval", "5");
 	settings->setDefault("time_speed", "96");
 	settings->setDefault("server_unload_unused_data_timeout", "19");
 	settings->setDefault("server_map_save_interval", "1.238");

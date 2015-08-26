@@ -266,8 +266,6 @@ public:
 	// Prints a line or two of info
 	void printDebugInfo(std::ostream &os);
 
-	u32 getDayNightRatio();
-
 	u16 getHP();
 	u16 getAir();
 	u16 getHunger();
@@ -394,9 +392,6 @@ private:
 
 	PacketCounter m_packetcounter;
 
-	// Received from the server. 0-23999
-	u32 m_time_of_day;
-
 	bool m_form_open;
 
 	Queue<std::wstring> m_chat_queue;
@@ -413,7 +408,10 @@ private:
 
 	Queue<ClientEvent> m_client_event_queue;
 
-	friend class FarMesh;
+		// time_of_day speed approximation for old protocol
+	bool m_time_of_day_set;
+	float m_last_time_of_day_f;
+	float m_time_of_day_update_timer;
 };
 
 #endif // !SERVER
