@@ -53,6 +53,7 @@
 #include "main.h"
 #endif
 #include "hud.h"
+#include "sky.h"
 
 /*
 	TODO: Move content-aware stuff to separate file by adding properties
@@ -555,40 +556,6 @@ void getPointedNode(Client *client, v3f player_position,
 	}
 }
 
-void update_skybox(video::IVideoDriver* driver,
-		scene::ISceneManager* smgr, scene::ISceneNode* &skybox,
-		float brightness)
-{
-	if (skybox)
-		skybox->remove();
-
-	if (brightness >= 0.5) {
-		skybox = smgr->addSkyBoxSceneNode(
-			driver->getTexture(getTexturePath("skybox2.png").c_str()),
-			driver->getTexture(getTexturePath("skybox3.png").c_str()),
-			driver->getTexture(getTexturePath("skybox1.png").c_str()),
-			driver->getTexture(getTexturePath("skybox1.png").c_str()),
-			driver->getTexture(getTexturePath("skybox1.png").c_str()),
-			driver->getTexture(getTexturePath("skybox1.png").c_str()));
-	}else if(brightness >= 0.2) {
-		skybox = smgr->addSkyBoxSceneNode(
-			driver->getTexture(getTexturePath("skybox2_dawn.png").c_str()),
-			driver->getTexture(getTexturePath("skybox3_dawn.png").c_str()),
-			driver->getTexture(getTexturePath("skybox1_dawn.png").c_str()),
-			driver->getTexture(getTexturePath("skybox1_dawn.png").c_str()),
-			driver->getTexture(getTexturePath("skybox1_dawn.png").c_str()),
-			driver->getTexture(getTexturePath("skybox1_dawn.png").c_str()));
-	}else{
-		skybox = smgr->addSkyBoxSceneNode(
-			driver->getTexture(getTexturePath("skybox2_night.png").c_str()),
-			driver->getTexture(getTexturePath("skybox3_night.png").c_str()),
-			driver->getTexture(getTexturePath("skybox1_night.png").c_str()),
-			driver->getTexture(getTexturePath("skybox1_night.png").c_str()),
-			driver->getTexture(getTexturePath("skybox1_night.png").c_str()),
-			driver->getTexture(getTexturePath("skybox1_night.png").c_str()));
-	}
-}
-
 /*
 	Draws a screen with logo and text on it.
 	Text will be removed when the screen is drawn the next time.
@@ -688,8 +655,6 @@ void the_game(
 	const s32 hotbar_itemcount = 8;
 	s32 hotbar_imagesize = 48;
 
-	// The color of the sky
-	video::SColor bgcolor_bright = video::SColor(255,167,167,200);
 	/*
 		Draw "Loading" screen
 	*/
@@ -813,13 +778,6 @@ void the_game(
 	}
 
 	/*
-		Create skybox
-	*/
-	float old_brightness = 1.0;
-	scene::ISceneNode* skybox = NULL;
-	update_skybox(driver, smgr, skybox, 1.0);
-
-	/*
 		Create the camera node
 	*/
 	Camera camera(smgr, draw_control, &client);
@@ -833,10 +791,16 @@ void the_game(
 		Clouds
 	*/
 
-	float cloud_height = BS*100;
 	Clouds *clouds = NULL;
 	if (g_settings->getBool("enable_clouds"))
-		clouds = new Clouds(smgr->getRootSceneNode(), smgr, -1, cloud_height, time(0));
+		clouds = new Clouds(smgr->getRootSceneNode(), smgr, -1, time(0));
+
+	/*
+		Skybox
+	*/
+
+	Sky *sky = NULL;
+	sky = new Sky(smgr->getRootSceneNode(), smgr, -1);
 
 	/*
 		Move into game
@@ -951,6 +915,10 @@ void the_game(
 	// NOTE: So we have to use getTime() and call run()s between them
 	u32 lasttime = device->getTimer()->getTime();
 	v3s16 lastpointed(0,0,0);
+
+	float recent_turn_speed = 0.0;
+	float time_of_day = 0;
+	float time_of_day_smooth = 0;
 
 	while (device->run() && kill == false) {
 		//std::cerr<<"frame"<<std::endl;
@@ -1391,6 +1359,7 @@ void the_game(
 			NOTE: Do this before client.setPlayerControl() to not cause a camera lag of one frame
 		*/
 
+		float turn_amount = 0.0;
 		if ((device->isWindowActive() && noMenuActive()) || random_input) {
 			if (!random_input) {
 				// Mac OSX gets upset if this is set every frame
@@ -1411,8 +1380,12 @@ void the_game(
 
 				camera_yaw -= dx*d;
 				camera_pitch += dy*d;
-				if (camera_pitch < -89.5) camera_pitch = -89.5;
-				if (camera_pitch > 89.5) camera_pitch = 89.5;
+				if (camera_pitch < -89.5)
+					camera_pitch = -89.5;
+				if (camera_pitch > 89.5)
+					camera_pitch = 89.5;
+
+				turn_amount = v2f(dx, dy).getLength() * d;
 			}
 			input->setMousePos(displaycenter.X, displaycenter.Y);
 		}else{
@@ -1423,6 +1396,8 @@ void the_game(
 			//infostream<<"window inactive"<<std::endl;
 			first_loop_after_window_activation = true;
 		}
+
+		recent_turn_speed = recent_turn_speed * 0.9 + turn_amount * 0.1;
 
 		/*
 			Player speed control
@@ -1893,33 +1868,66 @@ void the_game(
 		input->resetLeftReleased();
 		input->resetRightReleased();
 
-		/*
-			Calculate stuff for drawing
-		*/
+		float fog_range = 0.0;
+		if (draw_control.range_all) {
+			fog_range = 100000*BS;
+		}else{
+			fog_range = (draw_control.wanted_range+MAP_BLOCKSIZE)*(BS*1.5);
+			fog_range *= 0.9;
+		}
 
-		u32 daynight_ratio = client.getDayNightRatio();
-		u8 l = decode_light((daynight_ratio * LIGHT_SUN) / 1000);
-		video::SColor bgcolor = video::SColor(
-			255,
-			bgcolor_bright.getRed() * l / 255,
-			bgcolor_bright.getGreen() * l / 255,
-			bgcolor_bright.getBlue() * l / 255
-		);
+		u32 daynight_ratio = client.getEnv().getDayNightRatio();
+		float time_brightness = (float)decode_light((daynight_ratio * LIGHT_SUN) / 1000) / 255.0;
+		float direct_brightness = 0;
+		bool sunlight_seen = false;
+		if (free_move) {
+			direct_brightness = time_brightness;
+			sunlight_seen = true;
+		}else{
+			ScopeProfiler sp(g_profiler, "Detecting background light", SPT_AVG);
+			float old_brightness = sky->getBrightness();
+			direct_brightness = (float)client.getEnv().getClientMap().getBackgroundBrightness(
+				MYMIN(fog_range*1.2, 60*BS),
+				daynight_ratio,
+				(int)(old_brightness*255.5),
+				&sunlight_seen
+			);
+			direct_brightness /= 255.0;
+		}
 
-		float brightness = (float)l/255.0;
+		time_of_day = client.getEnv().getTimeOfDayF();
+		float maxsm = 0.05;
+		if (
+			fabs(time_of_day - time_of_day_smooth) > maxsm
+			&& fabs(time_of_day - time_of_day_smooth + 1.0) > maxsm
+			&& fabs(time_of_day - time_of_day_smooth - 1.0) > maxsm
+		)
+			time_of_day_smooth = time_of_day;
+		float todsm = 0.05;
+		if (time_of_day_smooth > 0.8 && time_of_day < 0.2) {
+			time_of_day_smooth = time_of_day_smooth * (1.0-todsm) + (time_of_day+1.0) * todsm;
+		}else{
+			time_of_day_smooth = time_of_day_smooth * (1.0-todsm) + time_of_day * todsm;
+		}
 
-		/*
-			Update skybox
-		*/
-		if (fabs(brightness - old_brightness) > 0.01)
-			update_skybox(driver, smgr, skybox, brightness);
+		float moon_phase = client.getEnv().getMoonPhase();
+
+		sky->update(time_of_day_smooth, moon_phase, time_brightness, direct_brightness, sunlight_seen);
+
+		video::SColor bgcolor = sky->getBgColor();
+		video::SColor skycolor = sky->getSkyColor();
 
 		/*
 			Update clouds
 		*/
 		if (clouds) {
-			clouds->step(dtime);
-			clouds->update(v2f(player_position.X, player_position.Z), 0.05+brightness*0.95);
+			if (sky->getCloudsVisible()) {
+				clouds->setVisible(true);
+				clouds->step(dtime);
+				clouds->update(v2f(player_position.X, player_position.Z), sky->getCloudColor());
+			}else{
+				clouds->setVisible(false);
+			}
 		}
 
 		/*
@@ -1928,24 +1936,16 @@ void the_game(
 		allparticles_step(dtime, client.getEnv());
 		allparticlespawners_step(dtime, client.getEnv());
 
-		// Store brightness value
-		old_brightness = brightness;
-
 		/*
 			Fog
 		*/
 
 		if (enable_fog && !force_fog_off) {
-			f32 range = draw_control.wanted_range*BS + MAP_BLOCKSIZE*BS*1.5;
-			range *= 0.9;
-			if (draw_control.range_all)
-				range = 100000*BS;
-
 			driver->setFog(
 				bgcolor,
 				video::EFT_FOG_LINEAR,
-				range*0.4,
-				range*1.0,
+				fog_range*0.4,
+				fog_range*1.0,
 				0.01,
 				false, // pixel fog
 				false // range fog
@@ -2166,7 +2166,7 @@ void the_game(
 
 		{
 			TimeTaker timer("beginScene");
-			driver->beginScene(false, true, bgcolor);
+			driver->beginScene(true, true, skycolor);
 			timer.stop(true);
 		}
 
@@ -2329,6 +2329,9 @@ void the_game(
 					core::rect<s32>(0,0,screensize.X,screensize.Y),
 					NULL);
 		}
+
+		// Clear Z buffer
+		driver->clearZBuffer();
 
 		/*
 			End scene

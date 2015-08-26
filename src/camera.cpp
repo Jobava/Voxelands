@@ -396,8 +396,12 @@ void Camera::updateViewingRange(f32 frametime_in)
 	m_range_old = new_range;
 	m_frametime_old = frametime;
 	// Just so big a value that everything rendered is visible
-	// Some more allowance than viewing_range_max * BS because of active objects etc.
-	m_cameranode->setFarValue(viewing_range_max * BS * 10);
+	// Some more allowance than viewing_range_max * BS because of clouds, active objects etc.
+	if (viewing_range_max < 200*BS) {
+		m_cameranode->setFarValue(2000*BS);
+	}else{
+		m_cameranode->setFarValue(viewing_range_max * BS * 10);
+	}
 }
 
 void Camera::wield(const InventoryItem* item)

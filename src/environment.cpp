@@ -44,7 +44,11 @@
 #define PP(x) "("<<(x).X<<","<<(x).Y<<","<<(x).Z<<")"
 
 Environment::Environment():
-	m_time_of_day(9000)
+	m_time(0),
+	m_time_of_day(9000),
+	m_time_of_day_f(9000./24000),
+	m_time_of_day_speed(0),
+	m_time_counter(0)
 {
 }
 
@@ -195,15 +199,36 @@ void Environment::printPlayers(std::ostream &o)
 	}
 }
 
-/*void Environment::setDayNightRatio(u32 r)
-{
-	getDayNightRatio() = r;
-}*/
-
 u32 Environment::getDayNightRatio()
 {
-	//return getDayNightRatio();
-	return time_to_daynight_ratio(m_time_of_day);
+	return time_to_daynight_ratio(m_time_of_day_f*24000.0);
+}
+
+void Environment::stepTimeOfDay(float dtime)
+{
+	m_time_counter += dtime;
+	f32 speed = m_time_of_day_speed * 24000./(24.*3600);
+	u32 units = (u32)(m_time_counter*speed);
+	m_time_counter -= (f32)units / speed;
+	bool sync_f = false;
+	if (units > 0) {
+		// Sync at overflow
+		if (m_time_of_day + units >= 24000) {
+			m_time++;
+			sync_f = true;
+		}
+		m_time_of_day = (m_time_of_day + units) % 24000;
+		if (sync_f)
+			m_time_of_day_f = (float)m_time_of_day / 24000.0;
+	}
+
+	if (!sync_f) {
+		m_time_of_day_f += m_time_of_day_speed/24/3600*dtime;
+		if (m_time_of_day_f > 1.0)
+			m_time_of_day_f -= 1.0;
+		if (m_time_of_day_f < 0.0)
+			m_time_of_day_f += 1.0;
+	}
 }
 
 /*
@@ -469,6 +494,7 @@ void ServerEnvironment::saveMeta(const std::string &savedir)
 	Settings args;
 	args.setU64("game_time", m_game_time);
 	args.setU64("time_of_day", getTimeOfDay());
+	args.setU64("world_time",m_time);
 	args.writeLines(os);
 	os<<"EnvArgsEnd\n";
 }
@@ -513,6 +539,13 @@ void ServerEnvironment::loadMeta(const std::string &savedir)
 	}catch(SettingNotFoundException &e){
 		// This is not as important
 		m_time_of_day = 9000;
+	}
+
+	try{
+		m_time = args.getU64("world_time");
+	}catch(SettingNotFoundException &e){
+		// This is not as important
+		m_time = 0;
 	}
 }
 
@@ -705,6 +738,8 @@ void ServerEnvironment::step(float dtime)
 	DSTACK(__FUNCTION_NAME);
 
 	//TimeTaker timer("ServerEnv step");
+
+	stepTimeOfDay(dtime);
 
 	// Get some settings
 	bool footprints = g_settings->getBool("enable_footprints");
@@ -3367,6 +3402,8 @@ LocalPlayer * ClientEnvironment::getLocalPlayer()
 void ClientEnvironment::step(float dtime)
 {
 	DSTACK(__FUNCTION_NAME);
+
+	stepTimeOfDay(dtime);
 
 	// Get some settings
 	bool footprints = g_settings->getBool("enable_footprints");

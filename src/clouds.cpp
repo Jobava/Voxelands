@@ -35,11 +35,9 @@ Clouds::Clouds(
 		scene::ISceneNode* parent,
 		scene::ISceneManager* mgr,
 		s32 id,
-		float cloud_y,
 		u32 seed
 ):
 	scene::ISceneNode(parent, mgr, id),
-	m_cloud_y(cloud_y),
 	m_seed(seed),
 	m_camera_pos(0,0),
 	m_camera_offset(0,0,0),
@@ -50,14 +48,16 @@ Clouds::Clouds(
 	m_material.setFlag(video::EMF_LIGHTING, false);
 	m_material.setFlag(video::EMF_BACK_FACE_CULLING, false);
 	m_material.setFlag(video::EMF_BILINEAR_FILTER, false);
-	m_material.setFlag(video::EMF_FOG_ENABLE, false);
+	m_material.setFlag(video::EMF_FOG_ENABLE, true);
+	m_material.setFlag(video::EMF_ANTI_ALIASING, true);
 
-	m_box = core::aabbox3d<f32>(-BS*1000000,cloud_y-BS,-BS*1000000, BS*1000000,cloud_y+BS,BS*1000000);
+	m_cloud_y = BS*100;
+
+	m_box = core::aabbox3d<f32>(-BS*1000000,m_cloud_y-BS,-BS*1000000, BS*1000000,m_cloud_y+BS,BS*1000000);
 
 	m_face_count = 1;
 	if (g_settings->getBool("enable_3d_clouds"))
 		m_face_count = 6;
-
 }
 
 Clouds::~Clouds()
@@ -92,8 +92,9 @@ void Clouds::render()
 	*/
 
 	const s16 cloud_radius_i = 12;
-	const float cloud_size = BS*48;
-	const v2f cloud_speed(-BS*2, 0);
+	const float cloud_size = BS*64;
+	const v2f cloud_speed(0, -BS*2);
+	const float cloud_full_radius = cloud_size * cloud_radius_i;
 
 	// Position of cloud noise origin in world coordinates
 	v2f world_cloud_origin_pos_f = m_time*cloud_speed;
@@ -112,14 +113,66 @@ void Clouds::render()
 		center_of_drawing_in_noise_i.Y * cloud_size
 	) + world_cloud_origin_pos_f;
 
+	video::SColorf c_top_f(m_color);
+	video::SColorf c_side_1_f(m_color);
+	video::SColorf c_side_2_f(m_color);
+	video::SColorf c_bottom_f(m_color);
+	c_side_1_f.r *= 0.95;
+	c_side_1_f.g *= 0.95;
+	c_side_1_f.b *= 0.95;
+	c_side_2_f.r *= 0.90;
+	c_side_2_f.g *= 0.90;
+	c_side_2_f.b *= 0.90;
+	c_bottom_f.r *= 0.80;
+	c_bottom_f.g *= 0.80;
+	c_bottom_f.b *= 0.80;
+	c_top_f.a = 1.0;
+	c_side_1_f.a = 1.0;
+	c_side_2_f.a = 1.0;
+	c_bottom_f.a = 1.0;
+	video::SColor c_top = c_top_f.toSColor();
+	video::SColor c_side_1 = c_side_1_f.toSColor();
+	video::SColor c_side_2 = c_side_2_f.toSColor();
+	video::SColor c_bottom = c_bottom_f.toSColor();
+
 	video::SColor c[6] = {
-		video::SColor(128,m_brightness*240,m_brightness*240,m_brightness*255),
-		video::SColor(128,m_brightness*230,m_brightness*230,m_brightness*255),
-		video::SColor(128,m_brightness*220,m_brightness*220,m_brightness*245),
-		video::SColor(128,m_brightness*230,m_brightness*230,m_brightness*255),
-		video::SColor(128,m_brightness*220,m_brightness*220,m_brightness*245),
-		video::SColor(128,m_brightness*205,m_brightness*205,m_brightness*230)
+		c_top,
+		c_side_1,
+		c_side_2,
+		c_side_1,
+		c_side_2,
+		c_bottom
 	};
+
+	// Get fog parameters for setting them back later
+	video::SColor fog_color(0,0,0,0);
+	video::E_FOG_TYPE fog_type = video::EFT_FOG_LINEAR;
+	f32 fog_start = 0;
+	f32 fog_end = 0;
+	f32 fog_density = 0;
+	bool fog_pixelfog = false;
+	bool fog_rangefog = false;
+
+	driver->getFog(
+		fog_color,
+		fog_type,
+		fog_start,
+		fog_end,
+		fog_density,
+		fog_pixelfog,
+		fog_rangefog
+	);
+
+	// Set our own fog
+	driver->setFog(
+		fog_color,
+		fog_type,
+		cloud_full_radius * 0.5,
+		cloud_full_radius*1.2,
+		fog_density,
+		fog_pixelfog,
+		fog_rangefog
+	);
 
 	for (s16 zi=-cloud_radius_i; zi<cloud_radius_i; zi++)
 	for (s16 xi=-cloud_radius_i; xi<cloud_radius_i; xi++) {
@@ -203,6 +256,16 @@ void Clouds::render()
 		}
 
 	}
+
+	driver->setFog(
+		fog_color,
+		fog_type,
+		fog_start,
+		fog_end,
+		fog_density,
+		fog_pixelfog,
+		fog_rangefog
+	);
 }
 
 void Clouds::step(float dtime)
@@ -210,9 +273,9 @@ void Clouds::step(float dtime)
 	m_time += dtime;
 }
 
-void Clouds::update(v2f camera_p, float brightness)
+void Clouds::update(v2f camera_p, video::SColorf color)
 {
 	m_camera_pos = camera_p;
-	m_brightness = brightness;
+	m_color = color;
 }
 

@@ -132,13 +132,13 @@ public:
 	void printPlayers(std::ostream &o);
 	virtual bool propogateEnergy(u8 level, v3s16 powersrc, v3s16 signalsrc, v3s16 pos, core::map<v3s16,MapBlock*> &modified_blocks) {return false;};
 
-	//void setDayNightRatio(u32 r);
 	u32 getDayNightRatio();
 
 	// 0-23999
 	virtual void setTimeOfDay(u32 time)
 	{
 		m_time_of_day = time;
+		m_time_of_day_f = (float)time / 24000.0;
 	}
 
 	u32 getTimeOfDay()
@@ -146,13 +146,60 @@ public:
 		return m_time_of_day;
 	}
 
+	float getTimeOfDayF()
+	{
+		return m_time_of_day_f;
+	}
+
+	void stepTimeOfDay(float dtime);
+
+	void setTimeOfDaySpeed(float speed)
+	{
+		m_time_of_day_speed = speed;
+	}
+
+	float getTimeOfDaySpeed()
+	{
+		return m_time_of_day_speed;
+	}
+
+	float getMoonPhase()
+	{
+		float d = m_time%20;
+		return d/20.0;
+	}
+
+	u32 getTime()
+	{
+		return m_time;
+	}
+
+	void setTime(u32 t)
+	{
+		m_time = t;
+	}
+
+	u32 getSeason()
+	{
+		return (m_time%240)/60;
+	}
+
+	u32 getYear()
+	{
+		return m_time/240;
+	}
+
 protected:
 	// peer_ids in here should be unique, except that there may be many 0s
 	core::list<Player*> m_players;
-	// Brightness
-	//u32 m_daynight_ratio;
+	u32 m_time;
 	// Time of day in milli-hours (0-23999); determines day and night
 	u32 m_time_of_day;
+	// Time of day in 0...1
+	float m_time_of_day_f;
+	float m_time_of_day_speed;
+	// Used to buffer dtime for adding to m_time_of_day
+	float m_time_counter;
 	// A list of positions and nodes that should be set *after* the entire loop runs
 	std::map<v3s16,MapNode> m_delayed_node_changes;
 };
