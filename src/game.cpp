@@ -2313,7 +2313,8 @@ void the_game(
 					show_debug,
 					has_selected_node,
 					spos,
-					snode
+					snode,
+					client.getEnv().getTime()
 				);
 			}
 		}

@@ -785,6 +785,9 @@ void ServerEnvironment::step(float dtime)
 				if (n.getContent() == CONTENT_GRASS) {
 					n.setContent(CONTENT_GRASS_FOOTSTEPS);
 					m_map->setNode(bottompos, n);
+				}else if (n.getContent() == CONTENT_GRASS_AUTUMN) {
+					n.setContent(CONTENT_GRASS_FOOTSTEPS_AUTUMN);
+					m_map->setNode(bottompos, n);
 				}else{
 					bottompos.Y += 1;
 					MapNode n = m_map->getNodeNoEx(bottompos);
@@ -874,6 +877,10 @@ void ServerEnvironment::step(float dtime)
 		bool can_daylight = false;
 		if (getTimeOfDay() >= 10000 && getTimeOfDay() < 14000)
 			can_daylight = true;
+		u16 season = getSeason();
+		s16 coldzone = 60;
+		if (season == ENV_SEASON_WINTER)
+			coldzone = 20;
 		bool unsafe_fire = g_settings->getBool("unsafe_fire");
 		for (std::set<v3s16>::iterator i = m_active_blocks.m_list.begin(); i != m_active_blocks.m_list.end(); i++) {
 			v3s16 bp = *i;
@@ -1022,6 +1029,14 @@ void ServerEnvironment::step(float dtime)
 					}
 					break;
 				}
+				case CONTENT_GRASS_FOOTSTEPS_AUTUMN:
+				{
+					if (n.envticks > 3) {
+						n.setContent(CONTENT_GRASS_AUTUMN);
+						m_map->addNodeWithEvent(p, n);
+					}
+					break;
+				}
 				/*
 					Convert mud under proper lighting to grass
 				*/
@@ -1029,11 +1044,15 @@ void ServerEnvironment::step(float dtime)
 				{
 					MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
 					if (content_features(n_top).air_equivalent) {
-						if (p.Y > 50 && p.Y < 1024) {
+						if (p.Y > (coldzone+10) && p.Y < 1024) {
 							n.setContent(CONTENT_MUDSNOW);
 							m_map->addNodeWithEvent(p, n);
 						}else if (n_top.getLightBlend(getDayNightRatio()) >= 13) {
-							n.setContent(CONTENT_GROWING_GRASS);
+							if (season == ENV_SEASON_AUTUMN || season == ENV_SEASON_WINTER) {
+								n.setContent(CONTENT_GROWING_GRASS_AUTUMN);
+							}else{
+								n.setContent(CONTENT_GROWING_GRASS);
+							}
 							n.param2 = 0;
 							m_map->addNodeWithEvent(p, n);
 						}
@@ -1042,10 +1061,16 @@ void ServerEnvironment::step(float dtime)
 				}
 
 				case CONTENT_GROWING_GRASS:
+					if (season == ENV_SEASON_WINTER || season == ENV_SEASON_AUTUMN) {
+						n.setContent(CONTENT_GROWING_GRASS_AUTUMN);
+						m_map->addNodeWithEvent(p,n);
+					}
+				case CONTENT_GROWING_GRASS_AUTUMN:
 				{
 					MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
 					if (content_features(n_top).air_equivalent) {
-						plantgrowth_grass(this,p);
+						if (season != ENV_SEASON_WINTER)
+							plantgrowth_grass(this,p);
 					}else{
 						n.setContent(CONTENT_MUD);
 						m_map->addNodeWithEvent(p,n);
@@ -1056,8 +1081,8 @@ void ServerEnvironment::step(float dtime)
 				case CONTENT_WATER:
 				case CONTENT_WATERSOURCE:
 				{
-					if (p.Y > 60 && p.Y < 1024) {
-						s16 range = (p.Y > 60) ? 2 : 4;
+					if (p.Y > coldzone && p.Y < 1024) {
+						s16 range = (p.Y > coldzone) ? 2 : 4;
 						std::vector<content_t> search;
 						search.push_back(CONTENT_LAVASOURCE);
 						search.push_back(CONTENT_LAVA);
@@ -1074,7 +1099,7 @@ void ServerEnvironment::step(float dtime)
 				{
 					bool found = false;
 					if (p.Y > 0) {
-						s16 range = (p.Y > 60) ? 2 : 4;
+						s16 range = (p.Y > coldzone) ? 2 : 4;
 						std::vector<content_t> search;
 						search.push_back(CONTENT_LAVASOURCE);
 						search.push_back(CONTENT_LAVA);
@@ -1098,7 +1123,7 @@ void ServerEnvironment::step(float dtime)
 				case CONTENT_SNOW:
 				{
 					MapNode n_test = m_map->getNodeNoEx(p+v3s16(0,-1,0));
-					if (n_test.getContent() == CONTENT_AIR)
+					if (n_test.getContent() == CONTENT_AIR || p.Y < (coldzone-10))
 						m_map->removeNodeWithEvent(p);
 					break;
 				}
@@ -1228,7 +1253,22 @@ void ServerEnvironment::step(float dtime)
 				{
 					{
 						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
-						if (
+						u32 ch = m_time%60;
+						if (n_top.getContent() == CONTENT_SNOW) {
+							break;
+						}else if (
+							p.Y < (coldzone-10)
+							&& (
+								ch > 10
+								|| (
+									n_top.getLightBlend(getDayNightRatio()) >= 13
+									&& myrand_range(0,5) == 0
+								) || myrand_range(0,10) == 0
+							)
+						) {
+							n.setContent(CONTENT_GRASS_AUTUMN);
+							m_map->addNodeWithEvent(p, n);
+						}else if (
 							content_features(n_top).air_equivalent == false
 							&& n_top.getContent() != CONTENT_IGNORE
 							&& content_features(n_top).draw_type != CDT_PLANTLIKE
@@ -1248,8 +1288,26 @@ void ServerEnvironment::step(float dtime)
 					ContentFeatures &f = content_features(n_top);
 					if (f.air_equivalent) {
 						if (n.envticks > 2) {
-							if (p.Y > 50 && p.Y < 1024) {
+							if (
+								p.Y > (coldzone-10)
+								&& p.Y < 1024
+								&& (
+									m_time%60 > 10
+									|| myrand_range(0,10) == 0
+								)
+							) {
 								n.setContent(CONTENT_MUDSNOW);
+								m_map->addNodeWithEvent(p, n);
+							}else if (
+								(
+									season == ENV_SEASON_WINTER
+									|| season == ENV_SEASON_AUTUMN
+								) && (
+									m_time%60 > 10
+									|| myrand_range(0,10) == 0
+								)
+							) {
+								n.setContent(CONTENT_GRASS_AUTUMN);
 								m_map->addNodeWithEvent(p, n);
 							}
 						}
@@ -1261,7 +1319,8 @@ void ServerEnvironment::step(float dtime)
 								if (nearest == NULL || nearest->getPosition().getDistanceFrom(pp)/BS > 20.0) {
 									std::vector<content_t> search;
 									search.push_back(CONTENT_WILDGRASS_SHORT);
-									search.push_back(CONTENT_WILDGRASS_LONG);
+									if (season != ENV_SEASON_SPRING)
+										search.push_back(CONTENT_WILDGRASS_LONG);
 									search.push_back(CONTENT_FLOWER_STEM);
 									search.push_back(CONTENT_FLOWER_ROSE);
 									search.push_back(CONTENT_FLOWER_TULIP);
@@ -1274,6 +1333,49 @@ void ServerEnvironment::step(float dtime)
 							}
 						}
 					}else if (n_top.getContent() != CONTENT_IGNORE) {
+						n.setContent(CONTENT_GRASS_AUTUMN);
+						m_map->addNodeWithEvent(p,n);
+					}
+					break;
+				}
+				case CONTENT_GRASS_AUTUMN:
+				{
+					MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
+					ContentFeatures &f = content_features(n_top);
+					u32 ch = m_time%60;
+					if (n_top.getContent() == CONTENT_SNOW) {
+						n.setContent(CONTENT_MUDSNOW);
+						m_map->addNodeWithEvent(p,n);
+					}else if (f.air_equivalent) {
+						if ((season == ENV_SEASON_SPRING && myrand_range(0,10) == 0) || season == ENV_SEASON_SUMMER) {
+							n.setContent(CONTENT_GRASS);
+							m_map->addNodeWithEvent(p,n);
+						}else if (season == ENV_SEASON_WINTER && (ch > 10 || myrand_range(0,5) == 0)) {
+							n.setContent(CONTENT_MUDSNOW);
+							m_map->addNodeWithEvent(p,n);
+						}else{
+							int f = (700-(p.Y*2))+10;
+							if (p.Y > 1 && myrand()%f == 0) {
+								if (n_top.getContent() == CONTENT_AIR && n_top.getLightBlend(getDayNightRatio()) >= 13) {
+									v3f pp = intToFloat(p,BS);
+									Player *nearest = getNearestConnectedPlayer(pp);
+									if (nearest == NULL || nearest->getPosition().getDistanceFrom(pp)/BS > 20.0) {
+										std::vector<content_t> search;
+										search.push_back(CONTENT_WILDGRASS_SHORT);
+										search.push_back(CONTENT_WILDGRASS_LONG);
+										search.push_back(CONTENT_FLOWER_STEM);
+										search.push_back(CONTENT_FLOWER_ROSE);
+										search.push_back(CONTENT_FLOWER_TULIP);
+										search.push_back(CONTENT_FLOWER_DAFFODIL);
+										if (!searchNear(p,v3s16(1,1,1),search,NULL)) {
+											n_top.setContent(CONTENT_WILDGRASS_SHORT);
+											m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top);
+										}
+									}
+								}
+							}
+						}
+					}else{
 						n.setContent(CONTENT_MUD);
 						m_map->addNodeWithEvent(p,n);
 					}
@@ -1283,12 +1385,30 @@ void ServerEnvironment::step(float dtime)
 				case CONTENT_WILDGRASS_SHORT:
 				{
 					MapNode n_btm = m_map->getNodeNoEx(p+v3s16(0,-1,0));
-					if (n_btm.getContent() == CONTENT_GRASS || n_btm.getContent() == CONTENT_MUD) {
+					if (
+						n_btm.getContent() == CONTENT_GRASS
+						|| n_btm.getContent() == CONTENT_GRASS_AUTUMN
+						|| n_btm.getContent() == CONTENT_MUDSNOW
+						|| n_btm.getContent() == CONTENT_MUD
+					) {
 						if (p.Y > -1 && n.envticks > 10) {
 							MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
-							if (n_btm.getContent() == CONTENT_GRASS) {
+							if (n_btm.getContent() != CONTENT_MUD) {
 								if (n_top.getLightBlend(getDayNightRatio()) >= 13) {
-									if (myrand()%5 == 0) {
+									u32 chance = 20;
+									switch (season) {
+									case ENV_SEASON_SUMMER:
+										chance = 10;
+										break;
+									case ENV_SEASON_AUTUMN:
+										chance = 15;
+										break;
+									case ENV_SEASON_SPRING:
+										chance = 5;
+										break;
+									default:;
+									}
+									if (myrand_range(0,chance) == 0) {
 										n.setContent(CONTENT_FLOWER_STEM);
 										m_map->addNodeWithEvent(p, n);
 									}else{
@@ -1307,9 +1427,24 @@ void ServerEnvironment::step(float dtime)
 
 				case CONTENT_WILDGRASS_LONG:
 				{
-					if (p.Y > -1 && n.envticks > 30) {
-						n.setContent(CONTENT_DEADGRASS);
-						m_map->addNodeWithEvent(p, n);
+					if (p.Y > -1) {
+						u32 chance = 50;
+						switch (season) {
+						case ENV_SEASON_SUMMER:
+							chance = 25;
+							break;
+						case ENV_SEASON_AUTUMN:
+							chance = 10;
+							break;
+						case ENV_SEASON_WINTER:
+							chance = 5;
+							break;
+						default:;
+						}
+						if (myrand_range(0,chance) == 0) {
+							n.setContent(CONTENT_DEADGRASS);
+							m_map->addNodeWithEvent(p, n);
+						}
 					}
 					break;
 				}
@@ -1320,12 +1455,15 @@ void ServerEnvironment::step(float dtime)
 					int ch = 0;
 					if (
 						n_btm.getContent() == CONTENT_GRASS
+						|| n_btm.getContent() == CONTENT_GRASS_AUTUMN
 						|| n_btm.getContent() == CONTENT_MUD
 					)
 						ch = 100;
 					if (n_btm.getContent() == CONTENT_FARM_DIRT)
 						ch = 50;
 					if (ch) {
+						if (season == ENV_SEASON_SPRING)
+							break;
 						if ((ch == 50 || p.Y > -1) && n.envticks > 20) {
 							MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
 							if (n_top.getLightBlend(getDayNightRatio()) >= 13) {
@@ -1354,8 +1492,19 @@ void ServerEnvironment::step(float dtime)
 
 				case CONTENT_DEADGRASS:
 				{
-					if (p.Y > -1 && n.envticks > 20)
+					MapNode n_btm = m_map->getNodeNoEx(p+v3s16(0,-1,0));
+					content_t c = n_btm.getContent();
+					if (
+						(
+							c != CONTENT_MUD
+							&& c != CONTENT_GRASS
+							&& c != CONTENT_GRASS_AUTUMN
+							&& c != CONTENT_MUDSNOW
+						)
+						|| n.envticks > 20
+					) {
 						m_map->removeNodeWithEvent(p);
+					}
 					break;
 				}
 
@@ -1364,8 +1513,18 @@ void ServerEnvironment::step(float dtime)
 				case CONTENT_FLOWER_TULIP:
 				{
 					MapNode n_under = m_map->getNodeNoEx(p+v3s16(0,-1,0));
-					if (n_under.getContent() == CONTENT_GRASS) {
-						if (n.envticks > 60) {
+					if (n_under.getContent() == CONTENT_GRASS || n_under.getContent() == CONTENT_GRASS_AUTUMN) {
+						u32 chance = 0;
+						switch (season) {
+						case ENV_SEASON_AUTUMN:
+							chance = 10;
+							break;
+						case ENV_SEASON_WINTER:
+							chance = 5;
+							break;
+						default:;
+						}
+						if (chance && myrand_range(0,chance) == 0) {
 							n.setContent(CONTENT_WILDGRASS_SHORT);
 							m_map->addNodeWithEvent(p, n);
 						}
@@ -1481,7 +1640,7 @@ void ServerEnvironment::step(float dtime)
 				// growing apples!
 				case CONTENT_APPLE_LEAVES:
 				{
-					if (n.envticks%30 == 0) {
+					if (n.envticks%30 == 0 && season == ENV_SEASON_SPRING) {
 						if (searchNear(p,v3s16(3,3,3),CONTENT_APPLE_TREE,NULL)) {
 							if (!searchNear(p,v3s16(1,1,1),CONTENT_APPLE_BLOSSOM,NULL)) {
 								n.setContent(CONTENT_APPLE_BLOSSOM);
@@ -1495,6 +1654,9 @@ void ServerEnvironment::step(float dtime)
 
 				// leaf decay
 				case CONTENT_LEAVES:
+				case CONTENT_LEAVES_AUTUMN:
+				case CONTENT_LEAVES_WINTER:
+				case CONTENT_LEAVES_SNOWY:
 				case CONTENT_JUNGLELEAVES:
 				case CONTENT_CONIFER_LEAVES:
 				{
@@ -1518,6 +1680,40 @@ void ServerEnvironment::step(float dtime)
 								ServerActiveObject *obj = new ItemSAO(this, 0, sapling_pos, "MaterialItem2 " + itos(n.getContent()) + " 1");
 								addActiveObject(obj);
 							}
+						}else if (n.getContent() == CONTENT_LEAVES) {
+							if (season == ENV_SEASON_AUTUMN) {
+								n.setContent(CONTENT_LEAVES_AUTUMN);
+								m_map->addNodeWithEvent(p,n);
+							}else if (season == ENV_SEASON_WINTER) {
+								n.setContent(CONTENT_LEAVES_WINTER);
+								m_map->addNodeWithEvent(p,n);
+							}
+						}else if (n.getContent() == CONTENT_LEAVES_AUTUMN) {
+							if (season == ENV_SEASON_WINTER) {
+								n.setContent(CONTENT_LEAVES_WINTER);
+								m_map->addNodeWithEvent(p,n);
+							}else if (season != ENV_SEASON_AUTUMN) {
+								n.setContent(CONTENT_LEAVES);
+								m_map->addNodeWithEvent(p,n);
+							}
+						}else if (n.getContent() == CONTENT_LEAVES_WINTER) {
+							if (season == ENV_SEASON_AUTUMN) {
+								n.setContent(CONTENT_LEAVES_AUTUMN);
+								m_map->addNodeWithEvent(p,n);
+							}else if (season == ENV_SEASON_WINTER) {
+								if (myrand_range(0,5) && p.Y > 0) {
+									n.setContent(CONTENT_LEAVES_SNOWY);
+									m_map->addNodeWithEvent(p,n);
+								}
+							}else{
+								n.setContent(CONTENT_LEAVES);
+								m_map->addNodeWithEvent(p,n);
+							}
+						}else if (n.getContent() == CONTENT_LEAVES_SNOWY) {
+							if (season != ENV_SEASON_WINTER) {
+								n.setContent(CONTENT_LEAVES_WINTER);
+								m_map->addNodeWithEvent(p,n);
+							}
 						}
 					}
 					break;
@@ -1540,7 +1736,7 @@ void ServerEnvironment::step(float dtime)
 									++found_apple;
 								}
 							}
-							if (found_apple < 3) {
+							if (found_apple < season) {
 								n.setContent(CONTENT_APPLE);
 								m_map->addNodeWithEvent(p, n);
 							}
@@ -1815,6 +2011,9 @@ void ServerEnvironment::step(float dtime)
 						search.push_back(CONTENT_CONIFER_TREE);
 						search.push_back(CONTENT_YOUNG_CONIFER_TREE);
 						search.push_back(CONTENT_LEAVES);
+						search.push_back(CONTENT_LEAVES_AUTUMN);
+						search.push_back(CONTENT_LEAVES_WINTER);
+						search.push_back(CONTENT_LEAVES_SNOWY);
 						search.push_back(CONTENT_JUNGLELEAVES);
 						search.push_back(CONTENT_CONIFER_LEAVES);
 						search.push_back(CONTENT_APPLE_LEAVES);
@@ -1840,6 +2039,9 @@ void ServerEnvironment::step(float dtime)
 						search.push_back(CONTENT_CONIFER_TREE);
 						search.push_back(CONTENT_YOUNG_CONIFER_TREE);
 						search.push_back(CONTENT_LEAVES);
+						search.push_back(CONTENT_LEAVES_AUTUMN);
+						search.push_back(CONTENT_LEAVES_WINTER);
+						search.push_back(CONTENT_LEAVES_SNOWY);
 						search.push_back(CONTENT_JUNGLELEAVES);
 						search.push_back(CONTENT_CONIFER_LEAVES);
 						search.push_back(CONTENT_APPLE_LEAVES);
@@ -1847,7 +2049,13 @@ void ServerEnvironment::step(float dtime)
 						search.push_back(CONTENT_APPLE);
 						search.push_back(CONTENT_IGNORE);
 						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
-						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_GRASS_FOOTSTEPS) {
+						if (
+							below == CONTENT_MUD
+							|| below == CONTENT_GRASS
+							|| below == CONTENT_GRASS_FOOTSTEPS
+							|| below == CONTENT_GRASS_AUTUMN
+							|| below == CONTENT_GRASS_FOOTSTEPS_AUTUMN
+						) {
 							v3s16 h;
 							if (!searchNearInv(p,v3s16(-2,2,-2),v3s16(2,7,2),search,&h)) {
 								// young tree 1
@@ -1864,7 +2072,13 @@ void ServerEnvironment::step(float dtime)
 				{
 					if (n.envticks > 15) {
 						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
-						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_GRASS_FOOTSTEPS) {
+						if (
+							below == CONTENT_MUD
+							|| below == CONTENT_GRASS
+							|| below == CONTENT_GRASS_FOOTSTEPS
+							|| below == CONTENT_GRASS_AUTUMN
+							|| below == CONTENT_GRASS_FOOTSTEPS_AUTUMN
+						) {
 							content_t above = m_map->getNodeNoEx(p+v3s16(0,1,0)).getContent();
 							std::vector<content_t> search;
 							search.push_back(CONTENT_AIR);
@@ -1877,6 +2091,9 @@ void ServerEnvironment::step(float dtime)
 							search.push_back(CONTENT_CONIFER_TREE);
 							search.push_back(CONTENT_YOUNG_CONIFER_TREE);
 							search.push_back(CONTENT_LEAVES);
+							search.push_back(CONTENT_LEAVES_AUTUMN);
+							search.push_back(CONTENT_LEAVES_WINTER);
+							search.push_back(CONTENT_LEAVES_SNOWY);
 							search.push_back(CONTENT_JUNGLELEAVES);
 							search.push_back(CONTENT_CONIFER_LEAVES);
 							search.push_back(CONTENT_APPLE_LEAVES);
@@ -1943,6 +2160,9 @@ void ServerEnvironment::step(float dtime)
 						search.push_back(CONTENT_CONIFER_TREE);
 						search.push_back(CONTENT_YOUNG_CONIFER_TREE);
 						search.push_back(CONTENT_LEAVES);
+						search.push_back(CONTENT_LEAVES_AUTUMN);
+						search.push_back(CONTENT_LEAVES_WINTER);
+						search.push_back(CONTENT_LEAVES_SNOWY);
 						search.push_back(CONTENT_JUNGLELEAVES);
 						search.push_back(CONTENT_CONIFER_LEAVES);
 						search.push_back(CONTENT_APPLE_LEAVES);
@@ -1950,7 +2170,13 @@ void ServerEnvironment::step(float dtime)
 						search.push_back(CONTENT_APPLE);
 						search.push_back(CONTENT_IGNORE);
 						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
-						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_GRASS_FOOTSTEPS) {
+						if (
+							below == CONTENT_MUD
+							|| below == CONTENT_GRASS
+							|| below == CONTENT_GRASS_FOOTSTEPS
+							|| below == CONTENT_GRASS_AUTUMN
+							|| below == CONTENT_GRASS_FOOTSTEPS_AUTUMN
+						) {
 							v3s16 h;
 							if (!searchNearInv(p,v3s16(-2,2,-2),v3s16(2,7,2),search,&h)) {
 								// young tree 1
@@ -1967,7 +2193,13 @@ void ServerEnvironment::step(float dtime)
 				{
 					if (n.envticks > 15) {
 						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
-						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_GRASS_FOOTSTEPS) {
+						if (
+							below == CONTENT_MUD
+							|| below == CONTENT_GRASS
+							|| below == CONTENT_GRASS_FOOTSTEPS
+							|| below == CONTENT_GRASS_AUTUMN
+							|| below == CONTENT_GRASS_FOOTSTEPS_AUTUMN
+						) {
 							content_t above = m_map->getNodeNoEx(p+v3s16(0,1,0)).getContent();
 							std::vector<content_t> search;
 							search.push_back(CONTENT_AIR);
@@ -1980,6 +2212,9 @@ void ServerEnvironment::step(float dtime)
 							search.push_back(CONTENT_CONIFER_TREE);
 							search.push_back(CONTENT_YOUNG_CONIFER_TREE);
 							search.push_back(CONTENT_LEAVES);
+							search.push_back(CONTENT_LEAVES_AUTUMN);
+							search.push_back(CONTENT_LEAVES_WINTER);
+							search.push_back(CONTENT_LEAVES_SNOWY);
 							search.push_back(CONTENT_JUNGLELEAVES);
 							search.push_back(CONTENT_CONIFER_LEAVES);
 							search.push_back(CONTENT_APPLE_LEAVES);
@@ -2041,6 +2276,9 @@ void ServerEnvironment::step(float dtime)
 						search.push_back(CONTENT_CONIFER_TREE);
 						search.push_back(CONTENT_YOUNG_CONIFER_TREE);
 						search.push_back(CONTENT_LEAVES);
+						search.push_back(CONTENT_LEAVES_AUTUMN);
+						search.push_back(CONTENT_LEAVES_WINTER);
+						search.push_back(CONTENT_LEAVES_SNOWY);
 						search.push_back(CONTENT_JUNGLELEAVES);
 						search.push_back(CONTENT_CONIFER_LEAVES);
 						search.push_back(CONTENT_APPLE_LEAVES);
@@ -2048,7 +2286,13 @@ void ServerEnvironment::step(float dtime)
 						search.push_back(CONTENT_APPLE);
 						search.push_back(CONTENT_IGNORE);
 						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
-						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_GRASS_FOOTSTEPS) {
+						if (
+							below == CONTENT_MUD
+							|| below == CONTENT_GRASS
+							|| below == CONTENT_GRASS_FOOTSTEPS
+							|| below == CONTENT_GRASS_AUTUMN
+							|| below == CONTENT_GRASS_FOOTSTEPS_AUTUMN
+						) {
 							v3s16 h;
 							if (!searchNearInv(p,v3s16(-2,2,-2),v3s16(2,10,2),search,&h)) {
 								// young tree 1
@@ -2065,7 +2309,13 @@ void ServerEnvironment::step(float dtime)
 				{
 					if (n.envticks > 15) {
 						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
-						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_GRASS_FOOTSTEPS) {
+						if (
+							below == CONTENT_MUD
+							|| below == CONTENT_GRASS
+							|| below == CONTENT_GRASS_FOOTSTEPS
+							|| below == CONTENT_GRASS_AUTUMN
+							|| below == CONTENT_GRASS_FOOTSTEPS_AUTUMN
+						) {
 							content_t above = m_map->getNodeNoEx(p+v3s16(0,1,0)).getContent();
 							std::vector<content_t> search;
 							search.push_back(CONTENT_AIR);
@@ -2078,6 +2328,9 @@ void ServerEnvironment::step(float dtime)
 							search.push_back(CONTENT_CONIFER_TREE);
 							search.push_back(CONTENT_YOUNG_CONIFER_TREE);
 							search.push_back(CONTENT_LEAVES);
+							search.push_back(CONTENT_LEAVES_AUTUMN);
+							search.push_back(CONTENT_LEAVES_WINTER);
+							search.push_back(CONTENT_LEAVES_SNOWY);
 							search.push_back(CONTENT_JUNGLELEAVES);
 							search.push_back(CONTENT_CONIFER_LEAVES);
 							search.push_back(CONTENT_APPLE_LEAVES);
@@ -2141,6 +2394,9 @@ void ServerEnvironment::step(float dtime)
 						search.push_back(CONTENT_CONIFER_TREE);
 						search.push_back(CONTENT_YOUNG_CONIFER_TREE);
 						search.push_back(CONTENT_LEAVES);
+						search.push_back(CONTENT_LEAVES_AUTUMN);
+						search.push_back(CONTENT_LEAVES_WINTER);
+						search.push_back(CONTENT_LEAVES_SNOWY);
 						search.push_back(CONTENT_JUNGLELEAVES);
 						search.push_back(CONTENT_CONIFER_LEAVES);
 						search.push_back(CONTENT_APPLE_LEAVES);
@@ -2148,7 +2404,13 @@ void ServerEnvironment::step(float dtime)
 						search.push_back(CONTENT_APPLE);
 						search.push_back(CONTENT_IGNORE);
 						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
-						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_GRASS_FOOTSTEPS) {
+						if (
+							below == CONTENT_MUD
+							|| below == CONTENT_GRASS
+							|| below == CONTENT_GRASS_FOOTSTEPS
+							|| below == CONTENT_GRASS_AUTUMN
+							|| below == CONTENT_GRASS_FOOTSTEPS_AUTUMN
+						) {
 							v3s16 h;
 							if (!searchNearInv(p,v3s16(-2,2,-2),v3s16(2,12,2),search,&h)) {
 								// young tree 1
@@ -2165,7 +2427,13 @@ void ServerEnvironment::step(float dtime)
 				{
 					if (n.envticks > 15) {
 						content_t below = m_map->getNodeNoEx(p+v3s16(0,-1,0)).getContent();
-						if (below == CONTENT_MUD || below == CONTENT_GRASS || below == CONTENT_GRASS_FOOTSTEPS) {
+						if (
+							below == CONTENT_MUD
+							|| below == CONTENT_GRASS
+							|| below == CONTENT_GRASS_FOOTSTEPS
+							|| below == CONTENT_GRASS_AUTUMN
+							|| below == CONTENT_GRASS_FOOTSTEPS_AUTUMN
+						) {
 							content_t above = m_map->getNodeNoEx(p+v3s16(0,1,0)).getContent();
 							std::vector<content_t> search;
 							search.push_back(CONTENT_AIR);
@@ -2178,6 +2446,9 @@ void ServerEnvironment::step(float dtime)
 							search.push_back(CONTENT_CONIFER_TREE);
 							search.push_back(CONTENT_YOUNG_CONIFER_TREE);
 							search.push_back(CONTENT_LEAVES);
+							search.push_back(CONTENT_LEAVES_AUTUMN);
+							search.push_back(CONTENT_LEAVES_WINTER);
+							search.push_back(CONTENT_LEAVES_SNOWY);
 							search.push_back(CONTENT_JUNGLELEAVES);
 							search.push_back(CONTENT_CONIFER_LEAVES);
 							search.push_back(CONTENT_APPLE_LEAVES);
@@ -2235,7 +2506,7 @@ void ServerEnvironment::step(float dtime)
 						apple_pos += v3f(myrand_range(-1500,1500)*1.0/1000, 0, myrand_range(-1500,1500)*1.0/1000);
 						ServerActiveObject *obj = new ItemSAO(this, 0, apple_pos, "CraftItem apple 1");
 						addActiveObject(obj);
-					}else if (n.envticks > 600 && active_object_count_wider < 10) {
+					}else if ((n.envticks > 600 || (n.envticks > 100 && season == ENV_SEASON_WINTER)) && active_object_count_wider < 10) {
 						n.setContent(CONTENT_APPLE_LEAVES);
 						m_map->addNodeWithEvent(p,n);
 						v3f rot_pos = intToFloat(p, BS);
@@ -2246,7 +2517,7 @@ void ServerEnvironment::step(float dtime)
 					break;
 				}
 
-				// grow junglegrass on sand near water
+				// grow sponges on sand in water
 				case CONTENT_SAND:
 				{
 					if (n.envticks%30 == 0) {
@@ -2462,22 +2733,22 @@ void ServerEnvironment::step(float dtime)
 				if (
 					n.getContent() != CONTENT_GRASS
 					&& n.getContent() != CONTENT_MUD
-					&& p.Y > 55 && p.Y < 1024
+					&& p.Y >(coldzone-5) && p.Y < 1024
 					&& (
 						content_features(n).draw_type == CDT_CUBELIKE
 						|| content_features(n).draw_type == CDT_GLASSLIKE
 					)
 				) {
 					if (myrand()%20 == 0) {
-						MapNode n_top = m_map->getNodeNoEx(p+v3s16(0,1,0));
+						std::vector<content_t> search;
+						search.push_back(CONTENT_AIR);
 						// check that it's on top, and somewhere snow could fall
 						// not 100% because torches
 						if (
-							n_top.getContent() == CONTENT_AIR
-							&& n_top.getLightBlend(getDayNightRatio()) >= 13
+							!searchNearInv(p,v3s16(0,1,0),v3s16(0,16,0),search,NULL)
 							&& !searchNear(p,v3s16(3,3,3),CONTENT_FIRE,NULL)
 						) {
-							n_top.setContent(CONTENT_SNOW);
+							MapNode n_top(CONTENT_SNOW);
 							m_map->addNodeWithEvent(p+v3s16(0,1,0), n_top);
 						}
 					}
@@ -3665,6 +3936,16 @@ void ClientEnvironment::step(float dtime)
 			MapNode n = m_map->getNodeNoEx(bottompos);
 			if (n.getContent() == CONTENT_GRASS) {
 				n.setContent(CONTENT_GRASS_FOOTSTEPS);
+				m_map->setNode(bottompos, n);
+				// Update mesh on client
+				if (m_map->mapType() == MAPTYPE_CLIENT) {
+					v3s16 p_blocks = getNodeBlockPos(bottompos);
+					MapBlock *b = m_map->getBlockNoCreate(p_blocks);
+					//b->updateMesh(getDayNightRatio());
+					b->setMeshExpired(true);
+				}
+			}else if (n.getContent() == CONTENT_GRASS_AUTUMN) {
+				n.setContent(CONTENT_GRASS_FOOTSTEPS_AUTUMN);
 				m_map->setNode(bottompos, n);
 				// Update mesh on client
 				if (m_map->mapType() == MAPTYPE_CLIENT) {

@@ -434,6 +434,53 @@ void content_mapnode_init(bool repeat)
 	f->hardness = 1.0;
 	f->farm_ploughable = true;
 
+	i = CONTENT_GRASS_AUTUMN;
+	f = &content_features(i);
+	f->description = wgettext("Grass");
+	f->setAllTextures("mud.png^grass_side_autumn.png");
+	f->setTexture(0, "grass_autumn.png");
+	f->setTexture(1, "mud.png");
+	f->setInventoryTextureCube("grass_autumn.png","mud.png^grass_side_autumn.png","mud.png^grass_side_autumn.png");
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MUD)+" 1";
+	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_DEADGRASS)+" 1";
+	f->extra_dug_item_rarity = 10;
+	f->sound_step = "grass-step";
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->farm_ploughable = true;
+	lists::add("decrafting",i);
+
+	i = CONTENT_GROWING_GRASS_AUTUMN;
+	f = &content_features(i);
+	f->description = wgettext("Growing Grass");
+	f->setAllTextures("mud.png");
+	f->setTexture(0, "grass_growing_autumn.png");
+	f->setInventoryTextureCube("grass_autumn.png","mud.png","mud.png");
+	f->draw_type = CDT_CUBELIKE;
+	f->param2_type = CPT_PLANTGROWTH;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MUD)+" 1";
+	f->special_alternate_node = CONTENT_GRASS_AUTUMN;
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->farm_ploughable = true;
+
+	i = CONTENT_GRASS_FOOTSTEPS_AUTUMN;
+	f = &content_features(i);
+	f->description = wgettext("Grass");
+	f->setAllTextures("mud.png^grass_side_autumn.png");
+	f->setTexture(0, "grass_footsteps_autumn.png");
+	f->setTexture(1, "mud.png");
+	f->draw_type = CDT_CUBELIKE;
+	f->is_ground_content = true;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_MUD)+" 1";
+	f->sound_step = "grass-step";
+	f->type = CMT_DIRT;
+	f->hardness = 1.0;
+	f->farm_ploughable = true;
+
 	i = CONTENT_MUDSNOW;
 	f = &content_features(i);
 	f->description = wgettext("Muddy Snow");
