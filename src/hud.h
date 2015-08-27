@@ -83,7 +83,8 @@ void hud_draw(
 	bool nodeinfo,
 	bool selected,
 	v3s16 pos,
-	MapNode node
+	MapNode node,
+	u32 time
 );
 
 #endif

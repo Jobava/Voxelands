@@ -58,6 +58,11 @@ class ServerActiveObject;
 #define ENV_EVENT_NODE_PARTICLES	4
 #define ENV_EVENT_NODEMOD		5
 
+#define ENV_SEASON_SUMMER 0
+#define ENV_SEASON_AUTUMN 1
+#define ENV_SEASON_WINTER 2
+#define ENV_SEASON_SPRING 3
+
 struct EnvEvent {
 	u8 type;
 	v3f pos;

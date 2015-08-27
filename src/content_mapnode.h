@@ -96,7 +96,15 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_LIMESTONE_WALL 0x02C
 // FREE 0x02D-0x07C
 // 0x7D-0x7F reserved values, air, ignore, etc
-// FREE 0x80-0x7FE
+// FREE 0x80-0x7F6
+#define CONTENT_LEAVES_SNOWY 0x7F7
+#define CONTENT_TRIMMED_LEAVES_AUTUMN 0x7F8
+#define CONTENT_TRIMMED_LEAVES_WINTER 0x7F9
+#define CONTENT_LEAVES_AUTUMN 0x7FA
+#define CONTENT_LEAVES_WINTER 0x7FB
+#define CONTENT_GRASS_AUTUMN 0x7FC
+#define CONTENT_GROWING_GRASS_AUTUMN 0x7FD
+#define CONTENT_GRASS_FOOTSTEPS_AUTUMN 0x7FE
 #define CONTENT_GROWING_GRASS 0x7FF
 #define CONTENT_GRASS 0x800
 #define CONTENT_TREE 0x801
@@ -192,7 +200,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_COUCH_OUTER_BLACK 0x864
 #define CONTENT_COUCH_CHAIR_BLACK 0x865
 #define CONTENT_CAULDRON 0x866
-// FREE 867-87F
+// FREE 867-86F
 #define CONTENT_FLAG 0x870
 #define CONTENT_FLAG_BLUE 0x871
 #define CONTENT_FLAG_GREEN 0x872
@@ -201,7 +209,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_FLAG_RED 0x875
 #define CONTENT_FLAG_YELLOW 0x876
 #define CONTENT_FLAG_BLACK 0x877
-
+// FREE 878-87F
 // plants
 #define CONTENT_WILDGRASS_SHORT 0x880
 #define CONTENT_WILDGRASS_LONG 0x881

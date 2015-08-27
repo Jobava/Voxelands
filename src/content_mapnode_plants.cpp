@@ -263,6 +263,117 @@ void content_mapnode_plants(bool repeat)
 	lists::add("decrafting",i);
 	lists::add("cooking",i);
 
+	i = CONTENT_LEAVES_AUTUMN;
+	f = &content_features(i);
+	f->description = wgettext("Leaves");
+	f->light_propagates = true;
+	f->air_equivalent = true;
+	f->walkable = false;
+	f->climbable = true;
+	f->param_type = CPT_LIGHT;
+	//f->is_ground_content = true;
+	if (new_style_leaves) {
+		f->draw_type = CDT_LEAFLIKE;
+		f->solidness = 0; // drawn separately, makes no faces
+		f->setAllTextures("leaves_autumn.png");
+#ifndef SERVER
+		f->setAllTextureTypes(MATERIAL_ALPHA_SIMPLE);
+		f->setAllTextureFlags(0);
+#endif
+	}else{
+		f->draw_type = CDT_CUBELIKE;
+		f->setAllTextures("[noalpha:leaves_autumn.png");
+	}
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/16;
+	f->cook_result = std::string("CraftItem lump_of_resin 1");
+	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAPLING)+" 1";
+	f->extra_dug_item_rarity = 20;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->ondig_special_drop = CONTENT_TRIMMED_LEAVES_AUTUMN;
+	f->ondig_special_drop_count = 1;
+	f->ondig_special_tool = TT_SHEAR;
+	f->type = CMT_PLANT;
+	f->hardness = 0.15;
+	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
+	lists::add("decrafting",i);
+	lists::add("cooking",i);
+
+	i = CONTENT_LEAVES_WINTER;
+	f = &content_features(i);
+	f->description = wgettext("Leaves");
+	f->light_propagates = true;
+	f->air_equivalent = true;
+	f->walkable = false;
+	f->climbable = true;
+	f->param_type = CPT_LIGHT;
+	//f->is_ground_content = true;
+	if (new_style_leaves) {
+		f->draw_type = CDT_LEAFLIKE;
+		f->solidness = 0; // drawn separately, makes no faces
+		f->setAllTextures("leaves_winter.png");
+#ifndef SERVER
+		f->setAllTextureTypes(MATERIAL_ALPHA_SIMPLE);
+		f->setAllTextureFlags(0);
+#endif
+	}else{
+		f->draw_type = CDT_CUBELIKE;
+		f->setAllTextures("[noalpha:leaves_winter.png");
+	}
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/16;
+	f->cook_result = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_ASH)+" 1";
+	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAPLING)+" 1";
+	f->extra_dug_item_rarity = 20;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->ondig_special_drop = CONTENT_TRIMMED_LEAVES_WINTER;
+	f->ondig_special_drop_count = 1;
+	f->ondig_special_tool = TT_SHEAR;
+	f->type = CMT_PLANT;
+	f->hardness = 0.15;
+	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
+	lists::add("decrafting",i);
+	lists::add("cooking",i);
+
+	i = CONTENT_LEAVES_SNOWY;
+	f = &content_features(i);
+	f->description = wgettext("Leaves");
+	f->light_propagates = true;
+	f->air_equivalent = true;
+	f->walkable = false;
+	f->climbable = true;
+	f->param_type = CPT_LIGHT;
+	//f->is_ground_content = true;
+	if (new_style_leaves) {
+		f->draw_type = CDT_LEAFLIKE;
+		f->solidness = 0; // drawn separately, makes no faces
+		f->setAllTextures("leaves_snowy.png");
+#ifndef SERVER
+		f->setAllTextureTypes(MATERIAL_ALPHA_SIMPLE);
+		f->setAllTextureFlags(0);
+#endif
+	}else{
+		f->draw_type = CDT_CUBELIKE;
+		f->setAllTextures("[noalpha:leaves_snowy.png");
+	}
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/16;
+	f->cook_result = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_ASH)+" 1";
+	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_SAPLING)+" 1";
+	f->extra_dug_item_rarity = 20;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_LEAVES_WINTER)+" 1";
+	f->ondig_special_drop = CONTENT_TRIMMED_LEAVES_WINTER;
+	f->ondig_special_drop_count = 1;
+	f->ondig_special_tool = TT_SHEAR;
+	f->type = CMT_PLANT;
+	f->hardness = 0.15;
+	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
+	lists::add("decrafting",i);
+	lists::add("cooking",i);
+
 	i = CONTENT_APPLE_LEAVES;
 	f = &content_features(i);
 	f->description = wgettext("Apple Tree Leaves");
@@ -398,6 +509,70 @@ void content_mapnode_plants(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/16;
 	f->cook_result = std::string("CraftItem lump_of_resin 1");
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.15;
+	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
+	lists::add("creative",i);
+	lists::add("cooking",i);
+
+	i = CONTENT_TRIMMED_LEAVES_AUTUMN;
+	f = &content_features(i);
+	f->description = wgettext("Trimmed Leaves");
+	f->light_propagates = true;
+	f->air_equivalent = true;
+	f->walkable = false;
+	f->climbable = true;
+	f->param_type = CPT_LIGHT;
+	if (new_style_leaves) {
+		f->draw_type = CDT_GLASSLIKE;
+		f->solidness = 0; // drawn separately, makes no faces
+		f->visual_solidness = 1;
+		f->setAllTextures("leaves_autumn.png");
+#ifndef SERVER
+		f->setAllTextureTypes(MATERIAL_ALPHA_SIMPLE);
+#endif
+		f->setInventoryTextureCube("leaves_autumn.png", "leaves_autumn.png", "leaves_autumn.png");
+	}else{
+		f->draw_type = CDT_CUBELIKE;
+		f->setAllTextures("[noalpha:leaves_autumn.png");
+	}
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/16;
+	f->cook_result = std::string("CraftItem lump_of_resin 1");
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->type = CMT_PLANT;
+	f->hardness = 0.15;
+	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
+	lists::add("creative",i);
+	lists::add("cooking",i);
+
+	i = CONTENT_TRIMMED_LEAVES_WINTER;
+	f = &content_features(i);
+	f->description = wgettext("Trimmed Leaves");
+	f->light_propagates = true;
+	f->air_equivalent = true;
+	f->walkable = false;
+	f->climbable = true;
+	f->param_type = CPT_LIGHT;
+	if (new_style_leaves) {
+		f->draw_type = CDT_GLASSLIKE;
+		f->solidness = 0; // drawn separately, makes no faces
+		f->visual_solidness = 1;
+		f->setAllTextures("leaves_winter.png");
+#ifndef SERVER
+		f->setAllTextureTypes(MATERIAL_ALPHA_SIMPLE);
+#endif
+		f->setInventoryTextureCube("leaves_winter.png", "leaves_winter.png", "leaves_winter.png");
+	}else{
+		f->draw_type = CDT_CUBELIKE;
+		f->setAllTextures("[noalpha:leaves_winter.png");
+	}
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/16;
+	f->cook_result = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_ASH)+" 1";
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->type = CMT_PLANT;
 	f->hardness = 0.15;

@@ -28,6 +28,7 @@
 #include "log.h"
 #include "game.h"
 #include "intl.h"
+#include "environment.h"
 
 void draw_image(
 	video::IVideoDriver *driver,
@@ -380,7 +381,8 @@ void hud_draw(
 	bool nodeinfo,
 	bool selected,
 	v3s16 pos,
-	MapNode node
+	MapNode node,
+	u32 time
 )
 {
 	InventoryList *mainlist = inventory->getList("main");
@@ -767,6 +769,51 @@ void hud_draw(
 			sdim
 		);
 		font->draw(txt.c_str(), rect2, video::SColor(255,255,255,255), false, false, NULL);
+	}
+
+	if (time != 0) {
+		u32 day = time%240;
+		u32 year = time/240;
+		u32 season = day/60;
+
+		std::string txt("");
+
+		switch (season) {
+		case ENV_SEASON_SUMMER:
+			txt += gettext("Summer");
+			break;
+		case ENV_SEASON_AUTUMN:
+			txt += gettext("Autumn");
+			break;
+		case ENV_SEASON_WINTER:
+			txt += gettext("Winter");
+			break;
+		case ENV_SEASON_SPRING:
+			txt += gettext("Spring");
+			break;
+		default:;
+			txt += "???";
+		}
+
+		txt += ", ";
+
+		{
+			char buff[256];
+			snprintf(buff,256,gettext("Day %u of Year %u"),day+1,year+1);
+
+			txt += buff;
+		}
+
+		std::wstring wtxt = narrow_to_wide(txt);
+
+		v2u32 dim = font->getDimension(wtxt.c_str());
+		v2s32 sdim(dim.X,dim.Y);
+		v2s32 p(screensize.X-(sdim.X+10),5);
+		core::rect<s32> rect2(
+			p,
+			sdim
+		);
+		font->draw(wtxt.c_str(), rect2, video::SColor(255,255,255,255), false, false, NULL);
 	}
 
 	{

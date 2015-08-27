@@ -833,7 +833,8 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		v2s16 p2d(p.X, p.Z);
 		sector = m_env.getMap().emergeSector(p2d);
 
-		assert(sector->getPos() == p2d);
+		if (sector->getPos() != p2d)
+			return;
 
 		//TimeTaker timer("MapBlock deSerialize");
 		// 0ms
