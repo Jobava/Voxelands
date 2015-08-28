@@ -118,22 +118,19 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 	/* Convert m_init_draw_spec to m_inventorylists */
 
 	m_inventorylists.clear();
+	m_rings.clear();
 	m_images.clear();
 	m_fields.clear();
 
 	Strfnd f(m_formspec_string);
-	while(f.atend() == false)
-	{
+	while (f.atend() == false) {
 		std::string type = trim(f.next("["));
-		if(type == "invsize" || type == "size")
-		{
+		if (type == "invsize" || type == "size") {
 			v2f invsize;
 			invsize.X = mystof(f.next(","));
-			if(type == "size")
-			{
+			if (type == "size") {
 				invsize.Y = mystof(f.next("]"));
-			}
-			else{
+			}else{
 				invsize.Y = mystof(f.next(";"));
 				errorstream<<"WARNING: invsize is deprecated, use size"<<std::endl;
 				f.next("]");
@@ -157,15 +154,14 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 			recalculateAbsolutePosition(false);
 			basepos = getBasePos();
 			bp_set = 2;
-		}
-		else if(type == "list")
-		{
+		}else if (type == "list") {
 			std::string name = f.next(";");
 			InventoryLocation loc;
-			if(name == "context" || name == "current_name")
+			if (name == "context" || name == "current_name") {
 				loc = m_current_inventory_location;
-			else
+			}else{
 				loc.deSerialize(name);
+			}
 			std::string listname = f.next(";");
 			v2s32 pos = basepos;
 			pos.X += mystof(f.next(",")) * (float)spacing.X;
@@ -197,12 +193,10 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 					<<", pos=("<<pos.X<<","<<pos.Y<<")"
 					<<", geom=("<<geom.X<<","<<geom.Y<<")"
 					<<std::endl;
-			if(bp_set != 2)
+			if (bp_set != 2)
 				errorstream<<"WARNING: invalid use of list without a size[] element"<<std::endl;
 			m_inventorylists.push_back(ListDrawSpec(loc, listname, bg, pos, geom, i_start, i_end));
-		}
-		else if(type == "image")
-		{
+		}else if (type == "image") {
 			v2s32 pos = basepos;
 			pos.X += mystof(f.next(",")) * (float)spacing.X;
 			pos.Y += mystof(f.next(";")) * (float)spacing.Y;
@@ -214,12 +208,23 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 					<<", pos=("<<pos.X<<","<<pos.Y<<")"
 					<<", geom=("<<geom.X<<","<<geom.Y<<")"
 					<<std::endl;
-			if(bp_set != 2)
+			if (bp_set != 2)
 				errorstream<<"WARNING: invalid use of image without a size[] element"<<std::endl;
 			m_images.push_back(ImageDrawSpec(name, pos, geom));
-		}
-		else if(type == "field")
-		{
+		}else if (type == "ring") {
+			v2s32 pos = basepos;
+			pos.X += mystof(f.next(",")) * (float)spacing.X;
+			pos.Y += mystof(f.next(";")) * (float)spacing.Y;
+			int rad = mystof(f.next(";")) * (float)imgsize.Y;
+			pos.X += rad/2;
+			pos.Y += rad/2;
+			std::string c = f.next(";");
+			int val = mystoi(f.next("]"));
+			video::SColor col;
+			if (!parseColorString(c,col,true))
+				col = video::SColor(255,255,0,0);
+			m_rings.push_back(RingDrawSpec(col,val,pos,rad));
+		}else if (type == "field") {
 			std::string fname = f.next(";");
 			std::string flabel = f.next(";");
 			bool multi = false;
@@ -337,9 +342,7 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 			}
 
 			m_fields.push_back(spec);
-		}
-		else if(type == "label")
-		{
+		}else if (type == "label") {
 			v2s32 pos;
 			pos.X = mystof(f.next(",")) * (float)spacing.X;
 			pos.Y = mystof(f.next(";")) * (float)spacing.Y;
@@ -347,7 +350,7 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 			rect = core::rect<s32>(pos.X, pos.Y+((imgsize.Y/2)-15), pos.X+300, pos.Y+((imgsize.Y/2)+15));
 
 			std::string flabel = f.next("]");
-			if(bp_set != 2)
+			if (bp_set != 2)
 				errorstream<<"WARNING: invalid use of label without a size[] element"<<std::endl;
 
 			FieldSpec spec = FieldSpec(
@@ -358,9 +361,7 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 			);
 			Environment->addStaticText(spec.flabel.c_str(), rect, false, true, this, spec.fid);
 			m_fields.push_back(spec);
-		}
-		else if(type == "button" || type == "button_exit")
-		{
+		}else if (type == "button" || type == "button_exit") {
 			v2s32 pos;
 			pos.X = mystof(f.next(",")) * (float)spacing.X;
 			pos.Y = mystof(f.next(";")) * (float)spacing.Y;
@@ -372,7 +373,7 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 
 			std::string fname = f.next(";");
 			std::string flabel = f.next("]");
-			if(bp_set != 2)
+			if (bp_set != 2)
 				errorstream<<"WARNING: invalid use of button without a size[] element"<<std::endl;
 
 			FieldSpec spec = FieldSpec(
@@ -386,9 +387,7 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 				spec.is_exit = true;
 			Environment->addButton(rect, this, spec.fid, spec.flabel.c_str());
 			m_fields.push_back(spec);
-		}
-		else if(type == "image_button" || type == "image_button_exit")
-		{
+		}else if (type == "image_button" || type == "image_button_exit") {
 			v2s32 pos;
 			pos.X = mystof(f.next(",")) * (float)spacing.X;
 			pos.Y = mystof(f.next(";")) * (float)spacing.Y;
@@ -401,7 +400,7 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 			std::string fimage = f.next(";");
 			std::string fname = f.next(";");
 			std::string flabel = f.next("]");
-			if(bp_set != 2)
+			if (bp_set != 2)
 				errorstream<<"WARNING: invalid use of image_button without a size[] element"<<std::endl;
 
 			FieldSpec spec = FieldSpec(
@@ -421,9 +420,7 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 			e->setScaleImage(true);
 
 			m_fields.push_back(spec);
-		}
-		else
-		{
+		}else{
 			// Ignore others
 			std::string ts = f.next("]");
 			infostream<<"Unknown DrawSpec: type="<<type<<", data=\""<<ts<<"\""
@@ -432,8 +429,7 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 	}
 
 	// If there's inventory, put the usage string at the bottom
-	if (m_inventorylists.size())
-	{
+	if (m_inventorylists.size()) {
 		core::rect<s32> rect(0, 0, size.X-padding.X*2, helptext_h);
 		rect = rect + v2s32(size.X/2 - rect.getWidth()/2,
 				size.Y-rect.getHeight()-5);
@@ -441,8 +437,7 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 		Environment->addStaticText(text, rect, false, true, this, 256);
 	}
 	// If there's fields, add a Proceed button
-	if (m_fields.size() && bp_set != 2)
-	{
+	if (m_fields.size() && bp_set != 2) {
 		// if the size wasn't set by an invsize[] or size[] adjust it now to fit all the fields
 		rect = core::rect<s32>(
 			screensize.X/2 - 160,
@@ -609,25 +604,41 @@ void GUIFormSpecMenu::drawMenu()
 		Phase 1: Item images; prepare tooltip
 	*/
 
-	for(u32 i=0; i<m_inventorylists.size(); i++)
-	{
+	for (u32 i=0; i<m_rings.size(); i++) {
+		draw_progress_ring(
+			driver,
+			v2s32(m_screensize_old.X,m_screensize_old.Y),
+			m_rings[i].pos,
+			m_rings[i].rad,
+			m_rings[i].value,
+			m_rings[i].colour
+		);
+	}
+
+	for (u32 i=0; i<m_inventorylists.size(); i++) {
 		drawList(m_inventorylists[i], 1);
 	}
 
-	for(u32 i=0; i<m_images.size(); i++)
-	{
+	for (u32 i=0; i<m_images.size(); i++) {
 		const ImageDrawSpec &spec = m_images[i];
-		video::ITexture *texture = Environment->getVideoDriver()->getTexture(getTexturePath(spec.name).c_str());
+		video::ITexture *texture = driver->getTexture(getTexturePath(spec.name).c_str());
 		// Image size on screen
 		core::rect<s32> imgrect(0, 0, spec.geom.X, spec.geom.Y);
 		// Image rectangle on screen
 		core::rect<s32> rect = imgrect + spec.pos;
 		const video::SColor color(255,255,255,255);
 		const video::SColor colors[] = {color,color,color,color};
-		driver->draw2DImage(texture, rect,
-			core::rect<s32>(core::position2d<s32>(0,0),
-					core::dimension2di(texture->getOriginalSize())),
-			NULL/*&AbsoluteClippingRect*/, colors, true);
+		driver->draw2DImage(
+			texture,
+			rect,
+			core::rect<s32>(
+				core::position2d<s32>(0,0),
+				core::dimension2di(texture->getOriginalSize())
+			),
+			NULL,
+			colors,
+			true
+		);
 	}
 
 	/*

@@ -928,7 +928,7 @@ static bool parseNamedColorString(const std::string &value, video::SColor &color
 	if (alpha_pos != std::string::npos) {
 		color_name = value.substr(0, alpha_pos);
 		alpha_string = value.substr(alpha_pos + 1);
-	} else {
+	}else{
 		color_name = value;
 	}
 
@@ -953,11 +953,13 @@ static bool parseNamedColorString(const std::string &value, video::SColor &color
 			return false;
 
 		unsigned char d1, d2;
-		if (!hex_digit_decode(alpha_string.at(0), d1)
-				|| !hex_digit_decode(alpha_string.at(1), d2))
+		if (
+			!hex_digit_decode(alpha_string.at(0), d1)
+			|| !hex_digit_decode(alpha_string.at(1), d2)
+		)
 			return false;
 		color_temp |= ((d1 & 0xf) << 4 | (d2 & 0xf)) << 24;
-	} else {
+	}else{
 		color_temp |= 0xff << 24;  // Fully opaque
 	}
 
@@ -970,10 +972,11 @@ bool parseColorString(const std::string &value, video::SColor &color, bool quiet
 {
 	bool success;
 
-	if (value[0] == '#')
+	if (value[0] == '#') {
 		success = parseHexColorString(value, color);
-	else
+	}else{
 		success = parseNamedColorString(value, color);
+	}
 
 	if (!success && !quiet)
 		errorstream << "Invalid color: \"" << value << "\"" << std::endl;

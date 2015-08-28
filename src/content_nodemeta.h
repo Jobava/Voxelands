@@ -254,6 +254,7 @@ public:
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool nodeRemovalDisabled();
 	virtual std::string getDrawSpecString();
+	virtual std::vector<NodeBox> getNodeBoxes(MapNode &n);
 
 	virtual bool import(NodeMetadata *meta);
 
@@ -282,6 +283,7 @@ public:
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool nodeRemovalDisabled();
 	virtual std::string getDrawSpecString();
+	virtual std::vector<NodeBox> getNodeBoxes(MapNode &n);
 
 	virtual bool import(NodeMetadata *meta);
 
@@ -339,9 +341,15 @@ public:
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool nodeRemovalDisabled();
 	virtual std::string getDrawSpecString();
+	virtual std::vector<NodeBox> getNodeBoxes(MapNode &n);
+
+	bool m_should_fire;
+	float m_fuel_totaltime;
+	float m_fuel_time;
 
 private:
 	Inventory *m_inventory;
+	float m_step_accumulator;
 };
 
 

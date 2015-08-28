@@ -1971,6 +1971,10 @@ void meshgen_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, boo
 
 	TileSpec tiles[6];
 	NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+data->m_blockpos_nodes);
+	if (meta) {
+		NodeMetadata *cmeta = meta->clone();
+		meta = cmeta;
+	}
 	for (int i = 0; i < 6; i++) {
 		// Handles facedir rotation for textures
 		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods,meta);
@@ -1978,8 +1982,12 @@ void meshgen_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, boo
 
 	std::vector<NodeBox> boxes = content_features(n).getNodeBoxes(n);
 	meshgen_build_nodebox(data,p,n,selected,boxes,tiles);
-	if (!meta || !has_meta)
+	if (!meta)
 		return;
+	if (!has_meta) {
+		delete meta;
+		return;
+	}
 
 	boxes = meta->getNodeBoxes(n);
 	if (boxes.size() > 0) {
@@ -1989,6 +1997,8 @@ void meshgen_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, boo
 		}
 		meshgen_build_nodebox(data,p,n,selected,boxes,tiles);
 	}
+
+	delete meta;
 }
 
 void meshgen_glasslike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)

@@ -2866,7 +2866,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						SendInventory(player->peer_id);
 					}
 				}
-			}else if (selected_content == CONTENT_INCINERATOR_ACTIVE) {
+			}else if (selected_content == CONTENT_INCINERATOR) {
 				NodeMetadata *meta = m_env.getMap().getNodeMetadata(p_under);
 				if (!meta)
 					return;
@@ -2874,27 +2874,15 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				InventoryList *plist = player->inventory.getList("main");
 				if (plist == NULL || ilist == NULL)
 					return;
-				InventoryItem *fitem = ilist->getItem(0);
-				if (!fitem || !fitem->getCount() || !fitem->isFuel())
-					return;
+				if (((IncineratorNodeMetadata*)meta)->m_fuel_totaltime <= ((IncineratorNodeMetadata*)meta)->m_fuel_time) {
+					InventoryItem *fitem = ilist->getItem(0);
+					if (!fitem || !fitem->getCount() || !fitem->isFuel())
+						return;
+					((IncineratorNodeMetadata*)meta)->m_should_fire = true;
+				}
 				plist->deleteItem(item_i);
 				UpdateCrafting(peer_id);
 				SendInventory(peer_id);
-				if (fitem->getCount() == 1) {
-					content_t c = fitem->getContent();
-					ilist->deleteItem(0);
-					if (c == CONTENT_TOOLITEM_STEELBUCKET_LAVA)
-						ilist->addItem(0,new ToolItem(CONTENT_TOOLITEM_STEELBUCKET,0,0));
-				}else{
-					fitem->remove(1);
-				}
-
-				v3s16 blockpos = getNodeBlockPos(p_under);
-				meta->inventoryModified();
-				MapBlock *block = m_env.getMap().getBlockNoCreateNoEx(blockpos);
-				if(block)
-					block->raiseModified(MOD_STATE_WRITE_NEEDED);
-				setBlockNotSent(blockpos);
 			}else if (
 				selected_node_features.draw_type != CDT_TORCHLIKE
 				&& wielded_tool_features.has_rotate_effect
