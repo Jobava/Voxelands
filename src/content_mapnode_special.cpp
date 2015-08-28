@@ -1446,13 +1446,14 @@ void content_mapnode_special(bool repeat)
 	f->draw_type = CDT_NODEBOX_META;
 	f->setAllTextures("furnace_side.png");
 	f->setTexture(0, "furnace_top.png");
-	f->setTexture(1, "furnace_top.png");
+	f->setTexture(1, "furnace_top.png^[transformFY");
 	f->setTexture(2, "furnace_side.png^[transformFX");
 	f->setTexture(4, "furnace_back.png");
 	f->setTexture(5, "furnace_front.png"); // Z-
 	f->setAllMetaTextures("fire.png");
 	content_nodebox_furnace(f);
 	f->setInventoryTextureNodeBox(i,"furnace_top.png^[transformR90", "furnace_front.png", "furnace_side.png^[transformFX");
+	f->rotate_tile_with_nodebox = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	if(f->initial_metadata == NULL)
@@ -1490,13 +1491,14 @@ void content_mapnode_special(bool repeat)
 	f->draw_type = CDT_NODEBOX_META;
 	f->setAllTextures("furnace_side.png");
 	f->setTexture(0, "furnace_top.png");
-	f->setTexture(1, "furnace_top.png");
+	f->setTexture(1, "furnace_top.png^[transformFY");
 	f->setTexture(2, "furnace_side.png^[transformFX");
 	f->setTexture(4, "furnace_back.png");
 	f->setTexture(5, "furnace_lock.png"); // Z-
 	f->setAllMetaTextures("fire.png");
 	content_nodebox_lockedfurnace(f);
 	f->setInventoryTextureNodeBox(i,"furnace_top.png^[transformR90", "furnace_lock.png", "furnace_side.png^[transformFX");
+	f->rotate_tile_with_nodebox = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	if(f->initial_metadata == NULL)
@@ -1535,13 +1537,14 @@ void content_mapnode_special(bool repeat)
 	f->draw_type = CDT_NODEBOX_META;
 	f->setAllTextures("incinerator_side.png");
 	f->setTexture(0, "incinerator_top.png");
-	f->setTexture(1, "incinerator_top.png");
+	f->setTexture(1, "incinerator_top.png^[transformFY");
 	f->setTexture(2, "incinerator_side.png^[transformFX");
 	f->setTexture(4, "incinerator_back.png");
 	f->setTexture(5, "incinerator_front.png"); // Z-
 	f->setAllMetaTextures("fire.png");
 	content_nodebox_incinerator(f);
 	f->setInventoryTextureNodeBox(i,"incinerator_top.png^[transformR90", "incinerator_front.png", "incinerator_side.png^[transformFX");
+	f->rotate_tile_with_nodebox = true;
 	f->solidness = 0; // drawn separately, makes no faces
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	if(f->initial_metadata == NULL)
