@@ -710,18 +710,24 @@ void FurnaceNodeMetadata::inventoryModified()
 }
 bool FurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 {
-	if(dtime > 60.0)
+	{
+		MapNode n = env->getMap().getNodeNoEx(pos).getContent();
+		if (n.getContent() == CONTENT_FURNACE_ACTIVE) {
+			n.param1 = n.param2;
+			n.setContent(CONTENT_FURNACE);
+			env->setPostStepNodeSwap(pos,n);
+		}
+	}
+
+	if (dtime > 60.0)
 		infostream<<"Furnace stepping a long time ("<<dtime<<")"<<std::endl;
 	// Update at a fixed frequency
 	const float interval = 2.0;
 	m_step_accumulator += dtime;
 	bool changed = false;
-	MapNode n = env->getMap().getNodeNoEx(pos);
 	while (m_step_accumulator > interval) {
 		m_step_accumulator -= interval;
 		dtime = interval;
-
-		//infostream<<"Furnace step dtime="<<dtime<<std::endl;
 
 		InventoryList *dst_list = m_inventory->getList("dst");
 		assert(dst_list);
@@ -749,12 +755,6 @@ bool FurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 			If item finishes cooking, move it to result.
 		*/
 		if (m_fuel_time < m_fuel_totaltime) {
-			if (n.getContent() == CONTENT_FURNACE) {
-				n.param2 = n.param1;
-				n.setContent(CONTENT_FURNACE_ACTIVE);
-				env->setPostStepNodeSwap(pos,n);
-			}
-			//infostream<<"Furnace is active"<<std::endl;
 			m_fuel_time += dtime;
 			m_src_time += dtime;
 			if (m_src_time >= m_src_totaltime && m_src_totaltime > 0.001 && src_item) {
@@ -767,17 +767,8 @@ bool FurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 			changed = true;
 
 			// If the fuel was not used up this step, just keep burning it
-			if (m_fuel_time < m_fuel_totaltime) {
+			if (m_fuel_time < m_fuel_totaltime)
 				continue;
-			}else if (n.getContent() == CONTENT_FURNACE_ACTIVE) {
-				n.param1 = n.param2;
-				n.setContent(CONTENT_FURNACE);
-				env->setPostStepNodeSwap(pos,n);
-			}
-		}else if (n.getContent() == CONTENT_FURNACE_ACTIVE) {
-			n.param1 = n.param2;
-			n.setContent(CONTENT_FURNACE);
-			env->setPostStepNodeSwap(pos,n);
 		}
 
 		/*
@@ -821,24 +812,37 @@ bool FurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 			changed = true;
 		}else{
 			m_step_accumulator = 0;
-			MapNode n = env->getMap().getNodeNoEx(pos).getContent();
-			if (n.getContent() == CONTENT_FURNACE_ACTIVE) {
-				n.param1 = n.param2;
-				n.setContent(CONTENT_FURNACE);
-				env->setPostStepNodeSwap(pos,n);
-			}
 		}
 	}
 	return changed;
 }
 std::string FurnaceNodeMetadata::getDrawSpecString()
 {
-	return
-		"size[8,9]"
-		"list[current_name;fuel;2,3;1,1;]"
-		"list[current_name;src;2,1;1,1;]"
-		"list[current_name;dst;5,1;2,2;]"
-		"list[current_player;main;0,5;8,4;]";
+	std::string spec("size[8,9]");
+	spec += "list[current_name;fuel;2,3;1,1;]";
+	spec += "ring[2,3;1;#FF0000;";
+	float v = 0;
+	if (m_fuel_totaltime > 0.0)
+		v = 100.0-((100.0/m_fuel_totaltime)*m_fuel_time);
+	spec += itos((int)v);
+	spec += "]";
+	spec += "list[current_name;src;2,1;1,1;]";
+	spec += "list[current_name;dst;5,1;2,2;]";
+	spec += "list[current_player;main;0,5;8,4;]";
+	return spec;
+}
+std::vector<NodeBox> FurnaceNodeMetadata::getNodeBoxes(MapNode &n)
+{
+	std::vector<NodeBox> boxes;
+	boxes.clear();
+
+	if (m_fuel_time < m_fuel_totaltime) {
+		boxes.push_back(NodeBox(
+			-0.3125*BS,-0.25*BS,-0.4*BS,0.3125*BS,0.125*BS,-0.3*BS
+		));
+	}
+
+	return transformNodeBox(n,boxes);
 }
 bool FurnaceNodeMetadata::import(NodeMetadata *meta)
 {
@@ -971,13 +975,20 @@ void LockingFurnaceNodeMetadata::inventoryModified()
 }
 bool LockingFurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 {
+	{
+		MapNode n = env->getMap().getNodeNoEx(pos);
+		if (n.getContent() == CONTENT_LOCKABLE_FURNACE_ACTIVE) {
+			n.param1 = n.param2;
+			n.setContent(CONTENT_LOCKABLE_FURNACE);
+			env->setPostStepNodeSwap(pos,n);
+		}
+	}
 	if (dtime > 60.0)
 		infostream<<"LockingFurnace stepping a long time ("<<dtime<<")"<<std::endl;
 	// Update at a fixed frequency
 	const float interval = 2.0;
 	m_step_accumulator += dtime;
 	bool changed = false;
-	MapNode n = env->getMap().getNodeNoEx(pos);
 	while(m_step_accumulator > interval) {
 		m_step_accumulator -= interval;
 		dtime = interval;
@@ -1019,13 +1030,6 @@ bool LockingFurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment 
 			If item finishes cooking, move it to result.
 		*/
 		if (m_fuel_time < m_fuel_totaltime) {
-			if (n.getContent() == CONTENT_LOCKABLE_FURNACE) {
-				n.param2 = n.param1;
-				n.setContent(CONTENT_LOCKABLE_FURNACE_ACTIVE);
-				env->setPostStepNodeSwap(pos,n);
-				changed = true;
-			}
-			//infostream<<"Furnace is active"<<std::endl;
 			m_fuel_time += dtime;
 			m_src_time += dtime;
 			if (m_src_time >= m_src_totaltime && m_src_totaltime > 0.001 && src_item) {
@@ -1038,19 +1042,8 @@ bool LockingFurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment 
 			changed = true;
 
 			// If the fuel was not used up this step, just keep burning it
-			if (m_fuel_time < m_fuel_totaltime) {
+			if (m_fuel_time < m_fuel_totaltime)
 				continue;
-			}else if (n.getContent() == CONTENT_LOCKABLE_FURNACE_ACTIVE) {
-				n.param1 = n.param2;
-				n.setContent(CONTENT_LOCKABLE_FURNACE);
-				env->setPostStepNodeSwap(pos,n);
-				changed = true;
-			}
-		}else if (n.getContent() == CONTENT_LOCKABLE_FURNACE_ACTIVE) {
-			n.param1 = n.param2;
-			n.setContent(CONTENT_LOCKABLE_FURNACE);
-			env->setPostStepNodeSwap(pos,n);
-			changed = true;
 		}
 
 		/*
@@ -1062,9 +1055,12 @@ bool LockingFurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment 
 			If there is no source item, or the source item is not cookable,
 			or the furnace is still cooking, or the furnace became overloaded, stop loop.
 		*/
-		if(src_item == NULL || !room_available || m_fuel_time < m_fuel_totaltime ||
-			dst_list->roomForCookedItem(src_item) == false)
-		{
+		if (
+			src_item == NULL
+			|| !room_available ||
+			m_fuel_time < m_fuel_totaltime
+			|| dst_list->roomForCookedItem(src_item) == false
+		) {
 			m_step_accumulator = 0;
 			break;
 		}
@@ -1091,24 +1087,37 @@ bool LockingFurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment 
 			changed = true;
 		}else{
 			m_step_accumulator = 0;
-			if (n.getContent() == CONTENT_LOCKABLE_FURNACE_ACTIVE) {
-				n.param1 = n.param2;
-				n.setContent(CONTENT_LOCKABLE_FURNACE);
-				env->setPostStepNodeSwap(pos,n);
-				changed = true;
-			}
 		}
 	}
 	return changed;
 }
 std::string LockingFurnaceNodeMetadata::getDrawSpecString()
 {
-	return
-		"size[8,9]"
-		"list[current_name;fuel;2,3;1,1;]"
-		"list[current_name;src;2,1;1,1;]"
-		"list[current_name;dst;5,1;2,2;]"
-		"list[current_player;main;0,5;8,4;]";
+	std::string spec("size[8,9]");
+	spec += "list[current_name;fuel;2,3;1,1;]";
+	spec += "ring[2,3;1;#FF0000;";
+	float v = 0;
+	if (m_fuel_totaltime > 0.0)
+		v = 100.0-((100.0/m_fuel_totaltime)*m_fuel_time);
+	spec += itos((int)v);
+	spec += "]";
+	spec += "list[current_name;src;2,1;1,1;]";
+	spec += "list[current_name;dst;5,1;2,2;]";
+	spec += "list[current_player;main;0,5;8,4;]";
+	return spec;
+}
+std::vector<NodeBox> LockingFurnaceNodeMetadata::getNodeBoxes(MapNode &n)
+{
+	std::vector<NodeBox> boxes;
+	boxes.clear();
+
+	if (m_fuel_time < m_fuel_totaltime) {
+		boxes.push_back(NodeBox(
+			-0.3125*BS,-0.25*BS,-0.4*BS,0.3125*BS,0.125*BS,-0.3*BS
+		));
+	}
+
+	return transformNodeBox(n,boxes);
 }
 bool LockingFurnaceNodeMetadata::import(NodeMetadata *meta)
 {
@@ -1207,6 +1216,11 @@ IncineratorNodeMetadata::IncineratorNodeMetadata()
 
 	m_inventory = new Inventory();
 	m_inventory->addList("fuel", 1);
+
+	m_should_fire = false;
+	m_step_accumulator = 0;
+	m_fuel_totaltime = 0;
+	m_fuel_time = 0;
 }
 IncineratorNodeMetadata::~IncineratorNodeMetadata()
 {
@@ -1220,6 +1234,8 @@ NodeMetadata* IncineratorNodeMetadata::clone()
 {
 	IncineratorNodeMetadata *d = new IncineratorNodeMetadata();
 	*d->m_inventory = *m_inventory;
+	d->m_fuel_totaltime = m_fuel_totaltime;
+	d->m_fuel_time = m_fuel_time;
 	return d;
 }
 NodeMetadata* IncineratorNodeMetadata::create(std::istream &is)
@@ -1227,20 +1243,30 @@ NodeMetadata* IncineratorNodeMetadata::create(std::istream &is)
 	IncineratorNodeMetadata *d = new IncineratorNodeMetadata();
 
 	d->m_inventory->deSerialize(is);
+	int temp;
+	is>>temp;
+	d->m_fuel_totaltime = (float)temp/10;
+	is>>temp;
+	d->m_fuel_time = (float)temp/10;
 
 	return d;
 }
 void IncineratorNodeMetadata::serializeBody(std::ostream &os)
 {
 	m_inventory->serialize(os);
+	os<<itos(m_fuel_totaltime*10)<<" ";
+	os<<itos(m_fuel_time*10)<<" ";
 }
 std::wstring IncineratorNodeMetadata::infoText()
 {
-	InventoryList *list = m_inventory->getList("fuel");
-	InventoryItem *fitem;
-
-	if (list && list->getUsedSlots() > 0 && (fitem = list->getItem(0)) != NULL && fitem->isFuel())
+	if (m_fuel_time < m_fuel_totaltime)
 		return wgettext("Incinerator is active");
+	InventoryList *fuel_list = m_inventory->getList("fuel");
+	if (fuel_list) {
+		InventoryItem *fuel_item = fuel_list->getItem(0);
+		if (fuel_item && fuel_item->isFuel())
+			return wgettext("Incinerator is active");
+	}
 	return wgettext("Incinerator is inactive");
 }
 bool IncineratorNodeMetadata::nodeRemovalDisabled()
@@ -1262,32 +1288,113 @@ void IncineratorNodeMetadata::inventoryModified()
 bool IncineratorNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 {
 	MapNode n = env->getMap().getNodeNoEx(pos);
-	InventoryList *list = m_inventory->getList("fuel");
-	InventoryItem *fitem;
-
-	if (list && list->getUsedSlots() > 0 && (fitem = list->getItem(0)) != NULL && fitem->isFuel()) {
-		if (n.getContent() == CONTENT_INCINERATOR) {
-			n.param1 = n.param2;
-			n.setContent(CONTENT_INCINERATOR_ACTIVE);
-			env->setPostStepNodeSwap(pos,n);
-			return true;
-		}
-	}else if (n.getContent() == CONTENT_INCINERATOR_ACTIVE) {
+	if (n.getContent() == CONTENT_INCINERATOR_ACTIVE) {
 		n.param2 = n.param1;
 		n.setContent(CONTENT_INCINERATOR);
 		env->setPostStepNodeSwap(pos,n);
-		return true;
 	}
-	return false;
+	if (dtime > 60.0)
+		infostream<<"Incinerator stepping a long time ("<<dtime<<")"<<std::endl;
+	// Update at a fixed frequency
+	const float interval = 2.0;
+	m_step_accumulator += dtime;
+	bool changed = false;
+	while(m_step_accumulator > interval) {
+		m_step_accumulator -= interval;
+		dtime = interval;
+
+		/*
+			If fuel is burning, increment the burn counters.
+		*/
+		if (m_fuel_time < m_fuel_totaltime) {
+			m_fuel_time += dtime;
+			changed = true;
+
+			// If the fuel was not used up this step, just keep burning it
+			if (m_fuel_time < m_fuel_totaltime)
+				continue;
+		}
+
+		/*
+			If the furnace is still cooking, stop loop.
+		*/
+		if (m_fuel_time < m_fuel_totaltime) {
+			m_step_accumulator = 0;
+			break;
+		}
+
+		if (!m_should_fire) {
+			m_step_accumulator = 0;
+			break;
+		}
+
+		//infostream<<"Furnace is out of fuel"<<std::endl;
+
+		InventoryList *fuel_list = m_inventory->getList("fuel");
+		assert(fuel_list);
+		InventoryItem *fuel_item = fuel_list->getItem(0);
+		if (fuel_item && fuel_item->isFuel()) {
+			if ((fuel_item->getContent()&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
+				m_fuel_totaltime = ((CraftItem*)fuel_item)->getFuelTime();
+			}else if ((fuel_item->getContent()&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
+				m_fuel_totaltime = ((ToolItem*)fuel_item)->getFuelTime();
+			}else{
+				m_fuel_totaltime = ((MaterialItem*)fuel_item)->getFuelTime();
+			}
+			m_fuel_time = 0;
+			content_t c = fuel_item->getContent();
+			fuel_list->decrementMaterials(1);
+			if (c == CONTENT_TOOLITEM_STEELBUCKET_LAVA) {
+				fuel_list->addItem(0,new ToolItem(CONTENT_TOOLITEM_STEELBUCKET,0,0));
+			}
+			m_should_fire = false;
+			changed = true;
+		}else{
+			m_step_accumulator = 0;
+		}
+	}
+	return changed;
 }
 std::string IncineratorNodeMetadata::getDrawSpecString()
 {
-	return
-		std::string("size[8,7]"
-		"label[1,0.5;")+gettext("Add fuel, then punch to incinerate wielded item")+"]"
-		"label[3.5,1.5;Fuel]"
-		"list[current_name;fuel;4,1;1,1;]"
-		"list[current_player;main;0,3;8,4;]";
+	std::string spec("size[8,7]");
+	spec += "label[1,0.5;";
+	spec += gettext("Add fuel, then punch to incinerate wielded item");
+	spec += "]";
+	spec += "label[3,1.5;Fuel]";
+	spec += "list[current_name;fuel;4,1;1,1;]";
+	spec += "ring[4,1;1;#FF0000;";
+	float v = 0;
+	if (m_fuel_totaltime > 0.0)
+		v = 100.0-((100.0/m_fuel_totaltime)*m_fuel_time);
+	spec += itos((int)v);
+	spec += "]";
+	spec += "list[current_player;main;0,3;8,4;]";
+	return spec;
+}
+std::vector<NodeBox> IncineratorNodeMetadata::getNodeBoxes(MapNode &n)
+{
+	std::vector<NodeBox> boxes;
+	boxes.clear();
+	InventoryList *list = m_inventory->getList("fuel");
+	InventoryItem *fitem;
+
+	if (
+		(
+			m_fuel_time < m_fuel_totaltime
+		) || (
+			list
+			&& list->getUsedSlots() > 0
+			&& (fitem = list->getItem(0)) != NULL
+			&& fitem->isFuel()
+		)
+	) {
+		boxes.push_back(NodeBox(
+			-0.3125*BS,-0.25*BS,-0.4*BS,0.3125*BS,0.125*BS,-0.3*BS
+		));
+	}
+
+	return transformNodeBox(n,boxes);
 }
 
 /*
@@ -2560,7 +2667,8 @@ std::string BookShelfNodeMetadata::getDrawSpecString()
 		"list[current_name;0;0.5,0;7,2;]"
 		"list[current_player;main;0,3;8,4;]";
 }
-std::vector<NodeBox> BookShelfNodeMetadata::getNodeBoxes(MapNode &n) {
+std::vector<NodeBox> BookShelfNodeMetadata::getNodeBoxes(MapNode &n)
+{
 	std::vector<NodeBox> boxes;
 	boxes.clear();
 

@@ -121,6 +121,24 @@ class GUIFormSpecMenu : public GUIModalMenu
 		v2s32 geom;
 	};
 
+	struct RingDrawSpec
+	{
+		RingDrawSpec()
+		{
+		}
+		RingDrawSpec(video::SColor &a_color, int value, v2s32 a_pos, int a_rad):
+			colour(a_color),
+			value(value),
+			pos(a_pos),
+			rad(a_rad)
+		{
+		}
+		video::SColor colour;
+		int value;
+		v2s32 pos;
+		int rad;
+	};
+
 	struct FieldSpec
 	{
 		FieldSpec()
@@ -198,6 +216,7 @@ protected:
 
 	core::array<ListDrawSpec> m_inventorylists;
 	core::array<ImageDrawSpec> m_images;
+	core::array<RingDrawSpec> m_rings;
 	core::array<FieldSpec> m_fields;
 
 	ItemSpec *m_selected_item;

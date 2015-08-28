@@ -786,6 +786,7 @@ void content_toolitem_init()
 	f->hardness = 700.;
 	f->dig_time = 0.2;
 	f->level = 5;
+	f->has_punch_effect = false;
 	crafting::setPickRecipe(CONTENT_CRAFTITEM_MITHRIL,CONTENT_TOOLITEM_MITHRIL_PICK);
 	lists::add("craftguide",i);
 

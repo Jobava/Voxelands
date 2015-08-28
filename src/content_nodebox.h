@@ -68,5 +68,8 @@ void content_nodebox_flower_pot(ContentFeatures *f);
 void content_nodebox_parcel(ContentFeatures *f);
 void content_nodebox_cauldron(ContentFeatures *f);
 void content_nodebox_forge(ContentFeatures *f);
+void content_nodebox_furnace(ContentFeatures *f);
+void content_nodebox_lockedfurnace(ContentFeatures *f);
+void content_nodebox_incinerator(ContentFeatures *f);
 
 #endif
