@@ -5515,7 +5515,7 @@ void Server::HandlePlayerHP(Player *player, s16 damage, s16 suffocate, s16 hunge
 		player->hp = 0;
 
 		//TODO: Throw items around
-		if (g_settings->getBool("lose_inv_on_death")) {
+		if (g_settings->getBool("death_drops_inv")) {
 			v3s16 bottompos = floatToInt(player->getPosition() + v3f(0,-BS/4,0), BS);
 			v3s16 p = bottompos + v3s16(0,1,0);
 			MapNode in_n = m_env.getMap().getNodeNoEx(p);

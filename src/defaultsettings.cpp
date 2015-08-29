@@ -179,7 +179,7 @@ void set_creative_defaults(Settings *settings)
 	settings->setDefault("enable_hunger", "false");
 	settings->setDefault("max_mob_level", "passive");
 	settings->setDefault("initial_inventory", "false");
-	settings->setDefault("lose_inv_on_death", "false");
+	settings->setDefault("death_drops_inv", "false");
 	settings->setDefault("tool_wear","false");
 }
 
@@ -192,7 +192,7 @@ void set_adventure_defaults(Settings *settings)
 	settings->setDefault("enable_hunger", "false");
 	settings->setDefault("max_mob_level", "aggressive");
 	settings->setDefault("initial_inventory", "true");
-	settings->setDefault("lose_inv_on_death", "false");
+	settings->setDefault("death_drops_inv", "false");
 	settings->setDefault("tool_wear","true");
 }
 
@@ -205,7 +205,7 @@ void set_survival_defaults(Settings *settings)
 	settings->setDefault("enable_hunger", "true");
 	settings->setDefault("max_mob_level", "destructive");
 	settings->setDefault("initial_inventory", "false");
-	settings->setDefault("lose_inv_on_death", "true");
+	settings->setDefault("death_drops_inv", "true");
 	settings->setDefault("tool_wear","true");
 }
 

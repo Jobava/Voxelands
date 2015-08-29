@@ -95,6 +95,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 	bool initial_inventory;
 	bool infinite_inventory;
 	bool droppable_inventory;
+	bool death_drops_inventory;
 	bool enable_damage;
 	bool suffocation;
 	bool hunger;
@@ -232,6 +233,13 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			droppable_inventory = ((gui::IGUICheckBox*)e)->isChecked();
 		else
 			droppable_inventory = m_data->droppable_inventory;
+	}
+	{
+		gui::IGUIElement *e = getElementFromId(GUI_ID_LOSE_INV_CB);
+		if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+			death_drops_inventory = ((gui::IGUICheckBox*)e)->isChecked();
+		else
+			death_drops_inventory = m_data->death_drops_inventory;
 	}
 	{
 		gui::IGUIElement *e = getElementFromId(GUI_ID_TOOL_WEAR_CB);
@@ -587,6 +595,11 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		}
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
+			rect += topleft_content + v2s32(70, 320);
+			Environment->addCheckBox(unsafe_fire, rect, this, GUI_ID_FIRE_CB, wgettext("Dangerous Fire"));
+		}
+		{
+			core::rect<s32> rect(0, 0, 200, 30);
 			rect += topleft_content + v2s32(300, 200);
 			Environment->addCheckBox(infinite_inventory, rect, this, GUI_ID_INFINITE_INV_CB, wgettext("Infinite Inventory"));
 		}
@@ -603,12 +616,12 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 		{
 			core::rect<s32> rect(0, 0, 200, 30);
 			rect += topleft_content + v2s32(300, 290);
-			Environment->addCheckBox(unsafe_fire, rect, this, GUI_ID_FIRE_CB, wgettext("Dangerous Fire"));
+			Environment->addCheckBox(death_drops_inventory, rect, this, GUI_ID_LOSE_INV_CB, wgettext("Death drops Inventory"));
 		}
 		// Start game button
 		{
 			core::rect<s32> rect(0, 0, 180, 30);
-			rect += topleft_content + v2s32(185, 340);
+			rect += topleft_content + v2s32(185, 370);
 			Environment->addButton(rect, this, GUI_ID_JOIN_GAME_BUTTON, wgettext("Start Game"));
 		}
 	}else if (m_data->selected_tab == TAB_SINGLEPLAYER_MAP) {
@@ -932,6 +945,11 @@ void GUIMainMenu::acceptInput()
 				((gui::IGUICheckBox*)e)->setChecked(m_data->droppable_inventory);
 		}
 		{
+			gui::IGUIElement *e = getElementFromId(GUI_ID_LOSE_INV_CB);
+			if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+				((gui::IGUICheckBox*)e)->setChecked(m_data->death_drops_inventory);
+		}
+		{
 			gui::IGUIElement *e = getElementFromId(GUI_ID_TOOL_WEAR_CB);
 			if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
 				((gui::IGUICheckBox*)e)->setChecked(m_data->tool_wear);
@@ -992,14 +1010,29 @@ void GUIMainMenu::acceptInput()
 				m_data->infinite_inventory = ((gui::IGUICheckBox*)e)->isChecked();
 		}
 		if (!m_data->infinite_inventory) {
-			gui::IGUIElement *e = getElementFromId(GUI_ID_INITIAL_INV_CB);
-			if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-				m_data->initial_inventory = ((gui::IGUICheckBox*)e)->isChecked();
+			{
+				gui::IGUIElement *e = getElementFromId(GUI_ID_INITIAL_INV_CB);
+				if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+					m_data->initial_inventory = ((gui::IGUICheckBox*)e)->isChecked();
+			}
+			{
+				gui::IGUIElement *e = getElementFromId(GUI_ID_LOSE_INV_CB);
+				if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+					m_data->death_drops_inventory = ((gui::IGUICheckBox*)e)->isChecked();
+			}
 		}else{
-			m_data->initial_inventory = false;
-			gui::IGUIElement *e = getElementFromId(GUI_ID_INITIAL_INV_CB);
-			if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
-				((gui::IGUICheckBox*)e)->setChecked(false);
+			{
+				m_data->initial_inventory = false;
+				gui::IGUIElement *e = getElementFromId(GUI_ID_INITIAL_INV_CB);
+				if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+					((gui::IGUICheckBox*)e)->setChecked(false);
+			}
+			{
+				m_data->death_drops_inventory = false;
+				gui::IGUIElement *e = getElementFromId(GUI_ID_LOSE_INV_CB);
+				if(e != NULL && e->getType() == gui::EGUIET_CHECK_BOX)
+					((gui::IGUICheckBox*)e)->setChecked(false);
+			}
 		}
 		{
 			gui::IGUIElement *e = getElementFromId(GUI_ID_DROPPABLE_INV_CB);
