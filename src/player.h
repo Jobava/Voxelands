@@ -65,7 +65,7 @@ public:
 	Player();
 	virtual ~Player();
 
-	void resetInventory();
+	void resetInventory(bool include_clothes = true);
 	void checkInventory();
 
 	virtual void move(f32 dtime, Map &map, f32 pos_max_d) = 0;
