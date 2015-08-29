@@ -3085,7 +3085,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						<<std::endl;
 				cannot_remove_node = true;
 			// check for borderstone
-			}else if (borderstone_locked) {
+			}else if (borderstone_locked && !selected_node_features.borderstone_diggable) {
 				infostream<<"Player "<<player->getName()<<" cannot remove node: borderstone protected"<<std::endl;
 				cannot_remove_node = true;
 			// check for locked items and borderstone
@@ -5515,6 +5515,95 @@ void Server::HandlePlayerHP(Player *player, s16 damage, s16 suffocate, s16 hunge
 		player->hp = 0;
 
 		//TODO: Throw items around
+		if (g_settings->getBool("lose_inv_on_death")) {
+			v3s16 bottompos = floatToInt(player->getPosition() + v3f(0,-BS/4,0), BS);
+			v3s16 p = bottompos + v3s16(0,1,0);
+			MapNode in_n = m_env.getMap().getNodeNoEx(p);
+			v3s16 droppos = p;
+			bool can_drop = false;
+			// if they're standing in an air-like node, drop inventory to a parcel
+			// otherwise they just lose it
+			v3s16 pp;
+			if (in_n.getContent() == CONTENT_PARCEL) {
+				can_drop = true;
+			}else if (m_env.searchNear(p,v3s16(3,3,3),CONTENT_PARCEL,&pp)) {
+				droppos = pp;
+				can_drop = true;
+			}else if (in_n.getContent() != CONTENT_LAVASOURCE && content_features(in_n.getContent()).buildable_to) {
+				while (!can_drop && p.Y > -30000) {
+					MapNode nn = m_env.getMap().getNodeNoEx(p+v3s16(0,-1,0));
+					if (nn.getContent() == CONTENT_PARCEL) {
+						droppos = p+v3s16(0,-1,0);
+						can_drop = true;
+					}else if (nn.getContent() == CONTENT_LAVASOURCE) {
+						break;
+					}else if (!content_features(nn.getContent()).buildable_to) {
+						droppos = p;
+						can_drop = true;
+						break;
+					}
+					p.Y--;
+				}
+			}
+
+			if (can_drop) {
+				MapNode nn = m_env.getMap().getNodeNoEx(droppos);
+				if (nn.getContent() != CONTENT_PARCEL) {
+					v3s16 pp;
+					if (m_env.searchNear(droppos,v3s16(3,3,3),CONTENT_PARCEL,&pp)) {
+						droppos = pp;
+						nn = m_env.getMap().getNodeNoEx(droppos);
+					}else{
+						nn.setContent(CONTENT_PARCEL);
+						core::list<u16> far_players;
+						sendAddNode(droppos, nn, 0, &far_players, 30);
+
+						/*
+							Add node.
+
+							This takes some time so it is done after the quick stuff
+						*/
+						core::map<v3s16, MapBlock*> modified_blocks;
+						{
+							MapEditEventIgnorer ign(&m_ignore_map_edit_events);
+
+							std::string p_name(player->getName());
+							m_env.getMap().addNodeAndUpdate(droppos, nn, modified_blocks, p_name);
+						}
+						/*
+							Set blocks not sent to far players
+						*/
+						for (core::list<u16>::Iterator i = far_players.begin(); i != far_players.end(); i++) {
+							u16 peer_id = *i;
+							RemoteClient *client = getClient(peer_id);
+							if (client==NULL)
+								continue;
+							client->SetBlocksNotSent(modified_blocks);
+						}
+					}
+				}
+
+				NodeMetadata *meta = m_env.getMap().getNodeMetadata(droppos);
+				if (meta) {
+					Inventory *inv = meta->getInventory();
+					if (inv) {
+						InventoryList *pl = inv->getList("0");
+						InventoryList *il = player->inventory.getList("main");
+						if (pl && il) {
+							for (u32 i=0; i<32; i++) {
+								InventoryItem *item = il->takeItem(i,99);
+								if (item)
+									pl->addItem(item);
+							}
+						}
+					}
+				}
+			}
+
+			player->resetInventory(false);
+			UpdateCrafting(player->peer_id);
+			SendInventory(player->peer_id);
+		}
 
 		// Handle players that are not connected
 		if (player->peer_id == PEER_ID_INEXISTENT) {

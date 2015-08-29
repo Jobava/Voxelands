@@ -363,6 +363,8 @@ struct ContentFeatures
 	bool fertilizer_affects;
 	// when dug with a shovel near water, turns to farm dirt
 	bool farm_ploughable;
+	// if true, this node can be dug even in a borderstone protected area
+	bool borderstone_diggable;
 
 	// Inventory item string as which the node appears in inventory when dug.
 	// Mineral overrides this.
@@ -531,6 +533,7 @@ struct ContentFeatures
 		destructive_mob_safe = false;
 		fertilizer_affects = false;
 		farm_ploughable = false;
+		borderstone_diggable = false;
 		dug_item = "";
 		extra_dug_item = "";
 		extra_dug_item_rarity = 2;

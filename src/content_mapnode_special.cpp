@@ -2107,6 +2107,7 @@ void content_mapnode_special(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->solidness = 0; // drawn separately, makes no faces
 	f->air_equivalent = true; // grass grows underneath
+	f->borderstone_diggable = true;
 	content_nodebox_parcel(f);
 	f->setInventoryTextureNodeBox(i,"parcel_top.png", "parcel.png", "parcel.png");
 	f->type = CMT_DIRT;

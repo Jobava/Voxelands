@@ -81,9 +81,24 @@ void Player::wieldItem(u16 item)
 	m_selected_item = item;
 }
 
-void Player::resetInventory()
+void Player::resetInventory(bool include_clothes)
 {
-	inventory.clear();
+	if (include_clothes) {
+		inventory.clear();
+	}else{
+		InventoryList *l = inventory.getList("main");
+		if (l)
+			l->clearItems();
+		l = inventory.getList("discard");
+		if (l)
+			l->clearItems();
+		l = inventory.getList("craft");
+		if (l)
+			l->clearItems();
+		l = inventory.getList("craftresult");
+		if (l)
+			l->clearItems();
+	}
 	checkInventory();
 }
 
