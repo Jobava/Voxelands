@@ -53,6 +53,7 @@ enum {
 	GUI_ID_INITIAL_INV_CB,
 	GUI_ID_INFINITE_INV_CB,
 	GUI_ID_DROPPABLE_INV_CB,
+	GUI_ID_LOSE_INV_CB,
 	GUI_ID_DAMAGE_CB,
 	GUI_ID_TOOL_WEAR_CB,
 	GUI_ID_FIRE_CB,
@@ -102,6 +103,7 @@ struct MainMenuData
 		initial_inventory(true),
 		infinite_inventory(false),
 		droppable_inventory(true),
+		death_drops_inventory(false),
 		enable_damage(true),
 		suffocation(false),
 		hunger(false),
@@ -131,6 +133,7 @@ struct MainMenuData
 	bool initial_inventory;
 	bool infinite_inventory;
 	bool droppable_inventory;
+	bool death_drops_inventory;
 	bool enable_damage;
 	bool suffocation;
 	bool hunger;

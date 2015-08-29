@@ -1223,6 +1223,7 @@ int main(int argc, char *argv[])
 				menudata.initial_inventory = g_settings->getBool("initial_inventory");
 				menudata.infinite_inventory = g_settings->getBool("infinite_inventory");
 				menudata.droppable_inventory = g_settings->getBool("droppable_inventory");
+				menudata.death_drops_inventory = g_settings->getBool("death_drops_inv");
 				menudata.enable_damage = g_settings->getBool("enable_damage");
 				menudata.suffocation = g_settings->getBool("enable_suffocation");
 				menudata.hunger = g_settings->getBool("enable_hunger");
@@ -1336,6 +1337,7 @@ int main(int argc, char *argv[])
 				g_settings->set("initial_inventory", itos(menudata.initial_inventory));
 				g_settings->set("infinite_inventory", itos(menudata.infinite_inventory));
 				g_settings->set("droppable_inventory", itos(menudata.droppable_inventory));
+				g_settings->set("death_drops_inv", itos(menudata.death_drops_inventory));
 				g_settings->set("enable_damage", itos(menudata.enable_damage));
 				g_settings->set("enable_suffocation", itos(menudata.suffocation));
 				g_settings->set("enable_hunger", itos(menudata.hunger));
