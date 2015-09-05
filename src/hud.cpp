@@ -571,7 +571,9 @@ void hud_draw(
 	// health
 	if (have_health) {
 		int c = 55+(halfheartcount*10);
-		float e = energy/((float)halfheartcount/100.0);
+		float e = 0.0;
+		if (halfheartcount > 0.0)
+			e = energy/((float)halfheartcount/100.0);
 		if (e > 100.0)
 			e = 100.0;
 		if (e < 0.0)
