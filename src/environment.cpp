@@ -2848,7 +2848,7 @@ bool ServerEnvironment::propogateEnergy(u8 level, v3s16 powersrc, v3s16 signalsr
 		return false;
 	ContentFeatures &f = content_features(n);
 	if (f.energy_type == CET_NONE) {
-		if (powersrc != signalsrc || n.getContent() != CONTENT_STONE)
+		if (powersrc != signalsrc || (n.getContent() != CONTENT_STONE && n.getContent() != CONTENT_LIMESTONE))
 			return false;
 	}else{
 		if ((f.energy_type == CET_SOURCE || f.energy_type == CET_SWITCH) && pos != powersrc)
@@ -3044,11 +3044,11 @@ bool ServerEnvironment::propogateEnergy(u8 level, v3s16 powersrc, v3s16 signalsr
 			if ((pos+v3s16(1,-1,0)) != signalsrc)
 				propogateEnergy(level,powersrc,pos,pos+v3s16(1,-1,0), modified_blocks);
 		}else if (powersrc == pos) {
-			if ((pos+v3s16(1,0,0)) != signalsrc && n_plus_x.getContent() == CONTENT_STONE)
+			if ((pos+v3s16(1,0,0)) != signalsrc && (n_plus_x.getContent() == CONTENT_STONE || n_plus_x.getContent() == CONTENT_LIMESTONE))
 				propogateEnergy(level,powersrc,pos,pos+v3s16(1,0,0), modified_blocks);
-			if ((pos+v3s16(1,1,0)) != signalsrc && n_plus_xy.getContent() == CONTENT_STONE)
+			if ((pos+v3s16(1,1,0)) != signalsrc && (n_plus_xy.getContent() == CONTENT_STONE || n_plus_xy.getContent() == CONTENT_LIMESTONE))
 				propogateEnergy(level,powersrc,pos,pos+v3s16(1,1,0), modified_blocks);
-			if ((pos+v3s16(1,-1,0)) != signalsrc && n_plus_x_y.getContent() == CONTENT_STONE)
+			if ((pos+v3s16(1,-1,0)) != signalsrc && (n_plus_x_y.getContent() == CONTENT_STONE || n_plus_x_y.getContent() == CONTENT_LIMESTONE))
 				propogateEnergy(level,powersrc,pos,pos+v3s16(1,-1,0), modified_blocks);
 		}
 	}
@@ -3063,11 +3063,11 @@ bool ServerEnvironment::propogateEnergy(u8 level, v3s16 powersrc, v3s16 signalsr
 			if ((pos+v3s16(-1,-1,0)) != signalsrc)
 				propogateEnergy(level,powersrc,pos,pos+v3s16(-1,-1,0), modified_blocks);
 		}else if (powersrc == pos) {
-			if ((pos+v3s16(-1,0,0)) != signalsrc && n_minus_x.getContent() == CONTENT_STONE)
+			if ((pos+v3s16(-1,0,0)) != signalsrc && (n_minus_x.getContent() == CONTENT_STONE || n_minus_x.getContent() == CONTENT_LIMESTONE))
 				propogateEnergy(level,powersrc,pos,pos+v3s16(-1,0,0), modified_blocks);
-			if ((pos+v3s16(-1,1,0)) != signalsrc && n_minus_xy.getContent() == CONTENT_STONE)
+			if ((pos+v3s16(-1,1,0)) != signalsrc && (n_minus_xy.getContent() == CONTENT_STONE || n_minus_xy.getContent() == CONTENT_LIMESTONE))
 				propogateEnergy(level,powersrc,pos,pos+v3s16(-1,1,0), modified_blocks);
-			if ((pos+v3s16(-1,-1,0)) != signalsrc && n_minus_x_y.getContent() == CONTENT_STONE)
+			if ((pos+v3s16(-1,-1,0)) != signalsrc && (n_minus_x_y.getContent() == CONTENT_STONE || n_minus_x_y.getContent() == CONTENT_LIMESTONE))
 				propogateEnergy(level,powersrc,pos,pos+v3s16(-1,-1,0), modified_blocks);
 		}
 	}
@@ -3082,11 +3082,11 @@ bool ServerEnvironment::propogateEnergy(u8 level, v3s16 powersrc, v3s16 signalsr
 			if ((pos+v3s16(0,-1,1)) != signalsrc)
 				propogateEnergy(level,powersrc,pos,pos+v3s16(0,-1,1), modified_blocks);
 		}else if (powersrc == pos) {
-			if ((pos+v3s16(0,0,1)) != signalsrc && n_plus_z.getContent() == CONTENT_STONE)
+			if ((pos+v3s16(0,0,1)) != signalsrc && (n_plus_z.getContent() == CONTENT_STONE || n_plus_z.getContent() == CONTENT_LIMESTONE))
 				propogateEnergy(level,powersrc,pos,pos+v3s16(0,0,1), modified_blocks);
-			if ((pos+v3s16(0,1,1)) != signalsrc && n_plus_zy.getContent() == CONTENT_STONE)
+			if ((pos+v3s16(0,1,1)) != signalsrc && (n_plus_zy.getContent() == CONTENT_STONE || n_plus_zy.getContent() == CONTENT_LIMESTONE))
 				propogateEnergy(level,powersrc,pos,pos+v3s16(0,1,1), modified_blocks);
-			if ((pos+v3s16(0,-1,1)) != signalsrc && n_plus_z_y.getContent() == CONTENT_STONE)
+			if ((pos+v3s16(0,-1,1)) != signalsrc && (n_plus_z_y.getContent() == CONTENT_STONE || n_plus_z_y.getContent() == CONTENT_LIMESTONE))
 				propogateEnergy(level,powersrc,pos,pos+v3s16(0,-1,1), modified_blocks);
 		}
 	}
@@ -3101,11 +3101,11 @@ bool ServerEnvironment::propogateEnergy(u8 level, v3s16 powersrc, v3s16 signalsr
 			if ((pos+v3s16(0,-1,-1)) != signalsrc)
 				propogateEnergy(level,powersrc,pos,pos+v3s16(0,-1,-1), modified_blocks);
 		}else if (powersrc == pos) {
-			if ((pos+v3s16(0,0,-1)) != signalsrc && n_minus_z.getContent() == CONTENT_STONE)
+			if ((pos+v3s16(0,0,-1)) != signalsrc && (n_minus_z.getContent() == CONTENT_STONE || n_minus_z.getContent() == CONTENT_LIMESTONE))
 				propogateEnergy(level,powersrc,pos,pos+v3s16(0,0,-1), modified_blocks);
-			if ((pos+v3s16(0,1,-1)) != signalsrc && n_minus_zy.getContent() == CONTENT_STONE)
+			if ((pos+v3s16(0,1,-1)) != signalsrc && (n_minus_zy.getContent() == CONTENT_STONE || n_minus_zy.getContent() == CONTENT_LIMESTONE))
 				propogateEnergy(level,powersrc,pos,pos+v3s16(0,1,-1), modified_blocks);
-			if ((pos+v3s16(0,-1,-1)) != signalsrc && n_minus_z_y.getContent() == CONTENT_STONE)
+			if ((pos+v3s16(0,-1,-1)) != signalsrc && (n_minus_z_y.getContent() == CONTENT_STONE || n_minus_z_y.getContent() == CONTENT_LIMESTONE))
 				propogateEnergy(level,powersrc,pos,pos+v3s16(0,-1,-1), modified_blocks);
 		}
 	}
