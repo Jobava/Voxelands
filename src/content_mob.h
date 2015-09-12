@@ -110,8 +110,6 @@ struct MobFeatures {
 	MobMotionType motion_type;
 	MobMotion angry_motion;
 	f32 static_thrown_speed;
-	content_t hunted_node;
-	content_t fleed_node;
 	bool notices_player;
 	content_t tamed_mob;
 	content_t attack_throw_object;
@@ -141,16 +139,13 @@ struct MobFeatures {
 	std::string sound_random;
 	std::string sound_random_extra;
 
-	content_t spawn_on;
-	content_t spawn_in;
-	u8 spawn_min_light;
-	u8 spawn_max_light;
 	s16 spawn_min_height;
 	s16 spawn_max_height;
-	u8 spawn_max_nearby_mobs;
 	s16 spawn_chance;
-	s16 spawn_nearest_player;
-	s16 spawn_farthest_player;
+	s16 spawn_group;
+	bool spawn_water;
+
+	bool spawn_naturally;
 
 	MobFeatures()
 	{
@@ -241,8 +236,6 @@ struct MobFeatures {
 		motion_type = MMT_WALK;
 		angry_motion = MM_STATIC;
 		static_thrown_speed = 20.0;
-		hunted_node = CONTENT_IGNORE;
-		fleed_node = CONTENT_IGNORE;
 		notices_player = false;
 		tamed_mob = CONTENT_IGNORE;
 		attack_throw_object = CONTENT_IGNORE;
@@ -270,16 +263,12 @@ struct MobFeatures {
 		sound_punch = "mob-dig";
 		sound_random = "";
 		sound_random_extra = "";
-		spawn_on = CONTENT_IGNORE;
-		spawn_in = CONTENT_IGNORE;
-		spawn_min_light = 0;
-		spawn_max_light = LIGHT_MAX;
 		spawn_min_height = -20000;
 		spawn_max_height = 100;
-		spawn_max_nearby_mobs = 3;
 		spawn_chance = 1;
-		spawn_nearest_player = 0;
-		spawn_farthest_player = 0;
+		spawn_group = 1;
+		spawn_water = false;
+		spawn_naturally = true;
 	}
 };
 
@@ -307,6 +296,9 @@ inline std::string mobLevelS(u8 level)
 
 class ServerEnvironment;
 bool content_mob_spawn(ServerEnvironment *env, v3s16 pos, u32 active_object_count);
+void mob_spawn(v3s16 pos, content_t mob, ServerEnvironment *env);
+void mob_spawn_passive(v3s16 pos, bool water, ServerEnvironment *env);
+void mob_spawn_hostile(v3s16 pos, bool water, ServerEnvironment *env);
 
 MobFeatures & content_mob_features(content_t i);
 void content_mob_init();

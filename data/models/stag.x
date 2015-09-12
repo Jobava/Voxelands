@@ -6331,7 +6331,6 @@ Frame Root {
              123.529412;
              0.000000; 0.000000; 0.000000;;
              0.000000; 0.000000; 0.000000;;
-            TextureFilename {"mob_doe.png";}
           }
         } // End of Cube_002 material list
         XSkinMeshHeader {

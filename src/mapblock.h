@@ -539,6 +539,12 @@ public:
 	void serializeDiskExtra(std::ostream &os, u8 version);
 	void deSerializeDiskExtra(std::istream &is, u8 version);
 
+	// Used by the server env for mob spawning
+	bool has_spawn_area;
+	v3s16 spawn_area;
+	bool water_spawn;
+	u32 last_spawn;
+
 private:
 	/*
 		Private methods
