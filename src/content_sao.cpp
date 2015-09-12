@@ -517,7 +517,6 @@ void MobSAO::step(float dtime, bool send_recommended)
 	bool dont_move = false;
 
 	m_age += dtime;
-	m_last_sound += dtime;
 
 	/* die, but not in the middle of attacking someone */
 	if (m.lifetime > 0.0 && m_age >= m.lifetime && (!m.notices_player || m_disturbing_player == "")) {
@@ -566,6 +565,8 @@ void MobSAO::step(float dtime, bool send_recommended)
 			}
 		}
 	}
+
+	m_last_sound += dtime;
 
 	if (m_last_sound > 30.0) {
 		m_last_sound -= 5.0;
@@ -729,10 +730,10 @@ void MobSAO::step(float dtime, bool send_recommended)
 				}else{
 					m_walk_around = !m_walk_around;
 					if (m_walk_around) {
-						if (!disturbing_player || mot != MM_SEEKER)
-						m_walk_around_timer = 0.1*myrand_range(5,15);
+						if ((!m.notices_player && !disturbing_player) || mot != MM_SEEKER)
+							m_walk_around_timer = myrand_range(10,20);
 					}else{
-						m_walk_around_timer = 0.1*myrand_range(20,40);
+						m_walk_around_timer = myrand_range(10,20);
 					}
 				}
 			}else if (m_walk_around_timer > 10.0) {

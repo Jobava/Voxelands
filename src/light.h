@@ -50,6 +50,10 @@ extern u32 daynight_cache_ratios[DAYNIGHT_CACHE_COUNT];*/
 // This brightness is reserved for sunlight
 #define LIGHT_SUN 15
 
+// these are used in mob spawning
+#define LIGHT_SPAWN_BRIGHT 10
+#define LIGHT_SPAWN_DARK 4
+
 inline u8 diminish_light(u8 light)
 {
 	if(light == 0)

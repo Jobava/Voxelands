@@ -38,18 +38,22 @@
 */
 
 MapBlock::MapBlock(Map *parent, v3s16 pos, bool dummy):
-		m_parent(parent),
-		m_pos(pos),
-		m_modified(MOD_STATE_WRITE_NEEDED),
-		is_underground(false),
-		m_lighting_expired(true),
-		m_day_night_differs(false),
-		m_generated(false),
-		m_timestamp(BLOCK_TIMESTAMP_UNDEFINED),
-		m_usage_timer(0)
+	has_spawn_area(false),
+	spawn_area(0,0,0),
+	water_spawn(false),
+	last_spawn(0),
+	m_parent(parent),
+	m_pos(pos),
+	m_modified(MOD_STATE_WRITE_NEEDED),
+	is_underground(false),
+	m_lighting_expired(true),
+	m_day_night_differs(false),
+	m_generated(false),
+	m_timestamp(BLOCK_TIMESTAMP_UNDEFINED),
+	m_usage_timer(0)
 {
 	data = NULL;
-	if(dummy == false)
+	if (dummy == false)
 		reallocate();
 
 	//m_spawn_timer = -10000;

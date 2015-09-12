@@ -130,46 +130,12 @@ bool content_mob_spawn(ServerEnvironment *env, v3s16 pos, u32 active_object_coun
 	if ((c1 != CONTENT_AIR && c1 != CONTENT_WATERSOURCE) && c1 != c2)
 		return false;
 
-	u8 light = a1.getLightBlend(env->getDayNightRatio());
-	u8 level = mobLevelI(g_settings->get("max_mob_level"));
-	v3f pf = intToFloat(pos,BS);
-	Player *nearest = env->getNearestConnectedPlayer(pf);
-	f32 distance = 30000.0;
-	if (nearest)
-		distance = pf.getDistanceFrom(nearest->getPosition());
-
 	for (u16 i=0; i<CONTENT_MOB_COUNT; i++) {
 		MobFeatures m = g_content_mob_features[i];
-		if (m.spawn_in == CONTENT_IGNORE && m.spawn_on == CONTENT_IGNORE)
-			continue;
-		if (m.spawn_max_nearby_mobs < active_object_count)
-			continue;
 		if (m.spawn_min_height > pos.Y)
 			continue;
 		if (m.spawn_max_height < pos.Y)
 			continue;
-		if (m.spawn_in != CONTENT_IGNORE) {
-			if (m.spawn_in != c1)
-				continue;
-			if (m.spawn_in != c2)
-				continue;
-		}
-		if (m.spawn_on != CONTENT_IGNORE) {
-			if (m.spawn_on != c0)
-				continue;
-		}
-		if (m.spawn_min_light > light)
-			continue;
-		if (m.spawn_max_light < light)
-			continue;
-		if (m.level > level)
-			continue;
-		if (m.notices_player && m.spawn_nearest_player != m.spawn_farthest_player) {
-			if (m.spawn_nearest_player > distance)
-				continue;
-			if (m.spawn_farthest_player < distance)
-				continue;
-		}
 		if (m.spawn_chance > 1 && rand%m.spawn_chance != 0)
 			continue;
 		can.push_back(i);
@@ -204,6 +170,196 @@ bool content_mob_spawn(ServerEnvironment *env, v3s16 pos, u32 active_object_coun
 	return true;
 }
 
+void mob_spawn(v3s16 pos, content_t mob, ServerEnvironment *env)
+{
+
+	MobFeatures &m = content_mob_features(mob);
+
+	if (m.content == CONTENT_IGNORE)
+		return;
+
+	v3f p = intToFloat(pos+v3s16(0,1,0), BS);
+	actionstream<<"A mob of type "<<m.content<<" spawns at "<<PP(floatToInt(p,BS))<<std::endl;
+	ServerActiveObject *obj = new MobSAO(env, 0, p, m.content);
+	u16 id = env->addActiveObject(obj);
+	if (!id) {
+		actionstream<<"A mob of type "<<m.content<<" didn't spawn at "<<PP(floatToInt(p,BS))<<std::endl;
+		return;
+	}
+
+	if (id && m.sound_spawn != "")
+		env->addEnvEvent(ENV_EVENT_SOUND,p,m.sound_spawn);
+}
+
+void mob_spawn_passive(v3s16 pos, bool water, ServerEnvironment *env)
+{
+	std::vector<content_t> can;
+	int rand = myrand();
+	for (u16 i=0; i<CONTENT_MOB_COUNT; i++) {
+		MobFeatures m = g_content_mob_features[i];
+		if (!m.spawn_naturally)
+			continue;
+		if (m.level > MOB_PASSIVE)
+			continue;
+		if (m.spawn_water != water)
+			continue;
+		if (m.spawn_min_height > pos.Y)
+			continue;
+		if (m.spawn_max_height < pos.Y)
+			continue;
+		if (m.spawn_chance > 1 && rand%m.spawn_chance != 0)
+			continue;
+		can.push_back(i);
+	}
+
+	if (can.size() == 0)
+		return;
+
+	MobFeatures m;
+	u32 index = 0;
+
+	if (can.size() > 1)
+		index = myrand_range(0,can.size()-1);
+
+	m = g_content_mob_features[can[index]];
+
+	if (m.content == CONTENT_IGNORE)
+		return;
+
+	v3s16 spots[9] = {
+		v3s16(0,0,0),
+		v3s16(-2,0,0),
+		v3s16(-2,0,2),
+		v3s16(-2,0,-2),
+		v3s16(2,0,0),
+		v3s16(2,0,-2),
+		v3s16(2,0,2),
+		v3s16(0,0,-2),
+		v3s16(0,0,2)
+	};
+	u16 cnt = 0;
+	for (u16 i=0; i<9 && cnt < m.spawn_group; i++) {
+		v3s16 p = pos+spots[i];
+		if (water) {
+			if (env->getMap().getNodeNoEx(p+v3s16(0,1,0)).getContent() != CONTENT_WATERSOURCE)
+				continue;
+		}else{
+			content_t c = env->getMap().getNodeNoEx(pos).getContent();
+			bool have_spot = false;
+			for (s16 x=-1; !have_spot && x<2; x++) {
+			for (s16 y=-1; !have_spot && y<2; y++) {
+			for (s16 z=-1; !have_spot && z<2; z++) {
+				v3s16 pp = p+v3s16(x,y,z);
+				if (env->getMap().getNodeNoEx(pp).getContent() != c)
+					continue;
+				pp.Y++;
+				if (env->getMap().getNodeNoEx(pp).getContent() != CONTENT_AIR)
+					continue;
+				pp.Y++;
+				if (env->getMap().getNodeNoEx(pp).getContent() != CONTENT_AIR)
+					continue;
+				p += v3s16(x,y,z);
+				have_spot = true;
+				break;
+			}
+			}
+			}
+
+			if (!have_spot)
+				continue;
+		}
+		mob_spawn(p,m.content,env);
+		cnt++;
+	}
+}
+
+void mob_spawn_hostile(v3s16 pos, bool water, ServerEnvironment *env)
+{
+	std::vector<content_t> can;
+	int rand = myrand();
+	u8 level = mobLevelI(g_settings->get("max_mob_level"));
+	if (level < MOB_AGGRESSIVE)
+		return;
+	for (u16 i=0; i<CONTENT_MOB_COUNT; i++) {
+		MobFeatures m = g_content_mob_features[i];
+		if (!m.spawn_naturally)
+			continue;
+		if (m.level < MOB_AGGRESSIVE)
+			continue;
+		if (m.level > level)
+			continue;
+		if (m.spawn_water != water)
+			continue;
+		if (m.spawn_min_height > pos.Y)
+			continue;
+		if (m.spawn_max_height < pos.Y)
+			continue;
+		if (m.spawn_chance > 1 && rand%m.spawn_chance != 0)
+			continue;
+		can.push_back(i);
+	}
+
+	if (can.size() == 0)
+		return;
+
+	MobFeatures m;
+	u32 index = 0;
+
+	if (can.size() > 1)
+		index = myrand_range(0,can.size()-1);
+
+	m = g_content_mob_features[can[index]];
+
+	if (m.content == CONTENT_IGNORE)
+		return;
+
+	v3s16 spots[9] = {
+		v3s16(0,0,0),
+		v3s16(-2,0,0),
+		v3s16(-2,0,2),
+		v3s16(-2,0,-2),
+		v3s16(2,0,0),
+		v3s16(2,0,-2),
+		v3s16(2,0,2),
+		v3s16(0,0,-2),
+		v3s16(0,0,2)
+	};
+	u16 cnt = 0;
+	for (u16 i=0; i<9 && cnt < m.spawn_group; i++) {
+		v3s16 p = pos+spots[i];
+		if (water) {
+			if (env->getMap().getNodeNoEx(p+v3s16(0,1,0)).getContent() != CONTENT_WATERSOURCE)
+				continue;
+		}else{
+			content_t c = env->getMap().getNodeNoEx(pos).getContent();
+			bool have_spot = false;
+			for (s16 x=-1; !have_spot && x<2; x++) {
+			for (s16 y=-1; !have_spot && y<2; y++) {
+			for (s16 z=-1; !have_spot && z<2; z++) {
+				v3s16 pp = p+v3s16(x,y,z);
+				if (env->getMap().getNodeNoEx(pp).getContent() != c)
+					continue;
+				pp.Y++;
+				if (env->getMap().getNodeNoEx(pp).getContent() != CONTENT_AIR)
+					continue;
+				pp.Y++;
+				if (env->getMap().getNodeNoEx(pp).getContent() != CONTENT_AIR)
+					continue;
+				p += v3s16(x,y,z);
+				have_spot = true;
+				break;
+			}
+			}
+			}
+
+			if (!have_spot)
+				continue;
+		}
+		mob_spawn(p,m.content,env);
+		cnt++;
+	}
+}
+
 void content_mob_init()
 {
 	content_t i;
@@ -220,10 +376,9 @@ void content_mob_init()
 	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_RAT)+" 1";
 	f->motion = MM_WANDER;
 	f->moves_silently = true;
-	f->spawn_on = CONTENT_STONE;
-	f->spawn_in = CONTENT_AIR;
 	f->spawn_max_height = -10;
-	f->spawn_max_nearby_mobs = 4;
+	f->spawn_group = 3;
+	f->spawn_naturally = false;
 	f->lifetime = 900.0;
 	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.));
 
@@ -239,12 +394,9 @@ void content_mob_init()
 	f->motion_type = MMT_FLYLOW;
 	f->glow_light = LIGHT_MAX-1;
 	f->moves_silently = true;
-	f->spawn_on = CONTENT_JUNGLETREE;
-	f->spawn_in = CONTENT_AIR;
 	f->spawn_min_height = -5;
 	f->spawn_max_height = 50;
-	f->spawn_max_light = LIGHT_MAX/2;
-	f->spawn_max_nearby_mobs = 5;
+	f->spawn_naturally = false;
 	f->lifetime = 1200.0;
 	f->setCollisionBox(aabb3f(-BS/4.,-BS/6.,-BS/4., BS/4.,BS/6.,BS/4.));
 
@@ -289,11 +441,7 @@ void content_mob_init()
 	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_OERKKI_DUST)+" 2";
 	f->motion = MM_SEEKER;
 	f->moves_silently = true;
-	f->spawn_on = CONTENT_STONE;
-	f->spawn_in = CONTENT_AIR;
 	f->spawn_max_height = 2;
-	f->spawn_max_light = LIGHT_MAX/4;
-	f->spawn_max_nearby_mobs = 2;
 	f->sound_spawn = "mob-oerkki-spawn";
 	f->notices_player = true;
 	f->attack_player_damage = 3;
@@ -343,11 +491,6 @@ void content_mob_init()
 	f->punch_action = MPA_HARM;
 	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_GUNPOWDER)+" 4";
 	f->motion = MM_SENTRY;
-	f->spawn_on = CONTENT_MOSSYCOBBLE;
-	f->spawn_in = CONTENT_AIR;
-	f->spawn_max_light = LIGHT_MAX/3;
-	f->spawn_max_nearby_mobs = 1;
-	f->spawn_farthest_player = 20.0*BS;
 	f->notices_player = true;
 	f->attack_throw_object = CONTENT_MOB_FIREBALL;
 	f->attack_glow_light = LIGHT_MAX-1;
@@ -369,6 +512,7 @@ void content_mob_init()
 	f->attack_player_damage = 3;
 	f->attack_player_range = v3f(2,2,2);
 	f->contact_explosion_diameter = 3;
+	f->spawn_naturally = false;
 	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.));
 
 	i = CONTENT_MOB_DOE;
@@ -389,12 +533,9 @@ void content_mob_init()
 	f->motion = MM_SEEKER;
 	f->motion_type = MMT_WALK;
 	f->sound_random = "mob-deer-env";
-	f->spawn_on = CONTENT_WILDGRASS_SHORT;
-	f->spawn_in = CONTENT_AIR;
 	f->spawn_min_height = -5;
 	f->spawn_max_height = 40;
-	f->spawn_min_light = LIGHT_MAX/2;
-	f->spawn_max_nearby_mobs = 3;
+	f->spawn_group = 3;
 	f->lifetime = 1200.0;
 	f->setCollisionBox(aabb3f(-0.6*BS, 0., -0.6*BS, 0.6*BS, 1.25*BS, 0.6*BS));
 
@@ -418,12 +559,8 @@ void content_mob_init()
 	f->motion_type = MMT_WALK;
 	f->angry_motion = MM_SEEKER;
 	f->sound_random = "mob-deer-env";
-	f->spawn_on = CONTENT_WILDGRASS_SHORT;
-	f->spawn_in = CONTENT_AIR;
 	f->spawn_min_height = -5;
 	f->spawn_max_height = 40;
-	f->spawn_min_light = LIGHT_MAX/2;
-	f->spawn_max_nearby_mobs = 3;
 	f->spawn_chance = 2;
 	f->notices_player = true;
 	f->attack_player_damage = 3;
@@ -451,6 +588,7 @@ void content_mob_init()
 	f->sound_random = "mob-deer-env";
 	f->notices_player = true;
 	f->lifetime = 1800.0;
+	f->spawn_naturally = false;
 	f->setCollisionBox(aabb3f(-0.7*BS, 0., -0.7*BS, 0.7*BS, 1.5*BS, 0.7*BS));
 
 	i = CONTENT_MOB_FISH;
@@ -471,11 +609,9 @@ void content_mob_init()
 	f->motion = MM_WANDER;
 	f->motion_type = MMT_SWIM;
 	f->moves_silently = true;
-	f->spawn_on = CONTENT_SAND;
-	f->spawn_in = CONTENT_WATERSOURCE;
 	f->spawn_min_height = -30;
 	f->spawn_max_height = -2;
-	f->spawn_max_nearby_mobs = 5;
+	f->spawn_group = 3;
 	f->hp = 5;
 	f->lifetime = 1200.0;
 	f->setCollisionBox(aabb3f(-0.25*BS, 0.25*BS, -0.25*BS, 0.25*BS, 0.75*BS, 0.25*BS));
@@ -498,11 +634,8 @@ void content_mob_init()
 	f->motion = MM_SEEKER;
 	f->motion_type = MMT_SWIM;
 	f->moves_silently = true;
-	f->spawn_on = CONTENT_SAND;
-	f->spawn_in = CONTENT_WATERSOURCE;
 	f->spawn_min_height = -30;
 	f->spawn_max_height = -2;
-	f->spawn_max_nearby_mobs = 3;
 	f->notices_player = true;
 	f->attack_player_damage = 3;
 	f->attack_player_range = v3f(1,1,1);
@@ -527,12 +660,8 @@ void content_mob_init()
 	f->tamed_mob = CONTENT_MOB_TAMEWOLF;
 	f->motion = MM_SEEKER;
 	f->motion_type = MMT_WALK;
-	f->spawn_on = CONTENT_WILDGRASS_LONG;
-	f->spawn_in = CONTENT_AIR;
 	f->spawn_min_height = 0;
 	f->spawn_max_height = 40;
-	f->spawn_max_light = LIGHT_MAX/2;
-	f->spawn_max_nearby_mobs = 3;
 	f->sound_punch = "mob-wolf-hit";
 	f->sound_spawn = "mob-wolf-spawn";
 	f->notices_player = true;
@@ -563,6 +692,7 @@ void content_mob_init()
 	f->attack_mob_damage = 5;
 	f->attack_mob_range = v3f(1,1,1);
 	f->lifetime = 1800.0;
+	f->spawn_naturally = false;
 	f->setCollisionBox(aabb3f(-0.5*BS, 0., -0.5*BS, 0.5*BS, 1.*BS, 0.5*BS));
 
 	i = CONTENT_MOB_SHEEP;
@@ -588,12 +718,9 @@ void content_mob_init()
 	f->motion_type = MMT_WALK;
 	f->sound_random = "mob-sheep-env";
 	f->sound_random_extra = "mob-ducksheep-env";
-	f->spawn_on = CONTENT_WILDGRASS_SHORT;
-	f->spawn_in = CONTENT_AIR;
 	f->spawn_min_height = 2;
 	f->spawn_max_height = 50;
-	f->spawn_min_light = LIGHT_MAX/2;
-	f->spawn_max_nearby_mobs = 3;
+	f->spawn_group = 4;
 	f->lifetime = 1800.0;
 	f->setCollisionBox(aabb3f(-0.4*BS, 0., -0.4*BS, 0.4*BS, 1.*BS, 0.4*BS));
 
@@ -613,6 +740,7 @@ void content_mob_init()
 	f->lifetime = 10.0;
 	f->contact_place_node = CONTENT_SNOW;
 	f->contact_drop_item = CONTENT_CRAFTITEM_SNOW_BALL;
+	f->spawn_naturally = false;
 	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.));
 
 	i = CONTENT_MOB_ARROW;
@@ -631,5 +759,6 @@ void content_mob_init()
 	f->attack_mob_range = v3f(1,1,1);
 	f->lifetime = 20.0;
 	f->contact_drop_item = CONTENT_CRAFTITEM_ARROW;
+	f->spawn_naturally = false;
 	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.));
 }

@@ -988,35 +988,91 @@ void ServerEnvironment::step(float dtime)
 				active_object_count_wider += wblock->m_active_objects.size();
 			}
 
+			if (
+				active_object_count_wider < 2
+				&& block->has_spawn_area
+				&& (
+					block->last_spawn < m_time_of_day-6000
+					|| block->last_spawn > m_time_of_day+6000
+				)
+			) {
+				MapNode n = block->getNodeNoEx(block->spawn_area);
+				MapNode n1 = block->getNodeNoEx(block->spawn_area+v3s16(0,1,0));
+				MapNode n2 = block->getNodeNoEx(block->spawn_area+v3s16(0,2,0));
+				u8 light = n1.getLightBlend(getDayNightRatio());
+				if (block->water_spawn) {
+					if (n1.getContent() != CONTENT_WATERSOURCE || n2.getContent() != CONTENT_WATERSOURCE)
+						block->has_spawn_area = false;
+				}else{
+					if (
+						!content_features(n1.getContent()).air_equivalent
+						|| !content_features(n2.getContent()).air_equivalent
+					)
+						block->has_spawn_area = false;
+				}
+
+				if (block->has_spawn_area) {
+					// dawn, passive mobs spawn
+					if (m_time_of_day > 7000 && m_time_of_day < 8000) {
+						if (
+							(
+								n.getContent() == CONTENT_GRASS
+								|| n.getContent() == CONTENT_GRASS_AUTUMN
+								|| n.getContent() == CONTENT_GRASS_FOOTSTEPS
+								|| n.getContent() == CONTENT_GRASS_FOOTSTEPS_AUTUMN
+								|| n.getContent() == CONTENT_MUDSNOW
+								|| (
+									block->water_spawn
+									&& n.getContent() == CONTENT_SAND
+								)
+							) && (
+								light >= LIGHT_SPAWN_BRIGHT
+							)
+						) {
+							mob_spawn_passive(block->spawn_area+block->getPosRelative(),block->water_spawn,this);
+						}else if (n.getContent() == CONTENT_STONE && light <= LIGHT_SPAWN_DARK && block->getPosRelative().Y < -16) {
+							mob_spawn(block->spawn_area+block->getPosRelative(),CONTENT_MOB_RAT,this);
+						}
+						block->last_spawn = m_time_of_day;
+					// dusk, hostile mobs spawn, or fireflies
+					}else if (m_time_of_day > 19000 && m_time_of_day < 20000) {
+						if (light <= LIGHT_SPAWN_DARK) {
+							if (n.getContent() == CONTENT_STONE || n.getContent() == CONTENT_SAND) {
+								mob_spawn_hostile(block->spawn_area+block->getPosRelative(),block->water_spawn,this);
+							}else if (n1.getContent() == CONTENT_JUNGLEGRASS) {
+								mob_spawn(block->spawn_area+block->getPosRelative(),CONTENT_MOB_FIREFLY,this);
+							}
+						}
+						block->last_spawn = m_time_of_day;
+					}
+				}
+			}
+
 			v3s16 p0;
-			bool spawned = false;
 			for (p0.X=0; p0.X<MAP_BLOCKSIZE; p0.X++)
 			for (p0.Y=0; p0.Y<MAP_BLOCKSIZE; p0.Y++)
 			for (p0.Z=0; p0.Z<MAP_BLOCKSIZE; p0.Z++) {
 				v3s16 p = p0 + block->getPosRelative();
 				block->incNodeTicks(p0);
 				MapNode n = block->getNodeNoEx(p0);
-				if (!spawned && active_object_count_wider < 5) {
+				if (!block->has_spawn_area && content_features(n.getContent()).draw_type == CDT_CUBELIKE) {
 					MapNode n1 = block->getNodeNoEx(p0+v3s16(0,1,0));
-					bool spawnable = false;
-					switch (n.getContent()) {
-					case CONTENT_SAND:
-						if (n1.getContent() == CONTENT_WATERSOURCE)
-							spawnable = true;
-						break;
-					case CONTENT_STONE:
-					case CONTENT_MOSSYCOBBLE:
-					case CONTENT_WILDGRASS_SHORT:
-					case CONTENT_WILDGRASS_LONG:
-					case CONTENT_JUNGLETREE:
-						if (n1.getContent() == CONTENT_AIR)
-							spawnable = true;
-						break;
-					default:;
-					}
-					if (spawnable && content_mob_spawn(this,p,active_object_count_wider)) {
-						spawned = true;
-						active_object_count_wider++;
+					MapNode n2 = block->getNodeNoEx(p0+v3s16(0,2,0));
+					if (
+						content_features(n1.getContent()).air_equivalent
+						&& content_features(n2.getContent()).air_equivalent
+					) {
+						block->spawn_area = p0;
+						block->has_spawn_area = true;
+						block->water_spawn = false;
+					}else if (
+						n.getContent() == CONTENT_SAND
+						&& n1.getContent() == CONTENT_WATERSOURCE
+						&& n2.getContent() == CONTENT_WATERSOURCE
+					) {
+						block->spawn_area = p0;
+						block->has_spawn_area = true;
+						block->water_spawn = true;
 					}
 				}
 
