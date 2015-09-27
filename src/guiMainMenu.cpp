@@ -768,7 +768,7 @@ void GUIMainMenu::regenerateGui(v2u32 screensize)
 			txt += "\ndarkrose, sdzen, Pentium44, Menche, MavJS, tiemay, Tapoky, JHeaton, Wayward_One, Stephane, hdastwb, VargaD.\n\n";
 
 			txt += gettext("Artists and Modellers");
-			txt += "\ndarkrose, sdzen, Menche, Pentium44, Wuzzy, Carl 'melkior' Kidwell, Jordach.\n\n";
+			txt += "\ndarkrose, sdzen, Menche, Pentium44, Wuzzy, Carl 'melkior' Kidwell, Jordach, Gwinna, elky.\n\n";
 
 			txt += gettext("Translators");
 			txt += "\ndarkrose, Szkodnix, soognarf, Wuzzy, Akien, redhound, Rui, loh, wario, puma_rc, Uniaika.\n\n";
