@@ -609,9 +609,8 @@ void content_mob_init()
 	f->motion = MM_WANDER;
 	f->motion_type = MMT_SWIM;
 	f->moves_silently = true;
-	f->spawn_min_height = -30;
-	f->spawn_max_height = -2;
 	f->spawn_group = 3;
+	f->spawn_water = true;
 	f->hp = 5;
 	f->lifetime = 1200.0;
 	f->setCollisionBox(aabb3f(-0.25*BS, 0.25*BS, -0.25*BS, 0.25*BS, 0.75*BS, 0.25*BS));
@@ -634,8 +633,7 @@ void content_mob_init()
 	f->motion = MM_SEEKER;
 	f->motion_type = MMT_SWIM;
 	f->moves_silently = true;
-	f->spawn_min_height = -30;
-	f->spawn_max_height = -2;
+	f->spawn_water = true;
 	f->notices_player = true;
 	f->attack_player_damage = 3;
 	f->attack_player_range = v3f(1,1,1);

@@ -988,10 +988,16 @@ void ServerEnvironment::step(float dtime)
 				active_object_count_wider += wblock->m_active_objects.size();
 			}
 
+			// TODO: don't spawn if there was a recent one nearby
 			if (
-				active_object_count_wider < 2
-				&& block->has_spawn_area
+				block->has_spawn_area
 				&& (
+					active_object_count_wider < 2
+					|| (
+						block->water_spawn
+						&& active_object_count_wider < 5
+					)
+				) && (
 					block->last_spawn < m_time_of_day-6000
 					|| block->last_spawn > m_time_of_day+6000
 				)
@@ -1001,6 +1007,7 @@ void ServerEnvironment::step(float dtime)
 				MapNode n2 = block->getNodeNoEx(block->spawn_area+v3s16(0,2,0));
 				u8 light = n1.getLightBlend(getDayNightRatio());
 				if (block->water_spawn) {
+					printf("waterspawn\n");
 					if (n1.getContent() != CONTENT_WATERSOURCE || n2.getContent() != CONTENT_WATERSOURCE)
 						block->has_spawn_area = false;
 				}else{
@@ -1027,6 +1034,7 @@ void ServerEnvironment::step(float dtime)
 								)
 							) && (
 								light >= LIGHT_SPAWN_BRIGHT
+								|| block->water_spawn
 							)
 						) {
 							mob_spawn_passive(block->spawn_area+block->getPosRelative(),block->water_spawn,this);
@@ -1061,6 +1069,7 @@ void ServerEnvironment::step(float dtime)
 					if (
 						content_features(n1.getContent()).air_equivalent
 						&& content_features(n2.getContent()).air_equivalent
+						&& myrand_range(0,5) == 0
 					) {
 						block->spawn_area = p0;
 						block->has_spawn_area = true;
