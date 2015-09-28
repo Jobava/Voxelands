@@ -3974,6 +3974,74 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 						continue;
 					client->SetBlocksNotSent(modified_blocks);
 				}
+			}else if (
+				(
+					wielded_tool_features.param_type == CPT_DROP
+					|| wielded_craft_features.param_type == CPT_DROP
+				)
+				&& wielditem->getData() != 0
+			) {
+				v3s16 blockpos = getNodeBlockPos(p_over);
+
+				/*
+					Check that the block is loaded so that the item
+					can properly be added to the static list too
+				*/
+				MapBlock *block = m_env.getMap().getBlockNoCreateNoEx(blockpos);
+				if (block==NULL) {
+					infostream<<"Error while placing object: "
+							"block not found"<<std::endl;
+					return;
+				}
+
+				/*
+					If in creative mode, item dropping is disabled unless
+					player has build privileges
+				*/
+				if (g_settings->getBool("droppable_inventory") == false || (getPlayerPrivs(player) & PRIV_BUILD) == 0) {
+					infostream<<"Not allowing player to drop item: "
+							"creative mode and no build privs"<<std::endl;
+					return;
+				}
+
+				// Calculate a position for it
+				v3f pos = intToFloat(p_over, BS);
+				//pos.Y -= BS*0.45;
+				pos.Y -= BS*0.25; // let it drop a bit
+				// Randomize a bit
+				pos.X += BS*0.2*(float)myrand_range(-1000,1000)/1000.0;
+				pos.Z += BS*0.2*(float)myrand_range(-1000,1000)/1000.0;
+
+				/*
+					Create the object
+				*/
+				ServerActiveObject *obj = wielditem->createSAO(&m_env, 0, pos);
+
+				if (obj == NULL) {
+					infostream<<"WARNING: item resulted in NULL object, "
+							<<"not placing onto map"
+							<<std::endl;
+				}else{
+					actionstream<<player->getName()<<" places "<<item->getName()
+							<<" at "<<PP(p_over)<<std::endl;
+
+					// Add the object to the environment
+					m_env.addActiveObject(obj);
+
+					infostream<<"Placed object"<<std::endl;
+
+					if (g_settings->getBool("infinite_inventory") == false) {
+						// Delete the right amount of items from the slot
+						InventoryList *ilist = player->inventory.getList("main");
+
+						wielditem->setData(0);
+						ilist->addDiff(item_i,wielditem);
+
+						// Send inventory
+						UpdateCrafting(peer_id);
+						SendInventory(peer_id);
+					}
+				}
 			}else if (wielded_craft_features.teleports > -2) {
 				s8 dest = wielded_craft_features.teleports;
 				/*

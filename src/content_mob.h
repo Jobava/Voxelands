@@ -91,6 +91,7 @@ enum MobDrawType
 
 struct MobFeatures {
 	content_t content;
+	std::wstring description;
 	u8 level;
 #ifndef SERVER
 	TileSpec tiles[6];
@@ -224,6 +225,7 @@ struct MobFeatures {
 	void reset()
 	{
 		content = CONTENT_IGNORE;
+		description = L"";
 		texture = "";
 		texture_display = MDT_AUTO;
 		model = "";

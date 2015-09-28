@@ -60,6 +60,8 @@ struct CraftItemFeatures {
 	// if this teleports the player home, -2 = no, -1 = default home
 	// 0-7 for specific flag colours
 	s8 teleports;
+	// the data value of this item
+	ContentParamType param_type;
 	// used by mobs that are picked up
 	content_t drop_item;
 	// used by snowballs and such... things that are thrown
@@ -89,6 +91,7 @@ struct CraftItemFeatures {
 		energy_effect(0),
 		drop_count(-1),
 		teleports(-2),
+		param_type(CPT_NONE),
 		drop_item(CONTENT_IGNORE),
 		thrown_item(CONTENT_IGNORE),
 		shot_item(CONTENT_IGNORE),

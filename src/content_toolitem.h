@@ -52,6 +52,8 @@ struct ToolItemFeatures {
 	f32 dig_time;
 	// the level of the tool, this affects the amount of minerals etc.
 	u8 level;
+	// the data value of this item
+	ContentParamType param_type;
 	// used for eg. bows throwing an arrow
 	content_t thrown_item;
 	// when this item is placed, it should be replaced by this in inventory
@@ -78,6 +80,7 @@ struct ToolItemFeatures {
 		hardness(0.),
 		dig_time(3.),
 		level(1),
+		param_type(CPT_NONE),
 		thrown_item(CONTENT_IGNORE),
 		onplace_replace_item(CONTENT_IGNORE),
 		onplace_node(CONTENT_IGNORE)
@@ -158,5 +161,6 @@ ToolItemFeatures & content_toolitem_features(std::string subname);
 #define CONTENT_TOOLITEM_MITHRIL_AXE (CONTENT_TOOLITEM_MASK | 0x2D)
 #define CONTENT_TOOLITEM_MITHRIL_SWORD (CONTENT_TOOLITEM_MASK | 0x2E)
 #define CONTENT_TOOLITEM_MITHRIL_SPEAR (CONTENT_TOOLITEM_MASK | 0x2F)
+#define CONTENT_TOOLITEM_MOB_SPAWNER (CONTENT_TOOLITEM_MASK | 0x30)
 
 #endif

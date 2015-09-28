@@ -783,6 +783,7 @@ void content_toolitem_init()
 	f->name = "mithril_pick";
 	f->description = wgettext("Mithril Pick");
 	f->type = TT_PICK;
+	f->param_type = CPT_ENCHANTMENT;
 	f->hardness = 700.;
 	f->dig_time = 0.2;
 	f->level = 5;
@@ -797,6 +798,7 @@ void content_toolitem_init()
 	f->name = "mithril_shovel";
 	f->description = wgettext("Mithril Shovel");
 	f->type = TT_SHOVEL;
+	f->param_type = CPT_ENCHANTMENT;
 	f->hardness = 700.;
 	f->dig_time = 0.05;
 	f->level = 5;
@@ -810,6 +812,7 @@ void content_toolitem_init()
 	f->name = "mithril_axe";
 	f->description = wgettext("Mithril Axe");
 	f->type = TT_AXE;
+	f->param_type = CPT_ENCHANTMENT;
 	f->hardness = 700.;
 	f->dig_time = 0.2;
 	f->level = 5;
@@ -823,6 +826,7 @@ void content_toolitem_init()
 	f->name = "mithril_sword";
 	f->description = wgettext("Mithril Sword");
 	f->type = TT_SWORD;
+	f->param_type = CPT_ENCHANTMENT;
 	f->hardness = 700.;
 	f->dig_time = 0.2;
 	f->level = 5;
@@ -836,9 +840,28 @@ void content_toolitem_init()
 	f->name = "mithril_spear";
 	f->description = wgettext("Mithril Spear");
 	f->type = TT_SPEAR;
+	f->param_type = CPT_ENCHANTMENT;
 	f->hardness = 600.;
 	f->dig_time = 0.2;
 	f->level = 5;
 	crafting::setSpearRecipe(CONTENT_CRAFTITEM_MITHRIL,CONTENT_TOOLITEM_MITHRIL_SPEAR);
+	lists::add("craftguide",i);
+
+	i = CONTENT_TOOLITEM_MOB_SPAWNER;
+	f = &g_content_toolitem_features[i];
+	f->content = i;
+	f->texture = "tool_mob_spawner.png";
+	f->name = "mob_spawner";
+	f->description = wgettext("Mob Spawner");
+	f->type = TT_SPECIAL;
+	f->param_type = CPT_DROP;
+	{
+		content_t r[9] = {
+			CONTENT_IGNORE,				CONTENT_CRAFTITEM_MITHRIL_UNBOUND,	CONTENT_IGNORE,
+			CONTENT_CRAFTITEM_MITHRIL_UNBOUND,	CONTENT_IGNORE,				CONTENT_CRAFTITEM_MITHRIL_UNBOUND,
+			CONTENT_IGNORE,				CONTENT_CRAFTITEM_MITHRIL_UNBOUND,	CONTENT_IGNORE
+		};
+		crafting::setRecipe(r,i,1);
+	}
 	lists::add("craftguide",i);
 }

@@ -368,6 +368,7 @@ void content_mob_init()
 	i = CONTENT_MOB_RAT;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
+	f->description = wgettext("Rat");
 	f->level = MOB_PASSIVE;
 	f->model = "rat.x";
 	f->setTexture("mob_rat.png");
@@ -385,6 +386,7 @@ void content_mob_init()
 	i = CONTENT_MOB_FIREFLY;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
+	f->description = wgettext("Firefly");
 	f->level = MOB_PASSIVE;
 	f->model_scale = v3f(0.5,0.5,0.5);
 	f->setTexture("mob_firefly.png");
@@ -403,6 +405,7 @@ void content_mob_init()
 	i = CONTENT_MOB_OERKKI;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
+	f->description = wgettext("Oerkki");
 	f->level = MOB_AGGRESSIVE;
 	if (g_settings->getBool("enable_supernatural")) {
 		f->model = "oerkki.x";
@@ -452,6 +455,7 @@ void content_mob_init()
 	i = CONTENT_MOB_DUNGEON_MASTER;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
+	f->description = wgettext("Dungeon Master");
 	f->level = MOB_DESTRUCTIVE;
 	if (g_settings->getBool("enable_supernatural")) {
 		f->model = "dungeon_master.b3d";
@@ -501,6 +505,7 @@ void content_mob_init()
 	i = CONTENT_MOB_FIREBALL;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
+	f->description = wgettext("Fireball");
 	f->level = MOB_DESTRUCTIVE;
 	f->setTexture("mob_fireball.png");
 	f->punch_action = MPA_IGNORE;
@@ -518,6 +523,7 @@ void content_mob_init()
 	i = CONTENT_MOB_DOE;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
+	f->description = wgettext("Doe");
 	f->level = MOB_PASSIVE;
 	f->hp = 30;
 	f->model = "doe.x";
@@ -542,6 +548,7 @@ void content_mob_init()
 	i = CONTENT_MOB_STAG;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
+	f->description = wgettext("Stag");
 	f->level = MOB_AGGRESSIVE;
 	f->hp = 40;
 	f->model = "stag.x";
@@ -571,6 +578,7 @@ void content_mob_init()
 	i = CONTENT_MOB_TAMESTAG;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
+	f->description = wgettext("Stag");
 	f->level = MOB_PASSIVE;
 	f->hp = 40;
 	f->model = "stag.b3d";
@@ -594,6 +602,7 @@ void content_mob_init()
 	i = CONTENT_MOB_FISH;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
+	f->description = wgettext("Fish");
 	f->level = MOB_PASSIVE;
 	f->model = "fish.b3d";
 	f->model_rotation = v3f(0,-90,0);
@@ -618,6 +627,7 @@ void content_mob_init()
 	i = CONTENT_MOB_SHARK;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
+	f->description = wgettext("Shark");
 	f->level = MOB_AGGRESSIVE;
 	f->hp = 40;
 	f->model = "shark.b3d";
@@ -643,6 +653,7 @@ void content_mob_init()
 	i = CONTENT_MOB_WOLF;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
+	f->description = wgettext("Wolf");
 	f->level = MOB_AGGRESSIVE;
 	f->hp = 40;
 	f->model = "wolf.b3d";
@@ -671,6 +682,7 @@ void content_mob_init()
 	i = CONTENT_MOB_TAMEWOLF;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
+	f->description = wgettext("Tame Wolf");
 	f->level = MOB_PASSIVE;
 	f->hp = 40;
 	f->model = "wolf.b3d";
@@ -696,6 +708,7 @@ void content_mob_init()
 	i = CONTENT_MOB_SHEEP;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
+	f->description = wgettext("Sheep");
 	f->level = MOB_PASSIVE;
 	f->hp = 30;
 	f->model = "sheep.b3d";
@@ -725,6 +738,7 @@ void content_mob_init()
 	i = CONTENT_MOB_SNOWBALL;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
+	f->description = wgettext("Snowball");
 	f->level = MOB_AGGRESSIVE;
 	f->setTexture("snow_ball.png");
 	f->model_offset = v3f(0,0.2,0);
@@ -744,6 +758,7 @@ void content_mob_init()
 	i = CONTENT_MOB_ARROW;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
+	f->description = wgettext("Arrow");
 	f->level = MOB_AGGRESSIVE;
 	f->setTexture("mob_arrow.png");
 	f->texture_display = MDT_EXTRUDED;

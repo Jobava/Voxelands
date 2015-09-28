@@ -400,6 +400,9 @@ public:
 	{
 		return "";
 	}
+
+	ServerActiveObject* createSAO(ServerEnvironment *env, u16 id, v3f pos);
+
 	bool isCookable() const;
 	InventoryItem *createCookResult() const;
 	bool isFuel() const;

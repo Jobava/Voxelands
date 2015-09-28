@@ -1512,6 +1512,7 @@ void content_craftitem_init()
 	f->content = CONTENT_CRAFTITEM_MITHRIL;
 	f->texture = "mithril_unbound.png";
 	f->name = "mithril_bound";
+	f->param_type = CPT_ENCHANTMENT;
 	f->description = wgettext("Mithril");
 	f->overlay_base = "ingot_overlay";
 	lists::add("creative",i);

@@ -289,12 +289,14 @@ video::ITexture * CraftItem::getImage() const
 	os<<name;
 
 	if (base != "") {
-		EnchantmentInfo info;
-		u16 data = m_data;
-		// TODO: adding more than 2 overlays messes up alpha
-		for (int i=0; i<2 && enchantment_get(&data,&info); i++) {
-			if (info.overlay != "")
-				os<<"^"<<base<<"_"<<info.overlay<<".png";
+		if (content_craftitem_features(m_content).param_type == CPT_ENCHANTMENT) {
+			EnchantmentInfo info;
+			u16 data = m_data;
+			// TODO: adding more than 2 overlays messes up alpha
+			for (int i=0; i<2 && enchantment_get(&data,&info); i++) {
+				if (info.overlay != "")
+					os<<"^"<<base<<"_"<<info.overlay<<".png";
+			}
 		}
 	}
 
@@ -359,14 +361,16 @@ std::wstring CraftItem::getGuiText()
 		txt += narrow_to_wide(buff);
 	}
 	if (m_data > 0) {
-		EnchantmentInfo info;
-		u16 data = m_data;
-		txt += L"\n";
-		while (enchantment_get(&data,&info)) {
+		if (content_craftitem_features(m_content).param_type == CPT_ENCHANTMENT) {
+			EnchantmentInfo info;
+			u16 data = m_data;
 			txt += L"\n";
-			txt += info.name;
-			txt += L" ";
-			txt += itows(info.level);
+			while (enchantment_get(&data,&info)) {
+				txt += L"\n";
+				txt += info.name;
+				txt += L" ";
+				txt += itows(info.level);
+			}
 		}
 	}
 
@@ -375,11 +379,14 @@ std::wstring CraftItem::getGuiText()
 
 ServerActiveObject* CraftItem::createSAO(ServerEnvironment *env, u16 id, v3f pos)
 {
+	content_t drop = content_craftitem_features(m_content).drop_item;
+	if (content_craftitem_features(m_content).param_type == CPT_DROP && m_data != 0)
+		drop = m_data;
 	// Special cases
-	if ((content_craftitem_features(m_content).drop_item&CONTENT_MOB_MASK) == CONTENT_MOB_MASK) {
+	if ((drop&CONTENT_MOB_MASK) == CONTENT_MOB_MASK) {
 		v3f p = pos;
 		p.Y += 0.5*BS;
-		ServerActiveObject *obj = new MobSAO(env,id,p,content_craftitem_features(m_content).drop_item);
+		ServerActiveObject *obj = new MobSAO(env,id,p,drop);
 		if (obj)
 			return obj;
 	}
@@ -469,13 +476,15 @@ std::string ToolItem::getBasename() const
 	std::ostringstream os;
 	os<<content_toolitem_features(m_content).texture;
 
-	EnchantmentInfo info;
-	u16 data = m_data;
-	// TODO: adding more than 2 overlays messes up alpha
-	for (int i=0; i<2 && enchantment_get(&data,&info); i++) {
-		std::string ol = toolitem_overlay(m_content,info.overlay);
-		if (ol != "")
-			os<<"^"<<ol;
+	if (content_toolitem_features(m_content).param_type == CPT_ENCHANTMENT) {
+		EnchantmentInfo info;
+		u16 data = m_data;
+		// TODO: adding more than 2 overlays messes up alpha
+		for (int i=0; i<2 && enchantment_get(&data,&info); i++) {
+			std::string ol = toolitem_overlay(m_content,info.overlay);
+			if (ol != "")
+				os<<"^"<<ol;
+		}
 	}
 
 	return os.str();
@@ -527,14 +536,30 @@ std::wstring ToolItem::getGuiText()
 		txt += narrow_to_wide(buff);
 	}
 	if (m_data > 0) {
-		EnchantmentInfo info;
-		u16 data = m_data;
-		txt += L"\n";
-		while (enchantment_get(&data,&info)) {
+		switch (content_toolitem_features(m_content).param_type) {
+		case CPT_ENCHANTMENT:
+		{
+			EnchantmentInfo info;
+			u16 data = m_data;
 			txt += L"\n";
-			txt += info.name;
-			txt += L" ";
-			txt += itows(info.level);
+			while (enchantment_get(&data,&info)) {
+				txt += L"\n";
+				txt += info.name;
+				txt += L" ";
+				txt += itows(info.level);
+			}
+			break;
+		}
+		case CPT_DROP:
+		{
+			if ((m_data&CONTENT_MOB_MASK) == CONTENT_MOB_MASK) {
+				txt += L"\n";
+				txt += wgettext("Contains: ");
+				txt += content_mob_features(m_data).description;
+			}
+			break;
+		}
+		default:;
 		}
 	}
 
@@ -560,6 +585,23 @@ bool ToolItem::isFuel() const
 float ToolItem::getFuelTime() const
 {
 	return content_toolitem_features(m_content).fuel_time;
+}
+
+ServerActiveObject* ToolItem::createSAO(ServerEnvironment *env, u16 id, v3f pos)
+{
+	content_t drop = CONTENT_IGNORE;
+	if (content_toolitem_features(m_content).param_type == CPT_DROP && m_data != 0)
+		drop = m_data;
+	// Special cases
+	if ((drop&CONTENT_MOB_MASK) == CONTENT_MOB_MASK) {
+		v3f p = pos;
+		p.Y += 0.5*BS;
+		ServerActiveObject *obj = new MobSAO(env,id,p,drop);
+		if (obj)
+			return obj;
+	}
+	// Default
+	return InventoryItem::createSAO(env, id, pos);
 }
 
 /*
