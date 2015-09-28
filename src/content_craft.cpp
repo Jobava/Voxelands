@@ -876,7 +876,7 @@ FoundReverseRecipe getReverseRecipe(InventoryItem *iitem, int index)
 
 //how to update an ingredient list given a range of new craft items
 template <typename It>
-void addToIngredientList(It results_begin, It results_end, std::vector<content_t>& ingredient_list)
+void addToIngredientList(It results_begin, It results_end, std::vector<lists::ListData>& ingredient_list)
 {
 	using namespace std;
 
@@ -926,7 +926,7 @@ std::vector<content_t>& getCraftGuideIngredientList()
 	static unsigned last_craftguide_count = 0;
 
 	//get the craftguide list
-	const vector<content_t>& craft_list = lists::get("craftguide");
+	const vector<lists::ListData>& craft_list = lists::get("craftguide");
 
 	//check if more items need to be added
 	if (craft_list.size() > last_craftguide_count) {
@@ -944,7 +944,7 @@ std::vector<content_t>& getCraftGuideIngredientList()
 
 void giveCreative(Player *player)
 {
-	std::vector<content_t> &creativeinv = lists::get("player-creative");
+	std::vector<lists::ListData> &creativeinv = lists::get("player-creative");
 
 	InventoryList *l = player->inventory.getList("main");
 
@@ -957,13 +957,7 @@ void giveCreative(Player *player)
 	player->resetInventory();
 
 	for(u8 i=0; i<creativeinv.size(); i++) {
-		if ((creativeinv[(int)i]&CONTENT_CRAFTITEM_MASK) == CONTENT_CRAFTITEM_MASK) {
-			assert(player->inventory.addItem("main", new CraftItem(creativeinv[i], 1,0)) == NULL) ;
-		}else if ((creativeinv.at(i)&CONTENT_TOOLITEM_MASK) == CONTENT_TOOLITEM_MASK) {
-			assert(player->inventory.addItem("main", new ToolItem(creativeinv[i], 0,0)) == NULL) ;
-		}else{
-			assert(player->inventory.addItem("main", new MaterialItem(creativeinv[i], 1,0)) == NULL) ;
-		}
+		player->inventory.addItem("main",InventoryItem::create(creativeinv[i].content,creativeinv[i].count,0,creativeinv[i].data);
 	}
 }
 

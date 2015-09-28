@@ -26,15 +26,22 @@
 
 namespace lists {
 
-std::map< std::string , std::vector<content_t> > c_lists;
+std::map< std::string , std::vector<ListData> > c_lists;
 
-void add(std::string name, content_t c)
+void add(std::string name, content_t c, uint16_t count, uint16_t data)
 {
-	if (std::find(c_lists[name].begin(),c_lists[name].end(),c) == c_lists[name].end())
-		c_lists[name].push_back(c);
+	for (std::vector<ListData>::iterator i = c_lists[name].begin(); i != c_lists[name].end(); ++i) {
+		ListData d = *i;
+		if (d.content == c && d.data == data) {
+			i->count = count;
+			return;
+		}
+	}
+
+	c_lists[name].push_back(ListData(c,count,data));
 }
 
-std::vector<content_t> &get(std::string name)
+std::vector<ListData> &get(std::string name)
 {
 	return c_lists[name];
 }

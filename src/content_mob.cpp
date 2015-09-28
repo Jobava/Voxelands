@@ -28,6 +28,7 @@
 #include "environment.h"
 #include "map.h"
 #include "profiler.h"
+#include "intl.h"
 
 MobFeatures g_content_mob_features[CONTENT_MOB_COUNT];
 
