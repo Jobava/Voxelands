@@ -787,10 +787,11 @@ void content_mob_init()
 	f->contact_drop_item = CONTENT_CRAFTITEM_ARROW;
 	f->spawn_naturally = false;
 	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.));
-        
+
 	i = CONTENT_MOB_GREY_KITTY;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
+	f->description = wgettext("Grey Kitten");
 	f->level = MOB_AGGRESSIVE;
 	f->hp = 30;
 	f->model = "kitty.b3d";
@@ -811,10 +812,12 @@ void content_mob_init()
 	f->spawn_max_height = 40;
 	f->lifetime = 1200.0;
 	f->setCollisionBox(aabb3f(-0.6*BS, 0., -0.6*BS, 0.6*BS, 1.25*BS, 0.6*BS));
-	
+	lists::add("creative",CONTENT_TOOLITEM_MOB_SPAWNER,1,i);
+
 	i = CONTENT_MOB_WHITE_KITTY;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
+	f->description = wgettext("White Kitten");
 	f->level = MOB_AGGRESSIVE;
 	f->hp = 30;
 	f->model = "kitty.b3d";
@@ -835,10 +838,12 @@ void content_mob_init()
 	f->spawn_max_height = 40;
 	f->lifetime = 1200.0;
 	f->setCollisionBox(aabb3f(-0.6*BS, 0., -0.6*BS, 0.6*BS, 1.25*BS, 0.6*BS));
-	
+	lists::add("creative",CONTENT_TOOLITEM_MOB_SPAWNER,1,i);
+
 	i = CONTENT_MOB_SIAMESE_KITTY;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
+	f->description = wgettext("Siamese Kitten");
 	f->level = MOB_AGGRESSIVE;
 	f->hp = 30;
 	f->model = "kitty.b3d";
@@ -859,10 +864,12 @@ void content_mob_init()
 	f->spawn_max_height = 40;
 	f->lifetime = 1200.0;
 	f->setCollisionBox(aabb3f(-0.6*BS, 0., -0.6*BS, 0.6*BS, 1.25*BS, 0.6*BS));
-	
+	lists::add("creative",CONTENT_TOOLITEM_MOB_SPAWNER,1,i);
+
 	i = CONTENT_MOB_GINGER_KITTY;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
+	f->description = wgettext("Ginger Kitten");
 	f->level = MOB_AGGRESSIVE;
 	f->hp = 30;
 	f->model = "kitty.b3d";
@@ -883,4 +890,5 @@ void content_mob_init()
 	f->spawn_max_height = 40;
 	f->lifetime = 1200.0;
 	f->setCollisionBox(aabb3f(-0.6*BS, 0., -0.6*BS, 0.6*BS, 1.25*BS, 0.6*BS));
+	lists::add("creative",CONTENT_TOOLITEM_MOB_SPAWNER,1,i);
 }
