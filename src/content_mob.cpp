@@ -22,6 +22,7 @@
 #include "serverobject.h"
 #include "content_sao.h"
 #include "content_mob.h"
+#include "content_list.h"
 #include "content_craftitem.h"
 #include "main.h"
 #include "settings.h"
@@ -383,6 +384,7 @@ void content_mob_init()
 	f->spawn_naturally = false;
 	f->lifetime = 900.0;
 	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS/2.,BS/3.));
+	lists::add("creative",CONTENT_TOOLITEM_MOB_SPAWNER,1,i);
 
 	i = CONTENT_MOB_FIREFLY;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
@@ -402,6 +404,7 @@ void content_mob_init()
 	f->spawn_naturally = false;
 	f->lifetime = 1200.0;
 	f->setCollisionBox(aabb3f(-BS/4.,-BS/6.,-BS/4., BS/4.,BS/6.,BS/4.));
+	lists::add("creative",CONTENT_TOOLITEM_MOB_SPAWNER,1,i);
 
 	i = CONTENT_MOB_OERKKI;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
@@ -452,6 +455,7 @@ void content_mob_init()
 	f->attack_player_range = v3f(1,1,1);
 	f->lifetime = 600.0;
 	f->setCollisionBox(aabb3f(-BS/3.,0.0,-BS/3., BS/3.,BS*2.,BS/3.));
+	lists::add("creative",CONTENT_TOOLITEM_MOB_SPAWNER,1,i);
 
 	i = CONTENT_MOB_DUNGEON_MASTER;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
@@ -502,6 +506,7 @@ void content_mob_init()
 	f->attack_throw_offset = v3f(0,1.4,-1.0);
 	f->lifetime = 600.0;
 	f->setCollisionBox(aabb3f(-0.75*BS, 0.*BS, -0.75*BS, 0.75*BS, 2.0*BS, 0.75*BS));
+	lists::add("creative",CONTENT_TOOLITEM_MOB_SPAWNER,1,i);
 
 	i = CONTENT_MOB_FIREBALL;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
@@ -545,6 +550,7 @@ void content_mob_init()
 	f->spawn_group = 3;
 	f->lifetime = 1200.0;
 	f->setCollisionBox(aabb3f(-0.6*BS, 0., -0.6*BS, 0.6*BS, 1.25*BS, 0.6*BS));
+	lists::add("creative",CONTENT_TOOLITEM_MOB_SPAWNER,1,i);
 
 	i = CONTENT_MOB_STAG;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
@@ -575,6 +581,7 @@ void content_mob_init()
 	f->attack_player_range = v3f(1,1,1);
 	f->lifetime = 900.0;
 	f->setCollisionBox(aabb3f(-0.7*BS, 0., -0.7*BS, 0.7*BS, 1.5*BS, 0.7*BS));
+	lists::add("creative",CONTENT_TOOLITEM_MOB_SPAWNER,1,i);
 
 	i = CONTENT_MOB_TAMESTAG;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
@@ -624,6 +631,7 @@ void content_mob_init()
 	f->hp = 5;
 	f->lifetime = 1200.0;
 	f->setCollisionBox(aabb3f(-0.25*BS, 0.25*BS, -0.25*BS, 0.25*BS, 0.75*BS, 0.25*BS));
+	lists::add("creative",CONTENT_TOOLITEM_MOB_SPAWNER,1,i);
 
 	i = CONTENT_MOB_SHARK;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
@@ -650,6 +658,7 @@ void content_mob_init()
 	f->attack_player_range = v3f(1,1,1);
 	f->lifetime = 600.0;
 	f->setCollisionBox(aabb3f(-0.75*BS, 0., -0.75*BS, 0.75*BS, 1.*BS, 0.75*BS));
+	lists::add("creative",CONTENT_TOOLITEM_MOB_SPAWNER,1,i);
 
 	i = CONTENT_MOB_WOLF;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
@@ -679,6 +688,7 @@ void content_mob_init()
 	f->attack_player_range = v3f(1,1,1);
 	f->lifetime = 900.0;
 	f->setCollisionBox(aabb3f(-0.5*BS, 0., -0.5*BS, 0.5*BS, 1.*BS, 0.5*BS));
+	lists::add("creative",CONTENT_TOOLITEM_MOB_SPAWNER,1,i);
 
 	i = CONTENT_MOB_TAMEWOLF;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
@@ -705,6 +715,7 @@ void content_mob_init()
 	f->lifetime = 1800.0;
 	f->spawn_naturally = false;
 	f->setCollisionBox(aabb3f(-0.5*BS, 0., -0.5*BS, 0.5*BS, 1.*BS, 0.5*BS));
+	lists::add("creative",CONTENT_TOOLITEM_MOB_SPAWNER,1,i);
 
 	i = CONTENT_MOB_SHEEP;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
@@ -735,6 +746,7 @@ void content_mob_init()
 	f->spawn_group = 4;
 	f->lifetime = 1800.0;
 	f->setCollisionBox(aabb3f(-0.4*BS, 0., -0.4*BS, 0.4*BS, 1.*BS, 0.4*BS));
+	lists::add("creative",CONTENT_TOOLITEM_MOB_SPAWNER,1,i);
 
 	i = CONTENT_MOB_SNOWBALL;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];

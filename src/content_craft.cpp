@@ -875,8 +875,7 @@ FoundReverseRecipe getReverseRecipe(InventoryItem *iitem, int index)
 }
 
 //how to update an ingredient list given a range of new craft items
-template <typename It>
-void addToIngredientList(It results_begin, It results_end, std::vector<lists::ListData>& ingredient_list)
+void addToIngredientList(std::vector<lists::ListData> results, uint32_t begin, std::vector<content_t>& ingredient_list)
 {
 	using namespace std;
 
@@ -884,10 +883,11 @@ void addToIngredientList(It results_begin, It results_end, std::vector<lists::Li
 	set<content_t> ingredients (ingredient_list.begin(), ingredient_list.end());
 
 	//go through the result list
-	for (It it = results_begin; it != results_end; ++it) {
+	for (std::vector<lists::ListData>::iterator it = results.begin()+begin; it != results.end(); ++it) {
 
+		lists::ListData d = *it;
 		//make a temporary inventory item for the result
-		InventoryItem *result = InventoryItem::create(*it, 1);
+		InventoryItem *result = InventoryItem::create(d.content, 1, 0, d.data);
 
 		//go through every recipe for this item
 		for (int rec_ind = getRecipeCount(result); rec_ind--;) {
@@ -923,7 +923,7 @@ std::vector<content_t>& getCraftGuideIngredientList()
 
 	//the ingredient list, and the number of items that were in the craftguide list at the last check
 	static vector<content_t> ingredient_list;
-	static unsigned last_craftguide_count = 0;
+	static uint32_t last_craftguide_count = 0;
 
 	//get the craftguide list
 	const vector<lists::ListData>& craft_list = lists::get("craftguide");
@@ -932,7 +932,7 @@ std::vector<content_t>& getCraftGuideIngredientList()
 	if (craft_list.size() > last_craftguide_count) {
 
 		//if so, add the new stuff
-		addToIngredientList(craft_list.begin() + last_craftguide_count, craft_list.end(), ingredient_list);
+		addToIngredientList(craft_list, last_craftguide_count, ingredient_list);
 
 		//and update the craftguide count
 		last_craftguide_count = craft_list.size();
@@ -957,7 +957,7 @@ void giveCreative(Player *player)
 	player->resetInventory();
 
 	for(u8 i=0; i<creativeinv.size(); i++) {
-		player->inventory.addItem("main",InventoryItem::create(creativeinv[i].content,creativeinv[i].count,0,creativeinv[i].data);
+		player->inventory.addItem("main", InventoryItem::create(creativeinv[i].content,creativeinv[i].count,0,creativeinv[i].data));
 	}
 }
 
