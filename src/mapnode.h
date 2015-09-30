@@ -777,6 +777,44 @@ struct ContentFeatures
 ContentFeatures & content_features(content_t i);
 ContentFeatures & content_features(MapNode &n);
 
+struct SelectedNode
+{
+	v3s16 pos;
+	u16 crack;
+	bool has_crack;
+	bool is_coloured;
+
+	SelectedNode()
+	{
+		pos = v3s16(0,0,0);
+		has_crack = false;
+		is_coloured = true;
+	}
+
+	SelectedNode(v3s16 p)
+	{
+		pos = p;
+		has_crack = false;
+		is_coloured = true;
+	}
+
+	SelectedNode(v3s16 p, u16 c)
+	{
+		pos = p;
+		crack = c;
+		has_crack = true;
+		is_coloured = true;
+	}
+
+	SelectedNode(v3s16 p, u16 c, bool h)
+	{
+		pos = p;
+		crack = c;
+		has_crack = true;
+		is_coloured = h;
+	}
+};
+
 /*
 	Packs directions like (1,0,0), (1,-1,0)
 */

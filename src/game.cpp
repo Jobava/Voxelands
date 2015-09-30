@@ -862,7 +862,6 @@ void the_game(
 
 	float nodig_delay_counter = 0.0;
 	float dig_time = 0.0;
-	u16 dig_index = 0;
 	v3s16 nodepos_old(-32768,-32768,-32768);
 
 	float use_delay_counter = 0.5;
@@ -899,6 +898,7 @@ void the_game(
 
 	bool has_selected_node = false;
 	v3s16 selected_node_pos = v3s16(0,0,0);
+	u32 selected_node_crack = 0;
 
 	/*
 		Main loop
@@ -1577,11 +1577,6 @@ void the_game(
 				client.setPointedContent(selected_active_object->getContent());
 				/* Clear possible cracking animation */
 				if (nodepos_old != v3s16(-32768,-32768,-32768)) {
-					client.clearTempMod(nodepos_old);
-					MapNode nn = client.getNode(nodepos_old);
-					v3s16 aa = content_features(nn).onact_also_affects;
-					if (aa != v3s16(0,0,0))
-						client.clearTempMod(nodepos_old+nn.getEffectedRotation());
 					dig_time = 0.0;
 					nodepos_old = v3s16(-32768,-32768,-32768);
 				}
@@ -1644,11 +1639,6 @@ void the_game(
 
 				if (!nodefound) {
 					if (nodepos_old != v3s16(-32768,-32768,-32768)) {
-						client.clearTempMod(nodepos_old);
-						MapNode nn = client.getNode(nodepos_old);
-						v3s16 aa = content_features(nn).onact_also_affects;
-						if (aa != v3s16(0,0,0))
-							client.clearTempMod(nodepos_old+nn.getEffectedRotation());
 						dig_time = 0.0;
 						nodepos_old = v3s16(-32768,-32768,-32768);
 					}
@@ -1661,13 +1651,6 @@ void the_game(
 						Check information text of node
 					*/
 
-					if (nodepos != nodepos_old && nodepos_old != v3s16(-32768,-32768,-32768)) {
-						client.clearTempMod(nodepos_old);
-						MapNode nn = client.getNode(nodepos_old);
-						v3s16 aa = content_features(nn).onact_also_affects;
-						if (aa != v3s16(0,0,0))
-							client.clearTempMod(nodepos_old+nn.getEffectedRotation());
-					}
 					NodeMetadata *meta = client.getNodeMetadata(nodepos);
 					if (meta)
 						infotext = meta->infoText();
@@ -1676,27 +1659,14 @@ void the_game(
 						Handle digging
 					*/
 
-					if (input->getLeftReleased()) {
-						client.clearTempMod(nodepos);
-						MapNode nn = client.getNode(nodepos);
-						v3s16 aa = content_features(nn).onact_also_affects;
-						if (aa != v3s16(0,0,0))
-							client.clearTempMod(nodepos+nn.getEffectedRotation());
+					if (input->getLeftReleased())
 						dig_time = 0.0;
-					}
 					/*
 						Visualize selection
 					*/
 
-					if (highlight_selected_node) {
-						client.setTempMod(nodepos, NodeMod(NODEMOD_SELECTION));
-						MapNode nn = client.getNode(nodepos);
-						v3s16 aa = content_features(nn).onact_also_affects;
-						if (aa != v3s16(0,0,0))
-							client.setTempMod(nodepos+nn.getEffectedRotation(),NodeMod(NODEMOD_SELECTION));
-					}else{
+					if (!highlight_selected_node)
 						hilightboxes.push_back(nodehilightbox);
-					}
 
 					if (nodig_delay_counter > 0.0) {
 						nodig_delay_counter -= dtime;
@@ -1706,11 +1676,6 @@ void the_game(
 									<<nodepos.Y<<","<<nodepos.Z<<")"<<std::endl;
 
 							if (nodepos_old != v3s16(-32768,-32768,-32768)) {
-								client.clearTempMod(nodepos_old);
-								MapNode nn = client.getNode(nodepos_old);
-								v3s16 aa = content_features(nn).onact_also_affects;
-								if (aa != v3s16(0,0,0))
-									client.clearTempMod(nodepos_old+nn.getEffectedRotation());
 								dig_time = 0.0;
 								nodepos_old = v3s16(-32768,-32768,-32768);
 							}
@@ -1747,42 +1712,29 @@ void the_game(
 
 							if (prop.diggable == false) {
 								dig_time_complete = 10000000.0;
-								client.clearTempMod(nodepos);
-								MapNode nn = client.getNode(nodepos);
-								v3s16 aa = content_features(nn).onact_also_affects;
-								if (aa != v3s16(0,0,0))
-									client.clearTempMod(nodepos+nn.getEffectedRotation());
 							}else{
 								dig_time_complete = prop.time;
 								if (enable_particles)
 									addPunchingParticles(smgr, player, nodepos, content_features(n).tiles);
 
 								if (dig_time_complete >= 0.001) {
-									dig_index = (u16)((float)CRACK_ANIMATION_LENGTH
+									selected_node_crack = (u16)((float)CRACK_ANIMATION_LENGTH
 											* dig_time/dig_time_complete);
 								}else {
 									// This is for torches
-									dig_index = CRACK_ANIMATION_LENGTH;
+									selected_node_crack = CRACK_ANIMATION_LENGTH;
 								}
 
-								if (dig_index < CRACK_ANIMATION_LENGTH) {
-									client.setTempMod(nodepos, NodeMod(NODEMOD_CRACK, dig_index));
-								}else{
+								if (selected_node_crack >= CRACK_ANIMATION_LENGTH) {
 									infostream<<"Digging completed"<<std::endl;
 									client.groundAction(3, nodepos, neighbourpos, g_selected_item);
 									client.clearTempMod(nodepos);
 									client.removeNode(nodepos);
-									{
-										MapNode nn = client.getNode(nodepos);
-										v3s16 aa = content_features(nn).onact_also_affects;
-										if (aa != v3s16(0,0,0))
-											client.clearTempMod(nodepos+nn.getEffectedRotation());
-									}
 
 									if (enable_particles)
 										addDiggingParticles(smgr, player, nodepos, content_features(n).tiles);
 
-									dig_time = 0;
+									dig_time = 0.0;
 
 									nodig_delay_counter = dig_time_complete
 											/ (float)CRACK_ANIMATION_LENGTH;
@@ -1867,15 +1819,15 @@ void the_game(
 			} // selected_object == NULL
 		}
 
+		use_delay_counter -= dtime;
+
 		// this lets us hold down use to eat, and limits to 2 items per second
 		if (input->wasKeyDown(getKeySetting(VLKC_USE))) {
-			use_delay_counter += dtime;
-			if (use_delay_counter > 0.5) {
+			if (use_delay_counter <= 0.0) {
 				client.useItem();
-				use_delay_counter -= 0.5;
+				/* TODO: this should come from content*_features */
+				use_delay_counter = 1.0;
 			}
-		}else{
-			use_delay_counter = 0.5;
 		}
 
 		if (left_punch || (input->getLeftClicked() && !left_punch_muted))
@@ -2218,12 +2170,30 @@ void the_game(
 			for (core::list<aabb3f>::Iterator i=hilightboxes.begin(); i != hilightboxes.end(); i++) {
 				driver->draw3DBox(*i, video::SColor(255,0,0,0));
 			}
-		}
 
-		/*
-			Wielded tool
-		*/
-		if (show_hud) {
+			/* TODO: this should get nodes from the client, for other players' cracks */
+			std::vector<SelectedNode> selected_nodes;
+			if (has_selected_node) {
+				selected_nodes.push_back(
+					SelectedNode(selected_node_pos,selected_node_crack,highlight_selected_node)
+				);
+				MapNode nn = client.getNode(selected_node_pos);
+				v3s16 aa = content_features(nn).onact_also_affects;
+				if (aa != v3s16(0,0,0))
+					selected_nodes.push_back(
+						SelectedNode(selected_node_pos+nn.getEffectedRotation(),selected_node_crack,highlight_selected_node)
+					);
+			}
+
+			/* TODO: draw the crack/highlight node(s) here */
+			if (selected_nodes.size() > 0) {
+				for (std::vector<SelectedNode>::iterator i = selected_nodes.begin(); i != selected_nodes.end(); i++) {
+				}
+			}
+
+			/*
+				Wielded tool
+			*/
 			// Warning: This clears the Z buffer.
 			camera.drawWieldedTool();
 		}
