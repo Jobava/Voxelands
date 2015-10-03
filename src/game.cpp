@@ -173,7 +173,7 @@ public:
 		NodeMetadata *meta = m_client->getEnv().getMap().getNodeMetadata(m_p);
 		if (!meta)
 			return "";
-		return meta->getDrawSpecString();
+		return meta->getDrawSpecString(m_client->getLocalPlayer());
 	}
 
 	NodeMetadata *getMeta()
@@ -1807,7 +1807,7 @@ void the_game(
 
 					if (input->wasKeyDown(getKeySetting(VLKC_EXAMINE)) && !random_input) {
 						// If metadata provides an inventory view, activate it
-						if (meta && meta->getDrawSpecString() != "") {
+						if (meta && meta->getDrawSpecString(client.getLocalPlayer()) != "") {
 							infostream<<"Launching custom inventory view"<<std::endl;
 
 							InventoryLocation inventoryloc;
@@ -1816,7 +1816,7 @@ void the_game(
 							/* Create menu */
 
 							GUIFormSpecMenu *menu = new GUIFormSpecMenu(guienv, guiroot, -1, &g_menumgr, &client);
-							menu->setFormSpec(meta->getDrawSpecString(), inventoryloc);
+							menu->setFormSpec(meta->getDrawSpecString(client.getLocalPlayer()), inventoryloc);
 							menu->setFormIO(new NodeMetadataFormIO(nodepos, &client));
 							menu->drop();
 							{

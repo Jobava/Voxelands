@@ -48,6 +48,8 @@ Player::Player():
 	in_water_stable(false),
 	is_climbing(false),
 	swimming_up(false),
+	in_bed(false),
+	wake_timeout(0.0),
 	craftresult_is_preview(true),
 	hp(20),
 	air(20),
@@ -226,6 +228,7 @@ void Player::serialize(std::ostream &os)
 	}
 	if (m_given_clothes)
 		args.set("clothes_given","true");
+	args.setFloat("wake_timeout",wake_timeout);
 
 	args.writeLines(os);
 
@@ -298,6 +301,12 @@ void Player::deSerialize(std::istream &is)
 		m_given_clothes = args.getBool("clothes_given");
 	}else{
 		m_given_clothes = false;
+	}
+
+	if (args.exists("wake_timeout")) {
+		wake_timeout = args.getFloat("wake_timeout");
+	}else{
+		wake_timeout = 0.0;
 	}
 
 	inventory.deSerialize(is);

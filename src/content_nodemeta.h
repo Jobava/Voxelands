@@ -50,7 +50,7 @@ public:
 		m_text = fields["text"];
 		return true;
 	}
-	virtual std::string getDrawSpecString();
+	virtual std::string getDrawSpecString(Player *player);
 
 	virtual bool import(NodeMetadata *meta);
 
@@ -78,7 +78,7 @@ public:
 	virtual std::string getText(){ return m_text; }
 	void setText(std::string t){ m_text = t; }
 	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
-	virtual std::string getDrawSpecString();
+	virtual std::string getDrawSpecString(Player *player);
 
 	virtual bool import(NodeMetadata *meta);
 
@@ -106,6 +106,28 @@ private:
 	std::string m_owner;
 };
 
+class BedNodeMetadata : public NodeMetadata
+{
+public:
+	BedNodeMetadata();
+	//~BedNodeMetadata();
+
+	virtual u16 typeId() const;
+	static NodeMetadata* create(std::istream &is);
+	virtual NodeMetadata* clone();
+	virtual void serializeBody(std::ostream &os);
+
+	virtual bool nodeRemovalDisabled();
+
+	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
+	virtual std::string getDrawSpecString(Player *player);
+
+private:
+	std::string m_owner;
+	std::string m_sleeper;
+	bool m_nope;
+};
+
 class ChestNodeMetadata : public NodeMetadata
 {
 public:
@@ -119,7 +141,7 @@ public:
 	virtual std::wstring infoText();
 	virtual Inventory* getInventory() {return m_inventory;}
 	virtual bool nodeRemovalDisabled();
-	virtual std::string getDrawSpecString();
+	virtual std::string getDrawSpecString(Player *player);
 
 	virtual bool import(NodeMetadata *meta);
 
@@ -140,7 +162,7 @@ public:
 	virtual std::wstring infoText();
 	virtual Inventory* getInventory() {return m_inventory;}
 	virtual bool nodeRemovalDisabled();
-	virtual std::string getDrawSpecString();
+	virtual std::string getDrawSpecString(Player *player);
 
 	virtual bool import(NodeMetadata *meta);
 
@@ -167,7 +189,7 @@ public:
 	virtual std::wstring infoText();
 	virtual Inventory* getInventory() {return m_inventory;}
 	virtual bool nodeRemovalDisabled();
-	virtual std::string getDrawSpecString();
+	virtual std::string getDrawSpecString(Player *player);
 
 	virtual bool import(NodeMetadata *meta);
 
@@ -195,7 +217,7 @@ public:
 	virtual Inventory* getInventory() {return m_inventory;}
 	virtual bool nodeRemovalDisabled();
 	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
-	virtual std::string getDrawSpecString();
+	virtual std::string getDrawSpecString(Player *player);
 
 private:
 	u16 m_page;
@@ -213,7 +235,7 @@ public:
 	virtual NodeMetadata* clone();
 	virtual void serializeBody(std::ostream &os);
 	virtual Inventory* getInventory() {return m_inventory;}
-	virtual std::string getDrawSpecString();
+	virtual std::string getDrawSpecString(Player *player);
 
 private:
 	Inventory *m_inventory;
@@ -253,7 +275,7 @@ public:
 	virtual void inventoryModified();
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool nodeRemovalDisabled();
-	virtual std::string getDrawSpecString();
+	virtual std::string getDrawSpecString(Player *player);
 	virtual std::vector<NodeBox> getNodeBoxes(MapNode &n);
 
 	virtual bool import(NodeMetadata *meta);
@@ -282,7 +304,7 @@ public:
 	virtual void inventoryModified();
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool nodeRemovalDisabled();
-	virtual std::string getDrawSpecString();
+	virtual std::string getDrawSpecString(Player *player);
 	virtual std::vector<NodeBox> getNodeBoxes(MapNode &n);
 
 	virtual bool import(NodeMetadata *meta);
@@ -340,7 +362,7 @@ public:
 	virtual void inventoryModified();
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool nodeRemovalDisabled();
-	virtual std::string getDrawSpecString();
+	virtual std::string getDrawSpecString(Player *player);
 	virtual std::vector<NodeBox> getNodeBoxes(MapNode &n);
 
 	bool m_should_fire;
@@ -370,7 +392,7 @@ public:
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool import(NodeMetadata *meta);
 	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
-	virtual std::string getDrawSpecString();
+	virtual std::string getDrawSpecString(Player *player);
 
 	u16 getPage() {return m_page;}
 
@@ -397,7 +419,7 @@ public:
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool import(NodeMetadata *meta);
 	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
-	virtual std::string getDrawSpecString();
+	virtual std::string getDrawSpecString(Player *player);
 
 	u16 getPage() {return m_page;}
 
@@ -428,7 +450,7 @@ public:
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool import(NodeMetadata *meta);
 	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
-	virtual std::string getDrawSpecString();
+	virtual std::string getDrawSpecString(Player *player);
 
 	u16 getPage() {return m_page;}
 
@@ -454,7 +476,7 @@ public:
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool import(NodeMetadata *meta);
 	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
-	virtual std::string getDrawSpecString();
+	virtual std::string getDrawSpecString(Player *player);
 
 	u16 getPage() {return m_page;}
 
@@ -476,7 +498,7 @@ public:
 	virtual bool nodeRemovalDisabled();
 	virtual bool import(NodeMetadata *meta);
 	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
-	virtual std::string getDrawSpecString();
+	virtual std::string getDrawSpecString(Player *player);
 
 	std::string getContent() { return m_content; }
 
@@ -498,7 +520,7 @@ public:
 	virtual bool nodeRemovalDisabled();
 	virtual bool import(NodeMetadata *meta);
 	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
-	virtual std::string getDrawSpecString();
+	virtual std::string getDrawSpecString(Player *player);
 
 	virtual std::string getOwner(){ return m_owner; }
 	virtual void setOwner(std::string t){ m_owner = t; }
@@ -547,7 +569,7 @@ public:
 	virtual void serializeBody(std::ostream &os);
 	virtual Inventory* getInventory() {return m_inventory;}
 	virtual bool nodeRemovalDisabled();
-	virtual std::string getDrawSpecString();
+	virtual std::string getDrawSpecString(Player *player);
 	virtual std::vector<NodeBox> getNodeBoxes(MapNode &n);
 
 private:
@@ -583,7 +605,7 @@ public:
 	virtual void inventoryModified();
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool nodeRemovalDisabled();
-	virtual std::string getDrawSpecString();
+	virtual std::string getDrawSpecString(Player *player);
 	virtual std::vector<NodeBox> getNodeBoxes(MapNode &n);
 
 	u8 m_water_level;
@@ -613,7 +635,7 @@ public:
 	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
 	virtual bool nodeRemovalDisabled();
 	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
-	virtual std::string getDrawSpecString();
+	virtual std::string getDrawSpecString(Player *player);
 
 private:
 	bool m_show_craft;

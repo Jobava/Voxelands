@@ -204,8 +204,9 @@ u32 Environment::getDayNightRatio()
 	return time_to_daynight_ratio(m_time_of_day_f*24000.0);
 }
 
-void Environment::stepTimeOfDay(float dtime)
+float Environment::stepTimeOfDay(float dtime)
 {
+	float r = m_time_of_day_f;
 	m_time_counter += dtime;
 	f32 speed = m_time_of_day_speed * 24000./(24.*3600);
 	u32 units = (u32)(m_time_counter*speed);
@@ -229,6 +230,9 @@ void Environment::stepTimeOfDay(float dtime)
 		if (m_time_of_day_f < 0.0)
 			m_time_of_day_f += 1.0;
 	}
+	if (m_time_of_day_f < r)
+		return (m_time_of_day_f+1.0)-r;
+	return m_time_of_day_f-r;
 }
 
 /*
@@ -301,7 +305,8 @@ ServerEnvironment::ServerEnvironment(ServerMap *map, Server *server):
 	m_server(server),
 	m_send_recommended_timer(0),
 	m_game_time(0),
-	m_game_time_fraction_counter(0)
+	m_game_time_fraction_counter(0),
+	m_players_sleeping(false)
 {
 }
 
@@ -739,7 +744,8 @@ void ServerEnvironment::step(float dtime)
 
 	//TimeTaker timer("ServerEnv step");
 
-	stepTimeOfDay(dtime);
+	float time_diff = stepTimeOfDay(dtime);
+	time_diff *= 24000.0;
 
 	// Get some settings
 	bool footprints = g_settings->getBool("enable_footprints");
@@ -758,17 +764,27 @@ void ServerEnvironment::step(float dtime)
 	bool blockstep = m_active_blocks_management_interval.step(dtime, 2.0);
 	std::list<v3s16> players_blockpos;
 
+	bool sleepskip = true;
+
 	/*
 		Handle players
 	*/
 	{
 		ScopeProfiler sp(g_profiler, "SEnv: handle players avg", SPT_AVG);
+		int pc = 0;
 		for (core::list<Player*>::Iterator i = m_players.begin(); i != m_players.end(); i++) {
 			Player *player = *i;
 
 			// Ignore disconnected players
 			if (player->peer_id == 0)
 				continue;
+			pc++;
+
+			if (!player->in_bed)
+				sleepskip = false;
+
+			if (player->wake_timeout > 0.0)
+				player->wake_timeout -= time_diff;
 
 			v3f playerpos = player->getPosition();
 
@@ -809,12 +825,55 @@ void ServerEnvironment::step(float dtime)
 				players_blockpos.push_back(blockpos);
 			}
 		}
+		if (!pc)
+			sleepskip = false;
 	}
 
 	/*
 		Manage active block list
 	*/
 	if (blockstep) {
+		if (sleepskip) {
+			if (m_players_sleeping) {
+				// advance time to dawn or dusk
+				if (m_time_of_day < 6000) {
+					setTimeOfDay(6000);
+				}else if (m_time_of_day > 18000) {
+					m_time++;
+					setTimeOfDay(6000);
+				}else{
+					setTimeOfDay(18000);
+				}
+				// wake up
+				addEnvEvent(ENV_EVENT_WAKE,v3f(0,0,0),"");
+				for (core::list<Player*>::Iterator i = m_players.begin(); i != m_players.end(); i++) {
+					Player *player = *i;
+
+					// Ignore disconnected players
+					if (player->peer_id == 0)
+						continue;
+					player->in_bed = false;
+					player->wake_timeout = 10000;
+				}
+			}else{
+				// go to sleep
+				addEnvEvent(ENV_EVENT_SLEEP,v3f(0,0,0),"");
+			}
+
+			m_players_sleeping = !m_players_sleeping;
+		}else if (m_players_sleeping) {
+			// wake up
+			addEnvEvent(ENV_EVENT_WAKE,v3f(0,0,0),"");
+			for (core::list<Player*>::Iterator i = m_players.begin(); i != m_players.end(); i++) {
+				Player *player = *i;
+
+				// Ignore disconnected players
+				if (player->peer_id == 0)
+					continue;
+				player->in_bed = false;
+			}
+		}
+
 		ScopeProfiler sp(g_profiler, "SEnv: manage act. block list avg /2s", SPT_AVG);
 
 		/*

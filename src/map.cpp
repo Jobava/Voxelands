@@ -3752,7 +3752,9 @@ void ClientMap::renderPostFx()
 	m_camera_mutex.Unlock();
 	video::SColor post_effect_color(0,0,0,0);
 
-	if (m_client->getFormState()) {
+	if (m_client->getSleepAlpha() > 0) {
+		post_effect_color = video::SColor(m_client->getSleepAlpha(),0,0,0);
+	}else if (m_client->getFormState()) {
 		post_effect_color = video::SColor(128,0,0,0);
 	}else{
 		MapNode n = getNodeNoEx(floatToInt(camera_position, BS));

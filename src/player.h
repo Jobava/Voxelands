@@ -180,6 +180,11 @@ public:
 	bool is_climbing;
 	bool swimming_up;
 
+	// whether the player is in bed
+	bool in_bed;
+	// set for 10 hours (10000) after the player last woke up
+	f32 wake_timeout;
+
 	u8 light;
 
 	Inventory inventory;

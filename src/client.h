@@ -342,6 +342,8 @@ public:
 	bool getFormState() {return m_form_open;}
 	void setFormState(bool state) {m_form_open = state;}
 
+	u8 getSleepAlpha() {return m_sleep_state*255;}
+
 private:
 
 	// Virtual methods from con::PeerHandler
@@ -408,10 +410,15 @@ private:
 
 	Queue<ClientEvent> m_client_event_queue;
 
-		// time_of_day speed approximation for old protocol
+	// time_of_day speed approximation for old protocol
 	bool m_time_of_day_set;
 	float m_last_time_of_day_f;
 	float m_time_of_day_update_timer;
+
+	// sleep effects
+	bool m_sleeping;
+	bool m_waking;
+	float m_sleep_state;
 };
 
 #endif // !SERVER

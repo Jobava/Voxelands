@@ -56,7 +56,8 @@ class ServerActiveObject;
 #define ENV_EVENT_DIG_PARTICLES		2
 #define ENV_EVENT_PUNCH_PARTICLES	3
 #define ENV_EVENT_NODE_PARTICLES	4
-#define ENV_EVENT_NODEMOD		5
+#define ENV_EVENT_SLEEP			5
+#define ENV_EVENT_WAKE			6
 
 #define ENV_SEASON_SUMMER 0
 #define ENV_SEASON_AUTUMN 1
@@ -71,6 +72,15 @@ struct EnvEvent {
 
 	EnvEvent():
 		type(ENV_EVENT_NONE),
+		pos(0,0,0),
+		data(""),
+		except_player(NULL)
+	{
+	}
+
+	EnvEvent(u8 ctype):
+		type(ctype),
+		pos(0,0,0),
 		data(""),
 		except_player(NULL)
 	{
@@ -156,7 +166,7 @@ public:
 		return m_time_of_day_f;
 	}
 
-	void stepTimeOfDay(float dtime);
+	float stepTimeOfDay(float dtime);
 
 	void setTimeOfDaySpeed(float speed)
 	{
@@ -437,6 +447,8 @@ private:
 	u32 m_game_time;
 	// A helper variable for incrementing the latter
 	float m_game_time_fraction_counter;
+	// whether players are sleeping
+	int m_players_sleeping;
 };
 
 #ifndef SERVER

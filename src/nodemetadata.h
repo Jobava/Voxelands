@@ -80,7 +80,7 @@ public:
 	virtual bool nodeRemovalDisabled(){return false;}
 	// Used to make custom inventory menus.
 	// See format in guiInventoryMenu.cpp.
-	virtual std::string getDrawSpecString(){return "";}
+	virtual std::string getDrawSpecString(Player *player){return "";}
 	// the node owner - if not "" then only the owner can dig the node
 	virtual std::string getOwner(){ return std::string(""); }
 	virtual void setOwner(std::string t){  }

@@ -65,7 +65,7 @@ void SignNodeMetadata::serializeBody(std::ostream &os)
 {
 	os<<serializeString(m_text);
 }
-std::string SignNodeMetadata::getDrawSpecString()
+std::string SignNodeMetadata::getDrawSpecString(Player *player)
 {
 	std::string spec("size[5,2.5]");
 	spec += "field[0.75,0;4,1.5;text;;";
@@ -128,7 +128,7 @@ bool LockingSignNodeMetadata::receiveFields(std::string formname, std::map<std::
 	m_text = fields["text"];
 	return true;
 }
-std::string LockingSignNodeMetadata::getDrawSpecString()
+std::string LockingSignNodeMetadata::getDrawSpecString(Player *player)
 {
 	std::string spec("size[5,2.5]");
 	spec += "field[0.75,0;4,1.5;text;;";
@@ -187,6 +187,109 @@ std::wstring FlagNodeMetadata::infoText()
 }
 
 /*
+	BedNodeMetadata
+*/
+
+// Prototype
+BedNodeMetadata proto_BedNodeMetadata();
+
+BedNodeMetadata::BedNodeMetadata()
+{
+	NodeMetadata::registerType(typeId(), create);
+	m_owner = "";
+	m_nope = false;
+}
+u16 BedNodeMetadata::typeId() const
+{
+	return CONTENT_BED_HEAD;
+}
+NodeMetadata* BedNodeMetadata::create(std::istream &is)
+{
+	BedNodeMetadata *d = new BedNodeMetadata();
+	d->setOwner(deSerializeString(is));
+	int temp;
+	is>>temp;
+	d->m_nope = !!temp;
+	return d;
+}
+NodeMetadata* BedNodeMetadata::clone()
+{
+	BedNodeMetadata *d = new BedNodeMetadata();
+	d->m_owner = m_owner;
+	d->m_nope = m_nope;
+	return d;
+}
+void BedNodeMetadata::serializeBody(std::ostream &os)
+{
+	os<<serializeString(m_owner);
+	os<<itos(m_nope) << " ";
+}
+bool BedNodeMetadata::nodeRemovalDisabled()
+{
+	if (m_owner != "")
+		return true;
+	return false;
+}
+bool BedNodeMetadata::receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player)
+{
+	if (fields["wake"] != "") {
+		m_nope = false;
+		player->in_bed = false;
+		m_owner = "";
+		return true;
+	}else if (fields["sleep"] != "") {
+		if (m_owner != "")
+			return false;
+		if (player->wake_timeout > 0.0) {
+			m_nope = true;
+			return true;
+		}
+		m_nope = false;
+		player->in_bed = true;
+		m_owner = player->getName();
+		return true;
+	}else if (player->getName() == m_owner) { // this will happen if the player escape closes the form
+		m_nope = false;
+		player->in_bed = false;
+		m_owner = "";
+		return true;
+	}else if (m_nope) {
+		m_nope = false;
+		return true;
+	}
+	return false;
+}
+std::string BedNodeMetadata::getDrawSpecString(Player *player)
+{
+	std::string spec("size[5,2.5]");
+	if (m_owner == "") {
+		if (m_nope) {
+			spec += "label[1.25,1;";
+			spec += gettext("You can't sleep yet.");
+			spec += "]";
+		}else{
+			spec += "button[1.25,1;3,1;sleep;";
+			spec += gettext("Go to sleep");
+			spec += "]";
+		}
+	}else if (m_owner != player->getName()) {
+		spec += "label[1.25,1;";
+		spec += gettext("Someone else is sleeping here.");
+		spec += "]";
+	}else if (m_nope) {
+		spec += "label[1.25,1;";
+		spec += gettext("You can't sleep yet.");
+		spec += "]";
+	}else{
+		spec += "button_exit[1.25,2;3,1;wake;";
+		spec += gettext("Get out of bed");
+		spec += "]";
+	}
+	return spec;
+}
+
+
+/*
 	ChestNodeMetadata
 */
 
@@ -240,7 +343,7 @@ bool ChestNodeMetadata::nodeRemovalDisabled()
 		return false;
 	return true;
 }
-std::string ChestNodeMetadata::getDrawSpecString()
+std::string ChestNodeMetadata::getDrawSpecString(Player *player)
 {
 	return
 		"size[8,9]"
@@ -314,7 +417,7 @@ bool LockingChestNodeMetadata::nodeRemovalDisabled()
 		return false;
 	return true;
 }
-std::string LockingChestNodeMetadata::getDrawSpecString()
+std::string LockingChestNodeMetadata::getDrawSpecString(Player *player)
 {
 	return
 		"size[8,9]"
@@ -388,7 +491,7 @@ bool SafeNodeMetadata::nodeRemovalDisabled()
 		return false;
 	return true;
 }
-std::string SafeNodeMetadata::getDrawSpecString()
+std::string SafeNodeMetadata::getDrawSpecString(Player *player)
 {
 	return
 		"size[8,9]"
@@ -442,7 +545,7 @@ void ParcelNodeMetadata::serializeBody(std::ostream &os)
 {
 	m_inventory->serialize(os);
 }
-std::string ParcelNodeMetadata::getDrawSpecString()
+std::string ParcelNodeMetadata::getDrawSpecString(Player *player)
 {
 	return
 		"size[8,4]"
@@ -538,7 +641,7 @@ bool CreativeChestNodeMetadata::receiveFields(std::string formname, std::map<std
 	}
 	return true;
 }
-std::string CreativeChestNodeMetadata::getDrawSpecString()
+std::string CreativeChestNodeMetadata::getDrawSpecString(Player *player)
 {
 	char buff[256];
 	std::vector<lists::ListData> &list = lists::get("creative");
@@ -816,7 +919,7 @@ bool FurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 	}
 	return changed;
 }
-std::string FurnaceNodeMetadata::getDrawSpecString()
+std::string FurnaceNodeMetadata::getDrawSpecString(Player *player)
 {
 	std::string spec("size[8,9]");
 	spec += "list[current_name;fuel;2,3;1,1;]";
@@ -1091,7 +1194,7 @@ bool LockingFurnaceNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment 
 	}
 	return changed;
 }
-std::string LockingFurnaceNodeMetadata::getDrawSpecString()
+std::string LockingFurnaceNodeMetadata::getDrawSpecString(Player *player)
 {
 	std::string spec("size[8,9]");
 	spec += "list[current_name;fuel;2,3;1,1;]";
@@ -1355,7 +1458,7 @@ bool IncineratorNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *en
 	}
 	return changed;
 }
-std::string IncineratorNodeMetadata::getDrawSpecString()
+std::string IncineratorNodeMetadata::getDrawSpecString(Player *player)
 {
 	std::string spec("size[8,7]");
 	spec += "label[1,0.5;";
@@ -1583,7 +1686,7 @@ bool CraftGuideNodeMetadata::receiveFields(std::string formname, std::map<std::s
 	}
 	return true;
 }
-std::string CraftGuideNodeMetadata::getDrawSpecString()
+std::string CraftGuideNodeMetadata::getDrawSpecString(Player *player)
 {
 	InventoryList *l = m_inventory->getList("result");
 	InventoryItem *q = l->getItem(0);
@@ -1864,7 +1967,7 @@ bool ReverseCraftGuideNodeMetadata::receiveFields(std::string formname, std::map
 	//nothing happened
 	return false;
 }
-std::string ReverseCraftGuideNodeMetadata::getDrawSpecString()
+std::string ReverseCraftGuideNodeMetadata::getDrawSpecString(Player *player)
 {
 	using namespace std;
 
@@ -2070,7 +2173,7 @@ bool CookBookNodeMetadata::receiveFields(std::string formname, std::map<std::str
 	}
 	return true;
 }
-std::string CookBookNodeMetadata::getDrawSpecString()
+std::string CookBookNodeMetadata::getDrawSpecString(Player *player)
 {
 	std::vector<lists::ListData> &list = lists::get("cooking");
 
@@ -2285,7 +2388,7 @@ bool DeCraftNodeMetadata::receiveFields(std::string formname, std::map<std::stri
 	}
 	return true;
 }
-std::string DeCraftNodeMetadata::getDrawSpecString()
+std::string DeCraftNodeMetadata::getDrawSpecString(Player *player)
 {
 	std::vector<lists::ListData> &list = lists::get("decrafting");
 	char buff[256];
@@ -2389,7 +2492,7 @@ bool BookNodeMetadata::receiveFields(std::string formname, std::map<std::string,
 	return true;
 }
 
-std::string BookNodeMetadata::getDrawSpecString()
+std::string BookNodeMetadata::getDrawSpecString(Player *player)
 {
 	std::string spec("size[6,6]");
 	spec += "field[1,1;5,1;title;";
@@ -2488,7 +2591,7 @@ bool DiaryNodeMetadata::receiveFields(std::string formname, std::map<std::string
 	return true;
 }
 
-std::string DiaryNodeMetadata::getDrawSpecString()
+std::string DiaryNodeMetadata::getDrawSpecString(Player *player)
 {
 	std::string spec("size[6,6]");
 	spec += "field[1,1;5,1;title;";
@@ -2660,7 +2763,7 @@ bool BookShelfNodeMetadata::nodeRemovalDisabled()
 		return false;
 	return true;
 }
-std::string BookShelfNodeMetadata::getDrawSpecString()
+std::string BookShelfNodeMetadata::getDrawSpecString(Player *player)
 {
 	return
 		"size[8,7]"
@@ -2727,6 +2830,7 @@ NodeMetadata* ClockNodeMetadata::create(std::istream &is)
 NodeMetadata* ClockNodeMetadata::clone()
 {
 	ClockNodeMetadata *d = new ClockNodeMetadata();
+	d->m_time = m_time;
 	return d;
 }
 void ClockNodeMetadata::serializeBody(std::ostream &os)
@@ -2939,7 +3043,7 @@ bool CauldronNodeMetadata::step(float dtime, v3s16 pos, ServerEnvironment *env)
 	}
 	return false;
 }
-std::string CauldronNodeMetadata::getDrawSpecString()
+std::string CauldronNodeMetadata::getDrawSpecString(Player *player)
 {
 	return
 		std::string("size[8,7]"
@@ -3202,7 +3306,7 @@ bool ForgeNodeMetadata::receiveFields(std::string formname, std::map<std::string
 	}
 	return true;
 }
-std::string ForgeNodeMetadata::getDrawSpecString()
+std::string ForgeNodeMetadata::getDrawSpecString(Player *player)
 {
 	std::string spec("size[8,8]");
 	if (m_show_craft) {

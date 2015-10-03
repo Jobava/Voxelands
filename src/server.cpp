@@ -5536,12 +5536,14 @@ void Server::SendEnvEvent(u8 type, v3f pos, std::string &data, Player *except_pl
 		if (except_player != NULL && except_player->peer_id == client->peer_id)
 			continue;
 
-		Player *player = m_env.getPlayer(client->peer_id);
-		if (player) {
-			// don't send to far off players (2 mapblocks)
-			v3f player_pos = player->getPosition();
-			if (player_pos.getDistanceFrom(pos) > 320.0)
-				continue;
+		if (type != ENV_EVENT_WAKE && type != ENV_EVENT_SLEEP) {
+			Player *player = m_env.getPlayer(client->peer_id);
+			if (player) {
+				// don't send to far off players (2 mapblocks)
+				v3f player_pos = player->getPosition();
+				if (player_pos.getDistanceFrom(pos) > 320.0)
+					continue;
+			}
 		}
 
 		// Send as reliable

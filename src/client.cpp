@@ -232,7 +232,10 @@ Client::Client(
 	m_access_denied(false),
 	m_time_of_day_set(false),
 	m_last_time_of_day_f(-1),
-	m_time_of_day_update_timer(0)
+	m_time_of_day_update_timer(0),
+	m_sleeping(false),
+	m_waking(false),
+	m_sleep_state(0.0)
 {
 	m_mesh_update_thread.m_env = &m_env;
 	m_packetcounter_timer = 0.0;
@@ -309,6 +312,18 @@ void Client::step(float dtime)
 		m_ignore_damage_timer -= dtime;
 	}else{
 		m_ignore_damage_timer = 0.0;
+	}
+
+	if (m_sleeping) {
+		m_sleep_state += dtime;
+		if (m_sleep_state > 1.0)
+			m_sleep_state = 1.0;
+	}else if (m_waking) {
+		m_sleep_state -= dtime;
+		if (m_sleep_state < 0.5) {
+			m_sleep_state = 0.0;
+			m_waking = false;
+		}
 	}
 
 	m_time_of_day_update_timer += dtime;
@@ -1592,7 +1607,15 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 			break;
 		case ENV_EVENT_NODE_PARTICLES: // node particles
 			break;
-		case ENV_EVENT_NODEMOD: // nodemod
+		case ENV_EVENT_SLEEP: // go to sleep
+			m_sleeping = true;
+			m_waking = false;
+			m_sleep_state = 0.5;
+			break;
+		case ENV_EVENT_WAKE: // wake up
+			m_sleeping = false;
+			m_waking = true;
+			m_sleep_state = 1.0;
 			break;
 		default:
 			infostream<<"Client: unknown env_event: "<<type<<": "<<ev<<std::endl;

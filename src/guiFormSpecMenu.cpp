@@ -284,7 +284,7 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 			}
 
 			FieldSpec spec = FieldSpec(
-				narrow_to_wide(fname.c_str()),
+				fname.c_str(),
 				narrow_to_wide(flabel.c_str()),
 				narrow_to_wide(fdefault.c_str()),
 				258+m_fields.size()
@@ -354,7 +354,7 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 				errorstream<<"WARNING: invalid use of label without a size[] element"<<std::endl;
 
 			FieldSpec spec = FieldSpec(
-				narrow_to_wide(""),
+				"",
 				narrow_to_wide(flabel.c_str()),
 				narrow_to_wide(""),
 				258+m_fields.size()
@@ -377,7 +377,7 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 				errorstream<<"WARNING: invalid use of button without a size[] element"<<std::endl;
 
 			FieldSpec spec = FieldSpec(
-				narrow_to_wide(fname.c_str()),
+				fname.c_str(),
 				narrow_to_wide(flabel.c_str()),
 				narrow_to_wide(""),
 				258+m_fields.size()
@@ -404,7 +404,7 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 				errorstream<<"WARNING: invalid use of image_button without a size[] element"<<std::endl;
 
 			FieldSpec spec = FieldSpec(
-				narrow_to_wide(fname.c_str()),
+				fname.c_str(),
 				narrow_to_wide(flabel.c_str()),
 				narrow_to_wide(fimage.c_str()),
 				258+m_fields.size()
@@ -656,11 +656,11 @@ void GUIFormSpecMenu::acceptInput()
 			const FieldSpec &s = m_fields[i];
 			if (s.send) {
 				if (s.is_button) {
-					fields[wide_to_narrow(s.fname.c_str())] = s.flabel.c_str();
+					fields[s.fname.c_str()] = L"true";
 				}else{
 					e = getElementFromId(s.fid);
 					if (e != NULL)
-						fields[wide_to_narrow(s.fname.c_str())] = e->getText();
+						fields[s.fname.c_str()] = e->getText();
 				}
 			}
 		}

@@ -1231,6 +1231,8 @@ void content_mapnode_furniture(bool repeat)
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 	f->suffocation_per_second = 0;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new BedNodeMetadata();
 
 	i = CONTENT_BED_FOOT;
 	f = &content_features(i);
@@ -1290,6 +1292,8 @@ void content_mapnode_furniture(bool repeat)
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 	f->suffocation_per_second = 0;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new BedNodeMetadata();
 
 	i = CONTENT_BED_BLUE_FOOT;
 	f = &content_features(i);
@@ -1349,6 +1353,8 @@ void content_mapnode_furniture(bool repeat)
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 	f->suffocation_per_second = 0;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new BedNodeMetadata();
 
 	i = CONTENT_BED_GREEN_FOOT;
 	f = &content_features(i);
@@ -1408,6 +1414,8 @@ void content_mapnode_furniture(bool repeat)
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 	f->suffocation_per_second = 0;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new BedNodeMetadata();
 
 	i = CONTENT_BED_ORANGE_FOOT;
 	f = &content_features(i);
@@ -1467,6 +1475,8 @@ void content_mapnode_furniture(bool repeat)
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 	f->suffocation_per_second = 0;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new BedNodeMetadata();
 
 	i = CONTENT_BED_PURPLE_FOOT;
 	f = &content_features(i);
@@ -1526,6 +1536,8 @@ void content_mapnode_furniture(bool repeat)
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 	f->suffocation_per_second = 0;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new BedNodeMetadata();
 
 	i = CONTENT_BED_RED_FOOT;
 	f = &content_features(i);
@@ -1585,6 +1597,8 @@ void content_mapnode_furniture(bool repeat)
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 	f->suffocation_per_second = 0;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new BedNodeMetadata();
 
 	i = CONTENT_BED_YELLOW_FOOT;
 	f = &content_features(i);
@@ -1644,6 +1658,8 @@ void content_mapnode_furniture(bool repeat)
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 	f->suffocation_per_second = 0;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new BedNodeMetadata();
 
 	i = CONTENT_BED_BLACK_FOOT;
 	f = &content_features(i);
