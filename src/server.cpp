@@ -3070,6 +3070,14 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 								<<"Node metadata disables removal"
 								<<std::endl;
 						cannot_remove_node = true;
+					}else if (selected_node_features.onact_also_affects != v3s16(0,0,0)) {
+						NodeMetadata *ameta = m_env.getMap().getNodeMetadata(p_under+selected_node.getEffectedRotation());
+						if (ameta && !ameta->nodeRemovalDisabled() == true) {
+							infostream<<"Server: Not finishing digging: "
+									<<"Sibling Node metadata disables removal"
+									<<std::endl;
+							cannot_remove_node = true;
+						}
 					}
 				}
 			}
