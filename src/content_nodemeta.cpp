@@ -195,9 +195,10 @@ BedNodeMetadata proto_BedNodeMetadata();
 
 BedNodeMetadata::BedNodeMetadata()
 {
-	NodeMetadata::registerType(typeId(), create);
 	m_owner = "";
 	m_nope = false;
+
+	NodeMetadata::registerType(typeId(), create);
 }
 u16 BedNodeMetadata::typeId() const
 {
@@ -206,7 +207,7 @@ u16 BedNodeMetadata::typeId() const
 NodeMetadata* BedNodeMetadata::create(std::istream &is)
 {
 	BedNodeMetadata *d = new BedNodeMetadata();
-	d->setOwner(deSerializeString(is));
+	d->m_owner = deSerializeString(is);
 	int temp;
 	is>>temp;
 	d->m_nope = !!temp;
@@ -281,7 +282,7 @@ std::string BedNodeMetadata::getDrawSpecString(Player *player)
 		spec += gettext("You can't sleep yet.");
 		spec += "]";
 	}else{
-		spec += "button_exit[1.25,2;3,1;wake;";
+		spec += "button_exit[1.25,1;3,1;wake;";
 		spec += gettext("Get out of bed");
 		spec += "]";
 	}
