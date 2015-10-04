@@ -324,8 +324,9 @@ void content_mob_init();
 #define CONTENT_MOB_WHITE_KITTY (CONTENT_MOB_MASK | 0x11)
 #define CONTENT_MOB_SIAMESE_KITTY (CONTENT_MOB_MASK | 0x12)
 #define CONTENT_MOB_GINGER_KITTY (CONTENT_MOB_MASK | 0x13)
+#define CONTENT_MOB_SHEARED_SHEEP (CONTENT_MOB_MASK | 0x14)
 
 // increment me if you add a mob!
-#define CONTENT_MOB_COUNT 20
+#define CONTENT_MOB_COUNT 21
 
 #endif

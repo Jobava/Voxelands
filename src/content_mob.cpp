@@ -748,6 +748,33 @@ void content_mob_init()
 	f->setCollisionBox(aabb3f(-0.4*BS, 0., -0.4*BS, 0.4*BS, 1.*BS, 0.4*BS));
 	lists::add("creative",CONTENT_TOOLITEM_MOB_SPAWNER,1,i);
 
+	i = CONTENT_MOB_SHEARED_SHEEP;
+	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
+	f->content = i;
+	f->description = wgettext("Sheared Sheep");
+	f->level = MOB_PASSIVE;
+	f->hp = 30;
+	f->model = "sheared_sheep.b3d";
+	f->model_scale = v3f(0.8,0.8,0.8);
+	f->model_rotation = v3f(0,-90,0);
+	f->model_offset = v3f(0,0.6,0);
+	f->setTexture("mob_sheared_sheep.png");
+	f->setAnimationFrames(MA_STAND,40,60);
+	f->setAnimationFrames(MA_MOVE,1,28);
+	f->setAnimationFrames(MA_ATTACK,1,28);
+	f->punch_action = MPA_HARM;
+	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_MEAT)+" 2";
+	f->motion = MM_SEEKER;
+	f->motion_type = MMT_WALK;
+	f->sound_random = "mob-sheep-env";
+	f->sound_random_extra = "mob-ducksheep-env";
+	f->spawn_min_height = 2;
+	f->spawn_max_height = 50;
+	f->spawn_group = 4;
+	f->lifetime = 1800.0;
+	f->setCollisionBox(aabb3f(-0.4*BS, 0., -0.4*BS, 0.4*BS, 1.*BS, 0.4*BS));
+	lists::add("creative",CONTENT_TOOLITEM_MOB_SPAWNER,1,i);
+
 	i = CONTENT_MOB_SNOWBALL;
 	f = &g_content_mob_features[i&~CONTENT_MOB_MASK];
 	f->content = i;
