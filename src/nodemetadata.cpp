@@ -119,10 +119,7 @@ void NodeMetadataList::serialize(std::ostream &os)
 	writeU16(buf, count);
 	os.write((char*)buf, 2);
 
-	for(core::map<v3s16, NodeMetadata*>::Iterator
-			i = m_data.getIterator();
-			i.atEnd()==false; i++)
-	{
+	for (core::map<v3s16, NodeMetadata*>::Iterator i = m_data.getIterator(); i.atEnd()==false; i++) {
 		v3s16 p = i.getNode()->getKey();
 		NodeMetadata *data = i.getNode()->getValue();
 
@@ -136,15 +133,17 @@ void NodeMetadataList::serialize(std::ostream &os)
 }
 void NodeMetadataList::deSerialize(std::istream &is)
 {
-	m_data.clear();
+	{
+		JMutexAutoLock lock(m_mutex);
+		m_data.clear();
+	}
 
 	u8 buf[6];
 
 	is.read((char*)buf, 2);
 	u16 version = readU16(buf);
 
-	if(version > 1)
-	{
+	if (version > 1) {
 		infostream<<__FUNCTION_NAME<<": version "<<version<<" not supported"
 				<<std::endl;
 		throw SerializationError("NodeMetadataList::deSerialize");
@@ -153,8 +152,7 @@ void NodeMetadataList::deSerialize(std::istream &is)
 	is.read((char*)buf, 2);
 	u16 count = readU16(buf);
 
-	for(u16 i=0; i<count; i++)
-	{
+	for (u16 i=0; i<count; i++) {
 		is.read((char*)buf, 2);
 		u16 p16 = readU16(buf);
 
@@ -167,11 +165,10 @@ void NodeMetadataList::deSerialize(std::istream &is)
 
 		NodeMetadata *data = NodeMetadata::deSerialize(is);
 
-		if(data == NULL)
+		if (data == NULL)
 			continue;
 
-		if(m_data.find(p))
-		{
+		if (m_data.find(p)) {
 			infostream<<"WARNING: NodeMetadataList::deSerialize(): "
 					<<"already set data at position"
 					<<"("<<p.X<<","<<p.Y<<","<<p.Z<<"): Ignoring."
@@ -191,10 +188,8 @@ NodeMetadataList::NodeMetadataList()
 
 NodeMetadataList::~NodeMetadataList()
 {
-	for(core::map<v3s16, NodeMetadata*>::Iterator
-			i = m_data.getIterator();
-			i.atEnd()==false; i++)
-	{
+	JMutexAutoLock lock(m_mutex);
+	for (core::map<v3s16, NodeMetadata*>::Iterator i = m_data.getIterator(); i.atEnd()==false; i++) {
 		delete i.getNode()->getValue();
 	}
 }
