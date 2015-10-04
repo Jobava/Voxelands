@@ -728,9 +728,9 @@ void content_mob_init()
 	f->model_rotation = v3f(0,-90,0);
 	f->model_offset = v3f(0,0.6,0);
 	f->setTexture("mob_sheep.png");
-	f->setAnimationFrames(MA_STAND,61,120);
-	f->setAnimationFrames(MA_MOVE,0,60);
-	f->setAnimationFrames(MA_ATTACK,0,60);
+	f->setAnimationFrames(MA_STAND,40,60);
+	f->setAnimationFrames(MA_MOVE,1,28);
+	f->setAnimationFrames(MA_ATTACK,1,28);
 	f->punch_action = MPA_HARM;
 	f->dropped_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_MEAT)+" 2";
 	f->special_punch_item = TT_SHEAR;
