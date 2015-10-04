@@ -1049,14 +1049,8 @@ void ServerEnvironment::step(float dtime)
 
 			// TODO: don't spawn if there was a recent one nearby
 			if (
-				block->has_spawn_area
+				active_object_count_wider < 5
 				&& (
-					active_object_count_wider < 2
-					|| (
-						block->water_spawn
-						&& active_object_count_wider < 5
-					)
-				) && (
 					block->last_spawn < m_time_of_day-6000
 					|| block->last_spawn > m_time_of_day+6000
 				)
@@ -1066,7 +1060,6 @@ void ServerEnvironment::step(float dtime)
 				MapNode n2 = block->getNodeNoEx(block->spawn_area+v3s16(0,2,0));
 				u8 light = n1.getLightBlend(getDayNightRatio());
 				if (block->water_spawn) {
-					printf("waterspawn\n");
 					if (n1.getContent() != CONTENT_WATERSOURCE || n2.getContent() != CONTENT_WATERSOURCE)
 						block->has_spawn_area = false;
 				}else{
@@ -1080,25 +1073,25 @@ void ServerEnvironment::step(float dtime)
 				if (block->has_spawn_area) {
 					// dawn, passive mobs spawn
 					if (m_time_of_day > 7000 && m_time_of_day < 8000) {
-						if (
-							(
-								n.getContent() == CONTENT_GRASS
-								|| n.getContent() == CONTENT_GRASS_AUTUMN
-								|| n.getContent() == CONTENT_GRASS_FOOTSTEPS
-								|| n.getContent() == CONTENT_GRASS_FOOTSTEPS_AUTUMN
-								|| n.getContent() == CONTENT_MUDSNOW
-								|| (
-									block->water_spawn
-									&& n.getContent() == CONTENT_SAND
+						if (active_object_count_wider < 2) {
+							if (block->water_spawn) {
+								if (n.getContent() == CONTENT_SAND)
+									mob_spawn_passive(block->spawn_area+block->getPosRelative(),block->water_spawn,this);
+							}else if (
+								(
+									n.getContent() == CONTENT_GRASS
+									|| n.getContent() == CONTENT_GRASS_AUTUMN
+									|| n.getContent() == CONTENT_GRASS_FOOTSTEPS
+									|| n.getContent() == CONTENT_GRASS_FOOTSTEPS_AUTUMN
+									|| n.getContent() == CONTENT_MUDSNOW
+								) && (
+									light >= LIGHT_SPAWN_BRIGHT
 								)
-							) && (
-								light >= LIGHT_SPAWN_BRIGHT
-								|| block->water_spawn
-							)
-						) {
-							mob_spawn_passive(block->spawn_area+block->getPosRelative(),block->water_spawn,this);
-						}else if (n.getContent() == CONTENT_STONE && light <= LIGHT_SPAWN_DARK && block->getPosRelative().Y < -16) {
-							mob_spawn(block->spawn_area+block->getPosRelative(),CONTENT_MOB_RAT,this);
+							) {
+								mob_spawn_passive(block->spawn_area+block->getPosRelative(),block->water_spawn,this);
+							}else if (n.getContent() == CONTENT_STONE && light <= LIGHT_SPAWN_DARK && block->getPosRelative().Y < -16) {
+								mob_spawn(block->spawn_area+block->getPosRelative(),CONTENT_MOB_RAT,this);
+							}
 						}
 						block->last_spawn = m_time_of_day;
 					// dusk, hostile mobs spawn, or fireflies
