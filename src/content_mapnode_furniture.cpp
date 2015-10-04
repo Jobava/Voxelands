@@ -1722,7 +1722,7 @@ void content_mapnode_furniture(bool repeat)
 	lists::add("creative",i);
 	f->suffocation_per_second = 0;
 	if (f->initial_metadata == NULL)
-		f->initial_metadata = new BedNodeMetadata();
+		f->initial_metadata = new CampBedNodeMetadata();
 
 	i = CONTENT_BED_CAMP_FOOT;
 	f = &content_features(i);

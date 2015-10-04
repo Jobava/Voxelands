@@ -128,6 +128,31 @@ private:
 	bool m_nope;
 };
 
+class CampBedNodeMetadata : public NodeMetadata
+{
+public:
+	CampBedNodeMetadata();
+	//~BedNodeMetadata();
+
+	virtual u16 typeId() const;
+	static NodeMetadata* create(std::istream &is);
+	virtual NodeMetadata* clone();
+	virtual void serializeBody(std::ostream &os);
+
+	virtual bool step(float dtime, v3s16 pos, ServerEnvironment *env);
+	virtual bool nodeRemovalDisabled();
+
+	virtual bool receiveFields(std::string formname, std::map<std::string, std::string> fields, Player *player);
+	virtual std::string getDrawSpecString(Player *player);
+
+private:
+	std::string m_owner;
+	std::string m_sleeper;
+	bool m_nope;
+	bool m_used;
+	int m_ticks;
+};
+
 class ChestNodeMetadata : public NodeMetadata
 {
 public:

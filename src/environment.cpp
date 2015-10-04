@@ -765,7 +765,6 @@ void ServerEnvironment::step(float dtime)
 	std::list<v3s16> players_blockpos;
 
 	bool sleepskip = true;
-	bool did_wake = false;
 
 	/*
 		Handle players
@@ -846,7 +845,6 @@ void ServerEnvironment::step(float dtime)
 					setTimeOfDay(18000);
 				}
 				// wake up
-				did_wake = true;
 				addEnvEvent(ENV_EVENT_WAKE,v3f(0,0,0),"");
 				for (core::list<Player*>::Iterator i = m_players.begin(); i != m_players.end(); i++) {
 					Player *player = *i;
