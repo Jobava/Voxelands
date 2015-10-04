@@ -1826,6 +1826,33 @@ void the_game(
 								client.playSound(sound,0);
 							}
 							client.setFormState(true);
+						}else{
+							MapNode nn = client.getNode(nodepos);
+							v3s16 aa = content_features(nn).onact_also_affects;
+							if (aa != v3s16(0,0,0)) {
+								v3s16 npos = nodepos+nn.getEffectedRotation();
+								NodeMetadata *ameta = client.getNodeMetadata(npos);
+								if (ameta && ameta->getDrawSpecString(client.getLocalPlayer()) != "") {
+									infostream<<"Launching custom inventory view"<<std::endl;
+
+									InventoryLocation inventoryloc;
+									inventoryloc.setNodeMeta(nodepos);
+
+									/* Create menu */
+
+									GUIFormSpecMenu *menu = new GUIFormSpecMenu(guienv, guiroot, -1, &g_menumgr, &client);
+									menu->setFormSpec(ameta->getDrawSpecString(client.getLocalPlayer()), inventoryloc);
+									menu->setFormIO(new NodeMetadataFormIO(npos, &client));
+									menu->drop();
+									{
+										std::string sound = content_features(nn.getContent()).sound_access;
+										if (sound == "")
+											sound = "open-menu";
+										client.playSound(sound,0);
+									}
+									client.setFormState(true);
+								}
+							}
 						}
 					}
 					if (input->getRightClicked()) {
