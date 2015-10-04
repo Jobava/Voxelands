@@ -56,68 +56,6 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version)
 {
 	MapNode result = n_from;
 	switch (n_from.getContent()) {
-	case CONTENT_LADDER_LEGACY:
-	{
-		switch (n_from.param2) {
-		case 1:
-			result.setContent(CONTENT_LADDER_WALL);
-			result.param2 = 1;
-			break;
-		case 2:
-			result.setContent(CONTENT_LADDER_WALL);
-			result.param2 = 3;
-			break;
-		case 4:
-			result.setContent(CONTENT_LADDER_ROOF);
-			result.param2 = 0;
-			break;
-		case 8:
-			result.setContent(CONTENT_LADDER_FLOOR);
-			result.param2 = 0;
-			break;
-		case 16:
-			result.setContent(CONTENT_LADDER_WALL);
-			result.param2 = 0;
-			break;
-		case 32:
-			result.setContent(CONTENT_LADDER_WALL);
-			result.param2 = 2;
-			break;
-		default:;
-		}
-	}
-		break;
-	case CONTENT_TORCH_LEGACY:
-	{
-		switch (n_from.param2) {
-		case 1:
-			result.setContent(CONTENT_TORCH);
-			result.param2 = 1;
-			break;
-		case 2:
-			result.setContent(CONTENT_TORCH);
-			result.param2 = 3;
-			break;
-		case 4:
-			result.setContent(CONTENT_TORCH);
-			result.param2 = 4;
-			break;
-		case 8:
-			result.setContent(CONTENT_TORCH);
-			result.param2 = 5;
-			break;
-		case 16:
-			result.setContent(CONTENT_TORCH);
-			result.param2 = 0;
-			break;
-		case 32:
-			result.setContent(CONTENT_TORCH);
-			result.param2 = 2;
-			break;
-		default:;
-		}
-	}
-		break;
 	case CONTENT_FARM_WHEAT_1:
 		result.setContent(CONTENT_FARM_WHEAT);
 		result.param2 = 4;

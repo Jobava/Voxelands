@@ -49,7 +49,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_STONE 0x000
 #define CONTENT_LIMESTONE 0x001
 #define CONTENT_WATER 0x002
-#define CONTENT_TORCH_LEGACY 0x003
+// FREE 0x003
 #define CONTENT_GLASSLIGHT 0x004
 #define CONTENT_CHAIR 0x005
 #define CONTENT_FORGE 0x006
@@ -76,8 +76,7 @@ MapNode mapnode_translate_to_internal(MapNode n_from, u8 version);
 #define CONTENT_STEEL_FENCE 0x01C
 #define CONTENT_STEEL_BARS 0x01D
 #define CONTENT_RAIL 0x01E
-// deprecated, just here for backwards compat
-#define CONTENT_LADDER_LEGACY 0x01F
+// FREE 0x01F
 #define CONTENT_LAVA 0x020
 #define CONTENT_LAVASOURCE 0x021
 #define CONTENT_LADDER_WALL 0x022

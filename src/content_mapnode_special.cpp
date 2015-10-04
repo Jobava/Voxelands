@@ -496,43 +496,6 @@ void content_mapnode_special(bool repeat)
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = CONTENT_LADDER_LEGACY;
-	f = &content_features(i);
-	f->description = wgettext("Ladder");
-	f->setAllTextures("ladder.png");
-	f->light_propagates = true;
-	f->param_type = CPT_LIGHT;
-	f->param2_type = CPT_FACEDIR_WALLMOUNT;
-	f->draw_type = CDT_NODEBOX;
-	f->is_ground_content = true;
-	f->dug_item = std::string("MaterialItem ")+itos(CONTENT_LADDER_WALL)+" 1";
-	f->solidness = 0;
-	f->floormount_alternate_node = CONTENT_LADDER_FLOOR;
-	f->wallmount_alternate_node = CONTENT_LADDER_WALL;
-	f->roofmount_alternate_node = CONTENT_LADDER_ROOF;
-	f->rotate_tile_with_nodebox = true;
-	f->climbable = true;
-	f->air_equivalent = true;
-	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
-	f->fuel_time = 30/16;
-	f->type = CMT_WOOD;
-	f->hardness = 0.5;
-	f->pressure_type = CST_CRUSHABLE;
-	f->suffocation_per_second = 0;
-	f->setNodeBox(core::aabbox3d<f32>(
-		-0.4375*BS,-0.5*BS,0.3125*BS,-0.3125*BS,0.5*BS,0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		0.3125*BS,-0.5*BS,0.3125*BS,0.4375*BS,0.5*BS,0.5*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.3125*BS,-0.25*BS,0.375*BS,0.3125*BS,-0.1875*BS,0.4375*BS
-	));
-	f->addNodeBox(core::aabbox3d<f32>(
-		-0.3125*BS,0.25*BS,0.375*BS,0.3125*BS,0.3125*BS,0.4375*BS
-	));
-	f->setInventoryTextureNodeBox(i,"ladder.png","ladder.png","ladder.png");
-
 	i = CONTENT_LADDER_WALL;
 	f = &content_features(i);
 	f->description = wgettext("Ladder");
@@ -1105,29 +1068,6 @@ void content_mapnode_special(bool repeat)
 	f->post_effect_color = video::SColor(192, 255, 64, 0);
 #endif
 	f->pressure_type = CST_CRUSHED;
-
-	i = CONTENT_TORCH_LEGACY;
-	f = &content_features(i);
-	f->description = wgettext("Torch");
-	f->setAllTextures("torch.png");
-	f->setInventoryTexture("torch_inventory.png");
-	f->setAllTextureFlags(0);
-	f->param_type = CPT_LIGHT;
-	f->param2_type = CPT_FACEDIR_WALLMOUNT;
-	f->draw_type = CDT_TORCHLIKE;
-	f->light_propagates = true;
-	f->sunlight_propagates = true;
-	f->solidness = 0; // drawn separately, makes no faces
-	f->walkable = false;
-	f->air_equivalent = true;
-	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
-	f->fuel_time = 0.5;
-	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_TORCH)+" 1";
-	f->light_source = LIGHT_MAX-1;
-	f->type = CMT_WOOD;
-	f->hardness = 0.0;
-	f->pressure_type = CST_CRUSHED;
-	f->suffocation_per_second = 0;
 
 	i = CONTENT_TORCH;
 	f = &content_features(i);
