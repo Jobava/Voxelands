@@ -765,6 +765,7 @@ void ServerEnvironment::step(float dtime)
 	std::list<v3s16> players_blockpos;
 
 	bool sleepskip = true;
+	bool did_wake = false;
 
 	/*
 		Handle players
@@ -845,6 +846,7 @@ void ServerEnvironment::step(float dtime)
 					setTimeOfDay(18000);
 				}
 				// wake up
+				did_wake = true;
 				addEnvEvent(ENV_EVENT_WAKE,v3f(0,0,0),"");
 				for (core::list<Player*>::Iterator i = m_players.begin(); i != m_players.end(); i++) {
 					Player *player = *i;
@@ -1897,42 +1899,10 @@ void ServerEnvironment::step(float dtime)
 										continue;
 									if (content_features(n_test).flammable > 0) {
 										content_t c = n_test.getContent();
-										if (
-											c >= CONTENT_DOOR_MIN
-											&& c <= CONTENT_DOOR_MAX
-											&& (c&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK
-										) {
-											MapNode n_sect;
-											n_sect.setContent(CONTENT_FIRE_SHORTTERM);
-											if ((c&CONTENT_DOOR_SECT_MASK) == CONTENT_DOOR_SECT_MASK) {
-												m_map->addNodeWithEvent(p+v3s16(x,y-1,z), n_sect);
-											}else{
-												m_map->addNodeWithEvent(p+v3s16(x,y+1,z), n_sect);
-											}
-										}else if (
-											n_test.getContent() >= CONTENT_BED_MIN
-											&& n_test.getContent() <= CONTENT_BED_MAX
-										) {
-											v3s16 p_foot = v3s16(0,0,0);
-											u8 d = n_test.param2&0x0F;
-											switch (d) {
-											case 1:
-												p_foot.X = 1;
-												break;
-											case 2:
-												p_foot.Z = -1;
-												break;
-											case 3:
-												p_foot.X = -1;
-												break;
-											default:
-												p_foot.Z = 1;
-												break;
-											}
-											if ((n_test.getContent()&CONTENT_BED_FOOT_MASK) == 0)
-												p_foot *= -1;
+										if (content_features(c).onact_also_affects != v3s16(0,0,0)) {
+											v3s16 p_other = p+v3s16(x,y,z)+n_test.getEffectedRotation();
 											n_test.setContent(CONTENT_FIRE_SHORTTERM);
-											m_map->addNodeWithEvent(p+v3s16(x,y,z)+p_foot, n_test);
+											m_map->addNodeWithEvent(p_other, n_test);
 										}
 										n_test.setContent(CONTENT_FIRE_SHORTTERM);
 										m_map->addNodeWithEvent(p+v3s16(x,y,z), n_test);
@@ -1977,42 +1947,10 @@ void ServerEnvironment::step(float dtime)
 									continue;
 								if (content_features(n_test).flammable > 0) {
 									content_t c = n_test.getContent();
-									if (
-										c >= CONTENT_DOOR_MIN
-										&& c <= CONTENT_DOOR_MAX
-										&& (c&CONTENT_HATCH_MASK) != CONTENT_HATCH_MASK
-									) {
-										MapNode n_sect;
-										n_sect.setContent(CONTENT_FIRE_SHORTTERM);
-										if ((c&CONTENT_DOOR_SECT_MASK) == CONTENT_DOOR_SECT_MASK) {
-											m_map->addNodeWithEvent(p+v3s16(x,y-1,z), n_sect);
-										}else{
-											m_map->addNodeWithEvent(p+v3s16(x,y+1,z), n_sect);
-										}
-									}else if (
-										n_test.getContent() >= CONTENT_BED_MIN
-										&& n_test.getContent() <= CONTENT_BED_MAX
-									) {
-										v3s16 p_foot = v3s16(0,0,0);
-										u8 d = n_test.param2&0x0F;
-										switch (d) {
-										case 1:
-											p_foot.X = 1;
-											break;
-										case 2:
-											p_foot.Z = -1;
-											break;
-										case 3:
-											p_foot.X = -1;
-											break;
-										default:
-											p_foot.Z = 1;
-											break;
-										}
-										if ((n_test.getContent()&CONTENT_BED_FOOT_MASK) == 0)
-											p_foot *= -1;
+									if (content_features(c).onact_also_affects != v3s16(0,0,0)) {
+										v3s16 p_other = p+v3s16(x,y,z)+n_test.getEffectedRotation();
 										n_test.setContent(CONTENT_FIRE_SHORTTERM);
-										m_map->addNodeWithEvent(p+v3s16(x,y,z)+p_foot, n_test);
+										m_map->addNodeWithEvent(p_other, n_test);
 									}
 									n_test.setContent(CONTENT_FIRE_SHORTTERM);
 									m_map->addNodeWithEvent(p+v3s16(x,y,z), n_test);

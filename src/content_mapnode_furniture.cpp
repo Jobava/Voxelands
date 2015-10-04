@@ -1689,6 +1689,64 @@ void content_mapnode_furniture(bool repeat)
 	f->pressure_type = CST_SOLID;
 	f->suffocation_per_second = 0;
 
+	i = CONTENT_BED_CAMP_HEAD;
+	f = &content_features(i);
+	f->description = wgettext("Camp Bed");
+	f->setAllTextures("hay_bale.png");
+	f->setTexture(0,"bed_camp_top.png");
+	f->setInventoryTexture("bed_camp_inv.png");
+	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->light_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->rotate_tile_with_nodebox = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/32;
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->onact_also_affects = v3s16(0,0,1);
+	content_nodebox_slab(f);
+	f->type = CMT_PLANT;
+	f->hardness = 0.25;
+	f->pressure_type = CST_CRUSHABLE;
+	{
+		content_t r[9] = {
+			CONTENT_CRAFTITEM_FUR,	CONTENT_CRAFTITEM_FUR,	CONTENT_IGNORE,
+			CONTENT_HAY,		CONTENT_HAY,		CONTENT_IGNORE,
+			CONTENT_IGNORE,		CONTENT_IGNORE,		CONTENT_IGNORE
+		};
+		crafting::setRecipe(r,CONTENT_BED_CAMP_HEAD,1);
+	}
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+	f->suffocation_per_second = 0;
+	if (f->initial_metadata == NULL)
+		f->initial_metadata = new BedNodeMetadata();
+
+	i = CONTENT_BED_CAMP_FOOT;
+	f = &content_features(i);
+	f->description = wgettext("Camp Bed");
+	f->setAllTextures("hay_bale.png");
+	f->setTexture(0,"bed_camp_top.png");
+	f->setInventoryTexture("bed_camp_inv.png");
+	f->wield_nodebox = false;
+	f->param_type = CPT_LIGHT;
+	f->param2_type = CPT_FACEDIR_SIMPLE;
+	f->draw_type = CDT_NODEBOX;
+	f->light_propagates = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->rotate_tile_with_nodebox = true;
+	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
+	f->fuel_time = 30/32;
+	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_BED_CAMP_HEAD)+" 1";
+	f->onact_also_affects = v3s16(0,0,-1);
+	content_nodebox_slab(f);
+	f->type = CMT_PLANT;
+	f->hardness = 0.25;
+	f->pressure_type = CST_CRUSHABLE;
+	f->suffocation_per_second = 0;
+
 	// Paintings
 	i = CONTENT_PAINTING_WHITE;
 	f = &content_features(i);
