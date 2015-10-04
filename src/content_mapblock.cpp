@@ -1970,11 +1970,7 @@ void meshgen_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, boo
 	};
 
 	TileSpec tiles[6];
-	NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+data->m_blockpos_nodes);
-	if (meta) {
-		NodeMetadata *cmeta = meta->clone();
-		meta = cmeta;
-	}
+	NodeMetadata *meta = data->m_env->getMap().getNodeMetadataClone(p+data->m_blockpos_nodes);
 	for (int i = 0; i < 6; i++) {
 		// Handles facedir rotation for textures
 		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods,meta);
@@ -3805,16 +3801,19 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, bo
 		cols[2] = 64;
 		cols[3] = 255;
 	}else{
-		NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+data->m_blockpos_nodes);
-		if (meta && meta->getEnergy()) {
-			u8 e = meta->getEnergy();
-			e = (e*16)-1;
-			if (e < 80)
-				e = 80;
-			cols[0] = 255;
-			cols[1] = e;
-			cols[2] = e;
-			cols[3] = e;
+		NodeMetadata *meta = data->m_env->getMap().getNodeMetadataClone(p+data->m_blockpos_nodes);
+		if (meta) {
+			if (meta->getEnergy()) {
+				u8 e = meta->getEnergy();
+				e = (e*16)-1;
+				if (e < 80)
+					e = 80;
+				cols[0] = 255;
+				cols[1] = e;
+				cols[2] = e;
+				cols[3] = e;
+			}
+			delete meta;
 		}
 	}
 
@@ -4068,10 +4067,9 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	}
 
 	TileSpec tiles[6];
-	NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+data->m_blockpos_nodes);
 	for (int i=0; i<6; i++) {
 		// Handles facedir rotation for textures
-		tiles[i] = getNodeTile(n,p,faces[i],data->m_temp_mods,meta);
+		tiles[i] = getNodeTile(n,p,faces[i],data->m_temp_mods);
 	}
 
 	bool urot = (n.getContent() >= CONTENT_SLAB_STAIR_UD_MIN && n.getContent() <= CONTENT_SLAB_STAIR_UD_MAX);
@@ -4380,10 +4378,9 @@ void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	};
 
 	TileSpec tiles[6];
-	NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+data->m_blockpos_nodes);
 	for (int i = 0; i < 6; i++) {
 		// Handles facedir rotation for textures
-		tiles[i] = getNodeTile(n,p,faces[i],data->m_temp_mods,meta);
+		tiles[i] = getNodeTile(n,p,faces[i],data->m_temp_mods);
 	}
 	v3f pos = intToFloat(p, BS);
 
@@ -5173,7 +5170,7 @@ void meshgen_flaglike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	TileSpec tiles[6];
 	TileSpec flag;
 	MapNode pn(CONTENT_FENCE);
-	NodeMetadata *meta = data->m_env->getMap().getNodeMetadata(p+data->m_blockpos_nodes);
+	NodeMetadata *meta = data->m_env->getMap().getNodeMetadataClone(p+data->m_blockpos_nodes);
 	for (u16 i=0; i<6; i++) {
 		// Handles facedir rotation for textures
 		tiles[i] = getNodeTile(pn,p,tile_dirs[i],data->m_temp_mods);
@@ -5225,6 +5222,7 @@ void meshgen_flaglike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	}
 
 	data->append(flag.getMaterial(), vertices, 4, indices, 6, colours);
+	delete meta;
 }
 
 void meshgen_melonlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)

@@ -116,13 +116,15 @@ private:
 class NodeMetadataList
 {
 public:
+	NodeMetadataList();
 	~NodeMetadataList();
 
 	void serialize(std::ostream &os);
 	void deSerialize(std::istream &is);
 
 	// Get pointer to data
-	NodeMetadata* get(v3s16 p);
+	NodeMetadata *get(v3s16 p);
+	NodeMetadata *getClone(v3s16 p);
 	// Deletes data
 	void remove(v3s16 p);
 	// Deletes old data and sets a new one
@@ -134,6 +136,7 @@ public:
 
 private:
 	core::map<v3s16, NodeMetadata*> m_data;
+	JMutex m_mutex;
 };
 
 #endif

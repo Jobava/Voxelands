@@ -184,6 +184,11 @@ void NodeMetadataList::deSerialize(std::istream &is)
 	}
 }
 
+NodeMetadataList::NodeMetadataList()
+{
+	m_mutex.Init();
+}
+
 NodeMetadataList::~NodeMetadataList()
 {
 	for(core::map<v3s16, NodeMetadata*>::Iterator
@@ -202,12 +207,21 @@ NodeMetadata* NodeMetadataList::get(v3s16 p)
 		return NULL;
 	return n->getValue();
 }
+NodeMetadata *NodeMetadataList::getClone(v3s16 p)
+{
+	JMutexAutoLock lock(m_mutex);
+	NodeMetadata *data = get(p);
+	if (!data)
+		return NULL;
+
+	return data->clone();
+}
 
 void NodeMetadataList::remove(v3s16 p)
 {
+	JMutexAutoLock lock(m_mutex);
 	NodeMetadata *olddata = get(p);
-	if(olddata)
-	{
+	if (olddata) {
 		delete olddata;
 		m_data.remove(p);
 	}

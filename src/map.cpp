@@ -1621,18 +1621,36 @@ NodeMetadata* Map::getNodeMetadata(v3s16 p)
 	v3s16 blockpos = getNodeBlockPos(p);
 	v3s16 p_rel = p - blockpos*MAP_BLOCKSIZE;
 	MapBlock *block = getBlockNoCreateNoEx(blockpos);
-	if(!block){
+	if (!block) {
 		infostream<<"Map::getNodeMetadata(): Need to emerge "
 				<<PP(blockpos)<<std::endl;
 		block = emergeBlock(blockpos, false);
 	}
-	if(!block)
-	{
+	if (!block) {
 		infostream<<"WARNING: Map::getNodeMetadata(): Block not found"
 				<<std::endl;
 		return NULL;
 	}
 	NodeMetadata *meta = block->m_node_metadata.get(p_rel);
+	return meta;
+}
+
+NodeMetadata* Map::getNodeMetadataClone(v3s16 p)
+{
+	v3s16 blockpos = getNodeBlockPos(p);
+	v3s16 p_rel = p - blockpos*MAP_BLOCKSIZE;
+	MapBlock *block = getBlockNoCreateNoEx(blockpos);
+	if (!block) {
+		infostream<<"Map::getNodeMetadata(): Need to emerge "
+				<<PP(blockpos)<<std::endl;
+		block = emergeBlock(blockpos, false);
+	}
+	if (!block) {
+		infostream<<"WARNING: Map::getNodeMetadata(): Block not found"
+				<<std::endl;
+		return NULL;
+	}
+	NodeMetadata *meta = block->m_node_metadata.getClone(p_rel);
 	return meta;
 }
 
