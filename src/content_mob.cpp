@@ -756,7 +756,7 @@ void content_mob_init()
 	f->hp = 30;
 	f->model = "sheared_sheep.b3d";
 	f->model_scale = v3f(0.8,0.8,0.8);
-	f->model_rotation = v3f(0,-90,0);
+	f->model_rotation = v3f(0,180,0);
 	f->model_offset = v3f(0,0.6,0);
 	f->setTexture("mob_sheared_sheep.png");
 	f->setAnimationFrames(MA_STAND,40,60);
