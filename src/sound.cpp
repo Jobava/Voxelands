@@ -166,6 +166,7 @@ void sound_playStep(Map *map, v3f pos, int foot, float gain)
 		case CMT_LIQUID:
 			snd = "liquid-step";
 			break;
+		case CMT_TREE:
 		case CMT_WOOD:
 			snd = "wood-step";
 			break;
@@ -214,6 +215,7 @@ void sound_playDig(content_t c, v3f pos)
 	case CMT_LIQUID:
 		g_sound->playSoundAt("liquid-dig",false,pos);
 		break;
+	case CMT_TREE:
 	case CMT_WOOD:
 		g_sound->playSoundAt("wood-dig",false,pos);
 		break;

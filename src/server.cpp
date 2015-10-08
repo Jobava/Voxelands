@@ -3340,6 +3340,10 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				}else if (
 					selected_node_features.ondig_special_drop != CONTENT_IGNORE
 					&& selected_node_features.ondig_special_tool == wielded_tool_features.type
+					&& (
+						selected_node_features.liquid_type != LIQUID_NONE
+						|| wielded_tool_features.level > 1
+					)
 				) {
 					if (selected_node_features.ondig_special_tool_append != "") {
 						std::string dug_s = std::string("ToolItem ");

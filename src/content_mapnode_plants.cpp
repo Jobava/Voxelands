@@ -50,7 +50,7 @@ void content_mapnode_plants(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->cook_result = std::string("CraftItem lump_of_charcoal 1");
 	f->fuel_time = 30;
-	f->type = CMT_WOOD;
+	f->type = CMT_TREE;
 	f->hardness = 1.0;
 	f->ondig_special_drop = CONTENT_WOOD;
 	f->ondig_special_drop_count = 6;
@@ -71,7 +71,7 @@ void content_mapnode_plants(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->cook_result = std::string("CraftItem lump_of_charcoal 1");
 	f->fuel_time = 30;
-	f->type = CMT_WOOD;
+	f->type = CMT_TREE;
 	f->hardness = 1.0;
 	f->ondig_special_drop = CONTENT_WOOD;
 	f->ondig_special_drop_count = 6;
@@ -92,7 +92,7 @@ void content_mapnode_plants(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->cook_result = std::string("CraftItem lump_of_charcoal 1");
 	f->fuel_time = 30;
-	f->type = CMT_WOOD;
+	f->type = CMT_TREE;
 	f->hardness = 1.0;
 	f->ondig_special_drop = CONTENT_JUNGLEWOOD;
 	f->ondig_special_drop_count = 6;
@@ -112,7 +112,7 @@ void content_mapnode_plants(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->cook_result = std::string("CraftItem lump_of_charcoal 1");
 	f->fuel_time = 25;
-	f->type = CMT_WOOD;
+	f->type = CMT_TREE;
 	f->hardness = 0.8;
 	f->ondig_special_drop = CONTENT_WOOD_PINE;
 	f->ondig_special_drop_count = 6;
@@ -136,7 +136,7 @@ void content_mapnode_plants(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_LEAVES;
 	f->fuel_time = 20;
-	f->type = CMT_WOOD;
+	f->type = CMT_TREE;
 	f->hardness = 1.0;
 	f->suffocation_per_second = 0;
 	lists::add("creative",i);
@@ -157,7 +157,7 @@ void content_mapnode_plants(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_JUNGLELEAVES;
 	f->fuel_time = 20;
-	f->type = CMT_WOOD;
+	f->type = CMT_TREE;
 	f->hardness = 1.0;
 	f->suffocation_per_second = 0;
 	lists::add("creative",i);
@@ -178,7 +178,7 @@ void content_mapnode_plants(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_APPLE_LEAVES;
 	f->fuel_time = 20;
-	f->type = CMT_WOOD;
+	f->type = CMT_TREE;
 	f->hardness = 1.0;
 	f->suffocation_per_second = 0;
 	lists::add("creative",i);
@@ -199,7 +199,7 @@ void content_mapnode_plants(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->special_alternate_node = CONTENT_CONIFER_LEAVES;
 	f->fuel_time = 20;
-	f->type = CMT_WOOD;
+	f->type = CMT_TREE;
 	f->hardness = 1.0;
 	f->suffocation_per_second = 0;
 	lists::add("creative",i);

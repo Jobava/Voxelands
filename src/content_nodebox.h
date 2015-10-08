@@ -71,5 +71,6 @@ void content_nodebox_forge(ContentFeatures *f);
 void content_nodebox_furnace(ContentFeatures *f);
 void content_nodebox_lockedfurnace(ContentFeatures *f);
 void content_nodebox_incinerator(ContentFeatures *f);
+void content_nodebox_rock(ContentFeatures *f);
 
 #endif

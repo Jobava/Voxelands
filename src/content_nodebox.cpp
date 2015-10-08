@@ -1607,3 +1607,19 @@ void content_nodebox_incinerator(ContentFeatures *f)
 		-0.25*BS,-0.5*BS,-0.4375*BS,0.25*BS,-0.0625*BS,-0.375*BS
 	));
 }
+
+void content_nodebox_rock(ContentFeatures *f)
+{
+	f->setNodeBox(NodeBox(
+		-0.125*BS,-0.5*BS,-0.125*BS,0.125*BS,-0.3125*BS,0.1875*BS
+	));
+	f->addNodeBox(NodeBox(
+		-0.1875*BS,-0.4375*BS,-0.0625*BS,-0.0625*BS,-0.375*BS,0.25*BS
+	));
+	f->addNodeBox(NodeBox(
+		0.125*BS,-0.5*BS,-0.125*BS,0.1875*BS,-0.4375*BS,0.1875*BS
+	));
+	f->addNodeBox(NodeBox(
+		-0.0625*BS,-0.5*BS,-0.25*BS,0.1875*BS,-0.375*BS,-0.125*BS
+	));
+}

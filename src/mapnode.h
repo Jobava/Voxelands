@@ -155,6 +155,7 @@ enum LiquidType
 enum ContentMaterialType {
 	CMT_AIR,
 	CMT_WOOD,
+	CMT_TREE,
 	CMT_STONE,
 	CMT_LIQUID,
 	CMT_PLANT,

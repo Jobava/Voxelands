@@ -59,7 +59,11 @@ DiggingProperties getDiggingProperties(content_t content, content_t tool, u16 da
 		wear = 65535/t_features.hardness*c_features.hardness;
 	bool diggable = true;
 	bool type_match = false;
-	if ((tool&CONTENT_CLOTHESITEM_MASK) == CONTENT_CLOTHESITEM_MASK || (c_features.type == CMT_STONE && t_features.type != TT_PICK)) {
+	if (
+		(tool&CONTENT_CLOTHESITEM_MASK) == CONTENT_CLOTHESITEM_MASK
+		|| (c_features.type == CMT_STONE && t_features.type != TT_PICK)
+		|| (c_features.type == CMT_TREE && t_features.type == TT_NONE)
+	) {
 		diggable = false;
 	}else{
 		switch (t_features.type) {
@@ -70,7 +74,7 @@ DiggingProperties getDiggingProperties(content_t content, content_t tool, u16 da
 			if (c_features.type == CMT_PLANT) {
 				time *= 2.;
 				type_match = true;
-			}else if (c_features.type != CMT_WOOD && c_features.type != CMT_GLASS) {
+			}else if (c_features.type != CMT_WOOD && c_features.type != CMT_TREE && c_features.type != CMT_GLASS) {
 				time *= 10.;
 			}else{
 				type_match = true;
@@ -181,6 +185,7 @@ std::string toolitem_overlay(content_t content, std::string ol)
 		base += "spear_";
 		break;
 	case TT_SPECIAL:
+	case TT_CLUB:
 	case TT_NONE:
 	default:
 		return "";
@@ -199,18 +204,26 @@ void content_toolitem_init()
 	content_t i;
 	ToolItemFeatures *f = NULL;
 
-	i = CONTENT_TOOLITEM_WPICK;
+	i = CONTENT_TOOLITEM_SMALL_PICK;
 	f = &g_content_toolitem_features[i];
 	f->content = i;
-	f->texture = "tool_woodpick.png";
+	f->texture = "tool_smallpick.png";
 	f->name = "WPick";
-	f->description = wgettext("Wooden Pick");
+	f->description = wgettext("Small Stone Pick");
 	f->type = TT_PICK;
-	f->hardness = 30.;
+	f->hardness = 20.;
 	f->dig_time = 1.5;
 	f->level = 1;
-	crafting::setPickRecipe(CONTENT_WOOD,CONTENT_TOOLITEM_WPICK);
-	crafting::setPickRecipe(CONTENT_JUNGLEWOOD,CONTENT_TOOLITEM_WPICK);
+	{
+		content_t r[9] = {
+			CONTENT_ROCK,	CONTENT_ROCK,			CONTENT_ROCK,
+			CONTENT_IGNORE,	CONTENT_CRAFTITEM_WOOD_PLANK,	CONTENT_IGNORE,
+			CONTENT_IGNORE,	CONTENT_IGNORE,			CONTENT_IGNORE
+		};
+		crafting::setRecipe(r,i,1);
+		r[4] = CONTENT_CRAFTITEM_JUNGLE_PLANK;
+		crafting::setRecipe(r,i,1);
+	}
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -270,17 +283,16 @@ void content_toolitem_init()
 	lists::add("player-creative",i);
 	lists::add("creative",i);
 
-	i = CONTENT_TOOLITEM_WSHOVEL;
+	i = CONTENT_TOOLITEM_TROWEL;
 	f = &g_content_toolitem_features[i];
 	f->content = i;
-	f->texture = "tool_woodshovel.png";
+	f->texture = "tool_trowel.png";
 	f->name = "WShovel";
-	f->description = wgettext("Wooden Shovel");
+	f->description = wgettext("Stone Trowel");
 	f->type = TT_SHOVEL;
 	f->hardness = 50.;
 	f->dig_time = 0.4;
-	crafting::setShovelRecipe(CONTENT_WOOD,CONTENT_TOOLITEM_WSHOVEL);
-	crafting::setShovelRecipe(CONTENT_JUNGLEWOOD,CONTENT_TOOLITEM_WSHOVEL);
+	crafting::set1over1Recipe(CONTENT_ROCK,CONTENT_CRAFTITEM_STICK,i);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -325,17 +337,23 @@ void content_toolitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = CONTENT_TOOLITEM_WAXE;
+	i = CONTENT_TOOLITEM_SMALL_AXE;
 	f = &g_content_toolitem_features[i];
 	f->content = i;
-	f->texture = "tool_woodaxe.png";
+	f->texture = "tool_smallaxe.png";
 	f->name = "WAxe";
-	f->description = wgettext("Wooden Axe");
+	f->description = wgettext("Small Stone Axe");
 	f->type = TT_AXE;
 	f->hardness = 30.;
 	f->dig_time = 1.5;
-	crafting::setAxeRecipe(CONTENT_WOOD,CONTENT_TOOLITEM_WAXE);
-	crafting::setAxeRecipe(CONTENT_JUNGLEWOOD,CONTENT_TOOLITEM_WAXE);
+	{
+		content_t r[9] = {
+			CONTENT_ROCK,	CONTENT_ROCK,			CONTENT_IGNORE,
+			CONTENT_IGNORE,	CONTENT_CRAFTITEM_STICK,	CONTENT_IGNORE,
+			CONTENT_IGNORE,	CONTENT_IGNORE,			CONTENT_IGNORE
+		};
+		crafting::setRecipe(r,i,1);
+	}
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -380,17 +398,17 @@ void content_toolitem_init()
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
-	i = CONTENT_TOOLITEM_WSWORD;
+	i = CONTENT_TOOLITEM_CLUB;
 	f = &g_content_toolitem_features[i];
 	f->content = i;
-	f->texture = "tool_woodsword.png";
+	f->texture = "tool_woodclub.png";
 	f->name = "WSword";
-	f->description = wgettext("Wooden Sword");
-	f->type = TT_SWORD;
+	f->description = wgettext("Wooden Club");
+	f->type = TT_CLUB;
 	f->hardness = 120.;
 	f->dig_time = 1.5;
-	crafting::setSwordRecipe(CONTENT_WOOD,CONTENT_TOOLITEM_WSWORD);
-	crafting::setSwordRecipe(CONTENT_JUNGLEWOOD,CONTENT_TOOLITEM_WSWORD);
+	crafting::setCol1Recipe(CONTENT_CRAFTITEM_WOOD_PLANK,i);
+	crafting::setCol1Recipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,i);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
@@ -428,6 +446,7 @@ void content_toolitem_init()
 	f->name = "FShears";
 	f->description = wgettext("Flint Shears");
 	f->type = TT_SHEAR;
+	f->level = 2;
 	f->hardness = 200.;
 	f->dig_time = 0.7;
 	crafting::setShearsRecipe(CONTENT_CRAFTITEM_FLINT,CONTENT_TOOLITEM_FLINTSHEARS);

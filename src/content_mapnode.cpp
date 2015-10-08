@@ -214,6 +214,28 @@ void content_mapnode_init(bool repeat)
 	lists::add("creative",i);
 	lists::add("decrafting",i);
 
+	i = CONTENT_ROCK;
+	f = &content_features(i);
+	f->description = wgettext("Rock");
+	f->setAllTextures("stone.png");
+	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->type = CMT_DIRT;
+	f->hardness = 0.01;
+	f->param_type = CPT_LIGHT;
+	f->draw_type = CDT_NODEBOX;
+	f->light_propagates = true;
+	f->sunlight_propagates = true;
+	f->air_equivalent = true;
+	f->buildable_to = true;
+	f->solidness = 0; // drawn separately, makes no faces
+	f->suffocation_per_second = 0;
+	content_nodebox_rock(f);
+	f->setInventoryTextureNodeBox(i,"stone.png", "stone.png", "stone.png");
+	crafting::set1To2Recipe(CONTENT_STONE_KNOB,CONTENT_ROCK);
+	crafting::set1To2Recipe(CONTENT_ROUGHSTONE_KNOB,CONTENT_ROCK);
+	lists::add("craftguide",i);
+	lists::add("creative",i);
+
 	i = CONTENT_ICE;
 	f = &content_features(i);
 	f->description = wgettext("Ice");
@@ -443,6 +465,8 @@ void content_mapnode_init(bool repeat)
 	f->draw_type = CDT_CUBELIKE;
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
+	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_ROCK)+" 1";
+	f->extra_dug_item_rarity = 5;
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	f->farm_ploughable = true;
