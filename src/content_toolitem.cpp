@@ -23,6 +23,7 @@
 #include "content_craft.h"
 #include "content_list.h"
 #include "content_mapnode.h"
+#include "mineral.h"
 #include <map>
 #include "intl.h"
 #include "enchantment.h"
@@ -49,7 +50,7 @@ ToolItemFeatures & content_toolitem_features(std::string subname)
 	return g_content_toolitem_features[CONTENT_IGNORE];
 }
 
-DiggingProperties getDiggingProperties(content_t content, content_t tool, u16 data)
+DiggingProperties getDiggingProperties(content_t content, u8 mineral, content_t tool, u16 data)
 {
 	ToolItemFeatures t_features = content_toolitem_features(tool);
 	ContentFeatures &c_features = content_features(content);
@@ -81,7 +82,7 @@ DiggingProperties getDiggingProperties(content_t content, content_t tool, u16 da
 			}
 			break;
 		case TT_PICK:
-			if (c_features.type != CMT_STONE) {
+			if (c_features.type != CMT_STONE || t_features.level < mineral_features(mineral).min_level) {
 				time *= 2.;
 			}else{
 				type_match = true;

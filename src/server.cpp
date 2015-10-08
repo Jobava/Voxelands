@@ -3296,7 +3296,7 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 					if (item && (std::string)item->getName() == "ToolItem") {
 						ToolItem *titem = (ToolItem*)item;
 						// Get digging properties for material and tool
-						DiggingProperties prop = getDiggingProperties(selected_content, titem->getContent(),titem->getData());
+						DiggingProperties prop = getDiggingProperties(selected_content, mineral, titem->getContent(),titem->getData());
 
 						if (prop.diggable == false) {
 							infostream<<"Server: WARNING: Player digged"

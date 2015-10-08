@@ -1740,7 +1740,8 @@ void the_game(
 
 							// Get digging properties for material and tool
 							content_t material = n.getContent();
-							DiggingProperties prop = getDiggingProperties(material, toolid, tooldata);
+							u8 mineral = n.getMineral();
+							DiggingProperties prop = getDiggingProperties(material, mineral, toolid, tooldata);
 
 							float dig_time_complete = 0.0;
 
