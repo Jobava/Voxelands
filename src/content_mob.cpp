@@ -768,9 +768,7 @@ void content_mob_init()
 	f->motion_type = MMT_WALK;
 	f->sound_random = "mob-sheep-env";
 	f->sound_random_extra = "mob-ducksheep-env";
-	f->spawn_min_height = 2;
-	f->spawn_max_height = 50;
-	f->spawn_group = 4;
+	f->spawn_naturally = false;
 	f->lifetime = 1800.0;
 	f->setCollisionBox(aabb3f(-0.4*BS, 0., -0.4*BS, 0.4*BS, 1.*BS, 0.4*BS));
 	lists::add("creative",CONTENT_TOOLITEM_MOB_SPAWNER,1,i);

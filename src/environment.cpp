@@ -1049,7 +1049,7 @@ void ServerEnvironment::step(float dtime)
 
 			// TODO: don't spawn if there was a recent one nearby
 			if (
-				active_object_count_wider < 5
+				active_object_count_wider < 6
 				&& (
 					block->last_spawn < m_time_of_day-6000
 					|| block->last_spawn > m_time_of_day+6000
@@ -1073,7 +1073,7 @@ void ServerEnvironment::step(float dtime)
 				if (block->has_spawn_area) {
 					// dawn, passive mobs spawn
 					if (m_time_of_day > 7000 && m_time_of_day < 8000) {
-						if (active_object_count_wider < 2) {
+						if (!active_object_count_wider) {
 							if (block->water_spawn) {
 								if (n.getContent() == CONTENT_SAND)
 									mob_spawn_passive(block->spawn_area+block->getPosRelative(),block->water_spawn,this);
@@ -1097,7 +1097,18 @@ void ServerEnvironment::step(float dtime)
 					// dusk, hostile mobs spawn, or fireflies
 					}else if (m_time_of_day > 19000 && m_time_of_day < 20000) {
 						if (light <= LIGHT_SPAWN_DARK) {
-							if (n.getContent() == CONTENT_STONE || n.getContent() == CONTENT_SAND) {
+							if (
+								(
+									n.getContent() == CONTENT_STONE
+									|| n.getContent() == CONTENT_SAND
+								) && (
+									block->water_spawn
+									|| (
+										block->getPos().Y > 0
+										|| myrand_range(0,5) == 0
+									)
+								)
+							) {
 								mob_spawn_hostile(block->spawn_area+block->getPosRelative(),block->water_spawn,this);
 							}else if (n1.getContent() == CONTENT_JUNGLEGRASS) {
 								mob_spawn(block->spawn_area+block->getPosRelative(),CONTENT_MOB_FIREFLY,this);

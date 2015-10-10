@@ -85,6 +85,12 @@ public:
 
 	v3f getPosition()
 	{
+		if (m_position.X > 30000*BS || m_position.X < -30000*BS)
+			m_position.X = ((s32)m_position.X)%(30000*BS);
+		if (m_position.Y > 30000*BS || m_position.Y < -30000*BS)
+			m_position.Y = ((s32)m_position.Y)%(30000*BS);
+		if (m_position.Z > 30000*BS || m_position.Z < -30000*BS)
+			m_position.Z = ((s32)m_position.Z)%(30000*BS);
 		return m_position;
 	}
 
@@ -108,6 +114,12 @@ public:
 	virtual void setPosition(const v3f &position)
 	{
 		m_position = position;
+		if (m_position.X > 30000*BS || m_position.X < -30000*BS)
+			m_position.X = ((s32)m_position.X)%(30000*BS);
+		if (m_position.Y > 30000*BS || m_position.Y < -30000*BS)
+			m_position.Y = ((s32)m_position.Y)%(30000*BS);
+		if (m_position.Z > 30000*BS || m_position.Z < -30000*BS)
+			m_position.Z = ((s32)m_position.Z)%(30000*BS);
 	}
 
 	void setPitch(f32 pitch)
