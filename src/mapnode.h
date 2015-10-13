@@ -375,6 +375,10 @@ struct ContentFeatures
 	// Extra dug item and its rarity
 	std::string extra_dug_item;
 	s32 extra_dug_item_rarity;
+	// the minimum tool level required to get the extra dug item
+	u8 extra_dug_item_min_level;
+	// the maximum tool level required to get the extra dug item
+	u8 extra_dug_item_max_level;
 
 	// when dug, this node will replace the dug node
 	content_t ondig_replace_node;
@@ -540,6 +544,8 @@ struct ContentFeatures
 		dug_item = "";
 		extra_dug_item = "";
 		extra_dug_item_rarity = 2;
+		extra_dug_item_min_level = 0;
+		extra_dug_item_max_level = 100;
 		ondig_replace_node = CONTENT_IGNORE;
 		ondig_replace_node_requires = CONTENT_IGNORE;
 		ondig_special_drop = CONTENT_IGNORE;

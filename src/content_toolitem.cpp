@@ -291,6 +291,7 @@ void content_toolitem_init()
 	f->name = "WShovel";
 	f->description = wgettext("Stone Trowel");
 	f->type = TT_SHOVEL;
+	f->level = 1;
 	f->hardness = 50.;
 	f->dig_time = 0.4;
 	crafting::set1over1Recipe(CONTENT_ROCK,CONTENT_CRAFTITEM_STICK,i);
@@ -304,6 +305,7 @@ void content_toolitem_init()
 	f->name = "STShovel";
 	f->description = wgettext("Stone Shovel");
 	f->type = TT_SHOVEL;
+	f->level = 1;
 	f->hardness = 150.;
 	f->dig_time = 0.2;
 	crafting::setShovelRecipe(CONTENT_ROUGHSTONE,CONTENT_TOOLITEM_STSHOVEL);
@@ -345,6 +347,7 @@ void content_toolitem_init()
 	f->name = "WAxe";
 	f->description = wgettext("Small Stone Axe");
 	f->type = TT_AXE;
+	f->level = 1;
 	f->hardness = 30.;
 	f->dig_time = 1.5;
 	{
@@ -365,6 +368,7 @@ void content_toolitem_init()
 	f->name = "STAxe";
 	f->description = wgettext("Stone Axe");
 	f->type = TT_AXE;
+	f->level = 1;
 	f->hardness = 100.;
 	f->dig_time = 0.75;
 	crafting::setAxeRecipe(CONTENT_ROUGHSTONE,CONTENT_TOOLITEM_STAXE);
@@ -408,6 +412,7 @@ void content_toolitem_init()
 	f->type = TT_CLUB;
 	f->hardness = 120.;
 	f->dig_time = 1.5;
+	f->level = 1;
 	crafting::setCol1Recipe(CONTENT_CRAFTITEM_WOOD_PLANK,i);
 	crafting::setCol1Recipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,i);
 	lists::add("craftguide",i);
@@ -422,6 +427,7 @@ void content_toolitem_init()
 	f->type = TT_SWORD;
 	f->hardness = 300.;
 	f->dig_time = 1.0;
+	f->level = 1;
 	crafting::setSwordRecipe(CONTENT_ROUGHSTONE,CONTENT_TOOLITEM_STSWORD);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
@@ -478,6 +484,7 @@ void content_toolitem_init()
 	f->type = TT_BUCKET;
 	f->hardness = 30.;
 	f->dig_time = 0.0;
+	f->level = 1;
 	f->damaging_nodes_diggable = false;
 	crafting::setURecipe(CONTENT_CRAFTITEM_JUNGLE_PLANK,CONTENT_TOOLITEM_WBUCKET);
 	crafting::setURecipe(CONTENT_CRAFTITEM_WOOD_PLANK,CONTENT_TOOLITEM_WBUCKET);
@@ -568,6 +575,7 @@ void content_toolitem_init()
 	f->description = wgettext("Fire Starter");
 	f->liquids_pointable = true;
 	f->type = TT_SPECIAL;
+	f->level = 3;
 	f->has_fire_effect = true;
 	crafting::set1Any2Recipe(CONTENT_CRAFTITEM_FLINT,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_FIRESTARTER);
 	lists::add("craftguide",i);
@@ -580,6 +588,7 @@ void content_toolitem_init()
 	f->name = "crowbar";
 	f->description = wgettext("Crowbar");
 	f->type = TT_SPECIAL;
+	f->level = 3;
 	f->has_rotate_effect = true;
 	crafting::set1over1Recipe(CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_CRAFTITEM_STEEL_INGOT,CONTENT_TOOLITEM_CROWBAR);
 	lists::add("craftguide",i);
@@ -592,6 +601,7 @@ void content_toolitem_init()
 	f->name = "key";
 	f->description = wgettext("Key");
 	f->type = TT_SPECIAL;
+	f->level = 4;
 	f->has_unlock_effect = true;
 	crafting::set1To1Recipe(CONTENT_CRAFTITEM_GOLD_INGOT,CONTENT_TOOLITEM_KEY);
 	lists::add("craftguide",i);
@@ -603,6 +613,7 @@ void content_toolitem_init()
 	f->name = "stone_spear";
 	f->description = wgettext("Stone Spear");
 	f->type = TT_SPEAR;
+	f->level = 1;
 	f->hardness = 100.;
 	f->dig_time = 1.5;
 	crafting::setSpearRecipe(CONTENT_ROUGHSTONE,CONTENT_TOOLITEM_STONESPEAR);
@@ -644,6 +655,7 @@ void content_toolitem_init()
 	f->name = "bow";
 	f->description = wgettext("Bow");
 	f->type = TT_SPECIAL;
+	f->level = 2;
 	f->thrown_item = CONTENT_CRAFTITEM_ARROW;
 	{
 		content_t r[9] = {
@@ -874,6 +886,7 @@ void content_toolitem_init()
 	f->name = "mob_spawner";
 	f->description = wgettext("Mob Spawner");
 	f->type = TT_SPECIAL;
+	f->level = 4;
 	f->param_type = CPT_DROP;
 	{
 		content_t r[9] = {

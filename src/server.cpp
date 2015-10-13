@@ -3503,7 +3503,13 @@ void Server::ProcessData(u8 *data, u32 datasize, u16 peer_id)
 				if (item == NULL) {
 					std::string &extra_dug_s = selected_node_features.extra_dug_item;
 					s32 extra_rarity = selected_node_features.extra_dug_item_rarity;
-					if (extra_dug_s != "" && extra_rarity != 0 && myrand() % extra_rarity == 0) {
+					if (
+						extra_dug_s != ""
+						&& extra_rarity != 0
+						&& selected_node_features.extra_dug_item_min_level <= wielded_tool_features.level
+						&& selected_node_features.extra_dug_item_max_level >= wielded_tool_features.level
+						&& myrand_range(0,extra_rarity) == 0
+					) {
 						std::istringstream is(extra_dug_s, std::ios::binary);
 						item = InventoryItem::deSerialize(is);
 					}

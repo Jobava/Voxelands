@@ -80,7 +80,7 @@ struct ToolItemFeatures {
 		type(TT_NONE),
 		hardness(0.),
 		dig_time(3.),
-		level(1),
+		level(0),
 		param_type(CPT_NONE),
 		thrown_item(CONTENT_IGNORE),
 		onplace_replace_item(CONTENT_IGNORE),

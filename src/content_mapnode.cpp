@@ -466,7 +466,8 @@ void content_mapnode_init(bool repeat)
 	f->is_ground_content = true;
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->extra_dug_item = std::string("MaterialItem2 ")+itos(CONTENT_ROCK)+" 1";
-	f->extra_dug_item_rarity = 5;
+	f->extra_dug_item_rarity = 3;
+	f->extra_dug_item_max_level = 1;
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
 	f->farm_ploughable = true;
@@ -498,6 +499,7 @@ void content_mapnode_init(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->extra_dug_item = std::string("CraftItem2 ")+itos(CONTENT_CRAFTITEM_SALTPETER)+" 1";
 	f->extra_dug_item_rarity = 30;
+	f->extra_dug_item_min_level = 3;
 	f->cook_result = std::string("MaterialItem2 ")+itos(CONTENT_GLASS)+" 1";
 	f->type = CMT_DIRT;
 	f->hardness = 1.0;
@@ -516,6 +518,7 @@ void content_mapnode_init(bool repeat)
 	f->dug_item = std::string("MaterialItem2 ")+itos(i)+" 1";
 	f->extra_dug_item = std::string("CraftItem lump_of_flint 1");
 	f->extra_dug_item_rarity = 10;
+	f->extra_dug_item_min_level = 1;
 	f->type = CMT_DIRT;
 	f->hardness = 1.75;
 	lists::add("creative",i);
