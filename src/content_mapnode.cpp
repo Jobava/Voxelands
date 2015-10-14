@@ -2255,6 +2255,7 @@ void content_mapnode_init(bool repeat)
 	f->type = CMT_STONE;
 	f->hardness = 0.9;
 	crafting::set5Recipe(CONTENT_ROUGHSTONE,CONTENT_COBBLE);
+	crafting::setHardBlockRecipe(CONTENT_ROCK,CONTENT_COBBLE);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
