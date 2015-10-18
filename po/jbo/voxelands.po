@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Lisa 'darkrose' Milne
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Wuzzy <almikes@aol.com>, 2015
 # Wuzzy <almikes@aol.com>, 2014-2015
@@ -9,14 +9,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-17 15:58+1000\n"
+"POT-Creation-Date: 2015-10-19 01:55+1000\n"
 "PO-Revision-Date: 2015-08-19 01:41+0000\n"
 "Last-Translator: Wuzzy <almikes@aol.com>\n"
-"Language-Team: Lojban (http://www.transifex.com/voxelands/voxelands/language/jbo/)\n"
+"Language-Team: Lojban (http://www.transifex.com/voxelands/voxelands/language/"
+"jbo/)\n"
+"Language: jbo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: jbo\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: src/character_creator.cpp:55
@@ -229,9 +230,20 @@ msgstr "lo fanbu'u cutci"
 
 #: src/character_creator.cpp:202
 msgid ""
-"Here you can create your default character, this is how other players will see you in-game. When you join a new server you will start with the clothing you select here. Additional clothing, both protective and decorative, can be crafted in-game.\n"
+"Here you can create your default character, this is how other players will "
+"see you in-game. When you join a new server you will start with the clothing "
+"you select here. Additional clothing, both protective and decorative, can be "
+"crafted in-game.\n"
 "You can return here from the main menu anytime to change your character."
-msgstr ".i vi lo ti sazycimde ku do kakne lo nu finti lo xarpre be do be'o goi xy\n.i xy. ba se viska lo drata kelci ca lo nu kelci\n.i ca lo nu do co'a pilno lo cnino samse'u kei xy. dasni lo taxfu poi do cuxna ke'a\n.i cumki fa lo nu lo seljmina taxfu noi ke'a badgai gi'e jadni ku'o se zbasu kei fe lo nu kelci\n.i cumki fa lo nu do xrukla pe'a lo ti sazycimde le ralju sazycimde tezu'e lo nu gafygau xy."
+msgstr ""
+".i vi lo ti sazycimde ku do kakne lo nu finti lo xarpre be do be'o goi xy\n"
+".i xy. ba se viska lo drata kelci ca lo nu kelci\n"
+".i ca lo nu do co'a pilno lo cnino samse'u kei xy. dasni lo taxfu poi do "
+"cuxna ke'a\n"
+".i cumki fa lo nu lo seljmina taxfu noi ke'a badgai gi'e jadni ku'o se zbasu "
+"kei fe lo nu kelci\n"
+".i cumki fa lo nu do xrukla pe'a lo ti sazycimde le ralju sazycimde tezu'e "
+"lo nu gafygau xy."
 
 #: src/character_creator.cpp:223
 msgid "Create Your Character"
@@ -1117,11 +1129,11 @@ msgstr "lo fagri rokci"
 msgid "Steel Ingot"
 msgstr "lo gasta manfybli"
 
-#: src/content_craftitem.cpp:225 src/content_mapnode.cpp:702
+#: src/content_craftitem.cpp:225 src/content_mapnode.cpp:710
 msgid "Brick"
 msgstr "lo kitybli"
 
-#: src/content_craftitem.cpp:233
+#: src/content_craftitem.cpp:233 src/content_mob.cpp:373
 msgid "Rat"
 msgstr "lo ratcu"
 
@@ -1129,11 +1141,11 @@ msgstr "lo ratcu"
 msgid "Cooked Rat"
 msgstr "le seljukpa ratcu"
 
-#: src/content_craftitem.cpp:259
+#: src/content_craftitem.cpp:259 src/content_mob.cpp:392
 msgid "Firefly"
 msgstr "lo gusycinki"
 
-#: src/content_craftitem.cpp:269 src/content_mapnode_plants.cpp:806
+#: src/content_craftitem.cpp:269 src/content_mapnode_plants.cpp:981
 msgid "Apple"
 msgstr "lo plise"
 
@@ -1217,7 +1229,7 @@ msgstr "lo fagyfesti"
 msgid "Apple Blossoms"
 msgstr "lo plise xrula"
 
-#: src/content_craftitem.cpp:512 src/content_mapnode_plants.cpp:611
+#: src/content_craftitem.cpp:512 src/content_mapnode_plants.cpp:786
 msgid "Cactus Berry"
 msgstr "lo jesyspa jbari"
 
@@ -1305,7 +1317,7 @@ msgstr "lo ricyblu"
 msgid "Oerkki Dust"
 msgstr "lo za'e pumrxo'erki"
 
-#: src/content_craftitem.cpp:783
+#: src/content_craftitem.cpp:783 src/content_mob.cpp:613
 msgid "Fish"
 msgstr "lo finpe"
 
@@ -1457,7 +1469,7 @@ msgstr "lo pelxu revyskapi"
 msgid "Black Leather"
 msgstr "lo xekri revyskapi"
 
-#: src/content_craftitem.cpp:1209
+#: src/content_craftitem.cpp:1209 src/content_mob.cpp:799
 msgid "Arrow"
 msgstr "lo celga'a"
 
@@ -1545,419 +1557,424 @@ msgstr ""
 msgid "Unbound Mithril"
 msgstr "lo narjorne jimrmifrile"
 
-#: src/content_craftitem.cpp:1515
+#: src/content_craftitem.cpp:1516
 msgid "Mithril"
 msgstr "lo jimrmifrile"
 
-#: src/content_craftitem.cpp:1524
+#: src/content_craftitem.cpp:1525
 msgid "Ruby"
 msgstr "lo zirxu'ejme"
 
-#: src/content_craftitem.cpp:1532
+#: src/content_craftitem.cpp:1533
 msgid "Turquiose"
 msgstr "lo cicnykunra"
 
-#: src/content_craftitem.cpp:1540
+#: src/content_craftitem.cpp:1541
 msgid "Amethyst"
 msgstr "lo amtisti"
 
-#: src/content_craftitem.cpp:1548
+#: src/content_craftitem.cpp:1549
 msgid "Sapphire"
 msgstr ""
 
-#: src/content_craftitem.cpp:1556
+#: src/content_craftitem.cpp:1557
 msgid "Sunstone"
 msgstr ""
 
-#: src/content_mapnode.cpp:251
+#: src/content_mapnode.cpp:185
 msgid "Stone"
 msgstr "lo rokci"
 
-#: src/content_mapnode.cpp:268
+#: src/content_mapnode.cpp:202
 msgid "Limestone"
 msgstr ""
 
-#: src/content_mapnode.cpp:285
+#: src/content_mapnode.cpp:219
+msgid "Rock"
+msgstr ""
+
+#: src/content_mapnode.cpp:241
 msgid "Ice"
 msgstr "lo bisli"
 
-#: src/content_mapnode.cpp:301
+#: src/content_mapnode.cpp:257
 msgid "Coal Block"
 msgstr "lo kolme bliku"
 
-#: src/content_mapnode.cpp:318
+#: src/content_mapnode.cpp:274
 msgid "Charcoal Block"
 msgstr "lo fagytabno bliku"
 
-#: src/content_mapnode.cpp:335
+#: src/content_mapnode.cpp:291
 msgid "Stone Brick"
 msgstr "lo morna rokci"
 
-#: src/content_mapnode.cpp:349
+#: src/content_mapnode.cpp:305
 msgid "Stone Block"
 msgstr "lo rokci bliku"
 
-#: src/content_mapnode.cpp:363
+#: src/content_mapnode.cpp:319
 msgid "Rough Stone Brick"
 msgstr "lo rufsu ke morna rokci"
 
-#: src/content_mapnode.cpp:380
+#: src/content_mapnode.cpp:336
 msgid "Rough Stone Block"
 msgstr "lo rufsu ke rokci bliku"
 
-#: src/content_mapnode.cpp:396 src/content_mapnode.cpp:429
+#: src/content_mapnode.cpp:352 src/content_mapnode.cpp:385
+#: src/content_mapnode.cpp:399 src/content_mapnode.cpp:432
 msgid "Grass"
 msgstr "lo srasu"
 
-#: src/content_mapnode.cpp:414
+#: src/content_mapnode.cpp:370 src/content_mapnode.cpp:417
 msgid "Growing Grass"
 msgstr "lo banro srasu"
 
-#: src/content_mapnode.cpp:443
+#: src/content_mapnode.cpp:446
 msgid "Muddy Snow"
 msgstr "lo derpesxu snime"
 
-#: src/content_mapnode.cpp:459
+#: src/content_mapnode.cpp:462
 msgid "Mud"
 msgstr "lo derpesxu"
 
-#: src/content_mapnode.cpp:472
+#: src/content_mapnode.cpp:478
 msgid "Ash Block"
 msgstr "lo fagyfesti bliku"
 
-#: src/content_mapnode.cpp:487
+#: src/content_mapnode.cpp:493
 msgid "Sand"
 msgstr "lo canre"
 
-#: src/content_mapnode.cpp:505
+#: src/content_mapnode.cpp:512
 msgid "Gravel"
 msgstr "lo cmaro'i"
 
-#: src/content_mapnode.cpp:521
+#: src/content_mapnode.cpp:529
 msgid "Sand Stone"
 msgstr "lo canro'i"
 
-#: src/content_mapnode.cpp:536
+#: src/content_mapnode.cpp:544
 msgid "Sand Stone Bricks"
 msgstr "lo morna canro'i"
 
-#: src/content_mapnode.cpp:551
+#: src/content_mapnode.cpp:559
 msgid "Sand Stone Blocks"
 msgstr "lo canro'i bliku"
 
-#: src/content_mapnode.cpp:566
+#: src/content_mapnode.cpp:574
 msgid "Clay"
 msgstr "lo kliti"
 
-#: src/content_mapnode.cpp:583
+#: src/content_mapnode.cpp:591
 msgid "Blue Clay"
 msgstr "lo blanu kliti"
 
-#: src/content_mapnode.cpp:600
+#: src/content_mapnode.cpp:608
 msgid "Green Clay"
 msgstr "lo crino kliti"
 
-#: src/content_mapnode.cpp:617
+#: src/content_mapnode.cpp:625
 msgid "Orange Clay"
 msgstr "lo narju kliti"
 
-#: src/content_mapnode.cpp:634
+#: src/content_mapnode.cpp:642
 msgid "Purple Clay"
 msgstr "lo zirpu kliti"
 
-#: src/content_mapnode.cpp:651
+#: src/content_mapnode.cpp:659
 msgid "Red Clay"
 msgstr "lo xunre kliti"
 
-#: src/content_mapnode.cpp:668
+#: src/content_mapnode.cpp:676
 msgid "Yellow Clay"
 msgstr "lo pelxu kliti"
 
-#: src/content_mapnode.cpp:685
+#: src/content_mapnode.cpp:693
 msgid "Black Clay"
 msgstr "lo xekri kliti"
 
-#: src/content_mapnode.cpp:721
+#: src/content_mapnode.cpp:729
 msgid "Terracotta"
 msgstr "lo stakrterakota"
 
-#: src/content_mapnode.cpp:733
+#: src/content_mapnode.cpp:741
 msgid "Terracotta Brick"
 msgstr "lo morna stakrterakota"
 
-#: src/content_mapnode.cpp:747
+#: src/content_mapnode.cpp:755
 msgid "Terracotta Block"
 msgstr "lo stakrterakota bliku"
 
-#: src/content_mapnode.cpp:761
+#: src/content_mapnode.cpp:769
 msgid "Terracotta Tile"
 msgstr "lo stakrterakota tapla"
 
-#: src/content_mapnode.cpp:781
+#: src/content_mapnode.cpp:789
 msgid "Glass"
 msgstr "lo blaci"
 
-#: src/content_mapnode.cpp:801
+#: src/content_mapnode.cpp:809
 msgid "Blue Glass"
 msgstr "lo blanu blaci"
 
-#: src/content_mapnode.cpp:823
+#: src/content_mapnode.cpp:831
 msgid "Green Glass"
 msgstr "lo crino blaci"
 
-#: src/content_mapnode.cpp:845
+#: src/content_mapnode.cpp:853
 msgid "Orange Glass"
 msgstr "lo narju blaci"
 
-#: src/content_mapnode.cpp:867
+#: src/content_mapnode.cpp:875
 msgid "Purple Glass"
 msgstr "lo zirpu blaci"
 
-#: src/content_mapnode.cpp:889
+#: src/content_mapnode.cpp:897
 msgid "Red Glass"
 msgstr "lo xunre blaci"
 
-#: src/content_mapnode.cpp:911
+#: src/content_mapnode.cpp:919
 msgid "Yellow Glass"
 msgstr "lo pelxu blaci"
 
-#: src/content_mapnode.cpp:933
+#: src/content_mapnode.cpp:941
 msgid "Black Glass"
 msgstr "lo xekri blaci"
 
-#: src/content_mapnode.cpp:955
+#: src/content_mapnode.cpp:963
 msgid "Glass Pane"
 msgstr "lo blaci plita"
 
-#: src/content_mapnode.cpp:989
+#: src/content_mapnode.cpp:997
 msgid "Blue Glass Pane"
 msgstr "lo blanu ke blaci plita"
 
-#: src/content_mapnode.cpp:1024
+#: src/content_mapnode.cpp:1032
 msgid "Green Glass Pane"
 msgstr "lo crino ke blaci plita"
 
-#: src/content_mapnode.cpp:1059
+#: src/content_mapnode.cpp:1067
 msgid "Orange Glass Pane"
 msgstr "lo narju ke blaci plita"
 
-#: src/content_mapnode.cpp:1094
+#: src/content_mapnode.cpp:1102
 msgid "Purple Glass Pane"
 msgstr "lo zirpu ke blaci plita"
 
-#: src/content_mapnode.cpp:1129
+#: src/content_mapnode.cpp:1137
 msgid "Red Glass Pane"
 msgstr "lo xunre ke blaci plita"
 
-#: src/content_mapnode.cpp:1164
+#: src/content_mapnode.cpp:1172
 msgid "Yellow Glass Pane"
 msgstr "lo pelxu ke blaci plita"
 
-#: src/content_mapnode.cpp:1199
+#: src/content_mapnode.cpp:1207
 msgid "Black Glass Pane"
 msgstr "lo xekri ke blaci plita"
 
-#: src/content_mapnode.cpp:1234 src/content_mapnode_farm.cpp:333
+#: src/content_mapnode.cpp:1242 src/content_mapnode_farm.cpp:333
 msgid "Glass Light"
 msgstr "lo blaci tergu'i"
 
-#: src/content_mapnode.cpp:1257
+#: src/content_mapnode.cpp:1265
 msgid "Wood"
 msgstr "lo mudri"
 
-#: src/content_mapnode.cpp:1283
+#: src/content_mapnode.cpp:1291
 msgid "Jungle Wood"
 msgstr "lo glatimdemricfoi mudri"
 
-#: src/content_mapnode.cpp:1308
+#: src/content_mapnode.cpp:1316
 msgid "Pine"
 msgstr "lo ckunu mudri"
 
-#: src/content_mapnode.cpp:1333
+#: src/content_mapnode.cpp:1341
 msgid "Sponge"
 msgstr "lo panje"
 
-#: src/content_mapnode.cpp:1348
+#: src/content_mapnode.cpp:1356
 msgid "Waterlogged Sponge"
 msgstr "lo cilmo panje"
 
-#: src/content_mapnode.cpp:1363
+#: src/content_mapnode.cpp:1371
 msgid "Hay Bale"
 msgstr "lo sudysrasu bliku"
 
-#: src/content_mapnode.cpp:1380
+#: src/content_mapnode.cpp:1388
 msgid "Raw Apple Pie"
 msgstr "lo na'e seljukpa ke plise titnanba"
 
-#: src/content_mapnode.cpp:1409
+#: src/content_mapnode.cpp:1417
 msgid "Apple Pie"
 msgstr "lo plise titnanba"
 
-#: src/content_mapnode.cpp:1504
+#: src/content_mapnode.cpp:1512
 msgid "Raw Pumpkin Pie"
 msgstr "lo na'e seljukpa ke guzmrkukurbita titnanba"
 
-#: src/content_mapnode.cpp:1533
+#: src/content_mapnode.cpp:1541
 msgid "Pumpkin Pie"
 msgstr "lo guzmrkukurbita titnanba"
 
-#: src/content_mapnode.cpp:1628 src/content_mapnode.cpp:1707
+#: src/content_mapnode.cpp:1636 src/content_mapnode.cpp:1715
 msgid "Snow"
 msgstr "lo snime"
 
-#: src/content_mapnode.cpp:1644
+#: src/content_mapnode.cpp:1652
 msgid "Snowman"
 msgstr "lo remkemsi'exra"
 
-#: src/content_mapnode.cpp:1730 src/content_mapnode_farm.cpp:445
+#: src/content_mapnode.cpp:1738 src/content_mapnode_farm.cpp:445
 msgid "Cotton"
 msgstr "lo mapni"
 
-#: src/content_mapnode.cpp:1761
+#: src/content_mapnode.cpp:1769
 msgid "Blue Cotton"
 msgstr "lo blanu mapni"
 
-#: src/content_mapnode.cpp:1778
+#: src/content_mapnode.cpp:1786
 msgid "Green Cotton"
 msgstr "lo crino mapni"
 
-#: src/content_mapnode.cpp:1795
+#: src/content_mapnode.cpp:1803
 msgid "Orange Cotton"
 msgstr "lo narju mapni"
 
-#: src/content_mapnode.cpp:1812
+#: src/content_mapnode.cpp:1820
 msgid "Purple Cotton"
 msgstr "lo zirpu mapni"
 
-#: src/content_mapnode.cpp:1829
+#: src/content_mapnode.cpp:1837
 msgid "Red Cotton"
 msgstr "lo xunre mapni"
 
-#: src/content_mapnode.cpp:1846
+#: src/content_mapnode.cpp:1854
 msgid "Yellow Cotton"
 msgstr "lo pelxu mapni"
 
-#: src/content_mapnode.cpp:1863
+#: src/content_mapnode.cpp:1871
 msgid "Black Cotton"
 msgstr "lo xekri mapni"
 
-#: src/content_mapnode.cpp:1880
+#: src/content_mapnode.cpp:1888
 msgid "Carpet"
 msgstr "lo buklolgai"
 
-#: src/content_mapnode.cpp:1903
+#: src/content_mapnode.cpp:1911
 msgid "Blue Carpet"
 msgstr "lo blanu buklolgai"
 
-#: src/content_mapnode.cpp:1927
+#: src/content_mapnode.cpp:1935
 msgid "Green Carpet"
 msgstr "lo crino buklolgai"
 
-#: src/content_mapnode.cpp:1951
+#: src/content_mapnode.cpp:1959
 msgid "Orange Carpet"
 msgstr "lo narju buklolgai"
 
-#: src/content_mapnode.cpp:1975
+#: src/content_mapnode.cpp:1983
 msgid "Purple Carpet"
 msgstr "lo zirpu buklolgai"
 
-#: src/content_mapnode.cpp:1999
+#: src/content_mapnode.cpp:2007
 msgid "Red Carpet"
 msgstr "lo xunre buklolgai"
 
-#: src/content_mapnode.cpp:2023
+#: src/content_mapnode.cpp:2031
 msgid "Yellow Carpet"
 msgstr "lo pelxu buklolgai"
 
-#: src/content_mapnode.cpp:2047
+#: src/content_mapnode.cpp:2055
 msgid "Black Carpet"
 msgstr "lo xekri buklolgai"
 
-#: src/content_mapnode.cpp:2071
+#: src/content_mapnode.cpp:2079
 msgid "Air"
 msgstr "lo vacri"
 
-#: src/content_mapnode.cpp:2087
+#: src/content_mapnode.cpp:2095
 msgid "Vacuum"
 msgstr "lo maisru"
 
-#: src/content_mapnode.cpp:2104 src/content_mapnode.cpp:2134
+#: src/content_mapnode.cpp:2112 src/content_mapnode.cpp:2142
 msgid "Water"
 msgstr "lo djacu"
 
-#: src/content_mapnode.cpp:2164 src/content_mapnode.cpp:2192
+#: src/content_mapnode.cpp:2172 src/content_mapnode.cpp:2200
 msgid "Lava"
 msgstr "lo likro'i"
 
-#: src/content_mapnode.cpp:2223
+#: src/content_mapnode.cpp:2231
 msgid "Rough Stone"
 msgstr "lo rufsu rokci"
 
-#: src/content_mapnode.cpp:2240
+#: src/content_mapnode.cpp:2248
 msgid "Cobble Stone"
 msgstr "lo lolro'iboi"
 
-#: src/content_mapnode.cpp:2255
+#: src/content_mapnode.cpp:2264
 msgid "Mossy Cobble Stone"
 msgstr "lo clika lolro'iboi"
 
-#: src/content_mapnode.cpp:2268
+#: src/content_mapnode.cpp:2277
 msgid "Steel Block"
 msgstr "lo gasta bliku"
 
-#: src/content_mapnode.cpp:2285
+#: src/content_mapnode.cpp:2294
 msgid "Mithril Block"
 msgstr "lo jimrmifrile bliku"
 
-#: src/content_mapnode.cpp:2301
+#: src/content_mapnode.cpp:2310
 msgid "Stone Knob"
 msgstr "lo rokci ke jadni batke"
 
-#: src/content_mapnode.cpp:2302
+#: src/content_mapnode.cpp:2311
 msgid "Rough Stone Knob"
 msgstr "lo rufsu rokci ke jadni batke"
 
-#: src/content_mapnode.cpp:2303
+#: src/content_mapnode.cpp:2312
 msgid "Sandstone Knob"
 msgstr "lo canro'i ke jadni batke"
 
-#: src/content_mapnode.cpp:2304
+#: src/content_mapnode.cpp:2313
 msgid "Wooden Knob"
 msgstr "lo mudri ke jadni batke"
 
-#: src/content_mapnode.cpp:2305
+#: src/content_mapnode.cpp:2314
 msgid "Junglewood Knob"
 msgstr "lo glatimdemricfoi mudri ke jadni batke"
 
-#: src/content_mapnode.cpp:2306
+#: src/content_mapnode.cpp:2315
 msgid "Pine Knob"
 msgstr "lo ckunu ke jadni batke"
 
-#: src/content_mapnode.cpp:2310
+#: src/content_mapnode.cpp:2319
 msgid "Copper Block"
 msgstr "lo tunka bliku"
 
-#: src/content_mapnode.cpp:2327
+#: src/content_mapnode.cpp:2336
 msgid "Gold Block"
 msgstr "lo solji bliku"
 
-#: src/content_mapnode.cpp:2344
+#: src/content_mapnode.cpp:2353
 msgid "Silver Block"
 msgstr "lo rijno bliku"
 
-#: src/content_mapnode.cpp:2361
+#: src/content_mapnode.cpp:2370
 msgid "Tin Block"
 msgstr "lo tinci bliku"
 
-#: src/content_mapnode.cpp:2378
+#: src/content_mapnode.cpp:2387
 msgid "Quartz Block"
 msgstr "lo kunrkuartse bliku"
 
-#: src/content_mapnode.cpp:2395
+#: src/content_mapnode.cpp:2404
 msgid "Stone Tiles"
 msgstr "lo rokci tapla"
 
-#: src/content_mapnode.cpp:2417
+#: src/content_mapnode.cpp:2426
 msgid "Wood Tiles"
 msgstr "lo mudri tapla"
 
@@ -2243,66 +2260,71 @@ msgid "Table"
 msgstr "lo jubme"
 
 #: src/content_mapnode_furniture.cpp:1206
-#: src/content_mapnode_furniture.cpp:1237
+#: src/content_mapnode_furniture.cpp:1239
 msgid "Bed"
 msgstr "lo ckana"
 
-#: src/content_mapnode_furniture.cpp:1265
-#: src/content_mapnode_furniture.cpp:1296
+#: src/content_mapnode_furniture.cpp:1267
+#: src/content_mapnode_furniture.cpp:1300
 msgid "Blue Bed"
 msgstr "lo blanu ckana"
 
-#: src/content_mapnode_furniture.cpp:1324
-#: src/content_mapnode_furniture.cpp:1355
+#: src/content_mapnode_furniture.cpp:1328
+#: src/content_mapnode_furniture.cpp:1361
 msgid "Green Bed"
 msgstr "lo crino ckana"
 
-#: src/content_mapnode_furniture.cpp:1383
-#: src/content_mapnode_furniture.cpp:1414
+#: src/content_mapnode_furniture.cpp:1389
+#: src/content_mapnode_furniture.cpp:1422
 msgid "Orange Bed"
 msgstr "lo narju ckana"
 
-#: src/content_mapnode_furniture.cpp:1442
-#: src/content_mapnode_furniture.cpp:1473
+#: src/content_mapnode_furniture.cpp:1450
+#: src/content_mapnode_furniture.cpp:1483
 msgid "Purple Bed"
 msgstr "lo zirpu ckana"
 
-#: src/content_mapnode_furniture.cpp:1501
-#: src/content_mapnode_furniture.cpp:1532
+#: src/content_mapnode_furniture.cpp:1511
+#: src/content_mapnode_furniture.cpp:1544
 msgid "Red Bed"
 msgstr "lo xunre ckana"
 
-#: src/content_mapnode_furniture.cpp:1560
-#: src/content_mapnode_furniture.cpp:1591
+#: src/content_mapnode_furniture.cpp:1572
+#: src/content_mapnode_furniture.cpp:1605
 msgid "Yellow Bed"
 msgstr "lo pelxu ckana"
 
-#: src/content_mapnode_furniture.cpp:1619
-#: src/content_mapnode_furniture.cpp:1650
+#: src/content_mapnode_furniture.cpp:1633
+#: src/content_mapnode_furniture.cpp:1666
 msgid "Black Bed"
 msgstr "lo xekri ckana"
 
-#: src/content_mapnode_furniture.cpp:1679
+#: src/content_mapnode_furniture.cpp:1694
+#: src/content_mapnode_furniture.cpp:1729
+msgid "Camp Bed"
+msgstr ""
+
+#: src/content_mapnode_furniture.cpp:1753
 msgid "Colorful Painting"
 msgstr "lo sorska pixra"
 
-#: src/content_mapnode_furniture.cpp:1714
+#: src/content_mapnode_furniture.cpp:1788
 msgid "Red Rose Painting"
 msgstr "lo pixra be lo xunre rozgu"
 
-#: src/content_mapnode_furniture.cpp:1749
+#: src/content_mapnode_furniture.cpp:1823
 msgid "Field Painting"
 msgstr "lo pixra be lo foldi"
 
-#: src/content_mapnode_furniture.cpp:1784
+#: src/content_mapnode_furniture.cpp:1858
 msgid "Blue Flower Painting"
 msgstr "lo pixra be lo blanu xrula"
 
-#: src/content_mapnode_furniture.cpp:1819
+#: src/content_mapnode_furniture.cpp:1893
 msgid "Painting Canvas"
 msgstr "lo pixra fanbu'u"
 
-#: src/content_mapnode_furniture.cpp:1857
+#: src/content_mapnode_furniture.cpp:1931
 msgid "Clock"
 msgstr "lo junla"
 
@@ -2342,115 +2364,117 @@ msgstr "lo citno ckunu ricystani"
 msgid "Jungle Grass"
 msgstr "lo glatimdemricfoi srasu"
 
-#: src/content_mapnode_plants.cpp:231
+#: src/content_mapnode_plants.cpp:231 src/content_mapnode_plants.cpp:268
+#: src/content_mapnode_plants.cpp:305 src/content_mapnode_plants.cpp:342
 msgid "Leaves"
 msgstr "lo pezli"
 
-#: src/content_mapnode_plants.cpp:268
+#: src/content_mapnode_plants.cpp:379
 msgid "Apple Tree Leaves"
 msgstr "lo plisytricu pezli"
 
-#: src/content_mapnode_plants.cpp:305
+#: src/content_mapnode_plants.cpp:416
 msgid "Jungle Leaves"
 msgstr "lo glatimdemricfoi pezli"
 
-#: src/content_mapnode_plants.cpp:342
+#: src/content_mapnode_plants.cpp:453
 msgid "Conifer Leaves"
 msgstr "lo ckunu pezli"
 
-#: src/content_mapnode_plants.cpp:379
+#: src/content_mapnode_plants.cpp:490 src/content_mapnode_plants.cpp:522
+#: src/content_mapnode_plants.cpp:554
 msgid "Trimmed Leaves"
 msgstr "lo terka'a pezli"
 
-#: src/content_mapnode_plants.cpp:411
+#: src/content_mapnode_plants.cpp:586
 msgid "Trimmed Apple Tree Leaves"
 msgstr "lo terka'a ke plisytricu pezli"
 
-#: src/content_mapnode_plants.cpp:443
+#: src/content_mapnode_plants.cpp:618
 msgid "Trimmed Jungle Leaves"
 msgstr "lo terka'a ke glatimdemricfoi pezli"
 
-#: src/content_mapnode_plants.cpp:475
+#: src/content_mapnode_plants.cpp:650
 msgid "Trimmed Conifer Leaves"
 msgstr "lo terka'a ke ckunu pezli"
 
-#: src/content_mapnode_plants.cpp:507
+#: src/content_mapnode_plants.cpp:682
 msgid "Apple Tree Blossom"
 msgstr "le plisytricu xrula"
 
-#: src/content_mapnode_plants.cpp:539
+#: src/content_mapnode_plants.cpp:714
 msgid "Trimmed Apple Tree Blossom"
 msgstr "le terka'a ke plisytricu xrula"
 
-#: src/content_mapnode_plants.cpp:568
+#: src/content_mapnode_plants.cpp:743
 msgid "Cactus Blossom"
 msgstr "lo jesyspa cifxrula"
 
-#: src/content_mapnode_plants.cpp:589
+#: src/content_mapnode_plants.cpp:764
 msgid "Cactus Flower"
 msgstr "lo jesyspa xrula"
 
-#: src/content_mapnode_plants.cpp:632
+#: src/content_mapnode_plants.cpp:807
 msgid "Cactus"
 msgstr "lo jesyspa"
 
-#: src/content_mapnode_plants.cpp:695
+#: src/content_mapnode_plants.cpp:870
 msgid "Papyrus"
 msgstr "lo misryplespa"
 
-#: src/content_mapnode_plants.cpp:718
+#: src/content_mapnode_plants.cpp:893
 msgid "Sapling"
 msgstr "lo ciftricu"
 
-#: src/content_mapnode_plants.cpp:740
+#: src/content_mapnode_plants.cpp:915
 msgid "Apple Tree Sapling"
 msgstr "lo plise ciftricu"
 
-#: src/content_mapnode_plants.cpp:762
+#: src/content_mapnode_plants.cpp:937
 msgid "Jungle Sapling"
 msgstr "lo glatimdemricfoi ciftricu"
 
-#: src/content_mapnode_plants.cpp:784
+#: src/content_mapnode_plants.cpp:959
 msgid "Conifer Sapling"
 msgstr "lo ckunu ciftricu"
 
-#: src/content_mapnode_plants.cpp:831 src/content_mapnode_plants.cpp:855
+#: src/content_mapnode_plants.cpp:1006 src/content_mapnode_plants.cpp:1030
 msgid "Wild Grass"
 msgstr "lo cilce srasu"
 
-#: src/content_mapnode_plants.cpp:878
+#: src/content_mapnode_plants.cpp:1053
 msgid "Dead Grass"
 msgstr "lo morsi srasu"
 
-#: src/content_mapnode_plants.cpp:901
+#: src/content_mapnode_plants.cpp:1076
 msgid "Flower Stem"
 msgstr "lo xrula stani"
 
-#: src/content_mapnode_plants.cpp:924
+#: src/content_mapnode_plants.cpp:1099
 msgid "Rose"
 msgstr "lo rozgu"
 
-#: src/content_mapnode_plants.cpp:948
+#: src/content_mapnode_plants.cpp:1123
 msgid "Daffodil"
 msgstr "lo sparnarcisu"
 
-#: src/content_mapnode_plants.cpp:972
+#: src/content_mapnode_plants.cpp:1147
 msgid "Tulip"
 msgstr "lo tujli"
 
-#: src/content_mapnode_plants.cpp:996
+#: src/content_mapnode_plants.cpp:1171
 msgid "Tea Seeds"
 msgstr "lo tcati tsiju"
 
-#: src/content_mapnode_plants.cpp:1016
+#: src/content_mapnode_plants.cpp:1191
 msgid "Tea Plant"
 msgstr "lo tcati spati"
 
-#: src/content_mapnode_plants.cpp:1040
+#: src/content_mapnode_plants.cpp:1215
 msgid "Coffee Beans"
 msgstr "lo se ckafi"
 
-#: src/content_mapnode_plants.cpp:1061
+#: src/content_mapnode_plants.cpp:1236
 msgid "Coffee Plant"
 msgstr "lo ckafi spati"
 
@@ -2598,207 +2622,207 @@ msgstr "lo xekri blaci drutapla"
 msgid "Thatch Roof Tile"
 msgstr "lo sudysrasu drutapla"
 
-#: src/content_mapnode_special.cpp:501 src/content_mapnode_special.cpp:538
-#: src/content_mapnode_special.cpp:598 src/content_mapnode_special.cpp:633
+#: src/content_mapnode_special.cpp:501 src/content_mapnode_special.cpp:561
+#: src/content_mapnode_special.cpp:596
 msgid "Ladder"
 msgstr "lo rajyserti"
 
-#: src/content_mapnode_special.cpp:668
+#: src/content_mapnode_special.cpp:631
 msgid "Border Stone"
 msgstr "le jimte rokci"
 
-#: src/content_mapnode_special.cpp:695
+#: src/content_mapnode_special.cpp:658
 msgid "Book"
 msgstr "lo cukta"
 
-#: src/content_mapnode_special.cpp:727
+#: src/content_mapnode_special.cpp:690
 msgid "Cook Book"
 msgstr "lo nu jukpa kei cukta"
 
-#: src/content_mapnode_special.cpp:759
+#: src/content_mapnode_special.cpp:722
 msgid "Decraft Book"
 msgstr "lo to'e selzba cukta"
 
-#: src/content_mapnode_special.cpp:790 src/content_mapnode_special.cpp:985
-#: src/content_nodemeta.cpp:2315
+#: src/content_mapnode_special.cpp:753 src/content_mapnode_special.cpp:948
+#: src/content_nodemeta.cpp:2693
 msgid "Diary"
 msgstr "lo sivykarni"
 
-#: src/content_mapnode_special.cpp:822
+#: src/content_mapnode_special.cpp:785
 msgid "Craft Book"
 msgstr "lo selzba cukta"
 
-#: src/content_mapnode_special.cpp:862
+#: src/content_mapnode_special.cpp:825
 msgid "Reverse Craft Book"
 msgstr "lo terzba cukta"
 
-#: src/content_mapnode_special.cpp:900
+#: src/content_mapnode_special.cpp:863
 msgid "Guide"
 msgstr "lo gidva cukta"
 
-#: src/content_mapnode_special.cpp:929 src/content_nodemeta.h:416
+#: src/content_mapnode_special.cpp:892 src/content_nodemeta.h:471
 msgid "Cooking Guide"
 msgstr "lo nu jukpa kei gidva cukta"
 
-#: src/content_mapnode_special.cpp:957 src/content_nodemeta.h:442
+#: src/content_mapnode_special.cpp:920 src/content_nodemeta.h:497
 msgid "Decrafting Guide"
 msgstr "lo to'e selzba ke gidva cukta"
 
-#: src/content_mapnode_special.cpp:1014 src/content_nodemeta.h:358
+#: src/content_mapnode_special.cpp:977 src/content_nodemeta.h:413
 msgid "Craft Guide"
 msgstr "lo selzba ke gidva cukta"
 
-#: src/content_mapnode_special.cpp:1042 src/content_nodemeta.h:385
+#: src/content_mapnode_special.cpp:1005 src/content_nodemeta.h:440
 msgid "Reverse Craft Guide"
 msgstr "lo terzba ke gidva cukta"
 
-#: src/content_mapnode_special.cpp:1070 src/content_mapnode_special.cpp:1091
+#: src/content_mapnode_special.cpp:1033 src/content_mapnode_special.cpp:1054
 msgid "Fire"
 msgstr "lo fagri"
 
-#: src/content_mapnode_special.cpp:1111 src/content_mapnode_special.cpp:1134
+#: src/content_mapnode_special.cpp:1074
 msgid "Torch"
 msgstr "lo fagytergu'i"
 
-#: src/content_mapnode_special.cpp:1162 src/content_mapnode_special.cpp:1189
-#: src/content_mapnode_special.cpp:1223
+#: src/content_mapnode_special.cpp:1102 src/content_mapnode_special.cpp:1129
+#: src/content_mapnode_special.cpp:1163
 msgid "Sign"
 msgstr "lo sinxa"
 
-#: src/content_mapnode_special.cpp:1252 src/content_mapnode_special.cpp:1283
-#: src/content_mapnode_special.cpp:1316
+#: src/content_mapnode_special.cpp:1192 src/content_mapnode_special.cpp:1223
+#: src/content_mapnode_special.cpp:1256
 msgid "Locking Sign"
 msgstr "lo selstela sinxa"
 
-#: src/content_mapnode_special.cpp:1346 src/content_nodemeta.cpp:229
+#: src/content_mapnode_special.cpp:1286 src/content_nodemeta.cpp:500
 msgid "Chest"
 msgstr "lo gairvau"
 
-#: src/content_mapnode_special.cpp:1370 src/content_nodemeta.cpp:504
+#: src/content_mapnode_special.cpp:1310 src/content_nodemeta.cpp:775
 msgid "Creative Chest"
 msgstr "lo finkai gairvau"
 
-#: src/content_mapnode_special.cpp:1391
+#: src/content_mapnode_special.cpp:1331
 msgid "Locking Chest"
 msgstr "lo selstela gairvau"
 
-#: src/content_mapnode_special.cpp:1422
+#: src/content_mapnode_special.cpp:1362
 msgid "Safe"
 msgstr "lo badvau"
 
-#: src/content_mapnode_special.cpp:1444 src/content_mapnode_special.cpp:1465
+#: src/content_mapnode_special.cpp:1384 src/content_mapnode_special.cpp:1411
 msgid "Furnace"
 msgstr "lo toknu"
 
-#: src/content_mapnode_special.cpp:1484 src/content_mapnode_special.cpp:1506
+#: src/content_mapnode_special.cpp:1429 src/content_mapnode_special.cpp:1457
 msgid "Locking Furnace"
 msgstr "lo selstela toknu"
 
-#: src/content_mapnode_special.cpp:1524 src/content_mapnode_special.cpp:1544
+#: src/content_mapnode_special.cpp:1475 src/content_mapnode_special.cpp:1501
 msgid "Incinerator"
 msgstr "lo festoknu"
 
-#: src/content_mapnode_special.cpp:1562
+#: src/content_mapnode_special.cpp:1519
 msgid "Nyan Cat"
 msgstr "lo me la'o gy.Nyan Cat.gy."
 
-#: src/content_mapnode_special.cpp:1576
+#: src/content_mapnode_special.cpp:1533
 msgid "Rainbow"
 msgstr "lo tanbargu"
 
-#: src/content_mapnode_special.cpp:1588
+#: src/content_mapnode_special.cpp:1545
 msgid "Unbaked Flower Pot"
 msgstr "lo nalseljukpa spapatxu"
 
-#: src/content_mapnode_special.cpp:1610
+#: src/content_mapnode_special.cpp:1567
 msgid "Flower Pot"
 msgstr "lo spapatxu"
 
-#: src/content_mapnode_special.cpp:1628
+#: src/content_mapnode_special.cpp:1585
 msgid "Cobblestone Wall"
 msgstr "lo lolro'iboi bitmu"
 
-#: src/content_mapnode_special.cpp:1652
+#: src/content_mapnode_special.cpp:1609
 msgid "Rough Stone Wall"
 msgstr "lo rufsu rokci bitmu"
 
-#: src/content_mapnode_special.cpp:1676
+#: src/content_mapnode_special.cpp:1633
 msgid "Mossy Cobblestone Wall"
 msgstr "lo clika lolro'iboi bitmu"
 
-#: src/content_mapnode_special.cpp:1700
+#: src/content_mapnode_special.cpp:1657
 msgid "Stone Wall"
 msgstr "lo rokci bitmu"
 
-#: src/content_mapnode_special.cpp:1724
+#: src/content_mapnode_special.cpp:1681
 msgid "Sand Stone Wall"
 msgstr "lo canro'i bitmu"
 
-#: src/content_mapnode_special.cpp:1748
+#: src/content_mapnode_special.cpp:1705
 msgid "Limestone Wall"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:1772
+#: src/content_mapnode_special.cpp:1729
 msgid "TNT"
 msgstr "lo bamrti'enti"
 
-#: src/content_mapnode_special.cpp:1792
+#: src/content_mapnode_special.cpp:1749
 msgid "In-Progress explosion - how did you get this???"
 msgstr "lo spoja to .uecai paunai ta'ima do cpacu ri toi"
 
-#: src/content_mapnode_special.cpp:1812
+#: src/content_mapnode_special.cpp:1769
 msgid "Steam"
 msgstr "lo jaurgapci"
 
-#: src/content_mapnode_special.cpp:1833
+#: src/content_mapnode_special.cpp:1790
 msgid "Home Flag"
 msgstr "lo zdani lanci"
 
-#: src/content_mapnode_special.cpp:1879
+#: src/content_mapnode_special.cpp:1836
 msgid "Blue Home Flag"
 msgstr "lo blanu ke zdani lanci"
 
-#: src/content_mapnode_special.cpp:1904
+#: src/content_mapnode_special.cpp:1861
 msgid "Green Home Flag"
 msgstr "lo crino ke zdani lanci"
 
-#: src/content_mapnode_special.cpp:1929
+#: src/content_mapnode_special.cpp:1886
 msgid "Orange Home Flag"
 msgstr "lo narju ke zdani lanci"
 
-#: src/content_mapnode_special.cpp:1954
+#: src/content_mapnode_special.cpp:1911
 msgid "Purple Home Flag"
 msgstr "lo zirpu ke zdani lanci"
 
-#: src/content_mapnode_special.cpp:1979
+#: src/content_mapnode_special.cpp:1936
 msgid "Red Home Flag"
 msgstr "lo xunre ke zdani lanci"
 
-#: src/content_mapnode_special.cpp:2004
+#: src/content_mapnode_special.cpp:1961
 msgid "Yellow Home Flag"
 msgstr "lo pelxu ke zdani lanci"
 
-#: src/content_mapnode_special.cpp:2029
+#: src/content_mapnode_special.cpp:1986
 msgid "Black Home Flag"
 msgstr "lo xekri ke zdani lanci"
 
-#: src/content_mapnode_special.cpp:2054
+#: src/content_mapnode_special.cpp:2011
 msgid "Life Support System"
 msgstr "lo renvi sidju minji"
 
-#: src/content_mapnode_special.cpp:2078
+#: src/content_mapnode_special.cpp:2035
 msgid "Parcel"
 msgstr "lo bakfu"
 
-#: src/content_mapnode_special.cpp:2103
+#: src/content_mapnode_special.cpp:2061
 msgid "Cauldron"
 msgstr "lo brapatxu"
 
-#: src/content_mapnode_special.cpp:2124 src/content_nodemeta.cpp:2932
+#: src/content_mapnode_special.cpp:2082 src/content_nodemeta.cpp:3312
 msgid "Forge"
 msgstr ""
 
-#: src/content_mapnode_special.cpp:2152
+#: src/content_mapnode_special.cpp:2110
 msgid "Forge Fire"
 msgstr ""
 
@@ -2838,8 +2862,73 @@ msgstr "lo canro'i serti"
 msgid "Limestone Stair"
 msgstr ""
 
+#: src/content_mob.cpp:412
+#, fuzzy
+msgid "Oerkki"
+msgstr "lo za'e pumrxo'erki"
+
+#: src/content_mob.cpp:463
+msgid "Dungeon Master"
+msgstr ""
+
+#: src/content_mob.cpp:514
+#, fuzzy
+msgid "Fireball"
+msgstr "lo gusycinki"
+
+#: src/content_mob.cpp:532
+#, fuzzy
+msgid "Doe"
+msgstr "fitytu'i"
+
+#: src/content_mob.cpp:558 src/content_mob.cpp:589
+msgid "Stag"
+msgstr ""
+
+#: src/content_mob.cpp:639
+msgid "Shark"
+msgstr ""
+
+#: src/content_mob.cpp:666
+msgid "Wolf"
+msgstr ""
+
+#: src/content_mob.cpp:696
+msgid "Tame Wolf"
+msgstr ""
+
+#: src/content_mob.cpp:723
+msgid "Sheep"
+msgstr ""
+
+#: src/content_mob.cpp:754
+msgid "Sheared Sheep"
+msgstr ""
+
+#: src/content_mob.cpp:779
+#, fuzzy
+msgid "Snowball"
+msgstr "lo si'erboi"
+
+#: src/content_mob.cpp:819
+msgid "Grey Kitten"
+msgstr ""
+
+#: src/content_mob.cpp:845
+#, fuzzy
+msgid "White Kitten"
+msgstr "lo blabi pilka"
+
+#: src/content_mob.cpp:871
+msgid "Siamese Kitten"
+msgstr ""
+
+#: src/content_mob.cpp:897
+msgid "Ginger Kitten"
+msgstr ""
+
 #: src/content_nodemeta.cpp:75 src/content_nodemeta.cpp:138
-#: src/content_nodemeta.cpp:2299 src/content_nodemeta.cpp:2398
+#: src/content_nodemeta.cpp:2677 src/content_nodemeta.cpp:2776
 msgid "Save"
 msgstr "rejgau"
 
@@ -2848,528 +2937,569 @@ msgstr "rejgau"
 msgid "%s's Home Flag"
 msgstr "lo zdani lanci po la'o gy.%s.gy."
 
-#: src/content_nodemeta.cpp:302
+#: src/content_nodemeta.cpp:269 src/content_nodemeta.cpp:282
+#: src/content_nodemeta.cpp:436 src/content_nodemeta.cpp:449
+msgid "You can't sleep yet."
+msgstr ""
+
+#: src/content_nodemeta.cpp:273 src/content_nodemeta.cpp:440
+msgid "Go to sleep"
+msgstr ""
+
+#: src/content_nodemeta.cpp:278 src/content_nodemeta.cpp:445
+msgid "Someone else is sleeping here."
+msgstr ""
+
+#: src/content_nodemeta.cpp:286 src/content_nodemeta.cpp:453
+msgid "Get out of bed"
+msgstr ""
+
+#: src/content_nodemeta.cpp:432
+msgid "This bed is too uncomfortable to sleep in."
+msgstr ""
+
+#: src/content_nodemeta.cpp:573
 #, c-format
 msgid "Locking Chest owned by '%s'"
 msgstr "lo selstela gairvau poi ponse la'o gy.%s.gy."
 
-#: src/content_nodemeta.cpp:376
+#: src/content_nodemeta.cpp:647
 #, c-format
 msgid "Safe owned by '%s'"
 msgstr ".i ti badvau .i ri ponse la'o cmene.%s.cmene"
 
-#: src/content_nodemeta.cpp:545 src/content_nodemeta.cpp:1492
-#: src/content_nodemeta.cpp:1779 src/content_nodemeta.cpp:1971
-#: src/content_nodemeta.cpp:2185
+#: src/content_nodemeta.cpp:816 src/content_nodemeta.cpp:1870
+#: src/content_nodemeta.cpp:2157 src/content_nodemeta.cpp:2349
+#: src/content_nodemeta.cpp:2563
 #, c-format
 msgid "Page %d of %d"
 msgstr "%d moi le'i papri poi ke'a %d mei"
 
-#: src/content_nodemeta.cpp:549 src/content_nodemeta.cpp:1520
-#: src/content_nodemeta.cpp:1798 src/content_nodemeta.cpp:1980
-#: src/content_nodemeta.cpp:2201
+#: src/content_nodemeta.cpp:820 src/content_nodemeta.cpp:1898
+#: src/content_nodemeta.cpp:2176 src/content_nodemeta.cpp:2358
+#: src/content_nodemeta.cpp:2579
 msgid "<< Previous Page"
 msgstr "lidne"
 
-#: src/content_nodemeta.cpp:555 src/content_nodemeta.cpp:1526
-#: src/content_nodemeta.cpp:1804 src/content_nodemeta.cpp:1986
-#: src/content_nodemeta.cpp:2207
+#: src/content_nodemeta.cpp:826 src/content_nodemeta.cpp:1904
+#: src/content_nodemeta.cpp:2182 src/content_nodemeta.cpp:2364
+#: src/content_nodemeta.cpp:2585
 msgid "Next Page >>"
 msgstr "selyli'e"
 
-#: src/content_nodemeta.cpp:598
+#: src/content_nodemeta.cpp:869
 #, c-format
 msgid "Border Stone owned by '%s'"
 msgstr ".i ti jimte rokci .i ri se ponse la'o cmene.%s.cmene"
 
-#: src/content_nodemeta.cpp:673
+#: src/content_nodemeta.cpp:944
 msgid "Furnace is overloaded"
 msgstr ".i lo ti toknu cu dukse lo ka mulno"
 
-#: src/content_nodemeta.cpp:674
+#: src/content_nodemeta.cpp:945
 msgid "Furnace is out of fuel"
 msgstr ".i lo ti toknu cu kunti lo livla"
 
-#: src/content_nodemeta.cpp:676
+#: src/content_nodemeta.cpp:947
 msgid "Furnace is inactive"
 msgstr ".i lo toknu cu cando"
 
-#: src/content_nodemeta.cpp:679
+#: src/content_nodemeta.cpp:950
 msgid "Furnace is active"
 msgstr ".i lo toknu cu tolcando"
 
-#: src/content_nodemeta.cpp:934
+#: src/content_nodemeta.cpp:1209
 msgid "Locking Furnace is overloaded"
 msgstr ".i lo ti toknu cu dukse lo ka mulno"
 
-#: src/content_nodemeta.cpp:935
+#: src/content_nodemeta.cpp:1210
 msgid "Locking Furnace is out of fuel"
 msgstr ".i lo ti toknu cu kunti lo livla"
 
-#: src/content_nodemeta.cpp:937
+#: src/content_nodemeta.cpp:1212
 msgid "Locking Furnace is inactive"
 msgstr "lo selstela toknu cu cando"
 
-#: src/content_nodemeta.cpp:940
+#: src/content_nodemeta.cpp:1215
 msgid "Locking Furnace is active"
 msgstr "lo selstela toknu cu tolcando"
 
-#: src/content_nodemeta.cpp:1190
+#: src/content_nodemeta.cpp:1470
 msgid "Armed Explosive: about to detonate"
 msgstr ".i lo ti jbama cu bazi spoja"
 
-#: src/content_nodemeta.cpp:1193
+#: src/content_nodemeta.cpp:1473
 #, c-format
 msgid "Armed Explosive: %d second till detonation"
 msgid_plural "Armed Explosive: %d seconds till detonation"
 msgstr[0] ".i ti pojbre jbama .i ri spoja bazi lo snidu be li %d"
 msgstr[1] ".i ti pojbre jbama .i ri spoja bazi lo snidu be li %d"
 
-#: src/content_nodemeta.cpp:1243
+#: src/content_nodemeta.cpp:1534 src/content_nodemeta.cpp:1539
 msgid "Incinerator is active"
 msgstr ".i lo festoknu cu tolcando"
 
-#: src/content_nodemeta.cpp:1244
+#: src/content_nodemeta.cpp:1541
 msgid "Incinerator is inactive"
 msgstr ".i lo festoknu cu cando"
 
-#: src/content_nodemeta.cpp:1287
+#: src/content_nodemeta.cpp:1633
 msgid "Add fuel, then punch to incinerate wielded item"
 msgstr "ko setca lo livla .ijebabo ko darxi tezu'e lo nu jelgau lo jgari dacti"
 
-#: src/content_nodemeta.cpp:1496 src/content_nodemeta.cpp:1784
+#: src/content_nodemeta.cpp:1874 src/content_nodemeta.cpp:2162
 msgid "Add item here to see recipe"
 msgstr "ko setca lo dacti ti tezu'e lonu za'e jarcygau fe tu'a le te jukpa"
 
-#: src/content_nodemeta.cpp:1501 src/content_nodemeta.cpp:1789
+#: src/content_nodemeta.cpp:1879 src/content_nodemeta.cpp:2167
 #, c-format
 msgid "Recipe %d of %d"
 msgstr "%d moi le'i te jukpa poi ke'a %d mei"
 
-#: src/content_nodemeta.cpp:1510
+#: src/content_nodemeta.cpp:1888
 msgid "Gives"
 msgstr "lo selzba"
 
-#: src/content_nodemeta.cpp:1975
+#: src/content_nodemeta.cpp:2353
 msgid "Add item here to see cook result"
 msgstr "ko setca lo dacti ti tezu'e lonu jarcygau fe tu'a lo se jukpa"
 
-#: src/content_nodemeta.cpp:2189
+#: src/content_nodemeta.cpp:2567
 msgid "Add item here to see dig result"
 msgstr "ko setca lo dacti ti tezu'e lonu jarcygau fe tu'a lo se kakpa"
 
-#: src/content_nodemeta.cpp:2193
+#: src/content_nodemeta.cpp:2571
 msgid "Dig Result"
 msgstr "lo selkakpa"
 
-#: src/content_nodemeta.cpp:2197
+#: src/content_nodemeta.cpp:2575
 msgid "Random Drop"
 msgstr "lo cunso selkakpa"
 
-#: src/content_nodemeta.cpp:2289 src/content_nodemeta.cpp:2388
+#: src/content_nodemeta.cpp:2667 src/content_nodemeta.cpp:2766
 msgid "Title"
 msgstr "lo cmene"
 
-#: src/content_nodemeta.cpp:2294 src/content_nodemeta.cpp:2393
+#: src/content_nodemeta.cpp:2672 src/content_nodemeta.cpp:2771
 msgid "Content"
 msgstr "lo se vasru"
 
-#: src/content_nodemeta.cpp:2747
+#: src/content_nodemeta.cpp:3127
 msgid "Cauldron is active"
 msgstr ".i lo brapatxu cu tolcando"
 
-#: src/content_nodemeta.cpp:2750
+#: src/content_nodemeta.cpp:3130
 msgid "Cauldron is hot"
 msgstr ".i lo brapatxu cu glare"
 
-#: src/content_nodemeta.cpp:2752
+#: src/content_nodemeta.cpp:3132
 msgid "Cauldron is cool"
 msgstr ".i lo brapatxu cu lenku"
 
-#: src/content_nodemeta.cpp:2754
+#: src/content_nodemeta.cpp:3134
 msgid "Cauldron is empty"
 msgstr ".i lo brapatxu cu kunti"
 
-#: src/content_nodemeta.cpp:2758
+#: src/content_nodemeta.cpp:3138
 msgid "Cauldron is inactive"
 msgstr ".i lo brapatxu cu cando"
 
-#: src/content_nodemeta.cpp:2759
+#: src/content_nodemeta.cpp:3139
 msgid "Cauldron is out of fuel"
 msgstr ".i lo brapatxu cu kunti loi livla"
 
-#: src/content_nodemeta.cpp:2838
+#: src/content_nodemeta.cpp:3218
 msgid "Add fuel, then punch to add or remove water"
-msgstr "ko setca lo livla .ijebabo ko darxi tezu'e lo nu jmina gi'a vimcu loi djacu"
+msgstr ""
+"ko setca lo livla .ijebabo ko darxi tezu'e lo nu jmina gi'a vimcu loi djacu"
 
-#: src/content_nodemeta.cpp:3104
+#: src/content_nodemeta.cpp:3484
 msgid "Show Enchanting"
 msgstr ""
 
-#: src/content_nodemeta.cpp:3111 src/game.cpp:207
+#: src/content_nodemeta.cpp:3491 src/game.cpp:208
 msgid "Show Crafting"
 msgstr "jarco le zbasu"
 
-#: src/content_toolitem.cpp:207
-msgid "Wooden Pick"
-msgstr "lo mudri velkakpymru"
-
-#: src/content_toolitem.cpp:222
-msgid "Stone Pick"
+#: src/content_toolitem.cpp:213
+#, fuzzy
+msgid "Small Stone Pick"
 msgstr "lo rokci velkakpymru"
 
 #: src/content_toolitem.cpp:236
+msgid "Stone Pick"
+msgstr "lo rokci velkakpymru"
+
+#: src/content_toolitem.cpp:250
 msgid "Flint Pick"
 msgstr "lo fagri rokci velkakpymru"
 
-#: src/content_toolitem.cpp:250
+#: src/content_toolitem.cpp:264
 msgid "Steel Pick"
 msgstr "lo gasta velkakpymru"
 
-#: src/content_toolitem.cpp:264
+#: src/content_toolitem.cpp:278
 msgid "Creative Pick"
 msgstr "lo finkai velkakpymru"
 
-#: src/content_toolitem.cpp:278
-msgid "Wooden Shovel"
-msgstr "lo mudri canpa"
-
 #: src/content_toolitem.cpp:292
+#, fuzzy
+msgid "Stone Trowel"
+msgstr "lo rokci canpa"
+
+#: src/content_toolitem.cpp:306
 msgid "Stone Shovel"
 msgstr "lo rokci canpa"
 
-#: src/content_toolitem.cpp:305
+#: src/content_toolitem.cpp:320
 msgid "Flint Shovel"
 msgstr "lo fagri rokci canpa"
 
-#: src/content_toolitem.cpp:319
+#: src/content_toolitem.cpp:334
 msgid "Steel Shovel"
 msgstr "lo gasta canpa"
 
-#: src/content_toolitem.cpp:333
-msgid "Wooden Axe"
-msgstr "lo mudri ka'amru"
+#: src/content_toolitem.cpp:348
+#, fuzzy
+msgid "Small Stone Axe"
+msgstr "lo rokci ka'amru"
 
-#: src/content_toolitem.cpp:347
+#: src/content_toolitem.cpp:369
 msgid "Stone Axe"
 msgstr "lo rokci ka'amru"
 
-#: src/content_toolitem.cpp:360
+#: src/content_toolitem.cpp:383
 msgid "Flint Axe"
 msgstr "lo fagri rokci ka'amru"
 
-#: src/content_toolitem.cpp:374
+#: src/content_toolitem.cpp:397
 msgid "Steel Axe"
 msgstr "lo gasta ka'amru"
 
-#: src/content_toolitem.cpp:388
-msgid "Wooden Sword"
-msgstr "lo mudri cladakyxa'i"
+#: src/content_toolitem.cpp:411
+#, fuzzy
+msgid "Wooden Club"
+msgstr "lo mudri ke jadni batke"
 
-#: src/content_toolitem.cpp:402
+#: src/content_toolitem.cpp:426
 msgid "Stone Sword"
 msgstr "lo rokci cladakyxa'i"
 
-#: src/content_toolitem.cpp:415
+#: src/content_toolitem.cpp:440
 msgid "Steel Sword"
 msgstr "lo gasta cladakyxa'i"
 
-#: src/content_toolitem.cpp:429
+#: src/content_toolitem.cpp:454
 msgid "Flint Shears"
 msgstr "lo fagri rokci jinci"
 
-#: src/content_toolitem.cpp:442
+#: src/content_toolitem.cpp:468
 msgid "Steel Shears"
 msgstr "lo gasta jinci"
 
-#: src/content_toolitem.cpp:456
+#: src/content_toolitem.cpp:482
 msgid "Wooden Bucket"
 msgstr "lo mudri baktu"
 
-#: src/content_toolitem.cpp:472
+#: src/content_toolitem.cpp:499
 msgid "Tin Bucket"
 msgstr "lo tinci baktu"
 
-#: src/content_toolitem.cpp:488
+#: src/content_toolitem.cpp:515
 msgid "Wooden Bucket of Water"
 msgstr "lo mudri baktu be loi djacu"
 
-#: src/content_toolitem.cpp:499
+#: src/content_toolitem.cpp:526
 msgid "Tin Bucket of Water"
 msgstr "lo tinci baktu be loi djacu"
 
-#: src/content_toolitem.cpp:510
+#: src/content_toolitem.cpp:537
 msgid "Steel Bucket"
 msgstr "lo gasta baktu"
 
-#: src/content_toolitem.cpp:525
+#: src/content_toolitem.cpp:552
 msgid "Steel Bucket of Water"
 msgstr "lo gasta baktu be loi djacu"
 
-#: src/content_toolitem.cpp:536
+#: src/content_toolitem.cpp:563
 msgid "Steel Bucket of Lava"
 msgstr "lo gasta baktu be loi likro'i"
 
-#: src/content_toolitem.cpp:548
+#: src/content_toolitem.cpp:575
 msgid "Fire Starter"
 msgstr "lo jelca tutci"
 
-#: src/content_toolitem.cpp:561
+#: src/content_toolitem.cpp:589
 msgid "Crowbar"
 msgstr "lo cfinyvra"
 
-#: src/content_toolitem.cpp:573
+#: src/content_toolitem.cpp:602
 msgid "Key"
 msgstr "lo ckiku"
 
-#: src/content_toolitem.cpp:584
+#: src/content_toolitem.cpp:614
 msgid "Stone Spear"
 msgstr "lo rokci kilga'axa'i"
 
-#: src/content_toolitem.cpp:597
+#: src/content_toolitem.cpp:628
 msgid "Flint Spear"
 msgstr "lo fagri rokci kilga'axa'i"
 
-#: src/content_toolitem.cpp:611
+#: src/content_toolitem.cpp:642
 msgid "Steel Spear"
 msgstr "lo gasta kilga'axa'i"
 
-#: src/content_toolitem.cpp:625
+#: src/content_toolitem.cpp:656
 msgid "Bow"
 msgstr "lo skogarce'a"
 
-#: src/content_toolitem.cpp:644
+#: src/content_toolitem.cpp:676
 msgid "Raw Mithril Pick"
 msgstr ""
 
-#: src/content_toolitem.cpp:658
+#: src/content_toolitem.cpp:690
 msgid "Raw Mithril Shovel"
 msgstr ""
 
-#: src/content_toolitem.cpp:672
+#: src/content_toolitem.cpp:704
 msgid "Raw Mithril Axe"
 msgstr ""
 
-#: src/content_toolitem.cpp:686
+#: src/content_toolitem.cpp:718
 msgid "Raw Mithril Sword"
 msgstr ""
 
-#: src/content_toolitem.cpp:700
+#: src/content_toolitem.cpp:732
 msgid "Raw Mithril Spear"
 msgstr ""
 
-#: src/content_toolitem.cpp:714
+#: src/content_toolitem.cpp:746
 msgid "Unbound Mithril Pick"
 msgstr "lo narjorne jimrmifrile velkakpymru"
 
-#: src/content_toolitem.cpp:728
+#: src/content_toolitem.cpp:760
 msgid "Unbound Mithril Shovel"
 msgstr "lo narjorne jimrmifrile canpa"
 
-#: src/content_toolitem.cpp:742
+#: src/content_toolitem.cpp:774
 msgid "Unbound Mithril Axe"
 msgstr "lo narjorne jimrmifrile ka'amru"
 
-#: src/content_toolitem.cpp:756
+#: src/content_toolitem.cpp:788
 msgid "Unbound Mithril Sword"
 msgstr "lo narjorne jimrmifrile cladakyxa'i"
 
-#: src/content_toolitem.cpp:770
+#: src/content_toolitem.cpp:802
 msgid "Unbound Mithril Spear"
 msgstr "lo narjorne jimrmifrilie kilga'axa'i"
 
-#: src/content_toolitem.cpp:784
+#: src/content_toolitem.cpp:816
 msgid "Mithril Pick"
 msgstr "lo jimrmifrile velkakpymru"
 
-#: src/content_toolitem.cpp:797
+#: src/content_toolitem.cpp:831
 msgid "Mithril Shovel"
 msgstr "lo jimrmifrile canpa"
 
-#: src/content_toolitem.cpp:810
+#: src/content_toolitem.cpp:845
 msgid "Mithril Axe"
 msgstr "lo jimrmifrile ka'amru"
 
-#: src/content_toolitem.cpp:823
+#: src/content_toolitem.cpp:859
 msgid "Mithril Sword"
 msgstr "lo jimrmifrile cladakyxa'i"
 
-#: src/content_toolitem.cpp:836
+#: src/content_toolitem.cpp:873
 msgid "Mithril Spear"
 msgstr "lo jimrmifrilie kilga'axa'i"
 
-#: src/game.cpp:208
+#: src/content_toolitem.cpp:887
+msgid "Mob Spawner"
+msgstr ""
+
+#: src/game.cpp:209
 msgid "Clothes"
 msgstr "lo bukpu"
 
-#: src/game.cpp:209
+#: src/game.cpp:210
 msgid "Hat/Helmet"
 msgstr "lo mapku"
 
-#: src/game.cpp:211
+#: src/game.cpp:212
 msgid "Jacket"
 msgstr "lo kosta"
 
-#: src/game.cpp:213
+#: src/game.cpp:214
 msgid "Decorative"
 msgstr "lo jadni"
 
-#: src/game.cpp:215
+#: src/game.cpp:216
 msgid "Shirt"
 msgstr "lo creka"
 
-#: src/game.cpp:217
+#: src/game.cpp:218
 msgid "Belt"
 msgstr "lo karli"
 
-#: src/game.cpp:219
+#: src/game.cpp:220
 msgid "Pants"
 msgstr "lo palku"
 
-#: src/game.cpp:221
+#: src/game.cpp:222
 msgid "Boots"
 msgstr "lo cutci"
 
-#: src/game.cpp:228
+#: src/game.cpp:229
 msgid "Drop to Ground"
 msgstr "lo nu falcru lo loldi"
 
-#: src/game.cpp:230
+#: src/game.cpp:231
 msgid "Change Clothing"
 msgstr "taxfu gafygau"
 
-#: src/game.cpp:623
+#: src/game.cpp:590
 msgid "Loading"
 msgstr ".i ca'o samymo'i"
 
-#: src/game.cpp:697
+#: src/game.cpp:662
 msgid "Loading..."
 msgstr ".i ca'o samymo'i"
 
-#: src/game.cpp:706
+#: src/game.cpp:671
 msgid "Creating server..."
 msgstr ".i lo samtcise'u cu se zbasu"
 
-#: src/game.cpp:717
+#: src/game.cpp:682
 msgid "Creating client..."
 msgstr ".i lo samtciselse'u cu se zbasu"
 
-#: src/game.cpp:722
+#: src/game.cpp:687
 msgid "Resolving address..."
 msgstr ".i ca'o troci lo nu facki lo samjudri"
 
-#: src/game.cpp:733
+#: src/game.cpp:698
 msgid "Couldn't resolve address"
 msgstr ".i na kakne lo nu facki lo samjudri"
 
-#: src/game.cpp:773
+#: src/game.cpp:738
 #, c-format
 msgid "Connecting to server... (timeout in %d second)"
 msgid_plural "Connecting to server... (timeout in %d seconds)"
-msgstr[0] ".i ca'o troci lo za'i samjo'e lo samse'u to da'i co'urdenpa za lo snidu be li %d toi"
-msgstr[1] ".i ca'o troci lo za'i samjo'e lo samse'u to da'i co'urdenpa za lo snidu be li %d toi"
+msgstr[0] ""
+".i ca'o troci lo za'i samjo'e lo samse'u to da'i co'urdenpa za lo snidu be "
+"li %d toi"
+msgstr[1] ""
+".i ca'o troci lo za'i samjo'e lo samse'u to da'i co'urdenpa za lo snidu be "
+"li %d toi"
 
-#: src/game.cpp:802
+#: src/game.cpp:767
 #, c-format
 msgid "Access denied. Reason: %ls"
 msgstr ".i na curmi le nu do vitke .iki'ubo me zoi gy.%ls.gy."
 
-#: src/game.cpp:806
+#: src/game.cpp:771
 msgid "Unable to Connect (port already in use?)."
-msgstr ".i na kakne fe lo nu co'a samjo'e to paunai xu lo judrnporte ca'o se pilno toi"
+msgstr ""
+".i na kakne fe lo nu co'a samjo'e to paunai xu lo judrnporte ca'o se pilno "
+"toi"
 
-#: src/game.cpp:809
+#: src/game.cpp:774
 msgid "Connection timed out."
 msgstr ".i lo pu'u troci lo za'i samjo'e cu pu se co'urde'a"
 
-#: src/game.cpp:959
+#: src/game.cpp:927
 msgid "Access denied. Reason: "
 msgstr ".i na curmi le nu do vitke .iki'ubo"
 
-#: src/game.cpp:1193
+#: src/game.cpp:1161
 msgid "free_move disabled"
 msgstr ".i lo me la'o gy.free_move.gy. selpli"
 
-#: src/game.cpp:1197
+#: src/game.cpp:1165
 msgid "free_move enabled"
 msgstr ".i lo me la'o gy.free_move.gy. na selpli"
 
-#: src/game.cpp:1209
+#: src/game.cpp:1177
 #, c-format
 msgid "Saved screenshot to '%s'"
 msgstr ".i lo vidnyxra cu pu se rejgau fi'o samjudri fe'u zoi gy.%s.gy."
 
-#: src/game.cpp:1221
+#: src/game.cpp:1189
 msgid "HUD shown"
 msgstr ".i tu'a lo crakemsazycimde cu se jarco"
 
-#: src/game.cpp:1223
+#: src/game.cpp:1191
 msgid "HUD hidden"
 msgstr ".i tu'a lo crakemsazycimde cu to'e se jarco"
 
-#: src/game.cpp:1229
+#: src/game.cpp:1197
 msgid "Chat shown"
 msgstr ".i tu'a to samta'a notci cu se jarco"
 
-#: src/game.cpp:1231
+#: src/game.cpp:1199
 msgid "Chat hidden"
 msgstr ".i tu'a to samta'a notci cu to'e se jarco"
 
-#: src/game.cpp:1237
+#: src/game.cpp:1205
 msgid "Fog disabled"
 msgstr ".i lo bumru cu na selpli"
 
-#: src/game.cpp:1239
+#: src/game.cpp:1207
 msgid "Fog enabled"
 msgstr ".i lo bumru cu selpli"
 
-#: src/game.cpp:1245
+#: src/game.cpp:1213
 msgid "Camera update disabled"
 msgstr ".i le nu kacma nu ningau cu na selpli"
 
-#: src/game.cpp:1247
+#: src/game.cpp:1215
 msgid "Camera update enabled"
 msgstr ".i le nu kacma nu ningau cu selpli"
 
-#: src/game.cpp:1257
+#: src/game.cpp:1225
 msgid "Debug info shown"
 msgstr ".i le si'o samcfisisku kei datni cu jarco"
 
-#: src/game.cpp:1262
+#: src/game.cpp:1230
 msgid "Debug info and frametime graph hidden"
-msgstr ".i le si'o samcfisisku kei datni .e lo me la'o gy.frametime.gy. cartu cu jarco"
+msgstr ""
+".i le si'o samcfisisku kei datni .e lo me la'o gy.frametime.gy. cartu cu "
+"jarco"
 
-#: src/game.cpp:1266
+#: src/game.cpp:1234
 msgid "Frametime graph shown"
 msgstr ".i lo me la'o gy.frametime.gy. cartu cu jarco"
 
-#: src/game.cpp:1278
+#: src/game.cpp:1246
 #, c-format
 msgid "Profiler shown (page %d of %d)"
-msgstr ".i lo me la'o gy.profiler.gy. cu jarco to %d moi le'i papri poi ke'a %d mei toi"
+msgstr ""
+".i lo me la'o gy.profiler.gy. cu jarco to %d moi le'i papri poi ke'a %d mei "
+"toi"
 
-#: src/game.cpp:1282
+#: src/game.cpp:1250
 msgid "Profiler hidden"
 msgstr ".i lo me la'o gy.profiler.gy. toljarco"
 
-#: src/game.cpp:1290 src/game.cpp:1301
+#: src/game.cpp:1258 src/game.cpp:1269
 #, c-format
 msgid "Minimum viewing range changed to %d"
-msgstr ".i lo nacmecrai ke ni jvinu se kuspe pu se galfi fi tu'a lo gutci be li %d"
+msgstr ""
+".i lo nacmecrai ke ni jvinu se kuspe pu se galfi fi tu'a lo gutci be li %d"
 
-#: src/game.cpp:1370
+#: src/game.cpp:1338
 msgid "Enabled full viewing range"
 msgstr ".i le mulnu ke jvinu se kuspe cu selpli"
 
-#: src/game.cpp:1374
+#: src/game.cpp:1342
 msgid "Disabled full viewing range"
 msgstr ".i le mulnu ke jvinu se kuspe cu na selpli"
 
-#: src/game.cpp:1967
+#: src/game.cpp:1995
 msgid "Disconnected (Network Timeout)"
 msgstr ".i narsamjo'e to samseltcana co'urdenpa toi"
 
-#: src/game.cpp:2375
+#: src/game.cpp:2407
 msgid "Shutting down..."
 msgstr ".i ca ca'a tolcfagau"
 
@@ -3381,235 +3511,259 @@ msgstr ".i do pu morsi"
 msgid "Respawn"
 msgstr "gasnu lo nu mi tolcanci"
 
-#: src/guiFormSpecMenu.cpp:440
+#: src/guiFormSpecMenu.cpp:436
 msgid "Left click: Move all items, Right click: Move single item"
-msgstr "da'i iklki fe lo zulselpevysmacu lo nu muvdu lo ro dacti .i da'i iklki fe lo prityselpevysmacu lo nu muvdu lo pa dacti"
+msgstr ""
+"da'i iklki fe lo zulselpevysmacu lo nu muvdu lo ro dacti .i da'i iklki fe lo "
+"prityselpevysmacu lo nu muvdu lo pa dacti"
 
-#: src/guiFormSpecMenu.cpp:463
+#: src/guiFormSpecMenu.cpp:458
 msgid "Write It"
 msgstr "ko ciska"
 
-#: src/guiMainMenu.cpp:339
+#: src/guiMainMenu.cpp:347
 msgid "Character Creator"
 msgstr "finti lo xarpre"
 
-#: src/guiMainMenu.cpp:345 src/guiMainMenu.cpp:470 src/guiMainMenu.cpp:512
-#: src/guiMainMenu.cpp:618
+#: src/guiMainMenu.cpp:353 src/guiMainMenu.cpp:478 src/guiMainMenu.cpp:520
+#: src/guiMainMenu.cpp:631
 msgid "Single Player"
 msgstr "pa kelci"
 
-#: src/guiMainMenu.cpp:351 src/guiMainMenu.cpp:402
+#: src/guiMainMenu.cpp:359 src/guiMainMenu.cpp:410
 msgid "Multi Player"
 msgstr "su'o re kelci"
 
-#: src/guiMainMenu.cpp:357 src/guiPauseMenu.cpp:155
+#: src/guiMainMenu.cpp:365 src/guiPauseMenu.cpp:155
 msgid "Settings"
 msgstr "lo tikygau sazycimde"
 
-#: src/guiMainMenu.cpp:363
+#: src/guiMainMenu.cpp:371
 msgid "Credits"
 msgstr "lo finti liste"
 
-#: src/guiMainMenu.cpp:369
+#: src/guiMainMenu.cpp:377
 msgid "Quit"
 msgstr "tolcfagau"
 
-#: src/guiMainMenu.cpp:410
+#: src/guiMainMenu.cpp:418
 msgid "Name/Password"
 msgstr "lo cmene .e lo lerpoijaspu"
 
-#: src/guiMainMenu.cpp:438
+#: src/guiMainMenu.cpp:446
 msgid "Address/Port"
 msgstr "lo samjudri jo'u judrnporte"
 
-#: src/guiMainMenu.cpp:464
+#: src/guiMainMenu.cpp:472
 msgid "Connect"
 msgstr "samjongau"
 
-#: src/guiMainMenu.cpp:479 src/guiMainMenu.cpp:521 src/guiMainMenu.cpp:627
+#: src/guiMainMenu.cpp:487 src/guiMainMenu.cpp:529 src/guiMainMenu.cpp:640
 msgid "Creative Mode"
 msgstr "le nu finti kelci"
 
-#: src/guiMainMenu.cpp:480 src/guiMainMenu.cpp:522 src/guiMainMenu.cpp:628
+#: src/guiMainMenu.cpp:488 src/guiMainMenu.cpp:530 src/guiMainMenu.cpp:641
 msgid "Adventure Mode"
 msgstr "le nu ckape kelci"
 
-#: src/guiMainMenu.cpp:481 src/guiMainMenu.cpp:523 src/guiMainMenu.cpp:629
+#: src/guiMainMenu.cpp:489 src/guiMainMenu.cpp:531 src/guiMainMenu.cpp:642
 msgid "Survival Mode"
 msgstr "le nu rivbi kelci"
 
-#: src/guiMainMenu.cpp:494 src/guiMainMenu.cpp:642
+#: src/guiMainMenu.cpp:502 src/guiMainMenu.cpp:655
 msgid "Advanced Settings"
 msgstr "jarco le pluja ke tikygau sazycimde"
 
-#: src/guiMainMenu.cpp:500 src/guiMainMenu.cpp:542
+#: src/guiMainMenu.cpp:508 src/guiMainMenu.cpp:550
 msgid "Map Options"
 msgstr "jarco le munje tikygau ke sazycimde"
 
-#: src/guiMainMenu.cpp:506 src/guiMainMenu.cpp:612 src/guiMainMenu.cpp:737
+#: src/guiMainMenu.cpp:514 src/guiMainMenu.cpp:625 src/guiMainMenu.cpp:750
 msgid "Start Game"
 msgstr "cfari fa lo nu kelci"
 
-#: src/guiMainMenu.cpp:536
+#: src/guiMainMenu.cpp:544
 msgid "Hide Advanced Settings"
 msgstr "toljarco le pluja ke tikygau sazycimde"
 
-#: src/guiMainMenu.cpp:547
+#: src/guiMainMenu.cpp:555
 msgid "Creatures"
 msgstr "lo danlu"
 
-#: src/guiMainMenu.cpp:554
+#: src/guiMainMenu.cpp:562
 msgid "None"
 msgstr "noda"
 
-#: src/guiMainMenu.cpp:555
+#: src/guiMainMenu.cpp:563
 msgid "Passive"
 msgstr "lo ka cando"
 
-#: src/guiMainMenu.cpp:556
+#: src/guiMainMenu.cpp:564
 msgid "Passive & Aggressive"
 msgstr "lo ka cando .e lo ka gunta"
 
-#: src/guiMainMenu.cpp:557
+#: src/guiMainMenu.cpp:565
 msgid "Passive, Aggressive, & Destructive"
 msgstr "lo ka cando .e lo ka gunta .e lo ka spogau"
 
-#: src/guiMainMenu.cpp:571
+#: src/guiMainMenu.cpp:579
 msgid "Player Damage"
 msgstr "lo kelci selxai"
 
-#: src/guiMainMenu.cpp:576
+#: src/guiMainMenu.cpp:584
 msgid "Suffocation/Drowning"
 msgstr "le nu dirva'u gi'e jaurvasmro"
 
-#: src/guiMainMenu.cpp:581
+#: src/guiMainMenu.cpp:589
 msgid "Hunger"
 msgstr "lo si'o xagji"
 
-#: src/guiMainMenu.cpp:586
+#: src/guiMainMenu.cpp:594
 msgid "Tool Wear"
 msgstr "lo tutci ke pilno selxai"
 
-#: src/guiMainMenu.cpp:591
-msgid "Infinite Inventory"
-msgstr "cimni dacti"
-
-#: src/guiMainMenu.cpp:596
-msgid "Initial Inventory"
-msgstr "dunda lo so'o dacti ca lo cfari"
-
-#: src/guiMainMenu.cpp:601
-msgid "Droppable Inventory"
-msgstr "lo nu falcru lo dacti cu cumki"
-
-#: src/guiMainMenu.cpp:606
+#: src/guiMainMenu.cpp:599
 msgid "Dangerous Fire"
 msgstr "lo ckape fagri"
 
-#: src/guiMainMenu.cpp:648
+#: src/guiMainMenu.cpp:604
+msgid "Infinite Inventory"
+msgstr "cimni dacti"
+
+#: src/guiMainMenu.cpp:609
+msgid "Initial Inventory"
+msgstr "dunda lo so'o dacti ca lo cfari"
+
+#: src/guiMainMenu.cpp:614
+msgid "Droppable Inventory"
+msgstr "lo nu falcru lo dacti cu cumki"
+
+#: src/guiMainMenu.cpp:619
+#, fuzzy
+msgid "Death drops Inventory"
+msgstr "lo nu falcru lo dacti cu cumki"
+
+#: src/guiMainMenu.cpp:661
 msgid "Hide Map Options"
 msgstr "toljarco le munje tikygau ke sazycimde"
 
-#: src/guiMainMenu.cpp:653
+#: src/guiMainMenu.cpp:666
 msgid "Create New Map"
 msgstr "zbasu lo cnino munje"
 
-#: src/guiMainMenu.cpp:659
+#: src/guiMainMenu.cpp:672
 msgid "Warning! Your old map will be deleted!"
 msgstr ".e'unai da'i lo do tolci'o munje cu ba vimcu"
 
-#: src/guiMainMenu.cpp:665
+#: src/guiMainMenu.cpp:678
 msgid "Map Type"
 msgstr "ma munje klesi"
 
-#: src/guiMainMenu.cpp:672
+#: src/guiMainMenu.cpp:685
 msgid "Flat"
 msgstr "lo pinta"
 
-#: src/guiMainMenu.cpp:673
+#: src/guiMainMenu.cpp:686
 msgid "Flatter"
 msgstr "lo zmadu be lo ka pinta"
 
-#: src/guiMainMenu.cpp:674
+#: src/guiMainMenu.cpp:687
 msgid "Smoother"
 msgstr "lo zmadu be lo ka xutla"
 
-#: src/guiMainMenu.cpp:675
+#: src/guiMainMenu.cpp:688
 msgid "Default"
 msgstr "lo fadni"
 
-#: src/guiMainMenu.cpp:676
+#: src/guiMainMenu.cpp:689
 msgid "Hilly"
 msgstr "lo cmama'a"
 
-#: src/guiMainMenu.cpp:677
+#: src/guiMainMenu.cpp:690
 msgid "Mountains"
 msgstr "lo cmana"
 
-#: src/guiMainMenu.cpp:678
+#: src/guiMainMenu.cpp:691
 msgid "Crazy"
 msgstr "lo fenki"
 
-#: src/guiMainMenu.cpp:679
+#: src/guiMainMenu.cpp:692
 msgid "Crazy Hills"
 msgstr "lo fenki cmama'a"
 
-#: src/guiMainMenu.cpp:701
+#: src/guiMainMenu.cpp:714
 msgid "Use Fixed Seed"
 msgstr "pilno le stodi ke cunso namcu"
 
-#: src/guiMainMenu.cpp:707
+#: src/guiMainMenu.cpp:720
 msgid "Map Seed"
 msgstr "le munje ke cunso namcu"
 
-#: src/guiMainMenu.cpp:724
+#: src/guiMainMenu.cpp:737
 msgid "Clear Map"
 msgstr "kuntygau lo munje"
 
-#: src/guiMainMenu.cpp:729
+#: src/guiMainMenu.cpp:742
 msgid "Warning! This will delete all construction from your map!"
-msgstr ".e'unai .i ganai da'i tu'a do ranji gi ju'o lo ro dilnu pe do cu ba se vimcu fi lo munje pe do"
+msgstr ""
+".e'unai .i ganai da'i tu'a do ranji gi ju'o lo ro dilnu pe do cu ba se vimcu "
+"fi lo munje pe do"
 
-#: src/guiMainMenu.cpp:747
+#: src/guiMainMenu.cpp:760
 msgid ""
 "Voxelands\n"
 "http://www.voxelands.com/\n"
 "By Lisa 'darkrose' Milne <lisa@ltmnet.com> and contributors."
-msgstr ".i la'o gy.Voxelands.gy.\nnoi ke'a se urli zoi gy.http://www.voxeland.com/.gy. nu'o\nse finti la'o gy.Lisa Milne.gy. nu'o la'o gy.darkrose.gy. to zoi gy.lisa@ltmnet.com.gy. co'e toi .e lo sidju"
+msgstr ""
+".i la'o gy.Voxelands.gy.\n"
+"noi ke'a se urli zoi gy.http://www.voxeland.com/.gy. nu'o\n"
+"se finti la'o gy.Lisa Milne.gy. nu'o la'o gy.darkrose.gy. to zoi gy."
+"lisa@ltmnet.com.gy. co'e toi .e lo sidju"
 
-#: src/guiMainMenu.cpp:754
+#: src/guiMainMenu.cpp:767
 msgid "Programmers"
 msgstr ""
 
-#: src/guiMainMenu.cpp:757
+#: src/guiMainMenu.cpp:770
 msgid "Artists and Modellers"
 msgstr ""
 
-#: src/guiMainMenu.cpp:760
+#: src/guiMainMenu.cpp:773
 msgid "Translators"
 msgstr "lo fanva"
 
-#: src/guiMainMenu.cpp:763
+#: src/guiMainMenu.cpp:776
 msgid "Documentation Writters"
 msgstr ""
 
-#: src/guiMainMenu.cpp:766
+#: src/guiMainMenu.cpp:779
 msgid "Testers, Packagers, and Builders"
 msgstr ""
 
-#: src/guiMainMenu.cpp:769
+#: src/guiMainMenu.cpp:782
 msgid "Music and Sound Effects Composers"
 msgstr "lo zgifi'i .e le sance finti"
 
-#: src/guiMainMenu.cpp:772
+#: src/guiMainMenu.cpp:785
 msgid "Other Contributers, and Special Thanks"
 msgstr "lo drata je se ckire sidju"
 
-#: src/guiMainMenu.cpp:776
+#: src/guiMainMenu.cpp:789
 msgid ""
 "Based on Minetest-C55 by Perttu Ahola <celeron55@gmail.com>\n"
-"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
-msgstr ".i finti fu la'o gy.Minetest-C55.gy.\npoi ke'a selfi'i la'o gy.Perttu Ahola.gy. to zoi gy.celeron55@gmail.com.gy. co'e toi\n.e lo sidju po'u la'o gy.PilzAdam.gy. .e la'o gy.Taoki.gy. .e la'o gy.tango_.gy. .e la'o gy.kahrl.gy. .e la'o gy.darkrose.gy. .e la'o gy.matttpt.gy. .e la'o gy.erlehmann.gy. .e la'o gy.SpeedProg.gy. .e la'o gy. JacobF.gy. .e la'o dy.teddydestodes.dy. .e la'o gy.marktraceur.gy. .e la'o dy.Jonathan Neuschafer.dy. .e la'o gy.thexyz.gy. .e la'o gy.VanessaE.gy. .e la'o gy.sfan5.gy. .e lo mutce cunso drata prenu"
+"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
+"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
+"Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
+msgstr ""
+".i finti fu la'o gy.Minetest-C55.gy.\n"
+"poi ke'a selfi'i la'o gy.Perttu Ahola.gy. to zoi gy.celeron55@gmail.com.gy. "
+"co'e toi\n"
+".e lo sidju po'u la'o gy.PilzAdam.gy. .e la'o gy.Taoki.gy. .e la'o gy.tango_."
+"gy. .e la'o gy.kahrl.gy. .e la'o gy.darkrose.gy. .e la'o gy.matttpt.gy. .e "
+"la'o gy.erlehmann.gy. .e la'o gy.SpeedProg.gy. .e la'o gy. JacobF.gy. .e "
+"la'o dy.teddydestodes.dy. .e la'o gy.marktraceur.gy. .e la'o dy.Jonathan "
+"Neuschafer.dy. .e la'o gy.thexyz.gy. .e la'o gy.VanessaE.gy. .e la'o gy."
+"sfan5.gy. .e lo mutce cunso drata prenu"
 
 #: src/guiMessageMenu.cpp:112 src/guiPauseMenu.cpp:143
 msgid "Continue"
@@ -3823,73 +3977,100 @@ msgstr "lo ni sance"
 msgid "press Key"
 msgstr "ko da'ergau le batke"
 
-#: src/hud.cpp:779
+#: src/hud.cpp:785
+msgid "Summer"
+msgstr ""
+
+#: src/hud.cpp:788
+msgid "Autumn"
+msgstr ""
+
+#: src/hud.cpp:791
+msgid "Winter"
+msgstr ""
+
+#: src/hud.cpp:794
+#, fuzzy
+msgid "Spring"
+msgstr "lo cilta"
+
+#: src/hud.cpp:804
+#, c-format
+msgid "Day %u of Year %u"
+msgstr ""
+
+#: src/hud.cpp:828
 #, c-format
 msgid "Energy Boost: %d:%02d"
 msgstr ""
 
-#: src/hud.cpp:804
+#: src/hud.cpp:853
 #, c-format
 msgid "Cold Protection: %d:%02d"
 msgstr ""
 
-#: src/inventory.cpp:230 src/inventory.cpp:350
+#: src/inventory.cpp:230 src/inventory.cpp:352
 msgid "Cookable: Yes"
 msgstr ""
 
-#: src/inventory.cpp:235 src/inventory.cpp:355 src/inventory.cpp:523
+#: src/inventory.cpp:235 src/inventory.cpp:357 src/inventory.cpp:532
 msgid "Fuel Burn Time: "
 msgstr ""
 
-#: src/inventory.cpp:319
+#: src/inventory.cpp:321
 msgid "Hunger: "
 msgstr ""
 
-#: src/inventory.cpp:325
+#: src/inventory.cpp:327
 msgid "Health: "
 msgstr ""
 
-#: src/inventory.cpp:332
+#: src/inventory.cpp:334
 msgid "Cold Protection: "
 msgstr ""
 
-#: src/inventory.cpp:341
+#: src/inventory.cpp:343
 msgid "Energy Boost: "
 msgstr ""
 
-#: src/inventory.cpp:512
+#: src/inventory.cpp:521
 msgid "Strength: "
 msgstr ""
 
-#: src/inventory.cpp:515
+#: src/inventory.cpp:524
 msgid "Speed: "
 msgstr ""
 
-#: src/inventory.cpp:518
+#: src/inventory.cpp:527
 msgid "Level: "
 msgstr ""
 
-#: src/inventory.cpp:601
+#: src/inventory.cpp:557
+#, fuzzy
+msgid "Contains: "
+msgstr "lo cmana"
+
+#: src/inventory.cpp:643
 msgid "Armour: "
 msgstr ""
 
-#: src/inventory.cpp:607
+#: src/inventory.cpp:649
 msgid "Warmth: "
 msgstr ""
 
-#: src/inventory.cpp:613
+#: src/inventory.cpp:655
 msgid "Pressure: "
 msgstr ""
 
-#: src/inventory.cpp:619
+#: src/inventory.cpp:661
 msgid "Suffocation: "
 msgstr ""
 
-#: src/inventory.cpp:625
+#: src/inventory.cpp:667
 msgid "Durability: "
 msgstr ""
 
-#: src/inventory.cpp:630
+#: src/inventory.cpp:672
 msgid "Effect Boost: "
 msgstr ""
 
@@ -4228,3 +4409,15 @@ msgstr ".i ca'o samymo'i le se pilno kakne me la'o gy.MapNodes.gy."
 #: src/mapnode.cpp:306
 msgid "Loading Special MapNodes"
 msgstr ".i ca'o samymo'i lo rirci me la'o gy.MapNodes.gy."
+
+#~ msgid "Wooden Sword"
+#~ msgstr "lo mudri cladakyxa'i"
+
+#~ msgid "Wooden Axe"
+#~ msgstr "lo mudri ka'amru"
+
+#~ msgid "Wooden Shovel"
+#~ msgstr "lo mudri canpa"
+
+#~ msgid "Wooden Pick"
+#~ msgstr "lo mudri velkakpymru"

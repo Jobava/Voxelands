@@ -1,22 +1,25 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Lisa 'darkrose' Milne
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Roman M. Yagodin <roman.yagodin@gmail.com>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-17 15:58+1000\n"
+"POT-Creation-Date: 2015-10-19 01:55+1000\n"
 "PO-Revision-Date: 2015-08-19 09:11+0000\n"
 "Last-Translator: Roman M. Yagodin <roman.yagodin@gmail.com>\n"
-"Language-Team: Russian (http://www.transifex.com/voxelands/voxelands/language/ru/)\n"
+"Language-Team: Russian (http://www.transifex.com/voxelands/voxelands/"
+"language/ru/)\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ru\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: src/character_creator.cpp:55
 msgid "White Skin"
@@ -228,9 +231,18 @@ msgstr "Холщовая обувь"
 
 #: src/character_creator.cpp:202
 msgid ""
-"Here you can create your default character, this is how other players will see you in-game. When you join a new server you will start with the clothing you select here. Additional clothing, both protective and decorative, can be crafted in-game.\n"
+"Here you can create your default character, this is how other players will "
+"see you in-game. When you join a new server you will start with the clothing "
+"you select here. Additional clothing, both protective and decorative, can be "
+"crafted in-game.\n"
 "You can return here from the main menu anytime to change your character."
-msgstr "Здесь можно задать исходный внешний вид своего персонажа. Так он будет выглядеть для других игроков в начале игры - например, при подключении к новому серверу. Другие предметы одежды, как защитные, так и декоративные, могут быть созданы в процессе игры.\nВы можете вернуться сюда в любое время из главного меню, чтобы изменить внешний вид вашего персонажа."
+msgstr ""
+"Здесь можно задать исходный внешний вид своего персонажа. Так он будет "
+"выглядеть для других игроков в начале игры - например, при подключении к "
+"новому серверу. Другие предметы одежды, как защитные, так и декоративные, "
+"могут быть созданы в процессе игры.\n"
+"Вы можете вернуться сюда в любое время из главного меню, чтобы изменить "
+"внешний вид вашего персонажа."
 
 #: src/character_creator.cpp:223
 msgid "Create Your Character"
@@ -1116,11 +1128,11 @@ msgstr "Кремень"
 msgid "Steel Ingot"
 msgstr "Стальной слиток"
 
-#: src/content_craftitem.cpp:225 src/content_mapnode.cpp:702
+#: src/content_craftitem.cpp:225 src/content_mapnode.cpp:710
 msgid "Brick"
 msgstr "Кирпич"
 
-#: src/content_craftitem.cpp:233
+#: src/content_craftitem.cpp:233 src/content_mob.cpp:373
 msgid "Rat"
 msgstr "Крыса"
 
@@ -1128,11 +1140,11 @@ msgstr "Крыса"
 msgid "Cooked Rat"
 msgstr "Жареная крыса"
 
-#: src/content_craftitem.cpp:259
+#: src/content_craftitem.cpp:259 src/content_mob.cpp:392
 msgid "Firefly"
 msgstr "Светлячок"
 
-#: src/content_craftitem.cpp:269 src/content_mapnode_plants.cpp:806
+#: src/content_craftitem.cpp:269 src/content_mapnode_plants.cpp:981
 msgid "Apple"
 msgstr "Яблоко"
 
@@ -1216,7 +1228,7 @@ msgstr "Пепел"
 msgid "Apple Blossoms"
 msgstr "Цветы яблони"
 
-#: src/content_craftitem.cpp:512 src/content_mapnode_plants.cpp:611
+#: src/content_craftitem.cpp:512 src/content_mapnode_plants.cpp:786
 msgid "Cactus Berry"
 msgstr "Плод кактуса"
 
@@ -1304,7 +1316,7 @@ msgstr "Смола"
 msgid "Oerkki Dust"
 msgstr "Пыль Оэркки"
 
-#: src/content_craftitem.cpp:783
+#: src/content_craftitem.cpp:783 src/content_mob.cpp:613
 msgid "Fish"
 msgstr "Рыба"
 
@@ -1456,7 +1468,7 @@ msgstr "Желтая кожа"
 msgid "Black Leather"
 msgstr "Черная кожа"
 
-#: src/content_craftitem.cpp:1209
+#: src/content_craftitem.cpp:1209 src/content_mob.cpp:799
 msgid "Arrow"
 msgstr "Стрела"
 
@@ -1544,419 +1556,424 @@ msgstr "Сырой мифрил"
 msgid "Unbound Mithril"
 msgstr "Свободный мифрил"
 
-#: src/content_craftitem.cpp:1515
+#: src/content_craftitem.cpp:1516
 msgid "Mithril"
 msgstr "Мифрил"
 
-#: src/content_craftitem.cpp:1524
+#: src/content_craftitem.cpp:1525
 msgid "Ruby"
 msgstr "Рубин"
 
-#: src/content_craftitem.cpp:1532
+#: src/content_craftitem.cpp:1533
 msgid "Turquiose"
 msgstr "Бирюза"
 
-#: src/content_craftitem.cpp:1540
+#: src/content_craftitem.cpp:1541
 msgid "Amethyst"
 msgstr "Аметист"
 
-#: src/content_craftitem.cpp:1548
+#: src/content_craftitem.cpp:1549
 msgid "Sapphire"
 msgstr "Сапфир"
 
-#: src/content_craftitem.cpp:1556
+#: src/content_craftitem.cpp:1557
 msgid "Sunstone"
 msgstr "Янтарь"
 
-#: src/content_mapnode.cpp:251
+#: src/content_mapnode.cpp:185
 msgid "Stone"
 msgstr "Камень"
 
-#: src/content_mapnode.cpp:268
+#: src/content_mapnode.cpp:202
 msgid "Limestone"
 msgstr "Известняк"
 
-#: src/content_mapnode.cpp:285
+#: src/content_mapnode.cpp:219
+msgid "Rock"
+msgstr ""
+
+#: src/content_mapnode.cpp:241
 msgid "Ice"
 msgstr "Лед"
 
-#: src/content_mapnode.cpp:301
+#: src/content_mapnode.cpp:257
 msgid "Coal Block"
 msgstr "Блок каменного угля"
 
-#: src/content_mapnode.cpp:318
+#: src/content_mapnode.cpp:274
 msgid "Charcoal Block"
 msgstr "Блок древесного угля"
 
-#: src/content_mapnode.cpp:335
+#: src/content_mapnode.cpp:291
 msgid "Stone Brick"
 msgstr "Каменный кирпич"
 
-#: src/content_mapnode.cpp:349
+#: src/content_mapnode.cpp:305
 msgid "Stone Block"
 msgstr "Каменный блок"
 
-#: src/content_mapnode.cpp:363
+#: src/content_mapnode.cpp:319
 msgid "Rough Stone Brick"
 msgstr "Кирпич грубого камня"
 
-#: src/content_mapnode.cpp:380
+#: src/content_mapnode.cpp:336
 msgid "Rough Stone Block"
 msgstr "Блок грубого камня"
 
-#: src/content_mapnode.cpp:396 src/content_mapnode.cpp:429
+#: src/content_mapnode.cpp:352 src/content_mapnode.cpp:385
+#: src/content_mapnode.cpp:399 src/content_mapnode.cpp:432
 msgid "Grass"
 msgstr "Трава"
 
-#: src/content_mapnode.cpp:414
+#: src/content_mapnode.cpp:370 src/content_mapnode.cpp:417
 msgid "Growing Grass"
 msgstr "Растущая трава"
 
-#: src/content_mapnode.cpp:443
+#: src/content_mapnode.cpp:446
 msgid "Muddy Snow"
 msgstr "Грязный снег"
 
-#: src/content_mapnode.cpp:459
+#: src/content_mapnode.cpp:462
 msgid "Mud"
 msgstr "Грязь"
 
-#: src/content_mapnode.cpp:472
+#: src/content_mapnode.cpp:478
 msgid "Ash Block"
 msgstr "Блок пепла"
 
-#: src/content_mapnode.cpp:487
+#: src/content_mapnode.cpp:493
 msgid "Sand"
 msgstr "Песок"
 
-#: src/content_mapnode.cpp:505
+#: src/content_mapnode.cpp:512
 msgid "Gravel"
 msgstr "Гравий"
 
-#: src/content_mapnode.cpp:521
+#: src/content_mapnode.cpp:529
 msgid "Sand Stone"
 msgstr "Песчаник"
 
-#: src/content_mapnode.cpp:536
+#: src/content_mapnode.cpp:544
 msgid "Sand Stone Bricks"
 msgstr "Кирпичи песчаника"
 
-#: src/content_mapnode.cpp:551
+#: src/content_mapnode.cpp:559
 msgid "Sand Stone Blocks"
 msgstr "Блоки песчаника"
 
-#: src/content_mapnode.cpp:566
+#: src/content_mapnode.cpp:574
 msgid "Clay"
 msgstr "Глина"
 
-#: src/content_mapnode.cpp:583
+#: src/content_mapnode.cpp:591
 msgid "Blue Clay"
 msgstr "Синяя глина"
 
-#: src/content_mapnode.cpp:600
+#: src/content_mapnode.cpp:608
 msgid "Green Clay"
 msgstr "Зеленая глина"
 
-#: src/content_mapnode.cpp:617
+#: src/content_mapnode.cpp:625
 msgid "Orange Clay"
 msgstr "Оранжевая глина"
 
-#: src/content_mapnode.cpp:634
+#: src/content_mapnode.cpp:642
 msgid "Purple Clay"
 msgstr "Фиолетовая глина"
 
-#: src/content_mapnode.cpp:651
+#: src/content_mapnode.cpp:659
 msgid "Red Clay"
 msgstr "Красная глина"
 
-#: src/content_mapnode.cpp:668
+#: src/content_mapnode.cpp:676
 msgid "Yellow Clay"
 msgstr "Желтая глина"
 
-#: src/content_mapnode.cpp:685
+#: src/content_mapnode.cpp:693
 msgid "Black Clay"
 msgstr "Черная глина"
 
-#: src/content_mapnode.cpp:721
+#: src/content_mapnode.cpp:729
 msgid "Terracotta"
 msgstr "Керамика"
 
-#: src/content_mapnode.cpp:733
+#: src/content_mapnode.cpp:741
 msgid "Terracotta Brick"
 msgstr "Керамический кирпич"
 
-#: src/content_mapnode.cpp:747
+#: src/content_mapnode.cpp:755
 msgid "Terracotta Block"
 msgstr "Блок керамики"
 
-#: src/content_mapnode.cpp:761
+#: src/content_mapnode.cpp:769
 msgid "Terracotta Tile"
 msgstr "Керамическая плитка"
 
-#: src/content_mapnode.cpp:781
+#: src/content_mapnode.cpp:789
 msgid "Glass"
 msgstr "Стекло"
 
-#: src/content_mapnode.cpp:801
+#: src/content_mapnode.cpp:809
 msgid "Blue Glass"
 msgstr "Синее стекло"
 
-#: src/content_mapnode.cpp:823
+#: src/content_mapnode.cpp:831
 msgid "Green Glass"
 msgstr "Зеленое стекло"
 
-#: src/content_mapnode.cpp:845
+#: src/content_mapnode.cpp:853
 msgid "Orange Glass"
 msgstr "Оранжевое стекло"
 
-#: src/content_mapnode.cpp:867
+#: src/content_mapnode.cpp:875
 msgid "Purple Glass"
 msgstr "Фиолетовое стекло"
 
-#: src/content_mapnode.cpp:889
+#: src/content_mapnode.cpp:897
 msgid "Red Glass"
 msgstr "Красное стекло"
 
-#: src/content_mapnode.cpp:911
+#: src/content_mapnode.cpp:919
 msgid "Yellow Glass"
 msgstr "Желтое стекло"
 
-#: src/content_mapnode.cpp:933
+#: src/content_mapnode.cpp:941
 msgid "Black Glass"
 msgstr "Черное стекло"
 
-#: src/content_mapnode.cpp:955
+#: src/content_mapnode.cpp:963
 msgid "Glass Pane"
 msgstr "Стеклянная панель"
 
-#: src/content_mapnode.cpp:989
+#: src/content_mapnode.cpp:997
 msgid "Blue Glass Pane"
 msgstr "Панель синего стекла"
 
-#: src/content_mapnode.cpp:1024
+#: src/content_mapnode.cpp:1032
 msgid "Green Glass Pane"
 msgstr "Панель зеленого стекла"
 
-#: src/content_mapnode.cpp:1059
+#: src/content_mapnode.cpp:1067
 msgid "Orange Glass Pane"
 msgstr "Панель оранжевого стекла"
 
-#: src/content_mapnode.cpp:1094
+#: src/content_mapnode.cpp:1102
 msgid "Purple Glass Pane"
 msgstr "Панель фиолетового стекла"
 
-#: src/content_mapnode.cpp:1129
+#: src/content_mapnode.cpp:1137
 msgid "Red Glass Pane"
 msgstr "Панель красного стекла"
 
-#: src/content_mapnode.cpp:1164
+#: src/content_mapnode.cpp:1172
 msgid "Yellow Glass Pane"
 msgstr "Панель желтого стекла"
 
-#: src/content_mapnode.cpp:1199
+#: src/content_mapnode.cpp:1207
 msgid "Black Glass Pane"
 msgstr "Панель черного стекла"
 
-#: src/content_mapnode.cpp:1234 src/content_mapnode_farm.cpp:333
+#: src/content_mapnode.cpp:1242 src/content_mapnode_farm.cpp:333
 msgid "Glass Light"
 msgstr "Стеклянная лампа"
 
-#: src/content_mapnode.cpp:1257
+#: src/content_mapnode.cpp:1265
 msgid "Wood"
 msgstr "Дерево"
 
-#: src/content_mapnode.cpp:1283
+#: src/content_mapnode.cpp:1291
 msgid "Jungle Wood"
 msgstr "Пальмовое дерево"
 
-#: src/content_mapnode.cpp:1308
+#: src/content_mapnode.cpp:1316
 msgid "Pine"
 msgstr "Сосна"
 
-#: src/content_mapnode.cpp:1333
+#: src/content_mapnode.cpp:1341
 msgid "Sponge"
 msgstr "Губка"
 
-#: src/content_mapnode.cpp:1348
+#: src/content_mapnode.cpp:1356
 msgid "Waterlogged Sponge"
 msgstr "Мокрая губка"
 
-#: src/content_mapnode.cpp:1363
+#: src/content_mapnode.cpp:1371
 msgid "Hay Bale"
 msgstr "Тюк сена"
 
-#: src/content_mapnode.cpp:1380
+#: src/content_mapnode.cpp:1388
 msgid "Raw Apple Pie"
 msgstr "Сырой яблочный пирог"
 
-#: src/content_mapnode.cpp:1409
+#: src/content_mapnode.cpp:1417
 msgid "Apple Pie"
 msgstr "Яблочный пирог"
 
-#: src/content_mapnode.cpp:1504
+#: src/content_mapnode.cpp:1512
 msgid "Raw Pumpkin Pie"
 msgstr "Сырой тыквенный пирог"
 
-#: src/content_mapnode.cpp:1533
+#: src/content_mapnode.cpp:1541
 msgid "Pumpkin Pie"
 msgstr "Тыквенный пирог"
 
-#: src/content_mapnode.cpp:1628 src/content_mapnode.cpp:1707
+#: src/content_mapnode.cpp:1636 src/content_mapnode.cpp:1715
 msgid "Snow"
 msgstr "Снег"
 
-#: src/content_mapnode.cpp:1644
+#: src/content_mapnode.cpp:1652
 msgid "Snowman"
 msgstr "Снеговик"
 
-#: src/content_mapnode.cpp:1730 src/content_mapnode_farm.cpp:445
+#: src/content_mapnode.cpp:1738 src/content_mapnode_farm.cpp:445
 msgid "Cotton"
 msgstr "Хлопок"
 
-#: src/content_mapnode.cpp:1761
+#: src/content_mapnode.cpp:1769
 msgid "Blue Cotton"
 msgstr "Синий хлопок"
 
-#: src/content_mapnode.cpp:1778
+#: src/content_mapnode.cpp:1786
 msgid "Green Cotton"
 msgstr "Зеленый хлопок"
 
-#: src/content_mapnode.cpp:1795
+#: src/content_mapnode.cpp:1803
 msgid "Orange Cotton"
 msgstr "Оранжевый хлопок"
 
-#: src/content_mapnode.cpp:1812
+#: src/content_mapnode.cpp:1820
 msgid "Purple Cotton"
 msgstr "Фиолетовый хлопок"
 
-#: src/content_mapnode.cpp:1829
+#: src/content_mapnode.cpp:1837
 msgid "Red Cotton"
 msgstr "Красный хлопок"
 
-#: src/content_mapnode.cpp:1846
+#: src/content_mapnode.cpp:1854
 msgid "Yellow Cotton"
 msgstr "Желтый хлопок"
 
-#: src/content_mapnode.cpp:1863
+#: src/content_mapnode.cpp:1871
 msgid "Black Cotton"
 msgstr "Черный хлопок"
 
-#: src/content_mapnode.cpp:1880
+#: src/content_mapnode.cpp:1888
 msgid "Carpet"
 msgstr "Ковер"
 
-#: src/content_mapnode.cpp:1903
+#: src/content_mapnode.cpp:1911
 msgid "Blue Carpet"
 msgstr "Синий ковер"
 
-#: src/content_mapnode.cpp:1927
+#: src/content_mapnode.cpp:1935
 msgid "Green Carpet"
 msgstr "Зеленый ковер"
 
-#: src/content_mapnode.cpp:1951
+#: src/content_mapnode.cpp:1959
 msgid "Orange Carpet"
 msgstr "Оранжевый ковер"
 
-#: src/content_mapnode.cpp:1975
+#: src/content_mapnode.cpp:1983
 msgid "Purple Carpet"
 msgstr "Фиолетовый ковер"
 
-#: src/content_mapnode.cpp:1999
+#: src/content_mapnode.cpp:2007
 msgid "Red Carpet"
 msgstr "Красный ковер"
 
-#: src/content_mapnode.cpp:2023
+#: src/content_mapnode.cpp:2031
 msgid "Yellow Carpet"
 msgstr "Желтый ковер"
 
-#: src/content_mapnode.cpp:2047
+#: src/content_mapnode.cpp:2055
 msgid "Black Carpet"
 msgstr "Черный ковер"
 
-#: src/content_mapnode.cpp:2071
+#: src/content_mapnode.cpp:2079
 msgid "Air"
 msgstr "Воздух"
 
-#: src/content_mapnode.cpp:2087
+#: src/content_mapnode.cpp:2095
 msgid "Vacuum"
 msgstr "Вакуум"
 
-#: src/content_mapnode.cpp:2104 src/content_mapnode.cpp:2134
+#: src/content_mapnode.cpp:2112 src/content_mapnode.cpp:2142
 msgid "Water"
 msgstr "Вода"
 
-#: src/content_mapnode.cpp:2164 src/content_mapnode.cpp:2192
+#: src/content_mapnode.cpp:2172 src/content_mapnode.cpp:2200
 msgid "Lava"
 msgstr "Лава"
 
-#: src/content_mapnode.cpp:2223
+#: src/content_mapnode.cpp:2231
 msgid "Rough Stone"
 msgstr "Грубый камень"
 
-#: src/content_mapnode.cpp:2240
+#: src/content_mapnode.cpp:2248
 msgid "Cobble Stone"
 msgstr "Булыжник"
 
-#: src/content_mapnode.cpp:2255
+#: src/content_mapnode.cpp:2264
 msgid "Mossy Cobble Stone"
 msgstr "Замшелый булыжник"
 
-#: src/content_mapnode.cpp:2268
+#: src/content_mapnode.cpp:2277
 msgid "Steel Block"
 msgstr "Стальной блок"
 
-#: src/content_mapnode.cpp:2285
+#: src/content_mapnode.cpp:2294
 msgid "Mithril Block"
 msgstr "Блок мифрила"
 
-#: src/content_mapnode.cpp:2301
+#: src/content_mapnode.cpp:2310
 msgid "Stone Knob"
 msgstr "Каменная кнопка"
 
-#: src/content_mapnode.cpp:2302
+#: src/content_mapnode.cpp:2311
 msgid "Rough Stone Knob"
 msgstr "Кнопка из грубого камня"
 
-#: src/content_mapnode.cpp:2303
+#: src/content_mapnode.cpp:2312
 msgid "Sandstone Knob"
 msgstr "Кнопка из песчаника"
 
-#: src/content_mapnode.cpp:2304
+#: src/content_mapnode.cpp:2313
 msgid "Wooden Knob"
 msgstr "Деревянная кнопка"
 
-#: src/content_mapnode.cpp:2305
+#: src/content_mapnode.cpp:2314
 msgid "Junglewood Knob"
 msgstr "Пальмовая кнопка"
 
-#: src/content_mapnode.cpp:2306
+#: src/content_mapnode.cpp:2315
 msgid "Pine Knob"
 msgstr "Сосновая кнопка"
 
-#: src/content_mapnode.cpp:2310
+#: src/content_mapnode.cpp:2319
 msgid "Copper Block"
 msgstr "Блок меди"
 
-#: src/content_mapnode.cpp:2327
+#: src/content_mapnode.cpp:2336
 msgid "Gold Block"
 msgstr "Блок золота"
 
-#: src/content_mapnode.cpp:2344
+#: src/content_mapnode.cpp:2353
 msgid "Silver Block"
 msgstr "Блок серебра"
 
-#: src/content_mapnode.cpp:2361
+#: src/content_mapnode.cpp:2370
 msgid "Tin Block"
 msgstr "Блок олова"
 
-#: src/content_mapnode.cpp:2378
+#: src/content_mapnode.cpp:2387
 msgid "Quartz Block"
 msgstr "Блок кварца"
 
-#: src/content_mapnode.cpp:2395
+#: src/content_mapnode.cpp:2404
 msgid "Stone Tiles"
 msgstr "Каменные плитки"
 
-#: src/content_mapnode.cpp:2417
+#: src/content_mapnode.cpp:2426
 msgid "Wood Tiles"
 msgstr "Деревянные плитки"
 
@@ -2242,66 +2259,71 @@ msgid "Table"
 msgstr "Стол"
 
 #: src/content_mapnode_furniture.cpp:1206
-#: src/content_mapnode_furniture.cpp:1237
+#: src/content_mapnode_furniture.cpp:1239
 msgid "Bed"
 msgstr "Кровать"
 
-#: src/content_mapnode_furniture.cpp:1265
-#: src/content_mapnode_furniture.cpp:1296
+#: src/content_mapnode_furniture.cpp:1267
+#: src/content_mapnode_furniture.cpp:1300
 msgid "Blue Bed"
 msgstr "Синяя кровать"
 
-#: src/content_mapnode_furniture.cpp:1324
-#: src/content_mapnode_furniture.cpp:1355
+#: src/content_mapnode_furniture.cpp:1328
+#: src/content_mapnode_furniture.cpp:1361
 msgid "Green Bed"
 msgstr "Зеленая кровать"
 
-#: src/content_mapnode_furniture.cpp:1383
-#: src/content_mapnode_furniture.cpp:1414
+#: src/content_mapnode_furniture.cpp:1389
+#: src/content_mapnode_furniture.cpp:1422
 msgid "Orange Bed"
 msgstr "Оранжевая кровать"
 
-#: src/content_mapnode_furniture.cpp:1442
-#: src/content_mapnode_furniture.cpp:1473
+#: src/content_mapnode_furniture.cpp:1450
+#: src/content_mapnode_furniture.cpp:1483
 msgid "Purple Bed"
 msgstr "Фиолетовая кровать"
 
-#: src/content_mapnode_furniture.cpp:1501
-#: src/content_mapnode_furniture.cpp:1532
+#: src/content_mapnode_furniture.cpp:1511
+#: src/content_mapnode_furniture.cpp:1544
 msgid "Red Bed"
 msgstr "Красная кровать"
 
-#: src/content_mapnode_furniture.cpp:1560
-#: src/content_mapnode_furniture.cpp:1591
+#: src/content_mapnode_furniture.cpp:1572
+#: src/content_mapnode_furniture.cpp:1605
 msgid "Yellow Bed"
 msgstr "Желтая кровать"
 
-#: src/content_mapnode_furniture.cpp:1619
-#: src/content_mapnode_furniture.cpp:1650
+#: src/content_mapnode_furniture.cpp:1633
+#: src/content_mapnode_furniture.cpp:1666
 msgid "Black Bed"
 msgstr "Черная кровать"
 
-#: src/content_mapnode_furniture.cpp:1679
+#: src/content_mapnode_furniture.cpp:1694
+#: src/content_mapnode_furniture.cpp:1729
+msgid "Camp Bed"
+msgstr ""
+
+#: src/content_mapnode_furniture.cpp:1753
 msgid "Colorful Painting"
 msgstr "Цветная картина"
 
-#: src/content_mapnode_furniture.cpp:1714
+#: src/content_mapnode_furniture.cpp:1788
 msgid "Red Rose Painting"
 msgstr "Картина с красной розой"
 
-#: src/content_mapnode_furniture.cpp:1749
+#: src/content_mapnode_furniture.cpp:1823
 msgid "Field Painting"
 msgstr "Пейзаж"
 
-#: src/content_mapnode_furniture.cpp:1784
+#: src/content_mapnode_furniture.cpp:1858
 msgid "Blue Flower Painting"
 msgstr "Картина с синим цветком"
 
-#: src/content_mapnode_furniture.cpp:1819
+#: src/content_mapnode_furniture.cpp:1893
 msgid "Painting Canvas"
 msgstr "Холст для живописи"
 
-#: src/content_mapnode_furniture.cpp:1857
+#: src/content_mapnode_furniture.cpp:1931
 msgid "Clock"
 msgstr "Часы"
 
@@ -2341,115 +2363,117 @@ msgstr "Молодое хвойное дерево"
 msgid "Jungle Grass"
 msgstr "Папоротник"
 
-#: src/content_mapnode_plants.cpp:231
+#: src/content_mapnode_plants.cpp:231 src/content_mapnode_plants.cpp:268
+#: src/content_mapnode_plants.cpp:305 src/content_mapnode_plants.cpp:342
 msgid "Leaves"
 msgstr "Листья"
 
-#: src/content_mapnode_plants.cpp:268
+#: src/content_mapnode_plants.cpp:379
 msgid "Apple Tree Leaves"
 msgstr "Листья яблони"
 
-#: src/content_mapnode_plants.cpp:305
+#: src/content_mapnode_plants.cpp:416
 msgid "Jungle Leaves"
 msgstr "Пальмовые листья"
 
-#: src/content_mapnode_plants.cpp:342
+#: src/content_mapnode_plants.cpp:453
 msgid "Conifer Leaves"
 msgstr "Хвоя"
 
-#: src/content_mapnode_plants.cpp:379
+#: src/content_mapnode_plants.cpp:490 src/content_mapnode_plants.cpp:522
+#: src/content_mapnode_plants.cpp:554
 msgid "Trimmed Leaves"
 msgstr "Нарезанные листья"
 
-#: src/content_mapnode_plants.cpp:411
+#: src/content_mapnode_plants.cpp:586
 msgid "Trimmed Apple Tree Leaves"
 msgstr "Нарезанные листья яблони"
 
-#: src/content_mapnode_plants.cpp:443
+#: src/content_mapnode_plants.cpp:618
 msgid "Trimmed Jungle Leaves"
 msgstr "Нарезанные пальмовые листья"
 
-#: src/content_mapnode_plants.cpp:475
+#: src/content_mapnode_plants.cpp:650
 msgid "Trimmed Conifer Leaves"
 msgstr "Нарезанная хвоя"
 
-#: src/content_mapnode_plants.cpp:507
+#: src/content_mapnode_plants.cpp:682
 msgid "Apple Tree Blossom"
 msgstr "Цветы яблони"
 
-#: src/content_mapnode_plants.cpp:539
+#: src/content_mapnode_plants.cpp:714
 msgid "Trimmed Apple Tree Blossom"
 msgstr "Нарезанные цветы яблони"
 
-#: src/content_mapnode_plants.cpp:568
+#: src/content_mapnode_plants.cpp:743
 msgid "Cactus Blossom"
 msgstr "Цветок кактуса"
 
-#: src/content_mapnode_plants.cpp:589
+#: src/content_mapnode_plants.cpp:764
 msgid "Cactus Flower"
 msgstr "Цветок кактуса"
 
-#: src/content_mapnode_plants.cpp:632
+#: src/content_mapnode_plants.cpp:807
 msgid "Cactus"
 msgstr "Кактус"
 
-#: src/content_mapnode_plants.cpp:695
+#: src/content_mapnode_plants.cpp:870
 msgid "Papyrus"
 msgstr "Папирус"
 
-#: src/content_mapnode_plants.cpp:718
+#: src/content_mapnode_plants.cpp:893
 msgid "Sapling"
 msgstr "Саженец"
 
-#: src/content_mapnode_plants.cpp:740
+#: src/content_mapnode_plants.cpp:915
 msgid "Apple Tree Sapling"
 msgstr "Саженец яблони"
 
-#: src/content_mapnode_plants.cpp:762
+#: src/content_mapnode_plants.cpp:937
 msgid "Jungle Sapling"
 msgstr "Росток пальмы"
 
-#: src/content_mapnode_plants.cpp:784
+#: src/content_mapnode_plants.cpp:959
 msgid "Conifer Sapling"
 msgstr "Саженец сосны"
 
-#: src/content_mapnode_plants.cpp:831 src/content_mapnode_plants.cpp:855
+#: src/content_mapnode_plants.cpp:1006 src/content_mapnode_plants.cpp:1030
 msgid "Wild Grass"
 msgstr "Бурьян"
 
-#: src/content_mapnode_plants.cpp:878
+#: src/content_mapnode_plants.cpp:1053
 msgid "Dead Grass"
 msgstr "Сухая трава"
 
-#: src/content_mapnode_plants.cpp:901
+#: src/content_mapnode_plants.cpp:1076
 msgid "Flower Stem"
 msgstr "Стебель цветка"
 
-#: src/content_mapnode_plants.cpp:924
+#: src/content_mapnode_plants.cpp:1099
 msgid "Rose"
 msgstr "Роза"
 
-#: src/content_mapnode_plants.cpp:948
+#: src/content_mapnode_plants.cpp:1123
 msgid "Daffodil"
 msgstr "Бледно-желтый нарцис"
 
-#: src/content_mapnode_plants.cpp:972
+#: src/content_mapnode_plants.cpp:1147
 msgid "Tulip"
 msgstr "Тюльпан"
 
-#: src/content_mapnode_plants.cpp:996
+#: src/content_mapnode_plants.cpp:1171
 msgid "Tea Seeds"
 msgstr "Семена чая"
 
-#: src/content_mapnode_plants.cpp:1016
+#: src/content_mapnode_plants.cpp:1191
 msgid "Tea Plant"
 msgstr "Чайное дерево"
 
-#: src/content_mapnode_plants.cpp:1040
+#: src/content_mapnode_plants.cpp:1215
 msgid "Coffee Beans"
 msgstr "Зерна кофе"
 
-#: src/content_mapnode_plants.cpp:1061
+#: src/content_mapnode_plants.cpp:1236
 msgid "Coffee Plant"
 msgstr "Кофейное дерево"
 
@@ -2597,207 +2621,207 @@ msgstr "Черепица черного стекла"
 msgid "Thatch Roof Tile"
 msgstr "Соломенная черепица"
 
-#: src/content_mapnode_special.cpp:501 src/content_mapnode_special.cpp:538
-#: src/content_mapnode_special.cpp:598 src/content_mapnode_special.cpp:633
+#: src/content_mapnode_special.cpp:501 src/content_mapnode_special.cpp:561
+#: src/content_mapnode_special.cpp:596
 msgid "Ladder"
 msgstr "Лестница"
 
-#: src/content_mapnode_special.cpp:668
+#: src/content_mapnode_special.cpp:631
 msgid "Border Stone"
 msgstr "Граничный камень"
 
-#: src/content_mapnode_special.cpp:695
+#: src/content_mapnode_special.cpp:658
 msgid "Book"
 msgstr "Книга"
 
-#: src/content_mapnode_special.cpp:727
+#: src/content_mapnode_special.cpp:690
 msgid "Cook Book"
 msgstr "Использование печи"
 
-#: src/content_mapnode_special.cpp:759
+#: src/content_mapnode_special.cpp:722
 msgid "Decraft Book"
 msgstr "Книга по разборке"
 
-#: src/content_mapnode_special.cpp:790 src/content_mapnode_special.cpp:985
-#: src/content_nodemeta.cpp:2315
+#: src/content_mapnode_special.cpp:753 src/content_mapnode_special.cpp:948
+#: src/content_nodemeta.cpp:2693
 msgid "Diary"
 msgstr "Дневник"
 
-#: src/content_mapnode_special.cpp:822
+#: src/content_mapnode_special.cpp:785
 msgid "Craft Book"
 msgstr "Книга по сборке"
 
-#: src/content_mapnode_special.cpp:862
+#: src/content_mapnode_special.cpp:825
 msgid "Reverse Craft Book"
 msgstr "Книга по разборке"
 
-#: src/content_mapnode_special.cpp:900
+#: src/content_mapnode_special.cpp:863
 msgid "Guide"
 msgstr "Руководство"
 
-#: src/content_mapnode_special.cpp:929 src/content_nodemeta.h:416
+#: src/content_mapnode_special.cpp:892 src/content_nodemeta.h:471
 msgid "Cooking Guide"
 msgstr "Руководство по использованию печи"
 
-#: src/content_mapnode_special.cpp:957 src/content_nodemeta.h:442
+#: src/content_mapnode_special.cpp:920 src/content_nodemeta.h:497
 msgid "Decrafting Guide"
 msgstr "Руководство по разборке"
 
-#: src/content_mapnode_special.cpp:1014 src/content_nodemeta.h:358
+#: src/content_mapnode_special.cpp:977 src/content_nodemeta.h:413
 msgid "Craft Guide"
 msgstr "Руководство по сборке"
 
-#: src/content_mapnode_special.cpp:1042 src/content_nodemeta.h:385
+#: src/content_mapnode_special.cpp:1005 src/content_nodemeta.h:440
 msgid "Reverse Craft Guide"
 msgstr "Руководство по разборке"
 
-#: src/content_mapnode_special.cpp:1070 src/content_mapnode_special.cpp:1091
+#: src/content_mapnode_special.cpp:1033 src/content_mapnode_special.cpp:1054
 msgid "Fire"
 msgstr "Огонь"
 
-#: src/content_mapnode_special.cpp:1111 src/content_mapnode_special.cpp:1134
+#: src/content_mapnode_special.cpp:1074
 msgid "Torch"
 msgstr "Факел"
 
-#: src/content_mapnode_special.cpp:1162 src/content_mapnode_special.cpp:1189
-#: src/content_mapnode_special.cpp:1223
+#: src/content_mapnode_special.cpp:1102 src/content_mapnode_special.cpp:1129
+#: src/content_mapnode_special.cpp:1163
 msgid "Sign"
 msgstr "Табличка"
 
-#: src/content_mapnode_special.cpp:1252 src/content_mapnode_special.cpp:1283
-#: src/content_mapnode_special.cpp:1316
+#: src/content_mapnode_special.cpp:1192 src/content_mapnode_special.cpp:1223
+#: src/content_mapnode_special.cpp:1256
 msgid "Locking Sign"
 msgstr "Табличка с запором"
 
-#: src/content_mapnode_special.cpp:1346 src/content_nodemeta.cpp:229
+#: src/content_mapnode_special.cpp:1286 src/content_nodemeta.cpp:500
 msgid "Chest"
 msgstr "Сундук"
 
-#: src/content_mapnode_special.cpp:1370 src/content_nodemeta.cpp:504
+#: src/content_mapnode_special.cpp:1310 src/content_nodemeta.cpp:775
 msgid "Creative Chest"
 msgstr "Сундук создателя"
 
-#: src/content_mapnode_special.cpp:1391
+#: src/content_mapnode_special.cpp:1331
 msgid "Locking Chest"
 msgstr "Сундук с запором"
 
-#: src/content_mapnode_special.cpp:1422
+#: src/content_mapnode_special.cpp:1362
 msgid "Safe"
 msgstr "Сейф"
 
-#: src/content_mapnode_special.cpp:1444 src/content_mapnode_special.cpp:1465
+#: src/content_mapnode_special.cpp:1384 src/content_mapnode_special.cpp:1411
 msgid "Furnace"
 msgstr "Печь"
 
-#: src/content_mapnode_special.cpp:1484 src/content_mapnode_special.cpp:1506
+#: src/content_mapnode_special.cpp:1429 src/content_mapnode_special.cpp:1457
 msgid "Locking Furnace"
 msgstr "Печь с запором"
 
-#: src/content_mapnode_special.cpp:1524 src/content_mapnode_special.cpp:1544
+#: src/content_mapnode_special.cpp:1475 src/content_mapnode_special.cpp:1501
 msgid "Incinerator"
 msgstr "Мусоросжигатель"
 
-#: src/content_mapnode_special.cpp:1562
+#: src/content_mapnode_special.cpp:1519
 msgid "Nyan Cat"
 msgstr "Кошка Нян"
 
-#: src/content_mapnode_special.cpp:1576
+#: src/content_mapnode_special.cpp:1533
 msgid "Rainbow"
 msgstr "Радуга"
 
-#: src/content_mapnode_special.cpp:1588
+#: src/content_mapnode_special.cpp:1545
 msgid "Unbaked Flower Pot"
 msgstr "Необожженный цветочный горшок"
 
-#: src/content_mapnode_special.cpp:1610
+#: src/content_mapnode_special.cpp:1567
 msgid "Flower Pot"
 msgstr "Цветочный горшок"
 
-#: src/content_mapnode_special.cpp:1628
+#: src/content_mapnode_special.cpp:1585
 msgid "Cobblestone Wall"
 msgstr "Булыжная стена"
 
-#: src/content_mapnode_special.cpp:1652
+#: src/content_mapnode_special.cpp:1609
 msgid "Rough Stone Wall"
 msgstr "Стена грубого камня"
 
-#: src/content_mapnode_special.cpp:1676
+#: src/content_mapnode_special.cpp:1633
 msgid "Mossy Cobblestone Wall"
 msgstr "Стена замшелого булыжника"
 
-#: src/content_mapnode_special.cpp:1700
+#: src/content_mapnode_special.cpp:1657
 msgid "Stone Wall"
 msgstr "Каменная стена"
 
-#: src/content_mapnode_special.cpp:1724
+#: src/content_mapnode_special.cpp:1681
 msgid "Sand Stone Wall"
 msgstr "Стена песчаника"
 
-#: src/content_mapnode_special.cpp:1748
+#: src/content_mapnode_special.cpp:1705
 msgid "Limestone Wall"
 msgstr "Известняковая стена"
 
-#: src/content_mapnode_special.cpp:1772
+#: src/content_mapnode_special.cpp:1729
 msgid "TNT"
 msgstr "Динамит"
 
-#: src/content_mapnode_special.cpp:1792
+#: src/content_mapnode_special.cpp:1749
 msgid "In-Progress explosion - how did you get this???"
 msgstr "Начат обратный отсчет до взрыва - где ты достал взрывчатку???"
 
-#: src/content_mapnode_special.cpp:1812
+#: src/content_mapnode_special.cpp:1769
 msgid "Steam"
 msgstr "Пар"
 
-#: src/content_mapnode_special.cpp:1833
+#: src/content_mapnode_special.cpp:1790
 msgid "Home Flag"
 msgstr "Домашний флаг"
 
-#: src/content_mapnode_special.cpp:1879
+#: src/content_mapnode_special.cpp:1836
 msgid "Blue Home Flag"
 msgstr "Синий домашний флаг"
 
-#: src/content_mapnode_special.cpp:1904
+#: src/content_mapnode_special.cpp:1861
 msgid "Green Home Flag"
 msgstr "Зеленый домашний флаг"
 
-#: src/content_mapnode_special.cpp:1929
+#: src/content_mapnode_special.cpp:1886
 msgid "Orange Home Flag"
 msgstr "Оранжевый домашний флаг"
 
-#: src/content_mapnode_special.cpp:1954
+#: src/content_mapnode_special.cpp:1911
 msgid "Purple Home Flag"
 msgstr "Фиолетовый домашний флаг"
 
-#: src/content_mapnode_special.cpp:1979
+#: src/content_mapnode_special.cpp:1936
 msgid "Red Home Flag"
 msgstr "Красный домашний флаг"
 
-#: src/content_mapnode_special.cpp:2004
+#: src/content_mapnode_special.cpp:1961
 msgid "Yellow Home Flag"
 msgstr "Желтый домашний флаг"
 
-#: src/content_mapnode_special.cpp:2029
+#: src/content_mapnode_special.cpp:1986
 msgid "Black Home Flag"
 msgstr "Черный домашний флаг"
 
-#: src/content_mapnode_special.cpp:2054
+#: src/content_mapnode_special.cpp:2011
 msgid "Life Support System"
 msgstr "Система жизнеобеспечения"
 
-#: src/content_mapnode_special.cpp:2078
+#: src/content_mapnode_special.cpp:2035
 msgid "Parcel"
 msgstr "Пакет"
 
-#: src/content_mapnode_special.cpp:2103
+#: src/content_mapnode_special.cpp:2061
 msgid "Cauldron"
 msgstr "Котел"
 
-#: src/content_mapnode_special.cpp:2124 src/content_nodemeta.cpp:2932
+#: src/content_mapnode_special.cpp:2082 src/content_nodemeta.cpp:3312
 msgid "Forge"
 msgstr "Кузница"
 
-#: src/content_mapnode_special.cpp:2152
+#: src/content_mapnode_special.cpp:2110
 msgid "Forge Fire"
 msgstr "Кузнечный огонь"
 
@@ -2837,8 +2861,73 @@ msgstr "Ступенька песчаника"
 msgid "Limestone Stair"
 msgstr "Известняковая ступенька"
 
+#: src/content_mob.cpp:412
+#, fuzzy
+msgid "Oerkki"
+msgstr "Пыль Оэркки"
+
+#: src/content_mob.cpp:463
+msgid "Dungeon Master"
+msgstr ""
+
+#: src/content_mob.cpp:514
+#, fuzzy
+msgid "Fireball"
+msgstr "Светлячок"
+
+#: src/content_mob.cpp:532
+#, fuzzy
+msgid "Doe"
+msgstr "Готово"
+
+#: src/content_mob.cpp:558 src/content_mob.cpp:589
+msgid "Stag"
+msgstr ""
+
+#: src/content_mob.cpp:639
+msgid "Shark"
+msgstr ""
+
+#: src/content_mob.cpp:666
+msgid "Wolf"
+msgstr ""
+
+#: src/content_mob.cpp:696
+msgid "Tame Wolf"
+msgstr ""
+
+#: src/content_mob.cpp:723
+msgid "Sheep"
+msgstr ""
+
+#: src/content_mob.cpp:754
+msgid "Sheared Sheep"
+msgstr ""
+
+#: src/content_mob.cpp:779
+#, fuzzy
+msgid "Snowball"
+msgstr "Снежок"
+
+#: src/content_mob.cpp:819
+msgid "Grey Kitten"
+msgstr ""
+
+#: src/content_mob.cpp:845
+#, fuzzy
+msgid "White Kitten"
+msgstr "Белая кожа"
+
+#: src/content_mob.cpp:871
+msgid "Siamese Kitten"
+msgstr ""
+
+#: src/content_mob.cpp:897
+msgid "Ginger Kitten"
+msgstr ""
+
 #: src/content_nodemeta.cpp:75 src/content_nodemeta.cpp:138
-#: src/content_nodemeta.cpp:2299 src/content_nodemeta.cpp:2398
+#: src/content_nodemeta.cpp:2677 src/content_nodemeta.cpp:2776
 msgid "Save"
 msgstr "Сохранить"
 
@@ -2847,77 +2936,98 @@ msgstr "Сохранить"
 msgid "%s's Home Flag"
 msgstr "Домашний флаг %s"
 
-#: src/content_nodemeta.cpp:302
+#: src/content_nodemeta.cpp:269 src/content_nodemeta.cpp:282
+#: src/content_nodemeta.cpp:436 src/content_nodemeta.cpp:449
+msgid "You can't sleep yet."
+msgstr ""
+
+#: src/content_nodemeta.cpp:273 src/content_nodemeta.cpp:440
+msgid "Go to sleep"
+msgstr ""
+
+#: src/content_nodemeta.cpp:278 src/content_nodemeta.cpp:445
+msgid "Someone else is sleeping here."
+msgstr ""
+
+#: src/content_nodemeta.cpp:286 src/content_nodemeta.cpp:453
+msgid "Get out of bed"
+msgstr ""
+
+#: src/content_nodemeta.cpp:432
+msgid "This bed is too uncomfortable to sleep in."
+msgstr ""
+
+#: src/content_nodemeta.cpp:573
 #, c-format
 msgid "Locking Chest owned by '%s'"
 msgstr "Сундук с запором принадлежит '%s'"
 
-#: src/content_nodemeta.cpp:376
+#: src/content_nodemeta.cpp:647
 #, c-format
 msgid "Safe owned by '%s'"
 msgstr "Сейф принадлежит '%s'"
 
-#: src/content_nodemeta.cpp:545 src/content_nodemeta.cpp:1492
-#: src/content_nodemeta.cpp:1779 src/content_nodemeta.cpp:1971
-#: src/content_nodemeta.cpp:2185
+#: src/content_nodemeta.cpp:816 src/content_nodemeta.cpp:1870
+#: src/content_nodemeta.cpp:2157 src/content_nodemeta.cpp:2349
+#: src/content_nodemeta.cpp:2563
 #, c-format
 msgid "Page %d of %d"
 msgstr "Страница %d из %d"
 
-#: src/content_nodemeta.cpp:549 src/content_nodemeta.cpp:1520
-#: src/content_nodemeta.cpp:1798 src/content_nodemeta.cpp:1980
-#: src/content_nodemeta.cpp:2201
+#: src/content_nodemeta.cpp:820 src/content_nodemeta.cpp:1898
+#: src/content_nodemeta.cpp:2176 src/content_nodemeta.cpp:2358
+#: src/content_nodemeta.cpp:2579
 msgid "<< Previous Page"
 msgstr "<< Пред. страница"
 
-#: src/content_nodemeta.cpp:555 src/content_nodemeta.cpp:1526
-#: src/content_nodemeta.cpp:1804 src/content_nodemeta.cpp:1986
-#: src/content_nodemeta.cpp:2207
+#: src/content_nodemeta.cpp:826 src/content_nodemeta.cpp:1904
+#: src/content_nodemeta.cpp:2182 src/content_nodemeta.cpp:2364
+#: src/content_nodemeta.cpp:2585
 msgid "Next Page >>"
 msgstr "След. страница >>"
 
-#: src/content_nodemeta.cpp:598
+#: src/content_nodemeta.cpp:869
 #, c-format
 msgid "Border Stone owned by '%s'"
 msgstr "Граничный камень принадлежит '%s'"
 
-#: src/content_nodemeta.cpp:673
+#: src/content_nodemeta.cpp:944
 msgid "Furnace is overloaded"
 msgstr "Печь перегружена"
 
-#: src/content_nodemeta.cpp:674
+#: src/content_nodemeta.cpp:945
 msgid "Furnace is out of fuel"
 msgstr "В печи закончилось топливо"
 
-#: src/content_nodemeta.cpp:676
+#: src/content_nodemeta.cpp:947
 msgid "Furnace is inactive"
 msgstr "Печь выключена"
 
-#: src/content_nodemeta.cpp:679
+#: src/content_nodemeta.cpp:950
 msgid "Furnace is active"
 msgstr "Печь работает"
 
-#: src/content_nodemeta.cpp:934
+#: src/content_nodemeta.cpp:1209
 msgid "Locking Furnace is overloaded"
 msgstr "Печь с запором перегружена"
 
-#: src/content_nodemeta.cpp:935
+#: src/content_nodemeta.cpp:1210
 msgid "Locking Furnace is out of fuel"
 msgstr "В печи с запором закончилось топливо"
 
-#: src/content_nodemeta.cpp:937
+#: src/content_nodemeta.cpp:1212
 msgid "Locking Furnace is inactive"
 msgstr "Печь с запором выключена"
 
-#: src/content_nodemeta.cpp:940
+#: src/content_nodemeta.cpp:1215
 msgid "Locking Furnace is active"
 msgstr "Печь с запором работает"
 
-#: src/content_nodemeta.cpp:1190
+#: src/content_nodemeta.cpp:1470
 msgid "Armed Explosive: about to detonate"
 msgstr "Снаряженная взрывчатка: сейчас рванет"
 
-#: src/content_nodemeta.cpp:1193
+#: src/content_nodemeta.cpp:1473
 #, c-format
 msgid "Armed Explosive: %d second till detonation"
 msgid_plural "Armed Explosive: %d seconds till detonation"
@@ -2926,344 +3036,353 @@ msgstr[1] "Снаряженная взрывчатка: %d секунды до �
 msgstr[2] "Снаряженная взрывчатка: %d секунд до детонации"
 msgstr[3] "Снаряженная взрывчатка: %d секунд до детонации"
 
-#: src/content_nodemeta.cpp:1243
+#: src/content_nodemeta.cpp:1534 src/content_nodemeta.cpp:1539
 msgid "Incinerator is active"
 msgstr "Мусоросжигатель работает"
 
-#: src/content_nodemeta.cpp:1244
+#: src/content_nodemeta.cpp:1541
 msgid "Incinerator is inactive"
 msgstr "Мусоросжигатель выключен"
 
-#: src/content_nodemeta.cpp:1287
+#: src/content_nodemeta.cpp:1633
 msgid "Add fuel, then punch to incinerate wielded item"
 msgstr "Добавьте топлива и затем ударьте предметом, который нужно сжечь"
 
-#: src/content_nodemeta.cpp:1496 src/content_nodemeta.cpp:1784
+#: src/content_nodemeta.cpp:1874 src/content_nodemeta.cpp:2162
 msgid "Add item here to see recipe"
 msgstr "Поместите предмет сюда, чтобы увидеть рецепт"
 
-#: src/content_nodemeta.cpp:1501 src/content_nodemeta.cpp:1789
+#: src/content_nodemeta.cpp:1879 src/content_nodemeta.cpp:2167
 #, c-format
 msgid "Recipe %d of %d"
 msgstr "Рецепт %d из %d"
 
-#: src/content_nodemeta.cpp:1510
+#: src/content_nodemeta.cpp:1888
 msgid "Gives"
 msgstr "Дает"
 
-#: src/content_nodemeta.cpp:1975
+#: src/content_nodemeta.cpp:2353
 msgid "Add item here to see cook result"
 msgstr "Поместите предмет сюда, чтобы увидеть результат запекания"
 
-#: src/content_nodemeta.cpp:2189
+#: src/content_nodemeta.cpp:2567
 msgid "Add item here to see dig result"
 msgstr "Поместите предмет сюда, чтобы увидеть результат разрушения"
 
-#: src/content_nodemeta.cpp:2193
+#: src/content_nodemeta.cpp:2571
 msgid "Dig Result"
 msgstr "Результат разрущения"
 
-#: src/content_nodemeta.cpp:2197
+#: src/content_nodemeta.cpp:2575
 msgid "Random Drop"
 msgstr "Выпадает случайно"
 
-#: src/content_nodemeta.cpp:2289 src/content_nodemeta.cpp:2388
+#: src/content_nodemeta.cpp:2667 src/content_nodemeta.cpp:2766
 msgid "Title"
 msgstr "Название"
 
-#: src/content_nodemeta.cpp:2294 src/content_nodemeta.cpp:2393
+#: src/content_nodemeta.cpp:2672 src/content_nodemeta.cpp:2771
 msgid "Content"
 msgstr "Содержимое"
 
-#: src/content_nodemeta.cpp:2747
+#: src/content_nodemeta.cpp:3127
 msgid "Cauldron is active"
 msgstr "Котел включен"
 
-#: src/content_nodemeta.cpp:2750
+#: src/content_nodemeta.cpp:3130
 msgid "Cauldron is hot"
 msgstr "Котел горячий"
 
-#: src/content_nodemeta.cpp:2752
+#: src/content_nodemeta.cpp:3132
 msgid "Cauldron is cool"
 msgstr "Котел холодный"
 
-#: src/content_nodemeta.cpp:2754
+#: src/content_nodemeta.cpp:3134
 msgid "Cauldron is empty"
 msgstr "Котел пуст"
 
-#: src/content_nodemeta.cpp:2758
+#: src/content_nodemeta.cpp:3138
 msgid "Cauldron is inactive"
 msgstr "Котел выключен"
 
-#: src/content_nodemeta.cpp:2759
+#: src/content_nodemeta.cpp:3139
 msgid "Cauldron is out of fuel"
 msgstr "Котел без топлива"
 
-#: src/content_nodemeta.cpp:2838
+#: src/content_nodemeta.cpp:3218
 msgid "Add fuel, then punch to add or remove water"
-msgstr "Добавьте топлива и затем ударьте для того, чтобы добавить или убрать воду"
+msgstr ""
+"Добавьте топлива и затем ударьте для того, чтобы добавить или убрать воду"
 
-#: src/content_nodemeta.cpp:3104
+#: src/content_nodemeta.cpp:3484
 msgid "Show Enchanting"
 msgstr "Окно зачарования"
 
-#: src/content_nodemeta.cpp:3111 src/game.cpp:207
+#: src/content_nodemeta.cpp:3491 src/game.cpp:208
 msgid "Show Crafting"
 msgstr "Окно сборки"
 
-#: src/content_toolitem.cpp:207
-msgid "Wooden Pick"
-msgstr "Деревянная кирка"
-
-#: src/content_toolitem.cpp:222
-msgid "Stone Pick"
+#: src/content_toolitem.cpp:213
+#, fuzzy
+msgid "Small Stone Pick"
 msgstr "Каменная кирка"
 
 #: src/content_toolitem.cpp:236
+msgid "Stone Pick"
+msgstr "Каменная кирка"
+
+#: src/content_toolitem.cpp:250
 msgid "Flint Pick"
 msgstr "Кремневая кирка"
 
-#: src/content_toolitem.cpp:250
+#: src/content_toolitem.cpp:264
 msgid "Steel Pick"
 msgstr "Стальная кирка"
 
-#: src/content_toolitem.cpp:264
+#: src/content_toolitem.cpp:278
 msgid "Creative Pick"
 msgstr "Кирка создателя"
 
-#: src/content_toolitem.cpp:278
-msgid "Wooden Shovel"
-msgstr "Деревянная лопата"
-
 #: src/content_toolitem.cpp:292
+#, fuzzy
+msgid "Stone Trowel"
+msgstr "Каменная лопата"
+
+#: src/content_toolitem.cpp:306
 msgid "Stone Shovel"
 msgstr "Каменная лопата"
 
-#: src/content_toolitem.cpp:305
+#: src/content_toolitem.cpp:320
 msgid "Flint Shovel"
 msgstr "Кремневая лопата"
 
-#: src/content_toolitem.cpp:319
+#: src/content_toolitem.cpp:334
 msgid "Steel Shovel"
 msgstr "Стальная лопата"
 
-#: src/content_toolitem.cpp:333
-msgid "Wooden Axe"
-msgstr "Деревянный топор"
+#: src/content_toolitem.cpp:348
+#, fuzzy
+msgid "Small Stone Axe"
+msgstr "Каменный топор"
 
-#: src/content_toolitem.cpp:347
+#: src/content_toolitem.cpp:369
 msgid "Stone Axe"
 msgstr "Каменный топор"
 
-#: src/content_toolitem.cpp:360
+#: src/content_toolitem.cpp:383
 msgid "Flint Axe"
 msgstr "Кремневый топор"
 
-#: src/content_toolitem.cpp:374
+#: src/content_toolitem.cpp:397
 msgid "Steel Axe"
 msgstr "Стальной топор"
 
-#: src/content_toolitem.cpp:388
-msgid "Wooden Sword"
-msgstr "Деревянный меч"
+#: src/content_toolitem.cpp:411
+#, fuzzy
+msgid "Wooden Club"
+msgstr "Деревянная кнопка"
 
-#: src/content_toolitem.cpp:402
+#: src/content_toolitem.cpp:426
 msgid "Stone Sword"
 msgstr "Каменный меч"
 
-#: src/content_toolitem.cpp:415
+#: src/content_toolitem.cpp:440
 msgid "Steel Sword"
 msgstr "Стальной меч"
 
-#: src/content_toolitem.cpp:429
+#: src/content_toolitem.cpp:454
 msgid "Flint Shears"
 msgstr "Кремневые ножницы"
 
-#: src/content_toolitem.cpp:442
+#: src/content_toolitem.cpp:468
 msgid "Steel Shears"
 msgstr "Стальные ножницы"
 
-#: src/content_toolitem.cpp:456
+#: src/content_toolitem.cpp:482
 msgid "Wooden Bucket"
 msgstr "Деревянное ведро"
 
-#: src/content_toolitem.cpp:472
+#: src/content_toolitem.cpp:499
 msgid "Tin Bucket"
 msgstr "Цинковое ведро"
 
-#: src/content_toolitem.cpp:488
+#: src/content_toolitem.cpp:515
 msgid "Wooden Bucket of Water"
 msgstr "Деревянное ведро воды"
 
-#: src/content_toolitem.cpp:499
+#: src/content_toolitem.cpp:526
 msgid "Tin Bucket of Water"
 msgstr "Цинковое ведро воды"
 
-#: src/content_toolitem.cpp:510
+#: src/content_toolitem.cpp:537
 msgid "Steel Bucket"
 msgstr "Стальное ведро"
 
-#: src/content_toolitem.cpp:525
+#: src/content_toolitem.cpp:552
 msgid "Steel Bucket of Water"
 msgstr "Стальное ведро воды"
 
-#: src/content_toolitem.cpp:536
+#: src/content_toolitem.cpp:563
 msgid "Steel Bucket of Lava"
 msgstr "Стальное ведро лавы"
 
-#: src/content_toolitem.cpp:548
+#: src/content_toolitem.cpp:575
 msgid "Fire Starter"
 msgstr "Огниво"
 
-#: src/content_toolitem.cpp:561
+#: src/content_toolitem.cpp:589
 msgid "Crowbar"
 msgstr "Лом"
 
-#: src/content_toolitem.cpp:573
+#: src/content_toolitem.cpp:602
 msgid "Key"
 msgstr "Ключ"
 
-#: src/content_toolitem.cpp:584
+#: src/content_toolitem.cpp:614
 msgid "Stone Spear"
 msgstr "Каменное копье"
 
-#: src/content_toolitem.cpp:597
+#: src/content_toolitem.cpp:628
 msgid "Flint Spear"
 msgstr "Кремневое копье"
 
-#: src/content_toolitem.cpp:611
+#: src/content_toolitem.cpp:642
 msgid "Steel Spear"
 msgstr "Стальное копье"
 
-#: src/content_toolitem.cpp:625
+#: src/content_toolitem.cpp:656
 msgid "Bow"
 msgstr "Лук"
 
-#: src/content_toolitem.cpp:644
+#: src/content_toolitem.cpp:676
 msgid "Raw Mithril Pick"
 msgstr "Кирка из сырого мифрила"
 
-#: src/content_toolitem.cpp:658
+#: src/content_toolitem.cpp:690
 msgid "Raw Mithril Shovel"
 msgstr "Лопата из сырого мифрила"
 
-#: src/content_toolitem.cpp:672
+#: src/content_toolitem.cpp:704
 msgid "Raw Mithril Axe"
 msgstr "Топор из сырого мифрила"
 
-#: src/content_toolitem.cpp:686
+#: src/content_toolitem.cpp:718
 msgid "Raw Mithril Sword"
 msgstr "Меч из сырого мифрила"
 
-#: src/content_toolitem.cpp:700
+#: src/content_toolitem.cpp:732
 msgid "Raw Mithril Spear"
 msgstr "Копье из сырого мифрила"
 
-#: src/content_toolitem.cpp:714
+#: src/content_toolitem.cpp:746
 msgid "Unbound Mithril Pick"
 msgstr "Кирка из свободного мифрила"
 
-#: src/content_toolitem.cpp:728
+#: src/content_toolitem.cpp:760
 msgid "Unbound Mithril Shovel"
 msgstr "Лопата из свободного мифрила"
 
-#: src/content_toolitem.cpp:742
+#: src/content_toolitem.cpp:774
 msgid "Unbound Mithril Axe"
 msgstr "Топор из свободного мифрила"
 
-#: src/content_toolitem.cpp:756
+#: src/content_toolitem.cpp:788
 msgid "Unbound Mithril Sword"
 msgstr "Меч из свободного мифрила"
 
-#: src/content_toolitem.cpp:770
+#: src/content_toolitem.cpp:802
 msgid "Unbound Mithril Spear"
 msgstr "Копье из свободного мифрила"
 
-#: src/content_toolitem.cpp:784
+#: src/content_toolitem.cpp:816
 msgid "Mithril Pick"
 msgstr "Мифриловая кирка"
 
-#: src/content_toolitem.cpp:797
+#: src/content_toolitem.cpp:831
 msgid "Mithril Shovel"
 msgstr "Мифриловая лопата"
 
-#: src/content_toolitem.cpp:810
+#: src/content_toolitem.cpp:845
 msgid "Mithril Axe"
 msgstr "Мифриловый топор"
 
-#: src/content_toolitem.cpp:823
+#: src/content_toolitem.cpp:859
 msgid "Mithril Sword"
 msgstr "Мифриловый меч"
 
-#: src/content_toolitem.cpp:836
+#: src/content_toolitem.cpp:873
 msgid "Mithril Spear"
 msgstr "Мифриловое копье"
 
-#: src/game.cpp:208
+#: src/content_toolitem.cpp:887
+msgid "Mob Spawner"
+msgstr ""
+
+#: src/game.cpp:209
 msgid "Clothes"
 msgstr "Одежда"
 
-#: src/game.cpp:209
+#: src/game.cpp:210
 msgid "Hat/Helmet"
 msgstr "Шляпа/шлем"
 
-#: src/game.cpp:211
+#: src/game.cpp:212
 msgid "Jacket"
 msgstr "Куртка"
 
-#: src/game.cpp:213
+#: src/game.cpp:214
 msgid "Decorative"
 msgstr "Украшения"
 
-#: src/game.cpp:215
+#: src/game.cpp:216
 msgid "Shirt"
 msgstr "Рубашка"
 
-#: src/game.cpp:217
+#: src/game.cpp:218
 msgid "Belt"
 msgstr "Пояс"
 
-#: src/game.cpp:219
+#: src/game.cpp:220
 msgid "Pants"
 msgstr "Штаны"
 
-#: src/game.cpp:221
+#: src/game.cpp:222
 msgid "Boots"
 msgstr "Ботинки"
 
-#: src/game.cpp:228
+#: src/game.cpp:229
 msgid "Drop to Ground"
 msgstr "На землю"
 
-#: src/game.cpp:230
+#: src/game.cpp:231
 msgid "Change Clothing"
 msgstr "Сменить одежду"
 
-#: src/game.cpp:623
+#: src/game.cpp:590
 msgid "Loading"
 msgstr "Загрузка"
 
-#: src/game.cpp:697
+#: src/game.cpp:662
 msgid "Loading..."
 msgstr "Загрузка..."
 
-#: src/game.cpp:706
+#: src/game.cpp:671
 msgid "Creating server..."
 msgstr "Создаем сервер..."
 
-#: src/game.cpp:717
+#: src/game.cpp:682
 msgid "Creating client..."
 msgstr "Создаем клиент..."
 
-#: src/game.cpp:722
+#: src/game.cpp:687
 msgid "Resolving address..."
 msgstr "Определяем адрес..."
 
-#: src/game.cpp:733
+#: src/game.cpp:698
 msgid "Couldn't resolve address"
 msgstr "Невозможно определить  адрес"
 
-#: src/game.cpp:773
+#: src/game.cpp:738
 #, c-format
 msgid "Connecting to server... (timeout in %d second)"
 msgid_plural "Connecting to server... (timeout in %d seconds)"
@@ -3272,107 +3391,107 @@ msgstr[1] "Соединяемся с сервером... (таймаут %d се
 msgstr[2] "Соединяемся с сервером... (таймаут %d секунд)"
 msgstr[3] "Соединяемся с сервером... (таймаут %d секунд)"
 
-#: src/game.cpp:802
+#: src/game.cpp:767
 #, c-format
 msgid "Access denied. Reason: %ls"
 msgstr "Доступ запрещен. Причина: %ls"
 
-#: src/game.cpp:806
+#: src/game.cpp:771
 msgid "Unable to Connect (port already in use?)."
 msgstr "Невозможно подключиться (порт уже используется?)."
 
-#: src/game.cpp:809
+#: src/game.cpp:774
 msgid "Connection timed out."
 msgstr "Время ожидания соединения истекло."
 
-#: src/game.cpp:959
+#: src/game.cpp:927
 msgid "Access denied. Reason: "
 msgstr "Доступ запрещен. Причина:"
 
-#: src/game.cpp:1193
+#: src/game.cpp:1161
 msgid "free_move disabled"
 msgstr "Режим полета отключен"
 
-#: src/game.cpp:1197
+#: src/game.cpp:1165
 msgid "free_move enabled"
 msgstr "Режим полета включен"
 
-#: src/game.cpp:1209
+#: src/game.cpp:1177
 #, c-format
 msgid "Saved screenshot to '%s'"
 msgstr "Снимок экрана сохранен в '%s'"
 
-#: src/game.cpp:1221
+#: src/game.cpp:1189
 msgid "HUD shown"
 msgstr "Интерфейс показан"
 
-#: src/game.cpp:1223
+#: src/game.cpp:1191
 msgid "HUD hidden"
 msgstr "Интерфейс скрыт"
 
-#: src/game.cpp:1229
+#: src/game.cpp:1197
 msgid "Chat shown"
 msgstr "Чат показан"
 
-#: src/game.cpp:1231
+#: src/game.cpp:1199
 msgid "Chat hidden"
 msgstr "Чат скрыт"
 
-#: src/game.cpp:1237
+#: src/game.cpp:1205
 msgid "Fog disabled"
 msgstr "Туман выключен"
 
-#: src/game.cpp:1239
+#: src/game.cpp:1207
 msgid "Fog enabled"
 msgstr "Туман включен"
 
-#: src/game.cpp:1245
+#: src/game.cpp:1213
 msgid "Camera update disabled"
 msgstr "Обновление камеры отключено"
 
-#: src/game.cpp:1247
+#: src/game.cpp:1215
 msgid "Camera update enabled"
 msgstr "Обновление камеры включено"
 
-#: src/game.cpp:1257
+#: src/game.cpp:1225
 msgid "Debug info shown"
 msgstr "Показана отладочная информация"
 
-#: src/game.cpp:1262
+#: src/game.cpp:1230
 msgid "Debug info and frametime graph hidden"
 msgstr "Отладочная информация и график производительности скрыты"
 
-#: src/game.cpp:1266
+#: src/game.cpp:1234
 msgid "Frametime graph shown"
 msgstr "Показан график производительности"
 
-#: src/game.cpp:1278
+#: src/game.cpp:1246
 #, c-format
 msgid "Profiler shown (page %d of %d)"
 msgstr "Показан профайлер (страница %d из %d)"
 
-#: src/game.cpp:1282
+#: src/game.cpp:1250
 msgid "Profiler hidden"
 msgstr "Профайлер скрыт"
 
-#: src/game.cpp:1290 src/game.cpp:1301
+#: src/game.cpp:1258 src/game.cpp:1269
 #, c-format
 msgid "Minimum viewing range changed to %d"
 msgstr "Минимальная дальность обзора установлена в %d"
 
-#: src/game.cpp:1370
+#: src/game.cpp:1338
 msgid "Enabled full viewing range"
 msgstr "Полная дальность обзора включена"
 
-#: src/game.cpp:1374
+#: src/game.cpp:1342
 msgid "Disabled full viewing range"
 msgstr "Полная дальность обзора выключена"
 
-#: src/game.cpp:1967
+#: src/game.cpp:1995
 msgid "Disconnected (Network Timeout)"
 msgstr "Отключен (таймаут сети)"
 
-#: src/game.cpp:2375
+#: src/game.cpp:2407
 msgid "Shutting down..."
 msgstr "Завершаем работу..."
 
@@ -3384,235 +3503,250 @@ msgstr "Вы умерли."
 msgid "Respawn"
 msgstr "Возродиться"
 
-#: src/guiFormSpecMenu.cpp:440
+#: src/guiFormSpecMenu.cpp:436
 msgid "Left click: Move all items, Right click: Move single item"
 msgstr "Левый клик: переместить все, Правый клик: переместить один"
 
-#: src/guiFormSpecMenu.cpp:463
+#: src/guiFormSpecMenu.cpp:458
 msgid "Write It"
 msgstr "Пишите"
 
-#: src/guiMainMenu.cpp:339
+#: src/guiMainMenu.cpp:347
 msgid "Character Creator"
 msgstr "Создание персонажа"
 
-#: src/guiMainMenu.cpp:345 src/guiMainMenu.cpp:470 src/guiMainMenu.cpp:512
-#: src/guiMainMenu.cpp:618
+#: src/guiMainMenu.cpp:353 src/guiMainMenu.cpp:478 src/guiMainMenu.cpp:520
+#: src/guiMainMenu.cpp:631
 msgid "Single Player"
 msgstr "Локальная игра"
 
-#: src/guiMainMenu.cpp:351 src/guiMainMenu.cpp:402
+#: src/guiMainMenu.cpp:359 src/guiMainMenu.cpp:410
 msgid "Multi Player"
 msgstr "Многопользовательская игра"
 
-#: src/guiMainMenu.cpp:357 src/guiPauseMenu.cpp:155
+#: src/guiMainMenu.cpp:365 src/guiPauseMenu.cpp:155
 msgid "Settings"
 msgstr "Настройки"
 
-#: src/guiMainMenu.cpp:363
+#: src/guiMainMenu.cpp:371
 msgid "Credits"
 msgstr "Благодарности"
 
-#: src/guiMainMenu.cpp:369
+#: src/guiMainMenu.cpp:377
 msgid "Quit"
 msgstr "Выйти"
 
-#: src/guiMainMenu.cpp:410
+#: src/guiMainMenu.cpp:418
 msgid "Name/Password"
 msgstr "Имя/пароль"
 
-#: src/guiMainMenu.cpp:438
+#: src/guiMainMenu.cpp:446
 msgid "Address/Port"
 msgstr "Адрес/порт"
 
-#: src/guiMainMenu.cpp:464
+#: src/guiMainMenu.cpp:472
 msgid "Connect"
 msgstr "Подключиться"
 
-#: src/guiMainMenu.cpp:479 src/guiMainMenu.cpp:521 src/guiMainMenu.cpp:627
+#: src/guiMainMenu.cpp:487 src/guiMainMenu.cpp:529 src/guiMainMenu.cpp:640
 msgid "Creative Mode"
 msgstr "Режим создателя"
 
-#: src/guiMainMenu.cpp:480 src/guiMainMenu.cpp:522 src/guiMainMenu.cpp:628
+#: src/guiMainMenu.cpp:488 src/guiMainMenu.cpp:530 src/guiMainMenu.cpp:641
 msgid "Adventure Mode"
 msgstr "Режим приключения"
 
-#: src/guiMainMenu.cpp:481 src/guiMainMenu.cpp:523 src/guiMainMenu.cpp:629
+#: src/guiMainMenu.cpp:489 src/guiMainMenu.cpp:531 src/guiMainMenu.cpp:642
 msgid "Survival Mode"
 msgstr "Режим выживания"
 
-#: src/guiMainMenu.cpp:494 src/guiMainMenu.cpp:642
+#: src/guiMainMenu.cpp:502 src/guiMainMenu.cpp:655
 msgid "Advanced Settings"
 msgstr "Расширенные настройки"
 
-#: src/guiMainMenu.cpp:500 src/guiMainMenu.cpp:542
+#: src/guiMainMenu.cpp:508 src/guiMainMenu.cpp:550
 msgid "Map Options"
 msgstr "Настройки карты"
 
-#: src/guiMainMenu.cpp:506 src/guiMainMenu.cpp:612 src/guiMainMenu.cpp:737
+#: src/guiMainMenu.cpp:514 src/guiMainMenu.cpp:625 src/guiMainMenu.cpp:750
 msgid "Start Game"
 msgstr "Начать игру"
 
-#: src/guiMainMenu.cpp:536
+#: src/guiMainMenu.cpp:544
 msgid "Hide Advanced Settings"
 msgstr "Скрыть расширенные настройки"
 
-#: src/guiMainMenu.cpp:547
+#: src/guiMainMenu.cpp:555
 msgid "Creatures"
 msgstr "Существа"
 
-#: src/guiMainMenu.cpp:554
+#: src/guiMainMenu.cpp:562
 msgid "None"
 msgstr "Нет"
 
-#: src/guiMainMenu.cpp:555
+#: src/guiMainMenu.cpp:563
 msgid "Passive"
 msgstr "Пассивные"
 
-#: src/guiMainMenu.cpp:556
+#: src/guiMainMenu.cpp:564
 msgid "Passive & Aggressive"
 msgstr "Пассивные и агрессивные"
 
-#: src/guiMainMenu.cpp:557
+#: src/guiMainMenu.cpp:565
 msgid "Passive, Aggressive, & Destructive"
 msgstr "Пассивные, агрессивные и разрушители"
 
-#: src/guiMainMenu.cpp:571
+#: src/guiMainMenu.cpp:579
 msgid "Player Damage"
 msgstr "Повреждения"
 
-#: src/guiMainMenu.cpp:576
+#: src/guiMainMenu.cpp:584
 msgid "Suffocation/Drowning"
 msgstr "Дыхание"
 
-#: src/guiMainMenu.cpp:581
+#: src/guiMainMenu.cpp:589
 msgid "Hunger"
 msgstr "Голод"
 
-#: src/guiMainMenu.cpp:586
+#: src/guiMainMenu.cpp:594
 msgid "Tool Wear"
 msgstr "Износ инструментов"
 
-#: src/guiMainMenu.cpp:591
-msgid "Infinite Inventory"
-msgstr "Бездонный инвентарь"
-
-#: src/guiMainMenu.cpp:596
-msgid "Initial Inventory"
-msgstr "Начальное снаряжение"
-
-#: src/guiMainMenu.cpp:601
-msgid "Droppable Inventory"
-msgstr "Выбрасывать предметы"
-
-#: src/guiMainMenu.cpp:606
+#: src/guiMainMenu.cpp:599
 msgid "Dangerous Fire"
 msgstr "Опасный огонь"
 
-#: src/guiMainMenu.cpp:648
+#: src/guiMainMenu.cpp:604
+msgid "Infinite Inventory"
+msgstr "Бездонный инвентарь"
+
+#: src/guiMainMenu.cpp:609
+msgid "Initial Inventory"
+msgstr "Начальное снаряжение"
+
+#: src/guiMainMenu.cpp:614
+msgid "Droppable Inventory"
+msgstr "Выбрасывать предметы"
+
+#: src/guiMainMenu.cpp:619
+#, fuzzy
+msgid "Death drops Inventory"
+msgstr "Выбрасывать предметы"
+
+#: src/guiMainMenu.cpp:661
 msgid "Hide Map Options"
 msgstr "Скрыть настройки карты"
 
-#: src/guiMainMenu.cpp:653
+#: src/guiMainMenu.cpp:666
 msgid "Create New Map"
 msgstr "Создать новую карту"
 
-#: src/guiMainMenu.cpp:659
+#: src/guiMainMenu.cpp:672
 msgid "Warning! Your old map will be deleted!"
 msgstr "Предупреждаем! Ваша старая карта будет удалена!"
 
-#: src/guiMainMenu.cpp:665
+#: src/guiMainMenu.cpp:678
 msgid "Map Type"
 msgstr "Тип карты"
 
-#: src/guiMainMenu.cpp:672
+#: src/guiMainMenu.cpp:685
 msgid "Flat"
 msgstr "Совсем плоская"
 
-#: src/guiMainMenu.cpp:673
+#: src/guiMainMenu.cpp:686
 msgid "Flatter"
 msgstr "Более плоская"
 
-#: src/guiMainMenu.cpp:674
+#: src/guiMainMenu.cpp:687
 msgid "Smoother"
 msgstr "Более гладкая"
 
-#: src/guiMainMenu.cpp:675
+#: src/guiMainMenu.cpp:688
 msgid "Default"
 msgstr "По умолчанию"
 
-#: src/guiMainMenu.cpp:676
+#: src/guiMainMenu.cpp:689
 msgid "Hilly"
 msgstr "Холмы"
 
-#: src/guiMainMenu.cpp:677
+#: src/guiMainMenu.cpp:690
 msgid "Mountains"
 msgstr "Горы"
 
-#: src/guiMainMenu.cpp:678
+#: src/guiMainMenu.cpp:691
 msgid "Crazy"
 msgstr "Безумная"
 
-#: src/guiMainMenu.cpp:679
+#: src/guiMainMenu.cpp:692
 msgid "Crazy Hills"
 msgstr "Безумно холмистая"
 
-#: src/guiMainMenu.cpp:701
+#: src/guiMainMenu.cpp:714
 msgid "Use Fixed Seed"
 msgstr "Свое зерно"
 
-#: src/guiMainMenu.cpp:707
+#: src/guiMainMenu.cpp:720
 msgid "Map Seed"
 msgstr "Зерно"
 
-#: src/guiMainMenu.cpp:724
+#: src/guiMainMenu.cpp:737
 msgid "Clear Map"
 msgstr "Очистить карту"
 
-#: src/guiMainMenu.cpp:729
+#: src/guiMainMenu.cpp:742
 msgid "Warning! This will delete all construction from your map!"
 msgstr "Предупреждаем! Все сооружения на карте буду уничтожены!"
 
-#: src/guiMainMenu.cpp:747
+#: src/guiMainMenu.cpp:760
 msgid ""
 "Voxelands\n"
 "http://www.voxelands.com/\n"
 "By Lisa 'darkrose' Milne <lisa@ltmnet.com> and contributors."
-msgstr "Voxelands\nhttp://www.voxelands.com/\nLisa 'darkrose' Milne <lisa@ltmnet.com> и сотоварищи."
+msgstr ""
+"Voxelands\n"
+"http://www.voxelands.com/\n"
+"Lisa 'darkrose' Milne <lisa@ltmnet.com> и сотоварищи."
 
-#: src/guiMainMenu.cpp:754
+#: src/guiMainMenu.cpp:767
 msgid "Programmers"
 msgstr "Программирование"
 
-#: src/guiMainMenu.cpp:757
+#: src/guiMainMenu.cpp:770
 msgid "Artists and Modellers"
 msgstr "Графика"
 
-#: src/guiMainMenu.cpp:760
+#: src/guiMainMenu.cpp:773
 msgid "Translators"
 msgstr "Локализация"
 
-#: src/guiMainMenu.cpp:763
+#: src/guiMainMenu.cpp:776
 msgid "Documentation Writters"
 msgstr "Разработка документации"
 
-#: src/guiMainMenu.cpp:766
+#: src/guiMainMenu.cpp:779
 msgid "Testers, Packagers, and Builders"
 msgstr "Тестирование, сборка и создание установочных пакетов"
 
-#: src/guiMainMenu.cpp:769
+#: src/guiMainMenu.cpp:782
 msgid "Music and Sound Effects Composers"
 msgstr "Музыка и звуковые эффекты"
 
-#: src/guiMainMenu.cpp:772
+#: src/guiMainMenu.cpp:785
 msgid "Other Contributers, and Special Thanks"
 msgstr "Другие участники, наши благодарности"
 
-#: src/guiMainMenu.cpp:776
+#: src/guiMainMenu.cpp:789
 msgid ""
 "Based on Minetest-C55 by Perttu Ahola <celeron55@gmail.com>\n"
-"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
-msgstr " Основано на Minetest-C55, созданном Perttu Ahola <celeron55@gmail.com> \nи сотоварищи: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... и еще десятком-другим случайных прохожих."
+"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
+"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
+"Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
+msgstr ""
+" Основано на Minetest-C55, созданном Perttu Ahola <celeron55@gmail.com> \n"
+"и сотоварищи: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
+"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
+"Neuschafer, thexyz, VanessaE, sfan5... и еще десятком-другим случайных "
+"прохожих."
 
 #: src/guiMessageMenu.cpp:112 src/guiPauseMenu.cpp:143
 msgid "Continue"
@@ -3826,73 +3960,100 @@ msgstr "Громкость:"
 msgid "press Key"
 msgstr "нажмите клавишу"
 
-#: src/hud.cpp:779
+#: src/hud.cpp:785
+msgid "Summer"
+msgstr ""
+
+#: src/hud.cpp:788
+msgid "Autumn"
+msgstr ""
+
+#: src/hud.cpp:791
+msgid "Winter"
+msgstr ""
+
+#: src/hud.cpp:794
+#, fuzzy
+msgid "Spring"
+msgstr "Веревка"
+
+#: src/hud.cpp:804
+#, c-format
+msgid "Day %u of Year %u"
+msgstr ""
+
+#: src/hud.cpp:828
 #, c-format
 msgid "Energy Boost: %d:%02d"
 msgstr "Энергия: %d:%02d"
 
-#: src/hud.cpp:804
+#: src/hud.cpp:853
 #, c-format
 msgid "Cold Protection: %d:%02d"
 msgstr "Защита от холода: %d:%02d"
 
-#: src/inventory.cpp:230 src/inventory.cpp:350
+#: src/inventory.cpp:230 src/inventory.cpp:352
 msgid "Cookable: Yes"
 msgstr "Можно приготовить: Да"
 
-#: src/inventory.cpp:235 src/inventory.cpp:355 src/inventory.cpp:523
+#: src/inventory.cpp:235 src/inventory.cpp:357 src/inventory.cpp:532
 msgid "Fuel Burn Time: "
 msgstr "Время горения топлива:"
 
-#: src/inventory.cpp:319
+#: src/inventory.cpp:321
 msgid "Hunger: "
 msgstr "Голод:"
 
-#: src/inventory.cpp:325
+#: src/inventory.cpp:327
 msgid "Health: "
 msgstr "Здоровье:"
 
-#: src/inventory.cpp:332
+#: src/inventory.cpp:334
 msgid "Cold Protection: "
 msgstr "Защита от холода:"
 
-#: src/inventory.cpp:341
+#: src/inventory.cpp:343
 msgid "Energy Boost: "
 msgstr "Энергия:"
 
-#: src/inventory.cpp:512
+#: src/inventory.cpp:521
 msgid "Strength: "
 msgstr "Сила:"
 
-#: src/inventory.cpp:515
+#: src/inventory.cpp:524
 msgid "Speed: "
 msgstr "Скорость:"
 
-#: src/inventory.cpp:518
+#: src/inventory.cpp:527
 msgid "Level: "
 msgstr "Уровень:"
 
-#: src/inventory.cpp:601
+#: src/inventory.cpp:557
+#, fuzzy
+msgid "Contains: "
+msgstr "Горы"
+
+#: src/inventory.cpp:643
 msgid "Armour: "
 msgstr "Броня:"
 
-#: src/inventory.cpp:607
+#: src/inventory.cpp:649
 msgid "Warmth: "
 msgstr "Температура:"
 
-#: src/inventory.cpp:613
+#: src/inventory.cpp:655
 msgid "Pressure: "
 msgstr "Давление:"
 
-#: src/inventory.cpp:619
+#: src/inventory.cpp:661
 msgid "Suffocation: "
 msgstr "Дыхание:"
 
-#: src/inventory.cpp:625
+#: src/inventory.cpp:667
 msgid "Durability: "
 msgstr "Износ:"
 
-#: src/inventory.cpp:630
+#: src/inventory.cpp:672
 msgid "Effect Boost: "
 msgstr "Эффект:"
 
@@ -4231,3 +4392,15 @@ msgstr "Загружаем интерактивные элементы"
 #: src/mapnode.cpp:306
 msgid "Loading Special MapNodes"
 msgstr "Загружаем особые элементы"
+
+#~ msgid "Wooden Sword"
+#~ msgstr "Деревянный меч"
+
+#~ msgid "Wooden Axe"
+#~ msgstr "Деревянный топор"
+
+#~ msgid "Wooden Shovel"
+#~ msgstr "Деревянная лопата"
+
+#~ msgid "Wooden Pick"
+#~ msgstr "Деревянная кирка"
