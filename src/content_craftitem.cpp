@@ -79,7 +79,7 @@ void content_craftitem_init()
 	f->texture = "paper.png";
 	f->name = "paper";
 	f->description = wgettext("Paper");
-	crafting::setRow1Recipe(CONTENT_PAPYRUS,CONTENT_CRAFTITEM_PAPER);
+	crafting::setRow3Recipe(CONTENT_PAPYRUS,CONTENT_CRAFTITEM_PAPER);
 	lists::add("craftguide",i);
 	lists::add("creative",i);
 
