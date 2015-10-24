@@ -3,6 +3,31 @@ Voxelands changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1510.00: (release 2015-10-24)
+ - Optimise some textures
+ - make paper craft give 3 paper
+ - add support for extra_dug_item to be restricted to certain tool levels
+ - assorted mob tweaks
+ - when digging out-of-level minerals, dig slower to warn the player
+ - give tree its own material type, prevent digging without a tool
+ - add rock as random drop from mud
+ - remove wooden tools, replace with basic wood/rock tools
+ - add mutex to metadata get/set
+ - remove some legacy nodes
+ - allow affected node metadata to disable removal of selected node
+ - allow opening a form from the node next to the selected node, if onact_also_affects points to it
+ - sleep in beds + camp beds
+ - Add new sheep model and texture
+ - adding kitty mobs
+ - mob spawners
+ - improved mob spawning
+ - propagate energy through limestone
+ - remove potential divide by zero in hud
+ - add death drops inventory to gui
+ - lose inventory on death in survival mode
+ - new furnace and incinerator code
+ - moving sun and moon, plus seasons, and moon phases
+
 1508.01: (release 2015-08-24)
 - fix enchantments not getting initialised in some cases
 
