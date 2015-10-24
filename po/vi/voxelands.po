@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Lisa 'darkrose' Milne
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Deuce <ntg255@gmail.com>, 2015
 msgid ""
@@ -9,14 +9,13 @@ msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-19 01:55+1000\n"
-"PO-Revision-Date: 2015-06-16 00:42+0000\n"
-"Last-Translator: Deuce <ntg255@gmail.com>\n"
-"Language-Team: Vietnamese (http://www.transifex.com/projects/p/voxelands/"
-"language/vi/)\n"
-"Language: vi\n"
+"PO-Revision-Date: 2015-10-18 15:56+0000\n"
+"Last-Translator: Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
+"Language-Team: Vietnamese (http://www.transifex.com/voxelands/voxelands/language/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: src/character_creator.cpp:55
@@ -229,40 +228,37 @@ msgstr "Giày thể thao"
 
 #: src/character_creator.cpp:202
 msgid ""
-"Here you can create your default character, this is how other players will "
-"see you in-game. When you join a new server you will start with the clothing "
-"you select here. Additional clothing, both protective and decorative, can be "
-"crafted in-game.\n"
+"Here you can create your default character, this is how other players will see you in-game. When you join a new server you will start with the clothing you select here. Additional clothing, both protective and decorative, can be crafted in-game.\n"
 "You can return here from the main menu anytime to change your character."
-msgstr ""
+msgstr "Ở đây bạn có thể làm người bạn. Đây là cách người khác sẽ nhìn thấy bạn trong trò chơi. Khi bạn vào server mới, bạn sẽ bắt đầu với những quần áo bạn chọn ở đây. Quần áo thêm, cho bảo vệ và ngoại hình, có thể được làm trong trò chơi.\n Bạn có thể trở lại đây từ thực đơn chính lúc nào để thay quần áo bạn và các tính năng trên khuôn mặt."
 
 #: src/character_creator.cpp:223
 msgid "Create Your Character"
-msgstr ""
+msgstr "Làm người bạn"
 
 #: src/character_creator.cpp:230
 msgid "Male"
-msgstr ""
+msgstr "Trai"
 
 #: src/character_creator.cpp:235
 msgid "Female"
-msgstr ""
+msgstr "Gái"
 
 #: src/character_creator.cpp:242
 msgid "Taller"
-msgstr ""
+msgstr "Cao hơn"
 
 #: src/character_creator.cpp:247
 msgid "Shorter"
-msgstr ""
+msgstr "Thấp hơn"
 
 #: src/character_creator.cpp:254
 msgid "Wider"
-msgstr ""
+msgstr "Rộng hơn"
 
 #: src/character_creator.cpp:259
 msgid "Thinner"
-msgstr ""
+msgstr "Mỏng hơn"
 
 #: src/character_creator.cpp:418
 msgid "Done"
@@ -274,1123 +270,1123 @@ msgstr "Thôi"
 
 #: src/content_clothesitem.cpp:53
 msgid "Space Suit Pants"
-msgstr ""
+msgstr "Quần bộ đồ vũ trụ"
 
 #: src/content_clothesitem.cpp:75
 msgid "Space Suit Shirt"
-msgstr ""
+msgstr "Áo bộ đồ vũ trụ"
 
 #: src/content_clothesitem.cpp:97
 msgid "Space Suit Helmet"
-msgstr ""
+msgstr "Mũ bộ đồ vũ trụ"
 
 #: src/content_clothesitem.cpp:113
 msgid "Space Suit Boots"
-msgstr ""
+msgstr "Giày ống bộ đồ vũ trụ"
 
 #: src/content_clothesitem.cpp:130
 msgid "Cotton T-Shirt"
-msgstr ""
+msgstr "Áo thun bông gòn"
 
 #: src/content_clothesitem.cpp:144
 msgid "Blue Cotton T-Shirt"
-msgstr ""
+msgstr "Áo thun bông gòn xanh"
 
 #: src/content_clothesitem.cpp:158
 msgid "Green Cotton T-Shirt"
-msgstr ""
+msgstr "Áo thun bông gòn xanh lá cây"
 
 #: src/content_clothesitem.cpp:172
 msgid "Orange Cotton Tshirt"
-msgstr ""
+msgstr "Áo thun bông gòn cam"
 
 #: src/content_clothesitem.cpp:186
 msgid "Purple Cotton T-Shirt"
-msgstr ""
+msgstr "Áo thun bông gòn tím"
 
 #: src/content_clothesitem.cpp:200
 msgid "Red Cotton T-Shirt"
-msgstr ""
+msgstr "Áo thun bông gòn đỏ"
 
 #: src/content_clothesitem.cpp:214
 msgid "Yellow Cotton T-Shirt"
-msgstr ""
+msgstr "Áo thun bông gòn vàng"
 
 #: src/content_clothesitem.cpp:228
 msgid "Black Cotton T-Shirt"
-msgstr ""
+msgstr "Áo thun bông gòn đen"
 
 #: src/content_clothesitem.cpp:243
 msgid "Cotton Shirt"
-msgstr ""
+msgstr "Áo bông gòn"
 
 #: src/content_clothesitem.cpp:257
 msgid "Blue Cotton Shirt"
-msgstr ""
+msgstr "Áo bông gòn xanh"
 
 #: src/content_clothesitem.cpp:271
 msgid "Green Cotton Shirt"
-msgstr ""
+msgstr "Áo bông gòn xanh lá cây"
 
 #: src/content_clothesitem.cpp:285
 msgid "Orange Cotton Shirt"
-msgstr ""
+msgstr "Áo bông gòn cam"
 
 #: src/content_clothesitem.cpp:299
 msgid "Purple Cotton Shirt"
-msgstr ""
+msgstr "Áo bông gòn tím"
 
 #: src/content_clothesitem.cpp:313
 msgid "Red Cotton Shirt"
-msgstr ""
+msgstr "Áo bông gòn đỏ"
 
 #: src/content_clothesitem.cpp:327
 msgid "Yellow Cotton Shirt"
-msgstr ""
+msgstr "Áo bông gòn vàng"
 
 #: src/content_clothesitem.cpp:341
 msgid "Black Cotton Shirt"
-msgstr ""
+msgstr "Áo bông gòn đen"
 
 #: src/content_clothesitem.cpp:356
 msgid "Cotton Shorts"
-msgstr ""
+msgstr "Quần sóoc bông gòn"
 
 #: src/content_clothesitem.cpp:371
 msgid "Blue Cotton Shorts"
-msgstr ""
+msgstr "Quần sóoc bông gòn xanh"
 
 #: src/content_clothesitem.cpp:386
 msgid "Green Cotton Shorts"
-msgstr ""
+msgstr "Quần sóoc bông gòn xanh lá cây"
 
 #: src/content_clothesitem.cpp:401
 msgid "Orange Cotton Shorts"
-msgstr ""
+msgstr "Quần sóoc bông gòn cam"
 
 #: src/content_clothesitem.cpp:416
 msgid "Purple Cotton Shorts"
-msgstr ""
+msgstr "Quần sóoc bông gòn tím"
 
 #: src/content_clothesitem.cpp:431
 msgid "Red Cotton Shorts"
-msgstr ""
+msgstr "Quần sóoc bông gòn đỏ"
 
 #: src/content_clothesitem.cpp:446
 msgid "Yellow Cotton Shorts"
-msgstr ""
+msgstr "Quần sóoc bông gòn vàng"
 
 #: src/content_clothesitem.cpp:461
 msgid "Black Cotton Shorts"
-msgstr ""
+msgstr "Quần sóoc bông gòn đen"
 
 #: src/content_clothesitem.cpp:477
 msgid "Cotton Hat"
-msgstr ""
+msgstr "Mũ bông gòn"
 
 #: src/content_clothesitem.cpp:491
 msgid "Blue Cotton Hat"
-msgstr ""
+msgstr "Mũ bông gòn xanh"
 
 #: src/content_clothesitem.cpp:505
 msgid "Green Cotton Hat"
-msgstr ""
+msgstr "Mũ bông gòn xanh lá cây"
 
 #: src/content_clothesitem.cpp:519
 msgid "Orange Cotton Hat"
-msgstr ""
+msgstr "Mũ bông gòn cam"
 
 #: src/content_clothesitem.cpp:533
 msgid "Purple Cotton Hat"
-msgstr ""
+msgstr "Mũ bông gòn tím"
 
 #: src/content_clothesitem.cpp:547
 msgid "Red Cotton Hat"
-msgstr ""
+msgstr "Mũ bông gòn đỏ"
 
 #: src/content_clothesitem.cpp:561
 msgid "Yellow Cotton Hat"
-msgstr ""
+msgstr "Mũ bông gòn vàng"
 
 #: src/content_clothesitem.cpp:575
 msgid "Black Cotton Hat"
-msgstr ""
+msgstr "Mũ bông gòn đen"
 
 #: src/content_clothesitem.cpp:590
 msgid "Cotton Tie"
-msgstr ""
+msgstr "Cà vạt bông gòn"
 
 #: src/content_clothesitem.cpp:604
 msgid "Blue Cotton Tie"
-msgstr ""
+msgstr "Cà vạt bông gòn xanh"
 
 #: src/content_clothesitem.cpp:618
 msgid "Green Cotton Tie"
-msgstr ""
+msgstr "Cà vạt bông gòn xanh lá cây"
 
 #: src/content_clothesitem.cpp:632
 msgid "Orange Cotton Tie"
-msgstr ""
+msgstr "Cà vạt bông gòn cam"
 
 #: src/content_clothesitem.cpp:646
 msgid "Purple Cotton Tie"
-msgstr ""
+msgstr "Cà vạt bông gòn tím"
 
 #: src/content_clothesitem.cpp:660
 msgid "Red Cotton Tie"
-msgstr ""
+msgstr "Cà vạt bông gòn đỏ"
 
 #: src/content_clothesitem.cpp:674
 msgid "Yellow Cotton Tie"
-msgstr ""
+msgstr "Cà vạt bông gòn vàng"
 
 #: src/content_clothesitem.cpp:688
 msgid "Black Cotton Tie"
-msgstr ""
+msgstr "Cà vạt bông gòn đen"
 
 #: src/content_clothesitem.cpp:703
 msgid "Canvas Shirt"
-msgstr ""
+msgstr "Áo vải bạt"
 
 #: src/content_clothesitem.cpp:718
 msgid "Blue Canvas Shirt"
-msgstr ""
+msgstr "Áo vải bạt xanh"
 
 #: src/content_clothesitem.cpp:733
 msgid "Green Canvas Shirt"
-msgstr ""
+msgstr "Áo vải bạt xanh lá cây"
 
 #: src/content_clothesitem.cpp:748
 msgid "Orange Canvas Shirt"
-msgstr ""
+msgstr "Áo vải bạt cam"
 
 #: src/content_clothesitem.cpp:763
 msgid "Purple Canvas Shirt"
-msgstr ""
+msgstr "Áo vải bạt tím"
 
 #: src/content_clothesitem.cpp:778
 msgid "Red Canvas Shirt"
-msgstr ""
+msgstr "Áo vải bạt đỏ"
 
 #: src/content_clothesitem.cpp:793
 msgid "Yellow Canvas Shirt"
-msgstr ""
+msgstr "Áo vải bạt vàng"
 
 #: src/content_clothesitem.cpp:808
 msgid "Black Canvas Shirt"
-msgstr ""
+msgstr "Áo vải bạt đen"
 
 #: src/content_clothesitem.cpp:824
 msgid "Canvas Pants"
-msgstr ""
+msgstr "Quần vải bạt"
 
 #: src/content_clothesitem.cpp:839
 msgid "Blue Canvas Pants"
-msgstr ""
+msgstr "Quần vải bạt xanh"
 
 #: src/content_clothesitem.cpp:854
 msgid "Green Canvas Pants"
-msgstr ""
+msgstr "Quần vải bạt xanh lá cây"
 
 #: src/content_clothesitem.cpp:869
 msgid "Orange Canvas Pants"
-msgstr ""
+msgstr "Quần vải bạt cam"
 
 #: src/content_clothesitem.cpp:884
 msgid "Purple Canvas Pants"
-msgstr ""
+msgstr "Quần vải bạt tím"
 
 #: src/content_clothesitem.cpp:899
 msgid "Red Canvas Pants"
-msgstr ""
+msgstr "Quần vải bạt đỏ"
 
 #: src/content_clothesitem.cpp:914
 msgid "Yellow Canvas Pants"
-msgstr ""
+msgstr "Quần vải bạt vàng"
 
 #: src/content_clothesitem.cpp:929
 msgid "Black Canvas Pants"
-msgstr ""
+msgstr "Quần vải bạt đen"
 
 #: src/content_clothesitem.cpp:959
 msgid "Blue Canvas Shoes"
-msgstr ""
+msgstr "Giày vải bạt xanh"
 
 #: src/content_clothesitem.cpp:973
 msgid "Green Canvas Shoes"
-msgstr ""
+msgstr "Giày vải bạt xanh lá cây"
 
 #: src/content_clothesitem.cpp:987
 msgid "Orange Canvas Shoes"
-msgstr ""
+msgstr "Giày vải bạt cam"
 
 #: src/content_clothesitem.cpp:1001
 msgid "Purple Canvas Shoes"
-msgstr ""
+msgstr "Giày vải bạt tím"
 
 #: src/content_clothesitem.cpp:1015
 msgid "Red Canvas Shoes"
-msgstr ""
+msgstr "Giày vải bạt đỏ"
 
 #: src/content_clothesitem.cpp:1029
 msgid "Yellow Canvas Shoes"
-msgstr ""
+msgstr "Giày vải bạt vàng"
 
 #: src/content_clothesitem.cpp:1043
 msgid "Black Canvas Shoes"
-msgstr ""
+msgstr "Giày vải bạt đen"
 
 #: src/content_clothesitem.cpp:1058
 msgid "Canvas Belt"
-msgstr ""
+msgstr "Dây lưng vải bạt"
 
 #: src/content_clothesitem.cpp:1072
 msgid "Blue Canvas Belt"
-msgstr ""
+msgstr "Dây lưng vải bạt xanh"
 
 #: src/content_clothesitem.cpp:1086
 msgid "Green Canvas Belt"
-msgstr ""
+msgstr "Dây lưng vải bạt xanh lá cây"
 
 #: src/content_clothesitem.cpp:1100
 msgid "Orange Canvas Belt"
-msgstr ""
+msgstr "Dây lưng vải bạt cam"
 
 #: src/content_clothesitem.cpp:1114
 msgid "Purple Canvas Belt"
-msgstr ""
+msgstr "Dây lưng vải bạt tím"
 
 #: src/content_clothesitem.cpp:1128
 msgid "Red Canvas Belt"
-msgstr ""
+msgstr "Dây lưng vải bạt đỏ"
 
 #: src/content_clothesitem.cpp:1142
 msgid "Yellow Canvas Belt"
-msgstr ""
+msgstr "Dây lưng vải bạt vàng"
 
 #: src/content_clothesitem.cpp:1156
 msgid "Black Canvas Belt"
-msgstr ""
+msgstr "Dây lưng vải bạt đen"
 
 #: src/content_clothesitem.cpp:1171
 msgid "Leather Jacket"
-msgstr ""
+msgstr "Áo vét da"
 
 #: src/content_clothesitem.cpp:1186
 msgid "White Leather Jacket"
-msgstr ""
+msgstr "Áo vét da trắng"
 
 #: src/content_clothesitem.cpp:1201
 msgid "Blue Leather Jacket"
-msgstr ""
+msgstr "Áo vét da xanh"
 
 #: src/content_clothesitem.cpp:1216
 msgid "Green Leather Jacket"
-msgstr ""
+msgstr "Áo vét da xanh lá cây"
 
 #: src/content_clothesitem.cpp:1231
 msgid "Orange Leather Jacket"
-msgstr ""
+msgstr "Áo vét da cam"
 
 #: src/content_clothesitem.cpp:1246
 msgid "Purple Leather Jacket"
-msgstr ""
+msgstr "Áo vét da tím"
 
 #: src/content_clothesitem.cpp:1261
 msgid "Red Leather Jacket"
-msgstr ""
+msgstr "Áo vét da đỏ"
 
 #: src/content_clothesitem.cpp:1276
 msgid "Yellow Leather Jacket"
-msgstr ""
+msgstr "Áo vét da vàng"
 
 #: src/content_clothesitem.cpp:1291
 msgid "Black Leather Jacket"
-msgstr ""
+msgstr "Áo vét da đen"
 
 #: src/content_clothesitem.cpp:1307
 msgid "Leather Pants"
-msgstr ""
+msgstr "Quần da"
 
 #: src/content_clothesitem.cpp:1322
 msgid "White Leather Pants"
-msgstr ""
+msgstr "Quần da trắng"
 
 #: src/content_clothesitem.cpp:1337
 msgid "Blue Leather Pants"
-msgstr ""
+msgstr "Quần da xanh"
 
 #: src/content_clothesitem.cpp:1352
 msgid "Green Leather Pants"
-msgstr ""
+msgstr "Quần da xanh lá cây"
 
 #: src/content_clothesitem.cpp:1367
 msgid "Orange Leather Pants"
-msgstr ""
+msgstr "Quần da cam"
 
 #: src/content_clothesitem.cpp:1382
 msgid "Purple Leather Pants"
-msgstr ""
+msgstr "Quần da tím"
 
 #: src/content_clothesitem.cpp:1397
 msgid "Red Leather Pants"
-msgstr ""
+msgstr "Quần da đỏ"
 
 #: src/content_clothesitem.cpp:1412
 msgid "Yellow Leather Pants"
-msgstr ""
+msgstr "Quần da vàng"
 
 #: src/content_clothesitem.cpp:1427
 msgid "Black Leather Pants"
-msgstr ""
+msgstr "Quần da đen"
 
 #: src/content_clothesitem.cpp:1443
 msgid "Leather Hat"
-msgstr ""
+msgstr "Mũ da"
 
 #: src/content_clothesitem.cpp:1457
 msgid "White Leather Hat"
-msgstr ""
+msgstr "Mũ da trắng"
 
 #: src/content_clothesitem.cpp:1471
 msgid "Blue Leather Hat"
-msgstr ""
+msgstr "Mũ da xanh"
 
 #: src/content_clothesitem.cpp:1485
 msgid "Green Leather Hat"
-msgstr ""
+msgstr "Mũ da xanh lá cây"
 
 #: src/content_clothesitem.cpp:1499
 msgid "Orange Leather Hat"
-msgstr ""
+msgstr "Mũ da cam"
 
 #: src/content_clothesitem.cpp:1513
 msgid "Purple Leather Hat"
-msgstr ""
+msgstr "Mũ da tím"
 
 #: src/content_clothesitem.cpp:1527
 msgid "Red Leather Hat"
-msgstr ""
+msgstr "Mũ da đỏ"
 
 #: src/content_clothesitem.cpp:1541
 msgid "Yellow Leather Hat"
-msgstr ""
+msgstr "Mũ da vàng"
 
 #: src/content_clothesitem.cpp:1555
 msgid "Black Leather Hat"
-msgstr ""
+msgstr "Mũ da đen"
 
 #: src/content_clothesitem.cpp:1570
 msgid "Leather Helmet"
-msgstr ""
+msgstr "Mũ bảo hiểm da"
 
 #: src/content_clothesitem.cpp:1585
 msgid "White Leather Helmet"
-msgstr ""
+msgstr "Mũ bảo hiểm da trắng"
 
 #: src/content_clothesitem.cpp:1600
 msgid "Blue Leather Helmet"
-msgstr ""
+msgstr "Mũ bảo hiểm da xanh"
 
 #: src/content_clothesitem.cpp:1615
 msgid "Green Leather Helmet"
-msgstr ""
+msgstr "Mũ bảo hiểm da xanh lá cây"
 
 #: src/content_clothesitem.cpp:1630
 msgid "Orange Leather Helmet"
-msgstr ""
+msgstr "Mũ bảo hiểm da cam"
 
 #: src/content_clothesitem.cpp:1645
 msgid "Purple Leather Helmet"
-msgstr ""
+msgstr "Mũ bảo hiểm da tím"
 
 #: src/content_clothesitem.cpp:1660
 msgid "Red Leather Helmet"
-msgstr ""
+msgstr "Mũ bảo hiểm da đỏ"
 
 #: src/content_clothesitem.cpp:1675
 msgid "Yellow Leather Helmet"
-msgstr ""
+msgstr "Mũ bảo hiểm da vàng"
 
 #: src/content_clothesitem.cpp:1690
 msgid "Black Leather Helmet"
-msgstr ""
+msgstr "Mũ bảo hiểm da đen"
 
 #: src/content_clothesitem.cpp:1721
 msgid "White Leather Shoes"
-msgstr ""
+msgstr "Giày da trắng"
 
 #: src/content_clothesitem.cpp:1736
 msgid "Blue Leather Shoes"
-msgstr ""
+msgstr "Giày da xanh"
 
 #: src/content_clothesitem.cpp:1751
 msgid "Green Leather Shoes"
-msgstr ""
+msgstr "Giày da xanh lá cây"
 
 #: src/content_clothesitem.cpp:1766
 msgid "Orange Leather Shoes"
-msgstr ""
+msgstr "Giày da cam"
 
 #: src/content_clothesitem.cpp:1781
 msgid "Purple Leather Shoes"
-msgstr ""
+msgstr "Giày da tím"
 
 #: src/content_clothesitem.cpp:1796
 msgid "Red Leather Shoes"
-msgstr ""
+msgstr "Giày da đỏ"
 
 #: src/content_clothesitem.cpp:1811
 msgid "Yellow Leather Shoes"
-msgstr ""
+msgstr "Giày da vàng"
 
 #: src/content_clothesitem.cpp:1826
 msgid "Black Leather Shoes"
-msgstr ""
+msgstr "Giày da đen"
 
 #: src/content_clothesitem.cpp:1842
 msgid "Leather Boots"
-msgstr ""
+msgstr "Giày ống da"
 
 #: src/content_clothesitem.cpp:1857
 msgid "White Leather Boots"
-msgstr ""
+msgstr "Giày ống da trắng"
 
 #: src/content_clothesitem.cpp:1872
 msgid "Blue Leather Boots"
-msgstr ""
+msgstr "Giày ống da xanh"
 
 #: src/content_clothesitem.cpp:1887
 msgid "Green Leather Boots"
-msgstr ""
+msgstr "Giày ống da xanh lá cây"
 
 #: src/content_clothesitem.cpp:1902
 msgid "Orange Leather Boots"
-msgstr ""
+msgstr "Giày ống da cam"
 
 #: src/content_clothesitem.cpp:1917
 msgid "Purple Leather Boots"
-msgstr ""
+msgstr "Giày ống da tím"
 
 #: src/content_clothesitem.cpp:1932
 msgid "Red Leather Boots"
-msgstr ""
+msgstr "Giày ống da đỏ"
 
 #: src/content_clothesitem.cpp:1947
 msgid "Yellow Leather Boots"
-msgstr ""
+msgstr "Giày ống da vàng"
 
 #: src/content_clothesitem.cpp:1962
 msgid "Black Leather Boots"
-msgstr ""
+msgstr "Giày ống da đen"
 
 #: src/content_clothesitem.cpp:1978
 msgid "Leather Belt"
-msgstr ""
+msgstr "Dây lưng da"
 
 #: src/content_clothesitem.cpp:1993
 msgid "White Leather Belt"
-msgstr ""
+msgstr "Dây lưng da trắng"
 
 #: src/content_clothesitem.cpp:2008
 msgid "Blue Leather Belt"
-msgstr ""
+msgstr "Dây lưng da xanh"
 
 #: src/content_clothesitem.cpp:2023
 msgid "Green Leather Belt"
-msgstr ""
+msgstr "Dây lưng da xanh lá cây"
 
 #: src/content_clothesitem.cpp:2038
 msgid "Orange Leather Belt"
-msgstr ""
+msgstr "Dây lưng da cam"
 
 #: src/content_clothesitem.cpp:2053
 msgid "Purple Leather Belt"
-msgstr ""
+msgstr "Dây lưng da tím"
 
 #: src/content_clothesitem.cpp:2068
 msgid "Red Leather Belt"
-msgstr ""
+msgstr "Dây lưng da đỏ"
 
 #: src/content_clothesitem.cpp:2083
 msgid "Yellow Leather Belt"
-msgstr ""
+msgstr "Dây lưng da vàng"
 
 #: src/content_clothesitem.cpp:2098
 msgid "Black Leather Belt"
-msgstr ""
+msgstr "Dây lưng da đen"
 
 #: src/content_clothesitem.cpp:2114
 msgid "Fur Coat"
-msgstr ""
+msgstr "Áo choàng da lông thú"
 
 #: src/content_clothesitem.cpp:2129
 msgid "White Fur Coat"
-msgstr ""
+msgstr "Áo choàng da lông thú trắng"
 
 #: src/content_clothesitem.cpp:2144
 msgid "Blue Fur Coat"
-msgstr ""
+msgstr "Áo choàng da lông thú xanh"
 
 #: src/content_clothesitem.cpp:2159
 msgid "Green Fur Coat"
-msgstr ""
+msgstr "Áo choàng da lông thú xanh lá cây"
 
 #: src/content_clothesitem.cpp:2174
 msgid "Orange Fur Coat"
-msgstr ""
+msgstr "Áo choàng da lông thú cam"
 
 #: src/content_clothesitem.cpp:2189
 msgid "Purple Fur Coat"
-msgstr ""
+msgstr "Áo choàng da lông thú tím"
 
 #: src/content_clothesitem.cpp:2204
 msgid "Red Fur Coat"
-msgstr ""
+msgstr "Áo choàng da lông thú đỏ"
 
 #: src/content_clothesitem.cpp:2219
 msgid "Yellow Fur Coat"
-msgstr ""
+msgstr "Áo choàng da lông thú vàng"
 
 #: src/content_clothesitem.cpp:2234
 msgid "Black Fur Coat"
-msgstr ""
+msgstr "Áo choàng da lông thú đen"
 
 #: src/content_clothesitem.cpp:2250
 msgid "Fur Pants"
-msgstr ""
+msgstr "Quần da lông thú"
 
 #: src/content_clothesitem.cpp:2265
 msgid "White Fur Pants"
-msgstr ""
+msgstr "Quần da lông thú trắng"
 
 #: src/content_clothesitem.cpp:2280
 msgid "Blue Fur Pants"
-msgstr ""
+msgstr "Quần da lông thú xanh"
 
 #: src/content_clothesitem.cpp:2295
 msgid "Green Fur Pants"
-msgstr ""
+msgstr "Quần da lông thú xanh lá cây"
 
 #: src/content_clothesitem.cpp:2310
 msgid "Orange Fur Pants"
-msgstr ""
+msgstr "Quần da lông thú cam"
 
 #: src/content_clothesitem.cpp:2325
 msgid "Purple Fur Pants"
-msgstr ""
+msgstr "Quần da lông thú tím"
 
 #: src/content_clothesitem.cpp:2340
 msgid "Red Fur Pants"
-msgstr ""
+msgstr "Quần da lông thú đỏ"
 
 #: src/content_clothesitem.cpp:2355
 msgid "Yellow Fur Pants"
-msgstr ""
+msgstr "Quần da lông thú vàng"
 
 #: src/content_clothesitem.cpp:2370
 msgid "Black Fur Pants"
-msgstr ""
+msgstr "Quần da lông thú đen"
 
 #: src/content_clothesitem.cpp:2386
 msgid "Fur Hat"
-msgstr ""
+msgstr "Mũ da lông thú"
 
 #: src/content_clothesitem.cpp:2401
 msgid "White Fur Hat"
-msgstr ""
+msgstr "Mũ da lông thú trắng"
 
 #: src/content_clothesitem.cpp:2416
 msgid "Blue Fur Hat"
-msgstr ""
+msgstr "Mũ da lông thú xanh"
 
 #: src/content_clothesitem.cpp:2431
 msgid "Green Fur Hat"
-msgstr ""
+msgstr "Mũ da lông thú xanh lá cây"
 
 #: src/content_clothesitem.cpp:2446
 msgid "Orange Fur Hat"
-msgstr ""
+msgstr "Mũ da lông thú cam"
 
 #: src/content_clothesitem.cpp:2461
 msgid "Purple Fur Hat"
-msgstr ""
+msgstr "Mũ da lông thú tím"
 
 #: src/content_clothesitem.cpp:2476
 msgid "Red Fur Hat"
-msgstr ""
+msgstr "Mũ da lông thú đỏ"
 
 #: src/content_clothesitem.cpp:2491
 msgid "Yellow Fur Hat"
-msgstr ""
+msgstr "Mũ da lông thú vàng"
 
 #: src/content_clothesitem.cpp:2506
 msgid "Black Fur Hat"
-msgstr ""
+msgstr "Mũ da lông thú đen"
 
 #: src/content_clothesitem.cpp:2536
 msgid "White Fur Shoes"
-msgstr ""
+msgstr "Giày da lông thú trắng"
 
 #: src/content_clothesitem.cpp:2550
 msgid "Blue Fur Shoes"
-msgstr ""
+msgstr "Giày da lông thú xanh"
 
 #: src/content_clothesitem.cpp:2564
 msgid "Green Fur Shoes"
-msgstr ""
+msgstr "Giày da lông thú xanh lá cây"
 
 #: src/content_clothesitem.cpp:2578
 msgid "Orange Fur Shoes"
-msgstr ""
+msgstr "Giày da lông thú cam"
 
 #: src/content_clothesitem.cpp:2592
 msgid "Purple Fur Shoes"
-msgstr ""
+msgstr "Giày da lông thú tím"
 
 #: src/content_clothesitem.cpp:2606
 msgid "Red Fur Shoes"
-msgstr ""
+msgstr "Giày da lông thú đỏ"
 
 #: src/content_clothesitem.cpp:2620
 msgid "Yellow Fur Shoes"
-msgstr ""
+msgstr "Giày da lông thú vàng"
 
 #: src/content_clothesitem.cpp:2634
 msgid "Black Fur Shoes"
-msgstr ""
+msgstr "Giày da lông thú đen"
 
 #: src/content_clothesitem.cpp:2649
 msgid "Fur Boots"
-msgstr ""
+msgstr "Giày ống da lông thú"
 
 #: src/content_clothesitem.cpp:2664
 msgid "White Fur Boots"
-msgstr ""
+msgstr "Giày ống da lông thú trắng"
 
 #: src/content_clothesitem.cpp:2679
 msgid "Blue Fur Boots"
-msgstr ""
+msgstr "Giày ống da lông thú xanh"
 
 #: src/content_clothesitem.cpp:2694
 msgid "Green Fur Boots"
-msgstr ""
+msgstr "Giày ống da lông thú xanh lá cây"
 
 #: src/content_clothesitem.cpp:2709
 msgid "Orange Fur Boots"
-msgstr ""
+msgstr "Giày ống da lông thú cam"
 
 #: src/content_clothesitem.cpp:2724
 msgid "Purple Fur Boots"
-msgstr ""
+msgstr "Giày ống da lông thú tím"
 
 #: src/content_clothesitem.cpp:2739
 msgid "Red Fur Boots"
-msgstr ""
+msgstr "Giày ống da lông thú đỏ"
 
 #: src/content_clothesitem.cpp:2754
 msgid "Yellow Fur Boots"
-msgstr ""
+msgstr "Giày ống da lông thú vàng"
 
 #: src/content_clothesitem.cpp:2769
 msgid "Black Fur Boots"
-msgstr ""
+msgstr "Giày ống da lông thú "
 
 #: src/content_clothesitem.cpp:2785
 msgid "Leather Necklace"
-msgstr ""
+msgstr "Vòng đeo cổ bằng da"
 
 #: src/content_clothesitem.cpp:2808
 msgid "Gold Medallion"
-msgstr ""
+msgstr "Huy chương lớn vàng"
 
 #: src/content_clothesitem.cpp:2824
 msgid "Copper Medallion"
-msgstr ""
+msgstr "Huy chương lớn đồng"
 
 #: src/content_clothesitem.cpp:2840
 msgid "Silver Medallion"
-msgstr ""
+msgstr "Huy chương lớn bạc"
 
 #: src/content_clothesitem.cpp:2856
 msgid "Tin Medallion"
-msgstr ""
+msgstr "Huy chương lớn thiếc"
 
 #: src/content_clothesitem.cpp:2872
 msgid "Iron Medallion"
-msgstr ""
+msgstr "Huy chương lớn sắt"
 
 #: src/content_clothesitem.cpp:2888
 msgid "Quartz Medallion"
-msgstr ""
+msgstr "Huy chương lớn thạch anh"
 
 #: src/content_clothesitem.cpp:2905
 msgid "Steel Helmet"
-msgstr ""
+msgstr "Mũ thép"
 
 #: src/content_clothesitem.cpp:2920
 msgid "Steel Chest Armour"
-msgstr ""
+msgstr "Áo giáp thép"
 
 #: src/content_clothesitem.cpp:2935
 msgid "Steel Pants"
-msgstr ""
+msgstr "Quần thép"
 
 #: src/content_clothesitem.cpp:2950
 msgid "Steel Boots"
-msgstr ""
+msgstr "Giày thép"
 
 #: src/content_clothesitem.cpp:2965
 msgid "Copper Helmet"
-msgstr ""
+msgstr "Mũ đồng"
 
 #: src/content_clothesitem.cpp:2979
 msgid "Copper Chest Armour"
-msgstr ""
+msgstr "Áo giáp đồng"
 
 #: src/content_clothesitem.cpp:2993
 msgid "Copper Pants"
-msgstr ""
+msgstr "Quần đồng"
 
 #: src/content_clothesitem.cpp:3007
 msgid "Copper Boots"
-msgstr ""
+msgstr "Giày đồng"
 
 #: src/content_craftitem.cpp:81
 msgid "Paper"
-msgstr ""
+msgstr "Giấy"
 
 #: src/content_craftitem.cpp:91
 msgid "Charcoal Lump"
-msgstr ""
+msgstr "Cục than"
 
 #: src/content_craftitem.cpp:100
 msgid "Coal Lump"
-msgstr ""
+msgstr "Cục than đá"
 
 #: src/content_craftitem.cpp:109
 msgid "Iron Lump"
-msgstr ""
+msgstr "Cục sắt"
 
 #: src/content_craftitem.cpp:119
 msgid "Clay Lump"
-msgstr ""
+msgstr "Cục đất sét"
 
 #: src/content_craftitem.cpp:129
 msgid "Tin Lump"
-msgstr ""
+msgstr "Cục thiếc"
 
 #: src/content_craftitem.cpp:139
 msgid "Copper Lump"
-msgstr ""
+msgstr "Cục đồng"
 
 #: src/content_craftitem.cpp:149
 msgid "Silver Lump"
-msgstr ""
+msgstr "Cục bạc"
 
 #: src/content_craftitem.cpp:159
 msgid "Gold Lump"
-msgstr ""
+msgstr "Cục vàng"
 
 #: src/content_craftitem.cpp:169
 msgid "Quartz Crystal"
-msgstr ""
+msgstr "Tinh thể thạch anh"
 
 #: src/content_craftitem.cpp:177
 msgid "Tin Ingot"
-msgstr ""
+msgstr "Thỏi thiếc"
 
 #: src/content_craftitem.cpp:185
 msgid "Copper Ingot"
-msgstr ""
+msgstr "Thỏi đồng"
 
 #: src/content_craftitem.cpp:193
 msgid "Silver Ingot"
-msgstr ""
+msgstr "Thỏi bạc"
 
 #: src/content_craftitem.cpp:201
 msgid "Gold Ingot"
-msgstr ""
+msgstr "Thỏi vàng"
 
 #: src/content_craftitem.cpp:209
 msgid "Flint"
-msgstr ""
+msgstr "Đá lửa"
 
 #: src/content_craftitem.cpp:217
 msgid "Steel Ingot"
-msgstr ""
+msgstr "Thỏi thép"
 
 #: src/content_craftitem.cpp:225 src/content_mapnode.cpp:710
 msgid "Brick"
-msgstr ""
+msgstr "Cục gạch đất sét"
 
 #: src/content_craftitem.cpp:233 src/content_mob.cpp:373
 msgid "Rat"
-msgstr ""
+msgstr "Con chuột"
 
 #: src/content_craftitem.cpp:245
 msgid "Cooked Rat"
-msgstr ""
+msgstr "Chuột thui"
 
 #: src/content_craftitem.cpp:259 src/content_mob.cpp:392
 msgid "Firefly"
-msgstr ""
+msgstr "Con đom đóm"
 
 #: src/content_craftitem.cpp:269 src/content_mapnode_plants.cpp:981
 msgid "Apple"
-msgstr ""
+msgstr "Trái táo"
 
 #: src/content_craftitem.cpp:281
 msgid "Iron Apple"
-msgstr ""
+msgstr "Trái táo bằng sắt"
 
 #: src/content_craftitem.cpp:302
 msgid "Blue Dye"
-msgstr ""
+msgstr "Thuốc nhuộm xanh"
 
 #: src/content_craftitem.cpp:312
 msgid "Green Dye"
-msgstr ""
+msgstr "Thuốc nhuộm xanh lá cây"
 
 #: src/content_craftitem.cpp:322
 msgid "Orange Dye"
-msgstr ""
+msgstr "Thuốc nhuộm cam"
 
 #: src/content_craftitem.cpp:332
 msgid "Purple Dye"
-msgstr ""
+msgstr "Thuốc nhuộm tím"
 
 #: src/content_craftitem.cpp:342
 msgid "Red Dye"
-msgstr ""
+msgstr "Thuốc nhuộm đỏ"
 
 #: src/content_craftitem.cpp:352
 msgid "Yellow Dye"
-msgstr ""
+msgstr "Thuốc nhuộm vàng"
 
 #: src/content_craftitem.cpp:363
 msgid "White Dye"
-msgstr ""
+msgstr "Thuốc nhuộm trắng"
 
 #: src/content_craftitem.cpp:374
 msgid "Black Dye"
-msgstr ""
+msgstr "Thuốc nhuộm đen"
 
 #: src/content_craftitem.cpp:384
 msgid "Quartz Dust"
-msgstr ""
+msgstr "Bụi thạch anh"
 
 #: src/content_craftitem.cpp:394
 msgid "Saltpeter"
-msgstr ""
+msgstr "Hỏa tiêu"
 
 #: src/content_craftitem.cpp:402
 msgid "Gun Powder"
-msgstr ""
+msgstr "Thuốc súng"
 
 #: src/content_craftitem.cpp:412
 msgid "Snow Ball"
-msgstr ""
+msgstr "Hòn tuyết"
 
 #: src/content_craftitem.cpp:420
 msgid "Stick"
-msgstr ""
+msgstr "Cái gậy"
 
 #: src/content_craftitem.cpp:437
 msgid "Pine Plank"
-msgstr ""
+msgstr "Tấm ván gỗ cây thông"
 
 #: src/content_craftitem.cpp:449
 msgid "Wood Plank"
-msgstr ""
+msgstr "Tấm ván gỗ"
 
 #: src/content_craftitem.cpp:462
 msgid "Jungle Wood Plank"
-msgstr ""
+msgstr "Tấm ván gỗ cây cọ"
 
 #: src/content_craftitem.cpp:474
 msgid "TNT Stick"
-msgstr ""
+msgstr "Gậy thuốc nổ mạnh"
 
 #: src/content_craftitem.cpp:491
 msgid "Ash"
-msgstr ""
+msgstr "Tro bụi"
 
 #: src/content_craftitem.cpp:499
 msgid "Apple Blossoms"
-msgstr ""
+msgstr "Hoa cây táo"
 
 #: src/content_craftitem.cpp:512 src/content_mapnode_plants.cpp:786
 msgid "Cactus Berry"
-msgstr ""
+msgstr "Trái cây xương rồng"
 
 #: src/content_craftitem.cpp:525
 msgid "Mush"
-msgstr ""
+msgstr "Hồ bột"
 
 #: src/content_craftitem.cpp:536
 msgid "Sliced Pumpkin"
-msgstr ""
+msgstr "Bí đỏ cắt lát"
 
 #: src/content_craftitem.cpp:550
 msgid "Pumpkin Pie Slice"
-msgstr ""
+msgstr "Miếng bánh bí đỏ"
 
 #: src/content_craftitem.cpp:562
 msgid "Apple Pie Slice"
-msgstr ""
+msgstr "Miếng bánh táo"
 
 #: src/content_craftitem.cpp:574
 msgid "Sliced Melon"
-msgstr ""
+msgstr "Dưa gang cắt lát"
 
 #: src/content_craftitem.cpp:588 src/content_mapnode_farm.cpp:263
 msgid "Wheat"
-msgstr ""
+msgstr "Lúa mì"
 
 #: src/content_craftitem.cpp:600
 msgid "Flour"
-msgstr ""
+msgstr "Bột mì"
 
 #: src/content_craftitem.cpp:614
 msgid "Dough"
-msgstr ""
+msgstr "Bột nhão mì"
 
 #: src/content_craftitem.cpp:630
 msgid "Bread"
-msgstr ""
+msgstr "Bánh mì"
 
 #: src/content_craftitem.cpp:642 src/content_mapnode_farm.cpp:360
 msgid "Potato"
-msgstr ""
+msgstr "Khoai tây"
 
 #: src/content_craftitem.cpp:656
 msgid "Potato Starch"
-msgstr ""
+msgstr "Bột khoai tây"
 
 #: src/content_craftitem.cpp:666
 msgid "Roast Potato"
-msgstr ""
+msgstr "Nhoai tây nướng"
 
 #: src/content_craftitem.cpp:678 src/content_mapnode_farm.cpp:381
 msgid "Carrot"
-msgstr ""
+msgstr "Cà rốt"
 
 #: src/content_craftitem.cpp:690
 msgid "Raw Carrot Cake"
-msgstr ""
+msgstr "Bánh cà rốt sống"
 
 #: src/content_craftitem.cpp:705
 msgid "Carrot Cake"
-msgstr ""
+msgstr "Bánh cà rốt"
 
 #: src/content_craftitem.cpp:717 src/content_mapnode_farm.cpp:402
 msgid "Beetroot"
-msgstr ""
+msgstr "Củ cải đường"
 
 #: src/content_craftitem.cpp:729
 msgid "Bunch of Grapes"
-msgstr ""
+msgstr "Búi nho"
 
 #: src/content_craftitem.cpp:741
 msgid "String"
-msgstr ""
+msgstr "Dây"
 
 #: src/content_craftitem.cpp:751
 msgid "Mithril Dust"
-msgstr ""
+msgstr "Bụi đá mithril"
 
 #: src/content_craftitem.cpp:763
 msgid "Resin"
-msgstr ""
+msgstr "Nhựa thông"
 
 #: src/content_craftitem.cpp:773
 msgid "Oerkki Dust"
-msgstr ""
+msgstr "Bụi Oerkki"
 
 #: src/content_craftitem.cpp:783 src/content_mob.cpp:613
 msgid "Fish"
-msgstr ""
+msgstr "Cá"
 
 #: src/content_craftitem.cpp:799
 msgid "Cooked Fish"
-msgstr ""
+msgstr "Cá kho"
 
 #: src/content_craftitem.cpp:813
 msgid "Meat"
-msgstr ""
+msgstr "Thịt"
 
 #: src/content_craftitem.cpp:827
 msgid "Cooked Meat"
-msgstr ""
+msgstr "Thịt kho"
 
 #: src/content_craftitem.cpp:841
 msgid "Cotton Sheet"
-msgstr ""
+msgstr "Tấm vải bông gòn"
 
 #: src/content_craftitem.cpp:858
 msgid "Blue Cotton Sheet"
-msgstr ""
+msgstr "Tấm vải bông gòn xanh"
 
 #: src/content_craftitem.cpp:868
 msgid "Green Cotton Sheet"
-msgstr ""
+msgstr "Tấm vải bông gòn xanh lá cây"
 
 #: src/content_craftitem.cpp:878
 msgid "Orange Cotton Sheet"
-msgstr ""
+msgstr "Tấm vải bông gòn cam"
 
 #: src/content_craftitem.cpp:888
 msgid "Purple Cotton Sheet"
-msgstr ""
+msgstr "Tấm vải bông gòn tím"
 
 #: src/content_craftitem.cpp:898
 msgid "Red Cotton Sheet"
-msgstr ""
+msgstr "Tấm vải bông gòn đỏ"
 
 #: src/content_craftitem.cpp:908
 msgid "Yellow Cotton Sheet"
-msgstr ""
+msgstr "Tấm vải bông gòn vàng"
 
 #: src/content_craftitem.cpp:918
 msgid "Black Cotton Sheet"
-msgstr ""
+msgstr "Tấm vải bông gòn đen"
 
 #: src/content_craftitem.cpp:928
 msgid "Canvas Sheet"
-msgstr ""
+msgstr "Tấm vải bạt"
 
 #: src/content_craftitem.cpp:945
 msgid "Blue Canvas Sheet"
-msgstr ""
+msgstr "Tấm vải bạt xanh"
 
 #: src/content_craftitem.cpp:955
 msgid "Green Canvas Sheet"
-msgstr ""
+msgstr "Tấm vải bạt xanh lá cây"
 
 #: src/content_craftitem.cpp:965
 msgid "Orange Canvas Sheet"
-msgstr ""
+msgstr "Tấm vải bạt cam"
 
 #: src/content_craftitem.cpp:975
 msgid "Purple Canvas Sheet"
-msgstr ""
+msgstr "Tấm vải bạt tím"
 
 #: src/content_craftitem.cpp:985
 msgid "Red Canvas Sheet"
-msgstr ""
+msgstr "Tấm vải bạt đỏ"
 
 #: src/content_craftitem.cpp:995
 msgid "Yellow Canvas Sheet"
-msgstr ""
+msgstr "Tấm vải bạt vàng"
 
 #: src/content_craftitem.cpp:1005
 msgid "Black Canvas Sheet"
-msgstr ""
+msgstr "Tấm vải bạt đen"
 
 #: src/content_craftitem.cpp:1015
 msgid "Fur"
-msgstr ""
+msgstr "Lông thú"
 
 #: src/content_craftitem.cpp:1023
 msgid "White Fur"
@@ -1398,187 +1394,187 @@ msgstr ""
 
 #: src/content_craftitem.cpp:1034
 msgid "Blue Fur"
-msgstr ""
+msgstr "Lông thú xanh"
 
 #: src/content_craftitem.cpp:1045
 msgid "Green Fur"
-msgstr ""
+msgstr "Lông thú xanh lá cây"
 
 #: src/content_craftitem.cpp:1056
 msgid "Orange Fur"
-msgstr ""
+msgstr "Lông thú cam"
 
 #: src/content_craftitem.cpp:1067
 msgid "Purple Fur"
-msgstr ""
+msgstr "Lông thú tím"
 
 #: src/content_craftitem.cpp:1078
 msgid "Red Fur"
-msgstr ""
+msgstr "Lông thú đỏ"
 
 #: src/content_craftitem.cpp:1089
 msgid "Yellow Fur"
-msgstr ""
+msgstr "Lông thú vàng"
 
 #: src/content_craftitem.cpp:1100
 msgid "Black Fur"
-msgstr ""
+msgstr "Lông thú đen"
 
 #: src/content_craftitem.cpp:1111
 msgid "Leather"
-msgstr ""
+msgstr "Da thuộc"
 
 #: src/content_craftitem.cpp:1121
 msgid "White Leather"
-msgstr ""
+msgstr "Da thuộc trắng"
 
 #: src/content_craftitem.cpp:1132
 msgid "Blue Leather"
-msgstr ""
+msgstr "Da thuộc xanh"
 
 #: src/content_craftitem.cpp:1143
 msgid "Green Leather"
-msgstr ""
+msgstr "Da thuộc xanh lá cây"
 
 #: src/content_craftitem.cpp:1154
 msgid "Orange Leather"
-msgstr ""
+msgstr "Da thuộc cam"
 
 #: src/content_craftitem.cpp:1165
 msgid "Purple Leather"
-msgstr ""
+msgstr "Da thuộc tím"
 
 #: src/content_craftitem.cpp:1176
 msgid "Red Leather"
-msgstr ""
+msgstr "Da thuộc đỏ"
 
 #: src/content_craftitem.cpp:1187
 msgid "Yellow Leather"
-msgstr ""
+msgstr "Da thuộc vàng"
 
 #: src/content_craftitem.cpp:1198
 msgid "Black Leather"
-msgstr ""
+msgstr "Da thuộc đen"
 
 #: src/content_craftitem.cpp:1209 src/content_mob.cpp:799
 msgid "Arrow"
-msgstr ""
+msgstr "Mũi tên"
 
 #: src/content_craftitem.cpp:1220 src/content_mapnode_farm.cpp:50
 msgid "Fertilizer"
-msgstr ""
+msgstr "Phân bón"
 
 #: src/content_craftitem.cpp:1232
 msgid "White Oerkki Dust"
-msgstr ""
+msgstr "Bụi Oerkki trắng"
 
 #: src/content_craftitem.cpp:1244
 msgid "Blue Oerkki Dust"
-msgstr ""
+msgstr "Bụi Oerkki xanh"
 
 #: src/content_craftitem.cpp:1256
 msgid "Green Oerkki Dust"
-msgstr ""
+msgstr "Bụi Oerkki xanh lá cây"
 
 #: src/content_craftitem.cpp:1268
 msgid "Orange Oerkki Dust"
-msgstr ""
+msgstr "Bụi Oerkki cam"
 
 #: src/content_craftitem.cpp:1280
 msgid "Purple Oerkki Dust"
-msgstr ""
+msgstr "Bụi Oerkki tím"
 
 #: src/content_craftitem.cpp:1292
 msgid "Red Oerkki Dust"
-msgstr ""
+msgstr "Bụi Oerkki đỏ"
 
 #: src/content_craftitem.cpp:1304
 msgid "Yellow Oerkki Dust"
-msgstr ""
+msgstr "Bụi Oerkki vàng"
 
 #: src/content_craftitem.cpp:1316
 msgid "Black Oerkki Dust"
-msgstr ""
+msgstr "Bụi Oerkki đen"
 
 #: src/content_craftitem.cpp:1328
 msgid "Glass Bottle"
-msgstr ""
+msgstr "Chai thủy tinh"
 
 #: src/content_craftitem.cpp:1346
 msgid "Grape Juice"
-msgstr ""
+msgstr "Nước nho"
 
 #: src/content_craftitem.cpp:1364
 msgid "Apple Juice"
-msgstr ""
+msgstr "Nước táo"
 
 #: src/content_craftitem.cpp:1382
 msgid "Tea Leaves"
-msgstr ""
+msgstr "Nước trà"
 
 #: src/content_craftitem.cpp:1395
 msgid "Tea"
-msgstr ""
+msgstr "Nước trà"
 
 #: src/content_craftitem.cpp:1414
 msgid "Roasted Coffee Beans"
-msgstr ""
+msgstr "Hột cà phê nướng"
 
 #: src/content_craftitem.cpp:1428
 msgid "Coffee"
-msgstr ""
+msgstr "Cà phê"
 
 #: src/content_craftitem.cpp:1447
 msgid "Steel Bottle"
-msgstr ""
+msgstr "Chai thép"
 
 #: src/content_craftitem.cpp:1465
 msgid "Bottle of Water"
-msgstr ""
+msgstr "Chai nước"
 
 #: src/content_craftitem.cpp:1480
 msgid "Bottle of Hot Water"
-msgstr ""
+msgstr "Chai nước sôi"
 
 #: src/content_craftitem.cpp:1496
 msgid "Raw Mithril"
-msgstr ""
+msgstr "Đá mithril nguyên liệu"
 
 #: src/content_craftitem.cpp:1507
 msgid "Unbound Mithril"
-msgstr ""
+msgstr "Đá mithril được cởi ra"
 
 #: src/content_craftitem.cpp:1516
 msgid "Mithril"
-msgstr ""
+msgstr "Đá mithril"
 
 #: src/content_craftitem.cpp:1525
 msgid "Ruby"
-msgstr ""
+msgstr "Ngọc đỏ"
 
 #: src/content_craftitem.cpp:1533
 msgid "Turquiose"
-msgstr ""
+msgstr "Ngọc lam"
 
 #: src/content_craftitem.cpp:1541
 msgid "Amethyst"
-msgstr ""
+msgstr "Ngọc thạch anh tím"
 
 #: src/content_craftitem.cpp:1549
 msgid "Sapphire"
-msgstr ""
+msgstr "Ngọc bích"
 
 #: src/content_craftitem.cpp:1557
 msgid "Sunstone"
-msgstr ""
+msgstr "Đá mặt trời"
 
 #: src/content_mapnode.cpp:185
 msgid "Stone"
-msgstr ""
+msgstr "Đá"
 
 #: src/content_mapnode.cpp:202
 msgid "Limestone"
-msgstr ""
+msgstr "Đá vôi"
 
 #: src/content_mapnode.cpp:219
 msgid "Rock"
@@ -1586,652 +1582,652 @@ msgstr ""
 
 #: src/content_mapnode.cpp:241
 msgid "Ice"
-msgstr ""
+msgstr "Nước đá"
 
 #: src/content_mapnode.cpp:257
 msgid "Coal Block"
-msgstr ""
+msgstr "Khối than đá"
 
 #: src/content_mapnode.cpp:274
 msgid "Charcoal Block"
-msgstr ""
+msgstr "Khối than"
 
 #: src/content_mapnode.cpp:291
 msgid "Stone Brick"
-msgstr ""
+msgstr "Cục gạch đá"
 
 #: src/content_mapnode.cpp:305
 msgid "Stone Block"
-msgstr ""
+msgstr "Khối đá"
 
 #: src/content_mapnode.cpp:319
 msgid "Rough Stone Brick"
-msgstr ""
+msgstr "Cục gạch đá nhám"
 
 #: src/content_mapnode.cpp:336
 msgid "Rough Stone Block"
-msgstr ""
+msgstr "Khối đá nhám"
 
 #: src/content_mapnode.cpp:352 src/content_mapnode.cpp:385
 #: src/content_mapnode.cpp:399 src/content_mapnode.cpp:432
 msgid "Grass"
-msgstr ""
+msgstr "Cỏ"
 
 #: src/content_mapnode.cpp:370 src/content_mapnode.cpp:417
 msgid "Growing Grass"
-msgstr ""
+msgstr "Cỏ phát triển"
 
 #: src/content_mapnode.cpp:446
 msgid "Muddy Snow"
-msgstr ""
+msgstr "Tuyết đục ngầu"
 
 #: src/content_mapnode.cpp:462
 msgid "Mud"
-msgstr ""
+msgstr "Bùn"
 
 #: src/content_mapnode.cpp:478
 msgid "Ash Block"
-msgstr ""
+msgstr "Khối tro"
 
 #: src/content_mapnode.cpp:493
 msgid "Sand"
-msgstr ""
+msgstr "Cát"
 
 #: src/content_mapnode.cpp:512
 msgid "Gravel"
-msgstr ""
+msgstr "Sỏi"
 
 #: src/content_mapnode.cpp:529
 msgid "Sand Stone"
-msgstr ""
+msgstr "Sa thạch"
 
 #: src/content_mapnode.cpp:544
 msgid "Sand Stone Bricks"
-msgstr ""
+msgstr "Cục gạch sa thạch"
 
 #: src/content_mapnode.cpp:559
 msgid "Sand Stone Blocks"
-msgstr ""
+msgstr "Khối sa thạch"
 
 #: src/content_mapnode.cpp:574
 msgid "Clay"
-msgstr ""
+msgstr "Đất sét"
 
 #: src/content_mapnode.cpp:591
 msgid "Blue Clay"
-msgstr ""
+msgstr "Đất sét xanh"
 
 #: src/content_mapnode.cpp:608
 msgid "Green Clay"
-msgstr ""
+msgstr "Đất sét xanh lá cây"
 
 #: src/content_mapnode.cpp:625
 msgid "Orange Clay"
-msgstr ""
+msgstr "Đất sét cam"
 
 #: src/content_mapnode.cpp:642
 msgid "Purple Clay"
-msgstr ""
+msgstr "Đất sét tím"
 
 #: src/content_mapnode.cpp:659
 msgid "Red Clay"
-msgstr ""
+msgstr "Đất sét đỏ"
 
 #: src/content_mapnode.cpp:676
 msgid "Yellow Clay"
-msgstr ""
+msgstr "Đất sét vàng"
 
 #: src/content_mapnode.cpp:693
 msgid "Black Clay"
-msgstr ""
+msgstr "Đất sét đen"
 
 #: src/content_mapnode.cpp:729
 msgid "Terracotta"
-msgstr ""
+msgstr "Đất nung"
 
 #: src/content_mapnode.cpp:741
 msgid "Terracotta Brick"
-msgstr ""
+msgstr "Cục gạch đất nung"
 
 #: src/content_mapnode.cpp:755
 msgid "Terracotta Block"
-msgstr ""
+msgstr "Khối đất nung"
 
 #: src/content_mapnode.cpp:769
 msgid "Terracotta Tile"
-msgstr ""
+msgstr "Đá lát đất nung"
 
 #: src/content_mapnode.cpp:789
 msgid "Glass"
-msgstr ""
+msgstr "Kính"
 
 #: src/content_mapnode.cpp:809
 msgid "Blue Glass"
-msgstr ""
+msgstr "Kính xanh"
 
 #: src/content_mapnode.cpp:831
 msgid "Green Glass"
-msgstr ""
+msgstr "Kính xanh lá cây"
 
 #: src/content_mapnode.cpp:853
 msgid "Orange Glass"
-msgstr ""
+msgstr "Kính cam"
 
 #: src/content_mapnode.cpp:875
 msgid "Purple Glass"
-msgstr ""
+msgstr "Kính tím"
 
 #: src/content_mapnode.cpp:897
 msgid "Red Glass"
-msgstr ""
+msgstr "Kính đỏ"
 
 #: src/content_mapnode.cpp:919
 msgid "Yellow Glass"
-msgstr ""
+msgstr "Kính vàng"
 
 #: src/content_mapnode.cpp:941
 msgid "Black Glass"
-msgstr ""
+msgstr "Kính đen"
 
 #: src/content_mapnode.cpp:963
 msgid "Glass Pane"
-msgstr ""
+msgstr "Tấm kính"
 
 #: src/content_mapnode.cpp:997
 msgid "Blue Glass Pane"
-msgstr ""
+msgstr "Tấm kính xanh"
 
 #: src/content_mapnode.cpp:1032
 msgid "Green Glass Pane"
-msgstr ""
+msgstr "Tấm kính xanh lá cây"
 
 #: src/content_mapnode.cpp:1067
 msgid "Orange Glass Pane"
-msgstr ""
+msgstr "Tấm kính cam"
 
 #: src/content_mapnode.cpp:1102
 msgid "Purple Glass Pane"
-msgstr ""
+msgstr "Tấm kính tím"
 
 #: src/content_mapnode.cpp:1137
 msgid "Red Glass Pane"
-msgstr ""
+msgstr "Tấm kính đỏ"
 
 #: src/content_mapnode.cpp:1172
 msgid "Yellow Glass Pane"
-msgstr ""
+msgstr "Tấm kính vàng"
 
 #: src/content_mapnode.cpp:1207
 msgid "Black Glass Pane"
-msgstr ""
+msgstr "Tấm kính đen"
 
 #: src/content_mapnode.cpp:1242 src/content_mapnode_farm.cpp:333
 msgid "Glass Light"
-msgstr ""
+msgstr "Đèn kính"
 
 #: src/content_mapnode.cpp:1265
 msgid "Wood"
-msgstr ""
+msgstr "Gỗ"
 
 #: src/content_mapnode.cpp:1291
 msgid "Jungle Wood"
-msgstr ""
+msgstr "Gỗ cây cọ"
 
 #: src/content_mapnode.cpp:1316
 msgid "Pine"
-msgstr ""
+msgstr "Cây thông"
 
 #: src/content_mapnode.cpp:1341
 msgid "Sponge"
-msgstr ""
+msgstr "Bọt biển"
 
 #: src/content_mapnode.cpp:1356
 msgid "Waterlogged Sponge"
-msgstr ""
+msgstr "Bọt biển ướt"
 
 #: src/content_mapnode.cpp:1371
 msgid "Hay Bale"
-msgstr ""
+msgstr "Kiện cỏ khô"
 
 #: src/content_mapnode.cpp:1388
 msgid "Raw Apple Pie"
-msgstr ""
+msgstr "Bánh táo sống"
 
 #: src/content_mapnode.cpp:1417
 msgid "Apple Pie"
-msgstr ""
+msgstr "Bánh táo"
 
 #: src/content_mapnode.cpp:1512
 msgid "Raw Pumpkin Pie"
-msgstr ""
+msgstr "Bánh bí ngô sống"
 
 #: src/content_mapnode.cpp:1541
 msgid "Pumpkin Pie"
-msgstr ""
+msgstr "Bánh bí ngô"
 
 #: src/content_mapnode.cpp:1636 src/content_mapnode.cpp:1715
 msgid "Snow"
-msgstr ""
+msgstr "Tuyết"
 
 #: src/content_mapnode.cpp:1652
 msgid "Snowman"
-msgstr ""
+msgstr "Người tuyết"
 
 #: src/content_mapnode.cpp:1738 src/content_mapnode_farm.cpp:445
 msgid "Cotton"
-msgstr ""
+msgstr "Bông gòn"
 
 #: src/content_mapnode.cpp:1769
 msgid "Blue Cotton"
-msgstr ""
+msgstr "Bông gòn xanh"
 
 #: src/content_mapnode.cpp:1786
 msgid "Green Cotton"
-msgstr ""
+msgstr "Bông gòn xanh lá cây"
 
 #: src/content_mapnode.cpp:1803
 msgid "Orange Cotton"
-msgstr ""
+msgstr "Bông gòn cam"
 
 #: src/content_mapnode.cpp:1820
 msgid "Purple Cotton"
-msgstr ""
+msgstr "Bông gòn tím"
 
 #: src/content_mapnode.cpp:1837
 msgid "Red Cotton"
-msgstr ""
+msgstr "Bông gòn đỏ"
 
 #: src/content_mapnode.cpp:1854
 msgid "Yellow Cotton"
-msgstr ""
+msgstr "Bông gòn vàng"
 
 #: src/content_mapnode.cpp:1871
 msgid "Black Cotton"
-msgstr ""
+msgstr "Bông gòn đen"
 
 #: src/content_mapnode.cpp:1888
 msgid "Carpet"
-msgstr ""
+msgstr "Thảm"
 
 #: src/content_mapnode.cpp:1911
 msgid "Blue Carpet"
-msgstr ""
+msgstr "Thảm xanh"
 
 #: src/content_mapnode.cpp:1935
 msgid "Green Carpet"
-msgstr ""
+msgstr "Thảm xanh lá cây"
 
 #: src/content_mapnode.cpp:1959
 msgid "Orange Carpet"
-msgstr ""
+msgstr "Thảm cam"
 
 #: src/content_mapnode.cpp:1983
 msgid "Purple Carpet"
-msgstr ""
+msgstr "Thảm tím"
 
 #: src/content_mapnode.cpp:2007
 msgid "Red Carpet"
-msgstr ""
+msgstr "Thảm đỏ"
 
 #: src/content_mapnode.cpp:2031
 msgid "Yellow Carpet"
-msgstr ""
+msgstr "Thảm vàng"
 
 #: src/content_mapnode.cpp:2055
 msgid "Black Carpet"
-msgstr ""
+msgstr "Thảm đen"
 
 #: src/content_mapnode.cpp:2079
 msgid "Air"
-msgstr ""
+msgstr "Không khí"
 
 #: src/content_mapnode.cpp:2095
 msgid "Vacuum"
-msgstr ""
+msgstr "Chân không"
 
 #: src/content_mapnode.cpp:2112 src/content_mapnode.cpp:2142
 msgid "Water"
-msgstr ""
+msgstr "Nước"
 
 #: src/content_mapnode.cpp:2172 src/content_mapnode.cpp:2200
 msgid "Lava"
-msgstr ""
+msgstr "Dung nham"
 
 #: src/content_mapnode.cpp:2231
 msgid "Rough Stone"
-msgstr ""
+msgstr "Đá nhám"
 
 #: src/content_mapnode.cpp:2248
 msgid "Cobble Stone"
-msgstr ""
+msgstr "Đá sỏi"
 
 #: src/content_mapnode.cpp:2264
 msgid "Mossy Cobble Stone"
-msgstr ""
+msgstr "Đá sỏi có rêu"
 
 #: src/content_mapnode.cpp:2277
 msgid "Steel Block"
-msgstr ""
+msgstr "Khối thép"
 
 #: src/content_mapnode.cpp:2294
 msgid "Mithril Block"
-msgstr ""
+msgstr "Khối đá mithril"
 
 #: src/content_mapnode.cpp:2310
 msgid "Stone Knob"
-msgstr ""
+msgstr "Buả đấm bằng đá"
 
 #: src/content_mapnode.cpp:2311
 msgid "Rough Stone Knob"
-msgstr ""
+msgstr "Buả đấm bằng đá nham"
 
 #: src/content_mapnode.cpp:2312
 msgid "Sandstone Knob"
-msgstr ""
+msgstr "Buả đấm bằng sa thạch"
 
 #: src/content_mapnode.cpp:2313
 msgid "Wooden Knob"
-msgstr ""
+msgstr "Buả đấm bằng gỗ"
 
 #: src/content_mapnode.cpp:2314
 msgid "Junglewood Knob"
-msgstr ""
+msgstr "Buả đấm bằng gỗ cây cọ"
 
 #: src/content_mapnode.cpp:2315
 msgid "Pine Knob"
-msgstr ""
+msgstr "Buả đấm bằng gỗ cây thông"
 
 #: src/content_mapnode.cpp:2319
 msgid "Copper Block"
-msgstr ""
+msgstr "Khối đồng"
 
 #: src/content_mapnode.cpp:2336
 msgid "Gold Block"
-msgstr ""
+msgstr "Khối vàng"
 
 #: src/content_mapnode.cpp:2353
 msgid "Silver Block"
-msgstr ""
+msgstr "Khối bạc"
 
 #: src/content_mapnode.cpp:2370
 msgid "Tin Block"
-msgstr ""
+msgstr "Khối thiếc"
 
 #: src/content_mapnode.cpp:2387
 msgid "Quartz Block"
-msgstr ""
+msgstr "Khối thạch anh"
 
 #: src/content_mapnode.cpp:2404
 msgid "Stone Tiles"
-msgstr ""
+msgstr "Đá lát"
 
 #: src/content_mapnode.cpp:2426
 msgid "Wood Tiles"
-msgstr ""
+msgstr "Gạch mem gỗ"
 
 #: src/content_mapnode_circuit.cpp:36
 msgid "Mithril Wire"
-msgstr ""
+msgstr "Dây mithril"
 
 #: src/content_mapnode_circuit.cpp:60
 msgid "Copper Wire"
-msgstr ""
+msgstr "Dây đồng"
 
 #: src/content_mapnode_circuit.cpp:92
 msgid "Reactor"
-msgstr ""
+msgstr "Lò phản ứng"
 
 #: src/content_mapnode_circuit.cpp:115
 msgid "Solar Panel"
-msgstr ""
+msgstr "Bảng pin mặt trời"
 
 #: src/content_mapnode_circuit.cpp:146
 msgid "Water Wheel"
-msgstr ""
+msgstr "Bánh xe nước"
 
 #: src/content_mapnode_circuit.cpp:179
 msgid "Switch"
-msgstr ""
+msgstr "Công tắc"
 
 #: src/content_mapnode_circuit.cpp:215
 msgid "Button"
-msgstr ""
+msgstr "Nút"
 
 #: src/content_mapnode_circuit.cpp:247
 msgid "Stone Pressure Plate"
-msgstr ""
+msgstr "Các tấm đá bắt áp chân"
 
 #: src/content_mapnode_circuit.cpp:276
 msgid "Wood Pressure Plate"
-msgstr ""
+msgstr "Các tấm gỗ bắt áp chân"
 
 #: src/content_mapnode_circuit.cpp:305
 msgid "Not Gate"
-msgstr ""
+msgstr "Cổng mạch điện NOT"
 
 #: src/content_mapnode_circuit.cpp:337
 msgid "Repeater"
-msgstr ""
+msgstr "Máy nhắc lại"
 
 #: src/content_mapnode_circuit.cpp:369 src/content_mapnode_circuit.cpp:393
 msgid "Electric Lamp"
-msgstr ""
+msgstr "Đèn điện"
 
 #: src/content_mapnode_circuit.cpp:427 src/content_mapnode_circuit.cpp:462
 #: src/content_mapnode_circuit.cpp:516 src/content_mapnode_circuit.cpp:537
 #: src/content_mapnode_circuit.cpp:582 src/content_mapnode_circuit.cpp:603
 msgid "Piston"
-msgstr ""
+msgstr "Van đẩy"
 
 #: src/content_mapnode_circuit.cpp:489 src/content_mapnode_circuit.cpp:560
 #: src/content_mapnode_circuit.cpp:626
 msgid "Piston Arm"
-msgstr ""
+msgstr "Tay van đẩy"
 
 #: src/content_mapnode_circuit.cpp:648 src/content_mapnode_circuit.cpp:676
 #: src/content_mapnode_circuit.cpp:730 src/content_mapnode_circuit.cpp:751
 #: src/content_mapnode_circuit.cpp:796 src/content_mapnode_circuit.cpp:817
 msgid "Sticky Piston"
-msgstr ""
+msgstr "Van đẩy dính"
 
 #: src/content_mapnode_circuit.cpp:703 src/content_mapnode_circuit.cpp:774
 #: src/content_mapnode_circuit.cpp:840
 msgid "Sticky Piston Arm"
-msgstr ""
+msgstr "Tay van đẩy dính"
 
 #: src/content_mapnode_door.cpp:38 src/content_mapnode_door.cpp:65
 #: src/content_mapnode_door.cpp:639 src/content_mapnode_door.cpp:665
 msgid "Wood Door"
-msgstr ""
+msgstr "Cửa gỗ"
 
 #: src/content_mapnode_door.cpp:97 src/content_mapnode_door.cpp:125
 #: src/content_mapnode_door.cpp:743 src/content_mapnode_door.cpp:770
 msgid "Steel Door"
-msgstr ""
+msgstr "Cửa thép"
 
 #: src/content_mapnode_door.cpp:158 src/content_mapnode_door.cpp:184
 #: src/content_mapnode_door.cpp:692 src/content_mapnode_door.cpp:717
 msgid "Glass Door"
-msgstr ""
+msgstr "Cửa kính"
 
 #: src/content_mapnode_door.cpp:215 src/content_mapnode_door.cpp:243
 #: src/content_mapnode_door.cpp:798 src/content_mapnode_door.cpp:824
 msgid "Wood Windowed Door"
-msgstr ""
+msgstr "Cửa gỗ có cửa sổ"
 
 #: src/content_mapnode_door.cpp:277 src/content_mapnode_door.cpp:306
 #: src/content_mapnode_door.cpp:851 src/content_mapnode_door.cpp:878
 msgid "Steel Windowed Door"
-msgstr ""
+msgstr "Cửa thép có cửa sổ"
 
 #: src/content_mapnode_door.cpp:342 src/content_mapnode_door.cpp:369
 #: src/content_mapnode_door.cpp:907 src/content_mapnode_door.cpp:935
 msgid "Right Hanging Wood Door"
-msgstr ""
+msgstr "Cửa gỗ bên phải"
 
 #: src/content_mapnode_door.cpp:399 src/content_mapnode_door.cpp:426
 #: src/content_mapnode_door.cpp:964 src/content_mapnode_door.cpp:991
 msgid "Right Hanging Glass Door"
-msgstr ""
+msgstr "Cửa kính bên phải"
 
 #: src/content_mapnode_door.cpp:456 src/content_mapnode_door.cpp:484
 #: src/content_mapnode_door.cpp:1019 src/content_mapnode_door.cpp:1048
 msgid "Right Hanging Steel Door"
-msgstr ""
+msgstr "Cửa thép"
 
 #: src/content_mapnode_door.cpp:515 src/content_mapnode_door.cpp:543
 #: src/content_mapnode_door.cpp:1078 src/content_mapnode_door.cpp:1106
 msgid "Right Hanging Wood Windowed Door"
-msgstr ""
+msgstr "Cửa gỗ bên phải với cửa sổ"
 
 #: src/content_mapnode_door.cpp:574 src/content_mapnode_door.cpp:603
 #: src/content_mapnode_door.cpp:1135 src/content_mapnode_door.cpp:1164
 msgid "Right Hanging Steel Windowed Door"
-msgstr ""
+msgstr "Cửa thép bên phải với cửa sổ"
 
 #: src/content_mapnode_door.cpp:1195 src/content_mapnode_door.cpp:1374
 #: src/content_mapnode_door.cpp:1431
 msgid "Wood Hatch"
-msgstr ""
+msgstr "Cửa gỗ sập"
 
 #: src/content_mapnode_door.cpp:1222 src/content_mapnode_door.cpp:1402
 #: src/content_mapnode_door.cpp:1459
 msgid "Steel Hatch"
-msgstr ""
+msgstr "Cửa sập thép"
 
 #: src/content_mapnode_door.cpp:1249
 msgid "Wood Windowed Hatch"
-msgstr ""
+msgstr "Cửa gỗ sập có cửa sổ"
 
 #: src/content_mapnode_door.cpp:1278
 msgid "Steel Windowed Hatch"
-msgstr ""
+msgstr "Cửa sập thép có cửa sổ"
 
 #: src/content_mapnode_door.cpp:1309 src/content_mapnode_door.cpp:1489
 msgid "Wood Gate"
-msgstr ""
+msgstr "Cổng gỗ"
 
 #: src/content_mapnode_door.cpp:1342 src/content_mapnode_door.cpp:1515
 msgid "Steel Gate"
-msgstr ""
+msgstr "Cổng thép"
 
 #: src/content_mapnode_farm.cpp:38
 msgid "Farm Dirt"
-msgstr ""
+msgstr "Đất làm cho màu mỡ"
 
 #: src/content_mapnode_farm.cpp:68
 msgid "Trellis"
-msgstr ""
+msgstr "Giàn mắt cáo"
 
 #: src/content_mapnode_farm.cpp:91
 msgid "Wheat Seeds"
-msgstr ""
+msgstr "Hột mì"
 
 #: src/content_mapnode_farm.cpp:111
 msgid "Melon Seeds"
-msgstr ""
+msgstr "Hột dưa"
 
 #: src/content_mapnode_farm.cpp:133
 msgid "Pumpkin Seeds"
-msgstr ""
+msgstr "Hột bí đỏ"
 
 #: src/content_mapnode_farm.cpp:155
 msgid "Potato Seeds"
-msgstr ""
+msgstr "Hột khoai tây"
 
 #: src/content_mapnode_farm.cpp:177
 msgid "Carrot Seeds"
-msgstr ""
+msgstr "Hột cà rốt"
 
 #: src/content_mapnode_farm.cpp:199
 msgid "Beetroot Seeds"
-msgstr ""
+msgstr "Hột củ cải"
 
 #: src/content_mapnode_farm.cpp:221
 msgid "Grape Seeds"
-msgstr ""
+msgstr "Hột nho"
 
 #: src/content_mapnode_farm.cpp:243
 msgid "Cotton Seeds"
-msgstr ""
+msgstr "Hột bông gòn"
 
 #: src/content_mapnode_farm.cpp:286
 msgid "Melon"
-msgstr ""
+msgstr "Dưa"
 
 #: src/content_mapnode_farm.cpp:303
 msgid "Pumpkin"
-msgstr ""
+msgstr "Bí đỏ"
 
 #: src/content_mapnode_farm.cpp:322
 msgid "Jack' O Lantern"
-msgstr ""
+msgstr "Đèn bí ngô"
 
 #: src/content_mapnode_farm.cpp:423
 msgid "Grape"
-msgstr ""
+msgstr "Nho"
 
 #: src/content_mapnode_farm.cpp:469
 msgid "Trellis Grape"
-msgstr ""
+msgstr "Nho giàn mắt cáo"
 
 #: src/content_mapnode_farm.cpp:493 src/content_mapnode_farm.cpp:512
 msgid "Dead Vine"
-msgstr ""
+msgstr "Cây nho chết"
 
 #: src/content_mapnode_furniture.cpp:36
 msgid "Book Shelf"
-msgstr ""
+msgstr "Kệ sách"
 
 #: src/content_mapnode_furniture.cpp:74
 msgid "Junglewood Book Shelf"
-msgstr ""
+msgstr "Kệ sách bằng gỗ cây cọ"
 
 #: src/content_mapnode_furniture.cpp:112
 msgid "Pine Book Shelf"
-msgstr ""
+msgstr "Kệ sách bằng gỗ cây thông"
 
 #: src/content_mapnode_furniture.cpp:150 src/content_mapnode_furniture.cpp:169
 #: src/content_mapnode_furniture.cpp:188 src/content_mapnode_furniture.cpp:207
 #: src/content_mapnode_furniture.cpp:226 src/content_mapnode_furniture.cpp:245
 msgid "Couch"
-msgstr ""
+msgstr "Ghế tràng kỷ"
 
 #: src/content_mapnode_furniture.cpp:274 src/content_mapnode_furniture.cpp:293
 #: src/content_mapnode_furniture.cpp:312 src/content_mapnode_furniture.cpp:331
 #: src/content_mapnode_furniture.cpp:350 src/content_mapnode_furniture.cpp:369
 msgid "Blue Couch"
-msgstr ""
+msgstr "Ghế tràng kỷ xanh"
 
 #: src/content_mapnode_furniture.cpp:392 src/content_mapnode_furniture.cpp:411
 #: src/content_mapnode_furniture.cpp:430 src/content_mapnode_furniture.cpp:449
 #: src/content_mapnode_furniture.cpp:468 src/content_mapnode_furniture.cpp:487
 msgid "Green Couch"
-msgstr ""
+msgstr "Ghế tràng kỷ xanh lá cây"
 
 #: src/content_mapnode_furniture.cpp:510 src/content_mapnode_furniture.cpp:529
 #: src/content_mapnode_furniture.cpp:548 src/content_mapnode_furniture.cpp:567
 #: src/content_mapnode_furniture.cpp:586 src/content_mapnode_furniture.cpp:605
 msgid "Orange Couch"
-msgstr ""
+msgstr "Ghế tràng kỷ cam"
 
 #: src/content_mapnode_furniture.cpp:628 src/content_mapnode_furniture.cpp:647
 #: src/content_mapnode_furniture.cpp:666 src/content_mapnode_furniture.cpp:685
 #: src/content_mapnode_furniture.cpp:704 src/content_mapnode_furniture.cpp:723
 msgid "Purple Couch"
-msgstr ""
+msgstr "Ghế tràng kỷ tím"
 
 #: src/content_mapnode_furniture.cpp:746 src/content_mapnode_furniture.cpp:765
 #: src/content_mapnode_furniture.cpp:784 src/content_mapnode_furniture.cpp:803
 #: src/content_mapnode_furniture.cpp:822 src/content_mapnode_furniture.cpp:841
 msgid "Red Couch"
-msgstr ""
+msgstr "Ghế tràng kỷ đỏ"
 
 #: src/content_mapnode_furniture.cpp:864 src/content_mapnode_furniture.cpp:883
 #: src/content_mapnode_furniture.cpp:902 src/content_mapnode_furniture.cpp:921
 #: src/content_mapnode_furniture.cpp:940 src/content_mapnode_furniture.cpp:959
 msgid "Yellow Couch"
-msgstr ""
+msgstr "Ghế tràng kỷ vàng"
 
 #: src/content_mapnode_furniture.cpp:982
 #: src/content_mapnode_furniture.cpp:1001
@@ -2240,55 +2236,55 @@ msgstr ""
 #: src/content_mapnode_furniture.cpp:1058
 #: src/content_mapnode_furniture.cpp:1077
 msgid "Black Couch"
-msgstr ""
+msgstr "Ghế tràng kỷ đen"
 
 #: src/content_mapnode_furniture.cpp:1100
 msgid "Chair"
-msgstr ""
+msgstr "Cái ghế"
 
 #: src/content_mapnode_furniture.cpp:1149
 msgid "Table"
-msgstr ""
+msgstr "Cái bàn"
 
 #: src/content_mapnode_furniture.cpp:1206
 #: src/content_mapnode_furniture.cpp:1239
 msgid "Bed"
-msgstr ""
+msgstr "Cái giường"
 
 #: src/content_mapnode_furniture.cpp:1267
 #: src/content_mapnode_furniture.cpp:1300
 msgid "Blue Bed"
-msgstr ""
+msgstr "Cái giường xanh"
 
 #: src/content_mapnode_furniture.cpp:1328
 #: src/content_mapnode_furniture.cpp:1361
 msgid "Green Bed"
-msgstr ""
+msgstr "Cái giường xanh lá cây"
 
 #: src/content_mapnode_furniture.cpp:1389
 #: src/content_mapnode_furniture.cpp:1422
 msgid "Orange Bed"
-msgstr ""
+msgstr "Cái giường cam"
 
 #: src/content_mapnode_furniture.cpp:1450
 #: src/content_mapnode_furniture.cpp:1483
 msgid "Purple Bed"
-msgstr ""
+msgstr "Cái giường tím"
 
 #: src/content_mapnode_furniture.cpp:1511
 #: src/content_mapnode_furniture.cpp:1544
 msgid "Red Bed"
-msgstr ""
+msgstr "Cái giường đỏ"
 
 #: src/content_mapnode_furniture.cpp:1572
 #: src/content_mapnode_furniture.cpp:1605
 msgid "Yellow Bed"
-msgstr ""
+msgstr "Cái giường vàng"
 
 #: src/content_mapnode_furniture.cpp:1633
 #: src/content_mapnode_furniture.cpp:1666
 msgid "Black Bed"
-msgstr ""
+msgstr "Cái giường đen"
 
 #: src/content_mapnode_furniture.cpp:1694
 #: src/content_mapnode_furniture.cpp:1729
@@ -2297,561 +2293,561 @@ msgstr ""
 
 #: src/content_mapnode_furniture.cpp:1753
 msgid "Colorful Painting"
-msgstr ""
+msgstr "Bức tranh nhiều màu"
 
 #: src/content_mapnode_furniture.cpp:1788
 msgid "Red Rose Painting"
-msgstr ""
+msgstr "Bức tranh bông hồng đỏ"
 
 #: src/content_mapnode_furniture.cpp:1823
 msgid "Field Painting"
-msgstr ""
+msgstr "Bức tranh cánh đồng"
 
 #: src/content_mapnode_furniture.cpp:1858
 msgid "Blue Flower Painting"
-msgstr ""
+msgstr "Bức tranh hoa tím"
 
 #: src/content_mapnode_furniture.cpp:1893
 msgid "Painting Canvas"
-msgstr ""
+msgstr "Vải bạt bức tranh"
 
 #: src/content_mapnode_furniture.cpp:1931
 msgid "Clock"
-msgstr ""
+msgstr "Đồng hồ"
 
 #: src/content_mapnode_plants.cpp:42
 msgid "Tree"
-msgstr ""
+msgstr "Cây sồi"
 
 #: src/content_mapnode_plants.cpp:63
 msgid "Apple Tree"
-msgstr ""
+msgstr "Cây táo"
 
 #: src/content_mapnode_plants.cpp:84
 msgid "Jungle Tree"
-msgstr ""
+msgstr "Cây cọ"
 
 #: src/content_mapnode_plants.cpp:104
 msgid "Conifer Tree"
-msgstr ""
+msgstr "Cây thông"
 
 #: src/content_mapnode_plants.cpp:125
 msgid "Young Tree"
-msgstr ""
+msgstr "Cây sồi non"
 
 #: src/content_mapnode_plants.cpp:146
 msgid "Young Jungle Tree"
-msgstr ""
+msgstr "Cây cọ nhỏ"
 
 #: src/content_mapnode_plants.cpp:167
 msgid "Young Apple Tree"
-msgstr ""
+msgstr "Cây táo nhỏ"
 
 #: src/content_mapnode_plants.cpp:188
 msgid "Young Conifer Tree"
-msgstr ""
+msgstr "Cây thông nhỏ"
 
 #: src/content_mapnode_plants.cpp:209
 msgid "Jungle Grass"
-msgstr ""
+msgstr "Cỏ rừng"
 
 #: src/content_mapnode_plants.cpp:231 src/content_mapnode_plants.cpp:268
 #: src/content_mapnode_plants.cpp:305 src/content_mapnode_plants.cpp:342
 msgid "Leaves"
-msgstr ""
+msgstr "Lá cây sồi"
 
 #: src/content_mapnode_plants.cpp:379
 msgid "Apple Tree Leaves"
-msgstr ""
+msgstr "Lá cây táo"
 
 #: src/content_mapnode_plants.cpp:416
 msgid "Jungle Leaves"
-msgstr ""
+msgstr "Lá cây cọ"
 
 #: src/content_mapnode_plants.cpp:453
 msgid "Conifer Leaves"
-msgstr ""
+msgstr "Lá cây thông"
 
 #: src/content_mapnode_plants.cpp:490 src/content_mapnode_plants.cpp:522
 #: src/content_mapnode_plants.cpp:554
 msgid "Trimmed Leaves"
-msgstr ""
+msgstr "Lá cây sồi cắt tỉa"
 
 #: src/content_mapnode_plants.cpp:586
 msgid "Trimmed Apple Tree Leaves"
-msgstr ""
+msgstr "Lá cây táo cắt tỉa"
 
 #: src/content_mapnode_plants.cpp:618
 msgid "Trimmed Jungle Leaves"
-msgstr ""
+msgstr "Lá cây cọ cắt tỉa"
 
 #: src/content_mapnode_plants.cpp:650
 msgid "Trimmed Conifer Leaves"
-msgstr ""
+msgstr "Lá cây thông cắt tỉa"
 
 #: src/content_mapnode_plants.cpp:682
 msgid "Apple Tree Blossom"
-msgstr ""
+msgstr "Hoa cây táo"
 
 #: src/content_mapnode_plants.cpp:714
 msgid "Trimmed Apple Tree Blossom"
-msgstr ""
+msgstr "Hoa cây táo cắt tỉa"
 
 #: src/content_mapnode_plants.cpp:743
 msgid "Cactus Blossom"
-msgstr ""
+msgstr "Hoa cây xương rồng"
 
 #: src/content_mapnode_plants.cpp:764
 msgid "Cactus Flower"
-msgstr ""
+msgstr "Bông cây xương rồng"
 
 #: src/content_mapnode_plants.cpp:807
 msgid "Cactus"
-msgstr ""
+msgstr "Cây xương rồng"
 
 #: src/content_mapnode_plants.cpp:870
 msgid "Papyrus"
-msgstr ""
+msgstr "Cây cói giấy"
 
 #: src/content_mapnode_plants.cpp:893
 msgid "Sapling"
-msgstr ""
+msgstr "Cây sồi non"
 
 #: src/content_mapnode_plants.cpp:915
 msgid "Apple Tree Sapling"
-msgstr ""
+msgstr "Cây táo non"
 
 #: src/content_mapnode_plants.cpp:937
 msgid "Jungle Sapling"
-msgstr ""
+msgstr "Cây cọ non"
 
 #: src/content_mapnode_plants.cpp:959
 msgid "Conifer Sapling"
-msgstr ""
+msgstr "Cây thông non"
 
 #: src/content_mapnode_plants.cpp:1006 src/content_mapnode_plants.cpp:1030
 msgid "Wild Grass"
-msgstr ""
+msgstr "Cỏ dại"
 
 #: src/content_mapnode_plants.cpp:1053
 msgid "Dead Grass"
-msgstr ""
+msgstr "Cỏ chết"
 
 #: src/content_mapnode_plants.cpp:1076
 msgid "Flower Stem"
-msgstr ""
+msgstr "Cọng hoa"
 
 #: src/content_mapnode_plants.cpp:1099
 msgid "Rose"
-msgstr ""
+msgstr "Hoa hồng"
 
 #: src/content_mapnode_plants.cpp:1123
 msgid "Daffodil"
-msgstr ""
+msgstr "Hoa vàng"
 
 #: src/content_mapnode_plants.cpp:1147
 msgid "Tulip"
-msgstr ""
+msgstr "Hoa uất kim hương"
 
 #: src/content_mapnode_plants.cpp:1171
 msgid "Tea Seeds"
-msgstr ""
+msgstr "Hột trà"
 
 #: src/content_mapnode_plants.cpp:1191
 msgid "Tea Plant"
-msgstr ""
+msgstr "Cây trà"
 
 #: src/content_mapnode_plants.cpp:1215
 msgid "Coffee Beans"
-msgstr ""
+msgstr "Hột cà phê"
 
 #: src/content_mapnode_plants.cpp:1236
 msgid "Coffee Plant"
-msgstr ""
+msgstr "Cây cà phê"
 
 #: src/content_mapnode_slab.cpp:37
 msgid "Rough Stone Slab"
-msgstr ""
+msgstr "Miếng đá nham"
 
 #: src/content_mapnode_slab.cpp:56 src/content_mapnode_slab.cpp:442
 msgid "Cobble Stone Slab"
-msgstr ""
+msgstr "Miếng đá sỏi"
 
 #: src/content_mapnode_slab.cpp:75
 msgid "Mossy Cobble Stone Slab"
-msgstr ""
+msgstr "Miếng đá sỏi có rêu"
 
 #: src/content_mapnode_slab.cpp:94
 msgid "Stone Slab"
-msgstr ""
+msgstr "Miếng đá"
 
 #: src/content_mapnode_slab.cpp:112
 msgid "Wood Slab"
-msgstr ""
+msgstr "Miếng gỗ"
 
 #: src/content_mapnode_slab.cpp:132
 msgid "Jungle Wood Slab"
-msgstr ""
+msgstr "Miếng gỗ cọ"
 
 #: src/content_mapnode_slab.cpp:152
 msgid "Brick Slab"
-msgstr ""
+msgstr "Miếng gạch"
 
 #: src/content_mapnode_slab.cpp:174
 msgid "Sand Stone Slab"
-msgstr ""
+msgstr "Miếng sa thạch"
 
 #: src/content_mapnode_slab.cpp:192 src/content_mapnode_slab.cpp:551
 msgid "Glass Slab"
-msgstr ""
+msgstr "Miếng kính"
 
 #: src/content_mapnode_slab.cpp:218 src/content_mapnode_slab.cpp:574
 msgid "Blue Glass Slab"
-msgstr ""
+msgstr "Miếng kính xanh"
 
 #: src/content_mapnode_slab.cpp:245 src/content_mapnode_slab.cpp:597
 msgid "Green Glass Slab"
-msgstr ""
+msgstr "Miếng kính xanh lá cây"
 
 #: src/content_mapnode_slab.cpp:272 src/content_mapnode_slab.cpp:620
 msgid "Orange Glass Slab"
-msgstr ""
+msgstr "Miếng kính cam"
 
 #: src/content_mapnode_slab.cpp:299 src/content_mapnode_slab.cpp:643
 msgid "Purple Glass Slab"
-msgstr ""
+msgstr "Miếng kính tím"
 
 #: src/content_mapnode_slab.cpp:326 src/content_mapnode_slab.cpp:666
 msgid "Red Glass Slab"
-msgstr ""
+msgstr "Miếng kính đỏ"
 
 #: src/content_mapnode_slab.cpp:353 src/content_mapnode_slab.cpp:689
 msgid "Yellow Glass Slab"
-msgstr ""
+msgstr "Miếng kính vàng"
 
 #: src/content_mapnode_slab.cpp:380 src/content_mapnode_slab.cpp:712
 msgid "Black Glass Slab"
-msgstr ""
+msgstr "Miếng kính đen"
 
 #: src/content_mapnode_slab.cpp:407
 msgid "Limestone Slab"
-msgstr ""
+msgstr "Đá vôi"
 
 #: src/content_mapnode_special.cpp:37
 msgid "Fence"
-msgstr ""
+msgstr "Hàng rào"
 
 #: src/content_mapnode_special.cpp:66
 msgid "Steel Fence"
-msgstr ""
+msgstr "Hàng rào thép"
 
 #: src/content_mapnode_special.cpp:94
 msgid "Jungle Wood Fence"
-msgstr ""
+msgstr "Hàng rào gỗ cây cọ"
 
 #: src/content_mapnode_special.cpp:123
 msgid "Pine Fence"
-msgstr ""
+msgstr "Hàng rào gỗ cây thông"
 
 #: src/content_mapnode_special.cpp:152
 msgid "Steel Bars"
-msgstr ""
+msgstr "Chấn song thép"
 
 #: src/content_mapnode_special.cpp:182
 msgid "Rail"
-msgstr ""
+msgstr "Đường sắt"
 
 #: src/content_mapnode_special.cpp:215
 msgid "Terracotta Roof Tile"
-msgstr ""
+msgstr "Mái ngói đất nung"
 
 #: src/content_mapnode_special.cpp:232
 msgid "Wood Roof Tile"
-msgstr ""
+msgstr "Mái ngói gỗ"
 
 #: src/content_mapnode_special.cpp:250
 msgid "Asphalt Roof Tile"
-msgstr ""
+msgstr "Mái ngói nhựa đường"
 
 #: src/content_mapnode_special.cpp:274
 msgid "Stone Roof Tile"
-msgstr ""
+msgstr "Mái ngói đá"
 
 #: src/content_mapnode_special.cpp:291
 msgid "Glass Roof Tile"
-msgstr ""
+msgstr "Mái ngói kính"
 
 #: src/content_mapnode_special.cpp:314
 msgid "Blue Glass Roof Tile"
-msgstr ""
+msgstr "Mái ngói kính xanh"
 
 #: src/content_mapnode_special.cpp:338
 msgid "Green Glass Roof Tile"
-msgstr ""
+msgstr "Mái ngói kính xanh lá cây"
 
 #: src/content_mapnode_special.cpp:362
 msgid "Orange Glass Roof Tile"
-msgstr ""
+msgstr "Mái ngói kính cam"
 
 #: src/content_mapnode_special.cpp:386
 msgid "Purple Glass Roof Tile"
-msgstr ""
+msgstr "Mái ngói kính tím"
 
 #: src/content_mapnode_special.cpp:410
 msgid "Red Glass Roof Tile"
-msgstr ""
+msgstr "Mái ngói kính đỏ"
 
 #: src/content_mapnode_special.cpp:434
 msgid "Yellow Glass Roof Tile"
-msgstr ""
+msgstr "Mái ngói kính vàng"
 
 #: src/content_mapnode_special.cpp:458
 msgid "Black Glass Roof Tile"
-msgstr ""
+msgstr "Mái ngói kính đen"
 
 #: src/content_mapnode_special.cpp:482
 msgid "Thatch Roof Tile"
-msgstr ""
+msgstr "Mái ngói lá rơm khô"
 
 #: src/content_mapnode_special.cpp:501 src/content_mapnode_special.cpp:561
 #: src/content_mapnode_special.cpp:596
 msgid "Ladder"
-msgstr ""
+msgstr "Thang"
 
 #: src/content_mapnode_special.cpp:631
 msgid "Border Stone"
-msgstr ""
+msgstr "Đá làm biên giới"
 
 #: src/content_mapnode_special.cpp:658
 msgid "Book"
-msgstr ""
+msgstr "Sách"
 
 #: src/content_mapnode_special.cpp:690
 msgid "Cook Book"
-msgstr ""
+msgstr "Sách dạy nấu ăn"
 
 #: src/content_mapnode_special.cpp:722
 msgid "Decraft Book"
-msgstr ""
+msgstr "Sách tháo đồ"
 
 #: src/content_mapnode_special.cpp:753 src/content_mapnode_special.cpp:948
 #: src/content_nodemeta.cpp:2693
 msgid "Diary"
-msgstr ""
+msgstr "Lịch ghi nhớ"
 
 #: src/content_mapnode_special.cpp:785
 msgid "Craft Book"
-msgstr ""
+msgstr "Sách làm đồ"
 
 #: src/content_mapnode_special.cpp:825
 msgid "Reverse Craft Book"
-msgstr ""
+msgstr "Sách làm đồ ngược chiều"
 
 #: src/content_mapnode_special.cpp:863
 msgid "Guide"
-msgstr ""
+msgstr "Sách chỉ dẫn"
 
 #: src/content_mapnode_special.cpp:892 src/content_nodemeta.h:471
 msgid "Cooking Guide"
-msgstr ""
+msgstr "Sách chỉ dẫn nấu ăn"
 
 #: src/content_mapnode_special.cpp:920 src/content_nodemeta.h:497
 msgid "Decrafting Guide"
-msgstr ""
+msgstr "Sách chỉ dẫn tháo đồ"
 
 #: src/content_mapnode_special.cpp:977 src/content_nodemeta.h:413
 msgid "Craft Guide"
-msgstr ""
+msgstr "Sách chỉ dẫn làm đồ"
 
 #: src/content_mapnode_special.cpp:1005 src/content_nodemeta.h:440
 msgid "Reverse Craft Guide"
-msgstr ""
+msgstr "Sách chỉ dẫn làm đồ ngược chiều"
 
 #: src/content_mapnode_special.cpp:1033 src/content_mapnode_special.cpp:1054
 msgid "Fire"
-msgstr ""
+msgstr "Lửa"
 
 #: src/content_mapnode_special.cpp:1074
 msgid "Torch"
-msgstr ""
+msgstr "Ngọn đuốc"
 
 #: src/content_mapnode_special.cpp:1102 src/content_mapnode_special.cpp:1129
 #: src/content_mapnode_special.cpp:1163
 msgid "Sign"
-msgstr ""
+msgstr "Ký hiệu"
 
 #: src/content_mapnode_special.cpp:1192 src/content_mapnode_special.cpp:1223
 #: src/content_mapnode_special.cpp:1256
 msgid "Locking Sign"
-msgstr ""
+msgstr "Ký hiệu khoá"
 
 #: src/content_mapnode_special.cpp:1286 src/content_nodemeta.cpp:500
 msgid "Chest"
-msgstr ""
+msgstr "Tủ"
 
 #: src/content_mapnode_special.cpp:1310 src/content_nodemeta.cpp:775
 msgid "Creative Chest"
-msgstr ""
+msgstr "Tủ tất cả mọi thứ"
 
 #: src/content_mapnode_special.cpp:1331
 msgid "Locking Chest"
-msgstr ""
+msgstr "Tủ có khoá"
 
 #: src/content_mapnode_special.cpp:1362
 msgid "Safe"
-msgstr ""
+msgstr "Tủ sắt"
 
 #: src/content_mapnode_special.cpp:1384 src/content_mapnode_special.cpp:1411
 msgid "Furnace"
-msgstr ""
+msgstr "Lò"
 
 #: src/content_mapnode_special.cpp:1429 src/content_mapnode_special.cpp:1457
 msgid "Locking Furnace"
-msgstr ""
+msgstr "Lò có khoá"
 
 #: src/content_mapnode_special.cpp:1475 src/content_mapnode_special.cpp:1501
 msgid "Incinerator"
-msgstr ""
+msgstr "Lò đốt rác"
 
 #: src/content_mapnode_special.cpp:1519
 msgid "Nyan Cat"
-msgstr ""
+msgstr "Mèo Nyan Cat"
 
 #: src/content_mapnode_special.cpp:1533
 msgid "Rainbow"
-msgstr ""
+msgstr "Cầu vồng"
 
 #: src/content_mapnode_special.cpp:1545
 msgid "Unbaked Flower Pot"
-msgstr ""
+msgstr "Chậu cảnh chưa qua lò"
 
 #: src/content_mapnode_special.cpp:1567
 msgid "Flower Pot"
-msgstr ""
+msgstr "Chậu cảnh"
 
 #: src/content_mapnode_special.cpp:1585
 msgid "Cobblestone Wall"
-msgstr ""
+msgstr "Tường đá sỏi"
 
 #: src/content_mapnode_special.cpp:1609
 msgid "Rough Stone Wall"
-msgstr ""
+msgstr "Tường đá nhám"
 
 #: src/content_mapnode_special.cpp:1633
 msgid "Mossy Cobblestone Wall"
-msgstr ""
+msgstr "Tường đá sỏi có rêu"
 
 #: src/content_mapnode_special.cpp:1657
 msgid "Stone Wall"
-msgstr ""
+msgstr "Tường đá"
 
 #: src/content_mapnode_special.cpp:1681
 msgid "Sand Stone Wall"
-msgstr ""
+msgstr "Tường sa thạch"
 
 #: src/content_mapnode_special.cpp:1705
 msgid "Limestone Wall"
-msgstr ""
+msgstr "Tường đá vôi"
 
 #: src/content_mapnode_special.cpp:1729
 msgid "TNT"
-msgstr ""
+msgstr "Chất thuốc nổ mạnh"
 
 #: src/content_mapnode_special.cpp:1749
 msgid "In-Progress explosion - how did you get this???"
-msgstr ""
+msgstr "Thuốc nổ mạnh đang nổ - sao có được này???"
 
 #: src/content_mapnode_special.cpp:1769
 msgid "Steam"
-msgstr ""
+msgstr "Hơi nước"
 
 #: src/content_mapnode_special.cpp:1790
 msgid "Home Flag"
-msgstr ""
+msgstr "Cờ nhà"
 
 #: src/content_mapnode_special.cpp:1836
 msgid "Blue Home Flag"
-msgstr ""
+msgstr "Cờ nhà xanh"
 
 #: src/content_mapnode_special.cpp:1861
 msgid "Green Home Flag"
-msgstr ""
+msgstr "Cờ nhà xanh lá cây"
 
 #: src/content_mapnode_special.cpp:1886
 msgid "Orange Home Flag"
-msgstr ""
+msgstr "Cờ nhà cam"
 
 #: src/content_mapnode_special.cpp:1911
 msgid "Purple Home Flag"
-msgstr ""
+msgstr "Cờ nhà tím"
 
 #: src/content_mapnode_special.cpp:1936
 msgid "Red Home Flag"
-msgstr ""
+msgstr "Cờ nhà đỏ"
 
 #: src/content_mapnode_special.cpp:1961
 msgid "Yellow Home Flag"
-msgstr ""
+msgstr "Cờ nhà vàng"
 
 #: src/content_mapnode_special.cpp:1986
 msgid "Black Home Flag"
-msgstr ""
+msgstr "Cờ nhà xanh"
 
 #: src/content_mapnode_special.cpp:2011
 msgid "Life Support System"
-msgstr ""
+msgstr "Thiết bị duy trì sự sống"
 
 #: src/content_mapnode_special.cpp:2035
 msgid "Parcel"
-msgstr ""
+msgstr "Gói bưu kiện"
 
 #: src/content_mapnode_special.cpp:2061
 msgid "Cauldron"
-msgstr ""
+msgstr "Vạc để nấu"
 
 #: src/content_mapnode_special.cpp:2082 src/content_nodemeta.cpp:3312
 msgid "Forge"
-msgstr ""
+msgstr "Lò rèn"
 
 #: src/content_mapnode_special.cpp:2110
 msgid "Forge Fire"
-msgstr ""
+msgstr "Lửa lò rèn"
 
 #: src/content_mapnode_stair.cpp:37
 msgid "Rough Stone Stair"
-msgstr ""
+msgstr "Cầu thang đá nhám"
 
 #: src/content_mapnode_stair.cpp:54
 msgid "Cobble Stone Stair"
-msgstr ""
+msgstr "Cầu thang đá sỏi"
 
 #: src/content_mapnode_stair.cpp:71
 msgid "Mossy Cobble Stone Stair"
-msgstr ""
+msgstr "Cầu thang đá sỏi có rêu"
 
 #: src/content_mapnode_stair.cpp:88
 msgid "Stone Stair"
-msgstr ""
+msgstr "Cầu thang đá"
 
 #: src/content_mapnode_stair.cpp:106
 msgid "Wood Stair"
-msgstr ""
+msgstr "Cầu thang gỗ"
 
 #: src/content_mapnode_stair.cpp:125
 msgid "Jungle Wood Stair"
-msgstr ""
+msgstr "Cầu thang gỗ cây cọ"
 
 #: src/content_mapnode_stair.cpp:144
 msgid "Brick Stair"
-msgstr ""
+msgstr "Cầu thang gạch"
 
 #: src/content_mapnode_stair.cpp:166
 msgid "Sand Stone Stair"
-msgstr ""
+msgstr "Cầu thang sa thạch"
 
 #: src/content_mapnode_stair.cpp:183
 msgid "Limestone Stair"
-msgstr ""
+msgstr "Cầu thang đá vôi"
 
 #: src/content_mob.cpp:412
 msgid "Oerkki"
@@ -2866,9 +2862,8 @@ msgid "Fireball"
 msgstr ""
 
 #: src/content_mob.cpp:532
-#, fuzzy
 msgid "Doe"
-msgstr "Xong"
+msgstr ""
 
 #: src/content_mob.cpp:558 src/content_mob.cpp:589
 msgid "Stag"
@@ -2903,9 +2898,8 @@ msgid "Grey Kitten"
 msgstr ""
 
 #: src/content_mob.cpp:845
-#, fuzzy
 msgid "White Kitten"
-msgstr "Da trắng"
+msgstr ""
 
 #: src/content_mob.cpp:871
 msgid "Siamese Kitten"
@@ -2918,12 +2912,12 @@ msgstr ""
 #: src/content_nodemeta.cpp:75 src/content_nodemeta.cpp:138
 #: src/content_nodemeta.cpp:2677 src/content_nodemeta.cpp:2776
 msgid "Save"
-msgstr ""
+msgstr "Dành sự tiến tới"
 
 #: src/content_nodemeta.cpp:185
 #, c-format
 msgid "%s's Home Flag"
-msgstr ""
+msgstr "%s's cờ nhà"
 
 #: src/content_nodemeta.cpp:269 src/content_nodemeta.cpp:282
 #: src/content_nodemeta.cpp:436 src/content_nodemeta.cpp:449
@@ -2949,68 +2943,68 @@ msgstr ""
 #: src/content_nodemeta.cpp:573
 #, c-format
 msgid "Locking Chest owned by '%s'"
-msgstr ""
+msgstr "Tủ có khoá của '%s'"
 
 #: src/content_nodemeta.cpp:647
 #, c-format
 msgid "Safe owned by '%s'"
-msgstr ""
+msgstr "Tủ sắt của '%s'"
 
 #: src/content_nodemeta.cpp:816 src/content_nodemeta.cpp:1870
 #: src/content_nodemeta.cpp:2157 src/content_nodemeta.cpp:2349
 #: src/content_nodemeta.cpp:2563
 #, c-format
 msgid "Page %d of %d"
-msgstr ""
+msgstr "Trang %d of %d"
 
 #: src/content_nodemeta.cpp:820 src/content_nodemeta.cpp:1898
 #: src/content_nodemeta.cpp:2176 src/content_nodemeta.cpp:2358
 #: src/content_nodemeta.cpp:2579
 msgid "<< Previous Page"
-msgstr ""
+msgstr "<< Trang trước"
 
 #: src/content_nodemeta.cpp:826 src/content_nodemeta.cpp:1904
 #: src/content_nodemeta.cpp:2182 src/content_nodemeta.cpp:2364
 #: src/content_nodemeta.cpp:2585
 msgid "Next Page >>"
-msgstr ""
+msgstr "Trang tiếp >>"
 
 #: src/content_nodemeta.cpp:869
 #, c-format
 msgid "Border Stone owned by '%s'"
-msgstr ""
+msgstr "Đá làm biên giới của '%s'"
 
 #: src/content_nodemeta.cpp:944
 msgid "Furnace is overloaded"
-msgstr ""
+msgstr "Lò có đồ nhiều quá"
 
 #: src/content_nodemeta.cpp:945
 msgid "Furnace is out of fuel"
-msgstr ""
+msgstr "Lò hết chất đốt"
 
 #: src/content_nodemeta.cpp:947
 msgid "Furnace is inactive"
-msgstr ""
+msgstr "Lò không hoạt động"
 
 #: src/content_nodemeta.cpp:950
 msgid "Furnace is active"
-msgstr ""
+msgstr "Lò đang cháy"
 
 #: src/content_nodemeta.cpp:1209
 msgid "Locking Furnace is overloaded"
-msgstr ""
+msgstr "Lò có khoá có đồ nhiều quá"
 
 #: src/content_nodemeta.cpp:1210
 msgid "Locking Furnace is out of fuel"
-msgstr ""
+msgstr "Lò có khoá hết chất đốt"
 
 #: src/content_nodemeta.cpp:1212
 msgid "Locking Furnace is inactive"
-msgstr ""
+msgstr "Lò có khoá không hoạt động"
 
 #: src/content_nodemeta.cpp:1215
 msgid "Locking Furnace is active"
-msgstr ""
+msgstr "Lò có khoá đang cháy"
 
 #: src/content_nodemeta.cpp:1470
 msgid "Armed Explosive: about to detonate"
@@ -3560,51 +3554,51 @@ msgstr ""
 
 #: src/guiMainMenu.cpp:562
 msgid "None"
-msgstr ""
+msgstr "Không vật gì"
 
 #: src/guiMainMenu.cpp:563
 msgid "Passive"
-msgstr ""
+msgstr "Bị động"
 
 #: src/guiMainMenu.cpp:564
 msgid "Passive & Aggressive"
-msgstr ""
+msgstr "Bị động và hay gây hấn"
 
 #: src/guiMainMenu.cpp:565
 msgid "Passive, Aggressive, & Destructive"
-msgstr ""
+msgstr "Bị động, hay gây hấn, và phá hoại"
 
 #: src/guiMainMenu.cpp:579
 msgid "Player Damage"
-msgstr ""
+msgstr "Làm hỏng người"
 
 #: src/guiMainMenu.cpp:584
 msgid "Suffocation/Drowning"
-msgstr ""
+msgstr "Sự nghẹt thở/dìm chết"
 
 #: src/guiMainMenu.cpp:589
 msgid "Hunger"
-msgstr ""
+msgstr "Sự đói"
 
 #: src/guiMainMenu.cpp:594
 msgid "Tool Wear"
-msgstr ""
+msgstr "Dụng cụ bị mòn"
 
 #: src/guiMainMenu.cpp:599
 msgid "Dangerous Fire"
-msgstr ""
+msgstr "Lửa nguy hiểm"
 
 #: src/guiMainMenu.cpp:604
 msgid "Infinite Inventory"
-msgstr ""
+msgstr "Kiểm kê không bờ bến"
 
 #: src/guiMainMenu.cpp:609
 msgid "Initial Inventory"
-msgstr ""
+msgstr "Cho đồ đầu trò chơi"
 
 #: src/guiMainMenu.cpp:614
 msgid "Droppable Inventory"
-msgstr ""
+msgstr "Kiểm kê bỏ được"
 
 #: src/guiMainMenu.cpp:619
 msgid "Death drops Inventory"
@@ -3612,322 +3606,320 @@ msgstr ""
 
 #: src/guiMainMenu.cpp:661
 msgid "Hide Map Options"
-msgstr ""
+msgstr "Trốn chọn lựa thế giới"
 
 #: src/guiMainMenu.cpp:666
 msgid "Create New Map"
-msgstr ""
+msgstr "Làm thế giới mới"
 
 #: src/guiMainMenu.cpp:672
 msgid "Warning! Your old map will be deleted!"
-msgstr ""
+msgstr "Coi chưng! Làm như vậy sẽ xóa thế giới cũ của bạn!"
 
 #: src/guiMainMenu.cpp:678
 msgid "Map Type"
-msgstr ""
+msgstr "Kiểu thế giới"
 
 #: src/guiMainMenu.cpp:685
 msgid "Flat"
-msgstr ""
+msgstr "Bằng phẳng"
 
 #: src/guiMainMenu.cpp:686
 msgid "Flatter"
-msgstr ""
+msgstr "Phẳng hơn"
 
 #: src/guiMainMenu.cpp:687
 msgid "Smoother"
-msgstr ""
+msgstr "Bằng hơn"
 
 #: src/guiMainMenu.cpp:688
 msgid "Default"
-msgstr ""
+msgstr "Vắng mặt"
 
 #: src/guiMainMenu.cpp:689
 msgid "Hilly"
-msgstr ""
+msgstr "Có nhiều đồi"
 
 #: src/guiMainMenu.cpp:690
 msgid "Mountains"
-msgstr ""
+msgstr "Núi"
 
 #: src/guiMainMenu.cpp:691
 msgid "Crazy"
-msgstr ""
+msgstr "Rất không đều"
 
 #: src/guiMainMenu.cpp:692
 msgid "Crazy Hills"
-msgstr ""
+msgstr "Đồi rất không đều"
 
 #: src/guiMainMenu.cpp:714
 msgid "Use Fixed Seed"
-msgstr ""
+msgstr "Dụng số sinh ra thế giới"
 
 #: src/guiMainMenu.cpp:720
 msgid "Map Seed"
-msgstr ""
+msgstr "Số sinh ra thế giới"
 
 #: src/guiMainMenu.cpp:737
 msgid "Clear Map"
-msgstr ""
+msgstr "Làm trong sạch thế giới"
 
 #: src/guiMainMenu.cpp:742
 msgid "Warning! This will delete all construction from your map!"
-msgstr ""
+msgstr "Coi chưng! Làm như vậy sẽ xóa tất cả các tòa nhà từ thế giới của bạn!"
 
 #: src/guiMainMenu.cpp:760
 msgid ""
 "Voxelands\n"
 "http://www.voxelands.com/\n"
 "By Lisa 'darkrose' Milne <lisa@ltmnet.com> and contributors."
-msgstr ""
+msgstr "Voxelands\nhttp://www.voxelands.com/\nĐược làm bởi Lisa 'darkrose' Milne <lisa@ltmnet.com> và người giúp sức khác"
 
 #: src/guiMainMenu.cpp:767
 msgid "Programmers"
-msgstr ""
+msgstr "Người lập trình trên máy tính"
 
 #: src/guiMainMenu.cpp:770
 msgid "Artists and Modellers"
-msgstr ""
+msgstr "Nghệ sĩ và người làm mẫu vật"
 
 #: src/guiMainMenu.cpp:773
 msgid "Translators"
-msgstr ""
+msgstr "Người dịch"
 
 #: src/guiMainMenu.cpp:776
 msgid "Documentation Writters"
-msgstr ""
+msgstr "Người viết sự chứng minh bằng tài liệu"
 
 #: src/guiMainMenu.cpp:779
 msgid "Testers, Packagers, and Builders"
-msgstr ""
+msgstr "Người thử, người đóng gói, và người xây dựng phần mềm của máy tính"
 
 #: src/guiMainMenu.cpp:782
 msgid "Music and Sound Effects Composers"
-msgstr ""
+msgstr "Người sáng tác âm nhạc và âm thanh"
 
 #: src/guiMainMenu.cpp:785
 msgid "Other Contributers, and Special Thanks"
-msgstr ""
+msgstr "Người giúp sức khác, và cảm ơn đặc biệt"
 
 #: src/guiMainMenu.cpp:789
 msgid ""
 "Based on Minetest-C55 by Perttu Ahola <celeron55@gmail.com>\n"
-"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
-"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
-"Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
-msgstr ""
+"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
+msgstr "Có nguồn gốc từ Minetest-C55 được làm bởi Perttu Ahola <celeron55@gmail.com>\nvà người giúp sức: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... và nhiều người ngẫu nhiên hơn!"
 
 #: src/guiMessageMenu.cpp:112 src/guiPauseMenu.cpp:143
 msgid "Continue"
-msgstr ""
+msgstr "Tiếp tục"
 
 #: src/guiPasswordChange.cpp:105
 msgid "Old Password"
-msgstr ""
+msgstr "Mật mã cũ"
 
 #: src/guiPasswordChange.cpp:123
 msgid "New Password"
-msgstr ""
+msgstr "Mật mã mới"
 
 #: src/guiPasswordChange.cpp:140
 msgid "Confirm Password"
-msgstr ""
+msgstr "Xác nhận mật mã mới"
 
 #: src/guiPasswordChange.cpp:158
 msgid "Change"
-msgstr ""
+msgstr "Thay đổi"
 
 #: src/guiPasswordChange.cpp:166
 msgid "Passwords do not match!"
-msgstr ""
+msgstr "Mật mã lộn; xin làm lại"
 
 #: src/guiPauseMenu.cpp:103
 msgid "Voxelands by darkrose and contributors"
-msgstr ""
+msgstr "Voxelands được làm bởi darkrose và người giúp sức"
 
 #: src/guiPauseMenu.cpp:149
 msgid "Change Password"
-msgstr ""
+msgstr "Thay đổi mật mã"
 
 #: src/guiPauseMenu.cpp:161
 msgid "Disconnect"
-msgstr ""
+msgstr "Làm rời ra"
 
 #: src/guiSettingsMenu.cpp:70
 msgid "Forward"
-msgstr ""
+msgstr "Đi tới"
 
 #: src/guiSettingsMenu.cpp:71
 msgid "Backward"
-msgstr ""
+msgstr "Đi lùi"
 
 #: src/guiSettingsMenu.cpp:72 src/keycode.cpp:234
 msgid "Left"
-msgstr ""
+msgstr "Đi trái"
 
 #: src/guiSettingsMenu.cpp:73 src/keycode.cpp:234
 msgid "Right"
-msgstr ""
+msgstr "Đi phải"
 
 #: src/guiSettingsMenu.cpp:74
 msgid "Jump"
-msgstr ""
+msgstr "Nhảy"
 
 #: src/guiSettingsMenu.cpp:75
 msgid "Sneak"
-msgstr ""
+msgstr "Ú oà"
 
 #: src/guiSettingsMenu.cpp:76
 msgid "Inventory"
-msgstr ""
+msgstr "Sự kiểm kê"
 
 #: src/guiSettingsMenu.cpp:77
 msgid "Use Item"
-msgstr ""
+msgstr "Dùng đồ"
 
 #: src/guiSettingsMenu.cpp:78
 msgid "Chat"
-msgstr ""
+msgstr "Nói chuyện phiếm"
 
 #: src/guiSettingsMenu.cpp:79
 msgid "Command"
-msgstr ""
+msgstr "Đanh từ điều khiển"
 
 #: src/guiSettingsMenu.cpp:80
 msgid "Range Select"
-msgstr ""
+msgstr "Chọn phạm vi nhìn"
 
 #: src/guiSettingsMenu.cpp:81
 msgid "Toggle Fly"
-msgstr ""
+msgstr "Bật/tắt khả năng để bay"
 
 #: src/guiSettingsMenu.cpp:82 src/keycode.cpp:234
 msgid "Up"
-msgstr ""
+msgstr "Đi lên"
 
 #: src/guiSettingsMenu.cpp:83 src/keycode.cpp:234
 msgid "Down"
-msgstr ""
+msgstr "Đi xuống"
 
 #: src/guiSettingsMenu.cpp:84
 msgid "Run"
-msgstr ""
+msgstr "Chạy"
 
 #: src/guiSettingsMenu.cpp:85
 msgid "Examine/Open"
-msgstr ""
+msgstr "Xem/mở"
 
 #: src/guiSettingsMenu.cpp:86
 msgid "Take Screenshot"
-msgstr ""
+msgstr "Chụp hình"
 
 #: src/guiSettingsMenu.cpp:87
 msgid "Show/Hide HUD"
-msgstr ""
+msgstr "Bật/tắt màn hình thông tin"
 
 #: src/guiSettingsMenu.cpp:88
 msgid "Show/Hide Chat"
-msgstr ""
+msgstr "Bật/tắt chỗ nói chuyện"
 
 #: src/guiSettingsMenu.cpp:89
 msgid "Toggle Fog"
-msgstr ""
+msgstr "Bật/tắt sương mù"
 
 #: src/guiSettingsMenu.cpp:93
 msgid "Increase Viewing Range"
-msgstr ""
+msgstr "Tăng lên phạm vị thấy"
 
 #: src/guiSettingsMenu.cpp:94
 msgid "Decrease Viewing Range"
-msgstr ""
+msgstr "Giảm bớt phạm vị thấy"
 
 #: src/guiSettingsMenu.cpp:96
 msgid "Previous Item"
-msgstr ""
+msgstr "Đồ trước"
 
 #: src/guiSettingsMenu.cpp:97
 msgid "Next Item"
-msgstr ""
+msgstr "Đồ sau"
 
 #: src/guiSettingsMenu.cpp:277
 msgid "Main Menu"
-msgstr ""
+msgstr "Bảng chọn chính"
 
 #: src/guiSettingsMenu.cpp:284 src/guiSettingsMenu.cpp:311
 msgid "Controls"
-msgstr ""
+msgstr "Quyền năng trò chơi"
 
 #: src/guiSettingsMenu.cpp:290 src/guiSettingsMenu.cpp:342
 msgid "Graphics"
-msgstr ""
+msgstr "Hình ảnh"
 
 #: src/guiSettingsMenu.cpp:296 src/guiSettingsMenu.cpp:386
 msgid "Video"
-msgstr ""
+msgstr "Viđêô"
 
 #: src/guiSettingsMenu.cpp:302 src/guiSettingsMenu.cpp:429
 msgid "Sound"
-msgstr ""
+msgstr "Âm thanh"
 
 #: src/guiSettingsMenu.cpp:348
 msgid "Fancy trees"
-msgstr ""
+msgstr "Cây với chi tiết hình"
 
 #: src/guiSettingsMenu.cpp:353
 msgid "Smooth Lighting"
-msgstr ""
+msgstr "Sự thắp đèn bằng"
 
 #: src/guiSettingsMenu.cpp:358
 msgid "3D Clouds"
-msgstr ""
+msgstr "Đám mây có 3 chiều"
 
 #: src/guiSettingsMenu.cpp:363
 msgid "Opaque water"
-msgstr ""
+msgstr "Nước mờ"
 
 #: src/guiSettingsMenu.cpp:368
 msgid "Classic HUD"
-msgstr ""
+msgstr "Màn hình thông tin cũ"
 
 #: src/guiSettingsMenu.cpp:373
 msgid "Wieldring Index"
-msgstr ""
+msgstr "Tròn kiểm kê"
 
 #: src/guiSettingsMenu.cpp:379 src/guiSettingsMenu.cpp:422
 msgid "Some settings cannot be changed in-game."
-msgstr ""
+msgstr "Có một số cài đặt không thể thay đổi trong trò chơi"
 
 #: src/guiSettingsMenu.cpp:392
 msgid "Fullscreen"
-msgstr ""
+msgstr "Toàn màn hình"
 
 #: src/guiSettingsMenu.cpp:397
 msgid "Particles"
-msgstr ""
+msgstr "Hạt lửa và bụi"
 
 #: src/guiSettingsMenu.cpp:402
 msgid "Mip-Mapping"
-msgstr ""
+msgstr "MIP-mapping"
 
 #: src/guiSettingsMenu.cpp:407
 msgid "Bi-Linear Filtering"
-msgstr ""
+msgstr "Lọc ảnh hai đường"
 
 #: src/guiSettingsMenu.cpp:412
 msgid "Tri-Linear Filtering"
-msgstr ""
+msgstr "Lọc ảnh ba đường"
 
 #: src/guiSettingsMenu.cpp:417
 msgid "Anisotropic Filtering"
-msgstr ""
+msgstr "Lọc ảnh không đẳng hướng"
 
 #: src/guiSettingsMenu.cpp:435
 msgid "Volume:"
-msgstr ""
+msgstr "Âm lượng"
 
 #: src/guiSettingsMenu.cpp:609
 msgid "press Key"
-msgstr ""
+msgstr "Đánh nút"
 
 #: src/hud.cpp:785
 msgid "Summer"
@@ -3953,48 +3945,48 @@ msgstr ""
 #: src/hud.cpp:828
 #, c-format
 msgid "Energy Boost: %d:%02d"
-msgstr ""
+msgstr "Tăng năng lượng: %d:%02d"
 
 #: src/hud.cpp:853
 #, c-format
 msgid "Cold Protection: %d:%02d"
-msgstr ""
+msgstr "Bảo vệ lạnh: %d:%02d"
 
 #: src/inventory.cpp:230 src/inventory.cpp:352
 msgid "Cookable: Yes"
-msgstr ""
+msgstr "Được nấu: được"
 
 #: src/inventory.cpp:235 src/inventory.cpp:357 src/inventory.cpp:532
 msgid "Fuel Burn Time: "
-msgstr ""
+msgstr "Giờ cháy thiêu chất đốt:"
 
 #: src/inventory.cpp:321
 msgid "Hunger: "
-msgstr ""
+msgstr "Sự đói:"
 
 #: src/inventory.cpp:327
 msgid "Health: "
-msgstr ""
+msgstr "Sức khoẻ:"
 
 #: src/inventory.cpp:334
 msgid "Cold Protection: "
-msgstr ""
+msgstr "Bảo vệ lạnh:"
 
 #: src/inventory.cpp:343
 msgid "Energy Boost: "
-msgstr ""
+msgstr "Tăng năng lượng:"
 
 #: src/inventory.cpp:521
 msgid "Strength: "
-msgstr ""
+msgstr "Sức mạnh:"
 
 #: src/inventory.cpp:524
 msgid "Speed: "
-msgstr ""
+msgstr "Tốc độ:"
 
 #: src/inventory.cpp:527
 msgid "Level: "
-msgstr ""
+msgstr "Trình độ:"
 
 #: src/inventory.cpp:557
 msgid "Contains: "
@@ -4002,360 +3994,360 @@ msgstr ""
 
 #: src/inventory.cpp:643
 msgid "Armour: "
-msgstr ""
+msgstr "Áo giáp:"
 
 #: src/inventory.cpp:649
 msgid "Warmth: "
-msgstr ""
+msgstr "Hơi nóng:"
 
 #: src/inventory.cpp:655
 msgid "Pressure: "
-msgstr ""
+msgstr "Áp lực:"
 
 #: src/inventory.cpp:661
 msgid "Suffocation: "
-msgstr ""
+msgstr "Sự nghẹt thở:"
 
 #: src/inventory.cpp:667
 msgid "Durability: "
-msgstr ""
+msgstr "Tính bền:"
 
 #: src/inventory.cpp:672
 msgid "Effect Boost: "
-msgstr ""
+msgstr "Tăng tác dụng"
 
 #: src/keycode.cpp:229
 msgid "Left Button"
-msgstr ""
+msgstr "Nút trái chuột máy tính"
 
 #: src/keycode.cpp:229
 msgid "Middle Button"
-msgstr ""
+msgstr "Nút giữa chuột máy tính"
 
 #: src/keycode.cpp:229
 msgid "Right Button"
-msgstr ""
+msgstr "Nút phải chuột máy tính"
 
 #: src/keycode.cpp:229
 msgid "X Button 1"
-msgstr ""
+msgstr "Nút X 1"
 
 #: src/keycode.cpp:230
 msgid "Back"
-msgstr ""
+msgstr "Lại"
 
 #: src/keycode.cpp:230
 msgid "Clear"
-msgstr ""
+msgstr "Diệt trừ"
 
 #: src/keycode.cpp:230
 msgid "Return"
-msgstr ""
+msgstr "Enter"
 
 #: src/keycode.cpp:230
 msgid "Tab"
-msgstr ""
+msgstr "Tab"
 
 #: src/keycode.cpp:230
 msgid "X Button 2"
-msgstr ""
+msgstr "Nút X 2"
 
 #: src/keycode.cpp:231
 msgid "Capital"
-msgstr ""
+msgstr "Chữ viết hoa"
 
 #: src/keycode.cpp:231
 msgid "Control"
-msgstr ""
+msgstr "Control"
 
 #: src/keycode.cpp:231
 msgid "Kana"
-msgstr ""
+msgstr "Kana"
 
 #: src/keycode.cpp:231
 msgid "Menu"
-msgstr ""
+msgstr "Bảng chọn"
 
 #: src/keycode.cpp:231
 msgid "Pause"
-msgstr ""
+msgstr "Pause"
 
 #: src/keycode.cpp:231
 msgid "Shift"
-msgstr ""
+msgstr "Shift"
 
 #: src/keycode.cpp:232
 msgid "Convert"
-msgstr ""
+msgstr "Đổi"
 
 #: src/keycode.cpp:232
 msgid "Escape"
-msgstr ""
+msgstr "Escape"
 
 #: src/keycode.cpp:232
 msgid "Final"
-msgstr ""
+msgstr "Cuối cùng"
 
 #: src/keycode.cpp:232
 msgid "Junja"
-msgstr ""
+msgstr "Junja"
 
 #: src/keycode.cpp:232
 msgid "Kanji"
-msgstr ""
+msgstr "Kanji"
 
 #: src/keycode.cpp:232
 msgid "Nonconvert"
-msgstr ""
+msgstr "Không đổi"
 
 #: src/keycode.cpp:233
 msgid "Accept"
-msgstr ""
+msgstr "Nhận"
 
 #: src/keycode.cpp:233
 msgid "End"
-msgstr ""
+msgstr "End"
 
 #: src/keycode.cpp:233
 msgid "Home"
-msgstr ""
+msgstr "Home"
 
 #: src/keycode.cpp:233
 msgid "Mode Change"
-msgstr ""
+msgstr "Thay đổi cách"
 
 #: src/keycode.cpp:233
 msgid "Next"
-msgstr ""
+msgstr "Tiếp sau"
 
 #: src/keycode.cpp:233
 msgid "Prior"
-msgstr ""
+msgstr "Trước"
 
 #: src/keycode.cpp:233
 msgid "Space"
-msgstr ""
+msgstr "Space"
 
 #: src/keycode.cpp:234
 msgid "Execute"
-msgstr ""
+msgstr "Thi hành"
 
 #: src/keycode.cpp:234
 msgid "Print"
-msgstr ""
+msgstr "In"
 
 #: src/keycode.cpp:234
 msgid "Select"
-msgstr ""
+msgstr "Chọn"
 
 #: src/keycode.cpp:235
 msgid "Delete"
-msgstr ""
+msgstr "Delete/xoá"
 
 #: src/keycode.cpp:235
 msgid "Help"
-msgstr ""
+msgstr "Sự giúp"
 
 #: src/keycode.cpp:235
 msgid "Insert"
-msgstr ""
+msgstr "Insert"
 
 #: src/keycode.cpp:235
 msgid "Snapshot"
-msgstr ""
+msgstr "Chụp hình"
 
 #: src/keycode.cpp:238
 msgid "Left Windows"
-msgstr ""
+msgstr "Nút Windows trái"
 
 #: src/keycode.cpp:239
 msgid "Apps"
-msgstr ""
+msgstr "Các ứng dụng"
 
 #: src/keycode.cpp:239
 msgid "Numpad 0"
-msgstr ""
+msgstr "Nút phím số 0"
 
 #: src/keycode.cpp:239
 msgid "Numpad 1"
-msgstr ""
+msgstr "Nút phím số 1"
 
 #: src/keycode.cpp:239
 msgid "Right Windows"
-msgstr ""
+msgstr "Nút Windows phải"
 
 #: src/keycode.cpp:239
 msgid "Sleep"
-msgstr ""
+msgstr "Ngủ"
 
 #: src/keycode.cpp:240
 msgid "Numpad 2"
-msgstr ""
+msgstr "Nút phím số 2"
 
 #: src/keycode.cpp:240
 msgid "Numpad 3"
-msgstr ""
+msgstr "Nút phím số 3"
 
 #: src/keycode.cpp:240
 msgid "Numpad 4"
-msgstr ""
+msgstr "Nút phím số 4"
 
 #: src/keycode.cpp:240
 msgid "Numpad 5"
-msgstr ""
+msgstr "Nút phím số 5"
 
 #: src/keycode.cpp:240
 msgid "Numpad 6"
-msgstr ""
+msgstr "Nút phím số 6"
 
 #: src/keycode.cpp:240
 msgid "Numpad 7"
-msgstr ""
+msgstr "Nút phím số 7"
 
 #: src/keycode.cpp:241
 msgid "Numpad *"
-msgstr ""
+msgstr "Nút * trên phím số"
 
 #: src/keycode.cpp:241
 msgid "Numpad +"
-msgstr ""
+msgstr "Nút + trên phím số"
 
 #: src/keycode.cpp:241
 msgid "Numpad -"
-msgstr ""
+msgstr "Nút - trên phím số"
 
 #: src/keycode.cpp:241
 msgid "Numpad /"
-msgstr ""
+msgstr "Nút / trên phím số"
 
 #: src/keycode.cpp:241
 msgid "Numpad 8"
-msgstr ""
+msgstr "Nút phím số 8"
 
 #: src/keycode.cpp:241
 msgid "Numpad 9"
-msgstr ""
+msgstr "Nút phím số 9"
 
 #: src/keycode.cpp:245
 msgid "Num Lock"
-msgstr ""
+msgstr "Nút bật phím số Num Lock"
 
 #: src/keycode.cpp:245
 msgid "Scroll Lock"
-msgstr ""
+msgstr "Scroll Lock"
 
 #: src/keycode.cpp:246
 msgid "Left Shift"
-msgstr ""
+msgstr "Nút Shift trái"
 
 #: src/keycode.cpp:246
 msgid "Right Shift"
-msgstr ""
+msgstr "Nút Shift phải"
 
 #: src/keycode.cpp:247
 msgid "Left Control"
-msgstr ""
+msgstr "Nút Control trái"
 
 #: src/keycode.cpp:247
 msgid "Left Menu"
-msgstr ""
+msgstr "Nút Menu trái"
 
 #: src/keycode.cpp:247
 msgid "Right Control"
-msgstr ""
+msgstr "Nút Control phải"
 
 #: src/keycode.cpp:247
 msgid "Right Menu"
-msgstr ""
+msgstr "Nút Control phải"
 
 #: src/keycode.cpp:249
 msgid "Comma"
-msgstr ""
+msgstr "Dấu phẩy"
 
 #: src/keycode.cpp:249
 msgid "Minus"
-msgstr ""
+msgstr "Dấu trừ"
 
 #: src/keycode.cpp:249
 msgid "Period"
-msgstr ""
+msgstr "Dấu chấm"
 
 #: src/keycode.cpp:249
 msgid "Plus"
-msgstr ""
+msgstr "Dấu cộng"
 
 #: src/keycode.cpp:253
 msgid "Attn"
-msgstr ""
+msgstr "Attn"
 
 #: src/keycode.cpp:253
 msgid "CrSel"
-msgstr ""
+msgstr "CrSel"
 
 #: src/keycode.cpp:254
 msgid "Erase OEF"
-msgstr ""
+msgstr "Xóa OEF"
 
 #: src/keycode.cpp:254
 msgid "ExSel"
-msgstr ""
+msgstr "ExSel"
 
 #: src/keycode.cpp:254
 msgid "OEM Clear"
-msgstr ""
+msgstr "OEM Clear"
 
 #: src/keycode.cpp:254
 msgid "PA1"
-msgstr ""
+msgstr "PA1"
 
 #: src/keycode.cpp:254
 msgid "Play"
-msgstr ""
+msgstr "Chơi"
 
 #: src/keycode.cpp:254
 msgid "Zoom"
-msgstr ""
+msgstr "Phóng to"
 
 #: src/main.cpp:1131
 msgid "Setting Up UI"
-msgstr ""
+msgstr "Đang xếp đặt giao diện sử dụng"
 
 #: src/main.cpp:1154
 msgid "Loading MapNodes"
-msgstr ""
+msgstr "Đang tải MapNodes"
 
 #: src/main.cpp:1156
 msgid "Loading Creatures"
-msgstr ""
+msgstr "Đang tải sinh vật và động vật"
 
 #: src/main.cpp:1159
 msgid "Setting Up Sound"
-msgstr ""
+msgstr "Đang xếp đặt âm thanh"
 
 #: src/mapnode.cpp:282
 msgid "Loading Base MapNodes"
-msgstr ""
+msgstr "Đang tải MapNodes căn bản"
 
 #: src/mapnode.cpp:286
 msgid "Loading Circuit MapNodes"
-msgstr ""
+msgstr "Đang tải MapNodes mạch điện"
 
 #: src/mapnode.cpp:290
 msgid "Loading Plant MapNodes"
-msgstr ""
+msgstr "Đang tải MapNodes cây cối"
 
 #: src/mapnode.cpp:294
 msgid "Loading Farming MapNodes"
-msgstr ""
+msgstr "Đang tải MapNodes nông nghiệp"
 
 #: src/mapnode.cpp:298
 msgid "Loading Decorative MapNodes"
-msgstr ""
+msgstr "Đang tải MapNodes trang trí"
 
 #: src/mapnode.cpp:302
 msgid "Loading Interactive MapNodes"
-msgstr ""
+msgstr "Đang tải MapNodes tương tác"
 
 #: src/mapnode.cpp:306
 msgid "Loading Special MapNodes"
-msgstr ""
+msgstr "Đang tải MapNodes đặc biệt"

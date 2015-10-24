@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Lisa 'darkrose' Milne
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Jay <joeyxtreme@hotmail.nl>, 2014
 # NOH <neinmeinleben@outlook.com>, 2015
@@ -10,14 +10,13 @@ msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-19 01:55+1000\n"
-"PO-Revision-Date: 2015-08-23 11:20+0000\n"
+"PO-Revision-Date: 2015-10-18 16:24+0000\n"
 "Last-Translator: NOH <neinmeinleben@outlook.com>\n"
-"Language-Team: Dutch (Netherlands) (http://www.transifex.com/voxelands/"
-"voxelands/language/nl_NL/)\n"
-"Language: nl_NL\n"
+"Language-Team: Dutch (Netherlands) (http://www.transifex.com/voxelands/voxelands/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/character_creator.cpp:55
@@ -230,17 +229,9 @@ msgstr "Canvas Schoenen"
 
 #: src/character_creator.cpp:202
 msgid ""
-"Here you can create your default character, this is how other players will "
-"see you in-game. When you join a new server you will start with the clothing "
-"you select here. Additional clothing, both protective and decorative, can be "
-"crafted in-game.\n"
+"Here you can create your default character, this is how other players will see you in-game. When you join a new server you will start with the clothing you select here. Additional clothing, both protective and decorative, can be crafted in-game.\n"
 "You can return here from the main menu anytime to change your character."
-msgstr ""
-"Hier kun je jouw personage aanmaken, zo zien de andere spelers jouw "
-"personage in het spel. Als je naar een nieuwe server gaat dan start je met "
-"de kleding die je daar hebt selecteerd. Aanvullende kleding, zowel "
-"beschermend als decoratief, kun je in het spel maken. Je kunt hier altijd "
-"terugkeren via het hoofdmenu om jouw personage te veranderen."
+msgstr "Hier kun je jouw personage aanmaken, zo zien de andere spelers jouw personage in het spel. Als je naar een nieuwe server gaat dan start je met de kleding die je daar hebt selecteerd. Aanvullende kleding, zowel beschermend als decoratief, kun je in het spel maken. Je kunt hier altijd terugkeren via het hoofdmenu om jouw personage te veranderen."
 
 #: src/character_creator.cpp:223
 msgid "Create Your Character"
@@ -1588,7 +1579,7 @@ msgstr "Kalksteen"
 
 #: src/content_mapnode.cpp:219
 msgid "Rock"
-msgstr ""
+msgstr "Rots"
 
 #: src/content_mapnode.cpp:241
 msgid "Ice"
@@ -2299,7 +2290,7 @@ msgstr "Zwarte Bed"
 #: src/content_mapnode_furniture.cpp:1694
 #: src/content_mapnode_furniture.cpp:1729
 msgid "Camp Bed"
-msgstr ""
+msgstr "Kamp Bed"
 
 #: src/content_mapnode_furniture.cpp:1753
 msgid "Colorful Painting"
@@ -2860,69 +2851,64 @@ msgid "Limestone Stair"
 msgstr "Kalkstenen Trap"
 
 #: src/content_mob.cpp:412
-#, fuzzy
 msgid "Oerkki"
-msgstr "Oerkkipoeder"
+msgstr "Oerkki"
 
 #: src/content_mob.cpp:463
 msgid "Dungeon Master"
-msgstr ""
+msgstr "Dungeon Master"
 
 #: src/content_mob.cpp:514
-#, fuzzy
 msgid "Fireball"
-msgstr "Vuurvliegje"
+msgstr "Vuurbal"
 
 #: src/content_mob.cpp:532
-#, fuzzy
 msgid "Doe"
-msgstr "Klaar"
+msgstr "Ree"
 
 #: src/content_mob.cpp:558 src/content_mob.cpp:589
 msgid "Stag"
-msgstr ""
+msgstr "Hert"
 
 #: src/content_mob.cpp:639
 msgid "Shark"
-msgstr ""
+msgstr "Haai"
 
 #: src/content_mob.cpp:666
 msgid "Wolf"
-msgstr ""
+msgstr "Wolf"
 
 #: src/content_mob.cpp:696
 msgid "Tame Wolf"
-msgstr ""
+msgstr "Tamme Wolf"
 
 #: src/content_mob.cpp:723
 msgid "Sheep"
-msgstr ""
+msgstr "Schaap"
 
 #: src/content_mob.cpp:754
 msgid "Sheared Sheep"
-msgstr ""
+msgstr "Geschoren Schaap"
 
 #: src/content_mob.cpp:779
-#, fuzzy
 msgid "Snowball"
 msgstr "Sneeuwbal"
 
 #: src/content_mob.cpp:819
 msgid "Grey Kitten"
-msgstr ""
+msgstr "Grijze Kitten"
 
 #: src/content_mob.cpp:845
-#, fuzzy
 msgid "White Kitten"
-msgstr "Witte Huidskleur"
+msgstr "Witte Kitten"
 
 #: src/content_mob.cpp:871
 msgid "Siamese Kitten"
-msgstr ""
+msgstr "Siamese Kitten"
 
 #: src/content_mob.cpp:897
 msgid "Ginger Kitten"
-msgstr ""
+msgstr "Gember Kitten"
 
 #: src/content_nodemeta.cpp:75 src/content_nodemeta.cpp:138
 #: src/content_nodemeta.cpp:2677 src/content_nodemeta.cpp:2776
@@ -2937,23 +2923,23 @@ msgstr "%s's Thuis Vlag"
 #: src/content_nodemeta.cpp:269 src/content_nodemeta.cpp:282
 #: src/content_nodemeta.cpp:436 src/content_nodemeta.cpp:449
 msgid "You can't sleep yet."
-msgstr ""
+msgstr "Je kunt nog niet slapen."
 
 #: src/content_nodemeta.cpp:273 src/content_nodemeta.cpp:440
 msgid "Go to sleep"
-msgstr ""
+msgstr "Go slapen"
 
 #: src/content_nodemeta.cpp:278 src/content_nodemeta.cpp:445
 msgid "Someone else is sleeping here."
-msgstr ""
+msgstr "Iemand anders is hier aan het slapen."
 
 #: src/content_nodemeta.cpp:286 src/content_nodemeta.cpp:453
 msgid "Get out of bed"
-msgstr ""
+msgstr "Ga uit bed"
 
 #: src/content_nodemeta.cpp:432
 msgid "This bed is too uncomfortable to sleep in."
-msgstr ""
+msgstr "Dit bed is to oncomfortabel om in the slapen."
 
 #: src/content_nodemeta.cpp:573
 #, c-format
@@ -3042,8 +3028,7 @@ msgstr "De verbrandingsoven is inactief"
 
 #: src/content_nodemeta.cpp:1633
 msgid "Add fuel, then punch to incinerate wielded item"
-msgstr ""
-"Brandstof toevoegen en dan het voorwerp stoten om het te laten verbranden"
+msgstr "Brandstof toevoegen en dan het voorwerp stoten om het te laten verbranden"
 
 #: src/content_nodemeta.cpp:1874 src/content_nodemeta.cpp:2162
 msgid "Add item here to see recipe"
@@ -3108,9 +3093,7 @@ msgstr "De Ketel heeft geen brondstof meer"
 
 #: src/content_nodemeta.cpp:3218
 msgid "Add fuel, then punch to add or remove water"
-msgstr ""
-"Brandstof toevoegen en dan het voorwerp stoten om water toe te voegen of te "
-"verwijderen"
+msgstr "Brandstof toevoegen en dan het voorwerp stoten om water toe te voegen of te verwijderen"
 
 #: src/content_nodemeta.cpp:3484
 msgid "Show Enchanting"
@@ -3121,9 +3104,8 @@ msgid "Show Crafting"
 msgstr "Laat Crafting zien"
 
 #: src/content_toolitem.cpp:213
-#, fuzzy
 msgid "Small Stone Pick"
-msgstr "Stenen Houweel"
+msgstr "Kleine Stenen Houweel"
 
 #: src/content_toolitem.cpp:236
 msgid "Stone Pick"
@@ -3142,9 +3124,8 @@ msgid "Creative Pick"
 msgstr "Creatieve Houweel"
 
 #: src/content_toolitem.cpp:292
-#, fuzzy
 msgid "Stone Trowel"
-msgstr "Stenen Schep"
+msgstr "Stenen Troffel"
 
 #: src/content_toolitem.cpp:306
 msgid "Stone Shovel"
@@ -3159,9 +3140,8 @@ msgid "Steel Shovel"
 msgstr "Stalen Schep"
 
 #: src/content_toolitem.cpp:348
-#, fuzzy
 msgid "Small Stone Axe"
-msgstr "Stalen Bijl"
+msgstr "Kleine Stenen Bijl"
 
 #: src/content_toolitem.cpp:369
 msgid "Stone Axe"
@@ -3176,9 +3156,8 @@ msgid "Steel Axe"
 msgstr "Stalen Bijl"
 
 #: src/content_toolitem.cpp:411
-#, fuzzy
 msgid "Wooden Club"
-msgstr "Houten Draaiknop"
+msgstr "Houten Club"
 
 #: src/content_toolitem.cpp:426
 msgid "Stone Sword"
@@ -3314,7 +3293,7 @@ msgstr "Mithril Speer"
 
 #: src/content_toolitem.cpp:887
 msgid "Mob Spawner"
-msgstr ""
+msgstr "Mob Spawner"
 
 #: src/game.cpp:209
 msgid "Clothes"
@@ -3501,8 +3480,7 @@ msgstr "Respawn"
 
 #: src/guiFormSpecMenu.cpp:436
 msgid "Left click: Move all items, Right click: Move single item"
-msgstr ""
-"Linker knop: Alle items verplaatsen, Rechter knop: Enkele item verplaatsen"
+msgstr "Linker knop: Alle items verplaatsen, Rechter knop: Enkele item verplaatsen"
 
 #: src/guiFormSpecMenu.cpp:458
 msgid "Write It"
@@ -3626,9 +3604,8 @@ msgid "Droppable Inventory"
 msgstr "Inventaris die je kunt laten droppen"
 
 #: src/guiMainMenu.cpp:619
-#, fuzzy
 msgid "Death drops Inventory"
-msgstr "Inventaris die je kunt laten droppen"
+msgstr "Inventaris dropt als je dood gaat"
 
 #: src/guiMainMenu.cpp:661
 msgid "Hide Map Options"
@@ -3699,10 +3676,7 @@ msgid ""
 "Voxelands\n"
 "http://www.voxelands.com/\n"
 "By Lisa 'darkrose' Milne <lisa@ltmnet.com> and contributors."
-msgstr ""
-"Voxelands\n"
-"http://www.voxelands.com/\n"
-"Gemaakt door Lisa 'darkrose' Milne <lisa@ltmnet.com> en door bijdragers."
+msgstr "Voxelands\nhttp://www.voxelands.com/\nGemaakt door Lisa 'darkrose' Milne <lisa@ltmnet.com> en door bijdragers."
 
 #: src/guiMainMenu.cpp:767
 msgid "Programmers"
@@ -3735,15 +3709,8 @@ msgstr "Andere Bijdragers en Speciale Dank aan"
 #: src/guiMainMenu.cpp:789
 msgid ""
 "Based on Minetest-C55 by Perttu Ahola <celeron55@gmail.com>\n"
-"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
-"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
-"Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
-msgstr ""
-"Gebaseerd op Minetest-C55 door Perttu Ahola <celeron55@gmail.com>\n"
-" en de volgende bijdragers: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), "
-"darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, "
-"Jonathan Neuschafer, thexyz, VanessaE, sfan5... en nog tientalle andere "
-"personen."
+"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
+msgstr "Gebaseerd op Minetest-C55 door Perttu Ahola <celeron55@gmail.com>\n en de volgende bijdragers: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... en nog tientalle andere personen."
 
 #: src/guiMessageMenu.cpp:112 src/guiPauseMenu.cpp:143
 msgid "Continue"
@@ -3959,25 +3926,24 @@ msgstr "Druk op een knop"
 
 #: src/hud.cpp:785
 msgid "Summer"
-msgstr ""
+msgstr "Zomer"
 
 #: src/hud.cpp:788
 msgid "Autumn"
-msgstr ""
+msgstr "Herfst"
 
 #: src/hud.cpp:791
 msgid "Winter"
-msgstr ""
+msgstr "Winter"
 
 #: src/hud.cpp:794
-#, fuzzy
 msgid "Spring"
-msgstr "Draad"
+msgstr "Lente"
 
 #: src/hud.cpp:804
 #, c-format
 msgid "Day %u of Year %u"
-msgstr ""
+msgstr "Dag %u van Jaar %u"
 
 #: src/hud.cpp:828
 #, c-format
@@ -4026,9 +3992,8 @@ msgid "Level: "
 msgstr "Level:"
 
 #: src/inventory.cpp:557
-#, fuzzy
 msgid "Contains: "
-msgstr "Bergen"
+msgstr "Bevat:"
 
 #: src/inventory.cpp:643
 msgid "Armour: "
@@ -4389,15 +4354,3 @@ msgstr "Interactieve MapNodes Laden"
 #: src/mapnode.cpp:306
 msgid "Loading Special MapNodes"
 msgstr "Speciale MapNodes Laden"
-
-#~ msgid "Wooden Sword"
-#~ msgstr "Houten Zwaard"
-
-#~ msgid "Wooden Axe"
-#~ msgstr "Houten Bijl"
-
-#~ msgid "Wooden Shovel"
-#~ msgstr "Houten Schep"
-
-#~ msgid "Wooden Pick"
-#~ msgstr "Houten Houweel"

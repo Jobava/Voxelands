@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Lisa 'darkrose' Milne
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Roman M. Yagodin <roman.yagodin@gmail.com>, 2014-2015
 msgid ""
@@ -9,17 +9,14 @@ msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-19 01:55+1000\n"
-"PO-Revision-Date: 2015-08-19 09:11+0000\n"
+"PO-Revision-Date: 2015-10-19 06:10+0000\n"
 "Last-Translator: Roman M. Yagodin <roman.yagodin@gmail.com>\n"
-"Language-Team: Russian (http://www.transifex.com/voxelands/voxelands/"
-"language/ru/)\n"
-"Language: ru\n"
+"Language-Team: Russian (http://www.transifex.com/voxelands/voxelands/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
-"%100>=11 && n%100<=14)? 2 : 3);\n"
+"Language: ru\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: src/character_creator.cpp:55
 msgid "White Skin"
@@ -231,18 +228,9 @@ msgstr "Холщовая обувь"
 
 #: src/character_creator.cpp:202
 msgid ""
-"Here you can create your default character, this is how other players will "
-"see you in-game. When you join a new server you will start with the clothing "
-"you select here. Additional clothing, both protective and decorative, can be "
-"crafted in-game.\n"
+"Here you can create your default character, this is how other players will see you in-game. When you join a new server you will start with the clothing you select here. Additional clothing, both protective and decorative, can be crafted in-game.\n"
 "You can return here from the main menu anytime to change your character."
-msgstr ""
-"Здесь можно задать исходный внешний вид своего персонажа. Так он будет "
-"выглядеть для других игроков в начале игры - например, при подключении к "
-"новому серверу. Другие предметы одежды, как защитные, так и декоративные, "
-"могут быть созданы в процессе игры.\n"
-"Вы можете вернуться сюда в любое время из главного меню, чтобы изменить "
-"внешний вид вашего персонажа."
+msgstr "Здесь можно задать исходный внешний вид своего персонажа. Так он будет выглядеть для других игроков в начале игры - например, при подключении к новому серверу. Другие предметы одежды, как защитные, так и декоративные, могут быть созданы в процессе игры.\nВы можете вернуться сюда в любое время из главного меню, чтобы изменить внешний вид вашего персонажа."
 
 #: src/character_creator.cpp:223
 msgid "Create Your Character"
@@ -1590,7 +1578,7 @@ msgstr "Известняк"
 
 #: src/content_mapnode.cpp:219
 msgid "Rock"
-msgstr ""
+msgstr "Скала"
 
 #: src/content_mapnode.cpp:241
 msgid "Ice"
@@ -2301,7 +2289,7 @@ msgstr "Черная кровать"
 #: src/content_mapnode_furniture.cpp:1694
 #: src/content_mapnode_furniture.cpp:1729
 msgid "Camp Bed"
-msgstr ""
+msgstr "Кровать"
 
 #: src/content_mapnode_furniture.cpp:1753
 msgid "Colorful Painting"
@@ -2862,69 +2850,64 @@ msgid "Limestone Stair"
 msgstr "Известняковая ступенька"
 
 #: src/content_mob.cpp:412
-#, fuzzy
 msgid "Oerkki"
-msgstr "Пыль Оэркки"
+msgstr "Оэркки"
 
 #: src/content_mob.cpp:463
 msgid "Dungeon Master"
-msgstr ""
+msgstr "Повелитель подземелья"
 
 #: src/content_mob.cpp:514
-#, fuzzy
 msgid "Fireball"
-msgstr "Светлячок"
+msgstr "Огонек"
 
 #: src/content_mob.cpp:532
-#, fuzzy
 msgid "Doe"
-msgstr "Готово"
+msgstr "Лань"
 
 #: src/content_mob.cpp:558 src/content_mob.cpp:589
 msgid "Stag"
-msgstr ""
+msgstr "Олень"
 
 #: src/content_mob.cpp:639
 msgid "Shark"
-msgstr ""
+msgstr "Акула"
 
 #: src/content_mob.cpp:666
 msgid "Wolf"
-msgstr ""
+msgstr "Волк"
 
 #: src/content_mob.cpp:696
 msgid "Tame Wolf"
-msgstr ""
+msgstr "Прирученный волк"
 
 #: src/content_mob.cpp:723
 msgid "Sheep"
-msgstr ""
+msgstr "Овца"
 
 #: src/content_mob.cpp:754
 msgid "Sheared Sheep"
-msgstr ""
+msgstr "Стриженная овца"
 
 #: src/content_mob.cpp:779
-#, fuzzy
 msgid "Snowball"
 msgstr "Снежок"
 
 #: src/content_mob.cpp:819
 msgid "Grey Kitten"
-msgstr ""
+msgstr "Серая кошка"
 
 #: src/content_mob.cpp:845
-#, fuzzy
 msgid "White Kitten"
-msgstr "Белая кожа"
+msgstr "Белая кошка"
 
 #: src/content_mob.cpp:871
 msgid "Siamese Kitten"
-msgstr ""
+msgstr "Сиамская кошка"
 
 #: src/content_mob.cpp:897
 msgid "Ginger Kitten"
-msgstr ""
+msgstr "Рыжая кошка"
 
 #: src/content_nodemeta.cpp:75 src/content_nodemeta.cpp:138
 #: src/content_nodemeta.cpp:2677 src/content_nodemeta.cpp:2776
@@ -2939,23 +2922,23 @@ msgstr "Домашний флаг %s"
 #: src/content_nodemeta.cpp:269 src/content_nodemeta.cpp:282
 #: src/content_nodemeta.cpp:436 src/content_nodemeta.cpp:449
 msgid "You can't sleep yet."
-msgstr ""
+msgstr "Вы не можете спать сейчас."
 
 #: src/content_nodemeta.cpp:273 src/content_nodemeta.cpp:440
 msgid "Go to sleep"
-msgstr ""
+msgstr "Прилечь поспать"
 
 #: src/content_nodemeta.cpp:278 src/content_nodemeta.cpp:445
 msgid "Someone else is sleeping here."
-msgstr ""
+msgstr "Кто-то другой уже спит здесь."
 
 #: src/content_nodemeta.cpp:286 src/content_nodemeta.cpp:453
 msgid "Get out of bed"
-msgstr ""
+msgstr "Встать с кровати"
 
 #: src/content_nodemeta.cpp:432
 msgid "This bed is too uncomfortable to sleep in."
-msgstr ""
+msgstr "Эта кровать слишком неудобная, чтобы спать на ней."
 
 #: src/content_nodemeta.cpp:573
 #, c-format
@@ -3111,8 +3094,7 @@ msgstr "Котел без топлива"
 
 #: src/content_nodemeta.cpp:3218
 msgid "Add fuel, then punch to add or remove water"
-msgstr ""
-"Добавьте топлива и затем ударьте для того, чтобы добавить или убрать воду"
+msgstr "Добавьте топлива и затем ударьте для того, чтобы добавить или убрать воду"
 
 #: src/content_nodemeta.cpp:3484
 msgid "Show Enchanting"
@@ -3123,9 +3105,8 @@ msgid "Show Crafting"
 msgstr "Окно сборки"
 
 #: src/content_toolitem.cpp:213
-#, fuzzy
 msgid "Small Stone Pick"
-msgstr "Каменная кирка"
+msgstr "Малая каменная кирка"
 
 #: src/content_toolitem.cpp:236
 msgid "Stone Pick"
@@ -3144,9 +3125,8 @@ msgid "Creative Pick"
 msgstr "Кирка создателя"
 
 #: src/content_toolitem.cpp:292
-#, fuzzy
 msgid "Stone Trowel"
-msgstr "Каменная лопата"
+msgstr "Каменный мастерок"
 
 #: src/content_toolitem.cpp:306
 msgid "Stone Shovel"
@@ -3161,9 +3141,8 @@ msgid "Steel Shovel"
 msgstr "Стальная лопата"
 
 #: src/content_toolitem.cpp:348
-#, fuzzy
 msgid "Small Stone Axe"
-msgstr "Каменный топор"
+msgstr "Малый каменный топор"
 
 #: src/content_toolitem.cpp:369
 msgid "Stone Axe"
@@ -3178,9 +3157,8 @@ msgid "Steel Axe"
 msgstr "Стальной топор"
 
 #: src/content_toolitem.cpp:411
-#, fuzzy
 msgid "Wooden Club"
-msgstr "Деревянная кнопка"
+msgstr "Деревянная дубина"
 
 #: src/content_toolitem.cpp:426
 msgid "Stone Sword"
@@ -3316,7 +3294,7 @@ msgstr "Мифриловое копье"
 
 #: src/content_toolitem.cpp:887
 msgid "Mob Spawner"
-msgstr ""
+msgstr "Призыватель существ"
 
 #: src/game.cpp:209
 msgid "Clothes"
@@ -3629,9 +3607,8 @@ msgid "Droppable Inventory"
 msgstr "Выбрасывать предметы"
 
 #: src/guiMainMenu.cpp:619
-#, fuzzy
 msgid "Death drops Inventory"
-msgstr "Выбрасывать предметы"
+msgstr "Потеря предметов при смерти"
 
 #: src/guiMainMenu.cpp:661
 msgid "Hide Map Options"
@@ -3702,10 +3679,7 @@ msgid ""
 "Voxelands\n"
 "http://www.voxelands.com/\n"
 "By Lisa 'darkrose' Milne <lisa@ltmnet.com> and contributors."
-msgstr ""
-"Voxelands\n"
-"http://www.voxelands.com/\n"
-"Lisa 'darkrose' Milne <lisa@ltmnet.com> и сотоварищи."
+msgstr "Voxelands\nhttp://www.voxelands.com/\nLisa 'darkrose' Milne <lisa@ltmnet.com> и сотоварищи."
 
 #: src/guiMainMenu.cpp:767
 msgid "Programmers"
@@ -3738,15 +3712,8 @@ msgstr "Другие участники, наши благодарности"
 #: src/guiMainMenu.cpp:789
 msgid ""
 "Based on Minetest-C55 by Perttu Ahola <celeron55@gmail.com>\n"
-"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
-"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
-"Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
-msgstr ""
-" Основано на Minetest-C55, созданном Perttu Ahola <celeron55@gmail.com> \n"
-"и сотоварищи: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
-"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
-"Neuschafer, thexyz, VanessaE, sfan5... и еще десятком-другим случайных "
-"прохожих."
+"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
+msgstr " Основано на Minetest-C55, созданном Perttu Ahola <celeron55@gmail.com> \nи сотоварищи: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... и еще десятком-другим случайных прохожих."
 
 #: src/guiMessageMenu.cpp:112 src/guiPauseMenu.cpp:143
 msgid "Continue"
@@ -3962,25 +3929,24 @@ msgstr "нажмите клавишу"
 
 #: src/hud.cpp:785
 msgid "Summer"
-msgstr ""
+msgstr "Лето"
 
 #: src/hud.cpp:788
 msgid "Autumn"
-msgstr ""
+msgstr "Осень"
 
 #: src/hud.cpp:791
 msgid "Winter"
-msgstr ""
+msgstr "Зима"
 
 #: src/hud.cpp:794
-#, fuzzy
 msgid "Spring"
-msgstr "Веревка"
+msgstr "Весна"
 
 #: src/hud.cpp:804
 #, c-format
 msgid "Day %u of Year %u"
-msgstr ""
+msgstr "День %u года %u"
 
 #: src/hud.cpp:828
 #, c-format
@@ -4029,9 +3995,8 @@ msgid "Level: "
 msgstr "Уровень:"
 
 #: src/inventory.cpp:557
-#, fuzzy
 msgid "Contains: "
-msgstr "Горы"
+msgstr "Содержит:"
 
 #: src/inventory.cpp:643
 msgid "Armour: "
@@ -4392,15 +4357,3 @@ msgstr "Загружаем интерактивные элементы"
 #: src/mapnode.cpp:306
 msgid "Loading Special MapNodes"
 msgstr "Загружаем особые элементы"
-
-#~ msgid "Wooden Sword"
-#~ msgstr "Деревянный меч"
-
-#~ msgid "Wooden Axe"
-#~ msgstr "Деревянный топор"
-
-#~ msgid "Wooden Shovel"
-#~ msgstr "Деревянная лопата"
-
-#~ msgid "Wooden Pick"
-#~ msgstr "Деревянная кирка"

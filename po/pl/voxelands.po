@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Lisa 'darkrose' Milne
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Robert Wolniak <robert.wolniak@gmail.com>, 2014-2015
 msgid ""
@@ -9,16 +9,14 @@ msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-19 01:55+1000\n"
-"PO-Revision-Date: 2015-08-17 06:00+0000\n"
+"PO-Revision-Date: 2015-10-18 15:56+0000\n"
 "Last-Translator: Lisa 'darkrose' Milne <lisa@ltmnet.com>\n"
-"Language-Team: Polish (http://www.transifex.com/voxelands/voxelands/language/"
-"pl/)\n"
-"Language: pl\n"
+"Language-Team: Polish (http://www.transifex.com/voxelands/voxelands/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
+"Language: pl\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: src/character_creator.cpp:55
 msgid "White Skin"
@@ -230,17 +228,9 @@ msgstr "Buty Z Materiału"
 
 #: src/character_creator.cpp:202
 msgid ""
-"Here you can create your default character, this is how other players will "
-"see you in-game. When you join a new server you will start with the clothing "
-"you select here. Additional clothing, both protective and decorative, can be "
-"crafted in-game.\n"
+"Here you can create your default character, this is how other players will see you in-game. When you join a new server you will start with the clothing you select here. Additional clothing, both protective and decorative, can be crafted in-game.\n"
 "You can return here from the main menu anytime to change your character."
-msgstr ""
-"W tym okienku możesz stworzyć swoją domyślną postać tak, jak będzie widziana "
-"przez innych graczy. Po dołączeniu do dowolnego serwera, twoja postać będzie "
-"ubrana tak samo jak tutaj. Pozostałe ubrania, tak obronne jak i ozdobne, "
-"można stworzyć podczas gry.\n"
-"Możesz tu wrócić w dowolnym momencie z poziomu Menu Głównego."
+msgstr "W tym okienku możesz stworzyć swoją domyślną postać tak, jak będzie widziana przez innych graczy. Po dołączeniu do dowolnego serwera, twoja postać będzie ubrana tak samo jak tutaj. Pozostałe ubrania, tak obronne jak i ozdobne, można stworzyć podczas gry.\nMożesz tu wrócić w dowolnym momencie z poziomu Menu Głównego."
 
 #: src/character_creator.cpp:223
 msgid "Create Your Character"
@@ -2860,23 +2850,20 @@ msgid "Limestone Stair"
 msgstr ""
 
 #: src/content_mob.cpp:412
-#, fuzzy
 msgid "Oerkki"
-msgstr "Proszek Oerkkiego"
+msgstr ""
 
 #: src/content_mob.cpp:463
 msgid "Dungeon Master"
 msgstr ""
 
 #: src/content_mob.cpp:514
-#, fuzzy
 msgid "Fireball"
-msgstr "Świetlik"
+msgstr ""
 
 #: src/content_mob.cpp:532
-#, fuzzy
 msgid "Doe"
-msgstr "Gotowe"
+msgstr ""
 
 #: src/content_mob.cpp:558 src/content_mob.cpp:589
 msgid "Stag"
@@ -2903,18 +2890,16 @@ msgid "Sheared Sheep"
 msgstr ""
 
 #: src/content_mob.cpp:779
-#, fuzzy
 msgid "Snowball"
-msgstr "Śnieżka"
+msgstr ""
 
 #: src/content_mob.cpp:819
 msgid "Grey Kitten"
 msgstr ""
 
 #: src/content_mob.cpp:845
-#, fuzzy
 msgid "White Kitten"
-msgstr "Blada Skóra"
+msgstr ""
 
 #: src/content_mob.cpp:871
 msgid "Siamese Kitten"
@@ -3119,9 +3104,8 @@ msgid "Show Crafting"
 msgstr "Pokaż Okno Wytwarzania"
 
 #: src/content_toolitem.cpp:213
-#, fuzzy
 msgid "Small Stone Pick"
-msgstr "Kamienny Kilof"
+msgstr ""
 
 #: src/content_toolitem.cpp:236
 msgid "Stone Pick"
@@ -3140,9 +3124,8 @@ msgid "Creative Pick"
 msgstr ""
 
 #: src/content_toolitem.cpp:292
-#, fuzzy
 msgid "Stone Trowel"
-msgstr "Kamienna Łopata"
+msgstr ""
 
 #: src/content_toolitem.cpp:306
 msgid "Stone Shovel"
@@ -3157,9 +3140,8 @@ msgid "Steel Shovel"
 msgstr "Stalowa Łopata"
 
 #: src/content_toolitem.cpp:348
-#, fuzzy
 msgid "Small Stone Axe"
-msgstr "Kamienna Siekiera"
+msgstr ""
 
 #: src/content_toolitem.cpp:369
 msgid "Stone Axe"
@@ -3174,9 +3156,8 @@ msgid "Steel Axe"
 msgstr "Stalowa Siekiera"
 
 #: src/content_toolitem.cpp:411
-#, fuzzy
 msgid "Wooden Club"
-msgstr "Drewniana Gałka"
+msgstr ""
 
 #: src/content_toolitem.cpp:426
 msgid "Stone Sword"
@@ -3500,9 +3481,7 @@ msgstr "Odradzanie się"
 
 #: src/guiFormSpecMenu.cpp:436
 msgid "Left click: Move all items, Right click: Move single item"
-msgstr ""
-"Kliknięcie lewym przyciskiem myszy: Przenieś wszystkie przedmioty, "
-"Kliknięcie prawym przyciskiem myszy: Przenieś pojedynczy przedmiot"
+msgstr "Kliknięcie lewym przyciskiem myszy: Przenieś wszystkie przedmioty, Kliknięcie prawym przyciskiem myszy: Przenieś pojedynczy przedmiot"
 
 #: src/guiFormSpecMenu.cpp:458
 msgid "Write It"
@@ -3626,9 +3605,8 @@ msgid "Droppable Inventory"
 msgstr "Możliwy do wyrzucenia Inwentarz"
 
 #: src/guiMainMenu.cpp:619
-#, fuzzy
 msgid "Death drops Inventory"
-msgstr "Możliwy do wyrzucenia Inwentarz"
+msgstr ""
 
 #: src/guiMainMenu.cpp:661
 msgid "Hide Map Options"
@@ -3732,9 +3710,7 @@ msgstr ""
 #: src/guiMainMenu.cpp:789
 msgid ""
 "Based on Minetest-C55 by Perttu Ahola <celeron55@gmail.com>\n"
-"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
-"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
-"Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
+"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
 msgstr ""
 
 #: src/guiMessageMenu.cpp:112 src/guiPauseMenu.cpp:143
@@ -3962,9 +3938,8 @@ msgid "Winter"
 msgstr ""
 
 #: src/hud.cpp:794
-#, fuzzy
 msgid "Spring"
-msgstr "Sznur"
+msgstr ""
 
 #: src/hud.cpp:804
 #, c-format
@@ -4018,9 +3993,8 @@ msgid "Level: "
 msgstr ""
 
 #: src/inventory.cpp:557
-#, fuzzy
 msgid "Contains: "
-msgstr "Góry"
+msgstr ""
 
 #: src/inventory.cpp:643
 msgid "Armour: "
@@ -4381,15 +4355,3 @@ msgstr "Wczytywanie Węzłów Interakcji"
 #: src/mapnode.cpp:306
 msgid "Loading Special MapNodes"
 msgstr "Wczytywanie Węzłów Specjalnych"
-
-#~ msgid "Wooden Sword"
-#~ msgstr "Drewniany Miecz"
-
-#~ msgid "Wooden Axe"
-#~ msgstr "Drewniana Siekiera"
-
-#~ msgid "Wooden Shovel"
-#~ msgstr "Drewniana Łopata"
-
-#~ msgid "Wooden Pick"
-#~ msgstr "Drewniany Kilof"

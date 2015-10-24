@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Lisa 'darkrose' Milne
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Rui, 2015
 # Rui Takeda, 2015
@@ -11,14 +11,13 @@ msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-19 01:55+1000\n"
-"PO-Revision-Date: 2015-08-17 06:08+0000\n"
+"PO-Revision-Date: 2015-10-19 17:42+0000\n"
 "Last-Translator: Rui\n"
-"Language-Team: Japanese (http://www.transifex.com/voxelands/voxelands/"
-"language/ja/)\n"
-"Language: ja\n"
+"Language-Team: Japanese (http://www.transifex.com/voxelands/voxelands/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: src/character_creator.cpp:55
@@ -231,15 +230,9 @@ msgstr "ズック靴"
 
 #: src/character_creator.cpp:202
 msgid ""
-"Here you can create your default character, this is how other players will "
-"see you in-game. When you join a new server you will start with the clothing "
-"you select here. Additional clothing, both protective and decorative, can be "
-"crafted in-game.\n"
+"Here you can create your default character, this is how other players will see you in-game. When you join a new server you will start with the clothing you select here. Additional clothing, both protective and decorative, can be crafted in-game.\n"
 "You can return here from the main menu anytime to change your character."
-msgstr ""
-"ここではスキンを作成できます。\n"
-"スキンは他のプレイヤーに表示されます。\n"
-"タイトルからもこの設定に戻れます。"
+msgstr "ここではスキンを作成できます。\nスキンは他のプレイヤーに表示されます。\nタイトルからもこの設定に戻れます。"
 
 #: src/character_creator.cpp:223
 msgid "Create Your Character"
@@ -1551,7 +1544,7 @@ msgstr "未加工のミスリル"
 
 #: src/content_craftitem.cpp:1507
 msgid "Unbound Mithril"
-msgstr ""
+msgstr "未製のミスリル"
 
 #: src/content_craftitem.cpp:1516
 msgid "Mithril"
@@ -1587,7 +1580,7 @@ msgstr "石灰岩"
 
 #: src/content_mapnode.cpp:219
 msgid "Rock"
-msgstr ""
+msgstr "岩"
 
 #: src/content_mapnode.cpp:241
 msgid "Ice"
@@ -2298,7 +2291,7 @@ msgstr "黒いベッド"
 #: src/content_mapnode_furniture.cpp:1694
 #: src/content_mapnode_furniture.cpp:1729
 msgid "Camp Bed"
-msgstr ""
+msgstr "キャンプベッド"
 
 #: src/content_mapnode_furniture.cpp:1753
 msgid "Colorful Painting"
@@ -2756,7 +2749,7 @@ msgstr "砂岩の壁"
 
 #: src/content_mapnode_special.cpp:1705
 msgid "Limestone Wall"
-msgstr ""
+msgstr "石灰岩の壁"
 
 #: src/content_mapnode_special.cpp:1729
 msgid "TNT"
@@ -2816,11 +2809,11 @@ msgstr "大釜"
 
 #: src/content_mapnode_special.cpp:2082 src/content_nodemeta.cpp:3312
 msgid "Forge"
-msgstr ""
+msgstr "炉"
 
 #: src/content_mapnode_special.cpp:2110
 msgid "Forge Fire"
-msgstr ""
+msgstr "炉の火"
 
 #: src/content_mapnode_stair.cpp:37
 msgid "Rough Stone Stair"
@@ -2856,72 +2849,67 @@ msgstr "砂岩の階段"
 
 #: src/content_mapnode_stair.cpp:183
 msgid "Limestone Stair"
-msgstr ""
+msgstr "石灰岩の階段"
 
 #: src/content_mob.cpp:412
-#, fuzzy
 msgid "Oerkki"
-msgstr "Oerkkiの欠片"
+msgstr "Oerkki"
 
 #: src/content_mob.cpp:463
 msgid "Dungeon Master"
-msgstr ""
+msgstr "ダンジョンマスター"
 
 #: src/content_mob.cpp:514
-#, fuzzy
 msgid "Fireball"
-msgstr "ホタル"
+msgstr "火の玉"
 
 #: src/content_mob.cpp:532
-#, fuzzy
 msgid "Doe"
-msgstr "決定"
+msgstr "Doe"
 
 #: src/content_mob.cpp:558 src/content_mob.cpp:589
 msgid "Stag"
-msgstr ""
+msgstr "シカ"
 
 #: src/content_mob.cpp:639
 msgid "Shark"
-msgstr ""
+msgstr "サメ"
 
 #: src/content_mob.cpp:666
 msgid "Wolf"
-msgstr ""
+msgstr "狼"
 
 #: src/content_mob.cpp:696
 msgid "Tame Wolf"
-msgstr ""
+msgstr "飼いならされた狼"
 
 #: src/content_mob.cpp:723
 msgid "Sheep"
-msgstr ""
+msgstr "羊"
 
 #: src/content_mob.cpp:754
 msgid "Sheared Sheep"
-msgstr ""
+msgstr "刈り取られた羊"
 
 #: src/content_mob.cpp:779
-#, fuzzy
 msgid "Snowball"
-msgstr "雪玉"
+msgstr "雪球"
 
 #: src/content_mob.cpp:819
 msgid "Grey Kitten"
-msgstr ""
+msgstr "灰色の子猫"
 
 #: src/content_mob.cpp:845
-#, fuzzy
 msgid "White Kitten"
-msgstr "白い肌"
+msgstr "白い子猫"
 
 #: src/content_mob.cpp:871
 msgid "Siamese Kitten"
-msgstr ""
+msgstr "シャム猫"
 
 #: src/content_mob.cpp:897
 msgid "Ginger Kitten"
-msgstr ""
+msgstr "ジンジャー色の子猫"
 
 #: src/content_nodemeta.cpp:75 src/content_nodemeta.cpp:138
 #: src/content_nodemeta.cpp:2677 src/content_nodemeta.cpp:2776
@@ -2936,23 +2924,23 @@ msgstr "%sの旗"
 #: src/content_nodemeta.cpp:269 src/content_nodemeta.cpp:282
 #: src/content_nodemeta.cpp:436 src/content_nodemeta.cpp:449
 msgid "You can't sleep yet."
-msgstr ""
+msgstr "まだ寝ることはできません。"
 
 #: src/content_nodemeta.cpp:273 src/content_nodemeta.cpp:440
 msgid "Go to sleep"
-msgstr ""
+msgstr "寝る"
 
 #: src/content_nodemeta.cpp:278 src/content_nodemeta.cpp:445
 msgid "Someone else is sleeping here."
-msgstr ""
+msgstr "他の誰かがここに眠っています。"
 
 #: src/content_nodemeta.cpp:286 src/content_nodemeta.cpp:453
 msgid "Get out of bed"
-msgstr ""
+msgstr "ベッドから出ます"
 
 #: src/content_nodemeta.cpp:432
 msgid "This bed is too uncomfortable to sleep in."
-msgstr ""
+msgstr "このベッドで寝るのはかなり不快です。"
 
 #: src/content_nodemeta.cpp:573
 #, c-format
@@ -3105,20 +3093,19 @@ msgstr "大釜は燃料切れです"
 
 #: src/content_nodemeta.cpp:3218
 msgid "Add fuel, then punch to add or remove water"
-msgstr ""
+msgstr "燃料を入れて、パンチで追加または水を除去します"
 
 #: src/content_nodemeta.cpp:3484
 msgid "Show Enchanting"
-msgstr ""
+msgstr "エンチャント表示"
 
 #: src/content_nodemeta.cpp:3491 src/game.cpp:208
 msgid "Show Crafting"
 msgstr "クラフティング表示"
 
 #: src/content_toolitem.cpp:213
-#, fuzzy
 msgid "Small Stone Pick"
-msgstr "石のピッケル"
+msgstr "小さい石のピッケル"
 
 #: src/content_toolitem.cpp:236
 msgid "Stone Pick"
@@ -3134,12 +3121,11 @@ msgstr "鉄のピッケル"
 
 #: src/content_toolitem.cpp:278
 msgid "Creative Pick"
-msgstr ""
+msgstr "クリエイティブピッケル"
 
 #: src/content_toolitem.cpp:292
-#, fuzzy
 msgid "Stone Trowel"
-msgstr "石のシャベル"
+msgstr "石のコテ"
 
 #: src/content_toolitem.cpp:306
 msgid "Stone Shovel"
@@ -3154,9 +3140,8 @@ msgid "Steel Shovel"
 msgstr "鉄のシャベル"
 
 #: src/content_toolitem.cpp:348
-#, fuzzy
 msgid "Small Stone Axe"
-msgstr "石の斧"
+msgstr "小さい石の斧"
 
 #: src/content_toolitem.cpp:369
 msgid "Stone Axe"
@@ -3171,9 +3156,8 @@ msgid "Steel Axe"
 msgstr "鉄の斧"
 
 #: src/content_toolitem.cpp:411
-#, fuzzy
 msgid "Wooden Club"
-msgstr "木の欠片"
+msgstr "木の棍棒"
 
 #: src/content_toolitem.cpp:426
 msgid "Stone Sword"
@@ -3249,67 +3233,67 @@ msgstr "弓"
 
 #: src/content_toolitem.cpp:676
 msgid "Raw Mithril Pick"
-msgstr ""
+msgstr "未加工のミスリルのピッケル"
 
 #: src/content_toolitem.cpp:690
 msgid "Raw Mithril Shovel"
-msgstr ""
+msgstr "未加工のミスリルのショベル"
 
 #: src/content_toolitem.cpp:704
 msgid "Raw Mithril Axe"
-msgstr ""
+msgstr "未加工のミスリルの斧"
 
 #: src/content_toolitem.cpp:718
 msgid "Raw Mithril Sword"
-msgstr ""
+msgstr "未加工のミスリルの剣"
 
 #: src/content_toolitem.cpp:732
 msgid "Raw Mithril Spear"
-msgstr ""
+msgstr "未加工のミスリルの槍"
 
 #: src/content_toolitem.cpp:746
 msgid "Unbound Mithril Pick"
-msgstr ""
+msgstr "未製のミスリルのピッケル"
 
 #: src/content_toolitem.cpp:760
 msgid "Unbound Mithril Shovel"
-msgstr ""
+msgstr "未製のミスリルのショベル"
 
 #: src/content_toolitem.cpp:774
 msgid "Unbound Mithril Axe"
-msgstr ""
+msgstr "未製のミスリルの斧"
 
 #: src/content_toolitem.cpp:788
 msgid "Unbound Mithril Sword"
-msgstr ""
+msgstr "未製のミスリルの剣"
 
 #: src/content_toolitem.cpp:802
 msgid "Unbound Mithril Spear"
-msgstr ""
+msgstr "未製のミスリルの槍"
 
 #: src/content_toolitem.cpp:816
 msgid "Mithril Pick"
-msgstr ""
+msgstr "ミスリルのピッケル"
 
 #: src/content_toolitem.cpp:831
 msgid "Mithril Shovel"
-msgstr ""
+msgstr "ミスリルのショベル"
 
 #: src/content_toolitem.cpp:845
 msgid "Mithril Axe"
-msgstr ""
+msgstr "ミスリルの斧"
 
 #: src/content_toolitem.cpp:859
 msgid "Mithril Sword"
-msgstr ""
+msgstr "ミスリルの剣"
 
 #: src/content_toolitem.cpp:873
 msgid "Mithril Spear"
-msgstr ""
+msgstr "ミスリルの槍"
 
 #: src/content_toolitem.cpp:887
 msgid "Mob Spawner"
-msgstr ""
+msgstr "Mobスポナー"
 
 #: src/game.cpp:209
 msgid "Clothes"
@@ -3572,7 +3556,7 @@ msgstr "生物"
 
 #: src/guiMainMenu.cpp:562
 msgid "None"
-msgstr ""
+msgstr "無"
 
 #: src/guiMainMenu.cpp:563
 msgid "Passive"
@@ -3619,9 +3603,8 @@ msgid "Droppable Inventory"
 msgstr "ドロップ可能なインベントリ"
 
 #: src/guiMainMenu.cpp:619
-#, fuzzy
 msgid "Death drops Inventory"
-msgstr "ドロップ可能なインベントリ"
+msgstr "死亡時にインベントリをドロップ"
 
 #: src/guiMainMenu.cpp:661
 msgid "Hide Map Options"
@@ -3692,43 +3675,41 @@ msgid ""
 "Voxelands\n"
 "http://www.voxelands.com/\n"
 "By Lisa 'darkrose' Milne <lisa@ltmnet.com> and contributors."
-msgstr ""
+msgstr "Voxelands\nhttp://www.voxelands.com/\nLisa 'darkrose' Milne <lisa@ltmnet.com> と貢献者によって開発されています。"
 
 #: src/guiMainMenu.cpp:767
 msgid "Programmers"
-msgstr ""
+msgstr "プログラマ"
 
 #: src/guiMainMenu.cpp:770
 msgid "Artists and Modellers"
-msgstr ""
+msgstr "アーティストとモデレーター"
 
 #: src/guiMainMenu.cpp:773
 msgid "Translators"
-msgstr ""
+msgstr "翻訳者"
 
 #: src/guiMainMenu.cpp:776
 msgid "Documentation Writters"
-msgstr ""
+msgstr "資料の筆者"
 
 #: src/guiMainMenu.cpp:779
 msgid "Testers, Packagers, and Builders"
-msgstr ""
+msgstr "テスター、パッケージャー、ビルダー"
 
 #: src/guiMainMenu.cpp:782
 msgid "Music and Sound Effects Composers"
-msgstr ""
+msgstr "音楽とサウンドエフェクトの作曲者"
 
 #: src/guiMainMenu.cpp:785
 msgid "Other Contributers, and Special Thanks"
-msgstr ""
+msgstr "その他の貢献者、スペシャルサンクス"
 
 #: src/guiMainMenu.cpp:789
 msgid ""
 "Based on Minetest-C55 by Perttu Ahola <celeron55@gmail.com>\n"
-"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
-"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
-"Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
-msgstr ""
+"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
+msgstr "Perttu Ahola <celeron55@gmail.com>によるMinetest-C55をベースに開発されています。\nその開発者: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... と様々な人たち"
 
 #: src/guiMessageMenu.cpp:112 src/guiPauseMenu.cpp:143
 msgid "Continue"
@@ -3908,7 +3889,7 @@ msgstr "手のインデックス"
 
 #: src/guiSettingsMenu.cpp:379 src/guiSettingsMenu.cpp:422
 msgid "Some settings cannot be changed in-game."
-msgstr ""
+msgstr "いくつかの設定はゲーム中に変更することができません。"
 
 #: src/guiSettingsMenu.cpp:392
 msgid "Fullscreen"
@@ -3944,100 +3925,98 @@ msgstr "キーを押してください"
 
 #: src/hud.cpp:785
 msgid "Summer"
-msgstr ""
+msgstr "夏"
 
 #: src/hud.cpp:788
 msgid "Autumn"
-msgstr ""
+msgstr "秋"
 
 #: src/hud.cpp:791
 msgid "Winter"
-msgstr ""
+msgstr "冬"
 
 #: src/hud.cpp:794
-#, fuzzy
 msgid "Spring"
-msgstr "糸"
+msgstr "春"
 
 #: src/hud.cpp:804
 #, c-format
 msgid "Day %u of Year %u"
-msgstr ""
+msgstr "%u日 %u年"
 
 #: src/hud.cpp:828
 #, c-format
 msgid "Energy Boost: %d:%02d"
-msgstr ""
+msgstr "エナジーブースト: %d:%02d"
 
 #: src/hud.cpp:853
 #, c-format
 msgid "Cold Protection: %d:%02d"
-msgstr ""
+msgstr "冷気プロテクション: %d:%02d"
 
 #: src/inventory.cpp:230 src/inventory.cpp:352
 msgid "Cookable: Yes"
-msgstr ""
+msgstr "調理: 可能"
 
 #: src/inventory.cpp:235 src/inventory.cpp:357 src/inventory.cpp:532
 msgid "Fuel Burn Time: "
-msgstr ""
+msgstr "炉の加熱時間"
 
 #: src/inventory.cpp:321
 msgid "Hunger: "
-msgstr ""
+msgstr "満腹度:"
 
 #: src/inventory.cpp:327
 msgid "Health: "
-msgstr ""
+msgstr "体力:"
 
 #: src/inventory.cpp:334
 msgid "Cold Protection: "
-msgstr ""
+msgstr "冷気プロテクション:"
 
 #: src/inventory.cpp:343
 msgid "Energy Boost: "
-msgstr ""
+msgstr "エナジーブースト:"
 
 #: src/inventory.cpp:521
 msgid "Strength: "
-msgstr ""
+msgstr "強さ:"
 
 #: src/inventory.cpp:524
 msgid "Speed: "
-msgstr ""
+msgstr "速度:"
 
 #: src/inventory.cpp:527
 msgid "Level: "
-msgstr ""
+msgstr "レベル:"
 
 #: src/inventory.cpp:557
-#, fuzzy
 msgid "Contains: "
-msgstr "山地のマップ"
+msgstr "要素:"
 
 #: src/inventory.cpp:643
 msgid "Armour: "
-msgstr ""
+msgstr "アーマー:"
 
 #: src/inventory.cpp:649
 msgid "Warmth: "
-msgstr ""
+msgstr "暖気:"
 
 #: src/inventory.cpp:655
 msgid "Pressure: "
-msgstr ""
+msgstr "押し:"
 
 #: src/inventory.cpp:661
 msgid "Suffocation: "
-msgstr ""
+msgstr "窒息:"
 
 #: src/inventory.cpp:667
 msgid "Durability: "
-msgstr ""
+msgstr "耐久力:"
 
 #: src/inventory.cpp:672
 msgid "Effect Boost: "
-msgstr ""
+msgstr "エフェクトブースト:"
 
 #: src/keycode.cpp:229
 msgid "Left Button"
@@ -4374,15 +4353,3 @@ msgstr "相互作用するノードを読み込んでいます..."
 #: src/mapnode.cpp:306
 msgid "Loading Special MapNodes"
 msgstr "特別なノードを読み込んでいます..."
-
-#~ msgid "Wooden Sword"
-#~ msgstr "木の剣"
-
-#~ msgid "Wooden Axe"
-#~ msgstr "木の斧"
-
-#~ msgid "Wooden Shovel"
-#~ msgstr "木のシャベル"
-
-#~ msgid "Wooden Pick"
-#~ msgstr "木のピッケル"

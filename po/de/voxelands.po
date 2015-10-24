@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Lisa 'darkrose' Milne
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Wuzzy <almikes@aol.com>, 2014-2015
 # Jan Rößler <soognarf@googlemail.com>, 2014
@@ -11,14 +11,13 @@ msgstr ""
 "Project-Id-Version: Voxelands\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-19 01:55+1000\n"
-"PO-Revision-Date: 2015-08-20 14:45+0000\n"
+"PO-Revision-Date: 2015-10-18 22:10+0000\n"
 "Last-Translator: Wuzzy <almikes@aol.com>\n"
-"Language-Team: German (http://www.transifex.com/voxelands/voxelands/language/"
-"de/)\n"
-"Language: de\n"
+"Language-Team: German (http://www.transifex.com/voxelands/voxelands/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/character_creator.cpp:55
@@ -231,18 +230,9 @@ msgstr "Leinenschuhe"
 
 #: src/character_creator.cpp:202
 msgid ""
-"Here you can create your default character, this is how other players will "
-"see you in-game. When you join a new server you will start with the clothing "
-"you select here. Additional clothing, both protective and decorative, can be "
-"crafted in-game.\n"
+"Here you can create your default character, this is how other players will see you in-game. When you join a new server you will start with the clothing you select here. Additional clothing, both protective and decorative, can be crafted in-game.\n"
 "You can return here from the main menu anytime to change your character."
-msgstr ""
-"Hier können Sie Ihre Standardfigur erstellen; so werden Sie von anderen "
-"Spieler im Spiel gesehen. Wenn Sie einem neuen Server beitreten, werden Sie "
-"mit der hier ausgewählten Kleidung anfangen. Weitere Kleidung, sowohl zum "
-"Schutz als auch zur Dekoration, kann im Spiel angefertigt werden.\n"
-"Sie können jederzeit hierher aus dem Hauptmenü zurückkehren, um Ihre Figur "
-"zu wechseln."
+msgstr "Hier können Sie Ihre Standardfigur erstellen; so werden Sie von anderen Spieler im Spiel gesehen. Wenn Sie einem neuen Server beitreten, werden Sie mit der hier ausgewählten Kleidung anfangen. Weitere Kleidung, sowohl zum Schutz als auch zur Dekoration, kann im Spiel angefertigt werden.\nSie können jederzeit hierher aus dem Hauptmenü zurückkehren, um Ihre Figur zu wechseln."
 
 #: src/character_creator.cpp:223
 msgid "Create Your Character"
@@ -1590,7 +1580,7 @@ msgstr "Kalkstein"
 
 #: src/content_mapnode.cpp:219
 msgid "Rock"
-msgstr ""
+msgstr "Gestein"
 
 #: src/content_mapnode.cpp:241
 msgid "Ice"
@@ -2301,7 +2291,7 @@ msgstr "schwarzes Bett"
 #: src/content_mapnode_furniture.cpp:1694
 #: src/content_mapnode_furniture.cpp:1729
 msgid "Camp Bed"
-msgstr ""
+msgstr "Feldbett"
 
 #: src/content_mapnode_furniture.cpp:1753
 msgid "Colorful Painting"
@@ -2862,69 +2852,64 @@ msgid "Limestone Stair"
 msgstr "Kalksteinstufe"
 
 #: src/content_mob.cpp:412
-#, fuzzy
 msgid "Oerkki"
-msgstr "Oerkkistaub"
+msgstr "Oerkki"
 
 #: src/content_mob.cpp:463
 msgid "Dungeon Master"
-msgstr ""
+msgstr "Kerkermeister"
 
 #: src/content_mob.cpp:514
-#, fuzzy
 msgid "Fireball"
-msgstr "Glühwürmchen"
+msgstr "Feuerball"
 
 #: src/content_mob.cpp:532
-#, fuzzy
 msgid "Doe"
-msgstr "Fertig"
+msgstr "Hirschkuh"
 
 #: src/content_mob.cpp:558 src/content_mob.cpp:589
 msgid "Stag"
-msgstr ""
+msgstr "Hirsch"
 
 #: src/content_mob.cpp:639
 msgid "Shark"
-msgstr ""
+msgstr "Hai"
 
 #: src/content_mob.cpp:666
 msgid "Wolf"
-msgstr ""
+msgstr "Wolf"
 
 #: src/content_mob.cpp:696
 msgid "Tame Wolf"
-msgstr ""
+msgstr "Zahmer Wolf"
 
 #: src/content_mob.cpp:723
 msgid "Sheep"
-msgstr ""
+msgstr "Schaf"
 
 #: src/content_mob.cpp:754
 msgid "Sheared Sheep"
-msgstr ""
+msgstr "Geschorenes Schaf"
 
 #: src/content_mob.cpp:779
-#, fuzzy
 msgid "Snowball"
 msgstr "Schneeball"
 
 #: src/content_mob.cpp:819
 msgid "Grey Kitten"
-msgstr ""
+msgstr "Graue Katze"
 
 #: src/content_mob.cpp:845
-#, fuzzy
 msgid "White Kitten"
-msgstr "weiße Haut"
+msgstr "Weiße Katze"
 
 #: src/content_mob.cpp:871
 msgid "Siamese Kitten"
-msgstr ""
+msgstr "Siamkatze"
 
 #: src/content_mob.cpp:897
 msgid "Ginger Kitten"
-msgstr ""
+msgstr "Gingerkatze"
 
 #: src/content_nodemeta.cpp:75 src/content_nodemeta.cpp:138
 #: src/content_nodemeta.cpp:2677 src/content_nodemeta.cpp:2776
@@ -2939,23 +2924,23 @@ msgstr "Heimatflagge von %s"
 #: src/content_nodemeta.cpp:269 src/content_nodemeta.cpp:282
 #: src/content_nodemeta.cpp:436 src/content_nodemeta.cpp:449
 msgid "You can't sleep yet."
-msgstr ""
+msgstr "Sie können jetzt nicht schlafen."
 
 #: src/content_nodemeta.cpp:273 src/content_nodemeta.cpp:440
 msgid "Go to sleep"
-msgstr ""
+msgstr "Schlafen gehen"
 
 #: src/content_nodemeta.cpp:278 src/content_nodemeta.cpp:445
 msgid "Someone else is sleeping here."
-msgstr ""
+msgstr "Hier schläft jemand anderes."
 
 #: src/content_nodemeta.cpp:286 src/content_nodemeta.cpp:453
 msgid "Get out of bed"
-msgstr ""
+msgstr "Aufstehen"
 
 #: src/content_nodemeta.cpp:432
 msgid "This bed is too uncomfortable to sleep in."
-msgstr ""
+msgstr "Dieses Bett ist zu unbequem, um darin zu schlafen."
 
 #: src/content_nodemeta.cpp:573
 #, c-format
@@ -3044,8 +3029,7 @@ msgstr "Müllverbrennungsanlage ist inaktiv"
 
 #: src/content_nodemeta.cpp:1633
 msgid "Add fuel, then punch to incinerate wielded item"
-msgstr ""
-"Brennstoff zugeben, dann schlagen, um getragenen Gegenstand zu verbrennen"
+msgstr "Brennstoff zugeben, dann schlagen, um getragenen Gegenstand zu verbrennen"
 
 #: src/content_nodemeta.cpp:1874 src/content_nodemeta.cpp:2162
 msgid "Add item here to see recipe"
@@ -3110,8 +3094,7 @@ msgstr "Kessel hat keinen Brennstoff"
 
 #: src/content_nodemeta.cpp:3218
 msgid "Add fuel, then punch to add or remove water"
-msgstr ""
-"Brennstoff zufügen, dann schlagen, um Wasser hinzuzufügen oder zu entfernen"
+msgstr "Brennstoff zufügen, dann schlagen, um Wasser hinzuzufügen oder zu entfernen"
 
 #: src/content_nodemeta.cpp:3484
 msgid "Show Enchanting"
@@ -3122,9 +3105,8 @@ msgid "Show Crafting"
 msgstr "Fertigung anzeigen"
 
 #: src/content_toolitem.cpp:213
-#, fuzzy
 msgid "Small Stone Pick"
-msgstr "Steinspitzhacke"
+msgstr "kleine Steinspitzhacke"
 
 #: src/content_toolitem.cpp:236
 msgid "Stone Pick"
@@ -3143,9 +3125,8 @@ msgid "Creative Pick"
 msgstr "Kreativspitzhacke"
 
 #: src/content_toolitem.cpp:292
-#, fuzzy
 msgid "Stone Trowel"
-msgstr "Steinschaufel"
+msgstr "Steinpflanzschaufel"
 
 #: src/content_toolitem.cpp:306
 msgid "Stone Shovel"
@@ -3160,9 +3141,8 @@ msgid "Steel Shovel"
 msgstr "Stahlschaufel"
 
 #: src/content_toolitem.cpp:348
-#, fuzzy
 msgid "Small Stone Axe"
-msgstr "Steinaxt"
+msgstr "kleine Steinaxt"
 
 #: src/content_toolitem.cpp:369
 msgid "Stone Axe"
@@ -3177,9 +3157,8 @@ msgid "Steel Axe"
 msgstr "Stahlaxt"
 
 #: src/content_toolitem.cpp:411
-#, fuzzy
 msgid "Wooden Club"
-msgstr "Holzknauf"
+msgstr "Holzkeule"
 
 #: src/content_toolitem.cpp:426
 msgid "Stone Sword"
@@ -3315,7 +3294,7 @@ msgstr "Mithrilspeer"
 
 #: src/content_toolitem.cpp:887
 msgid "Mob Spawner"
-msgstr ""
+msgstr "Mob-Erzeuger"
 
 #: src/game.cpp:209
 msgid "Clothes"
@@ -3502,9 +3481,7 @@ msgstr "Wiederbeleben"
 
 #: src/guiFormSpecMenu.cpp:436
 msgid "Left click: Move all items, Right click: Move single item"
-msgstr ""
-"Linksklick: Alle Gegenstände verschieben, Rechtsklick: 1 Gegenstand "
-"verschieben"
+msgstr "Linksklick: Alle Gegenstände verschieben, Rechtsklick: 1 Gegenstand verschieben"
 
 #: src/guiFormSpecMenu.cpp:458
 msgid "Write It"
@@ -3628,9 +3605,8 @@ msgid "Droppable Inventory"
 msgstr "Wegwerfbares Inventar"
 
 #: src/guiMainMenu.cpp:619
-#, fuzzy
 msgid "Death drops Inventory"
-msgstr "Wegwerfbares Inventar"
+msgstr "Tod lässt Inventar fallen"
 
 #: src/guiMainMenu.cpp:661
 msgid "Hide Map Options"
@@ -3701,10 +3677,7 @@ msgid ""
 "Voxelands\n"
 "http://www.voxelands.com/\n"
 "By Lisa 'darkrose' Milne <lisa@ltmnet.com> and contributors."
-msgstr ""
-"Voxelands\n"
-"http://www.voxelands.com/\n"
-"Von Lisa »darkrose« Milne <lisa@ltmnet.com> und Mitwirkenden."
+msgstr "Voxelands\nhttp://www.voxelands.com/\nVon Lisa »darkrose« Milne <lisa@ltmnet.com> und Mitwirkenden."
 
 #: src/guiMainMenu.cpp:767
 msgid "Programmers"
@@ -3737,14 +3710,8 @@ msgstr "Andere Mitwirkende und besonderes Dankeschön"
 #: src/guiMainMenu.cpp:789
 msgid ""
 "Based on Minetest-C55 by Perttu Ahola <celeron55@gmail.com>\n"
-"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
-"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
-"Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
-msgstr ""
-"Basierend auf Minetest-C55 von Perttu Ahola <celeron55@gmail.com>\n"
-"und Mitwirkenden: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, "
-"matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan "
-"Neuschafer, thexyz, VanessaE, sfan5 … und zig weiteren zufälligen Leuten."
+"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
+msgstr "Basierend auf Minetest-C55 von Perttu Ahola <celeron55@gmail.com>\nund Mitwirkenden: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5 … und zig weiteren zufälligen Leuten."
 
 #: src/guiMessageMenu.cpp:112 src/guiPauseMenu.cpp:143
 msgid "Continue"
@@ -3960,25 +3927,24 @@ msgstr "Taste drücken"
 
 #: src/hud.cpp:785
 msgid "Summer"
-msgstr ""
+msgstr "Sommer"
 
 #: src/hud.cpp:788
 msgid "Autumn"
-msgstr ""
+msgstr "Herbst"
 
 #: src/hud.cpp:791
 msgid "Winter"
-msgstr ""
+msgstr "Winter"
 
 #: src/hud.cpp:794
-#, fuzzy
 msgid "Spring"
-msgstr "Faden"
+msgstr "Frühling"
 
 #: src/hud.cpp:804
 #, c-format
 msgid "Day %u of Year %u"
-msgstr ""
+msgstr "%u. Tag im Jahre %u"
 
 #: src/hud.cpp:828
 #, c-format
@@ -4027,9 +3993,8 @@ msgid "Level: "
 msgstr "Stufe: "
 
 #: src/inventory.cpp:557
-#, fuzzy
 msgid "Contains: "
-msgstr "Berge"
+msgstr "Enthält:"
 
 #: src/inventory.cpp:643
 msgid "Armour: "
@@ -4390,15 +4355,3 @@ msgstr "Interaktive MapNodes laden"
 #: src/mapnode.cpp:306
 msgid "Loading Special MapNodes"
 msgstr "Besondere MapNodes laden"
-
-#~ msgid "Wooden Sword"
-#~ msgstr "Holzschwert"
-
-#~ msgid "Wooden Axe"
-#~ msgstr "Holzaxt"
-
-#~ msgid "Wooden Shovel"
-#~ msgstr "Holzschaufel"
-
-#~ msgid "Wooden Pick"
-#~ msgstr "Holzspitzhacke"
