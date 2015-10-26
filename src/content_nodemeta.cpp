@@ -35,6 +35,7 @@
 #include "main.h"
 #include "mapblock.h"
 #include "enchantment.h"
+#include <algorithm>
 
 /*
 	SignNodeMetadata
