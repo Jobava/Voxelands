@@ -424,6 +424,10 @@ MapBlockMesh::~MapBlockMesh()
 
 void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset, JMutex *mutex)
 {
+	DSTACK(__FUNCTION_NAME);
+
+	BEGIN_DEBUG_EXCEPTION_HANDLER
+
 	data->m_blockpos_nodes = data->m_blockpos*MAP_BLOCKSIZE;
 	data->m_smooth_lighting = g_settings->getBool("smooth_lighting");
 	bool selected = false;
@@ -621,6 +625,8 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset, JMutex *mut
 
 	if (mutex != NULL)
 		mutex->Unlock();
+
+	END_DEBUG_EXCEPTION_HANDLER(errorstream)
 }
 
 void MapBlockMesh::refresh(u32 daynight_ratio)
