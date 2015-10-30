@@ -54,7 +54,7 @@ public:
 
 	const char *sym() const;
 	const char *name() const;
-	const wchar_t *guiName() const;
+    const std::wstring guiName() const;
 
 	std::string debug() const;
 protected:

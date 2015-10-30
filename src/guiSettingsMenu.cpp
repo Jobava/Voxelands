@@ -327,7 +327,7 @@ void GUISettingsMenu::regenerateGui(v2u32 screensize)
 			{
 				core::rect < s32 > rect(0, 0, 110, 30);
 				rect += topleft_content + offset + v2s32(155, -5);
-				Environment->addButton(rect, this, GUI_ID_KEYSETTINGS_BASE+i, keys[i].guiName());
+				Environment->addButton(rect, this, GUI_ID_KEYSETTINGS_BASE+i, keys[i].guiName().c_str());
 			}
 			offset += v2s32(0, 33);
 			if (offset.Y > 450) {
@@ -579,7 +579,7 @@ bool GUISettingsMenu::OnEvent(const SEvent& event)
 		gui::IGUIElement *e = getElementFromId(activeKey);
 		if (e != NULL && e->getType() == gui::EGUIET_BUTTON) {
 			e->setEnabled(true);
-			e->setText(kp.guiName());
+			e->setText(kp.guiName().c_str());
 			keys[activeKey-GUI_ID_KEYSETTINGS_BASE] = kp;
 		}
 		activeKey = -1;

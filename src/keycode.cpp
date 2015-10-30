@@ -339,10 +339,10 @@ const char *KeyPress::name() const
 	}
 }
 
-const wchar_t *KeyPress::guiName() const
+const std::wstring KeyPress::guiName() const
 {
 	const char* n = name();
-	return narrow_to_wide(n).c_str();
+	return narrow_to_wide(n);
 }
 
 const KeyPress EscapeKey("KEY_ESCAPE");
