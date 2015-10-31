@@ -28,6 +28,7 @@
 #include "exceptions.h"
 #include "settings.h"
 #include "hex.h"
+#include "intl.h"
 #include <map>
 
 class UnknownKeycode : public BaseException
@@ -222,38 +223,146 @@ static const char *KeyNames[] =
 		"-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-",
 		"-", "-", "-", "-", "-", "-", "-", "-", "KEY_ATTN", "KEY_CRSEL", "KEY_EXSEL",
 		"KEY_EREOF", "KEY_PLAY", "KEY_ZOOM", "KEY_PA1", "KEY_OEM_CLEAR", "-" };
+		
+static const char *KeyNamesLang[255];
 
-#define N_(text) text
+void init_KeyNamesLang()
+{
+	for (int i = 0; i < 255; i++)
+		KeyNamesLang[i] = gettext("-");
 
-static const char *KeyNamesLang[] =
-	{ "-", N_("Left Button"), N_("Right Button"), N_("Cancel"), N_("Middle Button"), N_("X Button 1"),
-			N_("X Button 2"), "-", N_("Back"), N_("Tab"), "-", "-", N_("Clear"), N_("Return"), "-",
-			"-", N_("Shift"), N_("Control"), N_("Menu"), N_("Pause"), N_("Capital"), N_("Kana"), "-",
-			N_("Junja"), N_("Final"), N_("Kanji"), "-", N_("Escape"), N_("Convert"), N_("Nonconvert"),
-			N_("Accept"), N_("Mode Change"), N_("Space"), N_("Prior"), N_("Next"), N_("End"), N_("Home"),
-			N_("Left"), N_("Up"), N_("Right"), N_("Down"), N_("Select"), N_("Print"), N_("Execute"),
-			N_("Snapshot"), N_("Insert"), N_("Delete"), N_("Help"), "0", "1", "2", "3", "4", "5",
-			"6", "7", "8", "9", "-", "-", "-", "-", "-", "-", "-", "A", "B", "C",
-			"D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q",
-			"R", "S", "T", "U", "V", "W", "X", "Y", "Z", N_("Left Windows"),
-			N_("Right Windows"), N_("Apps"), "-", N_("Sleep"), N_("Numpad 0"), N_("Numpad 1"),
-			N_("Numpad 2"), N_("Numpad 3"), N_("Numpad 4"), N_("Numpad 5"), N_("Numpad 6"), N_("Numpad 7"),
-			N_("Numpad 8"), N_("Numpad 9"), N_("Numpad *"), N_("Numpad +"), N_("Numpad /"), N_("Numpad -"),
-			"Numpad .", "Numpad /", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8",
-			"F9", "F10", "F11", "F12", "F13", "F14", "F15", "F16", "F17", "F18",
-			"F19", "F20", "F21", "F22", "F23", "F24", "-", "-", "-", "-", "-", "-",
-			"-", "-", N_("Num Lock"), N_("Scroll Lock"), "-", "-", "-", "-", "-", "-", "-",
-			"-", "-", "-", "-", "-", "-", "-", N_("Left Shift"), N_("Right Shift"),
-			N_("Left Control"), N_("Right Control"), N_("Left Menu"), N_("Right Menu"), "-", "-",
-			"-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-",
-			"-", "-", "-", "-", "-", N_("Plus"), N_("Comma"), N_("Minus"), N_("Period"), "-", "-",
-			"-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-",
-			"-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-",
-			"-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-",
-			"-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", N_("Attn"), N_("CrSel"),
-			N_("ExSel"), N_("Erase OEF"), N_("Play"), N_("Zoom"), N_("PA1"), N_("OEM Clear"), "-" };
-
-#undef N_
+	KeyNamesLang[1] = gettext("Left Button");
+	KeyNamesLang[2] = gettext("Right Button");
+	KeyNamesLang[3] = gettext("Cancel");
+	KeyNamesLang[4] = gettext("Middle Button");
+	KeyNamesLang[5] = gettext("X Button 1");
+	KeyNamesLang[6] = gettext("X Button 2");
+	KeyNamesLang[8] = gettext("Back");
+	KeyNamesLang[9] = gettext("Tab");
+	KeyNamesLang[12] = gettext("Clear");
+	KeyNamesLang[13] = gettext("Return");
+	KeyNamesLang[16] = gettext("Shift");
+	KeyNamesLang[17] = gettext("Control");
+	KeyNamesLang[18] = gettext("Menu");
+	KeyNamesLang[19] = gettext("Pause");
+	KeyNamesLang[20] = gettext("Capital");
+	KeyNamesLang[21] = gettext("Kana");
+	KeyNamesLang[23] = gettext("Junja");
+	KeyNamesLang[24] = gettext("Final");
+	KeyNamesLang[25] = gettext("Kanji");
+	KeyNamesLang[27] = gettext("Escape");
+	KeyNamesLang[28] = gettext("Convert");
+	KeyNamesLang[29] = gettext("Nonconvert");
+	KeyNamesLang[30] = gettext("Accept");
+	KeyNamesLang[31] = gettext("Mode Change");
+	KeyNamesLang[32] = gettext("Space");
+	KeyNamesLang[33] = gettext("Prior");
+	KeyNamesLang[34] = gettext("Next");
+	KeyNamesLang[35] = gettext("End");
+	KeyNamesLang[36] = gettext("Home");
+	KeyNamesLang[37] = gettext("Left");
+	KeyNamesLang[38] = gettext("Up");
+	KeyNamesLang[39] = gettext("Right");
+	KeyNamesLang[40] = gettext("Down");
+	KeyNamesLang[41] = gettext("Select");
+	KeyNamesLang[42] = gettext("Print");
+	KeyNamesLang[43] = gettext("Execute");
+	KeyNamesLang[44] = gettext("Snapshot");
+	KeyNamesLang[45] = gettext("Insert");
+	KeyNamesLang[46] = gettext("Delete");
+	KeyNamesLang[47] = gettext("Help");
+	KeyNamesLang[48] = gettext("0");
+	KeyNamesLang[49] = gettext("1");
+	KeyNamesLang[50] = gettext("2");
+	KeyNamesLang[51] = gettext("3");
+	KeyNamesLang[52] = gettext("4");
+	KeyNamesLang[53] = gettext("5");
+	KeyNamesLang[54] = gettext("6");
+	KeyNamesLang[55] = gettext("7");
+	KeyNamesLang[56] = gettext("8");
+	KeyNamesLang[57] = gettext("9");
+	KeyNamesLang[65] = gettext("A");
+	KeyNamesLang[66] = gettext("B");
+	KeyNamesLang[67] = gettext("C");
+	KeyNamesLang[68] = gettext("D");
+	KeyNamesLang[69] = gettext("E");
+	KeyNamesLang[70] = gettext("F");
+	KeyNamesLang[71] = gettext("G");
+	KeyNamesLang[72] = gettext("H");
+	KeyNamesLang[73] = gettext("I");
+	KeyNamesLang[74] = gettext("J");
+	KeyNamesLang[75] = gettext("K");
+	KeyNamesLang[76] = gettext("L");
+	KeyNamesLang[77] = gettext("M");
+	KeyNamesLang[78] = gettext("N");
+	KeyNamesLang[79] = gettext("O");
+	KeyNamesLang[80] = gettext("P");
+	KeyNamesLang[81] = gettext("Q");
+	KeyNamesLang[82] = gettext("R");
+	KeyNamesLang[83] = gettext("S");
+	KeyNamesLang[84] = gettext("T");
+	KeyNamesLang[85] = gettext("U");
+	KeyNamesLang[86] = gettext("V");
+	KeyNamesLang[87] = gettext("W");
+	KeyNamesLang[88] = gettext("X");
+	KeyNamesLang[89] = gettext("Y");
+	KeyNamesLang[90] = gettext("Z");
+	KeyNamesLang[91] = gettext("Left Windows");
+	KeyNamesLang[92] = gettext("Right Windows");
+	KeyNamesLang[93] = gettext("Apps");
+	KeyNamesLang[95] = gettext("Sleep");
+	KeyNamesLang[96] = gettext("Numpad 0");
+	KeyNamesLang[97] = gettext("Numpad 1");
+	KeyNamesLang[98] = gettext("Numpad 2");
+	KeyNamesLang[99] = gettext("Numpad 3");
+	KeyNamesLang[100] = gettext("Numpad 4");
+	KeyNamesLang[101] = gettext("Numpad 5");
+	KeyNamesLang[102] = gettext("Numpad 6");
+	KeyNamesLang[103] = gettext("Numpad 7");
+	KeyNamesLang[104] = gettext("Numpad 8");
+	KeyNamesLang[105] = gettext("Numpad 9");
+	KeyNamesLang[106] = gettext("Numpad *");
+	KeyNamesLang[107] = gettext("Numpad +");
+	KeyNamesLang[108] = gettext("Numpad /");
+	KeyNamesLang[109] = gettext("Numpad -");
+	KeyNamesLang[110] = gettext("Numpad .");
+	KeyNamesLang[111] = gettext("Numpad /");
+	KeyNamesLang[121] = gettext("F10");
+	KeyNamesLang[122] = gettext("F11");
+	KeyNamesLang[123] = gettext("F12");
+	KeyNamesLang[124] = gettext("F13");
+	KeyNamesLang[125] = gettext("F14");
+	KeyNamesLang[126] = gettext("F15");
+	KeyNamesLang[127] = gettext("F16");
+	KeyNamesLang[128] = gettext("F17");
+	KeyNamesLang[129] = gettext("F18");
+	KeyNamesLang[130] = gettext("F19");
+	KeyNamesLang[131] = gettext("F20");
+	KeyNamesLang[132] = gettext("F21");
+	KeyNamesLang[133] = gettext("F22");
+	KeyNamesLang[134] = gettext("F23");
+	KeyNamesLang[135] = gettext("F24");
+	KeyNamesLang[144] = gettext("Num Lock");
+	KeyNamesLang[145] = gettext("Scroll Lock");
+	KeyNamesLang[160] = gettext("Left Shift");
+	KeyNamesLang[161] = gettext("Right Shift");
+	KeyNamesLang[162] = gettext("Left Control");
+	KeyNamesLang[163] = gettext("Right Control");
+	KeyNamesLang[164] = gettext("Left Menu");
+	KeyNamesLang[165] = gettext("Right Menu");
+	KeyNamesLang[187] = gettext("Plus");
+	KeyNamesLang[188] = gettext("Comma");
+	KeyNamesLang[189] = gettext("Minus");
+	KeyNamesLang[190] = gettext("Period");
+	KeyNamesLang[246] = gettext("Attn");
+	KeyNamesLang[247] = gettext("CrSel");
+	KeyNamesLang[248] = gettext("ExSel");
+	KeyNamesLang[249] = gettext("Erase OEF");
+	KeyNamesLang[250] = gettext("Play");
+	KeyNamesLang[251] = gettext("Zoom");
+	KeyNamesLang[252] = gettext("PA1");
+	KeyNamesLang[253] = gettext("OEM Clear");
+}
 
 KeyPress::KeyPress() :
 	Key(irr::KEY_KEY_CODES_COUNT),

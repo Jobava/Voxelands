@@ -17,4 +17,9 @@ inline wchar_t* chartowchar_t(const char *str)
 wchar_t* wgettext(const char *str);
 wchar_t* wngettext(const char *str1, const char *str2, int n);
 
+#ifndef SERVER
+// Initialise KeyNamesLang array
+void init_KeyNamesLang();
+#endif
+
 #endif

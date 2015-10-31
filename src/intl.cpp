@@ -730,4 +730,7 @@ void init_gettext()
 	setlocale(LC_CTYPE, "");
 #endif
 	intl_init(&intl,"voxelands.mo");
+#ifndef SERVER
+	init_KeyNamesLang();
+#endif
 }
