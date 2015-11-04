@@ -872,6 +872,7 @@ void ServerEnvironment::step(float dtime)
 					continue;
 				player->in_bed = false;
 			}
+			m_players_sleeping = false;
 		}
 
 		ScopeProfiler sp(g_profiler, "SEnv: manage act. block list avg /2s", SPT_AVG);
