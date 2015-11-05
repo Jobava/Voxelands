@@ -1719,6 +1719,7 @@ void content_mapnode_init(bool repeat)
 	f->is_ground_content = true;
 	f->light_propagates = true;
 	f->buildable_to = true;
+	f->walkable = false;
 	f->material_pointable = false;
 	f->sunlight_propagates = true;
 	f->solidness = 0; // drawn separately, makes no faces

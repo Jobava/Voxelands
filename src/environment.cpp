@@ -940,7 +940,7 @@ void ServerEnvironment::step(float dtime)
 		u16 season = getSeason();
 		s16 coldzone = 60;
 		if (season == ENV_SEASON_WINTER)
-			coldzone = 20;
+			coldzone = 5;
 		bool unsafe_fire = g_settings->getBool("unsafe_fire");
 		for (std::set<v3s16>::iterator i = m_active_blocks.m_list.begin(); i != m_active_blocks.m_list.end(); i++) {
 			v3s16 bp = *i;
@@ -1491,7 +1491,7 @@ void ServerEnvironment::step(float dtime)
 						if ((season == ENV_SEASON_SPRING && myrand_range(0,10) == 0) || season == ENV_SEASON_SUMMER) {
 							n.setContent(CONTENT_GRASS);
 							m_map->addNodeWithEvent(p,n);
-						}else if (season == ENV_SEASON_WINTER && p.Y > (coldzone-10) && (ch > 10 || myrand_range(0,5) == 0)) {
+						}else if (season == ENV_SEASON_WINTER && p.Y > (coldzone-5) && (ch > 10 || myrand_range(0,5) == 0)) {
 							// should only change to snow if there's nothing above it
 							std::vector<content_t> search;
 							search.push_back(CONTENT_SNOW);
@@ -2816,7 +2816,7 @@ void ServerEnvironment::step(float dtime)
 				if (
 					n.getContent() != CONTENT_GRASS
 					&& n.getContent() != CONTENT_MUD
-					&& p.Y >(coldzone-5) && p.Y < 1024
+					&& p.Y >(coldzone+5) && p.Y < 1024
 					&& (
 						content_features(n).draw_type == CDT_CUBELIKE
 						|| content_features(n).draw_type == CDT_GLASSLIKE
