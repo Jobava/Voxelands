@@ -379,9 +379,6 @@ void content_mapnode_circuit(bool repeat)
 	f->unpowered_node = CONTENT_CIRCUIT_LAMP_OFF;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_LAMP_OFF)+" 1";
 	f->setAllTextures("circuit_lamp_on.png");
-#ifndef SERVER
-	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
-#endif
 	f->setInventoryTextureCube("circuit_lamp.png", "circuit_lamp.png", "circuit_lamp.png");
 	f->type = CMT_WOOD;
 	f->hardness = 0.15;
