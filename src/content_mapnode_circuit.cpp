@@ -371,14 +371,14 @@ void content_mapnode_circuit(bool repeat)
 	f->solidness = 0; // drawn separately, makes no faces
 	f->visual_solidness = 1;
 	f->param_type = CPT_LIGHT;
-	f->draw_type = CDT_GLASSLIKE;
+	f->draw_type = CDT_CUBELIKE;
 	f->light_propagates = true;
 	f->sunlight_propagates = true;
 	f->energy_type = CET_CONDUCTIVE;
 	f->light_source = LIGHT_MAX-1;
 	f->unpowered_node = CONTENT_CIRCUIT_LAMP_OFF;
 	f->dug_item = std::string("MaterialItem2 ")+itos(CONTENT_CIRCUIT_LAMP_OFF)+" 1";
-	f->setAllTextures("circuit_lamp.png");
+	f->setAllTextures("circuit_lamp_on.png");
 #ifndef SERVER
 	f->setAllTextureTypes(MATERIAL_ALPHA_BLEND);
 #endif
