@@ -484,6 +484,7 @@ void content_mapnode_farm(bool repeat)
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/4;
 	f->type = CMT_WOOD;
+	f->type = CMT_PLANT;
 	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
@@ -523,8 +524,8 @@ void content_mapnode_farm(bool repeat)
 	f->ondig_replace_node = CONTENT_TRELLIS;
 	f->flammable = 1; // can be replaced by fire if the node under it is set on fire
 	f->fuel_time = 30/4;
-	f->type = CMT_WOOD;
-	f->hardness = 0.3;
+	f->type = CMT_PLANT;
+	f->hardness = 0.4;
 	f->pressure_type = CST_CRUSHABLE;
 	f->suffocation_per_second = 0;
 }
