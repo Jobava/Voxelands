@@ -558,3 +558,22 @@ void plantgrowth_grass(ServerEnvironment *env, v3s16 p0)
 	if (add)
 		env->getMap().addNodeWithEvent(p0,n);
 }
+
+void plantgrowth_cactus(ServerEnvironment *env, v3s16 p0)
+{
+	int height = 1;
+	for (;; height++) {
+		MapNode nn = env->getMap().getNodeNoEx(p0+v3s16(0,height,0));
+		if (nn.getContent() == CONTENT_AIR) {
+			break;
+		}else if (nn.getContent() != CONTENT_CACTUS || nn.envticks < 5) {
+			return;
+		}
+	}
+
+	if (height > 4 || myrand_range(0,3) != 0)
+		return;
+
+	MapNode n(CONTENT_CACTUS);
+	env->getMap().addNodeWithEvent(p0+v3s16(0,height,0),n);
+}

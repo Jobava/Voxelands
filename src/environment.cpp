@@ -1322,8 +1322,10 @@ void ServerEnvironment::step(float dtime)
 							}else if (content_features(testnode).draw_type == CDT_MELONLIKE) {
 								if (content_features(testnode).param2_type == CPT_PLANTGROWTH)
 									plantgrowth_plant(this,test_p);
+							}else if (testnode.getContent() == CONTENT_CACTUS) {
+								plantgrowth_cactus(this,test_p);
 							}else if (testnode.getContent() == CONTENT_FERTILIZER) {
-									plantgrowth_fertilizer(this,test_p);
+								plantgrowth_fertilizer(this,test_p);
 							}else if (testnode.getContent() == CONTENT_AIR) {
 								int chance = 5;
 								if (water_found == 1)
