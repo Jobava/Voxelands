@@ -3,6 +3,15 @@ Voxelands changelog
 This should contain all the major changes.
 For minor stuff, refer to the commit log of the repository.
 
+1510.01: (release 2015-11-14)
+ - re-enable cactus farming
+ - vine on trellis should be plant type when digging
+ - bug fix to sleeping, ensure sleep cycle is disabled when players wake
+ - fix the flashing snow, and snow appearing inside buildings
+ - add an exception handler to mapblock meshgen
+ - make controls menu display keybinds correctly
+ - Added missing #include <algorithm> so win version compiles
+
 1510.00: (release 2015-10-24)
  - Optimise some textures
  - make paper craft give 3 paper
