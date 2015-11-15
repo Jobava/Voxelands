@@ -797,11 +797,6 @@ void Client::ProcessData(u8 *data, u32 datasize, u16 sender_peer_id)
 		p.Y = readS16(&data[4]);
 		p.Z = readS16(&data[6]);
 
-		//TimeTaker t1("TOCLIENT_REMOVENODE");
-
-		// This will clear the cracking animation after digging
-		((ClientMap&)m_env.getMap()).clearTempMod(p);
-
 		removeNode(p);
 	}
 	break;
@@ -2274,34 +2269,6 @@ float Client::getEnergy()
 	if (!player)
 		return 0.0;
 	return player->getEnergy();
-}
-
-void Client::setTempMod(v3s16 p, NodeMod mod)
-{
-	//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
-	assert(m_env.getMap().mapType() == MAPTYPE_CLIENT);
-
-	core::map<v3s16, MapBlock*> affected_blocks;
-	((ClientMap&)m_env.getMap()).setTempMod(p, mod, &affected_blocks);
-
-	for(core::map<v3s16, MapBlock*>::Iterator i = affected_blocks.getIterator(); i.atEnd() == false; i++) {
-		MapBlock *block = i.getNode()->getValue();
-		addUpdateMeshTask(block->getPos());
-	}
-}
-
-void Client::clearTempMod(v3s16 p)
-{
-	//JMutexAutoLock envlock(m_env_mutex); //bulk comment-out
-	assert(m_env.getMap().mapType() == MAPTYPE_CLIENT);
-
-	core::map<v3s16, MapBlock*> affected_blocks;
-	((ClientMap&)m_env.getMap()).clearTempMod(p, &affected_blocks);
-
-	for(core::map<v3s16, MapBlock*>::Iterator i = affected_blocks.getIterator(); i.atEnd() == false; i++) {
-		MapBlock *block = i.getNode()->getValue();
-		addUpdateMeshTask(block->getPos());
-	}
 }
 
 void Client::addUpdateMeshTask(v3s16 p, bool ack_to_server, bool refresh_only)

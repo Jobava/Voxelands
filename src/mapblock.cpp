@@ -62,7 +62,6 @@ MapBlock::MapBlock(Map *parent, v3s16 pos, bool dummy):
 	m_mesh_expired = false;
 	mesh_mutex.Init();
 	mesh = NULL;
-	m_temp_mods_mutex.Init();
 #endif
 }
 

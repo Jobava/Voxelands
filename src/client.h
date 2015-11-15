@@ -271,9 +271,6 @@ public:
 	u16 getHunger();
 	float getEnergy();
 
-	void setTempMod(v3s16 p, NodeMod mod);
-	void clearTempMod(v3s16 p);
-
 	bool getChatMessage(std::wstring &message)
 	{
 		if(m_chat_queue.size() == 0)

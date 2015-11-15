@@ -27,17 +27,17 @@
 #define MAPBLOCK_MESH_HEADER
 
 #include "common_irrlicht.h"
-#include "mapblock_nodemod.h"
 #include "voxel.h"
 #include <vector>
+#include <map>
 
 /*
 	Mesh making stuff
 */
 
 // Helper functions
-TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods, NodeMetadata *meta = NULL);
-TileSpec getMetaTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods);
+TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir, SelectedNode &select, NodeMetadata *meta = NULL);
+TileSpec getMetaTile(MapNode mn, v3s16 p, v3s16 face_dir, SelectedNode &select);
 u8 getSmoothLight(v3s16 p, v3s16 corner, VoxelManipulator &vmanip);
 
 class MapBlock;
@@ -65,7 +65,7 @@ struct MeshMakeData
 {
 	u32 m_daynight_ratio;
 	bool m_refresh_only;
-	NodeModMap m_temp_mods;
+	std::map<v3s16,SelectedNode> m_select;
 	VoxelManipulator m_vmanip;
 	v3s16 m_blockpos;
 	v3s16 m_blockpos_nodes;

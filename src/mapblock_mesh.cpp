@@ -46,13 +46,6 @@ void MeshMakeData::fill(u32 daynight_ratio, MapBlock *block)
 	v3s16 blockpos_nodes = m_blockpos*MAP_BLOCKSIZE;
 
 	/*
-		There is no harm not copying the TempMods of the neighbors
-		because they are already copied to this block
-	*/
-	m_temp_mods.clear();
-	block->copyTempMods(m_temp_mods);
-
-	/*
 		Copy data
 	*/
 
@@ -131,7 +124,7 @@ static video::SColor blend_light(u32 data, u32 daylight_factor)
 	Gets node tile from any place relative to block.
 	Returns TILE_NODE if doesn't exist or should not be drawn.
 */
-TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods, NodeMetadata *meta)
+TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir, SelectedNode &select, NodeMetadata *meta)
 {
 	TileSpec spec;
 	spec = mn.getTile(face_dir,false);
@@ -271,29 +264,26 @@ TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods,
 	}
 
 	/*
-		Check temporary modifications on this node
+		apply crack to this node
 	*/
-	NodeMod mod;
-	if (temp_mods.get(p, &mod)) {
-		if (mod == NODEMOD_CRACK) {
-			/*
-				Get texture id, translate it to name, append stuff to
-				name, get texture id
-			*/
+	if (select.has_crack) {
+		/*
+			Get texture id, translate it to name, append stuff to
+			name, get texture id
+		*/
 
-			// Get original texture name
-			u32 orig_id = spec.texture.id;
-			std::string orig_name = g_texturesource->getTextureName(orig_id);
+		// Get original texture name
+		u32 orig_id = spec.texture.id;
+		std::string orig_name = g_texturesource->getTextureName(orig_id);
 
-			// Create new texture name
-			std::ostringstream os;
-			os<<orig_name<<"^[crack"<<mod.param;
+		// Create new texture name
+		std::ostringstream os;
+		os<<orig_name<<"^[crack"<<select.crack;
 
-			// Get new texture
-			u32 new_id = g_texturesource->getTextureId(os.str());
+		// Get new texture
+		u32 new_id = g_texturesource->getTextureId(os.str());
 
-			spec.texture = g_texturesource->getTexture(new_id);
-		}
+		spec.texture = g_texturesource->getTexture(new_id);
 	}
 
 	return spec;
@@ -303,36 +293,32 @@ TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir, NodeModMap &temp_mods,
 	Gets node meta tile from any place relative to block.
 	Returns TILE_NODE if doesn't exist or should not be drawn.
 */
-TileSpec getMetaTile(MapNode mn, v3s16 p, v3s16 face_dir,
-		NodeModMap &temp_mods)
+TileSpec getMetaTile(MapNode mn, v3s16 p, v3s16 face_dir, SelectedNode &select)
 {
 	TileSpec spec;
 	spec = mn.getMetaTile(face_dir);
 
 	/*
-		Check temporary modifications on this node
+		apply crack to this node
 	*/
-	NodeMod mod;
-	if (temp_mods.get(p, &mod)) {
-		if (mod == NODEMOD_CRACK) {
-			/*
-				Get texture id, translate it to name, append stuff to
-				name, get texture id
-			*/
+	if (select.has_crack) {
+		/*
+			Get texture id, translate it to name, append stuff to
+			name, get texture id
+		*/
 
-			// Get original texture name
-			u32 orig_id = spec.texture.id;
-			std::string orig_name = g_texturesource->getTextureName(orig_id);
+		// Get original texture name
+		u32 orig_id = spec.texture.id;
+		std::string orig_name = g_texturesource->getTextureName(orig_id);
 
-			// Create new texture name
-			std::ostringstream os;
-			os<<orig_name<<"^[crack"<<mod.param;
+		// Create new texture name
+		std::ostringstream os;
+		os<<orig_name<<"^[crack"<<select.crack;
 
-			// Get new texture
-			u32 new_id = g_texturesource->getTextureId(os.str());
+		// Get new texture
+		u32 new_id = g_texturesource->getTextureId(os.str());
 
-			spec.texture = g_texturesource->getTexture(new_id);
-		}
+		spec.texture = g_texturesource->getTexture(new_id);
 	}
 
 	return spec;
@@ -430,7 +416,6 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset, JMutex *mut
 
 	data->m_blockpos_nodes = data->m_blockpos*MAP_BLOCKSIZE;
 	data->m_smooth_lighting = g_settings->getBool("smooth_lighting");
-	bool selected = false;
 	m_pos = data->m_blockpos;
 
 	for(s16 z=0; z<MAP_BLOCKSIZE; z++)
@@ -440,9 +425,7 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset, JMutex *mut
 		v3s16 p(x,y,z);
 
 		MapNode n = data->m_vmanip.getNodeNoEx(data->m_blockpos_nodes+p);
-		NodeMod mod;
-		data->m_temp_mods.get(p,&mod);
-		selected = (mod == NODEMOD_SELECTION);
+		SelectedNode selected = data->m_select[p+data->m_blockpos_nodes];
 
 		if (g_sound) {
 			std::string snd = content_features(n).sound_ambient;
@@ -492,7 +475,7 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset, JMutex *mut
 				data->m_sounds->erase(i);
 			}
 		}
-		if (data->m_smooth_lighting && !selected)
+		if (data->m_smooth_lighting && !selected.is_coloured)
 			meshgen_preset_smooth_lights(data,p);
 		switch (content_features(n).draw_type) {
 		case CDT_AIRLIKE:

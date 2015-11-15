@@ -788,7 +788,14 @@ struct SelectedNode
 	{
 		pos = v3s16(0,0,0);
 		has_crack = false;
-		is_coloured = true;
+		is_coloured = false;
+	}
+
+	SelectedNode(bool h)
+	{
+		pos = v3s16(0,0,0);
+		has_crack = false;
+		is_coloured = h;
 	}
 
 	SelectedNode(v3s16 p)

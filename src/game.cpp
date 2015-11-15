@@ -1686,7 +1686,7 @@ void the_game(
 							client.groundAction(0, nodepos, neighbourpos, g_selected_item);
 						}
 						if (input->getLeftClicked())
-							client.setTempMod(nodepos, NodeMod(NODEMOD_CRACK, 0));
+							selected_node_crack = 0;
 						if (input->getLeftState()) {
 							MapNode n = client.getNode(nodepos);
 
@@ -1728,7 +1728,7 @@ void the_game(
 								if (selected_node_crack >= CRACK_ANIMATION_LENGTH) {
 									infostream<<"Digging completed"<<std::endl;
 									client.groundAction(3, nodepos, neighbourpos, g_selected_item);
-									client.clearTempMod(nodepos);
+									selected_node_crack = 0;
 									client.removeNode(nodepos);
 
 									if (enable_particles)

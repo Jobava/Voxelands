@@ -39,7 +39,6 @@
 #include "voxel.h"
 #include "nodemetadata.h"
 #include "staticobject.h"
-#include "mapblock_nodemod.h"
 #ifndef SERVER
 	#include "mapblock_mesh.h"
 #endif
@@ -419,50 +418,6 @@ public:
 	// Copies data from VoxelManipulator getPosRelative()
 	void copyFrom(VoxelManipulator &dst);
 
-#ifndef SERVER // Only on client
-	/*
-		Methods for setting temporary modifications to nodes for
-		drawing
-
-		returns true if the mod was different last time
-	*/
-	bool setTempMod(v3s16 p, const NodeMod &mod)
-	{
-		/*dstream<<"setTempMod called on block"
-				<<" ("<<p.X<<","<<p.Y<<","<<p.Z<<")"
-				<<", mod.type="<<mod.type
-				<<", mod.param="<<mod.param
-				<<std::endl;*/
-		JMutexAutoLock lock(m_temp_mods_mutex);
-
-		return m_temp_mods.set(p, mod);
-	}
-	// Returns true if there was one
-	bool getTempMod(v3s16 p, NodeMod *mod)
-	{
-		JMutexAutoLock lock(m_temp_mods_mutex);
-
-		return m_temp_mods.get(p, mod);
-	}
-	bool clearTempMod(v3s16 p)
-	{
-		JMutexAutoLock lock(m_temp_mods_mutex);
-
-		return m_temp_mods.clear(p);
-	}
-	bool clearTempMods()
-	{
-		JMutexAutoLock lock(m_temp_mods_mutex);
-
-		return m_temp_mods.clear();
-	}
-	void copyTempMods(NodeModMap &dst)
-	{
-		JMutexAutoLock lock(m_temp_mods_mutex);
-		m_temp_mods.copy(dst);
-	}
-#endif
-
 	/*
 		Update day-night lighting difference flag.
 
@@ -638,11 +593,6 @@ private:
 		In practice this is set when the day/night lighting switches.
 	*/
 	bool m_mesh_expired;
-
-	// Temporary modifications to nodes
-	// These are only used when drawing
-	NodeModMap m_temp_mods;
-	JMutex m_temp_mods_mutex;
 #endif
 
 	/*

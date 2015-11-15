@@ -61,7 +61,7 @@
 #define MAP_BLOCKSIZE 16
 /*
 	This makes mesh updates too slow, as many meshes are updated during
-	the main loop (related to TempMods and day/night)
+	the main loop (related to day/night)
 */
 //#define MAP_BLOCKSIZE 32
 

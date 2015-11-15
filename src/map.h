@@ -35,7 +35,6 @@
 #include "common_irrlicht.h"
 #include "mapgen.h"
 #include "mapnode.h"
-#include "mapblock_nodemod.h"
 #include "constants.h"
 #include "voxel.h"
 
@@ -552,22 +551,6 @@ public:
 	int getBackgroundBrightness(float max_d, u32 daylight_factor, int oldvalue, bool *sunlight_seen_result);
 
 	void renderPostFx();
-
-	/*
-		Methods for setting temporary modifications to nodes for
-		drawing.
-
-		Returns true if something changed.
-
-		All blocks whose mesh could have been changed are inserted
-		to affected_blocks.
-	*/
-	bool setTempMod(v3s16 p, NodeMod mod,
-			core::map<v3s16, MapBlock*> *affected_blocks=NULL);
-	bool clearTempMod(v3s16 p,
-			core::map<v3s16, MapBlock*> *affected_blocks=NULL);
-	// Efficient implementation needs a cache of TempMods
-	//void clearTempMods();
 
 	void expireMeshes(bool only_daynight_diffed);
 

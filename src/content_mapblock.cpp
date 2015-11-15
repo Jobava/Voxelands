@@ -569,7 +569,7 @@ static void meshgen_cuboid(
 	const aabb3f &box,
 	TileSpec *tiles,
 	int tilecount,
-	bool selected,
+	SelectedNode selected,
 	const f32* txc,
 	v3s16 angle,
 	v3f centre,
@@ -727,7 +727,7 @@ static void meshgen_cuboid(
 		std::vector<u32> colours;
 		if (cols) {
 			meshgen_custom_lights(colours,cols[0],cols[1],cols[2],cols[3],4);
-		}else if (selected) {
+		}else if (selected.is_coloured) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
 			meshgen_lights(data,n,p,colours,255,faces[i],4,vertices[i]);
@@ -740,7 +740,7 @@ static void meshgen_cuboid(
 }
 
 /* TODO: this can also have the fuck optimised out of it, make less faces where possible */
-static void meshgen_build_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, std::vector<NodeBox> &boxes, TileSpec *tiles)
+static void meshgen_build_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected, std::vector<NodeBox> &boxes, TileSpec *tiles)
 {
 	v3f pos = intToFloat(p,BS);
 	for (std::vector<NodeBox>::iterator i = boxes.begin(); i != boxes.end(); i++) {
@@ -771,7 +771,7 @@ static void meshgen_build_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, bool 
 	}
 }
 
-static void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3f pos, TileSpec &tile, bool selected, s16 rot, v3s16 face)
+static void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3f pos, TileSpec &tile, SelectedNode selected, s16 rot, v3s16 face)
 {
 	// vertices for top and bottom tri
 	v3f top_v[3];
@@ -815,7 +815,7 @@ static void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners
 		};
 		u16 indices[] = {0,1,2};
 		std::vector<u32> colours;
-		if (selected) {
+		if (selected.is_coloured) {
 			meshgen_selected_lights(colours,255,3);
 		}else{
 			meshgen_lights(data,n,p,colours,255,downface,3,tri_v);
@@ -833,7 +833,7 @@ static void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners
 		};
 		u16 indices[] = {0,1,2};
 		std::vector<u32> colours;
-		if (selected) {
+		if (selected.is_coloured) {
 			meshgen_selected_lights(colours,255,3);
 		}else{
 			meshgen_lights(data,n,p,colours,255,upface,3,tri_v);
@@ -845,7 +845,7 @@ static void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners
 	}
 }
 
-static void meshgen_leaftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3f pos, TileSpec &tile, bool selected, s16 rot)
+static void meshgen_leaftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3f pos, TileSpec &tile, SelectedNode selected, s16 rot)
 {
 	// vertices
 	v3f v[3];
@@ -871,7 +871,7 @@ static void meshgen_leaftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners
 		};
 		u16 indices[] = {0,1,2};
 		std::vector<u32> colours;
-		if (selected) {
+		if (selected.is_coloured) {
 			meshgen_selected_lights(colours,255,3);
 		}else{
 			meshgen_lights(data,n,p,colours,255,v3s16(0,0,0),3,tri_v);
@@ -891,11 +891,11 @@ void meshgen_preset_smooth_lights(MeshMakeData *data, v3s16 p)
 	}
 }
 
-void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
 {
 	v3f pos = intToFloat(p, BS);
 	if (meshgen_hardface(data,p,n,v3s16(-1,0,0))) {
-		TileSpec tile = getNodeTile(n,p,v3s16(-1,0,0),data->m_temp_mods,NULL);
+		TileSpec tile = getNodeTile(n,p,v3s16(-1,0,0),data->m_select[p+data->m_blockpos_nodes],NULL);
 		video::S3DVertex vertices[4] = {
 			video::S3DVertex(-0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
 			video::S3DVertex(-0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
@@ -905,7 +905,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 
 		u16 indices[6] = {0,1,2,2,3,0};
 		std::vector<u32> colours;
-		if (selected) {
+		if (selected.is_coloured) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
 			meshgen_lights(data,n,p,colours,255,v3s16(-1,0,0),4,vertices);
@@ -918,7 +918,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
 	if (meshgen_hardface(data,p,n,v3s16(1,0,0))) {
-		TileSpec tile = getNodeTile(n,p,v3s16(1,0,0),data->m_temp_mods,NULL);
+		TileSpec tile = getNodeTile(n,p,v3s16(1,0,0),data->m_select[p+data->m_blockpos_nodes],NULL);
 		video::S3DVertex vertices[4] = {
 			video::S3DVertex(0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
 			video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1()),
@@ -928,7 +928,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 
 		u16 indices[6] = {0,1,2,2,3,0};
 		std::vector<u32> colours;
-		if (selected) {
+		if (selected.is_coloured) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
 			meshgen_lights(data,n,p,colours,255,v3s16(1,0,0),4,vertices);
@@ -941,7 +941,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
 	if (meshgen_hardface(data,p,n,v3s16(0,-1,0))) {
-		TileSpec tile = getNodeTile(n,p,v3s16(0,-1,0),data->m_temp_mods,NULL);
+		TileSpec tile = getNodeTile(n,p,v3s16(0,-1,0),data->m_select[p+data->m_blockpos_nodes],NULL);
 		video::S3DVertex vertices[4] = {
 			video::S3DVertex( 0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
 			video::S3DVertex(-0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
@@ -951,7 +951,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 
 		u16 indices[6] = {0,1,2,2,3,0};
 		std::vector<u32> colours;
-		if (selected) {
+		if (selected.is_coloured) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
 			meshgen_lights(data,n,p,colours,255,v3s16(0,-1,0),4,vertices);
@@ -964,7 +964,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
 	if (meshgen_hardface(data,p,n,v3s16(0,1,0))) {
-		TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),data->m_temp_mods,NULL);
+		TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),data->m_select[p+data->m_blockpos_nodes],NULL);
 		video::S3DVertex vertices[4] = {
 			video::S3DVertex( 0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
 			video::S3DVertex(-0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1()),
@@ -974,7 +974,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 
 		u16 indices[6] = {0,1,2,2,3,0};
 		std::vector<u32> colours;
-		if (selected) {
+		if (selected.is_coloured) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
 			meshgen_lights(data,n,p,colours,255,v3s16(0,1,0),4,vertices);
@@ -987,7 +987,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
 	if (meshgen_hardface(data,p,n,v3s16(0,0,-1))) {
-		TileSpec tile = getNodeTile(n,p,v3s16(0,0,-1),data->m_temp_mods,NULL);
+		TileSpec tile = getNodeTile(n,p,v3s16(0,0,-1),data->m_select[p+data->m_blockpos_nodes],NULL);
 		video::S3DVertex vertices[4] = {
 			video::S3DVertex(-0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
 			video::S3DVertex( 0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
@@ -997,7 +997,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 
 		u16 indices[6] = {0,1,2,2,3,0};
 		std::vector<u32> colours;
-		if (selected) {
+		if (selected.is_coloured) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
 			meshgen_lights(data,n,p,colours,255,v3s16(0,0,-1),4,vertices);
@@ -1010,7 +1010,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
 	if (meshgen_hardface(data,p,n,v3s16(0,0,1))) {
-		TileSpec tile = getNodeTile(n,p,v3s16(0,0,1),data->m_temp_mods,NULL);
+		TileSpec tile = getNodeTile(n,p,v3s16(0,0,1),data->m_select[p+data->m_blockpos_nodes],NULL);
 		video::S3DVertex vertices[4] = {
 			video::S3DVertex( 0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
 			video::S3DVertex(-0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
@@ -1020,7 +1020,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 
 		u16 indices[6] = {0,1,2,2,3,0};
 		std::vector<u32> colours;
-		if (selected) {
+		if (selected.is_coloured) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
 			meshgen_lights(data,n,p,colours,255,v3s16(0,0,1),4,vertices);
@@ -1035,7 +1035,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 }
 
 /* TODO: should use custom vertexes instead of boxes for curved rails */
-void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
 {
 	bool is_rail_x [] = { false, false };  /* x-1, x+1 */
 	bool is_rail_z [] = { false, false };  /* z-1, z+1 */
@@ -1166,7 +1166,7 @@ void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	TileSpec *tile;
 	for (int i = 0; i < 6; i++) {
 		// Handles facedir rotation for textures
-		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
+		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_select[p+data->m_blockpos_nodes]);
 	}
 	v3f pos = intToFloat(p,BS);
 
@@ -1408,10 +1408,10 @@ void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	}
 }
 
-void meshgen_plantlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+void meshgen_plantlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
 {
 	ContentFeatures *f = &content_features(n);
-	TileSpec tile = getNodeTile(n,p,v3s16(0,0,0),data->m_temp_mods);
+	TileSpec tile = getNodeTile(n,p,v3s16(0,0,0),data->m_select[p+data->m_blockpos_nodes]);
 	v3f offset(0,0,0);
 	if (data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0,-1,0)).getContent() == CONTENT_FLOWER_POT)
 		offset = v3f(0,-0.25*BS,0);
@@ -1514,7 +1514,7 @@ void meshgen_plantlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 
 		u16 indices[] = {0,1,2,2,3,0};
 		std::vector<u32> colours;
-		if (selected) {
+		if (selected.is_coloured) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
 			meshgen_lights(data,n,p,colours,255,v3s16(0,0,0),4,vertices);
@@ -1528,7 +1528,7 @@ void meshgen_plantlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	}
 }
 
-void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
 {
 	ContentFeatures *f = &content_features(n);
 	TileSpec *tiles = f->tiles;
@@ -1734,7 +1734,7 @@ void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 
 		u16 indices[] = {0,1,2,2,3,0};
 		std::vector<u32> colours;
-		if (selected) {
+		if (selected.is_coloured) {
 			meshgen_selected_lights(colours,f->vertex_alpha,4);
 		}else{
 			meshgen_lights(data,n,p,colours,f->vertex_alpha,dir,4,vertices);
@@ -1769,7 +1769,7 @@ void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 
 		u16 indices[] = {0,1,2,2,3,0};
 		std::vector<u32> colours;
-		if (selected) {
+		if (selected.is_coloured) {
 			meshgen_selected_lights(colours,f->vertex_alpha,4);
 		}else{
 			meshgen_lights(data,n,p,colours,f->vertex_alpha,v3s16(0,1,0),4,vertices);
@@ -1783,7 +1783,7 @@ void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	}
 }
 
-void meshgen_liquid_source(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+void meshgen_liquid_source(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
 {
 	ContentFeatures *f = &content_features(n);
 	TileSpec *tiles = f->tiles;
@@ -1945,7 +1945,7 @@ void meshgen_liquid_source(MeshMakeData *data, v3s16 p, MapNode &n, bool selecte
 
 		u16 indices[] = {0,1,2,2,3,0};
 		std::vector<u32> colours;
-		if (selected) {
+		if (selected.is_coloured) {
 			meshgen_selected_lights(colours,f->vertex_alpha,4);
 		}else{
 			meshgen_lights(data,n,p,colours,f->vertex_alpha,g_6dirs[j],4,vertices);
@@ -1958,7 +1958,7 @@ void meshgen_liquid_source(MeshMakeData *data, v3s16 p, MapNode &n, bool selecte
 	}
 }
 
-void meshgen_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, bool has_meta)
+void meshgen_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected, bool has_meta)
 {
 	static const v3s16 tile_dirs[6] = {
 		v3s16(0, 1, 0),
@@ -1973,7 +1973,7 @@ void meshgen_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, boo
 	NodeMetadata *meta = data->m_env->getMap().getNodeMetadataClone(p+data->m_blockpos_nodes);
 	for (int i = 0; i < 6; i++) {
 		// Handles facedir rotation for textures
-		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods,meta);
+		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_select[p+data->m_blockpos_nodes],meta);
 	}
 
 	std::vector<NodeBox> boxes = content_features(n).getNodeBoxes(n);
@@ -1989,7 +1989,7 @@ void meshgen_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, boo
 	if (boxes.size() > 0) {
 		for (int i = 0; i < 6; i++) {
 			// Handles facedir rotation for textures
-			tiles[i] = getMetaTile(n,p,tile_dirs[i],data->m_temp_mods);
+			tiles[i] = getMetaTile(n,p,tile_dirs[i],data->m_select[p+data->m_blockpos_nodes]);
 		}
 		meshgen_build_nodebox(data,p,n,selected,boxes,tiles);
 	}
@@ -1997,7 +1997,7 @@ void meshgen_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, boo
 	delete meta;
 }
 
-void meshgen_glasslike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+void meshgen_glasslike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
 {
 	static const v3s16 tile_dirs[6] = {
 		v3s16(0, 1, 0),
@@ -2011,7 +2011,7 @@ void meshgen_glasslike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	TileSpec tiles[6];
 	for (int i = 0; i < 6; i++) {
 		// Handles facedir rotation for textures
-		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
+		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_select[p+data->m_blockpos_nodes]);
 	}
 
 	v3f pos = intToFloat(p,BS);
@@ -2067,7 +2067,7 @@ void meshgen_glasslike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 
 		u16 indices[] = {0,1,2,2,3,0};
 		std::vector<u32> colours;
-		if (selected) {
+		if (selected.is_coloured) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
 			meshgen_lights(data,n,p,colours,255,g_6dirs[j],4,vertices);
@@ -2081,7 +2081,7 @@ void meshgen_glasslike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	}
 }
 
-void meshgen_torchlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+void meshgen_torchlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
 {
 	static const f32 txc[24] = {
 		0.625,0.125,0.75,0.25,
@@ -2192,7 +2192,7 @@ void meshgen_torchlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	// Add to mesh collector
 	for (s32 j=0; j<6; j++) {
 		std::vector<u32> colours;
-		if (selected) {
+		if (selected.is_coloured) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
 			meshgen_lights(data,n,p,colours,255,faces[j],4,vertices[j]);
@@ -2206,7 +2206,7 @@ void meshgen_torchlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	}
 }
 
-void meshgen_fencelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+void meshgen_fencelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
 {
 	static const v3s16 tile_dirs[6] = {
 		v3s16( 0, 1, 0),
@@ -2239,7 +2239,7 @@ void meshgen_fencelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	TileSpec tiles[6];
 	for (int i = 0; i < 6; i++) {
 		// Handles facedir rotation for textures
-		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
+		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_select[p+data->m_blockpos_nodes]);
 	}
 
 	v3f pos = intToFloat(p, BS);
@@ -2349,9 +2349,9 @@ void meshgen_fencelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	}
 }
 
-void meshgen_firelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+void meshgen_firelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
 {
-	TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),data->m_temp_mods);
+	TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),data->m_select[p+data->m_blockpos_nodes]);
 	content_t current = n.getContent();
 	content_t n2c;
 	MapNode n2;
@@ -2422,7 +2422,7 @@ void meshgen_firelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		}
 		u16 indices[] = {0,1,2,2,3,0};
 		std::vector<u32> colours;
-		if (selected) {
+		if (selected.is_coloured) {
 			meshgen_selected_lights(colours,255,4);
 		}else{
 			meshgen_lights(data,n,p,colours,255,v3s16(0,0,0),4,vertices);
@@ -2436,7 +2436,7 @@ void meshgen_firelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	}
 }
 
-void meshgen_walllike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+void meshgen_walllike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
 {
 	static const v3s16 tile_dirs[6] = {
 		v3s16(0, 1, 0),
@@ -2452,7 +2452,7 @@ void meshgen_walllike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	TileSpec tiles[6];
 	for (int i = 0; i < 6; i++) {
 		// Handles facedir rotation for textures
-		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
+		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_select[p+data->m_blockpos_nodes]);
 	}
 
 	v3f pos = intToFloat(p, BS);
@@ -2542,7 +2542,7 @@ void meshgen_walllike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	}
 }
 
-void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
 {
 	bool is_roof_x [] = { false, false };  /* x-1, x+1 */
 	bool is_roof_z [] = { false, false };  /* z-1, z+1 */
@@ -2593,8 +2593,8 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	u8 adjacencies = is_roof_x[0] + is_roof_x[1] + is_roof_z[0] + is_roof_z[1];
 
 	// get the tile, with crack if being dug
-	TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),data->m_temp_mods);
-	TileSpec toptile = getNodeTile(n,p,v3s16(0,-1,0),data->m_temp_mods);
+	TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),data->m_select[p+data->m_blockpos_nodes]);
+	TileSpec toptile = getNodeTile(n,p,v3s16(0,-1,0),data->m_select[p+data->m_blockpos_nodes]);
 
 	u8 type = 0;
 	s16 angle = 0;
@@ -3478,7 +3478,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	}
 }
 
-void meshgen_leaflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+void meshgen_leaflike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
 {
 	bool is_xp = false;
 	bool is_xm = false;
@@ -3514,8 +3514,8 @@ void meshgen_leaflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 		is_xmzm = true;
 
 	// get the tile, with crack if being dug
-	TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),data->m_temp_mods);
-	TileSpec toptile = getNodeTile(n,p,v3s16(0,-1,0),data->m_temp_mods);
+	TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),data->m_select[p+data->m_blockpos_nodes]);
+	TileSpec toptile = getNodeTile(n,p,v3s16(0,-1,0),data->m_select[p+data->m_blockpos_nodes]);
 
 	u8 type = 0;
 	s16 angle = 0;
@@ -3653,7 +3653,7 @@ void meshgen_leaflike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	}
 }
 
-void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, bool is3d)
+void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected, bool is3d)
 {
 	MapNode n_plus_y = data->m_vmanip.getNodeNoEx(data->m_blockpos_nodes + p + v3s16(0,1,0));
 	MapNode n_minus_x = data->m_vmanip.getNodeNoEx(data->m_blockpos_nodes + p + v3s16(-1,0,0));
@@ -3790,12 +3790,12 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, bo
 	TileSpec tiles[6];
 	for (int i = 0; i < 6; i++) {
 		// Handles facedir rotation for textures
-		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
+		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_select[p+data->m_blockpos_nodes]);
 	}
 
 	v3f pos = intToFloat(p, BS);
 	u8 cols[4] = {250,64,64,64};
-	if (selected) {
+	if (selected.is_coloured) {
 		cols[0] = 255;
 		cols[1] = 64;
 		cols[2] = 64;
@@ -4047,7 +4047,7 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected, bo
 	}
 }
 
-void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
 {
 	static v3s16 faces[6] = {
 		v3s16( 0, 1, 0),
@@ -4069,7 +4069,7 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	TileSpec tiles[6];
 	for (int i=0; i<6; i++) {
 		// Handles facedir rotation for textures
-		tiles[i] = getNodeTile(n,p,faces[i],data->m_temp_mods);
+		tiles[i] = getNodeTile(n,p,faces[i],data->m_select[p+data->m_blockpos_nodes]);
 	}
 
 	bool urot = (n.getContent() >= CONTENT_SLAB_STAIR_UD_MIN && n.getContent() <= CONTENT_SLAB_STAIR_UD_MAX);
@@ -4273,7 +4273,7 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					vertices[i][j].TCoords += tiles[i].texture.pos;
 				}
 				std::vector<u32> colours;
-				if (selected) {
+				if (selected.is_coloured) {
 					meshgen_selected_lights(colours,255,vcounts[i]);
 				}else{
 					meshgen_lights(data,n,p,colours,255,f,vcounts[i],vertices[i]);
@@ -4297,7 +4297,7 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					vertices[i][j].TCoords += tiles[i].texture.pos;
 				}
 				std::vector<u32> colours;
-				if (selected) {
+				if (selected.is_coloured) {
 					meshgen_selected_lights(colours,255,vcounts[i]);
 				}else{
 					meshgen_lights(data,n,p,colours,255,f,vcounts[i],vertices[i]);
@@ -4322,7 +4322,7 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				vertices[i][j].TCoords += tiles[i].texture.pos;
 			}
 			std::vector<u32> colours;
-			if (selected) {
+			if (selected.is_coloured) {
 				meshgen_selected_lights(colours,255,vcounts[i]);
 			}else{
 				meshgen_lights(data,n,p,colours,255,f,vcounts[i],vertices[i]);
@@ -4343,7 +4343,7 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				vertices[i][j].TCoords += tiles[i].texture.pos;
 			}
 			std::vector<u32> colours;
-			if (selected) {
+			if (selected.is_coloured) {
 				meshgen_selected_lights(colours,255,vcounts[i]);
 			}else{
 				meshgen_lights(data,n,p,colours,255,faces[i],vcounts[i],vertices[i]);
@@ -4358,7 +4358,7 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	}
 }
 
-void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
 {
 	static v3s16 faces[6] = {
 		v3s16( 0, 1, 0),
@@ -4380,7 +4380,7 @@ void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	TileSpec tiles[6];
 	for (int i = 0; i < 6; i++) {
 		// Handles facedir rotation for textures
-		tiles[i] = getNodeTile(n,p,faces[i],data->m_temp_mods);
+		tiles[i] = getNodeTile(n,p,faces[i],data->m_select[p+data->m_blockpos_nodes]);
 	}
 	v3f pos = intToFloat(p, BS);
 
@@ -4439,7 +4439,7 @@ void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				vertices[i][j].TCoords += tiles[i].texture.pos;
 			}
 			std::vector<u32> colours;
-			if (selected) {
+			if (selected.is_coloured) {
 				meshgen_selected_lights(colours,255,4);
 			}else{
 				meshgen_lights(data,n,p,colours,255,ufaces[i],4,vertices[i]);
@@ -4463,7 +4463,7 @@ void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				vertices[i][j].TCoords += tiles[i].texture.pos;
 			}
 			std::vector<u32> colours;
-			if (selected) {
+			if (selected.is_coloured) {
 				meshgen_selected_lights(colours,255,4);
 			}else{
 				meshgen_lights(data,n,p,colours,255,faces[i],4,vertices[i]);
@@ -4478,7 +4478,7 @@ void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	}
 }
 
-void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
 {
 	bool x_plus = false;
 	bool x_plus_any = false;
@@ -4546,8 +4546,8 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	}else if (!meshgen_hardface(data,p,n,v3s16(0,0,-1))) {
 		z_minus_any = true;
 	}
-	TileSpec tile = getNodeTile(n,p,v3s16(1,0,0),data->m_temp_mods);
-	TileSpec endtile = getNodeTile(n,p,v3s16(0,1,0),data->m_temp_mods);
+	TileSpec tile = getNodeTile(n,p,v3s16(1,0,0),data->m_select[p+data->m_blockpos_nodes]);
+	TileSpec endtile = getNodeTile(n,p,v3s16(0,1,0),data->m_select[p+data->m_blockpos_nodes]);
 	video::S3DVertex vertices[10] = {
 		video::S3DVertex(0       ,-BS*0.5,BS*0.499, 0,0,0, video::SColor(255,255,255,255), 0.125, 0.),
 		video::S3DVertex(BS*0.125,-BS*0.5,BS*0.499, 0,0,0, video::SColor(255,255,255,255), 0.25, 0.),
@@ -4612,7 +4612,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 				v[i].TCoords += tile.texture.pos;
 			}
 			std::vector<u32> colours;
-			if (selected) {
+			if (selected.is_coloured) {
 				meshgen_selected_lights(colours,255,10);
 			}else{
 				v3s16 f[3];
@@ -4644,7 +4644,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					v[i].TCoords += endtile.texture.pos;
 				}
 				std::vector<u32> colours;
-				if (selected) {
+				if (selected.is_coloured) {
 					meshgen_selected_lights(colours,255,6);
 				}else{
 					meshgen_lights(data,n,p,colours,255,v3s16(0,1,0),6,v);
@@ -4668,7 +4668,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					v[i].TCoords += endtile.texture.pos;
 				}
 				std::vector<u32> colours;
-				if (selected) {
+				if (selected.is_coloured) {
 					meshgen_selected_lights(colours,255,6);
 				}else{
 					meshgen_lights(data,n,p,colours,255,v3s16(0,-1,0),6,v);
@@ -4690,7 +4690,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					v[i].TCoords += tile.texture.pos;
 				}
 				std::vector<u32> colours;
-				if (selected) {
+				if (selected.is_coloured) {
 					meshgen_selected_lights(colours,255,6);
 				}else{
 					meshgen_lights(data,n,p,colours,255,v3s16(0,1,0),6,v);
@@ -4715,7 +4715,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					v[i].TCoords += tile.texture.pos;
 				}
 				std::vector<u32> colours;
-				if (selected) {
+				if (selected.is_coloured) {
 					meshgen_selected_lights(colours,255,10);
 				}else{
 					v3s16 f[3];
@@ -4750,7 +4750,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					v[i].TCoords += tile.texture.pos;
 				}
 				std::vector<u32> colours;
-				if (selected) {
+				if (selected.is_coloured) {
 					meshgen_selected_lights(colours,255,10);
 				}else{
 					v3s16 f[3];
@@ -4785,7 +4785,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					v[i].TCoords += tile.texture.pos;
 				}
 				std::vector<u32> colours;
-				if (selected) {
+				if (selected.is_coloured) {
 					meshgen_selected_lights(colours,255,10);
 				}else{
 					v3s16 f[3];
@@ -4821,7 +4821,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					v[i].TCoords += tile.texture.pos;
 				}
 				std::vector<u32> colours;
-				if (selected) {
+				if (selected.is_coloured) {
 					meshgen_selected_lights(colours,255,10);
 				}else{
 					v3s16 f[3];
@@ -4857,7 +4857,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					v[i].TCoords += tile.texture.pos;
 				}
 				std::vector<u32> colours;
-				if (selected) {
+				if (selected.is_coloured) {
 					meshgen_selected_lights(colours,255,10);
 				}else{
 					v3s16 f[3];
@@ -4891,7 +4891,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						v[i].TCoords += endtile.texture.pos;
 					}
 					std::vector<u32> colours;
-					if (selected) {
+					if (selected.is_coloured) {
 						meshgen_selected_lights(colours,255,6);
 					}else{
 						meshgen_lights(data,n,p,colours,255,v3s16(1,0,0),6,v);
@@ -4915,7 +4915,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						v[i].TCoords += endtile.texture.pos;
 					}
 					std::vector<u32> colours;
-					if (selected) {
+					if (selected.is_coloured) {
 						meshgen_selected_lights(colours,255,6);
 					}else{
 						meshgen_lights(data,n,p,colours,255,v3s16(-1,0,0),6,v);
@@ -4939,7 +4939,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						v[i].TCoords += tile.texture.pos;
 					}
 					std::vector<u32> colours;
-					if (selected) {
+					if (selected.is_coloured) {
 						meshgen_selected_lights(colours,255,10);
 					}else{
 						v3s16 f[3];
@@ -4975,7 +4975,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						v[i].TCoords += tile.texture.pos;
 					}
 					std::vector<u32> colours;
-					if (selected) {
+					if (selected.is_coloured) {
 						meshgen_selected_lights(colours,255,10);
 					}else{
 						v3s16 f[3];
@@ -5010,7 +5010,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 					v[i].TCoords += tile.texture.pos;
 				}
 				std::vector<u32> colours;
-				if (selected) {
+				if (selected.is_coloured) {
 					meshgen_selected_lights(colours,255,10);
 				}else{
 					v3s16 f[3];
@@ -5044,7 +5044,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						v[i].TCoords += endtile.texture.pos;
 					}
 					std::vector<u32> colours;
-					if (selected) {
+					if (selected.is_coloured) {
 						meshgen_selected_lights(colours,255,6);
 					}else{
 						meshgen_lights(data,n,p,colours,255,v3s16(0,0,1),6,v);
@@ -5068,7 +5068,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						v[i].TCoords += endtile.texture.pos;
 					}
 					std::vector<u32> colours;
-					if (selected) {
+					if (selected.is_coloured) {
 						meshgen_selected_lights(colours,255,6);
 					}else{
 						meshgen_lights(data,n,p,colours,255,v3s16(0,0,-1),6,v);
@@ -5093,7 +5093,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						v[i].TCoords += tile.texture.pos;
 					}
 					std::vector<u32> colours;
-					if (selected) {
+					if (selected.is_coloured) {
 						meshgen_selected_lights(colours,255,10);
 					}else{
 						v3s16 f[3];
@@ -5128,7 +5128,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 						v[i].TCoords += tile.texture.pos;
 					}
 					std::vector<u32> colours;
-					if (selected) {
+					if (selected.is_coloured) {
 						meshgen_selected_lights(colours,255,10);
 					}else{
 						v3s16 f[3];
@@ -5156,7 +5156,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	}
 }
 
-void meshgen_flaglike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+void meshgen_flaglike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
 {
 	static const v3s16 tile_dirs[6] = {
 		v3s16(0, 1, 0),
@@ -5173,10 +5173,10 @@ void meshgen_flaglike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	NodeMetadata *meta = data->m_env->getMap().getNodeMetadataClone(p+data->m_blockpos_nodes);
 	for (u16 i=0; i<6; i++) {
 		// Handles facedir rotation for textures
-		tiles[i] = getNodeTile(pn,p,tile_dirs[i],data->m_temp_mods);
+		tiles[i] = getNodeTile(pn,p,tile_dirs[i],data->m_select[p+data->m_blockpos_nodes]);
 	}
 
-	flag = getNodeTile(n,p,v3s16(0,0,0),data->m_temp_mods,meta);
+	flag = getNodeTile(n,p,v3s16(0,0,0),data->m_select[p+data->m_blockpos_nodes],meta);
 
 	std::vector<NodeBox> boxes = content_features(n).getNodeBoxes(n);
 	meshgen_build_nodebox(data,p,n,selected,boxes,tiles);
@@ -5210,7 +5210,7 @@ void meshgen_flaglike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 
 	u16 indices[] = {0,1,2,2,3,0};
 	std::vector<u32> colours;
-	if (selected) {
+	if (selected.is_coloured) {
 		meshgen_selected_lights(colours,255,4);
 	}else{
 		meshgen_lights(data,n,p,colours,255,v3s16(0,0,0),4,vertices);
@@ -5225,7 +5225,7 @@ void meshgen_flaglike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	delete meta;
 }
 
-void meshgen_melonlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
+void meshgen_melonlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
 {
 	ContentFeatures *f = &content_features(n.getContent());
 	if (f->param2_type != CPT_PLANTGROWTH || n.param2 == 0) {
@@ -5245,7 +5245,7 @@ void meshgen_melonlike(MeshMakeData *data, v3s16 p, MapNode &n, bool selected)
 	TileSpec tiles[6];
 	for (u16 i=0; i<6; i++) {
 		// Handles facedir rotation for textures
-		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_temp_mods);
+		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_select[p+data->m_blockpos_nodes]);
 	}
 
 	float v = (float)n.param2*0.0625;
@@ -5259,7 +5259,7 @@ void meshgen_farnode(MeshMakeData *data, v3s16 p, MapNode &n)
 {
 	v3f pos = intToFloat(p, BS);
 	if (meshgen_farface(data,p,n,v3s16(-1,0,0))) {
-		TileSpec tile = getNodeTile(n,p,v3s16(-1,0,0),data->m_temp_mods,NULL);
+		TileSpec tile = getNodeTile(n,p,v3s16(-1,0,0),data->m_select[p+data->m_blockpos_nodes],NULL);
 		video::S3DVertex vertices[4] = {
 			video::S3DVertex(-0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
 			video::S3DVertex(-0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
@@ -5276,7 +5276,7 @@ void meshgen_farnode(MeshMakeData *data, v3s16 p, MapNode &n)
 		data->appendFar(tile.getMaterial(), vertices, 4, indices, 6);
 	}
 	if (meshgen_farface(data,p,n,v3s16(1,0,0))) {
-		TileSpec tile = getNodeTile(n,p,v3s16(1,0,0),data->m_temp_mods,NULL);
+		TileSpec tile = getNodeTile(n,p,v3s16(1,0,0),data->m_select[p+data->m_blockpos_nodes],NULL);
 		video::S3DVertex vertices[4] = {
 			video::S3DVertex(0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
 			video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1()),
@@ -5293,7 +5293,7 @@ void meshgen_farnode(MeshMakeData *data, v3s16 p, MapNode &n)
 		data->appendFar(tile.getMaterial(), vertices, 4, indices, 6);
 	}
 	if (meshgen_farface(data,p,n,v3s16(0,-1,0))) {
-		TileSpec tile = getNodeTile(n,p,v3s16(0,-1,0),data->m_temp_mods,NULL);
+		TileSpec tile = getNodeTile(n,p,v3s16(0,-1,0),data->m_select[p+data->m_blockpos_nodes],NULL);
 		video::S3DVertex vertices[4] = {
 			video::S3DVertex( 0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
 			video::S3DVertex(-0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
@@ -5311,7 +5311,7 @@ void meshgen_farnode(MeshMakeData *data, v3s16 p, MapNode &n)
 		data->appendFar(tile.getMaterial(), vertices, 4, indices, 6);
 	}
 	if (meshgen_farface(data,p,n,v3s16(0,1,0))) {
-		TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),data->m_temp_mods,NULL);
+		TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),data->m_select[p+data->m_blockpos_nodes],NULL);
 		video::S3DVertex vertices[4] = {
 			video::S3DVertex( 0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
 			video::S3DVertex(-0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1()),
@@ -5328,7 +5328,7 @@ void meshgen_farnode(MeshMakeData *data, v3s16 p, MapNode &n)
 		data->appendFar(tile.getMaterial(), vertices, 4, indices, 6);
 	}
 	if (meshgen_farface(data,p,n,v3s16(0,0,-1))) {
-		TileSpec tile = getNodeTile(n,p,v3s16(0,0,-1),data->m_temp_mods,NULL);
+		TileSpec tile = getNodeTile(n,p,v3s16(0,0,-1),data->m_select[p+data->m_blockpos_nodes],NULL);
 		video::S3DVertex vertices[4] = {
 			video::S3DVertex(-0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
 			video::S3DVertex( 0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
@@ -5345,7 +5345,7 @@ void meshgen_farnode(MeshMakeData *data, v3s16 p, MapNode &n)
 		data->appendFar(tile.getMaterial(), vertices, 4, indices, 6);
 	}
 	if (meshgen_farface(data,p,n,v3s16(0,0,1))) {
-		TileSpec tile = getNodeTile(n,p,v3s16(0,0,1),data->m_temp_mods,NULL);
+		TileSpec tile = getNodeTile(n,p,v3s16(0,0,1),data->m_select[p+data->m_blockpos_nodes],NULL);
 		video::S3DVertex vertices[4] = {
 			video::S3DVertex( 0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
 			video::S3DVertex(-0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
