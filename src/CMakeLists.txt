@@ -242,6 +242,7 @@ set(voxelands_SRCS
 	content_mapblock.cpp
 	content_cao.cpp
 	mapblock_mesh.cpp
+	selection_mesh.cpp
 	keycode.cpp
 	camera.cpp
 	clouds.cpp

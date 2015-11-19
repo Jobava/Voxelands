@@ -569,7 +569,7 @@ static void meshgen_cuboid(
 	const aabb3f &box,
 	TileSpec *tiles,
 	int tilecount,
-	SelectedNode selected,
+	SelectedNode &selected,
 	const f32* txc,
 	v3s16 angle,
 	v3f centre,
@@ -659,7 +659,7 @@ static void meshgen_cuboid(
 		{
 			bool edge = true;
 			for (s32 j=0; edge && j<4; j++) {
-				if (vertices[i][j].Pos.Y < 0.49*BS)
+				if (vertices[i][j].Pos.Y < 0.49*data->m_BS)
 					edge = false;
 			}
 			if (edge && !meshgen_hardface(data,p,n,v3s16(0,1,0)))
@@ -670,7 +670,7 @@ static void meshgen_cuboid(
 		{
 			bool edge = true;
 			for (s32 j=0; edge && j<4; j++) {
-				if (vertices[i][j].Pos.Y > -0.49*BS)
+				if (vertices[i][j].Pos.Y > -0.49*data->m_BS)
 					edge = false;
 			}
 			if (edge && !meshgen_hardface(data,p,n,v3s16(0,-1,0)))
@@ -681,7 +681,7 @@ static void meshgen_cuboid(
 		{
 			bool edge = true;
 			for (s32 j=0; edge && j<4; j++) {
-				if (vertices[i][j].Pos.X < 0.49*BS)
+				if (vertices[i][j].Pos.X < 0.49*data->m_BS)
 					edge = false;
 			}
 			if (edge && !meshgen_hardface(data,p,n,v3s16(1,0,0)))
@@ -692,7 +692,7 @@ static void meshgen_cuboid(
 		{
 			bool edge = true;
 			for (s32 j=0; edge && j<4; j++) {
-				if (vertices[i][j].Pos.X > -0.49*BS)
+				if (vertices[i][j].Pos.X > -0.49*data->m_BS)
 					edge = false;
 			}
 			if (edge && !meshgen_hardface(data,p,n,v3s16(-1,0,0)))
@@ -703,7 +703,7 @@ static void meshgen_cuboid(
 		{
 			bool edge = true;
 			for (s32 j=0; edge && j<4; j++) {
-				if (vertices[i][j].Pos.Z < 0.49*BS)
+				if (vertices[i][j].Pos.Z < 0.49*data->m_BS)
 					edge = false;
 			}
 			if (edge && !meshgen_hardface(data,p,n,v3s16(0,0,1)))
@@ -714,7 +714,7 @@ static void meshgen_cuboid(
 		{
 			bool edge = true;
 			for (s32 j=0; edge && j<4; j++) {
-				if (vertices[i][j].Pos.Z > -0.49*BS)
+				if (vertices[i][j].Pos.Z > -0.49*data->m_BS)
 					edge = false;
 			}
 			if (edge && !meshgen_hardface(data,p,n,v3s16(0,0,-1)))
@@ -740,19 +740,19 @@ static void meshgen_cuboid(
 }
 
 /* TODO: this can also have the fuck optimised out of it, make less faces where possible */
-static void meshgen_build_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected, std::vector<NodeBox> &boxes, TileSpec *tiles)
+static void meshgen_build_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected, std::vector<NodeBox> &boxes, TileSpec *tiles)
 {
 	v3f pos = intToFloat(p,BS);
 	for (std::vector<NodeBox>::iterator i = boxes.begin(); i != boxes.end(); i++) {
 		NodeBox box = *i;
 
 		// Compute texture coords
-		f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
-		f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
-		f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
-		f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
-		f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
-		f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
+		f32 tx1 = (box.m_box.MinEdge.X/data->m_BS)+0.5;
+		f32 ty1 = (box.m_box.MinEdge.Y/data->m_BS)+0.5;
+		f32 tz1 = (box.m_box.MinEdge.Z/data->m_BS)+0.5;
+		f32 tx2 = (box.m_box.MaxEdge.X/data->m_BS)+0.5;
+		f32 ty2 = (box.m_box.MaxEdge.Y/data->m_BS)+0.5;
+		f32 tz2 = (box.m_box.MaxEdge.Z/data->m_BS)+0.5;
 		f32 txc[24] = {
 			// up
 			tx1, 1-tz2, tx2, 1-tz1,
@@ -771,7 +771,7 @@ static void meshgen_build_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, Selec
 	}
 }
 
-static void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3f pos, TileSpec &tile, SelectedNode selected, s16 rot, v3s16 face)
+static void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3f pos, TileSpec &tile, SelectedNode &selected, s16 rot, v3s16 face)
 {
 	// vertices for top and bottom tri
 	v3f top_v[3];
@@ -790,7 +790,7 @@ static void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners
 		downface.Z *= -1;
 	for (int i=0; i<3; i++) {
 		top_v[i].X = (corners[i].X*BS);
-		top_v[i].Y = ((corners[i].Y+0.01)*BS);
+		top_v[i].Y = ((corners[i].Y+0.01)*BS)+data->m_BSd;
 		top_v[i].Z = (corners[i].Z*BS);
 		top_t[i].X = (corners[i].X+0.5);
 		top_t[i].Y = (corners[i].Z+0.5);
@@ -801,7 +801,7 @@ static void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners
 
 		// reverse winding for bottom
 		btm_v[2-i].X = (corners[i].X*BS);
-		btm_v[2-i].Y = ((corners[i].Y-0.01)*BS);
+		btm_v[2-i].Y = ((corners[i].Y-0.01)*BS)-data->m_BSd;
 		btm_v[2-i].Z = (corners[i].Z*BS);
 		btm_t[2-i].X = top_t[i].X;
 		btm_t[2-i].Y = top_t[i].Y;
@@ -845,16 +845,20 @@ static void meshgen_rooftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners
 	}
 }
 
-static void meshgen_leaftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3f pos, TileSpec &tile, SelectedNode selected, s16 rot)
+static void meshgen_leaftri(MeshMakeData *data, MapNode &n, v3s16 p, v3f corners[3], v3f pos, TileSpec &tile, SelectedNode &selected, s16 rot)
 {
+	if (selected.is_coloured || selected.has_crack) {
+		meshgen_rooftri(data,n,p,corners,pos,tile,selected,rot,v3s16(0,0,0));
+		return;
+	}
 	// vertices
 	v3f v[3];
 	// tex coords
 	v2f t[3];
 	for (int i=0; i<3; i++) {
-		v[i].X = (corners[i].X*BS);
-		v[i].Y = (corners[i].Y*BS);
-		v[i].Z = (corners[i].Z*BS);
+		v[i].X = (corners[i].X*data->m_BS);
+		v[i].Y = (corners[i].Y*data->m_BS);
+		v[i].Z = (corners[i].Z*data->m_BS);
 		t[i].X = (corners[i].X+0.5);
 		t[i].Y = (corners[i].Z+0.5);
 		if (rot)
@@ -891,16 +895,16 @@ void meshgen_preset_smooth_lights(MeshMakeData *data, v3s16 p)
 	}
 }
 
-void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
+void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected)
 {
 	v3f pos = intToFloat(p, BS);
 	if (meshgen_hardface(data,p,n,v3s16(-1,0,0))) {
-		TileSpec tile = getNodeTile(n,p,v3s16(-1,0,0),data->m_select[p+data->m_blockpos_nodes],NULL);
+		TileSpec tile = getNodeTile(n,p,v3s16(-1,0,0),selected,NULL);
 		video::S3DVertex vertices[4] = {
-			video::S3DVertex(-0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
-			video::S3DVertex(-0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
-			video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
-			video::S3DVertex(-0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
+			video::S3DVertex(-0.5*data->m_BS, 0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
+			video::S3DVertex(-0.5*data->m_BS, 0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
 		};
 
 		u16 indices[6] = {0,1,2,2,3,0};
@@ -918,12 +922,12 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
 	if (meshgen_hardface(data,p,n,v3s16(1,0,0))) {
-		TileSpec tile = getNodeTile(n,p,v3s16(1,0,0),data->m_select[p+data->m_blockpos_nodes],NULL);
+		TileSpec tile = getNodeTile(n,p,v3s16(1,0,0),selected,NULL);
 		video::S3DVertex vertices[4] = {
-			video::S3DVertex(0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
-			video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1()),
-			video::S3DVertex(0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
-			video::S3DVertex(0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0())
+			video::S3DVertex(0.5*data->m_BS,-0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex(0.5*data->m_BS,-0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1()),
+			video::S3DVertex(0.5*data->m_BS, 0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
+			video::S3DVertex(0.5*data->m_BS, 0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0())
 		};
 
 		u16 indices[6] = {0,1,2,2,3,0};
@@ -941,12 +945,12 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
 	if (meshgen_hardface(data,p,n,v3s16(0,-1,0))) {
-		TileSpec tile = getNodeTile(n,p,v3s16(0,-1,0),data->m_select[p+data->m_blockpos_nodes],NULL);
+		TileSpec tile = getNodeTile(n,p,v3s16(0,-1,0),selected,NULL);
 		video::S3DVertex vertices[4] = {
-			video::S3DVertex( 0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
-			video::S3DVertex(-0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
-			video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
-			video::S3DVertex( 0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
+			video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
 		};
 
 		u16 indices[6] = {0,1,2,2,3,0};
@@ -964,12 +968,12 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
 	if (meshgen_hardface(data,p,n,v3s16(0,1,0))) {
-		TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),data->m_select[p+data->m_blockpos_nodes],NULL);
+		TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),selected,NULL);
 		video::S3DVertex vertices[4] = {
-			video::S3DVertex( 0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
-			video::S3DVertex(-0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1()),
-			video::S3DVertex(-0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
-			video::S3DVertex( 0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0())
+			video::S3DVertex( 0.5*data->m_BS, 0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex(-0.5*data->m_BS, 0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1()),
+			video::S3DVertex(-0.5*data->m_BS, 0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
+			video::S3DVertex( 0.5*data->m_BS, 0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0())
 		};
 
 		u16 indices[6] = {0,1,2,2,3,0};
@@ -987,12 +991,12 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
 	if (meshgen_hardface(data,p,n,v3s16(0,0,-1))) {
-		TileSpec tile = getNodeTile(n,p,v3s16(0,0,-1),data->m_select[p+data->m_blockpos_nodes],NULL);
+		TileSpec tile = getNodeTile(n,p,v3s16(0,0,-1),selected,NULL);
 		video::S3DVertex vertices[4] = {
-			video::S3DVertex(-0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
-			video::S3DVertex( 0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
-			video::S3DVertex( 0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
-			video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
+			video::S3DVertex(-0.5*data->m_BS, 0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
+			video::S3DVertex( 0.5*data->m_BS, 0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
+			video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
 		};
 
 		u16 indices[6] = {0,1,2,2,3,0};
@@ -1010,12 +1014,12 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
 	if (meshgen_hardface(data,p,n,v3s16(0,0,1))) {
-		TileSpec tile = getNodeTile(n,p,v3s16(0,0,1),data->m_select[p+data->m_blockpos_nodes],NULL);
+		TileSpec tile = getNodeTile(n,p,v3s16(0,0,1),selected,NULL);
 		video::S3DVertex vertices[4] = {
-			video::S3DVertex( 0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
-			video::S3DVertex(-0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
-			video::S3DVertex(-0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
-			video::S3DVertex( 0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
+			video::S3DVertex( 0.5*data->m_BS, 0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
+			video::S3DVertex(-0.5*data->m_BS, 0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
 		};
 
 		u16 indices[6] = {0,1,2,2,3,0};
@@ -1035,7 +1039,7 @@ void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 }
 
 /* TODO: should use custom vertexes instead of boxes for curved rails */
-void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
+void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected)
 {
 	bool is_rail_x [] = { false, false };  /* x-1, x+1 */
 	bool is_rail_z [] = { false, false };  /* z-1, z+1 */
@@ -1166,7 +1170,7 @@ void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 	TileSpec *tile;
 	for (int i = 0; i < 6; i++) {
 		// Handles facedir rotation for textures
-		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_select[p+data->m_blockpos_nodes]);
+		tiles[i] = getNodeTile(n,p,tile_dirs[i],selected);
 	}
 	v3f pos = intToFloat(p,BS);
 
@@ -1175,11 +1179,11 @@ void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 	{
 		if (is_rail_x_plus_y[0] || is_rail_x_plus_y[1] || is_rail_z_plus_y[0] || is_rail_z_plus_y[1]) {
 			aabb3f track[5] = {
-				aabb3f(-0.375*BS,-0.03125*BS,-0.4375*BS,0.375*BS,0.03125*BS,-0.25*BS),
-				aabb3f(-0.375*BS,-0.03125*BS,0.0625*BS,0.375*BS,0.03125*BS,0.25*BS),
-				aabb3f(-0.375*BS,-0.03125*BS,0.5*BS,0.375*BS,0.03125*BS,0.6875*BS),
-				aabb3f(0.1875*BS,0.03125*BS,-0.64*BS,0.25*BS,0.09375*BS,0.77*BS),
-				aabb3f(-0.25*BS,0.03125*BS,-0.64*BS,-0.1875*BS,0.09375*BS,0.77*BS)
+				aabb3f(-0.375*data->m_BS,-0.03125*data->m_BS,-0.4375*data->m_BS,0.375*data->m_BS,0.03125*data->m_BS,-0.25*data->m_BS),
+				aabb3f(-0.375*data->m_BS,-0.03125*data->m_BS,0.0625*data->m_BS,0.375*data->m_BS,0.03125*data->m_BS,0.25*data->m_BS),
+				aabb3f(-0.375*data->m_BS,-0.03125*data->m_BS,0.5*data->m_BS,0.375*data->m_BS,0.03125*data->m_BS,0.6875*data->m_BS),
+				aabb3f(0.1875*data->m_BS,0.03125*data->m_BS,-0.64*data->m_BS,0.25*data->m_BS,0.09375*data->m_BS,0.77*data->m_BS),
+				aabb3f(-0.25*data->m_BS,0.03125*data->m_BS,-0.64*data->m_BS,-0.1875*data->m_BS,0.09375*data->m_BS,0.77*data->m_BS)
 			};
 			tile = &tiles[0];
 			v3s16 an(0,angle,0);
@@ -1199,12 +1203,12 @@ void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 			for (int bi=0; bi<5; bi++) {
 				if (bi == 3)
 					tile = &tiles[1];
-				f32 tx1 = (track[bi].MinEdge.X/BS)+0.5;
-				f32 ty1 = (track[bi].MinEdge.Y/BS)+0.5;
-				f32 tz1 = (track[bi].MinEdge.Z/BS)+0.5;
-				f32 tx2 = (track[bi].MaxEdge.X/BS)+0.5;
-				f32 ty2 = (track[bi].MaxEdge.Y/BS)+0.5;
-				f32 tz2 = (track[bi].MaxEdge.Z/BS)+0.5;
+				f32 tx1 = (track[bi].MinEdge.X/data->m_BS)+0.5;
+				f32 ty1 = (track[bi].MinEdge.Y/data->m_BS)+0.5;
+				f32 tz1 = (track[bi].MinEdge.Z/data->m_BS)+0.5;
+				f32 tx2 = (track[bi].MaxEdge.X/data->m_BS)+0.5;
+				f32 ty2 = (track[bi].MaxEdge.Y/data->m_BS)+0.5;
+				f32 tz2 = (track[bi].MaxEdge.Z/data->m_BS)+0.5;
 				f32 txc[24] = {
 					// up
 					tx1, 1-tz2, tx2, 1-tz1,
@@ -1223,21 +1227,21 @@ void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 			}
 		}else{
 			aabb3f track[4] = {
-				aabb3f(-0.375*BS,-0.5*BS,-0.375*BS,0.375*BS,-0.4375*BS,-0.1875*BS),
-				aabb3f(-0.375*BS,-0.5*BS,0.1875*BS,0.375*BS,-0.4375*BS,0.375*BS),
-				aabb3f(-0.25*BS,-0.4375*BS,-0.5*BS,-0.1875*BS,-0.375*BS,0.5*BS),
-				aabb3f(0.1875*BS,-0.4375*BS,-0.5*BS,0.25*BS,-0.375*BS,0.5*BS)
+				aabb3f(-0.375*data->m_BS,-0.5*data->m_BS,-0.375*data->m_BS,0.375*data->m_BS,-0.4375*data->m_BS,-0.1875*data->m_BS),
+				aabb3f(-0.375*data->m_BS,-0.5*data->m_BS,0.1875*data->m_BS,0.375*data->m_BS,-0.4375*data->m_BS,0.375*data->m_BS),
+				aabb3f(-0.25*data->m_BS,-0.4375*data->m_BS,-0.5*data->m_BS,-0.1875*data->m_BS,-0.375*data->m_BS,0.5*data->m_BS),
+				aabb3f(0.1875*data->m_BS,-0.4375*data->m_BS,-0.5*data->m_BS,0.25*data->m_BS,-0.375*data->m_BS,0.5*data->m_BS)
 			};
 			tile = &tiles[0];
 			for (int bi=0; bi<4; bi++) {
 				if (bi == 2)
 					tile = &tiles[1];
-				f32 tx1 = (track[bi].MinEdge.X/BS)+0.5;
-				f32 ty1 = (track[bi].MinEdge.Y/BS)+0.5;
-				f32 tz1 = (track[bi].MinEdge.Z/BS)+0.5;
-				f32 tx2 = (track[bi].MaxEdge.X/BS)+0.5;
-				f32 ty2 = (track[bi].MaxEdge.Y/BS)+0.5;
-				f32 tz2 = (track[bi].MaxEdge.Z/BS)+0.5;
+				f32 tx1 = (track[bi].MinEdge.X/data->m_BS)+0.5;
+				f32 ty1 = (track[bi].MinEdge.Y/data->m_BS)+0.5;
+				f32 tz1 = (track[bi].MinEdge.Z/data->m_BS)+0.5;
+				f32 tx2 = (track[bi].MaxEdge.X/data->m_BS)+0.5;
+				f32 ty2 = (track[bi].MaxEdge.Y/data->m_BS)+0.5;
+				f32 tz2 = (track[bi].MaxEdge.Z/data->m_BS)+0.5;
 				f32 txc[24] = {
 					// up
 					tx1, 1-tz2, tx2, 1-tz1,
@@ -1260,30 +1264,30 @@ void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 	case 1: // curved
 	{
 		aabb3f track[10] = {
-			aabb3f(-0.4375*BS,-0.5*BS,-0.375*BS,0.3125*BS,-0.4375*BS,-0.1875*BS),
-			aabb3f(-0.375*BS,-0.499*BS,-0.4375*BS,-0.1875*BS,-0.4385*BS,0.3125*BS),
+			aabb3f(-0.4375*data->m_BS,-0.5*data->m_BS,-0.375*data->m_BS,0.3125*data->m_BS,-0.4375*data->m_BS,-0.1875*data->m_BS),
+			aabb3f(-0.375*data->m_BS,-0.499*data->m_BS,-0.4375*data->m_BS,-0.1875*data->m_BS,-0.4385*data->m_BS,0.3125*data->m_BS),
 
-			aabb3f(0.1875*BS,-0.4375*BS,-0.5*BS,0.25*BS,-0.375*BS,-0.0625*BS),
-			aabb3f(0.1575*BS,-0.4365*BS,-0.125*BS,0.22*BS,-0.374*BS,0.0),
-			aabb3f(0.15*BS,-0.4375*BS,-0.0625*BS,0.2135*BS,-0.375*BS,0.0625*BS),
-			aabb3f(-0.125*BS,-0.4365*BS,0.1575*BS,0.0,-0.374*BS,0.22*BS),
-			aabb3f(-0.5*BS,-0.4375*BS,0.1875*BS,-0.0625*BS,-0.375*BS,0.25*BS),
+			aabb3f(0.1875*data->m_BS,-0.4375*data->m_BS,-0.5*data->m_BS,0.25*data->m_BS,-0.375*data->m_BS,-0.0625*data->m_BS),
+			aabb3f(0.1575*data->m_BS,-0.4365*data->m_BS,-0.125*data->m_BS,0.22*data->m_BS,-0.374*data->m_BS,0.0),
+			aabb3f(0.15*data->m_BS,-0.4375*data->m_BS,-0.0625*data->m_BS,0.2135*data->m_BS,-0.375*data->m_BS,0.0625*data->m_BS),
+			aabb3f(-0.125*data->m_BS,-0.4365*data->m_BS,0.1575*data->m_BS,0.0,-0.374*data->m_BS,0.22*data->m_BS),
+			aabb3f(-0.5*data->m_BS,-0.4375*data->m_BS,0.1875*data->m_BS,-0.0625*data->m_BS,-0.375*data->m_BS,0.25*data->m_BS),
 
-			aabb3f(-0.25*BS,-0.4375*BS,-0.5*BS,-0.1875*BS,-0.375*BS,-0.3125*BS),
-			aabb3f(0.3425*BS,-0.4385*BS,-0.0625*BS,0.415*BS,-0.374*BS,0.0625*BS),
-			aabb3f(-0.5*BS,-0.4375*BS,-0.25*BS,-0.3125*BS,-0.375*BS,-0.1875*BS)
+			aabb3f(-0.25*data->m_BS,-0.4375*data->m_BS,-0.5*data->m_BS,-0.1875*data->m_BS,-0.375*data->m_BS,-0.3125*data->m_BS),
+			aabb3f(0.3425*data->m_BS,-0.4385*data->m_BS,-0.0625*data->m_BS,0.415*data->m_BS,-0.374*data->m_BS,0.0625*data->m_BS),
+			aabb3f(-0.5*data->m_BS,-0.4375*data->m_BS,-0.25*data->m_BS,-0.3125*data->m_BS,-0.375*data->m_BS,-0.1875*data->m_BS)
 		};
 		tile = &tiles[0];
 		s16 a[10] = {110,70, 90,110,135,70,90, 90,-45,90};
 		for (int bi=0; bi<10; bi++) {
 			if (bi == 2)
 				tile = &tiles[1];
-			f32 tx1 = (track[bi].MinEdge.X/BS)+0.5;
-			f32 ty1 = (track[bi].MinEdge.Y/BS)+0.5;
-			f32 tz1 = (track[bi].MinEdge.Z/BS)+0.5;
-			f32 tx2 = (track[bi].MaxEdge.X/BS)+0.5;
-			f32 ty2 = (track[bi].MaxEdge.Y/BS)+0.5;
-			f32 tz2 = (track[bi].MaxEdge.Z/BS)+0.5;
+			f32 tx1 = (track[bi].MinEdge.X/data->m_BS)+0.5;
+			f32 ty1 = (track[bi].MinEdge.Y/data->m_BS)+0.5;
+			f32 tz1 = (track[bi].MinEdge.Z/data->m_BS)+0.5;
+			f32 tx2 = (track[bi].MaxEdge.X/data->m_BS)+0.5;
+			f32 ty2 = (track[bi].MaxEdge.Y/data->m_BS)+0.5;
+			f32 tz2 = (track[bi].MaxEdge.Z/data->m_BS)+0.5;
 			f32 txc[24] = {
 				// up
 				tx1, 1-tz2, tx2, 1-tz1,
@@ -1305,35 +1309,35 @@ void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 	case 2: // t-junction
 	{
 		aabb3f track[13] = {
-			aabb3f(-0.375*BS,-0.5*BS,-0.375*BS,0.375*BS,-0.4375*BS,-0.1875*BS),
-			aabb3f(-0.375*BS,-0.5*BS,0.1875*BS,0.375*BS,-0.4375*BS,0.375*BS),
-			aabb3f(-0.4375*BS,-0.499*BS,-0.375*BS,0.3125*BS,-0.4385*BS,-0.1875*BS),
+			aabb3f(-0.375*data->m_BS,-0.5*data->m_BS,-0.375*data->m_BS,0.375*data->m_BS,-0.4375*data->m_BS,-0.1875*data->m_BS),
+			aabb3f(-0.375*data->m_BS,-0.5*data->m_BS,0.1875*data->m_BS,0.375*data->m_BS,-0.4375*data->m_BS,0.375*data->m_BS),
+			aabb3f(-0.4375*data->m_BS,-0.499*data->m_BS,-0.375*data->m_BS,0.3125*data->m_BS,-0.4385*data->m_BS,-0.1875*data->m_BS),
 
-			aabb3f(-0.25*BS,-0.4375*BS,-0.5*BS,-0.1875*BS,-0.375*BS,0.5*BS),
+			aabb3f(-0.25*data->m_BS,-0.4375*data->m_BS,-0.5*data->m_BS,-0.1875*data->m_BS,-0.375*data->m_BS,0.5*data->m_BS),
 
-			aabb3f(0.1875*BS,-0.4375*BS,-0.5*BS,0.25*BS,-0.375*BS,0.125*BS),
-			aabb3f(0.1875*BS,-0.4375*BS,0.25*BS,0.25*BS,-0.375*BS,0.5*BS),
+			aabb3f(0.1875*data->m_BS,-0.4375*data->m_BS,-0.5*data->m_BS,0.25*data->m_BS,-0.375*data->m_BS,0.125*data->m_BS),
+			aabb3f(0.1875*data->m_BS,-0.4375*data->m_BS,0.25*data->m_BS,0.25*data->m_BS,-0.375*data->m_BS,0.5*data->m_BS),
 
-			aabb3f(-0.25*BS,-0.4375*BS,-0.5*BS,-0.1875*BS,-0.375*BS,-0.3125*BS),
-			aabb3f(0.3425*BS,-0.4385*BS,-0.0625*BS,0.415*BS,-0.374*BS,0.0625*BS),
+			aabb3f(-0.25*data->m_BS,-0.4375*data->m_BS,-0.5*data->m_BS,-0.1875*data->m_BS,-0.375*data->m_BS,-0.3125*data->m_BS),
+			aabb3f(0.3425*data->m_BS,-0.4385*data->m_BS,-0.0625*data->m_BS,0.415*data->m_BS,-0.374*data->m_BS,0.0625*data->m_BS),
 
-			aabb3f(0.1875*BS,-0.4375*BS,-0.5*BS,0.25*BS,-0.375*BS,-0.1875*BS),
-			aabb3f(0.1875*BS,-0.4375*BS,-0.125*BS,0.25*BS,-0.375*BS,-0.0625*BS),
-			aabb3f(0.1575*BS,-0.4365*BS,-0.125*BS,0.22*BS,-0.374*BS,0.0),
-			aabb3f(0.15*BS,-0.4375*BS,-0.0625*BS,0.2135*BS,-0.375*BS,0.0625*BS),
-			aabb3f(-0.125*BS,-0.4365*BS,0.1575*BS,0.0,-0.374*BS,0.22*BS)
+			aabb3f(0.1875*data->m_BS,-0.4375*data->m_BS,-0.5*data->m_BS,0.25*data->m_BS,-0.375*data->m_BS,-0.1875*data->m_BS),
+			aabb3f(0.1875*data->m_BS,-0.4375*data->m_BS,-0.125*data->m_BS,0.25*data->m_BS,-0.375*data->m_BS,-0.0625*data->m_BS),
+			aabb3f(0.1575*data->m_BS,-0.4365*data->m_BS,-0.125*data->m_BS,0.22*data->m_BS,-0.374*data->m_BS,0.0),
+			aabb3f(0.15*data->m_BS,-0.4375*data->m_BS,-0.0625*data->m_BS,0.2135*data->m_BS,-0.375*data->m_BS,0.0625*data->m_BS),
+			aabb3f(-0.125*data->m_BS,-0.4365*data->m_BS,0.1575*data->m_BS,0.0,-0.374*data->m_BS,0.22*data->m_BS)
 		};
 		tile = &tiles[0];
 		s16 a[13] = {0,0,110, 0, 0,0, 90,-45, 90,90,110,135,70};
 		for (int bi=0; bi<13; bi++) {
 			if (bi == 3)
 				tile = &tiles[1];
-			f32 tx1 = (track[bi].MinEdge.X/BS)+0.5;
-			f32 ty1 = (track[bi].MinEdge.Y/BS)+0.5;
-			f32 tz1 = (track[bi].MinEdge.Z/BS)+0.5;
-			f32 tx2 = (track[bi].MaxEdge.X/BS)+0.5;
-			f32 ty2 = (track[bi].MaxEdge.Y/BS)+0.5;
-			f32 tz2 = (track[bi].MaxEdge.Z/BS)+0.5;
+			f32 tx1 = (track[bi].MinEdge.X/data->m_BS)+0.5;
+			f32 ty1 = (track[bi].MinEdge.Y/data->m_BS)+0.5;
+			f32 tz1 = (track[bi].MinEdge.Z/data->m_BS)+0.5;
+			f32 tx2 = (track[bi].MaxEdge.X/data->m_BS)+0.5;
+			f32 ty2 = (track[bi].MaxEdge.Y/data->m_BS)+0.5;
+			f32 tz2 = (track[bi].MaxEdge.Z/data->m_BS)+0.5;
 			f32 txc[24] = {
 				// up
 				tx1, 1-tz2, tx2, 1-tz1,
@@ -1355,37 +1359,37 @@ void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 	case 3: // crossing
 	{
 		aabb3f track[20] = {
-			aabb3f(-0.375*BS,-0.5*BS,-0.3125*BS,0.375*BS,-0.4375*BS,-0.125*BS),
-			aabb3f(-0.375*BS,-0.5*BS,0.125*BS,0.375*BS,-0.4375*BS,0.3125*BS),
-			aabb3f(-0.3125*BS,-0.499*BS,-0.375*BS,-0.125*BS,-0.4385*BS,0.375*BS),
-			aabb3f( 0.125*BS,-0.499*BS,-0.375*BS,0.3125*BS,-0.4385*BS,0.375*BS),
+			aabb3f(-0.375*data->m_BS,-0.5*data->m_BS,-0.3125*data->m_BS,0.375*data->m_BS,-0.4375*data->m_BS,-0.125*data->m_BS),
+			aabb3f(-0.375*data->m_BS,-0.5*data->m_BS,0.125*data->m_BS,0.375*data->m_BS,-0.4375*data->m_BS,0.3125*data->m_BS),
+			aabb3f(-0.3125*data->m_BS,-0.499*data->m_BS,-0.375*data->m_BS,-0.125*data->m_BS,-0.4385*data->m_BS,0.375*data->m_BS),
+			aabb3f( 0.125*data->m_BS,-0.499*data->m_BS,-0.375*data->m_BS,0.3125*data->m_BS,-0.4385*data->m_BS,0.375*data->m_BS),
 
-			aabb3f(-0.25*BS,-0.4375*BS,-0.5*BS,-0.1875*BS,-0.375*BS,-0.1875*BS),
-			aabb3f(-0.25*BS,-0.4375*BS,0.1875*BS,-0.1875*BS,-0.375*BS,0.5*BS),
-			aabb3f(-0.25*BS,-0.4375*BS,-0.125*BS,-0.1875*BS,-0.375*BS,0.125*BS),
+			aabb3f(-0.25*data->m_BS,-0.4375*data->m_BS,-0.5*data->m_BS,-0.1875*data->m_BS,-0.375*data->m_BS,-0.1875*data->m_BS),
+			aabb3f(-0.25*data->m_BS,-0.4375*data->m_BS,0.1875*data->m_BS,-0.1875*data->m_BS,-0.375*data->m_BS,0.5*data->m_BS),
+			aabb3f(-0.25*data->m_BS,-0.4375*data->m_BS,-0.125*data->m_BS,-0.1875*data->m_BS,-0.375*data->m_BS,0.125*data->m_BS),
 
-			aabb3f(0.1875*BS,-0.4375*BS,-0.5*BS,0.25*BS,-0.375*BS,-0.1875*BS),
-			aabb3f(0.1875*BS,-0.4375*BS,0.1875*BS,0.25*BS,-0.375*BS,0.5*BS),
-			aabb3f(0.1875*BS,-0.4375*BS,-0.125*BS,0.25*BS,-0.375*BS,0.125*BS),
+			aabb3f(0.1875*data->m_BS,-0.4375*data->m_BS,-0.5*data->m_BS,0.25*data->m_BS,-0.375*data->m_BS,-0.1875*data->m_BS),
+			aabb3f(0.1875*data->m_BS,-0.4375*data->m_BS,0.1875*data->m_BS,0.25*data->m_BS,-0.375*data->m_BS,0.5*data->m_BS),
+			aabb3f(0.1875*data->m_BS,-0.4375*data->m_BS,-0.125*data->m_BS,0.25*data->m_BS,-0.375*data->m_BS,0.125*data->m_BS),
 
-			aabb3f(-0.5*BS,-0.4375*BS,0.1875*BS,-0.25*BS,-0.375*BS,0.25*BS),
-			aabb3f(0.25*BS,-0.4375*BS,0.1875*BS,0.5*BS,-0.375*BS,0.25*BS),
-			aabb3f(-0.125*BS,-0.4375*BS,0.1875*BS,0.125*BS,-0.375*BS,0.25*BS),
+			aabb3f(-0.5*data->m_BS,-0.4375*data->m_BS,0.1875*data->m_BS,-0.25*data->m_BS,-0.375*data->m_BS,0.25*data->m_BS),
+			aabb3f(0.25*data->m_BS,-0.4375*data->m_BS,0.1875*data->m_BS,0.5*data->m_BS,-0.375*data->m_BS,0.25*data->m_BS),
+			aabb3f(-0.125*data->m_BS,-0.4375*data->m_BS,0.1875*data->m_BS,0.125*data->m_BS,-0.375*data->m_BS,0.25*data->m_BS),
 
-			aabb3f(-0.5*BS,-0.4375*BS,-0.25*BS,-0.25*BS,-0.375*BS,-0.1875*BS),
-			aabb3f(0.25*BS,-0.4375*BS,-0.25*BS,0.5*BS,-0.375*BS,-0.1875*BS),
-			aabb3f(-0.125*BS,-0.4375*BS,-0.25*BS,0.125*BS,-0.375*BS,-0.1875*BS)
+			aabb3f(-0.5*data->m_BS,-0.4375*data->m_BS,-0.25*data->m_BS,-0.25*data->m_BS,-0.375*data->m_BS,-0.1875*data->m_BS),
+			aabb3f(0.25*data->m_BS,-0.4375*data->m_BS,-0.25*data->m_BS,0.5*data->m_BS,-0.375*data->m_BS,-0.1875*data->m_BS),
+			aabb3f(-0.125*data->m_BS,-0.4375*data->m_BS,-0.25*data->m_BS,0.125*data->m_BS,-0.375*data->m_BS,-0.1875*data->m_BS)
 		};
 		tile = &tiles[0];
 		for (int bi=0; bi<16; bi++) {
 			if (bi == 4)
 				tile = &tiles[1];
-			f32 tx1 = (track[bi].MinEdge.X/BS)+0.5;
-			f32 ty1 = (track[bi].MinEdge.Y/BS)+0.5;
-			f32 tz1 = (track[bi].MinEdge.Z/BS)+0.5;
-			f32 tx2 = (track[bi].MaxEdge.X/BS)+0.5;
-			f32 ty2 = (track[bi].MaxEdge.Y/BS)+0.5;
-			f32 tz2 = (track[bi].MaxEdge.Z/BS)+0.5;
+			f32 tx1 = (track[bi].MinEdge.X/data->m_BS)+0.5;
+			f32 ty1 = (track[bi].MinEdge.Y/data->m_BS)+0.5;
+			f32 tz1 = (track[bi].MinEdge.Z/data->m_BS)+0.5;
+			f32 tx2 = (track[bi].MaxEdge.X/data->m_BS)+0.5;
+			f32 ty2 = (track[bi].MaxEdge.Y/data->m_BS)+0.5;
+			f32 tz2 = (track[bi].MaxEdge.Z/data->m_BS)+0.5;
 			f32 txc[24] = {
 				// up
 				tx1, 1-tz2, tx2, 1-tz1,
@@ -1408,13 +1412,13 @@ void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 	}
 }
 
-void meshgen_plantlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
+void meshgen_plantlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected)
 {
 	ContentFeatures *f = &content_features(n);
-	TileSpec tile = getNodeTile(n,p,v3s16(0,0,0),data->m_select[p+data->m_blockpos_nodes]);
+	TileSpec tile = getNodeTile(n,p,v3s16(0,0,0),selected);
 	v3f offset(0,0,0);
 	if (data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0,-1,0)).getContent() == CONTENT_FLOWER_POT)
-		offset = v3f(0,-0.25*BS,0);
+		offset = v3f(0,-0.25*data->m_BS,0);
 
 	v3f pos_inner(0,0,0);
 	{
@@ -1429,21 +1433,21 @@ void meshgen_plantlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sel
 
 		if (unf->draw_type == CDT_CUBELIKE && unc != CONTENT_FARM_DIRT) {
 			if (up.X%2) {
-				pos_inner.Z = -0.1*BS;
+				pos_inner.Z = -0.1*data->m_BS;
 			}else{
-				pos_inner.Z = 0.1*BS;
+				pos_inner.Z = 0.1*data->m_BS;
 			}
 			if (up.Z%2) {
-				pos_inner.X = -0.1*BS;
+				pos_inner.X = -0.1*data->m_BS;
 			}else{
-				pos_inner.X = 0.1*BS;
+				pos_inner.X = 0.1*data->m_BS;
 			}
 			if (up.Y%2) {
-				pos_inner.X += 0.05*BS;
-				pos_inner.Z -= 0.05*BS;
+				pos_inner.X += 0.05*data->m_BS;
+				pos_inner.Z -= 0.05*data->m_BS;
 			}else{
-				pos_inner.X -= 0.05*BS;
-				pos_inner.Z += 0.05*BS;
+				pos_inner.X -= 0.05*data->m_BS;
+				pos_inner.Z += 0.05*data->m_BS;
 			}
 		}
 	}
@@ -1480,7 +1484,7 @@ void meshgen_plantlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sel
 			}
 			n2 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p + v3s16(0,-1,0));
 			if (n2.getContent() == CONTENT_FLOWER_POT) {
-				offset = v3f(0,-0.25*BS,0);
+				offset = v3f(0,-0.25*data->m_BS,0);
 				if (h == 0.5) {
 					v = (0.25*tile.texture.size.Y)+tile.texture.y0();
 					h = 0.75;
@@ -1494,41 +1498,83 @@ void meshgen_plantlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sel
 
 	v3f pos = offset+intToFloat(p,BS)+pos_inner;
 
-	for (u32 j=0; j<2; j++) {
-		video::S3DVertex vertices[4] = {
-			video::S3DVertex(-0.5*BS,-0.5*BS,0., 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1()),
-			video::S3DVertex( 0.5*BS,-0.5*BS,0., 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
-			video::S3DVertex( 0.5*BS,   h*BS,0., 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), v),
-			video::S3DVertex(-0.5*BS,   h*BS,0., 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), v)
-		};
+	if (selected.is_coloured || selected.has_crack) {
+		for (u32 j=0; j<2; j++) {
+			video::S3DVertex vertices[4] = {
+				video::S3DVertex(-0.5*BS,-0.5*BS,0., 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1()),
+				video::S3DVertex( 0.5*BS,-0.5*BS,0., 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+				video::S3DVertex( 0.5*BS,   h*BS,0., 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), v),
+				video::S3DVertex(-0.5*BS,   h*BS,0., 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), v)
+			};
 
-		s16 angle = 45;
-		if (j == 1)
-			angle = -45;
+			s16 angle = 45;
+			if (j == 1)
+				angle = -45;
 
-		for (u16 i=0; i<4; i++) {
-			vertices[i].Pos.rotateXZBy(angle);
-			if (is_scaled)
-				vertices[i].Pos *= scale;
+			for (u16 i=0; i<4; i++) {
+				vertices[i].Pos.rotateXZBy(angle);
+				if (is_scaled)
+					vertices[i].Pos *= scale;
+			}
+
+			u16 indices[] = {0,1,2,2,3,0};
+			std::vector<u32> colours;
+			if (selected.is_coloured) {
+				meshgen_selected_lights(colours,255,4);
+			}else{
+				meshgen_lights(data,n,p,colours,255,v3s16(0,0,0),4,vertices);
+			}
+
+			for (u16 i=0; i<4; i++) {
+				vertices[i].Pos += pos;
+				vertices[i].Pos.X += 0.005;
+			}
+
+			data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
+
+			for (u16 i=0; i<4; i++) {
+				vertices[i].Pos.X -= 0.01;
+			}
+
+			data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 		}
+	}else{
+		for (u32 j=0; j<2; j++) {
+			video::S3DVertex vertices[4] = {
+				video::S3DVertex(-0.5*BS,-0.5*BS,0., 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1()),
+				video::S3DVertex( 0.5*BS,-0.5*BS,0., 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+				video::S3DVertex( 0.5*BS,   h*BS,0., 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), v),
+				video::S3DVertex(-0.5*BS,   h*BS,0., 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), v)
+			};
 
-		u16 indices[] = {0,1,2,2,3,0};
-		std::vector<u32> colours;
-		if (selected.is_coloured) {
-			meshgen_selected_lights(colours,255,4);
-		}else{
-			meshgen_lights(data,n,p,colours,255,v3s16(0,0,0),4,vertices);
+			s16 angle = 45;
+			if (j == 1)
+				angle = -45;
+
+			for (u16 i=0; i<4; i++) {
+				vertices[i].Pos.rotateXZBy(angle);
+				if (is_scaled)
+					vertices[i].Pos *= scale;
+			}
+
+			u16 indices[] = {0,1,2,2,3,0};
+			std::vector<u32> colours;
+			if (selected.is_coloured) {
+				meshgen_selected_lights(colours,255,4);
+			}else{
+				meshgen_lights(data,n,p,colours,255,v3s16(0,0,0),4,vertices);
+			}
+
+			for (u16 i=0; i<4; i++) {
+				vertices[i].Pos += pos;
+			}
+
+			data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 		}
-
-		for (u16 i=0; i<4; i++) {
-			vertices[i].Pos += pos;
-		}
-
-		data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
 	}
 }
 
-void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
+void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected)
 {
 	ContentFeatures *f = &content_features(n);
 	TileSpec *tiles = f->tiles;
@@ -1558,7 +1604,7 @@ void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode select
 	};
 	for (u32 i=0; i<9; i++) {
 		content_t content = CONTENT_AIR;
-		float level = -0.5 * BS;
+		float level = -0.5 * data->m_BS;
 		u8 flags = 0;
 		// Check neighbor
 		v3s16 p2 = p + neighbor_dirs[i];
@@ -1570,14 +1616,14 @@ void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode select
 				p2.Y += 1;
 				n2 = data->m_vmanip.getNodeRO(data->m_blockpos_nodes + p2);
 				if (content_features(n2).liquid_type == LIQUID_NONE) {
-					level = 0.5*BS;
+					level = 0.5*data->m_BS;
 				}else{
-					level = (-0.5+node_liquid_level) * BS;
+					level = (-0.5+node_liquid_level) * data->m_BS;
 				}
 				p2.Y -= 1;
 			}else if (n2.getContent() == f->liquid_alternative_flowing) {
 				level = (-0.5 + ((float)(n2.param2&LIQUID_LEVEL_MASK)
-						+ 0.5) / 8.0 * node_liquid_level) * BS;
+						+ 0.5) / 8.0 * node_liquid_level) * data->m_BS;
 			}
 
 			// Check node above neighbor.
@@ -1616,12 +1662,12 @@ void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode select
 			content_t content = neighbor_contents[neighbordir];
 			// If top is liquid, draw starting from top of node
 			if ((neighbor_flags[neighbordir]&neighborflag_top_is_same_liquid) != 0) {
-				cornerlevel = 0.5*BS;
+				cornerlevel = 0.5*data->m_BS;
 				valid_count = 1;
 				break;
 			// Source is always the same height
 			}else if (content == f->liquid_alternative_source) {
-				cornerlevel = (-0.5+node_liquid_level)*BS;
+				cornerlevel = (-0.5+node_liquid_level)*data->m_BS;
 				valid_count = 1;
 				break;
 			// Flowing liquid has level information
@@ -1633,7 +1679,7 @@ void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode select
 			}
 		}
 		if (air_count >= 2) {
-			cornerlevel = -0.5*BS;
+			cornerlevel = -0.5*data->m_BS;
 		}else if (valid_count > 0) {
 			cornerlevel /= valid_count;
 		}
@@ -1687,16 +1733,16 @@ void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode select
 			continue;
 
 		video::S3DVertex vertices[4] = {
-			video::S3DVertex(-0.5*BS,0,0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[i].texture.x0(), tiles[i].texture.y1()),
-			video::S3DVertex( 0.5*BS,0,0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[i].texture.x1(), tiles[i].texture.y1()),
-			video::S3DVertex( 0.5*BS,0,0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[i].texture.x1(), tiles[i].texture.y0()),
-			video::S3DVertex(-0.5*BS,0,0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[i].texture.x0(), tiles[i].texture.y0()),
+			video::S3DVertex(-0.5*data->m_BS,0,0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tiles[i].texture.x0(), tiles[i].texture.y1()),
+			video::S3DVertex( 0.5*data->m_BS,0,0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tiles[i].texture.x1(), tiles[i].texture.y1()),
+			video::S3DVertex( 0.5*data->m_BS,0,0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tiles[i].texture.x1(), tiles[i].texture.y0()),
+			video::S3DVertex(-0.5*data->m_BS,0,0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tiles[i].texture.x0(), tiles[i].texture.y0()),
 		};
 
 		// If our topside is liquid, set upper border of face at upper border of node
 		if (top_is_same_liquid) {
-			vertices[2].Pos.Y = 0.5*BS;
-			vertices[3].Pos.Y = 0.5*BS;
+			vertices[2].Pos.Y = 0.5*data->m_BS;
+			vertices[3].Pos.Y = 0.5*data->m_BS;
 		// Otherwise upper position of face is corner levels
 		}else{
 			vertices[2].Pos.Y = corner_levels[side_corners[i][0]];
@@ -1709,8 +1755,8 @@ void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode select
 			vertices[1].Pos.Y = corner_levels[side_corners[i][0]];
 		// If neighbor is not liquid, lower border of face is lower border of node
 		}else{
-			vertices[0].Pos.Y = -0.5*BS;
-			vertices[1].Pos.Y = -0.5*BS;
+			vertices[0].Pos.Y = -0.5*data->m_BS;
+			vertices[1].Pos.Y = -0.5*data->m_BS;
 		}
 
 		s16 angle = 0;
@@ -1753,10 +1799,10 @@ void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode select
 
 	if (top_is_same_liquid == false) {
 		video::S3DVertex vertices[4] = {
-			video::S3DVertex(-0.5*BS,0, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
-			video::S3DVertex( 0.5*BS,0, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
-			video::S3DVertex( 0.5*BS,0,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
-			video::S3DVertex(-0.5*BS,0,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0())
+			video::S3DVertex(-0.5*data->m_BS,0, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
+			video::S3DVertex( 0.5*data->m_BS,0, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
+			video::S3DVertex( 0.5*data->m_BS,0,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
+			video::S3DVertex(-0.5*data->m_BS,0,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0())
 		};
 
 		// This fixes a strange bug
@@ -1783,7 +1829,7 @@ void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode select
 	}
 }
 
-void meshgen_liquid_source(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
+void meshgen_liquid_source(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected)
 {
 	ContentFeatures *f = &content_features(n);
 	TileSpec *tiles = f->tiles;
@@ -1871,38 +1917,38 @@ void meshgen_liquid_source(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode
 
 		// The face at Z+
 		video::S3DVertex vertices[4] = {
-			video::S3DVertex(-0.5*BS,-0.5*BS,0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[j].texture.x0(), tiles[j].texture.y1()),
-			video::S3DVertex( 0.5*BS,-0.5*BS,0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[j].texture.x1(), tiles[j].texture.y1()),
-			video::S3DVertex( 0.5*BS, 0.5*BS,0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[j].texture.x1(), tiles[j].texture.y0()),
-			video::S3DVertex(-0.5*BS, 0.5*BS,0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[j].texture.x0(), tiles[j].texture.y0()),
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS,0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tiles[j].texture.x0(), tiles[j].texture.y1()),
+			video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS,0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tiles[j].texture.x1(), tiles[j].texture.y1()),
+			video::S3DVertex( 0.5*data->m_BS, 0.5*data->m_BS,0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tiles[j].texture.x1(), tiles[j].texture.y0()),
+			video::S3DVertex(-0.5*data->m_BS, 0.5*data->m_BS,0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tiles[j].texture.x0(), tiles[j].texture.y0()),
 		};
 		switch (j) {
 		case 0: // Z+
 			if (drop[0])
-				vertices[2].Pos.Y = 0.375*BS;
+				vertices[2].Pos.Y = 0.375*data->m_BS;
 			if (drop[1])
-				vertices[3].Pos.Y = 0.375*BS;
+				vertices[3].Pos.Y = 0.375*data->m_BS;
 			break;
 		case 1: // Y+
 			if (!drop[1] && !drop[2] && !drop[3] && drop[0]) {
 				for(u16 i=0; i<4; i++) {
 					vertices[i].Pos.rotateXYBy(90);
 				}
-				vertices[2].Pos.Z = 0.375*BS;
+				vertices[2].Pos.Z = 0.375*data->m_BS;
 			}else if (!drop[0] && !drop[1] && !drop[3] && drop[2]) {
 				for(u16 i=0; i<4; i++) {
 					vertices[i].Pos.rotateXYBy(90);
 				}
-				vertices[0].Pos.Z = 0.375*BS;
+				vertices[0].Pos.Z = 0.375*data->m_BS;
 			}else{
 				if (drop[0])
-					vertices[3].Pos.Z = 0.375*BS;
+					vertices[3].Pos.Z = 0.375*data->m_BS;
 				if (drop[1])
-					vertices[2].Pos.Z = 0.375*BS;
+					vertices[2].Pos.Z = 0.375*data->m_BS;
 				if (drop[2])
-					vertices[1].Pos.Z = 0.375*BS;
+					vertices[1].Pos.Z = 0.375*data->m_BS;
 				if (drop[3])
-					vertices[0].Pos.Z = 0.375*BS;
+					vertices[0].Pos.Z = 0.375*data->m_BS;
 			}
 			for(u16 i=0; i<4; i++) {
 				vertices[i].Pos.rotateYZBy(-90);
@@ -1910,18 +1956,18 @@ void meshgen_liquid_source(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode
 			break;
 		case 2: // X+
 			if (drop[1])
-				vertices[2].Pos.Y = 0.375*BS;
+				vertices[2].Pos.Y = 0.375*data->m_BS;
 			if (drop[2])
-				vertices[3].Pos.Y = 0.375*BS;
+				vertices[3].Pos.Y = 0.375*data->m_BS;
 			for(u16 i=0; i<4; i++) {
 				vertices[i].Pos.rotateXZBy(-90);
 			}
 			break;
 		case 3: // Z-
 			if (drop[2])
-				vertices[2].Pos.Y = 0.375*BS;
+				vertices[2].Pos.Y = 0.375*data->m_BS;
 			if (drop[3])
-				vertices[3].Pos.Y = 0.375*BS;
+				vertices[3].Pos.Y = 0.375*data->m_BS;
 			for(u16 i=0; i<4; i++) {
 				vertices[i].Pos.rotateXZBy(180);
 			}
@@ -1933,9 +1979,9 @@ void meshgen_liquid_source(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode
 			break;
 		case 5: // X-
 			if (drop[3])
-				vertices[2].Pos.Y = 0.375*BS;
+				vertices[2].Pos.Y = 0.375*data->m_BS;
 			if (drop[0])
-				vertices[3].Pos.Y = 0.375*BS;
+				vertices[3].Pos.Y = 0.375*data->m_BS;
 			for(u16 i=0; i<4; i++) {
 				vertices[i].Pos.rotateXZBy(90);
 			}
@@ -1958,7 +2004,7 @@ void meshgen_liquid_source(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode
 	}
 }
 
-void meshgen_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected, bool has_meta)
+void meshgen_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected, bool has_meta)
 {
 	static const v3s16 tile_dirs[6] = {
 		v3s16(0, 1, 0),
@@ -1973,7 +2019,7 @@ void meshgen_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selec
 	NodeMetadata *meta = data->m_env->getMap().getNodeMetadataClone(p+data->m_blockpos_nodes);
 	for (int i = 0; i < 6; i++) {
 		// Handles facedir rotation for textures
-		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_select[p+data->m_blockpos_nodes],meta);
+		tiles[i] = getNodeTile(n,p,tile_dirs[i],selected,meta);
 	}
 
 	std::vector<NodeBox> boxes = content_features(n).getNodeBoxes(n);
@@ -1989,7 +2035,7 @@ void meshgen_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selec
 	if (boxes.size() > 0) {
 		for (int i = 0; i < 6; i++) {
 			// Handles facedir rotation for textures
-			tiles[i] = getMetaTile(n,p,tile_dirs[i],data->m_select[p+data->m_blockpos_nodes]);
+			tiles[i] = getMetaTile(n,p,tile_dirs[i],selected);
 		}
 		meshgen_build_nodebox(data,p,n,selected,boxes,tiles);
 	}
@@ -1997,7 +2043,7 @@ void meshgen_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selec
 	delete meta;
 }
 
-void meshgen_glasslike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
+void meshgen_glasslike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected)
 {
 	static const v3s16 tile_dirs[6] = {
 		v3s16(0, 1, 0),
@@ -2011,7 +2057,7 @@ void meshgen_glasslike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sel
 	TileSpec tiles[6];
 	for (int i = 0; i < 6; i++) {
 		// Handles facedir rotation for textures
-		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_select[p+data->m_blockpos_nodes]);
+		tiles[i] = getNodeTile(n,p,tile_dirs[i],selected);
 	}
 
 	v3f pos = intToFloat(p,BS);
@@ -2026,10 +2072,10 @@ void meshgen_glasslike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sel
 
 		// The face at Z+
 		video::S3DVertex vertices[4] = {
-			video::S3DVertex(-0.5*BS,-0.5*BS,0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[j].texture.x0(), tiles[j].texture.y1()),
-			video::S3DVertex( 0.5*BS,-0.5*BS,0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[j].texture.x1(), tiles[j].texture.y1()),
-			video::S3DVertex( 0.5*BS, 0.5*BS,0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[j].texture.x1(), tiles[j].texture.y0()),
-			video::S3DVertex(-0.5*BS, 0.5*BS,0.5*BS, 0,0,0, video::SColor(255,255,255,255), tiles[j].texture.x0(), tiles[j].texture.y0()),
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS,0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tiles[j].texture.x0(), tiles[j].texture.y1()),
+			video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS,0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tiles[j].texture.x1(), tiles[j].texture.y1()),
+			video::S3DVertex( 0.5*data->m_BS, 0.5*data->m_BS,0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tiles[j].texture.x1(), tiles[j].texture.y0()),
+			video::S3DVertex(-0.5*data->m_BS, 0.5*data->m_BS,0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tiles[j].texture.x0(), tiles[j].texture.y0()),
 		};
 
 		s16 yrot = 0;
@@ -2081,7 +2127,7 @@ void meshgen_glasslike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sel
 	}
 }
 
-void meshgen_torchlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
+void meshgen_torchlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected)
 {
 	static const f32 txc[24] = {
 		0.625,0.125,0.75,0.25,
@@ -2102,35 +2148,35 @@ void meshgen_torchlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sel
 	v3s16 dir = unpackDir(n.param2);
 	video::S3DVertex vertices[6][4] = {
 		{	// up
-			video::S3DVertex(-0.0625*BS,0.125*BS,0.0625*BS, 0,1,0, video::SColor(255,255,255,255), txc[0],txc[1]),
-			video::S3DVertex(0.0625*BS,0.125*BS,0.0625*BS, 0,1,0, video::SColor(255,255,255,255), txc[2],txc[1]),
-			video::S3DVertex(0.0625*BS,0.125*BS,-0.0625*BS, 0,1,0, video::SColor(255,255,255,255), txc[2],txc[3]),
-			video::S3DVertex(-0.0625*BS,0.125*BS,-0.0625*BS, 0,1,0, video::SColor(255,255,255,255), txc[0],txc[3])
+			video::S3DVertex(-0.0625*data->m_BS,0.125*data->m_BS,0.0625*data->m_BS, 0,1,0, video::SColor(255,255,255,255), txc[0],txc[1]),
+			video::S3DVertex(0.0625*data->m_BS,0.125*data->m_BS,0.0625*data->m_BS, 0,1,0, video::SColor(255,255,255,255), txc[2],txc[1]),
+			video::S3DVertex(0.0625*data->m_BS,0.125*data->m_BS,-0.0625*data->m_BS, 0,1,0, video::SColor(255,255,255,255), txc[2],txc[3]),
+			video::S3DVertex(-0.0625*data->m_BS,0.125*data->m_BS,-0.0625*data->m_BS, 0,1,0, video::SColor(255,255,255,255), txc[0],txc[3])
 		},{	// down
-			video::S3DVertex(-0.0625*BS,-0.5*BS,-0.0625*BS, 0,-1,0, video::SColor(255,255,255,255), txc[4],txc[5]),
-			video::S3DVertex(0.0625*BS,-0.5*BS,-0.0625*BS, 0,-1,0, video::SColor(255,255,255,255), txc[6],txc[5]),
-			video::S3DVertex(0.0625*BS,-0.5*BS,0.0625*BS, 0,-1,0, video::SColor(255,255,255,255), txc[6],txc[7]),
-			video::S3DVertex(-0.0625*BS,-0.5*BS,0.0625*BS, 0,-1,0, video::SColor(255,255,255,255), txc[4],txc[7])
+			video::S3DVertex(-0.0625*data->m_BS,-0.5*data->m_BS,-0.0625*data->m_BS, 0,-1,0, video::SColor(255,255,255,255), txc[4],txc[5]),
+			video::S3DVertex(0.0625*data->m_BS,-0.5*data->m_BS,-0.0625*data->m_BS, 0,-1,0, video::SColor(255,255,255,255), txc[6],txc[5]),
+			video::S3DVertex(0.0625*data->m_BS,-0.5*data->m_BS,0.0625*data->m_BS, 0,-1,0, video::SColor(255,255,255,255), txc[6],txc[7]),
+			video::S3DVertex(-0.0625*data->m_BS,-0.5*data->m_BS,0.0625*data->m_BS, 0,-1,0, video::SColor(255,255,255,255), txc[4],txc[7])
 		},{	// right
-			video::S3DVertex(0.0625*BS,0.125*BS,-0.0625*BS, 1,0,0, video::SColor(255,255,255,255), txc[ 8],txc[9]),
-			video::S3DVertex(0.0625*BS,0.125*BS,0.0625*BS, 1,0,0, video::SColor(255,255,255,255), txc[10],txc[9]),
-			video::S3DVertex(0.0625*BS,-0.5*BS,0.0625*BS, 1,0,0, video::SColor(255,255,255,255), txc[10],txc[11]),
-			video::S3DVertex(0.0625*BS,-0.5*BS,-0.0625*BS, 1,0,0, video::SColor(255,255,255,255), txc[ 8],txc[11])
+			video::S3DVertex(0.0625*data->m_BS,0.125*data->m_BS,-0.0625*data->m_BS, 1,0,0, video::SColor(255,255,255,255), txc[ 8],txc[9]),
+			video::S3DVertex(0.0625*data->m_BS,0.125*data->m_BS,0.0625*data->m_BS, 1,0,0, video::SColor(255,255,255,255), txc[10],txc[9]),
+			video::S3DVertex(0.0625*data->m_BS,-0.5*data->m_BS,0.0625*data->m_BS, 1,0,0, video::SColor(255,255,255,255), txc[10],txc[11]),
+			video::S3DVertex(0.0625*data->m_BS,-0.5*data->m_BS,-0.0625*data->m_BS, 1,0,0, video::SColor(255,255,255,255), txc[ 8],txc[11])
 		},{	// left
-			video::S3DVertex(-0.0625*BS,0.125*BS,0.0625*BS, -1,0,0, video::SColor(255,255,255,255), txc[12],txc[13]),
-			video::S3DVertex(-0.0625*BS,0.125*BS,-0.0625*BS, -1,0,0, video::SColor(255,255,255,255), txc[14],txc[13]),
-			video::S3DVertex(-0.0625*BS,-0.5*BS,-0.0625*BS, -1,0,0, video::SColor(255,255,255,255), txc[14],txc[15]),
-			video::S3DVertex(-0.0625*BS,-0.5*BS,0.0625*BS, -1,0,0, video::SColor(255,255,255,255), txc[12],txc[15])
+			video::S3DVertex(-0.0625*data->m_BS,0.125*data->m_BS,0.0625*data->m_BS, -1,0,0, video::SColor(255,255,255,255), txc[12],txc[13]),
+			video::S3DVertex(-0.0625*data->m_BS,0.125*data->m_BS,-0.0625*data->m_BS, -1,0,0, video::SColor(255,255,255,255), txc[14],txc[13]),
+			video::S3DVertex(-0.0625*data->m_BS,-0.5*data->m_BS,-0.0625*data->m_BS, -1,0,0, video::SColor(255,255,255,255), txc[14],txc[15]),
+			video::S3DVertex(-0.0625*data->m_BS,-0.5*data->m_BS,0.0625*data->m_BS, -1,0,0, video::SColor(255,255,255,255), txc[12],txc[15])
 		},{	// back
-			video::S3DVertex(0.0625*BS,0.125*BS,0.0625*BS, 0,0,1, video::SColor(255,255,255,255), txc[16],txc[17]),
-			video::S3DVertex(-0.0625*BS,0.125*BS,0.0625*BS, 0,0,1, video::SColor(255,255,255,255), txc[18],txc[17]),
-			video::S3DVertex(-0.0625*BS,-0.5*BS,0.0625*BS, 0,0,1, video::SColor(255,255,255,255), txc[18],txc[19]),
-			video::S3DVertex(0.0625*BS,-0.5*BS,0.0625*BS, 0,0,1, video::SColor(255,255,255,255), txc[16],txc[19])
+			video::S3DVertex(0.0625*data->m_BS,0.125*data->m_BS,0.0625*data->m_BS, 0,0,1, video::SColor(255,255,255,255), txc[16],txc[17]),
+			video::S3DVertex(-0.0625*data->m_BS,0.125*data->m_BS,0.0625*data->m_BS, 0,0,1, video::SColor(255,255,255,255), txc[18],txc[17]),
+			video::S3DVertex(-0.0625*data->m_BS,-0.5*data->m_BS,0.0625*data->m_BS, 0,0,1, video::SColor(255,255,255,255), txc[18],txc[19]),
+			video::S3DVertex(0.0625*data->m_BS,-0.5*data->m_BS,0.0625*data->m_BS, 0,0,1, video::SColor(255,255,255,255), txc[16],txc[19])
 		},{	// front
-			video::S3DVertex(-0.0625*BS,0.125*BS,-0.0625*BS, 0,0,-1, video::SColor(255,255,255,255), txc[20],txc[21]),
-			video::S3DVertex(0.0625*BS,0.125*BS,-0.0625*BS, 0,0,-1, video::SColor(255,255,255,255), txc[22],txc[21]),
-			video::S3DVertex(0.0625*BS,-0.5*BS,-0.0625*BS, 0,0,-1, video::SColor(255,255,255,255), txc[22],txc[23]),
-			video::S3DVertex(-0.0625*BS,-0.5*BS,-0.0625*BS, 0,0,-1, video::SColor(255,255,255,255), txc[20],txc[23])
+			video::S3DVertex(-0.0625*data->m_BS,0.125*data->m_BS,-0.0625*data->m_BS, 0,0,-1, video::SColor(255,255,255,255), txc[20],txc[21]),
+			video::S3DVertex(0.0625*data->m_BS,0.125*data->m_BS,-0.0625*data->m_BS, 0,0,-1, video::SColor(255,255,255,255), txc[22],txc[21]),
+			video::S3DVertex(0.0625*data->m_BS,-0.5*data->m_BS,-0.0625*data->m_BS, 0,0,-1, video::SColor(255,255,255,255), txc[22],txc[23]),
+			video::S3DVertex(-0.0625*data->m_BS,-0.5*data->m_BS,-0.0625*data->m_BS, 0,0,-1, video::SColor(255,255,255,255), txc[20],txc[23])
 		}
 	};
 
@@ -2206,7 +2252,7 @@ void meshgen_torchlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sel
 	}
 }
 
-void meshgen_fencelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
+void meshgen_fencelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected)
 {
 	static const v3s16 tile_dirs[6] = {
 		v3s16( 0, 1, 0),
@@ -2239,7 +2285,7 @@ void meshgen_fencelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sel
 	TileSpec tiles[6];
 	for (int i = 0; i < 6; i++) {
 		// Handles facedir rotation for textures
-		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_select[p+data->m_blockpos_nodes]);
+		tiles[i] = getNodeTile(n,p,tile_dirs[i],selected);
 	}
 
 	v3f pos = intToFloat(p, BS);
@@ -2256,12 +2302,12 @@ void meshgen_fencelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sel
 		NodeBox box = boxes[bi];
 
 		// Compute texture coords
-		f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
-		f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
-		f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
-		f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
-		f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
-		f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
+		f32 tx1 = (box.m_box.MinEdge.X/data->m_BS)+0.5;
+		f32 ty1 = (box.m_box.MinEdge.Y/data->m_BS)+0.5;
+		f32 tz1 = (box.m_box.MinEdge.Z/data->m_BS)+0.5;
+		f32 tx2 = (box.m_box.MaxEdge.X/data->m_BS)+0.5;
+		f32 ty2 = (box.m_box.MaxEdge.Y/data->m_BS)+0.5;
+		f32 tz2 = (box.m_box.MaxEdge.Z/data->m_BS)+0.5;
 		f32 txc[24] = {
 			// up
 			tx1, 1-tz2, tx2, 1-tz1,
@@ -2306,12 +2352,12 @@ void meshgen_fencelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sel
 				NodeBox box = boxes[i+2+(bps*(k%4))];
 
 				// Compute texture coords
-				f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
-				f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
-				f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
-				f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
-				f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
-				f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
+				f32 tx1 = (box.m_box.MinEdge.X/data->m_BS)+0.5;
+				f32 ty1 = (box.m_box.MinEdge.Y/data->m_BS)+0.5;
+				f32 tz1 = (box.m_box.MinEdge.Z/data->m_BS)+0.5;
+				f32 tx2 = (box.m_box.MaxEdge.X/data->m_BS)+0.5;
+				f32 ty2 = (box.m_box.MaxEdge.Y/data->m_BS)+0.5;
+				f32 tz2 = (box.m_box.MaxEdge.Z/data->m_BS)+0.5;
 				f32 txc[24] = {
 					// up
 					tx1, 1-tz2, tx2, 1-tz1,
@@ -2349,9 +2395,9 @@ void meshgen_fencelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sel
 	}
 }
 
-void meshgen_firelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
+void meshgen_firelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected)
 {
-	TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),data->m_select[p+data->m_blockpos_nodes]);
+	TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),selected);
 	content_t current = n.getContent();
 	content_t n2c;
 	MapNode n2;
@@ -2381,10 +2427,10 @@ void meshgen_firelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 	v3f pos = intToFloat(p,BS);
 	for (u32 j=0; j<4; j++) {
 		video::S3DVertex vertices[4] = {
-			video::S3DVertex(-0.5*BS,-0.5*BS,0.369*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1()),
-			video::S3DVertex( 0.5*BS,-0.5*BS,0.369*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
-			video::S3DVertex( 0.5*BS, 0.5*BS,0.369*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
-			video::S3DVertex(-0.5*BS, 0.5*BS,0.369*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0())
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS,0.369*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1()),
+			video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS,0.369*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex( 0.5*data->m_BS, 0.5*data->m_BS,0.369*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
+			video::S3DVertex(-0.5*data->m_BS, 0.5*data->m_BS,0.369*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0())
 		};
 		int vOffset = 1; // Vertical offset of faces after rotation
 		// Calculate which faces should be drawn
@@ -2436,7 +2482,7 @@ void meshgen_firelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 	}
 }
 
-void meshgen_walllike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
+void meshgen_walllike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected)
 {
 	static const v3s16 tile_dirs[6] = {
 		v3s16(0, 1, 0),
@@ -2452,7 +2498,7 @@ void meshgen_walllike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 	TileSpec tiles[6];
 	for (int i = 0; i < 6; i++) {
 		// Handles facedir rotation for textures
-		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_select[p+data->m_blockpos_nodes]);
+		tiles[i] = getNodeTile(n,p,tile_dirs[i],selected);
 	}
 
 	v3f pos = intToFloat(p, BS);
@@ -2466,12 +2512,12 @@ void meshgen_walllike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 		box = boxes[bi];
 
 		// Compute texture coords
-		f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
-		f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
-		f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
-		f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
-		f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
-		f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
+		f32 tx1 = (box.m_box.MinEdge.X/data->m_BS)+0.5;
+		f32 ty1 = (box.m_box.MinEdge.Y/data->m_BS)+0.5;
+		f32 tz1 = (box.m_box.MinEdge.Z/data->m_BS)+0.5;
+		f32 tx2 = (box.m_box.MaxEdge.X/data->m_BS)+0.5;
+		f32 ty2 = (box.m_box.MaxEdge.Y/data->m_BS)+0.5;
+		f32 tz2 = (box.m_box.MaxEdge.Z/data->m_BS)+0.5;
 		f32 txc[24] = {
 			// up
 			tx1, 1-tz2, tx2, 1-tz1,
@@ -2499,12 +2545,12 @@ void meshgen_walllike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 				box = boxes[i+3+(bps*(k%4))];
 
 				// Compute texture coords
-				f32 tx1 = (box.m_box.MinEdge.X/BS)+0.5;
-				f32 ty1 = (box.m_box.MinEdge.Y/BS)+0.5;
-				f32 tz1 = (box.m_box.MinEdge.Z/BS)+0.5;
-				f32 tx2 = (box.m_box.MaxEdge.X/BS)+0.5;
-				f32 ty2 = (box.m_box.MaxEdge.Y/BS)+0.5;
-				f32 tz2 = (box.m_box.MaxEdge.Z/BS)+0.5;
+				f32 tx1 = (box.m_box.MinEdge.X/data->m_BS)+0.5;
+				f32 ty1 = (box.m_box.MinEdge.Y/data->m_BS)+0.5;
+				f32 tz1 = (box.m_box.MinEdge.Z/data->m_BS)+0.5;
+				f32 tx2 = (box.m_box.MaxEdge.X/data->m_BS)+0.5;
+				f32 ty2 = (box.m_box.MaxEdge.Y/data->m_BS)+0.5;
+				f32 tz2 = (box.m_box.MaxEdge.Z/data->m_BS)+0.5;
 				f32 txc[24] = {
 					// up
 					tx1, 1-tz2, tx2, 1-tz1,
@@ -2542,7 +2588,7 @@ void meshgen_walllike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 	}
 }
 
-void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
+void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected)
 {
 	bool is_roof_x [] = { false, false };  /* x-1, x+1 */
 	bool is_roof_z [] = { false, false };  /* z-1, z+1 */
@@ -2593,8 +2639,8 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 	u8 adjacencies = is_roof_x[0] + is_roof_x[1] + is_roof_z[0] + is_roof_z[1];
 
 	// get the tile, with crack if being dug
-	TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),data->m_select[p+data->m_blockpos_nodes]);
-	TileSpec toptile = getNodeTile(n,p,v3s16(0,-1,0),data->m_select[p+data->m_blockpos_nodes]);
+	TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),selected);
+	TileSpec toptile = getNodeTile(n,p,v3s16(0,-1,0),selected);
 
 	u8 type = 0;
 	s16 angle = 0;
@@ -3478,7 +3524,7 @@ void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 	}
 }
 
-void meshgen_leaflike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
+void meshgen_leaflike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected)
 {
 	bool is_xp = false;
 	bool is_xm = false;
@@ -3514,8 +3560,8 @@ void meshgen_leaflike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 		is_xmzm = true;
 
 	// get the tile, with crack if being dug
-	TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),data->m_select[p+data->m_blockpos_nodes]);
-	TileSpec toptile = getNodeTile(n,p,v3s16(0,-1,0),data->m_select[p+data->m_blockpos_nodes]);
+	TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),selected);
+	TileSpec toptile = getNodeTile(n,p,v3s16(0,-1,0),selected);
 
 	u8 type = 0;
 	s16 angle = 0;
@@ -3653,7 +3699,7 @@ void meshgen_leaflike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 	}
 }
 
-void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected, bool is3d)
+void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected, bool is3d)
 {
 	MapNode n_plus_y = data->m_vmanip.getNodeNoEx(data->m_blockpos_nodes + p + v3s16(0,1,0));
 	MapNode n_minus_x = data->m_vmanip.getNodeNoEx(data->m_blockpos_nodes + p + v3s16(-1,0,0));
@@ -3790,7 +3836,7 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 	TileSpec tiles[6];
 	for (int i = 0; i < 6; i++) {
 		// Handles facedir rotation for textures
-		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_select[p+data->m_blockpos_nodes]);
+		tiles[i] = getNodeTile(n,p,tile_dirs[i],selected);
 	}
 
 	v3f pos = intToFloat(p, BS);
@@ -3822,13 +3868,13 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 		if (!x_plus && !x_minus && !z_plus && !z_minus) {
 			{
 				video::S3DVertex vertices[4] = {
-					video::S3DVertex(-BS/2,-0.49*BS,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()),
-					video::S3DVertex(BS/2,-0.49*BS,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,-0.49*BS,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
-					video::S3DVertex(-BS/2,-0.49*BS,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
+					video::S3DVertex(-data->m_BS/2,-0.49*data->m_BS,data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()),
+					video::S3DVertex(data->m_BS/2,-0.49*data->m_BS,data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
+					video::S3DVertex(data->m_BS/2,-0.49*data->m_BS,-data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
+					video::S3DVertex(-data->m_BS/2,-0.49*data->m_BS,-data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
 				};
 				for (u16 i=0; i<4; i++) {
-					vertices[i].Pos += intToFloat(p, BS);
+					vertices[i].Pos += pos;
 				}
 				u16 indices[] = {0,1,2,2,3,0};
 				std::vector<u32> colours;
@@ -3837,13 +3883,13 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 			}
 			{
 				video::S3DVertex vertices[4] = {
-					video::S3DVertex(-BS/2,-0.49*BS,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,-0.49*BS,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,-0.49*BS,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
-					video::S3DVertex(-BS/2,-0.49*BS,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()),
+					video::S3DVertex(-data->m_BS/2,-0.49*data->m_BS,data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
+					video::S3DVertex(data->m_BS/2,-0.49*data->m_BS,data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
+					video::S3DVertex(data->m_BS/2,-0.49*data->m_BS,-data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
+					video::S3DVertex(-data->m_BS/2,-0.49*data->m_BS,-data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()),
 				};
 				for (u16 i=0; i<4; i++) {
-					vertices[i].Pos += intToFloat(p, BS);
+					vertices[i].Pos += pos;
 				}
 				u16 indices[] = {0,1,2,2,3,0};
 				std::vector<u32> colours;
@@ -3853,13 +3899,13 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 		}else{
 			if (x_plus) {
 				video::S3DVertex vertices[4] = {
-					video::S3DVertex(0,-0.49*BS,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()+(sy/2)),
-					video::S3DVertex(BS/2,-0.49*BS,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,-0.49*BS,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
-					video::S3DVertex(0,-0.49*BS,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()+(sy/2)),
+					video::S3DVertex(0,-0.49*data->m_BS,data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()+(sy/2)),
+					video::S3DVertex(data->m_BS/2,-0.49*data->m_BS,data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
+					video::S3DVertex(data->m_BS/2,-0.49*data->m_BS,-data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
+					video::S3DVertex(0,-0.49*data->m_BS,-data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()+(sy/2)),
 				};
 				for (u16 i=0; i<4; i++) {
-					vertices[i].Pos += intToFloat(p, BS);
+					vertices[i].Pos += pos;
 				}
 				u16 indices[] = {0,1,2,2,3,0};
 				std::vector<u32> colours;
@@ -3868,13 +3914,13 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 			}
 			if (x_minus) {
 				video::S3DVertex vertices[4] = {
-					video::S3DVertex(-BS/2,-0.49*BS,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()),
-					video::S3DVertex(0,-0.49*BS,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()-(sy/2)),
-					video::S3DVertex(0,-0.49*BS,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()-(sy/2)),
-					video::S3DVertex(-BS/2,-0.49*BS,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
+					video::S3DVertex(-data->m_BS/2,-0.49*data->m_BS,data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()),
+					video::S3DVertex(0,-0.49*data->m_BS,data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()-(sy/2)),
+					video::S3DVertex(0,-0.49*data->m_BS,-data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()-(sy/2)),
+					video::S3DVertex(-data->m_BS/2,-0.49*data->m_BS,-data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
 				};
 				for (u16 i=0; i<4; i++) {
-					vertices[i].Pos += intToFloat(p, BS);
+					vertices[i].Pos += pos;
 				}
 				u16 indices[] = {0,1,2,2,3,0};
 				std::vector<u32> colours;
@@ -3883,13 +3929,13 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 			}
 			if (z_plus) {
 				video::S3DVertex vertices[4] = {
-					video::S3DVertex(-BS/2,-0.49*BS,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,-0.49*BS,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,-0.49*BS,0, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()+(sy/2)),
-					video::S3DVertex(-BS/2,-0.49*BS,0, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()+(sy/2)),
+					video::S3DVertex(-data->m_BS/2,-0.49*data->m_BS,data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
+					video::S3DVertex(data->m_BS/2,-0.49*data->m_BS,data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
+					video::S3DVertex(data->m_BS/2,-0.49*data->m_BS,0, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()+(sy/2)),
+					video::S3DVertex(-data->m_BS/2,-0.49*data->m_BS,0, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()+(sy/2)),
 				};
 				for (u16 i=0; i<4; i++) {
-					vertices[i].Pos += intToFloat(p, BS);
+					vertices[i].Pos += pos;
 				}
 				u16 indices[] = {0,1,2,2,3,0};
 				std::vector<u32> colours;
@@ -3898,13 +3944,13 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 			}
 			if (z_minus) {
 				video::S3DVertex vertices[4] = {
-					video::S3DVertex(-BS/2,-0.49*BS,0, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()-(sy/2)),
-					video::S3DVertex(BS/2,-0.49*BS,0, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()-(sy/2)),
-					video::S3DVertex(BS/2,-0.49*BS,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
-					video::S3DVertex(-BS/2,-0.49*BS,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()),
+					video::S3DVertex(-data->m_BS/2,-0.49*data->m_BS,0, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()-(sy/2)),
+					video::S3DVertex(data->m_BS/2,-0.49*data->m_BS,0, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()-(sy/2)),
+					video::S3DVertex(data->m_BS/2,-0.49*data->m_BS,-data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
+					video::S3DVertex(-data->m_BS/2,-0.49*data->m_BS,-data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()),
 				};
 				for (u16 i=0; i<4; i++) {
-					vertices[i].Pos += intToFloat(p, BS);
+					vertices[i].Pos += pos;
 				}
 				u16 indices[] = {0,1,2,2,3,0};
 				std::vector<u32> colours;
@@ -3913,13 +3959,13 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 			}
 			if (x_plus_y) {
 				video::S3DVertex vertices[4] = {
-					video::S3DVertex(0.49*BS,-BS/2,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
-					video::S3DVertex(0.49*BS,-BS/2,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
-					video::S3DVertex(0.49*BS,BS/2,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
-					video::S3DVertex(0.49*BS,BS/2,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()),
+					video::S3DVertex(0.49*data->m_BS,-data->m_BS/2,-data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
+					video::S3DVertex(0.49*data->m_BS,-data->m_BS/2,data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
+					video::S3DVertex(0.49*data->m_BS,data->m_BS/2,data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
+					video::S3DVertex(0.49*data->m_BS,data->m_BS/2,-data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()),
 				};
 				for (u16 i=0; i<4; i++) {
-					vertices[i].Pos += intToFloat(p, BS);
+					vertices[i].Pos += pos;
 				}
 				u16 indices[] = {0,1,2,2,3,0};
 				std::vector<u32> colours;
@@ -3928,13 +3974,13 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 			}
 			if (x_minus_y) {
 				video::S3DVertex vertices[4] = {
-					video::S3DVertex(-0.49*BS,-BS/2,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
-					video::S3DVertex(-0.49*BS,-BS/2,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
-					video::S3DVertex(-0.49*BS,BS/2,-BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
-					video::S3DVertex(-0.49*BS,BS/2,BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()),
+					video::S3DVertex(-0.49*data->m_BS,-data->m_BS/2,data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
+					video::S3DVertex(-0.49*data->m_BS,-data->m_BS/2,-data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
+					video::S3DVertex(-0.49*data->m_BS,data->m_BS/2,-data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
+					video::S3DVertex(-0.49*data->m_BS,data->m_BS/2,data->m_BS/2, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()),
 				};
 				for (u16 i=0; i<4; i++) {
-					vertices[i].Pos += intToFloat(p, BS);
+					vertices[i].Pos += pos;
 				}
 				u16 indices[] = {0,1,2,2,3,0};
 				std::vector<u32> colours;
@@ -3943,13 +3989,13 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 			}
 			if (z_plus_y) {
 				video::S3DVertex vertices[4] = {
-					video::S3DVertex(BS/2,-BS/2,0.49*BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
-					video::S3DVertex(-BS/2,-BS/2,0.49*BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
-					video::S3DVertex(-BS/2,BS/2,0.49*BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
-					video::S3DVertex(BS/2,BS/2,0.49*BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()),
+					video::S3DVertex(data->m_BS/2,-data->m_BS/2,0.49*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
+					video::S3DVertex(-data->m_BS/2,-data->m_BS/2,0.49*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
+					video::S3DVertex(-data->m_BS/2,data->m_BS/2,0.49*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
+					video::S3DVertex(data->m_BS/2,data->m_BS/2,0.49*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()),
 				};
 				for (u16 i=0; i<4; i++) {
-					vertices[i].Pos += intToFloat(p, BS);
+					vertices[i].Pos += pos;
 				}
 				u16 indices[] = {0,1,2,2,3,0};
 				std::vector<u32> colours;
@@ -3958,13 +4004,13 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 			}
 			if (z_minus_y) {
 				video::S3DVertex vertices[4] = {
-					video::S3DVertex(-BS/2,-BS/2,-0.49*BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,-BS/2,-0.49*BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
-					video::S3DVertex(BS/2,BS/2,-0.49*BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
-					video::S3DVertex(-BS/2,BS/2,-0.49*BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()),
+					video::S3DVertex(-data->m_BS/2,-data->m_BS/2,-0.49*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y1()),
+					video::S3DVertex(data->m_BS/2,-data->m_BS/2,-0.49*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y1()),
+					video::S3DVertex(data->m_BS/2,data->m_BS/2,-0.49*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x1(), tiles[0].texture.y0()),
+					video::S3DVertex(-data->m_BS/2,data->m_BS/2,-0.49*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tiles[0].texture.x0(), tiles[0].texture.y0()),
 				};
 				for (u16 i=0; i<4; i++) {
-					vertices[i].Pos += intToFloat(p, BS);
+					vertices[i].Pos += pos;
 				}
 				u16 indices[] = {0,1,2,2,3,0};
 				std::vector<u32> colours;
@@ -3977,31 +4023,31 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 
 	std::vector<aabb3f> boxes;
 	if (!x_plus && !x_minus && !z_plus && !z_minus) {
-		boxes.push_back(aabb3f(-0.125*BS,-0.5*BS,-0.125*BS,0.125*BS,-0.4375*BS,0.125*BS));
+		boxes.push_back(aabb3f(-0.125*data->m_BS,-0.5*data->m_BS,-0.125*data->m_BS,0.125*data->m_BS,-0.4375*data->m_BS,0.125*data->m_BS));
 	}else{
 		if (x_plus) {
-			boxes.push_back(aabb3f(0.,-0.5*BS,-0.0625*BS,0.5*BS,-0.4375*BS,0.0625*BS));
+			boxes.push_back(aabb3f(0.,-0.5*data->m_BS,-0.0625*data->m_BS,0.5*data->m_BS,-0.4375*data->m_BS,0.0625*data->m_BS));
 		}
 		if (x_minus) {
-			boxes.push_back(aabb3f(-0.5*BS,-0.5*BS,-0.0625*BS,0.,-0.4375*BS,0.0625*BS));
+			boxes.push_back(aabb3f(-0.5*data->m_BS,-0.5*data->m_BS,-0.0625*data->m_BS,0.,-0.4375*data->m_BS,0.0625*data->m_BS));
 		}
 		if (z_plus) {
-			boxes.push_back(aabb3f(-0.0625*BS,-0.5*BS,0.,0.0625*BS,-0.4375*BS,0.5*BS));
+			boxes.push_back(aabb3f(-0.0625*data->m_BS,-0.5*data->m_BS,0.,0.0625*data->m_BS,-0.4375*data->m_BS,0.5*data->m_BS));
 		}
 		if (z_minus) {
-			boxes.push_back(aabb3f(-0.0625*BS,-0.5*BS,-0.5*BS,0.0625*BS,-0.4375*BS,0.));
+			boxes.push_back(aabb3f(-0.0625*data->m_BS,-0.5*data->m_BS,-0.5*data->m_BS,0.0625*data->m_BS,-0.4375*data->m_BS,0.));
 		}
 		if (x_plus_y) {
-			boxes.push_back(aabb3f(0.4375*BS,-0.4375*BS,-0.0625*BS,0.5*BS,0.5625*BS,0.0625*BS));
+			boxes.push_back(aabb3f(0.4375*data->m_BS,-0.4375*data->m_BS,-0.0625*data->m_BS,0.5*data->m_BS,0.5625*data->m_BS,0.0625*data->m_BS));
 		}
 		if (x_minus_y) {
-			boxes.push_back(aabb3f(-0.5*BS,-0.4375*BS,-0.0625*BS,-0.4375*BS,0.5625*BS,0.0625*BS));
+			boxes.push_back(aabb3f(-0.5*data->m_BS,-0.4375*data->m_BS,-0.0625*data->m_BS,-0.4375*data->m_BS,0.5625*data->m_BS,0.0625*data->m_BS));
 		}
 		if (z_plus_y) {
-			boxes.push_back(aabb3f(-0.0625*BS,-0.4375*BS,0.4375*BS,0.0625*BS,0.5625*BS,0.5*BS));
+			boxes.push_back(aabb3f(-0.0625*data->m_BS,-0.4375*data->m_BS,0.4375*data->m_BS,0.0625*data->m_BS,0.5625*data->m_BS,0.5*data->m_BS));
 		}
 		if (z_minus_y) {
-			boxes.push_back(aabb3f(-0.0625*BS,-0.4375*BS,-0.5*BS,0.0625*BS,0.5625*BS,-0.4375*BS));
+			boxes.push_back(aabb3f(-0.0625*data->m_BS,-0.4375*data->m_BS,-0.5*data->m_BS,0.0625*data->m_BS,0.5625*data->m_BS,-0.4375*data->m_BS));
 		}
 		u8 cnt = x_plus+x_minus+z_plus+z_minus;
 		if (
@@ -4016,19 +4062,19 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 				)
 			)
 		) {
-			boxes.push_back(aabb3f(-0.125*BS,-0.5*BS,-0.125*BS,0.125*BS,-0.375*BS,0.125*BS));
+			boxes.push_back(aabb3f(-0.125*data->m_BS,-0.5*data->m_BS,-0.125*data->m_BS,0.125*data->m_BS,-0.375*data->m_BS,0.125*data->m_BS));
 		}
 	}
 	for (std::vector<aabb3f>::iterator i = boxes.begin(); i != boxes.end(); i++) {
 		aabb3f box = *i;
 
 		// Compute texture coords
-		f32 tx1 = (i->MinEdge.X/BS)+0.5;
-		f32 ty1 = (i->MinEdge.Y/BS)+0.5;
-		f32 tz1 = (i->MinEdge.Z/BS)+0.5;
-		f32 tx2 = (i->MaxEdge.X/BS)+0.5;
-		f32 ty2 = (i->MaxEdge.Y/BS)+0.5;
-		f32 tz2 = (i->MaxEdge.Z/BS)+0.5;
+		f32 tx1 = (i->MinEdge.X/data->m_BS)+0.5;
+		f32 ty1 = (i->MinEdge.Y/data->m_BS)+0.5;
+		f32 tz1 = (i->MinEdge.Z/data->m_BS)+0.5;
+		f32 tx2 = (i->MaxEdge.X/data->m_BS)+0.5;
+		f32 ty2 = (i->MaxEdge.Y/data->m_BS)+0.5;
+		f32 tz2 = (i->MaxEdge.Z/data->m_BS)+0.5;
 		f32 txc[24] = {
 			// up
 			tx1, 1-tz2, tx2, 1-tz1,
@@ -4047,7 +4093,7 @@ void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 	}
 }
 
-void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
+void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected)
 {
 	static v3s16 faces[6] = {
 		v3s16( 0, 1, 0),
@@ -4069,102 +4115,102 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sel
 	TileSpec tiles[6];
 	for (int i=0; i<6; i++) {
 		// Handles facedir rotation for textures
-		tiles[i] = getNodeTile(n,p,faces[i],data->m_select[p+data->m_blockpos_nodes]);
+		tiles[i] = getNodeTile(n,p,faces[i],selected);
 	}
 
 	bool urot = (n.getContent() >= CONTENT_SLAB_STAIR_UD_MIN && n.getContent() <= CONTENT_SLAB_STAIR_UD_MAX);
 
 	video::S3DVertex vertices[6][16] = {
 		{ // up
-			video::S3DVertex(-0.5*BS, 0.5*BS , 0.5*BS , 0,0,0, video::SColor(255,255,255,255), 0.,0.),
-			video::S3DVertex( 0.5*BS, 0.5*BS , 0.5*BS , 0,0,0, video::SColor(255,255,255,255), 1.,0.),
-			video::S3DVertex( 0.5*BS, 0.5*BS , 0.25*BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.25),
-			video::S3DVertex(-0.5*BS, 0.5*BS , 0.25*BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.25),
+			video::S3DVertex(-0.5*data->m_BS, 0.5*data->m_BS , 0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 0.,0.),
+			video::S3DVertex( 0.5*data->m_BS, 0.5*data->m_BS , 0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 1.,0.),
+			video::S3DVertex( 0.5*data->m_BS, 0.5*data->m_BS , 0.25*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.25),
+			video::S3DVertex(-0.5*data->m_BS, 0.5*data->m_BS , 0.25*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.25),
 
-			video::S3DVertex(-0.5*BS, 0.25*BS, 0.25*BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.25),
-			video::S3DVertex( 0.5*BS, 0.25*BS, 0.25*BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.25),
-			video::S3DVertex( 0.5*BS, 0.25*BS, 0.     , 0,0,0, video::SColor(255,255,255,255), 1.,0.5),
-			video::S3DVertex(-0.5*BS, 0.25*BS, 0.     , 0,0,0, video::SColor(255,255,255,255), 0.,0.5),
+			video::S3DVertex(-0.5*data->m_BS, 0.25*data->m_BS, 0.25*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.25),
+			video::S3DVertex( 0.5*data->m_BS, 0.25*data->m_BS, 0.25*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.25),
+			video::S3DVertex( 0.5*data->m_BS, 0.25*data->m_BS, 0.     , 0,0,0, video::SColor(255,255,255,255), 1.,0.5),
+			video::S3DVertex(-0.5*data->m_BS, 0.25*data->m_BS, 0.     , 0,0,0, video::SColor(255,255,255,255), 0.,0.5),
 
-			video::S3DVertex(-0.5*BS, 0.     , 0.     , 0,0,0, video::SColor(255,255,255,255), 0.,0.5),
-			video::S3DVertex( 0.5*BS, 0.     , 0.     , 0,0,0, video::SColor(255,255,255,255), 1.,0.5),
-			video::S3DVertex( 0.5*BS, 0.     ,-0.25*BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.75),
-			video::S3DVertex(-0.5*BS, 0.     ,-0.25*BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.75),
+			video::S3DVertex(-0.5*data->m_BS, data->m_BSd, data->m_BSd, 0,0,0, video::SColor(255,255,255,255), 0.,0.5),
+			video::S3DVertex( 0.5*data->m_BS, data->m_BSd, data->m_BSd, 0,0,0, video::SColor(255,255,255,255), 1.,0.5),
+			video::S3DVertex( 0.5*data->m_BS, data->m_BSd,-0.25*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.75),
+			video::S3DVertex(-0.5*data->m_BS, data->m_BSd,-0.25*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.75),
 
-			video::S3DVertex(-0.5*BS,-0.25*BS,-0.25*BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.75),
-			video::S3DVertex( 0.5*BS,-0.25*BS,-0.25*BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.75),
-			video::S3DVertex( 0.5*BS,-0.25*BS,-0.5*BS , 0,0,0, video::SColor(255,255,255,255), 1.,1.),
-			video::S3DVertex(-0.5*BS,-0.25*BS,-0.5*BS , 0,0,0, video::SColor(255,255,255,255), 0.,1.)
+			video::S3DVertex(-0.5*data->m_BS,-0.25*BS+data->m_BSd,-0.25*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.75),
+			video::S3DVertex( 0.5*data->m_BS,-0.25*BS+data->m_BSd,-0.25*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.75),
+			video::S3DVertex( 0.5*data->m_BS,-0.25*BS+data->m_BSd,-0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 1.,1.),
+			video::S3DVertex(-0.5*data->m_BS,-0.25*BS+data->m_BSd,-0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 0.,1.)
 		},{ // down
-			video::S3DVertex(-0.5*BS,-0.5*BS ,-0.5*BS , 0,0,0, video::SColor(255,255,255,255), 0.,0.),
-			video::S3DVertex( 0.5*BS,-0.5*BS ,-0.5*BS , 0,0,0, video::SColor(255,255,255,255), 1.,0.),
-			video::S3DVertex( 0.5*BS,-0.5*BS , 0.5*BS , 0,0,0, video::SColor(255,255,255,255), 1.,1.),
-			video::S3DVertex(-0.5*BS,-0.5*BS , 0.5*BS , 0,0,0, video::SColor(255,255,255,255), 0.,1.)
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS ,-0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 0.,0.),
+			video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS ,-0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 1.,0.),
+			video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS , 0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 1.,1.),
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS , 0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 0.,1.)
 		},{ // right
-			video::S3DVertex( 0.5*BS, 0.5*BS , 0.5*BS , 0,0,0, video::SColor(255,255,255,255), 1.,0.),
-			video::S3DVertex( 0.5*BS,-0.5*BS , 0.5*BS , 0,0,0, video::SColor(255,255,255,255), 1.,1.),
-			video::S3DVertex( 0.5*BS,-0.5*BS ,-0.5*BS , 0,0,0, video::SColor(255,255,255,255), 0.,1.),
+			video::S3DVertex( 0.5*data->m_BS, 0.5*data->m_BS , 0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 1.,0.),
+			video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS , 0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 1.,1.),
+			video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS ,-0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 0.,1.),
 
-			video::S3DVertex( 0.5*BS, 0.5*BS , 0.5*BS , 0,0,0, video::SColor(255,255,255,255), 1.,0.),
-			video::S3DVertex( 0.5*BS, 0.25*BS, 0.25*BS, 0,0,0, video::SColor(255,255,255,255), 0.75,0.25),
-			video::S3DVertex( 0.5*BS, 0.5*BS , 0.25*BS, 0,0,0, video::SColor(255,255,255,255), 0.75,0.),
+			video::S3DVertex( 0.5*data->m_BS, 0.5*data->m_BS , 0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 1.,0.),
+			video::S3DVertex( 0.5*data->m_BS, 0.25*data->m_BS, 0.25*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.75,0.25),
+			video::S3DVertex( 0.5*data->m_BS, 0.5*data->m_BS , 0.25*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.75,0.),
 
-			video::S3DVertex( 0.5*BS, 0.25*BS, 0.25*BS, 0,0,0, video::SColor(255,255,255,255), 0.75,0.25),
-			video::S3DVertex( 0.5*BS, 0.     , 0.     , 0,0,0, video::SColor(255,255,255,255), 0.5,0.5),
-			video::S3DVertex( 0.5*BS, 0.25*BS, 0.     , 0,0,0, video::SColor(255,255,255,255), 0.5,0.25),
+			video::S3DVertex( 0.5*data->m_BS, 0.25*data->m_BS, 0.25*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.75,0.25),
+			video::S3DVertex( 0.5*data->m_BS, data->m_BSd, data->m_BSd, 0,0,0, video::SColor(255,255,255,255), 0.5,0.5),
+			video::S3DVertex( 0.5*data->m_BS, 0.25*data->m_BS, data->m_BSd, 0,0,0, video::SColor(255,255,255,255), 0.5,0.25),
 
-			video::S3DVertex( 0.5*BS, 0.     , 0.     , 0,0,0, video::SColor(255,255,255,255), 0.5,0.5),
-			video::S3DVertex( 0.5*BS,-0.25*BS,-0.25*BS, 0,0,0, video::SColor(255,255,255,255), 0.25,0.75),
-			video::S3DVertex( 0.5*BS, 0.     ,-0.25*BS, 0,0,0, video::SColor(255,255,255,255), 0.5,0.75),
+			video::S3DVertex( 0.5*data->m_BS, data->m_BSd, data->m_BSd, 0,0,0, video::SColor(255,255,255,255), 0.5,0.5),
+			video::S3DVertex( 0.5*data->m_BS,-0.25*data->m_BS,-0.25*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.25,0.75),
+			video::S3DVertex( 0.5*data->m_BS, data->m_BSd,-0.25*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.5,0.75),
 
-			video::S3DVertex( 0.5*BS,-0.25*BS,-0.25*BS, 0,0,0, video::SColor(255,255,255,255), 0.25,0.75),
-			video::S3DVertex( 0.5*BS,-0.5*BS ,-0.5*BS , 0,0,0, video::SColor(255,255,255,255), 0.,1.),
-			video::S3DVertex( 0.5*BS,-0.25*BS,-0.5*BS , 0,0,0, video::SColor(255,255,255,255), 0.,0.75)
+			video::S3DVertex( 0.5*data->m_BS,-0.25*data->m_BS,-0.25*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.25,0.75),
+			video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS ,-0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 0.,1.),
+			video::S3DVertex( 0.5*data->m_BS,-0.25*data->m_BS,-0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 0.,0.75)
 		},{ // left
-			video::S3DVertex(-0.5*BS, 0.5*BS , 0.5*BS , 0,0,0, video::SColor(255,255,255,255), 0.,0.),
-			video::S3DVertex(-0.5*BS,-0.5*BS ,-0.5*BS , 0,0,0, video::SColor(255,255,255,255), 1.,1.),
-			video::S3DVertex(-0.5*BS,-0.5*BS , 0.5*BS , 0,0,0, video::SColor(255,255,255,255), 0.,1.),
+			video::S3DVertex(-0.5*data->m_BS, 0.5*data->m_BS , 0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 0.,0.),
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS ,-0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 1.,1.),
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS , 0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 0.,1.),
 
-			video::S3DVertex(-0.5*BS, 0.5*BS , 0.5*BS , 0,0,0, video::SColor(255,255,255,255), 0.,0.),
-			video::S3DVertex(-0.5*BS, 0.5*BS , 0.25*BS, 0,0,0, video::SColor(255,255,255,255), 0.25,0.),
-			video::S3DVertex(-0.5*BS, 0.25*BS, 0.25*BS, 0,0,0, video::SColor(255,255,255,255), 0.25,0.25),
+			video::S3DVertex(-0.5*data->m_BS, 0.5*data->m_BS , 0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 0.,0.),
+			video::S3DVertex(-0.5*data->m_BS, 0.5*data->m_BS , 0.25*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.25,0.),
+			video::S3DVertex(-0.5*data->m_BS, 0.25*data->m_BS, 0.25*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.25,0.25),
 
-			video::S3DVertex(-0.5*BS, 0.25*BS, 0.25*BS, 0,0,0, video::SColor(255,255,255,255), 0.25,0.25),
-			video::S3DVertex(-0.5*BS, 0.25*BS, 0.     , 0,0,0, video::SColor(255,255,255,255), 0.5,0.25),
-			video::S3DVertex(-0.5*BS, 0.     , 0.     , 0,0,0, video::SColor(255,255,255,255), 0.5,0.5),
+			video::S3DVertex(-0.5*data->m_BS, 0.25*data->m_BS, 0.25*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.25,0.25),
+			video::S3DVertex(-0.5*data->m_BS, 0.25*data->m_BS, data->m_BSd, 0,0,0, video::SColor(255,255,255,255), 0.5,0.25),
+			video::S3DVertex(-0.5*data->m_BS, data->m_BSd, data->m_BSd, 0,0,0, video::SColor(255,255,255,255), 0.5,0.5),
 
-			video::S3DVertex(-0.5*BS, 0.     , 0.     , 0,0,0, video::SColor(255,255,255,255), 0.5,0.5),
-			video::S3DVertex(-0.5*BS, 0.     ,-0.25*BS, 0,0,0, video::SColor(255,255,255,255), 0.75,0.5),
-			video::S3DVertex(-0.5*BS,-0.25*BS,-0.25*BS, 0,0,0, video::SColor(255,255,255,255), 0.75,0.75),
+			video::S3DVertex(-0.5*data->m_BS, data->m_BSd, data->m_BSd, 0,0,0, video::SColor(255,255,255,255), 0.5,0.5),
+			video::S3DVertex(-0.5*data->m_BS, data->m_BSd,-0.25*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.75,0.5),
+			video::S3DVertex(-0.5*data->m_BS,-0.25*data->m_BS,-0.25*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.75,0.75),
 
-			video::S3DVertex(-0.5*BS,-0.25*BS,-0.25*BS, 0,0,0, video::SColor(255,255,255,255), 0.75,0.75),
-			video::S3DVertex(-0.5*BS,-0.25*BS,-0.5*BS , 0,0,0, video::SColor(255,255,255,255), 1.,0.75),
-			video::S3DVertex(-0.5*BS,-0.5*BS ,-0.5*BS , 0,0,0, video::SColor(255,255,255,255), 1.,1.)
+			video::S3DVertex(-0.5*data->m_BS,-0.25*data->m_BS,-0.25*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.75,0.75),
+			video::S3DVertex(-0.5*data->m_BS,-0.25*data->m_BS,-0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 1.,0.75),
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS ,-0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 1.,1.)
 		},{ // back
-			video::S3DVertex( 0.5*BS, 0.5*BS , 0.5*BS , 0,0,0, video::SColor(255,255,255,255), 0.,0.),
-			video::S3DVertex(-0.5*BS, 0.5*BS , 0.5*BS , 0,0,0, video::SColor(255,255,255,255), 1.,0.),
-			video::S3DVertex(-0.5*BS,-0.5*BS , 0.5*BS , 0,0,0, video::SColor(255,255,255,255), 1.,1.),
-			video::S3DVertex( 0.5*BS,-0.5*BS , 0.5*BS , 0,0,0, video::SColor(255,255,255,255), 0.,1.)
+			video::S3DVertex( 0.5*data->m_BS, 0.5*data->m_BS , 0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 0.,0.),
+			video::S3DVertex(-0.5*data->m_BS, 0.5*data->m_BS , 0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 1.,0.),
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS , 0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 1.,1.),
+			video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS , 0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 0.,1.)
 		},{ // front
-			video::S3DVertex(-0.5*BS, 0.5*BS , 0.25*BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.),
-			video::S3DVertex( 0.5*BS, 0.5*BS , 0.25*BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.),
-			video::S3DVertex( 0.5*BS, 0.25*BS, 0.25*BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.25),
-			video::S3DVertex(-0.5*BS, 0.25*BS, 0.25*BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.25),
+			video::S3DVertex(-0.5*data->m_BS, 0.5*data->m_BS , 0.25*BS-data->m_BSd, 0,0,0, video::SColor(255,255,255,255), 0.,0.),
+			video::S3DVertex( 0.5*data->m_BS, 0.5*data->m_BS , 0.25*BS-data->m_BSd, 0,0,0, video::SColor(255,255,255,255), 1.,0.),
+			video::S3DVertex( 0.5*data->m_BS, 0.25*data->m_BS, 0.25*BS-data->m_BSd, 0,0,0, video::SColor(255,255,255,255), 1.,0.25),
+			video::S3DVertex(-0.5*data->m_BS, 0.25*data->m_BS, 0.25*BS-data->m_BSd, 0,0,0, video::SColor(255,255,255,255), 0.,0.25),
 
-			video::S3DVertex(-0.5*BS, 0.25*BS, 0.     , 0,0,0, video::SColor(255,255,255,255), 0.,0.25),
-			video::S3DVertex( 0.5*BS, 0.25*BS, 0.     , 0,0,0, video::SColor(255,255,255,255), 1.,0.25),
-			video::S3DVertex( 0.5*BS, 0.     , 0.     , 0,0,0, video::SColor(255,255,255,255), 1.,0.5),
-			video::S3DVertex(-0.5*BS, 0.     , 0.     , 0,0,0, video::SColor(255,255,255,255), 0.,0.5),
+			video::S3DVertex(-0.5*data->m_BS, 0.25*data->m_BS, -data->m_BSd, 0,0,0, video::SColor(255,255,255,255), 0.,0.25),
+			video::S3DVertex( 0.5*data->m_BS, 0.25*data->m_BS, -data->m_BSd, 0,0,0, video::SColor(255,255,255,255), 1.,0.25),
+			video::S3DVertex( 0.5*data->m_BS, data->m_BSd, -data->m_BSd, 0,0,0, video::SColor(255,255,255,255), 1.,0.5),
+			video::S3DVertex(-0.5*data->m_BS, data->m_BSd, -data->m_BSd, 0,0,0, video::SColor(255,255,255,255), 0.,0.5),
 
-			video::S3DVertex(-0.5*BS, 0.     ,-0.25*BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.5),
-			video::S3DVertex( 0.5*BS, 0.     ,-0.25*BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.5),
-			video::S3DVertex( 0.5*BS,-0.25*BS,-0.25*BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.75),
-			video::S3DVertex(-0.5*BS,-0.25*BS,-0.25*BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.75),
+			video::S3DVertex(-0.5*data->m_BS, data->m_BSd,-0.25*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.5),
+			video::S3DVertex( 0.5*data->m_BS, data->m_BSd,-0.25*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.5),
+			video::S3DVertex( 0.5*data->m_BS,-0.25*data->m_BS,-0.25*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.75),
+			video::S3DVertex(-0.5*data->m_BS,-0.25*data->m_BS,-0.25*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.75),
 
-			video::S3DVertex(-0.5*BS,-0.25*BS,-0.5*BS , 0,0,0, video::SColor(255,255,255,255), 0.,0.75),
-			video::S3DVertex( 0.5*BS,-0.25*BS,-0.5*BS , 0,0,0, video::SColor(255,255,255,255), 1.,0.75),
-			video::S3DVertex( 0.5*BS,-0.5*BS ,-0.5*BS , 0,0,0, video::SColor(255,255,255,255), 1.,1.),
-			video::S3DVertex(-0.5*BS,-0.5*BS ,-0.5*BS , 0,0,0, video::SColor(255,255,255,255), 0.,1.)
+			video::S3DVertex(-0.5*data->m_BS,-0.25*BS+data->m_BSd,-0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 0.,0.75),
+			video::S3DVertex( 0.5*data->m_BS,-0.25*BS+data->m_BSd,-0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 1.,0.75),
+			video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS ,-0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 1.,1.),
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS ,-0.5*data->m_BS , 0,0,0, video::SColor(255,255,255,255), 0.,1.)
 		}
 	};
 
@@ -4228,29 +4274,29 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sel
 		// slab connection
 		vcounts[0] = 12;
 		icounts[0] = 18;
-		vertices[0][8] =  video::S3DVertex(-0.5*BS, 0.    , 0.,     0,0,0, video::SColor(255,255,255,255), 0.,0.5);
-		vertices[0][9] =  video::S3DVertex( 0.5*BS, 0.    , 0.,     0,0,0, video::SColor(255,255,255,255), 1.,0.5),
-		vertices[0][10] = video::S3DVertex( 0.5*BS, 0.    ,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), 1.,1.0),
-		vertices[0][11] = video::S3DVertex(-0.5*BS, 0.    ,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), 0.,1.0),
+		vertices[0][8] =  video::S3DVertex(-0.5*data->m_BS, data->m_BSd, data->m_BSd,     0,0,0, video::SColor(255,255,255,255), 0.,0.5);
+		vertices[0][9] =  video::S3DVertex( 0.5*data->m_BS, data->m_BSd, data->m_BSd,     0,0,0, video::SColor(255,255,255,255), 1.,0.5),
+		vertices[0][10] = video::S3DVertex( 0.5*data->m_BS, data->m_BSd,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 1.,1.0),
+		vertices[0][11] = video::S3DVertex(-0.5*data->m_BS, data->m_BSd,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.,1.0),
 
 		vcounts[2] = 12;
 		icounts[2] = 12;
-		vertices[2][9] =  video::S3DVertex( 0.5*BS, 0.    , 0.,     0,0,0, video::SColor(255,255,255,255), 0.5,0.5);
-		vertices[2][10] = video::S3DVertex( 0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), 0.,1.);
-		vertices[2][11] = video::S3DVertex( 0.5*BS, 0.    ,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.5);
+		vertices[2][9] =  video::S3DVertex( 0.5*data->m_BS, data->m_BSd, data->m_BSd,     0,0,0, video::SColor(255,255,255,255), 0.5,0.5);
+		vertices[2][10] = video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.,1.);
+		vertices[2][11] = video::S3DVertex( 0.5*data->m_BS, data->m_BSd,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.5);
 
 		vcounts[3] = 12;
 		icounts[3] = 12;
-		vertices[3][9] =  video::S3DVertex(-0.5*BS, 0.    , 0.,     0,0,0, video::SColor(255,255,255,255), 0.5,0.5);
-		vertices[3][10] = video::S3DVertex(-0.5*BS, 0.    ,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), 1.0,0.5);
-		vertices[3][11] = video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), 1.0,1.0);
+		vertices[3][9] =  video::S3DVertex(-0.5*data->m_BS, data->m_BSd, data->m_BSd,     0,0,0, video::SColor(255,255,255,255), 0.5,0.5);
+		vertices[3][10] = video::S3DVertex(-0.5*data->m_BS, data->m_BSd,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 1.0,0.5);
+		vertices[3][11] = video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 1.0,1.0);
 
 		vcounts[5] = 12;
 		icounts[5] = 18;
-		vertices[5][8] =  video::S3DVertex(-0.5*BS, 0.    ,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.5);
-		vertices[5][9] =  video::S3DVertex( 0.5*BS, 0.    ,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.5);
-		vertices[5][10] = video::S3DVertex( 0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), 1.,1.);
-		vertices[5][11] = video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), 0.,1.);
+		vertices[5][8] =  video::S3DVertex(-0.5*data->m_BS, data->m_BSd,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.5);
+		vertices[5][9] =  video::S3DVertex( 0.5*data->m_BS, data->m_BSd,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.5);
+		vertices[5][10] = video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 1.,1.);
+		vertices[5][11] = video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.,1.);
 	}else{
 		skips[2] = !meshgen_hardface(data,p,n,right);
 		skips[3] = !meshgen_hardface(data,p,n,left);
@@ -4358,7 +4404,7 @@ void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sel
 	}
 }
 
-void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
+void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected)
 {
 	static v3s16 faces[6] = {
 		v3s16( 0, 1, 0),
@@ -4380,7 +4426,7 @@ void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 	TileSpec tiles[6];
 	for (int i = 0; i < 6; i++) {
 		// Handles facedir rotation for textures
-		tiles[i] = getNodeTile(n,p,faces[i],data->m_select[p+data->m_blockpos_nodes]);
+		tiles[i] = getNodeTile(n,p,faces[i],selected);
 	}
 	v3f pos = intToFloat(p, BS);
 
@@ -4391,35 +4437,35 @@ void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 	// flip lighting
 	video::S3DVertex vertices[6][4] = {
 		{ // up
-			video::S3DVertex(-0.5*BS, 0.    , 0.5*BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.),
-			video::S3DVertex( 0.5*BS, 0.    , 0.5*BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.),
-			video::S3DVertex( 0.5*BS, 0.    ,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), 1.,1.),
-			video::S3DVertex(-0.5*BS, 0.    ,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), 0.,1.)
+			video::S3DVertex(-0.5*data->m_BS, data->m_BSd, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.),
+			video::S3DVertex( 0.5*data->m_BS, data->m_BSd, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.),
+			video::S3DVertex( 0.5*data->m_BS, data->m_BSd,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 1.,1.),
+			video::S3DVertex(-0.5*data->m_BS, data->m_BSd,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.,1.)
 		},{ // down
-			video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.),
-			video::S3DVertex( 0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.),
-			video::S3DVertex( 0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), 1.,1.),
-			video::S3DVertex(-0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), 0.,1.)
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.),
+			video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.),
+			video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 1.,1.),
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.,1.)
 		},{ // right
-			video::S3DVertex( 0.5*BS, 0.    ,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.+tex_v),
-			video::S3DVertex( 0.5*BS, 0.    , 0.5*BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.+tex_v),
-			video::S3DVertex( 0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), 1.,.5+tex_v),
-			video::S3DVertex( 0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), 0.,.5+tex_v)
+			video::S3DVertex( 0.5*data->m_BS, data->m_BSd,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.+tex_v),
+			video::S3DVertex( 0.5*data->m_BS, data->m_BSd, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.+tex_v),
+			video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 1.,.5+tex_v),
+			video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.,.5+tex_v)
 		},{ // left
-			video::S3DVertex(-0.5*BS, 0.    , 0.5*BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.+tex_v),
-			video::S3DVertex(-0.5*BS, 0.    ,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.+tex_v),
-			video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), 1.,.5+tex_v),
-			video::S3DVertex(-0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), 0.,.5+tex_v)
+			video::S3DVertex(-0.5*data->m_BS, data->m_BSd, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.+tex_v),
+			video::S3DVertex(-0.5*data->m_BS, data->m_BSd,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.+tex_v),
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 1.,.5+tex_v),
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.,.5+tex_v)
 		},{ // back
-			video::S3DVertex( 0.5*BS, 0.    , 0.5*BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.+tex_v),
-			video::S3DVertex(-0.5*BS, 0.    , 0.5*BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.+tex_v),
-			video::S3DVertex(-0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), 1.,.5+tex_v),
-			video::S3DVertex( 0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), 0.,.5+tex_v)
+			video::S3DVertex( 0.5*data->m_BS, data->m_BSd, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.+tex_v),
+			video::S3DVertex(-0.5*data->m_BS, data->m_BSd, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.+tex_v),
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 1.,.5+tex_v),
+			video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.,.5+tex_v)
 		},{ // front
-			video::S3DVertex(-0.5*BS, 0.    ,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.+tex_v),
-			video::S3DVertex( 0.5*BS, 0.    ,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.+tex_v),
-			video::S3DVertex( 0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), 1.,.5+tex_v),
-			video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), 0.,.5+tex_v)
+			video::S3DVertex(-0.5*data->m_BS, data->m_BSd,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.,0.+tex_v),
+			video::S3DVertex( 0.5*data->m_BS, data->m_BSd,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 1.,0.+tex_v),
+			video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 1.,.5+tex_v),
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), 0.,.5+tex_v)
 		}
 	};
 	u16 indices[6] = {0,1,2,2,3,0};
@@ -4478,7 +4524,7 @@ void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 	}
 }
 
-void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
+void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected)
 {
 	bool x_plus = false;
 	bool x_plus_any = false;
@@ -4546,51 +4592,51 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sel
 	}else if (!meshgen_hardface(data,p,n,v3s16(0,0,-1))) {
 		z_minus_any = true;
 	}
-	TileSpec tile = getNodeTile(n,p,v3s16(1,0,0),data->m_select[p+data->m_blockpos_nodes]);
-	TileSpec endtile = getNodeTile(n,p,v3s16(0,1,0),data->m_select[p+data->m_blockpos_nodes]);
+	TileSpec tile = getNodeTile(n,p,v3s16(1,0,0),selected);
+	TileSpec endtile = getNodeTile(n,p,v3s16(0,1,0),selected);
 	video::S3DVertex vertices[10] = {
-		video::S3DVertex(0       ,-BS*0.5,BS*0.499, 0,0,0, video::SColor(255,255,255,255), 0.125, 0.),
-		video::S3DVertex(BS*0.125,-BS*0.5,BS*0.499, 0,0,0, video::SColor(255,255,255,255), 0.25, 0.),
-		video::S3DVertex(BS*0.375,-BS*0.5,BS*0.375, 0,0,0, video::SColor(255,255,255,255), 0.5, 0.),
-		video::S3DVertex(BS*0.499,-BS*0.5,BS*0.125, 0,0,0, video::SColor(255,255,255,255), 0.75, 0.),
-		video::S3DVertex(BS*0.499,-BS*0.5,0       , 0,0,0, video::SColor(255,255,255,255), 0.625, 0.),
+		video::S3DVertex(0       ,-data->m_BS*0.5,data->m_BS*0.499, 0,0,0, video::SColor(255,255,255,255), 0.125, 0.),
+		video::S3DVertex(data->m_BS*0.125,-data->m_BS*0.5,data->m_BS*0.499, 0,0,0, video::SColor(255,255,255,255), 0.25, 0.),
+		video::S3DVertex(data->m_BS*0.375,-data->m_BS*0.5,data->m_BS*0.375, 0,0,0, video::SColor(255,255,255,255), 0.5, 0.),
+		video::S3DVertex(data->m_BS*0.499,-data->m_BS*0.5,data->m_BS*0.125, 0,0,0, video::SColor(255,255,255,255), 0.75, 0.),
+		video::S3DVertex(data->m_BS*0.499,-data->m_BS*0.5,0       , 0,0,0, video::SColor(255,255,255,255), 0.625, 0.),
 
-		video::S3DVertex(0       , BS*0.5,BS*0.499, 0,0,0, video::SColor(255,255,255,255), 0.125, 1.0),
-		video::S3DVertex(BS*0.125, BS*0.5,BS*0.499, 0,0,0, video::SColor(255,255,255,255), 0.25, 1.0),
-		video::S3DVertex(BS*0.375, BS*0.5,BS*0.375, 0,0,0, video::SColor(255,255,255,255), 0.5, 1.0),
-		video::S3DVertex(BS*0.499, BS*0.5,BS*0.125, 0,0,0, video::SColor(255,255,255,255), 0.75, 1.0),
-		video::S3DVertex(BS*0.499, BS*0.5,0       , 0,0,0, video::SColor(255,255,255,255), 0.625, 1.0)
+		video::S3DVertex(0       , data->m_BS*0.5,data->m_BS*0.499, 0,0,0, video::SColor(255,255,255,255), 0.125, 1.0),
+		video::S3DVertex(data->m_BS*0.125, data->m_BS*0.5,data->m_BS*0.499, 0,0,0, video::SColor(255,255,255,255), 0.25, 1.0),
+		video::S3DVertex(data->m_BS*0.375, data->m_BS*0.5,data->m_BS*0.375, 0,0,0, video::SColor(255,255,255,255), 0.5, 1.0),
+		video::S3DVertex(data->m_BS*0.499, data->m_BS*0.5,data->m_BS*0.125, 0,0,0, video::SColor(255,255,255,255), 0.75, 1.0),
+		video::S3DVertex(data->m_BS*0.499, data->m_BS*0.5,0       , 0,0,0, video::SColor(255,255,255,255), 0.625, 1.0)
 	};
 	video::S3DVertex branch_vertices[10] = {
-		video::S3DVertex(0       ,BS*0.125,BS*0.499, 0,0,0, video::SColor(255,255,255,255), 0.125, 0.625),
-		video::S3DVertex(BS*0.125,BS*0.125,BS*0.499, 0,0,0, video::SColor(255,255,255,255), 0.25, 0.625),
-		video::S3DVertex(BS*0.375,BS*0.125,BS*0.375, 0,0,0, video::SColor(255,255,255,255), 0.5, 0.625),
-		video::S3DVertex(BS*0.499,BS*0.125,BS*0.125, 0,0,0, video::SColor(255,255,255,255), 0.75, 0.625),
-		video::S3DVertex(BS*0.499,BS*0.125,0       , 0,0,0, video::SColor(255,255,255,255), 0.625, 0.625),
+		video::S3DVertex(0       ,data->m_BS*0.125,data->m_BS*0.499, 0,0,0, video::SColor(255,255,255,255), 0.125, 0.625),
+		video::S3DVertex(data->m_BS*0.125,data->m_BS*0.125,data->m_BS*0.499, 0,0,0, video::SColor(255,255,255,255), 0.25, 0.625),
+		video::S3DVertex(data->m_BS*0.375,data->m_BS*0.125,data->m_BS*0.375, 0,0,0, video::SColor(255,255,255,255), 0.5, 0.625),
+		video::S3DVertex(data->m_BS*0.499,data->m_BS*0.125,data->m_BS*0.125, 0,0,0, video::SColor(255,255,255,255), 0.75, 0.625),
+		video::S3DVertex(data->m_BS*0.499,data->m_BS*0.125,0       , 0,0,0, video::SColor(255,255,255,255), 0.625, 0.625),
 
-		video::S3DVertex(0       ,BS*0.5  ,BS*0.499, 0,0,0, video::SColor(255,255,255,255), 0.125, 1.0),
-		video::S3DVertex(BS*0.125,BS*0.5  ,BS*0.499, 0,0,0, video::SColor(255,255,255,255), 0.25, 1.0),
-		video::S3DVertex(BS*0.375,BS*0.5  ,BS*0.375, 0,0,0, video::SColor(255,255,255,255), 0.5, 1.0),
-		video::S3DVertex(BS*0.499,BS*0.5  ,BS*0.125, 0,0,0, video::SColor(255,255,255,255), 0.75, 1.0),
-		video::S3DVertex(BS*0.499,BS*0.5  ,0       , 0,0,0, video::SColor(255,255,255,255), 0.625, 1.0)
+		video::S3DVertex(0       ,data->m_BS*0.5  ,data->m_BS*0.499, 0,0,0, video::SColor(255,255,255,255), 0.125, 1.0),
+		video::S3DVertex(data->m_BS*0.125,data->m_BS*0.5  ,data->m_BS*0.499, 0,0,0, video::SColor(255,255,255,255), 0.25, 1.0),
+		video::S3DVertex(data->m_BS*0.375,data->m_BS*0.5  ,data->m_BS*0.375, 0,0,0, video::SColor(255,255,255,255), 0.5, 1.0),
+		video::S3DVertex(data->m_BS*0.499,data->m_BS*0.5  ,data->m_BS*0.125, 0,0,0, video::SColor(255,255,255,255), 0.75, 1.0),
+		video::S3DVertex(data->m_BS*0.499,data->m_BS*0.5  ,0       , 0,0,0, video::SColor(255,255,255,255), 0.625, 1.0)
 	};
 	u16 indices[24] = {0,1,6,0,6,5,1,2,7,1,7,6,2,3,8,2,8,7,3,4,9,3,9,8};
 	video::S3DVertex end_vertices[6] = {
-		video::S3DVertex(BS*0.5  ,BS*0.5,0       , 0,0,0, video::SColor(255,255,255,255), 0.5, 0.),
-		video::S3DVertex(BS*0.5  ,BS*0.5,BS*0.125, 0,0,0, video::SColor(255,255,255,255), 0.625, 0.),
-		video::S3DVertex(BS*0.375,BS*0.5,BS*0.375, 0,0,0, video::SColor(255,255,255,255), 0.875, 0.125),
-		video::S3DVertex(BS*0.125,BS*0.5,BS*0.5  , 0,0,0, video::SColor(255,255,255,255), 1.0, 0.375),
-		video::S3DVertex(0       ,BS*0.5,BS*0.5  , 0,0,0, video::SColor(255,255,255,255), 1.0, 0.5),
-		video::S3DVertex(0       ,BS*0.5,0       , 0,0,0, video::SColor(255,255,255,255), 0.5, 0.5)
+		video::S3DVertex(data->m_BS*0.5  ,data->m_BS*0.5,0       , 0,0,0, video::SColor(255,255,255,255), 0.5, 0.),
+		video::S3DVertex(data->m_BS*0.5  ,data->m_BS*0.5,data->m_BS*0.125, 0,0,0, video::SColor(255,255,255,255), 0.625, 0.),
+		video::S3DVertex(data->m_BS*0.375,data->m_BS*0.5,data->m_BS*0.375, 0,0,0, video::SColor(255,255,255,255), 0.875, 0.125),
+		video::S3DVertex(data->m_BS*0.125,data->m_BS*0.5,data->m_BS*0.5  , 0,0,0, video::SColor(255,255,255,255), 1.0, 0.375),
+		video::S3DVertex(0       ,data->m_BS*0.5,data->m_BS*0.5  , 0,0,0, video::SColor(255,255,255,255), 1.0, 0.5),
+		video::S3DVertex(0       ,data->m_BS*0.5,0       , 0,0,0, video::SColor(255,255,255,255), 0.5, 0.5)
 	};
 	u16 end_indices[12] = {5,1,0,5,2,1,5,3,2,5,4,3};
 	video::S3DVertex base_vertices[6] = {
-		video::S3DVertex(BS*0.498,-BS*0.5 ,BS*0.498, 0,0,0, video::SColor(255,255,255,255), 0., 0.),
-		video::S3DVertex(BS*0.498,-BS*0.5 ,BS*0.125, 0,0,0, video::SColor(255,255,255,255), 0.375, 0.),
-		video::S3DVertex(BS*0.125,-BS*0.5 ,BS*0.498, 0,0,0, video::SColor(255,255,255,255), 0.375, 0.),
-		video::S3DVertex(BS*0.498, BS*0.25,BS*0.125, 0,0,0, video::SColor(255,255,255,255), 0.375, 0.75),
-		video::S3DVertex(BS*0.375, BS*0.25,BS*0.375, 0,0,0, video::SColor(255,255,255,255), 0.125, 0.75),
-		video::S3DVertex(BS*0.125, BS*0.25,BS*0.498, 0,0,0, video::SColor(255,255,255,255), 0.375, 0.75),
+		video::S3DVertex(data->m_BS*0.498,-data->m_BS*0.5 ,data->m_BS*0.498, 0,0,0, video::SColor(255,255,255,255), 0., 0.),
+		video::S3DVertex(data->m_BS*0.498,-data->m_BS*0.5 ,data->m_BS*0.125, 0,0,0, video::SColor(255,255,255,255), 0.375, 0.),
+		video::S3DVertex(data->m_BS*0.125,-data->m_BS*0.5 ,data->m_BS*0.498, 0,0,0, video::SColor(255,255,255,255), 0.375, 0.),
+		video::S3DVertex(data->m_BS*0.498, data->m_BS*0.25,data->m_BS*0.125, 0,0,0, video::SColor(255,255,255,255), 0.375, 0.75),
+		video::S3DVertex(data->m_BS*0.375, data->m_BS*0.25,data->m_BS*0.375, 0,0,0, video::SColor(255,255,255,255), 0.125, 0.75),
+		video::S3DVertex(data->m_BS*0.125, data->m_BS*0.25,data->m_BS*0.498, 0,0,0, video::SColor(255,255,255,255), 0.375, 0.75),
 	};
 	u16 base_indices[12] = {0,1,3,0,5,2,0,3,4,0,4,5};
 	u16 rots[4] = {0,90,180,270};
@@ -4708,7 +4754,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sel
 				video::S3DVertex v[10];
 				for (u16 i=0; i<10; i++) {
 					v[i] = branch_vertices[i];
-					v[i].Pos += v3f(0,-BS*0.625,0);
+					v[i].Pos += v3f(0,-data->m_BS*0.625,0);
 					v[i].Pos.rotateXYBy(90);
 					v[i].Pos.rotateYZBy(rots[j]);
 					v[i].TCoords *= tile.texture.size;
@@ -4814,7 +4860,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sel
 				video::S3DVertex v[10];
 				for (u16 i=0; i<10; i++) {
 					v[i] = branch_vertices[i];
-					v[i].Pos += v3f(0,-BS*0.625,0);
+					v[i].Pos += v3f(0,-data->m_BS*0.625,0);
 					v[i].Pos.rotateYZBy(90);
 					v[i].Pos.rotateXYBy(rots[j]);
 					v[i].TCoords *= tile.texture.size;
@@ -4968,7 +5014,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sel
 					video::S3DVertex v[10];
 					for (u16 i=0; i<10; i++) {
 						v[i] = branch_vertices[i];
-						v[i].Pos += v3f(0,-BS*0.625,0);
+						v[i].Pos += v3f(0,-data->m_BS*0.625,0);
 						v[i].Pos.rotateYZBy(90);
 						v[i].Pos.rotateXYBy(rots[j]);
 						v[i].TCoords *= tile.texture.size;
@@ -5086,7 +5132,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sel
 					video::S3DVertex v[10];
 					for (u16 i=0; i<10; i++) {
 						v[i] = branch_vertices[i];
-						v[i].Pos += v3f(0,-BS*0.625,0);
+						v[i].Pos += v3f(0,-data->m_BS*0.625,0);
 						v[i].Pos.rotateXYBy(90);
 						v[i].Pos.rotateYZBy(rots[j]);
 						v[i].TCoords *= tile.texture.size;
@@ -5156,7 +5202,7 @@ void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sel
 	}
 }
 
-void meshgen_flaglike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
+void meshgen_flaglike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected)
 {
 	static const v3s16 tile_dirs[6] = {
 		v3s16(0, 1, 0),
@@ -5173,10 +5219,10 @@ void meshgen_flaglike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 	NodeMetadata *meta = data->m_env->getMap().getNodeMetadataClone(p+data->m_blockpos_nodes);
 	for (u16 i=0; i<6; i++) {
 		// Handles facedir rotation for textures
-		tiles[i] = getNodeTile(pn,p,tile_dirs[i],data->m_select[p+data->m_blockpos_nodes]);
+		tiles[i] = getNodeTile(pn,p,tile_dirs[i],selected);
 	}
 
-	flag = getNodeTile(n,p,v3s16(0,0,0),data->m_select[p+data->m_blockpos_nodes],meta);
+	flag = getNodeTile(n,p,v3s16(0,0,0),selected,meta);
 
 	std::vector<NodeBox> boxes = content_features(n).getNodeBoxes(n);
 	meshgen_build_nodebox(data,p,n,selected,boxes,tiles);
@@ -5197,10 +5243,10 @@ void meshgen_flaglike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 	}
 
 	video::S3DVertex vertices[4] = {
-		video::S3DVertex( 0.125*BS,       0.,0. , 0,0,0, video::SColor(255,255,255,255), tuv[0], tuv[1]),
-		video::S3DVertex( 0.875*BS,       0.,0. , 0,0,0, video::SColor(255,255,255,255), tuv[2], tuv[3]),
-		video::S3DVertex( 0.875*BS,0.4375*BS,0.5, 0,0,0, video::SColor(255,255,255,255), tuv[4], tuv[5]),
-		video::S3DVertex( 0.125*BS,0.4375*BS,0.2, 0,0,0, video::SColor(255,255,255,255), tuv[6], tuv[7])
+		video::S3DVertex( 0.125*data->m_BS,       0.,0. , 0,0,0, video::SColor(255,255,255,255), tuv[0], tuv[1]),
+		video::S3DVertex( 0.875*data->m_BS,       0.,0. , 0,0,0, video::SColor(255,255,255,255), tuv[2], tuv[3]),
+		video::S3DVertex( 0.875*data->m_BS,0.4375*data->m_BS,0.5, 0,0,0, video::SColor(255,255,255,255), tuv[4], tuv[5]),
+		video::S3DVertex( 0.125*data->m_BS,0.4375*data->m_BS,0.2, 0,0,0, video::SColor(255,255,255,255), tuv[6], tuv[7])
 	};
 
 	s16 angle = 5+n.getRotationAngle();
@@ -5225,7 +5271,7 @@ void meshgen_flaglike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sele
 	delete meta;
 }
 
-void meshgen_melonlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected)
+void meshgen_melonlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected)
 {
 	ContentFeatures *f = &content_features(n.getContent());
 	if (f->param2_type != CPT_PLANTGROWTH || n.param2 == 0) {
@@ -5245,26 +5291,27 @@ void meshgen_melonlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode sel
 	TileSpec tiles[6];
 	for (u16 i=0; i<6; i++) {
 		// Handles facedir rotation for textures
-		tiles[i] = getNodeTile(n,p,tile_dirs[i],data->m_select[p+data->m_blockpos_nodes]);
+		tiles[i] = getNodeTile(n,p,tile_dirs[i],selected);
 	}
 
 	float v = (float)n.param2*0.0625;
 	float hv = v/2;
 	std::vector<NodeBox> boxes;
-	boxes.push_back(NodeBox(-hv*BS,-0.5*BS,-hv*BS,hv*BS,(v-0.5)*BS,hv*BS));
+	boxes.push_back(NodeBox(-hv*data->m_BS,-0.5*data->m_BS,-hv*data->m_BS,hv*data->m_BS,(v-0.5)*data->m_BS,hv*data->m_BS));
 	meshgen_build_nodebox(data,p,n,selected,boxes,tiles);
 }
 
 void meshgen_farnode(MeshMakeData *data, v3s16 p, MapNode &n)
 {
-	v3f pos = intToFloat(p, BS);
+	SelectedNode selected;
+	v3f pos = intToFloat(p, data->m_BS);
 	if (meshgen_farface(data,p,n,v3s16(-1,0,0))) {
-		TileSpec tile = getNodeTile(n,p,v3s16(-1,0,0),data->m_select[p+data->m_blockpos_nodes],NULL);
+		TileSpec tile = getNodeTile(n,p,v3s16(-1,0,0),selected,NULL);
 		video::S3DVertex vertices[4] = {
-			video::S3DVertex(-0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
-			video::S3DVertex(-0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
-			video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
-			video::S3DVertex(-0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
+			video::S3DVertex(-0.5*data->m_BS, 0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
+			video::S3DVertex(-0.5*data->m_BS, 0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
 		};
 
 		u16 indices[6] = {0,1,2,2,3,0};
@@ -5276,12 +5323,12 @@ void meshgen_farnode(MeshMakeData *data, v3s16 p, MapNode &n)
 		data->appendFar(tile.getMaterial(), vertices, 4, indices, 6);
 	}
 	if (meshgen_farface(data,p,n,v3s16(1,0,0))) {
-		TileSpec tile = getNodeTile(n,p,v3s16(1,0,0),data->m_select[p+data->m_blockpos_nodes],NULL);
+		TileSpec tile = getNodeTile(n,p,v3s16(1,0,0),selected,NULL);
 		video::S3DVertex vertices[4] = {
-			video::S3DVertex(0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
-			video::S3DVertex(0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1()),
-			video::S3DVertex(0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
-			video::S3DVertex(0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0())
+			video::S3DVertex(0.5*data->m_BS,-0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex(0.5*data->m_BS,-0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1()),
+			video::S3DVertex(0.5*data->m_BS, 0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
+			video::S3DVertex(0.5*data->m_BS, 0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0())
 		};
 
 		u16 indices[6] = {0,1,2,2,3,0};
@@ -5293,12 +5340,12 @@ void meshgen_farnode(MeshMakeData *data, v3s16 p, MapNode &n)
 		data->appendFar(tile.getMaterial(), vertices, 4, indices, 6);
 	}
 	if (meshgen_farface(data,p,n,v3s16(0,-1,0))) {
-		TileSpec tile = getNodeTile(n,p,v3s16(0,-1,0),data->m_select[p+data->m_blockpos_nodes],NULL);
+		TileSpec tile = getNodeTile(n,p,v3s16(0,-1,0),selected,NULL);
 		video::S3DVertex vertices[4] = {
-			video::S3DVertex( 0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
-			video::S3DVertex(-0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
-			video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
-			video::S3DVertex( 0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
+			video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
 		};
 
 		u16 indices[6] = {0,1,2,2,3,0};
@@ -5311,12 +5358,12 @@ void meshgen_farnode(MeshMakeData *data, v3s16 p, MapNode &n)
 		data->appendFar(tile.getMaterial(), vertices, 4, indices, 6);
 	}
 	if (meshgen_farface(data,p,n,v3s16(0,1,0))) {
-		TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),data->m_select[p+data->m_blockpos_nodes],NULL);
+		TileSpec tile = getNodeTile(n,p,v3s16(0,1,0),selected,NULL);
 		video::S3DVertex vertices[4] = {
-			video::S3DVertex( 0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
-			video::S3DVertex(-0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1()),
-			video::S3DVertex(-0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
-			video::S3DVertex( 0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0())
+			video::S3DVertex( 0.5*data->m_BS, 0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex(-0.5*data->m_BS, 0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1()),
+			video::S3DVertex(-0.5*data->m_BS, 0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
+			video::S3DVertex( 0.5*data->m_BS, 0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0())
 		};
 
 		u16 indices[6] = {0,1,2,2,3,0};
@@ -5328,12 +5375,12 @@ void meshgen_farnode(MeshMakeData *data, v3s16 p, MapNode &n)
 		data->appendFar(tile.getMaterial(), vertices, 4, indices, 6);
 	}
 	if (meshgen_farface(data,p,n,v3s16(0,0,-1))) {
-		TileSpec tile = getNodeTile(n,p,v3s16(0,0,-1),data->m_select[p+data->m_blockpos_nodes],NULL);
+		TileSpec tile = getNodeTile(n,p,v3s16(0,0,-1),selected,NULL);
 		video::S3DVertex vertices[4] = {
-			video::S3DVertex(-0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
-			video::S3DVertex( 0.5*BS, 0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
-			video::S3DVertex( 0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
-			video::S3DVertex(-0.5*BS,-0.5*BS,-0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
+			video::S3DVertex(-0.5*data->m_BS, 0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
+			video::S3DVertex( 0.5*data->m_BS, 0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
+			video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS,-0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
 		};
 
 		u16 indices[6] = {0,1,2,2,3,0};
@@ -5345,12 +5392,12 @@ void meshgen_farnode(MeshMakeData *data, v3s16 p, MapNode &n)
 		data->appendFar(tile.getMaterial(), vertices, 4, indices, 6);
 	}
 	if (meshgen_farface(data,p,n,v3s16(0,0,1))) {
-		TileSpec tile = getNodeTile(n,p,v3s16(0,0,1),data->m_select[p+data->m_blockpos_nodes],NULL);
+		TileSpec tile = getNodeTile(n,p,v3s16(0,0,1),selected,NULL);
 		video::S3DVertex vertices[4] = {
-			video::S3DVertex( 0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
-			video::S3DVertex(-0.5*BS, 0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
-			video::S3DVertex(-0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
-			video::S3DVertex( 0.5*BS,-0.5*BS, 0.5*BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
+			video::S3DVertex( 0.5*data->m_BS, 0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y0()),
+			video::S3DVertex(-0.5*data->m_BS, 0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y0()),
+			video::S3DVertex(-0.5*data->m_BS,-0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x1(), tile.texture.y1()),
+			video::S3DVertex( 0.5*data->m_BS,-0.5*data->m_BS, 0.5*data->m_BS, 0,0,0, video::SColor(255,255,255,255), tile.texture.x0(), tile.texture.y1())
 		};
 
 		u16 indices[6] = {0,1,2,2,3,0};

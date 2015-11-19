@@ -39,6 +39,7 @@
 TileSpec getNodeTile(MapNode mn, v3s16 p, v3s16 face_dir, SelectedNode &select, NodeMetadata *meta = NULL);
 TileSpec getMetaTile(MapNode mn, v3s16 p, v3s16 face_dir, SelectedNode &select);
 u8 getSmoothLight(v3s16 p, v3s16 corner, VoxelManipulator &vmanip);
+video::SColor blend_light(u32 data, u32 daylight_factor);
 
 class MapBlock;
 class Environment;
@@ -65,7 +66,6 @@ struct MeshMakeData
 {
 	u32 m_daynight_ratio;
 	bool m_refresh_only;
-	std::map<v3s16,SelectedNode> m_select;
 	VoxelManipulator m_vmanip;
 	v3s16 m_blockpos;
 	v3s16 m_blockpos_nodes;
@@ -73,13 +73,18 @@ struct MeshMakeData
 	Environment *m_env;
 	std::vector<MeshData> m_meshdata;
 	std::vector<MeshData> m_fardata;
+	std::map<v3s16,SelectedNode> m_selected;
 	MeshData *m_single;
+	float m_BS;
+	float m_BSd;
 
 	std::map<v3s16,MapBlockSound> *m_sounds;
 
 	MeshMakeData():
 		m_refresh_only(false),
 		m_single(NULL),
+		m_BS(BS),
+		m_BSd(0.0),
 		m_sounds(NULL)
 	{}
 

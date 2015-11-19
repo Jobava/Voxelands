@@ -32,25 +32,25 @@
 #include "utility.h"
 
 void meshgen_preset_smooth_lights(MeshMakeData *data, v3s16 p);
-void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected);
-void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected);
-void meshgen_plantlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected);
-void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected);
-void meshgen_liquid_source(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected);
-void meshgen_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected, bool meta);
-void meshgen_glasslike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected);
-void meshgen_torchlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected);
-void meshgen_fencelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected);
-void meshgen_firelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected);
-void meshgen_walllike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected);
-void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected);
-void meshgen_leaflike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected);
-void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected, bool is3d);
-void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected);
-void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected);
-void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected);
-void meshgen_flaglike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected);
-void meshgen_melonlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode selected);
+void meshgen_cubelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected);
+void meshgen_raillike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected);
+void meshgen_plantlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected);
+void meshgen_liquid(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected);
+void meshgen_liquid_source(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected);
+void meshgen_nodebox(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected, bool meta);
+void meshgen_glasslike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected);
+void meshgen_torchlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected);
+void meshgen_fencelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected);
+void meshgen_firelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected);
+void meshgen_walllike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected);
+void meshgen_rooflike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected);
+void meshgen_leaflike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected);
+void meshgen_wirelike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected, bool is3d);
+void meshgen_stairlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected);
+void meshgen_slablike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected);
+void meshgen_trunklike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected);
+void meshgen_flaglike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected);
+void meshgen_melonlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &selected);
 void meshgen_farnode(MeshMakeData *data, v3s16 p, MapNode &n);
 
 #endif

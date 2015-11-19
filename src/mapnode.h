@@ -783,42 +783,27 @@ struct SelectedNode
 	u16 crack;
 	bool has_crack;
 	bool is_coloured;
+	content_t content;
 
 	SelectedNode()
 	{
 		pos = v3s16(0,0,0);
 		has_crack = false;
 		is_coloured = false;
+		content = CONTENT_IGNORE;
 	}
 
-	SelectedNode(bool h)
+	SelectedNode(v3s16 p, u16 c, bool h, content_t cnt)
 	{
-		pos = v3s16(0,0,0);
-		has_crack = false;
+		pos = p;
+		if (c) {
+			crack = c-1;
+			has_crack = true;
+		}else{
+			has_crack = false;
+		}
 		is_coloured = h;
-	}
-
-	SelectedNode(v3s16 p)
-	{
-		pos = p;
-		has_crack = false;
-		is_coloured = true;
-	}
-
-	SelectedNode(v3s16 p, u16 c)
-	{
-		pos = p;
-		crack = c;
-		has_crack = true;
-		is_coloured = true;
-	}
-
-	SelectedNode(v3s16 p, u16 c, bool h)
-	{
-		pos = p;
-		crack = c;
-		has_crack = true;
-		is_coloured = h;
+		content = cnt;
 	}
 };
 

@@ -54,6 +54,7 @@
 #endif
 #include "hud.h"
 #include "sky.h"
+#include "selection_mesh.h"
 
 /*
 	TODO: Move content-aware stuff to separate file by adding properties
@@ -1645,6 +1646,8 @@ void the_game(
 					has_selected_node = false;
 				}else{
 					has_selected_node = true;
+					if (nodepos != selected_node_pos)
+						selected_node_crack = 0;
 					selected_node_pos = nodepos;
 
 					/*
@@ -2158,36 +2161,38 @@ void the_game(
 
 		{
 
-		video::SMaterial m;
-		//m.Thickness = 10;
-		m.Thickness = 3;
-		m.Lighting = false;
-		driver->setMaterial(m);
-
 		driver->setTransform(video::ETS_WORLD, core::IdentityMatrix);
 
 		if (show_hud) {
-			for (core::list<aabb3f>::Iterator i=hilightboxes.begin(); i != hilightboxes.end(); i++) {
-				driver->draw3DBox(*i, video::SColor(255,0,0,0));
-			}
-
 			/* TODO: this should get nodes from the client, for other players' cracks */
 			std::vector<SelectedNode> selected_nodes;
 			if (has_selected_node) {
+				MapNode snode = client.getEnv().getMap().getNodeNoEx(selected_node_pos,NULL);
 				selected_nodes.push_back(
-					SelectedNode(selected_node_pos,selected_node_crack,highlight_selected_node)
+					SelectedNode(selected_node_pos,selected_node_crack,highlight_selected_node,snode.getContent())
 				);
 				MapNode nn = client.getNode(selected_node_pos);
 				v3s16 aa = content_features(nn).onact_also_affects;
-				if (aa != v3s16(0,0,0))
+				if (aa != v3s16(0,0,0)) {
+					v3s16 spos = selected_node_pos+nn.getEffectedRotation();
+					snode = client.getEnv().getMap().getNodeNoEx(spos,NULL);
 					selected_nodes.push_back(
-						SelectedNode(selected_node_pos+nn.getEffectedRotation(),selected_node_crack,highlight_selected_node)
+						SelectedNode(spos,selected_node_crack,highlight_selected_node,snode.getContent())
 					);
+				}
 			}
 
-			/* TODO: draw the crack/highlight node(s) here */
-			if (selected_nodes.size() > 0) {
-				for (std::vector<SelectedNode>::iterator i = selected_nodes.begin(); i != selected_nodes.end(); i++) {
+			if (selected_nodes.size() > 0)
+				selection_draw(driver,client,selected_nodes);
+
+			/* draw old-style selection boxes */
+			if (hilightboxes.size()) {
+				video::SMaterial m;
+				m.Thickness = 3;
+				m.Lighting = false;
+				driver->setMaterial(m);
+				for (core::list<aabb3f>::Iterator i=hilightboxes.begin(); i != hilightboxes.end(); i++) {
+					driver->draw3DBox(*i, video::SColor(255,0,0,0));
 				}
 			}
 
