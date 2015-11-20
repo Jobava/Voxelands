@@ -28,6 +28,7 @@
 
 static std::map<v3s16,SelectedNode> selected;
 static std::vector<SelectionMesh*> meshes;
+static v3s16 o_camera_offset(0,0,0);
 
 static void selection_clear()
 {
@@ -71,7 +72,7 @@ static void selection_generate(Client &client)
 	}
 }
 
-void selection_draw(video::IVideoDriver* driver, Client &client, std::vector<SelectedNode> &select)
+void selection_draw(video::IVideoDriver* driver, Client &client, v3s16 camera_offset, std::vector<SelectedNode> &select)
 {
 	if (!select.size()) {
 		if (selected.size())
@@ -98,11 +99,21 @@ void selection_draw(video::IVideoDriver* driver, Client &client, std::vector<Sel
 	if (!match || nselected.size() != selected.size()) {
 		selection_clear();
 		selected.swap(nselected);
+		o_camera_offset = camera_offset;
 		selection_generate(client);
 	}
 
 	if (!meshes.size())
 		return;
+
+	v3f cos_diff(0,0,0);
+	bool cos_changed = false;
+
+	if (camera_offset != o_camera_offset) {
+		cos_diff = intToFloat(o_camera_offset-camera_offset, BS);
+		o_camera_offset = camera_offset;
+		cos_changed = true;
+	}
 
 	bool render_trilinear = g_settings->getBool("trilinear_filter");
 	bool render_bilinear = g_settings->getBool("bilinear_filter");
@@ -115,6 +126,8 @@ void selection_draw(video::IVideoDriver* driver, Client &client, std::vector<Sel
 		scene::SMesh *m = mesh->getMesh();
 		if (!m)
 			continue;
+		if (cos_changed)
+			translateMesh(m, cos_diff);
 
 		u32 c = m->getMeshBufferCount();
 		for (u32 i=0; i<c; i++) {
@@ -252,7 +265,7 @@ void SelectionMesh::generate(MeshMakeData *data)
 		buf->append(d.vertices.data(), d.vertices.size(), d.indices.data(), d.indices.size());
 	}
 
-	translateMesh(mesh, intToFloat(data->m_blockpos_nodes, BS));
+	translateMesh(mesh, intToFloat(data->m_blockpos_nodes - o_camera_offset, BS));
 
 	if (m_mesh)
 		m_mesh->drop();

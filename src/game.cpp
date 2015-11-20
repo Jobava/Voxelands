@@ -2183,7 +2183,7 @@ void the_game(
 			}
 
 			if (selected_nodes.size() > 0)
-				selection_draw(driver,client,selected_nodes);
+				selection_draw(driver,client,camera.getOffset(),selected_nodes);
 
 			/* draw old-style selection boxes */
 			if (hilightboxes.size()) {

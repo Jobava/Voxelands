@@ -26,7 +26,7 @@
 
 class Client;
 
-void selection_draw(video::IVideoDriver* driver, Client &client, std::vector<SelectedNode> &select);
+void selection_draw(video::IVideoDriver* driver, Client &client, v3s16 camera_offset, std::vector<SelectedNode> &select);
 
 class SelectionMesh
 {
