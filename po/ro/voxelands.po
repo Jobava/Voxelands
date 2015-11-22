@@ -1,0 +1,4357 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Lisa 'darkrose' Milne
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Jobava <jobaval10n@gmail.com>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: Voxelands\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-10-19 01:55+1000\n"
+"PO-Revision-Date: 2015-11-22 00:37+0000\n"
+"Last-Translator: Jobava <jobaval10n@gmail.com>\n"
+"Language-Team: Romanian (http://www.transifex.com/voxelands/voxelands/language/ro/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ro\n"
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
+
+#: src/character_creator.cpp:55
+msgid "White Skin"
+msgstr "Piele albă"
+
+#: src/character_creator.cpp:56
+msgid "Red Skin"
+msgstr "Piele roșie"
+
+#: src/character_creator.cpp:57
+msgid "Green Skin"
+msgstr "Piele verde"
+
+#: src/character_creator.cpp:58
+msgid "Fair Skin"
+msgstr "Piele deschisă"
+
+#: src/character_creator.cpp:59
+msgid "Tanned Skin"
+msgstr "Piele bronzată"
+
+#: src/character_creator.cpp:60
+msgid "Dark Skin"
+msgstr "Piele maronie"
+
+#: src/character_creator.cpp:61
+msgid "Black Skin"
+msgstr "Piele neagră"
+
+#: src/character_creator.cpp:63
+msgid "Human Face"
+msgstr "Față umană"
+
+#: src/character_creator.cpp:64
+msgid "Elven Face"
+msgstr "Față de elf"
+
+#: src/character_creator.cpp:65
+msgid "Dwarven Face"
+msgstr "Față de dwarf"
+
+#: src/character_creator.cpp:66
+msgid "Alien Face"
+msgstr "Față de extraterestru"
+
+#: src/character_creator.cpp:68
+msgid "White Hair"
+msgstr "Păr alb"
+
+#: src/character_creator.cpp:69
+msgid "Blue Hair"
+msgstr "Păr albastru"
+
+#: src/character_creator.cpp:70
+msgid "Green Hair"
+msgstr "Păr verde"
+
+#: src/character_creator.cpp:71
+msgid "Orange Hair"
+msgstr "Păr portocaliu"
+
+#: src/character_creator.cpp:72
+msgid "Brown Hair"
+msgstr "Păr maroniu"
+
+#: src/character_creator.cpp:73
+msgid "Purple Hair"
+msgstr "Păr purpuriu"
+
+#: src/character_creator.cpp:74
+msgid "Red Hair"
+msgstr "Păr roșu"
+
+#: src/character_creator.cpp:75
+msgid "Blonde Hair"
+msgstr "Păr blond"
+
+#: src/character_creator.cpp:76
+msgid "Black Hair"
+msgstr "Păr negru"
+
+#: src/character_creator.cpp:78
+msgid "Short Hair"
+msgstr "Păr scurt"
+
+#: src/character_creator.cpp:79
+msgid "Medium Hair"
+msgstr "Păr mediu"
+
+#: src/character_creator.cpp:80
+msgid "Long Hair"
+msgstr "Păr lung"
+
+#: src/character_creator.cpp:81
+msgid "Styled Hair"
+msgstr "Păr stilat"
+
+#: src/character_creator.cpp:83
+msgid "White Eyes"
+msgstr "Ochi albi"
+
+#: src/character_creator.cpp:84
+msgid "Blue Eyes"
+msgstr "Ochi albaștri"
+
+#: src/character_creator.cpp:85
+msgid "Green Eyes"
+msgstr "Ochi verzi"
+
+#: src/character_creator.cpp:86
+msgid "Orange Eyes"
+msgstr "Ochi portocalii"
+
+#: src/character_creator.cpp:87
+msgid "Brown Eyes"
+msgstr "Ochi căprui"
+
+#: src/character_creator.cpp:88
+msgid "Purple Eyes"
+msgstr "Ochi purpurii"
+
+#: src/character_creator.cpp:89
+msgid "Red Eyes"
+msgstr "Ochi roșii"
+
+#: src/character_creator.cpp:90
+msgid "Yellow Eyes"
+msgstr "Ochi galbeni"
+
+#: src/character_creator.cpp:91
+msgid "Black Eyes"
+msgstr "Ochi negri"
+
+#: src/character_creator.cpp:93
+msgid "White T-Shirt"
+msgstr "Tricou alb"
+
+#: src/character_creator.cpp:94
+msgid "Blue T-Shirt"
+msgstr "Tricou albastru"
+
+#: src/character_creator.cpp:95
+msgid "Green T-Shirt"
+msgstr "Tricou verde"
+
+#: src/character_creator.cpp:96
+msgid "Orange T-Shirt"
+msgstr "Tricou portocaliu"
+
+#: src/character_creator.cpp:97
+msgid "Purple T-Shirt"
+msgstr "Tricou purpuriu"
+
+#: src/character_creator.cpp:98
+msgid "Red T-Shirt"
+msgstr "Tricou roșu"
+
+#: src/character_creator.cpp:99
+msgid "Yellow T-Shirt"
+msgstr "Tricou galben"
+
+#: src/character_creator.cpp:100
+msgid "Black T-Shirt"
+msgstr "Tricou negru"
+
+#: src/character_creator.cpp:102
+msgid "White Pants"
+msgstr "Pantaloni albi"
+
+#: src/character_creator.cpp:103
+msgid "Blue Pants"
+msgstr "Pantaloni albaștri"
+
+#: src/character_creator.cpp:104
+msgid "Green Pants"
+msgstr "Pantaloni verzi"
+
+#: src/character_creator.cpp:105
+msgid "Orange Pants"
+msgstr "Pantaloni portocalii"
+
+#: src/character_creator.cpp:106
+msgid "Purple Pants"
+msgstr "Pantaloni purpurii"
+
+#: src/character_creator.cpp:107
+msgid "Red Pants"
+msgstr "Pantaloni roșii"
+
+#: src/character_creator.cpp:108
+msgid "Yellow Pants"
+msgstr "Pantaloni galbeni"
+
+#: src/character_creator.cpp:109
+msgid "Black Pants"
+msgstr "Pantaloni negri"
+
+#: src/character_creator.cpp:111 src/content_clothesitem.cpp:1706
+msgid "Leather Shoes"
+msgstr "Pantofi de piele"
+
+#: src/character_creator.cpp:112 src/content_clothesitem.cpp:2522
+msgid "Fur Shoes"
+msgstr "Pantofi de blană"
+
+#: src/character_creator.cpp:113 src/content_clothesitem.cpp:945
+msgid "Canvas Shoes"
+msgstr "Pantofi de pânză"
+
+#: src/character_creator.cpp:202
+msgid ""
+"Here you can create your default character, this is how other players will see you in-game. When you join a new server you will start with the clothing you select here. Additional clothing, both protective and decorative, can be crafted in-game.\n"
+"You can return here from the main menu anytime to change your character."
+msgstr "Aici poți crea personajul tău implicit, așa te vor vedea ceilalți jucători în joc. Când te alături la un nou server, vei începe acolo cu îmbrăcămintea aleasă aici. Îmbrăcăminte suplimentară, atât protectivă, cât și decorativă, poate fi fabricată în joc.\nPoți reveni aici din meniul principal oricând dorești să schimbi personajul tău."
+
+#: src/character_creator.cpp:223
+msgid "Create Your Character"
+msgstr "Creează personajul tău"
+
+#: src/character_creator.cpp:230
+msgid "Male"
+msgstr "Bărbat"
+
+#: src/character_creator.cpp:235
+msgid "Female"
+msgstr "Femeie"
+
+#: src/character_creator.cpp:242
+msgid "Taller"
+msgstr "Mai înalt"
+
+#: src/character_creator.cpp:247
+msgid "Shorter"
+msgstr "Mai scund"
+
+#: src/character_creator.cpp:254
+msgid "Wider"
+msgstr "Mai lat"
+
+#: src/character_creator.cpp:259
+msgid "Thinner"
+msgstr "Mai slab"
+
+#: src/character_creator.cpp:418
+msgid "Done"
+msgstr "Gata"
+
+#: src/character_creator.cpp:423 src/keycode.cpp:229
+msgid "Cancel"
+msgstr "Renunță"
+
+#: src/content_clothesitem.cpp:53
+msgid "Space Suit Pants"
+msgstr "Pantaloni de costum spațial"
+
+#: src/content_clothesitem.cpp:75
+msgid "Space Suit Shirt"
+msgstr "Cămașă de costum spațial"
+
+#: src/content_clothesitem.cpp:97
+msgid "Space Suit Helmet"
+msgstr "Cască de costum spațial"
+
+#: src/content_clothesitem.cpp:113
+msgid "Space Suit Boots"
+msgstr "Ghete de costum spațial"
+
+#: src/content_clothesitem.cpp:130
+msgid "Cotton T-Shirt"
+msgstr "Tricou de bumbac"
+
+#: src/content_clothesitem.cpp:144
+msgid "Blue Cotton T-Shirt"
+msgstr "Tricou albastru de bumbac"
+
+#: src/content_clothesitem.cpp:158
+msgid "Green Cotton T-Shirt"
+msgstr "Tricou verde de bumbac"
+
+#: src/content_clothesitem.cpp:172
+msgid "Orange Cotton Tshirt"
+msgstr "Tricou portocaliu de bumbac"
+
+#: src/content_clothesitem.cpp:186
+msgid "Purple Cotton T-Shirt"
+msgstr "Tricou purpuriu de bumbac"
+
+#: src/content_clothesitem.cpp:200
+msgid "Red Cotton T-Shirt"
+msgstr "Tricou roșu de bumbac"
+
+#: src/content_clothesitem.cpp:214
+msgid "Yellow Cotton T-Shirt"
+msgstr "Tricou galben de bumbac"
+
+#: src/content_clothesitem.cpp:228
+msgid "Black Cotton T-Shirt"
+msgstr "Tricou negru de bumbac"
+
+#: src/content_clothesitem.cpp:243
+msgid "Cotton Shirt"
+msgstr "Cămașa de bumbac"
+
+#: src/content_clothesitem.cpp:257
+msgid "Blue Cotton Shirt"
+msgstr "Cămașă albastră de bumbac"
+
+#: src/content_clothesitem.cpp:271
+msgid "Green Cotton Shirt"
+msgstr "Cămașă verde de bumbac"
+
+#: src/content_clothesitem.cpp:285
+msgid "Orange Cotton Shirt"
+msgstr "Cămașă portocalie de bumbac"
+
+#: src/content_clothesitem.cpp:299
+msgid "Purple Cotton Shirt"
+msgstr "Cămașa purpurie de bumbac"
+
+#: src/content_clothesitem.cpp:313
+msgid "Red Cotton Shirt"
+msgstr "Cămașa roșie de bumbac"
+
+#: src/content_clothesitem.cpp:327
+msgid "Yellow Cotton Shirt"
+msgstr "Cămașa galbenă de bumbac"
+
+#: src/content_clothesitem.cpp:341
+msgid "Black Cotton Shirt"
+msgstr "Cămașa neagră de bumbac"
+
+#: src/content_clothesitem.cpp:356
+msgid "Cotton Shorts"
+msgstr "Pantaloni scurți de bumbac"
+
+#: src/content_clothesitem.cpp:371
+msgid "Blue Cotton Shorts"
+msgstr "Pantaloni scurți albaștri de bumbac"
+
+#: src/content_clothesitem.cpp:386
+msgid "Green Cotton Shorts"
+msgstr "Pantaloni scurți verzi de bumbac"
+
+#: src/content_clothesitem.cpp:401
+msgid "Orange Cotton Shorts"
+msgstr "Pantaloni scurți portocalii de bumbac"
+
+#: src/content_clothesitem.cpp:416
+msgid "Purple Cotton Shorts"
+msgstr "Pantaloni scurți purpurii de bumbac"
+
+#: src/content_clothesitem.cpp:431
+msgid "Red Cotton Shorts"
+msgstr "Pantaloni scurți roșii de bumbac"
+
+#: src/content_clothesitem.cpp:446
+msgid "Yellow Cotton Shorts"
+msgstr "Pantaloni scurți galbeni de bumbac"
+
+#: src/content_clothesitem.cpp:461
+msgid "Black Cotton Shorts"
+msgstr "Pantaloni scurți negri de bumbac"
+
+#: src/content_clothesitem.cpp:477
+msgid "Cotton Hat"
+msgstr "Pălărie de bumbac"
+
+#: src/content_clothesitem.cpp:491
+msgid "Blue Cotton Hat"
+msgstr "Pălărie albastră de bumbac"
+
+#: src/content_clothesitem.cpp:505
+msgid "Green Cotton Hat"
+msgstr "Pălărie verde de bumbac"
+
+#: src/content_clothesitem.cpp:519
+msgid "Orange Cotton Hat"
+msgstr "Pălărie portocalie de bumbac"
+
+#: src/content_clothesitem.cpp:533
+msgid "Purple Cotton Hat"
+msgstr "Pălărie purpurie de bumbac"
+
+#: src/content_clothesitem.cpp:547
+msgid "Red Cotton Hat"
+msgstr "Pălărie roșie de bumbac"
+
+#: src/content_clothesitem.cpp:561
+msgid "Yellow Cotton Hat"
+msgstr "Pălărie galbenă de bumbac"
+
+#: src/content_clothesitem.cpp:575
+msgid "Black Cotton Hat"
+msgstr "Pălărie neagră de bumbac"
+
+#: src/content_clothesitem.cpp:590
+msgid "Cotton Tie"
+msgstr "Cravată de bumbac"
+
+#: src/content_clothesitem.cpp:604
+msgid "Blue Cotton Tie"
+msgstr "Cravată albastră de bumbac"
+
+#: src/content_clothesitem.cpp:618
+msgid "Green Cotton Tie"
+msgstr "Cravată verde de bumbac"
+
+#: src/content_clothesitem.cpp:632
+msgid "Orange Cotton Tie"
+msgstr "Cravată portocalie de bumbac"
+
+#: src/content_clothesitem.cpp:646
+msgid "Purple Cotton Tie"
+msgstr "Cravată purpurie de bumbac"
+
+#: src/content_clothesitem.cpp:660
+msgid "Red Cotton Tie"
+msgstr "Cravată roșie de bumbac"
+
+#: src/content_clothesitem.cpp:674
+msgid "Yellow Cotton Tie"
+msgstr "Cravată galbenă de bumbac"
+
+#: src/content_clothesitem.cpp:688
+msgid "Black Cotton Tie"
+msgstr "Cravată neagră de bumbac"
+
+#: src/content_clothesitem.cpp:703
+msgid "Canvas Shirt"
+msgstr "Cămașă de pânză"
+
+#: src/content_clothesitem.cpp:718
+msgid "Blue Canvas Shirt"
+msgstr "Cămașă albastră de pânză"
+
+#: src/content_clothesitem.cpp:733
+msgid "Green Canvas Shirt"
+msgstr "Cămașă verde de pânză"
+
+#: src/content_clothesitem.cpp:748
+msgid "Orange Canvas Shirt"
+msgstr "Cămașă portocalie de pânză"
+
+#: src/content_clothesitem.cpp:763
+msgid "Purple Canvas Shirt"
+msgstr "Cămașă purpurie de pânză"
+
+#: src/content_clothesitem.cpp:778
+msgid "Red Canvas Shirt"
+msgstr "Cămașă roșie de pânză"
+
+#: src/content_clothesitem.cpp:793
+msgid "Yellow Canvas Shirt"
+msgstr "Cămașă galbenă de pânză"
+
+#: src/content_clothesitem.cpp:808
+msgid "Black Canvas Shirt"
+msgstr "Cămașă neagră de pânză"
+
+#: src/content_clothesitem.cpp:824
+msgid "Canvas Pants"
+msgstr "Pantaloni de pânză"
+
+#: src/content_clothesitem.cpp:839
+msgid "Blue Canvas Pants"
+msgstr "Pantaloni albaștri de pânză"
+
+#: src/content_clothesitem.cpp:854
+msgid "Green Canvas Pants"
+msgstr "Pantaloni verzi de pânză"
+
+#: src/content_clothesitem.cpp:869
+msgid "Orange Canvas Pants"
+msgstr "Pantaloni portocalii de pânză"
+
+#: src/content_clothesitem.cpp:884
+msgid "Purple Canvas Pants"
+msgstr "Pantaloni purpurii de pânză"
+
+#: src/content_clothesitem.cpp:899
+msgid "Red Canvas Pants"
+msgstr "Pantaloni roșii de pânză"
+
+#: src/content_clothesitem.cpp:914
+msgid "Yellow Canvas Pants"
+msgstr "Pantaloni galbeni de pânză"
+
+#: src/content_clothesitem.cpp:929
+msgid "Black Canvas Pants"
+msgstr "Pantaloni negri de pânză"
+
+#: src/content_clothesitem.cpp:959
+msgid "Blue Canvas Shoes"
+msgstr "Pantaloni albaștri de pânză"
+
+#: src/content_clothesitem.cpp:973
+msgid "Green Canvas Shoes"
+msgstr "Pantaloni verzi de pânză"
+
+#: src/content_clothesitem.cpp:987
+msgid "Orange Canvas Shoes"
+msgstr "Pantaloni portocalii de pânză"
+
+#: src/content_clothesitem.cpp:1001
+msgid "Purple Canvas Shoes"
+msgstr "Pantaloni purpurii de pânză"
+
+#: src/content_clothesitem.cpp:1015
+msgid "Red Canvas Shoes"
+msgstr "Pantaloni roșii de pânză"
+
+#: src/content_clothesitem.cpp:1029
+msgid "Yellow Canvas Shoes"
+msgstr "Pantaloni galbeni de pânză"
+
+#: src/content_clothesitem.cpp:1043
+msgid "Black Canvas Shoes"
+msgstr "Pantaloni negri de pânză"
+
+#: src/content_clothesitem.cpp:1058
+msgid "Canvas Belt"
+msgstr "Centură de pânză"
+
+#: src/content_clothesitem.cpp:1072
+msgid "Blue Canvas Belt"
+msgstr "Centură albastră de pânză"
+
+#: src/content_clothesitem.cpp:1086
+msgid "Green Canvas Belt"
+msgstr "Centură verde de pânză"
+
+#: src/content_clothesitem.cpp:1100
+msgid "Orange Canvas Belt"
+msgstr "Centură portocalie de pânză"
+
+#: src/content_clothesitem.cpp:1114
+msgid "Purple Canvas Belt"
+msgstr "Centură purpurie de pânză"
+
+#: src/content_clothesitem.cpp:1128
+msgid "Red Canvas Belt"
+msgstr "Centură roșie de pânză"
+
+#: src/content_clothesitem.cpp:1142
+msgid "Yellow Canvas Belt"
+msgstr "Centură galbenă de pânză"
+
+#: src/content_clothesitem.cpp:1156
+msgid "Black Canvas Belt"
+msgstr "Centură neagră de pânză"
+
+#: src/content_clothesitem.cpp:1171
+msgid "Leather Jacket"
+msgstr "Jachetă de piele"
+
+#: src/content_clothesitem.cpp:1186
+msgid "White Leather Jacket"
+msgstr "Jachetă albă de piele"
+
+#: src/content_clothesitem.cpp:1201
+msgid "Blue Leather Jacket"
+msgstr "Jachetă neagră de piele"
+
+#: src/content_clothesitem.cpp:1216
+msgid "Green Leather Jacket"
+msgstr "Jachetă verde de piele"
+
+#: src/content_clothesitem.cpp:1231
+msgid "Orange Leather Jacket"
+msgstr "Jachetă portocalie de piele"
+
+#: src/content_clothesitem.cpp:1246
+msgid "Purple Leather Jacket"
+msgstr "Jachetă purpurie de piele"
+
+#: src/content_clothesitem.cpp:1261
+msgid "Red Leather Jacket"
+msgstr "Jachetă roșie de piele"
+
+#: src/content_clothesitem.cpp:1276
+msgid "Yellow Leather Jacket"
+msgstr "Jachetă galbenă de piele"
+
+#: src/content_clothesitem.cpp:1291
+msgid "Black Leather Jacket"
+msgstr "Jachetă neagră de piele"
+
+#: src/content_clothesitem.cpp:1307
+msgid "Leather Pants"
+msgstr "Pantaloni de piele"
+
+#: src/content_clothesitem.cpp:1322
+msgid "White Leather Pants"
+msgstr "Pantaloni albi de piele"
+
+#: src/content_clothesitem.cpp:1337
+msgid "Blue Leather Pants"
+msgstr "Pantaloni negri de piele"
+
+#: src/content_clothesitem.cpp:1352
+msgid "Green Leather Pants"
+msgstr "Pantaloni verzi de piele"
+
+#: src/content_clothesitem.cpp:1367
+msgid "Orange Leather Pants"
+msgstr "Pantaloni portocalii de piele"
+
+#: src/content_clothesitem.cpp:1382
+msgid "Purple Leather Pants"
+msgstr "Pantaloni purpurii de piele"
+
+#: src/content_clothesitem.cpp:1397
+msgid "Red Leather Pants"
+msgstr "Pantaloni roșii de piele"
+
+#: src/content_clothesitem.cpp:1412
+msgid "Yellow Leather Pants"
+msgstr "Pantaloni galbeni de piele"
+
+#: src/content_clothesitem.cpp:1427
+msgid "Black Leather Pants"
+msgstr "Pantaloni negri de piele"
+
+#: src/content_clothesitem.cpp:1443
+msgid "Leather Hat"
+msgstr "Pălărie de piele"
+
+#: src/content_clothesitem.cpp:1457
+msgid "White Leather Hat"
+msgstr "Pălărie albă de piele"
+
+#: src/content_clothesitem.cpp:1471
+msgid "Blue Leather Hat"
+msgstr "Pălărie albastră de piele"
+
+#: src/content_clothesitem.cpp:1485
+msgid "Green Leather Hat"
+msgstr "Pălărie verde de piele"
+
+#: src/content_clothesitem.cpp:1499
+msgid "Orange Leather Hat"
+msgstr "Pălărie portocaliede piele"
+
+#: src/content_clothesitem.cpp:1513
+msgid "Purple Leather Hat"
+msgstr "Pălărie purpuriede piele"
+
+#: src/content_clothesitem.cpp:1527
+msgid "Red Leather Hat"
+msgstr "Pălărie roșie de piele"
+
+#: src/content_clothesitem.cpp:1541
+msgid "Yellow Leather Hat"
+msgstr "Pălărie galbenă de piele"
+
+#: src/content_clothesitem.cpp:1555
+msgid "Black Leather Hat"
+msgstr "Pălărie neagră de piele"
+
+#: src/content_clothesitem.cpp:1570
+msgid "Leather Helmet"
+msgstr "Cască de piele"
+
+#: src/content_clothesitem.cpp:1585
+msgid "White Leather Helmet"
+msgstr "Cască albă de piele"
+
+#: src/content_clothesitem.cpp:1600
+msgid "Blue Leather Helmet"
+msgstr "Cască albastră de piele"
+
+#: src/content_clothesitem.cpp:1615
+msgid "Green Leather Helmet"
+msgstr "Cască verde de piele"
+
+#: src/content_clothesitem.cpp:1630
+msgid "Orange Leather Helmet"
+msgstr "Cască portocaliede piele"
+
+#: src/content_clothesitem.cpp:1645
+msgid "Purple Leather Helmet"
+msgstr "Cască purpurie de piele"
+
+#: src/content_clothesitem.cpp:1660
+msgid "Red Leather Helmet"
+msgstr "Cască roșie de piele"
+
+#: src/content_clothesitem.cpp:1675
+msgid "Yellow Leather Helmet"
+msgstr "Cască galbenă de piele"
+
+#: src/content_clothesitem.cpp:1690
+msgid "Black Leather Helmet"
+msgstr "Cască neagră de piele"
+
+#: src/content_clothesitem.cpp:1721
+msgid "White Leather Shoes"
+msgstr "Cască albă de piele"
+
+#: src/content_clothesitem.cpp:1736
+msgid "Blue Leather Shoes"
+msgstr "Cască albastră de piele"
+
+#: src/content_clothesitem.cpp:1751
+msgid "Green Leather Shoes"
+msgstr "Cască verde de piele"
+
+#: src/content_clothesitem.cpp:1766
+msgid "Orange Leather Shoes"
+msgstr "Cască portocalie de piele"
+
+#: src/content_clothesitem.cpp:1781
+msgid "Purple Leather Shoes"
+msgstr "Cască purpurie de piele"
+
+#: src/content_clothesitem.cpp:1796
+msgid "Red Leather Shoes"
+msgstr "Cască roșie de piele"
+
+#: src/content_clothesitem.cpp:1811
+msgid "Yellow Leather Shoes"
+msgstr "Cască galbenă de piele"
+
+#: src/content_clothesitem.cpp:1826
+msgid "Black Leather Shoes"
+msgstr "Cască neagră de piele"
+
+#: src/content_clothesitem.cpp:1842
+msgid "Leather Boots"
+msgstr "Cizme de piele"
+
+#: src/content_clothesitem.cpp:1857
+msgid "White Leather Boots"
+msgstr "Cizme albe de piele"
+
+#: src/content_clothesitem.cpp:1872
+msgid "Blue Leather Boots"
+msgstr "Cizme albastre de piele"
+
+#: src/content_clothesitem.cpp:1887
+msgid "Green Leather Boots"
+msgstr "Cizme verzide piele"
+
+#: src/content_clothesitem.cpp:1902
+msgid "Orange Leather Boots"
+msgstr "Cizme portocaliide piele"
+
+#: src/content_clothesitem.cpp:1917
+msgid "Purple Leather Boots"
+msgstr "Cizme purpuriide piele"
+
+#: src/content_clothesitem.cpp:1932
+msgid "Red Leather Boots"
+msgstr "Cizme roșii de piele"
+
+#: src/content_clothesitem.cpp:1947
+msgid "Yellow Leather Boots"
+msgstr "Cizme galbene de piele"
+
+#: src/content_clothesitem.cpp:1962
+msgid "Black Leather Boots"
+msgstr "Cizme negrede piele"
+
+#: src/content_clothesitem.cpp:1978
+msgid "Leather Belt"
+msgstr "Centură de piele"
+
+#: src/content_clothesitem.cpp:1993
+msgid "White Leather Belt"
+msgstr "Centură albă de piele"
+
+#: src/content_clothesitem.cpp:2008
+msgid "Blue Leather Belt"
+msgstr "Centură albastră de piele"
+
+#: src/content_clothesitem.cpp:2023
+msgid "Green Leather Belt"
+msgstr "Centură verde de piele"
+
+#: src/content_clothesitem.cpp:2038
+msgid "Orange Leather Belt"
+msgstr "Centură portocalie de piele"
+
+#: src/content_clothesitem.cpp:2053
+msgid "Purple Leather Belt"
+msgstr "Centură purpurie de piele"
+
+#: src/content_clothesitem.cpp:2068
+msgid "Red Leather Belt"
+msgstr "Centură roșie de piele"
+
+#: src/content_clothesitem.cpp:2083
+msgid "Yellow Leather Belt"
+msgstr "Centură galbenă de piele"
+
+#: src/content_clothesitem.cpp:2098
+msgid "Black Leather Belt"
+msgstr "Centură neagră de piele"
+
+#: src/content_clothesitem.cpp:2114
+msgid "Fur Coat"
+msgstr "Haină de blană"
+
+#: src/content_clothesitem.cpp:2129
+msgid "White Fur Coat"
+msgstr "Haină albă de blană"
+
+#: src/content_clothesitem.cpp:2144
+msgid "Blue Fur Coat"
+msgstr "Haină albastră de blană"
+
+#: src/content_clothesitem.cpp:2159
+msgid "Green Fur Coat"
+msgstr "Haină verde de blană"
+
+#: src/content_clothesitem.cpp:2174
+msgid "Orange Fur Coat"
+msgstr "Haină portocalie de blană"
+
+#: src/content_clothesitem.cpp:2189
+msgid "Purple Fur Coat"
+msgstr "Haină purpurie de blană"
+
+#: src/content_clothesitem.cpp:2204
+msgid "Red Fur Coat"
+msgstr "Haină roșie de blană"
+
+#: src/content_clothesitem.cpp:2219
+msgid "Yellow Fur Coat"
+msgstr "Haină galbenă de blană"
+
+#: src/content_clothesitem.cpp:2234
+msgid "Black Fur Coat"
+msgstr "Haină neagră de blană"
+
+#: src/content_clothesitem.cpp:2250
+msgid "Fur Pants"
+msgstr "Pantaloni de blană"
+
+#: src/content_clothesitem.cpp:2265
+msgid "White Fur Pants"
+msgstr "Pantaloni albi de blană"
+
+#: src/content_clothesitem.cpp:2280
+msgid "Blue Fur Pants"
+msgstr "Pantaloni albaștri de blană"
+
+#: src/content_clothesitem.cpp:2295
+msgid "Green Fur Pants"
+msgstr "Pantaloni verzide blană"
+
+#: src/content_clothesitem.cpp:2310
+msgid "Orange Fur Pants"
+msgstr "Pantaloni portocalii de blană"
+
+#: src/content_clothesitem.cpp:2325
+msgid "Purple Fur Pants"
+msgstr "Pantaloni purpuriide blană"
+
+#: src/content_clothesitem.cpp:2340
+msgid "Red Fur Pants"
+msgstr "Pantaloni roșii de blană"
+
+#: src/content_clothesitem.cpp:2355
+msgid "Yellow Fur Pants"
+msgstr "Pantaloni galbeni de blană"
+
+#: src/content_clothesitem.cpp:2370
+msgid "Black Fur Pants"
+msgstr "Pantaloni negri de blană"
+
+#: src/content_clothesitem.cpp:2386
+msgid "Fur Hat"
+msgstr "Pălărie de blană"
+
+#: src/content_clothesitem.cpp:2401
+msgid "White Fur Hat"
+msgstr "Pălărie albă de blană"
+
+#: src/content_clothesitem.cpp:2416
+msgid "Blue Fur Hat"
+msgstr "Pălărie albastră de blană"
+
+#: src/content_clothesitem.cpp:2431
+msgid "Green Fur Hat"
+msgstr "Pălărie verde de blană"
+
+#: src/content_clothesitem.cpp:2446
+msgid "Orange Fur Hat"
+msgstr "Pălărie portocalie de blană"
+
+#: src/content_clothesitem.cpp:2461
+msgid "Purple Fur Hat"
+msgstr "Pălărie purpurie de blană"
+
+#: src/content_clothesitem.cpp:2476
+msgid "Red Fur Hat"
+msgstr "Pălărie roșie de blană"
+
+#: src/content_clothesitem.cpp:2491
+msgid "Yellow Fur Hat"
+msgstr "Pălărie galbenă de blană"
+
+#: src/content_clothesitem.cpp:2506
+msgid "Black Fur Hat"
+msgstr "Pălărie neagră de blană"
+
+#: src/content_clothesitem.cpp:2536
+msgid "White Fur Shoes"
+msgstr "Pantofi albi de blană"
+
+#: src/content_clothesitem.cpp:2550
+msgid "Blue Fur Shoes"
+msgstr "Pantofi negri de blană"
+
+#: src/content_clothesitem.cpp:2564
+msgid "Green Fur Shoes"
+msgstr "Pantofi verzi de blană"
+
+#: src/content_clothesitem.cpp:2578
+msgid "Orange Fur Shoes"
+msgstr "Pantofi portocalii de blană"
+
+#: src/content_clothesitem.cpp:2592
+msgid "Purple Fur Shoes"
+msgstr "Pantofi purpurii de blană"
+
+#: src/content_clothesitem.cpp:2606
+msgid "Red Fur Shoes"
+msgstr "Pantofi roșii de blană"
+
+#: src/content_clothesitem.cpp:2620
+msgid "Yellow Fur Shoes"
+msgstr "Pantofi galbeni de blană"
+
+#: src/content_clothesitem.cpp:2634
+msgid "Black Fur Shoes"
+msgstr "Pantofi negri de blană"
+
+#: src/content_clothesitem.cpp:2649
+msgid "Fur Boots"
+msgstr "Ghete de blană"
+
+#: src/content_clothesitem.cpp:2664
+msgid "White Fur Boots"
+msgstr "Ghete albe de blană"
+
+#: src/content_clothesitem.cpp:2679
+msgid "Blue Fur Boots"
+msgstr "Ghete albastre de blană"
+
+#: src/content_clothesitem.cpp:2694
+msgid "Green Fur Boots"
+msgstr "Ghete verzide blană"
+
+#: src/content_clothesitem.cpp:2709
+msgid "Orange Fur Boots"
+msgstr "Ghete portocalii de blană"
+
+#: src/content_clothesitem.cpp:2724
+msgid "Purple Fur Boots"
+msgstr "Ghete purpurii de blană"
+
+#: src/content_clothesitem.cpp:2739
+msgid "Red Fur Boots"
+msgstr "Ghete roșiide blană"
+
+#: src/content_clothesitem.cpp:2754
+msgid "Yellow Fur Boots"
+msgstr "Ghete galbenede blană"
+
+#: src/content_clothesitem.cpp:2769
+msgid "Black Fur Boots"
+msgstr "Ghete negre de blană"
+
+#: src/content_clothesitem.cpp:2785
+msgid "Leather Necklace"
+msgstr "Colier de piele"
+
+#: src/content_clothesitem.cpp:2808
+msgid "Gold Medallion"
+msgstr "Medalion de aur"
+
+#: src/content_clothesitem.cpp:2824
+msgid "Copper Medallion"
+msgstr "Medalion de cupru"
+
+#: src/content_clothesitem.cpp:2840
+msgid "Silver Medallion"
+msgstr "Medalion de argint"
+
+#: src/content_clothesitem.cpp:2856
+msgid "Tin Medallion"
+msgstr "Medalion de staniu"
+
+#: src/content_clothesitem.cpp:2872
+msgid "Iron Medallion"
+msgstr "Medalion de fier"
+
+#: src/content_clothesitem.cpp:2888
+msgid "Quartz Medallion"
+msgstr "Medalion de quarț"
+
+#: src/content_clothesitem.cpp:2905
+msgid "Steel Helmet"
+msgstr "Cască de oțel"
+
+#: src/content_clothesitem.cpp:2920
+msgid "Steel Chest Armour"
+msgstr "Armură de piept de oțel"
+
+#: src/content_clothesitem.cpp:2935
+msgid "Steel Pants"
+msgstr "Pantaloni de oțel"
+
+#: src/content_clothesitem.cpp:2950
+msgid "Steel Boots"
+msgstr "Cizme de oțel"
+
+#: src/content_clothesitem.cpp:2965
+msgid "Copper Helmet"
+msgstr "Cască de cupru"
+
+#: src/content_clothesitem.cpp:2979
+msgid "Copper Chest Armour"
+msgstr "Armură de piept din cupru"
+
+#: src/content_clothesitem.cpp:2993
+msgid "Copper Pants"
+msgstr "Pantaloni din cupru"
+
+#: src/content_clothesitem.cpp:3007
+msgid "Copper Boots"
+msgstr "Ghete din cupru"
+
+#: src/content_craftitem.cpp:81
+msgid "Paper"
+msgstr "Hârtie"
+
+#: src/content_craftitem.cpp:91
+msgid "Charcoal Lump"
+msgstr "Bucată de mangal"
+
+#: src/content_craftitem.cpp:100
+msgid "Coal Lump"
+msgstr "Bucată de cărbune"
+
+#: src/content_craftitem.cpp:109
+msgid "Iron Lump"
+msgstr "Bucată de fier"
+
+#: src/content_craftitem.cpp:119
+msgid "Clay Lump"
+msgstr "Bucată de lut"
+
+#: src/content_craftitem.cpp:129
+msgid "Tin Lump"
+msgstr "Bucată de staniu"
+
+#: src/content_craftitem.cpp:139
+msgid "Copper Lump"
+msgstr "Bucată de cupru"
+
+#: src/content_craftitem.cpp:149
+msgid "Silver Lump"
+msgstr "Bucată de argint"
+
+#: src/content_craftitem.cpp:159
+msgid "Gold Lump"
+msgstr "Bucată de aur"
+
+#: src/content_craftitem.cpp:169
+msgid "Quartz Crystal"
+msgstr "Cristal de cuarț"
+
+#: src/content_craftitem.cpp:177
+msgid "Tin Ingot"
+msgstr "Lingou de staniu"
+
+#: src/content_craftitem.cpp:185
+msgid "Copper Ingot"
+msgstr "Lingou de cupru"
+
+#: src/content_craftitem.cpp:193
+msgid "Silver Ingot"
+msgstr "Lingou de argint"
+
+#: src/content_craftitem.cpp:201
+msgid "Gold Ingot"
+msgstr "Lingou de aur"
+
+#: src/content_craftitem.cpp:209
+msgid "Flint"
+msgstr "Cremene"
+
+#: src/content_craftitem.cpp:217
+msgid "Steel Ingot"
+msgstr "Lingou de oțel"
+
+#: src/content_craftitem.cpp:225 src/content_mapnode.cpp:710
+msgid "Brick"
+msgstr "Cărămidă"
+
+#: src/content_craftitem.cpp:233 src/content_mob.cpp:373
+msgid "Rat"
+msgstr "Șobolan"
+
+#: src/content_craftitem.cpp:245
+msgid "Cooked Rat"
+msgstr "Șobolan gătit"
+
+#: src/content_craftitem.cpp:259 src/content_mob.cpp:392
+msgid "Firefly"
+msgstr "Licurici"
+
+#: src/content_craftitem.cpp:269 src/content_mapnode_plants.cpp:981
+msgid "Apple"
+msgstr "Măr"
+
+#: src/content_craftitem.cpp:281
+msgid "Iron Apple"
+msgstr "Măr de fier"
+
+#: src/content_craftitem.cpp:302
+msgid "Blue Dye"
+msgstr "Vopsea albastră"
+
+#: src/content_craftitem.cpp:312
+msgid "Green Dye"
+msgstr "Vopsea verde"
+
+#: src/content_craftitem.cpp:322
+msgid "Orange Dye"
+msgstr "Vopsea portocalie"
+
+#: src/content_craftitem.cpp:332
+msgid "Purple Dye"
+msgstr "Vopsea purpurie"
+
+#: src/content_craftitem.cpp:342
+msgid "Red Dye"
+msgstr "Vopsea roșie"
+
+#: src/content_craftitem.cpp:352
+msgid "Yellow Dye"
+msgstr "Vopsea galbenă"
+
+#: src/content_craftitem.cpp:363
+msgid "White Dye"
+msgstr "Vopsea albă"
+
+#: src/content_craftitem.cpp:374
+msgid "Black Dye"
+msgstr "Vopsea neagră"
+
+#: src/content_craftitem.cpp:384
+msgid "Quartz Dust"
+msgstr "Praf de cuarț"
+
+#: src/content_craftitem.cpp:394
+msgid "Saltpeter"
+msgstr "Salpetru"
+
+#: src/content_craftitem.cpp:402
+msgid "Gun Powder"
+msgstr "Praf de pușcă"
+
+#: src/content_craftitem.cpp:412
+msgid "Snow Ball"
+msgstr "Bulgăre de zăpadă"
+
+#: src/content_craftitem.cpp:420
+msgid "Stick"
+msgstr "Băț"
+
+#: src/content_craftitem.cpp:437
+msgid "Pine Plank"
+msgstr "Scândură de pi"
+
+#: src/content_craftitem.cpp:449
+msgid "Wood Plank"
+msgstr "Scândură de lemn"
+
+#: src/content_craftitem.cpp:462
+msgid "Jungle Wood Plank"
+msgstr "Scândură de lemn de junglă"
+
+#: src/content_craftitem.cpp:474
+msgid "TNT Stick"
+msgstr "Băț de TNT"
+
+#: src/content_craftitem.cpp:491
+msgid "Ash"
+msgstr "Cenușă"
+
+#: src/content_craftitem.cpp:499
+msgid "Apple Blossoms"
+msgstr "Flori de măr"
+
+#: src/content_craftitem.cpp:512 src/content_mapnode_plants.cpp:786
+msgid "Cactus Berry"
+msgstr "Fruct de cactus"
+
+#: src/content_craftitem.cpp:525
+msgid "Mush"
+msgstr "Terci"
+
+#: src/content_craftitem.cpp:536
+msgid "Sliced Pumpkin"
+msgstr "Bostan feliat"
+
+#: src/content_craftitem.cpp:550
+msgid "Pumpkin Pie Slice"
+msgstr "Felie de plăcintă de bostan"
+
+#: src/content_craftitem.cpp:562
+msgid "Apple Pie Slice"
+msgstr "Felie de plăcintă de mere"
+
+#: src/content_craftitem.cpp:574
+msgid "Sliced Melon"
+msgstr "Pepene feliat"
+
+#: src/content_craftitem.cpp:588 src/content_mapnode_farm.cpp:263
+msgid "Wheat"
+msgstr "Grâu"
+
+#: src/content_craftitem.cpp:600
+msgid "Flour"
+msgstr "Făină"
+
+#: src/content_craftitem.cpp:614
+msgid "Dough"
+msgstr "Aluat"
+
+#: src/content_craftitem.cpp:630
+msgid "Bread"
+msgstr "Pâine"
+
+#: src/content_craftitem.cpp:642 src/content_mapnode_farm.cpp:360
+msgid "Potato"
+msgstr "Cartof"
+
+#: src/content_craftitem.cpp:656
+msgid "Potato Starch"
+msgstr "Amidon de cartof"
+
+#: src/content_craftitem.cpp:666
+msgid "Roast Potato"
+msgstr "Cartof copt"
+
+#: src/content_craftitem.cpp:678 src/content_mapnode_farm.cpp:381
+msgid "Carrot"
+msgstr "Morcov"
+
+#: src/content_craftitem.cpp:690
+msgid "Raw Carrot Cake"
+msgstr "Plăcintă de morcovi crudă"
+
+#: src/content_craftitem.cpp:705
+msgid "Carrot Cake"
+msgstr "Plăcintă de morcovi"
+
+#: src/content_craftitem.cpp:717 src/content_mapnode_farm.cpp:402
+msgid "Beetroot"
+msgstr "Sfeclă"
+
+#: src/content_craftitem.cpp:729
+msgid "Bunch of Grapes"
+msgstr "Ciorchine de struguri"
+
+#: src/content_craftitem.cpp:741
+msgid "String"
+msgstr "Funie"
+
+#: src/content_craftitem.cpp:751
+msgid "Mithril Dust"
+msgstr "Praf de mitril"
+
+#: src/content_craftitem.cpp:763
+msgid "Resin"
+msgstr "Rășină"
+
+#: src/content_craftitem.cpp:773
+msgid "Oerkki Dust"
+msgstr "Praf de oerkki"
+
+#: src/content_craftitem.cpp:783 src/content_mob.cpp:613
+msgid "Fish"
+msgstr "Pește"
+
+#: src/content_craftitem.cpp:799
+msgid "Cooked Fish"
+msgstr "Pește gătit"
+
+#: src/content_craftitem.cpp:813
+msgid "Meat"
+msgstr "Carne"
+
+#: src/content_craftitem.cpp:827
+msgid "Cooked Meat"
+msgstr "Carne gătită"
+
+#: src/content_craftitem.cpp:841
+msgid "Cotton Sheet"
+msgstr "Foaie de bumbac"
+
+#: src/content_craftitem.cpp:858
+msgid "Blue Cotton Sheet"
+msgstr "Foaie albastră de bumbac"
+
+#: src/content_craftitem.cpp:868
+msgid "Green Cotton Sheet"
+msgstr "Foaie verde de bumbac"
+
+#: src/content_craftitem.cpp:878
+msgid "Orange Cotton Sheet"
+msgstr "Foaie portocalie de bumbac"
+
+#: src/content_craftitem.cpp:888
+msgid "Purple Cotton Sheet"
+msgstr "Foaie purpurie de bumbac"
+
+#: src/content_craftitem.cpp:898
+msgid "Red Cotton Sheet"
+msgstr "Foaie roșie de bumbac"
+
+#: src/content_craftitem.cpp:908
+msgid "Yellow Cotton Sheet"
+msgstr "Foaie galbenă de bumbac"
+
+#: src/content_craftitem.cpp:918
+msgid "Black Cotton Sheet"
+msgstr "Foaie neagră de bumbac"
+
+#: src/content_craftitem.cpp:928
+msgid "Canvas Sheet"
+msgstr "Foaie de pânză"
+
+#: src/content_craftitem.cpp:945
+msgid "Blue Canvas Sheet"
+msgstr "Foaie albastră de pânză"
+
+#: src/content_craftitem.cpp:955
+msgid "Green Canvas Sheet"
+msgstr "Foaie verde de pânză"
+
+#: src/content_craftitem.cpp:965
+msgid "Orange Canvas Sheet"
+msgstr "Foaie portocalie de pânză"
+
+#: src/content_craftitem.cpp:975
+msgid "Purple Canvas Sheet"
+msgstr "Foaie purpurie de pânză"
+
+#: src/content_craftitem.cpp:985
+msgid "Red Canvas Sheet"
+msgstr "Foaie roșie de pânză"
+
+#: src/content_craftitem.cpp:995
+msgid "Yellow Canvas Sheet"
+msgstr "Foaie galbenă de pânză"
+
+#: src/content_craftitem.cpp:1005
+msgid "Black Canvas Sheet"
+msgstr "Foaie neagră de pânză"
+
+#: src/content_craftitem.cpp:1015
+msgid "Fur"
+msgstr "Blană"
+
+#: src/content_craftitem.cpp:1023
+msgid "White Fur"
+msgstr "Blană albă"
+
+#: src/content_craftitem.cpp:1034
+msgid "Blue Fur"
+msgstr "Blană albastră"
+
+#: src/content_craftitem.cpp:1045
+msgid "Green Fur"
+msgstr "Blană verde"
+
+#: src/content_craftitem.cpp:1056
+msgid "Orange Fur"
+msgstr "Blană portocalie"
+
+#: src/content_craftitem.cpp:1067
+msgid "Purple Fur"
+msgstr "Blană purpurie"
+
+#: src/content_craftitem.cpp:1078
+msgid "Red Fur"
+msgstr "Blană roșie"
+
+#: src/content_craftitem.cpp:1089
+msgid "Yellow Fur"
+msgstr "Blană galbenă"
+
+#: src/content_craftitem.cpp:1100
+msgid "Black Fur"
+msgstr "Blană neagră"
+
+#: src/content_craftitem.cpp:1111
+msgid "Leather"
+msgstr "Piele"
+
+#: src/content_craftitem.cpp:1121
+msgid "White Leather"
+msgstr "Piele albă"
+
+#: src/content_craftitem.cpp:1132
+msgid "Blue Leather"
+msgstr "Piele albastră"
+
+#: src/content_craftitem.cpp:1143
+msgid "Green Leather"
+msgstr "Piele verde"
+
+#: src/content_craftitem.cpp:1154
+msgid "Orange Leather"
+msgstr "Piele portocalie"
+
+#: src/content_craftitem.cpp:1165
+msgid "Purple Leather"
+msgstr "Piele purpurie"
+
+#: src/content_craftitem.cpp:1176
+msgid "Red Leather"
+msgstr "Piele roșie"
+
+#: src/content_craftitem.cpp:1187
+msgid "Yellow Leather"
+msgstr "Piele galbenă"
+
+#: src/content_craftitem.cpp:1198
+msgid "Black Leather"
+msgstr "Piele neagră"
+
+#: src/content_craftitem.cpp:1209 src/content_mob.cpp:799
+msgid "Arrow"
+msgstr "Săgeată"
+
+#: src/content_craftitem.cpp:1220 src/content_mapnode_farm.cpp:50
+msgid "Fertilizer"
+msgstr "Îngrășământ"
+
+#: src/content_craftitem.cpp:1232
+msgid "White Oerkki Dust"
+msgstr "Praf alb de oerkki"
+
+#: src/content_craftitem.cpp:1244
+msgid "Blue Oerkki Dust"
+msgstr "Praf albastru de oerkki"
+
+#: src/content_craftitem.cpp:1256
+msgid "Green Oerkki Dust"
+msgstr "Praf verde de oerkki"
+
+#: src/content_craftitem.cpp:1268
+msgid "Orange Oerkki Dust"
+msgstr "Praf portocaliu de oerkki"
+
+#: src/content_craftitem.cpp:1280
+msgid "Purple Oerkki Dust"
+msgstr "Praf purpuriu de oerkki"
+
+#: src/content_craftitem.cpp:1292
+msgid "Red Oerkki Dust"
+msgstr "Praf roșu de oerkki"
+
+#: src/content_craftitem.cpp:1304
+msgid "Yellow Oerkki Dust"
+msgstr "Praf galben de oerkki"
+
+#: src/content_craftitem.cpp:1316
+msgid "Black Oerkki Dust"
+msgstr "Praf negru de oerkki"
+
+#: src/content_craftitem.cpp:1328
+msgid "Glass Bottle"
+msgstr "Butelcă de sticlă"
+
+#: src/content_craftitem.cpp:1346
+msgid "Grape Juice"
+msgstr "Suc de struguri"
+
+#: src/content_craftitem.cpp:1364
+msgid "Apple Juice"
+msgstr "Suc de mere"
+
+#: src/content_craftitem.cpp:1382
+msgid "Tea Leaves"
+msgstr "Frunze de ceai"
+
+#: src/content_craftitem.cpp:1395
+msgid "Tea"
+msgstr "Ceai"
+
+#: src/content_craftitem.cpp:1414
+msgid "Roasted Coffee Beans"
+msgstr "Cafea prăjită"
+
+#: src/content_craftitem.cpp:1428
+msgid "Coffee"
+msgstr "Cafea"
+
+#: src/content_craftitem.cpp:1447
+msgid "Steel Bottle"
+msgstr "Butelcă de oțel"
+
+#: src/content_craftitem.cpp:1465
+msgid "Bottle of Water"
+msgstr "Butelcă de apă"
+
+#: src/content_craftitem.cpp:1480
+msgid "Bottle of Hot Water"
+msgstr "Butelcă de apă fierbinte"
+
+#: src/content_craftitem.cpp:1496
+msgid "Raw Mithril"
+msgstr "Mithril brut"
+
+#: src/content_craftitem.cpp:1507
+msgid "Unbound Mithril"
+msgstr "Mithril detașat"
+
+#: src/content_craftitem.cpp:1516
+msgid "Mithril"
+msgstr "Mithril"
+
+#: src/content_craftitem.cpp:1525
+msgid "Ruby"
+msgstr "Rubin"
+
+#: src/content_craftitem.cpp:1533
+msgid "Turquiose"
+msgstr "Turcoaz"
+
+#: src/content_craftitem.cpp:1541
+msgid "Amethyst"
+msgstr "Ametist"
+
+#: src/content_craftitem.cpp:1549
+msgid "Sapphire"
+msgstr "Safir"
+
+#: src/content_craftitem.cpp:1557
+msgid "Sunstone"
+msgstr "Piatra soarelui"
+
+#: src/content_mapnode.cpp:185
+msgid "Stone"
+msgstr "Piatră"
+
+#: src/content_mapnode.cpp:202
+msgid "Limestone"
+msgstr "Calcar"
+
+#: src/content_mapnode.cpp:219
+msgid "Rock"
+msgstr "Rocă"
+
+#: src/content_mapnode.cpp:241
+msgid "Ice"
+msgstr "Gheață"
+
+#: src/content_mapnode.cpp:257
+msgid "Coal Block"
+msgstr "Bloc de cărbune"
+
+#: src/content_mapnode.cpp:274
+msgid "Charcoal Block"
+msgstr "Bloc de mangal"
+
+#: src/content_mapnode.cpp:291
+msgid "Stone Brick"
+msgstr "Cărămidă de piatră"
+
+#: src/content_mapnode.cpp:305
+msgid "Stone Block"
+msgstr "Bloc de piatră"
+
+#: src/content_mapnode.cpp:319
+msgid "Rough Stone Brick"
+msgstr "Cărămidă de piatră brută"
+
+#: src/content_mapnode.cpp:336
+msgid "Rough Stone Block"
+msgstr "Bloc de piatră brută"
+
+#: src/content_mapnode.cpp:352 src/content_mapnode.cpp:385
+#: src/content_mapnode.cpp:399 src/content_mapnode.cpp:432
+msgid "Grass"
+msgstr "Iarbă"
+
+#: src/content_mapnode.cpp:370 src/content_mapnode.cpp:417
+msgid "Growing Grass"
+msgstr "Iarbă în creștere"
+
+#: src/content_mapnode.cpp:446
+msgid "Muddy Snow"
+msgstr "Zăpadă noroioasă"
+
+#: src/content_mapnode.cpp:462
+msgid "Mud"
+msgstr "Noroi"
+
+#: src/content_mapnode.cpp:478
+msgid "Ash Block"
+msgstr "Bloc de cenușă"
+
+#: src/content_mapnode.cpp:493
+msgid "Sand"
+msgstr "Nisip"
+
+#: src/content_mapnode.cpp:512
+msgid "Gravel"
+msgstr "Pietriș"
+
+#: src/content_mapnode.cpp:529
+msgid "Sand Stone"
+msgstr "Gresie"
+
+#: src/content_mapnode.cpp:544
+msgid "Sand Stone Bricks"
+msgstr "Cărămizi din gresie"
+
+#: src/content_mapnode.cpp:559
+msgid "Sand Stone Blocks"
+msgstr "Blocuri de gresie"
+
+#: src/content_mapnode.cpp:574
+msgid "Clay"
+msgstr "Argilă"
+
+#: src/content_mapnode.cpp:591
+msgid "Blue Clay"
+msgstr "Argilă albastră"
+
+#: src/content_mapnode.cpp:608
+msgid "Green Clay"
+msgstr "Argilă verde"
+
+#: src/content_mapnode.cpp:625
+msgid "Orange Clay"
+msgstr "Argilă portocalie"
+
+#: src/content_mapnode.cpp:642
+msgid "Purple Clay"
+msgstr "Argilă purpurie"
+
+#: src/content_mapnode.cpp:659
+msgid "Red Clay"
+msgstr "Argilă roșie"
+
+#: src/content_mapnode.cpp:676
+msgid "Yellow Clay"
+msgstr "Argilă galbenă"
+
+#: src/content_mapnode.cpp:693
+msgid "Black Clay"
+msgstr "Argilă neagră"
+
+#: src/content_mapnode.cpp:729
+msgid "Terracotta"
+msgstr "Teracotă"
+
+#: src/content_mapnode.cpp:741
+msgid "Terracotta Brick"
+msgstr "Cărămidă de teracotă"
+
+#: src/content_mapnode.cpp:755
+msgid "Terracotta Block"
+msgstr "Bloc de teracotă"
+
+#: src/content_mapnode.cpp:769
+msgid "Terracotta Tile"
+msgstr "Pavelă de teracotă"
+
+#: src/content_mapnode.cpp:789
+msgid "Glass"
+msgstr "Sticlă"
+
+#: src/content_mapnode.cpp:809
+msgid "Blue Glass"
+msgstr "Sticlă albastră"
+
+#: src/content_mapnode.cpp:831
+msgid "Green Glass"
+msgstr "Sticlă verde"
+
+#: src/content_mapnode.cpp:853
+msgid "Orange Glass"
+msgstr "Sticlă portocalie"
+
+#: src/content_mapnode.cpp:875
+msgid "Purple Glass"
+msgstr "Sticlă purpurie"
+
+#: src/content_mapnode.cpp:897
+msgid "Red Glass"
+msgstr "Sticlă roșie"
+
+#: src/content_mapnode.cpp:919
+msgid "Yellow Glass"
+msgstr "Sticlă galbenă"
+
+#: src/content_mapnode.cpp:941
+msgid "Black Glass"
+msgstr "Sticlă neagră"
+
+#: src/content_mapnode.cpp:963
+msgid "Glass Pane"
+msgstr "Panou de sticlă"
+
+#: src/content_mapnode.cpp:997
+msgid "Blue Glass Pane"
+msgstr "Panou albastru de sticlă"
+
+#: src/content_mapnode.cpp:1032
+msgid "Green Glass Pane"
+msgstr "Panou verde de sticlă"
+
+#: src/content_mapnode.cpp:1067
+msgid "Orange Glass Pane"
+msgstr "Panou portocaliu de sticlă"
+
+#: src/content_mapnode.cpp:1102
+msgid "Purple Glass Pane"
+msgstr "Panou purpuriu de sticlă"
+
+#: src/content_mapnode.cpp:1137
+msgid "Red Glass Pane"
+msgstr "Panou roșu de sticlă"
+
+#: src/content_mapnode.cpp:1172
+msgid "Yellow Glass Pane"
+msgstr "Panou galben de sticlă"
+
+#: src/content_mapnode.cpp:1207
+msgid "Black Glass Pane"
+msgstr "Panou negru de sticlă"
+
+#: src/content_mapnode.cpp:1242 src/content_mapnode_farm.cpp:333
+msgid "Glass Light"
+msgstr "Lumină de sticlă"
+
+#: src/content_mapnode.cpp:1265
+msgid "Wood"
+msgstr "Lemn"
+
+#: src/content_mapnode.cpp:1291
+msgid "Jungle Wood"
+msgstr "Lemn de junglă"
+
+#: src/content_mapnode.cpp:1316
+msgid "Pine"
+msgstr "Pin"
+
+#: src/content_mapnode.cpp:1341
+msgid "Sponge"
+msgstr "Burete"
+
+#: src/content_mapnode.cpp:1356
+msgid "Waterlogged Sponge"
+msgstr "Burete umed"
+
+#: src/content_mapnode.cpp:1371
+msgid "Hay Bale"
+msgstr "Balot de fân"
+
+#: src/content_mapnode.cpp:1388
+msgid "Raw Apple Pie"
+msgstr "Plăcintă de mere crudă"
+
+#: src/content_mapnode.cpp:1417
+msgid "Apple Pie"
+msgstr "Plăcintă de mere"
+
+#: src/content_mapnode.cpp:1512
+msgid "Raw Pumpkin Pie"
+msgstr "Plăcintă de bostan crudă"
+
+#: src/content_mapnode.cpp:1541
+msgid "Pumpkin Pie"
+msgstr "Plăcintă de bostan"
+
+#: src/content_mapnode.cpp:1636 src/content_mapnode.cpp:1715
+msgid "Snow"
+msgstr "Zăpadă"
+
+#: src/content_mapnode.cpp:1652
+msgid "Snowman"
+msgstr "Om de zăpadă"
+
+#: src/content_mapnode.cpp:1738 src/content_mapnode_farm.cpp:445
+msgid "Cotton"
+msgstr "Bumbac"
+
+#: src/content_mapnode.cpp:1769
+msgid "Blue Cotton"
+msgstr "Bumbac albastru"
+
+#: src/content_mapnode.cpp:1786
+msgid "Green Cotton"
+msgstr "Bumbac verde"
+
+#: src/content_mapnode.cpp:1803
+msgid "Orange Cotton"
+msgstr "Bumbac portocaliu"
+
+#: src/content_mapnode.cpp:1820
+msgid "Purple Cotton"
+msgstr "Bumbac purpuriu"
+
+#: src/content_mapnode.cpp:1837
+msgid "Red Cotton"
+msgstr "Bumbac roșu"
+
+#: src/content_mapnode.cpp:1854
+msgid "Yellow Cotton"
+msgstr "Bumbac galben"
+
+#: src/content_mapnode.cpp:1871
+msgid "Black Cotton"
+msgstr "Bumbac negru"
+
+#: src/content_mapnode.cpp:1888
+msgid "Carpet"
+msgstr "Covor"
+
+#: src/content_mapnode.cpp:1911
+msgid "Blue Carpet"
+msgstr "Covor albastru"
+
+#: src/content_mapnode.cpp:1935
+msgid "Green Carpet"
+msgstr "Covor verde"
+
+#: src/content_mapnode.cpp:1959
+msgid "Orange Carpet"
+msgstr "Covor portocaliu"
+
+#: src/content_mapnode.cpp:1983
+msgid "Purple Carpet"
+msgstr "Covor purpuriu"
+
+#: src/content_mapnode.cpp:2007
+msgid "Red Carpet"
+msgstr "Covor roșu"
+
+#: src/content_mapnode.cpp:2031
+msgid "Yellow Carpet"
+msgstr "Covor galbe"
+
+#: src/content_mapnode.cpp:2055
+msgid "Black Carpet"
+msgstr "Covor negru"
+
+#: src/content_mapnode.cpp:2079
+msgid "Air"
+msgstr "Aer"
+
+#: src/content_mapnode.cpp:2095
+msgid "Vacuum"
+msgstr "Vid"
+
+#: src/content_mapnode.cpp:2112 src/content_mapnode.cpp:2142
+msgid "Water"
+msgstr "Apă"
+
+#: src/content_mapnode.cpp:2172 src/content_mapnode.cpp:2200
+msgid "Lava"
+msgstr "Lavă"
+
+#: src/content_mapnode.cpp:2231
+msgid "Rough Stone"
+msgstr "Piatră brută"
+
+#: src/content_mapnode.cpp:2248
+msgid "Cobble Stone"
+msgstr "Piatră cubică"
+
+#: src/content_mapnode.cpp:2264
+msgid "Mossy Cobble Stone"
+msgstr "Piatră cubică cu mușchi"
+
+#: src/content_mapnode.cpp:2277
+msgid "Steel Block"
+msgstr "Bloc de oțel"
+
+#: src/content_mapnode.cpp:2294
+msgid "Mithril Block"
+msgstr "Bloc de mithril"
+
+#: src/content_mapnode.cpp:2310
+msgid "Stone Knob"
+msgstr "Mâner de piatră"
+
+#: src/content_mapnode.cpp:2311
+msgid "Rough Stone Knob"
+msgstr "Mâner de piatră brută"
+
+#: src/content_mapnode.cpp:2312
+msgid "Sandstone Knob"
+msgstr "Mâner de gresie"
+
+#: src/content_mapnode.cpp:2313
+msgid "Wooden Knob"
+msgstr "Mâner de lemn"
+
+#: src/content_mapnode.cpp:2314
+msgid "Junglewood Knob"
+msgstr "Mâner de lemn de junglă"
+
+#: src/content_mapnode.cpp:2315
+msgid "Pine Knob"
+msgstr "Mâner de pin"
+
+#: src/content_mapnode.cpp:2319
+msgid "Copper Block"
+msgstr "Bloc de cupru"
+
+#: src/content_mapnode.cpp:2336
+msgid "Gold Block"
+msgstr "Bloc de aur"
+
+#: src/content_mapnode.cpp:2353
+msgid "Silver Block"
+msgstr "Bloc de argint"
+
+#: src/content_mapnode.cpp:2370
+msgid "Tin Block"
+msgstr "Bloc de staniu"
+
+#: src/content_mapnode.cpp:2387
+msgid "Quartz Block"
+msgstr "Bloc de quarț"
+
+#: src/content_mapnode.cpp:2404
+msgid "Stone Tiles"
+msgstr "Pavele de piatră"
+
+#: src/content_mapnode.cpp:2426
+msgid "Wood Tiles"
+msgstr "Pavele de lemn"
+
+#: src/content_mapnode_circuit.cpp:36
+msgid "Mithril Wire"
+msgstr "Fir de mithril"
+
+#: src/content_mapnode_circuit.cpp:60
+msgid "Copper Wire"
+msgstr "Fir de cupru"
+
+#: src/content_mapnode_circuit.cpp:92
+msgid "Reactor"
+msgstr "Reactor"
+
+#: src/content_mapnode_circuit.cpp:115
+msgid "Solar Panel"
+msgstr "Panou solar"
+
+#: src/content_mapnode_circuit.cpp:146
+msgid "Water Wheel"
+msgstr "Roată de apă"
+
+#: src/content_mapnode_circuit.cpp:179
+msgid "Switch"
+msgstr "Comutator"
+
+#: src/content_mapnode_circuit.cpp:215
+msgid "Button"
+msgstr "Buto"
+
+#: src/content_mapnode_circuit.cpp:247
+msgid "Stone Pressure Plate"
+msgstr "Placă de presiune de piatră"
+
+#: src/content_mapnode_circuit.cpp:276
+msgid "Wood Pressure Plate"
+msgstr "Placă de presiune de lemn"
+
+#: src/content_mapnode_circuit.cpp:305
+msgid "Not Gate"
+msgstr "Poartă NU"
+
+#: src/content_mapnode_circuit.cpp:337
+msgid "Repeater"
+msgstr "Repetor"
+
+#: src/content_mapnode_circuit.cpp:369 src/content_mapnode_circuit.cpp:393
+msgid "Electric Lamp"
+msgstr "Lampă electrică"
+
+#: src/content_mapnode_circuit.cpp:427 src/content_mapnode_circuit.cpp:462
+#: src/content_mapnode_circuit.cpp:516 src/content_mapnode_circuit.cpp:537
+#: src/content_mapnode_circuit.cpp:582 src/content_mapnode_circuit.cpp:603
+msgid "Piston"
+msgstr "Pisto"
+
+#: src/content_mapnode_circuit.cpp:489 src/content_mapnode_circuit.cpp:560
+#: src/content_mapnode_circuit.cpp:626
+msgid "Piston Arm"
+msgstr "Braț de piston"
+
+#: src/content_mapnode_circuit.cpp:648 src/content_mapnode_circuit.cpp:676
+#: src/content_mapnode_circuit.cpp:730 src/content_mapnode_circuit.cpp:751
+#: src/content_mapnode_circuit.cpp:796 src/content_mapnode_circuit.cpp:817
+msgid "Sticky Piston"
+msgstr "Piston lipicios"
+
+#: src/content_mapnode_circuit.cpp:703 src/content_mapnode_circuit.cpp:774
+#: src/content_mapnode_circuit.cpp:840
+msgid "Sticky Piston Arm"
+msgstr "Braț de piston lipicios"
+
+#: src/content_mapnode_door.cpp:38 src/content_mapnode_door.cpp:65
+#: src/content_mapnode_door.cpp:639 src/content_mapnode_door.cpp:665
+msgid "Wood Door"
+msgstr "Ușă de lemn"
+
+#: src/content_mapnode_door.cpp:97 src/content_mapnode_door.cpp:125
+#: src/content_mapnode_door.cpp:743 src/content_mapnode_door.cpp:770
+msgid "Steel Door"
+msgstr "Ușă de oțel"
+
+#: src/content_mapnode_door.cpp:158 src/content_mapnode_door.cpp:184
+#: src/content_mapnode_door.cpp:692 src/content_mapnode_door.cpp:717
+msgid "Glass Door"
+msgstr "Ușă de sticlă"
+
+#: src/content_mapnode_door.cpp:215 src/content_mapnode_door.cpp:243
+#: src/content_mapnode_door.cpp:798 src/content_mapnode_door.cpp:824
+msgid "Wood Windowed Door"
+msgstr "Ușă de lemn cu fereastră"
+
+#: src/content_mapnode_door.cpp:277 src/content_mapnode_door.cpp:306
+#: src/content_mapnode_door.cpp:851 src/content_mapnode_door.cpp:878
+msgid "Steel Windowed Door"
+msgstr "Ușă de oțel cu fereastră"
+
+#: src/content_mapnode_door.cpp:342 src/content_mapnode_door.cpp:369
+#: src/content_mapnode_door.cpp:907 src/content_mapnode_door.cpp:935
+msgid "Right Hanging Wood Door"
+msgstr "Ușă de lemn cu balama pe dreapta"
+
+#: src/content_mapnode_door.cpp:399 src/content_mapnode_door.cpp:426
+#: src/content_mapnode_door.cpp:964 src/content_mapnode_door.cpp:991
+msgid "Right Hanging Glass Door"
+msgstr "Ușă de sticlă cu balama pe dreapta"
+
+#: src/content_mapnode_door.cpp:456 src/content_mapnode_door.cpp:484
+#: src/content_mapnode_door.cpp:1019 src/content_mapnode_door.cpp:1048
+msgid "Right Hanging Steel Door"
+msgstr "Ușă de oțel cu balama pe dreapta"
+
+#: src/content_mapnode_door.cpp:515 src/content_mapnode_door.cpp:543
+#: src/content_mapnode_door.cpp:1078 src/content_mapnode_door.cpp:1106
+msgid "Right Hanging Wood Windowed Door"
+msgstr "Ușă de lemn cu balama pe dreapta cu fereastră"
+
+#: src/content_mapnode_door.cpp:574 src/content_mapnode_door.cpp:603
+#: src/content_mapnode_door.cpp:1135 src/content_mapnode_door.cpp:1164
+msgid "Right Hanging Steel Windowed Door"
+msgstr "Ușă de oțel cu balama pe dreapta cu fereastră"
+
+#: src/content_mapnode_door.cpp:1195 src/content_mapnode_door.cpp:1374
+#: src/content_mapnode_door.cpp:1431
+msgid "Wood Hatch"
+msgstr "Trapă de lemn"
+
+#: src/content_mapnode_door.cpp:1222 src/content_mapnode_door.cpp:1402
+#: src/content_mapnode_door.cpp:1459
+msgid "Steel Hatch"
+msgstr "Trapă de oțel"
+
+#: src/content_mapnode_door.cpp:1249
+msgid "Wood Windowed Hatch"
+msgstr "Trapă de lemn cu fereastră"
+
+#: src/content_mapnode_door.cpp:1278
+msgid "Steel Windowed Hatch"
+msgstr "Trapă de oțel cu fereastră"
+
+#: src/content_mapnode_door.cpp:1309 src/content_mapnode_door.cpp:1489
+msgid "Wood Gate"
+msgstr "Poartă de lemn"
+
+#: src/content_mapnode_door.cpp:1342 src/content_mapnode_door.cpp:1515
+msgid "Steel Gate"
+msgstr "Poartă de oțel"
+
+#: src/content_mapnode_farm.cpp:38
+msgid "Farm Dirt"
+msgstr "Pământ de fermă"
+
+#: src/content_mapnode_farm.cpp:68
+msgid "Trellis"
+msgstr "Trellis"
+
+#: src/content_mapnode_farm.cpp:91
+msgid "Wheat Seeds"
+msgstr "Semințe de grâu"
+
+#: src/content_mapnode_farm.cpp:111
+msgid "Melon Seeds"
+msgstr "Semințe de pepene"
+
+#: src/content_mapnode_farm.cpp:133
+msgid "Pumpkin Seeds"
+msgstr "Semințe de bostan"
+
+#: src/content_mapnode_farm.cpp:155
+msgid "Potato Seeds"
+msgstr "Semințe de cartof"
+
+#: src/content_mapnode_farm.cpp:177
+msgid "Carrot Seeds"
+msgstr "Semințe de morcov"
+
+#: src/content_mapnode_farm.cpp:199
+msgid "Beetroot Seeds"
+msgstr "Semințe de sfeclă"
+
+#: src/content_mapnode_farm.cpp:221
+msgid "Grape Seeds"
+msgstr "Semințe de strugure"
+
+#: src/content_mapnode_farm.cpp:243
+msgid "Cotton Seeds"
+msgstr "Semințe de bumbac"
+
+#: src/content_mapnode_farm.cpp:286
+msgid "Melon"
+msgstr "Pepene"
+
+#: src/content_mapnode_farm.cpp:303
+msgid "Pumpkin"
+msgstr "Bostan"
+
+#: src/content_mapnode_farm.cpp:322
+msgid "Jack' O Lantern"
+msgstr "Jack' O Lantern"
+
+#: src/content_mapnode_farm.cpp:423
+msgid "Grape"
+msgstr "Strugure"
+
+#: src/content_mapnode_farm.cpp:469
+msgid "Trellis Grape"
+msgstr "Strugure Trellis"
+
+#: src/content_mapnode_farm.cpp:493 src/content_mapnode_farm.cpp:512
+msgid "Dead Vine"
+msgstr "Viță moartă"
+
+#: src/content_mapnode_furniture.cpp:36
+msgid "Book Shelf"
+msgstr "Raft de cărți"
+
+#: src/content_mapnode_furniture.cpp:74
+msgid "Junglewood Book Shelf"
+msgstr "Raft de cărți de lemn de junglă"
+
+#: src/content_mapnode_furniture.cpp:112
+msgid "Pine Book Shelf"
+msgstr "Raft de pin de cărți"
+
+#: src/content_mapnode_furniture.cpp:150 src/content_mapnode_furniture.cpp:169
+#: src/content_mapnode_furniture.cpp:188 src/content_mapnode_furniture.cpp:207
+#: src/content_mapnode_furniture.cpp:226 src/content_mapnode_furniture.cpp:245
+msgid "Couch"
+msgstr "Canapea"
+
+#: src/content_mapnode_furniture.cpp:274 src/content_mapnode_furniture.cpp:293
+#: src/content_mapnode_furniture.cpp:312 src/content_mapnode_furniture.cpp:331
+#: src/content_mapnode_furniture.cpp:350 src/content_mapnode_furniture.cpp:369
+msgid "Blue Couch"
+msgstr "Canapea albastră"
+
+#: src/content_mapnode_furniture.cpp:392 src/content_mapnode_furniture.cpp:411
+#: src/content_mapnode_furniture.cpp:430 src/content_mapnode_furniture.cpp:449
+#: src/content_mapnode_furniture.cpp:468 src/content_mapnode_furniture.cpp:487
+msgid "Green Couch"
+msgstr "Canapea verde"
+
+#: src/content_mapnode_furniture.cpp:510 src/content_mapnode_furniture.cpp:529
+#: src/content_mapnode_furniture.cpp:548 src/content_mapnode_furniture.cpp:567
+#: src/content_mapnode_furniture.cpp:586 src/content_mapnode_furniture.cpp:605
+msgid "Orange Couch"
+msgstr "Canapea portocalie"
+
+#: src/content_mapnode_furniture.cpp:628 src/content_mapnode_furniture.cpp:647
+#: src/content_mapnode_furniture.cpp:666 src/content_mapnode_furniture.cpp:685
+#: src/content_mapnode_furniture.cpp:704 src/content_mapnode_furniture.cpp:723
+msgid "Purple Couch"
+msgstr "Canapea purpurie"
+
+#: src/content_mapnode_furniture.cpp:746 src/content_mapnode_furniture.cpp:765
+#: src/content_mapnode_furniture.cpp:784 src/content_mapnode_furniture.cpp:803
+#: src/content_mapnode_furniture.cpp:822 src/content_mapnode_furniture.cpp:841
+msgid "Red Couch"
+msgstr "Canapea roșie"
+
+#: src/content_mapnode_furniture.cpp:864 src/content_mapnode_furniture.cpp:883
+#: src/content_mapnode_furniture.cpp:902 src/content_mapnode_furniture.cpp:921
+#: src/content_mapnode_furniture.cpp:940 src/content_mapnode_furniture.cpp:959
+msgid "Yellow Couch"
+msgstr "Canapea galbenă"
+
+#: src/content_mapnode_furniture.cpp:982
+#: src/content_mapnode_furniture.cpp:1001
+#: src/content_mapnode_furniture.cpp:1020
+#: src/content_mapnode_furniture.cpp:1039
+#: src/content_mapnode_furniture.cpp:1058
+#: src/content_mapnode_furniture.cpp:1077
+msgid "Black Couch"
+msgstr "Canapea neagră"
+
+#: src/content_mapnode_furniture.cpp:1100
+msgid "Chair"
+msgstr "Scaun"
+
+#: src/content_mapnode_furniture.cpp:1149
+msgid "Table"
+msgstr "Masă"
+
+#: src/content_mapnode_furniture.cpp:1206
+#: src/content_mapnode_furniture.cpp:1239
+msgid "Bed"
+msgstr "Pat"
+
+#: src/content_mapnode_furniture.cpp:1267
+#: src/content_mapnode_furniture.cpp:1300
+msgid "Blue Bed"
+msgstr "Pat alb"
+
+#: src/content_mapnode_furniture.cpp:1328
+#: src/content_mapnode_furniture.cpp:1361
+msgid "Green Bed"
+msgstr "Pat verde"
+
+#: src/content_mapnode_furniture.cpp:1389
+#: src/content_mapnode_furniture.cpp:1422
+msgid "Orange Bed"
+msgstr "Pat portocaliu"
+
+#: src/content_mapnode_furniture.cpp:1450
+#: src/content_mapnode_furniture.cpp:1483
+msgid "Purple Bed"
+msgstr "Pat purpuriu"
+
+#: src/content_mapnode_furniture.cpp:1511
+#: src/content_mapnode_furniture.cpp:1544
+msgid "Red Bed"
+msgstr "Pat roșu"
+
+#: src/content_mapnode_furniture.cpp:1572
+#: src/content_mapnode_furniture.cpp:1605
+msgid "Yellow Bed"
+msgstr "Pat galben"
+
+#: src/content_mapnode_furniture.cpp:1633
+#: src/content_mapnode_furniture.cpp:1666
+msgid "Black Bed"
+msgstr "Pat negru"
+
+#: src/content_mapnode_furniture.cpp:1694
+#: src/content_mapnode_furniture.cpp:1729
+msgid "Camp Bed"
+msgstr "Pat de camping"
+
+#: src/content_mapnode_furniture.cpp:1753
+msgid "Colorful Painting"
+msgstr "Tablou coloar"
+
+#: src/content_mapnode_furniture.cpp:1788
+msgid "Red Rose Painting"
+msgstr "Tablou cu trandafiri roșii"
+
+#: src/content_mapnode_furniture.cpp:1823
+msgid "Field Painting"
+msgstr "Pictură cu peisaj"
+
+#: src/content_mapnode_furniture.cpp:1858
+msgid "Blue Flower Painting"
+msgstr "Pictură cu flori albastre"
+
+#: src/content_mapnode_furniture.cpp:1893
+msgid "Painting Canvas"
+msgstr "Pânză de pictură"
+
+#: src/content_mapnode_furniture.cpp:1931
+msgid "Clock"
+msgstr "Ceasornic"
+
+#: src/content_mapnode_plants.cpp:42
+msgid "Tree"
+msgstr "Copac"
+
+#: src/content_mapnode_plants.cpp:63
+msgid "Apple Tree"
+msgstr "Pom de mere"
+
+#: src/content_mapnode_plants.cpp:84
+msgid "Jungle Tree"
+msgstr "Arbore de junglă"
+
+#: src/content_mapnode_plants.cpp:104
+msgid "Conifer Tree"
+msgstr "Copac conifer"
+
+#: src/content_mapnode_plants.cpp:125
+msgid "Young Tree"
+msgstr "Copac tânăr"
+
+#: src/content_mapnode_plants.cpp:146
+msgid "Young Jungle Tree"
+msgstr "Copac tânăr de junglă"
+
+#: src/content_mapnode_plants.cpp:167
+msgid "Young Apple Tree"
+msgstr "Pom de mere tânăr"
+
+#: src/content_mapnode_plants.cpp:188
+msgid "Young Conifer Tree"
+msgstr "Copac conifer tânăr"
+
+#: src/content_mapnode_plants.cpp:209
+msgid "Jungle Grass"
+msgstr "Iarbă de junglă"
+
+#: src/content_mapnode_plants.cpp:231 src/content_mapnode_plants.cpp:268
+#: src/content_mapnode_plants.cpp:305 src/content_mapnode_plants.cpp:342
+msgid "Leaves"
+msgstr "Frunze"
+
+#: src/content_mapnode_plants.cpp:379
+msgid "Apple Tree Leaves"
+msgstr "Frunze de măr"
+
+#: src/content_mapnode_plants.cpp:416
+msgid "Jungle Leaves"
+msgstr "Frunze de junglă"
+
+#: src/content_mapnode_plants.cpp:453
+msgid "Conifer Leaves"
+msgstr "Frunze de conifere"
+
+#: src/content_mapnode_plants.cpp:490 src/content_mapnode_plants.cpp:522
+#: src/content_mapnode_plants.cpp:554
+msgid "Trimmed Leaves"
+msgstr "Frunze tăiate"
+
+#: src/content_mapnode_plants.cpp:586
+msgid "Trimmed Apple Tree Leaves"
+msgstr "Frunze tăiate de măr"
+
+#: src/content_mapnode_plants.cpp:618
+msgid "Trimmed Jungle Leaves"
+msgstr "Frunze tăiate de junglă"
+
+#: src/content_mapnode_plants.cpp:650
+msgid "Trimmed Conifer Leaves"
+msgstr "Frunze tăiate de conifer"
+
+#: src/content_mapnode_plants.cpp:682
+msgid "Apple Tree Blossom"
+msgstr "Floare de măr"
+
+#: src/content_mapnode_plants.cpp:714
+msgid "Trimmed Apple Tree Blossom"
+msgstr "Floare de măr tăiată"
+
+#: src/content_mapnode_plants.cpp:743
+msgid "Cactus Blossom"
+msgstr "Mugur de cactus"
+
+#: src/content_mapnode_plants.cpp:764
+msgid "Cactus Flower"
+msgstr "Floare de cactus"
+
+#: src/content_mapnode_plants.cpp:807
+msgid "Cactus"
+msgstr "Cactus"
+
+#: src/content_mapnode_plants.cpp:870
+msgid "Papyrus"
+msgstr "Papirus"
+
+#: src/content_mapnode_plants.cpp:893
+msgid "Sapling"
+msgstr "Lăstar"
+
+#: src/content_mapnode_plants.cpp:915
+msgid "Apple Tree Sapling"
+msgstr "Lăstar de măr"
+
+#: src/content_mapnode_plants.cpp:937
+msgid "Jungle Sapling"
+msgstr "Lăstar de junglă"
+
+#: src/content_mapnode_plants.cpp:959
+msgid "Conifer Sapling"
+msgstr "Lăstar de conifer"
+
+#: src/content_mapnode_plants.cpp:1006 src/content_mapnode_plants.cpp:1030
+msgid "Wild Grass"
+msgstr "Iarbă sălbatică"
+
+#: src/content_mapnode_plants.cpp:1053
+msgid "Dead Grass"
+msgstr "Iarbă moartă"
+
+#: src/content_mapnode_plants.cpp:1076
+msgid "Flower Stem"
+msgstr "Tulpină de floare"
+
+#: src/content_mapnode_plants.cpp:1099
+msgid "Rose"
+msgstr "Trandafir"
+
+#: src/content_mapnode_plants.cpp:1123
+msgid "Daffodil"
+msgstr "Zarnacadea"
+
+#: src/content_mapnode_plants.cpp:1147
+msgid "Tulip"
+msgstr "Lalea"
+
+#: src/content_mapnode_plants.cpp:1171
+msgid "Tea Seeds"
+msgstr "Semințe de ceai"
+
+#: src/content_mapnode_plants.cpp:1191
+msgid "Tea Plant"
+msgstr "Plantă de ceai"
+
+#: src/content_mapnode_plants.cpp:1215
+msgid "Coffee Beans"
+msgstr "Boabe de cafea"
+
+#: src/content_mapnode_plants.cpp:1236
+msgid "Coffee Plant"
+msgstr "Plantă de cafea"
+
+#: src/content_mapnode_slab.cpp:37
+msgid "Rough Stone Slab"
+msgstr "Lespede de piatră brută"
+
+#: src/content_mapnode_slab.cpp:56 src/content_mapnode_slab.cpp:442
+msgid "Cobble Stone Slab"
+msgstr "Lespede de piatră cubică"
+
+#: src/content_mapnode_slab.cpp:75
+msgid "Mossy Cobble Stone Slab"
+msgstr "Lespede de piatră cubică cu mușchi"
+
+#: src/content_mapnode_slab.cpp:94
+msgid "Stone Slab"
+msgstr "Lespede de piatră"
+
+#: src/content_mapnode_slab.cpp:112
+msgid "Wood Slab"
+msgstr "Lespede de lemn"
+
+#: src/content_mapnode_slab.cpp:132
+msgid "Jungle Wood Slab"
+msgstr "Lespede de lemn de junglă"
+
+#: src/content_mapnode_slab.cpp:152
+msgid "Brick Slab"
+msgstr "Lespede de cărămidă"
+
+#: src/content_mapnode_slab.cpp:174
+msgid "Sand Stone Slab"
+msgstr "Lespede de gresie"
+
+#: src/content_mapnode_slab.cpp:192 src/content_mapnode_slab.cpp:551
+msgid "Glass Slab"
+msgstr "Lespede de sticlă"
+
+#: src/content_mapnode_slab.cpp:218 src/content_mapnode_slab.cpp:574
+msgid "Blue Glass Slab"
+msgstr "Lespede de sticlă albastră"
+
+#: src/content_mapnode_slab.cpp:245 src/content_mapnode_slab.cpp:597
+msgid "Green Glass Slab"
+msgstr "Lespede de sticlă verde"
+
+#: src/content_mapnode_slab.cpp:272 src/content_mapnode_slab.cpp:620
+msgid "Orange Glass Slab"
+msgstr "Lespede de sticlă portocalie"
+
+#: src/content_mapnode_slab.cpp:299 src/content_mapnode_slab.cpp:643
+msgid "Purple Glass Slab"
+msgstr "Lespede de sticlă purpurie"
+
+#: src/content_mapnode_slab.cpp:326 src/content_mapnode_slab.cpp:666
+msgid "Red Glass Slab"
+msgstr "Lespede de sticlă roșie"
+
+#: src/content_mapnode_slab.cpp:353 src/content_mapnode_slab.cpp:689
+msgid "Yellow Glass Slab"
+msgstr "Lespede de sticlă galbenă"
+
+#: src/content_mapnode_slab.cpp:380 src/content_mapnode_slab.cpp:712
+msgid "Black Glass Slab"
+msgstr "Lespede de sticlă neagră"
+
+#: src/content_mapnode_slab.cpp:407
+msgid "Limestone Slab"
+msgstr "Lespede de gresie"
+
+#: src/content_mapnode_special.cpp:37
+msgid "Fence"
+msgstr "Gard"
+
+#: src/content_mapnode_special.cpp:66
+msgid "Steel Fence"
+msgstr "Gard de oțel"
+
+#: src/content_mapnode_special.cpp:94
+msgid "Jungle Wood Fence"
+msgstr "Gard de lemn de junglă"
+
+#: src/content_mapnode_special.cpp:123
+msgid "Pine Fence"
+msgstr "Gard de pin"
+
+#: src/content_mapnode_special.cpp:152
+msgid "Steel Bars"
+msgstr "Bare de oțel"
+
+#: src/content_mapnode_special.cpp:182
+msgid "Rail"
+msgstr "Șină"
+
+#: src/content_mapnode_special.cpp:215
+msgid "Terracotta Roof Tile"
+msgstr "Țiglă de teracotă"
+
+#: src/content_mapnode_special.cpp:232
+msgid "Wood Roof Tile"
+msgstr "Țiglă de lemn"
+
+#: src/content_mapnode_special.cpp:250
+msgid "Asphalt Roof Tile"
+msgstr "Țiglă de asfalt"
+
+#: src/content_mapnode_special.cpp:274
+msgid "Stone Roof Tile"
+msgstr "Țiglă de piatră"
+
+#: src/content_mapnode_special.cpp:291
+msgid "Glass Roof Tile"
+msgstr "Țiglă de sticlă"
+
+#: src/content_mapnode_special.cpp:314
+msgid "Blue Glass Roof Tile"
+msgstr "Țiglă de sticlă albastră"
+
+#: src/content_mapnode_special.cpp:338
+msgid "Green Glass Roof Tile"
+msgstr "Țiglă de sticlă verde"
+
+#: src/content_mapnode_special.cpp:362
+msgid "Orange Glass Roof Tile"
+msgstr "Țiglă de sticlă portocalie"
+
+#: src/content_mapnode_special.cpp:386
+msgid "Purple Glass Roof Tile"
+msgstr "Țiglă de sticlă purpurie"
+
+#: src/content_mapnode_special.cpp:410
+msgid "Red Glass Roof Tile"
+msgstr "Țiglă de sticlă roșie"
+
+#: src/content_mapnode_special.cpp:434
+msgid "Yellow Glass Roof Tile"
+msgstr "Țiglă de sticlă galbenă"
+
+#: src/content_mapnode_special.cpp:458
+msgid "Black Glass Roof Tile"
+msgstr "Țiglă de sticlă neagră"
+
+#: src/content_mapnode_special.cpp:482
+msgid "Thatch Roof Tile"
+msgstr "Țiglă de acoperiș de paie"
+
+#: src/content_mapnode_special.cpp:501 src/content_mapnode_special.cpp:561
+#: src/content_mapnode_special.cpp:596
+msgid "Ladder"
+msgstr "Scară"
+
+#: src/content_mapnode_special.cpp:631
+msgid "Border Stone"
+msgstr "Piatră de frontieră"
+
+#: src/content_mapnode_special.cpp:658
+msgid "Book"
+msgstr "Carte"
+
+#: src/content_mapnode_special.cpp:690
+msgid "Cook Book"
+msgstr "Carte de bucate"
+
+#: src/content_mapnode_special.cpp:722
+msgid "Decraft Book"
+msgstr "Carte de dezasamblare"
+
+#: src/content_mapnode_special.cpp:753 src/content_mapnode_special.cpp:948
+#: src/content_nodemeta.cpp:2693
+msgid "Diary"
+msgstr "Jurnal"
+
+#: src/content_mapnode_special.cpp:785
+msgid "Craft Book"
+msgstr "Carte de asamblare"
+
+#: src/content_mapnode_special.cpp:825
+msgid "Reverse Craft Book"
+msgstr "Carte de asamblare inversă"
+
+#: src/content_mapnode_special.cpp:863
+msgid "Guide"
+msgstr "Ghid"
+
+#: src/content_mapnode_special.cpp:892 src/content_nodemeta.h:471
+msgid "Cooking Guide"
+msgstr "Ghid de gătit"
+
+#: src/content_mapnode_special.cpp:920 src/content_nodemeta.h:497
+msgid "Decrafting Guide"
+msgstr "Ghid de dezasamblare"
+
+#: src/content_mapnode_special.cpp:977 src/content_nodemeta.h:413
+msgid "Craft Guide"
+msgstr "Ghid de asamblare"
+
+#: src/content_mapnode_special.cpp:1005 src/content_nodemeta.h:440
+msgid "Reverse Craft Guide"
+msgstr "Ghid de asamblare inversă"
+
+#: src/content_mapnode_special.cpp:1033 src/content_mapnode_special.cpp:1054
+msgid "Fire"
+msgstr "Foc"
+
+#: src/content_mapnode_special.cpp:1074
+msgid "Torch"
+msgstr "Torță"
+
+#: src/content_mapnode_special.cpp:1102 src/content_mapnode_special.cpp:1129
+#: src/content_mapnode_special.cpp:1163
+msgid "Sign"
+msgstr "Semn"
+
+#: src/content_mapnode_special.cpp:1192 src/content_mapnode_special.cpp:1223
+#: src/content_mapnode_special.cpp:1256
+msgid "Locking Sign"
+msgstr "Semn încuiabil"
+
+#: src/content_mapnode_special.cpp:1286 src/content_nodemeta.cpp:500
+msgid "Chest"
+msgstr "Cufăr"
+
+#: src/content_mapnode_special.cpp:1310 src/content_nodemeta.cpp:775
+msgid "Creative Chest"
+msgstr "Cufăr creativ"
+
+#: src/content_mapnode_special.cpp:1331
+msgid "Locking Chest"
+msgstr "Cufăr încuiabil"
+
+#: src/content_mapnode_special.cpp:1362
+msgid "Safe"
+msgstr "Seif"
+
+#: src/content_mapnode_special.cpp:1384 src/content_mapnode_special.cpp:1411
+msgid "Furnace"
+msgstr "Furnal"
+
+#: src/content_mapnode_special.cpp:1429 src/content_mapnode_special.cpp:1457
+msgid "Locking Furnace"
+msgstr "Furnal încuiabil"
+
+#: src/content_mapnode_special.cpp:1475 src/content_mapnode_special.cpp:1501
+msgid "Incinerator"
+msgstr "Incinerator"
+
+#: src/content_mapnode_special.cpp:1519
+msgid "Nyan Cat"
+msgstr "Mâță Nyan"
+
+#: src/content_mapnode_special.cpp:1533
+msgid "Rainbow"
+msgstr "Curcubeu"
+
+#: src/content_mapnode_special.cpp:1545
+msgid "Unbaked Flower Pot"
+msgstr "Ghiveci de flori nears"
+
+#: src/content_mapnode_special.cpp:1567
+msgid "Flower Pot"
+msgstr "Ghiveci de flori"
+
+#: src/content_mapnode_special.cpp:1585
+msgid "Cobblestone Wall"
+msgstr "Perete de piatră cubică"
+
+#: src/content_mapnode_special.cpp:1609
+msgid "Rough Stone Wall"
+msgstr "Perete de piatră brută"
+
+#: src/content_mapnode_special.cpp:1633
+msgid "Mossy Cobblestone Wall"
+msgstr "Perete de piatră cubică cu mușchi"
+
+#: src/content_mapnode_special.cpp:1657
+msgid "Stone Wall"
+msgstr "Perete de piatră"
+
+#: src/content_mapnode_special.cpp:1681
+msgid "Sand Stone Wall"
+msgstr "Perete de gresie"
+
+#: src/content_mapnode_special.cpp:1705
+msgid "Limestone Wall"
+msgstr "Perete de calcar"
+
+#: src/content_mapnode_special.cpp:1729
+msgid "TNT"
+msgstr "TNT"
+
+#: src/content_mapnode_special.cpp:1749
+msgid "In-Progress explosion - how did you get this???"
+msgstr "Explozie în curs - cum ai ajuns aici???"
+
+#: src/content_mapnode_special.cpp:1769
+msgid "Steam"
+msgstr "Aburi"
+
+#: src/content_mapnode_special.cpp:1790
+msgid "Home Flag"
+msgstr "Steag de casă"
+
+#: src/content_mapnode_special.cpp:1836
+msgid "Blue Home Flag"
+msgstr "Steag albastru de casă"
+
+#: src/content_mapnode_special.cpp:1861
+msgid "Green Home Flag"
+msgstr "Steag verde de casă"
+
+#: src/content_mapnode_special.cpp:1886
+msgid "Orange Home Flag"
+msgstr "Steag portocaliu de casă"
+
+#: src/content_mapnode_special.cpp:1911
+msgid "Purple Home Flag"
+msgstr "Steag purpuriu de casă"
+
+#: src/content_mapnode_special.cpp:1936
+msgid "Red Home Flag"
+msgstr "Steag roșu de casă"
+
+#: src/content_mapnode_special.cpp:1961
+msgid "Yellow Home Flag"
+msgstr "Steag galben de casă"
+
+#: src/content_mapnode_special.cpp:1986
+msgid "Black Home Flag"
+msgstr "Steag negru de casă"
+
+#: src/content_mapnode_special.cpp:2011
+msgid "Life Support System"
+msgstr "Sistem de susținere a vieții"
+
+#: src/content_mapnode_special.cpp:2035
+msgid "Parcel"
+msgstr "Parcelă"
+
+#: src/content_mapnode_special.cpp:2061
+msgid "Cauldron"
+msgstr "Cazan"
+
+#: src/content_mapnode_special.cpp:2082 src/content_nodemeta.cpp:3312
+msgid "Forge"
+msgstr "Forjă"
+
+#: src/content_mapnode_special.cpp:2110
+msgid "Forge Fire"
+msgstr "Foc de forjă"
+
+#: src/content_mapnode_stair.cpp:37
+msgid "Rough Stone Stair"
+msgstr "Scară de piatră brută"
+
+#: src/content_mapnode_stair.cpp:54
+msgid "Cobble Stone Stair"
+msgstr "Scară de piatră cubică"
+
+#: src/content_mapnode_stair.cpp:71
+msgid "Mossy Cobble Stone Stair"
+msgstr "Scară de piatră cubică cu mușchi"
+
+#: src/content_mapnode_stair.cpp:88
+msgid "Stone Stair"
+msgstr "Scară de piatră"
+
+#: src/content_mapnode_stair.cpp:106
+msgid "Wood Stair"
+msgstr "Scară de lem"
+
+#: src/content_mapnode_stair.cpp:125
+msgid "Jungle Wood Stair"
+msgstr "Scară de lemn de junglă"
+
+#: src/content_mapnode_stair.cpp:144
+msgid "Brick Stair"
+msgstr "Scară de cărămidă"
+
+#: src/content_mapnode_stair.cpp:166
+msgid "Sand Stone Stair"
+msgstr "Scară de cărămidă de gresie"
+
+#: src/content_mapnode_stair.cpp:183
+msgid "Limestone Stair"
+msgstr "Scară de calcar"
+
+#: src/content_mob.cpp:412
+msgid "Oerkki"
+msgstr "Oerkki"
+
+#: src/content_mob.cpp:463
+msgid "Dungeon Master"
+msgstr "Maestru de temniță"
+
+#: src/content_mob.cpp:514
+msgid "Fireball"
+msgstr "Minge de foc"
+
+#: src/content_mob.cpp:532
+msgid "Doe"
+msgstr "Căprioară"
+
+#: src/content_mob.cpp:558 src/content_mob.cpp:589
+msgid "Stag"
+msgstr "Cerb"
+
+#: src/content_mob.cpp:639
+msgid "Shark"
+msgstr "Rechin"
+
+#: src/content_mob.cpp:666
+msgid "Wolf"
+msgstr "Lup"
+
+#: src/content_mob.cpp:696
+msgid "Tame Wolf"
+msgstr "Lup îmblânzit"
+
+#: src/content_mob.cpp:723
+msgid "Sheep"
+msgstr "Oaie"
+
+#: src/content_mob.cpp:754
+msgid "Sheared Sheep"
+msgstr "Oaie tunsă"
+
+#: src/content_mob.cpp:779
+msgid "Snowball"
+msgstr "Bulgăre de zăpadă"
+
+#: src/content_mob.cpp:819
+msgid "Grey Kitten"
+msgstr "Pisicuță gri"
+
+#: src/content_mob.cpp:845
+msgid "White Kitten"
+msgstr "Pisicuță albă"
+
+#: src/content_mob.cpp:871
+msgid "Siamese Kitten"
+msgstr "Pisicuță siameză"
+
+#: src/content_mob.cpp:897
+msgid "Ginger Kitten"
+msgstr "Pisicuță roșcată"
+
+#: src/content_nodemeta.cpp:75 src/content_nodemeta.cpp:138
+#: src/content_nodemeta.cpp:2677 src/content_nodemeta.cpp:2776
+msgid "Save"
+msgstr "Salvează"
+
+#: src/content_nodemeta.cpp:185
+#, c-format
+msgid "%s's Home Flag"
+msgstr "Steagul de casă al lui %s"
+
+#: src/content_nodemeta.cpp:269 src/content_nodemeta.cpp:282
+#: src/content_nodemeta.cpp:436 src/content_nodemeta.cpp:449
+msgid "You can't sleep yet."
+msgstr "Nu poți dormi încă."
+
+#: src/content_nodemeta.cpp:273 src/content_nodemeta.cpp:440
+msgid "Go to sleep"
+msgstr "Dormi"
+
+#: src/content_nodemeta.cpp:278 src/content_nodemeta.cpp:445
+msgid "Someone else is sleeping here."
+msgstr "Altcineva doarme aici."
+
+#: src/content_nodemeta.cpp:286 src/content_nodemeta.cpp:453
+msgid "Get out of bed"
+msgstr "Ieși din pat"
+
+#: src/content_nodemeta.cpp:432
+msgid "This bed is too uncomfortable to sleep in."
+msgstr "Acest pat este prea incomod pentru a dormi."
+
+#: src/content_nodemeta.cpp:573
+#, c-format
+msgid "Locking Chest owned by '%s'"
+msgstr "Cufăr încuiabil deținut de „%s”"
+
+#: src/content_nodemeta.cpp:647
+#, c-format
+msgid "Safe owned by '%s'"
+msgstr "Cufăr deținut de „%s”"
+
+#: src/content_nodemeta.cpp:816 src/content_nodemeta.cpp:1870
+#: src/content_nodemeta.cpp:2157 src/content_nodemeta.cpp:2349
+#: src/content_nodemeta.cpp:2563
+#, c-format
+msgid "Page %d of %d"
+msgstr "Pagina %d din %d"
+
+#: src/content_nodemeta.cpp:820 src/content_nodemeta.cpp:1898
+#: src/content_nodemeta.cpp:2176 src/content_nodemeta.cpp:2358
+#: src/content_nodemeta.cpp:2579
+msgid "<< Previous Page"
+msgstr "<< Pagina anterioară"
+
+#: src/content_nodemeta.cpp:826 src/content_nodemeta.cpp:1904
+#: src/content_nodemeta.cpp:2182 src/content_nodemeta.cpp:2364
+#: src/content_nodemeta.cpp:2585
+msgid "Next Page >>"
+msgstr "Pagina următoare >>"
+
+#: src/content_nodemeta.cpp:869
+#, c-format
+msgid "Border Stone owned by '%s'"
+msgstr "Piatră de hotar deținută de „%s”"
+
+#: src/content_nodemeta.cpp:944
+msgid "Furnace is overloaded"
+msgstr "Furnalul este supraîncărcat"
+
+#: src/content_nodemeta.cpp:945
+msgid "Furnace is out of fuel"
+msgstr "Furnalul nu mai are combustibil"
+
+#: src/content_nodemeta.cpp:947
+msgid "Furnace is inactive"
+msgstr "Furnalul este inactiv"
+
+#: src/content_nodemeta.cpp:950
+msgid "Furnace is active"
+msgstr "Furnalul este activ"
+
+#: src/content_nodemeta.cpp:1209
+msgid "Locking Furnace is overloaded"
+msgstr "Furnalul încuiabil este supraîncărcat"
+
+#: src/content_nodemeta.cpp:1210
+msgid "Locking Furnace is out of fuel"
+msgstr "Furnalul încuiabil nu mai are combustibil"
+
+#: src/content_nodemeta.cpp:1212
+msgid "Locking Furnace is inactive"
+msgstr "Furnalul încuiabil este inactiv"
+
+#: src/content_nodemeta.cpp:1215
+msgid "Locking Furnace is active"
+msgstr "Furnalul încuiabil este activ"
+
+#: src/content_nodemeta.cpp:1470
+msgid "Armed Explosive: about to detonate"
+msgstr "Exploziv armat: aproape de detonare"
+
+#: src/content_nodemeta.cpp:1473
+#, c-format
+msgid "Armed Explosive: %d second till detonation"
+msgid_plural "Armed Explosive: %d seconds till detonation"
+msgstr[0] "Explozibil armat: %d secundă până la detonare"
+msgstr[1] "Explozibil armat: %d secunde până la detonare"
+msgstr[2] "Explozibil armat: %d de secunde până la detonare"
+
+#: src/content_nodemeta.cpp:1534 src/content_nodemeta.cpp:1539
+msgid "Incinerator is active"
+msgstr "Incineratorul este activ"
+
+#: src/content_nodemeta.cpp:1541
+msgid "Incinerator is inactive"
+msgstr "Incineratorul este inactiv"
+
+#: src/content_nodemeta.cpp:1633
+msgid "Add fuel, then punch to incinerate wielded item"
+msgstr "Adaugă combustibil, apoi lovește-l pentru a incinera obiectul din mână"
+
+#: src/content_nodemeta.cpp:1874 src/content_nodemeta.cpp:2162
+msgid "Add item here to see recipe"
+msgstr "Adaugă obiectul aici pentru a vedea rețeta"
+
+#: src/content_nodemeta.cpp:1879 src/content_nodemeta.cpp:2167
+#, c-format
+msgid "Recipe %d of %d"
+msgstr "Rețeta %d din %d"
+
+#: src/content_nodemeta.cpp:1888
+msgid "Gives"
+msgstr "Conferă"
+
+#: src/content_nodemeta.cpp:2353
+msgid "Add item here to see cook result"
+msgstr "Adaugă obiectul aici pentru a vedea rezultatul gătirii"
+
+#: src/content_nodemeta.cpp:2567
+msgid "Add item here to see dig result"
+msgstr "Adaugă obiectul aici pentru a vedea rezultatul săpării"
+
+#: src/content_nodemeta.cpp:2571
+msgid "Dig Result"
+msgstr "Rezultatul săpării"
+
+#: src/content_nodemeta.cpp:2575
+msgid "Random Drop"
+msgstr "Obiect picat la întâmplare"
+
+#: src/content_nodemeta.cpp:2667 src/content_nodemeta.cpp:2766
+msgid "Title"
+msgstr "Titlu"
+
+#: src/content_nodemeta.cpp:2672 src/content_nodemeta.cpp:2771
+msgid "Content"
+msgstr "Conținut"
+
+#: src/content_nodemeta.cpp:3127
+msgid "Cauldron is active"
+msgstr "Cazanul este activ"
+
+#: src/content_nodemeta.cpp:3130
+msgid "Cauldron is hot"
+msgstr "Cazanul este fierbinte"
+
+#: src/content_nodemeta.cpp:3132
+msgid "Cauldron is cool"
+msgstr "Cazanul este rece"
+
+#: src/content_nodemeta.cpp:3134
+msgid "Cauldron is empty"
+msgstr "Cazanul este gol"
+
+#: src/content_nodemeta.cpp:3138
+msgid "Cauldron is inactive"
+msgstr "Cazanul este inactiv"
+
+#: src/content_nodemeta.cpp:3139
+msgid "Cauldron is out of fuel"
+msgstr "Cazanul nu mai are combustibil"
+
+#: src/content_nodemeta.cpp:3218
+msgid "Add fuel, then punch to add or remove water"
+msgstr "Adaugă combustibil, apoi lovește-l pentru a adăuga sau elimina apă"
+
+#: src/content_nodemeta.cpp:3484
+msgid "Show Enchanting"
+msgstr "Arată vrăjile"
+
+#: src/content_nodemeta.cpp:3491 src/game.cpp:208
+msgid "Show Crafting"
+msgstr "Arată fabricarea"
+
+#: src/content_toolitem.cpp:213
+msgid "Small Stone Pick"
+msgstr "Târnăcop mic de piatră"
+
+#: src/content_toolitem.cpp:236
+msgid "Stone Pick"
+msgstr "Târnăcop de piatră"
+
+#: src/content_toolitem.cpp:250
+msgid "Flint Pick"
+msgstr "Târnăcop de cremene"
+
+#: src/content_toolitem.cpp:264
+msgid "Steel Pick"
+msgstr "Târnăcop de oțel"
+
+#: src/content_toolitem.cpp:278
+msgid "Creative Pick"
+msgstr "Târnăcop creativ"
+
+#: src/content_toolitem.cpp:292
+msgid "Stone Trowel"
+msgstr "Mistrie de piatră"
+
+#: src/content_toolitem.cpp:306
+msgid "Stone Shovel"
+msgstr "Lopată de piatră"
+
+#: src/content_toolitem.cpp:320
+msgid "Flint Shovel"
+msgstr "Lopată de cremene"
+
+#: src/content_toolitem.cpp:334
+msgid "Steel Shovel"
+msgstr "Lopată de oțel"
+
+#: src/content_toolitem.cpp:348
+msgid "Small Stone Axe"
+msgstr "Topor mic de piatră"
+
+#: src/content_toolitem.cpp:369
+msgid "Stone Axe"
+msgstr "Topor de piatră"
+
+#: src/content_toolitem.cpp:383
+msgid "Flint Axe"
+msgstr "Topor de cremene"
+
+#: src/content_toolitem.cpp:397
+msgid "Steel Axe"
+msgstr "Topor de oțel"
+
+#: src/content_toolitem.cpp:411
+msgid "Wooden Club"
+msgstr "Bâtă de lemn"
+
+#: src/content_toolitem.cpp:426
+msgid "Stone Sword"
+msgstr "Sabie de piatră"
+
+#: src/content_toolitem.cpp:440
+msgid "Steel Sword"
+msgstr "Sabie din oțel"
+
+#: src/content_toolitem.cpp:454
+msgid "Flint Shears"
+msgstr "Foarfeci din cremene"
+
+#: src/content_toolitem.cpp:468
+msgid "Steel Shears"
+msgstr "Foarfeci din oțel"
+
+#: src/content_toolitem.cpp:482
+msgid "Wooden Bucket"
+msgstr "Găleată de lemn"
+
+#: src/content_toolitem.cpp:499
+msgid "Tin Bucket"
+msgstr "Găleată din staniu"
+
+#: src/content_toolitem.cpp:515
+msgid "Wooden Bucket of Water"
+msgstr "Găleată de lemn cu apă"
+
+#: src/content_toolitem.cpp:526
+msgid "Tin Bucket of Water"
+msgstr "Găleată cu apă din staniu"
+
+#: src/content_toolitem.cpp:537
+msgid "Steel Bucket"
+msgstr "Găleată de oțe"
+
+#: src/content_toolitem.cpp:552
+msgid "Steel Bucket of Water"
+msgstr "Găleată de oțel cu apă"
+
+#: src/content_toolitem.cpp:563
+msgid "Steel Bucket of Lava"
+msgstr "Găleată de oțel cu lavă"
+
+#: src/content_toolitem.cpp:575
+msgid "Fire Starter"
+msgstr "Brichetă"
+
+#: src/content_toolitem.cpp:589
+msgid "Crowbar"
+msgstr "Rangă"
+
+#: src/content_toolitem.cpp:602
+msgid "Key"
+msgstr "Cheie"
+
+#: src/content_toolitem.cpp:614
+msgid "Stone Spear"
+msgstr "Suliță de piatră"
+
+#: src/content_toolitem.cpp:628
+msgid "Flint Spear"
+msgstr "Suliță de cremene"
+
+#: src/content_toolitem.cpp:642
+msgid "Steel Spear"
+msgstr "Suliță de oțel"
+
+#: src/content_toolitem.cpp:656
+msgid "Bow"
+msgstr "Arc"
+
+#: src/content_toolitem.cpp:676
+msgid "Raw Mithril Pick"
+msgstr "Târnăcop de mithril brut"
+
+#: src/content_toolitem.cpp:690
+msgid "Raw Mithril Shovel"
+msgstr "Lopată de mitril brut"
+
+#: src/content_toolitem.cpp:704
+msgid "Raw Mithril Axe"
+msgstr "Topor de mithril brut"
+
+#: src/content_toolitem.cpp:718
+msgid "Raw Mithril Sword"
+msgstr "Sabie de mithrlil brut"
+
+#: src/content_toolitem.cpp:732
+msgid "Raw Mithril Spear"
+msgstr "Suliță de mithril brut"
+
+#: src/content_toolitem.cpp:746
+msgid "Unbound Mithril Pick"
+msgstr "Târnăcop de mithril detașat"
+
+#: src/content_toolitem.cpp:760
+msgid "Unbound Mithril Shovel"
+msgstr "Lopată de mithril detașat"
+
+#: src/content_toolitem.cpp:774
+msgid "Unbound Mithril Axe"
+msgstr "Topor de mithril detașat"
+
+#: src/content_toolitem.cpp:788
+msgid "Unbound Mithril Sword"
+msgstr "Sabie de mithril detașat"
+
+#: src/content_toolitem.cpp:802
+msgid "Unbound Mithril Spear"
+msgstr "Suliță de mithril detașat"
+
+#: src/content_toolitem.cpp:816
+msgid "Mithril Pick"
+msgstr "Târnăcop de mithril"
+
+#: src/content_toolitem.cpp:831
+msgid "Mithril Shovel"
+msgstr "Lopată de mithril"
+
+#: src/content_toolitem.cpp:845
+msgid "Mithril Axe"
+msgstr "Topor de mithril"
+
+#: src/content_toolitem.cpp:859
+msgid "Mithril Sword"
+msgstr "Sabie de mithril"
+
+#: src/content_toolitem.cpp:873
+msgid "Mithril Spear"
+msgstr "Suliță de mithril"
+
+#: src/content_toolitem.cpp:887
+msgid "Mob Spawner"
+msgstr "Creator de creaturi"
+
+#: src/game.cpp:209
+msgid "Clothes"
+msgstr "Haine"
+
+#: src/game.cpp:210
+msgid "Hat/Helmet"
+msgstr "Pălărie/cască"
+
+#: src/game.cpp:212
+msgid "Jacket"
+msgstr "Jachetă"
+
+#: src/game.cpp:214
+msgid "Decorative"
+msgstr "Decorative"
+
+#: src/game.cpp:216
+msgid "Shirt"
+msgstr "Cămașă"
+
+#: src/game.cpp:218
+msgid "Belt"
+msgstr "Centură"
+
+#: src/game.cpp:220
+msgid "Pants"
+msgstr "Pantaloni"
+
+#: src/game.cpp:222
+msgid "Boots"
+msgstr "Cizme"
+
+#: src/game.cpp:229
+msgid "Drop to Ground"
+msgstr "Aruncă la pământ"
+
+#: src/game.cpp:231
+msgid "Change Clothing"
+msgstr "Schimbă îmbrăcămintea"
+
+#: src/game.cpp:590
+msgid "Loading"
+msgstr "Încărcare"
+
+#: src/game.cpp:662
+msgid "Loading..."
+msgstr "Se încarcă..."
+
+#: src/game.cpp:671
+msgid "Creating server..."
+msgstr "Se creează serverul..."
+
+#: src/game.cpp:682
+msgid "Creating client..."
+msgstr "Se creează clientul..."
+
+#: src/game.cpp:687
+msgid "Resolving address..."
+msgstr "Se rezolvă adresa..."
+
+#: src/game.cpp:698
+msgid "Couldn't resolve address"
+msgstr "Nu s-a putut rezolva adresa"
+
+#: src/game.cpp:738
+#, c-format
+msgid "Connecting to server... (timeout in %d second)"
+msgid_plural "Connecting to server... (timeout in %d seconds)"
+msgstr[0] "Se conectează la server... (expiră în %d secundă)"
+msgstr[1] "Se conectează la server... (expiră în %d secunde)"
+msgstr[2] "Se conectează la server... (expiră în %d de secunde)"
+
+#: src/game.cpp:767
+#, c-format
+msgid "Access denied. Reason: %ls"
+msgstr "Acces refuzat. Motivul: %ls"
+
+#: src/game.cpp:771
+msgid "Unable to Connect (port already in use?)."
+msgstr "Conectare nereușită (este deja folosit portul?)."
+
+#: src/game.cpp:774
+msgid "Connection timed out."
+msgstr "Conexiunea a expirat."
+
+#: src/game.cpp:927
+msgid "Access denied. Reason: "
+msgstr "Acces refuzat. Motivul:"
+
+#: src/game.cpp:1161
+msgid "free_move disabled"
+msgstr "free_move dezactivat"
+
+#: src/game.cpp:1165
+msgid "free_move enabled"
+msgstr "free_move activat"
+
+#: src/game.cpp:1177
+#, c-format
+msgid "Saved screenshot to '%s'"
+msgstr "Salvează captura de ecran în „%s”"
+
+#: src/game.cpp:1189
+msgid "HUD shown"
+msgstr "Arată HUD-ul"
+
+#: src/game.cpp:1191
+msgid "HUD hidden"
+msgstr "HUD ascuns"
+
+#: src/game.cpp:1197
+msgid "Chat shown"
+msgstr "Chat afișat"
+
+#: src/game.cpp:1199
+msgid "Chat hidden"
+msgstr "Chat ascuns"
+
+#: src/game.cpp:1205
+msgid "Fog disabled"
+msgstr "Ceața dezactivată"
+
+#: src/game.cpp:1207
+msgid "Fog enabled"
+msgstr "Ceața activată"
+
+#: src/game.cpp:1213
+msgid "Camera update disabled"
+msgstr "Actualizarea camerei dezactivată"
+
+#: src/game.cpp:1215
+msgid "Camera update enabled"
+msgstr "Actualizarea camerei activată"
+
+#: src/game.cpp:1225
+msgid "Debug info shown"
+msgstr "Informația de depanare afișată"
+
+#: src/game.cpp:1230
+msgid "Debug info and frametime graph hidden"
+msgstr "Informația de depanare și graficul cu durata cadrelor ascunse"
+
+#: src/game.cpp:1234
+msgid "Frametime graph shown"
+msgstr "Graficul cu durata cadrelor afișat"
+
+#: src/game.cpp:1246
+#, c-format
+msgid "Profiler shown (page %d of %d)"
+msgstr "Profilatorul afișat (pagina %d din %d)"
+
+#: src/game.cpp:1250
+msgid "Profiler hidden"
+msgstr "Profilatorul ascuns"
+
+#: src/game.cpp:1258 src/game.cpp:1269
+#, c-format
+msgid "Minimum viewing range changed to %d"
+msgstr "Raza minimă de vedere schimbată la %d"
+
+#: src/game.cpp:1338
+msgid "Enabled full viewing range"
+msgstr "Raza completă de vedere activată"
+
+#: src/game.cpp:1342
+msgid "Disabled full viewing range"
+msgstr "Raza completă de vedere dezactivată"
+
+#: src/game.cpp:1995
+msgid "Disconnected (Network Timeout)"
+msgstr "Deconectat (Lipsă conexiune rețea)"
+
+#: src/game.cpp:2407
+msgid "Shutting down..."
+msgstr "Se închide..."
+
+#: src/guiDeathScreen.cpp:97
+msgid "You died."
+msgstr "Ai murit."
+
+#: src/guiDeathScreen.cpp:102
+msgid "Respawn"
+msgstr "Învie"
+
+#: src/guiFormSpecMenu.cpp:436
+msgid "Left click: Move all items, Right click: Move single item"
+msgstr "Clic stânga: mută toate elementele, clic dreapta: mută un singur element"
+
+#: src/guiFormSpecMenu.cpp:458
+msgid "Write It"
+msgstr "Scrie asta"
+
+#: src/guiMainMenu.cpp:347
+msgid "Character Creator"
+msgstr "Creator de personaje"
+
+#: src/guiMainMenu.cpp:353 src/guiMainMenu.cpp:478 src/guiMainMenu.cpp:520
+#: src/guiMainMenu.cpp:631
+msgid "Single Player"
+msgstr "Un jucător"
+
+#: src/guiMainMenu.cpp:359 src/guiMainMenu.cpp:410
+msgid "Multi Player"
+msgstr "Multi-jucător"
+
+#: src/guiMainMenu.cpp:365 src/guiPauseMenu.cpp:155
+msgid "Settings"
+msgstr "Setări"
+
+#: src/guiMainMenu.cpp:371
+msgid "Credits"
+msgstr "Credite"
+
+#: src/guiMainMenu.cpp:377
+msgid "Quit"
+msgstr "Ieși"
+
+#: src/guiMainMenu.cpp:418
+msgid "Name/Password"
+msgstr "Nume/parolă"
+
+#: src/guiMainMenu.cpp:446
+msgid "Address/Port"
+msgstr "Adresă/port"
+
+#: src/guiMainMenu.cpp:472
+msgid "Connect"
+msgstr "Conectare"
+
+#: src/guiMainMenu.cpp:487 src/guiMainMenu.cpp:529 src/guiMainMenu.cpp:640
+msgid "Creative Mode"
+msgstr "Mod creativ"
+
+#: src/guiMainMenu.cpp:488 src/guiMainMenu.cpp:530 src/guiMainMenu.cpp:641
+msgid "Adventure Mode"
+msgstr "Mod aventură"
+
+#: src/guiMainMenu.cpp:489 src/guiMainMenu.cpp:531 src/guiMainMenu.cpp:642
+msgid "Survival Mode"
+msgstr "Mod supraviețuire"
+
+#: src/guiMainMenu.cpp:502 src/guiMainMenu.cpp:655
+msgid "Advanced Settings"
+msgstr "Setări avansate"
+
+#: src/guiMainMenu.cpp:508 src/guiMainMenu.cpp:550
+msgid "Map Options"
+msgstr "Opțiuni hartă"
+
+#: src/guiMainMenu.cpp:514 src/guiMainMenu.cpp:625 src/guiMainMenu.cpp:750
+msgid "Start Game"
+msgstr "Începe jocul"
+
+#: src/guiMainMenu.cpp:544
+msgid "Hide Advanced Settings"
+msgstr "Ascunde setările avansate"
+
+#: src/guiMainMenu.cpp:555
+msgid "Creatures"
+msgstr "Creaturi"
+
+#: src/guiMainMenu.cpp:562
+msgid "None"
+msgstr "Niciuna"
+
+#: src/guiMainMenu.cpp:563
+msgid "Passive"
+msgstr "Pasive"
+
+#: src/guiMainMenu.cpp:564
+msgid "Passive & Aggressive"
+msgstr "Pasive și agresive"
+
+#: src/guiMainMenu.cpp:565
+msgid "Passive, Aggressive, & Destructive"
+msgstr "Pasive, agresive și distructive"
+
+#: src/guiMainMenu.cpp:579
+msgid "Player Damage"
+msgstr "Rănire jucător"
+
+#: src/guiMainMenu.cpp:584
+msgid "Suffocation/Drowning"
+msgstr "Sufocare/înec"
+
+#: src/guiMainMenu.cpp:589
+msgid "Hunger"
+msgstr "Foame"
+
+#: src/guiMainMenu.cpp:594
+msgid "Tool Wear"
+msgstr "Uzură unelte"
+
+#: src/guiMainMenu.cpp:599
+msgid "Dangerous Fire"
+msgstr "Foc periculos"
+
+#: src/guiMainMenu.cpp:604
+msgid "Infinite Inventory"
+msgstr "Inventar infinit"
+
+#: src/guiMainMenu.cpp:609
+msgid "Initial Inventory"
+msgstr "Inventar inițial"
+
+#: src/guiMainMenu.cpp:614
+msgid "Droppable Inventory"
+msgstr "Inventar aruncabil"
+
+#: src/guiMainMenu.cpp:619
+msgid "Death drops Inventory"
+msgstr "Moartea aruncă inventarul"
+
+#: src/guiMainMenu.cpp:661
+msgid "Hide Map Options"
+msgstr "Ascunde opțiunile de hartă"
+
+#: src/guiMainMenu.cpp:666
+msgid "Create New Map"
+msgstr "Creează o hartă nouă"
+
+#: src/guiMainMenu.cpp:672
+msgid "Warning! Your old map will be deleted!"
+msgstr "Atenție! Harta veche va fi ștearsă!"
+
+#: src/guiMainMenu.cpp:678
+msgid "Map Type"
+msgstr "Tipul de hartă"
+
+#: src/guiMainMenu.cpp:685
+msgid "Flat"
+msgstr "Plată"
+
+#: src/guiMainMenu.cpp:686
+msgid "Flatter"
+msgstr "Mai plată"
+
+#: src/guiMainMenu.cpp:687
+msgid "Smoother"
+msgstr "Mai lină"
+
+#: src/guiMainMenu.cpp:688
+msgid "Default"
+msgstr "Implicită"
+
+#: src/guiMainMenu.cpp:689
+msgid "Hilly"
+msgstr "Deluroasă"
+
+#: src/guiMainMenu.cpp:690
+msgid "Mountains"
+msgstr "Munți"
+
+#: src/guiMainMenu.cpp:691
+msgid "Crazy"
+msgstr "Nebună"
+
+#: src/guiMainMenu.cpp:692
+msgid "Crazy Hills"
+msgstr "Dealuri nebune"
+
+#: src/guiMainMenu.cpp:714
+msgid "Use Fixed Seed"
+msgstr "Utilizează sămânță fixă"
+
+#: src/guiMainMenu.cpp:720
+msgid "Map Seed"
+msgstr "Sămânță hartă"
+
+#: src/guiMainMenu.cpp:737
+msgid "Clear Map"
+msgstr "Curăță harta"
+
+#: src/guiMainMenu.cpp:742
+msgid "Warning! This will delete all construction from your map!"
+msgstr "Atenție! Aceasta va șterge toate construcțiile de pe hartă!"
+
+#: src/guiMainMenu.cpp:760
+msgid ""
+"Voxelands\n"
+"http://www.voxelands.com/\n"
+"By Lisa 'darkrose' Milne <lisa@ltmnet.com> and contributors."
+msgstr "Voxelands\nhttp://www.voxelands.com/\nDe Lisa 'darkrose' Milne <lisa@ltmnet.com> și contribuitori."
+
+#: src/guiMainMenu.cpp:767
+msgid "Programmers"
+msgstr "Programatori"
+
+#: src/guiMainMenu.cpp:770
+msgid "Artists and Modellers"
+msgstr "Artiști și modelator"
+
+#: src/guiMainMenu.cpp:773
+msgid "Translators"
+msgstr "Translator"
+
+#: src/guiMainMenu.cpp:776
+msgid "Documentation Writters"
+msgstr "Scriitori de documentație"
+
+#: src/guiMainMenu.cpp:779
+msgid "Testers, Packagers, and Builders"
+msgstr "Testeri, împachetatori și constructori"
+
+#: src/guiMainMenu.cpp:782
+msgid "Music and Sound Effects Composers"
+msgstr "Compozitori de muzică și efecte muzicale"
+
+#: src/guiMainMenu.cpp:785
+msgid "Other Contributers, and Special Thanks"
+msgstr "Alți contribuitori și mulțumiri speciale"
+
+#: src/guiMainMenu.cpp:789
+msgid ""
+"Based on Minetest-C55 by Perttu Ahola <celeron55@gmail.com>\n"
+"and contributors: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... and tens of more random people."
+msgstr "Bazat pe Minetest-C55 de Perttu Ahola <celeron55@gmail.com>\nși contribuitorii: PilzAdam, Taoki, tango_, kahrl (kaaaaaahrl?), darkrose, matttpt, erlehmann, SpeedProg, JacobF, teddydestodes, marktraceur, Jonathan Neuschafer, thexyz, VanessaE, sfan5... și zeci de alți contribuitori întâmplători."
+
+#: src/guiMessageMenu.cpp:112 src/guiPauseMenu.cpp:143
+msgid "Continue"
+msgstr "Continuă"
+
+#: src/guiPasswordChange.cpp:105
+msgid "Old Password"
+msgstr "Vechea parolă"
+
+#: src/guiPasswordChange.cpp:123
+msgid "New Password"
+msgstr "Noua parolă"
+
+#: src/guiPasswordChange.cpp:140
+msgid "Confirm Password"
+msgstr "Confirmă parola"
+
+#: src/guiPasswordChange.cpp:158
+msgid "Change"
+msgstr "Schimbă"
+
+#: src/guiPasswordChange.cpp:166
+msgid "Passwords do not match!"
+msgstr "Parolele nu se potrivesc!"
+
+#: src/guiPauseMenu.cpp:103
+msgid "Voxelands by darkrose and contributors"
+msgstr "Voxelands de darkrose și contribuitori"
+
+#: src/guiPauseMenu.cpp:149
+msgid "Change Password"
+msgstr "Schimbă parola"
+
+#: src/guiPauseMenu.cpp:161
+msgid "Disconnect"
+msgstr "Deconectare"
+
+#: src/guiSettingsMenu.cpp:70
+msgid "Forward"
+msgstr "Înainte"
+
+#: src/guiSettingsMenu.cpp:71
+msgid "Backward"
+msgstr "Înapoi"
+
+#: src/guiSettingsMenu.cpp:72 src/keycode.cpp:234
+msgid "Left"
+msgstr "Stânga"
+
+#: src/guiSettingsMenu.cpp:73 src/keycode.cpp:234
+msgid "Right"
+msgstr "Dreapta"
+
+#: src/guiSettingsMenu.cpp:74
+msgid "Jump"
+msgstr "Sari"
+
+#: src/guiSettingsMenu.cpp:75
+msgid "Sneak"
+msgstr "Strecoară-te"
+
+#: src/guiSettingsMenu.cpp:76
+msgid "Inventory"
+msgstr "Inventar"
+
+#: src/guiSettingsMenu.cpp:77
+msgid "Use Item"
+msgstr "Folosește obiectul"
+
+#: src/guiSettingsMenu.cpp:78
+msgid "Chat"
+msgstr "Chat"
+
+#: src/guiSettingsMenu.cpp:79
+msgid "Command"
+msgstr "Comandă"
+
+#: src/guiSettingsMenu.cpp:80
+msgid "Range Select"
+msgstr "Selectează raza"
+
+#: src/guiSettingsMenu.cpp:81
+msgid "Toggle Fly"
+msgstr "Comută zborul"
+
+#: src/guiSettingsMenu.cpp:82 src/keycode.cpp:234
+msgid "Up"
+msgstr "Sus"
+
+#: src/guiSettingsMenu.cpp:83 src/keycode.cpp:234
+msgid "Down"
+msgstr "Jos"
+
+#: src/guiSettingsMenu.cpp:84
+msgid "Run"
+msgstr "Aleargă"
+
+#: src/guiSettingsMenu.cpp:85
+msgid "Examine/Open"
+msgstr "Examinează/deschide"
+
+#: src/guiSettingsMenu.cpp:86
+msgid "Take Screenshot"
+msgstr "Fă o captură de ecran"
+
+#: src/guiSettingsMenu.cpp:87
+msgid "Show/Hide HUD"
+msgstr "Arată/ascunde HUD-ul"
+
+#: src/guiSettingsMenu.cpp:88
+msgid "Show/Hide Chat"
+msgstr "Arată/ascunde chat-ul"
+
+#: src/guiSettingsMenu.cpp:89
+msgid "Toggle Fog"
+msgstr "Comută ceața"
+
+#: src/guiSettingsMenu.cpp:93
+msgid "Increase Viewing Range"
+msgstr "Crește raza vizuală"
+
+#: src/guiSettingsMenu.cpp:94
+msgid "Decrease Viewing Range"
+msgstr "Descrește raza vizuală"
+
+#: src/guiSettingsMenu.cpp:96
+msgid "Previous Item"
+msgstr "Obiectul anterior"
+
+#: src/guiSettingsMenu.cpp:97
+msgid "Next Item"
+msgstr "Obiectul următor"
+
+#: src/guiSettingsMenu.cpp:277
+msgid "Main Menu"
+msgstr "Meniul principal"
+
+#: src/guiSettingsMenu.cpp:284 src/guiSettingsMenu.cpp:311
+msgid "Controls"
+msgstr "Controale"
+
+#: src/guiSettingsMenu.cpp:290 src/guiSettingsMenu.cpp:342
+msgid "Graphics"
+msgstr "Grafice"
+
+#: src/guiSettingsMenu.cpp:296 src/guiSettingsMenu.cpp:386
+msgid "Video"
+msgstr "Video"
+
+#: src/guiSettingsMenu.cpp:302 src/guiSettingsMenu.cpp:429
+msgid "Sound"
+msgstr "Sunet"
+
+#: src/guiSettingsMenu.cpp:348
+msgid "Fancy trees"
+msgstr "Copaci șmecheri"
+
+#: src/guiSettingsMenu.cpp:353
+msgid "Smooth Lighting"
+msgstr "Lumină difuză"
+
+#: src/guiSettingsMenu.cpp:358
+msgid "3D Clouds"
+msgstr "Nori 3D"
+
+#: src/guiSettingsMenu.cpp:363
+msgid "Opaque water"
+msgstr "Apă opacă"
+
+#: src/guiSettingsMenu.cpp:368
+msgid "Classic HUD"
+msgstr "HUD clasic"
+
+#: src/guiSettingsMenu.cpp:373
+msgid "Wieldring Index"
+msgstr ""
+
+#: src/guiSettingsMenu.cpp:379 src/guiSettingsMenu.cpp:422
+msgid "Some settings cannot be changed in-game."
+msgstr "Unele setări nu pot fi schimbate în timpul jocului."
+
+#: src/guiSettingsMenu.cpp:392
+msgid "Fullscreen"
+msgstr "Ecran complet"
+
+#: src/guiSettingsMenu.cpp:397
+msgid "Particles"
+msgstr "Particule"
+
+#: src/guiSettingsMenu.cpp:402
+msgid "Mip-Mapping"
+msgstr "Mip-mapping"
+
+#: src/guiSettingsMenu.cpp:407
+msgid "Bi-Linear Filtering"
+msgstr "Filtru biliniar"
+
+#: src/guiSettingsMenu.cpp:412
+msgid "Tri-Linear Filtering"
+msgstr "Filtru triliniar"
+
+#: src/guiSettingsMenu.cpp:417
+msgid "Anisotropic Filtering"
+msgstr "Filtru anisotropic"
+
+#: src/guiSettingsMenu.cpp:435
+msgid "Volume:"
+msgstr "Volum:"
+
+#: src/guiSettingsMenu.cpp:609
+msgid "press Key"
+msgstr "apasă tasta"
+
+#: src/hud.cpp:785
+msgid "Summer"
+msgstr "Vara"
+
+#: src/hud.cpp:788
+msgid "Autumn"
+msgstr "Toamna"
+
+#: src/hud.cpp:791
+msgid "Winter"
+msgstr "Iarnă"
+
+#: src/hud.cpp:794
+msgid "Spring"
+msgstr "Primăvara"
+
+#: src/hud.cpp:804
+#, c-format
+msgid "Day %u of Year %u"
+msgstr "Ziua %u a anului %u"
+
+#: src/hud.cpp:828
+#, c-format
+msgid "Energy Boost: %d:%02d"
+msgstr "Creștere de energie: %d:%02d"
+
+#: src/hud.cpp:853
+#, c-format
+msgid "Cold Protection: %d:%02d"
+msgstr "Protecție la frig: %d:%02d"
+
+#: src/inventory.cpp:230 src/inventory.cpp:352
+msgid "Cookable: Yes"
+msgstr "Poate fi gătit: da"
+
+#: src/inventory.cpp:235 src/inventory.cpp:357 src/inventory.cpp:532
+msgid "Fuel Burn Time: "
+msgstr "Timp de ardere al combustibilului:"
+
+#: src/inventory.cpp:321
+msgid "Hunger: "
+msgstr "Foame:"
+
+#: src/inventory.cpp:327
+msgid "Health: "
+msgstr "Sănătate:"
+
+#: src/inventory.cpp:334
+msgid "Cold Protection: "
+msgstr "Protecție la frig:"
+
+#: src/inventory.cpp:343
+msgid "Energy Boost: "
+msgstr "Adaos de energie:"
+
+#: src/inventory.cpp:521
+msgid "Strength: "
+msgstr "Putere:"
+
+#: src/inventory.cpp:524
+msgid "Speed: "
+msgstr "Viteză:"
+
+#: src/inventory.cpp:527
+msgid "Level: "
+msgstr "Nivel:"
+
+#: src/inventory.cpp:557
+msgid "Contains: "
+msgstr "Conține:"
+
+#: src/inventory.cpp:643
+msgid "Armour: "
+msgstr "Armură:"
+
+#: src/inventory.cpp:649
+msgid "Warmth: "
+msgstr "Căldură:"
+
+#: src/inventory.cpp:655
+msgid "Pressure: "
+msgstr "Presiune:"
+
+#: src/inventory.cpp:661
+msgid "Suffocation: "
+msgstr "Sufocare:"
+
+#: src/inventory.cpp:667
+msgid "Durability: "
+msgstr "Durabilitate:"
+
+#: src/inventory.cpp:672
+msgid "Effect Boost: "
+msgstr "Creștere de efect:"
+
+#: src/keycode.cpp:229
+msgid "Left Button"
+msgstr "Buton stânga"
+
+#: src/keycode.cpp:229
+msgid "Middle Button"
+msgstr "Buton din mijloc"
+
+#: src/keycode.cpp:229
+msgid "Right Button"
+msgstr "Buton dreapta"
+
+#: src/keycode.cpp:229
+msgid "X Button 1"
+msgstr "Buton X 1"
+
+#: src/keycode.cpp:230
+msgid "Back"
+msgstr "Înapoi"
+
+#: src/keycode.cpp:230
+msgid "Clear"
+msgstr "Șterge"
+
+#: src/keycode.cpp:230
+msgid "Return"
+msgstr "Revino"
+
+#: src/keycode.cpp:230
+msgid "Tab"
+msgstr "Tab"
+
+#: src/keycode.cpp:230
+msgid "X Button 2"
+msgstr "Buton X 2"
+
+#: src/keycode.cpp:231
+msgid "Capital"
+msgstr ""
+
+#: src/keycode.cpp:231
+msgid "Control"
+msgstr "Control"
+
+#: src/keycode.cpp:231
+msgid "Kana"
+msgstr "Kana"
+
+#: src/keycode.cpp:231
+msgid "Menu"
+msgstr "Meniu"
+
+#: src/keycode.cpp:231
+msgid "Pause"
+msgstr "Pauză"
+
+#: src/keycode.cpp:231
+msgid "Shift"
+msgstr "Shift"
+
+#: src/keycode.cpp:232
+msgid "Convert"
+msgstr ""
+
+#: src/keycode.cpp:232
+msgid "Escape"
+msgstr "Escape"
+
+#: src/keycode.cpp:232
+msgid "Final"
+msgstr "Final"
+
+#: src/keycode.cpp:232
+msgid "Junja"
+msgstr "Junja"
+
+#: src/keycode.cpp:232
+msgid "Kanji"
+msgstr "Kanji"
+
+#: src/keycode.cpp:232
+msgid "Nonconvert"
+msgstr ""
+
+#: src/keycode.cpp:233
+msgid "Accept"
+msgstr "Acceptă"
+
+#: src/keycode.cpp:233
+msgid "End"
+msgstr "End"
+
+#: src/keycode.cpp:233
+msgid "Home"
+msgstr "Home"
+
+#: src/keycode.cpp:233
+msgid "Mode Change"
+msgstr "Schimbare de moduri"
+
+#: src/keycode.cpp:233
+msgid "Next"
+msgstr "Mai departe"
+
+#: src/keycode.cpp:233
+msgid "Prior"
+msgstr "Anterior"
+
+#: src/keycode.cpp:233
+msgid "Space"
+msgstr "Spațiu"
+
+#: src/keycode.cpp:234
+msgid "Execute"
+msgstr "Execută"
+
+#: src/keycode.cpp:234
+msgid "Print"
+msgstr "Imprimare"
+
+#: src/keycode.cpp:234
+msgid "Select"
+msgstr "Selecție"
+
+#: src/keycode.cpp:235
+msgid "Delete"
+msgstr "Delete"
+
+#: src/keycode.cpp:235
+msgid "Help"
+msgstr "Ajutor"
+
+#: src/keycode.cpp:235
+msgid "Insert"
+msgstr "Insert"
+
+#: src/keycode.cpp:235
+msgid "Snapshot"
+msgstr "Captură"
+
+#: src/keycode.cpp:238
+msgid "Left Windows"
+msgstr "Windows stânga"
+
+#: src/keycode.cpp:239
+msgid "Apps"
+msgstr "Aplicații"
+
+#: src/keycode.cpp:239
+msgid "Numpad 0"
+msgstr "Numpad 0"
+
+#: src/keycode.cpp:239
+msgid "Numpad 1"
+msgstr "Numpad 1"
+
+#: src/keycode.cpp:239
+msgid "Right Windows"
+msgstr "Windows dreapta"
+
+#: src/keycode.cpp:239
+msgid "Sleep"
+msgstr "Somn"
+
+#: src/keycode.cpp:240
+msgid "Numpad 2"
+msgstr "Numpad 2"
+
+#: src/keycode.cpp:240
+msgid "Numpad 3"
+msgstr "Numpad 3"
+
+#: src/keycode.cpp:240
+msgid "Numpad 4"
+msgstr "Numpad 4"
+
+#: src/keycode.cpp:240
+msgid "Numpad 5"
+msgstr "Numpad 5"
+
+#: src/keycode.cpp:240
+msgid "Numpad 6"
+msgstr "Numpad 6"
+
+#: src/keycode.cpp:240
+msgid "Numpad 7"
+msgstr "Numpad 7"
+
+#: src/keycode.cpp:241
+msgid "Numpad *"
+msgstr "Numpad *"
+
+#: src/keycode.cpp:241
+msgid "Numpad +"
+msgstr "Numpad +"
+
+#: src/keycode.cpp:241
+msgid "Numpad -"
+msgstr "Numpad -"
+
+#: src/keycode.cpp:241
+msgid "Numpad /"
+msgstr "Numpad /"
+
+#: src/keycode.cpp:241
+msgid "Numpad 8"
+msgstr "Numpad 8"
+
+#: src/keycode.cpp:241
+msgid "Numpad 9"
+msgstr "Numpad 9"
+
+#: src/keycode.cpp:245
+msgid "Num Lock"
+msgstr "Num Lock"
+
+#: src/keycode.cpp:245
+msgid "Scroll Lock"
+msgstr "Scroll Lock"
+
+#: src/keycode.cpp:246
+msgid "Left Shift"
+msgstr "Shift stânga"
+
+#: src/keycode.cpp:246
+msgid "Right Shift"
+msgstr "Shift dreapta"
+
+#: src/keycode.cpp:247
+msgid "Left Control"
+msgstr "Control stânga"
+
+#: src/keycode.cpp:247
+msgid "Left Menu"
+msgstr "Meniu stânga"
+
+#: src/keycode.cpp:247
+msgid "Right Control"
+msgstr "Control dreapta"
+
+#: src/keycode.cpp:247
+msgid "Right Menu"
+msgstr "Meniu dreapta"
+
+#: src/keycode.cpp:249
+msgid "Comma"
+msgstr "Virgulă"
+
+#: src/keycode.cpp:249
+msgid "Minus"
+msgstr "Minus"
+
+#: src/keycode.cpp:249
+msgid "Period"
+msgstr "Punct"
+
+#: src/keycode.cpp:249
+msgid "Plus"
+msgstr "Plus"
+
+#: src/keycode.cpp:253
+msgid "Attn"
+msgstr "Atenție"
+
+#: src/keycode.cpp:253
+msgid "CrSel"
+msgstr "CrSel"
+
+#: src/keycode.cpp:254
+msgid "Erase OEF"
+msgstr "Erase OEF"
+
+#: src/keycode.cpp:254
+msgid "ExSel"
+msgstr "ExSel"
+
+#: src/keycode.cpp:254
+msgid "OEM Clear"
+msgstr "OEM Clear"
+
+#: src/keycode.cpp:254
+msgid "PA1"
+msgstr "PA1"
+
+#: src/keycode.cpp:254
+msgid "Play"
+msgstr "Play"
+
+#: src/keycode.cpp:254
+msgid "Zoom"
+msgstr "Zoom"
+
+#: src/main.cpp:1131
+msgid "Setting Up UI"
+msgstr "Setări de interfață"
+
+#: src/main.cpp:1154
+msgid "Loading MapNodes"
+msgstr "Se încarcă MapNodes"
+
+#: src/main.cpp:1156
+msgid "Loading Creatures"
+msgstr "Se încarcă creaturile"
+
+#: src/main.cpp:1159
+msgid "Setting Up Sound"
+msgstr "Setări de sunet"
+
+#: src/mapnode.cpp:282
+msgid "Loading Base MapNodes"
+msgstr "Se încarcă MapNodes de bază"
+
+#: src/mapnode.cpp:286
+msgid "Loading Circuit MapNodes"
+msgstr "Se încarcă MapNodes de circuit"
+
+#: src/mapnode.cpp:290
+msgid "Loading Plant MapNodes"
+msgstr "Se încarcă MapNodes de plantă"
+
+#: src/mapnode.cpp:294
+msgid "Loading Farming MapNodes"
+msgstr "Se încarcă MapNodes de fermă"
+
+#: src/mapnode.cpp:298
+msgid "Loading Decorative MapNodes"
+msgstr "Se încarcă MapNodes decorative"
+
+#: src/mapnode.cpp:302
+msgid "Loading Interactive MapNodes"
+msgstr "Se încarcă MapNodes interactive"
+
+#: src/mapnode.cpp:306
+msgid "Loading Special MapNodes"
+msgstr "Se încarcă MapNodes speciale"
